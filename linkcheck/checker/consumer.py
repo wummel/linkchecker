@@ -140,7 +140,7 @@ class Consumer (object):
         """start output of all configured loggers"""
         self.lock.acquire()
         try:
-             self.logger.start_output()
+            self.logger.start_output()
             for logger in self.fileoutput:
                 logger.start_output()
         finally:
