@@ -420,7 +420,7 @@ if options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
         logtype, encoding = options.output, "iso-8859-15"
-    if linkcheck.Loggers.has_key(logtype) and has_codec(encoding):
+    if linkcheck.Loggers.has_key(logtype) and has_encoding(encoding):
         config['logger'] = config.logger_new(logtype, encoding=encoding)
     else:
         printUsage(_("Illegal argument %r for option %s") % \
