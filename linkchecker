@@ -22,7 +22,9 @@ import sys
 if not hasattr(sys, 'version_info') or sys.version_info<(2, 3, 0, 'final', 0):
     raise SystemExit, "This program requires Python 2.3 or later."
 
-# try to use psyco
+# do not use psyco, at the moment (Oct 2003) it has bugs causing
+# infinite loops when threads are enabled, and psyco disables
+# the Ctrl-C break button of the Python interpreter.
 #try:
 #    import psyco
 #    psyco.profile()
