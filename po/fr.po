@@ -161,12 +161,6 @@ msgstr " erreurs"
 msgid "Info"
 msgstr ""
 
-msgid "illegal recursionlevel number %d"
-msgstr "valeur du niveau de récursivité %d illégal"
-
-msgid "%.3f seconds"
-msgstr "%.3f secondes"
-
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -212,7 +206,7 @@ msgid ""
 "        Default password is 'joe@'. See also -u.\n"
 "-P secs, --pause=secs\n"
 "        Pause <secs> seconds between each url check. This option\n"
-"\timplies -t0.\n"
+"        implies -t0.\n"
 "        Default is no pause between requests.\n"
 "-q, --quiet\n"
 "        Quiet operation. This is only useful with -F.\n"
@@ -317,6 +311,12 @@ msgstr ""
 "        error message, for example 'This page has moved' or\n"
 "        'Oracle Application Server error'.\n"
 "        This option implies -w.\n"
+
+msgid "illegal recursionlevel number %d"
+msgstr "valeur du niveau de récursivité %d illégal"
+
+msgid "%.3f seconds"
+msgstr "%.3f secondes"
 
 msgid "Execute 'linkchecker -h' for help\n"
 msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"

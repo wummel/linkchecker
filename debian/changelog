@@ -7,10 +7,12 @@ linkchecker (1.3.2) unstable; urgency=low
   * workaround for broken HEAD with some Apache servers by using GET
   * enable out-of-the-box CGI scripts for Debian package in
     http://localhost/doc/linkchecker/lconline/
-  * change logging config in the CGI scripts, the log file can be 
+    this of course requires an HTTP server installed on your machine
+  * change logging config in the CGI scripts, the log file can be
     enabled in linkcheck/lc_cgi.py
+  * updated to standards version 3.5.5
 
- -- Bastian Kleineidam <calvin@debian.org>  Thu, 24 May 2001 12:53:51 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 10 Jun 2001 13:20:19 +0200
 
 linkchecker (1.3.1) unstable; urgency=low
 

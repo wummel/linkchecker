@@ -169,12 +169,6 @@ msgstr " Fehler"
 msgid "Info"
 msgstr "Info"
 
-msgid "illegal recursionlevel number %d"
-msgstr "illegale recursionlevel Nummer %d"
-
-msgid "%.3f seconds"
-msgstr "%.3f Sekunden"
-
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -329,6 +323,12 @@ msgstr ""
 "        Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option impliziert -w.\n"
+
+msgid "illegal recursionlevel number %d"
+msgstr "illegale recursionlevel Nummer %d"
+
+msgid "%.3f seconds"
+msgstr "%.3f Sekunden"
 
 msgid "Execute 'linkchecker -h' for help\n"
 msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"

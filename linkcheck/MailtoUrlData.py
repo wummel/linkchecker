@@ -27,9 +27,9 @@ word = r"[-a-zA-Z0-9,./%]+"
 headers = r"\?(%s=%s(&%s=%s)*)$" % (word, word, word, word)
 headers_re = re.compile(headers)
 
-# parse /etc/resolv.conf (only on UNIX systems)
-if os.name=='posix':
-    DNS.ParseResolvConf()
+# parse /etc/resolv.conf (on UNIX systems)
+# or read entries from the registry (Windows systems)
+DNS.init_dns_resolver()
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
