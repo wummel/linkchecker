@@ -7,8 +7,9 @@ linkchecker (1.4.2) unstable; urgency=low
     parameters.
   * linkcheck/UrlData.py: modify the linkmatcher pattern to prevent a
     RuntimeError: maximum recursion limit exceeded.
+  * Updated the test suite.
 
- -- Bastian Kleineidam <calvin@debian.org>  Sat, 27 Apr 2002 14:14:50 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sat, 27 Apr 2002 14:58:29 +0200
 
 linkchecker (1.4.1) unstable; urgency=low
 
