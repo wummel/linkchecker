@@ -1,13 +1,13 @@
 """Supporting definitions for the Python regression test."""
+import linkcheck
 
-
-class Error(Exception):
+class Error (Exception):
         """Base class for regression test exceptions."""
 
-class TestFailed(Error):
+class TestFailed (Error):
         """Test failed."""
 
-class TestSkipped(Error):
+class TestSkipped (Error):
         """Test skipped.
 
         This can be raised to indicate that a test was deliberatly
@@ -21,14 +21,14 @@ class TestSkipped(Error):
 
 verbose = 1		# Flag set to 0 by regrtest.py
 
-def unload(name):
+def unload (name):
 	import sys
 	try:
 		del sys.modules[name]
 	except KeyError:
 		pass
 
-def forget(modname):
+def forget (modname):
 	unload(modname)
 	import sys, os
 	for dirname in sys.path:
@@ -39,7 +39,7 @@ def forget(modname):
 
 FUZZ = 1e-6
 
-def fcmp(x, y): # fuzzy comparison function
+def fcmp (x, y): # fuzzy comparison function
 	if type(x) == type(0.0) or type(y) == type(0.0):
 		try:
 			x, y = coerce(x, y)
@@ -59,7 +59,7 @@ def fcmp(x, y): # fuzzy comparison function
 TESTFN = '@test' # Filename used for testing
 from os import unlink
 
-def findfile(file, here=__file__):
+def findfile (file, here=__file__):
 	import os
 	if os.path.isabs(file):
 		return file
@@ -70,3 +70,29 @@ def findfile(file, here=__file__):
 		fn = os.path.join(dn, file)
 		if os.path.exists(fn): return fn
 	return file
+
+
+class TestLogger (linkcheck.Logging.Logger):
+    """ Output for regression test """
+    def init (self):
+        pass
+
+    def newUrl (self, urlData):
+        print 'url',urlData.urlName
+        if urlData.cached:
+            print "cached"
+        if urlData.name:
+            print "name",urlData.name
+        if urlData.baseRef:
+            print "baseurl",urlData.baseRef
+        if urlData.infoString:
+            print "info",urlData.infoString
+        if urlData.warningString:
+            print "warning",urlData.warningString
+        if urlData.valid:
+            print "valid"
+        else:
+            print "error"
+
+    def endOfOutput (self, linknumber=-1):
+        pass

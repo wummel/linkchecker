@@ -125,8 +125,8 @@ o If you have your system configured to automatically establish a
 o Javascript links are currently ignored.
 o If your platform does not support threading, LinkChecker uses -t0.
 o You can supply multiple user/password pairs in a configuration file.
-o Cookies are not accepted by LinkChecker.
-o To use proxies set $http_proxy, $https_proxy on Unix or Windows.
+o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
+  on Unix or Windows.
   On a Mac use the Internet Config.
 o When checking 'news:' links the given NNTP host doesn't need to be the
   same as the host of the user browsing your pages!
@@ -160,6 +160,19 @@ def printUsage (msg):
     sys.stderr.write(linkcheck._("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
 
+
+def getLinkPat (arg):
+    if arg[0:1] == '!':
+        pattern = arg[1:]
+        negate = 1
+    else:
+        pattern = arg
+        negate = 0
+    return {
+        "pattern": re.compile(pattern),
+        "negate": negate,
+        "strict": 0,
+    }
 
 # Read command line arguments
 try:
@@ -220,7 +233,7 @@ for opt,arg in options:
         config["anchors"] = 1
 
     elif opt=="-e" or opt=="--extern":
-        config["externlinks"].append((re.compile(arg), 0))
+        config["externlinks"].append(getLinkPat(arg))
 
     elif opt=="-h" or opt=="--help":
         printHelp()
@@ -248,7 +261,7 @@ for opt,arg in options:
         config['interactive'] = 1
 
     elif opt=="-i" or opt=="--intern":
-        config["internlinks"].append(re.compile(arg))
+        config["internlinks"].append(getLinkPat(arg))
 
     elif opt=="-l" or opt=="--denyallow":
         config["denyallow"] = 1

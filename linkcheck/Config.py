@@ -38,6 +38,7 @@ Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
+# default logger classes
 Loggers = {
     "text": Logging.StandardLogger,
     "html": Logging.HtmlLogger,
@@ -47,7 +48,6 @@ Loggers = {
     "csv": Logging.CSVLogger,
     "blacklist": Logging.BlacklistLogger,
     "xml": Logging.XMLLogger,
-    "test": Logging.TestLogger,
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
@@ -93,7 +93,7 @@ class Configuration (UserDict.UserDict):
         """Initialize the default options"""
         UserDict.UserDict.__init__(self)
         self.reset()
-        # we use this variable to delay the calling of
+        # we use "reduceCount" to delay the calling of
 	# Threader.reduceThreads() because we would call it too often.
         # Therefore we count this variable up to 5 and then we call
         # reduceThreads(). Ok, this is a hack but ItWorksForMe(tm).
@@ -166,7 +166,6 @@ class Configuration (UserDict.UserDict):
         self['xml'] = {
             "filename":     "linkchecker-out.xml",
         }
-        self['test'] = {} #  no args for test logger
         self['log'] = self.newLogger('text')
         self["quiet"] = 0
         self["warningregex"] = None
@@ -303,6 +302,12 @@ class Configuration (UserDict.UserDict):
 	args.update(self[logtype])
 	args.update(dict)
         return apply(Loggers[logtype], (), args)
+
+    def addLogger(self, logtype, loggerClass, logargs={}):
+        "add a new logger type"
+        global Loggers
+        Loggers[logtype] = loggerClass
+        self[logtype] = logargs
 
     def incrementLinknumber_NoThreads (self):
         self['linknumber'] += 1

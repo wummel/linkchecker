@@ -46,7 +46,7 @@ EntityTable = {
     '\'': '&apos;',
 }
 
-def quote(s):
+def quote (s):
     res = list(s)
     for i in range(len(res)):
         c = res[i]
@@ -54,35 +54,35 @@ def quote(s):
     return ''.join(res)
 
 # return formatted time
-def _strtime(t):
+def _strtime (t):
     return time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(t))
 
 class Logger:
-    def __init__(self, **args):
+    def __init__ (self, **args):
         self.logfields = None # all fields
         if args.has_key('fields'):
             if "all" not in args['fields']:
                 self.logfields = args['fields']
 
 
-    def logfield(self, name):
+    def logfield (self, name):
         if self.logfields is None:
             return 1
         return name in self.logfields
 
 
-    def init(self):
+    def init (self):
         raise Exception, "abstract function"
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         raise Exception, "abstract function"
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         raise Exception, "abstract function"
 
 
 
-class StandardLogger(Logger):
+class StandardLogger (Logger):
     """Standard text logger.
 
 Every Logger has to implement the following functions:
@@ -116,7 +116,7 @@ __init__(self, **args)
     Unknown keywords will be ignored.
     """
 
-    def __init__(self, **args):
+    def __init__ (self, **args):
         apply(Logger.__init__, (self,), args)
         self.errors = 0
         #self.warnings = 0
@@ -128,7 +128,7 @@ __init__(self, **args)
 	    self.fd = sys.stdout
 
 
-    def init(self):
+    def init (self):
         if self.fd is None: return
         self.starttime = time.time()
         if self.logfield('intro'):
@@ -139,7 +139,7 @@ __init__(self, **args)
             self.fd.flush()
 
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         if self.fd is None: return
         if self.logfield('url'):
             self.fd.write("\n"+linkcheck._(LogFields['url'])+Spaces['url']+urlData.urlName)
@@ -186,7 +186,7 @@ __init__(self, **args)
         self.fd.flush()
 
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.logfield('outro'):
             self.fd.write(linkcheck._("\nThats it. "))
@@ -232,10 +232,10 @@ HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//EN">
 <body bgcolor=%s link=%s vlink=%s alink=%s>
 """
 
-class HtmlLogger(StandardLogger):
+class HtmlLogger (StandardLogger):
     """Logger with HTML output"""
 
-    def __init__(self, **args):
+    def __init__ (self, **args):
         apply(StandardLogger.__init__, (self,), args)
         self.colorbackground = args['colorbackground']
         self.colorurl = args['colorurl']
@@ -245,7 +245,7 @@ class HtmlLogger(StandardLogger):
         self.tableerror = args['tableerror']
         self.tableok = args['tableok']
 
-    def init(self):
+    def init (self):
         if self.fd is None: return
         self.starttime = time.time()
         self.fd.write(HTML_HEADER%(Config.App, self.colorbackground,
@@ -258,7 +258,7 @@ class HtmlLogger(StandardLogger):
         self.fd.flush()
 
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         if self.fd is None: return
         self.fd.write('<table align=left border=0 cellspacing=0'
               ' cellpadding=1 bgcolor='+self.colorborder+' summary=Border'
@@ -321,7 +321,7 @@ class HtmlLogger(StandardLogger):
         self.fd.flush()
 
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.logfield("outro"):
             self.fd.write(linkcheck._("\nThats it. "))
@@ -362,10 +362,10 @@ class HtmlLogger(StandardLogger):
         self.fd = None
 
 
-class ColoredLogger(StandardLogger):
+class ColoredLogger (StandardLogger):
     """ANSI colorized output"""
 
-    def __init__(self, **args):
+    def __init__ (self, **args):
         esc="\x1b[%sm"
         apply(StandardLogger.__init__, (self,), args)
         self.colorparent = esc % args['colorparent']
@@ -382,7 +382,7 @@ class ColoredLogger(StandardLogger):
         self.currentPage = None
         self.prefix = 0
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         if self.fd is None: return
         if self.logfield("parenturl"):
             if urlData.parentName:
@@ -474,7 +474,7 @@ class ColoredLogger(StandardLogger):
         self.fd.flush()
 
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.logfield("outro"):
             if self.prefix:
@@ -483,16 +483,16 @@ class ColoredLogger(StandardLogger):
 
 
 
-class GMLLogger(StandardLogger):
+class GMLLogger (StandardLogger):
     """GML means Graph Modeling Language. Use a GML tool to see
     your sitemap graph.
     """
-    def __init__(self, **args):
+    def __init__ (self, **args):
         apply(StandardLogger.__init__, (self,), args)
         self.nodes = {}
         self.nodeid = 0
 
-    def init(self):
+    def init (self):
         if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
@@ -505,7 +505,7 @@ class GMLLogger(StandardLogger):
             self.fd.flush()
 
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         """write one node and all possible edges"""
         if self.fd is None: return
         node = urlData
@@ -527,7 +527,7 @@ class GMLLogger(StandardLogger):
         self.writeEdges()
 
 
-    def writeEdges(self):
+    def writeEdges (self):
         """write all edges we can find in the graph in a brute-force
            manner. Better would be a mapping of parent urls.
 	"""
@@ -545,7 +545,7 @@ class GMLLogger(StandardLogger):
         self.fd.flush()
 
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         self.fd.write("]\n")
         if self.logfield("outro"):
@@ -566,15 +566,15 @@ class GMLLogger(StandardLogger):
 
 
 
-class XMLLogger(StandardLogger):
+class XMLLogger (StandardLogger):
     """XML output mirroring the GML structure. Easy to parse with any XML
        tool."""
-    def __init__(self, **args):
+    def __init__ (self, **args):
         apply(StandardLogger.__init__, (self,), args)
         self.nodes = {}
         self.nodeid = 0
 
-    def init(self):
+    def init (self):
         if self.fd is None: return
         self.starttime = time.time()
         self.fd.write('<?xml version="1.0"?>\n')
@@ -589,7 +589,7 @@ class XMLLogger(StandardLogger):
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
         self.fd.flush()
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         """write one node and all possible edges"""
         if self.fd is None: return
         node = urlData
@@ -615,7 +615,7 @@ class XMLLogger(StandardLogger):
 	    self.fd.write("  </node>\n")
         self.writeEdges()
 
-    def writeEdges(self):
+    def writeEdges (self):
         """write all edges we can find in the graph in a brute-force
            manner. Better would be a mapping of parent urls.
 	"""
@@ -636,7 +636,7 @@ class XMLLogger(StandardLogger):
                 self.fd.write("  </edge>\n")
         self.fd.flush()
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         self.fd.write("</graph>\n</GraphXML>\n")
         if self.logfield("outro"):
@@ -658,15 +658,15 @@ class XMLLogger(StandardLogger):
 
 
 
-class SQLLogger(StandardLogger):
+class SQLLogger (StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
-    def __init__(self, **args):
+    def __init__ (self, **args):
         apply(StandardLogger.__init__, (self,), args)
         self.dbname = args['dbname']
         self.separator = args['separator']
 
 
-    def init(self):
+    def init (self):
         if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
@@ -677,7 +677,7 @@ class SQLLogger(StandardLogger):
 	                Config.Email))
             self.fd.flush()
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         if self.fd is None: return
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infoString,"
@@ -702,7 +702,7 @@ class SQLLogger(StandardLogger):
 	       self.separator))
         self.fd.flush()
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.logfield("outro"):
             self.stoptime = time.time()
@@ -721,28 +721,28 @@ class SQLLogger(StandardLogger):
         self.fd = None
 
 
-class BlacklistLogger(Logger):
+class BlacklistLogger (Logger):
     """Updates a blacklist of wrong links. If a link on the blacklist
     is working (again), it is removed from the list. So after n days
     we have only links on the list which failed for n days.
     """
-    def __init__(self, **args):
+    def __init__ (self, **args):
         apply(Logger.__init__, (self,), args)
         self.errors = 0
         self.blacklist = {}
         self.filename = args['filename']
 
-    def init(self):
+    def init (self):
         pass
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         if urlData.valid:
             self.blacklist[urlData.getCacheKey()] = None
         elif not urlData.cached:
             self.errors = 1
             self.blacklist[urlData.getCacheKey()] = urlData
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         """write the blacklist"""
         fd = open(self.filename, "w")
         for url in self.blacklist.keys():
@@ -750,15 +750,15 @@ class BlacklistLogger(Logger):
                 fd.write(url+"\n")
 
 
-class CSVLogger(StandardLogger):
+class CSVLogger (StandardLogger):
     """ CSV output. CSV consists of one line per entry. Entries are
     separated by a semicolon.
     """
-    def __init__(self, **args):
+    def __init__ (self, **args):
         apply(StandardLogger.__init__, (self,), args)
         self.separator = args['separator']
 
-    def init(self):
+    def init (self):
         if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
@@ -785,7 +785,7 @@ class CSVLogger(StandardLogger):
                       "# cached;\n")
             self.fd.flush()
 
-    def newUrl(self, urlData):
+    def newUrl (self, urlData):
         if self.fd is None: return
         self.fd.write(
 	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%d%s%d\n" % (
@@ -807,7 +807,7 @@ class CSVLogger(StandardLogger):
         self.fd.flush()
 
 
-    def endOfOutput(self, linknumber=-1):
+    def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         self.stoptime = time.time()
         if self.logfield("outro"):
@@ -824,29 +824,3 @@ class CSVLogger(StandardLogger):
             self.fd.flush()
         self.fd = None
 
-
-
-class TestLogger(Logger):
-    """ Output for regression test """
-    def init(self):
-        pass
-
-    def newUrl(self, urlData):
-        print 'url',urlData.urlName
-        if urlData.cached:
-            print "cached"
-        if urlData.name:
-            print "name",urlData.name
-        if urlData.baseRef:
-            print "baseurl",urlData.baseRef
-        if urlData.infoString:
-            print "info",urlData.infoString
-        if urlData.warningString:
-            print "warning",urlData.warningString
-        if urlData.valid:
-            print "valid"
-        else:
-            print "error"
-
-    def endOfOutput(self, linknumber=-1):
-        pass

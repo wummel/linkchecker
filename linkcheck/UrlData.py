@@ -388,21 +388,34 @@ class UrlData:
         if not (self.config["externlinks"] or self.config["internlinks"]):
             return 0
         # deny and allow external checking
+        Config.debug(HURT_ME_PLENTY, "Url", self.url)
         if self.config["denyallow"]:
-            for pat, strict in self.config["externlinks"]:
-                if pat.search(self.url):
-                    return (1, strict)
-            for pat in self.config["internlinks"]:
-                if pat.search(self.url):
-                    return 0
+            for entry in self.config["externlinks"]:
+                Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                match = entry['pattern'].search(self.url)
+                if (entry['negate'] and not match) or \
+                   (match and not entry['negate']):
+                    return (1, entry['strict'])
+            for entry in self.config["internlinks"]:
+                Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                match = entry['pattern'].search(self.url)
+                if (entry['negate'] and not match) or \
+                   (match and not entry['negate']):
+                    return 1
             return 0
         else:
-            for pat in self.config["internlinks"]:
-                if pat.search(self.url):
+            for entry in self.config["internlinks"]:
+                Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                match = entry['pattern'].search(self.url)
+                if (entry['negate'] and not match) or \
+                   (match and not entry['negate']):
                     return 0
-            for pat, strict in self.config["externlinks"]:
-                if pat.search(self.url):
-                    return (1, strict)
+            for entry in self.config["externlinks"]:
+                Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                match = entry['pattern'].search(self.url)
+                if (entry['negate'] and not match) or \
+                   (match and not entry['negate']):
+                    return (1, entry['strict'])
             return (1,0)
         raise linkcheck.error, "internal error in UrlData._getExtern"
 

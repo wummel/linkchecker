@@ -19,9 +19,9 @@ A: The difference between LinkChecker and web browsers is the type of HTTP
 
 Q: How can I tell LinkChecker which proxy to use?
 A: LinkChecker works transparently with proxies. In a Unix or Windows
-   environment, set the http_proxy, ftp_proxy or gopher_proxy environment
-   variables to a URL that identifies the proxy server before starting
-   LinkChecker. For example
+   environment, set the http_proxy, https_proxy, ftp_proxy or gopher_proxy
+   environment variables to a URL that identifies the proxy server before
+   starting LinkChecker. For example
    # http_proxy="http://www.someproxy.com:3128"
    # export http_proxy
 
@@ -94,3 +94,19 @@ A: Cookies can not store more information as is in the HTTP request itself,
    This could be used to "track" subsequent requests to this server.
    Cookies are only stored in memory. After LinkChecker finishes, they
    are lost. So the tracking is restricted to the checking time.
+
+Q: I want to have my own logging class. How can I use it in LinkChecker?
+A: Currently, only a Python API lets you define new logging classes.
+   Define your own logging class as a subclass of linkcheck.Logging.Logger
+   or any other standard logging class in that module.
+   Then call the addLogger function in Config.Configuration to register
+   your new Logger.
+   After this append a new Logging instance to the fileoutput.
+
+   import linkcheck, MyLogger
+   log_format = 'mylog'
+   log_args = {'fileoutput': log_format, 'filename': 'foo.txt'}
+   cfg = linkcheck.Config.Configuration()
+   cfg.addLogger(log_format, MyLogger.MyLogger)
+   cfg['fileoutput'].append(cfg.newLogger(log_format, log_args)) 
+
