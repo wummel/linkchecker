@@ -1,4 +1,4 @@
-1.13.6 "" (released xx.xx.xxxx)
+2.0 "" (released xx.xx.xxxx)
 
   * Only instantiate SSL connections if SSL is supported
     Type: bugfix
