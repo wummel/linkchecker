@@ -18,8 +18,6 @@ include linkcheck/HtmlParser/htmlparse.y
 include linkcheck/HtmlParser/*.h
 include linkcheck/ftpparse/*.h
 include po/*.po po/*.pot po/Makefile
-recursive-include share *.mo
-exclude _linkchecker_configdata.py
 include doc/*.py doc/*.example
 include doc/po4a.conf doc/*.po doc/*.pot
 include doc/en/*.txt doc/en/*.nav doc/en/*.html doc/en/*.png doc/en/*.jpg
