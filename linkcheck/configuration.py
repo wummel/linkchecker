@@ -387,7 +387,7 @@ class Configuration (dict):
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
-    def write_boolean_config (self, fp. boolopts):
+    def write_boolean_config (self, fp, boolopts):
         """
         Write a boolean value into the config file.
         """
