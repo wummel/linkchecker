@@ -25,40 +25,40 @@ import linkcheck.log
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {
-    'a':        ['href'],
-    'applet':   ['archive', 'src'],
-    'area':     ['href'],
-    'bgsound':  ['src'],
-    'blockquote': ['cite'],
-    'body':     ['background'],
-    'del':      ['cite'],
-    'embed':    ['pluginspage', 'src'],
-    'form':     ['action'],
-    'frame':    ['src', 'longdesc'],
-    'head':     ['profile'],
-    'iframe':   ['src', 'longdesc'],
-    'ilayer':   ['background'],
-    'img':      ['src', 'lowsrc', 'longdesc', 'usemap'],
-    'input':    ['src', 'usemap'],
-    'ins':      ['cite'],
-    'isindex':  ['action'],
-    'layer':    ['background', 'src'],
-    'link':     ['href'],
-    'meta':     ['content'],
-    'object':   ['classid', 'data', 'archive', 'usemap'],
-    'q':        ['cite'],
-    'script':   ['src', 'for'],
-    'table':    ['background'],
-    'td':       ['background'],
-    'th':       ['background'],
-    'tr':       ['background'],
-    'xmp':      ['href'],
-    None:       ['style'],
+    'a':        [u'href'],
+    'applet':   [u'archive', u'src'],
+    'area':     [u'href'],
+    'bgsound':  [u'src'],
+    'blockquote': [u'cite'],
+    'body':     [u'background'],
+    'del':      [u'cite'],
+    'embed':    [u'pluginspage', u'src'],
+    'form':     [u'action'],
+    'frame':    [u'src', u'longdesc'],
+    'head':     [u'profile'],
+    'iframe':   [u'src', u'longdesc'],
+    'ilayer':   [u'background'],
+    'img':      [u'src', u'lowsrc', u'longdesc', u'usemap'],
+    'input':    [u'src', u'usemap'],
+    'ins':      [u'cite'],
+    'isindex':  [u'action'],
+    'layer':    [u'background', u'src'],
+    'link':     [u'href'],
+    'meta':     [u'content'],
+    'object':   [u'classid', u'data', u'archive', u'usemap'],
+    'q':        [u'cite'],
+    'script':   [u'src', u'for'],
+    'table':    [u'background'],
+    'td':       [u'background'],
+    'th':       [u'background'],
+    'tr':       [u'background'],
+    'xmp':      [u'href'],
+    None:       [u'style'],
 }
 
 # matcher for <meta http-equiv=refresh> tags
-_refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
-css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
+refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
+css_url_re = re.compile(ur"url\((?P<url>[^\)]+)\)")
 
 class TagFinder (object):
     """Base class storing HTML parse messages in a list.
@@ -107,9 +107,9 @@ class MetaRobotsFinder (TagFinder):
         """search for meta robots.txt "nofollow" and "noindex" flags"""
         if tag == 'meta':
             if attrs.get('name') == 'robots':
-                val = attrs.get('content', '').lower().split(',')
-                self.follow = 'nofollow' not in val
-                self.index = 'noindex' not in val
+                val = attrs.get('content', u'').lower().split(u',')
+                self.follow = u'nofollow' not in val
+                self.index = u'noindex' not in val
 
 
 class LinkFinder (TagFinder):
@@ -144,8 +144,9 @@ class LinkFinder (TagFinder):
                     name = linkcheck.strformat.unquote(
                                           attrs.get('title', u''))
                     if not name:
-                        name = linkcheck.linkname.href_name(
-                                            self.content[self.parser.pos():])
+                        data = self.content[self.parser.pos():]
+                        data = data.decode(self.parser.encoding, "ignore")
+                        name = linkcheck.linkname.href_name(data)
                 elif tag == 'img':
                     name = linkcheck.strformat.unquote(attrs.get('alt', u''))
                     if not name:
@@ -155,9 +156,9 @@ class LinkFinder (TagFinder):
                     name = u""
                 # possible codebase
                 if tag in ('applet', 'object'):
-                    base = linkcheck.strformat.unquote(attrs.get('codebase', ''))
+                    base = linkcheck.strformat.unquote(attrs.get('codebase', u''))
                 else:
-                    base = ""
+                    base = u""
                 value = linkcheck.strformat.unquote(attrs[attr])
                 # add link to url list
                 self.add_link(tag, attr, value, name, base)
@@ -167,7 +168,7 @@ class LinkFinder (TagFinder):
         urls = []
         # look for meta refresh
         if tag == 'meta':
-            mo = _refresh_re.match(url)
+            mo = refresh_re.match(url)
             if mo:
                 urls.append(mo.group("url"))
         elif attr == 'style':
@@ -179,7 +180,12 @@ class LinkFinder (TagFinder):
             # no url found
             return
         for u in urls:
+            assert isinstance(tag, unicode), tag
+            assert isinstance(attr, unicode), attr
+            assert isinstance(u, unicode), u
+            assert isinstance(name, unicode), name
+            assert isinstance(base, unicode), base
             linkcheck.log.debug(linkcheck.LOG_CHECK,
-              "LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
+              u"LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))

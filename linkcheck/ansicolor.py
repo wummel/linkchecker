@@ -216,9 +216,6 @@ class ColoredStreamHandler (logging.StreamHandler, object):
         [N.B. this may be removed depending on feedback].
         """
         color = self.get_color(record)
-        # contrary to popular belief I am very interested in log
-        # system exceptions, so disable the bare except clause below
-        #try:
         msg = self.format(record)
         if not hasattr(types, "UnicodeType"): #if no unicode support...
             self.stream.write("%s" % msg, color=color)
@@ -230,5 +227,3 @@ class ColoredStreamHandler (logging.StreamHandler, object):
                                   color=color)
         self.stream.write(os.linesep)
         self.flush()
-        #except:
-        #    self.handleError(record)

@@ -38,12 +38,12 @@ def image_name (txt):
     if mo:
         name = linkcheck.strformat.unquote(mo.group('name').strip())
         return  _unquote(name)
-    return ''
+    return u''
 
 
 def href_name (txt):
     """return the name part of the first <a href="">name</a> link in txt"""
-    name = ""
+    name = u""
     endtag = endtag_re.search(txt)
     if not endtag:
         return name

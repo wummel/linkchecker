@@ -111,7 +111,8 @@ class Cache (object):
         """add a new URL to list of URLs to check"""
         self.lock.acquire()
         try:
-            linkcheck.log.debug(linkcheck.LOG_CACHE, "Add url %s..", url_data)
+            linkcheck.log.debug(linkcheck.LOG_CACHE,
+                                "Add url %s...", repr(url_data))
             # check syntax
             if not url_data.check_syntax():
                 # wrong syntax, do not check any further
@@ -124,7 +125,7 @@ class Cache (object):
                 return False
             # url is not cached, so add to incoming queue
             self.incoming.append(url_data)
-            linkcheck.log.debug(linkcheck.LOG_CACHE, "..added.")
+            linkcheck.log.debug(linkcheck.LOG_CACHE, "...added.")
             return True
         finally:
             self.lock.release()

@@ -181,7 +181,7 @@ def absolute_url (base_url, base_ref, parent_url):
 
 def get_url_from (base_url, recursion_level, consumer,
                   parent_url=None, base_ref=None, line=0, column=0,
-                  name=None, cmdline=None):
+                  name=u"", cmdline=None):
     """get url data from given base data"""
     default_encoding = "iso8859-15"
     if not isinstance(base_url, unicode):
@@ -190,6 +190,8 @@ def get_url_from (base_url, recursion_level, consumer,
         parent_url = unicode(parent_url, default_encoding, "ignore")
     if base_ref is not None and not isinstance(base_ref, unicode):
         base_ref = unicode(base_ref, default_encoding, "ignore")
+    if not isinstance(name, unicode):
+        name = unicode(name, default_encoding, "ignore")
     if cmdline and linkcheck.url.url_needs_quoting(base_url):
         base_url = linkcheck.url.url_quote(base_url)
     url = absolute_url(base_url, base_ref, parent_url)
@@ -229,6 +231,7 @@ def get_url_from (base_url, recursion_level, consumer,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)
 
+
 def get_index_html (urls):
     """Construct artificial index.html from given URLs."""
     lines = ["<html>", "<body>"]
@@ -238,5 +241,4 @@ def get_index_html (urls):
         lines.append('<a href="%s">%s</a>' % (url, name))
     lines.extend(["</body>", "</html>"])
     return os.linesep.join(lines)
-
 

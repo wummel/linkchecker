@@ -37,7 +37,7 @@ import linkcheck.httplib2
 import linkcheck.HtmlParser.htmlsax
 
 
-stderr = codecs.getwriter("iso8859-1")(sys.stderr, "ignore")
+stderr = codecs.getwriter("iso8859-1")(sys.stderr, errors="ignore")
 
 def internal_error ():
     """print internal error message to stderr"""
@@ -87,7 +87,7 @@ class UrlBase (object):
 
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None, base_ref = None,
-                  line = -1, column = -1, name = ""):
+                  line = -1, column = -1, name = u""):
         """Initialize check data, and store given variables.
 
            @base_url - unquoted and/or unnormed url
@@ -421,7 +421,7 @@ class UrlBase (object):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking anchor %r",
                             self.anchor)
         h = linkcheck.linkparse.LinkFinder(self.get_content(),
-                                   tags={'a': ['name'], None: ['id']})
+                                   tags={'a': [u'name'], None: [u'id']})
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
         p.feed(self.get_content())
@@ -527,7 +527,7 @@ class UrlBase (object):
         """
         # search for a possible base reference
         h = linkcheck.linkparse.LinkFinder(self.get_content(),
-                                           tags={'base': ['href']})
+                                           tags={'base': [u'href']})
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
         p.feed(self.get_content())
@@ -607,9 +607,18 @@ class UrlBase (object):
                              parent_url=self.url, line=lineno, column=column)
                 self.consumer.append_url(url_data)
 
+    def __str__ (self):
+        return repr(self)
+
     def __repr__ (self):
         """return serialized url check data"""
         sep = unicode(os.linesep)
+        assert isinstance(self.base_url, unicode), self.base_url
+        if self.parent_url is not None:
+            assert isinstance(self.parent_url, unicode), self.parent_url
+        if self.base_ref is not None:
+            assert isinstance(self.base_ref, unicode), self.base_ref
+        assert isinstance(self.name, unicode), self.name
         return sep.join([
             u"%s link" % self.scheme,
             u"base_url=%s" % self.base_url,

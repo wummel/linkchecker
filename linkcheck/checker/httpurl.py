@@ -46,7 +46,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     "Url link with http scheme"
 
     def __init__ (self, base_url, recursion_level, consumer,
-                  parent_url=None, base_ref=None, line=0, column=0, name=""):
+                  parent_url=None, base_ref=None, line=0, column=0, name=u""):
         """initialize basic url data and HTTP specific variables"""
         super(HttpUrl, self).__init__(base_url, recursion_level, consumer,
                parent_url=parent_url, base_ref=base_ref, line=line,
