@@ -90,7 +90,7 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     consumer = linkcheck.checker.consumer.Consumer(config, cache)
     # start checking
     url = form["url"].value
-    url_data = linkcheck.checker.get_url_from(url, 0, consumer))
+    url_data = linkcheck.checker.get_url_from(url, 0, consumer)
     consumer.append_url(url_data)
     linkcheck.checker.check_urls(consumer)
 

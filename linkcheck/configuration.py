@@ -106,9 +106,9 @@ class Configuration (dict):
             'colorurl':        '#dcd5cf',
             'colorborder':     '#000000',
             'colorlink':       '#191c83',
-            'tablewarning':    '<td bgcolor="#e0954e">',
-            'tableerror':      '<td bgcolor="#db4930">',
-            'tableok':         '<td bgcolor="#3ba557">',
+            'colorwarning':    '#e0954e',
+            'colorerror':      '#db4930',
+            'colorok':         '#3ba557',
         }
         self['gml'] = {
             "filename":     "linkchecker-out.gml",
