@@ -213,17 +213,22 @@ class ColoredStreamHandler (logging.StreamHandler, object):
 
         If a formatter is specified, it is used to format the record.
         The record is then written to the stream with a trailing newline
-        [N.B. this may be removed depending on feedback].
+        [N.B. this may be removed depending on feedback]. If exception
+        information is present, it is formatted using
+        traceback.print_exception and appended to the stream.
         """
         color = self.get_color(record)
-        msg = self.format(record)
-        if not hasattr(types, "UnicodeType"): #if no unicode support...
-            self.stream.write("%s" % msg, color=color)
-        else:
-            try:
+        try:
+            msg = self.format(record)
+            if not hasattr(types, "UnicodeType"): #if no unicode support...
                 self.stream.write("%s" % msg, color=color)
-            except UnicodeError:
-                self.stream.write("%s" % msg.encode("UTF-8"),
-                                  color=color)
-        self.stream.write(os.linesep)
-        self.flush()
+            else:
+                try:
+                    self.stream.write("%s" % msg, color=color)
+                except UnicodeError:
+                    self.stream.write("%s" % msg.encode("UTF-8"),
+                                      color=color)
+            self.stream.write(os.linesep)
+            self.flush()
+        except:
+            self.handleError(record)
