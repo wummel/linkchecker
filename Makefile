@@ -9,6 +9,7 @@ HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
 HOST=www.debianplanet.org
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
+TEST=env LANG=C ftp_proxy="" http_proxy="" $(PYTHON) test/regrtest.py
 OFFLINETESTS = test_base test_misc test_file test_frames
 ONLINETESTS = test_mail test_http test_https test_news test_ftp
 DESTDIR=/.
@@ -84,10 +85,10 @@ upload-devel: distclean dist VERSION-DEVEL
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 test:
-	env LANG=C $(PYTHON) test/regrtest.py $(OFFLINETESTS)
+	$(TEST) $(OFFLINETESTS)
 
 onlinetest:
-	env LANG=C $(PYTHON) test/regrtest.py $(ONLINETESTS)
+	$(TEST) $(ONLINETESTS)
 
 locale:
 	$(MAKE) -C po
