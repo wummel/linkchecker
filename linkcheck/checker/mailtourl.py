@@ -93,6 +93,7 @@ class MailtoUrl (urlbase.UrlBase):
             If no host accepts SMTP, we print a warning.
         (3) Try to verify the address with the VRFY command. If we got
             an answer, print the verified address as an info.
+            If not, print a warning.
         """
         if not self.addresses:
             self.add_warning(_("No addresses found."))
@@ -146,9 +147,16 @@ class MailtoUrl (urlbase.UrlBase):
                 info = self.url_connection.verify(username)
                 linkcheck.log.debug(linkcheck.LOG_CHECK,
                                     "SMTP user info %r", info)
+                d = {'info': str(info[1])}
                 if info[0] == 250:
-                    self.add_info(_("Verified address: %(info)s.") % \
-                                  {'info': str(info[1])})
+                    self.add_info(_("Verified address: %(info)s.") % d)
+                # check for 25x return code which means that the address
+                # could not be verified, but is sent anyway
+                elif 0 < (info[0] - 250) < 10:
+                    self.add_info(_("Unverified address: %(info)s." \
+                                  " But mail will be sent anyway.") % d)
+                else:
+                    self.add_warning(_("Unverified address: %(info)s.") % d)
             except smtplib.SMTPException, msg:
                 self.add_warning(
                       _("MX mail host %(host)s did not accept connections: " \
