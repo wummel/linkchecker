@@ -122,6 +122,9 @@ For single-letter option arguments the space is not a necessity. So
         message, for example 'This page has moved' or 'Oracle
         Application Server error'.
         This option implies -w.
+--warning-size-bytes=bytes
+        Print a warning if content size is available and exceeds the given
+        number of bytes.
 """) % (linkcheck.log.LoggerKeys, _profile)
 
 Notes = linkcheck._("""NOTES
