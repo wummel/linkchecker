@@ -77,6 +77,14 @@ class Logger (object):
             self.fd = sys.stdout
             self.close_fd = False
 
+    def write (self, s):
+        """write string to file output"""
+        if self.fd is None:
+            raise ValueError("write to non-file")
+        if not isinstance(s, unicode):
+            raise ValueError("write non-unicode string %r" % s)
+        self.fd.write(s.encode(self.output_encoding, "strict"))
+
     def has_field (self, name):
         """see if given field name will be logged"""
         if self.logfields is None:
