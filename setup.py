@@ -120,7 +120,7 @@ where the path arguments point to your SSL installation.""")
 
 
 setup (name = "LinkChecker",
-       version = "1.2.5",
+       version = "1.2.6",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",

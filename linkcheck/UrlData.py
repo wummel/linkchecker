@@ -22,6 +22,7 @@ debug = linkcheck.Config.debug
 
 ExcList = [
    IOError,
+   ValueError, # from http11lib.py
    linkcheck.error,
    EOFError, # from ftplib.py
 ]

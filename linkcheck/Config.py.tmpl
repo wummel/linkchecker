@@ -79,6 +79,7 @@ class Configuration(UserDict.UserDict):
         """Initialize the default options"""
         UserDict.UserDict.__init__(self)
         self.reset()
+        self.reduceCount = 0
 
     def reset(self):
         """Reset to default values"""
@@ -282,8 +283,11 @@ class Configuration(UserDict.UserDict):
 
     def finished_Threads(self):
         time.sleep(0.1)
-        self.threader.reduceThreads()
-        #debug("finished?\n")
+        if self.reduceCount==5:
+            self.reduceCount=0
+            self.threader.reduceThreads()
+        else:
+            self.reduceCount = self.reduceCount + 1
         return self.threader.finished() and self.urls.empty()
 
     def finish_Threads(self):
