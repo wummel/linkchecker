@@ -6,6 +6,29 @@ A: Please check your web pages first. Are they really ok? Use
    Check if the web server is accepting HEAD requests as well.
 
 
+Q: I still get an error, but the page is definitely ok.
+Q: I get an error "too much redirections", but the URL displays ok in my
+   browser.
+A: The difference between LinkChecker and web browsers is the type of HTTP
+   request. LinkChecker does a HEAD request, browsers do a GET request of
+   the same URL. Now, a lot of servers are broken when it comes to HEAD
+   support. LinkChecker tries to detect some of them, but can not catch all.
+   Nevertheless, this is an error. If the URL is on your own web server,
+   go check that your server is handling HEAD requests!
+
+
+Q: How can I tell LinkChecker which proxy to use?
+A: LinkChecker works transparently with proxies. In a Unix or Windows
+   environment, set the http_proxy, ftp_proxy or gopher_proxy environment
+   variables to a URL that identifies the proxy server before starting
+   LinkChecker. For example
+   # http_proxy="http://www.someproxy.com:3128"
+   # export http_proxy
+
+   In a Macintosh environment, LinkChecker will retrieve proxy information
+   from Internet Config.
+
+
 Q: The link "mailto:john@company.com?subject=Hello John" is reported
    as an error.
 A: You have to quote special characters (e.g. spaces) in the subject field.
@@ -14,15 +37,15 @@ A: You have to quote special characters (e.g. spaces) in the subject field.
 
 
 Q: Has LinkChecker JavaScript support?
-A: No. It never will. JavaScript sucks. If your page is not
-   working without JS, then your web design is broken (or you
-   cannot code ;). Learn PHP or Zope or ASP, but use JavaScript just
-   as an addon for your web pages.
+A: No, it never will. JavaScript sucks. If your page is not
+   working without JS then your web design is broken.
+   Learn PHP or Zope or ASP, and use JavaScript just as an addon for your
+   web pages.
 
 
 Q: I have a pretty large site to check. How can I restrict link checking
    to check only my own pages?
-A: Look at the options --intern, --extern, --strict, --denyallow  and 
+A: Look at the options --intern, --extern, --strict, --denyallow  and
    --recursion-level.
 
 
@@ -31,7 +54,7 @@ A: When it comes to checking there are three types of URLs:
    1) strict URLs:
       we do only syntax checking
    2) extern URLs:
-      like 1), but we additionally check if they are valid by connect()ing 
+      like 1), but we additionally check if they are valid by connect()ing
       to them
    3) intern URLs:
       like 2), but we additionally check if they are HTML pages and if so,
@@ -61,3 +84,11 @@ A: When it comes to checking there are three types of URLs:
    'mydomain.com' and 'myotherdomain.com'. Then we specify
    -i'^http://my(other)?domain\.com' as intern regular expression, all other
    urls are treated extern. Easy.
+
+
+Q: Are Cookies insecure?
+A: Yes. Cookies can store your IP. After storing, the cookies are sent out
+   to the server on request. So if you use the -C, --cookies option you
+   should know what you are doing!
+   But Cookies are only stored in memory. After LinkChecker finishes, they
+   are deleted and will be lost.

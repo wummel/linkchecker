@@ -74,6 +74,7 @@ class HttpUrlData (UrlData):
         self.headers = None
         self.auth = None
         self.proxyauth = None
+        self.cookies = []
         if not self.urlTuple[2]:
             self.setWarning(linkcheck._("Missing '/' at end of URL"))
         if self.config["robotstxt"] and not self.robotsTxtAllowsUrl():
@@ -176,13 +177,17 @@ class HttpUrlData (UrlData):
             if status == 204:
                 # no content
                 self.setWarning(statusText)
+            # store cookies for valid links
+            if self.config['cookies']:
+                for c in self.cookies:
+                    self.setInfo("Cookie: %s"%c)
+                out = self.config.storeCookies(self.headers, self.urlTuple[1])
+                for h in out:
+                    self.setInfo(h)
             if status >= 200:
                 self.setValid(`status`+" "+statusText)
             else:
                 self.setValid("OK")
-            # store cookies for valid links
-            if self.config['cookies']:
-                self.config.storeCookies(self.headers)
 
     def _setProxy (self, proxy):
         self.proxy = proxy
@@ -225,7 +230,10 @@ class HttpUrlData (UrlData):
             self.urlConnection.putheader("Referer", self.parentName)
         self.urlConnection.putheader("User-agent", Config.UserAgent)
         if self.config['cookies']:
-            self.config.setCookies(self.urlConnection)
+            self.cookies = self.config.getCookies(self.urlTuple[1],
+                                                  self.urlTuple[2])
+            for c in self.cookies:
+                self.urlConnection.putheader("Cookie", c)
         self.urlConnection.endheaders()
         return self.urlConnection.getreply()
 
@@ -264,10 +272,3 @@ class HttpUrlData (UrlData):
             self.config.robotsTxtCache_set(roboturl, rp)
         rp = self.config.robotsTxtCache_get(roboturl)
         return rp.can_fetch(Config.UserAgent, self.url)
-
-    def closeConnection (self):
-        #if self.headers:
-        #    try: self.headers.close()
-        #    except: pass
-        #    self.headers = None
-        UrlData.closeConnection(self)
