@@ -27,8 +27,10 @@ import traceback
 import socket
 import select
 import linkcheck
+import linkcheck.linkparse
 import bk.log
 import bk.i18n
+import bk.HtmlParser.htmlsax
 
 
 ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
@@ -64,19 +66,6 @@ def print_app_info ():
         value = os.getenv(key)
         if value is not None:
             print >>sys.stderr, key, "=", repr(value)
-
-
-def get_absolute_url (urlName, baseRef, parentName):
-    """Search for the absolute url to detect the link type. This does not
-       join any url fragments together! Returns the url in lower case to
-       simplify urltype matching."""
-    if urlName and ":" in urlName:
-        return urlName.lower()
-    elif baseRef and ":" in baseRef:
-        return baseRef.lower()
-    elif parentName and ":" in parentName:
-        return parentName.lower()
-    return ""
 
 
 # regular expression for port numbers
@@ -119,7 +108,7 @@ class UrlData (object):
         self.extern = (1, 0)
         self.data = None
         self.has_content = False
-        url = get_absolute_url(self.urlName, self.baseRef, self.parentName)
+        url = linkcheck.checker.get_absolute_url(self.urlName, self.baseRef, self.parentName)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
 
@@ -203,7 +192,7 @@ class UrlData (object):
         self.anchor = self.urlparts[4]
 
     def logMe (self):
-        debug(BRING_IT_ON, "logging url")
+        bk.log.debug(linkcheck.LOG_CHECK, "logging url")
         self.config.incrementLinknumber()
         if self.config["verbose"] or not self.valid or \
            (self.warningString and self.config["warnings"]):
@@ -218,21 +207,21 @@ class UrlData (object):
             etype, value = sys.exc_info()[:2]
             if etype!=4:
                 raise
-        except (KeyboardInterrupt, linkcheck.test_support.Error):
+        except KeyboardInterrupt:
             raise
         except:
             internal_error()
 
     def _check (self):
-        debug(BRING_IT_ON, "Checking", self)
+        bk.log.debug(linkcheck.LOG_CHECK, "Checking", self)
         if self.recursionLevel and self.config['wait']:
-            debug(BRING_IT_ON, "sleeping for", self.config['wait'], "seconds")
+            bk.log.debug(linkcheck.LOG_CHECK, "sleeping for", self.config['wait'], "seconds")
             time.sleep(self.config['wait'])
         t = time.time()
         if not self.checkCache():
             return
         # apply filter
-        debug(BRING_IT_ON, "extern =", self.extern)
+        bk.log.debug(linkcheck.LOG_CHECK, "extern =", self.extern)
         if self.extern[0] and (self.config["strict"] or self.extern[1]):
             self.setWarning(
                   bk.i18n._("outside of domain filter, checked only syntax"))
@@ -240,16 +229,16 @@ class UrlData (object):
             return
 
         # check connection
-        debug(BRING_IT_ON, "checking connection")
+        bk.log.debug(linkcheck.LOG_CHECK, "checking connection")
         try:
             self.checkConnection()
             if self.cached:
                 return
             if self.config["anchors"]:
                 self.checkAnchors()
-        except tuple(ExcList):
+        except tuple(linkcheck.checker.ExcList):
             etype, evalue, etb = sys.exc_info()
-            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(etb))
+            bk.log.debug(linkcheck.LOG_CHECK, "exception", traceback.format_tb(etb))
             # make nicer error msg for unknown hosts
             if isinstance(evalue, socket.error) and evalue[0]==-2:
                 evalue = bk.i18n._('Hostname not found')
@@ -261,34 +250,34 @@ class UrlData (object):
         # check content
         warningregex = self.config["warningregex"]
         if warningregex and self.valid:
-            debug(BRING_IT_ON, "checking content")
+            bk.log.debug(linkcheck.LOG_CHECK, "checking content")
             try:
                 self.checkContent(warningregex)
-            except tuple(ExcList):
+            except tuple(linkcheck.checker.ExcList):
                 value, tb = sys.exc_info()[1:]
-                debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
+                bk.log.debug(linkcheck.LOG_CHECK, "exception", traceback.format_tb(tb))
                 self.setError(str(value))
 
         self.checktime = time.time() - t
         # check recursion
-        debug(BRING_IT_ON, "checking recursion")
+        bk.log.debug(linkcheck.LOG_CHECK, "checking recursion")
         try:
             if self.allowsRecursion():
                 self.parseUrl()
             # check content size
             self.checkSize()
-        except tuple(ExcList):
+        except tuple(linkcheck.checker.ExcList):
             value, tb = sys.exc_info()[1:]
-            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
+            bk.log.debug(linkcheck.LOG_CHECK, "exception", traceback.format_tb(tb))
             self.setError(bk.i18n._("could not parse content: %r")%str(value))
         # close
         self.closeConnection()
         self.logMe()
-        debug(BRING_IT_ON, "caching")
+        bk.log.debug(linkcheck.LOG_CHECK, "caching")
         self.putInCache()
 
     def checkSyntax (self):
-        debug(BRING_IT_ON, "checking syntax")
+        bk.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         if not self.urlName or self.urlName=="":
             self.setError(bk.i18n._("URL is null or empty"))
             self.logMe()
@@ -307,7 +296,7 @@ class UrlData (object):
         return True
 
     def checkCache (self):
-        debug(BRING_IT_ON, "checking cache")
+        bk.log.debug(linkcheck.LOG_CHECK, "checking cache")
         for key in self.getCacheKeys():
             if self.config.urlCache_has_key(key):
                 self.copyFromCache(self.config.urlCache_get(key))
@@ -386,7 +375,7 @@ class UrlData (object):
                 self.hasContent()):
             # do not bother
             return
-        debug(HURT_ME_PLENTY, "checking anchor", self.anchor)
+        bk.log.debug(linkcheck.LOG_CHECK, "checking anchor", self.anchor)
         h = linkcheck.linkparse.LinkFinder(self.getContent(), tags={'a': ['name'], None: ['id']})
         p = bk.HtmlParser.htmlsax.parser(h)
         h.parser = p
@@ -403,16 +392,16 @@ class UrlData (object):
         if not (self.config["externlinks"] or self.config["internlinks"]):
             return (0, 0)
         # deny and allow external checking
-        bk.log.debug(HURT_ME_PLENTY, "Url", self.url)
+        bk.log.debug(linkcheck.LOG_CHECK, "Url", self.url)
         if self.config["denyallow"]:
             for entry in self.config["externlinks"]:
-                bk.log.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                bk.log.debug(linkcheck.LOG_CHECK, "Extern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (1, entry['strict'])
             for entry in self.config["internlinks"]:
-                bk.log.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                bk.log.debug(linkcheck.LOG_CHECK, "Intern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
@@ -420,13 +409,13 @@ class UrlData (object):
             return (0, 0)
         else:
             for entry in self.config["internlinks"]:
-                bk.log.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                bk.log.debug(linkcheck.LOG_CHECK, "Intern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (0, 0)
             for entry in self.config["externlinks"]:
-                bk.log.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                bk.log.debug(linkcheck.LOG_CHECK, "Extern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
@@ -467,7 +456,7 @@ class UrlData (object):
 
     def parseUrl (self):
         # default parse type is html
-        debug(BRING_IT_ON, "Parsing recursively into", self)
+        bk.log.debug(linkcheck.LOG_CHECK, "Parsing recursively into", self)
         self.parse_html();
 
     def getUserPassword (self):
@@ -506,7 +495,7 @@ class UrlData (object):
                 base = codebase
             else:
                 base = baseRef
-            debug(NIGHTMARE, "Put url %r in queue"%url)
+            bk.log.debug(linkcheck.LOG_CHECK, "Put url %r in queue"%url)
             self.config.appendUrl(linkcheck.checker.getUrlDataFrom(url,
                                   self.recursionLevel+1, self.config,
                                   parentName=self.url, baseRef=base,

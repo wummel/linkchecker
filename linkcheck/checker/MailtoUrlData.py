@@ -43,7 +43,7 @@ class MailtoUrlData (HostCheckingUrlData.HostCheckingUrlData):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
                     self.adresses.extend(rfc822.AddressList(a).addresslist)
-        bk.log.debug(BRING_IT_ON, "adresses: ", self.adresses)
+        bk.log.debug(linkcheck.LOG_CHECK, "adresses: ", self.adresses)
 
     def _cutout_adresses (self):
         mo = headers_re.search(self.urlName)
@@ -73,25 +73,25 @@ class MailtoUrlData (HostCheckingUrlData.HostCheckingUrlData):
 
         value = "unknown reason"
         for name,mail in self.adresses:
-            bk.log.debug(BRING_IT_ON, "checking mail address", mail)
-            bk.log.debug(HURT_ME_PLENTY, "splitting address")
+            bk.log.debug(linkcheck.LOG_CHECK, "checking mail address", mail)
+            bk.log.debug(linkcheck.LOG_CHECK, "splitting address")
             user,host = self._split_adress(mail)
-            bk.log.debug(HURT_ME_PLENTY, "looking up MX mailhost")
+            bk.log.debug(linkcheck.LOG_CHECK, "looking up MX mailhost")
             mxrecords = bk.net.dns.lazy.mxlookup(host, config.dnsconfig)
-            bk.log.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
+            bk.log.debug(linkcheck.LOG_CHECK, "found mailhosts", mxrecords)
             if not len(mxrecords):
                 self.setWarning(bk.i18n._("No MX mail host for %s found")%host)
                 return
             smtpconnect = 0
             for mxrecord in mxrecords:
                 try:
-                    bk.log.debug(BRING_IT_ON, "SMTP check for", mxrecord)
+                    bk.log.debug(linkcheck.LOG_CHECK, "SMTP check for", mxrecord)
                     self.urlConnection = smtplib.SMTP(mxrecord[1])
-                    bk.log.debug(HURT_ME_PLENTY, "SMTP connected!")
+                    bk.log.debug(linkcheck.LOG_CHECK, "SMTP connected!")
                     smtpconnect = 1
                     self.urlConnection.helo()
                     info = self.urlConnection.verify(user)
-                    bk.log.debug(HURT_ME_PLENTY, "SMTP user info", info)
+                    bk.log.debug(linkcheck.LOG_CHECK, "SMTP user info", info)
                     if info[0]==250:
                         self.setInfo(bk.i18n._("Verified adress: %s")%str(info[1]))
                 except:

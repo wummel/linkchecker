@@ -136,7 +136,7 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
                     continue
                 raise
             self.headers = response.msg
-            debug(BRING_IT_ON, response.status, response.reason, self.headers)
+            bk.log.debug(linkcheck.LOG_CHECK, response.status, response.reason, self.headers)
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
@@ -166,7 +166,7 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
                     _user, _password = self.getUserPassword()
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
-                    debug(BRING_IT_ON, "Authentication", _user, "/", _password)
+                    bk.log.debug(linkcheck.LOG_CHECK, "Authentication", _user, "/", _password)
                 continue
             elif response.status >= 400:
                 if self.headers and self.urlparts[4]:
@@ -260,7 +260,7 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
             # new response data
             response = self._getHttpResponse()
             self.headers = response.msg
-            debug(BRING_IT_ON, "Redirected", self.headers)
+            bk.log.debug(linkcheck.LOG_CHECK, "Redirected", self.headers)
             tries += 1
         return tries, response
 
@@ -310,7 +310,7 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
         else:
             host = self.urlparts[1]
             scheme = self.urlparts[0]
-        debug(HURT_ME_PLENTY, "host", host)
+        bk.log.debug(linkcheck.LOG_CHECK, "host", host)
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self.getHTTPObject(host, scheme)
@@ -354,7 +354,8 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
             h = linkcheck.httplib2.HTTPSConnection(host)
         else:
             raise linkcheck.LinkCheckerError, "invalid url scheme %s" % scheme
-        h.set_debuglevel(get_debuglevel())
+        if self.config.get("debug"):
+            h.set_debuglevel(1)
         h.connect()
         return h
 
@@ -426,8 +427,8 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
 
     def robotsTxtAllowsUrl (self):
         roboturl = self.getRobotsTxtUrl()
-        debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
-        debug(HURT_ME_PLENTY, "url", self.url)
+        bk.log.debug(linkcheck.LOG_CHECK, "robots.txt url", roboturl)
+        bk.log.debug(linkcheck.LOG_CHECK, "url", self.url)
         if not self.config.robotsTxtCache_has_key(roboturl):
             rp = linkcheck.robotparser2.RobotFileParser()
             rp.set_url(roboturl)

@@ -119,7 +119,7 @@ def set_intern_url (url, klass, config):
     """Precondition: config['strict'] is true (ie strict checking) and
        recursion level is zero (ie url given on the command line)"""
     if klass == linkcheck.checker.FileUrlData.FileUrlData:
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern pattern ^file:")
+        bk.log.debug(linkcheck.LOG_CHECK, "Add intern pattern ^file:")
         config['internlinks'].append(getLinkPat("^file:"))
     elif klass in [linkcheck.checker.HttpUrlData.HttpUrlData,
                    linkcheck.checker.HttpsUrlData.HttpsUrlData,
@@ -127,9 +127,22 @@ def set_intern_url (url, klass, config):
         domain = urlparse.urlsplit(url)[1]
         if domain:
             domain = "://%s"%re.escape(domain)
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern domain", domain)
+            bk.log.debug(linkcheck.LOG_CHECK, "Add intern domain", domain)
             # add scheme colon to link pattern
             config['internlinks'].append(getLinkPat(domain))
+
+
+def get_absolute_url (urlName, baseRef, parentName):
+    """Search for the absolute url to detect the link type. This does not
+       join any url fragments together! Returns the url in lower case to
+       simplify urltype matching."""
+    if urlName and ":" in urlName:
+        return urlName.lower()
+    elif baseRef and ":" in baseRef:
+        return baseRef.lower()
+    elif parentName and ":" in parentName:
+        return parentName.lower()
+    return ""
 
 
 def getUrlDataFrom (urlName, recursionLevel, config, parentName=None,

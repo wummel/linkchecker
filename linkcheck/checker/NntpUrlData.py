@@ -41,7 +41,7 @@ class NntpUrlData (UrlData.UrlData):
         else:
             self.url = self.urlName
         self.urlparts = urlparse.urlsplit(self.url)
-        bk.log.debug(BRING_IT_ON, self.urlparts)
+        bk.log.debug(linkcheck.LOG_CHECK, self.urlparts)
 
     def checkConnection (self):
         nntpserver = self.urlparts[1] or self.config["nntpserver"]
