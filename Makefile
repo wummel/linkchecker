@@ -68,7 +68,7 @@ deb_unsigned: cleandeb
 	# same thing, but unsigned (for local archives)
 	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -us -uc -r"fakeroot --"
 
-files:	locale
+files:	locale, localbuild
 	env http_proxy="" LANG=C $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
