@@ -1,14 +1,19 @@
 1.8.1
   * Add missing () to function call in proxy handling code
-    Changed files: FtpUrlData
+    Changed files: FtpUrlData.py
+  * Use urlparse.url(un)split instead of urlparse.url(un)parse
+    Changed files: FtpUrlData.py, UrlData.py, HttpUrlData.py,
+      FileUrlData.py
   * Print size information if its available
-    Changed files: FtpUrlData, UrlData, HttpUrlData
+    Changed files: FtpUrlData.py, UrlData.py, HttpUrlData.py
   * Add --warning-size-bytes to print warning if content size exceeds
     the given byte limit
-    Changed files: FtpUrlData, HttpUrlData, linkchecker, Config.py,
+    Changed files: FtpUrlData.py, HttpUrlData.py, linkchecker, Config.py,
       linkchecker.1
   * Updated translations
     Changed files: po/linkchecker.pot, po/*.po
+  * Parse supported file types for ftp links
+    Changed files: FtpUrlData.py, FileUrlData.py, UrlData.py
 
 1.8.0
   * Require Python >= 2.2.1, remove httplib.
