@@ -22,6 +22,12 @@
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
+  * Add all URL aliases to the URL cache to avoid recursion. This
+    also changes some invariants about what URLs are expected to be
+    in the cache.
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py
+
 2.6 "Lord of the Rings" (released 15.3.2005)
 
   * Run with low priority. New option --priority to run with normal
