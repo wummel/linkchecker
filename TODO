@@ -1,5 +1,3 @@
-- test CGI script
-
 - all threads should regularly poll a status variable
   this can be used to make ctrl-c working faster, and to print messages
 
