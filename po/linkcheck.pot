@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Aug 24 17:06:26 2004\n"
+"POT-Creation-Date: Fri Aug 27 15:57:22 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,9 @@ msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
 msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
+msgstr ""
+
+msgid "URL is unrecognized or has invalid syntax"
 msgstr ""
 
 msgid "Added trailing slash to directory"
@@ -137,9 +140,6 @@ msgstr ""
 msgid "NNTP busy: %s"
 msgstr ""
 
-msgid "URL has invalid port number %s"
-msgstr ""
-
 msgid "Host is empty"
 msgstr ""
 
@@ -149,13 +149,14 @@ msgid ""
 "You have found an internal error in LinkChecker. Please write a bug report\n"
 "at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
 "or send mail to %s and include the following information:\n"
-"1) The URL or file you are testing\n"
-"2) Your commandline arguments and/or configuration.\n"
-"3) The system information below.\n"
+"- the URL or file you are testing\n"
+"- your commandline arguments and/or configuration.\n"
+"- the output of a debug run with option \"-Dall\" of the executed command\n"
+"- the system information below.\n"
 "\n"
-"If you disclose some information because its too private to you thats ok.\n"
-"I will try to help you nontheless (but you have to give me *something*\n"
-"I can work with ;).\n"
+"Disclosing some of the information above due to privacy reasons is ok.\n"
+"I will try to help you nontheless, but you have to give me something\n"
+"I can work with ;) .\n"
 msgstr ""
 
 msgid "******** LinkChecker internal error, bailing out ********"
@@ -167,19 +168,13 @@ msgstr ""
 msgid "Python %s on %s"
 msgstr ""
 
-msgid "Base URL is not properly quoted"
-msgstr ""
-
-msgid "Base reference is not properly quoted"
-msgstr ""
-
-msgid "Parent url is not properly quoted"
-msgstr ""
-
 msgid "Valid: %(result)s"
 msgstr ""
 
 msgid "Error: %(result)s"
+msgstr ""
+
+msgid "Base URL is not properly normed. Normed url is %(url)r."
 msgstr ""
 
 msgid "URL has invalid port %r"
@@ -200,9 +195,6 @@ msgstr ""
 msgid "URL is empty"
 msgstr ""
 
-msgid "URL has whitespace at beginning or end"
-msgstr ""
-
 msgid "anchor #%s not found"
 msgstr ""
 
@@ -213,9 +205,6 @@ msgid "Content size %s is larger than %s"
 msgstr ""
 
 msgid "more than one <base> tag found, using only the first one"
-msgstr ""
-
-msgid "Host %s (%s) found"
 msgstr ""
 
 msgid "invalid log option %r"
@@ -231,7 +220,7 @@ msgstr ""
 msgid "empty url was given"
 msgstr ""
 
-msgid "invalid url was given"
+msgid "disallowed url was given"
 msgstr ""
 
 msgid "no url was given"
@@ -297,18 +286,6 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-msgid ", line %d"
-msgstr ""
-
-msgid ", col %d"
-msgstr ""
-
-msgid " (cached)"
-msgstr ""
-
-msgid "%.3f seconds"
-msgstr ""
-
 msgid "created by %s at %s"
 msgstr ""
 
@@ -327,8 +304,19 @@ msgstr ""
 msgid "Stopped checking at %s (%s)"
 msgstr ""
 
-msgid ""
-"Start checking at %s\n"
+msgid "Start checking at %s"
+msgstr ""
+
+msgid " (cached)"
+msgstr ""
+
+msgid ", line %d"
+msgstr ""
+
+msgid ", col %d"
+msgstr ""
+
+msgid "%.3f seconds"
 msgstr ""
 
 msgid "Thats it. "
@@ -337,7 +325,7 @@ msgstr ""
 msgid "1 error"
 msgstr ""
 
-msgid " errors"
+msgid "%d errors"
 msgstr ""
 
 msgid " in 1 link"
@@ -349,26 +337,13 @@ msgstr ""
 msgid " found"
 msgstr ""
 
-msgid ""
-"Stopped checking at %s (%s)\n"
-msgstr ""
-
-msgid ""
-"Get the newest version at %s\n"
-msgstr ""
-
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-
 msgid "Get the newest version at %s"
 msgstr ""
 
 msgid "Write comments and bugs to %s"
 msgstr ""
 
-msgid "Start checking at %s"
+msgid " errors"
 msgstr ""
 
 msgid "seconds"
@@ -410,7 +385,7 @@ msgid ""
 "EXAMPLES\n"
 "Check the treasure.calvinsplayground.de domain, but don't recurse into\n"
 "links outside of this domain:\n"
-"  linkchecker -Fhtml -ocolored http://treasure.calvinsplayground.de/\n"
+"  linkchecker -Fhtml http://treasure.calvinsplayground.de/\n"
 "\n"
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"

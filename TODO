@@ -1,7 +1,5 @@
 This release:
 
-- fix all tests
-
 - cache keys
   see also SF request #952051: is query considered in url cache keys?
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Tue Aug 24 17:06:26 2004\n"
+"POT-Creation-Date: Fri Aug 27 15:57:22 2004\n"
 "PO-Revision-Date: 2004-05-27 01:06+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -19,6 +19,9 @@ msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
 msgstr ""
 "%5d URLs zu prüfen, %4d Verknüpfungen überprüft, %2d aktive Threads, "
 "Laufzeit %s"
+
+msgid "URL is unrecognized or has invalid syntax"
+msgstr ""
 
 msgid "Added trailing slash to directory"
 msgstr ""
@@ -153,9 +156,6 @@ msgstr "NNTP server zu beschäftigt; habe es mehr als %d mal versucht"
 msgid "NNTP busy: %s"
 msgstr "NNTP beschäftigt: %s"
 
-msgid "URL has invalid port number %s"
-msgstr "URL hat ungültige Portnummer %s"
-
 msgid "Host is empty"
 msgstr ""
 
@@ -166,13 +166,14 @@ msgid ""
 "You have found an internal error in LinkChecker. Please write a bug report\n"
 "at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
 "or send mail to %s and include the following information:\n"
-"1) The URL or file you are testing\n"
-"2) Your commandline arguments and/or configuration.\n"
-"3) The system information below.\n"
+"- the URL or file you are testing\n"
+"- your commandline arguments and/or configuration.\n"
+"- the output of a debug run with option \"-Dall\" of the executed command\n"
+"- the system information below.\n"
 "\n"
-"If you disclose some information because its too private to you thats ok.\n"
-"I will try to help you nontheless (but you have to give me *something*\n"
-"I can work with ;).\n"
+"Disclosing some of the information above due to privacy reasons is ok.\n"
+"I will try to help you nontheless, but you have to give me something\n"
+"I can work with ;) .\n"
 msgstr ""
 "\n"
 "********** Hoppala. *************\n"
@@ -201,21 +202,15 @@ msgstr "Systeminformation:"
 msgid "Python %s on %s"
 msgstr ""
 
-msgid "Base URL is not properly quoted"
-msgstr ""
-
-msgid "Base reference is not properly quoted"
-msgstr ""
-
-msgid "Parent url is not properly quoted"
-msgstr ""
-
 msgid "Valid: %(result)s"
 msgstr ""
 
 #, fuzzy
 msgid "Error: %(result)s"
 msgstr "Fehler: %s\n"
+
+msgid "Base URL is not properly normed. Normed url is %(url)r."
+msgstr ""
 
 #, fuzzy
 msgid "URL has invalid port %r"
@@ -237,9 +232,6 @@ msgstr "Konnte Inhalt nicht parsen: %r"
 msgid "URL is empty"
 msgstr "URL ist Null oder leer"
 
-msgid "URL has whitespace at beginning or end"
-msgstr "URL besitzt Leerzeichen am Anfang oder Ende"
-
 msgid "anchor #%s not found"
 msgstr "Anker #%s nicht gefunden"
 
@@ -251,10 +243,6 @@ msgstr "Inhalt %s is größer als %s"
 
 msgid "more than one <base> tag found, using only the first one"
 msgstr "mehr als ein <base> Tag gefunden, benutze lediglich das erste"
-
-#, fuzzy
-msgid "Host %s (%s) found"
-msgstr "Rechnername nicht gefunden"
 
 #, fuzzy
 msgid "invalid log option %r"
@@ -269,7 +257,8 @@ msgstr "nicht unterstützte Sprache"
 msgid "empty url was given"
 msgstr "leere URL wurde angegeben"
 
-msgid "invalid url was given"
+#, fuzzy
+msgid "disallowed url was given"
 msgstr "ungültige URL wurde angegeben"
 
 msgid "no url was given"
@@ -343,18 +332,6 @@ msgstr "Prüfzeit"
 msgid "URL"
 msgstr "URL"
 
-msgid ", line %d"
-msgstr ", Zeile %d"
-
-msgid ", col %d"
-msgstr ", Spalte %d"
-
-msgid " (cached)"
-msgstr " (aus dem Cache)"
-
-msgid "%.3f seconds"
-msgstr "%.3f Sekunden"
-
 #, fuzzy
 msgid "created by %s at %s"
 msgstr "erstellt von %s um %s\n"
@@ -379,8 +356,21 @@ msgstr "Beende Prüfen am %s (%s)%s"
 msgid "Stopped checking at %s (%s)"
 msgstr "Beende Prüfen am %s (%s)\n"
 
-msgid "Start checking at %s\n"
+#, fuzzy
+msgid "Start checking at %s"
 msgstr "Beginne Prüfen am %s\n"
+
+msgid " (cached)"
+msgstr " (aus dem Cache)"
+
+msgid ", line %d"
+msgstr ", Zeile %d"
+
+msgid ", col %d"
+msgstr ", Spalte %d"
+
+msgid "%.3f seconds"
+msgstr "%.3f Sekunden"
 
 msgid "Thats it. "
 msgstr "Das wars. "
@@ -388,7 +378,8 @@ msgstr "Das wars. "
 msgid "1 error"
 msgstr "1 Fehler"
 
-msgid " errors"
+#, fuzzy
+msgid "%d errors"
 msgstr " Fehler"
 
 msgid " in 1 link"
@@ -400,19 +391,6 @@ msgstr " in %d URLs"
 msgid " found"
 msgstr " gefunden"
 
-msgid "Stopped checking at %s (%s)\n"
-msgstr "Beende Prüfen am %s (%s)\n"
-
-msgid "Get the newest version at %s\n"
-msgstr "Die neueste Version gibt es unter %s\n"
-
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-"Schreiben Sie Kommentare und Fehler an %s\n"
-"\n"
-
 #, fuzzy
 msgid "Get the newest version at %s"
 msgstr "Die neueste Version gibt es unter %s\n"
@@ -423,9 +401,8 @@ msgstr ""
 "Schreiben Sie Kommentare und Fehler an %s\n"
 "\n"
 
-#, fuzzy
-msgid "Start checking at %s"
-msgstr "Beginne Prüfen am %s\n"
+msgid " errors"
+msgstr " Fehler"
 
 msgid "seconds"
 msgstr "Sekunden"
@@ -489,7 +466,7 @@ msgid ""
 "EXAMPLES\n"
 "Check the treasure.calvinsplayground.de domain, but don't recurse into\n"
 "links outside of this domain:\n"
-"  linkchecker -Fhtml -ocolored http://treasure.calvinsplayground.de/\n"
+"  linkchecker -Fhtml http://treasure.calvinsplayground.de/\n"
 "\n"
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"
@@ -801,6 +778,32 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "URL has invalid port number %s"
+#~ msgstr "URL hat ungültige Portnummer %s"
+
+#~ msgid "URL has whitespace at beginning or end"
+#~ msgstr "URL besitzt Leerzeichen am Anfang oder Ende"
+
+#, fuzzy
+#~ msgid "Host %s (%s) found"
+#~ msgstr "Rechnername nicht gefunden"
+
+#~ msgid "Start checking at %s\n"
+#~ msgstr "Beginne Prüfen am %s\n"
+
+#~ msgid "Stopped checking at %s (%s)\n"
+#~ msgstr "Beende Prüfen am %s (%s)\n"
+
+#~ msgid "Get the newest version at %s\n"
+#~ msgstr "Die neueste Version gibt es unter %s\n"
+
+#~ msgid ""
+#~ "Write comments and bugs to %s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Schreiben Sie Kommentare und Fehler an %s\n"
+#~ "\n"
 
 #~ msgid "removed %d cached urls from incoming queue"
 #~ msgstr "%d gespeicherte URLs wurden aus der Warteschlange entfernt"

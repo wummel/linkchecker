@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Tue Aug 24 17:06:26 2004\n"
+"POT-Creation-Date: Fri Aug 27 15:57:22 2004\n"
 "PO-Revision-Date: 2004-02-20 15:26+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -16,6 +16,9 @@ msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
 msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
+msgstr ""
+
+msgid "URL is unrecognized or has invalid syntax"
 msgstr ""
 
 msgid "Added trailing slash to directory"
@@ -145,9 +148,6 @@ msgstr ""
 msgid "NNTP busy: %s"
 msgstr ""
 
-msgid "URL has invalid port number %s"
-msgstr ""
-
 msgid "Host is empty"
 msgstr ""
 
@@ -157,13 +157,14 @@ msgid ""
 "You have found an internal error in LinkChecker. Please write a bug report\n"
 "at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
 "or send mail to %s and include the following information:\n"
-"1) The URL or file you are testing\n"
-"2) Your commandline arguments and/or configuration.\n"
-"3) The system information below.\n"
+"- the URL or file you are testing\n"
+"- your commandline arguments and/or configuration.\n"
+"- the output of a debug run with option \"-Dall\" of the executed command\n"
+"- the system information below.\n"
 "\n"
-"If you disclose some information because its too private to you thats ok.\n"
-"I will try to help you nontheless (but you have to give me *something*\n"
-"I can work with ;).\n"
+"Disclosing some of the information above due to privacy reasons is ok.\n"
+"I will try to help you nontheless, but you have to give me something\n"
+"I can work with ;) .\n"
 msgstr ""
 
 msgid "******** LinkChecker internal error, bailing out ********"
@@ -175,21 +176,15 @@ msgstr ""
 msgid "Python %s on %s"
 msgstr ""
 
-msgid "Base URL is not properly quoted"
-msgstr ""
-
-msgid "Base reference is not properly quoted"
-msgstr ""
-
-msgid "Parent url is not properly quoted"
-msgstr ""
-
 msgid "Valid: %(result)s"
 msgstr ""
 
 #, fuzzy
 msgid "Error: %(result)s"
 msgstr "Fout: %s\n"
+
+msgid "Base URL is not properly normed. Normed url is %(url)r."
+msgstr ""
 
 msgid "URL has invalid port %r"
 msgstr ""
@@ -211,9 +206,6 @@ msgstr ""
 msgid "URL is empty"
 msgstr "URL is nul of leeg"
 
-msgid "URL has whitespace at beginning or end"
-msgstr ""
-
 msgid "anchor #%s not found"
 msgstr ""
 
@@ -225,10 +217,6 @@ msgstr ""
 
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
-
-#, fuzzy
-msgid "Host %s (%s) found"
-msgstr " gevonden"
 
 #, fuzzy
 msgid "invalid log option %r"
@@ -243,8 +231,9 @@ msgstr ""
 msgid "empty url was given"
 msgstr ""
 
-msgid "invalid url was given"
-msgstr ""
+#, fuzzy
+msgid "disallowed url was given"
+msgstr "geen bestanden of URLs gegeven"
 
 msgid "no url was given"
 msgstr "geen bestanden of URLs gegeven"
@@ -318,18 +307,6 @@ msgstr "Testtijd"
 msgid "URL"
 msgstr "URL"
 
-msgid ", line %d"
-msgstr ", regel %d"
-
-msgid ", col %d"
-msgstr ""
-
-msgid " (cached)"
-msgstr " (uit de cache)"
-
-msgid "%.3f seconds"
-msgstr "%.3f Seconden"
-
 #, fuzzy
 msgid "created by %s at %s"
 msgstr "gemaakt door %s om %s\n"
@@ -354,8 +331,21 @@ msgstr "Stop testen om %s (%s)%s"
 msgid "Stopped checking at %s (%s)"
 msgstr "Stop testen om %s (%s)\n"
 
-msgid "Start checking at %s\n"
+#, fuzzy
+msgid "Start checking at %s"
 msgstr "Begin testen vanaf %s\n"
+
+msgid " (cached)"
+msgstr " (uit de cache)"
+
+msgid ", line %d"
+msgstr ", regel %d"
+
+msgid ", col %d"
+msgstr ""
+
+msgid "%.3f seconds"
+msgstr "%.3f Seconden"
 
 msgid "Thats it. "
 msgstr "Dat was het. "
@@ -363,7 +353,8 @@ msgstr "Dat was het. "
 msgid "1 error"
 msgstr "1 fout"
 
-msgid " errors"
+#, fuzzy
+msgid "%d errors"
 msgstr " fouten"
 
 msgid " in 1 link"
@@ -375,19 +366,6 @@ msgstr " in %d URLs"
 msgid " found"
 msgstr " gevonden"
 
-msgid "Stopped checking at %s (%s)\n"
-msgstr "Stop testen om %s (%s)\n"
-
-msgid "Get the newest version at %s\n"
-msgstr "Haal de nieuwste versie op van %s\n"
-
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-"Stuur commentaar en bugs aan %s\n"
-"\n"
-
 #, fuzzy
 msgid "Get the newest version at %s"
 msgstr "Haal de nieuwste versie op van %s\n"
@@ -398,9 +376,8 @@ msgstr ""
 "Stuur commentaar en bugs aan %s\n"
 "\n"
 
-#, fuzzy
-msgid "Start checking at %s"
-msgstr "Begin testen vanaf %s\n"
+msgid " errors"
+msgstr " fouten"
 
 msgid "seconds"
 msgstr "Seconden"
@@ -464,7 +441,7 @@ msgid ""
 "EXAMPLES\n"
 "Check the treasure.calvinsplayground.de domain, but don't recurse into\n"
 "links outside of this domain:\n"
-"  linkchecker -Fhtml -ocolored http://treasure.calvinsplayground.de/\n"
+"  linkchecker -Fhtml http://treasure.calvinsplayground.de/\n"
 "\n"
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"
@@ -699,6 +676,26 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#, fuzzy
+#~ msgid "Host %s (%s) found"
+#~ msgstr " gevonden"
+
+#~ msgid "Start checking at %s\n"
+#~ msgstr "Begin testen vanaf %s\n"
+
+#~ msgid "Stopped checking at %s (%s)\n"
+#~ msgstr "Stop testen om %s (%s)\n"
+
+#~ msgid "Get the newest version at %s\n"
+#~ msgstr "Haal de nieuwste versie op van %s\n"
+
+#~ msgid ""
+#~ "Write comments and bugs to %s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Stuur commentaar en bugs aan %s\n"
+#~ "\n"
 
 #~ msgid "Error"
 #~ msgstr "Fout"
