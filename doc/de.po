@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-03-11 22:18+0100\n"
-"PO-Revision-Date: 2005-03-11 22:27+0100\n"
+"POT-Creation-Date: 2005-03-11 23:05+0100\n"
+"PO-Revision-Date: 2005-03-11 23:06+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -498,273 +498,284 @@ msgstr "B<-N>I<Server>, B<--nntp-server=>I<Server>"
 msgid "Specify an NNTP server for 'news:...' links. Default is the environment variable NNTP_SERVER. If no host is given, only the syntax of the link is checked."
 msgstr "Gibt ein NNTP Rechner für B<news:...> Links. Standard ist die Umgebungsvariable NNTP_SERVER. Falls kein Rechner angegeben ist, wird lediglich auf korrekte Syntax des Links geprüft."
 
+# type: TP
+#: en/linkchecker.1:222
+#, no-wrap
+msgid "B<--no-proxy-for=>I<regex>"
+msgstr "B<--no-proxy-for=>I<regex>"
+
+# type: Plain text
+#: en/linkchecker.1:226
+msgid "Contact hosts that match the given expression directly instead of going through a proxy."
+msgstr "Rechner welche den angegebenen regulären Ausdruck entsprechen sollen direkt und nicht über einen Proxy angesprochen werden."
+
 # type: SS
-#: en/linkchecker.1:223
+#: en/linkchecker.1:227
 #, no-wrap
 msgid "Deprecated options"
 msgstr "Alte Optionen"
 
 # type: TP
-#: en/linkchecker.1:224
+#: en/linkchecker.1:228
 #, no-wrap
 msgid "B<--status>"
 msgstr "B<--status>"
 
 # type: Plain text
-#: en/linkchecker.1:227
+#: en/linkchecker.1:231
 msgid "Print check status every 5 seconds to stderr. This is the default now."
 msgstr "Gebe Prüfstatus alle 5 Sekunden an stderr aus. Dies ist die Voreinstellung."
 
 # type: SH
-#: en/linkchecker.1:228
+#: en/linkchecker.1:232
 #, no-wrap
 msgid "OUTPUT TYPES"
 msgstr "AUSGABETYPEN"
 
 # type: Plain text
-#: en/linkchecker.1:230
+#: en/linkchecker.1:234
 msgid "Note that by default only errors are logged."
 msgstr "Beachten Sie dass normalerweise nur Fehler geloggt werden."
 
 # type: TP
-#: en/linkchecker.1:231
+#: en/linkchecker.1:235
 #, no-wrap
 msgid "B<text>"
 msgstr "B<text>"
 
 # type: Plain text
-#: en/linkchecker.1:234
+#: en/linkchecker.1:238
 msgid "Standard text logger, logging URLs in keyword: argument fashion."
 msgstr "Standard Textausgabe in \"Schlüssel: Wert\"-Form."
 
 # type: TP
-#: en/linkchecker.1:234
+#: en/linkchecker.1:238
 #, no-wrap
 msgid "B<html>"
 msgstr "B<html>"
 
 # type: Plain text
-#: en/linkchecker.1:239
+#: en/linkchecker.1:243
 msgid "Log URLs in keyword: argument fashion, formatted as HTML.  Additionally has links to the referenced pages. Invalid URLs have HTML and CSS syntax check links appended."
 msgstr "Gebe URLs in \"Schlüssel: Wert\"-Form als HTML formatiert aus. Besitzt zudem Verknüpfungen auf die referenzierten Seiten. Ungültige URLs haben Verknüpfungen zur HTML und CSS Syntaxprüfung angehängt."
 
 # type: TP
-#: en/linkchecker.1:239
+#: en/linkchecker.1:243
 #, no-wrap
 msgid "B<csv>"
 msgstr "B<csv>"
 
 # type: Plain text
-#: en/linkchecker.1:242
+#: en/linkchecker.1:246
 msgid "Log check result in CSV format with one URL per line."
 msgstr "Gebe Prüfresultat in CSV-Format aus mit einer URL pro Zeile."
 
 # type: TP
-#: en/linkchecker.1:242
+#: en/linkchecker.1:246
 #, no-wrap
 msgid "B<gml>"
 msgstr "B<gml>"
 
 # type: Plain text
-#: en/linkchecker.1:246
+#: en/linkchecker.1:250
 msgid "Log parent-child relations between linked URLs as a GML graph.  You should use the B<--verbose> option to get a complete graph."
 msgstr "Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als GML Graphen aus. Sie sollten die Option B<--verbose> benutzen, um einen vollständigen Graphen zu erhalten."
 
 # type: TP
-#: en/linkchecker.1:246
+#: en/linkchecker.1:250
 #, no-wrap
 msgid "B<dot>"
 msgstr "B<dot>"
 
 # type: Plain text
-#: en/linkchecker.1:250
+#: en/linkchecker.1:254
 msgid "Log parent-child relations between linked URLs as a DOT graph.  You should use the B<--verbose> option to get a complete graph."
 msgstr "Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als DOT Graphen aus. Sie sollten die Option B<--verbose> benutzen, um einen vollständigen Graphen zu erhalten."
 
 # type: TP
-#: en/linkchecker.1:250
+#: en/linkchecker.1:254
 #, no-wrap
 msgid "B<xml>"
 msgstr "B<xml>"
 
 # type: Plain text
-#: en/linkchecker.1:253
+#: en/linkchecker.1:257
 msgid "Log check result as machine-readable XML file."
 msgstr "Gebe Prüfresultat als maschinenlesbare XML-Datei aus."
 
 # type: TP
-#: en/linkchecker.1:253
+#: en/linkchecker.1:257
 #, no-wrap
 msgid "B<sql>"
 msgstr "B<sql>"
 
 # type: Plain text
-#: en/linkchecker.1:257
+#: en/linkchecker.1:261
 msgid "Log check result as SQL script with INSERT commands. An example script to create the initial SQL table is included as create.sql."
 msgstr "Gebe Prüfresultat als SQL Skript mit INSERT Befehlen aus. Ein Beispielskript, um die initiale SQL Tabelle zu erstellen ist unter create.sql zu finden."
 
 # type: TP
-#: en/linkchecker.1:257
+#: en/linkchecker.1:261
 #, no-wrap
 msgid "B<blacklist>"
 msgstr "B<blacklist>"
 
 # type: Plain text
-#: en/linkchecker.1:262
+#: en/linkchecker.1:266
 msgid "Suitable for cron jobs. Logs the check result into a file B<~/.linkchecker/blacklist> which only contains entries with invalid urls and the number of times they have failed."
 msgstr "Für Cronjobs geeignet. Gibt das Prüfergebnis in eine Datei B<~/.linkchecker/blacklist> aus welche nur Einträge mit fehlerhaften URLs und die Anzahl der Fehlversuche enthält."
 
 # type: TP
-#: en/linkchecker.1:262
+#: en/linkchecker.1:266
 #, no-wrap
 msgid "B<none>"
 msgstr "B<none>"
 
 # type: Plain text
-#: en/linkchecker.1:265
+#: en/linkchecker.1:269
 msgid "Logs nothing. Suitable for scripts."
 msgstr "Gibt nichts aus. Für Skripte geeignet."
 
 # type: SH
-#: en/linkchecker.1:266
+#: en/linkchecker.1:270
 #, no-wrap
 msgid "NOTES"
 msgstr "BEMERKUNGEN"
 
 # type: Plain text
-#: en/linkchecker.1:269
+#: en/linkchecker.1:273
 msgid "A B<!> before any regex negates it. So B<'!^mailto:'> matches everything but a mailto link."
 msgstr "Ein B<!> vor einem regulären Ausdruck negiert diesen. Also matcht B<'!^mailto:'> alles außer mailto Links."
 
 # type: Plain text
-#: en/linkchecker.1:273
+#: en/linkchecker.1:277
 msgid "LinkCheckers commandline parser treats B<ftp.> links like B<ftp://ftp.> and B<www.> links like B<http://www.>.  You can also give local files as arguments."
 msgstr "URLs von der Kommandozeile die mit B<ftp.> beginnen werden wie B<ftp://ftp.> behandelt, URLs die mit B<www.> beginnen wie B<http://www.>. Sie können auch lokale Dateien als Argumente angeben."
 
 # type: Plain text
-#: en/linkchecker.1:278
+#: en/linkchecker.1:282
 msgid "If you have your system configured to automatically establish a connection to the internet (e.g. with diald), it will connect when checking links not pointing to your local host.  Use the B<-s> and B<-i> options to prevent this."
 msgstr "Falls sich Ihr System automatisch mit dem Internet verbindet (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht auf Ihren lokalen Rechner verweisen Benutzen Sie die Optionen B<-s> und B<-i>, um dies zu verhindern."
 
 # type: Plain text
-#: en/linkchecker.1:280
+#: en/linkchecker.1:284
 msgid "Javascript links are currently ignored."
 msgstr "Javascript Links werden zur Zeit ignoriert."
 
 # type: Plain text
-#: en/linkchecker.1:283
+#: en/linkchecker.1:287
 msgid "If your platform does not support threading, LinkChecker uses B<-t0>."
 msgstr "Wenn Ihr System keine Threads unterstützt, benutzt LinkChecker automatisch B<-t0>."
 
 # type: Plain text
-#: en/linkchecker.1:285
+#: en/linkchecker.1:289
 msgid "You can supply multiple user/password pairs in a configuration file."
 msgstr "Sie können mehrere Benutzer/Passwort Paare in einer Konfigurationsdatei angeben."
 
 # type: Plain text
-#: en/linkchecker.1:288
+#: en/linkchecker.1:292
 msgid "To use proxies set $http_proxy, $https_proxy on Unix or Windows.  On a Mac use the Internet Config."
 msgstr "Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config."
 
 # type: Plain text
-#: en/linkchecker.1:291
+#: en/linkchecker.1:295
 msgid "When checking B<news:> links the given NNTP host doesn't need to be the same as the host of the user browsing your pages."
 msgstr "Beim Prüfen von B<news:> Links muß der angegebene NNTP Rechner nicht unbedingt derselbe wie der des Benutzers sein."
 
 # type: SH
-#: en/linkchecker.1:292
+#: en/linkchecker.1:296
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr "UMGEBUNG"
 
 # type: Plain text
-#: en/linkchecker.1:294
+#: en/linkchecker.1:298
 msgid "B<NNTP_SERVER> - specifies default NNTP server"
 msgstr "B<NNTP_SERVER> - gibt Standard NNTP Server an"
 
 # type: Plain text
-#: en/linkchecker.1:296
+#: en/linkchecker.1:300
 msgid "B<http_proxy> - specifies default HTTP proxy server"
 msgstr "B<http_proxy> - gibt Standard HTTP Proxy an"
 
 # type: Plain text
-#: en/linkchecker.1:298
+#: en/linkchecker.1:302
 msgid "B<ftp_proxy> - specifies default FTP proxy server"
 msgstr "B<ftp_proxy> - gibt Standard FTP Proxy an"
 
 # type: Plain text
-#: en/linkchecker.1:300
+#: en/linkchecker.1:304
 msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
 msgstr "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - gibt Ausgabesprache an"
 
 # type: SH
-#: en/linkchecker.1:301
+#: en/linkchecker.1:305
 #, no-wrap
 msgid "RETURN VALUE"
 msgstr "RÜCKGABEWERT"
 
 # type: Plain text
-#: en/linkchecker.1:303
+#: en/linkchecker.1:307
 msgid "The return value is non-zero when"
 msgstr "Der Rückgabewert ist nicht Null falls"
 
 # type: IP
-#: en/linkchecker.1:303
-#: en/linkchecker.1:305
 #: en/linkchecker.1:307
+#: en/linkchecker.1:309
+#: en/linkchecker.1:311
 #, no-wrap
 msgid "\\(bu"
 msgstr "\\(bu"
 
 # type: Plain text
-#: en/linkchecker.1:305
+#: en/linkchecker.1:309
 msgid "invalid links were found or"
 msgstr "ungültige Verknüpfungen gefunden wurden oder"
 
 # type: Plain text
-#: en/linkchecker.1:307
+#: en/linkchecker.1:311
 msgid "link warnings were found and --warnings option was given"
 msgstr "Warnungen gefunden wurden und die Option --warnings wurde angegeben oder"
 
 # type: Plain text
-#: en/linkchecker.1:309
+#: en/linkchecker.1:313
 msgid "a program error occurred."
 msgstr "ein Programmfehler aufgetreten ist."
 
 # type: SH
-#: en/linkchecker.1:310
+#: en/linkchecker.1:314
 #, no-wrap
 msgid "FILES"
 msgstr "DATEIEN"
 
 # type: Plain text
-#: en/linkchecker.1:313
+#: en/linkchecker.1:317
 msgid "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - default configuration files"
 msgstr "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - Standardkonfigurationsdateien"
 
 # type: Plain text
-#: en/linkchecker.1:315
+#: en/linkchecker.1:319
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr "B<~/.linkchecker/blacklist> - Standard Dateiname der blacklist Logger Ausgabe"
 
 # type: Plain text
-#: en/linkchecker.1:317
+#: en/linkchecker.1:321
 msgid "B<linkchecker-out.>I<type> - default logger file output name"
 msgstr "B<linkchecker-out.>I<type> - Standard Dateiname der Logausgabe"
 
 # type: Plain text
-#: en/linkchecker.1:319
+#: en/linkchecker.1:323
 msgid "B<http://docs.python.org/lib/node127.html> - valid output encodings"
 msgstr "<http://docs.python.org/lib/node127.html> - gültige Ausgabe Enkodierungen"
 
 # type: SH
-#: en/linkchecker.1:320
+#: en/linkchecker.1:324
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTHOR"
 
 # type: Plain text
-#: en/linkchecker.1:321
+#: en/linkchecker.1:325
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 
