@@ -245,7 +245,11 @@ class UrlBase (object):
         """
         # norm base url
         base_url, is_idn = linkcheck.url.url_norm(self.base_url)
-        if self.base_url != base_url:
+        if is_idn:
+            self.add_warning(_("""URL %s has a unicode domain name which
+                          is not yet widely supported. You should use
+                          the URL %s instead.""") % (self.base_url, base_url))
+        elif self.base_url != base_url:
             self.add_warning(
               _("Base URL is not properly normed. Normed url is %(url)s.") % \
                {'url': base_url})
