@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, sys, time, re, httplib, zlib, gzip robotparser2
+import urlparse, sys, time, re, httplib, zlib, gzip, robotparser2
 from urllib import quote, unquote
 from cStringIO import StringIO
 import Config, i18n
