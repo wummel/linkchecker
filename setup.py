@@ -24,7 +24,7 @@ from distutils.command.install import install
 from distutils.command.config import config
 from distutils import util
 from distutils.file_util import write_file
-import os
+import os,string
 
 
 class LCInstall(install):
@@ -33,12 +33,17 @@ class LCInstall(install):
         # we have to write a configuration file because we need the
         # <install_data>/share/locale directory (and other stuff
         # like author, url, ...)
-        if self.root:
-            install_data = self.install_data[len(self.root):]
-        else:
-            install_data = self.install_data
-        data = ['install_data = %s' % \
-                `os.path.join(install_data, 'share')`]
+        # install data
+        data = []
+        for d in ['purelib', 'platlib', 'lib', 'headers', 'scripts', 'data']:
+            attr = 'install_'+d
+            if self.root:
+                val = getattr(self, attr)[len(self.root):]
+            else:
+                val = getattr(self, attr)
+            data.append("%s = %s" % (attr, `val`))
+        from pprint import pformat
+        data.append('outputs = %s' % pformat(self.get_outputs()))
         self.distribution.create_conf_file(self.install_lib, data)
 
 
@@ -57,13 +62,14 @@ class LCDistribution(Distribution):
     def create_conf_file(self, directory, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
         filename = os.path.join(directory, self.config_file)
-        # add metadata
+        # metadata
         metanames = dir(self.metadata) + \
                     ['fullname', 'contact', 'contact_email']
         for name in metanames:
               method = "get_" + name
               cmd = "%s = %s" % (name, `getattr(self.metadata, method)()`)
               data.append(cmd)
+        # write the config file
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 

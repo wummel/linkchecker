@@ -129,8 +129,8 @@ msgstr "Le groupe %s a %s articles, de %s à %s"
 msgid "HTTP 301 (moved permanent) encountered: you should update this link"
 msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
 
-msgid "HTTPS url ignored"
-msgstr "Url HTTPS ignorées"
+msgid "HTTPS not supported"
+msgstr "HTTPS not supported"
 
 msgid "Illegal NNTP link syntax"
 msgstr "Syntaxe illégale du lien NNTP"

@@ -141,8 +141,8 @@ msgid "HTTP 301 (moved permanent) encountered: you should update this link"
 msgstr ""
 "HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
 
-msgid "HTTPS url ignored"
-msgstr "HTTPS url ignoriert"
+msgid "HTTPS not supported"
+msgstr "HTTPS nicht unterstützt"
 
 msgid "Illegal NNTP link syntax"
 msgstr "Illegale NNTP link Syntax"
