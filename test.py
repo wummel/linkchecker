@@ -43,11 +43,12 @@ regexp is applied to the whole path (package/package/module.py). Test regexp
 is applied to a full test id (package.package.module.class.test_method).
 
 Options:
-  -h                    print this help message
+  -h, --help            print this help message
   -v                    verbose (print dots for each test run)
   -vv                   very verbose (print test names)
   -q                    quiet (do not print anything on success)
   -w                    enable warnings about omitted test cases
+  -d                    invoke pdb when an exception occurs
   -p                    show progress bar (can be combined with -v or -vv)
   -u                    select unit tests (default)
   -f                    select functional tests
@@ -59,6 +60,8 @@ Options:
   --coverage            create code coverage reports
   --search-in dir       limit directory tree walk to dir (optimisation)
   --immediate-errors    show errors as soon as they happen
+  --resource name       enable given resource; currently only 'network'
+                        is allowed
 """
 #
 # This script borrows ideas from Zope 3's test runner heavily.  It is smaller
@@ -73,10 +76,13 @@ import types
 import getopt
 import unittest
 import traceback
+import pdb
 from sets import Set
 
 __metaclass__ = type
 
+
+Resources = ['network']
 
 class Options:
     """Configurable properties of the test runner."""
@@ -88,6 +94,10 @@ class Options:
                                 # basedir)
     follow_symlinks = True      # should symlinks to subdirectories be
                                 # followed? (hardcoded, may cause loops)
+    pattern = None              # test filename pattern
+
+    # available resources
+    resources = []
 
     # which tests to run
     unit_tests = False          # unit tests (default if both are false)
@@ -104,6 +114,7 @@ class Options:
     list_tests = False          # --list-tests
     list_hooks = False          # --list-hooks
     run_tests = True            # run tests (disabled by --list-foo)
+    postmortem = False          # invoke pdb when an exception occurs
 
     # output verbosity
     verbosity = 0               # verbosity level (-v)
@@ -164,7 +175,7 @@ def get_test_files(cfg):
     if cfg.functional_tests:
         test_names.append('ftests')
     baselen = len(cfg.basedir) + 1
-    def visit(ignored, dir, files):
+    def visit_dir(ignored, dir, files):
         if os.path.basename(dir) not in test_names:
             for name in test_names:
                 if name + '.py' in files:
@@ -176,17 +187,18 @@ def get_test_files(cfg):
             print >> sys.stderr, "%s is not a package" % dir
             return
         for file in files:
-            if file.startswith('test') and file.endswith('.py'):
-                path = os.path.join(dir, file)
-                if matcher(path[baselen:]):
-                    results.append(path)
+            visit_file(dir, file)
+    def visit_file(dir, file):
+        if file.startswith('test') and file.endswith('.py'):
+            path = os.path.join(dir, file)
+            if matcher(path[baselen:]):
+                results.append(path)
     if cfg.follow_symlinks:
         walker = walk_with_symlinks
     else:
         walker = os.path.walk
     for dir in cfg.search_in:
-        print repr(dir)
-        walker(dir, visit, None)
+        walker(dir, visit_dir, None)
     results.sort()
     return results
 
@@ -316,6 +328,7 @@ class CustomTestResult(unittest._TextTestResult):
     __super_startTest = __super.startTest
     __super_stopTest = __super.stopTest
     __super_printErrors = __super.printErrors
+    __super_printErrorList = __super.printErrorList
 
     def __init__(self, stream, descriptions, verbosity, count, cfg, hooks):
         self.__super_init(stream, descriptions, verbosity)
@@ -373,6 +386,10 @@ class CustomTestResult(unittest._TextTestResult):
     def printErrors(self):
         if self.cfg.progress and not (self.dots or self.showAll):
             self.stream.writeln()
+        if self.cfg.immediate_errors and (self.errors or self.failures):
+            self.stream.writeln(self.separator1)
+            self.stream.writeln("Tests that failed")
+            self.stream.writeln(self.separator2)
         self.__super_printErrors()
 
     def formatError(self, err):
@@ -380,20 +397,33 @@ class CustomTestResult(unittest._TextTestResult):
 
     def printTraceback(self, kind, test, err):
         self.stream.writeln()
-        self.stream.writeln()
+        self.stream.writeln(self.separator1)
         self.stream.writeln("%s: %s" % (kind, test))
+        self.stream.writeln(self.separator2)
         self.stream.writeln(self.formatError(err))
         self.stream.writeln()
 
     def addFailure(self, test, err):
         if self.cfg.immediate_errors:
             self.printTraceback("FAIL", test, err)
+        if self.cfg.postmortem:
+            pdb.post_mortem(sys.exc_info()[2])
         self.failures.append((test, self.formatError(err)))
 
     def addError(self, test, err):
         if self.cfg.immediate_errors:
             self.printTraceback("ERROR", test, err)
+        if self.cfg.postmortem:
+            pdb.post_mortem(sys.exc_info()[2])
         self.errors.append((test, self.formatError(err)))
+
+    def printErrorList(self, flavour, errors):
+        if self.cfg.immediate_errors:
+            for test, err in errors:
+                description = self.getDescription(test)
+                self.stream.writeln("%s: %s" % (flavour, description))
+        else:
+            self.__super_printErrorList(flavour, errors)
 
 
 class CustomTestRunner(unittest.TextTestRunner):
@@ -477,12 +507,14 @@ def main(argv):
             pass
 
     # Option processing
-    opts, args = getopt.gnu_getopt(argv[1:], 'hvpqufw',
+    opts, args = getopt.gnu_getopt(argv[1:], 'hvpqufwd',
                                    ['list-files', 'list-tests', 'list-hooks',
                                     'level=', 'all-levels', 'coverage',
-                                    'search-in=', 'immediate-errors'])
+                                    'search-in=', 'immediate-errors', 'help',
+                                    'resource=',
+                                   ])
     for k, v in opts:
-        if k == '-h':
+        if k in ['-h', '--help']:
             print __doc__
             return 0
         elif k == '-v':
@@ -499,6 +531,8 @@ def main(argv):
             cfg.unit_tests = True
         elif k == '-f':
             cfg.functional_tests = True
+        elif k == '-d':
+            cfg.postmortem = True
         elif k == '-w':
             cfg.warn_omitted = True
         elif k == '--list-files':
@@ -512,6 +546,13 @@ def main(argv):
             cfg.run_tests = False
         elif k == '--coverage':
             cfg.coverage = True
+        elif k == '--resource':
+            if v not in Resources:
+                print >> sys.stderr, ('%s: argument to --resource (%s) must'
+                                      ' be one of %s'
+                                      % (argv[0], v, str(Resources)))
+                return 1
+            cfg.resources.append(v)
         elif k == '--level':
             try:
                 cfg.level = int(v)
@@ -548,9 +589,6 @@ def main(argv):
 
     if not cfg.search_in:
         cfg.search_in = (cfg.basedir, )
-
-    # Set up the python path
-    sys.path[0] = cfg.basedir
 
     # Set up tracing before we start importing things
     tracer = None
