@@ -15,7 +15,7 @@ include linkcheck/HtmlParser/Makefile
 include linkcheck/HtmlParser/htmllex.l
 include linkcheck/HtmlParser/htmlparse.y
 include linkcheck/HtmlParser/*.h
-include po/*.po po/*.pot po/*.py po/Makefile
+include po/*.po po/*.pot po/Makefile
 recursive-include share *.mo
 exclude _linkchecker_configdata.py
 include doc/*.txt doc/*.nav doc/*.html doc/*.py doc/*.png doc/*.jpg
