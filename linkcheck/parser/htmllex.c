@@ -33,6 +33,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+/* #include <stdint.h> /* Breaks IA64 test-noansi-r */
 /* %endif */
 
 /* %if-tables-serialization */
@@ -7209,10 +7210,10 @@ static yyconst flex_int32_t yy_rule_linenum[87] =
 
 /* use Pythons memory management */
 void* yyalloc (yy_size_t bytes, void* yyscanner) {
-    return PyMem_Malloc(bytes);
+    return PyMem_Malloc((size_t)bytes);
 }
 void* yyrealloc (void* ptr, yy_size_t bytes, void* yyscanner) {
-    return PyMem_Realloc(ptr, bytes);
+    return PyMem_Realloc(ptr, (size_t)bytes);
 }
 void yyfree (void* ptr, void* yyscanner) {
     PyMem_Free(ptr);
@@ -7256,7 +7257,7 @@ static PyObject* quote_string (PyObject* val) {
 	Py_DECREF(val);
         val = nval;
     }
-    if (!quote) {
+    if (quote==0) {
         return val;
     }
     /* quote suffix */
@@ -7292,7 +7293,7 @@ static PyObject* quote_string (PyObject* val) {
 
 
 
-#line 7296 "htmllex.c"
+#line 7297 "htmllex.c"
 
 #define INITIAL 0
 #define S_PI 1
@@ -7578,7 +7579,7 @@ YY_DECL
 
 
   /*********************** EOF ************************/
-#line 7582 "htmllex.c"
+#line 7583 "htmllex.c"
 
     yylval = yylval_param;
 
@@ -8761,7 +8762,7 @@ YY_RULE_SETUP
 #line 897 "htmllex.l"
 ECHO;
 	YY_BREAK
-#line 8765 "htmllex.c"
+#line 8766 "htmllex.c"
 
 	case YY_END_OF_BUFFER:
 		{

@@ -98,10 +98,10 @@
 
 /* use Pythons memory management */
 void* yyalloc (yy_size_t bytes, void* yyscanner) {
-    return PyMem_Malloc(bytes);
+    return PyMem_Malloc((size_t)bytes);
 }
 void* yyrealloc (void* ptr, yy_size_t bytes, void* yyscanner) {
-    return PyMem_Realloc(ptr, bytes);
+    return PyMem_Realloc(ptr, (size_t)bytes);
 }
 void yyfree (void* ptr, void* yyscanner) {
     PyMem_Free(ptr);
@@ -145,7 +145,7 @@ static PyObject* quote_string (PyObject* val) {
 	Py_DECREF(val);
         val = nval;
     }
-    if (!quote) {
+    if (quote==0) {
         return val;
     }
     /* quote suffix */
