@@ -52,7 +52,7 @@ deb:
 	# (linkchecker.1 -> undocumented.1)
 	$(MAKE) cleandeb
 	fakeroot debian/rules binary
-	fakeroot cvs-buildpackage -sgpg -pgpg -k959C340F
+	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -W/home/calvin/projects/cvs-build -sgpg -pgpg -k959C340F -rfakeroot 
 
 .PHONY: packages
 packages:
