@@ -67,6 +67,7 @@ class TagFinder (object):
 
     def __init__ (self, content):
         """store content in buffer"""
+        super(TagFinder, self).__init__()
         self.content = content
         # warnings and errors during parsing
         self.parse_info = []

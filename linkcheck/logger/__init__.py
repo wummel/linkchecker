@@ -93,7 +93,7 @@ class Logger (object):
             fields = self.logfields
         values = [self.field(x) for x in fields]
         # maximum indent for localized log field names
-        self.max_indent = max(map(lambda x: len(x), values))+1
+        self.max_indent = max([len(x) for x in values])+1
         for key in fields:
             self.logspaces[key] = " "*(self.max_indent - len(self.field(key)))
 
