@@ -1,4 +1,4 @@
-2.2 "" (released xx.xx.2005)
+2.2 "" (released xx.01.2005)
 
   * CSV log format changes:
     - default separator is now a comma, not a semicolon
@@ -52,6 +52,11 @@
     Type: bugfix
     Changed: linkcheck/robotparser2.py
     Added: doc/robots.txt
+
+  * Updated the included linkcheck/httplib2.py from the newest httplib.py
+    found in Python CVS.
+    Type: feature
+    Changed: linkcheck/httplib2.py
 
 2.1 "Shogun Assassin" (released 11.1.2005)
 
