@@ -16,7 +16,6 @@ def mxlookup(name):
     convenience routine for doing an MX lookup of a name. returns a
     sorted list of (preference, mail exchanger) records
     """
-       
     a = Base.DnsRequest(name, qtype = 'mx').req().answers
     l = map(lambda x:x['data'], a)
     l.sort()

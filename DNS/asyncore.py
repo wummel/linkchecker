@@ -1,4 +1,3 @@
-# -*- Mode: Python; tab-width: 4 -*-
 # 	$Id$
 #	Author: Sam Rushing <rushing@nightmare.com>
 

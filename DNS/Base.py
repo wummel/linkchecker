@@ -1,37 +1,70 @@
 # $Id$
-import sys
-import getopt
-import socket
-import string
+import sys, re, getopt, socket
 import DNS,DNS.Lib,DNS.Type,DNS.Class,DNS.Opcode
 #import asyncore
 
-defaults= { 'protocol':'udp', 'port':53, 'opcode':DNS.Opcode.QUERY, 
-            'qtype':DNS.Type.A, 'rd':1, 'timing':1 }
+defaults= {
+    'protocol': 'udp',
+    'port': 53,
+    'opcode': DNS.Opcode.QUERY,
+    'qtype':DNS.Type.A,
+    'rd':1,
+    'timing':1,
+    'server': [],
+    'search_domains': [],
+}
 
 defaults['server']=[]
 
-def ParseResolvConf():
-    "parses the /etc/resolv.conf file and sets defaults for name servers"
-    import string
+
+def init_dns_resolver():
     global defaults
-    lines=open("/etc/resolv.conf").readlines()
-    for line in lines:
-        line = string.strip(line)
+    import os
+    if os.name=="posix":
+        init_dns_resolver_posix()
+    elif os.name=="nt":
+        init_dns_resolver_nt()
+    if not defaults['search_domains']:
+        defaults['search_domains'].append('')
+    if not defaults['server']:
+        defaults['server'].append('127.0.0.1')
+
+def init_dns_resolver_posix():
+    "parses the /etc/resolv.conf file and sets defaults for name servers"
+    global defaults
+    for line in open('/etc/resolv.conf', 'r').readlines():
+        line = line.strip()
         if (not line) or line[0]==';' or line[0]=='#':
             continue
-        fields=string.split(line)
-        if fields[0]=='domain':
-            defaults['domain']=fields[1]
-        if fields[0]=='search':
-            pass
-        if fields[0]=='options':
-            pass
-        if fields[0]=='sortlist':
-            pass
-        if fields[0]=='nameserver':
-            defaults['server'].append(fields[1])
+        m = re.match(r'^search\s+\.?(.*)$', line)
+        if m:
+            for domain in m.group(1).split():
+                defaults['search_domains'].append('.'+lower(domain))
+        m = re.match(r'^nameserver\s+(\S+)\s*$', line)
+        if m: defaults['server'].append(m.group(1))
+        m = re.match(r'^domain\s+(\S+)\s*$', line)
+        if m: defaults['domain']= m.group(1)
 
+
+def init_dns_resolver_nt():
+    """Windows network config read from registry"""
+    import winreg
+    global defaults
+    try:
+        key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
+                 r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters")
+    except WindowsError:
+        # key not found :(
+        return
+    if key.get("EnableDhcp"):
+        nameserver = key.get("DhcpNameServer")
+    else:
+        nameserver = key.get("NameServer")
+    if nameserver:
+        defaults['server'].append(nameserver)
+    searchlist = key.get("SearchList", [])
+    for domain in searchlist:
+        defaults['search_domains'].append('.'+lower(domain))
 
 
 class DnsRequest:
@@ -125,10 +158,10 @@ class DnsRequest:
 	self.port = self.args['port']
 	opcode = self.args['opcode']
 	rd = self.args['rd']
-	server=self.args['server']
+	server = self.args['server']
 	if type(self.args['qtype']) == type('foo'):
 	    try:
-		qtype = eval(string.upper(self.args['qtype']), DNS.Type.__dict__)
+		qtype = eval(self.args['qtype'].upper(), DNS.Type.__dict__)
 	    except (NameError,SyntaxError):
 		raise DNS.Error,'unknown query type'
 	else:

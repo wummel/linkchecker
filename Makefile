@@ -42,7 +42,7 @@ config:
 dist:	locale config
 	./setup.py sdist --formats=gztar,zip # bdist_rpm
 	# extra run without SSL compilation
-	./setup.py bdist_wininst
+	./setup.py bdist_wininst --bitmap="guruguru.bmp"
 
 deb:
 	# cleandeb because distutils choke on dangling symlinks

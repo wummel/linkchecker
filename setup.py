@@ -130,6 +130,12 @@ class MyDistribution(Distribution):
     def run_commands(self):
         if "config" not in self.commands:
             self.check_ssl()
+        if "bdist_wininst" in self.commands:
+            # enable .bat file as a script
+            self.scripts.append('linkchecker.bat')
+        else:
+            # man page for POSIX systems
+            self.data_files.append(('man/man1', ['linkchecker.1']))
         Distribution.run_commands(self)
 
 
@@ -269,6 +275,5 @@ o a (Fast)CGI web interface (requires HTTP server)
                       ['linkchecker.bat', 'lconline/leer.html',
 		       'lconline/index.html', 'lconline/lc_cgi.html',
 		       'lc.cgi','lc.fcgi','lc.sz_fcgi']),
-                     ('man/man1', ['linkchecker.1']),
 		    ],
 )

@@ -5,7 +5,7 @@ include lc.cgi lc.fcgi lc.sz_fcgi
 include Makefile
 include create.sql
 include debian/rules debian/changelog debian/copyright debian/control
-include debian/linkchecker.* debian/linkchecker-ssl.* debian/*-ssl
+include debian/linkchecker.*
 include DNS/README
 include test/*.py test/*.txt
 include test/output/test_* test/html/*.html
