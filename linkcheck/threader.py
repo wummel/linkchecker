@@ -40,7 +40,7 @@ PRIO_LOW = 2
 _posix_nice_val = {
     PRIO_HIGH: -5,
     PRIO_NORMAL: +0,
-    PRIO_LOW: +5,
+    PRIO_LOW: +10,
 }
 if _has_win32process:
     if hasattr(win32process, "BELOW_NORMAL_PRIORITY_CLASS"):
