@@ -421,11 +421,13 @@ if options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
         logtype, encoding = options.output, "iso-8859-15"
-    if linkcheck.Loggers.has_key(logtype) and has_encoding(encoding):
-        config['logger'] = config.logger_new(logtype, encoding=encoding)
-    else:
-        printUsage(_("Illegal argument %r for option %s") % \
-                   (options.output, "'-o, --output'"))
+    if not linkcheck.Loggers.has_key(logtype):
+        printUsage(_("Illegal logger type %r in %r for option %s") % \
+                   (logtype, options.output, "'-o, --output'"))
+    if logtype != 'none' and not has_encoding(encoding):
+        printUsage(_("Illegal encoding %r in %r for option %s") % \
+                   (encoding, options.output, "'-o, --output'"))
+    config['logger'] = config.logger_new(logtype, encoding=encoding)
 if options.fileoutput:
     ns = {'fileoutput': 1}
     for arg in options.fileoutput:
