@@ -8,7 +8,7 @@ config["anchors"] = True
 config["verbose"] = True
 config.setThreads(0)
 htmldir = "test/html"
-for filename in ('misc.html','anchor.html', 'norobots'):
+for filename in ('misc.html','anchor.html', 'norobots.html'):
     url = os.path.join(htmldir, filename)
     config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0, config))
 linkcheck.checkUrls(config)
