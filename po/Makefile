@@ -25,11 +25,14 @@ SOURCES=\
 ../linkcheck/__init__.py \
 ../linkcheck/lc_cgi.py \
 ../linkchecker
-TARGETS=de.mo fr.mo
+LDIR=../locale
+LFILE=LC_MESSAGES/$(PACKAGE).mo
+MOS=$(LDIR)/de/$(LFILE) $(LDIR)/fr/$(LFILE)
 PACKAGE=linkcheck
 
+.PHONY: all
 all:
-	$(MAKE) $(TARGETS)
+	$(MAKE) de.mo fr.mo
 
 %.po:	.time.pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
@@ -40,8 +43,8 @@ all:
 	touch .time.pot
 
 %.mo:	%.po
-	$(MSGFMT) $< -o ../locale/$*/LC_MESSAGES/$(PACKAGE).mo
+	$(MSGFMT) -o$(LDIR)/$*/$(LFILE) $<
 
+.PHONY: clean
 clean:
-	rm -f .time.pot
-	for d in ../locale/*; do echo $$d; done
+	rm -f .time.pot $(MOS)
