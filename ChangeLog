@@ -2,6 +2,12 @@
   * added LRU.setdefault function
     Changed: linkcheck/LRU.py
     Closes: SF bug 885916
+  * Added Mac OS X as supported platform (version 10.3 is known to work)
+    Changed: README, INSTALL
+  * HTML parser objects are now subclassable and collectable by the cyclic
+    garbage collector
+    Changed: linkcheck/parser/htmlparse.y
+
 
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing

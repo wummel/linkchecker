@@ -1,3 +1,5 @@
+- use resolve_entities in scanner
+
 - after a failed HEAD request, try always GET and see if that fails
   too
 
