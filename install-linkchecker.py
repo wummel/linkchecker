@@ -30,6 +30,8 @@ lib_dir = get_python_lib(plat_specific=1)
 dest_dir = os.path.join(prg, "LinkChecker")
 pythonw = os.path.join(sys.prefix, "pythonw.exe")
 
+import linkcheck
+
 def do_install ():
     """create_shortcut(target, description, filename[, arguments[, \
                      workdir[, iconpath[, iconindex]]]])
@@ -48,6 +50,7 @@ def do_install ():
     except OSError:
         pass
     path = os.path.join(dest_dir, "Check URL.lnk")
+    script_dir = linkcheck.configdata.install_scripts
     arguments = os.path.join(script_dir, "linkchecker")
     create_shortcut(pythonw, "Check URL", path, arguments)
     file_created(path)
