@@ -182,6 +182,5 @@ if __name__=='__main__':
         abbuzze()
     except:
         _curses.endwin()
-        type, value = sys.exc_info()[:2]
-        print type,value
+        print sys.exc_info()[:2]
         print "Sorry, your washing machine is broken!"

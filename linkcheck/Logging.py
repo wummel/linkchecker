@@ -388,10 +388,10 @@ class ColoredLogger(StandardLogger):
         self.fd.flush()        
 
 
-    def endOfOutput(self):
+    def endOfOutput(self, linknumber=-1):
         if self.prefix:
             self.fd.write("o\n")
-        StandardLogger.endOfOutput(self)
+        StandardLogger.endOfOutput(self, linknumber=linknumber)
 
 
 class GMLLogger(StandardLogger):
@@ -414,7 +414,7 @@ class GMLLogger(StandardLogger):
     def newUrl(self, urlData):
         self.nodes.append(urlData)
 
-    def endOfOutput(self):
+    def endOfOutput(self, linknumber=-1):
         writtenNodes = {}
         # write nodes
         nodeid = 1
@@ -500,7 +500,7 @@ class SQLLogger(StandardLogger):
 	       self.separator))
         self.fd.flush()
 
-    def endOfOutput(self):
+    def endOfOutput(self, linknumber=-1):
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
         name = _("seconds")
@@ -537,7 +537,7 @@ class BlacklistLogger:
             self.errors = 1
             self.blacklist[urlData.getCacheKey()] = urlData
 
-    def endOfOutput(self):
+    def endOfOutput(self, linknumber=-1):
         """write the blacklist"""
         fd = open(args['filename'], "w")
         for url in self.blacklist.keys():
@@ -595,7 +595,7 @@ class CSVLogger(StandardLogger):
             urlData.cached))
         self.fd.flush()
 
-    def endOfOutput(self):
+    def endOfOutput(self, linknumber=-1):
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
         name = _("seconds")

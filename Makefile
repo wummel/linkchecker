@@ -9,10 +9,11 @@ PROXY=--proxy= -itreasure.calvinsplayground.de -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
 PACKAGE = linkchecker
 DEBPACKAGE = ../$(PACKAGE)_$(VERSION)_i386.deb
-RPMPATH=build/bdist.linux2-i686/rpm
-RPMPACKAGE=$(RPMPATH)/RPMS/i386/$(PACKAGE)-$(VERSION)-1.i386.rpm
-SRPMPACKAGE=$(RPMPATH)/SRPMS/$(PACKAGE)-$(VERSION)-1.src.rpm
-ALLPACKAGES = $(DEBPACKAGE) $(RPMPACKAGE) $(SRPMPACKAGE)
+SRCPACKAGE = linkchecker-$(VERSION).tar.gz
+RPMPATH=build/bdist.linux2/rpm
+#RPMPACKAGE=$(RPMPATH)/RPMS/i386/$(PACKAGE)-$(VERSION)-1.i386.rpm
+#SRPMPACKAGE=$(RPMPATH)/SRPMS/$(PACKAGE)-$(VERSION)-1.src.rpm
+ALLPACKAGES = $(DEBPACKAGE) $(SRCPACKAGE) #$(RPMPACKAGE) $(SRPMPACKAGE)
 SOURCES = linkcheck/Config.py \
 linkcheck/FileUrlData.py \
 linkcheck/FtpUrlData.py \
@@ -43,7 +44,7 @@ clean:
 	python setup.py clean --all
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
-dist:
+dist:	mo version
 	python setup.py sdist bdist_rpm
 	fakeroot debian/rules binary
 
@@ -57,12 +58,12 @@ files:
 version:
 	echo $(VERSION) > VERSION
 
-upload: version files packages
+upload: files packages
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
 	scp VERSION shell1.sourceforge.net:/home/groups/linkchecker/htdocs/raw/
 	scp $(DEBPACKAGE) ../Packages.gz shell1.sourceforge.net:/home/groups/linkchecker/htdocs/debian
 	ncftpput download.sourceforge.net /incoming $(ALLPACKAGES)
-	ssh -C calvin@shell1.sourceforge.net cd /home/groups/linkchecker/htdocs/raw && make
+	ssh -C shell1.sourceforge.net cd /home/groups/linkchecker/htdocs/raw && make
 
 test:
 	rm -f test/*.result

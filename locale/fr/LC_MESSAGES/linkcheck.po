@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-06-18 15:21+0200\n"
+"POT-Creation-Date: 2000-06-22 01:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,11 +28,21 @@ msgstr ""
 msgid " errors"
 msgstr " erreurs"
 
+msgid " found\n"
+msgstr ""
+
 msgid " found.\n"
 msgstr ""
 
 #, c-format
+msgid " in %d links"
+msgstr ""
+
+#, c-format
 msgid " in %d links found\n"
+msgstr ""
+
+msgid " in 1 link"
 msgstr ""
 
 msgid " in 1 link found\n"
@@ -189,6 +199,9 @@ msgid "No NNTP server specified, checked only syntax"
 msgstr ""
 
 msgid "No adresses found"
+msgstr ""
+
+msgid "No user or password found"
 msgstr ""
 
 #, c-format

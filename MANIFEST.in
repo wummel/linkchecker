@@ -12,5 +12,6 @@ include debian/dirs
 include debian/docs
 include DNS/README
 include linkcheck/__init__.py.tmpl
-recursive-include test *.html *.py *.tmpl
+include test/viewprof.py test/profiletest.py.tmpl
+recursive-include test *.html
 recursive-include locale *.mo *.po

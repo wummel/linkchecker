@@ -15,13 +15,6 @@ http://www.activestate.com/ActivePerl) if you want to install OpenSSL
 on Windows!
 
 
-Install with Distutils
-----------------------
-The Distutils package has a lot of install options to tweak and ease
-your installation.
-To install LinkChecker run "python setup.py install".
-Debian users can build the .deb package with "debian/rules binary".
-
 Install without Distutils
 -------------------------
 Execute "python install.py" to install LinkChecker in the distribution 
@@ -31,6 +24,13 @@ To use HTTPS, compile the Pyhton module ssl.c, for example with
 ssl.c -o ssl.o"
 Put the distribution directory in your path to execute the linkchecker
 script from everywhere.
+
+Install with Distutils
+----------------------
+The Distutils package has a lot of install options to tweak and ease
+your installation.
+To install LinkChecker run "python setup.py install".
+Debian users can build the .deb package with "debian/rules binary".
 
 
 Running LinkChecker

@@ -169,11 +169,12 @@ config.read(configfiles)
 
 # check for environment variables (currently only http_proxy)
 if os.environ.has_key("http_proxy"):
-    proxy = re.compile("(?:http://)?(.+):(.+)").match(
+    proxy = re.compile("^(http://)?(?P<host>.+?)(:(?P<port>\d+))?").search(
             os.environ["http_proxy"])
     if proxy:
-        config["proxy"] = proxy.group(1)
-        config["proxyport"] = int(proxy.group(2))
+        config["proxy"] = proxy.group('host')
+        if proxy.group('port'):
+            config["proxyport"] = int(proxy.group('port'))
     else:
         config["proxy"] = os.environ["http_proxy"]
 

@@ -28,8 +28,9 @@ linkchecker (1.2.3) unstable; urgency=low
   * Renice the main thread loop by sleep()ing some time
   * New function config.reset()
   * fix dead lock with news: urls
+  * print how much links we checked
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 18 Jun 2000 00:23:44 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 22 Jun 2000 11:23:49 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 
