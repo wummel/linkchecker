@@ -18,17 +18,19 @@
 
 # imports and checks
 import sys
-if sys.version[:5] < "2.0":
-    raise SystemExit, "This program requires Python 2.0 or later."
+if sys.version[:5] < "2.1":
+    raise SystemExit, "This program requires Python 2.1 or later."
 
 import getopt, re, os, urlparse, pprint, linkcheck
 import linkcheck.timeoutsocket
 # set default 10 seconds timeout
 linkcheck.timeoutsocket.setDefaultSocketTimeout(10)
+# import several helper debugging things
 from linkcheck.debuglevels import *
 from linkcheck import StringUtil
 debug = linkcheck.debug
 
+# main usage text
 Usage = linkcheck._("""USAGE\tlinkchecker [options] file-or-url...
 
 OPTIONS
@@ -146,10 +148,12 @@ o Local files and syntactic sugar on the command line:
 """)
 
 def printVersion ():
+    """print the program version and exit"""
     print linkcheck.Config.AppInfo
     sys.exit(0)
 
 def printHelp ():
+    """print the program help text"""
     if os.name!='posix':
         StringUtil.paginate(Usage+"\n"+Notes+"\n"+Examples)
     else:
@@ -159,6 +163,7 @@ def printHelp ():
     sys.exit(0)
 
 def printUsage (msg):
+    """print a program msg text to stderr"""
     sys.stderr.write(linkcheck._("Error: %s\n") % msg)
     sys.stderr.write(linkcheck._("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
@@ -204,7 +209,7 @@ for opt,arg in options:
     if opt=="-D" or opt=="--debug":
         linkcheck.Config.DebugLevel += 1
 debug(BRING_IT_ON, "Python", sys.version, "on", sys.platform)
-# apply configuration
+# read configuration from config files
 config = linkcheck.Config.Configuration()
 configfiles = []
 for opt,arg in options:
@@ -214,7 +219,7 @@ config.read(configfiles)
 # disable threading for debugging
 if linkcheck.Config.DebugLevel > 0:
     config.disableThreading()
-# apply options and arguments
+# apply commandline options and arguments
 _user = "anonymous"
 _password = "guest@"
 constructauth = 0
@@ -336,6 +341,7 @@ if config["log"].__class__ == BlacklistLogger and \
 
 debug(HURT_ME_PLENTY, pprint.pformat(config.data))
 
+# interactive input
 if len(args)==0:
     if config['interactive']:
         urls = raw_input(linkcheck._("enter one or more urls, separated by white-space\n--> "))
@@ -343,17 +349,21 @@ if len(args)==0:
     else:
         config.warn(linkcheck._("no files or urls given"))
 
+# syntactic sugar
 from linkcheck import UrlData
 for url in args:
     url = url.strip()
     if not (":" in url):
-        if re.compile("^ftp\.").match(url):
+        if url.startswith("ftp."):
             url = "ftp://"+url
-        elif re.compile("^www\.").match(url):
+        elif url.startswith("www."):
             url = "http://"+url
     config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config))
 
-# check the urls
+############################# check the urls ################################
 linkcheck.checkUrls(config)
+#############################################################################
+
+# interactive input end
 if config['interactive']:
     raw_input(linkcheck._("Hit RETURN to finish"))
