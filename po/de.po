@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Thu Jan 29 20:05:48 2004\n"
+"POT-Creation-Date: Thu Jan 29 22:20:33 2004\n"
 "PO-Revision-Date: 2004-01-10 12:12+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -48,6 +48,19 @@ msgstr "Amazon server blockieren HTTP HEAD Anfragen, verwende stattdessen GET"
 msgid "Enforced Proxy %r"
 msgstr "Erzwungener Proxy %r"
 
+#, fuzzy
+msgid "more than %d redirections, aborting"
+msgstr "mehr als fünf Weiterleitungen, breche ab"
+
+msgid "Server %r has no anchor support, removing anchor from request"
+msgstr "Server %r ohne Anker Unterstützung, lösche Anker von der Anfrage"
+
+msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
+msgstr "Server unterstützt kein HEAD, verwende GET"
+
+msgid "Effective URL %s"
+msgstr "Effektive URL %s"
+
 msgid ""
 "recursive redirection encountered:\n"
 " %s"
@@ -71,24 +84,12 @@ msgstr ""
 msgid "HTTP redirection to non-http url encountered; the original url was %r."
 msgstr "HTTP Weiterleitung zu einer nicht-HTTP url; die Original-Url war %r."
 
-msgid "more than five redirections, aborting"
-msgstr "mehr als fünf Weiterleitungen, breche ab"
+msgid "unknown"
+msgstr ""
 
-msgid ""
-"Server does not support HEAD request (got %d status), falling back to GET"
+#, fuzzy
+msgid "Server %r did not support HEAD request, used GET for checking"
 msgstr "Server unterstützt keine HEAD Anfrage (bekam Status %d), verwende GET"
-
-msgid "Server %r has no HEAD support, falling back to GET"
-msgstr "Server %r ohne HEAD Unterstützung, verwende GET"
-
-msgid "Server %r has no anchor support, removing anchor from request"
-msgstr "Server %r ohne Anker Unterstützung, lösche Anker von der Anfrage"
-
-msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
-msgstr "Server unterstützt kein HEAD, verwende GET"
-
-msgid "Effective URL %s"
-msgstr "Effektive URL %s"
 
 msgid "Last modified %s"
 msgstr "Letzte Änderung %s"
@@ -725,3 +726,6 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "Server %r has no HEAD support, falling back to GET"
+#~ msgstr "Server %r ohne HEAD Unterstützung, verwende GET"

@@ -23,6 +23,12 @@
   * added an example cron script
     Added: linkcheck-cron.sh
     Changed: MANIFEST.in, setup.py
+  * only warn about missing anchor support servers when the url has
+    actually an anchor
+    Changed: linkcheck/HttpUrlData.py
+  * always fall back to HTTP GET request when HEAD gave an error to
+    cope with servers not supporting HEAD
+    Changed: linkcheck/HttpUrlData.py
 
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing
