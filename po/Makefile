@@ -11,6 +11,8 @@ LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
 LANGUAGES = de fr nl es
 
+all: template
+
 mofiles:
 	@for la in $(LANGUAGES); do \
 	  if [ ! -d $(LDIR)/$$la/LC_MESSAGES ]; then \
