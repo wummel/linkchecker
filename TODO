@@ -1,30 +1,23 @@
-- better CGI scripts
+- Javascript in CGI scripts
 <form onsubmit=return(isRequired(document.checklinkForm)) name=checklinkForm ...>
 </form>
 
 //Check for the required fields
-function isRequired(thisForm)
-{
-
-	var empty = false;
-	
-	// URI	
-	if ( (isEmpty(thisForm.uri)) || 
-                       (thisForm.uri.value == "http://") ) 
-	{
-		alert("The URL field is required.  Please fill it in.");
-		thisForm.uri.select();
-		thisForm.uri.focus();
-		empty = true;
-	}
-	// verify URL format
-        if ( (empty == false) && 
-             ( verifyURI(thisForm.uri) == false) )
-        {
-		alert("Invalid URL submitted.  Please submit a valid UH URL.")
-		thisForm.uri.select();
-		thisForm.uri.focus();
-                empty = true;
-        }
-	return (!(empty));
+function isRequired (thisForm) {
+    var empty = false;
+    // URI
+    if (isEmpty(thisForm.uri) || (thisForm.uri.value == "http://")) {
+        alert("The URL field is required. Please fill it in.");
+        thisForm.uri.select();
+        thisForm.uri.focus();
+        empty = true;
+    }
+    // verify URL format
+    if ((empty == false) && (verifyURI(thisForm.uri) == false)) {
+        alert("Invalid URL submitted. Please submit a valid URL.");
+        thisForm.uri.select();
+        thisForm.uri.focus();
+        empty = true;
+    }
+    return (!(empty));
 }
