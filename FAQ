@@ -96,6 +96,7 @@ A: Cookies can not store more information as is in the HTTP request itself,
    Cookies are only stored in memory. After LinkChecker finishes, they
    are lost. So the tracking is restricted to the checking time.
 
+
 Q: I want to have my own logging class. How can I use it in LinkChecker?
 A: Currently, only a Python API lets you define new logging classes.
    Define your own logging class as a subclass of StandardLogger or any other
