@@ -536,7 +536,9 @@ class Configuration (UserDict.UserDict):
             i=1
             while 1:
                 tuple = cfgparser.get(section, "extern%d" % i).split()
-                if len(tuple)!=2: break
+                if len(tuple)!=2:
+                    sys.stderr.write("extern%d: syntax error %s\n"%(i, tuple))
+                    break
                 self["externlinks"].append(linkcheck.getLinkPat(tuple[0], strict=int(tuple[1])))
                 i += 1
         except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
