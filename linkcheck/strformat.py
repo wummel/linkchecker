@@ -29,11 +29,18 @@ import urlparse
 
 def unicode_safe (s, encoding="iso-8859-1"):
     """
-    Return unicode string without raising encoding errors. Unknown
+    Get unicode string without raising encoding errors. Unknown
     characters of the given encoding will be ignored.
+
+    @param s: the string to be decoded
+    @type s: unicode or encoded string
+    @return: if s is already unicode, return s unchanged; else return
+        decoded unicode string
+    @rtype: unicode
     """
     assert s is not None, "argument to unicode_safe was None"
     if isinstance(s, unicode):
+        # s is already unicode, nothing to do
         return s
     return unicode(s, encoding, "ignore")
 
