@@ -261,21 +261,29 @@ class TestUrl (unittest.TestCase):
 
     def test_valid (self):
         """test url validity functions"""
-        self.assert_(linkcheck.url.is_valid_url("http://www.imadoofus.com"))
-        self.assert_(linkcheck.url.is_valid_url("http://www.imadoofus.com/"))
-        self.assert_(linkcheck.url.is_valid_url(
+        self.assert_(linkcheck.url.is_safe_url("http://www.imadoofus.com"))
+        self.assert_(linkcheck.url.is_safe_url("http://www.imadoofus.com/"))
+        self.assert_(linkcheck.url.is_safe_url(
                                          "http://www.imadoofus.com/~calvin"))
-        self.assert_(linkcheck.url.is_valid_url(
+        self.assert_(linkcheck.url.is_safe_url(
                                              "http://www.imadoofus.com/a,b"))
-        self.assert_(linkcheck.url.is_valid_url(
+        self.assert_(linkcheck.url.is_safe_url(
                                         "http://www.imadoofus.com#anchor55"))
-        self.assert_(linkcheck.url.is_valid_js_url(
+        self.assert_(linkcheck.url.is_safe_js_url(
                                        "http://www.imadoofus.com/?hulla=do"))
 
     def test_needs_quoting (self):
         """test url quoting necessity"""
         url = "mailto:<calvin@debian.org>?subject=Halli Hallo"
-        self.assert_(linkcheck.url.url_needs_quoting(url), url)
+        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        url = " http://www.imadoofus.com/"
+        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        url = "http://www.imadoofus.com/ "
+        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        url = "http://www.imadoofus.com/\n"
+        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        url = "\nhttp://www.imadoofus.com/"
+        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
 
 def test_suite ():
     """build and return a TestSuite"""
