@@ -2,6 +2,8 @@
   * use XmlUtils instead of xmlify for XML quoting
     Added: linkcheck/XmlUtils.py
     Changed: linkcheck/StringUtil.py, linkcheck/log/XMLLogger.py
+  * don't require a value anymore with the --version option
+    Changed: linkchecker
 
 1.12.1 (release 21.2.2004)
   * raise IncompleteRead instead of ValueError on malformed chunked
