@@ -181,7 +181,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
                     self.method = "GET"
-                    #redirect_cache = [self.url]
+                    self.aliases = []
                     fallback_GET = True
                     continue
                 raise
@@ -212,7 +212,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
                     self.method = "GET"
-                    # reset aliases
                     self.aliases = []
                     fallback_GET = True
                     continue
@@ -224,7 +223,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     self.method = "GET"
-                    # reset aliases
                     self.aliases = []
                     fallback_GET = True
                     continue
@@ -240,29 +238,28 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                         base64.encodestring("%s:%s" % (_user, _password))
                     linkcheck.log.debug(linkcheck.LOG_CHECK,
                                     "Authentication %s/%s", _user, _password)
-                continue
+                    continue
             elif response.status >= 400:
                 if self.headers and self.urlparts[4] and not self.no_anchor:
                     self.no_anchor = True
                     continue
+                # retry with GET
                 if self.method == "HEAD":
-                    # fall back to GET
                     self.method = "GET"
-                    # reset aliases
                     self.aliases = []
                     fallback_GET = True
                     continue
-            elif self.headers and self.method != "GET":
+            elif self.headers and self.method == "HEAD":
                 # test for HEAD support
                 mime = headers.get_content_type(self.headers)
                 poweredby = self.headers.get('X-Powered-By', '')
                 server = self.headers.get('Server', '')
                 if mime == 'application/octet-stream' and \
-                   (poweredby.startswith('Zope') or \
-                    server.startswith('Zope')):
-                    self.add_warning(_("Zope Server cannot determine"
-                                " MIME type with HEAD, falling back to GET."))
+                  (poweredby.startswith('Zope') or server.startswith('Zope')):
+                    # Zope server could not get Content-Type with HEAD
                     self.method = "GET"
+                    self.aliases = []
+                    fallback_GET = True
                     continue
             break
         return response, fallback_GET
