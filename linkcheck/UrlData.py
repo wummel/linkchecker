@@ -171,8 +171,8 @@ class UrlData:
         self.html_comments = []
         self.has_content = 0
         url = get_absolute_url(self.urlName, self.baseRef, self.parentName)
-        self.scheme = url.split(":", 1)[0] or "unknown"
-
+        # assume file link if no scheme is found
+        self.scheme = url.split(":", 1)[0] or "file"
 
     def setError(self, s):
         self.valid=0
@@ -191,13 +191,11 @@ class UrlData:
         else:
             self.warningString = s
 
-
     def setInfo(self, s):
         if self.infoString:
             self.infoString += "\n"+s
         else:
             self.infoString = s
-
 
     def copyFrom(self, urlData):
         self.errorString = urlData.errorString

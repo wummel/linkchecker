@@ -1,3 +1,4 @@
+Dont assume .html on local files: guess mime, parse URIs
 Check why threaded app wont exit resp. is stalled
 Another Profiling roundup
 Named constants for ANSI Color codes

@@ -64,7 +64,8 @@ For single-letter option arguments the space is not a necessity. So
         environment variable NNTP_SERVER. If no host is given,
         only the syntax of the link is checked.
 -o type, --output=type
-        Specify output type as %s. Default type is text.
+        Specify output type as %s.
+        Default type is text.
 -p pwd, --password=pwd
         Try password pwd for HTML and FTP authorization.
         Default password is 'joe@'. See also -u.
@@ -105,8 +106,8 @@ For single-letter option arguments the space is not a necessity. So
         Use this to check for pages that contain some form of error
         message, for example 'This page has moved' or 'Oracle
         Application Server error'.
-        This option implies -w.\n") % linkcheck.Config.LoggerKeys
-""")
+        This option implies -w.
+""") % linkcheck.Config.LoggerKeys
 
 Notes = linkcheck._("""NOTES
 o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL

@@ -1,3 +1,12 @@
+linkchecker (1.3.23) unstable; urgency=low
+
+  * linkcheck/linkname.py: workaround for a bug regex matching with
+    re.DOTALL. This could result in href="" names not found correctly.
+  * linkcheck/linkname.py: immediately return on <img> tags inside <a>.
+  * linkchecker: interpolate %s in help text
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 13 Mar 2002 21:31:57 +0100
+
 linkchecker (1.3.22) unstable; urgency=low
 
   * last release before 1.4.0

@@ -18,7 +18,7 @@
 import re, linkcheck
 from UrlData import UrlData
 
-ignored_schemes_re = re.compile(r"""^(
+ignored_schemes = r"""^(
 acap        # application configuration access protocol
 |afs        # Andrew File System global file names
 |cid        # content identifier
@@ -49,7 +49,9 @@ acap        # application configuration access protocol
 |clsid      # Microsoft specific
 |javascript # JavaScript
 |isbn       # ISBN (int. book numbers)
-):""", re.VERBOSE)
+):"""
+
+ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
 
 class IgnoredUrlData(UrlData):

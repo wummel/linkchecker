@@ -1,6 +1,10 @@
 test_file
 url file:///home/calvin/projects/linkchecker/test/html/file.html
 valid
+url file:///home/calvin/projects/linkchecker/test/html/file.txt
+valid
+url file:///home/calvin/projects/linkchecker/test/html/file.asc
+valid
 url http.html
 name relative url
 valid
@@ -26,4 +30,10 @@ name bad file
 error
 url file:/etc/
 name good dir
+valid
+url file:///etc/group
+cached
+valid
+url file:///etc/group
+cached
 valid
