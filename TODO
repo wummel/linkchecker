@@ -1,4 +1,4 @@
-- check CSS urls, like style="background-image:url(mylogo.gif)"
+- also parse .css stylesheets (not only the style="" attribute in html)
 
 - all threads should regularly poll a status variable
   this can be used to make ctrl-c working faster, and to print messages

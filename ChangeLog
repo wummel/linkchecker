@@ -1,5 +1,5 @@
 1.9.4
-  * check CSS background-image urls
+  * check CSS urls
     Changed: linkcheck/UrlData.py, linkcheck/linkparser.py
 
 1.9.3 (released 16.10.2003)
