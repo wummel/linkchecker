@@ -8,6 +8,8 @@
   * Fix concatenation with relative base urls by first joining the
     parent url.
   * New commandline option --profile to write profile data.
+  * Add httplib.py from Python CVS 2.1 maintenance branch, which has the
+    skip_host keyword argument I am using now.
 
 1.6.6
   * Use the new HTTPConnection/HTTPResponse interface of httplib
