@@ -22,10 +22,10 @@ class HostCheckingUrlData (UrlData):
     "Url link for which we have to connect to a specific host"
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,
-                  baseRef=None, line=0, name=""):
+                  baseRef=None, line=0, column=0, name=""):
         UrlData.__init__(self, urlName, recursionLevel, config,
 	                 parentName=parentName, baseRef=baseRef, line=line,
-		         name=name)
+		         column=column, name=name)
         self.host = None
         self.url = urlName
 

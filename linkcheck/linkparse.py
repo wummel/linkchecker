@@ -55,6 +55,10 @@ LinkTags = {
 _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
 
 class LinkParser (HtmlParser):
+    """Parse the content for a list of links. After parsing, the urls
+    will have a list of parsed links entries with the format
+    (url, lineno, column, name, base)
+    """
 
     def __init__ (self, content, tags=LinkTags):
         HtmlParser.__init__(self)
@@ -100,5 +104,5 @@ class LinkParser (HtmlParser):
             else:
                 # only meta refresh has an url, so return
                 return
-        self.urls.append((url, self.lineno(), name, base))
+        self.urls.append((url, self.lineno(), self.column(), name, base))
 

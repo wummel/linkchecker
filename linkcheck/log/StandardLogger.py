@@ -86,8 +86,9 @@ __init__(self, **args)
             self.fd.write(linkcheck._(LogFields["name"])+Spaces["name"]+urlData.name+"\n")
         if urlData.parentName and self.logfield('parenturl'):
             self.fd.write(linkcheck._(LogFields['parenturl'])+Spaces["parenturl"]+
-	                  urlData.parentName+linkcheck._(", line ")+
-	                  str(urlData.line)+"\n")
+	                  urlData.parentName+
+                          (linkcheck._(", line %d")%urlData.line)+
+                          (linkcheck._(", col %d")%urlData.column)+"\n")
         if urlData.baseRef and self.logfield('base'):
             self.fd.write(linkcheck._(LogFields["base"])+Spaces["base"]+urlData.baseRef+"\n")
         if urlData.url and self.logfield('realurl'):

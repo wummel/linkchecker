@@ -22,11 +22,15 @@ typedef struct {
      */
     char* buf;
     /* current position in the buffer counting from zero */
-    int bufpos;
+    unsigned int bufpos;
     /* current position of next syntax element */
-    int nextpos;
+    unsigned int nextpos;
     /* position in the stream of data already seen, counting from zero */
-    int pos;
+    unsigned int pos;
+    /* line counter, counting from one */
+    unsigned int lineno;
+    /* column counter, counting from zero */
+    unsigned int column;
     /* temporary vars */
     void* lexbuf;
     char* tmp_buf;

@@ -1664,9 +1664,12 @@ static PyObject* htmlsax_parser(PyObject* self, PyObject* args) {
     p->userData = PyMem_New(UserData, sizeof(UserData));
     p->userData->handler = handler;
     NEW_BUF(p->userData->buf);
-    p->userData->nextpos = 0;
-    p->userData->bufpos = 0;
-    p->userData->pos = 0;
+    p->userData->nextpos =
+	p->userData->bufpos =
+	p->userData->pos =
+	p->userData->pos =
+	p->userData->column = 0;
+    p->userData->lineno = 1;
     NEW_BUF(p->userData->tmp_buf);
     p->userData->tmp_tag = p->userData->tmp_attrname =
 	p->userData->tmp_attrval = p->userData->tmp_attrs =
@@ -1743,7 +1746,16 @@ static PyObject* parser_lineno (parser_object* self, PyObject* args) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    return Py_BuildValue("i", yyget_lineno(self->scanner));
+    return Py_BuildValue("i", self->userData->lineno);
+}
+
+
+static PyObject* parser_column (parser_object* self, PyObject* args) {
+    if (!PyArg_ParseTuple(args, "")) {
+	PyErr_SetString(PyExc_TypeError, "no args required");
+        return NULL;
+    }
+    return Py_BuildValue("i", self->userData->column);
 }
 
 
@@ -1801,8 +1813,11 @@ static PyObject* parser_reset(parser_object* self, PyObject* args) {
     /* reset buffer */
     RESIZE_BUF(self->userData->buf);
     RESIZE_BUF(self->userData->tmp_buf);
-    self->userData->bufpos = 0;
-    self->userData->pos = 0;
+    self->userData->bufpos =
+	self->userData->pos =
+        self->userData->nextpos =
+	self->userData->column = 0;
+    self->userData->lineno = 1;
     self->userData->tmp_tag = self->userData->tmp_attrs =
         self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     self->scanner = NULL;
@@ -1825,6 +1840,8 @@ static PyMethodDef parser_methods[] = {
     {"flush", (PyCFunction) parser_flush, METH_VARARGS},
     /* get the current line number */
     {"lineno", (PyCFunction) parser_lineno, METH_VARARGS},
+    /* get the current column */
+    {"column", (PyCFunction) parser_column, METH_VARARGS},
     /* get the current scanner position */
     {"pos", (PyCFunction) parser_pos, METH_VARARGS},
     {NULL, NULL}

@@ -75,6 +75,24 @@
 
 /* update the buffer and scanner positions */
 #define UPDATE_BUFPOS yyextra->bufpos += yyleng; yyextra->pos += yyleng
+/* update the column position; use this *only* in rules that cannot match
+ the newline char '\n'!
+ */
+#define UPDATE_COLUMN yyextra->column += yyleng
+/* update the line and column position; use this in rules that can match the
+ newline char '\n'.
+ */
+#define UPDATE_LINE { \
+    int i; \
+    for (i=0; i<yyleng; ++i) { \
+        if (yytext[i] == '\n') { \
+            ++(yyextra->lineno); \
+            yyextra->column = 0; \
+        } \
+        else ++(yyextra->column); \
+    } \
+}
+
 /* return a token, adjusting the nextpos value */
 #define RETURN(tok) yyextra->nextpos = yyextra->bufpos; return tok
 
@@ -145,7 +163,6 @@ static PyObject* quote_string (PyObject* val) {
 
 %option 8bit outfile="htmllex.c"
 %option align full
-%option yylineno
 /* uncomment the next line for debugging */
 /*%option debug*/
 %option nounput nomain noyywrap noyymore noreject
@@ -184,11 +201,13 @@ RX_DATA [-a-zA-Z0-9_]+
   /*********************** COMMENT ************************/
 <INITIAL><!-- {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     BEGIN(S_COMMENT);
 }
 
 <S_COMMENT>-*--> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng-3);
     SETLVAL;
     BEGIN(INITIAL);
@@ -197,11 +216,13 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_COMMENT>[^-]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_COMMENT>-+[^->]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
@@ -212,11 +233,13 @@ RX_DATA [-a-zA-Z0-9_]+
   /*********************** DOCTYPE ************************/
 <INITIAL><![Dd][Oo][Cc][Tt][Yy][Pp][Ee] {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     BEGIN(S_DOCTYPE);
 }
 
 <S_DOCTYPE>> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     SETLVAL;
     BEGIN(INITIAL);
     RETURN(T_DOCTYPE);
@@ -224,17 +247,20 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_DOCTYPE>[^>]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
   /*********************** CDATA ************************/
 <INITIAL><!\[CDATA\[ {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     BEGIN(S_CDATA);
 }
 
 <S_CDATA>\]*\]\]> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng-3);
     SETLVAL;
     BEGIN(INITIAL);
@@ -243,11 +269,13 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_CDATA>[^\]]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_CDATA>\]+[^>\]]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
@@ -258,11 +286,13 @@ RX_DATA [-a-zA-Z0-9_]+
   /*********************** PI ************************/
 <INITIAL><\? {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     BEGIN(S_PI);
 }
 
 <S_PI>\?*\?> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng-2);
     SETLVAL;
     BEGIN(INITIAL);
@@ -271,11 +301,13 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_PI>[^?]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_PI>\?+[^?>]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
@@ -287,6 +319,7 @@ RX_DATA [-a-zA-Z0-9_]+
   /*********************** TAGSTART ************************/
 <INITIAL><{RX_WHITE_SPACE}*/[A-Za-z] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     yyextra->tmp_attrs = PyDict_New();
     if (yyextra->tmp_attrs==NULL) return T_ERROR;
     BEGIN(S_TAGSTART);
@@ -296,11 +329,13 @@ RX_DATA [-a-zA-Z0-9_]+
     /* actually accept a lot of tag chars, which may be illegal,
      but we dont care, its the browsers job */
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_TAGSTART>{RX_WHITE_SPACE}+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     LOWER_TMP;
     PYSTRING_TMP(yyextra->tmp_tag);
     CLEAR_BUF(yyextra->tmp_buf);
@@ -309,6 +344,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_TAGSTART>\/> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     BEGIN(INITIAL);
     if (!strlen(yyextra->tmp_buf)) {
 	yyextra->tmp_buf = PyMem_Resize(yyextra->tmp_buf, char, 4);
@@ -327,6 +363,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_TAGSTART>> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     if (!strlen(yyextra->tmp_buf)) {
 	yyextra->tmp_buf = PyMem_Resize(yyextra->tmp_buf, char, 3);
 	if (!yyextra->tmp_buf) {return T_ERROR; }
@@ -350,6 +387,7 @@ RX_DATA [-a-zA-Z0-9_]+
   /*********************** SCRIPT ************************/
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*> {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     SETLVAL;
     BEGIN(INITIAL);
     RETURN(T_SCRIPT);
@@ -357,47 +395,56 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_SCRIPT>[^<]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
   /* this is so shitty */
 <S_SCRIPT></[^/] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT><\/{RX_WHITE_SPACE}*/[^Ss] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss]/[^Cc] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc]/[^Rr] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr]/[^Ii] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii]/[^Pp] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp]/[^Tt] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*/[^>] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
@@ -408,6 +455,7 @@ RX_DATA [-a-zA-Z0-9_]+
   /*********************** STYLE ************************/
 <S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt][Yy][Ll][Ee]{RX_WHITE_SPACE}*> {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     SETLVAL;
     BEGIN(INITIAL);
     RETURN(T_STYLE);
@@ -415,42 +463,50 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_STYLE>[^<]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
   /* this is so shitty */
 <S_STYLE></[^/] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_STYLE><\/{RX_WHITE_SPACE}*/[^Ss] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_STYLE><\/{RX_WHITE_SPACE}*[Ss]/[^Tt] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt]/[^Yy] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt][Yy]/[^Ll] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt][Yy][Ll]/[^Ee] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt][Yy][Ll][Ee]{RX_WHITE_SPACE}*/[^>] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
@@ -461,12 +517,14 @@ RX_DATA [-a-zA-Z0-9_]+
   /*********************** ATTRS ************************/
 <S_ATTR1>{RX_NAME} {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_ATTR2);
 }
 
 <S_ATTR1,S_ATTR2,S_ATTR3>\/> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     FLUSH_ATTRS;
     BEGIN(INITIAL);
     SET_ATTR_LVAL;
@@ -475,6 +533,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_ATTR1,S_ATTR2,S_ATTR3>> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     FLUSH_ATTRS;
     SCRIPT_CHECK;
     SET_ATTR_LVAL;
@@ -483,16 +542,19 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_ATTR2>{RX_DATA} {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_ATTR2>{RX_WHITE_SPACE}+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     BEGIN(S_ATTR3);
 }
 
 <S_ATTR2,S_ATTR3>{RX_WHITE_SPACE}*{RX_EQUAL}{RX_WHITE_SPACE}* {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     LOWER_TMP;
     PYSTRING_TMP(yyextra->tmp_attrname);
     CLEAR_BUF(yyextra->tmp_buf);
@@ -502,10 +564,12 @@ RX_DATA [-a-zA-Z0-9_]+
 <S_ATTR1,S_ATTR2>.|\n {
     /* this also skips whitespace! */
     UPDATE_BUFPOS;
+    UPDATE_LINE;
 }
 
 <S_ATTR3>{RX_NAME} {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     LOWER_TMP;
     PYSTRING_TMP(yyextra->tmp_attrname);
     CLEAR_BUF(yyextra->tmp_buf);
@@ -522,24 +586,28 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_ATTR4>\" {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     BEGIN(S_STRING);
 }
 
 
 <S_ATTR4>\' {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     BEGIN(S_APOSSTRING);
 }
 
 
 <S_ATTR4>[^\012 \t\b\r\n>\'\"]+ {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_ATTR5);
 }
 
 <S_ATTR4>> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
     if (PyDict_SetItem(yyextra->tmp_attrs,
@@ -555,6 +623,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_ATTR4>\/> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
     if (PyDict_SetItem(yyextra->tmp_attrs,
@@ -570,15 +639,18 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_ATTR4>{RX_WHITE_SPACE}+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
 }
 
 <S_ATTR5>[^\012 \t\b\r\n>]+ {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_ATTR5>> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
     if (PyDict_SetItem(yyextra->tmp_attrs,
@@ -594,6 +666,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_ATTR5>\/> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
     if (PyDict_SetItem(yyextra->tmp_attrs,
@@ -609,6 +682,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_ATTR5>{RX_WHITE_SPACE}+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
     if (PyDict_SetItem(yyextra->tmp_attrs,
@@ -622,6 +696,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_APOSSTRING>\' {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
     yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
@@ -637,12 +712,14 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_APOSSTRING>[^']+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 
 <S_STRING>\" {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
     yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
@@ -658,22 +735,26 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_STRING>[^"]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
   /*********************** TAGEND ************************/
 <INITIAL><{RX_WHITE_SPACE}*\/{RX_WHITE_SPACE}*/[A-Za-z] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     BEGIN(S_TAGEND);
 }
 
 <S_TAGEND>[^<>\r\n \t\b\012]+ {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_TAGEND>> {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     LOWER_TMP;
     SETLVAL;
     BEGIN(INITIAL);
@@ -682,6 +763,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_TAGEND><{RX_WHITE_SPACE}* {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     LOWER_TMP;
     SETLVAL;
     SET_ERROR("Missing > in end tag.");
@@ -694,11 +776,13 @@ RX_DATA [-a-zA-Z0-9_]+
 <S_TAGEND>{RX_WHITE_SPACE}+ {
     /* delete whitespace in or around tag names */
     UPDATE_BUFPOS;
+    UPDATE_LINE;
 }
 
   /*********************** TEXT ************************/
 <INITIAL>[^<]+ {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
     SETLVAL;
     RETURN(T_TEXT);
@@ -706,6 +790,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <INITIAL><[^\012 \t\b\r\nA-Za-z!?/] {
     UPDATE_BUFPOS;
+    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
     SETLVAL;
     RETURN(T_TEXT);
@@ -713,6 +798,7 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <INITIAL><{RX_WHITE_SPACE}+[^A-Za-z/] {
     UPDATE_BUFPOS;
+    UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
     SETLVAL;
     RETURN(T_TEXT);

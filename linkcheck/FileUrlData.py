@@ -91,13 +91,13 @@ class FileUrlData (UrlData):
                   config,
                   recursionLevel,
                   parentName = None,
-                  baseRef = None, line=0, name=""):
+                  baseRef = None, line=0, column=0, name=""):
         UrlData.__init__(self,
                   urlName,
                   config,
                   recursionLevel,
                   parentName=parentName,
-                  baseRef=baseRef, line=line, name=name)
+                  baseRef=baseRef, line=line, column=column, name=name)
         if not parentName and not baseRef and \
            not re.compile("^file:").search(self.urlName):
             self.urlName = os.path.expanduser(self.urlName)

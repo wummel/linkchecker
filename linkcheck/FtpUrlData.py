@@ -38,10 +38,11 @@ class FtpUrlData (ProxyUrlData):
             http = HttpUrlData(self.urlName,
                   self.recursionLevel,
                   self.config,
-                  self.parentName,
-                  self.baseRef,
-                  self.line,
-		  self.name)
+                  parentName=self.parentName,
+                  baseRef=self.baseRef,
+                  line=self.line,
+                  column=self.column,
+		  name=self.name)
             http.buildUrl
             return http.check()
         # no proxy

@@ -50,6 +50,10 @@ class HtmlParser:
         """return current parser line number"""
         return self.parser.lineno()
 
+    def column (self):
+        """return current parser column"""
+        return self.parser.column()
+
     def pos (self):
         """return current parser buffer position"""
         return self.parser.pos()

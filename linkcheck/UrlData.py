@@ -90,6 +90,7 @@ class UrlData:
                   parentName = None,
                   baseRef = None,
                   line = 0,
+                  column = 0,
 		  name = ""):
         self.urlName = urlName
         self.recursionLevel = recursionLevel
@@ -103,6 +104,7 @@ class UrlData:
         self.valid = 1
         self.url = None
         self.line = line
+        self.column = column
         self.name = name
         self.downloadtime = 0
         self.checktime = 0
@@ -128,7 +130,7 @@ class UrlData:
 
     def setWarning (self, s):
         if self.warningString:
-            self.warningString += "\n" + s
+            self.warningString += "\n"+s
         else:
             self.warningString = s
 
@@ -159,7 +161,7 @@ class UrlData:
         self.urlTuple = urlparse.urlparse(self.url)
         # make host lowercase
         self.urlTuple = (self.urlTuple[0], self.urlTuple[1].lower(),
-                         self.urlTuple[2], self.urlTuple[ 3],self.urlTuple[4],
+                         self.urlTuple[2], self.urlTuple[3], self.urlTuple[4],
                          self.urlTuple[5])
         self.url = urlparse.urlunparse(self.urlTuple)
         # resolve HTML entities
@@ -312,7 +314,7 @@ class UrlData:
         if not (self.valid and anchor and self.isHtml()):
             return
         h = LinkParser(self.getContent(), {'a': ['name']})
-        for cur_anchor,line,name,base in h.urls:
+        for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == anchor:
                 return
         self.setWarning(linkcheck._("anchor #%s not found") % anchor)
@@ -366,7 +368,8 @@ class UrlData:
     def checkContent (self, warningregex):
         match = warningregex.search(self.getContent())
         if match:
-            self.setWarning(linkcheck._("Found %s in link contents") % `match.group()`)
+            self.setWarning(linkcheck._("Found %s in link contents") % \
+                            `match.group()`)
 
 
     def parseUrl (self):
@@ -377,16 +380,18 @@ class UrlData:
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
             if len(h.urls)>1:
-                self.setWarning(linkcheck._("more than one <base> tag found, using only the first one"))
+                self.setWarning(linkcheck._(
+                "more than one <base> tag found, using only the first one"))
         h = LinkParser(self.getContent())
-        for url,line,name,codebase in h.urls:
+        for url,line,column,name,codebase in h.urls:
             if codebase:
                 base = codebase
             else:
                 base = baseRef
             self.config.appendUrl(GetUrlDataFrom(url,
                                   self.recursionLevel+1, self.config,
-                                  self.url, base, line, name))
+                                  parentName=self.url, baseRef=base,
+                                  line=line, column=column, name=name))
 
 
     def __str__ (self):
@@ -398,10 +403,11 @@ class UrlData:
 	       "recursionLevel=%s\n"
 	       "urlConnection=%s\n"
 	       "line=%s\n"
+               "column=%s\n"
 	       "name=%s" % \
              (self.scheme, self.urlName, self.parentName, self.baseRef,
-             self.cached, self.recursionLevel, self.urlConnection, self.line,
-	     self.name))
+              self.cached, self.recursionLevel, self.urlConnection, self.line,
+              self.column, self.name))
 
 
     def _getUserPassword (self):
@@ -436,7 +442,7 @@ def get_absolute_url (urlName, baseRef, parentName):
 
 
 def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
-                    baseRef=None, line=0, name=None):
+                    baseRef=None, line=0, column=0, name=None):
     url = get_absolute_url(urlName, baseRef, parentName)
     # test scheme
     if url.startswith("http:"):
@@ -463,5 +469,5 @@ def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
     # assume local file
     else:
         klass = FileUrlData
-    return klass(urlName, recursionLevel, config, parentName, baseRef, line,
-                 name)
+    return klass(urlName, recursionLevel, config, parentName, baseRef,
+                 line=line, column=column, name=name)
