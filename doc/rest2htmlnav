@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
+"""
+Produces custom HTML and machine-parseable navigation info
+"""
+
+try:
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
+
+from docutils.core import publish_cmdline, default_description
+
+
+description = ('Generates (X)HTML documents and navigation information '
+               'from standalone reStructuredText sources.  ' +
+               default_description)
+
+publish_cmdline(writer_name='htmlnav', description=description)
