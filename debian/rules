@@ -24,8 +24,8 @@ binary-post-install/linkchecker::
 	install -m 755 cgi/lc.cgi $(CGIDIR)
 	install -m 755 cgi/lc.fcgi $(CGIDIR)
 # install system wide configuration files in etc
-	install -m 644 $(SHARE)/linkcheckerrc $(ETC)/linkchecker/
-	install -m 644 $(SHARE)/logging.conf $(ETC)/linkchecker/
+	install -m 644 config/linkcheckerrc $(ETC)/linkchecker/
+	install -m 644 config/logging.conf $(ETC)/linkchecker/
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
 # install lintian overrides
