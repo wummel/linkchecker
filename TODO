@@ -1,5 +1,10 @@
 Next releases:
 
+- logger methods should get called with unicode strings (using
+  the unicode-output from the html parser)
+
+- specify output encoding for loggers
+
 - rethink intern/extern stuff
 
 - when an URL is found in the cache and it has a broken anchor, the broken
