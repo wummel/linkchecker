@@ -15,7 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, urlparse, urllib, time, traceback, socket, select, DNS
+import sys, re, urlparse, urllib, time, traceback, socket, select
+try:
+    import DNS
+except ImportError:
+    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
+    raise SystemExit
+DNS.DiscoverNameServers()
+
 import Config, StringUtil, linkcheck, linkname, test_support, timeoutsocket
 from debuglevels import *
 debug = Config.debug

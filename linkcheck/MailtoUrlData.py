@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os, re, sys, Config, cgi, urllib, linkcheck
+import os, re, sys, Config, cgi, urllib, linkcheck, DNS
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
@@ -23,13 +23,6 @@ from debuglevels import *
 
 # regular expression for RFC2368 compliant mailto: scanning
 headers_re = re.compile(r"\?(.+)$")
-
-try:
-    import DNS
-except ImportError:
-    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
-    raise SystemExit
-DNS.DiscoverNameServers()
 
 class MailtoUrlData (HostCheckingUrlData):
     "Url link with mailto scheme"
