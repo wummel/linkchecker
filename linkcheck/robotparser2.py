@@ -9,7 +9,7 @@
     The robots.txt Exclusion Protocol is implemented as specified in
     http://info.webcrawler.com/mak/projects/robots/norobots-rfc.html
 """
-import urlparse, urllib, urllib2, httplib2, socket, re, zlib, gzip
+import urlparse, httplib, urllib, urllib2, httplib2, socket, re, zlib, gzip
 from cStringIO import StringIO
 
 __all__ = ["RobotFileParser"]
@@ -88,6 +88,10 @@ class RobotFileParser (object):
             else:
                 self.allow_all = True
                 debug(BRING_IT_ON, "robots.txt allow all")
+            return
+        except httplib.HTTPException:
+            self.allow_all = True
+            debug(BRING_IT_ON, "robots.txt allow all")
             return
         lines = []
         line = f.readline()
