@@ -1,3 +1,9 @@
+linkchecker (2.5-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 17 Feb 2005 14:56:49 +0100
+
 linkchecker (2.4-2) unstable; urgency=low
 
   * import profile module conditionally, and suggest python2.4-profiler
