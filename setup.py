@@ -116,17 +116,12 @@ class MyInstallData (install_data, object):
                 mode |= 044
                 os.chmod(path, mode)
 
-    def copy_file (self, filename, dirname):
-         (out, _) = super(MyInstallData, self).copy_file(filename, dirname)
-         # match for man pages
-         if re.search(r'/man/man\d/.+\.\d$', out):
-             return (out+".gz", _)
-         return (out, _)
-
 
 class MyDistribution (distklass, object):
+    """custom distribution class generating config file"""
 
     def run_commands (self):
+        """generate config file and run commands"""
         cwd = os.getcwd()
         data = []
         data.append('config_dir = %r' % os.path.join(cwd, "config"))
@@ -135,6 +130,7 @@ class MyDistribution (distklass, object):
         super(MyDistribution, self).run_commands()
 
     def get_conf_filename (self, directory):
+        """get name for config file"""
         return os.path.join(directory, "_%s_configdata.py"%self.get_name())
 
     def create_conf_file (self, data, directory=None):
