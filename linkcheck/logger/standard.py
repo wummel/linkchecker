@@ -102,22 +102,22 @@ class StandardLogger (linkcheck.logger.Logger):
             return
         if self.has_field('url'):
             self.fd.write(os.linesep+self.field('url')+self.spaces('url')+
-                          url_data.base_url)
+                          repr(url_data.base_url))
             if url_data.cached:
                 self.fd.write(_(" (cached)")+os.linesep)
             else:
                 self.fd.write(os.linesep)
         if url_data.name and self.has_field('name'):
             self.fd.write(self.field("name")+self.spaces("name")+
-                          url_data.name+os.linesep)
+                          repr(url_data.name)+os.linesep)
         if url_data.parent_url and self.has_field('parenturl'):
             self.fd.write(self.field('parenturl')+self.spaces("parenturl")+
-                          (url_data.parent_url or "")+
+                          url_data.parent_url+
                           (_(", line %d")%url_data.line)+
                           (_(", col %d")%url_data.column)+os.linesep)
         if url_data.base_ref and self.has_field('base'):
             self.fd.write(self.field("base")+self.spaces("base")+
-                          url_data.base_ref+os.linesep)
+                          repr(url_data.base_ref)+os.linesep)
         if url_data.url and self.has_field('realurl'):
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
                           url_data.url+os.linesep)

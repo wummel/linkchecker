@@ -22,8 +22,6 @@ import time
 
 from linkcheck.i18n import _
 
-import httplib2, ftests
-
 # logger areas
 LOG = "linkcheck"
 LOG_CMDLINE = "linkcheck.cmdline"
@@ -84,3 +82,4 @@ Loggers = {
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = ", ".join(["%r"%name for name in Loggers.keys()])
+

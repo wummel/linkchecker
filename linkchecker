@@ -38,6 +38,8 @@ import linkcheck
 import linkcheck.log
 import linkcheck.optcomplete
 import linkcheck.checker
+import linkcheck.checker.cache
+import linkcheck.checker.consumer
 import linkcheck.configuration
 from linkcheck.i18n import _
 
@@ -473,18 +475,21 @@ if len(args)==0:
     else:
         linkcheck.log.warn(linkcheck.LOG_CMDLINE, _("no files or urls given"))
 
+cache = linkcheck.checker.cache.Cache()
+consumer = linkcheck.checker.consumer.Consumer(config, cache)
 # syntactic sugar
 for url in args:
     if url.startswith("www."):
         url = "http://%s"%url
     elif url.startswith("ftp."):
         url = "ftp://%s"%url
-    config.append_url(linkcheck.checker.get_url_from(url, 0, config, cmdline=True))
+    url_data = linkcheck.checker.get_url_from(url, 0, consumer, cmdline=True)
+    consumer.append_url(url_data)
 
 ############################# check the urls ################################
 if do_profile:
     import profile
-    profile.run("linkcheck.checker.check_urls(config)", _profile)
+    profile.run("linkcheck.checker.check_urls(consumer)", _profile)
 else:
     # do not use psyco, at the moment (Oct 2003) it has bugs causing
     # infinite loops when threads are enabled, and psyco disables
@@ -494,7 +499,7 @@ else:
     #    psyco.full()
     #except ImportError:
     #    pass
-    linkcheck.checker.check_urls(config)
+    linkcheck.checker.check_urls(consumer)
 #############################################################################
 
 # interactive input end

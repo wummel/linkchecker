@@ -64,8 +64,7 @@ class ColoredLogger (linkcheck.logger.standard.StandardLogger):
                         self.fd.write("o"+os.linesep)
                     self.fd.write(os.linesep+self.field("parenturl")+
                               self.spaces("parenturl")+
-                              self.colorparent+
-                              (url_data.parent_url or "")+
+                              self.colorparent+url_data.parent_url+
                               self.colorreset+os.linesep)
                     self.currentPage = url_data.parent_url
                     self.prefix = 1
@@ -80,7 +79,7 @@ class ColoredLogger (linkcheck.logger.standard.StandardLogger):
             else:
                 self.fd.write(os.linesep)
             self.fd.write(self.field("url")+self.spaces("url")+self.colorurl+
-                      url_data.base_url+self.colorreset)
+                      repr(url_data.base_url)+self.colorreset)
             if url_data.line:
                 self.fd.write(_(", line %d")%url_data.line)
             if url_data.column:
@@ -94,7 +93,7 @@ class ColoredLogger (linkcheck.logger.standard.StandardLogger):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(self.field("name")+self.spaces("name")+
-                          self.colorname+url_data.name+self.colorreset+
+                          self.colorname+repr(url_data.name)+self.colorreset+
                           os.linesep)
         if url_data.base_ref and self.has_field("base"):
             if self.prefix:

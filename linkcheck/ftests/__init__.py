@@ -20,7 +20,10 @@ import os
 import unittest
 import difflib
 
+import linkcheck
 import linkcheck.checker
+import linkcheck.checker.cache
+import linkcheck.checker.consumer
 import linkcheck.configuration
 import linkcheck.logger
 
@@ -68,7 +71,7 @@ class TestLogger (linkcheck.logger.Logger):
             self.diff.append(line)
 
 
-def get_test_config (confargs, logargs):
+def get_test_consumer (confargs, logargs):
     """initialize a test configuration object"""
     config = linkcheck.configuration.Configuration()
     config.logger_add('test', TestLogger)
@@ -76,10 +79,11 @@ def get_test_config (confargs, logargs):
     config['logger'] = config.logger_new('test', **logargs)
     config["anchors"] = True
     config["verbose"] = True
-    config.set_threads(0)
+    config['threads'] = 0
     for key, value in confargs.items():
         config[key] = value
-    return config
+    cache = linkcheck.checker.cache.Cache()
+    return linkcheck.checker.consumer.Consumer(config, cache)
 
 
 class StandardTest (unittest.TestCase, object):
@@ -107,11 +111,12 @@ class StandardTest (unittest.TestCase, object):
         url = self.get_file(filename)
         confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
-        config = get_test_config(confargs, logargs)
-        config.append_url(linkcheck.checker.get_url_from(url, 0, config))
-        linkcheck.checker.check_urls(config)
-        if config['logger'].diff:
-            self.fail(os.linesep.join([url] + config['logger'].diff))
+        consumer = get_test_consumer(confargs, logargs)
+        url_data = linkcheck.checker.get_url_from(url, 0, consumer)
+        consumer.append_url(url_data)
+        linkcheck.checker.check_urls(consumer)
+        if consumer.config['logger'].diff:
+            self.fail(os.linesep.join([url] + consumer.config['logger'].diff))
 
     def direct (self, url, resultlines, fields=None, recursionlevel=0):
         """check url with expected result"""
@@ -119,8 +124,10 @@ class StandardTest (unittest.TestCase, object):
         logargs = {'expected': resultlines}
         if fields is not None:
             logargs['fields'] = fields
-        config = get_test_config(confargs, logargs)
-        config.append_url(linkcheck.checker.get_url_from(url, 0, config))
-        linkcheck.checker.check_urls(config)
-        if config['logger'].diff:
-            self.fail(os.linesep.join([url]+config['logger'].diff))
+        consumer = get_test_consumer(confargs, logargs)
+        url_data = linkcheck.checker.get_url_from(url, 0, consumer)
+        consumer.append_url(url_data)
+        linkcheck.checker.check_urls(consumer)
+        if consumer.config['logger'].diff:
+            self.fail(os.linesep.join([url] + consumer.config['logger'].diff))
+
