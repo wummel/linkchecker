@@ -8,6 +8,14 @@
     Type: documentation
     Changed: doc/upgrading.txt, doc/install.txt
 
+  * fix typo in redirection cache handling
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py
+
+  * fileoutput must honor verbose/quiet configuration
+    Type: bugfix
+    Changed: linkcheck/checker/consumer.py
+
 1.13.0 "The Butterfly Effect" (released 1.9.2004)
   * lots of internal code restructuring
     Type: code cleanup

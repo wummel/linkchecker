@@ -160,8 +160,8 @@ class Consumer (object):
               (self.config["verbose"] or not url_data.valid or
                (url_data.warning and self.config["warnings"])):
                 self.logger.new_url(url_data)
-            for log in self.fileoutput:
-                log.new_url(url_data)
+                for log in self.fileoutput:
+                    log.new_url(url_data)
         finally:
             self.lock.release()
         # XXX deadlock!
