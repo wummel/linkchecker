@@ -1,6 +1,6 @@
 Next releases:
 
-- check unknown encoding config (both command line and config file)
+- IDN test (eg. www.wölfel.de)
 
 - rethink intern/extern stuff
 
