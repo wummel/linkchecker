@@ -392,12 +392,12 @@ if options.fileoutput:
         except ValueError:
             pass
         if linkcheck.Loggers.has_key(ftype):
-            config['fileoutput'].append(config.newLogger(ftype, ns))
+            config['fileoutput'].append(config.logger_new(ftype, **ns))
         else:
             printUsage(_("Illegal argument %r for option %s") % \
                        (ftype, "'-F, --file-output'"))
     if not options.output:
-        config['log'] = config.newLogger('none')
+        config['log'] = config.logger_new('none')
 if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.intern:
