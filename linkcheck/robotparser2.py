@@ -1,6 +1,23 @@
 """ robotparser2.py
 
     Copyright (C) 2000  Bastian Kleineidam
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+    The robots.txt Exclusion Protocol is implemented as specified in
+    http://info.webcrawler.com/mak/projects/robots/norobots-rfc.html
 """
 import re,string,urlparse,urllib
 
@@ -26,6 +43,7 @@ class RobotFileParser:
         self.last_checked = time.time()
 
     def set_url(self, url):
+        self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
 
     def read(self):
@@ -38,7 +56,10 @@ class RobotFileParser:
             status, text, mime = connection.getreply()
             if status in [301,302]:
                 tries = tries + 1
-                self.set_url(mime.getheader("Location"))
+                newurl = self.mime.get("Location", self.mime.get("Uri", ""))
+                newurl = urlparse.urljoin(self.url, newurl)
+                _debug(newurl)
+                self.set_url(newurl)
             else:
                 break
         if status==401 or status==403:
@@ -177,10 +198,15 @@ class Entry:
 
 
 def _test():
+    global debug
+    import sys
     rp = RobotFileParser()
     debug = 1
-    rp.set_url('http://www.musi-cal.com/robots.txt')
-    rp.read()
+    if len(sys.argv) <= 1:
+        rp.set_url('http://www.musi-cal.com/robots.txt')
+        rp.read()
+    else:
+        rp.parse(open(sys.argv[1]).readlines())
     print rp
     print rp.can_fetch('*', 'http://www.musi-cal.com.com/')
     print rp.can_fetch('Musi-Cal-Robot',

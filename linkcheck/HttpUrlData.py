@@ -91,7 +91,8 @@ class HttpUrlData(UrlData):
             redirected = self.urlName
             while status in [301,302] and self.mime and tries < 5:
                 has301status = (status==301)
-                redirected = urlparse.urljoin(redirected, self.mime.getheader("Location"))
+                newurl = self.mime.get("Location", self.mime.get("Uri", ""))
+                redirected = urlparse.urljoin(redirected, newurl)
                 self.urlTuple = urlparse.urlparse(redirected)
                 status, statusText, self.mime = self._getHttpRequest()
                 Config.debug("DEBUG: Redirected\n"+str(self.mime))
