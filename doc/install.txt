@@ -138,6 +138,10 @@ to run the script.
    with FastCGI support.
 
 2. Copy the script of your choice in the CGI directory.
+   Note that only the local host (ie. 127.0.0.1) can access this
+   script. If you want to enable access from other hosts you have
+   to adjust the ALLOWED_HOSTS and ALLOWED_SERVERS variables in
+   the lc.cgi (or lc.fcgi) script.
 
 3. Adjust the "action=..." parameter in lconline/lc_cgi.html
    to point to your CGI script.
