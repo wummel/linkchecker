@@ -29,7 +29,7 @@ class XMLLogger (StandardLogger):
         self.nodeid = 0
 
     def init (self):
-        StandardLogger.init(self)
+        Logger.init(self)
         if self.fd is None: return
         self.starttime = time.time()
         self.fd.write('<?xml version="1.0"?>\n')

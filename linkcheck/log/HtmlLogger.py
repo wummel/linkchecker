@@ -47,7 +47,7 @@ class HtmlLogger (StandardLogger):
         self.tableok = args['tableok']
 
     def init (self):
-        StandardLogger.init(self)
+        Logger.init(self)
         if self.fd is None: return
         self.starttime = time.time()
         self.fd.write(HTML_HEADER%(Config.App, self.colorbackground,

@@ -29,7 +29,7 @@ class GMLLogger (StandardLogger):
         self.nodeid = 0
 
     def init (self):
-        StandardLogger.init(self)
+        Logger.init(self)
         if self.fd is None: return
         self.starttime = time.time()
         if self.has_field("intro"):
