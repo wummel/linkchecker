@@ -29,6 +29,10 @@
     Added linkcheck/ftpparse/*
     Changed: setup.py, linkcheck/checker/ftpurl.py
 
+  * Ignore all errors when closing SMTP connections.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
 2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:
