@@ -4,7 +4,7 @@
 PACKAGE=linkchecker
 ROOT=$(CURDIR)/debian/$(PACKAGE)
 DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
-PYTHON=python2.2
+PYTHON=python2.1
 CGIDIR=$(ROOT)/usr/lib/cgi-bin/lconline
 HTMLDIR=$(ROOT)/var/www/lconline
 
