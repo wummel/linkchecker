@@ -15,7 +15,7 @@ import DNS.Type
 import DNS.Class
 import DNS.Opcode
 import DNS.Status
-
+from DNS import Error
 
 # Low-level 16 and 32 bit integer packing and unpacking
 
@@ -49,7 +49,7 @@ def bin2addr(n):
 
 # Packing class
 
-class PackError(Exception):
+class PackError(Error):
     pass
 
 class Packer:
@@ -141,7 +141,7 @@ class Packer:
 
 # Unpacking class
 
-class UnpackError(Exception):
+class UnpackError(Error):
     pass
 
 class Unpacker:

@@ -23,9 +23,7 @@ from linkcheck import _
 from debuglevels import *
 
 # regular expression for RFC2368 compliant mailto: scanning
-word = r"[-a-zA-Z0-9,./%]+"
-headers = r"\?(%s=%s(&%s=%s)*)$" % (word, word, word, word)
-headers_re = re.compile(headers)
+headers_re = re.compile(r"\?(.+)$")
 
 # parse /etc/resolv.conf (on UNIX systems)
 # or read entries from the registry (Windows systems)
@@ -38,7 +36,7 @@ class MailtoUrlData(HostCheckingUrlData):
         HostCheckingUrlData.buildUrl(self)
         self.headers = {}
         self.adresses = AddressList(self._cutout_adresses()).addresslist
-        for key in ["to","cc","bcc"]:
+        for key in ("to","cc","bcc"):
             if self.headers.has_key(key):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
