@@ -28,6 +28,17 @@ class HttpUrlData (UrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
 
+    def buildUrl (self):
+        UrlData.buildUrl(self)
+        if not self.urlTuple[2]:
+            self.setWarning(linkcheck._("Path is empty"))
+            self.urlTuple = (self.urlTuple[0], self.urlTuple[1], "/",
+                self.urlTuple[3], self.urlTuple[4], self.urlTuple[5])
+            self.url = urlparse.urlunparse(self.urlTuple)
+            # resolve HTML entities
+            self.url = StringUtil.unhtmlify(self.url)
+
+
     def checkConnection (self):
         """
         Check a URL with HTTP protocol.
@@ -75,8 +86,6 @@ class HttpUrlData (UrlData):
         self.auth = None
         self.proxyauth = None
         self.cookies = []
-        if not self.urlTuple[2]:
-            self.setWarning(linkcheck._("Missing '/' at end of URL"))
         if self.config["robotstxt"] and not self.robotsTxtAllowsUrl():
             self.setWarning(linkcheck._("Access denied by robots.txt, checked only syntax"))
             return
