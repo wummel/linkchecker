@@ -24,8 +24,6 @@ import linkcheck.ftests
 class TestTelnet (linkcheck.ftests.StandardTest):
     """test telnet: link checking"""
 
-    needed_resources = ['network']
-
     def test_telnet (self):
         url = "telnet:"
         rurl = url+"//"
@@ -36,28 +34,28 @@ class TestTelnet (linkcheck.ftests.StandardTest):
             "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://swindon.city.ac.uk"
+        url = "telnet://www.imadoofus.com"
         resultlines = [
             "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
-            "valid",
+            "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://user@swindon.city.ac.uk"
+        url = "telnet://user@www.imadoofus.com"
         resultlines = [
             "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
-            "valid",
+            "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://user:password@swindon.city.ac.uk"
+        url = "telnet://user:pass@www.imadoofus.com"
         resultlines = [
             "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
-            "valid",
+            "error",
         ]
         self.direct(url, resultlines)
 
