@@ -1,52 +1,52 @@
 <html><head>
 <title>LinkChecker Online</title>
 </head>
-<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
+<body text="#192c83" bgcolor="#fff7e5" link="#191c83" vlink="#191c83"
+ alink="#191c83">
 
 <font face="Lucida,Verdana,Arial,sans-serif">
 <center><h2>LinkChecker Online</h2>
 (powered by <a href="http://linkchecker.sourceforge.net/"
-target=_top>LinkChecker</a>)
+target="_top">LinkChecker</a>)
 </center>
 
 <blockquote>
-<form method=POST action="http://localhost/cgi-bin/lconline/lc.cgi"
- target=links>
-<table border=0 cellpadding=2 cellspacing=0 summary=''>
-<tr><td colspan=2 bgcolor="#fff7e5">
+<form method="POST" action="lc.cgi" target="links">
+<table border="0" cellpadding="2" cellspacing="0" summary="">
+<tr><td colspan="2" bgcolor="#fff7e5">
 <font face="Lucida,Verdana,Arial,sans-serif">URL:
-<input size=70 name=url value="http://">
-<input type=submit value="Go!"></font></td></tr>
+<input size="70" name="url" value="http://">
+<input type="submit" value="Go!"></font></td></tr>
 <td><font face="Lucida,Verdana,Arial,sans-serif">Recursion Level:
-<select name=level>
-<option value=0>0</option>
-<option value=1 selected>1</option>
-<option value=2>2</option>
-<option value=3>3</option>
+<select name="level">
+<option value="0">0</option>
+<option value="1" selected>1</option>
+<option value="2">2</option>
+<option value="3">3</option>
 </select>
 </font></td>
 <td><font face="Lucida,Verdana,Arial,sans-serif">
-Check anchors in HTML: <input type=checkbox name=anchors checked>
+Check anchors in HTML: <input type="checkbox" name="anchors" checked>
 </font></td></tr>
 <tr><td>
 <font face="Lucida,Verdana,Arial,sans-serif">
-Log only errors: <input type=checkbox name=errors>
+Log only errors: <input type="checkbox" name="errors">
 </font></td>
 <td><font face="Lucida,Verdana,Arial,sans-serif">
-Check only intern links: <input type=checkbox name=intern checked>
+Check only intern links: <input type="checkbox" name="intern" checked>
 </font></td>
 </tr>
 <tr>
 <td><font face="Lucida,Verdana,Arial,sans-serif">
 Output language: <select name="language">
-<option value=C selected>English</option>
-<option value=de>Deutsch</option>
-<option value=fr>Fran&ccedil;ais</option>
-<option value=nl>Nederlands</option>
+<option value="C" selected>English</option>
+<option value="de">Deutsch</option>
+<option value="fr">Fran&ccedil;ais</option>
+<option value="nl">Nederlands</option>
 </select>
 </font></td>
 <td><font face="Lucida,Verdana,Arial,sans-serif">
-Check strict intern links: <input type=checkbox name=strict>
+Check strict intern links: <input type="checkbox" name="strict">
 </font></td>
 </tr>
 </table>
