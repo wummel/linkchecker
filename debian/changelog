@@ -1,16 +1,17 @@
-linkchecker (1.3.0) unstable; urgency=low
+linkchecker (1.2.3) unstable; urgency=low
 
-  * Blacklist output support
   * typo fix for adjustWinPath
   * added some source code documentation
-  * Improved error messages for wrong options
-  * FileOutput mapping in Config.py
+  * improved error messages for wrong options
+  * configuration file option for output filenames
   * linkchecker.bat installation support for windows
   * included test suite in distribution
-  * Improved mailto: link parsing
+  * improved mailto: link parsing
+  * Blacklist output support
   * CSV output support
+  * SSL autodetection in setup.py
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 28 Apr 2000 12:59:13 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 28 Apr 2000 13:48:14 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 

@@ -11,7 +11,7 @@ from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 import Logging
 
-Version = "1.3.0"
+Version = "1.2.3"
 AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
@@ -344,7 +344,7 @@ class Configuration(UserDict.UserDict):
             for key in filenames.keys():
                 if self.data["fileoutputnames"].has_key(key) and \
                    type(filenames[key]) == StringType:
-                    self.data["fileoutputnames"] = filenames[key]
+                    self.data["fileoutputnames"][key] = filenames[key]
         except ConfigParser.Error: pass
         try:
             filelist = string.split(cfgparser.get(section, "fileoutput"))

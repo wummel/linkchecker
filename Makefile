@@ -1,8 +1,8 @@
 VERSION=$(shell ./setup.py --version)
-#HOST=treasure.calvinsplayground.de
+HOST=treasure.calvinsplayground.de
 PROXY=
 #PROXY=-P$(HOST):5050
-HOST=fsinfo.cs.uni-sb.de
+#HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
@@ -19,7 +19,7 @@ clean:
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 install:
-	./setup.py install --prefix=/tmp/usr --exec-prefix=/tmp/usr
+	./setup.py install --prefix=/tmp/usr
 	# do what I mean, Distutils!
 	cp -a /tmp/usr/* $(DESTDIR)/usr
 	# remove following line if Distutils have script support
@@ -32,7 +32,7 @@ dist:
 	fakeroot debian/rules binary
         
 files:
-	./$(PACKAGE) -Ftext -Fhtml -Fgml -Fsql -R -t0 -v $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
+	./$(PACKAGE) -ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
 homepage:
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt

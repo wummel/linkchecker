@@ -2,17 +2,34 @@
 from distutils.core import setup
 from distutils.dist import Distribution
 from Template import Template
-import sys
+import sys,os,string
 
 # Autodetect the existence of an SSL library (this is pretty shitty)
 # Autodetect Windows platforms to include the linkchecker.bat script
 class LCDistribution(Distribution):
+    default_include_dirs = ['/usr/include/openssl',
+                            '/usr/local/include/openssl']
     def run_commands (self):
-        if self.has_ssl():
+        self.check_ssl()
+        self.check_windows()
+        for cmd in self.commands:
+            self.run_command (cmd)
+
+    def check_ssl(self):
+        incldir = self.has_ssl()
+        if incldir:
+            self.announce("SSL header file ssl.h found, "
+                          "enabling SSL compilation.")
             self.ext_modules = [('ssl', {'sources': ['ssl.c'],
-                        'include_dirs': ['/usr/include/openssl'],
+                        'include_dirs': [incldir],
                         'library_dirs': ['/usr/lib'],
                         'libs': ['ssl']})]
+        else:
+            self.announce("SSL header file ssl.h missing, "
+                          "disabling SSL compilation.\n"
+			  "Use the -I option for the build_ext command.")
+
+    def check_windows(self):
         if sys.platform=='win32':
             inst = self.find_command_obj("install")
             inst.ensure_ready()
@@ -21,15 +38,18 @@ class LCDistribution(Distribution):
 	    f.write(t.fill_in({"path_to_linkchecker": inst.install_scripts}))
             f.close()
             self.scripts.append('linkchecker.bat')
-        for cmd in self.commands:
-            self.run_command (cmd)
 
     def has_ssl(self):
-        return 1
+        incls = self.find_command_obj("build_ext").include_dirs
+        incls = (incls and string.split(incls, os.pathsep)) or []
+        for d in incls + self.default_include_dirs:
+            if os.path.exists(os.path.join(d, "ssl.h")):
+                return d
+        return 0
 
 
 setup (name = "linkchecker",
-       version = "1.3.0",
+       version = "1.2.3",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",
@@ -49,8 +69,7 @@ o restrict link checking to your local domain
 o HTTP proxy support
 o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support 
-"""
-
+""",
        distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],
        scripts = ['linkchecker'],

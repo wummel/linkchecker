@@ -198,7 +198,7 @@ for opt,arg in options:
     elif opt=="-F" or opt=="--file-output":
         if linkcheck.Config.Loggers.has_key(arg) and arg != "blacklist":
             config["fileoutput"].append(linkcheck.Config.Loggers[arg](
-	      open(linkcheck.Config.FileOutput[arg], "w")))
+	      open(config["fileoutputnames"][arg], "w")))
         else:
             printUsage("Illegal argument '"+arg+\
 	               "' for option '-F, --file-output'")

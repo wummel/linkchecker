@@ -8,6 +8,8 @@
 #warnings=0
 #quiet=0
 #fileoutput = text colored html gml sql
+# customize your output filenames
+#fileoutputnames = {'text': 'myoutput.txt', 'html': 'mylinks.htm'}
 
 [checking]
 #threads=5
