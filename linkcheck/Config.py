@@ -120,20 +120,19 @@ class Configuration(UserDict.UserDict):
             'tableerror':      '<td bgcolor="#db4930">',
             'tableok':         '<td bgcolor="#3ba557">',
         }
-        ESC="\x1b"
         self['colored'] = {
             "filename":     "linkchecker-out.ansi",
-            'colorparent':  ESC+"[37m",   # white
-            'colorurl':     ESC+"[0m",    # standard
-            'colorname':    ESC+"[0m",    # standard
-            'colorreal':    ESC+"[36m",   # cyan
-            'colorbase':    ESC+"[35m",   # magenty
-            'colorvalid':   ESC+"[1;32m", # green
-            'colorinvalid': ESC+"[1;31m", # red
-            'colorinfo':    ESC+"[0m",    # standard
-            'colorwarning': ESC+"[1;33m", # yellow
-            'colordltime':  ESC+"[0m",    # standard
-            'colorreset':   ESC+"[0m",    # reset to standard
+            'colorparent':  "37",   # white
+            'colorurl':     "0",    # standard
+            'colorname':    "0",    # standard
+            'colorreal':    "36",   # cyan
+            'colorbase':    "35",   # magenty
+            'colorvalid':   "1;32", # green
+            'colorinvalid': "1;31", # red
+            'colorinfo':    "0",    # standard
+            'colorwarning': "1;33", # yellow
+            'colordltime':  "0",    # standard
+            'colorreset':   "0",    # reset to standard
         }
         self['gml'] = {
             "filename":     "linkchecker-out.gml",

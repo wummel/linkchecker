@@ -360,7 +360,7 @@ class ColoredLogger(StandardLogger):
     """ANSI colorized output"""
 
     def __init__(self, **args):
-        esc="\033[%s"
+        esc="\x1b[%sm"
         apply(StandardLogger.__init__, (self,), args)
         self.colorparent = esc % args['colorparent']
         self.colorurl = esc % args['colorurl']
