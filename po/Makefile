@@ -25,12 +25,13 @@ SOURCES=\
 ../linkchecker
 LDIR=../share/locale
 LFILE=LC_MESSAGES/$(PACKAGE).mo
-MOS=$(LDIR)/de/$(LFILE) $(LDIR)/fr/$(LFILE) $(LDIR)/nl/$(LFILE)
 PACKAGE=linkcheck
+# defined language (add new languages here)
+LANGUAGES=de fr nl
+MOS=$(patsubst %, %.mo, $(LANGUAGES) )
 
 .PHONY: all
-all:
-	$(MAKE) de.mo fr.mo nl.mo
+all:	$(MOS)
 
 %.po:	.time.pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
@@ -41,10 +42,13 @@ all:
 	touch .time.pot
 
 %.mo:	%.po
+	if [ ! -d $(LDIR)/$*/LC_MESSAGES ]; then \
+	  mkdir -p $(LDIR)/$*/LC_MESSAGES; \
+	fi
 	$(MSGFMT) -o$(LDIR)/$*/$(LFILE) $<
 
 clean:
-	rm -f $(MOS)
+	for f in $(LANGUAGES); do rm -f $(LDIR)/$$f/$(LFILE); done
 
 distclean:	clean
 	rm -f .time.pot
