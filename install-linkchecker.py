@@ -52,11 +52,11 @@ def do_install ():
     create_shortcut(pythonw, "Check URL", path, arguments)
     file_created(path)
 
-    target = os.path.join(lib_dir,
-                          "PythonCard\\docs\\html\\index.html")
-    path = os.path.join(dest_dir, "Documentation.lnk")
-    create_shortcut(target, "Documentation", path)
-    file_created(path)
+    #target = os.path.join(lib_dir,
+    #                      "PythonCard\\docs\\html\\index.html")
+    #path = os.path.join(dest_dir, "Documentation.lnk")
+    #create_shortcut(target, "Documentation", path)
+    #file_created(path)
 
     target = os.path.join(sys.prefix, "RemoveLinkChecker.exe")
     path = os.path.join(dest_dir, "Uninstall LinkChecker.lnk")
