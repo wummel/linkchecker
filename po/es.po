@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 2.4\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-03-12 01:41+0100\n"
+"POT-Creation-Date: 2005-04-01 11:24+0200\n"
 "PO-Revision-Date: 2005-03-02 21:10-0500\n"
 "Last-Translator: Servilio Afre Puentes <servilio@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -42,14 +42,14 @@ msgstr[1] "%2d hilos activos,"
 msgid "runtime %s"
 msgstr "tiempo de corrida %s"
 
-#: ../linkcheck/checker/consumer.py:159
+#: ../linkcheck/checker/consumer.py:147
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] "interrupción por teclado, esperando a que termine %d hilo activo"
 msgstr[1] "interrupción por teclado, esperando a que terminen %d hilos activos"
 
-#: ../linkcheck/checker/consumer.py:179
+#: ../linkcheck/checker/consumer.py:167
 msgid "Status:"
 msgstr "Estado:"
 
@@ -76,57 +76,47 @@ msgstr ""
 "El camino %r del URL no es el mismo que el camino %r del sistema.\n"
 "Debería usar siempre el camino del sistema en los URLs."
 
-#: ../linkcheck/checker/httpurl.py:77
-msgid "URL path is empty, assuming '/' as path."
-msgstr "El camino del URL está vacío, asumiendo '/' como camino."
-
-#: ../linkcheck/checker/httpurl.py:147 ../linkcheck/checker/httpurl.py:299
+#: ../linkcheck/checker/httpurl.py:132 ../linkcheck/checker/httpurl.py:281
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr "Denegado el acceso por robots.txt, chequeando sólo la sintaxis."
 
-#: ../linkcheck/checker/httpurl.py:151
+#: ../linkcheck/checker/httpurl.py:136
 #, fuzzy
 msgid "Amazon servers block HTTP HEAD requests, using GET instead."
 msgstr ""
 "Los servidores de Amazon bloquean las peticiones HTTP HEAD, usando GET en "
 "cambio."
 
-#: ../linkcheck/checker/httpurl.py:162
+#: ../linkcheck/checker/httpurl.py:147
 #, python-format
 msgid "Effective URL %s."
 msgstr "URL efectivo %s."
 
-#: ../linkcheck/checker/httpurl.py:199
+#: ../linkcheck/checker/httpurl.py:184
 #, fuzzy, python-format
 msgid "Enforced proxy %r."
 msgstr "Imponiendo Proxy %r."
 
-#: ../linkcheck/checker/httpurl.py:203
+#: ../linkcheck/checker/httpurl.py:188
 #, fuzzy, python-format
 msgid "Enforced proxy %r ignored, aborting."
 msgstr "Imponiendo Proxy %r."
 
-#: ../linkcheck/checker/httpurl.py:231
+#: ../linkcheck/checker/httpurl.py:214
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr "más de %d redirecciones, abortando"
 
-#: ../linkcheck/checker/httpurl.py:263
-#, fuzzy
-msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET."
-msgstr ""
-"El servidor Zope no puede determinar el tipo MIME con HEAD, usando GET."
-
-#: ../linkcheck/checker/httpurl.py:286
+#: ../linkcheck/checker/httpurl.py:268
 #, python-format
 msgid "Redirected to %(url)s."
 msgstr "Redireccionado a %(url)s."
 
-#: ../linkcheck/checker/httpurl.py:294 ../linkcheck/checker/urlbase.py:373
+#: ../linkcheck/checker/httpurl.py:276 ../linkcheck/checker/urlbase.py:377
 msgid "Outside of domain filter, checked only syntax."
 msgstr "Fuera del filtro de dominio, se chequeó sólo la sintaxis."
 
-#: ../linkcheck/checker/httpurl.py:310
+#: ../linkcheck/checker/httpurl.py:292
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
@@ -135,13 +125,13 @@ msgstr ""
 "se encontró redirección recursiva:\n"
 " %s"
 
-#: ../linkcheck/checker/httpurl.py:320
+#: ../linkcheck/checker/httpurl.py:302
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 "Se encontró \"HTTP 301 (movido permanentemente)\": debería actualizar\n"
 "este enlace."
 
-#: ../linkcheck/checker/httpurl.py:325
+#: ../linkcheck/checker/httpurl.py:307
 msgid ""
 "A HTTP 301 redirection occured and the URL has no trailing / at the end. All "
 "URLs which point to (home) directories should end with a / to avoid "
@@ -151,55 +141,55 @@ msgstr ""
 "Todos los URLs apuntando a directorios (de inicio) deben terminar con\n"
 "un '/' para evitar la redirección."
 
-#: ../linkcheck/checker/httpurl.py:336
+#: ../linkcheck/checker/httpurl.py:318
 #, python-format
 msgid "HTTP redirection to non-http url encountered; the original url was %r."
 msgstr ""
 "Se encontró una redirección HTTP hacia un URL no-HTTP; el URL original\n"
 "era %r."
 
-#: ../linkcheck/checker/httpurl.py:365
+#: ../linkcheck/checker/httpurl.py:347
 msgid "unknown"
 msgstr "desconocido"
 
-#: ../linkcheck/checker/httpurl.py:367
+#: ../linkcheck/checker/httpurl.py:349
 #, python-format
 msgid "Server %r did not support HEAD request, used GET for checking."
 msgstr "El servidor %r no soportó el pedido HEAD, se usó GET para chequear."
 
-#: ../linkcheck/checker/httpurl.py:370
+#: ../linkcheck/checker/httpurl.py:352
 #, python-format
 msgid "Server %r had no anchor support, removed anchor from request."
 msgstr ""
 "El servidor %r no tenía soporte para ancla, se eliminó el ancla del\n"
 "pedido."
 
-#: ../linkcheck/checker/httpurl.py:379
+#: ../linkcheck/checker/httpurl.py:361
 #, fuzzy, python-format
 msgid "Store cookie: %s."
 msgstr "Almacenar \"cookie\": %s."
 
-#: ../linkcheck/checker/httpurl.py:386
+#: ../linkcheck/checker/httpurl.py:368
 #, python-format
 msgid "Could not store cookies: %(msg)s."
 msgstr "No se pudieron almacenar las \"cookies\": %(msg)s."
 
-#: ../linkcheck/checker/httpurl.py:394
+#: ../linkcheck/checker/httpurl.py:376
 #, python-format
 msgid "Last modified %s."
 msgstr "Última modificación %s."
 
-#: ../linkcheck/checker/httpurl.py:473
+#: ../linkcheck/checker/httpurl.py:456
 #, python-format
 msgid "Unsupported HTTP url scheme %r"
 msgstr "Esquema %r de URL HTTP no soportado"
 
-#: ../linkcheck/checker/httpurl.py:504
+#: ../linkcheck/checker/httpurl.py:487
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:526 ../linkcheck/checker/httpurl.py:554
+#: ../linkcheck/checker/httpurl.py:509 ../linkcheck/checker/httpurl.py:537
 #, python-format
 msgid "Unsupported content encoding %r."
 msgstr "Codificación contenido %r no soportada."
@@ -254,11 +244,11 @@ msgstr "Información del sistema:"
 msgid "Python %s on %s"
 msgstr "Pitón %s en %s"
 
-#: ../linkcheck/checker/urlbase.py:274
+#: ../linkcheck/checker/urlbase.py:278
 msgid "URL is empty"
 msgstr "El URL está vacío"
 
-#: ../linkcheck/checker/urlbase.py:294
+#: ../linkcheck/checker/urlbase.py:298
 #, python-format
 msgid ""
 "URL %s has a unicode domain name which\n"
@@ -269,46 +259,46 @@ msgstr ""
 "                          no es ampliamente soportado aún. Debería\n"
 "                          usar el URL %s en cambio."
 
-#: ../linkcheck/checker/urlbase.py:299
+#: ../linkcheck/checker/urlbase.py:303
 #, python-format
 msgid "Base URL is not properly normed. Normed url is %(url)s."
 msgstr "El URL base no está propiamente normado. El URL normado es %(url)s."
 
-#: ../linkcheck/checker/urlbase.py:327
+#: ../linkcheck/checker/urlbase.py:331
 #, python-format
 msgid "URL has invalid port %r"
 msgstr "El URL tiene un puerto %r inválido"
 
-#: ../linkcheck/checker/urlbase.py:359
+#: ../linkcheck/checker/urlbase.py:363
 #, python-format
 msgid "URL is located in %s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:389
+#: ../linkcheck/checker/urlbase.py:393
 msgid "Hostname not found"
 msgstr "No se encontró el nombre del servidor"
 
-#: ../linkcheck/checker/urlbase.py:392
+#: ../linkcheck/checker/urlbase.py:396
 #, python-format
 msgid "Bad HTTP response %r"
 msgstr "Mala respuesta HTTP %r"
 
-#: ../linkcheck/checker/urlbase.py:423
+#: ../linkcheck/checker/urlbase.py:427
 #, python-format
 msgid "could not parse content: %r"
 msgstr "no se pudo analizar el contenido: %r"
 
-#: ../linkcheck/checker/urlbase.py:507
+#: ../linkcheck/checker/urlbase.py:511
 #, python-format
 msgid "Anchor #%s not found."
 msgstr "No se encontró el ancla #%s."
 
-#: ../linkcheck/checker/urlbase.py:593
+#: ../linkcheck/checker/urlbase.py:597
 #, python-format
 msgid "Found %r in link contents."
 msgstr "Se encontró %r en los contenidos del enlace."
 
-#: ../linkcheck/checker/urlbase.py:602
+#: ../linkcheck/checker/urlbase.py:606
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr "El tamaño del contenido %s es más grande que %s."
@@ -334,35 +324,40 @@ msgstr "No se encontraron direcciones."
 msgid "No MX mail host for %(domain)s found."
 msgstr "No se encontró servidor MX para %(domain)s."
 
-#: ../linkcheck/checker/mailtourl.py:198
+#: ../linkcheck/checker/mailtourl.py:158
+#, fuzzy, python-format
+msgid "No host for %(domain)s found."
+msgstr "No se encontró servidor MX para %(domain)s."
+
+#: ../linkcheck/checker/mailtourl.py:206
 #, python-format
 msgid "Verified address: %(info)s."
 msgstr "Dirección verificada: %(info)s."
 
-#: ../linkcheck/checker/mailtourl.py:202
+#: ../linkcheck/checker/mailtourl.py:210
 #, python-format
 msgid "Unverified address: %(info)s. But mail will be sent anyway."
 msgstr ""
 "Dirección sin verificar: %(info)s. Pero el correo se enviará de todos\n"
 "modos."
 
-#: ../linkcheck/checker/mailtourl.py:205
+#: ../linkcheck/checker/mailtourl.py:213
 #, python-format
 msgid "Unverified address: %(info)s."
 msgstr "Dirección sin verificar: %(info)s."
 
-#: ../linkcheck/checker/mailtourl.py:208
+#: ../linkcheck/checker/mailtourl.py:216
 #, python-format
 msgid "MX mail host %(host)s did not accept connections: %(error)s."
 msgstr ""
 "El servidor de correo %(host)s definido en el registro MX no aceptó\n"
 "conecciones: %(error)s."
 
-#: ../linkcheck/checker/mailtourl.py:213
+#: ../linkcheck/checker/mailtourl.py:221
 msgid "Could not connect, but syntax is correct"
 msgstr "No pude conectar, pero la sintaxis es correcta"
 
-#: ../linkcheck/checker/mailtourl.py:215
+#: ../linkcheck/checker/mailtourl.py:223
 #, python-format
 msgid "Found MX mail host %(host)s"
 msgstr "Se encontró el servidor de correo %(host)s definido en el registro MX"
@@ -1361,3 +1356,12 @@ msgstr "opciones"
 #, python-format
 msgid "ambiguous option: %s (%s?)"
 msgstr "opción ambigua: %s (¿%s?)"
+
+#~ msgid "URL path is empty, assuming '/' as path."
+#~ msgstr "El camino del URL está vacío, asumiendo '/' como camino."
+
+#, fuzzy
+#~ msgid ""
+#~ "Zope Server cannot determine MIME type with HEAD, falling back to GET."
+#~ msgstr ""
+#~ "El servidor Zope no puede determinar el tipo MIME con HEAD, usando GET."
