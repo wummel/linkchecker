@@ -20,3 +20,10 @@ Possible improvements people could work on:
 - [FEATURE] Option to save downloaded pages. This could also be used to
   build an internal cache, however there are already a plethora of
   caching proxies we could use for that.
+
+- [FEATURE] for the Windows install name the script linkchecker.cmd and
+  put as the first line:
+  @python -x "%~f0" %* & exit /b
+  This way one can run "linkchecker" instead of
+  "python c:\python2.4\scripts\linkchecker" if c:\python2.4\scripts is
+  in the PATH.
