@@ -89,35 +89,14 @@ class MyInstall (install):
                 print "  %s: %s" % (opt_name, val)
 
 
-class MyInstallData(install_data):
+class MyInstallData (install_data):
     """My own data installer to handle .man pages"""
-    def run (self):
-        self.mkpath(self.install_dir)
-        for f in self.data_files:
-            if type(f) == StringType:
-                # it's a simple file, so copy it
-                if self.warn_dir:
-                    self.warn("setup script did not provide a directory for "
-                              "'%s' -- installing right in '%s'" %
-                              (f, self.install_dir))
-                self._install_file(f, self.install_dir)
-            else:
-                # it's a tuple with path to install to and a list of files
-                dir = f[0]
-                if not os.path.isabs(dir):
-                    dir = os.path.join(self.install_dir, dir)
-                elif self.root:
-                    dir = change_root(self.root, dir)
-                self.mkpath(dir)
-                for data in f[1]:
-                    self._install_file(data, dir)
-
-    def _install_file(self, filename, dirname):
-        (out, _) = self.copy_file(filename, dirname)
+    def copy_file (self, filename, dirname):
+        (out, _) = install_data.copy_file(self, filename, dirname)
         # match for man pages
         if re.search(r'/man/man\d/.+\.\d$', out):
-            out = out+".gz"
-        self.outfiles.append(out)
+            return (out+".gz", _)
+        return (out, _)
 
 
 class MyDistribution (Distribution):
