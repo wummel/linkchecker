@@ -29,6 +29,12 @@ from distutils.dep_util import newer
 
 import os, string, re, sys
 
+def get_nt_desktop_path (default=""):
+    if os.environ.has_key("ALLUSERSPROFILE"):
+        return os.path.join(os.environ["ALLUSERSPROFILE"], "Desktop")
+    if os.environ.has_key("USERPROFILE"):
+        return os.path.join(os.environ["USERPROFILE"], "Desktop")
+    return default
 
 class MyInstall(install):
     def run(self):
@@ -50,27 +56,19 @@ class MyInstall(install):
 	self.distribution.create_conf_file(self.install_lib, data)
         if os.name=="nt":
             # copy batch file to desktop
-            path = self.install_scripts
-            if os.environ.has_key("ALLUSERSPROFILE"):
-                path = os.path.join(os.environ["ALLUSERSPROFILE"], "Desktop")
-            elif os.environ.has_key("USERPROFILE"):
-                path = os.path.join(os.environ["USERPROFILE"], "Desktop")
-            filename = os.path.join(path, "linkchecker.bat")
+            path = get_nt_desktop_path(default=self.install_scripts)
+            path = os.path.join(path, "linkchecker.bat")
             data = open("linkchecker.bat").readlines()
             data = map(string.strip, data)
             data = map(lambda s: s.replace("$python", sys.executable), data)
             data = map(lambda s, self=self: s.replace("$install_scripts",
               self.install_scripts), data)
-            self.distribution.create_file(filename, data)
+            self.distribution.create_file(path, data)
             # copy README file to desktop
-            path = self.install_data
-            if os.environ.has_key("ALLUSERSPROFILE"):
-                path = os.path.join(os.environ["ALLUSERSPROFILE"], "Desktop")
-            elif os.environ.has_key("USERPROFILE"):
-                path = os.path.join(os.environ["USERPROFILE"], "Desktop")
-            filename = os.path.join(directory, "LinkChecker_Readme.txt")
+            path = get_nt_desktop_path(default=self.install_data)
+            path = os.path.join(path, "LinkChecker_Readme.txt")
             data = open("README").read()
-            self.distribution.create_file(filename, data)
+            self.distribution.create_file(path, data)
 
     # sent a patch for this, but here it is for compatibility
     def dump_dirs (self, msg):

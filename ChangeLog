@@ -6,3 +6,4 @@
   * Default socket timeout is now 10 seconds
   * updated linkcheck/timeoutsocket.py to newest version
   * updated README and INSTALL
+  * s/User-agent/User-Agent/, use same case as other browsers
