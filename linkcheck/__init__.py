@@ -47,6 +47,9 @@ except ImportError:
 # set _ as an alias for gettext
 _ = gettext
 
+import timeoutsocket
+timeoutsocket.setDefaultSocketTimeout(20)
+
 import Config,UrlData,sys,lc_cgi
 
 def checkUrls(config = Config.Configuration()):

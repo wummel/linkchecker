@@ -1,4 +1,4 @@
-"""Timeout Socket
+"""enables a timeout on all TCP connections
 
 This module enables a timeout mechanism on all TCP connections.  It
 does this by inserting a shim on top of the socket module.  After

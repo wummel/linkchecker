@@ -8,8 +8,6 @@ HOST=treasure.calvinsplayground.de
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_all.deb $(PACKAGE)-ssl_$(VERSION)_i386.deb
-PULLHOST=phoenix.net.uni-sb.de
-PULLPATH=/home/calvin/temp/linkchecker
 OFFLINETESTS = test_base test_misc test_file test_frames
 ONLINETESTS = test_mail test_http test_https test_news test_ftp
 
@@ -62,19 +60,11 @@ upload: distclean dist package files VERSION
 	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/
 	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
 
-uploadpull: distclean dist package files VERSION
-	# shit, need to make pull, scp upload is not working any more
-	# aha, sourceforge fixed the shells, use upload again :)
-	ssh -t $(PULLHOST) "cd $(PULLPATH) && make clean"
-	scp debian/changelog README linkchecker-out.* VERSION $(PULLHOST):$(PULLPATH)
-	scp dist/* $(PULLHOST):$(PULLPATH)/dist
-	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make pull"
-
 test:
-	python2 test/regrtest.py $(OFFLINE_TESTS)
+	python2 test/regrtest.py $(OFFLINETESTS)
 
 onlinetest:
-	python2 test/regrtest.py $(ONLINE_TESTS)
+	python2 test/regrtest.py $(ONLINETESTS)
 
 locale:
 	$(MAKE) -C po

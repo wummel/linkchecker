@@ -1,4 +1,4 @@
-.TH LINKCHECKER 1 "18 November 2000"
+.TH LINKCHECKER 1 "10 March 2001"
 .SH NAME
 linkchecker \- check your HTML documents for broken links
 .SH SYNOPSIS
@@ -11,7 +11,7 @@ linkchecker \- check your HTML documents for broken links
 ]
 .SH DESCRIPTION
 .LP
-LinkChecker features
+linkchecker features
 recursive checking,
 multithreading,
 output in colored or normal text, HTML, SQL, CSV or a sitemap
@@ -44,7 +44,7 @@ Assume urls that match the given regular expression as extern.
 Only intern HTML links are checked recursively.
 .TP
 \fB-f \fIfile\fP, \fB--config=\fIfile\fP
-Use \fIfile\fP as configuration file. LinkChecker first searches for
+Use \fIfile\fP as configuration file. linkchecker first searches for
 ~/.linkcheckerrc and then /etc/linkcheckerrc on Unix systems.
 Under Windows systems we read <path-to-program>\\linkcheckerrc.
 .TP
@@ -57,7 +57,7 @@ output.
 .TP
 \fB-i \fIregex\fP, \fB--intern=\fIregex\fP
 Assume URLs that match the given regular expression as intern.
-LinkChecker descends recursively only to intern URLs, not to extern.
+linkchecker descends recursively only to intern URLs, not to extern.
 .TP
 \fB-h\fP, \fB--help\fP
 Help me! Print usage information for this program.
@@ -127,12 +127,12 @@ Use the -s and -i options to prevent this.
 
 Javascript links are currently ignored.
 
-If your platform does not support threading, LinkChecker uses 
+If your platform does not support threading, linkchecker uses 
 \fB-t0\fP.
 
 You can supply multiple user/password pairs in a configuration file.
 
-Cookies are not accepted by LinkChecker.
+Cookies are not accepted by linkchecker.
 
 To use proxies set $http_proxy, $https_proxy on Unix or Windows.
 On a Mac use the Internet Config.
