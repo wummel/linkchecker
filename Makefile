@@ -1,5 +1,5 @@
 # This Makefile is only used by developers.
-PYTHON=python2.2
+PYTHON=python2.3
 VERSION=$(shell $(PYTHON) setup.py --version)
 PACKAGE=linkchecker
 NAME=$(shell $(PYTHON) setup.py --name)
@@ -46,11 +46,11 @@ dist:	locale config
 	md5sum dist/* > $(MD5SUMS)
 	for f in dist/*; do gpg --detach-sign --armor $$f; done
 
-# to build in the current directory (assumes python 2.2)
+# to build in the current directory (assumes python 2.3)
 localbuild:
 	$(MAKE) -C linkcheck/parser
 	$(PYTHON) setup.py build
-	cp -f build/lib.linux-i686-2.2/linkcheck/parser/htmlsax.so linkcheck/parser
+	cp -f build/lib.linux-i686-2.3/linkcheck/parser/htmlsax.so linkcheck/parser
 
 
 # produce the .deb Debian package

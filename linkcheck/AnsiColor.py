@@ -29,7 +29,7 @@ AnsiType = {
     'invert': '7',
 }
 
-# color numbers
+# color numbers (the capitalized colors are bright)
 AnsiColor = {
     'default': '0',
     'black':   '30',
@@ -71,6 +71,7 @@ def esc_ansicolor (color):
     return AnsiEsc % (ctype+cnum)
 
 AnsiReset = esc_ansicolor("default")
+
 
 def colorize (text, color=None):
     "return text colorized if TERM is set"

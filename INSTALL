@@ -3,7 +3,7 @@
 
 Requirements
 ------------
-Python >= 2.2.1 from http://www.python.org/
+Python >= 2.3 from http://www.python.org/
 For HTTPS support you need to compile Python with the SSL _socket
 module.
 

@@ -1,6 +1,7 @@
-1.8.23
-  * merged robotparser.py with newest official version
-    Changed: linkcheck/robotparser.py
+1.9.23
+  * Require Python 2.3
+    - removed timeoutsocket.py and robotparser.py
+    - use True/False values
     Closes: SF bug 784977
   * start CGI output immediately
     Changed: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py

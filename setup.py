@@ -146,7 +146,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.8.23",
+       version = "1.9.0",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
@@ -199,5 +199,11 @@ o a (Fast)CGI web interface (requires HTTP server)
               'lc.cgi','lc.fcgi','lc.sz_fcgi','linkchecker.bat']),
          ('share/man/man1', ['linkchecker.1']),
       ],
-      #classifiers = ['Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',]
+      classifiers = [
+        'Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',
+        'Development Status :: 5 - Production/Stable',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'Programming Language :: Python',
+        'Programming Language :: C',
+      ],
 )

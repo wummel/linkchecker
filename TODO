@@ -4,12 +4,10 @@
 - the HTML parser should be even more forgiving with badly formatted html
 
 possible Python 2.3 improvements (ie needs Python >= 2.3)
-- get rid of timeoutsocket.py, the default socket has timeouts
 - use optparse instead of getopt with more flexible commandline help
 - replace the debug() function with the logging module
   we'll see how we can insert multiple debug levels into this thing
 - use Bool object type
-- get rid of the patched robotparser.py
 - use new csv module
 - use the Set type instead of hashmaps (did I use hashmaps for sets here?)
 

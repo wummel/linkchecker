@@ -19,8 +19,8 @@
 
 # imports and checks
 import sys
-if not hasattr(sys, 'version_info') or sys.version_info<(2, 2, 1, 'final', 0):
-    raise SystemExit, "This program requires Python 2.2.1 or later."
+if not hasattr(sys, 'version_info') or sys.version_info<(2, 3, 0, 'final', 0):
+    raise SystemExit, "This program requires Python 2.3 or later."
 
 import getopt, re, os, pprint, linkcheck
 import linkcheck.timeoutsocket
