@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "POT-Creation-Date: Sat Aug 28 14:53:56 2004\n"
-"PO-Revision-Date: 2004-02-20 15:26+0100\n"
+"PO-Revision-Date: 2004-08-28 15:43+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,8 +15,7 @@ msgstr ""
 msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
-msgid ""
-"Status: %5d urls queued, %4d urls checked, %2d active threads, runtime %s"
+msgid "Status: %5d urls queued, %4d urls checked, %2d active threads, runtime %s"
 msgstr ""
 
 msgid "URL is unrecognized or has invalid syntax"
@@ -76,13 +75,9 @@ msgid ""
 msgstr ""
 
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
-msgstr ""
-"HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen."
+msgstr "HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen."
 
-msgid ""
-"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
-"urls which point to (home) directories should end with a / to avoid "
-"redirection."
+msgid "A HTTP 301 redirection occured and the url has no trailing / at the end. All urls which point to (home) directories should end with a / to avoid redirection."
 msgstr ""
 
 msgid "HTTP redirection to non-http url encountered; the original url was %r."
@@ -103,32 +98,27 @@ msgstr ""
 msgid "Unsupported content encoding %r."
 msgstr ""
 
-#, fuzzy
 msgid "Invalid mail syntax"
-msgstr "ungeldige Optie '%s'"
+msgstr ""
 
 #, fuzzy
 msgid "No addresses found"
 msgstr "Geen adres gevonden"
 
-#, fuzzy
 msgid "No MX mail host for %(domain)s found"
-msgstr "Geen Mail host %s gevonden"
+msgstr "Geen Mail host %(domain)s gevonden"
 
-#, fuzzy
 msgid "Verified address: %(info)s"
-msgstr "Geldig adres: %s"
+msgstr "Geldig adres: %(info)s"
 
-#, fuzzy
 msgid "MX mail host %(host)s did not accept connections: %(error)s"
-msgstr "Geen van de mail hosts %s accepteert een SMTP Verbinding: %s"
+msgstr "Geen van de mail hosts %(host)s accepteert een SMTP Verbinding: %(error)s"
 
 msgid "Could not connect, but syntax is correct"
 msgstr ""
 
-#, fuzzy
 msgid "Found MX mail host %(host)s"
-msgstr "Mail host %s gevonden"
+msgstr "Mail host %(host)s gevonden"
 
 #, fuzzy
 msgid "Could not split the mail address"
@@ -183,9 +173,8 @@ msgstr ""
 msgid "Valid: %(result)s"
 msgstr ""
 
-#, fuzzy
 msgid "Error: %(result)s"
-msgstr "Fout: %s\n"
+msgstr "Fout: %(result)s"
 
 msgid "Base URL is not properly normed. Normed url is %(url)r."
 msgstr ""
@@ -222,9 +211,8 @@ msgstr ""
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
-#, fuzzy
 msgid "invalid log option %r"
-msgstr "ungeldige Log Optie '%s'"
+msgstr "ungeldige Log Optie %r"
 
 msgid "extern%d: syntax error %s\n"
 msgstr ""
@@ -252,8 +240,7 @@ msgstr "ungeldige Optie '%s'"
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
-"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 "
-"alink=#191c83>\n"
+"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
 "<blockquote>\n"
 "<b>Error: %s</b><br>\n"
 "The LinkChecker Online script has encountered an error. Please ensure\n"
@@ -263,14 +250,7 @@ msgid ""
 "</blockquote>\n"
 "</body>\n"
 "</html>"
-msgstr ""
-"<html><head><title>LinkChecker Online Fehler</title></head><body text="
-"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
-"\"#191c83\"><blockquote><b>Fehler: %s</b><br>Das LinkChecker Online Skript "
-"ist auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die "
-"angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen "
-"enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
-"blockquote></body></html>"
+msgstr "<html><head><title>LinkChecker Online Fehler</title></head><body text=\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink=\"#191c83\"><blockquote><b>Fehler: %s</b><br>Das LinkChecker Online Skript ist auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </blockquote></body></html>"
 
 msgid "Real URL"
 msgstr "Echte URL"
@@ -315,15 +295,11 @@ msgstr "URL"
 msgid "created by %s at %s"
 msgstr "gemaakt door %s om %s\n"
 
-#, fuzzy
 msgid "Get the newest version at %(url)s"
-msgstr "Haal de nieuwste versie op van %s\n"
+msgstr "Haal de nieuwste versie op van %(url)s"
 
-#, fuzzy
 msgid "Write comments and bugs to %(email)s"
-msgstr ""
-"Stuur commentaar en bugs aan %s\n"
-"\n"
+msgstr "Stuur commentaar en bugs aan %(email)s"
 
 msgid "# Format of the entries:"
 msgstr "# Format der Einträge:"
@@ -357,9 +333,8 @@ msgstr "Dat was het. "
 msgid "1 error"
 msgstr "1 fout"
 
-#, fuzzy
 msgid "%d errors"
-msgstr " fouten"
+msgstr "%d fouten"
 
 msgid " in 1 link"
 msgstr " in 1 URL"
@@ -401,8 +376,7 @@ msgid ""
 "o A ! before a regular expression negates it. So '!^mailto:' matches\n"
 "  everything but a mailto link.\n"
 "o URLs on the command line starting with \"ftp.\" are treated like\n"
-"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www."
-"\".\n"
+"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www.\".\n"
 "  You can also give local files as arguments.\n"
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
@@ -421,15 +395,13 @@ msgstr ""
 "KOMMENTARE\n"
 "o Ein ! vor einem regulären Ausdruck negiert diesen. Also matcht\n"
 "  '!^mailto:' alles außer mailto Links.\n"
-"o LinkChecker's Kommandozeilenparser behandelt \"ftp.\" Links wie \"ftp://"
-"ftp.\"\n"
+"o LinkChecker's Kommandozeilenparser behandelt \"ftp.\" Links wie \"ftp://ftp.\"\n"
 "  und \"www.\" Links wie \"http://www.\".\n"
 "  Sie können auch lokale Dateien als Argumente angeben\n"
 "o Falls sich Ihr System automatisch mit dem Internet verbindet\n"
 "  (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht\n"
 "  auf Ihren lokalen Rechner verweisen\n"
-"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe "
-"BEISPIELE)\n"
+"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe BEISPIELE)\n"
 "o Javascript Links werden zur Zeit ignoriert\n"
 "o Wenn Ihr System keine Threads unterstützt verwendet LinkChecker die\n"
 "  Option -t0\n"
@@ -681,56 +653,3 @@ msgstr "geen bestanden of URLs gegeven"
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
 
-#, fuzzy
-#~ msgid "Host %s (%s) found"
-#~ msgstr " gevonden"
-
-#~ msgid "Start checking at %s\n"
-#~ msgstr "Begin testen vanaf %s\n"
-
-#~ msgid "Stopped checking at %s (%s)\n"
-#~ msgstr "Stop testen om %s (%s)\n"
-
-#~ msgid "Get the newest version at %s\n"
-#~ msgstr "Haal de nieuwste versie op van %s\n"
-
-#~ msgid ""
-#~ "Write comments and bugs to %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Stuur commentaar en bugs aan %s\n"
-#~ "\n"
-
-#~ msgid "Error"
-#~ msgstr "Fout"
-
-#~ msgid "Valid"
-#~ msgstr "Geldig"
-
-#~ msgid "created by %s at %s%s"
-#~ msgstr "gemaakt door %s om %s%s"
-
-#~ msgid "Get the newest version at %s%s"
-#~ msgstr "Haal de nieuwste versie op van %s%s"
-
-#~ msgid "Write comments and bugs to %s%s%s"
-#~ msgstr "Stuur commentaar en bugs aan %s%s%s"
-
-#~ msgid " (cached)\n"
-#~ msgstr " (uit de cache)\n"
-
-#~ msgid "%.3f seconds\n"
-#~ msgstr "%.3f Seconden\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Thats it. "
-#~ msgstr ""
-#~ "\n"
-#~ "Dat was het. "
-
-#~ msgid " found\n"
-#~ msgstr " gevonden\n"
-
-#~ msgid "found"
-#~ msgstr "gevonden"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "POT-Creation-Date: Sat Aug 28 14:53:56 2004\n"
-"PO-Revision-Date: 2004-01-03 23:24+0100\n"
+"PO-Revision-Date: 2004-08-28 15:42+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: fr <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,8 +15,7 @@ msgstr ""
 msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
-msgid ""
-"Status: %5d urls queued, %4d urls checked, %2d active threads, runtime %s"
+msgid "Status: %5d urls queued, %4d urls checked, %2d active threads, runtime %s"
 msgstr ""
 
 msgid "URL is unrecognized or has invalid syntax"
@@ -78,10 +77,7 @@ msgstr ""
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien."
 
-msgid ""
-"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
-"urls which point to (home) directories should end with a / to avoid "
-"redirection."
+msgid "A HTTP 301 redirection occured and the url has no trailing / at the end. All urls which point to (home) directories should end with a / to avoid redirection."
 msgstr ""
 
 msgid "HTTP redirection to non-http url encountered; the original url was %r."
@@ -109,23 +105,20 @@ msgstr ""
 msgid "No addresses found"
 msgstr "Aucune adresse trouvée"
 
-#, fuzzy
 msgid "No MX mail host for %(domain)s found"
-msgstr "ne pas trouvé un hôte de messagerie %s"
+msgstr "ne pas trouvé un hôte de messagerie %(domain)s"
 
 msgid "Verified address: %(info)s"
 msgstr ""
 
-#, fuzzy
 msgid "MX mail host %(host)s did not accept connections: %(error)s"
-msgstr "Aucun des hôtes de messagerie pour %s n'accepte de connection SMTP: %s"
+msgstr "Aucun des hôtes de messagerie pour %(host)s n'accepte de connection SMTP: %(error)s"
 
 msgid "Could not connect, but syntax is correct"
 msgstr ""
 
-#, fuzzy
 msgid "Found MX mail host %(host)s"
-msgstr "trouvé un hôte de messagerie %s"
+msgstr "trouvé un hôte de messagerie %(host)s"
 
 #, fuzzy
 msgid "Could not split the mail address"
@@ -180,9 +173,8 @@ msgstr ""
 msgid "Valid: %(result)s"
 msgstr ""
 
-#, fuzzy
 msgid "Error: %(result)s"
-msgstr "Erreur: %s\n"
+msgstr "Erreur: %(result)s"
 
 msgid "Base URL is not properly normed. Normed url is %(url)r."
 msgstr ""
@@ -219,9 +211,8 @@ msgstr ""
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
-#, fuzzy
 msgid "invalid log option %r"
-msgstr "option de log invalide '%s'"
+msgstr "option de log invalide %r"
 
 msgid "extern%d: syntax error %s\n"
 msgstr ""
@@ -249,8 +240,7 @@ msgstr ""
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
-"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 "
-"alink=#191c83>\n"
+"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
 "<blockquote>\n"
 "<b>Error: %s</b><br>\n"
 "The LinkChecker Online script has encountered an error. Please ensure\n"
@@ -304,15 +294,11 @@ msgstr ""
 msgid "created by %s at %s"
 msgstr ""
 
-#, fuzzy
 msgid "Get the newest version at %(url)s"
-msgstr "Obtenir la dernière version à %s\n"
+msgstr "Obtenir la dernière version à %(url)s"
 
-#, fuzzy
 msgid "Write comments and bugs to %(email)s"
-msgstr ""
-"Ecrire les commentaires et rapport de bug à %s\n"
-"\n"
+msgstr "Ecrire les commentaires et rapport de bug à %(email)s"
 
 msgid "# Format of the entries:"
 msgstr "# Format des entrées:"
@@ -346,9 +332,8 @@ msgstr "Terminé. "
 msgid "1 error"
 msgstr "1 erreur"
 
-#, fuzzy
 msgid "%d errors"
-msgstr " erreurs"
+msgstr "%d erreurs"
 
 msgid " in 1 link"
 msgstr " dans 1 liens"
@@ -390,8 +375,7 @@ msgid ""
 "o A ! before a regular expression negates it. So '!^mailto:' matches\n"
 "  everything but a mailto link.\n"
 "o URLs on the command line starting with \"ftp.\" are treated like\n"
-"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www."
-"\".\n"
+"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www.\".\n"
 "  You can also give local files as arguments.\n"
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
@@ -410,23 +394,19 @@ msgstr ""
 "NOTES\n"
 "o A ! before any regex negates it. So '!^mailto:' matches everything but\n"
 "  a mailto link.\n"
-"o LinkChecker suppose qu'il s'agit de liens http:// et respectivement ftp:// "
-"lorsque l'URL\n"
+"o LinkChecker suppose qu'il s'agit de liens http:// et respectivement ftp:// lorsque l'URL\n"
 "  de la ligne de commande commence par 'www.' et respectivement 'ftp.'\n"
 "  Vous pouvez aussi donner des fichiers locaux comme arguments\n"
 "o Si votre systeme est configuré pour établir automatiquement une\n"
-"  connexion à internet (e.g. with diald), il se connectera lorsque les "
-"liens\n"
+"  connexion à internet (e.g. with diald), il se connectera lorsque les liens\n"
 "  contrôlés ne pointent pas vers votre réseau local\n"
 "  Utiliser l'option -s et -i pour l'éviter (voir EXEMPLES)\n"
 "o Les liens Javascript sont actuellement ignorés.\n"
 "o If your platform does not support threading, LinkChecker uses -t0\n"
-"o Vous pouvez fournir plusieurs couples 'utilisateurs'/'mots de passe' dans "
-"le fichier de configuration.\n"
+"o Vous pouvez fournir plusieurs couples 'utilisateurs'/'mots de passe' dans le fichier de configuration.\n"
 "o To use proxies set $http_proxy, $https_proxy on Unix or Windows.\n"
 "  On a Mac use the Internet Config.\n"
-"o Lors d'un contrôle des liens 'news:', l'hôte NNTP spécifié n'a pas besoin "
-"d'être le\n"
+"o Lors d'un contrôle des liens 'news:', l'hôte NNTP spécifié n'a pas besoin d'être le\n"
 "  même que l'hôte de l'utilisateur qui parcourt vos pages!\n"
 
 #, fuzzy
@@ -671,58 +651,3 @@ msgstr "aucun fichier ou url donnée"
 msgid "Hit RETURN to finish"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Host %s (%s) found"
-#~ msgstr " trouvé"
-
-#~ msgid "Start checking at %s\n"
-#~ msgstr "Démarrage du controle à %s\n"
-
-#~ msgid "Stopped checking at %s (%s)\n"
-#~ msgstr "Arrêt du controle à %s (%s)\n"
-
-#~ msgid "Get the newest version at %s\n"
-#~ msgstr "Obtenir la dernière version à %s\n"
-
-#~ msgid ""
-#~ "Write comments and bugs to %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Ecrire les commentaires et rapport de bug à %s\n"
-#~ "\n"
-
-#~ msgid "Error"
-#~ msgstr "Erreur"
-
-#~ msgid "Valid"
-#~ msgstr "Valide"
-
-#~ msgid "Get the newest version at %s%s"
-#~ msgstr "Obtenir la dernière version à %s%s"
-
-#~ msgid "Write comments and bugs to %s%s%s"
-#~ msgstr "Ecrire les commentaires et rapport de bug à %s%s%s"
-
-#~ msgid " (cached)\n"
-#~ msgstr " (caché)\n"
-
-#~ msgid "%.3f seconds\n"
-#~ msgstr "%.3f secondes\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Thats it. "
-#~ msgstr ""
-#~ "\n"
-#~ "Terminé. "
-
-#~ msgid " found\n"
-#~ msgstr " trouvé\n"
-
-#~ msgid ""
-#~ "Print debugging information. Provide this option multiple times\n"
-#~ "for even more debugging information."
-#~ msgstr "Affiche des informations de débugage supplémentaires."
-
-#~ msgid "found"
-#~ msgstr "trouvé"
