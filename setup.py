@@ -25,7 +25,6 @@ from distutils import util
 from distutils.file_util import write_file
 import os
 
-config_file = "config.py"
 
 class LCInstall(install):
     def run(self):
@@ -69,40 +68,42 @@ class LCConfig(config):
                                   include_dirs = self.ssl_include_dirs,
                                   other_libraries = ["crypto"],
                                   headers = ["ssl.h"])
-        f = open(config_file,'w')
-        f.write("# this file is automatically created by setup.py config\n")
-	f.write("have_ssl = %d\n" % (have_ssl))
-        f.write("ssl_library_dirs = %s\n" % `self.ssl_library_dirs`)
-        f.write("ssl_include_dirs = %s\n" % `self.ssl_include_dirs`)
-        f.write("libraries = %s\n" % `['ssl', 'crypto']`)
-        f.close()
-        self.distribution.create_conf_file(".")
+        data = []
+	data.append("have_ssl = %d" % (have_ssl))
+        data.append("ssl_library_dirs = %s" % `self.ssl_library_dirs`)
+        data.append("ssl_include_dirs = %s" % `self.ssl_include_dirs`)
+        data.append("libraries = %s" % `['ssl', 'crypto']`)
+        data.append("install_data = ''")
+        self.distribution.create_conf_file(".", data)
 
 
 class LCDistribution(Distribution):
 
-    def run_commands (self):
+    config_file = "LinkCheckerConf.py"
+
+    def run_commands(self):
         if "config" not in self.commands:
             self.check_ssl()
         Distribution.run_commands(self)
 
     def check_ssl(self):
-        if not os.path.exists(config_file):
-            raise SystemExit, 'Please configure LinkChecker by running ' \
-	                      '"python setup.py config".'
-        from test import config
+        if not os.path.exists(self.config_file):
+            self.announce("WARNING: Configuration file %s not found."
+	                  % self.config_file)
+            return
+        import LinkCheckerConf
         if 'bdist_wininst' in self.commands and os.name!='nt':
             self.announce("bdist_wininst command found on non-Windows "
 	                  "platform. Disabling SSL compilation")
-        elif config.have_ssl:
+        elif LinkCheckerConf.have_ssl:
             self.ext_modules = [Extension('ssl', ['ssl.c'],
-                        include_dirs=config.ssl_include_dirs,
-                        library_dirs=config.ssl_library_dirs,
-                        libraries=config.libraries)]
+                        include_dirs=LinkCheckerConf.ssl_include_dirs,
+                        library_dirs=LinkCheckerConf.ssl_library_dirs,
+                        libraries=LinkCheckerConf.libraries)]
 
     def create_conf_file(self, dir, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
-        filename = os.path.join(dir, self.get_name() + "Conf.py")
+        filename = os.path.join(dir, self.config_file)
         data.append("name = %s" % `self.get_name()`)
         data.append("version = %s" % `self.get_version()`)
         data.append("author = %s" % `self.get_author()`)

@@ -11,7 +11,7 @@ PROXY=--proxy= -itreasure.calvinsplayground.de -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
 SOURCES = \
-linkcheck/Config.py.tmpl \
+linkcheck/Config.py \
 linkcheck/FileUrlData.py \
 linkcheck/FtpUrlData.py \
 linkcheck/GopherUrlData.py \
@@ -26,17 +26,9 @@ linkcheck/RobotsTxt.py \
 linkcheck/TelnetUrlData.py \
 linkcheck/Threader.py \
 linkcheck/UrlData.py \
-linkcheck/__init__.py.tmpl \
-linkcheck/lc_cgi.py \
-linkchecker.tmpl
-
-TEMPLATEFILES = \
-README \
-linkcheck/Config.py \
 linkcheck/__init__.py \
-install.py \
-linkchecker \
-linkchecker.bat
+linkcheck/lc_cgi.py \
+linkchecker
 
 DESTDIR=/.
 .PHONY: test clean files homepage dist install all
@@ -49,7 +41,7 @@ clean:
 
 distclean:	clean
 	rm -rf dist
-	rm -f $(PACKAGE)-out.* $(TEMPLATEFILES) VERSION
+	rm -f $(PACKAGE)-out.* VERSION
 
 dist:	mo
 	rm -rf debian/tmp

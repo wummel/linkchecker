@@ -24,11 +24,12 @@ class error(Exception):
     pass
 
 # i18n suppport
+import LinkCheckerConf
 try:
     import fintl,os
     gettext = fintl.gettext
     domain = 'linkcheck'
-    localedir = os.path.join('$install_data', 'locale')
+    localedir = os.path.join(LinkCheckerConf.install_data, 'locale')
     fintl.bindtextdomain(domain, localedir)
     fintl.textdomain(domain)
 except ImportError:
