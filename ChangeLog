@@ -28,6 +28,12 @@
     Type: feature
     Changed: linkchecker
 
+  * When searching for link names, limit the amount of data to look at
+    to 500 characters. Do not look at the complete content anymore.
+    This speeds up parsing of big HTML files significantly.
+    Type: optimization
+    Changed: linkcheck/linkparse.py
+
 2.1 "Shogun Assassin" (released 11.1.2005)
 
   * Added XHTML support to the HTML parser.

@@ -190,7 +190,10 @@ class LinkFinder (TagFinder):
         if tag == 'a' and attr == 'href':
             name = linkcheck.strformat.unquote(attrs.get('title', u''))
             if not name:
-                data = self.content[self.parser.pos():]
+                pos = self.parser.pos()
+                # Look for name only up to characters from current
+                # position, to limit the amount of data to encode.
+                data = self.content[pos:pos+500]
                 data = data.decode(self.parser.encoding, "ignore")
                 name = linkcheck.linkname.href_name(data)
         elif tag == 'img':
