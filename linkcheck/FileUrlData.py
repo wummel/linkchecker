@@ -115,7 +115,7 @@ class FileUrlData (UrlData):
     def buildUrl (self):
         UrlData.buildUrl(self)
         # ignore query and fragment url parts
-        self.urlparts[4] = self.urlparts[5] = ''
+        self.urlparts[3] = self.urlparts[4] = ''
 
 
     def adjustWinPath (self):
