@@ -1,3 +1,9 @@
+linkchecker (1.10.3-2) unstable; urgency=low
+
+  * install upstream changelog (Closes: #227141)
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 12 Jan 2004 01:58:06 +0100
+
 linkchecker (1.10.3-1) unstable; urgency=low
 
   * New upstream version
