@@ -1,8 +1,8 @@
-1.9.6 (released xx.xx.xxxx)
+1.9.6 (released 5.12.2003)
   * catch httplib errors in robotparser
     Changed: linkcheck/robotparser2.py
     Closes: SF bug 836864
-  * - fixed infinite recursion option avlue
+  * - fixed infinite recursion option with negative value
     - initialize self.urlparts to avoid crash when reading cached http
       urls
     Changed: linkcheck/UrlData.py
