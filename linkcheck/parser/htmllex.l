@@ -179,6 +179,7 @@ static PyObject* quote_string (PyObject* val) {
 
 %x S_PI
 %x S_COMMENT
+%x S_COMMENT2
 %x S_DOCTYPE
 %x S_CDATA
 %x S_TAGSTART
@@ -239,6 +240,34 @@ RX_DATA [-a-zA-Z0-9_]+
 <S_COMMENT>. {
     return T_WAIT;
 }
+
+   /* Note: www.nba.com ad some <! Copyright !> comment */
+<INITIAL><![ ]+ {
+    UPDATE_BUFPOS;
+    BEGIN(S_COMMENT2);
+}
+
+<S_COMMENT2>!> {
+    UPDATE_BUFPOS;
+    SETLVAL;
+    BEGIN(INITIAL);
+    RETURN(T_COMMENT);
+}
+
+<S_COMMENT2>[^!]+ {
+    UPDATE_BUFPOS;
+    APPEND_TO_TMP(yyleng);
+}
+
+<S_COMMENT2>![^>]+ {
+    UPDATE_BUFPOS;
+    APPEND_TO_TMP(yyleng);
+}
+
+<S_COMMENT2>. {
+    return T_WAIT;
+}
+
 
   /*********************** DOCTYPE ************************/
 <INITIAL><![Dd][Oo][Cc][Tt][Yy][Pp][Ee] {
