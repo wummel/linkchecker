@@ -15,9 +15,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import http11lib,urlparse,sys,time,re
+import httplib,urlparse,sys,time,re,robotparser
 from UrlData import UrlData
-from RobotsTxt import RobotsTxt
 import Config,StringUtil
 from linkcheck import _
 
@@ -173,7 +172,7 @@ class HttpUrlData(UrlData):
         return self.urlConnection.getreply()
 
     def _getHTTPObject(self, host):
-        return http11lib.HTTP(host)
+        return httplib.HTTP(host)
 
     def getContent(self):
         if not self.data:
@@ -193,18 +192,14 @@ class HttpUrlData(UrlData):
         return self.mime.gettype()=="text/html"
 
     def robotsTxtAllowsUrl(self, config):
-        try:
-            if config.robotsTxtCache_has_key(self.urlTuple[1]):
-                robotsTxt = config.robotsTxtCache_get(self.urlTuple[1])
-            else:
-                robotsTxt = RobotsTxt(self.urlTuple, Config.UserAgent)
-                Config.debug("DEBUG: "+str(robotsTxt)+"\n")
-                config.robotsTxtCache_set(self.urlTuple[1], robotsTxt)
-        except:
-            type, value = sys.exc_info()[:2]
-            Config.debug("Heieiei: "+str(value)+"\n")
-            return 1
-        return robotsTxt.allowance(Config.UserAgent, self.urlTuple[2])
+        if not config.robotsTxtCache_has_key(self.url):
+            roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]
+            rp = robotparser.RobotFileParser()
+            rp.set_url(roboturl)
+            rp.read()
+            robotsTxt = rp.can_fetch(Config.UserAgent, self.url)
+            config.robotsTxtCache_set(self.urlTuple[0:2], robotsTxt)
+        return config.robotsTxtCache_get(self.url)
 
 
     def __str__(self):

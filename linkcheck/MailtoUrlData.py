@@ -18,7 +18,7 @@
 import os,re,string,DNS,sys,Config,cgi,urllib,linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
-from smtplib import SMTP
+from smtplib import SMTP,SMTPException
 from linkcheck import _
 
 # regular expression for RFC2368 compliant mailto: scanning
@@ -85,9 +85,8 @@ class MailtoUrlData(HostCheckingUrlData):
                     info = self.urlConnection.verify(user)
                     if info[0]==250:
                         self.setInfo("Verified adress: "+info[1])
-                except:
-                    type, value = sys.exc_info()[:2]
-                    #print type,value
+                except SMTPException:
+                    pass
                 if smtpconnect: break
             
             if not smtpconnect:

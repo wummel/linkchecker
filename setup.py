@@ -43,62 +43,8 @@ class LCInstall(install):
 
 
 class LCConfig(config):
-    user_options = config.user_options + [
-        ('ssl-include-dirs=', None,
-         "directories to search for SSL header files"),
-        ('ssl-library-dirs=', None,
-         "directories to search for SSL library files"),
-        ]
-
-    def initialize_options (self):
-        config.initialize_options(self)
-        self.ssl_include_dirs = None
-        self.ssl_library_dirs = None
-
-    def finalize_options(self):
-        # we have some default include and library directories
-        self.basic_finalize_options()
-        if self.ssl_include_dirs is None:
-            self.ssl_include_dirs = ['/usr/include/openssl',
-                                     '/usr/local/include/openssl']
-        if self.ssl_library_dirs is None:
-            self.ssl_library_dirs = ['/usr/lib',
-                                     '/usr/local/lib']
-
-    def basic_finalize_options(self):
-        """fix up types of option values"""
-        # this should be in config.finalize_options
-        # I submitted a patch
-        if self.include_dirs is None:
-            self.include_dirs = self.distribution.include_dirs or []
-        elif type(self.include_dirs) is StringType:
-            self.include_dirs = string.split(self.include_dirs, os.pathsep)
-
-        if self.libraries is None:
-            self.libraries = []
-        elif type(self.libraries) is StringType:
-            self.libraries = [self.libraries]
-
-        if self.library_dirs is None:
-            self.library_dirs = []
-        elif type(self.library_dirs) is StringType:
-            self.library_dirs = [self.library_dirs]
-
-
     def run (self):
-        # try to compile a test program with SSL
-        config.run(self)
-        have_ssl = self.check_lib("ssl",
-                                  library_dirs = self.ssl_library_dirs,
-                                  include_dirs = self.ssl_include_dirs,
-                                  headers = ["ssl.h"])
-        # write the result in the configuration file
-        data = []
-	data.append("have_ssl = %d" % (have_ssl))
-        data.append("ssl_library_dirs = %s" % `self.ssl_library_dirs`)
-        data.append("ssl_include_dirs = %s" % `self.ssl_include_dirs`)
-        data.append("libraries = %s" % `['ssl', 'crypto']`)
-        data.append("install_data = %s" % `os.getcwd()`)
+        data = ["install_data = %s" % `os.getcwd()`]
         self.distribution.create_conf_file(".", data)
 
 
@@ -106,28 +52,6 @@ class LCDistribution(Distribution):
     def __init__(self, attrs=None):
         Distribution.__init__(self, attrs=attrs)
         self.config_file = self.get_name()+"Conf.py"
-
-
-    def run_commands(self):
-        if "config" not in self.commands:
-            self.check_ssl()
-        Distribution.run_commands(self)
-
-
-    def check_ssl(self):
-        if not os.path.exists(self.config_file):
-            raise SystemExit, "please run 'python setup.py config'"
-            #self.announce("generating default configuration")
-            #self.run_command('config')
-        import LinkCheckerConf
-        if 'bdist_wininst' in self.commands and os.name!='nt':
-            self.announce("bdist_wininst command found on non-Windows "
-	                  "platform. Disabling SSL compilation")
-        elif LinkCheckerConf.have_ssl:
-            self.ext_modules = [Extension('ssl', ['ssl.c'],
-                        include_dirs=LinkCheckerConf.ssl_include_dirs,
-                        library_dirs=LinkCheckerConf.ssl_library_dirs,
-                        libraries=LinkCheckerConf.libraries)]
 
 
     def create_conf_file(self, directory, data=[]):
@@ -145,7 +69,7 @@ class LCDistribution(Distribution):
 
 
 setup (name = "LinkChecker",
-       version = "1.2.6",
+       version = "1.3.0",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",

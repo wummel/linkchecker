@@ -3,25 +3,12 @@
 
 Requirements
 ------------
-Python >= 1.5.2 from http://www.python.org/
-Distutils >= 0.9.1 from http://www.python.org/sigs/distutils-sig/
-Python 1.6 includes the Distutils 0.9.1,
-Python 2.0 includes the Distutils 1.0
-
-
-Optionally packages
--------------------
-OpenSSL from http://www.openssl.org/
-You will need Perl for Win32 (available from
-http://www.activestate.com/ActivePerl) if you want to install OpenSSL
-on Windows!
+Python >= 2.0 from http://www.python.org/
 
 
 Setup
 -----
 Run "python setup.py config" to configure.
-Linux users should run "python setup.py config -lcrypto" to use the SSL 
-module.
 Run "python setup.py install --prefix=<prefix>" to install.
 Default prefix is /usr.
 Run "python setup.py --help" for help.
@@ -35,13 +22,6 @@ Local configuration files are in ~/.linkcheckerrc on Unix platforms.
 To run the program type "linkchecker" followed by your URLs you want 
 to check.
 Type "linkchecker -h" for help.
-
-
-Note
-----
-If you want to make your own distribution with "python setup.py sdist",
-you will need Distutils >= 0.9.4. Older versions are hanging when
-they try to parse the MANIFEST.in file.
 
 
 (Fast)CGI web interface
