@@ -33,19 +33,23 @@ class FormError (Exception):
     pass
 
 
-def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
-    if os.environ.get('REMOTE_ADDR') not in hosts or \
-       os.environ.get('SERVER_ADDR') not in servers:
-        logit({}, env)
-        printError(out, "Access denied")
-
-
-def checklink (out=sys.stdout, form={}, env=os.environ):
-    """main cgi function, check the given links and print out the result"""
+def startoutput (out=sys.stdout):
     out.write("Content-type: text/html\r\n"
               "Cache-Control: no-cache\r\n"
               "Pragma: no-cache\r\n"
               "\r\n")
+
+def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
+    if os.environ.get('REMOTE_ADDR') in hosts and \
+       os.environ.get('SERVER_ADDR') in servers:
+        return 1
+    logit({}, env)
+    printError(out, "Access denied")
+    return 0
+
+
+def checklink (out=sys.stdout, form={}, env=os.environ):
+    """main cgi function, check the given links and print out the result"""
     try: checkform(form)
     except FormError, why:
         logit(form, env)

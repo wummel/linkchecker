@@ -25,10 +25,12 @@ ALLOWED_SERVERS = ['127.0.0.1']
 try:
     while fcgi.isFCGI():
         req = fcgi.FCGI()
-        linkcheck.lc_cgi.checkaccess(out=req.out, hosts=ALLOWED_HOSTS,
-                                     servers=ALLOWED_SERVERS, env=req.env)
-        linkcheck.lc_cgi.checklink(out=req.out, form=req.getFieldStorage(),
-                                   env=req.env)
+        linkcheck.lc_cgi.startoutput(out=req.out)
+        if linkcheck.lc_cgi.checkaccess(out=req.out, hosts=ALLOWED_HOSTS,
+                                        servers=ALLOWED_SERVERS, env=req.env):
+            linkcheck.lc_cgi.checklink(out=req.out,
+                                       form=req.getFieldStorage(),
+                                       env=req.env)
         req.Finish()
 except:
     import traceback

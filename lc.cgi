@@ -26,5 +26,7 @@ ALLOWED_SERVERS = ['127.0.0.1']
 #cgi.test()
 #sys.exit(0)
 import linkcheck.lc_cgi
-linkcheck.lc_cgi.checkaccess(hosts=ALLOWED_HOSTS, servers=ALLOWED_SERVERS)
-linkcheck.lc_cgi.checklink(form=cgi.FieldStorage())
+linkcheck.lc_cgi.startoutput()
+if linkcheck.lc_cgi.checkaccess(hosts=ALLOWED_HOSTS,
+                                servers=ALLOWED_SERVERS):
+    linkcheck.lc_cgi.checklink(form=cgi.FieldStorage())

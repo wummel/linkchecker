@@ -1,7 +1,10 @@
 1.8.23
-  * upated robotparser.py to python2.3 version
+  * merged robotparser.py with newest official version
     Changed: linkcheck/robotparser.py
     Closes: SF bug 784977
+  * start CGI output immediately
+    Changed: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py
+    Closes: SF bug 784331
 
 1.8.22
   * allow colons in HTML attribute names, used for namespaces
