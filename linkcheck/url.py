@@ -218,7 +218,7 @@ def url_norm (url):
     # quote parts again
     urlparts[0] = urllib.quote(urlparts[0]) # scheme
     urlparts[1] = urllib.quote(urlparts[1], ':@') # host
-    nopathquote = ';/=,~*-+()@'
+    nopathquote = ';/=,~*-+()@|'
     urlparts[2] = urllib.quote(urlparts[2], nopathquote) # path
     res = urlparse.urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
