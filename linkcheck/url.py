@@ -78,11 +78,15 @@ def splitparams (path):
 
 def is_safe_js_url (urlstr):
     """test javascript URLs"""
-    url = urlparse.urlsplit(urlstr)
+    url = list(urlparse.urlsplit(urlstr))
     if url[0].lower() != 'http':
         return False
     if not is_safe_host(url[1]):
         return False
+    if ";" in urlstr:
+        url[2], parameter = splitparams(url[2])
+        if not is_safe_parameter(parameter):
+            return False
     if not is_safe_path(url[2]):
         return False
     if not is_safe_query(url[3]):
@@ -218,7 +222,8 @@ def url_norm (url):
 
 _slashes_ro = re.compile(r"/+")
 _samedir_ro = re.compile(r"/\./|/\.$")
-_parentdir_ro = re.compile(r"^/(\.\./)+|/[^/\.]+/\.\.(/|$)")
+_parentdir_ro = re.compile(r"^/(\.\./)+|/(?!\.\./)[^/]+/\.\.(/|$)")
+_relparentdir_ro = re.compile(r"^(?!\.\./)[^/]+/\.\.(/|$)")
 def collapse_segments (path):
     """Remove all redundant segments from the given URL path.
        Precondition: path is an unquoted url path
@@ -243,6 +248,12 @@ def collapse_segments (path):
     while newpath != path:
         path = newpath
         newpath = _parentdir_ro.sub("/", path)
+    # collapse parent path segments of relative paths
+    # (ie. without leading slash)
+    newpath = _relparentdir_ro.sub("", path)
+    while newpath != path:
+        path = newpath
+        newpath = _relparentdir_ro.sub("", path)
     return path
 
 
