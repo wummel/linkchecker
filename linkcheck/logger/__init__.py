@@ -18,6 +18,7 @@
 
 import time
 import linkcheck
+import linkcheck.i18n
 
 
 def strtime (t):

@@ -16,7 +16,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import time
 import re
 import sys
 import urlparse
@@ -58,63 +57,25 @@ extensions = {
 }
 
 
-# main check function
-def checkUrls (config):
-    """ checkUrls gets a complete configuration object as parameter where all
-    runtime-dependent options are stored.
-    If you call checkUrls more than once, you can specify different
-    configurations.
-
-    In the config object there are functions to get a new URL (getUrl) and
-    to check it (checkUrl).
-    """
-    config.log_init()
-    try:
-        start_time = time.time()
-        status_time = start_time
-        while True:
-            if config.hasMoreUrls():
-                config.checkUrl(config.getUrl())
-            elif config.finished():
-                break
-            else:
-                # active connections are downloading/parsing, so
-                # wait a little
-                time.sleep(0.1)
-            if config['status']:
-                curtime = time.time()
-                if (curtime - status_time) > 5:
-                    printStatus(config, curtime, start_time)
-                    status_time = curtime
-        config.log_endOfOutput()
-    except KeyboardInterrupt:
-        config.finish()
-        config.log_endOfOutput()
-        active = config.threader.active_threads()
-        linkcheck.log.warn(LOG_CHECK, linkcheck.i18n._("keyboard interrupt; waiting for %d active threads to finish") % active)
-        raise
-
-
-import linkcheck.logger
-import linkcheck.logger.FileUrlData
-import linkcheck.logger.IgnoredUrlData
-import linkcheck.logger.FtpUrlData
-import linkcheck.logger.GopherUrlData
-import linkcheck.logger.HttpUrlData
-import linkcheck.logger.HttpsUrlData
-import linkcheck.logger.MailtoUrlData
-import linkcheck.logger.TelnetUrlData
-import linkcheck.logger.NntpUrlData
+import linkcheck.FileUrlData
+import linkcheck.IgnoredUrlData
+import linkcheck.FtpUrlData
+import linkcheck.GopherUrlData
+import linkcheck.HttpUrlData
+import linkcheck.HttpsUrlData
+import linkcheck.MailtoUrlData
+import linkcheck.TelnetUrlData
+import linkcheck.NntpUrlData
 
 def set_intern_url (url, klass, config):
     """Precondition: config['strict'] is true (ie strict checking) and
        recursion level is zero (ie url given on the command line)"""
-    if klass == linkcheck.logger.FileUrlData.FileUrlData:
+    if klass == linkcheck.FileUrlData.FileUrlData:
         linkcheck.log.debug(LOG_CHECK, "Add intern pattern ^file:")
         config['internlinks'].append(getLinkPat("^file:"))
-    elif klass in [linkcheck.logger.HttpUrlData.HttpUrlData,
-                   linkcheck.logger.HttpsUrlData.HttpsUrlData,
-                   linkcheck.logger.FtpUrlData.FtpUrlData]:
+    elif klass in [linkcheck.HttpUrlData.HttpUrlData,
+                   linkcheck.HttpsUrlData.HttpsUrlData,
+                   linkcheck.FtpUrlData.FtpUrlData]:
         domain = urlparse.urlsplit(url)[1]
         if domain:
             domain = "://%s"%re.escape(domain)
@@ -123,42 +84,7 @@ def set_intern_url (url, klass, config):
             config['internlinks'].append(getLinkPat(domain))
 
 
-def getUrlDataFrom (urlName, recursionLevel, config, parentName=None,
-                    baseRef=None, line=0, column=0, name=None,
-                    cmdline=None):
-    url = get_absolute_url(urlName, baseRef, parentName)
-    # test scheme
-    if url.startswith("http:"):
-        klass = linkcheck.logger.HttpUrlData.HttpUrlData
-    elif url.startswith("ftp:"):
-        klass = linkcheck.logger.FtpUrlData.FtpUrlData
-    elif url.startswith("file:"):
-        klass = linkcheck.logger.FileUrlData.FileUrlData
-    elif url.startswith("telnet:"):
-        klass = linkcheck.logger.TelnetUrlData.TelnetUrlData
-    elif url.startswith("mailto:"):
-        klass = linkcheck.logger.MailtoUrlData.MailtoUrlData
-    elif url.startswith("gopher:"):
-        klass = linkcheck.logger.GopherUrlData.GopherUrlData
-    elif url.startswith("https:"):
-        klass = linkcheck.logger.HttpsUrlData.HttpsUrlData
-    elif url.startswith("nttp:") or \
-         url.startswith("news:") or \
-         url.startswith("snews:"):
-        klass = linkcheck.logger.NntpUrlData.NntpUrlData
-    # application specific links are ignored
-    elif ignored_schemes_re.search(url):
-        klass = linkcheck.logger.IgnoredUrlData.IgnoredUrlData
-    # assume local file
-    else:
-        klass = linkcheck.logger.FileUrlData.FileUrlData
-    if config['strict'] and cmdline and \
-       not (config['internlinks'] or config['externlinks']):
-        # set automatic intern/extern stuff if no filter was given
-        set_intern_url(url, klass, config)
-    return klass(urlName, recursionLevel, config, parentName, baseRef,
-                 line=line, column=column, name=name)
-
+import linkcheck.logger
 
 def printStatus (config, curtime, start_time):
     tocheck = len(config.urls)

@@ -17,7 +17,7 @@
 
 import sys
 import time
-import linkcheck
+import linkcheck.i18n
 import linkcheck.logger.Logger
 
 
