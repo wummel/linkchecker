@@ -68,9 +68,7 @@ So for example 1.1.5 is the fifth release of the 1.1 development package.
 
 Included packages
 -----------------
-fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
-CSV from http://eh.org/~laurie/comp/python/csv/index.html
-
+fcgi.py and sz_fcgi.py from Andreas Jung (http://www.andreas-jung.com/privat.html)
 Note that included packages are modified by me.
 
 
