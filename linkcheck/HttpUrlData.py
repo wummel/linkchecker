@@ -16,14 +16,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, sys, time, re, httplib2, zlib, gzip, robotparser2
+import urlparse, sys, time, re, httplib2, zlib, gzip, robotparser2, socket
 from urllib import quote, unquote
 from cStringIO import StringIO
 import Config, i18n
 from debug import *
 from ProxyUrlData import ProxyUrlData
 from UrlData import ExcList, GetUrlDataFrom
-supportHttps = hasattr(httplib2, "HTTPSConnection")
+supportHttps = hasattr(httplib2, "HTTPSConnection") and hasattr(socket, "ssl")
 
 ExcList.extend([httplib2.error,])
 
