@@ -9,6 +9,11 @@
     Closes: SF bug 1013191
     Changed: linkchecker, linkcheck/checker/consumer.py
 
+  * Specify doctype and charset in html output
+    Type: feature
+    Closes: SF bug 1014283
+    Changed: linkcheck/logger/html.py
+
 1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request
     Type: bugfix
