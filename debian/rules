@@ -30,6 +30,4 @@ common-install-impl::
 	install -m 755 cgi/lc.fcgi $(CGIDIR)
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
-# install lintian overrides
-	install -m 644 debian/linkchecker.lintian $(ROOT)/usr/share/lintian/overrides/linkchecker
 
