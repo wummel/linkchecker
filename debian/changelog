@@ -1,6 +1,6 @@
 linkchecker (1.5.5) unstable; urgency=low
 
-  * linkcheck/linkname.py: fix linkname regular expressions (from 1.4.8)
+  * linkcheck/linkname.py: fix linkname regular expressions (from 1.4.9)
   * linkchecker: documentation typos
   * linkcheck/__init__.py: use getLinkPat function for all config
     entries, not just commandline

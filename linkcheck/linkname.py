@@ -18,7 +18,7 @@ import re, StringUtil
 
 imgtag_re = re.compile(r"""(?i)\s+alt\s*=\s*(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
 img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>]+)+>""")
-href_re = re.compile(r"""(?i)(?P<name>("[^"\n]*"|'[^'\n]*'|[^<]+|<(?!/a\s*>))*)</a\s*>""")
+endtag_re = re.compile(r"""(?i)</a\s*>""")
 
 def image_name(txt):
     name = ""
@@ -34,15 +34,13 @@ def image_name(txt):
 
 def href_name(txt):
     name = ""
-    mo = href_re.search(txt)
-    if mo:
-        #print "DEBUG:", `mo.group(0)`
-        name = mo.group('name').strip()
-        if img_re.search(name):
-            return image_name(name)
-        name = StringUtil.remove_markup(name)
-        name = StringUtil.unhtmlify(name)
-    #print "NAME:", `name`
+    endtag = endtag_re.search(txt)
+    if not endtag: return name
+    name = txt[:endtag.start()]
+    if img_re.search(name):
+        return image_name(name)
+    name = StringUtil.remove_markup(name)
+    name = StringUtil.unhtmlify(name)
     return name
 
 _tests = (
@@ -53,6 +51,10 @@ _tests = (
     "test<</a>",
     "test</</a>",
     "test</a</a>",
+    "test",
+    "\n",
+    "",
+    '"</a>"foo',
 )
 
 def _test ():

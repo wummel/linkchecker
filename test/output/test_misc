@@ -2,8 +2,10 @@ test_misc
 url file:///home/calvin/projects/linkchecker/test/html/misc.html
 valid
 url hutzli:nixgutt
+name bad scheme
 error
 url javascript:loadthis()
+name javascript url
 warning Javascript url ignored
 valid
 url telnet:localhost

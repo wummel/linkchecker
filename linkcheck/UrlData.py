@@ -77,16 +77,16 @@ _linkMatcher = r"""
     \s*            # whitespace
     %s             # tag name
     \s+            # whitespace
-    ([^"'>]|"[^"]*"|'[^']*')*         # skip leading attributes
+    ([^"'>]|"[^"\n]*"|'[^'\n]*')*         # skip leading attributes
     %s             # attrib name
     \s*            # whitespace
     =              # equal sign
     \s*            # whitespace
     (?P<value>     # attribute value
-     "[^"]*" |     # in double quotes
-     '[^']*' |     # in single quotes
+     "[^"\n]*" |   # in double quotes
+     '[^'\n]*' |   # in single quotes
      [^\s>]+)      # unquoted
-    ([^"'>]|"[^"]*"|'[^']*')*          # skip trailing attributes
+    ([^"'>]|"[^"\n]*"|'[^'\n]*')*         # skip trailing attributes
     >              # close tag
     """
 
@@ -123,22 +123,22 @@ LinkTags = (
 
 LinkPatterns = []
 for tags,attrs in LinkTags:
-    attr = '(%s)'%'|'.join(attrs)
     tag = '(%s)'%'|'.join(tags)
+    attr = '(%s)'%'|'.join(attrs)
     LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
-                                               re.VERBOSE|re.DOTALL),
-                         'tag': tag,
-                         'attr': attr})
+                                               re.VERBOSE),
+                         'tags': tags,
+                         'attrs': attrs})
 AnchorPattern = {
-    'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE|re.DOTALL),
-    'tag': 'a',
-    'attr': 'name',
+    'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE),
+    'tags': ['a'],
+    'attrs': ['name'],
 }
 
 BasePattern = {
     'pattern': re.compile(_linkMatcher % ("base", "href"), re.VERBOSE),
-    'tag': 'base',
-    'attr': 'href',
+    'tags': ['base'],
+    'attrs': ['href'],
 }
 
 #CommentPattern = re.compile("<!--.*?--\s*>", re.DOTALL)
@@ -483,10 +483,16 @@ class UrlData:
 
 
     def searchInForTag (self, pattern):
-        debug(HURT_ME_PLENTY, "Searching for tag", `pattern['tag']`,
-	      "attribute", `pattern['attr']`)
+        debug(HURT_ME_PLENTY, "Searching for tags", `pattern['tags']`,
+	      "attributes", `pattern['attrs']`)
         urls = []
         index = 0
+        if 'a' in pattern['tags'] and 'href' in pattern['attrs']:
+            tag = 'a'
+        elif 'img' in pattern['tags']:
+            tag = 'img'
+        else:
+            tag = ''
         while 1:
             match = pattern['pattern'].search(self.getContent(), index)
             if not match: break
@@ -498,19 +504,19 @@ class UrlData:
             url = StringUtil.unhtmlify(url)
             lineno= StringUtil.getLineNumber(self.getContent(), match.start())
             # extra feature: get optional name for this bookmark
-            name = self.searchInForName(pattern['tag'], pattern['attr'],
-	                                match.start(), match.end())
-            debug(HURT_ME_PLENTY, "Found", `url`, "at line", lineno)
+            name = self.searchInForName(tag, match.start(), match.end())
+            debug(HURT_ME_PLENTY, "Found", `url`, "name", `name`,
+                  "at line", lineno)
             urls.append((url, lineno, name))
         return urls
 
 
-    def searchInForName (self, tag, attr, start, end):
+    def searchInForName (self, tag, start, end):
         name=""
-        if tag=='img':
-            name = linkname.image_name(self.getContent()[start:end])
-        elif tag=='a' and attr=='href':
+        if tag=='a':
             name = linkname.href_name(self.getContent()[end:])
+        elif tag=='img':
+            name = linkname.image_name(self.getContent()[start:end])
         return name
 
 

@@ -2,31 +2,43 @@ test_mail
 url file:///home/calvin/projects/linkchecker/test/html/mail.html
 valid
 url mailto:calvin@LocalHost?subject=Hallo&to=michi
+name 1
 warning No MX mail host for LocalHost found
 valid
 url mailto:Dude <calvin@studcs.uni-sb.de> , Killer <calvin@cs.uni-sb.de>?subject=bla
+name 2
 valid
 url mailto:Bastian Kleineidam <calvin@studcs.uni-sb.de>?bcc=jsmith%40company.com
+name 3
 warning No MX mail host for company.com found
 valid
 url mailto:Bastian Kleineidam <calvin@studcs.uni-sb.de>
+name 4
 valid
 url mailto:
+name 6
 warning No adresses found
 valid
 url mailto:o'hara@cs.uni-sb.de
+name 5
 valid
 url mailto:?to=calvin@studcs.uni-sb.de&subject=blubb&cc=calvin_cc@studcs.uni-sb.de&CC=calvin_CC@studcs.uni-sb.de
+name ...
 valid
 url mailto:news-admins@freshmeat.net?subject=Re:%20[fm%20#11093]%20(news-admins)%20Submission%20report%20-%20Pretty%20CoLoRs
+name ...
 valid
 url mailto:jan@jan-dittberner.de?subject=test
+name ...
 valid
 url mailto:a@d?subject=הצü
+name 5
 warning No MX mail host for d found
 valid
 url mailto:calvin@cs.uni-sb.de?subject=Halli hallo
+name _
 valid
 url mailto:Bastian Kleineidam <calvin@host1?foo=bar>
+name 3
 warning No MX mail host for host1 found
 valid

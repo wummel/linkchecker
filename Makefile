@@ -57,6 +57,7 @@ deb_unsigned: cleandeb
 
 files:	locale
 	env http_proxy="" $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
+	for f in linkchecker-out.*; do gzip --best $$f; done
 
 VERSION:
 	echo $(VERSION) > VERSION
@@ -67,7 +68,7 @@ VERSION-DEVEL:
 upload: distclean dist files VERSION
 	scp debian/changelog $(HTMLDIR)/changes.txt
 	scp README $(HTMLDIR)/readme.txt
-	scp linkchecker-out.* $(HTMLDIR)
+	scp linkchecker-out.*.gz $(HTMLDIR)
 	scp VERSION $(HTMLDIR)/raw/
 	#scp dist/* $(HTMLDIR)/
 	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"

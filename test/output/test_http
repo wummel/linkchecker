@@ -2,44 +2,59 @@ test_http
 url file:///home/calvin/projects/linkchecker/test/html/http.html
 valid
 url http://www.garantiertnixgutt.bla
+name bad url
 warning Path is empty
 error
 url http://www.heise.de
+name ok
 warning Path is empty
 valid
 url http:/www.heise.de
+name one slash
 error
 url http:www.heise.de
+name no slash
 error
 url http://
+name no url
 warning Path is empty
 error
 url http:/
 cached
+name no url, one slash
 warning Path is empty
 error
 url http:
 cached
+name no url, no slash
 warning Path is empty
 error
 url http://www.blubb.de/stalter&sohn
+name unquoted ampersand
 error
 url http://slashdot.org/
+name unquoted
 valid
 url http://fsinfo.cs.uni-sb.de/~calvin/#isnix
+name invalid anchor
 warning anchor #isnix not found
 valid
 url HtTP://WWW.hEIsE.DE
 cached
+name should be cached
 warning Path is empty
 valid
 url HTTP://WWW.HEISE.DE
 cached
+name should be cached
 warning Path is empty
 valid
 url http://www.heise.de/?quoted=ü
+name html entities
 valid
 url illegalquote1
+name no beginning quote
 error
 url illegalquote2
+name no ending quote
 error
