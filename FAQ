@@ -50,7 +50,7 @@ A6: Look at the options --intern, --extern, --strict, --denyallow  and
    --recursion-level.
 
 
-Q7: I dont get this --extern/--intern stuff.
+Q7: I don't get this --extern/--intern stuff.
 A7: When it comes to checking there are three types of URLs:
    1) strict extern URLs:
       We do only syntax checking. Intern URLs are never strict.
@@ -86,18 +86,18 @@ A7: When it comes to checking there are three types of URLs:
    -i'^http://my(other)?domain\.com' as intern regular expression, all other
    urls are treated extern. Easy.
 
-   Another example. We dont want to check mailto urls. Then its
-   -i'!^mailto:'. The '!' negates an expression. With --strict, we dont
+   Another example. We don't want to check mailto urls. Then its
+   -i'!^mailto:'. The '!' negates an expression. With --strict, we don't
    even connect to any mail hosts.
    
-   Yet another example. We check our site www.mycompany.com, dont recurse
+   Yet another example. We check our site www.mycompany.com, don't recurse
    into extern links point outside from our site and want to ignore links to
    hollowood.com and hullabulla.com completely.
    This can only be done with a configuration entry like
    [filtering]
    extern1=hollowood.com 1
    extern2=hullabulla.com 1
-   # the 1 means strict extern ie dont even connect
+   # the 1 means strict extern ie don't even connect
    and the command
    linkchecker --intern=www.mycompany.com www.mycompany.com
 
@@ -132,8 +132,8 @@ A9: Currently, only a Python API lets you define new logging classes.
 Q10.1: LinkChecker does not ignore anchor references on caching.
 Q10.2: Some links with anchors are getting checked twice.
 A10: This is not a bug.
-   Its common practice to believe that if an URL ABC#anchor1 works then
-   ABC#anchor2 works too. Thats not specified anywhere and I have seen
+   It is common practice to believe that if an URL ABC#anchor1 works then
+   ABC#anchor2 works too. That is not specified anywhere and I have seen
    server-side scripts that fail on some anchors and not on others.
    This is the reason for always checking URLs with different anchors.
    If you really want to disable this, use --no-anchor-caching.
