@@ -23,6 +23,7 @@ debug = linkcheck.Config.debug
 ExcList = [
    IOError,
    linkcheck.error,
+   EOFError, # from ftplib.py
 ]
 try:
     import socket

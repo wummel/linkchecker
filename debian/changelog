@@ -6,10 +6,11 @@ linkchecker (1.2.5) unstable; urgency=low
   * adjust #! line in linkchecker script to correct python interpreter
     (Adam Feuer <adamf@pobox.com>)
   * proper proxy config handling
-  * distribution restructuring
-  * RPM packages
+  * distribution restructuring (now with RPM  and Zip packages)
+  * catch EOFError with ftp links (reported by Stan Mulder
+    <stan@intrepidsoftware.com>)
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 10 Sep 2000 18:23:19 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 11 Sep 2000 00:53:53 +0200
 
 linkchecker (1.2.4) unstable; urgency=low
 

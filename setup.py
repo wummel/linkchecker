@@ -111,6 +111,7 @@ where the path arguments point to your SSL installation.""")
             self.scripts.append('linkchecker.bat')
         elif os.name=='posix':
             self.data_files.append(('/etc', ['linkcheckerrc']))
+            os.chmod("linkchecker", 0755)
 
 
 setup (name = "LinkChecker",
