@@ -76,6 +76,9 @@ release: releasecheck dist upload homepage
 	@echo "Uploading new LinkChecker Homepage..."
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 
+homepage:
+	$(MAKE) -C doc homepage
+
 dist: locale config
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 
