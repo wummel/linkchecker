@@ -176,7 +176,7 @@ o a (Fast)CGI web interface (requires HTTP server)
        cmdclass = {'install': MyInstall,
                    'install_data': MyInstallData,
                   },
-       packages = ['', 'linkcheck', 'linkcheck.log',
+       packages = ['', 'linkcheck', 'linkcheck.logger',
                    'linkcheck.parser', 'linkcheck.DNS'],
        ext_modules = [Extension('linkcheck.parser.htmlsax',
                   ['linkcheck/parser/htmllex.c',
