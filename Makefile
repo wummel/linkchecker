@@ -56,6 +56,7 @@ distclean:	clean
 	rm -f $(DEBPACKAGE) $(PACKAGE)-out.* $(TEMPLATEFILES) VERSION
 
 dist:	mo
+	rm -rf debian/tmp
 	python setup.py sdist #bdist_rpm
 	fakeroot debian/rules binary
 

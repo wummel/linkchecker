@@ -43,8 +43,7 @@ class LCDistribution(Distribution):
     def run_commands (self):
         self.check_ssl()
         self.additional_things()
-        for cmd in self.commands:
-            self.run_command (cmd)
+        Distribution.run_commands(self)
 
     def check_ssl(self):
         incldir = self.has_ssl()
