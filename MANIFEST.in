@@ -6,7 +6,7 @@ include Makefile
 include create.sql
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
-include DNS/README
+include linkcheck/DNS/README
 include test/*.py test/*.txt
 include test/output/test_* test/html/*.html
 include rpm_build_script
