@@ -15,7 +15,7 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import os
+import os,sys
 from Template import Template
 
 distpath = os.getcwd()
@@ -28,6 +28,7 @@ data = {
     'url': '$url',
     'appname': '$appname',
     'email': '$email',
+    'python': os.path.normpath(sys.executable),
 }
 files = [
     'linkchecker',

@@ -21,7 +21,6 @@ from RobotsTxt import RobotsTxt
 import Config,StringUtil
 from linkcheck import _
 
-
 class HttpUrlData(UrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
