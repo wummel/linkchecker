@@ -14,18 +14,13 @@ url news:§$%&/´`(§%
 warning No NNTP server specified, skipping this URL
 valid
 url nntp://news.rz.uni-sb.de/comp.lang.python
-warning NNTP busy: 505 Connection rejected, you're making too many connects per minute
 error
 url nntp://news.rz.uni-sb.de/comp.lang.python/1-5
-warning NNTP busy: 505 Connection rejected, you're making too many connects per minute
 error
 url nntp://news.rz.uni-sb.de/EFGJG4.7A@deshaw.com
-warning NNTP busy: 505 Connection rejected, you're making too many connects per minute
 error
 url nntp://news.rz.uni-sb.de/
-warning NNTP busy: 505 Connection rejected, you're making too many connects per minute
-No newsgroup specified in NNTP URL
-valid
+error
 url news:comp.lang.python/1-5
 warning No NNTP server specified, skipping this URL
 valid
