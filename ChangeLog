@@ -1,6 +1,8 @@
 1.8.13
   * fix typo in manpage
     Changed files: linkchecker.1
+  * remove anchor from HEAD and GET requests
+    Changed files: linkcheck/{HttpUrlData, UrlData}.py
 
 1.8.12
   * convert urlparts to list also on redirect
