@@ -56,8 +56,8 @@ class Translator (gettext.GNUTranslations):
 
 class NullTranslator (gettext.NullTranslations):
     """
-    A translation class always installing its gettext methods into the
-    default namespace.
+    A dummy translation class always installing its gettext methods into
+    the default namespace.
     """
 
     def install (self, do_unicode):
@@ -69,7 +69,8 @@ class NullTranslator (gettext.NullTranslations):
 
 def init (domain, directory):
     """
-    Initialize this gettext i18n module.
+    Initialize this gettext i18n module. Searches for supported languages
+    and installs the gettext translator class.
     """
     global default_language
     if os.path.isdir(directory):
@@ -117,8 +118,19 @@ def get_headers_lang (headers):
     if not headers.has_key('Accept-Language'):
         return default_language
     languages = headers['Accept-Language'].split(",")
-    # XXX sort with quality values
-    languages = [ lang.split(";")[0].strip() for lang in languages ]
+    # sort with preference values
+    pref_languages = []
+    for lang in languages:
+        pref = 1.0
+        if ";" in lang:
+            lang, _pref = lang.split(';', 1)
+            try:
+                pref = float(_pref)
+            except ValueError:
+                pass
+        pref_languages.add((_pref, lang))
+    languages = [x[1] for x in sorted(pref_languages)]
+    # search for lang
     for lang in languages:
         if lang in supported_languages:
             return lang
@@ -131,7 +143,7 @@ def get_locale ():
     """
     loc = locale.getdefaultlocale()[0]
     if loc is None:
-        loc = 'C'
+        return 'C'
     loc = locale.normalize(loc)
     # split up the locale into its base components
     pos = loc.find('@')
