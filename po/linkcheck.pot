@@ -1,0 +1,511 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: Thu Aug  7 12:34:43 2003\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+msgid "invalid log option '%s'"
+msgstr ""
+
+msgid ""
+"extern%d: syntax error %s\n"
+msgstr ""
+
+msgid "No user or password found"
+msgstr ""
+
+msgid "Remote host has closed connection"
+msgstr ""
+
+msgid "Got no answer from FTP server"
+msgstr ""
+
+msgid "Missing trailing directory slash in ftp url"
+msgstr ""
+
+msgid "found"
+msgstr ""
+
+msgid "URL path is empty, assuming '/' as path"
+msgstr ""
+
+msgid "Using Proxy %s"
+msgstr ""
+
+msgid "Access denied by robots.txt, checked only syntax"
+msgstr ""
+
+msgid "Amazon servers block HTTP HEAD requests, using GET instead"
+msgstr ""
+
+msgid "Enforced Proxy %s"
+msgstr ""
+
+msgid ""
+"recursive redirection encountered:\n"
+" %s"
+msgstr ""
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link."
+msgstr ""
+
+msgid "A HTTP 301 redirection occured and the url has no trailing / at the end. All urls which point to (home) directories should end with a / to avoid redirection."
+msgstr ""
+
+msgid "HTTP redirection to non-http url encountered; the original url was %s."
+msgstr ""
+
+msgid "more than five redirections, aborting"
+msgstr ""
+
+msgid "Server does not support HEAD request (got %d status), falling back to GET"
+msgstr ""
+
+msgid "Server %s has no HEAD support, falling back to GET"
+msgstr ""
+
+msgid "Server %s has no anchor support, removing anchor from request"
+msgstr ""
+
+msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
+msgstr ""
+
+msgid "Effective URL %s"
+msgstr ""
+
+msgid "Unsupported content encoding %s."
+msgstr ""
+
+msgid "%s url ignored"
+msgstr ""
+
+msgid "No adresses found"
+msgstr ""
+
+msgid "No MX mail host for %s found"
+msgstr ""
+
+msgid "Verified adress: %s"
+msgstr ""
+
+msgid "None of the MX mail hosts for %s accepts an SMTP connection: %s"
+msgstr ""
+
+msgid "found MX mail host %s"
+msgstr ""
+
+msgid "could not split the mail adress"
+msgstr ""
+
+msgid "No NNTP server specified, skipping this URL"
+msgstr ""
+
+msgid "Articel number %s found"
+msgstr ""
+
+msgid "Group %s has %s articles, range %s to %s"
+msgstr ""
+
+msgid "No newsgroup specified in NNTP URL"
+msgstr ""
+
+msgid "NTTP server too busy; tried more than %d times"
+msgstr ""
+
+msgid "NNTP busy: %s"
+msgstr ""
+
+msgid "URL has invalid port number %s"
+msgstr ""
+
+msgid ""
+"\n"
+"********** Oops, I did it again. *************\n"
+"\n"
+"You have found an internal error in LinkChecker. Please write a bug report\n"
+"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
+"or send mail to %s and include the following information:\n"
+"1) The URL or file you are testing\n"
+"2) Your commandline arguments and/or configuration.\n"
+"3) The system information below.\n"
+"\n"
+"If you disclose some information because its too private to you thats ok.\n"
+"I will try to help you nontheless (but you have to give me *something*\n"
+"I can work with ;).\n"
+msgstr ""
+
+msgid ""
+"\n"
+"******** LinkChecker internal error, bailing out ********"
+msgstr ""
+
+msgid "System info:"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Valid"
+msgstr ""
+
+msgid "URL is null or empty"
+msgstr ""
+
+msgid "outside of domain filter, checked only syntax"
+msgstr ""
+
+msgid "anchor #%s not found"
+msgstr ""
+
+msgid "Found %s in link contents"
+msgstr ""
+
+msgid "Content size %s is larger than %s"
+msgstr ""
+
+msgid "more than one <base> tag found, using only the first one"
+msgstr ""
+
+msgid "keyboard interrupt; waiting for active connections to finish"
+msgstr ""
+
+msgid "unsupported language"
+msgstr ""
+
+msgid "empty url was given"
+msgstr ""
+
+msgid "invalid url was given"
+msgstr ""
+
+msgid "no url was given"
+msgstr ""
+
+msgid "invalid recursion level syntax"
+msgstr ""
+
+msgid "recursion level greater than 3"
+msgstr ""
+
+msgid "invalid %s option syntax"
+msgstr ""
+
+msgid ""
+"<html><head>\n"
+"<title>LinkChecker Online Error</title></head>\n"
+"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
+"<blockquote>\n"
+"<b>Error: %s</b><br>\n"
+"The LinkChecker Online script has encountered an error. Please ensure\n"
+"that your provided URL link begins with <code>http://</code> and\n"
+"contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>\n"
+"Errors are logged.\n"
+"</blockquote>\n"
+"</body>\n"
+"</html>"
+msgstr ""
+
+msgid ""
+"created by %s at %s\n"
+msgstr ""
+
+msgid ""
+"Get the newest version at %s\n"
+msgstr ""
+
+msgid ""
+"Write comments and bugs to %s\n"
+"\n"
+msgstr ""
+
+msgid ""
+"# Format of the entries:\n"
+msgstr ""
+
+msgid "seconds"
+msgstr ""
+
+msgid "Stopped checking at %s"
+msgstr ""
+
+msgid "minutes"
+msgstr ""
+
+msgid "hours"
+msgstr ""
+
+msgid ", line %d"
+msgstr ""
+
+msgid ", col %d"
+msgstr ""
+
+msgid ""
+" (cached)\n"
+msgstr ""
+
+msgid "%.3f seconds"
+msgstr ""
+
+msgid ""
+"Start checking at %s\n"
+msgstr ""
+
+msgid " (cached)"
+msgstr ""
+
+msgid "Thats it. "
+msgstr ""
+
+msgid "1 error"
+msgstr ""
+
+msgid " errors"
+msgstr ""
+
+msgid " in 1 link"
+msgstr ""
+
+msgid " in %d links"
+msgstr ""
+
+msgid " found"
+msgstr ""
+
+msgid "Real URL"
+msgstr ""
+
+msgid "Result"
+msgstr ""
+
+msgid "Base"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Parent URL"
+msgstr ""
+
+msgid "Extern"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "D/L Time"
+msgstr ""
+
+msgid "D/L Size"
+msgstr ""
+
+msgid "Check Time"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid ""
+"%.3f seconds\n"
+msgstr ""
+
+msgid ""
+"\n"
+"Thats it. "
+msgstr ""
+
+msgid ""
+" found\n"
+msgstr ""
+
+msgid ""
+"USAGE\tlinkchecker [options] file-or-url...\n"
+"\n"
+"OPTIONS\n"
+"For single-letter option arguments the space is not a necessity. So\n"
+"'-o colored' is the same as '-ocolored'.\n"
+"-a, --anchors\n"
+"        Check HTTP anchor references. This option applies to both internal\n"
+"        and external urls. Default is don't check anchors.\n"
+"        This option implies -w because anchor errors are always warnings.\n"
+"-C, --cookies\n"
+"        Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
+"        which are sent back to the originating server are accepted.\n"
+"        Sent and accepted cookies are provided as additional logging\n"
+"        information.\n"
+"-d, --denyallow\n"
+"        Swap checking order to external/internal. Default checking order\n"
+"        is internal/external.\n"
+"-D, --debug\n"
+"        Print debugging information. Provide this option multiple times\n"
+"        for even more debugging information.\n"
+"-e regex, --extern=regex\n"
+"        Assume urls that match the given expression as external.\n"
+"        Only internal HTML links are checked recursively.\n"
+"-f file, --config=file\n"
+"        Use file as configuration file. As default LinkChecker first\n"
+"        searches /etc/linkcheckerrc and then ~/.linkcheckerrc\n"
+"        (under Windows <path-to-program>\\linkcheckerrc).\n"
+"-F type[/filename], --file-output=type[/filename]\n"
+"        Same as -o, but write to a file linkchecker-out.<type>\n"
+"        or <filename> if specified. If the file already exists, it\n"
+"        is overwritten. You can specify this option more than once.\n"
+"        There is no file output for the blacklist logger. Default is\n"
+"        no file output.\n"
+"-I, --interactive\n"
+"        Ask for url if none are given on the commandline.\n"
+"-i regex, --intern=regex\n"
+"        Assume URLs that match the given expression as internal.\n"
+"        LinkChecker descends recursively only to internal URLs, not to\n"
+"        external.\n"
+"-h, --help\n"
+"        Help me! Print usage information for this program.\n"
+"-N server, --nntp-server=server\n"
+"        Specify an NNTP server for 'news:...' links. Default is the\n"
+"        environment variable NNTP_SERVER. If no host is given,\n"
+"        only the syntax of the link is checked.\n"
+"--no-anchor-caching\n"
+"        Treat url#anchora and url#anchorb as equal on caching. This\n"
+"        is the default browser behaviour, but it's not specified in\n"
+"        the URI specification. Use with care.\n"
+"-o type, --output=type\n"
+"        Specify output type as %s.\n"
+"        Default type is text.\n"
+"-p pwd, --password=pwd\n"
+"        Try password pwd for HTTP and FTP authorization.\n"
+"        Default password is 'joe@'. See also -u.\n"
+"-P secs, --pause=secs\n"
+"        Pause <secs> seconds between each url check. This option\n"
+"        implies -t0.\n"
+"        Default is no pause between requests.\n"
+"--profile\n"
+"        Write profiling data into a file named %s in the\n"
+"        current working directory.\n"
+"        See also --viewprof.\n"
+"-q, --quiet\n"
+"        Quiet operation. This is only useful with -F.\n"
+"-r depth, --recursion-level=depth\n"
+"        Check recursively all links up to given depth. A negative depth\n"
+"        will enable inifinite recursion.\n"
+"        Default depth is 1.\n"
+"-s, --strict\n"
+"        Check only syntax of external links, do not try to connect to them.\n"
+"        For local file urls, only local files are internal. For\n"
+"        http and ftp urls, all urls at the same domain name are internal.\n"
+"-t num, --threads=num\n"
+"        Generate no more than num threads. Default number of threads is 5.\n"
+"        To disable threading specify a non-positive number.\n"
+"--timeout=secs\n"
+"        Set the timeout for TCP connection attempts in seconds. The default\n"
+"        timeout is 10 seconds.\n"
+"-u name, --user=name\n"
+"        Try username name for HTTP and FTP authorization.\n"
+"        Default is 'anonymous'. See also -p.\n"
+"-V, --version\n"
+"        Print version and exit.\n"
+"-v, --verbose\n"
+"        Log all checked URLs (implies -w). Default is to log only invalid\n"
+"        URLs.\n"
+"--viewprof\n"
+"        Print out previously generated profiling data. See also --profile.\n"
+"-w, --warnings\n"
+"        Log warnings.\n"
+"-W regex, --warning-regex=regex\n"
+"        Define a regular expression which prints a warning if it matches\n"
+"        any content of the checked link.\n"
+"        This applies of course only to pages which are valid, so we can\n"
+"        get their content.\n"
+"        Use this to check for pages that contain some form of error\n"
+"        message, for example 'This page has moved' or 'Oracle\n"
+"        Application Server error'.\n"
+"        This option implies -w.\n"
+"--warning-size-bytes=bytes\n"
+"        Print a warning if content size is available and exceeds the given\n"
+"        number of bytes.\n"
+"        This option implies -w.\n"
+msgstr ""
+
+msgid ""
+"NOTES\n"
+"o A ! before any regex negates it. So '!^mailto:' matches everything but\n"
+"  a mailto link.\n"
+"o LinkCheckers commandline parser treats \"ftp.\" links like \"ftp://ftp.\"\n"
+"  and \"www.\" links like \"http://www.\".\n"
+"  You can also give local files as arguments.\n"
+"o If you have your system configured to automatically establish a\n"
+"  connection to the internet (e.g. with diald), it will connect when\n"
+"  checking links not pointing to your local host.\n"
+"  Use the -s and -i options to prevent this.\n"
+"o Javascript links are currently ignored.\n"
+"o If your platform does not support threading, LinkChecker uses -t0.\n"
+"o You can supply multiple user/password pairs in a configuration file.\n"
+"o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy\n"
+"  on Unix or Windows.\n"
+"  On a Mac use the Internet Config.\n"
+"o When checking 'news:' links the given NNTP host doesn't need to be the\n"
+"  same as the host of the user browsing your pages!\n"
+msgstr ""
+
+msgid ""
+"EXAMPLES\n"
+"o Check the treasure.calvinsplayground.de domain, but don't recurse into\n"
+"  links outside of this domain:\n"
+"      linkchecker -v -r5 -ohtml -s \\\n"
+"       http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
+"\n"
+"o Don't connect to mailto: hosts, only check their URL syntax. All other\n"
+"  links are checked as usual:\n"
+"      linkchecker --intern='!^mailto:' --strict www.mysite.org\n"
+"\n"
+"o Local files and syntactic sugar on the command line:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n"
+msgstr ""
+
+msgid ""
+"Error: %s\n"
+msgstr ""
+
+msgid ""
+"Execute 'linkchecker -h' for help\n"
+msgstr ""
+
+msgid "Could not find profiling file %s."
+msgstr ""
+
+msgid "Please run linkchecker with --profile to generate it."
+msgstr ""
+
+msgid "Illegal argument '%s' for option "
+msgstr ""
+
+msgid "Illegal argument %s for option %s"
+msgstr ""
+
+msgid ""
+"enter one or more urls, separated by white-space\n"
+"--> "
+msgstr ""
+
+msgid "no files or urls given"
+msgstr ""
+
+msgid "Hit RETURN to finish"
+msgstr ""
+
