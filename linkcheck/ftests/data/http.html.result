@@ -12,11 +12,11 @@ error
 url http:localhost:8000/
 name no slash
 error
-url http://
+url http:// (cached)
 name no url
 warning URL path is empty, assuming '/' as path
 error
-url http:/ (cached)
+url http:/
 name no url, one slash
 warning URL path is empty, assuming '/' as path
 error
