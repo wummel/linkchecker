@@ -1,8 +1,8 @@
 VERSION=$(shell ./setup.py -V)
-HOST=treasure.calvinsplayground.de
+#HOST=treasure.calvinsplayground.de
 PROXY=
 #PROXY=-P$(HOST):5050
-#HOST=fsinfo.cs.uni-sb.de
+HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
@@ -42,5 +42,5 @@ test:
 	rm -f test/*.result
 	@for i in test/*.html; do \
 	  echo "Testing $$i. Results are in $$i.result"; \
-	  ./$(PACKAGE) -t0 -v -a $$i > $$i.result 2>&1; \
+	  ./$(PACKAGE) -t0 -N"news.rz.uni-sb.de" -v -a $$i > $$i.result 2>&1; \
         done

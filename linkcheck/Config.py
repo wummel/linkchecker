@@ -185,6 +185,7 @@ class Configuration(UserDict.UserDict):
                 timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
+                self.debug(value)
                 if re.compile("^505").search(str(value)):
                     import whrandom,time
                     time.sleep(whrandom.randint(30,60))
