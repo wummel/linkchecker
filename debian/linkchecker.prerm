@@ -4,7 +4,8 @@
 # used by Bastian Kleineidam for LinkChecker
 set -e
 PACKAGE=linkchecker
-PYTHON=python2.2
+PYTHON=python
+PYVER=2.2
 
 #DEBHELPER#
 
@@ -12,7 +13,7 @@ dpkg --listfiles $PACKAGE |
         awk '$0~/\.py$/ {print $0"c\n" $0"o"}' |
         xargs rm -f >&2
 
-rmdir /usr/lib/$PYTHON/site-packages/linkcheck 2>/dev/null || true
+rmdir /usr/lib/${PYTHON}${PYVER}/site-packages/linkcheck 2>/dev/null || true
 
 # for later use of python-central
 #/usr/sbin/register-python-package module remove linkchecker ">=2.0"

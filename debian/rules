@@ -3,7 +3,7 @@
 # GNU copyright 1997 to 1999 by Joey Hess.
 PACKAGE=linkchecker
 DOCDIR = debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)
-PYTHON=python2.2
+PYTHON=python
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
