@@ -1,6 +1,4 @@
-configure-stamp
-build-stamp
-.files-stamp
+*-stamp
 *-out.*
 build
 dist
