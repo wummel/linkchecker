@@ -107,45 +107,55 @@ class MailtoUrl (urlbase.UrlBase):
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "looking up MX mailhost %r", domain)
             answers = linkcheck.dns.resolver.query(domain, 'MX')
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                "found %d MX mailhosts", len(answers))
             if len(answers) == 0:
                 self.add_warning(_("No MX mail host for %(domain)s found.") %\
                                 {'domain': domain})
                 return
-            smtpconnect = 0
-            for rdata in answers:
-                try:
-                    host = rdata.exchange.to_text(omit_final_dot=True)
-                    preference = rdata.preference
-                    linkcheck.log.debug(linkcheck.LOG_CHECK,
-                              "SMTP check for %r (pref %d)", host, preference)
-                    self.url_connection = smtplib.SMTP()
-                    if self.consumer.config.get("debug"):
-                        self.url_connection.set_debuglevel(1)
-                    self.url_connection.connect(host)
-                    linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                        "SMTP connected!")
-                    smtpconnect = 1
-                    self.url_connection.helo()
-                    info = self.url_connection.verify(username)
-                    linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                        "SMTP user info %r", info)
-                    if info[0] == 250:
-                        self.add_info(_("Verified address: %(info)s.") % \
-                                     {'info': str(info[1])})
-                except smtplib.SMTPException, msg:
-                    self.add_warning(
+            # sort according to preference (lower preference means this
+            # host should be preferred
+            mxdata = [(rdata.preference,
+                   rdata.exchange.to_text(omit_final_dot=True))
+                   for rdata in answers]
+            mxdata.sort()
+            # debug output
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                "found %d MX mailhosts:", len(answers))
+            for preference, host in mxdata:
+                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                "MX host %r, preference %d", host, preference)
+            # connect
+            self.check_smtp_connect(mxdata)
+
+    def check_smtp_connect (self, mxdata):
+        """mxdata is a list of (preference, host) tuples to check for"""
+        smtpconnect = 0
+        for preference, host in mxdata:
+            try:
+                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                        "SMTP check for %r (preference %d)", host, preference)
+                self.url_connection = smtplib.SMTP()
+                if self.consumer.config.get("debug"):
+                    self.url_connection.set_debuglevel(1)
+                self.url_connection.connect(host)
+                linkcheck.log.debug(linkcheck.LOG_CHECK, "SMTP connected!")
+                smtpconnect = 1
+                self.url_connection.helo()
+                info = self.url_connection.verify(username)
+                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                    "SMTP user info %r", info)
+                if info[0] == 250:
+                    self.add_info(_("Verified address: %(info)s.") % \
+                                  {'info': str(info[1])})
+            except smtplib.SMTPException, msg:
+                self.add_warning(
                       _("MX mail host %(host)s did not accept connections: "\
-                        "%(error)s.") % \
-                        {'host': rdata.exchange, 'error': str(msg)})
-                if smtpconnect:
-                    break
-            if not smtpconnect:
-                self.set_result(_("Could not connect, but syntax is correct"))
-            else:
-                self.set_result(_("Found MX mail host %(host)s") % \
-                              {'host': rdata.exchange})
+                        "%(error)s.") % {'host': host, 'error': str(msg)})
+            if smtpconnect:
+                break
+        if not smtpconnect:
+            self.set_result(_("Could not connect, but syntax is correct"))
+        else:
+            self.set_result(_("Found MX mail host %(host)s") % {'host': host})
 
     def _split_address (self, address):
         split = address.split("@", 1)
