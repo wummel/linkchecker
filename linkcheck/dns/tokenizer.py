@@ -171,7 +171,7 @@ class Tokenizer(object):
                     self._unget_char(c)
                     return skipped
             skipped += 1
-        raise AssertionError("skip_whitespace() broke endless loop")
+        raise AssertionError, "skip_whitespace() broke endless loop"
 
     def get(self, want_leading = False, want_comment = False):
         """Get the next token.

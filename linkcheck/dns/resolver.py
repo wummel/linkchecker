@@ -108,10 +108,10 @@ class Answer(object):
                             break
                         continue
                     except KeyError:
-                        raise NoAnswer("DNS response had no answer")
-                raise NoAnswer("DNS response had no answer")
+                        raise NoAnswer, "DNS response had no answer"
+                raise NoAnswer, "DNS response had no answer"
         if rrset is None:
-            raise NoAnswer("DNS response had no answer")
+            raise NoAnswer, "DNS response had no answer"
         self.rrset = rrset
         self.expiration = time.time() + min_ttl
 
@@ -555,15 +555,15 @@ class Resolver(object):
             nameservers = self.nameservers[:]
             while response is None:
                 if len(nameservers) == 0:
-                    raise NoNameservers("No DNS servers could answer the query")
+                    raise NoNameservers, "No DNS servers could answer the query"
                 for nameserver in nameservers:
                     now = time.time()
                     if now < start:
                         # Time going backwards is bad.  Just give up.
-                        raise Timeout("DNS query timed out")
+                        raise Timeout, "DNS query timed out"
                     duration = now - start
                     if duration >= self.lifetime:
-                        raise Timeout("DNS query timed out")
+                        raise Timeout, "DNS query timed out"
                     timeout = min(self.lifetime - duration, self.timeout)
                     try:
                         if tcp:
@@ -604,7 +604,7 @@ class Resolver(object):
             all_nxdomain = False
             break
         if all_nxdomain:
-            raise NXDOMAIN("Domain does not exist")
+            raise NXDOMAIN, "Domain does not exist"
         answer = Answer(qname, rdtype, rdclass, response)
         if self.cache:
             self.cache.put((qname, rdtype, rdclass), answer)
