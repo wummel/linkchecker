@@ -1,3 +1,8 @@
+1.8.8
+  * All amazon servers block HEAD requests with timeouts. Use GET as
+    a workaround, but issue a warning.
+    Changed files: linkcheck/HttpUrlData.py
+
 1.8.7
   * #define YY_NO_UNISTD_H on Windows systems, fixes build error with
     Visual Studio compiler

@@ -26,6 +26,8 @@ from ProxyUrlData import ProxyUrlData
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
+_isAmazonHost = re.compile(r'www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').match
+
 class HttpUrlData (ProxyUrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
@@ -93,6 +95,10 @@ class HttpUrlData (ProxyUrlData):
             self.setWarning(i18n._("Access denied by robots.txt, checked only syntax"))
             return
 
+        # amazon servers suck
+        if _isAmazonHost(self.urlparts[1]):
+            self.setWarning(i18n._("Amazon servers block HTTP HEAD requests, "
+                                   "using GET instead"))
         # first try
         response = self._getHttpResponse()
         self.headers = response.msg
@@ -156,11 +162,11 @@ class HttpUrlData (ProxyUrlData):
                     self.headers = response.msg
             elif self.headers:
                 type = self.headers.gettype()
-                poweredby = self.headers.getheader('X-Powered-By')
-                server = self.headers.getheader('Server')
+                poweredby = self.headers.get('X-Powered-By', '')
+                server = self.headers.get('Server', '')
                 if type=='application/octet-stream' and \
-                   ((poweredby and poweredby[:4]=='Zope') or \
-                    (server and server[:4]=='Zope')):
+                   (poweredby.startswith('Zope') or \
+                    server.startswith('Zope')):
                     self.setWarning(i18n._("Zope Server cannot determine"
                                 " MIME type with HEAD, falling back to GET"))
                     response = self._getHttpResponse("GET")
@@ -205,6 +211,8 @@ class HttpUrlData (ProxyUrlData):
         """Put request and return (status code, status text, mime object).
            host can be host:port format
 	"""
+        if _isAmazonHost(self.urlparts[1]):
+            method = "GET"
         if self.proxy:
             host = self.proxy
         else:
