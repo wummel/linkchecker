@@ -3,9 +3,11 @@ url file:///home/calvin/projects/linkchecker/test/html/http.html
 valid
 url http://www.garantiertnixgutt.bla
 name bad url
+warning Missing '/' at end of URL
 error
 url http://www.heise.de
 name ok
+warning Missing '/' at end of URL
 valid
 url http:/www.heise.de
 name one slash
@@ -38,10 +40,12 @@ valid
 url HtTP://WWW.hEIsE.DE
 cached
 name should be cached
+warning Missing '/' at end of URL
 valid
 url HTTP://WWW.HEISE.DE
 cached
 name should be cached
+warning Missing '/' at end of URL
 valid
 url http://www.heise.de/?quoted=ü
 name html entities

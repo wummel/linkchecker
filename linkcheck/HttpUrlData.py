@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import httplib, urlparse, sys, time, re
-import Config, StringUtil, robotparser2
+import Config, StringUtil, robotparser
 from UrlData import UrlData
 from urllib import splittype, splithost, splituser, splitpasswd
 from linkcheck import _
@@ -251,7 +251,7 @@ class HttpUrlData(UrlData):
     def robotsTxtAllowsUrl(self, config):
         roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]
         if not config.robotsTxtCache_has_key(roboturl):
-            rp = robotparser2.RobotFileParser(roboturl)
+            rp = robotparser.RobotFileParser(roboturl)
             rp.read()
             config.robotsTxtCache_set(roboturl, rp)
         rp = config.robotsTxtCache_get(roboturl)

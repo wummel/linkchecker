@@ -13,17 +13,49 @@ Python!
 
 Setup
 -----
-Run "python setup.py build" to build.
-Run "python setup.py install" to install.
-Run "python setup.py --help" for help.
-
 After installation, the system wide configuration file is in
 <prefix>/share/linkchecker/linkcheckerrc.
-The local configuration file is ~/.linkcheckerrc on Unix platforms.
 
-To run the program type "linkchecker" followed by your URLs you want
-to check.
-Type "linkchecker -h" for help.
+o Unix platforms
+  - open a commandline window and change to the linkchecker-x.x.x
+    directory
+  - run "python setup.py install" to install
+
+  For help on setup.py options, run "python setup.py --help".
+  The local configuration file is $HOME/.linkcheckerrc
+
+  To run the program type "linkchecker" followed by your URLs you want
+  to check.
+  Type "linkchecker -h" for help.
+
+
+o Windows platforms
+  - make sure that python.exe is in your PATH
+  - open a commandline window (cmd.exe) and change to the
+    linkchecker-x.x.x directory
+  - run "python.exe setup.py install" to install
+
+  For help on setup.py options, run "python.exe setup.py --help".
+
+  To run the program, change to the scripts directory of your python
+  installation and type "linkchecker.bat" followed by your URLs you
+  want to check.
+  Type "linkchecker.bat -h" for help.
+
+
+o MacOS 9.x platforms
+  - open the Python IDE
+  - open the setup.py file
+  - run it (click on "Run all")
+  - in the popup window, select the "install" command and click "Add"
+  - click "Ok"; this will copy files into the Python folder
+
+  Read the MacOS Python documentation to find out about passing
+  commandline options to Python scripts.
+
+
+o MacOS X platforms
+  - not tested
 
 
 (Fast)CGI web interface
