@@ -1,5 +1,10 @@
 1.9.1
-  * Add CC documentation to INSTALL
+  * Add documentation how to change the default C compiler
+    Changed: INSTALL
+  * Fixed blacklist logging
+    Changed: linkcheck/log/BlacklistLogger.py
+  * removed unused imports
+    Changed: linkcheck/*.py
 
 1.9.0
   * Require Python 2.3
