@@ -196,7 +196,7 @@ class TestParser (unittest.TestCase):
         """test entity resolving"""
         for c in "abcdefghijklmnopqrstuvwxyz":
             self.assertEqual(
-                   linkcheck.HtmlParser.resolve_entities("&#%d;"%ord(c)), c)
+                   linkcheck.HtmlParser.resolve_entities("&#%d;" % ord(c)), c)
 
 
 def test_suite ():
