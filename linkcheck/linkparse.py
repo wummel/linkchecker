@@ -61,7 +61,8 @@ LinkTags = {
 
 # matcher for <meta http-equiv=refresh> tags
 refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
-css_url_re = re.compile(ur"url\((?P<url>[^\)]+)\)")
+_quoted_pat = ur"('[^']+'|\"[^\"]+\"|[^\)\s]+)"
+css_url_re = re.compile(ur"url\(\s*(?P<url>%s)\s*\)" % _quoted_pat)
 
 class TagFinder (object):
     """
@@ -217,7 +218,8 @@ class LinkFinder (TagFinder):
                 urls.append(mo.group("url"))
         elif attr == 'style':
             for mo in css_url_re.finditer(url):
-                urls.append(mo.group("url"))
+                u = mo.group("url")
+                urls.append(linkcheck.strformat.unquote(u, matching=True))
         else:
             urls.append(url)
         if not urls:
