@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: 2004-08-29 17:48+CEST\n"
+"POT-Creation-Date: 2004-08-31 22:29+CEST\n"
 "PO-Revision-Date: 2004-08-28 15:43+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -176,11 +176,9 @@ msgstr ""
 msgid "Python %s on %s"
 msgstr ""
 
-msgid "Valid: %(result)s"
-msgstr ""
-
-msgid "Error: %(result)s"
-msgstr "Fout: %(result)s"
+#, fuzzy
+msgid "URL is empty"
+msgstr "URL is nul of leeg"
 
 msgid "Base URL is not properly normed. Normed url is %(url)r."
 msgstr ""
@@ -200,10 +198,6 @@ msgstr ""
 
 msgid "could not parse content: %r"
 msgstr ""
-
-#, fuzzy
-msgid "URL is empty"
-msgstr "URL is nul of leeg"
 
 msgid "anchor #%s not found"
 msgstr ""
@@ -340,6 +334,13 @@ msgstr ""
 
 msgid "%.3f seconds"
 msgstr "%.3f Seconden"
+
+msgid "Valid"
+msgstr ""
+
+#, fuzzy
+msgid "Error"
+msgstr "Fout: %s\n"
 
 msgid "Thats it. "
 msgstr "Dat was het. "
@@ -668,3 +669,6 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#~ msgid "Error: %(result)s"
+#~ msgstr "Fout: %(result)s"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: 2004-08-29 17:48+CEST\n"
+"POT-Creation-Date: 2004-08-31 22:29+CEST\n"
 "PO-Revision-Date: 2004-08-28 19:02+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -197,11 +197,8 @@ msgstr "Systeminformation:"
 msgid "Python %s on %s"
 msgstr "Python %s auf %s"
 
-msgid "Valid: %(result)s"
-msgstr "Gültig: %(result)s"
-
-msgid "Error: %(result)s"
-msgstr "Fehler: %(result)s"
+msgid "URL is empty"
+msgstr "URL ist leer"
 
 msgid "Base URL is not properly normed. Normed url is %(url)r."
 msgstr "Basis URL ist nicht genormt. Genormte url ist %(url)r."
@@ -220,9 +217,6 @@ msgstr "Ungültige HTTP Antwort %r"
 
 msgid "could not parse content: %r"
 msgstr "Konnte Inhalt nicht parsen: %r"
-
-msgid "URL is empty"
-msgstr "URL ist leer"
 
 msgid "anchor #%s not found"
 msgstr "Anker #%s nicht gefunden"
@@ -354,6 +348,13 @@ msgstr ", Spalte %d"
 
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
+
+msgid "Valid"
+msgstr ""
+
+#, fuzzy
+msgid "Error"
+msgstr "Fehler: %s"
 
 msgid "Thats it. "
 msgstr "Das wars. "
@@ -763,3 +764,9 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "Valid: %(result)s"
+#~ msgstr "Gültig: %(result)s"
+
+#~ msgid "Error: %(result)s"
+#~ msgstr "Fehler: %(result)s"
