@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-09-20 13:48+0200\n"
+"POT-Creation-Date: 2004-09-20 17:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -368,9 +368,9 @@ msgstr ""
 msgid "Write comments and bugs to %(email)s"
 msgstr ""
 
-#: ../linkcheck/logger/gml.py:125 ../linkcheck/logger/html.py:249
+#: ../linkcheck/logger/gml.py:125 ../linkcheck/logger/html.py:251
 #: ../linkcheck/logger/sql.py:120 ../linkcheck/logger/xmllog.py:173
-#: ../linkcheck/logger/text.py:237
+#: ../linkcheck/logger/text.py:239
 #, python-format
 msgid "Stopped checking at %s (%s)"
 msgstr ""
@@ -419,20 +419,20 @@ msgid_plural "%d links checked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/html.py:244 ../linkcheck/logger/text.py:233
+#: ../linkcheck/logger/html.py:245 ../linkcheck/logger/text.py:234
 #, python-format
 msgid "%d error found."
 msgid_plural "%d errors found."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/html.py:255 ../linkcheck/logger/sql.py:58
+#: ../linkcheck/logger/html.py:257 ../linkcheck/logger/sql.py:58
 #: ../linkcheck/logger/xmllog.py:81 ../linkcheck/logger/text.py:94
 #, python-format
 msgid "Get the newest version at %s"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:259 ../linkcheck/logger/sql.py:61
+#: ../linkcheck/logger/html.py:261 ../linkcheck/logger/sql.py:61
 #: ../linkcheck/logger/xmllog.py:84 ../linkcheck/logger/text.py:97
 #, python-format
 msgid "Write comments and bugs to %s"
@@ -569,62 +569,84 @@ msgid ""
 "  linkchecker -r0 ftp.linux.org\n"
 msgstr ""
 
-#: ../linkchecker:109
+#: ../linkchecker:102
+msgid ""
+"LOGGER OUTPUT TYPES\n"
+"Note that by default only errors are logged.\n"
+"\n"
+"text    Standard text logger, logging URLs in keyword: argument fashion\n"
+"html    Log URLs in keyword: argument fashion, formatted as HTML.\n"
+"        Additionally has links to the referenced pages. Invalid URLs have\n"
+"        HTML and CSS syntax check links appended.\n"
+"csv     Log check result in CSV format with one URL per line.\n"
+"gml     Log parent-child relations between linked URLs as a GML graph.\n"
+"        You should use the --verbose option to get a complete graph.\n"
+"xml     Log check result as machine-readable XML file.\n"
+"sql     Log check result as SQL script with INSERT commands. An example\n"
+"        script to create the initial SQL table is included as create.sql.\n"
+"blacklist\n"
+"        Suitable for cron jobs. Logs the check result into a file\n"
+"        ~/.blacklist which only contains entries with invalid urls and\n"
+"        the number of times they have failed.\n"
+"none    Logs nothing. Suitable for scripts.\n"
+msgstr ""
+
+#: ../linkchecker:129
 #, python-format
 msgid "Error: %s"
 msgstr ""
 
-#: ../linkchecker:111
+#: ../linkchecker:131
 msgid "Execute 'linkchecker -h' for help"
 msgstr ""
 
-#: ../linkchecker:119
+#: ../linkchecker:139
 #, python-format
 msgid "Could not find profiling file %s."
 msgstr ""
 
-#: ../linkchecker:122
+#: ../linkchecker:142
 msgid "Please run linkchecker with --profile to generate it."
 msgstr ""
 
-#: ../linkchecker:197
+#: ../linkchecker:217
 msgid "General options"
 msgstr ""
 
-#: ../linkchecker:200
+#: ../linkchecker:220
 msgid ""
 "Use file as configuration file. As default LinkChecker first\n"
 "searches /etc/linkcheckerrc and then ~/.linkcheckerrc\n"
 "(under Windows <path-to-program>\\linkcheckerrc)."
 msgstr ""
 
-#: ../linkchecker:205
+#: ../linkchecker:225
 msgid "Ask for url if none are given on the commandline."
 msgstr ""
 
-#: ../linkchecker:208
+#: ../linkchecker:228
 msgid "Generate no more than num threads. Default number of threads is 10."
 msgstr ""
 
-#: ../linkchecker:212
+#: ../linkchecker:232
 msgid "Print version and exit."
 msgstr ""
 
-#: ../linkchecker:217
+#: ../linkchecker:237
 msgid "Output options"
 msgstr ""
 
-#: ../linkchecker:220
+#: ../linkchecker:240
 msgid ""
 "Log all checked URLs (implies -w). Default is to log only invalid\n"
 "URLs."
 msgstr ""
 
-#: ../linkchecker:223
+#: ../linkchecker:243
 msgid "Log warnings."
 msgstr ""
 
-#: ../linkchecker:226
+#: ../linkchecker:246
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -635,22 +657,22 @@ msgid ""
 "Application Server error'. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:235
+#: ../linkchecker:255
 msgid ""
 "Print a warning if content size is available and exceeds the given\n"
 "number of bytes. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:239
+#: ../linkchecker:259
 msgid "Quiet operation. This is only useful with -F."
 msgstr ""
 
-#: ../linkchecker:242
+#: ../linkchecker:262
 #, python-format
 msgid "Specify output as %(loggertypes)s. Default output type is text."
 msgstr ""
 
-#: ../linkchecker:247
+#: ../linkchecker:267
 #, python-format
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker_blacklist for\n"
@@ -662,11 +684,11 @@ msgid ""
 "to more than one file. Default is no file output."
 msgstr ""
 
-#: ../linkchecker:257
+#: ../linkchecker:277
 msgid "Do not print check status messages."
 msgstr ""
 
-#: ../linkchecker:260
+#: ../linkchecker:280
 #, python-format
 msgid ""
 "Print debugging output for given logger.\n"
@@ -678,28 +700,28 @@ msgid ""
 "For accurate results, threading will be disabled during debug runs."
 msgstr ""
 
-#: ../linkchecker:270
+#: ../linkchecker:290
 #, python-format
 msgid ""
 "Write profiling data into a file named %s in the\n"
 "current working directory. See also --viewprof."
 msgstr ""
 
-#: ../linkchecker:274
+#: ../linkchecker:294
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr ""
 
-#: ../linkchecker:279
+#: ../linkchecker:299
 msgid "Checking options"
 msgstr ""
 
-#: ../linkchecker:282
+#: ../linkchecker:302
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable inifinite recursion. Default depth is infinite."
 msgstr ""
 
-#: ../linkchecker:286
+#: ../linkchecker:306
 msgid ""
 " regex, --intern=regex\n"
 "Assume URLs that match the given expression as internal.\n"
@@ -707,32 +729,32 @@ msgid ""
 "external."
 msgstr ""
 
-#: ../linkchecker:292
+#: ../linkchecker:312
 msgid ""
 "Assume urls that match the given expression as external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:296
+#: ../linkchecker:316
 msgid ""
 "Assume urls that match the given expression as strict external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:300
+#: ../linkchecker:320
 msgid ""
 "Check only syntax of external links, do not try to connect to them.\n"
 "For local file urls, only local files are internal. For\n"
 "http and ftp urls, all urls at the same domain name are internal."
 msgstr ""
 
-#: ../linkchecker:305
+#: ../linkchecker:325
 msgid ""
 "Swap checking order to external/internal. Default checking order\n"
 "is internal/external."
 msgstr ""
 
-#: ../linkchecker:309
+#: ../linkchecker:329
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -740,80 +762,80 @@ msgid ""
 "information."
 msgstr ""
 
-#: ../linkchecker:315
+#: ../linkchecker:335
 msgid ""
 "Check HTTP anchor references. This option applies to both internal\n"
 "and external urls. Default is don't check anchors.\n"
 "This option implies -w because anchor errors are always warnings."
 msgstr ""
 
-#: ../linkchecker:320
+#: ../linkchecker:340
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
 "is the default browser behaviour, but it's not specified in\n"
 "the URI specification. Use with care."
 msgstr ""
 
-#: ../linkchecker:325
+#: ../linkchecker:345
 msgid ""
 "Try given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. See also -p."
 msgstr ""
 
-#: ../linkchecker:329
+#: ../linkchecker:349
 msgid ""
 "Try given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. See also -u."
 msgstr ""
 
-#: ../linkchecker:333
+#: ../linkchecker:353
 #, python-format
 msgid ""
 "Set the timeout for TCP connection attempts in seconds. The default\n"
 "timeout is %d seconds."
 msgstr ""
 
-#: ../linkchecker:337
+#: ../linkchecker:357
 msgid ""
 "Pause <secs> seconds between each url check. This option implies -t0.\n"
 "Default is no pause between requests."
 msgstr ""
 
-#: ../linkchecker:341
+#: ../linkchecker:361
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
 "only the syntax of the link is checked."
 msgstr ""
 
-#: ../linkchecker:347
+#: ../linkchecker:367
 msgid "Deprecated options"
 msgstr ""
 
-#: ../linkchecker:350
+#: ../linkchecker:370
 msgid "Print check status every 5 seconds to stderr. This is the default."
 msgstr ""
 
-#: ../linkchecker:387 ../linkchecker:401 ../linkchecker:442
+#: ../linkchecker:407 ../linkchecker:421 ../linkchecker:462
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr ""
 
-#: ../linkchecker:421 ../linkchecker:435
+#: ../linkchecker:441 ../linkchecker:455
 #, python-format
 msgid "Illegal argument %d for option %s"
 msgstr ""
 
-#: ../linkchecker:476
+#: ../linkchecker:496
 msgid ""
 "enter one or more urls, separated by white-space\n"
 "--> "
 msgstr ""
 
-#: ../linkchecker:479
+#: ../linkchecker:499
 msgid "no files or urls given"
 msgstr ""
 
-#: ../linkchecker:510
+#: ../linkchecker:530
 msgid "Hit RETURN to finish"
 msgstr ""

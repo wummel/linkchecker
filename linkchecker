@@ -99,6 +99,26 @@ You can skip the "ftp://" url part if the domain starts with "ftp.":
   linkchecker -r0 ftp.linux.org
 """)
 
+Logertypes = _(r"""LOGGER OUTPUT TYPES
+Note that by default only errors are logged.
+
+text    Standard text logger, logging URLs in keyword: argument fashion
+html    Log URLs in keyword: argument fashion, formatted as HTML.
+        Additionally has links to the referenced pages. Invalid URLs have
+        HTML and CSS syntax check links appended.
+csv     Log check result in CSV format with one URL per line.
+gml     Log parent-child relations between linked URLs as a GML graph.
+        You should use the --verbose option to get a complete graph.
+xml     Log check result as machine-readable XML file.
+sql     Log check result as SQL script with INSERT commands. An example
+        script to create the initial SQL table is included as create.sql.
+blacklist
+        Suitable for cron jobs. Logs the check result into a file
+        ~/.blacklist which only contains entries with invalid urls and
+        the number of times they have failed.
+none    Logs nothing. Suitable for scripts.
+""")
+
 def printVersion ():
     """print the program version and exit"""
     print linkcheck.configuration.AppInfo

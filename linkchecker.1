@@ -206,6 +206,40 @@ only the syntax of the link is checked.
 \fB--status\fP
 Print check status every 5 seconds to stderr. This is the default now.
 
+.SH LOGGER OUTPUT TYPES
+Note that by default only errors are logged.
+
+.TP
+\fBtext\fP
+Standard text logger, logging URLs in keyword: argument fashion
+.TP
+\fBhtml\fP
+Log URLs in keyword: argument fashion, formatted as HTML.
+Additionally has links to the referenced pages. Invalid URLs have
+HTML and CSS syntax check links appended.
+.TP
+\fBcsv\fP
+Log check result in CSV format with one URL per line.
+.TP
+\fBgml\fP
+Log parent-child relations between linked URLs as a GML graph.
+You should use the \fB--verbose\fP option to get a complete graph.
+.TP
+\fBxml\fP
+Log check result as machine-readable XML file.
+.TP
+\fBsql\fP
+Log check result as SQL script with INSERT commands. An example
+script to create the initial SQL table is included as create.sql.
+.TP
+\fBblacklist\fP
+Suitable for cron jobs. Logs the check result into a file
+\fB~/.blacklist\fP which only contains entries with invalid urls and
+the number of times they have failed.
+.TP
+\fBnone\fP
+Logs nothing. Suitable for scripts.
+
 .SH NOTES
 A \fB!\fP before any regex negates it. So \fB'!^mailto:'\fP matches
 everything but a mailto link.
@@ -231,6 +265,13 @@ On a Mac use the Internet Config.
 
 When checking 'news:' links the given NNTP host doesn't need to be the
 same as the host of the user browsing your pages!
+
+.SH FILES
+\fB/etc/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP - default configuration files
+
+\fB~/.blacklist\fP - default blacklist logger output filename
+
+\fBlinkchecker-out.\fP\fItype\fP - default logger file output name
 
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>

@@ -13,6 +13,10 @@
     Type: bugfix
     Changed: linkcheck/checker/ftpurl.py
 
+  * Document the different logger output types.
+    Type: documentation
+    Changed: linkchecker, linkchecker.1
+
 1.13.4 "Shaun of the dead" (released 17.9.2004)
   * Catch HTTP cookie errors and add a warning.
     Type: bugfix
