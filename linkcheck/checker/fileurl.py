@@ -138,6 +138,8 @@ class FileUrl (urlbase.UrlBase):
         return False
 
     def parse_url (self):
+        if self.is_directory():
+            return self.parse_html()
         for key, ro in linkcheck.checker.extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
