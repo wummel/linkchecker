@@ -192,6 +192,7 @@ class Configuration(UserDict.UserDict):
         self.urls = []
         self.threader = None
         self.dataLock = None
+        sys.setcheckinterval(10)
 
     def enableThreading(self, num):
         """Enable threading by replacing functions with their
@@ -220,6 +221,7 @@ class Configuration(UserDict.UserDict):
         self.urls = Queue.Queue(0)
         self.threader = Threader.Threader(num)
         self.dataLock = Lock()
+        sys.setcheckinterval(20)
 
     def hasMoreUrls_NoThreads(self):
         return len(self.urls)
@@ -387,10 +389,8 @@ class Configuration(UserDict.UserDict):
     def error(self, msg):
         self.message(_("error: %s")%msg)
 
-
     def message(self, msg):
         print >> sys.stderr, msg
-
 
     def readConfig(self, files):
         """this big function reads all the configuration parameters

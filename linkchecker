@@ -25,7 +25,6 @@ import getopt, re, os, urlparse, pprint, linkcheck
 from linkcheck.debuglevels import *
 from linkcheck import _,StringUtil
 
-
 Usage = _("""USAGE\tlinkchecker [options] file-or-url...
 
 OPTIONS
