@@ -7,8 +7,9 @@ linkchecker (1.2.5) unstable; urgency=low
     (Adam Feuer <adamf@pobox.com>)
   * proper proxy config handling
   * distribution restructuring
+  * RPM packages
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 10 Sep 2000 12:50:52 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 10 Sep 2000 18:23:19 +0200
 
 linkchecker (1.2.4) unstable; urgency=low
 
