@@ -2,7 +2,7 @@
   * added Mandrake .spec file from Chris Green <cmg@dok.org>
     Added: linkchecker.spec
     Changed: MANIFEST.in
-  * print last-modified date for http links in infos
+  * print last-modified date for http and https links in infos
     Changed: linkcheck/HttpUrlData.py
   * add detailed installation instructions for Windows
     Changed: INSTALL
