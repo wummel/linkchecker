@@ -108,7 +108,7 @@ class RobotFileParser (object):
         """Reads the robots.txt URL and feeds it to the parser."""
         self._reset()
         headers = {
-            'User-Agent': 'Python RobotFileParser/2.0',
+            'User-Agent': 'Python RobotFileParser/2.1',
             'Accept-Encoding' : 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
         }
         req = urllib2.Request(self.url, None, headers)
