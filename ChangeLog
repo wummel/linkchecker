@@ -12,6 +12,8 @@
   * include the optcomplete module for bash autocompletion
     Added: linkcheck/optcomplete.py, linkcheck-completion
     Changed: MANIFEST.in
+  * print out nicer error message for unknown host names
+    Changed: linkcheck/UrlData.py
 
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing
