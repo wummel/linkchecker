@@ -4,7 +4,7 @@ linkchecker (1.2.3) unstable; urgency=low
   * added some source code documentation
   * improved error messages for wrong options
   * configuration file options for logger output
-  * linkchecker.bat installation support for windows
+  * linkchecker.bat installation support for Windows
   * included test suite in distribution
   * blacklist output support
   * CSV output support
@@ -19,11 +19,11 @@ linkchecker (1.2.3) unstable; urgency=low
   * Debian package is now lintian clean
   * Only catch some exceptions in main check loop so the KeyboardInterrupt
     exception propagates through
-  * Disable threading on non-POSIX systems
   * Renice the main thread loop by sleep()ing some time
   * New function config.reset()
+  * fix dead lock with news: urls
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 12 Jun 2000 14:50:44 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 18 Jun 2000 00:23:44 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 

@@ -243,7 +243,8 @@ class UrlData:
         if not (anchor!="" and self.isHtml() and self.valid):
             return
         self.getContent()
-        for cur_anchor,line in self.searchInForTag("a", "name"):
+        for cur_anchor,line in self.searchInForTag(
+	    re.compile(_linkMatcher % ("a", "name"), re.VERBOSE)):
             if cur_anchor == anchor:
                 return
         self.setWarning("anchor #"+anchor+" not found")

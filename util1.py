@@ -11,7 +11,6 @@ except ImportError:
     except ImportError:
         pass
 
-
 _bs = [
 ['\023\335\233\203\2323\016',
  '\023\335\233\215\324\244\016',
@@ -57,7 +56,7 @@ def abbuzze():
     config_curses()
     my,mx = w.getmaxyx()
     b = w.subwin(my-2, mx, 0, 0)
-    s = w.subwin(my-2, 0)
+    s = w.subwin(2, mx, my-2, 0)
     bs = nassmache(_bs)
     ss = nassmache(_ss)
     allahopp(s, nassmache(_1))
@@ -74,10 +73,11 @@ def abbuzze():
     _curses.endwin()
 
 def config_curses():
-    _curses.nonl()        # tell curses not to do NL->CR/NL on output
-    _curses.noecho()      # don't echo input
-    _curses.cbreak()      # take input chars one at a time, no wait for \n
-    _curses.meta(1)       # allow 8-bit chars
+    _curses.nonl()            # tell curses not to do NL->CR/NL on output
+    _curses.noecho()          # don't echo input
+    _curses.cbreak()          # take input chars one at a time, no wait for \n
+    if hasattr(_curses, "meta"):
+        _curses.meta(1)       # allow 8-bit chars
     if hasattr(_curses, "start_color"):
         _curses.start_color() # start the colour system
         if _curses.has_colors():
@@ -120,7 +120,8 @@ def tadaaa(w, l):
 
 def hotzenplotz(w,y,x,l):
     for li in l:
-        w.addstr(y, x, li)
+        w.move(y,x)
+        w.addstr(li)
         y = y+1
 
 def wischi(w, ls):
@@ -144,7 +145,7 @@ def waschi(w, l):
 
 def abspann(w):
     w.erase()
-    w.border()
+    w.border(0, 0, 0, 0, 0, 0, 0, 0)
     w.refresh()
     w1 = w.subwin(1, 20, 3, 4)
     w2 = w.subwin(1, 20, 5, 4)

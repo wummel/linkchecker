@@ -74,8 +74,9 @@ class StandardLogger:
     """
 
     def __init__(self, **args):
-        self.errors=0
-        self.warnings=0
+        self.errors = 0
+        self.warnings = 0
+        self.linknumber = 0
         if args.has_key('fileoutput'):
             self.fd = open(args['filename'], "w")
 	elif args.has_key('fd'):
@@ -159,7 +160,7 @@ class HtmlLogger(StandardLogger):
     """Logger with HTML output"""
 
     def __init__(self, **args):
-        StandardLogger.__init__(self, args)
+        apply(StandardLogger.__init__, (self,), args)
         self.colorbackground = args['colorbackground']
         self.colorurl = args['colorurl']
         self.colorborder = args['colorborder']
@@ -268,7 +269,7 @@ class ColoredLogger(StandardLogger):
     """ANSI colorized output"""
 
     def __init__(self, **args):
-        StandardLogger.__init__(self, args)
+        apply(StandardLogger.__init__, (self,), args)
         self.colorparent = args['colorparent']
         self.colorurl = args['colorurl']
         self.colorreal = args['colorreal']
@@ -375,7 +376,7 @@ class GMLLogger(StandardLogger):
     your sitemap graph.
     """
     def __init__(self, **args):
-        StandardLogger.__init__(self, args)
+        apply(StandardLogger.__init__, (self,), args)
         self.nodes = []
 
     def init(self):
@@ -433,7 +434,7 @@ class GMLLogger(StandardLogger):
 class SQLLogger(StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
     def __init__(self, **args):
-        StandardLogger.__init__(self, args)
+        apply(StandardLogger.__init__, (self,), args)
         self.dbname = args['dbname']
         self.separator = args['separator']
 
@@ -510,7 +511,7 @@ class CSVLogger(StandardLogger):
     separated by a semicolon.
     """
     def __init__(self, **args):
-        StandardLogger.__init__(self, args)
+        apply(StandardLogger.__init__, (self,), args)
         self.separator = args['separator']
 
     def init(self):

@@ -152,14 +152,11 @@ class Configuration(UserDict.UserDict):
         self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
         self.urlCache = {}
         self.robotsTxtCache = {}
-        if os.name=='posix':
-            try:
-                import threading
-                self.enableThreading(10)
-            except ImportError:
-                type, value = sys.exc_info()[:2]
-                self.disableThreading()
-        else:
+        try:
+            import threading
+            self.enableThreading(10)
+        except ImportError:
+            type, value = sys.exc_info()[:2]
             self.disableThreading()
 
     def disableThreading(self):
@@ -276,9 +273,11 @@ class Configuration(UserDict.UserDict):
 
     def connectNntp_Threads(self):
         if not self.data.has_key("nntp"):
-            self.dataLock.acquire()
-            self._do_connectNntp()
-            self.dataLock.release()
+            try:
+                self.dataLock.acquire()
+                self._do_connectNntp()
+            finally:
+                self.dataLock.release()
 
     def _do_connectNntp(self):
         """This is done only once per checking task."""
@@ -286,7 +285,7 @@ class Configuration(UserDict.UserDict):
         timeout = 1
         while timeout:
             try:
-                self.data["nntp"] = nntplib.NNTP(self.data["nntpserver"] or "")
+                self.data["nntp"]=nntplib.NNTP(self.data["nntpserver"] or "")
                 timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
@@ -303,7 +302,8 @@ class Configuration(UserDict.UserDict):
     def finished_Threads(self):
         time.sleep(0.1)
         self.threader.reduceThreads()
-        return not self.hasMoreUrls() and self.threader.finished()
+        debug("finished?\n")
+        return self.threader.finished() and self.urls.empty()
 
     def finish_Threads(self):
         self.threader.finish()
@@ -318,45 +318,55 @@ class Configuration(UserDict.UserDict):
         self.threader.startThread(url.check, (self,))
 
     def urlCache_has_key_Threads(self, key):
-        self.urlCacheLock.acquire()
-        ret = self.urlCache.has_key(key)
-        self.urlCacheLock.release()
-        return ret
+        try:
+            self.urlCacheLock.acquire()
+            return self.urlCache.has_key(key)
+        finally:
+            self.urlCacheLock.release()
 
     def urlCache_get_Threads(self, key):
-        self.urlCacheLock.acquire()
-        ret = self.urlCache[key]
-        self.urlCacheLock.release()
-        return ret
+        try:
+            self.urlCacheLock.acquire()
+            return self.urlCache[key]
+        finally:
+            self.urlCacheLock.release()
 
     def urlCache_set_Threads(self, key, val):
-        self.urlCacheLock.acquire()
-        self.urlCache[key] = val
-        self.urlCacheLock.release()
+        try:
+            self.urlCacheLock.acquire()
+            self.urlCache[key] = val
+        finally:
+            self.urlCacheLock.release()
 
     def robotsTxtCache_has_key_Threads(self, key):
-        self.robotsTxtCacheLock.acquire()
-        ret = self.robotsTxtCache.has_key(key)
-        self.robotsTxtCacheLock.release()
-        return ret
+        try:
+            self.robotsTxtCacheLock.acquire()
+            return self.robotsTxtCache.has_key(key)
+        finally:
+            self.robotsTxtCacheLock.release()
 
     def robotsTxtCache_get_Threads(self, key):
-        self.robotsTxtCacheLock.acquire()
-        ret = self.robotsTxtCache[key]
-        self.robotsTxtCacheLock.release()
-        return ret
+        try:
+            self.robotsTxtCacheLock.acquire()
+            return self.robotsTxtCache[key]
+        finally:
+            self.robotsTxtCacheLock.release()
 
     def robotsTxtCache_set_Threads(self, key, val):
-        self.robotsTxtCacheLock.acquire()
-        self.robotsTxtCache[key] = val
-        self.robotsTxtCacheLock.release()
+        try:
+            self.robotsTxtCacheLock.acquire()
+            self.robotsTxtCache[key] = val
+        finally:
+            self.robotsTxtCacheLock.release()
 
     def log_newUrl_Threads(self, url):
-        self.logLock.acquire()
-        if not self.data["quiet"]: self.data["log"].newUrl(url)
-        for log in self.data["fileoutput"]:
-            log.newUrl(url)
-        self.logLock.release()
+        try:
+            self.logLock.acquire()
+            if not self.data["quiet"]: self.data["log"].newUrl(url)
+            for log in self.data["fileoutput"]:
+                log.newUrl(url)
+        finally:
+            self.logLock.release()
 
     def read(self, files = []):
         if not files:
