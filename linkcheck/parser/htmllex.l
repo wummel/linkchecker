@@ -197,7 +197,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_COMMENT);
 }
 
-<S_COMMENT>-*--> {
+<S_COMMENT>-*--[ ]*> {
     UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng-3);
     SETLVAL;
@@ -210,7 +210,12 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_COMMENT>-+[^->]+ {
+<S_COMMENT>-+[^ ->]+ {
+    UPDATE_LINE;
+    APPEND_TO_TMP(yyleng);
+}
+
+<S_COMMENT>-+[ ]+[^>] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -332,7 +337,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
   /*********************** TAGSTART ************************/
 <INITIAL><{RX_WHITE_SPACE}*/[A-Za-z] {
     UPDATE_LINE;
-    yyextra->tmp_attrs = PyObject_CallObject(yyextra->sorted_dict, NULL);
+    yyextra->tmp_attrs = PyObject_CallObject(yyextra->list_dict, NULL);
     if (yyextra->tmp_attrs==NULL) {
         return T_ERROR;
     }
@@ -880,7 +885,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     LOWER_TMP;
     yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
     SETLVAL;
-    yyextra->tmp_attrs = PyObject_CallObject(yyextra->sorted_dict, NULL);
+    yyextra->tmp_attrs = PyObject_CallObject(yyextra->list_dict, NULL);
     if (yyextra->tmp_attrs==NULL) {
         return T_ERROR;
     }
@@ -920,7 +925,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     LOWER_TMP;
     yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
     SETLVAL;
-    yyextra->tmp_attrs = PyObject_CallObject(yyextra->sorted_dict, NULL);
+    yyextra->tmp_attrs = PyObject_CallObject(yyextra->list_dict, NULL);
     if (yyextra->tmp_attrs==NULL) {
         return T_ERROR;
     }

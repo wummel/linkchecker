@@ -11,6 +11,10 @@
     Type: feature
     Changed: linkcheck/UrlData.py
 
+  * updated optcomplete to newest upstream
+    Type: feature
+    Changed: linkcheck/optcomplete.py
+
 1.12.2 (release 4.4.2004)
   * use XmlUtils instead of xmlify for XML quoting
     Type: code cleanup

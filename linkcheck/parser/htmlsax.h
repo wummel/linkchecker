@@ -71,7 +71,7 @@ typedef struct {
     /* parser.resolve_entities */
     PyObject* resolve_entities;
     /* parser.SortedDict */
-    PyObject* sorted_dict;
+    PyObject* list_dict;
     /* stored Python exception (if error occurred in scanner) */
     PyObject* exc_type;
     PyObject* exc_val;

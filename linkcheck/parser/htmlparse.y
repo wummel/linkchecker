@@ -44,7 +44,7 @@ static int yyerror (char* msg) {
 
 /* parser.resolve_entities */
 static PyObject* resolve_entities;
-static PyObject* sorted_dict;
+static PyObject* list_dict;
 
 /* macros for easier scanner state manipulation */
 
@@ -457,7 +457,7 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
         self->userData->tmp_attrval = self->userData->tmp_attrs =
         self->userData->lexbuf = NULL;
     self->userData->resolve_entities = resolve_entities;
-    self->userData->sorted_dict = sorted_dict;
+    self->userData->list_dict = list_dict;
     self->userData->exc_type = NULL;
     self->userData->exc_val = NULL;
     self->userData->exc_tb = NULL;
@@ -742,7 +742,7 @@ static PyMethodDef parser_methods[] = {
 static PyTypeObject parser_type = {
     PyObject_HEAD_INIT(NULL)
     0,              /* ob_size */
-    "htmlsax.parser",      /* tp_name */
+    "linkcheck.parser.htmlsax.parser",      /* tp_name */
     sizeof(parser_object), /* tp_size */
     0,              /* tp_itemsize */
     /* methods */
@@ -831,7 +831,10 @@ PyMODINIT_FUNC inithtmlsax (void) {
     if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities"))==NULL) {
         return;
     }
-    if ((sorted_dict = PyObject_GetAttrString(m, "SortedDict"))==NULL) {
+    if ((m = PyImport_ImportModule("linkcheck.containers"))==NULL) {
+        return;
+    }
+    if ((list_dict = PyObject_GetAttrString(m, "ListDict"))==NULL) {
         return;
     }
 }
