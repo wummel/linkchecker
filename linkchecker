@@ -378,7 +378,7 @@ if options.extern:
     config["externlinks"].extend(pats)
 if options.output:
     if linkcheck.Loggers.has_key(options.output):
-        config['log'] = config.newLogger(options.output)
+        config['log'] = config.logger_new(options.output)
     else:
         printUsage(_("Illegal argument %r for option %s") % \
                    (options.output, "'-o, --output'"))
