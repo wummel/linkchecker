@@ -164,7 +164,7 @@ class MyDistribution (distklass, object):
                  "creating %s" % filename, self.verbose>=1, self.dry_run)
 
 
-if os.name=='nt':
+if os.name == 'nt':
     # windows does not have unistd.h
     macros = [('YY_NO_UNISTD_H', None)]
     cargs = []
@@ -181,7 +181,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.13.2",
+       version = "1.13.3",
        description = "check HTML documents for broken links",
        keywords = "link,url,checking,verfication",
        author = myname,

@@ -1,3 +1,6 @@
+1.13.3 "" (released xx.xx.xxxx)
+  *
+
 1.13.2 "Zatôichi" (released 8.9.2004)
   * Fix permissions of data files on install to be world readable.
     Type: bugfix
