@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Thu May 27 23:04:43 2004\n"
+"POT-Creation-Date: Thu Jul 22 15:35:24 2004\n"
 "PO-Revision-Date: 2004-05-27 01:06+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -21,6 +21,11 @@ msgstr "ungültige Log Option '%s'"
 msgid "extern%d: syntax error %s\n"
 msgstr "extern%d: Syntaxfehler %s\n"
 
+msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
+msgstr ""
+"%5d URLs zu prüfen, %4d Verknüpfungen überprüft, %2d aktive Threads, "
+"Laufzeit %s"
+
 msgid "No user or password found"
 msgstr "Kein Benutzername oder Passwort gefunden"
 
@@ -33,8 +38,9 @@ msgstr "Keine Antwort vom FTP Server"
 msgid "Missing trailing directory slash in ftp url"
 msgstr "Fehlender / am Ende der FTP url"
 
-msgid "found"
-msgstr "gefunden"
+#, fuzzy
+msgid "Host %s (%s) found"
+msgstr "Rechnername nicht gefunden"
 
 msgid "URL path is empty, assuming '/' as path"
 msgstr "URL Pfad ist leer, verwende '/'"
@@ -223,11 +229,6 @@ msgstr "mehr als ein <base> Tag gefunden, benutze lediglich das erste"
 msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr "Tastatur Abbruch; warte auf Beendigung von %d aktiven Verbindungen"
 
-msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
-msgstr ""
-"%5d URLs zu prüfen, %4d Verknüpfungen überprüft, %2d aktive Threads, "
-"Laufzeit %s"
-
 msgid "unsupported language"
 msgstr "nicht unterstützte Sprache"
 
@@ -384,15 +385,6 @@ msgstr ""
 
 msgid " found\n"
 msgstr " gefunden\n"
-
-msgid "seconds"
-msgstr "Sekunden"
-
-msgid "minutes"
-msgstr "Minuten"
-
-msgid "hours"
-msgstr "Stunden"
 
 msgid "%r at %s, assuming non-compressed content"
 msgstr "%r bei %s, vermute nicht-komprimierten Inhalt"
@@ -748,3 +740,15 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "found"
+#~ msgstr "gefunden"
+
+#~ msgid "seconds"
+#~ msgstr "Sekunden"
+
+#~ msgid "minutes"
+#~ msgstr "Minuten"
+
+#~ msgid "hours"
+#~ msgstr "Stunden"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu May 27 23:04:43 2004\n"
+"POT-Creation-Date: Thu Jul 22 15:35:24 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,9 @@ msgid ""
 "extern%d: syntax error %s\n"
 msgstr ""
 
+msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
+msgstr ""
+
 msgid "No user or password found"
 msgstr ""
 
@@ -37,7 +40,7 @@ msgstr ""
 msgid "Missing trailing directory slash in ftp url"
 msgstr ""
 
-msgid "found"
+msgid "Host %s (%s) found"
 msgstr ""
 
 msgid "URL path is empty, assuming '/' as path"
@@ -201,9 +204,6 @@ msgstr ""
 msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
-msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
-msgstr ""
-
 msgid "unsupported language"
 msgstr ""
 
@@ -354,15 +354,6 @@ msgstr ""
 
 msgid ""
 " found\n"
-msgstr ""
-
-msgid "seconds"
-msgstr ""
-
-msgid "minutes"
-msgstr ""
-
-msgid "hours"
 msgstr ""
 
 msgid "%r at %s, assuming non-compressed content"

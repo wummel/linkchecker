@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Thu May 27 23:04:43 2004\n"
+"POT-Creation-Date: Thu Jul 22 15:35:24 2004\n"
 "PO-Revision-Date: 2004-02-20 15:26+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -21,6 +21,9 @@ msgstr "ungeldige Log Optie '%s'"
 msgid "extern%d: syntax error %s\n"
 msgstr ""
 
+msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
+msgstr ""
+
 msgid "No user or password found"
 msgstr "Geen gebruikernaam of wachtwoord gevonden"
 
@@ -33,8 +36,9 @@ msgstr "Geen antwoord van FTP Server"
 msgid "Missing trailing directory slash in ftp url"
 msgstr ""
 
-msgid "found"
-msgstr "gevonden"
+#, fuzzy
+msgid "Host %s (%s) found"
+msgstr " gevonden"
 
 msgid "URL path is empty, assuming '/' as path"
 msgstr ""
@@ -202,9 +206,6 @@ msgstr ""
 msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
-msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
-msgstr ""
-
 msgid "unsupported language"
 msgstr ""
 
@@ -362,15 +363,6 @@ msgstr ""
 
 msgid " found\n"
 msgstr " gevonden\n"
-
-msgid "seconds"
-msgstr "Seconden"
-
-msgid "minutes"
-msgstr "minuten"
-
-msgid "hours"
-msgstr "Uren"
 
 msgid "%r at %s, assuming non-compressed content"
 msgstr ""
@@ -653,3 +645,15 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#~ msgid "found"
+#~ msgstr "gevonden"
+
+#~ msgid "seconds"
+#~ msgstr "Seconden"
+
+#~ msgid "minutes"
+#~ msgstr "minuten"
+
+#~ msgid "hours"
+#~ msgstr "Uren"
