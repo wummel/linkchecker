@@ -160,7 +160,7 @@ class TextLogger (linkcheck.logger.Logger):
     def write_base (self, url_data):
         """write url_data.base_ref"""
         self.fd.write(self.field("base")+self.spaces("base"))
-        self.fd.write(repr(url_data.base_ref), color=self.colorbase)
+        self.fd.write(url_data.base_ref, color=self.colorbase)
         self.fd.write(os.linesep)
 
     def write_real (self, url_data):
