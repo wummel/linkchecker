@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
 "POT-Creation-Date: 2004-11-13 12:40+0100\n"
-"PO-Revision-Date: 2004-11-13 12:41+0100\n"
+"PO-Revision-Date: 2004-11-13 14:47+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr "Verzeichnis"
 #: ../linkcheck/checker/fileurl.py:112
 #, python-format
 msgid "The URL path %r is not the same as the system path %r. You should always use the system path in URLs."
-msgstr ""
+msgstr "Der URL Pfad %r ist nicht derselbe wie der Systempfad %r. Sie sollten immer den Systempfad in URLs benutzen."
 
 #: ../linkcheck/checker/httpurl.py:65
 msgid "URL path is empty, assuming '/' as path"
@@ -199,7 +199,7 @@ msgid ""
 "URL %s has a unicode domain name which\n"
 "                          is not yet widely supported. You should use\n"
 "                          the URL %s instead."
-msgstr ""
+msgstr "URL %s besitzt eine Unicode Domäne, welche noch nicht von allen verarbeitet werden kann. Sie sollten stattdessen die URL %s benutzen."
 
 #: ../linkcheck/checker/urlbase.py:254
 #, python-format
@@ -781,6 +781,8 @@ msgid ""
 "ENCODING specifies the output encoding, the default is \"iso-8859-15\".\n"
 "Valid encodings are listed at http://docs.python.org/lib/node127.html."
 msgstr ""
+"Spezifiziere die Ausgabe als %(loggertypes)s. Standardausgabe ist text. ENCODING gibt die Ausgabeencodirung and, die Standardencodierung ist \"iso-8859-15\".\n"
+"Gültige Encodierungen sind unter http://docs.python.org/lib/node127.html aufgelistet."
 
 #: ../linkchecker:280
 #, python-format
