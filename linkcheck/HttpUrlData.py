@@ -282,12 +282,14 @@ class HttpUrlData (ProxyUrlData):
             method = "GET"
         if self.proxy:
             host = self.proxy
+            scheme = "http"
         else:
             host = self.urlparts[1]
+            scheme = self.urlparts[0]
         debug(HURT_ME_PLENTY, "host", host)
         if self.urlConnection:
             self.closeConnection()
-        self.urlConnection = self.getHTTPObject(host)
+        self.urlConnection = self.getHTTPObject(host, scheme)
         # quote parts before submit
         qurlparts = self.urlparts[:]
         qurlparts[2:5] = map(quote, self.urlparts[2:5])
@@ -320,14 +322,13 @@ class HttpUrlData (ProxyUrlData):
         return self.urlConnection.getresponse()
 
 
-    def getHTTPObject (self, host):
-        scheme = self.urlparts[0]
+    def getHTTPObject (self, host, scheme):
         if scheme=="http":
             h = httplib.HTTPConnection(host)
         elif scheme=="https":
             h = httplib.HTTPSConnection(host)
         else:
-            raise IOError, "invalid url scheme %s" % scheme
+            raise LinkCheckerError, "invalid url scheme %s" % scheme
         h.set_debuglevel(get_debuglevel())
         h.connect()
         return h
