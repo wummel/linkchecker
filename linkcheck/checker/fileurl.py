@@ -99,6 +99,19 @@ class FileUrl (urlbase.UrlBase):
         self.has_content = True
         return self.data
 
+    def set_cache_keys (self):
+        """Set keys for URL checking and content recursion."""
+        # removed anchor from content cache key
+        self.cache_content_key = self.url
+        # construct cache key
+        if self.consumer.config["anchorcaching"]:
+            # do not ignore anchor
+            self.cache_url_key = \
+                         urlparse.urlunsplit(self.urlparts[:4]+[self.anchor])
+        else:
+            # no anchor caching
+            self.cache_url_key = self.url
+
     def is_html (self):
         if linkcheck.checker.extensions['html'].search(self.url):
             return True
