@@ -30,8 +30,8 @@ For single-letter option arguments the space is not a necessity.
 So \fI-o colored\fP is the same as \fI-ocolored\fP.
 .TP
 \fB-a\fP, \fB--anchors\fP
-Check HTTP anchor references.  This option applies to both intern
-and extern urls. Default is don't check anchors.
+Check HTTP anchor references.  This option applies to both internal
+and external urls. Default is don't check anchors.
 This option implies -w because anchor errors are always warnings.
 .TP
 \fB-C\fP, \fB--cookies\fP
@@ -41,16 +41,16 @@ Sent and accepted cookies are provided as additional logging
 information.
 .TP
 \fB-d\fP, \fB--denyallow\fP
-Swap checking order to extern/intern. Default checking order is
-intern/extern.
+Swap checking order to external/internal. Default checking order is
+internal/external.
 .TP
 \fB-D\fP, \fB--debug\fP
 Print debugging information. Provide this option multiple times
 for even more debugging information.
 .TP
 \fB-e \fIregex\fP, \fB--extern=\fIregex\fP
-Assume urls that match the given regular expression as extern.
-Only intern HTML links are checked recursively.
+Assume urls that match the given regular expression as external.
+Only internal HTML links are checked recursively.
 .TP
 \fB-f \fIfile\fP, \fB--config=\fIfile\fP
 Use \fIfile\fP as configuration file. As default LinkChecker first searches
@@ -67,8 +67,8 @@ output.
 Ask for url if none are given on the commandline.
 .TP
 \fB-i \fIregex\fP, \fB--intern=\fIregex\fP
-Assume URLs that match the given regular expression as intern.
-LinkChecker descends recursively only to intern URLs, not to extern.
+Assume URLs that match the given regular expression as internal.
+LinkChecker descends recursively only to internal URLs, not to external.
 .TP
 \fB-h\fP, \fB--help\fP
 Help me! Print usage information for this program.
@@ -106,7 +106,7 @@ A negative depth will enable inifinite recursion.
 Default depth is 1.
 .TP
 \fB-s\fP, \fB--strict\fP
-Check only the syntax of extern links, do not try to connect to them.
+Check only the syntax of external links, do not try to connect to them.
 For local file urls, only local files are internal. For
 http and ftp urls, all urls at the same domain name are internal.
 .TP

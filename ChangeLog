@@ -1,10 +1,13 @@
 1.8.22
-  * allow colons in HTML attribute names for namespaces
+  * allow colons in HTML attribute names, used for namespaces
     Changed: linkcheck/parser/htmllex.l
-  * fix match of intern patters with --denyallow enabled
+  * fix match of intern patterns with --denyallow enabled
     Changed: linkcheck/UrlData.py
   * s/intern/internal/ and s/extern/external/ in the documentation
     Changed: linkchecker, linkchecker.1, FAQ
+  * rename column "column" to "col" in SQL output, since "column" is
+    a reserved keyword. Thanks Garvin Hicking for the hint.
+    Changed: linkcheck/log/SQLLogger.py, create.sql
 
 1.8.21
   * detect recursive redirections; the maximum of five redirections is

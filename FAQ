@@ -4,7 +4,7 @@ Q1: LinkChecker produced an error, but my web page is ok with
 A1: Please check your web pages first. Are they really ok? Use
    a syntax highlighting editor! Use HTML Tidy from www.w3c.org!
    Check if the web server is accepting HEAD requests as well.
-   Check if you are using a Proxy which produces the error.
+   Check if you are using a proxy which produces the error.
 
 
 Q2.1: I still get an error, but the page is definitely ok.
@@ -38,10 +38,10 @@ A4: You have to quote special characters (e.g. spaces) in the subject field.
 
 
 Q5: Has LinkChecker JavaScript support?
-A5: No, it never will. JavaScript sucks. If your page is not
-   working without JS then your web design is broken.
-   Learn PHP or Zope or ASP, and use JavaScript just as an addon for your
-   web pages.
+A5: No, it never will. If your page is not working without JS then your
+   web design is broken.
+   Use PHP or Zope or ASP for dynamic content, and use JavaScript just as
+   an addon for your web pages.
 
 
 Q6: I have a pretty large site to check. How can I restrict link checking
@@ -52,12 +52,12 @@ A6: Look at the options --intern, --extern, --strict, --denyallow  and
 
 Q7: I don't get this --extern/--intern stuff.
 A7: When it comes to checking there are three types of URLs:
-   1) strict extern URLs:
-      We do only syntax checking. Intern URLs are never strict.
-   2) extern URLs:
+   1) strict external URLs:
+      We do only syntax checking. Internal URLs are never strict.
+   2) external URLs:
       Like 1), but we additionally check if they are valid by connect()ing
       to them
-   3) intern URLs:
+   3) internal URLs:
       Like 2), but we additionally check if they are HTML pages and if so,
       we descend recursively into this link and check all the links in the
       HTML content.
@@ -67,42 +67,42 @@ A7: When it comes to checking there are three types of URLs:
    LinkChecker provides four options which affect URLs to fall in one
    of those three categories: --intern, --extern, --strict and
    --denyallow.
-   By default all URLs are intern. With --extern you specify what URLs
-   are extern. With --intern you specify what URLs are intern.
+   By default all URLs are internal. With --extern you specify what URLs
+   are external. With --intern you specify what URLs are internal.
    Now imagine you have both --extern and --intern. What happens
    when an URL matches both patterns? Or when it matches none? In this
    situation the --denyallow option specifies the order in which we match
-   the URL. By default it is intern/extern, with --denyallow the order is
-   extern/intern. Either way, the first match counts, and if none matches,
+   the URL. By default it is internal/external, with --denyallow the order is
+   external/internal. Either way, the first match counts, and if none matches,
    the last checked category is the category for the URL.
-   Finally, with --strict all extern URLs are strict.
+   Finally, with --strict all external URLs are strict.
    
-   Oh, and just to boggle your mind: you can have more than one extern
+   Oh, and just to boggle your mind: you can have more than one external
    regular expression in a config file and for each of those expressions
-   you can specify if those matched extern URLs should be strict or not.
+   you can specify if those matched external URLs should be strict or not.
 
    An example. Assume we want to check only urls of our domains named
    'mydomain.com' and 'myotherdomain.com'. Then we specify
-   -i'^http://my(other)?domain\.com' as intern regular expression, all other
-   urls are treated extern. Easy.
+   -i'^http://my(other)?domain\.com' as internal regular expression, all other
+   urls are treated external. Easy.
 
    Another example. We don't want to check mailto urls. Then its
    -i'!^mailto:'. The '!' negates an expression. With --strict, we don't
    even connect to any mail hosts.
    
    Yet another example. We check our site www.mycompany.com, don't recurse
-   into extern links point outside from our site and want to ignore links to
+   into external links point outside from our site and want to ignore links to
    hollowood.com and hullabulla.com completely.
    This can only be done with a configuration entry like
    [filtering]
    extern1=hollowood.com 1
    extern2=hullabulla.com 1
-   # the 1 means strict extern ie don't even connect
+   # the 1 means strict external ie don't even connect
    and the command
    linkchecker --intern=www.mycompany.com www.mycompany.com
 
 
-Q8: Are Cookies insecure?
+Q8: Is LinkCheckers cookie feature insecure?
 A8: Cookies can not store more information as is in the HTTP request itself,
    so you are not giving away any more system information.
    After storing however, the cookies are sent out to the server on request.
@@ -111,6 +111,7 @@ A8: Cookies can not store more information as is in the HTTP request itself,
    and this is what some people annoys (including me).
    Cookies are only stored in memory. After LinkChecker finishes, they
    are lost. So the tracking is restricted to the checking time.
+   The cookie feature is disabled as default.
 
 
 Q9: I want to have my own logging class. How can I use it in LinkChecker?
@@ -139,8 +140,10 @@ A10: This is not a bug.
    If you really want to disable this, use --no-anchor-caching.
 
 
-Q11: I see linkchecker gets a "/robots.txt" file for every site it
+Q11: I see LinkChecker gets a "/robots.txt" file for every site it
      checks. What is that about?
-A11: See http://www.robotstxt.org/wc/robots.html and
- http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt
- for more info.
+A11: LinkChecker follows the robots.txt exclusion standard. To avoid
+   misuse of LinkChecker, you cannot turn this feature off.
+   See http://www.robotstxt.org/wc/robots.html and
+   http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt
+   for more info.

@@ -1,7 +1,7 @@
 On Debian systems, you have a simple CGI script located at
 http://localhost/lconline/index.html
 For this to work, your web server must have content negotiation enabled.
-Or you have to remove for one language XY the file extensions of the .html
-files.
+Or you have to remove for one language XY the file extensions of the
+.html.XY files.
 
 For installation of a FastCGI script instead of the above, see README.
