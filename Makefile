@@ -22,6 +22,7 @@ all:
 clean:
 # ignore errors of this command
 	-$(PYTHON) setup.py clean --all
+	rm -f sign-stamp release-stamp
 	$(MAKE) -C po clean
 	rm -f linkcheck/HtmlParser/htmlsax.so
 	rm -f linkcheck/HtmlParser/*.output
@@ -31,7 +32,6 @@ distclean: clean cleandeb
 # just to be sure clean also the build dir
 	rm -rf dist build
 	rm -f _$(PACKAGE)_configdata.py MANIFEST Packages.gz
-	rm -f sign-stamp release-stamp
 # clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-out* $(PACKAGE).prof $(PACKAGE)-md5sums.txt
 
