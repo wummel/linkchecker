@@ -176,4 +176,6 @@ class XMLLogger (linkcheck.logger.Logger):
             self.fd.write(os.linesep)
             self.fd.write("-->")
         self.flush()
+        if self.close_fd:
+            self.fd.close()
         self.fd = None

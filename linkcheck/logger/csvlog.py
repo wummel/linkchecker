@@ -102,5 +102,6 @@ class CSVLogger (linkcheck.logger.Logger):
                            linkcheck.strformat.strduration(duration),
                            self.lineterminator))
             self.flush()
-        self.fd.close()
+        if self.close_fd:
+            self.fd.close()
         self.fd = None

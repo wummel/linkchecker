@@ -264,4 +264,6 @@ class HtmlLogger (linkcheck.logger.Logger):
              linkcheck.configuration.Email+"</a>.")+os.linesep)
             self.fd.write("</small></body></html>"+os.linesep)
         self.flush()
+        if self.close_fd:
+            self.fd.close()
         self.fd = None

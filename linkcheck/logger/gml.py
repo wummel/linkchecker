@@ -127,4 +127,6 @@ class GMLLogger (linkcheck.logger.Logger):
                            linkcheck.strformat.strduration(duration)))
             self.fd.write(os.linesep)
         self.flush()
+        if self.close_fd:
+            self.fd.close()
         self.fd = None

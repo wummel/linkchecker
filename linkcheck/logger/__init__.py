@@ -62,10 +62,13 @@ class Logger (object):
         """initialize self.fd file descriptor from args"""
         if args.has_key('fileoutput'):
             self.fd = file(args['filename'], "w")
+            self.close_fd = True
         elif args.has_key('fd'):
             self.fd = args['fd']
+            self.close_fd = False
         else:
             self.fd = sys.stdout
+            self.close_fd = False
 
     def has_field (self, name):
         """see if given field name will be logged"""
