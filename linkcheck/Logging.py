@@ -170,7 +170,7 @@ class HtmlLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write("<html><head><title>"+Config.AppName+"</title></head>"+
+        self.fd.write("<html><head><title>"+Config.App+"</title></head>"+
               "<body bgcolor="+ColorBackground+" link="+ColorLink+
               " vlink="+ColorLink+" alink="+ColorLink+">"+
               "<center><h2>"+MyFont+Config.AppName+"</font>"+
