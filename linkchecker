@@ -82,7 +82,7 @@ For single-letter option arguments the space is not a necessity. So
         Generate no more than num threads. Default number of threads is 5.
         To disable threading specify a non-positive number.
 --timeout=secs
-        Set the timeout for connection attempts in seconds. the default
+        Set the timeout for TCP connection attempts in seconds. The default
         timeout is system dependant.
 -u name, --user=name
         Try username name for HTML and FTP authorization.

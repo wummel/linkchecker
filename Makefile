@@ -25,7 +25,9 @@ clean:
 .PHONY: distclean
 distclean: clean cleandeb
 	rm -rf dist build # just to be sure clean also the build dir
-	rm -f $(PACKAGE)-out.* VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
+	rm -f VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
+	# clean aborted dist builds and -out files
+	rm -f $(PACKAGE)-*
 
 .PHONY: cleandeb
 cleandeb:

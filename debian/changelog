@@ -2,13 +2,13 @@ linkchecker (1.3.6) unstable; urgency=low
 
   * fix typo in Copyright blurb
   * implemented Proxy Authentication (untested)
-  * Opera Bookmark files (opera.adr) support, they get parsed
-    automatically like HTML files
+  * Opera Bookmark files (opera.adr) support, they are parsed
+    automatically
   * support for TCP socket timeouts with --timeout (untested)
   * replace string module functions with Python 2.x string methods
   * use TCP for DNS MX mailhost lookup as default, not UDP as it seems
     to hang forever (dont know why). This should fix bug #106393, but
-    only time will tell.
+    only time and tests will tell.
   * updated DNS.init_dns_config with Windows-specific functions from
     pydns.sf.net (only tested under Win2000 with DNS server settings
     over DHCP)
