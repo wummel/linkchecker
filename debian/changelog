@@ -1,3 +1,10 @@
+linkchecker (1.13.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * added debian/watch file
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 28 Jul 2004 16:32:00 +0200
+
 linkchecker (1.12.3-1) unstable; urgency=low
 
   * New upstream release.
