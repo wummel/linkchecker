@@ -25,6 +25,7 @@ import types
 
 import linkcheck.configuration
 import linkcheck.url
+import linkcheck.i18n
 import linkcheck.strformat
 
 _logfile = None
@@ -108,7 +109,7 @@ def checkform (form):
         lang = form['language'].value
         if lang in _supported_langs:
             os.environ['LC_MESSAGES'] = lang
-            #XXXinit_gettext()
+            linkcheck.i18n.init()
         else:
             raise FormError(_("unsupported language"))
     # check url syntax
