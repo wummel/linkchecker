@@ -21,23 +21,16 @@ from distutils.dist import Distribution
 from distutils.extension import Extension
 from distutils.command.install import install
 from distutils.command.config import config
+from distutils import util
+from distutils.file_util import write_file
 import os
 
-# put the config file in the test dir to prevent installation
-config_file = "test/config.py"
+config_file = "config.py"
 
 class LCInstall(install):
     def run(self):
         install.run(self)
-        self.create_conf_file()
-
-    def create_conf_file(self):
-        from distutils.fancy_getopt import longopt_xlate
-        filename = os.path.join(self.install_lib,
-                                self.distribution.get_name() + "Conf.py")
-        data = []
-        self.execute(write_file, (filename, data),
-                     "creating %s" % filename)
+        self.distribution.create_conf_file(self.install_lib)
 
 
 class LCConfig(config):
@@ -77,11 +70,13 @@ class LCConfig(config):
                                   other_libraries = ["crypto"],
                                   headers = ["ssl.h"])
         f = open(config_file,'w')
+        f.write("# this file is automatically created by setup.py config\n")
 	f.write("have_ssl = %d\n" % (have_ssl))
         f.write("ssl_library_dirs = %s\n" % `self.ssl_library_dirs`)
         f.write("ssl_include_dirs = %s\n" % `self.ssl_include_dirs`)
         f.write("libraries = %s\n" % `['ssl', 'crypto']`)
         f.close()
+        self.distribution.create_conf_file(".")
 
 
 class LCDistribution(Distribution):
@@ -105,6 +100,16 @@ class LCDistribution(Distribution):
                         library_dirs=config.ssl_library_dirs,
                         libraries=config.libraries)]
 
+    def create_conf_file(self, dir, data=[]):
+        data.insert(0, "# this file is automatically created by setup.py")
+        filename = os.path.join(dir, self.get_name() + "Conf.py")
+        data.append("name = %s" % `self.get_name()`)
+        data.append("version = %s" % `self.get_version()`)
+        data.append("author = %s" % `self.get_author()`)
+        data.append("author_email = %s" % `self.get_author_email()`)
+        data.append("url = %s" % `self.get_url()`)
+        util.execute(write_file, (filename, data),
+                     "creating %s" % filename, self.verbose >= 1, self.dry_run)
 
 setup (name = "LinkChecker",
        version = "1.2.6",

@@ -37,7 +37,7 @@ HtmlCopyright = "Copyright &copy; 2000 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
 Url = LinkCheckerConf.url
-Email = LinkCheckerConf.email
+Email = LinkCheckerConf.author_email
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' whithin this

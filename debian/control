@@ -6,7 +6,7 @@ Standards-Version: 3.0.1
 
 Package: linkchecker
 Architecture: any
-Depends: python-base (>= 1.5.2)
+Depends: python-base (== 1.5.2)
 Suggests: libssl09, libssl09-dev
 Description: check/validate/test your HTML documents for broken links/URLs
  Features:
