@@ -1,6 +1,10 @@
 - no more threading disablement: we have dummy_threading now
   disable threads for debugging purposes only (internal)
 
+- SF bug #992389 bit me when I wanted to do absolute imports
+  at the *UrlData classes :/
+  When the bug is fixed we can import absolute classes
+
 - cache queue rework?
 
 - document what checks are performed for each url type
