@@ -238,6 +238,29 @@ def list_message_files(package, suffix=".po"):
     return _list
 
 
+def check_manifest ():
+    """
+    Snatched from roundup.sf.net.
+    Check that the files listed in the MANIFEST are present when the
+    source is unpacked.
+    """
+    try:
+        f = open('MANIFEST')
+    except:
+        print '\n*** SOURCE WARNING: The MANIFEST file is missing!'
+        return
+    try:
+        manifest = [l.strip() for l in f.readlines()]
+    finally:
+        f.close()
+    err = [line for line in manifest if not os.path.exists(line)]
+    if err:
+        n = len(manifest)
+        print '\n*** SOURCE WARNING: There are files missing (%d/%d found)!'%(
+            n-len(err), n)
+        print 'Missing:', '\nMissing: '.join(err)
+
+
 class MyBuild (build, object):
     """
     Custom build command.
@@ -254,6 +277,7 @@ class MyBuild (build, object):
             msgfmt.make(_src, _build_dst)
 
     def run (self):
+        check_manifest()
         self.build_message_files()
         build.run(self)
 
