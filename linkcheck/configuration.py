@@ -30,18 +30,18 @@ import linkcheck.log
 import linkcheck.containers
 
 Version = _linkchecker_configdata.version
-AppName = "LinkChecker"
-App = AppName+" "+Version
+AppName = u"LinkChecker"
+App = AppName+u" "+Version
 Author =  _linkchecker_configdata.author
-HtmlAuthor = Author.replace(' ', '&nbsp;')
-Copyright = "Copyright © 2000-2004 "+Author
-HtmlCopyright = "Copyright &copy; 2000-2004 "+HtmlAuthor
-AppInfo = App+"              "+Copyright
-HtmlAppInfo = App+", "+HtmlCopyright
+HtmlAuthor = Author.replace(u' ', u'&nbsp;')
+Copyright = u"Copyright © 2000-2004 "+Author
+HtmlCopyright = u"Copyright &copy; 2000-2004 "+HtmlAuthor
+AppInfo = App+u"              "+Copyright
+HtmlAppInfo = App+u", "+HtmlCopyright
 Url = _linkchecker_configdata.url
 Email = _linkchecker_configdata.author_email
-UserAgent = "%s/%s (%s; %s)" % (AppName, Version, Url, Email)
-Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
+UserAgent = u"%s/%s (%s; %s)" % (AppName, Version, Url, Email)
+Freeware = AppName+u""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
