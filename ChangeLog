@@ -7,6 +7,12 @@
   * before putting url data objects in the queue, check if they
     have correct syntax and are not already cached
     Changed: linkcheck/{UrlData,Config}.py
+  * every once in a while, remove all already cached urls from the
+    incoming queue. This action is reported when --status is given.
+    Changed: linkcheck/Config.py
+  * both changes above result in significant performance improvements
+    when checking large websites, since a majority of the links tend
+    to be navigation links to already-cached pages.
 
 1.12.1 (release 21.2.2004)
   * raise IncompleteRead instead of ValueError on malformed chunked
