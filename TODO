@@ -7,7 +7,6 @@ possible Python 2.3 improvements (ie needs Python >= 2.3)
 - use optparse instead of getopt with more flexible commandline help
 - replace the debug() function with the logging module
   we'll see how we can insert multiple debug levels into this thing
-- use Bool object type
 - use new csv module
 - use the Set type instead of hashmaps (did I use hashmaps for sets here?)
 

@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import time
+import time, csv
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
 from Logger import Logger
@@ -28,59 +28,54 @@ class CSVLogger (StandardLogger):
     def __init__ (self, **args):
         StandardLogger.__init__(self, **args)
         self.separator = args['separator']
+        self.lineterminator = "\n"
 
     def init (self):
         Logger.init(self)
         if self.fd is None: return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("# "+(i18n._("created by %s at %s\n") % (Config.AppName,
-                      strtime(self.starttime))))
-            self.fd.write("# "+(i18n._("Get the newest version at %s\n") % Config.Url))
-            self.fd.write("# "+(i18n._("Write comments and bugs to %s\n\n") % \
-	                    Config.Email))
-            self.fd.write(i18n._("# Format of the entries:\n")+\
-                          "# urlname;\n"
-                          "# recursionlevel;\n"
-                          "# parentname;\n"
-                      "# baseref;\n"
-                      "# errorstring;\n"
-                      "# validstring;\n"
-                      "# warningstring;\n"
-                      "# infostring;\n"
-                      "# valid;\n"
-                      "# url;\n"
-                      "# line;\n"
-                      "# column;\n"
-                      "# name;\n"
-                      "# dltime;\n"
-                      "# dlsize;\n"
-                      "# checktime;\n"
-                      "# cached;\n")
+            self.fd.write("# "+(i18n._("created by %s at %s%s") % (Config.AppName, strtime(self.starttime), self.lineterminator)))
+            self.fd.write("# "+(i18n._("Get the newest version at %s%s") % (Config.Url, self.lineterminator)))
+            self.fd.write("# "+(i18n._("Write comments and bugs to %s%s%s") % \
+	                    (Config.Email, self.lineterminator, self.lineterminator)))
+            self.fd.write(
+                      i18n._("# Format of the entries:")+self.lineterminator+\
+                      "# urlname;"+self.lineterminator+\
+                      "# recursionlevel;"+self.lineterminator+\
+                      "# parentname;"+self.lineterminator+\
+                      "# baseref;"+self.lineterminator+\
+                      "# errorstring;"+self.lineterminator+\
+                      "# validstring;"+self.lineterminator+\
+                      "# warningstring;"+self.lineterminator+\
+                      "# infostring;"+self.lineterminator+\
+                      "# valid;"+self.lineterminator+\
+                      "# url;"+self.lineterminator+\
+                      "# line;"+self.lineterminator+\
+                      "# column;"+self.lineterminator+\
+                      "# name;"+self.lineterminator+\
+                      "# dltime;"+self.lineterminator+\
+                      "# dlsize;"+self.lineterminator+\
+                      "# checktime;"+self.lineterminator+\
+                      "# cached;"+self.lineterminator)
             self.fd.flush()
+        self.writer = csv.writer(self.fd, dialect='excel', delimitor=self.separator, lineterminator=self.lineterminator)
+
 
     def newUrl (self, urlData):
         if self.fd is None: return
-        self.fd.write(
-    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%s%s%d%s%d%s%d%s%d\n" % (
-    urlData.urlName, self.separator,
-    urlData.recursionLevel, self.separator,
-    urlData.parentName, self.separator,
-    urlData.baseRef, self.separator,
-    urlData.errorString, self.separator,
-    urlData.validString, self.separator,
-    urlData.warningString, self.separator,
-    urlData.infoString, self.separator,
-    urlData.valid, self.separator,
-    urlData.url, self.separator,
-    urlData.line, self.separator,
-    urlData.column, self.separator,
-    urlData.name, self.separator,
-    urlData.dltime, self.separator,
-    urlData.dlsize, self.separator,
-    urlData.checktime, self.separator,
-    urlData.cached))
+        row = [urlData.urlName, urlData.recursionLevel,
+               urlData.parentName, urlData.baseRef,
+               urlData.errorString, urlData.validString,
+               urlData.warningString, urlData.infoString,
+               urlData.valid, urlData.url,
+               urlData.line, urlData.column,
+               urlData.name, urlData.dltime,
+               urlData.dlsize, urlData.checktime,
+               urlData.cached]
+        self.writer.writerow(row)
         self.fd.flush()
+
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
@@ -95,7 +90,8 @@ class CSVLogger (StandardLogger):
             if duration > 60:
                 duration = duration / 60
                 name = i18n._("hours")
-            self.fd.write(" (%.3f %s)\n" % (duration, name))
+            self.fd.write(" (%.3f %s)%s" % (duration, name, self.lineterminator))
             self.fd.flush()
+        self.fd.close()
         self.fd = None
 
