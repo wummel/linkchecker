@@ -202,7 +202,9 @@ class MyBuildExt (build_ext, object):
         # First, sanity-check the 'extensions' list
         self.check_extensions_list(self.extensions)
         for ext in self.extensions:
-            ext.extra_compile_args.extend(extra)
+            for opt in extra:
+                if opt not in ext.extra_compile_args:
+                    ext.extra_compile_args.append(opt)
             self.build_extension(ext)
 
 
