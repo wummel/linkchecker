@@ -260,7 +260,7 @@ for opt,arg in options:
         config["warnings"] = 1
 
 if constructauth:
-    congif["authentication"].insert(0, (re.compile(".*"), _user, _password))
+    config["authentication"].insert(0, (re.compile(".*"), _user, _password))
 
 # construct the url list
 if len(args)==0:
