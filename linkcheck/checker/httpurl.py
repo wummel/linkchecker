@@ -24,6 +24,7 @@ import zlib
 import gzip
 import socket
 import cStringIO as StringIO
+import Cookie
 
 import linkcheck
 import linkcheck.url
@@ -307,10 +308,14 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             if self.consumer.config['cookies']:
                 for c in self.cookies:
                     self.add_info("Cookie: %s" % c)
-                out = self.consumer.cache.store_cookies(self.headers,
-                                                        self.urlparts[1])
-                for h in out:
-                    self.add_info(h)
+                try:
+                    out = self.consumer.cache.store_cookies(self.headers,
+                                                            self.urlparts[1])
+                    for h in out:
+                        self.add_info(h)
+                except Cookie.CookieError, msg:
+                    self.add_warning(_("Could not store cookies: %(msg)s") %
+                                     str(msg))
             if response.status >= 200:
                 self.set_result("%r %s" % (response.status, response.reason))
             else:
