@@ -17,4 +17,6 @@ rem Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 rem uncomment the next line to enable german output
 rem set LC_MESSAGES=de
+rem uncomment the next line to enable french output
+rem set LC_MESSAGES=fr
 "python.exe" "linkchecker" %*

@@ -251,7 +251,7 @@ else:
     data_files.append(('share/linkchecker/examples',["linkchecker.bat"]))
 
 setup (name = "linkchecker",
-       version = "1.3.7",
+       version = "1.3.8",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
