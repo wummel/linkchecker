@@ -14,7 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-"""Fast HTML parser module written in C with the following features:
+"""
+Fast HTML parser module written in C with the following features:
 
 1. Reentrant
 
@@ -71,9 +72,13 @@ import htmlentitydefs
 
 
 def _resolve_ascii_entity (mo):
-    """Helper function for resolve_entities to resolve one &#XXX;
-       entity if it is an ASCII character. Else leave as is.
-       Input is a match object with a "num" group matched.
+    """
+    Resolve one &#XXX; entity if it is an ASCII character. Else leave as is.
+
+    @param mo: matched v{_num_re} object with a "num" match group
+    @type mo: c{MatchObject} instance
+    @return: resolved ASCII entity char, or original entity
+    @rtype: c{string}
     """
     # convert to number
     ent = mo.group()
@@ -91,13 +96,28 @@ def _resolve_ascii_entity (mo):
 
 
 _num_re = re.compile(ur'(?i)&#x?(?P<num>\d+);')
+
 def resolve_ascii_entities (s):
-    """resolve entities in 7-bit ASCII range to eliminate obfuscation"""
+    """
+    Resolve entities in 7-bit ASCII range to eliminate obfuscation.
+
+    @param s: string with entities
+    @type s: c{string}
+    @return: string with resolved ASCII entities
+    @rtype: c{string}
+    """
     return _num_re.sub(_resolve_ascii_entity, s)
 
 
 def _resolve_html_entity (mo):
-    """resolve html entity, helper function for resolve_html_entities"""
+    """
+    Resolve html entity.
+
+    @param mo: matched v{_entity_re} object with a "entity" match group
+    @type mo: c{MatchObject} instance
+    @return: resolved entity char, or original entity
+    @rtype: c{string}
+    """
     ent = mo.group("entity")
     s = mo.group()
     entdef = htmlentitydefs.entitydefs.get(ent)
@@ -108,19 +128,42 @@ def _resolve_html_entity (mo):
 
 
 _entity_re = re.compile(ur'(?i)&(?P<entity>[a-z]+);')
+
 def resolve_html_entities (s):
-    """resolve html entites in s and return result"""
+    """
+    Resolve HTML entities in s and return result.
+
+    @param s: string with HTML entities
+    @type s: c{string}
+    @return: string with resolved HTML entities
+    @rtype: c{string}
+    """
     return _entity_re.sub(_resolve_html_entity, s)
 
 
 def resolve_entities (s):
-    """resolve both html and 7-bit ASCII entites in s and return result"""
+    """
+    Resolve both HTML and 7-bit ASCII entities in s.
+
+    @param s: string with entities
+    @type s: c{string}
+    @return: string with resolved entities
+    @rtype: c{string}
+    """
     s = resolve_ascii_entities(s)
     return resolve_html_entities(s)
 
 
 def strip_quotes (s):
-    """remove possible double or single quotes"""
+    """
+    Remove possible double or single quotes. Only matching quotes
+    are removed.
+
+    @param s: a string
+    @type s: c{string}
+    @return: string with removed single or double quotes
+    @rtype: c{string}
+    """
     if len(s) >= 2 and \
        ((s.startswith("'") and s.endswith("'")) or \
         (s.startswith('"') and s.endswith('"'))):
@@ -130,10 +173,15 @@ def strip_quotes (s):
 
 _encoding_ro = re.compile(r"charset=(?P<encoding>[-0-9a-zA-Z]+)")
 
-def set_encoding (self, tag, attrs):
-    """Set document encoding for given parser. Tag must be a meta tag."""
-    if tag != u'meta':
-        return
+def set_encoding (self, attrs):
+    """
+    Set document encoding for the HTML parser according to the <meta>
+    tag attribute information.
+
+    @param attrs: attributes of a <meta> HTML tag
+    @type attrs: c{dict}
+    @return: c{None}
+    """
     if attrs.get('http-equiv', u'').lower() == u"content-type":
         content = attrs.get('content', u'')
         mo = _encoding_ro.search(content)
@@ -149,6 +197,14 @@ def set_encoding (self, tag, attrs):
 
 
 def set_doctype (self, doctype):
+    """
+    Set document type of the HTML parser according to the given
+    document type string.
+
+    @param doctype: document type
+    @type doctype: c{string}
+    @return: c{None}
+    """
     if u"XHTML" in doctype:
         self.doctype = "XHTML"
 
