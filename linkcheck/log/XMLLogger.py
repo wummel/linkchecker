@@ -46,7 +46,7 @@ class XMLLogger (StandardLogger):
 	              Config.Email)
             self.fd.write("-->\n\n")
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
-        self.fd.flush()
+        self.flush()
 
 
     def newUrl (self, urlData):
@@ -98,7 +98,7 @@ class XMLLogger (StandardLogger):
                                   (node.valid and 1 or 0))
                 self.fd.write("    </data>\n")
                 self.fd.write("  </edge>\n")
-        self.fd.flush()
+        self.flush()
 
 
     def endOfOutput (self, linknumber=-1):
@@ -111,5 +111,5 @@ class XMLLogger (StandardLogger):
             self.fd.write(i18n._("Stopped checking at %s (%s)\n")%\
                           (strtime(self.stoptime), strduration(duration)))
             self.fd.write("-->")
-        self.fd.flush()
+        self.flush()
         self.fd = None

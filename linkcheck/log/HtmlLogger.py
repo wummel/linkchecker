@@ -61,7 +61,7 @@ class HtmlLogger (StandardLogger):
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
               (i18n._("Start checking at %s\n") % strtime(self.starttime))+
 	      "<br>")
-        self.fd.flush()
+        self.flush()
 
 
     def newUrl (self, urlData):
@@ -136,7 +136,7 @@ class HtmlLogger (StandardLogger):
 	                  "</td>\n"+self.tableerror+
 			  urlData.errorString+"</td>\n</tr>\n")
         self.fd.write("</table></td></tr></table><br clear=\"all\">")
-        self.fd.flush()
+        self.flush()
 
 
     def endOfOutput (self, linknumber=-1):
@@ -169,5 +169,5 @@ class HtmlLogger (StandardLogger):
             self.fd.write(i18n._("Write comments and bugs to %s\n\n") %\
 	     ('<a href="mailto:'+Config.Email+'">'+Config.Email+"</a>."))
             self.fd.write("</small></body></html>")
-        self.fd.flush()
+        self.flush()
         self.fd = None

@@ -40,7 +40,7 @@ class SQLLogger (StandardLogger):
             self.fd.write("-- "+(i18n._("Get the newest version at %s\n") % Config.Url))
             self.fd.write("-- "+(i18n._("Write comments and bugs to %s\n\n") % \
 	                Config.Email))
-            self.fd.flush()
+            self.flush()
 
 
     def newUrl (self, urlData):
@@ -69,7 +69,7 @@ class SQLLogger (StandardLogger):
                urlData.dlsize,
                urlData.cached,
 	       self.separator))
-        self.fd.flush()
+        self.flush()
 
 
     def endOfOutput (self, linknumber=-1):
@@ -79,5 +79,5 @@ class SQLLogger (StandardLogger):
             duration = self.stoptime - self.starttime
             self.fd.write("-- "+i18n._("Stopped checking at %s (%s)\n")%\
 	                  (strtime(self.stoptime), strduration(duration)))
-        self.fd.flush()
+        self.flush()
         self.fd = None

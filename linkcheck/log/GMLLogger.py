@@ -43,7 +43,7 @@ class GMLLogger (StandardLogger):
             self.fd.write("# "+(i18n._("Write comments and bugs to %s\n\n") % \
   	                    Config.Email))
             self.fd.write("graph [\n  directed 1\n")
-            self.fd.flush()
+            self.flush()
 
 
     def newUrl (self, urlData):
@@ -85,7 +85,7 @@ class GMLLogger (StandardLogger):
                 if self.has_field("result"):
                     self.fd.write("    valid  %d\n" % (node.valid and 1 or 0))
                 self.fd.write("  ]\n")
-        self.fd.flush()
+        self.flush()
 
 
     def endOfOutput (self, linknumber=-1):
@@ -96,5 +96,5 @@ class GMLLogger (StandardLogger):
             duration = self.stoptime - self.starttime
             self.fd.write("# "+i18n._("Stopped checking at %s (%s)\n")%\
 	                  (strtime(self.stoptime), strduration(duration)))
-        self.fd.flush()
+        self.flush()
         self.fd = None

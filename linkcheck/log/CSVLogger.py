@@ -59,7 +59,7 @@ class CSVLogger (StandardLogger):
                       "# dlsize;"+self.lineterminator+\
                       "# checktime;"+self.lineterminator+\
                       "# cached;"+self.lineterminator)
-            self.fd.flush()
+            self.flush()
         self.writer = csv.writer(self.fd, dialect='excel', delimiter=self.separator, lineterminator=self.lineterminator)
 
 
@@ -75,7 +75,7 @@ class CSVLogger (StandardLogger):
                urlData.dlsize, urlData.checktime,
                urlData.cached]
         self.writer.writerow(row)
-        self.fd.flush()
+        self.flush()
 
 
     def endOfOutput (self, linknumber=-1):
@@ -85,6 +85,6 @@ class CSVLogger (StandardLogger):
             duration = self.stoptime - self.starttime
             self.fd.write("# "+i18n._("Stopped checking at %s (%s)%s")%\
                           (strtime(self.stoptime), strduration(duration), self.lineterminator))
-            self.fd.flush()
+            self.flush()
         self.fd.close()
         self.fd = None

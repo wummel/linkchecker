@@ -77,7 +77,7 @@ __init__(self, **args)
             self.fd.write(i18n._("Get the newest version at %s\n") % Config.Url)
             self.fd.write(i18n._("Write comments and bugs to %s\n\n") % Config.Email)
             self.fd.write(i18n._("Start checking at %s\n") % strtime(self.starttime))
-            self.fd.flush()
+            self.flush()
 
 
     def newUrl (self, urlData):
@@ -132,11 +132,12 @@ __init__(self, **args)
             else:
                 self.errors += 1
                 self.fd.write(urlData.errorString+"\n")
-        self.fd.flush()
+        self.flush()
 
 
     def endOfOutput (self, linknumber=-1):
-        if self.fd is None: return
+        if self.fd is None:
+            return
         if self.has_field('outro'):
             self.fd.write(i18n._("\nThats it. "))
             #if self.warnings==1:
@@ -157,5 +158,15 @@ __init__(self, **args)
             duration = self.stoptime - self.starttime
             self.fd.write(i18n._("Stopped checking at %s (%s)\n") % \
                           (strtime(self.stoptime), strduration(duration)))
-        self.fd.flush()
+        self.flush()
         self.fd = None
+
+
+    def flush (self):
+        """ignore flush errors since we are not responsible for proper
+           flushing of log output streams"""
+        if self.fd:
+            try:
+                self.fd.flush()
+            except IOError:
+                pass

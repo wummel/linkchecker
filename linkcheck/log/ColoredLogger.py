@@ -142,7 +142,7 @@ class ColoredLogger (StandardLogger):
                 self.errors += 1
                 self.fd.write(self.colorinvalid+urlData.errorString+
 	                      self.colorreset+"\n")
-        self.fd.flush()
+        self.flush()
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
