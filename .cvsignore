@@ -4,7 +4,6 @@ test.prof
 *-out.*
 *.so
 *.o
-*.mo
 build
 linkchecker-*.tar.gz
 MANIFEST

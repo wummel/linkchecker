@@ -52,13 +52,16 @@ class LCDistribution(Distribution):
                 return d
         return 0
 
+                                           
     def replace_in_scripts(self):
-        inst = self.find_command_obj("install")
-        inst.ensure_ready()
-        t = Template("linkchecker.bat.tmpl")
-        f = open("linkchecker.bat","w")
-        f.write(t.fill_in({"path_to_linkchecker": inst.install_scripts}))
-        f.close()
+        if sys.platform=='win32':
+            inst = self.find_command_obj("install")
+            inst.ensure_ready()
+            t = Template("linkchecker.bat.tmpl")
+            f = open("linkchecker.bat","w")
+            f.write(t.fill_in({"path_to_linkchecker": inst.install_scripts}))
+            f.close()
+            self.scripts.append('linkchecker.bat')
 
 
 setup (name = "linkchecker",
@@ -78,12 +81,14 @@ o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, Gopher, Telnet and local file links 
   are supported.
   Javascript links are currently ignored
-o restrict link checking to your local domain
+o restrict link checking with regular expression filters for URLs
 o HTTP proxy support
 o give username/password for HTTP and FTP authorization
-o robots.txt exclusion protocol support 
+o robots.txt exclusion protocol support
+o internationalization support (currently english and german)
 """,
        distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],
-       scripts = ['linkchecker', 'linkchecker.bat'],
+       scripts = ['linkchecker'],
+       data = ['locale/de/LC_MESSAGES/linkcheck.po'],
 )

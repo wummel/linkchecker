@@ -10,10 +10,11 @@ o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, Gopher, Telnet and local file links 
   are supported
   Javascript links are currently ignored
-o restrict link checking to your local domain
+o restrict link checking with regular expression filters for URLs
 o HTTP proxy support
 o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support 
+o internationalization support (currently english and german)
 
 LinkChecker is licensed under the GNU Public License.
 Credits go to Guido van Rossum for making Python. His hovercraft is
@@ -39,9 +40,9 @@ DNS see DNS/README
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
 
 Note that the following packages are modified by me:
-httplib.py (renamed to http11lib.py)
-fcgi.py
-sz_fcgi.py
+httplib.py (renamed to http11lib.py and a bug fixed)
+fcgi.py (implemented immediate output)
+sz_fcgi.py (simplified the code)
 
 
 The big picture (if you want to hack on the code):
@@ -59,8 +60,8 @@ equivalents if threading is disabled.
 calls linkcheck.Config.checkUrl(), which calls 
 linkcheck.UrlData.check().
 An UrlData object represents a single URL with all attached data like
-validity, check time and so on. These values are filled when the 
-UrlData.check() function exits.
+validity, check time and so on. These values are filled by the 
+UrlData.check() function.
 Derived from the base class UrlData are the different URL types: 
 HttpUrlData for http:// links, MailtoUrlData for mailto: links and so on.
 
