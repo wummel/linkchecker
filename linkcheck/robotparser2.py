@@ -40,11 +40,11 @@ class PasswordManager (object):
         self.user = user
         self.password = password
 
-    def add_password (realm, uri, user, passwd):
+    def add_password (self, realm, uri, user, passwd):
         # we have already our password
         pass
 
-    def find_user_password (realm, authuri):
+    def find_user_password (self, realm, authuri):
         return self.user, self.password
 
 
