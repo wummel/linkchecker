@@ -24,9 +24,8 @@ from debuglevels import *
 # regular expression for RFC2368 compliant mailto: scanning
 headers_re = re.compile(r"\?(.+)$")
 
-# parse /etc/resolv.conf (on UNIX systems)
-# or read entries from the registry (Windows systems)
-linkcheck.DNS.init_dns_resolver()
+import DNS
+DNS.DiscoverNameServers()
 
 class MailtoUrlData (HostCheckingUrlData):
     "Url link with mailto scheme"
@@ -75,7 +74,7 @@ class MailtoUrlData (HostCheckingUrlData):
             Config.debug(HURT_ME_PLENTY, "splitting address")
             user,host = self._split_adress(mail)
             Config.debug(HURT_ME_PLENTY, "looking up MX mailhost")
-            mxrecords = linkcheck.DNS.mxlookup(host, protocol="tcp")
+            mxrecords = DNS.mxlookup(host)
             Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
                 self.setWarning(linkcheck._("No MX mail host for %s found")%host)

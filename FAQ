@@ -91,7 +91,8 @@ A: Cookies can not store more information as is in the HTTP request itself,
    so you are not giving away any more system information.
    After storing however, the cookies are sent out to the server on request.
    Not to every server, but only to the one who the cookie originated from!
-   This could be used to "track" subsequent requests to this server.
+   This could be used to "track" subsequent requests to this server,
+   and this is what some people annoys (including me).
    Cookies are only stored in memory. After LinkChecker finishes, they
    are lost. So the tracking is restricted to the checking time.
 

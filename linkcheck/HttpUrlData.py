@@ -80,11 +80,10 @@ class HttpUrlData (UrlData):
         | "503"   ; Service Unavailable
         | extension-code
         """
-
+        # set the proxy, so a 407 status after this is an error
         self._setProxy(self.config["proxy"].get(self.scheme))
         self.headers = None
         self.auth = None
-        self.proxyauth = None
         self.cookies = []
         if self.config["robotstxt"] and not self.robotsTxtAllowsUrl():
             self.setWarning(linkcheck._("Access denied by robots.txt, checked only syntax"))
@@ -98,17 +97,10 @@ class HttpUrlData (UrlData):
 
             # proxy enforcement (overrides standard proxy)
             if status == 305 and self.headers:
+                oldproxy = (self.proxy, self.proxyauth)
                 self._setProxy(self.headers.getheader("Location"))
                 status, statusText, self.headers = self._getHttpRequest()
-            # proxy authentication
-            if status==407:
-                if not (self.proxyuser and self.proxypass):
-                    break
-                if not self.proxyauth:
-                    import base64
-                    self.proxyauth = "Basic "+base64.encodestring("%s:%s" % \
-			(self.proxyuser, self.proxypass))
-                    status, statusText, self.headers = self._getHttpRequest()
+                self.proxy, self.proxyauth = oldproxy
             # follow redirections
             tries = 0
             redirected = self.urlName
@@ -141,7 +133,7 @@ class HttpUrlData (UrlData):
             # - Apache/1.3.14 (Unix) (500 error, http://www.rhino3d.de/)
             # - some advertisings (they want only GET, dont ask why ;)
             # - Zope server (it has to render the page to get the correct
-            #   content-type
+            #   content-type)
             elif status in [405,501,500]:
                 # HEAD method not allowed ==> try get
                 self.setWarning(linkcheck._("Server does not support HEAD request (got "
@@ -200,16 +192,18 @@ class HttpUrlData (UrlData):
 
     def _setProxy (self, proxy):
         self.proxy = proxy
-        self.proxyuser = None
-        self.proxypass = None
+        self.proxyauth = None
         if self.proxy:
             if self.proxy[:7].lower() != "http://":
                 self.proxy = "http://"+self.proxy
             self.proxy = splittype(self.proxy)[1]
             self.proxy = splithost(self.proxy)[0]
-            self.proxyuser, self.proxy = splituser(self.proxy)
-            if self.proxyuser:
-                self.proxyuser, self.proxypass = splitpasswd(self.proxyuser)
+            self.proxyauth, self.proxy = splituser(self.proxy)
+            if self.proxyauth is not None:
+                if ":" not in self.proxyauth: self.proxyauth += ":"
+                import base64
+                self.proxyauth = base64.encodestring(self.proxyauth).strip()
+                self.proxyauth = "Basic "+self.proxyauth
 
     def _getHttpRequest (self, method="HEAD"):
         """Put request and return (status code, status text, mime object).
@@ -234,7 +228,7 @@ class HttpUrlData (UrlData):
             self.urlConnection.putheader("Authorization", self.auth)
         if self.proxyauth:
             self.urlConnection.putheader("Proxy-Authorization",
-	        self.proxyauth)
+	                                 self.proxyauth)
         if self.parentName:
             self.urlConnection.putheader("Referer", self.parentName)
         self.urlConnection.putheader("User-agent", Config.UserAgent)
@@ -260,6 +254,12 @@ class HttpUrlData (UrlData):
             status, statusText, self.headers = self._getHttpRequest("GET")
             self.urlConnection = self.urlConnection.getfile()
             self.data = self.urlConnection.read()
+            encoding = self.headers.getheader("Content-Encoding")
+            if encoding and encoding.lower().endswith("gzip"):
+                import gzip, cStringIO
+                f = gzip.GzipFile(filename="", mode="rb",
+                                  fileobj=cStringIO.StringIO(self.data))
+                self.data = f.read()
             self.downloadtime = time.time() - t
             self.init_html_comments()
             Config.debug(HURT_ME_PLENTY, "comment spans", self.html_comments)
