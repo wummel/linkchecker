@@ -4,6 +4,11 @@
     Closes: SF bug #1022132
     Changed: setup.py
 
+  * Fixed the SQL logger when encountering empty URLs.
+    Type: bugfix
+    Closes: SF bug #1022156
+    Changed: linkcheck/logger/sql.py
+
 1.13.1 "Old men in new cars" (released 3.9.2004)
   * Fixed RPM generation by adding the generated config file to the
     installed files list.
