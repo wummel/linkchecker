@@ -15,6 +15,8 @@
     functions
     Changed: linkchecker, linkcheck/{Config,Threader}.py,
       test/test_*.py
+  * set default connection timeout to 60 seconds
+    Changed: linkcheck/__init__.py
 
 1.10.1 (release 19.12.2003)
   * added Mandrake .spec file from Chris Green <cmg@dok.org>

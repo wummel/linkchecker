@@ -13,4 +13,3 @@
 include some web check and/or spider features:
 - warn if overall size of page (including images/flash/etc.) is too big
 - save downloaded pages
-use interrupt_main?
