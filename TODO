@@ -7,8 +7,6 @@ Next releases:
 
 - standardize fileoutput init method for loggers
 
-- make sure loggers close all opened file objects on end of output
-
 - rethink intern/extern stuff
 
 - when an URL is found in the cache and it has a broken anchor, the broken
