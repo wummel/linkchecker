@@ -1,3 +1,9 @@
+linkchecker (1.5.5) unstable; urgency=low
+
+  * linkcheck/linkname.py: fix linkname regular expressions
+
+ -- Bastian Kleineidam <calvin@debian.org>  Fri,  7 Jun 2002 21:44:20 +0200
+
 linkchecker (1.5.4) unstable; urgency=low
 
   * linkcheck/log/__init__.py: use ISO 8601 conform timestamps
