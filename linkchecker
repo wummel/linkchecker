@@ -71,8 +71,7 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
 Examples = bk.i18n._(r"""EXAMPLES
 Check the treasure.calvinsplayground.de domain, but don't recurse into
 links outside of this domain:
-  linkchecker -v --status -r5 -Fhtml -itreasure\.calvinsplayground\.de \
-  -ocolored http://treasure.calvinsplayground.de/
+  linkchecker --status -Fhtml -ocolored http://treasure.calvinsplayground.de/
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
@@ -149,8 +148,7 @@ group.add_option("-I", "--interactive", action="store_true", dest="interactive",
 """Ask for url if none are given on the commandline."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
                  help=bk.i18n._(
-"""Generate no more than num threads. Default number of threads is 5.
-To disable threading specify a non-positive number."""))
+"""Generate no more than num threads. Default number of threads is 5."""))
 
 group.add_option("-V", "--version", action="store_true", dest="version",
                  help=bk.i18n._(
@@ -219,7 +217,7 @@ group = optparse.OptionGroup(optparser, bk.i18n._("Checking options"))
 group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
                  help=bk.i18n._(
 """Check recursively all links up to given depth. A negative depth
-will enable inifinite recursion. Default depth is 1."""))
+will enable inifinite recursion. Default depth is infinite."""))
 group.add_option("-e", "--extern", type="string", action="append", dest="extern",
                  help=bk.i18n._(
 """Assume urls that match the given expression as external.
@@ -313,7 +311,8 @@ if options.anchors is not None:
     config["anchors"] = options.anchors
     config["warnings"] = True
 if options.extern:
-    config["externlinks"].extend([linkcheck.getLinkPat(arg) for arg in options.extern])
+    pats = [linkcheck.getLinkPat(arg) for arg in options.extern]
+    config["externlinks"].extend(pats)
 if options.output:
     if linkcheck.Loggers.has_key(options.output):
         config['log'] = config.newLogger(options.output)
@@ -325,7 +324,8 @@ if options.fileoutput:
     for ftype in options.fileoutput:
         try:
             ftype, ns['filename'] = ftype.split('/', 1)
-            if not ns['filename']: raise ValueError
+            if not ns['filename']:
+                raise ValueError
         except ValueError:
             pass
         if linkcheck.Loggers.has_key(ftype):
@@ -338,7 +338,8 @@ if options.fileoutput:
 if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.intern:
-    config["internlinks"].extend([linkcheck.getLinkPat(arg) for arg in options.intern])
+    pats = [linkcheck.getLinkPat(arg) for arg in options.intern]
+    config["internlinks"].extend(pats)
 if options.denyallow is not None:
     config["denyallow"] = options.denyallow
 if options.nntpserver:
@@ -395,9 +396,10 @@ if options.cookies is not None:
 if constructauth:
     config["authentication"].insert(0, {'pattern': re.compile(".*"),
                                         'user': _username,
-					'password': _password})
+                                        'password': _password})
 
-bk.log.debug(linkcheck.LOG_CMDLINE, "configuration:", pprint.pformat(config.items()))
+bk.log.debug(linkcheck.LOG_CMDLINE, "configuration:",
+             pprint.pformat(config.items()))
 
 # interactive input
 if len(args)==0:
@@ -409,12 +411,13 @@ if len(args)==0:
 
 # syntactic sugar
 for url in args:
-    url = url.strip()
-    if ":" not in url:
-        if url.startswith("www."):
-            url = "http://%s"%url
-        elif url.startswith("ftp."):
-            url = "ftp://%s"%url
+    if url.startswith("www."):
+        url = "http://%s"%url
+    elif url.startswith("ftp."):
+        url = "ftp://%s"%url
+    # note that the url could be still unquoted
+    # the GetUrlDataFrom can quote urls that need it
+    # see also bk.url.url_needs_quoting()
     config.appendUrl(linkcheck.GetUrlDataFrom(url, 0, config, cmdline=True))
 
 ############################# check the urls ################################
