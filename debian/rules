@@ -1,6 +1,5 @@
 #!/usr/bin/make -f
-# Sample debian/rules that uses debhelper.
-# GNU copyright 1997 to 1999 by Joey Hess.
+
 PACKAGE = linkchecker
 ROOT = $(CURDIR)/debian/$(PACKAGE)
 DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
@@ -8,68 +7,25 @@ PYTHON = python
 CGIDIR = $(ROOT)/usr/lib/cgi-bin/lconline
 HTMLDIR = $(ROOT)/var/www/lconline
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+include /usr/share/cdbs/1/rules/debhelper.mk
 
-# This has to be exported to make some magic below work.
-export DH_OPTIONS
-
-build: build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	rm -f build-stamp
-	$(MAKE) clean
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_clean -k
-	dh_installdirs
+binary-post-install/linkchecker::
 	$(MAKE) locale
 	$(PYTHON) setup.py install --root=$(ROOT) --no-compile
 # remove example files, we install them below
 	rm -r $(ROOT)/usr/share/linkchecker/examples
 # install CGI files
-	install -c -m 644 cgi/lconline/*.html $(HTMLDIR)
-	install -c -m 644 cgi/lconline/*.de $(HTMLDIR)
-	install -c -m 644 cgi/lconline/*.en $(HTMLDIR)
-	install -c -m 644 cgi/lconline/check.js $(HTMLDIR)
-	cat cgi/lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.cgi
-	cat cgi/lc.fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.fcgi
-	chmod 755 $(CGIDIR)/lc.cgi
-	chmod 755 $(CGIDIR)/lc.fcgi
+	install -m 644 cgi/lconline/*.html $(HTMLDIR)
+	install -m 644 cgi/lconline/*.de $(HTMLDIR)
+	install -m 644 cgi/lconline/*.en $(HTMLDIR)
+	install -m 644 cgi/lconline/check.js $(HTMLDIR)
+	install -m 755 cgi/lc.cgi $(CGIDIR)
+	install -m 755 cgi/lc.fcgi $(CGIDIR)
 # install system wide configuration files in etc
-	install -m644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc/linkchecker
-	install -m644 $(ROOT)/usr/share/linkchecker/logging.conf $(ROOT)/etc/linkchecker
+	install -m 644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc/linkchecker
+	install -m 644 $(ROOT)/usr/share/linkchecker/logging.conf $(ROOT)/etc/linkchecker
 # install bash_completion script
-	install -m644 config/linkchecker-completion $(ROOT)/etc/bash_completion.d
+	install -m 644 config/linkchecker-completion $(ROOT)/etc/bash_completion.d
 # install lintian overrides
-	install -m644 debian/linkchecker.lintian $(ROOT)/usr/share/lintian/overrides/linkchecker
+	install -m 644 debian/linkchecker.lintian $(ROOT)/usr/share/lintian/overrides/linkchecker
 
-# Build architecture-independent files here.
-binary-indep: build install
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples config/linkcheck-cron.sh
-#	dh_installman linkchecker.1
-	dh_installchangelogs ChangeLog
-	dh_link
-	dh_strip
-	dh_python
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
