@@ -112,9 +112,8 @@ typedef struct {
 staticforward PyTypeObject parser_type;
 
 /* use Pythons memory management */
-#define malloc PyMem_Malloc
-#define realloc PyMem_Realloc
-#define free PyMem_Free
+#define YYMALLOC PyMem_Malloc
+#define YYFREE PyMem_Free
 
 %}
 
@@ -432,11 +431,6 @@ finish_characters:
 ;
 
 %%
-
-/* disable python memory interface */
-#undef malloc
-#undef realloc
-#undef free
 
 /* create parser object */
 static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds) {
