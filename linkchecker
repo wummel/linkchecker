@@ -309,10 +309,10 @@ group.add_option("-V", "--version", action="store_true", dest="version",
                  help=_(
 """Print version and exit."""))
 
-group.add_option("--low-priority", action="store_true", dest="lowprio",
+group.add_option("--priority", action="store_true", dest="priority",
                  help=_(
-"""Run with low thread scheduling priority. Useful when checking large
-sites to not interfere with running progams."""))
+"""Run with normal thread scheduling priority. Per default Linkchecker
+runs with low thread priority to be suitable as a background job."""))
 optparser.add_option_group(group)
 
 
@@ -489,7 +489,7 @@ except linkcheck.LinkCheckerError, msg:
 # apply commandline options and arguments
 constructauth = False
 do_profile = False
-if options.lowprio:
+if not options.priority:
     import linkcheck.threader
     linkcheck.threader.set_thread_priority(linkcheck.threader.PRIO_LOW)
 if options.anchors is not None:
