@@ -85,7 +85,6 @@ o If your platform does not support threading, linkchecker assumes -t0
 Examples = """EXAMPLES
 o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\
     http://treasure.calvinsplayground.de/~calvin/ > sample.html
-  generates the included sample.html file
 o Local files and syntactic sugar on the command line:
       linkchecker c:\\temp\\test.html
       linkchecker ../bla.html
