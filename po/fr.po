@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Thu Jan 29 22:20:33 2004\n"
+"POT-Creation-Date: Thu Jan 29 22:32:40 2004\n"
 "PO-Revision-Date: 2004-01-03 23:24+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: fr <fr@li.org>\n"
@@ -171,7 +171,7 @@ msgid "outside of domain filter, checked only syntax"
 msgstr "outside of domain filter, analyse de la syntaxe seulement"
 
 #, fuzzy
-msgid "Host not found"
+msgid "Hostname not found"
 msgstr " trouvé"
 
 msgid "anchor #%s not found"
