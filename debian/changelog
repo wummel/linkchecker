@@ -4,8 +4,10 @@ linkchecker (1.2.6) unstable; urgency=low
   * configuration changes: distutils are now required; because of that
     we have no more .tmpl files
   * correct db name in create.sql
+  * added timeoutsocket.py to supply a timeout for socket.connect()
+    calls
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 13 Oct 2000 23:44:29 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 16 Oct 2000 14:55:51 +0200
 
 linkchecker (1.2.5) unstable; urgency=low
 
