@@ -1,4 +1,4 @@
-#!/usr/bin/python -O
+#!/usr/bin/python
 """setup file for the distuils module"""
 # -*- coding: iso-8859-1 -*-
 

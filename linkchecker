@@ -1,4 +1,4 @@
-#!/usr/bin/python -O
+#!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 """check HTML pages for broken links"""
 # Copyright (C) 2000-2004  Bastian Kleineidam
