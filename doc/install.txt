@@ -125,7 +125,7 @@ Setup for Windows - compiling from source:
    Still in the MSYS window, change to the ``linkchecker-X.X.X\po``
    directory and run ``make``.
 
-4. Generate the LinkChecker installer
+4. Generate and execute the LinkChecker installer
    
    Close the MSYS application (by typing ``exit``) and open a DOS command
    prompt.
@@ -179,8 +179,8 @@ to run the script.
    
    a) look in the error log of your web server
    b) be sure that you have enabled CGI support in your web server
-      do this by running other CGI scripts from which you know that
-      they are working
+      do this by running other CGI scripts which you know are
+      working
    c) try to run the lc.cgi script by hand
    d) try the testit() function in the lc.cgi script
 
