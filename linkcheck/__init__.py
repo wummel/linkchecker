@@ -58,11 +58,11 @@ def get_link_pat (arg, strict=False):
     Returns a compiled pattern and a negate and strict option.
 
     @param arg: pattern from config
-    @type arg: c{string}
+    @type arg: string
     @param strict: if pattern is to be handled strict
-    @type strict: c{bool}
+    @type strict: bool
     @return: dictionary with keys 'pattern', 'negate' and 'strict'
-    @rtype: c{dict}
+    @rtype: dict
     """
     linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg[0:1] == '!':

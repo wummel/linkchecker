@@ -31,7 +31,7 @@ class HtmlPrinter (object):
         Write to given file descriptor.
 
         @param fd: file like object (default=sys.stdout)
-        @type fd: c{file}
+        @type fd: file
         """
         self.fd = fd
 
@@ -41,7 +41,7 @@ class HtmlPrinter (object):
 
         @param attrs: list of values to print
         @type attrs: tuple
-        @return: c{None}
+        @return: None
         """
         print >> self.fd, self.mem, attrs
 
@@ -50,10 +50,10 @@ class HtmlPrinter (object):
         Print message to stderr with name prefix.
 
         @param msg: message to print
-        @type msg: c{string}
+        @type msg: string
         @param name: print this before the message
-        @type name: c{string}
-        @return: c{None}
+        @type name: string
+        @return: None
         """
         print >> sys.stderr, name, msg
 
@@ -62,8 +62,8 @@ class HtmlPrinter (object):
         Report filter/parser error.
 
         @param msg: message to print
-        @type msg: c{string}
-        @return: c{None}
+        @type msg: string
+        @return: None
         """
         self._errorfun(msg, "error:")
 
@@ -72,8 +72,8 @@ class HtmlPrinter (object):
         Report a filter/parser warning.
 
         @param msg: message to print
-        @type msg: c{string}
-        @return: c{None}
+        @type msg: string
+        @return: None
         """
         self._errorfun(msg, "warning:")
 
@@ -82,8 +82,8 @@ class HtmlPrinter (object):
         Report a fatal filter/parser error.
 
         @param msg: message to print
-        @type msg: c{string}
-        @return: c{None}
+        @type msg: string
+        @return: None
         """
         self._errorfun(msg, "fatal error:")
 
@@ -92,7 +92,7 @@ class HtmlPrinter (object):
         Remember the called method name in self.mem.
 
         @param name: attribute name
-        @type name: c{string}
+        @type name: string
         @return: method which just prints out its arguments
         @rtype: a bound function object
         """
@@ -110,9 +110,9 @@ class HtmlPrettyPrinter (object):
         Write to given file descriptor in given encoding.
 
         @param fd: file like object (default=sys.stdout)
-        @type fd: c{file}
+        @type fd: file
         @param encoding: encoding (default=iso8859-1)
-        @type encoding: c{string}
+        @type encoding: string
         """
         self.fd = fd
         self.encoding = encoding
@@ -122,8 +122,8 @@ class HtmlPrettyPrinter (object):
         Print HTML comment.
 
         @param data: the comment
-        @type data: c{string}
-        @return: c{None}
+        @type data: string
+        @return: None
         """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<!--%s-->" % data)
@@ -133,10 +133,10 @@ class HtmlPrettyPrinter (object):
         Print HTML start element.
 
         @param tag: tag name
-        @type tag: c{string}
+        @type tag: string
         @param attrs: tag attributes
-        @type attrs: c{dict}
-        @return: c{None}
+        @type attrs: dict
+        @return: None
         """
         self._start_element(tag, attrs, ">")
 
@@ -145,10 +145,10 @@ class HtmlPrettyPrinter (object):
         Print HTML start-end element.
 
         @param tag: tag name
-        @type tag: c{string}
+        @type tag: string
         @param attrs: tag attributes
-        @type attrs: c{dict}
-        @return: c{None}
+        @type attrs: dict
+        @return: None
         """
         self._start_element(tag, attrs, "/>")
 
@@ -157,12 +157,12 @@ class HtmlPrettyPrinter (object):
         Print HTML element with end string.
 
         @param tag: tag name
-        @type tag: c{string}
+        @type tag: string
         @param attrs: tag attributes
-        @type attrs: c{dict}
+        @type attrs: dict
         @param end: either > or />
-        @type end: c{string}
-        @return: c{None}
+        @type end: string
+        @return: None
         """
         tag = tag.encode(self.encoding, "ignore")
         self.fd.write("<%s" % tag.replace("/", ""))
@@ -180,8 +180,8 @@ class HtmlPrettyPrinter (object):
         Print HTML end element.
 
         @param tag: tag name
-        @type tag: c{string}
-        @return: c{None}
+        @type tag: string
+        @return: None
         """
         tag = tag.encode(self.encoding, "ignore")
         self.fd.write("</%s>" % tag)
@@ -191,8 +191,8 @@ class HtmlPrettyPrinter (object):
         Print HTML document type.
 
         @param data: the document type
-        @type data: c{string}
-        @return: c{None}
+        @type data: string
+        @return: None
         """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<!DOCTYPE%s>" % data)
@@ -202,8 +202,8 @@ class HtmlPrettyPrinter (object):
         Print HTML pi.
 
         @param data: the tag data
-        @type data: c{string}
-        @return: c{None}
+        @type data: string
+        @return: None
         """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<?%s?>" % data)
@@ -213,8 +213,8 @@ class HtmlPrettyPrinter (object):
         Print HTML cdata.
 
         @param data: the character data
-        @type data: c{string}
-        @return: c{None}
+        @type data: string
+        @return: None
         """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<![CDATA[%s]]>" % data)
@@ -224,8 +224,8 @@ class HtmlPrettyPrinter (object):
         Print characters.
 
         @param data: the character data
-        @type data: c{string}
-        @return: c{None}
+        @type data: string
+        @return: None
         """
         data = data.encode(self.encoding, "ignore")
         self.fd.write(data)
@@ -236,9 +236,9 @@ def quote_attrval (s):
     Quote a HTML attribute to be able to wrap it in double quotes.
 
     @param s: the attribute string to quote
-    @type s: c{string}
+    @type s: string
     @return: the quoted HTML attribute
-    @rtype: c{string}
+    @rtype: string
     """
     s = s.replace('&', "&amp;")
     s = s.replace('"', "&quot;")

@@ -1,11 +1,12 @@
-"""HTTP/1.1 client library
+"""
+HTTP/1.1 client library
 
 <intro stuff goes here>
 <other stuff, too>
 
 HTTPConnection go through a number of "states", which defines when a client
 may legally make another request or fetch the response for a particular
-request. This diagram details these state transitions:
+request. This diagram details these state transitions::
 
     (null)
       |
@@ -40,10 +41,10 @@ request. This diagram details these state transitions:
                           Request-sent
 
 This diagram presents the following rules:
-  -- a second request may not be started until {response-headers-read}
-  -- a response [object] cannot be retrieved until {request-sent}
-  -- there is no differentiation between an unread response body and a
-     partially read response body
+  - a second request may not be started until {response-headers-read}
+  - a response [object] cannot be retrieved until {request-sent}
+  - there is no differentiation between an unread response body and a
+    partially read response body
 
 Note: this enforcement is applied by the HTTPConnection class. The
       HTTPResponse class does not enforce this state machine, which

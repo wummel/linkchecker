@@ -34,7 +34,7 @@ garbage.
 
 Jean Delvare provided the following table of different common terminal
 emulators and their support for the various attributes and others have
-helped me flesh it out:
+helped me flesh it out::
 
               clear    bold     dark    under    blink   reverse  conceal
  ------------------------------------------------------------------------
@@ -181,7 +181,7 @@ def has_colors_nt ():
 
 def colorize (text, color=None):
     """
-    Colorize text with given color. If color is c{None}, leave the
+    Colorize text with given color. If color is None, leave the
     text as-is.
     """
     if color is not None:

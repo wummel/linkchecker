@@ -43,7 +43,7 @@ def _msg (prefix, msg):
     Print given prefix and debug message to stderr if the _debug flag is
     set.
 
-    @return: c{None}
+    @return: None
     """
     if _debug:
         print >> sys.stderr, prefix, msg
@@ -70,7 +70,7 @@ class PasswordManager (object):
         """
         Does nothing since username and password are already stored.
 
-        @return: c{None}
+        @return: None
         """
         pass
 
@@ -79,7 +79,7 @@ class PasswordManager (object):
         Get stored username and password.
 
         @return: A tuple (user, password)
-        @rtype: c{tuple}
+        @rtype: tuple
         """
         return self.user, self.password
 
@@ -104,7 +104,7 @@ class RobotFileParser (object):
         """
         Reset internal flags and entry lists.
 
-        @return: c{None}
+        @return: None
         """
         self.entries = []
         self.default_entry = None
@@ -120,7 +120,7 @@ class RobotFileParser (object):
         check for new robots.txt files periodically.
 
         @return: last modified in time.time() format
-        @rtype: c{number}
+        @rtype: number
         """
         return self.last_checked
 
@@ -129,7 +129,7 @@ class RobotFileParser (object):
         Sets the time the robots.txt file was last fetched to the
         current time.
 
-        @return: c{None}
+        @return: None
         """
         import time
         self.last_checked = time.time()
@@ -138,7 +138,7 @@ class RobotFileParser (object):
         """
         Sets the URL referring to a robots.txt file.
 
-        @return: c{None}
+        @return: None
         """
         self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
@@ -148,8 +148,8 @@ class RobotFileParser (object):
         Construct an URL opener object. It considers the given credentials
         from the __init__() method and supports proxies.
 
-        @return URL opener
-        @rtype: c{urllib2.OpenerDirector}
+        @return: URL opener
+        @rtype: urllib2.OpenerDirector
         """
         pwd_manager = PasswordManager(self.user, self.password)
         handlers = [
@@ -171,7 +171,7 @@ class RobotFileParser (object):
         """
         Reads the robots.txt URL and feeds it to the parser.
 
-        @return: c{None}
+        @return: None
         """
         self._reset()
         headers = {
@@ -217,7 +217,7 @@ class RobotFileParser (object):
         """
         Add a parsed entry to entry list.
 
-        @return: c{None}
+        @return: None
         """
         if "*" in entry.useragents:
             # the default entry is considered last
@@ -231,7 +231,7 @@ class RobotFileParser (object):
         We allow that a user-agent: line is not preceded by
         one or more blank lines.
 
-        @return: c{None}
+        @return: None
         """
         debug("robots.txt parse lines")
         state = 0
@@ -297,7 +297,7 @@ class RobotFileParser (object):
         Using the parsed robots.txt decide if useragent can fetch url.
 
         @return: True if agent can fetch url, else False
-        @rtype: c{bool}
+        @rtype: bool
         """
         debug("Checking robot.txt allowance for:\n"\
               "  user agent: %r\n  url: %r" % (useragent, url))
@@ -327,7 +327,7 @@ class RobotFileParser (object):
         robots.txt file.
 
         @return: robots.txt format
-        @rtype: c{string}
+        @rtype: string
         """
         lines = [str(entry) for entry in self.entries]
         if self.default_entry is not None:
@@ -356,7 +356,7 @@ class RuleLine (object):
         Look if given path applies to this rule.
 
         @return: True if pathname applies to this rule, else False
-        @rtype: c{bool}
+        @rtype: bool
         """
         return self.path == "*" or path.startswith(self.path)
 
@@ -365,7 +365,7 @@ class RuleLine (object):
         Construct string representation in robots.txt format.
 
         @return: robots.txt format
-        @rtype: c{string}
+        @rtype: string
         """
         return (self.allowance and "Allow" or "Disallow")+": "+self.path
 
@@ -387,7 +387,7 @@ class Entry (object):
         string representation in robots.txt format.
 
         @return: robots.txt format
-        @rtype: c{string}
+        @rtype: string
         """
         lines = ["User-agent: %r" % agent for agent in self.useragents]
         lines.extend([str(line) for line in self.rulelines])
@@ -398,7 +398,7 @@ class Entry (object):
         Check if this entry applies to the specified agent.
 
         @return: True if this entry applies to the agent, else False.
-        @rtype: c{bool}
+        @rtype: bool
         """
         # split the name token and make it lower case
         if not useragent:
@@ -422,7 +422,7 @@ class Entry (object):
         Check if given filename is allowed to acces this entry.
 
         @return: True if allowed, else False
-        @rtype: c{bool}
+        @rtype: bool
         """
         for line in self.rulelines:
             debug("%s %s %s" % (filename, str(line), line.allowance))

@@ -4,7 +4,7 @@ Copied from the Python Cookbook recipe at
 http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/286222
 
 To find the memory usage in a particular section of code these
-functions are typically used as follows:
+functions are typically used as follows::
     m0 = memory()
     ...
     m1 = memory(m0)
@@ -21,8 +21,8 @@ def _VmB (VmKey):
     """
     Parse /proc/<pid>/status file for given key.
 
-    @return requested number value of status entry
-    @rtype: c{float}
+    @return: requested number value of status entry
+    @rtype: float
     """
     if os.name != 'posix':
         # not supported
@@ -50,7 +50,7 @@ def memory (since=0.0):
     Get memory usage.
 
     @return: memory usage in bytes
-    @rtype: c{float}
+    @rtype: float
     """
     return _VmB('VmSize:') - since
 
@@ -60,7 +60,7 @@ def resident (since=0.0):
     Get resident memory usage.
 
     @return: resident memory usage in bytes
-    @rtype: c{float}
+    @rtype: float
     """
     return _VmB('VmRSS:') - since
 
@@ -70,6 +70,6 @@ def stacksize (since=0.0):
     Get stack size.
 
     @return: stack size in bytes
-    @rtype: c{float}
+    @rtype: float
     """
     return _VmB('VmStk:') - since

@@ -99,14 +99,14 @@ class UrlBase (object):
         """
         Initialize check data, and store given variables.
 
-        @base_url - unquoted and possibly unnormed url
-        @recursion_level - on what check level lies the base url
-        @config - Configuration instance
-        @parent_url - quoted and normed url of parent or None
-        @base_ref - quoted and normed url of <base href=""> or None
-        @line - line number of url in parent content
-        @column - column number of url in parent content
-        @name - name of url or empty
+        @param base_url: unquoted and possibly unnormed url
+        @param recursion_level: on what check level lies the base url
+        @param consumer: consumer instance
+        @param parent_url: quoted and normed url of parent or None
+        @param base_ref: quoted and normed url of <base href=""> or None
+        @param line: line number of url in parent content
+        @param column: column number of url in parent content
+        @param name: name of url or empty
         """
         self.base_ref = base_ref
         # note that self.base_url must not be modified

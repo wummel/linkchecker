@@ -91,9 +91,9 @@ class Logger (object):
         errors are ignored.
 
         @param s: string to encode
-        @type s: c{unicode}
+        @type s: unicode
         @return: encoded string
-        @rtype: c{string}
+        @rtype: string
         """
         if not isinstance(s, unicode):
             raise ValueError("tried to encode non-unicode string %r" % s)

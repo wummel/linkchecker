@@ -85,16 +85,16 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         The first digit of the Status-Code defines the class of response. The
         last two digits do not have any categorization role. There are 5
         values for the first digit:
-        o 1xx: Informational - Not used, but reserved for future use
-        o 2xx: Success - The action was successfully received,
-          understood, and accepted.
-        o 3xx: Redirection - Further action must be taken in order to
-          complete the request
-        o 4xx: Client Error - The request contains bad syntax or cannot
-          be fulfilled
-        o 5xx: Server Error - The server failed to fulfill an apparently
-        o 5xx: Server Error - The server failed to fulfill an apparently
-        valid request
+          - 1xx: Informational - Not used, but reserved for future use
+          - 2xx: Success - The action was successfully received,
+            understood, and accepted.
+          - 3xx: Redirection - Further action must be taken in order to
+            complete the request
+          - 4xx: Client Error - The request contains bad syntax or cannot
+            be fulfilled
+          - 5xx: Server Error - The server failed to fulfill an apparently
+            valid request
+
         The individual values of the numeric status codes defined for
         HTTP/1.0, and an example set of corresponding Reason-Phrase's, are
         presented below. The reason phrases listed here are only recommended

@@ -16,54 +16,47 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 Fast HTML parser module written in C with the following features:
+ 1. Reentrant
+    As soon as any HTML string data is available, we try to feed it
+    to the HTML parser. This means that the parser has to scan possible
+    incomplete data, recognizing as much as it can. Incomplete trailing
+    data is saved for subsequent callsm, or it is just flushed into the
+    output buffer with the flush() function.
+    A reset() brings the parser back to its initial state, throwing away all
+    buffered data.
 
-1. Reentrant
+ 2. Coping with HTML syntax errors
+    The parser recognizes as much as it can and passes the rest
+    of the data as TEXT tokens.
+    The scanner only passes complete recognized HTML syntax elements to
+    the parser. Invalid syntax elements are passed as TEXT. This way we do
+    not need the bison error recovery.
+    Incomplete data is rescanned the next time the parser calls yylex() or
+    when it is being flush()ed.
+    
+    The following syntax errors will be recognized correctly:
+     1. missing quotes around attribute values
+     2. "</...>" end tags in script modus
+     3. missing ">" in tags
+     4. invalid tag names
+     5. invalid characters inside tags or tag attributes
+    
+    Additionally the parser has the following features:
+     1. NULL bytes are changed into spaces
+     2. <!-- ... --> inside a <script> or <style> are not treated as
+        comments but as DATA
 
-   As soon as any HTML string data is available, we try to feed it
-   to the HTML parser. This means that the parser has to scan possible
-   incomplete data, recognizing as much as it can. Incomplete trailing
-   data is saved for subsequent callsm, or it is just flushed into the
-   output buffer with the flush() function.
-   A reset() brings the parser back to its initial state, throwing away all
-   buffered data.
+ 3. Speed
+    The FLEX code has options to generate a large but fast scanner.
+    The parser ignores forbidden or unnecessary HTML end tags.
+    The parser converts tag and attribute names to lower case for easier
+    matching.
+    The parser quotes all attribute values.
+    Python memory management interface is used.
 
-2. Coping with HTML syntax errors
-
-   The parser recognizes as much as it can and passes the rest
-   of the data as TEXT tokens.
-   The scanner only passes complete recognized HTML syntax elements to
-   the parser. Invalid syntax elements are passed as TEXT. This way we do
-   not need the bison error recovery.
-   Incomplete data is rescanned the next time the parser calls yylex() or
-   when it is being flush()ed.
-
-   The following syntax errors will be recognized correctly:
-
-   a) missing quotes around attribute values
-   b) "</...>" end tags in script modus
-   c) missing ">" in tags
-   d) invalid tag names
-   e) invalid characters inside tags or tag attributes
-
-   Additionally the parser has the following features:
-
-   a) NULL bytes are changed into spaces
-   b) <!-- ... --> inside a <script> or <style> are not treated as
-      comments but as DATA
-
-3. Speed
-
-   The FLEX code has options to generate a large but fast scanner.
-   The parser ignores forbidden or unnecessary HTML end tags.
-   The parser converts tag and attribute names to lower case for easier
-   matching.
-   The parser quotes all attribute values.
-   Python memory management interface is used.
-
-4. Character encoding aware
-
-   The parser itself is not encoding aware, but all the output are
-   always Python Unicode strings.
+ 4. Character encoding aware
+    The parser itself is not encoding aware, but all the output are
+    always Python Unicode strings.
 """
 
 import re
@@ -76,9 +69,9 @@ def _resolve_ascii_entity (mo):
     Resolve one &#XXX; entity if it is an ASCII character. Else leave as is.
 
     @param mo: matched v{_num_re} object with a "num" match group
-    @type mo: c{MatchObject} instance
+    @type mo: MatchObject instance
     @return: resolved ASCII entity char, or original entity
-    @rtype: c{string}
+    @rtype: string
     """
     # convert to number
     ent = mo.group()
@@ -102,9 +95,9 @@ def resolve_ascii_entities (s):
     Resolve entities in 7-bit ASCII range to eliminate obfuscation.
 
     @param s: string with entities
-    @type s: c{string}
+    @type s: string
     @return: string with resolved ASCII entities
-    @rtype: c{string}
+    @rtype: string
     """
     return _num_re.sub(_resolve_ascii_entity, s)
 
@@ -113,10 +106,10 @@ def _resolve_html_entity (mo):
     """
     Resolve html entity.
 
-    @param mo: matched v{_entity_re} object with a "entity" match group
-    @type mo: c{MatchObject} instance
+    @param mo: matched _entity_re object with a "entity" match group
+    @type mo: MatchObject instance
     @return: resolved entity char, or original entity
-    @rtype: c{string}
+    @rtype: string
     """
     ent = mo.group("entity")
     s = mo.group()
@@ -134,9 +127,9 @@ def resolve_html_entities (s):
     Resolve HTML entities in s and return result.
 
     @param s: string with HTML entities
-    @type s: c{string}
+    @type s: string
     @return: string with resolved HTML entities
-    @rtype: c{string}
+    @rtype: string
     """
     return _entity_re.sub(_resolve_html_entity, s)
 
@@ -146,9 +139,9 @@ def resolve_entities (s):
     Resolve both HTML and 7-bit ASCII entities in s.
 
     @param s: string with entities
-    @type s: c{string}
+    @type s: string
     @return: string with resolved entities
-    @rtype: c{string}
+    @rtype: string
     """
     s = resolve_ascii_entities(s)
     return resolve_html_entities(s)
@@ -160,9 +153,9 @@ def strip_quotes (s):
     are removed.
 
     @param s: a string
-    @type s: c{string}
+    @type s: string
     @return: string with removed single or double quotes
-    @rtype: c{string}
+    @rtype: string
     """
     if len(s) >= 2 and \
        ((s.startswith("'") and s.endswith("'")) or \
@@ -179,8 +172,8 @@ def set_encoding (self, attrs):
     tag attribute information.
 
     @param attrs: attributes of a <meta> HTML tag
-    @type attrs: c{dict}
-    @return: c{None}
+    @type attrs: dict
+    @return: None
     """
     if attrs.get('http-equiv', u'').lower() == u"content-type":
         content = attrs.get('content', u'')
@@ -202,8 +195,8 @@ def set_doctype (self, doctype):
     document type string.
 
     @param doctype: document type
-    @type doctype: c{string}
-    @return: c{None}
+    @type doctype: string
+    @return: None
     """
     if u"XHTML" in doctype:
         self.doctype = "XHTML"

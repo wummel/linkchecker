@@ -133,6 +133,23 @@ class ListDict (dict):
         super(ListDict, self).clear()
 
 
+class Node (object):
+    """
+    Internal node with pointers to sisters.
+    Built for and used by PyPE:
+    http://pype.sourceforge.net
+    Copyright 2003 Josiah Carlson. (Licensed under the GPL)
+    """
+
+    def __init__ (self, prev, me):
+        """
+        Initialize pointers and data.
+        """
+        self.prev = prev
+        self.me = me
+        self.next = None
+
+
 class LRU (object):
     """
     Implementation of a length-limited O(1) LRU queue.
@@ -140,19 +157,6 @@ class LRU (object):
     http://pype.sourceforge.net
     Copyright 2003 Josiah Carlson. (Licensed under the GPL)
     """
-
-    class Node (object):
-        """
-        Internal node with pointers to sisters.
-        """
-
-        def __init__ (self, prev, me):
-            """
-            Initialize pointers and data.
-            """
-            self.prev = prev
-            self.me = me
-            self.next = None
 
     def __len__ (self):
         """
@@ -198,7 +202,7 @@ class LRU (object):
         """
         if obj in self.d:
             del self[obj]
-        nobj = self.Node(self.last, (obj, val))
+        nobj = Node(self.last, (obj, val))
         if self.first is None:
             self.first = nobj
         if self.last:

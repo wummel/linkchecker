@@ -31,7 +31,7 @@ def debug (log, msg, *args):
     """
     Log a debug message.
 
-    return: c{None}
+    return: None
     """
     logging.getLogger(log).debug(msg, *args)
 
@@ -40,7 +40,7 @@ def info (log, msg, *args):
     """
     Log an informational message.
 
-    return: c{None}
+    return: None
     """
     logging.getLogger(log).info(msg, *args)
 
@@ -49,7 +49,7 @@ def warn (log, msg, *args):
     """
     Log a warning.
 
-    return: c{None}
+    return: None
     """
     logging.getLogger(log).warn(msg, *args)
 
@@ -58,7 +58,7 @@ def error (log, msg, *args):
     """
     Log an error.
 
-    return: c{None}
+    return: None
     """
     logging.getLogger(log).error(msg, *args)
 
@@ -67,7 +67,7 @@ def critical (log, msg, *args):
     """
     Log a critical error.
 
-    return: c{None}
+    return: None
     """
     logging.getLogger(log).critical(msg, *args)
 
@@ -76,6 +76,6 @@ def exception (log, msg, *args):
     """
     Log an exception.
 
-    return: c{None}
+    return: None
     """
     logging.getLogger(log).exception(msg, *args)

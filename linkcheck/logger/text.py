@@ -34,34 +34,36 @@ class TextLogger (linkcheck.logger.Logger):
     A text logger, colorizing the output if possible.
 
     Every Logger has to implement the following functions:
-    start_output (self)
-      Called once to initialize the Logger. Why do we not use __init__(self)?
-      Because we initialize the start time in start_output and __init__ gets
-      not called at the time the checking starts but when the logger object is
-      created.
-      Another reason is that we might want to create several loggers
-      as a default and then switch to another configured output. So we
-      must not print anything out at __init__ time.
-    
-    new_url (self, url_data)
-      Called every time an url finished checking. All data we checked is in
-      the UrlData object url_data.
-    
-    end_output (self)
-      Called at the end of checking to close filehandles and such.
-    
+
+    C{def start_output (self)}
+    Called once to initialize the Logger. Why do we not use __init__(self)?
+    Because we initialize the start time in start_output and __init__ gets
+    not called at the time the checking starts but when the logger object is
+    created.
+    Another reason is that we might want to create several loggers
+    as a default and then switch to another configured output. So we
+    must not print anything out at __init__ time.
+
+    C{def new_url (self, url_data)}
+    Called every time an url finished checking. All data we checked is in
+    the UrlData object url_data.
+
+    C{def end_output (self)}
+    Called at the end of checking to close filehandles and such.
+
     Passing parameters to the constructor:
-    __init__ (self, **args)
-      The args dictionary is filled in Config.py. There you can specify
-      default parameters. Adjust these parameters in the configuration
-      files in the appropriate logger section.
-    
-        Informal text output format spec:
-        Output consists of a set of URL logs separated by one or more
-        blank lines.
-        A URL log consists of two or more lines. Each line consists of
-        keyword and data, separated by whitespace.
-        Unknown keywords will be ignored.
+
+    C{def __init__ (self, **args)}
+    The args dictionary is filled in Config.py. There you can specify
+    default parameters. Adjust these parameters in the configuration
+    files in the appropriate logger section.
+
+    Informal text output format spec:
+    Output consists of a set of URL logs separated by one or more
+    blank lines.
+    A URL log consists of two or more lines. Each line consists of
+    keyword and data, separated by whitespace.
+    Unknown keywords will be ignored.
     """
 
     def __init__ (self, **args):

@@ -112,8 +112,8 @@ def check_urls (consumer):
 
     @param consumer: an object where all runtime-dependent options are
         stored
-    @type consumer: c{linkcheck.consumer.Consumer}
-    @return: c{None}
+    @type consumer: linkcheck.consumer.Consumer
+    @return: None
     """
     try:
         _check_urls(consumer)
@@ -128,8 +128,8 @@ def _check_urls (consumer):
 
     @param consumer: an object where all runtime-dependent options are
         stored
-    @type consumer: c{linkcheck.consumer.Consumer}
-    @return: c{None}
+    @type consumer: linkcheck.consumer.Consumer
+    @return: None
     """
     consumer.logger_start_output()
     start_time = time.time()
@@ -169,11 +169,11 @@ def set_intern_url (url, klass, config):
     Add intern url pattern for url given on the command line.
 
     @param url: URL to add
-    @type url: c{string}
+    @type url: string
     @param klass: URL class
     @type klass: class object
     @param config: configuration data
-    @type config: c{linkcheck.configuration.Configuration}
+    @type config: linkcheck.configuration.Configuration
     """
     linkcheck.log.debug(linkcheck.LOG_CHECK, "Set intern url for %r", url)
     if klass == linkcheck.checker.fileurl.FileUrl:
@@ -199,11 +199,11 @@ def absolute_url (base_url, base_ref, parent_url):
     simplify urltype matching.
 
     @param base_url: base url from a link tag
-    @type base_url: c{string} or c{None}
+    @type base_url: string or None
     @param base_ref: base url from <base> tag
-    @type base_ref: c{string} or c{None}
+    @type base_ref: string or None
     @param parent_url: url of parent document
-    @type parent_url: c{string} or c{None}
+    @type parent_url: string or None
     """
     if base_url and linkcheck.url.url_is_absolute(base_url):
         return base_url.lower()
@@ -221,23 +221,23 @@ def get_url_from (base_url, recursion_level, consumer,
     Get url data from given base data.
 
     @param base_url: base url from a link tag
-    @type base_url: c{string}
+    @type base_url: string
     @param recursion_level: current recursion level
-    @type recursion_level: c{number}
+    @type recursion_level: number
     @param consumer: consumer object
-    @type consumer: c{linkcheck.checker.consumer.Consumer}
+    @type consumer: linkcheck.checker.consumer.Consumer
     @param parent_url: parent url
-    @type parent_url: c{string} or c{None}
+    @type parent_url: string or None
     @param base_ref: base url from <base> tag
-    @type base_ref c{string} or c{None}
+    @type base_ref string or None
     @param line: line number
-    @type line: c{number}
+    @type line: number
     @param column: column number
-    @type column: c{number}
+    @type column: number
     @param name: link name
-    @type name: c{string}
+    @type name: string
     @param cmdline: flag if url was given on command line
-    @type cmdline: c{bool}
+    @type cmdline: bool
     """
     default_encoding = "iso8859-15"
     if not isinstance(base_url, unicode):
@@ -293,7 +293,7 @@ def get_index_html (urls):
     Construct artificial index.html from given URLs.
 
     @param urls: list with url strings
-    @type urls: c{list} of c{string}
+    @type urls: list of string
     """
     lines = ["<html>", "<body>"]
     for entry in urls:

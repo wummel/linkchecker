@@ -39,9 +39,9 @@ def intify (s):
     Coerce a truth value to 0/1.
 
     @param s: an object (usually a string)
-    @type s: c{object}
+    @type s: object
     @return: 1 if object truth value is True, else 0
-    @rtype: c{number}
+    @rtype: number
     """
     if s:
         return 1

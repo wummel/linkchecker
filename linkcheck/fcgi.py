@@ -16,17 +16,18 @@ readable, more robust at handling large CGI data and return
 document sizes, and also to fit the model that we had previously
 used for FastCGI.
 
-    WARNING:  If you don't know what you are doing, don't tinker with this
-              module!
+WARNING: If you don't know what you are doing, don't tinker with this
+module!
 
 Creation Date:    1/30/98 2:59:04PM
 
-License:      This is free software.  You may use this software for any
-              purpose including modification/redistribution, so long as
-              this header remains intact and that you do not claim any
-              rights of ownership or authorship of this software.  This
-              software has been tested, but no warranty is expressed or
-              implied.
+License:
+This is free software.  You may use this software for any
+purpose including modification/redistribution, so long as
+this header remains intact and that you do not claim any
+rights of ownership or authorship of this software. This
+software has been tested, but no warranty is expressed or
+implied.
 """
 import os
 import sys
