@@ -37,6 +37,26 @@ msgstr "Résultat"
 msgid "Warning"
 msgstr "Avertissement"
 
+#, fuzzy
+msgid ""
+"EXAMPLES\n"
+"o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
+"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
+"o Local files and syntactic sugar on the command line:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n"
+msgstr ""
+"EXEMPLES\n"
+"o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
+"    http://treasure.calvinsplayground.de/~calvin/\n"
+"o Fichiers locaux et morceau syntaxique dans la ligne de commande:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n"
+
 msgid "%.3f seconds"
 msgstr "%.3f secondes"
 
@@ -83,90 +103,18 @@ msgstr "1 avertissement, "
 msgid "Illegal argument '%s' for option "
 msgstr "Argumen illégal '%s' pour l'option "
 
-msgid "hours"
-msgstr "heures"
-
-#, fuzzy
-msgid "HTTPS url ignored"
-msgstr "Url Javascript ignorée"
-
-msgid "Start checking at %s\n"
-msgstr "Démarrage du controle à %s\n"
-
-msgid "D/L Time"
-msgstr "Durée D/L"
-
-msgid "seconds"
-msgstr "secondes"
-
-msgid "URL"
-msgstr ""
-
-msgid ""
-"EXAMPLES\n"
-"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
-"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
-"o Local files and syntactic sugar on the command line:\n"
-"      linkchecker c:\\temp\\test.html\n"
-"      linkchecker ../bla.html\n"
-"      linkchecker www.myhomepage.de\n"
-"      linkchecker -r0 ftp.linux.org\n"
-msgstr ""
-"EXEMPLES\n"
-"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
-"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
-"o Fichiers locaux et morceau syntaxique dans la ligne de commande:\n"
-"      linkchecker c:\\temp\\test.html\n"
-"      linkchecker ../bla.html\n"
-"      linkchecker www.myhomepage.de\n"
-"      linkchecker -r0 ftp.linux.org\n"
-
-msgid "URL is null or empty"
-msgstr "L'URL est nulle ou vide"
-
-msgid " in %d links"
-msgstr " dans %d liens"
-
-msgid " errors"
-msgstr " erreurs"
-
-msgid "Info"
-msgstr ""
-
-msgid "illegal recursionlevel number %d"
-msgstr "valeur du niveau de récursivité %d illégal"
-
-msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
-
-msgid "Base"
-msgstr "Base"
-
-msgid "Check Time"
-msgstr "Durée d'Analyse"
-
-msgid "Stopped checking at %s"
-msgstr "Arrêt du controle à %s"
-
-msgid "Group %s has %s articles, range %s to %s"
-msgstr "Le groupe %s a %s articles, de %s à %s"
-
-msgid "No user or password found"
-msgstr "Aucun utilisateur ou mot de passe trouvé"
-
-msgid "Get the newest version at %s\n"
-msgstr "Obtenir la dernière version à %s\n"
-
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
 "OPTIONS\n"
+"For single-letter option arguments the space is not a necessity. So\n"
+"'-o colored' is the same as '-ocolored'.\n"
 "-a, --anchors\n"
 "        Check anchor references. Default is don't check anchors.\n"
+"-d, --denyallow\n"
+"        Swap checking order to extern/intern. Default checking order\n"
+"        is intern/extern.\n"
 "-D, --debug\n"
 "        Print additional debugging information.\n"
 "-e regex, --extern=regex\n"
@@ -187,9 +135,6 @@ msgid ""
 "extern.\n"
 "-h, --help\n"
 "        Help me! Print usage information for this program.\n"
-"-l, --allowdeny\n"
-"        Swap checking order to intern/extern. Default checking order\n"
-"        is extern/intern.\n"
 "-N server, --nntp-server=server\n"
 "        Specify an NNTP server for 'news:...' links. Default is the\n"
 "        environment variable NNTP_SERVER. If no host is given,\n"
@@ -238,6 +183,9 @@ msgstr ""
 "-a, --anchors\n"
 "        Contrôle les références ancrées. Par défaut, il ne les contrôle "
 "pas.\n"
+"-d, --denyallow\n"
+"        Swap checking order to extern/intern. Default checking order\n"
+"        is intern/extern.\n"
 "-D, --debug\n"
 "        Affiche des informations de débugage supplémentaires.\n"
 "-e regex, --extern=regex\n"
@@ -260,9 +208,6 @@ msgstr ""
 "        Assume urls that match the given expression as intern.\n"
 "-h, --help\n"
 "        Aide moi! Affiche les informations d'utilisation pour ce programme.\n"
-"-l, --allowdeny\n"
-"        Swap checking order to intern/extern. Default checking order\n"
-"        is extern/intern.\n"
 "-N, --nntp-server\n"
 "        Specify an NNTP server for 'news:...' links. Default is the\n"
 "        environment variable NNTP_SERVER. If no host is given,\n"
@@ -306,6 +251,64 @@ msgstr ""
 "        error message, for example 'This page has moved' or\n"
 "        'Oracle Application Server error'.\n"
 "        This option implies -w.\n"
+
+msgid "hours"
+msgstr "heures"
+
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Url Javascript ignorée"
+
+msgid "Start checking at %s\n"
+msgstr "Démarrage du controle à %s\n"
+
+msgid "D/L Time"
+msgstr "Durée D/L"
+
+msgid "seconds"
+msgstr "secondes"
+
+msgid "URL"
+msgstr ""
+
+msgid "URL is null or empty"
+msgstr "L'URL est nulle ou vide"
+
+msgid " in %d links"
+msgstr " dans %d liens"
+
+msgid " errors"
+msgstr " erreurs"
+
+msgid "Info"
+msgstr ""
+
+msgid "illegal recursionlevel number %d"
+msgstr "valeur du niveau de récursivité %d illégal"
+
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
+
+msgid "Base"
+msgstr "Base"
+
+msgid "Check Time"
+msgstr "Durée d'Analyse"
+
+msgid "Stopped checking at %s"
+msgstr "Arrêt du controle à %s"
+
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Le groupe %s a %s articles, de %s à %s"
+
+msgid "No user or password found"
+msgstr "Aucun utilisateur ou mot de passe trouvé"
+
+msgid "Get the newest version at %s\n"
+msgstr "Obtenir la dernière version à %s\n"
 
 msgid "Got no answer from FTP server"
 msgstr "N'obtient pas de réponse du serveur FTP"
@@ -354,11 +357,11 @@ msgstr ""
 "liens\n"
 "  contrôlés ne pointent pas vers votre réseau local\n"
 "  Utiliser l'option -s et -i pour l'éviter (voir EXEMPLES)\n"
-"o Les liens Javascript sont actuellement ignorés\n"
+"o Les liens Javascript sont actuellement ignorés.\n"
 "o If your platform does not support threading, LinkChecker uses -t0\n"
 "o Vous pouvez fournir plusieurs couples 'utilisateurs'/'mots de passe' dans "
-"le fichier de configuration\n"
-"o Les cookies ne sont pas acceptés par LinkChecker\n"
+"le fichier de configuration.\n"
+"o Les cookies ne sont pas acceptés par LinkChecker.\n"
 "o To use proxies set $http_proxy, $https_proxy on Unix or Windows.\n"
 "  On a Mac use the Internet Config.\n"
 "o Lors d'un contrôle des liens 'news:', l'hôte NNTP spécifié n'a pas besoin "

@@ -21,13 +21,14 @@ from distutils.core import setup, DEBUG
 from distutils.dist import Distribution
 from distutils.extension import Extension
 from distutils.command.install import install
+from distutils.command.install_data import install_data
 from distutils.command.config import config
 from distutils import util
 from distutils.file_util import write_file
-import os,string
+import os,string,re
 
 
-class LCInstall(install):
+class MyInstall(install):
     def run(self):
         install.run(self)
         # we have to write a configuration file because we need the
@@ -65,7 +66,38 @@ class LCInstall(install):
                 print "  %s: %s" % (opt_name, val)
 
 
-class LCConfig(config):
+class MyInstallData(install_data):
+    """My own data installer to handle .man pages"""
+    def run (self):
+        self.mkpath(self.install_dir)
+        for f in self.data_files:
+            if type(f) == StringType:
+                # it's a simple file, so copy it
+                if self.warn_dir:
+                    self.warn("setup script did not provide a directory for "
+                              "'%s' -- installing right in '%s'" %
+                              (f, self.install_dir))
+                self._install_file(f, self.install_dir)
+            else:
+                # it's a tuple with path to install to and a list of files
+                dir = f[0]
+                if not os.path.isabs(dir):
+                    dir = os.path.join(self.install_dir, dir)
+                elif self.root:
+                    dir = change_root(self.root, dir)
+                self.mkpath(dir)
+                for data in f[1]:
+                    self._install_file(data, dir)
+
+    def _install_file(self, filename, dirname):
+        (out, _) = self.copy_file(filename, dirname)
+        # match for man pages .[0-9]
+        if re.search(r'/man/.+\.\d$', out):
+            out = out+".gz"
+        self.outfiles.append(out)
+
+
+class MyConfig(config):
     user_options = config.user_options + [
         ('ssl-include-dirs=', None,
          "directories to search for SSL header files"),
@@ -137,7 +169,7 @@ class LCConfig(config):
         self.distribution.create_conf_file(".", data)
 
 
-class LCDistribution(Distribution):
+class MyDistribution(Distribution):
     def __init__(self, attrs=None):
         Distribution.__init__(self, attrs=attrs)
         self.config_file = self.get_name()+"Conf.py"
@@ -207,8 +239,11 @@ o i18n support
 o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
 """,
-       distclass = LCDistribution,
-       cmdclass = {'config': LCConfig, 'install': LCInstall},
+       distclass = MyDistribution,
+       cmdclass = {'config': MyConfig,
+                   'install': MyInstall,
+                   'install_data': MyInstallData,
+		  },
        packages = ['','DNS','linkcheck'],
        scripts = ['linkchecker'],
        data_files = [('share/locale/de/LC_MESSAGES',

@@ -4,8 +4,9 @@ linkchecker (1.2.9) unstable; urgency=low
     checking; see the FAQ for detailed information
   * added a man page
   * setup.py: fix for distutils debugging function dump_dirs
+  * setup.py: fix to handle man pages correctly with bdist_rpm target
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 20 Nov 2000 19:47:02 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Wed, 22 Nov 2000 12:42:02 +0100
 
 linkchecker (1.2.8) unstable; urgency=low
 

@@ -1,0 +1,157 @@
+.TH LINKCHECKER 1 "18 November 2000"
+.SH NAME
+linkchecker \- check your HTML documents for broken links
+.SH SYNOPSIS
+.B linkchecker
+[
+.I options
+]
+[
+.I file-or-url
+]
+.SH DESCRIPTION
+.LP
+LinkChecker features
+recursive checking,
+multithreading,
+output in colored or normal text, HTML, SQL, CSV or a sitemap
+graph in GML or XML,
+support for HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, 
+Gopher, Telnet and local file links, 
+restriction of link checking with regular expression filters for URLs,
+proxy support,
+username/password authorization for HTTP and FTP,
+robots.txt exclusion protocol support,
+i18n support,
+a command line interface and
+a (Fast)CGI web interface (requires HTTP server)
+.SH OPTIONS
+For single-letter option arguments the space is not a necessity.
+So \fI-o colored\fP is the same as \fI-ocolored\fP.
+.TP
+\fB-a, --anchors\fP
+Check anchor references. Default is don't check anchors.
+.TP
+\fB-d, --denyallow\fP
+Swap checking order to extern/intern. Default checking order is
+intern/extern.
+.TP
+\fB-D, --debug\fP
+Print debugging information.
+.TP
+\fB-e \fIregex\fB, --extern=\fIregex\fP
+Assume urls that match the given regular expression as extern.
+Only intern HTML links are checked recursively.
+.TP
+\fB-f \fIfile\fB, --config=\fIfile\fP
+Use \fIfile\fP as configuration file. LinkChecker first searches for
+~/.linkcheckerrc and then /etc/linkcheckerrc and under
+Windows <path-to-program>\\linkcheckerrc.
+.TP
+\fB-F \fItype\fB, --file-output=\fItype\fP
+Same as output, but write to a file \fIlinkchecker-out.<type>\fP.
+If the file already exists, it is overwritten. You can specify this
+option more than once. There is no file output for the blacklist
+logger. Default is no file output.
+.TP
+\fB-i \fIregex\fB, --intern=\fIregex\fP
+Assume URLs that match the given regular expression as intern.
+LinkChecker descends recursively only to intern URLs, not to extern.
+.TP
+\fB-h, --help\fP
+Help me! Print usage information for this program.
+.TP
+\fB-N \fIserver\fB, --nntp-server=\fIserver\fP
+Specify an NNTP server for 'news:...' links. Default is the
+environment variable NNTP_SERVER. If no host is given,
+only the syntax of the link is checked.
+.TP
+\fB-o \fItype\fB, --output=\fItype\fP
+Specify output type as \fItext\fP, \fIcolored\fP, \fIhtml\fP, \fIsql\fP,
+\fIcsv\fP, \fIgml\fP, \fIxml\fP or \fIblacklist\fP.
+Default type is \fItext\fP.
+.TP
+\fB-p \fIpwd\fB, --password=\fIpwd\fP
+Try the password \fIpwd\fB for HTML and FTP authorization.
+The default password is \fIguest@\fP. See also \fB-u\fP.
+.TP
+\fB-q, --quiet\fP
+Quiet operation. This is only useful with \fB-F\fP.
+.TP
+\fB-r \fIdepth\fB, --recursion-level=\fIdepth\fP
+Check recursively all links up to given \fIdepth\fP (depth >= 0).
+Default depth is 1.
+.TP
+\fB-R, --robots-txt\fP
+Obey the robots exclusion standard.
+.TP
+\fB-s, --strict\fP
+Check only the syntax of extern links, do not try to connect to them.
+.TP
+\fB-t \fInum\fB, --threads=\fInum\fP
+Generate no more than \fInum\fP threads. Default number of threads is 5.
+To disable threading specify a non-positive number.
+.TP
+\fB-u \fIname\fB, --user=\fIname\fP
+Try username \fIname\fP for HTML and FTP authorization.
+Default is \fIanonymous\fP. See also \fB-p\fP.
+.TP
+\fB-V, --version\fP
+Print version and exit.
+.TP
+\fB-v, --verbose\fP
+Log all checked URLs (implies \fB-w\fP). Default is to log only invalid
+URLs.
+.TP
+\fB-w, --warnings\fP
+Log warnings.
+.TP
+\fB-W \fIregex\fB, --warning-regex=\fIregex\fP
+Define a regular expression which prints a warning if it matches any
+content of the checked link.
+This applies of course only to pages which are valid, so we can get
+their content.
+Use this to check for pages that contain some form of error, for example
+'This page has moved' or 'Oracle Application Server error'.
+This option implies \fB-w\fP.
+.SH NOTES
+Linkchecker assumes an \fIhttp://\fP resp. \fIftp://\fP link when a 
+commandline URL starts with \fIwww.\fP resp. \fIftp.\fP
+You can also give local files as arguments.
+
+If you have your system configured to automatically establish a
+connection to the internet (e.g. with diald), it will connect when
+checking links not pointing to your local host.
+Use the -s and -i options to prevent this.
+
+Javascript links are currently ignored.
+
+If your platform does not support threading, LinkChecker uses 
+\fB-t0\fP.
+
+You can supply multiple user/password pairs in a configuration file.
+
+Cookies are not accepted by LinkChecker.
+
+To use proxies set $http_proxy, $https_proxy on Unix or Windows.
+On a Mac use the Internet Config.
+
+When checking 'news:' links the given NNTP host doesn't need to be the
+same as the host of the user browsing your pages!
+
+.SH EXAMPLES
+\fIlinkchecker -v -ohtml -s -itreasure.calvinsplayground.de \\
+.br
+http://treasure.calvinsplayground.de/~calvin/
+
+\fPLocal files and syntactic sugar on the command line:
+.br
+\fIlinkchecker c:\\temp\\test.html
+.br
+linkchecker ../bla.html
+.br
+linkchecker www.myhomepage.de
+.br
+linkchecker -r0 ftp.linux.org\fP
+.SH AUTHOR
+Bastian Kleineidam <calvin@users.sourceforge.net>
