@@ -396,8 +396,6 @@ if options.fileoutput:
         else:
             printUsage(_("Illegal argument %r for option %s") % \
                        (ftype, "'-F, --file-output'"))
-    if not options.output:
-        config['logger'] = config.logger_new('none')
 if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.intern:
