@@ -535,7 +535,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             response = self._get_http_response()
             self.headers = response.msg
             self.data = response.read()
-            encoding = self.headers.get("Content-Encoding")
+            encoding = self.get_content_encoding()
             if encoding in _supported_encodings:
                 try:
                     if encoding == 'deflate':
@@ -563,7 +563,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return False
         if self.headers.gettype()[:9] != "text/html":
             return False
-        encoding = self.headers.get("Content-Encoding")
+        encoding = self.get_content_encoding()
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
             self.add_warning(_('Unsupported content encoding %r.') % encoding)
@@ -593,6 +593,16 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             ptype = ptype.split(';')[0]
         return ptype.strip()
 
+    def get_content_encoding (self):
+        """
+        Get the content encoding from the Content-Encoding header value, or
+        an empty string if not found.
+
+        @return: encoding string
+        @rtype: string
+        """
+        return self.headers.get("Content-Encoding", "").strip()
+
     def is_parseable (self):
         """
         Check if content is parseable for recursion.
@@ -604,7 +614,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return False
         if self.get_content_type() not in ("text/html", "text/css"):
             return False
-        encoding = self.headers.get("Content-Encoding")
+        encoding = self.get_content_encoding()
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
             self.add_warning(_('Unsupported content encoding %r.') % encoding)
