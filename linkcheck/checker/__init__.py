@@ -18,10 +18,13 @@
 
 import time
 import sys
+import os
+import cgi
 import socket
 import select
 import re
 import urlparse
+import urllib
 import nntplib
 import ftplib
 
@@ -218,3 +221,15 @@ def get_url_from (base_url, recursion_level, consumer,
     return klass(base_url, recursion_level, consumer,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)
+
+def get_index_html (urls):
+    """Construct artificial index.html from given URLs."""
+    lines = ["<html>", "<body>"]
+    for entry in urls:
+        name = cgi.escape(entry)
+        url = cgi.escape(urllib.quote(entry))
+        lines.append('<a href="%s">%s</a>' % (url, name))
+    lines.extend(["</body>", "</html>"])
+    return os.linesep.join(lines)
+
+
