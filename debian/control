@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
 Build-Depends: python2.2-dev (>= 2.2.1), debhelper (>= 4.1.0), gettext
-Standards-Version: 3.5.10.0
+Standards-Version: 3.6.0
 
 Package: linkchecker
 Architecture: any
