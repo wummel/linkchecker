@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import httplib, urlparse, sys, time, re
+import urlparse, sys, time, re
+import linkcheck.httplib as httplib
 import Config, StringUtil, robotparser, linkcheck
 if Config.DebugLevel > 0:
     robotparser.debug = 1

@@ -17,7 +17,8 @@
 
 from UrlData import UrlData
 from HttpUrlData import HttpUrlData
-import httplib, linkcheck, Config
+import linkcheck, Config
+import linkcheck.httplib as httplib
 _supportHttps = hasattr(httplib, "HTTPSConnection")
 
 
