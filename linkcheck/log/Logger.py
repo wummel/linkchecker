@@ -34,3 +34,7 @@ class Logger:
 
     def endOfOutput (self, linknumber=-1):
         raise Exception, "abstract function"
+
+    def __str__ (self):
+        return self.__name__
+
