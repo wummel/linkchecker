@@ -1,10 +1,11 @@
 1.8.3
   * add missing imports for StringUtil in log classes
     Changed files: linkcheck/log/{Standard,SQl,Html,Colored}.Loggerpy
-  * fixed wrong debug level
+  * fixed wrong debug level comparison from > to >=
     Changed files: linkcheck/Config.py
   * JavaScript checks in the CGI scripts
     Changed files: lconline/lc_cgi.html.*
+    Added files: lconline/check.js
   * Updated documentation with a link restriction example
     Changed files: linkchecker, linkchecker.1, FAQ
 
