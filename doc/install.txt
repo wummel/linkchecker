@@ -5,6 +5,13 @@
 Installation
 ============
 
+If you are upgrading from older versions of LinkChecker you should
+also read the `upgrading documentation`_.
+
+.. _upgrading documentation:
+   upgrading.html
+
+
 Requirements for Unix/Linux or Mac OS X
 ---------------------------------------
 
