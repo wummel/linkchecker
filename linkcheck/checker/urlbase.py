@@ -527,21 +527,6 @@ class UrlBase (object):
         """Parse into HTML content and search for URLs to check.
            Found URLs are added to the URL queue.
         """
-        # search for a possible base reference
-        h = linkcheck.linkparse.LinkFinder(self.get_content(),
-                                           tags={'base': [u'href']})
-        p = linkcheck.HtmlParser.htmlsax.parser(h)
-        h.parser = p
-        p.feed(self.get_content())
-        p.flush()
-        h.parser = None
-        p.handler = None
-        base_ref = None
-        if len(h.urls)>=1:
-            base_ref = h.urls[0][0]
-            if len(h.urls)>1:
-                self.add_warning(_(
-                "more than one <base> tag found, using only the first one"))
         h = linkcheck.linkparse.LinkFinder(self.get_content())
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
@@ -554,12 +539,12 @@ class UrlBase (object):
             self.add_warning(s)
         for url, line, column, name, codebase in h.urls:
             if codebase:
-                base = codebase
+                base_ref = codebase
             else:
-                base = base_ref
+                base_ref = h.base_ref
             url_data = linkcheck.checker.get_url_from(url,
                   self.recursion_level+1, self.consumer, parent_url=self.url,
-                  base_ref=base, line=line, column=column, name=name)
+                  base_ref=base_ref, line=line, column=column, name=name)
             self.consumer.append_url(url_data)
 
     def parse_opera (self):

@@ -101,6 +101,7 @@ class MetaRobotsFinder (TagFinder):
         super(MetaRobotsFinder, self).__init__(content)
         self.follow = True
         self.index = True
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "meta robots finder")
 
 
     def start_element (self, tag, attrs):
@@ -113,9 +114,9 @@ class MetaRobotsFinder (TagFinder):
 
 
 class LinkFinder (TagFinder):
-    """find a list of links. After parsing, the urls
-    will have a list of parsed links entries with the format
-    (url, lineno, column, name, base)
+    """Find a list of links. After parsing, self.urls
+    will be a list of parsed links entries with the format
+    (url, lineno, column, name, codebase)
     """
 
     def __init__ (self, content, tags=None):
@@ -126,6 +127,8 @@ class LinkFinder (TagFinder):
         else:
             self.tags = tags
         self.urls = []
+        self.base_ref = u''
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "link finder")
 
     def start_element (self, tag, attrs):
         """search for links and store found URLs in a list"""
@@ -135,33 +138,42 @@ class LinkFinder (TagFinder):
                             "line %d col %d old line %d old col %d",
                             self.parser.lineno(), self.parser.column(),
                          self.parser.last_lineno(), self.parser.last_column())
+        if tag == "base" and not self.base:
+            self.base_ref = attrs.get("href", u'')
         tagattrs = self.tags.get(tag, [])
         tagattrs.extend(self.tags.get(None, []))
         for attr in tagattrs:
-            if attr in attrs:
-                # name of this link
-                if tag == 'a' and attr == 'href':
-                    name = linkcheck.strformat.unquote(
-                                          attrs.get('title', u''))
-                    if not name:
-                        data = self.content[self.parser.pos():]
-                        data = data.decode(self.parser.encoding, "ignore")
-                        name = linkcheck.linkname.href_name(data)
-                elif tag == 'img':
-                    name = linkcheck.strformat.unquote(attrs.get('alt', u''))
-                    if not name:
-                        name = linkcheck.strformat.unquote(
-                                                     attrs.get('title', u''))
-                else:
-                    name = u""
-                # possible codebase
-                if tag in ('applet', 'object'):
-                    base = linkcheck.strformat.unquote(attrs.get('codebase', u''))
-                else:
-                    base = u""
-                value = linkcheck.strformat.unquote(attrs[attr])
-                # add link to url list
-                self.add_link(tag, attr, value, name, base)
+            if attr not in attrs:
+                continue
+            # name of this link
+            name = self.get_link_name(tag, attrs, attr)
+            # possible codebase
+            if tag in ('applet', 'object'):
+                codebase = linkcheck.strformat.unquote(
+                                                  attrs.get('codebase', u''))
+            else:
+                codebase = u''
+            value = linkcheck.strformat.unquote(attrs[attr])
+            # add link to url list
+            self.add_link(tag, attr, value, name, codebase)
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "LinkFinder finished tag %s", tag)
+
+    def get_link_name (self, tag, attrs, attr):
+        """Parse attrs for link name. Return name of link"""
+        if tag == 'a' and attr == 'href':
+            name = linkcheck.strformat.unquote(attrs.get('title', u''))
+            if not name:
+                data = self.content[self.parser.pos():]
+                data = data.decode(self.parser.encoding, "ignore")
+                name = linkcheck.linkname.href_name(data)
+        elif tag == 'img':
+            name = linkcheck.strformat.unquote(attrs.get('alt', u''))
+            if not name:
+                name = linkcheck.strformat.unquote(attrs.get('title', u''))
+        else:
+            name = u""
+        return name
 
     def add_link (self, tag, attr, url, name, base):
         """add given url data to url list"""
