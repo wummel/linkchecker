@@ -12,6 +12,8 @@
 
 - SF request #952051: is query considered in url cache keys?
 
+- doc framework
+
 - warn if overall size of page (including images/flash/etc.) is too big
   right now, the page size is only html content
 
