@@ -16,9 +16,9 @@ PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
 TESTFILES := $(wildcard linkcheck/tests/*.py linkcheck/ftests/*.py)
 PYCHECKEROPTS := -F config/pycheckrc
-PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint
+PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint.$(PYTHON)
 PYLINTOPTS := 
-PYLINTBROKEN = linkcheck/lc_cgi.py
+PYLINTBROKEN = 
 PYLINTFILES = $(filter-out $(PYLINTBROKEN),$(PYFILES))
 
 all:
