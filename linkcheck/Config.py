@@ -269,9 +269,12 @@ class Configuration (dict):
 
 
     def getUrl (self):
+        """get first url in queue and return it"""
         self.urlsLock.acquire()
         try:
-            return self.urls.pop()
+            u = self.urls[0]
+            del self.urls[0]
+            return u
         finally:
             self.urlsLock.release()
 

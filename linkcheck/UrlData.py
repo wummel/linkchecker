@@ -604,6 +604,7 @@ class UrlData (object):
                 base = codebase
             else:
                 base = baseRef
+            debug(NIGHTMARE, "Put url %r in queue"%url)
             self.config.appendUrl(GetUrlDataFrom(url,
                                   self.recursionLevel+1, self.config,
                                   parentName=self.url, baseRef=base,
