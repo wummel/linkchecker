@@ -8,20 +8,22 @@ MSGMERGE := msgmerge
 SOURCES = $(shell find ../linkcheck -name \*.py) \
 ../linkchecker
 
-LDIR=../share/locale
-PACKAGE=linkcheck
-LFILE=LC_MESSAGES/$(PACKAGE).mo
+LDIR = ../share/locale
+PACKAGE = linkcheck
+LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
-LANGUAGES=de fr nl
-MOS=$(patsubst %, %.mo, $(LANGUAGES) )
+LANGUAGES = de fr nl
+MOS = $(patsubst %, %.mo, $(LANGUAGES) )
 
 all:	$(MOS)
 
 win:
-	if [ ! -d $(LDIR)/de/LC_MESSAGES ]; then \
-	  mkdir -p $(LDIR)/de/LC_MESSAGES; \
-	fi
-	$(MSGFMT) -o$(LDIR)/de/$(LFILE) de.po
+	@for l in $(LANGUAGES); do \
+	  if [ ! -d $(LDIR)/$$l/LC_MESSAGES ]; then \
+	    mkdir -p $(LDIR)/$$l/LC_MESSAGES; \
+	  fi; \
+	  $(MSGFMT) -o$(LDIR)/$$l/$(LFILE) $$l.po; \
+	done
 
 %.po:	$(PACKAGE).pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
