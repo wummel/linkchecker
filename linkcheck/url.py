@@ -414,7 +414,7 @@ def match_host (host, domainlist):
 _nopathquote_chars = "-;/=,~*+()@"
 if os.name == 'nt':
     _nopathquote_chars += "|"
-_safe_url_chars = re.escape(_nopathquote_chars + "_:.&#%?[]")+"a-zA-Z0-9"
+_safe_url_chars = re.escape(_nopathquote_chars + "_:.&#%?[]!")+"a-zA-Z0-9"
 _safe_url_chars_ro = re.compile(r"^[%s]*$" % _safe_url_chars)
 def url_needs_quoting (url):
     """
