@@ -25,6 +25,7 @@ import urllib
 
 import urlbase
 import linkcheck
+import linkcheck.checker
 
 # if file extension lookup was unsuccessful, look at the content
 contents = {
@@ -34,20 +35,18 @@ contents = {
 }
 
 
-def get_index_html (dirname):
-    """Construct artificial index.html from given filename. Does
-       only allow regular files and directories, no symlinks."""
-    lines = ["<html>"]
+def get_files (dirname):
+    """Get lists of files in directory. Does only allow regular files
+       and directories, no symlinks.
+    """
+    files = []
     for entry in os.listdir(dirname):
         fullentry = os.path.join(dirname, entry)
         if os.path.islink(fullentry) or \
            not (os.path.isfile(fullentry) or os.path.isdir(fullentry)):
             continue
-        name = cgi.escape(entry)
-        url = cgi.escape(urllib.quote(entry))
-        lines.append('<a href="%s">%s</a>' % (url, name))
-    lines.append("</html>")
-    return os.linesep.join(lines)
+        files.append(entry)
+    return files
 
 
 class FileUrl (urlbase.UrlBase):
@@ -93,7 +92,8 @@ class FileUrl (urlbase.UrlBase):
 
     def get_directory_content (self):
         t = time.time()
-        self.data = get_index_html(self.get_os_filename())
+        files = get_files(self.get_os_filename())
+        self.data = linkcheck.checker.get_index_html(files)
         self.dltime = time.time() - t
         self.dlsize = len(self.data)
         self.has_content = True
