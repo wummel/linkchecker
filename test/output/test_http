@@ -13,6 +13,7 @@ url http:/www.heise.de
 name one slash
 error
 url http:www.heise.de
+cached
 name no slash
 error
 url http://
