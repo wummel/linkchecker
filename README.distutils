@@ -1,0 +1,225 @@
+                             Python Module
+                         Distribution Utilities
+                             release 0.1.3
+                           January 30, 2000
+                                    
+
+INTRODUCTION
+------------
+
+The Python Module Distribution Utilities, or Distutils for short, are a
+collection of modules that aid in the development, distribution, and
+installation of Python modules.  (It is intended that ultimately the
+Distutils will grow up into a system for distributing and installing
+whole Python applications, but for now their scope is limited to module
+distributions.)
+
+The Distutils will be a standard part of Python 1.6.  This release is
+intended to provide a wider audience an early opportunity to try out the
+system, improve its portability, shake out the bugs, make suggestions,
+and so forth.  Do not expect perfection: if you're trying out this
+release, it should be because you want to help debug and develop, not
+because you need a stable, working system immediately.
+
+Any feedback, comments, bug reports, success reports, etc. should be
+reported to the Distutils SIG at
+
+    distutils-sig@python.org
+
+If you're not yet a member of this mailing list, you can join at
+
+    http://www.python.org/mailman/listinfo/distutils-sig
+
+Reports of minor bugs (patches are especially welcome!) can be sent
+directly to me (Greg Ward) at gward@python.net.  Anything that expects a
+longer response than "Thanks for the bug report/fix!" should be directed
+to the SIG.
+
+
+INSTALLATION
+------------
+
+Obviously, in order to use the Distutils you must first install them.
+Luckily, since the goal of the whole project is to make distributing and 
+installing Python module distributions painless, this is quite easy:
+
+    python setup.py install
+
+Note that this installs to the "site" library directory of your local
+Python installation: /usr/local/lib/python1.5/site-packages by default
+on Unix, "C:\Program Files\Python" by default on Windows.  Since the
+Distutils are "package-ized", the installation process will create a
+subdirectory "distutils" under the site library directory.
+
+The installation is by default quite verbose.  You can silence it with
+the "-q" option:
+
+    python setup.py -q install
+
+but unfortunately the Distutils' verbosity is (currently) all or nothing.
+
+
+USAGE
+-----
+
+The Distutils will ultimately have three user communities: developers,
+packagers, and installers.  This release caters to developers and
+installers (system administrators and end-users); there is currently no
+facility for generating "built distributions", so there's nothing for
+the yet-to-exist "packager" community to play with here.
+
+If you are a module developer and you'd like to try out the Distutils
+for your own module distribution, see the USAGE.txt file for more
+information.  Also, don't forget to check out the example setup scripts
+in the "examples" subdirectory.
+
+If you are an installer (system administrator or end-user) and you'd
+like to try out the Distutils, you've already done so by installing the
+Distutils themselves (thanks!).  Additionally, at least two major module
+distributions (Numerical Python and PyXML) use the Distutils for
+installation; if you have installed the Distutils just to get another
+distributions up-and-running, follow the instructions included with that
+distribution.  For any "distutil-ized" distribution, though, this should
+always work:
+
+    python setup.py install
+
+
+EXAMPLES
+--------
+
+For developers who need to convert their own module distributions to use
+the Distutils, I've included a couple of example setup scripts in the
+"examples" subdirectory.  One of these, numpy_setup.py, has already been
+incorporated (and subsequently modified) into its intended target, but
+the example script is retained for historical interest (and because it's
+a bit shorter and easier to read than the "production" version).
+Hopefully the other two will become similarly obsolete in future.
+
+If you happen to have one of the other target module distributions handy
+(PIL for examples/pil_setup.py, and mxDateTime for
+examples/mxdatetime_setup.py), you could try using the setup scripts
+I've provided to build them.  In both cases, you just:
+
+  * copy (or link) the provided setup script to "setup.py" in the
+    target distribution (eg. copy pil_setup.py to setup.py in
+    Imaging-1.0, wherever you unpacked the Imaging tarball)
+  * run the setup script:
+        python setup.py install
+    to build and install the distribution to your standard Python
+    library directory
+
+Note that the setup script for PIL relies on being able to run "make" in
+the libImaging subdirectory, so it will probably only work on Unix.
+(This will be fixed in Distutils 0.2.)
+
+Also, as always you can split the setup run up into "build" and
+"install" steps:
+
+    python setup.py build
+    python setup.py install
+
+This is handy if you just want to be sure a given module distribution
+will build without installing it.  Finally, you can in theory install to
+a non-standard location, eg. using the --prefix and --exec-prefix
+options to the 'install' command:
+
+    python setup.py install --exec-prefix=/home/greg
+
+but currently this doesn't work very well.  I don't recommend using this
+feature; it will be fixed in Distutils 0.2.
+
+See examples/README.txt for more information on the example setup
+scripts included with the Distutils; see the USAGE.txt file for more
+examples of what you can (and cannot) do with the Distutils.  Better
+documentation will be coming in Distutils 0.2.
+
+
+MORE INFORMATION
+----------------
+
+I presented a paper at the Eighth International Python Conference which
+covers the usage, design, and architecture of the Distutils.  The
+published paper is heavy on usage examples, and is a bit more polished
+than the USAGE.txt file -- until proper documentation is available, the
+IPC8 paper is a good source of info.  You can find the paper online at
+
+    http://www.python.org/sigs/distutils-sig/ipc8_paper.html
+
+You can also find links to PDF and PostScript versions of the paper, as
+well as the slides from my presentation, at the Distutils home page:
+
+    http://www.python.org/sigs/distutils-sig
+
+
+BUGS AND LIMITATIONS
+--------------------
+
+Still lots of limitations, but several bugs have been fixed since
+release 0.1.2.  There's no (easy, documented) way to build extra C
+libraries that are used by an extension module, and no way to probe the
+system to see what external libraries are installed and where.  Checking
+for prerequisite Python modules hasn't even been considered yet.
+There's no database of installed Python modules.  Installation to
+non-standard directories (eg. a user's home directory) doesn't work very
+well.  Providing options to one command that ought to affect another
+command is a bit dodgy (and understanding why requires understanding how
+the Distutils work internally).  There's no support for "built
+distributions", either dumb (tarball, zip file) or smart (RPM, Wise).
+Using the "dist" command to create a source distribution is tricky.
+
+If you think of any limitations that aren't on the above list, or find
+serious bugs, or have contributions to make, come and join the Distutils 
+SIG:
+
+    http://www.python.org/mailman/listinfo/distutils-sig
+
+
+CONTRIBUTING
+------------
+
+Yes, please!  A good place to start is by reading the IPC paper and/or
+presentation slides that I mentioned above.  You should probably also
+read the requirements and design documents at
+
+    http://www.python.org/sigs/distutils-sig/
+
+if you're serious about working on the code.
+
+Small patches can be sent to the Distutils-SIG,
+
+    distutils-sig@python.org
+
+for discussion by the group.  Anything larger than 200-300 lines should
+be sent straight to me (gward@python.net) to reduce volume on the list.
+
+
+ACKNOWLEDGMENTS
+---------------
+
+[spiritual, in roughly chronological order since the birth of the project]
+  * Fred Drake and Andrew Kuchling for agreeing with me that the lack of
+    a standard build mechanism is a serious hole in Python
+  * Barry Warsaw for encouraging me to bring it up at Developer's Day
+    at IPC7
+  * the crowd at that Developer's Day session (notably Greg Stein,
+    Eric Raymond, Andrew Kuchling, and a few others who I've probably
+    forgotten) for a lively and stimulating discussion
+  * David Ascher, Guido van Rossum, and Paul Dubois for occasionally
+    reminding to stop fooling around and work on the Distutils
+  * oh hell, everyone who's ever contributed to the Distutils SIG
+
+[spiritual, before the project ever came to be]
+  * various perl5-porters: Andy Dougherty, Andreas König, Tim Bunce
+    for showing the way with Perl's ExtUtils family of modules
+  * Tim Bunce, Andreas König, and Jarkko Hietaniemi for showing
+    the potential by developing the Perl Module List (Tim & Andreas),
+    the CPAN archive (Jarkko), and the CPAN module (Andreas)
+
+[tangible, in chronological order]
+  * Fred Drake for the sysconfig module
+  * Perry Stoll for the MSVCCompiler class and the example setup
+    script for Numerical Python
+  * Thomas Heller for catching and fixing some Windows portability bugs
+
+$Id$
