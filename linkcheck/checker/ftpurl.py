@@ -52,7 +52,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.login(_user, _password)
         filename = self.cwd()
         if filename:
-            self.retrieve(filename)
+            self.listfile(filename)
         return None
 
     def is_html (self):
@@ -93,11 +93,11 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.close_connection()
             raise linkcheck.LinkCheckerError(
                                        _("Got no answer from FTP server"))
-        # don't set info anymore, this may change every time we logged in
+        # don't set info anymore, this may change every time we log in
         #self.add_info(info)
 
     def cwd (self):
-        """change directory to given path"""
+        """change to URL parent directory"""
         # leeched from webcheck
         dirs = self.urlparts[2].split('/')
         filename = dirs.pop()
@@ -107,8 +107,8 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.url_connection.cwd(d)
         return filename
 
-    def retrieve (self, filename):
-        """initiate download of given filename"""
+    def listfile (self, filename):
+        """see if filename is in the current FTP directory"""
         # it could be a directory if the trailing slash was forgotten
         try:
             self.url_connection.cwd(filename)
@@ -116,11 +116,16 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return
         except ftplib.error_perm:
             pass
-        # XXX use TYPE A for directories
-        self.url_connection.voidcmd('TYPE I')
-        self.url_connection.nlst(filename)
+        files = self.url_connection.nlst()
+        if filename not in files:
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                "FTP file %r not found in %s",
+                                filename, str(files))
+            raise ftplib.error_perm, "550 File not found"
 
     def close_connection (self):
-        try: self.url_connection.closet()
-        except: pass
+        try:
+            self.url_connection.close()
+        except ftplib.Error:
+            pass
         self.url_connection = None
