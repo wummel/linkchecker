@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, os, urlparse, urllib
+import re, os, urlparse
 from linkcheck import extensions
 from UrlData import UrlData, ExcList
 
@@ -69,8 +69,6 @@ acap        # application configuration access protocol
 |s?news     # news
 |nntp       # news
 )"""
-_url = r"(?i)%s:[-a-zA-Z0-9$_.+!?*'/(),;]+" % _schemes
-_url_re = re.compile(_url, re.VERBOSE)
 
 
 class FileUrlData (UrlData):
