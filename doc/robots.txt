@@ -1,0 +1,11 @@
+# Simple robots.txt example, put this into your web root.
+# See the complete reference at
+# http://www.robotstxt.org/wc/norobots-rfc.html
+
+# disallow cgi-bin access for all robots
+User-agent: *
+Disallow: /cgi-bin/
+
+# All LinkChecker versions are not allowed to check anything
+User-agent: LinkChecker
+Disallow: /
