@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, time
-from linkcheck import Config, _
+from linkcheck import Config, i18n
 from Logger import Logger
 from linkcheck.log import strtime
 from linkcheck import StringUtil
@@ -71,9 +71,9 @@ __init__(self, **args)
         self.starttime = time.time()
         if self.has_field('intro'):
             self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
-            self.fd.write(_("Get the newest version at %s\n") % Config.Url)
-            self.fd.write(_("Write comments and bugs to %s\n\n") % Config.Email)
-            self.fd.write(_("Start checking at %s\n") % strtime(self.starttime))
+            self.fd.write(i18n._("Get the newest version at %s\n") % Config.Url)
+            self.fd.write(i18n._("Write comments and bugs to %s\n\n") % Config.Email)
+            self.fd.write(i18n._("Start checking at %s\n") % strtime(self.starttime))
             self.fd.flush()
 
 
@@ -83,7 +83,7 @@ __init__(self, **args)
             self.fd.write("\n"+self.field('url')+self.spaces('url')+
                           urlData.urlName)
             if urlData.cached:
-                self.fd.write(_(" (cached)\n"))
+                self.fd.write(i18n._(" (cached)\n"))
             else:
                 self.fd.write("\n")
         if urlData.name and self.has_field('name'):
@@ -92,8 +92,8 @@ __init__(self, **args)
         if urlData.parentName and self.has_field('parenturl'):
             self.fd.write(self.field('parenturl')+self.spaces("parenturl")+
 	                  urlData.parentName+
-                          (_(", line %d")%urlData.line)+
-                          (_(", col %d")%urlData.column)+"\n")
+                          (i18n._(", line %d")%urlData.line)+
+                          (i18n._(", col %d")%urlData.column)+"\n")
         if urlData.baseRef and self.has_field('base'):
             self.fd.write(self.field("base")+self.spaces("base")+
                           urlData.baseRef+"\n")
@@ -102,13 +102,13 @@ __init__(self, **args)
                           urlData.url+"\n")
         if urlData.dltime>=0 and self.has_field('dltime'):
             self.fd.write(self.field("dltime")+self.spaces("dltime")+
-	                  _("%.3f seconds\n") % urlData.dltime)
+	                  i18n._("%.3f seconds\n") % urlData.dltime)
         if urlData.dlsize>=0 and self.has_field('dlsize'):
             self.fd.write(self.field("dlsize")+self.spaces("dlsize")+
 	                  "%s\n"%StringUtil.strsize(urlData.dlsize))
         if urlData.checktime and self.has_field('checktime'):
             self.fd.write(self.field("checktime")+self.spaces("checktime")+
-	                  _("%.3f seconds\n") % urlData.checktime)
+	                  i18n._("%.3f seconds\n") % urlData.checktime)
         if urlData.infoString and self.has_field('info'):
             self.fd.write(self.field("info")+self.spaces("info")+
 	                  StringUtil.indent(
@@ -135,31 +135,31 @@ __init__(self, **args)
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.has_field('outro'):
-            self.fd.write(_("\nThats it. "))
+            self.fd.write(i18n._("\nThats it. "))
             #if self.warnings==1:
-            #    self.fd.write(_("1 warning, "))
+            #    self.fd.write(i18n._("1 warning, "))
             #else:
-            #    self.fd.write(str(self.warnings)+_(" warnings, "))
+            #    self.fd.write(str(self.warnings)+i18n._(" warnings, "))
             if self.errors==1:
-                self.fd.write(_("1 error"))
+                self.fd.write(i18n._("1 error"))
             else:
-                self.fd.write(str(self.errors)+_(" errors"))
+                self.fd.write(str(self.errors)+i18n._(" errors"))
             if linknumber >= 0:
                 if linknumber == 1:
-                    self.fd.write(_(" in 1 link"))
+                    self.fd.write(i18n._(" in 1 link"))
                 else:
-                    self.fd.write(_(" in %d links") % linknumber)
-            self.fd.write(_(" found\n"))
+                    self.fd.write(i18n._(" in %d links") % linknumber)
+            self.fd.write(i18n._(" found\n"))
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            name = _("seconds")
-            self.fd.write(_("Stopped checking at %s") % strtime(self.stoptime))
+            name = i18n._("seconds")
+            self.fd.write(i18n._("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
-                name = _("minutes")
+                name = i18n._("minutes")
             if duration > 60:
                 duration = duration / 60
-                name = _("hours")
+                name = i18n._("hours")
             self.fd.write(" (%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None

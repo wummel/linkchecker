@@ -18,7 +18,7 @@
 class error (Exception):
     pass
 
-import re
+import re, i18n
 def getLinkPat (arg, strict=0):
     """get a link pattern matcher for intern/extern links"""
     debug(BRING_IT_ON, "Link pattern", `arg`)
@@ -41,25 +41,8 @@ extensions = {
 #    "text": re.compile(r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$'),
 }
 
-
-# i18n suppport
-import sys, os, _linkchecker_configdata
-def init_gettext ():
-    global _
-    try:
-        import gettext
-        domain = 'linkcheck'
-        localedir = os.path.join(_linkchecker_configdata.install_data,
-                    'share/locale')
-        _ = gettext.translation(domain, localedir).gettext
-    except (IOError, ImportError):
-        _ = lambda s: s
-init_gettext()
-
-import UrlData
 from Config import debug
 from debuglevels import *
-
 
 # main check function
 def checkUrls (config):
@@ -80,5 +63,5 @@ def checkUrls (config):
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-        config.warn(_("keyboard interrupt"))
+        config.warn(i18n._("keyboard interrupt"))
         raise

@@ -16,8 +16,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time, Cookie
-import _linkchecker_configdata
-from linkcheck import _, getLinkPat
+import _linkchecker_configdata, i18n
+from linkcheck import getLinkPat
 from os.path import expanduser, normpath, normcase, join, isfile
 from types import StringType
 from urllib import getproxies
@@ -435,10 +435,10 @@ class Configuration (UserDict.UserDict):
         self.readConfig(cfiles)
 
     def warn (self, msg):
-        self.message(_("Warning: %s")%msg)
+        self.message(i18n._("Warning: %s")%msg)
 
     def error (self, msg):
-        self.message(_("Error: %s")%msg)
+        self.message(i18n._("Error: %s")%msg)
 
     def message (self, msg):
         print >> sys.stderr, msg
@@ -471,7 +471,7 @@ class Configuration (UserDict.UserDict):
             if Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
-                self.warn(_("invalid log option '%s'") % log)
+                self.warn(i18n._("invalid log option '%s'") % log)
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
@@ -505,7 +505,7 @@ class Configuration (UserDict.UserDict):
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
-                self.error(_("illegal recursionlevel number %d") % num)
+                self.error(i18n._("illegal recursionlevel number %d") % num)
             self["recursionlevel"] = num
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 

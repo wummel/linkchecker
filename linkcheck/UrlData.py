@@ -15,14 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, urlparse, urllib, time, traceback, socket, select
+import sys, re, urlparse, urllib, time, traceback, socket, select, i18n
 from urllib import splituser, splithost, splitport
 #try:
 #    from linkcheck import DNS
 #except ImportError:
 #    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
 #    raise SystemExit
-from linkcheck import DNS, _, error
+from linkcheck import DNS, error
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, linkname, test_support, timeoutsocket
@@ -32,7 +32,7 @@ debug = Config.debug
 
 # helper function for internal errors
 def internal_error ():
-    print >> sys.stderr, _("""\n********** Oops, I did it again. *************
+    print >> sys.stderr, i18n._("""\n********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
@@ -49,13 +49,13 @@ I can work with ;).
     print >> sys.stderr, type, value
     traceback.print_exc()
     print_app_info()
-    print >> sys.stderr, _("\n******** LinkChecker internal error, bailing out ********")
+    print >> sys.stderr, i18n._("\n******** LinkChecker internal error, bailing out ********")
     sys.exit(1)
 
 
 def print_app_info ():
     import os
-    print >> sys.stderr, _("System info:")
+    print >> sys.stderr, i18n._("System info:")
     print >> sys.stderr, Config.App
     print >> sys.stderr, "Python %s on %s" % (sys.version, sys.platform)
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
@@ -113,8 +113,8 @@ class UrlData:
         self.config = config
         self.parentName = parentName
         self.baseRef = baseRef
-        self.errorString = _("Error")
-        self.validString = _("Valid")
+        self.errorString = i18n._("Error")
+        self.validString = i18n._("Valid")
         self.warningString = None
         self.infoString = None
         self.valid = 1
@@ -136,11 +136,11 @@ class UrlData:
 
     def setError (self, s):
         self.valid=0
-        self.errorString = _("Error")+": "+s
+        self.errorString = i18n._("Error")+": "+s
 
     def setValid (self, s):
         self.valid=1
-        self.validString = _("Valid")+": "+s
+        self.validString = i18n._("Valid")+": "+s
 
     def isHtml (self):
         return 0
@@ -183,7 +183,7 @@ class UrlData:
         self.userinfo, host = splituser(self.urlparts[1])
         x, port = splitport(host)
         if port is not None and not is_valid_port(port):
-            raise error(_("URL has invalid port number %s")\
+            raise error(i18n._("URL has invalid port number %s")\
                                   % str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()
@@ -224,7 +224,7 @@ class UrlData:
         # check syntax
         debug(BRING_IT_ON, "checking syntax")
         if not self.urlName or self.urlName=="":
-            self.setError(_("URL is null or empty"))
+            self.setError(i18n._("URL is null or empty"))
             self.logMe()
             return
         try:
@@ -249,7 +249,7 @@ class UrlData:
         debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern[0] and (self.config["strict"] or self.extern[1]):
             self.setWarning(
-                  _("outside of domain filter, checked only syntax"))
+                  i18n._("outside of domain filter, checked only syntax"))
             self.logMe()
             return
 
@@ -337,7 +337,7 @@ class UrlData:
         for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == anchor:
                 return
-        self.setWarning(_("anchor #%s not found") % anchor)
+        self.setWarning(i18n._("anchor #%s not found") % anchor)
 
 
     def _getExtern (self):
@@ -391,7 +391,7 @@ class UrlData:
            against the content of this url"""
         match = warningregex.search(self.getContent())
         if match:
-            self.setWarning(_("Found %s in link contents") % \
+            self.setWarning(i18n._("Found %s in link contents") % \
                             `match.group()`)
 
 
@@ -400,7 +400,7 @@ class UrlData:
            against the content size of this url"""
         maxbytes = self.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
-            self.setWarning(_("Content size %s is larger than %s")%\
+            self.setWarning(i18n._("Content size %s is larger than %s")%\
                          (StringUtil.strsize(self.dlsize),
                           StringUtil.strsize(maxbytes)))
 
@@ -425,7 +425,7 @@ class UrlData:
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
             if len(h.urls)>1:
-                self.setWarning(_(
+                self.setWarning(i18n._(
                 "more than one <base> tag found, using only the first one"))
         h = LinkParser(self.getContent())
         for url,line,column,name,codebase in h.urls:

@@ -1,5 +1,5 @@
-"""Handle https links"""
-# Copyright (C) 2000,2001  Bastian Kleineidam
+"""internationalization support"""
+# Copyright (C) 2000-2002  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,24 +15,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import Config, httplib, i18n
-from UrlData import UrlData
-from HttpUrlData import HttpUrlData
-_supportHttps = hasattr(httplib, "HTTPSConnection")
+# i18n suppport
+import os
+from _linkchecker_configdata import install_data
 
+def init_gettext ():
+    global _
+    try:
+        import gettext
+        domain = 'linkcheck'
+        localedir = os.path.join(install_data, 'share/locale')
+        _ = gettext.translation(domain, localedir).gettext
+    except (IOError, ImportError):
+        # default gettext function
+        _ = lambda s: s
 
-class HttpsUrlData (HttpUrlData):
-    """Url link with https scheme"""
-
-    def _getHTTPObject (self, host):
-        h = httplib.HTTPSConnection(host)
-        h.set_debuglevel(Config.DebugLevel)
-        h.connect()
-        return h
-
-    def _check (self):
-        if _supportHttps:
-            HttpUrlData._check(self)
-        else:
-            self.setWarning(i18n._("%s url ignored")%self.scheme.capitalize())
-            self.logMe()
+init_gettext()

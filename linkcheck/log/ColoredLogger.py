@@ -16,7 +16,7 @@
 
 import sys
 from StandardLogger import StandardLogger
-from linkcheck import StringUtil, _
+from linkcheck import StringUtil, i18n
 
 AnsiType = {
     'bold': "1",
@@ -107,11 +107,11 @@ class ColoredLogger (StandardLogger):
             self.fd.write(self.field("url")+self.spaces("url")+self.colorurl+
 	              urlData.urlName+self.colorreset)
             if urlData.line:
-                self.fd.write(_(", line %d")%urlData.line)
+                self.fd.write(i18n._(", line %d")%urlData.line)
             if urlData.column:
-                self.fd.write(_(", col %d")%urlData.column)
+                self.fd.write(i18n._(", col %d")%urlData.column)
             if urlData.cached:
-                self.fd.write(_(" (cached)\n"))
+                self.fd.write(i18n._(" (cached)\n"))
             else:
                 self.fd.write("\n")
 
@@ -136,7 +136,7 @@ class ColoredLogger (StandardLogger):
                 self.fd.write("|  ")
             self.fd.write(self.field("dltime")+self.spaces("dltime")+
                           self.colordltime+
-                          (_("%.3f seconds") % urlData.dltime)+
+                          (i18n._("%.3f seconds") % urlData.dltime)+
                           self.colorreset+"\n")
         if urlData.dlsize>=0 and self.has_field("dlsize"):
             if self.prefix:
@@ -149,7 +149,7 @@ class ColoredLogger (StandardLogger):
                 self.fd.write("|  ")
             self.fd.write(self.field("checktime")+self.spaces("checktime")+
                 self.colordltime+
-	        (_("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
+	        (i18n._("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
             
         if urlData.infoString and self.has_field("info"):
             if self.prefix:

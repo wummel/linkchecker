@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, os, re, time, urlparse, Config
-from linkcheck import _, getLinkPat, checkUrls, init_gettext
+import sys, os, re, time, urlparse, Config, i18n
+from linkcheck import getLinkPat, checkUrls
 from linkcheck.log import strtime
 from UrlData import GetUrlDataFrom
 from types import StringType
@@ -77,30 +77,30 @@ def checkform (form):
         lang = form['language'].value
         if lang in _supported_langs:
             os.environ['LC_MESSAGES'] = lang
-            init_gettext()
+            i18n.init_gettext()
         else:
-            raise FormError(_("unsupported language"))
+            raise FormError(i18n._("unsupported language"))
     # check url syntax
     if form.has_key("url"):
         url = form["url"].value
         if not url or url=="http://":
-            raise FormError(_("empty url was given"))
+            raise FormError(i18n._("empty url was given"))
         if not _is_valid_url(url):
-            raise FormError(_("invalid url was given"))
+            raise FormError(i18n._("invalid url was given"))
     else:
-        raise FormError(_("no url was given"))
+        raise FormError(i18n._("no url was given"))
     # check recursion level
     if form.has_key("level"):
         level = form["level"].value
         if not _is_level(level):
-            raise FormError(_("invalid recursion level syntax"))
+            raise FormError(i18n._("invalid recursion level syntax"))
         if int(level) > 3:
-            raise FormError(_("recursion level greater than 3"))
+            raise FormError(i18n._("recursion level greater than 3"))
     # check options
     for option in ("strict", "anchors", "errors", "intern"):
         if form.has_key(option):
             if not form[option].value=="on":
-                raise FormError(_("invalid %s option syntax") % option)
+                raise FormError(i18n._("invalid %s option syntax") % option)
 
 
 def logit (form, env):
@@ -122,7 +122,7 @@ def logit (form, env):
 
 def printError (out, why):
     """print standard error page"""
-    out.write(_("""<html><head>
+    out.write(i18n._("""<html><head>
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
 <blockquote>

@@ -15,8 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re
-from linkcheck import _
+import re, i18n
 from UrlData import UrlData
 
 ignored_schemes = r"""^(
@@ -59,5 +58,5 @@ class IgnoredUrlData (UrlData):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 
     def _check (self):
-        self.setWarning(_("%s url ignored")%self.scheme.capitalize())
+        self.setWarning(i18n._("%s url ignored")%self.scheme.capitalize())
         self.logMe()

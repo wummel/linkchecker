@@ -27,12 +27,12 @@ import linkcheck.timeoutsocket
 linkcheck.timeoutsocket.setDefaultSocketTimeout(30)
 # import several helper debugging things
 from linkcheck.debuglevels import *
-from linkcheck import StringUtil, Config
-debug = linkcheck.debug
+from linkcheck.log import LoggerKeys
+from linkcheck import StringUtil, Config, i18n, debug
 _profile = "linkchecker.prof"
 
 # main usage text
-Usage = linkcheck._("""USAGE\tlinkchecker [options] file-or-url...
+Usage = i18n._("""USAGE\tlinkchecker [options] file-or-url...
 
 OPTIONS
 For single-letter option arguments the space is not a necessity. So
@@ -126,9 +126,9 @@ For single-letter option arguments the space is not a necessity. So
         Print a warning if content size is available and exceeds the given
         number of bytes.
         This option implies -w.
-""") % (linkcheck.log.LoggerKeys, _profile)
+""") % (LoggerKeys, _profile)
 
-Notes = linkcheck._("""NOTES
+Notes = i18n._("""NOTES
 o A ! before any regex negates it. So '!^mailto:' matches everything but
   a mailto link.
 o LinkCheckers commandline parser treats "ftp." links like "ftp://ftp."
@@ -148,7 +148,7 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
   same as the host of the user browsing your pages!
 """)
 
-Examples = linkcheck._("""EXAMPLES
+Examples = i18n._("""EXAMPLES
 o Check the treasure.calvinsplayground.de domain, but don't recurse into
   links outside of this domain:
       linkchecker -v -r5 -ohtml -s -itreasure.calvinsplayground.de \\
@@ -182,15 +182,15 @@ def printHelp ():
 
 def printUsage (msg):
     """print a program msg text to stderr"""
-    sys.stderr.write(linkcheck._("Error: %s\n") % msg)
-    sys.stderr.write(linkcheck._("Execute 'linkchecker -h' for help\n"))
+    sys.stderr.write(i18n._("Error: %s\n") % msg)
+    sys.stderr.write(i18n._("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
 
 
 def viewprof ():
     if not os.path.exists(_profile):
-        sys.stderr.write(linkcheck._("Could not find profiling file %s.")%_profile)
-        sys.stderr.write(linkcheck._("Please run linkchecker with --profile to generate it."))
+        sys.stderr.write(i18n._("Could not find profiling file %s.")%_profile)
+        sys.stderr.write(i18n._("Please run linkchecker with --profile to generate it."))
         sys.exit(1)
     import pstats
     stats = pstats.Stats(_profile)
@@ -268,7 +268,7 @@ for opt,arg in options:
         if linkcheck.log.Loggers.has_key(arg):
             config['log'] = config.newLogger(arg)
         else:
-            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +\
+            printUsage((i18n._("Illegal argument '%s' for option ") % arg) +\
 	               "'-o, --output'")
 
     elif opt=="-F" or opt=="--file-output":
@@ -280,7 +280,7 @@ for opt,arg in options:
         if linkcheck.log.Loggers.has_key(type) and type != "blacklist":
             config['fileoutput'].append(config.newLogger(type, ns))
         else:
-            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +\
+            printUsage((i18n._("Illegal argument '%s' for option ") % arg) +\
 	               "'-F, --file-output'")
 
     elif opt=="-I" or opt=="--interactive":
@@ -303,7 +303,7 @@ for opt,arg in options:
         if int(arg) >= 0:
             config["wait"] = int(arg)
         else:
-            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +
+            printUsage((i18n._("Illegal argument '%s' for option ") % arg) +
 	               "'-P, --pause'")
 
     elif opt=="--profile":
@@ -316,7 +316,7 @@ for opt,arg in options:
         if int(arg) >= 0:
             config["recursionlevel"] = int(arg)
         else:
-            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +
+            printUsage((i18n._("Illegal argument '%s' for option ") % arg) +
 	               "'-r, --recursion-level'")
     # robots.txt is now default, so ignore this option
     elif opt=="-R" or opt=="--robots-txt": pass
@@ -380,10 +380,10 @@ debug(HURT_ME_PLENTY, "configuration:", pprint.pformat(config.data))
 # interactive input
 if len(args)==0:
     if config['interactive']:
-        urls = raw_input(linkcheck._("enter one or more urls, separated by white-space\n--> "))
+        urls = raw_input(i18n._("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
     else:
-        config.warn(linkcheck._("no files or urls given"))
+        config.warn(i18n._("no files or urls given"))
 
 # syntactic sugar
 from linkcheck import UrlData
@@ -406,4 +406,4 @@ else:
 
 # interactive input end
 if config['interactive']:
-    raw_input(linkcheck._("Hit RETURN to finish"))
+    raw_input(i18n._("Hit RETURN to finish"))

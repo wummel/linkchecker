@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, time, sys, nntplib, urlparse, random
-from linkcheck import _, error, Config
+import re, time, sys, nntplib, urlparse, random, i18n
+from linkcheck import error, Config
 from UrlData import ExcList,UrlData
 from debuglevels import *
 random.seed()
@@ -45,7 +45,7 @@ class NntpUrlData (UrlData):
     def checkConnection (self):
         nntpserver = self.urlparts[1] or self.config["nntpserver"]
         if not nntpserver:
-            self.setWarning(_("No NNTP server specified, skipping this URL"))
+            self.setWarning(i18n._("No NNTP server specified, skipping this URL"))
             return
         nntp = self._connectNntp(nntpserver)
         group = self.urlparts[2]
@@ -54,18 +54,18 @@ class NntpUrlData (UrlData):
         if '@' in group:
             # request article
             resp,number,id = nntp.stat("<"+group+">")
-            self.setInfo(_('Articel number %s found') % number)
+            self.setInfo(i18n._('Articel number %s found') % number)
         else:
             # split off trailing articel span
             group = group.split('/',1)[0]
             if group:
                 # request group info
                 resp,count,first,last,name = nntp.group(group)
-                self.setInfo(_("Group %s has %s articles, range %s to %s") %\
+                self.setInfo(i18n._("Group %s has %s articles, range %s to %s") %\
                              (name, count, first, last))
             else:
                 # group name is the empty string
-                self.setWarning(_("No newsgroup specified in NNTP URL"))
+                self.setWarning(i18n._("No newsgroup specified in NNTP URL"))
 
     def _connectNntp (self, nntpserver):
         """This is done only once per checking task. Also, the newly
@@ -84,9 +84,9 @@ class NntpUrlData (UrlData):
                 else:
                     raise
         if nntp is None:
-            raise error(_("NTTP server too busy; tried more than %d times")%tries)
+            raise error(i18n._("NTTP server too busy; tried more than %d times")%tries)
         if value is not None:
-            self.setWarning(_("NNTP busy: %s")%str(value))
+            self.setWarning(i18n._("NNTP busy: %s")%str(value))
         return nntp
 
     def getCacheKey (self):

@@ -16,7 +16,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import socket, urllib
-from linkcheck import _
 from UrlData import UrlData
 
 class HostCheckingUrlData (UrlData):
@@ -39,4 +38,4 @@ class HostCheckingUrlData (UrlData):
 
     def checkConnection (self):
         ip = socket.gethostbyname(self.host)
-        self.setValid(self.host+"("+ip+") "+_("found"))
+        self.setValid(self.host+"("+ip+") "+i18n._("found"))

@@ -17,7 +17,7 @@
 from StandardLogger import StandardLogger
 import time
 from linkcheck.log import strtime
-from linkcheck import StringUtil, _, Config
+from linkcheck import StringUtil, i18n, Config
 
 class SQLLogger (StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
@@ -31,10 +31,10 @@ class SQLLogger (StandardLogger):
         if self.fd is None: return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("-- "+(_("created by %s at %s\n") % (Config.AppName,
+            self.fd.write("-- "+(i18n._("created by %s at %s\n") % (Config.AppName,
                        strtime(self.starttime))))
-            self.fd.write("-- "+(_("Get the newest version at %s\n") % Config.Url))
-            self.fd.write("-- "+(_("Write comments and bugs to %s\n\n") % \
+            self.fd.write("-- "+(i18n._("Get the newest version at %s\n") % Config.Url))
+            self.fd.write("-- "+(i18n._("Write comments and bugs to %s\n\n") % \
 	                Config.Email))
             self.fd.flush()
 
@@ -71,15 +71,15 @@ class SQLLogger (StandardLogger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            name = _("seconds")
-            self.fd.write("-- "+_("Stopped checking at %s") % \
+            name = i18n._("seconds")
+            self.fd.write("-- "+i18n._("Stopped checking at %s") % \
 	              strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
-                name = _("minutes")
+                name = i18n._("minutes")
             if duration > 60:
                 duration = duration / 60
-                name = _("hours")
+                name = i18n._("hours")
             self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None

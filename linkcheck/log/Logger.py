@@ -14,22 +14,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from linkcheck import _
+from linkcheck import i18n as i18nreal
+class i18ndummy:
+    """dummy class to defer translation, but enable pygettext"""
+    _ = lambda self, s: s
+i18n = i18ndummy()
 
 class Logger:
     Fields = {
-        "realurl":   lambda: _("Real URL"),
-        "result":    lambda: _("Result"),
-        "base":      lambda: _("Base"),
-        "name":      lambda: _("Name"),
-        "parenturl": lambda: _("Parent URL"),
-        "extern":    lambda: _("Extern"),
-        "info":      lambda: _("Info"),
-        "warning":   lambda: _("Warning"),
-        "dltime":    lambda: _("D/L Time"),
-        "dlsize":    lambda: _("D/L Size"),
-        "checktime": lambda: _("Check Time"),
-        "url":       lambda: _("URL"),
+        "realurl":   i18n._("Real URL"),
+        "result":    i18n._("Result"),
+        "base":      i18n._("Base"),
+        "name":      i18n._("Name"),
+        "parenturl": i18n._("Parent URL"),
+        "extern":    i18n._("Extern"),
+        "info":      i18n._("Info"),
+        "warning":   i18n._("Warning"),
+        "dltime":    i18n._("D/L Time"),
+        "dlsize":    i18n._("D/L Size"),
+        "checktime": i18n._("Check Time"),
+        "url":       i18n._("URL"),
     }
 
     def __init__ (self, **args):
@@ -45,7 +49,8 @@ class Logger:
         return name in self.logfields
 
     def field (self, name):
-        return self.Fields[name]()
+        """return translated field name"""
+        return i18nreal._(self.Fields[name])
 
     def spaces (self, name):
         return self.logspaces[name]

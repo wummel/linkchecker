@@ -17,7 +17,7 @@
 import time
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
-from linkcheck import Config, _
+from linkcheck import Config, i18n
 
 class CSVLogger (StandardLogger):
     """ CSV output. CSV consists of one line per entry. Entries are
@@ -32,12 +32,12 @@ class CSVLogger (StandardLogger):
         if self.fd is None: return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
+            self.fd.write("# "+(i18n._("created by %s at %s\n") % (Config.AppName,
                       strtime(self.starttime))))
-            self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
-            self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
+            self.fd.write("# "+(i18n._("Get the newest version at %s\n") % Config.Url))
+            self.fd.write("# "+(i18n._("Write comments and bugs to %s\n\n") % \
 	                    Config.Email))
-            self.fd.write(_("# Format of the entries:\n")+\
+            self.fd.write(i18n._("# Format of the entries:\n")+\
                           "# urlname;\n"
                           "# recursionlevel;\n"
                           "# parentname;\n"
@@ -85,14 +85,14 @@ class CSVLogger (StandardLogger):
         self.stoptime = time.time()
         if self.has_field("outro"):
             duration = self.stoptime - self.starttime
-            name = _("seconds")
-            self.fd.write("# "+_("Stopped checking at %s") % strtime(self.stoptime))
+            name = i18n._("seconds")
+            self.fd.write("# "+i18n._("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
-                name = _("minutes")
+                name = i18n._("minutes")
             if duration > 60:
                 duration = duration / 60
-                name = _("hours")
+                name = i18n._("hours")
             self.fd.write(" (%.3f %s)\n" % (duration, name))
             self.fd.flush()
         self.fd = None

@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import time
-from linkcheck import Config, _
+from linkcheck import Config, i18n
 from linkcheck.StringUtil import xmlify
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
@@ -35,10 +35,10 @@ class XMLLogger (StandardLogger):
         self.fd.write('<?xml version="1.0"?>\n')
         if self.has_field("intro"):
             self.fd.write("<!--\n")
-            self.fd.write("  "+_("created by %s at %s\n") % \
+            self.fd.write("  "+i18n._("created by %s at %s\n") % \
 	              (Config.AppName, strtime(self.starttime)))
-            self.fd.write("  "+_("Get the newest version at %s\n") % Config.Url)
-            self.fd.write("  "+_("Write comments and bugs to %s\n\n") % \
+            self.fd.write("  "+i18n._("Get the newest version at %s\n") % Config.Url)
+            self.fd.write("  "+i18n._("Write comments and bugs to %s\n\n") % \
 	              Config.Email)
             self.fd.write("-->\n\n")
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
@@ -98,15 +98,15 @@ class XMLLogger (StandardLogger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            name = _("seconds")
+            name = i18n._("seconds")
             self.fd.write("<!-- ")
-            self.fd.write(_("Stopped checking at %s") % strtime(self.stoptime))
+            self.fd.write(i18n._("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
-                name = _("minutes")
+                name = i18n._("minutes")
             if duration > 60:
                 duration = duration / 60
-                name = _("hours")
+                name = i18n._("hours")
             self.fd.write(" (%.3f %s)\n" % (duration, name))
             self.fd.write("-->")
         self.fd.flush()
