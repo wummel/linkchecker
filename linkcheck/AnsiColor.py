@@ -57,13 +57,13 @@ def esc_ansicolor (color):
     if ";" in color:
         ctype, color = color.split(";", 1)
         if not AnsiType.has_key(ctype):
-            print >>sys.stderr, "invalid ANSI color type", `ctype`
+            print >>sys.stderr, "invalid ANSI color type", repr(ctype)
             print >>sys.stderr, "valid values are", AnsiType.keys()
             ctype = ''
         else:
             ctype = AnsiType[ctype]+";"
     if not AnsiColor.has_key(color):
-        print >>sys.stderr, "invalid ANSI color name", `color`
+        print >>sys.stderr, "invalid ANSI color name", repr(color)
         print >>sys.stderr, "valid values are", AnsiColor.keys()
         cnum = '0'
     else:

@@ -88,4 +88,4 @@ class Logger (object):
 
 
     def __repr__ (self):
-        return `self.__class__.__name__`
+        return repr(self.__class__.__name__)

@@ -176,8 +176,7 @@ class RobotFileParser (object):
 
     def can_fetch (self, useragent, url):
         """using the parsed robots.txt decide if useragent can fetch url"""
-        debug(BRING_IT_ON, "Checking robot.txt allowance for:\n  user agent: %s\n  url: %s" %
-               (`useragent`, `url`))
+        debug(BRING_IT_ON, "Checking robot.txt allowance for:\n  user agent: %r\n  url: %r"%(useragent, url))
         if self.disallow_all:
             return False
         if self.allow_all:
@@ -229,7 +228,7 @@ class Entry:
 
 
     def __str__ (self):
-        lines = ["User-agent: %s"%`agent` for agent in self.useragents]
+        lines = ["User-agent: %r"%agent for agent in self.useragents]
         lines.extend([str(line) for line in self.rulelines])
         return "\n".join(lines)
 
@@ -294,7 +293,7 @@ def decode (page):
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO(content))
         except zlib.error, msg:
-            warn(i18n._("%s at %s, assuming non-compressed content") % (`str(msg)`, page.geturl()))
+            warn(i18n._("%r at %s, assuming non-compressed content") % (str(msg), page.geturl()))
             fp = StringIO(content)
         # remove content-encoding header
         headers = {}

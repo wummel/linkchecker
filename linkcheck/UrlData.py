@@ -63,7 +63,7 @@ def print_app_info ():
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
         value = os.getenv(key)
         if value is not None:
-            print >>sys.stderr, key, "=", `value`
+            print >>sys.stderr, key, "=", repr(value)
 
 
 def get_absolute_url (urlName, baseRef, parentName):
@@ -504,8 +504,7 @@ class UrlData (object):
             return
         match = warningregex.search(self.getContent())
         if match:
-            self.setWarning(i18n._("Found %s in link contents") % \
-                            `match.group()`)
+            self.setWarning(i18n._("Found %r in link contents")%match.group())
 
 
     def checkSize (self):

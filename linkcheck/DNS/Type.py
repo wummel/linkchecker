@@ -49,10 +49,13 @@ typemap = {}
 for _name in _names:
     if _name[0] != '_': typemap[eval(_name)] = _name
 
-def typestr(type):
-    return typemap.get(type, `type`)
+def typestr (_type):
+    return typemap.get(_type, repr(_type))
 #
 # $Log$
+# Revision 1.5  2003/12/20 11:28:15  calvin
+# replace backticks with repr
+#
 # Revision 1.4  2003/07/04 14:23:22  calvin
 # add coding line
 #

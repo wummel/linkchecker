@@ -543,17 +543,17 @@ class DnsResult:
         print
         print ';; ANSWERS:'
         for a in self.answers:
-            print '%-20s    %-6s  %-6s  %s'%(a['name'],`a['ttl']`,a['typename'],
+            print '%-20s    %-6r  %-6s  %s'%(a['name'],a['ttl'],a['typename'],
                 a['data'])
         print
         print ';; AUTHORITY RECORDS:'
         for a in self.authority:
-            print '%-20s    %-6s  %-6s  %s'%(a['name'],`a['ttl']`,a['typename'],
+            print '%-20s    %-6r  %-6s  %s'%(a['name'],a['ttl'],a['typename'],
                 a['data'])
         print
         print ';; ADDITIONAL RECORDS:'
         for a in self.additional:
-            print '%-20s    %-6s  %-6s  %s'%(a['name'],`a['ttl']`,a['typename'],
+            print '%-20s    %-6r  %-6s  %s'%(a['name'],a['ttl'],a['typename'],
                 a['data'])
         print
         if self.args.has_key('elapsed'):
@@ -631,6 +631,9 @@ if __name__ == "__main__":
     testpacker()
 #
 # $Log$
+# Revision 1.6  2003/12/20 11:28:15  calvin
+# replace backticks with repr
+#
 # Revision 1.5  2003/07/04 14:23:22  calvin
 # add coding line
 #

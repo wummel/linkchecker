@@ -31,10 +31,13 @@ for _name in _names:
     if _name[0] != '_': classmap[eval(_name)] = _name
 
 def classstr(klass):
-    return classmap.get(klass, `klass`)
+    return classmap.get(klass, repr(klass))
 
 #
 # $Log$
+# Revision 1.5  2003/12/20 11:28:15  calvin
+# replace backticks with repr
+#
 # Revision 1.4  2003/07/04 14:23:22  calvin
 # add coding line
 #

@@ -103,7 +103,7 @@ class HttpUrlData (ProxyUrlData):
         # set the proxy, so a 407 status after this is an error
         self.setProxy(self.config["proxy"].get(self.scheme))
         if self.proxy:
-            self.setInfo(i18n._("Using Proxy %s")%`self.proxy`)
+            self.setInfo(i18n._("Using Proxy %r")%self.proxy)
         self.headers = None
         self.auth = None
         self.cookies = []
@@ -126,7 +126,7 @@ class HttpUrlData (ProxyUrlData):
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 self.setProxy(self.headers.getheader("Location"))
-                self.setInfo(i18n._("Enforced Proxy %s")%`self.proxy`)
+                self.setInfo(i18n._("Enforced Proxy %r")%self.proxy)
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
@@ -169,7 +169,7 @@ class HttpUrlData (ProxyUrlData):
                 # scheme, eg https or news
                 if self.urlparts[0]!="http":
                     self.setWarning(i18n._("HTTP redirection to non-http url encountered; "
-                                    "the original url was %s.") % `self.url`)
+                                    "the original url was %r.")%self.url)
                     # make new UrlData object
                     newobj = GetUrlDataFrom(redirected, self.recursionLevel, self.config,
                                             parentName=self.parentName, baseRef=self.baseRef,
@@ -215,11 +215,11 @@ class HttpUrlData (ProxyUrlData):
             elif response.status>=400 and self.headers:
                 server = self.headers.get('Server', '')
                 if _isBrokenHeadServer(server):
-                    self.setWarning(i18n._("Server %s has no HEAD support, falling back to GET") % `server`)
+                    self.setWarning(i18n._("Server %r has no HEAD support, falling back to GET")%server)
                     response = self._getHttpResponse("GET")
                     self.headers = response.msg
                 elif _isBrokenAnchorServer(server):
-                    self.setWarning(i18n._("Server %s has no anchor support, removing anchor from request") % `server`)
+                    self.setWarning(i18n._("Server %r has no anchor support, removing anchor from request")%server)
                     self.urlparts[4] = ''
                     response = self._getHttpResponse()
                     self.headers = response.msg
@@ -248,7 +248,7 @@ class HttpUrlData (ProxyUrlData):
     def checkResponse (self, response):
         """check final result"""
         if response.status >= 400:
-            self.setError(`response.status`+" "+response.reason)
+            self.setError("%r %s"%(response.status, response.reason))
         else:
             if response.status == 204:
                 # no content
@@ -261,7 +261,7 @@ class HttpUrlData (ProxyUrlData):
                 for h in out:
                     self.setInfo(h)
             if response.status >= 200:
-                self.setValid(`response.status`+" "+response.reason)
+                self.setValid("%r %s"%(response.status,response.reason))
             else:
                 self.setValid("OK")
         modified = self.headers.get('Last-Modified', '')
@@ -365,8 +365,7 @@ class HttpUrlData (ProxyUrlData):
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
            encoding!='identity':
-            self.setWarning(i18n._('Unsupported content encoding %s.')%\
-                            `encoding`)
+            self.setWarning(i18n._('Unsupported content encoding %r.')%encoding)
             return False
         return True
 
@@ -379,8 +378,7 @@ class HttpUrlData (ProxyUrlData):
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
            encoding!='identity':
-            self.setWarning(i18n._('Unsupported content encoding %s.')%\
-                            `encoding`)
+            self.setWarning(i18n._('Unsupported content encoding %r.')%encoding)
             return False
         return True
 

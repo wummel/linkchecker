@@ -22,7 +22,7 @@ class LinkCheckerError (Exception):
 import re, i18n
 def getLinkPat (arg, strict=False):
     """get a link pattern matcher for intern/extern links"""
-    debug(BRING_IT_ON, "Link pattern", `arg`)
+    debug(BRING_IT_ON, "Link pattern %r", arg)
     if arg[0:1] == '!':
         pattern = arg[1:]
         negate = True

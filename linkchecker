@@ -328,13 +328,13 @@ for opt,arg in options:
         try:
             wait = int(arg)
         except ValueError:
-            printUsage(i18n._("Illegal argument %s for option %s") % \
-                       (`arg`, "'-P, --pause'"))
+            printUsage(i18n._("Illegal argument %r for option %s") % \
+                       (arg, "'-P, --pause'"))
         if wait >= 0:
             config["wait"] = wait
         else:
-            printUsage(i18n._("Illegal argument %s for option %s") % \
-                       (`arg`, "'-P, --pause'"))
+            printUsage(i18n._("Illegal argument %r for option %s") % \
+                       (arg, "'-P, --pause'"))
 
     elif opt=="--profile":
         do_profile = True
@@ -346,8 +346,8 @@ for opt,arg in options:
         try:
             depth = int(arg)
         except ValueError:
-            printUsage(i18n._("Illegal argument %s for option %s") % \
-                       (`arg`, "'-r, --recursion-level'"))
+            printUsage(i18n._("Illegal argument %r for option %s") % \
+                       (arg, "'-r, --recursion-level'"))
         if depth >= 0:
             config["recursionlevel"] = depth
         else:
@@ -362,8 +362,8 @@ for opt,arg in options:
         try:
             num = int(arg)
         except ValueError:
-            printUsage(i18n._("Illegal argument %s for option %s") % \
-                       (`arg`, "'-t, --threads'"))
+            printUsage(i18n._("Illegal argument %r for option %s") % \
+                       (arg, "'-t, --threads'"))
         if num > 1 and not get_debuglevel() > 0:
             config.enableThreading(num)
         else:
@@ -373,11 +373,11 @@ for opt,arg in options:
         try:
             timeout = int(arg)
         except ValueError:
-            printUsage(i18n._("Illegal argument %s for option %s") % \
-                       (`arg`, "'--timeout'"))
+            printUsage(i18n._("Illegal argument %r for option %s") % \
+                       (arg, "'--timeout'"))
         if timeout <= 0:
-            printUsage(i18n._("Illegal argument %s for option %s") % \
-                       (`arg`, "'--timeout'"))
+            printUsage(i18n._("Illegal argument %r for option %s") % \
+                       (arg, "'--timeout'"))
         socket.setdefaulttimeout(timeout)
 
     elif opt=="-u" or opt=="--user":

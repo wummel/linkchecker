@@ -26,10 +26,13 @@ for _name in _names:
     if _name[0] != '_': opcodemap[eval(_name)] = _name
 
 def opcodestr(opcode):
-    return opcodemap.get(opcode, `opcode`)
+    return opcodemap.get(opcode, repr(opcode))
 
 #
 # $Log$
+# Revision 1.5  2003/12/20 11:28:15  calvin
+# replace backticks with repr
+#
 # Revision 1.4  2003/07/04 14:23:22  calvin
 # add coding line
 #
