@@ -19,7 +19,7 @@
 import sys, os, re, time, urlparse, Config, i18n
 from linkcheck import getLinkPat, checkUrls
 from linkcheck.log import strtime
-from UrlData import GetUrlDataFrom
+from linkcheck.UrlData import GetUrlDataFrom
 from types import StringType
 
 _logfile = None

@@ -18,22 +18,15 @@
 
 import Config, httplib, i18n
 from UrlData import UrlData
-from HttpUrlData import HttpUrlData
+from HttpUrlData import HttpUrlData, supportHttps
 from linkcheck.debug import *
-_supportHttps = hasattr(httplib, "HTTPSConnection")
 
 
 class HttpsUrlData (HttpUrlData):
     """Url link with https scheme"""
 
-    def _getHTTPObject (self, host):
-        h = httplib.HTTPSConnection(host)
-        h.set_debuglevel(get_debuglevel())
-        h.connect()
-        return h
-
     def _check (self):
-        if _supportHttps:
+        if supportHttps:
             HttpUrlData._check(self)
         else:
             self.setWarning(i18n._("%s url ignored")%self.scheme.capitalize())

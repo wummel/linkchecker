@@ -25,7 +25,8 @@ from debug import *
 if get_debuglevel() > 0:
     robotparser.debug = 1
 from ProxyUrlData import ProxyUrlData
-from UrlData import ExcList
+from UrlData import ExcList, GetUrlDataFrom
+supportHttps = hasattr(httplib, "HTTPSConnection")
 
 ExcList.extend([httplib.error,])
 
@@ -137,8 +138,7 @@ class HttpUrlData (ProxyUrlData):
             while response.status in [301,302] and self.headers and tries < 5:
                 newurl = self.headers.getheader("Location",
                              self.headers.getheader("Uri", ""))
-                redirected = urlparse.urljoin(redirected, newurl)
-                redirected = unquote(redirected)
+                redirected = unquote(urlparse.urljoin(redirected, newurl))
                 # note: urlparts has to be a list
                 self.urlparts = list(urlparse.urlsplit(redirected))
                 # check internal redirect cache to avoid recursion
@@ -153,11 +153,11 @@ class HttpUrlData (ProxyUrlData):
                 if response.status == 301:
                     if not has301status:
                         self.setWarning(i18n._("HTTP 301 (moved permanent) encountered: you "
-                                               "should update this link"))
+                                               "should update this link."))
                         if not (self.url.endswith('/') or self.url.endswith('.html')):
                             self.setWarning(i18n._("A HTTP 301 redirection occured and the url has no "
                                                    "trailing / at the end. All urls which point to (home) "
-                                                   "directories should end with a / to avoid redirection"))
+                                                   "directories should end with a / to avoid redirection."))
                         has301status = 1
                     self.aliases.append(redirected)
                 # check cache again on possibly changed URL
@@ -166,6 +166,22 @@ class HttpUrlData (ProxyUrlData):
                     self.copyFrom(self.config.urlCache_get(key))
                     self.cached = 1
                     self.logMe()
+                    return
+                # check if we still have a http url, it could be another
+                # scheme, eg https or news
+                if self.urlparts[0]!="http":
+                    self.setWarning(i18n._("HTTP redirection to non-http url encountered; "
+                                    "the original url was %s.") % `self.url`)
+                    # make new UrlData object
+                    newobj = GetUrlDataFrom(redirected, self.recursionLevel, self.config,
+                                            parentName=self.parentName, baseRef=self.baseRef,
+                                            line=self.line, column=self.column, name=self.name)
+                    newobj.warningString = self.warningString
+                    newobj.infoString = self.infoString
+                    # append new object to queue
+                    self.config.appendUrl(newobj)
+                    # pretend to be finished and logged
+                    self.cached = 1
                     return
                 # new response data
                 response = self._getHttpResponse()
@@ -271,7 +287,7 @@ class HttpUrlData (ProxyUrlData):
         debug(HURT_ME_PLENTY, "host", host)
         if self.urlConnection:
             self.closeConnection()
-        self.urlConnection = self._getHTTPObject(host)
+        self.urlConnection = self.getHTTPObject(host)
         # quote parts before submit
         qurlparts = self.urlparts[:]
         qurlparts[2:5] = map(quote, self.urlparts[2:5])
@@ -304,8 +320,14 @@ class HttpUrlData (ProxyUrlData):
         return self.urlConnection.getresponse()
 
 
-    def _getHTTPObject (self, host):
-        h = httplib.HTTPConnection(host)
+    def getHTTPObject (self, host):
+        scheme = self.urlparts[0]
+        if scheme=="http":
+            h = httplib.HTTPConnection(host)
+        elif scheme=="https":
+            h = httplib.HTTPSConnection(host)
+        else:
+            raise IOError, "invalid url scheme %s" % scheme
         h.set_debuglevel(get_debuglevel())
         h.connect()
         return h
