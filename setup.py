@@ -50,7 +50,7 @@ def get_nt_desktop_path (default=""):
     return default
 
 
-class MyInstall (install):
+class MyInstall (install, object):
 
     def run (self):
         super(MyInstall, self).run()
@@ -101,7 +101,7 @@ class MyInstall (install):
                 print "  %s: %s" % (opt_name, val)
 
 
-class MyInstallData (install_data):
+class MyInstallData (install_data, object):
     """My own data installer to handle permissions and .man pages"""
 
     def run (self):
