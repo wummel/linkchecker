@@ -388,6 +388,10 @@ class HttpUrlData (ProxyUrlData):
         return True
 
 
+    def isHttp (self):
+        return True
+
+
     def isParseable (self):
         if not (self.valid and self.headers):
             return False

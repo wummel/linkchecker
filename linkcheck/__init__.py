@@ -88,7 +88,7 @@ def checkUrls (config):
 
 
 def printStatus (config, curtime, start_time):
-    tocheck = config.urls.qsize()
+    tocheck = len(config.urls)
     links = config['linknumber']
     active = config.threader.active_threads()
     duration = strduration(curtime - start_time)

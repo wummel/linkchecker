@@ -218,6 +218,10 @@ class UrlData (object):
         return False
 
 
+    def isHttp (self):
+        return False
+
+
     def setWarning (self, s):
         if self.warningString:
             self.warningString += "\n"+s
@@ -455,7 +459,7 @@ class UrlData (object):
 
 
     def contentAllowsRobots (self):
-        if not self.isHtml():
+        if not self.isHttp():
             return True
         h = MetaRobotsFinder(self.getContent())
         p = htmlsax.parser(h)
