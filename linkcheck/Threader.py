@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+import time
 try:
     import threading as _threading
 except ImportError:
@@ -34,12 +35,11 @@ class Threader (object):
         "Wait until we are allowed to start a new thread"
         while self.active_threads() >= self.threads_max:
             self._reduce_threads()
+            time.sleep(0.1)
 
 
     def _reduce_threads (self):
-        for t in self.threads:
-            if not t.isAlive():
-                self.threads.remove(t)
+        self.threads = [ t for t in self.threads if t.isAlive() ]
 
 
     def active_threads (self):

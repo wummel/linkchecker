@@ -16,8 +16,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+
 class LinkCheckerError (Exception):
     pass
+
 
 import time, re, i18n
 def getLinkPat (arg, strict=False):
@@ -47,6 +49,7 @@ import UrlData
 from debug import *
 from linkcheck.log import strduration
 
+
 # main check function
 def checkUrls (config):
     """ checkUrls gets a complete configuration object as parameter where all
@@ -61,9 +64,11 @@ def checkUrls (config):
     try:
         start_time = time.time()
         status_time = start_time
-        while not config.finished():
+        while True:
             if config.hasMoreUrls():
                 config.checkUrl(config.getUrl())
+            elif config.finished():
+                break
             else:
                 # active connections are downloading/parsing, so
                 # wait a little
