@@ -68,7 +68,7 @@ class MyInstall (install):
             # copy README file to desktop
             path = get_nt_desktop_path(default=self.install_data)
             path = os.path.join(path, "LinkChecker_Readme.txt")
-            data = open("README").read()
+            data = [ line.strip() for line in open("README").readlines() ]
             self.distribution.create_file(path, data)
 
     # sent a patch for this, but here it is for compatibility
