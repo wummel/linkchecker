@@ -73,11 +73,7 @@ class Configuration (dict):
         self["denyallow"] = False
         self["interactive"] = False
         # on ftp, password is set by Pythons ftplib
-        self["authentication"] = [
-            {'pattern': re.compile(r'^.+'),
-             'user': 'anonymous',
-             'password': '',
-            }]
+        self["authentication"] = []
         self["proxy"] = urllib.getproxies()
         self["recursionlevel"] = -1
         self["wait"] = 0

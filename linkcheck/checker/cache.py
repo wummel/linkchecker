@@ -192,7 +192,9 @@ class Cache (object):
             linkcheck.log.debug(linkcheck.LOG_CACHE,
                        "robots.txt url %r of %r", roboturl, url_data.url)
             if roboturl not in self.robots_txt:
-                rp = linkcheck.robotparser2.RobotFileParser()
+                user, password = url_data.get_user_password()
+                rp = linkcheck.robotparser2.RobotFileParser(
+                                                user=user, password=password)
                 rp.set_url(roboturl)
                 rp.read()
                 self.robots_txt[roboturl] = rp
