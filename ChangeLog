@@ -13,6 +13,17 @@
     Type: documentation
     Changed: linkchecker, doc/{en,de,fr}/linkchecker.1
 
+  * Always write the GML graph beginning, not just when "intro" field
+    is defined.
+    Type: bugfix
+    Changed: linkcheck/logger/gml.py
+
+  * Added DOT graph format output logger.
+    Type: feature
+    Added: linkcheck/logger/dot.py
+    Changed: linkcheck/logger/__init__.py, linkcheck/configuration.py,
+      linkchecker
+
 2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:

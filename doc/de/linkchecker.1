@@ -102,7 +102,7 @@ mit \fB-F\fP nützlich.
 .TP
 \fB-o\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP], \fB--output=\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP]
 Spezifiziere die Ausgabe als \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP.
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP.
 Standardausgabe ist \fBtext\fP. \fIEnkodierung\fP gibt die
 Ausgabekodierung an, die Standardkodierung ist \fBiso-8859-15\fP.
 Gültige Encodierungen sind unter
@@ -116,7 +116,7 @@ Der \fIDateiname\fP Teil wird beim Ausgabetyp \fBnone\fP ignoriert,
 ansonsten wird die Datei überschreiben falls sie existiert.
 Sie können diese Option mehr als einmal verwenden. Gültige
 Ausgabetypen sind \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP.
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP.
 Standard ist keine Dateiausgabe. \fIEnkodierung\fP gibt die
 Ausgabekodierung an, die Standardkodierung ist \fBiso-8859-15\fP.
 Gültige Encodierungen sind unter
@@ -238,6 +238,11 @@ Gebe Prüfresultat in CSV-Format aus mit einer URL pro Zeile.
 .TP
 \fBgml\fP
 Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als GML Graphen aus.
+Sie sollten die Option \fB--verbose\fP benutzen, um einen vollständigen
+Graphen zu erhalten.
+.TP
+\fBdot\fP
+Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als DOT Graphen aus.
 Sie sollten die Option \fB--verbose\fP benutzen, um einen vollständigen
 Graphen zu erhalten.
 .TP

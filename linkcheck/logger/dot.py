@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2005  Bastian Kleineidam
+# Copyright (C) 2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-A gml logger.
+A DOT graph format logger. The specification has been taken from
+http://www.graphviz.org/cvs/doc/info/lang.html.
 """
 
 import time
@@ -24,10 +25,9 @@ import os
 import linkcheck.configuration
 
 
-class GMLLogger (linkcheck.logger.Logger):
+class DOTLogger (linkcheck.logger.Logger):
     """
-    GML means Graph Modeling Language. Use a GML tool to see
-    the sitemap graph.
+    Generates .dot sitemap graphs. Use graphviz to see the sitemap graph.
     """
 
     def __init__ (self, **args):
@@ -41,9 +41,9 @@ class GMLLogger (linkcheck.logger.Logger):
 
     def start_output (self):
         """
-        Print start of checking info as gml comment.
+        Print start of checking info as DOT comment.
         """
-        super(GMLLogger, self).start_output()
+        super(DOTLogger, self).start_output()
         if self.fd is None:
             return
         self.starttime = time.time()
@@ -57,15 +57,14 @@ class GMLLogger (linkcheck.logger.Logger):
                          {'email': linkcheck.configuration.Email})
             self.check_date()
             self.writeln()
-        self.writeln(u"graph [")
-        self.writeln(u"  directed 1")
+        self.writeln(u"graph {")
         self.flush()
 
     def comment (self, s, **args):
         """
-        Print GML comment.
+        Print DOT comment.
         """
-        self.write(u"# ")
+        self.write(u"// ")
         self.writeln(s=s, **args)
 
     def new_url (self, url_data):
@@ -79,19 +78,18 @@ class GMLLogger (linkcheck.logger.Logger):
             node.id = self.nodeid
             self.nodes[node.url] = node
             self.nodeid += 1
-            self.writeln(u"  node [")
-            self.writeln(u"    id     %d" % node.id)
+            self.writeln(u"  %d [" % node.id)
             if self.has_field("realurl"):
-                self.writeln(u'    label  "%s"' % node.url)
+                self.writeln(u'    label="%s",' % dotquote(node.url))
             if node.dltime >= 0 and self.has_field("dltime"):
-                self.writeln(u"    dltime %d" % node.dltime)
+                self.writeln(u"    dltime=%d," % node.dltime)
             if node.dlsize >= 0 and self.has_field("dlsize"):
-                self.writeln(u"    dlsize %d" % node.dlsize)
+                self.writeln(u"    dlsize=%d," % node.dlsize)
             if node.checktime and self.has_field("checktime"):
-                self.writeln(u"    checktime %d" % node.checktime)
+                self.writeln(u"    checktime=%d," % node.checktime)
             if self.has_field("extern"):
-                self.writeln(u"    extern %d" % (node.extern and 1 or 0))
-            self.writeln(u"  ]")
+                self.writeln(u"    extern=%d," % (node.extern and 1 or 0))
+            self.writeln(u"  ];")
         self.write_edges()
 
     def write_edges (self):
@@ -101,24 +99,22 @@ class GMLLogger (linkcheck.logger.Logger):
         """
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
-                self.writeln(u"  edge [")
-                self.writeln(u'    label  "%s"' % node.base_url)
-                if self.has_field("parenturl"):
-                    self.writeln(u"    source %d" % \
-                                 self.nodes[node.parent_url].id)
-                self.writeln(u"    target %d" % node.id)
+                source = self.nodes[node.parent_url].id
+                target = node.id
+                self.writeln(u"  %d -> %d [" % (source, target))
+                self.writeln(u'    label="%s",' % dotquote(node.base_url))
                 if self.has_field("result"):
-                    self.writeln(u"    valid  %d" % (node.valid and 1 or 0))
-                self.writeln(u"  ]")
+                    self.writeln(u"    valid=%d," % (node.valid and 1 or 0))
+                self.writeln(u"  ];")
         self.flush()
 
     def end_output (self, linknumber=-1):
         """
-        Print end of checking info as gml comment.
+        Print end of checking info as DOT comment.
         """
         if self.fd is None:
             return
-        self.writeln(u"]")
+        self.writeln(u"}")
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
@@ -129,3 +125,7 @@ class GMLLogger (linkcheck.logger.Logger):
         if self.close_fd:
             self.fd.close()
         self.fd = None
+
+
+def dotquote (s):
+    return s.replace('"', '\\"')

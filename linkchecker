@@ -118,6 +118,8 @@ html    Log URLs in keyword: argument fashion, formatted as HTML.
 csv     Log check result in CSV format with one URL per line.
 gml     Log parent-child relations between linked URLs as a GML graph.
         You should use the --verbose option to get a complete graph.
+dot     Log parent-child relations between linked URLs as a DOT graph.
+        You should use the --verbose option to get a complete graph.
 xml     Log check result as machine-readable XML file.
 sql     Log check result as SQL script with INSERT commands. An example
         script to create the initial SQL table is included as create.sql.

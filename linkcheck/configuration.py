@@ -130,6 +130,9 @@ class Configuration (dict):
         self['xml'] = {
             "filename":     "linkchecker-out.xml",
         }
+        self['dot'] = {
+            "filename":     "linkchecker-out.dot",
+        }
         self['none'] = {}
         self['logger'] = self.logger_new('text')
         self["warningregex"] = None

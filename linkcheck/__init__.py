@@ -82,6 +82,7 @@ def get_link_pat (arg, strict=False):
 import linkcheck.logger.text
 import linkcheck.logger.html
 import linkcheck.logger.gml
+import linkcheck.logger.dot
 import linkcheck.logger.sql
 import linkcheck.logger.csvlog
 import linkcheck.logger.blacklist
@@ -94,6 +95,7 @@ Loggers = {
     "text": linkcheck.logger.text.TextLogger,
     "html": linkcheck.logger.html.HtmlLogger,
     "gml": linkcheck.logger.gml.GMLLogger,
+    "dot": linkcheck.logger.dot.DOTLogger,
     "sql": linkcheck.logger.sql.SQLLogger,
     "csv": linkcheck.logger.csvlog.CSVLogger,
     "blacklist": linkcheck.logger.blacklist.BlacklistLogger,
