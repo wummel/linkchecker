@@ -102,13 +102,19 @@ Setup for Windows
 
 3. Compile gettext translations
 
-   Change to the linkchecker-X.X.X/po directory and run ``% make win``.
+   Still in the MSYS window, change to the ``linkchecker-X.X.X\po``
+   directory and run ``% make win``.
 
 4. Compile and install the LinkChecker Python modules
    
-   Close the MSYS application and open a DOS command prompt.
-   Change to the linkchecker-X.X.X directory and run
-   ``c:> python setup.py build -c mingw32 install``.
+   Close the MSYS application (by typing ``exit``) and open a DOS command
+   prompt.
+   Change to the ``linkchecker-X.X.X`` directory and run
+   ``c:> python setup.py build -c mingw32 bdist_wininst``.
+   
+   This generates a binary installer 
+   ``dist\linkchecker-X.X.X.win32-py2.3.exe`` which you just have to
+   execute.
 
 
 Installation for other platforms

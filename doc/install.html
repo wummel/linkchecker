@@ -122,12 +122,17 @@ python23.lib. (Should be the libs directory under your Python installation
 directory, for example <tt class="literal"><span class="pre">c:\Python23\Libs\</span></tt>.)</p>
 </li>
 <li><p class="first">Compile gettext translations</p>
-<p>Change to the linkchecker-X.X.X/po directory and run <tt class="literal"><span class="pre">%</span> <span class="pre">make</span> <span class="pre">win</span></tt>.</p>
+<p>Still in the MSYS window, change to the <tt class="literal"><span class="pre">linkchecker-X.X.X\po</span></tt>
+directory and run <tt class="literal"><span class="pre">%</span> <span class="pre">make</span> <span class="pre">win</span></tt>.</p>
 </li>
 <li><p class="first">Compile and install the LinkChecker Python modules</p>
-<p>Close the MSYS application and open a DOS command prompt.
-Change to the linkchecker-X.X.X directory and run
-<tt class="literal"><span class="pre">c:&gt;</span> <span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">install</span></tt>.</p>
+<p>Close the MSYS application (by typing <tt class="literal"><span class="pre">exit</span></tt>) and open a DOS command
+prompt.
+Change to the <tt class="literal"><span class="pre">linkchecker-X.X.X</span></tt> directory and run
+<tt class="literal"><span class="pre">c:&gt;</span> <span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">bdist_wininst</span></tt>.</p>
+<p>This generates a binary installer 
+<tt class="literal"><span class="pre">dist\linkchecker-X.X.X.win32-py2.3.exe</span></tt> which you just have to
+execute.</p>
 </li>
 </ol>
 </div>
@@ -166,7 +171,7 @@ they are working</li>
 </div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-09-02 09:57 UTC.
+Generated on: 2004-09-03 09:41 UTC.
 </div>
 </body>
 </html>
