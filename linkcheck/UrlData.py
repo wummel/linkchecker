@@ -77,16 +77,16 @@ _linkMatcher = r"""
     \s*            # whitespace
     %s             # tag name
     \s+            # whitespace
-    [^>]*?         # skip leading attributes (fails on Python 2.2b2)
+    ([^"'>]|"[^"]"|'[^']')*?         # skip leading attributes
     %s             # attrib name
     \s*            # whitespace
     =              # equal sign
     \s*            # whitespace
     (?P<value>     # attribute value
-     ".*?" |       # in double quotes
-     '.*?' |       # in single quotes
+     "[^"]*" |      # in double quotes
+     '[^']*' |      # in single quotes
      [^\s>]+)      # unquoted
-    ([^">]|".*?")* # skip trailing attributes
+    ([^"'>]|"[^"]"|'[^']')*          # skip trailing attributes
     >              # close tag
     """
 
