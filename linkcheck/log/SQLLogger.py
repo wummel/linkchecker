@@ -1,4 +1,4 @@
-# Copyright (C) 2000-2002  Bastian Kleineidam
+# Copyright (C) 2000-2003  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from StandardLogger import StandardLogger
+from Logger import Logger
 import time
 from linkcheck.log import strtime
 from linkcheck import StringUtil, i18n, Config

@@ -1,4 +1,4 @@
-# Copyright (C) 2000-2002  Bastian Kleineidam
+# Copyright (C) 2000-2003  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ from linkcheck import Config, i18n
 from linkcheck.StringUtil import xmlify
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
+from Logger import Logger
 
 class XMLLogger (StandardLogger):
     """XML output mirroring the GML structure. Easy to parse with any XML
