@@ -504,6 +504,9 @@ class UrlData:
 	        metamatch = _refresh_re.match(url)
 		if metamatch:
                     url = metamatch.group("url")
+		else:
+		    # ignore other contents (not for refresh)
+		    continue
             # need to resolve HTML entities
             url = StringUtil.unhtmlify(url)
             lineno= StringUtil.getLineNumber(self.getContent(), match.start())
