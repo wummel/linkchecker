@@ -66,16 +66,16 @@ msgstr ""
 #: linkcheck/Logging.py:306
 #, c-format
 msgid "%.3f seconds"
-msgstr ""
+msgstr "%.3f secondes"
 
 #: linkcheck/Logging.py:108 linkcheck/Logging.py:111
 #, c-format
 msgid "%.3f seconds\n"
-msgstr ""
+msgstr "%.3f secondes\n"
 
 #: linkcheck/Logging.py:100 linkcheck/Logging.py:280
 msgid ", line "
-msgstr ""
+msgstr ", ligne "
 
 #: linkcheck/Logging.py:414
 #, c-format
@@ -142,12 +142,12 @@ msgstr ""
 
 #: linkcheck/UrlData.py:50 linkcheck/UrlData.py:68
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #: linkchecker:125
 #, c-format
 msgid "Error: %s\n"
-msgstr ""
+msgstr "Erreur: %s\n"
 
 #: linkchecker:126
 msgid "Execute 'linkchecker -h' for help\n"
@@ -191,7 +191,7 @@ msgstr ""
 #: linkcheck/Logging.py:113 linkcheck/Logging.py:205 linkcheck/Logging.py:310
 #: linkcheck/Logging.py:314
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: linkcheck/JavascriptUrlData.py:25
 msgid "Javascript url ignored"
@@ -243,7 +243,7 @@ msgstr ""
 #: linkcheck/Logging.py:124 linkcheck/Logging.py:214 linkcheck/Logging.py:218
 #: linkcheck/Logging.py:328
 msgid "Result"
-msgstr ""
+msgstr "Résultat"
 
 #: linkcheck/Logging.py:88 linkcheck/Logging.py:165
 #, c-format
@@ -257,7 +257,7 @@ msgstr ""
 
 #: linkcheck/Logging.py:93 linkcheck/Logging.py:278
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: linkcheck/UrlData.py:125
 msgid "URL is null or empty"

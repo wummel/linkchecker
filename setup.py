@@ -22,6 +22,21 @@ from distutils.extension import Extension
 from Template import Template
 import sys,os,string
 
+def change_root_inv(root, pathname):
+    """the (partially) inverse function of change_root"""
+    if (not root) or \
+       (len(root)<len(pathname)) or \
+       (path[:len(root)]!=root):
+        return pathname
+
+    path = pathname[len(root):]
+    if os.name == 'posix':
+        if path[0]!='/': path = '/'+path
+    elif os.name == 'nt':
+        if path[0]!='\\': path = '\\'+path
+        path = os.path.splitdrive(root)[0] + path
+    return path
+
 class LCDistribution(Distribution):
     default_include_dirs = ['/usr/include/openssl',
                             '/usr/local/include/openssl']
@@ -64,7 +79,8 @@ class LCDistribution(Distribution):
         if os.name=='nt':
             t = Template("linkchecker.bat.tmpl")
             f = open("linkchecker.bat","w")
-            f.write(t.fill_in({"install_scripts": inst.install_scripts}))
+            f.write(t.fill_in({"install_scripts": \
+	            change_root_inv(inst.root, inst.install_scripts)}))
             f.close()
             self.scripts.append('linkchecker.bat')
         elif os.name=='posix':
