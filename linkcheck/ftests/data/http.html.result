@@ -15,43 +15,46 @@ real url http://localhost:8000/
 name ok
 error
 
-url http:/localhost:8000/ (cached)
-cache key http://localhost:8000/
-real url http://localhost:8000/
+url http:/localhost:8000/
+cache key http:///localhost%%3A8000/
+real url http:///localhost%%3A8000/
 name one slash
+warning Base URL is not properly normed. Normed url is 'http:///localhost%%3A8000/'.
 error
 
-url http:localhost:8000/
-cache key http:localhost:8000/
-real url http:localhost:8000/
+url http:localhost:8000/ (cached)
+cache key http:///localhost%%3A8000/
+real url http:///localhost%%3A8000/
 name no slash
+warning Base URL is not properly normed. Normed url is 'http:///localhost%%3A8000/'.
 error
 
 url http://
 cache key http:///
 real url http:///
 name no url
-warning URL path is empty, assuming '/' as path
+warning Base URL is not properly normed. Normed url is 'http:///'.
 error
 
 url http:/ (cached)
 cache key http:///
 real url http:///
 name no url, one slash
-warning URL path is empty, assuming '/' as path
+warning Base URL is not properly normed. Normed url is 'http:///'.
 error
 
 url http: (cached)
 cache key http:///
 real url http:///
 name no url, no slash
-warning URL path is empty, assuming '/' as path
+warning Base URL is not properly normed. Normed url is 'http:///'.
 error
 
 url http://localhost:8000/stalter&sohn
-cache key http://localhost:8000/stalter&sohn
-real url http://localhost:8000/stalter&sohn
+cache key http://localhost:8000/stalter%%26sohn
+real url http://localhost:8000/stalter%%26sohn
 name unquoted ampersand
+warning Base URL is not properly normed. Normed url is 'http://localhost:8000/stalter%%26sohn'.
 error
 
 url http://slashdot.org/
@@ -64,19 +67,21 @@ url HtTP://LoCAlHOst:8000/ (cached)
 cache key http://localhost:8000/
 real url http://localhost:8000/
 name should be cached
+warning Base URL is not properly normed. Normed url is 'http://localhost:8000/'.
 error
 
 url HTTP://LOCALHOST:8000/ (cached)
 cache key http://localhost:8000/
 real url http://localhost:8000/
 name should be cached
+warning Base URL is not properly normed. Normed url is 'http://localhost:8000/'.
 error
 
-url http://localhost:8000/?quoted=%%FC
+url http://localhost:8000/?quoted=ü
 cache key http://localhost:8000/?quoted=%%FC
 real url http://localhost:8000/?quoted=%%FC
 name html entities
-warning Base URL is not properly quoted
+warning Base URL is not properly normed. Normed url is 'http://localhost:8000/?quoted=%%FC'.
 error
 
 url http://localhost:8000/ (cached)

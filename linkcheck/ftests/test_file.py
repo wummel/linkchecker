@@ -66,10 +66,12 @@ class TestFile (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         # good file (missing double slash)
         url = "file:%(curdir)s/%(datadir)s/file.txt" % attrs
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
             "cache key file://%(curdir)s/%(datadir)s/file.txt" % attrs,
             "real url file://%(curdir)s/%(datadir)s/file.txt" % attrs,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)

@@ -41,7 +41,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = " http://www.heise.de/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % nurl,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly quoted",
@@ -51,7 +51,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "http://www.heise.de/ "
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % nurl,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly quoted",
@@ -61,7 +61,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "http://www.heise.de/\n"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % nurl,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly quoted",
@@ -85,7 +85,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "äöü?:"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % nurl,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly quoted",
@@ -96,7 +96,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "?äöü?"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % nurl,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly quoted",
@@ -107,7 +107,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "@³²¼][½ ³@] ¬½"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % nurl,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly quoted",

@@ -38,33 +38,37 @@ class TestFtp (linkcheck.ftests.StandardTest):
         ]
         self.direct(url, resultlines)
 
-    def test_ftp_missing_slashes (self):
+    def test_ftp_slashes (self):
         """test ftp links with missing slashes"""
         # ftp one slash
         url = "ftp:/ftp.debian.org/"
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "error",
         ]
         self.direct(url, resultlines)
-        # missing trailing slash
+        # missing path
         url = "ftp://ftp.debian.org"
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "warning Missing trailing directory slash in ftp url",
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)
         # missing trailing dir slash
         url = "ftp://ftp.debian.org/debian"
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
             "warning Missing trailing directory slash in ftp url",
             "valid",
         ]
@@ -74,21 +78,23 @@ class TestFtp (linkcheck.ftests.StandardTest):
         """test ftp links with too many slashes"""
         # ftp two dir slashes
         url = "ftp://ftp.debian.org//debian/"
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "warning Too many directory slashes",
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)
         # ftp many dir slashes
         url = "ftp://ftp.debian.org////////debian/"
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "warning too many directory slashes",
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)

@@ -26,11 +26,12 @@ class TestTelnet (linkcheck.ftests.StandardTest):
 
     def test_telnet (self):
         url = "telnet:"
-        rurl = url+"//"
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
-            "cache key %s" % rurl,
-            "real url %s" % rurl,
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "error",
         ]
         self.direct(url, resultlines)

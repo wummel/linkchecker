@@ -99,28 +99,28 @@ class TestMail (linkcheck.ftests.StandardTest):
     def test_warn_mail (self):
         """test some mailto addrs with warnings"""
         # contains non-quoted characters
-        url = "calvin@users.sf.net?subject=הצü"
-        qurl = self.quote("mailto:"+url)
+        url = "mailto:calvin@users.sf.net?subject=הצü"
+        qurl = self.quote(url)
         resultlines = [
-            "url %s" % qurl,
+            "url %s" % url,
             "cache key %s" % qurl,
             "real url %s" % qurl,
             "info Verified address: <calvin> is deliverable",
-            "warning Base URL is not properly quoted",
+            "warning Base URL is not properly normed. Normed url is %r." % qurl,
             "valid",
         ]
-        self.direct("mailto:"+url, resultlines)
-        url = "calvin@users.sf.net?subject=Halli hallo"
-        qurl = self.quote("mailto:"+url)
+        self.direct(url, resultlines)
+        url = "mailto:calvin@users.sf.net?subject=Halli hallo"
+        qurl = self.quote(url)
         resultlines = [
-            "url %s" % qurl,
+            "url %s" % url,
             "cache key %s" % qurl,
             "real url %s" % qurl,
             "info Verified address: <calvin> is deliverable",
-            "warning Base URL is not properly quoted",
+            "warning Base URL is not properly normed. Normed url is %r." % qurl,
             "valid",
         ]
-        self.direct("mailto:"+url, resultlines)
+        self.direct(url, resultlines)
         url = self.quote("mailto:")
         resultlines = [
             "url %s" % url,

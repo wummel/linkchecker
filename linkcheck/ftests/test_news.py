@@ -57,11 +57,12 @@ class TestNews (linkcheck.ftests.StandardTest):
     def test_snews (self):
         """test snews: link"""
         url = "snews:de.comp.os.unix.linux.misc"
-        nurl = linkcheck.url.url_norm("snews:de.comp.os.unix.linux.misc")
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
@@ -69,17 +70,17 @@ class TestNews (linkcheck.ftests.StandardTest):
 
     def test_illegal (self):
         # illegal syntax
-        url = "§$%&/´`(§%"
-        qurl = self.quote("news:"+url)
+        url = "news:§$%&/´`(§%"
+        qurl = self.quote(url)
         resultlines = [
-            "url %s" % qurl,
+            "url %s" % url,
             "cache key %s" % qurl,
             "real url %s" % qurl,
-            "warning Base URL is not properly quoted",
+            "warning Base URL is not properly normed. Normed url is %r." % qurl,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
-        self.newstest("news:"+url, resultlines)
+        self.newstest(url, resultlines)
 
     def test_nntp (self):
         """nttp scheme with host"""
