@@ -109,7 +109,7 @@ def make(filename, outfile):
         outfile = os.path.splitext(infile)[0] + '.mo'
 
     try:
-        lines = open(infile).readlines()
+        lines = file(infile).readlines()
     except IOError, msg:
         print >> sys.stderr, msg
         sys.exit(1)
@@ -166,7 +166,7 @@ def make(filename, outfile):
     output = generate()
 
     try:
-        open(outfile,"wb").write(output)
+        file(outfile,"wb").write(output)
     except IOError,msg:
         print >> sys.stderr, msg
                       

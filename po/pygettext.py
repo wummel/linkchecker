@@ -662,7 +662,7 @@ def main():
         elif opt in ('-x', '--exclude-file'):
             options.excludefilename = arg
         elif opt in ('-X', '--no-docstrings'):
-            fp = open(arg)
+            fp = file(arg)
             try:
                 while 1:
                     line = fp.readline()
@@ -681,7 +681,7 @@ def main():
     # initialize list of strings to exclude
     if options.excludefilename:
         try:
-            fp = open(options.excludefilename)
+            fp = file(options.excludefilename)
             options.toexclude = fp.readlines()
             fp.close()
         except IOError:
