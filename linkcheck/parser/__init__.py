@@ -21,6 +21,55 @@ __date__    = "$Date$"[7:-2]
 
 import re, htmlentitydefs
 
+class SortedDict (dict):
+    """a dictionary whose listing functions for keys and values preserve
+       the order in which elements were added
+    """
+    def __init__ (self):
+        # sorted list of keys
+        self._keys = []
+
+
+    def __setitem__ (self, key, value):
+        if not self.has_key(key):
+            self._keys.append(key)
+        super(SortedDict, self).__setitem__(key, value)
+
+
+    def __delitem__ (self, key):
+        self._keys.remove(key)
+        super(SortedDict, self).__delitem__(key)
+
+
+    def values (self):
+        return [self[k] for k in self._keys]
+
+
+    def items (self):
+        return [(k, self[k]) for k in self._keys]
+
+
+    def keys (self):
+        return self._keys[:]
+
+
+    def itervalues (self):
+        return iter(self.values())
+
+
+    def iteritems (self):
+        return iter(self.items())
+
+
+    def iterkeys (self):
+        return iter(self.keys())
+
+
+    def clear (self):
+        self._keys = []
+        super(SortedDict, self).clear()
+
+
 def _resolve_entity (mo):
     """resolve one &#XXX; entity"""
     # convert to number
@@ -44,7 +93,7 @@ def resolve_entities (s):
 
 entities = htmlentitydefs.entitydefs.items()
 
-UnHtmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities)
+UnHtmlTable = [("&"+x[0]+";", x[1]) for x in entities]
 # order matters!
 UnHtmlTable.sort()
 UnHtmlTable.reverse()
@@ -67,9 +116,3 @@ def strip_quotes (s):
         return s[1:-1]
     return s
 
-
-def _test ():
-    print resolve_entities("&#%d;"%ord('a'))
-
-if __name__=='__main__':
-    _test()
