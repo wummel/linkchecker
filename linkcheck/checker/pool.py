@@ -23,17 +23,40 @@ import time
 class ConnectionPool (object):
 
     def __init__ (self):
+        """
+        Initialize an empty connection dictionary which will have entries
+        of the form::
+        key -> [connection, status, expiration time]
+
+        Connection can be any open connection object (HTTP, FTP, ...).
+        Status is either 'available' or 'busy'.
+        Expiration time is the point of time in seconds when this
+        connection will be timed out.
+
+        The identifier key is usually a tuple (type, host, user, pass),
+        but it can be any immutable Python object.
+        """
         # open connections
-        # {(type, host, user, pass) -> [connection, status, timeout]}
+        # {(type, host, user, pass) -> [connection, status, expiration time]}
         self.connections = {}
 
     def add_connection (self, key, conn, timeout):
+        """
+        Add connection to the pool with given identifier key and timeout
+        in seconds.
+        """
         cached = key in self.connections
         if not cached:
             self.connections[key] = [conn, 'available', time.time() + timeout]
         return cached
 
     def get_connection (self, key):
+        """
+        Get open connection if available, for at most 30 seconds.
+
+        @return: Open connection object or None if no connection is available.
+        @rtype None or FTPConnection or HTTP(S)Connection
+        """
         if key not in self.connections:
             # not found
             return None
@@ -54,5 +77,8 @@ class ConnectionPool (object):
         return None
 
     def release_connection (self, key):
+        """
+        Mark an open and reusable connection as available.
+        """
         if key in self.connections:
             self.connections[key][1] = 'available'
