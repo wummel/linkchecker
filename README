@@ -53,6 +53,7 @@ Note that the following packages are modified by me:
 httplib.py (renamed to http11lib.py and a bug fixed)
 fcgi.py (implemented immediate output)
 sz_fcgi.py (simplified the code)
+DNS/Lib.py:566 fixed rdlength name error
 
 
 Internationalization

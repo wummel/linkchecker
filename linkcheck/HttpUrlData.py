@@ -58,6 +58,7 @@ class HttpUrlData(UrlData):
         | "401"   ; Unauthorized
         | "403"   ; Forbidden
         | "404"   ; Not Found
+        | "405"   ; Method not allowed
         | "500"   ; Internal Server Error
         | "501"   ; Not Implemented
         | "502"   ; Bad Gateway
@@ -84,7 +85,7 @@ class HttpUrlData(UrlData):
             tries = 0
             redirected = self.urlName
             while status in [301,302] and self.mime and tries < 5:
-                has301status = status==301
+                has301status = (status==301)
                 redirected = urlparse.urljoin(redirected, self.mime.getheader("Location"))
                 self.urlTuple = urlparse.urlparse(redirected)
                 status, statusText, self.mime = self._getHttpRequest()
@@ -101,13 +102,26 @@ class HttpUrlData(UrlData):
                 status, statusText, self.mime = self._getHttpRequest()
                 Config.debug("DEBUG: Authentication "+_user+"/"+_password+"\n")
 
-            # Netscape Enterprise Server 3 returns errors with HEAD
-            # request, but valid urls with GET request. Bummer!
+            # some servers get the HEAD request wrong:
+            # - Netscape Enterprise Server III (no HEAD implemented)
+            # - some advertisings (they want only GET, dont ask why ;)
+            # - Zope server (it has to render the page to get the correct
+            #   content-type
+            elif status==405:
+                # HEAD method not allowed ==> try get
+                status, statusText, self.mime = self._getHttpRequest("GET")
+                Config.debug("DEBUG: detected 405 error\n")
             elif status>=400 and self.mime:
                 server = self.mime.getheader("Server")
                 if server and self.netscape_re.search(server):
                     status, statusText, self.mime = self._getHttpRequest("GET")
                     Config.debug("DEBUG: Netscape Enterprise Server detected\n")
+            elif self.mime:
+                type = self.mime.gettype()
+                poweredby = self.mime.getheader('X-Powered-By')
+                if type=='application/octet-stream' and poweredby[:4]=='Zope':
+                    status,statusText,self.mime = self._getHttpRequest("GET")
+
             if status not in [301,302]: break
 
         effectiveurl = urlparse.urlunparse(self.urlTuple)
@@ -175,13 +189,6 @@ class HttpUrlData(UrlData):
     def isHtml(self):
         if not (self.valid and self.mime):
             return 0
-        # some web servers (Zope) only know the mime-type when they have
-        # to render the whole page. Before that, they return
-        # "application/octet-stream"
-        if self.mime.gettype()=="application/octet-stream":
-            self.closeConnection()
-            self.mime = self._getHttpRequest("GET")[2]
-            if not self.mime: return 0
         return self.mime.gettype()=="text/html"
 
     def robotsTxtAllowsUrl(self, config):

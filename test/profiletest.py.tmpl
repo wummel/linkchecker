@@ -21,25 +21,23 @@ import sys,re,profile,pstats
 # add the path to linkcheck module if you do not install with distutils
 $syspath
 import linkcheck
-url='http://www.yahoo.de/'
-config = linkcheck.Config.Configuration()
+#linkcheck.Config.DebugFlag = 1
 
-config['recursionlevel'] = 2
-config['anchors'] = 1
-config['internlinks'].append(re.compile(r"^(ftp|https?)://.*yahoo.*"))
-# avoid checking of local files (security!)
-config["externlinks"].append((re.compile("^file:"), 1))
-config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
-profile.run("linkcheck.checkUrls(config)", "threads.prof")
+def runit(config, name):
+    url='http://www.heise.de/'
+    config['recursionlevel'] = 2
+    config['anchors'] = 1
+    config['internlinks'].append(re.compile(r"^https?://www\.heise\.de"))
+    # avoid checking of local files (security!)
+    config["externlinks"].append((re.compile("^file:"), 1))
+    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
+    profile.run("linkcheck.checkUrls(config)", name)
 
-config.reset()
-
-config.disableThreading()
-config['recursionlevel'] = 2
-config['anchors'] = 1
-config['internlinks'].append(re.compile(r"^(ftp|https?)://.*yahoo.*"))
-# avoid checking of local files (security!)
-config["externlinks"].append((re.compile("^file:"), 1))
-config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
-profile.run("linkcheck.checkUrls(config)", "nothreads.prof")
+if __name__=='__main__':
+    config = linkcheck.Config.Configuration()
+    config.disableThreading()
+    runit(config, "nothreads.prof")
+    config.reset()
+    config.enableThreading(10)
+    runit(config, "threads.prof")
 

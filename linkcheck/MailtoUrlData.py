@@ -26,6 +26,9 @@ word = r"[-a-zA-Z0-9,./%]+"
 headers = r"\?(%s=%s(&%s=%s)*)$" % (word, word, word, word)
 headers_re = re.compile(headers)
 
+# parse /etc/resolv.conf (only on UNIX systems)
+DNS.ParseResolvConf()
+
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
     
@@ -38,7 +41,7 @@ class MailtoUrlData(HostCheckingUrlData):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
                     self.adresses.extend(AddressList(a).addresslist)
-        Config.debug("DEBUG: %s\nDEBUG: %s\n" % (self.adresses, self.headers))
+        Config.debug("DEBUG: mailto headers: %s\n" % self.headers)
 
 
     def _cutout_adresses(self):
@@ -64,8 +67,8 @@ class MailtoUrlData(HostCheckingUrlData):
             self.setWarning(_("No adresses found"))
             return
 
-        DNS.ParseResolvConf()
         for name,mail in self.adresses:
+            Config.debug("DEBUG: checking mail address %s" % mail)
             user,host = self._split_adress(mail)
             mxrecords = DNS.mxlookup(host)
             if not len(mxrecords):
@@ -74,6 +77,7 @@ class MailtoUrlData(HostCheckingUrlData):
             smtpconnect = 0
             for mxrecord in mxrecords:
                 try:
+                    Config.debug("DEBUG: SMTP check for %s\n" % mxrecord)
                     self.urlConnection = SMTP(mxrecord[1])
                     smtpconnect = 1
                     self.urlConnection.helo()

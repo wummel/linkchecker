@@ -563,7 +563,7 @@ class DnsResult:
 	if hasattr(u, mname):
 	    r['data']=getattr(u, mname)()
 	else:
-	    r['data']=u.getbytes(rdlength)
+	    r['data']=u.getbytes(r['rdlength'])
 	return r
 
 def dumpQ(u):
