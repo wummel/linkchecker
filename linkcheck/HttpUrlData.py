@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import urlparse, sys, time, re, httplib
-from urllib import unquote
+from urllib import quote, unquote
 import Config, StringUtil, i18n
 from linkcheck import robotparser
 from debug import *
@@ -242,7 +242,7 @@ class HttpUrlData (ProxyUrlData):
         else:
             path = urlparse.urlunsplit(('', '', self.urlparts[2],
             self.urlparts[3], self.urlparts[4]))
-        self.urlConnection.putrequest(method, path, skip_host=1)
+        self.urlConnection.putrequest(method, quote(path), skip_host=1)
         self.urlConnection.putheader("Host", host)
         # userinfo is from http://user@pass:host/
         if self.userinfo:

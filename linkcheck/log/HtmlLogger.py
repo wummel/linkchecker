@@ -18,6 +18,7 @@ from StandardLogger import StandardLogger
 from Logger import Logger
 from linkcheck.log import strtime
 from linkcheck import StringUtil, i18n, Config
+from urllib import quote
 import time
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">
@@ -81,8 +82,8 @@ class HtmlLogger (StandardLogger):
                           urlData.name+"</td>\n</tr>\n")
         if urlData.parentName and self.has_field("parenturl"):
             self.fd.write("<tr>\n<td>"+self.field("parenturl")+
-               '</td>\n<td><a target="top" href="'+urlData.parentName+'">'+
-               urlData.parentName+"</a>")
+               '</td>\n<td><a target="top" href="'+
+               quote(urlData.parentName)+'">'+urlData.parentName+"</a>")
             if urlData.line:
                 self.fd.write(i18n._(", line %d")%urlData.line)
             if urlData.column:
@@ -93,7 +94,7 @@ class HtmlLogger (StandardLogger):
 	                  urlData.baseRef+"</td>\n</tr>\n")
         if urlData.url and self.has_field("realurl"):
             self.fd.write("<tr>\n<td>"+self.field("realurl")+"</td>\n<td>"+
-	                  '<a target="top" href="'+urlData.url+
+	                  '<a target="top" href="'+quote(urlData.url)+
 			  '">'+urlData.url+"</a></td>\n</tr>\n")
         if urlData.dltime>=0 and self.has_field("dltime"):
             self.fd.write("<tr>\n<td>"+self.field("dltime")+"</td>\n<td>"+
