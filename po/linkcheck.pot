@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sat Jan  3 13:28:05 2004\n"
+"POT-Creation-Date: Sat Jan  3 14:30:18 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,7 +183,10 @@ msgstr ""
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
-msgid "keyboard interrupt; waiting for active connections to finish"
+msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
+msgstr ""
+
+msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
 msgid "unsupported language"
@@ -234,16 +237,7 @@ msgstr ""
 msgid "# Format of the entries:"
 msgstr ""
 
-msgid "seconds"
-msgstr ""
-
-msgid "Stopped checking at %s"
-msgstr ""
-
-msgid "minutes"
-msgstr ""
-
-msgid "hours"
+msgid "Stopped checking at %s (%s)%s"
 msgstr ""
 
 msgid ", line %d"
@@ -270,6 +264,10 @@ msgstr ""
 msgid ""
 "Write comments and bugs to %s\n"
 "\n"
+msgstr ""
+
+msgid ""
+"Stopped checking at %s (%s)\n"
 msgstr ""
 
 msgid ""
@@ -344,6 +342,15 @@ msgstr ""
 
 msgid ""
 " found\n"
+msgstr ""
+
+msgid "seconds"
+msgstr ""
+
+msgid "minutes"
+msgstr ""
+
+msgid "hours"
 msgstr ""
 
 msgid "%r at %s, assuming non-compressed content"
@@ -423,6 +430,8 @@ msgid ""
 "        Check only syntax of external links, do not try to connect to them.\n"
 "        For local file urls, only local files are internal. For\n"
 "        http and ftp urls, all urls at the same domain name are internal.\n"
+"--status\n"
+"        Print check status every 5 seconds to stderr.\n"
 "-t num, --threads=num\n"
 "        Generate no more than num threads. Default number of threads is 5.\n"
 "        To disable threading specify a non-positive number.\n"

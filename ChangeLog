@@ -2,7 +2,7 @@
   * fixed CGI safe_url pattern, it was too strict
     Changed: linkcheck/lc_cgi.py
   * replace backticks with repr() or %r
-    Changed: all .py files containing backticks
+    Changed: all .py files containing backticks, and po/*.po
   * make windows DNS nameserver parsing more robust
     Changed: linkcheck/DNS/Base.py
     Closes: SF bugs 863227,864383
