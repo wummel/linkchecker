@@ -60,7 +60,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # using no proxy here
         self.login()
         self.filename = self.cwd()
-        self.listfile(self.filename)
+        self.listfile()
         if self.is_directory():
             self.url_connection.cwd(self.filename)
             self.files = self.get_files()
@@ -96,9 +96,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 self.url_connection.login(_user)
             else:
                 self.url_connection.login(_user, _password)
-        except EOFError:
+        except EOFError, msg:
             raise linkcheck.LinkCheckerError(
-                                       _("Remote host has closed connection"))
+                              _("Remote host has closed connection")+": "+msg)
         if not self.url_connection.getwelcome():
             self.close_connection()
             raise linkcheck.LinkCheckerError(
@@ -121,12 +121,17 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.url_connection.cwd(d)
         return filename
 
-    def listfile (self, filename):
+    def listfile (self):
         """see if filename is in the current FTP directory"""
         files = self.url_connection.nlst()
         linkcheck.log.debug(linkcheck.LOG_CHECK, "FTP files %s", str(files))
-        if filename and filename not in files:
+        if self.filename and self.filename not in files:
             raise ftplib.error_perm, "550 File not found"
+        # it could be a directory if the trailing slash was forgotten
+        if self.filename and not self.url.endswith('/'):
+            if "%s/" % self.filename in self.get_files():
+                self.add_warning(_("Missing trailing directory slash in ftp url"))
+                self.url += '/'
 
     def get_files (self):
         """Get list of filenames in directory. Subdirectories have an
@@ -170,15 +175,6 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return False
 
     def is_directory (self):
-        # it could be a directory if the trailing slash was forgotten
-        if self.filename is not None and not self.url.endswith('/'):
-            try:
-                self.url_connection.cwd(self.filename)
-                self.add_warning(_("Missing trailing directory slash in ftp url"))
-                self.url += '/'
-                self.cwd()
-            except ftplib.error_perm, msg:
-                pass
         return self.url.endswith('/')
 
     def parse_url (self):
