@@ -5,8 +5,8 @@ linkchecker (1.2.4) unstable; urgency=low
   * fix for HTTP HEAD requests from bad/dumb servers
   * CGI script fixes
   * LinkChecker Online HTML pages added
-  * news: link support
-  * fixed parsing of extern? config file options
+  * news: link support for links which specify a NNTP server
+  * fixed parsing of extern? config file options (was endless loop)
 
  -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 14 Jul 2000 05:23:08 +0200
 

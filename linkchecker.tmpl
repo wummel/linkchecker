@@ -4,7 +4,7 @@ import sys
 
 # no i18n at this point
 if sys.version[:5] < "1.5.2":
-    print "This program requires Python 1.5.2 or later."
+    sys.stderr.write("This program requires Python 1.5.2 or later.\n")
     sys.exit(1)
 
 # add the path to linkcheck module if you do not install with distutils

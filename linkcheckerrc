@@ -1,12 +1,19 @@
 # sample resource file
 # see linkchecker -h for help on these options
+# commandline options override these settings!
 
 [output]
+# turn on/off debug messages
 #debug=0
-#log=text
+# use the color logger
+#log=colored
+# turn on/off --verbose
 #verbose=0
+# turn on/off --warnings
 #warnings=0
+# turn on/off --quiet
 #quiet=0
+# additional file output
 #fileoutput = text colored html gml sql
 
 # each Logger can have separate configuration parameters
@@ -32,8 +39,8 @@
 # HTML logger
 [html]
 #filename=linkchecker-out.html
-#colorbackground=
-#colorurl=
+#colorbackground=#ffffff
+#colorurl=blue
 #colorborder=
 #colorlink=
 #tablewarning=
@@ -62,31 +69,51 @@
 
 # checking options
 [checking]
+# number of threads
 #threads=5
+# check anchors?
 #anchors=0
 #recursionlevel=1
+# obey robots.txt exclusion?
 #robotstxt=0
+# overall strict checking. You can specify for each extern URL
+# separately if its strict or not. See the [filtering] section
 #strict=0
+# proxy parameters
 #proxy=www-proxy.uni-sb.de
 #proxyport=3128
+# supply a regular expression for which warnings are printed if found
+# in any HTML files.
 #warningregex="Request failed"
+# Basic NNTP server. Overrides NNTP_SERVER environment variable.
 #nntpserver=news.uni-stuttgart.de
 
 # filtering options
 # for each extern link we can specify if it is strict or not
+# extern means we do not recurse into extern HTML pages
+# strict means we do not even make a network connection to extern URLs,
+# we only check their syntax
+# Note that if you specify any extern patterns you should specify the
+# intern pattern as well. If the intern pattern is not specified than
+# no URL will be intern (==> all URLs will be extern) and thats not
+# what you wanted.
 [filtering]
-# strict avoid checking of local files
-#extern1=^file:.* 1
-#internlinks=
+# everything with 'lconline' in the URL name is extern
+extern1=lconline 0
+# everything with 'bookmark' in the URL name is extern and we make
+# no network connection to such URLs (strict)
+extern2=bookmark 1
+# links to our domain are intern
+internlinks=calvinsplayground\.de
 #allowdeny=0
 
 # You can provide different user/password pairs for different link types.
-# Entries are a triple with (link regular expression, username, password),
+# Entries are a triple (link regular expression, username, password),
 # separated by whitespace.
 # If the regular expression matches, the given user/password pair is used
 # for authentication. The commandline options -u,-p match every link
 # and therefore override the entries given here. The first match wins.
 # At the moment, authentication is used/needed for http[s] and ftp links.
 [authentication]
-#entry1=^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/.* lebowski lebowski
+#entry1=^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
 #entry2=^ftp://void.cs.uni-sb.de calvin hutzli

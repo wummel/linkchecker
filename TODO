@@ -10,9 +10,7 @@ o I want to be able to supply a "break" command even when multiple
   The thread implementation of Python is somewhat sparse and does not allow
   suspending/stopping of threads. What I am doing is to call sys.exit(1).
 
-o other translations
-
-o Parse GML output and make a site map graphic (PNG format)
+o Parse output and make a site map graphic (PNG format)
   Use an existing layout algorithm.
 
 Low priority

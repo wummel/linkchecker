@@ -8,7 +8,6 @@ You need Python >= 1.5.2 from http://www.python.org/
 Optionally packages
 -------------------
 Distutils >= 0.9 from http://www.python.org/sigs/distutils-sig/ 
-(Note: there is currently no 0.9 version so just use the CVS code)
 OpenSSL from http://www.openssl.org/
 You will need Perl for Win32 (available from
 http://www.activestate.com/ActivePerl) if you want to install OpenSSL 
@@ -41,6 +40,7 @@ Type "linkchecker -h" for help.
 
 (Fast)CGI web interface
 -----------------------
-The *cgi files are three CGI script which you can use to run LinkChecker
-from the web. 
-You can use and adjust the example HTML files to run the script.
+The *cgi files are three CGI script which you can use to run LinkChecker 
+with a nice graphical web interface.
+You can use and adjust the example HTML files in the lconline directory
+to run the script.
