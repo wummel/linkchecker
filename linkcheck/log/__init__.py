@@ -54,6 +54,7 @@ from SQLLogger import SQLLogger
 from CSVLogger import CSVLogger
 from BlacklistLogger import BlacklistLogger
 from XMLLogger import XMLLogger
+from NoneLogger import NoneLogger
 
 # default logger classes
 Loggers = {
@@ -65,6 +66,7 @@ Loggers = {
     "csv": CSVLogger,
     "blacklist": BlacklistLogger,
     "xml": XMLLogger,
+    "none": NoneLogger,
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = ", ".join(Loggers.keys())
