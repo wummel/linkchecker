@@ -17,11 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, os, re, time, urlparse
-try:
-    import Config, i18n
-except ImportError:
-    sys.path.append(os.getcwd())
-    import Config, i18n
+import Config, i18n
 from linkcheck import getLinkPat, checkUrls
 from linkcheck.log import strtime
 from linkcheck.url import is_valid_url, safe_host_pattern, safe_url_pattern
