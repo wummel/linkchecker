@@ -16,28 +16,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, sys, time, re, httplib, zlib, gzip, robotparser2
+import urlparse, sys, time, re, httplib2, zlib, gzip, robotparser2
 from urllib import quote, unquote
 from cStringIO import StringIO
 import Config, i18n
 from debug import *
-# XXX not dynamic
-if get_debuglevel() > 0:
-    robotparser2.debug = 1
 from ProxyUrlData import ProxyUrlData
 from UrlData import ExcList, GetUrlDataFrom
-supportHttps = hasattr(httplib, "HTTPSConnection")
+supportHttps = hasattr(httplib2, "HTTPSConnection")
 
-ExcList.extend([httplib.error,])
+ExcList.extend([httplib2.error,])
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
 # Amazon blocks HEAD requests at all
 _isAmazonHost = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 # Servers not supporting HEAD request (eg returning 404 errors)
-_isBrokenHeadServer = re.compile(r'Netscape-Enterprise/').search
+_isBrokenHeadServer = re.compile(r'(Netscape-Enterprise|Zope)/').search
 # Server not supporting anchors in urls (eg returning 404 errors)
 _isBrokenAnchorServer = re.compile(r'Microsoft-IIS/').search
+
 
 class HttpUrlData (ProxyUrlData):
     "Url link with http scheme"
@@ -324,9 +322,9 @@ class HttpUrlData (ProxyUrlData):
 
     def getHTTPObject (self, host, scheme):
         if scheme=="http":
-            h = httplib.HTTPConnection(host)
+            h = httplib2.HTTPConnection(host)
         elif scheme=="https":
-            h = httplib.HTTPSConnection(host)
+            h = httplib2.HTTPSConnection(host)
         else:
             raise LinkCheckerError, "invalid url scheme %s" % scheme
         h.set_debuglevel(get_debuglevel())
