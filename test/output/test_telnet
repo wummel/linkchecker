@@ -1,0 +1,15 @@
+test_telnet
+url file:///home/calvin/projects/linkchecker/test/html/telnet.html
+valid
+url telnet:localhost
+error
+url telnet:
+error
+url telnet://swindon.city.ac.uk
+valid
+url telnet://user@swindon.city.ac.uk
+cached
+valid
+url telnet://user:password@swindon.city.ac.uk
+cached
+valid

@@ -18,6 +18,7 @@
 import urlparse, urllib, sys, time, re
 import httplib
 import Config, StringUtil, robotparser, linkcheck
+# XXX not dynamic
 if Config.DebugLevel > 0:
     robotparser.debug = 1
 from ProxyUrlData import ProxyUrlData

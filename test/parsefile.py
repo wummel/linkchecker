@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import sys
-sys.path.insert(0, ".")
+import sys, os
+sys.path.insert(0, os.getcwd())
 from linkcheck.parser.htmllib import HtmlPrinter
 
 def _main():

@@ -20,9 +20,3 @@ class ProxyUrlData (UrlData):
                 self.proxyauth = base64.encodestring(self.proxyauth).strip()
                 self.proxyauth = "Basic "+self.proxyauth
 
-    def getUserPassword (self):
-        for auth in self.config["authentication"]:
-            if auth['pattern'].match(self.url):
-                return auth['user'], auth['password']
-        return None,None
-

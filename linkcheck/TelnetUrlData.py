@@ -15,39 +15,38 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import telnetlib, re, linkcheck
+import telnetlib, urllib, urlparse, re, linkcheck
+import Config
+from urllib import splituser, splithost, splitport, splitpasswd
 from HostCheckingUrlData import HostCheckingUrlData
-
-# regular expression for syntax checking
-
-_user = "[-a-zA-Z0-9$_.+!*'()]+"
-_password = _user
-_userpassword = r"((?P<user1>%s)|(?P<user>%s):(?P<password>%s))@" % \
-                (_user, _user, _password)
-_label = r"[a-zA-Z][-a-zA-Z0-9]*"
-_host = r"%s(\.%s)*| " % (_label, _label)
-_port = r"\d+"
-telnet_re =  re.compile(r"^telnet://(%s)?(?P<host>%s)(:(?P<port>%s))?(/)?$"%\
-                        (_userpassword, _host, _port))
+from UrlData import is_valid_port
+_ = linkcheck._
 
 class TelnetUrlData (HostCheckingUrlData):
     "Url link with telnet scheme"
 
     def buildUrl (self):
         HostCheckingUrlData.buildUrl(self)
-        mo = telnet_re.match(self.urlName)
-        if not mo:
-            raise linkcheck.error, linkcheck._("Illegal telnet link syntax")
-        self.user = mo.group("user")
-        self.password = mo.group("password")
-        self.host = mo.group("host")
-        self.port = mo.group("port")
-        if not self.port:
+        parts = urlparse.urlsplit(self.url)
+        userinfo, self.host = splituser(parts[1])
+        self.host, self.port = splitport(self.host)
+        if self.port is not None:
+            if not is_valid_port(self.port):
+                raise linkcheck.error(_("URL has invalid port number %s")\
+                                      % self.port)
+            self.port = int(self.port)
+        else:
             self.port = 23
+        if userinfo:
+            self.user, self.password = splitpasswd(userinfo)
+        else:
+            self.user, self.password = self.getUserPassword()
+
 
     def checkConnection (self):
         HostCheckingUrlData.checkConnection(self)
         self.urlConnection = telnetlib.Telnet()
+        self.urlConnection.set_debuglevel(Config.DebugLevel)
         self.urlConnection.open(self.host, self.port)
         if self.user:
             self.urlConnection.read_until("login: ", 10)
@@ -55,4 +54,5 @@ class TelnetUrlData (HostCheckingUrlData):
             if self.password:
                 self.urlConnection.read_until("Password: ", 10)
                 self.urlConnection.write(self.password+"\n")
+                # XXX how to tell if we are logged in??
         self.urlConnection.write("exit\n")

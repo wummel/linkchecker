@@ -15,8 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import socket, linkcheck
+import socket, urllib, linkcheck
 from UrlData import UrlData
+_ = linkcheck._
 
 class HostCheckingUrlData (UrlData):
     "Url link for which we have to connect to a specific host"
@@ -27,7 +28,7 @@ class HostCheckingUrlData (UrlData):
 	                 parentName=parentName, baseRef=baseRef, line=line,
 		         column=column, name=name)
         self.host = None
-        self.url = urlName
+        self.url = urllib.unquote(self.urlName)
 
     def buildUrl (self):
         # to avoid anchor checking
@@ -38,4 +39,4 @@ class HostCheckingUrlData (UrlData):
 
     def checkConnection (self):
         ip = socket.gethostbyname(self.host)
-        self.setValid(self.host+"("+ip+") "+linkcheck._("found"))
+        self.setValid(self.host+"("+ip+") "+_("found"))

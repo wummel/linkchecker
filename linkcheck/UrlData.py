@@ -80,7 +80,7 @@ if hasattr(socket, "sslerror"):
     ExcList.append(socket.sslerror)
 
 # regular expression for port numbers
-port_re = re.compile(r"\d+")
+is_valid_port = re.compile(r"\d+").match
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
@@ -169,7 +169,7 @@ class UrlData:
         # check userinfo@host:port syntax
         self.userinfo, host = splituser(self.urlparts[1])
         x, port = splitport(host)
-        if port is not None and not port_re.match(port):
+        if port is not None and not is_valid_port(port):
             raise linkcheck.error(linkcheck._("URL has invalid port number %s")\
                                   % str(port))
         # set host lowercase and without userinfo
@@ -396,6 +396,13 @@ class UrlData:
         # default parse type is html
         debug(BRING_IT_ON, "Parsing recursively into", self)
         self.parse_html();
+
+
+    def getUserPassword (self):
+        for auth in self.config["authentication"]:
+            if auth['pattern'].match(self.url):
+                return auth['user'], auth['password']
+        return None,None
 
 
     def parse_html (self):
