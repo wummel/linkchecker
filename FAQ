@@ -135,4 +135,5 @@ A10: This is not a bug.
    ABC#anchor2 works too. Thats not specified anywhere and I have seen
    server-side scripts that fail on some anchors and not on others.
    This is the reason for always checking URLs with different anchors.
+   If you really want to disable this, use --no-anchor-caching.
 
