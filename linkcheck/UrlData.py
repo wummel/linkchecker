@@ -94,6 +94,7 @@ if hasattr(socket, "sslerror"):
 # regular expression for port numbers
 is_valid_port = re.compile(r"\d+").match
 
+
 def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
                     baseRef=None, line=0, column=0, name=None,
                     cmdline=None):
@@ -152,7 +153,8 @@ def set_intern_url (url, klass, config):
         domain = urlparse.urlsplit(url)[1]
         if domain:
             domain = re.escape(domain)
-            config['internlinks'].append(getLinkPat(domain))
+            # add scheme colon to link patter
+            config['internlinks'].append(getLinkPat(":%s"%domain))
 
 
 class UrlData:
@@ -194,16 +196,20 @@ class UrlData:
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
 
+
     def setError (self, s):
         self.valid=0
         self.errorString = i18n._("Error")+": "+s
+
 
     def setValid (self, s):
         self.valid=1
         self.validString = i18n._("Valid")+": "+s
 
+
     def isHtml (self):
         return 0
+
 
     def setWarning (self, s):
         if self.warningString:
@@ -211,11 +217,13 @@ class UrlData:
         else:
             self.warningString = s
 
+
     def setInfo (self, s):
         if self.infoString:
             self.infoString += "\n"+s
         else:
             self.infoString = s
+
 
     def copyFrom (self, urlData):
         self.errorString = urlData.errorString
