@@ -40,6 +40,11 @@
     Type: feature
     Changed: linkcheck/checker/fileurl.py
 
+  * Added new option --extern-strict to specify strict extern url
+    patterns.
+    Type: feature
+    Changed: linkchecker
+
 1.13.0 "The Butterfly Effect" (released 1.9.2004)
   * lots of internal code restructuring
     Type: code cleanup
