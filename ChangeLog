@@ -10,6 +10,20 @@
     Type: feature
     Changed: install-rpm.sh
 
+  * HTML parser updates:
+    - supply and use Py_CLEAR macro
+    - only call set_encoding function if tag name is 'meta'
+    Type: feature
+    Changed: linkcheck/HtmlParser/*
+
+  * Changed documentation format for epydoc.
+    Type: documentation
+    Changed: *.py
+
+  * Fix FTP error message display crash.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
 2.1 "Shogun Assassin" (released 11.1.2005)
 
   * Added XHTML support to the HTML parser.
