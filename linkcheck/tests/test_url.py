@@ -81,6 +81,9 @@ class TestUrl (unittest.TestCase):
         url = "http://EXAMPLE.COM/"
         nurl = "http://example.com/"
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
+        url = "http://EXAMPLE.COM:55/"
+        nurl = "http://example.com:55/"
+        self.assertEqual(linkcheck.url.url_norm(url), nurl)
 
     def test_norm_defaultport (self):
         """test url norm default port recognition"""
