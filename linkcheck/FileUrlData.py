@@ -37,6 +37,7 @@ class FileUrlData(UrlData):
                  baseRef=baseRef, line=line)
         if not parentName and not baseRef and \
            not re.compile("^file:").search(self.urlName):
+            self.urlName = os.path.expanduser(self.urlName)
             winre = re.compile("^[a-zA-Z]:")
             if winre.search(self.urlName):
                 self.adjustWinPath()
@@ -45,7 +46,6 @@ class FileUrlData(UrlData):
                     self.urlName = os.getcwd()+"/"+self.urlName
                     if winre.search(self.urlName):
                         self.adjustWinPath()
-            self.urlName = os.path.normpath(self.urlName)
             self.urlName = string.replace(self.urlName, "\\", "/")
             self.urlName = "file://"+self.urlName
 

@@ -38,11 +38,11 @@ __init__(self, **args)
 """
 import sys,time,string
 import Config, StringUtil
-from linkcheck import _
+import linkcheck
+_ = linkcheck._
 
 # HTML shortcuts
 RowEnd="</td></tr>\n"
-MyFont="<font face=\"Lucida,Verdana,Arial,sans-serif,Helvetica\">"
 
 # keywords
 KeyWords = ["Real URL",
@@ -198,11 +198,20 @@ class HtmlLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write("<html><head><title>"+Config.App+"</title></head>"+
+        self.fd.write('<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//'+
+              linkcheck.LANG+
+	      '">\n<html><head><title>'+Config.App+"</title>\n"
+	      '<style type="text/css">\n<!--\n'
+              "h2 { font-family: Verdana,sans-serif; font-size: 22pt; \n"
+	      "     font-style: bold; font-weight: bold }\n"
+              "body { font-family: Arial,sans-serif; font-size: 11pt }\n"
+              "td   { font-family: Arial,sans-serif; font-size: 11pt }\n"
+              "code { font-family: Courier }\n"
+              "a:hover      { color: #34a4ef }\n"
+	      "//-->\n</style>\n</head>\n"+
               "<body bgcolor="+self.colorbackground+" link="+self.colorlink+
               " vlink="+self.colorlink+" alink="+self.colorlink+">"+
-              "<center><h2>"+MyFont+Config.App+"</font>"+
-              "</center></h2>"+
+              "<center><h2>"+Config.App+"</h2></center>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
               (_("Start checking at %s\n") % _strtime(self.starttime))+
 	      "<br><br>")
@@ -210,64 +219,59 @@ class HtmlLogger(StandardLogger):
 
 
     def newUrl(self, urlData):
-        self.fd.write("<table align=left border=\"0\" cellspacing=\"0\""
-              " cellpadding=\"1\" bgcolor="+self.colorborder+
-              "><tr><td><table align=left border=\"0\" cellspacing=\"0\""
-              " cellpadding=\"3\" bgcolor="+self.colorbackground+
+        self.fd.write('<table align=left border="0" cellspacing="0"'
+              ' cellpadding="1" bgcolor='+self.colorborder+' summary="Border"'
+              '><tr><td><table align="left" border="0" cellspacing="0"'
+              ' cellpadding="3" summary="checked link" bgcolor='+
+	      self.colorbackground+
               "><tr><td bgcolor="+self.colorurl+">"+
-              MyFont+"URL</font></td><td bgcolor="+self.colorurl+">"+
-	      MyFont+StringUtil.htmlify(urlData.urlName))
+              "URL</td><td bgcolor="+self.colorurl+">"+urlData.urlName)
         if urlData.cached:
             self.fd.write(_(" (cached)\n"))
-        self.fd.write("</font>"+RowEnd)
+        self.fd.write(RowEnd)
         
         if urlData.parentName:
-            self.fd.write("<tr><td>"+MyFont+_("Parent URL")+
-	                  "</font></td><td>"+
-			  MyFont+"<a href=\""+urlData.parentName+"\">"+
+            self.fd.write("<tr><td>"+_("Parent URL")+"</td><td>"+
+			  '<a href="'+urlData.parentName+'">'+
                           urlData.parentName+"</a> line "+str(urlData.line)+
-                          "</font>"+RowEnd)
-        if urlData.baseRef:
-            self.fd.write("<tr><td>"+MyFont+_("Base")+"</font></td><td>"+
-	                  MyFont+urlData.baseRef+"</font>"+RowEnd)
-        if urlData.url:
-            self.fd.write("<tr><td>"+MyFont+_("Real URL")+"</font></td><td>"+
-	                  MyFont+"<a href=\""+StringUtil.htmlify(urlData.url)+
-			  "\">"+urlData.url+"</a></font>"+RowEnd)
-        if urlData.downloadtime:
-            self.fd.write("<tr><td>"+MyFont+_("D/L Time")+"</font></td><td>"+
-	                  MyFont+(_("%.3f seconds") % urlData.downloadtime)+
-			  "</font>"+RowEnd)
-        if urlData.checktime:
-            self.fd.write("<tr><td>"+MyFont+_("Check Time")+
-	                  "</font></td><td>"+MyFont+
-			  (_("%.3f seconds") % urlData.checktime)+"</font>"+
                           RowEnd)
+        if urlData.baseRef:
+            self.fd.write("<tr><td>"+_("Base")+"</td><td>"+
+	                  urlData.baseRef+RowEnd)
+        if urlData.url:
+            self.fd.write("<tr><td>"+_("Real URL")+"</td><td>"+
+	                  "<a href=\""+urlData.url+
+			  '">'+urlData.url+"</a>"+RowEnd)
+        if urlData.downloadtime:
+            self.fd.write("<tr><td>"+_("D/L Time")+"</td><td>"+
+	                  (_("%.3f seconds") % urlData.downloadtime)+RowEnd)
+        if urlData.checktime:
+            self.fd.write("<tr><td>"+_("Check Time")+
+	                  "</td><td>"+
+			  (_("%.3f seconds") % urlData.checktime)+RowEnd)
         if urlData.infoString:
-            self.fd.write("<tr><td>"+MyFont+_("Info")+"</font></td><td>"+
-	                  MyFont+StringUtil.htmlify(urlData.infoString)+
-			  "</font>"+RowEnd)
+            self.fd.write("<tr><td>"+_("Info")+"</td><td>"+
+	                  StringUtil.htmlify(urlData.infoString)+RowEnd)
         if urlData.warningString:
             self.warnings = self.warnings+1
-            self.fd.write("<tr>"+self.tablewarning+MyFont+_("Warning")+
-	                  "</font></td>"+self.tablewarning+MyFont+
-			  urlData.warningString+"</font>"+RowEnd)
+            self.fd.write("<tr>"+self.tablewarning+_("Warning")+
+	                  "</td>"+self.tablewarning+
+			  urlData.warningString+RowEnd)
         if urlData.valid:
-            self.fd.write("<tr>"+self.tableok+MyFont+_("Result")+
-	                  "</font></td>"+self.tableok+MyFont+
-			  urlData.validString+"</font>"+RowEnd)
+            self.fd.write("<tr>"+self.tableok+_("Result")+"</td>"+
+	                  self.tableok+urlData.validString+RowEnd)
         else:
             self.errors = self.errors+1
-            self.fd.write("<tr>"+self.tableerror+MyFont+_("Result")+
-	                  "</font></td>"+self.tableerror+MyFont+
-			  urlData.errorString+"</font>"+RowEnd)
-        
-        self.fd.write("</table></td></tr></table><br clear=all><br>")
-        self.fd.flush()        
+            self.fd.write("<tr>"+self.tableerror+_("Result")+
+	                  "</td>"+self.tableerror+
+			  urlData.errorString++RowEnd)
 
-        
+        self.fd.write("</table></td></tr></table><br clear=all><br>")
+        self.fd.flush()
+
+
     def endOfOutput(self, linknumber=-1):
-        self.fd.write(MyFont+_("\nThats it. "))
+        self.fd.write(_("\nThats it. "))
         if self.warnings==1:
             self.fd.write(_("1 warning, "))
         else:
@@ -293,14 +297,15 @@ class HtmlLogger(StandardLogger):
             duration = duration / 60
             name = _("hours")
         self.fd.write("	(%.3f %s)\n" % (duration, name))
-	self.fd.write("</font></blockquote><br><hr noshade size=1><small>"+
-             MyFont+Config.HtmlAppInfo+"<br>")
+	self.fd.write("</blockquote><br><hr noshade size=1><small>"+
+             Config.HtmlAppInfo+"<br>")
 	self.fd.write(_("Get the newest version at %s\n") %\
-             ("<a href=\""+Config.Url+"\" target=\"_top\">"+Config.Url+"</a>.<br>"))
+             ('<a href="'+Config.Url+'" target="_top">'+Config.Url+
+	      "</a>.<br>"))
         self.fd.write(_("Write comments and bugs to %s\n\n") %\
 	     ("<a href=\"mailto:"+Config.Email+"\">"+Config.Email+"</a>."))
-	self.fd.write("</font></small></body></html>")
-        self.fd.flush()        
+	self.fd.write("</small></body></html>")
+        self.fd.flush()
         self.fd = None
 
 

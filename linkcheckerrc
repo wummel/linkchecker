@@ -1,4 +1,5 @@
 # sample resource file
+# to modify, just uncomment the line
 # see linkchecker -h for help on these options
 # commandline options override these settings!
 

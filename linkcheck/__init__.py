@@ -24,14 +24,23 @@ class error(Exception):
     pass
 
 # i18n suppport
+LANG="EN" # default language (used for HTML output)
 import LinkCheckerConf
 try:
-    import fintl,os
+    import fintl,os,string
     gettext = fintl.gettext
     domain = 'linkcheck'
     localedir = os.path.join(LinkCheckerConf.install_data, 'locale')
     fintl.bindtextdomain(domain, localedir)
     fintl.textdomain(domain)
+    languages = []
+    for envvar in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
+        if os.environ.has_key(envvar):
+            languages = string.split(os.environ[envvar], ':')
+            break
+    if languages:
+        LANG=string.upper(languages[0])
+
 except ImportError:
     def gettext(msg):
         return msg

@@ -45,4 +45,4 @@ A: When it comes to checking there are three types of URLs:
    An example. Assume we want to check only urls of our domains named
    'mydomain.com' and 'myotherdomain.com'. Then we specify
    -i'^http://my(other)?domain\.com' as intern regular expression, all other
-   urls are treated extern.
+   urls are treated extern. Easy.

@@ -1,3 +1,24 @@
+linkchecker (1.2.12) unstable; urgency=low
+
+  * MANIFEST.in: include rpm_build_script in source distribution
+  * linkcheck/FileUrlData.py:
+    - use only expanduser, not normpath in FileUrl constructor. I dont
+      want to norm because the user gave me this URL and he should know
+      better than me.
+  * debian/{postinst,prerm}: use #!/bin/sh -e because it is shorter
+    than set -e
+  * linkcheck/Config.py: use append(...) for list of config files, not
+    insert(0,...)
+  * linkcheck/Logging.py: tidy HTML output:
+    - use summary attribute in HTML tables
+    - fix <center> positioning
+    - use DOCTYPE tag
+    - use CSS (advantage: makes smaller file size, looks good)
+    - finally found the &amp; bug: dont use StringUtil.htmlify
+      on the url names.
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 22 Dec 2000 14:41:12 +0100
+
 linkchecker (1.2.11) unstable; urgency=low
 
   * debian/rules:
@@ -7,7 +28,7 @@ linkchecker (1.2.11) unstable; urgency=low
     - move linkcheckerrc in /etc, make no symlink
   * rpm_build_script: shell script to help build an RPM package
   * setup.cfg: use rpm_build_script
-  * MANIFEST.in: exclude LinkCheckerConf.py from distribution to enforce 
+  * MANIFEST.in: exclude LinkCheckerConf.py from distribution to enforce
     a run of 'python setup.py config'
 
  -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 17 Dec 2000 02:22:58 +0100

@@ -215,7 +215,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "LinkChecker",
-       version = "1.2.11",
+       version = "1.2.12",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
@@ -250,9 +250,9 @@ o a (Fast)CGI web interface (requires HTTP server)
                       ['locale/de/LC_MESSAGES/linkcheck.mo']),
                      ('share/locale/fr/LC_MESSAGES',
                       ['locale/fr/LC_MESSAGES/linkcheck.mo']),
+                     ('share/linkchecker', ['linkcheckerrc']),
                      ('share/linkchecker/examples',
-                      ['lc.cgi','lc.fcgi','lc.sz_fcgi','linkchecker.bat',
-		       'linkcheckerrc']),
+                      ['lc.cgi','lc.fcgi','lc.sz_fcgi','linkchecker.bat']),
                      ('share/linkchecker/examples/lconline',
                       ['lconline/leer.html','lconline/index.html',
                        'lconline/lc_cgi.html']),

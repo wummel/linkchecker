@@ -9,6 +9,7 @@ include debian/dirs debian/docs debian/links debian/postinst
 include debian/prerm
 include DNS/README
 include test/viewprof.py test/profiletest.py test/*.html
+include rpm_build_script
 recursive-include locale *.mo
 recursive-include po *.po *.py Makefile
 recursive-include lconline *

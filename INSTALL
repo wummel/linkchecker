@@ -33,6 +33,7 @@ root or "fakeroot debian/rules binary" as a normal user.
 
 After installation, the system wide configuration file is in 
 <prefix>/share/linkchecker/linkcheckerrc.
+On Debian Linux systems it is in /etc/linkcheckerrc.
 The local configuration file is ~/.linkcheckerrc on Unix platforms.
 
 To run the program type "linkchecker" followed by your URLs you want 

@@ -5,8 +5,11 @@ VERSION=$(shell python setup.py --version)
 PACKAGE = linkchecker
 NAME = $(shell python setup.py --name)
 HOST=treasure.calvinsplayground.de
+#LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
+PULLHOST=phoenix.net.uni-sb.de
+PULLPATH=/home/calvin/temp/linkchecker
 
 DESTDIR=/.
 .PHONY: test clean distclean package files upload dist locale all
@@ -54,6 +57,13 @@ upload: distclean dist package files VERSION
 	scp VERSION shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/raw/
 	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/
 	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
+
+uploadpull: distclean dist package files VERSION
+	# shit, need to make pull, scp upload is not working any more
+	ssh -t $(PULLHOST) "cd $(PULLPATH) && make clean"
+	scp debian/changelog README linkchecker-out.* VERSION $(PULLHOST):$(PULLPATH)
+	scp dist/* $(PULLHOST):$(PULLPATH)/dist
+	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make pull"
 
 test:
 	rm -f test/*.result

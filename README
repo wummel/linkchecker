@@ -94,7 +94,7 @@ An UrlData object represents a single URL with all attached data like
 validity, check time and so on. These values are filled by the 
 UrlData.check() function.
 Derived from the base class UrlData are the different URL types: 
-HttpUrlData for http:// links, MailtoUrlData for mailto: links and so on.
+HttpUrlData for http:// links, MailtoUrlData for mailto: links, etc.
 
 UrlData defines the functions which are common for *all* URLs, and
 the subclasses define functions needed for their URL type.
@@ -102,6 +102,6 @@ the subclasses define functions needed for their URL type.
 (4) Lets look at the output. Every output is defined in a Logger class.
 Each logger has functions init(), newUrl() and endOfOutput().
 We call init() once to initialize the Logger. UrlData.check() calls
-newUrl() (through UrlData.logMe()) and after all checking we call
-endOfOutput(). Easy.
+newUrl() (through UrlData.logMe()) for each new URL and after all 
+checking is done we call endOfOutput(). Easy.
 New loggers are created with the Config.newLogger function.

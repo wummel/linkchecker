@@ -1,9 +1,7 @@
-#! /bin/sh
+#!/bin/sh -e
 #
 # Written 1998 by Gregor Hoffleit <flight@debian.org>.
 # used by Bastian Kleineidam for LinkChecker
-
-set -e
 
 PACKAGE=linkchecker
 

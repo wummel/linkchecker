@@ -364,9 +364,11 @@ class Configuration(UserDict.UserDict):
 
     def read(self, files = []):
         if not files:
-            files.insert(0,norm("~/.linkcheckerrc"))
+            # system wide config settings
             config_dir = join(LinkCheckerConf.install_data, 'linkchecker')
-            files.insert(0,norm(join(config_dir, "linkcheckerrc")))
+            files.append(norm(join(config_dir, "linkcheckerrc")))
+            # per user config settings
+            files.append(norm("~/.linkcheckerrc"))
         self.readConfig(files)
 
     def warn(self, msg):
@@ -383,8 +385,7 @@ class Configuration(UserDict.UserDict):
 
     def readConfig(self, files):
         """this big function reads all the configuration parameters
-        used in the linkchecker module.
-        """
+        used in the linkchecker module."""
         debug("DEBUG: reading configuration from %s\n" % files)
         try:
             cfgparser = ConfigParser.ConfigParser()
