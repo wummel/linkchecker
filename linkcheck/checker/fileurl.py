@@ -93,14 +93,14 @@ class FileUrl (urlbase.UrlBase):
         self.has_content = True
         return self.data
 
-    def get_cache_keys (self):
+    def get_cache_key (self):
         # the host in urlparts is lowercase()d
         if self.urlparts:
             self.urlparts[4] = self.anchor
             key = urlparse.urlunsplit(self.urlparts)
             self.urlparts[4] = ''
-            return [key]
-        return []
+            return key
+        return None
 
     def is_html (self):
         if linkcheck.checker.extensions['html'].search(self.url):
