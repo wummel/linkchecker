@@ -18,6 +18,7 @@
     Changed files: po/de.po
   * Oops, an FTP proxy is not used. Will make it in the next release.
     Changed files: linkcheck/FtpUrlData.py
+  * Default socket timeout is now 30 seconds (10 was too short)
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.
