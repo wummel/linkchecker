@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-09-20 17:59+0200\n"
-"PO-Revision-Date: 2004-09-20 18:07+0100\n"
+"POT-Creation-Date: 2004-09-20 18:24+0200\n"
+"PO-Revision-Date: 2004-09-20 18:25+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -298,15 +298,15 @@ msgstr "Letzte Änderung %s"
 msgid "Unsupported content encoding %r."
 msgstr "Content-Encoding %r wird nicht unterstützt."
 
-#: ../linkcheck/checker/ftpurl.py:91
+#: ../linkcheck/checker/ftpurl.py:94
 msgid "Remote host has closed connection"
 msgstr "Entfernter Rechner hat die Verbindung geschlossen"
 
-#: ../linkcheck/checker/ftpurl.py:95
+#: ../linkcheck/checker/ftpurl.py:98
 msgid "Got no answer from FTP server"
 msgstr "Keine Antwort vom FTP Server"
 
-#: ../linkcheck/checker/ftpurl.py:115
+#: ../linkcheck/checker/ftpurl.py:118
 msgid "Missing trailing directory slash in ftp url"
 msgstr "Fehlender / am Ende der FTP url"
 
@@ -446,11 +446,11 @@ msgstr[1] "%d Verknüpfungen überprüft."
 
 #: ../linkcheck/logger/html.py:245
 #: ../linkcheck/logger/text.py:234
-#, fuzzy, python-format
+#, python-format
 msgid "%d error found."
 msgid_plural "%d errors found."
-msgstr[0] "%d Fehler"
-msgstr[1] "%d Fehler"
+msgstr[0] "%d Fehler."
+msgstr[1] "%d Fehler."
 
 #: ../linkcheck/logger/html.py:257
 #: ../linkcheck/logger/sql.py:58
@@ -649,10 +649,10 @@ msgstr ""
 
 #: ../linkchecker:102
 msgid ""
-"LOGGER OUTPUT TYPES\n"
+"OUTPUT TYPES\n"
 "Note that by default only errors are logged.\n"
 "\n"
-"text    Standard text logger, logging URLs in keyword: argument fashion\n"
+"text    Standard text output, logging URLs in keyword: argument fashion.\n"
 "html    Log URLs in keyword: argument fashion, formatted as HTML.\n"
 "        Additionally has links to the referenced pages. Invalid URLs have\n"
 "        HTML and CSS syntax check links appended.\n"
@@ -668,10 +668,10 @@ msgid ""
 "        the number of times they have failed.\n"
 "none    Logs nothing. Suitable for scripts.\n"
 msgstr ""
-"LOGAUSGABETYPEN\n"
+"AUSGABETYPEN\n"
 "Man bemerke dass standardmäßig nur Fehler ausgegeben werden.\n"
 "\n"
-"text    Standard Textlogger mit Ausgabe in \"Schlüssel: Wert\"-Form\n"
+"text    Standard Textausgabe in \"Schlüssel: Wert\"-Form.\n"
 "html   Gebe URLs in \"Schlüssel: Wert\"-Form als HTML formatiert aus.\n"
 "        Besitzt zudem Verknüpfungen auf die referenzierten Seiten. Ungültige URLs haben\n"
 "        Verknüpfungen zur HTML und CSS Syntaxprüfung angehängt.\n"

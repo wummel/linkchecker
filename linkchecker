@@ -99,10 +99,10 @@ You can skip the "ftp://" url part if the domain starts with "ftp.":
   linkchecker -r0 ftp.linux.org
 """)
 
-Logertypes = _(r"""LOGGER OUTPUT TYPES
+Logertypes = _(r"""OUTPUT TYPES
 Note that by default only errors are logged.
 
-text    Standard text logger, logging URLs in keyword: argument fashion
+text    Standard text output, logging URLs in keyword: argument fashion.
 html    Log URLs in keyword: argument fashion, formatted as HTML.
         Additionally has links to the referenced pages. Invalid URLs have
         HTML and CSS syntax check links appended.

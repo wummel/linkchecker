@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-09-20 17:59+0200\n"
+"POT-Creation-Date: 2004-09-20 18:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -288,15 +288,15 @@ msgstr ""
 msgid "Unsupported content encoding %r."
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:91
+#: ../linkcheck/checker/ftpurl.py:94
 msgid "Remote host has closed connection"
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:95
+#: ../linkcheck/checker/ftpurl.py:98
 msgid "Got no answer from FTP server"
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:115
+#: ../linkcheck/checker/ftpurl.py:118
 msgid "Missing trailing directory slash in ftp url"
 msgstr ""
 
@@ -571,10 +571,10 @@ msgstr ""
 
 #: ../linkchecker:102
 msgid ""
-"LOGGER OUTPUT TYPES\n"
+"OUTPUT TYPES\n"
 "Note that by default only errors are logged.\n"
 "\n"
-"text    Standard text logger, logging URLs in keyword: argument fashion\n"
+"text    Standard text output, logging URLs in keyword: argument fashion.\n"
 "html    Log URLs in keyword: argument fashion, formatted as HTML.\n"
 "        Additionally has links to the referenced pages. Invalid URLs have\n"
 "        HTML and CSS syntax check links appended.\n"
