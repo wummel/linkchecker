@@ -54,7 +54,7 @@ LinkTags = {
 
 # matcher for <meta http-equiv=refresh> tags
 _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
-_style_background_re = re.compile(r"background-image:\s*url\((?P<url>.+?)\)")
+_css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
 
 class LinkParser (HtmlParser):
     """Parse the content for a list of links. After parsing, the urls
@@ -104,23 +104,24 @@ class LinkParser (HtmlParser):
 
 
     def addLink (self, tag, attr, url, name, base):
+        urls = []
         # look for meta refresh
         if tag=='meta':
             mo = _refresh_re.match(url)
             if mo:
-                url = mo.group("url")
-            else:
-                # only meta refresh has an url, so return
-                return
+                urls.append(mo.group("url"))
         elif attr=='style':
-            mo = _style_background_re.search(url)
-            if mo:
-               url = mo.group("url")
-            else:
-                return
-        debug(NIGHTMARE, "LinkParser add link", tag, attr, url, name, base)
-        self.urls.append((url, self.last_lineno(), self.last_column(),
-                          name, base))
+            for mo in _css_url_re.finditer(url):
+                urls.append(mo.group("url"))
+        else:
+            urls.append(url)
+        if not urls:
+            # no url found
+            return
+        for u in urls:
+            debug(NIGHTMARE, "LinkParser add link", tag, attr, u, name, base)
+            self.urls.append((u, self.last_lineno(), self.last_column(),
+                              name, base))
 
 
     def _errorfun (self, msg, name):
