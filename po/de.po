@@ -596,7 +596,7 @@ msgid "Could not find profiling file %s."
 msgstr "Konnte Profiling-Datei %s nicht finden."
 
 msgid "Please run linkchecker with --profile to generate it."
-msgstr "Bitte starten Sie linkchecker mit --profile, um sie zu generieren.""
+msgstr "Bitte starten Sie linkchecker mit --profile, um sie zu generieren."
 
 msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
