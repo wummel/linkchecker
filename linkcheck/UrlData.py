@@ -18,11 +18,6 @@
 
 import sys, re, urlparse, urllib2, time, traceback, socket, select, i18n
 from urllib import splituser, splitport, unquote
-#try:
-#    from linkcheck import DNS
-#except ImportError:
-#    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
-#    raise SystemExit
 from linkcheck import DNS, LinkCheckerError, getLinkPat
 DNS.DiscoverNameServers()
 
@@ -379,7 +374,8 @@ class UrlData (object):
         # check recursion
         debug(BRING_IT_ON, "checking recursion")
         if self.allowsRecursion():
-            try: self.parseUrl()
+            try:
+                self.parseUrl()
             except tuple(ExcList):
                 value, tb = sys.exc_info()[1:]
                 debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))

@@ -45,6 +45,7 @@ extensions = {
 
 import UrlData
 from debug import *
+from linkcheck.log import strduration
 
 # main check function
 def checkUrls (config):
@@ -57,7 +58,6 @@ def checkUrls (config):
     to check it (checkUrl).
     """
     config.log_init()
-    from linkcheck.log import strduration
     try:
         start_time = time.time()
         status_time = start_time
@@ -70,12 +70,8 @@ def checkUrls (config):
                 time.sleep(0.1)
             if config['status']:
                 curtime = time.time()
-                tocheck = config.urls.qsize()
-                active = config.threader.active_threads()
-                links = config['linknumber']
-                duration = strduration(curtime - start_time)
                 if (curtime - status_time) > 5:
-                    print >>sys.stderr, i18n._("%5d urls queued, %4d links checked, %2d active threads, runtime %s")%(tocheck, links, active, duration)
+                    printStatus(config, curtime, start_time)
                     status_time = curtime
         config.log_endOfOutput()
     except KeyboardInterrupt:
@@ -84,3 +80,12 @@ def checkUrls (config):
         active = config.threader.active_threads()
         warn(i18n._("keyboard interrupt; waiting for %d active threads to finish") % active)
         raise
+
+
+def printStatus (config, curtime, start_time):
+    tocheck = config.urls.qsize()
+    links = config['linknumber']
+    active = config.threader.active_threads()
+    duration = strduration(curtime - start_time)
+    print >>sys.stderr, i18n._("%5d urls queued, %4d links checked, %2d active threads, runtime %s")%\
+                               (tocheck, links, active, duration)
