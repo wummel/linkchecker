@@ -79,7 +79,9 @@ Internationalization
 For german output execute "export LC_MESSAGES=de" in bash or
 "setenv LC_MESSAGES de" in tcsh.
 Under Windows, execute "set LC_MESSAGES=de".
-For french output use 'fr' instead of 'de'.
+Other supported languages are 'nl' (Nederlands) and 'fr' (français).
+If you want to help me translate LinkChecker, copy the linkchecker.pot
+file to <your language>.po and send me the translated file.
 
 
 Code design

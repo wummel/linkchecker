@@ -1,8 +1,10 @@
 1.6.3:
   * Generate md5sum checksums for distributed files
-    Files: Makefile
+    Changed files: Makefile
   * use "startswith" string method instead of a regex
-    Files: linkchecker, linkcheck/UrlData.py
+    Changed files: linkchecker, linkcheck/UrlData.py
+  * Note about supported languages, updated documentation.
+    Changed files: README
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.
