@@ -39,7 +39,8 @@ name unquoted
 valid
 url http://www.heise.de/#isnix
 name invalid anchor
-warning anchor #isnix not found
+warning Server 'Apache/1.3.29' had no anchor support, removed anchor from request
+anchor #isnix not found
 valid
 url HtTP://WWW.hEIsE.DE
 cached

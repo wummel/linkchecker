@@ -12,6 +12,7 @@ valid
 url mailto:Bastian Kleineidam <calvin@studcs.uni-sb.de>?bcc=jsmith%40wummel.company.com
 name 3
 info Verified adress: 2.1.5 <nobody@uni-sb.de>
+warning No MX mail host for wummel.company.com found
 valid
 url mailto:Bastian Kleineidam <calvin@studcs.uni-sb.de>
 name 4

@@ -19,6 +19,10 @@
     Type: bugfix
     Changed: linkcheck/{HttpUrlData, url}.py
 
+  * rework anchor fallback
+    Type: bugfix
+    Changed: linkcheck/HttpUrlData.py
+
 1.12.2 (release 4.4.2004)
   * use XmlUtils instead of xmlify for XML quoting
     Type: code cleanup
