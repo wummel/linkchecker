@@ -60,47 +60,6 @@ if hasattr(socket, "sslerror"):
     ExcList.append(socket.sslerror)
 
 
-#_schemes = r"""(
-#acap        # application configuration access protocol
-#|afs        # Andrew File System global file names
-#|cid        # content identifier
-#|data       # data
-#|dav        # dav
-#|fax        # fax
-#|imap       # internet message access protocol
-#|ldap       # Lightweight Directory Access Protocol
-#|mailserver # Access to data available from mail servers
-#|mid        # message identifier
-#|modem      # modem
-#|nfs        # network file system protocol
-#|opaquelocktoken # opaquelocktoken
-#|pop        # Post Office Protocol v3
-#|prospero   # Prospero Directory Service
-#|rtsp       # real time streaming protocol
-#|service    # service location
-#|sip        # session initiation protocol
-#|tel        # telephone
-#|tip        # Transaction Internet Protocol
-#|tn3270     # Interactive 3270 emulation sessions
-#|vemmi      # versatile multimedia interface
-#|wais       # Wide Area Information Servers
-#|z39\.50r   # Z39.50 Retrieval
-#|z39\.50s   # Z39.50 Session
-#|chrome     # Mozilla specific
-#|find       # Mozilla specific
-#|clsid      # Microsoft specific
-#|javascript # JavaScript
-#|isbn       # ISBN (int. book numbers)
-#|https?     # HTTP/HTTPS
-#|ftp        # FTP
-#|file       # local file
-#|telnet     # telnet
-#|mailto     # mailto
-#|gopher     # gopher
-#|s?news     # news
-#|nntp       # news
-#)"""
-
 ignored_schemes = r"""^(
 acap        # application configuration access protocol
 |afs        # Andrew File System global file names
@@ -112,13 +71,17 @@ acap        # application configuration access protocol
 |ldap       # Lightweight Directory Access Protocol
 |mailserver # Access to data available from mail servers
 |mid        # message identifier
+|mms        # multimedia stream
 |modem      # modem
 |nfs        # network file system protocol
 |opaquelocktoken # opaquelocktoken
 |pop        # Post Office Protocol v3
 |prospero   # Prospero Directory Service
+|rsync      # rsync protocol
 |rtsp       # real time streaming protocol
+|rtspu      # real time streaming protocol
 |service    # service location
+|shttp      # secure HTTP
 |sip        # session initiation protocol
 |tel        # telephone
 |tip        # Transaction Internet Protocol
@@ -191,6 +154,7 @@ import linkcheck.checker.httpsurl
 import linkcheck.checker.mailtourl
 import linkcheck.checker.telneturl
 import linkcheck.checker.nntpurl
+import linkcheck.checker.errorurl
 
 
 def set_intern_url (url, klass, config):
@@ -250,12 +214,15 @@ def get_url_from (base_url, recursion_level, consumer,
          url.startswith("news:") or \
          url.startswith("snews:"):
         klass = linkcheck.checker.nntpurl.NntpUrl
-    # application specific links are ignored
     elif ignored_schemes_re.search(url):
+        # ignored url
         klass = linkcheck.checker.ignoredurl.IgnoredUrl
-    # assume local file
-    else:
+    elif cmdline:
+        # assume local file on command line
         klass = linkcheck.checker.fileurl.FileUrl
+    else:
+        # error url, no further checking, just log this
+        klass = linkcheck.checker.errorurl.ErrorUrl
     if cmdline and not (consumer.config['internlinks'] or
                         consumer.config['externlinks']):
         # set automatic intern/extern stuff if no filter was given
