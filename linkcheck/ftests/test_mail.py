@@ -17,8 +17,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import unittest
-import urllib
-import os
 
 import linkcheck.ftests
 
@@ -31,7 +29,7 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
             "url %s" % url,
-            "info Verified adress: <calvin> is deliverable",
+            "info Verified address: <calvin> is deliverable",
             "valid",
         ]
         self.direct(url, resultlines)
@@ -39,21 +37,21 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "bcc=calvin%40users.sf.net")
         resultlines = [
             "url %s" % url,
-            "info Verified adress: <calvin> is deliverable",
+            "info Verified address: <calvin> is deliverable",
             "valid",
         ]
         self.direct(url, resultlines)
         url = self.quote("mailto:Bastian Kleineidam <calvin@users.sf.net>")
         resultlines = [
             "url %s" % url,
-            "info Verified adress: <calvin> is deliverable",
+            "info Verified address: <calvin> is deliverable",
             "valid",
         ]
         self.direct(url, resultlines)
         url = self.quote("mailto:o'hara@users.sf.net")
         resultlines = [
             "url %s" % url,
-            "info Verified adress: <o'hara> is deliverable",
+            "info Verified address: <o'hara> is deliverable",
             "valid",
         ]
         self.direct(url, resultlines)
@@ -61,9 +59,9 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
         resultlines = [
             "url %s" % url,
-            "info Verified adress: <calvin> is deliverable",
-            "info Verified adress: <calvin_cc> is deliverable",
-            "info Verified adress: <calvin_CC> is deliverable",
+            "info Verified address: <calvin> is deliverable",
+            "info Verified address: <calvin_cc> is deliverable",
+            "info Verified address: <calvin_CC> is deliverable",
             "valid",
         ]
         self.direct(url, resultlines)
@@ -82,7 +80,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = "calvin@users.sf.net?subject=הצü"
         resultlines = [
             "url %s" % self.quote("mailto:"+url),
-            "info Verified adress: <calvin> is deliverable",
+            "info Verified address: <calvin> is deliverable",
             "warning Base URL is not properly quoted",
             "valid",
         ]
@@ -90,7 +88,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = "calvin@users.sf.net?subject=Halli hallo"
         resultlines = [
             "url %s" % self.quote("mailto:"+url),
-            "info Verified adress: <calvin> is deliverable",
+            "info Verified address: <calvin> is deliverable",
             "warning Base URL is not properly quoted",
             "valid",
         ]
@@ -98,7 +96,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:")
         resultlines = [
             "url %s" % url,
-            "warning No adresses found",
+            "warning No addresses found",
             "valid",
         ]
         self.direct(url, resultlines)
