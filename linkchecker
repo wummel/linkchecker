@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
-import getopt,sys,re,string
+import sys
 
 if sys.version[:5] < "1.5.2":
     print "This program requires Python 1.5.2 or later."
     sys.exit(1)
-    
-# add the path to linkcheck module
-#sys.path.insert(0, "/home/calvin/projects/linkchecker")
 
-import linkcheck
+# add the path to linkcheck module if you install it manually somewhere
+#sys.path.append("/home/calvin/projects/linkchecker")
+import getopt,re,string,linkcheck
 
 Usage = """USAGE\tlinkchecker [options] file_or_url...
 

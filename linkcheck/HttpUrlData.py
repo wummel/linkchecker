@@ -1,4 +1,4 @@
-import httplib,urlparse,sys,time
+import http11lib,urlparse,sys,time
 from UrlData import UrlData
 from RobotsTxt import RobotsTxt
 import Config,StringUtil
@@ -116,7 +116,7 @@ class HttpUrlData(UrlData):
         return self.urlConnection.getreply()
 
     def _getHTTPObject(self, host):
-        return httplib.HTTP(host)
+        return http11lib.HTTP(host)
 
     def getContent(self):
         self.closeConnection()
@@ -124,7 +124,7 @@ class HttpUrlData(UrlData):
         self._getHttpRequest("GET")
         self.urlConnection = self.urlConnection.getfile()
         data = StringUtil.stripHtmlComments(self.urlConnection.read())
-        self.time = time.time() - t
+        self.downloadtime = time.time() - t
         Config.debug(Config.DebugDelim+data+Config.DebugDelim)
         return data
         

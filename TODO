@@ -1,5 +1,8 @@
-Is there a way to cleanly stop arbitrary Thread objects 
-(with exit handler)? Mail me solutions!
+(1) I want to be able to supply a "break" command even when multiple
+threads are running.
+So a thread has to check regularly if a break command was issued? No,
+I do not want this. The thread has to be interrupted from outside, but
+there is at the moment no way how to do this with Python threads. What I
+am doing is to call sys.exit(1). This kills the entire Python interpreter.
 
-When Python offers this in the next release:
-Internationalization and Distutils
+(2) Internationalization

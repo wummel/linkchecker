@@ -18,7 +18,7 @@ class UrlData:
                  recursionLevel, 
                  parentName = None,
                  baseRef = None,
-                 line = None, _time = None):
+                 line = None):
         self.urlName = urlName
         self.recursionLevel = recursionLevel
         self.parentName = parentName
@@ -30,7 +30,7 @@ class UrlData:
         self.valid = 1
         self.url = None
         self.line = line
-        self.downloadtime = _time
+        self.downloadtime = None
         self.checktime = None
         self.cached = 0
         self.urlConnection = None

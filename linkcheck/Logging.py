@@ -115,7 +115,8 @@ class StandardLogger:
         self.fd.write(" found.\n")
         self.stoptime = time.time()
         self.fd.write("Stopped checking at "+_strtime(self.stoptime)+
-	              (" (%.3f seconds)" % (self.stoptime - self.starttime)))
+	              (" (%.3f seconds)" % (self.stoptime - self.starttime))+
+                      "\n")
         self.fd.flush()
         self.close()
 

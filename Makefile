@@ -1,8 +1,8 @@
-VERSION=$(shell ./setup.py -q version)
+VERSION=$(shell ./setup.py -V)
 HOST=treasure.calvinsplayground.de
-PROXY=treasure.calvinsplayground.de:5050 -s
+PROXY=-P$(HOST):5050
 #HOST=fsinfo.cs.uni-sb.de
-#PROXY=www-proxy.uni-sb.de:3128
+#PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
 ALLPACKAGES = ../$(DEBPACKAGE)
@@ -19,7 +19,6 @@ clean:
 
 install:
 	./setup.py install --destdir=$(DESTDIR)
-	install -c 755 linkchecker $(DESTDIR)/usr/bin
 	install -c 644 linkcheckerrc $(DESTDIR)/etc
 
 dist:
@@ -27,7 +26,7 @@ dist:
 	fakeroot debian/rules binary
         
 files:
-	./$(PACKAGE) -Wtext -Whtml -Wgml -Wsql -R -t0 -v -P$(PROXY) -i$(HOST) http://$(HOST)/~calvin/
+	./$(PACKAGE) -Wtext -Whtml -Wgml -Wsql -R -t0 -v $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
 homepage:	files
 	scp *-out.* shell1.sourceforge.net:/home/groups/linkchecker/htdocs/
