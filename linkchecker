@@ -120,12 +120,12 @@ blacklist
 none    Logs nothing. Suitable for scripts.
 """)
 
-def printVersion ():
+def print_version ():
     """print the program version and exit"""
-    print linkcheck.configuration.AppInfo
+    print linkcheck.configuration.AppInfo.encode("iso8859-15", "ignore")
     sys.exit(0)
 
-def printUsage (msg):
+def print_usage (msg):
     """print a program msg text to stderr and exit"""
     sys.stderr.write(_("Error: %s") % msg)
     sys.stderr.write(os.linesep)
@@ -205,7 +205,7 @@ class LCOptionParser (optparse.OptionParser, object):
 
     def error (self, msg):
         """print usage info and given message"""
-        printUsage(msg)
+        print_usage(msg)
 
     def get_usage (self):
         """return translated usage text"""
@@ -422,10 +422,10 @@ if options.output:
     else:
         logtype, encoding = options.output, "iso-8859-15"
     if not linkcheck.Loggers.has_key(logtype):
-        printUsage(_("Unknown logger type %r in %r for option %s") % \
+        print_usage(_("Unknown logger type %r in %r for option %s") % \
                    (logtype, options.output, "'-o, --output'"))
     if logtype != 'none' and not has_encoding(encoding):
-        printUsage(_("Unknown encoding %r in %r for option %s") % \
+        print_usage(_("Unknown encoding %r in %r for option %s") % \
                    (encoding, options.output, "'-o, --output'"))
     config['logger'] = config.logger_new(logtype, encoding=encoding)
 if options.fileoutput:
@@ -450,18 +450,18 @@ if options.fileoutput:
                 else:
                     ns['filename'] = suffix
         if not linkcheck.Loggers.has_key(ftype):
-            printUsage(_("Unknown logger type %r in %r for option %s") % \
+            print_usage(_("Unknown logger type %r in %r for option %s") % \
                        (ftype, options.output, "'-F, --file-output'"))
         if ftype != 'none' and 'encoding' in ns and \
            not has_encoding(ns['encoding']):
-            printUsage(_("Unknown encoding %r in %r for option %s") % \
+            print_usage(_("Unknown encoding %r in %r for option %s") % \
                        ns['encoding'], options.output, "'-F, --file-output'")
         # generating loggers with fileoutput can throw
         # an exception when opening the file
         try:
             logger = config.logger_new(ftype, **ns)
         except OSError, msg:
-            printUsage(_("Illegal argument %r for option %s: %s") % \
+            print_usage(_("Illegal argument %r for option %s: %s") % \
                        (arg, "'-F, --file-output'", str(msg)))
         config['fileoutput'].append(logger)
 if options.interactive is not None:
@@ -482,7 +482,7 @@ if options.pause is not None:
     if options.pause >= 0:
         config["wait"] = options.pause
     else:
-        printUsage(_("Illegal argument %d for option %s") % \
+        print_usage(_("Illegal argument %d for option %s") % \
                    (options.pause, "'-P, --pause'"))
 if options.profile is not None:
     do_profile = options.profile
@@ -496,20 +496,20 @@ if options.status is not None:
     config['status'] = options.status
 if options.threads is not None:
     if options.threads < 1:
-        printUsage(_("Illegal argument %d for option %s") % \
+        print_usage(_("Illegal argument %d for option %s") % \
                    (options.threads, "'-t, --threads'"))
     config.set_threads(options.threads)
 if options.timeout is not None:
     if options.timeout > 0:
         socket.setdefaulttimeout(options.timeout)
     else:
-        printUsage(_("Illegal argument %r for option %s") % \
+        print_usage(_("Illegal argument %r for option %s") % \
                    (options.timeout, "'--timeout'"))
 if options.username is not None:
     _username = options.username
     constructauth = True
 if options.version is not None:
-    printVersion()
+    print_version()
 if options.verbose is not None:
     if options.verbose:
         config["verbose"] = True
