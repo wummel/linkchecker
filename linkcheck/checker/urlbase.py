@@ -246,7 +246,7 @@ class UrlBase (object):
             self.set_result(str(msg), valid=False)
             return False
         self.set_cache_keys()
-        self.extern = self._get_extern()
+        self.extern = self._get_extern(self.url)
         return True
 
     def build_url (self):
@@ -322,12 +322,8 @@ class UrlBase (object):
                                 self.consumer.config['wait'])
             time.sleep(self.consumer.config['wait'])
         t = time.time()
-        # apply filter
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
-        if self.extern[0] and \
-           (self.consumer.config["externstrictall"] or self.extern[1]):
-            self.add_info(
-                  _("outside of domain filter, checked only syntax"))
+        if self.is_extern():
+            self.add_info(_("outside of domain filter, checked only syntax"))
             return
 
         # check connection
@@ -450,24 +446,30 @@ class UrlBase (object):
                 return
         self.add_warning(_("anchor #%s not found") % self.anchor)
 
-    def _get_extern (self):
+    def is_extern (self):
+        # apply filter
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
+        return self.extern[0] and \
+           (self.consumer.config["externstrictall"] or self.extern[1])
+
+    def _get_extern (self, url):
         if not (self.consumer.config["externlinks"] or \
            self.consumer.config["internlinks"]):
             return (0, 0)
         # deny and allow external checking
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Url %r", self.url)
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "Url %r", url)
         if self.consumer.config["denyallow"]:
             for entry in self.consumer.config["externlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
                                     entry)
-                match = entry['pattern'].search(self.url)
+                match = entry['pattern'].search(url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (1, entry['strict'])
             for entry in self.consumer.config["internlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
                                     entry)
-                match = entry['pattern'].search(self.url)
+                match = entry['pattern'].search(url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (0, 0)
@@ -476,14 +478,14 @@ class UrlBase (object):
             for entry in self.consumer.config["internlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
                                     entry)
-                match = entry['pattern'].search(self.url)
+                match = entry['pattern'].search(url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (0, 0)
             for entry in self.consumer.config["externlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
                                     entry)
-                match = entry['pattern'].search(self.url)
+                match = entry['pattern'].search(url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (1, entry['strict'])
