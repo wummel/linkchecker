@@ -47,7 +47,11 @@ try:
     has_optcomplete = True
 except ImportError:
     has_optcomplete = False
-
+try:
+    import profile
+    has_profile = True
+except ImportError:
+    has_profile = False
 
 # default profiling filename
 _profile = "linkchecker.prof"
@@ -585,7 +589,7 @@ for url in args:
     consumer.append_url(url_data)
 
 ############################# check the urls ################################
-if do_profile:
+if do_profile and has_profile:
     run = True
     if os.path.exists(_profile):
         question = _("""Overwrite profiling file %r?
@@ -598,7 +602,6 @@ Press Ctrl-C to cancel, RETURN to continue.""") % _profile
             sys.stderr.write(os.linesep)
             run = False
     if run:
-        import profile
         profile.run("linkcheck.checker.check_urls(consumer)", _profile)
 else:
     try:
