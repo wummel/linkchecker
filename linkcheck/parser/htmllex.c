@@ -7124,14 +7124,14 @@ static yyconst flex_int32_t yy_rule_linenum[87] =
 
 /* reset buffer a to empty string */
 #define CLEAR_BUF(a) \
-    a = PyMem_Resize(a, char, 1); \
-    if (a==NULL) return T_ERROR; \
-    a[0] = '\0'
+    (a) = PyMem_Resize(a, char, 1); \
+    if ((a)==NULL) return T_ERROR; \
+    (a)[0] = '\0'
 
 /* make python string from tmp_buf and assign it to a */
 #define PYSTRING_TMP(a) \
-    a = PyString_FromString(yyextra->tmp_buf); \
-    if (a==NULL) return T_ERROR
+    (a) = PyString_FromString(yyextra->tmp_buf); \
+    if ((a)==NULL) return T_ERROR
 
 /* set return value from tmp_buf */
 #define SETLVAL {\
@@ -7144,8 +7144,8 @@ static yyconst flex_int32_t yy_rule_linenum[87] =
 /* append yytext to tmp_buf */
 #define APPEND_TO_TMP(n) {\
     int len = strlen(yyextra->tmp_buf); \
-    yyextra->tmp_buf = PyMem_Resize(yyextra->tmp_buf, char, len+n+1); \
-    strncat(yyextra->tmp_buf, yytext, n); \
+    yyextra->tmp_buf = PyMem_Resize(yyextra->tmp_buf, char, len+(n)+1); \
+    strncat(yyextra->tmp_buf, yytext, (n)); \
     }
 
 /* lowercase the tmp_buf */
