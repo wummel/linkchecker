@@ -61,6 +61,6 @@ url mailto:postmaster@aol.de
 name postmaster@aol.de
 warning No MX mail host for aol.de found
 valid
-url illegalquote1"
+url illegalquote1
 name no beginning quote
 error
