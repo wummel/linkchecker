@@ -6,7 +6,7 @@
     - write CSV column headers as the first data row
       (thanks to Hartmut Goebel)
     Type: feature
-    Changed: linkcheck/logger/csv.py
+    Changed: linkcheck/logger/csvlog.py
 
   * Support bzip-compressed man pages in RPM install script.
     From Hartmut Goebel.
