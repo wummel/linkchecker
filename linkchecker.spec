@@ -1,5 +1,5 @@
 %define name linkchecker
-%define version 1.12.0
+%define version 1.12.1
 %define release 1
 
 Summary: check HTML documents for broken links
