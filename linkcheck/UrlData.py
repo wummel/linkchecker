@@ -186,6 +186,7 @@ class UrlData (object):
         self.infoString = None
         self.valid = True
         self.url = None
+	self.urlparts = None
         self.line = line
         self.column = column
         self.name = name
