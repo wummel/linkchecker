@@ -406,6 +406,8 @@ class Configuration (dict):
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["quiet"] = cfgparser.getboolean(section, "quiet")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        try: self["status"] = cfgparser.getboolean(section, "status")
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
