@@ -173,6 +173,10 @@ class LinkFinder (TagFinder):
         for attr in tagattrs:
             if attr not in attrs:
                 continue
+            if tag == "meta":
+                refresh = attrs.get('http-equiv', u'').lower()
+                if refresh != 'refresh':
+                    continue
             # name of this link
             name = self.get_link_name(tag, attrs, attr)
             # possible codebase
