@@ -87,13 +87,13 @@
     for (i=0; i<yyleng; ++i) { \
         if (yytext[i] == '\n') { \
             ++(yyextra->lineno); \
-            yyextra->column = 0; \
+            yyextra->column = 1; \
         } \
         else ++(yyextra->column); \
     } \
 }
 
-/* return a token, adjusting the nextpos value */
+/* return a token, setting the nextpos value back to the bufpos */
 #define RETURN(tok) yyextra->nextpos = yyextra->bufpos; return tok
 
 /* XXX todo */

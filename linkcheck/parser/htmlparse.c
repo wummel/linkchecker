@@ -137,6 +137,11 @@ static int yyerror (char* msg) {
     if (buf==NULL) return NULL; \
     buf[0] = '\0'
 
+/* set old line and column */
+#define SET_OLD_LINECOL \
+    ud->last_lineno = ud->lineno; \
+    ud->last_column = ud->column
+
 /* parser type definition */
 typedef struct {
     PyObject_HEAD
@@ -188,7 +193,7 @@ typedef struct yyltype
 
 
 /* Line 213 of /usr/share/bison/yacc.c.  */
-#line 192 "htmlparse.c"
+#line 197 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
@@ -357,8 +362,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short yyrline[] =
 {
-       0,    97,    97,    98,   101,   102,   109,   146,   195,   228,
-     259,   290,   321,   352,   392,   432
+       0,   102,   102,   103,   106,   107,   114,   152,   202,   236,
+     268,   300,   332,   364,   405,   446
 };
 #endif
 
@@ -1007,22 +1012,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 97 "htmlparse.y"
+#line 102 "htmlparse.y"
     {}
     break;
 
   case 3:
-#line 98 "htmlparse.y"
+#line 103 "htmlparse.y"
     {}
     break;
 
   case 4:
-#line 101 "htmlparse.y"
+#line 106 "htmlparse.y"
     { YYACCEPT; /* wait for more lexer input */ }
     break;
 
   case 5:
-#line 103 "htmlparse.y"
+#line 108 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1032,7 +1037,7 @@ yyreduce:
     break;
 
   case 6:
-#line 110 "htmlparse.y"
+#line 115 "htmlparse.y"
     {
     /*  is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1068,11 +1073,12 @@ finish_start:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 7:
-#line 147 "htmlparse.y"
+#line 153 "htmlparse.y"
     {
     /*  is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1120,11 +1126,12 @@ finish_start_end:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 8:
-#line 196 "htmlparse.y"
+#line 203 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1156,11 +1163,12 @@ finish_end:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 9:
-#line 229 "htmlparse.y"
+#line 237 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1190,11 +1198,12 @@ finish_comment:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 10:
-#line 260 "htmlparse.y"
+#line 269 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1224,11 +1233,12 @@ finish_pi:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 11:
-#line 291 "htmlparse.y"
+#line 301 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1258,11 +1268,12 @@ finish_cdata:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 12:
-#line 322 "htmlparse.y"
+#line 333 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1292,11 +1303,12 @@ finish_doctype:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 13:
-#line 353 "htmlparse.y"
+#line 365 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1335,11 +1347,12 @@ finish_script:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 14:
-#line 393 "htmlparse.y"
+#line 406 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1378,11 +1391,12 @@ finish_style:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
   case 15:
-#line 433 "htmlparse.y"
+#line 447 "htmlparse.y"
     {
     /* Remember this is also called as a lexer error fallback */
     UserData* ud = yyget_extra(scanner);
@@ -1413,6 +1427,7 @@ finish_characters:
 	PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
 	YYABORT;
     }
+    SET_OLD_LINECOL;
 }
     break;
 
@@ -1420,7 +1435,7 @@ finish_characters:
     }
 
 /* Line 1016 of /usr/share/bison/yacc.c.  */
-#line 1424 "htmlparse.c"
+#line 1439 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1639,7 +1654,7 @@ yyreturn:
 }
 
 
-#line 466 "htmlparse.y"
+#line 481 "htmlparse.y"
 
 
 /* disable python memory interface */
@@ -1667,9 +1682,11 @@ static PyObject* htmlsax_parser(PyObject* self, PyObject* args) {
     p->userData->nextpos =
 	p->userData->bufpos =
 	p->userData->pos =
-	p->userData->pos =
-	p->userData->column = 0;
-    p->userData->lineno = 1;
+	p->userData->pos = 0;
+    p->userData->column =
+	p->userData->last_column =
+	p->userData->lineno =
+	p->userData->last_lineno = 1;
     NEW_BUF(p->userData->tmp_buf);
     p->userData->tmp_tag = p->userData->tmp_attrname =
 	p->userData->tmp_attrval = p->userData->tmp_attrs =
@@ -1694,8 +1711,8 @@ static void parser_dealloc (parser_object* self) {
 }
 
 
+/* flush parser buffers, isueing any remaining data as character data */
 static PyObject* parser_flush (parser_object* self, PyObject* args) {
-    /* flush parser buffers */
     int res=0;
     int len = strlen(self->userData->buf);
     if (!PyArg_ParseTuple(args, "")) {
@@ -1714,6 +1731,7 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
     self->userData->tmp_tag = self->userData->tmp_attrs =
 	self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     if (len > 0) {
+        // XXX set line, col
         int error = 0;
 	PyObject* s = PyString_FromString(self->userData->buf);
 	PyObject* callback = NULL;
@@ -1750,12 +1768,33 @@ static PyObject* parser_lineno (parser_object* self, PyObject* args) {
 }
 
 
+/* return the last parser line number */
+static PyObject* parser_last_lineno (parser_object* self, PyObject* args) {
+    if (!PyArg_ParseTuple(args, "")) {
+	PyErr_SetString(PyExc_TypeError, "no args required");
+        return NULL;
+    }
+    return Py_BuildValue("i", self->userData->last_lineno);
+}
+
+
+/* return the current parser column number */
 static PyObject* parser_column (parser_object* self, PyObject* args) {
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
     return Py_BuildValue("i", self->userData->column);
+}
+
+
+/* return the last parser column number */
+static PyObject* parser_last_column (parser_object* self, PyObject* args) {
+    if (!PyArg_ParseTuple(args, "")) {
+	PyErr_SetString(PyExc_TypeError, "no args required");
+        return NULL;
+    }
+    return Py_BuildValue("i", self->userData->last_column);
 }
 
 
@@ -1777,6 +1816,7 @@ static PyObject* parser_feed (parser_object* self, PyObject* args) {
 	PyErr_SetString(PyExc_TypeError, "string arg required");
 	return NULL;
     }
+
     /* parse */
     if (htmllexStart(self->scanner, self->userData, s, slen)!=0) {
 	PyErr_SetString(PyExc_MemoryError, "could not start scanner");
@@ -1815,9 +1855,11 @@ static PyObject* parser_reset(parser_object* self, PyObject* args) {
     RESIZE_BUF(self->userData->tmp_buf);
     self->userData->bufpos =
 	self->userData->pos =
-        self->userData->nextpos =
-	self->userData->column = 0;
-    self->userData->lineno = 1;
+	self->userData->nextpos = 0;
+    self->userData->column =
+	self->userData->last_column =
+	self->userData->lineno =
+	self->userData->last_lineno = 1;
     self->userData->tmp_tag = self->userData->tmp_attrs =
         self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     self->scanner = NULL;
@@ -1840,8 +1882,12 @@ static PyMethodDef parser_methods[] = {
     {"flush", (PyCFunction) parser_flush, METH_VARARGS},
     /* get the current line number */
     {"lineno", (PyCFunction) parser_lineno, METH_VARARGS},
+    /* get the last line number */
+    {"last_lineno", (PyCFunction) parser_last_lineno, METH_VARARGS},
     /* get the current column */
     {"column", (PyCFunction) parser_column, METH_VARARGS},
+    /* get the last column */
+    {"last_column", (PyCFunction) parser_last_column, METH_VARARGS},
     /* get the current scanner position */
     {"pos", (PyCFunction) parser_pos, METH_VARARGS},
     {NULL, NULL}

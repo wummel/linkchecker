@@ -50,9 +50,17 @@ class HtmlParser:
         """return current parser line number"""
         return self.parser.lineno()
 
+    def last_lineno (self):
+        """return parser line number of the last token"""
+        return self.parser.last_lineno()
+
     def column (self):
         """return current parser column"""
         return self.parser.column()
+
+    def last_column (self):
+        """return parser column of the last token"""
+        return self.parser.last_column()
 
     def pos (self):
         """return current parser buffer position"""
@@ -75,7 +83,7 @@ class HtmlPrinter (HtmlParser):
         return self._print
 
     def _print (self, *attrs):
-        print self.mem, attrs
+        print self.mem, attrs, self.last_lineno(), self.last_column()
 
 
 def _test():

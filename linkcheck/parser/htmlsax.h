@@ -29,8 +29,12 @@ typedef struct {
     unsigned int pos;
     /* line counter, counting from one */
     unsigned int lineno;
+    /* last value of line counter */
+    unsigned int last_lineno;
     /* column counter, counting from zero */
     unsigned int column;
+    /* last value of column counter */
+    unsigned int last_column;
     /* temporary vars */
     void* lexbuf;
     char* tmp_buf;
