@@ -117,18 +117,18 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # set the proxy, so a 407 status after this is an error
         self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
         if self.proxy:
-            self.add_info(_("Using Proxy %r") % self.proxy)
+            self.add_info(_("Using Proxy %r.") % self.proxy)
         self.headers = None
         self.auth = None
         self.cookies = []
         if not self.allows_robots(self.url):
             self.add_warning(
-                       _("Access denied by robots.txt, checked only syntax"))
+                       _("Access denied by robots.txt, checked only syntax."))
             return
 
         if _is_amazon(self.urlparts[1]):
             self.add_warning(_("Amazon servers block HTTP HEAD requests, "
-                                   "using GET instead"))
+                               "using GET instead."))
             self.method = "GET"
         else:
             # first try with HEAD
@@ -154,7 +154,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 self.set_proxy(self.headers.getheader("Location"))
-                self.add_info(_("Enforced Proxy %r") % self.proxy)
+                self.add_info(_("Enforced Proxy %r.") % self.proxy)
                 response = self._get_http_response()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
@@ -240,7 +240,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 newurl = unicode(newurl, "iso8859-1", "ignore")
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 newurl)
-            self.add_info(_("Redirected to %(url)s") % {'url': redirected})
+            self.add_info(_("Redirected to %(url)s.") % {'url': redirected})
             redirected, is_idn = linkcheck.url.url_norm(newurl)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
@@ -248,12 +248,12 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.extern = self._get_extern(redirected)
             if self.is_extern():
                 self.add_info(
-                          _("outside of domain filter, checked only syntax"))
+                          _("Outside of domain filter, checked only syntax."))
                 return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
                 self.add_warning(
-                       _("Access denied by robots.txt, checked only syntax"))
+                       _("Access denied by robots.txt, checked only syntax."))
                 return -1, response
             # see about recursive redirect
             all_seen = self.aliases + [self.cache_url_key]
@@ -330,7 +330,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             # store cookies for valid links
             if self.consumer.config['cookies']:
                 for c in self.cookies:
-                    self.add_info("Cookie: %s" % c)
+                    self.add_info("Cookie: %s." % c)
                 try:
                     out = self.consumer.cache.store_cookies(self.headers,
                                                             self.urlparts[1])
@@ -345,7 +345,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 self.set_result("OK")
         modified = self.headers.get('Last-Modified', '')
         if modified:
-            self.add_info(_("Last modified %s") % modified)
+            self.add_info(_("Last modified %s.") % modified)
 
     def _get_http_response (self):
         """Put request and return (status code, status text, mime object).

@@ -109,14 +109,14 @@ class NntpUrl (urlbase.UrlBase):
         if '@' in group:
             # request article
             resp, number, mid = nntp.stat("<"+group+">")
-            self.add_info(_('Articel number %s found') % number)
+            self.add_info(_('Articel number %s found.') % number)
         else:
             # split off trailing articel span
             group = group.split('/', 1)[0]
             if group:
                 # request group info
                 resp, count, first, last, name = nntp.group(group)
-                self.add_info(_("Group %s has %s articles, range %s to %s") %\
+                self.add_info(_("Group %s has %s articles, range %s to %s.")%\
                              (name, count, first, last))
             else:
                 # group name is the empty string

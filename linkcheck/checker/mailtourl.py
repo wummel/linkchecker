@@ -129,7 +129,7 @@ class MailtoUrl (urlbase.UrlBase):
                     linkcheck.log.debug(linkcheck.LOG_CHECK,
                                         "SMTP user info %r", info)
                     if info[0] == 250:
-                        self.add_info(_("Verified address: %(info)s") % \
+                        self.add_info(_("Verified address: %(info)s.") % \
                                      {'info': str(info[1])})
                 except smtplib.SMTPException, msg:
                     self.add_warning(

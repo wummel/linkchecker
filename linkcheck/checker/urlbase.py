@@ -323,7 +323,7 @@ class UrlBase (object):
             time.sleep(self.consumer.config['wait'])
         t = time.time()
         if self.is_extern():
-            self.add_info(_("outside of domain filter, checked only syntax"))
+            self.add_info(_("Outside of domain filter, checked only syntax."))
             return
 
         # check connection
