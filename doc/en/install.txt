@@ -68,6 +68,8 @@ Setup for Unix/Linux or Mac OS X
 
 2. Compile Python modules
    
+   Run ``python setup.py sdist --manifest-only`` to create the MANIFEST
+   file.
    Run ``python setup.py build`` to compile the Python files.
    For help about the setup.py script options, run
    ``python setup.py --help``.
@@ -133,7 +135,10 @@ Setup for Windows - compiling from source:
    Close the MSYS application (by typing ``exit``) and open a DOS command
    prompt.
    Change to the ``linkchecker-X.X.X`` directory and run
-   ``python setup.py build -c mingw32 bdist_wininst``.
+   ``python setup.py sdist --manifest-only`` to create the MANIFEST
+   file and
+   ``python setup.py build -c mingw32 bdist_wininst`` to build a
+   binary installer.
    
    This generates a binary installer
    ``dist\linkchecker-X.X.X.win32-py2.4.exe`` which you just have to

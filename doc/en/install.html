@@ -90,7 +90,9 @@ Psyco from <a class="reference" href="http://psyco.sourceforge.net/">http://psyc
 <p>Be sure to have installed all required Unix/Linux software listed above.</p>
 </li>
 <li><p class="first">Compile Python modules</p>
-<p>Run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span></tt> to compile the Python files.
+<p>Run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span> <span class="pre">--manifest-only</span></tt> to create the MANIFEST
+file.
+Run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span></tt> to compile the Python files.
 For help about the setup.py script options, run
 <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">--help</span></tt>.
 The CC environment variable is checked before compilation, so you can
@@ -149,7 +151,10 @@ directory, for example <tt class="docutils literal"><span class="pre">c:\Python2
 <p>Close the MSYS application (by typing <tt class="docutils literal"><span class="pre">exit</span></tt>) and open a DOS command
 prompt.
 Change to the <tt class="docutils literal"><span class="pre">linkchecker-X.X.X</span></tt> directory and run
-<tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">bdist_wininst</span></tt>.</p>
+<tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span> <span class="pre">--manifest-only</span></tt> to create the MANIFEST
+file and
+<tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">bdist_wininst</span></tt> to build a
+binary installer.</p>
 <p>This generates a binary installer
 <tt class="docutils literal"><span class="pre">dist\linkchecker-X.X.X.win32-py2.4.exe</span></tt> which you just have to
 execute.</p>
@@ -201,7 +206,7 @@ working</li>
 </div>
 <hr class="docutils footer" />
 <div class="footer">
-Generated on: 2005-03-15 23:27 UTC.
+Generated on: 2005-03-29 16:36 UTC.
 </div>
 </body>
 </html>
