@@ -28,12 +28,11 @@ try:
     import threading as _threading
 except ImportError:
     import dummy_threading as _threading
-import Queue, Threader
+import Threader
 
 Version = _linkchecker_configdata.version
 AppName = "LinkChecker"
 App = AppName+" "+Version
-UserAgent = AppName+"/"+Version
 Author =  _linkchecker_configdata.author
 HtmlAuthor = Author.replace(' ', '&nbsp;')
 Copyright = "Copyright © 2000-2004 "+Author
@@ -42,6 +41,7 @@ AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
 Url = _linkchecker_configdata.url
 Email = _linkchecker_configdata.author_email
+UserAgent = "%s/%s (%s; %s)" % (AppName, Version, Url, Email)
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
@@ -161,21 +161,24 @@ class Configuration (dict):
         }
         self['none'] = {}
         self['log'] = self.newLogger('text')
+        self.logLock = _threading.Lock()
         self["quiet"] = False
         self["warningregex"] = None
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER",None)
+        self["threads"] = True
         self.threader = Threader.Threader()
         self.setThreads(10)
         self.urlSeen = Set()
+        self.urlSeenLock = _threading.Lock()
         self.urlCache = LRU(MAX_URL_CACHE)
-        self.robotsTxtCache = LRU(MAX_ROBOTS_TXT_CACHE)
-        self["threads"] = True
-        self.urlsLock = _threading.Lock()
         self.urlCacheLock = _threading.Lock()
+        self.robotsTxtCache = LRU(MAX_ROBOTS_TXT_CACHE)
         self.robotsTxtCacheLock = _threading.Lock()
-        self.logLock = _threading.Lock()
-        self.urls = Queue.Queue(0)
+        self.urls = []
+        self.urlCounter = 0
+        self.urlsLock = _threading.Lock()
+        # basic data lock (eg for cookies, link numbers etc.)
         self.dataLock = _threading.Lock()
         self.cookies = LRU(MAX_COOKIES_CACHE)
 
@@ -226,11 +229,11 @@ class Configuration (dict):
 
 
     def hasMoreUrls (self):
-        return not self.urls.empty()
+        return self.urls
 
 
     def finished (self):
-        return self.threader.finished() and self.urls.empty()
+        return self.threader.finished() and not self.urls
 
 
     def finish (self):
@@ -238,17 +241,39 @@ class Configuration (dict):
 
 
     def appendUrl (self, urlData):
-        # check syntax
-        if not urlData.checkSyntax():
-            return
-        # check the cache
-        if not urlData.checkCache():
-            return
-        self.urls.put(urlData)
+        self.urlsLock.acquire()
+        try:
+            # check syntax
+            if not urlData.checkSyntax():
+                return
+            # check the cache
+            if not urlData.checkCache():
+                return
+            self.urlCounter += 1
+            if self.urlCounter==1000:
+                self.urlCounter = 0
+                self.filterUrlQueue()
+            self.urls.append(urlData)
+        finally:
+            self.urlsLock.release()
+
+
+    def filterUrlQueue (self):
+        """remove already cached urls from queue"""
+        # note: url lock must be acquired
+        olen = len(self.urls)
+        self.urls = [ u for u in self.urls if u.checkCache() ]
+        removed = olen - len(self.urls)
+        print >>sys.stderr, \
+          i18n._("removed %d cached urls from incoming queue")%removed
 
 
     def getUrl (self):
-        return self.urls.get()
+        self.urlsLock.acquire()
+        try:
+            return self.urls.pop()
+        finally:
+            self.urlsLock.release()
 
 
     def checkUrl (self, url):
@@ -256,19 +281,19 @@ class Configuration (dict):
 
 
     def urlSeen_has_key (self, key):
-        self.urlsLock.acquire()
+        self.urlSeenLock.acquire()
         try:
             return key in self.urlSeen
         finally:
-            self.urlsLock.release()
+            self.urlSeenLock.release()
 
 
     def urlSeen_set (self, key):
-        self.urlsLock.acquire()
+        self.urlSeenLock.acquire()
         try:
             self.urlSeen.add(key)
         finally:
-            self.urlsLock.release()
+            self.urlSeenLock.release()
 
 
     def urlCache_has_key (self, key):

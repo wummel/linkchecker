@@ -22,6 +22,11 @@
     easier reading
     Type: documentation
     Changed: linkchecker, linkchecker.1
+  * added contact url and email to the HTTP User-Agent string, which
+    gets us more accepted by some bot-blocking software; also see
+    http://www.livejournal.com/bots/
+    Type: feature
+    Changed: linkcheck/Config.py
 
 1.12.1 (release 21.2.2004)
   * raise IncompleteRead instead of ValueError on malformed chunked
