@@ -1,3 +1,9 @@
+linkchecker (1.13.5-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 20 Sep 2004 11:10:28 +0200
+
 linkchecker (1.13.4-1) unstable; urgency=medium
 
   * New upstream release, fixing serious bug. Medium urgency.
