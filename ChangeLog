@@ -2,6 +2,9 @@
   * Catch the maximum recursion limit error while parsing links and
     print an error message instead of bailing out.
     Changed files: linkcheck/UrlData.py
+  * Fixed Ctrl-C only interrupting one single thread, not the whole
+    program.
+    Changed files: linkcheck/UrlData.py, linkcheck/__init__.py
 
 1.6.4
   * Support for ftp proxies
