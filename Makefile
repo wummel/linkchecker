@@ -100,6 +100,11 @@ timeouttest:
 tar:	distclean
 	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
 
+releasecheck:
+	@if grep xxxx ChangeLog > /dev/null; then \
+	  echo "Could not release: edit ChangeLog release date"; false; \
+	fi
+
 pycheck:
 	-env PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYCHECKERFILES)
 
