@@ -87,8 +87,8 @@ class Logger (object):
 
     def encode (self, s):
         """
-        Encode string with configured output encoding. Encoding
-        errors are ignored.
+        Encode string with configured output encoding. Wrong encoded
+        characters are replaced.
 
         @param s: string to encode
         @type s: unicode
@@ -97,7 +97,7 @@ class Logger (object):
         """
         if not isinstance(s, unicode):
             raise ValueError("tried to encode non-unicode string %r" % s)
-        return s.encode(self.output_encoding, "ignore")
+        return s.encode(self.output_encoding, "replace")
 
     def check_date (self):
         """
