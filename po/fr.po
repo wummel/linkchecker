@@ -253,12 +253,6 @@ msgstr ""
 msgid "realurl"
 msgstr "Résultat"
 
-msgid "find: links are Mozilla-specific and will be ignored"
-msgstr ""
-
-msgid "chrome: links are Mozilla-specific and will be ignored"
-msgstr ""
-
 msgid "No adresses found"
 msgstr "Aucune adresse trouvée"
 
@@ -285,9 +279,6 @@ msgstr "Valide"
 
 msgid "hours"
 msgstr "heures"
-
-msgid "HTTPS url ignored"
-msgstr "Url Javascript ignorée"
 
 msgid "Start checking at %s\n"
 msgstr "Démarrage du controle à %s\n"

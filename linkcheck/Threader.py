@@ -19,17 +19,19 @@ from threading import *
 
 class Threader:
     "A thread generating class"
-    
+
     def __init__(self, num=5):
         self.maxThreads = num
         self.threads = []
-    
+
+
     def acquire(self):
         "Wait until we are allowed to start a new thread"
         while 1:
             self.reduceThreads()
             if len(self.threads) < self.maxThreads:
                 break
+
 
     def reduceThreads(self):
         for t in self.threads:

@@ -30,12 +30,15 @@ class HostCheckingUrlData(UrlData):
         self.host = None
         self.url = urlName
 
+
     def buildUrl(self):
         # to avoid anchor checking
         self.urlTuple=None
-        
+
+
     def getCacheKey(self):
-        return self.get_scheme()+":"+self.host
+        return "%s:%s" % (self.scheme, self.host)
+
 
     def checkConnection(self, config):
         ip = socket.gethostbyname(self.host)

@@ -115,7 +115,7 @@ CommentPatternEnd = re.compile("--\s*>")
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
-    
+
     def __init__(self, 
                  urlName, 
                  recursionLevel, 
@@ -143,19 +143,21 @@ class UrlData:
         self.data = None
         self.html_comments = []
         self.has_content = 0
-        
-        
+        url = get_absolute_url(self.urlName, self.baseRef, self.parentName)
+        self.scheme = url.split(":", 1)[0] or "unknown"
+
+
     def setError(self, s):
         self.valid=0
         self.errorString = _("Error")+": "+s
-        
+
     def setValid(self, s):
         self.valid=1
         self.validString = _("Valid")+": "+s
-        
+
     def isHtml(self):
         return 0
-        
+
     def setWarning(self, s):
         if self.warningString:
             self.warningString += "\n" + s
@@ -438,10 +440,6 @@ class UrlData:
         return name
 
 
-    def get_scheme(self):
-        return "none"
-
-
     def __str__(self):
         return ("%s link\n"
 	       "urlname=%s\n"
@@ -452,7 +450,7 @@ class UrlData:
 	       "urlConnection=%s\n"
 	       "line=%s\n"
 	       "name=%s" % \
-             (self.get_scheme(), self.urlName, self.parentName, self.baseRef,
+             (self.scheme, self.urlName, self.parentName, self.baseRef,
              self.cached, self.recursionLevel, self.urlConnection, self.line,
 	     self.name))
 
@@ -464,28 +462,31 @@ class UrlData:
         return None,None
 
 
-from ChromeUrlData import ChromeUrlData
 from FileUrlData import FileUrlData
-from FindUrlData import FindUrlData
+from IgnoredUrlData import IgnoredUrlData, ignored_schemes_re
 from FtpUrlData import FtpUrlData
 from GopherUrlData import GopherUrlData
 from HttpUrlData import HttpUrlData
 from HttpsUrlData import HttpsUrlData
-from JavascriptUrlData import JavascriptUrlData
 from MailtoUrlData import MailtoUrlData
 from TelnetUrlData import TelnetUrlData
 from NntpUrlData import NntpUrlData
 
-def GetUrlDataFrom(urlName, recursionLevel, parentName = None,
-                   baseRef = None, line = 0, name = None):
-    # search for the absolute url
-    url=""
+
+def get_absolute_url(urlName, baseRef, parentName):
+    """search for the absolute url"""
     if urlName and ":" in urlName:
-        url = urlName.lower()
+        return urlName.lower()
     elif baseRef and ":" in baseRef:
-        url = baseRef.lower()
+        return baseRef.lower()
     elif parentName and ":" in parentName:
-        url = parentName.lower()
+        return parentName.lower()
+    return ""
+
+
+def GetUrlDataFrom(urlName, recursionLevel, parentName=None,
+                   baseRef=None, line=0, name=None):
+    url = get_absolute_url(urlName, baseRef, parentName)
     # test scheme
     if re.search("^http:", url):
         klass = HttpUrlData
@@ -499,18 +500,13 @@ def GetUrlDataFrom(urlName, recursionLevel, parentName = None,
         klass = MailtoUrlData
     elif re.search("^gopher:", url):
         klass = GopherUrlData
-    elif re.search("^javascript:", url):
-        klass = JavascriptUrlData
     elif re.search("^https:", url):
         klass = HttpsUrlData
     elif re.search("^(s?news|nntp):", url):
         klass = NntpUrlData
-    # Mozillas Technology links start with "find:"
-    elif re.search("^find:", url):
-        klass = FindUrlData
-    # Mozilla Chrome URL
-    elif re.search("^chrome:", url):
-        klass = ChromeUrlData
+    # application specific links are ignored
+    elif ignored_schemes_re.search(url):
+        klass = IgnoredUrlData
     # assume local file
     else:
         klass = FileUrlData

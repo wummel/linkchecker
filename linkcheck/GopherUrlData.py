@@ -20,6 +20,4 @@ from linkcheck import _
 
 class GopherUrlData(UrlData):
     "Url link with gopher scheme"
-
-    def get_scheme(self):
-        return "gopher"
+    pass

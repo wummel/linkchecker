@@ -42,8 +42,8 @@ For single-letter option arguments the space is not a necessity. So
         Assume urls that match the given expression as extern.
         Only intern HTML links are checked recursively.
 -f file, --config=file
-        Use file as configuration file. LinkChecker first searches
-        ~/.linkcheckerrc and then /etc/linkcheckerrc
+        Use file as configuration file. Ad default LinkChecker first
+        searches /etc/linkcheckerrc and then ~/.linkcheckerrc
         (under Windows <path-to-program>\\linkcheckerrc).
 -F type[/filename], --file-output=type[/filename]
         Same as -o, but write to a file linkchecker-out.<type>

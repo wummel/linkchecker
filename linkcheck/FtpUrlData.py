@@ -30,7 +30,7 @@ class FtpUrlData(UrlData):
     """
     Url link with ftp scheme. 
     """
-    
+
     def checkConnection(self, config):
         _user, _password = self._getUserPassword(config)
         if _user is None or _password is None:
@@ -44,11 +44,9 @@ class FtpUrlData(UrlData):
             self.closeConnection()
             raise linkcheck.error, _("Got no answer from FTP server")
         self.setInfo(info)
-       
+
+
     def closeConnection(self):
         try: self.urlConnection.quit()
         except: pass
         self.urlConnection = None
-       
-    def get_scheme(self):
-        return "ftp"

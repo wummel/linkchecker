@@ -1,8 +1,13 @@
 linkchecker (1.3.12) unstable; urgency=low
 
   * use string methods where possible
+  * Add a lot more recognized URL schemes
+    (see http://www.w3.org/Addressing/schemes)
+    (Closes: #122163)
+  * merge all ignored schemes into one class
+  * New Python Policy (fixed in NMU) (Closes: #118254)
 
- -- Bastian Kleineidam <calvin@debian.org>  Sat,  1 Dec 2001 12:13:37 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 10 Dec 2001 14:03:48 +0100
 
 linkchecker (1.3.11) unstable; urgency=low
 

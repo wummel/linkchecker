@@ -31,12 +31,10 @@ class HttpsUrlData(HttpUrlData):
         h.connect(host)
         return h
 
+
     def check(self, config):
         if _supportHttps:
             HttpUrlData.check(self, config)
         else:
             self.setWarning(_("HTTPS url ignored"))
             self.logMe(config)
-
-    def get_scheme(self):
-        return "https"

@@ -26,9 +26,6 @@ class HttpUrlData(UrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
 
-    def get_scheme(self):
-        return "http"
-
     def checkConnection(self, config):
         """
         Check a URL with HTTP protocol.
@@ -71,7 +68,7 @@ class HttpUrlData(UrlData):
         | extension-code
         """
 
-        self._setProxy(config["proxy"].get(self.get_scheme()))
+        self._setProxy(config["proxy"].get(self.scheme))
         self.mime = None
         self.auth = None
         self.proxyauth = None

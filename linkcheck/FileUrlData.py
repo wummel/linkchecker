@@ -98,7 +98,3 @@ class FileUrlData(UrlData):
                     config.appendUrl(GetUrlDataFrom(url,
                         self.recursionLevel+1, self.url, None, lineno, name))
                 name = ""
-
-
-    def get_scheme(self):
-        return "file"

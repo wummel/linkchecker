@@ -31,8 +31,6 @@ class TelnetUrlData(HostCheckingUrlData):
             raise linkcheck.error, _("Illegal telnet link syntax")
         self.host = self.urlName[7:].lower()
 
-    def get_scheme(self):
-        return "telnet"
 
     def checkConnection(self, config):
         HostCheckingUrlData.checkConnection(self, config)

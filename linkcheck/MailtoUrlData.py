@@ -125,8 +125,4 @@ class MailtoUrlData(HostCheckingUrlData):
 
 
     def getCacheKey(self):
-        return self.get_scheme()+":"+str(self.adresses)
-
-
-    def get_scheme(self):
-        return "mailto"
+        return "%s:%s" % (self.scheme, str(self.adresses))
