@@ -1,7 +1,17 @@
-1.13.4 "" (released xx.xx.xxxx)
+1.13.4 "Shaun of the dead" (released xx.xx.xxxx)
   * Catch HTTP cookie errors and add a warning.
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
+
+  * fix up response page object in robots.txt parser for the upcoming
+    Python 2.4 release
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
+  * remove cached urls from progress queue, fixing endless wait for
+    checking to finish
+    Type: bugfix
+    Changed: linkcheck/checker/consumer.py
 
 1.13.3 "Fight Club" (released 10.9.2004)
   * Prevent collapsing of relative parent dir paths. This fixes false
