@@ -1,8 +1,18 @@
 1.8.19
   * add scheme colon in set_intern_url
-    Changed files: linkcheck/UrlData.py
+    Changed: linkcheck/UrlData.py
   * fix threading option -t
-    Changed files: linkchecker, linkcheck/Config.py
+    Changed: linkchecker, linkcheck/Config.py
+  * do not try to get content of urls that have no content (eg mail)
+    Closes: SF bug 765016
+    Changed: linkcheck/{Mailto,Nntp,Telnet,}UrlData.py
+  * added robots.txt FAQ
+    Removed: norobots-rfc.html
+    Changed: FAQ
+  * add iso-8859-1 coding line to all .py files
+    Changed: *.py
+  * Correctly quote the HTML output
+    Changed: linkcheck/log/HtmlLogger.py
 
 1.8.18
   * fix option error messages for invalid integer arguments

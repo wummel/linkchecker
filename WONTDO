@@ -1,7 +1,7 @@
 This is a list of things LinkChecker will *not* do for you.
 
 1) Support JavaScript
-   See the FAQ
+   See the FAQ, question Q5.
 
 2) Print unreachable/dead documents of your website.
    This would require
@@ -12,5 +12,5 @@ This is a list of things LinkChecker will *not* do for you.
    and look for missing files.
 
 3) HTML/XML syntax checking
-   Use the HTML tidy program from www.w3c.org.
+   Use the HTML tidy program from http://tidy.sourceforge.net/ .
 
