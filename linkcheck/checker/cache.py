@@ -18,6 +18,7 @@
 Store cached data during checking.
 """
 
+import time
 import Cookie
 try:
     import threading
