@@ -1,6 +1,6 @@
-# I copied the scripts in Tools/i18n of the Python 2.0 distribution
-I18NTOOLS=.
+# we use the scripts in Tools/i18n of the Python 2.3 distribution
 PYTHON=python2.2
+I18NTOOLS=.
 GETTEXT=$(PYTHON) $(I18NTOOLS)/pygettext.py -k i18n._
 MSGFMT=$(PYTHON) $(I18NTOOLS)/msgfmt.py
 #MSGFMT=msgfmt
@@ -35,6 +35,7 @@ SOURCES=\
 ../linkcheck/linkname.py \
 ../linkcheck/linkparse.py \
 ../linkchecker
+
 LDIR=../share/locale
 LFILE=LC_MESSAGES/$(PACKAGE).mo
 PACKAGE=linkcheck
@@ -42,7 +43,6 @@ PACKAGE=linkcheck
 LANGUAGES=de fr nl
 MOS=$(patsubst %, %.mo, $(LANGUAGES) )
 
-.PHONY: all
 all:	$(MOS)
 
 %.po:	pot-stamp
@@ -66,4 +66,3 @@ distclean:	clean
 	rm -f pot-stamp
 
 .PHONY: all clean distclean
-

@@ -16,48 +16,7 @@
 
 import sys
 from StandardLogger import StandardLogger
-from linkcheck import StringUtil, i18n
-
-AnsiType = {
-    'bold': "1",
-    'light': "2",
-    'blink': "5",
-    'invert': "7",
-}
-
-AnsiColor = {
-  'default': '0',
-  'black': "30",
-  'red': "31",
-  'green': "32",
-  'yellow': "33",
-  'blue': "34",
-  'purple': "35",
-  'cyan': "36",
-  'white': "37",
-  'Black': "40",
-  'Red': "41",
-  'Green': "42",
-  'Yellow': "43",
-  'Blue': "44",
-  'Purple': "45",
-  'Cyan': "46",
-  'White': "47",
-}
-
-def col_num (s):
-    type = ""
-    if ";" in s:
-        type, s = s.split(";", 1)
-        if not AnsiType.has_key(type):
-            print >>sys.stderr, "invalid ansi type", `type`
-            print >>sys.stderr, "valid values are", AnsiType.keys()
-        type = AnsiType[type]+";"
-    if not AnsiColor.has_key(s):
-        print >>sys.stderr, "invalid ansi color", `s`
-        print >>sys.stderr, "valid values are", AnsiColor.keys()
-    s = AnsiColor[s]
-    return type+s
+from linkcheck import StringUtil, i18n, AnsiColor
 
 
 class ColoredLogger (StandardLogger):
@@ -65,19 +24,18 @@ class ColoredLogger (StandardLogger):
 
     def __init__ (self, **args):
         StandardLogger.__init__(self, **args)
-        esc="\x1b[%sm"
-        self.colorparent = esc % col_num(args['colorparent'])
-        self.colorurl = esc % col_num(args['colorurl'])
-        self.colorname = esc % col_num(args['colorname'])
-        self.colorreal = esc % col_num(args['colorreal'])
-        self.colorbase = esc % col_num(args['colorbase'])
-        self.colorvalid = esc % col_num(args['colorvalid'])
-        self.colorinvalid = esc % col_num(args['colorinvalid'])
-        self.colorinfo = esc % col_num(args['colorinfo'])
-        self.colorwarning = esc % col_num(args['colorwarning'])
-        self.colordltime = esc % col_num(args['colordltime'])
-        self.colordlsize = esc % col_num(args['colordlsize'])
-        self.colorreset = esc % col_num(args['colorreset'])
+        self.colorparent = AnsiColor.esc_ansicolor(args['colorparent'])
+        self.colorurl = AnsiColor.esc_ansicolor(args['colorurl'])
+        self.colorname = AnsiColor.esc_ansicolor(args['colorname'])
+        self.colorreal = AnsiColor.esc_ansicolor(args['colorreal'])
+        self.colorbase = AnsiColor.esc_ansicolor(args['colorbase'])
+        self.colorvalid = AnsiColor.esc_ansicolor(args['colorvalid'])
+        self.colorinvalid = AnsiColor.esc_ansicolor(args['colorinvalid'])
+        self.colorinfo = AnsiColor.esc_ansicolor(args['colorinfo'])
+        self.colorwarning = AnsiColor.esc_ansicolor(args['colorwarning'])
+        self.colordltime = AnsiColor.esc_ansicolor(args['colordltime'])
+        self.colordlsize = AnsiColor.esc_ansicolor(args['colordlsize'])
+        self.colorreset = AnsiColor.esc_ansicolor(args['colorreset'])
         self.currentPage = None
         self.prefix = 0
 

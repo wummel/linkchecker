@@ -16,6 +16,8 @@
     Changed files: all .py files using i18n
   * Recognise "<! --" HTML comments
     Changed files: linkcheck/parser/htmllex.l
+  * -a anchor option implies -w because anchor errors are always warnings
+    Changed files: linkchecker
 
 1.8.2
   * - ignore invalid html attribute characters

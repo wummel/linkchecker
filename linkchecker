@@ -39,6 +39,7 @@ For single-letter option arguments the space is not a necessity. So
 '-o colored' is the same as '-ocolored'.
 -a, --anchors
         Check HTTP anchor references. Default is don't check anchors.
+        This option implies -w because anchor errors are always warnings.
 -C, --cookies
         Accept and send HTTP cookies according to RFC 2109. Only cookies
         which are sent back to the originating server are accepted.
@@ -257,6 +258,7 @@ do_profile = 0
 for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
         config["anchors"] = 1
+        config["warnings"] = 1
 
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append(linkcheck.getLinkPat(arg))

@@ -32,7 +32,7 @@ debug = Config.debug
 
 # helper function for internal errors
 def internal_error ():
-    print >> sys.stderr, i18n._("""\n********** Oops, I did it again. *************
+    print >>sys.stderr, i18n._("""\n********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
@@ -46,22 +46,22 @@ I will try to help you nontheless (but you have to give me *something*
 I can work with ;).
 """) % Config.Email
     type,value = sys.exc_info()[:2]
-    print >> sys.stderr, type, value
+    print >>sys.stderr, type, value
     traceback.print_exc()
     print_app_info()
-    print >> sys.stderr, i18n._("\n******** LinkChecker internal error, bailing out ********")
+    print >>sys.stderr, i18n._("\n******** LinkChecker internal error, bailing out ********")
     sys.exit(1)
 
 
 def print_app_info ():
     import os
-    print >> sys.stderr, i18n._("System info:")
-    print >> sys.stderr, Config.App
-    print >> sys.stderr, "Python %s on %s" % (sys.version, sys.platform)
+    print >>sys.stderr, i18n._("System info:")
+    print >>sys.stderr, Config.App
+    print >>sys.stderr, "Python %s on %s" % (sys.version, sys.platform)
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
         value = os.getenv(key)
         if value is not None:
-            print >> sys.stderr, key, "=", `value`
+            print >>sys.stderr, key, "=", `value`
 
 
 def get_absolute_url (urlName, baseRef, parentName):
