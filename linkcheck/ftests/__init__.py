@@ -21,6 +21,7 @@ import unittest
 import difflib
 
 import linkcheck
+linkcheck.init_i18n()
 import linkcheck.checker
 import linkcheck.checker.cache
 import linkcheck.checker.consumer
