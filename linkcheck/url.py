@@ -353,7 +353,7 @@ def match_url (url, domainlist):
        list"""
     if not url:
         return False
-    return match_host(spliturl(url)[1], domainlist)
+    return match_host(url_split(url)[1], domainlist)
 
 
 def match_host (host, domainlist):
@@ -384,7 +384,7 @@ def url_needs_quoting (url):
     return not _safe_url_chars_ro.match(url)
 
 
-def spliturl (url):
+def url_split (url):
     """Split url in a tuple (scheme, hostname, port, document) where
        hostname is always lowercased.
        Precondition: url is syntactically correct URI (eg has no whitespace)
@@ -396,3 +396,8 @@ def spliturl (url):
         host = host.lower()
         host, port = urllib.splitnport(host, port)
     return scheme, host, port, document
+
+
+def url_unicode_split (url):
+    """Like urlparse.urlsplit(), but always returning unicode parts."""
+    return [unicode(s) for s in urlparse.urlsplit(url)]
