@@ -2,6 +2,8 @@
   * All amazon servers block HEAD requests with timeouts. Use GET as
     a workaround, but issue a warning.
     Changed files: linkcheck/HttpUrlData.py
+  * restrict CGI access to localhost per default
+    Changed files: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py
 
 1.8.7
   * #define YY_NO_UNISTD_H on Windows systems, fixes build error with
