@@ -47,7 +47,7 @@ AppInfo = App+u"              "+Copyright
 HtmlAppInfo = App+u", "+HtmlCopyright
 Url = _linkchecker_configdata.url
 Email = _linkchecker_configdata.author_email
-UserAgent = u"%s/%s (%s; %s)" % (AppName, Version, Url, Email)
+UserAgent = u"%s/%s (+%s)" % (AppName, Version, Url)
 Freeware = AppName+u""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
