@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Mon Aug 11 14:46:19 2003\n"
+"POT-Creation-Date: Mon Aug 11 14:51:19 2003\n"
 "PO-Revision-Date: 2003-08-07 12:16+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -253,8 +253,7 @@ msgid "Get the newest version at %s%s"
 msgstr "Die neueste Version gibt es unter %s%s"
 
 msgid "Write comments and bugs to %s%s%s"
-msgstr ""
-"Schreiben Sie Kommentare und Fehler an %s%s%s"
+msgstr "Schreiben Sie Kommentare und Fehler an %s%s%s"
 
 msgid "# Format of the entries:"
 msgstr "# Format der Einträge:"

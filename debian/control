@@ -7,7 +7,7 @@ Standards-Version: 3.6.0
 
 Package: linkchecker
 Architecture: any
-Depends: ${python:Depends}
+Depends: python (>= 2.3), python (<< 2.4)
 Conflicts: linkchecker-ssl
 Suggests: httpd
 Description: check HTML documents for broken links
