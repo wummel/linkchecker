@@ -2,6 +2,7 @@ linkchecker (2.0-1) unstable; urgency=low
 
   * New upstream release.
   * use cdbs for package compilation
+  * use ${python:Depends}
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 24 Nov 2004 11:17:34 +0100
 
