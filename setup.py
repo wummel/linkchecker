@@ -99,7 +99,7 @@ class MyInstall (install, object):
         outs.append(self.distribution.get_conf_filename(self.install_lib))
         return outs
 
-    # compatibility bugfix for Python << 2.5
+    # compatibility bugfix for Python << 2.5, << 2.4.1, << 2.3.5
     def dump_dirs (self, msg):
         if DEBUG:
             from distutils.fancy_getopt import longopt_xlate
@@ -316,7 +316,18 @@ o a (Fast)CGI web interface (requires HTTP server)
                   define_macros = define_macros,
                   include_dirs = include_dirs + \
                                   [normpath("linkcheck/HtmlParser")],
-                  )],
+                  ),
+                  Extension("linkcheck.ftpparse._ftpparse",
+                        ["linkcheck/ftpparse/_ftpparse.c",
+                         "linkcheck/ftpparse/ftpparse.c"],
+                  extra_compile_args = extra_compile_args,
+                  library_dirs = library_dirs,
+                  libraries = libraries,
+                  define_macros = define_macros,
+                  include_dirs = include_dirs + \
+                                  [normpath("linkcheck/ftpparse")],
+                         ),
+                 ],
        scripts = scripts,
        data_files = data_files,
        classifiers = [

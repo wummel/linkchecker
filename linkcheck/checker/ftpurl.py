@@ -27,7 +27,7 @@ import linkcheck
 import urlbase
 import proxysupport
 import httpurl
-
+import linkcheck.ftpparse._ftpparse as ftpparse
 
 class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     """
@@ -105,7 +105,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         except EOFError, msg:
             msg = str(msg)
             raise linkcheck.LinkCheckerError(
-                           _("Remote host has closed connection: %s") % msg)
+                           _("Remote host has closed connection: %r") % msg)
         if not self.url_connection.getwelcome():
             self.close_connection()
             raise linkcheck.LinkCheckerError(
@@ -154,27 +154,19 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         Get list of filenames in directory. Subdirectories have an
         ending slash.
         """
-        # Rudimentary LIST output parsing. An entry is assumed to have
-        # the following form:
-        # drwxr-xr-x   8 root     wheel        1024 Jan  3  1994 foo
-        # Symbolic links are assumed to have the following form:
-        # drwxr-xr-x   8 root     wheel        1024 Jan  3  1994 foo -> bar
         files = []
         def add_entry (line):
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Directory entry %r",
                                 line)
-            parts = line.split()
-            if len(parts) >= 8:
-                if parts[-2] == "->":
-                    # symbolic link
-                    fname = parts[-3]
-                else:
-                    fname = parts[-1]
-                if fname not in (".", ".."):
-                    if line.startswith("d"):
-                        # a directory
-                        fname += "/"
-                    files.append(fname)
+            try:
+                fpo = ftpparse.parse(line)
+                name = fpo.name
+                if fpo.trycwd:
+                    name += "/"
+                if fpo.trycwd or fpo.tryretr:
+                    files.append(name)
+            except (ValueError, AttributeError), msg:
+                print "XXX", msg
         self.url_connection.dir(add_entry)
         return files
 
