@@ -18,6 +18,10 @@
     when checking large websites, since a majority of the links tend
     to be navigation links to already-cached pages.
     Type: note
+  * updated examples and put them before options in the man page for
+    easier reading
+    Type: documentation
+    Changed: linkchecker, linkchecker.1
 
 1.12.1 (release 21.2.2004)
   * raise IncompleteRead instead of ValueError on malformed chunked
