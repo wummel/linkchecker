@@ -20,19 +20,16 @@ __version__ = "$Revision$"[11:-2]
 __date__    = "$Date$"[7:-2]
 
 import sys
-try:
-    import htmlsax
-except ImportError, msg:
-    exctype, value = sys.exc_info()[:2]
-    print >>sys.stderr, "Could not import the parser module `htmlsax':", value
-    print >>sys.stderr, "Please check your installation of LinkChecker."
-    sys.exit(1)
 
 
 class HtmlPrinter (object):
     """handles all functions by printing the function name and attributes"""
+    def __init__ (self, fd=sys.stdout):
+        self.fd = fd
+
+
     def _print (self, *attrs):
-        print self.mem, attrs
+        print >> self.fd, self.mem, attrs
 
 
     def _errorfun (self, msg, name):
@@ -61,43 +58,46 @@ class HtmlPrinter (object):
         return self._print
 
 
+class HtmlPrettyPrinter (object):
+    def __init__ (self, fd=sys.stdout):
+        self.fd = fd
+
+
+    def comment (self, data):
+        self.fd.write("<!--%s-->" % data)
+
+
+    def startElement (self, tag, attrs):
+        self.fd.write("<%s"%tag.replace("/", ""))
+        for key, val in attrs.iteritems():
+            if val is None:
+                self.fd.write(" %s"%key)
+            else:
+                self.fd.write(" %s=\"%s\"" % (key, quote_attrval(val)))
+        self.fd.write(">")
+
+
+    def endElement (self, tag):
+        self.fd.write("</%s>" % tag)
+
+
+    def doctype (self, data):
+        self.fd.write("<!DOCTYPE%s>" % data)
+
+
+    def pi (self, data):
+        self.fd.write("<?%s?>" % data)
+
+
+    def cdata (self, data):
+        self.fd.write("<![CDATA[%s]]>"%data)
+
+
+    def characters (self, data):
+        self.fd.write(data)
+
+
 def quote_attrval (val):
     """quote a HTML attribute to be able to wrap it in double quotes"""
     return val.replace('"', '&quot;')
 
-
-def _test():
-    p = htmlsax.parser(HtmlPrinter())
-    p.feed("<hTml>")
-    p.feed("<a href>")
-    p.feed("<a href=''>")
-    p.feed('<a href="">')
-    p.feed("<a href='a'>")
-    p.feed('<a href="a">')
-    p.feed("<a href=a>")
-    p.feed("<a href='\"'>")
-    p.feed("<a href=\"'\">")
-    p.feed("<a href=' '>")
-    p.feed("<a href=a href=b>")
-    p.feed("<a/>")
-    p.feed("<a href/>")
-    p.feed("<a href=a />")
-    p.feed("</a>")
-    p.feed("<?bla foo?>")
-    p.feed("<?bla?>")
-    p.feed("<!-- - comment -->")
-    p.feed("<!---->")
-    p.feed("<!DOCTYPE \"vla foo>")
-    p.flush()
-
-def _broken ():
-    p = htmlsax.parser(HtmlPrinter())
-    # turn on debugging
-    p.debug(1)
-    p.feed("""<base href="http://www.msnbc.com/news/">""")
-    p.flush()
-
-
-if __name__ == '__main__':
-    #_test()
-    _broken()

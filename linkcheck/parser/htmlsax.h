@@ -66,10 +66,12 @@ typedef struct {
     PyObject* tmp_attrname;
     /* temporary HTML start tag attribute value */
     PyObject* tmp_attrval;
-    /* temporary HTML start tag attribute list */
+    /* temporary HTML start tag attribute list (a SortedDict) */
     PyObject* tmp_attrs;
     /* parser.resolve_entities */
     PyObject* resolve_entities;
+    /* parser.SortedDict */
+    PyObject* sorted_dict;
     /* stored Python exception (if error occurred in scanner) */
     PyObject* exc_type;
     PyObject* exc_val;
