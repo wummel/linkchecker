@@ -41,13 +41,11 @@ import Config, StringUtil
 import linkcheck
 _ = linkcheck._
 
-# HTML shortcuts
-RowEnd="</td></tr>\n"
-
 # keywords
 KeyWords = ["Real URL",
     "Result",
     "Base",
+    "Name",
     "Parent URL",
     "Info",
     "Warning",
@@ -109,44 +107,46 @@ class StandardLogger:
         self.fd.flush()
 
 
-    def newUrl(self, urldata):
-        self.fd.write("\n"+_("URL")+Spaces["URL"]+urldata.urlName)
-        if urldata.cached:
+    def newUrl(self, urlData):
+        self.fd.write("\n"+_("URL")+Spaces["URL"]+urlData.urlName)
+        if urlData.cached:
             self.fd.write(_(" (cached)\n"))
         else:
             self.fd.write("\n")
-        if urldata.parentName:
+        if urlData.name:
+            self.fd.write(_("Name")+Spaces["Name"]+urlData.name+"\n")
+        if urlData.parentName:
             self.fd.write(_("Parent URL")+Spaces["Parent URL"]+
-	                  urldata.parentName+_(", line ")+
-	                  str(urldata.line)+"\n")
-        if urldata.baseRef:
-            self.fd.write(_("Base")+Spaces["Base"]+urldata.baseRef+"\n")
-        if urldata.url:
-            self.fd.write(_("Real URL")+Spaces["Real URL"]+urldata.url+"\n")
-        if urldata.downloadtime:
+	                  urlData.parentName+_(", line ")+
+	                  str(urlData.line)+"\n")
+        if urlData.baseRef:
+            self.fd.write(_("Base")+Spaces["Base"]+urlData.baseRef+"\n")
+        if urlData.url:
+            self.fd.write(_("Real URL")+Spaces["Real URL"]+urlData.url+"\n")
+        if urlData.downloadtime:
             self.fd.write(_("D/L Time")+Spaces["D/L Time"]+
-	                  _("%.3f seconds\n") % urldata.downloadtime)
-        if urldata.checktime:
+	                  _("%.3f seconds\n") % urlData.downloadtime)
+        if urlData.checktime:
             self.fd.write(_("Check Time")+Spaces["Check Time"]+
-	                  _("%.3f seconds\n") % urldata.checktime)
-        if urldata.infoString:
+	                  _("%.3f seconds\n") % urlData.checktime)
+        if urlData.infoString:
             self.fd.write(_("Info")+Spaces["Info"]+
 	                  StringUtil.indent(
-                          StringUtil.blocktext(urldata.infoString, 65),
+                          StringUtil.blocktext(urlData.infoString, 65),
 			  MaxIndent)+"\n")
-        if urldata.warningString:
+        if urlData.warningString:
             self.warnings = self.warnings+1
             self.fd.write(_("Warning")+Spaces["Warning"]+
 	                  StringUtil.indent(
-                          StringUtil.blocktext(urldata.warningString, 65),
+                          StringUtil.blocktext(urlData.warningString, 65),
 			  MaxIndent)+"\n")
         
         self.fd.write(_("Result")+Spaces["Result"])
-        if urldata.valid:
-            self.fd.write(urldata.validString+"\n")
+        if urlData.valid:
+            self.fd.write(urlData.validString+"\n")
         else:
             self.errors = self.errors+1
-            self.fd.write(urldata.errorString+"\n")
+            self.fd.write(urlData.errorString+"\n")
         self.fd.flush()
 
 
@@ -207,7 +207,7 @@ class HtmlLogger(StandardLogger):
               "body { font-family: Arial,sans-serif; font-size: 11pt }\n"
               "td   { font-family: Arial,sans-serif; font-size: 11pt }\n"
               "code { font-family: Courier }\n"
-              "a:hover      { color: #34a4ef }\n"
+              "a:hover { color: #34a4ef }\n"
 	      "//-->\n</style>\n</head>\n"+
               "<body bgcolor="+self.colorbackground+" link="+self.colorlink+
               " vlink="+self.colorlink+" alink="+self.colorlink+">"+
@@ -224,47 +224,53 @@ class HtmlLogger(StandardLogger):
               '><tr><td><table align="left" border="0" cellspacing="0"'
               ' cellpadding="3" summary="checked link" bgcolor='+
 	      self.colorbackground+
-              "><tr><td bgcolor="+self.colorurl+">"+
-              "URL</td><td bgcolor="+self.colorurl+">"+urlData.urlName)
+              "><tr><td bgcolor="+self.colorurl+">"+_("URL")+
+              "</td><td bgcolor="+self.colorurl+">"+urlData.urlName)
         if urlData.cached:
             self.fd.write(_(" (cached)\n"))
-        self.fd.write(RowEnd)
-        
+        self.fd.write("</td></tr>\n")
+        if urlData.name:
+            self.fd.write("<tr><td>"+_("Name")+"</td><td>"+
+                          urlData.name+"</td></tr>\n")
         if urlData.parentName:
             self.fd.write("<tr><td>"+_("Parent URL")+"</td><td>"+
 			  '<a href="'+urlData.parentName+'">'+
                           urlData.parentName+"</a> line "+str(urlData.line)+
-                          RowEnd)
+                          "</td></tr>\n")
         if urlData.baseRef:
             self.fd.write("<tr><td>"+_("Base")+"</td><td>"+
-	                  urlData.baseRef+RowEnd)
+	                  urlData.baseRef+"</td></tr>\n")
         if urlData.url:
             self.fd.write("<tr><td>"+_("Real URL")+"</td><td>"+
 	                  "<a href=\""+urlData.url+
-			  '">'+urlData.url+"</a>"+RowEnd)
+			  '">'+urlData.url+"</a></td></tr>\n")
         if urlData.downloadtime:
             self.fd.write("<tr><td>"+_("D/L Time")+"</td><td>"+
-	                  (_("%.3f seconds") % urlData.downloadtime)+RowEnd)
+	                  (_("%.3f seconds") % urlData.downloadtime)+
+			  "</td></tr>\n")
         if urlData.checktime:
             self.fd.write("<tr><td>"+_("Check Time")+
 	                  "</td><td>"+
-			  (_("%.3f seconds") % urlData.checktime)+RowEnd)
+			  (_("%.3f seconds") % urlData.checktime)+
+			  "</td></tr>\n")
         if urlData.infoString:
             self.fd.write("<tr><td>"+_("Info")+"</td><td>"+
-	                  StringUtil.htmlify(urlData.infoString)+RowEnd)
+	                  StringUtil.htmlify(urlData.infoString)+
+			  "</td></tr>\n")
         if urlData.warningString:
             self.warnings = self.warnings+1
             self.fd.write("<tr>"+self.tablewarning+_("Warning")+
 	                  "</td>"+self.tablewarning+
-			  urlData.warningString+RowEnd)
+                          string.replace(urlData.warningString,"\n", "<br>")+
+			  "</td></tr>\n")
         if urlData.valid:
             self.fd.write("<tr>"+self.tableok+_("Result")+"</td>"+
-	                  self.tableok+urlData.validString+RowEnd)
+	                  self.tableok+urlData.validString+"</td></tr>\n")
         else:
             self.errors = self.errors+1
             self.fd.write("<tr>"+self.tableerror+_("Result")+
 	                  "</td>"+self.tableerror+
-			  urlData.errorString++RowEnd)
+			  urlData.errorString+"</td></tr>\n")
 
         self.fd.write("</table></td></tr></table><br clear=all><br>")
         self.fd.flush()
@@ -316,6 +322,7 @@ class ColoredLogger(StandardLogger):
         apply(StandardLogger.__init__, (self,), args)
         self.colorparent = args['colorparent']
         self.colorurl = args['colorurl']
+        self.colorname = args['colorname']
         self.colorreal = args['colorreal']
         self.colorbase = args['colorbase']
         self.colorvalid = args['colorvalid']
@@ -354,7 +361,12 @@ class ColoredLogger(StandardLogger):
             self.fd.write(_(" (cached)\n"))
         else:
             self.fd.write("\n")
-            
+
+        if urlData.name:
+            if self.prefix:
+                self.fd.write("|  ")
+            self.fd.write(_("Name")+Spaces["Name"]+self.colorname+
+                          urlData.name+self.colorreset+"\n")
         if urlData.baseRef:
             if self.prefix:
                 self.fd.write("|  ")
@@ -590,8 +602,8 @@ class SQLLogger(StandardLogger):
     def newUrl(self, urlData):
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infoString,"
-	      "valid,url,line,checktime,downloadtime,cached) values "
-              "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%d,%d)%s\n" % \
+	      "valid,url,line,name,checktime,downloadtime,cached) values "
+              "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%s,%d,%d,%d)%s\n" % \
 	      (self.dbname,
 	       StringUtil.sqlify(urlData.urlName),
                urlData.recursionLevel,
@@ -604,6 +616,7 @@ class SQLLogger(StandardLogger):
                urlData.valid,
                StringUtil.sqlify(urlData.url),
                urlData.line,
+               StringUtil.sqlify(urlData.name),
                urlData.checktime,
                urlData.downloadtime,
                urlData.cached,
@@ -682,6 +695,7 @@ class CSVLogger(StandardLogger):
                       "# valid;\n"
                       "# url;\n"
                       "# line;\n"
+                      "# name;\n"
                       "# downloadtime;\n"
                       "# checktime;\n"
                       "# cached;\n")
@@ -689,7 +703,7 @@ class CSVLogger(StandardLogger):
 
     def newUrl(self, urlData):
         self.fd.write(
-	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%d%s%d\n" % (
+	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%d%s%d\n" % (
 	    urlData.urlName, self.separator,
 	    urlData.recursionLevel, self.separator,
 	    urlData.parentName, self.separator,
@@ -701,6 +715,7 @@ class CSVLogger(StandardLogger):
             urlData.valid, self.separator,
             urlData.url, self.separator,
             urlData.line, self.separator,
+            urlData.name, self.separator,
             urlData.downloadtime, self.separator,
             urlData.checktime, self.separator,
             urlData.cached))

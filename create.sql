@@ -14,5 +14,6 @@ create table linksdb (
     valid          int,
     url            varchar(50),
     line           int,
+    name           varchar(50),
     cached         int
 );

@@ -23,13 +23,11 @@ from linkcheck import _
 class HostCheckingUrlData(UrlData):
     "Url link for which we have to connect to a specific host"
 
-    def __init__(self,
-                 urlName, 
-                 recursionLevel, 
-                 parentName = None,
-                 baseRef = None, line=0):
+    def __init__(self, urlName, recursionLevel, parentName = None,
+                 baseRef = None, line=0, name=""):
         UrlData.__init__(self, urlName, recursionLevel,
-	                 parentName=parentName, baseRef=baseRef, line=line)
+	                 parentName=parentName, baseRef=baseRef, line=line,
+			 name=name)
         self.host = None
         self.url = urlName
 

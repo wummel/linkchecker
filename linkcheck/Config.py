@@ -124,6 +124,7 @@ class Configuration(UserDict.UserDict):
             "filename":     "linkchecker-out.ansi",
             'colorparent':  ESC+"[37m",   # white
             'colorurl':     ESC+"[0m",    # standard
+            'colorname':    ESC+"[0m",    # standard
             'colorreal':    ESC+"[36m",   # cyan
             'colorbase':    ESC+"[35m",   # magenty
             'colorvalid':   ESC+"[1;32m", # green

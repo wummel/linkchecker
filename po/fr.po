@@ -122,6 +122,9 @@ msgstr "secondes"
 msgid "URL"
 msgstr ""
 
+msgid "Name"
+msgstr ""
+
 msgid "URL is null or empty"
 msgstr "L'URL est nulle ou vide"
 

@@ -45,7 +45,7 @@ package:
 	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz
 
 files:	locale
-	./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/~calvin/
+	env http_proxy="" ./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/~calvin/
 
 VERSION:
 	echo $(VERSION) > VERSION

@@ -15,24 +15,17 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import string,re,sys
+import string,re,sys,htmlentitydefs
 
-HtmlTable = [
-        ("ה","&auml;"),
-        ("צ","&ouml;"),
-        ("ü","&uuml;"),
-        ("ִ","&Auml;"),
-        ("ײ","&Ouml;"),
-        ("Ü","&Uuml;"),
-        ("ß","&szlig;"),
-        ("&","&amp;"),
-        ("<","&lt;"),
-        (">","&gt;"),
-        ("י","&eacute;"),
-        ("ט","&egrave;"),
-        ("א","&agrave;"),
-        ("ח","&ccedil;"),
-    ]
+HtmlTable = []
+UnHtmlTable = []
+for ent,ch in htmlentitydefs.entitydefs.items():
+    HtmlTable.append((ch, "&"+ent+";"))
+    UnHtmlTable.append(("&"+ent+";", ch))
+# order matters!
+HtmlTable.sort()
+UnHtmlTable.sort()
+UnHtmlTable.reverse()
 
 SQLTable = [
     ("'","''")
@@ -160,6 +153,8 @@ def htmlify(str):
     "Escape special HTML chars and strings"
     return applyTable(HtmlTable, str)
 
+def unhtmlify(str):
+    return applyTable(UnHtmlTable, str)
 
 def getLineNumber(str, index):
     "return the line number of str[index]"
@@ -184,3 +179,7 @@ def paginate(text, lines=22):
             print "press return to continue..."
             sys.stdin.read(1)
 
+
+if __name__=='__main__':
+    print htmlify("הצü")
+    print unhtmlify("&auml;&nbsp;&auml;&amp;auml;")

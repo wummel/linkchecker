@@ -52,18 +52,24 @@ _linkMatcher = r"""
     >              # close tag
     """
 
-LinkPatterns = (
-    re.compile(_linkMatcher % ("a", "href"), re.VERBOSE),
-    re.compile(_linkMatcher % ("img",   "src"), re.VERBOSE),
-    re.compile(_linkMatcher % ("form",  "action"), re.VERBOSE),
-    re.compile(_linkMatcher % ("body",  "background"), re.VERBOSE),
-    re.compile(_linkMatcher % ("frame", "src"), re.VERBOSE),
-    re.compile(_linkMatcher % ("link",  "href"), re.VERBOSE),
-    # <meta http-equiv="refresh" content="x; url=...">
-    re.compile(_linkMatcher % ("meta",  "url"), re.VERBOSE),
-    re.compile(_linkMatcher % ("area",  "href"), re.VERBOSE),
-    re.compile(_linkMatcher % ("script", "src"), re.VERBOSE),
+LinkTags = (
+    ("a", "href"),
+    ("img",   "src"),
+    ("form",  "action"),
+    ("body",  "background"),
+    ("frame", "src"),
+    ("link",  "href"),
+    ("meta",  "url"), # <meta http-equiv="refresh" content="x; url=...">
+    ("area",  "href"),
+    ("script", "src"),
 )
+
+LinkPatterns = []
+for tag,attr in LinkTags:
+    pattern = re.compile(_linkMatcher % (tag, attr), re.VERBOSE)
+    pattern.tag = tag
+    pattern.attr = attr
+    LinkPatterns.append(pattern)
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
@@ -73,7 +79,8 @@ class UrlData:
                  recursionLevel, 
                  parentName = None,
                  baseRef = None,
-                 line = 0):
+                 line = 0,
+		 name = ""):
         self.urlName = urlName
         self.recursionLevel = recursionLevel
         self.parentName = parentName
@@ -85,6 +92,7 @@ class UrlData:
         self.valid = 1
         self.url = None
         self.line = line
+        self.name = name
         self.downloadtime = 0
         self.checktime = 0
         self.cached = 0
@@ -252,8 +260,10 @@ class UrlData:
         if not (anchor!="" and self.isHtml() and self.valid):
             return
         self.getContent()
-        for cur_anchor,line in self.searchInForTag(
-	    re.compile(_linkMatcher % ("a", "name"), re.VERBOSE)):
+        pattern = re.compile(_linkMatcher % ("a", "name"), re.VERBOSE)
+        pattern.tag = "a"
+        pattern.attr = "name"
+        for cur_anchor,line in self.searchInForTag(pattern):
             if cur_anchor == anchor:
                 return
         self.setWarning("anchor #"+anchor+" not found")
@@ -321,8 +331,11 @@ class UrlData:
         debug(Config.DebugDelim+"Parsing recursively into\n"+\
               str(self)+"\n"+Config.DebugDelim)
         # search for a possible base reference
-        bases = self.searchInForTag(re.compile(_linkMatcher % ("base",
-	        "href"), re.VERBOSE))
+        pattern = re.compile(_linkMatcher % ("base", "href"), re.VERBOSE)
+        pattern.tag = "base"
+        pattern.attr = "href"
+        bases = self.searchInForTag(pattern)
+	        
         baseRef = None
         if len(bases)>=1:
             baseRef = bases[0][0]
@@ -332,12 +345,14 @@ class UrlData:
         # search for tags and add found tags to URL queue
         for pattern in LinkPatterns:
             urls = self.searchInForTag(pattern)
-            for url,line in urls:
+            for url,line,name in urls:
                 config.appendUrl(GetUrlDataFrom(url,
-                        self.recursionLevel+1, self.url, baseRef, line))
+                        self.recursionLevel+1, self.url, baseRef, line, name))
 
 
     def searchInForTag(self, pattern):
+        debug("Searching for tag %s, attribute %s" \
+	      % (pattern.tag, pattern.attr))
         urls = []
         index = 0
         while 1:
@@ -346,26 +361,46 @@ class UrlData:
             index = match.end()
             if self._isInComment(match.start()): continue
             # need to strip optional ending quotes for the meta tag
-            urls.append((string.strip(StringUtil.stripQuotes(match.group('value'))),
-                          StringUtil.getLineNumber(self.getContent(), 
-                                                   match.start())))
+            url = string.strip(StringUtil.stripQuotes(match.group('value')))
+            lineno=StringUtil.getLineNumber(self.getContent(), match.start())
+            # extra feature: get optional name for this bookmark
+            name = self.searchInForName(pattern.tag, pattern.attr,
+	                                match.start(), match.end())
+            urls.append((url, lineno, name))
         return urls
+
+    def searchInForName(self, tag, attr, start, end):
+        name=""
+        if tag=='img':
+            all = self.getContent()[start:end]
+            mo = re.search("(?i)\s+alt\s*=\s*(?P<name>(\".+?\"|[^\s>]+))", all)
+            if mo:
+                name = StringUtil.stripQuotes(mo.group('name'))
+                name = StringUtil.unhtmlify(name)
+        elif tag=='a' and attr=='href':
+            all = self.getContent()[end:]
+            mo = re.search("(?i)(?P<name>.*?)</a\s*>", all)
+            if mo:
+                name = mo.group('name')
+        return name
 
 
     def get_scheme(self):
-        return "no"
+        return "none"
 
     def __str__(self):
-        return """%s link
-urlname=%s
-parentName=%s
-baseRef=%s
-cached=%s
-recursionLevel=%s
-urlConnection=%s
-line=%s""" % \
-(self.get_scheme(), self.urlName, self.parentName, self.baseRef,
- self.cached, self.recursionLevel, self.urlConnection, self.line)
+        return ("%s link\n"
+	       "urlname=%s\n"
+	       "parentName=%s\n"
+	       "baseRef=%s\n"
+	       "cached=%s\n"
+	       "recursionLevel=%s\n"
+	       "urlConnection=%s\n"
+	       "line=%s\n"
+	       "name=%s" % \
+             (self.get_scheme(), self.urlName, self.parentName, self.baseRef,
+             self.cached, self.recursionLevel, self.urlConnection, self.line,
+	     self.name))
 
 
     def _getUserPassword(self, config):
@@ -376,6 +411,7 @@ line=%s""" % \
 
 
 from FileUrlData import FileUrlData
+from FindUrlData import FindUrlData
 from FtpUrlData import FtpUrlData
 from GopherUrlData import GopherUrlData
 from HttpUrlData import HttpUrlData
@@ -385,37 +421,38 @@ from MailtoUrlData import MailtoUrlData
 from TelnetUrlData import TelnetUrlData
 from NntpUrlData import NntpUrlData
 
-def GetUrlDataFrom(urlName, 
-                   recursionLevel, 
-                   parentName = None,
-                   baseRef = None, line = 0):
+def GetUrlDataFrom(urlName, recursionLevel, parentName = None,
+                   baseRef = None, line = 0, name = None):
     # search for the absolute url
-    name=""
+    url=""
     if urlName and ":" in urlName:
-        name = string.lower(urlName)
+        url = string.lower(urlName)
     elif baseRef and ":" in baseRef:
-        name = string.lower(baseRef)
+        url = string.lower(baseRef)
     elif parentName and ":" in parentName:
-        name = string.lower(parentName)
+        url = string.lower(parentName)
     # test scheme
-    if re.search("^http:", name):
-        return HttpUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^ftp:", name):
-        return FtpUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^file:", name):
-        return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^telnet:", name):
-        return TelnetUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^mailto:", name):
-        return MailtoUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^gopher:", name):
-        return GopherUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^javascript:", name):
-        return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^https:", name):
-        return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^(s?news|nntp):", name):
-        return NntpUrlData(urlName, recursionLevel, parentName, baseRef, line)
+    if re.search("^http:", url):
+        return HttpUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^ftp:", url):
+        return FtpUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^file:", url):
+        return FileUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^telnet:", url):
+        return TelnetUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^mailto:", url):
+        return MailtoUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^gopher:", url):
+        return GopherUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^javascript:", url):
+        return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^https:", url):
+        return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    if re.search("^(s?news|nntp):", url):
+        return NntpUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    # Mozillas Technology links start with "find:"
+    if re.search("^find:", url):
+        return FindUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
     # assume local file
-    return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)
+    return FileUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
 

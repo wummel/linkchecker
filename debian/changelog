@@ -11,8 +11,14 @@ linkchecker (1.2.13) unstable; urgency=low
     - two licenses: GPL and Python 2.0
   * linkcheck/__init__.py: user friendly warning for keyboard interrupts
   * debian/control: standards version 3.2.1
+  * support Mozilla-specific find: links
+  * print link names for:
+    - <a href> links (<a href="..">link name</a>)
+    - <img> links (the alt= attribute)
+    this makes it easier for bookmarks.html files to find the link
+    WARNING: this changed the output format!
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat,  6 Jan 2001 18:57:43 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun,  7 Jan 2001 12:51:19 +0100
 
 linkchecker (1.2.12) unstable; urgency=low
 
