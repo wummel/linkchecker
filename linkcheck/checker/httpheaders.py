@@ -48,7 +48,7 @@ def http_persistent (response):
     """
     headers = response.getheaders()
     if response.version == 11:
-        return has_header_value(headers, 'Connection', 'Close')
+        return not has_header_value(headers, 'Connection', 'Close')
     return has_header_value(headers, "Connection", "Keep-Alive")
 
 
