@@ -7,7 +7,7 @@ PACKAGEDIR=/home/groups/l/li/$(PACKAGE)
 #HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
 HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
 #HOST=treasure.calvinsplayground.de
-HOST=www.debianplanet.org
+HOST=www.debian.org
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
 TEST=env LANG=C ftp_proxy="" http_proxy="" $(PYTHON) test/regrtest.py
