@@ -163,8 +163,9 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
 def idna_encode (host):
     """Encode hostname as internationalized domain name (IDN) according
        to RFC 3490."""
-    if isinstance(host, unicode):
-        return host.encode('idna').decode('ascii'), True
+    if host and isinstance(host, unicode):
+        uhost = host.encode('idna').decode('ascii')
+        return uhost, uhost != host
     return host, False
 
 
