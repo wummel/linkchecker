@@ -16,6 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+# imports and checks
+import sys
+if not hasattr(sys, 'version_info') or \
+   sys.version_info < (2, 3, 0, 'final', 0):
+    raise SystemExit, "This program requires Python 2.3 or later."
 import os
 import re
 
