@@ -1,7 +1,4 @@
-- check and define where urls are encoded
-- before sending the request, urls need to be encoded
-
-possible Python 2.3 improvements:
+possible Python 2.3 improvements (ie needs Python >= 2.3)
 - get rid of timeoutsocket.py, the default socket has timeouts
 - use optparse instead of getopt with more flexible commandline help
 - replace the debug() function with the logging module
