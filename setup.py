@@ -248,6 +248,8 @@ data_files = [
              ['share/locale/fr/LC_MESSAGES/linkchecker.mo']),
          ('share/locale/nl/LC_MESSAGES',
              ['share/locale/nl/LC_MESSAGES/linkchecker.mo']),
+         ('share/locale/es/LC_MESSAGES',
+             ['share/locale/es/LC_MESSAGES/linkchecker.mo']),
          ('share/linkchecker',
              ['config/linkcheckerrc', 'config/logging.conf', ]),
          ('share/linkchecker/examples',
