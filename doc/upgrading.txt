@@ -13,7 +13,8 @@ manually installed versions prior to 1.13.0 are removed. Otherwise
 you will have startup problems.
 
 The default output logger ``text`` has now colored output if the
-output terminal supports it.
+output terminal supports it. The old ``colored`` output logger has
+been removed.
 
 The ``-F`` option no longer suppresses normal output. The old behaviour
 can be restored by giving the option ``-onone``.
