@@ -589,8 +589,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         """
         ptype = self.headers.get('Content-Type', 'application/octet-stream')
         if ";" in ptype:
+            # split off not needed extension info
             ptype = ptype.split(';')[0]
-        return ptype
+        return ptype.strip()
 
     def is_parseable (self):
         """
