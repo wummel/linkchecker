@@ -111,21 +111,3 @@ def get_localaddrs ():
     return [ ifc.getAddr(iface) for iface in ifc.getInterfaceList()
              if ifc.isUp(iface) ]
 
-
-def resolver_config (config):
-    "Set up the DnsLookupConnection class with /etc/resolv.conf information"
-    if not os.path.exists('/etc/resolv.conf'):
-        return
-    for line in file('/etc/resolv.conf', 'r').readlines():
-        line = line.strip()
-        if (not line) or line.startswith(';') or line.startswith('#'):
-            continue
-        m = re.match(r'^search\s+(\.?.+)$', line)
-        if m:
-            for domain in m.group(1).split():
-                config.search_domains.append('.'+domain.lower())
-        m = re.match(r'^nameserver\s+(\S+)\s*$', line)
-        if m:
-            config.nameservers.append(m.group(1).lower())
-
-
