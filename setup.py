@@ -36,8 +36,8 @@ def get_nt_desktop_path (default=""):
         return os.path.join(os.environ["USERPROFILE"], "Desktop")
     return default
 
-class MyInstall(install):
-    def run(self):
+class MyInstall (install):
+    def run (self):
         install.run(self)
         # we have to write a configuration file because we need the
         # <install_data>/share/locale directory (and other stuff
@@ -89,12 +89,12 @@ class MyInstall(install):
                 print "  %s: %s" % (opt_name, val)
 
 
-class MyDistribution(Distribution):
-    def __init__(self, attrs=None):
+class MyDistribution (Distribution):
+    def __init__ (self, attrs=None):
         Distribution.__init__(self, attrs=attrs)
         self.config_file = "_"+self.get_name()+"_configdata.py"
 
-    def run_commands(self):
+    def run_commands (self):
         cwd = os.getcwd()
         data = []
         data.append('config_dir = %s' % `os.path.join(cwd, "config")`)
@@ -102,7 +102,7 @@ class MyDistribution(Distribution):
         self.create_conf_file("", data)
         Distribution.run_commands(self)
 
-    def create_conf_file(self, directory, data=[]):
+    def create_conf_file (self, directory, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
         if not directory:
             directory = os.getcwd()
@@ -121,7 +121,7 @@ class MyDistribution(Distribution):
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
-    def create_file(self, filename, data):
+    def create_file (self, filename, data):
         # write the file
         util.execute(write_file, (filename, data),
                  "creating %s" % filename, self.verbose>=1, self.dry_run)
