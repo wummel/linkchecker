@@ -35,22 +35,15 @@ _az09 = r"a-z0-9"
 _path = r"\-\_\.\!\~\*\'\(\)"
 _hex_safe = r"2-9a-f"
 _hex_full = r"0-9a-f"
-_safe_scheme_pattern = r"""(https?)"""
-_safe_host_pattern = r"""
-([%(_az09)s][%(_az09)s\-]*(\.[%(_az09)s][%(_az09)s\-]*)*\.?)
-""" % locals()
-_safe_path_pattern = r"""
-((/([%(_az09)s%(_path)s]|(%%[%(_hex_safe)s][%(_hex_full)s]))+)*/?)
-""" % locals()
-_safe_fragment_pattern = r"""
-(\#([%(_az09)s%(_path)s\+]|(%%[%(_hex_safe)s][%(_hex_full)s]))+)?
-""" % locals()
-_safe_url_pattern = _safe_scheme_pattern+"://"+_safe_host_pattern+\
+_safe_scheme_pattern = r"(https?)"
+_safe_host_pattern = r"([%(_az09)s][%(_az09)s\-]*(\.[%(_az09)s][%(_az09)s\-]*)*\.?)" % locals()
+_safe_path_pattern = r"((/([%(_az09)s%(_path)s]|(%%[%(_hex_safe)s][%(_hex_full)s]))+)*/?)" % locals()
+_safe_fragment_pattern = r"(\#([%(_az09)s%(_path)s\+]|(%%[%(_hex_safe)s][%(_hex_full)s]))+)?" % locals()
+_safe_url_pattern = "(?i)"+_safe_scheme_pattern+"://"+_safe_host_pattern+\
                     _safe_path_pattern+_safe_fragment_pattern
 
 _is_level = re.compile(r"\d").match
-_is_valid_url = re.compile("^%s$" % _safe_url_pattern,
-                           re.VERBOSE|re.IGNORECASE).match
+_is_valid_url = re.compile("^%s$"%_safe_url_pattern).match
 
 
 class FormError (Exception):
@@ -178,7 +171,7 @@ if __name__=='__main__':
     class store:
         def __init__ (self, value):
             self.value = value
-    form={"url": store("http://localhost/"),
+    form={"url": store("http://www.heise.de/"),
           "level": store("0"),
          }
     checkform(form)
