@@ -17,7 +17,7 @@
     Changed: linkchecker, linkcheck/checker/proxysupport.py,
       linkcheck/configuration.py
 
-  * Syntax errors in regular expressions give a useful error message.
+  * Give a useful error message for syntax errors in regular expressions.
     Type: bugfix
     Changed: linkchecker, linkcheck/configuration.py
 
