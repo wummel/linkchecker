@@ -4,6 +4,9 @@
     Added: linkcheck/robotparser2.py
   * more restrictive url validity checking when running in CGI mode
     Changed: linkcheck/lc_cgi.py
+  * accept more Windows path specifications, like
+    file://C:\Dokume~1\test.html
+    Changed: linkcheck/FileUrlData.py
 
 1.9.2
   * parser fixes:
