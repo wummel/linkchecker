@@ -113,7 +113,6 @@ class Consumer (object):
             linkcheck.log.warn(linkcheck.LOG_CHECK,
              _("keyboard interrupt; waiting for %d active threads to finish"),
              self.active_threads())
-            self.cache.incoming_debug()
             self.lock.acquire()
             try:
                 self.threader.finish()

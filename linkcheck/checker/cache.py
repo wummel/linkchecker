@@ -125,14 +125,6 @@ class Cache (object):
         finally:
             self.lock.release()
 
-    def incoming_debug (self):
-        self.lock.acquire()
-        try:
-            for u in self.incoming:
-                linkcheck.log.debug(linkcheck.LOG_CACHE, "url %s", u)
-        finally:
-            self.lock.release()
-
     def has_incoming (self, key):
         self.lock.acquire()
         try:
