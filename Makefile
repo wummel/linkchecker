@@ -88,3 +88,6 @@ mo:
 	# french translation
 	msgfmt -o locale/fr/LC_MESSAGES/linkcheck.mo \
 	locale/fr/LC_MESSAGES/linkcheck.po
+
+pov:
+	povray +Ilinkchecker-out.pov +FN +Ositemap.png
