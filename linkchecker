@@ -96,7 +96,8 @@ For single-letter option arguments the space is not a necessity. So
 -q, --quiet
         Quiet operation. This is only useful with -F.
 -r depth, --recursion-level=depth
-        Check recursively all links up to given depth (depth >= 0).
+        Check recursively all links up to given depth. A negative depth
+        will enable inifinite recursion.
         Default depth is 1.
 -s, --strict
         Check only syntax of extern links, do not try to connect to them.
@@ -323,11 +324,15 @@ for opt,arg in options:
     	config["quiet"] = 1
 
     elif opt=="-r" or opt=="--recursion-level":
+        try:
+            depth = int(arg)
+        except ValueError:
+            printUsage(i18n._("Illegal argument %s for option %s") % \
+                       (`arg`, "'-r, --recursion-level'"))
         if int(arg) >= 0:
             config["recursionlevel"] = int(arg)
         else:
-            printUsage((i18n._("Illegal argument '%s' for option ") % arg) +
-	               "'-r, --recursion-level'")
+            config["recursionlevel"] = -1
     # robots.txt is now default, so ignore this option
     elif opt=="-R" or opt=="--robots-txt": pass
 

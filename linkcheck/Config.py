@@ -483,8 +483,6 @@ class Configuration (UserDict.UserDict):
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             num = cfgparser.getint(section, "recursionlevel")
-            if num<0:
-                error(i18n._("illegal recursionlevel number %d") % num)
             self["recursionlevel"] = num
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 

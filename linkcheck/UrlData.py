@@ -330,7 +330,8 @@ class UrlData:
         return self.valid and \
                self.isHtml() and \
                not self.cached and \
-               self.recursionLevel < self.config["recursionlevel"] and \
+               (self.config["recursionlevel"] >= 0 and
+                self.recursionLevel < self.config["recursionlevel"]) and \
                not self.extern[0]
 
 
