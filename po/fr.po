@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Fri Dec 19 19:16:38 2003\n"
+"POT-Creation-Date: Sat Jan  3 00:30:44 2004\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: fr <fr@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "trouvé"
 msgid "URL path is empty, assuming '/' as path"
 msgstr ""
 
-msgid "Using Proxy %s"
+msgid "Using Proxy %r"
 msgstr ""
 
 msgid "Access denied by robots.txt, checked only syntax"
@@ -45,7 +45,7 @@ msgstr "Accès refusé par robots.txt, analyse de la syntaxe seulement"
 msgid "Amazon servers block HTTP HEAD requests, using GET instead"
 msgstr ""
 
-msgid "Enforced Proxy %s"
+msgid "Enforced Proxy %r"
 msgstr ""
 
 msgid ""
@@ -63,7 +63,7 @@ msgid ""
 "redirection."
 msgstr ""
 
-msgid "HTTP redirection to non-http url encountered; the original url was %s."
+msgid "HTTP redirection to non-http url encountered; the original url was %r."
 msgstr ""
 
 msgid "more than five redirections, aborting"
@@ -73,10 +73,10 @@ msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
 msgstr ""
 
-msgid "Server %s has no HEAD support, falling back to GET"
+msgid "Server %r has no HEAD support, falling back to GET"
 msgstr ""
 
-msgid "Server %s has no anchor support, removing anchor from request"
+msgid "Server %r has no anchor support, removing anchor from request"
 msgstr ""
 
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
@@ -88,7 +88,7 @@ msgstr "URL effective %s"
 msgid "Last modified %s"
 msgstr ""
 
-msgid "Unsupported content encoding %s."
+msgid "Unsupported content encoding %r."
 msgstr ""
 
 msgid "%s url ignored"
@@ -175,7 +175,7 @@ msgstr "outside of domain filter, analyse de la syntaxe seulement"
 msgid "anchor #%s not found"
 msgstr ""
 
-msgid "Found %s in link contents"
+msgid "Found %r in link contents"
 msgstr ""
 
 msgid "Content size %s is larger than %s"
@@ -351,7 +351,7 @@ msgstr ""
 msgid " found\n"
 msgstr " trouvé\n"
 
-msgid "%s at %s, assuming non-compressed content"
+msgid "%r at %s, assuming non-compressed content"
 msgstr ""
 
 #, fuzzy
@@ -641,7 +641,8 @@ msgstr ""
 msgid "Illegal argument '%s' for option "
 msgstr "Argumen illégal '%s' pour l'option "
 
-msgid "Illegal argument %s for option %s"
+#, fuzzy
+msgid "Illegal argument %r for option %s"
 msgstr "Argumen illégal '%s' pour l'option %s"
 
 msgid ""

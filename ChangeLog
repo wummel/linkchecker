@@ -8,6 +8,13 @@
     Closes: SF bugs 863227,864383
   * only cache used data, not the whole url object
     Changed: linkcheck/{Http,}UrlData.py
+  * limit cached data
+    Changed: linkcheck/{UrlData,Config}.py
+    Added: linkcheck/LRU.py
+  * use dummy_threading module and get rid of the _NoThreads
+    functions
+    Changed: linkchecker, linkcheck/{Config,Threader}.py,
+      test/test_*.py
 
 1.10.1 (release 19.12.2003)
   * added Mandrake .spec file from Chris Green <cmg@dok.org>

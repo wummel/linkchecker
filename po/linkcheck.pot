@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Dec 19 19:16:38 2003\n"
+"POT-Creation-Date: Sat Jan  3 00:30:44 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgstr ""
 msgid "URL path is empty, assuming '/' as path"
 msgstr ""
 
-msgid "Using Proxy %s"
+msgid "Using Proxy %r"
 msgstr ""
 
 msgid "Access denied by robots.txt, checked only syntax"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Amazon servers block HTTP HEAD requests, using GET instead"
 msgstr ""
 
-msgid "Enforced Proxy %s"
+msgid "Enforced Proxy %r"
 msgstr ""
 
 msgid ""
@@ -63,7 +63,7 @@ msgstr ""
 msgid "A HTTP 301 redirection occured and the url has no trailing / at the end. All urls which point to (home) directories should end with a / to avoid redirection."
 msgstr ""
 
-msgid "HTTP redirection to non-http url encountered; the original url was %s."
+msgid "HTTP redirection to non-http url encountered; the original url was %r."
 msgstr ""
 
 msgid "more than five redirections, aborting"
@@ -72,10 +72,10 @@ msgstr ""
 msgid "Server does not support HEAD request (got %d status), falling back to GET"
 msgstr ""
 
-msgid "Server %s has no HEAD support, falling back to GET"
+msgid "Server %r has no HEAD support, falling back to GET"
 msgstr ""
 
-msgid "Server %s has no anchor support, removing anchor from request"
+msgid "Server %r has no anchor support, removing anchor from request"
 msgstr ""
 
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Last modified %s"
 msgstr ""
 
-msgid "Unsupported content encoding %s."
+msgid "Unsupported content encoding %r."
 msgstr ""
 
 msgid "%s url ignored"
@@ -174,7 +174,7 @@ msgstr ""
 msgid "anchor #%s not found"
 msgstr ""
 
-msgid "Found %s in link contents"
+msgid "Found %r in link contents"
 msgstr ""
 
 msgid "Content size %s is larger than %s"
@@ -346,7 +346,7 @@ msgid ""
 " found\n"
 msgstr ""
 
-msgid "%s at %s, assuming non-compressed content"
+msgid "%r at %s, assuming non-compressed content"
 msgstr ""
 
 msgid ""
@@ -512,7 +512,7 @@ msgstr ""
 msgid "Illegal argument '%s' for option "
 msgstr ""
 
-msgid "Illegal argument %s for option %s"
+msgid "Illegal argument %r for option %s"
 msgstr ""
 
 msgid ""

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Fri Dec 19 19:16:38 2003\n"
+"POT-Creation-Date: Sat Jan  3 00:30:44 2004\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "gevonden"
 msgid "URL path is empty, assuming '/' as path"
 msgstr ""
 
-msgid "Using Proxy %s"
+msgid "Using Proxy %r"
 msgstr ""
 
 msgid "Access denied by robots.txt, checked only syntax"
@@ -45,7 +45,7 @@ msgstr "Toegang geweigerd door robots.txt; alleen syntax gecontroleerd"
 msgid "Amazon servers block HTTP HEAD requests, using GET instead"
 msgstr ""
 
-msgid "Enforced Proxy %s"
+msgid "Enforced Proxy %r"
 msgstr ""
 
 msgid ""
@@ -67,7 +67,7 @@ msgstr ""
 "URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um "
 "Weiterleitungen zu verhindern"
 
-msgid "HTTP redirection to non-http url encountered; the original url was %s."
+msgid "HTTP redirection to non-http url encountered; the original url was %r."
 msgstr ""
 
 msgid "more than five redirections, aborting"
@@ -77,11 +77,13 @@ msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
 msgstr "Server understeunt geen HEAD verzoek (kreeg status %d), probeer GET"
 
-msgid "Server %s has no HEAD support, falling back to GET"
+#, fuzzy
+msgid "Server %r has no HEAD support, falling back to GET"
 msgstr "Server %s zonder HEAD ondersteuning, probeer GET"
 
-msgid "Server %s has no anchor support, removing anchor from request"
-msgstr ""
+#, fuzzy
+msgid "Server %r has no anchor support, removing anchor from request"
+msgstr "Server %s zonder HEAD ondersteuning, probeer GET"
 
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
 msgstr "Zope Server understeunt geen HEAD verzoek, probeer GET"
@@ -92,7 +94,7 @@ msgstr "Effektieve URL %s"
 msgid "Last modified %s"
 msgstr ""
 
-msgid "Unsupported content encoding %s."
+msgid "Unsupported content encoding %r."
 msgstr ""
 
 msgid "%s url ignored"
@@ -179,7 +181,7 @@ msgstr "buiten het domein filter, alleen syntax gecontroleerd"
 msgid "anchor #%s not found"
 msgstr ""
 
-msgid "Found %s in link contents"
+msgid "Found %r in link contents"
 msgstr ""
 
 msgid "Content size %s is larger than %s"
@@ -363,7 +365,7 @@ msgstr ""
 msgid " found\n"
 msgstr " gevonden\n"
 
-msgid "%s at %s, assuming non-compressed content"
+msgid "%r at %s, assuming non-compressed content"
 msgstr ""
 
 #, fuzzy
@@ -657,7 +659,8 @@ msgstr ""
 msgid "Illegal argument '%s' for option "
 msgstr "Ongeldige parameter '%s' als option "
 
-msgid "Illegal argument %s for option %s"
+#, fuzzy
+msgid "Illegal argument %r for option %s"
 msgstr "Ongeldige parameter '%s' als option %s"
 
 msgid ""

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Fri Dec 19 19:16:38 2003\n"
+"POT-Creation-Date: Sat Jan  3 00:30:44 2004\n"
 "PO-Revision-Date: 2003-12-10 21:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -36,7 +36,8 @@ msgstr "gefunden"
 msgid "URL path is empty, assuming '/' as path"
 msgstr "URL Pfad ist leer, verwende '/'"
 
-msgid "Using Proxy %s"
+#, fuzzy
+msgid "Using Proxy %r"
 msgstr "Verwende Proxy %s"
 
 msgid "Access denied by robots.txt, checked only syntax"
@@ -45,7 +46,8 @@ msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
 msgid "Amazon servers block HTTP HEAD requests, using GET instead"
 msgstr "Amazon server blockieren HTTP HEAD Anfragen, verwende stattdessen GET"
 
-msgid "Enforced Proxy %s"
+#, fuzzy
+msgid "Enforced Proxy %r"
 msgstr "Erzwungener Proxy %s"
 
 msgid ""
@@ -68,7 +70,8 @@ msgstr ""
 "URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um "
 "Weiterleitungen zu verhindern."
 
-msgid "HTTP redirection to non-http url encountered; the original url was %s."
+#, fuzzy
+msgid "HTTP redirection to non-http url encountered; the original url was %r."
 msgstr "HTTP Weiterleitung zu einer nicht-HTTP url; die Original-Url war %s."
 
 msgid "more than five redirections, aborting"
@@ -78,10 +81,12 @@ msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
 msgstr "Server unterstützt keine HEAD Anfrage (bekam Status %d), verwende GET"
 
-msgid "Server %s has no HEAD support, falling back to GET"
+#, fuzzy
+msgid "Server %r has no HEAD support, falling back to GET"
 msgstr "Server %s ohne HEAD Unterstützung, verwende GET"
 
-msgid "Server %s has no anchor support, removing anchor from request"
+#, fuzzy
+msgid "Server %r has no anchor support, removing anchor from request"
 msgstr "Server %s ohne Anker Unterstützung, lösche Anker von der Anfrage"
 
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
@@ -93,7 +98,8 @@ msgstr "Effektive URL %s"
 msgid "Last modified %s"
 msgstr "Letzte Änderung %s"
 
-msgid "Unsupported content encoding %s."
+#, fuzzy
+msgid "Unsupported content encoding %r."
 msgstr "Content-Encoding %s wird nicht unterstützt."
 
 msgid "%s url ignored"
@@ -196,7 +202,8 @@ msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
 msgid "anchor #%s not found"
 msgstr "Anker #%s nicht gefunden"
 
-msgid "Found %s in link contents"
+#, fuzzy
+msgid "Found %r in link contents"
 msgstr "Habe %s in Link Inhalt gefunden"
 
 msgid "Content size %s is larger than %s"
@@ -374,7 +381,8 @@ msgstr ""
 msgid " found\n"
 msgstr " gefunden\n"
 
-msgid "%s at %s, assuming non-compressed content"
+#, fuzzy
+msgid "%r at %s, assuming non-compressed content"
 msgstr "%s bei %s, vermute nicht-komprimierten Inhalt"
 
 msgid ""
@@ -678,7 +686,8 @@ msgstr "Bitte starten Sie linkchecker mit --profile, um sie zu generieren."
 msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
 
-msgid "Illegal argument %s for option %s"
+#, fuzzy
+msgid "Illegal argument %r for option %s"
 msgstr "Ungültiges Argument '%s' für Option %s"
 
 msgid ""
