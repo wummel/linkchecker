@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Default handler classes"""
+"""
+Default HTML parser handler classes.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,60 +22,148 @@ import sys
 
 
 class HtmlPrinter (object):
-    """handles all functions by printing the function name and attributes"""
+    """
+    Handles all functions by printing the function name and attributes.
+    """
 
     def __init__ (self, fd=sys.stdout):
-        """write to given file descriptor"""
+        """
+        Write to given file descriptor.
+
+        @param fd: file like object (default=sys.stdout)
+        @type fd: c{file}
+        """
         self.fd = fd
 
     def _print (self, *attrs):
-        """print function attributes"""
+        """
+        Print function attributes to stored file descriptor.
+
+        @param attrs: list of values to print
+        @type attrs: tuple
+        @return: c{None}
+        """
         print >> self.fd, self.mem, attrs
 
     def _errorfun (self, msg, name):
-        """print msg to stderr with name prefix"""
+        """
+        Print message to stderr with name prefix.
+
+        @param msg: message to print
+        @type msg: c{string}
+        @param name: print this before the message
+        @type name: c{string}
+        @return: c{None}
+        """
         print >> sys.stderr, name, msg
 
     def error (self, msg):
-        """signal a filter/parser error"""
+        """
+        Report filter/parser error.
+
+        @param msg: message to print
+        @type msg: c{string}
+        @return: c{None}
+        """
         self._errorfun(msg, "error:")
 
     def warning (self, msg):
-        """signal a filter/parser warning"""
+        """
+        Report a filter/parser warning.
+
+        @param msg: message to print
+        @type msg: c{string}
+        @return: c{None}
+        """
         self._errorfun(msg, "warning:")
 
     def fatal_error (self, msg):
-        """signal a fatal filter/parser error"""
+        """
+        Report a fatal filter/parser error.
+
+        @param msg: message to print
+        @type msg: c{string}
+        @return: c{None}
+        """
         self._errorfun(msg, "fatal error:")
 
     def __getattr__ (self, name):
-        """remember the func name"""
+        """
+        Remember the called method name in self.mem.
+
+        @param name: attribute name
+        @type name: c{string}
+        @return: method which just prints out its arguments
+        @rtype: a bound function object
+        """
         self.mem = name
         return self._print
 
 
 class HtmlPrettyPrinter (object):
-    """Print out all parsed HTML data in encoded form."""
+    """
+    Print out all parsed HTML data in encoded form.
+    """
 
     def __init__ (self, fd=sys.stdout, encoding="iso8859-1"):
-        """write to given file descriptor"""
+        """
+        Write to given file descriptor in given encoding.
+
+        @param fd: file like object (default=sys.stdout)
+        @type fd: c{file}
+        @param encoding: encoding (default=iso8859-1)
+        @type encoding: c{string}
+        """
         self.fd = fd
         self.encoding = encoding
 
     def comment (self, data):
-        """print comment"""
+        """
+        Print HTML comment.
+
+        @param data: the comment
+        @type data: c{string}
+        @return: c{None}
+        """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<!--%s-->" % data)
 
     def start_element (self, tag, attrs):
-        """print start element"""
+        """
+        Print HTML start element.
+
+        @param tag: tag name
+        @type tag: c{string}
+        @param attrs: tag attributes
+        @type attrs: c{dict}
+        @return: c{None}
+        """
         self._start_element(tag, attrs, ">")
 
     def start_end_element (self, tag, attrs):
-        """print combined start-end element"""
+        """
+        Print HTML start-end element.
+
+        @param tag: tag name
+        @type tag: c{string}
+        @param attrs: tag attributes
+        @type attrs: c{dict}
+        @return: c{None}
+        """
         self._start_element(tag, attrs, "/>")
 
     def _start_element (self, tag, attrs, end):
+        """
+        Print HTML element with end string.
+
+        @param tag: tag name
+        @type tag: c{string}
+        @param attrs: tag attributes
+        @type attrs: c{dict}
+        @param end: either > or />
+        @type end: c{string}
+        @return: c{None}
+        """
         tag = tag.encode(self.encoding, "ignore")
         self.fd.write("<%s" % tag.replace("/", ""))
         for key, val in attrs.iteritems():
@@ -86,33 +176,70 @@ class HtmlPrettyPrinter (object):
         self.fd.write(end)
 
     def end_element (self, tag):
-        """print end element"""
+        """
+        Print HTML end element.
+
+        @param tag: tag name
+        @type tag: c{string}
+        @return: c{None}
+        """
         tag = tag.encode(self.encoding, "ignore")
         self.fd.write("</%s>" % tag)
 
     def doctype (self, data):
-        """print document type"""
+        """
+        Print HTML document type.
+
+        @param data: the document type
+        @type data: c{string}
+        @return: c{None}
+        """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<!DOCTYPE%s>" % data)
 
     def pi (self, data):
-        """print pi"""
+        """
+        Print HTML pi.
+
+        @param data: the tag data
+        @type data: c{string}
+        @return: c{None}
+        """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<?%s?>" % data)
 
     def cdata (self, data):
-        """print cdata"""
+        """
+        Print HTML cdata.
+
+        @param data: the character data
+        @type data: c{string}
+        @return: c{None}
+        """
         data = data.encode(self.encoding, "ignore")
         self.fd.write("<![CDATA[%s]]>" % data)
 
     def characters (self, data):
-        """print characters"""
+        """
+        Print characters.
+
+        @param data: the character data
+        @type data: c{string}
+        @return: c{None}
+        """
         data = data.encode(self.encoding, "ignore")
         self.fd.write(data)
 
 
 def quote_attrval (s):
-    """quote a HTML attribute to be able to wrap it in double quotes"""
+    """
+    Quote a HTML attribute to be able to wrap it in double quotes.
+
+    @param s: the attribute string to quote
+    @type s: c{string}
+    @return: the quoted HTML attribute
+    @rtype: c{string}
+    """
     s = s.replace('&', "&amp;")
     s = s.replace('"', "&quot;")
     return s
