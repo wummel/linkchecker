@@ -31,8 +31,7 @@ from linkcheck.i18n import _
 contents = {
     "html": re.compile(r'(?i)<html>.*</html>'),
     "opera" : re.compile(r'Opera Hotlist'),
-# XXX TODO
-#    "text" : re.compile(r'(?i)# LinkChecker URL list'),
+    "text" : re.compile(r'(?i)# LinkChecker URL list'),
 }
 
 
@@ -115,7 +114,7 @@ class FileUrl (urlbase.UrlBase):
     def is_html (self):
         if linkcheck.checker.extensions['html'].search(self.url):
             return True
-        if contents['html'].search(self.get_content()[:20]):
+        if contents['html'].search(self.get_content()):
             return True
         return False
 
@@ -139,7 +138,7 @@ class FileUrl (urlbase.UrlBase):
         # try to read content (can fail, so catch error)
         try:
             for ro in contents.values():
-                if ro.search(self.get_content()[:20]):
+                if ro.search(self.get_content()):
                     return True
         except IOError:
             pass
