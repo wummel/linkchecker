@@ -19,14 +19,19 @@ from UrlData import UrlData
 from HttpUrlData import HttpUrlData
 from linkcheck import _
 _supportHttps=1
-try: import httpslib
-except ImportError: _supportHttps=0
+try:
+    from linkcheckssl import httpslib
+except ImportError:
+    _supportHttps=0
+
 
 class HttpsUrlData(HttpUrlData):
     """Url link with https scheme"""
 
     def _getHTTPObject(self, host):
-        return httpslib.HTTPS(host)
+        h = httpslib.HTTPS()
+        h.connect(host)
+        return h
 
     def check(self, config):
         if _supportHttps:

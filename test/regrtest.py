@@ -196,6 +196,7 @@ def runtest(test, generate, verbose, quiet, testdir = None):
         type, value = sys.exc_info()[:2]
         print "test", test, "crashed --", str(type) + ":", value
         if verbose:
+            import traceback
             traceback.print_exc(file=sys.stdout)
         return 0
     else:

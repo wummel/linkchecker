@@ -22,7 +22,7 @@ A: No. It never will. JavaScript sucks. If your page is not
 
 Q: I have a pretty large site to check. How can I restrict link checking
    to check only my own pages?
-A: Look at the options --intern, --extern, --strict, --allowdeny  and 
+A: Look at the options --intern, --extern, --strict, --denyallow  and 
    --recursion-level.
 
 

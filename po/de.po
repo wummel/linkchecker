@@ -23,7 +23,7 @@ msgid "minutes"
 msgstr "Minuten"
 
 msgid "No newsgroup specified in NNTP URL"
-msgstr "Keine newsgroup in der NNTP URL spezifiziert"
+msgstr "Keine Newsgroup in der NNTP URL spezifiziert"
 
 #, fuzzy
 msgid "No mail host for %s found"
@@ -350,7 +350,7 @@ msgid "checktime"
 msgstr "Prüfzeit"
 
 msgid "dltime"
-msgstr ""
+msgstr "D/L Zeit"
 
 msgid "invalid log option '%s'"
 msgstr "ungültige Log Option '%s'"
