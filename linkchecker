@@ -321,7 +321,7 @@ the URI specification. Use with care."""))
 group.add_option("-u", "--user", type="string", dest="username",
                  help=_(
 """Try given username for HTTP and FTP authorization.
-For FTP the default username is \fBanonymous\fP. See also -p."""))
+For FTP the default username is 'anonymous'. See also -p."""))
 group.add_option("-p", "--password", type="string", dest="password",
                  help=_(
 """Try given password for HTTP and FTP authorization.
