@@ -1,3 +1,8 @@
+1.8.14
+  * fix old bug in redirects not using the full url. this resulted in
+    errors like (-2, "Name or service not known")
+    Changed files: linkcheck/HttpUrlData.py
+
 1.8.13
   * fix typo in manpage
     Changed files: linkchecker.1
