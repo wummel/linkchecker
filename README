@@ -19,8 +19,8 @@ o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
 
 
-Installing, Requirements, Running
----------------------------------
+Installing and Requirements
+---------------------------
 Read the file INSTALL.
 
 
@@ -45,7 +45,7 @@ o MacOS 9.x platforms
 License and Credits
 -------------------
 LinkChecker is licensed under the GNU Public License.
-Credits go to Guido van Rossum and his team for making Python. 
+Credits go to Guido van Rossum and his team for making Python.
 His hovercraft is full of eels!
 As this program is directly derived from my Java link checker, additional
 credits go to Robert Forsman (the author of JCheckLinks) and his
