@@ -71,6 +71,10 @@
     Changed: linkchecker, linkcheck/configuration.py,
       linkcheck/checker/consumer.py
 
+  * Re-norm a changed file:// base url, avoiding a spurious warning.
+    Type: bugfix
+    Changed: linkcheck/checker/fileurl.py
+
 1.13.5 "Die Musterknaben" (released 22.9.2004)
   * Use xgettext with Python support for .pot file creation, adjusted
     developer documentation.
