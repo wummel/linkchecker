@@ -94,6 +94,67 @@ if hasattr(socket, "sslerror"):
 # regular expression for port numbers
 is_valid_port = re.compile(r"\d+").match
 
+def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
+                    baseRef=None, line=0, column=0, name=None,
+                    cmdline=None):
+    from FileUrlData import FileUrlData
+    from IgnoredUrlData import IgnoredUrlData, ignored_schemes_re
+    from FtpUrlData import FtpUrlData
+    from GopherUrlData import GopherUrlData
+    from HttpUrlData import HttpUrlData
+    from HttpsUrlData import HttpsUrlData
+    from MailtoUrlData import MailtoUrlData
+    from TelnetUrlData import TelnetUrlData
+    from NntpUrlData import NntpUrlData
+    url = get_absolute_url(urlName, baseRef, parentName)
+    # test scheme
+    if url.startswith("http:"):
+        klass = HttpUrlData
+    elif url.startswith("ftp:"):
+        klass = FtpUrlData
+    elif url.startswith("file:"):
+        klass = FileUrlData
+    elif url.startswith("telnet:"):
+        klass = TelnetUrlData
+    elif url.startswith("mailto:"):
+        klass = MailtoUrlData
+    elif url.startswith("gopher:"):
+        klass = GopherUrlData
+    elif url.startswith("https:"):
+        klass = HttpsUrlData
+    elif url.startswith("nttp:") or \
+         url.startswith("news:") or \
+         url.startswith("snews:"):
+        klass = NntpUrlData
+    # application specific links are ignored
+    elif ignored_schemes_re.search(url):
+        klass = IgnoredUrlData
+    # assume local file
+    else:
+        klass = FileUrlData
+    if config['strict'] and cmdline:
+        # set automatic intern/extern stuff
+        set_intern_url(url, klass, config)
+    return klass(urlName, recursionLevel, config, parentName, baseRef,
+                 line=line, column=column, name=name)
+
+
+def set_intern_url (url, klass, config):
+    """Precondition: config['strict'] is true (ie strict checking) and
+       recursion level is zero (ie url given on the command line)"""
+    from FileUrlData import FileUrlData
+    from FtpUrlData import FtpUrlData
+    from HttpUrlData import HttpUrlData
+    from HttpsUrlData import HttpsUrlData
+    if klass == FileUrlData:
+        config['internlinks'].append(getLinkPat("^file:"))
+    elif klass in [HttpUrlData, HttpsUrlData, FtpUrlData]:
+        domain = urlparse.urlsplit(url)[1]
+        if domain:
+            domain = re.escape(domain)
+            config['internlinks'].append(getLinkPat(domain))
+
+
 class UrlData:
     "Representing a URL with additional information like validity etc"
 
@@ -473,7 +534,7 @@ class UrlData:
         """
         lineno = 0
         lines = self.getContent().splitlines()
-        for line in line:
+        for line in lines:
             lineno += 1
             line = line.strip()
             if not line or line.startswith('#'): continue
@@ -496,61 +557,3 @@ class UrlData:
               self.cached, self.recursionLevel, self.urlConnection, self.line,
               self.column, self.name))
 
-
-from FileUrlData import FileUrlData
-from IgnoredUrlData import IgnoredUrlData, ignored_schemes_re
-from FtpUrlData import FtpUrlData
-from GopherUrlData import GopherUrlData
-from HttpUrlData import HttpUrlData
-from HttpsUrlData import HttpsUrlData
-from MailtoUrlData import MailtoUrlData
-from TelnetUrlData import TelnetUrlData
-from NntpUrlData import NntpUrlData
-
-
-def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
-                    baseRef=None, line=0, column=0, name=None,
-                    cmdline=None):
-    url = get_absolute_url(urlName, baseRef, parentName)
-    # test scheme
-    if url.startswith("http:"):
-        klass = HttpUrlData
-    elif url.startswith("ftp:"):
-        klass = FtpUrlData
-    elif url.startswith("file:"):
-        klass = FileUrlData
-    elif url.startswith("telnet:"):
-        klass = TelnetUrlData
-    elif url.startswith("mailto:"):
-        klass = MailtoUrlData
-    elif url.startswith("gopher:"):
-        klass = GopherUrlData
-    elif url.startswith("https:"):
-        klass = HttpsUrlData
-    elif url.startswith("nttp:") or \
-         url.startswith("news:") or \
-         url.startswith("snews:"):
-        klass = NntpUrlData
-    # application specific links are ignored
-    elif ignored_schemes_re.search(url):
-        klass = IgnoredUrlData
-    # assume local file
-    else:
-        klass = FileUrlData
-    if config['strict'] and cmdline:
-        # set automatic intern/extern stuff
-        set_intern_url(url, klass, config)
-    return klass(urlName, recursionLevel, config, parentName, baseRef,
-                 line=line, column=column, name=name)
-
-
-def set_intern_url (url, klass, config):
-    """Precondition: config['strict'] is true (ie strict checking) and
-       recursion level is zero (ie url given on the command line)"""
-    if klass == FileUrlData:
-        config['internlinks'].append(getLinkPat("^file:"))
-    elif klass in [HttpUrlData, HttpsUrlData, FtpUrlData]:
-        domain = urlparse.urlsplit(url)[1]
-        if domain:
-            domain = re.escape(domain)
-            config['internlinks'].append(getLinkPat(domain))
