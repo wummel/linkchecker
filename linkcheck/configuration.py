@@ -182,7 +182,7 @@ class Configuration (dict):
                 self['threads'] = 0
             # set debugging on given logger names
             if 'all' in debug:
-                debug = linkcheck.lognames.values()
+                debug = linkcheck.lognames.keys()
             for name in debug:
                 logname = linkcheck.lognames[name]
                 logging.getLogger(logname).setLevel(logging.DEBUG)
