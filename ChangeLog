@@ -16,6 +16,11 @@
     Closes: SF bug #1067914
     Changed: linkcheck/checker/httpurl.py
 
+  * Updated the warning and info messages to be always complete
+    sentences.
+    Type: feature
+    Changed: linkcheck/checker/*.py, po/*
+
 2.0rc1 "The Incredibles" (released 16.11.2004)
 
   * Only instantiate SSL connections if SSL is supported
