@@ -584,7 +584,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         _user, _password = self.get_user_password()
         key = ("http", self.urlparts[1], _user, _password)
         cache_add = self.consumer.cache.add_connection
-        if not self.persistent or \
+        # note: only cache the connection when it is persistent
+        # and all pending content has been received
+        if not self.persistent or not self.has_content or \
            not cache_add(key, self.url_connection, self.timeout):
             try:
                 self.url_connection.close()
