@@ -13,6 +13,11 @@
     Type: bugfix
     Changed: linkcheck/checker/consumer.py
 
+  * updated and synchronized documentation of the man page (linkchecker.1)
+    and the linkchecker --help output.
+    Type: documentation
+    Changed: linkchecker, linkchecker.1
+
 1.13.3 "Fight Club" (released 10.9.2004)
   * Prevent collapsing of relative parent dir paths. This fixes false
     positives on URLs of the form "../../foo".
