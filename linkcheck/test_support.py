@@ -1,6 +1,5 @@
 # -*- coding: iso-8859-1 -*-
 """Supporting definitions for the Python regression test."""
-import linkcheck
 from linkcheck.log.Logger import Logger
 
 class Error (Exception):
@@ -59,7 +58,6 @@ def fcmp (x, y): # fuzzy comparison function
 	return cmp(x, y)
 
 TESTFN = '@test' # Filename used for testing
-from os import unlink
 
 def findfile (file, here=__file__):
 	import os

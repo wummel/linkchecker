@@ -18,7 +18,7 @@
 
 import urlparse, sys, time, re, httplib, robotparser
 from urllib import quote, unquote
-import Config, StringUtil, i18n
+import Config, i18n
 from debug import *
 # XXX not dynamic
 if get_debuglevel() > 0:

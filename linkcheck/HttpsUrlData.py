@@ -16,8 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import Config, httplib, i18n
-from UrlData import UrlData
+import i18n
 from HttpUrlData import HttpUrlData, supportHttps
 from linkcheck.debug import *
 

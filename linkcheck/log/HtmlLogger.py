@@ -19,7 +19,6 @@ from StandardLogger import StandardLogger
 from Logger import Logger
 from linkcheck.log import strtime
 from linkcheck import StringUtil, i18n, Config
-from urllib import quote
 import time
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">

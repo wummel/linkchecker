@@ -15,7 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import os
 from Logger import Logger
+from linkcheck.Config import norm
 
 class BlacklistLogger (Logger):
     """Updates a blacklist of wrong links. If a link on the blacklist
@@ -26,20 +28,39 @@ class BlacklistLogger (Logger):
         super(BlacklistLogger, self).__init__(**args)
         self.errors = 0
         self.blacklist = {}
-        self.filename = args['filename']
+        self.filename = norm(args['filename'])
+        if os.path.exists(self.filename):
+            self.readBlacklist()
 
 
     def newUrl (self, urlData):
-        if urlData.valid:
-            self.blacklist[urlData.getCacheKey()] = None
-        elif not urlData.cached:
-            self.errors = 1
-            self.blacklist[urlData.getCacheKey()] = urlData
+        if not urlData.cached:
+            key = urlData.getCacheKey()
+            if key in self.blacklist:
+                if urlData.valid:
+                    del self.blacklist[key]
+                else:
+                    self.blacklist[key] += 1
+            else:
+                if not urlData.valid:
+                    self.blacklist[key] = 1
 
 
     def endOfOutput (self, linknumber=-1):
+        self.writeBlacklist()
+
+
+    def readBlacklist (self):
+        fd = file(self.filename, "r")
+        for line in fd:
+            value, key = line.split(1)
+            self.blacklist[key] = int(value)
+        fd.close()
+
+
+    def writeBlacklist (self):
         """write the blacklist"""
-        fd = open(self.filename, "w")
-        for url in self.blacklist.keys():
-            if self.blacklist[url] is None:
-                fd.write(url+"\n")
+        fd = file(self.filename, "w")
+        for key, value in self.blacklist.items():
+            fd.write("%d %s\n" % (value, key))
+        fd.close()

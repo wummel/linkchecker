@@ -19,8 +19,7 @@
 import ConfigParser, sys, os, re, time, Cookie
 import _linkchecker_configdata, i18n
 from linkcheck import getLinkPat
-from os.path import expanduser, normpath, normcase, join, isfile
-from types import StringType
+from os.path import expanduser, normpath, normcase, join
 from urllib import getproxies
 from debug import *
 

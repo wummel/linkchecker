@@ -17,7 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, re, urlparse, urllib2, time, traceback, socket, select, i18n
-from urllib import splituser, splithost, splitport, unquote
+from urllib import splituser, splitport, unquote
 #try:
 #    from linkcheck import DNS
 #except ImportError:
@@ -26,7 +26,7 @@ from urllib import splituser, splithost, splitport, unquote
 from linkcheck import DNS, LinkCheckerError, getLinkPat
 DNS.DiscoverNameServers()
 
-import Config, StringUtil, linkname, test_support
+import Config, StringUtil, test_support
 from linkparse import LinkParser
 from debug import *
 

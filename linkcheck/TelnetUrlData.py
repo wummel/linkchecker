@@ -17,9 +17,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import telnetlib, urlparse
-from linkcheck import Config, LinkCheckerError, i18n
+from linkcheck import LinkCheckerError, i18n
 from debug import *
-from urllib import splituser, splithost, splitport, splitpasswd
+from urllib import splituser, splitport, splitpasswd
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import is_valid_port
 
