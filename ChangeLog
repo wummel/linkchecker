@@ -1,7 +1,15 @@
 1.8.0
   * Require Python >= 2.2.1, remove httplib.
+    Changed files: setup.py, INSTALL, linkchecker
   * Add again python-dns, the Debian package maintainer is unresponsive
+    Added files: linkcheck/DNS/*.py
+    Changed files: INSTALL, setup.py
   * You must now use named constants for ANSII color codes
+    Changed files: linkcheckerrc, linkcheck/log/ColoredLogger.py
+  * Release RedHat 8.0 rpm packages.
+    Changed files: setup.py, MANIFEST.in
+  * remove --robots-txt from manpage, fix HTZP->HTTP typo
+    Changed files: linkchecker.1
 
 1.7.1
   * Fix memory leak in HTML parser flushing error path
