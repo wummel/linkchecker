@@ -127,7 +127,7 @@ class HttpUrlData (ProxyUrlData):
                              self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
                 redirected = unquote(redirected)
-                self.urlparts = urlparse.urlsplit(redirected)
+                self.urlparts = list(urlparse.urlsplit(redirected))
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 debug(BRING_IT_ON, "Redirected", self.headers)
