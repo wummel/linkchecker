@@ -66,7 +66,8 @@ upload: distclean dist files VERSION
 	scp README $(HTMLDIR)/readme.txt
 	scp linkchecker-out.* $(HTMLDIR)
 	scp VERSION $(HTMLDIR)/raw/
-	scp dist/* $(HTMLDIR)/
+	#scp dist/* $(HTMLDIR)/
+	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 test:
