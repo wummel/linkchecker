@@ -1,8 +1,10 @@
 linkchecker (1.6.5-1) unstable; urgency=low
 
   * New upstream release
+  * Dont install the test suite files as examples
+  * Put all cgi related files together in /usr/lib/cgi-bin/lconline
 
- -- Bastian Kleineidam <calvin@debian.org>  Sat, 19 Oct 2002 13:46:59 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 31 Oct 2002 14:55:14 +0100
 
 linkchecker (1.6.4-1) unstable; urgency=low
 

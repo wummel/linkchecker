@@ -5,6 +5,7 @@ PACKAGE=linkchecker
 ROOT=$(CURDIR)/debian/$(PACKAGE)
 DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
 PYTHON=python2.2
+CGIDIR=$(ROOT)/usr/lib/cgi-bin/lconline
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -42,13 +43,10 @@ install: build
 	$(PYTHON) setup.py install --root=$(ROOT) --no-compile
 	# remove example files, we install them below
 	rm -r $(ROOT)/usr/share/linkchecker/examples
-	# install additional doc files
-	install -c -m 644 test/*.py $(DOCDIR)/test
-	install -c -m 644 test/html/*.html $(DOCDIR)/test/html
-	install -c -m 644 test/output/test_* $(DOCDIR)/test/output
 	# install CGI files
-	install -c -m 644 lconline/*.html $(DOCDIR)/lconline
-	cat lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(ROOT)/usr/lib/cgi-bin/lconline/lc.cgi
+	install -c -m 644 lconline/*.html $(CGIDIR)
+	cat lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.cgi
+	chmod 755 $(CGIDIR)/lc.cgi
 	# install system wide configuration file in etc
 	mv $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc
 
