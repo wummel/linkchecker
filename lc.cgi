@@ -15,26 +15,23 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re,cgi,sys,urlparse,time,os
+import re, cgi, sys, urlparse, time, os
 sys.stderr = sys.stdout
 
 def testit():
     cgi.test()
     sys.exit(0)
 
-# main
-print "Content-type: text/html"
-print "Cache-Control: no-cache"
-print
 # uncomment the following line to test your CGI values
 #testit()
+# main
+print "Content-type: text/html"
+# http/1.1
+print "Cache-Control: no-cache"
+# http/1.0
+print "Pragma: no-cache"
+print
 form = cgi.FieldStorage()
-if form['language'].value == 'de':
-    os.environ['LC_MESSAGES'] = 'de'
-elif form['language'].value == 'fr':
-    os.environ['LC_MESSAGES'] = 'fr'
-else:
-    os.environ['LC_MESSAGES'] = 'C'
 import linkcheck
 if not linkcheck.lc_cgi.checkform(form):
     linkcheck.lc_cgi.logit(form, form)

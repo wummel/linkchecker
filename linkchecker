@@ -23,9 +23,10 @@ if sys.version[:5] < "2.0":
 
 import getopt, re, os, urlparse, pprint, linkcheck
 from linkcheck.debuglevels import *
-from linkcheck import _,StringUtil
+from linkcheck import StringUtil
+debug = linkcheck.debug
 
-Usage = _("""USAGE\tlinkchecker [options] file-or-url...
+Usage = linkcheck._("""USAGE\tlinkchecker [options] file-or-url...
 
 OPTIONS
 For single-letter option arguments the space is not a necessity. So
@@ -107,7 +108,7 @@ For single-letter option arguments the space is not a necessity. So
         This option implies -w.\n") % linkcheck.Config.LoggerKeys
 """)
 
-Notes = _("""NOTES
+Notes = linkcheck._("""NOTES
 o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL
   starts with 'www.' resp. 'ftp.'
   You can also give local files as arguments.
@@ -125,7 +126,7 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
   same as the host of the user browsing your pages!
 """)
 
-Examples = _("""EXAMPLES
+Examples = linkcheck._("""EXAMPLES
 o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\
     http://treasure.calvinsplayground.de/~calvin/ > sample.html
 o Local files and syntactic sugar on the command line:
@@ -149,8 +150,8 @@ def printHelp():
     sys.exit(0)
 
 def printUsage(msg):
-    sys.stderr.write(_("Error: %s\n") % msg)
-    sys.stderr.write(_("Execute 'linkchecker -h' for help\n"))
+    sys.stderr.write(linkcheck._("Error: %s\n") % msg)
+    sys.stderr.write(linkcheck._("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
 
 
@@ -192,7 +193,7 @@ except getopt.error:
 for opt,arg in options:
     if opt=="-D" or opt=="--debug":
         linkcheck.Config.DebugLevel += 1
-linkcheck.Config.debug(BRING_IT_ON, "Python", sys.version, "on", sys.platform)
+debug(BRING_IT_ON, "Python", sys.version, "on", sys.platform)
 # apply configuration
 config = linkcheck.Config.Configuration()
 configfiles = []
@@ -221,7 +222,7 @@ for opt,arg in options:
         if linkcheck.Config.Loggers.has_key(arg):
             config['log'] = config.newLogger(arg)
         else:
-            printUsage((_("Illegal argument '%s' for option ") % arg) +\
+            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +\
 	               "'-o, --output'")
 
     elif opt=="-F" or opt=="--file-output":
@@ -233,7 +234,7 @@ for opt,arg in options:
         if linkcheck.Config.Loggers.has_key(type) and type != "blacklist":
             config['fileoutput'].append(config.newLogger(type, ns))
         else:
-            printUsage((_("Illegal argument '%s' for option ") % arg) +\
+            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +\
 	               "'-F, --file-output'")
 
     elif opt=="-I" or opt=="--interactive":
@@ -256,7 +257,7 @@ for opt,arg in options:
         if int(arg) >= 0:
             config["wait"] = int(arg)
         else:
-            printUsage((_("Illegal argument '%s' for option ") % arg) +
+            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +
 	               "'-P, --pause'")
 
     elif opt=="-q" or opt=="--quiet":
@@ -266,7 +267,7 @@ for opt,arg in options:
         if int(arg) >= 0:
             config["recursionlevel"] = int(arg)
         else:
-            printUsage((_("Illegal argument '%s' for option ") % arg) +
+            printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +
 	               "'-r, --recursion-level'")
 
     elif opt=="-R" or opt=="--robots-txt":
@@ -319,14 +320,14 @@ if config["log"].__class__ == linkcheck.Logging.BlacklistLogger and \
    os.path.exists(config['log'].filename):
     args = open(config['log'].filename).readlines()
 
-linkcheck.Config.debug(HURT_ME_PLENTY, pprint.pformat(config.data))
+debug(HURT_ME_PLENTY, pprint.pformat(config.data))
 
 if len(args)==0:
     if config['interactive']:
-        urls = raw_input(_("enter one or more urls, separated by white-space\n--> "))
+        urls = raw_input(linkcheck._("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
     else:
-        config.warn(_("no files or urls given"))
+        config.warn(linkcheck._("no files or urls given"))
 
 for url in args:
     url = url.strip()
@@ -340,4 +341,4 @@ for url in args:
 # check the urls
 linkcheck.checkUrls(config)
 if config['interactive']:
-    raw_input(_("Hit RETURN to finish"))
+    raw_input(linkcheck._("Hit RETURN to finish"))

@@ -15,9 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, os, urlparse, urllib
+import re, os, urlparse, urllib, linkcheck
 from UrlData import UrlData, ExcList
-from linkcheck import _
 
 # OSError is thrown on Windows when a file is not found
 ExcList.append(OSError)

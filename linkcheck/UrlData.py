@@ -17,13 +17,12 @@
 
 import sys, re, urlparse, urllib, time, traceback, socket, select
 import DNS, Config, StringUtil, linkcheck, linkname
-debug = Config.debug
-from linkcheck import _
 from debuglevels import *
+debug = Config.debug
 
 # helper function for internal errors
 def internal_error ():
-    print >> sys.stderr, _("""\n********** Oops, I did it again. *************
+    print >> sys.stderr, linkcheck._("""\n********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker.
 Please write a bug report to %s and include
@@ -37,13 +36,13 @@ I can work with ;).
     import traceback
     traceback.print_exc()
     print_app_info()
-    print >> sys.stderr, _("\n******** LinkChecker internal error, bailing out ********")
+    print >> sys.stderr, linkcheck._("\n******** LinkChecker internal error, bailing out ********")
     sys.exit(1)
 
 
 def print_app_info ():
     import os
-    print >> sys.stderr, _("System info:")
+    print >> sys.stderr, linkcheck._("System info:")
     print >> sys.stderr, Config.App
     print >> sys.stderr, "Python %s on %s" % (sys.version, sys.platform)
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
@@ -155,8 +154,8 @@ class UrlData:
         self.recursionLevel = recursionLevel
         self.parentName = parentName
         self.baseRef = baseRef
-        self.errorString = _("Error")
-        self.validString = _("Valid")
+        self.errorString = linkcheck._("Error")
+        self.validString = linkcheck._("Valid")
         self.warningString = None
         self.infoString = None
         self.valid = 1
@@ -177,11 +176,11 @@ class UrlData:
 
     def setError(self, s):
         self.valid=0
-        self.errorString = _("Error")+": "+s
+        self.errorString = linkcheck._("Error")+": "+s
 
     def setValid(self, s):
         self.valid=1
-        self.validString = _("Valid")+": "+s
+        self.validString = linkcheck._("Valid")+": "+s
 
     def isHtml(self):
         return 0
@@ -258,7 +257,7 @@ class UrlData:
         # check syntax
         debug(BRING_IT_ON, "checking syntax")
         if not self.urlName or self.urlName=="":
-            self.setError(_("URL is null or empty"))
+            self.setError(linkcheck._("URL is null or empty"))
             self.logMe(config)
             return
         try:
@@ -283,7 +282,7 @@ class UrlData:
         debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern and (config["strict"] or self.extern[1]):
             self.setWarning(
-                  _("outside of domain filter, checked only syntax"))
+                  linkcheck._("outside of domain filter, checked only syntax"))
             self.logMe(config)
             return
 

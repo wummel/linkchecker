@@ -23,7 +23,7 @@ SOURCES=\
 ../linkcheck/__init__.py \
 ../linkcheck/lc_cgi.py \
 ../linkchecker
-LDIR=../locale
+LDIR=../share/locale
 LFILE=LC_MESSAGES/$(PACKAGE).mo
 MOS=$(LDIR)/de/$(LFILE) $(LDIR)/fr/$(LFILE)
 PACKAGE=linkcheck

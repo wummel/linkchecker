@@ -15,24 +15,39 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re,time,urlparse
-from linkcheck import _
+import os, re, time, urlparse
+import linkcheck
 from types import StringType
 
 _logfile = None
+_supported_langs = ('de', 'fr', 'C')
 
 def checkform(form):
+    if form.has_key("language"):
+        lang = form['language'].value
+        if lang in _supported_langs:
+            os.environ['LC_MESSAGES'] = lang
+            linkcheck.init_gettext()
+        else:
+            return 0
     for key in ["level","url"]:
-        if not form.has_key(key) or form[key].value == "": return 0
-    if not re.match(r"^https?://[-\w./=%?~]+$", form["url"].value): return 0
-    if not re.match(r"\d", form["level"].value): return 0
-    if int(form["level"].value) > 3: return 0
+        if not form.has_key(key) or form[key].value == "":
+            return 0
+    if not re.match(r"^https?://[-\w./=%?~]+$", form["url"].value):
+        return 0
+    if not re.match(r"\d", form["level"].value):
+        return 0
+    if int(form["level"].value) > 3:
+        return 0
     if form.has_key("anchors"):
-        if not form["anchors"].value=="on": return 0
+        if not form["anchors"].value=="on":
+            return 0
     if form.has_key("errors"):
-        if not form["errors"].value=="on": return 0
+        if not form["errors"].value=="on":
+            return 0
     if form.has_key("intern"):
-        if not form["intern"].value=="on": return 0
+        if not form["intern"].value=="on":
+            return 0
     return 1
 
 def getHostName(form):
@@ -50,20 +65,20 @@ def logit(form, env):
                 "REMOTE_HOST", "REMOTE_PORT"]:
         if env.has_key(var):
             _logfile.write(var+"="+env[var]+"\n")
-    for key in ["level", "url", "anchors", "errors", "intern"]:
+    for key in ["level", "url", "anchors", "errors", "intern", "language"]:
         if form.has_key(key):
             _logfile.write(str(form[key])+"\n")
 
 def printError(out):
-    out.write(_("<html><head><title>LinkChecker Online Error</title></head>"
-"<body text=\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\""
-"alink=\"#191c83\">"
-"<blockquote>"
-"<b>Error</b><br>"
-"The LinkChecker Online script has encountered an error. Please ensure "
-"that your provided URL link begins with <code>http://</code> and "
-"contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>"
-"Errors are logged."
-"</blockquote>"
-"</body>"
-"</html>"))
+    out.write(linkcheck._("""<html><head>
+<title>LinkChecker Online Error</title></head>
+<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
+<blockquote>
+<b>Error</b><br>
+The LinkChecker Online script has encountered an error. Please ensure
+that your provided URL link begins with <code>http://</code> and
+contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>
+Errors are logged.
+</blockquote>
+</body>
+</html>"""))

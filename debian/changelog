@@ -1,3 +1,18 @@
+linkchecker (1.3.22) unstable; urgency=low
+
+  * last release before 1.4.0
+  * CGI scripts don't raise Exception when called with missing form
+    parameters.
+  * The CGI form checking function checks also the language parameter.
+  * Updated documentation.
+  * Don't bail out if /etc/resolv.conf could not be found on DNS init.
+  * corrected installation of locale files
+  * install linkchecker.1 in share/man/man1, not man/man1
+  * Add support for multiple init_gettext calls, this is needed by CGI
+    scripts
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sat, 23 Feb 2002 21:35:52 +0100
+
 linkchecker (1.3.21) unstable; urgency=low
 
   * really fix the keyboardinterrupt thing

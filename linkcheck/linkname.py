@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re,StringUtil
+import re, StringUtil
 
 imgtag_re = re.compile("(?i)\s+alt\s*=\s*(?P<name>(\".*?\"|'.*?'|[^\s>]+))", re.DOTALL)
 img_re = re.compile("(?i)<\s*img\s+.*>", re.DOTALL)

@@ -15,9 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import socket
+import socket, linkcheck
 from UrlData import UrlData
-from linkcheck import _
 
 class HostCheckingUrlData(UrlData):
     "Url link for which we have to connect to a specific host"
@@ -42,4 +41,4 @@ class HostCheckingUrlData(UrlData):
 
     def checkConnection(self, config):
         ip = socket.gethostbyname(self.host)
-        self.setValid(self.host+"("+ip+") "+_("found"))
+        self.setValid(self.host+"("+ip+") "+linkcheck._("found"))

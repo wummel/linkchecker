@@ -16,7 +16,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from UrlData import UrlData
-from linkcheck import _
 
 class GopherUrlData(UrlData):
     "Url link with gopher scheme"

@@ -15,9 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import ftplib,linkcheck
+import ftplib, linkcheck
 from UrlData import UrlData,ExcList
-from linkcheck import _
 
 ExcList.extend([
    ftplib.error_reply,
@@ -34,15 +33,15 @@ class FtpUrlData(UrlData):
     def checkConnection(self, config):
         _user, _password = self._getUserPassword(config)
         if _user is None or _password is None:
-            raise linkcheck.error, _("No user or password found")
+            raise linkcheck.error, linkcheck._("No user or password found")
         try:
             self.urlConnection = ftplib.FTP(self.urlTuple[1], _user, _password)
         except EOFError:
-            raise linkcheck.error, _("Remote host has closed connection")
+            raise linkcheck.error, linkcheck._("Remote host has closed connection")
         info = self.urlConnection.getwelcome()
         if not info:
             self.closeConnection()
-            raise linkcheck.error, _("Got no answer from FTP server")
+            raise linkcheck.error, linkcheck._("Got no answer from FTP server")
         self.setInfo(info)
 
 

@@ -1,5 +1,5 @@
 # $Id$
-import sys, re, getopt, socket
+import os, sys, re, getopt, socket
 import DNS,DNS.Lib,DNS.Type,DNS.Class,DNS.Opcode
 #import asyncore
 
@@ -24,7 +24,6 @@ def init_dns_resolver():
     defaults['server'] = []
     defaults['search_domains'] = []
     # platform specific config
-    import os
     if os.name=="posix":
         init_dns_resolver_posix()
     elif os.name=="nt":
@@ -40,6 +39,8 @@ def init_dns_resolver():
 
 def init_dns_resolver_posix():
     "parses the /etc/resolv.conf file and sets defaults for name servers"
+    if not os.path.exists('/etc/resolv.conf'):
+        return
     # XXX this needs to be dynamic?
     global defaults
     for line in open('/etc/resolv.conf', 'r').readlines():

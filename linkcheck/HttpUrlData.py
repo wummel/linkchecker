@@ -16,13 +16,13 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import httplib, urlparse, sys, time, re
-import Config, StringUtil, robotparser
+import Config, StringUtil, robotparser, linkcheck
 if Config.DebugLevel > 0:
     robotparser.debug = 1
 from UrlData import UrlData
 from urllib import splittype, splithost, splituser, splitpasswd
-from linkcheck import _
 from debuglevels import *
+
 
 class HttpUrlData(UrlData):
     "Url link with http scheme"
@@ -75,9 +75,9 @@ class HttpUrlData(UrlData):
         self.auth = None
         self.proxyauth = None
         if not self.urlTuple[2]:
-            self.setWarning(_("Missing '/' at end of URL"))
+            self.setWarning(linkcheck._("Missing '/' at end of URL"))
         if config["robotstxt"] and not self.robotsTxtAllowsUrl(config):
-            self.setWarning(_("Access denied by robots.txt, checked only syntax"))
+            self.setWarning(linkcheck._("Access denied by robots.txt, checked only syntax"))
             return
 
         # first try
@@ -113,7 +113,7 @@ class HttpUrlData(UrlData):
                 Config.debug(BRING_IT_ON, "Redirected", self.mime)
                 tries += 1
             if tries >= 5:
-                self.setError(_("too much redirections (>= 5)"))
+                self.setError(linkcheck._("too much redirections (>= 5)"))
                 return
 
             # user authentication
@@ -136,13 +136,13 @@ class HttpUrlData(UrlData):
             #   content-type
             elif status in [405,501,500]:
                 # HEAD method not allowed ==> try get
-                self.setWarning(_("Server does not support HEAD request (got "
+                self.setWarning(linkcheck._("Server does not support HEAD request (got "
                                   "%d status), falling back to GET")%status)
                 status, statusText, self.mime = self._getHttpRequest("GET")
             elif status>=400 and self.mime:
                 server = self.mime.getheader("Server")
                 if server and self.netscape_re.search(server):
-                    self.setWarning(_("Netscape Enterprise Server with no "
+                    self.setWarning(linkcheck._("Netscape Enterprise Server with no "
                                       "HEAD support, falling back to GET"))
                     status,statusText,self.mime = self._getHttpRequest("GET")
             elif self.mime:
@@ -152,7 +152,7 @@ class HttpUrlData(UrlData):
                 if type=='application/octet-stream' and \
                    ((poweredby and poweredby[:4]=='Zope') or \
                     (server and server[:4]=='Zope')):
-                    self.setWarning(_("Zope Server cannot determine MIME type"
+                    self.setWarning(linkcheck._("Zope Server cannot determine MIME type"
                                       " with HEAD, falling back to GET"))
                     status,statusText,self.mime = self._getHttpRequest("GET")
 
@@ -160,15 +160,15 @@ class HttpUrlData(UrlData):
 
         effectiveurl = urlparse.urlunparse(self.urlTuple)
         if self.url != effectiveurl:
-            self.setWarning(_("Effective URL %s") % effectiveurl)
+            self.setWarning(linkcheck._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
 
         if has301status:
-            self.setWarning(_("HTTP 301 (moved permanent) encountered: you "
+            self.setWarning(linkcheck._("HTTP 301 (moved permanent) encountered: you "
                               "should update this link"))
             if self.url[-1]!='/':
                 self.setWarning(
-                     _("A HTTP 301 redirection occured and the url has no "
+                     linkcheck._("A HTTP 301 redirection occured and the url has no "
                      "trailing / at the end. All urls which point to (home) "
                      "directories should end with a / to avoid redirection"))
 

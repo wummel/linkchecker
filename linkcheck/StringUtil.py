@@ -18,7 +18,6 @@
 import re, sys, htmlentitydefs
 
 markup_re = re.compile("<.*?>", re.DOTALL)
-
 entities = htmlentitydefs.entitydefs.items()
 HtmlTable = map(lambda x: (x[1], "&"+x[0]+";"), entities)
 UnHtmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities)

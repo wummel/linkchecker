@@ -44,6 +44,9 @@ deb_local: cleandeb
 	# standard for local use
 	fakeroot debian/rules binary
 
+deb_localsigned:
+	debuild -sgpg -pgpg -k32EC6F3E -rfakeroot
+
 deb_signed: cleandeb
 	# ready for upload, signed with my GPG key
 	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k32EC6F3E -rfakeroot 
@@ -78,5 +81,8 @@ locale:
 timeouttest:
 	$(PYTHON) $(PACKAGE) -v --timeout=0 mailto:root@aol.com
 
+tar:	distclean
+	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
+
 .PHONY: all clean cleandeb distclean files upload test timeouttest locale
-.PHONY: onlinetest config dist deb_local deb_signed deb_unsigned
+.PHONY: onlinetest config dist deb_local deb_signed deb_unsigned tar

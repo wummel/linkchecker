@@ -16,10 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re, time, sys, nntplib, urlparse, linkcheck
-from linkcheck import _
 from UrlData import ExcList,UrlData
-debug = linkcheck.Config.debug
 from debuglevels import *
+debug = linkcheck.Config.debug
 
 ExcList.extend([nntplib.error_reply,
                nntplib.error_temp,
@@ -45,7 +44,7 @@ class NntpUrlData(UrlData):
     def checkConnection(self, config):
         nntpserver = self.urlTuple[1] or config["nntpserver"]
         if not nntpserver:
-            self.setWarning(_("No NNTP server specified, skipping this URL"))
+            self.setWarning(linkcheck._("No NNTP server specified, skipping this URL"))
             return
         nntp = self._connectNntp(nntpserver)
         group = self.urlTuple[2]
@@ -54,18 +53,18 @@ class NntpUrlData(UrlData):
         if '@' in group:
             # request article
             resp,number,id = nntp.stat("<"+group+">")
-            self.setInfo(_('Articel number %s found' % number))
+            self.setInfo(linkcheck._('Articel number %s found' % number))
         else:
             # split off trailing articel span
             group = group.split('/',1)[0]
             if group:
                 # request group info
                 resp,count,first,last,name = nntp.group(group)
-                self.setInfo(_("Group %s has %s articles, range %s to %s") %\
+                self.setInfo(linkcheck._("Group %s has %s articles, range %s to %s") %\
                              (name, count, first, last))
             else:
                 # group name is the empty string
-                self.setWarning(_("No newsgroup specified in NNTP URL"))
+                self.setWarning(linkcheck._("No newsgroup specified in NNTP URL"))
 
 
     def _connectNntp(self, nntpserver):

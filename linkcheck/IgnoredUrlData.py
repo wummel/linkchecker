@@ -15,9 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re
+import re, linkcheck
 from UrlData import UrlData
-from linkcheck import _
 
 ignored_schemes_re = re.compile(r"""^(
 acap        # application configuration access protocol
@@ -57,5 +56,5 @@ class IgnoredUrlData(UrlData):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 
     def _check(self, config):
-        self.setWarning(_("%s url ignored")%self.scheme.capitalize())
+        self.setWarning(linkcheck._("%s url ignored")%self.scheme.capitalize())
         self.logMe(config)

@@ -27,8 +27,8 @@ Read the file INSTALL.
 License and Credits
 -------------------
 LinkChecker is licensed under the GNU Public License.
-Credits go to Guido van Rossum for making Python. His hovercraft is
-full of eels!
+Credits go to Guido van Rossum and his team for making Python. 
+His hovercraft is full of eels!
 As this program is directly derived from my Java link checker, additional
 credits go to Robert Forsman (the author of JCheckLinks) and his
 robots.txt parse algorithm.
@@ -52,9 +52,9 @@ Included packages
 -----------------
 DNS from http://pydns.sourceforge.net/
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
-fintl.py from http://sourceforge.net/snippet/detail.php?type=snippet&id=100059
+CSV from http://eh.org/~laurie/comp/python/csv/index.html
 
-Note that all included packages are modified by me.
+Note that included packages are modified by me.
 
 
 Internationalization
@@ -75,7 +75,7 @@ commandline options and stores them in a Config object.
 (2) Which leads us directly to the Config class. This class stores all
 options and works a little magic: it tries to find out if your platform
 supports threads. If so, threading is enabled. If not, it is disabled.
-Several functions are replaced with their threaded equivalents if 
+Several functions are replaced with their threaded equivalents if
 threading is enabled.
 Another thing are config files. A Config object reads config file options
 on initialization so they get handled before any commandline options.
@@ -83,7 +83,7 @@ on initialization so they get handled before any commandline options.
 (3) The linkchecker script finally calls linkcheck.checkUrls(), which
 calls linkcheck.Config.checkUrl(), which calls linkcheck.UrlData.check().
 An UrlData object represents a single URL with all attached data like
-validity, check time and so on. These values are filled by the 
+validity, check time and so on. These values are filled by the
 UrlData.check() function.
 Derived from the base class UrlData are the different URL types: 
 HttpUrlData for http:// links, MailtoUrlData for mailto: links, etc.
@@ -94,6 +94,6 @@ the subclasses define functions needed for their URL type.
 (4) Lets look at the output. Every output is defined in a Logger class.
 Each logger has functions init(), newUrl() and endOfOutput().
 We call init() once to initialize the Logger. UrlData.check() calls
-newUrl() (through UrlData.logMe()) for each new URL and after all 
+newUrl() (through UrlData.logMe()) for each new URL and after all
 checking is done we call endOfOutput(). Easy.
 New loggers are created with the Config.newLogger function.

@@ -16,11 +16,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time
-import Logging, _linkchecker_configdata
+import Logging, _linkchecker_configdata, linkcheck
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 from urllib import getproxies
-from linkcheck import _
 from debuglevels import *
 
 Version = _linkchecker_configdata.version
@@ -384,10 +383,10 @@ class Configuration(UserDict.UserDict):
         self.readConfig(files)
 
     def warn(self, msg):
-        self.message(_("warning: %s")%msg)
+        self.message(linkcheck._("warning: %s")%msg)
 
     def error(self, msg):
-        self.message(_("error: %s")%msg)
+        self.message(linkcheck._("error: %s")%msg)
 
     def message(self, msg):
         print >> sys.stderr, msg
@@ -419,7 +418,7 @@ class Configuration(UserDict.UserDict):
             if Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
-                self.warn(_("invalid log option '%s'") % log)
+                self.warn(linkcheck._("invalid log option '%s'") % log)
         except ConfigParser.Error, msg:
             debug(HURT_ME_PLENTY, msg)
         try: 
@@ -455,7 +454,7 @@ class Configuration(UserDict.UserDict):
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
-                self.error(_("illegal recursionlevel number %d") % num)
+                self.error(linkcheck._("illegal recursionlevel number %d") % num)
             self["recursionlevel"] = num
         except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
         try: 

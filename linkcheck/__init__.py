@@ -19,18 +19,21 @@ class error(Exception):
     pass
 
 # i18n suppport
-import os, _linkchecker_configdata
-try:
-    import gettext
-    domain = 'linkcheck'
-    localedir = os.path.join(_linkchecker_configdata.install_data, 'locale')
-    t = gettext.translation(domain, localedir)
-    _ = t.gettext
-except IOError:
-    _ = lambda s: s
+import sys, os, _linkchecker_configdata
+def init_gettext ():
+    global _
+    try:
+        import gettext
+        domain = 'linkcheck'
+        localedir = os.path.join(_linkchecker_configdata.install_data,
+                    'share/locale')
+        _ = gettext.translation(domain, localedir).gettext
+    except (IOError, ImportError):
+        _ = lambda s: s
+init_gettext()
 
 import timeoutsocket
-import Config, UrlData, sys, lc_cgi
+import Config, UrlData, lc_cgi
 from debuglevels import *
 debug = Config.debug
 
@@ -45,7 +48,6 @@ def checkUrls(config):
     In the config object there are functions to get a new URL (getUrl) and
     to check it (checkUrl).
     """
-    debug(HURT_ME_PLENTY, "threads", config['threads'])
     config.log_init()
     try:
         while not config.finished():

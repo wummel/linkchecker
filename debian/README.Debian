@@ -1,0 +1,4 @@
+On Debian systems, you have a simple CGI script located at
+http://localhost/doc/linkchecker/lconline/
+
+For installation of other CGI scripts, see README

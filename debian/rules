@@ -39,9 +39,7 @@ install: build
 	dh_installdirs
 	$(MAKE) locale
 	$(PYTHON) setup.py install --root=$(CURDIR)/debian/$(PACKAGE) --no-compile
-	# remove man pages, we install them with dh_installman
-	rm -r debian/$(PACKAGE)/usr/man
-	# remove files, we install them below
+	# remove example files, we install them below
 	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples
 	# install additional doc files
 	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
@@ -60,7 +58,7 @@ binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installman linkchecker.1
+	#dh_installman linkchecker.1
 	dh_installchangelogs 
 	dh_link
 	dh_strip

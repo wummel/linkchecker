@@ -17,7 +17,6 @@
 
 import telnetlib, re, linkcheck
 from HostCheckingUrlData import HostCheckingUrlData
-from linkcheck import _
 
 # regular expression for syntax checking
 
@@ -38,14 +37,13 @@ class TelnetUrlData(HostCheckingUrlData):
         HostCheckingUrlData.buildUrl(self)
         mo = telnet_re.match(self.urlName)
         if not mo:
-            raise linkcheck.error, _("Illegal telnet link syntax")
+            raise linkcheck.error, linkcheck._("Illegal telnet link syntax")
         self.user = mo.group("user")
         self.password = mo.group("password")
         self.host = mo.group("host")
         self.port = mo.group("port")
         if not self.port:
             self.port = 23
-
 
     def checkConnection(self, config):
         HostCheckingUrlData.checkConnection(self, config)

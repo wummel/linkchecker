@@ -19,7 +19,6 @@ import os, re, DNS, sys, Config, cgi, urllib, linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
-from linkcheck import _
 from debuglevels import *
 
 # regular expression for RFC2368 compliant mailto: scanning
@@ -65,7 +64,7 @@ class MailtoUrlData(HostCheckingUrlData):
             an answer, print the verified adress as an info.
         """
         if not self.adresses:
-            self.setWarning(_("No adresses found"))
+            self.setWarning(linkcheck._("No adresses found"))
             return
 
         value = "unknown reason"
@@ -77,7 +76,7 @@ class MailtoUrlData(HostCheckingUrlData):
             mxrecords = DNS.mxlookup(host, protocol="tcp")
             Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
-                self.setError(_("No mail host for %s found")%host)
+                self.setError(linkcheck._("No mail host for %s found")%host)
                 return
             smtpconnect = 0
             for mxrecord in mxrecords:
@@ -90,19 +89,19 @@ class MailtoUrlData(HostCheckingUrlData):
                     info = self.urlConnection.verify(user)
                     Config.debug(HURT_ME_PLENTY, "SMTP user info", info)
                     if info[0]==250:
-                        self.setInfo(_("Verified adress: %s")%str(info[1]))
+                        self.setInfo(linkcheck._("Verified adress: %s")%str(info[1]))
                 except:
                     type, value = sys.exc_info()[:2]
                     #print type,value
                 if smtpconnect: break
             
             if not smtpconnect:
-                self.setWarning(_("None of the mail hosts for %s accepts an "
+                self.setWarning(linkcheck._("None of the mail hosts for %s accepts an "
                                   "SMTP connection: %s") % (host, str(value)))
                 mxrecord = mxrecords[0][1]
             else:
                 mxrecord = mxrecord[1]
-            self.setValid(_("found mail host %s") % mxrecord)
+            self.setValid(linkcheck._("found mail host %s") % mxrecord)
 
 
     def _split_adress(self, adress):
@@ -113,7 +112,7 @@ class MailtoUrlData(HostCheckingUrlData):
             return tuple(split)
         if len(split)==1:
             return (split[0], "localhost")
-        raise linkcheck.error, _("could not split the mail adress")
+        raise linkcheck.error, linkcheck._("could not split the mail adress")
 
 
     def closeConnection(self):

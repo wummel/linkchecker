@@ -16,8 +16,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, re, os
-dist_dir = "/home/calvin/projects/linkchecker"
-sys.path.insert(0,dist_dir)
 import fcgi
 
 # main
@@ -26,14 +24,9 @@ try:
         req = fcgi.FCGI()
         req.out.write("Content-type: text/html\r\n"
                       "Cache-Control: no-cache\r\n"
+                      "Pragma: no-cache\r\n"
                       "\r\n")
         form = req.getFieldStorage()
-        if form['language'].value == 'de':
-            os.environ['LC_MESSAGES'] = 'de'
-        elif form['language'].value == 'fr':
-            os.environ['LC_MESSAGES'] = 'fr'
-        else:
-            os.environ['LC_MESSAGES'] = 'C'
         import linkcheck
         if not linkcheck.lc_cgi.checkform(form):
             linkcheck.lc_cgi.logit(form, req.env)

@@ -18,7 +18,7 @@
 import httplib
 from UrlData import UrlData
 from HttpUrlData import HttpUrlData
-from linkcheck import _, Config
+import linkcheck, Config
 _supportHttps = hasattr(httplib, "HTTPS")
 
 
@@ -36,5 +36,5 @@ class HttpsUrlData(HttpUrlData):
         if _supportHttps:
             HttpUrlData._check(self, config)
         else:
-            self.setWarning(_("HTTPS url ignored"))
+            self.setWarning(linkcheck._("HTTPS url ignored"))
             self.logMe(config)
