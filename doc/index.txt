@@ -43,6 +43,18 @@ look at the ChangeLog_.
 .. _ChangeLog: changes.txt
 
 
+Screenshots
+===========
+
+   +----------------------------+----------------------------+
+   | .. image:: shot1_thumb.jpg | .. image:: shot2_thumb.jpg |
+   |      :align: middle        |      :align: middle        |
+   |      :target: shot1.png    |      :target: shot2.png    |
+   +----------------------------+----------------------------+
+   | Commandline interface      | CGI web interface          |
+   +----------------------------+----------------------------+
+
+
 Running
 =======
 
