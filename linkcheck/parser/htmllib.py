@@ -24,6 +24,7 @@ except ImportError:
     print >>sys.stderr, "Please check your installation of LinkChecker."
     sys.exit(1)
 
+
 class HtmlParser:
     """Use an internal C SAX parser. We do not define any callbacks
     here for compatibility. Currently recognized callbacks are:
@@ -44,37 +45,9 @@ class HtmlParser:
         """initialize the internal parser"""
         self.parser = htmlsax.parser(self)
 
-    def feed (self, data):
-        """feed some data to the parser"""
-        self.parser.feed(data)
-
-    def lineno (self):
-        """return current parser line number"""
-        return self.parser.lineno()
-
-    def last_lineno (self):
-        """return parser line number of the last token"""
-        return self.parser.last_lineno()
-
-    def column (self):
-        """return current parser column"""
-        return self.parser.column()
-
-    def last_column (self):
-        """return parser column of the last token"""
-        return self.parser.last_column()
-
-    def pos (self):
-        """return current parser buffer position"""
-        return self.parser.pos()
-
-    def flush (self):
-        """flush all data"""
-        self.parser.flush()
-
-    def reset (self):
-        """reset the parser (without flushing)"""
-        self.parser.reset()
+    def __getattr__ (self, name):
+        """delegate unknown attrs to self.parser"""
+        return getattr(self.parser, name)
 
 
 class HtmlPrinter (HtmlParser):
@@ -83,27 +56,22 @@ class HtmlPrinter (HtmlParser):
     def _print (self, *attrs):
         print self.mem, attrs, self.last_lineno(), self.last_column()
 
-
     def _errorfun (self, msg, name):
         """print msg to stderr with name prefix"""
         pos = "%d:%d:" % (self.lineno(), self.column())
         print >> sys.stderr, name, pos, msg
 
-
     def error (self, msg):
         """signal a filter/parser error"""
         self._errorfun(msg, "error:")
-
 
     def warning (self, msg):
         """signal a filter/parser warning"""
         self._errorfun(msg, "warning:")
 
-
     def fatalError (self, msg):
         """signal a fatal filter/parser error"""
         self._errorfun(msg, "fatal error:")
-
 
     def __getattr__ (self, name):
         self.mem = name
@@ -133,6 +101,7 @@ def _test():
     p.feed("<!---->")
     p.feed("<!DOCTYPE \"vla foo>")
     p.flush()
+
 
 def _broken ():
     p = HtmlPrinter()
