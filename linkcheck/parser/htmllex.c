@@ -9,7 +9,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 25
+#define YY_FLEX_SUBMINOR_VERSION 26
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -43,19 +43,9 @@ typedef uint32_t flex_uint32_t;
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
 typedef int flex_int32_t;
-# if __WORDSIZE == 64 || defined __arch64__ || defined __cplusplus
-typedef long int flex_int64_t;
-# else
-typedef long long int flex_int64_t;
-# endif
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-#if __WORDSIZE == 64 || defined __arch64__ || defined __cplusplus
-typedef unsigned long int flex_uint64_t;
-#else
-typedef unsigned long long int flex_uint64_t;
-#endif
 #endif /* ! C99 */
 
 /* Limits of integral types. */
@@ -6783,7 +6773,7 @@ static PyObject* quote_string (PyObject* val) {
 
 #define S_STRING 16
 
-#line 6787 "htmllex.c"
+#line 6777 "htmllex.c"
 #endif /* !yyIN_HEADER YY-END-DISCARD-FROM-HEADER */
 
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -7101,7 +7091,7 @@ YY_DECL
 
 
   /*********************** EOF ************************/
-#line 7105 "htmllex.c"
+#line 7095 "htmllex.c"
 
     yylval = yylvalp;
 #ifdef YYLTYPE
@@ -7118,7 +7108,7 @@ YY_DECL
 
 #ifdef YY_USES_REJECT
         if ( ! YY_G(yy_state_buf) )
-            YY_G(yy_state_buf) = yyalloc(YY_BUF_SIZE + 2  YY_CALL_LAST_ARG);
+            YY_G(yy_state_buf) = (yy_state_type *)yyalloc(YY_BUF_SIZE + 2  YY_CALL_LAST_ARG);
 #endif
 
 		if ( ! YY_G(yy_start) )
@@ -8171,7 +8161,7 @@ YY_RULE_SETUP
 #line 841 "htmllex.l"
 ECHO;
 	YY_BREAK
-#line 8175 "htmllex.c"
+#line 8165 "htmllex.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -8585,7 +8575,7 @@ static int yy_get_next_buffer YYFARGS0(void)
 					/* Reset buffer status. */
 					yyrestart( yyin YY_CALL_LAST_ARG);
 
-					/* fall through */
+					/*FALLTHROUGH*/
 
 				case EOB_ACT_END_OF_FILE:
 					{

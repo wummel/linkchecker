@@ -1,3 +1,9 @@
+1.8.5
+  * fix config.warn to warn
+    Changed files: linkcheck/__init.py
+  * rebuild parser with flex 2.5.26
+    Changed files: wc/parser/htmllex.c
+
 1.8.4
   * Improve error message for failing htmlsax module import
     Changed files: linkcheck/parser/htmllib.py
