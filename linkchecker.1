@@ -48,32 +48,38 @@ internal/external.
 Print debugging information. Provide this option multiple times
 for even more debugging information.
 .TP
-\fB-e \fIregex\fP, \fB--extern=\fIregex\fP
+\fB-e\fP \fIregex\fP, \fB--extern=\fP\fIregex\fP
 Assume urls that match the given regular expression as external.
 Only internal HTML links are checked recursively.
 .TP
-\fB-f \fIfile\fP, \fB--config=\fIfile\fP
+\fB-f\fP \fIfile\fP, \fB--config=\fP\fIfile\fP
 Use \fIfile\fP as configuration file. As default LinkChecker first searches
 /etc/linkcheckerrc and then ~/.linkcheckerrc.
 .TP
-\fB-F \fItype\fP[\fI/filename\fP], \fB--file-output=\fItype\fP[\fI/filename\fP]
-Same as -o, but write to a file \fIlinkchecker-out.<type>\fP
-or \fIfilename\fP if specified. If the file already exists, it is
-overwritten. You can specify this option more than once. There
-is no file output for the blacklist logger. Default is no file
-output.
+\fB-F\fP \fItype\fP[\fB/\fP\fIfilename\fP], \fB--file-output=\fP\fItype\fP[\fB/\fP\fIfilename\fP]
+Output to a file \fBlinkchecker-out.\fP\fItype\fP,
+\fB$HOME/.linkchecker_blacklist\fP for
+\fBblacklist\fP output, or \fIfilename\fP if specified.
+The \fIfilename\fP part of the \fBnone\fP output type will be ignored,
+else if the file already exists, it will be overwritten.
+You can specify this option more than once. Valid file output types
+are \fItext\fP, \fIcolored\fP, \fIhtml\fP, \fIsql\fP,
+\fIcsv\fP, \fIgml\fP, \fIxml\fP, \fInone\fP or \fIblacklist\fP
+Default is no file output. If console output is not specified with
+\fB-o\fP, this option suppresses all console output by implying
+\fB-o none\fP.
 .TP
 \fB-I\fP, \fB--interactive\fP
 Ask for url if none are given on the commandline.
 .TP
-\fB-i \fIregex\fP, \fB--intern=\fIregex\fP
+\fB-i\fP \fIregex\fP, \fB--intern=\fIregex\fP
 Assume URLs that match the given regular expression as internal.
 LinkChecker descends recursively only to internal URLs, not to external.
 .TP
 \fB-h\fP, \fB--help\fP
 Help me! Print usage information for this program.
 .TP
-\fB-N \fIserver\fP, \fB--nntp-server=\fIserver\fP
+\fB-N\fP \fIserver\fP, \fB--nntp-server=\fP\fIserver\fP
 Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked.
@@ -83,16 +89,16 @@ Treat url#anchora and url#anchorb as equal on caching. This
 is the default browser behaviour, but it's not specified in
 the URI specification. Use with care.
 .TP
-\fB-o \fItype\fP, \fB--output=\fItype\fP
+\fB-o\fP \fItype\fP, \fB--output=\fP\fItype\fP
 Specify output type as \fItext\fP, \fIcolored\fP, \fIhtml\fP, \fIsql\fP,
-\fIcsv\fP, \fIgml\fP, \fIxml\fP or \fIblacklist\fP.
+\fIcsv\fP, \fIgml\fP, \fIxml\fP, \fInone\fP or \fIblacklist\fP.
 Default type is \fItext\fP.
 .TP
-\fB-p \fIpwd\fP, \fB--password=\fIpwd\fP
+\fB-p\fP \fIpwd\fP, \fB--password=\fP\fIpwd\fP
 Try the password \fIpwd\fP for HTTP and FTP authorization.
 The default password is \fIguest@\fP. See also \fB-u\fP.
 .TP
-\fB-P \fIsecs\fP, \fB--pause=\fIsecs\fP
+\fB-P\fP \fIsecs\fP, \fB--pause=\fP\fIsecs\fP
 Pause \fIsecs\fP seconds between each url check. This option
 implies -t0.
 Default is no pause between requests.
@@ -100,7 +106,7 @@ Default is no pause between requests.
 \fB-q\fP, \fB--quiet\fP
 Quiet operation. This is only useful with \fB-F\fP.
 .TP
-\fB-r \fIdepth\fP, \fB--recursion-level=\fIdepth\fP
+\fB-r\fP \fIdepth\fP, \fB--recursion-level=\fP\fIdepth\fP
 Check recursively all links up to given \fIdepth\fP.
 A negative depth will enable inifinite recursion.
 Default depth is 1.
@@ -113,15 +119,15 @@ http and ftp urls, all urls at the same domain name are internal.
 \fB--status\fP
 Print check status every 5 seconds to stderr.
 .TP
-\fB-t \fInum\fP, \fB--threads=\fInum\fP
+\fB-t\fP \fInum\fP, \fB--threads=\fP\fInum\fP
 Generate no more than \fInum\fP threads. Default number of threads is 5.
 To disable threading specify a non-positive number.
 .TP
-\fB--timeout=\fIsecs\fP
+\fB--timeout=\fP\fIsecs\fP
 Set the timeout for connection attempts in seconds. The default timeout
 is 30 seconds.
 .TP
-\fB-u \fIname\fP, \fB--user=\fIname\fP
+\fB-u\fP \fIname\fP, \fB--user=\fP\fIname\fP
 Try username \fIname\fP for HTTP and FTP authorization.
 Default is \fIanonymous\fP. See also \fB-p\fP.
 .TP
@@ -135,7 +141,7 @@ URLs.
 \fB-w\fP, \fB--warnings\fP
 Log warnings.
 .TP
-\fB-W \fIregex\fP, \fB--warning-regex=\fIregex\fP
+\fB-W\fP \fIregex\fP, \fB--warning-regex=\fIregex\fP
 Define a regular expression which prints a warning if it matches any
 content of the checked link.
 This applies of course only to pages which are valid, so we can get
@@ -144,7 +150,7 @@ Use this to check for pages that contain some form of error, for example
 'This page has moved' or 'Oracle Application Server error'.
 This option implies \fB-w\fP.
 .TP
-\fB--warning-size-bytes=\fIbytes\fP
+\fB--warning-size-bytes=\fP\fIbytes\fP
 Print a warning if content size is available and exceeds the given
 number of \fIbytes\fP.
 This option implies \fB-w\fP.
