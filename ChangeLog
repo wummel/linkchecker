@@ -3,6 +3,12 @@
     Type: code cleanup
     Changed: a lot
 
+  * if checking revealed errors (or warnings with --warnings),
+    the command line client exits with a non-zero exit status
+    Type: feature
+    Closes: SF bug 1013191
+    Changed: linkchecker, linkcheck/checker/consumer.py
+
 1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request
     Type: bugfix
