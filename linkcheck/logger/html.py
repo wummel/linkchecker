@@ -28,8 +28,12 @@ import linkcheck.configuration
 from linkcheck.i18n import _
 
 
-HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">
-<html><head><title>%s</title>
+HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>%s</title>
 <style type="text/css">\n<!--
  h2 { font-family: Verdana,sans-serif; font-size: 22pt;
  font-style: bold; font-weight: bold }
