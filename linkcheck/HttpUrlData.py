@@ -204,7 +204,7 @@ class HttpUrlData (ProxyUrlData):
             self.setWarning(
                        i18n._("HTTP 301 (moved permanent) encountered: you "
                               "should update this link"))
-            if self.url[-1]!='/':
+            if not (self.url.endswith('/') or self.url.endswith('.html')):
                 self.setWarning(
             i18n._("A HTTP 301 redirection occured and the url has no "
                     "trailing / at the end. All urls which point to (home) "
