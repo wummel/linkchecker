@@ -34,9 +34,9 @@ For single-letter option arguments the space is not a necessity. So
 -a, --anchors
         Check HTTP anchor references. Default is don't check anchors.
 -C, --cookies
-        Accept and send HTTP cookies according to RFC 2109. See the
-        FAQ for security-related questions about cookies.
-        Sent or accepted cookies are provided as additional logging
+        Accept and send HTTP cookies according to RFC 2109. Only cookies
+        which are sent back to the originating server are accepted.
+        Sent and accepted cookies are provided as additional logging
         information.
 -d, --denyallow
         Swap checking order to extern/intern. Default checking order

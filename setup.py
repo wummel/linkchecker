@@ -148,6 +148,7 @@ o restriction of link checking with regular expression filters for URLs
 o proxy support
 o username/password authorization for HTTP and FTP
 o robots.txt exclusion protocol support
+o Cookie support
 o i18n support
 o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
