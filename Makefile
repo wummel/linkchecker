@@ -54,7 +54,7 @@ distclean:	clean
 dist:	mo
 	rm -rf debian/tmp
 	python setup.py sdist --formats=gztar,zip bdist_rpm
-	python setup.py bdist_wininst
+#	python setup.py bdist_wininst
 	fakeroot debian/rules binary
 	mv -f ../$(DEBPACKAGE) dist
 
