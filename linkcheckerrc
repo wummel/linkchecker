@@ -37,7 +37,7 @@ fileoutput=
 # standard text logger
 [text]
 filename=linkchecker-out.txt
-fields=url,result
+fields=all
 
 # GML logger
 [gml]
@@ -72,19 +72,19 @@ fields=all
 
 # ANSI color logger
 [colored]
-filename=linkchecker-out.ansi
-# colors for the various parts (\x1b = ESC)
-colorparent="\x1b[37m"
-colorurl="\x1b[0m"
-colorname="\x1b[0m"
-colorreal="\x1b[36m"
-colorbase="\x1b[35m"
-colorvalid="\x1b[1;32m"
-colorinvalid="\x1b[1;31m"
-colorinfo="\x1b[0m"
-colorwarning="\x1b[1;33m"
-colordltime="\x1b[0m"
-colorreset="\x1b[0m"
+filename=linkchecker-out.colored
+# colors for the various parts
+colorparent=37
+colorurl=0
+colorname=0
+colorreal=36
+colorbase=35
+colorvalid=1;32
+colorinvalid=1;31
+colorinfo=0
+colorwarning=1;33
+colordltime=0
+colorreset=0
 fields=all
 
 # blacklist logger

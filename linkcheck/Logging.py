@@ -211,7 +211,7 @@ __init__(self, **args)
             if duration > 60:
                 duration = duration / 60
                 name = _("hours")
-            self.fd.write("	(%.3f %s)\n" % (duration, name))
+            self.fd.write(" (%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
 
@@ -358,18 +358,19 @@ class ColoredLogger(StandardLogger):
     """ANSI colorized output"""
 
     def __init__(self, **args):
+        esc="\033[%sm"
         apply(StandardLogger.__init__, (self,), args)
-        self.colorparent = args['colorparent']
-        self.colorurl = args['colorurl']
-        self.colorname = args['colorname']
-        self.colorreal = args['colorreal']
-        self.colorbase = args['colorbase']
-        self.colorvalid = args['colorvalid']
-        self.colorinvalid = args['colorinvalid']
-        self.colorinfo = args['colorinfo']
-        self.colorwarning = args['colorwarning']
-        self.colordltime = args['colordltime']
-        self.colorreset = args['colorreset']
+        self.colorparent = esc % args['colorparent']
+        self.colorurl = esc % args['colorurl']
+        self.colorname = esc % args['colorname']
+        self.colorreal = esc % args['colorreal']
+        self.colorbase = esc % args['colorbase']
+        self.colorvalid = esc % args['colorvalid']
+        self.colorinvalid = esc % args['colorinvalid']
+        self.colorinfo = esc % args['colorinfo']
+        self.colorwarning = esc % args['colorwarning']
+        self.colordltime = esc % args['colordltime']
+        self.colorreset = esc % args['colorreset']
         self.currentPage = None
         self.prefix = 0
 

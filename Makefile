@@ -52,7 +52,7 @@ deb:
 	# (linkchecker.1 -> undocumented.1)
 	$(MAKE) cleandeb
 	fakeroot debian/rules binary
-	fakeroot dpkg-buildpackage -sgpg -pgpg -k959C340F
+	fakeroot cvs-buildpackage -sgpg -pgpg -k959C340F
 
 .PHONY: packages
 packages:
@@ -76,6 +76,7 @@ upload: distclean dist files VERSION
 	scp linkchecker-out.* $(HTMLDIR)
 	scp VERSION $(HTMLDIR)/raw/
 	scp dist/* $(FTPDIR)/
+	scp dist/* $(HTMLDIR)/
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 .PHONY: test
