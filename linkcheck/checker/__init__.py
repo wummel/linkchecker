@@ -195,6 +195,7 @@ import linkcheck.checker.nntpurl
 
 def set_intern_url (url, klass, config):
     """add intern url pattern for url given on the command line"""
+    linkcheck.log.debug(linkcheck.LOG_CHECK, "Set intern url for %r", url)
     if klass == linkcheck.checker.fileurl.FileUrl:
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern pattern ^file:")
         config['internlinks'].append(linkcheck.get_link_pat("^file:"))
@@ -258,7 +259,7 @@ def get_url_from (base_url, recursion_level, consumer,
     if cmdline and not (consumer.config['internlinks'] or
                         consumer.config['externlinks']):
         # set automatic intern/extern stuff if no filter was given
-        set_intern_url(base_url, klass, consumer.config)
+        set_intern_url(url, klass, consumer.config)
     return klass(base_url, recursion_level, consumer,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)
