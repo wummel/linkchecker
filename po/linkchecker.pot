@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2004-09-10 13:46+CEST\n"
+"POT-Creation-Date: 2004-09-14 22:04+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,77 +51,81 @@ msgstr ""
 msgid "%s url ignored"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:63
+#: ../linkcheck/checker/httpurl.py:64
 msgid "URL path is empty, assuming '/' as path"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:112
+#: ../linkcheck/checker/httpurl.py:113
 msgid "Using Proxy %r"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:118
+#: ../linkcheck/checker/httpurl.py:119
 msgid "Access denied by robots.txt, checked only syntax"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:122
+#: ../linkcheck/checker/httpurl.py:123
 msgid "Amazon servers block HTTP HEAD requests, using GET instead"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:149
+#: ../linkcheck/checker/httpurl.py:150
 msgid "Enforced Proxy %r"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:175
+#: ../linkcheck/checker/httpurl.py:176
 msgid "more than %d redirections, aborting"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:207
+#: ../linkcheck/checker/httpurl.py:208
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:215
+#: ../linkcheck/checker/httpurl.py:216
 msgid "Effective URL %s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:231
+#: ../linkcheck/checker/httpurl.py:232
 msgid "Redirected to %(url)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:242
+#: ../linkcheck/checker/httpurl.py:243
 msgid ""
 "recursive redirection encountered:\n"
 " %s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:252
+#: ../linkcheck/checker/httpurl.py:253
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:257
+#: ../linkcheck/checker/httpurl.py:258
 msgid "A HTTP 301 redirection occured and the URL has no trailing / at the end. All URLs which point to (home) directories should end with a / to avoid redirection."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:268
+#: ../linkcheck/checker/httpurl.py:269
 msgid "HTTP redirection to non-http url encountered; the original url was %r."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:296
+#: ../linkcheck/checker/httpurl.py:297
 msgid "unknown"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:298
+#: ../linkcheck/checker/httpurl.py:299
 msgid "Server %r did not support HEAD request, used GET for checking"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:301
+#: ../linkcheck/checker/httpurl.py:302
 msgid "Server %r had no anchor support, removed anchor from request"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:320
+#: ../linkcheck/checker/httpurl.py:317
+msgid "Could not store cookies: %(msg)s"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:325
 msgid "Last modified %s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:414 ../linkcheck/checker/httpurl.py:435
+#: ../linkcheck/checker/httpurl.py:419 ../linkcheck/checker/httpurl.py:440
 msgid "Unsupported content encoding %r."
 msgstr ""
 

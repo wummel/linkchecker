@@ -1,5 +1,7 @@
 1.13.4 "" (released xx.xx.xxxx)
-  *
+  * Catch HTTP cookie errors and add a warning.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
 
 1.13.3 "Fight Club" (released 10.9.2004)
   * Prevent collapsing of relative parent dir paths. This fixes false
