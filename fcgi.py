@@ -227,7 +227,7 @@ _sock = None
 class FCGI:
     def __init__(self):
         self.haveFinished = 0
-        if _init == None:
+        if _init is None:
             _startup()
         if not isFCGI():
             self.haveFinished = 1
@@ -242,15 +242,14 @@ class FCGI:
             good_addrs=None
 
         self.conn, addr=_sock.accept()
-        stdin = data = ""
-        self.env = {}
-        self.requestId=0
-        remaining=1
-
         # Check if the connection is from a legal address
         if good_addrs!=None and addr not in good_addrs:
             raise error, 'Connection from invalid server!'
 
+        stdin = data = ""
+        self.env = {}
+        self.requestId=0
+        remaining=1
         while remaining:
             r=record(); r.readRecord(self.conn)
 

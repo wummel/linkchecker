@@ -2,14 +2,14 @@
 from distutils.core import setup
 
 setup (name = "linkchecker",
-       version = "1.1.3",
+       version = "1.1.4",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",
        url = "http://linkchecker.sourceforge.net",
        licence = "GPL",
 
-       packages = ['','DNS','linkcheck','distutils','distutils/command'],
+       packages = ['','DNS','linkcheck'],
        # uncomment ext_modules to enable HTTPS support
        # you must have an SSL library and the Python header
        # files installed

@@ -7,54 +7,37 @@ import sys,thread,fcgi
 
 class SZ_FCGI:
 
-	# Constructor
-	def __init__(self,func):
-		self.func = func
-		self.handles  = {}
-		return None
+    def __init__(self,func):
+        self.func = func
+	self.handles  = {}
 
-	# create a new thread to handle requests
-	def run(self):
-		try:
-			while fcgi.isFCGI():
-				req = fcgi.FCGI()
-				thread.start_new_thread(self.handle_request,(req,0))
+    # create a new thread to handle requests
+    def run(self):
+        while fcgi.isFCGI():
+            req = fcgi.FCGI()
+	    thread.start_new_thread(self.handle_request,(req,0))
 
-		except:
-			write_log('isCGI() failed')
+    # Finish thread and send all data back to the FCGI parent
+    def finish(self):
+	req  = self.handles[thread.get_ident()]
+	req.Finish()
+	thread.exit()
 
+    # Call function - handled by a thread
+    def handle_request(self,*args):
+	req = args[0]
+	self.handles[thread.get_ident()] = req
+	try:
+	    self.func(self,req.env,req.getFieldStorage())
+	except:
+            write_traceback()
 
-	# Finish thread and send all data back to the FCGI parent
-	def finish(self):
-		req  = self.handles[thread.get_ident()]
-		req.Finish()
-		thread.exit()	
-		
+    # Our own FCGI print routine
+    def print(self,*args):
+	req = self.handles[thread.get_ident()]
+        for s in args:
+            req.out.write(str(s))
+            req.out.flush()
 
-
-	# Call function - handled by a thread
-	def handle_request(self,*args):
-
-		req = args[0]
-		self.handles[thread.get_ident()] = req
-
-		try:
-			self.func(self,req.env,req.getFieldStorage())
-		except:
-			pass
-
-
-	# Our own FCGI print routine
-	def pr(self,*args):
-	
-		req = self.handles[thread.get_ident()]
-
-		try:
-			s=''
-			for i in args: s=s+str(i)
-			req.out.write(s+'\n')
-			req.out.flush()
-		except:
-			pass
-
-
+    def println(self,*args):
+        req = self.handles[thread.get_ident()]
