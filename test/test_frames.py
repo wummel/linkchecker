@@ -1,5 +1,4 @@
-import os,sys
-sys.path.append(os.getcwd())
+import os, sys
 import linkcheck
 config = linkcheck.Config.Configuration()
 config['recursionlevel'] = 1

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
     Copyright (C) 2000  Bastian Kleineidam
 
@@ -18,4 +19,6 @@
 import pstats,glob
 
 for file in glob.glob('*.prof'):
-    pstats.Stats(file).strip_dirs().sort_stats("cumulative").print_stats(20)
+    stats = pstats.Stats(file)
+    #stats.strip_dirs().sort_stats("cumulative").print_stats(50)
+    stats.print_callees()

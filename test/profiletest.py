@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
     Copyright (C) 2000  Bastian Kleineidam
 
@@ -17,12 +18,15 @@
 """
 
 # profiling test
-import sys,re,profile,pstats,linkcheck
+import sys, re, profile, os
+sys.path.append(os.getcwd())
+import linkcheck
+
 #linkcheck.Config.DebugFlag = 1
 
-def runit(config, name):
+def runit (config, name):
     url='http://www.heise.de/'
-    config['recursionlevel'] = 2
+    config['recursionlevel'] = 1
     config['anchors'] = 1
     config['internlinks'].append(re.compile(r"^https?://www\.heise\.de"))
     # avoid checking of local files (security!)
