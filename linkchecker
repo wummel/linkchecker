@@ -198,10 +198,12 @@ this option suppresses all console output by implying -o none.""")%linkcheck.Log
 group.add_option("-D", "--debug", action="count",
                  help=bk.i18n._(
 """Print debugging information. Provide this option multiple times
-for even more debugging information."""))
+for even more debugging information. Enabling debug will also
+disable threading."""))
 group.add_option("--status", action="store_true", dest="status",
                  help=bk.i18n._(
-"""Print check status every 5 seconds to stderr."""))
+"""Print check status every 5 seconds to stderr. Does not work with the
+--debug option."""))
 group.add_option("--profile", action="store_true", dest="profile",
                  help=bk.i18n._(
 """Write profiling data into a file named %s in the
@@ -295,6 +297,8 @@ if "--wischiwaschi" in sys.argv:
 
 # set debug level as early as possible
 if options.debug is not None:
+    if options.status is not None:
+        printUsage(bk.i18n._("the --debug conflicts with --status."))
     set_debuglevel(options.debug)
 bk.log.debug(linkcheck.LOG_CMDLINE, "Python", sys.version, "on", sys.platform)
 # build a config object for this check session

@@ -28,8 +28,7 @@ a (Fast)CGI web interface (requires HTTP server)
 .SH EXAMPLES
 Check the treasure.calvinsplayground.de domain, but don't recurse into
 links outside of this domain:
-  \fBlinkchecker -v --status -r5 -itreasure\\.calvinsplayground\\.de \\
-  -Fhtml -ocolored http://treasure.calvinsplayground.de/\fP
+  \fBlinkchecker --status -ocolored http://treasure.calvinsplayground.de/\fP
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
@@ -67,7 +66,8 @@ internal/external.
 .TP
 \fB-D\fP, \fB--debug\fP
 Print debugging information. Provide this option multiple times
-for even more debugging information.
+for even more debugging information. Enabling debug will also
+disable threading.
 .TP
 \fB-e\fP \fIregex\fP, \fB--extern=\fP\fIregex\fP
 Assume urls that match the given regular expression as external.
@@ -130,7 +130,7 @@ Quiet operation. This is only useful with \fB-F\fP.
 \fB-r\fP \fIdepth\fP, \fB--recursion-level=\fP\fIdepth\fP
 Check recursively all links up to given \fIdepth\fP.
 A negative depth will enable inifinite recursion.
-Default depth is 1.
+Default depth is inifinite.
 .TP
 \fB-s\fP, \fB--strict\fP
 Check only the syntax of external links, do not try to connect to them.
@@ -138,7 +138,8 @@ For local file urls, only local files are internal. For
 http and ftp urls, all urls at the same domain name are internal.
 .TP
 \fB--status\fP
-Print check status every 5 seconds to stderr.
+Print check status every 5 seconds to stderr. Does not work with the
+\fB--debug\fP option.
 .TP
 \fB-t\fP \fInum\fP, \fB--threads=\fP\fInum\fP
 Generate no more than \fInum\fP threads. Default number of threads is 5.
