@@ -47,8 +47,8 @@ cc = os.environ.get("CC")
 win_python_dir = "/home/calvin/src/python23-maint-cvs/dist/src/"
 # if we are compiling for or under windows
 win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
-# releases supporting our special .cmd files
-win_cmd_releases = ['NT', 'XP', '2000', '2003Server']
+# releases supporting our special .bat files
+win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
 
 def normpath (path):
@@ -176,7 +176,7 @@ class MyBuildScripts (build_scripts, object):
         (first line matches 'first_line_re', ie. starts with "\#!" and
         contains "python"), then adjust the first line to refer to the
         current Python interpreter as we copy.
-        On Windows, such scripts get a ".cmd" extension.
+        On Windows, such scripts get a ".bat" extension.
         """
         adjust = 0
         outfile = os.path.join(self.build_dir, os.path.basename(script))
@@ -206,9 +206,9 @@ class MyBuildScripts (build_scripts, object):
 
         if adjust:
             if platform.system() == 'Windows' and \
-               platform.release() in win_cmd_releases and \
-               not outfile.endswith(".cmd"):
-                outfile += ".cmd"
+               platform.release() in win_bat_releases and \
+               not outfile.endswith(".bat"):
+                outfile += ".bat"
             self.adjust(f, script, post_interp, outfile)
             f.close()
         else:
@@ -221,7 +221,7 @@ class MyBuildScripts (build_scripts, object):
         log.info("copying and adjusting %s -> %s", script, self.build_dir)
         if not self.dry_run:
             outf = open(outfile, "w")
-            if outfile.endswith('.cmd'):
+            if outfile.endswith('.bat'):
                 pat = '@%s%s -x "%%~f0" %%* & exit /b\n'
             else:
                 pat = "#!%s%s\n"
