@@ -149,12 +149,13 @@ class StandardTest (unittest.TestCase):
         f.close()
         return resultlines
 
-    def file_test (self, filename):
+    def file_test (self, filename, confargs=None):
         """
         Check <filename> with expected result in <filename>.result.
         """
         url = self.get_file(filename)
-        confargs = {}
+        if confargs is None:
+            confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
         consumer = get_test_consumer(confargs, logargs)
         url_data = linkcheck.checker.get_url_from(
@@ -167,12 +168,16 @@ class StandardTest (unittest.TestCase):
             l = sep.join(l)
             self.fail(l.encode("iso8859-1", "ignore"))
 
-    def direct (self, url, resultlines, fields=None, recursionlevel=0):
+    def direct (self, url, resultlines, fields=None, recursionlevel=0,
+                confargs=None):
         """
         Check url with expected result.
         """
         assert isinstance(url, unicode), repr(url)
-        confargs = {'recursionlevel': recursionlevel}
+        if confargs is None:
+            confargs = {'recursionlevel': recursionlevel}
+        else:
+            confargs['recursionlevel'] = recursionlevel
         logargs = {'expected': resultlines}
         if fields is not None:
             logargs['fields'] = fields
