@@ -33,7 +33,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
-/* #include <stdint.h> /* Breaks IA64 test-noansi-r */
+/* #include <stdint.h> */ /* Breaks IA64 test-noansi-r */
 /* %endif */
 
 /* %if-tables-serialization */
@@ -7314,6 +7314,7 @@ static PyObject* quote_string (PyObject* val) {
 #define S_APOSSTRING 16
 #define S_STRING 17
 
+#ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
@@ -7323,6 +7324,7 @@ static PyObject* quote_string (PyObject* val) {
 /* %endif */
 /* %if-c++-only */
 /* %endif */
+#endif
 
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
@@ -7579,7 +7581,7 @@ YY_DECL
 
 
   /*********************** EOF ************************/
-#line 7583 "htmllex.c"
+#line 7585 "htmllex.c"
 
     yylval = yylval_param;
 
@@ -8760,7 +8762,7 @@ YY_RULE_SETUP
 #line 895 "htmllex.l"
 ECHO;
 	YY_BREAK
-#line 8764 "htmllex.c"
+#line 8766 "htmllex.c"
 
 	case YY_END_OF_BUFFER:
 		{
