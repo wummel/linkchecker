@@ -58,6 +58,7 @@ safe_url_pattern = r"%s://%s%s(#%s)?" % \
     (_safe_scheme_pattern, _safe_host_pattern,
      _safe_path_pattern, _safe_fragment_pattern)
 
+is_safe_char = re.compile("(?i)^%s$" % _safe_char).match
 is_safe_url = re.compile("(?i)^%s$" % safe_url_pattern).match
 is_safe_domain = re.compile("(?i)^%s$" % _safe_domain_pattern).match
 is_safe_host = re.compile("(?i)^%s$" % _safe_host_pattern).match
@@ -66,14 +67,18 @@ is_safe_parameter = re.compile("(?i)^%s$" % _safe_param_pattern).match
 is_safe_query = re.compile("(?i)^%s$" % _safe_query_pattern).match
 is_safe_fragment = re.compile("(?i)^%s$" % _safe_fragment_pattern).match
 
+
 # snatched form urlparse.py
 def splitparams (path):
+    """Split off parameter part from path.
+       Returns tuple (path-without-param, param)
+    """
     if '/'  in path:
         i = path.find(';', path.rfind('/'))
-        if i < 0:
-            return path, ''
     else:
         i = path.find(';')
+    if i < 0:
+        return path, ''
     return path[:i], path[i+1:]
 
 
@@ -227,6 +232,12 @@ def url_fix_mailto_urlsplit (urlparts):
 
 def url_parse_query (query):
     """Parse and re-join the given CGI query."""
+    # if ? is in the query, split it off, seen at msdn.microsoft.com
+    if '?' in query:
+        query, append = query.split('?', 1)
+        append = '?'+append
+    else:
+        append = ""
     l = []
     for k, v in parse_qsl(query, True):
         k = urllib.quote(k, '/-:,')
@@ -238,7 +249,7 @@ def url_parse_query (query):
         else:
             # some sites do not work when the equal sign is missing
             l.append("%s=" % k)
-    return '&'.join(l)
+    return '&'.join(l) + append
 
 
 def url_norm (url):
@@ -361,7 +372,10 @@ def match_host (host, domainlist):
     if not host:
         return False
     for domain in domainlist:
-        if host.endswith(domain):
+        if domain.startswith('.'):
+            if host.endswith(domain):
+                return True
+        elif host == domain:
             return True
     return False
 
