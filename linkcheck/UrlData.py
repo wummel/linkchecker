@@ -27,7 +27,6 @@ ExcList = [
    IOError,
    ValueError, # from httplib.py
    linkcheck.error,
-   EOFError, # from ftplib.py
    DNS.Error,
 ]
 try:
@@ -250,6 +249,7 @@ class UrlData:
                 self.checkAnchors(self.urlTuple[5])
         except tuple(ExcList):
             type, value = sys.exc_info()[:2]
+            print type, value
             self.setError(str(value))
 
         # check content

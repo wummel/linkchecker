@@ -5,7 +5,8 @@ NAME=$(shell ./setup.py --name)
 PACKAGEDIR=/home/groups/l/li/$(PACKAGE)
 HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
 FTPDIR=shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)
-HOST=treasure.calvinsplayground.de
+#HOST=treasure.calvinsplayground.de
+HOST=linkchecker.sourceforge.net
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 OFFLINETESTS = test_base test_misc test_file test_frames
@@ -55,7 +56,7 @@ deb:
 
 .PHONY: files
 files:	locale
-	env http_proxy="" ./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/~calvin/
+	env http_proxy="" ./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
 
 VERSION:
 	echo $(VERSION) > VERSION

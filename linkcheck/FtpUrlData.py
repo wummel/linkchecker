@@ -35,7 +35,10 @@ class FtpUrlData(UrlData):
         _user, _password = self._getUserPassword(config)
         if _user is None or _password is None:
             raise linkcheck.error, _("No user or password found")
-        self.urlConnection = ftplib.FTP(self.urlTuple[1], _user, _password)
+        try:
+            self.urlConnection = ftplib.FTP(self.urlTuple[1], _user, _password)
+        except EOFError:
+            raise linkcheck.error, _("Remote host has closed connection")
         info = self.urlConnection.getwelcome()
         if not info:
             self.closeConnection()
