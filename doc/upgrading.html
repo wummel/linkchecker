@@ -44,14 +44,15 @@ old behaviour can be restored by giving the option <tt class="literal"><span cla
 <p>The default recursion depth is now infinite. The old behaviour
 can be restored by giving the option <tt class="literal"><span class="pre">--recursion-level=1</span></tt>.</p>
 <p>The option <tt class="literal"><span class="pre">--strict</span></tt> has been renamed to <tt class="literal"><span class="pre">--extern-strict-all</span></tt>.</p>
-<p>The commandline program <tt class="literal"><span class="pre">linkchecker</span></tt> returns non-zero exit value
-when errors were encountered. For scripts to ignore exit values
-and therefore restore the old behaviour you can append a `` || true``
-at the end of the command.</p>
+<p>The commandline program <tt class="literal"><span class="pre">linkchecker</span></tt> returns now non-zero exit value
+when errors were encountered. Previous versions always return a zero
+exit value.
+For scripts to ignore exit values and therefore restore the old behaviour
+you can append a `` || true`` at the end of the command.</p>
 </div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-08-28 16:54 UTC.
+Generated on: 2004-08-28 16:55 UTC.
 </div>
 </body>
 </html>

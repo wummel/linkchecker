@@ -22,7 +22,8 @@ can be restored by giving the option ``--recursion-level=1``.
 
 The option ``--strict`` has been renamed to ``--extern-strict-all``.
 
-The commandline program ``linkchecker`` returns non-zero exit value
-when errors were encountered. For scripts to ignore exit values
-and therefore restore the old behaviour you can append a `` || true``
-at the end of the command.
+The commandline program ``linkchecker`` returns now non-zero exit value
+when errors were encountered. Previous versions always return a zero
+exit value.
+For scripts to ignore exit values and therefore restore the old behaviour
+you can append a `` || true`` at the end of the command.
