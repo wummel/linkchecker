@@ -56,6 +56,7 @@ MAX_COOKIES_CACHE = 500
 def norm (path):
     return normcase(normpath(expanduser(path)))
 
+
 def _check_morsel (m, host, path):
     # check domain (if its stored)
     if m["domain"] and not host.endswith(m["domain"]):

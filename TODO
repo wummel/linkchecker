@@ -1,3 +1,5 @@
+./linkchecker -r-1 -s --profile --status http://www.debianplanet.org/ > planet.txt
+
 - replace the debug() function with the logging module
   we'll see how we can insert multiple debug levels into this thing
 
