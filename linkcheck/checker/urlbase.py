@@ -190,20 +190,20 @@ class UrlBase (object):
             return []
         return [key]
 
-    def is_cached (self):
-        return self.consumer.cache.url_is_cached(self.get_cache_key())
-
     def get_cache_key (self):
         """Get key to store this url data in the cache."""
         assert self.anchor is not None
         if self.urlparts:
             if self.consumer.config["anchorcaching"]:
                 # do not ignore anchor
-                return urlparse.urlunsplit(self.urlparts)
+                return self.url
             else:
                 # removed anchor from cache key
                 return urlparse.urlunsplit(self.urlparts[:4]+[''])
         return None
+
+    def is_cached (self):
+        return self.consumer.cache.url_is_cached(self.get_cache_key())
 
     def build_url (self):
         # make url absolute
@@ -220,6 +220,8 @@ class UrlBase (object):
             self.url = self.base_url
         # split into (modifiable) list
         self.urlparts = list(urlparse.urlsplit(self.url))
+        # and unsplit again
+        self.url = urlparse.urlunsplit(self.urlparts)
         # check userinfo@host:port syntax
         self.userinfo, host = urllib.splituser(self.urlparts[1])
         # set host lowercase and without userinfo
