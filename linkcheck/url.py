@@ -210,9 +210,19 @@ def url_fix_host (urlparts):
             urlparts[1] = "%s%s:%d" % (userpass, host, port)
 
 
+def url_fix_common_typos (url):
+    """Fix common typos in given URL like forgotten colon."""
+    if url.startswith("http//"):
+        url = "http://" + url[6:]
+    elif url.startswith("https//"):
+        url = "https://" + url[7:]
+    return url
+
+
 def url_norm (url):
-    """Fix and normalize URL which must be quoted. Supports unicode
-       hostnames (IDNA encoding) according to RFC 3490.
+    """Normalize and, if fixit is True, fix the given URL which must be
+       quoted. Supports unicode hostnames (IDNA encoding) according to
+       RFC 3490.
 
        @return (normed url, idna flag)
     """

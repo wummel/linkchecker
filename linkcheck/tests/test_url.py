@@ -296,6 +296,15 @@ class TestUrl (unittest.TestCase):
         nurl = url
         self.assertEqual(url_norm(url), nurl)
 
+    def test_fixing (self):
+        """test url fix method"""
+        url = "http//www.imadoofus.org"
+        nurl = "http://www.imadoofus.org"
+        self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
+        url = u"http//www.imadoofus.org"
+        nurl = u"http://www.imadoofus.org"
+        self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
+
     def test_valid (self):
         """test url validity functions"""
         u = "http://www.imadoofus.com"
