@@ -87,19 +87,6 @@ class Configuration (dict):
         # Logger configurations
         self["text"] = {
             "filename": "linkchecker-out.txt",
-        }
-        self['html'] = {
-            "filename":        "linkchecker-out.html",
-            'colorbackground': '#fff7e5',
-            'colorurl':        '#dcd5cf',
-            'colorborder':     '#000000',
-            'colorlink':       '#191c83',
-            'tablewarning':    '<td bgcolor="#e0954e">',
-            'tableerror':      '<td bgcolor="#db4930">',
-            'tableok':         '<td bgcolor="#3ba557">',
-        }
-        self['colored'] = {
-            "filename":     "linkchecker-out.ansi",
             'colorparent':  "white",
             'colorurl':     "default",
             'colorname':    "default",
@@ -112,6 +99,16 @@ class Configuration (dict):
             'colordltime':  "default",
             'colordlsize':  "default",
             'colorreset':   "default",
+        }
+        self['html'] = {
+            "filename":        "linkchecker-out.html",
+            'colorbackground': '#fff7e5',
+            'colorurl':        '#dcd5cf',
+            'colorborder':     '#000000',
+            'colorlink':       '#191c83',
+            'tablewarning':    '<td bgcolor="#e0954e">',
+            'tableerror':      '<td bgcolor="#db4930">',
+            'tableok':         '<td bgcolor="#3ba557">',
         }
         self['gml'] = {
             "filename":     "linkchecker-out.gml",
@@ -132,7 +129,7 @@ class Configuration (dict):
             "filename":     "linkchecker-out.xml",
         }
         self['none'] = {}
-        self['logger'] = self.logger_new('colored')
+        self['logger'] = self.logger_new('text')
         self["quiet"] = False
         self["warningregex"] = None
         self["warnsizebytes"] = None
