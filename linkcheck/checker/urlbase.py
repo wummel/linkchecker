@@ -514,8 +514,6 @@ class UrlBase (object):
                 base = codebase
             else:
                 base = base_ref
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "Put url %r in queue",
-                                url)
             self.consumer.append_url(linkcheck.checker.get_url_from(url,
                            self.recursion_level+1, self.consumer,
                            parent_url=self.url, base_ref=base,

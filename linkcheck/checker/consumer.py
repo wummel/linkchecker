@@ -75,6 +75,8 @@ class Consumer (object):
 
     def append_url (self, url_data):
         """add new url to list of urls to check"""
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "Put url %s in queue", url_data)
         # check syntax
         if not url_data.check_syntax():
             # wrong syntax, do not check any further
