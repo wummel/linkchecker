@@ -6,6 +6,8 @@
 # turn on/off debug messages
 # use higher numbers for more debugging
 #debug=2
+# print status output
+#status=1
 # change the logging type
 #log=colored
 # turn on/off --verbose

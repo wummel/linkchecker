@@ -114,6 +114,8 @@ For single-letter option arguments the space is not a necessity. So
         Check only syntax of external links, do not try to connect to them.
         For local file urls, only local files are internal. For
         http and ftp urls, all urls at the same domain name are internal.
+--status
+        Regularly print numbers of urls checked and still to check.
 -t num, --threads=num
         Generate no more than num threads. Default number of threads is 5.
         To disable threading specify a non-positive number.
@@ -243,6 +245,7 @@ try:
     "wischiwaschi",
     "robots-txt",
     "strict",
+    "status",
     "threads=",
     "timeout=",
     "user=",
@@ -354,6 +357,9 @@ for opt,arg in options:
 
     elif opt=="-s" or opt=="--strict":
         config["strict"] = True
+
+    elif opt=="--status":
+        config['status'] = True
 
     elif opt=="-t" or opt=="--threads":
         try:

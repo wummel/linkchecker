@@ -57,7 +57,10 @@ def checkUrls (config):
     to check it (checkUrl).
     """
     config.log_init()
+    from linkcheck.log import strduration
     try:
+        start_time = time.time()
+        status_time = start_time
         while not config.finished():
             if config.hasMoreUrls():
                 config.checkUrl(config.getUrl())
@@ -65,9 +68,19 @@ def checkUrls (config):
                 # active connections are downloading/parsing, so
                 # wait a little
                 time.sleep(0.1)
+            if config['status']:
+                curtime = time.time()
+                tocheck = config.urls.qsize()
+                active = config.threader.active_threads()
+                links = config['linknumber']
+                duration = strduration(curtime - start_time)
+                if (curtime - status_time) > 5:
+                    print >>sys.stderr, i18n._("%5d urls queued, %4d links checked, %2d active threads, runtime %s")%(tocheck, links, active, duration)
+                    status_time = curtime
         config.log_endOfOutput()
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-        warn(i18n._("keyboard interrupt; waiting for active connections to finish"))
+        active = config.threader.active_threads()
+        warn(i18n._("keyboard interrupt; waiting for %d active threads to finish") % active)
         raise

@@ -107,6 +107,7 @@ class Configuration (dict):
         self["wait"] = 0
         self['cookies'] = False
         self["strict"] = False
+        self["status"] = False
         self["fileoutput"] = []
         # Logger configurations
         self["text"] = {
@@ -178,6 +179,10 @@ class Configuration (dict):
     def setThreads (self, num):
         debug(HURT_ME_PLENTY, "set threading with %d threads", num)
         self.threader.threads_max = num
+        if num>0:
+            sys.setcheckinterval(50)
+        else:
+            sys.setcheckinterval(100)
 
 
     def newLogger (self, logtype, dict={}):
