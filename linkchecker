@@ -87,16 +87,6 @@ def printVersion ():
     print linkcheck.Config.AppInfo
     sys.exit(0)
 
-def printHelp ():
-    """print the program help text and exit"""
-    if os.name!='posix':
-        StringUtil.paginate(Usage+"\n"+Notes+"\n"+Examples)
-    else:
-        print Usage
-	print Notes
-	print Examples
-    sys.exit(0)
-
 def printUsage (msg):
     """print a program msg text to stderr and exit"""
     sys.stderr.write(i18n._("Error: %s\n") % msg)
@@ -117,7 +107,24 @@ def viewprof ():
 
 # Read command line arguments
 from optparse import OptionParser
-optparser = OptionParser()
+
+class LCOptionParser (OptionParser):
+
+    def error (self, msg):
+        printUsage(msg)
+
+    def get_usage (self):
+        return Usage
+
+    def print_help (self, file=None):
+        s = "%s\n%s\n%s"%(self.format_help(), Notes, Examples)
+        if os.name!='posix':
+            StringUtil.paginate(s)
+        else:
+            print s
+        sys.exit(0)
+
+optparser = LCOptionParser()
 
 optparser.add_option("-a", "--anchors", action="store_true", dest="anchors",
                      help=i18n._(
