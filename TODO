@@ -1,7 +1,5 @@
 Next releases:
 
-- translate documentation and put it into language-specific dirs
-
 - windows .exe installer
 
 - rethink intern/extern stuff
