@@ -10,6 +10,10 @@
     Closes: SF bug #1067919
     Changed: doc/install.txt
 
+  * recheck intern/extern filters for redirected URLs
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
 2.0rc1 "The Incredibles" (released 16.11.2004)
 
   * Only instantiate SSL connections if SSL is supported
