@@ -42,7 +42,6 @@ install: build
 	# remove example files, we install them below
 	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples
 	# install additional doc files
-	install -c -m 644 linkcheck/DNS/README $(DOCDIR)/README_DNS.txt
 	install -c -m 644 test/*.py $(DOCDIR)/test
 	install -c -m 644 test/html/*.html $(DOCDIR)/test/html
 	install -c -m 644 test/output/test_* $(DOCDIR)/test/output
