@@ -20,13 +20,17 @@
     Type: bugfix
     Changed: linkchecker, linkcheck/configuration.py
 
-  * Also accept quoted CSS urls.
+  * Accept quoted urls in CSS attributes.
     Type: bugfix
     Changed: linkcheck/linkparse.py
 
   * Eliminate duplicate link reporting in the link parser.
     Type: bugfix
     Changed: linkcheck/linkparse.py
+
+  * Do not send multiple Accept-Encoding headers.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
 
 2.5 "Spanglish" (released 4.3.2005)
 
