@@ -17,4 +17,7 @@ homepage: nav
 clean:
 	rm -f $(NAVFILES) $(HTMLFILES) *.pyc *.pyo
 
+apidocs:
+	epydoc --html -o api --name "LinkChecker source documentation" --url ../index.html ../linkcheck/
+
 .PHONY: all clean homepage nav apidocs
