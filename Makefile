@@ -32,7 +32,7 @@ distclean: clean cleandeb
 	rm -rf linkcheckssl/ssl.so
 
 .PHONY: localbuild
-localbuild:
+localbuild: config
 	./setup.py build
 	cp -f build/lib.linux-i686-2.0/linkcheckssl/ssl.so linkcheckssl
 
