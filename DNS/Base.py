@@ -73,7 +73,7 @@ def init_dns_resolver_nt():
     if key:
         for server in winreg.stringdisplay(key["NameServer"]):
             if server:
-                defaults['nameserver'].append(server)
+                defaults['server'].append(server)
         for item in winreg.stringdisplay(key["SearchList"]):
             if item:
                 defaults['search_domains'].append(item)
@@ -88,7 +88,7 @@ def init_dns_resolver_nt():
             values, valuestype = subkey['DNSServerAddresses']
             for server in winreg.binipdisplay(values):
                 if server:
-                    defaults['nameserver'].append(server)
+                    defaults['server'].append(server)
     except EnvironmentError:
         pass
 
@@ -98,7 +98,7 @@ def init_dns_resolver_nt():
         for subkey in key.subkeys():
             for server in winreg.stringdisplay(subkey.get('NameServer', '')):
                 if server:
-                    defaults['nameserver'].append(server)
+                    defaults['server'].append(server)
     except EnvironmentError:
         pass
 
@@ -155,37 +155,37 @@ class DnsRequest:
 	return self.processReply()
 
     def processReply(self):
-	import time
+	#import time
 	self.args['elapsed']=(self.time_finish-self.time_start)*1000
 	u = DNS.Lib.Munpacker(self.reply)
-	r=DNS.Lib.DnsResult(u,self.args)
+	r = DNS.Lib.DnsResult(u,self.args)
 	r.args=self.args
 	#self.args=None  # mark this DnsRequest object as used.
 	return r
 	#### TODO TODO TODO ####
-	if protocol == 'tcp' and qtype == DNS.Type.AXFR:
-	    while 1:
-		header = f.read(2)
-		if len(header) < 2:
-		    print '========== EOF =========='
-		    break
-		count = DNS.Lib.unpack16bit(header)
-		if not count:
-		    print '========== ZERO COUNT =========='
-		    break
-		print '========== NEXT =========='
-		reply = f.read(count)
-		if len(reply) != count:
-		    print '*** Incomplete reply ***'
-		    break
-		u = DNS.Lib.Munpacker(reply)
-		DNS.Lib.dumpM(u)
+	#if protocol == 'tcp' and qtype == DNS.Type.AXFR:
+	#    while 1:
+	#	header = f.read(2)
+	#	if len(header) < 2:
+	#	    print '========== EOF =========='
+	#	    break
+	#	count = DNS.Lib.unpack16bit(header)
+	#	if not count:
+	#	    print '========== ZERO COUNT =========='
+	#	    break
+	#	print '========== NEXT =========='
+	#	reply = f.read(count)
+	#	if len(reply) != count:
+	#	    print '*** Incomplete reply ***'
+	#	    break
+	#	u = DNS.Lib.Munpacker(reply)
+	#	DNS.Lib.dumpM(u)
 
     def conn(self):
 	self.s.connect((self.ns,self.port))
 
     def req(self,*name,**args):
-	import time,sys
+	import time
 	self.argparse(name,args)
 	#if not self.args:
 	#    raise DNS.Error,'reinitialize request before reuse'
@@ -250,6 +250,8 @@ class DnsRequest:
 		raise DNS.Error,'no working nameservers found'
 	if not self.async:
 	    return self.response
+
+import asyncore
 
 #class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
 class DnsAsyncRequest(DnsRequest):

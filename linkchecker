@@ -21,9 +21,10 @@ import sys
 if sys.version[:5] < "2.0":
     raise SystemExit, "This program requires Python 2.0 or later."
 
-from linkcheck import timeoutsocket
 import getopt, re, os, urlparse, linkcheck
-from linkcheck import _,StringUtil,timeoutsocket
+from linkcheck import _,StringUtil
+if os.name!='nt':
+    from linkcheck import timeoutsocket
 
 Usage = _("""USAGE\tlinkchecker [options] file-or-url...
 
@@ -275,7 +276,10 @@ for opt,arg in options:
                 config.disableThreading()
 
     elif opt=="--timeout":
-        timeoutsocket.setDefaultSocketTimeout(int(arg))
+        if os.name!='nt':
+            timeoutsocket.setDefaultSocketTimeout(int(arg))
+        else:
+            print >> sys.stderr, _("warning: timeoutsocket not support on this platform")
 
     elif opt=="-u" or opt=="--user":
         _user = arg

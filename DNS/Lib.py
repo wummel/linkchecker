@@ -49,6 +49,9 @@ def bin2addr(n):
 
 # Packing class
 
+class PackError(Exception):
+    pass
+
 class Packer:
 	def __init__(self):
 		self.buf = ''
@@ -138,7 +141,8 @@ class Packer:
 
 # Unpacking class
 
-UnpackError = 'DNS.Lib.UnpackError'	# Exception
+class UnpackError(Exception):
+    pass
 
 class Unpacker:
 	def __init__(self, buf):
