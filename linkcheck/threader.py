@@ -86,7 +86,7 @@ class Threader (object):
         an empty thread list.
         """
         # this allows negative numbers
-        self.threads_max = max(num, 1)
+        self.threads_max = max(num, 0)
         # list of active threads to watch
         self.threads = []
 
