@@ -16,7 +16,7 @@
     Changed files: linkcheck/HttpUrlData.py
   * Updated german documentation
     Changed files: po/de.po
-  * Oops, an FTP proxy is not used. Will make in the next release.
+  * Oops, an FTP proxy is not used. Will make it in the next release.
     Changed files: linkcheck/FtpUrlData.py
 
 1.6.2:
