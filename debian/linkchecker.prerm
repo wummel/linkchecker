@@ -4,7 +4,7 @@
 # used by Bastian Kleineidam for LinkChecker
 
 PACKAGE=linkchecker
-PYTHON=python2.1
+PYTHON=python2.2
 
 #DEBHELPER#
 
