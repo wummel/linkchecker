@@ -1,3 +1,7 @@
+1.8.12
+  * convert urlparts to list also on redirect
+    Changed files: linkcheck/HttpUrlData.py
+
 1.8.11
   * catch httplib.error exceptions
     Changed files: linkcheck/HttpUrlData.py
