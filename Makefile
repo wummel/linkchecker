@@ -40,7 +40,7 @@ config:
 
 # no rpm package; too much trouble, cannot test
 dist:	locale config
-	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_rpm
+	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 	rm -f $(MD5SUMS)
 	md5sum dist/* > $(MD5SUMS)
 	for f in dist/*; do gpg --detach-sign --armor $$f; done
