@@ -16,8 +16,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re, time, sys, nntplib, urlparse, random, i18n
-from linkcheck import error, Config
-from UrlData import ExcList,UrlData
+from linkcheck import LinkCheckerError, Config
+from UrlData import ExcList, UrlData
 from debug import *
 random.seed()
 
@@ -84,7 +84,7 @@ class NntpUrlData (UrlData):
                 else:
                     raise
         if nntp is None:
-            raise error(i18n._("NTTP server too busy; tried more than %d times")%tries)
+            raise LinkCheckerError(i18n._("NTTP server too busy; tried more than %d times")%tries)
         if value is not None:
             self.setWarning(i18n._("NNTP busy: %s")%str(value))
         return nntp

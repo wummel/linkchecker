@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re, sys, Config, cgi, urllib, i18n
-from linkcheck import error
+from linkcheck import LinkCheckerError
 from linkcheck.DNS import mxlookup
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
@@ -111,7 +111,7 @@ class MailtoUrlData (HostCheckingUrlData):
             return tuple(split)
         if len(split)==1:
             return (split[0], "localhost")
-        raise error, i18n._("could not split the mail adress")
+        raise LinkCheckerError(i18n._("could not split the mail adress"))
 
     def closeConnection (self):
         try: self.urlConnection.quit()

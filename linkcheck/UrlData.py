@@ -22,7 +22,7 @@ from urllib import splituser, splithost, splitport
 #except ImportError:
 #    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
 #    raise SystemExit
-from linkcheck import DNS, error
+from linkcheck import DNS, LinkCheckerError
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, linkname, test_support, timeoutsocket
@@ -81,7 +81,7 @@ def get_absolute_url (urlName, baseRef, parentName):
 ExcList = [
    IOError,
    ValueError, # from httplib.py
-   error,
+   LinkCheckerError,
    DNS.Error,
    timeoutsocket.Timeout,
    socket.error,
@@ -182,7 +182,7 @@ class UrlData:
         self.userinfo, host = splituser(self.urlparts[1])
         x, port = splitport(host)
         if port is not None and not is_valid_port(port):
-            raise error(i18n._("URL has invalid port number %s")\
+            raise LinkCheckerError(i18n._("URL has invalid port number %s")\
                                   % str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()

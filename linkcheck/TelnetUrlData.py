@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import telnetlib, urlparse
-from linkcheck import Config, error, i18n
+from linkcheck import Config, LinkCheckerError, i18n
 from debug import *
 from urllib import splituser, splithost, splitport, splitpasswd
 from HostCheckingUrlData import HostCheckingUrlData
@@ -32,7 +32,7 @@ class TelnetUrlData (HostCheckingUrlData):
         self.host, self.port = splitport(self.host)
         if self.port is not None:
             if not is_valid_port(self.port):
-                raise error(i18n._("URL has invalid port number %s")\
+                raise LinkCheckerError(i18n._("URL has invalid port number %s")\
                                       % self.port)
             self.port = int(self.port)
         else:
