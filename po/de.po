@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-19 12:53+0100\n"
-"PO-Revision-Date: 2004-11-19 14:00+0100\n"
+"POT-Creation-Date: 2004-11-29 01:54+0100\n"
+"PO-Revision-Date: 2004-11-29 01:55+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -326,153 +326,158 @@ msgstr "Keine Antwort vom FTP Server"
 msgid "Missing trailing directory slash in ftp url."
 msgstr "Fehlender / am Ende der FTP url."
 
-#: ../linkcheck/logger/__init__.py:25
+#: ../linkcheck/logger/__init__.py:26
 msgid "Real URL"
 msgstr "Tats. URL"
 
-#: ../linkcheck/logger/__init__.py:26
+#: ../linkcheck/logger/__init__.py:27
 msgid "Cache key"
 msgstr "Cache Schlüssel"
 
-#: ../linkcheck/logger/__init__.py:27
+#: ../linkcheck/logger/__init__.py:28
 msgid "Result"
 msgstr "Ergebnis"
 
-#: ../linkcheck/logger/__init__.py:28
+#: ../linkcheck/logger/__init__.py:29
 msgid "Base"
 msgstr "Basis"
 
-#: ../linkcheck/logger/__init__.py:29
+#: ../linkcheck/logger/__init__.py:30
 msgid "Name"
 msgstr "Name"
 
-#: ../linkcheck/logger/__init__.py:30
+#: ../linkcheck/logger/__init__.py:31
 msgid "Parent URL"
 msgstr "Vater URL"
 
-#: ../linkcheck/logger/__init__.py:31
+#: ../linkcheck/logger/__init__.py:32
 msgid "Extern"
 msgstr "Extern"
 
-#: ../linkcheck/logger/__init__.py:32
+#: ../linkcheck/logger/__init__.py:33
 msgid "Info"
 msgstr "Info"
 
-#: ../linkcheck/logger/__init__.py:33
+#: ../linkcheck/logger/__init__.py:34
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../linkcheck/logger/__init__.py:34
+#: ../linkcheck/logger/__init__.py:35
 msgid "D/L Time"
 msgstr "D/L Zeit"
 
-#: ../linkcheck/logger/__init__.py:35
+#: ../linkcheck/logger/__init__.py:36
 msgid "D/L Size"
 msgstr "D/L Größe"
 
-#: ../linkcheck/logger/__init__.py:36
+#: ../linkcheck/logger/__init__.py:37
 msgid "Check Time"
 msgstr "Prüfzeit"
 
-#: ../linkcheck/logger/__init__.py:37
+#: ../linkcheck/logger/__init__.py:38
 msgid "URL"
 msgstr "URL"
 
+#: ../linkcheck/logger/__init__.py:92
+#, python-format
+msgid "Happy birthday for LinkChecker, I'm %d years old today!"
+msgstr "Herzlichen Glückwunsch zum Geburtstag, LinkChecker, ich bin heute %d Jahre alt geworden!"
+
 #: ../linkcheck/logger/gml.py:44
-#: ../linkcheck/logger/sql.py:56
-#: ../linkcheck/logger/xmllog.py:75
-#: ../linkcheck/logger/csvlog.py:45
+#: ../linkcheck/logger/sql.py:61
+#: ../linkcheck/logger/xmllog.py:80
+#: ../linkcheck/logger/csvlog.py:49
 #, python-format
 msgid "created by %s at %s"
 msgstr "erstellt von %s um %s"
 
 #: ../linkcheck/logger/gml.py:47
-#: ../linkcheck/logger/csvlog.py:48
+#: ../linkcheck/logger/csvlog.py:52
 #, python-format
 msgid "Get the newest version at %(url)s"
 msgstr "Die neueste Version gibt es unter %(url)s"
 
 #: ../linkcheck/logger/gml.py:49
-#: ../linkcheck/logger/csvlog.py:50
+#: ../linkcheck/logger/csvlog.py:54
 #, python-format
 msgid "Write comments and bugs to %(email)s"
 msgstr "Schreiben Sie Kommentare und Fehler an %(email)s"
 
-#: ../linkcheck/logger/gml.py:105
-#: ../linkcheck/logger/html.py:247
-#: ../linkcheck/logger/sql.py:118
-#: ../linkcheck/logger/xmllog.py:147
-#: ../linkcheck/logger/csvlog.py:102
-#: ../linkcheck/logger/text.py:224
+#: ../linkcheck/logger/gml.py:111
+#: ../linkcheck/logger/html.py:254
+#: ../linkcheck/logger/sql.py:124
+#: ../linkcheck/logger/xmllog.py:151
+#: ../linkcheck/logger/csvlog.py:107
+#: ../linkcheck/logger/text.py:225
 #, python-format
 msgid "Stopped checking at %s (%s)"
 msgstr "Beende Prüfen am %s (%s)"
 
-#: ../linkcheck/logger/html.py:86
-#: ../linkcheck/logger/text.py:96
+#: ../linkcheck/logger/html.py:92
+#: ../linkcheck/logger/text.py:97
 #, python-format
 msgid "Start checking at %s"
 msgstr "Beginne Prüfen am %s"
 
-#: ../linkcheck/logger/html.py:147
-#: ../linkcheck/logger/text.py:134
+#: ../linkcheck/logger/html.py:154
+#: ../linkcheck/logger/text.py:135
 msgid " (cached)"
 msgstr " (aus dem Cache)"
 
-#: ../linkcheck/logger/html.py:161
-#: ../linkcheck/logger/text.py:146
+#: ../linkcheck/logger/html.py:168
+#: ../linkcheck/logger/text.py:147
 #, python-format
 msgid ", line %d"
 msgstr ", Zeile %d"
 
-#: ../linkcheck/logger/html.py:162
-#: ../linkcheck/logger/text.py:147
+#: ../linkcheck/logger/html.py:169
+#: ../linkcheck/logger/text.py:148
 #, python-format
 msgid ", col %d"
 msgstr ", Spalte %d"
 
-#: ../linkcheck/logger/html.py:186
-#: ../linkcheck/logger/html.py:198
-#: ../linkcheck/logger/text.py:163
-#: ../linkcheck/logger/text.py:175
+#: ../linkcheck/logger/html.py:193
+#: ../linkcheck/logger/html.py:205
+#: ../linkcheck/logger/text.py:164
+#: ../linkcheck/logger/text.py:176
 #, python-format
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
-#: ../linkcheck/logger/html.py:221
-#: ../linkcheck/logger/text.py:199
+#: ../linkcheck/logger/html.py:228
+#: ../linkcheck/logger/text.py:200
 msgid "Valid"
 msgstr "Gültig"
 
-#: ../linkcheck/logger/html.py:226
-#: ../linkcheck/logger/text.py:203
+#: ../linkcheck/logger/html.py:233
+#: ../linkcheck/logger/text.py:204
 msgid "Error"
 msgstr "Fehler"
 
-#: ../linkcheck/logger/html.py:237
-#: ../linkcheck/logger/text.py:214
+#: ../linkcheck/logger/html.py:244
+#: ../linkcheck/logger/text.py:215
 msgid "That's it."
 msgstr "Das war's."
 
-#: ../linkcheck/logger/html.py:252
-#: ../linkcheck/logger/sql.py:59
-#: ../linkcheck/logger/xmllog.py:78
+#: ../linkcheck/logger/html.py:259
+#: ../linkcheck/logger/sql.py:64
+#: ../linkcheck/logger/xmllog.py:83
 #: ../linkcheck/logger/text.py:91
 #, python-format
 msgid "Get the newest version at %s"
 msgstr "Die neueste Version gibt es unter %s"
 
-#: ../linkcheck/logger/html.py:255
-#: ../linkcheck/logger/sql.py:61
-#: ../linkcheck/logger/xmllog.py:80
+#: ../linkcheck/logger/html.py:262
+#: ../linkcheck/logger/sql.py:66
+#: ../linkcheck/logger/xmllog.py:85
 #: ../linkcheck/logger/text.py:93
 #, python-format
 msgid "Write comments and bugs to %s"
 msgstr "Schreiben Sie Kommentare und Fehler an %s"
 
-#: ../linkcheck/logger/csvlog.py:52
-msgid "# Format of the entries:"
-msgstr "# Format der Einträge:"
+#: ../linkcheck/logger/csvlog.py:57
+msgid "Format of the entries:"
+msgstr "Format der Einträge:"
 
 #: ../linkcheck/lc_cgi.py:115
 msgid "unsupported language"

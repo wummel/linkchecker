@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-19 12:53+0100\n"
+"POT-Creation-Date: 2004-11-29 01:54+0100\n"
 "PO-Revision-Date: 2004-11-19 14:01+0100\n"
 "Last-Translator: Hans Brausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 
 #: ../linkcheck/checker/consumer.py:133
 #, python-format
-msgid "Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s"
+msgid ""
+"Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s"
 msgstr ""
 
-#: ../linkcheck/checker/ignoredurl.py:25
-#: ../linkcheck/checker/httpsurl.py:29
+#: ../linkcheck/checker/ignoredurl.py:25 ../linkcheck/checker/httpsurl.py:29
 #, python-format
 msgid "%s URL ignored."
 msgstr ""
@@ -39,7 +39,9 @@ msgstr ""
 
 #: ../linkcheck/checker/fileurl.py:113
 #, python-format
-msgid "The URL path %r is not the same as the system path %r. You should always use the system path in URLs."
+msgid ""
+"The URL path %r is not the same as the system path %r. You should always use "
+"the system path in URLs."
 msgstr ""
 
 #: ../linkcheck/checker/httpurl.py:65
@@ -51,8 +53,7 @@ msgstr ""
 msgid "Using Proxy %r."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:126
-#: ../linkcheck/checker/httpurl.py:256
+#: ../linkcheck/checker/httpurl.py:126 ../linkcheck/checker/httpurl.py:256
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr "Toegang geweigerd door robots.txt; alleen syntax gecontroleerd."
 
@@ -84,8 +85,7 @@ msgstr "Effektieve URL %s."
 msgid "Redirected to %(url)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:251
-#: ../linkcheck/checker/urlbase.py:326
+#: ../linkcheck/checker/httpurl.py:251 ../linkcheck/checker/urlbase.py:326
 msgid "Outside of domain filter, checked only syntax."
 msgstr "buiten het domein filter, alleen syntax gecontroleerd."
 
@@ -98,10 +98,14 @@ msgstr ""
 
 #: ../linkcheck/checker/httpurl.py:276
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
-msgstr "HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen."
+msgstr ""
+"HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen."
 
 #: ../linkcheck/checker/httpurl.py:281
-msgid "A HTTP 301 redirection occured and the URL has no trailing / at the end. All URLs which point to (home) directories should end with a / to avoid redirection."
+msgid ""
+"A HTTP 301 redirection occured and the URL has no trailing / at the end. All "
+"URLs which point to (home) directories should end with a / to avoid "
+"redirection."
 msgstr ""
 
 #: ../linkcheck/checker/httpurl.py:292
@@ -138,8 +142,7 @@ msgstr ""
 msgid "Unsupported HTTP url scheme %r"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:443
-#: ../linkcheck/checker/httpurl.py:464
+#: ../linkcheck/checker/httpurl.py:443 ../linkcheck/checker/httpurl.py:464
 #, python-format
 msgid "Unsupported content encoding %r."
 msgstr ""
@@ -255,7 +258,8 @@ msgstr "Geldig adres: %(info)s."
 #: ../linkcheck/checker/mailtourl.py:136
 #, python-format
 msgid "MX mail host %(host)s did not accept connections: %(error)s."
-msgstr "Geen van de mail hosts %(host)s accepteert een SMTP Verbinding: %(error)s."
+msgstr ""
+"Geen van de mail hosts %(host)s accepteert een SMTP Verbinding: %(error)s."
 
 #: ../linkcheck/checker/mailtourl.py:142
 msgid "Could not connect, but syntax is correct"
@@ -310,153 +314,138 @@ msgstr "Geen antwoord van FTP Server"
 msgid "Missing trailing directory slash in ftp url."
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:25
+#: ../linkcheck/logger/__init__.py:26
 msgid "Real URL"
 msgstr "Echte URL"
 
-#: ../linkcheck/logger/__init__.py:26
+#: ../linkcheck/logger/__init__.py:27
 msgid "Cache key"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:27
+#: ../linkcheck/logger/__init__.py:28
 msgid "Result"
 msgstr "Resultaat"
 
-#: ../linkcheck/logger/__init__.py:28
+#: ../linkcheck/logger/__init__.py:29
 msgid "Base"
 msgstr "Basis"
 
-#: ../linkcheck/logger/__init__.py:29
+#: ../linkcheck/logger/__init__.py:30
 msgid "Name"
 msgstr "Naam"
 
-#: ../linkcheck/logger/__init__.py:30
+#: ../linkcheck/logger/__init__.py:31
 msgid "Parent URL"
 msgstr "Ouder URL"
 
-#: ../linkcheck/logger/__init__.py:31
+#: ../linkcheck/logger/__init__.py:32
 msgid "Extern"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:32
+#: ../linkcheck/logger/__init__.py:33
 msgid "Info"
 msgstr "Info"
 
-#: ../linkcheck/logger/__init__.py:33
+#: ../linkcheck/logger/__init__.py:34
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../linkcheck/logger/__init__.py:34
+#: ../linkcheck/logger/__init__.py:35
 msgid "D/L Time"
 msgstr "D/L Zeit"
 
-#: ../linkcheck/logger/__init__.py:35
+#: ../linkcheck/logger/__init__.py:36
 msgid "D/L Size"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:36
+#: ../linkcheck/logger/__init__.py:37
 msgid "Check Time"
 msgstr "Testtijd"
 
-#: ../linkcheck/logger/__init__.py:37
+#: ../linkcheck/logger/__init__.py:38
 msgid "URL"
 msgstr "URL"
 
-#: ../linkcheck/logger/gml.py:44
-#: ../linkcheck/logger/sql.py:56
-#: ../linkcheck/logger/xmllog.py:75
-#: ../linkcheck/logger/csvlog.py:45
+#: ../linkcheck/logger/__init__.py:92
+#, python-format
+msgid "Happy birthday for LinkChecker, I'm %d years old today!"
+msgstr ""
+
+#: ../linkcheck/logger/gml.py:44 ../linkcheck/logger/sql.py:61
+#: ../linkcheck/logger/xmllog.py:80 ../linkcheck/logger/csvlog.py:49
 #, python-format
 msgid "created by %s at %s"
 msgstr "gemaakt door %s om %s"
 
-#: ../linkcheck/logger/gml.py:47
-#: ../linkcheck/logger/csvlog.py:48
+#: ../linkcheck/logger/gml.py:47 ../linkcheck/logger/csvlog.py:52
 #, python-format
 msgid "Get the newest version at %(url)s"
 msgstr "Haal de nieuwste versie op van %(url)s"
 
-#: ../linkcheck/logger/gml.py:49
-#: ../linkcheck/logger/csvlog.py:50
+#: ../linkcheck/logger/gml.py:49 ../linkcheck/logger/csvlog.py:54
 #, python-format
 msgid "Write comments and bugs to %(email)s"
 msgstr "Stuur commentaar en bugs aan %(email)s"
 
-#: ../linkcheck/logger/gml.py:105
-#: ../linkcheck/logger/html.py:247
-#: ../linkcheck/logger/sql.py:118
-#: ../linkcheck/logger/xmllog.py:147
-#: ../linkcheck/logger/csvlog.py:102
-#: ../linkcheck/logger/text.py:224
+#: ../linkcheck/logger/gml.py:111 ../linkcheck/logger/html.py:254
+#: ../linkcheck/logger/sql.py:124 ../linkcheck/logger/xmllog.py:151
+#: ../linkcheck/logger/csvlog.py:107 ../linkcheck/logger/text.py:225
 #, python-format
 msgid "Stopped checking at %s (%s)"
 msgstr "Stop testen om %s (%s)"
 
-#: ../linkcheck/logger/html.py:86
-#: ../linkcheck/logger/text.py:96
+#: ../linkcheck/logger/html.py:92 ../linkcheck/logger/text.py:97
 #, python-format
 msgid "Start checking at %s"
 msgstr "Begin testen vanaf %s"
 
-#: ../linkcheck/logger/html.py:147
-#: ../linkcheck/logger/text.py:134
+#: ../linkcheck/logger/html.py:154 ../linkcheck/logger/text.py:135
 msgid " (cached)"
 msgstr " (uit de cache)"
 
-#: ../linkcheck/logger/html.py:161
-#: ../linkcheck/logger/text.py:146
+#: ../linkcheck/logger/html.py:168 ../linkcheck/logger/text.py:147
 #, python-format
 msgid ", line %d"
 msgstr ", regel %d"
 
-#: ../linkcheck/logger/html.py:162
-#: ../linkcheck/logger/text.py:147
+#: ../linkcheck/logger/html.py:169 ../linkcheck/logger/text.py:148
 #, python-format
 msgid ", col %d"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:186
-#: ../linkcheck/logger/html.py:198
-#: ../linkcheck/logger/text.py:163
-#: ../linkcheck/logger/text.py:175
+#: ../linkcheck/logger/html.py:193 ../linkcheck/logger/html.py:205
+#: ../linkcheck/logger/text.py:164 ../linkcheck/logger/text.py:176
 #, python-format
 msgid "%.3f seconds"
 msgstr "%.3f Seconden"
 
-#: ../linkcheck/logger/html.py:221
-#: ../linkcheck/logger/text.py:199
+#: ../linkcheck/logger/html.py:228 ../linkcheck/logger/text.py:200
 msgid "Valid"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:226
-#: ../linkcheck/logger/text.py:203
+#: ../linkcheck/logger/html.py:233 ../linkcheck/logger/text.py:204
 msgid "Error"
 msgstr "Fout"
 
-#: ../linkcheck/logger/html.py:237
-#: ../linkcheck/logger/text.py:214
+#: ../linkcheck/logger/html.py:244 ../linkcheck/logger/text.py:215
 msgid "That's it."
 msgstr "Dat was het."
 
-#: ../linkcheck/logger/html.py:252
-#: ../linkcheck/logger/sql.py:59
-#: ../linkcheck/logger/xmllog.py:78
-#: ../linkcheck/logger/text.py:91
+#: ../linkcheck/logger/html.py:259 ../linkcheck/logger/sql.py:64
+#: ../linkcheck/logger/xmllog.py:83 ../linkcheck/logger/text.py:91
 #, python-format
 msgid "Get the newest version at %s"
 msgstr "Haal de nieuwste versie op van %s"
 
-#: ../linkcheck/logger/html.py:255
-#: ../linkcheck/logger/sql.py:61
-#: ../linkcheck/logger/xmllog.py:80
-#: ../linkcheck/logger/text.py:93
+#: ../linkcheck/logger/html.py:262 ../linkcheck/logger/sql.py:66
+#: ../linkcheck/logger/xmllog.py:85 ../linkcheck/logger/text.py:93
 #, python-format
 msgid "Write comments and bugs to %s"
 msgstr "Stuur commentaar en bugs aan %s"
 
-#: ../linkcheck/logger/csvlog.py:52
-msgid "# Format of the entries:"
-msgstr "# Format der Einträge:"
+#: ../linkcheck/logger/csvlog.py:57
+msgid "Format of the entries:"
+msgstr "Format der Einträge:"
 
 #: ../linkcheck/lc_cgi.py:115
 msgid "unsupported language"
@@ -488,7 +477,8 @@ msgstr "ungeldige Optie '%s'"
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
-"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
+"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 "
+"alink=#191c83>\n"
 "<blockquote>\n"
 "<b>Error: %s</b><br>\n"
 "The LinkChecker Online script has encountered an error. Please ensure\n"
@@ -498,7 +488,14 @@ msgid ""
 "</blockquote>\n"
 "</body>\n"
 "</html>"
-msgstr "<html><head><title>LinkChecker Online Fehler</title></head><body text=\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink=\"#191c83\"><blockquote><b>Fehler: %s</b><br>Das LinkChecker Online Skript ist auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </blockquote></body></html>"
+msgstr ""
+"<html><head><title>LinkChecker Online Fehler</title></head><body text="
+"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
+"\"#191c83\"><blockquote><b>Fehler: %s</b><br>Das LinkChecker Online Skript "
+"ist auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die "
+"angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen "
+"enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
+"blockquote></body></html>"
 
 #: ../linkcheck/configuration.py:221
 #, python-format
@@ -532,7 +529,8 @@ msgid ""
 "o A ! before a regular expression negates it. So '!^mailto:' matches\n"
 "  everything but a mailto link.\n"
 "o URLs on the command line starting with \"ftp.\" are treated like\n"
-"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www.\".\n"
+"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www."
+"\".\n"
 "  You can also give local files as arguments.\n"
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
@@ -830,14 +828,12 @@ msgstr ""
 msgid "Print check status every 5 seconds to stderr. This is the default."
 msgstr ""
 
-#: ../linkchecker:425
-#: ../linkchecker:453
+#: ../linkchecker:425 ../linkchecker:453
 #, python-format
 msgid "Unknown logger type %r in %r for option %s"
 msgstr ""
 
-#: ../linkchecker:428
-#: ../linkchecker:457
+#: ../linkchecker:428 ../linkchecker:457
 #, python-format
 msgid "Unknown encoding %r in %r for option %s"
 msgstr "Ongeldige parameter %r in %r als option %s"
@@ -847,8 +843,7 @@ msgstr "Ongeldige parameter %r in %r als option %s"
 msgid "Illegal argument %r for option %s: %s"
 msgstr "Ongeldige parameter %r als option %s: %s"
 
-#: ../linkchecker:485
-#: ../linkchecker:499
+#: ../linkchecker:485 ../linkchecker:499
 #, python-format
 msgid "Illegal argument %d for option %s"
 msgstr "Ongeldige parameter %d als option %s"
@@ -873,4 +868,3 @@ msgstr "geen bestanden of URLs gegeven"
 #: ../linkchecker:575
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
-
