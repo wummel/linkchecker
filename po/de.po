@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Apr 28 15:10:31 2003\n"
+"POT-Creation-Date: Tue Apr 29 11:45:33 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -58,8 +58,11 @@ msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
 msgstr "Server unterstützt keine HEAD Anfrage (bekam Status %d), verwende GET"
 
-msgid "Netscape Enterprise Server with no HEAD support, falling back to GET"
-msgstr "Netscape Enterprise Server ohne HEAD Unterstützung, verwende GET"
+msgid "Server %s has no HEAD support, falling back to GET"
+msgstr "Server %s ohne HEAD Unterstützung, verwende GET"
+
+msgid "Server %s has no anchor support, removing anchor from request"
+msgstr "Server %s ohne Anker Unterstützung, lösche Anker von der Anfrage"
 
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
 msgstr "Server unterstützt kein HEAD, verwende GET"
@@ -190,7 +193,7 @@ msgid "more than one <base> tag found, using only the first one"
 msgstr "mehr als ein <base> Tag gefunden, benutze lediglich das erste"
 
 msgid "keyboard interrupt; waiting for active connections to finish"
-msgstr ""
+msgstr "Tastatur Abbruch; warte auf das Ende der aktiven Verbindungen"
 
 msgid "unsupported language"
 msgstr "nicht unterstützte Sprache"
