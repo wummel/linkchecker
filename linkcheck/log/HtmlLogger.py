@@ -97,7 +97,7 @@ class HtmlLogger (StandardLogger):
 			  "</td></tr>\n")
         if urlData.infoString and self.logfield("info"):
             self.fd.write("<tr><td>"+linkcheck._("Info")+"</td><td>"+
-	                  StringUtil.htmlify(urlData.infoString)+
+	                  linkcheck.StringUtil.htmlify(urlData.infoString)+
 			  "</td></tr>\n")
         if urlData.warningString:
             #self.warnings += 1

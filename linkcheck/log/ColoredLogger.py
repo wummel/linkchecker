@@ -99,11 +99,11 @@ class ColoredLogger (StandardLogger):
         if urlData.infoString and self.logfield("info"):
             if self.prefix:
                 self.fd.write("|  "+linkcheck._("Info")+Spaces["info"]+
-                      StringUtil.indentWith(StringUtil.blocktext(
+                      linkcheck.StringUtil.indentWith(linkcheck.StringUtil.blocktext(
                         urlData.infoString, 65), "|      "+Spaces["info"]))
             else:
                 self.fd.write(linkcheck._("Info")+Spaces["info"]+
-                      StringUtil.indentWith(StringUtil.blocktext(
+                      linkcheck.StringUtil.indentWith(linkcheck.StringUtil.blocktext(
                         urlData.infoString, 65), "    "+Spaces["info"]))
             self.fd.write(self.colorreset+"\n")
             
