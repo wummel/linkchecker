@@ -8,6 +8,8 @@ foo
 MANIFEST
 VERSION
 _linkchecker_configdata.py
+*.pyc
+*.pyo
 js
 locale
 share
