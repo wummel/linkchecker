@@ -85,46 +85,6 @@ Good Luck!
 
 """
 
-#
-# Revision history
-#    1.21 Added connect_ex() function.
-#         Updated module docstring a bit.
-#         Narrower context for the shim effect -- it's less invasive.
-#    1.20 Updated these comments.
-#    1.19 Changed the name where we hide the original socket().
-#    1.18 Bug fix for Windows connected error code from Oleg and Mtea.
-#         Changed the way timeoutsocket replaces the socket() function to
-#         be less intrusive.
-#         Changed read() and readline() preserve data across timeout
-#         exceptions.  Readlines() may still lose data.
-#    1.17 Added these comments.
-#    1.16 Better handling of non-blocking sockets in connect,
-#         accept, recv, and send.
-#         Minor bug fix to exception short cuts.
-#    1.15 Accept now returns an instance of TimeoutSocket.
-#         Added new Connected and Busy constants and modified the
-#         connect() and accept() routines to use them.
-#    1.14 Fixed bug in accept().
-#         Added a fix for windows 10022 error.
-#         Thanks to Alex Martelli for pointing these out.
-#    1.13 Added license.
-#    1.12 Better mimicry of makefile()'s ability to duplicate a
-#         file descriptor.  This fixes Python 2.0 woes.
-#    1.10 As Tim Lavoie pointed out, setblocking() still had a bug.
-#    1.9  Thanks to Doug Fort for pointing these out.
-#         BAD bug with accept() return value fixed.
-#         Forgotten "_" in setblocking() fixed.
-#    1.8  Removed the error handling from send().  It was just wrong.
-#    1.7  Updated revision history
-#    1.6  Added setblocking() method and improved error handling
-#         in connect(), accept(), and send()
-#    1.5  Updated revision history
-#    1.4  Updated document string
-#    1.3  Changed name to timeoutsocket.py on Pehr's suggestion
-#    1.2  Added the silent replacement of the socket module
-#    1.1. First version of safesocket.py
-#
-
 __version__ = "$Revision$"
 __author__  = "Timothy O'Malley <timo@alum.mit.edu>"
 
@@ -358,7 +318,7 @@ class TimeoutFile:
     """TimeoutFile object
     Implements a file-like object on top of TimeoutSocket.
     """
-
+    
     def __init__(self, sock, mode="r", bufsize=4096):
         self._sock          = sock
         self._bufsize       = 4096
@@ -382,11 +342,12 @@ class TimeoutFile:
 
     def read(self, size=-1):
         _sock = self._sock
+        _bufsize = self._bufsize
         while 1:
             datalen = len(_sock._inqueue)
-            if datalen >= size > 0:
-                break 
-            bufsize = self._bufsize
+            if datalen >= size >= 0:
+                break
+            bufsize = _bufsize
             if size > 0:
                 bufsize = min(bufsize, size - datalen )
             buf = self.recv(bufsize)
@@ -403,14 +364,15 @@ class TimeoutFile:
 
     def readline(self, size=-1):
         _sock = self._sock
+        _bufsize = self._bufsize
         while 1:
             idx = string.find(_sock._inqueue, "\n")
             if idx >= 0:
                 break
             datalen = len(_sock._inqueue)
-            if datalen >= size > 0:
+            if datalen >= size >= 0:
                 break
-            bufsize = self._bufsize
+            bufsize = _bufsize
             if size > 0:
                 bufsize = min(bufsize, size - datalen )
             buf = self.recv(bufsize)
@@ -432,10 +394,16 @@ class TimeoutFile:
 
     def readlines(self, sizehint=-1):
         result = []
-        while 1:
-            line = self.readline()
-            if not line: break
-            result.append(line)
+        data = self.read()
+        while data:
+            idx = string.find(data, "\n")
+            if idx >= 0:
+                idx = idx + 1
+                result.append( data[:idx] )
+                data = data[idx:]
+            else:
+                result.append( data )
+                data = ""
         return result
     # end readlines
 
