@@ -87,10 +87,14 @@ def blocktext(s, width):
     "Adjust lines of s to be not wider than width"
     # split into lines
     s = string.split(s, "\n")
-    line = ""
+    s.reverse()
+    line = None
     ret = ""
     while len(s):
-        line = line + s.pop()
+        if line:
+            line = line+"\n"+s.pop()
+        else:
+            line = s.pop()
         while len(line) > width:
             i = getLastWordBoundary(line, width)
             ret = ret + string.strip(line[0:i]) + "\n"

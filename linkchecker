@@ -24,21 +24,21 @@ OPTIONS
 	Use file as configuration file. Pylice first searches
 	~/.linkcheckerrc and then /etc/linkcheckerrc
 	(under Windows <path-to-program>\\linkcheckerrc).
+-F name, --file-output=name
+	Same as output, but write to a file linkchecker-out.<name>.
+	If the file already exists, it is overwritten.
+	You can specify this option more than once.
+	Default is no file output.
 -i regex, --intern=regex
 	Assume urls that match the given expression as intern.
 -h, --help
 	Help me! Print usage information for this program.
 -l, --allowdeny
-	Swap checking order to intern/extern. Default checking order 
+	Swap checking order to intern/extern. Default checking order
 	is extern/intern.
 -o name, --output=name
 	Specify output as """+linkcheck.Config.LoggerKeys+""".
 	Default is text.
--W name, --file-output=name
-	Same as output, but write to a file linkchecker-out.<name>.
-	If the file already exists, it is overwritten.
-	You can specify this option more than once. 
-	Default is no file output.
 -p pwd, --password=pwd
 	Try given password for HTML and FTP authorization.
 	Default is 'guest@'. See -u.
@@ -46,7 +46,7 @@ OPTIONS
 	Use specified proxy for HTTP requests.
 	Standard port is 8080. Default is to use no proxy.
 -q, --quiet
-	Quiet operation. This is only useful with -W.
+	Quiet operation. This is only useful with -F.
 -r depth, --recursion-level=depth
 	Check recursively all links up to given depth (depth >= 0).
 	Default depth is 1.
@@ -57,16 +57,25 @@ OPTIONS
 -t num, --threads=num
 	Generate no more than num threads. Default number of threads is 5.
 	To disable threading specify a non-positive number.
--u name, --user=name  
-	Try given username for HTML and FTP authorization. 
-	Default is 'anonymous'. See -p. 
+-u name, --user=name
+	Try given username for HTML and FTP authorization.
+	Default is 'anonymous'. See -p.
 -V, --version
 	Print version and exit.
 -v, --verbose
-	Log all checked URLs (implies -w). Default is to log only invalid 
+	Log all checked URLs (implies -w). Default is to log only invalid
 	URLs.
 -w, --warnings
 	Log warnings.
+-W, --warning-regex
+	Define a regular expression which prints a warning if it matches
+	any content of the checked link.
+	This applies of course only to pages which are valid, so we can
+	get their content.
+	You can use this to check for pages that contain some form of
+	error message, for example "This page has moved" or
+	"Oracle Application Server error".
+        Implies -w.
 """
 
 Notes = """NOTES
@@ -112,7 +121,7 @@ def printUsage(msg):
 try:
     # Note: cut out the name of the script
     options, args = getopt.getopt(sys.argv[1:],
-    "aDe:f:hi:lP:o:p:qr:Rst:u:VvwW:", # short options
+    "aDe:f:F:hi:lP:o:p:qr:Rst:u:VvwW:", # short options
     ["anchors",                       # long options
     "config=",
     "debug", 
@@ -132,7 +141,8 @@ try:
     "user=",
     "version",
     "verbose",
-    "warnings"])
+    "warnings",
+    "warning-regex="])
 except getopt.error:
     type, value = sys.exc_info()[:2]
     printUsage(value)
@@ -174,7 +184,7 @@ for opt,arg in options:
         else:
             printUsage("Legal output arguments are "+linkcheck.Config.LoggerKeys+".")
 
-    elif opt=="-W" or opt=="--file-output":
+    elif opt=="-F" or opt=="--file-output":
         if linkcheck.Config.Loggers.has_key(arg):
             config["fileoutput"].append(linkcheck.Config.Loggers[arg](open("linkchecker-out."+arg, "w")))
         else:
@@ -233,6 +243,10 @@ for opt,arg in options:
         config["warnings"] = 1
     
     elif opt=="-w" or opt=="--warnings":
+        config["warnings"] = 1
+
+    elif opt=="-W" or opt=="--warning-regex":
+        config["warningregex"] = re.compile(arg)
         config["warnings"] = 1
 
 if constructauth:

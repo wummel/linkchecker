@@ -29,7 +29,7 @@ dist:
 	fakeroot debian/rules binary
         
 files:
-	./$(PACKAGE) -Wtext -Whtml -Wgml -Wsql -R -t0 -v $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
+	./$(PACKAGE) -Ftext -Fhtml -Fgml -Fsql -R -t0 -v $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
 homepage:	files
 	scp *-out.* shell1.sourceforge.net:/home/groups/linkchecker/htdocs/

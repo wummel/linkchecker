@@ -39,6 +39,7 @@ class UrlData:
         self.cached = 0
         self.urlConnection = None
         self.extern = 1
+        self.data = None
         
         
     def setError(self, s):
@@ -136,6 +137,12 @@ class UrlData:
             type, value = sys.exc_info()[:2]
             self.setError(str(value))
 
+        # check content
+        warningregex = config["warningregex"]
+        if warningregex and self.valid:
+            Config.debug("DEBUG: checking content\n")
+            self.checkContent(warningregex)
+
         self.checktime = time.time() - t
         # check recursion
         Config.debug("DEBUG: checking recursion\n")
@@ -210,18 +217,24 @@ class UrlData:
     def getContent(self):
         """Precondition: urlConnection is an opened URL.
         """
-        t = time.time()
-        data = StringUtil.stripHtmlComments(self.urlConnection.read())
-        self.downloadtime = time.time() - t
-        return data
+        if not self.data:
+            t = time.time()
+            self.data = StringUtil.stripHtmlComments(self.urlConnection.read())
+            self.downloadtime = time.time() - t
 
+    def checkContent(self, warningregex):
+        self.getContent()
+        match = warningregex.search(self.data)
+        if match:
+            self.setWarning("Found '"+match.group()+"' in link contents")
+    
     def parseUrl(self, config):
         Config.debug(Config.DebugDelim+"Parsing recursively into\n"+\
                          str(self)+"\n"+Config.DebugDelim)
-        data = self.getContent()
+        self.getContent()
         
         # search for a possible base reference
-        bases = self.searchInForTag(data, ("base", "href"))
+        bases = self.searchInForTag(self.data, ("base", "href"))
         baseRef = None
         if len(bases)>=1:
             baseRef = bases[0][0]
@@ -230,7 +243,7 @@ class UrlData:
             
         # search for tags and add found tags to URL queue
         for tag in LinkTags:
-            urls = self.searchInForTag(data, tag)
+            urls = self.searchInForTag(self.data, tag)
             Config.debug("DEBUG: "+str(tag)+" urls="+str(urls)+"\n")
             for _url,line in urls:
                 config.appendUrl(GetUrlDataFrom(_url,

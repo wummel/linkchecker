@@ -56,6 +56,7 @@ class Configuration(UserDict.UserDict):
         self.data["strict"] = 0
         self.data["fileoutput"] = []
         self.data["quiet"] = 0
+        self.data["warningregex"] = None
         self.urlCache = {}
         self.robotsTxtCache = {}
         try:
@@ -264,7 +265,13 @@ class Configuration(UserDict.UserDict):
         except ConfigParser.Error: pass
         try: self.data["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error: pass
-    
+        try:
+            filelist = string.split(cfgparser.get(section, "fileoutput"))
+            for arg in filelist:
+                if Loggers.has_key(arg):
+		    self.data["fileoutput"].append(Loggers[arg](open("linkchecker-out."+arg, "w")))
+	except ConfigParser.Error: pass
+
         section="checking"
         try: 
             num = cfgparser.getint(section, "threads")
@@ -285,16 +292,16 @@ class Configuration(UserDict.UserDict):
                 self.error("illegal recursionlevel number: "+`num`)
             self.data["recursionlevel"] = num
         except ConfigParser.Error: pass
-        try: self.data["robotstxt"] = cfgparser.getboolean(section, "robotstxt")
+        try: 
+            self.data["robotstxt"] = cfgparser.getboolean(section, 
+            "robotstxt")
         except ConfigParser.Error: pass
         try: self.data["strict"] = cfgparser.getboolean(section, "strict")
         except ConfigParser.Error: pass
-        try:
-            filelist = string.split(cfgparser.get(section, "fileoutput"))
-            for arg in filelist:
-                if Loggers.has_key(arg):
-		    self.data["fileoutput"].append(Loggers[arg](open("linkchecker-out."+arg, "w")))
-	except ConfigParser.Error:	pass
+        try: 
+            self.data["warningregex"] = re.compile(cfgparser.get(section,
+            "warningregex"))
+        except ConfigParser.Error: pass
 
         section = "authentication"
 	try:

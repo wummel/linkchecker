@@ -86,7 +86,8 @@ class StandardLogger:
                   StringUtil.blocktext(urldata.infoString, 65), 11)+"\n")
         if urldata.warningString:
             self.warnings = self.warnings+1
-            self.fd.write("Warning    "+urldata.warningString+"\n")
+            self.fd.write("Warning    "+StringUtil.indent(
+                StringUtil.blocktext(urldata.warningString, 65), 11)+"\n")
         
         self.fd.write("Result     ")
         if urldata.valid:

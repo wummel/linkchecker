@@ -1,3 +1,11 @@
+28.3.2000
+	* fixed wrong position of configuration file option in Config.py
+	* option -W is now -F, -W is a new option for inspecting
+	  the content of a link
+	* Remove the distutils package. You have to download it now
+	  separately if you want to. Otherwise install manually.
+	* cache the contents of links while checking
+
 27.3.2000
 	* Fixed misspelled exception in UrlData.py (BugTracker)
 	* Fixed wrong _time argument in HttpsUrlData.py 

@@ -18,4 +18,3 @@ include debian/files
 include debian/postinst.debhelper
 include debian/prerm.debhelper
 include DNS/README
-include distutils/README

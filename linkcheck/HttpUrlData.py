@@ -119,14 +119,14 @@ class HttpUrlData(UrlData):
         return http11lib.HTTP(host)
 
     def getContent(self):
-        self.closeConnection()
-        t = time.time()
-        self._getHttpRequest("GET")
-        self.urlConnection = self.urlConnection.getfile()
-        data = StringUtil.stripHtmlComments(self.urlConnection.read())
-        self.downloadtime = time.time() - t
-        Config.debug(Config.DebugDelim+data+Config.DebugDelim)
-        return data
+        if not self.data:
+            self.closeConnection()
+            t = time.time()
+            self._getHttpRequest("GET")
+            self.urlConnection = self.urlConnection.getfile()
+            self.data = StringUtil.stripHtmlComments(self.urlConnection.read())
+            self.downloadtime = time.time() - t
+            Config.debug(Config.DebugDelim+self.data+Config.DebugDelim)
         
     def isHtml(self):
         if not (self.valid and self.mime):
