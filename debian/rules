@@ -9,7 +9,8 @@ include /usr/share/cdbs/1/class/python-distutils.mk
 PACKAGE = linkchecker
 ROOT = $(CURDIR)/debian/$(PACKAGE)
 DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
-PYTHON = python2.4
+DEB_PYTHON_COMPILE_VERSION = 2.4
+PYTHON = python$(DEB_PYTHON_COMPILE_VERSION)
 CGIDIR = $(ROOT)/usr/lib/cgi-bin/lconline
 HTMLDIR = $(ROOT)/var/www/lconline
 SHARE = $(ROOT)/usr/share/linkchecker
