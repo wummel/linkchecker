@@ -71,12 +71,14 @@ def init (domain, directory):
 
 
 def get_translator (domain, directory, languages=None,
-                    translatorklass=Translator, fallback=False):
+                    translatorklass=Translator,
+                    fallback=False,
+                    fallbackklass=NullTranslator):
     """search the appropriate GNUTranslations class"""
     translator = gettext.translation(domain, localedir=directory,
             languages=languages, class_=translatorklass, fallback=fallback)
     if not isinstance(translator, gettext.GNUTranslations):
-        translator = NullTranslator()
+        translator = fallbackklass()
     return translator
 
 
