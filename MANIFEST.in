@@ -2,10 +2,10 @@ include README LICENSE TODO MANIFEST.in ChangeLog
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/linkcheck-cron.sh
 include config/logging.conf config/pycheckrc config/pylintrc
-include config/reindent.py
+include config/reindent.py install-linkchecker.py
 include linkchecker linkchecker.bat linkchecker.1
 include cgi/lc.cgi cgi/lc.fcgi cgi/README
-include Makefile linkchecker.spec
+include Makefile config/linkchecker.spec
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
 include test.py test/*.py test/*.sh
