@@ -1,3 +1,10 @@
+linkchecker (1.9.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Standards version 3.6.1, no changes
+
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 11 Sep 2003 23:52:09 +0200
+
 linkchecker (1.9.1-1) unstable; urgency=low
 
   * New upstream release.

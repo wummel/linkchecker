@@ -1,3 +1,10 @@
+1.9.2
+  * parser fixes:
+    - do not #include <stdint.h>, fixes build on some FreeBSD, Windows
+      and Solaris/SunOS platforms
+    - ignore first leading invalid backslash in a=\"b\" attributes
+    Changed: linkcheck/parser/htmllex.{l,c}
+
 1.9.1
   * add documentation how to change the default C compiler
     Changed: INSTALL

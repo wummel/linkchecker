@@ -8,8 +8,6 @@
 
 - use the Set type instead of hashmaps (did I use hashmaps for sets here?)
 
-- the HTML parser should be even more forgiving with badly formatted html
-
 include some web check and/or spider features:
 - warn if overall size of page (including images/flash/etc.) is too big
 - save downloaded pages
