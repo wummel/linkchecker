@@ -50,8 +50,9 @@ dist:
 files:
 	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
-homepage:
+upload:
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
+	ncftpput download.sourceforge.net /incoming $(ALLPACKAGES)
 
 test:
 	rm -f test/*.result

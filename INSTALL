@@ -1,24 +1,28 @@
                  LinkChecker installation
                 ==========================
 
-Requirements:
+Requirements
+------------
 You need Python >= 1.5.2 from http://www.python.org/
 
-Optionally packages:
-Distutils >= 0.8.3 from http://www.python.org/sigs/distutils-sig/ 
+Optionally packages
+-------------------
+Distutils >= 0.9 from http://www.python.org/sigs/distutils-sig/ 
 OpenSSL from http://www.openssl.org/
 You will need Perl for Win32 (available from
 http://www.activestate.com/ActivePerl) if you want to install OpenSSL 
 on Windows!
 
 
-Install with Distutils:
+Install with Distutils
+----------------------
 The Distutils package has a lot of install options to tweak and ease
 your installation.
 To install LinkChecker run "python setup.py install".
 Debian users can build the .deb package with "debian/rules binary".
 
-Install without Distutils:
+Install without Distutils
+-------------------------
 Execute "python install.py" to install LinkChecker in the distribution 
 directory.
 To use HTTPS, compile the Pyhton module ssl.c, for example with
@@ -28,7 +32,8 @@ Put the distribution directory in your path to execute the linkchecker
 script from everywhere.
 
 
-Running LinkChecker:
+Running LinkChecker
+-------------------
 Type "linkchecker" followed by your URLs you want to check.
 Type "linkchecker -h" for help.
 
