@@ -56,25 +56,25 @@ safe_url_pattern = r"%s://%s%s(#%s)?" % \
     (_safe_scheme_pattern, _safe_host_pattern,
      _safe_path_pattern, _safe_fragment_pattern)
 
-is_valid_url = re.compile("(?i)^%s$"%safe_url_pattern).match
-is_valid_domain = re.compile("(?i)^%s$"%_safe_domain_pattern).match
-is_valid_host = re.compile("(?i)^%s$"%_safe_host_pattern).match
-is_valid_path = re.compile("(?i)^%s$"%_safe_path_pattern).match
-is_valid_query = re.compile("(?i)^%s$"%_safe_query_pattern).match
-is_valid_fragment = re.compile("(?i)^%s$"%_safe_fragment_pattern).match
+is_safe_url = re.compile("(?i)^%s$"%safe_url_pattern).match
+is_safe_domain = re.compile("(?i)^%s$"%_safe_domain_pattern).match
+is_safe_host = re.compile("(?i)^%s$"%_safe_host_pattern).match
+is_safe_path = re.compile("(?i)^%s$"%_safe_path_pattern).match
+is_safe_query = re.compile("(?i)^%s$"%_safe_query_pattern).match
+is_safe_fragment = re.compile("(?i)^%s$"%_safe_fragment_pattern).match
 
-def is_valid_js_url (urlstr):
+def is_safe_js_url (urlstr):
     """test javascript urls"""
     url = urlparse.urlsplit(urlstr)
     if url[0].lower() != 'http':
         return False
-    if not is_valid_host(url[1]):
+    if not is_safe_host(url[1]):
         return False
-    if not is_valid_path(url[2]):
+    if not is_safe_path(url[2]):
         return False
-    if not is_valid_query(url[3]):
+    if not is_safe_query(url[3]):
         return False
-    if not is_valid_fragment(url[4]):
+    if not is_safe_fragment(url[4]):
         return False
     return True
 
@@ -139,7 +139,7 @@ def parse_qsl(qs, keep_blank_values=0, strict_parsing=0):
 
 
 def url_norm (url):
-    """normalize url which must be quoted"""
+    """fix and normalize url which must be quoted"""
     urlparts = list(urlparse.urlsplit(url))
     urlparts[0] = urllib.unquote(urlparts[0]).lower() # scheme
     urlparts[1] = urllib.unquote(urlparts[1]).lower() # host
@@ -287,6 +287,10 @@ def match_host (host, domainlist):
 _safe_url_chars = re.compile(r"^[-a-zA-Z0-9_:/\.,~;=&#%()@]*$")
 def url_needs_quoting (url):
     """return True if url needs percent quoting"""
+    if url.strip() != url:
+        # handle (trailing) whitespace as a special case
+        # since '$' matches immediately before a end-of-line
+        return True
     return not _safe_url_chars.match(url)
 
 
