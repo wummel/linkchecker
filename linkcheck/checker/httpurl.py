@@ -153,11 +153,11 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 response = self._get_http_response()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
-            # follow all redirections
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "follow all redirections")
             tries, response = \
                     self.follow_redirections(response, redirect_cache)
             if tries == -1:
-                # already handled
+                linkcheck.log.debug(linkcheck.LOG_CHECK, "already handled")
                 return
             if tries >= self.max_redirects:
                 if self.method == "HEAD":
@@ -180,7 +180,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                                     "Authentication %s/%s", _user, _password)
                 continue
             elif response.status >= 400:
-                if self.headers and self.urlparts[4]:
+                if self.headers and self.urlparts[4] and not self.no_anchor:
                     self.no_anchor = True
                     continue
                 if self.method == "HEAD":
