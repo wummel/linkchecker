@@ -20,7 +20,7 @@ include po/*.po po/*.pot po/Makefile
 recursive-include share *.mo
 exclude _linkchecker_configdata.py
 include doc/*.txt doc/*.nav doc/*.html doc/*.py doc/*.png doc/*.jpg
-include doc/*.css
+include doc/*.css doc/*.example
 include doc/en/*.1
 include doc/de/*.1
 include doc/fr/*.1
