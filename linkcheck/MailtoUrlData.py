@@ -35,18 +35,21 @@ class MailtoUrlData(HostCheckingUrlData):
         HostCheckingUrlData.buildUrl(self)
         self.headers = {}
         self.adresses = AddressList(self._cutout_adresses()).addresslist
-        for key in ("to","cc","bcc"):
+        for key in ("to", "cc", "bcc"):
             if self.headers.has_key(key):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
                     self.adresses.extend(AddressList(a).addresslist)
-        Config.debug(BRING_IT_ON, "mailto headers:", self.headers)
+        Config.debug(BRING_IT_ON, "adresses: ", self.adresses)
 
 
     def _cutout_adresses(self):
         mo = headers_re.search(self.urlName)
         if mo:
-            self.headers = cgi.parse_qs(mo.group(1), strict_parsing=1)
+            headers = cgi.parse_qs(mo.group(1), strict_parsing=1)
+            for key, val in headers.items():
+                key = key.lower()
+                self.headers.setdefault(key, []).extend(val)
             return self.urlName[7:mo.start()]
         return self.urlName[7:]
 
@@ -76,7 +79,7 @@ class MailtoUrlData(HostCheckingUrlData):
             mxrecords = DNS.mxlookup(host, protocol="tcp")
             Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
-                self.setError(linkcheck._("No mail host for %s found")%host)
+                self.setWarning(linkcheck._("No MX mail host for %s found")%host)
                 return
             smtpconnect = 0
             for mxrecord in mxrecords:
@@ -96,12 +99,12 @@ class MailtoUrlData(HostCheckingUrlData):
                 if smtpconnect: break
             
             if not smtpconnect:
-                self.setWarning(linkcheck._("None of the mail hosts for %s accepts an "
+                self.setWarning(linkcheck._("None of the MX mail hosts for %s accepts an "
                                   "SMTP connection: %s") % (host, str(value)))
                 mxrecord = mxrecords[0][1]
             else:
                 mxrecord = mxrecord[1]
-            self.setValid(linkcheck._("found mail host %s") % mxrecord)
+            self.setValid(linkcheck._("found MX mail host %s") % mxrecord)
 
 
     def _split_adress(self, adress):
