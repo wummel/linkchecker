@@ -1,4 +1,4 @@
-1.13.3 "" (released xx.xx.xxxx)
+1.13.3 "Fight Club" (released 10.9.2004)
   * Prevent collapsing of relative parent dir paths. This fixes false
     positives on URLs of the form "../../foo".
     Closes: SF bug #1025459
