@@ -1,3 +1,8 @@
+1.6.5
+  * Catch the maximum recursion limit error while parsing links and
+    print an error message instead of bailing out.
+    Changed files: linkcheck/UrlData.py
+
 1.6.4
   * Support for ftp proxies
     Changed files: linkcheck/FtpUrlData.py, linkcheck/HttpUrlData.py
