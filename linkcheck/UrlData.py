@@ -511,7 +511,7 @@ def GetUrlDataFrom(urlName, recursionLevel, parentName = None,
     elif re.search("^chrome:", url):
         klass = ChromeUrlData
     # assume local file
-    else
+    else:
         klass = FileUrlData
     return klass(urlName, recursionLevel, parentName, baseRef, line, name)
 
