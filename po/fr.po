@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Apr 26 02:12:47 2002\n"
+"POT-Creation-Date: Sat Apr 27 11:56:37 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -12,9 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#, fuzzy
 msgid "No MX mail host for %s found"
-msgstr "trouvé un hôte de messagerie %s"
+msgstr "ne pas trouvé un hôte de messagerie %s"
 
 msgid "Result"
 msgstr "Résultat"
@@ -26,7 +25,7 @@ msgid "Effective URL %s"
 msgstr "URL effective %s"
 
 msgid "url"
-msgstr ""
+msgstr "URL"
 
 msgid "No newsgroup specified in NNTP URL"
 msgstr ""
@@ -34,9 +33,8 @@ msgstr ""
 msgid "%.3f seconds\n"
 msgstr "%.3f secondes\n"
 
-#, fuzzy
 msgid "no files or urls given"
-msgstr "attention: aucun fichier ou url donnée"
+msgstr "aucun fichier ou url donnée"
 
 msgid "realurl"
 msgstr "Résultat"
@@ -82,9 +80,8 @@ msgstr ""
 msgid "checktime"
 msgstr "Durée d'Analyse"
 
-#, fuzzy
 msgid "HTTPS url ignored"
-msgstr "Url Javascript ignorée"
+msgstr "Url HTTPS ignorée"
 
 msgid "Check Time"
 msgstr "Durée d'Analyse"
@@ -101,9 +98,8 @@ msgstr "Obtenir la dernière version à %s\n"
 msgid "Got no answer from FTP server"
 msgstr "N'obtient pas de réponse du serveur FTP"
 
-#, fuzzy
-msgid "error: %s"
-msgstr "Erreur: %s\n"
+msgid "Error: %s"
+msgstr "Erreur: %s"
 
 msgid "could not split the mail adress"
 msgstr "impossible de partager l'adresse e-mail"
@@ -183,6 +179,9 @@ msgstr ""
 msgid "Real URL"
 msgstr "URL Réelle"
 
+msgid "Warning: %s"
+msgstr "Avertissement: %s"
+
 msgid " in 1 link"
 msgstr " dans 1 liens"
 
@@ -256,7 +255,6 @@ msgstr "Erreur"
 msgid "Illegal argument '%s' for option "
 msgstr "Argumen illégal '%s' pour l'option "
 
-#, fuzzy
 msgid "None of the MX mail hosts for %s accepts an SMTP connection: %s"
 msgstr "Aucun des hôtes de messagerie pour %s n'accepte de connection SMTP: %s"
 
@@ -309,9 +307,8 @@ msgstr "Base"
 msgid "Netscape Enterprise Server with no HEAD support, falling back to GET"
 msgstr ""
 
-#, fuzzy
 msgid "%s url ignored"
-msgstr "Url Javascript ignorée"
+msgstr "Url %s ignorée"
 
 msgid "Group %s has %s articles, range %s to %s"
 msgstr "Le groupe %s a %s articles, de %s à %s"
@@ -321,10 +318,6 @@ msgstr ""
 
 msgid "parenturl"
 msgstr ""
-
-#, fuzzy
-msgid "warning: %s"
-msgstr "Avertissement"
 
 msgid "invalid log option '%s'"
 msgstr "option de log invalide '%s'"
@@ -338,14 +331,12 @@ msgstr "Erreur: %s\n"
 msgid "# Format of the entries:\n"
 msgstr "# Format des entrées:\n"
 
-#, fuzzy
 msgid "found MX mail host %s"
 msgstr "trouvé un hôte de messagerie %s"
 
 msgid "Valid"
 msgstr "Valide"
 
-#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
@@ -531,3 +522,6 @@ msgstr "Auncun serveur NNTP spécifié, analyse de la syntaxe seulement"
 
 msgid "Parent URL"
 msgstr "URL Parente"
+
+#~ msgid "error: %s"
+#~ msgstr "Erreur: %s"

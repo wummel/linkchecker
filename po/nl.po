@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Apr 26 02:12:47 2002\n"
+"POT-Creation-Date: Sat Apr 27 11:56:37 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -12,7 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#, fuzzy
 msgid "No MX mail host for %s found"
 msgstr "Geen Mail host %s gevonden"
 
@@ -99,9 +98,8 @@ msgstr "Haal de nieuwste versie op van %s\n"
 msgid "Got no answer from FTP server"
 msgstr "Geen antwoord van FTP Server"
 
-#, fuzzy
-msgid "error: %s"
-msgstr "Fout: %s\n"
+msgid "Error: %s"
+msgstr "Fout: %s"
 
 msgid "could not split the mail adress"
 msgstr "kon Mail adres niet splitsen"
@@ -180,6 +178,9 @@ msgstr "Zope Server understeunt geen HEAD verzoek, probeer GET"
 msgid "Real URL"
 msgstr "Echte URL"
 
+msgid "Warning: %s"
+msgstr "Waarschuwing: %s"
+
 msgid " in 1 link"
 msgstr " in 1 URL"
 
@@ -253,7 +254,6 @@ msgstr "Fout"
 msgid "Illegal argument '%s' for option "
 msgstr "Ongeldige parameter '%s' als option "
 
-#, fuzzy
 msgid "None of the MX mail hosts for %s accepts an SMTP connection: %s"
 msgstr "Geen van de mail hosts %s accepteert een SMTP Verbinding: %s"
 
@@ -263,7 +263,6 @@ msgstr "Begin testen vanaf %s\n"
 msgid "URL"
 msgstr "URL"
 
-#, fuzzy
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
@@ -329,10 +328,6 @@ msgstr ""
 msgid "parenturl"
 msgstr "ouder URL"
 
-#, fuzzy
-msgid "warning: %s"
-msgstr "Waarschuwing"
-
 msgid "invalid log option '%s'"
 msgstr "ungeldige Log Optie '%s'"
 
@@ -345,14 +340,12 @@ msgstr "Fout: %s\n"
 msgid "# Format of the entries:\n"
 msgstr "# Format der Einträge:\n"
 
-#, fuzzy
 msgid "found MX mail host %s"
 msgstr "Mail host %s gevonden"
 
 msgid "Valid"
 msgstr "Geldig"
 
-#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
@@ -548,5 +541,5 @@ msgstr "Geen NNTP server gegeven; URL overgeslagen"
 msgid "Parent URL"
 msgstr "Ouder URL"
 
-#~ msgid "timeoutsocket is not support on this system"
-#~ msgstr "timeoutsocket wird auf diesem System nicht unterstützt"
+#~ msgid "error: %s"
+#~ msgstr "Fout: %s"

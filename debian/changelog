@@ -1,9 +1,10 @@
 linkchecker (1.4.2) unstable; urgency=low
 
   * move DNS package into linkchecker to prevent clash with the original
-    Python DNS module
+    Python DNS module (Closes: #143737)
+  * Updated german translation.
 
- -- Bastian Kleineidam <calvin@debian.org>  Fri, 26 Apr 2002 01:46:31 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sat, 27 Apr 2002 11:59:32 +0200
 
 linkchecker (1.4.1) unstable; urgency=low
 

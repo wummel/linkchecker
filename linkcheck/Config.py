@@ -383,10 +383,10 @@ class Configuration(UserDict.UserDict):
         self.readConfig(files)
 
     def warn(self, msg):
-        self.message(linkcheck._("warning: %s")%msg)
+        self.message(linkcheck._("Warning: %s")%msg)
 
     def error(self, msg):
-        self.message(linkcheck._("error: %s")%msg)
+        self.message(linkcheck._("Error: %s")%msg)
 
     def message(self, msg):
         print >> sys.stderr, msg
