@@ -133,6 +133,15 @@ class ListDict (dict):
         self._keys = []
         super(ListDict, self).clear()
 
+    def get_true (self, key, default):
+        """
+        Reteurn default element if key is not in the dict, of if the
+        self[key] evaluates to False.
+        """
+        if key not in self or not self[key]:
+            return default
+        return self[key]
+
 
 class Node (object):
     """
