@@ -16,12 +16,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import ConfigParser, sys, os, re, time, Cookie
+import ConfigParser, sys, os, re, Cookie
 import _linkchecker_configdata, i18n
 from linkcheck import getLinkPat
+from linkcheck.LRU import LRU
 from os.path import expanduser, normpath, normcase, join
 from urllib import getproxies
 from debug import *
+try:
+    import threading as _threading
+except ImportError:
+    import dummy_threading as _threading
+import Queue, Threader
 
 Version = _linkchecker_configdata.version
 AppName = "LinkChecker"
@@ -39,6 +45,11 @@ Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
+
+MAX_URL_CACHE = 10000
+MAX_ROBOTS_TXT_CACHE = 1000
+MAX_COOKIES_CACHE = 200
+
 
 # path util function
 def norm (path):
@@ -73,6 +84,7 @@ class Configuration (dict):
         # reduceThreads(). Ok, this is a hack but ItWorksForMe(tm).
         self.reduceCount = 0
 
+
     def reset (self):
         """Reset to default values"""
         self['linknumber'] = 0
@@ -85,10 +97,11 @@ class Configuration (dict):
         self["denyallow"] = False
         self["interactive"] = False
         # on ftp, password is set by Pythons ftplib
-        self["authentication"] = [{'pattern': re.compile(r'^.+'),
-	                          'user': 'anonymous',
-	                          'password': '',
-				 }]
+        self["authentication"] = [
+            {'pattern': re.compile(r'^.+'),
+             'user': 'anonymous',
+             'password': '',
+            }]
         self["proxy"] = getproxies()
         self["recursionlevel"] = 1
         self["wait"] = 0
@@ -147,134 +160,25 @@ class Configuration (dict):
         self["warningregex"] = None
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER",None)
-        self.urlCache = {}
-        self.robotsTxtCache = {}
-        try:
-            import threading
-            self.enableThreading(10)
-        except ImportError:
-            type, value = sys.exc_info()[:2]
-            debug(HURT_ME_PLENTY, "no threading available")
-            self.disableThreading()
-        self.cookies = {}
-
-    def disableThreading (self):
-        """Disable threading by replacing functions with their
-        non-threading equivalents
-	"""
-        debug(HURT_ME_PLENTY, "disable threading")
-        self["threads"] = False
-        self.hasMoreUrls = self.hasMoreUrls_NoThreads
-        self.finished = self.finished_NoThreads
-        self.finish = self.finish_NoThreads
-        self.appendUrl = self.appendUrl_NoThreads
-        self.getUrl = self.getUrl_NoThreads
-        self.checkUrl = self.checkUrl_NoThreads
-        self.urlCache_has_key = self.urlCache_has_key_NoThreads
-        self.urlCache_get = self.urlCache_get_NoThreads
-        self.urlCache_set = self.urlCache_set_NoThreads
-        self.urlCacheLock = None
-        self.robotsTxtCache_has_key = self.robotsTxtCache_has_key_NoThreads
-        self.robotsTxtCache_get = self.robotsTxtCache_get_NoThreads
-        self.robotsTxtCache_set = self.robotsTxtCache_set_NoThreads
-        self.robotsTxtCacheLock = None
-        self.incrementLinknumber = self.incrementLinknumber_NoThreads
-        self.getCookies = self.getCookies_NoThreads
-        self.storeCookies = self.storeCookies_NoThreads
-        self.log_newUrl = self.log_newUrl_NoThreads
-        self.logLock = None
-        self.urls = []
-        self.threader = None
-        self.dataLock = None
-        sys.setcheckinterval(10)
-
-    def enableThreading (self, num):
-        """Enable threading by replacing functions with their
-        threading equivalents
-	"""
-        debug(HURT_ME_PLENTY, "enable threading with %d threads" % num)
-        import Queue,Threader
-        from threading import Lock
+        self.threader = Threader.Threader()
+        self.setThreads(10)
+        self.urlSeen = {}
+        self.urlCache = LRU(MAX_URL_CACHE)
+        self.robotsTxtCache = LRU(MAX_ROBOTS_TXT_CACHE)
         self["threads"] = True
-        self.hasMoreUrls = self.hasMoreUrls_Threads
-        self.finished = self.finished_Threads
-        self.finish = self.finish_Threads
-        self.appendUrl = self.appendUrl_Threads
-        self.getUrl = self.getUrl_Threads
-        self.checkUrl = self.checkUrl_Threads
-        self.urlCache_has_key = self.urlCache_has_key_Threads
-        self.urlCache_get = self.urlCache_get_Threads
-        self.urlCache_set = self.urlCache_set_Threads
-        self.urlCacheLock = Lock()
-        self.robotsTxtCache_has_key = self.robotsTxtCache_has_key_Threads
-        self.robotsTxtCache_get = self.robotsTxtCache_get_Threads
-        self.robotsTxtCache_set = self.robotsTxtCache_set_Threads
-        self.robotsTxtCacheLock = Lock()
-        self.incrementLinknumber = self.incrementLinknumber_Threads
-        self.getCookies = self.getCookies_Threads
-        self.storeCookies = self.storeCookies_Threads
-        self.log_newUrl = self.log_newUrl_Threads
-        self.logLock = Lock()
+        self.urlsLock = _threading.Lock()
+        self.urlCacheLock = _threading.Lock()
+        self.robotsTxtCacheLock = _threading.Lock()
+        self.logLock = _threading.Lock()
         self.urls = Queue.Queue(0)
-        self.threader = Threader.Threader(num)
-        self.dataLock = Lock()
-        sys.setcheckinterval(20)
+        self.dataLock = _threading.Lock()
+        self.cookies = LRU(MAX_COOKIES_CACHE)
 
-    def hasMoreUrls_NoThreads (self):
-        return len(self.urls)
 
-    def finished_NoThreads (self):
-        return not self.hasMoreUrls_NoThreads()
+    def setThreads (self, num):
+        debug(HURT_ME_PLENTY, "set threading with %d threads", num)
+        self.threader.threads_max = num
 
-    def finish_NoThreads (self):
-        pass
-
-    def appendUrl_NoThreads (self, url):
-        self.urls.append(url)
-
-    def getUrl_NoThreads (self):
-        return self.urls.pop(0)
-
-    def checkUrl_NoThreads (self, url):
-        url.check()
-
-    def urlCache_has_key_NoThreads (self, key):
-        return self.urlCache.has_key(key)
-
-    def urlCache_get_NoThreads (self, key):
-        return self.urlCache[key]
-
-    def urlCache_set_NoThreads (self, key, val):
-        self.urlCache[key] = val
-
-    def robotsTxtCache_has_key_NoThreads (self, key):
-        return self.robotsTxtCache.has_key(key)
-
-    def robotsTxtCache_get_NoThreads (self, key):
-        return self.robotsTxtCache[key]
-
-    def robotsTxtCache_set_NoThreads (self, key, val):
-        self.robotsTxtCache[key] = val
-
-    def storeCookies_NoThreads (self, headers, host):
-        output = []
-        for h in headers.getallmatchingheaders("Set-Cookie"):
-            output.append(h)
-            debug(BRING_IT_ON, "Store Cookie", h)
-            c = self.cookies.setdefault(host, Cookie.SimpleCookie())
-            c.load(h)
-        return output
-
-    def getCookies_NoThreads (self, host, path):
-        debug(BRING_IT_ON, "Get Cookie", host, path)
-        if not self.cookies.has_key(host):
-            return []
-        cookievals = []
-        for m in self.cookies[host].values():
-            val = _check_morsel(m, host, path)
-            if val:
-                cookievals.append(val)
-        return cookievals
 
     def newLogger (self, logtype, dict={}):
         args = {}
@@ -283,24 +187,19 @@ class Configuration (dict):
         from linkcheck.log import Loggers
         return Loggers[logtype](**args)
 
+
     def addLogger(self, logtype, loggerClass, logargs={}):
         "add a new logger type"
         from linkcheck.log import Loggers
         Loggers[logtype] = loggerClass
         self[logtype] = logargs
 
-    def incrementLinknumber_NoThreads (self):
-        self['linknumber'] += 1
-
-    def log_newUrl_NoThreads (self, url):
-        if not self["quiet"]: self["log"].newUrl(url)
-        for log in self["fileoutput"]:
-            log.newUrl(url)
 
     def log_init (self):
         if not self["quiet"]: self["log"].init()
         for log in self["fileoutput"]:
             log.init()
+
 
     def log_endOfOutput (self):
         if not self["quiet"]:
@@ -308,38 +207,58 @@ class Configuration (dict):
         for log in self["fileoutput"]:
             log.endOfOutput(linknumber=self['linknumber'])
 
-    def incrementLinknumber_Threads (self):
+
+    def incrementLinknumber (self):
         try:
             self.dataLock.acquire()
             self['linknumber'] += 1
         finally:
             self.dataLock.release()
 
-    def hasMoreUrls_Threads (self):
+
+    def hasMoreUrls (self):
         return not self.urls.empty()
 
-    def finished_Threads (self):
-        time.sleep(0.1)
-        if self.reduceCount==5:
-            self.reduceCount = 0
-            self.threader.reduceThreads()
-        else:
-            self.reduceCount += 1
+
+    def finished (self):
         return self.threader.finished() and self.urls.empty()
 
-    def finish_Threads (self):
+
+    def finish (self):
         self.threader.finish()
 
-    def appendUrl_Threads (self, url):
+
+    def appendUrl (self, url):
         self.urls.put(url)
 
-    def getUrl_Threads (self):
+
+    def getUrl (self):
         return self.urls.get()
 
-    def checkUrl_Threads (self, url):
-        self.threader.startThread(url.check, ())
 
-    def urlCache_has_key_Threads (self, key):
+    def checkUrl (self, url):
+        self.threader.start_thread(url.check, ())
+
+
+    def urlSeen_has_key (self, key):
+        ret = None
+        try:
+            self.urlsLock.acquire()
+            ret = self.urlSeen.has_key(key)
+        finally:
+            self.urlsLock.release()
+        return ret
+
+
+    def urlSeen_set (self, key):
+        try:
+            self.urlsLock.acquire()
+            self.urlSeen[key] = 1
+        finally:
+            self.urlsLock.release()
+
+
+    def urlCache_has_key (self, key):
         ret = None
         try:
             self.urlCacheLock.acquire()
@@ -348,7 +267,8 @@ class Configuration (dict):
             self.urlCacheLock.release()
         return ret
 
-    def urlCache_get_Threads (self, key):
+
+    def urlCache_get (self, key):
         ret = None
         try:
             self.urlCacheLock.acquire()
@@ -357,14 +277,16 @@ class Configuration (dict):
             self.urlCacheLock.release()
         return ret
 
-    def urlCache_set_Threads (self, key, val):
+
+    def urlCache_set (self, key, val):
         try:
             self.urlCacheLock.acquire()
             self.urlCache[key] = val
         finally:
             self.urlCacheLock.release()
 
-    def robotsTxtCache_has_key_Threads (self, key):
+
+    def robotsTxtCache_has_key (self, key):
         ret = None
         try:
             self.robotsTxtCacheLock.acquire()
@@ -373,7 +295,8 @@ class Configuration (dict):
             self.robotsTxtCacheLock.release()
         return ret
 
-    def robotsTxtCache_get_Threads (self, key):
+
+    def robotsTxtCache_get (self, key):
         ret = None
         try:
             self.robotsTxtCacheLock.acquire()
@@ -382,14 +305,16 @@ class Configuration (dict):
             self.robotsTxtCacheLock.release()
         return ret
 
-    def robotsTxtCache_set_Threads (self, key, val):
+
+    def robotsTxtCache_set (self, key, val):
         try:
             self.robotsTxtCacheLock.acquire()
             self.robotsTxtCache[key] = val
         finally:
             self.robotsTxtCacheLock.release()
 
-    def log_newUrl_Threads (self, url):
+
+    def log_newUrl (self, url):
         try:
             self.logLock.acquire()
             if not self["quiet"]: self["log"].newUrl(url)
@@ -398,19 +323,36 @@ class Configuration (dict):
         finally:
             self.logLock.release()
 
-    def storeCookies_Threads (self, headers, host):
+
+    def storeCookies (self, headers, host):
         try:
             self.dataLock.acquire()
-            return self.storeCookies_NoThreads(headers, host)
+            output = []
+            for h in headers.getallmatchingheaders("Set-Cookie"):
+                output.append(h)
+                debug(BRING_IT_ON, "Store Cookie", h)
+                c = self.cookies.setdefault(host, Cookie.SimpleCookie())
+                c.load(h)
+            return output
         finally:
             self.dataLock.release()
 
-    def getCookies_Threads (self, host, path):
+
+    def getCookies (self, host, path):
         try:
             self.dataLock.acquire()
-            return self.getCookies_NoThreads(host, path)
+            debug(BRING_IT_ON, "Get Cookie", host, path)
+            if not self.cookies.has_key(host):
+                return []
+            cookievals = []
+            for m in self.cookies[host].values():
+                val = _check_morsel(m, host, path)
+                if val:
+                    cookievals.append(val)
+            return cookievals
         finally:
             self.dataLock.release()
+
 
     def read (self, files = []):
         cfiles = files[:]
@@ -421,6 +363,7 @@ class Configuration (dict):
             # per user config settings
             cfiles.append(norm("~/.linkcheckerrc"))
         self.readConfig(cfiles)
+
 
     def readConfig (self, files):
         """this big function reads all the configuration parameters
@@ -473,11 +416,7 @@ class Configuration (dict):
         section="checking"
         try:
             num = cfgparser.getint(section, "threads")
-            if num > 0:
-                debug(HURT_ME_PLENTY, "set threading with %d threads", num)
-                self.enableThreading(num)
-            else:
-                self.disableThreading()
+            self.setThreads(num)
         except ConfigParser.Error: debug(NIGHTMARE, msg)
         try: self["anchors"] = cfgparser.getboolean(section, "anchors")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)

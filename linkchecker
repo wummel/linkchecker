@@ -267,9 +267,6 @@ for opt,arg in options:
     if opt=="-f" or opt=="--config":
         configfiles.append(arg)
 config.read(configfiles)
-# disable threading for debugging
-if get_debuglevel() > 0:
-    config.disableThreading()
 # apply commandline options and arguments
 _user = "anonymous"
 _password = "guest@"
@@ -345,13 +342,13 @@ for opt,arg in options:
     elif opt=="-r" or opt=="--recursion-level":
         try:
             depth = int(arg)
+            if depth >= 0:
+                config["recursionlevel"] = depth
+            else:
+                config["recursionlevel"] = -1
         except ValueError:
             printUsage(i18n._("Illegal argument %r for option %s") % \
                        (arg, "'-r, --recursion-level'"))
-        if depth >= 0:
-            config["recursionlevel"] = depth
-        else:
-            config["recursionlevel"] = -1
     # robots.txt is now default, so ignore this option
     elif opt=="-R" or opt=="--robots-txt": pass
 
@@ -360,25 +357,21 @@ for opt,arg in options:
 
     elif opt=="-t" or opt=="--threads":
         try:
-            num = int(arg)
+            config.setThreads(int(arg))
         except ValueError:
             printUsage(i18n._("Illegal argument %r for option %s") % \
                        (arg, "'-t, --threads'"))
-        if num > 1 and not get_debuglevel() > 0:
-            config.enableThreading(num)
-        else:
-            config.disableThreading()
 
     elif opt=="--timeout":
         try:
             timeout = int(arg)
+            if timeout <= 0:
+                printUsage(i18n._("Illegal argument %r for option %s") % \
+                           (arg, "'--timeout'"))
+            socket.setdefaulttimeout(timeout)
         except ValueError:
             printUsage(i18n._("Illegal argument %r for option %s") % \
                        (arg, "'--timeout'"))
-        if timeout <= 0:
-            printUsage(i18n._("Illegal argument %r for option %s") % \
-                       (arg, "'--timeout'"))
-        socket.setdefaulttimeout(timeout)
 
     elif opt=="-u" or opt=="--user":
         _user = arg

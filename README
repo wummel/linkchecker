@@ -90,14 +90,11 @@ Only if you want to hack on the code.
 commandline options and stores them in a Config object.
 
 (2) Which leads us directly to the Config class. This class stores all
-options and works a little magic: it tries to find out if your platform
-supports threads. If so, threading is enabled. If not, it is disabled.
-Several functions are replaced with their threaded equivalents if
-threading is enabled.
-Another thing are config files. A Config object reads config file options
-on initialization so they get handled before any commandline options.
+options and supports threading and reading config files.
+A Config object reads config file options on initialization so they get
+handled before any commandline options.
 
-(3) The linkchecker script finally calls linkcheck.checkUrls(), which
+(3) The linkchecker script calls linkcheck.checkUrls(), which
 calls linkcheck.Config.checkUrl(), which calls linkcheck.UrlData.check().
 An UrlData object represents a single URL with all attached data like
 validity, check time and so on. These values are filled by the

@@ -19,7 +19,7 @@
 class LinkCheckerError (Exception):
     pass
 
-import re, i18n
+import time, re, i18n
 def getLinkPat (arg, strict=False):
     """get a link pattern matcher for intern/extern links"""
     debug(BRING_IT_ON, "Link pattern %r", arg)
@@ -61,6 +61,10 @@ def checkUrls (config):
         while not config.finished():
             if config.hasMoreUrls():
                 config.checkUrl(config.getUrl())
+            else:
+                # active connections are downloading/parsing, so
+                # wait a little
+                time.sleep(0.1)
         config.log_endOfOutput()
     except KeyboardInterrupt:
         config.finish()
