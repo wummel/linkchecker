@@ -380,3 +380,14 @@ class HTTP(HTTPConnection):
     self.headers = response
     self.file = response.fp
     return errcode, errmsg, response
+
+def _test():
+    h = HTTP('www.siemens.de')
+    h.putrequest("GET")
+    h.putheader("Host", 'www.siemens.de')
+    h.endheaders()
+    status,text,reply = h.getreply()
+    print status,text,reply
+
+if __name__=='__main__':
+    _test()

@@ -1,10 +1,11 @@
-import http11lib,urlparse,sys,time
+import http11lib,urlparse,sys,time,re
 from UrlData import UrlData
 from RobotsTxt import RobotsTxt
 import Config,StringUtil
 
 class HttpUrlData(UrlData):
     "Url link with http scheme"
+    netscape_re = re.compile("Netscape-Enterprise/")
 
     def checkConnection(self, config):
         """
@@ -53,31 +54,43 @@ class HttpUrlData(UrlData):
             self.setWarning("Access denied by robots.txt, checked only syntax")
             return
             
+        # first try
         status, statusText, self.mime = self._getHttpRequest()
         Config.debug(str(status)+", "+str(statusText)+", "+str(self.mime)+"\n")
+        while 1:
+            # follow redirections
+            tries = 0
+            redirected = self.urlName
+            while status in [301,302] and self.mime and tries < 5:
+                redirected = urlparse.urljoin(redirected, self.mime.getheader("Location"))
+                self.urlTuple = urlparse.urlparse(redirected)
+                status, statusText, self.mime = self._getHttpRequest()
+                Config.debug("\nRedirected\n"+str(self.mime))
+                tries = tries + 1
 
-        # follow redirections and set self.url to the effective url
-        tries = 0
-        redirected = self.urlName
-        while status in [301,302] and self.mime and tries < 5:
-            redirected = urlparse.urljoin(redirected, self.mime.getheader("Location"))
-            self.urlTuple = urlparse.urlparse(redirected)
-            status, statusText, self.mime = self._getHttpRequest()
-            Config.debug("\nRedirected\n"+str(self.mime))
-            tries = tries + 1
-    
+            # authentication
+            if status==401 and not self.auth:
+                import base64
+                _user, _password = self._getUserPassword(config)
+                self.auth = "Basic "+\
+                    string.strip(base64.encodestring(_user+":"+_password))
+                status, statusText, self.mime = self._getHttpRequest()
+                Config.debug("Authentication "+_user+"/"+_password+"\n")
+
+            # Netscape Enterprise Server returns errors with HEAD
+            # request, but valid urls with GET request. Bummer!
+            elif status>=400 and self.mime:
+                server = self.mime.getheader("Server")
+                if server and self.netscape_re.search(server):
+                    status, statusText, self.mime = self._getHttpRequest("GET")
+                    Config.debug("Netscape Enterprise Server detected\n")
+            if status not in [301,302]: break
+
         effectiveurl = urlparse.urlunparse(self.urlTuple)
         if self.url != effectiveurl:
             self.setWarning("Effective URL "+effectiveurl)
             self.url = effectiveurl
-        #
-        # authentication
-        if status == 401:
-            import base64
-            _user, _password = self._getUserPassword(config)
-            status, statusText, self.mime = self._getHttpRequest("HEAD",
-	    "Basic "+string.strip(base64.encodestring(_user+":"+_password)))
-        #
+
         # check final result
         if status >= 400:
             self.setError(`status`+" "+statusText)
@@ -90,7 +103,7 @@ class HttpUrlData(UrlData):
                 self.setValid("OK")
 
         
-    def _getHttpRequest(self, method="HEAD", auth=None):
+    def _getHttpRequest(self, method="HEAD"):
         "Put request and return (status code, status text, mime object)"
         if self.proxy:
             host = self.proxy+":"+`self.proxyport`
@@ -109,8 +122,8 @@ class HttpUrlData(UrlData):
                 path = path + "?" + self.urlTuple[4]
         self.urlConnection.putrequest(method, path)
         self.urlConnection.putheader("Host", self.urlTuple[1])
-        if auth:
-            self.urlConnection.putheader("Authorization", auth)
+        if self.auth:
+            self.urlConnection.putheader("Authorization", self.auth)
         self.urlConnection.putheader("User-agent", Config.UserAgent)
         self.urlConnection.endheaders()
         return self.urlConnection.getreply()
