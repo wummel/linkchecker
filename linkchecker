@@ -77,6 +77,13 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
   same as the host of the user browsing your pages!
 """)
 
+Retval = _(r"""RETURN VALUE
+The return value is non-zero when
+ o invalid links were found or
+ o link warnings were found and --warnings option was given
+ o a program error occurred
+""")
+
 Examples = _(r"""EXAMPLES
 The most common use checks the given domain recursively, plus any
 single URL pointing outside of the domain:
@@ -184,7 +191,7 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
         #   -fFILENAME, --file=FILENAME
         #           read data from FILENAME
         result = []
-        opts = option.option_strings
+        opts = self.option_strings[option]
         opt_width = self.help_position - self.current_indent - 2
         if len(opts) > opt_width:
             opts = "%*s%s\n" % (self.current_indent, "", opts)
@@ -221,7 +228,7 @@ class LCOptionParser (optparse.OptionParser, object):
 
     def print_help (self, file=None):
         """print translated help text"""
-        s = "%s\n%s\n%s" % (self.format_help(), Notes, Examples)
+        s = "%s\n%s\n%s\n%s" % (self.format_help(), Notes, Retval, Examples)
         if os.name != 'posix':
             linkcheck.StringUtil.paginate(s)
         else:
