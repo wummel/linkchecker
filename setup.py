@@ -1,7 +1,7 @@
 #!/usr/bin/python -O
 # -*- coding: iso-8859-1 -*-
 
-# Copyright (C) 2000-2002  Bastian Kleineidam
+# Copyright (C) 2000-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -146,7 +146,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.12.2",
+       version = "1.12.3",
        description = "check HTML documents for broken links",
        keywords = "link,url,checking,verfication",
        author = myname,
