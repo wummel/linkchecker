@@ -210,7 +210,8 @@ class UrlBase (object):
         # remove anchor from content cache key since we assume
         # URLs with different anchors to have the same content
         self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
-        assert isinstance(self.cache_content_key, unicode), self.cache_content_key
+        assert isinstance(self.cache_content_key, unicode), \
+               self.cache_content_key
         # construct cache key
         if self.consumer.config["anchorcaching"]:
             # do not ignore anchor
@@ -391,15 +392,16 @@ class UrlBase (object):
         """return True iff we can recurse into the url's content"""
         # note: test self.valid before self.is_parseable()
         linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
-                            "content=%s, robots=%s",
+                            "content=%s, extern=%s, robots=%s",
                             self.valid, self.is_parseable(),
                             self.can_get_content(),
+                            self.extern[0],
                             self.content_allows_robots())
         return self.valid and \
             self.is_parseable() and \
             self.can_get_content() and \
             (self.consumer.config["recursionlevel"] < 0 or
-             self.recursion_level < self.consumer.config["recursionlevel"]) and \
+            self.recursion_level < self.consumer.config["recursionlevel"]) and \
             not self.extern[0] and self.content_allows_robots()
 
     def content_allows_robots (self):
@@ -440,7 +442,8 @@ class UrlBase (object):
         self.add_warning(_("anchor #%s not found") % self.anchor)
 
     def _get_extern (self):
-        if not (self.consumer.config["externlinks"] or self.consumer.config["internlinks"]):
+        if not (self.consumer.config["externlinks"] or \
+           self.consumer.config["internlinks"]):
             return (0, 0)
         # deny and allow external checking
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Url %r", self.url)
