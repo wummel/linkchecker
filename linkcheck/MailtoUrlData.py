@@ -1,4 +1,4 @@
-import re,socket,string,DNS,sys
+import re,socket,string,DNS,sys,Config
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from UrlData import LinkCheckerException
@@ -28,14 +28,27 @@ class MailtoUrlData(HostCheckingUrlData):
 
     def checkConnection(self, config):
         DNS.ParseResolvConf()
+        Config.debug("Looking up mail host\n")
         mxrecords = DNS.mxlookup(self.host)
         if not len(mxrecords):
             self.setError("No mail host for "+self.host+" found")
             return
+        Config.debug("Connect to mail hosts\n")
+        try:
+            import signal
+            def handler(signum, frame):
+                raise IOError, "SMTP connect timeout"
+            signal.signal(signal.SIGALRM, handler)
+            sigs=1
+        except ImportError:
+            sigs=0
         smtpconnect = 0
         for mxrecord in mxrecords:
             try:
+                if sigs:
+                    signal.alarm(15)
                 self.urlConnection = SMTP(mxrecord[1])
+                Config.debug("Connected to "+str(mxrecord[1])+"\n")
                 smtpconnect = 1
                 self.urlConnection.helo()
                 info = self.urlConnection.verify(self.user)
@@ -43,7 +56,7 @@ class MailtoUrlData(HostCheckingUrlData):
                     self.setInfo("Verified adress: "+info[1])
             except:
                 type, value = sys.exc_info()[:2]
-                #print value
+                print type,value
             if smtpconnect: break
             
         if not smtpconnect:
