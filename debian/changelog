@@ -1,3 +1,10 @@
+linkchecker (1.3.1) unstable; urgency=low
+
+  * remove CVS files from Debian source package by using cvs-
+    buildpackage
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sat,  5 May 2001 16:05:06 +0200
+
 linkchecker (1.3.0) unstable; urgency=low
 
   * require and use Python >= 2.0

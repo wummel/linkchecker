@@ -70,7 +70,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 #	dh_installdebconf
-#	dh_installdocs
+	dh_installdocs
 #	dh_installexamples lc.* lconline/*.html
 #	dh_installmenu
 #	dh_installemacsen

@@ -4,3 +4,5 @@ substvars
 *.debhelper
 linkchecker
 linkchecker-ssl
+changelog-ssl
+*-nossl
