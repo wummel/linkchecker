@@ -1,3 +1,9 @@
+1.8.3
+  * add missing imports for StringUtil in log classess
+    Changed files: linkcheck/log/{Standard,SQl,Html,Colored}.Loggerpy
+  * fixed wrong debug level
+    Changed files: linkcheck/Config.py
+
 1.8.2
   * - ignore invalid html attribute characters
     - ignore trailing garbage on html end tags
