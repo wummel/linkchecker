@@ -139,10 +139,7 @@ def has_colors (fp):
     # redirected streams, as this is almost never what we want
     if hasattr(fp, "isatty") and fp.isatty():
         if os.name == 'nt':
-            # windows has no curses; assume we are running in a DOS
-            # command prompt which supports ANSI colors (ie. assume
-            # that ANSI.SYS is loaded)
-            return True
+            return has_colors_nt()
         try:
             import curses
             curses.setupterm()
@@ -153,6 +150,27 @@ def has_colors (fp):
             # no curses :(
             pass
     return False
+
+
+def has_colors_nt ():
+    """windows has no curses; check if running in an environment
+       which supports ANSI colors
+    """
+    _in = None
+    _out = None
+    try:
+        _in, _out = os.popen4("mem /c")
+        line = _out.readline()
+        while line:
+            if "ANSI" in line:
+                return True
+            line = _out.readline()
+        return False
+    finally:
+        if _in is not None:
+            _in.close()
+        if _out is not None:
+            _out.close()
 
 
 def colorize (text, color=None):
