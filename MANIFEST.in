@@ -1,19 +1,24 @@
-include README LICENSE TODO WONTDO MANIFEST.in
+include README LICENSE TODO MANIFEST.in
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/linkcheck-cron.sh
 include config/logging.conf config/pycheckrc config/pylintrc
 include config/reindent.py
 include linkchecker linkchecker.bat linkchecker.1
 include cgi/lc.cgi cgi/lc.fcgi cgi/lc.sz_fcgi cgi/README
-include Makefile linkchecker.spec create.sql
+include Makefile linkchecker.spec
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
-include test/*.py test/*.txt
+include test/*.py test/*.sh
 include cgi/lconline/*.html cgi/lconline/*.de cgi/lconline/*.en
-include cgi/lconline/check.js cgi/lconline/README.negotiation
-include linkcheck/HtmlParser/Makefile linkcheck/HtmlParser/htmllex.l
-include linkcheck/HtmlParser/htmlparse.y linkcheck/HtmlParser/htmlparse.h
-include linkcheck/HtmlParser/htmlsax.h
+include cgi/lconline/check.js
+include linkcheck/HtmlParser/Makefile
+include linkcheck/HtmlParser/htmllex.l
+include linkcheck/HtmlParser/htmlparse.y
+include linkcheck/HtmlParser/*.h
 include po/*.po po/*.pot po/*.py po/Makefile
 recursive-include share *.mo
 exclude _linkchecker_configdata.py
+include doc/*.txt doc/*.nav doc/*.html doc/*.py doc/*.png doc/*.jpg
+include doc/*.css
+include doc/Makefile doc/rest2htmlnav
+recursive-include linkcheck/ftests/data *.txt *.html *.result
