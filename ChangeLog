@@ -1,4 +1,4 @@
-1.13.0.1 "Arahan" (released 2.9.2004)
+1.13.1 "Old men in new cars" (released xx.xx.xxxx)
   * fixed RPM generation by adding the generated config file to the
     installed files list
     Type: bugfix
