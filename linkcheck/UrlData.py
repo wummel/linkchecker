@@ -450,7 +450,7 @@ class UrlData:
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
-                    return (1, 0)
+                    return (0, 0)
             return (0, 0)
         else:
             for entry in self.config["internlinks"]:
