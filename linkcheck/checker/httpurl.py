@@ -66,6 +66,12 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.urlparts[2] = '/'
             self.url = urlparse.urlunsplit(self.urlparts)
 
+    def allows_robots (self, url):
+        roboturl = self.get_robots_txt_url()
+        user, password = self.get_user_password()
+        return self.consumer.cache.robots_txt_allows_url(roboturl, url,
+                                                         user, password)
+
     def check_connection (self):
         """
         Check a URL with HTTP protocol.
@@ -115,7 +121,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.headers = None
         self.auth = None
         self.cookies = []
-        if not self.consumer.cache.robots_txt_allows_url(self):
+        if not self.allows_robots(self.url):
             self.add_warning(
                        _("Access denied by robots.txt, checked only syntax"))
             return

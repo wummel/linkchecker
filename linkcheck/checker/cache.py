@@ -182,15 +182,11 @@ class Cache (object):
         finally:
             self.lock.release()
 
-    def robots_txt_allows_url (self, url_data):
+    def robots_txt_allows_url (self, roboturl, url, user, password):
         """ask robots.txt allowance"""
         self.lock.acquire()
         try:
-            roboturl = url_data.get_robots_txt_url()
-            linkcheck.log.debug(linkcheck.LOG_CACHE,
-                       "robots.txt url %r of %r", roboturl, url_data.url)
             if roboturl not in self.robots_txt:
-                user, password = url_data.get_user_password()
                 rp = linkcheck.robotparser2.RobotFileParser(
                                                 user=user, password=password)
                 rp.set_url(roboturl)
@@ -198,8 +194,7 @@ class Cache (object):
                 self.robots_txt[roboturl] = rp
             else:
                 rp = self.robots_txt[roboturl]
-            return rp.can_fetch(linkcheck.configuration.UserAgent,
-                                url_data.url)
+            return rp.can_fetch(linkcheck.configuration.UserAgent, url)
         finally:
             self.lock.release()
 
