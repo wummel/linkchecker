@@ -1,8 +1,11 @@
 linkchecker (1.5.5) unstable; urgency=low
 
   * linkcheck/linkname.py: fix linkname regular expressions (from 1.4.8)
+  * linkchecker: documentation typos
+  * linkcheck/__init__.py: use getLinkPat function for all config
+    entries, not just commandline
 
- -- Bastian Kleineidam <calvin@debian.org>  Fri,  7 Jun 2002 21:44:20 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Fri,  7 Jun 2002 22:40:10 +0200
 
 linkchecker (1.5.4) unstable; urgency=low
 
