@@ -173,7 +173,8 @@ class HttpUrlData (ProxyUrlData):
             self.url = effectiveurl
 
         if has301status:
-            self.setWarning(i18n._("HTTP 301 (moved permanent) encountered: you "
+            self.setWarning(
+                       i18n._("HTTP 301 (moved permanent) encountered: you "
                               "should update this link"))
             if self.url[-1]!='/':
                 self.setWarning(
