@@ -70,7 +70,7 @@ class NntpUrlData (UrlData):
         introduced error codes 504 and 505 (both inclining "Too busy, retry
         later", are caught."""
         tries = 0
-        nntp = None
+        nntp = value = None
         while tries < 5:
             tries += 1
             try:
@@ -82,8 +82,10 @@ class NntpUrlData (UrlData):
                     time.sleep(whrandom.randint(10,20))
                 else:
                     raise
-        if nttp is None:
+        if nntp is None:
             raise linkcheck.error(_("NTTP server too busy; tried more than %d times")%tries)
+        if value is not None:
+            self.setWarning(linkcheck._("NNTP busy: %s")%str(value))
         return nntp
 
     def getCacheKey (self):
