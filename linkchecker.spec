@@ -50,4 +50,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f INSTALLED_FILES
 %defattr(-,root,root)
-%doc INSTALL README TODO draft-gilman-news-url-00.txt lconline/ test/
+%doc INSTALL README TODO lconline/ test/
