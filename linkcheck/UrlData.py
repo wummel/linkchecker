@@ -329,6 +329,8 @@ class UrlData:
         debug(BRING_IT_ON, "checking connection")
         try:
             self.checkConnection()
+            if self.cached:
+                return
             if self.anchor and self.config["anchors"]:
                 self.checkAnchors(self.anchor)
         except tuple(ExcList):

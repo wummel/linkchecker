@@ -134,7 +134,13 @@ class HttpUrlData (ProxyUrlData):
                 redirected = unquote(redirected)
                 # note: urlparts has to be a list
                 self.urlparts = list(urlparse.urlsplit(redirected))
-                # new response data
+                # check cache again on possibly changed URL
+                if self.config.urlCache_has_key(self.getCacheKey()):
+                    self.copyFrom(self.config.urlCache_get(self.getCacheKey()))
+                    self.cached = 1
+                    self.logMe()
+                    return
+        # new response data
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 debug(BRING_IT_ON, "Redirected", self.headers)
