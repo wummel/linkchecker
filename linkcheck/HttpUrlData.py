@@ -32,8 +32,6 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
 # Amazon blocks HEAD requests at all
 _isAmazonHost = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
-# Server not supporting anchors in urls (eg returning 404 errors)
-_isBrokenAnchorServer = re.compile(r'(Microsoft-IIS|Apache)/').search
 
 
 class HttpUrlData (ProxyUrlData):
