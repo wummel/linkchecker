@@ -19,7 +19,6 @@
 import time
 import cgi
 import os
-import gettext
 
 import linkcheck.logger
 import linkcheck.strformat
@@ -77,16 +76,16 @@ class HtmlLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.starttime = time.time()
-        self.fd.write(HTML_HEADER % (linkcheck.configuration.App,
-                      self.colorbackground,
-                      self.colorlink, self.colorlink, self.colorlink))
+        self.write(HTML_HEADER % (linkcheck.configuration.App,
+                   self.colorbackground,
+                   self.colorlink, self.colorlink, self.colorlink))
         if self.has_field('intro'):
-            self.fd.write("<center><h2>"+linkcheck.configuration.App+
-                          "</h2></center><br><blockquote>"+
-                          linkcheck.configuration.Freeware+"<br><br>"+
-                          (_("Start checking at %s") % \
-                          linkcheck.strformat.strtime(self.starttime))+
-                          os.linesep+"<br>")
+            self.write(u"<center><h2>"+linkcheck.configuration.App+
+                       "</h2></center><br><blockquote>"+
+                       linkcheck.configuration.Freeware+"<br><br>"+
+                       (_("Start checking at %s") % \
+                       linkcheck.strformat.strtime(self.starttime))+
+                       os.linesep+"<br>")
         self.flush()
 
     def new_url (self, url_data):
@@ -121,17 +120,17 @@ class HtmlLogger (linkcheck.logger.Logger):
 
     def write_table_start (self):
         """start html table"""
-        self.fd.write("<br clear=\"all\"><br>"+os.linesep+
-             "<table align=\"left\" border=\"0\" cellspacing=\"0\""+
-             " cellpadding=\"1\""+os.linesep+
-             " bgcolor=\""+self.colorborder+
-             "\" summary=\"Border\">"+os.linesep+
-             "<tr>"+os.linesep+
-             "<td>"+os.linesep+
-             "<table align=\"left\" border=\"0\" cellspacing=\"0\""+
-             " cellpadding=\"3\""+os.linesep+
-             " summary=\"checked link\" bgcolor=\""+self.colorbackground+
-             "\">"+os.linesep)
+        self.writeln(u"<br clear=\"all\"><br>")
+        self.writeln(u"<table align=\"left\" border=\"0\" cellspacing=\"0\""+
+                     u" cellpadding=\"1\"")
+        self.writeln(u" bgcolor=\""+self.colorborder+
+                     u"\" summary=\"Border\">")
+        self.writeln(u"<tr>")
+        self.writeln(u"<td>")
+        self.writeln(u"<table align=\"left\" border=\"0\" cellspacing=\"0\""+
+                     u" cellpadding=\"3\"")
+        self.writeln(u" summary=\"checked link\" bgcolor=\""+
+                     self.colorbackground+u"\">")
 
     def write_table_end (self):
         """end html table"""
@@ -238,14 +237,14 @@ class HtmlLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         if self.has_field("outro"):
-            self.fd.write(os.linesep+_("Thats it. "))
+            self.writeln()
+            self.write(_("Thats it. "))
             if linknumber >= 0:
-                self.fd.write(gettext.ngettext("%d link checked.",
-                               "%d links checked.", linknumber) % linknumber)
-                self.fd.write(" ")
-            self.fd.write(gettext.ngettext("%d error found.",
-                             "%d errors found.", self.errors) % self.errors)
-            self.fd.write(os.linesep)
+                self.write(_n("%d link checked.", "%d links checked.",
+                           linknumber) % linknumber)
+                self.write(u" ")
+            self.writeln(_n("%d error found.", "%d errors found.",
+                         self.errors) % self.errors)
             self.fd.write("<br>"+os.linesep)
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
