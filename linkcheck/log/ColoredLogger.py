@@ -62,7 +62,10 @@ class ColoredLogger (StandardLogger):
                 self.fd.write("\n")
             self.fd.write(linkcheck._("URL")+Spaces["url"]+self.colorurl+
 	              urlData.urlName+self.colorreset)
-            if urlData.line: self.fd.write(linkcheck._(", line ")+`urlData.line`+"")
+            if urlData.line:
+                self.fd.write(linkcheck._(", line %d")%urlData.line)
+            if urlData.column:
+                self.fd.write(linkcheck._(", col %d")%urlData.column)
             if urlData.cached:
                 self.fd.write(linkcheck._(" (cached)\n"))
             else:

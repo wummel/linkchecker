@@ -47,6 +47,7 @@ class CSVLogger (StandardLogger):
                       "# valid;\n"
                       "# url;\n"
                       "# line;\n"
+                      "# column;\n"
                       "# name;\n"
                       "# downloadtime;\n"
                       "# checktime;\n"
@@ -68,6 +69,7 @@ class CSVLogger (StandardLogger):
             urlData.valid, self.separator,
             urlData.url, self.separator,
             urlData.line, self.separator,
+            urlData.column, self.separator,
             urlData.name, self.separator,
             urlData.downloadtime, self.separator,
             urlData.checktime, self.separator,

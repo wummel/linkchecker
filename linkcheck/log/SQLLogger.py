@@ -40,8 +40,8 @@ class SQLLogger (StandardLogger):
         if self.fd is None: return
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infoString,"
-	      "valid,url,line,name,checktime,downloadtime,cached) values "
-              "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%s,%d,%d,%d)%s\n" % \
+	      "valid,url,line,column,name,checktime,downloadtime,cached) values "
+              "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%d,%d,%d)%s\n" % \
 	      (self.dbname,
 	       linkcheck.StringUtil.sqlify(urlData.urlName),
                urlData.recursionLevel,
@@ -54,6 +54,7 @@ class SQLLogger (StandardLogger):
                urlData.valid,
                linkcheck.StringUtil.sqlify(urlData.url),
                urlData.line,
+               urlData.column,
                linkcheck.StringUtil.sqlify(urlData.name),
                urlData.checktime,
                urlData.downloadtime,

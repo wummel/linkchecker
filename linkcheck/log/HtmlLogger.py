@@ -76,8 +76,12 @@ class HtmlLogger (StandardLogger):
         if urlData.parentName and self.logfield("parenturl"):
             self.fd.write("<tr><td>"+linkcheck._("Parent URL")+"</td><td>"+
 			  '<a href="'+urlData.parentName+'">'+
-                          urlData.parentName+"</a> line "+str(urlData.line)+
-                          "</td></tr>\n")
+                          urlData.parentName+"</a>")
+            if urlData.line:
+                self.fd.write(linkcheck._(", line %d")%urlData.line)
+            if urlData.column:
+                self.fd.write(linkcheck._(", col %d")%urlData.column)
+            self.fd.write("</td></tr>\n")
         if urlData.baseRef and self.logfield("base"):
             self.fd.write("<tr><td>"+linkcheck._("Base")+"</td><td>"+
 	                  urlData.baseRef+"</td></tr>\n")
