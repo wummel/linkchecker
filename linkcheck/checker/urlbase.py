@@ -609,14 +609,15 @@ class UrlBase (object):
 
     def __repr__ (self):
         """return serialized url check data"""
-        return os.linesep.join([
-            "%s link" % self.scheme,
-            "base_url=%s" % self.base_url,
-            "parent_url=%s" % self.parent_url,
-            "base_ref=%s" % self.base_ref,
-            "recursion_level=%s" % self.recursion_level,
-            "url_connection=%s" % self.url_connection,
-            "line=%d" % self.line,
-            "column=%d" % self.column,
-            "name=%s" % self.name,
+        sep = unicode(os.linesep)
+        return sep.join([
+            u"%s link" % self.scheme,
+            u"base_url=%s" % self.base_url,
+            u"parent_url=%s" % self.parent_url,
+            u"base_ref=%s" % self.base_ref,
+            u"recursion_level=%s" % self.recursion_level,
+            u"url_connection=%s" % self.url_connection,
+            u"line=%d" % self.line,
+            u"column=%d" % self.column,
+            u"name=%s" % self.name,
            ])
