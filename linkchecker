@@ -118,8 +118,8 @@ For single-letter option arguments the space is not a necessity. So
 """) % linkcheck.log.LoggerKeys
 
 Notes = linkcheck._("""NOTES
-o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL
-  starts with 'www.' resp. 'ftp.'
+o LinkCheckers commandline parser treats "ftp." links like "ftp://ftp."
+  and "www." links like "http://www.".
   You can also give local files as arguments.
 o If you have your system configured to automatically establish a
   connection to the internet (e.g. with diald), it will connect when

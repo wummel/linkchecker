@@ -134,8 +134,8 @@ Use this to check for pages that contain some form of error, for example
 'This page has moved' or 'Oracle Application Server error'.
 This option implies \fB-w\fP.
 .SH NOTES
-LinkChecker assumes an \fIhttp://\fP resp. \fIftp://\fP link when a 
-commandline URL starts with \fIwww.\fP resp. \fIftp.\fP
+LinkCheckers commandline parser treats \fIftp.\fP links like \fIftp://ftp.\fP
+and \fIwww.\fP links like \fIhttp://www.\fP.
 You can also give local files as arguments.
 
 If you have your system configured to automatically establish a
@@ -145,7 +145,7 @@ Use the -s and -i options to prevent this.
 
 Javascript links are currently ignored.
 
-If your platform does not support threading, LinkChecker uses 
+If your platform does not support threading, LinkChecker uses
 \fB-t0\fP.
 
 You can supply multiple user/password pairs in a configuration file.
