@@ -75,6 +75,12 @@
     Type: bugfix
     Changed: linkcheck/checker/fileurl.py
 
+  * Wrong case of file links on Windows platforms now issue a
+    warning.
+    Type: feature
+    Closes: SF bug #1062007
+    Changed: linkcheck/checker/fileurl.py
+
 1.13.5 "Die Musterknaben" (released 22.9.2004)
   * Use xgettext with Python support for .pot file creation, adjusted
     developer documentation.
