@@ -1,3 +1,11 @@
+1.8.2
+  * - ignore invalid html attribute characters
+    - ignore trailing garbage on html end tags
+    - fixed debugging code with flex
+    Changed files: linkcheck/parser/htmllex.l
+  * build parser with flex 2.5.25
+    Changed files: linkcheck/parser/{Makefile, htmllex.c}
+
 1.8.1
   * Add missing () to function call in proxy handling code
     Changed files: FtpUrlData.py
