@@ -97,36 +97,39 @@ class MailtoUrl (urlbase.UrlBase):
         if not self.addresses:
             self.add_warning(_("No addresses found."))
             return
-
-        value = "unknown reason"
         for name, mail in self.addresses:
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                "checking mail address %r", mail)
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "splitting address")
-            username, domain = self._split_address(mail)
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                "looking up MX mailhost %r", domain)
-            answers = linkcheck.dns.resolver.query(domain, 'MX')
-            if len(answers) == 0:
-                self.add_warning(_("No MX mail host for %(domain)s found.") %\
-                                {'domain': domain})
-                return
-            # sort according to preference (lower preference means this
-            # host should be preferred
-            mxdata = [(rdata.preference,
+            self.check_smtp_domain(name, mail)
+
+
+    def check_smtp_domain (self, name, mail):
+        """Check a single mail address"""
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "checking mail address %r", mail)
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "splitting address")
+        username, domain = self._split_address(mail)
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "looking up MX mailhost %r", domain)
+        answers = linkcheck.dns.resolver.query(domain, 'MX')
+        if len(answers) == 0:
+            self.add_warning(_("No MX mail host for %(domain)s found.") % \
+                            {'domain': domain})
+            return
+        # sort according to preference (lower preference means this
+        # host should be preferred
+        mxdata = [(rdata.preference,
                    rdata.exchange.to_text(omit_final_dot=True))
                    for rdata in answers]
-            mxdata.sort()
-            # debug output
+        mxdata.sort()
+        # debug output
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "found %d MX mailhosts:", len(answers))
+        for preference, host in mxdata:
             linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                "found %d MX mailhosts:", len(answers))
-            for preference, host in mxdata:
-                linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "MX host %r, preference %d", host, preference)
-            # connect
-            self.check_smtp_connect(mxdata)
+        # connect
+        self.check_smtp_connect(mxdata, username)
 
-    def check_smtp_connect (self, mxdata):
+    def check_smtp_connect (self, mxdata, username):
         """mxdata is a list of (preference, host) tuples to check for"""
         smtpconnect = 0
         for preference, host in mxdata:
@@ -148,7 +151,7 @@ class MailtoUrl (urlbase.UrlBase):
                                   {'info': str(info[1])})
             except smtplib.SMTPException, msg:
                 self.add_warning(
-                      _("MX mail host %(host)s did not accept connections: "\
+                      _("MX mail host %(host)s did not accept connections: " \
                         "%(error)s.") % {'host': host, 'error': str(msg)})
             if smtpconnect:
                 break
