@@ -1,3 +1,5 @@
+--extern is not working. self.extern is not a tuple :/
+missing __str__ methods for debug output objects (regex patterns and loggers)
 Check why threaded app wont exit resp. is stalled
 Another Profiling roundup
 Named constants for ANSI Color codes

@@ -472,8 +472,7 @@ class Configuration (UserDict.UserDict):
                 self["warnings"] = 1
         except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
         try: self["quiet"] = cfgparser.getboolean(section, "quiet")
-        except ConfigParser.Error, msg:
-            debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
         try: self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
         try:

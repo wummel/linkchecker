@@ -177,7 +177,7 @@ class UrlData:
         self.checktime = 0
         self.cached = 0
         self.urlConnection = None
-        self.extern = 1
+        self.extern = (1, 0)
         self.data = None
         self.html_comments = []
         self.has_content = 0
@@ -298,7 +298,7 @@ class UrlData:
 
         # apply filter
         debug(BRING_IT_ON, "extern =", self.extern)
-        if self.extern and (self.config["strict"] or self.extern[1]):
+        if self.extern[0] and (self.config["strict"] or self.extern[1]):
             self.setWarning(
                   linkcheck._("outside of domain filter, checked only syntax"))
             self.logMe()
@@ -371,7 +371,7 @@ class UrlData:
                self.isHtml() and \
                not self.cached and \
                self.recursionLevel < self.config["recursionlevel"] and \
-               not self.extern
+               not self.extern[0]
 
 
     def checkAnchors (self, anchor):
@@ -386,7 +386,7 @@ class UrlData:
 
     def _getExtern (self):
         if not (self.config["externlinks"] or self.config["internlinks"]):
-            return 0
+            return (0, 0)
         # deny and allow external checking
         Config.debug(HURT_ME_PLENTY, "Url", self.url)
         if self.config["denyallow"]:
@@ -401,15 +401,15 @@ class UrlData:
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
-                    return 1
-            return 0
+                    return (1, 0)
+            return (0, 0)
         else:
             for entry in self.config["internlinks"]:
                 Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
-                    return 0
+                    return (0, 0)
             for entry in self.config["externlinks"]:
                 Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
                 match = entry['pattern'].search(self.url)

@@ -24,7 +24,11 @@ from debuglevels import *
 # regular expression for RFC2368 compliant mailto: scanning
 headers_re = re.compile(r"\?(.+)$")
 
-import DNS
+try:
+    import DNS
+except ImportError:
+    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
+    raise SystemExit
 DNS.DiscoverNameServers()
 
 class MailtoUrlData (HostCheckingUrlData):
