@@ -28,7 +28,11 @@ import os
 import pprint
 import socket
 import optparse
+import bk.log
 import linkcheck
+import linkcheck.optcomplete
+import linkcheck.checker
+import linkcheck.Config
 
 # set default 60 seconds timeout
 default_timeout = 60
@@ -180,7 +184,7 @@ group.add_option("-q", "--quiet", action="store_true", dest="quiet",
 """Quiet operation. This is only useful with -F."""))
 group.add_option("-o", "--output", type="string", dest="output",
                  help=linkcheck.i18n._(
-"""Specify output as %s. Default output type is text.""")%linkcheck.logger.LoggerKeys)
+"""Specify output as %s. Default output type is text.""")%linkcheck.LoggerKeys)
 group.add_option("-F", "--file-output", type="string", action="append",
                  dest="fileoutput", help=linkcheck.i18n._(
 """type[/filename]
@@ -191,7 +195,7 @@ else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types
 are %s.
 Default is no file output. If console output is not specified with -o,
-this option suppresses all console output by implying -o none.""")%linkcheck.logger.LoggerKeys)
+this option suppresses all console output by implying -o none.""")%linkcheck.LoggerKeys)
 group.add_option("-D", "--debug", action="count",
                  help=linkcheck.i18n._(
 """Print debugging information. Provide this option multiple times
@@ -293,7 +297,7 @@ if "--wischiwaschi" in sys.argv:
 # set debug level as early as possible
 if options.debug is not None:
     set_debuglevel(options.debug)
-linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python", sys.version, "on", sys.platform)
+bk.log.debug(linkcheck.LOG_CMDLINE, "Python", sys.version, "on", sys.platform)
 # build a config object for this check session
 config = linkcheck.Config.Configuration()
 # read configuration from config files
@@ -310,7 +314,7 @@ if options.anchors is not None:
 if options.extern:
     config["externlinks"].extend([linkcheck.getLinkPat(arg) for arg in options.extern])
 if options.output:
-    if linkcheck.log.Loggers.has_key(options.output):
+    if linkcheck.Loggers.has_key(options.output):
         config['log'] = config.newLogger(options.output)
     else:
         printUsage(linkcheck.i18n._("Illegal argument %r for option %s") % \
@@ -323,7 +327,7 @@ if options.fileoutput:
             if not ns['filename']: raise ValueError
         except ValueError:
             pass
-        if linkcheck.log.Loggers.has_key(ftype):
+        if linkcheck.Loggers.has_key(ftype):
             config['fileoutput'].append(config.newLogger(ftype, ns))
         else:
             printUsage(linkcheck.i18n._("Illegal argument %r for option %s") % \
@@ -392,7 +396,7 @@ if constructauth:
                                         'user': _username,
 					'password': _password})
 
-debug(HURT_ME_PLENTY, "configuration:", pprint.pformat(config.items()))
+bk.log.debug(linkcheck.LOG_CMDLINE, "configuration:", pprint.pformat(config.items()))
 
 # interactive input
 if len(args)==0:
@@ -400,7 +404,7 @@ if len(args)==0:
         urls = raw_input(linkcheck.i18n._("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
     else:
-        warn(linkcheck.i18n._("no files or urls given"))
+        bk.log.warn(linkcheck.LOG_CMDLINE, linkcheck.i18n._("no files or urls given"))
 
 # syntactic sugar
 for url in args:
@@ -415,7 +419,7 @@ for url in args:
 ############################# check the urls ################################
 if do_profile:
     import profile
-    profile.run("linkcheck.checkUrls(config)", _profile)
+    profile.run("linkcheck.checker.checkUrls(config)", _profile)
 else:
     # do not use psyco, at the moment (Oct 2003) it has bugs causing
     # infinite loops when threads are enabled, and psyco disables
@@ -425,7 +429,7 @@ else:
     #    psyco.full()
     #except ImportError:
     #    pass
-    linkcheck.checkUrls(config)
+    linkcheck.checker.checkUrls(config)
 #############################################################################
 
 # interactive input end
