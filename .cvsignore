@@ -5,3 +5,6 @@ sample.html
 *-out.*
 *.so
 *.o
+build
+linkchecker-*.tar.gz
+MANIFEST
