@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-"""check HTML pages for broken links"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,6 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""
+Check HTML pages for broken links.
+"""
 
 import sys
 import getopt
@@ -578,14 +580,19 @@ Press Ctrl-C to cancel, RETURN to continue.""") % _profile
         import profile
         profile.run("linkcheck.checker.check_urls(consumer)", _profile)
 else:
-    # do not use psyco, at the moment (Oct 2003) it has bugs causing
-    # infinite loops when threads are enabled, and psyco disables
-    # the Ctrl-C break button of the Python interpreter.
-    #try:
-    #    import psyco
-    #    psyco.full()
-    #except ImportError:
-    #    pass
+    try:
+        import psyco
+        # psyco >= 1.4.0 final is needed
+        if psyco.__version__ >= 0x10400f0:
+            psyco.profile()
+        else:
+            # warn about old psyco version
+            linkcheck.log.warn(linkcheck.LOG_CMDLINE, 
+         _("""Psyco is installed but not used since the version is too old.
+Psyco >= 1.4 is needed."""))
+    except ImportError:
+        # no psyco available, just ignore
+        pass
     linkcheck.checker.check_urls(consumer)
 #############################################################################
 
