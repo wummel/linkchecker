@@ -250,6 +250,11 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 self.add_info(
                           _("outside of domain filter, checked only syntax"))
                 return -1, response
+            # check robots.txt allowance again
+            if not self.allows_robots(redirected):
+                self.add_warning(
+                       _("Access denied by robots.txt, checked only syntax"))
+                return -1, response
             # see about recursive redirect
             all_seen = self.aliases + [self.cache_url_key]
             if redirected in all_seen:
