@@ -78,12 +78,17 @@ class Configuration(UserDict.UserDict):
         self.urlCache_has_key = self.urlCache_has_key_NoThreads
         self.urlCache_get = self.urlCache_get_NoThreads
         self.urlCache_set = self.urlCache_set_NoThreads
+        self.urlCacheLock = None
         self.robotsTxtCache_has_key = self.robotsTxtCache_has_key_NoThreads
         self.robotsTxtCache_get = self.robotsTxtCache_get_NoThreads
         self.robotsTxtCache_set = self.robotsTxtCache_set_NoThreads
+        self.robotsTxtCacheLock = None
         self.log_newUrl = self.log_newUrl_NoThreads
+        self.logLock = None
         self.urls = []
         self.threader = None
+        self.connectNntp = self.connectNntp_NoThreads
+        self.dataLock = None
 
     def enableThreading(self, num):
         import Queue,Threader
@@ -107,6 +112,8 @@ class Configuration(UserDict.UserDict):
         self.logLock = Lock()
         self.urls = Queue.Queue(0)
         self.threader = Threader.Threader(num)
+        self.connectNntp = self.connectNntp_Threads
+        self.dataLock = Lock()
 
     def hasMoreUrls_NoThreads(self):
         return len(self.urls)
@@ -158,7 +165,19 @@ class Configuration(UserDict.UserDict):
         if not self.data["quiet"]: self.data["log"].endOfOutput()
         for log in self.data["fileoutput"]:
             log.endOfOutput()
-        
+
+    def connectNntp_NoThreads(self):
+        if not self.data.has_key("nntp"):
+            import nntplib
+            self.data["nntp"] = nntplib.NNTP(self.data["nntpserver"])
+
+    def connectNntp_Threads(self):
+        if not self.data.has_key("nntp"):
+            import nntplib
+            self.dataLock.acquire()
+            self.data["nntp"] = nntplib.NNTP(self.data["nntpserver"])
+            self.dataLock.release()
+
     def hasMoreUrls_Threads(self):
         return not self.urls.empty()
         

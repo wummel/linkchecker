@@ -1,4 +1,4 @@
-import nntplib,re,string
+import re,string
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import LinkCheckerException
 
@@ -17,7 +17,9 @@ class NntpUrlData(HostCheckingUrlData):
     def checkConnection(self, config):
         if not config["nntpserver"]:
             self.setWarning("No NNTP server specified, checked only syntax")
-        nntp = nntplib.NNTP(config["nntpserver"])
+        # only connect once
+        config.connectNntp()
+        nntp = config["nntp"]
         resp,count,first,last,name = nntp.group(self.host)
         self.setInfo("Group %s has %s articles, range %s to %s" % \
                      (name, count, first, last))

@@ -1,5 +1,6 @@
 30.3.2000
 	* support for NNTP news: links
+	* forgot to put lc.fcgi and lc.sz_fcgi in release
 
 30.3.2000 Version 1.1.4
 	* fixed missing self.mime assignment in HttpUrlData.py
