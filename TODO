@@ -27,3 +27,7 @@ Possible improvements people could work on:
   This way one can run "linkchecker" instead of
   "python c:\python2.4\scripts\linkchecker" if c:\python2.4\scripts is
   in the PATH.
+
+- [BUGFIX] CGI parameters should also be splitted on semicolons, but
+  the join routine must also use semicolons then where apropriate.
+  
