@@ -35,13 +35,18 @@ class AssertLock (lock_klass):
         """
         Acquire lock.
         """
-        assert not self._is_owned(), "deadlock"
+        assert not self.is_locked(), "deadlock"
         super(AssertLock, self).acquire(blocking=blocking)
 
     def release (self):
         """
         Release lock.
         """
-        assert self._is_owned(), "double release"
+        assert self.is_locked(), "double release"
         super(AssertLock, self).release()
 
+    def is_locked (self):
+        """
+        See if this lock is owned.
+        """
+        return self._is_owned()
