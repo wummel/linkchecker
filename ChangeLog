@@ -1,3 +1,14 @@
+2.5 "" (released xx.xx.xxxx)
+
+  * Added spanish translation, thanks to Servilio Afre Puentes.
+    Type: feature
+    Changed: po/Makefile
+    Added: po/es.po
+
+  * Ignore a missing locale/ dir instead of crashing.
+    Type: bugfix
+    Changed: linkcheck/i18n.py
+
 2.4 "Kitchen stories" (released 9.2.2005)
 
   * Work around a Python 2.4 bug when HTTP 302 redirections are
