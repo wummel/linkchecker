@@ -15,7 +15,7 @@ Description: check HTML documents for broken links
   o recursive checking
   o multithreaded
   o output can be colored or normal text, HTML, SQL, CSV or a sitemap
-    graph in GML or XML
+    graph in DOT, GML or XML
   o HTTP/1.1, FTP, mailto:, nntp:, news:, Gopher, Telnet and local
     file links are supported
   o restrict link checking with regular expression filters for URLs

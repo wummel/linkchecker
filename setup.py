@@ -286,7 +286,7 @@ setup (name = "linkchecker",
 o recursive checking
 o multithreading
 o output in colored or normal text, HTML, SQL, CSV or a sitemap
-  graph in GML or XML.
+  graph in DOT, GML or XML.
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
   file links support
 o restriction of link checking with regular expression filters for URLs
