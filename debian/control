@@ -6,7 +6,7 @@ Build-Depends-Indep: python-dev (>= 2.1), python-dev (<< 2.2), debhelper (>= 3.0
 Standards-Version: 3.5.6.0
 
 Package: linkchecker
-Architecture: any
+Architecture: all
 Depends: python (>= 2.1)
 Conflicts: python (>= 2.2), python-ssl (>= 2.2)
 Suggests: python-ssl (>= 2.1)
@@ -25,5 +25,5 @@ Description: check HTML documents for broken links
   o i18n support
   o command line interface
   o (Fast)CGI web interface (requires HTTP server)
-  
-  You have to install python-ssl for HTTPS support.
+ .
+ You have to install python-ssl for HTTPS support.
