@@ -25,6 +25,7 @@ import urllib
 
 import urlbase
 import linkcheck
+from linkcheck.i18n import _
 
 # if file extension lookup was unsuccessful, look at the content
 contents = {
@@ -76,7 +77,8 @@ class FileUrl (urlbase.UrlBase):
         self.url = urlparse.urlunsplit(self.urlparts)
 
     def check_connection (self):
-        if os.path.isdir(self.get_os_filename()):
+        if self.is_directory():
+            self.set_result(_("directory"))
             return
         super(FileUrl, self).check_connection()
 
