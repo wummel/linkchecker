@@ -100,5 +100,8 @@ o internationalization support
        data_files = [('locale/de/LC_MESSAGES',
                       ['locale/de/LC_MESSAGES/linkcheck.mo',
 		       'locale/de/LC_MESSAGES/linkcheck.po']),
-                    ],
+                     ('locale/fr/LC_MESSAGES',
+                      ['locale/fr/LC_MESSAGES/linkcheck.mo',
+		       'locale/fr/LC_MESSAGES/linkcheck.po']),
+		    ],
 )

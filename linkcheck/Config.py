@@ -78,7 +78,6 @@ class Configuration(UserDict.UserDict):
     def __init__(self):
         """Initialize the default options"""
         UserDict.UserDict.__init__(self)
-        self.data["log"] = Loggers["text"]()
         self.data["verbose"] = 0
         self.data["warnings"] = 0
         self.data["anchors"] = 0
@@ -130,10 +129,12 @@ class Configuration(UserDict.UserDict):
         }
         self.data['csv'] = {
             "filename":     "linkchecker-out.csv",
+            'separator': ';',
         }
         self.data['blacklist'] = {
             "filename":     "~/.blacklist",
 	}
+        self.data["log"] = self.newLogger('text')
         self.data["quiet"] = 0
         self.data["warningregex"] = None
         self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
@@ -236,7 +237,7 @@ class Configuration(UserDict.UserDict):
     def robotsTxtCache_set_NoThreads(self, key, val):
         self.robotsTxtCache[key] = val
 
-    def newLogger(self, name, fileout):
+    def newLogger(self, name, fileout=0):
         if fileout:
             self.data['fileoutput'].append(apply(Loggers[name], (fileout,),
 	                                         self.data[name]))

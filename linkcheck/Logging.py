@@ -77,7 +77,10 @@ class StandardLogger:
     def __init__(self, fileout=None, **args):
         self.errors=0
         self.warnings=0
-        self.fd = fileout and args['filename'] or sys.stdout
+        if fileout:
+            self.fd = open(args['filename'], "w")
+	else:
+	    self.fd = sys.stdout
 
 
     def init(self):
@@ -154,11 +157,21 @@ class StandardLogger:
 class HtmlLogger(StandardLogger):
     """Logger with HTML output"""
 
+    def __init__(self, fileout=None, **args):
+        apply(StandardLogger.__init__, (self, fileout), args)
+        self.colorbackground = args['colorbackground']
+        self.colorurl = args['colorurl']
+        self.colorborder = args['colorborder']
+        self.colorlink = args['colorlink']
+        self.tablewarning = args['tablewarning']
+        self.tableerror = args['tableerror']
+        self.tableok = args['tableok']
+
     def init(self):
         self.starttime = time.time()
         self.fd.write("<html><head><title>"+Config.App+"</title></head>"+
-              "<body bgcolor="+ColorBackground+" link="+ColorLink+
-              " vlink="+ColorLink+" alink="+ColorLink+">"+
+              "<body bgcolor="+self.colorbackground+" link="+self.colorlink+
+              " vlink="+self.colorlink+" alink="+self.colorlink+">"+
               "<center><h2>"+MyFont+Config.AppName+"</font>"+
               "</center></h2>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
@@ -169,12 +182,12 @@ class HtmlLogger(StandardLogger):
 
     def newUrl(self, urlData):
         self.fd.write("<table align=left border=\"0\" cellspacing=\"0\""
-              " cellpadding=\"1\" bgcolor="+ColorBorder+
+              " cellpadding=\"1\" bgcolor="+self.colorborder+
               "><tr><td><table align=left border=\"0\" cellspacing=\"0\""
-              " cellpadding=\"3\" bgcolor="+ColorBackground+
-              "><tr><td bgcolor="+ColorUrl+">"+
-              MyFont+"URL</font></td><td bgcolor="+ColorUrl+">"+MyFont+
-              StringUtil.htmlify(urlData.urlName))
+              " cellpadding=\"3\" bgcolor="+self.colorbackground+
+              "><tr><td bgcolor="+self.colorurl+">"+
+              MyFont+"URL</font></td><td bgcolor="+self.colorurl+">"+
+	      MyFont+StringUtil.htmlify(urlData.urlName))
         if urlData.cached:
             self.fd.write(_(" (cached)\n"))
         self.fd.write("</font>"+RowEnd)
@@ -207,16 +220,18 @@ class HtmlLogger(StandardLogger):
 			  "</font>"+RowEnd)
         if urlData.warningString:
             self.warnings = self.warnings+1
-            self.fd.write("<tr>"+TableWarning+MyFont+_("Warning")+
-	                  "</font></td>"+TableWarning+MyFont+
+            self.fd.write("<tr>"+self.tablewarning+MyFont+_("Warning")+
+	                  "</font></td>"+self.tablewarning+MyFont+
 			  urlData.warningString+"</font>"+RowEnd)
         if urlData.valid:
-            self.fd.write("<tr>"+TableOK+MyFont+_("Result")+"</font></td>"+
-                  TableOK+MyFont+urlData.validString+"</font>"+RowEnd)
+            self.fd.write("<tr>"+self.tableok+MyFont+_("Result")+
+	                  "</font></td>"+self.tableok+MyFont+
+			  urlData.validString+"</font>"+RowEnd)
         else:
             self.errors = self.errors+1
-            self.fd.write("<tr>"+TableError+MyFont+_("Result")+"</font></td>"+
-                  TableError+MyFont+urlData.errorString+"</font>"+RowEnd)
+            self.fd.write("<tr>"+self.tableerror+MyFont+_("Result")+
+	                  "</font></td>"+self.tableerror+MyFont+
+			  urlData.errorString+"</font>"+RowEnd)
         
         self.fd.write("</table></td></tr></table><br clear=all><br>")
         self.fd.flush()        
@@ -252,7 +267,17 @@ class ColoredLogger(StandardLogger):
     """ANSI colorized output"""
 
     def __init__(self, fileout=None, **args):
-        StandardLogger.__init__(self, fileout, args)
+        apply(StandardLogger.__init__, (self, fileout), args)
+        self.colorparent = args['colorparent']
+        self.colorurl = args['colorurl']
+        self.colorreal = args['colorreal']
+        self.colorbase = args['colorbase']
+        self.colorvalid = args['colorvalid']
+        self.colorinvalid = args['colorinvalid']
+        self.colorinfo = args['colorinfo']
+        self.colorwarning = args['colorwarning']
+        self.colordltime = args['colordltime']
+        self.colorreset = args['colorreset']
         self.currentPage = None
         self.prefix = 0
 
@@ -262,7 +287,8 @@ class ColoredLogger(StandardLogger):
                 if self.prefix:
                     self.fd.write("o\n")
                 self.fd.write("\n"+_("Parent URL")+Spaces["Parent URL"]+
-		              COL_PARENT+urlData.parentName+COL_RESET+"\n")
+		              self.colorparent+urlData.parentName+
+			      self.colorreset+"\n")
                 self.currentPage = urlData.parentName
                 self.prefix = 1
         else:
@@ -275,8 +301,8 @@ class ColoredLogger(StandardLogger):
             self.fd.write("|\n+- ")
         else:
             self.fd.write("\n")
-        self.fd.write(_("URL")+Spaces["URL"]+COL_URL+urlData.urlName+
-	              COL_RESET)
+        self.fd.write(_("URL")+Spaces["URL"]+self.colorurl+urlData.urlName+
+	              self.colorreset)
         if urlData.line: self.fd.write(_(", line ")+`urlData.line`+"")
         if urlData.cached:
             self.fd.write(_(" (cached)\n"))
@@ -286,24 +312,25 @@ class ColoredLogger(StandardLogger):
         if urlData.baseRef:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Base")+Spaces["Base"]+COL_BASE+urlData.baseRef+
-	                  COL_RESET+"\n")
+            self.fd.write(_("Base")+Spaces["Base"]+self.colorbase+
+	                  urlData.baseRef+self.colorreset+"\n")
             
         if urlData.url:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Real URL")+Spaces["Real URL"]+COL_REAL+
-	                  urlData.url+COL_RESET+"\n")
+            self.fd.write(_("Real URL")+Spaces["Real URL"]+self.colorreal+
+	                  urlData.url+self.colorreset+"\n")
         if urlData.downloadtime:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("D/L Time")+Spaces["D/L Time"]+COL_DLTIME+
-	        (_("%.3f seconds") % urlData.downloadtime)+COL_RESET+"\n")
+            self.fd.write(_("D/L Time")+Spaces["D/L Time"]+self.colordltime+
+	        (_("%.3f seconds") % urlData.downloadtime)+self.colorreset+"\n")
         if urlData.checktime:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Check Time")+Spaces["Check Time"]+COL_DLTIME+
-	        (_("%.3f seconds") % urlData.checktime)+COL_RESET+"\n")
+            self.fd.write(_("Check Time")+Spaces["Check Time"]+
+                self.colordltime+
+	        (_("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
             
         if urlData.infoString:
             if self.prefix:
@@ -314,23 +341,25 @@ class ColoredLogger(StandardLogger):
                 self.fd.write(_("Info")+Spaces["Info"]+
                       StringUtil.indentWith(StringUtil.blocktext(
                         urlData.infoString, 65), "    "+Spaces["Info"]))
-            self.fd.write(COL_RESET+"\n")
+            self.fd.write(self.colorreset+"\n")
             
         if urlData.warningString:
             self.warnings = self.warnings+1
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Warning")+Spaces["Warning"]+COL_WARNING+
-	                  urlData.warningString+COL_RESET+"\n")
+            self.fd.write(_("Warning")+Spaces["Warning"]+self.colorwarning+
+	                  urlData.warningString+self.colorreset+"\n")
 
         if self.prefix:
             self.fd.write("|  ")
         self.fd.write(_("Result")+Spaces["Result"])
         if urlData.valid:
-            self.fd.write(COL_VALID+urlData.validString+COL_RESET+"\n")
+            self.fd.write(self.colorvalid+urlData.validString+
+	                  self.colorreset+"\n")
         else:
             self.errors = self.errors+1
-            self.fd.write(COL_INVALID+urlData.errorString+COL_RESET+"\n")
+            self.fd.write(self.colorinvalid+urlData.errorString+
+	                  self.colorreset+"\n")
         self.fd.flush()        
 
 
@@ -345,12 +374,12 @@ class GMLLogger(StandardLogger):
     your sitemap graph.
     """
     def __init__(self, fileout=None, **args):
-        StandardLogger.__init__(self, fileout, args)
+        apply(StandardLogger.__init__, (self, fileout), args)
         self.nodes = []
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write(_("# created by %s at %s\n" % (Config.AppName,
+        self.fd.write(_("# created by %s at %s\n") % (Config.AppName,
                       _strtime(self.starttime)))
 	self.fd.write(_("# Get the newest version at %s\n") % Config.Url)
         self.fd.write(_("# Write comments and bugs to %s\n\n") % Config.Email)
@@ -403,13 +432,13 @@ class GMLLogger(StandardLogger):
 class SQLLogger(StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
     def __init__(self, fileout=None, **args):
-        StandardLogger.__init__(self, fileout, args)
+        apply(StandardLogger.__init__, (self, fileout), args)
         self.dbname = args['dbname']
-        self.commandsep = args['commandsep']
+        self.separator = args['separator']
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write(_("-- created by %s at %s\n" % (Config.AppName,
+        self.fd.write(_("-- created by %s at %s\n") % (Config.AppName,
                       _strtime(self.starttime)))
         self.fd.write(_("-- Get the newest version at %s\n") % Config.Url)
         self.fd.write(_("-- Write comments and bugs to %s\n\n") % Config.Email)
@@ -435,7 +464,7 @@ class SQLLogger(StandardLogger):
                urlData.checktime,
                urlData.downloadtime,
                urlData.cached,
-	       self.commandsep))
+	       self.separator))
         self.fd.flush()
 
     def endOfOutput(self):
@@ -477,7 +506,7 @@ class CSVLogger(StandardLogger):
     separated by a semicolon.
     """
     def __init__(self, fileout=None, **args):
-        StandardLogger.__init__(self, fileout, args)
+        apply(StandardLogger.__init__, (self, fileout), args)
         self.separator = args['separator']
 
     def init(self):

@@ -19,44 +19,36 @@ msgid ""
 "\n"
 "Thats it. "
 msgstr ""
-"\n"
-"Das wars. "
-
-msgid " (%.3f seconds)"
-msgstr " (%.3f Sekunden)"
 
 #: linkcheck/Logging.py:95 linkcheck/Logging.py:179 linkcheck/Logging.py:282
 msgid " (cached)\n"
-msgstr " (aus dem Cache)\n"
+msgstr ""
 
 #: linkcheck/Logging.py:143 linkcheck/Logging.py:234
 msgid " errors"
-msgstr " Fehler"
-
-msgid " found."
-msgstr " gefunden"
+msgstr " erreurs"
 
 #: linkcheck/Logging.py:144 linkcheck/Logging.py:235
 msgid " found.\n"
-msgstr " gefunden.\n"
+msgstr ""
 
 #: linkcheck/Logging.py:139 linkcheck/Logging.py:230
-msgid " warnings, "
-msgstr " Warnungen, "
+msgid " avertissements, "
+msgstr ""
 
 #: linkcheck/Logging.py:489
 msgid "# Format of the entries:\n"
-msgstr "# Format der Einträge:\n"
+msgstr ""
 
 #: linkcheck/Logging.py:355 linkcheck/Logging.py:487
 #, c-format
 msgid "# Get the newest version at %s\n"
-msgstr "# Die neueste Version gibt es unter %s\n"
+msgstr ""
 
 #: linkcheck/Logging.py:396 linkcheck/Logging.py:527
 #, c-format
 msgid "# Stopped checking at %s (%.3f seconds)\n"
-msgstr "# Beende Prüfen am %s (%.3f Sekunden)\n"
+msgstr ""
 
 #: linkcheck/Logging.py:356 linkcheck/Logging.py:488
 #, c-format
@@ -64,38 +56,36 @@ msgid ""
 "# Write comments and bugs to %s\n"
 "\n"
 msgstr ""
-"# Kommentare und Fehler mailen Sie bitte an %s\n"
-"\n"
 
 #: linkcheck/Logging.py:353 linkcheck/Logging.py:485
 #, c-format
 msgid "# created by %s at %s\n"
-msgstr "# erstellt von %s am %s\n"
+msgstr ""
 
 #: linkcheck/Logging.py:197 linkcheck/Logging.py:202 linkcheck/Logging.py:301
 #: linkcheck/Logging.py:306
 #, c-format
 msgid "%.3f seconds"
-msgstr "%.3f Sekunden"
+msgstr ""
 
 #: linkcheck/Logging.py:108 linkcheck/Logging.py:111
 #, c-format
 msgid "%.3f seconds\n"
-msgstr "%.3f Sekunden\n"
+msgstr ""
 
 #: linkcheck/Logging.py:100 linkcheck/Logging.py:280
 msgid ", line "
-msgstr ", Zeile "
+msgstr ""
 
 #: linkcheck/Logging.py:414
 #, c-format
 msgid "-- Get the newest version at %s\n"
-msgstr "-- Die neueste Version gibt es unter %s\n"
+msgstr ""
 
 #: linkcheck/Logging.py:443
 #, c-format
 msgid "-- Stopped checking at %s (%.3f seconds)\n"
-msgstr "-- Beende Prüfen am %s (%.3f Sekunden)\n"
+msgstr ""
 
 #: linkcheck/Logging.py:415
 #, c-format
@@ -103,37 +93,35 @@ msgid ""
 "-- Write comments and bugs to %s\n"
 "\n"
 msgstr ""
-"-- Kommentare und Fehler mailen Sie bitte an %s\n"
-"\n"
 
 #: linkcheck/Logging.py:412
 #, c-format
 msgid "-- created by %s at %s\n"
-msgstr "-- erstellt von %s am %s\n"
+msgstr ""
 
 #: linkcheck/Logging.py:141 linkcheck/Logging.py:232
 msgid "1 error"
-msgstr "1 Fehler"
+msgstr ""
 
 #: linkcheck/Logging.py:137 linkcheck/Logging.py:228
 msgid "1 warning, "
-msgstr "1 Warnung, "
+msgstr ""
 
 #: linkcheck/HttpUrlData.py:75
 msgid "Access denied by robots.txt, checked only syntax"
-msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
+msgstr ""
 
 #: linkcheck/Logging.py:103 linkcheck/Logging.py:189 linkcheck/Logging.py:289
 msgid "Base"
-msgstr "Basis"
+msgstr ""
 
 #: linkcheck/Logging.py:110 linkcheck/Logging.py:200 linkcheck/Logging.py:305
 msgid "Check Time"
-msgstr "Prüfzeit"
+msgstr ""
 
 #: linkcheck/Logging.py:107 linkcheck/Logging.py:196 linkcheck/Logging.py:300
 msgid "D/L Time"
-msgstr "D/L Zeit"
+msgstr ""
 
 #: linkchecker:102
 msgid ""
@@ -146,81 +134,72 @@ msgid ""
 "      linkchecker www.myhomepage.de\n"
 "      linkchecker -r0 ftp.linux.org\n"
 msgstr ""
-"BEISPIELE\n"
-"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
-"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
-"o Lokale Dateien und syntaktischer Zucker in der Kommandozeile:\n"
-"      linkchecker c:\\temp\\test.html\n"
-"      linkchecker ../bla.html\n"
-"      linkchecker www.myhomepage.de\n"
-"      linkchecker -r0 ftp.linux.org\n"
 
 #: linkcheck/HttpUrlData.py:115
 #, c-format
 msgid "Effective URL %s"
-msgstr "Effektive URL %s"
+msgstr ""
 
 #: linkcheck/UrlData.py:50 linkcheck/UrlData.py:68
 msgid "Error"
-msgstr "Fehler"
+msgstr ""
 
 #: linkchecker:125
 #, c-format
 msgid "Error: %s\n"
-msgstr "Fehler: %s\n"
+msgstr ""
 
 #: linkchecker:126
 msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Führen Sie 'linkchecker -h' aus um Hilfe zu erhalten\n"
+msgstr ""
 
 #: linkcheck/Logging.py:86 linkcheck/Logging.py:242
 #, c-format
 msgid "Get the newest version at %s\n"
-msgstr "Die neueste Version gibt es unter %s\n"
+msgstr ""
 
 #: linkcheck/FtpUrlData.py:34
 msgid "Got no answer from FTP server"
-msgstr "Keine Antwort vom FTP Server"
+msgstr ""
 
 #: linkcheck/NntpUrlData.py:41
 #, c-format
 msgid "Group %s has %s articles, range %s to %s"
-msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
+msgstr ""
 
 #: linkcheck/HttpUrlData.py:119
 msgid "HTTP 301 (moved permanent) encountered: you should update this link"
 msgstr ""
-"HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
 
 #: linkcheck/HttpsUrlData.py:44
 msgid "HTTPS url ignored"
-msgstr "HTTPS url ignoriert"
+msgstr ""
 
 #: linkcheck/NntpUrlData.py:31
 msgid "Illegal NNTP link syntax"
-msgstr "Illegale NNTP link Syntax"
+msgstr ""
 
 #: linkchecker:205 linkchecker:213 linkchecker:244
 #, c-format
 msgid "Illegal argument '%s' for option "
-msgstr "Ungültiges Argument '%s' für Option "
+msgstr ""
 
 #: linkcheck/TelnetUrlData.py:32
 msgid "Illegal telnet link syntax"
-msgstr "Illegale telnet link Syntax"
+msgstr ""
 
 #: linkcheck/Logging.py:113 linkcheck/Logging.py:205 linkcheck/Logging.py:310
 #: linkcheck/Logging.py:314
 msgid "Info"
-msgstr "Info"
+msgstr ""
 
 #: linkcheck/JavascriptUrlData.py:25
 msgid "Javascript url ignored"
-msgstr "Javascript url ignoriert"
+msgstr ""
 
 #: linkcheck/HttpUrlData.py:73
 msgid "Missing '/' at end of URL"
-msgstr "Fehlendes '/' am Ende der URL"
+msgstr ""
 
 #: linkchecker:87
 msgid ""
@@ -239,70 +218,50 @@ msgid ""
 "o When checking 'news:' links the given NNTP host doesn't need to be the\n"
 "  same as the host of the user browsing your pages!\n"
 msgstr ""
-"KOMMENTARE\n"
-"o LinkChecker verwendet eine http:// bzw. ftp:// URL wenn eine URL auf der\n"
-"  Kommandozeile mit 'www.' bzw. 'ftp.' beginnt\n"
-"  Sie können auch lokale Dateien als Argumente angeben\n"
-"o Falls sich Ihr System automatisch mit dem Internet verbindet\n"
-"  (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht\n"
-"  auf Ihren lokalen Rechner verweisen\n"
-"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe "
-"BEISPIELE)\n"
-"o Javascript Links werden zur Zeit ignoriert\n"
-"o Wenn Ihr System keine Threads unterstützt verwendet LinkChecker die\n"
-"  Option -t0\n"
-"o Sie können mehrere user/password Paare in einer Konfigurationsdatei\n"
-"  angeben\n"
-"o Cookies werden von LinkChecker nicht akzeptiert\n"
-"o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
-"  unbedingt derselbe wie der des Benutzers sein!\n"
 
 #: linkcheck/NntpUrlData.py:37
 msgid "No NNTP server specified, checked only syntax"
-msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
+msgstr ""
 
 #: linkcheck/MailtoUrlData.py:66
 msgid "No adresses found"
-msgstr "Keine Adressen gefunden"
+msgstr ""
 
 #: linkcheck/MailtoUrlData.py:91
 #, c-format
 msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
-msgstr "Keiner der Mail Hosts für %s akzeptiert eine SMTP Verbindung: %s"
+msgstr ""
 
 #: linkcheck/Logging.py:99 linkcheck/Logging.py:183 linkcheck/Logging.py:264
 msgid "Parent URL"
-msgstr "Vater URL"
+msgstr ""
 
 #: linkcheck/Logging.py:105 linkcheck/Logging.py:192 linkcheck/Logging.py:295
 msgid "Real URL"
-msgstr "Tats. URL"
+msgstr ""
 
 #: linkcheck/Logging.py:124 linkcheck/Logging.py:214 linkcheck/Logging.py:218
 #: linkcheck/Logging.py:328
 msgid "Result"
-msgstr "Ergebnis"
+msgstr ""
 
 #: linkcheck/Logging.py:88 linkcheck/Logging.py:165
 #, c-format
 msgid "Start checking at %s\n"
-msgstr "Beginne Prüfen am %s\n"
+msgstr ""
 
 #: linkcheck/Logging.py:146 linkcheck/Logging.py:237
 #, c-format
 msgid "Stopped checking at %s (%.3f seconds)\n"
-msgstr "Beende Prüfen am %s (%.3f Sekunden)\n"
-
-msgid "Thats it. "
-msgstr "Das wars. "
+msgstr ""
 
 #: linkcheck/Logging.py:93 linkcheck/Logging.py:278
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: linkcheck/UrlData.py:125
 msgid "URL is null or empty"
-msgstr "URL ist Null oder leer"
+msgstr ""
 
 #: linkchecker:16
 #, c-format
@@ -378,92 +337,19 @@ msgid ""
 "        'Oracle Application Server error'.\n"
 "        This option implies -w.\n"
 msgstr ""
-"BENUTZUNG\tlinkchecker [options] datei_oder_url...\n"
-"\n"
-"OPTIONEN\n"
-"-a, --anchors\n"
-"        Prüfe interne Verweise. Standard ist keine Prüfung.\n"
-"-D, --debug\n"
-"        Drucke zusätzlich Debug Information.\n"
-"-e regex, --extern=regex\n"
-"        Behandle URLs welche diesen Ausdruck matchen als extern.\n"
-"        Nur interne HTTP Links werden rekursiv geprüft.\n"
-"-f file, --config=file\n"
-"        Benutze file als Konfigurationsdatei. LinkChecker sucht zuerst\n"
-"        ~/.linkcheckerrc und dann /etc/linkcheckerrc\n"
-"        (unter Windows <Pfad-zum-Programm>\\linkcheckerrc).\n"
-"-F name, --file-output=name\n"
-"        Wie --output, aber schreibe in eine Datei (Standard ist\n"
-"        linkchecker-out.<name>)\n"
-"        Falls die Datei bereits existiert wird sie überschrieben.\n"
-"        Sie können diese Option mehr als einmal verwenden. Es gibt keine\n"
-"        Ausgabedatei für den blacklist Logger. Standard ist keine Ausgabe\n"
-"        in eine Datei.\n"
-"-i regex, --intern=regex\n"
-"        Behandle URLs welche diese Ausdruck matchen als intern.\n"
-"-h, --help\n"
-"        Hilf mir! Druche Nutzungsinformation für dieses Programm.\n"
-"-l, --allowdeny\n"
-"        Vertausche die Prüfreihenfolge zu intern/extern. Standardmäßige\n"
-"        Reihenfolge ist extern/intern.\n"
-"-N, --nntp-server\n"
-"        Gibt ein NNTP Rechner für 'news:...' Links. Standard ist die\n"
-"        Umgebungsvariable NNTP_SERVER. Falls kein Rechner angegeben ist,\n"
-"        wird lediglich auf korrekte Syntax des Links geprüft.\n"
-"-o name, --output=name\n"
-"        Verwende die Ausgabe %s.\n"
-"        Standard ist text.\n"
-"-p pwd, --password=pwd\n"
-"        Verwende das angegebene Passwort für HTML und FTP Authorisation.\n"
-"        Standard ist 'guest@'. Siehe -u.\n"
-"-P host[:port], --proxy=host[:port]\n"
-"        Verwende den angegebenen Proxy für HTTP Anfragen.\n"
-"        Standard Port ist 8080. Standard ist keine Verwendung eines Proxy.\n"
-"-q, --quiet\n"
-"        Keine Ausgabe. Dies ist nur in Verbindung mit -F nützlich.\n"
-"-r depth, --recursion-level=depth\n"
-"        Prüfe rekursiv alle Verweise bis zu der angegebenen Tiefe\n"
-"        (depth >= 0). Standard Tiefe ist 1.\n"
-"-R, --robots-txt\n"
-"        Befolge den Robots Exclusion Standard.\n"
-"-s, --strict\n"
-"        Prüfe lediglich die Syntax von externen Verweisen. Es wird keine.\n"
-"        Verbindung zu diesen Rechner aufgebaut.\n"
-"-t num, --threads=num\n"
-"        Generiere nicht mehr als num Threads. Standard Anzahl von Threads\n"
-"        ist 5. Um Threading auszuschalten geben Sie eine nichtpositive\n"
-"        Anzahl an.\n"
-"-u name, --user=name\n"
-"        Verwende den angegebenen Benutzernamen für HTML und FTP\n"
-"        Authorisation. Standard ist 'anonymous'. Siehe -p.\n"
-"-V, --version\n"
-"        Drucke die Version und beende das Programm.\n"
-"-v, --verbose\n"
-"        Logge alle geprüften URLs (nimmt -w an). Standard ist es, nur\n"
-"        fehlerhafte URLs zu loggen.\n"
-"-w, --warnings\n"
-"        Logge Warnungen.\n"
-"-W regex, --warning-regex=regex\n"
-"        Definieren Sie einen regulären Ausdruck, der eine Warnung ausdruckt\n"
-"        falls er den Inhalt eines geprüften Verweises matcht.\n"
-"        Dies gilt natürlich nur für gültige Seiten deren Inhalt wir\n"
-"        bekommen können.\n"
-"        Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
-"        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
-"        Diese Option nimmt -w an.\n"
 
 #: linkcheck/UrlData.py:51 linkcheck/UrlData.py:72
 msgid "Valid"
-msgstr "Gültig"
+msgstr ""
 
 #: linkcheck/Logging.py:119 linkcheck/Logging.py:210 linkcheck/Logging.py:323
 msgid "Warning"
-msgstr "Warnung"
+msgstr ""
 
 #: linkcheck/Logging.py:244
 #, c-format
 msgid "Write comments and bugs to %s\n"
-msgstr "Kommentare und Fehler mailen Sie bitte an %s\n"
+msgstr ""
 
 #: linkcheck/Logging.py:87
 #, c-format
@@ -471,41 +357,39 @@ msgid ""
 "Write comments and bugs to %s\n"
 "\n"
 msgstr ""
-"Kommentare und Fehler schreiben Sie bitte an %s\n"
-"\n"
 
 #: linkcheck/MailtoUrlData.py:107
 msgid "could not split the mail adress"
-msgstr "konnte Mail Adresse nicht splitten"
+msgstr ""
 
 #: linkcheck/HostCheckingUrlData.py:44
 msgid "found"
-msgstr "gefunden"
+msgstr ""
 
 #: linkcheck/MailtoUrlData.py:96
 #, c-format
 msgid "found mail host %s"
-msgstr "Mail host %s gefunden"
+msgstr ""
 
 #: linkcheck/UrlData.py:148
 msgid "outside of domain filter, checked only syntax"
-msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
+msgstr ""
 
 #: linkcheck/RobotsTxt.py:94
 #, c-format
 msgid "robots.txt:%d: allow without user agents"
-msgstr "robots.txt:%d: allow ohne user agents"
+msgstr ""
 
 #: linkcheck/RobotsTxt.py:85
 #, c-format
 msgid "robots.txt:%d: disallow without user agents"
-msgstr "robots.txt:%d: disallow ohne user agents"
+msgstr ""
 
 #: linkcheck/RobotsTxt.py:77
 #, c-format
 msgid "robots.txt:%d: user-agent in the middle of rules"
-msgstr "robots.txt:%d: user-agent zwischen Regeln"
+msgstr ""
 
 #: linkchecker:289
 msgid "warning: no files or urls given"
-msgstr "Warnung: keine Dateien oder URLs angegeben"
+msgstr ""

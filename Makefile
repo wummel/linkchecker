@@ -2,8 +2,8 @@
 # call make.
 VERSION=$(shell python setup.py --version)
 HOST=treasure.calvinsplayground.de
-PROXY=
-#PROXY=-P$(HOST):5050
+#PROXY=
+PROXY=-P$(HOST):5050
 #HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker
@@ -44,7 +44,7 @@ dist:
 	fakeroot debian/rules binary
         
 files:
-	./$(PACKAGE) -ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
+	./$(PACKAGE) -ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v -D $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
 homepage:
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
@@ -62,14 +62,14 @@ po:
 	--join-existing --keyword --keyword=_ \
 	--output-dir=locale/de/LC_MESSAGES/ --sort-output $(SOURCES)
 	# french translation
-	#xgettext --default-domain=linkcheck \
-	#--join-existing --keyword --keyword=_ \
-	#--output-dir=locale/fr/LC_MESSAGES/ --sort-output $(SOURCES)
+	xgettext --default-domain=linkcheck \
+	--join-existing --keyword --keyword=_ \
+	--output-dir=locale/fr/LC_MESSAGES/ --sort-output $(SOURCES)
 
 mo:
 	# german translation
 	msgfmt -o locale/de/LC_MESSAGES/linkcheck.mo \
 	locale/de/LC_MESSAGES/linkcheck.po
 	# french translation
-	#msgfmt -o locale/fr/LC_MESSAGES/linkcheck.mo \
-	#locale/fr/LC_MESSAGES/linkcheck.po
+	msgfmt -o locale/fr/LC_MESSAGES/linkcheck.mo \
+	locale/fr/LC_MESSAGES/linkcheck.po

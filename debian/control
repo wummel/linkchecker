@@ -13,11 +13,13 @@ Description: a link checker written in Python
  Features:
  o recursive checking
  o multithreaded
- o output can be colored or normal text, HTML, SQL or a GML sitemap graph
- o HTTP/1.1 and 1.0, HTTPS, FTP, mailto:, Gopher, Telnet and 
-   local file links are supported
+ o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
+   graph
+ o HTTP/1.1, HTTPS, FTP, mailto:, news:, Gopher, Telnet and local file links
+   are supported
    Javascript links are currently ignored
- o restrict link checking to your local domain
+ o restrict link checking with regular expression filters for URLs
  o HTTP proxy support
  o give username/password for HTTP and FTP authorization
  o robots.txt exclusion protocol support 
+ o internationalization support (currently english and german)

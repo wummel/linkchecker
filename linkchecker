@@ -82,7 +82,7 @@ Usage = _("USAGE\tlinkchecker [options] file_or_url...\n"
 "        You can use this to check for pages that contain some form of\n"
 "        error message, for example 'This page has moved' or\n"
 "        'Oracle Application Server error'.\n"
-"        This option implies -w.\n") % linkcheck.Config.LoggerKeys)
+"        This option implies -w.\n") % linkcheck.Config.LoggerKeys
 
 Notes = _("NOTES\n"
 "o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
@@ -166,7 +166,7 @@ try:
         if opt=="-f" or opt=="--config":
             configfiles.append(arg)
     config.read(configfiles)
-except:
+except IOError:
     type, value = sys.exc_info()[:2]
     printUsage(value)
 
@@ -200,15 +200,14 @@ for opt,arg in options:
     
     elif opt=="-o" or opt=="--output":
         if linkcheck.Config.Loggers.has_key(arg):
-            config["log"] = linkcheck.Config.Loggers[arg]()
+            config.newLogger(arg)
         else:
             printUsage((_("Illegal argument '%s' for option ") % arg) +\
 	               "'-o, --output'")
 
     elif opt=="-F" or opt=="--file-output":
         if linkcheck.Config.Loggers.has_key(arg) and arg != "blacklist":
-            config["fileoutput"].append(linkcheck.Config.Loggers[arg](
-	      open(config["fileoutputnames"][arg], "w")))
+            config.newLogger(arg, 1)
         else:
             printUsage((_("Illegal argument '%s' for option ") % arg) +\
 	               "'-F, --file-output'")
