@@ -601,7 +601,7 @@ class UrlBase (object):
                              parent_url=self.url, line=lineno, column=column)
                 self.consumer.append_url(url_data)
 
-    def __str__ (self):
+    def __repr__ (self):
         """return serialized url check data"""
         return os.linesep.join([
             "%s link" % self.scheme,
