@@ -171,7 +171,7 @@ class HttpUrlData (ProxyUrlData):
                     response = self._getHttpResponse("GET")
                     self.headers = response.msg
                 elif _isBrokenAnchorServer(server):
-                    self.setWarning(i18n.("Server %s has no anchor support, removing anchor from request") % `server`)
+                    self.setWarning(i18n._("Server %s has no anchor support, removing anchor from request") % `server`)
                     self.urlparts[4] = ''
                     response = self._getHttpResponse()
                     self.headers = response.msg
