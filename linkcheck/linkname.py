@@ -16,9 +16,9 @@
 
 import re, StringUtil
 
-imgtag_re = re.compile("\s+alt\s*=\s*(?P<name>(\".*?\"|'.*?'|[^\s>]+))", re.I)
-img_re = re.compile("<\s*img\s+.*>", re.DOTALL|re.I)
-href_re = re.compile("(?P<name>.*?)</a\s*>", re.I)
+imgtag_re = re.compile(r"""(?i)\s+alt\s*=\s*(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
+img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>]+)+>""")
+href_re = re.compile(r"""(?i)(?P<name>("[^"\n]*"|'[^'\n]*'|[^<]+|<(?!/a\s*>))*)</a\s*>""")
 
 def image_name(txt):
     name = ""
@@ -44,3 +44,20 @@ def href_name(txt):
         name = StringUtil.unhtmlify(name)
     #print "NAME:", `name`
     return name
+
+_tests = (
+    "<img src='' alt=''></a>",
+    "<img src alt=abc></a>",
+    "<b>guru guru</a>",
+    "a\njo</a>",
+    "test<</a>",
+    "test</</a>",
+    "test</a</a>",
+)
+
+def _test ():
+    for t in _tests:
+        print repr(href_name(t))
+
+if __name__=='__main__':
+    _test()
