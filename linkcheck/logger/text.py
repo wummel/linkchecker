@@ -19,6 +19,7 @@
 import sys
 import os
 import time
+import gettext
 
 import linkcheck
 import linkcheck.ansicolor
@@ -224,17 +225,15 @@ class TextLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         if self.has_field('outro'):
-            self.fd.write(os.linesep+_("Thats it. "))
-            if self.errors == 1:
-                self.fd.write(_("1 error"))
-            else:
-                self.fd.write(str(self.errors)+_(" errors"))
+            self.fd.write(os.linesep+_("Thats it.")+" ")
             if linknumber >= 0:
-                if linknumber == 1:
-                    self.fd.write(_(" in 1 link"))
-                else:
-                    self.fd.write(_(" in %d links") % linknumber)
-            self.fd.write(_(" found")+os.linesep)
+                self.fd.write(gettext.ngettext("%d link checked.",
+                               "%d links checked.", linknumber) % linknumber)
+                self.fd.write(" ")
+
+            self.fd.write(gettext.ngettext("%d error found.",
+                             "%d errors found.", self.errors) % self.errors)
+            self.fd.write(os.linesep)
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.fd.write(_("Stopped checking at %s (%s)") % \
