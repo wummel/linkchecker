@@ -43,10 +43,10 @@ import linkcheck.checker.consumer
 import linkcheck.configuration
 from linkcheck.i18n import _
 
-# some default values
+# default profiling filename
 _profile = "linkchecker.prof"
-_username = "anonymous"
-_password = "guest@"
+_username = None
+_password = None
 
 # main usage text
 Usage = _("""USAGE\tlinkchecker [options] file-or-url...
@@ -317,11 +317,11 @@ the URI specification. Use with care."""))
 group.add_option("-u", "--user", type="string", dest="username",
                  help=_(
 """Try given username for HTTP and FTP authorization.
-Default is %r. See also -p.""")%_username)
+For FTP the default username is \fBanonymous\fP. See also -p."""))
 group.add_option("-p", "--password", type="string", dest="password",
                  help=_(
 """Try given password for HTTP and FTP authorization.
-Default password is %r. See also -u.""")%_password)
+For FTP the default password is 'anonymous@'. See also -u."""))
 group.add_option("--timeout", type="int", dest="timeout",
                  help=_(
 """Set the timeout for TCP connection attempts in seconds. The default
@@ -457,15 +457,15 @@ if options.warningsizebytes is not None:
 if options.cookies is not None:
     config['cookies'] = options.cookies
 if constructauth:
-    config["authentication"].insert(0, {'pattern': re.compile(".*"),
-                                        'user': _username,
-                                        'password': _password})
+    config["authentication"].append({'pattern': re.compile(".+"),
+                                     'user': _username,
+                                     'password': _password})
 
 linkcheck.log.debug(linkcheck.LOG_CMDLINE, "configuration: %s",
                     pprint.pformat(config.items()))
 
 # interactive input
-if len(args)==0:
+if len(args) <= 0:
     if config['interactive']:
         urls = raw_input(_("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
