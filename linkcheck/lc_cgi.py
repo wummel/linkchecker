@@ -78,28 +78,28 @@ def checkform (form):
             os.environ['LC_MESSAGES'] = lang
             linkcheck.init_gettext()
         else:
-            raise FormError(_("Unsupported language"))
+            raise FormError(_("unsupported language"))
     # check url syntax
     if form.has_key("url"):
         url = form["url"].value
         if not url or url=="http://":
-            raise FormError(_("Empty url was given"))
+            raise FormError(_("empty url was given"))
         if not _is_valid_url(url):
-            raise FormError(_("Invalid url was given"))
+            raise FormError(_("invalid url was given"))
     else:
-        raise FormError(_("No url was given"))
+        raise FormError(_("no url was given"))
     # check recursion level
     if form.has_key("level"):
         level = form["level"].value
         if not _is_level(level):
-            raise FormError(_("Invalid recursion level syntax"))
+            raise FormError(_("invalid recursion level syntax"))
         if int(level) > 3:
-            raise FormError(_("Recursion level greater than 3"))
+            raise FormError(_("recursion level greater than 3"))
     # check options
     for option in ("strict", "anchors", "errors", "intern"):
         if form.has_key(option):
             if not form[option].value=="on":
-                raise FormError(_("Invalid %s option syntax") % option)
+                raise FormError(_("invalid %s option syntax") % option)
 
 
 def logit (form, env):
@@ -136,7 +136,7 @@ Errors are logged.
 
 if __name__=='__main__':
     class store:
-        def __init__(self, value):
+        def __init__ (self, value):
             self.value = value
     checklink(form={"url": store("http://localhost"),
                 "level": store("0"),

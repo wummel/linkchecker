@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Dec 31 00:52:53 2002\n"
+"POT-Creation-Date: Tue Dec 31 01:00:03 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -178,29 +178,31 @@ msgstr ""
 msgid "keyboard interrupt"
 msgstr ""
 
-msgid "Unsupported language"
-msgstr ""
-
-msgid "Empty url was given"
+msgid "unsupported language"
 msgstr ""
 
 #, fuzzy
-msgid "Invalid url was given"
+msgid "empty url was given"
 msgstr "geen bestanden of URLs gegeven"
 
 #, fuzzy
-msgid "No url was given"
+msgid "invalid url was given"
 msgstr "geen bestanden of URLs gegeven"
 
 #, fuzzy
-msgid "Invalid recursion level syntax"
+msgid "no url was given"
+msgstr "geen bestanden of URLs gegeven"
+
+#, fuzzy
+msgid "invalid recursion level syntax"
 msgstr "illegaal recursie nivo nummer %d"
 
-msgid "Recursion level greater than 3"
-msgstr ""
+#, fuzzy
+msgid "recursion level greater than 3"
+msgstr "illegaal recursie nivo nummer %d"
 
 #, fuzzy
-msgid "Invalid %s option syntax"
+msgid "invalid %s option syntax"
 msgstr "ungeldige Log Optie '%s'"
 
 #, fuzzy

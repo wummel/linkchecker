@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Dec 31 00:52:53 2002\n"
+"POT-Creation-Date: Tue Dec 31 01:00:03 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -195,32 +195,27 @@ msgstr "mehr als ein <base> Tag gefunden, benutze lediglich das erste"
 msgid "keyboard interrupt"
 msgstr "Unterbrechung durch Tastendruck"
 
-msgid "Unsupported language"
-msgstr ""
+msgid "unsupported language"
+msgstr "nicht unterstützte Sprache"
 
-msgid "Empty url was given"
-msgstr ""
+msgid "empty url was given"
+msgstr "leere URL wurde angegeben"
 
-#, fuzzy
-msgid "Invalid url was given"
-msgstr "keine Dateien oder URLs angegeben"
+msgid "invalid url was given"
+msgstr "ungültige URL wurde angegeben"
 
-#, fuzzy
-msgid "No url was given"
-msgstr "keine Dateien oder URLs angegeben"
+msgid "no url was given"
+msgstr "keine URL wurde angegeben"
 
-#, fuzzy
-msgid "Invalid recursion level syntax"
-msgstr "illegale recursionlevel Nummer %d"
+msgid "invalid recursion level syntax"
+msgstr "illegaler Rekursionslevel"
 
-msgid "Recursion level greater than 3"
-msgstr ""
+msgid "recursion level greater than 3"
+msgstr "Rekursionslevel war größer als 3"
 
-#, fuzzy
-msgid "Invalid %s option syntax"
-msgstr "ungültige Log Option '%s'"
+msgid "invalid %s option syntax"
+msgstr "ungültige Option '%s'"
 
-#, fuzzy
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
@@ -238,7 +233,7 @@ msgid ""
 msgstr ""
 "<html><head><title>LinkChecker Online Fehler</title></head><body "
 "text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
-"<blockquote><b>Fehler</b><br>Das LinkChecker Online Skript ist\n"
+"<blockquote><b>Fehler: %s</b><br>Das LinkChecker Online Skript ist\n"
 "auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die\n"
 "angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen\n"
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt.\n"
