@@ -72,7 +72,7 @@ upload: dist package files VERSION
 	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs
 	scp VERSION shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/raw/
 	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/
-	ssh -tC shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
+	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
 
 test:
 	rm -f test/*.result
