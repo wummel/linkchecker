@@ -1,0 +1,11 @@
+Q: The link "mailto:john@company.com?subject=Hello John" is reported
+   as an error.
+A: You have to quote special characters (e.g. spaces) in the subject field.
+   The correct link should be "mailto:...?subject=Hello%20John!"
+   Unfortunately browsers like IE and Netscape do not enforce this.
+
+
+Q: I have a pretty large site to check. How can I restrict link checking
+   to only check my own pages?
+A: Look at the options --intern, --extern, --strict and --recursion-level.
+
