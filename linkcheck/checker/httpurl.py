@@ -269,7 +269,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             # remember redireced url as alias
             self.aliases.append(redirected)
             # note: urlparts has to be a list
-            self.urlparts = list(urlparse.urlsplit(redirected))
+            self.urlparts = linkcheck.url.url_unicode_split(redirected)
             if response.status == 301:
                 if not self.has301status:
                     self.add_warning(

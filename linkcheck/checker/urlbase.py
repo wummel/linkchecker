@@ -210,8 +210,7 @@ class UrlBase (object):
         # remove anchor from content cache key since we assume
         # URLs with different anchors to have the same content
         self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
-        assert isinstance(self.cache_content_key, unicode), \
-               self.cache_content_key
+        assert isinstance(self.cache_content_key, unicode), self
         linkcheck.log.debug(linkcheck.LOG_CACHE, "Content cache key %r",
                             self.cache_content_key)
         # construct cache key
@@ -221,12 +220,12 @@ class UrlBase (object):
             parts = self.urlparts[:]
             parts[4] = self.anchor
             if self.userinfo:
-                parts[1] = self.userinfo+"@"+parts[1]
+                parts[1] = self.userinfo+u"@"+parts[1]
             self.cache_url_key = urlparse.urlunsplit(parts)
         else:
             # no anchor caching
             self.cache_url_key = self.cache_content_key
-        assert isinstance(self.cache_url_key, unicode), self.cache_url_key
+        assert isinstance(self.cache_url_key, unicode), self
         linkcheck.log.debug(linkcheck.LOG_CACHE, "URL cache key %r",
                             self.cache_url_key)
 
@@ -276,7 +275,7 @@ class UrlBase (object):
         else:
             self.url = base_url
         # split into (modifiable) list
-        self.urlparts = list(urlparse.urlsplit(self.url))
+        self.urlparts = linkcheck.url.url_unicode_split(self.url)
         # and unsplit again
         self.url = urlparse.urlunsplit(self.urlparts)
         # check userinfo@host:port syntax
@@ -615,22 +614,22 @@ class UrlBase (object):
     def serialized (self):
         """return serialized url check data as unicode string"""
         sep = unicode(os.linesep)
-        assert isinstance(self.base_url, unicode), self.base_url
+        assert isinstance(self.base_url, unicode), self
         if self.parent_url is not None:
-            assert isinstance(self.parent_url, unicode), self.parent_url
+            assert isinstance(self.parent_url, unicode), self
         if self.base_ref is not None:
-            assert isinstance(self.base_ref, unicode), self.base_ref
-        assert isinstance(self.name, unicode), self.name
+            assert isinstance(self.base_ref, unicode), self
+        assert isinstance(self.name, unicode), self
         return sep.join([
             u"%s link" % self.scheme,
-            u"base_url=%s" % self.base_url,
-            u"parent_url=%s" % self.parent_url,
-            u"base_ref=%s" % self.base_ref,
+            u"base_url=%r" % self.base_url,
+            u"parent_url=%r" % self.parent_url,
+            u"base_ref=%r" % self.base_ref,
             u"recursion_level=%s" % self.recursion_level,
             u"url_connection=%s" % self.url_connection,
             u"line=%d" % self.line,
             u"column=%d" % self.column,
-            u"name=%s" % self.name,
+            u"name=%r" % self.name,
            ])
 
     def __str__ (self):

@@ -157,7 +157,7 @@ def set_intern_url (url, klass, config):
     elif klass in [linkcheck.checker.httpurl.HttpUrl,
                    linkcheck.checker.httpsurl.HttpsUrl,
                    linkcheck.checker.ftpurl.FtpUrl]:
-        domain = urlparse.urlsplit(url)[1]
+        domain = linkcheck.url.url_unicode_split(url)[1]
         domain, is_idn = linkcheck.url.idna_encode(domain)
         if domain:
             domain = "://%s" % re.escape(domain)
