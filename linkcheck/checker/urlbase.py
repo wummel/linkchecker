@@ -245,7 +245,7 @@ class UrlBase (object):
         base_url = linkcheck.url.url_norm(self.base_url)
         if self.base_url != base_url:
             self.add_warning(
-              _("Base URL is not properly normed. Normed url is %(url)r.") % \
+              _("Base URL is not properly normed. Normed url is %(url)s.") % \
                {'url': base_url})
         # make url absolute
         if self.base_ref:
