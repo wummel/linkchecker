@@ -74,6 +74,10 @@ Print version and exit.
 \fB\-t\fP\fInum\fP, \fB\-\-threads=\fP\fInum\fP
 Generate no more than \fInum\fP threads. Default number of threads is 10.
 To disable threading specify a non-positive number.
+.TP
+\fB--priority\fP
+Run with normal thread scheduling priority. Per default LinkChecker runs
+with low thread priority to be suitable as a background job.
 
 .SS Output options
 .TP
@@ -90,7 +94,7 @@ content of the checked link.
 This applies of course only to pages which are valid, so we can get
 their content.
 Use this to check for pages that contain some form of error, for example
-'This page has moved' or 'Oracle Application Server error'.
+"This page has moved" or "Oracle Application Server error".
 This option implies \fB\-w\fP.
 .TP
 \fB\-\-warning\-size\-bytes=\fP\fIbytes\fP
