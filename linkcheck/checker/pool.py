@@ -45,10 +45,7 @@ class ConnectionPool (object):
         Add connection to the pool with given identifier key and timeout
         in seconds.
         """
-        cached = key in self.connections
-        if not cached:
-            self.connections[key] = [conn, 'available', time.time() + timeout]
-        return cached
+        self.connections[key] = [conn, 'available', time.time() + timeout]
 
     def get_connection (self, key):
         """
@@ -64,6 +61,11 @@ class ConnectionPool (object):
         t = time.time()
         if t > conn_data[2]:
             # timed out
+            try:
+                conn_data[1].close()
+            except:
+                # ignore close errors
+                pass
             del self.connections[key]
             return None
         # wait at most 300*0.1=30 seconds for connection to become available
