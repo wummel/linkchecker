@@ -52,6 +52,7 @@ def do_install ():
     path = os.path.join(dest_dir, "Check URL.lnk")
     script_dir = linkcheck.configdata.install_scripts
     arguments = os.path.join(script_dir, "linkchecker")
+    arguments += " --interactive"
     create_shortcut(python_exe, "Check URL", path, arguments)
     file_created(path)
 
