@@ -1,5 +1,7 @@
 1.13.0 "The Butterfly Effect" (released xx.xx.xxxx)
-  *
+  * lots of internal code restructuring
+    Type: code cleanup
+    Changed: a lot
 
 1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request

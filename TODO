@@ -1,13 +1,11 @@
-- use strtime in bk package
+- no more threading disablement: we have dummy_threading now
+  disable threads for debugging purposes only (internal)
 
 - cache queue rework?
 
 - document what checks are performed for each url type
 
 - SF request #952051: is query considered in url cache keys?
-
-- replace the debug() function with the logging module
-  we'll see how we can insert multiple debug levels into this thing
 
 - warn if overall size of page (including images/flash/etc.) is too big
   right now, the page size is only html content
