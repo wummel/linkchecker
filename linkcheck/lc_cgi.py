@@ -42,10 +42,10 @@ def startoutput (out=sys.stdout):
 def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
     if os.environ.get('REMOTE_ADDR') in hosts and \
        os.environ.get('SERVER_ADDR') in servers:
-        return 1
+        return True
     logit({}, env)
     printError(out, "Access denied")
-    return 0
+    return False
 
 
 def checklink (out=sys.stdout, form={}, env=os.environ):
@@ -59,16 +59,16 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     config["recursionlevel"] = int(form["level"].value)
     config["log"] = config.newLogger('html', {'fd': out})
     config.disableThreading()
-    if form.has_key('strict'): config['strict'] = 1
-    if form.has_key("anchors"): config["anchors"] = 1
-    if not form.has_key("errors"): config["verbose"] = 1
+    if form.has_key('strict'): config['strict'] = True
+    if form.has_key("anchors"): config["anchors"] = True
+    if not form.has_key("errors"): config["verbose"] = True
     if form.has_key("intern"):
         pat = "^(ftp|https?)://"+re.escape(getHostName(form))
     else:
         pat = ".+"
     config["internlinks"].append(getLinkPat(pat))
     # avoid checking of local files
-    config["externlinks"].append(getLinkPat("^file:", strict=1))
+    config["externlinks"].append(getLinkPat("^file:", strict=True))
     # start checking
     config.appendUrl(GetUrlDataFrom(form["url"].value, 0, config))
     checkUrls(config)

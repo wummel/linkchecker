@@ -22,10 +22,9 @@ import sys
 if not hasattr(sys, 'version_info') or sys.version_info<(2, 3, 0, 'final', 0):
     raise SystemExit, "This program requires Python 2.3 or later."
 
-import getopt, re, os, pprint, linkcheck
-import linkcheck.timeoutsocket
+import getopt, re, os, pprint, socket, linkcheck
 # set default 30 seconds timeout
-linkcheck.timeoutsocket.setDefaultSocketTimeout(30)
+socket.setdefaulttimeout(30)
 # import several helper debugging things
 from linkcheck.debug import *
 from linkcheck.log import LoggerKeys
@@ -111,7 +110,7 @@ For single-letter option arguments the space is not a necessity. So
         To disable threading specify a non-positive number.
 --timeout=secs
         Set the timeout for TCP connection attempts in seconds. The default
-        timeout is 10 seconds.
+        timeout is 30 seconds.
 -u name, --user=name
         Try username name for HTTP and FTP authorization.
         Default is 'anonymous'. See also -p.
@@ -265,12 +264,12 @@ if get_debuglevel() > 0:
 # apply commandline options and arguments
 _user = "anonymous"
 _password = "guest@"
-constructauth = 0
-do_profile = 0
+constructauth = False
+do_profile = False
 for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
-        config["anchors"] = "True"
-        config["warnings"] = "True"
+        config["anchors"] = True
+        config["warnings"] = True
 
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append(linkcheck.getLinkPat(arg))
@@ -286,7 +285,7 @@ for opt,arg in options:
 	               "'-o, --output'")
 
     elif opt=="-F" or opt=="--file-output":
-        ns = {'fileoutput':1}
+        ns = {'fileoutput': 1}
         try:
             type, ns['filename'] = arg.split('/', 1)
             if not ns['filename']: raise ValueError
@@ -298,23 +297,23 @@ for opt,arg in options:
 	               "'-F, --file-output'")
 
     elif opt=="-I" or opt=="--interactive":
-        config['interactive'] = "True"
+        config['interactive'] = True
 
     elif opt=="-i" or opt=="--intern":
         config["internlinks"].append(linkcheck.getLinkPat(arg))
 
     elif opt=="-l" or opt=="--denyallow":
-        config["denyallow"] = "True"
+        config["denyallow"] = True
 
     elif opt=="-N" or opt=="--nntp-server":
         config["nntpserver"] = arg
 
     elif opt=="--no-anchor-caching":
-        config["noanchorcaching"] = "True"
+        config["noanchorcaching"] = True
 
     elif opt=="-p" or opt=="--password":
         _password = arg
-        constructauth = "True"
+        constructauth = True
 
     elif opt=="-P" or opt=="--pause":
         try:
@@ -329,10 +328,10 @@ for opt,arg in options:
                        (`arg`, "'-P, --pause'"))
 
     elif opt=="--profile":
-        do_profile = "True"
+        do_profile = True
 
     elif opt=="-q" or opt=="--quiet":
-    	config["quiet"] = "True"
+    	config["quiet"] = True
 
     elif opt=="-r" or opt=="--recursion-level":
         try:
@@ -348,7 +347,7 @@ for opt,arg in options:
     elif opt=="-R" or opt=="--robots-txt": pass
 
     elif opt=="-s" or opt=="--strict":
-        config["strict"] = "True"
+        config["strict"] = True
 
     elif opt=="-t" or opt=="--threads":
         try:
@@ -370,18 +369,18 @@ for opt,arg in options:
         if timeout <= 0:
             printUsage(i18n._("Illegal argument %s for option %s") % \
                        (`arg`, "'--timeout'"))
-        linkcheck.timeoutsocket.setDefaultSocketTimeout(timeout)
+        socket.setdefaulttimeout(timeout)
 
     elif opt=="-u" or opt=="--user":
         _user = arg
-        constructauth = "True"
+        constructauth = True
 
     elif opt=="-V" or opt=="--version":
         printVersion()
 
     elif opt=="-v" or opt=="--verbose":
-        config["verbose"] = "True"
-        config["warnings"] = "True"
+        config["verbose"] = True
+        config["warnings"] = True
 
     elif opt=="--viewprof":
         viewprof()
@@ -391,14 +390,14 @@ for opt,arg in options:
         util1.abbuzze()
         sys.exit(0)
     elif opt=="-w" or opt=="--warnings":
-        config["warnings"] = "True"
+        config["warnings"] = True
 
     elif opt=="-W" or opt=="--warning-regex":
         config["warningregex"] = re.compile(arg)
-        config["warnings"] = "True"
+        config["warnings"] = True
 
     elif opt=="-C" or opt=="--cookies":
-        config['cookies'] = "True"
+        config['cookies'] = True
 
 if constructauth:
     config["authentication"].insert(0, {'pattern': re.compile(".*"),
@@ -431,7 +430,7 @@ for url in args:
             url = "http://%s"%url
         elif url.startswith("ftp."):
             url = "ftp://%s"%url
-    config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config, cmdline="True"))
+    config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config, cmdline=True))
 
 ############################# check the urls ################################
 if do_profile:

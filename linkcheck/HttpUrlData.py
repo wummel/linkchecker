@@ -121,7 +121,7 @@ class HttpUrlData (ProxyUrlData):
         response = self._getHttpResponse()
         self.headers = response.msg
         debug(BRING_IT_ON, response.status, response.reason, self.headers)
-        has301status = 0
+        has301status = False
         while 1:
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
@@ -157,13 +157,13 @@ class HttpUrlData (ProxyUrlData):
                             self.setWarning(i18n._("A HTTP 301 redirection occured and the url has no "
                                                    "trailing / at the end. All urls which point to (home) "
                                                    "directories should end with a / to avoid redirection."))
-                        has301status = 1
+                        has301status = True
                     self.aliases.append(redirected)
                 # check cache again on possibly changed URL
                 key = self.getCacheKey()
                 if self.config.urlCache_has_key(key):
                     self.copyFrom(self.config.urlCache_get(key))
-                    self.cached = 1
+                    self.cached = True
                     self.logMe()
                     return
                 # check if we still have a http url, it could be another
@@ -180,7 +180,7 @@ class HttpUrlData (ProxyUrlData):
                     # append new object to queue
                     self.config.appendUrl(newobj)
                     # pretend to be finished and logged
-                    self.cached = 1
+                    self.cached = True
                     return
                 # new response data
                 response = self._getHttpResponse()
@@ -335,7 +335,7 @@ class HttpUrlData (ProxyUrlData):
 
     def getContent (self):
         if not self.has_content:
-            self.has_content = 1
+            self.has_content = True
             self.closeConnection()
             t = time.time()
             response = self._getHttpResponse("GET")
@@ -357,16 +357,16 @@ class HttpUrlData (ProxyUrlData):
 
     def isHtml (self):
         if not (self.valid and self.headers):
-            return 0
+            return False
         if self.headers.gettype()[:9]!="text/html":
-            return 0
+            return False
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
            encoding!='identity':
             self.setWarning(i18n._('Unsupported content encoding %s.')%\
                             `encoding`)
-            return 0
-        return 1
+            return False
+        return True
 
 
     def getRobotsTxtUrl (self):

@@ -26,7 +26,7 @@ from urllib import splituser, splithost, splitport, unquote
 from linkcheck import DNS, LinkCheckerError, getLinkPat
 DNS.DiscoverNameServers()
 
-import Config, StringUtil, linkname, test_support, timeoutsocket
+import Config, StringUtil, linkname, test_support
 from linkparse import LinkParser
 from debug import *
 
@@ -84,7 +84,7 @@ ExcList = [
    ValueError, # from httplib.py
    LinkCheckerError,
    DNS.Error,
-   timeoutsocket.Timeout,
+   socket.timeout,
    socket.error,
    select.error,
 ]
@@ -182,7 +182,7 @@ class UrlData:
         self.validString = i18n._("Valid")
         self.warningString = None
         self.infoString = None
-        self.valid = 1
+        self.valid = True
         self.url = None
         self.line = line
         self.column = column
@@ -190,28 +190,28 @@ class UrlData:
         self.dltime = -1
         self.dlsize = -1
         self.checktime = 0
-        self.cached = 0
+        self.cached = True
         self.urlConnection = None
         self.extern = (1, 0)
         self.data = None
-        self.has_content = 0
+        self.has_content = False
         url = get_absolute_url(self.urlName, self.baseRef, self.parentName)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
 
 
     def setError (self, s):
-        self.valid=0
+        self.valid = False
         self.errorString = i18n._("Error")+": "+s
 
 
     def setValid (self, s):
-        self.valid=1
+        self.valid = True
         self.validString = i18n._("Valid")+": "+s
 
 
     def isHtml (self):
-        return 0
+        return False
 
 
     def setWarning (self, s):
@@ -318,7 +318,7 @@ class UrlData:
         for key in self.getCacheKeys():
             if self.config.urlCache_has_key(key):
                 self.copyFrom(self.config.urlCache_get(key))
-                self.cached = 1
+                self.cached = True
                 self.logMe()
                 return
 
@@ -384,7 +384,7 @@ class UrlData:
         if not self.cached:
             for key in self.getCacheKeys():
                 self.config.urlCache_set(key, self)
-            self.cached = 1
+            self.cached = True
 
 
     def getCacheKeys (self):
@@ -470,13 +470,13 @@ class UrlData:
 
     def hasContent (self):
         """indicate wether url getContent() can be called"""
-        return 1
+        return True
 
 
     def getContent (self):
         """Precondition: urlConnection is an opened URL."""
         if not self.has_content:
-            self.has_content = 1
+            self.has_content = True
             t = time.time()
             self.data = self.urlConnection.read()
             self.dltime = time.time() - t
