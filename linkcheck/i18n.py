@@ -25,18 +25,28 @@ import gettext
 supported_languages = ['en']
 default_language = None
 
+def install_builtin (self, do_unicode):
+    """install _() and _n() gettext methods into default namespace"""
+    import __builtin__
+    if do_unicode:
+        __builtin__.__dict__['_'] = self.ugettext
+        # also install ngettext
+        __builtin__.__dict__['_n'] = self.ungettext
+    else:
+        __builtin__.__dict__['_'] = self.gettext
+        # also install ngettext
+        __builtin__.__dict__['_n'] = self.ngettext
+
 class Translator (gettext.GNUTranslations):
 
     def install (self, do_unicode):
-        import __builtin__
-        if do_unicode:
-            __builtin__.__dict__['_'] = self.ugettext
-            # also install ngettext
-            __builtin__.__dict__['_n'] = self.ungettext
-        else:
-            __builtin__.__dict__['_'] = self.gettext
-            # also install ngettext
-            __builtin__.__dict__['_n'] = self.ngettext
+        install_builtin(self, do_unicode)
+
+
+class NullTranslator (gettext.NullTranslations):
+
+    def install (self, do_unicode):
+        install_builtin(self, do_unicode)
 
 
 def init (domain, directory):
@@ -55,15 +65,19 @@ def init (domain, directory):
     else:
         default_language = "en"
     # install translation service routines into default namespace
-    translator = get_translator(domain, directory, default_language)
+    translator = get_translator(domain, directory, fallback=True)
     do_unicode = True
     translator.install(do_unicode)
 
 
-def get_translator (domain, directory, language, translatorklass=Translator):
-    languages = [get_lang(language)]
-    return gettext.translation(domain,
-        localedir=directory, languages=languages, class_=translatorklass)
+def get_translator (domain, directory, languages=None,
+                    translatorklass=Translator, fallback=False):
+    """search the appropriate GNUTranslations class"""
+    translator = gettext.translation(domain, localedir=directory,
+            languages=languages, class_=translatorklass, fallback=fallback)
+    if not isinstance(translator, gettext.GNUTranslations):
+        translator = NullTranslator()
+    return translator
 
 
 def get_lang (lang):
