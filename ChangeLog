@@ -22,6 +22,7 @@
     Changed files: a lot .py files using these things
   * use yy_size_t for parser alloc definitions, fixes build errors on 64bit
     architectures
+    Changed files: linkcheck/parser/htmllex.l
 
 1.8.2
   * - ignore invalid html attribute characters
