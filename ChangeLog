@@ -1,4 +1,4 @@
-1.12.0 (release 20.1.2004)
+1.12.0 (release 31.1.2004)
   * added LRU.setdefault function
     Changed: linkcheck/LRU.py
     Closes: SF bug 885916
@@ -27,7 +27,7 @@
     actually an anchor
     Changed: linkcheck/HttpUrlData.py
   * always fall back to HTTP GET request when HEAD gave an error to
-    cope with servers not supporting HEAD
+    cope with servers not supporting HEAD requests
     Changed: linkcheck/HttpUrlData.py, FAQ
 
 1.10.3 (release 10.1.2004)
