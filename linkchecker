@@ -275,6 +275,11 @@ group.add_option("-t", "--threads", type="int", dest="threads",
 group.add_option("-V", "--version", action="store_true", dest="version",
                  help=_(
 """Print version and exit."""))
+
+group.add_option("--low-priority", action="store_true", dest="lowprio",
+                 help=_(
+"""Run with low thread scheduling priority. Useful when checking large
+sites to not interfere with running progams."""))
 optparser.add_option_group(group)
 
 
@@ -442,6 +447,9 @@ else:
 # apply commandline options and arguments
 constructauth = False
 do_profile = False
+if options.lowprio:
+    import linkcheck.threader
+    linkcheck.threader.set_thread_priority(linkcheck.threader.PRIO_LOW)
 if options.anchors is not None:
     config["anchors"] = options.anchors
     config["warnings"] = True
