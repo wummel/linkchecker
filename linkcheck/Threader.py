@@ -32,10 +32,8 @@ class Threader (object):
 
     def _acquire (self):
         "Wait until we are allowed to start a new thread"
-        while True:
+        while self.active_threads() >= self.threads_max:
             self._reduce_threads()
-            if len(self.threads) < self.threads_max:
-                break
 
 
     def _reduce_threads (self):
@@ -44,10 +42,14 @@ class Threader (object):
                 self.threads.remove(t)
 
 
+    def active_threads (self):
+        return len(self.threads)
+
+
     def finished (self):
         if self.threads_max > 0:
             self._reduce_threads()
-        return len(self.threads) == 0
+        return self.active_threads() == 0
 
 
     def finish (self):
@@ -68,4 +70,4 @@ class Threader (object):
 
     def __str__ (self):
         return "Threader with %d threads (max %d)" % \
-            (len(self.threads), self.threads_max)
+            (self.active_threads(), self.threads_max)
