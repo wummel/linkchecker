@@ -18,9 +18,14 @@
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
-  * For news: or nntp: urls, the entries ~/.netrc are now ignored.
+  * For news: or nntp: urls, entries in ~/.netrc are now ignored.
     Type: bugfix
     Changed: linkcheck/checker/nntpurl.py
+
+  * the HTML output shows now HTML and CSS validation links for
+    the parent URL of invalid links
+    Type: feature
+    Changed: linkcheck/logger/html.py
 
 1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request

@@ -1,7 +1,5 @@
 This release:
 
-- add links to validator.w3.org for urls in html output
-
 - fix all tests
 
 - cache keys
