@@ -462,11 +462,10 @@ class UrlData (object):
         return self.valid and \
                self.isParseable() and \
                self.hasContent() and \
-               self.contentAllowsRobots() and \
                not self.isCached() and \
                (self.config["recursionlevel"] < 0 or
                 self.recursionLevel < self.config["recursionlevel"]) and \
-               not self.extern[0]
+               not self.extern[0] and self.contentAllowsRobots()
 
 
     def contentAllowsRobots (self):
