@@ -1,6 +1,11 @@
 1.8.4
   * Improve error message for failing htmlsax module import
     Changed files: linkcheck/parser/htmllib.py
+  * Regenerate parser with new bison 1.875
+    Changed files: linkcheck/parser/htmlparser.c
+  * Some CVS files were not the same as their local counterpart.
+    Something went wrong. Anyway, I re-committed them.
+    Changed files: a lot .py files
  
 1.8.3
   * add missing imports for StringUtil in log classes, defer i18n of log

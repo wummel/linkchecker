@@ -1,6 +1,9 @@
 linkchecker (1.8.4-1) unstable; urgency=low
 
   * New upstream release.
+  * Some files of 1.8.3 were not checked in CVS correctly, upstream
+    (which happens to be me :) recommitted them and released 1.8.4
+    (Closes: #176242)
 
  -- Bastian Kleineidam <calvin@debian.org>  Thu,  9 Jan 2003 20:20:08 +0100
 
