@@ -123,19 +123,20 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
 
     def listfile (self):
         """see if filename is in the current FTP directory"""
+        if not self.filename:
+            return
         files = self.get_files()
         linkcheck.log.debug(linkcheck.LOG_CHECK, "FTP files %s", str(files))
-        if self.filename:
-            if self.filename in files:
-                # file found
-                return
-            # it could be a directory if the trailing slash was forgotten
-            if "%s/" % self.filename in files:
-                if not self.url.endswith('/'):
-                    self.add_warning(
-                           _("Missing trailing directory slash in ftp url."))
-                    self.url += '/'
-                return
+        if self.filename in files:
+            # file found
+            return
+        # it could be a directory if the trailing slash was forgotten
+        if "%s/" % self.filename in files:
+            if not self.url.endswith('/'):
+                self.add_warning(
+                         _("Missing trailing directory slash in ftp url."))
+                self.url += '/'
+            return
         raise ftplib.error_perm, "550 File not found"
 
     def get_files (self):
