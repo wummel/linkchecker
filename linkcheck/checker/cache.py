@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""store cached data during checking"""
+"""
+Store cached data during checking.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify

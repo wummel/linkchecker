@@ -53,6 +53,14 @@ class LinkCheckerError (Exception):
 def get_link_pat (arg, strict=False):
     """
     Get a link pattern matcher for intern/extern links.
+    Returns a compiled pattern and a negate and strict option.
+
+    @param arg: pattern from config
+    @type arg: c{string}
+    @param strict: if pattern is to be handled strict
+    @type strict: c{bool}
+    @return: dictionary with keys 'pattern', 'negate' and 'strict'
+    @rtype: c{dict}
     """
     linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg[0:1] == '!':
