@@ -3,14 +3,14 @@ import sys,time,Config,StringUtil
 # ANSI color codes
 ESC="\x1b"
 COL_PARENT  =ESC+"[37m"   # white
-COL_URL     =ESC+"[35m"   # magenta
-COL_REAL    =ESC+"[35m"   # magenta
-COL_BASE    =ESC+"[36m"   # cyan
+COL_URL     =ESC+"[0m"    # standard
+COL_REAL    =ESC+"[36m"   # cyan
+COL_BASE    =ESC+"[35m"   # magenty
 COL_VALID   =ESC+"[1;32m" # green
 COL_INVALID =ESC+"[1;31m" # red
-COL_INFO    =ESC+"[0;37m" # standard
+COL_INFO    =ESC+"[0m"    # standard
 COL_WARNING =ESC+"[1;33m" # yellow
-COL_DLTIME  =ESC+"[0;37m" # standard
+COL_DLTIME  =ESC+"[0m"    # standard
 COL_RESET   =ESC+"[0m"    # reset to standard
 
 # HTML colors
@@ -214,20 +214,23 @@ class ColoredLogger(StandardLogger):
                 if self.prefix:
                     self.fd.write("o\n")
                 self.fd.write("\nParent URL "+COL_PARENT+urlData.parentName+\
-				        COL_RESET+"\n")
-                self.prefix = 1
+  	                      COL_RESET+"\n")
                 self.currentPage = urlData.parentName
+                self.prefix = 1
         else:
+            if self.prefix:
+                self.fd.write("o\n")
             self.prefix = 0
+            self.currentPage=None
             
         if self.prefix:
             self.fd.write("|\n+- ")
         else:
             self.fd.write("\n")
         self.fd.write("URL       "+COL_URL+urlData.urlName+COL_RESET)
-        if urlData.line: self.fd.write(" (line "+`urlData.line`+")")
+        if urlData.line: self.fd.write(", line "+`urlData.line`+"")
         if urlData.cached:
-            self.fd.write("(cached)\n")
+            self.fd.write(" (cached)\n")
         else:
             self.fd.write("\n")
             
@@ -266,7 +269,7 @@ class ColoredLogger(StandardLogger):
 
         if self.prefix:
             self.fd.write("|  ")
-        self.fd.write("Result   ")
+        self.fd.write("Result    ")
         if urlData.valid:
             self.fd.write(COL_VALID+urlData.validString+COL_RESET+"\n")
         else:

@@ -4,7 +4,7 @@ SSL_INCLDIR = -I/usr/include/openssl
 SSL_LIBDIR = -L/usr/lib
 
 CC = gcc
-CFLAGS = -O2 -Wall
+CFLAGS = -O6 -Wall
 LDFLAGS = -shared $(SSL_LIBDIR) $(PY_LIBDIR)
 CPPFLAGS = $(SSL_INCLDIR) $(PY_INCLDIR)
 

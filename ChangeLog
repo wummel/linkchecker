@@ -1,13 +1,14 @@
 29.2.2000
 	* GML output additions
 	* HTTPS support
+	* Colored output fixes
 
 28.2.2000
 	* the patched PyLR parser generator works
 	* wrote a GML parser
 
 25.2.2000
-	* changed the name to LinkChecker. My old Java LinkChecker will 
+	* changed the name to LinkChecker; my old Java LinkChecker will 
 	  disappear because I do not maintain it anymore
 
 21.2.2000
