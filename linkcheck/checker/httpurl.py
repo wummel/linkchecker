@@ -191,8 +191,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         """
         # set the proxy, so a 407 status after this is an error
         self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
-        if self.proxy:
-            self.add_info(_("Using Proxy %r.") % self.proxy)
         self.headers = None
         self.auth = None
         self.cookies = []
@@ -232,10 +230,17 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
-                self.set_proxy(self.headers.getheader("Location"))
-                self.add_info(_("Enforced Proxy %r.") % self.proxy)
+                newproxy = self.headers.getheader("Location")
+                self.add_info(_("Enforced proxy %r.") % newproxy)
+                self.set_proxy(newproxy)
+                if not self.proxy:
+                    self.set_result(
+                         _("Enforced proxy %r ignored, aborting.") % newproxy,
+                         valid=False)
+                    return
                 response = self._get_http_response()
                 self.headers = response.msg
+                # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
             try:
                 tries, response = self.follow_redirections(response)

@@ -28,18 +28,36 @@ class ProxySupport (object):
     def set_proxy (self, proxy):
         """
         Parse given proxy information and store parsed values.
+        Note that only http:// proxies are supported, both for ftp://
+        and http:// urls.
         """
         self.proxy = proxy
         self.proxyauth = None
-        if self.proxy:
-            if self.proxy[:7].lower() != "http://":
-                self.proxy = "http://"+self.proxy
-            self.proxy = urllib.splittype(self.proxy)[1]
-            self.proxy = urllib.splithost(self.proxy)[0]
-            self.proxyauth, self.proxy = urllib.splituser(self.proxy)
-            if self.proxyauth is not None:
-                if ":" not in self.proxyauth:
-                    self.proxyauth += ":"
-                import base64
-                self.proxyauth = base64.encodestring(self.proxyauth).strip()
-                self.proxyauth = "Basic "+self.proxyauth
+        if not self.proxy:
+            self.add_info(_("Ignoring empty proxy setting for %r") % self.url)
+            return
+        if self.proxy[:7].lower() != "http://":
+            self.proxy = "http://"+self.proxy
+        self.proxy = urllib.splittype(self.proxy)[1]
+        self.proxy = urllib.splithost(self.proxy)[0]
+        self.proxyauth, self.proxy = urllib.splituser(self.proxy)
+        if self.ignore_proxy_host():
+            # log proxy without auth info
+            self.add_info(_("Ignoring proxy setting %r") % self.proxy)
+            self.proxy = None
+            self.proxyauth = None
+            return
+        self.add_info(_("Using proxy %r.") % self.proxy)
+        if self.proxyauth is not None:
+            if ":" not in self.proxyauth:
+                self.proxyauth += ":"
+            import base64
+            self.proxyauth = base64.encodestring(self.proxyauth).strip()
+            self.proxyauth = "Basic "+self.proxyauth
+
+
+    def ignore_proxy_host (self):
+        for ro in self.consumer.config["noproxyfor"]:
+            if ro.search(self.host):
+                return True
+        return False
