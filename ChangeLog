@@ -1,4 +1,4 @@
-2.0 "" (released xx.xx.xxxx)
+2.0rc1 "The Incredibles" (released 16.11.2004)
 
   * Only instantiate SSL connections if SSL is supported
     Type: bugfix

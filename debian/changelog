@@ -1,6 +1,6 @@
-linkchecker (2.0-1) unstable; urgency=low
+linkchecker (1.99+2.0rc1-1) unstable; urgency=low
 
-  * New upstream release.
+  * New upstream release (2.0 release candidate).
 
  -- Bastian Kleineidam <calvin@debian.org>  Mon, 25 Oct 2004 23:16:37 +0200
 
