@@ -35,13 +35,15 @@ default_timeout = 60
 socket.setdefaulttimeout(default_timeout)
 
 import linkcheck
+# initialize i18n
+linkcheck.init_i18n()
 import linkcheck.log
 import linkcheck.optcomplete
 import linkcheck.checker
 import linkcheck.checker.cache
 import linkcheck.checker.consumer
 import linkcheck.configuration
-from linkcheck.i18n import _
+
 
 # default profiling filename
 _profile = "linkchecker.prof"
@@ -351,11 +353,6 @@ optparser.add_option_group(group)
 
 ################# auto completion #####################
 linkcheck.optcomplete.autocomplete(optparser)
-
-if "--wischiwaschi" in sys.argv:
-    import linkcheck.util1
-    linkcheck.util1.abbuzze()
-    sys.exit(0)
 
 # read and parser command line options and arguments
 (options, args) = optparser.parse_args()
