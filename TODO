@@ -1,8 +1,6 @@
-This release:
-
-- adjust documentation to new or changed options
-
 Next releases:
+
+- new option --extern-strict
 
 - recursion into FTP links
 

@@ -19,6 +19,8 @@
     Changed: linkcheck/checker/httpurl.py
 
   * For news: or nntp: urls, entries in ~/.netrc are now ignored.
+    You should give instead username/password info in the configuration
+    file or on the command line.
     Type: bugfix
     Changed: linkcheck/checker/nntpurl.py
 
@@ -29,6 +31,14 @@
 
   * The status is now printed as default, it can be supressed with
     the new --no-status option.
+    Type: feature
+    Changed: linkchecker
+
+  * the default recursion level is now infinite
+    Type: feature
+    Changed: linkchecker
+
+  * renamed --strict to --extern-strict-all
     Type: feature
     Changed: linkchecker
 

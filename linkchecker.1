@@ -26,9 +26,12 @@ i18n support,
 a command line interface and
 a (Fast)CGI web interface (requires HTTP server)
 .SH EXAMPLES
-Check the treasure.calvinsplayground.de domain, but don't recurse into
-links outside of this domain:
-  \fBlinkchecker --status -ocolored http://treasure.calvinsplayground.de/\fP
+The most common use checks the given domain recursively, plus any
+single URL pointing outside of the domain:
+  \fBlinkchecker http://treasure.calvinsplayground.de/\fP
+
+Beware that this checks the whole site which can have several hundred
+thousands URLs. Use the -r option to restrict the recursion depth.
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
