@@ -49,7 +49,7 @@ under certain conditions. Look at the file `LICENSE' within this
 distribution."""
 
 
-def norm (path):
+def normpath (path):
     """
     Norm given system path with all available norm funcs in os.path.
     """
@@ -151,7 +151,7 @@ class Configuration (dict):
         Activating debugging disables threading.
         """
         config_dir = _linkchecker_configdata.config_dir
-        filename = norm(os.path.join(config_dir, "logging.conf"))
+        filename = normpath(os.path.join(config_dir, "logging.conf"))
         logging.config.fileConfig(filename)
         handler = linkcheck.ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
@@ -184,6 +184,17 @@ class Configuration (dict):
         linkcheck.Loggers[loggertype] = loggerclass
         self[loggertype] = loggerargs
 
+    def write (self, filename="~/.linkchecker/linkcheckerrc"):
+        filename = normpath(filename)
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "write configuration into %s", filename)
+        fp = open(filename, 'w')
+        self.write_output_config(fp)
+        self.write_checking_config(fp)
+        self.write_authentication_config(fp)
+        self.write_filtering_config(fp)
+        fp.close()
+
     def read (self, files=None):
         """
         Read settings from given config files.
@@ -195,9 +206,9 @@ class Configuration (dict):
         if not cfiles:
             # system wide config settings
             config_dir = _linkchecker_configdata.config_dir
-            cfiles.append(norm(os.path.join(config_dir, "linkcheckerrc")))
+            cfiles.append(normpath(os.path.join(config_dir, "linkcheckerrc")))
             # per user config settings
-            cfiles.append(norm("~/.linkchecker/linkcheckerrc"))
+            cfiles.append(normpath("~/.linkchecker/linkcheckerrc"))
         self.read_config(cfiles)
         # re-init logger
         self['logger'] = self.logger_new('text')
@@ -373,3 +384,32 @@ class Configuration (dict):
             self["denyallow"] = cfgparser.getboolean(section, "denyallow")
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+
+    def write_output_config (self, fp):
+        """
+        Write configuration options in section "output".
+        """
+        section = "output"
+        # XXX todo
+
+    def write_checking_config (self, fp):
+        """
+        Write configuration options in section "checking".
+        """
+        section = "checking"
+        # XXX todo
+
+    def write_authentication_config (self, fp):
+        """
+        Write configuration options in section "authentication".
+        """
+        section = "authentication"
+        # XXX todo
+
+    def write_filtering_config (self, fp):
+        """
+        Write configuration options in section "filtering".
+        """
+        section = "filtering"
+        # XXX todo
+
