@@ -34,7 +34,7 @@ class DOTLogger (linkcheck.logger.Logger):
         """
         Initialize graph node list and internal id counter.
         """
-        super(GMLLogger, self).__init__(**args)
+        super(DOTLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.nodes = {}
         self.nodeid = 0
@@ -90,7 +90,6 @@ class DOTLogger (linkcheck.logger.Logger):
             if self.has_field("extern"):
                 self.writeln(u"    extern=%d," % (node.extern and 1 or 0))
             self.writeln(u"  ];")
-        self.write_edges()
 
     def write_edges (self):
         """
@@ -102,7 +101,7 @@ class DOTLogger (linkcheck.logger.Logger):
                 source = self.nodes[node.parent_url].id
                 target = node.id
                 self.writeln(u"  %d -> %d [" % (source, target))
-                self.writeln(u'    label="%s",' % dotquote(node.base_url))
+                self.writeln(u'    label="%s",' % dotquote(node.name))
                 if self.has_field("result"):
                     self.writeln(u"    valid=%d," % (node.valid and 1 or 0))
                 self.writeln(u"  ];")
@@ -114,6 +113,7 @@ class DOTLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
+        self.write_edges()
         self.writeln(u"}")
         if self.has_field("outro"):
             self.stoptime = time.time()

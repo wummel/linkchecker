@@ -92,7 +92,6 @@ class GMLLogger (linkcheck.logger.Logger):
             if self.has_field("extern"):
                 self.writeln(u"    extern %d" % (node.extern and 1 or 0))
             self.writeln(u"  ]")
-        self.write_edges()
 
     def write_edges (self):
         """
@@ -118,6 +117,7 @@ class GMLLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
+        self.write_edges()
         self.writeln(u"]")
         if self.has_field("outro"):
             self.stoptime = time.time()
