@@ -357,9 +357,12 @@ class UrlData (object):
             if self.config["anchors"]:
                 self.checkAnchors()
         except tuple(ExcList):
-            value, tb = sys.exc_info()[1:]
-            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
-            self.setError(str(value))
+            etype, evalue, etb = sys.exc_info()
+            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(etb))
+            # make nicer error msg for unknown hosts
+            if isinstance(evalue, socket.error) and evalue[0]==-2:
+                evalue = i18n._('Host not found')
+            self.setError(str(evalue))
 
         # check content
         warningregex = self.config["warningregex"]
