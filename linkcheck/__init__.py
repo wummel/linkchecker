@@ -73,3 +73,4 @@ def checkUrls (config):
         config.finish()
         config.log_endOfOutput()
         config.warn(_("keyboard interrupt"))
+        raise
