@@ -101,9 +101,10 @@ class FileUrl (urlbase.UrlBase):
 
     def set_cache_keys (self):
         """Set keys for URL checking and content recursion."""
-        # removed anchor from content cache key
+        # remove anchor from content cache key
         self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[''])
-        # do not ignore anchor
+        # same here - a local file with different anchors has always the
+        # same result
         self.cache_url_key = self.cache_content_key
 
     def is_html (self):
