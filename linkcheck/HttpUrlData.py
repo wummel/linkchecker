@@ -17,7 +17,8 @@
 
 import httplib, urlparse, sys, time, re
 import Config, StringUtil, robotparser
-robotparser.debug = 1
+if Config.DebugLevel > 0:
+    robotparser.debug = 1
 from UrlData import UrlData
 from urllib import splittype, splithost, splituser, splitpasswd
 from linkcheck import _
