@@ -461,7 +461,7 @@ elif win_compiling:
 setup (name = "linkchecker",
        version = "2.8",
        description = "check websites and HTML documents for broken links",
-       keywords = "link,url,checking,verfication",
+       keywords = "link,url,checking,verification",
        author = myname,
        author_email = myemail,
        maintainer = myname,
