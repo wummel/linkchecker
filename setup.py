@@ -41,7 +41,6 @@ from distutils import util, log
 # cross compile config
 cc = os.environ.get("CC")
 # directory with cross compiled (for win32) python
-# see also http://kampfwurst.net/python-mingw32/
 win_python_dir = "/home/calvin/src/python23-maint-cvs/dist/src/"
 # if we are compiling for or under windows
 win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
@@ -358,7 +357,7 @@ elif os.name == 'nt':
              ]))
 
 setup (name = "linkchecker",
-       version = "2.7",
+       version = "2.8",
        description = "check websites and HTML documents for broken links",
        keywords = "link,url,checking,verfication",
        author = myname,
