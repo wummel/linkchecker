@@ -27,7 +27,7 @@ $(TEMPLATE): $(POSOURCES)
 	$(XGETTEXT) -w 80 --default-domain=$(PACKAGE) --language=Python \
 	  --copyright-holder="Bastian Kleineidam <calvin@users.sf.net>" \
 	  --msgid-bugs-address=calvin@users.sf.net -o $(TEMPLATE) \
-	  $(POSOURCES)
+	  --keyword=_n:1,2 $(POSOURCES)
 
 %.mo:	%.po
 	if [ ! -d $(LDIR)/$*/LC_MESSAGES ]; then \
