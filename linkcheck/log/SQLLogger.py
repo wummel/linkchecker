@@ -44,7 +44,7 @@ class SQLLogger (StandardLogger):
         if self.fd is None: return
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infostring,"
-	      "valid,url,line,column,name,checktime,dltime,dlsize,cached)"
+	      "valid,url,line,col,name,checktime,dltime,dlsize,cached)"
               " values "
               "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%d,%d,%d,%d)%s\n" % \
 	      (self.dbname,
