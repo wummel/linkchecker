@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os, re, DNS, sys, Config, cgi, urllib, linkcheck
+import os, re, sys, Config, cgi, urllib, linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
@@ -26,7 +26,7 @@ headers_re = re.compile(r"\?(.+)$")
 
 # parse /etc/resolv.conf (on UNIX systems)
 # or read entries from the registry (Windows systems)
-DNS.init_dns_resolver()
+linkcheck.DNS.init_dns_resolver()
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
@@ -76,7 +76,7 @@ class MailtoUrlData(HostCheckingUrlData):
             Config.debug(HURT_ME_PLENTY, "splitting address")
             user,host = self._split_adress(mail)
             Config.debug(HURT_ME_PLENTY, "looking up MX mailhost")
-            mxrecords = DNS.mxlookup(host, protocol="tcp")
+            mxrecords = linkcheck.DNS.mxlookup(host, protocol="tcp")
             Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
                 self.setWarning(linkcheck._("No MX mail host for %s found")%host)

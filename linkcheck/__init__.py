@@ -19,7 +19,7 @@ class error(Exception):
     pass
 
 # i18n suppport
-import sys, os, _linkchecker_configdata
+import sys, os, _linkchecker_configdata, DNS
 def init_gettext ():
     global _
     try:

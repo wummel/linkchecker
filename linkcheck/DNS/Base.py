@@ -1,13 +1,13 @@
 # $Id$
 import os, sys, re, getopt, socket
-import DNS,DNS.Lib,DNS.Type,DNS.Class,DNS.Opcode
+import Lib,Type,Class,Opcode
 #import asyncore
 
 defaults= {
     'protocol': 'udp',
     'port': 53,
-    'opcode': DNS.Opcode.QUERY,
-    'qtype':DNS.Type.A,
+    'opcode': Opcode.QUERY,
+    'qtype':Type.A,
     'rd':1,
     'timing':1,
     'server': [],
@@ -145,11 +145,11 @@ class DnsRequest:
 	self.f = self.s.makefile('r')
 	header = self.f.read(2)
 	if len(header) < 2:
-		raise DNS.Error,'EOF'
-	count = DNS.Lib.unpack16bit(header)
+		raise Error,'EOF'
+	count = Lib.unpack16bit(header)
 	self.reply = self.f.read(count)
 	if len(self.reply) != count:
-	    raise DNS.Error,'incomplete reply'
+	    raise Error,'incomplete reply'
 	self.time_finish=time.time()
 	self.args['server']=self.ns
 	return self.processReply()
@@ -157,19 +157,19 @@ class DnsRequest:
     def processReply(self):
 	#import time
 	self.args['elapsed']=(self.time_finish-self.time_start)*1000
-	u = DNS.Lib.Munpacker(self.reply)
-	r = DNS.Lib.DnsResult(u,self.args)
+	u = Lib.Munpacker(self.reply)
+	r = Lib.DnsResult(u,self.args)
 	r.args=self.args
 	#self.args=None  # mark this DnsRequest object as used.
 	return r
 	#### TODO TODO TODO ####
-	#if protocol == 'tcp' and qtype == DNS.Type.AXFR:
+	#if protocol == 'tcp' and qtype == Type.AXFR:
 	#    while 1:
 	#	header = f.read(2)
 	#	if len(header) < 2:
 	#	    print '========== EOF =========='
 	#	    break
-	#	count = DNS.Lib.unpack16bit(header)
+	#	count = Lib.unpack16bit(header)
 	#	if not count:
 	#	    print '========== ZERO COUNT =========='
 	#	    break
@@ -178,8 +178,8 @@ class DnsRequest:
 	#	if len(reply) != count:
 	#	    print '*** Incomplete reply ***'
 	#	    break
-	#	u = DNS.Lib.Munpacker(reply)
-	#	DNS.Lib.dumpM(u)
+	#	u = Lib.Munpacker(reply)
+	#	Lib.dumpM(u)
 
     def conn(self):
 	self.s.connect((self.ns,self.port))
@@ -188,7 +188,7 @@ class DnsRequest:
 	import time
 	self.argparse(name,args)
 	#if not self.args:
-	#    raise DNS.Error,'reinitialize request before reuse'
+	#    raise Error,'reinitialize request before reuse'
 	protocol = self.args['protocol']
 	self.port = self.args['port']
 	opcode = self.args['opcode']
@@ -196,24 +196,24 @@ class DnsRequest:
 	server = self.args['server']
 	if type(self.args['qtype']) == type('foo'):
 	    try:
-		qtype = eval(self.args['qtype'].upper(), DNS.Type.__dict__)
+		qtype = eval(self.args['qtype'].upper(), Type.__dict__)
 	    except (NameError,SyntaxError):
-		raise DNS.Error,'unknown query type'
+		raise Error,'unknown query type'
 	else:
 	    qtype=self.args['qtype']
 	if not self.args.has_key('name'):
 	    print self.args
-	    raise DNS.Error,'nothing to lookup'
+	    raise Error,'nothing to lookup'
 	qname = self.args['name']
-	if qtype == DNS.Type.AXFR:
+	if qtype == Type.AXFR:
 	    print 'Query type AXFR, protocol forced to TCP'
 	    protocol = 'tcp'
-	#print 'QTYPE %d(%s)' % (qtype, DNS.Type.typestr(qtype))
-	m = DNS.Lib.Mpacker()
+	#print 'QTYPE %d(%s)' % (qtype, Type.typestr(qtype))
+	m = Lib.Mpacker()
 	m.addHeader(0,
 	      0, opcode, 0, 0, rd, 0, 0, 0,
 	      1, 0, 0, 0)
-	m.addQuestion(qname, qtype, DNS.Class.IN)
+	m.addQuestion(qname, qtype, Class.IN)
 	self.request = m.getbuf()
 	if protocol == 'udp':
 	    self.response=None
@@ -232,7 +232,7 @@ class DnsRequest:
 		break
 	    if not self.response:
 		if not self.async:
-		    raise DNS.Error,'no working nameservers found'
+		    raise Error,'no working nameservers found'
 	else:
 	    self.response=None
 	    for self.ns in server:
@@ -240,14 +240,14 @@ class DnsRequest:
 		    self.socketInit(socket.AF_INET, socket.SOCK_STREAM)
 		    self.time_start=time.time()
 		    self.conn()
-		    self.s.send(DNS.Lib.pack16bit(len(self.request)) + self.request)
+		    self.s.send(Lib.pack16bit(len(self.request)) + self.request)
 		    self.s.shutdown(1)
 		    self.response=self.processTCPReply()
 		except socket.error:
 		    continue
 		break
 	    if not self.response:
-		raise DNS.Error,'no working nameservers found'
+		raise Error,'no working nameservers found'
 	if not self.async:
 	    return self.response
 

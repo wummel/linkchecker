@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, re, urlparse, urllib, time, traceback, socket, select
-import DNS, Config, StringUtil, linkcheck, linkname, test_support
+import Config, StringUtil, linkcheck, linkname, test_support
 from debuglevels import *
 debug = Config.debug
 
@@ -26,7 +26,11 @@ def internal_error ():
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
-or send mail to %s and include the following information.
+or send mail to %s and include the following information:
+1) The URL or file you are testing
+2) Your commandline arguments and/or configuration.
+3) The system information below.
+
 If you disclose some information because its too private to you thats ok.
 I will try to help you nontheless (but you have to give me *something*
 I can work with ;).
@@ -57,7 +61,7 @@ ExcList = [
    IOError,
    ValueError, # from httplib.py
    linkcheck.error,
-   DNS.Error,
+   linkcheck.DNS.Error,
    linkcheck.timeoutsocket.Timeout,
    socket.error,
    select.error,

@@ -11,11 +11,11 @@
 # ------------------------------------------------------------------------
 
 
-import DNS.Type
-import DNS.Class
-import DNS.Opcode
-import DNS.Status
-from DNS import Error
+import Type
+import Class
+import Opcode
+import Status
+from linkcheck.DNS import Error
 
 # Low-level 16 and 32 bit integer packing and unpacking
 
@@ -145,7 +145,7 @@ class Packer:
 			if offset + len(buf) < 0x3FFF:
 				index.append((keys[j], offset + len(buf)))
 			else:
-				print 'DNS.Lib.Packer.addname:',
+				print 'Lib.Packer.addname:',
 				print 'warning: pointer too big'
 			buf += chr(n) + label
 		if pointer:
@@ -321,30 +321,30 @@ class RRpacker(Packer):
 		return Packer.getbuf(self)
 	# Standard RRs (section 3.3)
 	def addCNAME(self, name, klass, ttl, cname):
-		self.addRRheader(name, DNS.Type.CNAME, klass, ttl)
+		self.addRRheader(name, Type.CNAME, klass, ttl)
 		self.addname(cname)
 		self.endRR()
 	def addHINFO(self, name, klass, ttl, cpu, os):
-		self.addRRheader(name, DNS.Type.HINFO, klass, ttl)
+		self.addRRheader(name, Type.HINFO, klass, ttl)
 		self.addstring(cpu)
 		self.addstring(os)
 		self.endRR()
 	def addMX(self, name, klass, ttl, preference, exchange):
-		self.addRRheader(name, DNS.Type.MX, klass, ttl)
+		self.addRRheader(name, Type.MX, klass, ttl)
 		self.add16bit(preference)
 		self.addname(exchange)
 		self.endRR()
 	def addNS(self, name, klass, ttl, nsdname):
-		self.addRRheader(name, DNS.Type.NS, klass, ttl)
+		self.addRRheader(name, Type.NS, klass, ttl)
 		self.addname(nsdname)
 		self.endRR()
 	def addPTR(self, name, klass, ttl, ptrdname):
-		self.addRRheader(name, DNS.Type.PTR, klass, ttl)
+		self.addRRheader(name, Type.PTR, klass, ttl)
 		self.addname(ptrdname)
 		self.endRR()
 	def addSOA(self, name, klass, ttl,
 		  mname, rname, serial, refresh, retry, expire, minimum):
-		self.addRRheader(name, DNS.Type.SOA, klass, ttl)
+		self.addRRheader(name, Type.SOA, klass, ttl)
 		self.addname(mname)
 		self.addname(rname)
 		self.add32bit(serial)
@@ -354,17 +354,17 @@ class RRpacker(Packer):
 		self.add32bit(minimum)
 		self.endRR()
 	def addTXT(self, name, klass, ttl, list):
-		self.addRRheader(name, DNS.Type.TXT, klass, ttl)
+		self.addRRheader(name, Type.TXT, klass, ttl)
 		for txtdata in list:
 			self.addstring(txtdata)
 		self.endRR()
 	# Internet specific RRs (section 3.4) -- class = IN
 	def addA(self, name, ttl, address):
-		self.addRRheader(name, DNS.Type.A, DNS.Class.IN, ttl)
+		self.addRRheader(name, Type.A, Class.IN, ttl)
 		self.addaddr(address)
 		self.endRR()
 	def addWKS(self, name, ttl, address, protocol, bitmap):
-		self.addRRheader(name, DNS.Type.WKS, DNS.Class.IN, ttl)
+		self.addRRheader(name, Type.WKS, Class.IN, ttl)
 		self.addaddr(address)
 		self.addbyte(chr(protocol))
 		self.addbytes(bitmap)
@@ -575,8 +575,8 @@ class DnsResult:
 	  self.header['ra'], self.header['z'], self.header['rcode'], 
 	  self.header['qdcount'], self.header['ancount'], 
 	  self.header['nscount'], self.header['arcount']) = u.getHeader()
-	self.header['opcodestr']=DNS.Opcode.opcodestr(self.header['opcode'])
-	self.header['status']=DNS.Status.statusstr(self.header['rcode'])
+	self.header['opcodestr']=Opcode.opcodestr(self.header['opcode'])
+	self.header['status']=Status.statusstr(self.header['rcode'])
 	for i in range(self.header['qdcount']):
 	    #print 'QUESTION %d:' % i,
 	    self.questions.append(self.storeQ(u))
@@ -593,19 +593,19 @@ class DnsResult:
     def storeQ(self,u):
 	q={}
 	q['qname'], q['qtype'], q['qclass'] = u.getQuestion()
-	q['qtypestr']=DNS.Type.typestr(q['qtype'])
-	q['qclassstr']=DNS.Class.classstr(q['qclass'])
+	q['qtypestr']=Type.typestr(q['qtype'])
+	q['qclassstr']=Class.classstr(q['qclass'])
 	return q 
 
     def storeRR(self,u):
 	r={}
 	r['name'],r['type'],r['class'],r['ttl'],r['rdlength'] = u.getRRheader()
-	r['typename'] = DNS.Type.typestr(r['type'])
-	r['classstr'] = DNS.Class.classstr(r['class'])
+	r['typename'] = Type.typestr(r['type'])
+	r['classstr'] = Class.classstr(r['class'])
 	#print 'name=%s, type=%d(%s), class=%d(%s), ttl=%d' \
 	#      % (name,
 	#	 type, typename,
-	#	 klass, DNS.Class.classstr(class),
+	#	 klass, Class.classstr(class),
 	#	 ttl)
 	mname = 'get%sdata' % r['typename']
 	if hasattr(u, mname):
@@ -618,16 +618,16 @@ def dumpQ(u):
 	qname, qtype, qclass = u.getQuestion()
 	print 'qname=%s, qtype=%d(%s), qclass=%d(%s)' \
 		  % (qname,
-		     qtype, DNS.Type.typestr(qtype),
-		     qclass, DNS.Class.classstr(qclass))
+		     qtype, Type.typestr(qtype),
+		     qclass, Class.classstr(qclass))
 
 def dumpRR(u):
 	name, type, klass, ttl, rdlength = u.getRRheader()
-	typename = DNS.Type.typestr(type)
+	typename = Type.typestr(type)
 	print 'name=%s, type=%d(%s), class=%d(%s), ttl=%d' \
 		  % (name,
 		     type, typename,
-		     klass, DNS.Class.classstr(klass),
+		     klass, Class.classstr(klass),
 		     ttl)
 	mname = 'get%sdata' % typename
 	if hasattr(u, mname):
