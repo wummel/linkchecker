@@ -1,3 +1,10 @@
+1.8.18
+  * fix option error messages for invalid integer arguments
+    Changed files: linkchecker
+  * enable infinite recursion with a negative -r value
+    Changed files: linkcheck/{UrlData,Config}.py, linkchecker,
+      linkchecker.1
+
 1.8.17
   * fix parsing of missing end tag in "</a <a b=c>"
     Changed files: linkcheck/parser/htmllex.l
