@@ -249,7 +249,7 @@ are %(loggertypes)s. You can specify this option multiple times to output
 to more than one file. Default is no file output.""") % \
 {'loggertypes': linkcheck.LoggerKeys})
 group.add_option("--no-status", action="store_false", dest="status",
-                 help=_(
+                 default=True, help=_(
 """Do not print check status every 5 seconds to stderr. When --debug is
 given, the status check will only be printed after each checked url.
 This is due to disabled threading during a debug run."""))
@@ -337,10 +337,12 @@ environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
 optparser.add_option_group(group)
 
-
 ################# deprecated options ##################
-group = optparse.OptionGroup(optparser, _("Deprecated options"))
-group.add_option("-R", "--robots-txt", action="store_true")
+group.add_option("--status", action="store_true", dest="status",
+                 help=_(
+"""Print check status every 5 seconds to stderr. When --debug is
+given, the status check will only be printed after each checked url.
+This is due to disabled threading during a debug run."""))
 optparser.add_option_group(group)
 
 ################# auto completion #####################
