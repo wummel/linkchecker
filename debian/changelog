@@ -1,8 +1,10 @@
 linkchecker (1.13.2-1) unstable; urgency=low
 
   * New upstream release.
+  * move old logfiles to /etc/linkchecker/linkcheckerrc.old in the
+    postinst script
 
- -- Bastian Kleineidam <calvin@debian.org>  Sun,  5 Sep 2004 23:04:57 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Wed,  8 Sep 2004 13:56:44 +0200
 
 linkchecker (1.13.1-2) unstable; urgency=low
 

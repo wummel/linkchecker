@@ -1,0 +1,23 @@
+#!/bin/sh -e
+# postinst script for linkchecker
+#
+# see: dh_installdeb(1)
+
+case "$1" in
+    configure|reconfigure|abort-upgrade|abort-remove|abort-deconfigure)
+        break
+    ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+# move old logfile
+if [ -f /etc/linkcheckerrc ]; then
+    mv -f /etc/linkcheckerrc /etc/linkchecker/linkcheckerrc.old || true
+fi
+
+#DEBHELPER#
+
+exit 0
