@@ -1,0 +1,113 @@
+                      LinkChecker
+                     =============
+
+LinkChecker checks HTML documents for broken links.
+
+It features
+o recursive checking
+o multithreading
+o output in colored or normal text, HTML, SQL, CSV or a sitemap
+  graph in GML or XML.
+o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
+  file links support
+o restriction of link checking with regular expression filters for URLs
+o proxy support
+o username/password authorization for HTTP and FTP
+o robots.txt exclusion protocol support
+o i18n support
+o a command line interface
+o a (Fast)CGI web interface (requires HTTP server)
+
+
+Installing and Requirements
+---------------------------
+Read the file INSTALL.
+
+
+Running the program
+-------------------
+o Unix or Mac OS X platforms
+  The local configuration file is $HOME/.linkcheckerrc
+  Type "linkchecker" followed by your URLs you want to check.
+  Type "linkchecker -h" for help.
+
+o Windows platforms
+  Double-click on "linkchecker.bat" on your desktop.
+  URL input is interactive.
+  Another way is executing "python.exe linkchecker" in the Python
+  Scripts directory.
+
+o Mac OS 9.x platforms
+  Read the MacOS Python documentation to find out about passing
+  commandline options to Python scripts.
+
+
+License and Credits
+-------------------
+LinkChecker is licensed under the GNU Public License.
+Credits go to Guido van Rossum and his team for making Python.
+His hovercraft is full of eels!
+As this program is directly derived from my Java link checker, additional
+credits go to Robert Forsman (the author of JCheckLinks) and his
+robots.txt parse algorithm.
+Nicolas Chauvat <Nicolas.Chauvat@logilab.fr> supplied a patch for
+an XML output logger.
+I want to thank everybody who gave me feedback, bug reports and
+suggestions.
+
+
+Versioning
+----------
+Version numbers have the same meaning as Linux Kernel version numbers.
+The first number is the major package version. The second number is
+the minor package version. An odd second number stands for development
+versions, an even number for stable version. The third number is a
+package release sequence number.
+So for example 1.1.5 is the fifth release of the 1.1 development package.
+
+
+Included packages
+-----------------
+fcgi.py and sz_fcgi.py from Andreas Jung (http://www.andreas-jung.com/privat.html)
+Note that included packages are modified by me.
+
+
+Internationalization
+--------------------
+For german output execute "export LC_MESSAGES=de" in bash or
+"setenv LC_MESSAGES de" in tcsh.
+Under Windows, execute "set LC_MESSAGES=de".
+Other supported languages are 'nl' (Nederlands) and 'fr' (français).
+If you want to help me translate LinkChecker, copy the linkchecker.pot
+file to <your language>.po and send me the translated file.
+
+
+Code design
+-----------
+Only if you want to hack on the code.
+
+(1) Look at the linkchecker script. This thing just reads all the
+commandline options and stores them in a Config object.
+
+(2) Which leads us directly to the Config class. This class stores all
+options and supports threading and reading config files.
+A Config object reads config file options on initialization so they get
+handled before any commandline options.
+
+(3) The linkchecker script calls linkcheck.checkUrls(), which
+calls linkcheck.Config.checkUrl(), which calls linkcheck.UrlData.check().
+An UrlData object represents a single URL with all attached data like
+validity, check time and so on. These values are filled by the
+UrlData.check() function.
+Derived from the base class UrlData are the different URL types: 
+HttpUrlData for http:// links, MailtoUrlData for mailto: links, etc.
+
+UrlData defines the functions which are common for *all* URLs, and
+the subclasses define functions needed for their URL type.
+
+(4) Lets look at the output. Every output is defined in a Logger class.
+Each logger has functions init(), newUrl() and endOfOutput().
+We call init() once to initialize the Logger. UrlData.check() calls
+newUrl() (through UrlData.logMe()) for each new URL and after all
+checking is done we call endOfOutput(). Easy.
+New loggers are created with the Config.newLogger function.
