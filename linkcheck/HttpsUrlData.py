@@ -17,19 +17,16 @@
 
 from UrlData import UrlData
 from HttpUrlData import HttpUrlData
-from linkcheck import _
-_supportHttps=1
-try:
-    from linkcheckssl import httpslib
-except ImportError:
-    _supportHttps=0
+from linkcheck import _, Config
+_supportHttps = hasattr(httplib, "HTTPS")
 
 
 class HttpsUrlData(HttpUrlData):
     """Url link with https scheme"""
 
     def _getHTTPObject(self, host):
-        h = httpslib.HTTPS()
+        h = httplib.HTTPS()
+        h.set_debuglevel(Config.DebugLevel)
         h.connect(host)
         return h
 

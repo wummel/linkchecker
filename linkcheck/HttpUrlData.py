@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import httplib,urlparse,sys,time,re
-import Config,StringUtil,robotparser2
+import httplib, urlparse, sys, time, re
+import Config, StringUtil, robotparser2
 from UrlData import UrlData
 from urllib import splittype, splithost, splituser, splitpasswd
 from linkcheck import _
@@ -223,7 +223,10 @@ class HttpUrlData(UrlData):
         return self.urlConnection.getreply()
 
     def _getHTTPObject(self, host):
-        return httplib.HTTP(host)
+        h = httplib.HTTP()
+        h.set_debuglevel(Config.DebugLevel)
+        h.connect(host)
+        return h
 
     def getContent(self):
         if not self.has_content:

@@ -17,14 +17,13 @@ export DH_OPTIONS
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	$(PYTHON) setup.py config -lcrypto
+	$(PYTHON) setup.py config
 	touch configure-stamp
 
 
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	rm -rf debian/linkchecker debian/linkchecker-ssl
 	$(PYTHON) setup.py build
 	touch build-stamp
 
@@ -44,8 +43,6 @@ install: build
 	rm -r debian/$(PACKAGE)/usr/man
 	# remove files, we install them below
 	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples
-	# remove any SSL related files
-	rm -r debian/$(PACKAGE)/usr/lib/$(PYTHON)/site-packages/linkcheckssl
 	# install additional doc files
 	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
 	install -c -m 644 test/*.py $(DOCDIR)/test

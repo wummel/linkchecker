@@ -15,10 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys,re,string,urlparse,urllib,time,DNS
-import Config,StringUtil,linkcheck,linkname
+import sys, re, urlparse, urllib, time, DNS, traceback
+import Config, StringUtil, linkcheck, linkname
+debug = Config.debug
 from linkcheck import _
-debug = linkcheck.Config.debug
 from debuglevels import *
 
 # we catch these exceptions, all other exceptions are internal
@@ -43,7 +43,7 @@ _linkMatcher = r"""
     \s*            # whitespace
     %s             # tag name
     \s+            # whitespace
-    [^>]*?         # skip leading attributes
+    [^>]*?         # skip leading attributes (fails on Python 2.2b2)
     %s             # attrib name
     \s*            # whitespace
     =              # equal sign
@@ -108,8 +108,7 @@ BasePattern = {
     'attr': 'href',
 }
 
-CommentPattern = re.compile("<!--.*?--\s*>", re.DOTALL)
-
+#CommentPattern = re.compile("<!--.*?--\s*>", re.DOTALL)
 # Workaround for Python 2.0 re module bug
 CommentPatternBegin = re.compile("<!--")
 CommentPatternEnd = re.compile("--\s*>")
@@ -189,8 +188,8 @@ class UrlData:
             self.url = self.urlName
         self.urlTuple = urlparse.urlparse(self.url)
         # make host lowercase
-        self.urlTuple = (self.urlTuple[0],string.lower(self.urlTuple[1]),
-                         self.urlTuple[2],self.urlTuple[3],self.urlTuple[4],
+        self.urlTuple = (self.urlTuple[0], self.urlTuple[1].lower(),
+                         self.urlTuple[2], self.urlTuple[ 3],self.urlTuple[4],
                          self.urlTuple[5])
         self.url = urlparse.urlunparse(self.urlTuple)
         # resolve HTML entities
@@ -221,7 +220,8 @@ class UrlData:
 	    self.buildUrl()
             self.extern = self._getExtern(config)
         except tuple(ExcList):
-            type, value = sys.exc_info()[:2]
+            type, value, tb = sys.exc_info()
+            debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
             self.setError(str(value))
             self.logMe(config)
             return
@@ -248,8 +248,8 @@ class UrlData:
             if self.urlTuple and config["anchors"]:
                 self.checkAnchors(self.urlTuple[5])
         except tuple(ExcList):
-            type, value = sys.exc_info()[:2]
-            #print type, value
+            type, value, tb = sys.exc_info()
+            debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
             self.setError(str(value))
 
         # check content
@@ -258,7 +258,8 @@ class UrlData:
             debug(BRING_IT_ON, "checking content")
             try:  self.checkContent(warningregex)
             except tuple(ExcList):
-                type, value = sys.exc_info()[:2]
+                type, value, tb = sys.exc_info()
+                debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
                 self.setError(str(value))
 
         self.checktime = time.time() - t
@@ -417,7 +418,7 @@ class UrlData:
             index = match.end()
             if self.is_in_comment(match.start()): continue
             # need to strip optional ending quotes for the meta tag
-            url = string.strip(StringUtil.stripQuotes(match.group('value')))
+            url = StringUtil.stripQuotes(match.group('value')).strip()
             # need to resolve HTML entities
             url = StringUtil.unhtmlify(url)
             lineno=StringUtil.getLineNumber(self.getContent(), match.start())
@@ -480,11 +481,11 @@ def GetUrlDataFrom(urlName, recursionLevel, parentName = None,
     # search for the absolute url
     url=""
     if urlName and ":" in urlName:
-        url = string.lower(urlName)
+        url = urlName.lower()
     elif baseRef and ":" in baseRef:
-        url = string.lower(baseRef)
+        url = baseRef.lower()
     elif parentName and ":" in parentName:
-        url = string.lower(parentName)
+        url = parentName.lower()
     # test scheme
     if re.search("^http:", url):
         klass = HttpUrlData

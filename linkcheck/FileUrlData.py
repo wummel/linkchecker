@@ -15,9 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re,string,os,urlparse,urllib
-from UrlData import UrlData
+import re, os, urlparse, urllib
+from UrlData import UrlData, ExcList
 from linkcheck import _
+
+# OSError is thrown on Windows when a file is not found
+ExcList.append(OSError)
 
 html_re = re.compile(r'(?i)\.s?html?$')
 html_content_re = re.compile(r'(?i)<html>.*</html>')
@@ -48,7 +51,7 @@ class FileUrlData(UrlData):
                     self.urlName = os.getcwd()+"/"+self.urlName
                     if winre.search(self.urlName):
                         self.adjustWinPath()
-            self.urlName = string.replace(self.urlName, "\\", "/")
+            self.urlName = self.urlName.replace("\\", "/")
             self.urlName = "file://"+self.urlName
 
 

@@ -82,57 +82,6 @@ class MyInstall(install):
                 print "  %s: %s" % (opt_name, val)
 
 
-class MyConfig(config):
-    user_options = config.user_options + [
-        ('ssl-include-dirs=', None,
-         "directories to search for SSL header files"),
-        ('ssl-library-dirs=', None,
-         "directories to search for SSL library files"),
-        ]
-
-
-    def initialize_options (self):
-        config.initialize_options(self)
-        self.ssl_include_dirs = None
-        self.ssl_library_dirs = None
-
-
-    def finalize_options(self):
-        # we have some default include and library directories
-        # suitable for each platform
-        config.finalize_options(self)
-        if self.ssl_include_dirs is None:
-            if os.name=='posix':
-                self.ssl_include_dirs = ['/usr/include/openssl',
-                                         '/usr/local/include/openssl']
-            else:
-                # dont know default incldirs on other platforms
-                self.ssl_include_dirs = []
-        if self.ssl_library_dirs is None:
-            if os.name=='posix':
-                self.ssl_library_dirs = ['/usr/lib', '/usr/local/lib']
-            else:
-                # dont know default libdirs on other platforms
-                self.ssl_library_dirs = []
-
-
-    def run (self):
-        # try to compile a test program with SSL
-        config.run(self)
-        self.libraries.append('ssl')
-        have_ssl = self.check_lib("ssl",
-                                  library_dirs = self.ssl_library_dirs,
-                                  include_dirs = self.ssl_include_dirs,
-                                  headers = ["ssl.h"])
-        # write the result in the configuration file
-        data = []
-	data.append("have_ssl = %d" % (have_ssl))
-        data.append("ssl_library_dirs = %s" % `self.ssl_library_dirs`)
-        data.append("ssl_include_dirs = %s" % `self.ssl_include_dirs`)
-        data.append("libraries = %s" % `self.libraries`)
-        data.append("install_data = %s" % `os.getcwd()`)
-        self.distribution.create_conf_file(".", data)
-
 
 class MyDistribution(Distribution):
     def __init__(self, attrs=None):
@@ -141,34 +90,23 @@ class MyDistribution(Distribution):
 
 
     def run_commands(self):
-        if "config" not in self.commands:
-            self.check_ssl()
+        cwd = os.getcwd()
+        data = []
+	data.append('config_dir = %s' % `os.path.join(cwd, "config")`)
+        data.append("install_data = %s" % `cwd`)
+        self.create_conf_file(".", data)
         Distribution.run_commands(self)
-
-
-    def check_ssl(self):
-        if not os.path.exists(self.config_file):
-            #raise SystemExit, "please run 'python setup.py config'"
-            self.announce("generating default configuration")
-            self.run_command('config')
-        import _linkchecker_configdata
-        if 'bdist_wininst' in self.commands and os.name != 'nt':
-            self.announce("bdist_wininst command found on non-Windows "
-	                  "platform. Disabling SSL compilation")
-        elif _linkchecker_configdata.have_ssl:
-            self.ext_modules = [Extension('linkcheckssl.ssl',
-	                ['linkcheckssl/ssl.c'],
-                        include_dirs=_linkchecker_configdata.ssl_include_dirs,
-                        library_dirs=_linkchecker_configdata.ssl_library_dirs,
-                        libraries=_linkchecker_configdata.libraries)]
 
 
     def create_conf_file(self, directory, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
         filename = os.path.join(directory, self.config_file)
         # add metadata
-        metanames = dir(self.metadata) + \
-                    ['fullname', 'contact', 'contact_email']
+        metanames = ("name", "version", "author", "author_email",
+                         "maintainer", "maintainer_email", "url",
+                         "licence", "description", "long_description",
+                         "keywords", "platforms", "fullname", "contact",
+                         "contact_email", "licence", "fullname")
         for name in metanames:
               method = "get_" + name
               cmd = "%s = %s" % (name, `getattr(self.metadata, method)()`)
@@ -189,7 +127,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.3.9",
+       version = "1.3.10",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
@@ -213,9 +151,7 @@ o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
 """,
        distclass = MyDistribution,
-       cmdclass = {'config': MyConfig,
-                   'install': MyInstall,
-		  },
+       cmdclass = {'install': MyInstall},
        packages = ['','DNS','linkcheck','linkcheckssl'],
        scripts = ['linkchecker'],
        data_files = [('share/locale/de/LC_MESSAGES',
