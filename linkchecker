@@ -312,7 +312,7 @@ for opt,arg in options:
 if constructauth:
     config["authentication"].insert(0, {'pattern': re.compile(".*"),
                                         'user': _user,
-					'pass': _password})
+					'password': _password})
 
 # construct the url list
 # if we use blacklist mode, try to read ~/.blacklist

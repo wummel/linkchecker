@@ -5,9 +5,11 @@ linkchecker (1.3.11) unstable; urgency=low
   * use Pythons builtin gettext module, get rid of fintl.py
   * use Pythons builtin robot.txt parser, get rid of
     robotparser2.py
-  * update Python gettext utilities in po/ to newest version
+  * update Python gettext utilities in po/ to newest version (2.1.1)
+  * fix the -p password option (thanks to Harri Pasanen
+    <harri.pasanen@trema.com> for pointing this out)
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed, 28 Nov 2001 17:57:20 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Fri, 30 Nov 2001 12:13:16 +0100
 
 linkchecker (1.3.10) unstable; urgency=low
 
