@@ -111,7 +111,7 @@ class UrlData:
         self.name = name
         self.dltime = -1
         self.dlsize = -1
-        self.checktime = -1
+        self.checktime = 0
         self.cached = 0
         self.urlConnection = None
         self.extern = (1, 0)
