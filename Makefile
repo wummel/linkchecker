@@ -73,11 +73,11 @@ test:
 
 po:
 	# german translation
-	xgettext --default-domain=linkcheck \
+	xgettext --default-domain=linkcheck --no-location \
 	--join-existing --keyword --keyword=_ \
 	--output-dir=locale/de/LC_MESSAGES/ --sort-output $(SOURCES)
 	# french translation
-	xgettext --default-domain=linkcheck \
+	xgettext --default-domain=linkcheck --no-location \
 	--join-existing --keyword --keyword=_ \
 	--output-dir=locale/fr/LC_MESSAGES/ --sort-output $(SOURCES)
 

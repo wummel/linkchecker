@@ -152,9 +152,16 @@ class StandardLogger:
         else:
             self.fd.write(_(" in %d links found\n") % self.linknumber)
         self.stoptime = time.time()
-        self.fd.write(_("Stopped checking at %s (%.3f seconds)\n") % \
-	               (_strtime(self.stoptime),
-		        (self.stoptime - self.starttime)))
+        duration = self.stoptime - self.starttime
+        name = _("seconds")
+        self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
+        if duration > 60:
+            duration = duration / 60
+            name = _("minutes")
+        if duration > 60:
+            duration = duration / 60
+            name = _("hours")
+        self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
 
@@ -260,9 +267,16 @@ class HtmlLogger(StandardLogger):
             self.fd.write(_(" in %d links found\n") % self.linknumber)
         self.fd.write("<br>")
         self.stoptime = time.time()
-        self.fd.write(_("Stopped checking at %s (%.3f seconds)\n") %\
-	              (_strtime(self.stoptime),
-                       (self.stoptime - self.starttime)))
+        duration = self.stoptime - self.starttime
+        name = _("seconds")
+        self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
+        if duration > 60:
+            duration = duration / 60
+            name = _("minutes")
+        if duration > 60:
+            duration = duration / 60
+            name = _("hours")
+        self.fd.write("	(%.3f %s)\n" % (duration, name))
 	self.fd.write("</font></blockquote><br><hr noshade size=1><small>"+
              MyFont+Config.HtmlAppInfo+"<br>")
 	self.fd.write(_("Get the newest version at %s\n") %\
@@ -435,9 +449,17 @@ class GMLLogger(StandardLogger):
         # end of output
         self.fd.write("]\n")
         self.stoptime = time.time()
-        self.fd.write(_("# Stopped checking at %s (%.3f seconds)\n") %\
-                      (_strtime(self.stoptime),
-		       (self.stoptime - self.starttime)))
+        duration = self.stoptime - self.starttime
+        name = _("seconds")
+        self.fd.write("# "+_("Stopped checking at %s") % \
+	              _strtime(self.stoptime))
+        if duration > 60:
+            duration = duration / 60
+            name = _("minutes")
+        if duration > 60:
+            duration = duration / 60
+            name = _("hours")
+        self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
 
@@ -483,9 +505,17 @@ class SQLLogger(StandardLogger):
 
     def endOfOutput(self):
         self.stoptime = time.time()
-        self.fd.write(_("-- Stopped checking at %s (%.3f seconds)\n") %\
-                      (_strtime(self.stoptime),
-		       (self.stoptime - self.starttime)))
+        duration = self.stoptime - self.starttime
+        name = _("seconds")
+        self.fd.write("-- "+_("Stopped checking at %s") % \
+	              _strtime(self.stoptime))
+        if duration > 60:
+            duration = duration / 60
+            name = _("minutes")
+        if duration > 60:
+            duration = duration / 60
+            name = _("hours")
+        self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
 
@@ -572,9 +602,16 @@ class CSVLogger(StandardLogger):
 
     def endOfOutput(self):
         self.stoptime = time.time()
-        self.fd.write(_("# Stopped checking at %s (%.3f seconds)\n") %\
-                      (_strtime(self.stoptime),
-		       (self.stoptime - self.starttime)))
+        duration = self.stoptime - self.starttime
+        name = _("seconds")
+        self.fd.write("# "+_("Stopped checking at %s") % _strtime(self.stoptime))
+        if duration > 60:
+            duration = duration / 60
+            name = _("minutes")
+        if duration > 60:
+            duration = duration / 60
+            name = _("hours")
+        self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
 
