@@ -65,20 +65,6 @@ def cnormpath (path):
     return path
 
 
-# windows install scheme for python >= 2.3
-# snatched from PC/bdist_wininst/install.c
-# this is used to fix install_* paths when cross compiling for windows
-win_path_scheme = {
-    "purelib": ("PURELIB", "Lib\\site-packages\\"),
-    "platlib": ("PLATLIB", "Lib\\site-packages\\"),
-    # note: same as platlib because of C extensions, else it would be purelib
-    "lib": ("PLATLIB", "Lib\\site-packages\\"),
-    # 'Include/dist_name' part already in archive
-    "headers": ("HEADERS", ""),
-    "scripts": ("SCRIPTS", "Scripts\\"),
-    "data": ("DATA", ""),
-}
-
 class MyInstall (install, object):
 
     def run (self):
@@ -98,12 +84,6 @@ class MyInstall (install, object):
                 val = getattr(self, attr)[cutoff:]
             else:
                 val = getattr(self, attr)
-            if win_compiling and d in win_path_scheme:
-                # look for placeholders to replace
-                oldpath, newpath = win_path_scheme[d]
-                oldpath = "%s%s" % (os.sep, oldpath)
-                if oldpath in val:
-                    val = val.replace(oldpath, newpath)
             if attr == 'install_data':
                 cdir = os.path.join(val, "share", "linkchecker")
                 data.append('config_dir = %r' % cnormpath(cdir))
@@ -217,8 +197,9 @@ if os.name == 'nt':
     # windows does not have unistd.h
     define_macros.append(('YY_NO_UNISTD_H', None))
 else:
-    # for gcc 3.x we could add -std=gnu99 to get rid of warnings, but
-    # that breaks other compilers
+    # For gcc 3.x we could add -std=gnu99 to get rid of warnings, but
+    # that breaks other compilers. And detecting GNU gcc 3.x is
+    # hard within this framework.
     extra_compile_args.append("-pedantic")
     if win_compiling:
         # we are cross compiling with mingw

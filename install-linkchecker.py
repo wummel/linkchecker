@@ -9,55 +9,71 @@
 # [bdist_wininst]
 # install-script=install-linkchecker.py
 
+# available functions:
+# create_shortcut(target, description, filename[, arguments[,
+#                 workdir[, iconpath[, iconindex]]]])
+# - create shortcut
+#
+# file_created(path)
+#  - register 'path' so that the uninstaller removes it
+#
+# directory_created(path)
+# - register 'path' so that the uninstaller removes it
+#
+# get_special_folder_location(csidl_string)
+# - get windows specific paths
+
 import sys
 import os
-from distutils.sysconfig import get_python_lib
 
 if not sys.platform.startswith('win'):
+    # not for us
     sys.exit()
 
-try:
-    prg = get_special_folder_path("CSIDL_COMMON_PROGRAMS")
-except OSError:
+# path retrieving functions
+
+def get_prg_path ():
     try:
-        prg = get_special_folder_path("CSIDL_PROGRAMS")
-    except OSError, reason:
-        # give up - cannot install shortcuts
-        print "cannot install shortcuts: %s" % reason
-        sys.exit()
+        return get_special_folder_path("CSIDL_COMMON_PROGRAMS")
+    except OSError:
+        try:
+            return get_special_folder_path("CSIDL_PROGRAMS")
+        except OSError, reason:
+            # give up - cannot install shortcuts
+            print "cannot install shortcuts: %s" % reason
+    sys.exit()
 
-lib_dir = get_python_lib(plat_specific=1)
-dest_dir = os.path.join(prg, "LinkChecker")
-python_exe = os.path.join(sys.prefix, "python.exe")
 
-import linkcheck
+def get_dest_dir ():
+    return os.path.join(get_prg_path(), "LinkChecker")
+
+
+def get_python_exe ():
+    return os.path.join(sys.prefix, "python.exe")
+
+
+# install routines
 
 def do_install ():
-    """create_shortcut(target, description, filename[, arguments[, \
-                     workdir[, iconpath[, iconindex]]]])
+    fix_configdata()
+    create_shortcuts()
 
-       file_created(path)
-         - register 'path' so that the uninstaller removes it
 
-       directory_created(path)
-         - register 'path' so that the uninstaller removes it
-
-       get_special_folder_location(csidl_string)
-    """
+def create_shortcuts ():
+    """Create program shortcuts"""
+    dest_dir = get_dest_dir()
     try:
         os.mkdir(dest_dir)
         directory_created(dest_dir)
     except OSError:
         pass
     path = os.path.join(dest_dir, "Check URL.lnk")
-    script_dir = linkcheck.configdata.install_scripts
-    arguments = os.path.join(script_dir, "linkchecker")
+    arguments = os.path.join(sys.prefix, "Scripts", "linkchecker")
     arguments += " --interactive"
-    create_shortcut(python_exe, "Check URL", path, arguments)
+    create_shortcut(get_python_exe(), "Check URL", path, arguments)
     file_created(path)
 
-    data_dir = linkcheck.configdata.install_data
-    target = os.path.join(data_dir,
+    target = os.path.join(sys.prefix,
                           "share", "linkchecker", "doc", "documentation.html")
     path = os.path.join(dest_dir, "Documentation.lnk")
     create_shortcut(target, "Documentation", path)
@@ -70,6 +86,49 @@ def do_install ():
     file_created(path)
     print "See the shortcuts installed in the LinkChecker Programs Group"
 
+
+def fix_configdata ():
+    """fix install and config paths in the config file"""
+    name = "_linkchecker_configdata.py"
+    conffile = os.path.join(sys.prefix, "Lib", "site-packages", name)
+    lines = []
+    for line in file(conffile):
+        if line.startswith("install_") or line.startswith("config_"):
+            lines.append(fix_install_path(line))
+        else:
+            lines.append(line)
+    f = file(conffile, "w")
+    f.write("".join(lines))
+    f.close()
+
+# windows install scheme for python >= 2.3
+# snatched from PC/bdist_wininst/install.c
+# this is used to fix install_* paths when cross compiling for windows
+win_path_scheme = {
+    "purelib": ("PURELIB", "Lib\\site-packages\\"),
+    "platlib": ("PLATLIB", "Lib\\site-packages\\"),
+    # note: same as platlib because of C extensions, else it would be purelib
+    "lib": ("PLATLIB", "Lib\\site-packages\\"),
+    # 'Include/dist_name' part already in archive
+    "headers": ("HEADERS", "."),
+    "scripts": ("SCRIPTS", "Scripts\\"),
+    "data": ("DATA", "."),
+}
+
+def fix_install_path (line):
+    """Replace placeholders written by bdist_wininst with those specified
+       in win_path_scheme."""
+    key, eq, val = line.split()
+    # unescape string (do not use eval())
+    val = val[1:-1].replace("\\\\", "\\")
+    for d in win_path_scheme.keys():
+        # look for placeholders to replace
+        oldpath, newpath = win_path_scheme[d]
+        oldpath = "%s%s" % (os.sep, oldpath)
+        if oldpath in val:
+            val = val.replace(oldpath, newpath)
+            val = os.path.join(sys.prefix, val)
+    return "%s = %r%s" % (key, val, os.linesep)
 
 if __name__ == '__main__':
     if "-install" == sys.argv[1]:
