@@ -15,8 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, urllib, sys, time, re, httplib, robotparser
+import urlparse, urllib, sys, time, re, httplib
 import Config, StringUtil, i18n
+from linkcheck import robotparser
 from debug import *
 # XXX not dynamic
 if get_debuglevel() > 0:
