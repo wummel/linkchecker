@@ -231,7 +231,7 @@ class HttpUrlData (UrlData):
 	                                 self.proxyauth)
         if self.parentName:
             self.urlConnection.putheader("Referer", self.parentName)
-        self.urlConnection.putheader("User-agent", Config.UserAgent)
+        self.urlConnection.putheader("User-Agent", Config.UserAgent)
         if self.config['cookies']:
             self.cookies = self.config.getCookies(self.urlTuple[1],
                                                   self.urlTuple[2])
