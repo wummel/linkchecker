@@ -6,6 +6,10 @@
     Type: feature
     Changed: linkcheck/HtmlParser/htmlparse.y
 
+  * Updated installation and usage documentation.
+    Type: documentation
+    Changed: doc/install.txt, doc/index.txt
+
 2.0rc2 "El día de la bestia" (released 20.11.2004)
 
   * encode version string for --version output
