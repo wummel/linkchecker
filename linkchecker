@@ -23,8 +23,8 @@ if sys.version[:5] < "2.0":
 
 import getopt, re, os, urlparse, linkcheck
 from linkcheck import _,StringUtil
-if os.name!='nt':
-    from linkcheck import timeoutsocket
+#if os.name!='nt':
+#    from linkcheck import timeoutsocket
 
 Usage = _("""USAGE\tlinkchecker [options] file-or-url...
 
@@ -282,10 +282,10 @@ for opt,arg in options:
                 config.disableThreading()
 
     elif opt=="--timeout":
-        if os.name!='nt':
-            timeoutsocket.setDefaultSocketTimeout(int(arg))
-        else:
-            print >> sys.stderr, _("warning: timeoutsocket is not support on this system")
+        #if os.name!='nt':
+        #    timeoutsocket.setDefaultSocketTimeout(int(arg))
+        #else:
+        print >> sys.stderr, _("warning: timeoutsocket is not support on this system")
 
     elif opt=="-u" or opt=="--user":
         _user = arg
