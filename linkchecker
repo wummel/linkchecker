@@ -160,6 +160,7 @@ for opt,arg in options:
 
     elif opt=="-D" or opt=="--debug":
         linkcheck.Config.DebugFlag = 1
+        config.disableThreading()
     
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append((re.compile(arg), 0))
@@ -214,7 +215,7 @@ for opt,arg in options:
     
     elif opt=="-t" or opt=="--threads":
         num = int(arg)
-        if config["threads"]:
+        if config["threads"] and not linkcheck.Config.DebugFlag:
             if num>0:
                 config.enableThreading(num)
             else:

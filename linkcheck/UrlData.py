@@ -252,7 +252,8 @@ class UrlData:
         return "urlname="+`self.urlName`+"\nparentName="+`self.parentName`+\
                "\nbaseRef="+`self.baseRef`+"\ncached="+`self.cached`+\
                "\nrecursionLevel="+`self.recursionLevel`+\
-               "\nurlConnection="+str(self.urlConnection)
+               "\nurlConnection="+str(self.urlConnection)+\
+	       "\nline="+`self.line`
 
     def _getUserPassword(self, config):
         for rx, _user, _password in config["authentication"]:

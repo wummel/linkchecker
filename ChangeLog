@@ -1,3 +1,9 @@
+11.3.2000
+	* Better debugging:
+	  -D implies -t0
+	  HTML data in debug output
+	  print line number in UrlData.__str__()
+
 8.3.2000 Version 1.1.1
 	* FastCGI modules added (no script yet)
 	* CGI script fixes

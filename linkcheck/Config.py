@@ -2,7 +2,7 @@ import ConfigParser,sys,os,re,UserDict,string
 from os.path import expanduser,normpath,normcase,join,isfile
 import Logging
 
-Version = "1.1.1"
+Version = "1.1.2"
 AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version

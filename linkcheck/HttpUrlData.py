@@ -124,6 +124,7 @@ class HttpUrlData(UrlData):
         self.urlConnection = self.urlConnection.getfile()
         data = StringUtil.stripHtmlComments(self.urlConnection.read())
         self.time = time.time() - t
+        Config.debug(Config.DebugDelim+data+Config.DebugDelim)
         return data
         
     def isHtml(self):
