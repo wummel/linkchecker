@@ -24,9 +24,9 @@ debug = Config.debug
 def internal_error ():
     print >> sys.stderr, linkcheck._("""\n********** Oops, I did it again. *************
 
-You have found an internal error in LinkChecker.
-Please write a bug report to %s and include
-the following information.
+You have found an internal error in LinkChecker. Please write a bug report
+at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
+or send mail to %s and include the following information.
 If you disclose some information because its too private to you thats ok.
 I will try to help you nontheless (but you have to give me *something*
 I can work with ;).
