@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Mon Aug 11 15:59:43 2003\n"
+"POT-Creation-Date: Sat Sep 20 14:17:26 2003\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -166,6 +166,9 @@ msgstr "Geldig"
 
 msgid "URL is null or empty"
 msgstr "URL is nul of leeg"
+
+msgid "URL has whitespace at beginning or end"
+msgstr ""
 
 msgid "outside of domain filter, checked only syntax"
 msgstr "buiten het domein filter, alleen syntax gecontroleerd"

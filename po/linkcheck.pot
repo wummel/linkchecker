@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Aug 11 15:59:43 2003\n"
+"POT-Creation-Date: Sat Sep 20 14:17:26 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,6 +160,9 @@ msgid "Valid"
 msgstr ""
 
 msgid "URL is null or empty"
+msgstr ""
+
+msgid "URL has whitespace at beginning or end"
 msgstr ""
 
 msgid "outside of domain filter, checked only syntax"

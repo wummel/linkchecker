@@ -17,7 +17,7 @@ MOS=$(patsubst %, %.mo, $(LANGUAGES) )
 
 all:	$(MOS)
 
-%.po:	$(PACAKGE).pot
+%.po:	$(PACKAGE).pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
 
 $(PACKAGE).pot: $(SOURCES)
