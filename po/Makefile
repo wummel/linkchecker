@@ -25,7 +25,7 @@ template: $(TEMPLATE)
 $(TEMPLATE): $(POSOURCES)
 	$(XGETTEXT) -w 80 --default-domain=$(PACKAGE) --language=Python \
 	  --copyright-holder="Bastian Kleineidam <calvin@users.sf.net>" \
-	  --msgid-bugs-address=calvin@users.sf.net \
+	  --msgid-bugs-address=calvin@users.sf.net -o $(TEMPLATE) \
 	  $(POSOURCES)
 
 %.mo:	%.po
