@@ -140,7 +140,13 @@ class HttpUrlData (ProxyUrlData):
                 # already handled
                 return
             if tries >= self.max_redirects:
-                self.setError(i18n._("more than %d redirections, aborting")%self.max_redirections)
+                if self.method=="HEAD":
+                    # Microsoft servers tend to recurse HEAD requests
+                    self.method = "GET"
+                    redirectCache = [self.url]
+                    fallback = True
+                    continue
+                self.setError(i18n._("more than %d redirections, aborting")%self.max_redirects)
                 return
             # user authentication
             if response.status == 401:
@@ -162,6 +168,7 @@ class HttpUrlData (ProxyUrlData):
                 if self.method=="HEAD":
                     # fall back to GET
                     self.method = "GET"
+                    redirectCache = [self.url]
                     fallback = True
                     continue
             elif self.headers and self.method!="GET":
@@ -199,6 +206,11 @@ class HttpUrlData (ProxyUrlData):
             # check internal redirect cache to avoid recursion
             if redirected in redirectCache:
                 redirectCache.append(redirected)
+                if self.method == "HEAD":
+                    # Microsoft servers tend to recurse HEAD requests
+                    # fall back to the original url and use GET
+                    self.urlparts = list(urlparse.urlsplit(self.url))
+                    return self.max_redirects, response
                 self.setError(
                      i18n._("recursive redirection encountered:\n %s") % \
                             "\n  => ".join(redirectCache))
