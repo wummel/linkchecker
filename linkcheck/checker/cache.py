@@ -232,7 +232,7 @@ class Cache (object):
         """
         self.lock.acquire()
         try:
-            return self.pool.add_connection(key, connection, timeout)
+            self.pool.add_connection(key, connection, timeout)
         finally:
             self.lock.release()
 
