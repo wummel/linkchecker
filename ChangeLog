@@ -1,3 +1,15 @@
+2.0rc2 "" (released xx.xx.xxxx)
+
+  * encode version string for --version output
+    Type: bugfix
+    Closes: SF bug #1067915
+    Changed: linkchecker
+
+  * added shell config note with --home install option
+    Type: documentation
+    Closes: SF bug #1067919
+    Changed: doc/install.txt
+
 2.0rc1 "The Incredibles" (released 16.11.2004)
 
   * Only instantiate SSL connections if SSL is supported
