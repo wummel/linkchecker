@@ -17,10 +17,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import urlparse, sys, time, re, httplib2, zlib, gzip, robotparser2, socket
-from urllib import quote, unquote
 from cStringIO import StringIO
 import Config, i18n
 from linkcheck import LinkCheckerError
+from linkcheck.url import url_norm, url_quote
 from debug import *
 from ProxyUrlData import ProxyUrlData
 from UrlData import ExcList, GetUrlDataFrom
@@ -211,7 +211,7 @@ class HttpUrlData (ProxyUrlData):
               tries < self.max_redirects:
             newurl = self.headers.getheader("Location",
                          self.headers.getheader("Uri", ""))
-            redirected = unquote(urlparse.urljoin(redirected, newurl))
+            redirected = url_norm(urlparse.urljoin(redirected, newurl))
             # note: urlparts has to be a list
             self.urlparts = list(urlparse.urlsplit(redirected))
             # check internal redirect cache to avoid recursion
@@ -319,9 +319,9 @@ class HttpUrlData (ProxyUrlData):
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self.getHTTPObject(host, scheme)
-        # quote parts before submit
-        qurlparts = self.urlparts[:]
-        qurlparts[2:5] = map(quote, self.urlparts[2:5])
+        # quote url before submit
+        url = url_quote(self.url)
+        qurlparts = urlparse.urlsplit(url)
         if self.proxy:
             path = urlparse.urlunsplit(qurlparts)
         else:
