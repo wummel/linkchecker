@@ -13,8 +13,10 @@ linkchecker (1.3.0) unstable; urgency=low
     Python 2.0 compatibility (thanks to Allan Bailey for the patch)
   * additionally allow https in the CGI script (thanks to Allan Bailey
     for the patch)
+  * fix for distutils bug: python2None interpreter is wrong
+  * fix default location of global config file
 
- -- Bastian Kleineidam <calvin@debian.org>  Sat, 28 Apr 2001 21:46:06 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 29 Apr 2001 02:09:41 +0200
 
 linkchecker (1.2.15) unstable; urgency=low
 

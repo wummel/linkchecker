@@ -22,10 +22,13 @@ from distutils.dist import Distribution
 from distutils.extension import Extension
 from distutils.command.install import install
 from distutils.command.install_data import install_data
+from distutils.command.build_scripts import build_scripts,first_line_re
 from distutils.command.config import config
 from distutils import util
 from distutils.file_util import write_file
-import os,string,re
+from distutils.dep_util import newer
+
+import os,string,re,sys
 
 
 class MyInstall(install):
@@ -64,37 +67,6 @@ class MyInstall(install):
                     opt_name = string.translate(opt_name, longopt_xlate)
                     val = getattr(self, opt_name)
                 print "  %s: %s" % (opt_name, val)
-
-
-class MyInstallData(install_data):
-    """My own data installer to handle .man pages"""
-    def run (self):
-        self.mkpath(self.install_dir)
-        for f in self.data_files:
-            if type(f) == StringType:
-                # it's a simple file, so copy it
-                if self.warn_dir:
-                    self.warn("setup script did not provide a directory for "
-                              "'%s' -- installing right in '%s'" %
-                              (f, self.install_dir))
-                self._install_file(f, self.install_dir)
-            else:
-                # it's a tuple with path to install to and a list of files
-                dir = f[0]
-                if not os.path.isabs(dir):
-                    dir = os.path.join(self.install_dir, dir)
-                elif self.root:
-                    dir = change_root(self.root, dir)
-                self.mkpath(dir)
-                for data in f[1]:
-                    self._install_file(data, dir)
-
-    def _install_file(self, filename, dirname):
-        (out, _) = self.copy_file(filename, dirname)
-        # match for man pages .[0-9]
-        if re.search(r'/man/.+\.\d$', out):
-            out = out+".gz"
-        self.outfiles.append(out)
 
 
 class MyConfig(config):
@@ -171,7 +143,7 @@ class MyDistribution(Distribution):
             self.announce("bdist_wininst command found on non-Windows "
 	                  "platform. Disabling SSL compilation")
         elif _linkchecker_configdata.have_ssl:
-            self.ext_modules = [Extension('linkcheckssl',
+            self.ext_modules = [Extension('linkcheckssl.ssl',
 	                ['linkcheckssl/ssl.c'],
                         include_dirs=_linkchecker_configdata.ssl_include_dirs,
                         library_dirs=_linkchecker_configdata.ssl_library_dirs,
@@ -191,6 +163,67 @@ class MyDistribution(Distribution):
         # write the config file
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
+
+class my_build_scripts(build_scripts):
+
+    description = "\"build\" scripts (copy and fixup #! line)"
+
+    user_options = [
+        ('build-dir=', 'd', "directory to \"build\" (copy) to"),
+        ('force', 'f', "forcibly build everything (ignore file timestamps"),
+        ]
+
+    boolean_options = ['force']
+
+
+    def copy_scripts(self):
+        """patched because of a bug"""
+        outfiles = []
+        self.mkpath(self.build_dir)
+        for script in self.scripts:
+            adjust = 0
+            outfile = os.path.join(self.build_dir, os.path.basename(script))
+
+            if not self.force and not newer(script, outfile):
+                self.announce("not copying %s (output up-to-date)" % script)
+                continue
+
+            # Always open the file, but ignore failures in dry-run mode --
+            # that way, we'll get accurate feedback if we can read the
+            # script.
+            try:
+                f = open(script, "r")
+            except IOError:
+                if not self.dry_run:
+                   raise
+                f = None
+            else:
+                first_line = f.readline()
+                if not first_line:
+                    self.warn("%s is an empty file (skipping)" % script)
+                    continue
+
+                match = first_line_re.match(first_line)
+                if match:
+                    adjust = 1
+                    post_interp = match.group(1) or ""
+
+            if adjust:
+                self.announce("copying and adjusting %s -> %s" %
+                              (script, self.build_dir))
+                if not self.dry_run:
+                    outf = open(outfile, "w")
+                    outf.write("#!%s%s\n" % 
+                               (os.path.normpath(sys.executable), post_interp))
+                    outf.writelines(f.readlines())
+                    outf.close()
+                if f:
+                    f.close()
+            else:
+                f.close()
+                self.copy_file(script, outfile)
+
+    # copy_scripts ()
 
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
@@ -223,7 +256,7 @@ o a (Fast)CGI web interface (requires HTTP server)
        distclass = MyDistribution,
        cmdclass = {'config': MyConfig,
                    'install': MyInstall,
-                   'install_data': MyInstallData,
+		   'build_scripts': my_build_scripts,
 		  },
        packages = ['','DNS','linkcheck','linkcheckssl'],
        scripts = ['linkchecker'],

@@ -360,7 +360,7 @@ class Configuration(UserDict.UserDict):
     def read(self, files = []):
         if not files:
             # system wide config settings
-            config_dir = join(_linkchecker_configdata.install_data, 'linkchecker')
+            config_dir = join(_linkchecker_configdata.install_data, 'share/linkchecker')
             files.append(norm(join(config_dir, "linkcheckerrc")))
             # per user config settings
             files.append(norm("~/.linkcheckerrc"))
@@ -415,8 +415,8 @@ class Configuration(UserDict.UserDict):
                          self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error: pass
         for key in Loggers.keys():
-            debug(key+"\n")
             if cfgparser.has_section(key):
+                debug(key+"\n")
                 for opt in cfgparser.options(key):
                     try: self[key][opt] = cfgparser.get(key, opt)
                     except ConfigParser.Error, msg: debug(str(msg))

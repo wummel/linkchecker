@@ -69,6 +69,119 @@ msgstr ""
 msgid "Effective URL %s"
 msgstr "Effektive URL %s"
 
+msgid ", line "
+msgstr ", Zeile "
+
+msgid "url"
+msgstr ""
+
+msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
+msgstr "Keiner der Mail Hosts für %s akzeptiert eine SMTP Verbindung: %s"
+
+msgid "name"
+msgstr ""
+
+msgid "%.3f seconds\n"
+msgstr "%.3f Sekunden\n"
+
+msgid "realurl"
+msgstr ""
+
+msgid ""
+"<html><head><title>LinkChecker Online Error</title></head><body text="
+"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
+"\"#191c83\"><blockquote><b>Error</b><br>The LinkChecker Online script has "
+"encountered an error. Please ensure that your provided URL link begins with "
+"<code>http://</code> and contains only these characters: <code>A-Za-z0-9./_~-"
+"</code><br><br>Errors are logged.</blockquote></body></html>"
+msgstr ""
+"<html><head><title>LinkChecker Online Fehler</title></head><body text="
+"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
+"\"#191c83\"><blockquote><b>Fehler</b><br>Das LinkChecker Online Skript ist "
+"auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die "
+"angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen "
+"enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
+"blockquote></body></html>"
+
+msgid "No adresses found"
+msgstr "Keine Adressen gefunden"
+
+msgid "created by %s at %s\n"
+msgstr "erstellt von %s um %s\n"
+
+msgid " found\n"
+msgstr " gefunden\n"
+
+msgid "1 error"
+msgstr "1 Fehler"
+
+msgid "Error"
+msgstr "Fehler"
+
+msgid "1 warning, "
+msgstr "1 Warnung, "
+
+#, fuzzy
+msgid "info"
+msgstr "Info"
+
+#, fuzzy
+msgid "base"
+msgstr "Basis"
+
+msgid "Valid"
+msgstr "Gültig"
+
+msgid "hours"
+msgstr "Stunden"
+
+msgid "Start checking at %s\n"
+msgstr "Beginne Prüfen am %s\n"
+
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+msgid "Base"
+msgstr "Basis"
+
+msgid "seconds"
+msgstr "Sekunden"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Name"
+msgstr ""
+
+msgid "URL is null or empty"
+msgstr "URL ist Null oder leer"
+
+msgid " in %d links"
+msgstr " in %d URLs"
+
+msgid " errors"
+msgstr " Fehler"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "illegal recursionlevel number %d"
+msgstr "illegale recursionlevel Nummer %d"
+
+msgid "%.3f seconds"
+msgstr "%.3f Sekunden"
+
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr ""
+"HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
+
+#, fuzzy
+msgid "checktime"
+msgstr "Prüfzeit"
+
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -91,7 +204,7 @@ msgid ""
 "        ~/.linkcheckerrc and then /etc/linkcheckerrc\n"
 "        (under Windows <path-to-program>\\linkcheckerrc).\n"
 "-F type[/filename], --file-output=type[/filename]\n"
-"        Same as output, but write to a file linkchecker-out.<type>\n"
+"        Same as -o, but write to a file linkchecker-out.<type>\n"
 "        or <filename> if specified. If the file already exists, it\n"
 "        is overwritten. You can specify this option more than once.\n"
 "        There is no file output for the blacklist logger. Default is\n"
@@ -215,119 +328,6 @@ msgstr ""
 "        Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option impliziert -w.\n"
-
-msgid ", line "
-msgstr ", Zeile "
-
-msgid "url"
-msgstr ""
-
-msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
-msgstr "Keiner der Mail Hosts für %s akzeptiert eine SMTP Verbindung: %s"
-
-msgid "name"
-msgstr ""
-
-msgid "%.3f seconds\n"
-msgstr "%.3f Sekunden\n"
-
-msgid "realurl"
-msgstr ""
-
-msgid ""
-"<html><head><title>LinkChecker Online Error</title></head><body text="
-"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
-"\"#191c83\"><blockquote><b>Error</b><br>The LinkChecker Online script has "
-"encountered an error. Please ensure that your provided URL link begins with "
-"<code>http://</code> and contains only these characters: <code>A-Za-z0-9./_~-"
-"</code><br><br>Errors are logged.</blockquote></body></html>"
-msgstr ""
-"<html><head><title>LinkChecker Online Fehler</title></head><body text="
-"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
-"\"#191c83\"><blockquote><b>Fehler</b><br>Das LinkChecker Online Skript ist "
-"auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die "
-"angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen "
-"enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
-"blockquote></body></html>"
-
-msgid "No adresses found"
-msgstr "Keine Adressen gefunden"
-
-msgid "created by %s at %s\n"
-msgstr "erstellt von %s um %s\n"
-
-msgid " found\n"
-msgstr " gefunden\n"
-
-msgid "1 error"
-msgstr "1 Fehler"
-
-msgid "Error"
-msgstr "Fehler"
-
-msgid "1 warning, "
-msgstr "1 Warnung, "
-
-#, fuzzy
-msgid "info"
-msgstr "Info"
-
-#, fuzzy
-msgid "base"
-msgstr "Basis"
-
-msgid "Valid"
-msgstr "Gültig"
-
-msgid "hours"
-msgstr "Stunden"
-
-msgid "Start checking at %s\n"
-msgstr "Beginne Prüfen am %s\n"
-
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
-msgid "Base"
-msgstr "Basis"
-
-msgid "seconds"
-msgstr "Sekunden"
-
-msgid "URL"
-msgstr "URL"
-
-msgid "Name"
-msgstr ""
-
-msgid "URL is null or empty"
-msgstr "URL ist Null oder leer"
-
-msgid " in %d links"
-msgstr " in %d URLs"
-
-msgid " errors"
-msgstr " Fehler"
-
-msgid "Info"
-msgstr "Info"
-
-msgid "illegal recursionlevel number %d"
-msgstr "illegale recursionlevel Nummer %d"
-
-msgid "%.3f seconds"
-msgstr "%.3f Sekunden"
-
-msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr ""
-"HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
-
-#, fuzzy
-msgid "checktime"
-msgstr "Prüfzeit"
 
 msgid "dltime"
 msgstr ""

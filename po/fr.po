@@ -69,6 +69,110 @@ msgstr ""
 msgid "Effective URL %s"
 msgstr "URL effective %s"
 
+msgid ", line "
+msgstr ", ligne "
+
+msgid "url"
+msgstr ""
+
+msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
+msgstr "Aucun des hôtes de messagerie pour %s n'accepte de connection SMTP: %s"
+
+msgid "name"
+msgstr ""
+
+msgid "%.3f seconds\n"
+msgstr "%.3f secondes\n"
+
+msgid "realurl"
+msgstr ""
+
+msgid ""
+"<html><head><title>LinkChecker Online Error</title></head><body text="
+"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
+"\"#191c83\"><blockquote><b>Error</b><br>The LinkChecker Online script has "
+"encountered an error. Please ensure that your provided URL link begins with "
+"<code>http://</code> and contains only these characters: <code>A-Za-z0-9./_~-"
+"</code><br><br>Errors are logged.</blockquote></body></html>"
+msgstr ""
+
+msgid "No adresses found"
+msgstr "Aucune adresse trouvée"
+
+msgid "created by %s at %s\n"
+msgstr ""
+
+msgid " found\n"
+msgstr " trouvé\n"
+
+msgid "1 error"
+msgstr "1 erreur"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "1 warning, "
+msgstr "1 avertissement, "
+
+msgid "info"
+msgstr ""
+
+#, fuzzy
+msgid "base"
+msgstr "Base"
+
+msgid "Valid"
+msgstr "Valide"
+
+msgid "hours"
+msgstr "heures"
+
+msgid "Start checking at %s\n"
+msgstr "Démarrage du controle à %s\n"
+
+msgid "D/L Time"
+msgstr "Durée D/L"
+
+msgid "Base"
+msgstr "Base"
+
+msgid "seconds"
+msgstr "secondes"
+
+msgid "URL"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "URL is null or empty"
+msgstr "L'URL est nulle ou vide"
+
+msgid " in %d links"
+msgstr " dans %d liens"
+
+msgid " errors"
+msgstr " erreurs"
+
+msgid "Info"
+msgstr ""
+
+msgid "illegal recursionlevel number %d"
+msgstr "valeur du niveau de récursivité %d illégal"
+
+msgid "%.3f seconds"
+msgstr "%.3f secondes"
+
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
+
+#, fuzzy
+msgid "checktime"
+msgstr "Durée d'Analyse"
+
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -91,7 +195,7 @@ msgid ""
 "        ~/.linkcheckerrc and then /etc/linkcheckerrc\n"
 "        (under Windows <path-to-program>\\linkcheckerrc).\n"
 "-F type[/filename], --file-output=type[/filename]\n"
-"        Same as output, but write to a file linkchecker-out.<type>\n"
+"        Same as -o, but write to a file linkchecker-out.<type>\n"
 "        or <filename> if specified. If the file already exists, it\n"
 "        is overwritten. You can specify this option more than once.\n"
 "        There is no file output for the blacklist logger. Default is\n"
@@ -215,110 +319,6 @@ msgstr ""
 "        error message, for example 'This page has moved' or\n"
 "        'Oracle Application Server error'.\n"
 "        This option implies -w.\n"
-
-msgid ", line "
-msgstr ", ligne "
-
-msgid "url"
-msgstr ""
-
-msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
-msgstr "Aucun des hôtes de messagerie pour %s n'accepte de connection SMTP: %s"
-
-msgid "name"
-msgstr ""
-
-msgid "%.3f seconds\n"
-msgstr "%.3f secondes\n"
-
-msgid "realurl"
-msgstr ""
-
-msgid ""
-"<html><head><title>LinkChecker Online Error</title></head><body text="
-"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
-"\"#191c83\"><blockquote><b>Error</b><br>The LinkChecker Online script has "
-"encountered an error. Please ensure that your provided URL link begins with "
-"<code>http://</code> and contains only these characters: <code>A-Za-z0-9./_~-"
-"</code><br><br>Errors are logged.</blockquote></body></html>"
-msgstr ""
-
-msgid "No adresses found"
-msgstr "Aucune adresse trouvée"
-
-msgid "created by %s at %s\n"
-msgstr ""
-
-msgid " found\n"
-msgstr " trouvé\n"
-
-msgid "1 error"
-msgstr "1 erreur"
-
-msgid "Error"
-msgstr "Erreur"
-
-msgid "1 warning, "
-msgstr "1 avertissement, "
-
-msgid "info"
-msgstr ""
-
-#, fuzzy
-msgid "base"
-msgstr "Base"
-
-msgid "Valid"
-msgstr "Valide"
-
-msgid "hours"
-msgstr "heures"
-
-msgid "Start checking at %s\n"
-msgstr "Démarrage du controle à %s\n"
-
-msgid "D/L Time"
-msgstr "Durée D/L"
-
-msgid "Base"
-msgstr "Base"
-
-msgid "seconds"
-msgstr "secondes"
-
-msgid "URL"
-msgstr ""
-
-msgid "Name"
-msgstr ""
-
-msgid "URL is null or empty"
-msgstr "L'URL est nulle ou vide"
-
-msgid " in %d links"
-msgstr " dans %d liens"
-
-msgid " errors"
-msgstr " erreurs"
-
-msgid "Info"
-msgstr ""
-
-msgid "illegal recursionlevel number %d"
-msgstr "valeur du niveau de récursivité %d illégal"
-
-msgid "%.3f seconds"
-msgstr "%.3f secondes"
-
-msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
-
-#, fuzzy
-msgid "checktime"
-msgstr "Durée d'Analyse"
 
 msgid "dltime"
 msgstr ""

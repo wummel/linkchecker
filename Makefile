@@ -70,7 +70,7 @@ VERSION:
 	echo $(VERSION) > VERSION
 
 .PHONY: upload
-upload: distclean dist files VERSION
+upload: distclean dist deb files VERSION
 	scp debian/changelog $(HTMLDIR)/changes.txt
 	scp README $(HTMLDIR)/readme.txt
 	scp linkchecker-out.* $(HTMLDIR)

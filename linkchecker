@@ -48,7 +48,7 @@ For single-letter option arguments the space is not a necessity. So
         ~/.linkcheckerrc and then /etc/linkcheckerrc
         (under Windows <path-to-program>\\linkcheckerrc).
 -F type[/filename], --file-output=type[/filename]
-        Same as output, but write to a file linkchecker-out.<type>
+        Same as -o, but write to a file linkchecker-out.<type>
         or <filename> if specified. If the file already exists, it
         is overwritten. You can specify this option more than once.
         There is no file output for the blacklist logger. Default is

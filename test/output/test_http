@@ -43,6 +43,13 @@ url HTTP://WWW.HEISE.DE
 cached
 name should be cached
 valid
+url http://www.heise.de/?quoted=ü
+name html entities
+valid
+url http://nocheckin
+name no check because of comment -->
+no beginning quote
+error
 url illegalquote1
 name no beginning quote
 error

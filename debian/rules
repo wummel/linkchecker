@@ -38,18 +38,18 @@ install: build
 	$(MAKE) locale
 	./setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
 	# remove man pages, we install them with dh_installman
-	rm -rf debian/$(PACKAGE)/usr/man
+	rm -r debian/$(PACKAGE)/usr/man
 	# remove example files, we install them with dh_installexamples
-	rm -rf debian/$(PACKAGE)/usr/share/linkchecker
+	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples/
 	# remove any SSL related files
-	rm -rf debian/$(PACKAGE)/usr/lib/python2.0/site-lib/linkchecker-ssl
+	rm -r debian/$(PACKAGE)/usr/lib/python2.0/site-packages/linkcheckssl
 	# install additional doc files
 	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
 	install -c -m 644 test/*.py $(DOCDIR)/test
 	install -c -m 644 test/html/*.html $(DOCDIR)/test/html
 	install -c -m 644 test/output/test_* $(DOCDIR)/test/output
 	# install system wide configuration file in etc
-	install -c -m 644 linkcheckerrc debian/$(PACKAGE)/etc
+	mv debian/$(PACKAGE)/usr/share/linkchecker/linkcheckerrc debian/$(PACKAGE)/etc
 
 
 # Build architecture-independent files here.
@@ -68,7 +68,7 @@ binary-indep: build install
 #	dh_installinfo
 #	dh_undocumented linkchecker.1
 	dh_installchangelogs 
-#	dh_link
+	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms

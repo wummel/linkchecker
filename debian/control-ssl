@@ -4,15 +4,15 @@ Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
 Build-Depends: python2-base, python2-dev, debhelper (>= 3.0.0), libssl-dev
 Build-Depends-Indep: gettext
-Standards-Version: 3.5.2
+Standards-Version: 3.5.3
 
 Package: linkchecker-ssl
 Architecture: any
 Depends: python2-base
 Recommends: linkchecker (>= ${Source-Version})
-Description: HTTPS modules for linkchecker
+Description: HTTPS module for linkchecker
  Includes the Python module 'linkcheckerssl' to support https://
- links for linkchecker.
+ links for LinkChecker.
  .
  Linkchecker features:
   o recursive checking
