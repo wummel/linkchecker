@@ -144,7 +144,7 @@ Mac OS 9.x) then drop me a note.
 (Fast)CGI web interface
 -----------------------
 
-The three CGI scripts can run LinkChecker with a nice graphical web
+The included CGI scripts can run LinkChecker with a nice graphical web
 interface.
 You can use and adjust the example HTML files in the lconline directory
 to run the script.
