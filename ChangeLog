@@ -5,6 +5,10 @@
     - accept "<!- " as comment begin
     Changed: linkcheck/parser/htmlex.l
     Closes: SF bug 768661
+  * quote url before submitting the request, the previous map() call
+    was useless. Thanks Toby Dickenson for the patch.
+    Changed: linkcheck/HttpUrlData.py
+    Closes: SF bug 776416
 
 1.8.19
   * add scheme colon in set_intern_url
