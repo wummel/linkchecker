@@ -24,7 +24,7 @@ class HTTPS(httplib.HTTP):
 		if not port: port = HTTPS_PORT
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		if self.debuglevel > 0: print 'connect:', (host, port)
-		self.sock.connect(host, port)
+		self.sock.connect((host, port))
 		self.ssl = ssl.ssl(self.sock.fileno())
 
 	def send (self, str):

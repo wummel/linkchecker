@@ -9,8 +9,12 @@ linkchecker (1.3.0) unstable; urgency=low
     Szabolcs Szakacsits for the report)
   * resolve HTML entities in link names (closes: Bug#90644)
   * debian standards version 3.5.3 (no changes)
+  * httpslib.py:27: use extra paranthesis around connect() argument for
+    Python 2.0 compatibility (thanks to Allan Bailey for the patch)
+  * additionally allow https in the CGI script (thanks to Allan Bailey
+    for the patch)
 
- -- Bastian Kleineidam <calvin@debian.org>  Sat, 28 Apr 2001 20:12:49 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sat, 28 Apr 2001 21:46:06 +0200
 
 linkchecker (1.2.15) unstable; urgency=low
 

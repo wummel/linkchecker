@@ -21,7 +21,7 @@ from linkcheck import _
 def checkform(form):
     for key in ["level","url"]:
         if not form.has_key(key) or form[key].value == "": return 0
-    if not re.match(r"^http://[-\w./=%?~]+$", form["url"].value): return 0
+    if not re.match(r"^https?://[-\w./=%?~]+$", form["url"].value): return 0
     if not re.match(r"\d", form["level"].value): return 0
     if int(form["level"].value) > 3: return 0
     if form.has_key("anchors"):
