@@ -1,271 +1,328 @@
+.\" This file was generated with po4a. Translate the source file.
 .\" 
-.TH "LINKCHECKER" "1" "10 mars 2001" "" ""
-.SH "NOM"
-linkchecker - outil permettant de vérifier s'il n'y a pas de liens cassés dans les documents HTML
+.TH LINKCHECKER 1 "10 mars 2001"  
 
-.SH "SYNOPSIS"
-.B linkchecker
-[
-.I options
-]
-[
-.I fichier\-ou\-url
-]
+.SH NOM
+linkchecker \- outil permettant de vérifier s'il n'y a pas de liens cassés 
+dans les documents HTML
 
-.SH "DESCRIPTION"
-.LP 
-LinkChecker propose
-une vérification récursive,
-du multithreading,
-un affichage en couleurs ou au format texte, HTML, SQL, CSV,
-mais aussi un graphique de la carte du site en GML ou XML,
-un support de HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, 
-Gopher, Telnet et les liens sur les fichiers locaux, 
-une vérification des liens restreinte par l'utilisation de filtres à base d'expressions rationnelles,
-un support des proxys,
-des autorisations nom utilisateur/mot de passe pour HTTP et FTP,
-un support du protocole d'exclusion par le fichier robots.txt,
-un support de l'internationalisation,
-une interface ligne de commandes et
-une interface web CGI (rapide, qui nécessite un serveur HTTP).
+.SH SYNOPSIS
+\fBlinkchecker\fP [ \fIoptions\fP ] [ \fIfichier\-ou\-url\fP ]
 
-.SH "EXEMPLES"
+.SH DESCRIPTION
+.LP
+LinkChecker propose une vérification récursive, du multithreading, un 
+affichage en couleurs ou au format texte, HTML, SQL, CSV, mais aussi un 
+graphique de la carte du site en GML ou XML, un support de HTTP/1.1, HTTPS, 
+FTP, mailto:, news:, nntp:,  Gopher, Telnet et les liens sur les fichiers 
+locaux,  une vérification des liens restreinte par l'utilisation de filtres 
+à base d'expressions rationnelles, un support des proxys, des autorisations 
+nom utilisateur/mot de passe pour HTTP et FTP, un support du protocole 
+d'exclusion par le fichier robots.txt,un support de l'internationalisation, 
+une interface ligne de commandes et une interface web CGI (rapide, qui 
+nécessite un serveur HTTP).
+
+.SH EXEMPLES
 L'utilisation la plus courante est de vérifier le domaine récursivement, ainsi que
-quelques URL simples pointant en dehors du domaine\ :
+quelques URL simples pointant en dehors du domaine :
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
 
-Faites attention, car ceci vérifie le site en entier, celui\-ci pouvant avoir plusieurs centaines
-de milliers d'URL. Utilisez l'option \fB\-r\fP pour restreindre la profondeur de la récursion.
+Faites attention, car ceci vérifie le site en entier, celui\-ci pouvant 
+avoir plusieurs centaines de milliers d'URL. Utilisez l'option \fB\-r\fP pour 
+restreindre la profondeur de la récursion.
 
 Pour ne pas se connecter aux hôtes mailto:, seulement vérifier leur syntaxe.
-Tous les autres liens sont vérifiés comme d'habitude\ :
+Tous les autres liens sont vérifiés comme d'habitude :
   \fBlinkchecker \-\-intern='!^mailto:' \-\-extern\-strict\-all www.mysite.org\fP
 
-Pour vérifier un fichier HTML local sur Unix\ :
+Pour vérifier un fichier HTML local sur Unix :
   \fBlinkchecker ../bla.html\fP
 
-Pour vérifier un fichier HTML local sur Windows\ :
-  \fBlinkchecker c:\\temp\\test.html\fP
+Pour vérifier un fichier HTML local sur Windows :
+  \fBlinkchecker c:\etemp\etest.html\fP
 
-Vous pouvez ne pas mettre la partie \fBhttp://\fP de l'URL si le nom de domaine commence par \fBwww.\fP\ :
+Vous pouvez ne pas mettre la partie \fBhttp://\fP de l'URL si le nom de domaine commence par \fBwww.\fP :
   \fBlinkchecker www.myhomepage.de\fP
 
-Vous pouvez ne pas mettre la partie \fBftp://\fP de l'URL si le nom de domaine commence par \fBftp.\fP\ :
+Vous pouvez ne pas mettre la partie \fBftp://\fP de l'URL si le nom de domaine commence par \fBftp.\fP :
   \fBlinkchecker \-r0 ftp.linux.org\fP
 
-.SH "OPTIONS"
-.SS Options générales
-.TP 
+.SH OPTIONS
+
+.SS "Options générales"
+.TP
 \fB\-h\fP, \fB\-\-help\fP
 Afficher des informations sur l'utilisation du programme.
-.TP 
+.TP
 \fB\-f\fP\fIconfigfile\fP, \fB\-\-config=\fP\fIconfigfile\fP
-Utiliser \fIconfigfile\fP comme fichier de configuration. LinkChecker recherche d'abord
-/etc/linkchecker/linkcheckerrc puis ~/.linkchecker/linkcheckerrc.
-.TP 
+Utiliser \fIconfigfile\fP comme fichier de configuration. LinkChecker recherche 
+d'abord \fB/etc/linkchecker/linkcheckerrc\fP puis 
+\fB~/.linkchecker/linkcheckerrc\fP.
+.TP
 \fB\-I\fP, \fB\-\-interactive\fP
 Demander l'URL si aucune n'a été donnée sur la ligne de commande.
-.TP 
+.TP
 \fB\-V\fP, \fB\-\-version\fP
 Afficher la version et quitter.
-.TP 
+.TP
 \fB\-t\fP\fInum\fP, \fB\-\-threads=\fP\fInum\fP
-Permettre de ne pas avoir plus de \fInum\fP threads. Le nombre de threads est fixé par défaut à 10.
-Pour désactiver le multithreading, spécifier un nombre non positif.
+Permettre de ne pas avoir plus de \fInum\fP threads. Le nombre de threads est 
+fixé par défaut à 10.Pour désactiver le multithreading, spécifier un 
+nombre non positif.
+.TP
+\fB\-\-priority\fP
+Run with normal thread scheduling priority. Per default LinkChecker runs 
+with low thread priority to be suitable as a background job.
 
-.SS Options de sortie
-.TP 
+.SS "Options de sortie"
+.TP
 \fB\-v\fP, \fB\-\-verbose\fP
-Journaliser toutes les URL vérifiées (implique \fB\-w\fP). Par défaut, seules les URL invalides
-sont mises dans le journal.
-.TP 
+Journaliser toutes les URL vérifiées (implique \fB\-w\fP). Par défaut, seules 
+les URL invalides sont mises dans le journal.
+.TP
 \fB\-w\fP, \fB\-\-warnings\fP
 Journaliser les avertissements.
-.TP 
-\fB\-W\fP\fIregex\fP, \fB\-\-warning\-regex=\fIregex\fP
-Définir une expression rationnelle. Quand cette expression rationnelle correspondra au contenu d'un lien vérifié, LinkChecker affichera un avertissement.
-Ceci ne s'applique qu'aux pages valides, car on peut ainsi récupérer leur contenu.
-Utilisez ceci afin de vérifier les pages qui peuvent contenir des messages d'erreur sous une certaine forme, comme par exemple 'Cette page a été déplacée' ou 'Erreur du serveur d'application Oracle'.
-Cette option implique \fB\-w\fP.
-.TP 
-\fB\-\-warning\-size\-bytes=\fP\fIoctets\fP
-Affiche un avertissement si la taille du contenu disponible dépasse le nombre d'\fIoctets\fP donné.
-Cette option implique \fB\-w\fP.
-.TP 
+.TP
+\fB\-W\fP\fIregex\fP, \fB\-\-warning\-regex=\fP\fIregex\fP
+Définir une expression rationnelle. Quand cette expression rationnelle 
+correspondra au contenu d'un lien vérifié, LinkChecker affichera un 
+avertissement.Ceci ne s'applique qu'aux pages valides, car on peut ainsi 
+récupérer leur contenu.Utilisez ceci afin de vérifier les pages qui 
+peuvent contenir des messages d'erreur sous une certaine forme, comme par 
+exemple "Cette page a été déplacée" ou "Erreur du serveur d'application 
+Oracle".Cette option implique \fB\-w\fP.
+.TP
+\fB\-\-warning\-size\-bytes=\fP\fIbytes\fP
+Affiche un avertissement si la taille du contenu disponible dépasse le 
+nombre d'\fIoctets\fP donné.Cette option implique \fB\-w\fP.
+.TP
 \fB\-q\fP, \fB\-\-quiet\fP
-Exécution silencieuse, c'est un alias pour \fB\-o none\fP.
-Cette option n'est utile qu'avec \fB\-F\fP.
-.TP 
-\fB\-o\fP\fItype\fP, \fB\-\-output=\fP\fItype\fP[\fB/\fP\fIencodage\fP]
-Spécifier le type de sortie. Les types possibles sont \fBtext\fP,
-\fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP ou \fBblacklist\fP. Le type par défaut est \fBtext\fP. Les différents types de sortie sont documentés ci\-dessous.
-\fIencodage\fP permet de spécifier l'encodage de sortie, la valeur par défaut étant \fBiso\-8859\-15\fP.
-Les encodages valides sont disponibles sur \fBhttp://docs.python.org/lib/node127.html\fP.
-.TP 
+Exécution silencieuse, c'est un alias pour \fB\-o none\fP. Cette option n'est 
+utile qu'avec \fB\-F\fP.
+.TP
+\fB\-o\fP\fItype\fP[\fB/\fP\fIencoding\fP], \fB\-\-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP]
+Spécifier le type de sortie. Les types possibles sont \fBtext\fP, \fBhtml\fP, 
+\fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP ou \fBblacklist\fP. Le type par 
+défaut est \fBtext\fP. Les différents types de sortie sont documentés 
+ci\-dessous. \fIencodage\fP permet de spécifier l'encodage de sortie, la valeur 
+par défaut étant \fBiso\-8859\-15\fP. Les encodages valides sont disponibles 
+sur \fBhttp://docs.python.org/lib/node127.html\fP.
+.TP
 \fB\-F\fP\fItype\fP[\fB/\fP\fIencodage\fP][\fB/\fP\fInom_fichier\fP], \fB\-\-file\-output=\fP\fItype\fP[\fB/\fP\fIencodage\fP][\fB/\fP\fInom_fichier\fP]
-Enregistrer la sortie dans un fichier \fBlinkchecker\-out.\fP\fItype\fP,
-\fB$HOME/.linkchecker/blacklist\fP pour la sortie \fBblacklist\fP, ou dans \fInom_fichier\fP si spécifié.
-\fIencodage\fP permet de spécifier l'encodage de sortie, la valeur par défaut étant \fBiso\-8859\-15\fP.
-Les encodages valides sont disponibles sur \fBhttp://docs.python.org/lib/node127.html\fP.
-La partie \fInom_fichier\fP du type de sortie \fBnone\fP est ignorée, sinon, si le fichier existe déjà, il sera écrasé.
-Vous pouvez spécifier l'option plusieurs fois. Les types de sortie valides pour les fichiers sont \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP ou \fBblacklist\fP.
-Par défaut, il n'y a pas de fichier de sortie. Les différents types de sortie sont documentés ci\-dessous. Il faut noter que vous pouvez supprimer toutes les sorties console avec l'option \fB\-o none\fP.
-.TP 
+Enregistrer la sortie dans un fichier \fBlinkchecker\-out.\fP\fItype\fP, 
+\fB$HOME/.linkchecker/blacklist\fP pour la sortie \fBblacklist\fP, ou dans 
+\fInom_fichier\fP si spécifié. \fIencodage\fP permet de spécifier l'encodage de 
+sortie, la valeur par défaut étant \fBiso\-8859\-15\fP. Les encodages valides 
+sont disponibles sur \fBhttp://docs.python.org/lib/node127.html\fP.La partie 
+\fInom_fichier\fP du type de sortie \fBnone\fP est ignorée, sinon, si le fichier 
+existe déjà, il sera écrasé.Vous pouvez spécifier l'option plusieurs 
+fois. Les types de sortie valides pour les fichiers sont \fBtext\fP, \fBhtml\fP, 
+\fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP ou \fBblacklist\fP.Par défaut, 
+il n'y a pas de fichier de sortie. Les différents types de sortie sont 
+documentés ci\-dessous. Il faut noter que vous pouvez supprimer toutes les 
+sorties console avec l'option \fB\-o none\fP.
+.TP
 \fB\-\-no\-status\fP
 Ne pas afficher les messages d'état de la vérification.
-.TP 
+.TP
 \fB\-D\fP\fIlogger\fP, \fB\-\-debug=\fP\fIlogger\fP
-Afficher les sorties de débogage pour l'enregistreur de journal \fIlogger\fP.
-Les enregistreurs disponibles sont\ : \fBcmdline\fP, \fBchecking\fP,
-\fBcache\fP, \fBgui\fP and \fBall\fP.
-\fBall\fP est un alias pour indiquer que l'on veut tous les enregistreurs disponibles.
-Cette option peut être donnée plusieurs fois pour déboguer avec plus d'un enregistreur de journal.
-.BR 
-Le multithreading est désactivé pendant une exécution en mode debug afin de garantir la précision des résultats.
-.TP 
+Afficher les sorties de débogage pour l'enregistreur de journal 
+\fIlogger\fP. Les enregistreurs disponibles sont : \fBcmdline\fP, \fBchecking\fP, 
+\fBcache\fP, \fBgui\fP and \fBall\fP. \fBall\fP est un alias pour indiquer que l'on veut 
+tous les enregistreurs disponibles. Cette option peut être donnée 
+plusieurs fois pour déboguer avec plus d'un enregistreur de journal. Le 
+multithreading est désactivé pendant une exécution en mode debug afin de 
+garantir la précision des résultats.
+.TP
 \fB\-\-profile\fP
-Écrire les données de profilage dans un fichier nommé \fBlinkchecker.prof\fP
+Écrire les données de profilage dans un fichier nommé \fBlinkchecker.prof\fP 
 dans le répertoire de travail courant. Voir aussi \fB\-\-viewprof\fP.
-.TP 
+.TP
 \fB\-\-viewprof\fP
-Afficher en sortie les données de profilage générées précédemment. Voir aussi \fB\-\-profile\fP.
+Afficher en sortie les données de profilage générées 
+précédemment. Voir aussi \fB\-\-profile\fP.
 
-.SS Options de vérification
-.TP 
-\fB\-r\fP\fIdepth\fP, \fB\-\-recursion\-level=\fP\fIprofondeur\fP
-Vérifier récursivement tous les liens jusqu'à une \fIprofondeur\fP donnée. Une profondeur négative permet d'avoir une récursion infinie. Par défaut, la récursion est infinie.
-.TP 
-\fB\-i\fP\fIregex\fP, \fB\-\-intern=\fIregex\fP
-Supposer que les URL correspondant à l'expression rationnelle donnée sont internes. LinkChecker ne descend récursivement que sur les URL internes, et pas sur les externes.
-.TP 
+.SS "Options de vérification"
+.TP
+\fB\-r\fP\fIprofondeur\fP, \fB\-\-recursion\-level=\fP\fIprofondeur\fP
+Vérifier récursivement tous les liens jusqu'à une 
+\fIrofondeur\fPdonnée. Une profondeur négative permet d'avoir une récursion 
+infinie. Par défaut, la récursion est infinie.
+.TP
+\fB\-i\fP\fIregex\fP, \fB\-\-intern=\fP\fIregex\fP
+Supposer que les URL correspondant à l'expression rationnelle donnée sont 
+internes. LinkChecker ne descend récursivement que sur les URL internes, et 
+pas sur les externes.
+.TP
 \fB\-e\fP\fIregex\fP, \fB\-\-extern=\fP\fIregex\fP
-Supposer que les URL correspondant à l'expression donnée sont externes. Seuls les liens HTML internes sont vérifiés récursivement.
-.TP 
+Supposer que les URL correspondant à l'expression donnée sont 
+externes. Seuls les liens HTML internes sont vérifiés récursivement.
+.TP
 \fB\-\-extern\-strict=\fP\fIregex\fP
-Supposer que les URL correspondant à l'expression donnée sont strictement externes. Seuls les liens HTML internes sont vérifiés récursivement.
-.TP 
+Supposer que les URL correspondant à l'expression donnée sont strictement 
+externes. Seuls les liens HTML internes sont vérifiés récursivement.
+.TP
 \fB\-s\fP, \fB\-\-extern\-strict\-all\fP
-Ne vérifier que la syntaxe des liens externes, sans que l'on essaie de s'y connecter. Pour les URL locales, seuls les fichiers locaux sont internes. Pour les URL HTTP et FTP, toutes les URL avec le même nom de domaine sont internes.
-.TP 
+Ne vérifier que la syntaxe des liens externes, sans que l'on essaie de s'y 
+connecter. Pour les URL locales, seuls les fichiers locaux sont 
+internes. Pour les URL HTTP et FTP, toutes les URL avec le même nom de 
+domaine sont internes.
+.TP
 \fB\-d\fP, \fB\-\-denyallow\fP
-Inverser l'ordre de vérification en externe/interne. L'ordre de vérification par défaut est interne/externe.
-.TP 
+Inverser l'ordre de vérification en externe/interne. L'ordre de 
+vérification par défaut est interne/externe.
+.TP
 \fB\-C\fP, \fB\-\-cookies\fP
-Accepter et envoyer des cookies HTTP en accord avec le RFC 2109. Seuls les cookies qui sont renvoyés au serveur d'origine sont acceptés. Les cookies acceptés et envoyés sont fournis comme une information supplémentaire dans les journaux.
-.TP 
+Accepter et envoyer des cookies HTTP en accord avec le RFC 2109. Seuls les 
+cookies qui sont renvoyés au serveur d'origine sont acceptés. Les cookies 
+acceptés et envoyés sont fournis comme une information supplémentaire 
+dans les journaux.
+.TP
 \fB\-a\fP, \fB\-\-anchors\fP
-Vérifier les références ancrées. Cette option s'applique aux URL internes et externes. Par défaut, il n'y a pas de vérification des ancres. Cette option implique \fB\-w\fP parce que les erreurs d'ancre sont toujours des avertissements.
-.TP 
+Vérifier les références ancrées. Cette option s'applique aux URL 
+internes et externes. Par défaut, il n'y a pas de vérification des 
+ancres. Cette option implique \fB\-w\fP parce que les erreurs d'ancre sont 
+toujours des avertissements.
+.TP
 \fB\-\-no\-anchor\-caching\fP
-Traiter url#anchora et url#anchorb comme égales dans le cache. Ceci est le comportement par défaut d'un navigateur, mais n'est pas spécifié dans la spécification URI. À utiliser avec précaution.
-.TP 
+Traiter url#anchora et url#anchorb comme égales dans le cache. Ceci est le 
+comportement par défaut d'un navigateur, mais n'est pas spécifié dans la 
+spécification URI. À utiliser avec précaution.
+.TP
 \fB\-u\fP\fInom\fP, \fB\-\-user=\fP\fInom\fP
-Essayer le nom d'utilisateur \fInom\fP pour l'autorisation HTTP et FTP. Pour FTP, le nom d'utilisateur par défaut est \fBanonymous\fP. Voir aussi \fB\-p\fP.
-.TP 
+Essayer le nom d'utilisateur \fInom\fP pour l'autorisation HTTP et FTP. Pour 
+FTP, le nom d'utilisateur par défaut est \fBanonymous\fP. Voir aussi \fB\-p\fP.
+.TP
 \fB\-p\fP\fIpwd\fP, \fB\-\-password=\fP\fIpwd\fP
-Essayer le mot de passe \fIpwd\fP pour l'autorisation HTTP et FTP. Pour FTP, le mot de passe par défaut est \fBanonymous@\fP. Voir aussi \fB\-u\fP.
-.TP 
+Essayer le mot de passe \fIpwd\fP pour l'autorisation HTTP et FTP. Pour FTP, le 
+mot de passe par défaut est \fBanonymous@\fP. Voir aussi \fB\-u\fP.
+.TP
 \fB\-\-timeout=\fP\fIsecs\fP
-Préciser le délai d'expiration pour les attentes de connexion en secondes. Le délai par défaut est de 30\ secondes.
-.TP 
+Préciser le délai d'expiration pour les attentes de connexion en 
+secondes. Le délai par défaut est de 30 secondes.
+.TP
 \fB\-P\fP\fIsecs\fP, \fB\-\-pause=\fP\fIsecs\fP
-Mettre en pause \fIsecs\fP secondes entre chaque vérification d'URL. Cette option implique \fB\-t0\fP. Par défaut, il n'y a pas de pause entre les requêtes.
-.TP 
+Mettre en pause \fIsecs\fP secondes entre chaque vérification d'URL. Cette 
+option implique \fB\-t0\fP. Par défaut, il n'y a pas de pause entre les 
+requêtes.
+.TP
 \fB\-N\fP\fIserveur\fP, \fB\-\-nntp\-server=\fP\fIserveur\fP
-Spécifier un serveur NNTP pour les liens « news: ». Par défaut, la variable d'environnement NNTP_SERVER est utilisée. Si aucun hôte n'est donné, LinkChecker n'effectue qu'une vérification de la syntaxe du lien.
+Spécifier un serveur NNTP pour les liens «\ news:\ ». Par défaut, la 
+variable d'environnement NNTP_SERVER est utilisée. Si aucun hôte n'est 
+donné, LinkChecker n'effectue qu'une vérification de la syntaxe du lien.
 
-.SS Options obsolètes
-.TP 
+.SS "Options obsolètes"
+.TP
 \fB\-\-status\fP
-Afficher l'état des vérifications toutes les 5\ secondes sur la sortie d'erreur. C'est le comportement par défaut.
+Afficher l'état des vérifications toutes les 5 secondes sur la sortie 
+d'erreur. C'est le comportement par défaut.
+
 .SH "OUTPUT TYPES"
 Notez que seules les erreurs sont journalisées par défaut.
 
-.TP 
+.TP
 \fBtext\fP
-Sortie texte standard, journaliser les URL dans des mots clés : mode argument.
-.TP 
+Sortie texte standard, journaliser les URL dans des mots clés\ : mode 
+argument.
+.TP
 \fBhtml\fP
-Journaliser les URL dans des mots clés : mode argument, formaté en HTML. Contient aussi des liens vers les pages référencées. Les URL invalides ont aussi en plus une vérification syntaxique des liens HTML et CSS.
-.TP 
+Journaliser les URL dans des mots clés\ : mode argument, formaté en 
+HTML. Contient aussi des liens vers les pages référencées. Les URL 
+invalides ont aussi en plus une vérification syntaxique des liens HTML et 
+CSS.
+.TP
 \fBcsv\fP
-Journaliser le résultat de la vérification au format CSV avec une URL par ligne.
-.TP 
+Journaliser le résultat de la vérification au format CSV avec une URL par 
+ligne.
+.TP
 \fBgml\fP
-Journaliser les relations fils/père entre les URL liées dans un graphe GML. Vous devez utiliser l'option \fB\-\-verbose\fP pour avoir un graphe complet.
-.TP 
+Journaliser les relations fils/père entre les URL liées dans un graphe 
+GML. Vous devez utiliser l'option \fB\-\-verbose\fP pour avoir un graphe complet.
+.TP
 \fBdot\fP
-Journaliser les relations fils/père entre les URL liées dans un graphe DOT. Vous devez utiliser l'option \fB\-\-verbose\fP pour avoir un graphe complet.
-.TP 
+Journaliser les relations fils/père entre les URL liées dans un graphe 
+DOT. Vous devez utiliser l'option \fB\-\-verbose\fP pour avoir un graphe complet.
+.TP
 \fBxml\fP
 Journaliser le résultat de la vérification dans un fichier au format XML.
-.TP 
+.TP
 \fBsql\fP
-Journaliser le résultat dans un script SQL avec des commandes INSERT. Un script d'exemple montrant la création de la table SQL initiale est inclus : create.sql.
-.TP 
+Journaliser le résultat dans un script SQL avec des commandes INSERT. Un 
+script d'exemple montrant la création de la table SQL initiale est 
+inclus\ : create.sql.
+.TP
 \fBblacklist\fP
-Approprié pour les tâches cron. Journaliser le résultat de la vérification dans un fichier \fB~/.linkchecker/blacklist\fP qui ne contient que les entrées avec des URL invalides et le nombre de fois qu'elles ont échoué.
-.TP 
+Approprié pour les tâches cron. Journaliser le résultat de la 
+vérification dans un fichier \fB~/.linkchecker/blacklist\fP qui ne contient 
+que les entrées avec des URL invalides et le nombre de fois qu'elles ont 
+échoué.
+.TP
 \fBnone\fP
 Ne rien journaliser du tout. Approprié pour les scripts.
 
-.SH "NOTES"
-Un \fB!\fP avant une expression rationnelle l'inverse. Ainsi \fB'!^mailto:'\fP correspond à tout sauf un lien mailto.
+.SH NOTES
+Un \fB!\fP avant une expression rationnelle l'inverse. Ainsi \fB'!^mailto:'\fP 
+correspond à tout sauf un lien mailto.
 
-Les URL sur la ligne de commande commençant par \fBftp.\fP sont traitées comme \fBftp://ftp.\fP, les URL commençant par \fBwww.\fP sont traitées comme \fBhttp://www.\fP.
-Vous pouvez aussi mettre des noms de fichiers locaux comme arguments.
+Les URL sur la ligne de commande commençant par \fBftp.\fP sont traitées 
+comme \fBftp://ftp.\fP, les URL commençant par \fBwww.\fP sont traitées comme 
+\fBhttp://www.\fP. Vous pouvez aussi mettre des noms de fichiers locaux comme 
+arguments.
 
-Si votre système est configuré pour établir automatiquement une connexion à internet (par exemple, avec diald), il se connectera quand les liens de vérification ne pointent pas sur votre système local.
-Utilisez les options \fB\-s\fP et \fB\-i\fP pour éviter cela.
+Si votre système est configuré pour établir automatiquement une connexion 
+à internet (par exemple, avec diald), il se connectera quand les liens de 
+vérification ne pointent pas sur votre système local. Utilisez les options 
+\fB\-s\fP et \fB\-i\fP pour éviter cela.
 
 Les liens javascript sont ignorés actuellement.
 
-Si votre plate\-forme n'accepte pas le multithreading, LinkChecker utilise \fB\-t0\fP.
+Si votre plate\-forme n'accepte pas le multithreading, LinkChecker utilise 
+\fB\-t0\fP.
 
-Vous pouvez fournir plusieurs paires nom d'utilisateur/mot de passe dans un fichier de configuration.
+Vous pouvez fournir plusieurs paires nom d'utilisateur/mot de passe dans un 
+fichier de configuration.
 
-Pour utiliser les proxys, positionnez $http_proxy, $https_proxy sur Unix ou Windows.
-Sur un Mac, utilisez la configuration Internet.
+Pour utiliser les proxys, positionnez $http_proxy, $https_proxy sur Unix ou 
+Windows.Sur un Mac, utilisez la configuration Internet.
 
-Pour la vérification des liens \fBnews:\fP, les liens de l'hôte NNTP donné n'ont pas besoin d'être les mêmes que l'hôte de l'utilisateur naviguant.
+Pour la vérification des liens \fBnews:\fP, les liens de l'hôte NNTP donné 
+n'ont pas besoin d'être les mêmes que l'hôte de l'utilisateur naviguant.
 
-.SH "ENVIRONNEMENT"
-\fBNNTP_SERVER\fP - spécifie le serveur NNTP par défaut
+.SH ENVIRONNEMENT
+\fBNNTP_SERVER\fP \- spécifie le serveur NNTP par défaut
 
-\fBhttp_proxy\fP - spécifie le proxy HTTP par défaut
+\fBhttp_proxy\fP \- spécifie le proxy HTTP par défaut
 
-\fBftp_proxy\fP - spécifie le proxy FTP par défaut
+\fBftp_proxy\fP \- spécifie le proxy FTP par défaut
 
-\fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP - spécifie la langue en sortie
+\fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP \- spécifie la langue en sortie
 
-.SH "DIAGNOSTICS"
+.SH "RETURN VALUE"
 Le code de retour est différent de 0 quand
 .IP \(bu
 il y a eu des liens non valides,
 .IP \(bu
-il y a eu des avertissements sur les liens et l'option \-\-warnings était positionnée,
+il y a eu des avertissements sur les liens et l'option \-\-warnings était 
+positionnée,
 .IP \(bu
 il y a eu une erreur dans le programme.
 
-.SH "FICHIERS"
-\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP - fichiers de configuration par défaut
+.SH FICHIERS
+\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \- 
+fichiers de configuration par défaut
 
-\fB~/.linkchecker/blacklist\fP - fichier par défaut des blacklists pour la journalisation
+\fB~/.linkchecker/blacklist\fP \- fichier par défaut des blacklists pour la 
+journalisation
 
-\fBlinkchecker\-out.\fP\fItype\fP - fichier par défaut pour la journalisation
+\fBlinkchecker\-out.\fP\fItype\fP \- fichier par défaut pour la journalisation
 
-\fBhttp://docs.python.org/lib/node127.html\fP - encodages valides de sortie
+\fBhttp://docs.python.org/lib/node127.html\fP \- encodages valides de sortie
 
-.SH "AUTEUR"
-Bastian Kleineidam <calvin@users.sourceforge.net>
-
-.SH "TRADUCTION"
-Ce document est une traduction, réalisée par Yann Verley <yann.verley@free.fr> le 29 novembre 2004.
-
-L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
-La version anglaise la plus à jour de ce document est toujours consultable via la commande\ :
-
-LANGUAGE=en man linkchecker
-
-N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans cette page de manuel.
+.SH AUTEUR
+Bastian Kleineidam <calvin@users.sourceforge.net>Ce document est une 
+traduction, réalisée par Yann Verley <yann.verley@free.fr<gt> le 29 
+novembre 2004.L'équipe de traduction a fait le maximum pour réaliser une 
+adaptation française de qualité. La version anglaise la plus à jour de ce 
+document est toujours consultable via la commande :LANGUAGE=en man 
+linkcheckerN'hésitez pas à signaler à l'auteur ou au traducteur, selon le 
+cas, toute erreur dans cette page de manuel.

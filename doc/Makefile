@@ -5,6 +5,6 @@ apidocs:
 	epydoc --html -o api --name "LinkChecker source documentation" --url ../index.html ../linkcheck/
 
 clean:
-	rm -f *.pyc *.pyo
+	rm -f *.pyc *.pyo *~
 
 .PHONY: apidocs po4a clean
