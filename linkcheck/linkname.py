@@ -24,7 +24,7 @@ import linkcheck.strformat
 
 imgtag_re = re.compile(r"(?i)\s+alt\s*=\s*"+\
                        r"""(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
-img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>]+)+>""")
+img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>])+>""")
 endtag_re = re.compile(r"""(?i)</a\s*>""")
 
 def _unquote (txt):

@@ -46,6 +46,15 @@
     Type: feature
     Changed: linkcheck/ansicolor.py
 
+  * Remember a <base href=""> tag in the link parser. Saves one HTML
+    parse.
+    Type: feature
+    Changed: linkcheck/checker/urlbase.py, linkcheck/linkparse.py
+
+  * Optimize link name parsing of img alt tags.
+    Type: feature
+    Changed: linkcheck/linkname.py
+
 1.13.5 "Die Musterknaben" (released 22.9.2004)
   * Use xgettext with Python support for .pot file creation, adjusted
     developer documentation.
