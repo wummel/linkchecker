@@ -61,6 +61,7 @@ LinkPatterns = (
     # <meta http-equiv="refresh" content="x; url=...">
     re.compile(_linkMatcher % ("meta",  "url"), re.VERBOSE),
     re.compile(_linkMatcher % ("area",  "href"), re.VERBOSE),
+    re.compile(_linkMatcher % ("script", "src"), re.VERBOSE),
 )
 
 class UrlData:
