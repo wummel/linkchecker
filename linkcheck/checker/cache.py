@@ -188,11 +188,18 @@ class Cache (linkcheck.lock.AssertLock):
         try:
             data = url_data.get_cache_data()
             key = url_data.cache_url_key
-            assert key not in self.checked, key+u", "+unicode(self.checked[key])
+            linkcheck.log.debug(linkcheck.LOG_CACHE, "Cache key %r...", key)
+            assert key not in self.checked, \
+                   key + u", " + unicode(self.checked[key])
             assert key in self.in_progress, key
             # move entry from self.in_progress to self.checked
             del self.in_progress[key]
             self.checked[key] = data
+            # add all aliases also to checked cache to avoid recursion
+            for key in url_data.aliases:
+                linkcheck.log.debug(linkcheck.LOG_CACHE,
+                                    "Cache alias %r...", key)
+                self.checked[key] = data
         finally:
             self.release()
 
