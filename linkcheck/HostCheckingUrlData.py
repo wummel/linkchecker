@@ -25,9 +25,6 @@ class HostCheckingUrlData(UrlData):
         ip = socket.gethostbyname(self.host)
         self.setValid(self.host+"("+ip+") found")
 
-    def closeConnection(self):
-        UrlData.closeConnection(self)
-
     def __str__(self):
         return "host="+`self.host`+"\n"+UrlData.__str__(self)
 

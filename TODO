@@ -15,4 +15,6 @@ o Internationalization
 
 o Parse GML output and make a site map graphic (PNG format)
 
+o Blacklist mode: only report links who fail over a certain amount of time
+
 Low priority

@@ -2,7 +2,7 @@ import ConfigParser,sys,os,re,UserDict,string
 from os.path import expanduser,normpath,normcase,join,isfile
 import Logging
 
-Version = "1.1.4"
+Version = "1.2.0"
 AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
@@ -20,9 +20,9 @@ under certain conditions. Look at the file `LICENSE' whithin this
 distribution."""
 Loggers = {"text": Logging.StandardLogger,
            "html": Logging.HtmlLogger,
-		   "colored": Logging.ColoredLogger,
-		   "gml": Logging.GMLLogger,
-		   "sql": Logging.SQLLogger}
+	   "colored": Logging.ColoredLogger,
+	   "gml": Logging.GMLLogger,
+	   "sql": Logging.SQLLogger}
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
 DebugDelim = "==========================================================\n"
 DebugFlag = 0
@@ -57,6 +57,7 @@ class Configuration(UserDict.UserDict):
         self.data["fileoutput"] = []
         self.data["quiet"] = 0
         self.data["warningregex"] = None
+        self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
         self.urlCache = {}
         self.robotsTxtCache = {}
         try:
@@ -301,6 +302,9 @@ class Configuration(UserDict.UserDict):
         try: 
             self.data["warningregex"] = re.compile(cfgparser.get(section,
             "warningregex"))
+        except ConfigParser.Error: pass
+        try:
+            self.data["nntpserver"] = cfgparser.get(section, "nntpserver")
         except ConfigParser.Error: pass
 
         section = "authentication"

@@ -291,6 +291,7 @@ from HttpsUrlData import HttpsUrlData
 from JavascriptUrlData import JavascriptUrlData
 from MailtoUrlData import MailtoUrlData
 from TelnetUrlData import TelnetUrlData
+from NntpUrlData import NntpUrlData
 
 def GetUrlDataFrom(urlName, 
                    recursionLevel, 
@@ -321,6 +322,8 @@ def GetUrlDataFrom(urlName,
         return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^https:").search(name):
         return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line)
+    if re.compile("^news:").search(name):
+        return NntpUrlData(urlName, recursionLevel, parentName, baseRef, line)
     # assume local file
     return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)
 

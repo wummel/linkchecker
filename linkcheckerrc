@@ -17,7 +17,8 @@
 #strict=0
 #proxy=www-proxy.uni-sb.de
 #proxyport=3128
-#warningregex=
+#warningregex="Request failed"
+#nntpserver=news.uni-stuttgart.de
 
 # for each extern link we can specify if it is strict or not
 [filtering]

@@ -126,7 +126,7 @@ class HttpUrlData(UrlData):
             self.urlConnection = self.urlConnection.getfile()
             self.data = StringUtil.stripHtmlComments(self.urlConnection.read())
             self.downloadtime = time.time() - t
-            Config.debug(Config.DebugDelim+self.data+Config.DebugDelim)
+            #Config.debug(Config.DebugDelim+self.data+Config.DebugDelim)
         
     def isHtml(self):
         if not (self.valid and self.mime):

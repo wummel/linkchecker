@@ -36,6 +36,10 @@ OPTIONS
 -l, --allowdeny
         Swap checking order to intern/extern. Default checking order
         is extern/intern.
+-N, --nntp-server
+        Specify an NNTP server for news: links. Default is the
+        environment variable NNTP_SERVER. If the variable is not defined,
+        only the syntax of the link is checked.
 -o name, --output=name
         Specify output as """+linkcheck.Config.LoggerKeys+""".
         Default is text.
@@ -89,8 +93,7 @@ o If you have your system configured to automatically establish a
 o Javascript links are currently ignored
 o If your platform does not support threading, linkchecker assumes -t0
 o You can supply multiple user/password pairs in a configuration file
-o Cookies are not accepted by LinkChecker and never will be. Cookies
-  are dumb. Use Zope with session support!
+o Cookies are not accepted by LinkChecker.
 """
 
 Examples = """EXAMPLES
@@ -122,12 +125,13 @@ def printUsage(msg):
 try:
     # Note: cut out the name of the script
     options, args = getopt.getopt(sys.argv[1:],
-    "aDe:f:F:hi:lP:o:p:qr:Rst:u:VvwW:", # short options
+    "aDe:f:F:hi:lN:P:o:p:qr:Rst:u:VvwW:", # short options
     ["anchors",                       # long options
     "config=",
     "debug", 
     "extern=",
     "file-output=",
+    "nntp-server=",
     "help",
     "intern=",
     "allowdeny",
@@ -197,6 +201,9 @@ for opt,arg in options:
     elif opt=="-l" or opt=="--allowdeny":
         config["allowdeny"] = 1
     
+    elif opt=="-N" or opt=="--nntp-server":
+        config["nntpserver"] = arg
+        
     elif opt=="-P" or opt=="--proxy":
         proxy = re.compile("(.+):(.+)").match(arg)
         if proxy:
