@@ -17,6 +17,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
+import os
+import os.path
 
 # dummy translator
 _ = lambda x: x
@@ -61,7 +63,11 @@ class Logger (object):
 
     def init_fileoutput (self, args):
         """initialize self.fd file descriptor from args"""
-        if args.has_key('fileoutput'):
+        if args.get('fileoutput'):
+            fname = args['filename']
+            path = os.path.dirname(fname)
+            if path and not os.path.isdir(path):
+                os.makedirs(path)
             self.fd = file(args['filename'], "w")
             self.close_fd = True
         elif args.has_key('fd'):
