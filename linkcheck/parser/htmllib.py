@@ -21,6 +21,7 @@ try:
 except ImportError:
     exctype, value = sys.exc_info()[:2]
     print >>sys.stderr, "Could not import the parser module `linkcheck.parser.htmlsax':", value
+    print >>sys.stderr, "Please check your installation of LinkChecker."
     sys.exit(1)
 
 class HtmlParser:
