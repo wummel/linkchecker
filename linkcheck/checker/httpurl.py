@@ -240,7 +240,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 newurl = unicode(newurl, "iso8859-1", "ignore")
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 newurl)
-            self.add_info(_("Redirected to %(url)s.") % {'url': redirected})
+            self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
             redirected, is_idn = linkcheck.url.url_norm(newurl)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
