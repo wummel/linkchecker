@@ -32,6 +32,8 @@ SOURCES=\
 ../linkcheck/UrlData.py \
 ../linkcheck/__init__.py \
 ../linkcheck/lc_cgi.py \
+../linkcheck/linkname.py \
+../linkcheck/linkparse.py \
 ../linkchecker
 LDIR=../share/locale
 LFILE=LC_MESSAGES/$(PACKAGE).mo
