@@ -32,7 +32,7 @@ import linkcheck.url
 import linkcheck.strformat
 import linkcheck.robotparser2
 import linkcheck.httplib2
-import linkcheck.checker.httpheaders as headers
+import httpheaders as headers
 import urlbase
 import proxysupport
 
@@ -236,7 +236,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     continue
             elif self.headers and self.method != "GET":
                 # test for HEAD support
-                mime = self.headers.gettype()
+                mime = headers.get_content_type(self.headers)
                 poweredby = self.headers.get('X-Powered-By', '')
                 server = self.headers.get('Server', '')
                 if mime == 'application/octet-stream' and \
@@ -584,3 +584,4 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 # ignore close errors
                 pass
         self.url_connection = None
+
