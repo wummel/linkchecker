@@ -1,5 +1,3 @@
-- check if anchor checking is really disabled per default
-
 - test CGI script
 
 - all threads should regularly poll a status variable

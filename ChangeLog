@@ -2,8 +2,9 @@
   * catch httplib errors in robotparser
     Changed: linkcheck/robotparser2.py
     Closes: SF bug 836864
-  * initialize self.urlparts to avoid crash when reading cached http
-    urls
+  * - fixed infinite recursion option avlue
+    - initialize self.urlparts to avoid crash when reading cached http
+      urls
     Changed: linkcheck/UrlData.py
 
 
