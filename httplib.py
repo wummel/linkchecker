@@ -349,6 +349,7 @@ class HTTP(HTTPConnection):
     # an error when we attempt to connect. Presumably, the client code
     # will call connect before then, with a proper host.
     HTTPConnection.__init__(self, host, port)
+    self.debuglevel=0
 
   def connect(self, host=None, port=None):
     "Accept arguments to set the host/port, since the superclass doesn't."
@@ -358,8 +359,7 @@ class HTTP(HTTPConnection):
     HTTPConnection.connect(self)
 
   def set_debuglevel(self, debuglevel):
-    "The class no longer supports the debuglevel."
-    pass
+    self.debuglevel=debuglevel
 
   def getfile(self):
     "Provide a getfile, since the superclass' use of HTTP/1.1 prevents it."

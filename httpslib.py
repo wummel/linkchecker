@@ -1,6 +1,6 @@
 # @(#)httpslib.py	1.1 VMS-99/01/30	https support
 
-import ssl,httplib
+import ssl,httplib,string,socket,mimetools
 
 HTTP_PREF = 'HTTP/'
 HTTPS_PORT = 443
@@ -150,7 +150,7 @@ def _test():
 	if args[1:]: selector = args[1]
 	h = HTTPS()
 	host = 'synergy.as.cmu.edu'
-	selector = '/~geek'
+	selector = '/~geek/'
 #	host = 'tls.cryptsoft.com'
 #	selector = '/'
 	h.set_debuglevel(dl)
