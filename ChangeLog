@@ -1,3 +1,11 @@
+2.0 "" (released xx.xx.2004)
+
+  * Regenerate the HTML parser with new Bison version 1.875d.
+    Also use the now supported Bison memory macros YYMALLOC and
+    YYFREE.
+    Type: feature
+    Changed: linkcheck/HtmlParser/htmlparse.y
+
 2.0rc2 "El día de la bestia" (released 20.11.2004)
 
   * encode version string for --version output
