@@ -27,6 +27,7 @@ LogFields = {
     "base": "Base",
     "name": "Name",
     "parenturl": "Parent URL",
+    "extern": "Extern",
     "info": "Info",
     "warning": "Warning",
     "dltime": "D/L Time",
@@ -57,7 +58,32 @@ def quote(s):
 def _strtime(t):
     return time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(t))
 
-class StandardLogger:
+class Logger:
+    def __init__(self, **args):
+        self.logfields = None # all fields
+        if args.has_key('fields'):
+            if type(args['fields']) == ListType:
+                self.logfields = args['fields']
+
+
+    def logfield(self, name):
+        if self.logfields is None:
+            return 1
+        return name in self.logfields
+
+
+   def init(self):
+       raise Exception, "abstract function"
+
+   def newUrl(self, urlData):
+       raise Exception, "abstract function"
+
+   def endOfOutput(self, linknumber=-1):
+       raise Exception, "abstract function"
+
+
+
+class StandardLogger(Logger):
     """Standard text logger.
 
 Every Logger has to implement the following functions:
@@ -92,6 +118,7 @@ __init__(self, **args)
     """
 
     def __init__(self, **args):
+        apply(Logger.__init__, (self,), args)
         self.errors = 0
         self.warnings = 0
         if args.has_key('fileoutput'):
@@ -100,19 +127,11 @@ __init__(self, **args)
             self.fd = args['fd']
         else:
 	    self.fd = sys.stdout
-        self.logfields = None # all fields
-        if args.has_key('fields'):
-            if type(args['fields']) == ListType:
-                self.logfields = args['fields']
 
-    def logfield(self, name):
-        if self.logfields is None:
-            return 1
-        return name in self.logfields
 
     def init(self):
+        self.starttime = time.time()
         if self.logfield('intro'):
-            self.starttime = time.time()
             self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
             self.fd.write(_("Get the newest version at %s\n") % Config.Url)
             self.fd.write(_("Write comments and bugs to %s\n\n") % Config.Email)
@@ -225,8 +244,9 @@ class HtmlLogger(StandardLogger):
               "a:hover { color: #34a4ef }\n"
 	      "//-->\n</style>\n</head>\n"+
               "<body bgcolor="+self.colorbackground+" link="+self.colorlink+
-              " vlink="+self.colorlink+" alink="+self.colorlink+">"+
-              "<center><h2>"+Config.App+"</h2></center>"+
+              " vlink="+self.colorlink+" alink="+self.colorlink+">")
+        if self.logfield('intro'):
+            self.fd.write("<center><h2>"+Config.App+"</h2></center>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
               (_("Start checking at %s\n") % _strtime(self.starttime))+
 	      "<br><br>")
@@ -239,51 +259,54 @@ class HtmlLogger(StandardLogger):
               '><tr><td><table align="left" border="0" cellspacing="0"'
               ' cellpadding="3" summary="checked link" bgcolor='+
 	      self.colorbackground+
-              "><tr><td bgcolor="+self.colorurl+">"+_("URL")+
+              ">")
+        if self.logfield("url"):
+	    self.fd.write("<tr><td bgcolor="+self.colorurl+">"+_("URL")+
               "</td><td bgcolor="+self.colorurl+">"+urlData.urlName)
-        if urlData.cached:
-            self.fd.write(_(" (cached)\n"))
-        self.fd.write("</td></tr>\n")
-        if urlData.name:
+            if urlData.cached:
+                self.fd.write(_(" (cached)\n"))
+            self.fd.write("</td></tr>\n")
+        if urlData.name and self.logfield("name"):
             self.fd.write("<tr><td>"+_("Name")+"</td><td>"+
                           urlData.name+"</td></tr>\n")
-        if urlData.parentName:
+        if urlData.parentName and self.logfield("parenturl"):
             self.fd.write("<tr><td>"+_("Parent URL")+"</td><td>"+
 			  '<a href="'+urlData.parentName+'">'+
                           urlData.parentName+"</a> line "+str(urlData.line)+
                           "</td></tr>\n")
-        if urlData.baseRef:
+        if urlData.baseRef and self.logfield("base"):
             self.fd.write("<tr><td>"+_("Base")+"</td><td>"+
 	                  urlData.baseRef+"</td></tr>\n")
-        if urlData.url:
+        if urlData.url and self.logfield("realurl"):
             self.fd.write("<tr><td>"+_("Real URL")+"</td><td>"+
 	                  "<a href=\""+urlData.url+
 			  '">'+urlData.url+"</a></td></tr>\n")
-        if urlData.downloadtime:
+        if urlData.downloadtime and self.logfield("dltime"):
             self.fd.write("<tr><td>"+_("D/L Time")+"</td><td>"+
 	                  (_("%.3f seconds") % urlData.downloadtime)+
 			  "</td></tr>\n")
-        if urlData.checktime:
+        if urlData.checktime and self.logfield("checktime"):
             self.fd.write("<tr><td>"+_("Check Time")+
 	                  "</td><td>"+
 			  (_("%.3f seconds") % urlData.checktime)+
 			  "</td></tr>\n")
-        if urlData.infoString:
+        if urlData.infoString and self.logfield("info"):
             self.fd.write("<tr><td>"+_("Info")+"</td><td>"+
 	                  StringUtil.htmlify(urlData.infoString)+
 			  "</td></tr>\n")
-        if urlData.warningString:
+        if urlData.warningString and self.logfield("warning"):
             self.warnings += 1
             self.fd.write("<tr>"+self.tablewarning+_("Warning")+
 	                  "</td>"+self.tablewarning+
                           string.replace(urlData.warningString,"\n", "<br>")+
 			  "</td></tr>\n")
-        if urlData.valid:
-            self.fd.write("<tr>"+self.tableok+_("Result")+"</td>"+
-	                  self.tableok+urlData.validString+"</td></tr>\n")
-        else:
-            self.errors += 1
-            self.fd.write("<tr>"+self.tableerror+_("Result")+
+        if self.logfield("result"):
+            if urlData.valid:
+                self.fd.write("<tr>"+self.tableok+_("Result")+"</td>"+
+                  self.tableok+urlData.validString+"</td></tr>\n")
+            else:
+                self.errors += 1
+                self.fd.write("<tr>"+self.tableerror+_("Result")+
 	                  "</td>"+self.tableerror+
 			  urlData.errorString+"</td></tr>\n")
 
@@ -292,40 +315,41 @@ class HtmlLogger(StandardLogger):
 
 
     def endOfOutput(self, linknumber=-1):
-        self.fd.write(_("\nThats it. "))
-        if self.warnings==1:
-            self.fd.write(_("1 warning, "))
-        else:
-            self.fd.write(str(self.warnings)+_(" warnings, "))
-        if self.errors==1:
-            self.fd.write(_("1 error"))
-        else:
-            self.fd.write(str(self.errors)+_(" errors"))
-        if linknumber >= 0:
-            if linknumber == 1:
-                self.fd.write(_(" in 1 link"))
+        if self.logfield("outro"):
+            self.fd.write(_("\nThats it. "))
+            if self.warnings==1:
+                self.fd.write(_("1 warning, "))
             else:
-                self.fd.write(_(" in %d links") % linknumber)
-        self.fd.write(_(" found\n")+"<br>")
-        self.stoptime = time.time()
-        duration = self.stoptime - self.starttime
-        name = _("seconds")
-        self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
-        if duration > 60:
-            duration = duration / 60
-            name = _("minutes")
-        if duration > 60:
-            duration = duration / 60
-            name = _("hours")
-        self.fd.write("	(%.3f %s)\n" % (duration, name))
-	self.fd.write("</blockquote><br><hr noshade size=1><small>"+
+                self.fd.write(str(self.warnings)+_(" warnings, "))
+            if self.errors==1:
+                self.fd.write(_("1 error"))
+            else:
+                self.fd.write(str(self.errors)+_(" errors"))
+            if linknumber >= 0:
+                if linknumber == 1:
+                    self.fd.write(_(" in 1 link"))
+                else:
+                    self.fd.write(_(" in %d links") % linknumber)
+            self.fd.write(_(" found\n")+"<br>")
+            self.stoptime = time.time()
+            duration = self.stoptime - self.starttime
+            name = _("seconds")
+            self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
+            if duration > 60:
+                duration = duration / 60
+                name = _("minutes")
+            if duration > 60:
+                duration = duration / 60
+                name = _("hours")
+            self.fd.write("	(%.3f %s)\n" % (duration, name))
+            self.fd.write("</blockquote><br><hr noshade size=1><small>"+
              Config.HtmlAppInfo+"<br>")
-	self.fd.write(_("Get the newest version at %s\n") %\
+            self.fd.write(_("Get the newest version at %s\n") %\
              ('<a href="'+Config.Url+'" target="_top">'+Config.Url+
 	      "</a>.<br>"))
-        self.fd.write(_("Write comments and bugs to %s\n\n") %\
+            self.fd.write(_("Write comments and bugs to %s\n\n") %\
 	     ("<a href=\"mailto:"+Config.Email+"\">"+Config.Email+"</a>."))
-	self.fd.write("</small></body></html>")
+            self.fd.write("</small></body></html>")
         self.fd.flush()
         self.fd = None
 
@@ -350,62 +374,63 @@ class ColoredLogger(StandardLogger):
         self.prefix = 0
 
     def newUrl(self, urlData):
-        if urlData.parentName:
-            if self.currentPage != urlData.parentName:
-                if self.prefix:
-                    self.fd.write("o\n")
-                self.fd.write("\n"+_("Parent URL")+Spaces["parenturl"]+
+        if self.logfield("parenturl"):
+            if urlData.parentName:
+                if self.currentPage != urlData.parentName:
+                    if self.prefix:
+                        self.fd.write("o\n")
+                    self.fd.write("\n"+_("Parent URL")+Spaces["parenturl"]+
 		              self.colorparent+urlData.parentName+
 			      self.colorreset+"\n")
-                self.currentPage = urlData.parentName
-                self.prefix = 1
-        else:
+                    self.currentPage = urlData.parentName
+                    self.prefix = 1
+            else:
+                if self.prefix:
+                    self.fd.write("o\n")
+                self.prefix = 0
+                self.currentPage=None
+        if self.logfield("url")
             if self.prefix:
-                self.fd.write("o\n")
-            self.prefix = 0
-            self.currentPage=None
-            
-        if self.prefix:
-            self.fd.write("|\n+- ")
-        else:
-            self.fd.write("\n")
-        self.fd.write(_("URL")+Spaces["url"]+self.colorurl+urlData.urlName+
-	              self.colorreset)
-        if urlData.line: self.fd.write(_(", line ")+`urlData.line`+"")
-        if urlData.cached:
-            self.fd.write(_(" (cached)\n"))
-        else:
-            self.fd.write("\n")
+                self.fd.write("|\n+- ")
+            else:
+                self.fd.write("\n")
+            self.fd.write(_("URL")+Spaces["url"]+self.colorurl+
+	              urlData.urlName+self.colorreset)
+            if urlData.line: self.fd.write(_(", line ")+`urlData.line`+"")
+            if urlData.cached:
+                self.fd.write(_(" (cached)\n"))
+            else:
+                self.fd.write("\n")
 
-        if urlData.name:
+        if urlData.name and self.logfield("name"):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(_("Name")+Spaces["name"]+self.colorname+
                           urlData.name+self.colorreset+"\n")
-        if urlData.baseRef:
+        if urlData.baseRef and self.logfield("base"):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(_("Base")+Spaces["base"]+self.colorbase+
 	                  urlData.baseRef+self.colorreset+"\n")
             
-        if urlData.url:
+        if urlData.url and self.logfield("realurl"):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(_("Real URL")+Spaces["realurl"]+self.colorreal+
 	                  urlData.url+self.colorreset+"\n")
-        if urlData.downloadtime:
+        if urlData.downloadtime and self.logfield("dltime"):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(_("D/L Time")+Spaces["dltime"]+self.colordltime+
 	        (_("%.3f seconds") % urlData.downloadtime)+self.colorreset+"\n")
-        if urlData.checktime:
+        if urlData.checktime and self.logfield("checktime"):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(_("Check Time")+Spaces["checktime"]+
                 self.colordltime+
 	        (_("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
             
-        if urlData.infoString:
+        if urlData.infoString and self.logfield("info"):
             if self.prefix:
                 self.fd.write("|  "+_("Info")+Spaces["info"]+
                       StringUtil.indentWith(StringUtil.blocktext(
@@ -416,30 +441,33 @@ class ColoredLogger(StandardLogger):
                         urlData.infoString, 65), "    "+Spaces["info"]))
             self.fd.write(self.colorreset+"\n")
             
-        if urlData.warningString:
+        if urlData.warningString and self.logfield("warning"):
             self.warnings += 1
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(_("Warning")+Spaces["warning"]+self.colorwarning+
 	                  urlData.warningString+self.colorreset+"\n")
 
-        if self.prefix:
-            self.fd.write("|  ")
-        self.fd.write(_("Result")+Spaces["result"])
-        if urlData.valid:
-            self.fd.write(self.colorvalid+urlData.validString+
-	                  self.colorreset+"\n")
-        else:
-            self.errors += 1
-            self.fd.write(self.colorinvalid+urlData.errorString+
-	                  self.colorreset+"\n")
-        self.fd.flush()        
+        if self.logfield("result"):
+            if self.prefix:
+                self.fd.write("|  ")
+            self.fd.write(_("Result")+Spaces["result"])
+            if urlData.valid:
+                self.fd.write(self.colorvalid+urlData.validString+
+	                      self.colorreset+"\n")
+            else:
+                self.errors += 1
+                self.fd.write(self.colorinvalid+urlData.errorString+
+	                      self.colorreset+"\n")
+        self.fd.flush()
 
 
     def endOfOutput(self, linknumber=-1):
-        if self.prefix:
-            self.fd.write("o\n")
+        if self.logfield("outro"):
+            if self.prefix:
+                self.fd.write("o\n")
         StandardLogger.endOfOutput(self, linknumber=linknumber)
+
 
 
 class GMLLogger(StandardLogger):
@@ -453,13 +481,14 @@ class GMLLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
+        if self.logfield("intro"):
+            self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
                       _strtime(self.starttime))))
-	self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
-        self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
-	                    Config.Email))
-	self.fd.write("graph [\n  directed 1\n")
-        self.fd.flush()
+            self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
+            self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
+  	                    Config.Email))
+            self.fd.write("graph [\n  directed 1\n")
+            self.fd.flush()
 
 
     def newUrl(self, urlData):
@@ -471,12 +500,14 @@ class GMLLogger(StandardLogger):
             self.nodeid += 1
             self.fd.write("  node [\n")
 	    self.fd.write("    id     %d\n" % node.id)
-            self.fd.write('    label  "%s"\n' % node.url)
-            if node.downloadtime:
+            if self.logfield("realurl"):
+                self.fd.write('    label  "%s"\n' % node.url)
+            if node.downloadtime and self.logfield("dltime"):
                 self.fd.write("    dltime %d\n" % node.downloadtime)
-            if node.checktime:
+            if node.checktime and self.logfield("checktime"):
                 self.fd.write("    checktime %d\n" % node.checktime)
-            self.fd.write("    extern %d\n" % (node.extern and 1 or 0))
+            if self.logfield("extern"):
+                self.fd.write("    extern %d\n" % (node.extern and 1 or 0))
 	    self.fd.write("  ]\n")
         self.writeEdges()
 
@@ -489,30 +520,34 @@ class GMLLogger(StandardLogger):
             if self.nodes.has_key(node.parentName):
                 self.fd.write("  edge [\n")
 		self.fd.write('    label  "%s"\n' % node.urlName)
-	        self.fd.write("    source %d\n" % \
-		              self.nodes[node.parentName].id)
+                if self.logfield("parenturl"):
+                    self.fd.write("    source %d\n" % \
+	                          self.nodes[node.parentName].id)
                 self.fd.write("    target %d\n" % node.id)
-                self.fd.write("    valid  %d\n" % (node.valid and 1 or 0))
+                if self.logfield("result"):
+                    self.fd.write("    valid  %d\n" % (node.valid and 1 or 0))
                 self.fd.write("  ]\n")
         self.fd.flush()
 
 
     def endOfOutput(self, linknumber=-1):
         self.fd.write("]\n")
-        self.stoptime = time.time()
-        duration = self.stoptime - self.starttime
-        name = _("seconds")
-        self.fd.write("# "+_("Stopped checking at %s") % \
+        if self.logfield("outro"):
+            self.stoptime = time.time()
+            duration = self.stoptime - self.starttime
+            name = _("seconds")
+            self.fd.write("# "+_("Stopped checking at %s") % \
 	              _strtime(self.stoptime))
-        if duration > 60:
-            duration = duration / 60
-            name = _("minutes")
-        if duration > 60:
-            duration = duration / 60
-            name = _("hours")
-        self.fd.write("	(%.3f %s)\n" % (duration, name))
+            if duration > 60:
+                duration = duration / 60
+                name = _("minutes")
+            if duration > 60:
+                duration = duration / 60
+                name = _("hours")
+            self.fd.write(" (%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
+
 
 
 class XMLLogger(StandardLogger):
@@ -526,13 +561,14 @@ class XMLLogger(StandardLogger):
     def init(self):
         self.starttime = time.time()
         self.fd.write('<?xml version="1.0"?>\n')
-        self.fd.write("<!--\n")
-        self.fd.write("  "+_("created by %s at %s\n") % \
+        if self.logfield("intro"):
+            self.fd.write("<!--\n")
+            self.fd.write("  "+_("created by %s at %s\n") % \
 	              (Config.AppName, _strtime(self.starttime)))
-        self.fd.write("  "+_("Get the newest version at %s\n") % Config.Url)
-        self.fd.write("  "+_("Write comments and bugs to %s\n\n") % \
+            self.fd.write("  "+_("Get the newest version at %s\n") % Config.Url)
+            self.fd.write("  "+_("Write comments and bugs to %s\n\n") % \
 	              Config.Email)
-        self.fd.write("-->\n\n")
+            self.fd.write("-->\n\n")
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
         self.fd.flush()
 
@@ -545,15 +581,17 @@ class XMLLogger(StandardLogger):
             self.nodeid += 1
             self.fd.write('  <node name="%d" ' % node.id)
             self.fd.write(">\n")
-            self.fd.write("    <label>%s</label>\n" % quote(node.url))
+            if self.logfield("realurl")
+                self.fd.write("    <label>%s</label>\n" % quote(node.url))
             self.fd.write("    <data>\n")
-            if node.downloadtime:
+            if node.downloadtime and self.logfield("dltime"):
                 self.fd.write("      <dltime>%f</dltime>\n" \
                                   % node.downloadtime)
-            if node.checktime:
+            if node.checktime and self.logfield("checktime"):
                 self.fd.write("      <checktime>%f</checktime>\n" \
                               % node.checktime)
-            self.fd.write("      <extern>%d</extern>\n" % \
+            if self.logfield("extern"):
+                self.fd.write("      <extern>%d</extern>\n" % \
 	                  (node.extern and 1 or 0))
             self.fd.write("    </data>\n")
 	    self.fd.write("  </node>\n")
@@ -570,9 +608,11 @@ class XMLLogger(StandardLogger):
 		              self.nodes[node.parentName].id)
                 self.fd.write(' target="%d"' % node.id)
                 self.fd.write(">\n")
-		self.fd.write("    <label>%s</label>\n" % quote(node.urlName))
+                if self.logfield("url"):
+		    self.fd.write("    <label>%s</label>\n" % quote(node.urlName))
                 self.fd.write("    <data>\n")
-                self.fd.write("      <valid>%d</valid>\n" % \
+                if self.logfield("result"):
+                    self.fd.write("      <valid>%d</valid>\n" % \
 		              (node.valid and 1 or 0))
                 self.fd.write("    </data>\n")
                 self.fd.write("  </edge>\n")
@@ -580,19 +620,20 @@ class XMLLogger(StandardLogger):
 
     def endOfOutput(self, linknumber=-1):
         self.fd.write("</graph>\n</GraphXML>\n")
-        self.stoptime = time.time()
-        duration = self.stoptime - self.starttime
-        name = _("seconds")
-        self.fd.write("<!-- ")
-        self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
-        if duration > 60:
-            duration = duration / 60
-            name = _("minutes")
-        if duration > 60:
-            duration = duration / 60
-            name = _("hours")
-        self.fd.write("	(%.3f %s)\n" % (duration, name))
-        self.fd.write("-->")
+        if self.logfield("outro"):
+            self.stoptime = time.time()
+            duration = self.stoptime - self.starttime
+            name = _("seconds")
+            self.fd.write("<!-- ")
+            self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
+            if duration > 60:
+                duration = duration / 60
+                name = _("minutes")
+            if duration > 60:
+                duration = duration / 60
+                name = _("hours")
+            self.fd.write(" (%.3f %s)\n" % (duration, name))
+            self.fd.write("-->")
         self.fd.flush()
         self.fd = None
 
@@ -605,14 +646,16 @@ class SQLLogger(StandardLogger):
         self.dbname = args['dbname']
         self.separator = args['separator']
 
+
     def init(self):
         self.starttime = time.time()
-        self.fd.write("-- "+(_("created by %s at %s\n") % (Config.AppName,
-                      _strtime(self.starttime))))
-        self.fd.write("-- "+(_("Get the newest version at %s\n") % Config.Url))
-        self.fd.write("-- "+(_("Write comments and bugs to %s\n\n") % \
-	                     Config.Email))
-        self.fd.flush()
+        if self.logfield("intro"):
+            self.fd.write("-- "+(_("created by %s at %s\n") % (Config.AppName,
+                       _strtime(self.starttime))))
+            self.fd.write("-- "+(_("Get the newest version at %s\n") % Config.Url))
+            self.fd.write("-- "+(_("Write comments and bugs to %s\n\n") % \
+	                Config.Email))
+            self.fd.flush()
 
     def newUrl(self, urlData):
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
@@ -639,23 +682,24 @@ class SQLLogger(StandardLogger):
         self.fd.flush()
 
     def endOfOutput(self, linknumber=-1):
-        self.stoptime = time.time()
-        duration = self.stoptime - self.starttime
-        name = _("seconds")
-        self.fd.write("-- "+_("Stopped checking at %s") % \
+        if self.logfield("outro"):
+            self.stoptime = time.time()
+            duration = self.stoptime - self.starttime
+            name = _("seconds")
+            self.fd.write("-- "+_("Stopped checking at %s") % \
 	              _strtime(self.stoptime))
-        if duration > 60:
-            duration = duration / 60
-            name = _("minutes")
-        if duration > 60:
-            duration = duration / 60
-            name = _("hours")
-        self.fd.write("	(%.3f %s)\n" % (duration, name))
+            if duration > 60:
+                duration = duration / 60
+                name = _("minutes")
+            if duration > 60:
+                duration = duration / 60
+                name = _("hours")
+            self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
 
 
-class BlacklistLogger:
+class BlacklistLogger(Logger):
     """Updates a blacklist of wrong links. If a link on the blacklist
     is working (again), it is removed from the list. So after n days
     we have only links on the list which failed for n days.
@@ -693,15 +737,16 @@ class CSVLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
+        if self.logfield("intro"):
+            self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
                       _strtime(self.starttime))))
-	self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
-	self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
+            self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
+            self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
 	                    Config.Email))
-        self.fd.write(_("# Format of the entries:\n")+\
-                      "# urlname;\n"
-                      "# recursionlevel;\n"
-                      "# parentname;\n"
+            self.fd.write(_("# Format of the entries:\n")+\
+                          "# urlname;\n"
+                          "# recursionlevel;\n"
+                          "# parentname;\n"
                       "# baseref;\n"
                       "# errorstring;\n"
                       "# validstring;\n"
@@ -714,7 +759,7 @@ class CSVLogger(StandardLogger):
                       "# downloadtime;\n"
                       "# checktime;\n"
                       "# cached;\n")
-        self.fd.flush()
+            self.fd.flush()
 
     def newUrl(self, urlData):
         self.fd.write(
@@ -736,22 +781,26 @@ class CSVLogger(StandardLogger):
             urlData.cached))
         self.fd.flush()
 
+
     def endOfOutput(self, linknumber=-1):
         self.stoptime = time.time()
-        duration = self.stoptime - self.starttime
-        name = _("seconds")
-        self.fd.write("# "+_("Stopped checking at %s") % _strtime(self.stoptime))
-        if duration > 60:
-            duration = duration / 60
-            name = _("minutes")
-        if duration > 60:
-            duration = duration / 60
-            name = _("hours")
-        self.fd.write("	(%.3f %s)\n" % (duration, name))
-        self.fd.flush()
+        if self.logfield("outro"):
+            duration = self.stoptime - self.starttime
+            name = _("seconds")
+            self.fd.write("# "+_("Stopped checking at %s") % _strtime(self.stoptime))
+            if duration > 60:
+                duration = duration / 60
+                name = _("minutes")
+            if duration > 60:
+                duration = duration / 60
+                name = _("hours")
+            self.fd.write(" (%.3f %s)\n" % (duration, name))
+            self.fd.flush()
         self.fd = None
 
-class TestLogger:
+
+
+class TestLogger(Logger):
     """ Output for regression test """
     def __init__(self, **args):
         pass

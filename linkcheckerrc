@@ -18,19 +18,20 @@ fileoutput=
 #fileoutput = text, colored, html, gml, sql
 
 # fields names:
-# all (for all fields)
-# realurl
-# result
-# base (base href=...)
-# name (<a href=...>name</a>)
-# parenturl
-# info
-# warning
-# dltime
-# checktime
-# url
-# intro (the blurb at the beginning, "starting at ...")
-# outro (the blurb at the end, "found x errors ...")
+# all       (for all fields)
+# realurl   (the full url link)
+# result    (valid or invalid, with messages)
+# extern    (1 or 0, only in some logger types reported)
+# base      (base href=...)
+# name      (<a href=...>name</a> and <img alt="name">)
+# parenturl (if any)
+# info      (some additional info, e.g. FTP welcome messages)
+# warning   (warnings)
+# dltime    (download time)
+# checktime (check time)
+# url       (the original url name, can be relative)
+# intro     (the blurb at the beginning, "starting at ...")
+# outro     (the blurb at the end, "found x errors ...")
 
 # each Logger can have separate configuration parameters
 # standard text logger

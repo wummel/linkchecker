@@ -1,17 +1,20 @@
-Source: linkchecker
-Section: web
+Source: linkchecker-ssl
+Section: non-US/main
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends: python2-base, python2-dev, debhelper (>= 3.0.0)
+Build-Depends: python2-base, python2-dev, debhelper (>= 3.0.0), libssl-dev
 Build-Depends-Indep: gettext
-Standards-Version: 3.5.2
+Standards-Version: 3.5.4
 
-Package: linkchecker
-Architecture: all
+Package: linkchecker-ssl
+Architecture: any
 Depends: python2-base
-Suggests: linkchecker-ssl (>= ${Source-Version})
-Description: check HTML documents for broken links
- Features:
+Recommends: linkchecker (>= ${Source-Version})
+Description: HTTPS module for linkchecker
+ Includes the Python module 'linkcheckerssl' to support https://
+ links for LinkChecker.
+ .
+ Linkchecker features:
   o recursive checking
   o multithreaded
   o output can be colored or normal text, HTML, SQL, CSV or a sitemap
