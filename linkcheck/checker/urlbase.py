@@ -326,9 +326,6 @@ class UrlBase (object):
                 raise linkcheck.LinkCheckerError, \
                          _("URL has invalid port %r") % str(self.port)
             self.port = int(self.port)
-        country = self.consumer.get_country_name(self.host)
-        if country is not None:
-            self.add_info(_("URL is located in %s.") % _(country))
 
     def check (self):
         """
@@ -353,6 +350,14 @@ class UrlBase (object):
             self.consumer.interrupted(self)
             internal_error()
 
+    def add_country_info (self):
+        """
+        Try to ask GeoIP database for country info.
+        """
+        country = self.consumer.get_country_name(self.host)
+        if country is not None:
+            self.add_info(_("URL is located in %s.") % _(country))
+
     def local_check (self):
         """
         Local check function can be overridden in subclasses.
@@ -372,6 +377,7 @@ class UrlBase (object):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking connection")
         try:
             self.check_connection()
+            self.add_country_info()
             if self.consumer.config["anchors"]:
                 self.check_anchors()
         except tuple(linkcheck.checker.ExcList):
