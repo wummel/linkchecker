@@ -230,7 +230,8 @@ class LCOptionParser (optparse.OptionParser, object):
 
     def print_help (self, file=None):
         """print translated help text"""
-        s = "%s\n%s\n%s\n%s" % (self.format_help(), Notes, Retval, Examples)
+        s = u"%s\n%s\n%s\n%s" % (self.format_help(), Notes, Retval, Examples)
+        s = s.encode("iso-8859-1", "replace")
         if os.name != 'posix':
             linkcheck.StringUtil.paginate(s)
         else:
