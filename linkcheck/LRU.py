@@ -119,7 +119,7 @@ def _main ():
     for i in a.iteritems():
         print i,
     print
-    b = a['2']
+    print a['2']
     a['6'] = '6'
     for i in a.iteritems():
         print i,

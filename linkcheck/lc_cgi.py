@@ -26,6 +26,7 @@ from types import StringType
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
+_is_level = re.compile(r'^[0123]$').match
 
 class FormError (Exception):
     """form related errors"""
@@ -97,7 +98,7 @@ def checkform (form):
         url = form["url"].value
         if not url or url=="http://":
             raise FormError(i18n._("empty url was given"))
-        if not _is_valid_url(url):
+        if not is_valid_url(url):
             raise FormError(i18n._("invalid url was given"))
     else:
         raise FormError(i18n._("no url was given"))
@@ -105,9 +106,7 @@ def checkform (form):
     if form.has_key("level"):
         level = form["level"].value
         if not _is_level(level):
-            raise FormError(i18n._("invalid recursion level syntax"))
-        if int(level) > 3:
-            raise FormError(i18n._("recursion level greater than 3"))
+            raise FormError(i18n._("invalid recursion level"))
     # check options
     for option in ("strict", "anchors", "errors", "intern"):
         if form.has_key(option):

@@ -493,11 +493,11 @@ class Configuration (dict):
         try:
             i = 1
             while 1:
-                tuple = cfgparser.get(section, "extern%d" % i).split()
-                if len(tuple)!=2:
-                    error(i18n._("extern%d: syntax error %s\n")%(i, tuple))
+                ctuple = cfgparser.get(section, "extern%d" % i).split()
+                if len(ctuple)!=2:
+                    error(i18n._("extern%d: syntax error %s\n")%(i, ctuple))
                     break
-                self["externlinks"].append(getLinkPat(tuple[0], strict=int(tuple[1])))
+                self["externlinks"].append(getLinkPat(ctuple[0], strict=int(ctuple[1])))
                 i += 1
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["internlinks"].append(getLinkPat(cfgparser.get(section, "internlinks")))
