@@ -128,6 +128,7 @@ A9: Currently, only a Python API lets you define new logging classes.
    cfg.addLogger(log_format, MyLogger.MyLogger)
    cfg['fileoutput'].append(cfg.newLogger(log_format, log_args)) 
 
+
 Q10.1: LinkChecker does not ignore anchor references on caching.
 Q10.2: Some links with anchors are getting checked twice.
 A10: This is not a bug.
