@@ -41,6 +41,10 @@ class Consumer (object):
         self.linknumber = 0
         # one lock for the data
         self.lock = threading.Lock()
+        # if checking had errors
+        self.errors = False
+        # if checking had warnings
+        self.warnings = False
 
     def filter_url_queue (self):
         """remove already cached urls from queue"""
@@ -152,6 +156,10 @@ class Consumer (object):
         try:
             self.linknumber += 1
             do_filter = (self.linknumber % 1000) == 0
+            if not url_data.valid:
+                self.errors = True
+            if url_data.warning and self.config["warnings"]:
+                self.warnings = True
             if not self.config['quiet'] and \
               (self.config["verbose"] or not url_data.valid or
                (url_data.warning and self.config["warnings"])):
