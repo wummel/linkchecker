@@ -86,7 +86,7 @@ Logge Warnungen.
 Definieren Sie einen regulären Ausdruck, der eine Warnung ausgibt
 falls er den Inhalt einer geprüften URL matcht.
 Dies gilt nur für gültige Seiten deren Inhalt wir bekommen können.
-.BR
+.br
 Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.
 'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.
 Diese Option impliziert \fB-w\fP.
@@ -134,7 +134,7 @@ Verfügbare Logger sind \fBcmdline\fP, \fBchecking\fP,
 Die Angabe \fBall\fP ist ein Synonym für alle verfügbaren Logger.
 Diese Option kann mehrmals angegeben werden, um
 mit mehr als einem Logger zu debuggen.
-.BR
+.br
 Für exakte Resultate wird Threading während einem
 Debuglauf deaktiviert.
 .TP
@@ -147,108 +147,114 @@ Gebe vorher generierte Profiling-Daten aus. Siehe auch \fB--profile\fP.
 
 .SS Optionen zum Prüfen
 .TP
-\fB-r\fP\fIdepth\fP, \fB--recursion-level=\fP\fIdepth\fP
-Check recursively all links up to given \fIdepth\fP.
-A negative depth will enable inifinite recursion.
-Default depth is inifinite.
+\fB-r\fP\fITiefe\fP, \fB--recursion-level=\fP\fITiefe\fP
+Prüfe rekursiv alle URLs bis zu der angegebenen \fITiefe\fP. Eine
+negative Tiefe erwirkt unendliche Rekursion. Standard Tiefe ist
+unendlich.
 .TP
 \fB-i\fP\fIregex\fP, \fB--intern=\fIregex\fP
-Assume URLs that match the given regular expression as internal.
-LinkChecker descends recursively only to internal URLs, not to external.
+Behandle URLs welche den regulären Ausdruck matchen als intern.
+LinkChecker steigt nur in interne URLs rekursiv ab, nicht in externe.
 .TP
 \fB-e\fP\fIregex\fP, \fB--extern=\fP\fIregex\fP
-Assume urls that match the given regular expression as external.
-Only internal HTML links are checked recursively.
+Behandle URLs welche diesen regulären Ausdruck matchen als extern.
+Nur interne HTTP Links werden rekursiv geprüft.
 .TP
 \fB--extern-strict=\fP\fIregex\fP
-Assume urls that match the given regular expression as strict external.
-Only internal HTML links are checked recursively.
+Behandle URLs welche diesen regulären Ausdruck matchen als strikt extern.
+Nur interne HTTP Links werden rekursiv geprüft.
 .TP
 \fB-s\fP, \fB--extern-strict-all\fP
-Check only the syntax of external links, do not try to connect to them.
-For local file urls, only local files are internal. For
-http and ftp urls, all urls at the same domain name are internal.
+Prüfe lediglich die Syntax von externen URLs. Es wird keine.
+Verbindung zu diesen Rechner aufgebaut.
+Bei lokalen Dateiurls sind lediglich lokale Dateien intern. Bei http
+und ftp URLs sind alle URLs mit demselben Domänennamen intern.
 .TP
 \fB-d\fP, \fB--denyallow\fP
-Swap checking order to external/internal. Default checking order is
-internal/external.
+Tausche die Prüfreihenfolge zu extern/intern. Standardreihenfolge
+ist intern/extern.
 .TP
 \fB-C\fP, \fB--cookies\fP
-Accept and send HTTP cookies according to RFC 2109. Only cookies
-which are sent back to the originating server are accepted.
-Sent and accepted cookies are provided as additional logging
-information.
+Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich
+Cookies die zum ursprünglichen Server zurückgesendet werden, werden
+akzeptiert.
+.br
+Gesendete und akzeptierte Cookies werden als zusätzliche
+Loginformation aufgeführt.
 .TP
 \fB-a\fP, \fB--anchors\fP
-Check HTTP anchor references.  This option applies to both internal
-and external urls. Default is don't check anchors.
-This option implies -w because anchor errors are always warnings.
+Prüfe HTTP Anker Verweise. Diese Option gilt sowohl für interne
+als auch für externe URLs. Standard ist keine Überprüfung.
+Diese Option impliziert \fB-w\fP weil Ankerfehler immer Warnungen sind.
 .TP
 \fB--no-anchor-caching\fP
-Treat url#anchora and url#anchorb as equal on caching. This
-is the default browser behaviour, but it's not specified in
-the URI specification. Use with care.
+Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies
+ist zwar Standard bei Browsern, aber in der URI Spezifikation
+nicht enthalten. Benutzen Sie diese Option mit Vorsicht.
 .TP
-\fB-u\fP\fIname\fP, \fB--user=\fP\fIname\fP
-Try username \fIname\fP for HTTP and FTP authorization.
-For FTP the default username is \fBanonymous\fP. See also \fB-p\fP.
+\fB-u\fP\fIName\fP, \fB--user=\fP\fIName\fP
+Verwende den angegebenen Benutzernamen für HTTP und FTP
+Authorisation. Für FTP ist der Standardname \fBanonymous\fP.
+Siehe auch \fB-p\fP.
 .TP
 \fB-p\fP\fIpwd\fP, \fB--password=\fP\fIpwd\fP
-Try the password \fIpwd\fP for HTTP and FTP authorization.
-For FTP the default password is \fBanonymous@\fP. See also \fB-u\fP.
+Verwende das angegebene Passwort für HTTP und FTP Authorisation.
+Für FTP ist das Standardpasswort \fBanonymous@\fP.
+Siehe auch \fB-u\fP.
 .TP
 \fB--timeout=\fP\fIsecs\fP
-Set the timeout for connection attempts in seconds. The default timeout
-is 30 seconds.
+Setze den Timeout für TCP-Verbindungen in Sekunden. Der Standard
+Timeout ist 30 Sekunden.
 .TP
-\fB-P\fP\fIsecs\fP, \fB--pause=\fP\fIsecs\fP
-Pause \fIsecs\fP seconds between each url check. This option
-implies \fB-t0\fP.
-Default is no pause between requests.
+\fB-P\fP\fISekunden\fP, \fB--pause=\fP\fISekunden\fP
+Pausiere die angegebene Zahl von Sekunden zwischen dem Prüfen jeder URL.
+Diese Option impliziert \fB-t0\fP.
+Standard ist keine Pause zwischen dem Prüfen.
 .TP
 \fB-N\fP\fIserver\fP, \fB--nntp-server=\fP\fIserver\fP
-Specify an NNTP server for 'news:...' links. Default is the
-environment variable NNTP_SERVER. If no host is given,
-only the syntax of the link is checked.
-
+Gibt ein NNTP Rechner für \fBnews:...\fP Links. Standard ist die
+Umgebungsvariable NNTP_SERVER. Falls kein Rechner angegeben ist,
+wird lediglich auf korrekte Syntax des Links geprüft.
 .SS Alte Optionen
 .TP
 \fB--status\fP
-Print check status every 5 seconds to stderr. This is the default now.
+Gebe Prüfstatus alle 5 Sekunden an stderr aus. Dies ist die Voreinstellung.
 
 .SH AUSGABETYPEN
-Note that by default only errors are logged.
+Beachten Sie dass normalerweise nur Fehler geloggt werden.
 
 .TP
 \fBtext\fP
-Standard text logger, logging URLs in keyword: argument fashion
+Standard Textausgabe in \fISchlüssel\fP\fB: \fP\fIWert\fP-Form.
 .TP
 \fBhtml\fP
-Log URLs in keyword: argument fashion, formatted as HTML.
-Additionally has links to the referenced pages. Invalid URLs have
-HTML and CSS syntax check links appended.
+Gebe URLs in \fISchlüssel\fP\fB: \fP\fIWert\fP-Form als HTML
+formatiert aus.
+Besitzt zudem Verknüpfungen auf die referenzierten Seiten.
+Ungültige URLs haben Verknüpfungen zur HTML und CSS Syntaxprüfung angehängt.
 .TP
 \fBcsv\fP
-Log check result in CSV format with one URL per line.
+Gebe Prüfresultat in CSV-Format aus mit einer URL pro Zeile.
 .TP
 \fBgml\fP
-Log parent-child relations between linked URLs as a GML graph.
-You should use the \fB--verbose\fP option to get a complete graph.
+Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als GML Graphen aus.
+Sie sollten die Option \fB--verbose\fP benutzen, um einen vollständigen
+Graphen zu erhalten.
 .TP
 \fBxml\fP
-Log check result as machine-readable XML file.
+Gebe Prüfresultat als maschinenlesbare XML-Datei aus.
 .TP
 \fBsql\fP
-Log check result as SQL script with INSERT commands. An example
-script to create the initial SQL table is included as create.sql.
+Gebe Prüfresultat als SQL Skript mit INSERT Befehlen aus. Ein Beispielskript,
+um die initiale SQL Tabelle zu erstellen ist unter create.sql zu finden.
 .TP
 \fBblacklist\fP
-Suitable for cron jobs. Logs the check result into a file
-\fB~/.blacklist\fP which only contains entries with invalid urls and
-the number of times they have failed.
+Für Cronjobs geeignet. Gibt das Prüfergebnis in eine Datei
+\fB~/.blacklist\fP aus welche nur Einträge mit fehlerhaften URLs und die
+Anzahl der Fehlversuche enthält.
 .TP
 \fBnone\fP
-Logs nothing. Suitable for scripts.
+Gibt nichts aus. Für Skripte geeignet.
 
 .SH BEMERKUNGEN
 Ein \fB!\fP vor einem regulären Ausdruck negiert diesen. Also matcht
@@ -277,6 +283,15 @@ Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.
 
 Beim Prüfen von \fBnews:\fP Links muß der angegebene NNTP Rechner nicht
 unbedingt derselbe wie der des Benutzers sein.
+
+.SH UMGEBUNG
+\fBNNTP_SERVER\fP - gibt Standard NNTP Server an
+
+\fBhttp_proxy\fP - gibt Standard HTTP Proxy an
+
+\fBftp_proxy\fP - gibt Standard FTP Proxy an
+
+\fBLC_MESSAGES\fP, \fBLANG\fP - gibt Ausgabesprache an
 
 .SH DATEIEN
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP -
