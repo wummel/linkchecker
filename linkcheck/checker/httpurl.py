@@ -58,7 +58,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         super(HttpUrl, self).__init__(base_url, recursion_level, consumer,
                parent_url=parent_url, base_ref=base_ref, line=line,
                column=column, name=name)
-        self.aliases = []
         self.max_redirects = 5
         self.has301status = False
         self.no_anchor = False # remove anchor in request url
