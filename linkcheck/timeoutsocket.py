@@ -1,4 +1,30 @@
-"""enables a timeout on all TCP connections
+
+####
+# Copyright 2000,2001 by Timothy O'Malley <timo@alum.mit.edu>
+# 
+#                All Rights Reserved
+# 
+# Permission to use, copy, modify, and distribute this software
+# and its documentation for any purpose and without fee is hereby
+# granted, provided that the above copyright notice appear in all
+# copies and that both that copyright notice and this permission
+# notice appear in supporting documentation, and that the name of
+# Timothy O'Malley  not be used in advertising or publicity
+# pertaining to distribution of the software without specific, written
+# prior permission. 
+# 
+# Timothy O'Malley DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+# SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS, IN NO EVENT SHALL Timothy O'Malley BE LIABLE FOR
+# ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+# WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+# PERFORMANCE OF THIS SOFTWARE. 
+#
+####
+
+"""Timeout Socket
 
 This module enables a timeout mechanism on all TCP connections.  It
 does this by inserting a shim on top of the socket module.  After
@@ -68,6 +94,28 @@ Good Luck!
 
 #
 # Revision history
+#    1.17 Added these comments.
+#    1.16 Better handling of non-blocking sockets in connect,
+#         accept, recv, and send.
+#         Minor bug fix to exception short cuts.
+#    1.15 Accept now returns an instance of TimeoutSocket.
+#         Added new Connected and Busy constants and modified the
+#         connect() and accept() routines to use them.
+#    1.14 Fixed bug in accept().
+#         Added a fix for windows 10022 error.
+#         Thanks to Alex Martelli for pointing these out.
+#    1.13 Added license.
+#    1.12 Better mimicry of makefile()'s ability to duplicate a
+#         file descriptor.  This fixes Python 2.0 woes.
+#    1.10 As Tim Lavoie pointed out, setblocking() still had a bug.
+#    1.9  Thanks to Doug Fort for pointing these out.
+#         BAD bug with accept() return value fixed.
+#         Forgotten "_" in setblocking() fixed.
+#    1.8  Removed the error handling from send().  It was just wrong.
+#    1.7  Updated revision history
+#    1.6  Added setblocking() method and improved error handling
+#         in connect(), accept(), and send()
+#    1.5  Updated revision history
 #    1.4  Updated document string
 #    1.3  Changed name to timeoutsocket.py on Pehr's suggestion
 #    1.2  Added the silent replacement of the socket module
@@ -80,14 +128,32 @@ __author__  = "Timothy O'Malley <timo@alum.mit.edu>"
 #
 # Imports
 #
-import select, errno
-import string
+import select
 try:
     from _timeoutsocket import *
 except ImportError:
     from socket import *
     _socket = socket
     del socket
+
+#
+# Set up constants to test for Connected and Blocking operations.
+# We delete 'os' and 'errno' to keep our namespace clean(er).
+# Thanks to Alex Martelli and G. Li for the Windows error codes.
+#
+import os
+if os.name == "nt":
+    _IsConnected = ( 10022, )
+    _ConnectBusy = ( 10035, )
+    _AcceptBusy  = ( 10035, )
+else:
+    import errno
+    _IsConnected = ( errno.EISCONN, )
+    _ConnectBusy = ( errno.EINPROGRESS, errno.EALREADY, errno.EWOULDBLOCK )
+    _AcceptBusy  = ( errno.EAGAIN, errno.EWOULDBLOCK )
+    del errno
+del os
+
 
 #
 # Default timeout value for ALL TimeoutSockets
@@ -130,9 +196,12 @@ class TimeoutSocket:
     set_timeout() method.
     """
 
+    _copies = 0
+    _blocking = 1
+    
     def __init__(self, sock, timeout):
-        self._sock    = sock
-        self._timeout = timeout
+        self._sock     = sock
+        self._timeout  = timeout
     # end __init__
 
     def __getattr__(self, key):
@@ -147,33 +216,42 @@ class TimeoutSocket:
         self._timeout = timeout
     # end set_timeout
 
-    def connect(self, addr, dumbhack=None):
+    def setblocking(self, blocking):
+        self._blocking = blocking
+        return self._sock.setblocking(blocking)
+    # end set_timeout
+
+    def connect(self, addr, port=None, dumbhack=None):
         # In case we were called as connect(host, port)
-        #if port != None:  addr = (addr, port)
+        if port != None:  addr = (addr, port)
 
         # Shortcuts
         sock    = self._sock
         timeout = self._timeout
+        blocking = self._blocking
 
         # First, make a non-blocking call to connect
         try:
             sock.setblocking(0)
             sock.connect(addr)
-            sock.setblocking(1)
+            sock.setblocking(blocking)
             return
         except Error, why:
-            # If we are already connected, then return success
+            # Set the socket's blocking mode back
+            sock.setblocking(blocking)
+            
+            # If we are not blocking, re-raise
+            if not blocking:
+                raise
+            
+            # If we are already connected, then return success.
             # If we got a genuine error, re-raise it.
             errcode = why[0]
-            if errcode == errno.EISCONN:
+            if dumbhack and errcode in _IsConnected:
                 return
-            if errcode == 10035 and why[1] == 'winsock error':
-                # Windows error code from G.Li@med.ge.com
-                return
-            vals = (errno.EINPROGRESS, errno.EALREADY, errno.EWOULDBLOCK)
-            if errcode not in vals:
+            elif errcode not in _ConnectBusy:
                 raise
-
+            
         # Now, wait for the connect to happen
         # ONLY if dumbhack indicates this is pass number one.
         #   If select raises an error, we pass it on.
@@ -187,25 +265,36 @@ class TimeoutSocket:
         raise Timeout("Attempted connect to %s timed out." % str(addr) )
     # end connect
 
-    def accept(self, dumbhack=1):
+    def accept(self, dumbhack=None):
         # Shortcuts
-        sock    = self._sock
-        timeout = self._timeout
+        sock     = self._sock
+        timeout  = self._timeout
+        blocking = self._blocking
 
-        # First, make a non-blocking call to connect
+        # First, make a non-blocking call to accept
+        #  If we get a valid result, then convert the
+        #  accept'ed socket into a TimeoutSocket.
+        # Be carefult about the blocking mode of ourselves.
         try:
             sock.setblocking(0)
-            sa = sock.accept()
-            sock.setblocking(1)
-            return sa
+            newsock, addr = sock.accept()
+            sock.setblocking(blocking)
+            timeoutnewsock = self.__class__(newsock, timeout)
+            timeoutnewsock.setblocking(blocking)
+            return (timeoutnewsock, addr)
         except Error, why:
-            # If we are already connected, then return success
+            # Set the socket's blocking mode back
+            sock.setblocking(blocking)
+
+            # If we are not supposed to block, then re-raise
+            if not blocking:
+                raise
+            
             # If we got a genuine error, re-raise it.
             errcode = why[0]
-            vals = (errno.EAGAIN, errno.EWOULDBLOCK)
-            if errcode not in vals:
+            if errcode not in _AcceptBusy:
                 raise
-
+            
         # Now, wait for the accept to happen
         # ONLY if dumbhack indicates this is pass number one.
         #   If select raises an error, we pass it on.
@@ -221,29 +310,33 @@ class TimeoutSocket:
 
     def send(self, data, flags=0):
         sock = self._sock
-        totallen = 0
-        while data:
-            r,w,e = select.select([],[sock], [], self._timeout)
+        if self._blocking:
+            r,w,e = select.select([],[sock],[], self._timeout)
             if not w:
                 raise Timeout("Send timed out")
-            sentlen = sock.send(data, flags)
-            data = data[sentlen:]
-            totallen += sentlen
-        return totallen
+        return sock.send(data, flags)
     # end send
 
     def recv(self, bufsize, flags=0):
         sock = self._sock
-        r,w,e = select.select([sock], [], [], self._timeout)
-        if r:
-            data = sock.recv(bufsize, flags)
-            return data
-        raise Timeout("Recv timed out")
+        if self._blocking:
+            r,w,e = select.select([sock], [], [], self._timeout)
+            if not r:
+                raise Timeout("Recv timed out")
+        return sock.recv(bufsize, flags)
     # end recv
 
     def makefile(self, flags="r", bufsize=-1):
+        self._copies = self._copies +1
         return TimeoutFile(self, flags, bufsize)
     # end makefile
+
+    def close(self):
+        if self._copies <= 0:
+            self._sock.close()
+        else:
+            self._copies = self._copies -1
+    # end close
 
 # end TimeoutSocket
 
@@ -265,6 +358,11 @@ class TimeoutFile:
         return getattr(self._sock, key)
     # end __getattr__
 
+    def close(self):
+        self._sock.close()
+        self._sock = None
+    # end close
+    
     def write(self, data):
         self.send(data)
     # end write
@@ -278,12 +376,12 @@ class TimeoutFile:
                 break 
             bufsize = self._bufsize
             if size > 0:
-                bufsize = min(bufsize, size - datalen)
+                bufsize = min(bufsize, size - datalen )
             buf = self.recv(bufsize)
             if not buf:
                 break
-            data += buf
-        if datalen > size > 0:
+            data = data + buf
+        if size > 0 and datalen > size:
             self._sock._inqueue = data[size:]
             data = data[:size]
         return data
@@ -293,7 +391,7 @@ class TimeoutFile:
         data = self._sock._inqueue
         self._sock._inqueue = ""
         while 1:
-            idx = string.find(data, "\n")
+            idx = data.find("\n")
             if idx >= 0:
                 break
             datalen = len(data)
@@ -305,10 +403,10 @@ class TimeoutFile:
             buf = self.recv(bufsize)
             if not buf:
                 break
-            data += buf
+            data = data + buf
 
         if idx >= 0:
-            idx += 1
+            idx = idx + 1
             self._sock._inqueue = data[idx:]
             data = data[:idx]
         elif size > 0 and datalen > size:

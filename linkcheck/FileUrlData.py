@@ -19,7 +19,10 @@ import re,string,os,urlparse,urllib
 from UrlData import UrlData
 from linkcheck import _
 
-html_re = re.compile(r'\.s?html?$')
+html_re = re.compile(r'(?i)\.s?html?$')
+html_content_re = re.compile(r'(?i)<html>.*</html>')
+opera_re = re.compile(r'^(?i)opera.adr$')
+opera_content_re = re.compile(r'(?i)Opera Hotlist')
 
 class FileUrlData(UrlData):
     "Url link with file scheme"
@@ -61,7 +64,31 @@ class FileUrlData(UrlData):
 
 
     def isHtml(self):
-        return self.valid and html_re.search(self.url)
+        return html_re.search(self.url) or opera_re.search(self.url) or \
+               html_content_re.search(self.getContent()) or \
+               opera_content_re.search(self.getContent())
+
+
+    def parseUrl(self, config):
+        if html_re.search(self.url) or \
+           html_content_re.search(self.getContent()):
+            UrlData.parseUrl(self, config)
+            return
+        # parse an opera bookmark file
+        name = ""
+        lineno = 0
+        # XXX use iterators for this?
+        for line in StringUtil.lines(self.getContent()):
+            lineno += 1
+            line = line.strip()
+            if line.startwith("NAME="):
+                name = line[5:]
+            elif line.startswith("URL="):
+                url = line[4:]
+                if url:
+                    config.appendUrl(GetUrlDataFrom(url,
+                        self.recursionLevel+1, self.url, None, lineno, name))
+                name = ""
 
 
     def get_scheme(self):

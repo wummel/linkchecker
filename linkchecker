@@ -20,11 +20,7 @@
 import sys
 if sys.version[:5] < "2.0":
     raise SystemExit, "This program requires Python 2.0 or later."
-import getopt,re,string,os,urlparse
-# 90 seconds timeout for all connections
-#import timeoutsocket
-#timeoutsocket.setDefaultSocketTimeout(90)
-import linkcheck
+import getopt, re, os, urlparse, linkcheck
 from linkcheck import _,StringUtil
 
 
@@ -84,6 +80,9 @@ For single-letter option arguments the space is not a necessity. So
 -t num, --threads=num
         Generate no more than num threads. Default number of threads is 5.
         To disable threading specify a non-positive number.
+--timeout=secs
+        Set the timeout for connection attempts in seconds. Default timeout
+        is system dependant.
 -u name, --user=name
         Try username name for HTML and FTP authorization.
         Default is 'anonymous'. See also -p.
@@ -175,6 +174,7 @@ try:
     "robots-txt",
     "strict",
     "threads=",
+    "timeout=",
     "user=",
     "version",
     "verbose",
@@ -220,7 +220,7 @@ for opt,arg in options:
     elif opt=="-F" or opt=="--file-output":
         ns = {'fileoutput':1}
         try:
-            type, ns['filename'] = string.split(arg, '/', 1)
+            type, ns['filename'] = arg.split('/', 1)
             if not ns['filename']: raise ValueError
         except ValueError: type = arg
         if linkcheck.Config.Loggers.has_key(type) and type != "blacklist":
@@ -273,6 +273,10 @@ for opt,arg in options:
             else:
                 config.disableThreading()
 
+    elif opt=="--timeout":
+        import timeoutsocket
+        timeoutsocket.setDefaultSocketTimeout(int(arg))
+
     elif opt=="-u" or opt=="--user":
         _user = arg
         constructauth = 1
@@ -310,7 +314,7 @@ if len(args)==0:
     print _("warning: no files or urls given")
 
 for url in args:
-    url = string.strip(url)
+    url = url.strip()
     if not (":" in url):
         if re.compile("^ftp\.").match(url):
             url = "ftp://"+url

@@ -51,16 +51,11 @@ So for example 1.1.5 is the fifth release of the 1.1 development package.
 Included packages
 -----------------
 httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
-DNS see DNS/README
+DNS from http://pydns.sourceforge.net/
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
 fintl.py from http://sourceforge.net/snippet/detail.php?type=snippet&id=100059
 
-Note that the following packages are modified by me:
-fcgi.py (implemented streamed output)
-sz_fcgi.py (simplified the code)
-DNS/Lib.py:566 fixed rdlength name error
-DNS/Lib.py:105 tuple parameter for Python 1.6 compatibility
-DNS/Base.py: fixed /etc/resolv.conf parser to cope with empty lines
+Note that all included packages are modified by me.
 
 
 Internationalization

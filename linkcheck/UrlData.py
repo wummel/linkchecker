@@ -372,6 +372,7 @@ class UrlData:
             self.html_comments.append((start, match.end()))
         debug(NIGHTMARE, "comment spans", self.html_comments)
 
+
     def is_in_comment(self, index):
         for low,high in self.html_comments:
             if low < index < high:
