@@ -7,7 +7,7 @@ config['log'] = config.newLogger('test')
 config["anchors"] = True
 config["verbose"] = True
 config.setThreads(0)
-for filename in ('file.html', "file.txt", "file.asc"):
+for filename in ('file.html', "file.txt", "file.asc", "file.css"):
     url = os.path.join("test", "html", filename)
     config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0, config))
 linkcheck.checkUrls(config)

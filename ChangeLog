@@ -1,4 +1,4 @@
-1.12.2 (release 3.4.2004)
+1.12.2 (release 4.4.2004)
   * use XmlUtils instead of xmlify for XML quoting
     Type: code cleanup
     Added: linkcheck/XmlUtils.py
