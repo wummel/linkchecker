@@ -31,6 +31,8 @@ class HttpUrlData (ProxyUrlData):
 
     def buildUrl (self):
         ProxyUrlData.buildUrl(self)
+        # encode userinfo
+        # XXX
         # check for empty paths
         if not self.urlparts[2]:
             self.setWarning(linkcheck._("Path is empty"))
@@ -125,7 +127,7 @@ class HttpUrlData (ProxyUrlData):
             if response.status==401:
 	        if not self.auth:
                     import base64
-                    _user, _password = self._getUserPassword()
+                    _user, _password = self.getUserPassword()
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
                 response = self._getHttpResponse()
@@ -217,7 +219,11 @@ class HttpUrlData (ProxyUrlData):
             self.urlparts[3], self.urlparts[4]))
         self.urlConnection.putrequest(method, path, skip_host=1)
         self.urlConnection.putheader("Host", host)
-        if self.auth:
+        # userinfo is from http://user@pass:host/
+        if self.userinfo:
+            self.urlConnection.putheader("Authorization", self.userinfo)
+        # auth is the -u and -p configuration options
+        elif self.auth:
             self.urlConnection.putheader("Authorization", self.auth)
         if self.proxyauth:
             self.urlConnection.putheader("Proxy-Authorization",
