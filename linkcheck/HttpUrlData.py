@@ -124,7 +124,16 @@ class HttpUrlData (ProxyUrlData):
         fallback = False
         redirectCache = [self.url]
         while True:
-            response = self._getHttpResponse()
+            try:
+                response = self._getHttpResponse()
+            except httplib2.BadStatusLine:
+                # some servers send empty HEAD replies
+                if self.method=="HEAD":
+                    self.method = "GET"
+                    redirectCache = [self.url]
+                    fallback = True
+                    continue
+                raise
             self.headers = response.msg
             debug(BRING_IT_ON, response.status, response.reason, self.headers)
             # proxy enforcement (overrides standard proxy)
