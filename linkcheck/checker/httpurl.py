@@ -153,7 +153,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 response = self._get_http_response()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "follow all redirections")
             tries, response = \
                     self.follow_redirections(response, redirect_cache)
             if tries == -1:
@@ -212,6 +211,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
 
     def follow_redirections (self, response, redirect_cache):
         """follow all redirections of http response"""
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "follow all redirections")
         redirected = self.url
         tries = 0
         while response.status in [301, 302] and self.headers and \
@@ -220,6 +220,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                          self.headers.getheader("Uri", ""))
             redirected = linkcheck.url.url_norm(
                                       urlparse.urljoin(redirected, newurl))
+            self.add_info(_("Redirected to %(url)s") % {'url': redirected})
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 redirected)
             # note: urlparts has to be a list
