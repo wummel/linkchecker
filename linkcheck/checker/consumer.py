@@ -61,8 +61,7 @@ class Consumer (linkcheck.lock.AssertLock):
         super(Consumer, self).__init__()
         self.config = config
         self.cache = cache
-        self.threader = linkcheck.threader.Threader()
-        self._set_threads(config['threads'])
+        self.threader = linkcheck.threader.Threader(num=config['threads'])
         self.logger = config['logger']
         self.fileoutput = config['fileoutput']
         self.linknumber = 0
@@ -71,18 +70,6 @@ class Consumer (linkcheck.lock.AssertLock):
         # if checking had warnings
         self.warnings = False
         self.logger_start_output()
-
-    def _set_threads (self, num):
-        """
-        Set number of checker threads to start.
-        """
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
-                            "set threading with %d threads", num)
-        self.threader.threads_max = num
-        if num > 0:
-            sys.setcheckinterval(50)
-        else:
-            sys.setcheckinterval(100)
 
     def append_url (self, url_data):
         """
