@@ -1,26 +1,27 @@
 Possible improvements people could work on:
 
-- Connection pooling. Right now we open for every link a new connection.
+- [OPTIMIZATION] Connection pooling. Right now we open for every link a
+  new connection.
   Must be thread-safe, must handle timeouts and connection expiration
   (HTTP: only pool persistent (ie. HTTP/1.1) connections; Keepalive
    header parsing).
 
-- rethink intern/extern stuff
+- [USAGE] rethink intern/extern stuff
 
-- when an URL is found in the cache and it has a broken anchor, the broken
-  anchor name is not displayed as a warning
+- [BUGFIX] when an URL is found in the cache and it has a broken anchor,
+  the broken anchor name is not displayed as a warning
 
-- Python 2.4 introduced an "usenetrc" option to ignore ~/.netrc for
-  NNTP. Thus we could get rid of our custom NNTP class that ignores
-  ~/.netrc completely and use "usenetrc=False" instead.
+- [OPTIMIZATION] Python 2.4 introduced an "usenetrc" option to ignore
+  ~/.netrc for NNTP. Thus we could get rid of our custom NNTP class that
+  ignores ~/.netrc completely and use "usenetrc=False" instead.
 
-- make a nice GUI for linkchecker
+- [USAGE] make a nice GUI for linkchecker
 
-- SF bug #992389 bit me when I wanted to do absolute imports
+- [OPTIMIZATION] SF bug #992389 bit me when I wanted to do absolute imports
   at the checker classes :/
   When the bug is fixed we can import absolute classes
 
-- warn if overall size of page (including images/flash/etc.) is too big
-  right now, the page size is only html content
+- [FEATURE] warn if overall size of page (including images/flash/etc.) is
+  too big right now, the page size is only html content
 
-- save downloaded pages
+- [FEATURE] save downloaded pages
