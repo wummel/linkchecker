@@ -39,6 +39,8 @@ install: build
 	dh_installdirs
 	$(MAKE) locale
 	python setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
+	# remove man pages, we install them with dh_installmanpages
+	rm -rf debian/$(PACKAGE)/usr/man
 	# install additional doc files
 	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
 	install -d -m 755 $(DOCDIR)/test
@@ -64,7 +66,7 @@ binary-arch: build install
 #	dh_installpam
 #	dh_installinit
 #	dh_installcron
-	dh_installmanpages linkchecker.1
+	dh_installmanpages
 #	dh_installinfo
 #	dh_undocumented linkchecker.1
 	dh_installchangelogs 
