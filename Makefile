@@ -12,13 +12,11 @@ HOST=www.debian.org
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
 TEST := test/run.sh test/regrtest.py
 OFFLINETESTS = test_base test_misc test_file test_frames
-ONLINETESTS = test_mail test_http test_https test_news test_ftp test_telnet
 DESTDIR=/.
 MD5SUMS=linkchecker-md5sums.txt
 
-PYCHECKEROPTS := -F pycheckrc
-PYCHECKERFILES := linkcheck/*.py linkcheck/parser/*.py \
-                  linkcheck/DNS/*.py linkcheck/log/*.py
+PYCHECKEROPTS := -F config/pycheckrc
+PYCHECKERFILES := linkcheck/*.py linkcheck/logger/*.py linkcheck/checker/*.py
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
@@ -27,7 +25,8 @@ clean:
 # ignore errors of this command
 	-$(PYTHON) setup.py clean --all
 	$(MAKE) -C po clean
-	rm -f linkcheck/parser/htmlsax.so
+	rm -f bk/HtmlParser/htmlsax.so
+	rm -f bk/HtmlParser/*.output
 	find . -name '*.py[co]' | xargs rm -f
 
 distclean: clean cleandeb

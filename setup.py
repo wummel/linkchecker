@@ -28,6 +28,7 @@ except ImportError:
     import distutils.dist
     distklass = distutils.dist.Distribution
 from distutils.command.install import install
+from distutils.command.install_data import install_data
 from distutils.file_util import write_file
 from distutils import util
 
@@ -166,7 +167,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.12.3",
+       version = "1.13.0",
        description = "check HTML documents for broken links",
        keywords = "link,url,checking,verfication",
        author = myname,

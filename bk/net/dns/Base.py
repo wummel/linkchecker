@@ -48,6 +48,7 @@ class DnsRequest (object):
     def argparse (self, name, config, args):
         self.name = name
         self.config = config
+        args['server'] = self.config.nameservers[0]
         for i in defaults.keys():
             if not args.has_key(i):
                 if self.defaults.has_key(i):
@@ -111,9 +112,8 @@ class DnsRequest (object):
     def conn (self):
         self.s.connect((self.ns, self.port))
 
-    def req (self, name, config, **args):
+    def req (self):
         " needs a refactoring "
-        self.argparse(name, config, args)
         #if not self.args:
         #    raise DNSError,'reinitialize request before reuse'
         protocol = self.args['protocol']

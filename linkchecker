@@ -199,6 +199,8 @@ group.add_option("--status", action="store_true", dest="status",
                  help=bk.i18n._(
 """Print check status every 5 seconds to stderr. Does not work with the
 --debug option."""))
+group.add_option("-D", "--debug", action="count",
+                 help=bk.i18n._("Print debugging output."))
 group.add_option("--profile", action="store_true", dest="profile",
                  help=bk.i18n._(
 """Write profiling data into a file named %s in the
@@ -278,8 +280,6 @@ optparser.add_option_group(group)
 group = optparse.OptionGroup(optparser, bk.i18n._("Deprecated options"))
 group.add_option("-R", "--robots-txt", action="store_true")
 optparser.add_option_group(group)
-group.add_option("-D", "--debug", action="count",
-                 help=bk.i18n._("Deprecated options"))
 
 ################# auto completion #####################
 linkcheck.optcomplete.autocomplete(optparser)
