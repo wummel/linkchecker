@@ -1,4 +1,7 @@
-1.9.23
+1.9.1
+  * Add CC documentation to INSTALL
+
+1.9.0
   * Require Python 2.3
     - removed timeoutsocket.py and robotparser.py, using upstream
     - use True/False for boolean values
