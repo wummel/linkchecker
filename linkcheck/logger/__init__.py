@@ -74,15 +74,24 @@ class Logger (object):
             self.fd = sys.stdout
             self.close_fd = False
 
+    def encode (self, s):
+        """Encode string with configured output encoding. Encoding
+           errors are ignored.
+
+           @return encoded string
+        """
+        if not isinstance(s, unicode):
+            raise ValueError("tried to encode non-unicode string %r" % s)
+        return s.encode(self.output_encoding, "ignore")
+
     def write (self, s, **args):
-        """write string to file output"""
+        """write string to output descriptor"""
         if self.fd is None:
             raise ValueError("write to non-file")
-        if not isinstance(s, unicode):
-            raise ValueError("write non-unicode string %r" % s)
-        self.fd.write(s.encode(self.output_encoding, "ignore"), **args)
+        self.fd.write(self.encode(s), **args)
 
     def writeln (self, s=u"", **args):
+        """write string to output descriptor plus a line ending"""
         self.write(s)
         self.write(unicode(os.linesep), **args)
 
