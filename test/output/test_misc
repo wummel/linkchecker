@@ -20,6 +20,13 @@ valid
 url telnet://user:password@route-views.oregon-ix.net
 cached
 valid
+url misc.html
+cached
+valid
+url misc.html
+cached
+valid
 url http://localhost
+info Using Proxy 'localhost:3128'
 warning Path is empty
 valid
