@@ -4,6 +4,10 @@
       and Solaris/SunOS platforms
     - ignore first leading invalid backslash in a=\"b\" attributes
     Changed: linkcheck/parser/htmllex.{l,c}
+  * add full script path to linkchecker on windows systems
+    Changed: linkchecker.bat
+  * fix generation of Linkchecker_Readme.txt under windows systems
+    Changed: setup.py
 
 1.9.1
   * add documentation how to change the default C compiler
