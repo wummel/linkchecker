@@ -6,6 +6,8 @@
 LinkChecker - check HTML documents for broken links
 ===================================================
 
+.. contents::
+
 Features
 ========
 
@@ -39,8 +41,10 @@ Requirements and installation instructions are located at the
 `install documentation`_. To see what has changed between releases
 look at the ChangeLog_.
 
-.. _install documentation: install.html
-.. _ChangeLog: changes.txt
+.. _install documentation:
+   install.html
+.. _ChangeLog:
+   http://cvs.sourceforge.net/viewcvs.py/linkchecker/linkchecker/ChangeLog?view=markup
 
 
 Screenshots
@@ -90,6 +94,26 @@ Other supported languages are 'nl' (Nederlands) and 'fr' (français).
 You can help to translate LinkChecker by copying the included
 ``linkchecker.pot`` file to ``language.po``, translate it and
 send it to me.
+
+
+Bug reporting
+=============
+
+The `SourceForge Bug interface`_ allows submitting of bugs, patches
+and requests.
+
+.. _SourceForge Bug interface:
+   http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
+
+
+CVS access
+==========
+
+The `SourceForge CVS page`_ has all the information on how to work
+with the development version of LinkChecker.
+
+.. _SourceForge CVS page:
+   http://sourceforge.net/cvs/?group_id=1913
 
 
 .. image:: http://sourceforge.net/sflogo.php?group_id=1913&type=1
