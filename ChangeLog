@@ -1,3 +1,15 @@
+1.7.1
+  * Fix memory leak in HTML parser flushing error path
+    Changed files: htmlparse.y
+  * add custom line and column tracking in parser
+    Changed files: htmllex.l, htmlparse.y, htmlsax.h, htmllib.py
+  * Use column tracking in urldata classes
+    Changed files: UrlData.py, FileUrlData,py, FtpUrlData.py,
+     HostCheckingUrlData.py
+  * Use column tracking in logger classes
+    Changed files: StandardLogger.py CVSLogger.py, ColoredLogger.py,
+      HtmlLogger.py, SqlLogger.py
+
 1.7.0
   * Added new HTML parser written in C as a Python extension module.
     It is faster and it is more fault tolerant.

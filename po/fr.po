@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Nov 24 23:11:45 2002\n"
+"POT-Creation-Date: Tue Nov 26 02:15:29 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -219,8 +219,11 @@ msgstr "URL Parente"
 msgid "URL"
 msgstr ""
 
-msgid ", line "
-msgstr ", ligne "
+msgid ", line %d"
+msgstr ", ligne %d"
+
+msgid ", col %d"
+msgstr ""
 
 msgid " (cached)\n"
 msgstr " (caché)\n"

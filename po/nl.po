@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Nov 24 23:11:45 2002\n"
+"POT-Creation-Date: Tue Nov 26 02:15:29 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -229,8 +229,11 @@ msgstr "Ouder URL"
 msgid "URL"
 msgstr "URL"
 
-msgid ", line "
-msgstr ", regel "
+msgid ", line %d"
+msgstr ", regel %d"
+
+msgid ", col %d"
+msgstr ""
 
 msgid " (cached)\n"
 msgstr " (uit de cache)\n"
