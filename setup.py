@@ -130,16 +130,19 @@ class LCDistribution(Distribution):
                         libraries=LinkCheckerConf.libraries)]
 
 
-    def create_conf_file(self, dir, data=[]):
+    def create_conf_file(self, directory, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
-        filename = os.path.join(dir, self.config_file)
-        data.append("name = %s" % `self.get_name()`)
-        data.append("version = %s" % `self.get_version()`)
-        data.append("author = %s" % `self.get_author()`)
-        data.append("author_email = %s" % `self.get_author_email()`)
-        data.append("url = %s" % `self.get_url()`)
+        filename = os.path.join(directory, self.config_file)
+        # add metadata
+        metanames = dir(self.metadata) + \
+                    ['fullname', 'contact', 'contact_email']
+        for name in metanames:
+              method = "get_" + name
+              cmd = "%s = %s" % (name, `getattr(self.metadata, method)()`)
+              data.append(cmd)
         util.execute(write_file, (filename, data),
-                     "creating %s" % filename, self.verbose >= 1, self.dry_run)
+                     "creating %s" % filename, self.verbose>=1, self.dry_run)
+
 
 setup (name = "LinkChecker",
        version = "1.2.6",
