@@ -1,3 +1,9 @@
+linkchecker (1.99+2.0rc2-1) unstable; urgency=low
+
+  * New upstream release (2.0 release candidate).
+
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 18 Nov 2004 01:59:55 +0100
+
 linkchecker (1.99+2.0rc1-1) unstable; urgency=low
 
   * New upstream release (2.0 release candidate).
