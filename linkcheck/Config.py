@@ -496,8 +496,9 @@ class Configuration(UserDict.UserDict):
 
         section = "filtering"
         try:
-            i=1
+            i=0
             while 1:
+                i = i + 1
                 tuple = string.split(cfgparser.get(section, "extern"+`i`))
                 if len(tuple)!=2: break
                 self.data["externlinks"].append((re.compile(tuple[0]),

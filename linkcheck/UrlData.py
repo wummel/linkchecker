@@ -136,6 +136,7 @@ class UrlData:
 
 
     def logMe(self, config):
+        Config.debug("DEBUG: logging url\n")
         config.incrementLinknumber()
         if config["verbose"] or not self.valid or \
            (self.warningString and config["warnings"]):
