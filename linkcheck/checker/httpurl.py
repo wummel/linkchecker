@@ -390,7 +390,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         Check final result and log it.
         """
         if response.status >= 400:
-            self.set_result("%r %s" % (response.status, response.reason),
+            self.set_result(u"%r %s" % (response.status, response.reason),
                             valid=False)
         else:
             if self.headers and self.headers.has_key("Server"):
@@ -419,9 +419,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     self.add_warning(_("Could not store cookies: %(msg)s.") %
                                      {'msg': str(msg)})
             if response.status >= 200:
-                self.set_result("%r %s" % (response.status, response.reason))
+                self.set_result(u"%r %s" % (response.status, response.reason))
             else:
-                self.set_result("OK")
+                self.set_result(u"OK")
         modified = self.headers.get('Last-Modified', '')
         if modified:
             self.add_info(_("Last modified %s.") % modified)
