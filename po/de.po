@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Wed Feb 12 01:13:53 2003\n"
+"POT-Creation-Date: Wed Mar  5 02:33:15 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -189,8 +189,8 @@ msgstr "Inhalt %s is größer als %s"
 msgid "more than one <base> tag found, using only the first one"
 msgstr "mehr als ein <base> Tag gefunden, benutze lediglich das erste"
 
-msgid "keyboard interrupt"
-msgstr "Unterbrechung durch Tastendruck"
+msgid "keyboard interrupt; waiting for active connections to finish"
+msgstr ""
 
 msgid "unsupported language"
 msgstr "nicht unterstützte Sprache"
@@ -349,7 +349,6 @@ msgstr ""
 msgid " found\n"
 msgstr " gefunden\n"
 
-#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
@@ -640,3 +639,6 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "keyboard interrupt"
+#~ msgstr "Unterbrechung durch Tastendruck"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Wed Feb 12 01:13:53 2003\n"
+"POT-Creation-Date: Wed Mar  5 02:33:15 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -172,7 +172,7 @@ msgstr ""
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
-msgid "keyboard interrupt"
+msgid "keyboard interrupt; waiting for active connections to finish"
 msgstr ""
 
 msgid "unsupported language"
@@ -332,7 +332,6 @@ msgstr ""
 msgid " found\n"
 msgstr " gevonden\n"
 
-#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
