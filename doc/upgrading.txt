@@ -16,7 +16,7 @@ Some added checks might trigger new warnings, so automated scripts
 or alarms can have more output than with 1.x releases.
 
 All output (file and console) is now encoded according to a given
-character set encoding which defaults to iso-8859-1. If you
+character set encoding which defaults to ISO-8859-15. If you
 relied that output was in a specific encoding, you might want to
 use the output encoding option.
 
