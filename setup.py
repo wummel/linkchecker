@@ -164,7 +164,7 @@ class MyConfig(config):
 	data.append("have_ssl = %d" % (have_ssl))
         data.append("ssl_library_dirs = %s" % `self.ssl_library_dirs`)
         data.append("ssl_include_dirs = %s" % `self.ssl_include_dirs`)
-        data.append("libraries = %s" % `['ssl', 'crypto']`)
+        data.append("libraries = %s" % `self.libraries`)
         data.append("install_data = %s" % `os.getcwd()`)
         self.distribution.create_conf_file(".", data)
 

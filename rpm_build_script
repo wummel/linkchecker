@@ -1,0 +1,3 @@
+#!/bin/sh
+python setup.py config -lcrypto
+env CFLAGS="-Wall" python setup.py build

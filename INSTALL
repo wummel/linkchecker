@@ -19,9 +19,13 @@ on Windows!
 
 Setup
 -----
-Run "python setup.py config" to configure.
-Linux users should run "python setup.py config -lcrypto" to use the SSL 
+Run "python setup.py config" to configure. This tests if we can
+compile the SSL extension and writes the result in the file
+LinkCheckerConf.py.
+You can give additional parameters to help compiling, for example
+Linux users can run "python setup.py config -lcrypto" to use the SSL
 module.
+Run "python setup.py build" to build.
 Run "python setup.py install" to install.
 Run "python setup.py --help" for help.
 Debian users can build the .deb package with "debian/rules binary" as
@@ -29,7 +33,7 @@ root or "fakeroot debian/rules binary" as a normal user.
 
 After installation, the system wide configuration file is in 
 <prefix>/share/linkchecker/linkcheckerrc.
-Local configuration files are in ~/.linkcheckerrc on Unix platforms.
+The local configuration file is ~/.linkcheckerrc on Unix platforms.
 
 To run the program type "linkchecker" followed by your URLs you want 
 to check.
