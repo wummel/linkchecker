@@ -86,7 +86,23 @@
 /* Copy the first part of user declarations.  */
 #line 2 "htmlparse.y"
 
-/* SAX parser, optimized for WebCleaner */
+/* SAX parser, optimized for WebCleaner
+ Copyright (C) 2000-2004  Bastian Kleineidam
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
 #include "htmlsax.h"
 #include <string.h>
 #include <stdio.h>
@@ -203,7 +219,7 @@ typedef int YYSTYPE;
 
 
 /* Line 214 of yacc.c.  */
-#line 207 "htmlparse.c"
+#line 223 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
@@ -373,8 +389,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short yyrline[] =
 {
-       0,   118,   118,   119,   122,   123,   130,   164,   210,   240,
-     260,   280,   300,   320,   341,   362
+       0,   134,   134,   135,   138,   139,   146,   180,   226,   256,
+     276,   296,   316,   336,   357,   378
 };
 #endif
 
@@ -1079,22 +1095,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 118 "htmlparse.y"
+#line 134 "htmlparse.y"
     {;}
     break;
 
   case 3:
-#line 119 "htmlparse.y"
+#line 135 "htmlparse.y"
     {;}
     break;
 
   case 4:
-#line 122 "htmlparse.y"
+#line 138 "htmlparse.y"
     { YYACCEPT; /* wait for more lexer input */ ;}
     break;
 
   case 5:
-#line 124 "htmlparse.y"
+#line 140 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1104,7 +1120,7 @@ yyreduce:
     break;
 
   case 6:
-#line 131 "htmlparse.y"
+#line 147 "htmlparse.y"
     {
     /* $1 is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1141,7 +1157,7 @@ finish_start:
     break;
 
   case 7:
-#line 165 "htmlparse.y"
+#line 181 "htmlparse.y"
     {
     /* $1 is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1190,7 +1206,7 @@ finish_start_end:
     break;
 
   case 8:
-#line 211 "htmlparse.y"
+#line 227 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1223,7 +1239,7 @@ finish_end:
     break;
 
   case 9:
-#line 241 "htmlparse.y"
+#line 257 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1246,7 +1262,7 @@ finish_comment:
     break;
 
   case 10:
-#line 261 "htmlparse.y"
+#line 277 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1269,7 +1285,7 @@ finish_pi:
     break;
 
   case 11:
-#line 281 "htmlparse.y"
+#line 297 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1292,7 +1308,7 @@ finish_cdata:
     break;
 
   case 12:
-#line 301 "htmlparse.y"
+#line 317 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1315,7 +1331,7 @@ finish_doctype:
     break;
 
   case 13:
-#line 321 "htmlparse.y"
+#line 337 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1339,7 +1355,7 @@ finish_script:
     break;
 
   case 14:
-#line 342 "htmlparse.y"
+#line 358 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1363,7 +1379,7 @@ finish_style:
     break;
 
   case 15:
-#line 363 "htmlparse.y"
+#line 379 "htmlparse.y"
     {
     /* Remember this is also called as a lexer error fallback */
     UserData* ud = yyget_extra(scanner);
@@ -1390,7 +1406,7 @@ finish_characters:
     }
 
 /* Line 999 of yacc.c.  */
-#line 1394 "htmlparse.c"
+#line 1410 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1584,7 +1600,7 @@ yyreturn:
 }
 
 
-#line 385 "htmlparse.y"
+#line 401 "htmlparse.y"
 
 
 /* disable python memory interface */
