@@ -202,7 +202,6 @@ class UrlBase (object):
 
     def set_cache_key (self):
         """Get key to store this url data in the cache."""
-        assert self.urlparts
         # construct cache key
         if self.consumer.config["anchorcaching"]:
             # do not ignore anchor
@@ -271,9 +270,6 @@ class UrlBase (object):
 
     def check (self):
         """main check function for checking this URL"""
-        assert self.consumer.cache.has_in_progress(self.cache_key)
-        assert not self.consumer.cache.has_checked(self.cache_key)
-        assert not self.cached
         try:
             self.local_check()
             self.consumer.checked(self)

@@ -147,13 +147,12 @@ class Cache (object):
         finally:
             self.lock.release()
 
-    def in_progress_remove (self, url_data, notfoundfail=True):
+    def in_progress_remove (self, url_data):
         """remove url from in-progress cache"""
         self.lock.acquire()
         try:
             key = url_data.cache_key
-            if notfoundfail:
-                assert key in self.in_progress
+            assert key in self.in_progress
             del self.in_progress[key]
         finally:
             self.lock.release()
