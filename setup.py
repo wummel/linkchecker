@@ -84,6 +84,7 @@ class LCDistribution(Distribution):
           'appname': self.get_name(),
           'email': self.get_author_email(),
           'long_description': self.get_long_description(),
+          'python': os.path.normpath(sys.executable),
         }
         files = [
             'linkchecker',
