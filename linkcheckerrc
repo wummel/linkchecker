@@ -145,6 +145,8 @@
 #nntpserver=
 # interactive operation
 #interactive=0
+# disable anchor caching
+#noanchorcaching=1
 
 # filtering options (see FAQ)
 # for each extern link we can specify if it is strict or not

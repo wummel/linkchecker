@@ -80,6 +80,7 @@ class Configuration (UserDict.UserDict):
         self["verbose"] = 0
         self["warnings"] = 0
         self["anchors"] = 0
+        self["noanchorcaching"] = 0
         self["externlinks"] = []
         self["internlinks"] = []
         self["denyallow"] = 0
@@ -503,6 +504,9 @@ class Configuration (UserDict.UserDict):
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             self["interactive"] = cfgparser.getboolean(section, "interactive")
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        try:
+            self["noanchorcaching"] = cfgparser.getboolean(section, "noanchorcaching")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
 
         section = "authentication"

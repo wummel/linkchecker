@@ -75,6 +75,10 @@ For single-letter option arguments the space is not a necessity. So
         Specify an NNTP server for 'news:...' links. Default is the
         environment variable NNTP_SERVER. If no host is given,
         only the syntax of the link is checked.
+-no-anchor-caching
+        Treat url#anchora and url#anchorb as equal on caching. This
+        is the default browser behaviour, but it's not specified in
+        the URI specification. Use with care.
 -o type, --output=type
         Specify output type as %s.
         Default type is text.
@@ -220,6 +224,7 @@ try:
     "profile",
     "quiet",
     "recursion-level=",
+    "no-anchor-caching",
     "wischiwaschi",
     "robots-txt",
     "strict",
@@ -296,6 +301,9 @@ for opt,arg in options:
 
     elif opt=="-N" or opt=="--nntp-server":
         config["nntpserver"] = arg
+
+    elif opt="--no-anchor-caching":
+        config["noanchorcaching"] = 1
 
     elif opt=="-p" or opt=="--password":
         _password = arg

@@ -310,12 +310,12 @@ class UrlData:
     def getCacheKey (self):
         # remember that the host is lowercase
         if self.urlparts:
-            if self.config["anchors"]:
-                # do not ignore anchor
-                return urlparse.urlunsplit(self.urlparts)
-            else:
+            if self.config["noanchorcaching"]:
                 # remove anchor from cache key
                 return urlparse.urlunsplit(self.urlparts[:4]+[''])
+            else:
+                # do not ignore anchor
+                return urlparse.urlunsplit(self.urlparts)
         return None
 
 
