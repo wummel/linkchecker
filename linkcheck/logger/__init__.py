@@ -52,6 +52,7 @@ class Logger (object):
         self.max_indent = 0
         # number of encountered errors
         self.errors = 0
+        # encoding of output strings
         if kwargs.has_key('fields'):
             if "all" not in kwargs['fields']:
                 # only log given fields
