@@ -315,7 +315,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                         self.add_info(h)
                 except Cookie.CookieError, msg:
                     self.add_warning(_("Could not store cookies: %(msg)s") %
-                                     str(msg))
+                                     {'msg': str(msg)})
             if response.status >= 200:
                 self.set_result("%r %s" % (response.status, response.reason))
             else:
