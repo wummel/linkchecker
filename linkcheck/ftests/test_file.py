@@ -51,38 +51,38 @@ class TestFile (linkcheck.ftests.StandardTest):
                  'datadir': 'linkcheck/ftests/data',
                 }
         # good file
-        url = "file://%(curdir)s/%(datadir)s/file.txt" % attrs
+        url = u"file://%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
         ]
         self.direct(url, resultlines)
         # bad file
-        url = "file:/%(curdir)s/%(datadir)s/file.txt" % attrs
+        url = u"file:/%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",
         ]
         self.direct(url, resultlines)
         # good file (missing double slash)
-        url = "file:%(curdir)s/%(datadir)s/file.txt" % attrs
+        url = u"file:%(curdir)s/%(datadir)s/file.txt" % attrs
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key file://%(curdir)s/%(datadir)s/file.txt" % attrs,
             "real url file://%(curdir)s/%(datadir)s/file.txt" % attrs,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)
         # good dir
-        url = "file://%(curdir)s/%(datadir)s/" % attrs
+        url = u"file://%(curdir)s/%(datadir)s/" % attrs
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",

@@ -29,7 +29,7 @@ class TestHttps (linkcheck.ftests.StandardTest):
         """test some https links"""
         url = "https://sourceforge.net/"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",

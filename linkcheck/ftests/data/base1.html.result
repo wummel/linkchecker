@@ -1,14 +1,14 @@
-url 'file://%(curdir)s/linkcheck/ftests/data/base1.html'
+url file://%(curdir)s/linkcheck/ftests/data/base1.html
 cache key file://%(curdir)s/linkcheck/ftests/data/base1.html
 real url file://%(curdir)s/linkcheck/ftests/data/base1.html
 valid
 
-url 'base2.html'
+url base2.html
 cache key file://%(curdir)s/linkcheck/ftests/data/base2.html
 real url file://%(curdir)s/linkcheck/ftests/data/base2.html
 valid
 
-url 'base2.html' (cached)
+url base2.html (cached)
 cache key file://%(curdir)s/linkcheck/ftests/data/base2.html
 real url file://%(curdir)s/linkcheck/ftests/data/base2.html
 valid

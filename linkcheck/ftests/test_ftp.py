@@ -29,9 +29,9 @@ class TestFtp (linkcheck.ftests.StandardTest):
     def test_ftp (self):
         """test ftp link"""
         # ftp two slashes
-        url = "ftp://ftp.debian.org/"
+        url = u"ftp://ftp.debian.org/"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
@@ -41,32 +41,32 @@ class TestFtp (linkcheck.ftests.StandardTest):
     def test_ftp_slashes (self):
         """test ftp links with missing slashes"""
         # ftp one slash
-        url = "ftp:/ftp.debian.org/"
+        url = u"ftp:/ftp.debian.org/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "error",
         ]
         self.direct(url, resultlines)
         # missing path
-        url = "ftp://ftp.debian.org"
+        url = u"ftp://ftp.debian.org"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)
         # missing trailing dir slash
-        url = "ftp://ftp.debian.org/debian"
+        url = u"ftp://ftp.debian.org/debian"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s/" % nurl,
             "warning Missing trailing directory slash in ftp url",
@@ -77,31 +77,31 @@ class TestFtp (linkcheck.ftests.StandardTest):
     def test_ftp_many_slashes (self):
         """test ftp links with too many slashes"""
         # ftp two dir slashes
-        url = "ftp://ftp.debian.org//debian/"
+        url = u"ftp://ftp.debian.org//debian/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)
         # ftp many dir slashes
-        url = "ftp://ftp.debian.org////////debian/"
+        url = u"ftp://ftp.debian.org////////debian/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "valid",
         ]
         self.direct(url, resultlines)
         # ftp three slashes
-        url = "ftp:///ftp.debian.org/"
+        url = u"ftp:///ftp.debian.org/"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",

@@ -30,7 +30,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:Dude <calvin@users.sf.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
-          "url %r" % url,
+          "url %s" % url,
           "cache key mailto:calvin@users.sf.net,calvin@users.sourceforge.net",
           "real url %s" % url,
           "info Verified address: <calvin> is deliverable",
@@ -40,7 +40,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:Bastian Kleineidam <calvin@users.sf.net>?"\
                 "bcc=calvin%40users.sourceforge.net")
         resultlines = [
-          "url %r" % url,
+          "url %s" % url,
           "cache key mailto:calvin@users.sf.net,calvin@users.sourceforge.net",
           "real url %s" % url,
           "info Verified address: <calvin> is deliverable",
@@ -49,7 +49,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = self.quote("mailto:Bastian Kleineidam <calvin@users.sf.net>")
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key mailto:calvin@users.sf.net",
             "real url %s" % url,
             "info Verified address: <calvin> is deliverable",
@@ -58,7 +58,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = self.quote("mailto:o'hara@users.sf.net")
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key mailto:o'hara@users.sf.net",
             "real url %s" % url,
             "info Verified address: <o'hara> is deliverable",
@@ -68,7 +68,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:?to=calvin@users.sf.net&subject=blubb&"\
                 "cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key mailto:calvin@users.sf.net,calvin_CC@users.sf.net,calvin_cc@users.sf.net",
             "real url %s" % url,
             "info Verified address: <calvin> is deliverable",
@@ -81,7 +81,7 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "Re:%20[fm%20#11093]%20(news-admins)%20Submission%20"\
                 "report%20-%20Pretty%20CoLoRs")
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key mailto:news-admins@freshmeat.net",
             "real url %s" % url,
             "valid",
@@ -89,7 +89,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = self.quote("mailto:foo@foo-bar.de?subject=test")
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key mailto:foo@foo-bar.de",
             "real url %s" % url,
             "valid",
@@ -99,31 +99,31 @@ class TestMail (linkcheck.ftests.StandardTest):
     def test_warn_mail (self):
         """test some mailto addrs with warnings"""
         # contains non-quoted characters
-        url = "mailto:calvin@users.sf.net?subject=הצü"
+        url = u"mailto:calvin@users.sf.net?subject=הצü"
         qurl = self.quote(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key mailto:calvin@users.sf.net",
             "real url %s" % qurl,
             "info Verified address: <calvin> is deliverable",
-            "warning Base URL is not properly normed. Normed url is %r." % qurl,
+            "warning Base URL is not properly normed. Normed url is %s." % qurl,
             "valid",
         ]
         self.direct(url, resultlines)
-        url = "mailto:calvin@users.sf.net?subject=Halli hallo"
+        url = u"mailto:calvin@users.sf.net?subject=Halli hallo"
         qurl = self.quote(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key mailto:calvin@users.sf.net",
             "real url %s" % qurl,
             "info Verified address: <calvin> is deliverable",
-            "warning Base URL is not properly normed. Normed url is %r." % qurl,
+            "warning Base URL is not properly normed. Normed url is %s." % qurl,
             "valid",
         ]
         self.direct(url, resultlines)
         url = self.quote("mailto:")
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "warning No addresses found",
@@ -137,7 +137,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:Bastian Kleineidam "\
                          "<calvin@users.sf.net?foo=bar>")
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key None",
             "real url %s" % url,
             "error",

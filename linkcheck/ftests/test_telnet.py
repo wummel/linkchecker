@@ -25,35 +25,35 @@ class TestTelnet (linkcheck.ftests.StandardTest):
     """test telnet: link checking"""
 
     def test_telnet (self):
-        url = "telnet:"
+        url = u"telnet:"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://www.imarealdoofus.com"
+        url = u"telnet://www.imarealdoofus.com"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://user@www.imarealdoofus.com"
+        url = u"telnet://user@www.imarealdoofus.com"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://user:pass@www.imarealdoofus.com"
+        url = u"telnet://user:pass@www.imarealdoofus.com"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",

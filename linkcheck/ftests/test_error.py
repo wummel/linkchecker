@@ -27,10 +27,10 @@ class TestError (linkcheck.ftests.StandardTest):
 
     def test_unrecognized (self):
         """unrecognized scheme test"""
-        url = "hutzli:"
+        url = u"hutzli:"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key None",
             "real url %s" % nurl,
             "error",
@@ -39,19 +39,19 @@ class TestError (linkcheck.ftests.StandardTest):
 
     def test_leading_whitespace (self):
         """leading whitespace test"""
-        url = " http://www.heise.de/"
+        url = u" http://www.heise.de/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key None",
             "real url %s" % nurl,
             "error",
         ]
         self.direct(url, resultlines)
-        url = "\nhttp://www.heise.de/"
+        url = u"\nhttp://www.heise.de/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key None",
             "real url %s" % nurl,
             "error",
@@ -60,23 +60,23 @@ class TestError (linkcheck.ftests.StandardTest):
 
     def test_trailing_whitespace (self):
         """trailing whitespace test"""
-        url = "http://www.heise.de/ "
+        url = u"http://www.heise.de/ "
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "error",
         ]
         self.direct(url, resultlines)
-        url = "http://www.heise.de/\n"
+        url = u"http://www.heise.de/\n"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "error",
         ]
         self.direct(url, resultlines)
@@ -84,30 +84,30 @@ class TestError (linkcheck.ftests.StandardTest):
     def test_invalid (self):
         """invalid syntax test"""
         # invalid scheme chars
-        url = "äöü?:"
+        url = u"äöü?:"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key None",
             "real url %s" % nurl,
             "error",
         ]
         self.direct(url, resultlines)
         # missing scheme alltogether
-        url = "?äöü?"
+        url = u"?äöü?"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key None",
             "real url %s" % nurl,
             "error",
         ]
         self.direct(url, resultlines)
         # really fucked up
-        url = "@³²¼][½ ³@] ¬½"
+        url = u"@³²¼][½ ³@] ¬½"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key None",
             "real url %s" % nurl,
             "error",

@@ -34,9 +34,9 @@ class TestNews (linkcheck.ftests.StandardTest):
     def test_news (self):
         """test news: link"""
         # news testing
-        url = "news:comp.os.linux.misc"
+        url = u"news:comp.os.linux.misc"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "warning No NNTP server specified, skipping this URL",
@@ -44,9 +44,9 @@ class TestNews (linkcheck.ftests.StandardTest):
         ]
         self.newstest(url, resultlines)
         # no group
-        url = "news:"
+        url = u"news:"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "warning No NNTP server specified, skipping this URL",
@@ -56,13 +56,13 @@ class TestNews (linkcheck.ftests.StandardTest):
 
     def test_snews (self):
         """test snews: link"""
-        url = "snews:de.comp.os.unix.linux.misc"
+        url = u"snews:de.comp.os.unix.linux.misc"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "warning Base URL is not properly normed. Normed url is %s." % nurl,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
@@ -70,13 +70,13 @@ class TestNews (linkcheck.ftests.StandardTest):
 
     def test_illegal (self):
         # illegal syntax
-        url = "news:§$%&/´`(§%"
+        url = u"news:§$%&/´`(§%"
         qurl = self.quote(url)
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % qurl,
             "real url %s" % qurl,
-            "warning Base URL is not properly normed. Normed url is %r." % qurl,
+            "warning Base URL is not properly normed. Normed url is %s." % qurl,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
@@ -84,9 +84,9 @@ class TestNews (linkcheck.ftests.StandardTest):
 
     def test_nntp (self):
         """nttp scheme with host"""
-        url = "nntp://news.yaako.com/comp.lang.python"
+        url = u"nntp://news.yaako.com/comp.lang.python"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
@@ -95,17 +95,17 @@ class TestNews (linkcheck.ftests.StandardTest):
 
     def test_article_span (self):
         """article span"""
-        url = "nntp://news.yaako.com/comp.lang.python/1-5"
+        url = u"nntp://news.yaako.com/comp.lang.python/1-5"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
         ]
         self.newstest(url, resultlines)
-        url = "news:comp.lang.python/1-5"
+        url = u"news:comp.lang.python/1-5"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "warning No NNTP server specified, skipping this URL",
@@ -115,9 +115,9 @@ class TestNews (linkcheck.ftests.StandardTest):
 
     def test_host_no_group (self):
         """host but no group"""
-        url = "nntp://news.yaako.com/"
+        url = u"nntp://news.yaako.com/"
         resultlines = [
-            "url %r" % url,
+            "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "warning No newsgroup specified in NNTP URL",

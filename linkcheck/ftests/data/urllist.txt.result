@@ -1,25 +1,25 @@
-url 'file://%(curdir)s/linkcheck/ftests/data/urllist.txt'
+url file://%(curdir)s/linkcheck/ftests/data/urllist.txt
 cache key file://%(curdir)s/linkcheck/ftests/data/urllist.txt
 real url file://%(curdir)s/linkcheck/ftests/data/urllist.txt
 valid
 
-url 'file.html'
+url file.html
 cache key file://%(curdir)s/linkcheck/ftests/data/file.html
 real url file://%(curdir)s/linkcheck/ftests/data/file.html
 valid
 
-url 'file.html#isnix' (cached)
+url file.html#isnix (cached)
 cache key file://%(curdir)s/linkcheck/ftests/data/file.html
 real url file://%(curdir)s/linkcheck/ftests/data/file.html
 warning anchor #isnix not found
 valid
 
-url 'file.html#iswas' (cached)
+url file.html#iswas (cached)
 cache key file://%(curdir)s/linkcheck/ftests/data/file.html
 real url file://%(curdir)s/linkcheck/ftests/data/file.html
 valid
 
-url 'javascript:loadthis()'
+url javascript:loadthis()
 cache key javascript:loadthis()
 real url javascript:loadthis()
 warning Javascript url ignored

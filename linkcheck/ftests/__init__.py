@@ -48,7 +48,7 @@ class TestLogger (linkcheck.logger.Logger):
     def new_url (self, url_data):
         """append logger output to self.result"""
         if self.has_field('url'):
-            url = u"url %s" % unicode(repr(url_data.base_url)[1:])
+            url = u"url %s" % url_data.base_url
             if url_data.cached:
                 url += u" (cached)"
             self.result.append(url)
