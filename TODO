@@ -1,23 +1,5 @@
 This release:
 
-- wont stop:
-Stopped checking at 2004-08-24 00:26:47+002 ( 49.175 seconds)
-WARNING keyboard interrupt; waiting for 10 active threads to finish
-Traceback (most recent call last):
-  File "./linkchecker", line 502, in ?
-    linkcheck.checker.check_urls(consumer)
-  File "/home/calvin/projects/linkchecker/linkcheck/checker/__init__.py", line 147, in check_urls
-    _check_urls(consumer)
-  File "/home/calvin/projects/linkchecker/linkcheck/checker/__init__.py", line 163, in _check_urls
-    consumer.check_url(url)
-  File "/home/calvin/projects/linkchecker/linkcheck/checker/consumer.py", line 78, in check_url
-    self.threader.start_thread(url_data.check, ())
-  File "/home/calvin/projects/linkchecker/linkcheck/threader.py", line 68, in start_thread
-    self._acquire()
-  File "/home/calvin/projects/linkchecker/linkcheck/threader.py", line 41, in _acquire
-    time.sleep(0.1)
-KeyboardInterrupt
-
 - document what checks are performed for each url type
 
 Next releases:
