@@ -2,6 +2,9 @@
   * fix old bug in redirects not using the full url. this resulted in
     errors like (-2, "Name or service not known")
     Changed files: linkcheck/HttpUrlData.py
+  * only remove anchors on IIS servers (other servers are doing quite
+    well with anchors... can you spell A-p-a-c-h-e ?)
+    Changed files: linkcheck/{HttpUrlData, UrlData}.py
 
 1.8.13
   * fix typo in manpage

@@ -32,6 +32,7 @@ warning URL path is empty, assuming '/' as path
 error
 url http://www.blubb.de/stalter&sohn
 name unquoted ampersand
+warning Server 'Microsoft-IIS/4.0' has no anchor support, removing anchor from request
 error
 url http://slashdot.org/
 name unquoted
