@@ -1,4 +1,4 @@
-1.12.3 "The Princess Bride" (released xx.xx.xxxx)
+1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request
     Type: bugfix
     Changed: linkcheck/HttpUrlData.py
