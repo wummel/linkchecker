@@ -3,8 +3,11 @@
     Changed files: Makefile
   * use "startswith" string method instead of a regex
     Changed files: linkchecker, linkcheck/UrlData.py
-  * Note about supported languages, updated documentation.
+  * Add a note about supported languages, updated the documentation.
     Changed files: README, linkchecker
+  * Remove --robots-txt option from documentation, it is per default
+    enabled and you cannot disable it from the command line.
+    Changed Files: linkchecker, po/*.po
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.

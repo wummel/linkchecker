@@ -88,8 +88,6 @@ For single-letter option arguments the space is not a necessity. So
 -r depth, --recursion-level=depth
         Check recursively all links up to given depth (depth >= 0).
         Default depth is 1.
--R, --robots-txt
-        Obey the robots exclusion standard (this is the default).
 -s, --strict
         Check only syntax of extern links, do not try to connect to them.
 -t num, --threads=num
@@ -284,9 +282,8 @@ for opt,arg in options:
         else:
             printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +
 	               "'-r, --recursion-level'")
-
-    elif opt=="-R" or opt=="--robots-txt":
-        config["robotstxt"] = 1
+    # robots.txt is now default
+    elif opt=="-R" or opt=="--robots-txt": pass
 
     elif opt=="-s" or opt=="--strict":
         config["strict"] = 1
