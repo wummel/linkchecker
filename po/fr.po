@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Jul 24 11:04:53 2003\n"
+"POT-Creation-Date: Tue Jul 29 01:29:37 2003\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -48,7 +48,21 @@ msgstr ""
 msgid "Enforced Proxy %s"
 msgstr ""
 
-msgid "too much redirections (>= 5)"
+msgid ""
+"recursive redirection encountered:\n"
+" %s"
+msgstr ""
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
+
+msgid ""
+"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
+"urls which point to (home) directories should end with a / to avoid "
+"redirection"
+msgstr ""
+
+msgid "more than five redirections, aborting"
 msgstr ""
 
 msgid ""
@@ -66,15 +80,6 @@ msgstr ""
 
 msgid "Effective URL %s"
 msgstr "URL effective %s"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
-
-msgid ""
-"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
-"urls which point to (home) directories should end with a / to avoid "
-"redirection"
-msgstr ""
 
 msgid "Unsupported content encoding %s."
 msgstr ""

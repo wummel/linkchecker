@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Jul 24 11:04:53 2003\n"
+"POT-Creation-Date: Tue Jul 29 01:29:37 2003\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -48,8 +48,25 @@ msgstr ""
 msgid "Enforced Proxy %s"
 msgstr ""
 
-msgid "too much redirections (>= 5)"
-msgstr "te veel verwijzingen (>= 5)"
+msgid ""
+"recursive redirection encountered:\n"
+" %s"
+msgstr ""
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr "HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen"
+
+msgid ""
+"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
+"urls which point to (home) directories should end with a / to avoid "
+"redirection"
+msgstr ""
+"Es trat eine HTTP 301 Weiterleitung auf und die URL endet nicht mit /. Alle "
+"URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um "
+"Weiterleitungen zu verhindern"
+
+msgid "more than five redirections, aborting"
+msgstr ""
 
 msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
@@ -66,18 +83,6 @@ msgstr "Zope Server understeunt geen HEAD verzoek, probeer GET"
 
 msgid "Effective URL %s"
 msgstr "Effektieve URL %s"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr "HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen"
-
-msgid ""
-"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
-"urls which point to (home) directories should end with a / to avoid "
-"redirection"
-msgstr ""
-"Es trat eine HTTP 301 Weiterleitung auf und die URL endet nicht mit /. Alle "
-"URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um "
-"Weiterleitungen zu verhindern"
 
 msgid "Unsupported content encoding %s."
 msgstr ""
@@ -637,3 +642,6 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#~ msgid "too much redirections (>= 5)"
+#~ msgstr "te veel verwijzingen (>= 5)"
