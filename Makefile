@@ -1,15 +1,16 @@
 # This Makefile is only used by developers! No need for users to
 # call make.
 VERSION=$(shell python setup.py --version)
+PACKAGE = linkchecker
+NAME = $(shell python setup.py --name)
 HOST=treasure.calvinsplayground.de
 PROXY=--proxy= -itreasure.calvinsplayground.de -s
 #PROXY=-P$(HOST):8080
 #HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
-PACKAGE = linkchecker
 DEBPACKAGE = ../$(PACKAGE)_$(VERSION)_i386.deb
-SRCPACKAGE = dist/LinkChecker-$(VERSION).tar.gz
+SRCPACKAGE = dist/$(NAME)-$(VERSION).tar.gz
 #RPMPATH=build/bdist.linux2/rpm
 #RPMPACKAGE=$(RPMPATH)/RPMS/i386/$(PACKAGE)-$(VERSION)-1.i386.rpm
 #SRPMPACKAGE=$(RPMPATH)/SRPMS/$(PACKAGE)-$(VERSION)-1.src.rpm
@@ -62,7 +63,7 @@ dist:	mo
 
 packages:	dist
 	rm -rf debian/tmp
-	cd .. && dpkg-scanpackages . linkchecker/override.txt | gzip --best > Packages.gz
+	cd .. && dpkg-scanpackages . $(PACKAGE)/override.txt | gzip --best > Packages.gz
 
 files:
 	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
@@ -71,12 +72,12 @@ VERSION: setup.py
 	echo $(VERSION) > VERSION
 
 upload: files packages VERSION
-	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
-	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/linkchecker/htdocs
-	scp VERSION shell1.sourceforge.net:/home/groups/linkchecker/htdocs/raw/
-	scp $(DEBPACKAGE) ../Packages.gz shell1.sourceforge.net:/home/groups/linkchecker/htdocs/debian
+	scp debian/changelog shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/changes.txt
+	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs
+	scp VERSION shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/raw/
+	scp $(DEBPACKAGE) ../Packages.gz shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/debian
 	ncftpput download.sourceforge.net /incoming $(ALLPACKAGES)
-	ssh -tC shell1.sourceforge.net "cd /home/groups/linkchecker/htdocs/raw && make"
+	ssh -tC shell1.sourceforge.net "cd /home/groups/$(PACKAGE)/htdocs/raw && make"
 
 test:
 	rm -f test/*.result
