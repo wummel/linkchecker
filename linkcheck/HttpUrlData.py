@@ -200,7 +200,7 @@ class HttpUrlData(UrlData):
         if self.proxy:
             host = self.proxy
         else:
-            host = self.urltuple[1]
+            host = self.urlTuple[1]
 
         if self.urlConnection:
             self.closeConnection()
