@@ -103,13 +103,16 @@ class LCConfig(config):
 
 
 class LCDistribution(Distribution):
+    def __init__(self, attrs=None):
+        Distribution.__init__(self, attrs=attrs)
+        self.config_file = self.get_name()+"Conf.py"
 
-    config_file = "LinkCheckerConf.py"
 
     def run_commands(self):
         if "config" not in self.commands:
             self.check_ssl()
         Distribution.run_commands(self)
+
 
     def check_ssl(self):
         if not os.path.exists(self.config_file):
@@ -125,6 +128,7 @@ class LCDistribution(Distribution):
                         include_dirs=LinkCheckerConf.ssl_include_dirs,
                         library_dirs=LinkCheckerConf.ssl_library_dirs,
                         libraries=LinkCheckerConf.libraries)]
+
 
     def create_conf_file(self, dir, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
