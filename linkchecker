@@ -311,11 +311,16 @@ for opt,arg in options:
         constructauth = 1
 
     elif opt=="-P" or opt=="--pause":
-        if int(arg) >= 0:
-            config["wait"] = int(arg)
+        try:
+            wait = int(arg)
+        except ValueError:
+            printUsage(i18n._("Illegal argument %s for option %s") % \
+                       (`arg`, "'-P, --pause'"))
+        if wait >= 0:
+            config["wait"] = wait
         else:
-            printUsage((i18n._("Illegal argument '%s' for option ") % arg) +
-	               "'-P, --pause'")
+            printUsage(i18n._("Illegal argument %s for option %s") % \
+                       (`arg`, "'-P, --pause'"))
 
     elif opt=="--profile":
         do_profile = 1
@@ -329,8 +334,8 @@ for opt,arg in options:
         except ValueError:
             printUsage(i18n._("Illegal argument %s for option %s") % \
                        (`arg`, "'-r, --recursion-level'"))
-        if int(arg) >= 0:
-            config["recursionlevel"] = int(arg)
+        if depth >= 0:
+            config["recursionlevel"] = depth
         else:
             config["recursionlevel"] = -1
     # robots.txt is now default, so ignore this option
@@ -340,7 +345,11 @@ for opt,arg in options:
         config["strict"] = 1
 
     elif opt=="-t" or opt=="--threads":
-        num = int(arg)
+        try:
+            num = int(arg)
+        except ValueError:
+            printUsage(i18n._("Illegal argument %s for option %s") % \
+                       (`arg`, "'-t, --threads'"))
         if config["threads"] and get_debuglevel()>0:
             if num>1:
                 config.enableThreading(num)
@@ -348,7 +357,12 @@ for opt,arg in options:
                 config.disableThreading()
 
     elif opt=="--timeout":
-        linkcheck.timeoutsocket.setDefaultSocketTimeout(int(arg))
+        try:
+            timeout = int(arg)
+        except ValueError:
+            printUsage(i18n._("Illegal argument %s for option %s") % \
+                       (`arg`, "'--timeout'"))
+        linkcheck.timeoutsocket.setDefaultSocketTimeout(timeout)
 
     elif opt=="-u" or opt=="--user":
         _user = arg
@@ -388,7 +402,7 @@ if constructauth:
 from linkcheck.log.BlacklistLogger import BlacklistLogger
 if config["log"].__class__ == BlacklistLogger and \
    os.path.exists(config['log'].filename):
-    args = open(config['log'].filename).readlines()
+    args = file(config['log'].filename).readlines()
 
 debug(HURT_ME_PLENTY, "configuration:", pprint.pformat(config.data))
 
