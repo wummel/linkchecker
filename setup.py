@@ -161,6 +161,8 @@ o a (Fast)CGI web interface (requires HTTP server)
              ['share/locale/de/LC_MESSAGES/linkcheck.mo']),
          ('share/locale/fr/LC_MESSAGES',
              ['share/locale/fr/LC_MESSAGES/linkcheck.mo']),
+         ('share/locale/nl/LC_MESSAGES',
+             ['share/locale/nl/LC_MESSAGES/linkcheck.mo']),
          ('share/linkchecker', ['linkcheckerrc']),
          ('share/linkchecker/examples',
              ['lconline/leer.html',

@@ -26,12 +26,33 @@ def pack32bit(n):
 	return chr((n>>24)&0xFF) + chr((n>>16)&0xFF) \
 		  + chr((n>>8)&0xFF) + chr(n&0xFF)
 
+def pack128bit(t):
+       return chr(chr(t[0]>>24)&0xFF) + chr((t[0]>>16)&0xFF) \
+              + chr((t[0]>>8)&0xFF) + chr(t[0]&0xFF) \
+              + chr((t[1]>>24)&0xFF) + chr((t[1]>>16)&0xFF) \
+              + chr((t[1]>>8)&0xFF) + chr(t[1]&0xFF) \
+              + chr((t[2]>>24)&0xFF) + chr((t[2]>>16)&0xFF) \
+              + chr((t[2]>>8)&0xFF) + chr(t[2]&0xFF) \
+              + chr((t[3]>>24)&0xFF) + chr((t[3]>>16)&0xFF) \
+              + chr((t[3]>>8)&0xFF) + chr(t[3]&0xFF)
+
 def unpack16bit(s):
 	return (ord(s[0])<<8) | ord(s[1])
 
 def unpack32bit(s):
 	return (ord(s[0])<<24) | (ord(s[1])<<16) \
 		  | (ord(s[2])<<8) | ord(s[3])
+
+def unpack128bit(s):
+       # tuple of 4 32 bit values
+       return(((ord(s[0])<<24) | (ord(s[1])<<16) \
+              | (ord(s[2])<<8) | ord(s[3])),
+              ((ord(s[4])<<24) | (ord(s[5])<<16) \
+              | (ord(s[6])<<8) | ord(s[7])),
+              ((ord(s[8])<<24) | (ord(s[9])<<16) \
+              | (ord(s[10])<<8) | ord(s[11])),
+              ((ord(s[12])<<24) | (ord(s[13])<<16) \
+              | (ord(s[14])<<8) | ord(s[15])))
 
 def addr2bin(addr):
 	if type(addr) == type(0):
@@ -45,6 +66,25 @@ def addr2bin(addr):
 def bin2addr(n):
 	return '%d.%d.%d.%d' % ((n>>24)&0xFF, (n>>16)&0xFF,
 		  (n>>8)&0xFF, n&0xFF)
+
+def bin2addr6(t):
+       comp = 0 #  0 - no compression yet, 1 - compressing, 2 - already compressed
+       mask = (0xffff0000,0xffff)
+       shift = (16, 0)
+       ret = ''
+       for n in 0,1,2,3:
+               for sub in 0,1:
+                       if comp < 2 and ((t[n] & mask[sub])==0):
+                               # and skip it
+                               comp = 1
+                       else:
+                               if(comp==1):
+                                       comp=2
+                                       ret += ':'
+                               if(ret):
+                                       ret += ':'
+                               ret += '%x' % (((t[n] & mask[sub]) >> shift[sub]) & 0xFFFF)
+       return(ret)
 
 
 # Packing class
@@ -161,8 +201,12 @@ class Unpacker:
 		return unpack16bit(self.getbytes(2))
 	def get32bit(self):
 		return unpack32bit(self.getbytes(4))
+        def get128bit(self):
+                return unpack128bit(self.getbytes(16))
 	def getaddr(self):
 		return bin2addr(self.get32bit())
+        def getaddr6(self):
+                return bin2addr6(self.get128bit())
 	def getstring(self):
 		return self.getbytes(ord(self.getbyte()))
 	def getname(self):
@@ -379,6 +423,8 @@ class RRunpacker(Unpacker):
 		return list
 	def getAdata(self):
 		return self.getaddr()
+        def getAAAAdata(self):
+                return self.getaddr6()
 	def getWKSdata(self):
 		address = self.getaddr()
 		protocol = ord(self.getbyte())
