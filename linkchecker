@@ -20,8 +20,9 @@
 import sys
 if sys.version[:5] < "2.0":
     raise SystemExit, "This program requires Python 2.0 or later."
+
 import getopt, re, os, urlparse, linkcheck
-from linkcheck import _,StringUtil
+from linkcheck import _,StringUtil,timeoutsocket
 
 
 Usage = _("""USAGE\tlinkchecker [options] file-or-url...
@@ -81,8 +82,8 @@ For single-letter option arguments the space is not a necessity. So
         Generate no more than num threads. Default number of threads is 5.
         To disable threading specify a non-positive number.
 --timeout=secs
-        Set the timeout for connection attempts in seconds. Default timeout
-        is system dependant.
+        Set the timeout for connection attempts in seconds. the default
+        timeout is system dependant.
 -u name, --user=name
         Try username name for HTML and FTP authorization.
         Default is 'anonymous'. See also -p.
@@ -274,7 +275,6 @@ for opt,arg in options:
                 config.disableThreading()
 
     elif opt=="--timeout":
-        import timeoutsocket
         timeoutsocket.setDefaultSocketTimeout(int(arg))
 
     elif opt=="-u" or opt=="--user":

@@ -82,7 +82,7 @@ class HttpUrlData(UrlData):
             return
 
         # first try
-        status, statusText, self.mime = self._getHttpRequest(self.urlTuple[1])
+        status, statusText, self.mime = self._getHttpRequest()
         Config.debug(BRING_IT_ON, status, statusText, self.mime)
         has301status = 0
         while 1:
@@ -137,7 +137,7 @@ class HttpUrlData(UrlData):
             #   content-type
             elif status in [405,501,500]:
                 # HEAD method not allowed ==> try get
-                self.setWarning(_("Server does not support HEAD request, falling back to GET"))
+                self.setWarning(_("Server does not support HEAD request (got %d status), falling back to GET")%status)
                 status, statusText, self.mime = self._getHttpRequest("GET")
             elif status>=400 and self.mime:
                 server = self.mime.getheader("Server")

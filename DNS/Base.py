@@ -18,12 +18,21 @@ defaults['server']=[]
 
 
 def init_dns_resolver():
+    """init the DNS resolver. This function can be called more than once"""
     global defaults
+    # reset to old values
+    defaults['server'] = []
+    defaults['search_domains'] = []
+    # platform specific config
     import os
     if os.name=="posix":
         init_dns_resolver_posix()
     elif os.name=="nt":
         init_dns_resolver_nt()
+    else:
+        # other platforms not supported (what about Mac?)
+        pass
+    # default values
     if not defaults['search_domains']:
         defaults['search_domains'].append('')
     if not defaults['server']:
@@ -31,6 +40,7 @@ def init_dns_resolver():
 
 def init_dns_resolver_posix():
     "parses the /etc/resolv.conf file and sets defaults for name servers"
+    # XXX this needs to be dynamic?
     global defaults
     for line in open('/etc/resolv.conf', 'r').readlines():
         line = line.strip()
@@ -50,21 +60,42 @@ def init_dns_resolver_nt():
     """Windows network config read from registry"""
     import winreg
     global defaults
+    key = None
     try:
         key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
-                 r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters")
-    except WindowsError:
-        # key not found :(
-        return
-    if key.get("EnableDhcp"):
-        nameserver = key.get("DhcpNameServer")
-    else:
-        nameserver = key.get("NameServer")
-    if nameserver:
-        defaults['server'].append(nameserver)
-    searchlist = key.get("SearchList", [])
-    for domain in searchlist:
-        defaults['search_domains'].append('.'+domain.lower())
+               r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters")
+    except EnvironmentError:
+        try: # for Windows ME
+            key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
+                    r"SYSTEM\CurrentControlSet\Services\VxD\MSTCP")
+        except EnvironmentError:
+            pass
+    if key:
+        nameserver = key["NameServer"][0] or ""
+        for server in nameserver.split(","):
+            defaults['nameserver'].append(server)
+    # XXX search for "EnableDhcp", "DhcpNameServer", "SearchList"
+
+    try: # for win2000
+        key = winreg.handle_key(winreg.HKEY_LOCAL_MACHINE,
+  r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DNSRegisteredAdapters")
+        for subkey in key.subkeys():
+            count, counttype = subkey['DNSServerAddressCount']
+            values, valuestype = subkey['DNSServerAddresses']
+            for server in winreg.binipdisplay(values):
+                defaults['nameserver'].append(server)
+    except EnvironmentError:
+        pass
+
+    try: # for whistler
+        key = winreg.handle_key(winreg.HKEY_LOCAL_MACHINE,
+           r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces")
+        for subkey in key.subkeys():
+            nameserver = subkey['NameServer'][0] or ""
+            for server in winreg.stringdisplay(nameserver):
+	        defaults['nameserver'].append(server)
+    except EnvironmentError:
+        pass
 
 
 class DnsRequest:

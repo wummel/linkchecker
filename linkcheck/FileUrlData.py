@@ -64,9 +64,15 @@ class FileUrlData(UrlData):
 
 
     def isHtml(self):
-        return html_re.search(self.url) or opera_re.search(self.url) or \
-               html_content_re.search(self.getContent()) or \
-               opera_content_re.search(self.getContent())
+        if html_re.search(self.url) or opera_re.search(self.url):
+            return 1
+        # try to read content (attention: could be a directory)
+        try:
+            return html_content_re.search(self.getContent()) or \
+                   opera_content_re.search(self.getContent())
+        except IOError:
+            pass
+        return None
 
 
     def parseUrl(self, config):
@@ -77,15 +83,15 @@ class FileUrlData(UrlData):
         # parse an opera bookmark file
         name = ""
         lineno = 0
-        # XXX use iterators for this?
-        for line in StringUtil.lines(self.getContent()):
+        for line in self.getContent().split("\n"):
             lineno += 1
             line = line.strip()
-            if line.startwith("NAME="):
+            if line.startswith("NAME="):
                 name = line[5:]
             elif line.startswith("URL="):
                 url = line[4:]
                 if url:
+                    from UrlData import GetUrlDataFrom
                     config.appendUrl(GetUrlDataFrom(url,
                         self.recursionLevel+1, self.url, None, lineno, name))
                 name = ""
