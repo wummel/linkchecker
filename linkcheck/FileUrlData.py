@@ -25,7 +25,7 @@ ExcList.append(OSError)
 extensions = {
     "html": r'(?i)\.s?html?$',
     "opera": r'^(?i)opera.adr$', # opera bookmark file
-    "text": r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$',
+#    "text": r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$',
 }
 for key in extensions.keys():
     extensions[key] = re.compile(extensions[key])
@@ -34,7 +34,7 @@ for key in extensions.keys():
 contents = {
     "html": r'(?i)<html>.*</html>',
     "opera" : r'Opera Hotlist',
-    "text" : r'[\w\s]+',
+#    "text" : r'[\w\s]+',
 }
 for key in contents.keys():
     contents[key] = re.compile(contents[key])
@@ -131,7 +131,7 @@ class FileUrlData (UrlData):
         # try to read content (can fail, so catch error)
         try:
             for ro in contents.values():
-                if ro.search(self.getContent()):
+                if ro.search(self.getContent()[:20]):
                     return 1
         except IOError:
             pass
@@ -143,7 +143,7 @@ class FileUrlData (UrlData):
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         for key,ro in contents.items():
-            if ro.search(self.getContent()):
+            if ro.search(self.getContent()[:20]):
                 return getattr(self, "parse_"+key)()
         return None
 
@@ -170,6 +170,7 @@ class FileUrlData (UrlData):
 
 
     def parse_text (self):
+        # unused at the moment
         lineno = 0
         for line in self.getContent().splitlines():
             lineno += 1
