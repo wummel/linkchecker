@@ -276,9 +276,6 @@ msgstr "D/L Zeit"
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
 msgid "D/L Size"
 msgstr "D/L Größe"
 
