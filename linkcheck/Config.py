@@ -36,7 +36,7 @@ def dictjoin(d1, d2):
     return d
 
 
-Version = "1.2.3"
+Version = "1.2.4"
 AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version

@@ -1,11 +1,11 @@
 # This Makefile is only used by developers! No need for users to
 # call make.
 VERSION=$(shell python setup.py --version)
-HOST=treasure.calvinsplayground.de
-PROXY=--proxy= -itreasure.calvinsplayground.de -s
+#HOST=treasure.calvinsplayground.de
+#PROXY=--proxy= -itreasure.calvinsplayground.de -s
 #PROXY=-P$(HOST):5050
-#HOST=fsinfo.cs.uni-sb.de
-#PROXY=-Pwww-proxy.uni-sb.de:3128
+HOST=fsinfo.cs.uni-sb.de
+PROXY=-Pwww-proxy.uni-sb.de:3128
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
 PACKAGE = linkchecker
 DEBPACKAGE = ../$(PACKAGE)_$(VERSION)_i386.deb
@@ -46,7 +46,7 @@ clean:
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 dist:	mo version
-	python setup.py sdist bdist_rpm
+	python setup.py sdist #bdist_rpm
 	fakeroot debian/rules binary
 
 packages:	dist
@@ -92,5 +92,3 @@ mo:
 	msgfmt -o locale/fr/LC_MESSAGES/linkcheck.mo \
 	locale/fr/LC_MESSAGES/linkcheck.po
 
-pov:
-	povray +Ilinkchecker-out.pov +FN +Ositemap.png

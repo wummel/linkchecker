@@ -103,14 +103,15 @@ class HttpUrlData(UrlData):
                 Config.debug("DEBUG: Authentication "+_user+"/"+_password+"\n")
 
             # some servers get the HEAD request wrong:
-            # - Netscape Enterprise Server III (no HEAD implemented)
+            # - Netscape Enterprise Server III (no HEAD implemented, 404 error)
+            # - Hyperwave Information Server (501 error)
             # - some advertisings (they want only GET, dont ask why ;)
             # - Zope server (it has to render the page to get the correct
             #   content-type
-            elif status==405:
+            elif status in [405,501]:
                 # HEAD method not allowed ==> try get
                 status, statusText, self.mime = self._getHttpRequest("GET")
-                Config.debug("DEBUG: detected 405 error\n")
+                Config.debug("DEBUG: HEAD not supported\n")
             elif status>=400 and self.mime:
                 server = self.mime.getheader("Server")
                 if server and self.netscape_re.search(server):
