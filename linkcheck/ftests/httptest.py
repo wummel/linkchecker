@@ -24,32 +24,6 @@ import time
 import linkcheck.ftests
 
 
-class HttpServerTest (linkcheck.ftests.StandardTest):
-    """start/stop an HTTP server that can be used for testing"""
-
-    def __init__ (self, methodName='runTest'):
-        """init test class and store default http server port"""
-        super(HttpServerTest, self).__init__(methodName=methodName)
-        self.port = 8001
-
-    def start_server (self):
-        """start a new HTTP server in a new thread"""
-        try:
-            import threading
-        except ImportError:
-            self.fail("This test needs threading support")
-        t = threading.Thread(None, start_server, None, (self.port,))
-        t.start()
-        # wait for server to start up
-        time.sleep(3)
-
-    def stop_server (self):
-        """send QUIT request to http server"""
-        conn = httplib.HTTPConnection("localhost:%d"%self.port)
-        conn.request("QUIT", "/")
-        conn.getresponse()
-
-
 class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler, object):
     """http request handler with QUIT stopping the server"""
 
@@ -94,11 +68,36 @@ class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
         super(NoQueryHttpRequestHandler, self).do_HEAD()
 
 
-def start_server (port):
+class HttpServerTest (linkcheck.ftests.StandardTest):
+    """start/stop an HTTP server that can be used for testing"""
+
+    def __init__ (self, methodName='runTest'):
+        """init test class and store default http server port"""
+        super(HttpServerTest, self).__init__(methodName=methodName)
+        self.port = 8001
+
+    def start_server (self, handler=NoQueryHttpRequestHandler):
+        """start a new HTTP server in a new thread"""
+        try:
+            import threading
+        except ImportError:
+            self.fail("This test needs threading support")
+        t = threading.Thread(None, start_server, None, (self.port, handler))
+        t.start()
+        # wait for server to start up
+        time.sleep(3)
+
+    def stop_server (self):
+        """send QUIT request to http server"""
+        conn = httplib.HTTPConnection("localhost:%d"%self.port)
+        conn.request("QUIT", "/")
+        conn.getresponse()
+
+
+def start_server (port, handler):
     """start an HTTP server on given port"""
-    HandlerClass = NoQueryHttpRequestHandler
     ServerClass = StoppableHttpServer
     server_address = ('', port)
-    HandlerClass.protocol_version = "HTTP/1.0"
-    httpd = ServerClass(server_address, HandlerClass)
+    handler.protocol_version = "HTTP/1.0"
+    httpd = ServerClass(server_address, handler)
     httpd.serve_forever()
