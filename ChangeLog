@@ -3,6 +3,8 @@
 	  -D implies -t0
 	  HTML data in debug output
 	  print line number in UrlData.__str__()
+	* set HTTP Host: header for virtual domains
+	* only send HTTP authorization header when its needed
 
 8.3.2000 Version 1.1.1
 	* FastCGI modules added (no script yet)

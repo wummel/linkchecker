@@ -8,7 +8,7 @@ CFLAGS = -O6 -Wall
 LDFLAGS = -shared $(SSL_LIBDIR) $(PY_LIBDIR)
 CPPFLAGS = $(SSL_INCLDIR) $(PY_INCLDIR)
 
-VERSION=1.1.1
+VERSION=1.1.2
 #HOST=treasure.calvinsplayground.de
 HOST=fsinfo.cs.uni-sb.de
 PROXY=www-proxy.uni-sb.de:3128
@@ -30,7 +30,7 @@ clean:
 	rm -f ssl.{so,o} $(ALLPACKAGES) $(PACKAGE)-out.*
 
 .files-stamp: all
-	./$(PACKAGE) -q -Wtext -Whtml -Wgml -Wsql -R -r2 -v -P $(PROXY) -i $(HOST) http://$(HOST)/~calvin/
+	./$(PACKAGE) -Wtext -Whtml -Wgml -Wsql -R -r2 -v -P $(PROXY) -i $(HOST) http://$(HOST)/~calvin/
 	@touch .files-stamp
 
 install:	install-dirs
