@@ -5,7 +5,7 @@ HTMLDIR := /home/calvin/public_html/linkchecker.sf.net
 
 all: $(HTMLFILES)
 
-%.html: %.txt htmlnav.py bfknav.py
+%.html:	%.txt ../htmlnav.py ../bfknav.py
 	../rest2htmlnav --stylesheet-path=lc.css --time $< $@
 
 nav: all
