@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-01-20 22:46+0100\n"
-"PO-Revision-Date: 2005-01-20 22:48+0100\n"
+"POT-Creation-Date: 2005-01-20 23:49+0100\n"
+"PO-Revision-Date: 2005-01-20 23:52+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,17 +14,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../linkcheck/checker/consumer.py:136
+#: ../linkcheck/checker/consumer.py:35
+#, python-format
+msgid "%5d URL queued,"
+msgid_plural "%5d URLs queued,"
+msgstr[0] "%5d URL überprüft,"
+msgstr[1] "%5d URLs überprüft,"
+
+#: ../linkcheck/checker/consumer.py:40
+#, python-format
+msgid "%4d URL checked,"
+msgid_plural "%4d URLs checked,"
+msgstr[0] "%4d Verknüpfung überprüft."
+msgstr[1] "%4d Verknüpfungen überprüft."
+
+#: ../linkcheck/checker/consumer.py:45
+#, python-format
+msgid "%2d active thread,"
+msgid_plural "%2d active threads,"
+msgstr[0] "%2d aktiver Thread,"
+msgstr[1] "%2d aktive Threads,"
+
+#: ../linkcheck/checker/consumer.py:50
+#, python-format
+msgid "runtime %s"
+msgstr "Laufzeit %s"
+
+#: ../linkcheck/checker/consumer.py:158
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] "Tastatur Abbruch; warte auf Beendigung von %d aktiven Verbindung"
 msgstr[1] "Tastatur Abbruch; warte auf Beendigung von %d aktiven Verbindungen"
 
-#: ../linkcheck/checker/consumer.py:158
-#, python-format
-msgid "Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s"
-msgstr "Status: %5d URLs noch zu prüfen, %4d URLs überprüft, %2d aktive Threads, Laufzeit %s"
+#: ../linkcheck/checker/consumer.py:176
+msgid "Status:"
+msgstr "Status:"
 
 #: ../linkcheck/checker/ignoredurl.py:29
 #: ../linkcheck/checker/httpsurl.py:35
@@ -400,19 +425,19 @@ msgstr "Herzlichen Glückwunsch zum Geburtstag, LinkChecker, ich bin heute %d Jah
 #: ../linkcheck/logger/gml.py:51
 #: ../linkcheck/logger/sql.py:81
 #: ../linkcheck/logger/xmllog.py:98
-#: ../linkcheck/logger/csvlog.py:60
+#: ../linkcheck/logger/csvlog.py:61
 #, python-format
 msgid "created by %s at %s"
 msgstr "erstellt von %s um %s"
 
 #: ../linkcheck/logger/gml.py:54
-#: ../linkcheck/logger/csvlog.py:63
+#: ../linkcheck/logger/csvlog.py:64
 #, python-format
 msgid "Get the newest version at %(url)s"
 msgstr "Die neueste Version gibt es unter %(url)s"
 
 #: ../linkcheck/logger/gml.py:56
-#: ../linkcheck/logger/csvlog.py:65
+#: ../linkcheck/logger/csvlog.py:66
 #, python-format
 msgid "Write comments and bugs to %(email)s"
 msgstr "Schreiben Sie Kommentare und Fehler an %(email)s"
@@ -422,7 +447,7 @@ msgstr "Schreiben Sie Kommentare und Fehler an %(email)s"
 #: ../linkcheck/logger/sql.py:148
 #: ../linkcheck/logger/xmllog.py:172
 #: ../linkcheck/logger/text.py:254
-#: ../linkcheck/logger/csvlog.py:126
+#: ../linkcheck/logger/csvlog.py:128
 #, python-format
 msgid "Stopped checking at %s (%s)"
 msgstr "Beende Prüfen am %s (%s)"
@@ -505,7 +530,7 @@ msgstr "Die neueste Version gibt es unter %s"
 msgid "Write comments and bugs to %s"
 msgstr "Schreiben Sie Kommentare und Fehler an %s"
 
-#: ../linkcheck/logger/csvlog.py:68
+#: ../linkcheck/logger/csvlog.py:69
 msgid "Format of the entries:"
 msgstr "Format der Einträge:"
 
@@ -557,12 +582,12 @@ msgstr ""
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt.\n"
 "</blockquote></body></html>"
 
-#: ../linkcheck/configuration.py:239
+#: ../linkcheck/configuration.py:240
 #, python-format
 msgid "invalid log option %r"
 msgstr "ungültige Log Option %r"
 
-#: ../linkcheck/configuration.py:355
+#: ../linkcheck/configuration.py:356
 #, python-format
 msgid "extern%d: syntax error %s\n"
 msgstr "extern%d: Syntaxfehler %s\n"
@@ -1077,7 +1102,7 @@ msgstr ""
 msgid "Canceled."
 msgstr "Abgebrochen."
 
-#: ../linkchecker:591
+#: ../linkchecker:592
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
@@ -1085,7 +1110,7 @@ msgstr ""
 "Psyco ist installiert aber nicht genutzt, da die Version zu alt ist.\n"
 "Psyco >= 1.4 wird benötigt."
 
-#: ../linkchecker:601
+#: ../linkchecker:602
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
 
