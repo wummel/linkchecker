@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Jan  6 00:27:02 2003\n"
+"POT-Creation-Date: Thu Jan  9 02:46:08 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -12,17 +12,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-msgid "Warning: %s"
-msgstr "Waarschuwing: %s"
-
-msgid "Error: %s"
-msgstr "Fout: %s"
-
 msgid "invalid log option '%s'"
 msgstr "ungeldige Log Optie '%s'"
 
 msgid "illegal recursionlevel number %d"
 msgstr "illegaal recursie nivo nummer %d"
+
+msgid "extern%d: syntax error %s\n"
+msgstr ""
 
 msgid "No user or password found"
 msgstr "Geen gebruikernaam of wachtwoord gevonden"
@@ -332,6 +329,7 @@ msgstr ""
 msgid " found\n"
 msgstr " gevonden\n"
 
+#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
@@ -340,6 +338,7 @@ msgid ""
 "'-o colored' is the same as '-ocolored'.\n"
 "-a, --anchors\n"
 "        Check HTTP anchor references. Default is don't check anchors.\n"
+"        This option implies -w because anchor errors are always warnings.\n"
 "-C, --cookies\n"
 "        Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "        which are sent back to the originating server are accepted.\n"
@@ -621,3 +620,9 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#~ msgid "Warning: %s"
+#~ msgstr "Waarschuwing: %s"
+
+#~ msgid "Error: %s"
+#~ msgstr "Fout: %s"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Jan  6 00:27:02 2003\n"
+"POT-Creation-Date: Thu Jan  9 02:46:08 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -12,17 +12,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-msgid "Warning: %s"
-msgstr "Warnung: %s"
-
-msgid "Error: %s"
-msgstr "Fehler: %s"
-
 msgid "invalid log option '%s'"
 msgstr "ungültige Log Option '%s'"
 
 msgid "illegal recursionlevel number %d"
 msgstr "illegale recursionlevel Nummer %d"
+
+msgid "extern%d: syntax error %s\n"
+msgstr ""
 
 msgid "No user or password found"
 msgstr "Kein Benutzername oder Passwort gefunden"
@@ -349,6 +346,7 @@ msgstr ""
 msgid " found\n"
 msgstr " gefunden\n"
 
+#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
@@ -357,6 +355,7 @@ msgid ""
 "'-o colored' is the same as '-ocolored'.\n"
 "-a, --anchors\n"
 "        Check HTTP anchor references. Default is don't check anchors.\n"
+"        This option implies -w because anchor errors are always warnings.\n"
 "-C, --cookies\n"
 "        Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "        which are sent back to the originating server are accepted.\n"
@@ -638,3 +637,9 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "Warning: %s"
+#~ msgstr "Warnung: %s"
+
+#~ msgid "Error: %s"
+#~ msgstr "Fehler: %s"
