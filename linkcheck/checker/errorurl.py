@@ -26,12 +26,12 @@ class ErrorUrl (urlbase.UrlBase):
 
     def check_syntax (self):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
-        self.url = self.base_url
+        self.url = linkcheck.url.url_norm(self.base_url)
         self.set_result(_("URL is unrecognized or has invalid syntax"),
                         valid=False)
         return False
 
     def get_cache_key (self):
         """cache key is the url"""
-        return self.base_url
+        return self.url
 
