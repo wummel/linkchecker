@@ -22,6 +22,7 @@ from linkcheck import getLinkPat
 from linkcheck.LRU import LRU
 from os.path import expanduser, normpath, normcase, join
 from urllib import getproxies
+from sets import Set
 from debug import *
 try:
     import threading as _threading
@@ -77,6 +78,7 @@ class Configuration (dict):
 
     def __init__ (self):
         """Initialize the default options"""
+        super(Configuration, self).__init__()
         self.reset()
         # we use "reduceCount" to delay the calling of
 	# Threader.reduceThreads() because we would call it too often.
@@ -163,7 +165,7 @@ class Configuration (dict):
         self["nntpserver"] = os.environ.get("NNTP_SERVER",None)
         self.threader = Threader.Threader()
         self.setThreads(10)
-        self.urlSeen = {}
+        self.urlSeen = Set()
         self.urlCache = LRU(MAX_URL_CACHE)
         self.robotsTxtCache = LRU(MAX_ROBOTS_TXT_CACHE)
         self["threads"] = True
@@ -177,7 +179,7 @@ class Configuration (dict):
 
 
     def setThreads (self, num):
-        debug(HURT_ME_PLENTY, "set threading with %d threads", num)
+        debug(HURT_ME_PLENTY, "set threading with %d threads"%num)
         self.threader.threads_max = num
         if num>0:
             sys.setcheckinterval(50)
@@ -246,83 +248,74 @@ class Configuration (dict):
 
 
     def urlSeen_has_key (self, key):
-        ret = None
+        self.urlsLock.acquire()
         try:
-            self.urlsLock.acquire()
-            ret = self.urlSeen.has_key(key)
+            return key in self.urlSeen
         finally:
             self.urlsLock.release()
-        return ret
 
 
     def urlSeen_set (self, key):
+        self.urlsLock.acquire()
         try:
-            self.urlsLock.acquire()
-            self.urlSeen[key] = 1
+            self.urlSeen.add(key)
         finally:
             self.urlsLock.release()
 
 
     def urlCache_has_key (self, key):
-        ret = None
+        self.urlCacheLock.acquire()
         try:
-            self.urlCacheLock.acquire()
-            ret = self.urlCache.has_key(key)
+            return key in self.urlCache
         finally:
             self.urlCacheLock.release()
-        return ret
 
 
     def urlCache_get (self, key):
-        ret = None
+        self.urlCacheLock.acquire()
         try:
-            self.urlCacheLock.acquire()
-            ret = self.urlCache[key]
+            return self.urlCache[key]
         finally:
             self.urlCacheLock.release()
-        return ret
 
 
     def urlCache_set (self, key, val):
+        self.urlCacheLock.acquire()
         try:
-            self.urlCacheLock.acquire()
             self.urlCache[key] = val
         finally:
             self.urlCacheLock.release()
 
 
     def robotsTxtCache_has_key (self, key):
-        ret = None
+        self.robotsTxtCacheLock.acquire()
         try:
-            self.robotsTxtCacheLock.acquire()
-            ret = self.robotsTxtCache.has_key(key)
+            return self.robotsTxtCache.has_key(key)
         finally:
             self.robotsTxtCacheLock.release()
-        return ret
 
 
     def robotsTxtCache_get (self, key):
-        ret = None
+        self.robotsTxtCacheLock.acquire()
         try:
-            self.robotsTxtCacheLock.acquire()
-            ret = self.robotsTxtCache[key]
+            return self.robotsTxtCache[key]
         finally:
             self.robotsTxtCacheLock.release()
-        return ret
 
 
     def robotsTxtCache_set (self, key, val):
+        self.robotsTxtCacheLock.acquire()
         try:
-            self.robotsTxtCacheLock.acquire()
             self.robotsTxtCache[key] = val
         finally:
             self.robotsTxtCacheLock.release()
 
 
     def log_newUrl (self, url):
+        self.logLock.acquire()
         try:
-            self.logLock.acquire()
-            if not self["quiet"]: self["log"].newUrl(url)
+            if not self["quiet"]:
+                self["log"].newUrl(url)
             for log in self["fileoutput"]:
                 log.newUrl(url)
         finally:
@@ -330,8 +323,8 @@ class Configuration (dict):
 
 
     def storeCookies (self, headers, host):
+        self.dataLock.acquire()
         try:
-            self.dataLock.acquire()
             output = []
             for h in headers.getallmatchingheaders("Set-Cookie"):
                 output.append(h)
@@ -344,8 +337,8 @@ class Configuration (dict):
 
 
     def getCookies (self, host, path):
+        self.dataLock.acquire()
         try:
-            self.dataLock.acquire()
             debug(BRING_IT_ON, "Get Cookie", host, path)
             if not self.cookies.has_key(host):
                 return []
