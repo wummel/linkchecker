@@ -9,6 +9,16 @@
     Type: bugfix
     Changed: linkcheck/i18n.py
 
+  * Since profile.py and pstats.py have been removed from some
+    Python standard installations (eg. Debian GNU/Linux), make their
+    usage optional.
+    Using --profile without an available profile.py prints a warning
+    and runs linkchecker without profiling.
+    Using --viewprof without an available pstats.py prints an error
+    and exits.
+    Type: bugfix
+    Changed: linkchecker
+
 2.4 "Kitchen stories" (released 9.2.2005)
 
   * Work around a Python 2.4 bug when HTTP 302 redirections are
