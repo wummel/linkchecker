@@ -50,23 +50,16 @@ def _text (*args, **kwargs):
 # debug function, using the debug level
 def debug (level, *args):
     if level <= _debuglevel:
-        _text(*args)
+        _text("DEBUG", *args)
 
 
 def info (*args):
-    args = list(args)
-    args.insert(0, "info:")
-    _text(*args, **{'color':'default'})
+    _text("INFO", *args, **{'color':'default'})
 
 
 def warn (*args):
-    args = list(args)
-    args.insert(0, "warning:")
-    _text(*args, **{'color':'bold;yellow'})
+    _text("WARN", *args, **{'color':'bold;yellow'})
 
 
 def error (*args):
-    args = list(args)
-    args.insert(0, "error:")
-    _text(*args, **{'color':'bold;red'})
-
+    _text("ERROR", *args, **{'color':'bold;red'})
