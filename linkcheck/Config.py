@@ -123,17 +123,17 @@ class Configuration (UserDict.UserDict):
         }
         self['colored'] = {
             "filename":     "linkchecker-out.ansi",
-            'colorparent':  "37",   # white
-            'colorurl':     "0",    # standard
-            'colorname':    "0",    # standard
-            'colorreal':    "36",   # cyan
-            'colorbase':    "35",   # magenty
-            'colorvalid':   "1;32", # green
-            'colorinvalid': "1;31", # red
-            'colorinfo':    "0",    # standard
-            'colorwarning': "1;33", # yellow
-            'colordltime':  "0",    # standard
-            'colorreset':   "0",    # reset to standard
+            'colorparent':  "white",
+            'colorurl':     "default",
+            'colorname':    "default",
+            'colorreal':    "cyan",
+            'colorbase':    "purple",
+            'colorvalid':   "bold;green",
+            'colorinvalid': "bold;red",
+            'colorinfo':    "default",
+            'colorwarning': "bold;yellow",
+            'colordltime':  "default",
+            'colorreset':   "default",
         }
         self['gml'] = {
             "filename":     "linkchecker-out.gml",

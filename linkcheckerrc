@@ -103,18 +103,21 @@
 #
 [colored]
 #filename=linkchecker-out.colored
-# colors for the various parts
-#colorparent=37
-#colorurl=0
-#colorname=0
-#colorreal=36
-#colorbase=35
-#colorvalid=1;32
-#colorinvalid=1;31
-#colorinfo=0
-#colorwarning=1;33
-#colordltime=0
-#colorreset=0
+# colors for the various parts, syntax is <color> or <type>;<color>
+# type can be bold, light, blink, invert
+# color can be default, black, red, green, yellow, blue, purple, cyan, white,
+# Black, Red, Green, Yellow, Blue, Purple, Cyan, White
+#colorparent=white
+#colorurl=default
+#colorname=default
+#colorreal=cyan
+#colorbase=purple
+#colorvalid=bold;green
+#colorinvalid=bold;red
+#colorinfo=default
+#colorwarning=bold;yekkiw
+#colordltime=default
+#colorreset=default
 #fields=all
 
 # blacklist logger

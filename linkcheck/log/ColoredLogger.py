@@ -14,9 +14,51 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import linkcheck
+import sys, linkcheck
 from linkcheck.log import Spaces
 from StandardLogger import StandardLogger
+
+AnsiType = {
+    'bold': "1",
+    'light': "2",
+    'blink': "5",
+    'invert': "7",
+}
+
+AnsiColor = {
+  'default': '0',
+  'black': "30",
+  'red': "31",
+  'green': "32",
+  'yellow': "33",
+  'blue': "34",
+  'purple': "35",
+  'cyan': "36",
+  'white': "37",
+  'Black': "40",
+  'Red': "41",
+  'Green': "42",
+  'Yellow': "43",
+  'Blue': "44",
+  'Purple': "45",
+  'Cyan': "46",
+  'White': "47",
+}
+
+def col_num (s):
+    type = ""
+    if ";" in s:
+        type, s = s.split(";", 1)
+        if not AnsiType.has_key(type):
+            print >>sys.stderr, "invalid ansi type", `type`
+            print >>sys.stderr, "valid values are", AnsiType.keys()
+        type = AnsiType[type]+";"
+    if not AnsiColor.has_key(s):
+        print >>sys.stderr, "invalid ansi color", `s`
+        print >>sys.stderr, "valid values are", AnsiColor.keys()
+    s = AnsiColor[s]
+    return type+s
+
 
 class ColoredLogger (StandardLogger):
     """ANSI colorized output"""
@@ -24,17 +66,17 @@ class ColoredLogger (StandardLogger):
     def __init__ (self, **args):
         esc="\x1b[%sm"
         apply(StandardLogger.__init__, (self,), args)
-        self.colorparent = esc % args['colorparent']
-        self.colorurl = esc % args['colorurl']
-        self.colorname = esc % args['colorname']
-        self.colorreal = esc % args['colorreal']
-        self.colorbase = esc % args['colorbase']
-        self.colorvalid = esc % args['colorvalid']
-        self.colorinvalid = esc % args['colorinvalid']
-        self.colorinfo = esc % args['colorinfo']
-        self.colorwarning = esc % args['colorwarning']
-        self.colordltime = esc % args['colordltime']
-        self.colorreset = esc % args['colorreset']
+        self.colorparent = esc % col_num(args['colorparent'])
+        self.colorurl = esc % col_num(args['colorurl'])
+        self.colorname = esc % col_num(args['colorname'])
+        self.colorreal = esc % col_num(args['colorreal'])
+        self.colorbase = esc % col_num(args['colorbase'])
+        self.colorvalid = esc % col_num(args['colorvalid'])
+        self.colorinvalid = esc % col_num(args['colorinvalid'])
+        self.colorinfo = esc % col_num(args['colorinfo'])
+        self.colorwarning = esc % col_num(args['colorwarning'])
+        self.colordltime = esc % col_num(args['colordltime'])
+        self.colorreset = esc % col_num(args['colorreset'])
         self.currentPage = None
         self.prefix = 0
 
