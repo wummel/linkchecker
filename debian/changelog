@@ -1,6 +1,6 @@
-linkchecker (1.13.4-1) unstable; urgency=low
+linkchecker (1.13.4-1) unstable; urgency=medium
 
-  * New upstream release.
+  * New upstream release, fixing serious bug. Medium urgency.
 
  -- Bastian Kleineidam <calvin@debian.org>  Tue, 14 Sep 2004 21:50:44 +0200
 
