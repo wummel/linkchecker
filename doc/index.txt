@@ -51,7 +51,7 @@ Screenshots
    |      :align: middle        |      :align: middle        |
    |      :target: shot1.png    |      :target: shot2.png    |
    +----------------------------+----------------------------+
-   | Commandline interface      | CGI web interface          |
+   | Commandline interface      | Web interface              |
    +----------------------------+----------------------------+
 
 
