@@ -1,6 +1,0 @@
-test_https
-url file:///home/calvin/projects/linkchecker/test/html/https.html
-valid
-url https://sourceforge.net/
-name https
-valid
