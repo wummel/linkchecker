@@ -142,7 +142,12 @@ def get_locale ():
     """
     Return current configured locale.
     """
-    loc = locale.getdefaultlocale()[0]
+    loc = None
+    try:
+        loc = locale.getdefaultlocale()[0]
+    except ValueError:
+        # workaround (XXX delete this when python2.5 is fixed)
+        pass
     if loc is None:
         return 'C'
     loc = locale.normalize(loc)
