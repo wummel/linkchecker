@@ -1,4 +1,6 @@
-- use linkcheck/url.py in HttpUrlData.py
+- remove anchor from request in case of errors
+
+- SF request #952051: is query considered in url cache keys?
 
 - replace the debug() function with the logging module
   we'll see how we can insert multiple debug levels into this thing
