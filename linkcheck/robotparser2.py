@@ -224,6 +224,10 @@ class RobotFileParser (object):
         """using the parsed robots.txt decide if useragent can fetch url"""
         debug("Checking robot.txt allowance for:\n"\
               "  user agent: %r\n  url: %r" % (useragent, url))
+        if not isinstance(useragent, str):
+            useragent = useragent.encode("ascii", "ignore")
+        if not isinstance(url, str):
+            url = url.encode("ascii", "ignore")
         if self.disallow_all:
             return False
         if self.allow_all:
