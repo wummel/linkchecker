@@ -1,5 +1,5 @@
-1.7.2
-  * Require Python >= 2.2.1, remove httplib
+1.8.0
+  * Require Python >= 2.2.1, remove httplib.
   * Add again python-dns, the Debian package maintainer is unresponsive
 
 1.7.1
