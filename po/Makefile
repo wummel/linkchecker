@@ -6,6 +6,7 @@ POSOURCES = $(shell find ../linkcheck -name \*.py) \
 LDIR = ../share/locale
 PACKAGE = linkchecker
 TEMPLATE = $(PACKAGE).pot
+MYMAIL := calvin@users.sourceforge.net
 LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
 LANGUAGES = de fr nl
@@ -24,9 +25,9 @@ mofiles:
 
 template: $(TEMPLATE)
 $(TEMPLATE): $(POSOURCES)
-	$(XGETTEXT) -w 80 --default-domain=$(PACKAGE) --language=Python \
-	  --copyright-holder="Bastian Kleineidam <calvin@users.sf.net>" \
-	  --msgid-bugs-address=calvin@users.sf.net -o $(TEMPLATE) \
+	$(XGETTEXT) -j -w 80 --default-domain=$(PACKAGE) --language=Python \
+	  --copyright-holder="Bastian Kleineidam <$(MYMAIL)>" \
+	  --msgid-bugs-address=$(MYMAIL) -o $(TEMPLATE) \
 	  --keyword=_n:1,2 $(POSOURCES)
 
 %.mo:	%.po
