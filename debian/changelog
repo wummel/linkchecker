@@ -3,7 +3,7 @@ linkchecker (1.12.3-1) unstable; urgency=low
   * New upstream release.
   * add lintian overrides
 
- -- Bastian Kleineidam <calvin@debian.org>  Mon,  5 Apr 2004 12:03:33 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 27 May 2004 09:07:49 +0200
 
 linkchecker (1.12.2-1) unstable; urgency=low
 
