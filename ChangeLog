@@ -1,4 +1,4 @@
-2.0 "" (released xx.xx.2004)
+2.0 "I Kina spiser de hunde" (released xx.xx.2004)
 
   * Regenerate the HTML parser with new Bison version 1.875d.
     Also use the now supported Bison memory macros YYMALLOC and
@@ -14,7 +14,8 @@
     Type: feature
     Changed: linkcheck/logger/*.py
 
-  * Updated and translated manpages.
+  * Updated and translated manpages. French translation from
+    Yann Verley. German translation from me ;)
     Type: documentation
     Added: doc/de/linkchecker.de.1, doc/fr/linkchecker.fr.1
     Changed: doc/en/linkchecker.1
