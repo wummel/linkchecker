@@ -805,14 +805,23 @@ RX_DATA [-a-zA-Z0-9_]+
     RETURN(T_ELEMENT_END);
 }
 
-<S_TAGEND><{RX_WHITE_SPACE}* {
+<S_TAGEND><{RX_WHITE_SPACE}*\/{RX_WHITE_SPACE}*/[A-Za-z] {
     UPDATE_BUFPOS;
     UPDATE_LINE;
     LOWER_TMP;
+    yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
     SETLVAL;
-    SET_ERROR("Missing > in end tag.");
-    yyextra->tmp_attrs = PyDict_New();
-    if (!yyextra->tmp_attrs) return T_ERROR;
+    BEGIN(S_TAGEND);
+    RETURN(T_ELEMENT_END);
+}
+
+<S_TAGEND><{RX_WHITE_SPACE}*/[A-Za-z] {
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
+    LOWER_TMP;
+    yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
+    SETLVAL;
+    if (!(yyextra->tmp_attrs = PyDict_New())) return T_ERROR;
     BEGIN(S_TAGSTART);
     RETURN(T_ELEMENT_END);
 }
@@ -826,10 +835,31 @@ RX_DATA [-a-zA-Z0-9_]+
 
 <S_TAGEND2>> {
     UPDATE_BUFPOS;
-    UPDATE_LINE;
+    UPDATE_COLUMN;
     LOWER_TMP;
     SETLVAL;
     BEGIN(INITIAL);
+    RETURN(T_ELEMENT_END);
+}
+
+<S_TAGEND2><{RX_WHITE_SPACE}*\/{RX_WHITE_SPACE}*/[A-Za-z] {
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
+    LOWER_TMP;
+    yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
+    SETLVAL;
+    BEGIN(S_TAGEND);
+    RETURN(T_ELEMENT_END);
+}
+
+<S_TAGEND2><{RX_WHITE_SPACE}*/[A-Za-z] {
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
+    LOWER_TMP;
+    yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
+    SETLVAL;
+    if (!(yyextra->tmp_attrs = PyDict_New())) return T_ERROR;
+    BEGIN(S_TAGSTART);
     RETURN(T_ELEMENT_END);
 }
 
