@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newnewfr\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-19 12:07+0100\n"
-"PO-Revision-Date: 2004-11-19 12:11+0100\n"
+"POT-Creation-Date: 2004-11-19 12:18+0100\n"
+"PO-Revision-Date: 2004-11-19 12:50+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: français <kde-francophone@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,14 +22,14 @@ msgid "Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s
 msgstr "État : %5d URL dans la file, %4d URL vérifiées, %2d threads actifs, temps d'exécution %s"
 
 #: ../linkcheck/checker/ignoredurl.py:25
-#: ../linkcheck/checker/httpsurl.py:28
+#: ../linkcheck/checker/httpsurl.py:29
 #, python-format
-msgid "%s url ignored"
-msgstr "URL %s ignorée"
+msgid "%s URL ignored."
+msgstr "URL %s ignorée."
 
 #: ../linkcheck/checker/fileurl.py:93
-msgid "Added trailing slash to directory"
-msgstr "Rajout d'une barre oblique terminale au répertoire"
+msgid "Added trailing slash to directory."
+msgstr "Rajout d'une barre oblique terminale au répertoire."
 
 #: ../linkcheck/checker/fileurl.py:99
 msgid "directory"
@@ -41,8 +41,8 @@ msgid "The URL path %r is not the same as the system path %r. You should always 
 msgstr "L'URL %r n'est pas la même que le chemin du système %r. Vous devez toujours utiliser le chemin du système dans les URL."
 
 #: ../linkcheck/checker/httpurl.py:65
-msgid "URL path is empty, assuming '/' as path"
-msgstr "Le chemin de l'URL est vide, on assume que « / » est un répertoire"
+msgid "URL path is empty, assuming '/' as path."
+msgstr "Le chemin de l'URL est vide, on assume que « / » est un répertoire."
 
 #: ../linkcheck/checker/httpurl.py:120
 #, python-format
@@ -69,13 +69,13 @@ msgid "more than %d redirections, aborting"
 msgstr "plus de %d redirections, annulation"
 
 #: ../linkcheck/checker/httpurl.py:215
-msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
-msgstr "Le serveur Zope ne peut déterminer le type MIME avec HEAD, retour à GET"
+msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET."
+msgstr "Le serveur Zope ne peut déterminer le type MIME avec HEAD, retour à GET."
 
 #: ../linkcheck/checker/httpurl.py:223
 #, python-format
-msgid "Effective URL %s"
-msgstr "URL effective %s"
+msgid "Effective URL %s."
+msgstr "URL effective %s."
 
 #: ../linkcheck/checker/httpurl.py:243
 #, python-format
@@ -115,18 +115,18 @@ msgstr "inconnu"
 
 #: ../linkcheck/checker/httpurl.py:322
 #, python-format
-msgid "Server %r did not support HEAD request, used GET for checking"
-msgstr "Le serveur %r n'accepte pas la requête HEAD, utilisation de GET pour la vérification"
+msgid "Server %r did not support HEAD request, used GET for checking."
+msgstr "Le serveur %r n'accepte pas la requête HEAD, utilisation de GET pour la vérification."
 
 #: ../linkcheck/checker/httpurl.py:325
 #, python-format
-msgid "Server %r had no anchor support, removed anchor from request"
-msgstr "Le serveur %r n'accepte pas les ancres, suppression des ancres pour la requête"
+msgid "Server %r had no anchor support, removed anchor from request."
+msgstr "Le serveur %r n'accepte pas les ancres, suppression des ancres pour la requête."
 
 #: ../linkcheck/checker/httpurl.py:340
 #, python-format
-msgid "Could not store cookies: %(msg)s"
-msgstr "Impossible d'enregistrer les cookies : %(msg)s"
+msgid "Could not store cookies: %(msg)s."
+msgstr "Impossible d'enregistrer les cookies : %(msg)s."
 
 #: ../linkcheck/checker/httpurl.py:348
 #, python-format
@@ -232,18 +232,18 @@ msgstr "Impossible d'analyser le contenu : %r"
 
 #: ../linkcheck/checker/urlbase.py:447
 #, python-format
-msgid "anchor #%s not found"
-msgstr "Impossible de trouver l'ancre #%s"
+msgid "Anchor #%s not found."
+msgstr "Impossible de trouver l'ancre #%s."
 
 #: ../linkcheck/checker/urlbase.py:516
 #, python-format
-msgid "Found %r in link contents"
-msgstr "%r trouvé dans le contenu du lien"
+msgid "Found %r in link contents."
+msgstr "%r trouvé dans le contenu du lien."
 
 #: ../linkcheck/checker/urlbase.py:523
 #, python-format
-msgid "Content size %s is larger than %s"
-msgstr "La taille du contenu (%s) est supérieure à %s"
+msgid "Content size %s is larger than %s."
+msgstr "La taille du contenu (%s) est supérieure à %s."
 
 #: ../linkcheck/checker/telneturl.py:43
 msgid "Host is empty"
@@ -254,13 +254,13 @@ msgid "Invalid mail syntax"
 msgstr "Syntaxe mail invalide"
 
 #: ../linkcheck/checker/mailtourl.py:98
-msgid "No addresses found"
-msgstr "Aucune adresse trouvée"
+msgid "No addresses found."
+msgstr "Aucune adresse trouvée."
 
 #: ../linkcheck/checker/mailtourl.py:113
 #, python-format
-msgid "No MX mail host for %(domain)s found"
-msgstr "Aucun hôte de messagerie trouvé pour %(domain)s"
+msgid "No MX mail host for %(domain)s found."
+msgstr "Aucun hôte de messagerie trouvé pour %(domain)s."
 
 #: ../linkcheck/checker/mailtourl.py:132
 #, python-format
@@ -269,8 +269,8 @@ msgstr "Adresse vérifiée : %(info)s."
 
 #: ../linkcheck/checker/mailtourl.py:136
 #, python-format
-msgid "MX mail host %(host)s did not accept connections: %(error)s"
-msgstr "L'hôte de messagerie %(host)s n'accepte de connexion : %(error)s"
+msgid "MX mail host %(host)s did not accept connections: %(error)s."
+msgstr "L'hôte de messagerie %(host)s n'accepte de connexion : %(error)s."
 
 #: ../linkcheck/checker/mailtourl.py:142
 msgid "Could not connect, but syntax is correct"
@@ -285,33 +285,33 @@ msgstr "Hôte de messagerie %(host)s trouvé"
 msgid "Could not split the mail address"
 msgstr "Impossible de découper l'adresse mail"
 
-#: ../linkcheck/checker/nntpurl.py:103
-msgid "No NNTP server specified, skipping this URL"
-msgstr "Aucun serveur NNTP spécifié, l'URL est ignorée"
+#: ../linkcheck/checker/nntpurl.py:104
+msgid "No NNTP server was specified, skipping this URL."
+msgstr "Aucun serveur NNTP spécifié, l'URL est ignorée."
 
-#: ../linkcheck/checker/nntpurl.py:112
+#: ../linkcheck/checker/nntpurl.py:113
 #, python-format
 msgid "Articel number %s found."
 msgstr "Article numéro %s trouvé."
 
-#: ../linkcheck/checker/nntpurl.py:119
+#: ../linkcheck/checker/nntpurl.py:120
 #, python-format
 msgid "Group %s has %s articles, range %s to %s."
 msgstr "Le groupe %s a %s articles, de %s à %s."
 
-#: ../linkcheck/checker/nntpurl.py:123
-msgid "No newsgroup specified in NNTP URL"
-msgstr "Aucun newsgroup spécifié dans l'URL NNTP"
+#: ../linkcheck/checker/nntpurl.py:124
+msgid "No newsgroup specified in NNTP URL."
+msgstr "Aucun newsgroup spécifié dans l'URL NNTP."
 
-#: ../linkcheck/checker/nntpurl.py:143
+#: ../linkcheck/checker/nntpurl.py:144
 #, python-format
-msgid "NTTP server too busy; tried more than %d times"
-msgstr "Le serveur NNTP est trop chargé ; plus de %d essais effectués"
+msgid "NTTP server too busy; tried more than %d times."
+msgstr "Le serveur NNTP est trop chargé ; plus de %d essais effectués."
 
-#: ../linkcheck/checker/nntpurl.py:145
+#: ../linkcheck/checker/nntpurl.py:146
 #, python-format
-msgid "NNTP busy: %s"
-msgstr "NNTP occupé : %s"
+msgid "NNTP busy: %s."
+msgstr "NNTP occupé : %s."
 
 #: ../linkcheck/checker/ftpurl.py:101
 msgid "Remote host has closed connection"
@@ -321,9 +321,9 @@ msgstr "L'hôte distant a fermé la connexion."
 msgid "Got no answer from FTP server"
 msgstr "Pas de réponse du serveur FTP"
 
-#: ../linkcheck/checker/ftpurl.py:133
-msgid "Missing trailing directory slash in ftp url"
-msgstr "Barre oblique terminale manquante dans l'URL FTP"
+#: ../linkcheck/checker/ftpurl.py:134
+msgid "Missing trailing directory slash in ftp url."
+msgstr "Barre oblique terminale manquante dans l'URL FTP."
 
 #: ../linkcheck/logger/__init__.py:25
 msgid "Real URL"

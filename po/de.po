@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-19 12:07+0100\n"
-"PO-Revision-Date: 2004-11-19 12:09+0100\n"
+"POT-Creation-Date: 2004-11-19 12:18+0100\n"
+"PO-Revision-Date: 2004-11-19 12:48+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,14 +24,14 @@ msgid "Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s
 msgstr "Status: %5d URLs noch zu prüfen, %4d URLs überprüft, %2d aktive Threads, Laufzeit %s"
 
 #: ../linkcheck/checker/ignoredurl.py:25
-#: ../linkcheck/checker/httpsurl.py:28
+#: ../linkcheck/checker/httpsurl.py:29
 #, python-format
-msgid "%s url ignored"
-msgstr "%s url ignoriert"
+msgid "%s URL ignored."
+msgstr "%s URL ignoriert."
 
 #: ../linkcheck/checker/fileurl.py:93
-msgid "Added trailing slash to directory"
-msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt"
+msgid "Added trailing slash to directory."
+msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt."
 
 #: ../linkcheck/checker/fileurl.py:99
 msgid "directory"
@@ -43,8 +43,8 @@ msgid "The URL path %r is not the same as the system path %r. You should always 
 msgstr "Der URL Pfad %r ist nicht derselbe wie der Systempfad %r. Sie sollten immer den Systempfad in URLs benutzen."
 
 #: ../linkcheck/checker/httpurl.py:65
-msgid "URL path is empty, assuming '/' as path"
-msgstr "URL Pfad ist leer, verwende '/'"
+msgid "URL path is empty, assuming '/' as path."
+msgstr "URL Pfad ist leer, verwende '/'."
 
 #: ../linkcheck/checker/httpurl.py:120
 #, python-format
@@ -71,13 +71,13 @@ msgid "more than %d redirections, aborting"
 msgstr "mehr als %d Weiterleitungen, breche ab"
 
 #: ../linkcheck/checker/httpurl.py:215
-msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
-msgstr "Server unterstützt kein HEAD, verwende GET"
+msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET."
+msgstr "Server unterstützt kein HEAD, verwende GET."
 
 #: ../linkcheck/checker/httpurl.py:223
 #, python-format
-msgid "Effective URL %s"
-msgstr "Effektive URL %s"
+msgid "Effective URL %s."
+msgstr "Effektive URL %s."
 
 #: ../linkcheck/checker/httpurl.py:243
 #, python-format
@@ -117,18 +117,18 @@ msgstr "unbekannt"
 
 #: ../linkcheck/checker/httpurl.py:322
 #, python-format
-msgid "Server %r did not support HEAD request, used GET for checking"
-msgstr "Server %r unterstützte keine HEAD Anfrage, verwendete GET zum Prüfen"
+msgid "Server %r did not support HEAD request, used GET for checking."
+msgstr "Server %r unterstützte keine HEAD Anfrage, verwendete GET zum Prüfen."
 
 #: ../linkcheck/checker/httpurl.py:325
 #, python-format
-msgid "Server %r had no anchor support, removed anchor from request"
-msgstr "Server %r besitzt keine Anker Unterstützung, lösche Anker von der Anfrage"
+msgid "Server %r had no anchor support, removed anchor from request."
+msgstr "Server %r besitzt keine Anker Unterstützung, lösche Anker von der Anfrage."
 
 #: ../linkcheck/checker/httpurl.py:340
 #, python-format
-msgid "Could not store cookies: %(msg)s"
-msgstr "Konnte Cookie nicht speichern: %(msg)s"
+msgid "Could not store cookies: %(msg)s."
+msgstr "Konnte Cookie nicht speichern: %(msg)s."
 
 #: ../linkcheck/checker/httpurl.py:348
 #, python-format
@@ -233,18 +233,18 @@ msgstr "Konnte Inhalt nicht parsen: %r"
 
 #: ../linkcheck/checker/urlbase.py:447
 #, python-format
-msgid "anchor #%s not found"
-msgstr "Anker #%s nicht gefunden"
+msgid "Anchor #%s not found."
+msgstr "Anker #%s nicht gefunden."
 
 #: ../linkcheck/checker/urlbase.py:516
 #, python-format
-msgid "Found %r in link contents"
-msgstr "Habe %r in Link Inhalt gefunden"
+msgid "Found %r in link contents."
+msgstr "Habe %r in Link Inhalt gefunden."
 
 #: ../linkcheck/checker/urlbase.py:523
 #, python-format
-msgid "Content size %s is larger than %s"
-msgstr "Inhalt %s is größer als %s"
+msgid "Content size %s is larger than %s."
+msgstr "Inhalt %s is größer als %s."
 
 #: ../linkcheck/checker/telneturl.py:43
 msgid "Host is empty"
@@ -255,13 +255,13 @@ msgid "Invalid mail syntax"
 msgstr "Ungültige Mail Syntax"
 
 #: ../linkcheck/checker/mailtourl.py:98
-msgid "No addresses found"
-msgstr "Keine Adressen wurden gefunden"
+msgid "No addresses found."
+msgstr "Keine Adressen wurden gefunden."
 
 #: ../linkcheck/checker/mailtourl.py:113
 #, python-format
-msgid "No MX mail host for %(domain)s found"
-msgstr "Kein MX mail host für %(domain)s gefunden"
+msgid "No MX mail host for %(domain)s found."
+msgstr "Kein MX mail host für %(domain)s gefunden."
 
 #: ../linkcheck/checker/mailtourl.py:132
 #, python-format
@@ -270,8 +270,8 @@ msgstr "Gültige Adresse: %(info)s."
 
 #: ../linkcheck/checker/mailtourl.py:136
 #, python-format
-msgid "MX mail host %(host)s did not accept connections: %(error)s"
-msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s"
+msgid "MX mail host %(host)s did not accept connections: %(error)s."
+msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s."
 
 #: ../linkcheck/checker/mailtourl.py:142
 msgid "Could not connect, but syntax is correct"
@@ -286,33 +286,33 @@ msgstr "MX Mail host %(host)s gefunden"
 msgid "Could not split the mail address"
 msgstr "konnte die Mail Adresse nicht splitten"
 
-#: ../linkcheck/checker/nntpurl.py:103
-msgid "No NNTP server specified, skipping this URL"
-msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
+#: ../linkcheck/checker/nntpurl.py:104
+msgid "No NNTP server was specified, skipping this URL."
+msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/nntpurl.py:112
+#: ../linkcheck/checker/nntpurl.py:113
 #, python-format
 msgid "Articel number %s found."
 msgstr "Artikel Nummer %s wurde gefunden."
 
-#: ../linkcheck/checker/nntpurl.py:119
+#: ../linkcheck/checker/nntpurl.py:120
 #, python-format
 msgid "Group %s has %s articles, range %s to %s."
 msgstr "Gruppe %s hat %s Artikel, von %s bis %s."
 
-#: ../linkcheck/checker/nntpurl.py:123
-msgid "No newsgroup specified in NNTP URL"
-msgstr "Keine Newsgroup in der NNTP URL spezifiziert"
+#: ../linkcheck/checker/nntpurl.py:124
+msgid "No newsgroup specified in NNTP URL."
+msgstr "Keine Newsgroup in der NNTP URL spezifiziert."
 
-#: ../linkcheck/checker/nntpurl.py:143
+#: ../linkcheck/checker/nntpurl.py:144
 #, python-format
-msgid "NTTP server too busy; tried more than %d times"
-msgstr "NNTP server zu beschäftigt; habe es mehr als %d mal versucht"
+msgid "NTTP server too busy; tried more than %d times."
+msgstr "NNTP server zu beschäftigt; habe es mehr als %d mal versucht."
 
-#: ../linkcheck/checker/nntpurl.py:145
+#: ../linkcheck/checker/nntpurl.py:146
 #, python-format
-msgid "NNTP busy: %s"
-msgstr "NNTP beschäftigt: %s"
+msgid "NNTP busy: %s."
+msgstr "NNTP beschäftigt: %s."
 
 #: ../linkcheck/checker/ftpurl.py:101
 msgid "Remote host has closed connection"
@@ -322,9 +322,9 @@ msgstr "Entfernter Rechner hat die Verbindung geschlossen"
 msgid "Got no answer from FTP server"
 msgstr "Keine Antwort vom FTP Server"
 
-#: ../linkcheck/checker/ftpurl.py:133
-msgid "Missing trailing directory slash in ftp url"
-msgstr "Fehlender / am Ende der FTP url"
+#: ../linkcheck/checker/ftpurl.py:134
+msgid "Missing trailing directory slash in ftp url."
+msgstr "Fehlender / am Ende der FTP url."
 
 #: ../linkcheck/logger/__init__.py:25
 msgid "Real URL"
