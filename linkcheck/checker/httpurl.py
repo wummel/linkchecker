@@ -32,6 +32,7 @@ import linkcheck.url
 import linkcheck.strformat
 import linkcheck.robotparser2
 import linkcheck.httplib2
+import linkcheck.checker.httpheaders as headers
 import urlbase
 import proxysupport
 
@@ -42,61 +43,6 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
 # Amazon blocks all HEAD requests
 _is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
-
-DEFAULT_TIMEOUT_SECS = 300
-
-
-def has_header_value (headers, name, value):
-    """
-    Look in headers for a specific header name and value.
-    Both name and value are case insensitive.
-
-    @return: True if header name and value are found
-    @rtype: bool
-    """
-    name = name.lower()
-    value = value.lower()
-    for hname, hvalue in headers:
-        if hname.lower()==name and hvalue.lower()==value:
-            return True
-    return False
-
-
-def http_persistent (response):
-    """
-    See if the HTTP connection can be kept open according the the
-    header values found in the response object.
-
-    @param response: response instance
-    @type response: httplib.HTTPResponse
-    @return: True if connection is persistent
-    @rtype: bool
-    """
-    headers = response.getheaders()
-    if response.version == 11:
-        return has_header_value(headers, 'Connection', 'Close')
-    return has_header_value(headers, "Connection", "Keep-Alive")
-
-
-def http_timeout (response):
-    """
-    Get HTTP timeout value, either from the Keep-Alive header or a
-    default value.
-
-    @param response: response instance
-    @type response: httplib.HTTPResponse
-    @return: timeout
-    @rtype: int
-    """
-    timeout = response.getheader("Keep-Alive")
-    if timeout is not None:
-        try:
-            timeout = int(timeout[8:].strip())
-        except ValueError, msg:
-            timeout = DEFAULT_TIMEOUT_SECS
-    else:
-        timeout = DEFAULT_TIMEOUT_SECS
-    return timeout
 
 
 class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
@@ -486,8 +432,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 self.url_connection.putheader("Cookie", c)
         self.url_connection.endheaders()
         response = self.url_connection.getresponse()
-        self.persistent = http_persistent(response)
-        self.timeout = http_timeout(response)
+        self.persistent = headers.http_persistent(response)
+        self.timeout = headers.http_timeout(response)
         return response
 
     def get_http_object (self, host, scheme):
@@ -535,7 +481,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             response = self._get_http_response()
             self.headers = response.msg
             self.data = response.read()
-            encoding = self.get_content_encoding()
+            encoding = headers.get_content_encoding(self.headers)
             if encoding in _supported_encodings:
                 try:
                     if encoding == 'deflate':
@@ -561,9 +507,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         """
         if not (self.valid and self.headers):
             return False
-        if self.headers.gettype()[:9] != "text/html":
+        if headers.get_content_type(self.headers) != "text/html":
             return False
-        encoding = self.get_content_encoding()
+        encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
             self.add_warning(_('Unsupported content encoding %r.') % encoding)
@@ -579,30 +525,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         """
         return True
 
-    def get_content_type (self):
-        """
-        Get the MIME type from the Content-Type header value, or
-        'application/octet-stream' if not found.
-
-        @return: MIME type
-        @rtype: string
-        """
-        ptype = self.headers.get('Content-Type', 'application/octet-stream')
-        if ";" in ptype:
-            # split off not needed extension info
-            ptype = ptype.split(';')[0]
-        return ptype.strip()
-
-    def get_content_encoding (self):
-        """
-        Get the content encoding from the Content-Encoding header value, or
-        an empty string if not found.
-
-        @return: encoding string
-        @rtype: string
-        """
-        return self.headers.get("Content-Encoding", "").strip()
-
     def is_parseable (self):
         """
         Check if content is parseable for recursion.
@@ -612,9 +534,10 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         """
         if not (self.valid and self.headers):
             return False
-        if self.get_content_type() not in ("text/html", "text/css"):
+        if headers.get_content_type(self.headers) not in \
+           ("text/html", "text/css"):
             return False
-        encoding = self.get_content_encoding()
+        encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
             self.add_warning(_('Unsupported content encoding %r.') % encoding)
@@ -625,7 +548,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         """
         Parse file contents for new links to check.
         """
-        ptype = self.get_content_type()
+        ptype = headers.get_content_type(self.headers)
         if ptype == "text/html":
             self.parse_html()
         elif ptype == "text/css":
