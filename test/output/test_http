@@ -35,7 +35,7 @@ error
 url http://slashdot.org/
 name unquoted
 valid
-url http://fsinfo.cs.uni-sb.de/~calvin/#isnix
+url http://www.heise.de/#isnix
 name invalid anchor
 warning anchor #isnix not found
 valid
