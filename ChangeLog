@@ -9,7 +9,8 @@
     Changed: po/*.po*
 
   * Remove intern optcomplete installation, and make it optional to
-    install.
+    install, since it is only needed on Unix installations using
+    bash-completion.
     Type: feature
     Changed: linkchecker, config/linkchecker-completion
     Removed: linkcheck/optcomplete.py
