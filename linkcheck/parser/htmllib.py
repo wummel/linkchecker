@@ -18,8 +18,8 @@
 import sys
 try:
     import htmlsax
-except ImportError:
-    sys.stderr.write("""Could not import the `htmlsax' parser module.""")
+except ImportError, msg:
+    sys.stderr.write("Could not import the parser module `linkcheck.parser.htmlsax': %s."%`msg`)
     sys.exit(1)
 
 class HtmlParser:
