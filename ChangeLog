@@ -62,6 +62,10 @@
     Type: bugfix
     Changed: linkchecker
 
+  * Updated french translation of linkchecker, thanks to Yann Verley.
+    Type: feature
+    Changed: po/fr.po, doc/fr/linkchecker.1
+
 2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:
