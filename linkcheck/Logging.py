@@ -1,3 +1,18 @@
+"""Logger classes.
+
+Every Logger has to implement the following functions:
+init(self)
+  Called once to initialize the Logger. Why do we not use __init__(self)?
+  Because we initialize the start time in init and __init__ gets not
+  called at the time the checking starts.
+
+newUrl(self,urlData)
+  Called every time an url finished checking. All data we checked is in
+  the UrlData object urlData.
+
+endOfOutput(self)
+  Called at the end of checking to close filehandles and such.
+"""
 import sys,time,Config,StringUtil
 
 # ANSI color codes
@@ -83,7 +98,7 @@ class StandardLogger:
             self.fd.write("Check Time %.3f seconds\n" % urldata.checktime)
         if urldata.infoString:
             self.fd.write("Info       "+StringUtil.indent(
-                  StringUtil.blocktext(urldata.infoString, 65), 11)+"\n")
+                StringUtil.blocktext(urldata.infoString, 65), 11)+"\n")
         if urldata.warningString:
             self.warnings = self.warnings+1
             self.fd.write("Warning    "+StringUtil.indent(
@@ -198,7 +213,7 @@ class HtmlLogger(StandardLogger):
         self.fd.write(" found.<br>")
         self.stoptime = time.time()
         self.fd.write("Stopped checking at"+_strtime(self.stoptime)+
-              ("(%.3f seconds)" % (self.stoptime - self.starttime))+
+              (" (%.3f seconds)" % (self.stoptime - self.starttime))+
 	      "</font></blockquote><br><hr noshade size=1><small>"+
               MyFont+Config.HtmlAppInfo+"<br>Get the newest version at "
               "<a href=\""+Config.Url+"\">"+Config.Url+

@@ -1,4 +1,4 @@
-linkchecker (1.2.0) stable; urgency=low
+linkchecker (1.2.0) unstable; urgency=low
 
   * stable release
   * fixed usage text glitches

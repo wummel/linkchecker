@@ -37,7 +37,7 @@ OPTIONS
         Swap checking order to intern/extern. Default checking order
         is extern/intern.
 -N, --nntp-server
-        Specify an NNTP server for news: links. Default is the
+        Specify an NNTP server for 'news:...' links. Default is the
         environment variable NNTP_SERVER. If no host is given,
         only the syntax of the link is checked.
 -o name, --output=name
@@ -106,8 +106,6 @@ o Local files and syntactic sugar on the command line:
       linkchecker ../bla.html
       linkchecker www.myhomepage.de
       linkchecker -r0 ftp.linux.org
-o Using the -W option:
-      linkchecker -W"traceback" -r5 http://zope.company.com/
 """
 
 def printVersion():
@@ -264,6 +262,7 @@ for opt,arg in options:
 if constructauth:
     congif["authentication"].insert(0, (re.compile(".*"), _user, _password))
 
+# construct the url list
 if len(args)==0:
     printUsage("no files or urls given")
 
@@ -275,4 +274,5 @@ for url in args:
             url = "http://"+url
     config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
 
+# check the urls
 linkcheck.checkUrls(config)
