@@ -21,6 +21,7 @@ import os
 import time
 
 import linkcheck
+import linkcheck.ansicolor
 import linkcheck.logger
 import linkcheck.strformat
 import linkcheck.configuration
