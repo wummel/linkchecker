@@ -12,7 +12,7 @@ linkchecker (1.2.3) unstable; urgency=low
   * added GPL copyright header to each of my .py files
   * i18n support and german translation of the logger outputs
   * use http_proxy environment variable if present
-  * be more RFC822 and RFC2368 compliant when scanning mail syntax
+  * be RFC822 and RFC2368 compliant when scanning mail syntax
   * fix for incorrect line number in logger output (reported by Michael
     Schmitz)
 

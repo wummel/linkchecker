@@ -15,41 +15,39 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import re,socket,string,DNS,sys,Config
+import re,string,DNS,sys,Config,cgi,urllib
+from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from UrlData import LinkCheckerException
 
-# regular expression strings for partially RFC822 compliant adress scanning
-# XXX far from complete mail adress scanning; enhance only when needed!
-word = r"[-\w%'!]+"
-words = r"[-\w%'!\s]+"
-dotwords = r"(%s(?:\.%s)*)" % (word,word)
-adress = "%s@%s" % (dotwords, dotwords)
-route_adress = "%s<%s>" % (words, adress)
-mailbox = "(%s|%s)" % (adress, route_adress)
-mailboxes = "%s?(\s*,\s*%s)*" % (mailbox, mailbox)
 
-# regular expression strings for RFC2368 compliant mailto: scanning
-header = word+"="+word
-headers = r"(?:\?%s(&%s)*)?" % (header, header)
-mailto = "^mailto:"+mailboxes+headers+"$"
-
-# compiled
-adress_re = re.compile(adress)
-mailto_re = re.compile(mailto)
+# regular expression for RFC2368 compliant mailto: scanning
+word = r"[-a-zA-Z0-9,./%]+"
+headers = r"\?(%s=%s(&%s=%s)*)$" % (word, word, word, word)
+headers_re = re.compile(headers)
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
     
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
-        mo = mailto_re.match(self.urlName)
-        if not mo:
-            raise LinkCheckerException, "Illegal mailto link syntax"
-        # note: this catches also cc= headers and such!
-        self.adresses = map(lambda x: (x[0], string.lower(x[1])),
-	                    re.findall(adress_re, self.urlName))
+        self.headers = {}
+        self.adresses = AddressList(self._cutout_adresses()).addresslist
+        for key in ["to","cc","bcc"]:
+            if self.headers.has_key(key):
+                for val in self.headers[key]:
+                    a = urllib.unquote(val)
+                    self.adresses.extend(AddressList(a).addresslist)
+        Config.debug("DEBUG: %s\nDEBUG: %s\n" % (self.adresses, self.headers))
+
+
+    def _cutout_adresses(self):
+        mo = headers_re.search(self.urlName)
+        if mo:
+            self.headers = cgi.parse_qs(mo.group(1), strict_parsing=1)
+            return self.urlName[7:mo.start()]
+        return self.urlName[7:]
 
     def checkConnection(self, config):
         """Verify a list of email adresses. If one adress fails,
@@ -63,8 +61,13 @@ class MailtoUrlData(HostCheckingUrlData):
         (3) Try to verify the adress with the VRFY command. If we got
             an answer, print the verified adress as an info.
         """
+        if not self.adresses:
+            self.setWarning("No adresses found")
+            return
+
         DNS.ParseResolvConf()
-        for user,host in self.adresses:
+        for name,mail in self.adresses:
+            user,host = self._split_adress(mail)
             mxrecords = DNS.mxlookup(host)
             if not len(mxrecords):
                 self.setError("No mail host for "+host+" found")
@@ -90,6 +93,17 @@ class MailtoUrlData(HostCheckingUrlData):
             else:
                 mxrecord = mxrecord[1]
             self.setValid("found mail host "+mxrecord)
+
+
+    def _split_adress(self, adress):
+        split = string.split(adress, "@", 1)
+        if len(split)==2:
+            if not split[1]:
+                return (split[0], "localhost")
+            return tuple(split)
+        if len(split)==1:
+            return (split[0], "localhost")
+        raise LinkCheckerException, "could not split the mail adress"
 
 
     def closeConnection(self):
