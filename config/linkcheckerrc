@@ -10,7 +10,7 @@
 # print status output
 #status=1
 # change the logging type
-#log=colored
+#log=xml
 # turn on/off --verbose
 #verbose=1
 # turn on/off --warnings
@@ -18,7 +18,7 @@
 # turn on/off --quiet
 #quiet=1
 # additional file output
-#fileoutput = text, colored, html, gml, sql
+#fileoutput = text, html, gml, sql
 
 # fields names:
 # all       (for all fields)
@@ -37,9 +37,26 @@
 # outro     (the blurb at the end, "found x errors ...")
 
 # each Logger can have separate configuration parameters
+
 # standard text logger
 [text]
 #filename=linkchecker-out.txt
+#fields=all
+# colors for the various parts, syntax is <color> or <type>;<color>
+# type can be bold, light, blink, invert
+# color can be default, black, red, green, yellow, blue, purple, cyan, white,
+# Black, Red, Green, Yellow, Blue, Purple, Cyan, White
+#colorparent=white
+#colorurl=default
+#colorname=default
+#colorreal=cyan
+#colorbase=purple
+#colorvalid=bold;green
+#colorinvalid=bold;red
+#colorinfo=default
+#colorwarning=bold;yekkiw
+#colordltime=default
+#colorreset=default
 #fields=all
 
 # GML logger
@@ -71,56 +88,6 @@
 #tablewarning=<td bgcolor=#e0954e>
 #tableerror=<td bgcolor=#db4930>
 #tableok=<td bgcolor=#3ba557>
-#fields=all
-
-# ANSI color logger
-# Format: {attr1};...;{attrn}
-#
-# 0	Reset all attributes
-# 1	Bright
-# 2	Dim
-# 4	Underscore
-# 5	Blink
-# 7	Reverse
-# 8	Hidden
-#
-#	Foreground Colors
-# 30	Black
-# 31	Red
-# 32	Green
-# 33	Yellow
-# 34	Blue
-# 35	Magenta
-# 36	Cyan
-# 37	White
-#
-#	Background Colors
-# 40	Black
-# 41	Red
-# 42	Green
-# 43	Yellow
-# 44	Blue
-# 45	Magenta
-# 46	Cyan
-# 47	White
-#
-[colored]
-#filename=linkchecker-out.colored
-# colors for the various parts, syntax is <color> or <type>;<color>
-# type can be bold, light, blink, invert
-# color can be default, black, red, green, yellow, blue, purple, cyan, white,
-# Black, Red, Green, Yellow, Blue, Purple, Cyan, White
-#colorparent=white
-#colorurl=default
-#colorname=default
-#colorreal=cyan
-#colorbase=purple
-#colorvalid=bold;green
-#colorinvalid=bold;red
-#colorinfo=default
-#colorwarning=bold;yekkiw
-#colordltime=default
-#colorreset=default
 #fields=all
 
 # blacklist logger
