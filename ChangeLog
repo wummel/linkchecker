@@ -10,6 +10,10 @@
     Type: documentation
     Changed: doc/install.txt, doc/index.txt
 
+  * Added comment() method to loggers for printing comments.
+    Type: feature
+    Changed: linkcheck/logger/*.py
+
 2.0rc2 "El día de la bestia" (released 20.11.2004)
 
   * encode version string for --version output
