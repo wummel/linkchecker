@@ -24,6 +24,18 @@
     Type: bugfix
     Changed: linkcheck/url.py
 
+  * Encode all output strings for display.
+    Type: bugfix
+    Changed: linkchecker
+
+  * Accept logger type case independent.
+    Type: feature
+    Changed: linkchecker
+
+  * Internal Unicode handling fixed.
+    Type: bugfix
+    Changed: linkcheck/url.py, linkcheck/checker/*.py
+
 2.0rc2 "El día de la bestia" (released 20.11.2004)
 
   * encode version string for --version output
