@@ -13,6 +13,7 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
+	rm -rf debian/tmp
 	python setup.py build
 
 	touch build-stamp

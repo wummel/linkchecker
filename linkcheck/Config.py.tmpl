@@ -27,15 +27,6 @@ from types import StringType
 import Logging
 from linkcheck import _
 
-def dictjoin(d1, d2):
-    d = {}
-    for key in d1.keys():
-        d[key] = d1[key]
-    for key in d2.keys():
-        d[key] = d2[key]
-    return d
-
-
 Version = "$version"
 AppName = "$appname"
 App = AppName+" "+Version
@@ -255,7 +246,10 @@ class Configuration(UserDict.UserDict):
         self.robotsTxtCache[key] = val
 
     def newLogger(self, name, dict={}):
-        return apply(Loggers[name], (), dictjoin(self.data[name],dict))
+        namespace = {}
+	namespace.update(self.data[name])
+	namespace.update(dict)
+        return apply(Loggers[name], (), namespace)
 
     def incrementLinknumber_NoThreads(self):
         self.data['linknumber'] = self.data['linknumber'] + 1

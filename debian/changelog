@@ -2,7 +2,8 @@ linkchecker (1.2.4) unstable; urgency=low
 
   * fixed parsing of /etc/resolv.conf with empty lines
   * french translation from Jerome Couderc <j.couderc@ifrance.com>
-  * fix for HTTP HEAD requests from bad/dumb servers
+    and Michael Gensheimer <michael@gensheimer.net>
+  * fix for HTTP HEAD requests from bad/dumb/old servers
   * CGI script fixes
   * LinkChecker Online HTML pages added
   * news: link support for links which specify a NNTP server
