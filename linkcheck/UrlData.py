@@ -259,7 +259,7 @@ class UrlData:
         try:
             self._check()
         except KeyboardInterrupt:
-            pass
+            raise
         except (socket.error, select.error):
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
@@ -501,7 +501,14 @@ class UrlData:
         else:
             tag = ''
         while 1:
-            match = pattern['pattern'].search(self.getContent(), index)
+            try:
+                match = pattern['pattern'].search(self.getContent(), index)
+            except RuntimeError, msg:
+                self.setError(linkcheck._("""Could not parse HTML content (%s).
+You may have a syntax error.
+LinkChecker is skipping the remaining content for the link type
+<%s %s>.""") % (msg, "|".join(pattern['tags']), "|".join(pattern['attrs'])))
+                break
             if not match: break
             index = match.end()
             if self.is_in_comment(match.start()): continue
