@@ -181,7 +181,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.13.3",
+       version = "1.13.4",
        description = "check HTML documents for broken links",
        keywords = "link,url,checking,verfication",
        author = myname,
