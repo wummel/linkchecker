@@ -64,7 +64,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installexamples linkcheck-cron.sh
+	dh_installexamples config/linkcheck-cron.sh
 #	dh_installman linkchecker.1
 	dh_installchangelogs ChangeLog
 	dh_link
