@@ -10,7 +10,7 @@ Architecture: any
 Depends: ${python:Depends}
 Conflicts: linkchecker-ssl
 Suggests: apache | httpd, python2.4-psyco, python2.4-optcomplete, python2.4-profiler
-Description: check HTML documents for broken links
+Description: check websites and HTML documents for broken links
  Features:
   o recursive checking
   o multithreaded
