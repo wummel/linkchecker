@@ -192,7 +192,11 @@ def url_norm (url):
     # quote parts again
     urlparts[0] = urllib.quote(urlparts[0]) # scheme
     urlparts[1] = urllib.quote(urlparts[1], ':@') # host
-    urlparts[2] = urllib.quote(urlparts[2], '/=,~') # path
+    nopathquote = ';/=,~'
+    # note: the list of chars not to quote is different for javascript urls
+    if urlparts[0]=='javascript':
+        nopathquote += '()+-'
+    urlparts[2] = urllib.quote(urlparts[2], nopathquote) # path
     res = urlparse.urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
         # append trailing empty fragment

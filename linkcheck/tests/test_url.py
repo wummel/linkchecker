@@ -246,6 +246,10 @@ class TestUrl (unittest.TestCase):
         url = "news:§$%&/´`(§%"
         nurl = 'news:%A7%24%25%26/%B4%60%28%A7%25'
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
+        # javascript url
+        url = "javascript:loadthis()"
+        nurl = url
+        self.assertEqual(linkcheck.url.url_norm(url), nurl)
 
     def test_norm_with_auth (self):
         """test norming of urls with authentication tokens"""
