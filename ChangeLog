@@ -24,6 +24,10 @@
     Type: bugfix
     Changed: linkcheck/checker/ftpurl.py
 
+  * Ask before overwriting old profile data with --profile.
+    Type: feature
+    Changed: linkchecker
+
 2.1 "Shogun Assassin" (released 11.1.2005)
 
   * Added XHTML support to the HTML parser.

@@ -151,7 +151,7 @@ def viewprof ():
         sys.exit(1)
     import pstats
     stats = pstats.Stats(_profile)
-    stats.strip_dirs().sort_stats("cumulative").print_stats(50)
+    stats.strip_dirs().sort_stats("cumulative").print_stats(100)
     sys.exit(0)
 
 
@@ -310,7 +310,7 @@ For accurate results, threading will be disabled during debug runs.""") % \
 group.add_option("--profile", action="store_true", dest="profile",
                  help=_(
 """Write profiling data into a file named %s in the
-current working directory. See also --viewprof.""")%_profile)
+current working directory. See also --viewprof.""") % _profile)
 group.add_option("--viewprof", action="store_true", dest="viewprof",
                  help=_(
 """Print out previously generated profiling data. See also --profile."""))
@@ -563,8 +563,20 @@ for url in args:
 
 ############################# check the urls ################################
 if do_profile:
-    import profile
-    profile.run("linkcheck.checker.check_urls(consumer)", _profile)
+    run = True
+    if os.path.exists(_profile):
+        question = _("""Overwrite profiling file %r?
+Press Ctrl-C to cancel, RETURN to continue.""") % _profile
+        try:
+            raw_input(question)
+        except KeyboardInterrupt:
+            sys.stderr.write(os.linesep)
+            sys.stderr.write(_("Canceled."))
+            sys.stderr.write(os.linesep)
+            run = False
+    if run:
+        import profile
+        profile.run("linkcheck.checker.check_urls(consumer)", _profile)
 else:
     # do not use psyco, at the moment (Oct 2003) it has bugs causing
     # infinite loops when threads are enabled, and psyco disables
