@@ -33,8 +33,7 @@ name unquoted
 valid
 url http://fsinfo.cs.uni-sb.de/~calvin/software/#isnix
 name invalid anchor
-warning anchor #isnix not found
-valid
+error
 url HtTP://WWW.hEIsE.DE
 cached
 name should be cached
@@ -46,10 +45,6 @@ valid
 url http://www.heise.de/?quoted=ü
 name html entities
 valid
-url http://nocheckin
-name no check because of comment -->
-no beginning quote
-error
 url illegalquote1
 name no beginning quote
 error

@@ -100,7 +100,7 @@ class HttpUrlData(UrlData):
                 redirected = urlparse.urljoin(redirected, newurl)
                 self.urlTuple = urlparse.urlparse(redirected)
                 status, statusText, self.mime = self._getHttpRequest()
-                Config.debug("DEBUG: Redirected\n"+str(self.mime))
+                Config.debug(BRING_IT_ON, "Redirected", self.mime)
                 tries += 1
             if tries >= 5:
                 self.setError(_("too much redirections (>= 5)"))
@@ -114,7 +114,8 @@ class HttpUrlData(UrlData):
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
                 status, statusText, self.mime = self._getHttpRequest()
-                Config.debug("DEBUG: Authentication "+_user+"/"+_password+"\n")
+                Config.debug(BRING_IT_ON, "Authentication", _user, "/",
+		             _password)
 
             # some servers get the HEAD request wrong:
             # - Netscape Enterprise Server III (no HEAD implemented, 404 error)
@@ -175,7 +176,7 @@ class HttpUrlData(UrlData):
         if self.proxy and not proxy:
             proxy = self.proxy
         if proxy:
-            Config.debug("DEBUG: using proxy %s\n" % proxy)
+            Config.debug(BRING_IT_ON, "using proxy", proxy)
             host = proxy
         else:
             host = self.urlTuple[1]
@@ -207,8 +208,8 @@ class HttpUrlData(UrlData):
             self.urlConnection = self.urlConnection.getfile()
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
-            self._init_html_comments()
-            Config.debug("DEBUG: comment spans %s\n" % self.html_comments)
+            self.init_html_comments()
+            Config.debug(HURT_ME_PLENTY, "comment spans", self.html_comments)
         return self.data
 
         

@@ -21,6 +21,8 @@ from linkcheck import _
 debug = linkcheck.Config.debug
 from debuglevels import *
 
+# we catch these exceptions, all other exceptions are internal
+# or system errors
 ExcList = [
    IOError,
    ValueError, # from httplib.py
@@ -34,6 +36,8 @@ try:
 except ImportError:
     pass
 
+
+# regular expression to match an HTML tag with one given attribute
 _linkMatcher = r"""
     (?i)           # case insensitive
     <              # open tag
@@ -345,28 +349,32 @@ class UrlData:
             t = time.time()
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
-            self._init_html_comments()
-            debug(NIGHTMARE, "comment spans", self.html_comments)
+            self.init_html_comments()
         return self.data
 
 
-    def _init_html_comments(self):
+    def init_html_comments(self):
         # if we find an URL inside HTML comments we ignore it
         # so build a list of intervalls which are HTML comments
         index = 0
         while 1:
             match = CommentPatternBegin.search(self.getContent(), index)
-            if not match: break
+            if not match:
+	        break
             start = match.start()
             index = match.end() + 1
-            end = CommentPatternEnd.search(self.getContent(), index)
-            if not match: break
+            match = CommentPatternEnd.search(self.getContent(), index)
+            if not match:
+                # hmm, we found no matching comment end.
+                # we *dont* ignore links here and break
+	        break
             index = match.end() + 1
             self.html_comments.append((start, match.end()))
+        debug(NIGHTMARE, "comment spans", self.html_comments)
 
-    def _isInComment(self, index):
+    def is_in_comment(self, index):
         for low,high in self.html_comments:
-            if low < index and index < high:
+            if low < index < high:
                 return 1
         return 0
 
@@ -405,7 +413,7 @@ class UrlData:
             match = pattern['pattern'].search(self.getContent(), index)
             if not match: break
             index = match.end()
-            if self._isInComment(match.start()): continue
+            if self.is_in_comment(match.start()): continue
             # need to strip optional ending quotes for the meta tag
             url = string.strip(StringUtil.stripQuotes(match.group('value')))
             # need to resolve HTML entities

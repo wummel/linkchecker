@@ -2,9 +2,6 @@
  */
 
 #include "Python.h"
-#if defined(WITH_THREAD) && !defined(HAVE_GETHOSTBYNAME_R) && !defined(MS_WINDOWS)
-#include "thread.h"
-#endif
 
 #include <sys/types.h>
 #ifndef MS_WINDOWS

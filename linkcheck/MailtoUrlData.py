@@ -69,23 +69,24 @@ class MailtoUrlData(HostCheckingUrlData):
             self.setWarning(_("No adresses found"))
             return
 
+        value = "unknown reason"
         for name,mail in self.adresses:
-            Config.debug("DEBUG: checking mail address %s\n" % mail)
+            Config.debug(BRING_IT_ON, "checking mail address", mail)
             user,host = self._split_adress(mail)
             mxrecords = DNS.mxlookup(host)
             if not len(mxrecords):
-                self.setError("No mail host for "+host+" found")
+                self.setError(_("No mail host for %s found")%host)
                 return
             smtpconnect = 0
             for mxrecord in mxrecords:
                 try:
-                    Config.debug("DEBUG: SMTP check for %s\n" % mxrecord)
+                    Config.debug(BRING_IT_ON, "SMTP check for", mxrecord)
                     self.urlConnection = SMTP(mxrecord[1])
                     smtpconnect = 1
                     self.urlConnection.helo()
                     info = self.urlConnection.verify(user)
                     if info[0]==250:
-                        self.setInfo("Verified adress: "+info[1])
+                        self.setInfo(_("Verified adress: %s")%str(info[1]))
                 except:
                     type, value = sys.exc_info()[:2]
                     #print type,value
@@ -93,7 +94,7 @@ class MailtoUrlData(HostCheckingUrlData):
             
             if not smtpconnect:
                 self.setWarning(_("None of the mail hosts for %s accepts an "
-                                  "SMTP connection: %s") % (host, value))
+                                  "SMTP connection: %s") % (host, str(value)))
                 mxrecord = mxrecords[0][1]
             else:
                 mxrecord = mxrecord[1]

@@ -120,7 +120,7 @@ __init__(self, **args)
     def __init__(self, **args):
         apply(Logger.__init__, (self,), args)
         self.errors = 0
-        self.warnings = 0
+        #self.warnings = 0
         if args.has_key('fileoutput'):
             self.fd = open(args['filename'], "w")
 	elif args.has_key('fd'):
@@ -167,9 +167,10 @@ __init__(self, **args)
 	                  StringUtil.indent(
                           StringUtil.blocktext(urlData.infoString, 65),
 			  MaxIndent)+"\n")
-        if urlData.warningString and self.logfield('warning'):
-            self.warnings += 1
-            self.fd.write(_(LogFields["warning"])+Spaces["warning"]+
+        if urlData.warningString:
+            #self.warnings += 1
+            if self.logfield('warning'):
+                self.fd.write(_(LogFields["warning"])+Spaces["warning"]+
 	                  StringUtil.indent(
                           StringUtil.blocktext(urlData.warningString, 65),
 			  MaxIndent)+"\n")
@@ -187,10 +188,10 @@ __init__(self, **args)
     def endOfOutput(self, linknumber=-1):
         if self.logfield('outro'):
             self.fd.write(_("\nThats it. "))
-            if self.warnings==1:
-                self.fd.write(_("1 warning, "))
-            else:
-                self.fd.write(str(self.warnings)+_(" warnings, "))
+            #if self.warnings==1:
+            #    self.fd.write(_("1 warning, "))
+            #else:
+            #    self.fd.write(str(self.warnings)+_(" warnings, "))
             if self.errors==1:
                 self.fd.write(_("1 error"))
             else:
@@ -294,11 +295,12 @@ class HtmlLogger(StandardLogger):
             self.fd.write("<tr><td>"+_("Info")+"</td><td>"+
 	                  StringUtil.htmlify(urlData.infoString)+
 			  "</td></tr>\n")
-        if urlData.warningString and self.logfield("warning"):
-            self.warnings += 1
-            self.fd.write("<tr>"+self.tablewarning+_("Warning")+
+        if urlData.warningString:
+            #self.warnings += 1
+            if self.logfield("warning"):
+                self.fd.write("<tr>"+self.tablewarning+_("Warning")+
 	                  "</td>"+self.tablewarning+
-                          string.replace(urlData.warningString,"\n", "<br>")+
+                          string.replace(urlData.warningString, "\n", "<br>")+
 			  "</td></tr>\n")
         if self.logfield("result"):
             if urlData.valid:
@@ -317,10 +319,10 @@ class HtmlLogger(StandardLogger):
     def endOfOutput(self, linknumber=-1):
         if self.logfield("outro"):
             self.fd.write(_("\nThats it. "))
-            if self.warnings==1:
-                self.fd.write(_("1 warning, "))
-            else:
-                self.fd.write(str(self.warnings)+_(" warnings, "))
+            #if self.warnings==1:
+            #    self.fd.write(_("1 warning, "))
+            #else:
+            #    self.fd.write(str(self.warnings)+_(" warnings, "))
             if self.errors==1:
                 self.fd.write(_("1 error"))
             else:
@@ -442,11 +444,13 @@ class ColoredLogger(StandardLogger):
                         urlData.infoString, 65), "    "+Spaces["info"]))
             self.fd.write(self.colorreset+"\n")
             
-        if urlData.warningString and self.logfield("warning"):
-            self.warnings += 1
-            if self.prefix:
-                self.fd.write("|  ")
-            self.fd.write(_("Warning")+Spaces["warning"]+self.colorwarning+
+        if urlData.warningString:
+            #self.warnings += 1
+            if self.logfield("warning"):
+                if self.prefix:
+                    self.fd.write("|  ")
+                self.fd.write(_("Warning")+Spaces["warning"]+
+		          self.colorwarning+
 	                  urlData.warningString+self.colorreset+"\n")
 
         if self.logfield("result"):

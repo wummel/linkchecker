@@ -62,7 +62,7 @@ def debug(level, *args):
     if DebugLevel > level:
         sys.stderr.write("DEBUG: ")
         for arg in args:
-            sys.stderr.write(" %s"%arg)
+            sys.stderr.write(" %s"%str(arg))
         sys.stderr.write("\n")
         sys.stderr.flush()
 
