@@ -108,3 +108,13 @@ class Logger (object):
         """return class name"""
         return repr(self.__class__.__name__)
 
+    def flush (self):
+        """If the logger has internal buffers, flush them.
+           Ignore flush I/O errors since we are not responsible for proper
+           flushing of log output streams.
+        """
+        if hasattr(self, "fd"):
+            try:
+                self.fd.flush()
+            except IOError:
+                pass

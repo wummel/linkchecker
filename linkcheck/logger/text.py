@@ -243,14 +243,3 @@ class TextLogger (linkcheck.logger.Logger):
             self.fd.write(os.linesep)
         self.flush()
         self.fd = None
-
-    def flush (self):
-        """If the logger has internal buffers, flush them.
-           Ignore flush I/O errors since we are not responsible for proper
-           flushing of log output streams.
-        """
-        if self.fd:
-            try:
-                self.fd.flush()
-            except IOError:
-                pass
