@@ -4,7 +4,7 @@ real url file://%(curdir)s/linkcheck/ftests/data/anchor.html
 valid
 
 url '#myid'
-cache key file://%(curdir)s/linkcheck/ftests/data/anchor.html#myid
+cache key file://%(curdir)s/linkcheck/ftests/data/anchor.html
 real url file://%(curdir)s/linkcheck/ftests/data/anchor.html
 name Bla
 valid
