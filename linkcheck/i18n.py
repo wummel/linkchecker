@@ -25,11 +25,23 @@ import gettext
 supported_languages = ['en']
 default_language = None
 
+class Translator (gettext.GNUTranslations):
+
+    def install (self, do_unicode):
+        import __builtin__
+        if do_unicode:
+            __builtin__.__dict__['_'] = self.ugettext
+            # also install ngettext
+            __builtin__.__dict__['_n'] = self.ungettext
+        else:
+            __builtin__.__dict__['_'] = self.gettext
+            # also install ngettext
+            __builtin__.__dict__['_n'] = self.ngettext
+
+
 def init (domain, directory):
     """initialize this gettext i18n module"""
     global default_language
-    # install static translation service
-    gettext.install(domain, directory)
     # get supported languages
     for lang in os.listdir(directory):
         path = os.path.join(directory, lang)
@@ -42,9 +54,13 @@ def init (domain, directory):
         default_language = loc
     else:
         default_language = "en"
+    # install translation service routines into default namespace
+    translator = get_translator(domain, directory, default_language)
+    do_unicode = True
+    translator.install(do_unicode)
 
 
-def get_translator (domain, directory, language, translatorklass=None):
+def get_translator (domain, directory, language, translatorklass=Translator):
     languages = [get_lang(language)]
     return gettext.translation(domain,
         localedir=directory, languages=languages, class_=translatorklass)
