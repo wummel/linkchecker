@@ -4,7 +4,7 @@
 
 21.2.2000
 	* add -q, --quiet option
-	* convert all url host to lowercase
+	* convert all url hosts to lowercase
 	* log the download time for urls
 
 20.2.2000

@@ -24,8 +24,8 @@ PyLR/    				the top level module Language Genration Tools
 """
 
 
+from Lexer import Lexer
 import Parser,Lexers,Parsers
-from Lexer import Lexer,SKIPTOK
 
 
 __version__ = "$Id$"

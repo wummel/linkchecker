@@ -128,7 +128,7 @@ _prodinfo = [
 
 
 
-class GrammarParser(PyLR.Parser.Parser):
+class GrammarParser(PyLR.Parser.LRParser):
     """
     this class was produced automatically by the PyLR parser generator.
     It is meant to be subclassed to produce a parser for the grammar

@@ -1,11 +1,6 @@
-
 __version__ = "$Id$"
 
-import  PyLRengine
-
-
-class Parser:
-
+class LRParser:
     def __init__(self, lexer, actiontable, gototable, prodinfo):
 	self.lexer = lexer
 	self.actions = actiontable
@@ -17,29 +12,36 @@ class Parser:
         except AttributeError:
             sys.stderr.write("Parser: error: forgot to supply a parser function\n")
             raise
-	self.engine = None
 
     # the unspecified function (the default for all productions)
     def unspecified(*args):
         return args[1]
 
-    def initengine(self, dodel=0):
-	self.engine = PyLRengine.NewEngine(self.prodinfo, self.actions, self.gotos)
-	if dodel:
-	    self.actions = []
-	    self.gotos = []
-	    self.prodinfo = []
-
     def parse(self, text, verbose=0):
-	self.initengine()
+        """The parse algorithm for an LR-parser.
+        Reference: [Aho,Seti,Ullmann: Compilerbau Teil 1, p. 266]
+        """
 	self.lexer.settext(text)
+        # push the start state on the stack
+        stack = [0]
 	while 1:
 	    tok, val = self.lexer.scan(verbose)
-	    if not self.engine.parse(tok, val, verbose):
-		break
-	# need to add a method to the engine to
-	# return the final value
-	# and return that here
-	return None
+            state = stack[-1]
+            action = self.actions[state][tok]
+            if action[0]=='s':
+                # push the symbol and the state
+                stack = stack + [tok, action[1]]
+            elif action[0]=='r':
+                P = self.prodinfo[action[1]]
+                # reduce P=A->b by popping 2*|b| from the stack
+                stack = stack[:-2*P[0]]
+                # push A and the goto symbol
+                stack = stack + [P[2], self.gotos[stack[-1][P[2]]]]
+                if verbose:
+		    print "reduce",P
+                P[1](tok, val)
+            elif action[0]=='a':
+                return
+            else:
+                self.onError()
 
-    

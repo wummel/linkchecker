@@ -21,11 +21,11 @@ is indicated in %(parsername)s's doc-string.
 import PyLR
 
 #
-# the action table
-# 's' means shift
-# ('r',<n>) means reduce with production n
-# 'a' means accept
-# '' means error
+# the action table means
+# ('s', -1)  shift
+# ('r', <n>) reduce with production n
+# ('a', -1)  accept
+# ('',  -1)  error
 # each row represents a state and each column a terminal lookahead symbol
 # (excluding symbols with Lexer.SKIPTOK of course).
 # Lexer symbols are:
@@ -35,7 +35,7 @@ _actiontable = %(actiontable)s
 
 #
 # the goto table, each row represents a state
-# and each column, the nonterminal that was on the lhs of the
+# and each column the nonterminal that was on the lhs of the
 # reduction
 #
 _gototable = %(gototable)s
@@ -45,7 +45,7 @@ _gototable = %(gototable)s
 # the entries are the length of the production, the name of a method 
 # in an instance of the %(parsername)s class below that gets called 
 # when that production occurs, and the index of the lhs in the 
-# nonterminals (as in # the gototable)
+# nonterminals (as in the gototable)
 #
 _prodinfo = %(prodinfo)s
 

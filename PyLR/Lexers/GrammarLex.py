@@ -2,7 +2,7 @@
 this file contains the Lexer that is used in parsing Grammar specifications
 """
 
-import re,Lexer
+import re,PyLR
 
 def retlex(mo):
     return mo.group("lex")
@@ -13,9 +13,9 @@ def retcode(mo):
 def retclass(mo):
     return mo.group("class")
 
-class GrammarLex(Lexer.Lexer):
+class GrammarLex(PyLR.Lexer):
     def __init__(self):
-	Lexer.Lexer.__init__(self)
+	PyLR.Lexer.__init__(self)
 	self.addpat(r"_lex\s+(?P<lex>[^\n]*)", "LEX", retlex)
 	self.addpat(r"_code\s+(?P<code>[^\n]*)", "CODE", retcode)
 	self.addpat(r"_class\s+(?P<class>[a-zA-Z_][a-zA-Z_0-9]*)", "CLASS", retclass)
@@ -26,6 +26,6 @@ class GrammarLex(Lexer.Lexer):
         self.addpat(r"\(", "LPAREN")
         self.addpat(r"\)", "RPAREN")
         self.addpat(r'"""', "GDEL")
-	self.addpat(r"\s*#[^\n]*", "", None, Lexer.SKIPTOK)
-	self.addpat(r"\s+", "", None, Lexer.SKIPTOK)
+	self.addpat(r"\s*#[^\n]*", "", None, 1)
+	self.addpat(r"\s+", "", None, 1)
 

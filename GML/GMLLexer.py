@@ -18,8 +18,8 @@ class GMLLexer(PyLR.Lexer):
         self.addpat(r"\]", "RSQB")
         self.addpat(r'"([^&"]+|&[a-zA-Z]+;)*"', "STRING")
         self.addpat(r"[a-zA-Z][a-zA-Z0-9]*", "KEY")
-        self.addpat(r"#[^\n]*", "", None, PyLR.SKIPTOK)
-        self.addpat(r"\s+", "", None, PyLR.SKIPTOK)
+        self.addpat(r"#[^\n]*", "", None, 1)
+        self.addpat(r"\s+", "", None, 1)
 
 def _test():
     gmltest = """# a graph example
@@ -35,6 +35,7 @@ def _test():
     # create the lexer
     lexer = GMLLexer()
     lexer.settext(gmltest)
+    print lexer.getTokenList()
     tok=1
     while tok:
         tok, val = lexer.scan(1)

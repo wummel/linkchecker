@@ -1,100 +1,83 @@
 __version__ = "$Id$"
 
-import time,string,types,parsertemplate
+import time,string,types,parsertemplate,Lexer,Set
 
-class PyLRParseError(ParseError):
+class ParseError(SyntaxError):
     pass
 
 class Production:
     """Production -- a Grammar is really just a list of productions.
-    The expected structure is a symbol for the LHS and a list of
-    symbols or symbols for the RHS."""
-    def __init__(self, LHS, RHS, funcname="unspecified"):
-	self.LHS = LHS
-	self.RHS = RHS
+    The expected structure is a symbol for the lhs and a list of
+    symbols or symbols for the rhs."""
+    def __init__(self, lhs, rhs, funcname="unspecified"):
+	self.lhs = lhs
+	self.rhs = rhs
 	self.funcname = funcname
 	self.func = None # will be assigned dynamically
         self.toklist = None
 
-    def setfunc(self, func):
-        """.setfunc(<callable>)  --used for the dynamic production
-        of a parseengine directly from Grammar.mkengine(), instead of tables
-        saved to a file."""
-	self.func = func
-	
-    def setfuncname(self, name):
-        """.setfuncname("") -- used by Grammar.writefile to produce
-        prodinfo table that.  .setfunc associates a function value
-        with the production for runtime, on the fly productions
-        of parsing engine from Grammar."""
-	self.funcname = name
-
     def __len__(self):
-	return len(self.RHS)
+	return len(self.rhs)
 
     def __repr__(self):
         return self.getrep()
 
     def getrep(self, toklist=None):
-	s = self.LHS+":"
-        for t in self.RHS:
+	s = self.lhs+":"
+        for t in self.rhs:
             if type(t)==types.IntType and toklist:
                 s = s+" "+toklist[t]
             else:
                 s = s+" "+str(t)
-        if self.funcname: s = s+" ("+self.funcname+")"
-        return s
+        return s+" ("+self.funcname+")"
 
     def items(self):
-	return range(len(self.RHS) + 1)
+	return range(len(self.rhs) + 1)
 
 
-class LR1Grammar:
+class Grammar:
     """Provides methods for producing the actiontable, the gototable, and the
     prodinfo table.  Using these functions, it can produce a python source
-    code file with these tables or a parsing engine.
+    code file with these tables.
     Note that we assume the first production (productions[0]) to be the start
     symbol."""
 
-    EPS = "<EPS>"
-    EOF = "<EOF>"
-    DummyLA = -1
+    EPS = -1
+    DummyLA = -2
 
     def __init__(self, productions, tokens=[], verbose=0):
+        if not productions:
+            raise ParseError, "empty production list"
 	self.verbose = verbose
 	self.productions = productions
         self.tokens = tokens
+	self.terminals = []
 	self.nonterminals = []
         for p in self.productions:
-            if p.LHS not in self.nonterminals:
-                self.nonterminals.append(p.LHS)
-        if self.verbose:
-            print "Nonterminals:", self.nonterminals
-	self.terminals = []
-        for p in self.productions:
-            for s in p.RHS:
-                if not (s in self.terminals or s in self.nonterminals):
+            if p.lhs not in self.nonterminals:
+                self.nonterminals.append(p.lhs)
+            for s in p.rhs:
+                if type(s) == types.IntType and s not in self.terminals:
                     self.terminals.append(s)
         self.terminals.sort()
         if self.verbose:
             print "Terminals:", self.terminals
-        # reduce the grammar
+            print "Nonterminals:", self.nonterminals
         self._reduceGrammar()
-        # build map with productions who have the same LHS
+        # build map with productions who have the same lhs
 	self.lhsprods = {}
 	for lhs in self.nonterminals:
-	    self.lhsprods[lhs] = filter(lambda x,l=lhs: x.LHS==l, self.productions)
-        # immediate epsilon productions
-	pi = 1
-	self.epslhs = {}
-	for p in self.productions:
-	    if p.RHS == []:
-		self.epslhs[p.LHS] = pi
-	    pi = pi + 1
-        # derived epsilon productions
-	self.lhsdereps = self._mklhsdereps()
-        # the FIRST function for the LR(1) grammar, implemented as a map
-	self.firstmap = self._mkfirstmap()
+	    self.lhsprods[lhs] = filter(lambda x,l=lhs: x.lhs==l,
+	                                self.productions)
+	self._genDerivedEpsilons()
+	self._genFIRSTmap()
+        self._genFOLLOWmap()
+	self.LALRitems = []
+	# help make epsilon productions work with kernel items
+	# and to compute goto transitions from kernel
+	self._genNTFIRSTmap()
+	# help make shifts work with only kernel items
+	self._genTFIRSTmap()
 
     def _reduceGrammar(self):
         """Definitions:
@@ -116,7 +99,7 @@ class LR1Grammar:
         """
         # productive nonterminals
         productive_nts = []
-        # rest_nt[p] == the number of nonterminals in p.RHS which are not yet
+        # rest_nt[p] == the number of nonterminals in p.rhs which are not yet
         # marked as productive
         # if rest_nt[p]==0 then p is productive
         rest_nt = {}
@@ -124,364 +107,223 @@ class LR1Grammar:
         # other nonterminals with A. this is the reason we add all found
         # productive nts to this list
         workedon_nts = []
-        # mark terminals as productive (even epsilon-prductions)
+        # mark terminals as productive (even epsilon-productions)
         for p in self.productions:
-            rest_nt[p]= len(filter(lambda x, s=self: x in s.nonterminals, p.RHS))
+            rest_nt[p]= len(filter(lambda x, s=self: x in s.nonterminals, p.rhs))
             if rest_nt[p]==0:
-                productive_nts[p] = 1
-                workedon_nts.append(p)
+                productive_nts.append(p.lhs)
+                workedon_nts.append(p.lhs)
         # work on the productive list
-        while len(workedon_nts):
+        while workedon_nts:
             x = workedon_nts[0]
-            # search for production p with x in p.RHS
-            for p in filter(lambda p, _x=x: _x in p.RHS, self.productions):
+            # search for production p with x in p.rhs
+            for p in filter(lambda p, _x=x: _x in p.rhs, self.productions):
                 rest_nt[p] = rest_nt[p] - 1
-                if not p.LHS in productive_nts:
-                    productive_nts.append(p.LHS)
-                    workedon_nts.append(p.LHS)
+                if not p.lhs in productive_nts:
+                    productive_nts.append(p.lhs)
+                    workedon_nts.append(p.lhs)
             workedon_nts.remove(x)
-        if not self.productions[0].LHS in productive_nts:
-            raise PyLRParseError, "start symbol of grammar is not productive"
+        if not self.productions[0].lhs in productive_nts:
+            raise ParseError, "start symbol of grammar is not productive"
 
         # reachable nonterminals
-        reachable_nts = self.productions[0]
+        reachable_nts = [self.productions[0]]
         added=1
         while added:
             added = 0
             for p in self.productions:
-                for r in p.RHS:
-                    if p.LHS in reachable_nts and (r in self.nonterminals and
+                for r in p.rhs:
+                    if p.lhs in reachable_nts and (r in self.nonterminals and
 		    r not in reachable_nts):
                         reachable_nts.append(r)
                         added = 1
 
         # reduce the grammar
-        self.productions = filter(lambda p,
-                  pnt=productive_nts,
-                  rnt=reachable_nts: p.LHS in pnt or p.LHS in rnt,
+        self.productions = filter(lambda p, pnt=productive_nts,
+                  rnt=reachable_nts: p.lhs in pnt or p.lhs in rnt,
                   self.productions)
+        if self.verbose:
+            print "Reduced grammar:\n"+`self`
 
     def __repr__(self):
         """I like functional programming :)"""
 	return string.join(map(lambda x,s=self: x.getrep(s.tokens),
 	                       self.productions),";\n")+";"
 
-    def _mklhsdereps(self):
-	"""determines the nonterminals that derive nothing (epsilon)"""
-	pi = 1                  
+    def _genDerivedEpsilons(self):
+	"""determines the nonterminals that can derive epsilon"""
 	res = {}
 	for p in self.productions:
-	    if p.RHS == []:
-		res[p.LHS] = pi
-	    pi = pi + 1
-	workingnonterms = []
-	for nt in self.nonterminals:
-	    if not res.has_key(nt):
-		workingnonterms.append(nt)
-	while 1:
-	    toremove = []
-	    for nt in workingnonterms:
-		if not res.has_key(nt):
-		    for p in self.lhsprods[nt]:
-			if len(p.RHS) == 1 and res.has_key(p.RHS[0]):
-			    res[p.LHS] = res[p.RHS[0]]
-			    toremove.append(nt)
-			    break
-	    if not toremove:
-		break
-	    for r in toremove:
-		workingnonterms.remove(r)
-	return res
+	    if not p.rhs:
+		res[p.lhs] = 1
+        self.lhseps = res.keys()
+        added=1
+        while added:
+            added=0
+            for p in self.productions:
+                if filter(lambda x,r=res: not r.has_key(x), p.rhs) and \
+		   not res.has_key(p.lhs):
+                    res[p.lhs]=added=1
+        self.lhsdereps = res.keys()
 
 
-    def _mkfirstmap(self):
-	"""return a dictionary keyed by symbol whose values are the set
-	of terminals that can precede that symbol
+    def _genFIRSTmap(self):
+	"""return dictionary d with d[A] = FIRST(A) for all symbols A
 	"""
-	res = {}
-	for sym in self.terminals+[Grammar.EPS, Grammar.EOF, Grammar.DummyLA]:
-	    res[sym] = {sym: 1}
+	self.FIRSTmap = {}
+	for sym in [Grammar.EPS]+self.terminals:
+	    self.FIRSTmap[sym] = {sym: 1}
         added=1
 	while added:
 	    added = 0
 	    for nt in self.nonterminals:
-		firsts = res.get(nt, {})
+		firsts = self.FIRSTmap.get(nt, {})
 		for p in self.lhsprods[nt]:
-		    if not p.RHS:
+		    if not p.rhs:
 			if not firsts.has_key(Grammar.EPS):
 			    added = firsts[Grammar.EPS] = 1
-		    for i in range(len(p.RHS)):
-			f = res.get(p.RHS[i], {})
-			for t in f.keys():
-			    if not firsts.has_key(t):
-				added = firsts[t] = 1
-			if not self.lhsdereps.has_key(p.RHS[i]):
+		    for Y in p.rhs:
+			f = self.FIRSTmap.get(Y, {})
+			for a in f.keys():
+			    if not firsts.has_key(a):
+				added = firsts[a] = 1
+			if not Y in self.lhsdereps:
 			    break
-		res[nt] = firsts
-	for s in res.keys():
-	    res[s] = res[s].keys()
-	return res
+		self.FIRSTmap[nt] = firsts
+	for s in self.FIRSTmap.keys():
+	    self.FIRSTmap[s] = self.FIRSTmap[s].keys()
 
 
-    # these function are used as the grammar produces the tables (or writes
-    # them to a file)
-    def firstofstring(self, gs_list):
-	tmpres = {}
-	allhaveeps = 1
-	for x in range(len(gs_list)):
-	    tmp = self.firstmap[gs_list[x]]
-	    for s in tmp:
-		tmpres[s] = 1
-	    if Grammar.EPS in tmp:
-		del tmpres[Grammar.EPS]
-	    else:
-		allhaveeps = 0
-		break
-	if allhaveeps:
-	    tmpres[Grammar.EPS] = 1
-	return tmpres.keys()
+    def FIRST(self, gs_list):
+        """extend FIRST to set of symbols
+	precondition: we already have calculated FIRST for all single
+	symbols and stored the values in self.FIRSTmap
+        """
+        assert gs_list, "list must be nonempty"
+	res = {}
+        allhaveeps=1
+	for X in gs_list:
+            set = self.FIRSTmap[X]
+	    for s in set:
+                res[s] = 1
+            if not Grammar.EPS in set:
+                allhaveeps=0
+                break
+	if allhaveeps:        
+	    res[Grammar.EPS] = 1
+	return res.keys()
 
-
-
-    def augment(self):
+    def _augment(self):
 	"""this function adds a production S' -> S to the grammar where S was
 	the start symbol.
 	"""
-	lhss = map(lambda x: x.LHS, self.productions)
-	newsym = self.productions[0].LHS
-	while 1:
-	    newsym = newsym + "'"
-	    if newsym not in lhss:
-		break
+	newsym = self.productions[0].lhs+"'"
+	while newsym in self.nonterminals:
+	    newsym = newsym+"'"
 	self.productions.insert(0, Production(newsym, 
-					      [self.productions[0].LHS]))
+					      [self.productions[0].lhs]))
 
+    def _genFOLLOWmap(self):
+        """dictionary d with d[A] = FOLLOW(A) for all nonterminals A
+        """
+	self.FOLLOWmap = {}
+        for nt in self.nonterminals+self.terminals:
+	    self.FOLLOWmap[nt] = []
+	self.FOLLOWmap[self.productions[0].lhs] = [0] # 0 is EOF token
+        added=1
+        while added:
+            added=0
+            for p in self.productions:
+                for i in range(1,len(p.rhs)):
+                    B = p.rhs[i-1]
+                    beta = p.rhs[i]
+                    for f in self.FIRSTmap[beta]:
+                        if f != Grammar.EPS and f not in self.FOLLOWmap[B]:
+                            self.FOLLOWmap[B].append(f)
+                            added=1
+            for p in self.productions:
+                for i in range(len(p.rhs)):
+                    B = p.rhs[i]
+                    dereps=1
+                    for X in p.rhs[(i+1):]:
+                        if X in self.terminals or (X not in self.lhsdereps):
+                            dereps=0
+                    if dereps:
+		        for f in self.FOLLOWmap[p.lhs]:
+                            if f not in self.FOLLOWmap[B]:
+                                self.FOLLOWmap[B].append(f)
+                                added=1
 
-    # follow is not used yet, but probably will be in determining error reporting/recovery
-    def follow(self):
-	eof = Grammar.EOF
-	follow = {}
-	startsym = self.productions[0].LHS
-	follow[startsym] = [eof]
-	nts = self.nonterminals
-	for p in self.productions:
-	    cutoff = range(len(p.RHS))
-	    cutoff.reverse()
-	    for c in cutoff[:-1]:  # all but the first of the RHS elements
-		f = self.firstmap[p.RHS[c]]
-		if Grammar.EPS in f:
-		    f.remove(Grammar.EPS)
-		if follow.has_key(p.RHS[c - 1]):
-		    if p.RHS[c -1] in nts:
-			follow[p.RHS[c -1]] = follow[p.RHS[c - 1]] + f[:]
-		else:
-		    if p.RHS[c -1] in nts:
-			follow[p.RHS[c - 1]] = f[:]
- 	for p in self.productions:
-	    if not p.RHS: continue
- 	    cutoff = range(len(p.RHS))
- 	    cutoff.reverse()
-	    if p.RHS[-1] in nts:
-		if follow.has_key(p.LHS):
-		    add = follow[p.LHS]
-		else:
-		    add = []
-
-		if follow.has_key(p.RHS[-1]):
-		    follow[p.RHS[-1]] = follow[p.RHS[-1]] + add
-		else:
-		    follow[p.RHS[-1]] = add
- 	    for c in cutoff[:-1]:
- 		f = self.firstmap[p.RHS[c]]
- 		if Grammar.EPS in f:
- 		    if follow.has_key(p.LHS):
- 			add = follow[p.LHS]
- 		    else:
- 			add = []
- 		    if follow.has_key(p.RHS[c-1]):
- 			follow[p.RHS[c-1]] = follow[p.RHS[c-1]] + add
- 		    elif add:
- 			follow[p.RHS[c - 1]] = add
-	for k in follow.keys():
-	    d = {}
-	    for i in follow[k]:
-		d[i] = 1
-	    follow[k] = d.keys()
-	return follow
-
-    def closure(self, items):
-	res = items[:]
-	todo = items[:]
-        more = 1
+    def _closure(self, items):
+        """Reference: [Aho,Seti,Ullmann: Compilerbau Teil 1, p. 282]
+        """
+        res = {}
+        for item in items.keys():
+            res[item]=0
+        more = []
 	while more:
-	    more = []
-	    for (prodind, rhsind), term in todo:
-		if rhsind >= len(self.productions[prodind].RHS):
+            more = []
+	    for prodind, rhsind, term in res.keys():
+		if rhsind >= len(self.productions[prodind].rhs):
 		    continue
-		for p in self.lhsprods.get(self.productions[prodind].RHS[rhsind], []):
+                prod = self.productions[prodind]
+		for p in self.lhsprods.get(self.prod.rhs[rhsind], []):
 		    try:
-			newpart = self.productions[prodind].RHS[rhsind + 1]
+			newpart = self.prod.rhs[rhsind + 1]
 		    except IndexError:
 			newpart = Grammar.EPS
-		    stringofsyms = [newpart, term]
-		    for t in self.firstofstring(stringofsyms):
-			if ((self.productions.index(p), 0), t) not in res:
-			    more.append(((self.productions.index(p), 0), t))
-		    if term == Grammar.EOF and newpart == Grammar.EPS:
-			if ((self.productions.index(p), 0), Grammar.EOF) not in res:
-			    more.append(((self.productions.index(p), 0), Grammar.EOF))
-	    if more:
-		res = res + more
-		todo = more
+		    for t in self.FIRST([newpart, term]):
+                        item = (self.productions.index(p), 0, t)
+			if not res.has_key(item):
+			    more.append(item)
+#                    if term == 0 and newpart == Grammar.EPS:
+#                        item = (self.productions.index(p), 0, 0)
+#                        if not res.has_key(item):
+#                            more.append(item)
+	    for item in more:
+		res[item]=0
 	return res
 
-    def goto(self, items, sym):
-	itemset = []
-	for (prodind, rhsind), term in items:
-	    try:
-		if self.productions[prodind].RHS[rhsind] == sym and ((prodind, rhsind+1), term) not in itemset:
-		    itemset.append( ((prodind, rhsind +1), term))
-	    except IndexError:  
-		pass
-	return self.closure(itemset)
-
-    def default_prodfunc(self):
-	"""for mkengine, this will produce a default function for those
-	unspecified
-	"""
-	return lambda *args: args[0]
-
-    def prodinfotable(self):
+    def _prodinfotable(self):
 	"""returns a list of three pieces of info for each production.
 	The first is the lenght of the production, the second is the
-	function(name) associated with the production and the third is
+	function name associated with the production and the third is
 	is the index of the lhs in a list of nonterminals.
 	"""
-	res = []
-	for p in self.productions:
-	    lhsind = self.nonterminals.index(p.LHS)
-	    func = p.func
-	    if not func:
-		func = self.default_prodfunc()
-	    plen = len(p.RHS)
-	    if p.RHS == [Grammar.EPS]:
-		plen = 0
-	    res.append((plen, func, lhsind))
-	return res
+	return map(lambda p,s=self: (len(p.rhs),
+	           p.funcname, s.nonterminals.index(p.lhs)), self.productions)
 
-
-class LALRGrammar(LR1Grammar):
-    def __init__(self, prods, toks=[]):
-	Grammar.__init__(self, prods, toks)
-	self.LALRitems = []
-        #
-	# this is to help mak epsilon productions work with kernel items
-	# and to compute goto transitions from kernel
-	print "computing ntfirsts..."
-	self.ntfirstmap = self._mkntfirstmap()
-        #
-	# this is to help make shifts work with only kernel items
-	print "computing tfirsts..."
-	self.tfirstmap = self._mktfirstmap()
-	#
-	# another thing to help epsilon productions
-	print "computing follows..."
-	self.followmap = self.follow()
-
-    def _mkntfirstmap(self):
+    def _genNTFIRSTmap(self):
 	"""computes all nonterms A, first of (strings n) such that some
-	nonterminal B derives [A, n] in zero or more steps of (rightmost)
+	nonterminal B derives [A, n] in zero or more steps of rightmost
 	derivation. used to help make epsilon productions quickly calculable.
 	(B may == A)
 	"""
-	res = {}
+	self.ntfirstmap = {}
+        for p in self.nonterminals:
+            self.ntfirstmap[p] = {}
 	for p in self.productions:
-	    if p.RHS and p.RHS[0] in self.nonterminals:
-		fos = self.firstofstring(p.RHS[1:])
-		fos.sort()
-		if not res.has_key(p.LHS):
-		    res[p.LHS] = {}
-		if not res[p.LHS].has_key(p.RHS[0]):
-		    res[p.LHS][p.RHS[0]] = []
-		for i in fos:
-		    if i not in res[p.LHS].get(p.RHS[0], []):
-			res[p.LHS][p.RHS[0]] = fos
-		
-	while 1:
+	    if p.rhs and p.rhs[0] in self.nonterminals:
+		self.ntfirstmap[p.lhs][p.rhs[0]] = 0
+        foundmore = 1
+	while foundmore:
 	    foundmore = 0
-	    reskeys = res.keys()
+	    reskeys = self.ntfirstmap.keys()
 	    for nt in reskeys:
-		rhsdict = res[nt]
+		rhsdict = self.ntfirstmap[nt]
 		for rnt in rhsdict.keys():
 		    if rnt in reskeys:
-			d = res[rnt]
+			d = self.ntfirstmap[rnt]
 			for k in d.keys():
-			    if not res[nt].has_key(k):
-				fos = self.firstofstring(d[k]+ res[nt][rnt]) 
+			    if not self.ntfirstmap[nt].has_key(k):
 				foundmore = 1
- 				fos.sort()
- 				res[nt][k] = fos
- 			    else:
- 				fos = self.firstofstring(d[k] + res[nt][rnt])
- 				fos.sort()
- 				if fos != res[nt][k]:  # then res[nt][k] is contained in fos
- 				    foundmore = 1
- 				    res[nt][k] = fos
-	    if not foundmore:
-		break
-	#
+ 				self.ntfirstmap[nt][k] = 0
 	# this part accounts for the fact that a nonterminal will
 	# produce exactly itself in zero steps
-	#
 	for p in self.productions:
-	    if res.has_key(p.LHS):
-                res[p.LHS][p.LHS] = [Grammar.EPS]
-	    else:
-		res[p.LHS] = {p.LHS: [Grammar.EPS]}
-	return res
-			    
-    def newmkntfirstmap(self):
-	"""computes all nonterms A, first of (strings n) such that some
-	nonterminal B derives [A, n] in zero or more steps of (rightmost)
-	derivation. used to help make epsilon productions quickly calculable.
-	(B may == A)
-	"""
-	res = {}
-	pi = 0
-	for p in self.productions:
-	    if p.RHS and p.RHS[0] in self.nonterminals:
-		if not res.has_key(p.LHS):
-		    res[p.LHS] = {}
-		if not res[p.LHS].has_key(p.RHS[0]):
-		    res[p.LHS][p.RHS[0]] = 1
-	while 1:
-	    foundmore = 0
-	    reskeys = res.keys()
-	    for nt in reskeys:
-		rhsdict = res[nt]
-		for rnt in rhsdict.keys():
-		    if rnt in reskeys:
-			d = res[rnt]
-			for k in d.keys():
-			    if not res[nt].has_key(k):
-				foundmore = 1
- 				res[nt][k] = 1
-	    if not foundmore:
-		break
-	#
-	# this part accounts for the fact that a nonterminal will
-	# produce exactly itself in zero steps
-	#
-	for p in self.productions:
-	    if res.has_key(p.LHS):
-                res[p.LHS][p.LHS] = 1
-	    else:
-		res[p.LHS] = {p.LHS: 1}
-	return res
+            self.ntfirstmap[p.lhs][p.lhs] = 0
 	
-
-	
-    def _mktfirstmap(self):
+    def _genTFIRSTmap(self):
 	"""for each nonterminal C, compute the set of all terminals a, such
 	that C derives ax in zero or more steps of (rightmost) derivation
 	where the last derivation is not an epsilon (empty) production.
@@ -489,117 +331,110 @@ class LALRGrammar(LR1Grammar):
 	assumes .mkfirstntmap() has been run and has already produced
 	self.ntfirstmap
 	"""
-	res = {}
+	self.tfirstmap = {}
+        for nt in self.nonterminals:
+            self.tfirstmap[nt] = []
 	for p in self.productions:
-	    if not res.has_key(p.LHS):
-		res[p.LHS] = []
-	    if p.RHS and p.RHS[0] in self.terminals:
-		res[p.LHS].append(p.RHS[0])
-	while 1:
+	    if p.rhs and p.rhs[0] in self.terminals:
+		self.tfirstmap[p.lhs].append(p.rhs[0])
+        foundmore = 1
+	while foundmore:
 	    foundmore = 0
-	    reskeys = res.keys()
+	    reskeys = self.tfirstmap.keys()
 	    for nt in self.ntfirstmap.keys():
 		arrows = self.ntfirstmap[nt]
 		for k in arrows.keys():
-		    for t in res[k]:
-			if t not in res[nt]:
+		    for t in self.tfirstmap[k]:
+			if t not in self.tfirstmap[nt]:
 			    foundmore = 1
-			    res[nt].append(t)
-	    if not foundmore:
-		break
-	return res
+			    self.tfirstmap[nt].append(t)
 
-    def goto(self, itemset, sym):
+    def _goto(self, itemset, sym):
+        """reference: [Aho,Seti,Ullmann: Compilerbau Teil 1, p. 293]"""
 	res = []
-	for (pi, ri) in itemset:
-	    if ri == len(self.productions[pi].RHS):
+	for pi, ri in itemset:
+	    if ri == len(self.productions[pi].rhs):
 		continue
-	    s = self.productions[pi].RHS[ri]
+	    s = self.productions[pi].rhs[ri]
 	    if s == sym:
 		res.append((pi, ri+1))
             d = self.ntfirstmap.get(s, {})
 	    for k in d.keys():
 		for p in self.lhsprods[k]:
-		    if p.RHS and p.RHS[0] == sym:
+		    if p.rhs and p.rhs[0] == sym:
 			i = self.productions.index(p)
 			if (i, 1) not in res: res.append((i, 1))
 	res.sort()
 	return res
 
-    def lookaheads(self, itemset):
+    def _lookaheads(self, itemset):
 	setsofitems = kernels = self.kernelitems
 	spontaneous = []
 	propagates = {}
 	gotomap = {}
-	for (kpi, kri) in itemset:
-	    C = self.closure([((kpi, kri), Grammar.DummyLA)])
-	    for (cpi, cri), t in C:
-		if (cri) == len(self.productions[cpi].RHS):
+	for kpi, kri in itemset:
+	    C = self._closure({(kpi, kri, Grammar.DummyLA):0})
+	    for cpi, cri, t in C.keys():
+		if cri == len(self.productions[cpi].rhs):
 		    continue
-		s = self.productions[cpi].RHS[cri]
+		s = self.productions[cpi].rhs[cri]
 		if gotomap.has_key(s):
 		    newstate = gotomap[s]
 		else:
-		    newstate = setsofitems.index(self.goto(itemset, s))
+		    newstate = setsofitems.index(self._goto(itemset, s))
 		    gotomap[s] = newstate
 		if t != Grammar.DummyLA:
-		    spontaneous.append((newstate, (cpi, cri+1), t))
+		    spontaneous.append((newstate, cpi, cri+1, t))
 		else:
  		    if propagates.has_key((kpi, kri)):
-			propagates[(kpi, kri)].append((newstate, (cpi, cri+1)))
+			propagates[(kpi, kri)].append((newstate, cpi, cri+1))
 		    else:
-			propagates[(kpi, kri)]=[(newstate, (cpi, cri+1))]
+			propagates[(kpi, kri)]=[(newstate, cpi, cri+1)]
 	return spontaneous, propagates
 
-    def kernelsoflalr1items(self):
-	res = [[(0, 0)]]
-	todo = [[(0, 0)]]
-	while 1:
+    def _genKernelitems(self):
+	self.kernelitems = todo = [[(0, 0)]]
+        newtodo = 0
+	while newtodo:
 	    newtodo = []
 	    for items in todo:
-		for s in self.terminals + self.nonterminals + [Grammar.EOF]:
-		    g = self.goto(items, s)
-		    if g and g not in res:
+		for s in self.terminals + self.nonterminals:
+		    g = self._goto(items, s)
+		    if g and g not in self.kernelitems:
 			newtodo.append(g)
-	    if not newtodo:
-		break
-	    else:
-		if self.verbose:
-		    print "found %d more kernels" % (len(newtodo))
-		res = res + newtodo
-		todo = newtodo
-	res.sort()
-	return res
+            if self.verbose:
+	        print "found %d more kernels" % (len(newtodo))
+	    self.kernelitems = self.kernelitems + newtodo
+	    todo = newtodo
+	self.kernelitems.sort()
 
-    def initLALR1items(self):
-	self.kernelitems = kernels = self.kernelsoflalr1items()
+    def _initLALR1items(self):
+	self._genKernelitems()
 	props = {}
 	la_table = []
-	for x in range(len(kernels)):
+	for i in range(len(self.kernelitems)):
 	    la_table.append([])
-	    for y in range(len(kernels[x])):
-		la_table[x].append([])
-	la_table[0][0] = [Grammar.EOF]
+	    for y in range(len(self.kernelitems[i])):
+		la_table[i].append([])
+	la_table[0][0] = [0] # EOF
 	if self.verbose:
-	    print "initLALR1items, kernels done, calculating propagations and spontaneous lookaheads"
+	    print "calculating propagations and spontaneous lookaheads"
 	state_i = 0
-	for itemset in kernels:
+	for itemset in self.kernelitems:
 	    if self.verbose:
 		print ".",
-            sp, pr = self.lookaheads(itemset)
-	    for ns, (pi, ri), t in sp:
-                inner = kernels[ns].index((pi, ri))
+            sp, pr = self._lookaheads(itemset)
+	    for ns, pi, ri, t in sp:
+                inner = self.kernelitems[ns].index((pi, ri))
 		la_table[ns][inner].append(t)
 	    props[state_i] = pr
 	    state_i = state_i + 1
 	return la_table, props
 
-    def LALR1items(self):
-	la_table, props = self.initLALR1items()
-	if self.verbose:
-	    print "done init LALR1items"
-	soi = self.kernelitems
-	while 1:
+    def _genLALR1items(self):
+	la_table, props = self._initLALR1items()
+        added_la=1
+	while added_la:
 	    added_la = 0
 	    state_i = 0
 	    for state in la_table:
@@ -608,30 +443,27 @@ class LALRGrammar(LR1Grammar):
 		    if not propterms:
 			ii = ii + 1
 			continue
-		    item = soi[state_i][ii]
+		    item = self.kernelitems[state_i][ii]
 		    ii = ii + 1
 		    try:
 			proplist = props[state_i][item]
 		    except KeyError:
 			continue
 		    for pstate, pitem in proplist:
-			inner = soi[pstate].index(pitem)
+			inner = self.kernelitems[pstate].index(pitem)
 			for pt in propterms:
 			    if pt not in la_table[pstate][inner]:
 				added_la = 1
 				la_table[pstate][inner].append(pt)
 		state_i = state_i + 1
-	    if not added_la:
-		break
-	#
+
 	# this section just reorganizes the above data
 	# to the state it's used in later...
-	# 
 	if self.verbose:
 	    print "done with lalr1items, reorganizing the data"
-	res = []
+	self.LALRitems = []
 	state_i = 0
-	for state in soi:
+	for state in self.kernelitems:
 	    item_i = 0
 	    inner = []
 	    for item in state:
@@ -640,31 +472,20 @@ class LALRGrammar(LR1Grammar):
  			inner.append((item, term))
 		item_i = item_i + 1
 	    inner.sort()
-	    res.append(inner)
+	    self.LALRitems.append(inner)
 	    state_i = state_i + 1
-	self.LALRitems = res
-	return res
-
-    def deriveN(self, nt1, nt2):
-	"""
-	assuming nt1 -> nt2 <some string>, what is <some string>? such that
-	we know it as 1) a set of terminals and 2) whether it contains
-	Grammar.EPS
-	"""
-	pass
 
     def actiontable(self):
 	items = self.LALRitems
 	res = []
 	state_i = 0
 	terms = self.terminals[:]
-	terms.append(Grammar.EOF)
 	errentry = ("", -1)
 	for state in items:
 	    list = [errentry] * len(terms)
 	    res.append(list)
-	    for (prodind, rhsind), term in state:
-		if (rhsind ) == len(self.productions[prodind].RHS):
+	    for prodind, rhsind, term in state:
+		if rhsind == len(self.productions[prodind].rhs):
 		    if prodind != 0:
 			new = ("r", prodind)
 			old = res[state_i][terms.index(term)]
@@ -677,27 +498,25 @@ class LALRGrammar(LR1Grammar):
 			if old != errentry and old != new:
 			    print "Conflict[%d,%d]:" % (state_i, terms.index(term)), old, "->", new
 			res[state_i][terms.index(term)] = new
-		#
+
 		# calculate reduction by epsilon productions 
-		#
-		elif self.productions[prodind].RHS[rhsind] in self.nonterminals:
-		    nt = self.productions[prodind].RHS[rhsind]
+		elif self.productions[prodind].rhs[rhsind] in self.nonterminals:
+		    nt = self.productions[prodind].rhs[rhsind]
 		    ntfirst = self.firstmap[nt]
 		    ntfirsts = self.ntfirstmap.get(nt, {})
 		    for k in ntfirsts.keys():
-			if self.epslhs.get(k, ""):
+			if self.lhseps.get(k, ""):
 			    reduceterms = self.followmap[k]
 #			    print `((prodind, rhsind), term)`, reduceterms
 			    for r in reduceterms:
    				inner = terms.index(r)
    				old = res[state_i][inner]
-   				new = ("r", self.epslhs[k])
+   				new = ("r", self.lhseps[k])
   			        if old != errentry and old != new:
   				    print "Conflict[%d,%d]:" % (state_i, inner), old, "->", new
   				res[state_i][inner] = new
-		    #
+
 		    # calculate the shifts that occur but whose normal items aren't in the kernel
-		    #
 		    tfirsts = self.tfirstmap[nt]
 		    for t in tfirsts:
 			inner = terms.index(t)
@@ -711,11 +530,10 @@ class LALRGrammar(LR1Grammar):
 			if old != errentry and old != new:
 			    print "Conflict[%d,%d]:" % (state_i, inner), old, "->", new			    
 			res[state_i][inner] = new
-		#
+
 		# compute the rest of the shifts that occur 'normally' in the kernel
-		#
 		else:
-		    t = self.productions[prodind].RHS[rhsind]
+		    t = self.productions[prodind].rhs[rhsind]
 		    inner = self.terminals.index(t)
 		    gt = self.goto(self.kernelitems[state_i], t)
 		    if gt in self.kernelitems:
@@ -735,44 +553,21 @@ class LALRGrammar(LR1Grammar):
 	nonterms = self.nonterminals
 	err = None
 	for state in items:
-	    list = [err] * len(nonterms)
-	    res.append(list)
+	    res.append([err] * len(nonterms))
 	    nonterm_i = 0
 	    for nt in nonterms:
-		goto = self.goto(state, nt)
+		goto = self._goto(state, nt)
 		if goto in items:
 		    res[state_i][nonterm_i] = items.index(goto)
 		nonterm_i = nonterm_i + 1
 	    state_i = state_i + 1
 	return res
 
-    def mkengine(self, inbufchunksize=None, stackchunksize=None):
-	"""dynamically will produde a parse engine, just an experiment,
-	don't try to use it for anything real.
-	"""
-	self.augment()
-	self.LALR1items()
-	at = self.actiontable()
-	gt = self.gototable()
-	self.productions = self.productions[1:]  # unaugment
-	pi = self.prodinfotable()
-	if not inbufchunksize:
-	    inbufchunksize = 50
-	if not stackchunksize:
-	    stackchunksize = 100
-	e = PyLRengine.NewEngine(pi, at, gt, inbufchunksize, stackchunksize)
-	return e
-
     def writefile(self, filename, parsername="MyParser", lexerinit = "PyLR.Lexer.Lexer()"):
-	self.augment()
-	print "About to start LALRitems at %d" % time.time()
-	self.LALR1items()
-	print "done building LALRitems at %d" % time.time()
+        self._augment()
+        self._genLALR1items()
 	at = self.actiontable()
-	print "done building actiontable at %d" % time.time()
 	gt = self.gototable()
-	print "done building gototable at %d" % time.time()
-	self.productions = self.productions[1:]
 	pi = self.prodinfotable()
 	template = parsertemplate.__doc__
 	vals = {"parsername": parsername, "lexerinit": lexerinit}
@@ -815,7 +610,7 @@ def _makeprod(x):
     raise AttributeError, "Invalid Production initializer"
 
 def _bootstrap():
-    # dang, how did Scott bootstrap the GrammarParser??
+    # dang, how did scott bootstrap the GrammarParser??
     # have to make this by hand
     import Lexers
 
@@ -841,8 +636,8 @@ def _bootstrap():
          ("rhsidlist", [], "rhseps"),
 	 ("idlist", ["idlist", toks.index("ID")], "idl_idlistID"),
 	 ("idlist", [toks.index("ID")], "idlistID")])
-    print string.join(map(lambda x: str(x), prods), "\n")
-    g = LALRGrammar(prods, toks)
+#    print string.join(map(lambda x: str(x), prods), "\n")
+    g = Grammar(prods, toks, 1)
 
 #    g.extrasources = "import PyLR.Parsers"
     # produce the parser
