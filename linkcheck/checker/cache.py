@@ -168,15 +168,18 @@ class Cache (linkcheck.lock.AssertLock):
         finally:
             self.release()
 
-    def in_progress_remove (self, url_data):
+    def in_progress_remove (self, url_data, ignore_missing=False):
         """
-        Remove url from in-progress cache.
+        Remove url from in-progress cache. If url is not cached and
+        ignore_missing evaluates True, raise AssertionError.
         """
         self.acquire()
         try:
             key = url_data.cache_url_key
-            assert key in self.in_progress, key
-            del self.in_progress[key]
+            if key in self.in_progress:
+                del self.in_progress[key]
+            else:
+                assert ignore_missing, repr(key)
         finally:
             self.release()
 
@@ -197,11 +200,10 @@ class Cache (linkcheck.lock.AssertLock):
             self.checked[key] = data
             # add all aliases also to checked cache to avoid recursion
             for key in url_data.aliases:
-                linkcheck.log.debug(linkcheck.LOG_CACHE,
-                                    "Cache alias %r...", key)
-                assert key not in self.checked, \
-                       key + u", " + unicode(self.checked[key])
-                self.checked[key] = data
+                if key not in self.checked:
+                    linkcheck.log.debug(linkcheck.LOG_CACHE,
+                                        "Cache alias %r...", key)
+                    self.checked[key] = data
         finally:
             self.release()
 

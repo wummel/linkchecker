@@ -112,7 +112,7 @@ class Consumer (linkcheck.lock.AssertLock):
         """
         Remove url from active list.
         """
-        self.cache.in_progress_remove(url_data)
+        self.cache.in_progress_remove(url_data, ignore_missing=True)
 
     def finished (self):
         """
