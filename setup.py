@@ -65,6 +65,9 @@ class MyInstall (install, object):
             else:
                 val = getattr(self, attr)
             data.append("%s = %r" % (attr, val))
+            if d == 'data':
+                cdir = os.path.join(val, "share", "linkchecker")
+                data.append('config_dir = %r' % cdir)
 	self.distribution.create_conf_file(self.install_lib, data)
         if os.name=="nt":
             # copy batch file to desktop
@@ -219,7 +222,8 @@ o a (Fast)CGI web interface (requires HTTP server)
              ['share/locale/fr/LC_MESSAGES/linkcheck.mo']),
          ('share/locale/nl/LC_MESSAGES',
              ['share/locale/nl/LC_MESSAGES/linkcheck.mo']),
-         ('share/linkchecker', ['config/linkcheckerrc']),
+         ('share/linkchecker', ['config/linkcheckerrc',
+                                'config/logging.conf', ]),
          ('share/linkchecker/examples',
              ['cgi/lconline/leer.html.en', 'cgi/lconline/leer.html.de',
               'cgi/lconline/index.html', 'cgi/lconline/lc_cgi.html.en',
