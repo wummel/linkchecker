@@ -1,4 +1,5 @@
-- print "I am alive" message
+- all threads should regularly poll a status variable
+  this can be used to make ctrl-c working faster, and to print messages
 
 possible Python 2.3 improvements (ie needs Python >= 2.3)
 - get rid of timeoutsocket.py, the default socket has timeouts
