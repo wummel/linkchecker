@@ -22,26 +22,29 @@ import os.path
 
 class TranslatedFields (dict):
    """store translated field names"""
+
    def __getitem__ (self, key):
        val = super(TranslatedFields, self).__getitem__(key)
        return _(val)
 
-Fields = TranslatedFields(
-    realurl="Real URL",
-    cachekey="Cache key",
-    result="Result",
-    base="Base",
-    name="Name",
-    parenturl="Parent URL",
-    extern="Extern",
-    info="Info",
-    warning="Warning",
-    dltime="D/L Time",
-    dlsize="D/L Size",
-    checktime="Check Time",
-    url="URL",
-)
 
+_ = lambda x: x
+Fields = TranslatedFields(
+    realurl=_("Real URL"),
+    cachekey=_("Cache key"),
+    result=_("Result"),
+    base=_("Base"),
+    name=_("Name"),
+    parenturl=_("Parent URL"),
+    extern=_("Extern"),
+    info=_("Info"),
+    warning=_("Warning"),
+    dltime=_("D/L Time"),
+    dlsize=_("D/L Size"),
+    checktime=_("Check Time"),
+    url=_("URL"),
+)
+del _
 
 class Logger (object):
     """basic logger class enabling logging of checked urls"""
@@ -100,7 +103,7 @@ class Logger (object):
 
     def field (self, name):
         """return translated field name"""
-        return _(Fields[name])
+        return Fields[name]
 
     def spaces (self, name):
         """return indent of spaces for given field name"""
