@@ -30,6 +30,7 @@ def main (url):
     h.connect()
     h.putrequest("HEAD", path, skip_host=True)
     h.putheader("Host", host)
+    h.putheader("User-Agent", "linkchecker")
     h.endheaders()
     req = h.getresponse()
     print req.msg
