@@ -553,7 +553,7 @@ class Resolver(object):
                         else:
                             response = linkcheck.dns.query.udp(request, nameserver,
                                                      timeout, self.port)
-                    except (socket.error, dns.exception.Timeout):
+                    except (socket.error, linkcheck.dns.exception.Timeout):
                         #
                         # Communication failure or timeout.  Go to the
                         # next server
