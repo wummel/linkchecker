@@ -98,7 +98,7 @@ A7: When it comes to checking there are three types of URLs:
    extern1=hollowood.com 1
    extern2=hullabulla.com 1
    # the 1 means strict extern ie dont even connect
-   and a the command line
+   and the command
    linkchecker --intern=www.mycompany.com www.mycompany.com
 
 
