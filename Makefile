@@ -77,9 +77,6 @@ files:	locale localbuild
 VERSION:
 	echo $(VERSION) > VERSION
 
-VERSION-DEVEL:
-	echo $(VERSION) > VERSION-DEVEL
-
 upload: distclean dist files VERSION homepage
 	ncftpput upload.sourceforge.net /incoming dist/*
 
@@ -89,13 +86,6 @@ homepage:
 	cp linkchecker-out.*.gz $(HTMLDIR)
 	cp VERSION $(HTMLDIR)/raw/
 	cp $(MD5SUMS) $(HTMLDIR)/
-
-upload-devel: distclean dist VERSION-DEVEL
-	scp ChangeLog $(HTMLDIR)/changes-devel.txt
-	scp VERSION-DEVEL $(HTMLDIR)/raw/
-	#scp dist/* $(HTMLDIR)/
-	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
-	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 test:
 	$(TEST) $(OFFLINETESTS)
@@ -114,4 +104,3 @@ tar:	distclean
 
 .PHONY: all clean cleandeb distclean files upload test timeouttest locale
 .PHONY: onlinetest config dist deb_local deb_signed deb_unsigned tar
-.PHONY: upload-devel
