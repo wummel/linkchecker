@@ -8,7 +8,6 @@
     garbage collector
     Changed: linkcheck/parser/htmlparse.y
 
-
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing
     Changed: linkchecker, po/*.po
