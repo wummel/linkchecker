@@ -6,9 +6,9 @@
   * do not try to get content of urls that have no content (eg mail)
     Closes: SF bug 765016
     Changed: linkcheck/{Mailto,Nntp,Telnet,}UrlData.py
-  * added robots.txt FAQ
+  * added robots.txt FAQ, updated links
     Removed: norobots-rfc.html
-    Changed: FAQ
+    Changed: FAQ, WONTDO
   * add iso-8859-1 coding line to all .py files
     Changed: *.py
   * Correctly quote the HTML output
