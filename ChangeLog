@@ -8,7 +8,8 @@
     Type: feature
     Changed: po/*.po*
 
-  * Depend on external optcomplete installation.
+  * Remove intern optcomplete installation, and make it optional to
+    install.
     Type: feature
     Changed: linkchecker, config/linkchecker-completion
     Removed: linkcheck/optcomplete.py
