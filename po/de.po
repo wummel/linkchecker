@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Feb  2 12:06:02 2003\n"
+"POT-Creation-Date: Wed Feb 12 01:13:53 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -44,6 +44,9 @@ msgstr "Verwende Proxy %s"
 
 msgid "Access denied by robots.txt, checked only syntax"
 msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
+
+msgid "Amazon servers block HTTP HEAD requests, using GET instead"
+msgstr ""
 
 msgid "Enforced Proxy %s"
 msgstr "Erzwungener Proxy %s"
