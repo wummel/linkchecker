@@ -131,6 +131,7 @@ class HtmlLogger (linkcheck.logger.Logger):
              "\">"+os.linesep)
 
     def write_table_end (self):
+        """end html table"""
         self.fd.write("</table></td></tr></table><br clear=\"all\">")
 
     def write_url (self, url_data):
