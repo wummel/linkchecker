@@ -2,6 +2,8 @@ This release:
 
 - document what checks are performed for each url type
 
+- adjust documentation to new or changed options
+
 Next releases:
 
 - SF bug #992389 bit me when I wanted to do absolute imports
