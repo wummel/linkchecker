@@ -254,8 +254,8 @@ class TestUrl (unittest.TestCase):
         nurl = '/foo/bar/'
         self.assertEqual(url_norm(url), nurl)
 
-    def test_norm_other (self):
-        """test norming of other schemes"""
+    def test_mail_url (self):
+        """test mailto urls"""
         # no netloc and no path
         url = 'mailto:'
         nurl = url
@@ -264,11 +264,18 @@ class TestUrl (unittest.TestCase):
         url = 'mailto:user@www.imadoofus.org'
         nurl = url
         self.assertEqual(url_norm(url), nurl)
+        # email with subject
+        url = 'mailto:user@www.imadoofus.org?subject=a_b'
+        nurl = url
+        self.assertEqual(url_norm(url), nurl)
+
+    def test_norm_other (self):
+        """test norming of other schemes"""
+        # using netloc
         # no netloc and no path
         url = 'news:'
         nurl = 'news:'
         self.assertEqual(url_norm(url), nurl)
-        # using netloc
         url = 'snews:'
         nurl = 'snews://'
         self.assertEqual(url_norm(url), nurl)

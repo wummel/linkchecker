@@ -219,20 +219,16 @@ def url_fix_common_typos (url):
     return url
 
 
-def url_norm (url):
-    """Normalize the given URL which must be quoted. Supports unicode
-       hostnames (IDNA encoding) according to RFC 3490.
+def url_fix_mailto_urlsplit (urlparts):
+    """Split query part of mailto url if found."""
+    if "?" in urlparts[2]:
+        urlparts[2], urlparts[3] = urlparts[2].split('?', 1)
 
-       @return (normed url, idna flag)
-    """
-    urlparts = list(urlparse.urlsplit(url))
-    # scheme
-    urlparts[0] = urllib.unquote(urlparts[0]).lower()
-    # host (with path or query side effects)
-    is_idn = url_fix_host(urlparts)
-    # query
+
+def url_parse_query (query):
+    """Parse and re-join the given CGI query."""
     l = []
-    for k, v in parse_qsl(urlparts[3], True):
+    for k, v in parse_qsl(query, True):
         k = urllib.quote(k, '/-:,')
         if v:
             v = urllib.quote(v, '/-:,')
@@ -242,7 +238,25 @@ def url_norm (url):
         else:
             # some sites do not work when the equal sign is missing
             l.append("%s=" % k)
-    urlparts[3] = '&'.join(l)
+    return '&'.join(l)
+
+
+def url_norm (url):
+    """Normalize the given URL which must be quoted. Supports unicode
+       hostnames (IDNA encoding) according to RFC 3490.
+
+       @return (normed url, idna flag)
+    """
+    urlparts = list(urlparse.urlsplit(url))
+    # scheme
+    urlparts[0] = urllib.unquote(urlparts[0]).lower()
+    # mailto: urlsplit is broken
+    if urlparts[0] == 'mailto':
+        url_fix_mailto_urlsplit(urlparts)
+    # host (with path or query side effects)
+    is_idn = url_fix_host(urlparts)
+    # query
+    urlparts[3] = url_parse_query(urlparts[3])
     if not urlparts[2]:
         # empty path should be a slash, but not in certain schemes
         # note that in relative links, urlparts[0] might be empty
