@@ -23,6 +23,7 @@ import re, urlparse, os
 from urllib import splittype, splithost, splitnport, splitquery, quote, unquote
 
 # adapted from David Wheelers "Secure Programming for Linux and Unix HOWTO"
+# http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/filter-html.html#VALIDATING-URIS
 _az09 = r"a-z0-9"
 _path = r"\-\_\.\!\~\*\'\(\)"
 _hex_safe = r"2-9a-f"
