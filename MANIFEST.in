@@ -11,6 +11,6 @@ include test/*.py test/*.txt
 include test/output/test_* test/html/*.html
 include rpm_build_script
 include lconline/*.html
-recursive-include locale *.mo
+recursive-include share *.mo
 recursive-include po *.po *.py Makefile
 exclude _linkchecker_configdata.py
