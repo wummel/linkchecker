@@ -2,13 +2,16 @@
 # -*- coding: iso-8859-1 -*-
 """print headers of an url"""
 
-import httplib, urlparse, sys
+import httplib
+import urlparse
+import sys
 
 def main (url):
     parts = urlparse.urlsplit(url)
     host = parts[1]
     path = urlparse.urlunsplit(('', '', parts[2], parts[3], parts[4]))
     h = httplib.HTTPConnection(host)
+    h.set_debuglevel(1)
     h.connect()
     h.putrequest("HEAD", path, skip_host=True)
     h.putheader("Host", host)

@@ -9,6 +9,7 @@ def main (url):
     host = parts[1]
     path = urlparse.urlunsplit(('', '', parts[2], parts[3], parts[4]))
     h = httplib.HTTPConnection(host)
+    h.set_debuglevel(1)
     h.connect()
     h.putrequest("GET", path, skip_host=True)
     h.putheader("Host", host)
