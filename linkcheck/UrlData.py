@@ -239,7 +239,8 @@ class UrlData:
         # apply filter
         debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern and (config["strict"] or self.extern[1]):
-            self.setWarning(_("outside of domain filter, checked only syntax"))
+            self.setWarning(
+                  _("outside of domain filter, checked only syntax"))
             self.logMe(config)
             return
 

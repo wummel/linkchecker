@@ -127,7 +127,7 @@ class HttpUrlData(UrlData):
 		             _password)
 
             # some servers get the HEAD request wrong:
-            # - Netscape Enterprise Server III (no HEAD implemented, 404 error)
+            # - Netscape Enterprise Server (no HEAD implemented, 404 error)
             # - Hyperwave Information Server (501 error)
             # - Apache/1.3.14 (Unix) (500 error, http://www.rhino3d.de/)
             # - some advertisings (they want only GET, dont ask why ;)
@@ -135,13 +135,15 @@ class HttpUrlData(UrlData):
             #   content-type
             elif status in [405,501,500]:
                 # HEAD method not allowed ==> try get
-                self.setWarning(_("Server does not support HEAD request (got %d status), falling back to GET")%status)
+                self.setWarning(_("Server does not support HEAD request (got "
+                                  "%d status), falling back to GET")%status)
                 status, statusText, self.mime = self._getHttpRequest("GET")
             elif status>=400 and self.mime:
                 server = self.mime.getheader("Server")
                 if server and self.netscape_re.search(server):
-                    self.setWarning(_("Netscape Enterprise Server with no HEAD support, falling back to GET"))
-                    status, statusText, self.mime = self._getHttpRequest("GET")
+                    self.setWarning(_("Netscape Enterprise Server with no "
+                                      "HEAD support, falling back to GET"))
+                    status,statusText,self.mime = self._getHttpRequest("GET")
             elif self.mime:
                 type = self.mime.gettype()
                 poweredby = self.mime.getheader('X-Powered-By')
@@ -149,7 +151,8 @@ class HttpUrlData(UrlData):
                 if type=='application/octet-stream' and \
                    ((poweredby and poweredby[:4]=='Zope') or \
                     (server and server[:4]=='Zope')):
-                    self.setWarning(_("Zope Server cannot determine MIME type with HEAD, falling back to GET"))
+                    self.setWarning(_("Zope Server cannot determine MIME type"
+                                      " with HEAD, falling back to GET"))
                     status,statusText,self.mime = self._getHttpRequest("GET")
 
             if status not in [301,302]: break
@@ -163,7 +166,8 @@ class HttpUrlData(UrlData):
             self.setWarning(_("HTTP 301 (moved permanent) encountered: you "
                               "should update this link"))
             if self.url[-1]!='/':
-                self.setWarning(_("A HTTP 301 redirection occured and the url has no "
+                self.setWarning(
+                     _("A HTTP 301 redirection occured and the url has no "
                      "trailing / at the end. All urls which point to (home) "
                      "directories should end with a / to avoid redirection"))
 
@@ -216,6 +220,8 @@ class HttpUrlData(UrlData):
         if self.proxyauth:
             self.urlConnection.putheader("Proxy-Authorization",
 	        self.proxyauth)
+        if self.parentName:
+            self.urlConnection.putheader("Referer", self.parentName)
         self.urlConnection.putheader("User-agent", Config.UserAgent)
         self.urlConnection.endheaders()
         return self.urlConnection.getreply()
