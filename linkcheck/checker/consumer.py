@@ -73,7 +73,7 @@ class Consumer (object):
             self.logger_new_url(url_data)
         else:
             # go check this url
-            # this calles either self.checked() or self.interrupted()
+            # this calls either self.checked() or self.interrupted()
             self.threader.start_thread(url_data.check, ())
 
     def checked (self, url_data):
@@ -83,6 +83,8 @@ class Consumer (object):
         self.logger_new_url(url_data)
         if not url_data.cached:
             self.cache.checked_add(url_data)
+        else:
+            self.cache.in_progress_remove(url_data)
 
     def interrupted (self, url_data):
         """remove url from active list"""
