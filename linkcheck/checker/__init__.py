@@ -24,6 +24,7 @@ import re
 import urlparse
 import nntplib
 import ftplib
+import Cookie
 
 import linkcheck.httplib2
 import linkcheck.dns.exception
@@ -53,6 +54,8 @@ ExcList = [
     ftplib.error_temp,
     ftplib.error_perm,
     ftplib.error_proto,
+    # Cookie error
+    Cookie.CookieError,
 ]
 # XXX remove this when depending on python >= 2.4
 if hasattr(socket, "sslerror"):
