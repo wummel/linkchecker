@@ -54,7 +54,7 @@
 #colorvalid=bold;green
 #colorinvalid=bold;red
 #colorinfo=default
-#colorwarning=bold;yekkiw
+#colorwarning=bold;yellow
 #colordltime=default
 #colorreset=default
 #fields=all
