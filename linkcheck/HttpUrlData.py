@@ -171,7 +171,7 @@ class HttpUrlData(UrlData):
             path = urlparse.urlunparse(('', '', self.urlTuple[2],
             self.urlTuple[3], self.urlTuple[4], ''))
         self.urlConnection.putrequest(method, path)
-        self.urlConnection.putheader("Host", self.urlTuple[1])
+        self.urlConnection.putheader("Host", host)
         if self.auth:
             self.urlConnection.putheader("Authorization", self.auth)
         self.urlConnection.putheader("User-agent", Config.UserAgent)

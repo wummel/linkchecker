@@ -1,3 +1,12 @@
+linkchecker (1.2.13) unstable; urgency=low
+
+  * linkcheck/HttpUrlData.py:
+    - better redirection handling
+    - really use host variable in "Host:" header
+  * linkcheck/robotparser2.py: better redirection handling
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri,  5 Jan 2001 00:34:21 +0100
+
 linkchecker (1.2.12) unstable; urgency=low
 
   * MANIFEST.in: include rpm_build_script in source distribution

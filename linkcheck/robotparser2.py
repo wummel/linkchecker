@@ -53,6 +53,7 @@ class RobotFileParser:
             _debug(self.host+self.path)
             connection = httplib.HTTP(self.host)
             connection.putrequest("GET", self.path)
+            connection.putheader("Host", self.host)
             connection.endheaders()
             status, text, mime = connection.getreply()
             if status in [301,302] and mime:
@@ -208,8 +209,8 @@ def _test():
     else:
         rp.parse(open(sys.argv[1]).readlines())
     print rp
-    print rp.can_fetch('*', 'http://www.musi-cal.com.com/')
-    print rp.can_fetch('Musi-Cal-Robot',
+    print rp.can_fetch('*', 'http://www.musi-cal.com/')
+    print rp.can_fetch('Musi-Cal-Robot/1.0',
                        'http://www.musi-cal.com/cgi-bin/event-search'
 		       '?city=San+Francisco')
 
