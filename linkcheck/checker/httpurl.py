@@ -165,6 +165,13 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.check_response(response, fallback_GET)
 
     def check_http_connection (self):
+        """
+        Check HTTP connection and return get response and a flag
+        if the check algorithm had to fall back to the GET method.
+
+        @return: (response, fallback_GET)
+        @rtype: tuple (HttpResponse, bool)
+        """
         # flag if second try should be done with GET
         fallback_GET = False
         while True:
