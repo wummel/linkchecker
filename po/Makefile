@@ -1,5 +1,4 @@
-# use scripts found in Tools/i18n of the Python distribution
-GETTEXT := python pygettext.py
+XGETTEXT := xgettext
 MSGFMT := msgfmt
 MSGMERGE := msgmerge
 POSOURCES = $(shell find ../linkcheck -name \*.py) \
@@ -22,8 +21,12 @@ mofiles:
 %.po:	$(TEMPLATE)
 	$(MSGMERGE) -U --suffix=.bak $@ $<
 
+template: $(TEMPLATE)
 $(TEMPLATE): $(POSOURCES)
-	$(GETTEXT) -w 80 --default-domain=$(PACKAGE) $(POSOURCES)
+	$(XGETTEXT) -w 80 --default-domain=$(PACKAGE) --language=Python \
+	  --copyright-holder="Bastian Kleineidam <calvin@users.sf.net>" \
+	  --msgid-bugs-address=calvin@users.sf.net \
+	  $(POSOURCES)
 
 %.mo:	%.po
 	if [ ! -d $(LDIR)/$*/LC_MESSAGES ]; then \
