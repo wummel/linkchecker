@@ -41,7 +41,7 @@
 
   * updated regression tests
     Type: feature
-    Changed: test/test_*.py, Makefile.am
+    Changed: test/test_*.py, Makefile
     Added: test/run.sh
 
 
