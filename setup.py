@@ -250,7 +250,8 @@ data_files = [
       ]
 
 if os.name == 'posix':
-    data_files.append(('share/man/man1', ['linkchecker.1']))
+    data_files.append(('share/man/man1', ['doc/en/linkchecker.1']))
+    #data_files.append(('share/man/de/man1', ['doc/de/linkchecker.de.1']))
     data_files.append(('share/linkchecker/examples',
               ['config/linkchecker-completion', 'config/linkcheck-cron.sh']))
 elif os.name == 'nt':

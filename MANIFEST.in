@@ -3,7 +3,7 @@ include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/linkcheck-cron.sh
 include config/logging.conf config/pycheckrc config/pylintrc
 include config/reindent.py install-linkchecker.py install-rpm.sh
-include linkchecker linkchecker.1
+include linkchecker
 include cgi/lc.cgi cgi/lc.fcgi cgi/README
 include Makefile
 include debian/rules debian/changelog debian/copyright debian/control
@@ -21,6 +21,8 @@ recursive-include share *.mo
 exclude _linkchecker_configdata.py
 include doc/*.txt doc/*.nav doc/*.html doc/*.py doc/*.png doc/*.jpg
 include doc/*.css
+include doc/en/*.1
+include doc/de/*.1
 include doc/Makefile doc/rest2htmlnav
 recursive-include linkcheck/ftests/data *.txt *.html *.result *.asc *.css
 include linkcheck/dns/tests/example*
