@@ -82,13 +82,14 @@ class Cache (object):
         try:
             for i, url_data in enumerate(self.incoming):
                 key = url_data.cache_url_key
-                if key not in self.in_progress:
+                if key in self.checked:
                     del self.incoming[i]
-                    if key in self.checked:
-                        # url is cached and can be logged
-                        url_data.copy_from_cache(self.checked[key])
-                    else:
-                        self.in_progress[key] = url_data
+                    # url is cached and can be logged
+                    url_data.copy_from_cache(self.checked[key])
+                    return url_data
+                elif key not in self.in_progress:
+                    del self.incoming[i]
+                    self.in_progress[key] = url_data
                     return url_data
             return None
         finally:
