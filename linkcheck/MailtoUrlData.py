@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os,re,string,DNS,sys,Config,cgi,urllib,linkcheck
+import os, re, DNS, sys, Config, cgi, urllib, linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
@@ -33,7 +33,7 @@ DNS.init_dns_resolver()
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
-    
+
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         self.headers = {}
@@ -52,6 +52,7 @@ class MailtoUrlData(HostCheckingUrlData):
             self.headers = cgi.parse_qs(mo.group(1), strict_parsing=1)
             return self.urlName[7:mo.start()]
         return self.urlName[7:]
+
 
     def checkConnection(self, config):
         """Verify a list of email adresses. If one adress fails,
@@ -72,8 +73,11 @@ class MailtoUrlData(HostCheckingUrlData):
         value = "unknown reason"
         for name,mail in self.adresses:
             Config.debug(BRING_IT_ON, "checking mail address", mail)
+            Config.debug(HURT_ME_PLENTY, "splitting address")
             user,host = self._split_adress(mail)
-            mxrecords = DNS.mxlookup(host)
+            Config.debug(HURT_ME_PLENTY, "looking up MX mailhost")
+            mxrecords = DNS.mxlookup(host, protocol="tcp")
+            Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
                 self.setError(_("No mail host for %s found")%host)
                 return
@@ -82,9 +86,11 @@ class MailtoUrlData(HostCheckingUrlData):
                 try:
                     Config.debug(BRING_IT_ON, "SMTP check for", mxrecord)
                     self.urlConnection = SMTP(mxrecord[1])
+                    Config.debug(HURT_ME_PLENTY, "SMTP connected!")
                     smtpconnect = 1
                     self.urlConnection.helo()
                     info = self.urlConnection.verify(user)
+                    Config.debug(HURT_ME_PLENTY, "SMTP user info", info)
                     if info[0]==250:
                         self.setInfo(_("Verified adress: %s")%str(info[1]))
                 except:
@@ -102,7 +108,7 @@ class MailtoUrlData(HostCheckingUrlData):
 
 
     def _split_adress(self, adress):
-        split = string.split(adress, "@", 1)
+        split = adress.split("@", 1)
         if len(split)==2:
             if not split[1]:
                 return (split[0], "localhost")

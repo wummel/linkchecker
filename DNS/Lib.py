@@ -11,8 +11,6 @@
 # ------------------------------------------------------------------------
 
 
-import string
-
 import DNS.Type
 import DNS.Class
 import DNS.Opcode
@@ -38,10 +36,10 @@ def unpack32bit(s):
 def addr2bin(addr):
 	if type(addr) == type(0):
 		return addr
-	bytes = string.splitfields(addr, '.')
+	bytes = addr.split('.')
 	if len(bytes) != 4: raise ValueError, 'bad IP address'
 	n = 0
-	for byte in bytes: n = n<<8 | string.atoi(byte)
+	for byte in bytes: n = n<<8 | int(byte)
 	return n
 
 def bin2addr(n):
@@ -77,21 +75,21 @@ class Packer:
 		# Add a domain name to the buffer, possibly using pointers.
 		# The case of the first occurrence of a name is preserved.
 		# Redundant dots are ignored.
-		list = []
-		for label in string.splitfields(name, '.'):
+		lst = []
+		for label in name.split('.'):
 			if label:
 				if len(label) > 63:
 					raise PackError, 'label too long'
-				list.append(label)
+				lst.append(label)
 		keys = []
-		for i in range(len(list)):
-			key = string.joinfields(list[i:], '.').upper()
+		for i in range(len(lst)):
+			key = '.'.join(lst[i:]).upper()
 			keys.append(key)
 			if self.index.has_key(key):
 				pointer = self.index[key]
 				break
 		else:
-			i = len(list)
+			i = len(lst)
 			pointer = None
 		# Do it into temporaries first so exceptions don't
 		# mess up self.index and self.buf
@@ -99,18 +97,18 @@ class Packer:
 		offset = len(self.buf)
 		index = []
 		for j in range(i):
-			label = list[j]
+			label = lst[j]
 			n = len(label)
 			if offset + len(buf) < 0x3FFF:
 				index.append((keys[j], offset + len(buf)))
 			else:
 				print 'DNS.Lib.Packer.addname:',
 				print 'warning: pointer too big'
-			buf = buf + (chr(n) + label)
+			buf += chr(n) + label
 		if pointer:
-			buf = buf + pack16bit(pointer | 0xC000)
+			buf += pack16bit(pointer | 0xC000)
 		else:
-			buf = buf + '\0'
+			buf += '\0'
 		self.buf = self.buf + buf
 		for key, value in index:
 			self.index[key] = value
@@ -494,7 +492,7 @@ class DnsResult:
 	    h['opcode'],h['status'],h['id'])
 	flags=filter(lambda x,h=h:h[x],('qr','aa','rd','ra','tc'))
 	print ';; flags: %s; Ques: %d, Ans: %d, Auth: %d, Addit: %d'%( 
-	    string.join(flags),h['qdcount'],h['ancount'],h['nscount'],
+	    ' '.join(flags),h['qdcount'],h['ancount'],h['nscount'],
 	    h['arcount'])
 	print ';; QUESTIONS:'
 	for q in self.questions:

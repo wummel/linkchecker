@@ -126,7 +126,6 @@ class DnsRequest:
 	self.args=args
 
     def socketInit(self,a,b):
-	import socket
 	self.s = socket.socket(a,b)
 
     def processUDPReply(self):

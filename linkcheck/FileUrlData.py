@@ -66,7 +66,7 @@ class FileUrlData(UrlData):
     def isHtml(self):
         if html_re.search(self.url) or opera_re.search(self.url):
             return 1
-        # try to read content (attention: could be a directory)
+        # try to read content (can fail, so catch error)
         try:
             return html_content_re.search(self.getContent()) or \
                    opera_content_re.search(self.getContent())

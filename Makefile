@@ -79,3 +79,7 @@ onlinetest:
 .PHONY: locale
 locale:
 	$(MAKE) -C po
+
+.PHONY: timeouttest
+timeouttest:
+	./$(PACKAGE) -DDD --timeout=2 mailto:calvin@cs.uni-sb.de
