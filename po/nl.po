@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Sun Apr  4 15:04:24 2004\n"
+"POT-Creation-Date: Thu May 27 01:06:11 2004\n"
 "PO-Revision-Date: 2004-02-20 15:26+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -174,6 +174,9 @@ msgstr "buiten het domein filter, alleen syntax gecontroleerd"
 #, fuzzy
 msgid "Hostname not found"
 msgstr " gevonden"
+
+msgid "Bad HTTP response %r"
+msgstr ""
 
 msgid "could not parse content: %r"
 msgstr ""

@@ -1,4 +1,11 @@
-1.12.3 (release xx.xx.xxxx)
+1.12.3 "The Princess Bride" (released xx.xx.xxxx)
+  * fall back to GET on bad status line of a HEAD request
+    Type: bugfix
+    Changed: linkcheck/HttpUrlData.py
+
+  * better error msg on BadStatusLine error
+    Type: feature
+    Changed: linkcheck/UrlData.py
 
 1.12.2 (release 4.4.2004)
   * use XmlUtils instead of xmlify for XML quoting
