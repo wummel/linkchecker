@@ -27,7 +27,7 @@ import linkcheck.timeoutsocket
 linkcheck.timeoutsocket.setDefaultSocketTimeout(30)
 # import several helper debugging things
 from linkcheck.debuglevels import *
-from linkcheck import StringUtil
+from linkcheck import StringUtil, Config
 debug = linkcheck.debug
 _profile = "linkchecker.prof"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python -O
 
-# Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000-2002  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -141,7 +141,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.8.2",
+       version = "1.8.3",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
