@@ -125,10 +125,6 @@ static PyObject* quote_string (PyObject* val) {
     char* internal = PyString_AS_STRING(val);
     int i;
     PyObject* prefix;
-    if (len==0) {
-        /* its an empty string */
-	return val;
-    }
     for (i=0; i<len; i++) {
 	if (isspace(internal[i]) ||
 	    internal[i]=='<' ||
@@ -140,7 +136,11 @@ static PyObject* quote_string (PyObject* val) {
             replace = 1;
 	}
     }
-    if (internal[len-1]=='/') {
+    if (len==0) {
+        /* its an empty string */
+	quote = 1;
+    }
+    else if (internal[len-1]=='/') {
 	quote = 1;
     }
     if (replace) {
