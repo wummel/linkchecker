@@ -1,3 +1,11 @@
+linkchecker (1.5.6) unstable; urgency=low
+
+  * linkcheck/HttpUrlData.py: support for Content-Encoding: gzip
+  * linkcheck/DNS: remove included files, depend on external PyDNS
+    library
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 24 Jun 2002 14:39:56 +0200
+
 linkchecker (1.5.5) unstable; urgency=low
 
   * linkcheck/linkname.py: fix linkname regular expressions (from 1.4.9)
@@ -8,11 +16,8 @@ linkchecker (1.5.5) unstable; urgency=low
   * linkchecker: documentation typos
   * linkcheck/__init__.py: use getLinkPat function for all config
     entries, not just commandline
-  * linkcheck/HttpUrlData.py: support for Content-Encoding: gzip
-  * linkcheck/DNS: remove included files, depend on external PyDNS
-    library
 
- -- Bastian Kleineidam <calvin@debian.org>  Sun, 23 Jun 2002 18:59:50 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Fri,  7 Jun 2002 22:40:10 +0200
 
 linkchecker (1.5.4) unstable; urgency=low
 
