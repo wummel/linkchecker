@@ -5,7 +5,11 @@ Next releases:
 - when an URL is found in the cache and it has a broken anchor, the broken
   anchor name is not displayed as a warning
 
-- make a nice wxWindows GUI for linkchecker
+- Python 2.4 introduced an "usenetrc" option to ignore ~/.netrc for
+  NNTP. Thus we could get rid of our custom NNTP class that ignores
+  ~/.netrc completely and use "usenetrc=False" instead.
+
+- make a nice GUI for linkchecker
 
 - SF bug #992389 bit me when I wanted to do absolute imports
   at the checker classes :/
