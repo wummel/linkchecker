@@ -1,8 +1,12 @@
 1.9.23
   * Require Python 2.3
-    - removed timeoutsocket.py and robotparser.py
-    - use True/False values
+    - removed timeoutsocket.py and robotparser.py, using upstream
+    - use True/False for boolean values
+    - use csv module
     Closes: SF bug 784977
+    Changed: a lot
+  * update po makefiles and tools
+    Changed po/*
   * start CGI output immediately
     Changed: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py
     Closes: SF bug 784331

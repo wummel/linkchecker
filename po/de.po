@@ -246,23 +246,18 @@ msgstr ""
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt.\n"
 "</blockquote></body></html>"
 
-#, fuzzy
 msgid "created by %s at %s%s"
-msgstr "erstellt von %s um %s\n"
+msgstr "erstellt von %s um %s%s"
 
-#, fuzzy
 msgid "Get the newest version at %s%s"
-msgstr "Die neueste Version gibt es unter %s\n"
+msgstr "Die neueste Version gibt es unter %s%s"
 
-#, fuzzy
 msgid "Write comments and bugs to %s%s%s"
 msgstr ""
-"Schreiben Sie Kommentare und Fehler an %s\n"
-"\n"
+"Schreiben Sie Kommentare und Fehler an %s%s%s"
 
-#, fuzzy
 msgid "# Format of the entries:"
-msgstr "# Format der Einträge:\n"
+msgstr "# Format der Einträge:"
 
 msgid "seconds"
 msgstr "Sekunden"
@@ -374,7 +369,6 @@ msgstr ""
 msgid " found\n"
 msgstr " gefunden\n"
 
-#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"

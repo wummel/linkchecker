@@ -1,14 +1,14 @@
 - all threads should regularly poll a status variable
   this can be used to make ctrl-c working faster, and to print messages
 
-- the HTML parser should be even more forgiving with badly formatted html
-
-possible Python 2.3 improvements (ie needs Python >= 2.3)
 - use optparse instead of getopt with more flexible commandline help
+
 - replace the debug() function with the logging module
   we'll see how we can insert multiple debug levels into this thing
-- use new csv module
+
 - use the Set type instead of hashmaps (did I use hashmaps for sets here?)
+
+- the HTML parser should be even more forgiving with badly formatted html
 
 include some web check and/or spider features:
 - warn if overall size of page (including images/flash/etc.) is too big
