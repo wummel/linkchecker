@@ -68,7 +68,7 @@ class MyInstall (install, object):
             if d == 'data':
                 cdir = os.path.join(val, "share", "linkchecker")
                 data.append('config_dir = %r' % cdir)
-	self.distribution.create_conf_file(self.install_lib, data)
+	self.distribution.create_conf_file(data, directory=self.install_lib)
         if os.name=="nt":
             # copy batch file to desktop
             path = get_nt_desktop_path(default=self.install_scripts)
@@ -84,6 +84,14 @@ class MyInstall (install, object):
             path = os.path.join(path, "LinkChecker_Readme.txt")
             data = [ line.strip() for line in open("README").readlines() ]
             self.distribution.create_file(path, data)
+
+    def get_outputs (self):
+        """add the generated config file from distribution.create_conf_file()
+           to the list of outputs.
+        """
+        outs = super(MyInstall, self).get_outputs()
+        outs.append(self.distribution.get_conf_filename(self.install_lib))
+        return outs
 
     # sent a patch for this, but here it is for compatibility
     def dump_dirs (self, msg):
@@ -117,24 +125,26 @@ class MyInstallData (install_data):
 
 class MyDistribution (distklass, object):
 
-    def __init__ (self, attrs=None):
-        super(MyDistribution, self).__init__(attrs=attrs)
-        self.config_file = "_%s_configdata.py"%self.get_name()
-
     def run_commands (self):
         cwd = os.getcwd()
         data = []
         data.append('config_dir = %r' % os.path.join(cwd, "config"))
         data.append("install_data = %r" % cwd)
-        self.create_conf_file("", data)
+        self.create_conf_file(data)
         super(MyDistribution, self).run_commands()
 
-    def create_conf_file (self, directory, data=[]):
+    def get_conf_filename (self, directory):
+        return os.path.join(directory, "_%s_configdata.py"%self.get_name())
+
+    def create_conf_file (self, data, directory=None):
+        """create local config file from given data (list of lines) in
+           the directory (or current directory if not given)
+        """
         data.insert(0, "# this file is automatically created by setup.py")
         data.insert(0, "# -*- coding: iso-8859-1 -*-")
-        if not directory:
+        if directory is None:
             directory = os.getcwd()
-        filename = os.path.join(directory, self.config_file)
+        filename = self.get_conf_filename(directory)
         # add metadata
         metanames = ("name", "version", "author", "author_email",
                      "maintainer", "maintainer_email", "url",
