@@ -1,3 +1,9 @@
+linkchecker (1.9.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 19 Aug 2003 00:16:00 +0200
+
 linkchecker (1.9.0-1) unstable; urgency=low
 
   * New upstream release, using Python 2.3.
