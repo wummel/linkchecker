@@ -39,7 +39,11 @@ Requirements for Unix/Linux or Mac OS X
 Requirements for Windows
 ------------------------
 
-1. Install the MinGW suite from http://mingw.sourceforge.net.
+1. Install Python >= 2.3 from http://www.python.org/
+   [http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe]
+
+2. *Only needed if you compile from source:*
+   install the MinGW suite from http://mingw.sourceforge.net.
    Be sure to install in the given order:
    
    a) MingGW
@@ -50,9 +54,6 @@ Requirements for Windows
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe]
    d) gettext
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe]
-
-2. Install Python >= 2.3 from http://www.python.org/
-   [http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe]
 
 
 Setup for Unix/Linux or Mac OS X
@@ -89,16 +90,18 @@ Setup for Unix/Linux or Mac OS X
       .. _Modifying Python's search path:
          http://docs.python.org/inst/search-path.html#SECTION000410000000000000000
 
-4. Enjoy
-   
-   LinkChecker is now installed
-   See the `main page`_ on how to configure and start LinkChecker.
-   
-   .. _main page:
-      index.html
+Setup for Windows - the binary .exe installer:
+----------------------------------------------
 
-Setup for Windows
------------------
+1. Install check
+   
+   Be sure to have installed all required windows software listed above.
+
+2. Execute the ``linkchecker-x.xx.win32-py2.3.exe`` file and follow
+   the instructions.
+
+Setup for Windows - compiling from source:
+------------------------------------------
 
 1. Install check
    
@@ -122,7 +125,7 @@ Setup for Windows
    Still in the MSYS window, change to the ``linkchecker-X.X.X\po``
    directory and run ``make``.
 
-4. Compile and install the LinkChecker Python modules
+4. Generate the LinkChecker installer
    
    Close the MSYS application (by typing ``exit``) and open a DOS command
    prompt.
@@ -133,13 +136,19 @@ Setup for Windows
    ``dist\linkchecker-X.X.X.win32-py2.3.exe`` which you just have to
    execute.
 
+After installation
+------------------
+
+LinkChecker is now installed. Have fun!
+See the `main page`_ on how to configure and start LinkChecker.
+
+.. _main page: index.html
 
 Installation for other platforms
 --------------------------------
 
 If you happen to install LinkChecker on other platforms (for example
 Mac OS 9.x) then drop me a note.
-
 
 (Fast)CGI web interface
 -----------------------
