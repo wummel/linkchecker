@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""main function module for link checking"""
+"""
+Main functions for link checking.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -58,7 +60,7 @@ ExcList = [
     ftplib.error_proto,
 ]
 # XXX remove this when depending on python >= 2.4
-if hasattr(socket, "sslerror"):
+if hasattr(socket, "sslerror") and sys.version_info >= (2, 4, 0, 'final', 0):
     ExcList.append(socket.sslerror)
 
 
