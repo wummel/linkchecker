@@ -15,6 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from StandardLogger import StandardLogger
+import time
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//EN">
 <html><head><title>%s</title>
