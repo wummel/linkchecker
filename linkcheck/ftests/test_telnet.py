@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-"""test news checking"""
+"""test telnet checking"""
 # Copyright (C) 2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -28,20 +28,37 @@ class TestTelnet (linkcheck.ftests.StandardTest):
 
     def test_telnet (self):
         url = "telnet:"
-        resultlines = ["url %s" % url, "cache key %s" % url,
-                       "real url %s" % url, "error"]
+        rurl = url+"//"
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % rurl,
+            "real url %s" % rurl,
+            "error",
+        ]
         self.direct(url, resultlines)
         url = "telnet://swindon.city.ac.uk"
-        resultlines = ["url %s" % url, "cache key %s" % url,
-                       "real url %s" % url, "valid"]
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % url,
+            "real url %s" % url,
+            "valid",
+        ]
         self.direct(url, resultlines)
         url = "telnet://user@swindon.city.ac.uk"
-        resultlines = ["url %s" % url, "cache key %s" % url,
-                       "real url %s" % url, "valid"]
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % url,
+            "real url %s" % url,
+            "valid",
+        ]
         self.direct(url, resultlines)
         url = "telnet://user:password@swindon.city.ac.uk"
-        resultlines = ["url %s" % url, "cache key %s" % url,
-                       "real url %s" % url, "valid"]
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % url,
+            "real url %s" % url,
+            "valid",
+        ]
         self.direct(url, resultlines)
 
 
