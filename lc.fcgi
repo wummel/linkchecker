@@ -20,7 +20,7 @@ try:
             continue
         config = linkcheck.Config.Configuration()
         config["recursionlevel"] = int(form["level"].value)
-        config["log"] = linkcheck.Logging.HtmlLogger(req.out)
+        config["log"] = config.newLogger('html', {'fd':req.out})
         config.disableThreading()
         if form.has_key("anchors"):    config["anchors"] = 1
         if not form.has_key("errors"): config["verbose"] = 1

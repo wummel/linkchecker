@@ -15,9 +15,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import re,string,time,nntplib
+import re,string,time,nntplib,linkcheck
 from HostCheckingUrlData import HostCheckingUrlData
-from UrlData import LinkCheckerException
 from linkcheck import _
 
 nntp_re =  re.compile("^news:[\w.\-]+$")
@@ -28,7 +27,7 @@ class NntpUrlData(HostCheckingUrlData):
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         if not nntp_re.match(self.urlName):
-            raise LinkCheckerException, _("Illegal NNTP link syntax")
+            raise linkcheck.error, _("Illegal NNTP link syntax")
         self.host = string.lower(self.urlName[5:])
 
 

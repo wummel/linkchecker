@@ -61,6 +61,7 @@ For german output execute "export LC_MESSAGES=de" in bash and
 "setenv LC_MESSAGES de" in tcsh.
 Under Windows, execute "set LC_MESSAGES=de".
 
+
 Code design
 -----------
 Only if you want to hack on the code.
@@ -71,8 +72,10 @@ commandline options and stores them in a Config object.
 (2) Which leads us directly to the Config class. This class stores all
 options and works a little magic: it tries to find out if your platform
 supports threads. If so, they are enabled. If not, they are disabled.
-Note: several functions are replaced with their non-threaded 
+Several functions are replaced with their non-threaded 
 equivalents if threading is disabled.
+Another thing are config files. A config object reads config file options
+on initialization so they get handled before any commandline options.
 
 (3) The linkchecker script finally calls linkcheck.checkUrls(), which
 calls linkcheck.Config.checkUrl(), which calls 
@@ -90,3 +93,14 @@ the subclasses define functions needed for their URL type.
 Each logger has functions init(), newUrl() and endOfOutput().
 You call init() once to initialize the Logger, newUrl() for each new URL
 we checked and endOfOutput() when all URLs are checked. Easy.
+New loggers are created with the Config.newLogger(name, fileoutput) function.
+
+Nifty features you did not expect
+---------------------------------
+o Included brain enhancer. Just read Python code to gain intelligence.
+o Wash-O-matic. LinkChecker has a secret option which washes all your 
+  dirty clothes in a matter of seconds.
+o Y2K-Compatible(tm) guarantee. The fact that you can read this text
+  in the Millenium age is proof enough!
+o Self destruction option (also called kamikaze option). Banzaaaiiii!
+o There is no spoon. Wake up already!

@@ -15,7 +15,7 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import ftplib
+import ftplib,linkcheck
 from UrlData import UrlData
 from linkcheck import _
 
@@ -31,7 +31,7 @@ class FtpUrlData(UrlData):
         info = self.urlConnection.getwelcome()
         if not info:
             self.closeConnection()
-            raise Exception, _("Got no answer from FTP server")
+            raise linkcheck.error, _("Got no answer from FTP server")
         self.setInfo(info)
        
     def closeConnection(self):

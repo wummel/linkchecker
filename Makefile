@@ -44,10 +44,9 @@ clean:
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 dist:
-	python setup.py sdist
-	python setup.py bdist_rpm
+	python setup.py sdist bdist_rpm
 	fakeroot debian/rules binary
-        
+
 files:
 	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 

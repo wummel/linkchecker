@@ -17,6 +17,8 @@ linkchecker (1.2.3) unstable; urgency=low
   * fix for incorrect line number in logger output (reported by Michael
     Schmitz)
   * Debian package is now lintian clean
+  * Only catch some exceptions in main check loop so the KeyboardInterrupt
+    exception propagates through
 
  -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat, 27 May 2000 00:01:34 +0200
 

@@ -16,8 +16,15 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 import sys,re,string,urlparse,urllib,time
-import Config,StringUtil
+import Config,StringUtil,linkcheck
 from linkcheck import _
+
+ExcList = [IOError, linkcheck.error]
+try:
+    import socket
+    ExcList.append(socket.error)
+except ImportError:
+    pass
 
 LinkTags = [("a",     "href"),
             ("img",   "src"),
@@ -29,9 +36,6 @@ LinkTags = [("a",     "href"),
             ("meta",  "url"),  
             ("area",  "href")]
 
-
-class LinkCheckerException(Exception):
-    pass
 
 
 class UrlData:
@@ -128,7 +132,7 @@ class UrlData:
         try:
 	    self.buildUrl()
             self.extern = self._getExtern(config)
-        except LinkCheckerException:
+        except linkcheck.error:
             type, value = sys.exc_info()[:2]
             self.setError(str(value))
             self.logMe(config)
@@ -155,8 +159,7 @@ class UrlData:
             self.checkConnection(config)
             if self.urlTuple and config["anchors"]:
                 self.checkAnchors(self.urlTuple[5])
-        # XXX should only catch some exceptions, not all!
-        except:
+        except tuple(ExcList):
             type, value = sys.exc_info()[:2]
             self.setError(str(value))
 

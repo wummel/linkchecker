@@ -15,11 +15,10 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import re,string,DNS,sys,Config,cgi,urllib
+import re,string,DNS,sys,Config,cgi,urllib,linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
-from UrlData import LinkCheckerException
 from linkcheck import _
 
 
@@ -104,7 +103,7 @@ class MailtoUrlData(HostCheckingUrlData):
             return tuple(split)
         if len(split)==1:
             return (split[0], "localhost")
-        raise LinkCheckerException, _("could not split the mail adress")
+        raise linkcheck.error, _("could not split the mail adress")
 
 
     def closeConnection(self):

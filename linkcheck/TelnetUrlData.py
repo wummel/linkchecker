@@ -15,9 +15,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import telnetlib,re,string
+import telnetlib,re,string,linkcheck
 from HostCheckingUrlData import HostCheckingUrlData
-from UrlData import LinkCheckerException
 from linkcheck import _
 
 # regular expression for syntax checking
@@ -29,7 +28,7 @@ class TelnetUrlData(HostCheckingUrlData):
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         if not telnet_re.match(self.urlName):
-            raise LinkCheckerException, _("Illegal telnet link syntax")
+            raise linkcheck.error, _("Illegal telnet link syntax")
         self.host = string.lower(self.urlName[7:])
 
 

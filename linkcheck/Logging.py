@@ -30,8 +30,7 @@ endOfOutput(self)
   Called at the end of checking to close filehandles and such.
 
 Passing parameters to the constructor:
-__init__(self, fileoutput=None, **args)
-  The fileoutput flag specifies if output goes to a file.
+__init__(self, **args)
   The args dictionary is filled in Config.py. There you can specify
   default parameters. Adjust these parameters in the configuration
   files in the appropriate logger section.
@@ -74,12 +73,14 @@ class StandardLogger:
     Unknown keywords will be ignored.
     """
 
-    def __init__(self, fileout=None, **args):
+    def __init__(self, **args):
         self.errors=0
         self.warnings=0
-        if fileout:
+        if args.has_key('fileoutput'):
             self.fd = open(args['filename'], "w")
-	else:
+	elif args.has_key('fd'):
+            self.fd = args['fd']
+        else:
 	    self.fd = sys.stdout
 
 
@@ -157,8 +158,8 @@ class StandardLogger:
 class HtmlLogger(StandardLogger):
     """Logger with HTML output"""
 
-    def __init__(self, fileout=None, **args):
-        apply(StandardLogger.__init__, (self, fileout), args)
+    def __init__(self, **args):
+        StandardLogger.__init__(self, args)
         self.colorbackground = args['colorbackground']
         self.colorurl = args['colorurl']
         self.colorborder = args['colorborder']
@@ -266,8 +267,8 @@ class HtmlLogger(StandardLogger):
 class ColoredLogger(StandardLogger):
     """ANSI colorized output"""
 
-    def __init__(self, fileout=None, **args):
-        apply(StandardLogger.__init__, (self, fileout), args)
+    def __init__(self, **args):
+        StandardLogger.__init__(self, args)
         self.colorparent = args['colorparent']
         self.colorurl = args['colorurl']
         self.colorreal = args['colorreal']
@@ -373,8 +374,8 @@ class GMLLogger(StandardLogger):
     """GML means Graph Modeling Language. Use a GML tool to see
     your sitemap graph.
     """
-    def __init__(self, fileout=None, **args):
-        apply(StandardLogger.__init__, (self, fileout), args)
+    def __init__(self, **args):
+        StandardLogger.__init__(self, args)
         self.nodes = []
 
     def init(self):
@@ -431,8 +432,8 @@ class GMLLogger(StandardLogger):
 
 class SQLLogger(StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
-    def __init__(self, fileout=None, **args):
-        apply(StandardLogger.__init__, (self, fileout), args)
+    def __init__(self, **args):
+        StandardLogger.__init__(self, args)
         self.dbname = args['dbname']
         self.separator = args['separator']
 
@@ -481,7 +482,8 @@ class BlacklistLogger:
     is working (again), it is removed from the list. So after n days
     we have only links on the list which failed for n days.
     """
-    def __init__(self, fileout=None, **args):
+    def __init__(self, **args):
+        self.errors = 0
         self.blacklist = {}
         self.filename = args['filename']
 
@@ -492,6 +494,7 @@ class BlacklistLogger:
         if urlData.valid:
             self.blacklist[urlData.getCacheKey()] = None
         elif not urlData.cached:
+            self.errors = 1
             self.blacklist[urlData.getCacheKey()] = urlData
 
     def endOfOutput(self):
@@ -506,8 +509,8 @@ class CSVLogger(StandardLogger):
     """ CSV output. CSV consists of one line per entry. Entries are
     separated by a semicolon.
     """
-    def __init__(self, fileout=None, **args):
-        apply(StandardLogger.__init__, (self, fileout), args)
+    def __init__(self, **args):
+        StandardLogger.__init__(self, args)
         self.separator = args['separator']
 
     def init(self):

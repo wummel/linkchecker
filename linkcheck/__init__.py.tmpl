@@ -20,6 +20,8 @@ Here we find the main function to call: checkUrls.
 This is the only entry point into the linkcheck module and is used
 of course by the linkchecker script.
 """
+class error(Exception):
+    pass
 
 # i18n suppport
 try:

@@ -196,14 +196,15 @@ for opt,arg in options:
     
     elif opt=="-o" or opt=="--output":
         if linkcheck.Config.Loggers.has_key(arg):
-            config.newLogger(arg)
+            config['log'] = config.newLogger(arg)
         else:
             printUsage((_("Illegal argument '%s' for option ") % arg) +\
 	               "'-o, --output'")
 
     elif opt=="-F" or opt=="--file-output":
         if linkcheck.Config.Loggers.has_key(arg) and arg != "blacklist":
-            config.newLogger(arg, 1)
+            config['fileoutput'].append(
+	        config.newLogger(arg, {'fileoutput':1}))
         else:
             printUsage((_("Illegal argument '%s' for option ") % arg) +\
 	               "'-F, --file-output'")

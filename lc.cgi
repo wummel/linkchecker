@@ -4,7 +4,7 @@ import re,cgi,sys,urlparse,time,os
 sys.stderr = sys.stdout
 
 # begin user configuration
-dist_dir = "/home/calvin/linkchecker"
+dist_dir = "/home/calvin/projects/linkchecker"
 cgi.logfile = "linkchecker.log" # must be an existing file
 # end user configuration
 
@@ -29,7 +29,7 @@ if not linkcheck.lc_cgi.checkform(form):
     sys.exit(0)
 config = linkcheck.Config.Configuration()
 config["recursionlevel"] = int(form["level"].value)
-config["log"] = linkcheck.Logging.HtmlLogger()
+config.newLogger('html')
 if form.has_key("anchors"):    config["anchors"] = 1
 if not form.has_key("errors"): config["verbose"] = 1
 if form.has_key("intern"):

@@ -27,6 +27,14 @@ from types import StringType
 import Logging
 from linkcheck import _
 
+def dictjoin(d1, d2):
+    d = {}
+    for key in d1.keys():
+        d[key] = d1[key]
+    for key in d2.keys():
+        d[key] = d2[key]
+    return d
+
 Version = "1.2.3"
 AppName = "LinkChecker"
 App = AppName+" "+Version
@@ -107,7 +115,7 @@ class Configuration(UserDict.UserDict):
         }
         ESC="\x1b"
         self.data['colored'] = {
-            "filename": "linkchecker-out.ansi",
+            "filename":     "linkchecker-out.ansi",
             'colorparent':  ESC+"[37m",   # white
             'colorurl':     ESC+"[0m",    # standard
             'colorreal':    ESC+"[36m",   # cyan
@@ -134,7 +142,7 @@ class Configuration(UserDict.UserDict):
         self.data['blacklist'] = {
             "filename":     "~/.blacklist",
 	}
-        self.newLogger('text')
+        self.data['log'] = self.newLogger('text')
         self.data["quiet"] = 0
         self.data["warningregex"] = None
         self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
@@ -237,13 +245,8 @@ class Configuration(UserDict.UserDict):
     def robotsTxtCache_set_NoThreads(self, key, val):
         self.robotsTxtCache[key] = val
 
-    def newLogger(self, name, fileout=0):
-        if fileout:
-            self.data['fileoutput'].append(apply(Loggers[name], (fileout,),
-	                                         self.data[name]))
-        else:
-            self.data['log'] = apply(Loggers[name], (fileout,),
-	                             self.data[name])
+    def newLogger(self, name, dict={}):
+        return apply(Loggers[name], (), dictjoin(self.data[name],dict))
 
     def log_newUrl_NoThreads(self, url):
         if not self.data["quiet"]: self.data["log"].newUrl(url)
@@ -384,9 +387,9 @@ class Configuration(UserDict.UserDict):
         try:
             log = cfgparser.get(section, "log")
             if Loggers.has_key(log):
-                self.newLogger(log)
+                self.data['log'] = self.newLogger(log)
             else:
-                self.warn("invalid log option "+log)
+                self.warn(_("invalid log option '%s'") % log)
         except ConfigParser.Error: pass
         try: 
             if cfgparser.getboolean(section, "verbose"):
@@ -402,7 +405,8 @@ class Configuration(UserDict.UserDict):
             for arg in filelist:
                 # no file output for the blacklist Logger
                 if Loggers.has_key(arg) and arg != "blacklist":
-		    self.newLogger(arg, 1)
+		    self.data['fileoutput'].append(
+                         self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error: pass
         for key in Loggers.keys():
             if cfgparser.has_section(key):
@@ -427,7 +431,7 @@ class Configuration(UserDict.UserDict):
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
-                self.error("illegal recursionlevel number: "+`num`)
+                self.error(_("illegal recursionlevel number %d") % num)
             self.data["recursionlevel"] = num
         except ConfigParser.Error: pass
         try: 
