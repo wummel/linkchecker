@@ -2,3 +2,5 @@ tmp
 files
 substvars
 *.debhelper
+linkchecker
+linkchecker-ssl
