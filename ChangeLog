@@ -4,6 +4,7 @@
 	  HTML data in debug output
 	  print line number in UrlData.__str__()
 	* set HTTP Host: header for virtual domains
+	  comment out the Host: header in httplib.py
 	* only send HTTP authorization header when its needed
 
 8.3.2000 Version 1.1.1

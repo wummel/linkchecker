@@ -247,7 +247,7 @@ class HTTPConnection:
       # try one more time (the socket was closed; this will reopen)
       self.send(str)
 
-    self.putheader('Host', self.host)
+    #self.putheader('Host', self.host)
 
     if self._http_vsn == 11:
       # Issue some standard headers for better HTTP/1.1 compliance
