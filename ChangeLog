@@ -4,6 +4,15 @@
     Type: feature
     Changed: doc/install.txt, linkcheck/__init__.py, some scripts
 
+  * Add square brackets ([]) to the list of allowed URL characters
+    that do not need to be quoted.
+    Type: bugfix
+    Changed: linkcheck/url.py
+
+  * Document the return value in the help text and man pages.
+    Type: documentation
+    Changed: linkchecker, doc/{en,de,fr}/linkchecker.1
+
 2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:
