@@ -29,8 +29,6 @@ elif os.name=='nt':
 else:
     platform_net = None
 
-LOG_NET = "bk.net"
-
 
 def get_localhosts ():
     """get list of localhost names and ips"""
@@ -49,7 +47,7 @@ def get_localhosts ():
         for addr in platform_net.get_localaddrs():
             add_addrinfo(localhosts, addr)
     else:
-        bk.log.warn(LOG_NET, "platform %r network not supported", os.name)
+        bk.log.warn(bk.LOG_NET, "platform %r network not supported", os.name)
     return localhosts
 
 
@@ -85,13 +83,13 @@ def resolver_config ():
     if platform_net is not None:
         platform_net.resolver_config(config)
     else:
-        bk.log.warn(LOG_NET, "platform %r network not supported", os.name)
+        bk.log.warn(bk.LOG_NET, "platform %r network not supported", os.name)
     if not config.search_domains:
         config.search_domains.append('')
     if not config.nameservers:
         config.nameservers.append('127.0.0.1')
-    bk.log.debug(LOG_NET, "nameservers %s", config.nameservers)
-    bk.log.debug(LOG_NET, "search domains %s", config.search_domains)
+    bk.log.debug(bk.LOG_NET, "nameservers %s", config.nameservers)
+    bk.log.debug(bk.LOG_NET, "search domains %s", config.search_domains)
     return config
 
 

@@ -22,7 +22,6 @@ import struct
 import math
 import sets
 import bk.log
-import wc
 
 
 # IP Adress regular expressions
@@ -178,22 +177,22 @@ def hosts2map (hosts):
             host, mask = host.split("/")
             mask = int(mask)
             if not is_valid_bitmask(mask):
-                bk.log.error(LOG_NET,
+                bk.log.error(bk.LOG_NET,
                              "bitmask %d is not a valid network mask", mask)
                 continue
             if not is_valid_ipv4(host):
-                bk.log.error(LOG_NET,
+                bk.log.error(bk.LOG_NET,
                              "host %r is not a valid ip address", host)
                 continue
             nets.append(dq2net(host, suffix2mask(mask)))
         elif _host_netmask_re.match(host):
             host, mask = host.split("/")
             if not is_valid_ipv4(host):
-                bk.log.error(LOG_NET,
+                bk.log.error(bk.LOG_NET,
                              "host %r is not a valid ip address", host)
                 continue
             if not is_valid_ipv4(mask):
-                bk.log.error(LOG_NET,
+                bk.log.error(bk.LOG_NET,
                              "mask %r is not a valid ip network mask", mask)
                 continue
             nets.append(dq2net(host, dq2mask(mask)))
@@ -203,7 +202,7 @@ def hosts2map (hosts):
             try:
                 hostset |= resolve_host(host)
             except socket.gaierror:
-                bk.log.error(LOG_NET, "invalid host %r", host)
+                bk.log.error(bk.LOG_NET, "invalid host %r", host)
     return (hostset, nets)
 
 

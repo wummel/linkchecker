@@ -7,7 +7,6 @@ import fcntl
 import os
 import struct
 import re
-import wc
 import bk.log
 
 
@@ -50,7 +49,7 @@ class IfConfig (object):
         try:
             result = self._fcntl(func, ifreq)
         except IOError, msg:
-            bk.log.warn(LOG_NET,
+            bk.log.warn(bk.LOG_NET,
                   "error getting addr for interface %r: %s", ifname, msg)
             return None
         return socket.inet_ntoa(result[20:24])
@@ -79,7 +78,7 @@ class IfConfig (object):
         try:
             result = self._fcntl(self.SIOCGIFFLAGS, ifreq)
         except IOError, msg:
-            bk.log.warn(LOG_NET,
+            bk.log.warn(bk.LOG_NET,
                  "error getting flags for interface %r: %s", ifname, msg)
             return 0
         # extract the interface's flags from the return value
