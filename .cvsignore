@@ -1,4 +1,6 @@
 build-stamp
+.files-stamp
+test.prof
 sample.html
 *-out.*
 *.so
