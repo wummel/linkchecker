@@ -1,3 +1,9 @@
+linkchecker (1.10.1-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 10 Dec 2003 21:18:54 +0100
+
 linkchecker (1.10.0-1) unstable; urgency=low
 
   * New upstream release.
