@@ -87,9 +87,9 @@
 #line 2 "htmlparse.y"
 
 /* SAX parser, optimized for WebCleaner */
+#include "htmlsax.h"
 #include <string.h>
 #include <stdio.h>
-#include "htmlsax.h"
 
 /* bison type definitions */
 #define YYSTYPE PyObject*

@@ -1,9 +1,9 @@
 /* the beginning */
 %{
 /* SAX parser, optimized for WebCleaner */
+#include "htmlsax.h"
 #include <string.h>
 #include <stdio.h>
-#include "htmlsax.h"
 
 /* bison type definitions */
 #define YYSTYPE PyObject*

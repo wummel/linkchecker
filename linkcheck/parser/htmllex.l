@@ -3,9 +3,9 @@
 */
 
 %{
+#include "htmlsax.h"
 #include <string.h>
 #include <stdlib.h>
-#include "htmlsax.h"
 
 #define YYSTYPE PyObject*
 #define YY_EXTRA_TYPE UserData*

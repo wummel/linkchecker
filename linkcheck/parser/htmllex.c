@@ -6827,9 +6827,9 @@ char *yytext;
    Unrecognizable character data is passed on as a TEXT token. 
 */
 #line 6 "htmllex.l"
+#include "htmlsax.h"
 #include <string.h>
 #include <stdlib.h>
-#include "htmlsax.h"
 
 #define YYSTYPE PyObject*
 #define YY_EXTRA_TYPE UserData*
