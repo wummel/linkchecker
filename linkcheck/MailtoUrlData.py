@@ -15,7 +15,7 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import re,string,DNS,sys,Config,cgi,urllib,linkcheck
+import os,re,string,DNS,sys,Config,cgi,urllib,linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
@@ -27,7 +27,8 @@ headers = r"\?(%s=%s(&%s=%s)*)$" % (word, word, word, word)
 headers_re = re.compile(headers)
 
 # parse /etc/resolv.conf (only on UNIX systems)
-DNS.ParseResolvConf()
+if os.name=='posix':
+    DNS.ParseResolvConf()
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"

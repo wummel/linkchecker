@@ -48,6 +48,11 @@ class LCDistribution(Distribution):
         Distribution.run_commands(self)
 
     def check_ssl(self):
+        if 'bdist_wininst' in self.commands and os.name!='nt':
+            self.announce(
+"""bdist_wininst command found on non-Windows platform.
+Disabling SSL compilation""")
+            return
         ok = 0
         c = self.get_command_obj('build_ext')
         c.ensure_finalized()
