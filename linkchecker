@@ -261,7 +261,7 @@ Specifying 'all' is an alias for specifying all available loggers.
 The option can be given multiple times to debug with more
 than one logger.
 
-For accurate results, threading will be disabled during debug runs.""") %\
+For accurate results, threading will be disabled during debug runs.""") % \
 {"lognamelist": linkcheck.lognamelist})
 group.add_option("--profile", action="store_true", dest="profile",
                  help=_(
@@ -279,15 +279,19 @@ group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
                  help=_(
 """Check recursively all links up to given depth. A negative depth
 will enable inifinite recursion. Default depth is infinite."""))
-group.add_option("-i", "--intern", type="string", action="append", dest="intern",
-                 help=_(
+group.add_option("-i", "--intern", type="string", action="append",
+                 dest="intern", help=_(
 """ regex, --intern=regex
 Assume URLs that match the given expression as internal.
 LinkChecker descends recursively only to internal URLs, not to
 external."""))
-group.add_option("-e", "--extern", type="string", action="append", dest="extern",
-                 help=_(
+group.add_option("-e", "--extern", type="string", action="append",
+                 dest="extern", help=_(
 """Assume urls that match the given expression as external.
+Only internal HTML links are checked recursively."""))
+group.add_option("--extern-strict", type="string", action="append",
+                 dest="externstrict", help=_(
+"""Assume urls that match the given expression as strict external.
 Only internal HTML links are checked recursively."""))
 group.add_option("-s", "--extern-strict-all", action="store_true",
                  dest="externstrictall", help=_(
@@ -309,8 +313,8 @@ group.add_option("-a", "--anchors", action="store_true", dest="anchors",
 """Check HTTP anchor references. This option applies to both internal
 and external urls. Default is don't check anchors.
 This option implies -w because anchor errors are always warnings."""))
-group.add_option("--no-anchor-caching", action="store_false", dest="anchorcaching",
-                 help=_(
+group.add_option("--no-anchor-caching", action="store_false",
+                 dest="anchorcaching", help=_(
 """Treat url#anchora and url#anchorb as equal on caching. This
 is the default browser behaviour, but it's not specified in
 the URI specification. Use with care."""))
@@ -374,6 +378,10 @@ if options.anchors is not None:
     config["warnings"] = True
 if options.extern:
     pats = [linkcheck.get_link_pat(arg) for arg in options.extern]
+    config["externlinks"].extend(pats)
+if options.externstrict:
+    pats = [linkcheck.get_link_pat(arg, strict=True) \
+            for arg in options.externstrict]
     config["externlinks"].extend(pats)
 if options.output:
     if linkcheck.Loggers.has_key(options.output):
