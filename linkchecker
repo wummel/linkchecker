@@ -482,7 +482,7 @@ if options.pause is not None:
 if options.profile is not None:
     do_profile = options.profile
 if options.quiet is not None:
-    config["quiet"] = options.quiet
+    config['logger'] = config.logger_new('none')
 if options.recursionlevel is not None:
     config["recursionlevel"] = options.recursionlevel
 if options.externstrictall is not None:

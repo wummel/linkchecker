@@ -124,7 +124,6 @@ class Configuration (dict):
         }
         self['none'] = {}
         self['logger'] = self.logger_new('text')
-        self["quiet"] = False
         self["warningregex"] = None
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
@@ -229,7 +228,8 @@ class Configuration (dict):
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
-            self["quiet"] = cfgparser.getboolean(section, "quiet")
+            if cfgparser.getboolean(section, "quiet"):
+                self['logger'] = self.logger_new('none')
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:

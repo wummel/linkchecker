@@ -140,8 +140,7 @@ class Consumer (object):
         """start output of all configured loggers"""
         self.lock.acquire()
         try:
-            if not self.config['quiet']:
-                self.logger.start_output()
+             self.logger.start_output()
             for logger in self.fileoutput:
                 logger.start_output()
         finally:
@@ -157,9 +156,8 @@ class Consumer (object):
                 self.errors = True
             if url_data.warning and self.config["warnings"]:
                 self.warnings = True
-            if not self.config['quiet'] and \
-              (self.config["verbose"] or not url_data.valid or
-               (url_data.warning and self.config["warnings"])):
+            if (self.config["verbose"] or not url_data.valid or
+                (url_data.warning and self.config["warnings"])):
                 self.logger.new_url(url_data)
                 for log in self.fileoutput:
                     log.new_url(url_data)
@@ -173,8 +171,7 @@ class Consumer (object):
         """end output of all configured loggers"""
         self.lock.acquire()
         try:
-            if not self.config['quiet']:
-                self.logger.end_output(linknumber=self.linknumber)
+            self.logger.end_output(linknumber=self.linknumber)
             for logger in self.fileoutput:
                 logger.end_output(linknumber=self.linknumber)
         finally:
