@@ -7,8 +7,9 @@ linkchecker (1.3.12) unstable; urgency=low
   * merge all ignored schemes into one class
   * New Python Policy (fixed in NMU) (Closes: #118254)
   * fixed manpage description of the -f option (Closes: #122159)
+  * fix setup.py to work with Python 2.2
 
- -- Bastian Kleineidam <calvin@debian.org>  Mon, 10 Dec 2001 14:52:05 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 27 Dec 2001 20:51:47 +0100
 
 linkchecker (1.3.11) unstable; urgency=low
 
