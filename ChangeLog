@@ -38,6 +38,11 @@
     Changed: linkcheck/checker/consumer.py, linkcheck/checker/cache.py
     Added: linkcheck/lock.py
 
+  * Always reinitialize stored HTTP headers on redirects; prevents
+    a false alarm about recursive redirects.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
 2.5 "Spanglish" (released 4.3.2005)
 
   * Added spanish translation, thanks to Servilio Afre Puentes.
