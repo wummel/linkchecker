@@ -274,7 +274,7 @@ class Configuration(UserDict.UserDict):
         if not self.data["quiet"]:
             self.data["log"].endOfOutput(linknumber=self.data['linknumber'])
         for log in self.data["fileoutput"]:
-            log.endOfOutput(linknumber=self.linknumber)
+            log.endOfOutput(linknumber=self.data['linknumber'])
 
     def connectNntp_NoThreads(self):
         if not self.data.has_key("nntp"):
