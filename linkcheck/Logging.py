@@ -383,3 +383,24 @@ class SQLLogger(StandardLogger):
 
     def endOfOutput(self):
         self.fd = None
+
+
+class BlacklistLogger:
+    """Updates a blacklist of wrong links"""
+    def __init__(self, filename):
+        self.blacklist = {}
+        self.filename = filename
+
+    def init(self):
+        """initialize the blacklist"""
+        pass
+
+    def newUrl(self, urlData):
+        if urlData.valid:
+            self.blacklist[urlData.getCacheKey()] = None
+        elif not urlData.cached:
+            self.blacklist[urlData.getCacheKey()] = urlData
+
+    def endOfOutput(self):
+        """write the blacklist"""
+        pass

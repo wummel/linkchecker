@@ -84,16 +84,18 @@ OPTIONS
 
 Notes = """NOTES
 o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL
-  starts with "www." resp. "ftp.".
-  You can also give local files as arguments.
+  starts with "www." resp. "ftp."
+  You can also give local files as arguments
 o If you have your system configured to automatically establish a
   connection to the internet (e.g. with diald), it will connect when
-  checking links not pointing to your local host.
-  Use the -s and -i options to prevent this (see EXAMPLES).
+  checking links not pointing to your local host
+  Use the -s and -i options to prevent this (see EXAMPLES)
 o Javascript links are currently ignored
 o If your platform does not support threading, linkchecker assumes -t0
 o You can supply multiple user/password pairs in a configuration file
-o Cookies are not accepted by LinkChecker.
+o Cookies are not accepted by LinkChecker
+o When checking news: links the given news host doesn't need to be the
+  same as the host of the user browsing your pages!
 """
 
 Examples = """EXAMPLES

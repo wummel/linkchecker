@@ -1,7 +1,5 @@
 High priority
 
-o Stable release? After 1.1.4 there will be 1.2.
-
 o DNS (and some URLs) seem to hang sometimes. Why?
 
 o I want to be able to supply a "break" command even when multiple

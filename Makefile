@@ -1,8 +1,8 @@
 VERSION=$(shell ./setup.py -V)
-#HOST=treasure.calvinsplayground.de
+HOST=treasure.calvinsplayground.de
 PROXY=
 #PROXY=-P$(HOST):5050
-HOST=fsinfo.cs.uni-sb.de
+#HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
@@ -20,8 +20,11 @@ clean:
 
 install:
 	./setup.py install --prefix=/tmp/usr --exec-prefix=/tmp/usr
+	# do what I mean, Distutils!
 	cp -a /tmp/usr/* $(DESTDIR)/usr
-	install -c -m 644 linkcheckerrc $(DESTDIR)/etc
+	# remove following line if Distutils have script support
+	install -c m 755 linkchecker $(DESTDIR)/usr/bin/
+	install -c -m 644 linkcheckerrc $(DESTDIR)/etc/
 	install -c -m 644 DNS/README $(DESTDIR)/usr/share/doc/$(PACKAGE)/README.dns
 
 dist:
