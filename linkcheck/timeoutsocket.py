@@ -27,9 +27,9 @@
 """Timeout Socket
 
 This module enables a timeout mechanism on all TCP connections.  It
-does this by inserting a shim on top of the socket module.  After
-this module has been imported, all socket creation goes through this
-shim.  As a result, every TCP connection will support a timeout.
+does this by inserting a shim into the socket module.  After this module
+has been imported, all socket creation goes through this shim.  As a
+result, every TCP connection will support a timeout.
 
 The beauty of this method is that it immediately and transparently
 enables the entire python library to support timeouts on TCP sockets.
@@ -51,13 +51,6 @@ this module does not change the default behavior of a socket.  The
 timeout mechanism only activates when the timeout has been set to
 a numeric value.  (This behavior mimics the behavior of the
 select.select() function.)
-
-This module works by replacing the socket module in the sys.modules
-array.  As a result, any reference to the original socket module
-will instead reference this module.  Whenever any creates a TCP
-socket using the socket.socket() function, this module returns an
-instance of the TimeoutSocket object.  It is this object that handles
-the timeouts.  
 
 This module implements two classes: TimeoutSocket and TimeoutFile.
 
@@ -86,7 +79,7 @@ connections that will timeout after 30 seconds:
 
 Note:  When used in this manner, the connect() routine may still
 block because it happens before the timeout is set.  To avoid
-this, use the 'timeout.setDefaultSocketTimeout()' function.
+this, use the 'timeoutsocket.setDefaultSocketTimeout()' function.
 
 Good Luck!
 
@@ -94,6 +87,16 @@ Good Luck!
 
 #
 # Revision history
+#    1.21 Added connect_ex() function.
+#         Updated module docstring a bit.
+#         Narrower context for the shim effect -- it's less invasive.
+#    1.20 Updated these comments.
+#    1.19 Changed the name where we hide the original socket().
+#    1.18 Bug fix for Windows connected error code from Oleg and Mtea.
+#         Changed the way timeoutsocket replaces the socket() function to
+#         be less intrusive.
+#         Changed read() and readline() preserve data across timeout
+#         exceptions.  Readlines() may still lose data.
 #    1.17 Added these comments.
 #    1.16 Better handling of non-blocking sockets in connect,
 #         accept, recv, and send.
@@ -128,13 +131,13 @@ __author__  = "Timothy O'Malley <timo@alum.mit.edu>"
 #
 # Imports
 #
-import select
-try:
-    from _timeoutsocket import *
-except ImportError:
-    from socket import *
-    _socket = socket
-    del socket
+import select, string
+import socket
+if not hasattr(socket, "_no_timeoutsocket"):
+    _socket = socket.socket
+else:
+    _socket = socket._no_timeoutsocket
+
 
 #
 # Set up constants to test for Connected and Blocking operations.
@@ -143,7 +146,7 @@ except ImportError:
 #
 import os
 if os.name == "nt":
-    _IsConnected = ( 10022, )
+    _IsConnected = ( 10022, 10056 )
     _ConnectBusy = ( 10035, )
     _AcceptBusy  = ( 10035, )
 else:
@@ -168,7 +171,7 @@ def getDefaultSocketTimeout():
 #
 # Exceptions for socket errors and timeouts
 #
-Error = error
+Error = socket.error
 class Timeout(Exception):
     pass
 
@@ -176,14 +179,15 @@ class Timeout(Exception):
 #
 # Factory function
 #
-def socket(family=AF_INET, type=SOCK_STREAM, proto=None):
+from socket import AF_INET, SOCK_STREAM
+def timeoutsocket(family=AF_INET, type=SOCK_STREAM, proto=None):
     if family != AF_INET or type != SOCK_STREAM:
         if proto:
             return _socket(family, type, proto)
         else:
             return _socket(family, type)
     return TimeoutSocket( _socket(family, type), _DefaultTimeout )
-# end socket
+# end timeoutsocket
 
 #
 # The TimeoutSocket class definition
@@ -221,6 +225,15 @@ class TimeoutSocket:
         return self._sock.setblocking(blocking)
     # end set_timeout
 
+    def connect_ex(self, addr):
+        errcode = 0
+        try:
+            self.connect(addr)
+        except Error, why:
+            errcode = why[0]
+        return errcode
+    # end connect_ex
+        
     def connect(self, addr, port=None, dumbhack=None):
         # In case we were called as connect(host, port)
         if port != None:  addr = (addr, port)
@@ -368,10 +381,9 @@ class TimeoutFile:
     # end write
 
     def read(self, size=-1):
-        data = self._sock._inqueue
-        self._sock._inqueue = ""
+        _sock = self._sock
         while 1:
-            datalen = len(data)
+            datalen = len(_sock._inqueue)
             if datalen >= size > 0:
                 break 
             bufsize = self._bufsize
@@ -380,21 +392,22 @@ class TimeoutFile:
             buf = self.recv(bufsize)
             if not buf:
                 break
-            data = data + buf
+            _sock._inqueue = _sock._inqueue + buf
+        data = _sock._inqueue
+        _sock._inqueue = ""
         if size > 0 and datalen > size:
-            self._sock._inqueue = data[size:]
+            _sock._inqueue = data[size:]
             data = data[:size]
         return data
     # end read
 
     def readline(self, size=-1):
-        data = self._sock._inqueue
-        self._sock._inqueue = ""
+        _sock = self._sock
         while 1:
-            idx = data.find("\n")
+            idx = string.find(_sock._inqueue, "\n")
             if idx >= 0:
                 break
-            datalen = len(data)
+            datalen = len(_sock._inqueue)
             if datalen >= size > 0:
                 break
             bufsize = self._bufsize
@@ -403,14 +416,16 @@ class TimeoutFile:
             buf = self.recv(bufsize)
             if not buf:
                 break
-            data = data + buf
+            _sock._inqueue = _sock._inqueue + buf
 
+        data = _sock._inqueue
+        _sock._inqueue = ""
         if idx >= 0:
             idx = idx + 1
-            self._sock._inqueue = data[idx:]
+            _sock._inqueue = data[idx:]
             data = data[:idx]
         elif size > 0 and datalen > size:
-            self._sock._inqueue = data[size:]
+            _sock._inqueue = data[size:]
             data = data[:size]
         return data
     # end readline
@@ -421,7 +436,7 @@ class TimeoutFile:
             line = self.readline()
             if not line: break
             result.append(line)
-        return line
+        return result
     # end readlines
 
     def flush(self):  pass
@@ -430,15 +445,12 @@ class TimeoutFile:
 
 
 #
-# Silently replace the standard socket module
+# Silently replace the socket() builtin function with
+# our timeoutsocket() definition.
 #
-import sys
-if sys.modules["socket"].__name__ != __name__:
-    me = sys.modules[__name__]
-    sys.modules["_timeoutsocket"] = sys.modules["socket"]
-    sys.modules["socket"]  = me
-    for mod in sys.modules.values():
-        if hasattr(mod, "socket") and type(mod.socket) == type(me):
-            mod.socket = me
-
+if not hasattr(socket, "_no_timeoutsocket"):
+    socket._no_timeoutsocket = socket.socket
+    socket.socket = timeoutsocket
+del socket
+socket = timeoutsocket
 # Finis
