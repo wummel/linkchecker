@@ -46,9 +46,6 @@ cleandeb:
 	rm -f debian/*.debhelper debian/{files,substvars}
 	rm -f configure-stamp build-stamp
 
-config:	MANIFEST
-	$(PYTHON) setup.py config -lcrypto
-
 MANIFEST: MANIFEST.in setup.py
 	$(PYTHON) setup.py sdist --manifest-only
 
@@ -56,7 +53,7 @@ locale:
 	$(MAKE) -C po
 
 # to build in the current directory
-localbuild:
+localbuild: MANIFEST
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
 	cp -f build/lib.linux-i686-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
@@ -88,7 +85,7 @@ release: releasecheck dist upload homepage
 homepage:
 	$(MAKE) -C doc/en homepage
 
-dist: locale config
+dist: locale MANIFEST
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 
 releasecheck:
@@ -123,4 +120,4 @@ reindent:
 	$(PYTHON) config/reindent.py -r -v linkcheck
 
 .PHONY: all clean cleandeb distclean files upload test timeouttest locale
-.PHONY: config deb_local deb_signed tar releasecheck pycheck pylint reindent
+.PHONY: deb_local deb_signed tar releasecheck pycheck pylint reindent
