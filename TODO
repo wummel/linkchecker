@@ -1,7 +1,5 @@
 Next releases:
 
-- IDN test (eg. www.wölfel.de)
-
 - rethink intern/extern stuff
 
 - when an URL is found in the cache and it has a broken anchor, the broken
