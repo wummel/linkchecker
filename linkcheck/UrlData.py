@@ -95,6 +95,7 @@ class UrlData:
                   column = 0,
 		  name = ""):
         self.urlName = urlName
+        self.anchor = None
         self.recursionLevel = recursionLevel
         self.config = config
         self.parentName = parentName
@@ -172,6 +173,7 @@ class UrlData:
                                   % str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()
+        self.anchor = self.urlparts[4]
 
 
     def logMe (self):
@@ -241,8 +243,8 @@ class UrlData:
         debug(BRING_IT_ON, "checking connection")
         try:
             self.checkConnection()
-            if self.urlparts and self.config["anchors"]:
-                self.checkAnchors(self.urlparts[4])
+            if self.anchor and self.config["anchors"]:
+                self.checkAnchors(self.anchor)
         except tuple(ExcList):
             type, value, tb = sys.exc_info()
             debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
@@ -290,6 +292,7 @@ class UrlData:
 
 
     def getCacheKey (self):
+        # use that the host is lowercase
         if self.urlparts:
             return urlparse.urlunsplit(self.urlparts)
         return None
@@ -366,10 +369,21 @@ class UrlData:
 
 
     def checkContent (self, warningregex):
+        """if a warning expression was given, call this function to check it
+           against the content of this url"""
         match = warningregex.search(self.getContent())
         if match:
             self.setWarning(linkcheck._("Found %s in link contents") % \
                             `match.group()`)
+
+
+    def checkSize (self, sizebytes):
+        """if a maximum size was given, call this function to check it
+           against the content size of this url"""
+        if sizebytes >= self.config["warnsizebytes"]:
+            self.setWarning(linkcheck._("Content size %s is larger than %s")%\
+                         (StringUtil.strsize(sizebytes),
+                          StringUtil.strsize(self.config["warnsizebytes"]))
 
 
     def parseUrl (self):

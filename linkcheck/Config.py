@@ -156,6 +156,7 @@ class Configuration (UserDict.UserDict):
         self['log'] = self.newLogger('text')
         self["quiet"] = 0
         self["warningregex"] = None
+        self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER",None)
         self.urlCache = {}
         self.robotsTxtCache = {}
@@ -454,27 +455,27 @@ class Configuration (UserDict.UserDict):
                 for opt in cfgparser.options(key):
                     try:
                         self[key][opt] = cfgparser.get(key, opt)
-                    except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+                    except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
                 try:
 		    self[key]['fields'] = map(string.strip,
 		         cfgparser.get(key, 'fields').split(','))
-                except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+                except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             log = cfgparser.get(section, "log")
             if linkcheck.log.Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
                 self.warn(linkcheck._("invalid log option '%s'") % log)
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
                 self["verbose"] = 1
                 self["warnings"] = 1
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["quiet"] = cfgparser.getboolean(section, "quiet")
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["warnings"] = cfgparser.getboolean(section, "warnings")
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             filelist = cfgparser.get(section, "fileoutput").split(",")
             for arg in filelist:
@@ -483,7 +484,7 @@ class Configuration (UserDict.UserDict):
                 if linkcheck.log.Loggers.has_key(arg) and arg != "blacklist":
 		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
-	except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
 
         section="checking"
         try:
@@ -492,31 +493,33 @@ class Configuration (UserDict.UserDict):
                 self.disableThreading()
             else:
                 self.enableThreading(num)
-        except ConfigParser.Error: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error: debug(NIGHTMARE, msg)
         try: self["anchors"] = cfgparser.getboolean(section, "anchors")
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
                 self.error(linkcheck._("illegal recursionlevel number %d") % num)
             self["recursionlevel"] = num
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
             self["robotstxt"] = cfgparser.getboolean(section, "robotstxt")
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["strict"] = cfgparser.getboolean(section, "strict")
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             warn = cfgparser.get(section, "warningregex")
             if warn:
                 self["warningregex"] = re.compile(warn)
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        try: self["warnsizebytes"] = int(cfgparser.get(section, "warnsizebytes"))
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             self["nntpserver"] = cfgparser.get(section, "nntpserver")
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             self["interactive"] = cfgparser.getboolean(section, "interactive")
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
 
         section = "authentication"
 	try:
@@ -529,7 +532,7 @@ class Configuration (UserDict.UserDict):
 		                                  'user': auth[1],
 						  'password': auth[2]})
                 i += 1
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
 
         section = "filtering"
         try:
@@ -541,8 +544,8 @@ class Configuration (UserDict.UserDict):
                     break
                 self["externlinks"].append(linkcheck.getLinkPat(tuple[0], strict=int(tuple[1])))
                 i += 1
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["internlinks"].append(linkcheck.getLinkPat(cfgparser.get(section, "internlinks")))
-        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
-	except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
+	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)

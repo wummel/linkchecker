@@ -140,6 +140,8 @@
 # in any HTML files.
 #warningregex=Oracle DB Error
 # Basic NNTP server. Overrides NNTP_SERVER environment variable.
+# warn if size info exceeds given maximum of bytes
+#warnsizebytes=2000
 #nntpserver=
 # interactive operation
 #interactive=0
