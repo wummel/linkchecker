@@ -1,6 +1,9 @@
 1.8.7
-  * #define YY_NO_UNISTD_H on Windows systems, fixes build error with Visual
-    Studio compiler
+  * #define YY_NO_UNISTD_H on Windows systems, fixes build error with
+    Visual Studio compiler
+    Changed files: setup.py
+  * use python2.2 headers for parser compile, not 2.1.
+    Changed files: linkcheck/parser/Makefile
 
 1.8.6
   * include a fixed robotparser.py (from Python 2.2 CVS maint branch)
