@@ -207,6 +207,68 @@ def HandleManTypes(r, conn):
         r.writeRecord(conn)
 
 #---------------------------------------------------------------------------
+
+class FastCGIWriter:
+    def __init__(self, rec, conn):
+        self.record = rec
+        self.conn = conn
+        self.closed = 0
+
+    def close(self):
+	if not self.closed:
+	    self.closed = 1
+            self.record.content=""
+            self.record.writeRecord(self.conn)
+
+    def isatty(self):
+	if self.closed:
+            raise ValueError, "I/O operation on closed file"
+	return 0
+
+    def seek(self, pos, mode = 0):
+	if self.closed:
+	    raise ValueError, "I/O operation on closed file"
+
+    def tell(self):
+	if self.closed:
+            raise ValueError, "I/O operation on closed file"
+	return 0
+
+    def read(self, n = -1):
+	if self.closed:
+	    raise ValueError, "I/O operation on closed file"
+	return ""
+
+    def readline(self, length=None):
+	if self.closed:
+		raise ValueError, "I/O operation on closed file"
+	return ""
+
+    def readlines(self):
+	if self.closed:
+		raise ValueError, "I/O operation on closed file"
+	return []
+
+    def write(self, s):
+	if self.closed:
+	    raise ValueError, "I/O operation on closed file"
+        while s:
+            chunk, s = self.getNextChunk(s)
+            self.record.content = chunk
+            self.record.writeRecord(self.conn)
+
+    def getNextChunk(self, data):
+        chunk = data[:8192]
+        data = data[8192:]
+        return chunk, data
+
+    def writelines(self, list):
+	self.write(string.joinfields(list, ''))
+
+    def flush(self):
+	if self.closed:
+	    raise ValueError, "I/O operation on closed file"
+
 #---------------------------------------------------------------------------
 
 
@@ -231,7 +293,7 @@ class FCGI:
             _startup()
         if not isFCGI():
             self.haveFinished = 1
-            self.inp, self.out, self.err, self.env = \
+            self.stdin, self.out, self.err, self.env = \
                                 sys.stdin, sys.stdout, sys.stderr, os.environ
             return
 
@@ -299,10 +361,16 @@ class FCGI:
                     data=data+r.content
         # end of while remaining:
 
-        self.inp = sys.stdin  = StringIO(stdin)
-        self.err = sys.stderr = StringIO()
-        self.out = sys.stdout = StringIO()
+        self.stdin = sys.stdin  = StringIO(stdin)
         self.data = StringIO(data)
+        r=record()
+        r.recType = FCGI_STDERR
+        r.reqId = self.requestId
+        self.err = sys.stderr = FastCGIWriter(r, self.conn)
+        r = record()
+        r.recType = FCGI_STDOUT
+        r.reqId = self.requestId
+        self.out = sys.stdout = FastCGIWriter(r, self.conn)
 
     def __del__(self):
         self.Finish()
@@ -310,28 +378,8 @@ class FCGI:
     def Finish(self, status=0):
         if not self.haveFinished:
             self.haveFinished = 1
-
-            self.err.seek(0,0)
-            self.out.seek(0,0)
-
-            r=record()
-            r.recType = FCGI_STDERR
-            r.reqId = self.requestId
-            data = self.err.read()
-            while data:
-                chunk, data = self.getNextChunk(data)
-                r.content = chunk
-                r.writeRecord(self.conn)
-            r.content="" ; r.writeRecord(self.conn)      # Terminate stream
-
-            r.recType = FCGI_STDOUT
-            data = self.out.read()
-            while data:
-                chunk, data = self.getNextChunk(data)
-                r.content = chunk
-                r.writeRecord(self.conn)
-            r.content="" ; r.writeRecord(self.conn)      # Terminate stream
-
+            self.err.close()
+            self.out.close()
             r=record()
             r.recType=FCGI_END_REQUEST
             r.reqId=self.requestId
@@ -340,7 +388,6 @@ class FCGI:
             r.writeRecord(self.conn)
             self.conn.close()
 
-
     def getFieldStorage(self):
         method = 'GET'
         if self.env.has_key('REQUEST_METHOD'):
@@ -348,12 +395,8 @@ class FCGI:
         if method == 'GET':
             return cgi.FieldStorage(environ=self.env, keep_blank_values=1)
         else:
-            return cgi.FieldStorage(fp=self.inp, environ=self.env, keep_blank_values=1)
+            return cgi.FieldStorage(fp=self.stdin, environ=self.env, keep_blank_values=1)
 
-    def getNextChunk(self, data):
-        chunk = data[:8192]
-        data = data[8192:]
-        return chunk, data
 
 
 Accept = FCGI       # alias for backward compatibility

@@ -52,10 +52,6 @@ class StandardLogger:
         self.errors=0
         self.warnings=0
         self.fd = fd
-        if fd==sys.stdout or fd==sys.stderr:
-            self.willclose=0
-        else:
-            self.willclose=1
 
 
     def init(self):
@@ -118,11 +114,8 @@ class StandardLogger:
 	              (" (%.3f seconds)" % (self.stoptime - self.starttime))+
                       "\n")
         self.fd.flush()
-        self.close()
+        self.fd = None
 
-    def close(self):
-        if self.willclose:
-            self.fd.close()
 
 
 class HtmlLogger(StandardLogger):
@@ -212,7 +205,7 @@ class HtmlLogger(StandardLogger):
               Config.Email+"\">"+Config.Email+
               "</a>.</font></small></body></html>")
         self.fd.flush()        
-        self.close()
+        self.fd = None
 
 
 class ColoredLogger(StandardLogger):
@@ -357,7 +350,7 @@ class GMLLogger(StandardLogger):
         # end of output
         self.fd.write("]\n")
         self.fd.flush()
-        self.close()
+        self.fd = None
 
 
 class SQLLogger(StandardLogger):
@@ -388,4 +381,4 @@ class SQLLogger(StandardLogger):
         self.fd.flush()
 
     def endOfOutput(self):
-        self.close()
+        self.fd = None

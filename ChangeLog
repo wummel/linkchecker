@@ -1,3 +1,8 @@
+25.3.2000
+	* FastCGI script fixes
+	* do not close the logging file descriptor
+	* patch for fcgi.py: flush output immediately
+
 24.3.2000
 	* first version of FastCGI script
 	* do not install distutils
