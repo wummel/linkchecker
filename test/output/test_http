@@ -4,6 +4,7 @@ valid
 url http://www.garantiertnixgutt.bla
 name bad url
 warning Missing '/' at end of URL
+Server does not support HEAD request (got 500 status), falling back to GET
 error
 url http://www.heise.de
 name ok

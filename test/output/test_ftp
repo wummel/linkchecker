@@ -4,13 +4,13 @@ valid
 url ftp:/ftp.debian.org/pub
 error
 url ftp://ftp.debian.org/pub
-info 220 ProFTPD 1.2.0pre10 Server (ftp1.sourceforge.net) [216.136.171.195]
+info 220 saens.debian.org FTP server (vsftpd)
 valid
 url ftp://ftp.debian.org//pub
-info 220 ProFTPD 1.2.0pre10 Server (ftp1.sourceforge.net) [216.136.171.195]
+info 220 saens.debian.org FTP server (vsftpd)
 valid
 url ftp://ftp.debian.org////////pub
-info 220 ProFTPD 1.2.0pre10 Server (ftp1.sourceforge.net) [216.136.171.195]
+info 220 saens.debian.org FTP server (vsftpd)
 valid
 url ftp:///ftp.debian.org/pub
 cached
