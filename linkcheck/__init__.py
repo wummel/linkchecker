@@ -63,5 +63,5 @@ def checkUrls (config):
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-        warn(i18n._("keyboard interrupt"))
+        warn(i18n._("keyboard interrupt; waiting for active connections to finish"))
         raise
