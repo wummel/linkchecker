@@ -116,6 +116,13 @@ class MyInstallData (install_data, object):
                 mode |= 044
                 os.chmod(path, mode)
 
+    def copy_file (self, filename, dirname):
+         (out, _) = super(MyInstallData, self).copy_file(filename, dirname)
+         # match for man pages
+         if re.search(r'/man/man\d/.+\.\d$', out):
+             return (out+".gz", _)
+         return (out, _)
+
 
 class MyDistribution (distklass, object):
 
