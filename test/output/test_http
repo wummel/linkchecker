@@ -2,23 +2,25 @@ test_http
 url file:///home/calvin/projects/linkchecker/test/html/http.html
 valid
 url http://www.garantiertnixgutt.bla
-warning Missing '/' at end of URL
+warning Path is empty
 error
 url http://www.heise.de
-warning Missing '/' at end of URL
+warning Path is empty
 valid
 url http:/www.heise.de
 error
 url http:www.heise.de
 error
 url http://
-warning Missing '/' at end of URL
+warning Path is empty
 error
 url http:/
+cached
+warning Path is empty
 error
 url http:
 cached
-warning Missing '/' at end of URL
+warning Path is empty
 error
 url http://www.blubb.de/stalter&sohn
 error
@@ -29,11 +31,11 @@ warning anchor #isnix not found
 valid
 url HtTP://WWW.hEIsE.DE
 cached
-warning Missing '/' at end of URL
+warning Path is empty
 valid
 url HTTP://WWW.HEISE.DE
 cached
-warning Missing '/' at end of URL
+warning Path is empty
 valid
 url http://www.heise.de/?quoted=ü
 valid
