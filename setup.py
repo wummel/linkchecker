@@ -102,7 +102,7 @@ class MyInstall (install, object):
 
 
 class MyInstallData (install_data, object):
-    """My own data installer to handle permissions and .man pages"""
+    """My own data installer to handle permissions"""
 
     def run (self):
         super(MyInstallData, self).run()
@@ -115,13 +115,6 @@ class MyInstallData (install_data, object):
                     mode |= 011
                 mode |= 044
                 os.chmod(path, mode)
-
-    def copy_file (self, filename, dirname):
-        (out, _) = install_data.copy_file(self, filename, dirname)
-        # match for man pages
-        if re.search(r'/man/man\d/.+\.\d$', out):
-            return (out+".gz", _)
-        return (out, _)
 
 
 class MyDistribution (distklass, object):
@@ -230,11 +223,11 @@ o a (Fast)CGI web interface (requires HTTP server)
        scripts = scripts,
        data_files = [
          ('share/locale/de/LC_MESSAGES',
-             ['share/locale/de/LC_MESSAGES/linkcheck.mo']),
+             ['share/locale/de/LC_MESSAGES/linkchecker.mo']),
          ('share/locale/fr/LC_MESSAGES',
-             ['share/locale/fr/LC_MESSAGES/linkcheck.mo']),
+             ['share/locale/fr/LC_MESSAGES/linkchecker.mo']),
          ('share/locale/nl/LC_MESSAGES',
-             ['share/locale/nl/LC_MESSAGES/linkcheck.mo']),
+             ['share/locale/nl/LC_MESSAGES/linkchecker.mo']),
          ('share/linkchecker', ['config/linkcheckerrc',
                                 'config/logging.conf', ]),
          ('share/linkchecker/examples',
