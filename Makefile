@@ -24,15 +24,17 @@ all:
 	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
-	-$(PYTHON) setup.py clean --all # ignore errors of this command
+# ignore errors of this command
+	-$(PYTHON) setup.py clean --all
 	$(MAKE) -C po clean
 	rm -f linkcheck/parser/htmlsax.so
 	find . -name '*.py[co]' | xargs rm -f
 
 distclean: clean cleandeb
-	rm -rf dist build # just to be sure clean also the build dir
+# just to be sure clean also the build dir
+	rm -rf dist build
 	rm -f VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
-	# clean aborted dist builds and -out files
+# clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-out* $(PACKAGE).prof $(PACKAGE)-md5sums.txt
 
 cleandeb:
@@ -43,11 +45,8 @@ cleandeb:
 config:
 	$(PYTHON) setup.py config -lcrypto
 
-dist:	locale config
+dist:	distclean locale config
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
-	rm -f $(MD5SUMS)
-	md5sum dist/* > $(MD5SUMS)
-	for f in dist/*; do gpg --detach-sign --armor $$f; done
 
 # to build in the current directory (assumes python 2.3)
 localbuild:
@@ -58,19 +57,12 @@ localbuild:
 
 # produce the .deb Debian package
 deb_local: cleandeb
-	# standard for local use
+# standard for local use
 	fakeroot debian/rules binary
 
-deb_localsigned:
-	debuild -sgpg -pgpg -k32EC6F3E -r"fakeroot --"
-
 deb_signed: cleandeb
-	# ready for upload, signed with my GPG key
+# ready for upload, signed with my GPG key
 	env CVSROOT=:ext:calvin@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k32EC6F3E -r"fakeroot --"
-
-deb_unsigned: cleandeb
-	# same thing, but unsigned (for local archives)
-	env CVSROOT=:ext:calvin@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -us -uc -r"fakeroot --"
 
 files:	locale localbuild
 	env http_proxy="" LANG=C $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
@@ -80,10 +72,13 @@ files:	locale localbuild
 VERSION:
 	echo $(VERSION) > VERSION
 
-upload: distclean dist files VERSION homepage
+upload:
+	rm -f $(MD5SUMS)
+	md5sum dist/* > $(MD5SUMS)
+	for f in dist/*; do gpg --detach-sign --armor $$f; done
 	ncftpput upload.sourceforge.net /incoming dist/*
 
-homepage:
+homepage: VERSION
 	cp ChangeLog $(HTMLDIR)/changes.txt
 	cp README $(HTMLDIR)/readme.txt
 	cp linkchecker-out.*.gz $(HTMLDIR)
