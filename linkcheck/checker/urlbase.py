@@ -212,14 +212,23 @@ class UrlBase (object):
         self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
         assert isinstance(self.cache_content_key, unicode), \
                self.cache_content_key
+        linkcheck.log.debug(linkcheck.LOG_CACHE, "Content cache key %r",
+                            self.cache_content_key)
         # construct cache key
-        if self.consumer.config["anchorcaching"]:
+        if self.consumer.config["anchorcaching"] and \
+           self.consumer.config["anchors"]:
             # do not ignore anchor
-            self.cache_url_key = self.url
+            parts = self.urlparts[:]
+            parts[4] = self.anchor
+            if self.userinfo:
+                parts[1] = self.userinfo+"@"+parts[1]
+            self.cache_url_key = urlparse.urlunsplit(parts)
         else:
             # no anchor caching
             self.cache_url_key = self.cache_content_key
         assert isinstance(self.cache_url_key, unicode), self.cache_url_key
+        linkcheck.log.debug(linkcheck.LOG_CACHE, "URL cache key %r",
+                            self.cache_url_key)
 
     def check_syntax (self):
         """Called before self.check(), this function inspects the
