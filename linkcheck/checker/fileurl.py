@@ -29,9 +29,9 @@ from linkcheck.i18n import _
 
 # if file extension lookup was unsuccessful, look at the content
 contents = {
-    "html": re.compile(r'(?i)<html>.*</html>'),
-    "opera" : re.compile(r'Opera Hotlist'),
-    "text" : re.compile(r'(?i)# LinkChecker URL list'),
+    "html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
+    "opera" : re.compile(r'^Opera Hotlist'),
+    "text" : re.compile(r'(?i)^# LinkChecker URL list'),
 }
 
 
@@ -138,7 +138,7 @@ class FileUrl (urlbase.UrlBase):
         # try to read content (can fail, so catch error)
         try:
             for ro in contents.values():
-                if ro.search(self.get_content()):
+                if ro.search(self.get_content()[:30]):
                     return True
         except IOError:
             pass
@@ -151,6 +151,6 @@ class FileUrl (urlbase.UrlBase):
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         for key, ro in contents.items():
-            if ro.search(self.get_content()[:20]):
+            if ro.search(self.get_content()[:30]):
                 return getattr(self, "parse_"+key)()
         return None
