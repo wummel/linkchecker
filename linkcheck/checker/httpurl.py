@@ -153,8 +153,17 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 response = self._get_http_response()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
-            tries, response = \
+            try:
+                tries, response = \
                     self.follow_redirections(response, redirect_cache)
+            except linkcheck.httplib2.BadStatusLine:
+                # some servers send empty HEAD replies
+                if self.method == "HEAD":
+                    self.method = "GET"
+                    redirect_cache = [self.url]
+                    fallback_GET = True
+                    continue
+                raise
             if tries == -1:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "already handled")
                 return
@@ -355,7 +364,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         if self.proxyauth:
             self.url_connection.putheader("Proxy-Authorization",
                                          self.proxyauth)
-        if self.parent_url:
+        if self.parent_url and self.parent_url.startswith('http://'):
             self.url_connection.putheader("Referer", self.parent_url)
         self.url_connection.putheader("User-Agent",
                                       linkcheck.configuration.UserAgent)
