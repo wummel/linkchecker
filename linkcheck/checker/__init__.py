@@ -183,6 +183,12 @@ def get_url_from (base_url, recursion_level, consumer,
                   parent_url=None, base_ref=None, line=0, column=0,
                   name=None, cmdline=None):
     """get url data from given base data"""
+    if not isinstance(base_url, unicode):
+        base_url = unicode(base_url)
+    if parent_url is not None and not isinstance(parent_url, unicode):
+        parent_url = unicode(parent_url)
+    if base_ref is not None and not isinstance(base_ref, unicode):
+        base_ref = unicode(base_ref)
     if cmdline and linkcheck.url.url_needs_quoting(base_url):
         base_url = linkcheck.url.url_quote(base_url)
     url = absolute_url(base_url, base_ref, parent_url)
