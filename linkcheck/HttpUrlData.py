@@ -120,8 +120,10 @@ class HttpUrlData(UrlData):
             elif self.mime:
                 type = self.mime.gettype()
                 poweredby = self.mime.getheader('X-Powered-By')
-                if type=='application/octet-stream' and poweredby and \
-                   poweredby[:4]=='Zope':
+                server = self.mime.getheader('Server')
+                if type=='application/octet-stream' and \
+                   ((poweredby and poweredby[:4]=='Zope') or \
+                    (server and server[:4]=='Zope')):
                     status,statusText,self.mime = self._getHttpRequest("GET")
 
             if status not in [301,302]: break
