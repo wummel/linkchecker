@@ -267,7 +267,7 @@ class UrlBase (object):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
         if self.extern[0] and \
            (self.consumer.config["externstrictall"] or self.extern[1]):
-            self.add_warning(
+            self.add_info(
                   _("outside of domain filter, checked only syntax"))
             self.consumer.logger_new_url(self)
             return
