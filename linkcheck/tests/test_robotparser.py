@@ -23,8 +23,12 @@ import linkcheck.robotparser2
 class TestRobotParser (unittest.TestCase):
     """test robots.txt parser (needs internet access)"""
 
+    needed_resources = ['network']
+
     def setUp (self):
         """initialize self.rp as a robots.txt parser"""
+        if hasattr(self, "needed_resources"):
+            self.check_resources(self.needed_resources)
         self.rp = linkcheck.robotparser2.RobotFileParser()
 
     def check (self, a, b):
