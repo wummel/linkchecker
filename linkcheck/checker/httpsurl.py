@@ -22,7 +22,8 @@ class HttpsUrl (httpurl.HttpUrl):
     """Url link with https scheme"""
 
     def local_check (self):
+        """check connection if SSL is supported, else ignore"""
         if httpurl.supportHttps:
             super(HttpsUrl, self).local_check()
         else:
-            self.add_warning(_("%s url ignored")%self.scheme.capitalize())
+            self.add_warning(_("%s URL ignored.") % self.scheme.capitalize())

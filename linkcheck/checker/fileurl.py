@@ -90,7 +90,7 @@ class FileUrl (urlbase.UrlBase):
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
         if self.is_directory() and not self.urlparts[2].endswith('/'):
-            self.add_warning(_("Added trailing slash to directory"))
+            self.add_warning(_("Added trailing slash to directory."))
             self.urlparts[2] += '/'
         self.url = urlparse.urlunsplit(self.urlparts)
 

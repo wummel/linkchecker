@@ -130,7 +130,8 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # it could be a directory if the trailing slash was forgotten
         if self.filename and not self.url.endswith('/'):
             if "%s/" % self.filename in self.get_files():
-                self.add_warning(_("Missing trailing directory slash in ftp url"))
+                self.add_warning(
+                           _("Missing trailing directory slash in ftp url."))
                 self.url += '/'
 
     def get_files (self):

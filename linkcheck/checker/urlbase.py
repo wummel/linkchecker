@@ -444,7 +444,7 @@ class UrlBase (object):
         for cur_anchor, line, column, name, base in h.urls:
             if cur_anchor == self.anchor:
                 return
-        self.add_warning(_("anchor #%s not found") % self.anchor)
+        self.add_warning(_("Anchor #%s not found.") % self.anchor)
 
     def is_extern (self):
         # apply filter
@@ -513,14 +513,14 @@ class UrlBase (object):
             return
         match = warningregex.search(self.get_content())
         if match:
-            self.add_warning(_("Found %r in link contents") % match.group())
+            self.add_warning(_("Found %r in link contents.") % match.group())
 
     def check_size (self):
         """if a maximum size was given, call this function to check it
            against the content size of this url"""
         maxbytes = self.consumer.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
-            self.add_warning(_("Content size %s is larger than %s") % \
+            self.add_warning(_("Content size %s is larger than %s.") % \
                          (linkcheck.strformat.strsize(self.dlsize),
                           linkcheck.strformat.strsize(maxbytes)))
 

@@ -62,7 +62,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # XXX
         # check for empty paths
         if not self.urlparts[2]:
-            self.add_warning(_("URL path is empty, assuming '/' as path"))
+            self.add_warning(_("URL path is empty, assuming '/' as path."))
             self.urlparts[2] = '/'
             self.url = urlparse.urlunsplit(self.urlparts)
 
@@ -213,14 +213,14 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                    (poweredby.startswith('Zope') or \
                     server.startswith('Zope')):
                     self.add_warning(_("Zope Server cannot determine"
-                                " MIME type with HEAD, falling back to GET"))
+                                " MIME type with HEAD, falling back to GET."))
                     self.method = "GET"
                     continue
             break
         # check url warnings
         effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
-            self.add_warning(_("Effective URL %s") % effectiveurl)
+            self.add_warning(_("Effective URL %s.") % effectiveurl)
             self.url = effectiveurl
         # check response
         self.check_response(response, fallback_GET)
@@ -320,10 +320,10 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 server = _("unknown")
             if fallback_GET:
                 self.add_warning(_("Server %r did not support HEAD request,"\
-                                   " used GET for checking") % server)
+                                   " used GET for checking.") % server)
             if self.no_anchor:
                 self.add_warning(_("Server %r had no anchor support, removed"\
-                                   " anchor from request") % server)
+                                   " anchor from request.") % server)
             if response.status == 204:
                 # no content
                 self.add_warning(response.reason)
@@ -337,7 +337,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     for h in out:
                         self.add_info(h)
                 except Cookie.CookieError, msg:
-                    self.add_warning(_("Could not store cookies: %(msg)s") %
+                    self.add_warning(_("Could not store cookies: %(msg)s.") %
                                      {'msg': str(msg)})
             if response.status >= 200:
                 self.set_result("%r %s" % (response.status, response.reason))

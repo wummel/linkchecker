@@ -95,7 +95,7 @@ class MailtoUrl (urlbase.UrlBase):
             an answer, print the verified address as an info.
         """
         if not self.addresses:
-            self.add_warning(_("No addresses found"))
+            self.add_warning(_("No addresses found."))
             return
 
         value = "unknown reason"
@@ -110,7 +110,7 @@ class MailtoUrl (urlbase.UrlBase):
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "found %d MX mailhosts", len(answers))
             if len(answers) == 0:
-                self.add_warning(_("No MX mail host for %(domain)s found") % \
+                self.add_warning(_("No MX mail host for %(domain)s found.") %\
                                 {'domain': domain})
                 return
             smtpconnect = 0
@@ -134,7 +134,7 @@ class MailtoUrl (urlbase.UrlBase):
                 except smtplib.SMTPException, msg:
                     self.add_warning(
                       _("MX mail host %(host)s did not accept connections: "\
-                        "%(error)s") % \
+                        "%(error)s.") % \
                         {'host': rdata.exchange, 'error': str(msg)})
                 if smtpconnect:
                     break

@@ -22,7 +22,7 @@ class IgnoredUrl (urlbase.UrlBase):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 
     def local_check (self):
-        self.add_warning(_("%s url ignored")%self.scheme.capitalize())
+        self.add_warning(_("%s URL ignored.") % self.scheme.capitalize())
 
     def can_get_content (self):
         return False
