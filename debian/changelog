@@ -1,3 +1,12 @@
+linkchecker (1.2.11) unstable; urgency=low
+
+  * debian/rules: 
+    - use dh_installexamples to install example files
+    - move test files into a common directory
+    - move linkcheckerrc in /etc, make no symlink
+
+ -- Die Kampfwurst <calvin@treasure>  Sat, 16 Dec 2000 12:42:00 +0100
+
 linkchecker (1.2.10) unstable; urgency=low
 
   * broken *.mo i18n files fixed

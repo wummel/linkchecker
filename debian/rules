@@ -41,12 +41,17 @@ install: build
 	python setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
 	# remove man pages, we install them with dh_installmanpages
 	rm -rf debian/$(PACKAGE)/usr/man
+	# remove example files, we install them with dh_installexamples
+	rm -rf debian/$(PACKAGE)/usr/share/linkchecker
 	# install additional doc files
+	install -d -m 755 $(DOCDIR)/examples
 	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
-	install -d -m 755 $(DOCDIR)/test
-	install -c -m 644 test/*.html test/*.py $(DOCDIR)/test
-	install -d -m 755 $(DOCDIR)/tests
-	install -c -m 644 tests/*.py $(DOCDIR)/tests
+	install -d -m 755 $(DOCDIR)/tests/linkcheck
+	install -c -m 644 test/*.html test/*.py $(DOCDIR)/tests/linkcheck
+	install -d -m 755 $(DOCDIR)/tests/dns
+	install -c -m 644 tests/*.py $(DOCDIR)/tests/dns
+	# install system wide configuration file in etc
+	install -c -m 644 linkcheckerrc debian/$(PACKAGE)/etc
 
 
 # Build architecture-independent files here.
@@ -60,7 +65,7 @@ binary-arch: build install
 	dh_testroot
 #	dh_installdebconf
 	dh_installdocs
-#	dh_installexamples
+	dh_installexamples lc.* lconline/*.html
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installpam
@@ -70,7 +75,7 @@ binary-arch: build install
 #	dh_installinfo
 #	dh_undocumented linkchecker.1
 	dh_installchangelogs 
-	dh_link
+#	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
