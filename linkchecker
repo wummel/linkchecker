@@ -109,7 +109,7 @@ def viewprof ():
     sys.exit(0)
 
 # Read command line arguments
-from optparse import OptionParser
+from optparse import OptionParser, OptionGroup
 
 class LCOptionParser (OptionParser):
 
@@ -129,143 +129,37 @@ class LCOptionParser (OptionParser):
 
 optparser = LCOptionParser()
 
-optparser.add_option("-a", "--anchors", action="store_true", dest="anchors",
-                     help=i18n._(
-"""Check HTTP anchor references. This option applies to both internal
-and external urls. Default is don't check anchors.
-This option implies -w because anchor errors are always warnings."""))
-
-optparser.add_option("-C", "--cookies", action="store_true", dest="cookies",
-                     help=i18n._(
-"""Accept and send HTTP cookies according to RFC 2109. Only cookies
-which are sent back to the originating server are accepted.
-Sent and accepted cookies are provided as additional logging
-information."""))
-
-optparser.add_option("-d", "--denyallow", action="store_true", dest="denyallow",
-                     help=i18n._(
-"""Swap checking order to external/internal. Default checking order
-is internal/external."""))
-
-optparser.add_option("-e", "--extern", type="string", action="append", dest="extern",
-                     help=i18n._(
-"""Assume urls that match the given expression as external.
-Only internal HTML links are checked recursively."""))
-
-optparser.add_option("-f", "--config", type="string", dest="configfile",
-                     help=i18n._(
+################# general options ##################
+group = OptionGroup(optparser, i18n._("General options"))
+group.add_option("-f", "--config", type="string", dest="configfile",
+                 help=i18n._(
 """Use file as configuration file. As default LinkChecker first
 searches /etc/linkcheckerrc and then ~/.linkcheckerrc
 (under Windows <path-to-program>\\linkcheckerrc)."""))
-
-optparser.add_option("-F", "--file-output", type="string", dest="fileoutput",
-                     help=i18n._(
-"""type[/filename]
-Same as -o, but write to a file linkchecker-out.<type>
-or <filename> if specified. If the file already exists, it
-is overwritten. You can specify this option more than once.
-There is no file output for the blacklist logger. Default is
-no file output."""))
-
-optparser.add_option("-D", "--debug", action="count",
-                     help=i18n._(
-"""Print debugging information. Provide this option multiple times
-for even more debugging information."""))
-
-optparser.add_option("-I", "--interactive", action="store_true", dest="interactive",
-                     help=i18n._(
+group.add_option("-I", "--interactive", action="store_true", dest="interactive",
+                 help=i18n._(
 """Ask for url if none are given on the commandline."""))
-
-optparser.add_option("-i", "--intern", type="string", action="append", dest="intern",
-                     help=i18n._(
-""" regex, --intern=regex
-Assume URLs that match the given expression as internal.
-LinkChecker descends recursively only to internal URLs, not to
-external."""))
-
-optparser.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
-                     help=i18n._(
-"""Specify an NNTP server for 'news:...' links. Default is the
-environment variable NNTP_SERVER. If no host is given,
-only the syntax of the link is checked."""))
-
-optparser.add_option("--no-anchor-caching", action="store_false", dest="anchorcaching",
-                     help=i18n._(
-"""Treat url#anchora and url#anchorb as equal on caching. This
-is the default browser behaviour, but it's not specified in
-the URI specification. Use with care."""))
-
-optparser.add_option("-o", "--output", type="string", dest="output",
-                     help=i18n._(
-"""Specify output type as %s. Default type is text.""")%LoggerKeys)
-
-optparser.add_option("-p", "--password", type="string", dest="password",
-                     help=i18n._(
-"""Try given password for HTTP and FTP authorization.
-Default password is %r. See also -u.""")%_password)
-
-optparser.add_option("-P", "--pause", type="int", dest="pause",
-                     help=i18n._(
-"""Pause <secs> seconds between each url check. This option implies -t0.
-Default is no pause between requests."""))
-
-optparser.add_option("--profile", action="store_true", dest="profile",
-                     help=i18n._(
-"""Write profiling data into a file named %s in the
-current working directory. See also --viewprof.""")%_profile)
-
-optparser.add_option("-q", "--quiet", action="store_true", dest="quiet",
-                     help=i18n._(
-"""Quiet operation. This is only useful with -F."""))
-
-optparser.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
-                     help=i18n._(
-"""Check recursively all links up to given depth. A negative depth
-will enable inifinite recursion. Default depth is 1."""))
-
-optparser.add_option("-s", "--strict", action="store_true", dest="strict",
-                     help=i18n._(
-"""Check only syntax of external links, do not try to connect to them.
-For local file urls, only local files are internal. For
-http and ftp urls, all urls at the same domain name are internal."""))
-
-optparser.add_option("--status", action="store_true", dest="status",
-                     help=i18n._(
-"""Print check status every 5 seconds to stderr."""))
-
-optparser.add_option("-t", "--threads", type="int", dest="threads",
-                     help=i18n._(
+group.add_option("-t", "--threads", type="int", dest="threads",
+                 help=i18n._(
 """Generate no more than num threads. Default number of threads is 5.
 To disable threading specify a non-positive number."""))
 
-optparser.add_option("--timeout", type="int", dest="timeout",
-                     help=i18n._(
-"""Set the timeout for TCP connection attempts in seconds. The default
-timeout is %d seconds.""") % default_timeout)
-
-optparser.add_option("-u", "--user", type="string", dest="username",
-                     help=i18n._(
-"""Try given username for HTTP and FTP authorization.
-Default is %r. See also -p.""")%_username)
-
-optparser.add_option("-V", "--version", dest="version",
-                     help=i18n._(
+group.add_option("-V", "--version", dest="version",
+                 help=i18n._(
 """Print version and exit."""))
+optparser.add_option_group(group)
 
-optparser.add_option("-v", "--verbose", action="store_true", dest="verbose",
-                     help=i18n._(
+
+################# output options ##################
+group = OptionGroup(optparser, i18n._("Output options"))
+group.add_option("-v", "--verbose", action="store_true", dest="verbose",
+                 help=i18n._(
 """Log all checked URLs (implies -w). Default is to log only invalid
 URLs."""))
-
-optparser.add_option("--viewprof", action="store_true", dest="viewprof",
-                     help=i18n._(
-"""Print out previously generated profiling data. See also --profile."""))
-
-optparser.add_option("-w", "--warnings", action="store_true", dest="warnings",
-                     help=i18n._("""Log warnings."""))
-
-optparser.add_option("-W", "--warning-regex", type="string", dest="warningregex",
-                     help=i18n._(
+group.add_option("-w", "--warnings", action="store_true", dest="warnings",
+                 help=i18n._("""Log warnings."""))
+group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
+                 help=i18n._(
 """Define a regular expression which prints a warning if it matches
 any content of the checked link.
 This applies of course only to pages which are valid, so we can
@@ -274,11 +168,110 @@ Use this to check for pages that contain some form of error
 message, for example 'This page has moved' or 'Oracle
 Application Server error'.
 This option implies -w."""))
-
-optparser.add_option("--warning-size-bytes", dest="warningsizebytes",
-                     help=i18n._(
+group.add_option("--warning-size-bytes", dest="warningsizebytes",
+                 help=i18n._(
 """Print a warning if content size is available and exceeds the given
 number of bytes. This option implies -w."""))
+group.add_option("-q", "--quiet", action="store_true", dest="quiet",
+                 help=i18n._(
+"""Quiet operation. This is only useful with -F."""))
+group.add_option("-o", "--output", type="string", dest="output",
+                 help=i18n._(
+"""Specify output type as %s. Default type is text.""")%LoggerKeys)
+group.add_option("-F", "--file-output", type="string", dest="fileoutput",
+                 help=i18n._(
+"""type[/filename]
+Same as -o, but write to a file linkchecker-out.<type>
+or <filename> if specified. If the file already exists, it
+is overwritten. You can specify this option more than once.
+There is no file output for the blacklist logger. Default is
+no file output."""))
+group.add_option("-D", "--debug", action="count",
+                 help=i18n._(
+"""Print debugging information. Provide this option multiple times
+for even more debugging information."""))
+group.add_option("--status", action="store_true", dest="status",
+                 help=i18n._(
+"""Print check status every 5 seconds to stderr."""))
+group.add_option("--profile", action="store_true", dest="profile",
+                 help=i18n._(
+"""Write profiling data into a file named %s in the
+current working directory. See also --viewprof.""")%_profile)
+group.add_option("--viewprof", action="store_true", dest="viewprof",
+                 help=i18n._(
+"""Print out previously generated profiling data. See also --profile."""))
+optparser.add_option_group(group)
+
+
+################# checking options ##################
+group = OptionGroup(optparser, i18n._("Checking options"))
+group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
+                 help=i18n._(
+"""Check recursively all links up to given depth. A negative depth
+will enable inifinite recursion. Default depth is 1."""))
+group.add_option("-e", "--extern", type="string", action="append", dest="extern",
+                 help=i18n._(
+"""Assume urls that match the given expression as external.
+Only internal HTML links are checked recursively."""))
+group.add_option("-i", "--intern", type="string", action="append", dest="intern",
+                 help=i18n._(
+""" regex, --intern=regex
+Assume URLs that match the given expression as internal.
+LinkChecker descends recursively only to internal URLs, not to
+external."""))
+group.add_option("-d", "--denyallow", action="store_true", dest="denyallow",
+                 help=i18n._(
+"""Swap checking order to external/internal. Default checking order
+is internal/external."""))
+group.add_option("-s", "--strict", action="store_true", dest="strict",
+                 help=i18n._(
+"""Check only syntax of external links, do not try to connect to them.
+For local file urls, only local files are internal. For
+http and ftp urls, all urls at the same domain name are internal."""))
+group.add_option("-C", "--cookies", action="store_true", dest="cookies",
+                 help=i18n._(
+"""Accept and send HTTP cookies according to RFC 2109. Only cookies
+which are sent back to the originating server are accepted.
+Sent and accepted cookies are provided as additional logging
+information."""))
+group.add_option("-a", "--anchors", action="store_true", dest="anchors",
+                 help=i18n._(
+"""Check HTTP anchor references. This option applies to both internal
+and external urls. Default is don't check anchors.
+This option implies -w because anchor errors are always warnings."""))
+group.add_option("--no-anchor-caching", action="store_false", dest="anchorcaching",
+                 help=i18n._(
+"""Treat url#anchora and url#anchorb as equal on caching. This
+is the default browser behaviour, but it's not specified in
+the URI specification. Use with care."""))
+group.add_option("-u", "--user", type="string", dest="username",
+                 help=i18n._(
+"""Try given username for HTTP and FTP authorization.
+Default is %r. See also -p.""")%_username)
+group.add_option("-p", "--password", type="string", dest="password",
+                 help=i18n._(
+"""Try given password for HTTP and FTP authorization.
+Default password is %r. See also -u.""")%_password)
+group.add_option("--timeout", type="int", dest="timeout",
+                 help=i18n._(
+"""Set the timeout for TCP connection attempts in seconds. The default
+timeout is %d seconds.""") % default_timeout)
+group.add_option("-P", "--pause", type="int", dest="pause",
+                 help=i18n._(
+"""Pause <secs> seconds between each url check. This option implies -t0.
+Default is no pause between requests."""))
+group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
+                 help=i18n._(
+"""Specify an NNTP server for 'news:...' links. Default is the
+environment variable NNTP_SERVER. If no host is given,
+only the syntax of the link is checked."""))
+optparser.add_option_group(group)
+
+
+################# deprecated options ##################
+group = OptionGroup(optparser, i18n._("Deprecated options"))
+group.add_option("-R", "--robots-txt", action="store_true")
+optparser.add_option_group(group)
 
 if "--wischiwaschi" in sys.argv:
     from linkcheck import util1
