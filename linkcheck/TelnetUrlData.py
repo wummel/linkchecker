@@ -15,12 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import telnetlib, urlparse, linkcheck
-import Config
+import telnetlib, urlparse
+from linkcheck import Config, _, error
 from urllib import splituser, splithost, splitport, splitpasswd
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import is_valid_port
-_ = linkcheck._
 
 class TelnetUrlData (HostCheckingUrlData):
     "Url link with telnet scheme"
@@ -32,7 +31,7 @@ class TelnetUrlData (HostCheckingUrlData):
         self.host, self.port = splitport(self.host)
         if self.port is not None:
             if not is_valid_port(self.port):
-                raise linkcheck.error(_("URL has invalid port number %s")\
+                raise error(_("URL has invalid port number %s")\
                                       % self.port)
             self.port = int(self.port)
         else:

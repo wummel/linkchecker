@@ -1,7 +1,7 @@
 # I copied the scripts in Tools/i18n of the Python 2.0 distribution
 I18NTOOLS=.
 PYTHON=python2.2
-GETTEXT=$(PYTHON) $(I18NTOOLS)/pygettext.py -k linkcheck._
+GETTEXT=$(PYTHON) $(I18NTOOLS)/pygettext.py -k _
 MSGFMT=$(PYTHON) $(I18NTOOLS)/msgfmt.py
 #MSGFMT=msgfmt
 MSGMERGE=msgmerge

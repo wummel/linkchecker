@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, os, urlparse, urllib, linkcheck, linkcheck.UrlData
+import re, os, urlparse, urllib
+from linkcheck import extensions
 from UrlData import UrlData, ExcList
 
 # OSError is thrown on Windows when a file is not found
@@ -125,7 +126,7 @@ class FileUrlData (UrlData):
 
     def isHtml (self):
         # guess by extension
-        for ro in linkcheck.extensions.values():
+        for ro in extensions.values():
             if ro.search(self.url):
                 return 1
         # try to read content (can fail, so catch error)
@@ -139,7 +140,7 @@ class FileUrlData (UrlData):
 
 
     def parseUrl (self):
-        for key,ro in linkcheck.extensions.items():
+        for key,ro in extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         for key,ro in contents.items():

@@ -15,9 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, os, re, time, urlparse
-import linkcheck
-_ = linkcheck._
+import sys, os, re, time, urlparse, Config
+from linkcheck import _, getLinkPat, checkUrls, init_gettext
+from linkcheck.log import strtime
+from UrlData import GetUrlDataFrom
 from types import StringType
 
 _logfile = None
@@ -42,7 +43,7 @@ def checklink (out=sys.stdout, form={}, env={}):
         logit(form, env)
         printError(out, why)
         return
-    config = linkcheck.Config.Configuration()
+    config = Config.Configuration()
     config["recursionlevel"] = int(form["level"].value)
     config["log"] = config.newLogger('html', {'fd': out})
     config.disableThreading()
@@ -53,12 +54,12 @@ def checklink (out=sys.stdout, form={}, env={}):
         pat = "^(ftp|https?)://"+re.escape(getHostName(form))
     else:
         pat = ".+"
-    config["internlinks"].append(linkcheck.getLinkPat(pat))
+    config["internlinks"].append(getLinkPat(pat))
     # avoid checking of local files
-    config["externlinks"].append(linkcheck.getLinkPat("^file:", strict=1))
+    config["externlinks"].append(getLinkPat("^file:", strict=1))
     # start checking
-    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(form["url"].value, 0, config))
-    linkcheck.checkUrls(config)
+    config.appendUrl(GetUrlDataFrom(form["url"].value, 0, config))
+    checkUrls(config)
 
 
 def getHostName (form):
@@ -76,7 +77,7 @@ def checkform (form):
         lang = form['language'].value
         if lang in _supported_langs:
             os.environ['LC_MESSAGES'] = lang
-            linkcheck.init_gettext()
+            init_gettext()
         else:
             raise FormError(_("unsupported language"))
     # check url syntax
@@ -109,7 +110,7 @@ def logit (form, env):
         return
     elif type(_logfile) == StringType:
         _logfile = open(_logfile, "a")
-    _logfile.write("\n"+linkcheck.log.strtime(time.time())+"\n")
+    _logfile.write("\n"+strtime(time.time())+"\n")
     for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
                 "REMOTE_HOST", "REMOTE_PORT"]:
         if env.has_key(var):
@@ -121,7 +122,7 @@ def logit (form, env):
 
 def printError (out, why):
     """print standard error page"""
-    out.write(linkcheck._("""<html><head>
+    out.write(_("""<html><head>
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
 <blockquote>

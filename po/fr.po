@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Jan  5 17:15:46 2003\n"
+"POT-Creation-Date: Sun Jan  5 21:56:54 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -273,19 +273,6 @@ msgstr " dans %d liens"
 msgid " found"
 msgstr " trouvé"
 
-msgid "%.3f seconds\n"
-msgstr "%.3f secondes\n"
-
-msgid ""
-"\n"
-"Thats it. "
-msgstr ""
-"\n"
-"Terminé. "
-
-msgid " found\n"
-msgstr " trouvé\n"
-
 msgid "Real URL"
 msgstr "URL Réelle"
 
@@ -321,6 +308,19 @@ msgstr "Durée d'Analyse"
 
 msgid "URL"
 msgstr ""
+
+msgid "%.3f seconds\n"
+msgstr "%.3f secondes\n"
+
+msgid ""
+"\n"
+"Thats it. "
+msgstr ""
+"\n"
+"Terminé. "
+
+msgid " found\n"
+msgstr " trouvé\n"
 
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -598,21 +598,3 @@ msgstr "aucun fichier ou url donnée"
 
 msgid "Hit RETURN to finish"
 msgstr ""
-
-#~ msgid "url"
-#~ msgstr "URL"
-
-#~ msgid "base"
-#~ msgstr "Base"
-
-#~ msgid "realurl"
-#~ msgstr "Résultat"
-
-#~ msgid "checktime"
-#~ msgstr "Durée d'Analyse"
-
-#~ msgid "warning"
-#~ msgstr "Avertissement"
-
-#~ msgid "result"
-#~ msgstr "Résultat"

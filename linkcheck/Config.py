@@ -16,7 +16,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time, Cookie
-import _linkchecker_configdata, linkcheck
+import _linkchecker_configdata
+from linkcheck import _, getLinkPat
 from os.path import expanduser, normpath, normcase, join, isfile
 from types import StringType
 from urllib import getproxies
@@ -291,11 +292,13 @@ class Configuration (UserDict.UserDict):
         args = {}
 	args.update(self[logtype])
 	args.update(dict)
-        return apply(linkcheck.log.Loggers[logtype], (), args)
+        from linkcheck.log import Loggers
+        return Loggers[logtype](**args)
 
     def addLogger(self, logtype, loggerClass, logargs={}):
         "add a new logger type"
-        linkcheck.log.Loggers[logtype] = loggerClass
+        from linkcheck.log import Loggers
+        Loggers[logtype] = loggerClass
         self[logtype] = logargs
 
     def incrementLinknumber_NoThreads (self):
@@ -432,10 +435,10 @@ class Configuration (UserDict.UserDict):
         self.readConfig(cfiles)
 
     def warn (self, msg):
-        self.message(linkcheck._("Warning: %s")%msg)
+        self.message(_("Warning: %s")%msg)
 
     def error (self, msg):
-        self.message(linkcheck._("Error: %s")%msg)
+        self.message(_("Error: %s")%msg)
 
     def message (self, msg):
         print >> sys.stderr, msg
@@ -444,6 +447,7 @@ class Configuration (UserDict.UserDict):
         """this big function reads all the configuration parameters
         used in the linkchecker module."""
         debug(BRING_IT_ON, "reading configuration from", files)
+        from linkcheck.log import Loggers
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
@@ -452,7 +456,7 @@ class Configuration (UserDict.UserDict):
 	    return
 
         section="output"
-        for key in linkcheck.log.Loggers.keys():
+        for key in Loggers.keys():
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
                     try:
@@ -464,10 +468,10 @@ class Configuration (UserDict.UserDict):
                 except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             log = cfgparser.get(section, "log")
-            if linkcheck.log.Loggers.has_key(log):
+            if Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
-                self.warn(linkcheck._("invalid log option '%s'") % log)
+                self.warn(_("invalid log option '%s'") % log)
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
@@ -483,7 +487,7 @@ class Configuration (UserDict.UserDict):
             for arg in filelist:
                 arg = arg.strip()
                 # no file output for the blacklist Logger
-                if linkcheck.log.Loggers.has_key(arg) and arg != "blacklist":
+                if Loggers.has_key(arg) and arg != "blacklist":
 		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
@@ -501,7 +505,7 @@ class Configuration (UserDict.UserDict):
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
-                self.error(linkcheck._("illegal recursionlevel number %d") % num)
+                self.error(_("illegal recursionlevel number %d") % num)
             self["recursionlevel"] = num
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
@@ -544,10 +548,10 @@ class Configuration (UserDict.UserDict):
                 if len(tuple)!=2:
                     sys.stderr.write("extern%d: syntax error %s\n"%(i, tuple))
                     break
-                self["externlinks"].append(linkcheck.getLinkPat(tuple[0], strict=int(tuple[1])))
+                self["externlinks"].append(getLinkPat(tuple[0], strict=int(tuple[1])))
                 i += 1
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["internlinks"].append(linkcheck.getLinkPat(cfgparser.get(section, "internlinks")))
+        try: self["internlinks"].append(getLinkPat(cfgparser.get(section, "internlinks")))
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
 	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)

@@ -15,9 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import socket, urllib, linkcheck
+import socket, urllib
+from linkcheck import _
 from UrlData import UrlData
-_ = linkcheck._
 
 class HostCheckingUrlData (UrlData):
     "Url link for which we have to connect to a specific host"

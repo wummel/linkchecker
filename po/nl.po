@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Jan  5 17:15:46 2003\n"
+"POT-Creation-Date: Sun Jan  5 21:56:54 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -283,19 +283,6 @@ msgstr " in %d URLs"
 msgid " found"
 msgstr " gevonden"
 
-msgid "%.3f seconds\n"
-msgstr "%.3f Seconden\n"
-
-msgid ""
-"\n"
-"Thats it. "
-msgstr ""
-"\n"
-"Dat was het. "
-
-msgid " found\n"
-msgstr " gevonden\n"
-
 msgid "Real URL"
 msgstr "Echte URL"
 
@@ -331,6 +318,19 @@ msgstr "Testtijd"
 
 msgid "URL"
 msgstr "URL"
+
+msgid "%.3f seconds\n"
+msgstr "%.3f Seconden\n"
+
+msgid ""
+"\n"
+"Thats it. "
+msgstr ""
+"\n"
+"Dat was het. "
+
+msgid " found\n"
+msgstr " gevonden\n"
 
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -614,33 +614,3 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
-
-#~ msgid "url"
-#~ msgstr "URL"
-
-#~ msgid "name"
-#~ msgstr "Naam"
-
-#~ msgid "parenturl"
-#~ msgstr "ouder URL"
-
-#~ msgid "base"
-#~ msgstr "basis"
-
-#~ msgid "realurl"
-#~ msgstr "echte URL"
-
-#~ msgid "dltime"
-#~ msgstr "D/L tijd"
-
-#~ msgid "checktime"
-#~ msgstr "Testtijd"
-
-#~ msgid "info"
-#~ msgstr "info"
-
-#~ msgid "warning"
-#~ msgstr "Waarschuwing"
-
-#~ msgid "result"
-#~ msgstr "resultaat"

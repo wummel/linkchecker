@@ -17,7 +17,8 @@
 
 import urlparse, urllib, sys, time, re
 import httplib
-import Config, StringUtil, robotparser, linkcheck
+import Config, StringUtil, robotparser
+from linkcheck import _
 # XXX not dynamic
 if Config.DebugLevel > 0:
     robotparser.debug = 1
@@ -36,7 +37,7 @@ class HttpUrlData (ProxyUrlData):
         # XXX
         # check for empty paths
         if not self.urlparts[2]:
-            self.setWarning(linkcheck._("Path is empty"))
+            self.setWarning(_("Path is empty"))
             self.urlparts[2] = "/"
             self.url = urlparse.urlunsplit(self.urlparts)
 
@@ -85,12 +86,12 @@ class HttpUrlData (ProxyUrlData):
         # set the proxy, so a 407 status after this is an error
         self.setProxy(self.config["proxy"].get(self.scheme))
         if self.proxy:
-            self.setInfo(linkcheck._("Using Proxy %s")%`self.proxy`)
+            self.setInfo(_("Using Proxy %s")%`self.proxy`)
         self.headers = None
         self.auth = None
         self.cookies = []
         if self.config["robotstxt"] and not self.robotsTxtAllowsUrl():
-            self.setWarning(linkcheck._("Access denied by robots.txt, checked only syntax"))
+            self.setWarning(_("Access denied by robots.txt, checked only syntax"))
             return
 
         # first try
@@ -103,7 +104,7 @@ class HttpUrlData (ProxyUrlData):
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 self.setProxy(self.headers.getheader("Location"))
-                self.setInfo(linkcheck._("Enforced Proxy %s")%`self.proxy`)
+                self.setInfo(_("Enforced Proxy %s")%`self.proxy`)
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
@@ -122,7 +123,7 @@ class HttpUrlData (ProxyUrlData):
                 Config.debug(BRING_IT_ON, "Redirected", self.headers)
                 tries += 1
             if tries >= 5:
-                self.setError(linkcheck._("too much redirections (>= 5)"))
+                self.setError(_("too much redirections (>= 5)"))
                 return
             # user authentication
             if response.status==401:
@@ -144,14 +145,14 @@ class HttpUrlData (ProxyUrlData):
             #   content-type)
             elif response.status in [405,501,500]:
                 # HEAD method not allowed ==> try get
-                self.setWarning(linkcheck._("Server does not support HEAD "
+                self.setWarning(_("Server does not support HEAD "
              "request (got %d status), falling back to GET")%response.status)
                 response = self._getHttpResponse("GET")
                 self.headers = response.msg
             elif response.status>=400 and self.headers:
                 server = self.headers.getheader("Server")
                 if server and self.netscape_re.search(server):
-                    self.setWarning(linkcheck._("Netscape Enterprise Server"
+                    self.setWarning(_("Netscape Enterprise Server"
                      " with no HEAD support, falling back to GET"))
                     response = self._getHttpResponse("GET")
                     self.headers = response.msg
@@ -162,7 +163,7 @@ class HttpUrlData (ProxyUrlData):
                 if type=='application/octet-stream' and \
                    ((poweredby and poweredby[:4]=='Zope') or \
                     (server and server[:4]=='Zope')):
-                    self.setWarning(linkcheck._("Zope Server cannot determine"
+                    self.setWarning(_("Zope Server cannot determine"
                                 " MIME type with HEAD, falling back to GET"))
                     response = self._getHttpResponse("GET")
                     self.headers = response.msg
@@ -170,15 +171,15 @@ class HttpUrlData (ProxyUrlData):
 
         effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
-            self.setWarning(linkcheck._("Effective URL %s") % effectiveurl)
+            self.setWarning(_("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
 
         if has301status:
-            self.setWarning(linkcheck._("HTTP 301 (moved permanent) encountered: you "
+            self.setWarning(_("HTTP 301 (moved permanent) encountered: you "
                               "should update this link"))
             if self.url[-1]!='/':
                 self.setWarning(
-            linkcheck._("A HTTP 301 redirection occured and the url has no "
+            _("A HTTP 301 redirection occured and the url has no "
                     "trailing / at the end. All urls which point to (home) "
                     "directories should end with a / to avoid redirection"))
 
@@ -276,7 +277,7 @@ class HttpUrlData (ProxyUrlData):
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
            encoding!='identity':
-            self.setWarning(linkcheck._('Unsupported content encoding %s.')%\
+            self.setWarning(_('Unsupported content encoding %s.')%\
                             `encoding`)
             return 0
         return 1

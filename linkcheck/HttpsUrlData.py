@@ -15,10 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import Config, httplib
 from UrlData import UrlData
+from linkcheck import _
 from HttpUrlData import HttpUrlData
-import linkcheck, Config
-import httplib
 _supportHttps = hasattr(httplib, "HTTPSConnection")
 
 
@@ -35,5 +35,5 @@ class HttpsUrlData (HttpUrlData):
         if _supportHttps:
             HttpUrlData._check(self)
         else:
-            self.setWarning(linkcheck._("%s url ignored")%self.scheme.capitalize())
+            self.setWarning(_("%s url ignored")%self.scheme.capitalize())
             self.logMe()
