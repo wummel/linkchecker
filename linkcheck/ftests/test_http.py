@@ -27,7 +27,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
 
     def test_html (self):
         self.start_server()
-        url = "http://localhost:%d/linkcheck/ftests/data/http.html"%self.port
+        url = u"http://localhost:%d/linkcheck/ftests/data/http.html"%self.port
         resultlines = self.get_resultlines("http.html")
         try:
             self.direct(url, resultlines, recursionlevel=1)
