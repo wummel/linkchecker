@@ -124,7 +124,8 @@ class FileUrl (urlbase.UrlBase):
     def get_directory_content (self):
         t = time.time()
         files = get_files(self.get_os_filename())
-        self.data = linkcheck.checker.get_index_html(files)
+        data = linkcheck.checker.get_index_html(files)
+        self.data = data.encode("iso8859-1", "ignore")
         self.dltime = time.time() - t
         self.dlsize = len(self.data)
         self.has_content = True
