@@ -45,7 +45,7 @@ cleandeb:
 config:
 	$(PYTHON) setup.py config -lcrypto
 
-dist:	distclean locale config
+dist:	releasecheck distclean locale config
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 
 # to build in the current directory (assumes python 2.3)
