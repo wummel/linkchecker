@@ -1,0 +1,71 @@
+.. meta::
+  :navigation.order: 2
+  :navigation.name: Documentation
+
+Documentation
+=============
+
+Basic usage
+-----------
+
+To check an URL like ``http://www.myhomepage.org/`` it is enough to
+execute ``linkchecker http://www.myhomepage.org/``. This will check the
+complete domain of www.myhomepage.org recursively. All links pointing
+outside of the domain are also checked for validity.
+
+For more options, read the man page ``linkchecker(1)`` or execute
+``linkchecker -h``.
+
+Performed checks
+----------------
+
+- HTTP links (``http:``, ``https:``)
+
+- Local files (``file:``)
+
+- Mail links (``mailto:``)
+
+- FTP links (``ftp:``)
+
+- Gopher links (``gopher:``)
+
+- Telnet links (``telnet:``)
+
+- NNTP links (``news:``, ``snews:``, ``nntp``)
+
+- Ignored links (``javascript:``, etc.)
+  
+  Here is a complete list of recognized, but ignored links. The most
+  prominent of them should be JavaScript links.
+  
+  - acap       (application configuration access protocol)
+  - afs        (Andrew File System global file names)
+  - chrome     (Mozilla specific)
+  - cid        (content identifier)
+  - clsid      (Microsoft specific)
+  - data       (data)
+  - dav        (dav)
+  - fax        (fax)
+  - find       (Mozilla specific)
+  - imap       (internet message access protocol)
+  - isbn       (ISBN (int. book numbers))
+  - javascript (JavaScript)
+  - ldap       (Lightweight Directory Access Protocol)
+  - mailserver (Access to data available from mail servers)
+  - mid        (message identifier)
+  - modem      (modem)
+  - nfs        (network file system protocol)
+  - opaquelocktoken (opaquelocktoken)
+  - pop        (Post Office Protocol v3)
+  - prospero   (Prospero Directory Service)
+  - rtsp       (real time streaming protocol)
+  - service    (service location)
+  - sip        (session initiation protocol)
+  - tel        (telephone)
+  - tip        (Transaction Internet Protocol)
+  - tn3270     (Interactive 3270 emulation sessions)
+  - vemmi      (versatile multimedia interface)
+  - wais       (Wide Area Information Servers)
+  - z39.50r    (Z39.50 Retrieval)
+  - z39.50s    (Z39.50 Session)
+
