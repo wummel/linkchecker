@@ -70,7 +70,7 @@ For single-letter option arguments the space is not a necessity. So
         Default password is 'joe@'. See also -u.
 -P secs, --pause=secs
         Pause <secs> seconds between each url check. This option
-	implies -t0.
+        implies -t0.
         Default is no pause between requests.
 -q, --quiet
         Quiet operation. This is only useful with -F.
