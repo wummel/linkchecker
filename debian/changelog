@@ -1,3 +1,11 @@
+linkchecker (1.8.17-1) unstable; urgency=low
+
+  * New upstream version
+  * remove python-ssl from description, it's integrated into python2.2
+    now
+
+ -- Bastian Kleineidam <calvin@debian.org>  Fri,  6 Jun 2003 11:40:44 +0200
+
 linkchecker (1.8.16-1) unstable; urgency=low
 
   * New upstream release.

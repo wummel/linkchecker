@@ -1,3 +1,10 @@
+1.8.17
+  * fix parsing of missing end tag in "</a <a b=c>"
+    Changed files: linkcheck/parser/htmllex.l
+  * fix entity resolving in parsed html links
+    Closes: SF bug #749543
+    Changed files: linkcheck/StringUtil.py
+
 1.8.16
   * also look at id attributes on anchor check
     (Closes SF Bug #741131)
