@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
 "POT-Creation-Date: 2005-02-01 03:04+0100\n"
-"PO-Revision-Date: 2005-02-01 02:49+0100\n"
+"PO-Revision-Date: 2005-02-02 09:10+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: français <kde-francophone@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,10 +47,8 @@ msgstr "temps d'exécution %s"
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
-msgstr[0] ""
-"interruption clavier ; en attente de la terminaison d' %d thread actif"
-msgstr[1] ""
-"interruption clavier ; en attente de la terminaison de %d threads actifs"
+msgstr[0] "interruption clavier ; en attente de la terminaison d' %d thread actif"
+msgstr[1] "interruption clavier ; en attente de la terminaison de %d threads actifs"
 
 #: ../linkcheck/checker/consumer.py:177
 msgid "Status:"
@@ -109,8 +107,7 @@ msgstr "plus de %d redirections, annulation"
 
 #: ../linkcheck/checker/httpurl.py:253
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET."
-msgstr ""
-"Le serveur Zope ne peut déterminer le type MIME avec HEAD, retour à GET."
+msgstr "Le serveur Zope ne peut déterminer le type MIME avec HEAD, retour à GET."
 
 #: ../linkcheck/checker/httpurl.py:261
 #, python-format
@@ -323,8 +320,7 @@ msgstr "Adresse vérifiée : %(info)s."
 #: ../linkcheck/checker/mailtourl.py:166
 #, python-format
 msgid "Unverified address: %(info)s. But mail will be sent anyway."
-msgstr ""
-"Adresse non vérifiée : %(info)s. Le message sera envoyé de toute façon."
+msgstr "Adresse non vérifiée : %(info)s. Le message sera envoyé de toute façon."
 
 #: ../linkcheck/checker/mailtourl.py:169
 #, python-format
@@ -601,31 +597,31 @@ msgstr ""
 
 #: ../linkcheck/__init__.py:124
 msgid "CRITICAL"
-msgstr ""
+msgstr "CRITICAL"
 
 #: ../linkcheck/__init__.py:125
 msgid "ERROR"
-msgstr ""
+msgstr "ERROR"
 
 #: ../linkcheck/__init__.py:126
 msgid "WARN"
-msgstr ""
+msgstr "WARN"
 
 #: ../linkcheck/__init__.py:127
 msgid "WARNING"
-msgstr ""
+msgstr "WARNING"
 
 #: ../linkcheck/__init__.py:128
 msgid "INFO"
-msgstr ""
+msgstr "INFO"
 
 #: ../linkcheck/__init__.py:129
 msgid "DEBUG"
-msgstr ""
+msgstr "DEBUG"
 
 #: ../linkcheck/__init__.py:130
 msgid "NOTSET"
-msgstr ""
+msgstr "NOTSET"
 
 #: ../linkcheck/configuration.py:255
 #, python-format
@@ -842,8 +838,7 @@ msgstr "Impossible de trouver le fichier de profilage %s."
 
 #: ../linkchecker:162
 msgid "Please run linkchecker with --profile to generate it."
-msgstr ""
-"Lancez s'il vous plaît linkchecker avec l'argument --profile pour le générer."
+msgstr "Lancez s'il vous plaît linkchecker avec l'argument --profile pour le générer."
 
 #: ../linkchecker:247
 msgid "General options"
@@ -1220,77 +1215,76 @@ msgstr "Tapez sur la touche ENTRÉE pour finir"
 #: /usr/lib/python2.4/optparse.py:329
 #, python-format
 msgid "usage: %s\n"
-msgstr ""
+msgstr "usage : %s\n"
 
 #: /usr/lib/python2.4/optparse.py:348
 msgid "Usage"
-msgstr ""
+msgstr "Usage"
 
 #: /usr/lib/python2.4/optparse.py:354
 msgid "integer"
-msgstr ""
+msgstr "integer"
 
 #: /usr/lib/python2.4/optparse.py:355
 msgid "long integer"
-msgstr ""
+msgstr "long integer"
 
 #: /usr/lib/python2.4/optparse.py:356
 msgid "floating-point"
-msgstr ""
+msgstr "floating-point"
 
 #: /usr/lib/python2.4/optparse.py:357
 msgid "complex"
-msgstr ""
+msgstr "complex"
 
 #: /usr/lib/python2.4/optparse.py:365
 #, python-format
 msgid "option %s: invalid %s value: %r"
-msgstr ""
+msgstr "option %s : valeur %s invalide : %r"
 
 #: /usr/lib/python2.4/optparse.py:373
 #, python-format
 msgid "option %s: invalid choice: %r (choose from %s)"
-msgstr ""
+msgstr "option %s : choix invalide : %r (choisir dans %s)"
 
 #: /usr/lib/python2.4/optparse.py:1136
 msgid "show this help message and exit"
-msgstr ""
+msgstr "afficher ce message d'aide et se terminer"
 
 #: /usr/lib/python2.4/optparse.py:1141
 msgid "show program's version number and exit"
-msgstr ""
+msgstr "afficher le numéro de version du programme et se terminer"
 
 #: /usr/lib/python2.4/optparse.py:1164
-#, fuzzy
 msgid "%prog [options]"
-msgstr "Options de sortie"
+msgstr "%prog [options]"
 
 #: /usr/lib/python2.4/optparse.py:1374 /usr/lib/python2.4/optparse.py:1413
 #, python-format
 msgid "%s option requires an argument"
-msgstr ""
+msgstr "L'option %s nécessite un argument"
 
 #: /usr/lib/python2.4/optparse.py:1376 /usr/lib/python2.4/optparse.py:1415
 #, python-format
 msgid "%s option requires %d arguments"
-msgstr ""
+msgstr "L'option %s nécessite %d arguments"
 
 #: /usr/lib/python2.4/optparse.py:1385
 #, python-format
 msgid "%s option does not take a value"
-msgstr ""
+msgstr "L'option %s ne prend pas de valeur"
 
 #: /usr/lib/python2.4/optparse.py:1402 /usr/lib/python2.4/optparse.py:1556
 #, python-format
 msgid "no such option: %s"
-msgstr ""
+msgstr "option invalide : %s"
 
 #: /usr/lib/python2.4/optparse.py:1502
-#, fuzzy
 msgid "options"
-msgstr "Options de sortie"
+msgstr "options"
 
 #: /usr/lib/python2.4/optparse.py:1559
 #, python-format
 msgid "ambiguous option: %s (%s?)"
-msgstr ""
+msgstr "option ambiguë : %s (%s ?)"
+
