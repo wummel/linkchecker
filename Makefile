@@ -37,9 +37,7 @@ config:
 
 # no rpm package; too much trouble, cannot test
 dist:	locale config
-	$(PYTHON) setup.py sdist --formats=gztar,zip
-	python2.1 setup.py bdist_wininst
-	python2.2 setup.py bdist_wininst
+	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_wininst
 
 # produce the .deb Debian package
 deb_local: cleandeb
@@ -58,7 +56,7 @@ deb_unsigned: cleandeb
 	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -us -uc -rfakeroot 
 
 files:	locale
-	env http_proxy="" $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
+	env http_proxy="" LANG=C $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
 VERSION:
