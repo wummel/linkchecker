@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "POT-Creation-Date: 2004-09-17 18:35+CEST\n"
-"PO-Revision-Date: 2004-09-14 22:05+0100\n"
+"PO-Revision-Date: 2004-09-17 18:37+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,11 +17,8 @@ msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr "Tastatur Abbruch; warte auf Beendigung von %d aktiven Verbindungen"
 
 #: ../linkcheck/checker/consumer.py:132
-msgid ""
-"Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s"
-msgstr ""
-"Status: %5d URLs noch zu prüfen, %4d URLs überprüft, %2d aktive Threads, "
-"Laufzeit %s"
+msgid "Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s"
+msgstr "Status: %5d URLs noch zu prüfen, %4d URLs überprüft, %2d aktive Threads, Laufzeit %s"
 
 #: ../linkcheck/checker/errorurl.py:29
 msgid "URL is unrecognized or has invalid syntax"
@@ -47,7 +44,8 @@ msgstr "Keine Antwort vom FTP Server"
 msgid "Missing trailing directory slash in ftp url"
 msgstr "Fehlender / am Ende der FTP url"
 
-#: ../linkcheck/checker/httpsurl.py:28 ../linkcheck/checker/ignoredurl.py:25
+#: ../linkcheck/checker/httpsurl.py:28
+#: ../linkcheck/checker/ignoredurl.py:25
 msgid "%s url ignored"
 msgstr "%s url ignoriert"
 
@@ -97,18 +95,11 @@ msgstr ""
 
 #: ../linkcheck/checker/httpurl.py:253
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
-msgstr ""
-"HTTP 301 (moved permanent) gefunden: sie sollten diesen Link aktualisieren."
+msgstr "HTTP 301 (moved permanent) gefunden: sie sollten diesen Link aktualisieren."
 
 #: ../linkcheck/checker/httpurl.py:258
-msgid ""
-"A HTTP 301 redirection occured and the URL has no trailing / at the end. All "
-"URLs which point to (home) directories should end with a / to avoid "
-"redirection."
-msgstr ""
-"Es ist eine HTTP 301 Weiterleitung aufgetreten und die URL endet nicht "
-"mit /. Alle URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit "
-"einem / enden, um Weiterleitungen zu verhindern."
+msgid "A HTTP 301 redirection occured and the URL has no trailing / at the end. All URLs which point to (home) directories should end with a / to avoid redirection."
+msgstr "Es ist eine HTTP 301 Weiterleitung aufgetreten und die URL endet nicht mit /. Alle URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um Weiterleitungen zu verhindern."
 
 #: ../linkcheck/checker/httpurl.py:269
 msgid "HTTP redirection to non-http url encountered; the original url was %r."
@@ -124,8 +115,7 @@ msgstr "Server %r unterstützte keine HEAD Anfrage, verwendete GET zum Prüfen"
 
 #: ../linkcheck/checker/httpurl.py:302
 msgid "Server %r had no anchor support, removed anchor from request"
-msgstr ""
-"Server %r besitzt keine Anker Unterstützung, lösche Anker von der Anfrage"
+msgstr "Server %r besitzt keine Anker Unterstützung, lösche Anker von der Anfrage"
 
 #: ../linkcheck/checker/httpurl.py:317
 msgid "Could not store cookies: %(msg)s"
@@ -135,7 +125,8 @@ msgstr "Konnte Cookie nicht speichern: %(msg)s"
 msgid "Last modified %s"
 msgstr "Letzte Änderung %s"
 
-#: ../linkcheck/checker/httpurl.py:419 ../linkcheck/checker/httpurl.py:440
+#: ../linkcheck/checker/httpurl.py:419
+#: ../linkcheck/checker/httpurl.py:440
 msgid "Unsupported content encoding %r."
 msgstr "Content-Encoding %r wird nicht unterstützt."
 
@@ -157,8 +148,7 @@ msgstr "Gültige Adresse: %(info)s"
 
 #: ../linkcheck/checker/mailtourl.py:136
 msgid "MX mail host %(host)s did not accept connections: %(error)s"
-msgstr ""
-"Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s"
+msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s"
 
 #: ../linkcheck/checker/mailtourl.py:142
 msgid "Could not connect, but syntax is correct"
@@ -323,8 +313,7 @@ msgstr "ungültige Option '%s'"
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
-"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 "
-"alink=#191c83>\n"
+"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
 "<blockquote>\n"
 "<b>Error: %s</b><br>\n"
 "The LinkChecker Online script has encountered an error. Please ensure\n"
@@ -335,8 +324,7 @@ msgid ""
 "</body>\n"
 "</html>"
 msgstr ""
-"<html><head><title>LinkChecker Online Fehler</title></head><body "
-"text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
+"<html><head><title>LinkChecker Online Fehler</title></head><body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>\n"
 "<blockquote><b>Fehler: %s</b><br>Das LinkChecker Online Skript ist\n"
 "auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die\n"
 "angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen\n"
@@ -395,16 +383,20 @@ msgstr "Prüfzeit"
 msgid "URL"
 msgstr "URL"
 
-#: ../linkcheck/logger/csvlog.py:45 ../linkcheck/logger/gml.py:44
-#: ../linkcheck/logger/sql.py:54 ../linkcheck/logger/xmllog.py:77
+#: ../linkcheck/logger/csvlog.py:45
+#: ../linkcheck/logger/gml.py:44
+#: ../linkcheck/logger/sql.py:54
+#: ../linkcheck/logger/xmllog.py:77
 msgid "created by %s at %s"
 msgstr "erstellt von %s um %s"
 
-#: ../linkcheck/logger/csvlog.py:49 ../linkcheck/logger/gml.py:48
+#: ../linkcheck/logger/csvlog.py:49
+#: ../linkcheck/logger/gml.py:48
 msgid "Get the newest version at %(url)s"
 msgstr "Die neueste Version gibt es unter %(url)s"
 
-#: ../linkcheck/logger/csvlog.py:52 ../linkcheck/logger/gml.py:51
+#: ../linkcheck/logger/csvlog.py:52
+#: ../linkcheck/logger/gml.py:51
 msgid "Write comments and bugs to %(email)s"
 msgstr "Schreiben Sie Kommentare und Fehler an %(email)s"
 
@@ -416,46 +408,58 @@ msgstr "# Format der Einträge:"
 msgid "Stopped checking at %s (%s)%s"
 msgstr "Beende Prüfen am %s (%s)%s"
 
-#: ../linkcheck/logger/gml.py:125 ../linkcheck/logger/html.py:253
-#: ../linkcheck/logger/sql.py:120 ../linkcheck/logger/text.py:240
+#: ../linkcheck/logger/gml.py:125
+#: ../linkcheck/logger/html.py:253
+#: ../linkcheck/logger/sql.py:120
+#: ../linkcheck/logger/text.py:240
 #: ../linkcheck/logger/xmllog.py:173
 msgid "Stopped checking at %s (%s)"
 msgstr "Beende Prüfen am %s (%s)"
 
-#: ../linkcheck/logger/html.py:86 ../linkcheck/logger/text.py:100
+#: ../linkcheck/logger/html.py:86
+#: ../linkcheck/logger/text.py:100
 msgid "Start checking at %s"
 msgstr "Beginne Prüfen am %s"
 
-#: ../linkcheck/logger/html.py:147 ../linkcheck/logger/text.py:138
+#: ../linkcheck/logger/html.py:147
+#: ../linkcheck/logger/text.py:138
 msgid " (cached)"
 msgstr " (aus dem Cache)"
 
-#: ../linkcheck/logger/html.py:161 ../linkcheck/logger/text.py:152
+#: ../linkcheck/logger/html.py:161
+#: ../linkcheck/logger/text.py:152
 msgid ", line %d"
 msgstr ", Zeile %d"
 
-#: ../linkcheck/logger/html.py:162 ../linkcheck/logger/text.py:153
+#: ../linkcheck/logger/html.py:162
+#: ../linkcheck/logger/text.py:153
 msgid ", col %d"
 msgstr ", Spalte %d"
 
-#: ../linkcheck/logger/html.py:188 ../linkcheck/logger/html.py:201
-#: ../linkcheck/logger/text.py:172 ../linkcheck/logger/text.py:186
+#: ../linkcheck/logger/html.py:188
+#: ../linkcheck/logger/html.py:201
+#: ../linkcheck/logger/text.py:172
+#: ../linkcheck/logger/text.py:186
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
-#: ../linkcheck/logger/html.py:225 ../linkcheck/logger/text.py:213
+#: ../linkcheck/logger/html.py:225
+#: ../linkcheck/logger/text.py:213
 msgid "Valid"
 msgstr "Gültig"
 
-#: ../linkcheck/logger/html.py:230 ../linkcheck/logger/text.py:217
+#: ../linkcheck/logger/html.py:230
+#: ../linkcheck/logger/text.py:217
 msgid "Error"
 msgstr "Fehler"
 
-#: ../linkcheck/logger/html.py:240 ../linkcheck/logger/text.py:227
+#: ../linkcheck/logger/html.py:240
+#: ../linkcheck/logger/text.py:227
 msgid "Thats it. "
 msgstr "Das wars. "
 
-#: ../linkcheck/logger/html.py:242 ../linkcheck/logger/text.py:229
+#: ../linkcheck/logger/html.py:242
+#: ../linkcheck/logger/text.py:229
 msgid "1 error"
 msgstr "1 Fehler"
 
@@ -463,25 +467,32 @@ msgstr "1 Fehler"
 msgid "%d errors"
 msgstr "%d Fehler"
 
-#: ../linkcheck/logger/html.py:247 ../linkcheck/logger/text.py:234
+#: ../linkcheck/logger/html.py:247
+#: ../linkcheck/logger/text.py:234
 msgid " in 1 link"
 msgstr " in einer URL"
 
-#: ../linkcheck/logger/html.py:249 ../linkcheck/logger/text.py:236
+#: ../linkcheck/logger/html.py:249
+#: ../linkcheck/logger/text.py:236
 msgid " in %d links"
 msgstr " in %d URLs"
 
-#: ../linkcheck/logger/html.py:250 ../linkcheck/logger/text.py:237
+#: ../linkcheck/logger/html.py:250
+#: ../linkcheck/logger/text.py:237
 msgid " found"
 msgstr " gefunden"
 
-#: ../linkcheck/logger/html.py:259 ../linkcheck/logger/sql.py:58
-#: ../linkcheck/logger/text.py:93 ../linkcheck/logger/xmllog.py:81
+#: ../linkcheck/logger/html.py:259
+#: ../linkcheck/logger/sql.py:58
+#: ../linkcheck/logger/text.py:93
+#: ../linkcheck/logger/xmllog.py:81
 msgid "Get the newest version at %s"
 msgstr "Die neueste Version gibt es unter %s"
 
-#: ../linkcheck/logger/html.py:263 ../linkcheck/logger/sql.py:61
-#: ../linkcheck/logger/text.py:96 ../linkcheck/logger/xmllog.py:84
+#: ../linkcheck/logger/html.py:263
+#: ../linkcheck/logger/sql.py:61
+#: ../linkcheck/logger/text.py:96
+#: ../linkcheck/logger/xmllog.py:84
 msgid "Write comments and bugs to %s"
 msgstr "Schreiben Sie Kommentare und Fehler an %s"
 
@@ -511,8 +522,7 @@ msgid ""
 "o A ! before a regular expression negates it. So '!^mailto:' matches\n"
 "  everything but a mailto link.\n"
 "o URLs on the command line starting with \"ftp.\" are treated like\n"
-"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www."
-"\".\n"
+"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www.\".\n"
 "  You can also give local files as arguments.\n"
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
@@ -532,14 +542,12 @@ msgstr ""
 "o Ein ! vor einem regulären Ausdruck negiert diesen. Also matcht\n"
 "  '!^mailto:' alles außer mailto Links.\n"
 "o URLs von der Kommandozeile die mit \"ftp.\" beginnen werden wie\n"
-"\"ftp://ftp.\" behandelt, URLs die mit  \"www.\" beginnen wie \"http://www."
-"\".\n"
+"\"ftp://ftp.\" behandelt, URLs die mit  \"www.\" beginnen wie \"http://www.\".\n"
 "  Sie können auch lokale Dateien als Argumente angeben\n"
 "o Falls sich Ihr System automatisch mit dem Internet verbindet\n"
 "  (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht\n"
 "  auf Ihren lokalen Rechner verweisen\n"
-"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe "
-"BEISPIELE)\n"
+"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe BEISPIELE)\n"
 "o Javascript Links werden zur Zeit ignoriert\n"
 "o Wenn Ihr System keine Threads unterstützt deaktiviert LinkChecker diese\n"
 "  automatisch.\n"
@@ -576,12 +584,10 @@ msgid ""
 "  linkchecker -r0 ftp.linux.org\n"
 msgstr ""
 "BEISPIELE\n"
-"Der häufigste Gebrauch prüft die angegebene Domäne rekursiv, inklusive "
-"aller\n"
+"Der häufigste Gebrauch prüft die angegebene Domäne rekursiv, inklusive aller\n"
 "einzelnen URLs die außerhalb dieser Domäne zeigen:\n"
 "  linkchecker -Fhtml http://treasure.calvinsplayground.de/\n"
-"Beachten Sie dass diese Prüfung die komplette Website abprüft, welche "
-"mehrere\n"
+"Beachten Sie dass diese Prüfung die komplette Website abprüft, welche mehrere\n"
 "Hunderttausend URLs besitzen kann. Benutzen Sie die Option -r, um die\n"
 "Rekursionstiefe einzuschränken.\n"
 "\n"
@@ -709,8 +715,7 @@ msgid ""
 "are %(loggertypes)s. You can specify this option multiple times to output\n"
 "to more than one file. Default is no file output."
 msgstr ""
-"Ausgabe in eine Datei namens linkchecker-out.<typ>, $HOME/."
-"linkchecker_blacklist\n"
+"Ausgabe in eine Datei namens linkchecker-out.<typ>, $HOME/.linkchecker_blacklist\n"
 "bei 'blacklist' Ausgabe, oder <datename> falls angegeben.\n"
 "Der <dateiname> Teil wird beim Ausgabetyp 'none' ignoriert,\n"
 "ansonsten wird die Datei überschreiben falls sie existiert.\n"
@@ -892,19 +897,21 @@ msgstr ""
 "wird lediglich auf korrekte Syntax des Links geprüft."
 
 #: ../linkchecker:347
-#, fuzzy
 msgid "Deprecated options"
-msgstr "Allgemeine Optionen"
+msgstr " Optionen"
 
 #: ../linkchecker:349
 msgid "Print check status every 5 seconds to stderr. This is the default."
-msgstr ""
+msgstr "Gebe Prüfstatus alle 5 Sekunden an stderr aus. Dies ist die Voreinstellung."
 
-#: ../linkchecker:387 ../linkchecker:401 ../linkchecker:442
+#: ../linkchecker:387
+#: ../linkchecker:401
+#: ../linkchecker:442
 msgid "Illegal argument %r for option %s"
 msgstr "Ungültiges Argument %r für Option %s"
 
-#: ../linkchecker:421 ../linkchecker:435
+#: ../linkchecker:421
+#: ../linkchecker:435
 msgid "Illegal argument %d for option %s"
 msgstr "Ungültiges Argument %d für Option %s"
 
@@ -924,12 +931,3 @@ msgstr "keine Dateien oder URLs angegeben"
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
 
-#~ msgid ""
-#~ "Print check status every 5 seconds to stderr. When --debug is\n"
-#~ "given, the status check will only be printed after each checked url.\n"
-#~ "This is due to disabled threading during a debug run."
-#~ msgstr ""
-#~ "Gebe alle 5 Sekunden den Status auf stderr aus. Wenn --debug\n"
-#~ "angegeben wurde wird der Status nur nach jeder überprüften\n"
-#~ "url ausgegeben. Dies ist wegen des deaktivierten Threading\n"
-#~ "während eines Debuglaufs."
