@@ -70,6 +70,13 @@ upload: distclean dist files VERSION
 	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
+upload-unstable: distclean dist VERSION-UNSTABLE
+	scp debian/changelog $(HTMLDIR)/changes-unstable.txt
+	scp VERSION-UNSTABLE $(HTMLDIR)/raw/
+	#scp dist/* $(HTMLDIR)/
+	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
+	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
+
 test:
 	$(PYTHON) test/regrtest.py $(OFFLINETESTS)
 
