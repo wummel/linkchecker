@@ -18,9 +18,11 @@ strict=0
 #proxy=www-proxy.uni-sb.de
 #proxyport=3128
 
+# for each extern link we can specify if it is strict or not
 [filtering]
-externlinks=
-internlinks=
+# strict avoid checking of local files
+#extern1=^file:.* 1
+#internlinks=
 allowdeny=0
 
 # You can provide different user/password pairs for different link types.

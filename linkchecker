@@ -42,7 +42,7 @@ OPTIONS
 	Default is no file output.
 -p pwd, --password=pwd
 	Try given password for HTML and FTP authorization.
-	Default is 'joe@'. See -u. 
+	Default is 'guest@'. See -u.
 -P host[:port], --proxy=host[:port]
 	Use specified proxy for HTTP requests.
 	Standard port is 8080. Default is to use no proxy.
@@ -78,8 +78,9 @@ o If you have your system configured to automatically establish a
   connection to the internet (e.g. with diald), it will connect when
   checking links not pointing to your local host.
   Use the -s and -i options to prevent this (see EXAMPLES).
-o Javascript and https links are currently ignored
+o Javascript links are currently ignored
 o If your platform does not support threading, linkchecker assumes -t0
+o You can supply multiple user/password pairs in a configuration file
 """
 
 Examples = """EXAMPLES
@@ -110,8 +111,9 @@ def printUsage(msg):
 # Read command line arguments
 try:
     # Note: cut out the name of the script
-    options, args = getopt.getopt(sys.argv[1:], "aDe:f:hi:lP:o:p:qr:Rst:u:VvwW:",
-    ["anchors",
+    options, args = getopt.getopt(sys.argv[1:],
+    "aDe:f:hi:lP:o:p:qr:Rst:u:VvwW:", # short options
+    ["anchors",                       # long options
     "config=",
     "debug", 
     "extern=",
@@ -160,7 +162,7 @@ for opt,arg in options:
         linkcheck.Config.DebugFlag = 1
     
     elif opt=="-e" or opt=="--extern":
-        config["externlinks"].append(re.compile(arg))
+        config["externlinks"].append((re.compile(arg), 0))
     
     elif opt=="-h" or opt=="--help":
         printHelp()
@@ -192,11 +194,11 @@ for opt,arg in options:
             config["proxy"] = arg
     
     elif opt=="-p" or opt=="--password":
-        _password=arg
-        constructAuth=1
+        _password = arg
+        constructauth = 1
         
     elif opt=="-q" or opt=="--quiet":
-    	config["quiet"]=1
+    	config["quiet"] = 1
     
     elif opt=="-r" or opt=="--recursion-level":
         if int(arg) >= 0:

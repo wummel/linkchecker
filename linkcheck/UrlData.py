@@ -97,7 +97,7 @@ class UrlData:
             return
         try:
 	    self.buildUrl()
-            self.extern = self._isExtern(config)
+            self.extern = self._getExtern(config)
         except:
             type, value = sys.exc_info()[:2]
             self.setError(str(value))
@@ -114,7 +114,7 @@ class UrlData:
         
         # apply filter
         Config.debug("DEBUG: checking filter\n")
-        if config["strict"] and self.extern:
+        if self.extern and (config["strict"] or self.extern[1]):
             self.setWarning("outside of domain filter, checked only syntax")
             self.logMe(config)
             return
@@ -177,8 +177,8 @@ class UrlData:
                 return
         self.setWarning("anchor #"+anchor+" not found")
 
-    def _isExtern(self, config):
-        if len(config["externlinks"])==0 and len(config["internlinks"])==0:
+    def _getExtern(self, config):
+        if not (config["externlinks"] or config["internlinks"]):
             return 0
         # deny and allow external checking
         Config.debug(self.url)
@@ -186,17 +186,17 @@ class UrlData:
             for pat in config["internlinks"]:
                 if pat.search(self.url):
                     return 0
-            for pat in config["externlinks"]:
+            for pat, strict in config["externlinks"]:
                 if pat.search(self.url):
-                    return 1
+                    return (1, strict)
         else:
-            for pat in config["externlinks"]:
+            for pat, strict in config["externlinks"]:
                 if pat.search(self.url):
-                    return 1
+                    return (1, strict)
             for pat in config["internlinks"]:
                 if pat.search(self.url):
                     return 0
-        return 1
+        return (1,0)
 
     def getContent(self):
         """Precondition: urlConnection is an opened URL.

@@ -308,7 +308,13 @@ class Configuration(UserDict.UserDict):
         self.data["authentication"].append((re.compile(".*"), "anonymous", "guest@"))
 
         section = "filtering"
-        try: self.data["externlinks"].append(re.compile(cfgparser.get(section, "externlinks")))
+        try:
+            i=1
+            while 1:
+                tuple = string.split(cfgparser.get(section, "extern"+`i`))
+                if len(tuple)!=2: break
+                self.data["externlinks"].append((re.compile(tuple[0]),
+		                                 int(tuple[1])))
         except: pass
         try: self.data["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
         except: pass

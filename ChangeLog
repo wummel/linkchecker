@@ -1,3 +1,8 @@
+8.3.2000 Version 1.1.1
+	* FastCGI modules added (no script yet)
+	* CGI script fixes
+	* supply strict/non-strict flag for each external filtering rule
+
 7.3.2000
 	* support for multiple user/password pairs
 
