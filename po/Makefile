@@ -6,16 +6,14 @@ MSGFMT=$(PYTHON) $(I18NTOOLS)/msgfmt.py
 #MSGFMT=msgfmt
 MSGMERGE=msgmerge
 SOURCES=\
-../linkcheck/ChromeUrlData.py \
 ../linkcheck/Config.py \
 ../linkcheck/FileUrlData.py \
-../linkcheck/FindUrlData.py \
+../linkcheck/IgnoredUrlData.py \
 ../linkcheck/FtpUrlData.py \
 ../linkcheck/GopherUrlData.py \
 ../linkcheck/HostCheckingUrlData.py \
 ../linkcheck/HttpUrlData.py \
 ../linkcheck/HttpsUrlData.py \
-../linkcheck/JavascriptUrlData.py \
 ../linkcheck/Logging.py \
 ../linkcheck/MailtoUrlData.py \
 ../linkcheck/NntpUrlData.py \
