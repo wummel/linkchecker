@@ -1,11 +1,8 @@
-#!/usr/bin/python
-# Originally written by Barry Warsaw <bwarsaw@python.org>
+#! /usr/bin/python
+# Originally written by Barry Warsaw <barry@zope.com>
 #
-# minimally patched to make it even more xgettext compatible 
+# Minimally patched to make it even more xgettext compatible 
 # by Peter Funk <pf@artcom-gmbh.de>
-#
-# even more minimalistic patched to fix the default-domain= option
-# by Bastian Kleineidam <calvin@users.sourceforge.net>
 
 """pygettext -- Python equivalent of xgettext(1)
 
@@ -52,11 +49,11 @@ Options:
 
     -a
     --extract-all
-        Extract all strings
+        Extract all strings.
 
     -d name
     --default-domain=name
-        Rename the default output file from messages.pot to name.pot 
+        Rename the default output file from messages.pot to name.pot.
 
     -E
     --escape
@@ -66,11 +63,11 @@ Options:
     --docstrings
         Extract module, class, method, and function docstrings.  These do not
         need to be wrapped in _() markers, and in fact cannot be for Python to
-        consider them docstrings.
+        consider them docstrings. (See also the -X option).
 
     -h
     --help
-        print this help message and exit
+        Print this help message and exit.
 
     -k word
     --keyword=word
@@ -131,8 +128,13 @@ Options:
         extracted from the input files.  Each string to be excluded must
         appear on a line by itself in the file.
 
-If `inputfile' is -, standard input is read.
+    -X filename
+    --no-docstrings=filename
+        Specify a file that contains a list of files (one per line) that
+        should not have their docstrings extracted.  This is only useful in
+        conjunction with the -D option above.
 
+If `inputfile' is -, standard input is read.
 """
 
 import os
@@ -140,6 +142,7 @@ import sys
 import time
 import getopt
 import tokenize
+import operator
 
 # for selftesting
 try:
@@ -148,7 +151,7 @@ try:
 except ImportError:
     def _(s): return s
 
-__version__ = '1.3'
+__version__ = '1.4'
 
 default_keywords = ['_']
 DEFAULTKEYWORDS = ', '.join(default_keywords)
@@ -157,8 +160,8 @@ EMPTYSTRING = ''
 
 
 
-# The normal pot-file header. msgmerge and EMACS' po-mode work better if
-# it's there.
+# The normal pot-file header. msgmerge and Emacs's po-mode work better if it's
+# there.
 pot_header = _('''\
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR ORGANIZATION
@@ -249,6 +252,7 @@ class TokenEater:
         self.__data = []
         self.__lineno = -1
         self.__freshmodule = 1
+        self.__curfile = None
 
     def __call__(self, ttype, tstring, stup, etup, line):
         # dispatch
@@ -258,12 +262,13 @@ class TokenEater:
         self.__state(ttype, tstring, stup[0])
 
     def __waiting(self, ttype, tstring, lineno):
+        opts = self.__options
         # Do docstring extractions, if enabled
-        if self.__options.docstrings:
+        if opts.docstrings and not opts.nodocstrings.get(self.__curfile):
             # module docstring?
             if self.__freshmodule:
                 if ttype == tokenize.STRING:
-                    self.__addentry(safe_eval(tstring), lineno)
+                    self.__addentry(safe_eval(tstring), lineno, isdocstring=1)
                     self.__freshmodule = 0
                 elif ttype not in (tokenize.COMMENT, tokenize.NL):
                     self.__freshmodule = 0
@@ -272,7 +277,7 @@ class TokenEater:
             if ttype == tokenize.NAME and tstring in ('class', 'def'):
                 self.__state = self.__suiteseen
                 return
-        if ttype == tokenize.NAME and tstring in self.__options.keywords:
+        if ttype == tokenize.NAME and tstring in opts.keywords:
             self.__state = self.__keywordseen
 
     def __suiteseen(self, ttype, tstring, lineno):
@@ -283,7 +288,7 @@ class TokenEater:
     def __suitedocstring(self, ttype, tstring, lineno):
         # ignore any intervening noise
         if ttype == tokenize.STRING:
-            self.__addentry(safe_eval(tstring), lineno)
+            self.__addentry(safe_eval(tstring), lineno, isdocstring=1)
             self.__state = self.__waiting
         elif ttype not in (tokenize.NEWLINE, tokenize.INDENT,
                            tokenize.COMMENT):
@@ -311,15 +316,16 @@ class TokenEater:
             self.__data.append(safe_eval(tstring))
         # TBD: should we warn if we seen anything else?
 
-    def __addentry(self, msg, lineno=None):
+    def __addentry(self, msg, lineno=None, isdocstring=0):
         if lineno is None:
             lineno = self.__lineno
         if not msg in self.__options.toexclude:
             entry = (self.__curfile, lineno)
-            self.__messages.setdefault(msg, []).append(entry)
+            self.__messages.setdefault(msg, {})[entry] = isdocstring
 
     def set_filename(self, filename):
         self.__curfile = filename
+        self.__freshmodule = 1
 
     def write(self, fp):
         options = self.__options
@@ -327,31 +333,56 @@ class TokenEater:
         # The time stamp in the header doesn't have the same format as that
         # generated by xgettext...
         print >> fp, pot_header % {'time': timestamp, 'version': __version__}
+        # Sort the entries.  First sort each particular entry's keys, then
+        # sort all the entries by their first item.
+        reverse = {}
         for k, v in self.__messages.items():
-            if not options.writelocations:
-                pass
-            # location comments are different b/w Solaris and GNU:
-            elif options.locationstyle == options.SOLARIS:
-                for filename, lineno in v:
-                    d = {'filename': filename, 'lineno': lineno}
-                    print >>fp, _('# File: %(filename)s, line: %(lineno)d') % d
-            elif options.locationstyle == options.GNU:
-                # fit as many locations on one line, as long as the
-                # resulting line length doesn't exceeds 'options.width'
-                locline = '#:'
-                for filename, lineno in v:
-                    d = {'filename': filename, 'lineno': lineno}
-                    s = _(' %(filename)s:%(lineno)d') % d
-                    if len(locline) + len(s) <= options.width:
-                        locline = locline + s
-                    else:
+            keys = v.keys()
+            keys.sort()
+            reverse.setdefault(tuple(keys), []).append((k, v))
+        rkeys = reverse.keys()
+        rkeys.sort()
+        for rkey in rkeys:
+            rentries = reverse[rkey]
+            rentries.sort()
+            for k, v in rentries:
+                isdocstring = 0
+                # If the entry was gleaned out of a docstring, then add a
+                # comment stating so.  This is to aid translators who may wish
+                # to skip translating some unimportant docstrings.
+                if reduce(operator.__add__, v.values()):
+                    isdocstring = 1
+                # k is the message string, v is a dictionary-set of (filename,
+                # lineno) tuples.  We want to sort the entries in v first by
+                # file name and then by line number.
+                v = v.keys()
+                v.sort()
+                if not options.writelocations:
+                    pass
+                # location comments are different b/w Solaris and GNU:
+                elif options.locationstyle == options.SOLARIS:
+                    for filename, lineno in v:
+                        d = {'filename': filename, 'lineno': lineno}
+                        print >>fp, _(
+                            '# File: %(filename)s, line: %(lineno)d') % d
+                elif options.locationstyle == options.GNU:
+                    # fit as many locations on one line, as long as the
+                    # resulting line length doesn't exceeds 'options.width'
+                    locline = '#:'
+                    for filename, lineno in v:
+                        d = {'filename': filename, 'lineno': lineno}
+                        s = _(' %(filename)s:%(lineno)d') % d
+                        if len(locline) + len(s) <= options.width:
+                            locline = locline + s
+                        else:
+                            print >> fp, locline
+                            locline = "#:" + s
+                    if len(locline) > 2:
                         print >> fp, locline
-                        locline = "#:" + s
-                if len(locline) > 2:
-                    print >> fp, locline
-            # TBD: sorting, normalizing
-            print >> fp, 'msgid', normalize(k)
-            print >> fp, 'msgstr ""\n'
+                if isdocstring:
+                    print >> fp, '#, docstring'
+                print >> fp, 'msgid', normalize(k)
+                print >> fp, 'msgstr ""\n'
 
 
 
@@ -360,12 +391,12 @@ def main():
     try:
         opts, args = getopt.getopt(
             sys.argv[1:],
-            'ad:DEhk:Kno:p:S:Vvw:x:',
+            'ad:DEhk:Kno:p:S:Vvw:x:X:',
             ['extract-all', 'default-domain=', 'escape', 'help',
              'keyword=', 'no-default-keywords',
              'add-location', 'no-location', 'output=', 'output-dir=',
              'style=', 'verbose', 'version', 'width=', 'exclude-file=',
-             'docstrings',
+             'docstrings', 'no-docstrings',
              ])
     except getopt.error, msg:
         usage(1, msg)
@@ -387,6 +418,7 @@ def main():
         width = 78
         excludefilename = ''
         docstrings = 0
+        nodocstrings = {}
 
     options = Options()
     locations = {'gnu' : options.GNU,
@@ -433,6 +465,16 @@ def main():
                 usage(1, _('--width argument must be an integer: %s') % arg)
         elif opt in ('-x', '--exclude-file'):
             options.excludefilename = arg
+        elif opt in ('-X', '--no-docstrings'):
+            fp = open(arg)
+            try:
+                while 1:
+                    line = fp.readline()
+                    if not line:
+                        break
+                    options.nodocstrings[line[:-1]] = 1
+            finally:
+                fp.close()
 
     # calculate escapes
     make_escapes(options.escape)
@@ -447,8 +489,8 @@ def main():
             options.toexclude = fp.readlines()
             fp.close()
         except IOError:
-            sys.stderr.write(_("Can't read --exclude-file: %s") %
-                             options.excludefilename)
+            print >> sys.stderr, _(
+                "Can't read --exclude-file: %s") % options.excludefilename
             sys.exit(1)
     else:
         options.toexclude = []
@@ -471,8 +513,8 @@ def main():
             try:
                 tokenize.tokenize(fp.readline, eater)
             except tokenize.TokenError, e:
-                sys.stderr.write('%s: %s, line %d, column %d\n' %
-                                 (e[0], filename, e[1][0], e[1][1]))
+                print >> sys.stderr, '%s: %s, line %d, column %d' % (
+                    e[0], filename, e[1][0], e[1][1])
         finally:
             if closep:
                 fp.close()
