@@ -37,8 +37,8 @@ _linkMatcher = r"""
     <              # open tag
     \s*            # whitespace
     %s             # tag name
-    \s+            # whitespace
     [^>]*?         # skip leading attributes
+    \s+            # whitespace
     %s             # attrib name
     \s*            # whitespace
     =              # equal sign

@@ -196,7 +196,9 @@ class HttpUrlData(UrlData):
             roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]
             rp = robotparser.RobotFileParser()
             rp.set_url(roboturl)
+            print roboturl
             rp.read()
+            print "2"
             robotsTxt = rp.can_fetch(Config.UserAgent, self.url)
             config.robotsTxtCache_set(self.urlTuple[0:2], robotsTxt)
         return config.robotsTxtCache_get(self.url)
