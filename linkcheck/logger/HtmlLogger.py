@@ -56,7 +56,7 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.has_field('intro'):
             self.fd.write("<center><h2>"+linkcheck.Config.App+"</h2></center>"+
               "<br><blockquote>"+linkcheck.Config.Freeware+"<br><br>"+
-              (linkcheck.i18n._("Start checking at %s\n") % \
+              (bk.i18n._("Start checking at %s\n") % \
                linkcheck.logger.strtime(self.starttime))+
 	      "<br>")
         self.flush()
@@ -76,7 +76,7 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
              "<td bgcolor=\""+self.colorurl+"\">"+self.field("url")+"</td>\n"+
              "<td bgcolor=\""+self.colorurl+"\">"+urlData.urlName)
             if urlData.cached:
-                self.fd.write(linkcheck.i18n._(" (cached)"))
+                self.fd.write(bk.i18n._(" (cached)"))
             self.fd.write("</td>\n</tr>\n")
         if urlData.name and self.has_field("name"):
             self.fd.write("<tr>\n<td>"+self.field("name")+"</td>\n<td>"+
@@ -84,23 +84,23 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if urlData.parentName and self.has_field("parenturl"):
             self.fd.write("<tr>\n<td>"+self.field("parenturl")+
                '</td>\n<td><a target="top" href="'+
-               linkcheck.url.url_quote(urlData.parentName or "")+'">'+
-               linkcheck.url.url_quote(urlData.parentName or "")+"</a>")
+               bk.url.url_quote(urlData.parentName or "")+'">'+
+               bk.url.url_quote(urlData.parentName or "")+"</a>")
             if urlData.line:
-                self.fd.write(linkcheck.i18n._(", line %d")%urlData.line)
+                self.fd.write(bk.i18n._(", line %d")%urlData.line)
             if urlData.column:
-                self.fd.write(linkcheck.i18n._(", col %d")%urlData.column)
+                self.fd.write(bk.i18n._(", col %d")%urlData.column)
             self.fd.write("</td>\n</tr>\n")
         if urlData.baseRef and self.has_field("base"):
             self.fd.write("<tr>\n<td>"+self.field("base")+"</td>\n<td>"+
 	                  urlData.baseRef+"</td>\n</tr>\n")
         if urlData.url and self.has_field("realurl"):
             self.fd.write("<tr>\n<td>"+self.field("realurl")+"</td>\n<td>"+
-	                  '<a target="top" href="'+linkcheck.url.url_quote(urlData.url)+
-			  '">'+linkcheck.url.url_quote(urlData.url)+"</a></td>\n</tr>\n")
+	                  '<a target="top" href="'+bk.url.url_quote(urlData.url)+
+			  '">'+bk.url.url_quote(urlData.url)+"</a></td>\n</tr>\n")
         if urlData.dltime>=0 and self.has_field("dltime"):
             self.fd.write("<tr>\n<td>"+self.field("dltime")+"</td>\n<td>"+
-	                  (linkcheck.i18n._("%.3f seconds") % urlData.dltime)+
+	                  (bk.i18n._("%.3f seconds") % urlData.dltime)+
 			  "</td>\n</tr>\n")
         if urlData.dlsize>=0 and self.has_field("dlsize"):
             self.fd.write("<tr>\n<td>"+self.field("dlsize")+"</td>\n<td>"+
@@ -109,7 +109,7 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if urlData.checktime and self.has_field("checktime"):
             self.fd.write("<tr>\n<td>"+self.field("checktime")+
 	                  "</td>\n<td>"+
-			  (linkcheck.i18n._("%.3f seconds") % urlData.checktime)+
+			  (bk.i18n._("%.3f seconds") % urlData.checktime)+
 			  "</td>\n</tr>\n")
         if urlData.infoString and self.has_field("info"):
             self.fd.write("<tr>\n<td>"+self.field("info")+"</td>\n<td>"+
@@ -140,32 +140,32 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.fd is None:
             return
         if self.has_field("outro"):
-            self.fd.write("\n"+linkcheck.i18n._("Thats it. "))
+            self.fd.write("\n"+bk.i18n._("Thats it. "))
             #if self.warnings==1:
-            #    self.fd.write(linkcheck.i18n._("1 warning, "))
+            #    self.fd.write(bk.i18n._("1 warning, "))
             #else:
-            #    self.fd.write(str(self.warnings)+linkcheck.i18n._(" warnings, "))
+            #    self.fd.write(str(self.warnings)+bk.i18n._(" warnings, "))
             if self.errors==1:
-                self.fd.write(linkcheck.i18n._("1 error"))
+                self.fd.write(bk.i18n._("1 error"))
             else:
-                self.fd.write(str(self.errors)+linkcheck.i18n._(" errors"))
+                self.fd.write(str(self.errors)+bk.i18n._(" errors"))
             if linknumber >= 0:
                 if linknumber == 1:
-                    self.fd.write(linkcheck.i18n._(" in 1 link"))
+                    self.fd.write(bk.i18n._(" in 1 link"))
                 else:
-                    self.fd.write(linkcheck.i18n._(" in %d links") % linknumber)
-            self.fd.write(linkcheck.i18n._(" found")+"\n<br>")
+                    self.fd.write(bk.i18n._(" in %d links") % linknumber)
+            self.fd.write(bk.i18n._(" found")+"\n<br>")
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write(linkcheck.i18n._("Stopped checking at %s (%s)\n")%\
+            self.fd.write(bk.i18n._("Stopped checking at %s (%s)\n")%\
                           (linkcheck.logger.strtime(self.stoptime),
                            linkcheck.logger.strduration(duration)))
             self.fd.write("</blockquote><br><hr noshade size=\"1\"><small>"+
                           linkcheck.Config.HtmlAppInfo+"<br>")
-            self.fd.write(linkcheck.i18n._("Get the newest version at %s\n") %\
+            self.fd.write(bk.i18n._("Get the newest version at %s\n") %\
              ('<a href="'+linkcheck.Config.Url+'" target="_top">'+linkcheck.Config.Url+
 	      "</a>.<br>"))
-            self.fd.write(linkcheck.i18n._("Write comments and bugs to %s\n\n") %\
+            self.fd.write(bk.i18n._("Write comments and bugs to %s\n\n") %\
 	     ('<a href="mailto:'+linkcheck.Config.Email+'">'+linkcheck.Config.Email+"</a>."))
             self.fd.write("</small></body></html>")
         self.flush()

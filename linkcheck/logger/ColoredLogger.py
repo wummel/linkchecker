@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import linkcheck.i18n
+import bk.i18n
 import linkcheck.AnsiColor
 import linkcheck.logger.StandardLogger
 
@@ -51,7 +51,7 @@ class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
                     self.fd.write("\n"+self.field("parenturl")+
                               self.spaces("parenturl")+
 		              self.colorparent+
-                              linkcheck.url.url_quote(urlData.parentName or "")+
+                              bk.url.url_quote(urlData.parentName or "")+
 			      self.colorreset+"\n")
                     self.currentPage = urlData.parentName
                     self.prefix = 1
@@ -68,11 +68,11 @@ class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.fd.write(self.field("url")+self.spaces("url")+self.colorurl+
 	              urlData.urlName+self.colorreset)
             if urlData.line:
-                self.fd.write(linkcheck.i18n._(", line %d")%urlData.line)
+                self.fd.write(bk.i18n._(", line %d")%urlData.line)
             if urlData.column:
-                self.fd.write(linkcheck.i18n._(", col %d")%urlData.column)
+                self.fd.write(bk.i18n._(", col %d")%urlData.column)
             if urlData.cached:
-                self.fd.write(linkcheck.i18n._(" (cached)\n"))
+                self.fd.write(bk.i18n._(" (cached)\n"))
             else:
                 self.fd.write("\n")
 
@@ -91,14 +91,14 @@ class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
-                          self.colorreal+linkcheck.url.url_quote(urlData.url)+
+                          self.colorreal+bk.url.url_quote(urlData.url)+
                           self.colorreset+"\n")
         if urlData.dltime>=0 and self.has_field("dltime"):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(self.field("dltime")+self.spaces("dltime")+
                           self.colordltime+
-                          (linkcheck.i18n._("%.3f seconds") % urlData.dltime)+
+                          (bk.i18n._("%.3f seconds") % urlData.dltime)+
                           self.colorreset+"\n")
         if urlData.dlsize>=0 and self.has_field("dlsize"):
             if self.prefix:
@@ -111,7 +111,7 @@ class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
                 self.fd.write("|  ")
             self.fd.write(self.field("checktime")+self.spaces("checktime")+
                 self.colordltime+
-	        (linkcheck.i18n._("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
+	        (bk.i18n._("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
 
         if urlData.infoString and self.has_field("info"):
             if self.prefix:

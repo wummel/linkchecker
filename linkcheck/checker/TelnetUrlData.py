@@ -33,7 +33,7 @@ class TelnetUrlData (linkcheck.HostCheckingUrlData.HostCheckingUrlData):
         self.host, self.port = urllib.splitport(self.host)
         if self.port is not None:
             if not linkcheck.UrlData.is_valid_port(self.port):
-                raise linkcheck.LinkCheckerError(linkcheck.i18n._("URL has invalid port number %s")\
+                raise linkcheck.LinkCheckerError(bk.i18n._("URL has invalid port number %s")\
                                       % self.port)
             self.port = int(self.port)
         else:

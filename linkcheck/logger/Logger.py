@@ -15,24 +15,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import linkcheck.i18n
+import bk.i18n
 
 
 class Logger (object):
 
     Fields = {
-        "realurl":   linkcheck.i18n._("Real URL"),
-        "result":    linkcheck.i18n._("Result"),
-        "base":      linkcheck.i18n._("Base"),
-        "name":      linkcheck.i18n._("Name"),
-        "parenturl": linkcheck.i18n._("Parent URL"),
-        "extern":    linkcheck.i18n._("Extern"),
-        "info":      linkcheck.i18n._("Info"),
-        "warning":   linkcheck.i18n._("Warning"),
-        "dltime":    linkcheck.i18n._("D/L Time"),
-        "dlsize":    linkcheck.i18n._("D/L Size"),
-        "checktime": linkcheck.i18n._("Check Time"),
-        "url":       linkcheck.i18n._("URL"),
+        "realurl":   bk.i18n._("Real URL"),
+        "result":    bk.i18n._("Result"),
+        "base":      bk.i18n._("Base"),
+        "name":      bk.i18n._("Name"),
+        "parenturl": bk.i18n._("Parent URL"),
+        "extern":    bk.i18n._("Extern"),
+        "info":      bk.i18n._("Info"),
+        "warning":   bk.i18n._("Warning"),
+        "dltime":    bk.i18n._("D/L Time"),
+        "dlsize":    bk.i18n._("D/L Size"),
+        "checktime": bk.i18n._("Check Time"),
+        "url":       bk.i18n._("URL"),
     }
 
     def __init__ (self, **args):

@@ -17,7 +17,7 @@
 
 import time
 import csv
-import linkcheck.i18n
+import bk.i18n
 import linkcheck.logger.StandardLogger
 import linkcheck.logger.Logger
 
@@ -37,12 +37,12 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
             return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("# "+(linkcheck.i18n._("created by %s at %s%s") % (linkcheck.Config.AppName, linkcheck.logger.strtime(self.starttime), self.lineterminator)))
-            self.fd.write("# "+(linkcheck.i18n._("Get the newest version at %s%s") % (linkcheck.Config.Url, self.lineterminator)))
-            self.fd.write("# "+(linkcheck.i18n._("Write comments and bugs to %s%s%s") % \
+            self.fd.write("# "+(bk.i18n._("created by %s at %s%s") % (linkcheck.Config.AppName, linkcheck.logger.strtime(self.starttime), self.lineterminator)))
+            self.fd.write("# "+(bk.i18n._("Get the newest version at %s%s") % (linkcheck.Config.Url, self.lineterminator)))
+            self.fd.write("# "+(bk.i18n._("Write comments and bugs to %s%s%s") % \
 	                    (linkcheck.Config.Email, self.lineterminator, self.lineterminator)))
             self.fd.write(
-                      linkcheck.i18n._("# Format of the entries:")+self.lineterminator+\
+                      bk.i18n._("# Format of the entries:")+self.lineterminator+\
                       "# urlname;"+self.lineterminator+\
                       "# recursionlevel;"+self.lineterminator+\
                       "# parentname;"+self.lineterminator+\
@@ -68,10 +68,10 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.fd is None:
             return
         row = [urlData.urlName, urlData.recursionLevel,
-               linkcheck.url.url_quote(urlData.parentName or ""), urlData.baseRef,
+               bk.url.url_quote(urlData.parentName or ""), urlData.baseRef,
                urlData.errorString, urlData.validString,
                urlData.warningString, urlData.infoString,
-               urlData.valid, linkcheck.url.url_quote(urlData.url),
+               urlData.valid, bk.url.url_quote(urlData.url),
                urlData.line, urlData.column,
                urlData.name, urlData.dltime,
                urlData.dlsize, urlData.checktime,
@@ -86,7 +86,7 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
         self.stoptime = time.time()
         if self.has_field("outro"):
             duration = self.stoptime - self.starttime
-            self.fd.write("# "+linkcheck.i18n._("Stopped checking at %s (%s)%s")%\
+            self.fd.write("# "+bk.i18n._("Stopped checking at %s (%s)%s")%\
                           (linkcheck.logger.strtime(self.stoptime),
                            linkcheck.logger.strduration(duration), self.lineterminator))
             self.flush()

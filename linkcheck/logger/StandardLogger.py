@@ -17,7 +17,7 @@
 
 import sys
 import time
-import linkcheck.i18n
+import bk.i18n
 import linkcheck.logger.Logger
 
 
@@ -73,9 +73,9 @@ __init__(self, **args)
         self.starttime = time.time()
         if self.has_field('intro'):
             self.fd.write("%s\n%s\n" % (linkcheck.Config.AppInfo, linkcheck.Config.Freeware))
-            self.fd.write(linkcheck.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url)
-            self.fd.write(linkcheck.i18n._("Write comments and bugs to %s\n\n") % linkcheck.Config.Email)
-            self.fd.write(linkcheck.i18n._("Start checking at %s\n") % linkcheck.logger.strtime(self.starttime))
+            self.fd.write(bk.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url)
+            self.fd.write(bk.i18n._("Write comments and bugs to %s\n\n") % linkcheck.Config.Email)
+            self.fd.write(bk.i18n._("Start checking at %s\n") % linkcheck.logger.strtime(self.starttime))
             self.flush()
 
     def newUrl (self, urlData):
@@ -85,7 +85,7 @@ __init__(self, **args)
             self.fd.write("\n"+self.field('url')+self.spaces('url')+
                           urlData.urlName)
             if urlData.cached:
-                self.fd.write(linkcheck.i18n._(" (cached)\n"))
+                self.fd.write(bk.i18n._(" (cached)\n"))
             else:
                 self.fd.write("\n")
         if urlData.name and self.has_field('name'):
@@ -93,24 +93,24 @@ __init__(self, **args)
                           urlData.name+"\n")
         if urlData.parentName and self.has_field('parenturl'):
             self.fd.write(self.field('parenturl')+self.spaces("parenturl")+
-	                  linkcheck.url.url_quote(urlData.parentName or "")+
-                          (linkcheck.i18n._(", line %d")%urlData.line)+
-                          (linkcheck.i18n._(", col %d")%urlData.column)+"\n")
+	                  bk.url.url_quote(urlData.parentName or "")+
+                          (bk.i18n._(", line %d")%urlData.line)+
+                          (bk.i18n._(", col %d")%urlData.column)+"\n")
         if urlData.baseRef and self.has_field('base'):
             self.fd.write(self.field("base")+self.spaces("base")+
                           urlData.baseRef+"\n")
         if urlData.url and self.has_field('realurl'):
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
-                          linkcheck.url.url_quote(urlData.url)+"\n")
+                          bk.url.url_quote(urlData.url)+"\n")
         if urlData.dltime>=0 and self.has_field('dltime'):
             self.fd.write(self.field("dltime")+self.spaces("dltime")+
-	                  linkcheck.i18n._("%.3f seconds\n") % urlData.dltime)
+	                  bk.i18n._("%.3f seconds\n") % urlData.dltime)
         if urlData.dlsize>=0 and self.has_field('dlsize'):
             self.fd.write(self.field("dlsize")+self.spaces("dlsize")+
 	                  "%s\n"%linkcheck.StringUtil.strsize(urlData.dlsize))
         if urlData.checktime and self.has_field('checktime'):
             self.fd.write(self.field("checktime")+self.spaces("checktime")+
-	                  linkcheck.i18n._("%.3f seconds\n") % urlData.checktime)
+	                  bk.i18n._("%.3f seconds\n") % urlData.checktime)
         if urlData.infoString and self.has_field('info'):
             self.fd.write(self.field("info")+self.spaces("info")+
 	                  linkcheck.StringUtil.indent(
@@ -137,24 +137,24 @@ __init__(self, **args)
         if self.fd is None:
             return
         if self.has_field('outro'):
-            self.fd.write(linkcheck.i18n._("\nThats it. "))
+            self.fd.write(bk.i18n._("\nThats it. "))
             #if self.warnings==1:
-            #    self.fd.write(linkcheck.i18n._("1 warning, "))
+            #    self.fd.write(bk.i18n._("1 warning, "))
             #else:
-            #    self.fd.write(str(self.warnings)+linkcheck.i18n._(" warnings, "))
+            #    self.fd.write(str(self.warnings)+bk.i18n._(" warnings, "))
             if self.errors==1:
-                self.fd.write(linkcheck.i18n._("1 error"))
+                self.fd.write(bk.i18n._("1 error"))
             else:
-                self.fd.write(str(self.errors)+linkcheck.i18n._(" errors"))
+                self.fd.write(str(self.errors)+bk.i18n._(" errors"))
             if linknumber >= 0:
                 if linknumber == 1:
-                    self.fd.write(linkcheck.i18n._(" in 1 link"))
+                    self.fd.write(bk.i18n._(" in 1 link"))
                 else:
-                    self.fd.write(linkcheck.i18n._(" in %d links") % linknumber)
-            self.fd.write(linkcheck.i18n._(" found\n"))
+                    self.fd.write(bk.i18n._(" in %d links") % linknumber)
+            self.fd.write(bk.i18n._(" found\n"))
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write(linkcheck.i18n._("Stopped checking at %s (%s)\n") % \
+            self.fd.write(bk.i18n._("Stopped checking at %s (%s)\n") % \
                           (linkcheck.logger.strtime(self.stoptime),
                            linkcheck.logger.strduration(duration)))
         self.flush()

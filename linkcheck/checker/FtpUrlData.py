@@ -52,7 +52,7 @@ class FtpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
         else:
             _user, _password = self.getUserPassword()
         if _user is None or _password is None:
-            raise linkcheck.LinkCheckerError(linkcheck.i18n._("No user or password found"))
+            raise linkcheck.LinkCheckerError(bk.i18n._("No user or password found"))
         self.login(_user, _password)
         filename = self.cwd()
         if filename:
@@ -89,10 +89,10 @@ class FtpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
             self.urlConnection.connect(self.urlparts[1])
             self.urlConnection.login(_user, _password)
         except EOFError:
-            raise linkcheck.LinkCheckerError(linkcheck.i18n._("Remote host has closed connection"))
+            raise linkcheck.LinkCheckerError(bk.i18n._("Remote host has closed connection"))
         if not self.urlConnection.getwelcome():
             self.closeConnection()
-            raise linkcheck.LinkCheckerError(linkcheck.i18n._("Got no answer from FTP server"))
+            raise linkcheck.LinkCheckerError(bk.i18n._("Got no answer from FTP server"))
         # dont set info anymore, this may change every time we logged in
         #self.setInfo(info)
 
@@ -113,7 +113,7 @@ class FtpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
         # it could be a directory if the trailing slash was forgotten
         try:
             self.urlConnection.cwd(filename)
-            self.setWarning(linkcheck.i18n._("Missing trailing directory slash in ftp url"))
+            self.setWarning(bk.i18n._("Missing trailing directory slash in ftp url"))
             return
         except ftplib.error_perm:
             pass

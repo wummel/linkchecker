@@ -33,7 +33,7 @@ ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
 
 # helper function for internal errors
 def internal_error ():
-    print >>sys.stderr, linkcheck.i18n._("""\n********** Oops, I did it again. *************
+    print >>sys.stderr, bk.i18n._("""\n********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
@@ -50,13 +50,13 @@ I can work with ;).
     print >>sys.stderr, etype, value
     traceback.print_exc()
     print_app_info()
-    print >>sys.stderr, linkcheck.i18n._("\n******** LinkChecker internal error, bailing out ********")
+    print >>sys.stderr, bk.i18n._("\n******** LinkChecker internal error, bailing out ********")
     sys.exit(1)
 
 
 def print_app_info ():
     import os
-    print >>sys.stderr, linkcheck.i18n._("System info:")
+    print >>sys.stderr, bk.i18n._("System info:")
     print >>sys.stderr, linkcheck.Config.App
     print >>sys.stderr, "Python %s on %s" % (sys.version, sys.platform)
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
@@ -103,8 +103,8 @@ class UrlData (object):
         self.config = config
         self.parentName = parentName
         self.baseRef = baseRef
-        self.errorString = linkcheck.i18n._("Error")
-        self.validString = linkcheck.i18n._("Valid")
+        self.errorString = bk.i18n._("Error")
+        self.validString = bk.i18n._("Valid")
         self.warningString = None
         self.infoString = None
         self.valid = True
@@ -127,11 +127,11 @@ class UrlData (object):
 
     def setError (self, s):
         self.valid = False
-        self.errorString = linkcheck.i18n._("Error")+": "+s
+        self.errorString = bk.i18n._("Error")+": "+s
 
     def setValid (self, s):
         self.valid = True
-        self.validString = linkcheck.i18n._("Valid")+": "+s
+        self.validString = bk.i18n._("Valid")+": "+s
 
     def isParseable (self):
         return False
@@ -197,7 +197,7 @@ class UrlData (object):
         self.userinfo, host = urllib.splituser(self.urlparts[1])
         x, port = urllib.splitport(host)
         if port is not None and not is_valid_port(port):
-            raise linkcheck.LinkCheckerError(linkcheck.i18n._("URL has invalid port number %r")\
+            raise linkcheck.LinkCheckerError(bk.i18n._("URL has invalid port number %r")\
                                   % str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()
@@ -237,7 +237,7 @@ class UrlData (object):
         debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern[0] and (self.config["strict"] or self.extern[1]):
             self.setWarning(
-                  linkcheck.i18n._("outside of domain filter, checked only syntax"))
+                  bk.i18n._("outside of domain filter, checked only syntax"))
             self.logMe()
             return
 
@@ -254,10 +254,10 @@ class UrlData (object):
             debug(HURT_ME_PLENTY, "exception", traceback.format_tb(etb))
             # make nicer error msg for unknown hosts
             if isinstance(evalue, socket.error) and evalue[0]==-2:
-                evalue = linkcheck.i18n._('Hostname not found')
+                evalue = bk.i18n._('Hostname not found')
             # make nicer error msg for bad status line
             if isinstance(evalue, linkcheck.httplib2.BadStatusLine):
-                evalue = linkcheck.i18n._('Bad HTTP response %r')%str(evalue)
+                evalue = bk.i18n._('Bad HTTP response %r')%str(evalue)
             self.setError(str(evalue))
 
         # check content
@@ -282,7 +282,7 @@ class UrlData (object):
         except tuple(ExcList):
             value, tb = sys.exc_info()[1:]
             debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
-            self.setError(linkcheck.i18n._("could not parse content: %r")%str(value))
+            self.setError(bk.i18n._("could not parse content: %r")%str(value))
         # close
         self.closeConnection()
         self.logMe()
@@ -292,11 +292,11 @@ class UrlData (object):
     def checkSyntax (self):
         debug(BRING_IT_ON, "checking syntax")
         if not self.urlName or self.urlName=="":
-            self.setError(linkcheck.i18n._("URL is null or empty"))
+            self.setError(bk.i18n._("URL is null or empty"))
             self.logMe()
             return False
         if ws_at_start_or_end(self.urlName):
-            self.setError(linkcheck.i18n._("URL has whitespace at beginning or end"))
+            self.setError(bk.i18n._("URL has whitespace at beginning or end"))
             self.logMe()
             return False
         try:
@@ -399,7 +399,7 @@ class UrlData (object):
         for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == self.anchor:
                 return
-        self.setWarning(linkcheck.i18n._("anchor #%s not found") % self.anchor)
+        self.setWarning(bk.i18n._("anchor #%s not found") % self.anchor)
 
     def _getExtern (self):
         if not (self.config["externlinks"] or self.config["internlinks"]):
@@ -456,14 +456,14 @@ class UrlData (object):
             return
         match = warningregex.search(self.getContent())
         if match:
-            self.setWarning(linkcheck.i18n._("Found %r in link contents")%match.group())
+            self.setWarning(bk.i18n._("Found %r in link contents")%match.group())
 
     def checkSize (self):
         """if a maximum size was given, call this function to check it
            against the content size of this url"""
         maxbytes = self.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
-            self.setWarning(linkcheck.i18n._("Content size %s is larger than %s")%\
+            self.setWarning(bk.i18n._("Content size %s is larger than %s")%\
                          (linkcheck.StringUtil.strsize(self.dlsize),
                           linkcheck.StringUtil.strsize(maxbytes)))
 
@@ -491,7 +491,7 @@ class UrlData (object):
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
             if len(h.urls)>1:
-                self.setWarning(linkcheck.i18n._(
+                self.setWarning(bk.i18n._(
                 "more than one <base> tag found, using only the first one"))
         h = linkcheck.linkparse.LinkFinder(self.getContent())
         p = bk.HtmlParser.htmlsax.parser(h)

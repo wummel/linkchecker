@@ -43,4 +43,4 @@ class HostCheckingUrlData (linkcheck.UrlData.UrlData):
 
     def checkConnection (self):
         ip = socket.gethostbyname(self.host)
-        self.setValid(self.host+"("+ip+") "+linkcheck.i18n._("found"))
+        self.setValid(self.host+"("+ip+") "+bk.i18n._("found"))

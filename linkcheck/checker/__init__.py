@@ -71,7 +71,7 @@ def checkUrls (config):
         config.finish()
         config.log_endOfOutput()
         active = config.threader.active_threads()
-        linkcheck.log.warn(LOG_CHECK, linkcheck.i18n._("keyboard interrupt; waiting for %d active threads to finish") % active)
+        linkcheck.log.warn(LOG_CHECK, bk.i18n._("keyboard interrupt; waiting for %d active threads to finish") % active)
         raise
 
 

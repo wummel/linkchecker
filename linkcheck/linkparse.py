@@ -17,7 +17,7 @@
 
 import re
 import linkcheck
-from linkcheck.debug import *
+
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {

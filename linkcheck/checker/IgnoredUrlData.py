@@ -59,7 +59,7 @@ class IgnoredUrlData (linkcheck.UrlData.UrlData):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 
     def _check (self):
-        self.setWarning(linkcheck.i18n._("%s url ignored")%self.scheme.capitalize())
+        self.setWarning(bk.i18n._("%s url ignored")%self.scheme.capitalize())
         self.logMe()
 
     def hasContent (self):

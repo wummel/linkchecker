@@ -35,10 +35,10 @@ class GMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
             return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("# "+(linkcheck.i18n._("created by %s at %s\n") % (linkcheck.Config.AppName,
+            self.fd.write("# "+(bk.i18n._("created by %s at %s\n") % (linkcheck.Config.AppName,
                       linkcheck.logger.strtime(self.starttime))))
-            self.fd.write("# "+(linkcheck.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url))
-            self.fd.write("# "+(linkcheck.i18n._("Write comments and bugs to %s\n\n") % \
+            self.fd.write("# "+(bk.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url))
+            self.fd.write("# "+(bk.i18n._("Write comments and bugs to %s\n\n") % \
   	                    linkcheck.Config.Email))
             self.fd.write("graph [\n  directed 1\n")
             self.flush()
@@ -55,7 +55,7 @@ class GMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.fd.write("  node [\n")
 	    self.fd.write("    id     %d\n" % node.id)
             if self.has_field("realurl"):
-                self.fd.write('    label  "%s"\n' % linkcheck.url.url_quote(node.url))
+                self.fd.write('    label  "%s"\n' % bk.url.url_quote(node.url))
             if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("    dltime %d\n" % node.dltime)
             if node.dlsize>=0 and self.has_field("dlsize"):
@@ -91,7 +91,7 @@ class GMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write("# "+linkcheck.i18n._("Stopped checking at %s (%s)\n")%\
+            self.fd.write("# "+bk.i18n._("Stopped checking at %s (%s)\n")%\
 	                  (linkcheck.logger.strtime(self.stoptime),
                            linkcheck.logger.strduration(duration)))
         self.flush()

@@ -64,10 +64,10 @@ class XMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
         self.fd.write('<?xml version="1.0"?>\n')
         if self.has_field("intro"):
             self.fd.write("<!--\n")
-            self.fd.write("  "+linkcheck.i18n._("created by %s at %s\n") % \
+            self.fd.write("  "+bk.i18n._("created by %s at %s\n") % \
 	              (linkcheck.Config.AppName, linkcheck.logger.strtime(self.starttime)))
-            self.fd.write("  "+linkcheck.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url)
-            self.fd.write("  "+linkcheck.i18n._("Write comments and bugs to %s\n\n") % \
+            self.fd.write("  "+bk.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url)
+            self.fd.write("  "+bk.i18n._("Write comments and bugs to %s\n\n") % \
 	              linkcheck.Config.Email)
             self.fd.write("-->\n\n")
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
@@ -85,7 +85,7 @@ class XMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.fd.write(">\n")
             if self.has_field("realurl"):
                 self.fd.write("    <label>%s</label>\n" %\
-                              xmlquote(linkcheck.url.url_quote(node.url)))
+                              xmlquote(bk.url.url_quote(node.url)))
             self.fd.write("    <data>\n")
             if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("      <dltime>%f</dltime>\n" % node.dltime)
@@ -130,7 +130,7 @@ class XMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.fd.write("<!-- ")
-            self.fd.write(linkcheck.i18n._("Stopped checking at %s (%s)\n")%\
+            self.fd.write(bk.i18n._("Stopped checking at %s (%s)\n")%\
                           (linkcheck.logger.strtime(self.stoptime),
                            linkcheck.logger.strduration(duration)))
             self.fd.write("-->")

@@ -57,7 +57,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
         # XXX
         # check for empty paths
         if not self.urlparts[2]:
-            self.setWarning(linkcheck.i18n._("URL path is empty, assuming '/' as path"))
+            self.setWarning(bk.i18n._("URL path is empty, assuming '/' as path"))
             self.urlparts[2] = '/'
             self.url = urlparse.urlunsplit(self.urlparts)
 
@@ -106,16 +106,16 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
         # set the proxy, so a 407 status after this is an error
         self.setProxy(self.config["proxy"].get(self.scheme))
         if self.proxy:
-            self.setInfo(linkcheck.i18n._("Using Proxy %r")%self.proxy)
+            self.setInfo(bk.i18n._("Using Proxy %r")%self.proxy)
         self.headers = None
         self.auth = None
         self.cookies = []
         if not self.robotsTxtAllowsUrl():
-            self.setWarning(linkcheck.i18n._("Access denied by robots.txt, checked only syntax"))
+            self.setWarning(bk.i18n._("Access denied by robots.txt, checked only syntax"))
             return
 
         if _isAmazonHost(self.urlparts[1]):
-            self.setWarning(linkcheck.i18n._("Amazon servers block HTTP HEAD requests, "
+            self.setWarning(bk.i18n._("Amazon servers block HTTP HEAD requests, "
                                    "using GET instead"))
             self.method = "GET"
         else:
@@ -140,7 +140,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 self.setProxy(self.headers.getheader("Location"))
-                self.setInfo(linkcheck.i18n._("Enforced Proxy %r")%self.proxy)
+                self.setInfo(bk.i18n._("Enforced Proxy %r")%self.proxy)
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
@@ -156,7 +156,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
                     redirectCache = [self.url]
                     fallback_GET = True
                     continue
-                self.setError(linkcheck.i18n._("more than %d redirections, aborting")%self.max_redirects)
+                self.setError(bk.i18n._("more than %d redirections, aborting")%self.max_redirects)
                 return
             # user authentication
             if response.status == 401:
@@ -185,7 +185,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
                 if mime=='application/octet-stream' and \
                    (poweredby.startswith('Zope') or \
                     server.startswith('Zope')):
-                    self.setWarning(linkcheck.i18n._("Zope Server cannot determine"
+                    self.setWarning(bk.i18n._("Zope Server cannot determine"
                                 " MIME type with HEAD, falling back to GET"))
                     self.method = "GET"
                     continue
@@ -193,7 +193,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
         # check url warnings
         effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
-            self.setWarning(linkcheck.i18n._("Effective URL %s") % effectiveurl)
+            self.setWarning(bk.i18n._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
         # check response
         self.checkResponse(response, fallback_GET)
@@ -207,7 +207,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
               tries < self.max_redirects:
             newurl = self.headers.getheader("Location",
                          self.headers.getheader("Uri", ""))
-            redirected = linkcheck.url.url_norm(urlparse.urljoin(redirected, newurl))
+            redirected = bk.url.url_norm(urlparse.urljoin(redirected, newurl))
             # note: urlparts has to be a list
             self.urlparts = list(urlparse.urlsplit(redirected))
             # check internal redirect cache to avoid recursion
@@ -219,17 +219,17 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
                     self.urlparts = list(urlparse.urlsplit(self.url))
                     return self.max_redirects, response
                 self.setError(
-                     linkcheck.i18n._("recursive redirection encountered:\n %s") % \
+                     bk.i18n._("recursive redirection encountered:\n %s") % \
                             "\n  => ".join(redirectCache))
                 return -1, response
             redirectCache.append(redirected)
             # remember this alias
             if response.status == 301:
                 if not self.has301status:
-                    self.setWarning(linkcheck.i18n._("HTTP 301 (moved permanent) encountered: you "
+                    self.setWarning(bk.i18n._("HTTP 301 (moved permanent) encountered: you "
                                            "should update this link."))
                     if not (self.url.endswith('/') or self.url.endswith('.html')):
-                        self.setWarning(linkcheck.i18n._("A HTTP 301 redirection occured and the url has no "
+                        self.setWarning(bk.i18n._("A HTTP 301 redirection occured and the url has no "
                                                "trailing / at the end. All urls which point to (home) "
                                                "directories should end with a / to avoid redirection."))
                     self.has301status = True
@@ -244,7 +244,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
             # check if we still have a http url, it could be another
             # scheme, eg https or news
             if self.urlparts[0]!="http":
-                self.setWarning(linkcheck.i18n._("HTTP redirection to non-http url encountered; "
+                self.setWarning(bk.i18n._("HTTP redirection to non-http url encountered; "
                                 "the original url was %r.")%self.url)
                 # make new UrlData object
                 newobj = linkcheck.UrlData.GetUrlDataFrom(redirected, self.recursionLevel, self.config,
@@ -273,11 +273,11 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
             if self.headers and self.headers.has_key("Server"):
                 server = self.headers['Server']
             else:
-                server = linkcheck.i18n._("unknown")
+                server = bk.i18n._("unknown")
             if fallback_GET:
-                self.setWarning(linkcheck.i18n._("Server %r did not support HEAD request, used GET for checking")%server)
+                self.setWarning(bk.i18n._("Server %r did not support HEAD request, used GET for checking")%server)
             if self.no_anchor:
-                self.setWarning(linkcheck.i18n._("Server %r had no anchor support, removed anchor from request")%server)
+                self.setWarning(bk.i18n._("Server %r had no anchor support, removed anchor from request")%server)
             if response.status == 204:
                 # no content
                 self.setWarning(response.reason)
@@ -294,7 +294,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
                 self.setValid("OK")
         modified = self.headers.get('Last-Modified', '')
         if modified:
-            self.setInfo(linkcheck.i18n._("Last modified %s") % modified)
+            self.setInfo(bk.i18n._("Last modified %s") % modified)
 
 
     def getCacheKeys (self):
@@ -318,7 +318,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
             self.closeConnection()
         self.urlConnection = self.getHTTPObject(host, scheme)
         # quote url before submit
-        url = linkcheck.url.url_quote(urlparse.urlunsplit(self.urlparts))
+        url = bk.url.url_quote(urlparse.urlunsplit(self.urlparts))
         qurlparts = list(urlparse.urlsplit(url))
         if self.no_anchor:
             qurlparts[4] = ''
@@ -394,7 +394,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
            encoding!='identity':
-            self.setWarning(linkcheck.i18n._('Unsupported content encoding %r.')%encoding)
+            self.setWarning(bk.i18n._('Unsupported content encoding %r.')%encoding)
             return False
         return True
 
@@ -418,7 +418,7 @@ class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
            encoding!='identity':
-            self.setWarning(linkcheck.i18n._('Unsupported content encoding %r.')%encoding)
+            self.setWarning(bk.i18n._('Unsupported content encoding %r.')%encoding)
             return False
         return True
 

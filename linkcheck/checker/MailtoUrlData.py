@@ -69,7 +69,7 @@ class MailtoUrlData (HostCheckingUrlData):
             an answer, print the verified adress as an info.
         """
         if not self.adresses:
-            self.setWarning(linkcheck.i18n._("No adresses found"))
+            self.setWarning(bk.i18n._("No adresses found"))
             return
 
         value = "unknown reason"
@@ -81,7 +81,7 @@ class MailtoUrlData (HostCheckingUrlData):
             mxrecords = mxlookup(host)
             linkcheck.Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
-                self.setWarning(linkcheck.i18n._("No MX mail host for %s found")%host)
+                self.setWarning(bk.i18n._("No MX mail host for %s found")%host)
                 return
             smtpconnect = 0
             for mxrecord in mxrecords:
@@ -94,18 +94,18 @@ class MailtoUrlData (HostCheckingUrlData):
                     info = self.urlConnection.verify(user)
                     linkcheck.Config.debug(HURT_ME_PLENTY, "SMTP user info", info)
                     if info[0]==250:
-                        self.setInfo(linkcheck.i18n._("Verified adress: %s")%str(info[1]))
+                        self.setInfo(bk.i18n._("Verified adress: %s")%str(info[1]))
                 except:
                     etype, value = sys.exc_info()[:2]
                     #print etype,value
                 if smtpconnect: break
             if not smtpconnect:
-                self.setWarning(linkcheck.i18n._("None of the MX mail hosts for %s accepts an "
+                self.setWarning(bk.i18n._("None of the MX mail hosts for %s accepts an "
                                   "SMTP connection: %s") % (host, str(value)))
                 mxrecord = mxrecords[0][1]
             else:
                 mxrecord = mxrecord[1]
-            self.setValid(linkcheck.i18n._("found MX mail host %s") % mxrecord)
+            self.setValid(bk.i18n._("found MX mail host %s") % mxrecord)
 
 
     def _split_adress (self, adress):
@@ -116,7 +116,7 @@ class MailtoUrlData (HostCheckingUrlData):
             return tuple(split)
         if len(split)==1:
             return (split[0], "localhost")
-        raise linkcheck.LinkCheckerError(linkcheck.i18n._("could not split the mail adress"))
+        raise linkcheck.LinkCheckerError(bk.i18n._("could not split the mail adress"))
 
 
     def closeConnection (self):

@@ -27,7 +27,6 @@ import _linkchecker_configdata
 import bk
 import bk.containers
 import linkcheck
-import linkcheck.i18n
 import linkcheck.Threader
 try:
     import threading

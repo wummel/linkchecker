@@ -47,7 +47,7 @@ class NntpUrlData (UrlData):
     def checkConnection (self):
         nntpserver = self.urlparts[1] or self.config["nntpserver"]
         if not nntpserver:
-            self.setWarning(linkcheck.i18n._("No NNTP server specified, skipping this URL"))
+            self.setWarning(bk.i18n._("No NNTP server specified, skipping this URL"))
             return
         nntp = self._connectNntp(nntpserver)
         group = self.urlparts[2]
@@ -56,18 +56,18 @@ class NntpUrlData (UrlData):
         if '@' in group:
             # request article
             resp,number,mid = nntp.stat("<"+group+">")
-            self.setInfo(linkcheck.i18n._('Articel number %s found') % number)
+            self.setInfo(bk.i18n._('Articel number %s found') % number)
         else:
             # split off trailing articel span
             group = group.split('/',1)[0]
             if group:
                 # request group info
                 resp,count,first,last,name = nntp.group(group)
-                self.setInfo(linkcheck.i18n._("Group %s has %s articles, range %s to %s") %\
+                self.setInfo(bk.i18n._("Group %s has %s articles, range %s to %s") %\
                              (name, count, first, last))
             else:
                 # group name is the empty string
-                self.setWarning(linkcheck.i18n._("No newsgroup specified in NNTP URL"))
+                self.setWarning(bk.i18n._("No newsgroup specified in NNTP URL"))
 
 
     def _connectNntp (self, nntpserver):
@@ -87,9 +87,9 @@ class NntpUrlData (UrlData):
                 else:
                     raise
         if nntp is None:
-            raise linkcheck.LinkCheckerError(linkcheck.i18n._("NTTP server too busy; tried more than %d times")%tries)
+            raise linkcheck.LinkCheckerError(bk.i18n._("NTTP server too busy; tried more than %d times")%tries)
         if value is not None:
-            self.setWarning(linkcheck.i18n._("NNTP busy: %s")%str(value))
+            self.setWarning(bk.i18n._("NNTP busy: %s")%str(value))
         return nntp
 
 

@@ -17,7 +17,7 @@
 
 import time
 import linkcheck
-import linkcheck.i18n
+import bk.i18n
 import linkcheck.logger.StandardLogger
 import linkcheck.logger.Logger
 
@@ -49,10 +49,10 @@ class SQLLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.fd is None: return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("-- "+(linkcheck.i18n._("created by %s at %s\n") % (linkcheck.Config.AppName,
+            self.fd.write("-- "+(bk.i18n._("created by %s at %s\n") % (linkcheck.Config.AppName,
                        linkcheck.strtime(self.starttime))))
-            self.fd.write("-- "+(linkcheck.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url))
-            self.fd.write("-- "+(linkcheck.i18n._("Write comments and bugs to %s\n\n") % \
+            self.fd.write("-- "+(bk.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url))
+            self.fd.write("-- "+(bk.i18n._("Write comments and bugs to %s\n\n") % \
 	                linkcheck.Config.Email))
             self.flush()
 
@@ -66,14 +66,14 @@ class SQLLogger (linkcheck.logger.StandardLogger.StandardLogger):
 	      (self.dbname,
 	       sqlify(urlData.urlName),
                urlData.recursionLevel,
-	       sqlify(linkcheck.url.url_quote(urlData.parentName or "")),
+	       sqlify(bk.url.url_quote(urlData.parentName or "")),
                sqlify(urlData.baseRef),
                sqlify(urlData.errorString),
                sqlify(urlData.validString),
                sqlify(urlData.warningString),
                sqlify(urlData.infoString),
                urlData.valid,
-               sqlify(linkcheck.url.url_quote(urlData.url)),
+               sqlify(bk.url.url_quote(urlData.url)),
                urlData.line,
                urlData.column,
                sqlify(urlData.name),
@@ -89,7 +89,7 @@ class SQLLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write("-- "+linkcheck.i18n._("Stopped checking at %s (%s)\n")%\
+            self.fd.write("-- "+bk.i18n._("Stopped checking at %s (%s)\n")%\
 	                  (linkcheck.logger.strtime(self.stoptime),
                            linkcheck.logger.strduration(duration)))
         self.flush()

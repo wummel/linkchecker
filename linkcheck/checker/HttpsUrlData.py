@@ -27,5 +27,5 @@ class HttpsUrlData (linkcheck.HttpUrlData.HttpUrlData):
         if linkcheck.HttpUrlData.supportHttps:
             super(HttpsUrlData, self)._check()
         else:
-            self.setWarning(linkcheck.i18n._("%s url ignored")%self.scheme.capitalize())
+            self.setWarning(bk.i18n._("%s url ignored")%self.scheme.capitalize())
             self.logMe()
