@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sat Jan  3 20:47:27 2004\n"
+"POT-Creation-Date: Sat Jan  3 22:17:56 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -520,7 +520,7 @@ msgstr ""
 
 msgid ""
 "Set the timeout for TCP connection attempts in seconds. The default\n"
-"timeout is 30 seconds."
+"timeout is %d seconds."
 msgstr ""
 
 msgid ""

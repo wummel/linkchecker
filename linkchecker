@@ -33,7 +33,8 @@ if not hasattr(sys, 'version_info') or sys.version_info<(2, 3, 0, 'final', 0):
 
 import getopt, re, os, pprint, socket, linkcheck
 # set default 60 seconds timeout
-socket.setdefaulttimeout(60)
+default_timeout = 60
+socket.setdefaulttimeout(default_timeout)
 # import several helper debugging things
 from linkcheck.debug import *
 from linkcheck.log import LoggerKeys
@@ -230,7 +231,7 @@ To disable threading specify a non-positive number."""))
 optparser.add_option("--timeout", type="int", dest="timeout",
                      help=i18n._(
 """Set the timeout for TCP connection attempts in seconds. The default
-timeout is 30 seconds."""))
+timeout is %d seconds.""") % default_timeout)
 
 optparser.add_option("-u", "--user", type="string", dest="username",
                      help=i18n._(
