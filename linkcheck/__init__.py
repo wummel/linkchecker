@@ -22,14 +22,16 @@ import time
 
 from linkcheck.i18n import _
 
-# logger areas
+# application log areas
 LOG = "linkcheck"
 LOG_CMDLINE = "linkcheck.cmdline"
 LOG_CHECK = "linkcheck.check"
+LOG_CACHE = "linkcheck.cache"
 LOG_GUI = "linkcheck.gui"
 lognames = {
     "cmdline": LOG_CMDLINE,
     "checking": LOG_CHECK,
+    "cache": LOG_CACHE,
     "gui": LOG_GUI,
     "all": LOG,
     }
@@ -57,6 +59,7 @@ def get_link_pat (arg, strict=False):
     }
 
 
+# note: don't confuse URL loggers with application logs above
 import linkcheck.logger.text
 import linkcheck.logger.html
 import linkcheck.logger.gml
@@ -67,7 +70,7 @@ import linkcheck.logger.xmllog
 import linkcheck.logger.none
 
 
-# default logger classes
+# default link logger classes
 Loggers = {
     "text": linkcheck.logger.text.TextLogger,
     "html": linkcheck.logger.html.HtmlLogger,
