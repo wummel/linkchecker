@@ -17,6 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re
+import os
 import urlparse
 import urllib
 
@@ -159,11 +160,20 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
     return r
 
 
+def idna_encode (host):
+    """Encode hostname as internationalized domain name (IDN) according
+       to RFC 3490."""
+    if isinstance(host, unicode):
+        return host.encode('idna').decode('ascii')
+    return host
+
+
 def url_norm (url):
-    """fix and normalize URL which must be quoted"""
+    """Fix and normalize URL which must be quoted. Supports unicode
+       hostnames according to RFC 3490."""
     urlparts = list(urlparse.urlsplit(url))
     urlparts[0] = urllib.unquote(urlparts[0]).lower() # scheme
-    urlparts[1] = urllib.unquote(urlparts[1]).lower() # host
+    urlparts[1] = idna_encode(urllib.unquote(urlparts[1]).lower()) # host
     # a leading backslash in path causes urlsplit() to add the
     # path components up to the first slash to host
     # try to find this case...
@@ -217,9 +227,8 @@ def url_norm (url):
         urlparts[2] = collapse_segments(urlparts[2])
     # quote parts again
     urlparts[0] = urllib.quote(urlparts[0]) # scheme
-    urlparts[1] = urllib.quote(urlparts[1], ':@') # host
-    nopathquote = ';/=,~*-+()@|'
-    urlparts[2] = urllib.quote(urlparts[2], nopathquote) # path
+    urlparts[1] = urllib.quote(urlparts[1], '@:') # host
+    urlparts[2] = urllib.quote(urlparts[2], _nopathquote_chars) # path
     res = urlparse.urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
@@ -316,7 +325,10 @@ def match_host (host, domainlist):
     return False
 
 
-_safe_url_chars = r"-a-zA-Z0-9_:/\.,~;=&#%()@\?\|"
+_nopathquote_chars = r"-;/=,~*+()@"
+if os.name == 'nt':
+    _nopathquote_chars += "|"
+_safe_url_chars = _nopathquote_chars + r"a-zA-Z0-9_:\.&#%\?"
 _safe_url_chars_ro = re.compile(r"^[%s]*$" % _safe_url_chars)
 def url_needs_quoting (url):
     """Check if url needs percent quoting. Note that the method does
