@@ -151,8 +151,9 @@ class HttpUrlData(UrlData):
     def _getHttpRequest(self, method="HEAD"):
         "Put request and return (status code, status text, mime object)"
         if self.proxy:
-            host = self.proxy+":"+`self.proxyport`
-            Config.debug("DEBUG: using proxy %s\n" % host)
+            Config.debug("DEBUG: using proxy %s:%d\n" %
+	                 (self.proxy,self.proxyport))
+            host = '%s:%d' % (self.proxy, self.proxyport)
         else:
             host = self.urlTuple[1]
         if self.urlConnection:

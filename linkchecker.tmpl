@@ -9,7 +9,7 @@ if sys.version[:5] < "1.5.2":
 
 # add the path to linkcheck module if you do not install with distutils
 $syspath
-import getopt,re,string,os
+import getopt,re,string,os,urlparse
 import linkcheck,StringUtil
 from linkcheck import _
 
@@ -165,18 +165,17 @@ configfiles = []
 for opt,arg in options:
     if opt=="-f" or opt=="--config":
         configfiles.append(arg)
+    elif opt=="-D" or opt=="--debug":
+        linkcheck.Config.DebugFlag = 1
+        config.disableThreading()
 config.read(configfiles)
 
-# check for environment variables (currently only http_proxy)
-if os.environ.has_key("http_proxy"):
-    proxy = re.compile("^(http://)?(?P<host>.+?)(:(?P<port>\d+))?").search(
-            os.environ["http_proxy"])
-    if proxy:
-        config["proxy"] = proxy.group('host')
-        if proxy.group('port'):
-            config["proxyport"] = int(proxy.group('port'))
-    else:
-        config["proxy"] = os.environ["http_proxy"]
+# if no proxy is given, fall back to http_proxy environment variable
+if os.environ.has_key('http_proxy') and not config['proxy']:
+    config['proxy'] = urlparse.urlparse(os.environ["http_proxy"])[1]
+    if string.find(config['proxy'], ':') != -1:
+        config['proxy'],port = string.split(config['proxy'], ':')
+        config['proxyport'] = int(port)
 
 # apply options and arguments
 _user = "anonymous"
@@ -186,10 +185,6 @@ for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
         config["anchors"] = 1
 
-    elif opt=="-D" or opt=="--debug":
-        linkcheck.Config.DebugFlag = 1
-        config.disableThreading()
-    
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append((re.compile(arg), 0))
     

@@ -40,35 +40,42 @@ def change_root_inv(root, pathname):
 class LCDistribution(Distribution):
     default_include_dirs = ['/usr/include/openssl',
                             '/usr/local/include/openssl']
+    default_library_dirs = ['/usr/lib',
+                            '/usr/local/lib']
     def run_commands (self):
         self.check_ssl()
         self.additional_things()
         Distribution.run_commands(self)
 
     def check_ssl(self):
-        incldir = self.has_ssl()
-        if incldir:
-            self.announce("SSL header file ssl.h found, "
-                          "enabling SSL compilation.")
+        ok = 0
+        incldirs = self.get_build_ext().include_dirs+self.default_include_dirs
+        libdirs = self.get_build_ext().library_dirs+self.default_library_dirs
+        for d in incldirs:
+            if os.path.exists(os.path.join(d, "ssl.h")):
+                self.announce('Found %s/ssl.h' % d)
+                ok = ok + 1
+        for d in libdirs:
+            if os.path.exists(os.path.join(d, "libssl.so")):
+                self.announce('Found %s/libssl.so' % d)
+                ok = ok + 1
+        if ok==2:
+            self.announce("Enabling SSL compilation")
             self.ext_modules = [Extension('ssl', ['ssl.c'],
-                        include_dirs=[incldir],
-                        library_dirs=['/usr/lib'],
+                        include_dirs=[incldirs],
+                        library_dirs=[libdirs],
                         libraries=['ssl'])]
         else:
-            self.announce("SSL header file ssl.h missing, "
-                          "disabling SSL compilation.\n"
-			  "Use the -I option for the build_ext command.")
+            self.announce(
+"""Some necessary SSL files are missing, disabling SSL compilation.
+Use "python setup.py build_ext -I<inclpath> -L<libpath>"
+where the path arguments point to your SSL installation.""")
 
-    def has_ssl(self):
-        """check if we can find ssl.h"""
-        incls = self.get_command_obj("build_ext").include_dirs
-        incls = (incls and string.split(incls, os.pathsep)) or []
-        for d in incls + self.default_include_dirs:
-            if os.path.exists(os.path.join(d, "ssl.h")):
-                return d
-        return 0
+    def get_build_ext(self):
+        c = self.get_command_obj('build_ext')
+        c.ensure_finalized()
+        return c
 
-                                           
     def additional_things(self):
         """replace path names and program information in various files"""
         self.announce("Filling template values.")

@@ -3,8 +3,9 @@ linkchecker (1.2.5) unstable; urgency=low
   * fix /etc/resolv.conf parsing again (this time for real?)
   * tuple param in DNS/Lib.py for Python 1.6 compatibility
   * adjust #! line in linkchecker script to correct python interpreter
+  * proper proxy config handling
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu,  7 Sep 2000 00:21:07 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 10 Sep 2000 12:50:52 +0200
 
 linkchecker (1.2.4) unstable; urgency=low
 

@@ -375,6 +375,7 @@ class Configuration(UserDict.UserDict):
         """this big function reads all the configuration parameters
         used in the linkchecker module.
         """
+        debug("DEBUG: reading configuration from %s\n" % files)
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
