@@ -70,7 +70,7 @@ files:	locale localbuild
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
 release: releasecheck dist upload homepage
-	mozilla -remote "openUrl(https://sourceforge.net/projects/linkchecker, new-tab)"
+	mozilla -remote "OpenUrl(https://sourceforge.net/projects/linkchecker,new-tab)"
 	@echo "Make SF release and press return..."
 	@read
 	@echo "Uploading new LinkChecker Homepage..."
