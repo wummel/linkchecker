@@ -837,6 +837,12 @@ RX_DATA [-a-zA-Z0-9_]+
     RETURN(T_ELEMENT_END);
 }
 
+<S_TAGEND2>[^<]+ {
+    UPDATE_BUFPOS;
+    UPDATE_COLUMN;
+    APPEND_TO_TMP(yyleng);
+}
+
 <S_TAGEND2><{RX_WHITE_SPACE}*\/{RX_WHITE_SPACE}*/[A-Za-z] {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -859,8 +865,7 @@ RX_DATA [-a-zA-Z0-9_]+
 }
 
 <S_TAGEND2>. {
-    UPDATE_BUFPOS;
-    UPDATE_LINE;
+    return T_WAIT;
 }
 
   /*********************** TEXT ************************/
@@ -909,16 +914,13 @@ int htmllexDebug (void** scanner, int debug) {
 /* prepare scanner for calls to yylex() */
 int htmllexStart (void* scanner, UserData* data, const char* s, int slen) {
     /* append s to data buffer and scan those bytes.
-     As Flex does not distinguish between '\0' and EOF characters,
-     we must replace '\0' with ' '. */
+     As Flex does not distinguish between NUL and EOF characters,
+     we must replace NUL with ' '. */
     int len = strlen(data->buf);
     int i;
     RESIZE_BUF(data->buf, len+slen+1);
     for (i=0; i<slen; i++) {
-	if (s[i]=='\0')
-	    data->buf[len+i] = ' ';
-	else
-            data->buf[len+i] = s[i];
+        data->buf[len+i] = (s[i]==0 ? ' ' : s[i]);
     }
     data->buf[len+slen] = '\0';
     if (len > data->bufpos) {
@@ -931,7 +933,9 @@ int htmllexStart (void* scanner, UserData* data, const char* s, int slen) {
     data->exc_type = NULL;
     data->exc_val = NULL;
     data->exc_tb = NULL;
-    /*fprintf(stderr, "SCANNING '%s'\n", data->buf+len);*/
+    if (yyget_debug(scanner)) {
+        fprintf(stderr, "SCANNING `%s'\n", data->buf+len);
+    }
     data->lexbuf = yy_scan_bytes(data->buf+len, slen, scanner);
     return 0;
 }
