@@ -22,7 +22,8 @@
   * Ensure stored result, info and warning strings are always Unicode.
     Else there might be encoding errors.
     Type: bugfix
-    Changed: linkcheck/checker/{urlbase,httpurl}.py
+    Changed: linkcheck/checker/{urlbase,httpurl,ftpurl}.py,
+      linkcheck/strformat.py
 
 2.4 "Kitchen stories" (released 9.2.2005)
 
