@@ -48,7 +48,7 @@ def init_gettext ():
         _ = lambda s: s
 init_gettext()
 
-import Config
+import Config, UrlData
 from debuglevels import *
 debug = Config.debug
 

@@ -4,6 +4,7 @@ Q: LinkChecker produced an error, but my web page is ok with
 A: Please check your web pages first. Are they really ok? Use
    a syntax highlighting editor! Use HTML Tidy from www.w3c.org!
    Check if the web server is accepting HEAD requests as well.
+   Check if you are using a Proxy which produces the error.
 
 
 Q: I still get an error, but the page is definitely ok.

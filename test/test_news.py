@@ -1,4 +1,4 @@
-import os, linkcheck, linkcheck.UrlData
+import os, linkcheck
 config = linkcheck.Config.Configuration()
 config.addLogger('test', linkcheck.test_support.TestLogger)
 config['recursionlevel'] = 1

@@ -16,6 +16,8 @@
     Changed files: linkcheck/HttpUrlData.py
   * Updated german documentation
     Changed files: po/de.po
+  * Oops, an FTP proxy is not used. Will make in the next release.
+    Changed files: linkcheck/FtpUrlData.py
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.

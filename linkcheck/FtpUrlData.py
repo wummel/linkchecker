@@ -31,6 +31,8 @@ class FtpUrlData (UrlData):
     """
 
     def checkConnection (self):
+        _proxy = self.config["proxy"].get(self.scheme)
+        # XXX proxy support (we support http and ftp!)
         _user, _password = self._getUserPassword()
         if _user is None or _password is None:
             raise linkcheck.error, linkcheck._("No user or password found")
