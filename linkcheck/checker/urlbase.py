@@ -87,16 +87,17 @@ class UrlBase (object):
                   line = -1, column = -1, name = ""):
         """Initialize check data, and store given variables.
 
-           @base_url - quoted url
+           @base_url - unquoted and/or unnormed url
            @recursion_level - on what check level lies the base url
            @config - Configuration instance
-           @parent_url - quoted url of parent or None
-           @base_ref - quoted url of <base href> or None
+           @parent_url - quoted and normed url of parent or None
+           @base_ref - quoted and normed url of <base href> or None
            @line - line number of url in parent content
            @column - column number of url in parent content
            @name - name of url or empty
         """
         self.base_ref = base_ref
+        # note that self.base_url must not be modified
         self.base_url = base_url
         self.url = None
         self.urlparts = None
@@ -119,15 +120,10 @@ class UrlBase (object):
         self.extern = (1, 0)
         self.data = None
         self.has_content = False
-        if linkcheck.url.url_needs_quoting(self.base_url):
-            self.add_warning(_("Base URL is not properly quoted"))
-            self.base_url = linkcheck.url.url_norm(self.base_url)
-        if self.base_ref and linkcheck.url.url_needs_quoting(self.base_ref):
-            self.add_warning(_("Base reference is not properly quoted"))
-            self.base_ref = linkcheck.url.url_norm(self.base_ref)
-        if self.parent_url and linkcheck.url.url_needs_quoting(self.parent_url):
-            self.add_warning(_("Parent url is not properly quoted"))
-            self.parent_url = linkcheck.url.url_norm(self.parent_url)
+        if self.base_ref:
+            assert not linkcheck.url.url_needs_quoting(self.base_ref)
+        if self.parent_url:
+            assert not linkcheck.url.url_needs_quoting(self.parent_url)
         url = linkcheck.checker.absolute_url(base_url, base_ref, parent_url)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
@@ -206,6 +202,12 @@ class UrlBase (object):
         return self.consumer.cache.url_is_cached(self.get_cache_key())
 
     def build_url (self):
+        # norm base url
+        base_url = linkcheck.url.url_norm(self.base_url)
+        if self.base_url != base_url:
+            self.add_warning(
+              _("Base URL is not properly normed. Normed url is %(url)r.") % \
+               {'url': base_url})
         # make url absolute
         if self.base_ref:
             # use base reference as parent url
@@ -213,11 +215,11 @@ class UrlBase (object):
                 # some websites have a relative base reference
                 self.base_ref = urljoin(self.parent_url, self.base_ref,
                                         self.scheme)
-            self.url = urljoin(self.base_ref, self.base_url, self.scheme)
+            self.url = urljoin(self.base_ref, base_url, self.scheme)
         elif self.parent_url:
-            self.url = urljoin(self.parent_url, self.base_url, self.scheme)
+            self.url = urljoin(self.parent_url, base_url, self.scheme)
         else:
-            self.url = self.base_url
+            self.url = base_url
         # split into (modifiable) list
         self.urlparts = list(urlparse.urlsplit(self.url))
         # and unsplit again
