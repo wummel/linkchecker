@@ -459,6 +459,8 @@ class UrlData (object):
         h.parser = p
         p.feed(self.getContent())
         p.flush()
+        h.parser = None
+        p.handler = None
         return h.follow
 
 
@@ -473,6 +475,8 @@ class UrlData (object):
         h.parser = p
         p.feed(self.getContent())
         p.flush()
+        h.parser = None
+        p.handler = None
         for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == self.anchor:
                 return
@@ -570,6 +574,8 @@ class UrlData (object):
         h.parser = p
         p.feed(self.getContent())
         p.flush()
+        h.parser = None
+        p.handler = None
         baseRef = None
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
@@ -581,6 +587,8 @@ class UrlData (object):
         h.parser = p
         p.feed(self.getContent())
         p.flush()
+        h.parser = None
+        p.handler = None
         for s in h.parse_info:
             # the parser had warnings/errors
             self.setWarning(s)
