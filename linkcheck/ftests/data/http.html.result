@@ -1,76 +1,113 @@
 url http://localhost:8001/linkcheck/ftests/data/http.html
+cache key http://localhost:8001/linkcheck/ftests/data/http.html
 real url http://localhost:8001/linkcheck/ftests/data/http.html
 valid
+
 url http://www.garantiertnixgutt.bla/
+cache key http://www.garantiertnixgutt.bla/
 real url http://www.garantiertnixgutt.bla/
 name bad url
 error
+
 url http://localhost:8000/
+cache key http://localhost:8000/
 real url http://localhost:8000/
 name ok
 error
-url http:/localhost:8000/
-real url http://localhost:8001/localhost:8000/
+
+url http:/localhost:8000/ (cached)
+cache key http://localhost:8000/
+real url http://localhost:8000/
 name one slash
 error
+
 url http:localhost:8000/
-real url http://localhost:8001/linkcheck/ftests/data/localhost:8000/
+cache key http:localhost:8000/
+real url http:localhost:8000/
 name no slash
 error
-url http:// (cached)
-real url http://
+
+url http://
+cache key http:///
+real url http:///
 name no url
 warning URL path is empty, assuming '/' as path
 error
-url http:/
-real url http:/
+
+url http:/ (cached)
+cache key http:///
+real url http:///
 name no url, one slash
 warning URL path is empty, assuming '/' as path
 error
+
 url http: (cached)
-real url http:
+cache key http:///
+real url http:///
 name no url, no slash
 warning URL path is empty, assuming '/' as path
 error
+
 url http://localhost:8000/stalter&sohn
+cache key http://localhost:8000/stalter&sohn
 real url http://localhost:8000/stalter&sohn
 name unquoted ampersand
 error
+
 url http://slashdot.org/
+cache key http://slashdot.org/
 real url http://slashdot.org/
 name unquoted
 valid
+
 url HtTP://LoCAlHOst:8000/ (cached)
+cache key http://localhost:8000/
 real url http://localhost:8000/
 name should be cached
 error
+
 url HTTP://LOCALHOST:8000/ (cached)
+cache key http://localhost:8000/
 real url http://localhost:8000/
 name should be cached
 error
+
 url http://localhost:8000/?quoted=%%FC
+cache key http://localhost:8000/?quoted=%%FC
 real url http://localhost:8000/?quoted=%%FC
 name html entities
 warning Base URL is not properly quoted
 error
+
 url http://localhost:8000/ (cached)
+cache key http://localhost:8000/
 real url http://localhost:8000/
 error
+
 url http.html (cached)
+cache key http://localhost:8001/linkcheck/ftests/data/http.html
 real url http://localhost:8001/linkcheck/ftests/data/http.html
 valid
+
 url http.html (cached)
+cache key http://localhost:8001/linkcheck/ftests/data/http.html
 real url http://localhost:8001/linkcheck/ftests/data/http.html
 valid
+
 url http.html (cached)
+cache key http://localhost:8001/linkcheck/ftests/data/http.html
 real url http://localhost:8001/linkcheck/ftests/data/http.html
 name CSS urls
 valid
+
 url http.html (cached)
+cache key http://localhost:8001/linkcheck/ftests/data/http.html
 real url http://localhost:8001/linkcheck/ftests/data/http.html
 name CSS urls
 valid
+
 url http://localhost:8000/ (cached)
+cache key http://localhost:8000/
 real url http://localhost:8000/
 name no beginning quote
 error
