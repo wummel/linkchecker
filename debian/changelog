@@ -1,8 +1,9 @@
 linkchecker (1.3.13) unstable; urgency=low
 
   * remove deleted source files from po/Makefile
+  * debian/control: conflict for obsoleted linkchecker-ssl
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed,  2 Jan 2002 16:51:31 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Wed,  2 Jan 2002 17:27:34 +0100
 
 linkchecker (1.3.12) unstable; urgency=low
 
