@@ -309,12 +309,12 @@ def match_host (host, domainlist):
     return False
 
 
-_safe_url_chars = re.compile(r"^[-a-zA-Z0-9_:/\.,~;=&#%()@]*$")
+_safe_url_chars = re.compile(r"^[-a-zA-Z0-9_:/\.,~;=&#%()@\?]*$")
 def url_needs_quoting (url):
     """Check if url needs percent quoting. Note that the method does
        only check basic character sets, and not any other syntax.
        The URL might still be syntactically incorrect even when
-       it is properly quoted..
+       it is properly quoted.
     """
     if url.rstrip() != url:
         # handle trailing whitespace as a special case
