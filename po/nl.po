@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Sat Jan 10 11:34:02 2004\n"
+"POT-Creation-Date: Sat Jan 10 12:11:09 2004\n"
 "PO-Revision-Date: 2004-01-03 23:27+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -452,29 +452,7 @@ msgstr ""
 msgid "Please run linkchecker with --profile to generate it."
 msgstr ""
 
-msgid ""
-"Check HTTP anchor references. This option applies to both internal\n"
-"and external urls. Default is don't check anchors.\n"
-"This option implies -w because anchor errors are always warnings."
-msgstr ""
-
-msgid ""
-"Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
-"which are sent back to the originating server are accepted.\n"
-"Sent and accepted cookies are provided as additional logging\n"
-"information."
-msgstr ""
-
-msgid ""
-"Swap checking order to external/internal. Default checking order\n"
-"is internal/external."
-msgstr ""
-"Verwissel de testvolgorde naar extern/intern. Standaard\n"
-"volgorde is intern/extern."
-
-msgid ""
-"Assume urls that match the given expression as external.\n"
-"Only internal HTML links are checked recursively."
+msgid "General options"
 msgstr ""
 
 msgid ""
@@ -483,75 +461,7 @@ msgid ""
 "(under Windows <path-to-program>\\linkcheckerrc)."
 msgstr ""
 
-msgid ""
-"type[/filename]\n"
-"Same as -o, but write to a file linkchecker-out.<type>\n"
-"or <filename> if specified. If the file already exists, it\n"
-"is overwritten. You can specify this option more than once.\n"
-"There is no file output for the blacklist logger. Default is\n"
-"no file output."
-msgstr ""
-
-msgid ""
-"Print debugging information. Provide this option multiple times\n"
-"for even more debugging information."
-msgstr ""
-
 msgid "Ask for url if none are given on the commandline."
-msgstr ""
-
-msgid ""
-" regex, --intern=regex\n"
-"Assume URLs that match the given expression as internal.\n"
-"LinkChecker descends recursively only to internal URLs, not to\n"
-"external."
-msgstr ""
-
-msgid ""
-"Specify an NNTP server for 'news:...' links. Default is the\n"
-"environment variable NNTP_SERVER. If no host is given,\n"
-"only the syntax of the link is checked."
-msgstr ""
-
-msgid ""
-"Treat url#anchora and url#anchorb as equal on caching. This\n"
-"is the default browser behaviour, but it's not specified in\n"
-"the URI specification. Use with care."
-msgstr ""
-
-msgid "Specify output type as %s. Default type is text."
-msgstr ""
-
-msgid ""
-"Try given password for HTTP and FTP authorization.\n"
-"Default password is %r. See also -u."
-msgstr ""
-
-msgid ""
-"Pause <secs> seconds between each url check. This option implies -t0.\n"
-"Default is no pause between requests."
-msgstr ""
-
-msgid ""
-"Write profiling data into a file named %s in the\n"
-"current working directory. See also --viewprof."
-msgstr ""
-
-msgid "Quiet operation. This is only useful with -F."
-msgstr ""
-
-msgid ""
-"Check recursively all links up to given depth. A negative depth\n"
-"will enable inifinite recursion. Default depth is 1."
-msgstr ""
-
-msgid ""
-"Check only syntax of external links, do not try to connect to them.\n"
-"For local file urls, only local files are internal. For\n"
-"http and ftp urls, all urls at the same domain name are internal."
-msgstr ""
-
-msgid "Print check status every 5 seconds to stderr."
 msgstr ""
 
 msgid ""
@@ -559,25 +469,15 @@ msgid ""
 "To disable threading specify a non-positive number."
 msgstr ""
 
-msgid ""
-"Set the timeout for TCP connection attempts in seconds. The default\n"
-"timeout is %d seconds."
-msgstr ""
-
-msgid ""
-"Try given username for HTTP and FTP authorization.\n"
-"Default is %r. See also -p."
-msgstr ""
-
 msgid "Print version and exit."
+msgstr ""
+
+msgid "Output options"
 msgstr ""
 
 msgid ""
 "Log all checked URLs (implies -w). Default is to log only invalid\n"
 "URLs."
-msgstr ""
-
-msgid "Print out previously generated profiling data. See also --profile."
 msgstr ""
 
 #, fuzzy
@@ -598,6 +498,118 @@ msgstr ""
 msgid ""
 "Print a warning if content size is available and exceeds the given\n"
 "number of bytes. This option implies -w."
+msgstr ""
+
+msgid "Quiet operation. This is only useful with -F."
+msgstr ""
+
+msgid "Specify output type as %s. Default type is text."
+msgstr ""
+
+msgid ""
+"type[/filename]\n"
+"Same as -o, but write to a file linkchecker-out.<type>\n"
+"or <filename> if specified. If the file already exists, it\n"
+"is overwritten. You can specify this option more than once.\n"
+"There is no file output for the blacklist logger. Default is\n"
+"no file output."
+msgstr ""
+
+msgid ""
+"Print debugging information. Provide this option multiple times\n"
+"for even more debugging information."
+msgstr ""
+
+msgid "Print check status every 5 seconds to stderr."
+msgstr ""
+
+msgid ""
+"Write profiling data into a file named %s in the\n"
+"current working directory. See also --viewprof."
+msgstr ""
+
+msgid "Print out previously generated profiling data. See also --profile."
+msgstr ""
+
+msgid "Checking options"
+msgstr ""
+
+msgid ""
+"Check recursively all links up to given depth. A negative depth\n"
+"will enable inifinite recursion. Default depth is 1."
+msgstr ""
+
+msgid ""
+"Assume urls that match the given expression as external.\n"
+"Only internal HTML links are checked recursively."
+msgstr ""
+
+msgid ""
+" regex, --intern=regex\n"
+"Assume URLs that match the given expression as internal.\n"
+"LinkChecker descends recursively only to internal URLs, not to\n"
+"external."
+msgstr ""
+
+msgid ""
+"Swap checking order to external/internal. Default checking order\n"
+"is internal/external."
+msgstr ""
+"Verwissel de testvolgorde naar extern/intern. Standaard\n"
+"volgorde is intern/extern."
+
+msgid ""
+"Check only syntax of external links, do not try to connect to them.\n"
+"For local file urls, only local files are internal. For\n"
+"http and ftp urls, all urls at the same domain name are internal."
+msgstr ""
+
+msgid ""
+"Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
+"which are sent back to the originating server are accepted.\n"
+"Sent and accepted cookies are provided as additional logging\n"
+"information."
+msgstr ""
+
+msgid ""
+"Check HTTP anchor references. This option applies to both internal\n"
+"and external urls. Default is don't check anchors.\n"
+"This option implies -w because anchor errors are always warnings."
+msgstr ""
+
+msgid ""
+"Treat url#anchora and url#anchorb as equal on caching. This\n"
+"is the default browser behaviour, but it's not specified in\n"
+"the URI specification. Use with care."
+msgstr ""
+
+msgid ""
+"Try given username for HTTP and FTP authorization.\n"
+"Default is %r. See also -p."
+msgstr ""
+
+msgid ""
+"Try given password for HTTP and FTP authorization.\n"
+"Default password is %r. See also -u."
+msgstr ""
+
+msgid ""
+"Set the timeout for TCP connection attempts in seconds. The default\n"
+"timeout is %d seconds."
+msgstr ""
+
+msgid ""
+"Pause <secs> seconds between each url check. This option implies -t0.\n"
+"Default is no pause between requests."
+msgstr ""
+
+msgid ""
+"Specify an NNTP server for 'news:...' links. Default is the\n"
+"environment variable NNTP_SERVER. If no host is given,\n"
+"only the syntax of the link is checked."
+msgstr ""
+
+msgid "Deprecated options"
 msgstr ""
 
 msgid "Illegal argument %r for option %s"

@@ -5,9 +5,12 @@
     Changed: linkcheck/Config.py
   * fix mime-type checking to allow parsing of .css stylesheets
     Changed: linkcheck/HttpUrlData.py
-  * honor meta robots tags like
+  * honor HTML meta tags for robots, ie.
     <meta name="ROBOTS" content="NOFOLLOW">
     Changed: linkcheck/UrlData.py, linkcheck/linkparse.py
+  * much less aggressive thread acquiring, this fixes the 100% CPU
+    usage from the previous version
+    Changed: linkcheck/Threader.py
 
 1.10.2 (release 3.1.2004)
   * fixed CGI safe_url pattern, it was too strict
