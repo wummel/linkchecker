@@ -1,20 +1,20 @@
-1.13.0 "The Butterfly Effect" (released xx.xx.xxxx)
+1.13.0 "The Butterfly Effect" (released 30.8.2004)
   * lots of internal code restructuring
     Type: code cleanup
     Changed: a lot
 
-  * if checking revealed errors (or warnings with --warnings),
-    the command line client exits with a non-zero exit status
+  * If checking revealed errors (or warnings with --warnings),
+    the command line client exits with a non-zero exit status.
     Type: feature
     Closes: SF bug 1013191
     Changed: linkchecker, linkcheck/checker/consumer.py
 
-  * Specify doctype and charset in html output
+  * Specify the HTML doctype and charset in HTML output.
     Type: feature
     Closes: SF bug 1014283
     Changed: linkcheck/logger/html.py
 
-  * fix endless loop on broken urls with non-empty anchor
+  * Fix endless loop on broken urls with non-empty anchor.
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
@@ -24,8 +24,8 @@
     Type: bugfix
     Changed: linkcheck/checker/nntpurl.py
 
-  * the HTML output shows now HTML and CSS validation links for
-    the parent URL of invalid links
+  * The HTML output shows now HTML and CSS validation links for
+    the parent URL of invalid links.
     Type: feature
     Changed: linkcheck/logger/html.py
 
@@ -45,7 +45,7 @@
     Closes: SF bug 1013206
     Changed: linkcheck/urlbase.py
 
-  * renamed --strict to --extern-strict-all
+  * Renamed the --strict option to --extern-strict-all.
     Type: feature
     Changed: linkchecker
 
