@@ -1,3 +1,9 @@
+1.8.10
+  * new option --no-anchor-caching
+    Changed files: linkchecker, linkcheck/{Config.py, UrlData.py}
+  * quote empty attribute arguments
+    Changed files: linkcheck/parser/htmllex.[lc]
+
 1.8.9
   * recompile with bison 1.875a
     Changed files: linkcheck/parser/htmlparse.[ch]
