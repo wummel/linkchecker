@@ -56,15 +56,15 @@ deb_local: cleandeb
 	fakeroot debian/rules binary
 
 deb_localsigned:
-	debuild -sgpg -pgpg -k32EC6F3E -rfakeroot
+	debuild -sgpg -pgpg -k32EC6F3E -r"fakeroot --"
 
 deb_signed: cleandeb
 	# ready for upload, signed with my GPG key
-	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k32EC6F3E -rfakeroot 
+	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k32EC6F3E -r"fakeroot --"
 
 deb_unsigned: cleandeb
 	# same thing, but unsigned (for local archives)
-	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -us -uc -rfakeroot 
+	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -us -uc -r"fakeroot --"
 
 files:	locale
 	env http_proxy="" LANG=C $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
