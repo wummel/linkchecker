@@ -20,7 +20,7 @@ try:
     import htmlsax
 except ImportError:
     exctype, value = sys.exc_info()[:2]
-    print >>sys.stderr, "Could not import the parser module `linkcheck.parser.htmlsax':", value
+    print >>sys.stderr, "Could not import the parser module `htmlsax':", value
     print >>sys.stderr, "Please check your installation of LinkChecker."
     sys.exit(1)
 
@@ -74,6 +74,8 @@ class HtmlPrinter (HtmlParser):
         self._errorfun(msg, "fatal error:")
 
     def __getattr__ (self, name):
+        if hasattr(self.parser, name):
+            return getattr(self.parser, name)
         self.mem = name
         return self._print
 
