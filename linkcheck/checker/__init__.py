@@ -179,11 +179,11 @@ def absolute_url (base_url, base_ref, parent_url):
     """Search for the absolute url to detect the link type. This does not
        join any url fragments together! Returns the url in lower case to
        simplify urltype matching."""
-    if base_url and ":" in base_url:
+    if base_url and linkcheck.url.url_is_absolute(base_url):
         return base_url.lower()
-    elif base_ref and ":" in base_ref:
+    elif base_ref and linkcheck.url.url_is_absolute(base_ref):
         return base_ref.lower()
-    elif parent_url and ":" in parent_url:
+    elif parent_url and linkcheck.url.url_is_absolute(parent_url):
         return parent_url.lower()
     return ""
 
