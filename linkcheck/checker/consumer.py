@@ -151,8 +151,9 @@ class Consumer (linkcheck.lock.AssertLock):
 
     def abort (self):
         """
-        Abort checking and send of-of-output message to logger.
+        Abort checking and send end-of-output message to logger.
         """
+        # wait for threads to finish
         while not self.no_more_threads():
             num = self.active_threads()
             msg = \
