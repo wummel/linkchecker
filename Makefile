@@ -47,7 +47,8 @@ dist:
 	python setup.py sdist bdist_rpm
 	fakeroot debian/rules binary
 
-packages:
+packages:	dist
+	rm -rf debian/tmp
 	cd .. && dpkg-scanpackages . linkchecker/override.txt | gzip --best > Packages.gz
 
 files:
@@ -56,7 +57,7 @@ files:
 version:
 	echo $(VERSION) > VERSION
 
-upload: version file dist packages
+upload: version files packages
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
 	scp VERSION shell1.sourceforge.net:/home/groups/linkchecker/htdocs/raw/
 	scp $(DEBPACKAGE) ../Packages.gz shell1.sourceforge.net:/home/groups/linkchecker/htdocs/debian

@@ -1,4 +1,4 @@
-#!/opt/python/bin/python1.5
+#!/usr/bin/env python
 
 import DNS
 # automatically load nameserver(s) from /etc/resolv.conf

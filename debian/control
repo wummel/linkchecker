@@ -6,7 +6,7 @@ Standards-Version: 3.0.1
 
 Package: linkchecker
 Architecture: any
-Depends: python-base
+Depends: python-base (>= 1.5.2)
 Suggests: libssl09, libssl09-dev
 Description: a link checker written in Python
  With LinkChecker you can check your HTML documents for broken links.

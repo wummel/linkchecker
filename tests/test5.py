@@ -1,4 +1,4 @@
-#!/opt/python/bin/python
+#!/usr/bin/env python
 
 import DNS
 DNS.ParseResolvConf()

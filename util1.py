@@ -1,3 +1,20 @@
+"""
+    Copyright (C) 2000  Bastian Kleineidam
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""
 import sys,time,rotor,types
 
 _curses = None
@@ -57,6 +74,8 @@ def abbuzze():
     my,mx = w.getmaxyx()
     b = w.subwin(my-2, mx, 0, 0)
     s = w.subwin(2, mx, my-2, 0)
+    if color:
+        s.color_set(1)
     bs = nassmache(_bs)
     ss = nassmache(_ss)
     allahopp(s, nassmache(_1))
@@ -76,9 +95,9 @@ def config_curses():
     _curses.nonl()            # tell curses not to do NL->CR/NL on output
     _curses.noecho()          # don't echo input
     _curses.cbreak()          # take input chars one at a time, no wait for \n
-    if hasattr(_curses, "meta"):
-        _curses.meta(1)       # allow 8-bit chars
+    global color
     if hasattr(_curses, "start_color"):
+        color = 1
         _curses.start_color() # start the colour system
         if _curses.has_colors():
             if _curses.can_change_color():
@@ -88,7 +107,8 @@ def config_curses():
                 _curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
                 _curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
                 _curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
-
+    else:
+        color = 0
 
 def waddemol(f):
     time.sleep(float(f))

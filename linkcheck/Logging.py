@@ -95,6 +95,7 @@ class StandardLogger:
 
 
     def newUrl(self, urldata):
+        self.linknumber = self.linknumber+1
         self.fd.write("\n"+_("URL")+Spaces["URL"]+urldata.urlName)
         if urldata.cached:
             self.fd.write(_(" (cached)\n"))
@@ -146,7 +147,10 @@ class StandardLogger:
             self.fd.write(_("1 error"))
         else:
             self.fd.write(str(self.errors)+_(" errors"))
-        self.fd.write(_(" found.\n"))
+        if self.linknumber == 1:
+            self.fd.write(_(" in 1 link found\n"))
+        else:
+            self.fd.write(_(" in %d links found\n") % self.linknumber)
         self.stoptime = time.time()
         self.fd.write(_("Stopped checking at %s (%.3f seconds)\n") % \
 	               (_strtime(self.stoptime),
@@ -183,6 +187,7 @@ class HtmlLogger(StandardLogger):
 
 
     def newUrl(self, urlData):
+        self.linknumber = self.linknumber+1
         self.fd.write("<table align=left border=\"0\" cellspacing=\"0\""
               " cellpadding=\"1\" bgcolor="+self.colorborder+
               "><tr><td><table align=left border=\"0\" cellspacing=\"0\""
@@ -249,7 +254,11 @@ class HtmlLogger(StandardLogger):
             self.fd.write(_("1 error"))
         else:
             self.fd.write(str(self.errors)+_(" errors"))
-        self.fd.write(_(" found.\n")+"<br>")
+        if self.linknumber == 1:
+            self.fd.write(_(" in 1 link found\n"))
+        else:
+            self.fd.write(_(" in %d links found\n") % self.linknumber)
+        self.fd.write("<br>")
         self.stoptime = time.time()
         self.fd.write(_("Stopped checking at %s (%.3f seconds)\n") %\
 	              (_strtime(self.stoptime),
@@ -284,6 +293,7 @@ class ColoredLogger(StandardLogger):
         self.prefix = 0
 
     def newUrl(self, urlData):
+        self.linknumber = self.linknumber+1
         if urlData.parentName:
             if self.currentPage != urlData.parentName:
                 if self.prefix:
@@ -389,6 +399,7 @@ class GMLLogger(StandardLogger):
         self.fd.flush()
 
     def newUrl(self, urlData):
+        self.linknumber = self.linknumber+1
         self.nodes.append(urlData)
 
     def endOfOutput(self):
@@ -447,6 +458,7 @@ class SQLLogger(StandardLogger):
         self.fd.flush()
 
     def newUrl(self, urlData):
+        self.linknumber = self.linknumber+1
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infoString,"
 	      "valid,url,line,checktime,downloadtime,cached) values "
@@ -492,6 +504,7 @@ class BlacklistLogger:
         pass
 
     def newUrl(self, urlData):
+        self.linknumber = self.linknumber+1
         if urlData.valid:
             self.blacklist[urlData.getCacheKey()] = None
         elif not urlData.cached:
@@ -538,6 +551,7 @@ class CSVLogger(StandardLogger):
         self.fd.flush()
 
     def newUrl(self, urlData):
+        self.linknumber = self.linknumber+1
         self.fd.write(
 	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%d%s%d\n" % (
 	    urlData.urlName, self.separator,
