@@ -1,26 +1,20 @@
 test_base
 url file:///home/calvin/projects/linkchecker/test/html/base1.html
-valid Valid
+valid
 url file:///home/calvin/projects/linkchecker/test/html/base2.html
-valid Valid
+valid
 url file:///home/calvin/projects/linkchecker/test/html/base3.html
-valid Valid
-url file:/etc
-parenturl file:/home/calvin/projects/linkchecker/test/html/base1.html
-line 6
-valid Valid
-url http://www.calvinandhobbes.com/
-parenturl file:/home/calvin/projects/linkchecker/test/html/base1.html
-line 4
-warning Effective URL http://www.ucomics.com/calvinandhobbes/
-valid Valid: 200 OK
-url passwd
-parenturl file:/home/calvin/projects/linkchecker/test/html/base2.html
-line 4
-baseurl file:/etc/
-valid Valid
-url blubba.shtml
-parenturl file:/home/calvin/projects/linkchecker/test/html/base3.html
-line 4
-baseurl http://treasure.calvinsplayground.de/~calvin/
-error Error: 404 Not Found
+valid
+url base2.html
+cached
+valid
+url base2.html
+cached
+valid
+url html/base1.html
+baseurl ..
+error
+url html/base1.html
+cached
+baseurl ..
+error

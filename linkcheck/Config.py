@@ -16,24 +16,24 @@
 #    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time
-import Logging, linkcheckerConf
+import Logging, _linkchecker_configdata
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 from urllib import getproxies
 from linkcheck import _
 
-Version = linkcheckerConf.version
-AppName = linkcheckerConf.name
+Version = _linkchecker_configdata.version
+AppName = _linkchecker_configdata.name
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
-Author =  linkcheckerConf.author
+Author =  _linkchecker_configdata.author
 HtmlAuthor = string.replace(Author, ' ', '&nbsp;')
 Copyright = "Copyright © 2000,2001 by "+Author
 HtmlCopyright = "Copyright &copy; 2000,2001 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
-Url = linkcheckerConf.url
-Email = linkcheckerConf.author_email
+Url = _linkchecker_configdata.url
+Email = _linkchecker_configdata.author_email
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' whithin this
@@ -360,7 +360,7 @@ class Configuration(UserDict.UserDict):
     def read(self, files = []):
         if not files:
             # system wide config settings
-            config_dir = join(linkcheckerConf.install_data, 'linkchecker')
+            config_dir = join(_linkchecker_configdata.install_data, 'linkchecker')
             files.append(norm(join(config_dir, "linkcheckerrc")))
             # per user config settings
             files.append(norm("~/.linkcheckerrc"))

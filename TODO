@@ -1,2 +1,4 @@
 Better link name parsing
 Embed the Mozilla spidermonkey JavaScript engine for JS links
+Warning if HTML source download is too slow
+Warning if HTML source is too big

@@ -9,32 +9,40 @@ HOST=treasure.calvinsplayground.de
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 OFFLINETESTS = test_base test_misc test_file test_frames
 ONLINETESTS = test_mail test_http test_https test_news test_ftp
-
 DESTDIR=/.
-.PHONY: test clean distclean package files upload dist locale all
 
+.PHONY: all
 all:
 	@echo "Read the file INSTALL to see how to build and install"
 
+.PHONY: clean
 clean:
 	-./setup.py clean --all # ignore errors of this command
 	$(MAKE) -C po clean
 	find . -name '*.py[co]' | xargs rm -f
 
+.PHONY: distclean
 distclean: clean cleandeb
 	rm -rf dist build # just to be sure clean also the build dir
 	rm -f $(PACKAGE)-out.* VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 
+.PHONY: cleandeb
 cleandeb:
 	rm -rf debian/$(PACKAGE) debian/$(PACKAGE)-ssl debian/tmp
 	rm -f debian/*.debhelper debian/{files,substvars}
 	rm -f configure-stamp build-stamp
 
-dist:	locale
+.PHONY: config
+config:
+	./setup.py config -lcrypto
+
+.PHONY: dist
+dist:	locale config
 	./setup.py sdist --formats=gztar,zip bdist_rpm
 	# extra run without SSL compilation
-	python setup.py bdist_wininst
+	./setup.py bdist_wininst
 
+.PHONY: deb
 deb:
 	# cleandeb because distutils choke on dangling symlinks
 	# (linkchecker.1 -> undocumented.1)
@@ -42,18 +50,22 @@ deb:
 	fakeroot debian/rules binary
 	fakeroot dpkg-buildpackage -sgpg -pgpg -k959C340F
 
+.PHONY: packages
 packages:
 	-cd .. && dpkg-scanpackages . | gzip --best > Packages.gz
 
+.PHONY: sources
 sources:
 	-cd .. && dpkg-scansources  . | gzip --best > Sources.gz
 
+.PHONY: files
 files:	locale
 	env http_proxy="" ./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/~calvin/
 
 VERSION:
 	echo $(VERSION) > VERSION
 
+.PHONY: upload
 upload: distclean dist files VERSION
 	scp debian/changelog shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/changes.txt
 	scp README shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/readme.txt
@@ -62,11 +74,14 @@ upload: distclean dist files VERSION
 	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/
 	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
 
+.PHONY: test
 test:
 	python2 test/regrtest.py $(OFFLINETESTS)
 
+.PHONY: onlinetest
 onlinetest:
 	python2 test/regrtest.py $(ONLINETESTS)
 
+.PHONY: locale
 locale:
 	$(MAKE) -C po

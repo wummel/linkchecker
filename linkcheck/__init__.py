@@ -20,12 +20,12 @@ class error(Exception):
 
 # i18n suppport
 LANG="EN" # default language (used for HTML output)
-import linkcheckerConf
+import _linkchecker_configdata
 try:
     import fintl,os,string
     gettext = fintl.gettext
     domain = 'linkcheck'
-    localedir = os.path.join(linkcheckerConf.install_data, 'locale')
+    localedir = os.path.join(_linkchecker_configdata.install_data, 'locale')
     fintl.bindtextdomain(domain, localedir)
     fintl.textdomain(domain)
     languages = []

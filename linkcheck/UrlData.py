@@ -356,7 +356,7 @@ class UrlData:
             end = CommentPatternEnd.search(self.getContent(), index)
             if not match: break
             index = match.end() + 1
-            self.html_comments.append(start, match.end())
+            self.html_comments.append((start, match.end()))
 
     def _isInComment(self, index):
         for low,high in self.html_comments:
@@ -376,13 +376,13 @@ class UrlData:
               str(self)+"\n"+Config.DebugDelim)
         # search for a possible base reference
         bases = self.searchInForTag(BasePattern)
-	        
+
         baseRef = None
         if len(bases)>=1:
             baseRef = bases[0][0]
             if len(bases)>1:
                 self.setWarning("more than one base tag found")
-            
+
         # search for tags and add found tags to URL queue
         for pattern in LinkPatterns:
             urls = self.searchInForTag(pattern)
@@ -403,6 +403,8 @@ class UrlData:
             if self._isInComment(match.start()): continue
             # need to strip optional ending quotes for the meta tag
             url = string.strip(StringUtil.stripQuotes(match.group('value')))
+            # need to resolve HTML entities
+            url = StringUtil.unhtmlify(url)
             lineno=StringUtil.getLineNumber(self.getContent(), match.start())
             # extra feature: get optional name for this bookmark
             name = self.searchInForName(pattern['tag'], pattern['attr'],
