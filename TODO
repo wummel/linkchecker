@@ -2,7 +2,8 @@ Possible improvements people could work on:
 
 - Connection pooling. Right now we open for every link a new connection.
   Must be thread-safe, must handle timeouts and connection expiration
-  (HTTP Keepalive header parsing).
+  (HTTP: only pool persistent (ie. HTTP/1.1) connections; Keepalive
+   header parsing).
 
 - rethink intern/extern stuff
 
