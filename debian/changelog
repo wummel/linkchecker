@@ -5,8 +5,12 @@ linkchecker (1.2.9) unstable; urgency=low
   * linkchecker.1: added a man page
   * setup.py: overloaded distutils debugging function dump_dirs
   * setup.py: handle man pages correctly with bdist_rpm target
+  * correct order with user/password authentication entries (report and
+    fix by Jamie Heilman <jamie@audible.transient.net>)
+  * default password is joe@, not guest@ (report and fix by Jamie
+    Heilman <jamie@audible.transient.net>)
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Wed, 22 Nov 2000 12:42:02 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 30 Nov 2000 18:13:52 +0100
 
 linkchecker (1.2.8) unstable; urgency=low
 

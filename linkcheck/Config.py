@@ -456,7 +456,7 @@ class Configuration(UserDict.UserDict):
                 tuple = string.split(cfgparser.get(section, "entry"+`i`))
 		if len(tuple)!=3: break
                 tuple[0] = re.compile(tuple[0])
-                self.data["authentication"].append(tuple)
+                self.data["authentication"].insert(0, tuple)
                 i = i + 1
         except ConfigParser.Error: pass
 
