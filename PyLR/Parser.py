@@ -1,6 +1,6 @@
 __version__ = "$Id$"
 
-class LRParser:
+class Parser:
     def __init__(self, lexer, actiontable, gototable, prodinfo):
 	self.lexer = lexer
 	self.actions = actiontable
@@ -28,20 +28,24 @@ class LRParser:
 	    tok, val = self.lexer.scan(verbose)
             state = stack[-1]
             action = self.actions[state][tok]
+            if verbose:
+                print "action",action
             if action[0]=='s':
                 # push the symbol and the state
                 stack = stack + [tok, action[1]]
             elif action[0]=='r':
-                P = self.prodinfo[action[1]]
+                P = self.prodinfo[action[1]-1]
                 # reduce P=A->b by popping 2*|b| from the stack
                 stack = stack[:-2*P[0]]
+                goto = self.gotos[stack[-1]][P[2]]
                 # push A and the goto symbol
-                stack = stack + [P[2], self.gotos[stack[-1][P[2]]]]
+                stack = stack + [P[2], goto]
                 if verbose:
 		    print "reduce",P
                 P[1](tok, val)
             elif action[0]=='a':
                 return
             else:
-                self.onError()
+                print "error"
+                return
 

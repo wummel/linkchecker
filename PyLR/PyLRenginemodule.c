@@ -15,19 +15,14 @@
 #include "Python.h"
 #include "PyLRengine.h"
 
+
 /***********************************************************************
  * PyLRengine Error things
  ***********************************************************************/
-static PyObject* PyLRParseError;
-
-#define CHECK_MALLOC(obj) \
-    if (!(obj = (PyObject *) malloc (sizeof(PyObject)))) { \
-	PyErr_SetString(PyExc_MemoryError, "no more memory"); \
-        return NULL; \
-    }
+static PyObject *PyLRengineError;
 
 #define onError(message) \
-{ PyErr_SetString(PyExc_ParseError, message); return NULL; }
+{ PyErr_SetString(PyLRengineError, message); return NULL; }
 
 
 
@@ -662,45 +657,43 @@ static PyTypeObject ParserType = {
 
 static PyObject *
 parsernew(self, args)
-PyObject* self;
-PyObject* args;
+  PyObject * self;
+  PyObject * args;
 {
-    PyObject* pyprodlengths = NULL;
-    PyObject* pyactions = NULL;
-    PyObject* pygotos = NULL;
-    PyObject* res = NULL;
-    int bufchunksize=50;
-    int stackchunksize=100;
-    CHECK_MALLOC(pyprodlengths)
-    CHECK_MALLOC(pyactions)
-    CHECK_MALLOC(pygotos)
-    if (!PyArg_ParseTuple(args, "O!O!O!|ii", &PyList_Type, &pyprodlengths,
-			  &PyList_Type, &pyactions, &PyList_Type, &pygotos,
-			  &bufchunksize, &stackchunksize))
-	goto finally;
-    res = (PyObject*) newparserobject(pyprodlengths, pyactions, pygotos, bufchunksize, stackchunksize);
-finally:
-    Py_XDECREF(pyprodlengths);
-    Py_XDECREF(pyactions);
-    Py_XDECREF(pygotos);
-    return res;
+  PyObject * pyprodlengths;
+  PyObject * pyactions;
+  PyObject * pygotos;
+  int bufchunksize=50;
+  int stackchunksize=100;
+  if ((pyprodlengths = (PyObject *) malloc (sizeof(PyObject))) == NULL)
+    onError("No More Mem!");
+  if ((pyactions = (PyObject *) malloc (sizeof(PyObject))) == NULL)
+    onError("No More Mem!"); 
+  if ((pygotos = (PyObject *) malloc (sizeof(PyObject))) == NULL)
+    onError("No More Mem!");
+  if (!PyArg_ParseTuple(args, "O!O!O!|ii", &PyList_Type, &pyprodlengths, 
+			&PyList_Type, &pyactions, &PyList_Type, &pygotos,&bufchunksize, &stackchunksize))
+    return NULL;
+  return (PyObject *) newparserobject(pyprodlengths, pyactions, pygotos, bufchunksize, stackchunksize);
 }
 
 
 static struct PyMethodDef PyLRengine_methods[] = {
-    {"NewEngine",  (PyCFunction)parsernew},
-    {NULL, NULL}
+  {"NewEngine",  parsernew, 1},
+  {NULL, NULL}
 };
 
 
 void
 initPyLRengine()
 {
-    PyObject *m, *d;
-    m = Py_InitModule("PyLRengine", PyLRengine_methods);
-    d = PyModule_GetDict(m);
-    if (PyErr_Occurred())
-	Py_FatalError("can't initialize module PyLRengine");
+  PyObject *m, *d;
+  m = Py_InitModule("PyLRengine", PyLRengine_methods);
+  d = PyModule_GetDict(m);
+  PyLRengineError = Py_BuildValue("s", "PyLRengine.error");
+  PyDict_SetItemString(d, "error", PyLRengineError);
+  if (PyErr_Occurred())
+    Py_FatalError("can't initialize module PyLRengine");
 }
 
 

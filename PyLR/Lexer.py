@@ -46,7 +46,7 @@ class Lexer:
 
     def scan(self, verbose=0):
 	if self.textindex >= len(self.text):
-            if verbose: print "EOF"
+            if verbose: print "tok=0, val=EOF"
 	    return (0, "EOF")
 	for i in self.irange:
             tok = self.toklist[i]
@@ -61,7 +61,7 @@ class Lexer:
                     val = apply(tok[2], (mo,))
                 else:
                     val = mo.group(0)
-                if verbose: print str(i)+", "+str(val)
+                if verbose: print "tok="+`i`+", val="+`val`
                 return (i, val)
         raise PyLRSyntaxError, "line "+\
             `StringUtil.getLineNumber(self.text, self.textindex)`+\

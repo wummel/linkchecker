@@ -27,7 +27,7 @@ import PyLR
 # ('a', -1)  accept
 # ('',  -1)  error
 # each row represents a state and each column a terminal lookahead symbol
-# (excluding symbols with Lexer.SKIPTOK of course).
+# (including Grammar.EPS, which is -1).
 # Lexer symbols are:
 # %(symbols)s
 #

@@ -1,6 +1,6 @@
 __version__ = "$Id$"
 
-import time,string,types,parsertemplate,Lexer,Set
+import sys,time,string,types,parsertemplate,Lexer,Set
 
 class ParseError(SyntaxError):
     pass
@@ -45,21 +45,19 @@ class Grammar:
     EPS = -1
     DummyLA = -2
 
-    def __init__(self, productions, tokens=[], verbose=0):
-        if not productions:
-            raise ParseError, "empty production list"
+    def __init__(self, productions, tokens, verbose=0):
+        if not (productions or tokens):
+            raise ParseError, "empty production or token list"
 	self.verbose = verbose
 	self.productions = productions
         self.tokens = tokens
-	self.terminals = []
-	self.nonterminals = []
+	self.terminals = range(len(tokens))
+	self.nonterminals = map(lambda p: p.lhs, self.productions)
         for p in self.productions:
-            if p.lhs not in self.nonterminals:
-                self.nonterminals.append(p.lhs)
             for s in p.rhs:
-                if type(s) == types.IntType and s not in self.terminals:
-                    self.terminals.append(s)
-        self.terminals.sort()
+                if (s not in self.terminals) and (s not in self.nonterminals):
+                    raise ParseError, "invalid symbol "+`s`+\
+		    " in production '"+`p`+"'"
         if self.verbose:
             print "Terminals:", self.terminals
             print "Nonterminals:", self.nonterminals
@@ -127,7 +125,7 @@ class Grammar:
             raise ParseError, "start symbol of grammar is not productive"
 
         # reachable nonterminals
-        reachable_nts = [self.productions[0]]
+        reachable_nts = [self.productions[0].lhs] # start symbol is reachable
         added=1
         while added:
             added = 0
@@ -140,7 +138,7 @@ class Grammar:
 
         # reduce the grammar
         self.productions = filter(lambda p, pnt=productive_nts,
-                  rnt=reachable_nts: p.lhs in pnt or p.lhs in rnt,
+                  rnt=reachable_nts: (p.lhs in pnt) and (p.lhs in rnt),
                   self.productions)
         if self.verbose:
             print "Reduced grammar:\n"+`self`
@@ -170,40 +168,40 @@ class Grammar:
     def _genFIRSTmap(self):
 	"""return dictionary d with d[A] = FIRST(A) for all symbols A
 	"""
-	self.FIRSTmap = {}
-	for sym in [Grammar.EPS]+self.terminals:
-	    self.FIRSTmap[sym] = {sym: 1}
+	self.firstmap = {}
+	for sym in [Grammar.EPS, Grammar.DummyLA]+self.terminals:
+	    self.firstmap[sym] = {sym: 1}
         added=1
 	while added:
 	    added = 0
 	    for nt in self.nonterminals:
-		firsts = self.FIRSTmap.get(nt, {})
+		firsts = self.firstmap.get(nt, {})
 		for p in self.lhsprods[nt]:
 		    if not p.rhs:
 			if not firsts.has_key(Grammar.EPS):
 			    added = firsts[Grammar.EPS] = 1
 		    for Y in p.rhs:
-			f = self.FIRSTmap.get(Y, {})
+			f = self.firstmap.get(Y, {})
 			for a in f.keys():
 			    if not firsts.has_key(a):
 				added = firsts[a] = 1
 			if not Y in self.lhsdereps:
 			    break
-		self.FIRSTmap[nt] = firsts
-	for s in self.FIRSTmap.keys():
-	    self.FIRSTmap[s] = self.FIRSTmap[s].keys()
+		self.firstmap[nt] = firsts
+	for s in self.firstmap.keys():
+	    self.firstmap[s] = self.firstmap[s].keys()
 
 
     def FIRST(self, gs_list):
         """extend FIRST to set of symbols
 	precondition: we already have calculated FIRST for all single
-	symbols and stored the values in self.FIRSTmap
+	symbols and stored the values in self.firstmap
         """
         assert gs_list, "list must be nonempty"
 	res = {}
         allhaveeps=1
 	for X in gs_list:
-            set = self.FIRSTmap[X]
+            set = self.firstmap[X]
 	    for s in set:
                 res[s] = 1
             if not Grammar.EPS in set:
@@ -222,6 +220,7 @@ class Grammar:
 	    newsym = newsym+"'"
 	self.productions.insert(0, Production(newsym, 
 					      [self.productions[0].lhs]))
+        self.lhsprods[newsym] = self.productions[0]
 
     def _genFOLLOWmap(self):
         """dictionary d with d[A] = FOLLOW(A) for all nonterminals A
@@ -237,7 +236,7 @@ class Grammar:
                 for i in range(1,len(p.rhs)):
                     B = p.rhs[i-1]
                     beta = p.rhs[i]
-                    for f in self.FIRSTmap[beta]:
+                    for f in self.firstmap[beta]:
                         if f != Grammar.EPS and f not in self.FOLLOWmap[B]:
                             self.FOLLOWmap[B].append(f)
                             added=1
@@ -260,16 +259,16 @@ class Grammar:
         res = {}
         for item in items.keys():
             res[item]=0
-        more = []
+        more = 1
 	while more:
             more = []
 	    for prodind, rhsind, term in res.keys():
-		if rhsind >= len(self.productions[prodind].rhs):
-		    continue
                 prod = self.productions[prodind]
-		for p in self.lhsprods.get(self.prod.rhs[rhsind], []):
+		if rhsind >= len(prod.rhs):
+		    continue
+		for p in self.lhsprods.get(prod.rhs[rhsind], []):
 		    try:
-			newpart = self.prod.rhs[rhsind + 1]
+			newpart = prod.rhs[rhsind + 1]
 		    except IndexError:
 			newpart = Grammar.EPS
 		    for t in self.FIRST([newpart, term]):
@@ -284,7 +283,7 @@ class Grammar:
 		res[item]=0
 	return res
 
-    def _prodinfotable(self):
+    def prodinfotable(self):
 	"""returns a list of three pieces of info for each production.
 	The first is the lenght of the production, the second is the
 	function name associated with the production and the third is
@@ -368,71 +367,71 @@ class Grammar:
 	return res
 
     def _lookaheads(self, itemset):
-	setsofitems = kernels = self.kernelitems
 	spontaneous = []
 	propagates = {}
 	gotomap = {}
 	for kpi, kri in itemset:
+            propagates[(kpi,kri)] = []
 	    C = self._closure({(kpi, kri, Grammar.DummyLA):0})
 	    for cpi, cri, t in C.keys():
 		if cri == len(self.productions[cpi].rhs):
 		    continue
-		s = self.productions[cpi].rhs[cri]
-		if gotomap.has_key(s):
-		    newstate = gotomap[s]
+		X = self.productions[cpi].rhs[cri]
+		if gotomap.has_key(X):
+		    newstate = gotomap[X]
 		else:
-		    newstate = setsofitems.index(self._goto(itemset, s))
-		    gotomap[s] = newstate
+		    gotomap[X] = newstate = self.kernelitems.index(\
+		        self._goto(itemset, X))
 		if t != Grammar.DummyLA:
-		    spontaneous.append((newstate, cpi, cri+1, t))
+		    spontaneous.append((newstate, (cpi, cri+1), t))
 		else:
- 		    if propagates.has_key((kpi, kri)):
-			propagates[(kpi, kri)].append((newstate, cpi, cri+1))
-		    else:
-			propagates[(kpi, kri)]=[(newstate, cpi, cri+1)]
+                    propagates[(kpi, kri)].append((newstate, (cpi, cri+1)))
 	return spontaneous, propagates
 
     def _genKernelitems(self):
 	self.kernelitems = todo = [[(0, 0)]]
-        newtodo = 0
+        newtodo = 1
 	while newtodo:
 	    newtodo = []
 	    for items in todo:
-		for s in self.terminals + self.nonterminals:
+		for s in self.nonterminals + self.terminals:
 		    g = self._goto(items, s)
 		    if g and g not in self.kernelitems:
 			newtodo.append(g)
             if self.verbose:
 	        print "found %d more kernels" % (len(newtodo))
-	    self.kernelitems = self.kernelitems + newtodo
-	    todo = newtodo
-	self.kernelitems.sort()
+            self.kernelitems = self.kernelitems + newtodo
+            todo = newtodo
+        if self.verbose:
+            print "generated kernelitems:",self.kernelitems
 
     def _initLALR1items(self):
 	self._genKernelitems()
+	if self.verbose:
+	    print "initializing lookahead table..."
 	props = {}
 	la_table = []
-	for i in range(len(self.kernelitems)):
-	    la_table.append([])
-	    for y in range(len(self.kernelitems[i])):
-		la_table[i].append([])
-	la_table[0][0] = [0] # EOF
-	if self.verbose:
-	    print "calculating propagations and spontaneous lookaheads"
-	state_i = 0
 	for itemset in self.kernelitems:
-	    if self.verbose:
-		print ".",
-            sp, pr = self._lookaheads(itemset)
-	    for ns, pi, ri, t in sp:
-                inner = self.kernelitems[ns].index((pi, ri))
-		la_table[ns][inner].append(t)
-	    props[state_i] = pr
-	    state_i = state_i + 1
+	    la_table.append([])
+	    for item in itemset:
+		la_table[-1].append([])
+	la_table[0][0].append(0) # EOF
+	for i in range(len(self.kernelitems)):
+            sp, pr = self._lookaheads(self.kernelitems[i])
+	    for ns, item, t in sp:
+                inner = self.kernelitems[ns].index(item)
+                if t not in la_table[ns][inner]:
+                    la_table[ns][inner].append(t)
+	    props[i] = pr
+        if self.verbose:
+            print "Lookahead table:",la_table
+            print "Propagations:",props
 	return la_table, props
 
     def _genLALR1items(self):
 	la_table, props = self._initLALR1items()
+	if self.verbose:
+	    print "calculating lookahead table..."
         added_la=1
 	while added_la:
 	    added_la = 0
@@ -457,10 +456,12 @@ class Grammar:
 				la_table[pstate][inner].append(pt)
 		state_i = state_i + 1
 
+        if self.verbose:
+            print "Lookahead table:",la_table
 	# this section just reorganizes the above data
 	# to the state it's used in later...
 	if self.verbose:
-	    print "done with lalr1items, reorganizing the data"
+	    print "reorganizing the data..."
 	self.LALRitems = []
 	state_i = 0
 	for state in self.kernelitems:
@@ -474,29 +475,33 @@ class Grammar:
 	    inner.sort()
 	    self.LALRitems.append(inner)
 	    state_i = state_i + 1
+        if self.verbose:
+            print "LALR items:",self.LALRitems
 
     def actiontable(self):
-	items = self.LALRitems
 	res = []
 	state_i = 0
-	terms = self.terminals[:]
+        terms = self.terminals[:]
+        terms.append(Grammar.EPS)
+	
 	errentry = ("", -1)
-	for state in items:
-	    list = [errentry] * len(terms)
-	    res.append(list)
-	    for prodind, rhsind, term in state:
+	for state in self.LALRitems:
+	    res.append([errentry] * len(terms))
+	    for (prodind, rhsind), term in state:
 		if rhsind == len(self.productions[prodind].rhs):
 		    if prodind != 0:
 			new = ("r", prodind)
 			old = res[state_i][terms.index(term)]
 			if old != errentry and old != new:
-			    print "Conflict[%d,%d]:" % (state_i, terms.index(term)), old, "->", new
+			    print "Conflict[%d,%d]:" % (state_i,
+			    terms.index(term)), old, "->", new
 			res[state_i][terms.index(term)] = new
 		    else:
 			new = ("a", -1)
 			old = res[state_i][terms.index(term)]
 			if old != errentry and old != new:
-			    print "Conflict[%d,%d]:" % (state_i, terms.index(term)), old, "->", new
+			    print "Conflict[%d,%d]:" % (state_i,
+			    terms.index(term)), old, "->", new
 			res[state_i][terms.index(term)] = new
 
 		# calculate reduction by epsilon productions 
@@ -505,22 +510,23 @@ class Grammar:
 		    ntfirst = self.firstmap[nt]
 		    ntfirsts = self.ntfirstmap.get(nt, {})
 		    for k in ntfirsts.keys():
-			if self.lhseps.get(k, ""):
+			if k in self.lhseps:
 			    reduceterms = self.followmap[k]
-#			    print `((prodind, rhsind), term)`, reduceterms
+			    print `((prodind, rhsind), term)`, reduceterms
 			    for r in reduceterms:
    				inner = terms.index(r)
    				old = res[state_i][inner]
    				new = ("r", self.lhseps[k])
   			        if old != errentry and old != new:
-  				    print "Conflict[%d,%d]:" % (state_i, inner), old, "->", new
+  				    print "Conflict[%d,%d]:" % (state_i,
+				    inner), old, "->", new
   				res[state_i][inner] = new
 
 		    # calculate the shifts that occur but whose normal items aren't in the kernel
 		    tfirsts = self.tfirstmap[nt]
 		    for t in tfirsts:
 			inner = terms.index(t)
-			g = self.goto(self.kernelitems[state_i], t)
+			g = self._goto(self.kernelitems[state_i], t)
 			old = res[state_i][inner]
 			try:
 			    news = self.kernelitems.index(g)
@@ -528,20 +534,22 @@ class Grammar:
 			    continue
 			new = ("s", news)
 			if old != errentry and old != new:
-			    print "Conflict[%d,%d]:" % (state_i, inner), old, "->", new			    
+			    print "Conflict[%d,%d]:" % (state_i,
+			    inner), old, "->", new
 			res[state_i][inner] = new
 
 		# compute the rest of the shifts that occur 'normally' in the kernel
 		else:
 		    t = self.productions[prodind].rhs[rhsind]
-		    inner = self.terminals.index(t)
-		    gt = self.goto(self.kernelitems[state_i], t)
+		    inner = terms.index(t)
+		    gt = self._goto(self.kernelitems[state_i], t)
 		    if gt in self.kernelitems:
 			news = self.kernelitems.index(gt)
 			old = res[state_i][inner]
 			new = ("s", news)
 			if old != errentry and old != new:
-			    print "Conflict[%d,%d]:" % (state_i, inner), old, "->", new			    
+			    print "Conflict[%d,%d]:" % (state_i,
+			    inner), old, "->", new
 			res[state_i][inner] = new
 	    state_i = state_i + 1
 	return res
@@ -568,6 +576,7 @@ class Grammar:
         self._genLALR1items()
 	at = self.actiontable()
 	gt = self.gototable()
+        self.productions = self.productions[1:]
 	pi = self.prodinfotable()
 	template = parsertemplate.__doc__
 	vals = {"parsername": parsername, "lexerinit": lexerinit}
@@ -643,6 +652,27 @@ def _bootstrap():
     # produce the parser
     g.writefile("./Parsers/GrammarParser.py", "GrammarParser", "PyLR.Lexers.GrammarLex()")
 
+def _test():
+    # first a non-productive Grammar
+    try:
+        Grammar([Production("S", ["S"])], ["EOF"])
+        assert 0, "Bummer!"
+    except ParseError: pass
+    # now a simple Grammar
+    import Lexers
+    toks = Lexers.MathLex().getTokenList()
+
+    prods = map(_makeprod,
+        [("expression", ["expression",toks.index("PLUS"),"term"], "addfunc"),
+         ("expression", ["term"]),
+         ("term", ["term", toks.index("TIMES"),"factor"], "timesfunc"),
+         ("term", ["factor"]),
+         ("factor", [toks.index("LPAR"), "expression", toks.index("RPAR")], "parenfunc"),
+	 ("factor", [toks.index("INT")])])
+    g = Grammar(prods, toks, 1)
+    g.writefile("Parsers/MathParser.py", "MathParser", "PyLR.Lexers.MathLex()")
+
 if __name__=='__main__':
-    _bootstrap()
+#    _bootstrap()
+    _test()
 
