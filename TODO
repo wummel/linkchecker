@@ -16,6 +16,8 @@ Possible improvements people could work on:
   Linux:
   os.nice(+5)
 
+- [INSTALL] build .mo file with improved msgfmt.py from roundup
+
 - [USAGE] rethink intern/extern stuff
 
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
