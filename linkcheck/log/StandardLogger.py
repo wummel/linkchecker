@@ -14,9 +14,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, time, linkcheck
+import sys, time, linkcheck, linkcheck.Config
 from Logger import Logger
-from linkcheck import Config
 from linkcheck.log import LogFields, Spaces, strtime, MaxIndent
 
 class StandardLogger (Logger):
@@ -68,9 +67,9 @@ __init__(self, **args)
         if self.fd is None: return
         self.starttime = time.time()
         if self.logfield('intro'):
-            self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
-            self.fd.write(linkcheck._("Get the newest version at %s\n") % Config.Url)
-            self.fd.write(linkcheck._("Write comments and bugs to %s\n\n") % Config.Email)
+            self.fd.write("%s\n%s\n" % (linkcheck.Config.AppInfo, linkcheck.Config.Freeware))
+            self.fd.write(linkcheck._("Get the newest version at %s\n") % linkcheck.Config.Url)
+            self.fd.write(linkcheck._("Write comments and bugs to %s\n\n") % linkcheck.Config.Email)
             self.fd.write(linkcheck._("Start checking at %s\n") % linkcheck.log.strtime(self.starttime))
             self.fd.flush()
 

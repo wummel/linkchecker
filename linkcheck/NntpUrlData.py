@@ -15,15 +15,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, time, sys, nntplib, urlparse, linkcheck
+import re, time, sys, nntplib, urlparse, random, linkcheck
 from UrlData import ExcList,UrlData
 from debuglevels import *
 debug = linkcheck.Config.debug
+random.seed()
 
 ExcList.extend([nntplib.error_reply,
                nntplib.error_temp,
                nntplib.error_perm,
                nntplib.error_proto,
+               EOFError,
                ])
 
 class NntpUrlData (UrlData):
@@ -78,12 +80,11 @@ class NntpUrlData (UrlData):
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
                 if re.compile("^50[45]").search(str(value)):
-                    import whrandom
-                    time.sleep(whrandom.randint(10,20))
+                    time.sleep(random.randrange(10,30))
                 else:
                     raise
         if nntp is None:
-            raise linkcheck.error(_("NTTP server too busy; tried more than %d times")%tries)
+            raise linkcheck.error(linkcheck._("NTTP server too busy; tried more than %d times")%tries)
         if value is not None:
             self.setWarning(linkcheck._("NNTP busy: %s")%str(value))
         return nntp

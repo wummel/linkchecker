@@ -34,7 +34,7 @@ def getLinkPat (arg, strict=0):
     }
 
 # i18n suppport
-import sys, os, _linkchecker_configdata, DNS
+import sys, os, _linkchecker_configdata
 def init_gettext ():
     global _
     try:
@@ -47,8 +47,7 @@ def init_gettext ():
         _ = lambda s: s
 init_gettext()
 
-import timeoutsocket
-import Config, UrlData, lc_cgi
+import Config
 from debuglevels import *
 debug = Config.debug
 

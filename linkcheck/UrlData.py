@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, urlparse, urllib, time, traceback, socket, select
-import Config, StringUtil, linkcheck, linkname, test_support
+import sys, re, urlparse, urllib, time, traceback, socket, select, DNS
+import Config, StringUtil, linkcheck, linkname, test_support, timeoutsocket
 from debuglevels import *
 debug = Config.debug
 
@@ -37,7 +37,6 @@ I can work with ;).
 """) % Config.Email
     type,value = sys.exc_info()[:2]
     print >> sys.stderr, type, value
-    import traceback
     traceback.print_exc()
     print_app_info()
     print >> sys.stderr, linkcheck._("\n******** LinkChecker internal error, bailing out ********")
@@ -61,8 +60,8 @@ ExcList = [
    IOError,
    ValueError, # from httplib.py
    linkcheck.error,
-   linkcheck.DNS.Error,
-   linkcheck.timeoutsocket.Timeout,
+   DNS.Error,
+   timeoutsocket.Timeout,
    socket.error,
    select.error,
 ]
@@ -122,13 +121,13 @@ LinkTags = (
 )
 
 LinkPatterns = []
-for tags,attrs in LinkTags:
-    tag = '(%s)'%'|'.join(tags)
-    attr = '(%s)'%'|'.join(attrs)
-    LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
+for _tags,_attrs in LinkTags:
+    _tag = '(%s)'%'|'.join(_tags)
+    _attr = '(%s)'%'|'.join(_attrs)
+    LinkPatterns.append({'pattern': re.compile(_linkMatcher % (_tag, _attr),
                                                re.VERBOSE),
-                         'tags': tags,
-                         'attrs': attrs})
+                         'tags': _tags,
+                         'attrs': _attrs})
 AnchorPattern = {
     'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE),
     'tags': ['a'],

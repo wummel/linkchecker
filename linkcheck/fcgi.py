@@ -107,7 +107,7 @@ class record:
             data = sock.recv(contentLength - len(self.content))
             self.content += data
         if paddingLength != 0:
-            padding = sock.recv(paddingLength)
+            _padding = sock.recv(paddingLength)
 
         # Parse the content information
         c = self.content
@@ -230,7 +230,7 @@ class FastCGIWriter:
             raise ValueError, "I/O operation on closed file"
 	return 0
 
-    def seek(self, pos, mode = 0):
+    def seek(self, pos, mode=0):
 	if self.closed:
 	    raise ValueError, "I/O operation on closed file"
 
@@ -239,7 +239,7 @@ class FastCGIWriter:
             raise ValueError, "I/O operation on closed file"
 	return 0
 
-    def read(self, n = -1):
+    def read(self, n=-1):
 	if self.closed:
 	    raise ValueError, "I/O operation on closed file"
 	return ""
@@ -311,7 +311,7 @@ class FCGI:
         self.conn, addr=_sock.accept()
         # Check if the connection is from a legal address
         if good_addrs!=None and addr not in good_addrs:
-            raise error, 'Connection from invalid server!'
+            raise error('Connection from invalid server!')
 
         stdin = data = ""
         self.env = {}

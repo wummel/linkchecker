@@ -14,8 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import time, linkcheck
-from linkcheck import Config
+import time, linkcheck, linkcheck.Config
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
 
@@ -32,11 +31,11 @@ class GMLLogger (StandardLogger):
         if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
-            self.fd.write("# "+(linkcheck._("created by %s at %s\n") % (Config.AppName,
+            self.fd.write("# "+(linkcheck._("created by %s at %s\n") % (linkcheck.Config.AppName,
                       strtime(self.starttime))))
-            self.fd.write("# "+(linkcheck._("Get the newest version at %s\n") % Config.Url))
+            self.fd.write("# "+(linkcheck._("Get the newest version at %s\n") % linkcheck.Config.Url))
             self.fd.write("# "+(linkcheck._("Write comments and bugs to %s\n\n") % \
-  	                    Config.Email))
+  	                    linkcheck.Config.Email))
             self.fd.write("graph [\n  directed 1\n")
             self.fd.flush()
 

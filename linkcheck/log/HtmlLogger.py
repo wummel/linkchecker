@@ -15,9 +15,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from StandardLogger import StandardLogger
-from linkcheck import Config
 from linkcheck.log import strtime
-import time, linkcheck
+import time, linkcheck, linkcheck.Config
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//EN">
 <html><head><title>%s</title>
@@ -49,11 +48,11 @@ class HtmlLogger (StandardLogger):
     def init (self):
         if self.fd is None: return
         self.starttime = time.time()
-        self.fd.write(HTML_HEADER%(Config.App, self.colorbackground,
+        self.fd.write(HTML_HEADER%(linkcheck.Config.App, self.colorbackground,
                       self.colorlink, self.colorlink, self.colorlink))
         if self.logfield('intro'):
-            self.fd.write("<center><h2>"+Config.App+"</h2></center>"+
-              "<br><blockquote>"+Config.Freeware+"<br><br>"+
+            self.fd.write("<center><h2>"+linkcheck.Config.App+"</h2></center>"+
+              "<br><blockquote>"+linkcheck.Config.Freeware+"<br><br>"+
               (linkcheck._("Start checking at %s\n") % strtime(self.starttime))+
 	      "<br><br>")
         self.fd.flush()
@@ -148,12 +147,12 @@ class HtmlLogger (StandardLogger):
                 name = linkcheck._("hours")
             self.fd.write("	(%.3f %s)\n" % (duration, name))
             self.fd.write("</blockquote><br><hr noshade size=1><small>"+
-             Config.HtmlAppInfo+"<br>")
+             linkcheck.Config.HtmlAppInfo+"<br>")
             self.fd.write(linkcheck._("Get the newest version at %s\n") %\
-             ('<a href="'+Config.Url+'" target=_top>'+Config.Url+
+             ('<a href="'+linkcheck.Config.Url+'" target=_top>'+linkcheck.Config.Url+
 	      "</a>.<br>"))
             self.fd.write(linkcheck._("Write comments and bugs to %s\n\n") %\
-	     ('<a href="mailto:'+Config.Email+'">'+Config.Email+"</a>."))
+	     ('<a href="mailto:'+linkcheck.Config.Email+'">'+linkcheck.Config.Email+"</a>."))
             self.fd.write("</small></body></html>")
         self.fd.flush()
         self.fd = None

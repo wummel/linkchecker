@@ -353,14 +353,12 @@ class CSV(UserList.UserList):
 #
 #
 
-
-class Entry(UserList.UserList):
-
+class Entry (UserList.UserList):
 	""" CSV data entry, UserList subclass.
 
         Has the same properties as a list, but has a few dictionary
         like properties for easy access of fields if they have titles.
-    
+
         Methods(Override):
           __init__
           __getitem__
@@ -369,9 +367,7 @@ class Entry(UserList.UserList):
 	"""
 
 
-
 	def __init__(self, fields, fields__title = None):
-	
 		""" Initialise with fields data and field title.
 
             Arguments:

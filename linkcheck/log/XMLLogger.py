@@ -14,8 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import time, linkcheck
-from linkcheck import Config
+import time, linkcheck, linkcheck.Config
 from linkcheck.StringUtil import xmlify
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
@@ -35,10 +34,10 @@ class XMLLogger (StandardLogger):
         if self.logfield("intro"):
             self.fd.write("<!--\n")
             self.fd.write("  "+linkcheck._("created by %s at %s\n") % \
-	              (Config.AppName, strtime(self.starttime)))
-            self.fd.write("  "+linkcheck._("Get the newest version at %s\n") % Config.Url)
+	              (linkcheck.Config.AppName, strtime(self.starttime)))
+            self.fd.write("  "+linkcheck._("Get the newest version at %s\n") % linkcheck.Config.Url)
             self.fd.write("  "+linkcheck._("Write comments and bugs to %s\n\n") % \
-	              Config.Email)
+	              linkcheck.Config.Email)
             self.fd.write("-->\n\n")
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
         self.fd.flush()

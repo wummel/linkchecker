@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time, Cookie
-import _linkchecker_configdata, linkcheck
+import _linkchecker_configdata, linkcheck, linkcheck.log
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 from urllib import getproxies
@@ -419,13 +419,14 @@ class Configuration (UserDict.UserDict):
             self.dataLock.release()
 
     def read (self, files = []):
-        if not files:
+        cfiles = files[:]
+        if not cfiles:
             # system wide config settings
             config_dir = join(_linkchecker_configdata.install_data, 'share/linkchecker')
-            files.append(norm(join(config_dir, "linkcheckerrc")))
+            cfiles.append(norm(join(config_dir, "linkcheckerrc")))
             # per user config settings
-            files.append(norm("~/.linkcheckerrc"))
-        self.readConfig(files)
+            cfiles.append(norm("~/.linkcheckerrc"))
+        self.readConfig(cfiles)
 
     def warn (self, msg):
         self.message(linkcheck._("Warning: %s")%msg)
