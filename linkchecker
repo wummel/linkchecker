@@ -39,11 +39,15 @@ import linkcheck
 # initialize i18n, puts _() function into global namespace
 linkcheck.init_i18n()
 import linkcheck.log
-import optcomplete
 import linkcheck.checker
 import linkcheck.checker.cache
 import linkcheck.checker.consumer
 import linkcheck.configuration
+try:
+    import optcomplete
+    has_optcomplete = True
+except ImportError:
+    has_optcomplete = False
 
 
 # default profiling filename
@@ -220,8 +224,8 @@ class LCOptionParser (optparse.OptionParser, object):
 
     def print_help (self, file=None):
         """print translated help text"""
-        s = "%s\n%s\n%s"%(self.format_help(), Notes, Examples)
-        if os.name!='posix':
+        s = "%s\n%s\n%s" % (self.format_help(), Notes, Examples)
+        if os.name != 'posix':
             linkcheck.StringUtil.paginate(s)
         else:
             print s
@@ -394,7 +398,8 @@ group.add_option("--status", action="store_true", dest="status",
 optparser.add_option_group(group)
 
 ################# auto completion #####################
-optcomplete.autocomplete(optparser)
+if has_optcomplete:
+    optcomplete.autocomplete(optparser)
 
 # read and parse command line options and arguments
 (options, args) = optparser.parse_args()
