@@ -13,18 +13,19 @@ on Windows!
 
 
 Install with Distutils:
-This is the preferred way to install because its the easy way.
-If you have the Distutils, run "python setup.py install".
+The Distutils package has a lot of install options to tweak and ease
+your installation.
+To install LinkChecker run "python setup.py install".
 Debian users can build the .deb package with "debian/rules binary".
 
 Install without Distutils:
-Adjust the sys.path.append argument in the file 'linkchecker' to point 
-to the distribution directory.
-Copy 'linkcheck/__init__.py.tmpl' to 'linkcheck/__init__.py' and 
-replace $install_data with the distribution directory.
-Windows users copy 'linkchecker.bat.tmpl' to 'linkchecker.bat' and
-replace $install_scripts with the distribution directory.
-After all, put the distribution directory in your path.
+Execute "python install.py" to install LinkChecker in the distribution 
+directory.
+To use HTTPS, compile the Pyhton module ssl.c, for example with
+"gcc -c -I/usr/include/openssl -I/usr/include/python1.5 -g -O2 -fPIC \
+ssl.c -o ssl.o"
+Put the distribution directory in your path to execute the linkchecker
+script from everywhere.
 
 
 Running LinkChecker:

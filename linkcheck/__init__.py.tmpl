@@ -56,5 +56,6 @@ def checkUrls(config = Config.Configuration()):
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-        sys.exit(1) # XXX this is not good(tm)
+	raise
     config.log_endOfOutput()
+
