@@ -16,6 +16,9 @@ HTMLDIR = $(ROOT)/var/www/lconline
 SHARE = $(ROOT)/usr/share/linkchecker
 ETC = $(ROOT)/etc
 
+common-configure-arch::
+	$(PYTHON) setup.py sdist --manifest-only
+
 common-install-impl::
 # remove example files, we install them with dh_installexamples
 	rm -r $(ROOT)/usr/share/linkchecker/examples
