@@ -79,7 +79,7 @@ class Configuration (dict):
         self["verbose"] = False
         self["warnings"] = False
         self["anchors"] = False
-        self["noanchorcaching"] = False
+        self["anchorcaching"] = True
         self["externlinks"] = []
         self["internlinks"] = []
         self["denyallow"] = False
@@ -499,7 +499,7 @@ class Configuration (dict):
             self["interactive"] = cfgparser.getboolean(section, "interactive")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
-            self["noanchorcaching"] = cfgparser.getboolean(section, "noanchorcaching")
+            self["anchorcaching"] = cfgparser.getboolean(section, "anchorcaching")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
 
         section = "authentication"

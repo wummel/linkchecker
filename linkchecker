@@ -318,7 +318,7 @@ for opt,arg in options:
         config["nntpserver"] = arg
 
     elif opt=="--no-anchor-caching":
-        config["noanchorcaching"] = True
+        config["anchorcaching"] = False
 
     elif opt=="-p" or opt=="--password":
         _password = arg
