@@ -27,8 +27,7 @@ DNS.DiscoverNameServers()
 
 import Config, StringUtil, linkname, test_support, timeoutsocket
 from linkparse import LinkParser
-from debuglevels import *
-debug = Config.debug
+from debug import *
 
 # helper function for internal errors
 def internal_error ():

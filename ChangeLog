@@ -18,6 +18,8 @@
     Changed files: linkcheck/parser/htmllex.l
   * -a anchor option implies -w because anchor errors are always warnings
     Changed files: linkchecker
+  * added AnsiColors.py and debug.py to split out some functions
+    Changed files: a lot .py files using these things
 
 1.8.2
   * - ignore invalid html attribute characters

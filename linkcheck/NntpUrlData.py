@@ -18,7 +18,7 @@
 import re, time, sys, nntplib, urlparse, random, i18n
 from linkcheck import error, Config
 from UrlData import ExcList,UrlData
-from debuglevels import *
+from debug import *
 random.seed()
 
 ExcList.extend([nntplib.error_reply,

@@ -21,7 +21,7 @@ from linkcheck import getLinkPat
 from os.path import expanduser, normpath, normcase, join, isfile
 from types import StringType
 from urllib import getproxies
-from debuglevels import *
+from debug import *
 
 Version = _linkchecker_configdata.version
 AppName = "LinkChecker"
@@ -39,19 +39,6 @@ Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
-
-# debug options
-DebugDelim = "==========================================================\n"
-DebugLevel = 0
-
-# note: debugging with more than 1 thread can be painful
-def debug (level, *args):
-    if DebugLevel >= level:
-        sys.stderr.write("DEBUG(%d):"%level)
-        for arg in args:
-            sys.stderr.write(" %s"%str(arg))
-        sys.stderr.write("\n")
-        sys.stderr.flush()
 
 # path util function
 def norm (path):

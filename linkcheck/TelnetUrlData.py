@@ -17,6 +17,7 @@
 
 import telnetlib, urlparse
 from linkcheck import Config, error, i18n
+from debug import *
 from urllib import splituser, splithost, splitport, splitpasswd
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import is_valid_port
@@ -45,7 +46,7 @@ class TelnetUrlData (HostCheckingUrlData):
     def checkConnection (self):
         HostCheckingUrlData.checkConnection(self)
         self.urlConnection = telnetlib.Telnet()
-        self.urlConnection.set_debuglevel(Config.DebugLevel)
+        self.urlConnection.set_debuglevel(DebugLevel)
         self.urlConnection.open(self.host, self.port)
         if self.user:
             self.urlConnection.read_until("login: ", 10)

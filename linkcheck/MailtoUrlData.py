@@ -21,7 +21,7 @@ from linkcheck.DNS import mxlookup
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
-from debuglevels import *
+from debug import *
 
 # regular expression for RFC2368 compliant mailto: scanning
 headers_re = re.compile(r"\?(.+)$")

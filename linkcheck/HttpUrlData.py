@@ -17,11 +17,11 @@
 
 import urlparse, urllib, sys, time, re, httplib, robotparser
 import Config, StringUtil, i18n
+from debug import *
 # XXX not dynamic
-if Config.DebugLevel > 0:
+if DebugLevel > 0:
     robotparser.debug = 1
 from ProxyUrlData import ProxyUrlData
-from debuglevels import *
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
@@ -95,7 +95,7 @@ class HttpUrlData (ProxyUrlData):
         # first try
         response = self._getHttpResponse()
         self.headers = response.msg
-        Config.debug(BRING_IT_ON, response.status, response.reason, self.headers)
+        debug(BRING_IT_ON, response.status, response.reason, self.headers)
         has301status = 0
         while 1:
             # proxy enforcement (overrides standard proxy)
@@ -118,7 +118,7 @@ class HttpUrlData (ProxyUrlData):
                 self.urlparts = urlparse.urlsplit(redirected)
                 response = self._getHttpResponse()
                 self.headers = response.msg
-                Config.debug(BRING_IT_ON, "Redirected", self.headers)
+                debug(BRING_IT_ON, "Redirected", self.headers)
                 tries += 1
             if tries >= 5:
                 self.setError(i18n._("too much redirections (>= 5)"))
@@ -132,8 +132,7 @@ class HttpUrlData (ProxyUrlData):
                         base64.encodestring("%s:%s" % (_user, _password))
                 response = self._getHttpResponse()
                 self.headers = response.msg
-                Config.debug(BRING_IT_ON, "Authentication", _user, "/",
-		             _password)
+                debug(BRING_IT_ON, "Authentication", _user, "/", _password)
             # some servers get the HEAD request wrong:
             # - Netscape Enterprise Server (no HEAD implemented, 404 error)
             # - Hyperwave Information Server (501 error)
@@ -208,7 +207,7 @@ class HttpUrlData (ProxyUrlData):
             host = self.proxy
         else:
             host = self.urlparts[1]
-        Config.debug(HURT_ME_PLENTY, "host", host)
+        debug(HURT_ME_PLENTY, "host", host)
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self._getHTTPObject(host)
@@ -242,7 +241,7 @@ class HttpUrlData (ProxyUrlData):
 
     def _getHTTPObject (self, host):
         h = httplib.HTTPConnection(host)
-        h.set_debuglevel(Config.DebugLevel)
+        h.set_debuglevel(DebugLevel)
         h.connect()
         return h
 
@@ -282,8 +281,8 @@ class HttpUrlData (ProxyUrlData):
 
     def robotsTxtAllowsUrl (self):
         roboturl = self.urlparts[0]+"://"+self.urlparts[1]+"/robots.txt"
-        Config.debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
-        Config.debug(HURT_ME_PLENTY, "url", self.url)
+        debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
+        debug(HURT_ME_PLENTY, "url", self.url)
         if not self.config.robotsTxtCache_has_key(roboturl):
             rp = robotparser.RobotFileParser()
             rp.set_url(roboturl)

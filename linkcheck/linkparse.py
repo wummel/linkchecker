@@ -15,9 +15,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re, StringUtil, linkname
-from debuglevels import *
+from debug import *
 from linkcheck.parser.htmllib import HtmlParser
-from linkcheck.Config import debug
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {

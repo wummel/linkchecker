@@ -42,8 +42,7 @@ extensions = {
 }
 
 import UrlData
-from Config import debug
-from debuglevels import *
+from debug import *
 
 # main check function
 def checkUrls (config):

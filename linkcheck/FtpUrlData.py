@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ftplib, i18n
-from linkcheck import Config, error, extensions
+from linkcheck import Config, error, extensions, debug
 from urllib import splitpasswd
 from ProxyUrlData import ProxyUrlData
 from HttpUrlData import HttpUrlData
@@ -82,7 +82,7 @@ class FtpUrlData (ProxyUrlData):
         # ready to connect
         try:
             self.urlConnection = ftplib.FTP()
-            self.urlConnection.set_debuglevel(Config.DebugLevel)
+            self.urlConnection.set_debuglevel(debug.DebugLevel)
             self.urlConnection.connect(self.urlparts[1])
             self.urlConnection.login(_user, _password)
         except EOFError:

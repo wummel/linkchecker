@@ -18,6 +18,7 @@
 import Config, httplib, i18n
 from UrlData import UrlData
 from HttpUrlData import HttpUrlData
+from linkcheck.debug import *
 _supportHttps = hasattr(httplib, "HTTPSConnection")
 
 
@@ -26,7 +27,7 @@ class HttpsUrlData (HttpUrlData):
 
     def _getHTTPObject (self, host):
         h = httplib.HTTPSConnection(host)
-        h.set_debuglevel(Config.DebugLevel)
+        h.set_debuglevel(DebugLevel)
         h.connect()
         return h
 
