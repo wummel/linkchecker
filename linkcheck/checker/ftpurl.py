@@ -51,8 +51,6 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             _user, _password = urllib.splitpasswd(self.userinfo)
         else:
             _user, _password = self.get_user_password()
-        #if _user is None or _password is None:
-        #    raise linkcheck.LinkCheckerError(_("No user or password found"))
         self.login(_user, _password)
         filename = self.cwd()
         if filename:
