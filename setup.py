@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 setup (name = "linkchecker",
-       version = "1.1.4",
+       version = "1.2.0",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",

@@ -1,7 +1,7 @@
 Source: linkchecker
 Section: web
 Priority: optional
-Maintainer: Bastian Kleineidam <calvin@cs.uni-sb.de>
+Maintainer: Bastian Kleineidam <calvin@users.sourceforge.net>
 Standards-Version: 3.0.1
 
 Package: linkchecker
