@@ -234,7 +234,7 @@ msgstr ""
 "\n"
 "Está bien no revelar alguna de la información arriba debido a razones\n"
 "de privacidad. Intentaré ayudarle de todos modos, pero debe darme algo\n"
-"con que pueda trabajar ;) ."
+"con que pueda trabajar ;) .\n"
 
 #: ../linkcheck/checker/urlbase.py:67
 msgid "******** LinkChecker internal error, bailing out ********"
