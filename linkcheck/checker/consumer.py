@@ -54,7 +54,8 @@ def print_duration (duration):
 
 class Consumer (object):
     """
-    Consume urls from the url queue in a threaded manner.
+    Consume urls from the url queue in a threaded manner. Also supply
+    thread-safe data acquiring methods.
     """
 
     def __init__ (self, config, cache):
@@ -97,7 +98,9 @@ class Consumer (object):
             self.logger_new_url(url_data)
 
     def check_url (self):
-        """start new thread checking the given url"""
+        """
+        Start new thread checking the given url.
+        """
         url_data = self.cache.incoming_get_url()
         if url_data is None:
             # active connections are downloading/parsing, so
