@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-02-01 02:46+0100\n"
+"POT-Creation-Date: 2005-02-01 03:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -544,6 +544,34 @@ msgid ""
 "</blockquote>\n"
 "</body>\n"
 "</html>"
+msgstr ""
+
+#: ../linkcheck/__init__.py:124
+msgid "CRITICAL"
+msgstr ""
+
+#: ../linkcheck/__init__.py:125
+msgid "ERROR"
+msgstr ""
+
+#: ../linkcheck/__init__.py:126
+msgid "WARN"
+msgstr ""
+
+#: ../linkcheck/__init__.py:127
+msgid "WARNING"
+msgstr ""
+
+#: ../linkcheck/__init__.py:128
+msgid "INFO"
+msgstr ""
+
+#: ../linkcheck/__init__.py:129
+msgid "DEBUG"
+msgstr ""
+
+#: ../linkcheck/__init__.py:130
+msgid "NOTSET"
 msgstr ""
 
 #: ../linkcheck/configuration.py:255

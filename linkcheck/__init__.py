@@ -44,6 +44,8 @@ lognames = {
     }
 lognamelist = ", ".join(["%r"%name for name in lognames.keys()])
 
+import linkcheck.log
+
 
 class LinkCheckerError (Exception):
     """
@@ -117,4 +119,13 @@ def init_i18n ():
     if locdir is None:
         locdir = os.path.join(configdata.install_data, 'share', 'locale')
     linkcheck.i18n.init(configdata.name, locdir)
+    # install translated log level names
+    import logging
+    logging.addLevelName(logging.CRITICAL, _('CRITICAL'))
+    logging.addLevelName(logging.ERROR, _('ERROR'))
+    logging.addLevelName(logging.WARN, _('WARN'))
+    logging.addLevelName(logging.WARNING, _('WARNING'))
+    logging.addLevelName(logging.INFO, _('INFO'))
+    logging.addLevelName(logging.DEBUG, _('DEBUG'))
+    logging.addLevelName(logging.NOTSET, _('NOTSET'))
 
