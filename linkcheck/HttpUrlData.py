@@ -120,7 +120,7 @@ class HttpUrlData (ProxyUrlData):
                 self.proxy, self.proxyauth = oldproxy
             # follow redirections
             tries = 0
-            redirected = self.urlName
+            redirected = self.url
             while response.status in [301,302] and self.headers and tries < 5:
                 has301status = (response.status==301)
                 newurl = self.headers.getheader("Location",
@@ -129,8 +129,8 @@ class HttpUrlData (ProxyUrlData):
                 redirected = unquote(redirected)
                 # note: urlparts has to be a list
                 self.urlparts = list(urlparse.urlsplit(redirected))
-                # preserve anchor on redirects
-                self.urlparts[4] = self.anchor
+                # we saved the anchor already, this one gets removed
+                self.urlparts[4] = ''
                 # new response data
                 response = self._getHttpResponse()
                 self.headers = response.msg
