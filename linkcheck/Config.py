@@ -45,7 +45,7 @@ DebugLevel = 0
 
 # note: debugging with more than 1 thread can be painful
 def debug (level, *args):
-    if DebugLevel > level:
+    if DebugLevel >= level:
         sys.stderr.write("DEBUG(%d):"%level)
         for arg in args:
             sys.stderr.write(" %s"%str(arg))
