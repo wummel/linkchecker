@@ -24,6 +24,7 @@ import sets
 import sys
 import os
 import time
+import encodings.idna
 
 import linkcheck.dns.exception
 import linkcheck.dns.message
@@ -516,6 +517,10 @@ class Resolver(object):
         answer the question."""
 
         if isinstance(qname, str):
+            qname = linkcheck.dns.name.from_text(qname, None)
+        elif isinstance(qname, unicode):
+            # Unicode domain names: http://www.faqs.org/rfcs/rfc3490.html
+            qname = encodings.idna.ToASCII(qname)
             qname = linkcheck.dns.name.from_text(qname, None)
         if isinstance(rdtype, str):
             rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
