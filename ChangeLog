@@ -28,7 +28,7 @@
     Changed: linkcheck/HttpUrlData.py
   * always fall back to HTTP GET request when HEAD gave an error to
     cope with servers not supporting HEAD
-    Changed: linkcheck/HttpUrlData.py
+    Changed: linkcheck/HttpUrlData.py, FAQ
 
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing
