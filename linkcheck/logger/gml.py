@@ -41,17 +41,23 @@ class GMLLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.writeln(u"# "+(_("created by %s at %s") % \
+            self.comment(_("created by %s at %s") % \
                          (linkcheck.configuration.AppName,
-                          linkcheck.strformat.strtime(self.starttime))))
-            self.writeln(u"# "+(_("Get the newest version at %(url)s") % \
-                                {'url': linkcheck.configuration.Url}))
-            self.writeln(u"# "+(_("Write comments and bugs to %(email)s") % \
-                                {'email': linkcheck.configuration.Email}))
+                          linkcheck.strformat.strtime(self.starttime)))
+            self.comment(_("Get the newest version at %(url)s") % \
+                         {'url': linkcheck.configuration.Url})
+            self.comment(_("Write comments and bugs to %(email)s") % \
+                         {'email': linkcheck.configuration.Email})
+            self.check_date()
             self.writeln()
             self.writeln(u"graph [")
             self.writeln(u"  directed 1")
             self.flush()
+
+    def comment (self, s, **args):
+        """Print GML comment."""
+        self.write(u"# ")
+        self.writeln(s=s, **args)
 
     def new_url (self, url_data):
         """write one node and all possible edges"""
@@ -102,7 +108,7 @@ class GMLLogger (linkcheck.logger.Logger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.writeln(u"# "+_("Stopped checking at %s (%s)")%\
+            self.comment(_("Stopped checking at %s (%s)")%\
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
         self.flush()

@@ -45,6 +45,10 @@ class BlacklistLogger (linkcheck.logger.Logger):
             self.fileoutput = False
             self.fd = sys.stdout
 
+    def comment (self, s, **args):
+        """Print nothing."""
+        pass
+
     def new_url (self, url_data):
         """put invalid url in blacklist, delete valid url from blacklist"""
         if not url_data.cached:

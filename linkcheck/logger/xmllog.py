@@ -63,6 +63,12 @@ class XMLLogger (linkcheck.logger.Logger):
         self.nodes = {}
         self.nodeid = 0
 
+    def comment (self, s, **args):
+        """Print HTML comment."""
+        self.write(u"<!-- ")
+        self.write(s, **args)
+        self.write(u" -->")
+
     def start_output (self):
         """print start of checking info as xml comment"""
         linkcheck.logger.Logger.start_output(self)
@@ -71,15 +77,14 @@ class XMLLogger (linkcheck.logger.Logger):
         self.starttime = time.time()
         self.writeln(u'<?xml version="1.0"?>')
         if self.has_field("intro"):
-            self.writeln(u"<!--")
-            self.writeln(u"  "+_("created by %s at %s") %
+            self.comment(_("created by %s at %s") %
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
-            self.writeln(u"  "+_("Get the newest version at %s") %
+            self.comment(_("Get the newest version at %s") %
                          linkcheck.configuration.Url)
-            self.writeln(u"  "+_("Write comments and bugs to %s") %
+            self.comment(_("Write comments and bugs to %s") %
                          linkcheck.configuration.Email)
-            self.writeln(u"-->")
+            self.check_date()
             self.writeln()
         self.writeln(u'<GraphXML>')
         self.writeln(u'<graph isDirected="true">')
@@ -143,11 +148,9 @@ class XMLLogger (linkcheck.logger.Logger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.writeln(u"<!-- ")
-            self.writeln(_("Stopped checking at %s (%s)") % \
+            self.comment(_("Stopped checking at %s (%s)") % \
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
-            self.writeln(u"-->")
         self.flush()
         if self.close_fd:
             self.fd.close()

@@ -92,6 +92,7 @@ class TextLogger (linkcheck.logger.Logger):
                          linkcheck.configuration.Url)
             self.writeln(_("Write comments and bugs to %s") %
                          linkcheck.configuration.Email)
+            self.check_date()
             self.writeln()
             self.writeln(_("Start checking at %s") %
                          linkcheck.strformat.strtime(self.starttime))

@@ -70,6 +70,12 @@ class HtmlLogger (linkcheck.logger.Logger):
         """return non-space-breakable field name"""
         return super(HtmlLogger, self).field(name).replace(" ", "&nbsp;")
 
+    def comment (self, s, **args):
+        """Print HTML comment."""
+        self.write(u"<!-- ")
+        self.write(s, **args)
+        self.write(u" -->")
+
     def start_output (self):
         """print start of checking info"""
         super(HtmlLogger, self).start_output()
@@ -86,6 +92,7 @@ class HtmlLogger (linkcheck.logger.Logger):
                        (_("Start checking at %s") % \
                        linkcheck.strformat.strtime(self.starttime))+
                        os.linesep+"<br>")
+            self.check_date()
         self.flush()
 
     def new_url (self, url_data):

@@ -19,6 +19,7 @@
 import sys
 import os
 import os.path
+import datetime
 
 _ = lambda x: x
 Fields = dict(
@@ -84,19 +85,30 @@ class Logger (object):
             raise ValueError("tried to encode non-unicode string %r" % s)
         return s.encode(self.output_encoding, "ignore")
 
+    def check_date (self):
+        """check for special dates"""
+        now = datetime.date.today()
+        if now.day == 7 and now.month == 1:
+            msg = _("Happy birthday for LinkChecker, I'm %d years old today!")
+            self.comment(msg % (now.year - 2000))
+
+    def comment (self, s, **args):
+        """Print given comment and a newline."""
+        self.writeln(s=s, **args)
+
     def write (self, s, **args):
-        """write string to output descriptor"""
+        """Write string to output descriptor."""
         if self.fd is None:
             raise ValueError("write to non-file")
         self.fd.write(self.encode(s), **args)
 
     def writeln (self, s=u"", **args):
-        """write string to output descriptor plus a line ending"""
+        """Write string to output descriptor plus a newline."""
         self.write(s)
         self.write(unicode(os.linesep), **args)
 
     def has_field (self, name):
-        """see if given field name will be logged"""
+        """See if given field name will be logged."""
         if self.logfields is None:
             # log all fields
             return True

@@ -22,6 +22,10 @@ import linkcheck.logger
 class NoneLogger (linkcheck.logger.Logger):
     """Dummy logger printing nothing."""
 
+    def comment (self, s, **args):
+        """Do nothing."""
+        pass
+
     def start_output (self):
         """do nothing"""
         pass

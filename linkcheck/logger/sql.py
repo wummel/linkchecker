@@ -46,6 +46,11 @@ class SQLLogger (linkcheck.logger.Logger):
         self.dbname = args['dbname']
         self.separator = args['separator']
 
+    def comment (self, s, **args):
+        """Print SQL comment."""
+        self.write(u"-- ")
+        self.write(s, **args)
+
     def start_output (self):
         """print start of checking info as sql comment"""
         linkcheck.logger.Logger.start_output(self)
@@ -53,13 +58,14 @@ class SQLLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.writeln(u"-- "+(_("created by %s at %s") % \
+            self.comment(_("created by %s at %s") % \
                          (linkcheck.configuration.AppName,
-                          linkcheck.strformat.strtime(self.starttime))))
-            self.writeln(u"-- "+(_("Get the newest version at %s") % \
-                         linkcheck.configuration.Url))
-            self.writeln(u"-- "+(_("Write comments and bugs to %s") % \
-                         linkcheck.configuration.Email))
+                          linkcheck.strformat.strtime(self.starttime)))
+            self.comment(_("Get the newest version at %s") % \
+                         linkcheck.configuration.Url)
+            self.comment(_("Write comments and bugs to %s") % \
+                         linkcheck.configuration.Email)
+            self.check_date()
             self.writeln()
             self.flush()
 
@@ -115,7 +121,7 @@ class SQLLogger (linkcheck.logger.Logger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.writeln(u"-- "+_("Stopped checking at %s (%s)")%\
+            self.comment(_("Stopped checking at %s (%s)") % \
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
         self.flush()
