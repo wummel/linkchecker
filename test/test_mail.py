@@ -6,9 +6,9 @@ config['recursionlevel'] = True
 config['log'] = config.newLogger('test')
 config["anchors"] = True
 config["verbose"] = True
-config.disableThreading()
+config.setThreads(0)
 htmldir = "test/html"
-for file in ('mail.html',):
-    url = os.path.join(htmldir, file)
+for filename in ('mail.html',):
+    url = os.path.join(htmldir, filename)
     config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0, config))
 linkcheck.checkUrls(config)

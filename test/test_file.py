@@ -6,9 +6,9 @@ config['recursionlevel'] = True
 config['log'] = config.newLogger('test')
 config["anchors"] = True
 config["verbose"] = True
-config.disableThreading()
+config.setThreads(0)
 htmldir = "test/html"
-for file in ('file.html',"file.txt","file.asc"):
-    url = os.path.join(htmldir, file)
+for filename in ('file.html', "file.txt", "file.asc"):
+    url = os.path.join(htmldir, filename)
     config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0, config))
 linkcheck.checkUrls(config)

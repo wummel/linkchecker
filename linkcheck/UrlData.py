@@ -407,6 +407,7 @@ class UrlData (object):
             data = self.getCacheData()
             for key in self.getCacheKeys():
                 self.config.urlCache_set(key, data)
+                self.config.urlSeen_set(key)
             self.cached = True
 
 
@@ -415,6 +416,11 @@ class UrlData (object):
         if key is None:
             return []
         return [key]
+
+
+    def isCached (self):
+        key = self.getCacheKey()
+        return self.cached or self.config.urlSeen_has_key(key)
 
 
     def getCacheKey (self):
@@ -438,7 +444,7 @@ class UrlData (object):
         return self.valid and \
                self.isParseable() and \
                self.hasContent() and \
-               not self.cached and \
+               not self.isCached() and \
                (self.config["recursionlevel"] < 0 or
                 self.recursionLevel < self.config["recursionlevel"]) and \
                not self.extern[0]
