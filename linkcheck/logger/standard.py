@@ -156,7 +156,7 @@ class StandardLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         if self.has_field('outro'):
-            self.fd.write(_(os.linesep+"Thats it. "))
+            self.fd.write(os.linesep+_("Thats it. "))
             if self.errors == 1:
                 self.fd.write(_("1 error"))
             else:
