@@ -8,7 +8,7 @@ if sys.version[:5] < "1.5.2":
     sys.exit(1)
 
 # add the path to linkcheck module if you do not install with distutils
-#sys.path.append("/home/calvin/projects/linkchecker")
+sys.path.append("/home/calvin/projects/linkchecker")
 import getopt,re,string,os
 import linkcheck,StringUtil
 from linkcheck import _
@@ -160,15 +160,11 @@ except getopt.error:
 
 # apply configuration
 config = linkcheck.Config.Configuration()
-try:
-    configfiles = []
-    for opt,arg in options:
-        if opt=="-f" or opt=="--config":
-            configfiles.append(arg)
-    config.read(configfiles)
-except IOError:
-    type, value = sys.exc_info()[:2]
-    printUsage(value)
+configfiles = []
+for opt,arg in options:
+    if opt=="-f" or opt=="--config":
+        configfiles.append(arg)
+config.read(configfiles)
 
 # check for environment variables (currently only http_proxy)
 if os.environ.has_key("http_proxy"):

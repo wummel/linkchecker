@@ -134,7 +134,7 @@ class Configuration(UserDict.UserDict):
         self.data['blacklist'] = {
             "filename":     "~/.blacklist",
 	}
-        self.data["log"] = self.newLogger('text')
+        self.newLogger('text')
         self.data["quiet"] = 0
         self.data["warningregex"] = None
         self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
@@ -384,7 +384,7 @@ class Configuration(UserDict.UserDict):
         try:
             log = cfgparser.get(section, "log")
             if Loggers.has_key(log):
-                self.data["log"] = self.newLogger(log)
+                self.newLogger(log)
             else:
                 self.warn("invalid log option "+log)
         except ConfigParser.Error: pass
@@ -402,7 +402,7 @@ class Configuration(UserDict.UserDict):
             for arg in filelist:
                 # no file output for the blacklist Logger
                 if Loggers.has_key(arg) and arg != "blacklist":
-		    self.data["fileoutput"].append(self.newLogger(arg, 1))
+		    self.newLogger(arg, 1)
 	except ConfigParser.Error: pass
         for key in Loggers.keys():
             if cfgparser.has_section(key):

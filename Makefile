@@ -2,13 +2,17 @@
 # call make.
 VERSION=$(shell python setup.py --version)
 HOST=treasure.calvinsplayground.de
-#PROXY=
-PROXY=-P$(HOST):5050
+PROXY=--proxy= -itreasure.calvinsplayground.de -s
+#PROXY=-P$(HOST):5050
 #HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
+LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
 PACKAGE = linkchecker
-DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
-ALLPACKAGES = ../$(DEBPACKAGE)
+DEBPACKAGE = ../$(PACKAGE)_$(VERSION)_i386.deb
+RPMPATH=build/bdist.linux2-i686/rpm
+RPMPACKAGE=$(RPMPATH)/RPMS/i386/$(PACKAGE)-$(VERSION)-1.i386.rpm
+SRPMPACKAGE=$(RPMPATH)/SRPMS/$(PACKAGE)-$(VERSION)-1.src.rpm
+ALLPACKAGES = $(DEBPACKAGE) $(RPMPACKAGE) $(SRPMPACKAGE)
 SOURCES = linkcheck/Config.py \
 linkcheck/FileUrlData.py \
 linkcheck/FtpUrlData.py \
@@ -40,11 +44,12 @@ clean:
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 dist:
-	python setup.py sdist bdist_rpm
+	python setup.py sdist
+	python setup.py bdist_rpm
 	fakeroot debian/rules binary
         
 files:
-	./$(PACKAGE) -ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v -D $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
+	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
 homepage:
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt

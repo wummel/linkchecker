@@ -172,7 +172,7 @@ class HtmlLogger(StandardLogger):
         self.fd.write("<html><head><title>"+Config.App+"</title></head>"+
               "<body bgcolor="+self.colorbackground+" link="+self.colorlink+
               " vlink="+self.colorlink+" alink="+self.colorlink+">"+
-              "<center><h2>"+MyFont+Config.AppName+"</font>"+
+              "<center><h2>"+MyFont+Config.App+"</font>"+
               "</center></h2>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
               (_("Start checking at %s\n") % _strtime(self.starttime))+
@@ -447,8 +447,8 @@ class SQLLogger(StandardLogger):
     def newUrl(self, urlData):
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infoString,"
-	      "valid,url,line,checktime,downloadtime,cached) values ('%s',"
-              "%d,'%s','%s','%s','%s','%s','%s',%d,'%s',%d,%d,%d,%d)%s\n" % \
+	      "valid,url,line,checktime,downloadtime,cached) values "
+              "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%d,%d)%s\n" % \
 	      (self.dbname,
 	       StringUtil.sqlify(urlData.urlName),
                urlData.recursionLevel,
@@ -472,6 +472,7 @@ class SQLLogger(StandardLogger):
         self.fd.write(_("-- Stopped checking at %s (%.3f seconds)\n") %\
                       (_strtime(self.stoptime),
 		       (self.stoptime - self.starttime)))
+        self.fd.flush()
         self.fd = None
 
 
@@ -534,7 +535,7 @@ class CSVLogger(StandardLogger):
 
     def newUrl(self, urlData):
         self.fd.write(
-	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%%s%d%s%d%s%d\n" % (
+	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%d%s%d\n" % (
 	    urlData.urlName, self.separator,
 	    urlData.recursionLevel, self.separator,
 	    urlData.parentName, self.separator,
@@ -556,5 +557,6 @@ class CSVLogger(StandardLogger):
         self.fd.write(_("# Stopped checking at %s (%.3f seconds)\n") %\
                       (_strtime(self.stoptime),
 		       (self.stoptime - self.starttime)))
+        self.fd.flush()
         self.fd = None
 

@@ -42,7 +42,7 @@ class UrlData:
                  recursionLevel, 
                  parentName = None,
                  baseRef = None,
-                 line = None):
+                 line = 0):
         self.urlName = urlName
         self.recursionLevel = recursionLevel
         self.parentName = parentName
@@ -54,8 +54,8 @@ class UrlData:
         self.valid = 1
         self.url = None
         self.line = line
-        self.downloadtime = None
-        self.checktime = None
+        self.downloadtime = 0
+        self.checktime = 0
         self.cached = 0
         self.urlConnection = None
         self.extern = 1
@@ -228,7 +228,6 @@ class UrlData:
         if not (config["externlinks"] or config["internlinks"]):
             return 0
         # deny and allow external checking
-        Config.debug(self.url)
         if config["allowdeny"]:
             for pat in config["internlinks"]:
                 if pat.search(self.url):
@@ -253,13 +252,14 @@ class UrlData:
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
             self._init_html_comments()
+            Config.debug("DEBUG: comment spans %s\n" % self.html_comments)
         return self.data
 
 
     def _init_html_comments(self):
         # if we find an URL inside HTML comments we ignore it
         # so build a list of intervalls which are HTML comments
-        pattern = re.compile("<!--.*?-->")
+        pattern = re.compile("<!--.*?-->", re.DOTALL)
         index = 0
         while 1:
             match = pattern.search(self.data, index)

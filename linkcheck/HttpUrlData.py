@@ -88,7 +88,7 @@ class HttpUrlData(UrlData):
                 redirected = urlparse.urljoin(redirected, self.mime.getheader("Location"))
                 self.urlTuple = urlparse.urlparse(redirected)
                 status, statusText, self.mime = self._getHttpRequest()
-                Config.debug("\nRedirected\n"+str(self.mime))
+                Config.debug("DEBUG: Redirected\n"+str(self.mime))
                 tries = tries + 1
 
             # authentication
@@ -99,7 +99,7 @@ class HttpUrlData(UrlData):
                     self.auth = "Basic "+\
                         string.strip(base64.encodestring(_user+":"+_password))
                 status, statusText, self.mime = self._getHttpRequest()
-                Config.debug("Authentication "+_user+"/"+_password+"\n")
+                Config.debug("DEBUG: Authentication "+_user+"/"+_password+"\n")
 
             # Netscape Enterprise Server returns errors with HEAD
             # request, but valid urls with GET request. Bummer!
@@ -107,7 +107,7 @@ class HttpUrlData(UrlData):
                 server = self.mime.getheader("Server")
                 if server and self.netscape_re.search(server):
                     status, statusText, self.mime = self._getHttpRequest("GET")
-                    Config.debug("Netscape Enterprise Server detected\n")
+                    Config.debug("DEBUG: Netscape Enterprise Server detected\n")
             if status not in [301,302]: break
 
         effectiveurl = urlparse.urlunparse(self.urlTuple)
@@ -169,6 +169,7 @@ class HttpUrlData(UrlData):
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
             self._init_html_comments()
+            Config.debug("DEBUG: comment spans %s\n" % self.html_comments)
         return self.data
         
     def isHtml(self):
