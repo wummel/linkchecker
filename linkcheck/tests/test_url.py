@@ -233,7 +233,11 @@ class TestUrl (unittest.TestCase):
         """test norming of other schemes"""
         # no netloc and no path
         url = 'mailto:'
-        nurl = 'mailto:'
+        nurl = url
+        self.assertEqual(linkcheck.url.url_norm(url), nurl)
+        # standard email
+        url = 'mailto:user@www.imadoofus.org'
+        nurl = url
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
         # no netloc and no path
         url = 'news:'
