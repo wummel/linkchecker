@@ -33,16 +33,16 @@ def unicode_safe (s, encoding="iso-8859-1"):
     characters of the given encoding will be ignored.
 
     @param s: the string to be decoded
-    @type s: unicode or encoded string
+    @type s: any object except None
     @return: if s is already unicode, return s unchanged; else return
-        decoded unicode string
+        decoded unicode string of str(s)
     @rtype: unicode
     """
     assert s is not None, "argument to unicode_safe was None"
     if isinstance(s, unicode):
         # s is already unicode, nothing to do
         return s
-    return unicode(s, encoding, "ignore")
+    return unicode(str(s), encoding, "ignore")
 
 
 def url_unicode_split (url):
