@@ -34,7 +34,6 @@ class ProxySupport (object):
         self.proxy = proxy
         self.proxyauth = None
         if not self.proxy:
-            self.add_info(_("Ignoring empty proxy setting for %r") % self.url)
             return
         if self.proxy[:7].lower() != "http://":
             self.proxy = "http://"+self.proxy
