@@ -32,6 +32,10 @@ class TelnetUrl (urlbase.UrlBase):
     """
 
     def build_url (self):
+        """
+        Call super.build_url(), set default telnet port and initialize
+        the login credentials.
+        """
         super(TelnetUrl, self).build_url()
         # default port
         if self.port is None:
@@ -43,12 +47,19 @@ class TelnetUrl (urlbase.UrlBase):
             self.user, self.password = self.get_user_password()
 
     def local_check (self):
+        """
+        Warn about empty host names. Else call super.local_check().
+        """
         if not self.host:
             self.set_result(_("Host is empty"), valid=False)
             return
         super(TelnetUrl, self).local_check()
 
     def check_connection (self):
+        """
+        Open a telnet connection and try to login. Expected login
+        label is "login: ", expected password label is "Password: ".
+        """
         self.url_connection = telnetlib.Telnet()
         if self.consumer.config.get("debug"):
             self.url_connection.set_debuglevel(1)
@@ -63,4 +74,10 @@ class TelnetUrl (urlbase.UrlBase):
         self.url_connection.write("exit\n")
 
     def can_get_content (self):
+        """
+        Telnet URLs have no content.
+
+        @return: False
+        @rtype: bool
+        """
         return False

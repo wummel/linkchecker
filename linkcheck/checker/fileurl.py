@@ -86,6 +86,12 @@ class FileUrl (urlbase.UrlBase):
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None,
                   base_ref = None, line=0, column=0, name=u""):
+        """
+        Besides the usual initialization the URL is normed according
+        to the platform:
+         - the base URL is made an absolute file:// URL
+         - under Windows platform the drive specifier is normed
+        """
         super(FileUrl, self).__init__(base_url, recursion_level, consumer,
              parent_url=parent_url, base_ref=base_ref,
              line=line, column=column, name=name)
@@ -103,6 +109,9 @@ class FileUrl (urlbase.UrlBase):
             self.base_url, is_idn = linkcheck.url.url_norm(base_url)
 
     def build_url (self):
+        """
+        Calls super.build_url() and adds a trailing slash to directories.
+        """
         super(FileUrl, self).build_url()
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
@@ -112,6 +121,10 @@ class FileUrl (urlbase.UrlBase):
         self.url = urlparse.urlunsplit(self.urlparts)
 
     def check_connection (self):
+        """
+        Try to open the local file. Under NT systems the case sensitivity
+        is checked.
+        """
         if self.is_directory():
             self.set_result(_("directory"))
         else:
@@ -119,11 +132,13 @@ class FileUrl (urlbase.UrlBase):
             self.check_case_sensitivity()
 
     def check_case_sensitivity (self):
+        """
+        Check if url and windows path name match cases
+        else there might be problems when copying such
+        files on web servers that are case sensitive.
+        """
         if os.name != 'nt':
             return
-        # Check if url and windows path name match cases
-        # else there might be problems when copying such
-        # files on web servers that are case sensitive.
         path = self.get_os_filename()
         realpath = get_nt_filename(path)
         if path != realpath:
@@ -133,6 +148,10 @@ class FileUrl (urlbase.UrlBase):
         pass
 
     def get_content (self):
+        """
+        Return file content, or in case of directories a dummy HTML file
+        with links to the files.
+        """
         if not self.valid:
             return ""
         if self.has_content:
@@ -143,6 +162,12 @@ class FileUrl (urlbase.UrlBase):
             return super(FileUrl, self).get_content()
 
     def get_directory_content (self):
+        """
+        Get dummy HTML data for the directory content.
+
+        @return: HTML data
+        @rtype: string
+        """
         t = time.time()
         files = get_files(self.get_os_filename())
         data = linkcheck.checker.get_index_html(files)
@@ -153,6 +178,9 @@ class FileUrl (urlbase.UrlBase):
         return self.data
 
     def is_html (self):
+        """
+        Check if file is a parseable HTML file.
+        """
         if linkcheck.checker.extensions['html'].search(self.url):
             return True
         if contents['html'].search(self.get_content()):
@@ -160,19 +188,43 @@ class FileUrl (urlbase.UrlBase):
         return False
 
     def is_file (self):
+        """
+        This is a file.
+
+        @return: True
+        @rtype: bool
+        """
         return True
 
     def get_os_filename (self):
+        """
+        Construct os specific file path out of the file:// URL.
+
+        @return: file name
+        @rtype: string
+        """
         path = self.urlparts[2]
         if os.name == 'nt':
             path = prepare_urlpath_for_nt(path)
         return urllib.url2pathname(path)
 
     def is_directory (self):
+        """
+        Check if file is a directory.
+
+        @return: True iff file is a directory
+        @rtype: bool
+        """
         filename = self.get_os_filename()
         return os.path.isdir(filename) and not os.path.islink(filename)
 
     def is_parseable (self):
+        """
+        Check if content is parseable for recursion.
+
+        @return: True if content is parseable
+        @rtype: bool
+        """
         if self.is_directory():
             return True
         # guess by extension
@@ -189,12 +241,17 @@ class FileUrl (urlbase.UrlBase):
         return False
 
     def parse_url (self):
+        """
+        Parse file contents for new links to check.
+        """
         if self.is_directory():
-            return self.parse_html()
+            self.parse_html()
+            return
         for key, ro in linkcheck.checker.extensions.items():
             if ro.search(self.url):
-                return getattr(self, "parse_"+key)()
+                getattr(self, "parse_"+key)()
+                return
         for key, ro in contents.items():
             if ro.search(self.get_content()[:30]):
-                return getattr(self, "parse_"+key)()
-        return None
+                getattr(self, "parse_"+key)()
+                return

@@ -49,6 +49,10 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.filename = None
 
     def check_connection (self):
+        """
+        In case of proxy, delegate to HttpUrl. Else check in this
+        order: login, changing directory, list the file.
+        """
         # proxy support (we support only http)
         self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
         if self.proxy:
@@ -70,7 +74,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return None
 
     def get_user_password (self):
-        # get login credentials
+        """
+        Get credentials to use for login.
+        """
         if self.userinfo:
             return urllib.splitpasswd(self.userinfo)
         return super(FtpUrl, self).get_user_password()
@@ -165,11 +171,17 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return files
 
     def is_html (self):
+        """
+        See if URL target is a HTML file by looking at the extension.
+        """
         if linkcheck.checker.extensions['html'].search(self.url):
             return True
         return False
 
     def is_parseable (self):
+        """
+        See if URL target is parseable for recursion.
+        """
         if self.is_directory():
             return True
         for ro in linkcheck.checker.extensions.values():
@@ -178,9 +190,15 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return False
 
     def is_directory (self):
+        """
+        See if URL target is a directory.
+        """
         return self.url.endswith('/')
 
     def parse_url (self):
+        """
+        Parse URL target for links.
+        """
         if self.is_directory():
             return self.parse_html()
         for key, ro in linkcheck.checker.extensions.items():
@@ -189,6 +207,10 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return None
 
     def get_content (self):
+        """
+        Return URL target content, or in case of directories a dummy HTML
+        file with links to the files.
+        """
         if not self.valid:
             return ""
         if self.has_content:
@@ -213,6 +235,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return self.data
 
     def close_connection (self):
+        """
+        Add the open connection to the connection pool.
+        """
         if self.url_connection is None:
             return
         # add to cached connections

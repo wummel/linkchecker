@@ -38,12 +38,16 @@ class NntpUrl (urlbase.UrlBase):
     """
 
     def check_connection (self):
+        """
+        Connect to NNTP server and try to request the URL article
+        resource (if specified).
+        """
         nntpserver = self.host or self.consumer.config["nntpserver"]
         if not nntpserver:
             self.add_warning(
                     _("No NNTP server was specified, skipping this URL."))
             return
-        nntp = self._connectNntp(nntpserver)
+        nntp = self._connect_nntp(nntpserver)
         group = self.urlparts[2]
         while group[:1] == '/':
             group = group[1:]
@@ -63,7 +67,7 @@ class NntpUrl (urlbase.UrlBase):
                 # group name is the empty string
                 self.add_warning(_("No newsgroup specified in NNTP URL."))
 
-    def _connectNntp (self, nntpserver):
+    def _connect_nntp (self, nntpserver):
         """
         This is done only once per checking task. Also, the newly
         introduced error codes 504 and 505 (both inclining "Too busy, retry
@@ -89,4 +93,10 @@ class NntpUrl (urlbase.UrlBase):
         return nntp
 
     def can_get_content (self):
+        """
+        NNTP urls have no content.
+
+        @return: False
+        @rtype: bool
+        """
         return False

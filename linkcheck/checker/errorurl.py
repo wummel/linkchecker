@@ -27,6 +27,9 @@ class ErrorUrl (urlbase.UrlBase):
     """
 
     def check_syntax (self):
+        """
+        Log a warning that the URL syntax is invalid or unknown.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         self.url, is_idn = linkcheck.url.url_norm(self.base_url)
         self.set_result(_("URL is unrecognized or has invalid syntax"),

@@ -47,6 +47,13 @@ DEFAULT_TIMEOUT_SECS = 300
 
 
 def has_header_value (headers, name, value):
+    """
+    Look in headers for a specific header name and value.
+    Both name and value are case insensitive.
+
+    @return: True if header name and value are found
+    @rtype: bool
+    """
     name = name.lower()
     value = value.lower()
     for hname, hvalue in headers:
@@ -56,6 +63,15 @@ def has_header_value (headers, name, value):
 
 
 def http_persistent (response):
+    """
+    See if the HTTP connection can be kept open according the the
+    header values found in the response object.
+
+    @param response: response instance
+    @type response: httplib.HTTPResponse
+    @return: True if connection is persistent
+    @rtype: bool
+    """
     headers = response.getheaders()
     if response.version == 11:
         return has_header_value(headers, 'Connection', 'Close')
@@ -63,6 +79,15 @@ def http_persistent (response):
 
 
 def http_timeout (response):
+    """
+    Get HTTP timeout value, either from the Keep-Alive header or a
+    default value.
+
+    @param response: response instance
+    @type response: httplib.HTTPResponse
+    @return: timeout
+    @rtype: int
+    """
     timeout = response.getheader("Keep-Alive")
     if timeout is not None:
         try:
@@ -94,6 +119,10 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.persistent = False
 
     def build_url (self):
+        """
+        Call super.build_url() and add a missing trailing slash to
+        the URL if the URL path is empty.
+        """
         super(HttpUrl, self).build_url()
         # encode userinfo
         # XXX
@@ -104,6 +133,15 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.url = urlparse.urlunsplit(self.urlparts)
 
     def allows_robots (self, url):
+        """
+        Fetch and parse the robots.txt of given url. Checks if LinkChecker
+        can access the requested resource.
+
+        @param url: the url to be requested
+        @type url: string
+        @return: True if access is granted, otherwise False
+        @rtype: bool
+        """
         roboturl = self.get_robots_txt_url()
         user, password = self.get_user_password()
         return self.consumer.cache.robots_txt_allows_url(roboturl, url,
@@ -264,7 +302,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.check_response(response, fallback_GET)
 
     def follow_redirections (self, response):
-        """follow all redirections of http response"""
+        """
+        Follow all redirections of http response.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "follow all redirections")
         redirected = self.url
         tries = 0
@@ -347,7 +387,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return tries, response
 
     def check_response (self, response, fallback_GET):
-        """check final result"""
+        """
+        Check final result and log it.
+        """
         if response.status >= 400:
             self.set_result("%r %s" % (response.status, response.reason),
                             valid=False)
@@ -439,6 +481,16 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return response
 
     def get_http_object (self, host, scheme):
+        """
+        Open a HTTP connection.
+
+        @param host: the host to connect to
+        @type host: string of the form <host>[:<port>]
+        @param scheme: 'http' or 'https'
+        @type scheme: string
+        @return: open HTTP(S) connection
+        @rtype: httplib.HTTP(S)Connection
+        """
         _user, _password = self.get_user_password()
         key = (scheme, self.urlparts[1], _user, _password)
         conn = self.consumer.cache.get_connection(key)
@@ -458,6 +510,13 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return h
 
     def get_content (self):
+        """
+        Get content of the URL target. The content data is cached after
+        the first call to this method.
+
+        @return: URL content, decompressed and decoded
+        @rtype: string
+        """
         if not self.has_content:
             self.method = "GET"
             self.has_content = True
@@ -481,6 +540,13 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return self.data
 
     def is_html (self):
+        """
+        See if this URL points to a HTML file by looking at the
+        Content-Type header, file extension and file content.
+
+        @return: True if URL points to HTML file
+        @rtype: bool
+        """
         if not (self.valid and self.headers):
             return False
         if self.headers.gettype()[:9] != "text/html":
@@ -493,15 +559,34 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return True
 
     def is_http (self):
+        """
+        This is a HTTP file.
+
+        @return: True
+        @rtype: bool
+        """
         return True
 
     def get_content_type (self):
+        """
+        Get the MIME type from the Content-Type header value, or
+        'application/octet-stream' if not found.
+
+        @return: MIME type
+        @rtype: string
+        """
         ptype = self.headers.get('Content-Type', 'application/octet-stream')
         if ";" in ptype:
             ptype = ptype.split(';')[0]
         return ptype
 
     def is_parseable (self):
+        """
+        Check if content is parseable for recursion.
+
+        @return: True if content is parseable
+        @rtype: bool
+        """
         if not (self.valid and self.headers):
             return False
         if self.get_content_type() not in ("text/html", "text/css"):
@@ -514,6 +599,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return True
 
     def parse_url (self):
+        """
+        Parse file contents for new links to check.
+        """
         ptype = self.get_content_type()
         if ptype == "text/html":
             self.parse_html()
@@ -522,9 +610,19 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return None
 
     def get_robots_txt_url (self):
+        """
+        Get the according robots.txt URL for this URL.
+
+        @return: robots.txt URL
+        @rtype: string
+        """
         return "%s://%s/robots.txt" % tuple(self.urlparts[0:2])
 
     def close_connection (self):
+        """
+        If connection is persistent, add it to the connection pool.
+        Else close the connection. Errors on closing are ignored.
+        """
         if self.url_connection is None:
             # no connection is open
             return

@@ -30,12 +30,37 @@ import linkcheck.log
 import linkcheck.dns.resolver
 
 
+def _split_address (address):
+    """
+    Split username and hostname of address. The hostname defaults
+    to 'localhost' if it is not specified.
+
+    @param address: an email address
+    @type address: string
+    @return: a tuple (username, hostname)
+    @rtype: tuple
+    @raise: LinkCheckerError if address could not be split
+    """
+    split = address.split("@", 1)
+    if len(split) == 2:
+        if not split[1]:
+            return (split[0], "localhost")
+        return tuple(split)
+    if len(split) == 1:
+        return (split[0], "localhost")
+    raise linkcheck.LinkCheckerError(_("Could not split the mail address"))
+
+
 class MailtoUrl (urlbase.UrlBase):
     """
     Url link with mailto scheme.
     """
 
     def build_url (self):
+        """
+        Call super.build_url(), extract list of mail addresses from URL,
+        and check their syntax.
+        """
         super(MailtoUrl, self).build_url()
         self.headers = {}
         self.addresses = email.Utils.getaddresses([self.cutout_addresses()])
@@ -46,13 +71,20 @@ class MailtoUrl (urlbase.UrlBase):
                     self.addresses.extend(email.Utils.getaddresses([a]))
         # check syntax of emails
         for name, addr in self.addresses:
-            username, domain = self._split_address(addr)
+            username, domain = _split_address(addr)
             if not linkcheck.url.is_safe_domain(domain):
                 raise linkcheck.LinkCheckerError(_("Invalid mail syntax"))
         linkcheck.log.debug(linkcheck.LOG_CHECK, "addresses: %s",
                             self.addresses)
 
     def cutout_addresses (self):
+        """
+        Parse all mail addresses out of the URL target. Additionally
+        store headers.
+
+        @return: comma separated list of email addresses
+        @rtype: string
+        """
         # cut off leading mailto: and unquote
         url = urllib.unquote(self.base_url[7:])
         # search for cc, bcc, to and store in headers
@@ -115,7 +147,7 @@ class MailtoUrl (urlbase.UrlBase):
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "checking mail address %r", mail)
         linkcheck.log.debug(linkcheck.LOG_CHECK, "splitting address")
-        username, domain = self._split_address(mail)
+        username, domain = _split_address(mail)
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "looking up MX mailhost %r", domain)
         answers = linkcheck.dns.resolver.query(domain, 'MX')
@@ -140,7 +172,12 @@ class MailtoUrl (urlbase.UrlBase):
 
     def check_smtp_connect (self, mxdata, username):
         """
-        mxdata is a list of (preference, host) tuples to check for
+        Connect to SMTP servers and check emails.
+
+        @param mxdata: list of (preference, host) tuples to check for
+        @type mxdata: list
+        @param username: the username to verify
+        @type username: string
         """
         smtpconnect = 0
         for preference, host in mxdata:
@@ -178,17 +215,6 @@ class MailtoUrl (urlbase.UrlBase):
         else:
             self.set_result(_("Found MX mail host %(host)s") % {'host': host})
 
-    def _split_address (self, address):
-        split = address.split("@", 1)
-        if len(split) == 2:
-            if not split[1]:
-                return (split[0], "localhost")
-            return tuple(split)
-        if len(split) == 1:
-            return (split[0], "localhost")
-        raise linkcheck.LinkCheckerError(
-                                  _("Could not split the mail address"))
-
     def close_connection (self):
         """
         Close a possibly opened SMTP connection.
@@ -218,5 +244,6 @@ class MailtoUrl (urlbase.UrlBase):
         mailto: URLs do not have any content
 
         @return: False
+        @rtype: bool
         """
         return False

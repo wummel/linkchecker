@@ -26,7 +26,16 @@ class IgnoredUrl (urlbase.UrlBase):
     """
 
     def local_check (self):
+        """
+        Only logs a warning that this URL is ignored.
+        """
         self.add_warning(_("%s URL ignored.") % self.scheme.capitalize())
 
     def can_get_content (self):
+        """
+        Ignored URLs have no content.
+
+        @return: False
+        @rtype: bool
+        """
         return False

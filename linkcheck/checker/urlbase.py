@@ -467,6 +467,10 @@ class UrlBase (object):
         return h.follow
 
     def check_anchors (self):
+        """
+        If URL was valid and a HTML resource, check the anchors and
+        log a warning when an anchor was not found.
+        """
         if not (self.valid and self.anchor and self.is_html() and \
                 self.can_get_content()):
             # do not bother
@@ -487,12 +491,24 @@ class UrlBase (object):
         self.add_warning(_("Anchor #%s not found.") % self.anchor)
 
     def is_extern (self):
-        # apply filter
+        """
+        Determine if this URL is extern or not.
+
+        @return: True if URL is extern, else False
+        @rtype: bool
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
         return self.extern[0] and \
            (self.consumer.config["externstrictall"] or self.extern[1])
 
     def _get_extern (self, url):
+        """
+        Match URL against intern and extern link patterns, according
+        to the configured denyallow order.
+
+        @return: a tuple (is_extern, is_strict)
+        @rtype: tuple (bool, bool)
+        """
         if not (self.consumer.config["externlinks"] or \
            self.consumer.config["internlinks"]):
             return (0, 0)
@@ -691,8 +707,20 @@ class UrlBase (object):
            ])
 
     def __str__ (self):
+        """
+        Get URL info.
+
+        @return: URL info, encoded with the output logger encoding
+        @rtype: string
+        """
         s = self.serialized()
         return self.consumer.config['logger'].encode(s)
 
     def __repr__ (self):
+        """
+        Get URL info.
+
+        @return: URL info
+        @rtype: unicode
+        """
         return u"<%s >" % self.serialized()
