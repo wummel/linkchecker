@@ -23,14 +23,14 @@ import smtplib
 import email.Utils
 
 import linkcheck
-import urlconnect
+import urlbase
 import linkcheck.log
 import linkcheck.dns.resolver
 
 from linkcheck.i18n import _
 
 
-class MailtoUrl (urlconnect.UrlConnect):
+class MailtoUrl (urlbase.UrlBase):
     """Url link with mailto scheme"""
 
     def build_url (self):
@@ -45,7 +45,7 @@ class MailtoUrl (urlconnect.UrlConnect):
         # check syntax of emails
         for name, addr in self.addresses:
             username, domain = self._split_address(addr)
-            if not linkcheck.url.is_valid_domain(domain):
+            if not linkcheck.url.is_safe_domain(domain):
                 raise linkcheck.LinkCheckerError(_("Invalid mail syntax"))
         linkcheck.log.debug(linkcheck.LOG_CHECK, "addresses: %s",
                             self.addresses)
