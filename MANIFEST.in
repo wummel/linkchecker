@@ -5,8 +5,8 @@ include lc.cgi lc.fcgi lc.sz_fcgi linkcheck-cron.sh
 include Makefile linkchecker.spec create.sql
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
-include test/*.py test/*.txt
-include test/output/test_* test/html/*.html
+include test/*.py test/*.txt pycheckrc
+include test/output/test_* test/html/*.html test/html/*.css test/html/*.txt
 include lconline/*.html lconline/*.de lconline/*.en
 include lconline/check.js lconline/README.negotiation
 include linkcheck/parser/Makefile linkcheck/parser/htmllex.l
