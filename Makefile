@@ -87,6 +87,9 @@ homepage: files VERSION
 test:
 	test/run.sh test.py --resource=network -fupv
 
+coverage:
+	test/run.sh test.py --coverage
+
 locale:
 	$(MAKE) -C po
 
