@@ -1,5 +1,6 @@
 include MANIFEST.in
 include README FAQ INSTALL LICENSE TODO draft-gilman-news-url-00.txt
+include norobots-rfc.html
 include linkcheckerrc linkchecker linkchecker.bat linkchecker.1 create.sql
 include lc.cgi lc.fcgi lc.sz_fcgi
 include Makefile
@@ -8,7 +9,7 @@ include debian/rules debian/changelog debian/copyright debian/control
 include debian/dirs debian/docs debian/links debian/postinst
 include debian/prerm
 include DNS/README
-include test/viewprof.py test/profiletest.py test/*.html
+include test/viewprof.py test/profiletest.py test/*.html test/robots.txt
 include rpm_build_script
 recursive-include locale *.mo
 recursive-include po *.po *.py Makefile

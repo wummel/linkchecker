@@ -47,7 +47,7 @@ install: build
 	install -d -m 755 $(DOCDIR)/examples
 	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
 	install -d -m 755 $(DOCDIR)/tests/linkcheck
-	install -c -m 644 test/*.html test/*.py $(DOCDIR)/tests/linkcheck
+	install -c -m 644 test/*.html test/*.py test/robots.txt $(DOCDIR)/tests/linkcheck
 	install -d -m 755 $(DOCDIR)/tests/dns
 	install -c -m 644 tests/*.py $(DOCDIR)/tests/dns
 	# install system wide configuration file in etc

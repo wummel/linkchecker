@@ -86,6 +86,11 @@ class HttpUrlData(UrlData):
         Config.debug(str(status)+", "+str(statusText)+", "+str(self.mime)+"\n")
         has301status = 0
         while 1:
+            # proxy enforcement
+            if status == 305 and self.mime:
+                status, statusText, self.mime = self._getHttpRequest(
+		                             proxy=self.mime.get("Location"))
+
             # follow redirections
             tries = 0
             redirected = self.urlName
@@ -155,17 +160,19 @@ class HttpUrlData(UrlData):
                 self.setValid("OK")
 
         
-    def _getHttpRequest(self, method="HEAD"):
+    def _getHttpRequest(self, method="HEAD", proxy=None):
         "Put request and return (status code, status text, mime object)"
-        if self.proxy:
-            Config.debug("DEBUG: using proxy %s\n" % self.proxy)
-            host = self.proxy
+        if self.proxy and not proxy:
+            proxy = self.proxy
+        if proxy:
+            Config.debug("DEBUG: using proxy %s\n" % proxy)
+            host = proxy
         else:
             host = self.urlTuple[1]
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self._getHTTPObject(host)
-        if self.proxy:
+        if proxy:
             path = urlparse.urlunparse(self.urlTuple)
         else:
             path = urlparse.urlunparse(('', '', self.urlTuple[2],

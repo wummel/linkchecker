@@ -3,9 +3,12 @@ linkchecker (1.2.13) unstable; urgency=low
   * linkcheck/HttpUrlData.py:
     - better redirection handling
     - really use host variable in "Host:" header
-  * linkcheck/robotparser2.py: better redirection handling
+    - support response code "305 Use proxy"
+  * linkcheck/robotparser2.py:
+    - better redirection handling
+    - cope with user-agent: lines without a preceding blank line
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri,  5 Jan 2001 00:34:21 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri,  5 Jan 2001 10:51:59 +0100
 
 linkchecker (1.2.12) unstable; urgency=low
 

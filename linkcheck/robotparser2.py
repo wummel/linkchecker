@@ -2,20 +2,6 @@
 
     Copyright (C) 2000  Bastian Kleineidam
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
     The robots.txt Exclusion Protocol is implemented as specified in
     http://info.webcrawler.com/mak/projects/robots/norobots-rfc.html
 """
@@ -50,7 +36,6 @@ class RobotFileParser:
         import httplib
         tries = 0
         while tries<5:
-            _debug(self.host+self.path)
             connection = httplib.HTTP(self.host)
             connection.putrequest("GET", self.path)
             connection.putheader("Host", self.host)
@@ -72,7 +57,9 @@ class RobotFileParser:
             self.parse(connection.getfile().readlines())
 
     def parse(self, lines):
-        """parse the input lines from a robot.txt file"""
+        """parse the input lines from a robot.txt file.
+	   We allow that a user-agent: line is not preceded by
+	   one or more blank lines."""
         state = 0
         linenumber = 0
         entry = Entry()
@@ -82,7 +69,9 @@ class RobotFileParser:
             linenumber = linenumber + 1
             if not line:
                 if state==1:
-                    _debug("line %d: no rules found" % linenumber)
+                    _debug("line %d: warning: you should insert"
+		           " allow: or disallow: directives below any"
+			   " user-agent: line" % linenumber)
                     entry = Entry()
                     state = 0
                 elif state==2:
@@ -102,29 +91,31 @@ class RobotFileParser:
                 line[1] = string.strip(line[1])
                 if line[0] == "user-agent":
                     if state==2:
-                        _debug("line %d: user-agent in the middle of "
-			           "rules" % linenumber)
-                    else:
-                        entry.useragents.append(string.strip(line[1]))
-                        state = 1
+                        _debug("line %d: warning: you should insert a blank"
+			       " line before any user-agent"
+                               " directive" % linenumber)
+                        self.entries.append(entry)
+                        entry = Entry()
+                    entry.useragents.append(line[1])
+                    state = 1
                 elif line[0] == "disallow":
                     if state==0:
-                        _debug("line %d: disallow without user "
-			           "agents" % linenumber)
+                        _debug("line %d: error: you must insert a user-agent:"
+			       " directive before this line" % linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 0))
                         state = 2
                 elif line[0] == "allow":
                     if state==0:
-                        _debug("line %d: allow without user "
-			           "agents" % linenumber)
+                        _debug("line %d: error: you must insert a user-agent:"
+			       " directive before this line" % linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 1))
                 else:
-                    _debug("line %d: unknown key %s" % (linenumber,
+                    _debug("line %d: warning: unknown key %s" % (linenumber,
                                line[0]))
             else:
-                _debug("line %d: malformed line %s" % (linenumber, line))
+                _debug("line %d: error: malformed line %s"%(linenumber, line))
         if state==2:
             self.entries.append(entry)
         _debug("Parsed rules:\n%s" % str(self))
@@ -154,7 +145,10 @@ class RobotFileParser:
             ret = ret + str(entry) + "\n"
         return ret
 
+
 class RuleLine:
+    """A rule line is a single "Allow:" (allowance==1) or "Disallow:"
+       (allowance==0) followed by a path."""
     def __init__(self, path, allowance):
         self.path = urllib.quote(path)
         self.allowance = allowance
@@ -163,10 +157,11 @@ class RuleLine:
         return self.path=="*" or re.match(self.path, filename)
 
     def __str__(self):
-        return (self.allowance and "Disallow" or "Allow")+": "+self.path
+        return (self.allowance and "Allow" or "Disallow")+": "+self.path
 
 
 class Entry:
+    """An entry has one or more user-agents and zero or more rulelines"""
     def __init__(self):
         self.useragents = []
         self.rulelines = []
@@ -191,7 +186,7 @@ class Entry:
     def allowance(self, filename):
         """Preconditions:
         - our agent applies to this entry
-        - file is URL decoded"""
+        - filename is URL decoded"""
         for line in self.rulelines:
             if line.applies_to(filename):
                 return line.allowance
@@ -208,7 +203,6 @@ def _test():
         rp.read()
     else:
         rp.parse(open(sys.argv[1]).readlines())
-    print rp
     print rp.can_fetch('*', 'http://www.musi-cal.com/')
     print rp.can_fetch('Musi-Cal-Robot/1.0',
                        'http://www.musi-cal.com/cgi-bin/event-search'
