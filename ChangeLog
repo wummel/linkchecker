@@ -5,7 +5,9 @@
     Changed: linkcheck/log/BlacklistLogger.py
   * removed unused imports
     Changed: linkcheck/*.py
-  * fixed parsing of end tags with trailing garbage
+  * parser fixes:
+    - fixed parsing of end tags with trailing garbage
+    - fixed parsing of script single comment lines
     Changed: linkcheck/parser/htmllex.l
 
 1.9.0
