@@ -30,4 +30,4 @@ name bad file
 error
 url file:/etc/
 name good dir
-valid
+error
