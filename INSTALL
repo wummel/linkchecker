@@ -44,7 +44,10 @@ Setup for Windows
    Be sure to have installed all required software listed above.
 1. Preparing Python for the MinGW compiler
    Search the file python23.dll in your windows folder.
-   After you found it, launch MSYS and do:
+   After you found it, launch MSYS. Then change into your windows folder,
+   for example with:
+   % cd c:\winnt\system32
+   After that execute:
    % pexports python23.dll > python23.def
    Then use the dlltool
    % dlltool --dllname python23.dll --def python23.def --output-lib libpython23.a
