@@ -184,7 +184,8 @@ class Configuration (dict):
             if 'all' in debug:
                 debug = linkcheck.lognames.values()
             for name in debug:
-                logging.getLogger(name).setLevel(logging.DEBUG)
+                logname = linkcheck.lognames[name]
+                logging.getLogger(logname).setLevel(logging.DEBUG)
 
     def logger_new (self, loggertype, **kwargs):
         """
