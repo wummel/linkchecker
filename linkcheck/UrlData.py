@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, urlparse, urllib, time, traceback, socket, select, i18n
+import sys, re, urlparse, urllib2, time, traceback, socket, select, i18n
 from urllib import splituser, splithost, splitport, unquote
 #try:
 #    from linkcheck import DNS
@@ -320,7 +320,7 @@ class UrlData:
 
 
     def checkConnection (self):
-        self.urlConnection = urllib.urlopen(self.url)
+        self.urlConnection = urllib2.urlopen(self.url)
 
 
     def allowsRecursion (self):
