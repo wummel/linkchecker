@@ -11,6 +11,8 @@
     Changed: linkcheck/DNS/Base.py
     Added: linkcheck/DNS/winreg.py
     Removed: linkcheck/DNS/win32dns.py
+  * fix https support test
+    Changed: linkcheck/HttpUrlData.py
 
 1.10.0 (released 7.12.2003)
   * catch httplib errors in robotparser
