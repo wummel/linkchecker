@@ -50,15 +50,16 @@ class RobotFileParser:
         import httplib
         tries = 0
         while tries<5:
+            _debug(self.host)
+            _debug(self.path)
             connection = httplib.HTTP(self.host)
             connection.putrequest("GET", self.path)
             connection.endheaders()
             status, text, mime = connection.getreply()
             if status in [301,302]:
                 tries = tries + 1
-                newurl = self.mime.get("Location", self.mime.get("Uri", ""))
+                newurl = mime.get("Location", mime.get("Uri", ""))
                 newurl = urlparse.urljoin(self.url, newurl)
-                _debug(newurl)
                 self.set_url(newurl)
             else:
                 break
