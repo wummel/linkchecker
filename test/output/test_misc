@@ -20,3 +20,6 @@ valid
 url telnet://user:password@route-views.oregon-ix.net
 cached
 valid
+url http://localhost
+warning Path is empty
+valid

@@ -1,8 +1,10 @@
 linkchecker (1.6.0) unstable; urgency=low
 
   * linkchecker.1: updated manpage
+  * linkcheck/UrlData.py: enable parsing of <meta http-equiv=refresh>
+    links again
 
- -- Bastian Kleineidam <calvin@debian.org>  Sun, 14 Jul 2002 12:16:35 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Fri,  2 Aug 2002 10:57:54 +0200
 
 linkchecker (1.5.7) unstable; urgency=low
 

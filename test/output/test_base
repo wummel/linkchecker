@@ -1,5 +1,8 @@
 test_base
 url file:///home/calvin/projects/linkchecker/test/html/base1.html
 valid
-url base2.html
-error
+url misc.html
+valid
+url misc.html
+cached
+valid
