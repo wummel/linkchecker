@@ -302,7 +302,7 @@ for opt,arg in options:
     elif opt=="-N" or opt=="--nntp-server":
         config["nntpserver"] = arg
 
-    elif opt="--no-anchor-caching":
+    elif opt=="--no-anchor-caching":
         config["noanchorcaching"] = 1
 
     elif opt=="-p" or opt=="--password":
