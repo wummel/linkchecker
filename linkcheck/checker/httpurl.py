@@ -46,11 +46,11 @@ _is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     "Url link with http scheme"
 
-    def __init__ (self, base_url, recursion_level, config, parent_url=None,
-                  base_ref=None, line=0, column=0, name=""):
-        super(HttpUrl, self).__init__(base_url, recursion_level, config,
-                         parent_url=parent_url, base_ref=base_ref, line=line,
-                         column=column, name=name)
+    def __init__ (self, base_url, recursion_level, consumer,
+                  parent_url=None, base_ref=None, line=0, column=0, name=""):
+        super(HttpUrl, self).__init__(base_url, recursion_level, consumer,
+               parent_url=parent_url, base_ref=base_ref, line=line,
+               column=column, name=name)
         self.aliases = []
         self.max_redirects = 5
         self.has301status = False
@@ -109,13 +109,13 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         | extension-code
         """
         # set the proxy, so a 407 status after this is an error
-        self.set_proxy(self.config["proxy"].get(self.scheme))
+        self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
         if self.proxy:
             self.add_info(_("Using Proxy %r") % self.proxy)
         self.headers = None
         self.auth = None
         self.cookies = []
-        if not self.robots_txt_allows_url():
+        if not self.consumer.cache.robots_txt_allows_url(self):
             self.add_warning(
                        _("Access denied by robots.txt, checked only syntax"))
             return
@@ -235,6 +235,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 self.set_result(
                      _("recursive redirection encountered:\n %s") % \
                             "\n  => ".join(redirect_cache), valid=False)
+                self.consumer.logger_new_url(self)
                 return -1, response
             redirect_cache.append(redirected)
             # remember this alias
@@ -252,11 +253,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     self.has301status = True
                 self.aliases.append(redirected)
             # check cache again on possibly changed URL
-            key = self.get_cache_key()
-            if self.config.url_cache_has_key(key):
-                self.copy_from_cache(self.config.url_cache_get(key))
-                self.cached = True
-                self.log_me()
+            if self.consumer.cache.check_cache(self):
+                self.consumer.logger_new_url(self)
                 return -1, response
             # check if we still have a http url, it could be another
             # scheme, eg https or news
@@ -266,15 +264,14 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                              "the original url was %r.") % self.url)
                 # make new Url object
                 newobj = linkcheck.checker.get_url_from(
-                          redirected, self.recursion_level, self.config,
+                          redirected, self.recursion_level, self.consumer,
                           parent_url=self.parent_url, base_ref=self.base_ref,
                           line=self.line, column=self.column, name=self.name)
                 newobj.warning = self.warning
                 newobj.info = self.info
                 # append new object to queue
-                self.config.append_url(newobj)
+                self.consumer.append_url(newobj)
                 # pretend to be finished and logged
-                self.cached = True
                 return -1, response
             # new response data
             response = self._get_http_response()
@@ -302,10 +299,10 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 # no content
                 self.add_warning(response.reason)
             # store cookies for valid links
-            if self.config['cookies']:
+            if self.consumer.config['cookies']:
                 for c in self.cookies:
                     self.add_info("Cookie: %s" % c)
-                out = self.config.storeCookies(self.headers, self.urlparts[1])
+                out = self.consumer.config.storeCookies(self.headers, self.urlparts[1])
                 for h in out:
                     self.add_info(h)
             if response.status >= 200:
@@ -335,14 +332,16 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         if self.url_connection:
             self.close_connection()
         self.url_connection = self.get_http_object(host, scheme)
-        url = urlparse.urlunsplit(self.urlparts)
         if self.no_anchor:
-            qurlparts[4] = ''
+            anchor = ''
+        else:
+            anchor = self.urlparts[4]
         if self.proxy:
-            path = urlparse.urlunsplit(self.urlparts)
+            path = urlparse.urlunsplit((self.urlparts[0], self.urlparts[1],
+                                 self.urlparts[2], self.urlparts[3], anchor))
         else:
             path = urlparse.urlunsplit(('', '', self.urlparts[2],
-                                        self.urlparts[3], self.urlparts[4]))
+                                        self.urlparts[3], anchor))
         self.url_connection.putrequest(self.method, path, skip_host=True)
         self.url_connection.putheader("Host", host)
         # userinfo is from http://user@pass:host/
@@ -360,8 +359,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                                       linkcheck.configuration.UserAgent)
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
-        if self.config['cookies']:
-            self.cookies = self.config.getCookies(self.urlparts[1],
+        if self.consumer.config['cookies']:
+            self.cookies = self.consumer.config.getCookies(self.urlparts[1],
                                                   self.urlparts[2])
             for c in self.cookies:
                 self.url_connection.putheader("Cookie", c)
@@ -375,7 +374,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             h = linkcheck.httplib2.HTTPSConnection(host)
         else:
             raise linkcheck.LinkCheckerError("invalid url scheme %s" % scheme)
-        if self.config.get("debug"):
+        if self.consumer.config.get("debug"):
             h.set_debuglevel(1)
         h.connect()
         return h
@@ -447,15 +446,3 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     def get_robots_txt_url (self):
         return "%s://%s/robots.txt" % tuple(self.urlparts[0:2])
 
-    def robots_txt_allows_url (self):
-        roboturl = self.get_robots_txt_url()
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "robots.txt url %r",
-                            roboturl)
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "url %r", self.url)
-        if not self.config.robots_txt_cache_has_key(roboturl):
-            rp = linkcheck.robotparser2.RobotFileParser()
-            rp.set_url(roboturl)
-            rp.read()
-            self.config.robots_txt_cache_set(roboturl, rp)
-        rp = self.config.robots_txt_cache_get(roboturl)
-        return rp.can_fetch(linkcheck.configuration.UserAgent, self.url)

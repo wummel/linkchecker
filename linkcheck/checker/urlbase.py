@@ -79,7 +79,7 @@ def print_app_info ():
 class UrlBase (object):
     """An URL with additional information like validity etc."""
 
-    def __init__ (self, base_url, recursion_level, config,
+    def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None, base_ref = None,
                   line = 0, column = 0, name = ""):
         """Initialize check data, and store given variables.
@@ -100,8 +100,9 @@ class UrlBase (object):
         self.parent_url = parent_url
         self.anchor = None
         self.recursion_level = recursion_level
-        self.config = config
+        self.consumer = consumer
         self.result = ""
+        self.cached = False
         self.valid = True
         self.warning = linkcheck.containers.SetList()
         self.info = linkcheck.containers.SetList()
@@ -111,7 +112,6 @@ class UrlBase (object):
         self.dltime = -1
         self.dlsize = -1
         self.checktime = 0
-        self.cached = False
         self.url_connection = None
         self.extern = (1, 0)
         self.data = None
@@ -169,6 +169,7 @@ class UrlBase (object):
         self.info.extend(cache_data["info"])
         self.valid = cache_data["valid"]
         self.dltime = cache_data["dltime"]
+        self.cached = True
 
     def get_cache_data (self):
         """return all data values that should be put in the cache"""
@@ -186,29 +187,18 @@ class UrlBase (object):
         return [key]
 
     def is_cached (self):
-        key = self.get_cache_key()
-        return self.cached or self.config.url_seen_has_key(key)
+        return self.consumer.cache.url_is_cached(self.get_cache_key())
 
     def get_cache_key (self):
         # note: the host is already lowercase
         if self.urlparts:
-            if self.config["anchorcaching"]:
+            if self.consumer.config["anchorcaching"]:
                 # do not ignore anchor
                 return urlparse.urlunsplit(self.urlparts)
             else:
                 # removed anchor from cache key
                 return urlparse.urlunsplit(self.urlparts[:4]+[''])
         return None
-
-    def put_in_cache (self):
-        """put url data into cache"""
-        if self.is_cached():
-            # another thread was faster and cached this url already
-            return
-        data = self.get_cache_data()
-        for key in self.get_cache_keys():
-            self.config.url_cache_set(key, data)
-            self.config.url_seen_set(key)
 
     def build_url (self):
         # make url absolute
@@ -236,14 +226,6 @@ class UrlBase (object):
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
 
-    def log_me (self):
-        """announce the url data as checked to the configured loggers"""
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "logging url")
-        self.config.increment_linknumber()
-        if self.config["verbose"] or not self.valid or \
-           (self.warning and self.config["warnings"]):
-            self.config.logger_new_url(self)
-
     def check (self):
         try:
             self.local_check()
@@ -260,28 +242,30 @@ class UrlBase (object):
 
     def local_check (self):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
-        if self.recursion_level and self.config['wait']:
+        if self.recursion_level and self.consumer.config['wait']:
             linkcheck.log.debug(linkcheck.LOG_CHECK,
-                            "sleeping for %d seconds", self.config['wait'])
-            time.sleep(self.config['wait'])
+                            "sleeping for %d seconds", self.consumer.config['wait'])
+            time.sleep(self.consumer.config['wait'])
         t = time.time()
-        if not self.check_cache():
+        if self.consumer.cache.check_cache(self):
+            # was cached from previous queue member
+            self.consumer.logger_new_url(self)
             return
         # apply filter
         linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
-        if self.extern[0] and (self.config["strict"] or self.extern[1]):
+        if self.extern[0] and (self.consumer.config["strict"] or self.extern[1]):
             self.add_warning(
                   _("outside of domain filter, checked only syntax"))
-            self.log_me()
+            self.consumer.logger_new_url(self)
             return
 
         # check connection
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking connection")
         try:
             self.check_connection()
-            if self.cached:
+            if self.is_cached():
                 return
-            if self.config["anchors"]:
+            if self.consumer.config["anchors"]:
                 self.check_anchors()
         except tuple(linkcheck.checker.ExcList):
             etype, evalue, etb = sys.exc_info()
@@ -296,7 +280,7 @@ class UrlBase (object):
             self.set_result(str(evalue), valid=False)
 
         # check content
-        warningregex = self.config["warningregex"]
+        warningregex = self.consumer.config["warningregex"]
         if warningregex and self.valid:
             linkcheck.log.debug(linkcheck.LOG_CHECK, "checking content")
             try:
@@ -323,38 +307,35 @@ class UrlBase (object):
                             valid=False)
         # close
         self.close_connection()
-        self.log_me()
+        self.consumer.logger_new_url(self)
         linkcheck.log.debug(linkcheck.LOG_CHECK, "caching")
-        self.put_in_cache()
+        self.consumer.cache.url_data_cache_add(self)
 
     def check_syntax (self):
+        """Called before self.check(), this function inspects the
+           url syntax. Success enables further checking, failure
+           immediately logs this url. This syntax check must not
+           use any network resources.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         if not self.base_url:
             self.set_result(_("URL is empty"), valid=False)
-            self.log_me()
+            self.consumer.logger_new_url(self)
             return False
         if ws_at_start_or_end(self.base_url):
+            # leading or trailing whitespace is common, so make a
+            # separate error message for this
             self.set_result(_("URL has whitespace at beginning or end"),
                             valid=False)
-            self.log_me()
+            self.consumer.logger_new_url(self)
             return False
         try:
             self.build_url()
             self.extern = self._get_extern()
         except linkcheck.LinkCheckerError, msg:
             self.set_result(str(msg), valid=False)
-            self.log_me()
+            self.consumer.logger_new_url(self)
             return False
-        return True
-
-    def check_cache (self):
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking cache")
-        for key in self.get_cache_keys():
-            if self.config.url_cache_has_key(key):
-                self.copy_from_cache(self.config.url_cache_get(key))
-                self.cached = True
-                self.log_me()
-                return False
         return True
 
     def close_connection (self):
@@ -379,8 +360,8 @@ class UrlBase (object):
             self.is_parseable() and \
             self.can_get_content() and \
             not self.is_cached() and \
-            (self.config["recursionlevel"] < 0 or
-             self.recursion_level < self.config["recursionlevel"]) and \
+            (self.consumer.config["recursionlevel"] < 0 or
+             self.recursion_level < self.consumer.config["recursionlevel"]) and \
             not self.extern[0] and self.content_allows_robots()
 
     def content_allows_robots (self):
@@ -418,19 +399,19 @@ class UrlBase (object):
         self.add_warning(_("anchor #%s not found") % self.anchor)
 
     def _get_extern (self):
-        if not (self.config["externlinks"] or self.config["internlinks"]):
+        if not (self.consumer.config["externlinks"] or self.consumer.config["internlinks"]):
             return (0, 0)
         # deny and allow external checking
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Url %r", self.url)
-        if self.config["denyallow"]:
-            for entry in self.config["externlinks"]:
+        if self.consumer.config["denyallow"]:
+            for entry in self.consumer.config["externlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
                                     entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (1, entry['strict'])
-            for entry in self.config["internlinks"]:
+            for entry in self.consumer.config["internlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
                                     entry)
                 match = entry['pattern'].search(self.url)
@@ -439,14 +420,14 @@ class UrlBase (object):
                     return (0, 0)
             return (0, 0)
         else:
-            for entry in self.config["internlinks"]:
+            for entry in self.consumer.config["internlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
                                     entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (0, 0)
-            for entry in self.config["externlinks"]:
+            for entry in self.consumer.config["externlinks"]:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
                                     entry)
                 match = entry['pattern'].search(self.url)
@@ -482,7 +463,7 @@ class UrlBase (object):
     def check_size (self):
         """if a maximum size was given, call this function to check it
            against the content size of this url"""
-        maxbytes = self.config["warnsizebytes"]
+        maxbytes = self.consumer.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
             self.add_warning(_("Content size %s is larger than %s") % \
                          (linkcheck.strformat.strsize(self.dlsize),
@@ -497,7 +478,7 @@ class UrlBase (object):
         self.parse_html()
 
     def get_user_password (self):
-        for auth in self.config["authentication"]:
+        for auth in self.consumer.config["authentication"]:
             if auth['pattern'].match(self.url):
                 return auth['user'], auth['password']
         return None, None
@@ -535,10 +516,10 @@ class UrlBase (object):
                 base = base_ref
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Put url %r in queue",
                                 url)
-            self.config.append_url(linkcheck.checker.get_url_from(url,
-                                  self.recursion_level+1, self.config,
-                                  parent_url=self.url, base_ref=base,
-                                  line=line, column=column, name=name))
+            self.consumer.append_url(linkcheck.checker.get_url_from(url,
+                           self.recursion_level+1, self.consumer,
+                           parent_url=self.url, base_ref=base,
+                           line=line, column=column, name=name))
 
     def parse_opera (self):
         """parse an opera bookmark file"""
@@ -553,8 +534,9 @@ class UrlBase (object):
             elif line.startswith("URL="):
                 url = line[4:]
                 if url:
-                    self.config.append_url(linkcheck.checker.get_url_from(url,
-           self.recursion_level+1, self.config, self.url, None, lineno, name))
+                    self.consumer.append_url(linkcheck.checker.get_url_from(url,
+                       self.recursion_level+1, self.consumer,
+                       self.url, None, lineno, name))
                 name = ""
 
     def parse_text (self):
@@ -567,9 +549,9 @@ class UrlBase (object):
             lineno += 1
             line = line.strip()
             if not line or line.startswith('#'): continue
-            self.config.append_url(
+            self.consumer.append_url(
                   linkcheck.checker.get_url_from(line, self.recursion_level+1,
-                               self.config, parent_url=self.url, line=lineno))
+                   self.consumer, parent_url=self.url, line=lineno))
 
     def parse_css (self):
         """parse a CSS file for url() patterns"""
@@ -578,9 +560,9 @@ class UrlBase (object):
             lineno += 1
             for mo in linkcheck.linkparse.css_url_re.finditer(line):
                 column = mo.start("url")
-                self.config.append_url(
+                self.consumer.append_url(
                              linkcheck.checker.get_url_from(mo.group("url"),
-                             self.recursion_level+1, self.config,
+                             self.recursion_level+1, self.consumer,
                              parent_url=self.url, line=lineno, column=column))
 
     def __str__ (self):
@@ -590,7 +572,6 @@ class UrlBase (object):
             "base_url=%s" % self.base_url,
             "parent_url=%s" % self.parent_url,
             "base_ref=%s" % self.base_ref,
-            "cached=%s" % self.cached,
             "recursion_level=%s" % self.recursion_level,
             "url_connection=%s" % self.url_connection,
             "line=%s" % self.line,

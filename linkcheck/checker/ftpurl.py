@@ -32,11 +32,11 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
 
     def check_connection (self):
         # proxy support (we support only http)
-        self.set_proxy(self.config["proxy"].get(self.scheme))
+        self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
         if self.proxy:
             http = httpurl.HttpUrl(self.base_url,
                   self.recursion_level,
-                  self.config,
+                  self.consumer.config,
                   parent_url=self.parent_url,
                   base_ref=self.base_ref,
                   line=self.line,
@@ -80,7 +80,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # ready to connect
         try:
             self.url_connection = ftplib.FTP()
-            if self.config.get("debug"):
+            if self.consumer.config.get("debug"):
                 self.url_connection.set_debuglevel(1)
             self.url_connection.connect(self.urlparts[1])
             self.url_connection.login(_user, _password)

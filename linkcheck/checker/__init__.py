@@ -137,53 +137,40 @@ acap        # application configuration access protocol
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
 
-def print_status (config, curtime, start_time):
-    """print check status looking at url queues"""
-    tocheck = len(config.urls)
-    links = config['linknumber']
-    active = config.threader.active_threads()
-    duration = linkcheck.strformat.strduration(curtime - start_time)
-    print >> sys.stderr, \
-     _("%5d urls queued, %4d links checked, %2d active threads, runtime %s")\
-     % (tocheck, links, active, duration)
-
-
 # main check function
-def check_urls (config):
+def check_urls (consumer):
     """Gets a complete configuration object as parameter where all
        runtime-dependent options are stored. If you call this function
        more than once, you can specify different configurations.
-
-       In the config object there are functions to get new URLs to check,
-       and to perform the actual checking.
     """
-    config.logger_start_output()
     try:
-        start_time = time.time()
-        status_time = start_time
-        while True:
-            if config.has_more_urls():
-                config.check_url(config.get_url())
-            elif config.finished():
-                break
-            else:
-                # active connections are downloading/parsing, so
-                # wait a little
-                time.sleep(0.1)
-            if config['status']:
-                curtime = time.time()
-                if (curtime - status_time) > 5:
-                    print_status(config, curtime, start_time)
-                    status_time = curtime
-        config.logger_end_output()
+        _check_urls(consumer)
     except KeyboardInterrupt:
-        config.finish()
-        config.logger_end_output()
-        active = config.threader.active_threads()
+        consumer.finish()
         linkcheck.log.warn(linkcheck.LOG_CHECK,
              _("keyboard interrupt; waiting for %d active threads to finish"),
-             active)
+             consumer.active_threads())
         raise
+
+
+def _check_urls (consumer):
+    consumer.logger_start_output()
+    start_time = time.time()
+    status_time = start_time
+    while not consumer.finished():
+        url = consumer.get_url()
+        if url is not None:
+            consumer.check_url(url)
+        else:
+            # active connections are downloading/parsing, so
+            # wait a little
+            time.sleep(0.1)
+        if consumer.config['status']:
+            curtime = time.time()
+            if (curtime - status_time) > 5:
+                consumer.print_status(curtime, start_time)
+                status_time = curtime
+    consumer.logger_end_output()
 
 
 # file extensions we can parse recursively
@@ -237,9 +224,9 @@ def absolute_url (base_url, base_ref, parent_url):
     return ""
 
 
-def get_url_from (base_url, recursion_level, config, parent_url=None,
-                  base_ref=None, line=0, column=0, name=None,
-                  cmdline=None):
+def get_url_from (base_url, recursion_level, consumer,
+                  parent_url=None, base_ref=None, line=0, column=0,
+                  name=None, cmdline=None):
     """get url data from given base data"""
     if cmdline and linkcheck.url.url_needs_quoting(base_url):
         base_url = linkcheck.url.url_quote(base_url)
@@ -269,9 +256,10 @@ def get_url_from (base_url, recursion_level, config, parent_url=None,
     # assume local file
     else:
         klass = linkcheck.checker.fileurl.FileUrl
-    if cmdline and url and config['strict'] and \
-       not (config['internlinks'] or config['externlinks']):
+    if cmdline and url and consumer.config['strict'] and \
+       not (consumer.config['internlinks'] or consumer.config['externlinks']):
         # set automatic intern/extern stuff if no filter was given
-        set_intern_url(url, klass, config)
-    return klass(base_url, recursion_level, config, parent_url, base_ref,
+        set_intern_url(url, klass, consumer.config)
+    return klass(base_url, recursion_level, consumer,
+                 parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)

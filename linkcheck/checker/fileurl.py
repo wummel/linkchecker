@@ -53,15 +53,12 @@ def get_index_html (dirname):
 class FileUrl (urlbase.UrlBase):
     "Url link with file scheme"
 
-    def __init__ (self,
-                  base_url,
-                  config,
-                  recursion_level,
+    def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None,
                   base_ref = None, line=0, column=0, name=""):
-        super(FileUrl, self).__init__(base_url, config, recursion_level,
-                                    parent_url=parent_url, base_ref=base_ref,
-                                    line=line, column=column, name=name)
+        super(FileUrl, self).__init__(base_url, recursion_level, consumer,
+             parent_url=parent_url, base_ref=base_ref,
+             line=line, column=column, name=name)
         if not (parent_url or base_ref or self.base_url.startswith("file:")):
             self.base_url = os.path.expanduser(self.base_url)
             if not self.base_url.startswith("/"):

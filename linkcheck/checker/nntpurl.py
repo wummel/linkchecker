@@ -46,7 +46,7 @@ class NntpUrl (urlbase.UrlBase):
         linkcheck.log.debug(linkcheck.LOG_CHECK, self.urlparts)
 
     def check_connection (self):
-        nntpserver = self.urlparts[1] or self.config["nntpserver"]
+        nntpserver = self.urlparts[1] or self.consumer.config["nntpserver"]
         if not nntpserver:
             self.add_warning(_("No NNTP server specified, skipping this URL"))
             return

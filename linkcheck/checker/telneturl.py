@@ -49,14 +49,14 @@ class TelnetUrl (urlconnect.UrlConnect):
     def local_check (self):
         if not self.host:
             self.set_result(_("Host is empty"), valid=False)
-            self.log_me()
+            self.consumer.logger_new_url(self)
             return
         super(TelnetUrl, self).local_check()
 
     def check_connection (self):
         super(TelnetUrl, self).check_connection()
         self.url_connection = telnetlib.Telnet()
-        if self.config.get("debug"):
+        if self.consumer.config.get("debug"):
             self.url_connection.set_debuglevel(1)
         self.url_connection.open(self.host, self.port)
         if self.user:
