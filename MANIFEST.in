@@ -1,17 +1,19 @@
-include README FAQ INSTALL LICENSE TODO
-include WONTDO MANIFEST.in linkchecker-completion
-include linkcheckerrc linkchecker linkchecker.bat linkchecker.1 create.sql
-include lc.cgi lc.fcgi lc.sz_fcgi linkcheck-cron.sh
+include README LICENSE TODO WONTDO MANIFEST.in
+include config/linkchecker-completion config/create.sql
+include config/linkcheckerrc config/linkcheck-cron.sh
+include config/logging.conf config/pycheckrc config/pylintrc
+include config/reindent.py
+include linkchecker linkchecker.bat linkchecker.1
+include cgi/lc.cgi cgi/lc.fcgi cgi/lc.sz_fcgi cgi/README
 include Makefile linkchecker.spec create.sql
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
-include test/*.py test/*.txt pycheckrc
-include test/output/test_* test/html/*.html test/html/*.css test/html/*.txt
-include lconline/*.html lconline/*.de lconline/*.en
-include lconline/check.js lconline/README.negotiation
-include linkcheck/parser/Makefile linkcheck/parser/htmllex.l
-include linkcheck/parser/htmlparse.y linkcheck/parser/htmlparse.h
-include linkcheck/parser/htmlsax.h
+include test/*.py test/*.txt
+include cgi/lconline/*.html cgi/lconline/*.de cgi/lconline/*.en
+include cgi/lconline/check.js cgi/lconline/README.negotiation
+include linkcheck/HtmlParser/Makefile linkcheck/HtmlParser/htmllex.l
+include linkcheck/HtmlParser/htmlparse.y linkcheck/HtmlParser/htmlparse.h
+include linkcheck/HtmlParser/htmlsax.h
 include po/*.po po/*.pot po/*.py po/Makefile
 recursive-include share *.mo
 exclude _linkchecker_configdata.py
