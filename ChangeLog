@@ -8,6 +8,9 @@
   * rename column "column" to "col" in SQL output, since "column" is
     a reserved keyword. Thanks Garvin Hicking for the hint.
     Changed: linkcheck/log/SQLLogger.py, create.sql
+  * handle HTTP redirects to a non-http url
+    Changed: linkcheck/{Http,}UrlData.py
+    Closes: SF bug 784372
 
 1.8.21
   * detect recursive redirections; the maximum of five redirections is

@@ -8,11 +8,8 @@ For HTTPS support you need to compile Python with the SSL _socket
 module.
 
 
-Setup
------
-After installation, the system wide configuration file is in
-<prefix>/share/linkchecker/linkcheckerrc.
-
+Installation
+------------
 o Unix platforms
   - open a commandline window and change to the linkchecker-x.x.x
     directory
@@ -38,6 +35,9 @@ o MacOS 9.x platforms
 
 o MacOS X platforms
   - not tested
+
+After installation, the system wide configuration file is in
+<prefix>/share/linkchecker/linkcheckerrc.
 
 
 (Fast)CGI web interface
