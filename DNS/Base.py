@@ -1,5 +1,6 @@
 # $Id$
 import sys, re, getopt, socket
+from string import lower
 import DNS,DNS.Lib,DNS.Type,DNS.Class,DNS.Opcode
 #import asyncore
 
