@@ -71,8 +71,6 @@ acap        # application configuration access protocol
 |nntp       # news
 )"""
 
-is_windows_path = re.compile("^[a-zA-Z]:").search
-
 class FileUrlData (UrlData):
     "Url link with file scheme"
 
@@ -87,13 +85,13 @@ class FileUrlData (UrlData):
                                     line=line, column=column, name=name)
         if not (parentName or baseRef or self.urlName.startswith("file:")):
             self.urlName = os.path.expanduser(self.urlName)
-            if is_windows_path(self.urlName):
-                self.adjustWinPath()
-            elif not self.urlName.startswith("/"):
+            if not self.urlName.startswith("/"):
                 self.urlName = os.getcwd()+"/"+self.urlName
-                if is_windows_path(self.urlName):
-                    self.adjustWinPath()
-            self.urlName = "file://"+self.urlName.replace("\\", "/")
+            self.urlName = "file://"+self.urlName
+        self.urlName = self.urlName.replace("\\", "/")
+        # transform c:/windows into /c|/windows
+        self.urlName = re.sub(r"^file://(/?)([a-zA-Z]):", r"file:///\2|",
+                              self.urlName)
 
 
     def buildUrl (self):
@@ -111,11 +109,6 @@ class FileUrlData (UrlData):
             self.urlparts[4] = ''
             return [key]
         return []
-
-
-    def adjustWinPath (self):
-        "c:\\windows ==> /c|\\windows"
-        self.urlName = "/%s|%s" % (self.urlName[0], self.urlName[2:])
 
 
     def isHtml (self):
