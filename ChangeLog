@@ -17,6 +17,9 @@
       test/test_*.py
   * set default connection timeout to 60 seconds
     Changed: linkcheck/__init__.py
+  * new option --status print regular messages about number of
+    checked urls and urls still to check
+    Changed: linkchecker, linkcheck/{__init__,Config}.py
 
 1.10.1 (release 19.12.2003)
   * added Mandrake .spec file from Chris Green <cmg@dok.org>
