@@ -10,18 +10,6 @@ url javascript:loadthis()
 name javascript url
 warning Javascript url ignored
 valid
-url telnet:localhost
-error
-url telnet:
-error
-url telnet://route-views.oregon-ix.net
-valid
-url telnet://user@route-views.oregon-ix.net
-cached
-valid
-url telnet://user:password@route-views.oregon-ix.net
-cached
-valid
 url misc.html
 cached
 valid
