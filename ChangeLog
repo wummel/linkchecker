@@ -16,6 +16,15 @@
     Type: bugfix
     Changed: linkcheck/checker/consumer.py
 
+  * Generate all translation files under windows systems.
+    Type: bugfix
+    Changed: po/Makefile
+
+  * Added windows binary installer script and configuration.
+    Type: feature
+    Changed: setup.py, setup.cfg
+    Added: install-linkchecker.py
+
 1.13.0 "The Butterfly Effect" (released 1.9.2004)
   * lots of internal code restructuring
     Type: code cleanup
