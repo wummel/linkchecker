@@ -27,7 +27,10 @@ except ImportError:
 
 class Threader (object):
     """
-    A thread generating class.
+    A thread generating class. Note that since Python has no ability to
+    stop threads from outside, one has to make sure threads poll
+    regularly for outside variables to stop them. Or one makes sure
+    threads surely will terminate in finite time.
     """
 
     def __init__ (self, num=5):
@@ -73,7 +76,6 @@ class Threader (object):
         Remove inactive threads.
         """
         self._reduce_threads()
-        # XXX don't know how to stop a thread
 
     def start_thread (self, func, args):
         """
