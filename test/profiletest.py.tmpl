@@ -8,7 +8,7 @@ import linkcheck
 url='http://www.yahoo.de/'
 config = linkcheck.Config.Configuration()
 
-config['recursionlevel'] = 3
+config['recursionlevel'] = 2
 config['anchors'] = 1
 config['internlinks'].append(re.compile(r"^(ftp|https?)://.*yahoo.*"))
 # avoid checking of local files (security!)
@@ -19,7 +19,7 @@ profile.run("linkcheck.checkUrls(config)", "threads.prof")
 config.reset()
 
 config.disableThreading()
-config['recursionlevel'] = 3
+config['recursionlevel'] = 2
 config['anchors'] = 1
 config['internlinks'].append(re.compile(r"^(ftp|https?)://.*yahoo.*"))
 # avoid checking of local files (security!)
