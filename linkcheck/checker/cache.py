@@ -19,13 +19,10 @@ Store cached data during checking.
 """
 
 import Cookie
-try:
-    import threading
-except ImportError:
-    import dummy_threading as threading
 
 import linkcheck
 import linkcheck.log
+import linkcheck.lock
 import linkcheck.containers
 import linkcheck.configuration
 import linkcheck.threader
@@ -50,7 +47,7 @@ def _check_morsel (m, host, path):
     return m.output(header='').strip()
 
 
-class Cache (object):
+class Cache (linkcheck.lock.AssertLock):
     """
     Store and provide routines for cached data. Currently there are
     caches for cookies, checked urls, FTP connections and robots.txt
@@ -63,8 +60,7 @@ class Cache (object):
         """
         Initialize the default options.
         """
-        # one big lock for all caches and queues
-        self.lock = threading.Lock()
+        super(Cache, self).__init__()
         # already checked urls
         self.checked = {}
         # urls that are being checked
@@ -82,11 +78,11 @@ class Cache (object):
         """
         Check if incoming queue is empty.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             return len(self.incoming) <= 0
         finally:
-            self.lock.release()
+            self.release()
 
     def incoming_get_url (self):
         """
@@ -94,7 +90,7 @@ class Cache (object):
         return it. If no such url is available return None. The
         url might be already cached.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             for i, url_data in enumerate(self.incoming):
                 key = url_data.cache_url_key
@@ -109,23 +105,23 @@ class Cache (object):
                     return url_data
             return None
         finally:
-            self.lock.release()
+            self.release()
 
     def incoming_len (self):
         """
         Return number of entries in incoming queue.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             return len(self.incoming)
         finally:
-            self.lock.release()
+            self.release()
 
     def incoming_add (self, url_data):
         """
         Add a new URL to list of URLs to check.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             linkcheck.log.debug(linkcheck.LOG_CACHE,
                                 "Add url %s...", repr(url_data))
@@ -144,7 +140,7 @@ class Cache (object):
             linkcheck.log.debug(linkcheck.LOG_CACHE, "...added.")
             return True
         finally:
-            self.lock.release()
+            self.release()
 
     def has_incoming (self, key):
         """
@@ -153,11 +149,11 @@ class Cache (object):
         @param key: Usually obtained from url_data.cache_url_key
         @type key: String
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             return key in self.incoming
         finally:
-            self.lock.release()
+            self.release()
 
     def has_in_progress (self, key):
         """
@@ -166,29 +162,29 @@ class Cache (object):
         @param key: Usually obtained from url_data.cache_url_key
         @type key: String
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             return key in self.in_progress
         finally:
-            self.lock.release()
+            self.release()
 
     def in_progress_remove (self, url_data):
         """
         Remove url from in-progress cache.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             key = url_data.cache_url_key
             assert key in self.in_progress, key
             del self.in_progress[key]
         finally:
-            self.lock.release()
+            self.release()
 
     def checked_add (self, url_data):
         """
         Cache checked url data.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             data = url_data.get_cache_data()
             key = url_data.cache_url_key
@@ -198,7 +194,7 @@ class Cache (object):
             del self.in_progress[key]
             self.checked[key] = data
         finally:
-            self.lock.release()
+            self.release()
 
     def checked_redirect (self, redirect, url_data):
         """
@@ -207,20 +203,20 @@ class Cache (object):
         If the redirect URL is found in the cache, the result data is
         already copied.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             if redirect in self.checked:
                 url_data.copy_from_cache(self.checked[redirect])
                 return True
             return False
         finally:
-            self.lock.release()
+            self.release()
 
     def robots_txt_allows_url (self, roboturl, url, user, password):
         """
         Ask robots.txt allowance.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             if roboturl not in self.robots_txt:
                 rp = linkcheck.robotparser2.RobotFileParser(
@@ -232,45 +228,45 @@ class Cache (object):
                 rp = self.robots_txt[roboturl]
             return rp.can_fetch(linkcheck.configuration.UserAgent, url)
         finally:
-            self.lock.release()
+            self.release()
 
     def get_connection (self, key):
         """
         Get open connection to given host. Return None if no such
         connection is available (or the old one timed out).
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             return self.pool.get_connection(key)
         finally:
-            self.lock.release()
+            self.release()
 
     def add_connection (self, key, connection, timeout):
         """
         Store open connection into cache for reuse.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             self.pool.add_connection(key, connection, timeout)
         finally:
-            self.lock.release()
+            self.release()
 
     def release_connection (self, key):
         """
         Store open connection into cache for reuse.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             return self.pool.release_connection(key)
         finally:
-            self.lock.release()
+            self.release()
 
     def store_cookies (self, headers, host):
         """
         Thread-safe cookie cache setter function. Can raise the
         exception Cookie.CookieError.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             output = []
             for h in headers.getallmatchingheaders("Set-Cookie"):
@@ -280,13 +276,13 @@ class Cache (object):
                 c.load(h)
             return output
         finally:
-            self.lock.release()
+            self.release()
 
     def get_cookies (self, host, path):
         """
         Thread-safe cookie cache getter function.
         """
-        self.lock.acquire()
+        self.acquire()
         try:
             linkcheck.log.debug(linkcheck.LOG_CACHE,
                                 "Get Cookie %s (%s)", host, path)
@@ -299,4 +295,4 @@ class Cache (object):
                     cookievals.append(val)
             return cookievals
         finally:
-            self.lock.release()
+            self.release()
