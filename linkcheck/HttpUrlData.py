@@ -151,7 +151,7 @@ class HttpUrlData(UrlData):
 
         if has301status:
             self.setWarning(_("HTTP 301 (moved permanent) encountered: you "
-                              "should update this link")
+                              "should update this link"))
             if self.url[-1]!='/':
                 self.setWarning(_("A HTTP 301 redirection occured and the url has no "
                      "trailing / at the end. All urls which point to (home) "
