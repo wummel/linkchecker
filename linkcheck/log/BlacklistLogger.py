@@ -51,7 +51,7 @@ class BlacklistLogger (Logger):
 
 
     def readBlacklist (self):
-        fd = file(self.filename, "r")
+        fd = file(self.filename)
         for line in fd:
             value, key = line.split(1)
             self.blacklist[key] = int(value)
@@ -60,7 +60,13 @@ class BlacklistLogger (Logger):
 
     def writeBlacklist (self):
         """write the blacklist"""
+        oldmask = None
+        if not os.path.exists(self.filename):
+            oldmask = os.umask(0077)
         fd = file(self.filename, "w")
         for key, value in self.blacklist.items():
             fd.write("%d %s\n" % (value, key))
         fd.close()
+        # restore umask
+        if oldmask is not None:
+            os.umask(oldmask)
