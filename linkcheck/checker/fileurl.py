@@ -85,7 +85,6 @@ class FileUrl (urlbase.UrlBase):
             self.set_result(_("directory"))
             return
         super(FileUrl, self).check_connection()
-        self.set_result(_("file"))
 
     def get_content (self):
         if self.is_directory() and not self.has_content:

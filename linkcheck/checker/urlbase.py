@@ -153,11 +153,7 @@ class UrlBase (object):
 
     def set_result (self, msg, valid=True):
         """set result string and validity"""
-        fmt = {'result': msg}
-        if valid:
-            self.result = _("Valid: %(result)s") % fmt
-        else:
-            self.result = _("Error: %(result)s") % fmt
+        self.result = msg
         self.valid = valid
 
     def is_parseable (self):
