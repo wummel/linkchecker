@@ -2,12 +2,12 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends-Indep: python2.1-dev, debhelper (>= 3.0.0), gettext
-Standards-Version: 3.5.7.1
+Build-Depends-Indep: python2.2-dev (>= 2.2.1), debhelper (>= 3.0.0), gettext
+Standards-Version: 3.5.8.0
 
 Package: linkchecker
 Architecture: any
-Depends: python2.1, python-dns
+Depends: python2.2 (>= 2.2.1)
 Conflicts: linkchecker-ssl
 Description: check HTML documents for broken links
  Features:

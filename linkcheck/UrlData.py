@@ -16,11 +16,12 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, re, urlparse, urllib, time, traceback, socket, select
-try:
-    import DNS
-except ImportError:
-    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
-    raise SystemExit
+#try:
+#    from linkcheck import DNS
+#except ImportError:
+#    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
+#    raise SystemExit
+from linkcheck import DNS
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, linkcheck, linkname, test_support, timeoutsocket

@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import urlparse, sys, time, re
-import linkcheck.httplib as httplib
+import httplib
 import Config, StringUtil, robotparser, linkcheck
 if Config.DebugLevel > 0:
     robotparser.debug = 1

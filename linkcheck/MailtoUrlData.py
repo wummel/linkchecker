@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os, re, sys, Config, cgi, urllib, linkcheck, DNS
+import os, re, sys, Config, cgi, urllib, linkcheck
+from linkcheck import DNS
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP

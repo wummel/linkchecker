@@ -3,8 +3,7 @@
 
 Requirements
 ------------
-Python >= 2.1 from http://www.python.org/
-PyDNS from http://pydns.sourceforge.net/
+Python >= 2.2.1 from http://www.python.org/
 For HTTPS support you need to compile Python with the SSL _socket
 module.
 

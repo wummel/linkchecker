@@ -1,3 +1,7 @@
+1.7.2
+  * Require Python >= 2.2.1, remove httplib
+  * Add again python-dns, the Debian package maintainer is unresponsive
+
 1.7.1
   * Fix memory leak in HTML parser flushing error path
     Changed files: htmlparse.y

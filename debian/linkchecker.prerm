@@ -4,7 +4,7 @@
 # used by Bastian Kleineidam for LinkChecker
 set -e
 PACKAGE=linkchecker
-PYVER=2.1
+PYVER=2.2
 PYTHON=python
 PYTHONXY=${PYTHON}${PYVER}
 
