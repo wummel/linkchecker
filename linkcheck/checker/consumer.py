@@ -131,9 +131,12 @@ class Consumer (object):
         Abort checking and send of-of-output message to logger.
         """
         while not self.no_more_threads():
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
-             _("keyboard interrupt; waiting for %d active threads to finish"),
-             self.active_threads())
+            num = self.active_threads()
+            msg = \
+            _n("keyboard interrupt; waiting for %d active thread to finish",
+               "keyboard interrupt; waiting for %d active threads to finish",
+               num)
+            linkcheck.log.warn(linkcheck.LOG_CHECK, msg, num)
             self.lock.acquire()
             try:
                 self.threader.finish()
