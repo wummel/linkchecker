@@ -21,7 +21,7 @@ __date__    = "$Date$"[7:-2]
 
 from xml.sax.saxutils import escape, unescape
 
-attr_entities = {
+xmlattr_entities = {
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -36,7 +36,7 @@ def xmlquote (s):
 
 def xmlquoteattr (s):
     """quote XML attribute, ready for inclusion with double quotes"""
-    return escape(s, attr_entities)
+    return escape(s, xmlattr_entities)
 
 
 def xmlunquote (s):
@@ -46,5 +46,6 @@ def xmlunquote (s):
 
 def xmlunquoteattr (s):
     """unquote attributes from XML"""
-    return unescape(s, attr_entities)
+    return unescape(s, xmlattr_entities)
+
 
