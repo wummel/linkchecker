@@ -233,6 +233,34 @@ else:
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
+data_files = [
+         ('share/locale/de/LC_MESSAGES',
+             ['share/locale/de/LC_MESSAGES/linkchecker.mo']),
+         ('share/locale/fr/LC_MESSAGES',
+             ['share/locale/fr/LC_MESSAGES/linkchecker.mo']),
+         ('share/locale/nl/LC_MESSAGES',
+             ['share/locale/nl/LC_MESSAGES/linkchecker.mo']),
+         ('share/linkchecker',
+             ['config/linkcheckerrc', 'config/logging.conf', ]),
+         ('share/linkchecker/examples',
+             ['cgi/lconline/leer.html.en', 'cgi/lconline/leer.html.de',
+              'cgi/lconline/index.html', 'cgi/lconline/lc_cgi.html.en',
+              'cgi/lconline/lc_cgi.html.de', 'cgi/lconline/check.js',
+              'cgi/lc.cgi', 'cgi/lc.fcgi', ]),
+      ]
+
+if os.name == 'posix':
+    data_files.append(('share/man/man1', ['linkchecker.1']))
+    data_files.append(('share/linkchecker/examples',
+              ['config/linkchecker-completion', 'config/linkcheck-cron.sh']))
+elif os.name == 'nt':
+    data_files.append(('share/linkchecker/doc',
+             ['doc/documentation.html', 'doc/index.html',
+              'doc/install.html', 'doc/index.html', 'doc/other.html',
+              'doc/upgrading.html', 'doc/lc.css', 'doc/navigation.css',
+              'doc/shot1.png', 'doc/shot2.png', 'doc/shot1_thumb.jpg',
+              'doc/shot2_thumb.jpg', ]))
+
 setup (name = "linkchecker",
        version = "2.0rc2",
        description = "check HTML documents for broken links",
@@ -282,24 +310,8 @@ o a (Fast)CGI web interface (requires HTTP server)
                                   [normpath("linkcheck/HtmlParser")],
                   )],
        scripts = scripts,
-       data_files = [
-         ('share/locale/de/LC_MESSAGES',
-             ['share/locale/de/LC_MESSAGES/linkchecker.mo']),
-         ('share/locale/fr/LC_MESSAGES',
-             ['share/locale/fr/LC_MESSAGES/linkchecker.mo']),
-         ('share/locale/nl/LC_MESSAGES',
-             ['share/locale/nl/LC_MESSAGES/linkchecker.mo']),
-         ('share/linkchecker', ['config/linkcheckerrc',
-                                'config/logging.conf', ]),
-         ('share/linkchecker/examples',
-             ['cgi/lconline/leer.html.en', 'cgi/lconline/leer.html.de',
-              'cgi/lconline/index.html', 'cgi/lconline/lc_cgi.html.en',
-              'cgi/lconline/lc_cgi.html.de', 'cgi/lconline/check.js',
-              'cgi/lc.cgi', 'cgi/lc.fcgi',
-              'config/linkchecker-completion', 'config/linkcheck-cron.sh']),
-         ('share/man/man1', ['linkchecker.1']),
-      ],
-      classifiers = [
+       data_files = data_files,
+       classifiers = [
         'Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License (GPL)',
