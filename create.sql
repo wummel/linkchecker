@@ -10,11 +10,14 @@ create table linksdb (
     errorstring    varchar(50),
     validstring    varchar(50),
     warningstring  varchar(50),
-    infoString     varchar(150),
+    infostring     varchar(150),
     valid          int,
     url            varchar(50),
     line           int,
-    column         int,
+    colum          int,
     name           varchar(50),
+    checktime      int,
+    dltime         int,
+    dlsize         int,
     cached         int
 );
