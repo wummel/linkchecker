@@ -7,12 +7,23 @@ $syspath
 import linkcheck
 url='http://www.yahoo.de/'
 config = linkcheck.Config.Configuration()
-config['recursionlevel'] = 5
+
+config['recursionlevel'] = 3
 config['anchors'] = 1
-config['internlinks'].append(re.compile(r"^(ftp|https?)://www\.yahoo\.de/"))
+config['internlinks'].append(re.compile(r"^(ftp|https?)://.*yahoo.*"))
 # avoid checking of local files (security!)
 config["externlinks"].append((re.compile("^file:"), 1))
 config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
-profile.run("linkcheck.checkUrls(config)", "test.prof")
-p = pstats.Stats("test.prof")
-p.strip_dirs().sort_stats("time").print_stats(20)
+profile.run("linkcheck.checkUrls(config)", "threads.prof")
+
+config.reset()
+
+config.disableThreading()
+config['recursionlevel'] = 3
+config['anchors'] = 1
+config['internlinks'].append(re.compile(r"^(ftp|https?)://.*yahoo.*"))
+# avoid checking of local files (security!)
+config["externlinks"].append((re.compile("^file:"), 1))
+config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
+profile.run("linkcheck.checkUrls(config)", "nothreads.prof")
+

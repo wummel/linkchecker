@@ -21,7 +21,7 @@ This module stores
 * Other configuration options
 """
 
-import ConfigParser,sys,os,re,UserDict,string
+import ConfigParser,sys,os,re,UserDict,string,time
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 import Logging
@@ -86,6 +86,10 @@ class Configuration(UserDict.UserDict):
     def __init__(self):
         """Initialize the default options"""
         UserDict.UserDict.__init__(self)
+        self.reset()
+
+    def reset(self):
+        """Reset to default values"""
         self.data["verbose"] = 0
         self.data["warnings"] = 0
         self.data["anchors"] = 0
@@ -288,7 +292,7 @@ class Configuration(UserDict.UserDict):
                 value = sys.exc_info()[1]
                 self.debug("NNTP: "+value+"\n")
                 if re.compile("^505").search(str(value)):
-                    import whrandom,time
+                    import whrandom
                     time.sleep(whrandom.randint(30,60))
                 else:
                     raise
@@ -297,6 +301,7 @@ class Configuration(UserDict.UserDict):
         return not self.urls.empty()
 
     def finished_Threads(self):
+        time.sleep(0.3)
         self.threader.reduceThreads()
         return not self.hasMoreUrls() and self.threader.finished()
 

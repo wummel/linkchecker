@@ -20,8 +20,11 @@ linkchecker (1.2.3) unstable; urgency=low
   * Only catch some exceptions in main check loop so the KeyboardInterrupt
     exception propagates through
   * Disable threading on non-POSIX systems
+  * Renice the main thread loop by sleep()ing 1/3 of a second in each
+    loop
+  * New function config.reset()
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 11 Jun 2000 21:28:48 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 12 Jun 2000 14:50:44 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 
