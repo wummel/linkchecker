@@ -50,7 +50,7 @@ class HttpServerTest (linkcheck.ftests.StandardTest):
         conn.getresponse()
 
 
-class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler):
+class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler, object):
     """http request handler with QUIT stopping the server"""
 
     def do_QUIT (self):
@@ -64,7 +64,7 @@ class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler):
         pass
 
 
-class StoppableHttpServer (BaseHTTPServer.HTTPServer):
+class StoppableHttpServer (BaseHTTPServer.HTTPServer, object):
     """http server that reacts to self.stop flag"""
 
     def serve_forever (self):
@@ -74,9 +74,29 @@ class StoppableHttpServer (BaseHTTPServer.HTTPServer):
             self.handle_request()
 
 
+class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
+    """handler ignoring the query part of requests"""
+
+    def remove_path_query (self):
+        """remove everything after a question mark"""
+        i = self.path.find('?')
+        if i != -1:
+            self.path = self.path[:i]
+
+    def do_GET (self):
+        """removes query part of GET request"""
+        self.remove_path_query()
+        super(NoQueryHttpRequestHandler, self).do_GET()
+
+    def do_HEAD (self):
+        """removes query part of HEAD request"""
+        self.remove_path_query()
+        super(NoQueryHttpRequestHandler, self).do_HEAD()
+
+
 def start_server (port):
     """start an HTTP server on given port"""
-    HandlerClass = StoppableHttpRequestHandler
+    HandlerClass = NoQueryHttpRequestHandler
     ServerClass = StoppableHttpServer
     server_address = ('', port)
     HandlerClass.protocol_version = "HTTP/1.0"
