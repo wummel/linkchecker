@@ -28,7 +28,7 @@
     Type: bugfix
     Changed: linkchecker
 
-  * Accept logger type case independent.
+  * Accept -o option logger type as case independent string.
     Type: feature
     Changed: linkchecker
 
