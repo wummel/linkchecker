@@ -1,0 +1,17 @@
+test_ftp
+url file:///home/calvin/projects/linkchecker/test/html/ftp.html
+valid
+url ftp:/ftp.debian.org/pub
+error
+url ftp://ftp.debian.org/pub
+info 220 ProFTPD Server (ftp1.sourceforge.net)
+valid
+url ftp://ftp.debian.org//pub
+info 220 ProFTPD Server (ftp1.sourceforge.net)
+valid
+url ftp://ftp.debian.org////////pub
+info 220 ProFTPD Server (ftp1.sourceforge.net)
+valid
+url ftp:///ftp.debian.org/pub
+cached
+error

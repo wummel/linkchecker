@@ -1,0 +1,51 @@
+test_http
+url file:///home/calvin/projects/linkchecker/test/html/http.html
+valid
+url http://www.garantiertnixgutt.bla
+name bad url
+error
+url http://www.heise.de
+name ok
+valid
+url http:/www.heise.de
+name one slash
+error
+url http:www.heise.de
+name no slash
+error
+url http://
+name no url
+warning Missing '/' at end of URL
+valid
+url http:/
+name no url, one slash
+valid
+url http:
+cached
+name no url, no slash
+warning Missing '/' at end of URL
+valid
+url http://www.blubb.de/stalter&sohn
+name unquoted ampersand
+error
+url http://slashdot.org/
+name unquoted
+valid
+url http://fsinfo.cs.uni-sb.de/~calvin/software/#isnix
+name invalid anchor
+warning anchor #isnix not found
+valid
+url HtTP://WWW.hEIsE.DE
+cached
+name should be cached
+valid
+url HTTP://WWW.HEISE.DE
+cached
+name should be cached
+valid
+url illegalquote1
+name no beginning quote
+error
+url illegalquote2
+name no ending quote
+error

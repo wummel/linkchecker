@@ -1,0 +1,44 @@
+test_mail
+url file:///home/calvin/projects/linkchecker/test/html/mail.html
+valid
+url mailto:calvin@LocalHost?subject=Hallo&to=michi
+name 1
+error
+url mailto:Dude <calvin@studcs.uni-sb.de> , Killer <calvin@cs.uni-sb.de>?subject=bla
+name 2
+warning None of the mail hosts for studcs.uni-sb.de accepts an SMTP connection: not all arguments converted
+None of the mail hosts for cs.uni-sb.de accepts an SMTP connection: not all arguments converted
+valid
+url mailto:Bastian Kleineidam <calvin@studcs.uni-sb.de>?bcc=jsmith%40company.com
+name 3
+warning None of the mail hosts for studcs.uni-sb.de accepts an SMTP connection: not all arguments converted
+error
+url mailto:Bastian Kleineidam <calvin@studcs.uni-sb.de>
+name 4
+warning None of the mail hosts for studcs.uni-sb.de accepts an SMTP connection: not all arguments converted
+valid
+url mailto:
+name 6
+warning No adresses found
+valid
+url mailto:o'hara@cs.uni-sb.de
+name 5
+warning None of the mail hosts for cs.uni-sb.de accepts an SMTP connection: not all arguments converted
+valid
+url mailto:?to=calvin@studcs.uni-sb.de?subject=blubb
+name ...
+warning None of the mail hosts for studcs.uni-sb.de accepts an SMTP connection: not all arguments converted
+valid
+url mailto:jan@jan-dittberner.de?subject=test
+name ...
+warning None of the mail hosts for jan-dittberner.de accepts an SMTP connection: not all arguments converted
+valid
+url mailto:a@d?subject=הצü
+name 5
+error
+url mailto:calvin@cs.uni-sb.de?subject=Halli hallo
+name _
+error
+url mailto:Bastian Kleineidam <calvin@host1?foo=bar>
+name 3
+error
