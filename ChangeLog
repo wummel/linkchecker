@@ -1,9 +1,10 @@
 2.6 "" (released xx.xx.xxxx)
 
-  * New option --low-priority to decrease the priority of spawned threads.
+  * Run with low priority. New option --priority to run with normal
+    priority.
     Type: feature
     Changed: linkchecker, linkcheck/threader.py
-    
+
   * If GeoIP Python wrapper is installed, log the country name as info.
     Type: feature
     Changed: linkcheck/checker/consumer.py
@@ -31,6 +32,11 @@
   * Do not send multiple Accept-Encoding headers.
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
+
+  * Avoid deadlocks between the cache and the queue lock.
+    Type: bugfix
+    Changed: linkcheck/checker/consumer.py, linkcheck/checker/cache.py
+    Added: linkcheck/lock.py
 
 2.5 "Spanglish" (released 4.3.2005)
 
