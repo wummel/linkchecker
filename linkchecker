@@ -411,7 +411,7 @@ if config["log"].__class__ == BlacklistLogger and \
    os.path.exists(config['log'].filename):
     args = file(config['log'].filename).readlines()
 
-debug(HURT_ME_PLENTY, "configuration:", pprint.pformat(config.data))
+debug(HURT_ME_PLENTY, "configuration:", pprint.pformat(config))
 
 # interactive input
 if len(args)==0:
