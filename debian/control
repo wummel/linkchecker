@@ -9,7 +9,6 @@ Package: linkchecker
 Architecture: all
 Depends: python (>= 2.1)
 Conflicts: python (>= 2.2), python-ssl (>= 2.2), linkchecker-ssl
-Suggests: python-ssl (>= 2.1)
 Description: check HTML documents for broken links
  Features:
   o recursive checking
@@ -23,6 +22,7 @@ Description: check HTML documents for broken links
   o give username/password for HTTP and FTP authorization
   o robots.txt exclusion protocol support 
   o i18n support
+  o Cookie support
   o command line interface
   o (Fast)CGI web interface (requires HTTP server)
  .

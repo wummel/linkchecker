@@ -1,3 +1,9 @@
+linkchecker (1.5.1) unstable; urgency=low
+
+  * debian/control: remove python-ssl from suggests
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 13 May 2002 01:24:06 +0200
+
 linkchecker (1.5.0) unstable; urgency=low
 
   * More syntax checking for host:port network locations (from 1.4.4)
