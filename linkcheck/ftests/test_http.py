@@ -37,36 +37,64 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
                   self.port
             resultlines = self.get_resultlines("http.html")
             self.direct(url, resultlines, recursionlevel=1)
-            url = u"http://localhost:%d/redirect1" % self.port
-            nurl = url
-            rurl = url.replace("redirect", "newurl")
-            resultlines = [
-                u"url %s" % url,
-                u"cache key %s" % nurl,
-                u"real url %s" % rurl,
-                u"info Redirected to %s." % rurl,
-                u"warning Effective URL %s." % rurl,
-                u"error",
-            ]
-            self.direct(url, resultlines, recursionlevel=0)
-            # test setting proxy and no-proxy-for
-            os.environ["http_proxy"] = "http://imadoofus:8877"
-            confargs = {"noproxyfor": [re.compile("localhost")]}
-            url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
-                  self.port
-            nurl = url
-            resultlines = [
-                u"url %s" % url,
-                u"cache key %s" % nurl,
-                u"real url %s" % nurl,
-                u"info Ignoring proxy setting 'imadoofus:8877'",
-                u"valid",
-            ]
-            self.direct(url, resultlines, recursionlevel=0,
-                        confargs=confargs)
-            del os.environ["http_proxy"]
+            self.redirect_test()
+            self.noproxyfor_test()
         finally:
             self.stop_server()
+
+    def redirect_test (self):
+        url = u"http://localhost:%d/redirect1" % self.port
+        nurl = url
+        rurl = url.replace("redirect", "newurl")
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % rurl,
+            u"info Redirected to %s." % rurl,
+            u"warning Effective URL %s." % rurl,
+            u"error",
+        ]
+        self.direct(url, resultlines, recursionlevel=0)
+        url = u"http://localhost:%d/linkcheck/ftests/data/redirect.html" % \
+              self.port
+        nurl = url
+        rurl = url.replace("redirect", "newurl")
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % rurl,
+            u"info Redirected to %s." % rurl,
+            u"warning Effective URL %s." % rurl,
+            u"valid",
+            u"url newurl.html (cached)",
+            u"cache key %s" % nurl.replace("redirect", "newurl"),
+            u"real url %s" % rurl.replace("redirect", "newurl"),
+            u"name Recursive Redirect",
+            u"info Redirected to %s." % rurl,
+            u"warning Effective URL %s." % rurl,
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=99)
+
+    def noproxyfor_test (self):
+        """
+        Test setting proxy and --no-proxy-for option.
+        """
+        os.environ["http_proxy"] = "http://imadoofus:8877"
+        confargs = {"noproxyfor": [re.compile("localhost")]}
+        url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
+              self.port
+        nurl = url
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"info Ignoring proxy setting 'imadoofus:8877'",
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=0,
+                    confargs=confargs)
+        del os.environ["http_proxy"]
 
 
 class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHandler):
@@ -82,7 +110,6 @@ class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHa
         self.send_response(302)
         self.send_header("Location", path)
         self.end_headers()
-
 
     def do_GET (self):
         """
