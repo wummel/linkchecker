@@ -9,6 +9,7 @@ Package: linkchecker
 Architecture: any
 Depends: python2.2 (>= 2.2.1)
 Conflicts: linkchecker-ssl
+Suggests: httpd
 Description: check HTML documents for broken links
  Features:
   o recursive checking
