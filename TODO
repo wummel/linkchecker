@@ -1,10 +1,6 @@
 - SF bug #992389 bit me when I wanted to do absolute imports
-  at the *UrlData classes :/
+  at the checker classes :/
   When the bug is fixed we can import absolute classes
-
-- fix url quoting: urls should be quoted as early as possible,
-  and inside the UrlData classes all the time. Makes log output
-  more easy.
 
 - cache queue rework?
 
