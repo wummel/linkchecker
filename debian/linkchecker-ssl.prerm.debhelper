@@ -1,5 +1,0 @@
-# Automatically added by dh_installdocs
-if [ \( "$1" = "upgrade" -o "$1" = "remove" \) -a -L /usr/doc/linkchecker-ssl ]; then
-	rm -f /usr/doc/linkchecker-ssl
-fi
-# End automatically added section
