@@ -11,6 +11,9 @@
     Changed files: linkchecker, linkchecker.1, FAQ
   * Updated po/pygettext.py to version 1.5, cleaned up some gettext
     usages.
+  * updated i18n
+    Added files: linkcheck/i18n.py
+    Changed files: all .py files using i18n
 
 1.8.2
   * - ignore invalid html attribute characters
