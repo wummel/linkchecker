@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Mar 31 15:31:59 2003\n"
+"POT-Creation-Date: Thu Apr 17 15:06:57 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -36,7 +36,7 @@ msgstr ""
 msgid "found"
 msgstr "gevonden"
 
-msgid "Path is empty"
+msgid "URL path is empty, assuming '/' as path"
 msgstr ""
 
 msgid "Using Proxy %s"

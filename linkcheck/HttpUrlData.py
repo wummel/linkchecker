@@ -36,6 +36,7 @@ class HttpUrlData (ProxyUrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
 
+
     def buildUrl (self):
         ProxyUrlData.buildUrl(self)
         # encode userinfo
@@ -210,6 +211,7 @@ class HttpUrlData (ProxyUrlData):
                 self.setValid(`response.status`+" "+response.reason)
             else:
                 self.setValid("OK")
+
 
     def _getHttpResponse (self, method="HEAD"):
         """Put request and return (status code, status text, mime object).

@@ -1,3 +1,8 @@
+1.8.11
+  * catch httplib.error exceptions
+  * ugh, urllib.py asks for passwords with getpass(); we switch
+    to urllib2.py which is nicer anyway.
+
 1.8.10
   * new option --no-anchor-caching
     Changed files: linkchecker, linkcheck/{Config.py, UrlData.py}, FAQ

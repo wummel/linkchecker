@@ -3,11 +3,11 @@ url file:///home/calvin/projects/linkchecker/test/html/http.html
 valid
 url http://www.garantiertnixgutt.bla
 name bad url
-warning Path is empty
+warning URL path is empty, assuming '/' as path
 error
 url http://www.heise.de
 name ok
-warning Path is empty
+warning URL path is empty, assuming '/' as path
 valid
 url http:/www.heise.de
 name one slash
@@ -18,17 +18,17 @@ name no slash
 error
 url http://
 name no url
-warning Path is empty
+warning URL path is empty, assuming '/' as path
 error
 url http:/
 cached
 name no url, one slash
-warning Path is empty
+warning URL path is empty, assuming '/' as path
 error
 url http:
 cached
 name no url, no slash
-warning Path is empty
+warning URL path is empty, assuming '/' as path
 error
 url http://www.blubb.de/stalter&sohn
 name unquoted ampersand
@@ -43,12 +43,12 @@ valid
 url HtTP://WWW.hEIsE.DE
 cached
 name should be cached
-warning Path is empty
+warning URL path is empty, assuming '/' as path
 valid
 url HTTP://WWW.HEISE.DE
 cached
 name should be cached
-warning Path is empty
+warning URL path is empty, assuming '/' as path
 valid
 url http://www.heise.de/?quoted=&uuml;
 name html entities
