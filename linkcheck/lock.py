@@ -26,6 +26,10 @@ except ImportError:
 lock_klass = threading.RLock().__class__
 
 class AssertLock (lock_klass):
+    """
+    Lock class asserting that only available locks are acquired,
+    and that no lock is released twice.
+    """
 
     def acquire (self, blocking=True):
         """
