@@ -254,8 +254,7 @@ class HttpUrlData (UrlData):
             status, statusText, self.headers = self._getHttpRequest("GET")
             self.urlConnection = self.urlConnection.getfile()
             self.data = self.urlConnection.read()
-            encoding = self.headers.getheader("Content-Encoding")
-            if encoding and encoding.lower().endswith("gzip"):
+            if self.headers.get("Content-Encoding")=="gzip":
                 import gzip, cStringIO
                 f = gzip.GzipFile(filename="", mode="rb",
                                   fileobj=cStringIO.StringIO(self.data))
@@ -268,7 +267,13 @@ class HttpUrlData (UrlData):
     def isHtml (self):
         if not (self.valid and self.headers):
             return 0
-        return self.headers.gettype()[:9]=="text/html"
+        if self.headers.gettype()[:9]!="text/html":
+            return 0
+        encoding = self.headers.get("Content-Encoding")
+        if encoding and encoding!='gzip':
+            self.setWarning(linkcheck._('Unsupported content encoding %s.')%`encoding`)
+            return 0
+        return 1
 
     def robotsTxtAllowsUrl (self):
         roboturl = "%s://%s/robots.txt" % self.urlTuple[0:2]
