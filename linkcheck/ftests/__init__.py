@@ -37,8 +37,11 @@ class TestLogger (linkcheck.logger.Logger):
         """kwargs must have "expected" keyword with the expected logger
            output lines"""
         super(TestLogger, self).__init__(**kwargs)
+        # list of expected output lines
         self.expected = kwargs['expected']
+        # list of real output lines
         self.result = []
+        # diff between expected and real output
         self.diff = []
 
     def start_output (self):
@@ -74,6 +77,8 @@ class TestLogger (linkcheck.logger.Logger):
     def end_output (self, linknumber=-1):
         """stores differences between expected and result in self.diff"""
         for line in difflib.unified_diff(self.expected, self.result):
+            if not isinstance(line, unicode):
+                line = unicode(line, "iso8859-1", "ignore")
             self.diff.append(line)
 
 
@@ -99,11 +104,12 @@ class StandardTest (unittest.TestCase):
         """check resources, using the provided function
            check_resources() from test.py
         """
+        super(StandardTest, self).setUp()
         if hasattr(self, "needed_resources"):
             self.check_resources(self.needed_resources)
 
     def quote (self, url):
-        """helper function quote a url"""
+        """helper function to quote a url"""
         return linkcheck.url.url_norm(url)
 
     def get_file (self, filename):
@@ -134,10 +140,13 @@ class StandardTest (unittest.TestCase):
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
             sep = unicode(os.linesep)
-            self.fail(sep.join([url] + consumer.config['logger'].diff))
+            l = [url] + consumer.config['logger'].diff
+            l = sep.join(l)
+            self.fail(l.encode("iso8859-1", "ignore"))
 
     def direct (self, url, resultlines, fields=None, recursionlevel=0):
         """check url with expected result"""
+        assert isinstance(url, unicode), repr(url)
         confargs = {'recursionlevel': recursionlevel}
         logargs = {'expected': resultlines}
         if fields is not None:
@@ -147,4 +156,7 @@ class StandardTest (unittest.TestCase):
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
-            self.fail(os.linesep.join([url] + consumer.config['logger'].diff))
+            sep = unicode(os.linesep)
+            l = [url] + consumer.config['logger'].diff
+            l = sep.join(l)
+            self.fail(l.encode("iso8859-1", "ignore"))
