@@ -37,9 +37,9 @@ install: build
 	dh_installdirs
 	$(MAKE) locale
 	$(PYTHON) setup.py install --root=$(ROOT) --no-compile
-	# remove example files, we install them below
+# remove example files, we install them below
 	rm -r $(ROOT)/usr/share/linkchecker/examples
-	# install CGI files
+# install CGI files
 	install -c -m 644 lconline/*.html $(HTMLDIR)
 	install -c -m 644 lconline/*.de $(HTMLDIR)
 	install -c -m 644 lconline/*.en $(HTMLDIR)
@@ -50,8 +50,10 @@ install: build
 	chmod 755 $(CGIDIR)/lc.cgi
 	chmod 755 $(CGIDIR)/lc.fcgi
 	chmod 755 $(CGIDIR)/lc.sz_fcgi
-	# install system wide configuration file in etc
-	mv $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc
+# install system wide configuration file in etc
+	install -m644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc
+# install bash_completion script
+	install -m644 linkchecker-completion $(ROOT)/etc/bash_completion.d
 
 
 # Build architecture-independent files here.
@@ -62,7 +64,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	#dh_installman linkchecker.1
+#	dh_installman linkchecker.1
 	dh_installchangelogs ChangeLog
 	dh_link
 	dh_strip
