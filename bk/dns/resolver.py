@@ -341,18 +341,10 @@ class Resolver(object):
     def _config_win32_fromkey(self, key):
         """Extract DNS info from a registry key."""
         try:
-            servers, rtype = _winreg.QueryValueEx(key, 'NameServer')
+            enable_dhcp, rtype = _winreg.QueryValueEx(key, 'EnableDHCP')
         except WindowsError:
-            servers = None
-        if servers:
-            self._config_win32_nameservers(servers)
-            try:
-                dom, rtype = _winreg.QueryValueEx(key, 'Domain')
-                if dom:
-                    self._config_win32_domain(servers)
-            except WindowsError:
-                pass
-        else:
+            enable_dhcp = False
+        if enable_dhcp:
             try:
                 servers, rtype = _winreg.QueryValueEx(key, 'DhcpNameServer')
             except WindowsError:
@@ -363,6 +355,19 @@ class Resolver(object):
                 self._config_win32_nameservers(servers, ' ')
                 try:
                     dom, rtype = _winreg.QueryValueEx(key, 'DhcpDomain')
+                    if dom:
+                        self._config_win32_domain(servers)
+                except WindowsError:
+                    pass
+        else:
+            try:
+                servers, rtype = _winreg.QueryValueEx(key, 'NameServer')
+            except WindowsError:
+                servers = None
+            if servers:
+                self._config_win32_nameservers(servers)
+                try:
+                    dom, rtype = _winreg.QueryValueEx(key, 'Domain')
                     if dom:
                         self._config_win32_domain(servers)
                 except WindowsError:
