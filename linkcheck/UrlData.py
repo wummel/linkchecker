@@ -18,7 +18,7 @@
 
 import sys, re, urlparse, urllib2, time, traceback, socket, select, i18n
 from urllib import splituser, splitport, unquote
-from linkcheck import DNS, LinkCheckerError, getLinkPat
+from linkcheck import DNS, LinkCheckerError, getLinkPat, httplib2
 from linkcheck.parser import htmlsax
 DNS.DiscoverNameServers()
 
@@ -345,6 +345,9 @@ class UrlData (object):
             # make nicer error msg for unknown hosts
             if isinstance(evalue, socket.error) and evalue[0]==-2:
                 evalue = i18n._('Hostname not found')
+            # make nicer error msg for bad status line
+            if isinstance(evalue, httplib2.BadStatusLine):
+                evalue = i18n._('Bad HTTP response %r')%str(evalue)
             self.setError(str(evalue))
 
         # check content
