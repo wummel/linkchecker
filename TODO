@@ -1,5 +1,3 @@
-- test.py soll resources beachten
-
 - testen: id="" Anchor check (email)
 
 - SF bug #992389 bit me when I wanted to do absolute imports
