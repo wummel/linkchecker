@@ -264,6 +264,9 @@ class HttpUrlData (ProxyUrlData):
                 self.setValid(`response.status`+" "+response.reason)
             else:
                 self.setValid("OK")
+        modified = self.headers.get('Last-Modified', '')
+        if modified:
+            self.setInfo(i18n._("Last modified %s") % modified)
 
 
     def getCacheKeys (self):

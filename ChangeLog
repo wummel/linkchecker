@@ -2,6 +2,8 @@
   * added Mandrake .spec file from Chris Green <cmg@dok.org>
     Added: linkchecker.spec
     Changed: MANIFEST.in
+  * print last-modified date for http links in infos
+    Changed: linkcheck/HttpUrlData.py
 
 1.10.0 (released 7.12.2003)
   * catch httplib errors in robotparser
@@ -13,7 +15,6 @@
     - with --strict option do not add any automatic filters if the user
       gave his own on the command line
     Changed: linkcheck/UrlData.py
-
 
 1.9.5 (released 31.10.2003)
   * Add Zope to servers with broken HEAD support, adjusted the FAQ
