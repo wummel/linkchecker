@@ -58,7 +58,6 @@ class IfConfig (object):
     def getInterfaceList (self):
         """ Get all interface names in a list
         """
-        # get interface list
         buf = array.array('c', '\0' * 1024)
         ifconf = struct.pack("iP", buf.buffer_info()[1], buf.buffer_info()[0])
         result = self._fcntl(self.SIOCGIFCONF, ifconf)
