@@ -99,7 +99,7 @@ class SQLLogger (linkcheck.logger.Logger):
                'result': sqlify(url_data.result),
                'warning': sqlify(os.linesep.join(url_data.warning)),
                'info': sqlify(os.linesep.join(url_data.info)),
-               'url': sqlify(linkcheck.url.url_quote(url_data.url)),
+               'url': sqlify(linkcheck.url.url_quote(url_data.url or "")),
                'line': url_data.line,
                'column': url_data.column,
                'name': sqlify(url_data.name),
