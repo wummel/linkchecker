@@ -23,7 +23,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* token type */
 #define YYSTYPE PyObject*
+/* type of user-specified data */
 #define YY_EXTRA_TYPE UserData*
 
 /* resize buffer b, returning T_ERROR on error */
@@ -123,18 +125,28 @@ void yyfree (void* ptr, void* yyscanner) {
     PyMem_Free(ptr);
 }
 
+/* include bison-generated token definitions */
 #include "htmlparse.h"
 %}
 
+/* use our own memory management functions (see above) */
 %option noyyalloc noyyrealloc noyyfree
-%option 8bit outfile="htmllex.c"
+/* handle 8bit characters */
+%option 8bit
+/* define output file */
+%option outfile="htmllex.c"
+/* optimize for speed */
 %option align full
-/* uncomment the next line for debugging */
+/* add debugging ability */
 %option debug
+/* don't use unneeded functions */
 %option nounput nomain noyywrap noyymore noreject
+/* make it reentrant and bison compatible */
 %option bison-bridge reentrant never-interactive
+/* print warnings on compiling */
 %option warn
 
+/* scanner states */
 %x S_PI
 %x S_COMMENT
 %x S_COMMENT2
@@ -161,6 +173,7 @@ void yyfree (void* ptr, void* yyscanner) {
 %x S_STRING
 %x S_STRING_ESC
 
+/* regular expression definitions used below */
 RX_WHITE_SPACE	[\n\r\ \t\b\012]
 RX_EQUAL	=
 RX_NAME	[a-zA-Z]([-a-zA-Z0-9_])*
@@ -170,7 +183,7 @@ RX_DATA [-a-zA-Z0-9_:]+
 
   /*********************** EOF ************************/
 <<EOF>> {
-    /* wait for more data */
+    /* hit end-of-file, wait for more data */
     return T_WAIT;
 }
 
@@ -208,7 +221,7 @@ RX_DATA [-a-zA-Z0-9_:]+
     return T_WAIT;
 }
 
-   /* Note: www.nba.com ad some <! Copyright !> comment */
+   /* Note: www.nba.com had some <! Copyright !> comment */
 <INITIAL><![ ]+ {
     UPDATE_BUFPOS;
     BEGIN(S_COMMENT2);
@@ -353,6 +366,7 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_COLUMN;
     BEGIN(INITIAL);
     if (!strlen(yyextra->tmp_buf)) {
+        /* the tag name was empty, assume a stray "</>" */
 	RESIZE_BUF(yyextra->tmp_buf, 4);
         strcpy(yyextra->tmp_buf, "</>");
         yyextra->tmp_attrs = NULL;
@@ -369,7 +383,9 @@ RX_DATA [-a-zA-Z0-9_:]+
 <S_TAGSTART>> {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
+    BEGIN(INITIAL);
     if (!strlen(yyextra->tmp_buf)) {
+        /* the tag name was empty, assume a stray "</>" */
 	RESIZE_BUF(yyextra->tmp_buf, 3);
         strcpy(yyextra->tmp_buf, "<>");
         yyextra->tmp_attrs = NULL;
@@ -433,7 +449,7 @@ RX_DATA [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-  /* this is so shitty */
+  /* XXX this is so shitty */
 <S_SCRIPT></[^/] {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -536,19 +552,19 @@ RX_DATA [-a-zA-Z0-9_:]+
     BEGIN(S_SCRIPT_STRING);
 }
 
-<S_SCRIPT_COMMENT>[^\-\n]+ {
+<S_SCRIPT_COMMENT>[^\-\r\n]+ {
     UPDATE_BUFPOS;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT_COMMENT>\n {
+<S_SCRIPT_COMMENT>[\r\n] {
     UPDATE_BUFPOS;
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_SCRIPT);
 }
 
-<S_SCRIPT_COMMENT>-([^-\n]+|-[^>\n]+) {
+<S_SCRIPT_COMMENT>-([^-\r\n]+|-[^>\r\n]+) {
     UPDATE_BUFPOS;
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
@@ -564,7 +580,7 @@ RX_DATA [-a-zA-Z0-9_:]+
     return T_WAIT;
 }
 
-<S_SCRIPT_MCOMMENT>[^*]+|\*[^/]+ {
+<S_SCRIPT_MCOMMENT>[^*]+|\* {
     UPDATE_BUFPOS;
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
@@ -574,10 +590,6 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_BUFPOS;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_SCRIPT);
-}
-
-<S_SCRIPT_MCOMMENT>. {
-    return T_WAIT;
 }
 
   /*********************** STYLE ************************/
@@ -839,6 +851,13 @@ RX_DATA [-a-zA-Z0-9_:]+
     BEGIN(S_ATTR1);
 }
 
+<S_APOSSTRING>\\ {
+    UPDATE_BUFPOS;
+    UPDATE_COLUMN;
+    APPEND_TO_TMP(yyleng);
+    BEGIN(S_APOSSTRING_ESC);
+}
+
 <S_APOSSTRING>\' {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -862,6 +881,20 @@ RX_DATA [-a-zA-Z0-9_:]+
 }
 
 
+<S_APOSSTRING_ESC>. {
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
+    APPEND_TO_TMP(yyleng);
+    BEGIN(S_APOSSTRING);
+}
+
+<S_STRING>\\ {
+    UPDATE_BUFPOS;
+    UPDATE_COLUMN;
+    APPEND_TO_TMP(yyleng);
+    BEGIN(S_STRING_ESC);
+}
+
 <S_STRING>\" {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -884,6 +917,14 @@ RX_DATA [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
+<S_STRING_ESC>. {
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
+    APPEND_TO_TMP(yyleng);
+    BEGIN(S_STRING);
+}
+
+
   /*********************** TAGEND ************************/
 <INITIAL><{RX_WHITE_SPACE}*\/{RX_WHITE_SPACE}*/[A-Za-z] {
     UPDATE_BUFPOS;
@@ -897,9 +938,9 @@ RX_DATA [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_TAGEND>> {
+<S_TAGEND>{RX_WHITE_SPACE}*> {
     UPDATE_BUFPOS;
-    UPDATE_COLUMN;
+    UPDATE_LINE;
     LOWER_TMP;
     SETLVAL;
     BEGIN(INITIAL);
@@ -1004,12 +1045,14 @@ RX_DATA [-a-zA-Z0-9_:]+
 
 %%
 
+/* initialize the scanner */
 int htmllexInit (void** scanner, UserData* data) {
     yylex_init(scanner);
     yyset_extra(data, *scanner);
     return 0;
 }
 
+/* set debug level; a level > 0 enables debugging */
 int htmllexDebug (void** scanner, int debug) {
     int old = yyget_debug(*scanner);
     yyset_debug(debug, *scanner);
@@ -1027,7 +1070,7 @@ int htmllexStart (void* scanner, UserData* data, const char* s, int slen) {
     for (i=0; i<slen; i++) {
         data->buf[len+i] = (s[i]==0 ? ' ' : s[i]);
     }
-    data->buf[len+slen] = '\0';
+    data->buf[len+slen] = 0;
     if (len > data->bufpos) {
         int rewind = len - data->bufpos;
 	slen += rewind;
@@ -1062,6 +1105,7 @@ int htmllexStop (void* scanner, UserData* data) {
     return 0;
 }
 
+/* destroy scanner when not needed any more */
 int htmllexDestroy (void* scanner) {
     yylex_destroy(scanner);
     return 0;

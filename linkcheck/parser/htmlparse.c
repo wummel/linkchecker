@@ -150,7 +150,7 @@ static PyObject* resolve_entities;
     strcmp(tag, "meta")==0 || \
     strcmp(tag, "param")==0)
 
-/* clear b to an empty string, returning NULL on error */
+/* clear buffer b, returning NULL on error */
 #define CLEAR_BUF(b) \
     b = PyMem_Resize(b, char, 1); \
     if (b==NULL) return NULL; \
