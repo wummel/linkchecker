@@ -233,9 +233,8 @@ class HtmlLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write('<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//'+
-              linkcheck.LANG+
-	      '">\n<html><head><title>'+Config.App+"</title>\n"
+        self.fd.write('<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//en">\n'+
+	      '<html><head><title>'+Config.App+"</title>\n"
 	      '<style type="text/css">\n<!--\n'
               "h2 { font-family: Verdana,sans-serif; font-size: 22pt; \n"
 	      "     font-style: bold; font-weight: bold }\n"
