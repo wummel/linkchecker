@@ -1,9 +1,5 @@
 Possible improvements people could work on:
 
-- use po4a to manage manpages
-
-- add --no-proxy-for and --low-priority to man pages
-
 - [USAGE] rethink intern/extern stuff. Especially when specifying
   --extern one should not have to also specify --intern suddenly.
 
