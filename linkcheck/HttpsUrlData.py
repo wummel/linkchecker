@@ -12,9 +12,9 @@ class HttpsUrlData(HttpUrlData):
                  recursionLevel, 
                  parentName = None,
                  baseRef = None,
-                 line = 0, _time = 0):
+                 line = 0):
         HttpUrlData.__init__(self, urlName, recursionLevel,
-                             parentName, baseRef, line, _time)
+                             parentName, baseRef, line)
 
     def _getHTTPObject(self, host):
         return httpslib.HTTPS(host)
