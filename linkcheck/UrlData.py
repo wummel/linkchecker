@@ -237,6 +237,7 @@ class UrlData (object):
 
 
     def copyFromCache (self, cacheData):
+        """fill attributes from cache data"""
         self.errorString = cacheData["errorString"]
         self.validString = cacheData["validString"]
         if self.warningString:
@@ -250,6 +251,7 @@ class UrlData (object):
 
 
     def getCacheData (self):
+        """return all data values that should be put in the cache"""
         return {"errorString": self.errorString,
                 "validString": self.validString,
                 "warningString": self.warningString,
@@ -315,6 +317,8 @@ class UrlData (object):
             debug(BRING_IT_ON, "sleeping for", self.config['wait'], "seconds")
             time.sleep(self.config['wait'])
         t = time.time()
+        if not self.checkCache():
+            return
         # apply filter
         debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern[0] and (self.config["strict"] or self.extern[1]):
