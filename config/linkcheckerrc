@@ -145,6 +145,10 @@
 # check only syntax of all mail adresses
 # extern3=^mailto: 1
 #denyallow=0
+# specify hosts to contact directly without a proxy
+# value is a regular expression
+#noproxy1=*\.intra
+#noproxy2=.*myinternurl.*
 
 # You can provide different user/password pairs for different link types.
 # Entries are a triple (link regular expression, username, password),
