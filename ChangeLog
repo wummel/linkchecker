@@ -1,6 +1,6 @@
 1.10.3 (release xx.xx.xxxx)
   * use the optparser module for command line parsing
-    Changed: linkchecker
+    Changed: linkchecker, po/*.po
   * use Set() instead of hash
     Changed: linkcheck/Config.py
 
