@@ -28,7 +28,7 @@ except OSError:
 
 lib_dir = get_python_lib(plat_specific=1)
 dest_dir = os.path.join(prg, "LinkChecker")
-pythonw = os.path.join(sys.prefix, "pythonw.exe")
+python_exe = os.path.join(sys.prefix, "python.exe")
 
 import linkcheck
 
@@ -52,7 +52,7 @@ def do_install ():
     path = os.path.join(dest_dir, "Check URL.lnk")
     script_dir = linkcheck.configdata.install_scripts
     arguments = os.path.join(script_dir, "linkchecker")
-    create_shortcut(pythonw, "Check URL", path, arguments)
+    create_shortcut(python_exe, "Check URL", path, arguments)
     file_created(path)
 
     #target = os.path.join(lib_dir,
