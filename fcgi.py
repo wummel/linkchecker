@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #------------------------------------------------------------------------
 #               Copyright (c) 1998 by Total Control Software
 #                         All Rights Reserved

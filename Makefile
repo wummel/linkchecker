@@ -9,12 +9,13 @@ PROXY=--proxy= -itreasure.calvinsplayground.de -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
 PACKAGE = linkchecker
 DEBPACKAGE = ../$(PACKAGE)_$(VERSION)_i386.deb
-SRCPACKAGE = linkchecker-$(VERSION).tar.gz
+SRCPACKAGE = dist/LinkChecker-$(VERSION).tar.gz
 #RPMPATH=build/bdist.linux2/rpm
 #RPMPACKAGE=$(RPMPATH)/RPMS/i386/$(PACKAGE)-$(VERSION)-1.i386.rpm
 #SRPMPACKAGE=$(RPMPATH)/SRPMS/$(PACKAGE)-$(VERSION)-1.src.rpm
 ALLPACKAGES = $(DEBPACKAGE) $(SRCPACKAGE) #$(RPMPACKAGE) $(SRPMPACKAGE)
-SOURCES = linkcheck/Config.py \
+SOURCES = \
+linkcheck/Config.py.tmpl \
 linkcheck/FileUrlData.py \
 linkcheck/FtpUrlData.py \
 linkcheck/GopherUrlData.py \
@@ -31,21 +32,30 @@ linkcheck/Threader.py \
 linkcheck/UrlData.py \
 linkcheck/__init__.py.tmpl \
 linkcheck/lc_cgi.py \
-linkchecker
+linkchecker.tmpl
+
+TEMPLATEFILES = \
+README \
+linkcheck/Config.py \
+linkcheck/__init__.py \
+install.py \
+linkchecker \
+linkchecker.bat
 
 DESTDIR=/.
 .PHONY: test clean files homepage dist install all
-TAR = tar
-ZIP = zip
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
 	python setup.py clean --all
-	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
-dist:	mo version
+distclean:	clean
+	rm -rf dist
+	rm -f $(DEBPACKAGE) $(PACKAGE)-out.* $(TEMPLATEFILES) VERSION
+
+dist:	mo
 	python setup.py sdist #bdist_rpm
 	fakeroot debian/rules binary
 
@@ -56,10 +66,10 @@ packages:	dist
 files:
 	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
-version:
+VERSION: setup.py
 	echo $(VERSION) > VERSION
 
-upload: files packages
+upload: files packages VERSION
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
 	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/linkchecker/htdocs
 	scp VERSION shell1.sourceforge.net:/home/groups/linkchecker/htdocs/raw/

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ## vim:ts=4:et:nowrap
 """i18n (multiple language) support.  Reads .mo files from GNU gettext msgfmt
 
