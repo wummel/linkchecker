@@ -1,3 +1,9 @@
+1.13.2
+  * Fix permissions of data files on install to be world readable.
+    Type: bugfix
+    Closes: SF bug #1022132
+    Changed: setup.py
+
 1.13.1 "Old men in new cars" (released 3.9.2004)
   * Fixed RPM generation by adding the generated config file to the
     installed files list.
