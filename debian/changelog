@@ -1,3 +1,9 @@
+linkchecker (1.2.5) unstable; urgency=low
+
+  * fix /etc/resolv.conf parsing again (this time for real)
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 21 Aug 2000 23:59:35 +0200
+
 linkchecker (1.2.4) unstable; urgency=low
 
   * fixed parsing of /etc/resolv.conf with empty lines

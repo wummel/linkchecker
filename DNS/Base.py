@@ -17,10 +17,8 @@ def ParseResolvConf():
     global defaults
     lines=open("/etc/resolv.conf").readlines()
     for line in lines:
-	string.strip(line)
-        if not line:
-            continue
-	if line[0]==';' or line[0]=='#':
+	line = string.strip(line)
+	if (not line) or line[0]==';' or line[0]=='#':
 	    continue
 	fields=string.split(line)
 	if fields[0]=='domain':
