@@ -6,14 +6,15 @@ MSGFMT=$(PYTHON) $(I18NTOOLS)/msgfmt.py
 #MSGFMT=msgfmt
 MSGMERGE=msgmerge
 SOURCES=\
+../linkcheck/AnsiColor.py \
 ../linkcheck/Config.py \
 ../linkcheck/FileUrlData.py \
-../linkcheck/IgnoredUrlData.py \
 ../linkcheck/FtpUrlData.py \
 ../linkcheck/GopherUrlData.py \
 ../linkcheck/HostCheckingUrlData.py \
 ../linkcheck/HttpUrlData.py \
 ../linkcheck/HttpsUrlData.py \
+../linkcheck/IgnoredUrlData.py \
 ../linkcheck/log/__init__.py \
 ../linkcheck/log/Logger.py \
 ../linkcheck/log/BlacklistLogger.py \
@@ -27,10 +28,13 @@ SOURCES=\
 ../linkcheck/MailtoUrlData.py \
 ../linkcheck/NntpUrlData.py \
 ../linkcheck/ProxyUrlData.py \
+../linkcheck/StringUtil.py \
 ../linkcheck/TelnetUrlData.py \
 ../linkcheck/Threader.py \
 ../linkcheck/UrlData.py \
 ../linkcheck/__init__.py \
+../linkcheck/debug.py \
+../linkcheck/i18n.py \
 ../linkcheck/lc_cgi.py \
 ../linkcheck/linkname.py \
 ../linkcheck/linkparse.py \

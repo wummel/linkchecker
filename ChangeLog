@@ -9,6 +9,9 @@
   * added another url exclusion example to the FAQ
     numerate questions and answers
     Changed files: FAQ
+  * fix linkchecker exceptions
+    Changed files: linkcheck/{Ftp,Mailto,Nntp,Telnet,}UrlData.py,
+      linkcheck/__init__.py
 
 1.8.4
   * Improve error message for failing htmlsax module import

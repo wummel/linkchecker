@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Jan 13 01:50:34 2003\n"
+"POT-Creation-Date: Wed Jan 22 20:55:19 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -620,9 +620,3 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
-
-#~ msgid "Warning: %s"
-#~ msgstr "Waarschuwing: %s"
-
-#~ msgid "Error: %s"
-#~ msgstr "Fout: %s"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Jan 13 01:50:34 2003\n"
+"POT-Creation-Date: Wed Jan 22 20:55:19 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -19,7 +19,7 @@ msgid "illegal recursionlevel number %d"
 msgstr "illegale recursionlevel Nummer %d"
 
 msgid "extern%d: syntax error %s\n"
-msgstr ""
+msgstr "extern%d: Syntaxfehler %s\n"
 
 msgid "No user or password found"
 msgstr "Kein Benutzername oder Passwort gefunden"
@@ -637,9 +637,3 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
-
-#~ msgid "Warning: %s"
-#~ msgstr "Warnung: %s"
-
-#~ msgid "Error: %s"
-#~ msgstr "Fehler: %s"

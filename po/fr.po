@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Jan 13 01:50:34 2003\n"
+"POT-Creation-Date: Wed Jan 22 20:55:19 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -604,9 +604,3 @@ msgstr "aucun fichier ou url donnée"
 
 msgid "Hit RETURN to finish"
 msgstr ""
-
-#~ msgid "Warning: %s"
-#~ msgstr "Avertissement: %s"
-
-#~ msgid "Error: %s"
-#~ msgstr "Erreur: %s"
