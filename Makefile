@@ -23,7 +23,7 @@ clean:
 
 distclean: clean cleandeb
 	rm -rf dist build # just to be sure clean also the build dir
-	rm -f VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
+	rm -f VERSION VERSION-DEVEL _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 	# clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-*
 
@@ -97,3 +97,4 @@ tar:	distclean
 
 .PHONY: all clean cleandeb distclean files upload test timeouttest locale
 .PHONY: onlinetest config dist deb_local deb_signed deb_unsigned tar
+.PHONY: upload-devel
