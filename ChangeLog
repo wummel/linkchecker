@@ -1,3 +1,13 @@
+1.13.1 "" (released xx.xx.xxxx)
+  * fixed RPM generation by adding the generated config file to the
+    installed files list
+    Type: bugfix
+    Changed: setup.py
+
+  * mention to remove old versions when upgrading in the documentation
+    Type: documentation
+    Changed: doc/upgrading.txt, doc/install.txt
+
 1.13.0 "The Butterfly Effect" (released 1.9.2004)
   * lots of internal code restructuring
     Type: code cleanup
