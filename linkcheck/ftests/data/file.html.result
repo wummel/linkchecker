@@ -9,28 +9,28 @@ real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name relative url
 valid
 
-url 'file.html#isnix'
-cache key file://%(curdir)s/linkcheck/ftests/data/file.html#isnix
+url 'file.html#isnix' (cached)
+cache key file://%(curdir)s/linkcheck/ftests/data/file.html
 real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name bad anchor
 warning anchor #isnix not found
 valid
 
-url 'file.html#iswas'
-cache key file://%(curdir)s/linkcheck/ftests/data/file.html#iswas
+url 'file.html#iswas' (cached)
+cache key file://%(curdir)s/linkcheck/ftests/data/file.html
 real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name good anchor
 valid
 
 url '#isnix' (cached)
-cache key file://%(curdir)s/linkcheck/ftests/data/file.html#isnix
+cache key file://%(curdir)s/linkcheck/ftests/data/file.html
 real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name bad anchor
 warning anchor #isnix not found
 valid
 
 url '#iswas' (cached)
-cache key file://%(curdir)s/linkcheck/ftests/data/file.html#iswas
+cache key file://%(curdir)s/linkcheck/ftests/data/file.html
 real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name good anchor
 valid
