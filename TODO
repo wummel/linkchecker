@@ -1,3 +1,5 @@
+- print "I am alive" message
+
 possible Python 2.3 improvements (ie needs Python >= 2.3)
 - get rid of timeoutsocket.py, the default socket has timeouts
 - use optparse instead of getopt with more flexible commandline help
