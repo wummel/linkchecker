@@ -158,11 +158,14 @@ if os.name=='nt':
     # windows does not have unistd.h
     macros = [('YY_NO_UNISTD_H', None)]
     cargs = []
+    # add post-install script for the bdist_wininst command
+    scripts = ['linkchecker', 'install-linkchecker.py'],
 else:
     macros = []
     # for gcc 3.x we could add -std=gnu99 to get rid of warnings, but
     # that breaks other compilers
     cargs = ["-pedantic"]
+    scripts = ['linkchecker'],
 
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
@@ -211,8 +214,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                   include_dirs = ["linkcheck/HtmlParser"],
                   define_macros = macros,
                   )],
-
-       scripts = ['linkchecker'],
+       scripts = scripts,
        data_files = [
          ('share/locale/de/LC_MESSAGES',
              ['share/locale/de/LC_MESSAGES/linkcheck.mo']),
