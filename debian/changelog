@@ -1,8 +1,10 @@
 linkchecker (1.13.3-1) unstable; urgency=low
 
   * New upstream release.
+  * of course the last entry meant 'move old config file' instead of
+    'move old logfiles'
 
- -- Bastian Kleineidam <calvin@debian.org>  Fri, 10 Sep 2004 09:07:21 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Fri, 10 Sep 2004 09:53:48 +0200
 
 linkchecker (1.13.2-1) unstable; urgency=low
 
