@@ -36,6 +36,8 @@ import Config, UrlData, sys, lc_cgi
 from debuglevels import *
 debug = Config.debug
 
+
+# main check function
 def checkUrls(config):
     """ checkUrls gets a complete configuration object as parameter where all
     runtime-dependent options are stored.

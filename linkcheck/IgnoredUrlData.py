@@ -56,6 +56,6 @@ acap        # application configuration access protocol
 class IgnoredUrlData(UrlData):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 
-    def check(self, config):
+    def _check(self, config):
         self.setWarning(_("%s url ignored")%self.scheme.capitalize())
         self.logMe(config)

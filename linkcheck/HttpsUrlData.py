@@ -32,9 +32,9 @@ class HttpsUrlData(HttpUrlData):
         return h
 
 
-    def check(self, config):
+    def _check(self, config):
         if _supportHttps:
-            HttpUrlData.check(self, config)
+            HttpUrlData._check(self, config)
         else:
             self.setWarning(_("HTTPS url ignored"))
             self.logMe(config)

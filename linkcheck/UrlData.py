@@ -21,6 +21,35 @@ debug = Config.debug
 from linkcheck import _
 from debuglevels import *
 
+# helper function for internal errors
+def internal_error ():
+    print >> sys.stderr, _("""\n********** Oops, I did it again. *************
+
+You have found an internal error in LinkChecker.
+Please write a bug report to %s and include
+the following information.
+If you disclose some information because its too private to you thats ok.
+I will try to help you nontheless (but you have to give me *something*
+I can work with ;).
+""") % Config.Email
+    import traceback
+    traceback.print_exc()
+    print_app_info()
+    print >> sys.stderr, _("\n******** LinkChecker internal error, bailing out ********")
+    sys.exit(1)
+
+
+def print_app_info ():
+    import os
+    print >> sys.stderr, _("System info:")
+    print >> sys.stderr, Config.App
+    print >> sys.stderr, "Python %s on %s" % (sys.version, sys.platform)
+    for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
+        value = os.getenv(key)
+        if value is not None:
+            print >> sys.stderr, key, "=", `value`
+
+
 # we catch these exceptions, all other exceptions are internal
 # or system errors
 ExcList = [
@@ -207,6 +236,14 @@ class UrlData:
 
 
     def check(self, config):
+        try:
+            self._check(config)
+        except KeyboardInterrupt:
+            pass
+        except:
+            internal_error()
+
+    def _check(self, config):
         debug(BRING_IT_ON, "Checking", self)
         if self.recursionLevel and config['wait']:
             debug(BRING_IT_ON, "sleeping for", config['wait'], "seconds")
