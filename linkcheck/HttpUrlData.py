@@ -122,7 +122,7 @@ class HttpUrlData(UrlData):
         if not self.data:
             self.closeConnection()
             t = time.time()
-            self._getHttpRequest("GET")
+            status, statusText, self.mime = self._getHttpRequest("GET")
             self.urlConnection = self.urlConnection.getfile()
             self.data = StringUtil.stripHtmlComments(self.urlConnection.read())
             self.downloadtime = time.time() - t

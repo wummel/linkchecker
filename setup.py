@@ -13,9 +13,7 @@ setup (name = "linkchecker",
        # uncomment ext_modules to enable HTTPS support
        # you must have an SSL library and the Python header
        # files installed
-       #ext_modules = [('ssl', {'sources': ['ssl.c'],
-       #                 'include_dirs': ['/usr/include/openssl'],
-       #                 'libs': ['ssl']})],
-       scripts = [('linkchecker.bat', 'nt')],
-       programs = ['linkchecker'],
+       ext_modules = [('ssl', {'sources': ['ssl.c'],
+                        'include_dirs': ['/usr/include/openssl'],
+                        'libs': ['ssl']})],
        )

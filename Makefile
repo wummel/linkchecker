@@ -19,10 +19,10 @@ clean:
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 install:
-	./setup.py install --destdir=$(DESTDIR)
+	./setup.py install --prefix=/tmp/usr --exec-prefix=/tmp/usr
+	cp -a /tmp/usr/* $(DESTDIR)/usr
 	install -c -m 644 linkcheckerrc $(DESTDIR)/etc
 	install -c -m 644 DNS/README $(DESTDIR)/usr/share/doc/$(PACKAGE)/README.dns
-	install -c -m 644 distutils/README $(DESTDIR)/usr/share/doc/$(PACKAGE)/README.distutils
 
 dist:
 	./setup.py sdist

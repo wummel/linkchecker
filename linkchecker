@@ -6,76 +6,76 @@ if sys.version[:5] < "1.5.2":
     print "This program requires Python 1.5.2 or later."
     sys.exit(1)
 
-# add the path to linkcheck module if you install it manually somewhere
-#sys.path.append("/home/calvin/projects/linkchecker")
+# add the path to linkcheck module if you do not install with distutils
+sys.path.append("/home/calvin/projects/linkchecker")
 import getopt,re,string,linkcheck
 
 Usage = """USAGE\tlinkchecker [options] file_or_url...
 
 OPTIONS
 -a, --anchors
-	Check anchor references. Default is don't check anchors.
+        Check anchor references. Default is don't check anchors.
 -D, --debug
-	Print additional debugging information.
+        Print additional debugging information.
 -e regex, --extern=regex
-	Assume urls that match the given expression as extern.
-	Only intern HTTP links are checked recursively.
+        Assume urls that match the given expression as extern.
+        Only intern HTTP links are checked recursively.
 -f file, --config=file
-	Use file as configuration file. Pylice first searches
-	~/.linkcheckerrc and then /etc/linkcheckerrc
-	(under Windows <path-to-program>\\linkcheckerrc).
+        Use file as configuration file. Pylice first searches
+        ~/.linkcheckerrc and then /etc/linkcheckerrc
+        (under Windows <path-to-program>\\linkcheckerrc).
 -F name, --file-output=name
-	Same as output, but write to a file linkchecker-out.<name>.
-	If the file already exists, it is overwritten.
-	You can specify this option more than once.
-	Default is no file output.
+        Same as output, but write to a file linkchecker-out.<name>.
+        If the file already exists, it is overwritten.
+        You can specify this option more than once.
+        Default is no file output.
 -i regex, --intern=regex
-	Assume urls that match the given expression as intern.
+        Assume urls that match the given expression as intern.
 -h, --help
-	Help me! Print usage information for this program.
+        Help me! Print usage information for this program.
 -l, --allowdeny
-	Swap checking order to intern/extern. Default checking order
-	is extern/intern.
+        Swap checking order to intern/extern. Default checking order
+        is extern/intern.
 -o name, --output=name
-	Specify output as """+linkcheck.Config.LoggerKeys+""".
-	Default is text.
+        Specify output as """+linkcheck.Config.LoggerKeys+""".
+        Default is text.
 -p pwd, --password=pwd
-	Try given password for HTML and FTP authorization.
-	Default is 'guest@'. See -u.
+        Try given password for HTML and FTP authorization.
+        Default is 'guest@'. See -u.
 -P host[:port], --proxy=host[:port]
-	Use specified proxy for HTTP requests.
-	Standard port is 8080. Default is to use no proxy.
+        Use specified proxy for HTTP requests.
+        Standard port is 8080. Default is to use no proxy.
 -q, --quiet
-	Quiet operation. This is only useful with -F.
+        Quiet operation. This is only useful with -F.
 -r depth, --recursion-level=depth
-	Check recursively all links up to given depth (depth >= 0).
-	Default depth is 1.
+        Check recursively all links up to given depth (depth >= 0).
+        Default depth is 1.
 -R, --robots-txt
-	Obey the robots exclusion standard.
+        Obey the robots exclusion standard.
 -s, --strict
-	Check only syntax of extern links, do not try to connect to them.
+        Check only syntax of extern links, do not try to connect to them.
 -t num, --threads=num
-	Generate no more than num threads. Default number of threads is 5.
-	To disable threading specify a non-positive number.
+        Generate no more than num threads. Default number of threads is 5.
+        To disable threading specify a non-positive number.
 -u name, --user=name
-	Try given username for HTML and FTP authorization.
-	Default is 'anonymous'. See -p.
+        Try given username for HTML and FTP authorization.
+        Default is 'anonymous'. See -p.
 -V, --version
-	Print version and exit.
+        Print version and exit.
 -v, --verbose
-	Log all checked URLs (implies -w). Default is to log only invalid
-	URLs.
+        Log all checked URLs (implies -w). Default is to log only invalid
+        URLs.
 -w, --warnings
-	Log warnings.
+        Log warnings.
 -W, --warning-regex
-	Define a regular expression which prints a warning if it matches
-	any content of the checked link.
-	This applies of course only to pages which are valid, so we can
-	get their content.
-	You can use this to check for pages that contain some form of
-	error message, for example "This page has moved" or
-	"Oracle Application Server error".
-        Implies -w.
+        Define a regular expression which prints a warning if it matches
+        any content of the checked link.
+        This applies of course only to pages which are valid, so we can
+        get their content.
+        You can use this to check for pages that contain some form of
+        error message, for example "This page has moved" or
+        "Oracle Application Server error".
+        This option implies -w.
 """
 
 Notes = """NOTES
@@ -89,7 +89,8 @@ o If you have your system configured to automatically establish a
 o Javascript links are currently ignored
 o If your platform does not support threading, linkchecker assumes -t0
 o You can supply multiple user/password pairs in a configuration file
-o Cookies are not accepted by LinkChecker.
+o Cookies are not accepted by LinkChecker and never will be. Cookies
+  are dumb. Use Zope with session support!
 """
 
 Examples = """EXAMPLES

@@ -1,3 +1,6 @@
+30.3.2000 Version 1.1.4
+	* fixed missing self.mime assignment in HttpUrlData.py
+
 28.3.2000
 	* fixed wrong position of configuration file option in Config.py
 	* option -W is now -F, -W is a new option for inspecting

@@ -1,4 +1,4 @@
-import telnetlib,re
+import telnetlib,re,string
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import LinkCheckerException
 
