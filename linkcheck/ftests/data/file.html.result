@@ -35,12 +35,6 @@ real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name good anchor
 valid
 
-url hutzli:nixgutt
-cache key hutzli:nixgutt
-real url hutzli:nixgutt
-name bad scheme
-error
-
 url javascript:loadthis()
 cache key javascript:loadthis()
 real url javascript:loadthis()
