@@ -95,7 +95,8 @@ class Logger (object):
             self.comment(msg % (now.year - 2000))
 
     def comment (self, s, **args):
-        """Print given comment and a newline."""
+        """Print a comment and a newline. This method just prints
+           the given string."""
         self.writeln(s=s, **args)
 
     def wrap (self, lines, width):
