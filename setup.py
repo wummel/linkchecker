@@ -48,20 +48,29 @@ class MyInstall(install):
         from pprint import pformat
         data.append('outputs = %s' % pformat(self.get_outputs()))
 	self.distribution.create_conf_file(self.install_lib, data)
-        # copy batch file to desktop
         if os.name=="nt":
+            # copy batch file to desktop
             path = self.install_scripts
             if os.environ.has_key("ALLUSERSPROFILE"):
                 path = os.path.join(os.environ["ALLUSERSPROFILE"], "Desktop")
             elif os.environ.has_key("USERPROFILE"):
                 path = os.path.join(os.environ["USERPROFILE"], "Desktop")
+            filename = os.path.join(path, "linkchecker.bat")
             data = open("linkchecker.bat").readlines()
             data = map(string.strip, data)
             data = map(lambda s: s.replace("$python", sys.executable), data)
             data = map(lambda s, self=self: s.replace("$install_scripts",
               self.install_scripts), data)
-            self.distribution.create_batch_file(path, data)
-
+            self.distribution.create_file(filename, data)
+            # copy README file to desktop
+            path = self.install_data
+            if os.environ.has_key("ALLUSERSPROFILE"):
+                path = os.path.join(os.environ["ALLUSERSPROFILE"], "Desktop")
+            elif os.environ.has_key("USERPROFILE"):
+                path = os.path.join(os.environ["USERPROFILE"], "Desktop")
+            filename = os.path.join(directory, "LinkChecker_Readme.txt")
+            data = open("README").read()
+            self.distribution.create_file(filename, data)
 
     # sent a patch for this, but here it is for compatibility
     def dump_dirs (self, msg):
@@ -82,21 +91,18 @@ class MyInstall(install):
                 print "  %s: %s" % (opt_name, val)
 
 
-
 class MyDistribution(Distribution):
     def __init__(self, attrs=None):
         Distribution.__init__(self, attrs=attrs)
         self.config_file = "_"+self.get_name()+"_configdata.py"
 
-
     def run_commands(self):
         cwd = os.getcwd()
         data = []
-	data.append('config_dir = %s' % `os.path.join(cwd, "config")`)
+        data.append('config_dir = %s' % `os.path.join(cwd, "config")`)
         data.append("install_data = %s" % `cwd`)
         self.create_conf_file("", data)
         Distribution.run_commands(self)
-
 
     def create_conf_file(self, directory, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
@@ -117,10 +123,8 @@ class MyDistribution(Distribution):
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
-
-    def create_batch_file(self, directory, data):
-        filename = os.path.join(directory, "linkchecker.bat")
-        # write the batch file
+    def create_file(self, filename, data):
+        # write the file
         util.execute(write_file, (filename, data),
                  "creating %s" % filename, self.verbose>=1, self.dry_run)
 

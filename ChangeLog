@@ -5,3 +5,4 @@
     changes, see debian/changelog.
   * Default socket timeout is now 10 seconds
   * updated linkcheck/timeoutsocket.py to newest version
+  * updated README and INSTALL

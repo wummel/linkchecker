@@ -24,6 +24,24 @@ Installing, Requirements, Running
 Read the file INSTALL.
 
 
+Running the program
+-------------------
+o Unix platforms
+  The local configuration file is $HOME/.linkcheckerrc
+  Type "linkchecker" followed by your URLs you want to check.
+  Type "linkchecker -h" for help.
+
+o Windows platforms
+  Double-click on "linkchecker.bat" on your desktop.
+  URL input is interactive.
+  Another way is executing "python.exe linkchecker" in the Python
+  Scripts directory.
+
+o MacOS 9.x platforms
+  Read the MacOS Python documentation to find out about passing
+  commandline options to Python scripts.
+
+
 License and Credits
 -------------------
 LinkChecker is licensed under the GNU Public License.

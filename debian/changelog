@@ -1,8 +1,8 @@
 linkchecker (1.6.1-1) unstable; urgency=low
 
-  * New upstream release, and made this non-native debian package.
+  * New upstream release, and made this a non-native debian package.
   * Standards version 3.5.7.0, no changes
-  * Depend on Python version 2.1
+  * Depend on Python version 2.1 (Closes: #159069)
 
  -- Bastian Kleineidam <calvin@debian.org>  Tue, 27 Aug 2002 00:10:20 +0200
 
