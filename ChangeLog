@@ -36,6 +36,10 @@
     Type: bugfix
     Changed: linkcheck/url.py, linkcheck/checker/*.py
 
+  * Use correct FTP directory list parsing.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
 2.0rc2 "El día de la bestia" (released 20.11.2004)
 
   * encode version string for --version output
