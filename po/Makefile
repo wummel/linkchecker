@@ -15,7 +15,7 @@ mofiles:
 	  if [ ! -d $(LDIR)/$$la/LC_MESSAGES ]; then \
 	    mkdir -p $(LDIR)/$$la/LC_MESSAGES; \
 	  fi; \
-	  $(MSGFMT) -o $(LDIR)/$$la/$(LFILE) $$l.po; \
+	  $(MSGFMT) -o $(LDIR)/$$la/$(LFILE) $$la.po; \
 	done
 
 %.po:	$(PACKAGE).pot
