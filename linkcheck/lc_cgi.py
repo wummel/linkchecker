@@ -57,15 +57,17 @@ def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
 
 def checklink (out=sys.stdout, form={}, env=os.environ):
     """main cgi function, check the given links and print out the result"""
-    try: checkform(form)
+    try:
+        checkform(form)
     except FormError, why:
         logit(form, env)
         print_error(out, why)
         return
+    import linkcheck.configuration
     config = linkcheck.configuration.Configuration()
     config["recursionlevel"] = int(form["level"].value)
-    config["log"] = config.newLogger('html', {'fd': out})
-    config.setThreads(0)
+    config["logger"] = config.logger_new('html', fd=out)
+    config["threads"] = 0
     if form.has_key('externstrictall'):
         config['externstrictall'] = True
     if form.has_key("anchors"):
@@ -81,11 +83,16 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     config["externlinks"].append(
              linkcheck.get_link_pat("^%s$" % linkcheck.url.safe_url_pattern))
     config["externlinks"].append(linkcheck.get_link_pat(".*", strict=True))
-    # start checking
     import linkcheck.checker
-    config.appendUrl(
-              linkcheck.checker.get_url_from(form["url"].value, 0, config))
-    linkcheck.checkUrls(config)
+    import linkcheck.checker.cache
+    import linkcheck.checker.consumer
+    cache = linkcheck.checker.cache.Cache()
+    consumer = linkcheck.checker.consumer.Consumer(config, cache)
+    # start checking
+    url = form["url"].value
+    url_data = linkcheck.checker.get_url_from(url, 0, consumer))
+    consumer.append_url(url_data)
+    linkcheck.checker.check_urls(consumer)
 
 
 def get_host_name (form):
