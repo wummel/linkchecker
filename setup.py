@@ -47,6 +47,8 @@ cc = os.environ.get("CC")
 win_python_dir = "/home/calvin/src/python23-maint-cvs/dist/src/"
 # if we are compiling for or under windows
 win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
+# releases supporting our special .cmd files
+win_cmd_releases = ['NT', 'XP', '2000', '2003Server']
 
 
 def normpath (path):
@@ -101,6 +103,7 @@ class MyInstall (install, object):
         return outs
 
     # compatibility bugfix for Python << 2.5, << 2.4.1, << 2.3.5
+    # remove this method when depending on one of the above versions
     def dump_dirs (self, msg):
         if DEBUG:
             from distutils.fancy_getopt import longopt_xlate
@@ -203,7 +206,7 @@ class MyBuildScripts (build_scripts, object):
 
         if adjust:
             if platform.system() == 'Windows' and \
-               platform.release() in ['NT', 'XP'] and \
+               platform.release() in win_cmd_releases and \
                not outfile.endswith(".cmd"):
                 outfile += ".cmd"
             self.adjust(f, script, post_interp, outfile)
@@ -405,8 +408,6 @@ libraries = []
 scripts = ['linkchecker']
 if win_compiling:
     scripts.append('install-linkchecker.py')
-# for MyInstallScripts
-cmd_scripts = ['linkchecker']
 
 if os.name == 'nt':
     # windows does not have unistd.h

@@ -75,13 +75,15 @@ Running under Windows platforms
 Start "Check URL" in your LinkChecker program group.
 URL input is interactive.
 
-Another way is executing on the command line. On Windows NT and XP,
-you can run ``linkchecker`` in the Python Scripts directory (eg.
-``c:\Python24\Scripts\``). If you put the Python Scripts directory in
-your ``PATH`` Environment variable, you can just run ``linkchecker``.
+Another way is executing on the command line.
+If there is a file ``linkchecker.cmd`` in your Python Scripts directory
+you can run eg. ``c:\Python24\Scripts\linkchecker.cmd``.
+If you put the Python Scripts directory in your ``PATH`` Environment
+variable, you can just run ``linkchecker``.
 
-Other Windows systems need to prefix the Python interpreter (eg.
-``c:\Python24\python.exe c:\Python24\Scripts\linkchecker``).
+If there is only a ``linkchecker`` file in your Python Scripts
+directory, you have to run eg.
+``c:\Python24\python.exe c:\Python24\Scripts\linkchecker``.
 
 
 Running under Mac OS 9.x platforms
