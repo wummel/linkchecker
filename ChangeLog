@@ -1,6 +1,6 @@
 1.8.10
   * new option --no-anchor-caching
-    Changed files: linkchecker, linkcheck/{Config.py, UrlData.py}
+    Changed files: linkchecker, linkcheck/{Config.py, UrlData.py}, FAQ
   * quote empty attribute arguments
     Changed files: linkcheck/parser/htmllex.[lc]
 
