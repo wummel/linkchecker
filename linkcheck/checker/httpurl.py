@@ -341,15 +341,16 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                        _("Access denied by robots.txt, checked only syntax."))
                 return -1, response
             # see about recursive redirect
-            all_seen = self.aliases + [self.cache_url_key]
+            all_seen = [self.cache_url_key] + self.aliases
             if redirected in all_seen:
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     # fall back to the original url and use GET
                     return self.max_redirects, response
+                recursion = all_seen + [redirected]
                 self.set_result(
                           _("recursive redirection encountered:\n %s") % \
-                            "\n  => ".join(all_seen), valid=False)
+                            "\n  => ".join(recursion), valid=False)
                 return -1, response
             # remember redireced url as alias
             self.aliases.append(redirected)
@@ -460,7 +461,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         else:
             path = urlparse.urlunsplit(('', '', self.urlparts[2],
                                         self.urlparts[3], anchor))
-        self.url_connection.putrequest(self.method, path, skip_host=True)
+        self.url_connection.putrequest(self.method, path, skip_host=True,
+                                       skip_accept_encoding=True)
         self.url_connection.putheader("Host", host)
         # userinfo is from http://user@pass:host/
         if self.userinfo:
