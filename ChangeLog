@@ -1,4 +1,4 @@
-1.10.4 (release xx.xx.xxxx)
+1.12.0 (release xx.xx.xxxx)
   * added LRU.setdefault function
     Changed: linkcheck/LRU.py
     Closes: SF bug 885916
@@ -11,9 +11,18 @@
     Changed: linkcheck/parser/htmllex.l
   * include the optcomplete module for bash autocompletion
     Added: linkcheck/optcomplete.py, linkcheck-completion
-    Changed: MANIFEST.in
+    Changed: MANIFEST.in, setup.py
   * print out nicer error message for unknown host names
     Changed: linkcheck/UrlData.py
+  * added new logger type "none" printing out nothing which is handy for
+    cron scripts.
+    Changed: linkchecker, linkcheck/Config.py, linkcheck/log/__init__.py
+    Added: linkcheck/log/NoneLogger.py
+  * the -F file output option disables console output now
+    Changed: linkchecker
+  * added an example cron script
+    Added: linkcheck-cron.sh
+    Changed: MANIFEST.in, setup.py
 
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing
