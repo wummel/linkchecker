@@ -1,4 +1,4 @@
-# we copied the scripts in Tools/i18n of the Python 2.0 distribution
+# I copied the scripts in Tools/i18n of the Python 2.0 distribution
 I18NTOOLS=.
 PYTHON=python2.1
 GETTEXT=$(PYTHON) $(I18NTOOLS)/pygettext.py
@@ -25,12 +25,12 @@ SOURCES=\
 ../linkchecker
 LDIR=../share/locale
 LFILE=LC_MESSAGES/$(PACKAGE).mo
-MOS=$(LDIR)/de/$(LFILE) $(LDIR)/fr/$(LFILE)
+MOS=$(LDIR)/de/$(LFILE) $(LDIR)/fr/$(LFILE) $(LDIR)/nl/$(LFILE)
 PACKAGE=linkcheck
 
 .PHONY: all
 all:
-	$(MAKE) de.mo fr.mo
+	$(MAKE) de.mo fr.mo nl.mo
 
 %.po:	.time.pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@

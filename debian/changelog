@@ -1,11 +1,16 @@
-linkchecker (1.3.23) unstable; urgency=low
+linkchecker (1.4.0) unstable; urgency=low
 
   * linkcheck/linkname.py: workaround for a bug regex matching with
-    re.DOTALL. This could result in href="" names not found correctly.
+    re.DOTALL. This could lead to missing linknames, but we can parse 
+    big files (>200 links) again.
   * linkcheck/linkname.py: immediately return on <img> tags inside <a>.
-  * linkchecker: interpolate %s in help text
+  * linkchecker: interpolate %s in help text with -o output list
+  * MANIFEST.in: include .mo files in the release
+  * linkcheck/FileUrlData.py: support for URLs included in text files
+  * Added Dutch translation from Hans Brausewein
+    <hans.bausewein@comerwell.xs4all.nl>.
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed, 13 Mar 2002 21:31:57 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 14 Mar 2002 22:28:45 +0100
 
 linkchecker (1.3.22) unstable; urgency=low
 
