@@ -29,6 +29,7 @@ def get_test_consumer ():
     Initialize a test configuration object.
     """
     config = linkcheck.configuration.Configuration()
+    config['logger'] = config.logger_new('none')
     cache = linkcheck.checker.cache.Cache()
     return linkcheck.checker.consumer.Consumer(config, cache)
 

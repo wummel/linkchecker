@@ -29,13 +29,14 @@ class TestLinkparser (unittest.TestCase):
 
     def _test_one_link (self, content, url):
         h = linkcheck.linkparse.LinkFinder(content)
+        self.assertEqual(len(h.urls), 0)
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
         p.feed(content)
         p.flush()
         h.parser = None
         p.handler = None
-        self.assert_(len(h.urls) == 1)
+        self.assertEqual(len(h.urls), 1)
         purl = h.urls[0][0]
         self.assertEqual(purl, url)
 
@@ -43,36 +44,36 @@ class TestLinkparser (unittest.TestCase):
         """
         Test <a href> parsing.
         """
-        content = '<a href="%s">'
-        url = "alink"
+        content = u'<a href="%s">'
+        url = u"alink"
         self._test_one_link(content % url, url)
-        url = " alink"
+        url = u" alink"
         self._test_one_link(content % url, url)
-        url = "alink "
+        url = u"alink "
         self._test_one_link(content % url, url)
-        url = " alink "
+        url = u" alink "
         self._test_one_link(content % url, url)
 
     def test_css_parsing (self):
         """
         Test css style attribute parsing.
         """
-        content = '<table style="background: url(%s) no-repeat" >'
-        url = "alink"
+        content = u'<table style="background: url(%s) no-repeat" >'
+        url = u"alink"
         self._test_one_link(content % url, url)
-        content = '<table style="background: url( %s) no-repeat" >'
+        content = u'<table style="background: url(%s) no-repeat" >'
         self._test_one_link(content % url, url)
-        content = '<table style="background: url(%s ) no-repeat" >'
+        content = u'<table style="background: url(%s ) no-repeat" >'
         self._test_one_link(content % url, url)
-        content = '<table style="background: url( %s ) no-repeat" >'
+        content = u'<table style="background: url( %s ) no-repeat" >'
         self._test_one_link(content % url, url)
-        content = '<table style="background: url(\'%s\') no-repeat" >'
+        content = u'<table style="background: url(\'%s\') no-repeat" >'
         self._test_one_link(content % url, url)
-        content = "<table style='background: url(\"%s\") no-repeat' >"
+        content = u"<table style='background: url(\"%s\") no-repeat' >"
         self._test_one_link(content % url, url)
-        content = '<table style="background: url(\'%s\' ) no-repeat" >'
+        content = u'<table style="background: url(\'%s\' ) no-repeat" >'
         self._test_one_link(content % url, url)
-        content = "<table style='background: url( \"%s\") no-repeat' >"
+        content = u"<table style='background: url( \"%s\") no-repeat' >"
         self._test_one_link(content % url, url)
 
 
