@@ -1,10 +1,27 @@
-"""Bastis winreg module to wrap the inconvenient _winreg module"""
+"""_winreg convenience wrapper (currently readonly)"""
+# Copyright (C) 2001  Bastian Kleineidam (except helper functions below)
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
 
 # import all from _winreg
 from _winreg import *
 from types import StringType
 
 class key_handle:
+    """represent an opened key with dictionary-like access"""
     def __init__(self, key, sub_key):
         self._key = OpenKey(key, sub_key)
 
@@ -24,25 +41,34 @@ class key_handle:
             return default
 
     def subkeys(self):
+        """get the list of subkeys as key_handle objects"""
         i = 0
         keys = []
         while 1:
             try:
-                keys.append(OpenKey(self._key, EnumKey(self._key, i)))
+                print repr(EnumKey(self._key, i))
+                keys.append(key_handle(self._key, EnumKey(self._key, i)))
             except EnvironmentError:
                 break
+            i += 1
         return keys
+
 
     def __len__(self):
         return QueryInfoKey(self._key)[0]
 
+
     def __setitem__(self, key, value):
+        """XXX to be implemented"""
         pass
+
 
     def __delitem__(self, key):
+        """XXX to be implemented"""
         pass
 
 
+#################################################################
 # helper functions from pydns at sourceforge
 # (c) 2001 Copyright by Wolfgang Strobl ws@mystrobl.de,
 #          License analog to the current Python license

@@ -10,8 +10,7 @@ linkchecker (1.3.6) unstable; urgency=low
     to hang forever (dont know why). This should fix bug #106393, but
     only time and tests will tell.
   * updated DNS.init_dns_config with Windows-specific functions from
-    pydns.sf.net (only tested under Win2000 with DNS server settings
-    over DHCP)
+    pydns.sf.net (tested under Win2000)
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 22 Aug 2001 19:34:13 +0200
 
