@@ -20,4 +20,8 @@ clean:
 apidocs:
 	epydoc --html -o api --name "LinkChecker source documentation" --url ../index.html ../linkcheck/
 
-.PHONY: all clean homepage nav apidocs
+po4a:
+	po4a po4a.conf
+
+.PHONY: all clean homepage nav apidocs po4a
+
