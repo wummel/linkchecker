@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-06-03 14:59+0200\n"
+"POT-Creation-Date: 2000-06-18 14:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,8 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: linkcheck/Logging.py:134 linkcheck/Logging.py:226
+#: linkcheck/Logging.py:134 linkcheck/Logging.py:140 linkcheck/Logging.py:226
+#: linkcheck/Logging.py:248
 msgid ""
 "\n"
 "Thats it. "
@@ -25,11 +26,13 @@ msgstr ""
 msgid " (%.3f seconds)"
 msgstr " (%.3f Sekunden)"
 
-#: linkcheck/Logging.py:95 linkcheck/Logging.py:179 linkcheck/Logging.py:282
+#: linkcheck/Logging.py:95 linkcheck/Logging.py:101 linkcheck/Logging.py:179
+#: linkcheck/Logging.py:199 linkcheck/Logging.py:282 linkcheck/Logging.py:320
 msgid " (cached)\n"
 msgstr " (aus dem Cache)\n"
 
-#: linkcheck/Logging.py:143 linkcheck/Logging.py:234
+#: linkcheck/Logging.py:143 linkcheck/Logging.py:149 linkcheck/Logging.py:234
+#: linkcheck/Logging.py:256
 msgid " errors"
 msgstr " Fehler"
 
@@ -40,25 +43,38 @@ msgstr " gefunden"
 msgid " found.\n"
 msgstr " gefunden.\n"
 
-#: linkcheck/Logging.py:139 linkcheck/Logging.py:230
+#: linkcheck/Logging.py:153 linkcheck/Logging.py:260
+#, c-format
+msgid " in %d links found\n"
+msgstr " in %d Verweisen gefunden\n"
+
+#: linkcheck/Logging.py:151 linkcheck/Logging.py:258
+msgid " in 1 link found\n"
+msgstr " in 1 Verweis gefunden\n"
+
+#: linkcheck/Logging.py:139 linkcheck/Logging.py:145 linkcheck/Logging.py:230
+#: linkcheck/Logging.py:252
 msgid " warnings, "
 msgstr " Warnungen, "
 
-#: linkcheck/Logging.py:489
+#: linkcheck/Logging.py:489 linkcheck/Logging.py:536
 msgid "# Format of the entries:\n"
 msgstr "# Format der Einträge:\n"
 
-#: linkcheck/Logging.py:355 linkcheck/Logging.py:487
+#: linkcheck/Logging.py:355 linkcheck/Logging.py:396 linkcheck/Logging.py:487
+#: linkcheck/Logging.py:534
 #, c-format
 msgid "# Get the newest version at %s\n"
 msgstr "# Die neueste Version gibt es unter %s\n"
 
-#: linkcheck/Logging.py:396 linkcheck/Logging.py:527
+#: linkcheck/Logging.py:396 linkcheck/Logging.py:438 linkcheck/Logging.py:527
+#: linkcheck/Logging.py:575
 #, c-format
 msgid "# Stopped checking at %s (%.3f seconds)\n"
 msgstr "# Beende Prüfen am %s (%.3f Sekunden)\n"
 
-#: linkcheck/Logging.py:356 linkcheck/Logging.py:488
+#: linkcheck/Logging.py:356 linkcheck/Logging.py:397 linkcheck/Logging.py:488
+#: linkcheck/Logging.py:535
 #, c-format
 msgid ""
 "# Write comments and bugs to %s\n"
@@ -67,37 +83,41 @@ msgstr ""
 "# Kommentare und Fehler mailen Sie bitte an %s\n"
 "\n"
 
-#: linkcheck/Logging.py:353 linkcheck/Logging.py:485
+#: linkcheck/Logging.py:353 linkcheck/Logging.py:394 linkcheck/Logging.py:485
+#: linkcheck/Logging.py:532
 #, c-format
 msgid "# created by %s at %s\n"
 msgstr "# erstellt von %s am %s\n"
 
-#: linkcheck/Logging.py:197 linkcheck/Logging.py:202 linkcheck/Logging.py:301
-#: linkcheck/Logging.py:306
+#: linkcheck/Logging.py:197 linkcheck/Logging.py:202 linkcheck/Logging.py:217
+#: linkcheck/Logging.py:222 linkcheck/Logging.py:301 linkcheck/Logging.py:306
+#: linkcheck/Logging.py:339 linkcheck/Logging.py:345
 #, c-format
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
-#: linkcheck/Logging.py:108 linkcheck/Logging.py:111
+#: linkcheck/Logging.py:108 linkcheck/Logging.py:111 linkcheck/Logging.py:114
+#: linkcheck/Logging.py:117
 #, c-format
 msgid "%.3f seconds\n"
 msgstr "%.3f Sekunden\n"
 
-#: linkcheck/Logging.py:100 linkcheck/Logging.py:280
+#: linkcheck/Logging.py:100 linkcheck/Logging.py:106 linkcheck/Logging.py:280
+#: linkcheck/Logging.py:318
 msgid ", line "
 msgstr ", Zeile "
 
-#: linkcheck/Logging.py:414
+#: linkcheck/Logging.py:414 linkcheck/Logging.py:456
 #, c-format
 msgid "-- Get the newest version at %s\n"
 msgstr "-- Die neueste Version gibt es unter %s\n"
 
-#: linkcheck/Logging.py:443
+#: linkcheck/Logging.py:443 linkcheck/Logging.py:486
 #, c-format
 msgid "-- Stopped checking at %s (%.3f seconds)\n"
 msgstr "-- Beende Prüfen am %s (%.3f Sekunden)\n"
 
-#: linkcheck/Logging.py:415
+#: linkcheck/Logging.py:415 linkcheck/Logging.py:457
 #, c-format
 msgid ""
 "-- Write comments and bugs to %s\n"
@@ -106,16 +126,18 @@ msgstr ""
 "-- Kommentare und Fehler mailen Sie bitte an %s\n"
 "\n"
 
-#: linkcheck/Logging.py:412
+#: linkcheck/Logging.py:412 linkcheck/Logging.py:454
 #, c-format
 msgid "-- created by %s at %s\n"
 msgstr "-- erstellt von %s am %s\n"
 
-#: linkcheck/Logging.py:141 linkcheck/Logging.py:232
+#: linkcheck/Logging.py:141 linkcheck/Logging.py:147 linkcheck/Logging.py:232
+#: linkcheck/Logging.py:254
 msgid "1 error"
 msgstr "1 Fehler"
 
-#: linkcheck/Logging.py:137 linkcheck/Logging.py:228
+#: linkcheck/Logging.py:137 linkcheck/Logging.py:143 linkcheck/Logging.py:228
+#: linkcheck/Logging.py:250
 msgid "1 warning, "
 msgstr "1 Warnung, "
 
@@ -123,15 +145,18 @@ msgstr "1 Warnung, "
 msgid "Access denied by robots.txt, checked only syntax"
 msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
 
-#: linkcheck/Logging.py:103 linkcheck/Logging.py:189 linkcheck/Logging.py:289
+#: linkcheck/Logging.py:103 linkcheck/Logging.py:109 linkcheck/Logging.py:189
+#: linkcheck/Logging.py:209 linkcheck/Logging.py:289 linkcheck/Logging.py:327
 msgid "Base"
 msgstr "Basis"
 
-#: linkcheck/Logging.py:110 linkcheck/Logging.py:200 linkcheck/Logging.py:305
+#: linkcheck/Logging.py:110 linkcheck/Logging.py:116 linkcheck/Logging.py:200
+#: linkcheck/Logging.py:220 linkcheck/Logging.py:305 linkcheck/Logging.py:343
 msgid "Check Time"
 msgstr "Prüfzeit"
 
-#: linkcheck/Logging.py:107 linkcheck/Logging.py:196 linkcheck/Logging.py:300
+#: linkcheck/Logging.py:107 linkcheck/Logging.py:113 linkcheck/Logging.py:196
+#: linkcheck/Logging.py:216 linkcheck/Logging.py:300 linkcheck/Logging.py:338
 msgid "D/L Time"
 msgstr "D/L Zeit"
 
@@ -160,7 +185,8 @@ msgstr ""
 msgid "Effective URL %s"
 msgstr "Effektive URL %s"
 
-#: linkcheck/UrlData.py:50 linkcheck/UrlData.py:68
+#: linkcheck/UrlData.py:50 linkcheck/UrlData.py:68 linkcheck/UrlData.py:76
+#: linkcheck/UrlData.py:94
 msgid "Error"
 msgstr "Fehler"
 
@@ -173,16 +199,17 @@ msgstr "Fehler: %s\n"
 msgid "Execute 'linkchecker -h' for help\n"
 msgstr "Führen Sie 'linkchecker -h' aus um Hilfe zu erhalten\n"
 
-#: linkcheck/Logging.py:86 linkcheck/Logging.py:242
+#: linkcheck/Logging.py:86 linkcheck/Logging.py:91 linkcheck/Logging.py:242
+#: linkcheck/Logging.py:268
 #, c-format
 msgid "Get the newest version at %s\n"
 msgstr "Die neueste Version gibt es unter %s\n"
 
-#: linkcheck/FtpUrlData.py:34
+#: linkcheck/FtpUrlData.py:34 linkcheck/FtpUrlData.py:40
 msgid "Got no answer from FTP server"
 msgstr "Keine Antwort vom FTP Server"
 
-#: linkcheck/NntpUrlData.py:41
+#: linkcheck/NntpUrlData.py:41 linkcheck/NntpUrlData.py:47
 #, c-format
 msgid "Group %s has %s articles, range %s to %s"
 msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
@@ -196,21 +223,23 @@ msgstr ""
 msgid "HTTPS url ignored"
 msgstr "HTTPS url ignoriert"
 
-#: linkcheck/NntpUrlData.py:31
+#: linkcheck/NntpUrlData.py:31 linkcheck/NntpUrlData.py:37
 msgid "Illegal NNTP link syntax"
 msgstr "Illegale NNTP link Syntax"
 
-#: linkchecker:205 linkchecker:213 linkchecker:244
+#: linkchecker:202 linkchecker:205 linkchecker:210 linkchecker:213
+#: linkchecker:241 linkchecker:244
 #, c-format
 msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
 
-#: linkcheck/TelnetUrlData.py:32
+#: linkcheck/TelnetUrlData.py:31 linkcheck/TelnetUrlData.py:32
 msgid "Illegal telnet link syntax"
 msgstr "Illegale telnet link Syntax"
 
-#: linkcheck/Logging.py:113 linkcheck/Logging.py:205 linkcheck/Logging.py:310
-#: linkcheck/Logging.py:314
+#: linkcheck/Logging.py:113 linkcheck/Logging.py:119 linkcheck/Logging.py:205
+#: linkcheck/Logging.py:225 linkcheck/Logging.py:310 linkcheck/Logging.py:314
+#: linkcheck/Logging.py:349 linkcheck/Logging.py:353
 msgid "Info"
 msgstr "Info"
 
@@ -257,38 +286,43 @@ msgstr ""
 "o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
 "  unbedingt derselbe wie der des Benutzers sein!\n"
 
-#: linkcheck/NntpUrlData.py:37
+#: linkcheck/NntpUrlData.py:37 linkcheck/NntpUrlData.py:43
 msgid "No NNTP server specified, checked only syntax"
 msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
 
-#: linkcheck/MailtoUrlData.py:66
+#: linkcheck/MailtoUrlData.py:64 linkcheck/MailtoUrlData.py:66
 msgid "No adresses found"
 msgstr "Keine Adressen gefunden"
 
-#: linkcheck/MailtoUrlData.py:91
+#: linkcheck/MailtoUrlData.py:89 linkcheck/MailtoUrlData.py:91
 #, c-format
 msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
 msgstr "Keiner der Mail Hosts für %s akzeptiert eine SMTP Verbindung: %s"
 
-#: linkcheck/Logging.py:99 linkcheck/Logging.py:183 linkcheck/Logging.py:264
+#: linkcheck/Logging.py:99 linkcheck/Logging.py:105 linkcheck/Logging.py:183
+#: linkcheck/Logging.py:203 linkcheck/Logging.py:264 linkcheck/Logging.py:301
 msgid "Parent URL"
 msgstr "Vater URL"
 
-#: linkcheck/Logging.py:105 linkcheck/Logging.py:192 linkcheck/Logging.py:295
+#: linkcheck/Logging.py:105 linkcheck/Logging.py:111 linkcheck/Logging.py:192
+#: linkcheck/Logging.py:212 linkcheck/Logging.py:295 linkcheck/Logging.py:333
 msgid "Real URL"
 msgstr "Tats. URL"
 
-#: linkcheck/Logging.py:124 linkcheck/Logging.py:214 linkcheck/Logging.py:218
-#: linkcheck/Logging.py:328
+#: linkcheck/Logging.py:124 linkcheck/Logging.py:130 linkcheck/Logging.py:214
+#: linkcheck/Logging.py:218 linkcheck/Logging.py:234 linkcheck/Logging.py:239
+#: linkcheck/Logging.py:328 linkcheck/Logging.py:367
 msgid "Result"
 msgstr "Ergebnis"
 
-#: linkcheck/Logging.py:88 linkcheck/Logging.py:165
+#: linkcheck/Logging.py:88 linkcheck/Logging.py:93 linkcheck/Logging.py:165
+#: linkcheck/Logging.py:184
 #, c-format
 msgid "Start checking at %s\n"
 msgstr "Beginne Prüfen am %s\n"
 
-#: linkcheck/Logging.py:146 linkcheck/Logging.py:237
+#: linkcheck/Logging.py:146 linkcheck/Logging.py:155 linkcheck/Logging.py:237
+#: linkcheck/Logging.py:263
 #, c-format
 msgid "Stopped checking at %s (%.3f seconds)\n"
 msgstr "Beende Prüfen am %s (%.3f Sekunden)\n"
@@ -296,11 +330,12 @@ msgstr "Beende Prüfen am %s (%.3f Sekunden)\n"
 msgid "Thats it. "
 msgstr "Das wars. "
 
-#: linkcheck/Logging.py:93 linkcheck/Logging.py:278
+#: linkcheck/Logging.py:93 linkcheck/Logging.py:99 linkcheck/Logging.py:278
+#: linkcheck/Logging.py:316
 msgid "URL"
 msgstr "URL"
 
-#: linkcheck/UrlData.py:125
+#: linkcheck/UrlData.py:125 linkcheck/UrlData.py:151
 msgid "URL is null or empty"
 msgstr "URL ist Null oder leer"
 
@@ -452,20 +487,22 @@ msgstr ""
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option nimmt -w an.\n"
 
-#: linkcheck/UrlData.py:51 linkcheck/UrlData.py:72
+#: linkcheck/UrlData.py:51 linkcheck/UrlData.py:72 linkcheck/UrlData.py:77
+#: linkcheck/UrlData.py:98
 msgid "Valid"
 msgstr "Gültig"
 
-#: linkcheck/Logging.py:119 linkcheck/Logging.py:210 linkcheck/Logging.py:323
+#: linkcheck/Logging.py:119 linkcheck/Logging.py:125 linkcheck/Logging.py:210
+#: linkcheck/Logging.py:230 linkcheck/Logging.py:323 linkcheck/Logging.py:362
 msgid "Warning"
 msgstr "Warnung"
 
-#: linkcheck/Logging.py:244
+#: linkcheck/Logging.py:244 linkcheck/Logging.py:270
 #, c-format
 msgid "Write comments and bugs to %s\n"
 msgstr "Kommentare und Fehler mailen Sie bitte an %s\n"
 
-#: linkcheck/Logging.py:87
+#: linkcheck/Logging.py:87 linkcheck/Logging.py:92
 #, c-format
 msgid ""
 "Write comments and bugs to %s\n"
@@ -474,7 +511,7 @@ msgstr ""
 "Kommentare und Fehler schreiben Sie bitte an %s\n"
 "\n"
 
-#: linkcheck/MailtoUrlData.py:107
+#: linkcheck/MailtoUrlData.py:105 linkcheck/MailtoUrlData.py:107
 msgid "could not split the mail adress"
 msgstr "konnte Mail Adresse nicht splitten"
 
@@ -482,12 +519,22 @@ msgstr "konnte Mail Adresse nicht splitten"
 msgid "found"
 msgstr "gefunden"
 
-#: linkcheck/MailtoUrlData.py:96
+#: linkcheck/MailtoUrlData.py:94 linkcheck/MailtoUrlData.py:96
 #, c-format
 msgid "found mail host %s"
 msgstr "Mail host %s gefunden"
 
-#: linkcheck/UrlData.py:148
+#: linkcheck/Config.py:451
+#, c-format
+msgid "illegal recursionlevel number %d"
+msgstr "illegale recursionlevel Nummer %d"
+
+#: linkcheck/Config.py:409
+#, c-format
+msgid "invalid log option '%s'"
+msgstr "ungültige Log Option '%s'"
+
+#: linkcheck/UrlData.py:148 linkcheck/UrlData.py:174
 msgid "outside of domain filter, checked only syntax"
 msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
 
@@ -506,6 +553,6 @@ msgstr "robots.txt:%d: disallow ohne user agents"
 msgid "robots.txt:%d: user-agent in the middle of rules"
 msgstr "robots.txt:%d: user-agent zwischen Regeln"
 
-#: linkchecker:289
+#: linkchecker:289 linkchecker:290
 msgid "warning: no files or urls given"
 msgstr "Warnung: keine Dateien oder URLs angegeben"
