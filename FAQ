@@ -52,10 +52,10 @@ A: Look at the options --intern, --extern, --strict, --denyallow  and
 
 Q: I dont get this --extern/--intern stuff.
 A: When it comes to checking there are three types of URLs:
-   1) strict URLs:
-      we do only syntax checking
+   1) strict extern URLs:
+      We do only syntax checking. Intern URLs are never strict.
    2) extern URLs:
-      like 1), but we additionally check if they are valid by connect()ing
+      Like 1), but we additionally check if they are valid by connect()ing
       to them
    3) intern URLs:
       like 2), but we additionally check if they are HTML pages and if so,
@@ -85,6 +85,10 @@ A: When it comes to checking there are three types of URLs:
    'mydomain.com' and 'myotherdomain.com'. Then we specify
    -i'^http://my(other)?domain\.com' as intern regular expression, all other
    urls are treated extern. Easy.
+
+   Another example. We dont want to check mailto urls. Then its
+   -i'!^mailto:'. The '!' negates an expression. With --strict, we dont
+   even connect to any mail hosts.
 
 
 Q: Are Cookies insecure?

@@ -136,6 +136,9 @@ Print a warning if content size is available and exceeds the given
 number of \fIbytes\fP.
 This option implies \fB-w\fP.
 .SH NOTES
+A \fI!\fP before any regex negates it. So \fI'!^mailto:'\fP matches
+everything but a mailto link.
+
 LinkCheckers commandline parser treats \fIftp.\fP links like \fIftp://ftp.\fP
 and \fIwww.\fP links like \fIhttp://www.\fP.
 You can also give local files as arguments.
@@ -159,16 +162,24 @@ When checking 'news:' links the given NNTP host doesn't need to be the
 same as the host of the user browsing your pages!
 
 .SH EXAMPLES
-\fIlinkchecker -v -ohtml -s -itreasure.calvinsplayground.de \\
+Check the treasure.calvinsplayground.de domain, but don't recurse into
+links outside of this domain:
 .br
-http://treasure.calvinsplayground.de/~calvin/
+\fIlinkchecker -v -r5 -ohtml -s -itreasure.calvinsplayground.de \\
+.br
+http://treasure.calvinsplayground.de/~calvin/ > sample.html\fP
 
-\fPLocal files and syntactic sugar on the command line:
+Don't connect to mailto: hosts, only check their URL syntax. All other
+links are checked as usual:
 .br
-linkchecker ../bla.html
+\fIlinkchecker --intern='!^mailto:' --strict www.mysite.org\fP
+
+Local files and syntactic sugar on the command line:
 .br
-linkchecker www.myhomepage.de
+\fIlinkchecker ../bla.html\fP
 .br
-linkchecker -r0 ftp.linux.org\fP
+\fIlinkchecker www.myhomepage.de\fP
+.br
+\fIlinkchecker -r0 ftp.linux.org\fP
 .SH AUTHOR
 Bastian Kleineidam <calvin@debian.org>

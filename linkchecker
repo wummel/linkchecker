@@ -21,7 +21,7 @@ import sys
 if not hasattr(sys, 'version_info') or sys.version_info<(2, 2, 1, 'final', 0):
     raise SystemExit, "This program requires Python 2.2.1 or later."
 
-import getopt, re, os, urlparse, pprint, linkcheck
+import getopt, re, os, pprint, linkcheck
 import linkcheck.timeoutsocket
 # set default 30 seconds timeout
 linkcheck.timeoutsocket.setDefaultSocketTimeout(30)
@@ -129,6 +129,8 @@ For single-letter option arguments the space is not a necessity. So
 """) % (linkcheck.log.LoggerKeys, _profile)
 
 Notes = linkcheck._("""NOTES
+o A ! before any regex negates it. So '!^mailto:' matches everything but
+  a mailto link.
 o LinkCheckers commandline parser treats "ftp." links like "ftp://ftp."
   and "www." links like "http://www.".
   You can also give local files as arguments.
@@ -147,8 +149,15 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
 """)
 
 Examples = linkcheck._("""EXAMPLES
-o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\
-    http://treasure.calvinsplayground.de/~calvin/ > sample.html
+o Check the treasure.calvinsplayground.de domain, but don't recurse into
+  links outside of this domain:
+      linkchecker -v -r5 -ohtml -s -itreasure.calvinsplayground.de \\
+       http://treasure.calvinsplayground.de/~calvin/ > sample.html
+
+o Don't connect to mailto: hosts, only check their URL syntax. All other
+  links are checked as usual:
+      linkchecker --intern='!^mailto:' --strict www.mysite.org
+
 o Local files and syntactic sugar on the command line:
       linkchecker c:\\temp\\test.html
       linkchecker ../bla.html
