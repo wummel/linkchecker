@@ -1,60 +1,60 @@
 # traduction de fr.po en français
 # French translation for LinkChecker.
 # Jerome Couderc <j.couderc@ifrance.com>, 2000.
-# Yann Verley <yann.verley@free.fr>, 2004.
+# Yann Verley <yann.verley@free.fr>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-01-31 13:38+0100\n"
-"PO-Revision-Date: 2004-11-29 18:45+0100\n"
+"POT-Creation-Date: 2005-01-31 16:33+0100\n"
+"PO-Revision-Date: 2005-01-31 14:09+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: français <kde-francophone@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
+"X-Generator: KBabel 1.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../linkcheck/checker/consumer.py:35
 #, python-format
 msgid "%5d URL queued,"
 msgid_plural "%5d URLs queued,"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%5d URL mise en file,"
+msgstr[1] "%5d URL mises en file,"
 
 #: ../linkcheck/checker/consumer.py:40
 #, python-format
 msgid "%4d URL checked,"
 msgid_plural "%4d URLs checked,"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d lien vérifié,"
+msgstr[1] "%d liens vérifiés,"
 
 #: ../linkcheck/checker/consumer.py:45
 #, python-format
 msgid "%2d active thread,"
 msgid_plural "%2d active threads,"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%2d thread actif,"
+msgstr[1] "%2d threads actifs,"
 
 #: ../linkcheck/checker/consumer.py:50
 #, python-format
 msgid "runtime %s"
-msgstr ""
+msgstr "temps d'exécution %s"
 
 #: ../linkcheck/checker/consumer.py:159
-#, fuzzy, python-format
+#, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] ""
-"interruption clavier ; en attente de la terminaison de %d threads actifs"
+"interruption clavier ; en attente de la terminaison d' %d thread actif"
 msgstr[1] ""
 "interruption clavier ; en attente de la terminaison de %d threads actifs"
 
 #: ../linkcheck/checker/consumer.py:177
 msgid "Status:"
-msgstr ""
+msgstr "État :"
 
 #: ../linkcheck/checker/ignoredurl.py:29 ../linkcheck/checker/httpsurl.py:35
 #, python-format
@@ -321,14 +321,15 @@ msgid "Verified address: %(info)s."
 msgstr "Adresse vérifiée : %(info)s."
 
 #: ../linkcheck/checker/mailtourl.py:166
-#, fuzzy, python-format
+#, python-format
 msgid "Unverified address: %(info)s. But mail will be sent anyway."
-msgstr "Adresse vérifiée : %(info)s."
+msgstr ""
+"Adresse non vérifiée : %(info)s. Le message sera envoyé de toute façon."
 
 #: ../linkcheck/checker/mailtourl.py:169
-#, fuzzy, python-format
+#, python-format
 msgid "Unverified address: %(info)s."
-msgstr "Adresse vérifiée : %(info)s."
+msgstr "Adresse non vérifiée : %(info)s."
 
 #: ../linkcheck/checker/mailtourl.py:172
 #, python-format
@@ -379,7 +380,7 @@ msgstr "NNTP occupé : %s."
 #: ../linkcheck/checker/ftpurl.py:104
 #, python-format
 msgid "Remote host has closed connection: %r"
-msgstr "L'hôte distant a fermé la connexion: %r"
+msgstr "L'hôte distant a fermé la connexion : %r"
 
 #: ../linkcheck/checker/ftpurl.py:108
 msgid "Got no answer from FTP server"
@@ -514,15 +515,15 @@ msgstr "Fin."
 #, python-format
 msgid "%d link checked."
 msgid_plural "%d links checked."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d lien vérifié"
+msgstr[1] "%d liens vérifiés"
 
 #: ../linkcheck/logger/html.py:291 ../linkcheck/logger/text.py:250
 #, python-format
 msgid "%d error found."
 msgid_plural "%d errors found."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d erreur trouvée."
+msgstr[1] "%d erreurs trouvées."
 
 #: ../linkcheck/logger/html.py:301 ../linkcheck/logger/sql.py:84
 #: ../linkcheck/logger/xmllog.py:101 ../linkcheck/logger/text.py:100
@@ -735,7 +736,6 @@ msgstr ""
 "  linkchecker -r0 ftp.linux.org\n"
 
 #: ../linkchecker:111
-#, fuzzy
 msgid ""
 "OUTPUT TYPES\n"
 "Note that by default only errors are logged.\n"
@@ -754,8 +754,8 @@ msgid ""
 "        script to create the initial SQL table is included as create.sql.\n"
 "blacklist\n"
 "        Suitable for cron jobs. Logs the check result into a file\n"
-"        ~/.blacklist which only contains entries with invalid urls and\n"
-"        the number of times they have failed.\n"
+"        ~/.linkchecker/blacklist which only contains entries with invalid\n"
+"        urls and the number of times they have failed.\n"
 "none    Logs nothing. Suitable for scripts.\n"
 msgstr ""
 "TYPES DE SORTIE\n"
@@ -772,6 +772,10 @@ msgstr ""
 "URL par ligne.\n"
 "gml     Journaliser les relations fils/père entre les URL liées dans un "
 "graphe GML.\n"
+"        Vous devez utiliser l'option --verbose pour avoir un graphe "
+"complet.\n"
+"dot     Journaliser les relations fils/père entre les URL liées dans un "
+"graphe DOT.\n"
 "        Vous devez utiliser l'option --verbose pour avoir un graphe "
 "complet.\n"
 "xml     Journaliser le résultat de la vérification dans un fichier au format "
@@ -903,7 +907,7 @@ msgstr ""
 #: ../linkchecker:297
 #, python-format
 msgid ""
-"Output to a file linkchecker-out.TYPE, $HOME/.linkchecker_blacklist for\n"
+"Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for\n"
 "'blacklist' output, or FILENAME if specified.\n"
 "ENCODING specifies the output encoding, the default is \"iso-8859-15\".\n"
 "Valid encodings are listed at http://docs.python.org/lib/node127.html.\n"
@@ -915,7 +919,7 @@ msgid ""
 "suppress all console output with the option '-o none'."
 msgstr ""
 "Mettre les sorties dans un fichier linkchecker-out.\n"
-"TYPE, $HOME/.linkchecker_blacklist pour la sortie « blacklist », ou FILENAME "
+"TYPE, $HOME/.linkchecker/blacklist pour la sortie « blacklist », ou FILENAME "
 "si spécifié.\n"
 "ENCODING spécifie l'encodage de sortie, la valeur par défaut étant « iso-"
 "8859-15 ».\n"
@@ -1159,23 +1163,22 @@ msgid ""
 "Overwrite profiling file %r?\n"
 "Press Ctrl-C to cancel, RETURN to continue."
 msgstr ""
+"Écraser le fichier de profilage %r ?\n"
+"Appuyez sur Ctrl-C pour annuler, Retour pour continuer."
 
 #: ../linkchecker:594
 msgid "Canceled."
-msgstr ""
+msgstr "Annulé."
 
 #: ../linkchecker:609
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
 msgstr ""
+"Psyco est installé, mais n'est pas utilisé car il est dans une version trop "
+"ancienne.\n"
+"Psyco >= 1.4 est requis."
 
 #: ../linkchecker:619
 msgid "Hit RETURN to finish"
 msgstr "Tapez sur la touche ENTRÉE pour finir"
-
-#~ msgid ""
-#~ "Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s"
-#~ msgstr ""
-#~ "État : %5d URL dans la file, %4d URL vérifiées, %2d threads actifs, temps "
-#~ "d'exécution %s"

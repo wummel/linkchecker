@@ -1,7 +1,7 @@
 .\" 
 .TH "LINKCHECKER" "1" "10 mars 2001" "" ""
 .SH "NOM"
-linkchecker \- outil permettant de vérifier s'il n'y a pas de liens cassés dans documents HTML
+linkchecker \- outil permettant de vérifier s'il n'y a pas de liens cassés dans les documents HTML
 
 .SH "SYNOPSIS"
 .B linkchecker
@@ -205,8 +205,7 @@ Journaliser le résultat de la vérification dans un fichier au format XML.
 Journaliser le résultat dans un script SQL avec des commandes INSERT. Un script d'exemple montrant la création de la table SQL initiale est inclus : create.sql.
 .TP 
 \fBblacklist\fP
-Approprié pour les tâches cron. Journaliser le résultat de la vérification
-dans un fichier \fB~/.linkchecker/blacklist\fP qui ne contient que les entrées avec des URL invalides et le nombre de fois qu'elles ont échoué.
+Approprié pour les tâches cron. Journaliser le résultat de la vérification dans un fichier \fB~/.linkchecker/blacklist\fP qui ne contient que les entrées avec des URL invalides et le nombre de fois qu'elles ont échoué.
 .TP 
 \fBnone\fP
 Ne rien journaliser du tout. Approprié pour les scripts.
@@ -240,14 +239,14 @@ Pour la vérification des liens \fBnews:\fP, les liens de l'hôte NNTP donné n'ont
 
 \fBLC_MESSAGES\fP, \fBLANG\fP \- spécifie la langue en sortie
 
-.SH RETURN VALUE
-The return value is non-zero when
+.SH "DIAGNOSTICS"
+Le code de retour est différent de 0 quand
 .IP \(bu
-invalid links were found or
+il y a eu des liens non valides,
 .IP \(bu
-link warnings were found and --warnings option was given
+il y a eu des avertissements sur les liens et l'option --warnings était positionnée,
 .IP \(bu
-a program error occurred.
+il y a eu une erreur dans le programme.
 
 .SH "FICHIERS"
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \- fichiers de configuration par défaut
