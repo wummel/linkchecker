@@ -138,7 +138,7 @@ class LinkFinder (TagFinder):
                             "line %d col %d old line %d old col %d",
                             self.parser.lineno(), self.parser.column(),
                          self.parser.last_lineno(), self.parser.last_column())
-        if tag == "base" and not self.base:
+        if tag == "base" and not self.base_ref:
             self.base_ref = attrs.get("href", u'')
         tagattrs = self.tags.get(tag, [])
         tagattrs.extend(self.tags.get(None, []))
