@@ -92,42 +92,46 @@ class HttpUrlData (ProxyUrlData):
             return
 
         # first try
-        status, statusText, self.headers = self._getHttpRequest()
-        Config.debug(BRING_IT_ON, status, statusText, self.headers)
+        response = self._getHttpResponse()
+        self.headers = response.msg
+        Config.debug(BRING_IT_ON, response.status, response.reason, self.headers)
         has301status = 0
         while 1:
 
             # proxy enforcement (overrides standard proxy)
-            if status == 305 and self.headers:
+            if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 self.setProxy(self.headers.getheader("Location"))
                 self.setInfo(linkcheck._("Enforced Proxy %s")%`self.proxy`)
-                status, statusText, self.headers = self._getHttpRequest()
+                response = self._getHttpResponse()
+                self.headers = reponse.msg
                 self.proxy, self.proxyauth = oldproxy
             # follow redirections
             tries = 0
             redirected = self.urlName
-            while status in [301,302] and self.headers and tries < 5:
-                has301status = (status==301)
+            while response.status in [301,302] and self.headers and tries < 5:
+                has301status = (response.status==301)
                 
                 newurl = self.headers.getheader("Location",
                                     self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
                 self.urlTuple = urlparse.urlparse(redirected)
-                status, statusText, self.headers = self._getHttpRequest()
+                reponse = self._getHttpResponse()
+                self.headers = reponse.msg
                 Config.debug(BRING_IT_ON, "Redirected", self.headers)
                 tries += 1
             if tries >= 5:
                 self.setError(linkcheck._("too much redirections (>= 5)"))
                 return
             # user authentication
-            if status==401:
+            if response.status==401:
 	        if not self.auth:
                     import base64
                     _user, _password = self._getUserPassword()
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
-                status, statusText, self.headers = self._getHttpRequest()
+                response = self._getHttpResponse()
+                self.headers = reponse.msg
                 Config.debug(BRING_IT_ON, "Authentication", _user, "/",
 		             _password)
             # some servers get the HEAD request wrong:
@@ -137,17 +141,19 @@ class HttpUrlData (ProxyUrlData):
             # - some advertisings (they want only GET, dont ask why ;)
             # - Zope server (it has to render the page to get the correct
             #   content-type)
-            elif status in [405,501,500]:
+            elif response.status in [405,501,500]:
                 # HEAD method not allowed ==> try get
-                self.setWarning(linkcheck._("Server does not support HEAD request (got "
-                                  "%d status), falling back to GET")%status)
-                status, statusText, self.headers = self._getHttpRequest("GET")
-            elif status>=400 and self.headers:
+                self.setWarning(linkcheck._("Server does not support HEAD "
+             "request (got %d status), falling back to GET")%response.status)
+                response = self._getHttpResponse("GET")
+                self.headers = response.msg
+            elif response.status>=400 and self.headers:
                 server = self.headers.getheader("Server")
                 if server and self.netscape_re.search(server):
-                    self.setWarning(linkcheck._("Netscape Enterprise Server with no "
-                                      "HEAD support, falling back to GET"))
-                    status,statusText,self.headers = self._getHttpRequest("GET")
+                    self.setWarning(linkcheck._("Netscape Enterprise Server"
+                     " with no HEAD support, falling back to GET"))
+                    response = self._getHttpResponse("GET")
+                    self.headers = response.msg
             elif self.headers:
                 type = self.headers.gettype()
                 poweredby = self.headers.getheader('X-Powered-By')
@@ -155,10 +161,11 @@ class HttpUrlData (ProxyUrlData):
                 if type=='application/octet-stream' and \
                    ((poweredby and poweredby[:4]=='Zope') or \
                     (server and server[:4]=='Zope')):
-                    self.setWarning(linkcheck._("Zope Server cannot determine MIME type"
-                                      " with HEAD, falling back to GET"))
-                    status,statusText,self.headers = self._getHttpRequest("GET")
-            if status not in [301,302]: break
+                    self.setWarning(linkcheck._("Zope Server cannot determine"
+                                " MIME type with HEAD, falling back to GET"))
+                    response = self._getHttpResponse("GET")
+                    self.headers = response.msg
+            if response.status not in [301,302]: break
 
         effectiveurl = urlparse.urlunparse(self.urlTuple)
         if self.url != effectiveurl:
@@ -170,17 +177,17 @@ class HttpUrlData (ProxyUrlData):
                               "should update this link"))
             if self.url[-1]!='/':
                 self.setWarning(
-                     linkcheck._("A HTTP 301 redirection occured and the url has no "
-                     "trailing / at the end. All urls which point to (home) "
-                     "directories should end with a / to avoid redirection"))
+            linkcheck._("A HTTP 301 redirection occured and the url has no "
+                    "trailing / at the end. All urls which point to (home) "
+                    "directories should end with a / to avoid redirection"))
 
         # check final result
-        if status >= 400:
-            self.setError(`status`+" "+statusText)
+        if response.status >= 400:
+            self.setError(`response.status`+" "+response.reason)
         else:
-            if status == 204:
+            if response.status == 204:
                 # no content
-                self.setWarning(statusText)
+                self.setWarning(response.reason)
             # store cookies for valid links
             if self.config['cookies']:
                 for c in self.cookies:
@@ -188,12 +195,12 @@ class HttpUrlData (ProxyUrlData):
                 out = self.config.storeCookies(self.headers, self.urlTuple[1])
                 for h in out:
                     self.setInfo(h)
-            if status >= 200:
-                self.setValid(`status`+" "+statusText)
+            if response.status >= 200:
+                self.setValid(`response.status`+" "+response.reason)
             else:
                 self.setValid("OK")
 
-    def _getHttpRequest (self, method="HEAD"):
+    def _getHttpResponse (self, method="HEAD"):
         """Put request and return (status code, status text, mime object).
            host can be host:port format
 	"""
@@ -210,7 +217,7 @@ class HttpUrlData (ProxyUrlData):
         else:
             path = urlparse.urlunparse(('', '', self.urlTuple[2],
             self.urlTuple[3], self.urlTuple[4], ''))
-        self.urlConnection.putrequest(method, path)
+        self.urlConnection.putrequest(method, path, skip_host=1)
         self.urlConnection.putheader("Host", host)
         if self.auth:
             self.urlConnection.putheader("Authorization", self.auth)
@@ -227,12 +234,12 @@ class HttpUrlData (ProxyUrlData):
             for c in self.cookies:
                 self.urlConnection.putheader("Cookie", c)
         self.urlConnection.endheaders()
-        return self.urlConnection.getreply()
+        return self.urlConnection.getresponse()
 
     def _getHTTPObject (self, host):
-        h = httplib.HTTP()
+        h = httplib.HTTPConnection(host)
         h.set_debuglevel(Config.DebugLevel)
-        h.connect(host)
+        h.connect()
         return h
 
     def getContent (self):
@@ -240,9 +247,9 @@ class HttpUrlData (ProxyUrlData):
             self.has_content = 1
             self.closeConnection()
             t = time.time()
-            status, statusText, self.headers = self._getHttpRequest("GET")
-            self.urlConnection = self.urlConnection.getfile()
-            self.data = self.urlConnection.read()
+            response = self._getHttpResponse("GET")
+            self.headers = response.msg
+            self.data = response.read()
             encoding = self.headers.get("Content-Encoding")
             if encoding in _supported_encodings:
                 from cStringIO import StringIO
