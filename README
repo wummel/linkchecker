@@ -16,7 +16,7 @@ o restrict link checking with regular expression filters for URLs
 o HTTP proxy support
 o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support 
-o internationalization support (currently english and german)
+o internationalization support
 
 
 License
@@ -57,7 +57,7 @@ sz_fcgi.py (simplified the code)
 
 Internationalization
 --------------------
-For german output execute "export LC_MESSAGES=de" in bash and
+For german output execute "export LC_MESSAGES=de" in bash or
 "setenv LC_MESSAGES de" in tcsh.
 Under Windows, execute "set LC_MESSAGES=de".
 

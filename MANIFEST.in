@@ -1,6 +1,6 @@
 include MANIFEST.in
 include INSTALL LICENSE TODO
-include linkchecker linkchecker.bat.tmpl linkcheckerrc
+include linkchecker.tmpl linkchecker.bat.tmpl linkcheckerrc
 include lc.cgi lc.fcgi lc.sz_fcgi
 include Makefile
 include create.sql

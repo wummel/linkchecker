@@ -1,4 +1,4 @@
-import curses,sys,time,rotor,types
+import sys,time,rotor,types
 
 _bs = [
 ['\023\335\233\203\2323\016',
@@ -38,6 +38,10 @@ _3 = '\236\177\246\304\351F\203(\005z\375\220\324)\201\266z*j\342\344l\323\0325\
 _4 = '\222\360P\277\330\300\246\3670\256\303\223\036\311['
 
 def abbuzze():
+    try: import curses
+    except ImportError:
+        print "Sorry, this operating system can not wash clothes!"
+        return
     w = curses.initscr() # initialize the curses library
     curses.nonl()        # tell curses not to do NL->CR/NL on output
     curses.noecho()      # don't echo input
