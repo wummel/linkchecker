@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-09 01:38+0100\n"
-"PO-Revision-Date: 2004-11-09 01:40+0100\n"
+"POT-Creation-Date: 2004-11-13 12:40+0100\n"
+"PO-Revision-Date: 2004-11-13 12:41+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,182 +29,18 @@ msgstr "Status: %5d URLs noch zu prüfen, %4d URLs überprüft, %2d aktive Threads,
 msgid "%s url ignored"
 msgstr "%s url ignoriert"
 
-#: ../linkcheck/checker/fileurl.py:90
+#: ../linkcheck/checker/fileurl.py:92
 msgid "Added trailing slash to directory"
 msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt"
 
-#: ../linkcheck/checker/fileurl.py:96
+#: ../linkcheck/checker/fileurl.py:98
 msgid "directory"
 msgstr "Verzeichnis"
 
-#: ../linkcheck/checker/fileurl.py:111
+#: ../linkcheck/checker/fileurl.py:112
 #, python-format
 msgid "The URL path %r is not the same as the system path %r. You should always use the system path in URLs."
 msgstr ""
-
-#: ../linkcheck/checker/errorurl.py:29
-msgid "URL is unrecognized or has invalid syntax"
-msgstr "URL ist unbekannt oder besitzt ungültige Syntax"
-
-#: ../linkcheck/checker/urlbase.py:45
-#, python-format
-msgid ""
-"********** Oops, I did it again. *************\n"
-"\n"
-"You have found an internal error in LinkChecker. Please write a bug report\n"
-"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
-"or send mail to %s and include the following information:\n"
-"- the URL or file you are testing\n"
-"- your commandline arguments and/or configuration.\n"
-"- the output of a debug run with option \"-Dall\" of the executed command\n"
-"- the system information below.\n"
-"\n"
-"Disclosing some of the information above due to privacy reasons is ok.\n"
-"I will try to help you nonetheless, but you have to give me something\n"
-"I can work with ;) .\n"
-msgstr ""
-"********** Hoppla. *************\n"
-"\n"
-"Sie haben einen internen Fehler in LinkChecker entdeckt. Bitte schreiben\n"
-"Sie einen Fehlerbericht an\n"
-"http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
-"oder senden Sie eine Mail an %s mit den folgenden Informationen:\n"
-"- die URL oder Datei, welche Sie gerade prüfen\n"
-"- ihre Kommandozeilenargumente und/oder Ihre Konfiguration.\n"
-"- die Ausgabe eines Debuglaufs Option \"-Dall\" und dem ausgeführten Befehl\n"
-"- die untenstehenden Systeminformationen.\n"
-"\n"
-"Wenn Sie Informationen aus privaten Gründen unterlassen ist das in Ordnung.\n"
-"Ich werde trotzdem versuchen, Ihnen zu helfen. Sie müssen mir allerdings\n"
-"irgendwas geben, womit ich arbeiten kann ;).\n"
-
-#: ../linkcheck/checker/urlbase.py:64
-msgid "******** LinkChecker internal error, bailing out ********"
-msgstr "******** LinkChecker interner Fehler, breche ab ********"
-
-#: ../linkcheck/checker/urlbase.py:70
-msgid "System info:"
-msgstr "Systeminformation:"
-
-#: ../linkcheck/checker/urlbase.py:72
-#, python-format
-msgid "Python %s on %s"
-msgstr "Python %s auf %s"
-
-#: ../linkcheck/checker/urlbase.py:231
-msgid "URL is empty"
-msgstr "URL ist leer"
-
-#: ../linkcheck/checker/urlbase.py:250
-#, python-format
-msgid "Base URL is not properly normed. Normed url is %(url)s."
-msgstr "Basis URL ist nicht genormt. Genormte url ist %(url)s."
-
-#: ../linkcheck/checker/urlbase.py:278
-#, python-format
-msgid "URL has invalid port %r"
-msgstr "URL hat eine ungültige Portnummer %r"
-
-#: ../linkcheck/checker/urlbase.py:316
-msgid "outside of domain filter, checked only syntax"
-msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
-
-#: ../linkcheck/checker/urlbase.py:331
-msgid "Hostname not found"
-msgstr "Rechnername nicht gefunden"
-
-#: ../linkcheck/checker/urlbase.py:334
-#, python-format
-msgid "Bad HTTP response %r"
-msgstr "Ungültige HTTP Antwort %r"
-
-#: ../linkcheck/checker/urlbase.py:363
-#, python-format
-msgid "could not parse content: %r"
-msgstr "Konnte Inhalt nicht parsen: %r"
-
-#: ../linkcheck/checker/urlbase.py:436
-#, python-format
-msgid "anchor #%s not found"
-msgstr "Anker #%s nicht gefunden"
-
-#: ../linkcheck/checker/urlbase.py:498
-#, python-format
-msgid "Found %r in link contents"
-msgstr "Habe %r in Link Inhalt gefunden"
-
-#: ../linkcheck/checker/urlbase.py:505
-#, python-format
-msgid "Content size %s is larger than %s"
-msgstr "Inhalt %s is größer als %s"
-
-#: ../linkcheck/checker/telneturl.py:43
-msgid "Host is empty"
-msgstr "Rechnername ist leer"
-
-#: ../linkcheck/checker/mailtourl.py:47
-msgid "Invalid mail syntax"
-msgstr "Ungültige Mail Syntax"
-
-#: ../linkcheck/checker/mailtourl.py:98
-msgid "No addresses found"
-msgstr "Keine Adressen wurden gefunden"
-
-#: ../linkcheck/checker/mailtourl.py:113
-#, python-format
-msgid "No MX mail host for %(domain)s found"
-msgstr "Kein MX mail host für %(domain)s gefunden"
-
-#: ../linkcheck/checker/mailtourl.py:132
-#, python-format
-msgid "Verified address: %(info)s"
-msgstr "Gültige Adresse: %(info)s"
-
-#: ../linkcheck/checker/mailtourl.py:136
-#, python-format
-msgid "MX mail host %(host)s did not accept connections: %(error)s"
-msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s"
-
-#: ../linkcheck/checker/mailtourl.py:142
-msgid "Could not connect, but syntax is correct"
-msgstr "Konnte nicht konnektieren, aber die Syntax ist korrekt"
-
-#: ../linkcheck/checker/mailtourl.py:144
-#, python-format
-msgid "Found MX mail host %(host)s"
-msgstr "MX Mail host %(host)s gefunden"
-
-#: ../linkcheck/checker/mailtourl.py:156
-msgid "Could not split the mail address"
-msgstr "konnte die Mail Adresse nicht splitten"
-
-#: ../linkcheck/checker/nntpurl.py:103
-msgid "No NNTP server specified, skipping this URL"
-msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
-
-#: ../linkcheck/checker/nntpurl.py:112
-#, python-format
-msgid "Articel number %s found"
-msgstr "Artikel nummer %s wurde gefunden"
-
-#: ../linkcheck/checker/nntpurl.py:119
-#, python-format
-msgid "Group %s has %s articles, range %s to %s"
-msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
-
-#: ../linkcheck/checker/nntpurl.py:123
-msgid "No newsgroup specified in NNTP URL"
-msgstr "Keine Newsgroup in der NNTP URL spezifiziert"
-
-#: ../linkcheck/checker/nntpurl.py:143
-#, python-format
-msgid "NTTP server too busy; tried more than %d times"
-msgstr "NNTP server zu beschäftigt; habe es mehr als %d mal versucht"
-
-#: ../linkcheck/checker/nntpurl.py:145
-#, python-format
-msgid "NNTP busy: %s"
-msgstr "NNTP beschäftigt: %s"
 
 #: ../linkcheck/checker/httpurl.py:65
 msgid "URL path is empty, assuming '/' as path"
@@ -303,6 +139,178 @@ msgstr "Nicht unterstütztes HTTP URL Schema %r"
 #, python-format
 msgid "Unsupported content encoding %r."
 msgstr "Content-Encoding %r wird nicht unterstützt."
+
+#: ../linkcheck/checker/errorurl.py:29
+msgid "URL is unrecognized or has invalid syntax"
+msgstr "URL ist unbekannt oder besitzt ungültige Syntax"
+
+#: ../linkcheck/checker/urlbase.py:45
+#, python-format
+msgid ""
+"********** Oops, I did it again. *************\n"
+"\n"
+"You have found an internal error in LinkChecker. Please write a bug report\n"
+"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
+"or send mail to %s and include the following information:\n"
+"- the URL or file you are testing\n"
+"- your commandline arguments and/or configuration.\n"
+"- the output of a debug run with option \"-Dall\" of the executed command\n"
+"- the system information below.\n"
+"\n"
+"Disclosing some of the information above due to privacy reasons is ok.\n"
+"I will try to help you nonetheless, but you have to give me something\n"
+"I can work with ;) .\n"
+msgstr ""
+"********** Hoppla. *************\n"
+"\n"
+"Sie haben einen internen Fehler in LinkChecker entdeckt. Bitte schreiben\n"
+"Sie einen Fehlerbericht an\n"
+"http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
+"oder senden Sie eine Mail an %s mit den folgenden Informationen:\n"
+"- die URL oder Datei, welche Sie gerade prüfen\n"
+"- ihre Kommandozeilenargumente und/oder Ihre Konfiguration.\n"
+"- die Ausgabe eines Debuglaufs Option \"-Dall\" und dem ausgeführten Befehl\n"
+"- die untenstehenden Systeminformationen.\n"
+"\n"
+"Wenn Sie Informationen aus privaten Gründen unterlassen ist das in Ordnung.\n"
+"Ich werde trotzdem versuchen, Ihnen zu helfen. Sie müssen mir allerdings\n"
+"irgendwas geben, womit ich arbeiten kann ;).\n"
+
+#: ../linkcheck/checker/urlbase.py:64
+msgid "******** LinkChecker internal error, bailing out ********"
+msgstr "******** LinkChecker interner Fehler, breche ab ********"
+
+#: ../linkcheck/checker/urlbase.py:70
+msgid "System info:"
+msgstr "Systeminformation:"
+
+#: ../linkcheck/checker/urlbase.py:72
+#, python-format
+msgid "Python %s on %s"
+msgstr "Python %s auf %s"
+
+#: ../linkcheck/checker/urlbase.py:231
+msgid "URL is empty"
+msgstr "URL ist leer"
+
+#: ../linkcheck/checker/urlbase.py:249
+#, python-format
+msgid ""
+"URL %s has a unicode domain name which\n"
+"                          is not yet widely supported. You should use\n"
+"                          the URL %s instead."
+msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:254
+#, python-format
+msgid "Base URL is not properly normed. Normed url is %(url)s."
+msgstr "Basis URL ist nicht genormt. Genormte url ist %(url)s."
+
+#: ../linkcheck/checker/urlbase.py:282
+#, python-format
+msgid "URL has invalid port %r"
+msgstr "URL hat eine ungültige Portnummer %r"
+
+#: ../linkcheck/checker/urlbase.py:320
+msgid "outside of domain filter, checked only syntax"
+msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
+
+#: ../linkcheck/checker/urlbase.py:335
+msgid "Hostname not found"
+msgstr "Rechnername nicht gefunden"
+
+#: ../linkcheck/checker/urlbase.py:338
+#, python-format
+msgid "Bad HTTP response %r"
+msgstr "Ungültige HTTP Antwort %r"
+
+#: ../linkcheck/checker/urlbase.py:367
+#, python-format
+msgid "could not parse content: %r"
+msgstr "Konnte Inhalt nicht parsen: %r"
+
+#: ../linkcheck/checker/urlbase.py:440
+#, python-format
+msgid "anchor #%s not found"
+msgstr "Anker #%s nicht gefunden"
+
+#: ../linkcheck/checker/urlbase.py:502
+#, python-format
+msgid "Found %r in link contents"
+msgstr "Habe %r in Link Inhalt gefunden"
+
+#: ../linkcheck/checker/urlbase.py:509
+#, python-format
+msgid "Content size %s is larger than %s"
+msgstr "Inhalt %s is größer als %s"
+
+#: ../linkcheck/checker/telneturl.py:43
+msgid "Host is empty"
+msgstr "Rechnername ist leer"
+
+#: ../linkcheck/checker/mailtourl.py:47
+msgid "Invalid mail syntax"
+msgstr "Ungültige Mail Syntax"
+
+#: ../linkcheck/checker/mailtourl.py:98
+msgid "No addresses found"
+msgstr "Keine Adressen wurden gefunden"
+
+#: ../linkcheck/checker/mailtourl.py:113
+#, python-format
+msgid "No MX mail host for %(domain)s found"
+msgstr "Kein MX mail host für %(domain)s gefunden"
+
+#: ../linkcheck/checker/mailtourl.py:132
+#, python-format
+msgid "Verified address: %(info)s"
+msgstr "Gültige Adresse: %(info)s"
+
+#: ../linkcheck/checker/mailtourl.py:136
+#, python-format
+msgid "MX mail host %(host)s did not accept connections: %(error)s"
+msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s"
+
+#: ../linkcheck/checker/mailtourl.py:142
+msgid "Could not connect, but syntax is correct"
+msgstr "Konnte nicht konnektieren, aber die Syntax ist korrekt"
+
+#: ../linkcheck/checker/mailtourl.py:144
+#, python-format
+msgid "Found MX mail host %(host)s"
+msgstr "MX Mail host %(host)s gefunden"
+
+#: ../linkcheck/checker/mailtourl.py:156
+msgid "Could not split the mail address"
+msgstr "konnte die Mail Adresse nicht splitten"
+
+#: ../linkcheck/checker/nntpurl.py:103
+msgid "No NNTP server specified, skipping this URL"
+msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
+
+#: ../linkcheck/checker/nntpurl.py:112
+#, python-format
+msgid "Articel number %s found"
+msgstr "Artikel nummer %s wurde gefunden"
+
+#: ../linkcheck/checker/nntpurl.py:119
+#, python-format
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
+
+#: ../linkcheck/checker/nntpurl.py:123
+msgid "No newsgroup specified in NNTP URL"
+msgstr "Keine Newsgroup in der NNTP URL spezifiziert"
+
+#: ../linkcheck/checker/nntpurl.py:143
+#, python-format
+msgid "NTTP server too busy; tried more than %d times"
+msgstr "NNTP server zu beschäftigt; habe es mehr als %d mal versucht"
+
+#: ../linkcheck/checker/nntpurl.py:145
+#, python-format
+msgid "NNTP busy: %s"
+msgstr "NNTP beschäftigt: %s"
 
 #: ../linkcheck/checker/ftpurl.py:101
 msgid "Remote host has closed connection"
@@ -515,7 +523,7 @@ msgstr ""
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt.\n"
 "</blockquote></body></html>"
 
-#: ../linkcheck/configuration.py:222
+#: ../linkcheck/configuration.py:221
 #, python-format
 msgid "invalid log option %r"
 msgstr "ungültige Log Option %r"
@@ -525,15 +533,15 @@ msgstr "ungültige Log Option %r"
 msgid "extern%d: syntax error %s\n"
 msgstr "extern%d: Syntaxfehler %s\n"
 
-#: ../linkcheck/strformat.py:133
+#: ../linkcheck/strformat.py:135
 msgid "seconds"
 msgstr "Sekunden"
 
-#: ../linkcheck/strformat.py:136
+#: ../linkcheck/strformat.py:138
 msgid "minutes"
 msgstr "Minuten"
 
-#: ../linkcheck/strformat.py:139
+#: ../linkcheck/strformat.py:141
 msgid "hours"
 msgstr "Stunden"
 
@@ -697,11 +705,11 @@ msgstr "Allgemeine Optionen"
 
 #: ../linkchecker:230
 msgid ""
-"Use file as configuration file. As default LinkChecker first\n"
+"Use CONFIGFILE as configuration file. As default LinkChecker first\n"
 "searches /etc/linkchecker/linkcheckerrc and then ~/.linkcheckerrc\n"
 "(under Windows <path-to-program>\\linkcheckerrc)."
 msgstr ""
-"Benutze file als Konfigurationsdatei. Standardmäßig sucht\n"
+"Benutze CONFIGFILE als Konfigurationsdatei. Standardmäßig sucht\n"
 " LinkChecker zuerst /etc/linkchecker/linkcheckerrc und dann ~/.linkcheckerrc\n"
 "(unter Windows <Pfad-zum-Programm>\\linkcheckerrc)."
 
@@ -954,10 +962,10 @@ msgstr ""
 
 #: ../linkchecker:373
 msgid ""
-"Pause <secs> seconds between each url check. This option implies -t0.\n"
+"Pause PAUSE seconds between each url check. This option implies -t0.\n"
 "Default is no pause between requests."
 msgstr ""
-"Pausiere <sek> Sekunden zwischen dem Prüfen jeder URL. Diese Option\n"
+"Pausiere PAUSE Sekunden zwischen dem Prüfen jeder URL. Diese Option\n"
 "impliziert -t0.\n"
 "Standard ist keine Pause zwischen dem Prüfen."
 
@@ -979,25 +987,35 @@ msgstr " Optionen"
 msgid "Print check status every 5 seconds to stderr. This is the default."
 msgstr "Gebe Prüfstatus alle 5 Sekunden an stderr aus. Dies ist die Voreinstellung."
 
-#: ../linkchecker:427
-#: ../linkchecker:460
-#: ../linkchecker:501
+#: ../linkchecker:425
+#: ../linkchecker:453
 #, python-format
-msgid "Illegal argument %r for option %s"
-msgstr "Ungültiges Argument %r für Option %s"
+msgid "Unknown logger type %r in %r for option %s"
+msgstr "Unbekannter Logtyp %r in %r für Option %s"
 
-#: ../linkchecker:456
+#: ../linkchecker:428
+#: ../linkchecker:457
+#, python-format
+msgid "Unknown encoding %r in %r for option %s"
+msgstr "Unbekanntes Encoding %r in %r für Option %s"
+
+#: ../linkchecker:464
 #, python-format
 msgid "Illegal argument %r for option %s: %s"
 msgstr "Ungültiges Argument %r für Option %s: %s"
 
-#: ../linkchecker:480
-#: ../linkchecker:494
+#: ../linkchecker:485
+#: ../linkchecker:499
 #, python-format
 msgid "Illegal argument %d for option %s"
 msgstr "Ungültiges Argument %d für Option %s"
 
-#: ../linkchecker:535
+#: ../linkchecker:506
+#, python-format
+msgid "Illegal argument %r for option %s"
+msgstr "Ungültiges Argument %r für Option %s"
+
+#: ../linkchecker:540
 msgid ""
 "enter one or more urls, separated by white-space\n"
 "--> "
@@ -1005,11 +1023,11 @@ msgstr ""
 "geben Sie eine oder mehrere durch Leerzeichen getrennte URLs ein\n"
 "--> "
 
-#: ../linkchecker:538
+#: ../linkchecker:543
 msgid "no files or urls given"
 msgstr "keine Dateien oder URLs angegeben"
 
-#: ../linkchecker:570
+#: ../linkchecker:575
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
 
