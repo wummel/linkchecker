@@ -25,30 +25,57 @@ import sys
 import string
 from types import StringType, TupleType
 from distutils.core import setup, Extension, DEBUG
-try:
-    import py2exe
-    distklass = py2exe.Distribution
-except ImportError:
-    import distutils.dist
-    distklass = distutils.dist.Distribution
+#try:
+#    import py2exe
+#    distklass = py2exe.Distribution
+#except ImportError:
+#    import distutils.dist
+#    distklass = distutils.dist.Distribution
+import distutils.dist
+distklass = distutils.dist.Distribution
 from distutils.command.install import install
 from distutils.command.install_data import install_data
 from distutils.file_util import write_file
 from distutils import util
 
 
-def p (path):
+# cross compile config
+cc = os.environ.get("CC")
+# directory with cross compiled (for win32) python
+# see also http://kampfwurst.net/python-mingw32/
+win_python_dir = "/home/calvin/src/python23-maint-cvs/dist/src/"
+# if we are compiling for or under windows
+win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
+
+
+def normpath (path):
     """norm a path name to platform specific notation"""
     return os.path.normpath(path)
 
 
-def get_nt_desktop_path (default=""):
-    if os.environ.has_key("ALLUSERSPROFILE"):
-        return os.path.join(os.environ["ALLUSERSPROFILE"], "Desktop")
-    if os.environ.has_key("USERPROFILE"):
-        return os.path.join(os.environ["USERPROFILE"], "Desktop")
-    return default
+def cnormpath (path):
+    """norm a path name to platform specific notation, but honoring
+       the win_compiling flag"""
+    path = normpath(path)
+    if win_compiling:
+        # replace slashes with backslashes
+        path = path.replace("/", "\\")
+    return path
 
+
+# windows install scheme for python >= 2.3
+# snatched from PC/bdist_wininst/install.c
+# this is used to fix install_* paths when cross compiling for windows
+win_path_scheme = {
+    "purelib": ("PURELIB", "Lib\\site-packages\\"),
+    "platlib": ("PLATLIB", "Lib\\site-packages\\"),
+    # note: same as platlib because of C extensions, else it would be purelib
+    "lib": ("PLATLIB", "Lib\\site-packages\\"),
+    # 'Include/dist_name' part already in archive
+    "headers": ("HEADERS", ""),
+    "scripts": ("SCRIPTS", "Scripts\\"),
+    "data": ("DATA", ""),
+}
 
 class MyInstall (install, object):
 
@@ -58,7 +85,7 @@ class MyInstall (install, object):
         # <install_data> directory (and other stuff like author, url, ...)
         data = []
         for d in ['purelib', 'platlib', 'lib', 'headers', 'scripts', 'data']:
-            attr = 'install_%s'%d
+            attr = 'install_%s' % d
             if self.root:
                 # cut off root path prefix
                 cutoff = len(self.root)
@@ -68,10 +95,16 @@ class MyInstall (install, object):
                 val = getattr(self, attr)[cutoff:]
             else:
                 val = getattr(self, attr)
-            data.append("%s = %r" % (attr, val))
-            if d == 'data':
+            if win_compiling and d in win_path_scheme:
+                # look for placeholders to replace
+                oldpath, newpath = win_path_scheme[d]
+                oldpath = "%s%s" % (os.sep, oldpath)
+                if oldpath in val:
+                    val = val.replace(oldpath, newpath)
+            if attr == 'install_data':
                 cdir = os.path.join(val, "share", "linkchecker")
-                data.append('config_dir = %r' % cdir)
+                data.append('config_dir = %r' % cnormpath(cdir))
+            data.append("%s = %r" % (attr, cnormpath(val)))
 	self.distribution.create_conf_file(data, directory=self.install_lib)
 
     def get_outputs (self):
@@ -127,6 +160,7 @@ class MyDistribution (distklass, object):
         data = []
         data.append('config_dir = %r' % os.path.join(cwd, "config"))
         data.append("install_data = %r" % cwd)
+        data.append("install_scripts = %r" % cwd)
         self.create_conf_file(data)
         super(MyDistribution, self).run_commands()
 
@@ -158,24 +192,38 @@ class MyDistribution (distklass, object):
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
-    def create_file (self, filename, data):
-        # write the file
-        util.execute(write_file, (filename, data),
-                 "creating %s" % filename, self.verbose>=1, self.dry_run)
+# global include dirs
+include_dirs = []
+# global macros
+define_macros = []
+# compiler args
+extra_compile_args = []
+# library directories
+library_dirs = []
+# libraries
+libraries = []
 
+scripts = ['linkchecker']
+if win_compiling:
+    scripts.append('install-linkchecker.py')
 
 if os.name == 'nt':
     # windows does not have unistd.h
-    macros = [('YY_NO_UNISTD_H', None)]
-    cargs = []
-    # add post-install script for the bdist_wininst command
-    scripts = ['linkchecker', 'install-linkchecker.py']
+    define_macros.append(('YY_NO_UNISTD_H', None))
 else:
     macros = []
     # for gcc 3.x we could add -std=gnu99 to get rid of warnings, but
     # that breaks other compilers
-    cargs = ["-pedantic"]
-    scripts = ['linkchecker']
+    extra_compile_args.append("-pedantic")
+    if win_compiling:
+        # we are cross compiling with mingw
+        # add directory for pyconfig.h
+        include_dirs.append(win_python_dir)
+        # add directory for Python.h
+        include_dirs.append(os.path.join(win_python_dir, "Include"))
+        # for finding libpythonX.Y.a
+        library_dirs.append(win_python_dir)
+        libraries.append("python%s" % get_python_version())
 
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
@@ -217,12 +265,16 @@ o a (Fast)CGI web interface (requires HTTP server)
                    'linkcheck.HtmlParser', 'linkcheck.tests',
                    'linkcheck.ftests', 'linkcheck.dns.tests', ],
        ext_modules = [Extension('linkcheck.HtmlParser.htmlsax',
-                  ['linkcheck/HtmlParser/htmllex.c',
+                  sources = ['linkcheck/HtmlParser/htmllex.c',
                    'linkcheck/HtmlParser/htmlparse.c',
                    'linkcheck/HtmlParser/s_util.c',
                   ],
-                  include_dirs = ["linkcheck/HtmlParser"],
-                  define_macros = macros,
+                  extra_compile_args = extra_compile_args,
+                  library_dirs = library_dirs,
+                  libraries = libraries,
+                  define_macros = define_macros,
+                  include_dirs = include_dirs + \
+                                  [normpath("linkcheck/HtmlParser")],
                   )],
        scripts = scripts,
        data_files = [
