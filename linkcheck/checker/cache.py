@@ -170,7 +170,7 @@ class Cache (object):
         self.lock.acquire()
         try:
             if redirect in self.checked:
-                url_data.copy_from_cache(self.checked[key])
+                url_data.copy_from_cache(self.checked[redirect])
                 return True
             return False
         finally:
