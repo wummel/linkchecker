@@ -105,7 +105,7 @@ class StandardTest (unittest.TestCase):
         return linkcheck.url.url_norm(url)
 
     def get_file (self, filename):
-        """get absolute file name, located within 'data' directory"""
+        """get file name located within 'data' directory"""
         return os.path.join("linkcheck", "ftests", "data", filename)
 
     def get_resultlines (self, filename):
@@ -126,7 +126,8 @@ class StandardTest (unittest.TestCase):
         confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
         consumer = get_test_consumer(confargs, logargs)
-        url_data = linkcheck.checker.get_url_from(url, 0, consumer)
+        url_data = linkcheck.checker.get_url_from(
+                                      url, 0, consumer, cmdline=True)
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
