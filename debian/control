@@ -26,5 +26,3 @@ Description: check HTML documents for broken links
   o Cookie support
   o command line interface
   o (Fast)CGI web interface (requires HTTP server)
- .
- You have to install python-ssl for HTTPS support.
