@@ -1,7 +1,7 @@
 linkchecker (2.2-1) unstable; urgency=low
 
   * New upstream release.
-  * Suggest psyco, and conflict with unsupported psyco versions << 1.4
+  * Suggest psyco
 
  -- Bastian Kleineidam <calvin@debian.org>  Thu, 20 Jan 2005 20:57:12 +0100
 
