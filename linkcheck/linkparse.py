@@ -57,6 +57,7 @@ _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
 _css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
 
 class TagParser (HtmlParser):
+    """basic parser class putting message in list"""
     def __init__ (self, content):
         super(TagParser, self).__init__()
         self.content = content
@@ -86,6 +87,7 @@ class TagParser (HtmlParser):
 
 
 class MetaRobotsParser (TagParser):
+    """parser class for robots.txt meta values in HTML"""
     def __init__ (self, content):
         super(MetaRobotsParser, self).__init__(content)
         self.follow = True
