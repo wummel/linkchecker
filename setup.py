@@ -22,13 +22,12 @@ from distutils.dist import Distribution
 from distutils.extension import Extension
 from distutils.command.install import install
 from distutils.command.install_data import install_data
-from distutils.command.build_scripts import build_scripts,first_line_re
 from distutils.command.config import config
 from distutils import util
 from distutils.file_util import write_file
 from distutils.dep_util import newer
 
-import os,string,re,sys
+import os, string, re, sys
 
 
 class MyInstall(install):
@@ -49,6 +48,18 @@ class MyInstall(install):
         from pprint import pformat
         data.append('outputs = %s' % pformat(self.get_outputs()))
 	self.distribution.create_conf_file(self.install_lib, data)
+        # copy batch file to desktop
+        if os.name=="nt":
+            path = self.install_scripts
+            if os.environ.has_key("ALLUSERSPROFILE"):
+                path = os.environ["ALLUSERSPROFILE"]
+            elif os.environ.has_key("USERPROFILE"):
+                path = os.environ["USERPROFILE"]
+            data = open("linkchecker.bat").readlines()
+            data = map(lambda s: s.replace("$python", sys.executable), data)
+            data = map(lambda s: s+"\r", data)
+            self.distribution.create_batch_file(path, data)
+
 
     # sent a patch for this, but here it is for compatibility
     def dump_dirs (self, msg):
@@ -130,22 +141,16 @@ class MyDistribution(Distribution):
     def run_commands(self):
         if "config" not in self.commands:
             self.check_ssl()
-        if "bdist_wininst" in self.commands:
-            # enable .bat file as a script
-            self.scripts.append('linkchecker.bat')
-        else:
-            # man page for POSIX systems
-            self.data_files.append(('man/man1', ['linkchecker.1']))
         Distribution.run_commands(self)
 
 
     def check_ssl(self):
         if not os.path.exists(self.config_file):
-            raise SystemExit, "please run 'python setup.py config'"
-            #self.announce("generating default configuration")
-            #self.run_command('config')
+            #raise SystemExit, "please run 'python setup.py config'"
+            self.announce("generating default configuration")
+            self.run_command('config')
         import _linkchecker_configdata
-        if 'bdist_wininst' in self.commands and os.name!='nt':
+        if 'bdist_wininst' in self.commands and os.name != 'nt':
             self.announce("bdist_wininst command found on non-Windows "
 	                  "platform. Disabling SSL compilation")
         elif _linkchecker_configdata.have_ssl:
@@ -170,88 +175,19 @@ class MyDistribution(Distribution):
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
-class my_build_scripts(build_scripts):
 
-    description = "\"build\" scripts (copy and fixup #! line)"
+    def create_batch_file(self, directory, data):
+        filename = os.path.join(path, "linkchecker.bat")
+        # write the batch file
+        util.execute(write_file, (filename, data),
+                 "creating %s" % filename, self.verbose>=1, self.dry_run)
 
-    user_options = [
-        ('build-dir=', 'd', "directory to \"build\" (copy) to"),
-        ('force', 'f', "forcibly build everything (ignore file timestamps"),
-        ]
-
-    boolean_options = ['force']
-
-
-    def copy_scripts(self):
-        """patched because of a bug"""
-        outfiles = []
-        self.mkpath(self.build_dir)
-        for script in self.scripts:
-            adjust = 0
-            outfile = os.path.join(self.build_dir, os.path.basename(script))
-
-            if not self.force and not newer(script, outfile):
-                self.announce("not copying %s (output up-to-date)" % script)
-                continue
-
-            # Always open the file, but ignore failures in dry-run mode --
-            # that way, we'll get accurate feedback if we can read the
-            # script.
-            try:
-                f = open(script, "r")
-            except IOError:
-                if not self.dry_run:
-                   raise
-                f = None
-            else:
-                first_line = f.readline()
-                if not first_line:
-                    self.warn("%s is an empty file (skipping)" % script)
-                    continue
-
-                match = first_line_re.match(first_line)
-                if match:
-                    adjust = 1
-                    post_interp = match.group(1) or ""
-
-            if adjust:
-                self.announce("copying and adjusting %s -> %s" %
-                              (script, self.build_dir))
-                if not self.dry_run:
-                    outf = open(outfile, "w")
-                    outf.write("#!%s%s\n" % 
-                               (os.path.normpath(sys.executable), post_interp))
-                    outf.writelines(f.readlines())
-                    outf.close()
-                if f:
-                    f.close()
-            else:
-                f.close()
-                self.copy_file(script, outfile)
-
-    # copy_scripts ()
 
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
-scripts = ['linkchecker']
-data_files = [('share/locale/de/LC_MESSAGES',
-      ['locale/de/LC_MESSAGES/linkcheck.mo']),
-     ('share/locale/fr/LC_MESSAGES',
-      ['locale/fr/LC_MESSAGES/linkcheck.mo']),
-     ('share/linkchecker', ['linkcheckerrc']),
-     ('share/linkchecker/examples',
-      ['lconline/leer.html',
-       'lconline/index.html', 'lconline/lc_cgi.html',
-       'lc.cgi','lc.fcgi','lc.sz_fcgi']),
-    ]
-if os.name=="nt":
-    scripts.append("linkchecker.bat")
-else:
-    data_files.append(('share/linkchecker/examples',["linkchecker.bat"]))
-
 setup (name = "linkchecker",
-       version = "1.3.8",
+       version = "1.3.9",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
@@ -259,8 +195,7 @@ setup (name = "linkchecker",
        maintainer_email = myemail,
        url = "http://linkchecker.sourceforge.net/",
        licence = "GPL",
-       long_description =
-"""Linkchecker features
+       long_description = """Linkchecker features
 o recursive checking
 o multithreading
 o output in colored or normal text, HTML, SQL, CSV or a sitemap
@@ -278,9 +213,18 @@ o a (Fast)CGI web interface (requires HTTP server)
        distclass = MyDistribution,
        cmdclass = {'config': MyConfig,
                    'install': MyInstall,
-		   'build_scripts': my_build_scripts,
 		  },
        packages = ['','DNS','linkcheck','linkcheckssl'],
-       scripts = scripts,
-       data_files = data_files,
+       scripts = ['linkchecker'],
+       data_files = [('share/locale/de/LC_MESSAGES',
+      ['locale/de/LC_MESSAGES/linkcheck.mo']),
+     ('share/locale/fr/LC_MESSAGES',
+      ['locale/fr/LC_MESSAGES/linkcheck.mo']),
+     ('share/linkchecker', ['linkcheckerrc']),
+     ('share/linkchecker/examples',
+      ['lconline/leer.html',
+       'lconline/index.html', 'lconline/lc_cgi.html',
+       'lc.cgi','lc.fcgi','lc.sz_fcgi','linkchecker.bat']),
+      ('man/man1', ['linkchecker.1']),
+    ],
 )

@@ -51,6 +51,8 @@ For single-letter option arguments the space is not a necessity. So
         is overwritten. You can specify this option more than once.
         There is no file output for the blacklist logger. Default is
         no file output.
+-I, --interactive
+        Ask for url if none are given on the commandline.
 -i regex, --intern=regex
         Assume URLs that match the given expression as intern.
         LinkChecker descends recursively only to intern URLs, not to extern.
@@ -157,7 +159,7 @@ def printUsage(msg):
 try:
     # Note: cut out the name of the script
     options, args = getopt.getopt(sys.argv[1:],
-    "adDe:f:F:hi:N:o:p:P:qr:Rst:u:VvwW:", # short options
+    "adDe:f:F:hIi:N:o:p:P:qr:Rst:u:VvwW:", # short options
     ["anchors",                       # long options
     "config=",
     "debug", 
@@ -165,6 +167,7 @@ try:
     "file-output=",
     "nntp-server=",
     "help",
+    "interactive",
     "intern=",
     "denyallow",
     "output=",
@@ -230,6 +233,9 @@ for opt,arg in options:
         else:
             printUsage((_("Illegal argument '%s' for option ") % arg) +\
 	               "'-F, --file-output'")
+
+    elif opt=="-I" or opt=="--interactive":
+        config['interactive'] = 1
 
     elif opt=="-i" or opt=="--intern":
         config["internlinks"].append(re.compile(arg))
@@ -315,7 +321,11 @@ if config["log"].__class__ == linkcheck.Logging.BlacklistLogger and \
     args = open(config['log'].filename).readlines()
 
 if len(args)==0:
-    print _("warning: no files or urls given")
+    if config['interactive']:
+        urls = raw_input(_("enter one or more urls, separated by white-space\n--> "))
+        args = urls.split()
+    else:
+        print _("warning: no files or urls given")
 
 for url in args:
     url = url.strip()

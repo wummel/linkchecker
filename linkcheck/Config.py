@@ -95,6 +95,7 @@ class Configuration(UserDict.UserDict):
         self["externlinks"] = []
         self["internlinks"] = []
         self["denyallow"] = 0
+        self["interactive"] = 0
         self["authentication"] = [{'pattern': re.compile(r'^.+'),
 	                          'user': 'anonymous',
 	                          'password': 'joe@',
