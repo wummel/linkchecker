@@ -47,22 +47,6 @@ msgid "# Format of the entries:\n"
 msgstr "# Format der Einträge:\n"
 
 #, c-format
-msgid "# Get the newest version at %s\n"
-msgstr "# Die neueste Version gibt es unter %s\n"
-
-#, c-format
-msgid ""
-"# Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-"# Kommentare und Fehler mailen Sie bitte an %s\n"
-"\n"
-
-#, c-format
-msgid "# created by %s at %s\n"
-msgstr "# erstellt von %s am %s\n"
-
-#, c-format
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
@@ -72,22 +56,6 @@ msgstr "%.3f Sekunden\n"
 
 msgid ", line "
 msgstr ", Zeile "
-
-#, c-format
-msgid "-- Get the newest version at %s\n"
-msgstr "-- Die neueste Version gibt es unter %s\n"
-
-#, c-format
-msgid ""
-"-- Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-"-- Kommentare und Fehler mailen Sie bitte an %s\n"
-"\n"
-
-#, c-format
-msgid "-- created by %s at %s\n"
-msgstr "-- erstellt von %s am %s\n"
 
 msgid "1 error"
 msgstr "1 Fehler"
@@ -138,7 +106,7 @@ msgid "Error: %s\n"
 msgstr "Fehler: %s\n"
 
 msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Führen Sie 'linkchecker -h' aus um Hilfe zu erhalten\n"
+msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
 
 #, c-format
 msgid "Get the newest version at %s\n"

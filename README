@@ -67,6 +67,7 @@ Internationalization
 For german output execute "export LC_MESSAGES=de" in bash or
 "setenv LC_MESSAGES de" in tcsh.
 Under Windows, execute "set LC_MESSAGES=de".
+For french output use 'fr' instead of 'de'.
 
 
 Code design

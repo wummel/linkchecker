@@ -281,7 +281,7 @@ class HtmlLogger(StandardLogger):
              MyFont+Config.HtmlAppInfo+"<br>")
 	self.fd.write(_("Get the newest version at %s\n") %\
              ("<a href=\""+Config.Url+"\">"+Config.Url+"</a>.<br>"))
-        self.fd.write(_("Write comments and bugs to %s\n") %\
+        self.fd.write(_("Write comments and bugs to %s\n\n") %\
 	     ("<a href=\"mailto:"+Config.Email+"\">"+Config.Email+"</a>."))
 	self.fd.write("</font></small></body></html>")
         self.fd.flush()        
@@ -404,10 +404,11 @@ class GMLLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write(_("# created by %s at %s\n") % (Config.AppName,
-                      _strtime(self.starttime)))
-	self.fd.write(_("# Get the newest version at %s\n") % Config.Url)
-        self.fd.write(_("# Write comments and bugs to %s\n\n") % Config.Email)
+        self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
+                      _strtime(self.starttime))))
+	self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
+        self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
+	                    Config.Email))
 	self.fd.write("graph [\n  directed 1\n")
         self.fd.flush()
 
@@ -471,10 +472,11 @@ class SQLLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write(_("-- created by %s at %s\n") % (Config.AppName,
-                      _strtime(self.starttime)))
-        self.fd.write(_("-- Get the newest version at %s\n") % Config.Url)
-        self.fd.write(_("-- Write comments and bugs to %s\n\n") % Config.Email)
+        self.fd.write("-- "+(_("created by %s at %s\n") % (Config.AppName,
+                      _strtime(self.starttime))))
+        self.fd.write("-- "+(_("Get the newest version at %s\n") % Config.Url))
+        self.fd.write("-- "+(_("Write comments and bugs to %s\n\n") % \
+	                     Config.Email))
         self.fd.flush()
 
     def newUrl(self, urlData):
@@ -555,10 +557,11 @@ class CSVLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write(_("# created by %s at %s\n") % (Config.AppName,
-                      _strtime(self.starttime)))
-	self.fd.write(_("# Get the newest version at %s\n") % Config.Url)
-	self.fd.write(_("# Write comments and bugs to %s\n\n") % Config.Email)
+        self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
+                      _strtime(self.starttime))))
+	self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
+	self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
+	                    Config.Email))
         self.fd.write(_("# Format of the entries:\n")+\
                       "# urlname;\n"
                       "# recursionlevel;\n"
