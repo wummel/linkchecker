@@ -349,11 +349,18 @@ if os.name == 'posix':
               ['config/linkchecker-completion', 'config/linkcheck-cron.sh']))
 elif os.name == 'nt':
     data_files.append(('share/linkchecker/doc',
-             ['doc/documentation.html', 'doc/index.html',
-              'doc/install.html', 'doc/index.html', 'doc/other.html',
-              'doc/upgrading.html', 'doc/lc.css', 'doc/navigation.css',
-              'doc/shot1.png', 'doc/shot2.png', 'doc/shot1_thumb.jpg',
-              'doc/shot2_thumb.jpg', ]))
+             ['doc/en/documentation.html',
+              'doc/en/index.html',
+              'doc/en/install.html',
+              'doc/en/other.html',
+              'doc/en/upgrading.html',
+              'doc/en/lc.css',
+              'doc/en/navigation.css',
+              'doc/en/shot1.png',
+              'doc/en/shot2.png',
+              'doc/en/shot1_thumb.jpg',
+              'doc/en/shot2_thumb.jpg',
+             ]))
 
 setup (name = "linkchecker",
        version = "2.6",
