@@ -4,8 +4,10 @@ linkchecker (1.3.0) unstable; urgency=low
     and use the one provided within the Python library
   * added <script src=> urls for link testing. Thanks to Tomas Cox
     <cox@idecnet.com> for the suggestion
+  * we get now all proxy configuration values from $http_proxy,
+    $https_proxy  on Unix,Windows and from Internet Config on the Mac
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Wed,  1 Nov 2000 22:07:25 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu,  2 Nov 2000 11:17:16 +0100
 
 linkchecker (1.2.6) unstable; urgency=low
 

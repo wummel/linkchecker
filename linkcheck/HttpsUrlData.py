@@ -24,15 +24,6 @@ _supportHttps=hasattr(socket, 'ssl')
 class HttpsUrlData(HttpUrlData):
     """Url link with https scheme"""
 
-    def __init__(self,
-                 urlName,
-                 recursionLevel, 
-                 parentName = None,
-                 baseRef = None,
-                 line = 0):
-        HttpUrlData.__init__(self, urlName, recursionLevel,
-                             parentName, baseRef, line)
-
     def _getHTTPObject(self, host):
         return httplib.HTTPS(host)
 
@@ -43,5 +34,5 @@ class HttpsUrlData(HttpUrlData):
             self.setWarning(_("HTTPS not supported"))
             self.logMe(config)
 
-    def __str__(self):
-        return "HTTPS link\n"+UrlData.__str__(self)
+    def get_scheme(self):
+        return "https"

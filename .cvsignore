@@ -5,6 +5,6 @@ build-stamp
 *.o
 build
 dist
-linkchecker-*.tar.gz
 MANIFEST
 VERSION
+LinkCheckerConf.py

@@ -28,7 +28,10 @@ ExcList.extend([nntplib.error_reply,
 
 class NntpUrlData(UrlData):
     "Url link with NNTP scheme"
-    
+
+    def get_scheme(self):
+        return "nntp"
+
     def buildUrl(self):
         # use nntp instead of news to comply with the unofficial internet
 	# draft of Alfred Gilman which unifies (s)news and nntp URLs
@@ -87,8 +90,3 @@ class NntpUrlData(UrlData):
 
     def getCacheKey(self):
         return self.url
-
-
-    def __str__(self):
-        return "NNTP link\n"+self.urlName
-

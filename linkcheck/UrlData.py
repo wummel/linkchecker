@@ -91,8 +91,7 @@ class UrlData:
         self.extern = 1
         self.data = None
         self.html_comments = []
-        
-        
+
     def setError(self, s):
         self.valid=0
         self.errorString = _("Error")+": "+s
@@ -347,12 +346,20 @@ class UrlData:
         return urls
 
 
+    def get_scheme(self):
+        return "no"
+
     def __str__(self):
-        return "urlname="+`self.urlName`+"\nparentName="+`self.parentName`+\
-               "\nbaseRef="+`self.baseRef`+"\ncached="+`self.cached`+\
-               "\nrecursionLevel="+`self.recursionLevel`+\
-               "\nurlConnection="+str(self.urlConnection)+\
-	       "\nline="+`self.line`
+        return """%s link
+urlname=%s
+parentName=%s
+baseRef=%s
+cached=%s
+recursionLevel=%s
+urlConnection=%s
+line=%s""" % \
+(self.get_scheme(), self.urlName, self.parentName, self.baseRef,
+ self.cached, self.recursionLevel, self.urlConnection, self.line)
 
 
     def _getUserPassword(self, config):

@@ -1,16 +1,12 @@
 # This Makefile is only used by developers.
 # You will need a Debian Linux system to use this Makefile!
 VERSION=$(shell python setup.py --version)
-PACKAGE = linkchecker
-NAME = $(shell python setup.py --name)
+PACKAGE=linkchecker
+NAME=$(shell python setup.py --name)
 HOST=treasure.calvinsplayground.de
-PROXY=--proxy= -itreasure.calvinsplayground.de -s
-#PROXY=-P$(HOST):8080
-#HOST=fsinfo.cs.uni-sb.de
-#PROXY=-Pwww-proxy.uni-sb.de:3128
-LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
-DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
-SOURCES = \
+LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v -itreasure.calvinsplayground.de -s
+DEBPACKAGE=$(PACKAGE)_$(VERSION)_i386.deb
+SOURCES=\
 linkcheck/Config.py \
 linkcheck/FileUrlData.py \
 linkcheck/FtpUrlData.py \
@@ -22,7 +18,6 @@ linkcheck/JavascriptUrlData.py \
 linkcheck/Logging.py \
 linkcheck/MailtoUrlData.py \
 linkcheck/NntpUrlData.py \
-linkcheck/RobotsTxt.py \
 linkcheck/TelnetUrlData.py \
 linkcheck/Threader.py \
 linkcheck/UrlData.py \
@@ -45,9 +40,7 @@ distclean:	clean
 
 dist:	mo
 	rm -rf debian/tmp
-	python setup.py sdist --formats=gztar,zip bdist_rpm
-	# extra run without SSL compilation
-	python setup.py bdist_wininst
+	python setup.py sdist --formats=gztar,zip bdist_rpm bdist_wininst
 	fakeroot debian/rules binary
 	mv -f ../$(DEBPACKAGE) dist
 
@@ -55,7 +48,7 @@ package:
 	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz
 
 files:
-	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
+	./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/~calvin/
 
 VERSION:
 	echo $(VERSION) > VERSION

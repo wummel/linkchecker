@@ -25,5 +25,5 @@ class JavascriptUrlData(UrlData):
         self.setWarning(_("Javascript url ignored"))
         self.logMe(config)
 
-    def __str__(self):
-        return "Javascript link\n"+UrlData.__str__(self)
+    def get_scheme(self):
+        return "javascript"

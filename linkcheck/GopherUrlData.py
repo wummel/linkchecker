@@ -21,5 +21,5 @@ from linkcheck import _
 class GopherUrlData(UrlData):
     "Url link with gopher scheme"
 
-    def __str__(self):
-        return "Gopher link\n"+UrlData.__str__(self)
+    def get_scheme(self):
+        return "gopher"

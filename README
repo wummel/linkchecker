@@ -11,12 +11,12 @@ o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
   graph
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
   file links are supported.
-  Javascript links are currently ignored
 o restrict link checking with regular expression filters for URLs
-o HTTP proxy support
+o proxy support
 o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support
-o internationalization support
+o i18n support
+o command line interface
 o (Fast)CGI web interface
 
 
@@ -31,8 +31,7 @@ LinkChecker is licensed under the GNU Public License.
 Credits go to Guido van Rossum for making Python. His hovercraft is
 full of eels!
 As this program is directly derived from my Java link checker, additional
-credits go to Robert Forsman (the author of JCheckLinks) and his
-robots.txt parse algorithm.
+credits go to Robert Forsman (the author of JCheckLinks).
 I want to thank everybody who gave me feedback, bug reports and
 suggestions.
 
@@ -49,14 +48,10 @@ So for example 1.1.5 is the fifth release of the 1.1 development package.
 
 Included packages
 -----------------
-httplib from http://www.lyra.org/greg/python/
-httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
 DNS see DNS/README
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
-fintl.py from http://sourceforge.net/snippet/detail.php?type=snippet&id=100059
 
 Note that the following packages are modified by me:
-httplib.py (renamed to http11lib.py and a bug fixed)
 fcgi.py (implemented streamed output)
 sz_fcgi.py (simplified the code)
 DNS/Lib.py:566 fixed rdlength name error

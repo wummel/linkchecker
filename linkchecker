@@ -2,8 +2,8 @@
 
 # imports and checks
 import sys
-if sys.version[:5] < "1.5.2":
-    raise SystemExit, "This program requires Python 1.5.2 or later."
+if (not hasattr(sys, 'version_info')) or sys.version_info < (2,0,0,'final',0):
+    raise SystemExit, "This program requires Python 2.0 or later."
 import getopt,re,string,os,urlparse
 # 90 seconds timeout for all connections
 #import timeoutsocket
@@ -48,9 +48,6 @@ Usage = _("USAGE\tlinkchecker [options] file_or_url...\n"
 "-p pwd, --password=pwd\n"
 "        Try given password for HTML and FTP authorization.\n"
 "        Default is 'guest@'. See -u.\n"
-"-P host[:port], --proxy=host[:port]\n"
-"        Use specified proxy for HTTP requests.\n"
-"        Standard port is 8080. Default is to use no proxy.\n"
 "-q, --quiet\n"
 "        Quiet operation. This is only useful with -F.\n"
 "-r depth, --recursion-level=depth\n"
@@ -95,6 +92,8 @@ Notes = _("NOTES\n"
 "o If your platform does not support threading, LinkChecker uses -t0\n"
 "o You can supply multiple user/password pairs in a configuration file\n"
 "o Cookies are not accepted by LinkChecker\n"
+"o To use proxies set $http_proxy, $https_proxy on Unix or Windows.\n"
+"  On a Mac use the Internet Config.\n"
 "o When checking 'news:' links the given NNTP host doesn't need to be the\n"
 "  same as the host of the user browsing your pages!\n")
 
@@ -130,7 +129,7 @@ def printUsage(msg):
 try:
     # Note: cut out the name of the script
     options, args = getopt.getopt(sys.argv[1:],
-    "aDe:f:F:hi:lN:P:o:p:qr:Rst:u:VvwW:", # short options
+    "aDe:f:F:hi:lN:o:p:qr:Rst:u:VvwW:", # short options
     ["anchors",                       # long options
     "config=",
     "debug", 
@@ -141,7 +140,6 @@ try:
     "intern=",
     "allowdeny",
     "output=",
-    "proxy=",
     "password=",
     "quiet",
     "recursion-level=",
@@ -168,13 +166,6 @@ for opt,arg in options:
         linkcheck.Config.DebugFlag = 1
         config.disableThreading()
 config.read(configfiles)
-
-# if no proxy is given, fall back to http_proxy environment variable
-if os.environ.has_key('http_proxy') and not config['proxy']:
-    config['proxy'] = urlparse.urlparse(os.environ["http_proxy"])[1]
-    if string.find(config['proxy'], ':') != -1:
-        config['proxy'],port = string.split(config['proxy'], ':')
-        config['proxyport'] = int(port)
 
 # apply options and arguments
 _user = "anonymous"
@@ -214,14 +205,6 @@ for opt,arg in options:
     elif opt=="-N" or opt=="--nntp-server":
         config["nntpserver"] = arg
         
-    elif opt=="-P" or opt=="--proxy":
-        proxy = re.compile("(.+):(.+)").match(arg)
-        if proxy:
-            config["proxy"] = proxy.group(1)
-            config["proxyport"] = int(proxy.group(2))
-        else:
-            config["proxy"] = arg
-    
     elif opt=="-p" or opt=="--password":
         _password = arg
         constructauth = 1

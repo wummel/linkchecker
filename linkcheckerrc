@@ -79,9 +79,6 @@
 # overall strict checking. You can specify for each extern URL
 # separately if its strict or not. See the [filtering] section
 #strict=0
-# proxy parameters
-#proxy = www-proxy.uni-sb.de
-#proxyport = 3128
 # supply a regular expression for which warnings are printed if found
 # in any HTML files.
 #warningregex="Request failed"
@@ -116,4 +113,4 @@
 # At the moment, authentication is used/needed for http[s] and ftp links.
 [authentication]
 #entry1=^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
-#entry2=^ftp://void.cs.uni-sb.de calvin hutzli
+#entry2=^ftp://void.cs.uni-sb.de calvin schnuckl

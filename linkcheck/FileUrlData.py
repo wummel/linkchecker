@@ -64,6 +64,5 @@ class FileUrlData(UrlData):
         return self.valid and html_re.search(self.url)
 
 
-    def __str__(self):
-        return "File link\n"+UrlData.__str__(self)
-
+    def get_scheme(self):
+        return "file"

@@ -37,12 +37,8 @@ class HostCheckingUrlData(UrlData):
         self.urlTuple=None
         
     def getCacheKey(self):
-        return self.host
+        return self.get_scheme()+":"+self.host
 
     def checkConnection(self, config):
         ip = socket.gethostbyname(self.host)
         self.setValid(self.host+"("+ip+") "+_("found"))
-
-    def __str__(self):
-        return "host="+`self.host`+"\n"+UrlData.__str__(self)
-

@@ -5,12 +5,9 @@ Requirements
 ------------
 Python >= 2.0 from http://www.python.org/
 
-
 Setup
 -----
-Run "python setup.py config" to configure.
-Run "python setup.py install --prefix=<prefix>" to install.
-Default prefix is /usr.
+Run "python setup.py install" to install.
 Run "python setup.py --help" for help.
 Debian users can build the .deb package with "debian/rules binary" as
 root or "fakeroot debian/rules binary" as a normal user.

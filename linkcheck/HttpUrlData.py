@@ -16,13 +16,17 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 import httplib,urlparse,sys,time,re,robotparser
-from UrlData import UrlData
 import Config,StringUtil
+from UrlData import UrlData
+from urllib import splittype, splithost
 from linkcheck import _
 
 class HttpUrlData(UrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
+
+    def get_scheme(self):
+        return "http"
 
     def checkConnection(self, config):
         """
@@ -63,11 +67,12 @@ class HttpUrlData(UrlData):
         | "503"   ; Service Unavailable
         | extension-code
         """
-        
+        self.proxy = config['proxy'].get(self.get_scheme(), None)
+        if self.proxy:
+            self.proxy = splittype(self.proxy)[1]
+            self.proxy = splithost(self.proxy)[0]
         self.mime = None
         self.auth = None
-        self.proxy = config["proxy"]
-        self.proxyport = config["proxyport"]
         if not self.urlTuple[2]:
             self.setWarning(_("Missing '/' at end of URL"))
         if config["robotstxt"] and not self.robotsTxtAllowsUrl(config):
@@ -150,9 +155,8 @@ class HttpUrlData(UrlData):
     def _getHttpRequest(self, method="HEAD"):
         "Put request and return (status code, status text, mime object)"
         if self.proxy:
-            Config.debug("DEBUG: using proxy %s:%d\n" %
-	                 (self.proxy,self.proxyport))
-            host = '%s:%d' % (self.proxy, self.proxyport)
+            Config.debug("DEBUG: using proxy %s\n" % self.proxy)
+            host = self.proxy
         else:
             host = self.urlTuple[1]
         if self.urlConnection:
@@ -203,9 +207,6 @@ class HttpUrlData(UrlData):
             config.robotsTxtCache_set(self.urlTuple[0:2], robotsTxt)
         return config.robotsTxtCache_get(self.url)
 
-
-    def __str__(self):
-        return "HTTP link\n"+UrlData.__str__(self)
 
     def closeConnection(self):
         if self.mime:

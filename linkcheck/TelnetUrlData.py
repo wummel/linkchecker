@@ -31,17 +31,10 @@ class TelnetUrlData(HostCheckingUrlData):
             raise linkcheck.error, _("Illegal telnet link syntax")
         self.host = string.lower(self.urlName[7:])
 
+    def get_scheme(self):
+        return "telnet"
 
     def checkConnection(self, config):
         HostCheckingUrlData.checkConnection(self, config)
         self.urlConnection = telnetlib.Telnet()
         self.urlConnection.open(self.host, 23)
-
-
-    def getCacheKey(self):
-        return "telnet:"+HostCheckingUrlData.getCacheKey(self)
-
-
-    def __str__(self):
-        return "Telnet link\n"+HostCheckingUrlData.__str__(self)
-

@@ -32,7 +32,10 @@ if os.name=='posix':
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
-    
+
+    def get_scheme(self):
+        return "mailto"
+
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         self.headers = {}
@@ -116,10 +119,4 @@ class MailtoUrlData(HostCheckingUrlData):
 
 
     def getCacheKey(self):
-        return "mailto:"+str(self.adresses)
-
-
-    def __str__(self):
-        return "Mailto link\n"+HostCheckingUrlData.__str__(self)
-
-
+        return self.get_scheme()+":"+str(self.adresses)
