@@ -14,6 +14,8 @@
   * updated i18n
     Added files: linkcheck/i18n.py
     Changed files: all .py files using i18n
+  * Recognise "<! --" HTML comments
+    Changed files: linkcheck/parser/htmllex.l
 
 1.8.2
   * - ignore invalid html attribute characters
