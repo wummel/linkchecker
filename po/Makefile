@@ -9,7 +9,7 @@ SOURCES = $(shell find ../linkcheck -name \*.py) \
 ../linkchecker
 
 LDIR = ../share/locale
-PACKAGE = linkcheck
+PACKAGE = linkchecker
 LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
 LANGUAGES = de fr nl
