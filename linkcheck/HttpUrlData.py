@@ -23,12 +23,6 @@ if Config.DebugLevel > 0:
 from ProxyUrlData import ProxyUrlData
 from debuglevels import *
 
-try:
-    h = httplib.HTTPConnection('')
-    h.putrequest('GET', '/', skip_host=1)
-    _skip_host=1
-except TypeError:
-    _skip_host=0
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
 class HttpUrlData (ProxyUrlData):
@@ -224,10 +218,7 @@ class HttpUrlData (ProxyUrlData):
         else:
             path = urlparse.urlunparse(('', '', self.urlTuple[2],
             self.urlTuple[3], self.urlTuple[4], ''))
-        if _skip_host:
-            self.urlConnection.putrequest(method, path, skip_host=1)
-        else:
-            self.urlConnection.putrequest(method, path)
+        self.urlConnection.putrequest(method, path, skip_host=1)
         self.urlConnection.putheader("Host", host)
         if self.auth:
             self.urlConnection.putheader("Authorization", self.auth)
