@@ -75,9 +75,9 @@ def init_dns_resolver_nt():
             if server:
                 defaults['nameserver'].append(server)
         for item in winreg.stringdisplay(key["SearchList"]):
-		    if item:
+            if item:
                 defaults['search_domains'].append(item)
-		
+
     # XXX search for "EnableDhcp", "DhcpNameServer"
 
     try: # search adapters
@@ -97,7 +97,7 @@ def init_dns_resolver_nt():
            r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces")
         for subkey in key.subkeys():
             for server in winreg.stringdisplay(subkey.get('NameServer', '')):
-			    if server:
+                if server:
                     defaults['nameserver'].append(server)
     except EnvironmentError:
         pass
