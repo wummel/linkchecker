@@ -1,0 +1,7 @@
+test_frames
+url file:///home/calvin/projects/linkchecker/test/html/frames.html
+valid
+url base1.html
+valid
+url http.html
+valid
