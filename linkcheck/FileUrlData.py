@@ -119,6 +119,10 @@ class FileUrlData (UrlData):
         return False
 
 
+    def isFile (self):
+        return True
+
+
     def isParseable (self):
         # guess by extension
         for ro in extensions.values():

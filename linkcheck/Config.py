@@ -318,6 +318,7 @@ class Configuration (dict):
     def urlCache_set (self, key, val):
         self.urlCacheLock.acquire()
         try:
+            debug(NIGHTMARE, "caching", repr(key))
             self.urlCache[key] = val
         finally:
             self.urlCacheLock.release()
