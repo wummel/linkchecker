@@ -11,8 +11,8 @@
     - really cope with missing ">" end tags
     Changed files: linkcheck/parser/html{lex.l, parse.y},
       linkcheck/linkparse.py, linkcheck/UrlData.py
-  * quote urls before a request or html output
-    Changed files: linkcheck/HttpUrlData.py, linkcheck/log/HtmlLogger.py
+  * quote urls before a request
+    Changed files: linkcheck/HttpUrlData.py
 
 1.8.13
   * fix typo in manpage
