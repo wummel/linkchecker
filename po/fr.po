@@ -172,8 +172,11 @@ msgstr ""
 msgid "illegal recursionlevel number %d"
 msgstr "valeur du niveau de récursivité %d illégal"
 
-msgid "%.3f seconds"
-msgstr "%.3f secondes"
+msgid "Remote host has closed connection"
+msgstr ""
+
+msgid "parenturl"
+msgstr ""
 
 msgid "Execute 'linkchecker -h' for help\n"
 msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
@@ -203,8 +206,8 @@ msgstr "Arrêt du controle à %s"
 msgid "Group %s has %s articles, range %s to %s"
 msgstr "Le groupe %s a %s articles, de %s à %s"
 
-msgid "Javascript url ignored"
-msgstr "Url Javascript ignorée"
+msgid "%.3f seconds"
+msgstr "%.3f secondes"
 
 msgid "No user or password found"
 msgstr "Aucun utilisateur ou mot de passe trouvé"
@@ -218,8 +221,8 @@ msgstr "N'obtient pas de réponse du serveur FTP"
 msgid "found mail host %s"
 msgstr "trouvé un hôte de messagerie %s"
 
-msgid "parenturl"
-msgstr ""
+msgid "Javascript url ignored"
+msgstr "Url Javascript ignorée"
 
 msgid "could not split the mail adress"
 msgstr "impossible de partager l'adresse e-mail"
