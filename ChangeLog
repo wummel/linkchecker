@@ -42,6 +42,11 @@
     Type: feature
     Changed: linkcheck/checker/ftpurl.py
 
+  * The new per-user configuration file is now stored in
+    ~/.linkchecker/linkcheckerrc.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration.py, doc/{de,en,fr}/*.1
+
 2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:
