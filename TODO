@@ -5,7 +5,7 @@ Possible improvements people could work on:
   Must be thread-safe, must handle timeouts and connection expiration
   (HTTP: only pool persistent (ie. HTTP/1.1) connections; Keepalive
    header parsing).
-  Note: FTP connection pooling is already there, but without timeouts.
+  Note: FTP connection pooling is already there.
 
 - [USAGE] rethink intern/extern stuff
 

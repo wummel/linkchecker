@@ -30,6 +30,8 @@ import linkcheck.containers
 import linkcheck.configuration
 import linkcheck.threader
 
+FTP_CONNECTION_TIMEOUT = 300
+
 
 def _check_morsel (m, host, path):
     """
@@ -224,12 +226,18 @@ class Cache (object):
         try:
             key = (host, username, password)
             if key in self.ftp_connections:
-                conn_and_status = self.ftp_connections[key]
-                if conn_and_status[1] == 'busy':
+                conn_data = self.ftp_connections[key]
+                t = time.time()
+                if conn_data[2] - t > FTP_CONNECTION_TIMEOUT:
+                    # timed out
+                    del self.ftp_connections[key]
+                    return None
+                if conn_data[1] == 'busy':
                     # connection is in use
                     return "busy"
-                conn_and_status[1] = 'busy'
-                return conn_and_status[0]
+                conn_data[1] = 'busy'
+                conn_data[2] = t
+                return conn_data[0]
             return None
         finally:
             self.lock.release()
@@ -243,7 +251,7 @@ class Cache (object):
             key = (host, username, password)
             cached = key in self.ftp_connections
             if not cached:
-                self.ftp_connections[key] = [conn, 'busy']
+                self.ftp_connections[key] = [conn, 'busy', time.time()]
             return cached
         finally:
             self.lock.release()
