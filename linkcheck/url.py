@@ -50,7 +50,7 @@ _safe_host_pattern = _safe_domain_pattern+r"(:(80|8080|8000))?" % _basic
 _safe_path_pattern = r"((/([%(_az09)s%(_path)s]|"\
                      r"(%%[%(_hex_safe)s][%(_hex_full)s]))+)*/?)" % _basic
 _safe_fragment_pattern = r"%s*" % _safe_char
-_safe_cgi = r"%s+(=%s+)?" % (_safe_char, _safe_char)
+_safe_cgi = r"%s+(=(%s|/)+)?" % (_safe_char, _safe_char)
 _safe_query_pattern = r"(%s(&%s)*)?" % (_safe_cgi, _safe_cgi)
 _safe_param_pattern = r"(%s(;%s)*)?" % (_safe_cgi, _safe_cgi)
 safe_url_pattern = r"%s://%s%s(#%s)?" % \
