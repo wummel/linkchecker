@@ -22,6 +22,9 @@ name 5
 valid
 url mailto:?to=calvin@studcs.uni-sb.de?subject=blubb
 name ...
+error
+url mailto:news-admins@freshmeat.net?subject=Re:%20[fm%20#11093]%20(news-admins)%20Submission%20report%20-%20Pretty%20CoLoRs
+name ...
 valid
 url mailto:jan@jan-dittberner.de?subject=test
 name ...
@@ -31,7 +34,7 @@ name 5
 error
 url mailto:calvin@cs.uni-sb.de?subject=Halli hallo
 name _
-error
+valid
 url mailto:Bastian Kleineidam <calvin@host1?foo=bar>
 name 3
 error
