@@ -77,7 +77,7 @@ name should be cached
 warning Base URL is not properly normed. Normed url is 'http://localhost:8000/'.
 error
 
-url 'http://localhost:8000/?quoted=ü'
+url 'http://localhost:8000/?quoted=\xfc'
 cache key http://localhost:8000/?quoted=%%FC
 real url http://localhost:8000/?quoted=%%FC
 name html entities
