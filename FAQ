@@ -8,4 +8,3 @@ A: You have to quote special characters (e.g. spaces) in the subject field.
 Q: I have a pretty large site to check. How can I restrict link checking
    to check only my own pages?
 A: Look at the options --intern, --extern, --strict and --recursion-level.
-
