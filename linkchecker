@@ -68,6 +68,10 @@ For single-letter option arguments the space is not a necessity. So
 -p pwd, --password=pwd
         Try password pwd for HTML and FTP authorization.
         Default password is 'joe@'. See also -u.
+-P secs, --pause=secs
+        Pause <secs> seconds between each url check. Don't forget to
+	disable threading with -t0 when you really want to wait.
+        Default is no pause between requests.
 -q, --quiet
         Quiet operation. This is only useful with -F.
 -r depth, --recursion-level=depth
@@ -132,7 +136,7 @@ o Local files and syntactic sugar on the command line:
 def printVersion():
     print linkcheck.Config.AppInfo
     sys.exit(0)
-  
+
 def printHelp():
     if os.name!='posix':
         StringUtil.paginate(Usage+"\n"+Notes+"\n"+Examples)
@@ -141,7 +145,7 @@ def printHelp():
 	print Notes
 	print Examples
     sys.exit(0)
-    
+
 def printUsage(msg):
     sys.stderr.write(_("Error: %s\n") % msg)
     sys.stderr.write(_("Execute 'linkchecker -h' for help\n"))
@@ -152,7 +156,7 @@ def printUsage(msg):
 try:
     # Note: cut out the name of the script
     options, args = getopt.getopt(sys.argv[1:],
-    "adDe:f:F:hi:N:o:p:qr:Rst:u:VvwW:", # short options
+    "adDe:f:F:hi:N:o:p:P:qr:Rst:u:VvwW:", # short options
     ["anchors",                       # long options
     "config=",
     "debug", 
@@ -164,6 +168,7 @@ try:
     "denyallow",
     "output=",
     "password=",
+    "pause=",
     "quiet",
     "recursion-level=",
     "wischiwaschi",
@@ -200,10 +205,10 @@ for opt,arg in options:
 
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append((re.compile(arg), 0))
-    
+
     elif opt=="-h" or opt=="--help":
         printHelp()
-    
+
     elif opt=="-o" or opt=="--output":
         if linkcheck.Config.Loggers.has_key(arg):
             config['log'] = config.newLogger(arg)
@@ -222,36 +227,43 @@ for opt,arg in options:
         else:
             printUsage((_("Illegal argument '%s' for option ") % arg) +\
 	               "'-F, --file-output'")
-    
+
     elif opt=="-i" or opt=="--intern":
         config["internlinks"].append(re.compile(arg))
-    
+
     elif opt=="-l" or opt=="--denyallow":
         config["denyallow"] = 1
-    
+
     elif opt=="-N" or opt=="--nntp-server":
         config["nntpserver"] = arg
-        
+
     elif opt=="-p" or opt=="--password":
         _password = arg
         constructauth = 1
-        
+
+    elif opt=="-P" or opt=="--pause":
+        if int(arg) >= 0:
+            config["wait"] = int(arg)
+        else:
+            printUsage((_("Illegal argument '%s' for option ") % arg) +
+	               "'-P, --pause'")
+
     elif opt=="-q" or opt=="--quiet":
     	config["quiet"] = 1
-    
+
     elif opt=="-r" or opt=="--recursion-level":
         if int(arg) >= 0:
             config["recursionlevel"] = int(arg)
         else:
             printUsage((_("Illegal argument '%s' for option ") % arg) +
 	               "'-r, --recursion-level'")
-    
+
     elif opt=="-R" or opt=="--robots-txt":
         config["robotstxt"] = 1
-    
+
     elif opt=="-s" or opt=="--strict":
         config["strict"] = 1
-    
+
     elif opt=="-t" or opt=="--threads":
         num = int(arg)
         if config["threads"] and not linkcheck.Config.DebugFlag:
@@ -259,11 +271,11 @@ for opt,arg in options:
                 config.enableThreading(num)
             else:
                 config.disableThreading()
-    
+
     elif opt=="-u" or opt=="--user":
         _user = arg
         constructauth = 1
-    
+
     elif opt=="-V" or opt=="--version":
         printVersion()
 

@@ -204,6 +204,8 @@ class UrlData:
     def check(self, config):
         debug(Config.DebugDelim+"Checking\n"+str(self)+"\n"+\
                      Config.DebugDelim)
+        if self.recursionlevel and config['wait']:
+            time.sleep(config['wait']);
         t = time.time()
         # check syntax
         debug("DEBUG: checking syntax\n")
@@ -397,10 +399,11 @@ class UrlData:
 
 
     def searchInForTag(self, pattern):
-        debug("Searching for tag %s, attribute %s" \
+        debug("Searching for tag %s, attribute %s\n" \
 	      % (pattern['tag'], pattern['attr']))
         urls = []
         index = 0
+        debug("hulla")
         while 1:
             match = pattern['pattern'].search(self.getContent(), index)
             if not match: break

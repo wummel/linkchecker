@@ -96,6 +96,7 @@ class Configuration(UserDict.UserDict):
 	                          'joe@')]
         self["proxy"] = getproxies()
         self["recursionlevel"] = 1
+        self["wait"] = 0
         self["robotstxt"] = 1
         self["strict"] = 0
         self["fileoutput"] = []

@@ -13,24 +13,19 @@ OpenSSL from http://www.openssl.org/
 
 Setup
 -----
-Run "python setup.py config" to configure. This tests if we can
-compile the SSL extension and writes the result in the file
-LinkCheckerConf.py.
-You can give additional parameters to help compiling, for example
-Linux users can run "python setup.py config -lcrypto" to use the SSL
-module.
-Run "python setup.py build" to build.
-Run "python setup.py install" to install.
-Run "python setup.py --help" for help.
-Debian users can build the .deb package with "debian/rules binary" as
-root or "fakeroot debian/rules binary" as a normal user.
+Run "python2 setup.py config" to configure.
+You can provide additional parameters, for example Linux users
+can run "python2 setup.py config -lcrypto" to use the SSL module.
+Run "python2 setup.py build" to build.
+Run "python2 setup.py install" to install.
+Run "python2 setup.py --help" for help.
 
-After installation, the system wide configuration file is in 
+After installation, the system wide configuration file is in
 <prefix>/share/linkchecker/linkcheckerrc.
 On Debian Linux systems it is in /etc/linkcheckerrc.
 The local configuration file is ~/.linkcheckerrc on Unix platforms.
 
-To run the program type "linkchecker" followed by your URLs you want 
+To run the program type "linkchecker" followed by your URLs you want
 to check.
 Type "linkchecker -h" for help.
 
@@ -43,7 +38,7 @@ You can use and adjust the example HTML files in the lconline directory
 to run the script.
 1) Choose a CGI script. The simplest is lc.cgi and you need a web server
    with CGI support.
-   The scripts lc.fcgi (I tested this a while ago) and lc.sz_fcgi 
+   The scripts lc.fcgi (I tested this a while ago) and lc.sz_fcgi
    (untested) need a web server with FastCGI support.
 2) Copy the script of your choice in the CGI directory.
 3) Adjust the "action=..." parameter in lconline/lc_cgi.html
