@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (C) 2000-2002  Bastian Kleineidam
+# Copyright (C) 2000-2003  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,10 +18,15 @@
 import sys, re, os, fcgi
 import linkcheck.lc_cgi
 
+# access
+ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_SERVERS = ['127.0.0.1']
 # main
 try:
     while fcgi.isFCGI():
         req = fcgi.FCGI()
+        linkcheck.lc_cgi.checkaccess(out=req.out, hosts=ALLOWED_HOSTS,
+                                     servers=ALLOWED_SERVERS, env=req.env)
         linkcheck.lc_cgi.checklink(out=req.out, form=req.getFieldStorage(),
                                    env=req.env)
         req.Finish()

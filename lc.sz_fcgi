@@ -18,7 +18,13 @@
 import sys, re, thread, sz_fcgi
 import linkcheck.lc_cgi
 
+# access
+ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_SERVERS = ['127.0.0.1']
 def func (fcg, req):
+    linkcheck.lc_cgi.checkaccess(out=req.out, hosts=ALLOWED_HOSTS,
+                                 servers=ALLOWED_SERVERS,
+                                 env=req.env)
     linkcheck.lc_cgi.checklink(out=req.out, form=req.getFieldStorage(),
                                env=req.env)
     req.Finish()

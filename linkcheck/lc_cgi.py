@@ -32,7 +32,14 @@ class FormError (Exception):
     pass
 
 
-def checklink (out=sys.stdout, form={}, env={}):
+def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
+    if os.environ.get('REMOTE_ADDR') not in hosts or \
+       os.environ.get('SERVER_ADDR') not in servers:
+        logit({}, env)
+        printError(out, "Access denied")
+
+
+def checklink (out=sys.stdout, form={}, env=os.environ):
     """main cgi function, check the given links and print out the result"""
     out.write("Content-type: text/html\r\n"
               "Cache-Control: no-cache\r\n"
