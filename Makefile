@@ -3,6 +3,7 @@ PYVER := 2.4
 PYTHON := python$(PYVER)
 PACKAGE := linkchecker
 NAME = $(shell $(PYTHON) setup.py --name)
+VERSION = $(shell $(PYTHON) setup.py --version)
 PACKAGEDIR = /home/groups/l/li/$(PACKAGE)
 #HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
 HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
@@ -38,6 +39,7 @@ distclean: clean cleandeb
 	rm -f _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-out* $(PACKAGE).prof $(PACKAGE)-md5sums.txt
+	rm -rf $(PACKAGE)-$(VERSION)
 
 cleandeb:
 	rm -rf debian/$(PACKAGE) debian/tmp
