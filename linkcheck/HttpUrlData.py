@@ -17,6 +17,7 @@
 
 import httplib, urlparse, sys, time, re
 import Config, StringUtil, robotparser
+robotparser.debug = 1
 from UrlData import UrlData
 from urllib import splittype, splithost, splituser, splitpasswd
 from linkcheck import _
@@ -219,11 +220,13 @@ class HttpUrlData(UrlData):
         self.urlConnection.endheaders()
         return self.urlConnection.getreply()
 
+
     def _getHTTPObject(self, host):
         h = httplib.HTTP()
         h.set_debuglevel(Config.DebugLevel)
         h.connect(host)
         return h
+
 
     def getContent(self):
         if not self.has_content:
@@ -238,7 +241,7 @@ class HttpUrlData(UrlData):
             Config.debug(HURT_ME_PLENTY, "comment spans", self.html_comments)
         return self.data
 
-        
+
     def isHtml(self):
         if not (self.valid and self.mime):
             return 0
@@ -246,9 +249,12 @@ class HttpUrlData(UrlData):
 
 
     def robotsTxtAllowsUrl(self, config):
-        roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]
+        roboturl = "%s://%s/robots.txt" % self.urlTuple[0:2]
+        Config.debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
+        Config.debug(HURT_ME_PLENTY, "url", self.url)
         if not config.robotsTxtCache_has_key(roboturl):
-            rp = robotparser.RobotFileParser(roboturl)
+            rp = robotparser.RobotFileParser()
+            rp.set_url(roboturl)
             rp.read()
             config.robotsTxtCache_set(roboturl, rp)
         rp = config.robotsTxtCache_get(roboturl)

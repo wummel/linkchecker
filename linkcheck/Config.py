@@ -449,8 +449,7 @@ class Configuration(UserDict.UserDict):
             self["recursionlevel"] = num
         except ConfigParser.Error: pass
         try: 
-            self["robotstxt"] = cfgparser.getboolean(section, 
-            "robotstxt")
+            self["robotstxt"] = cfgparser.getboolean(section, "robotstxt")
         except ConfigParser.Error: pass
         try: self["strict"] = cfgparser.getboolean(section, "strict")
         except ConfigParser.Error: pass

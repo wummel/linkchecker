@@ -21,7 +21,8 @@ import sys
 if sys.version[:5] < "2.0":
     raise SystemExit, "This program requires Python 2.0 or later."
 
-import getopt, re, os, urlparse, linkcheck
+import getopt, re, os, urlparse, pprint, linkcheck
+from linkcheck.debuglevels import *
 from linkcheck import _,StringUtil
 if os.name!='nt':
     from linkcheck import timeoutsocket
@@ -189,6 +190,11 @@ except getopt.error:
     type, value = sys.exc_info()[:2]
     printUsage(value)
 
+# set debug level as early as possible
+for opt,arg in options:
+    if opt=="-D" or opt=="--debug":
+        linkcheck.Config.DebugLevel += 1
+linkcheck.Config.debug(BRING_IT_ON, "Python", sys.version, "on", sys.platform)
 # apply configuration
 config = linkcheck.Config.Configuration()
 configfiles = []
@@ -196,7 +202,9 @@ for opt,arg in options:
     if opt=="-f" or opt=="--config":
         configfiles.append(arg)
 config.read(configfiles)
-
+# disable threading for debugging
+if linkcheck.Config.DebugLevel > 0:
+    config.disableThreading()
 # apply options and arguments
 _user = "anonymous"
 _password = "guest@"
@@ -204,10 +212,6 @@ constructauth = 0
 for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
         config["anchors"] = 1
-
-    elif opt=="-D" or opt=="--debug":
-        linkcheck.Config.DebugLevel += 1
-        config.disableThreading()
 
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append((re.compile(arg), 0))
@@ -319,6 +323,8 @@ if constructauth:
 if config["log"].__class__ == linkcheck.Logging.BlacklistLogger and \
    os.path.exists(config['log'].filename):
     args = open(config['log'].filename).readlines()
+
+linkcheck.Config.debug(HURT_ME_PLENTY, pprint.pformat(config.data))
 
 if len(args)==0:
     if config['interactive']:
