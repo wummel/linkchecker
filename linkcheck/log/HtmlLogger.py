@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -32,7 +33,7 @@ HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">
  a:hover { color: #34a4ef }
  //-->
 </style></head>
-<body bgcolor=%s link=%s vlink=%s alink=%s>
+<body bgcolor="%s" link="%s" vlink="%s" alink="%s">
 """
 
 class HtmlLogger (StandardLogger):
@@ -63,17 +64,17 @@ class HtmlLogger (StandardLogger):
 
     def newUrl (self, urlData):
         if self.fd is None: return
-        self.fd.write("<br clear=all><br>\n"+
-             "<table align=left border=0 cellspacing=0 cellpadding=1\n"+
-             " bgcolor="+self.colorborder+" summary=Border>\n"+
+        self.fd.write("<br clear=\"all\"><br>\n"+
+             "<table align=\"left\" border=\"0\" cellspacing=\"0\" cellpadding=\"1\"\n"+
+             " bgcolor=\""+self.colorborder+"\" summary=\"Border\">\n"+
              "<tr>\n"+
              "<td>\n"+
-             "<table align=left border=0 cellspacing=0 cellpadding=3\n"+
-             " summary=\"checked link\" bgcolor="+self.colorbackground+">\n")
+             "<table align=\"left\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"\n"+
+             " summary=\"checked link\" bgcolor=\""+self.colorbackground+"\">\n")
         if self.has_field("url"):
 	    self.fd.write("<tr>\n"+
-             "<td bgcolor="+self.colorurl+">"+self.field("url")+"</td>\n"+
-             "<td bgcolor="+self.colorurl+">"+urlData.urlName)
+             "<td bgcolor=\""+self.colorurl+"\">"+self.field("url")+"</td>\n"+
+             "<td bgcolor=\""+self.colorurl+"\">"+urlData.urlName)
             if urlData.cached:
                 self.fd.write(i18n._(" (cached)"))
             self.fd.write("</td>\n</tr>\n")
@@ -131,7 +132,7 @@ class HtmlLogger (StandardLogger):
                 self.fd.write("<tr>\n"+self.tableerror+self.field("result")+
 	                  "</td>\n"+self.tableerror+
 			  urlData.errorString+"</td>\n</tr>\n")
-        self.fd.write("</table></td></tr></table><br clear=all>")
+        self.fd.write("</table></td></tr></table><br clear=\"all\">")
         self.fd.flush()
 
     def endOfOutput (self, linknumber=-1):
@@ -163,10 +164,10 @@ class HtmlLogger (StandardLogger):
                 duration = duration / 60
                 name = i18n._("hours")
             self.fd.write("	(%.3f %s)\n" % (duration, name))
-            self.fd.write("</blockquote><br><hr noshade size=1><small>"+
+            self.fd.write("</blockquote><br><hr noshade size=\"1\"><small>"+
                           Config.HtmlAppInfo+"<br>")
             self.fd.write(i18n._("Get the newest version at %s\n") %\
-             ('<a href="'+Config.Url+'" target=_top>'+Config.Url+
+             ('<a href="'+Config.Url+'" target="_top">'+Config.Url+
 	      "</a>.<br>"))
             self.fd.write(i18n._("Write comments and bugs to %s\n\n") %\
 	     ('<a href="mailto:'+Config.Email+'">'+Config.Email+"</a>."))
