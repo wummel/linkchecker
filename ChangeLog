@@ -23,6 +23,11 @@
     Type: feature
     Changed: config/linkcheckerrc
 
+  * All leading directories of a given output log file are created
+    automatically now. Errors creating these directories or opening
+    the log file for writing abort the checking and print a usage mesage.
+    Type: feature
+    Changed: linkchecker, linkcheck/logger/__init__.py
 
 1.13.5 "Die Musterknaben" (released 22.9.2004)
   * Use xgettext with Python support for .pot file creation, adjusted

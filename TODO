@@ -3,9 +3,6 @@ Next releases:
 - logger methods should get called with unicode strings (using
   the unicode-output from the html parser)
 
-- should leading directories of --file-output given filenames be
-  created? Right now there is an IOError which is suboptimal.
-
 - use output encoding for loggers
 
 - check unknown encoding config (both command line and config file)
