@@ -83,6 +83,8 @@ class HttpUrlData (UrlData):
         """
         # set the proxy, so a 407 status after this is an error
         self._setProxy(self.config["proxy"].get(self.scheme))
+        if self.proxy:
+            self.setInfo(linkcheck._("Using HTTP Proxy %s")%`self.proxy`)
         self.headers = None
         self.auth = None
         self.cookies = []
@@ -100,6 +102,7 @@ class HttpUrlData (UrlData):
             if status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 self._setProxy(self.headers.getheader("Location"))
+                self.setInfo(linkcheck._("Enforced HTTP Proxy %s")%`self.proxy`)
                 status, statusText, self.headers = self._getHttpRequest()
                 self.proxy, self.proxyauth = oldproxy
             # follow redirections
@@ -212,7 +215,6 @@ class HttpUrlData (UrlData):
 	"""
         if self.proxy:
             host = self.proxy
-            self.setInfo(linkcheck._("Using HTTP Proxy %s")%`self.proxy`)
         else:
             host = self.urlTuple[1]
         Config.debug(HURT_ME_PLENTY, "host", host)
