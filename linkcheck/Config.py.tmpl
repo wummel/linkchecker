@@ -36,18 +36,18 @@ def dictjoin(d1, d2):
     return d
 
 
-Version = "1.2.4"
-AppName = "LinkChecker"
+Version = "$version"
+AppName = "$appname"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
-Author =  "Bastian Kleineidam"
-HtmlAuthor = "Bastian&nbsp;Kleineidam"
+Author =  "$author"
+HtmlAuthor = string.replace(Author, ' ', '&nbsp;')
 Copyright = "Copyright © 2000 by "+Author
 HtmlCopyright = "Copyright &copy; 2000 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
-Url = "http://linkchecker.sourceforge.net/"
-Email = "calvin@users.sourceforge.net"
+Url = "$url"
+Email = "$email"
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' whithin this

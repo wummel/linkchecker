@@ -61,6 +61,7 @@ class LCDistribution(Distribution):
 			  "Use the -I option for the build_ext command.")
 
     def has_ssl(self):
+        """check if we can find ssl.h"""
         incls = self.get_command_obj("build_ext").include_dirs
         incls = (incls and string.split(incls, os.pathsep)) or []
         for d in incls + self.default_include_dirs:
@@ -70,28 +71,43 @@ class LCDistribution(Distribution):
 
                                            
     def additional_things(self):
+        """replace path names and program information in various files"""
+        self.announce("Filling template values.")
         inst = self.get_command_obj("install")
         inst.ensure_finalized()
-        t = Template("linkcheck/__init__.py.tmpl")
-        f = open("linkcheck/__init__.py","w")
-        f.write(t.fill_in({"install_data": inst.install_data}))
-        f.close()
-        t = Template("linkchecker.tmpl")
-        f = open("linkchecker","w")
-        f.write(t.fill_in({"syspath": "# sys.path augmentation not needed"}))
-        f.close()
-        if os.name=='nt':
-            t = Template("linkchecker.bat.tmpl")
-            f = open("linkchecker.bat","w")
-            f.write(t.fill_in({"install_scripts": \
-	            change_root_inv(inst.root, inst.install_scripts)}))
+        data = {
+          'install_data': inst.install_data,
+          "install_scripts": change_root_inv(inst.root, inst.install_scripts),
+          "syspath": "# sys.path augmentation not needed",
+          'author': self.get_author(),
+          'version': self.get_version(),
+          'url': self.get_url(),
+          'appname': self.get_name(),
+          'email': self.get_author_email(),
+          'long_description': self.get_long_description(),
+        }
+        files = [
+            'linkchecker',
+            'linkchecker.bat',
+            'test/profiletest.py',
+            'linkcheck/__init__.py',
+            'linkcheck/Config.py',
+            'install.py',
+            'README',
+        ]
+        for name in files:
+            t = Template(name+".tmpl")
+            f = open(name,"w")
+            f.write(t.fill_in(data))
             f.close()
+        # append system specific files
+        if os.name=='nt':
             self.scripts.append('linkchecker.bat')
         elif os.name=='posix':
             self.data_files.append(('/etc', ['linkcheckerrc']))
 
 
-setup (name = "linkchecker",
+setup (name = "LinkChecker",
        version = "1.2.4",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
@@ -100,19 +116,22 @@ setup (name = "linkchecker",
        licence = "GPL",
        long_description =
 """With LinkChecker you can check your HTML documents for broken links.
+
 Features:
+---------
 o recursive checking
 o multithreaded
 o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
   graph
-o HTTP/1.1, HTTPS, FTP, mailto:, news:, Gopher, Telnet and local file links 
-  are supported.
+o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
+  file links are supported.
   Javascript links are currently ignored
 o restrict link checking with regular expression filters for URLs
 o HTTP proxy support
 o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support
 o internationalization support
+o (Fast)CGI web interface
 """,
        distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],

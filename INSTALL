@@ -1,5 +1,5 @@
-                 LinkChecker installation
-                ==========================
+                     Installation
+                    ==============
 
 Requirements
 ------------
@@ -33,8 +33,8 @@ To install LinkChecker run "python setup.py install".
 Debian users can build the .deb package with "debian/rules binary".
 
 
-Running LinkChecker
--------------------
+Running the link checker
+------------------------
 Type "linkchecker" followed by your URLs you want to check.
 Type "linkchecker -h" for help.
 

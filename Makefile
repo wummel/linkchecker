@@ -1,16 +1,16 @@
 # This Makefile is only used by developers! No need for users to
 # call make.
 VERSION=$(shell python setup.py --version)
-#HOST=treasure.calvinsplayground.de
-#PROXY=--proxy= -itreasure.calvinsplayground.de -s
-#PROXY=-P$(HOST):5050
-HOST=fsinfo.cs.uni-sb.de
-PROXY=-Pwww-proxy.uni-sb.de:3128
+HOST=treasure.calvinsplayground.de
+PROXY=--proxy= -itreasure.calvinsplayground.de -s
+#PROXY=-P$(HOST):8080
+#HOST=fsinfo.cs.uni-sb.de
+#PROXY=-Pwww-proxy.uni-sb.de:3128
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
 PACKAGE = linkchecker
 DEBPACKAGE = ../$(PACKAGE)_$(VERSION)_i386.deb
 SRCPACKAGE = linkchecker-$(VERSION).tar.gz
-RPMPATH=build/bdist.linux2/rpm
+#RPMPATH=build/bdist.linux2/rpm
 #RPMPACKAGE=$(RPMPATH)/RPMS/i386/$(PACKAGE)-$(VERSION)-1.i386.rpm
 #SRPMPACKAGE=$(RPMPATH)/SRPMS/$(PACKAGE)-$(VERSION)-1.src.rpm
 ALLPACKAGES = $(DEBPACKAGE) $(SRCPACKAGE) #$(RPMPACKAGE) $(SRPMPACKAGE)

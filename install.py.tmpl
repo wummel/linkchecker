@@ -15,21 +15,31 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import Template,os
+import os
+from Template import Template
 
 distpath = os.getcwd()
-t = Template.Template("linkcheck/__init__.py.tmpl")
-f = open("linkcheck/__init__.py","w")
-f.write(t.fill_in({"install_data": distpath}))
-f.close()
-for name in ['linkchecker','test/profiletest.py']:
-    t = Template.Template(name+".tmpl")
+data = {
+    'install_data': distpath,
+    'install_scripts': distpath,
+    "syspath": "sys.path.insert(0, '%s')" % distpath,
+    'author': '$author',
+    'version': '$version',
+    'url': '$url',
+    'appname': '$appname',
+    'email': '$email',
+}
+files = [
+    'linkchecker',
+    'linkchecker.bat',
+    'test/profiletest.py',
+    'linkcheck/__init__.py',
+    'linkcheck/Config.py',
+]
+for name in files:
+    t = Template(name+".tmpl")
     f = open(name,"w")
-    f.write(t.fill_in({"syspath": "sys.path.insert(0, '"+distpath+"')"}))
+    f.write(t.fill_in(data))
     f.close()
 os.chmod("linkchecker", 0755)
-t = Template.Template("linkchecker.bat.tmpl")
-f = open("linkchecker.bat","w")
-f.write(t.fill_in({"install_scripts": distpath}))
-f.close()
 print "Local installation ok"
