@@ -383,7 +383,7 @@ class UrlData:
         if sizebytes >= self.config["warnsizebytes"]:
             self.setWarning(linkcheck._("Content size %s is larger than %s")%\
                          (StringUtil.strsize(sizebytes),
-                          StringUtil.strsize(self.config["warnsizebytes"]))
+                          StringUtil.strsize(self.config["warnsizebytes"])))
 
 
     def parseUrl (self):
