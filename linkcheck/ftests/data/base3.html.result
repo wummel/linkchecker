@@ -1,0 +1,5 @@
+url file://%(curdir)s/linkcheck/ftests/data/base3.html
+valid
+url test.txt
+baseurl file://%(curdir)s/linkcheck/ftests/data/base/
+valid

@@ -1,0 +1,5 @@
+url file://%(curdir)s/linkcheck/ftests/data/anchor.html
+valid
+url #myid
+name Bla
+valid

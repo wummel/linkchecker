@@ -1,0 +1,26 @@
+url file://%(curdir)s/linkcheck/ftests/data/file.html
+valid
+url file.html (cached)
+name relative url
+valid
+url file.html#isnix
+name bad anchor
+warning anchor #isnix not found
+valid
+url file.html#iswas
+name good anchor
+valid
+url #isnix (cached)
+name bad anchor
+warning anchor #isnix not found
+valid
+url #iswas (cached)
+name good anchor
+valid
+url hutzli:nixgutt
+name bad scheme
+error
+url javascript:loadthis()
+name javascript url
+warning Javascript url ignored
+valid

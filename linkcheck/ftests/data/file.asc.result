@@ -1,0 +1,2 @@
+url file://%(curdir)s/linkcheck/ftests/data/file.asc
+valid
