@@ -77,19 +77,22 @@ _linkMatcher = r"""
     \s*            # whitespace
     %s             # tag name
     \s+            # whitespace
-    ([^"'>]|"[^"]"|'[^']')*?         # skip leading attributes
+    ([^"'>]|"[^"]*"|'[^']*')*?         # skip leading attributes
     %s             # attrib name
     \s*            # whitespace
     =              # equal sign
     \s*            # whitespace
     (?P<value>     # attribute value
-     "[^"]*" |      # in double quotes
-     '[^']*' |      # in single quotes
+     "[^"]*" |       # in double quotes
+     '[^']*' |       # in single quotes
      [^\s>]+)      # unquoted
-    ([^"'>]|"[^"]"|'[^']')*          # skip trailing attributes
+    ([^"'>]|"[^"]*"|'[^']*')*          # skip trailing attributes
     >              # close tag
     """
 
+
+# disable meta tag for now, the modified linkmatcher does not allow it
+# (['meta'],    ['url']), # <meta http-equiv='refresh' content='x; url=...'>
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = (
@@ -111,11 +114,10 @@ LinkTags = (
     (['isindex'], ['action']),
     (['layer'],   ['background', 'src']),
     (['link'],    ['href']),
-    (['meta'],    ['url']), # <meta http-equiv='refresh' content='x; url=...'>
     (['object'],  ['classid', 'codebase', 'data', 'archive', 'usemap']),
     (['q'],       ['cite']),
     (['script'],  ['src', 'for']),
-    (['body', 'table', 'td', 'th', 'tr'],   ['background']),
+    (['body', 'table', 'td', 'th', 'tr'], ['background']),
     (['xmp'],     ['href']),
 )
 
@@ -147,9 +149,9 @@ CommentPatternEnd = re.compile("--\s*>")
 class UrlData:
     "Representing a URL with additional information like validity etc"
 
-    def __init__(self, 
-                 urlName, 
-                 recursionLevel, 
+    def __init__(self,
+                 urlName,
+                 recursionLevel,
                  parentName = None,
                  baseRef = None,
                  line = 0,
@@ -453,8 +455,8 @@ class UrlData:
 
 
     def searchInForTag(self, pattern):
-        debug(HURT_ME_PLENTY, "Searching for tag", pattern['tag'],
-	      "attribute", pattern['attr'])
+        debug(HURT_ME_PLENTY, "Searching for tag", `pattern['tag']`,
+	      "attribute", `pattern['attr']`)
         urls = []
         index = 0
         while 1:
@@ -462,14 +464,15 @@ class UrlData:
             if not match: break
             index = match.end()
             if self.is_in_comment(match.start()): continue
-            # need to strip optional ending quotes for the meta tag
-            url = StringUtil.stripQuotes(match.group('value')).strip()
+            # strip quotes
+            url = StringUtil.stripQuotes(match.group('value'))
             # need to resolve HTML entities
             url = StringUtil.unhtmlify(url)
             lineno= StringUtil.getLineNumber(self.getContent(), match.start())
             # extra feature: get optional name for this bookmark
             name = self.searchInForName(pattern['tag'], pattern['attr'],
 	                                match.start(), match.end())
+            debug(HURT_ME_PLENTY, "Found", `url`, "at line", lineno)
             urls.append((url, lineno, name))
         return urls
 
