@@ -29,6 +29,12 @@ distclean: clean cleandeb
 	rm -f VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 	# clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-*
+	rm -rf linkcheckssl/ssl.so
+
+.PHONY: localbuild
+localbuild:
+	./setup.py build
+	cp -f build/lib.linux-i686-2.0/linkcheckssl/ssl.so linkcheckssl
 
 .PHONY: cleandeb
 cleandeb:

@@ -190,7 +190,8 @@ class HttpUrlData(UrlData):
             self.proxy = splittype(self.proxy)[1]
             self.proxy = splithost(self.proxy)[0]
             self.proxyuser, self.proxy = splituser(self.proxy)
-            self.proxyuser, self.proxypass = splitpasswd(self.proxyuser)
+            if self.proxyuser:
+                self.proxyuser, self.proxypass = splitpasswd(self.proxyuser)
 
 
     def _getHttpRequest(self, method="HEAD"):

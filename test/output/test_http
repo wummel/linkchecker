@@ -16,15 +16,15 @@ error
 url http://
 name no url
 warning Missing '/' at end of URL
-valid
+error
 url http:/
 name no url, one slash
-valid
+error
 url http:
 cached
 name no url, no slash
 warning Missing '/' at end of URL
-valid
+error
 url http://www.blubb.de/stalter&sohn
 name unquoted ampersand
 error
@@ -33,7 +33,8 @@ name unquoted
 valid
 url http://fsinfo.cs.uni-sb.de/~calvin/#isnix
 name invalid anchor
-error
+warning anchor #isnix not found
+valid
 url HtTP://WWW.hEIsE.DE
 cached
 name should be cached

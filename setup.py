@@ -248,7 +248,7 @@ data_files = [('share/locale/de/LC_MESSAGES',
 if os.name=="nt":
     scripts.append("linkchecker.bat")
 else:
-    data_files.append()
+    data_files.append(('share/linkchecker/examples',["linkchecker.bat"]))
 
 setup (name = "linkchecker",
        version = "1.3.7",

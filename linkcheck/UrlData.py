@@ -220,7 +220,7 @@ class UrlData:
         try:
 	    self.buildUrl()
             self.extern = self._getExtern(config)
-        except linkcheck.error:
+        except tuple(ExcList):
             type, value = sys.exc_info()[:2]
             self.setError(str(value))
             self.logMe(config)
@@ -249,7 +249,7 @@ class UrlData:
                 self.checkAnchors(self.urlTuple[5])
         except tuple(ExcList):
             type, value = sys.exc_info()[:2]
-            print type, value
+            #print type, value
             self.setError(str(value))
 
         # check content
@@ -268,6 +268,7 @@ class UrlData:
             self.parseUrl(config)
         self.closeConnection()
         self.logMe(config)
+        debug(BRING_IT_ON, "caching")
         self.putInCache(config)
 
 
@@ -339,7 +340,7 @@ class UrlData:
                 if pat.search(self.url):
                     return (1, strict)
             return (1,0)
-        raise ValueError, "internal error in UrlData._getExtern"
+        raise linkcheck.error, "internal error in UrlData._getExtern"
 
 
     def getContent(self):
