@@ -2,22 +2,22 @@
 #******************************************************************************\
 #* Copyright (c) 2003-2004, Martin Blais
 #* All rights reserved.
-#* 
+#*
 #* Redistribution and use in source and binary forms, with or without
 #* modification, are permitted provided that the following conditions are
 #* met:
-#* 
+#*
 #* * Redistributions of source code must retain the above copyright
 #*   notice, this list of conditions and the following disclaimer.
-#* 
+#*
 #* * Redistributions in binary form must reproduce the above copyright
 #*   notice, this list of conditions and the following disclaimer in the
 #*   documentation and/or other materials provided with the distribution.
-#* 
+#*
 #* * Neither the name of the Martin Blais, Furius, nor the names of its
 #*   contributors may be used to endorse or promote products derived from
 #*   this software without specific prior written permission.
-#* 
+#*
 #* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 #* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 #* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -92,12 +92,12 @@ __author__ = "Martin Blais <blais@furius.ca>"
 # EXTERNAL DECLARATIONS
 #===============================================================================
 
-import sys, os
-from os.path import *
+import sys
+import os
+import os.path
 import types
 import re
-
-from pprint import pprint, pformat
+import pprint
 
 #===============================================================================
 # PUBLIC DECLARATIONS
@@ -117,7 +117,6 @@ class AllCompleter:
 #-------------------------------------------------------------------------------
 #
 class NoneCompleter:
-
     """Generates empty completion list."""
 
     def __call__( self, pwd, line, point, prefix, suffix ):
@@ -126,16 +125,14 @@ class NoneCompleter:
 #-------------------------------------------------------------------------------
 #
 class DirCompleter:
-
     """Completes by listing subdirectories only."""
 
     def __call__( self, pwd, line, point, prefix, suffix ):
-        return filter(isdir, os.listdir(pwd))
+        return filter(os.path.isdir, os.listdir(pwd))
 
 #-------------------------------------------------------------------------------
 #
 class RegexCompleter:
-
     """Completes by filtering all possible files with the given list of
     regexps."""
 
@@ -151,7 +148,7 @@ class RegexCompleter:
             self.regexlist.append(r)
 
     def __call__( self, pwd, line, point, prefix, suffix ):
-        dn = dirname(prefix)
+        dn = os.path.dirname(prefix)
         if dn:
             pwd = dn
         files = os.listdir(pwd)
@@ -160,10 +157,10 @@ class RegexCompleter:
             for r in self.regexlist:
                 if r.match(fn):
                     if dn:
-                        fn = join(dn, fn)
+                        fn = os.path.join(dn, fn)
                     ofiles.append(fn)
                     break
-            if self.always_dirs and isdir(fn):
+            if self.always_dirs and os.path.isdir(fn):
                 ofiles.append(fn + '/')
         return ofiles
 
@@ -241,7 +238,7 @@ def autocomplete( parser,
     # caller complete. This is the normal path of execution.
     if not os.environ.has_key('OPTPARSE_AUTO_COMPLETE'):
         return
-    
+
     # Set default completers.
     if not arg_completer:
         arg_completer = AllCompleter()
@@ -287,7 +284,7 @@ def autocomplete( parser,
                     return value.autocomplete(subcmd_completer)
                 else:
                     sys.exit(1) # no completions for that command object
-            
+
     # Extract word enclosed word.
     prefix, suffix = extract_word(cline, cpoint)
     # The following would be less exact, but will work nonetheless .
@@ -368,9 +365,9 @@ def autocomplete( parser,
         print >> f, 'CPOINT', cpoint
         print >> f, 'CWORD', cword
         print >> f, '\nShort options'
-        print >> f, pformat(parser._short_opt)
+        print >> f, pprint.pformat(parser._short_opt)
         print >> f, '\nLong options'
-        print >> f, pformat(parser._long_opt)
+        print >> f, pprint.pformat(parser._long_opt)
         print >> f, 'Prefix/Suffix:', prefix, suffix
         print >> f, 'completions', completions
         f.close()
@@ -411,7 +408,7 @@ def guess_first_nonoption( gparser, subcmds_map ):
             value = subcmds_map[subcmdname]
         except KeyError:
             pass
-    
+
     gparser.allow_interspersed_args = prev_interspersed # restore state
 
     return value # can be None, indicates no command chosen.

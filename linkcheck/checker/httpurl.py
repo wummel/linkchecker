@@ -24,12 +24,15 @@ import zlib
 import gzip
 import socket
 import cStringIO as StringIO
-import bk.url
-import bk.i18n
+
 import linkcheck
+import linkcheck.url
 import linkcheck.robotparser2
 import linkcheck.httplib2
-import ProxyUrlData
+import urlbase
+import proxysupport
+
+from linkcheck.i18n import _
 
 supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
                hasattr(socket, "ssl")
@@ -37,33 +40,33 @@ supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
 # Amazon blocks all HEAD requests
-_isAmazonHost = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
+_is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 
 
-class HttpUrlData (ProxyUrlData.ProxyUrlData):
+class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     "Url link with http scheme"
 
-    def __init__ (self, urlName, recursionLevel, config, parentName=None,
-                  baseRef=None, line=0, column=0, name=""):
-        super(HttpUrlData, self).__init__(urlName, recursionLevel, config,
-	                 parentName=parentName, baseRef=baseRef, line=line,
-		         column=column, name=name)
+    def __init__ (self, base_url, recursion_level, config, parent_url=None,
+                  base_ref=None, line=0, column=0, name=""):
+        super(HttpUrl, self).__init__(base_url, recursion_level, config,
+                         parent_url=parent_url, base_ref=base_ref, line=line,
+                         column=column, name=name)
         self.aliases = []
         self.max_redirects = 5
         self.has301status = False
         self.no_anchor = False # remove anchor in request url
 
-    def buildUrl (self):
-        super(HttpUrlData, self).buildUrl()
+    def build_url (self):
+        super(HttpUrl, self).build_url()
         # encode userinfo
         # XXX
         # check for empty paths
         if not self.urlparts[2]:
-            self.setWarning(bk.i18n._("URL path is empty, assuming '/' as path"))
+            self.add_warning(_("URL path is empty, assuming '/' as path"))
             self.urlparts[2] = '/'
             self.url = urlparse.urlunsplit(self.urlparts)
 
-    def checkConnection (self):
+    def check_connection (self):
         """
         Check a URL with HTTP protocol.
         Here is an excerpt from RFC 1945 with common response codes:
@@ -77,6 +80,7 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
           complete the request
         o 4xx: Client Error - The request contains bad syntax or cannot
           be fulfilled
+        o 5xx: Server Error - The server failed to fulfill an apparently
         o 5xx: Server Error - The server failed to fulfill an apparently
         valid request
         The individual values of the numeric status codes defined for
@@ -105,88 +109,95 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
         | extension-code
         """
         # set the proxy, so a 407 status after this is an error
-        self.setProxy(self.config["proxy"].get(self.scheme))
+        self.set_proxy(self.config["proxy"].get(self.scheme))
         if self.proxy:
-            self.setInfo(bk.i18n._("Using Proxy %r")%self.proxy)
+            self.add_info(_("Using Proxy %r") % self.proxy)
         self.headers = None
         self.auth = None
         self.cookies = []
-        if not self.robotsTxtAllowsUrl():
-            self.setWarning(bk.i18n._("Access denied by robots.txt, checked only syntax"))
+        if not self.robots_txt_allows_url():
+            self.add_warning(
+                       _("Access denied by robots.txt, checked only syntax"))
             return
 
-        if _isAmazonHost(self.urlparts[1]):
-            self.setWarning(bk.i18n._("Amazon servers block HTTP HEAD requests, "
+        if _is_amazon(self.urlparts[1]):
+            self.add_warning(_("Amazon servers block HTTP HEAD requests, "
                                    "using GET instead"))
             self.method = "GET"
         else:
             # first try with HEAD
             self.method = "HEAD"
         fallback_GET = False
-        redirectCache = [self.url]
+        redirect_cache = [self.url]
         while True:
             try:
-                response = self._getHttpResponse()
+                response = self._get_http_response()
             except linkcheck.httplib2.BadStatusLine:
                 # some servers send empty HEAD replies
-                if self.method=="HEAD":
+                if self.method == "HEAD":
                     self.method = "GET"
-                    redirectCache = [self.url]
+                    redirect_cache = [self.url]
                     fallback_GET = True
                     continue
                 raise
             self.headers = response.msg
-            bk.log.debug(linkcheck.LOG_CHECK, response.status, response.reason, self.headers)
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "Response: %s %s",
+                                response.status, response.reason)
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "Headers: %s",
+                                self.headers)
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
-                self.setProxy(self.headers.getheader("Location"))
-                self.setInfo(bk.i18n._("Enforced Proxy %r")%self.proxy)
-                response = self._getHttpResponse()
+                self.set_proxy(self.headers.getheader("Location"))
+                self.add_info(_("Enforced Proxy %r") % self.proxy)
+                response = self._get_http_response()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
             # follow all redirections
-            tries, response = self.followRedirections(response, redirectCache)
+            tries, response = \
+                    self.follow_redirections(response, redirect_cache)
             if tries == -1:
                 # already handled
                 return
             if tries >= self.max_redirects:
-                if self.method=="HEAD":
+                if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     self.method = "GET"
-                    redirectCache = [self.url]
+                    redirect_cache = [self.url]
                     fallback_GET = True
                     continue
-                self.setError(bk.i18n._("more than %d redirections, aborting")%self.max_redirects)
+                self.set_result(_("more than %d redirections, aborting") % \
+                                self.max_redirects, valid=False)
                 return
             # user authentication
             if response.status == 401:
-	        if not self.auth:
+                if not self.auth:
                     import base64
-                    _user, _password = self.getUserPassword()
+                    _user, _password = self.get_user_password()
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
-                    bk.log.debug(linkcheck.LOG_CHECK, "Authentication", _user, "/", _password)
+                    linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                    "Authentication %s/%s", _user, _password)
                 continue
             elif response.status >= 400:
                 if self.headers and self.urlparts[4]:
                     self.no_anchor = True
                     continue
-                if self.method=="HEAD":
+                if self.method == "HEAD":
                     # fall back to GET
                     self.method = "GET"
-                    redirectCache = [self.url]
+                    redirect_cache = [self.url]
                     fallback_GET = True
                     continue
-            elif self.headers and self.method!="GET":
+            elif self.headers and self.method != "GET":
                 # test for HEAD support
                 mime = self.headers.gettype()
                 poweredby = self.headers.get('X-Powered-By', '')
                 server = self.headers.get('Server', '')
-                if mime=='application/octet-stream' and \
+                if mime == 'application/octet-stream' and \
                    (poweredby.startswith('Zope') or \
                     server.startswith('Zope')):
-                    self.setWarning(bk.i18n._("Zope Server cannot determine"
+                    self.add_warning(_("Zope Server cannot determine"
                                 " MIME type with HEAD, falling back to GET"))
                     self.method = "GET"
                     continue
@@ -194,178 +205,188 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
         # check url warnings
         effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
-            self.setWarning(bk.i18n._("Effective URL %s") % effectiveurl)
+            self.add_warning(_("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
         # check response
-        self.checkResponse(response, fallback_GET)
+        self.check_response(response, fallback_GET)
 
-    def followRedirections (self, response, redirectCache):
+    def follow_redirections (self, response, redirect_cache):
         """follow all redirections of http response"""
         redirected = self.url
         tries = 0
-        while response.status in [301,302] and self.headers and \
+        while response.status in [301, 302] and self.headers and \
               tries < self.max_redirects:
             newurl = self.headers.getheader("Location",
                          self.headers.getheader("Uri", ""))
-            redirected = bk.url.url_norm(urlparse.urljoin(redirected, newurl))
+            redirected = linkcheck.url.url_norm(
+                                      urlparse.urljoin(redirected, newurl))
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
+                                redirected)
             # note: urlparts has to be a list
             self.urlparts = list(urlparse.urlsplit(redirected))
             # check internal redirect cache to avoid recursion
-            if redirected in redirectCache:
-                redirectCache.append(redirected)
+            if redirected in redirect_cache:
+                redirect_cache.append(redirected)
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     # fall back to the original url and use GET
                     self.urlparts = list(urlparse.urlsplit(self.url))
                     return self.max_redirects, response
-                self.setError(
-                     bk.i18n._("recursive redirection encountered:\n %s") % \
-                            "\n  => ".join(redirectCache))
+                self.set_result(
+                     _("recursive redirection encountered:\n %s") % \
+                            "\n  => ".join(redirect_cache), valid=False)
                 return -1, response
-            redirectCache.append(redirected)
+            redirect_cache.append(redirected)
             # remember this alias
             if response.status == 301:
                 if not self.has301status:
-                    self.setWarning(bk.i18n._("HTTP 301 (moved permanent) encountered: you "
-                                           "should update this link."))
-                    if not (self.url.endswith('/') or self.url.endswith('.html')):
-                        self.setWarning(bk.i18n._("A HTTP 301 redirection occured and the url has no "
-                                               "trailing / at the end. All urls which point to (home) "
-                                               "directories should end with a / to avoid redirection."))
+                    self.add_warning(
+                           _("HTTP 301 (moved permanent) encountered: you"
+                             " should update this link."))
+                    if not (self.url.endswith('/') or \
+                       self.url.endswith('.html')):
+                        self.add_warning(
+                       _("A HTTP 301 redirection occured and the url has no "
+                     "trailing / at the end. All urls which point to (home) "
+                     "directories should end with a / to avoid redirection."))
                     self.has301status = True
                 self.aliases.append(redirected)
             # check cache again on possibly changed URL
-            key = self.getCacheKey()
-            if self.config.urlCache_has_key(key):
-                self.copyFromCache(self.config.urlCache_get(key))
+            key = self.get_cache_key()
+            if self.config.url_cache_has_key(key):
+                self.copy_from_cache(self.config.url_cache_get(key))
                 self.cached = True
-                self.logMe()
+                self.log_me()
                 return -1, response
             # check if we still have a http url, it could be another
             # scheme, eg https or news
-            if self.urlparts[0]!="http":
-                self.setWarning(bk.i18n._("HTTP redirection to non-http url encountered; "
-                                "the original url was %r.")%self.url)
-                # make new UrlData object
-                newobj = linkcheck.checker.getUrlDataFrom(redirected, self.recursionLevel, self.config,
-                                        parentName=self.parentName, baseRef=self.baseRef,
-                                        line=self.line, column=self.column, name=self.name)
-                newobj.warningString = self.warningString
-                newobj.infoString = self.infoString
+            if self.urlparts[0] != "http":
+                self.add_warning(
+                           _("HTTP redirection to non-http url encountered; "
+                             "the original url was %r.") % self.url)
+                # make new Url object
+                newobj = linkcheck.checker.get_url_from(
+                          redirected, self.recursion_level, self.config,
+                          parent_url=self.parent_url, base_ref=self.base_ref,
+                          line=self.line, column=self.column, name=self.name)
+                newobj.warning = self.warning
+                newobj.info = self.info
                 # append new object to queue
-                self.config.appendUrl(newobj)
+                self.config.append_url(newobj)
                 # pretend to be finished and logged
                 self.cached = True
                 return -1, response
             # new response data
-            response = self._getHttpResponse()
+            response = self._get_http_response()
             self.headers = response.msg
-            bk.log.debug(linkcheck.LOG_CHECK, "Redirected", self.headers)
             tries += 1
         return tries, response
 
-    def checkResponse (self, response, fallback_GET):
+    def check_response (self, response, fallback_GET):
         """check final result"""
         if response.status >= 400:
-            self.setError("%r %s"%(response.status, response.reason))
+            self.set_result("%r %s" % (response.status, response.reason),
+                            valid=False)
         else:
             if self.headers and self.headers.has_key("Server"):
                 server = self.headers['Server']
             else:
-                server = bk.i18n._("unknown")
+                server = _("unknown")
             if fallback_GET:
-                self.setWarning(bk.i18n._("Server %r did not support HEAD request, used GET for checking")%server)
+                self.add_warning(_("Server %r did not support HEAD request,"\
+                                   " used GET for checking") % server)
             if self.no_anchor:
-                self.setWarning(bk.i18n._("Server %r had no anchor support, removed anchor from request")%server)
+                self.add_warning(_("Server %r had no anchor support, removed"\
+                                   " anchor from request") % server)
             if response.status == 204:
                 # no content
-                self.setWarning(response.reason)
+                self.add_warning(response.reason)
             # store cookies for valid links
             if self.config['cookies']:
                 for c in self.cookies:
-                    self.setInfo("Cookie: %s"%c)
+                    self.add_info("Cookie: %s" % c)
                 out = self.config.storeCookies(self.headers, self.urlparts[1])
                 for h in out:
-                    self.setInfo(h)
+                    self.add_info(h)
             if response.status >= 200:
-                self.setValid("%r %s"%(response.status,response.reason))
+                self.set_result("%r %s" % (response.status, response.reason))
             else:
-                self.setValid("OK")
+                self.set_result("OK")
         modified = self.headers.get('Last-Modified', '')
         if modified:
-            self.setInfo(bk.i18n._("Last modified %s") % modified)
+            self.add_info(_("Last modified %s") % modified)
 
-    def getCacheKeys (self):
-        keys = super(HttpUrlData, self).getCacheKeys()
+    def get_cache_keys (self):
+        keys = super(HttpUrl, self).get_cache_keys()
         keys.extend(self.aliases)
         return keys
 
-    def _getHttpResponse (self):
+    def _get_http_response (self):
         """Put request and return (status code, status text, mime object).
-           host can be host:port format
-	"""
+           Host can be host:port format.
+        """
         if self.proxy:
             host = self.proxy
             scheme = "http"
         else:
             host = self.urlparts[1]
             scheme = self.urlparts[0]
-        bk.log.debug(linkcheck.LOG_CHECK, "host", host)
-        if self.urlConnection:
-            self.closeConnection()
-        self.urlConnection = self.getHTTPObject(host, scheme)
-        # quote url before submit
-        url = bk.url.url_quote(urlparse.urlunsplit(self.urlparts))
-        qurlparts = list(urlparse.urlsplit(url))
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "Connecting to %r", host)
+        if self.url_connection:
+            self.close_connection()
+        self.url_connection = self.get_http_object(host, scheme)
+        url = urlparse.urlunsplit(self.urlparts)
         if self.no_anchor:
             qurlparts[4] = ''
         if self.proxy:
-            path = urlparse.urlunsplit(qurlparts)
+            path = urlparse.urlunsplit(self.urlparts)
         else:
-            path = urlparse.urlunsplit(('', '', qurlparts[2],
-            qurlparts[3], qurlparts[4]))
-        self.urlConnection.putrequest(self.method, path, skip_host=True)
-        self.urlConnection.putheader("Host", host)
+            path = urlparse.urlunsplit(('', '', self.urlparts[2],
+                                        self.urlparts[3], self.urlparts[4]))
+        self.url_connection.putrequest(self.method, path, skip_host=True)
+        self.url_connection.putheader("Host", host)
         # userinfo is from http://user@pass:host/
         if self.userinfo:
-            self.urlConnection.putheader("Authorization", self.userinfo)
+            self.url_connection.putheader("Authorization", self.userinfo)
         # auth is the -u and -p configuration options
         elif self.auth:
-            self.urlConnection.putheader("Authorization", self.auth)
+            self.url_connection.putheader("Authorization", self.auth)
         if self.proxyauth:
-            self.urlConnection.putheader("Proxy-Authorization",
-	                                 self.proxyauth)
-        if self.parentName:
-            self.urlConnection.putheader("Referer", self.parentName)
-        self.urlConnection.putheader("User-Agent", linkcheck.Config.UserAgent)
-        self.urlConnection.putheader("Accept-Encoding", "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
+            self.url_connection.putheader("Proxy-Authorization",
+                                         self.proxyauth)
+        if self.parent_url:
+            self.url_connection.putheader("Referer", self.parent_url)
+        self.url_connection.putheader("User-Agent",
+                                      linkcheck.configuration.UserAgent)
+        self.url_connection.putheader("Accept-Encoding",
+                                  "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.config['cookies']:
             self.cookies = self.config.getCookies(self.urlparts[1],
                                                   self.urlparts[2])
             for c in self.cookies:
-                self.urlConnection.putheader("Cookie", c)
-        self.urlConnection.endheaders()
-        return self.urlConnection.getresponse()
+                self.url_connection.putheader("Cookie", c)
+        self.url_connection.endheaders()
+        return self.url_connection.getresponse()
 
-    def getHTTPObject (self, host, scheme):
-        if scheme=="http":
+    def get_http_object (self, host, scheme):
+        if scheme == "http":
             h = linkcheck.httplib2.HTTPConnection(host)
-        elif scheme=="https":
+        elif scheme == "https":
             h = linkcheck.httplib2.HTTPSConnection(host)
         else:
-            raise linkcheck.LinkCheckerError, "invalid url scheme %s" % scheme
+            raise linkcheck.LinkCheckerError("invalid url scheme %s" % scheme)
         if self.config.get("debug"):
             h.set_debuglevel(1)
         h.connect()
         return h
 
-    def getContent (self):
+    def get_content (self):
         if not self.has_content:
             self.method = "GET"
             self.has_content = True
-            self.closeConnection()
+            self.close_connection()
             t = time.time()
-            response = self._getHttpResponse()
+            response = self._get_http_response()
             self.headers = response.msg
             self.data = response.read()
             encoding = self.headers.get("Content-Encoding")
@@ -374,65 +395,67 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
                     if encoding == 'deflate':
                         f = StringIO.StringIO(zlib.decompress(self.data))
                     else:
-                        f = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(self.data))
+                        f = gzip.GzipFile('', 'rb', 9,
+                                          StringIO.StringIO(self.data))
                 except zlib.error:
                     f = StringIO.StringIO(self.data)
                 self.data = f.read()
             self.downloadtime = time.time() - t
         return self.data
 
-    def isHtml (self):
+    def is_html (self):
         if not (self.valid and self.headers):
             return False
-        if self.headers.gettype()[:9]!="text/html":
+        if self.headers.gettype()[:9] != "text/html":
             return False
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
-           encoding!='identity':
-            self.setWarning(bk.i18n._('Unsupported content encoding %r.')%encoding)
+           encoding != 'identity':
+            self.add_warning(_('Unsupported content encoding %r.') % encoding)
             return False
         return True
 
-    def isHttp (self):
+    def is_http (self):
         return True
 
-    def getContentType (self):
+    def get_content_type (self):
         ptype = self.headers.get('Content-Type', 'application/octet-stream')
         if ";" in ptype:
             ptype = ptype.split(';')[0]
         return ptype
 
-    def isParseable (self):
+    def is_parseable (self):
         if not (self.valid and self.headers):
             return False
-        if self.getContentType() not in ("text/html", "text/css"):
+        if self.get_content_type() not in ("text/html", "text/css"):
             return False
         encoding = self.headers.get("Content-Encoding")
         if encoding and encoding not in _supported_encodings and \
-           encoding!='identity':
-            self.setWarning(bk.i18n._('Unsupported content encoding %r.')%encoding)
+           encoding != 'identity':
+            self.add_warning(_('Unsupported content encoding %r.') % encoding)
             return False
         return True
 
-    def parseUrl (self):
-        ptype = self.getContentType()
-        if ptype=="text/html":
+    def parse_url (self):
+        ptype = self.get_content_type()
+        if ptype == "text/html":
             self.parse_html()
-        elif ptype=="text/css":
+        elif ptype == "text/css":
             self.parse_css()
         return None
 
-    def getRobotsTxtUrl (self):
-        return "%s://%s/robots.txt"%tuple(self.urlparts[0:2])
+    def get_robots_txt_url (self):
+        return "%s://%s/robots.txt" % tuple(self.urlparts[0:2])
 
-    def robotsTxtAllowsUrl (self):
-        roboturl = self.getRobotsTxtUrl()
-        bk.log.debug(linkcheck.LOG_CHECK, "robots.txt url", roboturl)
-        bk.log.debug(linkcheck.LOG_CHECK, "url", self.url)
-        if not self.config.robotsTxtCache_has_key(roboturl):
+    def robots_txt_allows_url (self):
+        roboturl = self.get_robots_txt_url()
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "robots.txt url %r",
+                            roboturl)
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "url %r", self.url)
+        if not self.config.robots_txt_cache_has_key(roboturl):
             rp = linkcheck.robotparser2.RobotFileParser()
             rp.set_url(roboturl)
             rp.read()
-            self.config.robotsTxtCache_set(roboturl, rp)
-        rp = self.config.robotsTxtCache_get(roboturl)
-        return rp.can_fetch(linkcheck.Config.UserAgent, self.url)
+            self.config.robots_txt_cache_set(roboturl, rp)
+        rp = self.config.robots_txt_cache_get(roboturl)
+        return rp.can_fetch(linkcheck.configuration.UserAgent, self.url)

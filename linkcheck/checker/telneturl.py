@@ -19,48 +19,54 @@
 import telnetlib
 import urlparse
 import urllib
+
 import linkcheck
-import HostCheckingUrlData
-import UrlData
-import bk.i18n
+import urlconnect
+
+from linkcheck.i18n import _
 
 
-class TelnetUrlData (HostCheckingUrlData.HostCheckingUrlData):
-    "Url link with telnet scheme"
+class TelnetUrl (urlconnect.UrlConnect):
+    """Url link with telnet scheme"""
 
-    def buildUrl (self):
-        super(TelnetUrlData, self).buildUrl()
+    def build_url (self):
+        super(TelnetUrl, self).build_url()
         parts = urlparse.urlsplit(self.url)
         userinfo, self.host = urllib.splituser(parts[1])
         self.host, self.port = urllib.splitport(self.host)
         if self.port is not None:
-            # XXX is_valid_port move?
-            if not UrlData.is_valid_port(self.port):
-                raise linkcheck.LinkCheckerError(bk.i18n._("URL has invalid port number %s")\
-                                      % self.port)
+            if not linkcheck.url.is_numeric_port(self.port):
+                raise linkcheck.LinkCheckerError(
+                       _("URL has invalid port number %s") % self.port)
             self.port = int(self.port)
         else:
             self.port = 23
         if userinfo:
             self.user, self.password = urllib.splitpasswd(userinfo)
         else:
-            self.user, self.password = self.getUserPassword()
+            self.user, self.password = self.get_user_password()
 
-    def checkConnection (self):
-        super(TelnetUrlData, self).checkConnection()
-        self.urlConnection = telnetlib.Telnet()
+    def local_check (self):
+        if not self.host:
+            self.set_result(_("Host is empty"), valid=False)
+            self.log_me()
+            return
+        super(TelnetUrl, self).local_check()
+
+    def check_connection (self):
+        super(TelnetUrl, self).check_connection()
+        self.url_connection = telnetlib.Telnet()
         if self.config.get("debug"):
-            self.urlConnection.set_debuglevel(1)
-        self.urlConnection.open(self.host, self.port)
+            self.url_connection.set_debuglevel(1)
+        self.url_connection.open(self.host, self.port)
         if self.user:
-            self.urlConnection.read_until("login: ", 10)
-            self.urlConnection.write(self.user+"\n")
+            self.url_connection.read_until("login: ", 10)
+            self.url_connection.write(self.user+"\n")
             if self.password:
-                self.urlConnection.read_until("Password: ", 10)
-                self.urlConnection.write(self.password+"\n")
+                self.url_connection.read_until("Password: ", 10)
+                self.url_connection.write(self.password+"\n")
                 # XXX how to tell if we are logged in??
-        self.urlConnection.write("exit\n")
+        self.url_connection.write("exit\n")
 
-    def hasContent (self):
+    def can_get_content (self):
         return False
-

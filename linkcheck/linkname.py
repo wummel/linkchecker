@@ -1,4 +1,5 @@
 # -*- coding: iso-8859-1 -*-
+"""parse name of common link types"""
 # Copyright (C) 2001-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,47 +18,36 @@
 
 import re
 import linkcheck
-import bk.HtmlParser
+import linkcheck.HtmlParser
+import linkcheck.strformat
 
 
-imgtag_re = re.compile(r"""(?i)\s+alt\s*=\s*(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
+imgtag_re = re.compile(r"(?i)\s+alt\s*=\s*"+\
+                       r"""(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
 img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>]+)+>""")
 endtag_re = re.compile(r"""(?i)</a\s*>""")
 
-def image_name(txt):
+def _unquote (txt):
+    """resolve entities and markup from txt"""
+    return linkcheck.HtmlParser.resolve_entities(
+                  linkcheck.strformat.remove_markup(txt))
+
+def image_name (txt):
+    """return the alt part of the first <img alt=""> tag in txt"""
     mo = imgtag_re.search(txt)
     if mo:
-        name = linkcheck.StringUtil.remove_markup(mo.group('name').strip())
-        return linkcheck.StringUtil.unquote(name)
+        name = linkcheck.strformat.unquote(mo.group('name').strip())
+        return  _unquote(name)
     return ''
 
 
-def href_name(txt):
+def href_name (txt):
+    """return the name part of the first <a href="">name</a> link in txt"""
     name = ""
     endtag = endtag_re.search(txt)
-    if not endtag: return name
+    if not endtag:
+        return name
     name = txt[:endtag.start()]
     if img_re.search(name):
         return image_name(name)
-    return bk.HtmlParser.resolve_entities(linkcheck.StringUtil.remove_markup(name))
-
-_tests = (
-    "<img src='' alt=''></a>",
-    "<img src alt=abc></a>",
-    "<b>guru guru</a>",
-    "a\njo</a>",
-    "test<</a>",
-    "test</</a>",
-    "test</a</a>",
-    "test",
-    "\n",
-    "",
-    '"</a>"foo',
-)
-
-def _test ():
-    for t in _tests:
-        print repr(href_name(t))
-
-if __name__=='__main__':
-    _test()
+    return _unquote(name)

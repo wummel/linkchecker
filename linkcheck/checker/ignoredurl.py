@@ -16,15 +16,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import UrlData
-import bk.i18n
+import urlbase
 
-class IgnoredUrlData (UrlData.UrlData):
+from linkcheck.i18n import _
+
+class IgnoredUrl (urlbase.UrlBase):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 
-    def _check (self):
-        self.setWarning(bk.i18n._("%s url ignored")%self.scheme.capitalize())
-        self.logMe()
+    def local_check (self):
+        self.add_warning(_("%s url ignored")%self.scheme.capitalize())
+        self.log_me()
 
-    def hasContent (self):
+    def can_get_content (self):
         return False

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle Gopher links"""
+"""Handle https links"""
 # Copyright (C) 2000-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,8 +16,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import UrlData
+import httpurl
 
-class GopherUrlData (UrlData.UrlData):
-    "Url link with gopher scheme"
-    pass
+from linkcheck.i18n import _
+
+class HttpsUrl (httpurl.HttpUrl):
+    """Url link with https scheme"""
+
+    def local_check (self):
+        if httpurl.supportHttps:
+            super(HttpsUrl, self).local_check()
+        else:
+            self.add_warning(_("%s url ignored")%self.scheme.capitalize())
+            self.log_me()

@@ -22,11 +22,12 @@ import re
 import time
 import urlparse
 import types
+
 import linkcheck
-import linkcheck.checker
-import bk.url
-import bk.i18n
-import bk.strtime
+import linkcheck.configuration
+import linkcheck.url
+import linkcheck.strformat
+from linkcheck.i18n import _
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
@@ -38,17 +39,19 @@ class FormError (Exception):
 
 
 def startoutput (out=sys.stdout):
+    """print leading HTML headers to given output stream"""
     out.write("Content-type: text/html\r\n"
               "Cache-Control: no-cache\r\n"
               "Pragma: no-cache\r\n"
               "\r\n")
 
 def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
+    """see if remote addr is allowed to access the CGI interface"""
     if os.environ.get('REMOTE_ADDR') in hosts and \
        os.environ.get('SERVER_ADDR') in servers:
         return True
     logit({}, env)
-    printError(out, "Access denied")
+    print_error(out, "Access denied")
     return False
 
 
@@ -57,9 +60,9 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     try: checkform(form)
     except FormError, why:
         logit(form, env)
-        printError(out, why)
+        print_error(out, why)
         return
-    config = linkcheck.Config.Configuration()
+    config = linkcheck.configuration.Configuration()
     config["recursionlevel"] = int(form["level"].value)
     config["log"] = config.newLogger('html', {'fd': out})
     config.setThreads(0)
@@ -67,19 +70,22 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     if form.has_key("anchors"): config["anchors"] = True
     if not form.has_key("errors"): config["verbose"] = True
     if form.has_key("intern"):
-        pat = bk.url.safe_host_pattern(re.escape(getHostName(form)))
+        pat = linkcheck.url.safe_host_pattern(re.escape(get_host_name(form)))
     else:
-        pat = bk.url.safe_url_pattern
-    config["internlinks"].append(linkcheck.getLinkPat("^%s$" % pat))
+        pat = linkcheck.url.safe_url_pattern
+    config["internlinks"].append(linkcheck.get_link_pat("^%s$" % pat))
     # avoid checking of local files or other nasty stuff
-    config["externlinks"].append(linkcheck.getLinkPat("^%s$" % bk.url.safe_url_pattern))
-    config["externlinks"].append(linkcheck.getLinkPat(".*", strict=True))
+    config["externlinks"].append(
+             linkcheck.get_link_pat("^%s$" % linkcheck.url.safe_url_pattern))
+    config["externlinks"].append(linkcheck.get_link_pat(".*", strict=True))
     # start checking
-    config.appendUrl(linkcheck.checker.getUrlDataFrom(form["url"].value, 0, config))
+    import linkcheck.checker
+    config.appendUrl(
+              linkcheck.checker.get_url_from(form["url"].value, 0, config))
     linkcheck.checkUrls(config)
 
 
-def getHostName (form):
+def get_host_name (form):
     """return host name of given url"""
     return urlparse.urlparse(form["url"].value)[1]
 
@@ -94,28 +100,28 @@ def checkform (form):
         lang = form['language'].value
         if lang in _supported_langs:
             os.environ['LC_MESSAGES'] = lang
-            bk.i18n.init_gettext()
+            #XXXinit_gettext()
         else:
-            raise FormError(bk.i18n._("unsupported language"))
+            raise FormError(_("unsupported language"))
     # check url syntax
     if form.has_key("url"):
         url = form["url"].value
-        if not url or url=="http://":
-            raise FormError(bk.i18n._("empty url was given"))
-        if not bk.url.is_valid_url(url):
-            raise FormError(bk.i18n._("invalid url was given"))
+        if not url or url == "http://":
+            raise FormError(_("empty url was given"))
+        if not linkcheck.url.is_valid_url(url):
+            raise FormError(_("invalid url was given"))
     else:
-        raise FormError(bk.i18n._("no url was given"))
+        raise FormError(_("no url was given"))
     # check recursion level
     if form.has_key("level"):
         level = form["level"].value
         if not _is_level(level):
-            raise FormError(bk.i18n._("invalid recursion level"))
+            raise FormError(_("invalid recursion level"))
     # check options
     for option in ("strict", "anchors", "errors", "intern"):
         if form.has_key(option):
-            if not form[option].value=="on":
-                raise FormError(bk.i18n._("invalid %s option syntax") % option)
+            if not form[option].value == "on":
+                raise FormError(_("invalid %s option syntax") % option)
 
 def logit (form, env):
     """log form errors"""
@@ -124,7 +130,7 @@ def logit (form, env):
         return
     elif type(_logfile) == types.StringType:
         _logfile = file(_logfile, "a")
-    _logfile.write("\n"+bk.strtime.strtime(time.time())+"\n")
+    _logfile.write("\n"+linkcheck.strformat.strtime(time.time())+"\n")
     for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
                 "REMOTE_HOST", "REMOTE_PORT"]:
         if env.has_key(var):
@@ -134,9 +140,9 @@ def logit (form, env):
             _logfile.write(str(form[key])+"\n")
 
 
-def printError (out, why):
+def print_error (out, why):
     """print standard error page"""
-    out.write(bk.i18n._("""<html><head>
+    out.write(_("""<html><head>
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
 <blockquote>
@@ -149,12 +155,3 @@ Errors are logged.
 </body>
 </html>""") % why)
 
-
-if __name__=='__main__':
-    class store:
-        def __init__ (self, value):
-            self.value = value
-    form={"url": store("http://www.heise.de/"),
-          "level": store("0"),
-         }
-    checkform(form)

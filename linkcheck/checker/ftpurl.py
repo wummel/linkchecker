@@ -18,58 +18,59 @@
 
 import ftplib
 import urllib
-import bk.i18n
+
 import linkcheck
-import ProxyUrlData
-import HttpUrlData
+import urlbase
+import proxysupport
+import httpurl
+
+from linkcheck.i18n import _
 
 
-class FtpUrlData (ProxyUrlData.ProxyUrlData):
-    """
-    Url link with ftp scheme.
-    """
+class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
+    """Url link with ftp scheme."""
 
-    def checkConnection (self):
+    def check_connection (self):
         # proxy support (we support only http)
-        self.setProxy(self.config["proxy"].get(self.scheme))
+        self.set_proxy(self.config["proxy"].get(self.scheme))
         if self.proxy:
-            http = HttpUrlData.HttpUrlData(self.urlName,
-                  self.recursionLevel,
+            http = httpurl.HttpUrl(self.base_url,
+                  self.recursion_level,
                   self.config,
-                  parentName=self.parentName,
-                  baseRef=self.baseRef,
+                  parent_url=self.parent_url,
+                  base_ref=self.base_ref,
                   line=self.line,
                   column=self.column,
-		  name=self.name)
-            http.buildUrl()
+                  name=self.name)
+            http.build_url()
             return http.check()
         # using no proxy here
         # get login credentials
         if self.userinfo:
             _user, _password = urllib.splitpasswd(self.userinfo)
         else:
-            _user, _password = self.getUserPassword()
+            _user, _password = self.get_user_password()
         if _user is None or _password is None:
-            raise linkcheck.LinkCheckerError(bk.i18n._("No user or password found"))
+            raise linkcheck.LinkCheckerError(_("No user or password found"))
         self.login(_user, _password)
         filename = self.cwd()
         if filename:
             self.retrieve(filename)
         return None
 
-    def isHtml (self):
-        if linkcheck.extensions['html'].search(self.url):
+    def is_html (self):
+        if linkcheck.checker.extensions['html'].search(self.url):
             return True
         return False
 
-    def isParseable (self):
-        for ro in linkcheck.extensions.values():
+    def is_parseable (self):
+        for ro in linkcheck.checker.extensions.values():
             if ro.search(self.url):
                 return True
         return False
 
-    def parseUrl (self):
-        for key,ro in linkcheck.extensions.items():
+    def parse_url (self):
+        for key, ro in linkcheck.checker.extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         return None
@@ -78,18 +79,20 @@ class FtpUrlData (ProxyUrlData.ProxyUrlData):
         """log into ftp server and check the welcome message"""
         # ready to connect
         try:
-            self.urlConnection = ftplib.FTP()
+            self.url_connection = ftplib.FTP()
             if self.config.get("debug"):
-                self.urlConnection.set_debuglevel(1)
-            self.urlConnection.connect(self.urlparts[1])
-            self.urlConnection.login(_user, _password)
+                self.url_connection.set_debuglevel(1)
+            self.url_connection.connect(self.urlparts[1])
+            self.url_connection.login(_user, _password)
         except EOFError:
-            raise linkcheck.LinkCheckerError(bk.i18n._("Remote host has closed connection"))
-        if not self.urlConnection.getwelcome():
-            self.closeConnection()
-            raise linkcheck.LinkCheckerError(bk.i18n._("Got no answer from FTP server"))
+            raise linkcheck.LinkCheckerError(
+                                       _("Remote host has closed connection"))
+        if not self.url_connection.getwelcome():
+            self.close_connection()
+            raise linkcheck.LinkCheckerError(
+                                       _("Got no answer from FTP server"))
         # dont set info anymore, this may change every time we logged in
-        #self.setInfo(info)
+        #self.add_info(info)
 
     def cwd (self):
         """change directory to given path"""
@@ -98,20 +101,20 @@ class FtpUrlData (ProxyUrlData.ProxyUrlData):
         filename = dirs.pop()
         if len(dirs) and not dirs[0]: del dirs[0]
         for d in dirs:
-            self.urlConnection.cwd(d)
+            self.url_connection.cwd(d)
         return filename
 
     def retrieve (self, filename):
         """initiate download of given filename"""
         # it could be a directory if the trailing slash was forgotten
         try:
-            self.urlConnection.cwd(filename)
-            self.setWarning(bk.i18n._("Missing trailing directory slash in ftp url"))
+            self.url_connection.cwd(filename)
+            self.add_warning(_("Missing trailing directory slash in ftp url"))
             return
         except ftplib.error_perm:
             pass
-        self.urlConnection.voidcmd('TYPE I')
-        conn, size = self.urlConnection.ntransfercmd('RETR %s'%filename)
+        self.url_connection.voidcmd('TYPE I')
+        conn, size = self.url_connection.ntransfercmd('RETR %s'%filename)
         if size:
             self.dlsize = size
             # dont download data XXX recursion
@@ -119,7 +122,7 @@ class FtpUrlData (ProxyUrlData.ProxyUrlData):
         #else:
         #    page = conn.makefile().read()
 
-    def closeConnection (self):
-        try: self.urlConnection.closet()
+    def close_connection (self):
+        try: self.url_connection.closet()
         except: pass
-        self.urlConnection = None
+        self.url_connection = None

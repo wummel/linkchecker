@@ -14,15 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-import UrlData
+
 import urllib
 
+class ProxySupport (object):
+    """get support for proxying and for urls with user:pass@host setting"""
 
-class ProxyUrlData (UrlData.UrlData):
-    """urldata with ability for proxying and for urls with user:pass@host
-       setting"""
-
-    def setProxy (self, proxy):
+    def set_proxy (self, proxy):
+        """parse given proxy information and store parsed values"""
         self.proxy = proxy
         self.proxyauth = None
         if self.proxy:
@@ -32,8 +31,8 @@ class ProxyUrlData (UrlData.UrlData):
             self.proxy = urllib.splithost(self.proxy)[0]
             self.proxyauth, self.proxy = urllib.splituser(self.proxy)
             if self.proxyauth is not None:
-                if ":" not in self.proxyauth: self.proxyauth += ":"
+                if ":" not in self.proxyauth:
+                    self.proxyauth += ":"
                 import base64
                 self.proxyauth = base64.encodestring(self.proxyauth).strip()
                 self.proxyauth = "Basic "+self.proxyauth
-

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle https links"""
+"""Handle Gopher links"""
 # Copyright (C) 2000-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,16 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import bk.i18n
-import HttpUrlData
+import urlbase
 
-
-class HttpsUrlData (HttpUrlData.HttpUrlData):
-    """Url link with https scheme"""
-
-    def _check (self):
-        if HttpUrlData.supportHttps:
-            super(HttpsUrlData, self)._check()
-        else:
-            self.setWarning(bk.i18n._("%s url ignored")%self.scheme.capitalize())
-            self.logMe()
+class GopherUrl (urlbase.UrlBase):
+    "Url link with gopher scheme"
+    pass

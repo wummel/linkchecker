@@ -26,25 +26,27 @@ __all__ = ["RobotFileParser"]
 
 _debug = False
 
-def msg (prefix, msg):
+def _msg (prefix, msg):
+    """print debug message"""
     if _debug:
-        print >>sys.stderr, prefix, msg
-debug = lambda txt: msg("debug:", txt)
-warn = lambda txt: msg("warning:", txt)
-error = lambda txt: msg("error:", txt)
+        print >> sys.stderr, prefix, msg
+debug = lambda txt: _msg("debug:", txt)
+warn = lambda txt: _msg("warning:", txt)
+error = lambda txt: _msg("error:", txt)
 
 
 class RobotFileParser (object):
     """ This class provides a set of methods to read, parse and answer
     questions about a single robots.txt file.
-
     """
 
     def __init__ (self, url=''):
+        """initialize internal entry lists and store given url"""
         self.set_url(url)
         self._reset()
 
     def _reset (self):
+        """reset internal entry lists"""
         self.entries = []
         self.default_entry = None
         self.disallow_all = False
@@ -56,14 +58,12 @@ class RobotFileParser (object):
 
         This is useful for long-running web spiders that need to
         check for new robots.txt files periodically.
-
         """
         return self.last_checked
 
     def modified (self):
         """Sets the time the robots.txt file was last fetched to the
         current time.
-
         """
         import time
         self.last_checked = time.time()
@@ -76,8 +76,10 @@ class RobotFileParser (object):
     def read (self):
         """Reads the robots.txt URL and feeds it to the parser."""
         self._reset()
-        headers = {'User-Agent': 'Python RobotFileParser/2.0',
-                   'Accept-Encoding' : 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5'}
+        headers = {
+            'User-Agent': 'Python RobotFileParser/2.0',
+            'Accept-Encoding' : 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
+        }
         req = urllib2.Request(self.url, None, headers)
         try:
             f = _opener.open(req)
@@ -115,6 +117,7 @@ class RobotFileParser (object):
         self.parse(lines)
 
     def _add_entry (self, entry):
+        """add entry to entry list"""
         if "*" in entry.useragents:
             # the default entry is considered last
             self.default_entry = entry
@@ -124,7 +127,8 @@ class RobotFileParser (object):
     def parse (self, lines):
         """parse the input lines from a robot.txt file.
            We allow that a user-agent: line is not preceded by
-           one or more blank lines."""
+           one or more blank lines.
+        """
         state = 0
         linenumber = 0
         entry = Entry()
@@ -132,19 +136,19 @@ class RobotFileParser (object):
         for line in lines:
             linenumber += 1
             if not line:
-                if state==1:
+                if state == 1:
                     warn("line %d: you should insert"
                           " allow: or disallow: directives below any"
                           " user-agent: line" % linenumber)
                     entry = Entry()
                     state = 0
-                elif state==2:
+                elif state == 2:
                     self._add_entry(entry)
                     entry = Entry()
                     state = 0
             # remove optional comment and strip line
             i = line.find('#')
-            if i>=0:
+            if i >= 0:
                 line = line[:i]
             line = line.strip()
             if not line:
@@ -154,7 +158,7 @@ class RobotFileParser (object):
                 line[0] = line[0].strip().lower()
                 line[1] = urllib.unquote(line[1].strip())
                 if line[0] == "user-agent":
-                    if state==2:
+                    if state == 2:
                         warn("line %d: you should insert a blank"
                               " line before any user-agent"
                               " directive" % linenumber)
@@ -163,14 +167,14 @@ class RobotFileParser (object):
                     entry.useragents.append(line[1])
                     state = 1
                 elif line[0] == "disallow":
-                    if state==0:
+                    if state == 0:
                         error("line %d: you must insert a user-agent:"
                               " directive before this line" % linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 0))
                         state = 2
                 elif line[0] == "allow":
-                    if state==0:
+                    if state == 0:
                         error("line %d: you must insert a user-agent:"
                                " directive before this line" % linenumber)
                     else:
@@ -178,14 +182,15 @@ class RobotFileParser (object):
                 else:
                     warn("line %d: unknown key %s" % (linenumber, line[0]))
             else:
-                error("line %d: malformed line %s"%(linenumber, line))
-        if state==2:
+                error("line %d: malformed line %s" % (linenumber, line))
+        if state == 2:
             self.entries.append(entry)
         debug("Parsed rules:\n%s" % str(self))
 
     def can_fetch (self, useragent, url):
         """using the parsed robots.txt decide if useragent can fetch url"""
-        debug("Checking robot.txt allowance for:\n  user agent: %r\n  url: %r"%(useragent, url))
+        debug("Checking robot.txt allowance for:\n"\
+              "  user agent: %r\n  url: %r" % (useragent, url))
         if self.disallow_all:
             return False
         if self.allow_all:
@@ -203,6 +208,7 @@ class RobotFileParser (object):
         return True
 
     def __str__ (self):
+        """return string representation in robots.txt format"""
         lines = [str(entry) for entry in self.entries]
         if self.default_entry is not None:
             lines.append(str(self.default_entry))
@@ -214,16 +220,19 @@ class RuleLine (object):
        (allowance==0) followed by a path."""
 
     def __init__ (self, path, allowance):
+        """initialize with given path and allowance info"""
         if path == '' and not allowance:
             # an empty value means allow all
             allowance = True
         self.path = urllib.quote(path)
         self.allowance = allowance
 
-    def applies_to (self, filename):
-        return self.path=="*" or filename.startswith(self.path)
+    def applies_to (self, path):
+        """return True if pathname applies to this rule"""
+        return self.path == "*" or path.startswith(self.path)
 
     def __str__ (self):
+        """return string representation in robots.txt format"""
         return (self.allowance and "Allow" or "Disallow")+": "+self.path
 
 
@@ -231,11 +240,13 @@ class Entry (object):
     """An entry has one or more user-agents and zero or more rulelines"""
 
     def __init__ (self):
+        """initialize user agent and rule list"""
         self.useragents = []
         self.rulelines = []
 
     def __str__ (self):
-        lines = ["User-agent: %r"%agent for agent in self.useragents]
+        """return string representation in robots.txt format"""
+        lines = ["User-agent: %r" % agent for agent in self.useragents]
         lines.extend([str(line) for line in self.rulelines])
         return "\n".join(lines)
 
@@ -246,7 +257,7 @@ class Entry (object):
             return True
         useragent = useragent.split("/")[0].lower()
         for agent in self.useragents:
-            if agent=='*':
+            if agent == '*':
                 # we have the catch-all agent
                 return True
             agent = agent.lower()
@@ -286,9 +297,9 @@ class Entry (object):
 ##  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 ##  SOFTWARE.
 def decode (page):
-    "gunzip or deflate a compressed page"
-    debug("robots.txt page info %s"%str(page.info()))
-    encoding = page.info().get("Content-Encoding") 
+    """gunzip or deflate a compressed page"""
+    debug("robots.txt page info %s" % str(page.info()))
+    encoding = page.info().get("Content-Encoding")
     if encoding in ('gzip', 'x-gzip', 'deflate'):
         # cannot seek in socket descriptors, so must get content now
         content = page.read()
@@ -298,7 +309,8 @@ def decode (page):
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
         except zlib.error, msg:
-            warn("uncompressing had error %s, assuming non-compressed content"%str(msg))
+            warn("uncompressing had error "\
+                 "%s, assuming non-compressed content" % str(msg))
             fp = StringIO.StringIO(content)
         # remove content-encoding header
         headers = {}
@@ -309,15 +321,21 @@ def decode (page):
         page = urllib.addinfourl(fp, headers, page.geturl())
     return page
 
+
 class HttpWithGzipHandler (urllib2.HTTPHandler):
     "support gzip encoding"
+
     def http_open (self, req):
+        """send request and decode answer"""
         return decode(urllib2.HTTPHandler.http_open(self, req))
+
 
 if hasattr(linkcheck.httplib2, 'HTTPS'):
     class HttpsWithGzipHandler (urllib2.HTTPSHandler):
         "support gzip encoding"
+
         def http_open (self, req):
+            """send request and decode answer"""
             return decode(urllib2.HTTPSHandler.http_open(self, req))
 
 
@@ -333,55 +351,3 @@ _opener = urllib2.build_opener(*_handlers)
 
 # end of urlutils.py routines
 ###########################################################################
-
-
-def _check (a, b):
-    if not b:
-        ac = "access denied"
-    else:
-        ac = "access allowed"
-    if a!=b:
-        print "failed"
-    else:
-        print "ok (%s)" % ac
-    print
-
-def _test ():
-    rp = RobotFileParser()
-
-    # robots.txt that exists, gotten to by redirection
-    rp.set_url('http://www.musi-cal.com/robots.txt')
-    rp.read()
-
-    # test for re.escape
-    _check(rp.can_fetch('*', 'http://www.musi-cal.com/'), True)
-    # this should match the first rule, which is a disallow
-    _check(rp.can_fetch('', 'http://www.musi-cal.com/'), False)
-    # various cherry pickers
-    _check(rp.can_fetch('CherryPickerSE',
-                       'http://www.musi-cal.com/cgi-bin/event-search'
-                       '?city=San+Francisco'), False)
-    _check(rp.can_fetch('CherryPickerSE/1.0',
-                       'http://www.musi-cal.com/cgi-bin/event-search'
-                       '?city=San+Francisco'), False)
-    _check(rp.can_fetch('CherryPickerSE/1.5',
-                       'http://www.musi-cal.com/cgi-bin/event-search'
-                       '?city=San+Francisco'), False)
-    # case sensitivity
-    _check(rp.can_fetch('ExtractorPro', 'http://www.musi-cal.com/blubba'), False)
-    _check(rp.can_fetch('extractorpro', 'http://www.musi-cal.com/blubba'), False)
-    # substring test
-    _check(rp.can_fetch('toolpak/1.1', 'http://www.musi-cal.com/blubba'), False)
-    # tests for catch-all * agent
-    _check(rp.can_fetch('spam', 'http://www.musi-cal.com/vsearch'), False)
-    _check(rp.can_fetch('spam', 'http://www.musi-cal.com/Musician/me'), True)
-    _check(rp.can_fetch('spam', 'http://www.musi-cal.com/'), True)
-    _check(rp.can_fetch('spam', 'http://www.musi-cal.com/'), True)
-
-    # robots.txt that does not exist
-    rp.set_url('http://www.lycos.com/robots.txt')
-    rp.read()
-    _check(rp.can_fetch('Mozilla', 'http://www.lycos.com/search'), True)
-
-if __name__ == '__main__':
-    _test()

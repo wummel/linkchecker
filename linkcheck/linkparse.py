@@ -1,4 +1,5 @@
 # -*- coding: iso-8859-1 -*-
+"""Find link tags in HTML text"""
 # Copyright (C) 2001-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,9 +18,9 @@
 
 import re
 import linkcheck
-import linkcheck.StringUtil
+import linkcheck.strformat
 import linkcheck.linkname
-import bk.log
+import linkcheck.log
 
 
 # ripped mainly from HTML::Tagset.pm
@@ -60,45 +61,51 @@ _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
 css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
 
 class TagFinder (object):
-    """base class storing parse messages in a list"""
+    """Base class storing HTML parse messages in a list.
+       TagFinder instances are to be used as HtmlParser handlers.
+    """
+
     def __init__ (self, content):
+        """store content in buffer"""
         self.content = content
         # warnings and errors during parsing
         self.parse_info = []
-
+        # parser object will be initialized when it is used as
+        # a handler object
+        self.parser = None
 
     def _errorfun (self, msg, name):
         """append msg to error list"""
         self.parse_info.append("%s at line %d col %d: %s" % \
             (name, self.parser.last_lineno(), self.parser.last_column(), msg))
 
+    def warning (self, msg):
+        """signal a filter/parser warning"""
+        self._errorfun(msg, "warning")
 
     def error (self, msg):
         """signal a filter/parser error"""
         self._errorfun(msg, "error")
 
-
-    def warning (self, msg):
-        """signal a filter/parser warning"""
-        self._errorfun(msg, "warning")
-
-
-    def fatalError (self, msg):
+    def fatal_error (self, msg):
         """signal a fatal filter/parser error"""
         self._errorfun(msg, "fatal error")
 
 
 class MetaRobotsFinder (TagFinder):
     """class for finding robots.txt meta values in HTML"""
+
     def __init__ (self, content):
+        """store content in buffer and initialize flags"""
         super(MetaRobotsFinder, self).__init__(content)
         self.follow = True
         self.index = True
 
 
-    def startElement (self, tag, attrs):
-        if tag=='meta':
-            if attrs.get('name')=='robots':
+    def start_element (self, tag, attrs):
+        """search for meta robots.txt "nofollow" and "noindex" flags"""
+        if tag == 'meta':
+            if attrs.get('name') == 'robots':
                 val = attrs.get('content', '').lower().split(',')
                 self.follow = 'nofollow' not in val
                 self.index = 'noindex' not in val
@@ -110,51 +117,58 @@ class LinkFinder (TagFinder):
     (url, lineno, column, name, base)
     """
 
-    def __init__ (self, content, tags=LinkTags):
+    def __init__ (self, content, tags=None):
+        """store content in buffer and initialize url list"""
         super(LinkFinder, self).__init__(content)
-        self.tags = tags
+        if tags is None:
+            self.tags = LinkTags
+        else:
+            self.tags = tags
         self.urls = []
 
-
-    def startElement (self, tag, attrs):
-        bk.log.debug(linkcheck.LOG_CHECK, "LinkFinder tag", tag, "attrs", attrs)
-        bk.log.debug(linkcheck.LOG_CHECK, "line", self.parser.lineno(),
-              "col", self.parser.column(),
-              "old line", self.parser.last_lineno(),
-              "old col", self.parser.last_column())
+    def start_element (self, tag, attrs):
+        """search for links and store found urls in url list"""
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "LinkFinder tag %s attrs %s",
+                            tag, attrs)
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "line %d col %d old line %d old col %d",
+                            self.parser.lineno(), self.parser.column(),
+                         self.parser.last_lineno(), self.parser.last_column())
         tagattrs = self.tags.get(tag, [])
         tagattrs.extend(self.tags.get(None, []))
         for attr in tagattrs:
             if attr in attrs:
                 # name of this link
-                if tag=='a' and attr=='href':
-                    name = linkcheck.StringUtil.unquote(attrs.get('title', ''))
+                if tag == 'a' and attr == 'href':
+                    name = linkcheck.strformat.unquote(attrs.get('title', ''))
                     if not name:
-                        name = linkcheck.linkname.href_name(self.content[self.parser.pos():])
-                elif tag=='img':
-                    name = linkcheck.StringUtil.unquote(attrs.get('alt', ''))
+                        name = linkcheck.linkname.href_name(
+                                            self.content[self.parser.pos():])
+                elif tag == 'img':
+                    name = linkcheck.strformat.unquote(attrs.get('alt', ''))
                     if not name:
-                        name = linkcheck.StringUtil.unquote(attrs.get('title', ''))
+                        name = linkcheck.strformat.unquote(
+                                                     attrs.get('title', ''))
                 else:
                     name = ""
                 # possible codebase
                 if tag in ('applet', 'object'):
-                    base = linkcheck.StringUtil.unquote(attrs.get('codebase'))
+                    base = linkcheck.strformat.unquote(attrs.get('codebase'))
                 else:
                     base = ""
-                value = linkcheck.StringUtil.unquote(attrs[attr])
+                value = linkcheck.strformat.unquote(attrs[attr])
                 # add link to url list
-                self.addLink(tag, attr, value, name, base)
+                self.add_link(tag, attr, value, name, base)
 
-
-    def addLink (self, tag, attr, url, name, base):
+    def add_link (self, tag, attr, url, name, base):
+        """add given url data to url list"""
         urls = []
         # look for meta refresh
-        if tag=='meta':
+        if tag == 'meta':
             mo = _refresh_re.match(url)
             if mo:
                 urls.append(mo.group("url"))
-        elif attr=='style':
+        elif attr == 'style':
             for mo in css_url_re.finditer(url):
                 urls.append(mo.group("url"))
         else:
@@ -163,8 +177,7 @@ class LinkFinder (TagFinder):
             # no url found
             return
         for u in urls:
-            bk.log.debug(linkcheck.LOG_CHECK, "LinkParser add link", tag, attr, u, name, base)
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+              "LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))
-
-

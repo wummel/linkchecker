@@ -18,28 +18,30 @@
 
 import socket
 import urllib
-import bk.i18n
-import UrlData
+
+import urlbase
+
+from linkcheck.i18n import _
 
 
-class HostCheckingUrlData (UrlData.UrlData):
-    "Url link for which we have to connect to a specific host"
+class UrlConnect (urlbase.UrlBase):
+    """Url link for which we have to connect to a specific host"""
 
-    def __init__ (self, urlName, recursionLevel, config, parentName=None,
-                  baseRef=None, line=0, column=0, name=""):
-        super(HostCheckingUrlData, self).__init__(urlName, recursionLevel,
-                    config, parentName=parentName, baseRef=baseRef,
+    def __init__ (self, base_url, recursion_level, config, parent_url=None,
+                  base_ref=None, line=0, column=0, name=""):
+        super(UrlConnect, self).__init__(base_url, recursion_level, config,
+                    parent_url=parent_url, base_ref=base_ref,
                     line=line, column=column, name=name)
         self.host = None
-        self.url = urllib.unquote(self.urlName)
+        self.url = self.base_url
 
-    def buildUrl (self):
+    def build_url (self):
         # to avoid anchor checking
         self.urlparts = None
 
-    def getCacheKeys (self):
+    def get_cache_keys (self):
         return ["%s:%s" % (self.scheme, self.host)]
 
-    def checkConnection (self):
+    def check_connection (self):
         ip = socket.gethostbyname(self.host)
-        self.setValid(bk.i18n._("Host %s (%s) found") % (self.host, ip))
+        self.set_result(_("Host %s (%s) found") % (self.host, ip))

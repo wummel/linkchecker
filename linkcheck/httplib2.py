@@ -669,7 +669,8 @@ class HTTPConnection:
                 elif self.port == HTTP_PORT:
                     self.putheader('Host', self.host.encode("idna"))
                 else:
-                    self.putheader('Host', "%s:%s" % (self.host.encode("idna"), self.port))
+                    self.putheader('Host', "%s:%s" % \
+                                   (self.host.encode("idna"), self.port))
 
             # note: we are assuming that clients will not attempt to set these
             #       headers since *this* library must deal with the
@@ -1208,7 +1209,7 @@ class LineAndFileWrapper:
         else:
             return L + self._file.readlines(size)
 
-def test():
+def test ():
     """Test this module.
 
     A hodge podge of tests collected here, because they have too many
@@ -1220,7 +1221,8 @@ def test():
     opts, args = getopt.getopt(sys.argv[1:], 'd')
     dl = 0
     for o, a in opts:
-        if o == '-d': dl = dl + 1
+        if o == '-d':
+            dl = dl + 1
     host = 'www.python.org'
     selector = '/'
     if args[0:]: host = args[0]

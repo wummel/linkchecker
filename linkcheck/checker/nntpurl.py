@@ -22,51 +22,53 @@ import sys
 import nntplib
 import urlparse
 import random
+
 import linkcheck
-import UrlData
-import bk.log
-import bk.i18n
+import urlbase
+import linkcheck.log
+
+from linkcheck.i18n import _
 
 random.seed()
 
-class NntpUrlData (UrlData.UrlData):
+class NntpUrl (urlbase.UrlBase):
     "Url link with NNTP scheme"
 
-    def buildUrl (self):
+    def build_url (self):
         # use nntp instead of news to comply with the unofficial internet
-	# draft of Alfred Gilman which unifies (s)news and nntp URLs
+        # draft of Alfred Gilman which unifies (s)news and nntp URLs
         # note: we use this only internally (for parsing and caching)
-        if self.urlName[:4].lower()=='news':
-            self.url = 'nntp'+self.urlName[4:]
+        if self.base_url[:4].lower() == 'news':
+            self.url = 'nntp'+self.base_url[4:]
         else:
-            self.url = self.urlName
+            self.url = self.base_url
         self.urlparts = urlparse.urlsplit(self.url)
-        bk.log.debug(linkcheck.LOG_CHECK, self.urlparts)
+        linkcheck.log.debug(linkcheck.LOG_CHECK, self.urlparts)
 
-    def checkConnection (self):
+    def check_connection (self):
         nntpserver = self.urlparts[1] or self.config["nntpserver"]
         if not nntpserver:
-            self.setWarning(bk.i18n._("No NNTP server specified, skipping this URL"))
+            self.add_warning(_("No NNTP server specified, skipping this URL"))
             return
         nntp = self._connectNntp(nntpserver)
         group = self.urlparts[2]
-        while group[:1]=='/':
+        while group[:1] == '/':
             group = group[1:]
         if '@' in group:
             # request article
-            resp,number,mid = nntp.stat("<"+group+">")
-            self.setInfo(bk.i18n._('Articel number %s found') % number)
+            resp, number, mid = nntp.stat("<"+group+">")
+            self.add_info(_('Articel number %s found') % number)
         else:
             # split off trailing articel span
-            group = group.split('/',1)[0]
+            group = group.split('/', 1)[0]
             if group:
                 # request group info
-                resp,count,first,last,name = nntp.group(group)
-                self.setInfo(bk.i18n._("Group %s has %s articles, range %s to %s") %\
+                resp, count, first, last, name = nntp.group(group)
+                self.add_info(_("Group %s has %s articles, range %s to %s") %\
                              (name, count, first, last))
             else:
                 # group name is the empty string
-                self.setWarning(bk.i18n._("No newsgroup specified in NNTP URL"))
+                self.add_warning(_("No newsgroup specified in NNTP URL"))
 
     def _connectNntp (self, nntpserver):
         """This is done only once per checking task. Also, the newly
@@ -77,21 +79,22 @@ class NntpUrlData (UrlData.UrlData):
         while tries < 5:
             tries += 1
             try:
-                nntp=nntplib.NNTP(nntpserver)
+                nntp = nntplib.NNTP(nntpserver)
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
                 if re.compile("^50[45]").search(str(value)):
-                    time.sleep(random.randrange(10,30))
+                    time.sleep(random.randrange(10, 30))
                 else:
                     raise
         if nntp is None:
-            raise linkcheck.LinkCheckerError(bk.i18n._("NTTP server too busy; tried more than %d times")%tries)
+            raise linkcheck.LinkCheckerError(
+                  _("NTTP server too busy; tried more than %d times")%tries)
         if value is not None:
-            self.setWarning(bk.i18n._("NNTP busy: %s")%str(value))
+            self.add_warning(_("NNTP busy: %s")%str(value))
         return nntp
 
-    def getCacheKeys (self):
+    def get_cache_keys (self):
         return [self.url]
 
-    def hasContent (self):
+    def can_get_content (self):
         return False

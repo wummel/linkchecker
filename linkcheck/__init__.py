@@ -19,23 +19,33 @@
 import sys
 import re
 import time
-import bk.i18n
-import bk.strtime
 
+from linkcheck.i18n import _
+
+import httplib2
 
 # logger areas
+LOG = "linkcheck"
 LOG_CMDLINE = "linkcheck.cmdline"
 LOG_CHECK = "linkcheck.check"
 LOG_GUI = "linkcheck.gui"
+lognames = {
+    "cmdline": LOG_CMDLINE,
+    "checking": LOG_CHECK,
+    "gui": LOG_GUI,
+    "all": LOG,
+    }
+lognamelist = ", ".join(["%r"%name for name in lognames.keys()])
 
 
 class LinkCheckerError (Exception):
+    """exception to be raised on linkchecker-specific check errors"""
     pass
 
 
-def getLinkPat (arg, strict=False):
+def get_link_pat (arg, strict=False):
     """get a link pattern matcher for intern/extern links"""
-    bk.log.debug(LOG_CHECK, "Link pattern %r", arg)
+    linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg[0:1] == '!':
         pattern = arg[1:]
         negate = True
@@ -49,28 +59,28 @@ def getLinkPat (arg, strict=False):
     }
 
 
-import linkcheck.logger.StandardLogger
-import linkcheck.logger.HtmlLogger
-import linkcheck.logger.ColoredLogger
-import linkcheck.logger.GMLLogger
-import linkcheck.logger.SQLLogger
-import linkcheck.logger.CSVLogger
-import linkcheck.logger.BlacklistLogger
-import linkcheck.logger.XMLLogger
-import linkcheck.logger.NoneLogger
+import linkcheck.logger.standard
+import linkcheck.logger.html
+import linkcheck.logger.colored
+import linkcheck.logger.gml
+import linkcheck.logger.sql
+import linkcheck.logger.csvlog
+import linkcheck.logger.blacklist
+import linkcheck.logger.xmllog
+import linkcheck.logger.none
 
 
 # default logger classes
 Loggers = {
-    "text": linkcheck.logger.StandardLogger.StandardLogger,
-    "html": linkcheck.logger.HtmlLogger.HtmlLogger,
-    "colored": linkcheck.logger.ColoredLogger.ColoredLogger,
-    "gml": linkcheck.logger.GMLLogger.GMLLogger,
-    "sql": linkcheck.logger.SQLLogger.SQLLogger,
-    "csv": linkcheck.logger.CSVLogger.CSVLogger,
-    "blacklist": linkcheck.logger.BlacklistLogger.BlacklistLogger,
-    "xml": linkcheck.logger.XMLLogger.XMLLogger,
-    "none": linkcheck.logger.NoneLogger.NoneLogger,
+    "text": linkcheck.logger.standard.StandardLogger,
+    "html": linkcheck.logger.html.HtmlLogger,
+    "colored": linkcheck.logger.colored.ColoredLogger,
+    "gml": linkcheck.logger.gml.GMLLogger,
+    "sql": linkcheck.logger.sql.SQLLogger,
+    "csv": linkcheck.logger.csvlog.CSVLogger,
+    "blacklist": linkcheck.logger.blacklist.BlacklistLogger,
+    "xml": linkcheck.logger.xmllog.XMLLogger,
+    "none": linkcheck.logger.none.NoneLogger,
 }
 # for easy printing: a comma separated logger list
-LoggerKeys = ", ".join(Loggers.keys())
+LoggerKeys = ", ".join(["%r"%name for name in Loggers.keys()])
