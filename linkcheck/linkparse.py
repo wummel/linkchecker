@@ -168,6 +168,8 @@ class LinkFinder (TagFinder):
             self.base_ref = attrs.get("href", u'')
         tagattrs = self.tags.get(tag, [])
         tagattrs.extend(self.tags.get(None, []))
+        # eliminate duplicate tag attrs
+        tagattrs = set(tagattrs)
         for attr in tagattrs:
             if attr not in attrs:
                 continue
