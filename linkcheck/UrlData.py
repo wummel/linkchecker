@@ -19,7 +19,10 @@ import sys,re,string,urlparse,urllib,time
 import Config,StringUtil,linkcheck
 from linkcheck import _
 
-ExcList = [IOError, linkcheck.error]
+ExcList = [
+   IOError,
+   linkcheck.error,
+]
 try:
     import socket
     ExcList.append(socket.error)

@@ -148,11 +148,14 @@ class Configuration(UserDict.UserDict):
         self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
         self.urlCache = {}
         self.robotsTxtCache = {}
-        try:
-            import threading
-            self.enableThreading(5)
-        except ImportError:
-            type, value = sys.exc_info()[:2]
+        if os.name=='posix':
+            try:
+                import threading
+                self.enableThreading(10)
+            except ImportError:
+                type, value = sys.exc_info()[:2]
+                self.disableThreading()
+        else:
             self.disableThreading()
 
     def disableThreading(self):
@@ -275,12 +278,11 @@ class Configuration(UserDict.UserDict):
 
     def _do_connectNntp(self):
         """This is done only once per checking task."""
-        if self.data["nntp"]: return
         import nntplib
         timeout = 1
         while timeout:
             try:
-                self.data["nntp"] = nntplib.NNTP(self.data["nntpserver"])
+                self.data["nntp"] = nntplib.NNTP(self.data["nntpserver"] or "")
                 timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]

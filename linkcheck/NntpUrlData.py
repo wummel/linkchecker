@@ -18,6 +18,13 @@
 import re,string,time,nntplib,linkcheck
 from HostCheckingUrlData import HostCheckingUrlData
 from linkcheck import _
+from UrlData import ExcList
+
+ExcList.extend([nntplib.error_reply,
+               nntplib.error_temp,
+               nntplib.error_perm,
+               nntplib.error_proto,
+               ])
 
 nntp_re =  re.compile("^news:[\w.\-]+$")
 

@@ -16,9 +16,15 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 import ftplib,linkcheck
-from UrlData import UrlData
+from UrlData import UrlData,ExcList
 from linkcheck import _
 
+ExcList.extend([
+   ftplib.error_reply,
+   ftplib.error_temp,
+   ftplib.error_perm,
+   ftplib.error_proto,
+])
 
 class FtpUrlData(UrlData):
     """

@@ -15,9 +15,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import re,string,os,urlparse
+import re,string,os,urlparse,urllib
 from UrlData import UrlData
-from os.path import normpath
 from linkcheck import _
 
 class FileUrlData(UrlData):
@@ -43,7 +42,9 @@ class FileUrlData(UrlData):
                     self.urlName = os.getcwd()+"/"+self.urlName
                     if winre.search(self.urlName):
                         self.adjustWinPath()
-            self.urlName = "file://"+normpath(self.urlName)
+            self.urlName = os.path.normpath(self.urlName)
+            self.urlName = string.replace(self.urlName, "\\", "/")
+            self.urlName = "file://"+self.urlName
 
 
     def buildUrl(self):

@@ -19,8 +19,9 @@ linkchecker (1.2.3) unstable; urgency=low
   * Debian package is now lintian clean
   * Only catch some exceptions in main check loop so the KeyboardInterrupt
     exception propagates through
+  * Disable threading on non-POSIX systems
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat, 27 May 2000 00:01:34 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 11 Jun 2000 21:28:48 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 

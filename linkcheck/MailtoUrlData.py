@@ -21,7 +21,6 @@ from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from linkcheck import _
 
-
 # regular expression for RFC2368 compliant mailto: scanning
 word = r"[-a-zA-Z0-9,./%]+"
 headers = r"\?(%s=%s(&%s=%s)*)$" % (word, word, word, word)
@@ -83,7 +82,7 @@ class MailtoUrlData(HostCheckingUrlData):
                         self.setInfo("Verified adress: "+info[1])
                 except:
                     type, value = sys.exc_info()[:2]
-                    print type,value
+                    #print type,value
                 if smtpconnect: break
             
             if not smtpconnect:
