@@ -23,3 +23,4 @@ include doc/*.css
 include doc/Makefile doc/rest2htmlnav
 recursive-include linkcheck/ftests/data *.txt *.html *.result *.asc *.css
 include linkcheck/dns/tests/example*
+include tacho.bmp
