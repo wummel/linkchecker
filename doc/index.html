@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.3: http://docutils.sourceforge.net/" />
+<title>LinkChecker - check HTML documents for broken links</title>
+<meta content="0" name="navigation.order" />
+<meta content="LinkChecker" name="navigation.name" />
+<link rel="stylesheet" href="lc.css" type="text/css" />
+<meta rel="SHORTCUT ICON" href="favicon.png" />
+<link rel="stylesheet" href="navigation.css" type="text/css" />
+<script type="text/javascript">
+window.onload = function() {
+  if (top.location != location) {
+    top.location.href = document.location.href;
+  }
+}
+</script>
+</head>
+<body>
+<!-- bfknav -->
+<div class="navigation">
+<div class="navrow" style="padding: 0em 0em 0em 1em;">
+<span>LinkChecker</span>
+<a href="./install.html">Installation</a>
+<a href="./documentation.html">Documentation</a>
+<a href="./faq.html">FAQ</a>
+
+</div>
+</div>
+<!-- /bfknav -->
+<h1 class="title">LinkChecker - check HTML documents for broken links</h1>
+<div class="document" id="linkchecker-check-html-documents-for-broken-links">
+<div class="section" id="features">
+<h1><a name="features">Features</a></h1>
+<ul class="simple">
+<li>recursive checking</li>
+<li>multithreading</li>
+<li>output in colored or normal text, HTML, SQL, CSV or a sitemap
+graph in GML or XML.</li>
+<li>HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
+file links support</li>
+<li>restriction of link checking with regular expression filters for URLs</li>
+<li>proxy support</li>
+<li>username/password authorization for HTTP and FTP</li>
+<li>robots.txt exclusion protocol support</li>
+<li>i18n support</li>
+<li>a command line interface</li>
+<li>a (Fast)CGI web interface (requires HTTP server)</li>
+</ul>
+</div>
+<div class="section" id="download">
+<h1><a name="download">Download</a></h1>
+<p>Download the latest packages from <a class="reference" href="http://sourceforge.net/project/showfiles.php?group_id=1913">LinkChecker download section</a>.
+There are also <a class="reference" href="linkchecker-md5sums.txt">Md5sum checksums</a> from above files.</p>
+<p>Requirements and installation instructions are located at the
+<a class="reference" href="install.html">install documentation</a>. To see what has changed between releases
+look at the <a class="reference" href="changes.txt">ChangeLog</a>.</p>
+</div>
+<div class="section" id="screenshots">
+<h1><a name="screenshots">Screenshots</a></h1>
+<blockquote>
+<table border class="table">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><p><a class="first last reference" href="shot1.png"><img align="middle" alt="shot1_thumb.jpg" src="shot1_thumb.jpg" /></a></p>
+</td>
+<td><p><a class="first last reference" href="shot2.png"><img align="middle" alt="shot2_thumb.jpg" src="shot2_thumb.jpg" /></a></p>
+</td>
+</tr>
+<tr><td>Commandline interface</td>
+<td>CGI web interface</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div class="section" id="running">
+<h1><a name="running">Running</a></h1>
+<div class="section" id="running-under-unix-or-mac-os-x-platforms">
+<h2><a name="running-under-unix-or-mac-os-x-platforms">Running under Unix or Mac OS X platforms</a></h2>
+<p>The local configuration file is $HOME/.linkcheckerrc
+Type &quot;linkchecker&quot; followed by your URLs you want to check.
+Type &quot;linkchecker -h&quot; for help.</p>
+</div>
+<div class="section" id="running-under-windows-platforms">
+<h2><a name="running-under-windows-platforms">Running under Windows platforms</a></h2>
+<p>Double-click on &quot;linkchecker.bat&quot; on your desktop.
+URL input is interactive.
+Another way is executing &quot;python.exe linkchecker&quot; in the Python
+Scripts directory.</p>
+</div>
+<div class="section" id="running-under-mac-os-9-x-platforms">
+<h2><a name="running-under-mac-os-9-x-platforms">Running under Mac OS 9.x platforms</a></h2>
+<p>Read the MacOS Python documentation to find out about passing
+commandline options to Python scripts.</p>
+</div>
+<div class="section" id="internationalization">
+<h2><a name="internationalization">Internationalization</a></h2>
+<p>For german output execute &quot;export LC_MESSAGES=de&quot; in bash or
+&quot;setenv LC_MESSAGES de&quot; in tcsh.
+Under Windows, execute &quot;set LC_MESSAGES=de&quot;.
+Other supported languages are 'nl' (Nederlands) and 'fr' (français).</p>
+<p>You can help to translate LinkChecker by copying the included
+<tt class="literal"><span class="pre">linkchecker.pot</span></tt> file to <tt class="literal"><span class="pre">language.po</span></tt>, translate it and
+send it to me.</p>
+</div>
+</div>
+</div>
+<hr class="footer" />
+<div class="footer">
+Generated on: 2004-08-24 20:14 UTC.
+</div>
+</body>
+</html>

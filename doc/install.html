@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.3: http://docutils.sourceforge.net/" />
+<title>Installation</title>
+<meta content="1" name="navigation.order" />
+<meta content="Installation" name="navigation.name" />
+<link rel="stylesheet" href="lc.css" type="text/css" />
+<meta rel="SHORTCUT ICON" href="favicon.png" />
+<link rel="stylesheet" href="navigation.css" type="text/css" />
+<script type="text/javascript">
+window.onload = function() {
+  if (top.location != location) {
+    top.location.href = document.location.href;
+  }
+}
+</script>
+</head>
+<body>
+<!-- bfknav -->
+<div class="navigation">
+<div class="navrow" style="padding: 0em 0em 0em 1em;">
+<a href="./index.html">LinkChecker</a>
+<span>Installation</span>
+<a href="./documentation.html">Documentation</a>
+<a href="./faq.html">FAQ</a>
+
+</div>
+</div>
+<!-- /bfknav -->
+<h1 class="title">Installation</h1>
+<div class="document" id="installation">
+<div class="section" id="requirements-for-unix-linux-or-mac-os-x">
+<h1><a name="requirements-for-unix-linux-or-mac-os-x">Requirements for Unix/Linux or Mac OS X</a></h1>
+<ol class="arabic">
+<li><p class="first">You need a standard GNU development environment with</p>
+<ol class="loweralpha simple">
+<li>C compiler (for example the GNU C Compiler gcc)
+Depending on your distribution, several development packages
+might be needed to provide a fully functional C development
+environment.</li>
+<li>gettext</li>
+</ol>
+</li>
+<li><p class="first">Python &gt;= 2.3 from <a class="reference" href="http://www.python.org/">http://www.python.org/</a> with zlib support</p>
+<p>Be sure to also have installed the included distutils module.
+On most distributions, the distutils module is included in
+an extra &quot;python-dev&quot; package.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="requirements-for-windows">
+<h1><a name="requirements-for-windows">Requirements for Windows</a></h1>
+<ol class="arabic simple">
+<li>Install the MinGW suite from <a class="reference" href="http://mingw.sourceforge.net">http://mingw.sourceforge.net</a>.
+Be sure to install in the given order:<ol class="loweralpha">
+<li>MingGW
+[<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe</a>]</li>
+<li>MSYS
+[<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe</a>]</li>
+<li>libiconv
+[<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe</a>]</li>
+<li>gettext
+[<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe</a>]</li>
+</ol>
+</li>
+<li>Install Python &gt;= 2.3 from <a class="reference" href="http://www.python.org/">http://www.python.org/</a>
+[ <a class="reference" href="http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe">http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe</a> ]</li>
+</ol>
+</div>
+<div class="section" id="setup-for-unix-linux-or-mac-os-x">
+<h1><a name="setup-for-unix-linux-or-mac-os-x">Setup for Unix/Linux or Mac OS X</a></h1>
+<ol class="arabic">
+<li><p class="first">Install check</p>
+<p>Be sure to have installed all required Unix/Linux software listed above.</p>
+</li>
+<li><p class="first">Compile Python modules
+Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span></tt> to compile the Python files.
+For help about the setup.py script options, run
+<tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">--help</span></tt>.
+The CC environment variable is checked before compilation, so you can
+change the default C compiler with <tt class="literal"><span class="pre">export</span> <span class="pre">CC=myccompiler</span></tt>.</p>
+</li>
+<li><blockquote class="first">
+<ol class="loweralpha">
+<li><p class="first">Installation as root</p>
+<p>Run <tt class="literal"><span class="pre">su</span> <span class="pre">-c</span> <span class="pre">'python</span> <span class="pre">setup.py</span> <span class="pre">install'</span></tt> to install LinkChecker.</p>
+</li>
+<li><p class="first">Installation as a normal user</p>
+<p>Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span> <span class="pre">--home</span> <span class="pre">$HOME</span></tt>.</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li><p class="first">Enjoy</p>
+<p>LinkChecker is now installed
+See the <a class="reference" href="index.html">main page</a> on how to configure and start LinkChecker.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="setup-for-windows">
+<h1><a name="setup-for-windows">Setup for Windows</a></h1>
+<ol class="arabic">
+<li><p class="first">Install check</p>
+<p>Be sure to have installed all required Unix/Linux software listed above.</p>
+</li>
+<li><p class="first">Preparing Python for the MinGW compiler</p>
+<p>Search the file python23.dll in your windows folder.
+After you found it, launch MSYS. Change into the windows folder,
+for example <tt class="literal"><span class="pre">%</span> <span class="pre">cd</span> <span class="pre">c:\winnt\system32</span></tt>. Then execute
+<tt class="literal"><span class="pre">%</span> <span class="pre">pexports</span> <span class="pre">python23.dll</span> <span class="pre">&gt;</span> <span class="pre">python23.def</span></tt>.
+Then use the dlltool with
+<tt class="literal"><span class="pre">%</span> <span class="pre">dlltool</span> <span class="pre">--dllname</span> <span class="pre">python23.dll</span> <span class="pre">--def</span> <span class="pre">python23.def</span> <span class="pre">--output-lib</span>
+<span class="pre">libpython23.a</span></tt>.
+The resulting library has to be placed in the same directory as
+python23.lib. (Should be the libs directory under your Python installation
+directory, for example <tt class="literal"><span class="pre">c:\Python23\Libs\</span></tt>.)</p>
+</li>
+<li><p class="first">Compile gettext translations</p>
+<p>Change to the linkchecker-X.X.X/po directory and run <tt class="literal"><span class="pre">%</span> <span class="pre">make</span> <span class="pre">win</span></tt>.</p>
+</li>
+<li><p class="first">Compile and install the LinkChecker Python modules</p>
+<p>Close the MSYS application and open a DOS command prompt.
+Change to the linkchecker-X.X.X directory and run
+<tt class="literal"><span class="pre">c:&gt;</span> <span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">install</span></tt>.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="installation-for-other-platforms">
+<h1><a name="installation-for-other-platforms">Installation for other platforms</a></h1>
+<p>If you happen to install LinkChecker on other platforms (for example
+Mac OS 9.x) then drop me a note.</p>
+</div>
+<div class="section" id="fast-cgi-web-interface">
+<h1><a name="fast-cgi-web-interface">(Fast)CGI web interface</a></h1>
+<p>The three CGI scripts can run LinkChecker with a nice graphical web
+interface.
+You can use and adjust the example HTML files in the lconline directory
+to run the script.</p>
+<ol class="arabic simple">
+<li>Choose a CGI script. The simplest is lc.cgi and you need a web server
+with CGI support.
+The scripts lc.fcgi (I tested this a while ago) and lc.sz_fcgi
+(untested) need a web server with FastCGI support.</li>
+<li>Copy the script of your choice in the CGI directory.</li>
+<li>Adjust the &quot;action=...&quot; parameter in lconline/lc_cgi.html
+to point to your CGI script.</li>
+<li>load the lconline/index.html file, enter an URL and klick on the
+check button</li>
+<li>If something goes wrong, check the following:<ol class="loweralpha">
+<li>look in the error log of your web server</li>
+<li>be sure that you have enabled CGI support in your web server
+do this by running other CGI scripts from which you know that
+they are working</li>
+<li>try to run the lc.cgi script by hand</li>
+<li>try the testit() function in the lc.cgi script</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+<hr class="footer" />
+<div class="footer">
+Generated on: 2004-08-24 20:15 UTC.
+</div>
+</body>
+</html>

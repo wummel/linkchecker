@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.3: http://docutils.sourceforge.net/" />
+<title>Frequently asked questions</title>
+<meta content="3" name="navigation.order" />
+<meta content="FAQ" name="navigation.name" />
+<link rel="stylesheet" href="lc.css" type="text/css" />
+<meta rel="SHORTCUT ICON" href="favicon.png" />
+<link rel="stylesheet" href="navigation.css" type="text/css" />
+<script type="text/javascript">
+window.onload = function() {
+  if (top.location != location) {
+    top.location.href = document.location.href;
+  }
+}
+</script>
+</head>
+<body>
+<!-- bfknav -->
+<div class="navigation">
+<div class="navrow" style="padding: 0em 0em 0em 1em;">
+<a href="./index.html">LinkChecker</a>
+<a href="./install.html">Installation</a>
+<a href="./documentation.html">Documentation</a>
+<span>FAQ</span>
+
+</div>
+</div>
+<!-- /bfknav -->
+<h1 class="title">Frequently asked questions</h1>
+<div class="document" id="frequently-asked-questions">
+<p><strong>Q: LinkChecker produced an error, but my web page is ok with
+Netscape/IE/Opera/...
+Is this a bug in LinkChecker?</strong></p>
+<p>A: Please check your web pages first. Are they really ok? Use
+a syntax highlighting editor! Use HTML Tidy from www.w3c.org!
+Check if you are using a proxy which produces the error.</p>
+<p><strong>Q: I still get an error, but the page is definitely ok.</strong></p>
+<p>A: Some servers deny access of automated tools (also called robots)
+like LinkChecker. This is not a bug in LinkChecker but rather a
+policy by the webmaster running the website you are checking.
+It might even be possible for a website to send robots different
+web pages than normal browsers.</p>
+<p><strong>Q: How can I tell LinkChecker which proxy to use?</strong></p>
+<p>A: LinkChecker works transparently with proxies. In a Unix or Windows
+environment, set the http_proxy, https_proxy, ftp_proxy or gopher_proxy
+environment variables to a URL that identifies the proxy server before
+starting LinkChecker. For example
+# http_proxy=&quot;<a class="reference" href="http://www.someproxy.com:3128">http://www.someproxy.com:3128</a>&quot;
+# export http_proxy</p>
+<p>In a Macintosh environment, LinkChecker will retrieve proxy information
+from Internet Config.</p>
+<p><strong>Q: The link &quot;mailto:john&#64;company.com?subject=Hello John&quot; is reported
+as an error.</strong></p>
+<p>A: You have to quote special characters (e.g. spaces) in the subject field.
+The correct link should be &quot;mailto:...?subject=Hello%20John&quot;
+Unfortunately browsers like IE and Netscape do not enforce this.</p>
+<p><strong>Q: Has LinkChecker JavaScript support?</strong></p>
+<p>A: No, it never will. If your page is not working without JS then your
+web design is broken.
+Use PHP or Zope or ASP for dynamic content, and use JavaScript just as
+an addon for your web pages.</p>
+<p><strong>Q: I have a pretty large site to check. How can I restrict link checking
+to check only my own pages?</strong></p>
+<p>A: Look at the options --intern, --extern, --strict, --denyallow  and
+--recursion-level.</p>
+<p><strong>Q: I don't get this --extern/--intern stuff.</strong></p>
+<p>A: When it comes to checking there are three types of URLs. Note
+that local files are also represented als URLs (ie <a class="reference" href="file://">file://</a>). So
+local files can be external URLs.</p>
+<ol class="arabic simple">
+<li>strict external URLs:
+We do only syntax checking. Internal URLs are never strict.</li>
+<li>external URLs:
+Like 1), but we additionally check if they are valid by connect()ing
+to them</li>
+<li>internal URLs:
+Like 2), but we additionally check if they are HTML pages and if so,
+we descend recursively into this link and check all the links in the
+HTML content.
+The --recursion-level option restricts the number of such recursive
+descends.</li>
+</ol>
+<p>LinkChecker provides four options which affect URLs to fall in one
+of those three categories: --intern, --extern, --strict and
+--denyallow.
+By default all URLs are internal. With --extern you specify what URLs
+are external. With --intern you specify what URLs are internal.
+Now imagine you have both --extern and --intern. What happens
+when an URL matches both patterns? Or when it matches none? In this
+situation the --denyallow option specifies the order in which we match
+the URL. By default it is internal/external, with --denyallow the order is
+external/internal. Either way, the first match counts, and if none matches,
+the last checked category is the category for the URL.
+Finally, with --strict all external URLs are strict.</p>
+<p>Oh, and just to boggle your mind: you can have more than one external
+regular expression in a config file and for each of those expressions
+you can specify if those matched external URLs should be strict or not.</p>
+<p>An example. Assume we want to check only urls of our domains named
+'mydomain.com' and 'myotherdomain.com'. Then we specify
+-i'^http://my(other)?domain.com' as internal regular expression, all other
+urls are treated external. Easy.</p>
+<p>Another example. We don't want to check mailto urls. Then its
+-i'!^mailto:'. The '!' negates an expression. With --strict, we don't
+even connect to any mail hosts.</p>
+<p>Yet another example. We check our site www.mycompany.com, don't recurse
+into external links point outside from our site and want to ignore links to
+hollowood.com and hullabulla.com completely.
+This can only be done with a configuration entry like
+[filtering]
+extern1=hollowood.com 1
+extern2=hullabulla.com 1
+# the 1 means strict external ie don't even connect
+and the command
+linkchecker --intern=www.mycompany.com www.mycompany.com</p>
+<p><strong>Q: Is LinkCheckers cookie feature insecure?</strong></p>
+<p>A: Cookies can not store more information as is in the HTTP request itself,
+so you are not giving away any more system information.
+After storing however, the cookies are sent out to the server on request.
+Not to every server, but only to the one who the cookie originated from!
+This could be used to &quot;track&quot; subsequent requests to this server,
+and this is what some people annoys (including me).
+Cookies are only stored in memory. After LinkChecker finishes, they
+are lost. So the tracking is restricted to the checking time.
+The cookie feature is disabled as default.</p>
+<p><strong>Q: I want to have my own logging class. How can I use it in LinkChecker?</strong></p>
+<p>A: Currently, only a Python API lets you define new logging classes.
+Define your own logging class as a subclass of StandardLogger or any other
+logging class in the log module.
+Then call the addLogger function in Config.Configuration to register
+your new Logger.
+After this append a new Logging instance to the fileoutput.</p>
+<p>import linkcheck, MyLogger
+log_format = 'mylog'
+log_args = {'fileoutput': log_format, 'filename': 'foo.txt'}
+cfg = linkcheck.Config.Configuration()
+cfg.addLogger(log_format, MyLogger.MyLogger)
+cfg['fileoutput'].append(cfg.newLogger(log_format, log_args))</p>
+<p><strong>Q: LinkChecker does not ignore anchor references on caching.</strong></p>
+<p><strong>Q: Some links with anchors are getting checked twice.</strong></p>
+<p>A: This is not a bug.
+It is common practice to believe that if an URL ABC#anchor1 works then
+ABC#anchor2 works too. That is not specified anywhere and I have seen
+server-side scripts that fail on some anchors and not on others.
+This is the reason for always checking URLs with different anchors.
+If you really want to disable this, use --no-anchor-caching.</p>
+<p><strong>Q: I see LinkChecker gets a &quot;/robots.txt&quot; file for every site it
+checks. What is that about?</strong></p>
+<p>A: LinkChecker follows the robots.txt exclusion standard. To avoid
+misuse of LinkChecker, you cannot turn this feature off.
+See <a class="reference" href="http://www.robotstxt.org/wc/robots.html">http://www.robotstxt.org/wc/robots.html</a> and
+<a class="reference" href="http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt">http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt</a>
+for more info.</p>
+<p><strong>Q: Ctrl-C does not stop LinkChecker immediately. Why is that so?</strong></p>
+<p>A: The Python interpreter has to wait for all threads to finish, and
+this means waiting for all open sockets to close. The default timeout
+for sockets is 30 seconds, hence the delay.
+You can change the default socket timeout with the --timeout option.
+This is a list of things LinkChecker will <em>not</em> do for you.</p>
+<p><strong>Q: Print unreachable/dead documents of your website.</strong></p>
+<p>A: This would require
+- file system access to your web repository
+- access to your web server configuration</p>
+<p>You can instead store the linkchecker results in a database
+and look for missing files.</p>
+<p><strong>Q: HTML/XML syntax checking</strong></p>
+<p>A: Use the HTML tidy program from <a class="reference" href="http://tidy.sourceforge.net/">http://tidy.sourceforge.net/</a> .</p>
+</div>
+<hr class="footer" />
+<div class="footer">
+Generated on: 2004-08-24 20:15 UTC.
+</div>
+</body>
+</html>

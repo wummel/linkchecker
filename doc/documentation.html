@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.3: http://docutils.sourceforge.net/" />
+<title>Documentation</title>
+<meta content="2" name="navigation.order" />
+<meta content="Documentation" name="navigation.name" />
+<link rel="stylesheet" href="lc.css" type="text/css" />
+<meta rel="SHORTCUT ICON" href="favicon.png" />
+<link rel="stylesheet" href="navigation.css" type="text/css" />
+<script type="text/javascript">
+window.onload = function() {
+  if (top.location != location) {
+    top.location.href = document.location.href;
+  }
+}
+</script>
+</head>
+<body>
+<!-- bfknav -->
+<div class="navigation">
+<div class="navrow" style="padding: 0em 0em 0em 1em;">
+<a href="./index.html">LinkChecker</a>
+<a href="./install.html">Installation</a>
+<span>Documentation</span>
+<a href="./faq.html">FAQ</a>
+
+</div>
+</div>
+<!-- /bfknav -->
+<h1 class="title">Documentation</h1>
+<div class="document" id="documentation">
+<div class="section" id="basic-usage">
+<h1><a name="basic-usage">Basic usage</a></h1>
+<p>To check an URL like <tt class="literal"><span class="pre">http://www.myhomepage.org/</span></tt> it is enough to
+execute <tt class="literal"><span class="pre">linkchecker</span> <span class="pre">http://www.myhomepage.org/</span></tt>. This will check the
+complete domain of www.myhomepage.org recursively. All links pointing
+outside of the domain are also checked for validity.</p>
+<p>For more options, read the man page <tt class="literal"><span class="pre">linkchecker(1)</span></tt> or execute
+<tt class="literal"><span class="pre">linkchecker</span> <span class="pre">-h</span></tt>.</p>
+</div>
+<div class="section" id="performed-checks">
+<h1><a name="performed-checks">Performed checks</a></h1>
+<ul>
+<li><p class="first">HTTP links (<tt class="literal"><span class="pre">http:</span></tt>, <tt class="literal"><span class="pre">https:</span></tt>)</p>
+</li>
+<li><p class="first">Local files (<tt class="literal"><span class="pre">file:</span></tt>)</p>
+</li>
+<li><p class="first">Mail links (<tt class="literal"><span class="pre">mailto:</span></tt>)</p>
+</li>
+<li><p class="first">FTP links (<tt class="literal"><span class="pre">ftp:</span></tt>)</p>
+</li>
+<li><p class="first">Gopher links (<tt class="literal"><span class="pre">gopher:</span></tt>)</p>
+</li>
+<li><p class="first">Telnet links (<tt class="literal"><span class="pre">telnet:</span></tt>)</p>
+</li>
+<li><p class="first">NNTP links (<tt class="literal"><span class="pre">news:</span></tt>, <tt class="literal"><span class="pre">snews:</span></tt>, <tt class="literal"><span class="pre">nntp</span></tt>)</p>
+</li>
+<li><p class="first">Ignored links (<tt class="literal"><span class="pre">javascript:</span></tt>, etc.)</p>
+<p>Here is a complete list of recognized, but ignored links. The most
+prominent of them should be JavaScript links.</p>
+<ul class="simple">
+<li>acap       (application configuration access protocol)</li>
+<li>afs        (Andrew File System global file names)</li>
+<li>chrome     (Mozilla specific)</li>
+<li>cid        (content identifier)</li>
+<li>clsid      (Microsoft specific)</li>
+<li>data       (data)</li>
+<li>dav        (dav)</li>
+<li>fax        (fax)</li>
+<li>find       (Mozilla specific)</li>
+<li>imap       (internet message access protocol)</li>
+<li>isbn       (ISBN (int. book numbers))</li>
+<li>javascript (JavaScript)</li>
+<li>ldap       (Lightweight Directory Access Protocol)</li>
+<li>mailserver (Access to data available from mail servers)</li>
+<li>mid        (message identifier)</li>
+<li>modem      (modem)</li>
+<li>nfs        (network file system protocol)</li>
+<li>opaquelocktoken (opaquelocktoken)</li>
+<li>pop        (Post Office Protocol v3)</li>
+<li>prospero   (Prospero Directory Service)</li>
+<li>rtsp       (real time streaming protocol)</li>
+<li>service    (service location)</li>
+<li>sip        (session initiation protocol)</li>
+<li>tel        (telephone)</li>
+<li>tip        (Transaction Internet Protocol)</li>
+<li>tn3270     (Interactive 3270 emulation sessions)</li>
+<li>vemmi      (versatile multimedia interface)</li>
+<li>wais       (Wide Area Information Servers)</li>
+<li>z39.50r    (Z39.50 Retrieval)</li>
+<li>z39.50s    (Z39.50 Session)</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<hr class="footer" />
+<div class="footer">
+Generated on: 2004-08-24 20:29 UTC.
+</div>
+</body>
+</html>
