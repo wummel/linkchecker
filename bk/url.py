@@ -77,8 +77,45 @@ def stripsite (url):
     return url[1], urlparse.urlunsplit( (0,0,url[2],url[3],url[4]) )
 
 
+def parse_qsl(qs, keep_blank_values=0, strict_parsing=0):
+    """Parse a query given as a string argument.
+
+    Arguments:
+
+    qs: URL-encoded query string to be parsed
+
+    keep_blank_values: flag indicating whether blank values in
+        URL encoded queries should be treated as blank strings.  A
+        true value indicates that blanks should be retained as blank
+        strings.  The default false value indicates that blank values
+        are to be ignored and treated as if they were  not included.
+
+    strict_parsing: flag indicating what to do with parsing errors. If
+        false (the default), errors are silently ignored. If true,
+        errors raise a ValueError exception.
+
+    Returns a list, as G-d intended.
+    """
+    pairs = [s2 for s1 in qs.split('&') for s2 in s1.split(';')]
+    r = []
+    for name_value in pairs:
+        nv = name_value.split('=', 1)
+        if len(nv) != 2:
+            if strict_parsing:
+                raise ValueError, "bad query field: %s" % `name_value`
+            elif len(nv) == 1:
+                nv = (nv[0], "")
+            else:
+                continue
+        if len(nv[1]) or keep_blank_values:
+            name = urllib.unquote(nv[0].replace('+', ' '))
+            value = urllib.unquote(nv[1].replace('+', ' '))
+            r.append((name, value))
+    return r
+
+
 def url_norm (url):
-    """unquote and normalize url which must be quoted"""
+    """normalize url which must be quoted"""
     urlparts = list(urlparse.urlsplit(url))
     urlparts[0] = urllib.unquote(urlparts[0]) # scheme
     urlparts[1] = urllib.unquote(urlparts[1]) # host
@@ -96,7 +133,15 @@ def url_norm (url):
         urlparts[1] = urlparts[1][:i]
     else:
         urlparts[2] = urllib.unquote(urlparts[2]) # path
-    urlparts[4] = urllib.unquote(urlparts[4]) # anchor
+    l = []
+    for k,v in parse_qsl(urlparts[3], True): # query
+        k = urllib.quote(k, '/-:,')
+        if v:
+            v = urllib.quote(v, '/-:,')
+            l.append("%s=%s" % (k, v))
+        else:
+            l.append(k)
+    urlparts[3] = '&'.join(l)
     path = urlparts[2].replace('\\', '/').replace('//', '/')
     if not path or path=='/':
         urlparts[2] = '/'
@@ -106,6 +151,10 @@ def url_norm (url):
         urlparts[2] = os.path.normpath(path).replace('\\', '/')
         if path.endswith('/'):
             urlparts[2] += '/'
+    # quote parts again
+    urlparts[0] = urllib.quote(urlparts[0]) # scheme
+    urlparts[1] = urllib.quote(urlparts[1], ':') # host
+    urlparts[2] = urllib.quote(urlparts[2], '/=,') # path
     return urlparse.urlunsplit(urlparts)
 
 
@@ -115,9 +164,15 @@ def url_quote (url):
     urlparts[0] = urllib.quote(urlparts[0]) # scheme
     urlparts[1] = urllib.quote(urlparts[1], ':') # host
     urlparts[2] = urllib.quote(urlparts[2], '/=,') # path
+    urlparts[3] = urllib.quote(urlparts[3], '&=,') # query
     l = []
-    for k,v in cgi.parse_qsl(urlparts[3], True): # query
-        l.append("%s=%s" % (urllib.quote(k, '/-:,'), urllib.quote(v, '/-:,')))
+    for k,v in parse_qsl(urlparts[3], True): # query
+        k = urllib.quote(k, '/-:,')
+        if v:
+            v = urllib.quote(v, '/-:,')
+            l.append("%s=%s" % (k, v))
+        else:
+            l.append(k)
     urlparts[3] = '&'.join(l)
     urlparts[4] = urllib.quote(urlparts[4]) # anchor
     return urlparse.urlunsplit(urlparts)

@@ -1,7 +1,7 @@
 D = ../../bk-python/bk
 
 diff:
-	diff -BurN . $(D)
+	diff -BurN -xCVS -x.cvsignore -x.pyc . $(D)
 
 update:
 	cp -r $(D)/* .
