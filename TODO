@@ -1,8 +1,5 @@
 This release:
 
-- cache keys
-  see also SF request #952051: is query considered in url cache keys?
-
 - wont stop:
 Stopped checking at 2004-08-24 00:26:47+002 ( 49.175 seconds)
 WARNING keyboard interrupt; waiting for 10 active threads to finish
