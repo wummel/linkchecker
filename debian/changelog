@@ -1,3 +1,10 @@
+linkchecker (1.12.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * install bash_completion script
+
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 29 Jan 2004 15:06:00 +0100
+
 linkchecker (1.10.3-2) unstable; urgency=low
 
   * install upstream changelog (Closes: #227141)
