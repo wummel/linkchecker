@@ -1,6 +1,5 @@
 # This Makefile is only used by developers.
 PYTHON := python2.3
-VERSION = $(shell $(PYTHON) setup.py --version)
 PACKAGE := linkchecker
 NAME = $(shell $(PYTHON) setup.py --name)
 PACKAGEDIR = /home/groups/l/li/$(PACKAGE)
@@ -32,7 +31,7 @@ clean:
 distclean: clean cleandeb
 # just to be sure clean also the build dir
 	rm -rf dist build
-	rm -f VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
+	rm -f _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-out* $(PACKAGE).prof $(PACKAGE)-md5sums.txt
 
@@ -67,21 +66,11 @@ files:	locale localbuild
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
-VERSION:
-	echo $(VERSION) > VERSION
-
 upload:
 	rm -f $(MD5SUMS)
 	md5sum dist/* > $(MD5SUMS)
 	for f in dist/*; do gpg --detach-sign --armor $$f; done
 	ncftpput upload.sourceforge.net /incoming dist/*
-
-homepage: files VERSION
-	cp ChangeLog $(HTMLDIR)/changes.txt
-	cp README $(HTMLDIR)/readme.txt
-	cp linkchecker-out.*.gz $(HTMLDIR)
-	cp VERSION $(HTMLDIR)/raw/
-	cp $(MD5SUMS) $(HTMLDIR)/
 
 test:
 	test/run.sh test.py --resource=network --search-in=linkcheck -fupv
