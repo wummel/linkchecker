@@ -15,7 +15,7 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import re,string,time,nntplib,urlparse,linkcheck
+import re,string,time,sys,nntplib,urlparse,linkcheck
 from linkcheck import _
 from UrlData import ExcList,UrlData
 debug = linkcheck.Config.debug
@@ -48,7 +48,7 @@ class NntpUrlData(UrlData):
             return
         nntp = self._connectNntp(nntpserver)
         group = self.urlTuple[2]
-        if group[:1]=='/':
+        while group[:1]=='/':
             group = group[1:]
         if '@' in group:
             # request article
@@ -57,10 +57,14 @@ class NntpUrlData(UrlData):
         else:
             # split off trailing articel span
             group = string.split(group,'/',1)[0]
-            # request group info
-            resp,count,first,last,name = nntp.group(self.urlTuple[2])
-            self.setInfo(_("Group %s has %s articles, range %s to %s") % \
-                         (name, count, first, last))
+            if group:
+                # request group info
+                resp,count,first,last,name = nntp.group(group)
+                self.setInfo(_("Group %s has %s articles, range %s to %s") %\
+                             (name, count, first, last))
+            else:
+                # group name is the empty string
+                self.setWarning(_("No newsgroup specified in NNTP URL"))
 
 
     def _connectNntp(self, nntpserver):
