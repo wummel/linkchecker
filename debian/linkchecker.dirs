@@ -1,4 +1,4 @@
-etc
+etc/linkchecker
 usr/lib/cgi-bin/lconline
 var/www/lconline
 etc/bash_completion.d

@@ -49,8 +49,9 @@ install: build
 	chmod 755 $(CGIDIR)/lc.cgi
 	chmod 755 $(CGIDIR)/lc.fcgi
 	chmod 755 $(CGIDIR)/lc.sz_fcgi
-# install system wide configuration file in etc
-	install -m644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc
+# install system wide configuration files in etc
+	install -m644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc/linkchecker
+	install -m644 $(ROOT)/usr/share/linkchecker/logging.conf $(ROOT)/etc/linkchecker
 # install bash_completion script
 	install -m644 config/linkchecker-completion $(ROOT)/etc/bash_completion.d
 # install lintian overrides

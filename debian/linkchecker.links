@@ -1,1 +1,2 @@
-/etc/linkcheckerrc /usr/share/linkchecker/linkcheckerrc
+/etc/linkchecker/linkcheckerrc /usr/share/linkchecker/linkcheckerrc
+/etc/linkchecker/logging.conf /usr/share/linkchecker/logging.conf
