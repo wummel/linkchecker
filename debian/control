@@ -5,7 +5,7 @@ Maintainer: Bastian Kleineidam <calvin@users.sourceforge.net>
 Standards-Version: 3.0.1
 
 Package: linkchecker
-Architecture: all
+Architecture: i386
 Depends: python-base (= 1.5.2)
 Suggests: libssl09|libssl095a
 Description: check/validate/test your HTML documents for broken links/URLs

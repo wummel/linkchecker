@@ -4,7 +4,9 @@
 Requirements
 ------------
 Python >= 1.5.2 from http://www.python.org/
-Distutils >= 0.9 from http://www.python.org/sigs/distutils-sig/
+Distutils >= 0.9.1 from http://www.python.org/sigs/distutils-sig/
+Python 1.6 includes the Distutils 0.9.1,
+Python 2.0 includes the Distutils 1.0
 
 Optionally packages
 -------------------
@@ -16,18 +18,15 @@ on Windows!
 
 Setup
 -----
-The Distutils package has a lot of install options to tweak and ease
-your installation. Type "python setup.py --help" for options.
-To install LinkChecker run "python setup.py install".
+Run "python setup.py config" to configure.
+Run "python setup.py install" to install.
+Run "python setup.py --help" for help.
 Debian users can build the .deb package with "debian/rules binary" as
 root or "fakeroot debian/rules binary" as a normal user.
 
 The system wide configuration file is in /etc/linkcheckerrc.
-
-
-Running the link checker
-------------------------
-Type "linkchecker" followed by your URLs you want to check.
+To run the program type "linkchecker" followed by your URLs you want 
+to check.
 Type "linkchecker -h" for help.
 
 

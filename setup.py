@@ -73,7 +73,7 @@ class LCConfig(config):
         data.append("ssl_library_dirs = %s" % `self.ssl_library_dirs`)
         data.append("ssl_include_dirs = %s" % `self.ssl_include_dirs`)
         data.append("libraries = %s" % `['ssl', 'crypto']`)
-        data.append("install_data = ''")
+        data.append("install_data = %s" % `os.getcwd()`)
         self.distribution.create_conf_file(".", data)
 
 
@@ -88,9 +88,8 @@ class LCDistribution(Distribution):
 
     def check_ssl(self):
         if not os.path.exists(self.config_file):
-            self.announce("WARNING: Configuration file %s not found."
-	                  % self.config_file)
-            return
+            self.announce("generating default configuration")
+            self.run_command('config')
         import LinkCheckerConf
         if 'bdist_wininst' in self.commands and os.name!='nt':
             self.announce("bdist_wininst command found on non-Windows "
