@@ -354,11 +354,10 @@ for opt,arg in options:
         except ValueError:
             printUsage(i18n._("Illegal argument %s for option %s") % \
                        (`arg`, "'-t, --threads'"))
-        if config["threads"] and get_debuglevel()>0:
-            if num>1:
-                config.enableThreading(num)
-            else:
-                config.disableThreading()
+        if num > 1 and not get_debuglevel() > 0:
+            config.enableThreading(num)
+        else:
+            config.disableThreading()
 
     elif opt=="--timeout":
         try:
@@ -425,11 +424,11 @@ if len(args)==0:
 from linkcheck import UrlData
 for url in args:
     url = url.strip()
-    if not (":" in url):
-        if url.startswith("ftp."):
-            url = "ftp://"+url
-        elif url.startswith("www."):
-            url = "http://"+url
+    if ":" not in url:
+        if url.startswith("www."):
+            url = "http://%s"%url
+        elif url.startswith("ftp."):
+            url = "ftp://%s"%url
     config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config, cmdline="True"))
 
 ############################# check the urls ################################

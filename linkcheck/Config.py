@@ -193,9 +193,10 @@ class Configuration (UserDict.UserDict):
         """Enable threading by replacing functions with their
         threading equivalents
 	"""
+        debug(HURT_ME_PLENTY, "enable threading with %d threads" % num)
         import Queue,Threader
         from threading import Lock
-        self["threads"] = 1
+        self["threads"] = "True"
         self.hasMoreUrls = self.hasMoreUrls_Threads
         self.finished = self.finished_Threads
         self.finish = self.finish_Threads
@@ -474,10 +475,10 @@ class Configuration (UserDict.UserDict):
         section="checking"
         try:
             num = cfgparser.getint(section, "threads")
-            if num<=0:
-                self.disableThreading()
-            else:
+            if num > 0:
                 self.enableThreading(num)
+            else:
+                self.disableThreading()
         except ConfigParser.Error: debug(NIGHTMARE, msg)
         try: self["anchors"] = cfgparser.getboolean(section, "anchors")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
