@@ -1,3 +1,15 @@
+2.2 "" (released xx.xx.2005)
+
+  * Write CSV column headers as the first row.
+    Thanks to Hartmut Goebel.
+    Type: feature
+    Changed: linkcheck/logger/csv.py
+
+  * Support bzip-compressed man pages in RPM install script.
+    Also from Hartmut Goebel.
+    Type: feature
+    Changed: install-rpm.sh
+
 2.1 "Shogun Assassin" (released 11.1.2005)
 
   * Added XHTML support to the HTML parser.
