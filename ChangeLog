@@ -8,6 +8,11 @@
     Type: feature
     Changed: po/*.po*
 
+  * Depend on external optcomplete installation.
+    Type: feature
+    Changed: linkchecker, config/linkchecker-completion
+    Removed: linkcheck/optcomplete.py
+
 2.0 "I Kina spiser de hunde" (released 7.12.2004)
 
   * Regenerate the HTML parser with new Bison version 1.875d.

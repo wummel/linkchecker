@@ -35,6 +35,7 @@ Requirements for Unix/Linux or Mac OS X
    On most distributions, the distutils module is included in
    an extra "python-dev" package.
 
+3. optcomplete Python module from http://furius.ca/optcomplete/
 
 Requirements for Windows
 ------------------------
@@ -43,7 +44,7 @@ Requirements for Windows
    [http://www.python.org/ftp/python/2.4/python-2.4.msi]
 
 2. *Only needed if you compile from source:*
-   install the MinGW suite from http://mingw.sourceforge.net.
+   install the MinGW suite from http://mingw.sourceforge.net/
    Be sure to install in the given order:
    
    a) MingGW
@@ -55,6 +56,7 @@ Requirements for Windows
    d) gettext
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe]
 
+3. optcomplete Python module from http://furius.ca/optcomplete/
 
 Setup for Unix/Linux or Mac OS X
 --------------------------------

@@ -39,7 +39,7 @@ import linkcheck
 # initialize i18n, puts _() function into global namespace
 linkcheck.init_i18n()
 import linkcheck.log
-import linkcheck.optcomplete
+import optcomplete
 import linkcheck.checker
 import linkcheck.checker.cache
 import linkcheck.checker.consumer
@@ -394,7 +394,7 @@ group.add_option("--status", action="store_true", dest="status",
 optparser.add_option_group(group)
 
 ################# auto completion #####################
-linkcheck.optcomplete.autocomplete(optparser)
+optcomplete.autocomplete(optparser)
 
 # read and parse command line options and arguments
 (options, args) = optparser.parse_args()

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.3.4: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.3.7: http://docutils.sourceforge.net/" />
 <title>Installation</title>
 <meta content="1" name="navigation.order" />
 <meta content="Installation" name="navigation.name" />
@@ -31,8 +31,8 @@ window.onload = function() {
 </div>
 </div>
 <!-- /bfknav -->
-<h1 class="title">Installation</h1>
 <div class="document" id="installation">
+<h1 class="title">Installation</h1>
 <p>If you are upgrading from older versions of LinkChecker you should
 also read the <a class="reference" href="upgrading.html">upgrading documentation</a>.</p>
 <div class="section" id="requirements-for-unix-linux-or-mac-os-x">
@@ -57,6 +57,8 @@ This is available in gettext &gt;= 0.12.</p>
 On most distributions, the distutils module is included in
 an extra &quot;python-dev&quot; package.</p>
 </li>
+<li><p class="first">optcomplete Python module from <a class="reference" href="http://furius.ca/optcomplete/">http://furius.ca/optcomplete/</a></p>
+</li>
 </ol>
 </div>
 <div class="section" id="requirements-for-windows">
@@ -65,7 +67,7 @@ an extra &quot;python-dev&quot; package.</p>
 <li>Install Python &gt;= 2.3 from <a class="reference" href="http://www.python.org/">http://www.python.org/</a>
 [<a class="reference" href="http://www.python.org/ftp/python/2.4/python-2.4.msi">http://www.python.org/ftp/python/2.4/python-2.4.msi</a>]</li>
 <li><em>Only needed if you compile from source:</em>
-install the MinGW suite from <a class="reference" href="http://mingw.sourceforge.net">http://mingw.sourceforge.net</a>.
+install the MinGW suite from <a class="reference" href="http://mingw.sourceforge.net/">http://mingw.sourceforge.net/</a>
 Be sure to install in the given order:<ol class="loweralpha">
 <li>MingGW
 [<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe</a>]</li>
@@ -77,6 +79,7 @@ Be sure to install in the given order:<ol class="loweralpha">
 [<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe</a>]</li>
 </ol>
 </li>
+<li>optcomplete Python module from <a class="reference" href="http://furius.ca/optcomplete/">http://furius.ca/optcomplete/</a></li>
 </ol>
 </div>
 <div class="section" id="setup-for-unix-linux-or-mac-os-x">
@@ -86,22 +89,22 @@ Be sure to install in the given order:<ol class="loweralpha">
 <p>Be sure to have installed all required Unix/Linux software listed above.</p>
 </li>
 <li><p class="first">Compile Python modules</p>
-<p>Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span></tt> to compile the Python files.
+<p>Run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span></tt> to compile the Python files.
 For help about the setup.py script options, run
-<tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">--help</span></tt>.
+<tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">--help</span></tt>.
 The CC environment variable is checked before compilation, so you can
-change the default C compiler with <tt class="literal"><span class="pre">export</span> <span class="pre">CC=myccompiler</span></tt>.</p>
+change the default C compiler with <tt class="docutils literal"><span class="pre">export</span> <span class="pre">CC=myccompiler</span></tt>.</p>
 </li>
 <li><blockquote class="first">
 <ol class="loweralpha">
 <li><p class="first">Installation as root</p>
-<p>Run <tt class="literal"><span class="pre">su</span> <span class="pre">-c</span> <span class="pre">'python</span> <span class="pre">setup.py</span> <span class="pre">install'</span></tt> to install LinkChecker.</p>
+<p>Run <tt class="docutils literal"><span class="pre">su</span> <span class="pre">-c</span> <span class="pre">'python</span> <span class="pre">setup.py</span> <span class="pre">install'</span></tt> to install LinkChecker.</p>
 </li>
 <li><p class="first">Installation as a normal user</p>
-<p>Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span> <span class="pre">--home</span> <span class="pre">$HOME</span></tt>. Note that you have
+<p>Run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span> <span class="pre">--home</span> <span class="pre">$HOME</span></tt>. Note that you have
 to adjust your PATH and PYTHONPATH environment variables, eg. by
-adding the commands <tt class="literal"><span class="pre">export</span> <span class="pre">PYTHONPATH=$HOME/lib/python</span></tt> and
-<tt class="literal"><span class="pre">export</span> <span class="pre">PATH=$PATH:$HOME/bin</span></tt> to your shell configuration
+adding the commands <tt class="docutils literal"><span class="pre">export</span> <span class="pre">PYTHONPATH=$HOME/lib/python</span></tt> and
+<tt class="docutils literal"><span class="pre">export</span> <span class="pre">PATH=$PATH:$HOME/bin</span></tt> to your shell configuration
 file.</p>
 <p>For more information look at the <a class="reference" href="http://docs.python.org/inst/search-path.html#SECTION000410000000000000000">Modifying Python's search path</a>
 documentation.</p>
@@ -117,7 +120,7 @@ documentation.</p>
 <li><p class="first">Install check</p>
 <p>Be sure to have installed all required windows software listed above.</p>
 </li>
-<li><p class="first">Execute the <tt class="literal"><span class="pre">linkchecker-x.xx.win32-py2.4.exe</span></tt> file and follow
+<li><p class="first">Execute the <tt class="docutils literal"><span class="pre">linkchecker-x.xx.win32-py2.4.exe</span></tt> file and follow
 the instructions.</p>
 </li>
 </ol>
@@ -131,26 +134,26 @@ the instructions.</p>
 <li><p class="first">Preparing Python for the MinGW compiler</p>
 <p>Search the file python24.dll in your windows folder.
 After you found it, launch MSYS. Change into the windows folder,
-for example <tt class="literal"><span class="pre">cd</span> <span class="pre">c:\winnt\system32</span></tt>. Then execute
-<tt class="literal"><span class="pre">pexports</span> <span class="pre">python24.dll</span> <span class="pre">&gt;</span> <span class="pre">python24.def</span></tt>.
+for example <tt class="docutils literal"><span class="pre">cd</span> <span class="pre">c:\winnt\system32</span></tt>. Then execute
+<tt class="docutils literal"><span class="pre">pexports</span> <span class="pre">python24.dll</span> <span class="pre">&gt;</span> <span class="pre">python24.def</span></tt>.
 Then use the dlltool with
-<tt class="literal"><span class="pre">dlltool</span> <span class="pre">--dllname</span> <span class="pre">python24.dll</span> <span class="pre">--def</span> <span class="pre">python24.def</span> <span class="pre">--output-lib</span>
+<tt class="docutils literal"><span class="pre">dlltool</span> <span class="pre">--dllname</span> <span class="pre">python24.dll</span> <span class="pre">--def</span> <span class="pre">python24.def</span> <span class="pre">--output-lib</span>
 <span class="pre">libpython24.a</span></tt>.
 The resulting library has to be placed in the same directory as
 python24.lib. (Should be the libs directory under your Python installation
-directory, for example <tt class="literal"><span class="pre">c:\Python24\Libs\</span></tt>.)</p>
+directory, for example <tt class="docutils literal"><span class="pre">c:\Python24\Libs\</span></tt>.)</p>
 </li>
 <li><p class="first">Compile gettext translations</p>
-<p>Still in the MSYS window, change to the <tt class="literal"><span class="pre">linkchecker-X.X.X\po</span></tt>
-directory and run <tt class="literal"><span class="pre">make</span></tt>.</p>
+<p>Still in the MSYS window, change to the <tt class="docutils literal"><span class="pre">linkchecker-X.X.X\po</span></tt>
+directory and run <tt class="docutils literal"><span class="pre">make</span></tt>.</p>
 </li>
 <li><p class="first">Generate and execute the LinkChecker installer</p>
-<p>Close the MSYS application (by typing <tt class="literal"><span class="pre">exit</span></tt>) and open a DOS command
+<p>Close the MSYS application (by typing <tt class="docutils literal"><span class="pre">exit</span></tt>) and open a DOS command
 prompt.
-Change to the <tt class="literal"><span class="pre">linkchecker-X.X.X</span></tt> directory and run
-<tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">bdist_wininst</span></tt>.</p>
+Change to the <tt class="docutils literal"><span class="pre">linkchecker-X.X.X</span></tt> directory and run
+<tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">bdist_wininst</span></tt>.</p>
 <p>This generates a binary installer
-<tt class="literal"><span class="pre">dist\linkchecker-X.X.X.win32-py2.4.exe</span></tt> which you just have to
+<tt class="docutils literal"><span class="pre">dist\linkchecker-X.X.X.win32-py2.4.exe</span></tt> which you just have to
 execute.</p>
 </li>
 </ol>
@@ -197,9 +200,9 @@ working</li>
 </ol>
 </div>
 </div>
-<hr class="footer" />
+<hr class="docutils footer" />
 <div class="footer">
-Generated on: 2004-12-07 22:12 UTC.
+Generated on: 2005-01-10 15:11 UTC.
 </div>
 </body>
 </html>

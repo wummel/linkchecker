@@ -1,3 +1,10 @@
+linkchecker (2.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * Depend on python-optcomplete.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 10 Jan 2005 16:05:44 +0100
+
 linkchecker (2.0-1) unstable; urgency=low
 
   * New upstream release.
