@@ -21,7 +21,8 @@ Setup
 Run "python setup.py config" to configure.
 Linux users should run "python setup.py config -lcrypto" to use the SSL 
 module.
-Run "python setup.py install" to install.
+Run "python setup.py install --prefix=<prefix>" to install.
+Default prefix is /usr.
 Run "python setup.py --help" for help.
 Debian users can build the .deb package with "debian/rules binary" as
 root or "fakeroot debian/rules binary" as a normal user.
