@@ -321,6 +321,9 @@ class UrlBase (object):
                 raise linkcheck.LinkCheckerError, \
                          _("URL has invalid port %r") % str(self.port)
             self.port = int(self.port)
+        country = self.consumer.get_country_name(self.host)
+        if country is not None:
+            self.add_info(_("URL is located in %s.") % _(country))
 
     def check (self):
         """
