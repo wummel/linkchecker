@@ -108,6 +108,8 @@ strict=0
 warningregex=
 # Basic NNTP server. Overrides NNTP_SERVER environment variable.
 nntpserver=
+# interactive operation
+interactive=0
 
 # filtering options (see FAQ)
 # for each extern link we can specify if it is strict or not

@@ -463,6 +463,9 @@ class Configuration(UserDict.UserDict):
         try:
             self["nntpserver"] = cfgparser.get(section, "nntpserver")
         except ConfigParser.Error: pass
+        try:
+            self["interactive"] = cfgparser.getboolean(section, "interactive")
+        except ConfigParser.Error: pass
 
         section = "authentication"
 	try:

@@ -285,7 +285,7 @@ for opt,arg in options:
         if os.name!='nt':
             timeoutsocket.setDefaultSocketTimeout(int(arg))
         else:
-            print >> sys.stderr, _("warning: timeoutsocket not support on this platform")
+            print >> sys.stderr, _("warning: timeoutsocket is not support on this system")
 
     elif opt=="-u" or opt=="--user":
         _user = arg
@@ -338,3 +338,5 @@ for url in args:
 
 # check the urls
 linkcheck.checkUrls(config)
+if config['interactive']:
+    raw_input(_("Hit RETURN to finish"))

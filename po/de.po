@@ -7,10 +7,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2000-07-10 23:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=iso8859-1\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
 msgid "Illegal telnet link syntax"
@@ -48,7 +48,7 @@ msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
 
 msgid "Verified adress: %s"
-msgstr ""
+msgstr "Gültige Adresse: %s"
 
 #, fuzzy
 msgid ""
@@ -71,7 +71,7 @@ msgstr ""
 "      linkchecker -r0 ftp.linux.org\n"
 
 msgid "too much redirections (>= 5)"
-msgstr ""
+msgstr "zu viele Weiterleitungen (>= 5)"
 
 msgid "Effective URL %s"
 msgstr "Effektive URL %s"
@@ -201,6 +201,8 @@ msgstr ""
 "        Sie können diese Option mehr als einmal verwenden. Es gibt keine\n"
 "        Ausgabedatei für den blacklist Logger. Standard ist keine Ausgabe\n"
 "        in eine Datei.\n"
+"-I, --interactive\n"
+"        Frage nach URLs, falls keine auf der Kommandozeile eingegeben wurde.\n"
 "-i regex, --intern=regex\n"
 "        Behandle URLs welche diese Ausdruck matchen als intern.\n"
 "-h, --help\n"
@@ -330,6 +332,9 @@ msgid ""
 "urls which point to (home) directories should end with a / to avoid "
 "redirection"
 msgstr ""
+"Es trat eine HTTP 301 Weiterleitung auf und die URL endet nicht mit /. Alle "
+"URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, "
+"um Weiterleitungen zu verhindern"
 
 msgid " in %d links"
 msgstr " in %d URLs"
@@ -442,8 +447,8 @@ msgstr ""
 "o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
 "  unbedingt derselbe wie der des Benutzers sein!\n"
 
-msgid "warning: timeoutsocket not support on this platform"
-msgstr ""
+msgid "warning: timeoutsocket is not supported on this system"
+msgstr "Warnung: timeoutsocket wird auf diesem System nicht unterstützt"
 
 msgid "Articel number %s found"
 msgstr "Artikel nummer %s wurde gefunden"
@@ -474,6 +479,8 @@ msgid ""
 "enter one or more urls, separated by white-space\n"
 "--> "
 msgstr ""
+"geben Sie eine oder mehrere durch Leerzeichen getrennte URLs ein\n"
+"--> "
 
 msgid ""
 "\n"
@@ -508,33 +515,3 @@ msgstr "# Format der Einträge:\n"
 
 msgid "Parent URL"
 msgstr "Vater URL"
-
-#~ msgid "1 warning, "
-#~ msgstr "1 Warnung, "
-
-#~ msgid " warnings, "
-#~ msgstr " Warnungen, "
-
-#~ msgid "HTTPS not supported"
-#~ msgstr "HTTPS nicht unterstützt"
-
-#~ msgid " (%.3f seconds)"
-#~ msgstr " (%.3f Sekunden)"
-
-#~ msgid "Illegal NNTP link syntax"
-#~ msgstr "Illegale NNTP link Syntax"
-
-#~ msgid "Thats it. "
-#~ msgstr "Das wars. "
-
-#~ msgid "Write comments and bugs to %s\n"
-#~ msgstr "Kommentare und Fehler mailen Sie bitte an %s\n"
-
-#~ msgid "robots.txt:%d: allow without user agents"
-#~ msgstr "robots.txt:%d: allow ohne user agents"
-
-#~ msgid "robots.txt:%d: disallow without user agents"
-#~ msgstr "robots.txt:%d: disallow ohne user agents"
-
-#~ msgid "robots.txt:%d: user-agent in the middle of rules"
-#~ msgstr "robots.txt:%d: user-agent zwischen Regeln"

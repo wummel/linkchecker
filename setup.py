@@ -52,12 +52,14 @@ class MyInstall(install):
         if os.name=="nt":
             path = self.install_scripts
             if os.environ.has_key("ALLUSERSPROFILE"):
-                path = os.environ["ALLUSERSPROFILE"]
+                path = os.path.join(os.environ["ALLUSERSPROFILE"], "Desktop")
             elif os.environ.has_key("USERPROFILE"):
-                path = os.environ["USERPROFILE"]
+                path = os.path.join(os.environ["USERPROFILE"], "Desktop")
             data = open("linkchecker.bat").readlines()
+            data = map(string.strip, data)
             data = map(lambda s: s.replace("$python", sys.executable), data)
-            data = map(lambda s: s+"\r", data)
+            data = map(lambda s, self=self: s.replace("$install_scripts",
+              self.install_scripts), data)
             self.distribution.create_batch_file(path, data)
 
 
@@ -177,7 +179,7 @@ class MyDistribution(Distribution):
 
 
     def create_batch_file(self, directory, data):
-        filename = os.path.join(path, "linkchecker.bat")
+        filename = os.path.join(directory, "linkchecker.bat")
         # write the batch file
         util.execute(write_file, (filename, data),
                  "creating %s" % filename, self.verbose>=1, self.dry_run)
