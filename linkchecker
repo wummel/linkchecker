@@ -516,7 +516,7 @@ if options.threads is not None:
     if options.threads < 1:
         print_usage(_("Illegal argument %d for option %s") % \
                    (options.threads, "'-t, --threads'"))
-    config.set_threads(options.threads)
+    config["threads"] = options.threads
 if options.timeout is not None:
     if options.timeout > 0:
         socket.setdefaulttimeout(options.timeout)

@@ -58,6 +58,10 @@
     Type: bugfix
     Changed: linkcheck/checker/{__init__, consumer}.py
 
+  * Fix crash when using -t option.
+    Type: bugfix
+    Changed: linkchecker
+
 2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:
