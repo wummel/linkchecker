@@ -76,7 +76,7 @@ class LCDistribution(Distribution):
         f = open("linkcheck/__init__.py","w")
         f.write(t.fill_in({"install_data": inst.install_data}))
         f.close()
-        t = Template.Template("linkchecker.tmpl")
+        t = Template("linkchecker.tmpl")
         f = open("linkchecker","w")
         f.write(t.fill_in({"syspath": "# sys.path augmentation not needed"}))
         f.close()
