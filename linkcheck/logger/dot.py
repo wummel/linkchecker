@@ -101,7 +101,7 @@ class DOTLogger (linkcheck.logger.Logger):
                 source = self.nodes[node.parent_url].id
                 target = node.id
                 self.writeln(u"  %d -> %d [" % (source, target))
-                self.writeln(u'    label="%s",' % dotquote(node.name))
+                self.writeln(u'    label="%s",' % dotedge(node.name))
                 if self.has_field("result"):
                     self.writeln(u"    valid=%d," % (node.valid and 1 or 0))
                 self.writeln(u"  ];")
@@ -129,3 +129,13 @@ class DOTLogger (linkcheck.logger.Logger):
 
 def dotquote (s):
     return s.replace('"', '\\"')
+
+
+def dotedge (s):
+    s = s.replace("\n", "\\n")
+    s = s.replace("\r", "\\r")
+    s = s.replace("\l", "\\l")
+    s = s.replace("\T", "\\T")
+    s = s.replace("\H", "\\H")
+    s = s.replace("\E", "\\E")
+    return dotquote(s)
