@@ -1,5 +1,4 @@
 # -*- coding: iso-8859-1 -*-
-"""Fast HTML parser module written in C"""
 # Copyright (C) 2000-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -15,59 +14,59 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""Fast HTML parser module written in C with the following features:
+
+1. Reentrant
+   
+   As soon as any HTML string data is available, we try to feed it
+   to the HTML parser. This means that the parser has to scan possible
+   incomplete data, recognizing as much as it can. Incomplete trailing
+   data is saved for subsequent calls (or it is just flushed away with the
+   flush() function).
+   A reset() brings the parser back to its initial state, throwing away all
+   buffered data.
+
+2. Coping with HTML syntax errors
+   
+   The parser recognizes as much as it can and passes the rest
+   of the data as TEXT tokens.
+   The scanner only passes complete recognized HTML syntax elements to
+   the parser. Invalid syntax elements are passed as TEXT. This way we do
+   not need the bison error recovery.
+   Incomplete data is rescanned the next time the parser calls yylex() or
+   when it is being flush()ed.
+   
+   The following syntax errors will be recognized correctly:
+   
+   a) missing quotes around attribute values
+   b) "</...>" end tags in script modus
+   c) missing ">" in tags
+   d) invalid tag names
+   e) invalid characters inside tags or tag attributes
+   
+   Additionally the parser has the following features:
+   
+   a) NULL bytes are changed into spaces
+   b) <!-- ... --> inside a <script> or <style> are not treated as
+      comments, so you can safely turn on the comment delete rule
+
+3. Speed
+   
+   The FLEX code has options to generate a large but fast scanner.
+   The parser ignores forbidden or unnecessary HTML end tags.
+   The parser converts tag and attribute names to lower case for easier
+   matching.
+   The parser quotes all attribute values with minimal necessity (this is
+   not standard compliant, but who cares when the browsers understand it).
+   The Python memory management interface is being used.
+
+"""
 
 __version__ = "$Revision$"[11:-2]
 __date__    = "$Date$"[7:-2]
 
-import re, htmlentitydefs
-
-class SortedDict (dict):
-    """a dictionary whose listing functions for keys and values preserve
-       the order in which elements were added
-    """
-    def __init__ (self):
-        # sorted list of keys
-        self._keys = []
-
-
-    def __setitem__ (self, key, value):
-        if not self.has_key(key):
-            self._keys.append(key)
-        super(SortedDict, self).__setitem__(key, value)
-
-
-    def __delitem__ (self, key):
-        self._keys.remove(key)
-        super(SortedDict, self).__delitem__(key)
-
-
-    def values (self):
-        return [self[k] for k in self._keys]
-
-
-    def items (self):
-        return [(k, self[k]) for k in self._keys]
-
-
-    def keys (self):
-        return self._keys[:]
-
-
-    def itervalues (self):
-        return iter(self.values())
-
-
-    def iteritems (self):
-        return iter(self.items())
-
-
-    def iterkeys (self):
-        return iter(self.keys())
-
-
-    def clear (self):
-        self._keys = []
-        super(SortedDict, self).clear()
+import re
+import htmlentitydefs
 
 
 def _resolve_entity (mo):
@@ -106,6 +105,7 @@ def applyTable (table, s):
 
 
 def resolve_html_entities (s):
+    """resolve html entites in s and return result"""
     return applyTable(UnHtmlTable, s)
 
 

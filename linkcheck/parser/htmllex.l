@@ -20,6 +20,7 @@
 
 %{
 #include "htmlsax.h"
+#include "s_util.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -49,9 +50,9 @@
 
 /* append yytext to tmp_buf */
 #define APPEND_TO_TMP(n) {\
-    size_t len = strlen(yyextra->tmp_buf); \
-    RESIZE_BUF(yyextra->tmp_buf, len+(n)+1); \
-    strncat(yyextra->tmp_buf, yytext, (size_t)n); \
+    size_t len = strlen(yyextra->tmp_buf)+(n)+1; \
+    RESIZE_BUF(yyextra->tmp_buf, len); \
+    strlcat(yyextra->tmp_buf, yytext, len); \
     }
 
 /* lowercase the tmp_buf */
@@ -732,7 +733,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     UPDATE_LINE;
 }
 
-<S_ATTR5>[^\012 \t\b\r\n>\"\']+ {
+<S_ATTR5>[^\012 \t\b\r\n>\"]+ {
     UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
 }
@@ -771,7 +772,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RETURN(T_ELEMENT_START_END);
 }
 
-<S_ATTR5>{RX_WHITE_SPACE}+|[\'\"] {
+<S_ATTR5>{RX_WHITE_SPACE}+|[\"] {
     UPDATE_LINE;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);

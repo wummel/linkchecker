@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-"""A parser for HTML"""
+"""Default handler classes"""
 # Copyright (C) 2000-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,9 @@ import sys
 
 class HtmlPrinter (object):
     """handles all functions by printing the function name and attributes"""
+
     def __init__ (self, fd=sys.stdout):
+        """write to given file descriptor"""
         self.fd = fd
 
 
@@ -59,15 +61,20 @@ class HtmlPrinter (object):
 
 
 class HtmlPrettyPrinter (object):
+    """Print out all parsed HTML data"""
+
     def __init__ (self, fd=sys.stdout):
+        """write to given file descriptor"""
         self.fd = fd
 
 
     def comment (self, data):
+        """print comment"""
         self.fd.write("<!--%s-->" % data)
 
 
     def startElement (self, tag, attrs):
+        """print start element"""
         self.fd.write("<%s"%tag.replace("/", ""))
         for key, val in attrs.iteritems():
             if val is None:
@@ -78,22 +85,27 @@ class HtmlPrettyPrinter (object):
 
 
     def endElement (self, tag):
+        """print end element"""
         self.fd.write("</%s>" % tag)
 
 
     def doctype (self, data):
+        """print document type"""
         self.fd.write("<!DOCTYPE%s>" % data)
 
 
     def pi (self, data):
+        """print pi"""
         self.fd.write("<?%s?>" % data)
 
 
     def cdata (self, data):
+        """print cdata"""
         self.fd.write("<![CDATA[%s]]>"%data)
 
 
     def characters (self, data):
+        """print characters"""
         self.fd.write(data)
 
 
