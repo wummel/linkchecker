@@ -241,6 +241,12 @@ class UrlData:
             self._check(config)
         except KeyboardInterrupt:
             pass
+        except socket.error:
+            # on Unix, ctrl-c can raise
+            # error: (4, 'Interrupted system call')
+            type, value = sys.exc_info()[:2]
+            if type!=4:
+                raise
         except:
             internal_error()
 

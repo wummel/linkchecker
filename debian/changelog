@@ -1,3 +1,9 @@
+linkchecker (1.3.20) unstable; urgency=low
+
+  * fix keyboard interrupt
+
+ -- Bastian Kleineidam <calvin@debian.org>  Fri,  8 Feb 2002 20:11:53 +0100
+
 linkchecker (1.3.19) unstable; urgency=low
 
   * minor updates for documentation and german translation

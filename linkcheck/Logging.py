@@ -130,6 +130,7 @@ __init__(self, **args)
 
 
     def init(self):
+        if self.fd is None: return
         self.starttime = time.time()
         if self.logfield('intro'):
             self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
@@ -140,6 +141,7 @@ __init__(self, **args)
 
 
     def newUrl(self, urlData):
+        if self.fd is None: return
         if self.logfield('url'):
             self.fd.write("\n"+_(LogFields['url'])+Spaces['url']+urlData.urlName)
             if urlData.cached:
@@ -186,6 +188,7 @@ __init__(self, **args)
 
 
     def endOfOutput(self, linknumber=-1):
+        if self.fd is None: return
         if self.logfield('outro'):
             self.fd.write(_("\nThats it. "))
             #if self.warnings==1:
@@ -232,6 +235,7 @@ class HtmlLogger(StandardLogger):
         self.tableok = args['tableok']
 
     def init(self):
+        if self.fd is None: return
         self.starttime = time.time()
         self.fd.write('<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//en">\n'+
 	      '<html><head><title>'+Config.App+"</title>\n"
@@ -254,6 +258,7 @@ class HtmlLogger(StandardLogger):
 
 
     def newUrl(self, urlData):
+        if self.fd is None: return
         self.fd.write('<table align=left border="0" cellspacing="0"'
               ' cellpadding="1" bgcolor='+self.colorborder+' summary="Border"'
               '><tr><td><table align="left" border="0" cellspacing="0"'
@@ -316,6 +321,7 @@ class HtmlLogger(StandardLogger):
 
 
     def endOfOutput(self, linknumber=-1):
+        if self.fd is None: return
         if self.logfield("outro"):
             self.fd.write(_("\nThats it. "))
             #if self.warnings==1:
@@ -376,6 +382,7 @@ class ColoredLogger(StandardLogger):
         self.prefix = 0
 
     def newUrl(self, urlData):
+        if self.fd is None: return
         if self.logfield("parenturl"):
             if urlData.parentName:
                 if self.currentPage != urlData.parentName:
@@ -467,6 +474,7 @@ class ColoredLogger(StandardLogger):
 
 
     def endOfOutput(self, linknumber=-1):
+        if self.fd is None: return
         if self.logfield("outro"):
             if self.prefix:
                 self.fd.write("o\n")
@@ -484,6 +492,7 @@ class GMLLogger(StandardLogger):
         self.nodeid = 0
 
     def init(self):
+        if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
             self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
@@ -497,6 +506,7 @@ class GMLLogger(StandardLogger):
 
     def newUrl(self, urlData):
         """write one node and all possible edges"""
+        if self.fd is None: return
         node = urlData
         if node.url and not self.nodes.has_key(node.url):
             node.id = self.nodeid
@@ -535,6 +545,7 @@ class GMLLogger(StandardLogger):
 
 
     def endOfOutput(self, linknumber=-1):
+        if self.fd is None: return
         self.fd.write("]\n")
         if self.logfield("outro"):
             self.stoptime = time.time()
@@ -563,6 +574,7 @@ class XMLLogger(StandardLogger):
         self.nodeid = 0
 
     def init(self):
+        if self.fd is None: return
         self.starttime = time.time()
         self.fd.write('<?xml version="1.0"?>\n')
         if self.logfield("intro"):
@@ -578,6 +590,7 @@ class XMLLogger(StandardLogger):
 
     def newUrl(self, urlData):
         """write one node and all possible edges"""
+        if self.fd is None: return
         node = urlData
         if node.url and not self.nodes.has_key(node.url):
             node.id = self.nodeid
@@ -623,6 +636,7 @@ class XMLLogger(StandardLogger):
         self.fd.flush()
 
     def endOfOutput(self, linknumber=-1):
+        if self.fd is None: return
         self.fd.write("</graph>\n</GraphXML>\n")
         if self.logfield("outro"):
             self.stoptime = time.time()
@@ -652,6 +666,7 @@ class SQLLogger(StandardLogger):
 
 
     def init(self):
+        if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
             self.fd.write("-- "+(_("created by %s at %s\n") % (Config.AppName,
@@ -662,6 +677,7 @@ class SQLLogger(StandardLogger):
             self.fd.flush()
 
     def newUrl(self, urlData):
+        if self.fd is None: return
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infoString,"
 	      "valid,url,line,name,checktime,downloadtime,cached) values "
@@ -686,6 +702,7 @@ class SQLLogger(StandardLogger):
         self.fd.flush()
 
     def endOfOutput(self, linknumber=-1):
+        if self.fd is None: return
         if self.logfield("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
@@ -741,6 +758,7 @@ class CSVLogger(StandardLogger):
         self.separator = args['separator']
 
     def init(self):
+        if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
             self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
@@ -767,6 +785,7 @@ class CSVLogger(StandardLogger):
             self.fd.flush()
 
     def newUrl(self, urlData):
+        if self.fd is None: return
         self.fd.write(
 	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%d%s%d\n" % (
 	    urlData.urlName, self.separator,
@@ -788,6 +807,7 @@ class CSVLogger(StandardLogger):
 
 
     def endOfOutput(self, linknumber=-1):
+        if self.fd is None: return
         self.stoptime = time.time()
         if self.logfield("outro"):
             duration = self.stoptime - self.starttime
