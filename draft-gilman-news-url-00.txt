@@ -1,7 +1,7 @@
 
 Internet-Draft                              Alfred S. Gilman
-draft-gilman-news-url-00                                                   
-August 31, 1997                                                 
+draft-gilman-news-url-00
+August 31, 1997
 Expires six months after above date
 
                        The 'news' URL scheme
@@ -60,7 +60,7 @@ URL has the form:
    newsURL    =  scheme ":" [ news-site ] [ refbygroup | message ]
    scheme     =  "news" | "snews" | "nntp"
    news-site  =  "//" site "/"
-   refbygroup = group [ "/" messageno [ "-" messageno ] ] 
+   refbygroup = group [ "/" messageno [ "-" messageno ] ]
    message    = local-part "@" domain
 
 Sites take the form defined for the generic URL syntax in section
@@ -170,6 +170,4 @@ Alfred S. Gilman
 Unit 712
 Arlington VA     22202-1926
 asgilman@access.digex.net
-
-
 
