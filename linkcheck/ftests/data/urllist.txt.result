@@ -1,0 +1,26 @@
+url 'file://%(curdir)s/linkcheck/ftests/data/urllist.txt'
+cache key file://%(curdir)s/linkcheck/ftests/data/urllist.txt
+real url file://%(curdir)s/linkcheck/ftests/data/urllist.txt
+valid
+
+url 'file.html'
+cache key file://%(curdir)s/linkcheck/ftests/data/file.html
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
+valid
+
+url 'file.html#isnix'
+cache key file://%(curdir)s/linkcheck/ftests/data/file.html#isnix
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
+warning anchor #isnix not found
+valid
+
+url 'file.html#iswas'
+cache key file://%(curdir)s/linkcheck/ftests/data/file.html#iswas
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
+valid
+
+url 'javascript:loadthis()'
+cache key javascript:loadthis()
+real url javascript:loadthis()
+warning Javascript url ignored
+valid

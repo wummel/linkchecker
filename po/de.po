@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: 2004-09-01 00:23+CEST\n"
+"POT-Creation-Date: 2004-09-03 16:54+CEST\n"
 "PO-Revision-Date: 2004-08-31 22:33+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -29,9 +29,6 @@ msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt"
 
 msgid "directory"
 msgstr "Verzeichnis"
-
-msgid "No user or password found"
-msgstr "Kein Benutzername oder Passwort gefunden"
 
 msgid "Remote host has closed connection"
 msgstr "Entfernter Rechner hat die Verbindung geschlossen"
@@ -765,3 +762,6 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "No user or password found"
+#~ msgstr "Kein Benutzername oder Passwort gefunden"

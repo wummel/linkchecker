@@ -25,6 +25,21 @@
     Changed: setup.py, setup.cfg, doc/install.txt
     Added: install-linkchecker.py
 
+  * Do not raise an error when user and/or password of ftp URLs is not
+    specified.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * honor anchor part of cache url key, handle the recursion check
+    with an extra cache key
+    Type: bugfix
+    Changed: linkcheck/checker/{urlbase,cache,fileurl}.py
+
+  * Support URL lists in text files with one URL per line. Empty lines
+    or comment lines starting with '#' are ignored.
+    Type: feature
+    Changed: linkcheck/checker/fileurl.py
+
 1.13.0 "The Butterfly Effect" (released 1.9.2004)
   * lots of internal code restructuring
     Type: code cleanup

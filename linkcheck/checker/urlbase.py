@@ -378,11 +378,11 @@ class UrlBase (object):
     def allows_recursion (self):
         """return True iff we can recurse into the url's content"""
         # note: test self.valid before self.is_parseable()
-        #linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
-        #                    "content=%s, robots=%s",
-        #                    self.valid, self.is_parseable(),
-        #                    self.can_get_content(),
-        #                    self.content_allows_robots())
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
+                            "content=%s, robots=%s",
+                            self.valid, self.is_parseable(),
+                            self.can_get_content(),
+                            self.content_allows_robots())
         return self.valid and \
             self.is_parseable() and \
             self.can_get_content() and \
@@ -568,15 +568,14 @@ class UrlBase (object):
                 url = line[4:]
                 if url:
                     url_data = linkcheck.checker.get_url_from(url,
-                 self.recursion_level+1, self.consumer, parent_url=self.url,
-                 base_ref=None, line=lineno, name=name)
+                              self.recursion_level+1, self.consumer,
+                              parent_url=self.url, line=lineno, name=name)
                     self.consumer.append_url(url_data)
                 name = ""
 
     def parse_text (self):
         """parse a text file with on url per line; comment and blank
            lines are ignored
-           UNUSED and UNTESTED, just use linkchecker `cat file.txt`
         """
         lineno = 0
         for line in self.get_content().splitlines():

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: 2004-09-01 00:23+CEST\n"
+"POT-Creation-Date: 2004-09-03 16:54+CEST\n"
 "PO-Revision-Date: 2004-08-31 22:34+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -27,9 +27,6 @@ msgstr ""
 
 msgid "directory"
 msgstr ""
-
-msgid "No user or password found"
-msgstr "Geen gebruikernaam of wachtwoord gevonden"
 
 msgid "Remote host has closed connection"
 msgstr "Remote host heeft de verbinding beëindigd"
@@ -667,3 +664,6 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#~ msgid "No user or password found"
+#~ msgstr "Geen gebruikernaam of wachtwoord gevonden"

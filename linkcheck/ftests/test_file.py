@@ -41,6 +41,10 @@ class TestFile (linkcheck.ftests.StandardTest):
         """test links of file.css"""
         self.file_test("file.css")
 
+    def test_urllist (self):
+        """test url list parsing"""
+        self.file_test("urllist.txt")
+
     def test_files (self):
         """test some direct file links"""
         attrs = {'curdir': os.getcwd(),

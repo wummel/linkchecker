@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2004-09-01 00:23+CEST\n"
+"POT-Creation-Date: 2004-09-03 16:54+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,9 +28,6 @@ msgid "Added trailing slash to directory"
 msgstr ""
 
 msgid "directory"
-msgstr ""
-
-msgid "No user or password found"
 msgstr ""
 
 msgid "Remote host has closed connection"
