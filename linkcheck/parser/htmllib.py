@@ -80,12 +80,34 @@ class HtmlParser:
 class HtmlPrinter (HtmlParser):
     """handles all functions by printing the function name and
        attributes"""
+    def _print (self, *attrs):
+        print self.mem, attrs, self.last_lineno(), self.last_column()
+
+
+    def _errorfun (self, msg, name):
+        """print msg to stderr with name prefix"""
+        pos = "%d:%d:" % (self.lineno(), self.column())
+        print >> sys.stderr, name, pos, msg
+
+
+    def error (self, msg):
+        """signal a filter/parser error"""
+        self._errorfun(msg, "error:")
+
+
+    def warning (self, msg):
+        """signal a filter/parser warning"""
+        self._errorfun(msg, "warning:")
+
+
+    def fatalError (self, msg):
+        """signal a fatal filter/parser error"""
+        self._errorfun(msg, "fatal error:")
+
+
     def __getattr__ (self, name):
         self.mem = name
         return self._print
-
-    def _print (self, *attrs):
-        print self.mem, attrs, self.last_lineno(), self.last_column()
 
 
 def _test():
