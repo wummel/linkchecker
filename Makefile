@@ -1,4 +1,4 @@
-VERSION=$(shell ./setup.py -q info --version)
+VERSION=$(shell ./setup.py --version)
 #HOST=treasure.calvinsplayground.de
 PROXY=
 #PROXY=-P$(HOST):5050

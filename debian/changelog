@@ -1,8 +1,14 @@
+linkchecker (1.2.2) unstable; urgency=low
+
+  * fix for anchor checking (Martin Herbener)
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 13 Apr 2000 00:08:18 +0200
+
 linkchecker (1.2.1) unstable; urgency=low
 
   * fix for Netscape Enterprise servers
-  * fixed congif typo (Bug Tracker report)
-  * fix for authentication (Thomas Stimmer <t.stinner@billiton.de>)
+  * fixed congif typo (Thomas Stinner <t.stinner@billiton.de>)
+  * fix for authentication (Thomas Stinner <t.stinner@billiton.de>)
 
  -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 10 Apr 2000 18:53:52 +0200
 

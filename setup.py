@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 setup (name = "linkchecker",
-       version = "1.2.1",
+       version = "1.2.2",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",
@@ -15,5 +15,6 @@ setup (name = "linkchecker",
        # files installed
        ext_modules = [('ssl', {'sources': ['ssl.c'],
                         'include_dirs': ['/usr/include/openssl'],
+                        'library_dirs': ['/usr/lib'],
                         'libs': ['ssl']})],
        )

@@ -188,7 +188,8 @@ class UrlData:
     def checkAnchors(self, anchor):
         if not (anchor!="" and self.isHtml() and self.valid):
             return
-        for cur_anchor,line in self.searchInForTag(self.getContent(), ("a", "name")):
+        self.getContent()
+        for cur_anchor,line in self.searchInForTag(self.data, ("a", "name")):
             if cur_anchor == anchor:
                 return
         self.setWarning("anchor #"+anchor+" not found")
