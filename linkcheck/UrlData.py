@@ -408,12 +408,12 @@ class UrlData (object):
     def getCacheKey (self):
         # note: the host is already lowercase
         if self.urlparts:
-            if self.config["noanchorcaching"]:
-                # removed anchor from cache key
-                return urlparse.urlunsplit(self.urlparts[:4]+[''])
-            else:
+            if self.config["anchorcaching"]:
                 # do not ignore anchor
                 return urlparse.urlunsplit(self.urlparts)
+            else:
+                # removed anchor from cache key
+                return urlparse.urlunsplit(self.urlparts[:4]+[''])
         return None
 
 
@@ -427,7 +427,7 @@ class UrlData (object):
                self.isParseable() and \
                self.hasContent() and \
                not self.cached and \
-               (self.config["recursionlevel"] >= 0 and
+               (self.config["recursionlevel"] < 0 or
                 self.recursionLevel < self.config["recursionlevel"]) and \
                not self.extern[0]
 
