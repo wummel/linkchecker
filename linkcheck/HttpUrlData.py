@@ -23,6 +23,7 @@ from UrlData import UrlData
 from urllib import splittype, splithost, splituser, splitpasswd
 from debuglevels import *
 
+_supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
 class HttpUrlData (UrlData):
     "Url link with http scheme"
@@ -232,6 +233,7 @@ class HttpUrlData (UrlData):
         if self.parentName:
             self.urlConnection.putheader("Referer", self.parentName)
         self.urlConnection.putheader("User-Agent", Config.UserAgent)
+        self.urlConnection.putheader("Accept-Encoding", "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.config['cookies']:
             self.cookies = self.config.getCookies(self.urlTuple[1],
                                                   self.urlTuple[2])
@@ -254,10 +256,15 @@ class HttpUrlData (UrlData):
             status, statusText, self.headers = self._getHttpRequest("GET")
             self.urlConnection = self.urlConnection.getfile()
             self.data = self.urlConnection.read()
-            if self.headers.get("Content-Encoding")=="gzip":
-                import gzip, cStringIO
-                f = gzip.GzipFile(filename="", mode="rb",
-                                  fileobj=cStringIO.StringIO(self.data))
+            encoding = self.headers.get("Content-Encoding")
+            if encoding in _supported_encodings:
+                from cStringIO import StringIO
+                if encoding == 'deflate':
+                    import zlib
+                    f = StringIO(zlib.decompress(self.data))
+                else:
+                    import gzip
+                    f = gzip.GzipFile('', 'rb', 9, StringIO(self.data))
                 self.data = f.read()
             self.downloadtime = time.time() - t
             self.init_html_comments()
@@ -270,8 +277,9 @@ class HttpUrlData (UrlData):
         if self.headers.gettype()[:9]!="text/html":
             return 0
         encoding = self.headers.get("Content-Encoding")
-        if encoding and encoding!='gzip':
-            self.setWarning(linkcheck._('Unsupported content encoding %s.')%`encoding`)
+        if encoding and encoding not in _supported_encodings:
+            self.setWarning(linkcheck._('Unsupported content encoding %s.')%\
+                            `encoding`)
             return 0
         return 1
 

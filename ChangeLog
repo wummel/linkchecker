@@ -1,6 +1,6 @@
 1.6.2:
-  * Warn about unknown Content-Encodings. We only support gzip at the
-    moment.
+  * Warn about unknown Content-Encodings.
+  * Support deflate content encoding (snatched from Debians reportbug)
 
 1.6.1:
   * FileUrlData.py: remove searching for links in text files, this is
