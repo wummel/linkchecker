@@ -421,15 +421,6 @@ class Configuration (UserDict.UserDict):
             cfiles.append(norm("~/.linkcheckerrc"))
         self.readConfig(cfiles)
 
-    def warn (self, msg):
-        self.message(i18n._("Warning: %s")%msg)
-
-    def error (self, msg):
-        self.message(i18n._("Error: %s")%msg)
-
-    def message (self, msg):
-        print >> sys.stderr, msg
-
     def readConfig (self, files):
         """this big function reads all the configuration parameters
         used in the linkchecker module."""
@@ -458,7 +449,7 @@ class Configuration (UserDict.UserDict):
             if Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
-                self.warn(i18n._("invalid log option '%s'") % log)
+                warn(i18n._("invalid log option '%s'") % log)
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
@@ -492,7 +483,7 @@ class Configuration (UserDict.UserDict):
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
-                self.error(i18n._("illegal recursionlevel number %d") % num)
+                error(i18n._("illegal recursionlevel number %d") % num)
             self["recursionlevel"] = num
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
@@ -501,9 +492,9 @@ class Configuration (UserDict.UserDict):
         try: self["strict"] = cfgparser.getboolean(section, "strict")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
-            warn = cfgparser.get(section, "warningregex")
-            if warn:
-                self["warningregex"] = re.compile(warn)
+            wr = cfgparser.get(section, "warningregex")
+            if wr:
+                self["warningregex"] = re.compile(wr)
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["warnsizebytes"] = int(cfgparser.get(section, "warnsizebytes"))
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
@@ -533,7 +524,7 @@ class Configuration (UserDict.UserDict):
             while 1:
                 tuple = cfgparser.get(section, "extern%d" % i).split()
                 if len(tuple)!=2:
-                    sys.stderr.write("extern%d: syntax error %s\n"%(i, tuple))
+                    error(i18n._("extern%d: syntax error %s\n")%(i, tuple))
                     break
                 self["externlinks"].append(getLinkPat(tuple[0], strict=int(tuple[1])))
                 i += 1
