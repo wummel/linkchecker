@@ -28,43 +28,23 @@ class TestError (linkcheck.ftests.StandardTest):
     def test_unrecognized (self):
         """unrecognized scheme test"""
         url = "hutzli:"
+        nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
             "error",
         ]
         self.direct(url, resultlines)
 
-    def test_whitespace (self):
-        """leading or trailing whitespace test"""
+    def test_leading_whitespace (self):
+        """leading whitespace test"""
         url = " http://www.heise.de/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly quoted",
-            "error",
-        ]
-        self.direct(url, resultlines)
-        url = "http://www.heise.de/ "
-        nurl = linkcheck.url.url_norm(url)
-        resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly quoted",
-            "error",
-        ]
-        self.direct(url, resultlines)
-        url = "http://www.heise.de/\n"
-        nurl = linkcheck.url.url_norm(url)
-        resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly quoted",
             "error",
         ]
         self.direct(url, resultlines)
@@ -74,7 +54,29 @@ class TestError (linkcheck.ftests.StandardTest):
             "url %s" % nurl,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly quoted",
+            "error",
+        ]
+        self.direct(url, resultlines)
+
+    def test_trailing_whitespace (self):
+        """trailing whitespace test"""
+        url = "http://www.heise.de/ "
+        nurl = linkcheck.url.url_norm(url)
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
+            "error",
+        ]
+        self.direct(url, resultlines)
+        url = "http://www.heise.de/\n"
+        nurl = linkcheck.url.url_norm(url)
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning Base URL is not properly normed. Normed url is %r." % nurl,
             "error",
         ]
         self.direct(url, resultlines)
@@ -88,7 +90,6 @@ class TestError (linkcheck.ftests.StandardTest):
             "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly quoted",
             "error",
         ]
         self.direct(url, resultlines)
@@ -99,7 +100,6 @@ class TestError (linkcheck.ftests.StandardTest):
             "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly quoted",
             "error",
         ]
         self.direct(url, resultlines)
@@ -110,7 +110,6 @@ class TestError (linkcheck.ftests.StandardTest):
             "url %s" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
-            "warning Base URL is not properly quoted",
             "error",
         ]
         self.direct(url, resultlines)
