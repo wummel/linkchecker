@@ -14,6 +14,10 @@
     Closes: SF bug #1168720
     Changed: linkcheck/linkparse.py, linkcheck/containers.py
 
+  * Fix the detection of persistent HTTP connections.
+    Type: bugfix
+    Changed: linkcheck/checker/httpheaders.py
+
 2.6 "Lord of the Rings" (released 15.3.2005)
 
   * Run with low priority. New option --priority to run with normal
