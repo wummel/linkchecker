@@ -347,6 +347,10 @@ class TestUrl (unittest.TestCase):
         url = u'www.öko.de'
         encurl, is_idn = linkcheck.url.idna_encode(url)
         self.assert_(is_idn)
+        url = u''
+        encurl, is_idn = linkcheck.url.idna_encode(url)
+        self.assertFalse(is_idn)
+        self.assertFalse(encurl)
 
 def test_suite ():
     """build and return a TestSuite"""
