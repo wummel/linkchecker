@@ -70,6 +70,7 @@ class Configuration (dict):
         super(Configuration, self).__init__()
         self["verbose"] = False
         self["warnings"] = False
+        self['quiet'] = False
         self["anchors"] = False
         self["anchorcaching"] = True
         self["externstrictall"] = False
@@ -264,6 +265,7 @@ class Configuration (dict):
         try:
             if cfgparser.getboolean(section, "quiet"):
                 self['logger'] = self.logger_new('none')
+                self['quiet'] = True
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -385,31 +387,42 @@ class Configuration (dict):
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
+    def write_boolean_config (self, fp. boolopts):
+        """
+        Write a boolean value into the config file.
+        """
+        for opt in boolopts:
+            if self[opt]:
+                fp.write("%s=1%s" % (opt, os.linesep))
+
     def write_output_config (self, fp):
         """
         Write configuration options in section "output".
         """
-        section = "output"
-        # XXX todo
+        fp.write("[output]%s" % os.linesep)
+        # XXX write logger output config
+        # XXX write fileoutput config
+        boolopts = ("verbose", "warnings", "quiet", "status", "interactive")
+        self.write_boolean_config(fp, boolopts)
 
     def write_checking_config (self, fp):
         """
         Write configuration options in section "checking".
         """
-        section = "checking"
+        fp.write("[checking]%s" % os.linesep)
         # XXX todo
 
     def write_authentication_config (self, fp):
         """
         Write configuration options in section "authentication".
         """
-        section = "authentication"
+        fp.write("[authentication]%s" % os.linesep)
         # XXX todo
 
     def write_filtering_config (self, fp):
         """
         Write configuration options in section "filtering".
         """
-        section = "filtering"
+        fp.write("[filtering]%s" % os.linesep)
         # XXX todo
 
