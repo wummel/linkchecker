@@ -66,6 +66,7 @@
 """
 
 import re
+import codecs
 import htmlentitydefs
 
 
@@ -125,4 +126,29 @@ def strip_quotes (s):
         (s.startswith('"') and s.endswith('"'))):
         return s[1:-1]
     return s
+
+
+_encoding_ro = re.compile(r"charset=(?P<encoding>[-0-9a-zA-Z]+)")
+
+def set_encoding (self, tag, attrs):
+    """Set document encoding for given parser. Tag must be a meta tag."""
+    if tag != u'meta':
+        return
+    if attrs.get('http-equiv', u'').lower() == u"content-type":
+        content = attrs.get('content', u'')
+        mo = _encoding_ro.search(content)
+        if mo:
+            encoding = mo.group("encoding").encode("ascii")
+            try:
+                encoding = encoding.encode("ascii")
+                codecs.lookup(encoding)
+                self.encoding = encoding
+            except LookupError:
+                # ignore unknown encodings
+                pass
+
+
+def set_doctype (self, doctype):
+    if u"XHTML" in doctype:
+        self.doctype = "XHTML"
 

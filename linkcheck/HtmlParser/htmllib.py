@@ -67,6 +67,13 @@ class HtmlPrettyPrinter (object):
 
     def start_element (self, tag, attrs):
         """print start element"""
+        self._start_element(tag, attrs, ">")
+
+    def start_end_element (self, tag, attrs):
+        """print combined start-end element"""
+        self._start_element(tag, attrs, "/>")
+
+    def _start_element (self, tag, attrs, end):
         tag = tag.encode(self.encoding, "ignore")
         self.fd.write("<%s" % tag.replace("/", ""))
         for key, val in attrs.iteritems():
@@ -76,7 +83,7 @@ class HtmlPrettyPrinter (object):
             else:
                 val = val.encode(self.encoding, "ignore")
                 self.fd.write(" %s=\"%s\"" % (key, quote_attrval(val)))
-        self.fd.write(">")
+        self.fd.write(end)
 
     def end_element (self, tag):
         """print end element"""

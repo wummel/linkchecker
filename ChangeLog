@@ -1,3 +1,9 @@
+2.1 "" (released xx.xx.xxxx)
+
+  * Added XHTML support to the HTML parser.
+    Type: feature
+    Changed: linkcheck/HtmlParser/*
+
 2.0 "I Kina spiser de hunde" (released 7.12.2004)
 
   * Regenerate the HTML parser with new Bison version 1.875d.

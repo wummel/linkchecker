@@ -44,24 +44,14 @@ static int yyerror (char* msg) {
 
 /* parser.resolve_entities */
 static PyObject* resolve_entities;
+/* ListDict class, sorted dictionary */
 static PyObject* list_dict;
+/* set_encoding helper function */
+static PyObject* set_encoding;
+/* set_doctype helper function */
+static PyObject* set_doctype;
 
 /* macros for easier scanner state manipulation */
-
-/* test whether tag does not need an HTML end tag */
-#define NO_HTML_END_TAG(tag) !(strcmp(tag, "area")==0 || \
-    strcmp(tag, "base")==0 || \
-    strcmp(tag, "basefont")==0 || \
-    strcmp(tag, "br")==0 || \
-    strcmp(tag, "col")==0 || \
-    strcmp(tag, "frame")==0 || \
-    strcmp(tag, "hr")==0 || \
-    strcmp(tag, "img")==0 || \
-    strcmp(tag, "input")==0 || \
-    strcmp(tag, "isindex")==0 || \
-    strcmp(tag, "link")==0 || \
-    strcmp(tag, "meta")==0 || \
-    strcmp(tag, "param")==0)
 
 /* clear buffer b, returning NULL on error */
 #define CLEAR_BUF(b) \
@@ -103,8 +93,12 @@ static PyObject* list_dict;
 /* parser type definition */
 typedef struct {
     PyObject_HEAD
+    /* the handler object */
     PyObject* handler;
+    /* the charset encoding (PyStringObject) */
     PyObject* encoding;
+    /* the document type (PyStringObject) */
+    PyObject* doctype;
     UserData* userData;
     void* scanner;
 } parser_object;
@@ -114,6 +108,37 @@ staticforward PyTypeObject parser_type;
 /* use Pythons memory management */
 #define YYMALLOC PyMem_Malloc
 #define YYFREE PyMem_Free
+
+/* Test whether tag does not need an HTML end tag. Return -1 on error. */
+static int html_end_tag (PyObject* ptag, PyObject* parser) {
+    PyObject* pdoctype;
+    char* doctype;
+    int ret = 1;
+    pdoctype = PyObject_GetAttrString(parser, "doctype");
+    if (pdoctype==NULL) return -1;
+    doctype = PyString_AsString(pdoctype);
+    if (doctype == NULL) { Py_DECREF(pdoctype); return -1; }
+    if (strcmp(doctype, "HTML")==0) {
+        char* tag = PyString_AsString(ptag);
+        if (tag == NULL) { Py_DECREF(pdoctype); return -1; }
+        ret = strcmp(tag, "area")!=0 &&
+            strcmp(tag, "base")!=0 &&
+            strcmp(tag, "basefont")!=0 &&
+            strcmp(tag, "br")!=0 &&
+            strcmp(tag, "col")!=0 &&
+            strcmp(tag, "frame")!=0 &&
+            strcmp(tag, "hr")!=0 &&
+            strcmp(tag, "img")!=0 &&
+            strcmp(tag, "input")!=0 &&
+            strcmp(tag, "isindex")!=0 &&
+            strcmp(tag, "link")!=0 &&
+            strcmp(tag, "meta")!=0 &&
+            strcmp(tag, "param")!=0;
+    }
+    /* it is not HTML (presumably XHTML) */
+    Py_DECREF(pdoctype);
+    return ret;
+}
 
 %}
 
@@ -163,7 +188,11 @@ element: T_WAIT { YYACCEPT; /* wait for more lexer input */ }
     PyObject* tag = PyTuple_GET_ITEM($1, 0);
     PyObject* attrs = PyTuple_GET_ITEM($1, 1);
     int error = 0;
-    if (!tag || !attrs) { error = 1; goto finish_start; }
+    if (tag==NULL || attrs==NULL) { error = 1; goto finish_start; }
+    /* set encoding */
+    result = PyObject_CallFunction(set_encoding, "OOO", ud->parser, tag, attrs);
+    if (result==NULL) { error=1; goto finish_start; }
+    Py_DECREF(result); result = NULL;
     if (PyObject_HasAttrString(ud->handler, "start_element")==1) {
 	callback = PyObject_GetAttrString(ud->handler, "start_element");
 	if (!callback) { error=1; goto finish_start; }
@@ -171,7 +200,7 @@ element: T_WAIT { YYACCEPT; /* wait for more lexer input */ }
 	if (!result) { error=1; goto finish_start; }
 	Py_DECREF(callback);
         Py_DECREF(result);
-        callback=result=NULL;
+        callback = result = NULL;
     }
     CHECK_ERROR(ud, finish_start);
 finish_start:
@@ -198,29 +227,27 @@ finish_start:
     PyObject* tag = PyTuple_GET_ITEM($1, 0);
     PyObject* attrs = PyTuple_GET_ITEM($1, 1);
     int error = 0;
-    PyObject* tagname = NULL;
-    if (!tag || !attrs) { error = 1; goto finish_start_end; }
-    if (PyObject_HasAttrString(ud->handler, "start_element")==1) {
-	callback = PyObject_GetAttrString(ud->handler, "start_element");
+    char* fname;
+    PyObject* tagname;
+    if (tag==NULL || attrs==NULL) { error = 1; goto finish_start_end; }
+    tagname = PyUnicode_AsEncodedString(tag, "ascii", "ignore");
+    if (tagname==NULL) { error=1; goto finish_start_end; }
+    /* set encoding */
+    result = PyObject_CallFunction(set_encoding, "OOO", ud->parser, tag, attrs);
+    if (result==NULL) { error=1; goto finish_start_end; }
+    Py_DECREF(result); result = NULL;
+    if (html_end_tag(tagname, ud->parser))
+        fname = "start_end_element";
+    else
+        fname = "start_element";
+    if (PyObject_HasAttrString(ud->handler, fname)==1) {
+	callback = PyObject_GetAttrString(ud->handler, fname);
 	if (!callback) { error=1; goto finish_start_end; }
 	result = PyObject_CallFunction(callback, "OO", tag, attrs);
 	if (!result) { error=1; goto finish_start_end; }
 	Py_DECREF(callback);
         Py_DECREF(result);
-        callback=result=NULL;
-    }
-    /* encode tagname in ASCII, ignoring any unknown chars */
-    tagname = PyUnicode_AsEncodedString(tag, "ascii", "ignore");
-    if (tagname==NULL) { error=1; goto finish_start_end; }
-    if (PyObject_HasAttrString(ud->handler, "end_element")==1 &&
-	NO_HTML_END_TAG(PyString_AsString(tagname))) {
-	callback = PyObject_GetAttrString(ud->handler, "end_element");
-	if (callback==NULL) { error=1; goto finish_start_end; }
-	result = PyObject_CallFunction(callback, "O", tag);
-	if (result==NULL) { error=1; goto finish_start_end; }
-	Py_DECREF(callback);
-        Py_DECREF(result);
-        callback=result=NULL;
+        callback = result = NULL;
     }
     CHECK_ERROR(ud, finish_start_end);
 finish_start_end:
@@ -229,7 +256,6 @@ finish_start_end:
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_XDECREF(tag);
-    Py_XDECREF(tagname);
     Py_XDECREF(attrs);
     Py_DECREF($1);
     if (error) {
@@ -249,14 +275,14 @@ finish_start_end:
     PyObject* tagname = PyUnicode_AsEncodedString($1, "ascii", "ignore");
     if (tagname==NULL) { error=1; goto finish_end; }
     if (PyObject_HasAttrString(ud->handler, "end_element")==1 &&
-	NO_HTML_END_TAG(PyString_AsString(tagname))) {
+	html_end_tag(tagname, ud->parser)) {
 	callback = PyObject_GetAttrString(ud->handler, "end_element");
 	if (callback==NULL) { error=1; goto finish_end; }
 	result = PyObject_CallFunction(callback, "O", $1);
 	if (result==NULL) { error=1; goto finish_end; }
 	Py_DECREF(callback);
 	Py_DECREF(result);
-        callback=result=NULL;
+        callback = result = NULL;
     }
     CHECK_ERROR(ud, finish_end);
 finish_end:
@@ -342,6 +368,10 @@ finish_cdata:
     PyObject* callback = NULL;
     PyObject* result = NULL;
     int error = 0;
+    /* set encoding */
+    result = PyObject_CallFunction(set_doctype, "OO", ud->parser, $1);
+    if (result==NULL) { error=1; goto finish_doctype; }
+    Py_DECREF(result); result = NULL;
     CALLBACK(ud, "doctype", "O", $1, finish_doctype);
     CHECK_ERROR(ud, finish_doctype);
 finish_doctype:
@@ -480,7 +510,14 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
         Py_DECREF(self);
         return NULL;
     }
-    self->userData->encoding = self->encoding;
+    self->doctype = PyString_FromString("HTML");
+    if (self->doctype == NULL) {
+        Py_DECREF(self->encoding);
+        Py_DECREF(self->handler);
+        Py_DECREF(self);
+        return NULL;
+    }
+    self->userData->parser = (PyObject*)self;
     return (PyObject*) self;
 }
 
@@ -525,9 +562,11 @@ static int parser_clear (parser_object* self) {
 static void parser_dealloc (parser_object* self) {
     htmllexDestroy(self->scanner);
     parser_clear(self);
-    self->userData->encoding = NULL;
+    self->userData->parser = NULL;
     Py_XDECREF(self->encoding);
     self->encoding = NULL;
+    Py_XDECREF(self->doctype);
+    self->doctype = NULL;
     PyMem_Del(self->userData->buf);
     PyMem_Del(self->userData->tmp_buf);
     PyMem_Del(self->userData);
@@ -752,7 +791,28 @@ static int parser_setencoding (parser_object* self, PyObject* value, void* closu
     Py_DECREF(self->encoding);
     Py_INCREF(value);
     self->encoding = value;
-    self->userData->encoding = value;
+    return 0;
+}
+
+
+static PyObject* parser_getdoctype (parser_object* self, void* closure) {
+    Py_INCREF(self->doctype);
+    return self->doctype;
+}
+
+
+static int parser_setdoctype (parser_object* self, PyObject* value, void* closure) {
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete doctype");
+        return -1;
+    }
+    if (!PyString_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "doctype must be string");
+        return -1;
+    }
+    Py_DECREF(self->doctype);
+    Py_INCREF(value);
+    self->doctype = value;
     return 0;
 }
 
@@ -768,6 +828,8 @@ static PyGetSetDef parser_getset[] = {
      "handler object", NULL},
     {"encoding", (getter)parser_getencoding, (setter)parser_setencoding,
      "encoding", NULL},
+    {"doctype", (getter)parser_getdoctype, (setter)parser_setdoctype,
+     "doctype", NULL},
     {NULL}  /* Sentinel */
 };
 
@@ -883,6 +945,17 @@ PyMODINIT_FUNC inithtmlsax (void) {
         return;
     }
     if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities"))==NULL) {
+        Py_DECREF(m);
+        return;
+    }
+    if ((set_encoding = PyObject_GetAttrString(m, "set_encoding"))==NULL) {
+        Py_DECREF(resolve_entities);
+        Py_DECREF(m);
+        return;
+    }
+    if ((set_doctype = PyObject_GetAttrString(m, "set_doctype"))==NULL) {
+        Py_DECREF(resolve_entities);
+        Py_DECREF(set_encoding);
         Py_DECREF(m);
         return;
     }

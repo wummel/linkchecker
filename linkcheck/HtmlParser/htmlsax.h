@@ -68,9 +68,9 @@ typedef struct {
     PyObject* tmp_attrval;
     /* temporary HTML start tag attribute list (a SortedDict) */
     PyObject* tmp_attrs;
-    /* parser.resolve_entities */
+    /* HtmlParser.resolve_entities */
     PyObject* resolve_entities;
-    /* parser.SortedDict */
+    /* HtmlParser.SortedDict */
     PyObject* list_dict;
     /* stored Python exception (if error occurred in scanner) */
     PyObject* exc_type;
@@ -78,8 +78,8 @@ typedef struct {
     PyObject* exc_tb;
     /* error string */
     PyObject* error;
-    /* encoding string  (default iso8859-1) */
-    PyObject* encoding;
+    /* the parser object itself */
+    PyObject* parser;
 } UserData;
 
 #endif

@@ -38,8 +38,15 @@
 
 /* make python unicode string from tmp_buf and assign it to a */
 #define PYSTRING_TMP(a) { \
-    const char* enc = PyString_AsString(yyextra->encoding); \
-    (a) = PyUnicode_Decode(yyextra->tmp_buf, strlen(yyextra->tmp_buf), enc, "ignore"); \
+    PyObject* pencoding; \
+    char* encoding; \
+    pencoding = PyObject_GetAttrString(yyextra->parser, "encoding"); \
+    if (pencoding==NULL) return T_ERROR; \
+    encoding = PyString_AsString(pencoding); \
+    if (encoding==NULL) { Py_DECREF(pencoding); return T_ERROR; } \
+    (a) = PyUnicode_Decode(yyextra->tmp_buf, strlen(yyextra->tmp_buf),  \
+                           encoding, "ignore"); \
+    Py_DECREF(pencoding); \
     if ((a)==NULL) return T_ERROR; \
 }
 
@@ -655,6 +662,14 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RETURN(T_ELEMENT_START_END);
 }
 
+<S_ATTR1,S_ATTR2,S_ATTR3>\/[^>] {
+    UPDATE_LINE;
+}
+
+<S_ATTR1,S_ATTR2,S_ATTR3>\/ {
+    return T_WAIT;
+}
+
 <S_ATTR1,S_ATTR2,S_ATTR3>> {
     UPDATE_COLUMN;
     FLUSH_ATTRS;
@@ -1001,13 +1016,19 @@ int htmllexStart (void* scanner, UserData* data, const char* s, int slen) {
      we must replace NUL with ' '. */
     int len = strlen(data->buf);
     int i;
-    RESIZE_BUF(data->buf, len+slen + 1);
-    for (i=0; i<slen; i++) {
-        data->buf[len+i] = (s[i]==0 ? ' ' : s[i]);
+    RESIZE_BUF(data->buf, len + slen + 1);
+    for (i=0; i < slen; i++) {
+        data->buf[len+i] = (s[i]=='\0' ? ' ' : s[i]);
     }
-    data->buf[len+slen] = 0;
+    data->buf[len+slen] = '\0';
+    if (yyget_debug(scanner)) {
+        fprintf(stderr, "SCANBUF %d `%s'\n", data->bufpos, data->buf);
+    }
     if (len > data->bufpos) {
         int rewind = len - data->bufpos;
+        if (yyget_debug(scanner)) {
+            fprintf(stderr, "REWIND %d\n", rewind);
+        }
 	slen += rewind;
 	len -= rewind;
     }
