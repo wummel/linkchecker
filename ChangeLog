@@ -47,6 +47,12 @@
     Type: feature
     Changed: setup.py
 
+  * Correct the sent User-Agent header when getting robots.txt files.
+    Added a simple robots.txt example file.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+    Added: doc/robots.txt
+
 2.1 "Shogun Assassin" (released 11.1.2005)
 
   * Added XHTML support to the HTML parser.

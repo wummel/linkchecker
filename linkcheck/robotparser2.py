@@ -32,6 +32,7 @@ import zlib
 import gzip
 import cStringIO as StringIO
 import linkcheck
+import linkcheck.configuration
 import linkcheck.httplib2
 
 __all__ = ["RobotFileParser"]
@@ -175,7 +176,7 @@ class RobotFileParser (object):
         """
         self._reset()
         headers = {
-            'User-Agent': 'Python RobotFileParser/2.1',
+            'User-Agent': linkcheck.configuration.UserAgent,
             'Accept-Encoding' : 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
         }
         req = urllib2.Request(self.url, None, headers)
