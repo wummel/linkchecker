@@ -36,5 +36,8 @@ class Logger:
         raise Exception, "abstract function"
 
     def __str__ (self):
-        return self.__name__
+        return self.__class__.__name__
+
+    def __repr__ (self):
+        return self.__class__.__name__
 
