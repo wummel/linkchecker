@@ -54,7 +54,8 @@ install: build
 	install -m644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc
 # install bash_completion script
 	install -m644 linkchecker-completion $(ROOT)/etc/bash_completion.d
-
+# install lintian overrides
+	install -m644 debian/linkchecker.lintian $(ROOT)/usr/share/lintian/overrides/linkchecker
 
 # Build architecture-independent files here.
 binary-indep: build install
