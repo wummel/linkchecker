@@ -41,3 +41,27 @@ Note that the following packages are modified by me:
 httplib.py (renamed to http11lib.py)
 fcgi.py
 sz_fcgi.py
+
+
+The big picture (if you want to hack on the code):
+
+(1) Look at the linkchecker script. This thing just reads all the
+commandline options and stores them in a Config object.
+
+(2) Which leads us directly to the Config class. This class stores all
+options and works a little magic: it tries to find out if your platform
+supports threads. If so, they are enabled. If not, they are disabled.
+Note: several functions are replaced with their non-threaded 
+equivalents of threading is disabled.
+
+(3) The linkchecker script finally calls linkcheck.checkUrls(), which
+calls linkcheck.Config.checkUrl(), which calls 
+linkcheck.UrlData.check().
+An UrlData object represents a single URL with all attached data like
+validity, check time and so on. Derived from the base class UrlData are
+the different URL types: HttpUrlData for http:// links, MailtoUrlData for
+mailto: links and so on.
+So UrlData defines the functions which are common for *all* URLs, and
+the subclasses define functions needed for their URL type.
+
+(4) Now look at the documentation in the different .py files.

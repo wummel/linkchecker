@@ -1,10 +1,10 @@
 linkchecker (1.2.1) unstable; urgency=low
 
-  * force 15 second timeout on SMTP connect
   * fix for Netscape Enterprise servers
   * fixed congif typo (Bug Tracker report)
+  * fix for authentication (Thomas Stimmer <t.stinner@billiton.de>)
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat,  8 Apr 2000 07:11:09 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 10 Apr 2000 18:53:52 +0200
 
 linkchecker (1.2.0) unstable; urgency=low
 

@@ -69,11 +69,12 @@ class HttpUrlData(UrlData):
                 tries = tries + 1
 
             # authentication
-            if status==401 and not self.auth:
-                import base64
-                _user, _password = self._getUserPassword(config)
-                self.auth = "Basic "+\
-                    string.strip(base64.encodestring(_user+":"+_password))
+            if status==401:
+	        if not self.auth:
+                    import base64,string
+                    _user, _password = self._getUserPassword(config)
+                    self.auth = "Basic "+\
+                        string.strip(base64.encodestring(_user+":"+_password))
                 status, statusText, self.mime = self._getHttpRequest()
                 Config.debug("Authentication "+_user+"/"+_password+"\n")
 
@@ -96,6 +97,7 @@ class HttpUrlData(UrlData):
             self.setError(`status`+" "+statusText)
         else:
             if status == 204:
+                # no content
                 self.setWarning(statusText)
             if status >= 200:
                 self.setValid(`status`+" "+statusText)

@@ -6,7 +6,7 @@ setup (name = "linkchecker",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",
-       url = "http://linkchecker.sourceforge.net",
+       url = "http://linkchecker.sourceforge.net/",
        licence = "GPL",
 
        packages = ['','DNS','linkcheck'],

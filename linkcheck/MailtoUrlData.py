@@ -33,20 +33,10 @@ class MailtoUrlData(HostCheckingUrlData):
         if not len(mxrecords):
             self.setError("No mail host for "+self.host+" found")
             return
-        Config.debug("Connect to mail hosts\n")
-        try:
-            import signal
-            def handler(signum, frame):
-                raise IOError, "SMTP connect timeout"
-            signal.signal(signal.SIGALRM, handler)
-            sigs=1
-        except ImportError:
-            sigs=0
         smtpconnect = 0
         for mxrecord in mxrecords:
             try:
-                if sigs:
-                    signal.alarm(15)
+                Config.debug("Connect to "+str(mxrecord)+"\n")
                 self.urlConnection = SMTP(mxrecord[1])
                 Config.debug("Connected to "+str(mxrecord[1])+"\n")
                 smtpconnect = 1

@@ -1,3 +1,11 @@
+"""Config.py in linkcheck
+
+Because this is the only place to store options, this class has
+quite some important functions.
+
+Further more, the basic Copyright infos are stored here.
+"""
+
 import ConfigParser,sys,os,re,UserDict,string
 from os.path import expanduser,normpath,normcase,join,isfile
 import Logging
