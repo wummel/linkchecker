@@ -1,18 +1,18 @@
 1.13.1 "Old men in new cars" (released xx.xx.xxxx)
-  * fixed RPM generation by adding the generated config file to the
-    installed files list
+  * Fixed RPM generation by adding the generated config file to the
+    installed files list.
     Type: bugfix
     Changed: setup.py
 
-  * mention to remove old versions when upgrading in the documentation
+  * Mention to remove old versions when upgrading in the documentation.
     Type: documentation
     Changed: doc/upgrading.txt, doc/install.txt
 
-  * fix typo in redirection cache handling
+  * Fix typo in redirection cache handling.
     Type: bugfix
     Changed: linkcheck/checker/cache.py
 
-  * fileoutput must honor verbose/quiet configuration
+  * The -F file output must honor verbose/quiet configuration.
     Type: bugfix
     Changed: linkcheck/checker/consumer.py
 
