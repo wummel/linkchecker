@@ -58,7 +58,7 @@ A: When it comes to checking there are three types of URLs:
       Like 1), but we additionally check if they are valid by connect()ing
       to them
    3) intern URLs:
-      like 2), but we additionally check if they are HTML pages and if so,
+      Like 2), but we additionally check if they are HTML pages and if so,
       we descend recursively into this link and check all the links in the
       HTML content.
       The --recursion-level option restricts the number of such recursive

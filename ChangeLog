@@ -8,6 +8,8 @@
     Added files: lconline/check.js
   * Updated documentation with a link restriction example
     Changed files: linkchecker, linkchecker.1, FAQ
+  * Updated po/pygettext.py to version 1.5, cleaned up some gettext
+    usages.
 
 1.8.2
   * - ignore invalid html attribute characters
