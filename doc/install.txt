@@ -77,7 +77,17 @@ Setup for Unix/Linux or Mac OS X
    
    b) Installation as a normal user
       
-      Run ``python setup.py install --home $HOME``.
+      Run ``python setup.py install --home $HOME``. Note that you have
+      to adjust your PATH and PYTHONPATH environment variables, eg. by
+      adding the commands ``export PYTHONPATH=$HOME/lib/python`` and
+      ``export PATH=$PATH:$HOME/bin`` to your shell configuration
+      file.
+      
+      For more information look at the `Modifying Python's search path`_
+      documentation.
+      
+      .. _Modifying Python's search path:
+         http://docs.python.org/inst/search-path.html#SECTION000410000000000000000
 
 4. Enjoy
    

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.3.3: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.3.4: http://docutils.sourceforge.net/" />
 <title>Installation</title>
 <meta content="1" name="navigation.order" />
 <meta content="Installation" name="navigation.name" />
@@ -97,7 +97,13 @@ change the default C compiler with <tt class="literal"><span class="pre">export<
 <p>Run <tt class="literal"><span class="pre">su</span> <span class="pre">-c</span> <span class="pre">'python</span> <span class="pre">setup.py</span> <span class="pre">install'</span></tt> to install LinkChecker.</p>
 </li>
 <li><p class="first">Installation as a normal user</p>
-<p>Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span> <span class="pre">--home</span> <span class="pre">$HOME</span></tt>.</p>
+<p>Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span> <span class="pre">--home</span> <span class="pre">$HOME</span></tt>. Note that you have
+to adjust your PATH and PYTHONPATH environment variables, eg. by
+adding the commands <tt class="literal"><span class="pre">export</span> <span class="pre">PYTHONPATH=$HOME/lib/python</span></tt> and
+<tt class="literal"><span class="pre">export</span> <span class="pre">PATH=$PATH:$HOME/bin</span></tt> to your shell configuration
+file.</p>
+<p>For more information look at the <a class="reference" href="http://docs.python.org/inst/search-path.html#SECTION000410000000000000000">Modifying Python's search path</a>
+documentation.</p>
 </li>
 </ol>
 </blockquote>
@@ -180,7 +186,7 @@ they are working</li>
 </div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-11-09 08:57 UTC.
+Generated on: 2004-11-17 19:04 UTC.
 </div>
 </body>
 </html>
