@@ -333,6 +333,7 @@ class TestUrl (unittest.TestCase):
         url = "file:///c|/msys/"
         nurl = url
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
+        self.assert_(not linkcheck.url.url_needs_quoting(url))
 
 def test_suite ():
     """build and return a TestSuite"""
