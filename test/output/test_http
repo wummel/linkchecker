@@ -29,6 +29,7 @@ url http:
 cached
 name no url, no slash
 warning URL path is empty, assuming '/' as path
+URL path is empty, assuming '/' as path
 error
 url http://www.blubb.de/stalter&sohn
 name unquoted ampersand
@@ -45,11 +46,13 @@ url HtTP://WWW.hEIsE.DE
 cached
 name should be cached
 warning URL path is empty, assuming '/' as path
+URL path is empty, assuming '/' as path
 valid
 url HTTP://WWW.HEISE.DE
 cached
 name should be cached
 warning URL path is empty, assuming '/' as path
+URL path is empty, assuming '/' as path
 valid
 url http://www.heise.de/?quoted=ü
 name html entities
