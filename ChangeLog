@@ -48,6 +48,11 @@
     Type: feature
     Changed: linkchecker, linkcheck/configuration.py, doc/{de,en,fr}/*.1
 
+  * The new blacklist output file is now stored in
+    ~/.linkchecker/blacklist.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration.py, doc/{de,en,fr}/*.1
+
   * Start the log output before appending new urls to the consumer since
     this can trigger logger.new_url().
     Type: bugfix

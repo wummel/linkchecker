@@ -8,8 +8,11 @@ Upgrading
 Migrating from 2.2 to 2.3
 -------------------------
 
-The old config file ``~/.linkcheckerrc`` should be moved to
-``~/.linkchecker/linkcheckerrc``.
+The per-user config file is now ``~/.linkchecker/linkcheckerrc``
+(previous location was ``~/.linkcheckerrc`` ).
+
+The default blacklist output file is now ``~/.linkchecker/blacklist``
+(previous location was ``~/.blacklist``).
 
 Python >= 2.4 is now required.
 

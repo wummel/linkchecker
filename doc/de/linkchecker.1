@@ -110,7 +110,7 @@ Gültige Encodierungen sind unter
 .TP
 \fB-F\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP][\fB/\fP\fIDateiname\fP], \fB--file-output=\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP][\fB/\fP\fIDateiname\fP]
 Ausgabe in eine Datei namens \fBlinkchecker-out.\fP\fITyp\fP,
-\fB$HOME/.linkchecker_blacklist\fP
+\fB$HOME/.linkchecker/blacklist\fP
 bei \fBblacklist\fP Ausgabe, oder \fIDateiname\fP falls angegeben.
 Der \fIDateiname\fP Teil wird beim Ausgabetyp \fBnone\fP ignoriert,
 ansonsten wird die Datei überschreiben falls sie existiert.
@@ -255,8 +255,8 @@ um die initiale SQL Tabelle zu erstellen ist unter create.sql zu finden.
 .TP
 \fBblacklist\fP
 Für Cronjobs geeignet. Gibt das Prüfergebnis in eine Datei
-\fB~/.blacklist\fP aus welche nur Einträge mit fehlerhaften URLs und die
-Anzahl der Fehlversuche enthält.
+\fB~/.linkchecker/blacklist\fP aus welche nur Einträge mit fehlerhaften
+URLs und die Anzahl der Fehlversuche enthält.
 .TP
 \fBnone\fP
 Gibt nichts aus. Für Skripte geeignet.
@@ -311,7 +311,8 @@ ein Programmfehler aufgetreten ist.
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP -
 Standardkonfigurationsdateien
 
-\fB~/.blacklist\fP - Standard Dateiname der blacklist Logger Ausgabe
+\fB~/.linkchecker/blacklist\fP -
+Standard Dateiname der blacklist Logger Ausgabe
 
 \fBlinkchecker-out.\fP\fITyp\fP - Standard Dateiname der Logger Ausgabe
 

@@ -1,12 +1,5 @@
 Possible improvements people could work on:
 
-- [OPTIMIZATION] HTTP connection pooling. Right now we open for every
-  HTTP link a new connection.
-  Must be thread-safe, must handle timeouts and connection expiration
-  (HTTP: only pool persistent (ie. HTTP/1.1) connections; Keepalive
-   header parsing).
-  Note: FTP connection pooling is already there.
-
 - [USAGE] rethink intern/extern stuff
 
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,

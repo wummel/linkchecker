@@ -104,7 +104,7 @@ Les encodages valides sont disponibles sur \fBhttp://docs.python.org/lib/node127
 .TP 
 \fB\-F\fP\fItype\fP[\fB/\fP\fIencodage\fP][\fB/\fP\fInom_fichier\fP], \fB\-\-file\-output=\fP\fItype\fP[\fB/\fP\fIencodage\fP][\fB/\fP\fInom_fichier\fP]
 Enregistrer la sortie dans un fichier \fBlinkchecker\-out.\fP\fItype\fP,
-\fB$HOME/.linkchecker_blacklist\fP pour la sortie \fBblacklist\fP, ou dans \fInom_fichier\fP si spécifié.
+\fB$HOME/.linkchecker/blacklist\fP pour la sortie \fBblacklist\fP, ou dans \fInom_fichier\fP si spécifié.
 \fIencodage\fP permet de spécifier l'encodage de sortie, la valeur par défaut étant \fBiso\-8859\-15\fP.
 Les encodages valides sont disponibles sur \fBhttp://docs.python.org/lib/node127.html\fP.
 La partie \fInom_fichier\fP du type de sortie \fBnone\fP est ignorée, sinon, si le fichier existe déjà, il sera écrasé.
@@ -205,7 +205,8 @@ Journaliser le résultat de la vérification dans un fichier au format XML.
 Journaliser le résultat dans un script SQL avec des commandes INSERT. Un script d'exemple montrant la création de la table SQL initiale est inclus : create.sql.
 .TP 
 \fBblacklist\fP
-Approprié pour les tâches cron. Journaliser le résultat de la vérification dans un fichier \fB~/.blacklist\fP qui ne contient que les entrées avec des URL invalides et le nombre de fois qu'elles ont échoué.
+Approprié pour les tâches cron. Journaliser le résultat de la vérification
+dans un fichier \fB~/.linkchecker/blacklist\fP qui ne contient que les entrées avec des URL invalides et le nombre de fois qu'elles ont échoué.
 .TP 
 \fBnone\fP
 Ne rien journaliser du tout. Approprié pour les scripts.
@@ -251,7 +252,7 @@ a program error occurred.
 .SH "FICHIERS"
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \- fichiers de configuration par défaut
 
-\fB~/.blacklist\fP \- fichier par défaut des blacklists pour la journalisation
+\fB~/.linkchecker/blacklist\fP \- fichier par défaut des blacklists pour la journalisation
 
 \fBlinkchecker\-out.\fP\fItype\fP \- fichier par défaut pour la journalisation
 

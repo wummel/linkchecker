@@ -125,8 +125,8 @@ sql     Log check result as SQL script with INSERT commands. An example
         script to create the initial SQL table is included as create.sql.
 blacklist
         Suitable for cron jobs. Logs the check result into a file
-        ~/.blacklist which only contains entries with invalid urls and
-        the number of times they have failed.
+        ~/.linkchecker/blacklist which only contains entries with invalid
+        urls and the number of times they have failed.
 none    Logs nothing. Suitable for scripts.
 """)
 
@@ -294,7 +294,7 @@ Valid encodings are listed at http://docs.python.org/lib/node127.html.""") % \
 group.add_option("-F", "--file-output", type="string", action="append",
                  dest="fileoutput", metavar="TYPE[/ENCODING][/FILENAME]",
                  help=_(
-"""Output to a file linkchecker-out.TYPE, $HOME/.linkchecker_blacklist for
+"""Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for
 'blacklist' output, or FILENAME if specified.
 ENCODING specifies the output encoding, the default is "iso-8859-15".
 Valid encodings are listed at http://docs.python.org/lib/node127.html.
