@@ -190,6 +190,8 @@ class HttpUrlData(UrlData):
         self.proxyuser = None
         self.proxypass = None
         if self.proxy:
+            if self.proxy[:7].lower() != "http://":
+                self.proxy = "http://"+self.proxy
             self.proxy = splittype(self.proxy)[1]
             self.proxy = splithost(self.proxy)[0]
             self.proxyuser, self.proxy = splituser(self.proxy)
@@ -205,7 +207,7 @@ class HttpUrlData(UrlData):
             host = self.proxy
         else:
             host = self.urlTuple[1]
-
+        Config.debug(HURT_ME_PLENTY, "host", host)
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self._getHTTPObject(host)
