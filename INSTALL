@@ -6,7 +6,7 @@ Requirements for Unix/Linux
 1. You need a standard GNU development environment with
    a) C compiler (for example the GNU C Compiler gcc)
    b) gettext
-2. Python >= 2.3 from http://www.python.org/
+2. Python >= 2.3 from http://www.python.org/ with zlib support
 
 
 Requirements for Windows
