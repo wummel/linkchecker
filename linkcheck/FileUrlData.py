@@ -114,8 +114,20 @@ class FileUrlData (UrlData):
 
     def buildUrl (self):
         UrlData.buildUrl(self)
-        # ignore query and fragment url parts
+        # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
+        self.url = urlparse.urlunsplit(self.urlparts)
+
+
+
+    def getCacheKey (self):
+        # use that the host is lowercase
+        if self.urlparts:
+            self.urlparts[4] = self.anchor
+            key = urlparse.urlunsplit(self.urlparts)
+            self.urlparts[4] = ''
+            return key
+        return None
 
 
     def adjustWinPath (self):

@@ -170,3 +170,15 @@ def unquote (s):
         return ''
     return unhtmlify(stripQuotes(s))
 
+def strsize (b):
+    if b<1024:
+        return "%d Byte"%b
+    b /= 1024
+    if b<1024:
+        return "%d kB"%b
+    b /= 1024
+    if b<1024:
+        return "%d MB"%b
+    b /= 1024
+    return "%d GB"
+

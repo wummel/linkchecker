@@ -64,6 +64,7 @@ class FtpUrlData (ProxyUrlData):
         # ready to connect
         try:
             self.urlConnection = ftplib.FTP()
+            self.urlConnection.set_debuglevel(linkcheck.Config.DebugLevel)
             self.urlConnection.connect(self.urlparts[1])
             self.urlConnection.login(_user, _password)
         except EOFError:
@@ -87,19 +88,25 @@ class FtpUrlData (ProxyUrlData):
 
 
     def retrieve (self, filename):
-        """intiate download of given filename"""
+        """initiate download of given filename"""
+        # it could be a directory if the trailing slash was forgotten
+        try:
+            self.urlConnection.cwd(filename)
+            self.setWarning(linkcheck._("Missing trailing directory slash in ftp url"))
+            return
+        except ftplib.error_perm:
+            pass
         self.urlConnection.voidcmd('TYPE I')
         conn, size = self.urlConnection.ntransfercmd('RETR %s'%filename)
         if size:
             self.checkSize(size)
+            # dont download data
             #page = conn.makefile().read(size)
         #else:
         #    page = conn.makefile().read()
 
 
     def closeConnection (self):
-        try:
-            self.urlConnection.quit()
-        except ftplib.all_errors:
-            self.urlConnection.close()
+        try: self.urlConnection.closet()
+        except: pass
         self.urlConnection = None

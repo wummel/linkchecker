@@ -96,9 +96,10 @@ class Configuration (UserDict.UserDict):
         self["internlinks"] = []
         self["denyallow"] = 0
         self["interactive"] = 0
+        # on ftp, password is set by Pythons ftplib
         self["authentication"] = [{'pattern': re.compile(r'^.+'),
 	                          'user': 'anonymous',
-	                          'password': 'joe@',
+	                          'password': '',
 				 }]
         self["proxy"] = getproxies()
         self["recursionlevel"] = 1
