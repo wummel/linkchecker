@@ -22,18 +22,18 @@ from UrlData import LinkCheckerException
 
 # regular expression strings for partially RFC822 compliant adress scanning
 # XXX far from complete mail adress scanning; enhance only when needed!
-word = r"[-\w%']+"
-words = r"[-\w%'\s]+"
+word = r"[-\w%'!]+"
+words = r"[-\w%'!\s]+"
 dotwords = r"(%s(?:\.%s)*)" % (word,word)
 adress = "%s@%s" % (dotwords, dotwords)
 route_adress = "%s<%s>" % (words, adress)
 mailbox = "(%s|%s)" % (adress, route_adress)
-mailboxes = "%s?(,%s)*" % (mailbox, mailbox)
+mailboxes = "%s?(\s*,\s*%s)*" % (mailbox, mailbox)
 
 # regular expression strings for RFC2368 compliant mailto: scanning
 header = word+"="+word
 headers = r"(?:\?%s(&%s)*)?" % (header, header)
-mailto = "^mailto:"+mailboxes+headers
+mailto = "^mailto:"+mailboxes+headers+"$"
 
 # compiled
 adress_re = re.compile(adress)

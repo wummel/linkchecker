@@ -21,12 +21,12 @@ from distutils.dist import Distribution
 from Template import Template
 import sys,os,string
 
-# Autodetect the existence of an SSL library (this is pretty shitty)
 class LCDistribution(Distribution):
     default_include_dirs = ['/usr/include/openssl',
                             '/usr/local/include/openssl']
     def run_commands (self):
         self.check_ssl()
+        self.replace_in_scripts()
         for cmd in self.commands:
             self.run_command (cmd)
 
@@ -51,6 +51,14 @@ class LCDistribution(Distribution):
             if os.path.exists(os.path.join(d, "ssl.h")):
                 return d
         return 0
+
+    def replace_in_scripts(self):
+        inst = self.find_command_obj("install")
+        inst.ensure_ready()
+        t = Template("linkchecker.bat.tmpl")
+        f = open("linkchecker.bat","w")
+        f.write(t.fill_in({"path_to_linkchecker": inst.install_scripts}))
+        f.close()
 
 
 setup (name = "linkchecker",
