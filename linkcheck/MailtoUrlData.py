@@ -44,7 +44,7 @@ class MailtoUrlData (HostCheckingUrlData):
     def _cutout_adresses (self):
         mo = headers_re.search(self.urlName)
         if mo:
-            headers = cgi.parse_qs(mo.group(1), strict_parsing=1)
+            headers = cgi.parse_qs(mo.group(1), strict_parsing=True)
             for key, val in headers.items():
                 key = key.lower()
                 self.headers.setdefault(key, []).extend(val)

@@ -297,7 +297,7 @@ class HttpUrlData (ProxyUrlData):
         else:
             path = urlparse.urlunsplit(('', '', qurlparts[2],
             qurlparts[3], qurlparts[4]))
-        self.urlConnection.putrequest(method, path, skip_host=1)
+        self.urlConnection.putrequest(method, path, skip_host=True)
         self.urlConnection.putheader("Host", host)
         # userinfo is from http://user@pass:host/
         if self.userinfo:

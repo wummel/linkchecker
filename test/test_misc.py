@@ -2,10 +2,10 @@
 import os, linkcheck
 config = linkcheck.Config.Configuration()
 config.addLogger('test', linkcheck.test_support.TestLogger)
-config['recursionlevel'] = 1
+config['recursionlevel'] = True
 config['log'] = config.newLogger('test')
-config["anchors"] = 1
-config["verbose"] = 1
+config["anchors"] = True
+config["verbose"] = True
 config.disableThreading()
 htmldir = "test/html"
 for file in ('misc.html','anchor.html'):
