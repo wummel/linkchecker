@@ -50,4 +50,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f INSTALLED_FILES
 %defattr(-,root,root)
-%doc README TODO doc/ lconline/ test/
+%doc README TODO doc/ cgi/lconline/ test/
