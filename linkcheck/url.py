@@ -56,12 +56,12 @@ safe_url_pattern = r"%s://%s%s(#%s)?" % \
     (_safe_scheme_pattern, _safe_host_pattern,
      _safe_path_pattern, _safe_fragment_pattern)
 
-is_safe_url = re.compile("(?i)^%s$"%safe_url_pattern).match
-is_safe_domain = re.compile("(?i)^%s$"%_safe_domain_pattern).match
-is_safe_host = re.compile("(?i)^%s$"%_safe_host_pattern).match
-is_safe_path = re.compile("(?i)^%s$"%_safe_path_pattern).match
-is_safe_query = re.compile("(?i)^%s$"%_safe_query_pattern).match
-is_safe_fragment = re.compile("(?i)^%s$"%_safe_fragment_pattern).match
+is_safe_url = re.compile("(?i)^%s$" % safe_url_pattern).match
+is_safe_domain = re.compile("(?i)^%s$" % _safe_domain_pattern).match
+is_safe_host = re.compile("(?i)^%s$" % _safe_host_pattern).match
+is_safe_path = re.compile("(?i)^%s$" % _safe_path_pattern).match
+is_safe_query = re.compile("(?i)^%s$" % _safe_query_pattern).match
+is_safe_fragment = re.compile("(?i)^%s$" % _safe_fragment_pattern).match
 
 def is_safe_js_url (urlstr):
     """test javascript URLs"""
