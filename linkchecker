@@ -428,14 +428,26 @@ if options.output:
 if options.fileoutput:
     ns = {'fileoutput': 1}
     for ftype in options.fileoutput:
-        try:
-            ftype, ns['filename'] = ftype.split('/', 1)
-            if not ns['filename']:
-                raise ValueError
-        except ValueError:
-            pass
+        # look for (optional) filename and encoding
+        if '/' in ftype:
+            ftype, suffix = ftype.split('/', 1)
+            if suffix:
+                if has_encoding(suffix):
+                    # it was an encoding
+                    ns['encoding'] = suffix
+                elif '/' in suffix:
+                    # look for (optional) encoding
+                    encoding, filename = suffix.split('/', 1)
+                    if has_encoding(encoding):
+                        ns['encoding'] = encoding
+                        ns['filename'] = filename
+                    else:
+                        ns['filename'] = suffix
+                else:
+                    ns['filename'] = suffix
         if linkcheck.Loggers.has_key(ftype):
-            config['fileoutput'].append(config.logger_new(ftype, **ns))
+            logger = config.logger_new(ftype, **ns)
+            config['fileoutput'].append(logger)
         else:
             printUsage(_("Illegal argument %r for option %s") % \
                        (ftype, "'-F, --file-output'"))
