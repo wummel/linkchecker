@@ -42,21 +42,22 @@ Fields = {
 class Logger (object):
     """basic logger class enabling logging of checked urls"""
 
-    def __init__ (self, **kwargs):
+    def __init__ (self, **args):
         """initialize a logger, looking for field restrictions in kwargs"""
         # what log fields should be in output
         self.logfields = None # log all fields
+        if args.has_key('fields'):
+            if "all" not in args['fields']:
+                # only log given fields
+                self.logfields = args['fields']
         # number of spaces before log fields for alignment
         self.logspaces = {}
         # maximum indent of spaces for alignment
         self.max_indent = 0
         # number of encountered errors
         self.errors = 0
-        # encoding of output strings
-        if kwargs.has_key('fields'):
-            if "all" not in kwargs['fields']:
-                # only log given fields
-                self.logfields = kwargs['fields']
+        # encoding of output
+        self.output_encoding = args.get("encoding", "iso-8859-1")
 
     def init_fileoutput (self, args):
         """initialize self.fd file descriptor from args"""

@@ -3,9 +3,7 @@ Next releases:
 - logger methods should get called with unicode strings (using
   the unicode-output from the html parser)
 
-- specify output encoding for loggers
-
-- standardize fileoutput init method for loggers
+- use output encoding for loggers
 
 - rethink intern/extern stuff
 

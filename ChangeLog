@@ -8,6 +8,22 @@
     Type: bugfix
     Changed: linkcheck/logger/*.py
 
+  * All loggers have now an output encoding. Valid encodings are listed
+    in http://docs.python.org/lib/node127.html. The default encoding is
+    "iso-8859-15".
+    Type: feature
+    Changed: linkcheck/logger/*.py
+    
+  * The --output and --file-output parameters can specify the encoding
+    now. The documentation has been updated with this change.
+    Type: feature
+    Changed: linkchecker, linkchecker.1
+    
+  * The encoding can also be specified in the linkcheckerrc config file.
+    Type: feature
+    Changed: config/linkcheckerrc
+
+
 1.13.5 "Die Musterknaben" (released 22.9.2004)
   * Use xgettext with Python support for .pot file creation, adjusted
     developer documentation.

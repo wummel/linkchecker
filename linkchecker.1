@@ -100,15 +100,23 @@ This option implies \fB-w\fP.
 \fB-q\fP, \fB--quiet\fP
 Quiet operation. This is only useful with \fB-F\fP.
 .TP
-\fB-o\fP\fItype\fP, \fB--output=\fP\fItype\fP
+\fB-o\fP\fItype\fP, \fB--output=\fP\fItype\fP[\fB/\fP\fIencoding\fP]
 Specify output type as \fBtext\fP, \fBcolored\fP, \fBhtml\fP, \fBsql\fP,
 \fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
 Default type is \fBtext\fP.
+\fIencoding\fP specifies the output encoding, the default is
+\fBiso-8859-15\fP.
+Valid encodings are listed at
+\fBhttp://docs.python.org/lib/node127.html\fP.
 .TP
-\fB-F\fP\fItype\fP[\fB/\fP\fIfilename\fP], \fB--file-output=\fP\fItype\fP[\fB/\fP\fIfilename\fP]
+\fB-F\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP], \fB--file-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP]
 Output to a file \fBlinkchecker-out.\fP\fItype\fP,
 \fB$HOME/.linkchecker_blacklist\fP for
 \fBblacklist\fP output, or \fIfilename\fP if specified.
+\fIencoding\fP specifies the output encoding, the default is
+\fBiso-8859-15\fP.
+Valid encodings are listed at
+\fBhttp://docs.python.org/lib/node127.html\fP.
 The \fIfilename\fP part of the \fBnone\fP output type will be ignored,
 else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types

@@ -258,15 +258,20 @@ group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation. This is only useful with -F."""))
 group.add_option("-o", "--output", type="string", dest="output",
+                 metavar="TYPE[/ENCODING]",
                  help=_(
-"""Specify output as %(loggertypes)s. Default output type is text.""") % \
+"""Specify output as %(loggertypes)s. Default output type is text.
+ENCODING specifies the output encoding, the default is "iso-8859-15".
+Valid encodings are listed at http://docs.python.org/lib/node127.html.""") % \
 {'loggertypes': linkcheck.LoggerKeys})
 group.add_option("-F", "--file-output", type="string", action="append",
-                 dest="fileoutput", metavar="TYPE[/FILENAME]",
+                 dest="fileoutput", metavar="TYPE[/ENCODING][/FILENAME]",
                  help=_(
 """Output to a file linkchecker-out.TYPE, $HOME/.linkchecker_blacklist for
 'blacklist' output, or FILENAME if specified.
-The FILENAME part of the 'none' output type will be ignored,
+ENCODING specifies the output encoding, the default is "iso-8859-15".
+Valid encodings are listed at http://docs.python.org/lib/node127.html.
+The FILENAME and ENCODING parts of the 'none' output type will be ignored,
 else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output TYPEs
 are %(loggertypes)s. You can specify this option multiple times to output
