@@ -37,7 +37,6 @@ from distutils.command.clean import clean
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
 from distutils import util, log
-from linkcheck import msgfmt
 
 # cross compile config
 cc = os.environ.get("CC")
@@ -269,6 +268,7 @@ class MyBuild (build, object):
             _build_dst = os.path.join("build", _dst)
             self.mkpath(os.path.dirname(_build_dst))
             self.announce("Compiling %s -> %s" % (_src, _build_dst))
+            from linkcheck import msgfmt
             msgfmt.make(_src, _build_dst)
 
     def run (self):
