@@ -228,7 +228,7 @@ class TimeoutSocket:
                 raise Timeout("Send timed out")
             sentlen = sock.send(data, flags)
             data = data[sentlen:]
-            totallen = totallen + sentlen
+            totallen += sentlen
         return totallen
     # end send
 
@@ -282,7 +282,7 @@ class TimeoutFile:
             buf = self.recv(bufsize)
             if not buf:
                 break
-            data = data + buf
+            data += buf
         if datalen > size > 0:
             self._sock._inqueue = data[size:]
             data = data[:size]
@@ -305,10 +305,10 @@ class TimeoutFile:
             buf = self.recv(bufsize)
             if not buf:
                 break
-            data = data + buf
+            data += buf
 
         if idx >= 0:
-            idx = idx + 1
+            idx += 1
             self._sock._inqueue = data[idx:]
             data = data[:idx]
         elif size > 0 and datalen > size:

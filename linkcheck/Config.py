@@ -23,24 +23,24 @@ This module stores
 """
 
 import ConfigParser, sys, os, re, UserDict, string, time
-import Logging, LinkCheckerConf
+import Logging, linkcheckerConf
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 from urllib import getproxies
 from linkcheck import _
 
-Version = LinkCheckerConf.version
-AppName = LinkCheckerConf.name
+Version = linkcheckerConf.version
+AppName = linkcheckerConf.name
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
-Author =  LinkCheckerConf.author
+Author =  linkcheckerConf.author
 HtmlAuthor = string.replace(Author, ' ', '&nbsp;')
 Copyright = "Copyright © 2000,2001 by "+Author
 HtmlCopyright = "Copyright &copy; 2000,2001 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
-Url = LinkCheckerConf.url
-Email = LinkCheckerConf.author_email
+Url = linkcheckerConf.url
+Email = linkcheckerConf.author_email
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' whithin this
@@ -263,7 +263,7 @@ class Configuration(UserDict.UserDict):
         return apply(Loggers[name], (), namespace)
 
     def incrementLinknumber_NoThreads(self):
-        self['linknumber'] = self['linknumber'] + 1
+        self['linknumber'] += 1
     
     def log_newUrl_NoThreads(self, url):
         if not self["quiet"]: self["log"].newUrl(url)
@@ -284,7 +284,7 @@ class Configuration(UserDict.UserDict):
     def incrementLinknumber_Threads(self):
         try:
             self.dataLock.acquire()
-            self['linknumber'] = self['linknumber'] + 1
+            self['linknumber'] += 1
         finally:
             self.dataLock.release()
 
@@ -297,7 +297,7 @@ class Configuration(UserDict.UserDict):
             self.reduceCount=0
             self.threader.reduceThreads()
         else:
-            self.reduceCount = self.reduceCount + 1
+            self.reduceCount += 1
         return self.threader.finished() and self.urls.empty()
 
     def finish_Threads(self):
@@ -366,7 +366,7 @@ class Configuration(UserDict.UserDict):
     def read(self, files = []):
         if not files:
             # system wide config settings
-            config_dir = join(LinkCheckerConf.install_data, 'linkchecker')
+            config_dir = join(linkcheckerConf.install_data, 'linkchecker')
             files.append(norm(join(config_dir, "linkcheckerrc")))
             # per user config settings
             files.append(norm("~/.linkcheckerrc"))
@@ -463,7 +463,7 @@ class Configuration(UserDict.UserDict):
 		if len(tuple)!=3: break
                 tuple[0] = re.compile(tuple[0])
                 self["authentication"].insert(0, tuple)
-                i = i + 1
+                i += 1
         except ConfigParser.Error: pass
 
         section = "filtering"
@@ -474,7 +474,7 @@ class Configuration(UserDict.UserDict):
                 if len(tuple)!=2: break
                 self["externlinks"].append((re.compile(tuple[0]),
 		                                 int(tuple[1])))
-                i = i + 1
+                i += 1
         except ConfigParser.Error: pass
         try: self["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
         except ConfigParser.Error: pass

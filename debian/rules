@@ -16,7 +16,7 @@ export DH_OPTIONS
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	python setup.py config -lcrypto
+	./setup.py config -lcrypto
 	touch configure-stamp
 
 
@@ -24,7 +24,7 @@ build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
 	rm -rf debian/$(PACKAGE)
-	python setup.py build
+	./setup.py build
 	touch build-stamp
 
 clean:
@@ -38,7 +38,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	$(MAKE) locale
-	python setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
+	./setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
 	# remove man pages, we install them with dh_installmanpages
 	rm -rf debian/$(PACKAGE)/usr/man
 	# remove example files, we install them with dh_installexamples

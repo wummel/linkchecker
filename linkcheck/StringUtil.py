@@ -52,7 +52,7 @@ def stripFenceComments(data):
     for line in lines:
         if not re.compile("\s*#.*").match(line):
             if ret:
-                ret = ret + "\n" + line
+                ret += "\n" + line
             else:
                 ret = line
     return ret
@@ -98,7 +98,7 @@ def indentWith(s, indent):
     while i < len(s):
         if s[i]=="\n" and (i+1) < len(s):
             s = s[0:(i+1)] + indent + s[(i+1):]
-        i = i+1
+        i += 1
     return s
 
 
@@ -111,12 +111,12 @@ def blocktext(s, width):
     ret = ""
     while len(s):
         if line:
-            line = line+"\n"+s.pop()
+            line += "\n"+s.pop()
         else:
             line = s.pop()
         while len(line) > width:
             i = getLastWordBoundary(line, width)
-            ret = ret + string.strip(line[0:i]) + "\n"
+            ret += string.strip(line[0:i]) + "\n"
             line = string.strip(line[i:])
     return ret + line
 
@@ -163,8 +163,8 @@ def getLineNumber(str, index):
     line=1
     while i<index:
         if str[i]=='\n': 
-            line = line + 1
-        i = i+1
+            line += 1
+        i += 1
     return line
 
 def paginate(text, lines=22):
@@ -173,7 +173,7 @@ def paginate(text, lines=22):
     curline = 1
     for line in textlines:
         print line
-        curline = curline + 1
+        curline += 1
         if curline >= lines and sys.stdin.isatty():
             curline = 1
             print "press return to continue..."

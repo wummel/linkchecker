@@ -105,7 +105,7 @@ class record:
         self.content = ""
         while len(self.content) < contentLength:
             data = sock.recv(contentLength - len(self.content))
-            self.content = self.content + data
+            self.content += data
         if paddingLength != 0:
             padding = sock.recv(paddingLength)
 
@@ -141,12 +141,12 @@ class record:
         elif self.recType==FCGI_GET_VALUES or self.recType==FCGI_PARAMS:
             content = ""
             for i in self.values.keys():
-                content = content + writePair(i, self.values[i])
+                content += writePair(i, self.values[i])
 
         elif self.recType==FCGI_END_REQUEST:
             v = self.appStatus
-            content = chr((v>>24)&255) + chr((v>>16)&255) + chr((v>>8)&255) + chr(v&255)
-            content = content + chr(self.protocolStatus) + 3*'\000'
+            content = chr((v>>24)&255) + chr((v>>16)&255) + chr((v>>8)&255) +\
+	              chr(v&255) + chr(self.protocolStatus) + 3*'\000'
 
         cLen = len(content)
         eLen = (cLen + 7) & (0xFFFF - 7)    # align to an 8-byte boundary
@@ -167,13 +167,17 @@ class record:
 #---------------------------------------------------------------------------
 
 def readPair(s, pos):
-    nameLen=ord(s[pos]) ; pos=pos+1
+    nameLen=ord(s[pos])
+    pos += 1
     if nameLen & 128:
-        b=map(ord, s[pos:pos+3]) ; pos=pos+3
+        b=map(ord, s[pos:pos+3])
+	pos += 3
         nameLen=((nameLen&127)<<24) + (b[0]<<16) + (b[1]<<8) + b[2]
-    valueLen=ord(s[pos]) ; pos=pos+1
+    valueLen=ord(s[pos])
+    pos += 1
     if valueLen & 128:
-        b=map(ord, s[pos:pos+3]) ; pos=pos+3
+        b=map(ord, s[pos:pos+3])
+	pos += 3
         valueLen=((valueLen&127)<<24) + (b[0]<<16) + (b[1]<<8) + b[2]
     return ( s[pos:pos+nameLen], s[pos+nameLen:pos+nameLen+valueLen],
              pos+nameLen+valueLen )
@@ -182,13 +186,15 @@ def readPair(s, pos):
 
 def writePair(name, value):
     l=len(name)
-    if l<128: s=chr(l)
+    if l<128:
+        s = chr(l)
     else:
-        s=chr(128|(l>>24)&255) + chr((l>>16)&255) + chr((l>>8)&255) + chr(l&255)
+        s = chr(128|(l>>24)&255) + chr((l>>16)&255) + chr((l>>8)&255) + chr(l&255)
     l=len(value)
-    if l<128: s=s+chr(l)
+    if l<128:
+        s += chr(l)
     else:
-        s=s+chr(128|(l>>24)&255) + chr((l>>16)&255) + chr((l>>8)&255) + chr(l&255)
+        s += chr(128|(l>>24)&255) + chr((l>>16)&255) + chr((l>>8)&255) + chr(l&255)
     return s + name + value
 
 #---------------------------------------------------------------------------
@@ -342,22 +348,22 @@ class FCGI:
 
             elif r.recType == FCGI_PARAMS:
                 if r.content == "":
-                    remaining=remaining-1
+                    remaining -= 1
                 else:
                     for i in r.values.keys():
                         self.env[i] = r.values[i]
 
             elif r.recType == FCGI_STDIN:
                 if r.content == "":
-                    remaining=remaining-1
+                    remaining = remaining-1
                 else:
-                    stdin=stdin+r.content
+                    stdin += r.content
 
             elif r.recType==FCGI_DATA:
                 if r.content == "":
-                    remaining=remaining-1
+                    remaining -= 1
                 else:
-                    data=data+r.content
+                    data += r.content
         # end of while remaining:
 
         self.stdin = sys.stdin  = StringIO(stdin)
@@ -425,7 +431,7 @@ def _test():
     try:
         while isFCGI():
             req = FCGI()
-            counter=counter+1
+            counter += 1
 
             try:
                 fs = req.getFieldStorage()

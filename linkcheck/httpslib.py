@@ -90,7 +90,7 @@ class _fileobject:
 		return self._sock.fileno()
 
 	def write (self, data):
-		self._wbuf = self._wbuf + data
+		self._wbuf += data
 		if self._wbufsize == 1:
 			if '\n' in data:
 				self.flush()
@@ -107,13 +107,13 @@ class _fileobject:
 			while len(self._rbuf) < n:
 				new = self._ssl.read(self._rbufsize)
 				if not new: break
-				self._rbuf = self._rbuf + new
+				self._rbuf += new
 			data,self._rbuf = self._rbuf[:n],self._rbuf[n:]
 			return data
 		while 1:
 			new = self._ssl.read(self._rbufsize)
 			if not new: break
-			self._rbuf = self._rbuf + new
+			self._rbuf += new
 		data,self._rbuf = self._rbuf,""
 		return data
 
@@ -124,10 +124,13 @@ class _fileobject:
 			new = self._ssl.read(self._rbufsize)
 			if not new: break
 			i = string.find(new,'\n')
-			if i >= 0: i = i + len(self._rbuf)
-			self._rbuf = self._rbuf + new
-		if i < 0: i = len(self._rbuf)
-		else: i = i+1
+			if i >= 0:
+			    i += len(self._rbuf)
+			self._rbuf += new
+		if i < 0:
+		    i = len(self._rbuf)
+		else:
+		    i += 1
 		data,self._rbuf = self._rbuf[:i],self._rbuf[i:]
 		return data
 
@@ -145,14 +148,15 @@ def _test():
 	opts, args = getopt.getopt(sys.argv[1:], 'd')
 	dl = 0
 	for o, a in opts:
-		if o == '-d': dl = dl + 1
-	if args[0:]: host = args[0]
-	if args[1:]: selector = args[1]
+	    if o == '-d':
+	        dl += 1
+	if args[0:]:
+	    host = args[0]
+	if args[1:]:
+	    selector = args[1]
 	h = HTTPS()
 	host = 'synergy.as.cmu.edu'
 	selector = '/~geek/'
-#	host = 'tls.cryptsoft.com'
-#	selector = '/'
 	h.set_debuglevel(dl)
 	h.connect(host)
 	h.putrequest('GET', selector)
@@ -162,9 +166,10 @@ def _test():
 	print 'errmsg  =', errmsg
 	print "\tHEADERS:"
 	if headers:
-	    for header in headers.headers: print string.strip(header)
+	    for header in headers.headers:
+	        print string.strip(header)
 	print "\tTEXT:"
 	print h.getfile().read()
 
 if __name__ == '__main__':
-	_test()
+    _test()

@@ -40,19 +40,19 @@
 # HTML logger
 [html]
 #filename=linkchecker-out.html
-#colorbackground=#ffffff
+# colors for the various parts
+#colorbackground="#ffffff"
 #colorurl=blue
 #colorborder=
 #colorlink=
 #tablewarning=
 #tableok=
-#tableok=
-#rowend=
-#myfont=
+#tableerror=
 
 # ANSI color logger
 [colored]
 #filename=linkchecker-out.ansi
+# colors for the various parts
 #colorparent=
 #colorurl=
 #colorname=

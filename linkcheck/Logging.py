@@ -22,6 +22,9 @@ init(self)
   Because we initialize the start time in init and __init__ gets not
   called at the time the checking starts but when the logger object is
   created.
+  Another reason is that we dont want might create several loggers
+  as a default and then switch to another configured output. So we
+  must not print anything out at __init__ time.
 
 newUrl(self,urlData)
   Called every time an url finished checking. All data we checked is in
@@ -135,7 +138,7 @@ class StandardLogger:
                           StringUtil.blocktext(urlData.infoString, 65),
 			  MaxIndent)+"\n")
         if urlData.warningString:
-            self.warnings = self.warnings+1
+            self.warnings += 1
             self.fd.write(_("Warning")+Spaces["Warning"]+
 	                  StringUtil.indent(
                           StringUtil.blocktext(urlData.warningString, 65),
@@ -145,7 +148,7 @@ class StandardLogger:
         if urlData.valid:
             self.fd.write(urlData.validString+"\n")
         else:
-            self.errors = self.errors+1
+            self.errors += 1
             self.fd.write(urlData.errorString+"\n")
         self.fd.flush()
 
@@ -258,7 +261,7 @@ class HtmlLogger(StandardLogger):
 	                  StringUtil.htmlify(urlData.infoString)+
 			  "</td></tr>\n")
         if urlData.warningString:
-            self.warnings = self.warnings+1
+            self.warnings += 1
             self.fd.write("<tr>"+self.tablewarning+_("Warning")+
 	                  "</td>"+self.tablewarning+
                           string.replace(urlData.warningString,"\n", "<br>")+
@@ -267,7 +270,7 @@ class HtmlLogger(StandardLogger):
             self.fd.write("<tr>"+self.tableok+_("Result")+"</td>"+
 	                  self.tableok+urlData.validString+"</td></tr>\n")
         else:
-            self.errors = self.errors+1
+            self.errors += 1
             self.fd.write("<tr>"+self.tableerror+_("Result")+
 	                  "</td>"+self.tableerror+
 			  urlData.errorString+"</td></tr>\n")
@@ -402,7 +405,7 @@ class ColoredLogger(StandardLogger):
             self.fd.write(self.colorreset+"\n")
             
         if urlData.warningString:
-            self.warnings = self.warnings+1
+            self.warnings += 1
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(_("Warning")+Spaces["Warning"]+self.colorwarning+
@@ -415,7 +418,7 @@ class ColoredLogger(StandardLogger):
             self.fd.write(self.colorvalid+urlData.validString+
 	                  self.colorreset+"\n")
         else:
-            self.errors = self.errors+1
+            self.errors += 1
             self.fd.write(self.colorinvalid+urlData.errorString+
 	                  self.colorreset+"\n")
         self.fd.flush()        
@@ -453,7 +456,7 @@ class GMLLogger(StandardLogger):
         if node.url and not self.nodes.has_key(node.url):
             node.id = self.nodeid
             self.nodes[node.url] = node
-            self.nodeid = self.nodeid + 1
+            self.nodeid += 1
             self.fd.write("  node [\n")
 	    self.fd.write("    id     %d\n" % node.id)
             self.fd.write('    label  "%s"\n' % node.url)
@@ -527,7 +530,7 @@ class XMLLogger(StandardLogger):
         if node.url and not self.nodes.has_key(node.url):
             node.id = self.nodeid
             self.nodes[node.url] = node
-            self.nodeid = self.nodeid + 1
+            self.nodeid += 1
             self.fd.write('  <node name="%d" ' % node.id)
             self.fd.write(">\n")
             self.fd.write("    <label>%s</label>\n" % quote(node.url))

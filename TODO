@@ -1,1 +1,2 @@
-Feature complete, only fixes.
+Better link name parsing
+Embed the Mozilla spidermonkey JavaScript engine for JS links

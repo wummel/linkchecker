@@ -16,7 +16,7 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import http11lib,urlparse,sys,time,re
+import httplib,urlparse,sys,time,re
 import Config,StringUtil,robotparser2
 from UrlData import UrlData
 from urllib import splittype, splithost
@@ -101,7 +101,7 @@ class HttpUrlData(UrlData):
                 self.urlTuple = urlparse.urlparse(redirected)
                 status, statusText, self.mime = self._getHttpRequest()
                 Config.debug("DEBUG: Redirected\n"+str(self.mime))
-                tries = tries + 1
+                tries += 1
 
             # authentication
             if status==401:
@@ -186,7 +186,7 @@ class HttpUrlData(UrlData):
         return self.urlConnection.getreply()
 
     def _getHTTPObject(self, host):
-        return http11lib.HTTP(host)
+        return httplib.HTTP(host)
 
     def getContent(self):
         if not self.data:

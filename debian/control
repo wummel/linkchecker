@@ -2,13 +2,13 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@users.sourceforge.net>
-Build-Depends: python-base (>= 1.5.2), python-base (<< 1.6), python-dev (>= 1.5.2), python-dev (<< 1.6), python-distutils (>= 0.9.4), debhelper
+Build-Depends: python2-base (>= 2.0), python2-base (<= 2.0), python2-dev (>= 1.5.2), python2-dev (<= 2.0), debhelper
 Build-Depends-Indep: gettext
 Standards-Version: 3.2.1
 
 Package: linkchecker
 Architecture: any
-Depends: python-base (>= 1.5.2), python-base (<< 1.6)
+Depends: python2-base (>= 2.0), python-base (<= 2.0)
 Suggests: libssl09|libssl095a, httpd
 Description: check HTML documents for broken links
  Features:

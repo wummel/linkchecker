@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python2
 # Originally written by Barry Warsaw <bwarsaw@python.org>
 #
 # minimally patched to make it even more xgettext compatible 
@@ -134,14 +134,21 @@ If `inputfile' is -, standard input is read.
 
 """)
 
-import os, sys, time, getopt, tokenize, string
+import os
+import sys
+import time
+import getopt
+import tokenize
 
 __version__ = '1.1'
+
 default_keywords = ['_']
-DEFAULTKEYWORDS = string.join(default_keywords, ', ')
+DEFAULTKEYWORDS = ', '.join(default_keywords)
+
 EMPTYSTRING = ''
 
 
+
 # The normal pot-file header. msgmerge and EMACS' po-mode work better if
 # it's there.
 pot_header = _('''\
@@ -162,7 +169,7 @@ msgstr ""
 
 ''')
 
-
+
 def usage(code, msg=''):
     print __doc__ % globals()
     if msg:
@@ -170,7 +177,7 @@ def usage(code, msg=''):
     sys.exit(code)
 
 
-
+
 escapes = []
 
 def make_escapes(pass_iso8859):
@@ -199,7 +206,7 @@ def escape(s):
     s = list(s)
     for i in range(len(s)):
         s[i] = escapes[ord(s[i])]
-    return string.join(s, EMPTYSTRING)
+    return EMPTYSTRING.join(s)
 
 
 def safe_eval(s):
@@ -210,7 +217,7 @@ def safe_eval(s):
 def normalize(s):
     # This converts the various Python string types into a format that is
     # appropriate for .po files, namely much closer to C style.
-    lines = string.split(s, '\n')
+    lines = s.split('\n')
     if len(lines) == 1:
         s = '"' + escape(s) + '"'
     else:
@@ -220,11 +227,11 @@ def normalize(s):
         for i in range(len(lines)):
             lines[i] = escape(lines[i])
         lineterm = '\\n"\n"'
-        s = '""\n"' + string.join(lines, lineterm) + '"'
+        s = '""\n"' + lineterm.join(lines) + '"'
     return s
 
 
-
+
 class TokenEater:
     def __init__(self, options):
         self.__options = options
@@ -256,7 +263,7 @@ class TokenEater:
             # of messages seen.  Reset state for the next batch.  If there
             # were no strings inside _(), then just ignore this entry.
             if self.__data:
-                msg = string.join(self.__data, EMPTYSTRING)
+                msg = EMPTYSTRING.join(self.__data)
                 if not msg in self.__options.toexclude:
                     entry = (self.__curfile, self.__lineno)
                     linenos = self.__messages.get(msg)
@@ -309,7 +316,7 @@ class TokenEater:
         finally:
             sys.stdout = sys.__stdout__
 
-
+
 def main():
     global default_keywords
     try:
@@ -439,8 +446,8 @@ def main():
         if closep:
             fp.close()
 
-
+
 if __name__ == '__main__':
     main()
     # some more test strings
-    #_(u'a unicode string')
+    _(u'a unicode string')

@@ -3,6 +3,7 @@ build-stamp
 *-out.*
 build
 dist
+foo
 MANIFEST
 VERSION
 LinkCheckerConf.py

@@ -142,7 +142,7 @@ def hotzenplotz(w,y,x,l):
     for li in l:
         w.move(y,x)
         w.addstr(li)
-        y = y+1
+        y += 1
 
 def wischi(w, ls):
     my,mx = w.getmaxyx()
@@ -152,8 +152,8 @@ def wischi(w, ls):
     up = 1
     w.erase()
     while i<11:
-        i = i+1
-        j = j + (up and 1 or -1)
+        i += 1
+        j += (up and 1 or -1)
         if j==-1: up = 1
         elif j==1: up = 0
         hotzenplotz(w,my/3,mx/2+j,ls[j+1])

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 #    Copyright (C) 2000  Bastian Kleineidam
 #
@@ -115,7 +115,7 @@ class MyConfig(config):
     def finalize_options(self):
         # we have some default include and library directories
         # suitable for each platform
-        self.basic_finalize_options()
+        config.finalize_options(self)
         if self.ssl_include_dirs is None:
             if os.name=='posix':
                 self.ssl_include_dirs = ['/usr/include/openssl',
@@ -129,27 +129,6 @@ class MyConfig(config):
             else:
                 # dont know default libdirs on other platforms
                 self.ssl_library_dirs = []
-
-
-    def basic_finalize_options(self):
-        """fix up types of option values"""
-        # this should be in config.finalize_options
-        # I submitted a patch
-        # ok, its in 1.0.1, but I still leave this here for compatibility
-        if self.include_dirs is None:
-            self.include_dirs = self.distribution.include_dirs or []
-        elif type(self.include_dirs) is StringType:
-            self.include_dirs = string.split(self.include_dirs, os.pathsep)
-
-        if self.libraries is None:
-            self.libraries = []
-        elif type(self.libraries) is StringType:
-            self.libraries = [self.libraries]
-
-        if self.library_dirs is None:
-            self.library_dirs = []
-        elif type(self.library_dirs) is StringType:
-            self.library_dirs = string.split(self.library_dirs, os.pathsep)
 
 
     def run (self):
@@ -189,7 +168,7 @@ class MyDistribution(Distribution):
         import LinkCheckerConf
         if 'bdist_wininst' in self.commands and os.name!='nt':
             self.announce("bdist_wininst command found on non-Windows "
-	                  "platform. Disabling SSL compilation")
+                          "platform. Disabling SSL compilation")
         elif LinkCheckerConf.have_ssl:
             self.ext_modules = [Extension('ssl', ['ssl.c'],
                         include_dirs=LinkCheckerConf.ssl_include_dirs,
@@ -214,8 +193,8 @@ class MyDistribution(Distribution):
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
-setup (name = "LinkChecker",
-       version = "1.2.14",
+setup (name = "linkchecker",
+       version = "1.3.0",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,

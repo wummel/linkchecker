@@ -1,8 +1,6 @@
-#
 # CSV 0.17  8 June 1999    Copyright ©Laurence Tratt 1998 - 1999
 # e-mail: tratt@dcs.kcl.ac.uk
 # home-page: http://eh.org/~laurie/comp/python/csv/index.html
-#
 #
 #
 # CSV.py is copyright ©1998 - 1999 by Laurence Tratt
@@ -22,28 +20,18 @@
 # IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-
-
-
-
 import re, string, types, UserList
-
-
-
 
 
 ###################################################################################################
 #
 # CSV class
 #
-
-
 class CSV(UserList.UserList):
-
 	""" Manage a CSV (comma separated values) file
 
         The data is held in a list.
-    
+
         Methods:
           __init__()
           load()    load from file
@@ -55,10 +43,8 @@ class CSV(UserList.UserList):
 	"""
 
 
-
 	def __init__(self, separator = ','):
-
-		""" Initialise CVS class instance.
+                """ Initialise CVS class instance.
 
             Arguments:
               separator        : The field delimiter. Defaults to ','
@@ -72,7 +58,6 @@ class CSV(UserList.UserList):
 
 
 	def load(self, file__data__name, fields__title__have, convert_numbers = 0, separator = None, comments = None):
-
 		""" Load up a CSV file
 
             Arguments:
@@ -94,7 +79,6 @@ class CSV(UserList.UserList):
 
 
 	def save(self, file__data__name, separator = None):
-
 		""" Save data to CSV file.
 
             Arguments:

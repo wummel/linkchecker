@@ -50,14 +50,12 @@ So for example 1.1.5 is the fifth release of the 1.1 development package.
 
 Included packages
 -----------------
-httplib from http://www.lyra.org/greg/python/
 httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
 DNS see DNS/README
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
 fintl.py from http://sourceforge.net/snippet/detail.php?type=snippet&id=100059
 
 Note that the following packages are modified by me:
-httplib.py (renamed to http11lib.py and a bug fixed)
 fcgi.py (implemented streamed output)
 sz_fcgi.py (simplified the code)
 DNS/Lib.py:566 fixed rdlength name error

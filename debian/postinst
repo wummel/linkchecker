@@ -4,7 +4,7 @@
 # used by Bastian Kleineidam for LinkChecker
 
 DIRLIST="/usr/lib/python1.5/site-packages/linkcheck"
-FILELIST="LinkCheckerConf.py"
+FILELIST="linkcheckerConf.py"
 SITEPACKAGES="/usr/lib/python1.5/site-packages"
 COMMAND="'import sys,py_compile;py_compile.compile(sys.argv[1])'"
 

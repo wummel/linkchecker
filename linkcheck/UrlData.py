@@ -16,16 +16,17 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import sys,re,string,urlparse,urllib,time
+import sys,re,string,urlparse,urllib,time,DNS
 import Config,StringUtil,linkcheck
 from linkcheck import _
 debug = linkcheck.Config.debug
 
 ExcList = [
    IOError,
-   ValueError, # from http11lib.py
+   ValueError, # from httplib.py
    linkcheck.error,
    EOFError, # from ftplib.py
+   DNS.Error,
 ]
 try:
     import socket
@@ -127,13 +128,13 @@ class UrlData:
         
     def setWarning(self, s):
         if self.warningString:
-            self.warningString = self.warningString+"\n" + s
+            self.warningString += "\n" + s
         else:
             self.warningString = s
 
     def setInfo(self, s):
         if self.infoString:
-            self.infoString = self.infoString+"\n"+s
+            self.infoString += "\n"+s
         else:
             self.infoString = s
             

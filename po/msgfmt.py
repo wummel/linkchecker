@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 # Written by Martin v. Löwis <loewis@informatik.hu-berlin.de>
 
@@ -21,21 +21,25 @@ Options:
 
 """
 
-import sys, getopt, struct, array, string
+import sys
+import getopt
+import struct
+import array
 
 __version__ = "1.0"
+
 MESSAGES = {}
 
 
-
+
 def usage(code, msg=''):
-    sys.stderr.write(__doc__)
+    print >> sys.stderr, __doc__
     if msg:
-        sys.stderr.write(msg)
+        print >> sys.stderr, msg
     sys.exit(code)
 
 
-
+
 def add(id, str, fuzzy):
     "Add a non-fuzzy translation to the dictionary."
     global MESSAGES
@@ -43,7 +47,7 @@ def add(id, str, fuzzy):
         MESSAGES[id] = str
 
 
-
+
 def generate():
     "Return the generated output."
     global MESSAGES
@@ -56,8 +60,8 @@ def generate():
         # For each string, we need size and file offset.  Each string is NUL
         # terminated; the NUL does not count into the size.
         offsets.append((len(ids), len(id), len(strs), len(MESSAGES[id])))
-        ids = ids + id + '\0'
-        strs = strs + MESSAGES[id] + '\0'
+        ids += id + '\0'
+        strs += MESSAGES[id] + '\0'
     output = ''
     # The header is 7 32-bit unsigned integers.  We don't use hash tables, so
     # the keys start right after the index tables.
@@ -70,8 +74,8 @@ def generate():
     # The string table first has the list of keys, then the list of values.
     # Each entry has first the size of the string, then the file offset.
     for o1, l1, o2, l2 in offsets:
-        koffsets = koffsets + [l1, o1+keystart]
-        voffsets = voffsets + [l2, o2+valuestart]
+        koffsets += [l1, o1+keystart]
+        voffsets += [l2, o2+valuestart]
     offsets = koffsets + voffsets
     output = struct.pack("iiiiiii",
                          0x950412de,        # Magic
@@ -80,19 +84,19 @@ def generate():
                          7*4,               # start of key index
                          7*4+len(keys)*8,   # start of value index
                          0, 0)              # size and offset of hash table
-    output = output + array.array("i", offsets).tostring()
-    output = output + ids
-    output = output + strs
+    output += array.array("i", offsets).tostring()
+    output += ids
+    output += strs
     return output
 
 
-
+
 def make(filename):
     ID = 1
     STR = 2
 
     # Compute .mo name from .po name
-    if filename[-3:] == '.po':
+    if filename.endswith('.po'):
         infile = filename
         outfile = filename[:-2] + 'mo'
     else:
@@ -101,7 +105,7 @@ def make(filename):
     try:
         lines = open(infile).readlines()
     except IOError, msg:
-        sys.stderr.write(msg)
+        print >> sys.stderr, msg
         sys.exit(1)
     
     section = None
@@ -110,42 +114,43 @@ def make(filename):
     # Parse the catalog
     lno = 0
     for l in lines:
-        lno = lno + 1
+        lno += 1
         # If we get a comment line after a msgstr, this is a new entry
         if l[0] == '#' and section == STR:
             add(msgid, msgstr, fuzzy)
             section = None
             fuzzy = 0
         # Record a fuzzy mark
-        if l[:2] == '#,' and string.find(l, 'fuzzy') != -1:
+        if l[:2] == '#,' and l.find('fuzzy'):
             fuzzy = 1
         # Skip comments
         if l[0] == '#':
             continue
         # Now we are in a msgid section, output previous section
-        if l[:5] == 'msgid':
+        if l.startswith('msgid'):
             if section == STR:
                 add(msgid, msgstr, fuzzy)
             section = ID
             l = l[5:]
             msgid = msgstr = ''
         # Now we are in a msgstr section
-        elif l[:6] == 'msgstr':
+        elif l.startswith('msgstr'):
             section = STR
             l = l[6:]
         # Skip empty lines
-        l = string.strip(l)
+        l = l.strip()
         if not l:
             continue
         # XXX: Does this always follow Python escape semantics?
         l = eval(l)
         if section == ID:
-            msgid = msgid + l
+            msgid += l
         elif section == STR:
-            msgstr = msgstr + l
+            msgstr += l
         else:
-            sys.stderr.write('Syntax error on %s:%d\n'
-	                     'before: %s\n' % (infile, lno, l))
+            print >> sys.stderr, 'Syntax error on %s:%d' % (infile, lno), \
+                  'before:'
+            print >> sys.stderr, l
             sys.exit(1)
     # Add last entry
     if section == STR:
@@ -158,10 +163,10 @@ def make(filename):
     try:
         open(outfile,"wb").write(output)
     except IOError,msg:
-        sys.stderr.write(msg)
+        print >> sys.stderr, msg
                       
 
-
+
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hV', ['help','version'])
@@ -173,12 +178,12 @@ def main():
         if opt in ('-h', '--help'):
             usage(0)
         elif opt in ('-V', '--version'):
-            sys.stderr.write("msgfmt.py %s" % __version__)
+            print >> sys.stderr, "msgfmt.py", __version__
             sys.exit(0)
     # do it
     if not args:
-        sys.stderr.write('No input file given\n')
-        sys.stderr.write("Try `msgfmt --help' for more information.\n")
+        print >> sys.stderr, 'No input file given'
+        print >> sys.stderr, "Try `msgfmt --help' for more information."
         return
 
     for filename in args:

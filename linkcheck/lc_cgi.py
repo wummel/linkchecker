@@ -1,6 +1,6 @@
 """ common CGI functions used by the CGI scripts
 
-    Copyright (C) 2000  Bastian Kleineidam
+    Copyright (C) 2000,2001  Bastian Kleineidam
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

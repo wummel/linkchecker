@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-#    Copyright (C) 2000  Bastian Kleineidam
+#!/usr/bin/env python2
+#    Copyright (C) 2000,2001  Bastian Kleineidam
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 
 # imports and checks
 import sys
-if sys.version[:5] < "1.5.2":
-    raise SystemExit, "This program requires Python 1.5.2 or later."
+if sys.version[:5] < "2.0":
+    raise SystemExit, "This program requires Python 2.0 or later."
 import getopt,re,string,os,urlparse
 # 90 seconds timeout for all connections
 #import timeoutsocket

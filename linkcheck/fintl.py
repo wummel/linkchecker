@@ -143,8 +143,8 @@ except ImportError:
                 else: 
                     raise error, ".mo file '%s' is corrupt" % mo_filename
                 # advance to the next entry in seek tables:
-                master_index= master_index + 8
-                transl_index= transl_index + 8
+                master_index += 8
+                transl_index += 8
 
         def gettext(self, message):
             """return the translation of a given message"""

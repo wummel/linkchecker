@@ -1,9 +1,10 @@
 # This Makefile is only used by developers.
 # You will need a Debian Linux system to use this Makefile because
 # some targets produce Debian .deb packages
-VERSION=$(shell python setup.py --version)
+PYTHON=python2.0
+VERSION=$(shell $(PYTHON) setup.py --version)
 PACKAGE = linkchecker
-NAME = $(shell python setup.py --name)
+NAME = $(shell $(PYTHON) setup.py --name)
 HOST=treasure.calvinsplayground.de
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
@@ -18,13 +19,13 @@ all:
 	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
-	-python setup.py clean --all # ignore errors of this command
+	-$(PYTHON) setup.py clean --all # ignore errors of this command
 	$(MAKE) -C po clean
 	find . -name '*.py[co]' | xargs rm -f
 
 distclean: clean cleandeb
 	rm -rf dist build # just to be sure clean also the build dir
-	rm -f $(PACKAGE)-out.* VERSION LinkCheckerConf.py MANIFEST Packages.gz
+	rm -f $(PACKAGE)-out.* VERSION $(PACKAGE)Conf.py MANIFEST Packages.gz
 
 cleandeb:
 	rm -rf debian/$(PACKAGE) debian/tmp
@@ -36,9 +37,9 @@ dist:	locale
 	# cleandeb because distutils choke on dangling symlinks
 	# (linkchecker.1 -> undocumented.1)
 	$(MAKE) cleandeb
-	python setup.py sdist --formats=gztar,zip bdist_rpm
+	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_rpm
 	# extra run without SSL compilation
-	python setup.py bdist_wininst
+	$(PYTHON) setup.py bdist_wininst
 	mv -f ../$(DEBPACKAGE) dist
 
 package:
