@@ -4,7 +4,8 @@ VERSION=$(shell $(PYTHON) setup.py --version)
 PACKAGE=linkchecker
 NAME=$(shell $(PYTHON) setup.py --name)
 PACKAGEDIR=/home/groups/l/li/$(PACKAGE)
-HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
+#HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
+HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
 #HOST=treasure.calvinsplayground.de
 HOST=www.debianplanet.org
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
@@ -79,15 +80,15 @@ VERSION:
 VERSION-DEVEL:
 	echo $(VERSION) > VERSION-DEVEL
 
-upload: distclean dist files VERSION
-	scp ChangeLog $(HTMLDIR)/changes.txt
-	scp README $(HTMLDIR)/readme.txt
-	scp linkchecker-out.*.gz $(HTMLDIR)
-	scp VERSION $(HTMLDIR)/raw/
-	scp $(MD5SUMS) $(HTMLDIR)/
-	#scp dist/* $(HTMLDIR)/
-	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
-	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
+upload: distclean dist files VERSION homepage
+	ncftpput upload.sourceforge.net /incoming dist/*
+
+homepage:
+	cp ChangeLog $(HTMLDIR)/changes.txt
+	cp README $(HTMLDIR)/readme.txt
+	cp linkchecker-out.*.gz $(HTMLDIR)
+	cp VERSION $(HTMLDIR)/raw/
+	cp $(MD5SUMS) $(HTMLDIR)/
 
 upload-devel: distclean dist VERSION-DEVEL
 	scp ChangeLog $(HTMLDIR)/changes-devel.txt
