@@ -101,10 +101,12 @@ class FileUrl (urlbase.UrlBase):
     def set_cache_keys (self):
         """Set keys for URL checking and content recursion."""
         # remove anchor from content cache key
-        self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[''])
+        self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
         # same here - a local file with different anchors has always the
         # same result
+        assert isinstance(self.cache_content_key, unicode), self.cache_content_key
         self.cache_url_key = self.cache_content_key
+        assert isinstance(self.cache_url_key, unicode), self.cache_url_key
 
     def is_html (self):
         if linkcheck.checker.extensions['html'].search(self.url):

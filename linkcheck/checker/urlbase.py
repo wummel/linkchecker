@@ -209,7 +209,8 @@ class UrlBase (object):
         """Set keys for URL checking and content recursion."""
         # remove anchor from content cache key since we assume
         # URLs with different anchors to have the same content
-        self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[''])
+        self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
+        assert isinstance(self.cache_content_key, unicode), self.cache_content_key
         # construct cache key
         if self.consumer.config["anchorcaching"]:
             # do not ignore anchor
@@ -217,6 +218,7 @@ class UrlBase (object):
         else:
             # no anchor caching
             self.cache_url_key = self.cache_content_key
+        assert isinstance(self.cache_url_key, unicode), self.cache_url_key
 
     def check_syntax (self):
         """Called before self.check(), this function inspects the
