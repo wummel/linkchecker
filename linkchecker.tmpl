@@ -266,10 +266,10 @@ for opt,arg in options:
         config["verbose"] = 1
         config["warnings"] = 1
 
-    elif opt="--wischiwaschi":
+    elif opt=="--wischiwaschi":
         import util1
-        util1.w()
-        exit(0)
+        util1.abbuzze()
+        sys.exit(0)
     elif opt=="-w" or opt=="--warnings":
         config["warnings"] = 1
 
