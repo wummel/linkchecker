@@ -159,13 +159,13 @@ if os.name=='nt':
     macros = [('YY_NO_UNISTD_H', None)]
     cargs = []
     # add post-install script for the bdist_wininst command
-    scripts = ['linkchecker', 'install-linkchecker.py'],
+    scripts = ['linkchecker', 'install-linkchecker.py']
 else:
     macros = []
     # for gcc 3.x we could add -std=gnu99 to get rid of warnings, but
     # that breaks other compilers
     cargs = ["-pedantic"]
-    scripts = ['linkchecker'],
+    scripts = ['linkchecker']
 
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
