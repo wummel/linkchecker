@@ -433,6 +433,9 @@ class UrlData:
                 self.setWarning(i18n._(
                 "more than one <base> tag found, using only the first one"))
         h = LinkParser(self.getContent())
+        for s in h.parse_info:
+            # the parser had warnings/errors
+            self.setWarning(s)
         for url,line,column,name,codebase in h.urls:
             if codebase:
                 base = codebase
