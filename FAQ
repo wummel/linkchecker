@@ -148,6 +148,7 @@ A11: LinkChecker follows the robots.txt exclusion standard. To avoid
    http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt
    for more info.
 
+
 Q12: Ctrl-C does not stop LinkChecker immediately. Why is that so?
 A12: The Python interpreter has to wait for all threads to finish, and
    this means waiting for all open sockets to close. The default timeout

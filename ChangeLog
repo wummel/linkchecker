@@ -1,4 +1,8 @@
-1.9.3
+1.9.4
+  * check CSS background-image urls
+    Changed: linkcheck/UrlData.py, linkcheck/linkparser.py
+
+1.9.3 (released 16.10.2003)
   * re-added an updated robot parser which uses urllib2 and can decode
     compressed transfer encodings.
     Added: linkcheck/robotparser2.py
