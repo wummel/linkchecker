@@ -211,7 +211,7 @@ class TextLogger (linkcheck.logger.Logger):
             return
         if self.has_field('outro'):
             self.writeln()
-            self.write(_("Thats it.")+" ")
+            self.write(_("That's it.")+" ")
             if linknumber >= 0:
                 self.write(_n("%d link checked.", "%d links checked.",
                               linknumber) % linknumber)
