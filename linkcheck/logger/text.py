@@ -80,7 +80,6 @@ class TextLogger (linkcheck.logger.Logger):
         self.colordltime = args['colordltime']
         self.colordlsize = args['colordlsize']
         self.colorreset = args['colorreset']
-        self.errors = 0
 
     def start_output (self):
         """print generic start checking info"""

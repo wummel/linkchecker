@@ -47,9 +47,14 @@ class Logger (object):
 
     def __init__ (self, **kwargs):
         """initialize a logger, looking for field restrictions in kwargs"""
+        # what log fields should be in output
         self.logfields = None # log all fields
+        # number of spaces before log fields for alignment
         self.logspaces = {}
+        # maximum indent of spaces for alignment
         self.max_indent = 0
+        # number of encountered errors
+        self.errors = 0
         if kwargs.has_key('fields'):
             if "all" not in kwargs['fields']:
                 # only log given fields
