@@ -1,3 +1,10 @@
+1.6.6
+  * Use the new HTTPConnection/HTTPResponse interface of httplib
+    Closes: SF bug #634679
+    Changed files: linkcheck/HTTPUrlData.py, linkcheck/HTTPSUrlData.py
+  * Updated the ftp online test
+    Changed files: test/output/test_ftp
+
 1.6.5
   * Catch the maximum recursion limit error while parsing links and
     print an error message instead of bailing out.
