@@ -26,9 +26,14 @@ import linkcheck.dns.rdatatype
 import linkcheck.dns.rrset
 import linkcheck.dns.zone
 
+_paths = ["linkcheck", "dns", "tests"]
 
-def fname (name):
-    return os.path.join("linkcheck", "dns", "tests", name)
+def fname (name, sep=None):
+    args = tuple(_paths + [name])
+    if sep is not None:
+        return sep.join(args)
+    else:
+        return os.path.join(*args)
 
 
 example_text = """$TTL 3600
@@ -90,7 +95,7 @@ $ORIGIN example.
 """
 
 include_text = """$INCLUDE "%s"
-""" % fname("example")
+""" % fname("example", sep="/")
 
 bad_directive_text = """$FOO bar
 $ORIGIN example.
