@@ -37,7 +37,9 @@ config:
 
 # no rpm package; too much trouble, cannot test
 dist:	locale config
-	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_wininst
+	$(PYTHON) setup.py sdist --formats=gztar,zip
+	python2.1 setup.py bdist_wininst
+	python2.2 setup.py bdist_wininst
 
 # produce the .deb Debian package
 deb_local: cleandeb
