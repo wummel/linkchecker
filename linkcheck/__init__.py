@@ -19,7 +19,7 @@ class error(Exception):
     pass
 
 # i18n suppport
-import _linkchecker_configdata
+import os, _linkchecker_configdata
 try:
     import gettext
     domain = 'linkcheck'
@@ -32,7 +32,7 @@ except IOError:
 #import timeoutsocket
 #timeoutsocket.setDefaultSocketTimeout(20)
 
-import Config,UrlData,sys,lc_cgi
+import Config, UrlData, sys, lc_cgi
 from debuglevels import *
 debug = Config.debug
 
