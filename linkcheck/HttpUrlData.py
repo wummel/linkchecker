@@ -104,7 +104,7 @@ class HttpUrlData (ProxyUrlData):
                 self.setProxy(self.headers.getheader("Location"))
                 self.setInfo(linkcheck._("Enforced Proxy %s")%`self.proxy`)
                 response = self._getHttpResponse()
-                self.headers = reponse.msg
+                self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
             # follow redirections
             tries = 0
@@ -116,8 +116,8 @@ class HttpUrlData (ProxyUrlData):
                                     self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
                 self.urlTuple = urlparse.urlparse(redirected)
-                reponse = self._getHttpResponse()
-                self.headers = reponse.msg
+                response = self._getHttpResponse()
+                self.headers = response.msg
                 Config.debug(BRING_IT_ON, "Redirected", self.headers)
                 tries += 1
             if tries >= 5:
@@ -131,7 +131,7 @@ class HttpUrlData (ProxyUrlData):
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
                 response = self._getHttpResponse()
-                self.headers = reponse.msg
+                self.headers = response.msg
                 Config.debug(BRING_IT_ON, "Authentication", _user, "/",
 		             _password)
             # some servers get the HEAD request wrong:
