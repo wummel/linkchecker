@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Wed Nov 27 19:46:22 2002\n"
+"POT-Creation-Date: Fri Dec  6 20:01:49 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -32,6 +32,9 @@ msgstr "Remote host heeft de verbinding beëindigd"
 
 msgid "Got no answer from FTP server"
 msgstr "Geen antwoord van FTP Server"
+
+msgid "Missing trailing directory slash in ftp url"
+msgstr ""
 
 msgid "found"
 msgstr "gevonden"
@@ -151,7 +154,7 @@ msgstr "Fout"
 msgid "Valid"
 msgstr "Geldig"
 
-msgid "URL has invalid port number"
+msgid "URL has invalid port number %s"
 msgstr ""
 
 msgid "URL is null or empty"
@@ -164,6 +167,9 @@ msgid "anchor #%s not found"
 msgstr ""
 
 msgid "Found %s in link contents"
+msgstr ""
+
+msgid "Content size %s is larger than %s"
 msgstr ""
 
 msgid "more than one <base> tag found, using only the first one"
@@ -253,6 +259,9 @@ msgstr "D/L Zeit"
 msgid "%.3f seconds"
 msgstr "%.3f Seconden"
 
+msgid "D/L Size"
+msgstr ""
+
 msgid "Check Time"
 msgstr "Testtijd"
 
@@ -306,6 +315,9 @@ msgstr "D/L tijd"
 
 msgid "%.3f seconds\n"
 msgstr "%.3f Seconden\n"
+
+msgid "dlsize"
+msgstr ""
 
 msgid "checktime"
 msgstr "Testtijd"
@@ -421,6 +433,10 @@ msgid ""
 "        message, for example 'This page has moved' or 'Oracle\n"
 "        Application Server error'.\n"
 "        This option implies -w.\n"
+"--warning-size-bytes=bytes\n"
+"        Print a warning if content size is available and exceeds the given\n"
+"        number of bytes.\n"
+"        This option implies -w.\n"
 msgstr ""
 "GEBRUIK\tlinkchecker [options] bestand_of_url...\n"
 "\n"
@@ -507,6 +523,10 @@ msgstr ""
 "        Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option impliziert -w.\n"
+"--warning-size-bytes=bytes\n"
+"        Print a warning if content size is available and exceeds the given\n"
+"        number of bytes.\n"
+"        This option implies -w.\n"
 
 msgid ""
 "NOTES\n"

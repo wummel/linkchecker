@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Wed Nov 27 19:46:22 2002\n"
+"POT-Creation-Date: Fri Dec  6 20:01:49 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -32,6 +32,9 @@ msgstr "Entfernter Rechner hat die Verbindung geschlossen"
 
 msgid "Got no answer from FTP server"
 msgstr "Keine Antwort vom FTP Server"
+
+msgid "Missing trailing directory slash in ftp url"
+msgstr ""
 
 msgid "found"
 msgstr "gefunden"
@@ -168,8 +171,8 @@ msgstr "Fehler"
 msgid "Valid"
 msgstr "Gültig"
 
-msgid "URL has invalid port number"
-msgstr "URL hat ungültige Portnummer"
+msgid "URL has invalid port number %s"
+msgstr "URL hat ungültige Portnummer %s"
 
 msgid "URL is null or empty"
 msgstr "URL ist Null oder leer"
@@ -182,6 +185,9 @@ msgstr "Anker #%s nicht gefunden"
 
 msgid "Found %s in link contents"
 msgstr "Habe %s in Link Inhalt gefunden"
+
+msgid "Content size %s is larger than %s"
+msgstr ""
 
 msgid "more than one <base> tag found, using only the first one"
 msgstr "mehr als ein <base> Tag gefunden, benutze lediglich das erste"
@@ -270,6 +276,12 @@ msgstr "D/L Zeit"
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+msgid "D/L Size"
+msgstr "D/L Größe"
+
 msgid "Check Time"
 msgstr "Prüfzeit"
 
@@ -323,6 +335,9 @@ msgstr "D/L Zeit"
 
 msgid "%.3f seconds\n"
 msgstr "%.3f Sekunden\n"
+
+msgid "dlsize"
+msgstr "D/L Größe"
 
 msgid "checktime"
 msgstr "Prüfzeit"
@@ -438,6 +453,10 @@ msgid ""
 "        message, for example 'This page has moved' or 'Oracle\n"
 "        Application Server error'.\n"
 "        This option implies -w.\n"
+"--warning-size-bytes=bytes\n"
+"        Print a warning if content size is available and exceeds the given\n"
+"        number of bytes.\n"
+"        This option implies -w.\n"
 msgstr ""
 "BENUTZUNG\tlinkchecker [options] datei_oder_url...\n"
 "\n"
@@ -523,6 +542,10 @@ msgstr ""
 "        bekommen können.\n"
 "        Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
+"        Diese Option impliziert -w.\n"
+"--warning-size-bytes=bytes\n"
+"        Drucke eine Warnung wenn die Inhaltsgröße bekannt ist und die\n"
+"        angegebene Anzahl an Bytes übersteigt.\n"
 "        Diese Option impliziert -w.\n"
 
 msgid ""

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Wed Nov 27 19:46:22 2002\n"
+"POT-Creation-Date: Fri Dec  6 20:01:49 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -32,6 +32,9 @@ msgstr ""
 
 msgid "Got no answer from FTP server"
 msgstr "N'obtient pas de réponse du serveur FTP"
+
+msgid "Missing trailing directory slash in ftp url"
+msgstr ""
 
 msgid "found"
 msgstr "trouvé"
@@ -148,7 +151,7 @@ msgstr "Erreur"
 msgid "Valid"
 msgstr "Valide"
 
-msgid "URL has invalid port number"
+msgid "URL has invalid port number %s"
 msgstr ""
 
 msgid "URL is null or empty"
@@ -161,6 +164,9 @@ msgid "anchor #%s not found"
 msgstr ""
 
 msgid "Found %s in link contents"
+msgstr ""
+
+msgid "Content size %s is larger than %s"
 msgstr ""
 
 msgid "more than one <base> tag found, using only the first one"
@@ -243,6 +249,9 @@ msgstr "Durée D/L"
 msgid "%.3f seconds"
 msgstr "%.3f secondes"
 
+msgid "D/L Size"
+msgstr ""
+
 msgid "Check Time"
 msgstr "Durée d'Analyse"
 
@@ -296,6 +305,9 @@ msgstr ""
 
 msgid "%.3f seconds\n"
 msgstr "%.3f secondes\n"
+
+msgid "dlsize"
+msgstr ""
 
 msgid "checktime"
 msgstr "Durée d'Analyse"
@@ -411,6 +423,10 @@ msgid ""
 "        message, for example 'This page has moved' or 'Oracle\n"
 "        Application Server error'.\n"
 "        This option implies -w.\n"
+"--warning-size-bytes=bytes\n"
+"        Print a warning if content size is available and exceeds the given\n"
+"        number of bytes.\n"
+"        This option implies -w.\n"
 msgstr ""
 "USAGE\tlinkchecker [options] fichier_ou_url...\n"
 "\n"
@@ -492,6 +508,10 @@ msgstr ""
 "        You can use this to check for pages that contain some form of\n"
 "        error message, for example 'This page has moved' or\n"
 "        'Oracle Application Server error'.\n"
+"        This option implies -w.\n"
+"--warning-size-bytes=bytes\n"
+"        Print a warning if content size is available and exceeds the given\n"
+"        number of bytes.\n"
 "        This option implies -w.\n"
 
 msgid ""
