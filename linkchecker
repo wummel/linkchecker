@@ -120,16 +120,23 @@ blacklist
 none    Logs nothing. Suitable for scripts.
 """)
 
+
+def encode (s, codec="iso8859-15"):
+    """Encode string with given codec for screen print."""
+    return s.encode(codec, "ignore")
+
+
 def print_version ():
     """print the program version and exit"""
-    print linkcheck.configuration.AppInfo.encode("iso8859-15", "ignore")
+    print encode(linkcheck.configuration.AppInfo)
     sys.exit(0)
+
 
 def print_usage (msg):
     """print a program msg text to stderr and exit"""
-    sys.stderr.write(_("Error: %s") % msg)
+    sys.stderr.write(encode(_("Error: %s") % msg))
     sys.stderr.write(os.linesep)
-    sys.stderr.write(_("Execute 'linkchecker -h' for help"))
+    sys.stderr.write(encode(_("Execute 'linkchecker -h' for help")))
     sys.stderr.write(os.linesep)
     sys.exit(1)
 
@@ -421,13 +428,13 @@ if options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
         logtype, encoding = options.output, "iso-8859-15"
-    if not linkcheck.Loggers.has_key(logtype):
+    if not linkcheck.Loggers.has_key(logtype.lower()):
         print_usage(_("Unknown logger type %r in %r for option %s") % \
                    (logtype, options.output, "'-o, --output'"))
     if logtype != 'none' and not has_encoding(encoding):
         print_usage(_("Unknown encoding %r in %r for option %s") % \
                    (encoding, options.output, "'-o, --output'"))
-    config['logger'] = config.logger_new(logtype, encoding=encoding)
+    config['logger'] = config.logger_new(logtype.lower(), encoding=encoding)
 if options.fileoutput:
     ns = {'fileoutput': 1}
     for arg in options.fileoutput:
