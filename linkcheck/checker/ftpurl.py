@@ -83,7 +83,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         _user, _password = self.get_user_password()
         key = ("ftp", self.urlparts[1], _user, _password)
         conn = self.consumer.cache.get_connection(key)
-        if conn is not None:
+        if conn is not None and conn.sock is not None:
             # reuse cached FTP connection
             self.url_connection = conn
             return
@@ -159,7 +159,8 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 if fpo.trycwd or fpo.tryretr:
                     files.append(name)
             except (ValueError, AttributeError), msg:
-                print "XXX", msg
+                linkcheck.log.debug(linkcheck.LOG_CHECK, "%s (%s)",
+                                    str(msg), line)
         self.url_connection.dir(add_entry)
         return files
 
@@ -218,9 +219,5 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         _user, _password = self.get_user_password()
         key = ("ftp", self.urlparts[1], _user, _password)
         cache_add = self.consumer.cache.add_connection
-        if not cache_add(key, self.url_connection, DEFAULT_TIMEOUT_SECS):
-            try:
-                self.url_connection.quit()
-            except:
-                pass
+        cache_add(key, self.url_connection, DEFAULT_TIMEOUT_SECS)
         self.url_connection = None
