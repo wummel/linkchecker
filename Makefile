@@ -12,6 +12,7 @@ LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
 OFFLINETESTS = test_base test_misc test_file test_frames
 ONLINETESTS = test_mail test_http test_https test_news test_ftp
 DESTDIR=/.
+MD5SUMS=linkchecker-md5sums.txt
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
@@ -38,6 +39,7 @@ config:
 # no rpm package; too much trouble, cannot test
 dist:	locale config
 	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_wininst
+	rm -f $(MD5SUMS)  md5sum dist/* > $(MD5SUMS)
 
 # produce the .deb Debian package
 deb_local: cleandeb
