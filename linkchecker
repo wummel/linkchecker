@@ -427,7 +427,8 @@ if options.output:
                    (options.output, "'-o, --output'"))
 if options.fileoutput:
     ns = {'fileoutput': 1}
-    for ftype in options.fileoutput:
+    for arg in options.fileoutput:
+        ftype = arg
         # look for (optional) filename and encoding
         if '/' in ftype:
             ftype, suffix = ftype.split('/', 1)
@@ -446,11 +447,17 @@ if options.fileoutput:
                 else:
                     ns['filename'] = suffix
         if linkcheck.Loggers.has_key(ftype):
-            logger = config.logger_new(ftype, **ns)
+            # generating loggers with fileoutput can throw
+            # an exception when opening the file
+            try:
+                logger = config.logger_new(ftype, **ns)
+            except OSError, msg:
+                printUsage(_("Illegal argument %r for option %s: %s") % \
+                           (arg, "'-F, --file-output'", str(msg)))
             config['fileoutput'].append(logger)
         else:
             printUsage(_("Illegal argument %r for option %s") % \
-                       (ftype, "'-F, --file-output'"))
+                       (arg, "'-F, --file-output'"))
 if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.intern:
