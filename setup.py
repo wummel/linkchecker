@@ -45,7 +45,7 @@ class LCDistribution(Distribution):
 			  "Use the -I option for the build_ext command.")
 
     def has_ssl(self):
-        incls = self.find_command_obj("build_ext").include_dirs
+        incls = self.get_command_obj("build_ext").include_dirs
         incls = (incls and string.split(incls, os.pathsep)) or []
         for d in incls + self.default_include_dirs:
             if os.path.exists(os.path.join(d, "ssl.h")):
@@ -54,7 +54,7 @@ class LCDistribution(Distribution):
 
                                            
     def replace_vars(self):
-        inst = self.find_command_obj("install")
+        inst = self.get_command_obj("install")
         inst.ensure_ready()
         t = Template("linkcheck/__init__.py.tmpl")
         f = open("linkcheck/__init__.py","w")
@@ -66,6 +66,7 @@ class LCDistribution(Distribution):
             f.write(t.fill_in({"install_scripts": inst.install_scripts}))
             f.close()
             self.scripts.append('linkchecker.bat')
+            self.scripts.append('linkcheckerrc')
 
 
 setup (name = "linkchecker",
@@ -94,7 +95,8 @@ o internationalization support (currently english and german)
        distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],
        scripts = ['linkchecker'],
-       data = ['locale/de/LC_MESSAGES/linkcheck.mo',
-               'locale/de/LC_MESSAGES/linkcheck.po',
-              ],
+       data_files = [('locale/de/LC_MESSAGES',
+                      ['locale/de/LC_MESSAGES/linkcheck.mo',
+		       'locale/de/LC_MESSAGES/linkcheck.po']),
+                    ],
 )

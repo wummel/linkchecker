@@ -2,12 +2,11 @@
                 ==========================
 
 Requirements:
-You need Python >= 1.5.2
-You get Python from http://www.python.org
+You need Python >= 1.5.2 from http://www.python.org/
 
 Optionally packages:
 Distutils >= 0.8.3 from http://www.python.org/sigs/distutils-sig/ 
-OpenSSL from http://www.openssl.org
+OpenSSL from http://www.openssl.org/
 You will need Perl for Win32 (available from
 http://www.activestate.com/ActivePerl) if you want to install OpenSSL 
 on Windows!
@@ -26,6 +25,7 @@ replace $install_data with the distribution directory.
 Windows users copy 'linkchecker.bat.tmpl' to 'linkchecker.bat' and
 replace $install_scripts with the distribution directory.
 After all, put the distribution directory in your path.
+
 
 Running LinkChecker:
 Type "linkchecker" followed by your URLs you want to check.
