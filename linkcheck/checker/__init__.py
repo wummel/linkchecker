@@ -104,11 +104,16 @@ acap        # application configuration access protocol
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
 
-# main check function
 def check_urls (consumer):
-    """Gets a complete configuration object as parameter where all
-       runtime-dependent options are stored. If you call this function
-       more than once, you can specify different configurations.
+    """
+    Main check function; checks all configured URLs until interrupted
+    with Ctrl-C. If you call this function more than once, you can specify
+    different configurations with the consumer parameter.
+
+    @param consumer: an object where all runtime-dependent options are
+        stored
+    @type consumer: c{linkcheck.consumer.Consumer}
+    @return: c{None}
     """
     try:
         _check_urls(consumer)
@@ -117,6 +122,15 @@ def check_urls (consumer):
 
 
 def _check_urls (consumer):
+    """
+    Checks all configured URLs. Prints status information, calls logger
+    methods.
+
+    @param consumer: an object where all runtime-dependent options are
+        stored
+    @type consumer: c{linkcheck.consumer.Consumer}
+    @return: c{None}
+    """
     consumer.logger_start_output()
     start_time = time.time()
     status_time = start_time
@@ -151,7 +165,16 @@ import linkcheck.checker.errorurl
 
 
 def set_intern_url (url, klass, config):
-    """add intern url pattern for url given on the command line"""
+    """
+    Add intern url pattern for url given on the command line.
+
+    @param url: URL to add
+    @type url: c{string}
+    @param klass: URL class
+    @type klass: class object
+    @param config: configuration data
+    @type config: c{linkcheck.configuration.Configuration}
+    """
     linkcheck.log.debug(linkcheck.LOG_CHECK, "Set intern url for %r", url)
     if klass == linkcheck.checker.fileurl.FileUrl:
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern pattern ^file:")
@@ -170,9 +193,18 @@ def set_intern_url (url, klass, config):
 
 
 def absolute_url (base_url, base_ref, parent_url):
-    """Search for the absolute url to detect the link type. This does not
-       join any url fragments together! Returns the url in lower case to
-       simplify urltype matching."""
+    """
+    Search for the absolute url to detect the link type. This does not
+    join any url fragments together! Returns the url in lower case to
+    simplify urltype matching.
+
+    @param base_url: base url from a link tag
+    @type base_url: c{string} or c{None}
+    @param base_ref: base url from <base> tag
+    @type base_ref: c{string} or c{None}
+    @param parent_url: url of parent document
+    @type parent_url: c{string} or c{None}
+    """
     if base_url and linkcheck.url.url_is_absolute(base_url):
         return base_url.lower()
     elif base_ref and linkcheck.url.url_is_absolute(base_ref):
@@ -185,7 +217,28 @@ def absolute_url (base_url, base_ref, parent_url):
 def get_url_from (base_url, recursion_level, consumer,
                   parent_url=None, base_ref=None, line=0, column=0,
                   name=u"", cmdline=None):
-    """get url data from given base data"""
+    """
+    Get url data from given base data.
+
+    @param base_url: base url from a link tag
+    @type base_url: c{string}
+    @param recursion_level: current recursion level
+    @type recursion_level: c{number}
+    @param consumer: consumer object
+    @type consumer: c{linkcheck.checker.consumer.Consumer}
+    @param parent_url: parent url
+    @type parent_url: c{string} or c{None}
+    @param base_ref: base url from <base> tag
+    @type base_ref c{string} or c{None}
+    @param line: line number
+    @type line: c{number}
+    @param column: column number
+    @type column: c{number}
+    @param name: link name
+    @type name: c{string}
+    @param cmdline: flag if url was given on command line
+    @type cmdline: c{bool}
+    """
     default_encoding = "iso8859-15"
     if not isinstance(base_url, unicode):
         base_url = unicode(base_url, default_encoding, "ignore")
@@ -236,7 +289,12 @@ def get_url_from (base_url, recursion_level, consumer,
 
 
 def get_index_html (urls):
-    """Construct artificial index.html from given URLs."""
+    """
+    Construct artificial index.html from given URLs.
+
+    @param urls: list with url strings
+    @type urls: c{list} of c{string}
+    """
     lines = ["<html>", "<body>"]
     for entry in urls:
         name = cgi.escape(entry)
