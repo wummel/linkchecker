@@ -76,7 +76,7 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
 Examples = _(r"""EXAMPLES
 Check the treasure.calvinsplayground.de domain, but don't recurse into
 links outside of this domain:
-  linkchecker -Fhtml -ocolored http://treasure.calvinsplayground.de/
+  linkchecker -Fhtml http://treasure.calvinsplayground.de/
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
