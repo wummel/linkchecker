@@ -228,12 +228,15 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
               tries < self.max_redirects:
             newurl = self.headers.getheader("Location",
                          self.headers.getheader("Uri", ""))
-            redirected, is_idn = linkcheck.url.url_norm(
-                                      urlparse.urljoin(redirected, newurl))
-            if not isinstance(redirected, unicode):
-                redirected = unicode(redirected, "iso8859-1", "ignore")
-            self.add_info(_("Redirected to %(url)s") % {'url': redirected})
+            # make new url absolute and unicode
+            newurl = urlparse.urljoin(redirected, newurl)
+            if not isinstance(newurl, unicode):
+                newurl = unicode(newurl, "iso8859-1", "ignore")
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
+                                newurl)
+            self.add_info(_("Redirected to %(url)s") % {'url': redirected})
+            redirected, is_idn = linkcheck.url.url_norm(newurl)
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
             # see about recursive redirect
             all_seen = self.aliases + [self.cache_url_key]
