@@ -4,12 +4,12 @@ linkchecker (1.3.0) unstable; urgency=low
   * fix agent matching in robotparser2.py
   * added more LinkPatterns (ripped from HTML::Tagset.pm)
   * fix ignored configfile settings for loggers
-  * optional filename argument for -F (patch from 
+  * optional filename argument for -F (patch from
     Jamie Heilman <jamie@audible.transient.net>)
-  * config file option to control  which fields the loggers should print
-    out
+  * config file option to control which fields the loggers should print
+  * fix anchor bug (unpack tuple of wrong size)
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri,  9 Feb 2001 10:51:24 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 22 Feb 2001 01:35:50 +0100
 
 linkchecker (1.2.14) unstable; urgency=low
 

@@ -11,6 +11,8 @@ LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_all.deb $(PACKAGE)-ssl_$(VERSION)_i386.deb
 PULLHOST=phoenix.net.uni-sb.de
 PULLPATH=/home/calvin/temp/linkchecker
+OFFLINETESTS = test_base test_misc test_file test_frames
+ONLINETESTS = test_mail test_http test_https test_news test_ftp
 
 DESTDIR=/.
 .PHONY: test clean distclean package files upload dist locale all
@@ -69,7 +71,10 @@ uploadpull: distclean dist package files VERSION
 	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make pull"
 
 test:
-	python2 test/regrtest.py
+	python2 test/regrtest.py $(OFFLINE_TESTS)
+
+onlinetest:
+	python2 test/regrtest.py $(ONLINE_TESTS)
 
 locale:
 	$(MAKE) -C po

@@ -297,7 +297,7 @@ class UrlData:
         if not (anchor!="" and self.isHtml() and self.valid):
             return
         self.getContent()
-        for cur_anchor,line in self.searchInForTag(AnchorPattern):
+        for cur_anchor,line,name in self.searchInForTag(AnchorPattern):
             if cur_anchor == anchor:
                 return
         self.setWarning("anchor #"+anchor+" not found")
