@@ -125,9 +125,12 @@ class FileUrl (urlbase.UrlBase):
     def get_content (self):
         if not self.valid:
             return ""
-        if self.is_directory() and not self.has_content:
+        if self.has_content:
+            return self.data
+        elif self.is_directory():
             return self.get_directory_content()
-        return super(FileUrl, self).get_content()
+        else:
+            return super(FileUrl, self).get_content()
 
     def get_directory_content (self):
         t = time.time()
