@@ -338,7 +338,7 @@ class UrlData:
         debug(HURT_ME_PLENTY, "checking anchor", anchor)
         if not (self.valid and anchor and self.isHtml()):
             return
-        h = LinkParser(self.getContent(), {'a': ['name']})
+        h = LinkParser(self.getContent(), {'a': ['name'], None: ['id']})
         for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == anchor:
                 return
