@@ -765,9 +765,6 @@ class TestLogger:
             print "cached"
         if urlData.name:
             print "name",urlData.name
-        if urlData.parentName:
-            print "parenturl",urlData.parentName
-	    print "line",urlData.line
         if urlData.baseRef:
             print "baseurl",urlData.baseRef
         if urlData.infoString:
@@ -775,9 +772,9 @@ class TestLogger:
         if urlData.warningString:
             print "warning",urlData.warningString
         if urlData.valid:
-            print "valid",urlData.validString
+            print "valid"
         else:
-            print "error",urlData.errorString
+            print "error"
 
     def endOfOutput(self, linknumber=-1):
         pass
