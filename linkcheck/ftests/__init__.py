@@ -17,6 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
+import codecs
 import unittest
 import difflib
 
@@ -47,26 +48,26 @@ class TestLogger (linkcheck.logger.Logger):
     def new_url (self, url_data):
         """append logger output to self.result"""
         if self.has_field('url'):
-            url = "url %r" % url_data.base_url
+            url = u"url %s" % unicode(repr(url_data.base_url)[1:])
             if url_data.cached:
-                url += " (cached)"
+                url += u" (cached)"
             self.result.append(url)
         if self.has_field('cachekey'):
-            self.result.append("cache key %s" % url_data.cache_url_key)
+            self.result.append(u"cache key %s" % url_data.cache_url_key)
         if self.has_field('realurl'):
-            self.result.append("real url %s" % url_data.url)
+            self.result.append(u"real url %s" % url_data.url)
         if self.has_field('name') and url_data.name:
-            self.result.append("name %s" % url_data.name)
+            self.result.append(u"name %s" % url_data.name)
         if self.has_field('base') and url_data.base_ref:
-            self.result.append("baseurl %s" % url_data.base_ref)
+            self.result.append(u"baseurl %s" % url_data.base_ref)
         if self.has_field('info'):
             for info in url_data.info:
-                self.result.append("info %s" % info)
+                self.result.append(u"info %s" % info)
         if self.has_field('warning'):
             for warning in url_data.warning:
-                self.result.append("warning %s" % warning)
+                self.result.append(u"warning %s" % warning)
         if self.has_field('result'):
-            self.result.append(url_data.valid and "valid" or "error")
+            self.result.append(url_data.valid and u"valid" or u"error")
         # note: do not append url_data.result since this is
         # platform dependent
 
@@ -107,17 +108,17 @@ class StandardTest (unittest.TestCase):
 
     def get_file (self, filename):
         """get file name located within 'data' directory"""
-        return os.path.join("linkcheck", "ftests", "data", filename)
+        return unicode(os.path.join("linkcheck", "ftests", "data", filename))
 
     def get_resultlines (self, filename):
         """return contents of file, as list of lines without line endings,
            ignoring empty lines and lines starting with a hash sign (#).
         """
         resultfile = self.get_file(filename+".result")
-        f = open(resultfile)
-        resultlines = [line.rstrip('\r\n') % {'curdir': os.getcwd()} \
+        f = codecs.open(resultfile, "r", "iso8859-1")
+        resultlines = [line.rstrip(u'\r\n') % {'curdir': os.getcwd()} \
                        for line in f \
-                       if line.strip() and not line.startswith('#')]
+                       if line.strip() and not line.startswith(u'#')]
         f.close()
         return resultlines
 
@@ -132,7 +133,8 @@ class StandardTest (unittest.TestCase):
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
-            self.fail(os.linesep.join([url] + consumer.config['logger'].diff))
+            sep = unicode(os.linesep)
+            self.fail(sep.join([url] + consumer.config['logger'].diff))
 
     def direct (self, url, resultlines, fields=None, recursionlevel=0):
         """check url with expected result"""
