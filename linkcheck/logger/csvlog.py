@@ -45,6 +45,7 @@ class CSVLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.starttime = time.time()
+        row = []
         if self.has_field("intro"):
             self.comment(_("created by %s at %s") % \
                          (linkcheck.configuration.AppName,
@@ -55,25 +56,29 @@ class CSVLogger (linkcheck.logger.Logger):
                          {'email': linkcheck.configuration.Email})
             self.check_date()
             self.comment(_("Format of the entries:"))
-            self.comment(u"urlname;")
-            self.comment(u"recursionlevel;")
-            self.comment(u"parentname;")
-            self.comment(u"baseref;")
-            self.comment(u"result;")
-            self.comment(u"warningstring;")
-            self.comment(u"infostring;")
-            self.comment(u"valid;")
-            self.comment(u"url;")
-            self.comment(u"line;")
-            self.comment(u"column;")
-            self.comment(u"name;")
-            self.comment(u"dltime;")
-            self.comment(u"dlsize;")
-            self.comment(u"checktime;")
-            self.comment(u"cached;")
+            for s in (u"urlname",
+                      u"recursionlevel",
+                      u"parentname",
+                      u"baseref",
+                      u"result",
+                      u"warningstring",
+                      u"infostring",
+                      u"valid",
+                      u"url",
+                      u"line",
+                      u"column",
+                      u"name",
+                      u"dltime",
+                      u"dlsize",
+                      u"checktime",
+                      u"cached"):
+                self.comment(s)
+                row.append(s)
             self.flush()
         self.writer = csv.writer(self.fd, dialect='excel',
                         delimiter=self.separator, lineterminator=os.linesep)
+        if row:
+            self.writer.writerow(row)
 
     def new_url (self, url_data):
         """print csv formatted url check info"""
