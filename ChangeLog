@@ -1,3 +1,9 @@
+1.8.19
+  * add scheme colon in set_intern_url
+    Changed files: linkcheck/UrlData.py
+  * fix threading option -t
+    Changed files: linkchecker, linkcheck/Config.py
+
 1.8.18
   * fix option error messages for invalid integer arguments
     Changed files: linkchecker
