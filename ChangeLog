@@ -19,6 +19,12 @@
     Type: bugfix
     Changed: linkcheck/{HttpUrlData, url}.py
 
+  * - preserve the order in which HTML attributes have been parsed
+    - cope with trailing space in HTML comments
+    Type: feature
+    Changed: linkcheck/parser/{__init__.py,htmllex.l}
+    Added: linkcheck/containers.py
+
   * rework anchor fallback
     Type: bugfix
     Changed: linkcheck/HttpUrlData.py
