@@ -1,4 +1,4 @@
-2.2 "" (released xx.01.2005)
+2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:
     - default separator is now a comma, not a semicolon
