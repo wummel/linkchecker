@@ -43,7 +43,7 @@ class FtpUrlData (ProxyUrlData):
                   line=self.line,
                   column=self.column,
 		  name=self.name)
-            http.buildUrl
+            http.buildUrl()
             return http.check()
         # no proxy
         _user, _password = self._getUserPassword()
