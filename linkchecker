@@ -144,7 +144,7 @@ group.add_option("-t", "--threads", type="int", dest="threads",
 """Generate no more than num threads. Default number of threads is 5.
 To disable threading specify a non-positive number."""))
 
-group.add_option("-V", "--version", dest="version",
+group.add_option("-V", "--version", action="store_true", dest="version",
                  help=i18n._(
 """Print version and exit."""))
 optparser.add_option_group(group)
