@@ -1,8 +1,7 @@
 #!/usr/bin/make -f
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
-PACKAGE=linkchecker
-DOCDIR = debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)
+PACKAGE=linkchecker-ssl
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -14,23 +13,40 @@ export DH_COMPAT=3
 export DH_OPTIONS
 
 nossl:
-	@echo already nossl version environments
-
-
-ssl:
-	@echo change to ssl version...
-	@cat debian/changelog | sed '1 s/linkchecker/linkchecker-ssl/' >debian/changelog-ssl
-	@cd debian && for i in *-ssl; do \
-                f=`echo $$i | sed -e 's/-ssl//'`; \
-                mv $$f $$f-nossl; \
+	@echo change to nossl version...
+	@cat debian/changelog | sed '1 s/linkchecker-ssl/linkchecker/' >debian/changelog-nossl
+	@cd debian && for i in *-nossl; do \
+                f=`echo $$i | sed -e 's/-nossl//'`; \
+                mv $$f $$f-ssl; \
                 mv $$i $$f; \
                 echo -n "$$f "; \
         done
 	@chmod +x debian/rules
 	@echo done
 
+ssl:
+	@echo already ssl version environments
 
-include debian/rules.mk
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	./setup.py config -lcrypto
+	touch configure-stamp
+
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	rm -rf debian/$(PACKAGE) debian/$(PACKAGE)-ssl
+	./setup.py build
+	touch build-stamp
+
+clean:
+	dh_testdir
+	rm -f build-stamp configure-stamp
+	$(MAKE) clean
+	dh_clean
 
 install: build
 	dh_testdir
@@ -38,38 +54,34 @@ install: build
 	dh_installdirs
 	$(MAKE) locale
 	./setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
-	# remove man pages, we install them with dh_installman
-	rm -r debian/$(PACKAGE)/usr/man
-	# remove example files, we install them with dh_installexamples
-	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples/
-	# remove any SSL related files
-	rm -r debian/$(PACKAGE)/usr/lib/python2.0/site-packages/linkcheckssl
-	# install additional doc files
-	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
-	install -c -m 644 test/*.py $(DOCDIR)/test
-	install -c -m 644 test/html/*.html $(DOCDIR)/test/html
-	install -c -m 644 test/output/test_* $(DOCDIR)/test/output
-	# install system wide configuration file in etc
-	mv debian/$(PACKAGE)/usr/share/linkchecker/linkcheckerrc debian/$(PACKAGE)/etc
+	# remove everything but the ssl modules
+	rm -rf debian/$(PACKAGE)/usr/man
+	rm -rf debian/$(PACKAGE)/usr/bin
+	rm -rf debian/$(PACKAGE)/usr/share
+	rm -rf debian/$(PACKAGE)/usr/lib/python2.0/site-packages/{linkcheck,DNS}
+	rm -rf debian/$(PACKAGE)/usr/lib/python2.0/site-packages/*.py
 
 
 # Build architecture-independent files here.
 binary-indep: build install
+
+# Build architecture-dependent files here.
+binary-arch: build install
 	dh_testdir
 	dh_testroot
 #	dh_installdebconf
 	dh_installdocs
-	dh_installexamples lc.* lconline/*.html
+#	dh_installexamples lc.* lconline/*.html
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installinit
 #	dh_installcron
-	dh_installman linkchecker.1
+#	dh_installman linkchecker.1
 #	dh_installinfo
 #	dh_undocumented linkchecker.1
-	dh_installchangelogs 
-	dh_link
+	dh_installchangelogs
+#	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
@@ -80,9 +92,6 @@ binary-indep: build install
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-
-# Build architecture-dependent files here.
-binary-arch: build install
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
