@@ -97,7 +97,7 @@ Setup for Windows - the binary .exe installer:
    
    Be sure to have installed all required windows software listed above.
 
-2. Execute the ``linkchecker-x.xx.win32-py2.3.exe`` file and follow
+2. Execute the ``linkchecker-x.xx.win32-py2.4.exe`` file and follow
    the instructions.
 
 Setup for Windows - compiling from source:
@@ -109,16 +109,16 @@ Setup for Windows - compiling from source:
 
 2. Preparing Python for the MinGW compiler
    
-   Search the file python23.dll in your windows folder.
+   Search the file python24.dll in your windows folder.
    After you found it, launch MSYS. Change into the windows folder,
    for example ``cd c:\winnt\system32``. Then execute
-   ``pexports python23.dll > python23.def``.
+   ``pexports python24.dll > python24.def``.
    Then use the dlltool with
-   ``dlltool --dllname python23.dll --def python23.def --output-lib
-   libpython23.a``.
+   ``dlltool --dllname python24.dll --def python24.def --output-lib
+   libpython24.a``.
    The resulting library has to be placed in the same directory as
-   python23.lib. (Should be the libs directory under your Python installation
-   directory, for example ``c:\Python23\Libs\``.)
+   python24.lib. (Should be the libs directory under your Python installation
+   directory, for example ``c:\Python24\Libs\``.)
 
 3. Compile gettext translations
    
@@ -133,7 +133,7 @@ Setup for Windows - compiling from source:
    ``python setup.py build -c mingw32 bdist_wininst``.
    
    This generates a binary installer
-   ``dist\linkchecker-X.X.X.win32-py2.3.exe`` which you just have to
+   ``dist\linkchecker-X.X.X.win32-py2.4.exe`` which you just have to
    execute.
 
 After installation

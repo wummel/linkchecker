@@ -117,7 +117,7 @@ documentation.</p>
 <li><p class="first">Install check</p>
 <p>Be sure to have installed all required windows software listed above.</p>
 </li>
-<li><p class="first">Execute the <tt class="literal"><span class="pre">linkchecker-x.xx.win32-py2.3.exe</span></tt> file and follow
+<li><p class="first">Execute the <tt class="literal"><span class="pre">linkchecker-x.xx.win32-py2.4.exe</span></tt> file and follow
 the instructions.</p>
 </li>
 </ol>
@@ -129,16 +129,16 @@ the instructions.</p>
 <p>Be sure to have installed all required Unix/Linux software listed above.</p>
 </li>
 <li><p class="first">Preparing Python for the MinGW compiler</p>
-<p>Search the file python23.dll in your windows folder.
+<p>Search the file python24.dll in your windows folder.
 After you found it, launch MSYS. Change into the windows folder,
 for example <tt class="literal"><span class="pre">cd</span> <span class="pre">c:\winnt\system32</span></tt>. Then execute
-<tt class="literal"><span class="pre">pexports</span> <span class="pre">python23.dll</span> <span class="pre">&gt;</span> <span class="pre">python23.def</span></tt>.
+<tt class="literal"><span class="pre">pexports</span> <span class="pre">python24.dll</span> <span class="pre">&gt;</span> <span class="pre">python24.def</span></tt>.
 Then use the dlltool with
-<tt class="literal"><span class="pre">dlltool</span> <span class="pre">--dllname</span> <span class="pre">python23.dll</span> <span class="pre">--def</span> <span class="pre">python23.def</span> <span class="pre">--output-lib</span>
-<span class="pre">libpython23.a</span></tt>.
+<tt class="literal"><span class="pre">dlltool</span> <span class="pre">--dllname</span> <span class="pre">python24.dll</span> <span class="pre">--def</span> <span class="pre">python24.def</span> <span class="pre">--output-lib</span>
+<span class="pre">libpython24.a</span></tt>.
 The resulting library has to be placed in the same directory as
-python23.lib. (Should be the libs directory under your Python installation
-directory, for example <tt class="literal"><span class="pre">c:\Python23\Libs\</span></tt>.)</p>
+python24.lib. (Should be the libs directory under your Python installation
+directory, for example <tt class="literal"><span class="pre">c:\Python24\Libs\</span></tt>.)</p>
 </li>
 <li><p class="first">Compile gettext translations</p>
 <p>Still in the MSYS window, change to the <tt class="literal"><span class="pre">linkchecker-X.X.X\po</span></tt>
@@ -150,7 +150,7 @@ prompt.
 Change to the <tt class="literal"><span class="pre">linkchecker-X.X.X</span></tt> directory and run
 <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span> <span class="pre">-c</span> <span class="pre">mingw32</span> <span class="pre">bdist_wininst</span></tt>.</p>
 <p>This generates a binary installer
-<tt class="literal"><span class="pre">dist\linkchecker-X.X.X.win32-py2.3.exe</span></tt> which you just have to
+<tt class="literal"><span class="pre">dist\linkchecker-X.X.X.win32-py2.4.exe</span></tt> which you just have to
 execute.</p>
 </li>
 </ol>
@@ -199,7 +199,7 @@ working</li>
 </div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-12-07 12:47 UTC.
+Generated on: 2004-12-07 22:12 UTC.
 </div>
 </body>
 </html>
