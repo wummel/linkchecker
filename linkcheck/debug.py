@@ -29,6 +29,9 @@ def get_debuglevel ():
     return _debuglevel
 
 def set_debuglevel (i):
+    if i>=NIGHTMARE:
+        import gc
+        gc.set_debug(gc.DEBUG_LEAK)
     global _debuglevel
     _debuglevel = i
 
