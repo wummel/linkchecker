@@ -10,7 +10,6 @@ HOST=www.debian.org
 #LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -s
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -s -r1
 DESTDIR = /.
-MD5SUMS := linkchecker-md5sums.txt
 PYCHECKEROPTS := -F config/pycheckrc
 PYLINTOPTS := 
 # --ignore=httplib2.py
@@ -32,6 +31,7 @@ distclean: clean cleandeb
 # just to be sure clean also the build dir
 	rm -rf dist build
 	rm -f _$(PACKAGE)_configdata.py MANIFEST Packages.gz
+	rm -f sign-stamp release-stamp
 # clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-out* $(PACKAGE).prof $(PACKAGE)-md5sums.txt
 
@@ -43,8 +43,8 @@ cleandeb:
 config:
 	$(PYTHON) setup.py config -lcrypto
 
-dist:	releasecheck distclean locale config
-	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
+locale:
+	$(MAKE) -C po
 
 # to build in the current directory (assumes python 2.3)
 localbuild:
@@ -66,10 +66,20 @@ files:	locale localbuild
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
-upload:
-	rm -f $(MD5SUMS)
-	md5sum dist/* > $(MD5SUMS)
+sign-stamp: release-stamp
 	for f in dist/*; do gpg --detach-sign --armor $$f; done
+	touch $@
+
+release-stamp: releasecheck distclean locale config
+	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
+	touch $@
+
+releasecheck:
+	@if grep -i xxxx ChangeLog > /dev/null; then \
+	  echo "Could not release: edit ChangeLog release date"; false; \
+	fi
+
+upload: sign-stamp
 	ncftpput upload.sourceforge.net /incoming dist/*
 
 test:
@@ -78,19 +88,11 @@ test:
 coverage:
 	test/run.sh test.py --coverage
 
-locale:
-	$(MAKE) -C po
-
 timeouttest:
 	$(PYTHON) $(PACKAGE) -v --timeout=0 mailto:root@aol.com
 
 tar:	distclean
 	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
-
-releasecheck:
-	@if grep xxxx ChangeLog > /dev/null; then \
-	  echo "Could not release: edit ChangeLog release date"; false; \
-	fi
 
 pycheck:
 	-env PYTHONPATH=. PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYFILES)
@@ -102,5 +104,4 @@ reindent:
 	$(PYTHON) config/reindent.py -r -v linkcheck
 
 .PHONY: all clean cleandeb distclean files upload test timeouttest locale
-.PHONY: onlinetest config dist deb_local deb_signed deb_unsigned tar
-.PHONY: releasecheck pycheck pylint reindent
+.PHONY: config deb_local deb_signed tar releasecheck pycheck pylint reindent
