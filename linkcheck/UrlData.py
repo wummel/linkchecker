@@ -237,7 +237,7 @@ class UrlData:
         if ":" in host:
             host,port = host.split(":", 1)
             if not port_re.match(port):
-                raise linkcheck.error("URL has invalid port number")
+                raise linkcheck.error(linkcheck._("URL has invalid port number"))
 
 
     def logMe (self):
@@ -381,7 +381,7 @@ class UrlData:
         for cur_anchor,line,name in self.searchInForTag(AnchorPattern):
             if cur_anchor == anchor:
                 return
-        self.setWarning("anchor #"+anchor+" not found")
+        self.setWarning(linkcheck._("anchor #%s not found") % anchor)
 
 
     def _getExtern (self):
@@ -417,7 +417,6 @@ class UrlData:
                    (match and not entry['negate']):
                     return (1, entry['strict'])
             return (1,0)
-        raise linkcheck.error, "internal error in UrlData._getExtern"
 
 
     def getContent (self):
@@ -461,7 +460,7 @@ class UrlData:
     def checkContent (self, warningregex):
         match = warningregex.search(self.getContent())
         if match:
-            self.setWarning("Found '"+match.group()+"' in link contents")
+            self.setWarning(linkcheck._("Found %s in link contents") % `match.group()`)
 
 
     def parseUrl (self):
@@ -473,7 +472,7 @@ class UrlData:
         if len(bases)>=1:
             baseRef = bases[0][0]
             if len(bases)>1:
-                self.setWarning("more than one base tag found")
+                self.setWarning(linkcheck._("more than one base tag found"))
 
         # search for tags and add found tags to URL queue
         for pattern in LinkPatterns:
