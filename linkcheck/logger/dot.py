@@ -57,7 +57,7 @@ class DOTLogger (linkcheck.logger.Logger):
                          {'email': linkcheck.configuration.Email})
             self.check_date()
             self.writeln()
-        self.writeln(u"graph {")
+        self.writeln(u"digraph {")
         self.flush()
 
     def comment (self, s, **args):
@@ -80,7 +80,7 @@ class DOTLogger (linkcheck.logger.Logger):
             self.nodeid += 1
             self.writeln(u"  %d [" % node.id)
             if self.has_field("realurl"):
-                self.writeln(u'    label="%s",' % dotquote(node.url))
+                self.writeln(u'    href="%s",' % dotquote(node.url))
             if node.dltime >= 0 and self.has_field("dltime"):
                 self.writeln(u"    dltime=%d," % node.dltime)
             if node.dlsize >= 0 and self.has_field("dlsize"):
