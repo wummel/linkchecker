@@ -47,6 +47,10 @@ msgstr "Warnung"
 msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
 
+#, fuzzy
+msgid "warning: timeoutsocket is not support on this system"
+msgstr "Warnung: timeoutsocket wird auf diesem System nicht unterstützt"
+
 msgid "Verified adress: %s"
 msgstr "Gültige Adresse: %s"
 
@@ -202,7 +206,8 @@ msgstr ""
 "        Ausgabedatei für den blacklist Logger. Standard ist keine Ausgabe\n"
 "        in eine Datei.\n"
 "-I, --interactive\n"
-"        Frage nach URLs, falls keine auf der Kommandozeile eingegeben wurde.\n"
+"        Frage nach URLs, falls keine auf der Kommandozeile eingegeben "
+"wurde.\n"
 "-i regex, --intern=regex\n"
 "        Behandle URLs welche diese Ausdruck matchen als intern.\n"
 "-h, --help\n"
@@ -333,8 +338,8 @@ msgid ""
 "redirection"
 msgstr ""
 "Es trat eine HTTP 301 Weiterleitung auf und die URL endet nicht mit /. Alle "
-"URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, "
-"um Weiterleitungen zu verhindern"
+"URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um "
+"Weiterleitungen zu verhindern"
 
 msgid " in %d links"
 msgstr " in %d URLs"
@@ -344,6 +349,9 @@ msgstr " Fehler"
 
 msgid "Info"
 msgstr "Info"
+
+msgid "Hit RETURN to finish"
+msgstr ""
 
 msgid "illegal recursionlevel number %d"
 msgstr "illegale recursionlevel Nummer %d"
@@ -446,9 +454,6 @@ msgstr ""
 "  Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.\n"
 "o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
 "  unbedingt derselbe wie der des Benutzers sein!\n"
-
-msgid "warning: timeoutsocket is not supported on this system"
-msgstr "Warnung: timeoutsocket wird auf diesem System nicht unterstützt"
 
 msgid "Articel number %s found"
 msgstr "Artikel nummer %s wurde gefunden"

@@ -463,6 +463,7 @@ class UrlData:
         return None,None
 
 
+from ChromeUrlData import ChromeUrlData
 from FileUrlData import FileUrlData
 from FindUrlData import FindUrlData
 from FtpUrlData import FtpUrlData
@@ -486,26 +487,31 @@ def GetUrlDataFrom(urlName, recursionLevel, parentName = None,
         url = string.lower(parentName)
     # test scheme
     if re.search("^http:", url):
-        return HttpUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^ftp:", url):
-        return FtpUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^file:", url):
-        return FileUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^telnet:", url):
-        return TelnetUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^mailto:", url):
-        return MailtoUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^gopher:", url):
-        return GopherUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^javascript:", url):
-        return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^https:", url):
-        return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
-    if re.search("^(s?news|nntp):", url):
-        return NntpUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+        klass = HttpUrlData
+    elif re.search("^ftp:", url):
+        klass = FtpUrlData
+    elif re.search("^file:", url):
+        klass = FileUrlData
+    elif re.search("^telnet:", url):
+        klass = TelnetUrlData
+    elif re.search("^mailto:", url):
+        klass = MailtoUrlData
+    elif re.search("^gopher:", url):
+        klass = GopherUrlData
+    elif re.search("^javascript:", url):
+        klass = JavascriptUrlData
+    elif re.search("^https:", url):
+        klass = HttpsUrlData
+    elif re.search("^(s?news|nntp):", url):
+        klass = NntpUrlData
     # Mozillas Technology links start with "find:"
-    if re.search("^find:", url):
-        return FindUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    elif re.search("^find:", url):
+        klass = FindUrlData
+    # Mozilla Chrome URL
+    elif re.search("^chrome:", url):
+        klass = ChromeUrlData
     # assume local file
-    return FileUrlData(urlName, recursionLevel, parentName, baseRef, line, name)
+    else
+        klass = FileUrlData
+    return klass(urlName, recursionLevel, parentName, baseRef, line, name)
 

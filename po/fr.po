@@ -47,6 +47,9 @@ msgstr "Avertissement"
 msgid "Illegal argument '%s' for option "
 msgstr "Argumen illégal '%s' pour l'option "
 
+msgid "warning: timeoutsocket is not support on this system"
+msgstr ""
+
 msgid "Verified adress: %s"
 msgstr ""
 
@@ -325,6 +328,9 @@ msgstr " erreurs"
 msgid "Info"
 msgstr ""
 
+msgid "Hit RETURN to finish"
+msgstr ""
+
 msgid "illegal recursionlevel number %d"
 msgstr "valeur du niveau de récursivité %d illégal"
 
@@ -423,9 +429,6 @@ msgstr ""
 "  On a Mac use the Internet Config.\n"
 "o Lors d'un contrôle des liens 'news:', l'hôte NNTP spécifié n'a pas besoin d'être le\n"
 "  même que l'hôte de l'utilisateur qui parcourt vos pages!\n"
-
-msgid "warning: timeoutsocket not support on this platform"
-msgstr ""
 
 msgid "Articel number %s found"
 msgstr ""
