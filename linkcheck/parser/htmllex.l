@@ -175,6 +175,7 @@ static PyObject* quote_string (PyObject* val) {
 %x S_CDATA
 %x S_TAGSTART
 %x S_TAGEND
+%x S_TAGEND2
 %x S_SCRIPT
 %x S_STYLE
 %x S_ATTR1
@@ -561,12 +562,6 @@ RX_DATA [-a-zA-Z0-9_]+
     BEGIN(S_ATTR4);
 }
 
-<S_ATTR1,S_ATTR2>.|\n {
-    /* this also skips whitespace! */
-    UPDATE_BUFPOS;
-    UPDATE_LINE;
-}
-
 <S_ATTR3>{RX_NAME} {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -582,6 +577,12 @@ RX_DATA [-a-zA-Z0-9_]+
     yyextra->tmp_attrname = yyextra->tmp_attrval = NULL;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_ATTR2);
+}
+
+<S_ATTR1,S_ATTR2,S_ATTR3>.|\n {
+    /* this also skips whitespace! */
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
 }
 
 <S_ATTR4>\" {
@@ -774,7 +775,22 @@ RX_DATA [-a-zA-Z0-9_]+
 }
 
 <S_TAGEND>{RX_WHITE_SPACE}+ {
-    /* delete whitespace in or around tag names */
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
+    /* ignore any trailing garbage of this end tag */
+    BEGIN(S_TAGEND2);
+}
+
+<S_TAGEND2>> {
+    UPDATE_BUFPOS;
+    UPDATE_LINE;
+    LOWER_TMP;
+    SETLVAL;
+    BEGIN(INITIAL);
+    RETURN(T_ELEMENT_END);
+}
+
+<S_TAGEND2>. {
     UPDATE_BUFPOS;
     UPDATE_LINE;
 }
@@ -816,6 +832,8 @@ RX_DATA [-a-zA-Z0-9_]+
 
 int htmllexInit (void** scanner, UserData* data) {
     yylex_init(scanner);
+    /* uncomment the next line for debugging */
+    /*yyset_debug(1, *scanner);*/
     yyset_extra(data, *scanner);
     return 0;
 }
