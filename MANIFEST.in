@@ -22,3 +22,4 @@ include doc/*.txt doc/*.nav doc/*.html doc/*.py doc/*.png doc/*.jpg
 include doc/*.css
 include doc/Makefile doc/rest2htmlnav
 recursive-include linkcheck/ftests/data *.txt *.html *.result *.asc *.css
+include linkcheck/dns/tests/example*
