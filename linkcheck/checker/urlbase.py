@@ -37,9 +37,6 @@ import linkcheck.HtmlParser.htmlsax
 from linkcheck.i18n import _
 
 
-ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
-
-
 def internal_error ():
     """print internal error message to stderr"""
     print >> sys.stderr, os.linesep
@@ -197,9 +194,7 @@ class UrlBase (object):
         return self.consumer.cache.url_is_cached(self.get_cache_key())
 
     def get_cache_key (self):
-        """Get key to store this url data in the cache. Note that
-           this method is only called after self.build_url() succeeds.
-        """
+        """Get key to store this url data in the cache."""
         assert self.anchor is not None
         if self.urlparts:
             if self.consumer.config["anchorcaching"]:
@@ -231,10 +226,12 @@ class UrlBase (object):
         self.urlparts[1] = host.lower()
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
-        x, port = urllib.splitport(host)
-        if port is not None and not linkcheck.url.is_numeric_port(port):
-            raise linkcheck.LinkCheckerError(_("URL has invalid port %r") %\
-                                             str(port))
+        self.host, self.port = urllib.splitport(host)
+        if self.port is not None:
+            if not linkcheck.url.is_numeric_port(self.port):
+                raise linkcheck.LinkCheckerError(
+                         _("URL has invalid port %r") % str(self.port))
+            self.port = int(self.port)
 
     def check (self):
         try:
@@ -324,27 +321,18 @@ class UrlBase (object):
     def check_syntax (self):
         """Called before self.check(), this function inspects the
            url syntax. Success enables further checking, failure
-           immediately logs this url. This syntax check must not
+           immediately logs this url. Syntax checks must not
            use any network resources.
         """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         if not self.base_url:
             self.set_result(_("URL is empty"), valid=False)
-            self.consumer.logger_new_url(self)
-            return False
-        if ws_at_start_or_end(self.base_url):
-            # leading or trailing whitespace is common, so make a
-            # separate error message for this
-            self.set_result(_("URL has whitespace at beginning or end"),
-                            valid=False)
-            self.consumer.logger_new_url(self)
             return False
         try:
             self.build_url()
             self.extern = self._get_extern()
         except linkcheck.LinkCheckerError, msg:
             self.set_result(str(msg), valid=False)
-            self.consumer.logger_new_url(self)
             return False
         return True
 
