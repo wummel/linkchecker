@@ -27,7 +27,29 @@ except ImportError:
 
 import linkcheck.threader
 import linkcheck.log
+import linkcheck.strformat
 from urlbase import stderr
+
+
+def print_tocheck (tocheck):
+    msg = _n("%5d URL queued,", "%5d URLs queued,", tocheck) % tocheck
+    print >> stderr, msg,
+
+
+def print_links (links):
+    msg = _n("%4d URL checked,", "%4d URLs checked,", links) % links
+    print >> stderr, msg,
+
+
+def print_active (active):
+    msg = _n("%2d active thread,", "%2d active threads,", active) % active
+    print >> stderr, msg,
+
+
+def print_duration (duration):
+    msg = _("runtime %s") % linkcheck.strformat.strduration(duration)
+    print >> stderr, msg,
+
 
 class Consumer (object):
     """
@@ -151,13 +173,13 @@ class Consumer (object):
         """
         self.lock.acquire()
         try:
+            print >> stderr, _("Status:"),
             active = self.threader.active_threads()
-            links = self.linknumber
-            tocheck = self.cache.incoming_len()
-            duration = linkcheck.strformat.strduration(curtime - start_time)
-            print >> stderr, _("Status: %5d URLs queued, "
-                     "%4d URLs checked, %2d active threads, runtime %s") % \
-                                 (tocheck, links, active, duration)
+            print_active(active)
+            print_links(self.linknumber)
+            print_tocheck(self.cache.incoming_len())
+            print_duration(curtime - start_time)
+            print >> stderr
         finally:
             self.lock.release()
 
