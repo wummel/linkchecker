@@ -376,7 +376,7 @@ class HTTPResponse:
         # NOTE: it is possible that we will not ever call self.close(). This
         #       case occurs when will_close is TRUE, length is None, and we
         #       read up to the last byte, but NOT past it.
-       
+        #
         # IMPLIES: if will_close is FALSE, then self.close() will ALWAYS be
         #          called, meaning self.isclosed() is meaningful.
         return self.fp is None
@@ -570,7 +570,7 @@ class HTTPConnection:
 
         # send the data to the server. if we get a broken pipe, then close
         # the socket. we want to reconnect when somebody tries to send again.
-       
+        #
         # NOTE: we DO propagate the error, though, because we cannot simply
         #       ignore the error... the caller will know if they can retry.
         if self.debuglevel > 0:
@@ -610,7 +610,7 @@ class HTTPConnection:
         if self.__response and self.__response.isclosed():
             self.__response = None
 
-       
+        #
         # in certain cases, we cannot issue another request on this connection.
         # this occurs when:
         #   1) we are in the process of sending a request.   (_CS_REQ_STARTED)
@@ -618,17 +618,17 @@ class HTTPConnection:
         #      to close the connection upon completion.
         #   3) the headers for the previous response have not been read, thus
         #      we cannot determine whether point (2) is true.   (_CS_REQ_SENT)
-       
+        #
         # if there is no prior response, then we can request at will.
-       
+        #
         # if point (2) is true, then we will have passed the socket to the
         # response (effectively meaning, "there is no prior response"), and
         # will open a new one when a new request is made.
-       
+        #
         # Note: if a prior response exists, then we *can* start a new request.
         #       We are not allowed to begin fetching the response to this new
         #       request, however, until that prior response is complete.
-       
+        #
         if self.__state == _CS_IDLE:
             self.__state = _CS_REQ_STARTED
         else:
@@ -725,9 +725,8 @@ class HTTPConnection:
     def _send_request(self, method, url, body, headers):
         # If headers already contains a host header, then define the
         # optional skip_host argument to putrequest().  The check is
-        # harder because field names are case insensitive.
-        if 'Host' in (headers
-            or [k for k in headers.iterkeys() if k.lower() == "host"]):
+        # more delicate because field names are case insensitive.
+        if 'host' in [k.lower() for k in headers]:
             self.putrequest(method, url, skip_host=1)
         else:
             self.putrequest(method, url)
@@ -748,22 +747,22 @@ class HTTPConnection:
         if self.__response and self.__response.isclosed():
             self.__response = None
 
-       
+        #
         # if a prior response exists, then it must be completed (otherwise, we
         # cannot read this response's header to determine the connection-close
         # behavior)
-       
+        #
         # note: if a prior response existed, but was connection-close, then the
         # socket and response were made independent of this HTTPConnection
         # object since a new request requires that we open a whole new
         # connection
-       
+        #
         # this means the prior response had one of two states:
         #   1) will_close: this connection was reset and the prior socket and
         #                  response operate independently
         #   2) persistent: the response was retained and we await its
         #                  isclosed() status to become true.
-       
+        #
         if self.__state != _CS_REQ_SENT or self.__response:
             raise ResponseNotReady()
 
@@ -908,6 +907,31 @@ class SSLFile(SharedSocketClient):
             line = all[:i]
             self._buf = all[i:]
             return line
+
+    def readlines(self, sizehint=0):
+        total = 0
+        list = []
+        while True:
+            line = self.readline()
+            if not line:
+                break
+            list.append(line)
+            total += len(line)
+            if sizehint and total >= sizehint:
+                break
+        return list
+
+    def fileno(self):
+        return self._sock.fileno()
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        line = self.readline()
+        if not line:
+            raise StopIteration
+        return line
 
 class FakeSocket(SharedSocketClient):
 
