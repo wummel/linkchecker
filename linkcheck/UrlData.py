@@ -30,6 +30,8 @@ import Config, StringUtil, test_support
 from linkparse import LinkParser
 from debug import *
 
+ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
+
 # helper function for internal errors
 def internal_error ():
     print >>sys.stderr, i18n._("""\n********** Oops, I did it again. *************
@@ -301,6 +303,10 @@ class UrlData (object):
         debug(BRING_IT_ON, "checking syntax")
         if not self.urlName or self.urlName=="":
             self.setError(i18n._("URL is null or empty"))
+            self.logMe()
+            return
+        if ws_at_start_or_end(self.urlName):
+            self.setError(i18n._("URL has whitespace at beginning or end"))
             self.logMe()
             return
         try:

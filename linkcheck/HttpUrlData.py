@@ -16,13 +16,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, sys, time, re, httplib, robotparser
+import urlparse, sys, time, re, httplib, robotparser2
 from urllib import quote, unquote
 import Config, i18n
 from debug import *
 # XXX not dynamic
 if get_debuglevel() > 0:
-    robotparser.debug = 1
+    robotparser2.debug = 1
 from ProxyUrlData import ProxyUrlData
 from UrlData import ExcList, GetUrlDataFrom
 supportHttps = hasattr(httplib, "HTTPSConnection")
@@ -378,7 +378,7 @@ class HttpUrlData (ProxyUrlData):
         debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
         debug(HURT_ME_PLENTY, "url", self.url)
         if not self.config.robotsTxtCache_has_key(roboturl):
-            rp = robotparser.RobotFileParser()
+            rp = robotparser2.RobotFileParser()
             rp.set_url(roboturl)
             rp.read()
             self.config.robotsTxtCache_set(roboturl, rp)
