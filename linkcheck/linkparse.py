@@ -25,6 +25,7 @@ import linkcheck.linkname
 import linkcheck.log
 
 MAX_NAMELEN = 256
+unquote = linkcheck.strformat.unquote
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {
@@ -129,7 +130,7 @@ class MetaRobotsFinder (TagFinder):
         """
         if tag == 'meta':
             if attrs.get('name') == 'robots':
-                val = attrs.get('content', u'').lower().split(u',')
+                val = attrs.get_true('content', u'').lower().split(u',')
                 self.follow = u'nofollow' not in val
                 self.index = u'noindex' not in val
 
@@ -165,7 +166,7 @@ class LinkFinder (TagFinder):
                             self.parser.lineno(), self.parser.column(),
                          self.parser.last_lineno(), self.parser.last_column())
         if tag == "base" and not self.base_ref:
-            self.base_ref = attrs.get("href", u'')
+            self.base_ref = attrs.get_true("href", u'')
         tagattrs = self.tags.get(tag, [])
         tagattrs.extend(self.tags.get(None, []))
         # eliminate duplicate tag attrs
@@ -174,18 +175,17 @@ class LinkFinder (TagFinder):
             if attr not in attrs:
                 continue
             if tag == "meta":
-                refresh = attrs.get('http-equiv', u'').lower()
+                refresh = attrs.get_true('http-equiv', u'').lower()
                 if refresh != 'refresh':
                     continue
             # name of this link
             name = self.get_link_name(tag, attrs, attr)
             # possible codebase
             if tag in ('applet', 'object'):
-                codebase = linkcheck.strformat.unquote(
-                                                  attrs.get('codebase', u''))
+                codebase = unquote(attrs.get_true('codebase', u''))
             else:
                 codebase = u''
-            value = linkcheck.strformat.unquote(attrs[attr])
+            value = unquote(attrs.get_true(attr, u''))
             # add link to url list
             self.add_link(tag, attr, value, name, codebase)
         linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -196,7 +196,7 @@ class LinkFinder (TagFinder):
         Parse attrs for link name. Return name of link.
         """
         if tag == 'a' and attr == 'href':
-            name = linkcheck.strformat.unquote(attrs.get('title', u''))
+            name = unquote(attrs.get_true('title', u''))
             if not name:
                 pos = self.parser.pos()
                 # Look for name only up to MAX_NAMELEN characters from current
@@ -205,9 +205,9 @@ class LinkFinder (TagFinder):
                 data = data.decode(self.parser.encoding, "ignore")
                 name = linkcheck.linkname.href_name(data)
         elif tag == 'img':
-            name = linkcheck.strformat.unquote(attrs.get('alt', u''))
+            name = unquote(attrs.get_true('alt', u''))
             if not name:
-                name = linkcheck.strformat.unquote(attrs.get('title', u''))
+                name = unquote(attrs.get_true('title', u''))
         else:
             name = u""
         return name
@@ -216,27 +216,28 @@ class LinkFinder (TagFinder):
         """
         Add given url data to url list.
         """
+        assert isinstance(tag, unicode), repr(tag)
+        assert isinstance(attr, unicode), repr(attr)
+        assert isinstance(name, unicode), repr(name)
+        assert isinstance(base, unicode), repr(base)
+        assert isinstance(url, unicode), repr(url)
         urls = []
         # look for meta refresh
-        if tag == 'meta':
+        if tag == u'meta':
             mo = refresh_re.match(url)
             if mo:
                 urls.append(mo.group("url"))
-        elif attr == 'style':
+        elif attr == u'style':
             for mo in css_url_re.finditer(url):
                 u = mo.group("url")
-                urls.append(linkcheck.strformat.unquote(u, matching=True))
+                urls.append(unquote(u, matching=True))
         else:
             urls.append(url)
         if not urls:
             # no url found
             return
         for u in urls:
-            assert isinstance(tag, unicode), tag
-            assert isinstance(attr, unicode), attr
-            assert isinstance(u, unicode), u
-            assert isinstance(name, unicode), name
-            assert isinstance(base, unicode), base
+            assert isinstance(u, unicode), repr(u)
             linkcheck.log.debug(linkcheck.LOG_CHECK,
               u"LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
