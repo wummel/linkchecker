@@ -1,4 +1,4 @@
-1.13.1 "Old men in new cars" (released xx.xx.xxxx)
+1.13.1 "Old men in new cars" (released 3.9.2004)
   * Fixed RPM generation by adding the generated config file to the
     installed files list.
     Type: bugfix
