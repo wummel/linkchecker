@@ -39,9 +39,10 @@ class SQLLogger (StandardLogger):
     def newUrl (self, urlData):
         if self.fd is None: return
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
-              "baseref,errorstring,validstring,warningstring,infoString,"
-	      "valid,url,line,column,name,checktime,downloadtime,cached) values "
-              "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%d,%d,%d)%s\n" % \
+              "baseref,errorstring,validstring,warningstring,infostring,"
+	      "valid,url,line,column,name,checktime,dltime,dlsize,cached)"
+              " values "
+              "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%d,%d,%d,%d)%s\n" % \
 	      (self.dbname,
 	       linkcheck.StringUtil.sqlify(urlData.urlName),
                urlData.recursionLevel,
@@ -57,7 +58,8 @@ class SQLLogger (StandardLogger):
                urlData.column,
                linkcheck.StringUtil.sqlify(urlData.name),
                urlData.checktime,
-               urlData.downloadtime,
+               urlData.dltime,
+               urlData.dlsize,
                urlData.cached,
 	       self.separator))
         self.fd.flush()

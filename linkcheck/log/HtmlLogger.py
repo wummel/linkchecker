@@ -89,9 +89,13 @@ class HtmlLogger (StandardLogger):
             self.fd.write("<tr><td>"+linkcheck._("Real URL")+"</td><td>"+
 	                  '<a href="'+urlData.url+
 			  '">'+urlData.url+"</a></td></tr>\n")
-        if urlData.downloadtime and self.logfield("dltime"):
+        if urlData.dltime>=0 and self.logfield("dltime"):
             self.fd.write("<tr><td>"+linkcheck._("D/L Time")+"</td><td>"+
-	                  (linkcheck._("%.3f seconds") % urlData.downloadtime)+
+	                  (linkcheck._("%.3f seconds") % urlData.dltime)+
+			  "</td></tr>\n")
+        if urlData.dlsize>=0 and self.logfield("dlsize"):
+            self.fd.write("<tr><td>"+linkcheck._("D/L Size")+"</td><td>"+
+	                  StringUtil.strsize(urlData.dlsize)+
 			  "</td></tr>\n")
         if urlData.checktime and self.logfield("checktime"):
             self.fd.write("<tr><td>"+linkcheck._("Check Time")+

@@ -99,8 +99,8 @@ class FtpUrlData (ProxyUrlData):
         self.urlConnection.voidcmd('TYPE I')
         conn, size = self.urlConnection.ntransfercmd('RETR %s'%filename)
         if size:
-            self.checkSize(size)
-            # dont download data
+            self.dlsize = size
+            # dont download data XXX recursion
             #page = conn.makefile().read(size)
         #else:
         #    page = conn.makefile().read()

@@ -55,9 +55,10 @@ class XMLLogger (StandardLogger):
             if self.logfield("realurl"):
                 self.fd.write("    <label>%s</label>\n" % xmlify(node.url))
             self.fd.write("    <data>\n")
-            if node.downloadtime and self.logfield("dltime"):
-                self.fd.write("      <dltime>%f</dltime>\n" \
-                                  % node.downloadtime)
+            if node.dltime>=0 and self.logfield("dltime"):
+                self.fd.write("      <dltime>%f</dltime>\n" % node.dltime)
+            if node.dlsize>=0 and self.logfield("dlsize"):
+                self.fd.write("      <dlsize>%d</dlsize>\n" % node.dlsize)
             if node.checktime and self.logfield("checktime"):
                 self.fd.write("      <checktime>%f</checktime>\n" \
                               % node.checktime)

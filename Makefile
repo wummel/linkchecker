@@ -69,6 +69,7 @@ deb_unsigned: cleandeb
 
 files:	locale
 	env http_proxy="" LANG=C $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
+	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
 VERSION:

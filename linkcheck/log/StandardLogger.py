@@ -93,9 +93,12 @@ __init__(self, **args)
             self.fd.write(linkcheck._(LogFields["base"])+Spaces["base"]+urlData.baseRef+"\n")
         if urlData.url and self.logfield('realurl'):
             self.fd.write(linkcheck._(LogFields["realurl"])+Spaces["realurl"]+urlData.url+"\n")
-        if urlData.downloadtime and self.logfield('dltime'):
+        if urlData.dltime>=0 and self.logfield('dltime'):
             self.fd.write(linkcheck._(LogFields["dltime"])+Spaces["dltime"]+
-	                  linkcheck._("%.3f seconds\n") % urlData.downloadtime)
+	                  linkcheck._("%.3f seconds\n") % urlData.dltime)
+        if urlData.dlsize>=0 and self.logfield('dlsize'):
+            self.fd.write(linkcheck._(LogFields["dlsize"])+Spaces["dlsize"]+
+	                  "%s\n"%StringUtil.strsize(urlData.dlsize))
         if urlData.checktime and self.logfield('checktime'):
             self.fd.write(linkcheck._(LogFields["checktime"])+Spaces["checktime"]+
 	                  linkcheck._("%.3f seconds\n") % urlData.checktime)

@@ -134,6 +134,7 @@ class Configuration (UserDict.UserDict):
             'colorinfo':    "default",
             'colorwarning': "bold;yellow",
             'colordltime':  "default",
+            'colordlsize':  "default",
             'colorreset':   "default",
         }
         self['gml'] = {

@@ -109,8 +109,9 @@ class UrlData:
         self.line = line
         self.column = column
         self.name = name
-        self.downloadtime = 0
-        self.checktime = 0
+        self.dltime = -1
+        self.dlsize = -1
+        self.checktime = -1
         self.cached = 0
         self.urlConnection = None
         self.extern = (1, 0)
@@ -149,7 +150,7 @@ class UrlData:
         self.warningString = urlData.warningString
         self.infoString = urlData.infoString
         self.valid = urlData.valid
-        self.downloadtime = urlData.downloadtime
+        self.dltime = urlData.dltime
 
 
     def buildUrl (self):
@@ -269,6 +270,9 @@ class UrlData:
                 type, value, tb = sys.exc_info()
                 debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
                 self.setError(str(value))
+        # check content size
+        self.checkSize()
+        # close
         self.closeConnection()
         self.logMe()
         debug(BRING_IT_ON, "caching")
@@ -364,8 +368,8 @@ class UrlData:
             self.has_content = 1
             t = time.time()
             self.data = self.urlConnection.read()
-            self.downloadtime = time.time() - t
-            self.checkSize(len(self.data))
+            self.dltime = time.time() - t
+            self.dlsize = len(self.data)
         return self.data
 
 
@@ -378,15 +382,14 @@ class UrlData:
                             `match.group()`)
 
 
-    def checkSize (self, sizebytes):
+    def checkSize (self):
         """if a maximum size was given, call this function to check it
            against the content size of this url"""
-        self.setInfo("D/L size %s"%StringUtil.strsize(sizebytes))
-        if self.config["warnsizebytes"] is not None:
-            if sizebytes >= self.config["warnsizebytes"]:
-                self.setWarning(linkcheck._("Content size %s is larger than %s")%\
-                         (StringUtil.strsize(sizebytes),
-                          StringUtil.strsize(self.config["warnsizebytes"])))
+        maxbytes = self.config["warnsizebytes"]
+        if maxbytes is not None and self.dlsize >= maxbytes:
+            self.setWarning(linkcheck._("Content size %s is larger than %s")%\
+                         (StringUtil.strsize(self.dlsize),
+                          StringUtil.strsize(maxbytes)))
 
 
     def parseUrl (self):

@@ -51,8 +51,10 @@ class GMLLogger (StandardLogger):
 	    self.fd.write("    id     %d\n" % node.id)
             if self.logfield("realurl"):
                 self.fd.write('    label  "%s"\n' % node.url)
-            if node.downloadtime and self.logfield("dltime"):
-                self.fd.write("    dltime %d\n" % node.downloadtime)
+            if node.dltime>=0 and self.logfield("dltime"):
+                self.fd.write("    dltime %d\n" % node.dltime)
+            if node.dlsize>=0 and self.logfield("dlsize"):
+                self.fd.write("    dlsize %d\n" % node.dlsize)
             if node.checktime and self.logfield("checktime"):
                 self.fd.write("    checktime %d\n" % node.checktime)
             if self.logfield("extern"):

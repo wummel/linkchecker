@@ -42,7 +42,7 @@ LogFields = {
     "info": "Info",
     "warning": "Warning",
     "dltime": "D/L Time",
-    "size": "Content Size",
+    "dlsize": "D/L Size",
     "checktime": "Check Time",
     "url": "URL",
 }

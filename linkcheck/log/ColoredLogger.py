@@ -76,6 +76,7 @@ class ColoredLogger (StandardLogger):
         self.colorinfo = esc % col_num(args['colorinfo'])
         self.colorwarning = esc % col_num(args['colorwarning'])
         self.colordltime = esc % col_num(args['colordltime'])
+        self.colordlsize = esc % col_num(args['colordlsize'])
         self.colorreset = esc % col_num(args['colorreset'])
         self.currentPage = None
         self.prefix = 0
@@ -129,11 +130,19 @@ class ColoredLogger (StandardLogger):
                 self.fd.write("|  ")
             self.fd.write(linkcheck._("Real URL")+Spaces["realurl"]+self.colorreal+
 	                  urlData.url+self.colorreset+"\n")
-        if urlData.downloadtime and self.logfield("dltime"):
+        if urlData.dltime>=0 and self.logfield("dltime"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(linkcheck._("D/L Time")+Spaces["dltime"]+self.colordltime+
-	        (linkcheck._("%.3f seconds") % urlData.downloadtime)+self.colorreset+"\n")
+            self.fd.write(linkcheck._("D/L Time")+Spaces["dltime"]+
+                          self.colordltime+
+                          (linkcheck._("%.3f seconds") % urlData.dltime)+
+                          self.colorreset+"\n")
+        if urlData.dlsize>=0 and self.logfield("dlsize"):
+            if self.prefix:
+                self.fd.write("|  ")
+            self.fd.write(linkcheck._("D/L Size")+Spaces["dlsize"]+
+                          self.colordlsize+StringUtil.strsize(urlData.dlsize)+
+                          self.colorreset+"\n")
         if urlData.checktime and self.logfield("checktime"):
             if self.prefix:
                 self.fd.write("|  ")

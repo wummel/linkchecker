@@ -49,7 +49,8 @@ class CSVLogger (StandardLogger):
                       "# line;\n"
                       "# column;\n"
                       "# name;\n"
-                      "# downloadtime;\n"
+                      "# dltime;\n"
+                      "# dlsize;\n"
                       "# checktime;\n"
                       "# cached;\n")
             self.fd.flush()
@@ -57,23 +58,24 @@ class CSVLogger (StandardLogger):
     def newUrl (self, urlData):
         if self.fd is None: return
         self.fd.write(
-	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%s%s%d%s%d%s%d\n" % (
-	    urlData.urlName, self.separator,
-	    urlData.recursionLevel, self.separator,
-	    urlData.parentName, self.separator,
-            urlData.baseRef, self.separator,
-            urlData.errorString, self.separator,
-            urlData.validString, self.separator,
-            urlData.warningString, self.separator,
-            urlData.infoString, self.separator,
-            urlData.valid, self.separator,
-            urlData.url, self.separator,
-            urlData.line, self.separator,
-            urlData.column, self.separator,
-            urlData.name, self.separator,
-            urlData.downloadtime, self.separator,
-            urlData.checktime, self.separator,
-            urlData.cached))
+    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%s%s%d%s%d%s%d%s%d\n" % (
+    urlData.urlName, self.separator,
+    urlData.recursionLevel, self.separator,
+    urlData.parentName, self.separator,
+    urlData.baseRef, self.separator,
+    urlData.errorString, self.separator,
+    urlData.validString, self.separator,
+    urlData.warningString, self.separator,
+    urlData.infoString, self.separator,
+    urlData.valid, self.separator,
+    urlData.url, self.separator,
+    urlData.line, self.separator,
+    urlData.column, self.separator,
+    urlData.name, self.separator,
+    urlData.dltime, self.separator,
+    urlData.dlsize, self.separator,
+    urlData.checktime, self.separator,
+    urlData.cached))
         self.fd.flush()
 
     def endOfOutput (self, linknumber=-1):
