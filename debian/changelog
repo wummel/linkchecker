@@ -1,3 +1,9 @@
+linkchecker (1.13.2) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun,  5 Sep 2004 23:04:57 +0200
+
 linkchecker (1.13.1-2) unstable; urgency=low
 
   * Added access notes about CGI script to README.Debian
