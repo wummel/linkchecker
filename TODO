@@ -1,9 +1,5 @@
 This release:
 
-- limit child entries of colored output logger
-
-- rename standard logger to plain logger
-
 - cache keys
   see also SF request #952051: is query considered in url cache keys?
 
