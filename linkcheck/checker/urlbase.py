@@ -84,7 +84,7 @@ class UrlBase (object):
 
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None, base_ref = None,
-                  line = 0, column = 0, name = ""):
+                  line = -1, column = -1, name = ""):
         """Initialize check data, and store given variables.
 
            @base_url - quoted url
@@ -572,7 +572,7 @@ class UrlBase (object):
             "base_ref=%s" % self.base_ref,
             "recursion_level=%s" % self.recursion_level,
             "url_connection=%s" % self.url_connection,
-            "line=%s" % self.line,
-            "column=%s" % self.column,
+            "line=%d" % self.line,
+            "column=%d" % self.column,
             "name=%s" % self.name,
            ])
