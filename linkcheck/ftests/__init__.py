@@ -145,7 +145,7 @@ class StandardTest (unittest.TestCase):
         resultfile = self.get_file(filename+".result")
         d = {'curdir': os.getcwd()}
         f = codecs.open(resultfile, "r", "iso8859-1")
-        resultlines = [line.rstrip() % d for line in f \
+        resultlines = [line.rstrip('\r\n') % d for line in f \
                        if line.strip() and not line.startswith(u'#')]
         f.close()
         return resultlines
