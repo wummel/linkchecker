@@ -11,7 +11,7 @@ LinkTags = [("a",     "href"),
             ("meta",  "url"),  
             ("area",  "href")]
 
-class LinkCheckException(Exception):
+class LinkCheckerException(Exception):
     pass
 
 class UrlData:
@@ -104,8 +104,9 @@ class UrlData:
         try:
 	    self.buildUrl()
             self.extern = self._getExtern(config)
-        except LinkCheckerException, msg:
-            self.setError(msg)
+        except LinkCheckerException:
+            type, value = sys.exc_info()[:2]
+            self.setError(str(value))
             self.logMe(config)
             return
 
@@ -130,6 +131,7 @@ class UrlData:
             self.checkConnection(config)
             if self.urlTuple and config["anchors"]:
                 self.checkAnchors(self.urlTuple[5])
+        # XXX should only catch some exceptions, not all!
         except:
             type, value = sys.exc_info()[:2]
             self.setError(str(value))

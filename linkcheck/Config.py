@@ -7,8 +7,9 @@ AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
 Author =  "Bastian Kleineidam"
+HtmlAuthor = "Bastian&nbsp;Kleineidam"
 Copyright = "Copyright © 2000 by "+Author
-HtmlCopyright = "Copyright &copy; 2000 by "+Author
+HtmlCopyright = "Copyright &copy; 2000 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
 Url = "http://linkchecker.sourceforge.net/"
@@ -218,7 +219,7 @@ class Configuration(UserDict.UserDict):
         
     def read(self, files = []):
         if not files:
-            files.insert(0,_norm("~/.pylicerc"))
+            files.insert(0,_norm("~/.linkcheckerrc"))
             if sys.platform=="win32":
                 if not sys.path[0]:
                     path=os.getcwd()
@@ -226,7 +227,7 @@ class Configuration(UserDict.UserDict):
                     path=sys.path[0]
             else:
                 path="/etc"
-            files.insert(0,_norm(join(path, "pylicerc")))
+            files.insert(0,_norm(join(path, "linkcheckerrc")))
         self.readConfig(files)
     
     def warn(self, msg):
@@ -292,7 +293,7 @@ class Configuration(UserDict.UserDict):
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
                 if Loggers.has_key(arg):
-		    self.data["fileoutput"].append(Loggers[arg](open("pylice-out."+arg, "w")))
+		    self.data["fileoutput"].append(Loggers[arg](open("linkchecker-out."+arg, "w")))
 	except ConfigParser.Error:	pass
 
         section = "authentication"

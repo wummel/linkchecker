@@ -1,8 +1,8 @@
 VERSION=$(shell ./setup.py -V)
-HOST=treasure.calvinsplayground.de
+#HOST=treasure.calvinsplayground.de
 PROXY=
 #PROXY=-P$(HOST):5050
-#HOST=fsinfo.cs.uni-sb.de
+HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb

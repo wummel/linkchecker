@@ -1,3 +1,9 @@
+27.3.2000
+	* Fixed misspelled exception in UrlData.py (BugTracker)
+	* Fixed wrong _time argument in HttpsUrlData.py 
+	  (Peter <peterw@waybeat.com.au>)
+	* Fixed missing env argument in lc.cgi
+
 26.3.2000
 	* FastCGI fixes
 	* simplified sz_fcgi.py

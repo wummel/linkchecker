@@ -22,7 +22,7 @@ print
 #testit()
 form = cgi.FieldStorage()
 if not linkcheck.lc_cgi.checkform(form):
-    linkcheck.lc_cgi.logit(form)
+    linkcheck.lc_cgi.logit(form, form)
     linkcheck.lc_cgi.printError(sys.stdout)
     sys.exit(0)
 config = linkcheck.Config.Configuration()
