@@ -19,6 +19,7 @@
 import time
 import cgi
 import os
+import gettext
 
 import linkcheck.logger
 import linkcheck.strformat
