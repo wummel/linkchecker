@@ -21,6 +21,7 @@ all:
 clean:
 	-$(PYTHON) setup.py clean --all # ignore errors of this command
 	$(MAKE) -C po clean
+	rm -f linkcheck/parser/htmlsax.so
 	find . -name '*.py[co]' | xargs rm -f
 
 distclean: clean cleandeb
