@@ -1,7 +1,7 @@
 Next releases:
 
-- Python 2.4 made socket.sslerror a subclass of socket.error; can we
-  use that?
+- when I add the anchor to the file:// cache key why are links checked
+  twice?
 
 - rethink intern/extern stuff, at least make new option --extern-strict
 
