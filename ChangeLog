@@ -1,6 +1,11 @@
 1.8.9
   * recompile with bison 1.875a
     Changed files: linkcheck/parser/htmlparse.[ch]
+  * remove stpcpy declaration, fixes compile error on RedHat 7.x
+    Changed files: linkcheck/parser/htmlsax.h
+  * clarify keyboard interrupt warning to wait for active connections
+    to finish
+    Changed files: linkcheck/__init__.py
 
 1.8.8
   * All amazon servers block HEAD requests with timeouts. Use GET as
