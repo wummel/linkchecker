@@ -1,3 +1,10 @@
+linkchecker (1.8.20) unstable; urgency=low
+
+  * New upstream release
+  * Standards version 3.6.0
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed,  9 Jul 2003 22:39:02 +0200
+
 linkchecker (1.8.19-1) unstable; urgency=low
 
   * New upstream release.
