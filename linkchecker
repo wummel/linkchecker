@@ -29,6 +29,7 @@ linkcheck.timeoutsocket.setDefaultSocketTimeout(30)
 from linkcheck.debuglevels import *
 from linkcheck import StringUtil
 debug = linkcheck.debug
+_profile = "linkchecker.prof"
 
 # main usage text
 Usage = linkcheck._("""USAGE\tlinkchecker [options] file-or-url...
@@ -83,6 +84,10 @@ For single-letter option arguments the space is not a necessity. So
         Pause <secs> seconds between each url check. This option
         implies -t0.
         Default is no pause between requests.
+--profile
+        Write profiling data into a file named %s in the
+        current working directory.
+        See also --viewprof.
 -q, --quiet
         Quiet operation. This is only useful with -F.
 -r depth, --recursion-level=depth
@@ -104,6 +109,8 @@ For single-letter option arguments the space is not a necessity. So
 -v, --verbose
         Log all checked URLs (implies -w). Default is to log only invalid
         URLs.
+--viewprof
+        Print out previously generated profiling data. See also --profile.
 -w, --warnings
         Log warnings.
 -W regex, --warning-regex=regex
@@ -115,7 +122,7 @@ For single-letter option arguments the space is not a necessity. So
         message, for example 'This page has moved' or 'Oracle
         Application Server error'.
         This option implies -w.
-""") % linkcheck.log.LoggerKeys
+""") % (linkcheck.log.LoggerKeys, _profile)
 
 Notes = linkcheck._("""NOTES
 o LinkCheckers commandline parser treats "ftp." links like "ftp://ftp."
@@ -167,6 +174,16 @@ def printUsage (msg):
     sys.exit(1)
 
 
+def viewprof ():
+    if not os.path.exists(_profile):
+        sys.stderr.write(linkcheck._("Could not find profiling file %s.")%_profile)
+        sys.stderr.write(linkcheck._("Please run linkchecker with --profile to generate it."))
+        sys.exit(1)
+    import pstats
+    stats = pstats.Stats(_profile)
+    stats.strip_dirs().sort_stats("cumulative").print_stats(50)
+    sys.exit(0)
+
 # Read command line arguments
 try:
     # Note: cut out the name of the script
@@ -186,6 +203,7 @@ try:
     "output=",
     "password=",
     "pause=",
+    "profile",
     "quiet",
     "recursion-level=",
     "wischiwaschi",
@@ -196,6 +214,7 @@ try:
     "user=",
     "version",
     "verbose",
+    "viewprof",
     "warnings",
     "warning-regex="])
 except getopt.error:
@@ -221,6 +240,7 @@ if linkcheck.Config.DebugLevel > 0:
 _user = "anonymous"
 _password = "guest@"
 constructauth = 0
+do_profile = 0
 for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
         config["anchors"] = 1
@@ -273,6 +293,9 @@ for opt,arg in options:
             printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +
 	               "'-P, --pause'")
 
+    elif opt=="--profile":
+        do_profile = 1
+
     elif opt=="-q" or opt=="--quiet":
     	config["quiet"] = 1
 
@@ -309,6 +332,9 @@ for opt,arg in options:
     elif opt=="-v" or opt=="--verbose":
         config["verbose"] = 1
         config["warnings"] = 1
+
+    elif opt=="--viewprof":
+        viewprof()
 
     elif opt=="--wischiwaschi":
         from linkcheck import util1
@@ -358,7 +384,11 @@ for url in args:
     config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config))
 
 ############################# check the urls ################################
-linkcheck.checkUrls(config)
+if do_profile:
+    import profile
+    profile.run("linkcheck.checkUrls(config)", _profile)
+else:
+    linkcheck.checkUrls(config)
 #############################################################################
 
 # interactive input end

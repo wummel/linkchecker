@@ -7,6 +7,7 @@
     than one link attribute in it.
   * Fix concatenation with relative base urls by first joining the
     parent url.
+  * New commandline option --profile to write profile data.
 
 1.6.6
   * Use the new HTTPConnection/HTTPResponse interface of httplib
