@@ -13,7 +13,9 @@ Q2.2: I get an error "too much redirections", but the URL displays ok in my
 A2: The difference between LinkChecker and web browsers is the type of HTTP
    request. LinkChecker does a HEAD request, browsers do a GET request of
    the same URL. Now, a lot of servers are broken when it comes to HEAD
-   support. LinkChecker tries to detect some of them, but can not catch all.
+   support. For examle Zope and Netscape Enterprise servers have broken
+   HEAD support.
+   LinkChecker tries to detect some of these, but can not catch all.
    Nevertheless, this is an error. If the URL is on your own web server,
    make sure that your server is handling HEAD requests!
 

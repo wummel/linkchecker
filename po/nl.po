@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Wed Oct 22 13:15:53 2003\n"
+"POT-Creation-Date: Fri Oct 31 17:29:12 2003\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -359,6 +359,9 @@ msgstr ""
 
 msgid " found\n"
 msgstr " gevonden\n"
+
+msgid "%s at %s, assuming non-compressed content"
+msgstr ""
 
 #, fuzzy
 msgid ""

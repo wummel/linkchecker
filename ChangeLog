@@ -1,5 +1,10 @@
-1.9.5
-  *
+1.9.5 (released 31.10.2003)
+  * Add Zope to servers with broken HEAD support, adjusted the FAQ
+    Changed: linkcheck/HttpUrlData.py, FAQ
+  * Disable psyco usage, it is causing infinite loops (this is a known
+    issue with psyco); and it is disabling ctrl-c interrupts (this
+    is also a known issue in psyco)
+    Changed: linkchecker
 
 1.9.4 (released 22.10.2003)
   * parse CSS stylesheet files and check included urls, for example
