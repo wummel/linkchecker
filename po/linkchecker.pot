@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-03-03 17:06+0100\n"
+"POT-Creation-Date: 2005-03-07 01:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,40 +17,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../linkcheck/checker/consumer.py:35
+#: ../linkcheck/checker/consumer.py:36
 #, python-format
 msgid "%5d URL queued,"
 msgid_plural "%5d URLs queued,"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:40
+#: ../linkcheck/checker/consumer.py:41
 #, python-format
 msgid "%4d URL checked,"
 msgid_plural "%4d URLs checked,"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:45
+#: ../linkcheck/checker/consumer.py:46
 #, python-format
 msgid "%2d active thread,"
 msgid_plural "%2d active threads,"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:50
+#: ../linkcheck/checker/consumer.py:51
 #, python-format
 msgid "runtime %s"
 msgstr ""
 
-#: ../linkcheck/checker/consumer.py:159
+#: ../linkcheck/checker/consumer.py:160
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:177
+#: ../linkcheck/checker/consumer.py:178
 msgid "Status:"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgstr ""
 msgid "Redirected to %(url)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:331 ../linkcheck/checker/urlbase.py:360
+#: ../linkcheck/checker/httpurl.py:331 ../linkcheck/checker/urlbase.py:363
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
@@ -238,31 +238,36 @@ msgstr ""
 msgid "URL has invalid port %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:375
-msgid "Hostname not found"
+#: ../linkcheck/checker/urlbase.py:326
+#, python-format
+msgid "URL is located in %s."
 msgstr ""
 
 #: ../linkcheck/checker/urlbase.py:378
+msgid "Hostname not found"
+msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:381
 #, python-format
 msgid "Bad HTTP response %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:409
+#: ../linkcheck/checker/urlbase.py:412
 #, python-format
 msgid "could not parse content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:493
+#: ../linkcheck/checker/urlbase.py:496
 #, python-format
 msgid "Anchor #%s not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:579
+#: ../linkcheck/checker/urlbase.py:582
 #, python-format
 msgid "Found %r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:588
+#: ../linkcheck/checker/urlbase.py:591
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr ""
@@ -356,6 +361,990 @@ msgstr ""
 
 #: ../linkcheck/checker/ftpurl.py:146
 msgid "Missing trailing directory slash in ftp url."
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:36
+msgid "Asia/Pacific Region"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:37
+msgid "Europe"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:38
+msgid "Andorra"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:39
+msgid "United Arab Emirates"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:40
+msgid "Afghanistan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:41
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:42
+msgid "Anguilla"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:43
+msgid "Albania"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:44
+msgid "Armenia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:45
+msgid "Netherlands Antilles"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:46
+msgid "Angola"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:47
+msgid "Antarctica"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:48
+msgid "Argentina"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:49
+msgid "American Samoa"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:50
+msgid "Austria"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:51
+msgid "Australia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:52
+msgid "Aruba"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:53
+msgid "Azerbaijan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:54
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:55
+msgid "Barbados"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:56
+msgid "Bangladesh"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:57
+msgid "Belgium"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:58
+msgid "Burkina Faso"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:59
+msgid "Bulgaria"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:60
+msgid "Bahrain"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:61
+msgid "Burundi"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:62
+msgid "Benin"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:63
+msgid "Bermuda"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:64
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:65
+msgid "Bolivia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:66
+msgid "Brazil"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:67
+msgid "Bahamas"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:68
+msgid "Bhutan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:69
+msgid "Bouvet Island"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:70
+msgid "Botswana"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:71
+msgid "Belarus"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:72
+msgid "Belize"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:73
+msgid "Canada"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:74
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:75
+msgid "Congo, The Democratic Republic of the"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:76
+msgid "Central African Republic"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:77
+msgid "Congo"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:78
+msgid "Switzerland"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:79
+msgid "Cote D'Ivoire"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:80
+msgid "Cook Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:81
+msgid "Chile"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:82
+msgid "Cameroon"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:83
+msgid "China"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:84
+msgid "Colombia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:85
+msgid "Costa Rica"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:86
+msgid "Cuba"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:87
+msgid "Cape Verde"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:88
+msgid "Christmas Island"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:89
+msgid "Cyprus"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:90
+msgid "Czech Republic"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:91
+msgid "Germany"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:92
+msgid "Djibouti"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:93
+msgid "Denmark"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:94
+msgid "Dominica"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:95
+msgid "Dominican Republic"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:96
+msgid "Algeria"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:97
+msgid "Ecuador"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:98
+msgid "Estonia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:99
+msgid "Egypt"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:100
+msgid "Western Sahara"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:101
+msgid "Eritrea"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:102
+msgid "Spain"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:103
+msgid "Ethiopia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:104
+msgid "Finland"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:105
+msgid "Fiji"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:106
+msgid "Falkland Islands (Malvinas)"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:107
+msgid "Micronesia, Federated States of"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:108
+msgid "Faroe Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:109
+msgid "France"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:110
+msgid "France, Metropolitan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:111
+msgid "Gabon"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:112
+msgid "United Kingdom"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:113
+msgid "Grenada"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:114
+msgid "Georgia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:115
+msgid "French Guiana"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:116
+msgid "Ghana"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:117
+msgid "Gibraltar"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:118
+msgid "Greenland"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:119
+msgid "Gambia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:120
+msgid "Guinea"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:121
+msgid "Guadeloupe"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:122
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:123
+msgid "Greece"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:124
+msgid "South Georgia and the South Sandwich Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:125
+msgid "Guatemala"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:126
+msgid "Guam"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:127
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:128
+msgid "Guyana"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:129
+msgid "Hong Kong"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:130
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:131
+msgid "Honduras"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:132
+msgid "Croatia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:133
+msgid "Haiti"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:134
+msgid "Hungary"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:135
+msgid "Indonesia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:136
+msgid "Ireland"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:137
+msgid "Israel"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:138
+msgid "India"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:139
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:140
+msgid "Iraq"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:141
+msgid "Iran, Islamic Republic of"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:142
+msgid "Iceland"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:143
+msgid "Italy"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:144
+msgid "Jamaica"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:145
+msgid "Jordan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:146
+msgid "Japan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:147
+msgid "Kenya"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:148
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:149
+msgid "Cambodia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:150
+msgid "Kiribati"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:151
+msgid "Comoros"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:152
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:153
+msgid "Korea, Democratic People's Republic of"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:154
+msgid "Korea, Republic of"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:155
+msgid "Kuwait"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:156
+msgid "Cayman Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:157
+msgid "Kazakhstan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:158
+msgid "Lao People's Democratic Republic"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:159
+msgid "Lebanon"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:160
+msgid "Saint Lucia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:161
+msgid "Liechtenstein"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:162
+msgid "Sri Lanka"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:163
+msgid "Liberia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:164
+msgid "Lesotho"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:165
+msgid "Lithuania"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:166
+msgid "Luxembourg"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:167
+msgid "Latvia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:168
+msgid "Libyan Arab Jamahiriya"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:169
+msgid "Morocco"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:170
+msgid "Monaco"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:171
+msgid "Moldova, Republic of"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:172
+msgid "Madagascar"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:173
+msgid "Marshall Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:174
+msgid "Macedonia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:175
+msgid "Mali"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:176
+msgid "Myanmar"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:177
+msgid "Mongolia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:178
+msgid "Macau"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:179
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:180
+msgid "Martinique"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:181
+msgid "Mauritania"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:182
+msgid "Montserrat"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:183
+msgid "Malta"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:184
+msgid "Mauritius"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:185
+msgid "Maldives"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:186
+msgid "Malawi"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:187
+msgid "Mexico"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:188
+msgid "Malaysia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:189
+msgid "Mozambique"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:190
+msgid "Namibia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:191
+msgid "New Caledonia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:192
+msgid "Niger"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:193
+msgid "Norfolk Island"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:194
+msgid "Nigeria"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:195
+msgid "Nicaragua"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:196
+msgid "Netherlands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:197
+msgid "Norway"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:198
+msgid "Nepal"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:199
+msgid "Nauru"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:200
+msgid "Niue"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:201
+msgid "New Zealand"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:202
+msgid "Oman"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:203
+msgid "Panama"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:204
+msgid "Peru"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:205
+msgid "French Polynesia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:206
+msgid "Papua New Guinea"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:207
+msgid "Philippines"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:208
+msgid "Pakistan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:209
+msgid "Poland"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:210
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:211
+msgid "Pitcairn Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:212
+msgid "Puerto Rico"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:213
+msgid "Palestinian Territory, Occupied"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:214
+msgid "Portugal"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:215
+msgid "Palau"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:216
+msgid "Paraguay"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:217
+msgid "Qatar"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:218
+msgid "Reunion"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:219
+msgid "Romania"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:220
+msgid "Russian Federation"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:221
+msgid "Rwanda"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:222
+msgid "Saudi Arabia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:223
+msgid "Solomon Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:224
+msgid "Seychelles"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:225
+msgid "Sudan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:226
+msgid "Sweden"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:227
+msgid "Singapore"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:228
+msgid "Saint Helena"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:229
+msgid "Slovenia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:230
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:231
+msgid "Slovakia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:232
+msgid "Sierra Leone"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:233
+msgid "San Marino"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:234
+msgid "Senegal"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:235
+msgid "Somalia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:236
+msgid "Suriname"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:237
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:238
+msgid "El Salvador"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:239
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:240
+msgid "Swaziland"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:241
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:242
+msgid "Chad"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:243
+msgid "French Southern Territories"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:244
+msgid "Togo"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:245
+msgid "Thailand"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:246
+msgid "Tajikistan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:247
+msgid "Tokelau"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:248
+msgid "Turkmenistan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:249
+msgid "Tunisia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:250
+msgid "Tonga"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:251
+msgid "East Timor"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:252
+msgid "Turkey"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:253
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:254
+msgid "Tuvalu"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:255
+msgid "Taiwan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:256
+msgid "Tanzania, United Republic of"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:257
+msgid "Ukraine"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:258
+msgid "Uganda"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:259
+msgid "United States Minor Outlying Islands"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:260
+msgid "United States"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:261
+msgid "Uruguay"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:262
+msgid "Uzbekistan"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:263
+msgid "Holy See (Vatican City State)"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:264
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:265
+msgid "Venezuela"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:266
+msgid "Virgin Islands, British"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:267
+msgid "Virgin Islands, U.S."
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:268
+msgid "Vietnam"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:269
+msgid "Vanuatu"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:270
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:271
+msgid "Samoa"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:272
+msgid "Yemen"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:273
+msgid "Mayotte"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:274
+msgid "Yugoslavia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:275
+msgid "South Africa"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:276
+msgid "Zambia"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:277
+msgid "Zaire"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:278
+msgid "Zimbabwe"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:279
+msgid "Anonymous Proxy"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:280
+msgid "Satellite Provider"
+msgstr ""
+
+#: ../linkcheck/checker/geoip.py:281
+msgid "Other"
 msgstr ""
 
 #: ../linkcheck/logger/__init__.py:30
@@ -579,12 +1568,12 @@ msgstr ""
 msgid "NOTSET"
 msgstr ""
 
-#: ../linkcheck/configuration.py:256
+#: ../linkcheck/configuration.py:269
 #, python-format
 msgid "invalid log option %r"
 msgstr ""
 
-#: ../linkcheck/configuration.py:373
+#: ../linkcheck/configuration.py:386
 #, python-format
 msgid "extern%d: syntax error %s\n"
 msgstr ""
@@ -736,21 +1725,27 @@ msgstr ""
 msgid "Print version and exit."
 msgstr ""
 
-#: ../linkchecker:282
+#: ../linkchecker:281
+msgid ""
+"Run with low thread scheduling priority. Useful when checking large\n"
+"sites to not interfere with running progams."
+msgstr ""
+
+#: ../linkchecker:287
 msgid "Output options"
 msgstr ""
 
-#: ../linkchecker:285
+#: ../linkchecker:290
 msgid ""
 "Log all checked URLs (implies -w). Default is to log only invalid\n"
 "URLs."
 msgstr ""
 
-#: ../linkchecker:288
+#: ../linkchecker:293
 msgid "Log warnings."
 msgstr ""
 
-#: ../linkchecker:291
+#: ../linkchecker:296
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -761,17 +1756,17 @@ msgid ""
 "Application Server error'. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:300
+#: ../linkchecker:305
 msgid ""
 "Print a warning if content size is available and exceeds the given\n"
 "number of bytes. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:304
+#: ../linkchecker:309
 msgid "Quiet operation. This is only useful with -F."
 msgstr ""
 
-#: ../linkchecker:308
+#: ../linkchecker:313
 #, python-format
 msgid ""
 "Specify output as %(loggertypes)s. Default output type is text.\n"
@@ -779,7 +1774,7 @@ msgid ""
 "Valid encodings are listed at http://docs.python.org/lib/node127.html."
 msgstr ""
 
-#: ../linkchecker:315
+#: ../linkchecker:320
 #, python-format
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for\n"
@@ -794,11 +1789,11 @@ msgid ""
 "suppress all console output with the option '-o none'."
 msgstr ""
 
-#: ../linkchecker:328
+#: ../linkchecker:333
 msgid "Do not print check status messages."
 msgstr ""
 
-#: ../linkchecker:331
+#: ../linkchecker:336
 #, python-format
 msgid ""
 "Print debugging output for given logger.\n"
@@ -810,28 +1805,28 @@ msgid ""
 "For accurate results, threading will be disabled during debug runs."
 msgstr ""
 
-#: ../linkchecker:341
+#: ../linkchecker:346
 #, python-format
 msgid ""
 "Write profiling data into a file named %s in the\n"
 "current working directory. See also --viewprof."
 msgstr ""
 
-#: ../linkchecker:345
+#: ../linkchecker:350
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr ""
 
-#: ../linkchecker:350
+#: ../linkchecker:355
 msgid "Checking options"
 msgstr ""
 
-#: ../linkchecker:353
+#: ../linkchecker:358
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable inifinite recursion. Default depth is infinite."
 msgstr ""
 
-#: ../linkchecker:357
+#: ../linkchecker:362
 msgid ""
 " regex, --intern=regex\n"
 "Assume URLs that match the given expression as internal.\n"
@@ -839,32 +1834,32 @@ msgid ""
 "external."
 msgstr ""
 
-#: ../linkchecker:363
+#: ../linkchecker:368
 msgid ""
 "Assume urls that match the given expression as external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:367
+#: ../linkchecker:372
 msgid ""
 "Assume urls that match the given expression as strict external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:371
+#: ../linkchecker:376
 msgid ""
 "Check only syntax of external links, do not try to connect to them.\n"
 "For local file urls, only local files are internal. For\n"
 "http and ftp urls, all urls at the same domain name are internal."
 msgstr ""
 
-#: ../linkchecker:376
+#: ../linkchecker:381
 msgid ""
 "Swap checking order to external/internal. Default checking order\n"
 "is internal/external."
 msgstr ""
 
-#: ../linkchecker:380
+#: ../linkchecker:385
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -872,119 +1867,125 @@ msgid ""
 "information."
 msgstr ""
 
-#: ../linkchecker:386
+#: ../linkchecker:391
 msgid ""
 "Check HTTP anchor references. This option applies to both internal\n"
 "and external urls. Default is don't check anchors.\n"
 "This option implies -w because anchor errors are always warnings."
 msgstr ""
 
-#: ../linkchecker:391
+#: ../linkchecker:396
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
 "is the default browser behaviour, but it's not specified in\n"
 "the URI specification. Use with care."
 msgstr ""
 
-#: ../linkchecker:396
+#: ../linkchecker:401
 msgid ""
 "Try given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. See also -p."
 msgstr ""
 
-#: ../linkchecker:400
+#: ../linkchecker:405
 msgid ""
 "Try given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. See also -u."
 msgstr ""
 
-#: ../linkchecker:404
+#: ../linkchecker:409
 #, python-format
 msgid ""
 "Set the timeout for TCP connection attempts in seconds. The default\n"
 "timeout is %d seconds."
 msgstr ""
 
-#: ../linkchecker:408
+#: ../linkchecker:413
 msgid ""
 "Pause PAUSE seconds between each url check. This option implies -t0.\n"
 "Default is no pause between requests."
 msgstr ""
 
-#: ../linkchecker:412
+#: ../linkchecker:417
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
 "only the syntax of the link is checked."
 msgstr ""
 
-#: ../linkchecker:418
+#: ../linkchecker:422
+msgid ""
+"Contact hosts that match the given expression directly instead of\n"
+"going through a proxy."
+msgstr ""
+
+#: ../linkchecker:427
 msgid "Deprecated options"
 msgstr ""
 
-#: ../linkchecker:421
+#: ../linkchecker:430
 msgid "Print check status every 5 seconds to stderr. This is the default."
 msgstr ""
 
-#: ../linkchecker:461 ../linkchecker:489
+#: ../linkchecker:473 ../linkchecker:501
 #, python-format
 msgid "Unknown logger type %r in %r for option %s"
 msgstr ""
 
-#: ../linkchecker:464 ../linkchecker:493
+#: ../linkchecker:476 ../linkchecker:505
 #, python-format
 msgid "Unknown encoding %r in %r for option %s"
 msgstr ""
 
-#: ../linkchecker:500
+#: ../linkchecker:512
 #, python-format
 msgid "Illegal argument %r for option %s: %s"
 msgstr ""
 
-#: ../linkchecker:521 ../linkchecker:535
+#: ../linkchecker:533 ../linkchecker:547
 #, python-format
 msgid "Illegal argument %d for option %s"
 msgstr ""
 
-#: ../linkchecker:542
+#: ../linkchecker:554
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr ""
 
-#: ../linkchecker:585
+#: ../linkchecker:597
 msgid ""
 "enter one or more urls, separated by white-space\n"
 "--> "
 msgstr ""
 
-#: ../linkchecker:588
+#: ../linkchecker:600
 msgid "no files or urls given"
 msgstr ""
 
-#: ../linkchecker:605
+#: ../linkchecker:617
 msgid ""
 "The `profile' Python module is not installed, therefore the --profile option "
 "is disabled."
 msgstr ""
 
-#: ../linkchecker:611
+#: ../linkchecker:623
 #, python-format
 msgid ""
 "Overwrite profiling file %r?\n"
 "Press Ctrl-C to cancel, RETURN to continue."
 msgstr ""
 
-#: ../linkchecker:617
+#: ../linkchecker:629
 msgid "Canceled."
 msgstr ""
 
-#: ../linkchecker:631
+#: ../linkchecker:643
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
 msgstr ""
 
-#: ../linkchecker:641
+#: ../linkchecker:653
 msgid "Hit RETURN to finish"
 msgstr ""
 

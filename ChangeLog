@@ -4,6 +4,12 @@
     threads.
     Type: feature
     Changed: linkchecker, linkcheck/threader.py
+    
+  * If GeoIP Python wrapper is installed, log the country name as
+    info.
+    Type: feature
+    Changed: linkcheck/checker/consumer.py
+    Added: linkcheck/checker/geoip.py
 
 2.5 "Spanglish" (released 4.3.2005)
 

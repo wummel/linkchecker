@@ -1,14 +1,13 @@
 Possible improvements people could work on:
 
-- [FEATURE] have an option (e.g. --no-proxy),
-  that lets linkchecker ignore all proxy settings in the
-  environment. And it would be nice when there where an
-  environment variable (e.g. $NO_PROXY) that holds a
-  comma-separated list of hosts, that should be contacted
-  directly and not over a proxy.
+- add --no-proxy-for and --low-priority to man pages
 
-- [FEATURE] Optional python-geoip support, logging the country
-  for URLs.
+- use po4a to manage manpages
+
+- [FEATURE] have an option (e.g. --no-proxy-for),
+  that lets linkchecker contact the given host directly instead
+  of going through a proxy. Should be a regex, should be able to
+  give option multiple times, and also in the config file.
 
 - [USAGE] rethink intern/extern stuff
 
