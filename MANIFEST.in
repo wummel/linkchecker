@@ -8,6 +8,7 @@ include cgi/lc.cgi cgi/lc.fcgi cgi/README
 include Makefile
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
+include debian/compat debian/NEWS.Debian debian/README.Debian debian/watch
 include test.py test/*.py test/*.sh
 include cgi/lconline/*.html cgi/lconline/*.de cgi/lconline/*.en
 include cgi/lconline/check.js
