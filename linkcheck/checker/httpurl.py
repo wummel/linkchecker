@@ -43,6 +43,36 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 # Amazon blocks all HEAD requests
 _is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 
+DEFAULT_TIMEOUT_SECS = 300
+
+
+def has_header_value (headers, name, value):
+    name = name.lower()
+    value = value.lower()
+    for hname, hvalue in headers:
+        if hname.lower()==name and hvalue.lower()==value:
+            return True
+    return False
+
+
+def http_persistent (response):
+    headers = response.getheaders()
+    if response.version == 11:
+        return has_header_value(headers, 'Connection', 'Close')
+    return has_header_value(headers, "Connection", "Keep-Alive")
+
+
+def http_timeout (response):
+    timeout = response.getheader("Keep-Alive")
+    if timeout is not None:
+        try:
+            timeout = int(timeout[8:].strip())
+        except ValueError, msg:
+            timeout = DEFAULT_TIMEOUT_SECS
+    else:
+        timeout = DEFAULT_TIMEOUT_SECS
+    return timeout
+
 
 class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     """
@@ -61,6 +91,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.max_redirects = 5
         self.has301status = False
         self.no_anchor = False # remove anchor in request url
+        self.persistent = False
 
     def build_url (self):
         super(HttpUrl, self).build_url()
@@ -139,6 +170,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         else:
             # first try with HEAD
             self.method = "HEAD"
+        # flag if second try should be done with GET
         fallback_GET = False
         while True:
             try:
@@ -401,9 +433,18 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             for c in self.cookies:
                 self.url_connection.putheader("Cookie", c)
         self.url_connection.endheaders()
-        return self.url_connection.getresponse()
+        response = self.url_connection.getresponse()
+        self.persistent = http_persistent(response)
+        self.timeout = http_timeout(response)
+        return response
 
     def get_http_object (self, host, scheme):
+        _user, _password = self.get_user_password()
+        key = (scheme, self.urlparts[1], _user, _password)
+        conn = self.consumer.cache.get_connection(key)
+        if conn is not None:
+            # reuse cached HTTP(S) connection
+            return conn
         if scheme == "http":
             h = linkcheck.httplib2.HTTPConnection(host)
         elif scheme == "https" and supportHttps:
@@ -483,3 +524,19 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     def get_robots_txt_url (self):
         return "%s://%s/robots.txt" % tuple(self.urlparts[0:2])
 
+    def close_connection (self):
+        if self.url_connection is None:
+            # no connection is open
+            return
+        # add to cached connections
+        _user, _password = self.get_user_password()
+        key = ("http", self.urlparts[1], _user, _password)
+        cache_add = self.consumer.cache.add_connection
+        if not self.persistent or \
+           not cache_add(key, self.url_connection, self.timeout):
+            try:
+                self.url_connection.close()
+            except:
+                # ignore close errors
+                pass
+        self.url_connection = None

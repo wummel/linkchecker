@@ -29,6 +29,9 @@ import proxysupport
 import httpurl
 import linkcheck.ftpparse._ftpparse as ftpparse
 
+DEFAULT_TIMEOUT_SECS = 300
+
+
 class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     """
     Url link with ftp scheme.
@@ -49,6 +52,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # proxy support (we support only http)
         self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
         if self.proxy:
+            # using a (HTTP) proxy
             http = httpurl.HttpUrl(self.base_url,
                   self.recursion_level,
                   self.consumer.config,
@@ -59,7 +63,6 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                   name=self.name)
             http.build_url()
             return http.check()
-        # using no proxy here
         self.login()
         self.filename = self.cwd()
         self.listfile()
@@ -72,23 +75,14 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return urllib.splitpasswd(self.userinfo)
         return super(FtpUrl, self).get_user_password()
 
-    def get_ftp_connection (self, hostport, _user, _password):
-        cache_get = self.consumer.cache.get_ftp_connection
-        # wait at most 300*0.1=30 seconds for connection to become available
-        for dummy in xrange(300):
-            conn = cache_get(hostport, _user, _password)
-            if conn != "busy":
-                return conn
-            time.sleep(0.1)
-        return None
-
     def login (self):
         """
         Log into ftp server and check the welcome message.
         """
-        _user, _password = self.get_user_password()
         # ready to connect
-        conn = self.get_ftp_connection(self.urlparts[1], _user, _password)
+        _user, _password = self.get_user_password()
+        key = ("ftp", self.urlparts[1], _user, _password)
+        conn = self.consumer.cache.get_connection(key)
         if conn is not None:
             # reuse cached FTP connection
             self.url_connection = conn
@@ -114,9 +108,6 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                                        _("Got no answer from FTP server"))
         # don't set info anymore, this may change every time we log in
         #self.add_info(info)
-        # add to cached connections
-        self.consumer.cache.add_ftp_connection(
-                      self.urlparts[1], _user, _password, self.url_connection)
 
     def cwd (self):
         """
@@ -221,7 +212,15 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return self.data
 
     def close_connection (self):
+        if self.url_connection is None:
+            return
+        # add to cached connections
         _user, _password = self.get_user_password()
-        self.consumer.cache.release_ftp_connection(
-                                          self.urlparts[1], _user, _password)
+        key = ("ftp", self.urlparts[1], _user, _password)
+        cache_add = self.consumer.cache.add_connection
+        if not cache_add(key, self.url_connection, DEFAULT_TIMEOUT_SECS):
+            try:
+                self.url_connection.quit()
+            except:
+                pass
         self.url_connection = None

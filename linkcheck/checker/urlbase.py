@@ -421,7 +421,6 @@ class UrlBase (object):
         except:
             # ignore close errors
             pass
-        # release variable for garbage collection
         self.url_connection = None
 
     def check_connection (self):

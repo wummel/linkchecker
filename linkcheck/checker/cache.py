@@ -18,7 +18,6 @@
 Store cached data during checking.
 """
 
-import time
 import Cookie
 try:
     import threading
@@ -30,8 +29,7 @@ import linkcheck.log
 import linkcheck.containers
 import linkcheck.configuration
 import linkcheck.threader
-
-FTP_CONNECTION_TIMEOUT = 300
+import linkcheck.checker.pool
 
 
 def _check_morsel (m, host, path):
@@ -69,12 +67,6 @@ class Cache (object):
         self.lock = threading.Lock()
         # already checked urls
         self.checked = {}
-        # open FTP connections
-        # {(host,user,pass) -> [connection, status, timeout]}
-        self.ftp_connections = {}
-        # open HTTP connections
-        # {(host,user,pass) -> [connection, status, timeout]}
-        self.ftp_connections = {}
         # urls that are being checked
         self.in_progress = {}
         # to-be-checked urls
@@ -83,6 +75,8 @@ class Cache (object):
         self.robots_txt = {}
         # stored cookies
         self.cookies = {}
+        # pooled connections
+        self.pool = linkcheck.checker.pool.ConnectionPool()
 
     def incoming_is_empty (self):
         self.lock.acquire()
@@ -221,54 +215,34 @@ class Cache (object):
         finally:
             self.lock.release()
 
-    def get_ftp_connection (self, host, username, password):
+    def get_connection (self, key):
         """
-        Get open FTP connection to given host. Return None if no such
-        connection is available.
+        Get open connection to given host. Return None if no such
+        connection is available (or the old one timed out).
         """
         self.lock.acquire()
         try:
-            key = (host, username, password)
-            if key in self.ftp_connections:
-                conn_data = self.ftp_connections[key]
-                if time.time() > conn_data[2]:
-                    # timed out
-                    del self.ftp_connections[key]
-                    return None
-                if conn_data[1] == 'busy':
-                    # connection is in use
-                    return "busy"
-                conn_data[1] = 'busy'
-                conn_data[2] = t
-                return conn_data[0]
-            return None
+            return self.pool.get_connection(key)
         finally:
             self.lock.release()
 
-    def add_ftp_connection (self, host, username, password, conn):
+    def add_connection (self, key, connection, timeout):
         """
-        Store open FTP connection into cache for reuse.
+        Store open connection into cache for reuse.
         """
         self.lock.acquire()
         try:
-            key = (host, username, password)
-            cached = key in self.ftp_connections
-            if not cached:
-                timeout = time.time() + FTP_CONNECTION_TIMEOUT
-                self.ftp_connections[key] = [conn, 'busy', timeout]
-            return cached
+            return self.pool.add_connection(key, connection, timeout)
         finally:
             self.lock.release()
 
-    def release_ftp_connection (self, host, username, password):
+    def release_connection (self, key):
         """
-        Store open FTP connection into cache for reuse.
+        Store open connection into cache for reuse.
         """
         self.lock.acquire()
         try:
-            key = (host, username, password)
-            if key in self.ftp_connections:
-                self.ftp_connections[key][1] = 'available'
+            return self.pool.release_connection(key)
         finally:
             self.lock.release()
 

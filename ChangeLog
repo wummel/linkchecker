@@ -37,7 +37,12 @@
     Type: bugfix
     Changed: linkcheck/checker/ftpurl.py
 
-  * If an FTP connection is pooled but busy, wait for the connection to
+  * Added connection pooling.
+    Type: feature
+    Added: linkcheck/checker/pool.py
+    Changed: linkcheck/checker/{cache, httpurl, ftpurl}.py
+
+  * If a connection is pooled but busy, wait for the connection to
     become available for at least 30 seconds.
     Type: feature
     Changed: linkcheck/checker/ftpurl.py
