@@ -4,301 +4,105 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Wed Sep  4 23:10:16 2002\n"
+"POT-Creation-Date: Wed Sep 11 11:16:43 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
-"Language-Team: LANGUAGE <de@li.org>\n"
+"Language-Team: LANGUAGE <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-msgid "Error: %s"
-msgstr "Fout: %s"
-
-msgid "No NNTP server specified, skipping this URL"
-msgstr "Geen NNTP server gegeven; URL overgeslagen"
-
-msgid "Found %s in link contents"
-msgstr ""
-
-msgid "Parent URL"
-msgstr "Ouder URL"
-
-msgid ""
-"\n"
-"********** Oops, I did it again. *************\n"
-"\n"
-"You have found an internal error in LinkChecker. Please write a bug report\n"
-"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
-"or send mail to %s and include the following information:\n"
-"1) The URL or file you are testing\n"
-"2) Your commandline arguments and/or configuration.\n"
-"3) The system information below.\n"
-"\n"
-"If you disclose some information because its too private to you thats ok.\n"
-"I will try to help you nontheless (but you have to give me *something*\n"
-"I can work with ;).\n"
-msgstr ""
-
-msgid ""
-"enter one or more urls, separated by white-space\n"
-"--> "
-msgstr ""
-"voert u een of meer URLs in, gescheiden door spaties\n"
-"--> "
-
-msgid " (cached)\n"
-msgstr " (uit de cache)\n"
-
-msgid "found MX mail host %s"
-msgstr "Mail host %s gevonden"
-
-msgid "# Format of the entries:\n"
-msgstr "# Format der Einträge:\n"
-
-msgid "Error: %s\n"
-msgstr "Fout: %s\n"
-
-msgid "Access denied by robots.txt, checked only syntax"
-msgstr "Toegang geweigerd door robots.txt; alleen syntax gecontroleerd"
-
-msgid " found"
-msgstr " gevonden"
-
-msgid "parenturl"
-msgstr "ouder URL"
-
-msgid "keyboard interrupt"
-msgstr ""
-
-msgid "%s url ignored"
-msgstr ""
-
-msgid "Netscape Enterprise Server with no HEAD support, falling back to GET"
-msgstr "Netscape Enterprise Server zonder HEAD ondersteuning, probeer GET"
-
-msgid "invalid log option '%s'"
-msgstr "ungeldige Log Optie '%s'"
-
-msgid "dltime"
-msgstr "D/L tijd"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr "HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen"
-
-msgid "illegal recursionlevel number %d"
-msgstr "illegaal recursie nivo nummer %d"
-
-msgid "checktime"
-msgstr "Testtijd"
-
-msgid " in %d links"
-msgstr " in %d URLs"
-
-msgid ""
-"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
-"urls which point to (home) directories should end with a / to avoid "
-"redirection"
-msgstr ""
-"Es trat eine HTTP 301 Weiterleitung auf und die URL endet nicht mit /. Alle "
-"URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um "
-"Weiterleitungen zu verhindern"
-
-msgid ""
-"<html><head>\n"
-"<title>LinkChecker Online Error</title></head>\n"
-"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 "
-"alink=#191c83>\n"
-"<blockquote>\n"
-"<b>Error</b><br>\n"
-"The LinkChecker Online script has encountered an error. Please ensure\n"
-"that your provided URL link begins with <code>http://</code> and\n"
-"contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>\n"
-"Errors are logged.\n"
-"</blockquote>\n"
-"</body>\n"
-"</html>"
-msgstr ""
-"<html><head><title>LinkChecker Online Fehler</title></head><body text="
-"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
-"\"#191c83\"><blockquote><b>Fehler</b><br>Das LinkChecker Online Skript ist "
-"auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die "
-"angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen "
-"enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
-"blockquote></body></html>"
-
-msgid "URL"
-msgstr "URL"
-
-msgid "Start checking at %s\n"
-msgstr "Begin testen vanaf %s\n"
-
-msgid "None of the MX mail hosts for %s accepts an SMTP connection: %s"
-msgstr "Geen van de mail hosts %s accepteert een SMTP Verbinding: %s"
+msgid "Result"
+msgstr "Resultaat"
 
 msgid "Illegal argument '%s' for option "
 msgstr "Ongeldige parameter '%s' als option "
 
-msgid "Error"
-msgstr "Fout"
-
-msgid "1 error"
-msgstr "1 fout"
-
-msgid " found\n"
-msgstr " gevonden\n"
-
-msgid ""
-"NOTES\n"
-"o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
-"  starts with 'www.' resp. 'ftp.'\n"
-"  You can also give local files as arguments.\n"
-"o If you have your system configured to automatically establish a\n"
-"  connection to the internet (e.g. with diald), it will connect when\n"
-"  checking links not pointing to your local host.\n"
-"  Use the -s and -i options to prevent this.\n"
-"o Javascript links are currently ignored.\n"
-"o If your platform does not support threading, LinkChecker uses -t0.\n"
-"o You can supply multiple user/password pairs in a configuration file.\n"
-"o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy\n"
-"  on Unix or Windows.\n"
-"  On a Mac use the Internet Config.\n"
-"o When checking 'news:' links the given NNTP host doesn't need to be the\n"
-"  same as the host of the user browsing your pages!\n"
-msgstr ""
-"KOMMENTARE\n"
-"o LinkChecker verwendet eine http:// bzw. ftp:// URL wenn eine URL auf der\n"
-"  Kommandozeile mit 'www.' bzw. 'ftp.' beginnt\n"
-"  Sie können auch lokale Dateien als Argumente angeben\n"
-"o Falls sich Ihr System automatisch mit dem Internet verbindet\n"
-"  (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht\n"
-"  auf Ihren lokalen Rechner verweisen\n"
-"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe "
-"BEISPIELE)\n"
-"o Javascript Links werden zur Zeit ignoriert\n"
-"o Wenn Ihr System keine Threads unterstützt verwendet LinkChecker die\n"
-"  Option -t0\n"
-"o Sie können mehrere user/password Paare in einer Konfigurationsdatei\n"
-"  angeben\n"
-"o Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter\n"
-"  Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.\n"
-"o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
-"  unbedingt derselbe wie der des Benutzers sein!\n"
-
-msgid "No adresses found"
-msgstr "Geen adres gevonden"
-
-msgid "info"
-msgstr "info"
-
-msgid "name"
-msgstr "Naam"
-
-msgid ", line "
-msgstr ", regel "
-
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
-msgid "too much redirections (>= 5)"
-msgstr "te veel verwijzingen (>= 5)"
-
-msgid ""
-"EXAMPLES\n"
-"o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
-"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
-"o Local files and syntactic sugar on the command line:\n"
-"      linkchecker c:\\temp\\test.html\n"
-"      linkchecker ../bla.html\n"
-"      linkchecker www.myhomepage.de\n"
-"      linkchecker -r0 ftp.linux.org\n"
-msgstr ""
-"VOORBEELDEN\n"
-"o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
-"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
-"o Lokale bestanden en syntaktischer Zucker op de commandoregel:\n"
-"      linkchecker c:\\temp\\test.html\n"
-"      linkchecker ../bla.html\n"
-"      linkchecker www.myhomepage.de\n"
-"      linkchecker -r0 ftp.linux.org\n"
-
-msgid "Verified adress: %s"
-msgstr "Geldig adres: %s"
-
-msgid "System info:"
+msgid "NNTP busy: %s"
 msgstr ""
 
-msgid "Warning"
-msgstr "Waarschuwing"
+msgid "%.3f seconds"
+msgstr "%.3f Seconden"
 
-msgid "Valid"
-msgstr "Geldig"
+msgid "Effective URL %s"
+msgstr "Effektieve URL %s"
 
-msgid "Illegal telnet link syntax"
-msgstr "Illegale Telnet link Syntax"
+msgid "url"
+msgstr "URL"
+
+msgid "No newsgroup specified in NNTP URL"
+msgstr "Geen nieuwsgroep in de NNTP URL gespecificeerd"
+
+msgid "%.3f seconds\n"
+msgstr "%.3f Seconden\n"
+
+msgid "no files or urls given"
+msgstr "geen bestanden of URLs gegeven"
+
+msgid "realurl"
+msgstr "echte URL"
+
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Voert u 'linkchecker -h' uit, om hulp te krijgen\n"
 
 msgid "more than one base tag found"
 msgstr ""
 
-msgid "found"
-msgstr "gevonden"
+msgid "created by %s at %s\n"
+msgstr "gemaakt door %s om %s\n"
 
-msgid "minutes"
-msgstr "minuten"
+msgid "base"
+msgstr "basis"
 
-msgid "Group %s has %s articles, range %s to %s"
-msgstr "Groep %s heeft %s artikelen, van %s tot %s"
+msgid "hours"
+msgstr "Uren"
 
-msgid "URL has invalid port number"
-msgstr ""
-
-msgid "Warning: %s"
-msgstr "Waarschuwing: %s"
-
-msgid "NTTP server too busy; tried more than %d times"
-msgstr ""
-
-msgid "Real URL"
-msgstr "Echte URL"
-
-msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
-msgstr "Zope Server understeunt geen HEAD verzoek, probeer GET"
-
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-"Stuur commentaar en bugs aan %s\n"
-"\n"
+msgid "seconds"
+msgstr "Seconden"
 
 msgid ""
 "\n"
-"Thats it. "
+"******** LinkChecker internal error, bailing out ********"
 msgstr ""
-"\n"
-"Dat was het. "
 
-msgid "warning"
-msgstr "Waarschuwing"
+msgid "Name"
+msgstr "Naam"
 
-msgid "result"
-msgstr "resultaat"
+msgid "URL is null or empty"
+msgstr "URL is nul of leeg"
 
-msgid ""
-"Server does not support HEAD request (got %d status), falling back to GET"
-msgstr "Server understeunt geen HEAD verzoek (kreeg status %d), probeer GET"
+msgid "Thats it. "
+msgstr "Dat was het. "
 
-msgid "Articel number %s found"
-msgstr "Artikel nummer %s niet gevonden"
+msgid "Info"
+msgstr "Info"
 
-msgid "No MX mail host for %s found"
-msgstr "Geen Mail host %s gevonden"
+msgid "Hit RETURN to finish"
+msgstr "Toets RETURN om te beëindigen"
 
-msgid "could not split the mail adress"
-msgstr "kon Mail adres niet splitsen"
+msgid "Remote host has closed connection"
+msgstr "Remote host heeft de verbinding beëindigd"
 
-msgid "Base"
-msgstr "Basis"
+msgid "Path is empty"
+msgstr ""
+
+msgid "checktime"
+msgstr "Testtijd"
+
+msgid "Check Time"
+msgstr "Testtijd"
+
+msgid "Stopped checking at %s"
+msgstr "Stop testen om %s"
+
+msgid "No user or password found"
+msgstr "Geen gebruikernaam of wachtwoord gevonden"
+
+msgid "anchor #%s not found"
+msgstr ""
+
+msgid "Got no answer from FTP server"
+msgstr "Geen antwoord van FTP Server"
 
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -471,97 +275,296 @@ msgstr ""
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option impliziert -w.\n"
 
-msgid "Got no answer from FTP server"
-msgstr "Geen antwoord van FTP Server"
+msgid "Error: %s"
+msgstr "Fout: %s"
 
-msgid "Get the newest version at %s\n"
-msgstr "Haal de nieuwste versie op van %s\n"
+msgid "could not split the mail adress"
+msgstr "kon Mail adres niet splitsen"
 
-msgid "No user or password found"
-msgstr "Geen gebruikernaam of wachtwoord gevonden"
+msgid "No MX mail host for %s found"
+msgstr "Geen Mail host %s gevonden"
 
-msgid "Stopped checking at %s"
-msgstr "Stop testen om %s"
-
-msgid "Check Time"
-msgstr "Testtijd"
-
-msgid "Path is empty"
-msgstr ""
-
-msgid "Remote host has closed connection"
-msgstr "Remote host heeft de verbinding beëindigd"
-
-msgid "Hit RETURN to finish"
-msgstr "Toets RETURN om te beëindigen"
-
-msgid "Info"
-msgstr "Info"
-
-msgid "Thats it. "
-msgstr "Dat was het. "
-
-msgid "URL is null or empty"
-msgstr "URL is nul of leeg"
-
-msgid "Name"
-msgstr "Naam"
+msgid "Articel number %s found"
+msgstr "Artikel nummer %s niet gevonden"
 
 msgid ""
-"\n"
-"******** LinkChecker internal error, bailing out ********"
+"Server does not support HEAD request (got %d status), falling back to GET"
+msgstr "Server understeunt geen HEAD verzoek (kreeg status %d), probeer GET"
+
+msgid "URL has invalid port number"
 msgstr ""
 
-msgid "seconds"
-msgstr "Seconden"
+msgid "warning"
+msgstr "Waarschuwing"
 
-msgid "outside of domain filter, checked only syntax"
-msgstr "buiten het domein filter, alleen syntax gecontroleerd"
+msgid "result"
+msgstr "resultaat"
 
-msgid "hours"
-msgstr "Uren"
+msgid ""
+"Write comments and bugs to %s\n"
+"\n"
+msgstr ""
+"Stuur commentaar en bugs aan %s\n"
+"\n"
 
-msgid "base"
-msgstr "basis"
+msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
+msgstr "Zope Server understeunt geen HEAD verzoek, probeer GET"
 
-msgid "created by %s at %s\n"
-msgstr "gemaakt door %s om %s\n"
+msgid "Real URL"
+msgstr "Echte URL"
 
-msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Voert u 'linkchecker -h' uit, om hulp te krijgen\n"
+msgid "NTTP server too busy; tried more than %d times"
+msgstr ""
 
-msgid "realurl"
-msgstr "echte URL"
-
-msgid "no files or urls given"
-msgstr "geen bestanden of URLs gegeven"
-
-msgid "%.3f seconds\n"
-msgstr "%.3f Seconden\n"
+msgid "Warning: %s"
+msgstr "Waarschuwing: %s"
 
 msgid " in 1 link"
 msgstr " in 1 URL"
 
-msgid "No newsgroup specified in NNTP URL"
-msgstr "Geen nieuwsgroep in de NNTP URL gespecificeerd"
+msgid "minutes"
+msgstr "minuten"
 
-msgid "url"
+msgid "found"
+msgstr "gevonden"
+
+msgid "outside of domain filter, checked only syntax"
+msgstr "buiten het domein filter, alleen syntax gecontroleerd"
+
+msgid "Illegal telnet link syntax"
+msgstr "Illegale Telnet link Syntax"
+
+msgid "Get the newest version at %s\n"
+msgstr "Haal de nieuwste versie op van %s\n"
+
+msgid "Warning"
+msgstr "Waarschuwing"
+
+msgid "System info:"
+msgstr ""
+
+msgid "Verified adress: %s"
+msgstr "Geldig adres: %s"
+
+msgid ""
+"EXAMPLES\n"
+"o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
+"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
+"o Local files and syntactic sugar on the command line:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n"
+msgstr ""
+"VOORBEELDEN\n"
+"o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
+"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
+"o Lokale bestanden en syntaktischer Zucker op de commandoregel:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n"
+
+msgid "too much redirections (>= 5)"
+msgstr "te veel verwijzingen (>= 5)"
+
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+msgid ", line "
+msgstr ", regel "
+
+msgid "name"
+msgstr "Naam"
+
+msgid "info"
+msgstr "info"
+
+msgid "No adresses found"
+msgstr "Geen adres gevonden"
+
+msgid ""
+"NOTES\n"
+"o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
+"  starts with 'www.' resp. 'ftp.'\n"
+"  You can also give local files as arguments.\n"
+"o If you have your system configured to automatically establish a\n"
+"  connection to the internet (e.g. with diald), it will connect when\n"
+"  checking links not pointing to your local host.\n"
+"  Use the -s and -i options to prevent this.\n"
+"o Javascript links are currently ignored.\n"
+"o If your platform does not support threading, LinkChecker uses -t0.\n"
+"o You can supply multiple user/password pairs in a configuration file.\n"
+"o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy\n"
+"  on Unix or Windows.\n"
+"  On a Mac use the Internet Config.\n"
+"o When checking 'news:' links the given NNTP host doesn't need to be the\n"
+"  same as the host of the user browsing your pages!\n"
+msgstr ""
+"KOMMENTARE\n"
+"o LinkChecker verwendet eine http:// bzw. ftp:// URL wenn eine URL auf der\n"
+"  Kommandozeile mit 'www.' bzw. 'ftp.' beginnt\n"
+"  Sie können auch lokale Dateien als Argumente angeben\n"
+"o Falls sich Ihr System automatisch mit dem Internet verbindet\n"
+"  (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht\n"
+"  auf Ihren lokalen Rechner verweisen\n"
+"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe "
+"BEISPIELE)\n"
+"o Javascript Links werden zur Zeit ignoriert\n"
+"o Wenn Ihr System keine Threads unterstützt verwendet LinkChecker die\n"
+"  Option -t0\n"
+"o Sie können mehrere user/password Paare in einer Konfigurationsdatei\n"
+"  angeben\n"
+"o Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter\n"
+"  Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.\n"
+"o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
+"  unbedingt derselbe wie der des Benutzers sein!\n"
+
+msgid " found\n"
+msgstr " gevonden\n"
+
+msgid "1 error"
+msgstr "1 fout"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Valid"
+msgstr "Geldig"
+
+msgid "Unsupported content encoding %s."
+msgstr ""
+
+msgid "None of the MX mail hosts for %s accepts an SMTP connection: %s"
+msgstr "Geen van de mail hosts %s accepteert een SMTP Verbinding: %s"
+
+msgid "Start checking at %s\n"
+msgstr "Begin testen vanaf %s\n"
+
+msgid "URL"
 msgstr "URL"
 
-msgid "anchor #%s not found"
+msgid ""
+"<html><head>\n"
+"<title>LinkChecker Online Error</title></head>\n"
+"<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 "
+"alink=#191c83>\n"
+"<blockquote>\n"
+"<b>Error</b><br>\n"
+"The LinkChecker Online script has encountered an error. Please ensure\n"
+"that your provided URL link begins with <code>http://</code> and\n"
+"contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>\n"
+"Errors are logged.\n"
+"</blockquote>\n"
+"</body>\n"
+"</html>"
 msgstr ""
+"<html><head><title>LinkChecker Online Fehler</title></head><body text="
+"\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
+"\"#191c83\"><blockquote><b>Fehler</b><br>Das LinkChecker Online Skript ist "
+"auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die "
+"angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen "
+"enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
+"blockquote></body></html>"
 
-msgid "Effective URL %s"
-msgstr "Effektieve URL %s"
-
-msgid "%.3f seconds"
-msgstr "%.3f Seconden"
-
-msgid "NNTP busy: %s"
+msgid ""
+"A HTTP 301 redirection occured and the url has no trailing / at the end. All "
+"urls which point to (home) directories should end with a / to avoid "
+"redirection"
 msgstr ""
+"Es trat eine HTTP 301 Weiterleitung auf und die URL endet nicht mit /. Alle "
+"URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit einem / enden, um "
+"Weiterleitungen zu verhindern"
 
-msgid "Result"
-msgstr "Resultaat"
+msgid " in %d links"
+msgstr " in %d URLs"
 
 msgid " errors"
 msgstr " fouten"
+
+msgid "illegal recursionlevel number %d"
+msgstr "illegaal recursie nivo nummer %d"
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr "HTTP 301 (moved permanent) gevonden: u moet deze verwijzing vernieuwen"
+
+msgid "dltime"
+msgstr "D/L tijd"
+
+msgid "Base"
+msgstr "Basis"
+
+msgid "Netscape Enterprise Server with no HEAD support, falling back to GET"
+msgstr "Netscape Enterprise Server zonder HEAD ondersteuning, probeer GET"
+
+msgid "%s url ignored"
+msgstr ""
+
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Groep %s heeft %s artikelen, van %s tot %s"
+
+msgid "keyboard interrupt"
+msgstr ""
+
+msgid "parenturl"
+msgstr "ouder URL"
+
+msgid "invalid log option '%s'"
+msgstr "ungeldige Log Optie '%s'"
+
+msgid " found"
+msgstr " gevonden"
+
+msgid "Access denied by robots.txt, checked only syntax"
+msgstr "Toegang geweigerd door robots.txt; alleen syntax gecontroleerd"
+
+msgid "Error: %s\n"
+msgstr "Fout: %s\n"
+
+msgid "# Format of the entries:\n"
+msgstr "# Format der Einträge:\n"
+
+msgid "found MX mail host %s"
+msgstr "Mail host %s gevonden"
+
+msgid " (cached)\n"
+msgstr " (uit de cache)\n"
+
+msgid ""
+"\n"
+"Thats it. "
+msgstr ""
+"\n"
+"Dat was het. "
+
+msgid ""
+"\n"
+"********** Oops, I did it again. *************\n"
+"\n"
+"You have found an internal error in LinkChecker. Please write a bug report\n"
+"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
+"or send mail to %s and include the following information:\n"
+"1) The URL or file you are testing\n"
+"2) Your commandline arguments and/or configuration.\n"
+"3) The system information below.\n"
+"\n"
+"If you disclose some information because its too private to you thats ok.\n"
+"I will try to help you nontheless (but you have to give me *something*\n"
+"I can work with ;).\n"
+msgstr ""
+
+msgid ""
+"enter one or more urls, separated by white-space\n"
+"--> "
+msgstr ""
+"voert u een of meer URLs in, gescheiden door spaties\n"
+"--> "
+
+msgid "Found %s in link contents"
+msgstr ""
+
+msgid "No NNTP server specified, skipping this URL"
+msgstr "Geen NNTP server gegeven; URL overgeslagen"
+
+msgid "Parent URL"
+msgstr "Ouder URL"

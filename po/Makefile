@@ -42,13 +42,13 @@ MOS=$(patsubst %, %.mo, $(LANGUAGES) )
 .PHONY: all
 all:	$(MOS)
 
-%.po:	.time.pot
+%.po:	pot-stamp
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
 
-.time.pot:
+pot-stamp: $(SOURCES)
 	rm -f $(PACKAGE).pot
 	$(GETTEXT) --default-domain=$(PACKAGE) --no-location $(SOURCES)
-	touch .time.pot
+	touch pot-stamp
 
 %.mo:	%.po
 	if [ ! -d $(LDIR)/$*/LC_MESSAGES ]; then \
@@ -60,7 +60,7 @@ clean:
 	for f in $(LANGUAGES); do rm -f $(LDIR)/$$f/$(LFILE); done
 
 distclean:	clean
-	rm -f .time.pot
+	rm -f pot-stamp
 
 .PHONY: all clean distclean
 
