@@ -9,6 +9,10 @@
     Type: bugfix
     Changed: linkcheck/url.py
 
+  * Make sure that URLs are always Unicode strings and not None.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py, linkcheck/containers.py
+
 2.6 "Lord of the Rings" (released 15.3.2005)
 
   * Run with low priority. New option --priority to run with normal
