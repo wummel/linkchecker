@@ -68,7 +68,6 @@ So for example 1.1.5 is the fifth release of the 1.1 development package.
 
 Included packages
 -----------------
-DNS from http://pydns.sourceforge.net/
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
 CSV from http://eh.org/~laurie/comp/python/csv/index.html
 
