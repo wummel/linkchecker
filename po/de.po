@@ -441,8 +441,8 @@ msgstr "Das wars. "
 #, python-format
 msgid "%d link checked."
 msgid_plural "%d links checked."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Verknüpfung überprüft."
+msgstr[1] "%d Verknüpfungen überprüft."
 
 #: ../linkcheck/logger/html.py:244
 #: ../linkcheck/logger/text.py:233
