@@ -5,6 +5,9 @@
   * only remove anchors on IIS servers (other servers are doing quite
     well with anchors... can you spell A-p-a-c-h-e ?)
     Changed files: linkcheck/{HttpUrlData, UrlData}.py
+  * correctly propagate and display parsing errors
+    Changed files: linkcheck/parser/html{lex.l, parse.y},
+      linkcheck/linkparse.py
 
 1.8.13
   * fix typo in manpage

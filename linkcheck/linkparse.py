@@ -64,6 +64,8 @@ class LinkParser (HtmlParser):
         self.content = content
         self.tags = tags
         self.urls = []
+        # warnings and errors during parsing
+        self.parse_info = []
         self.feed(self.content)
         debug(HURT_ME_PLENTY, "flushing")
         self.flush()
@@ -107,4 +109,27 @@ class LinkParser (HtmlParser):
                 return
         self.urls.append((url, self.last_lineno(), self.last_column(),
                           name, base))
+
+
+    def _errorfun (self, msg, name):
+        """append msg to error list"""
+        pos = "%d:%d" % (self.lineno(), self.column())
+        self.parse_info.append("%s: %s: %s" % (name, pos, msg))
+        print >> sys.stderr, name, pos, msg
+
+
+    def error (self, msg):
+        """signal a filter/parser error"""
+        self._errorfun(msg, "error:")
+
+
+    def warning (self, msg):
+        """signal a filter/parser warning"""
+        self._errorfun(msg, "warning:")
+
+
+    def fatalError (self, msg):
+        """signal a fatal filter/parser error"""
+        self._errorfun(msg, "fatal error:")
+
 
