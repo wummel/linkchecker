@@ -52,7 +52,7 @@ or send mail to %s and include the following information:
 - the system information below.
 
 Disclosing some of the information above due to privacy reasons is ok.
-I will try to help you nontheless, but you have to give me something
+I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
 """) % linkcheck.configuration.Email
     etype, value = sys.exc_info()[:2]
