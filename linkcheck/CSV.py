@@ -21,7 +21,7 @@
 # IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-import re, string, types, UserList
+import string, types, UserList
 
 
 ###################################################################################################
@@ -50,10 +50,9 @@ class CSV(UserList.UserList):
             Arguments:
               separator        : The field delimiter. Defaults to ','
         """
-
+                UserList.UserList.__init__(self)
 		self.separator = separator
 
-		self.data = []
 		self.fields__title__have = self.fields__title = None
 
 
@@ -381,8 +380,8 @@ class Entry(UserList.UserList):
               fields__title : a list with the titles of each field
                               (an empty list means there are no titles)
 		"""
+                UserList.UserList.__init__(self, fields)
 
-		self.data = fields
 		if fields__title != None:
 			self.fields__title = fields__title
 		else:

@@ -57,6 +57,7 @@ ExcList = [
    ValueError, # from httplib.py
    linkcheck.error,
    DNS.Error,
+   linkcheck.timeoutsocket.Timeout,
 ]
 try:
     import socket
@@ -346,10 +347,6 @@ class UrlData:
                not self.cached and \
                self.recursionLevel < config["recursionlevel"] and \
                not self.extern
-
-
-    def isHtml(self):
-        return 0
 
 
     def checkAnchors(self, anchor):

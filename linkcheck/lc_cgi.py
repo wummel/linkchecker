@@ -17,6 +17,7 @@
 
 import re,time,urlparse
 from linkcheck import _
+from types import StringType
 
 _logfile = None
 

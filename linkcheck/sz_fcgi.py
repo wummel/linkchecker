@@ -3,7 +3,7 @@ __version__ 	= "v0.8  19/10/1998 ajung"
 __doc__      	= "Multithreaded FastCGI Wrapper"
 
 
-import sys,thread,fcgi
+import thread,fcgi
 
 class SZ_FCGI:
     def __init__(self,func):

@@ -18,6 +18,7 @@
 import sys,time,rotor,types
 
 _curses = None
+_color = 0
 try:
     from ncurses import curses
     _curses = curses
@@ -74,7 +75,7 @@ def abbuzze():
     my,mx = w.getmaxyx()
     b = w.subwin(my-2, mx, 0, 0)
     s = w.subwin(2, mx, my-2, 0)
-    if color:
+    if _color:
         s.color_set(1)
     bs = nassmache(_bs)
     ss = nassmache(_ss)
@@ -92,12 +93,12 @@ def abbuzze():
     _curses.endwin()
 
 def config_curses():
+    global _color
     _curses.nonl()            # tell curses not to do NL->CR/NL on output
     _curses.noecho()          # don't echo input
     _curses.cbreak()          # take input chars one at a time, no wait for \n
-    global color
-    if hasattr(_curses, "start_color"):
-        color = 1
+    if hasattr(_curses, "start_color") and hasattr(_curses, "set_color"):
+        _color = 1
         _curses.start_color() # start the colour system
         if _curses.has_colors():
             if _curses.can_change_color():
@@ -107,8 +108,6 @@ def config_curses():
                 _curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
                 _curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
                 _curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
-    else:
-        color = 0
 
 def waddemol(f):
     time.sleep(float(f))
