@@ -17,6 +17,12 @@ MOS=$(patsubst %, %.mo, $(LANGUAGES) )
 
 all:	$(MOS)
 
+win:
+	if [ ! -d $(LDIR)/de/LC_MESSAGES ]; then \
+	  mkdir -p $(LDIR)/de/LC_MESSAGES; \
+	fi
+	$(MSGFMT) -o$(LDIR)/de/$(LFILE) de.po
+
 %.po:	$(PACKAGE).pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
 
