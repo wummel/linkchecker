@@ -1,32 +1,44 @@
-1.12.2 (release xx.xx.xxxx)
+1.12.2 (release 3.4.2004)
   * use XmlUtils instead of xmlify for XML quoting
     Type: code cleanup
     Added: linkcheck/XmlUtils.py
     Changed: linkcheck/StringUtil.py, linkcheck/log/XMLLogger.py
+
   * don't require a value anymore with the --version option
     Type: bugfix
     Changed: linkchecker
+
   * before putting url data objects in the queue, check if they have
     correct syntax and are not already cached
     Type: optimization
     Changed: linkcheck/{UrlData,Config}.py
+
   * every once in a while, remove all already cached urls from the
     incoming queue. This action is reported when --status is given.
     Type: optimization
     Changed: linkcheck/Config.py
+
   * both changes above result in significant performance improvements
     when checking large websites, since a majority of the links tend
     to be navigation links to already-cached pages.
     Type: note
+
   * updated examples and put them before options in the man page for
     easier reading
     Type: documentation
     Changed: linkchecker, linkchecker.1
+
   * added contact url and email to the HTTP User-Agent string, which
     gets us more accepted by some bot-blocking software; also see
     http://www.livejournal.com/bots/
     Type: feature
     Changed: linkcheck/Config.py
+
+  * only check robots.txt for http connections
+    Type: bugfix
+    Changed: linkcheck/{Http,}UrlData.py
+    Closes: SF bug 928895
+
 
 1.12.1 (release 21.2.2004)
   * raise IncompleteRead instead of ValueError on malformed chunked
