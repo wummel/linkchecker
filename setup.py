@@ -270,7 +270,7 @@ elif os.name == 'nt':
               'doc/shot2_thumb.jpg', ]))
 
 setup (name = "linkchecker",
-       version = "2.1",
+       version = "2.2",
        description = "check HTML documents for broken links",
        keywords = "link,url,checking,verfication",
        author = myname,
