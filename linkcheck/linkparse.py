@@ -56,19 +56,63 @@ LinkTags = {
 _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
 _css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
 
-class LinkParser (HtmlParser):
+class TagParser (HtmlParser):
+    def __init__ (self, content):
+        super(TagParser, self).__init__()
+        self.content = content
+        # warnings and errors during parsing
+        self.parse_info = []
+
+
+    def _errorfun (self, msg, name):
+        """append msg to error list"""
+        self.parse_info.append("%s at line %d col %d: %s" % \
+                (name, self.last_lineno(), self.last_column(), msg))
+
+
+    def error (self, msg):
+        """signal a filter/parser error"""
+        self._errorfun(msg, "error")
+
+
+    def warning (self, msg):
+        """signal a filter/parser warning"""
+        self._errorfun(msg, "warning")
+
+
+    def fatalError (self, msg):
+        """signal a fatal filter/parser error"""
+        self._errorfun(msg, "fatal error")
+
+
+class MetaRobotsParser (TagParser):
+    def __init__ (self, content):
+        super(MetaRobotsParser, self).__init__(content)
+        self.follow = True
+        self.index = True
+        self.feed(self.content)
+        debug(HURT_ME_PLENTY, "flushing")
+        self.flush()
+
+
+    def startElement (self, tag, attrs):
+        if tag=='meta':
+            if attrs.get('name')=='robots':
+                val = attrs.get('content', '').lower().split(',')
+                self.follow = 'nofollow' not in val
+                self.index = 'noindex' not in val
+
+
+class LinkParser (TagParser):
     """Parse the content for a list of links. After parsing, the urls
     will have a list of parsed links entries with the format
     (url, lineno, column, name, base)
     """
 
     def __init__ (self, content, tags=LinkTags):
-        super(LinkParser, self).__init__()
-        self.content = content
+        super(LinkParser, self).__init__(content)
         self.tags = tags
         self.urls = []
-        # warnings and errors during parsing
-        self.parse_info = []
         self.feed(self.content)
         debug(HURT_ME_PLENTY, "flushing")
         self.flush()
@@ -122,22 +166,4 @@ class LinkParser (HtmlParser):
             debug(NIGHTMARE, "LinkParser add link", tag, attr, u, name, base)
             self.urls.append((u, self.last_lineno(), self.last_column(),
                               name, base))
-
-
-    def _errorfun (self, msg, name):
-        """append msg to error list"""
-        self.parse_info.append("%s at line %d col %d: %s" % \
-                (name, self.last_lineno(), self.last_column(), msg))
-
-    def error (self, msg):
-        """signal a filter/parser error"""
-        self._errorfun(msg, "error")
-
-    def warning (self, msg):
-        """signal a filter/parser warning"""
-        self._errorfun(msg, "warning")
-
-    def fatalError (self, msg):
-        """signal a fatal filter/parser error"""
-        self._errorfun(msg, "fatal error")
 

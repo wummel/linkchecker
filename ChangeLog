@@ -5,6 +5,9 @@
     Changed: linkcheck/Config.py
   * fix mime-type checking to allow parsing of .css stylesheets
     Changed: linkcheck/HttpUrlData.py
+  * honor meta robots tags like
+    <meta name="ROBOTS" content="NOFOLLOW">
+    Changed: linkcheck/UrlData.py, linkcheck/linkparse.py
 
 1.10.2 (release 3.1.2004)
   * fixed CGI safe_url pattern, it was too strict

@@ -22,7 +22,7 @@ from linkcheck import DNS, LinkCheckerError, getLinkPat
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, test_support
-from linkparse import LinkParser
+from linkparse import LinkParser, MetaRobotsParser
 from debug import *
 
 ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
@@ -440,10 +440,17 @@ class UrlData (object):
         return self.valid and \
                self.isParseable() and \
                self.hasContent() and \
+               self.contentAllowsRobots() and \
                not self.isCached() and \
                (self.config["recursionlevel"] < 0 or
                 self.recursionLevel < self.config["recursionlevel"]) and \
                not self.extern[0]
+
+
+    def contentAllowsRobots (self):
+        if not self.isHtml():
+            return True
+        return MetaRobotsParser(self.getContent()).follow
 
 
     def checkAnchors (self):
