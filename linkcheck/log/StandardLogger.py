@@ -78,46 +78,46 @@ __init__(self, **args)
     def newUrl (self, urlData):
         if self.fd is None: return
         if self.logfield('url'):
-            self.fd.write("\n"+linkcheck._(LogFields['url'])+Spaces['url']+urlData.urlName)
+            self.fd.write("\n"+LogFields['url']+Spaces['url']+urlData.urlName)
             if urlData.cached:
                 self.fd.write(linkcheck._(" (cached)\n"))
             else:
                 self.fd.write("\n")
         if urlData.name and self.logfield('name'):
-            self.fd.write(linkcheck._(LogFields["name"])+Spaces["name"]+urlData.name+"\n")
+            self.fd.write(LogFields["name"]+Spaces["name"]+urlData.name+"\n")
         if urlData.parentName and self.logfield('parenturl'):
-            self.fd.write(linkcheck._(LogFields['parenturl'])+Spaces["parenturl"]+
+            self.fd.write(LogFields['parenturl']+Spaces["parenturl"]+
 	                  urlData.parentName+
                           (linkcheck._(", line %d")%urlData.line)+
                           (linkcheck._(", col %d")%urlData.column)+"\n")
         if urlData.baseRef and self.logfield('base'):
-            self.fd.write(linkcheck._(LogFields["base"])+Spaces["base"]+urlData.baseRef+"\n")
+            self.fd.write(LogFields["base"]+Spaces["base"]+urlData.baseRef+"\n")
         if urlData.url and self.logfield('realurl'):
-            self.fd.write(linkcheck._(LogFields["realurl"])+Spaces["realurl"]+urlData.url+"\n")
+            self.fd.write(LogFields["realurl"]+Spaces["realurl"]+urlData.url+"\n")
         if urlData.dltime>=0 and self.logfield('dltime'):
-            self.fd.write(linkcheck._(LogFields["dltime"])+Spaces["dltime"]+
+            self.fd.write(LogFields["dltime"]+Spaces["dltime"]+
 	                  linkcheck._("%.3f seconds\n") % urlData.dltime)
         if urlData.dlsize>=0 and self.logfield('dlsize'):
-            self.fd.write(linkcheck._(LogFields["dlsize"])+Spaces["dlsize"]+
+            self.fd.write(LogFields["dlsize"]+Spaces["dlsize"]+
 	                  "%s\n"%StringUtil.strsize(urlData.dlsize))
         if urlData.checktime and self.logfield('checktime'):
-            self.fd.write(linkcheck._(LogFields["checktime"])+Spaces["checktime"]+
+            self.fd.write(LogFields["checktime"]+Spaces["checktime"]+
 	                  linkcheck._("%.3f seconds\n") % urlData.checktime)
         if urlData.infoString and self.logfield('info'):
-            self.fd.write(linkcheck._(LogFields["info"])+Spaces["info"]+
+            self.fd.write(LogFields["info"]+Spaces["info"]+
 	                  StringUtil.indent(
                               StringUtil.blocktext(urlData.infoString, 65),
 			  MaxIndent)+"\n")
         if urlData.warningString:
             #self.warnings += 1
             if self.logfield('warning'):
-                self.fd.write(linkcheck._(LogFields["warning"])+Spaces["warning"]+
+                self.fd.write(LogFields["warning"]+Spaces["warning"]+
 	                  StringUtil.indent(
                               StringUtil.blocktext(urlData.warningString, 65),
 			  MaxIndent)+"\n")
 
         if self.logfield('result'):
-            self.fd.write(linkcheck._(LogFields["result"])+Spaces["result"])
+            self.fd.write(LogFields["result"]+Spaces["result"])
             if urlData.valid:
                 self.fd.write(urlData.validString+"\n")
             else:

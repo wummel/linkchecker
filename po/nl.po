@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Jan  5 02:24:32 2003\n"
+"POT-Creation-Date: Sun Jan  5 16:50:27 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -247,12 +247,6 @@ msgstr "minuten"
 msgid "hours"
 msgstr "Uren"
 
-msgid "Parent URL"
-msgstr "Ouder URL"
-
-msgid "URL"
-msgstr "URL"
-
 msgid ", line %d"
 msgstr ", regel %d"
 
@@ -262,35 +256,8 @@ msgstr ""
 msgid " (cached)\n"
 msgstr " (uit de cache)\n"
 
-msgid "Name"
-msgstr "Naam"
-
-msgid "Base"
-msgstr "Basis"
-
-msgid "Real URL"
-msgstr "Echte URL"
-
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
 msgid "%.3f seconds"
 msgstr "%.3f Seconden"
-
-msgid "D/L Size"
-msgstr ""
-
-msgid "Check Time"
-msgstr "Testtijd"
-
-msgid "Info"
-msgstr "Info"
-
-msgid "Warning"
-msgstr "Waarschuwing"
-
-msgid "Result"
-msgstr "Resultaat"
 
 msgid "Start checking at %s\n"
 msgstr "Begin testen vanaf %s\n"
@@ -316,41 +283,8 @@ msgstr " in %d URLs"
 msgid " found"
 msgstr " gevonden"
 
-msgid "url"
-msgstr "URL"
-
-msgid "name"
-msgstr "Naam"
-
-msgid "parenturl"
-msgstr "ouder URL"
-
-msgid "base"
-msgstr "basis"
-
-msgid "realurl"
-msgstr "echte URL"
-
-msgid "dltime"
-msgstr "D/L tijd"
-
 msgid "%.3f seconds\n"
 msgstr "%.3f Seconden\n"
-
-msgid "dlsize"
-msgstr ""
-
-msgid "checktime"
-msgstr "Testtijd"
-
-msgid "info"
-msgstr "info"
-
-msgid "warning"
-msgstr "Waarschuwing"
-
-msgid "result"
-msgstr "resultaat"
 
 msgid ""
 "\n"
@@ -361,6 +295,42 @@ msgstr ""
 
 msgid " found\n"
 msgstr " gevonden\n"
+
+msgid "Real URL"
+msgstr "Echte URL"
+
+msgid "Result"
+msgstr "Resultaat"
+
+msgid "Base"
+msgstr "Basis"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Parent URL"
+msgstr "Ouder URL"
+
+msgid "Extern"
+msgstr ""
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Warning"
+msgstr "Waarschuwing"
+
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+msgid "D/L Size"
+msgstr ""
+
+msgid "Check Time"
+msgstr "Testtijd"
+
+msgid "URL"
+msgstr "URL"
 
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -644,3 +614,33 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#~ msgid "url"
+#~ msgstr "URL"
+
+#~ msgid "name"
+#~ msgstr "Naam"
+
+#~ msgid "parenturl"
+#~ msgstr "ouder URL"
+
+#~ msgid "base"
+#~ msgstr "basis"
+
+#~ msgid "realurl"
+#~ msgstr "echte URL"
+
+#~ msgid "dltime"
+#~ msgstr "D/L tijd"
+
+#~ msgid "checktime"
+#~ msgstr "Testtijd"
+
+#~ msgid "info"
+#~ msgstr "info"
+
+#~ msgid "warning"
+#~ msgstr "Waarschuwing"
+
+#~ msgid "result"
+#~ msgstr "resultaat"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Jan  5 02:24:32 2003\n"
+"POT-Creation-Date: Sun Jan  5 16:50:27 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -237,12 +237,6 @@ msgstr ""
 msgid "hours"
 msgstr "heures"
 
-msgid "Parent URL"
-msgstr "URL Parente"
-
-msgid "URL"
-msgstr ""
-
 msgid ", line %d"
 msgstr ", ligne %d"
 
@@ -252,35 +246,8 @@ msgstr ""
 msgid " (cached)\n"
 msgstr " (caché)\n"
 
-msgid "Name"
-msgstr ""
-
-msgid "Base"
-msgstr "Base"
-
-msgid "Real URL"
-msgstr "URL Réelle"
-
-msgid "D/L Time"
-msgstr "Durée D/L"
-
 msgid "%.3f seconds"
 msgstr "%.3f secondes"
-
-msgid "D/L Size"
-msgstr ""
-
-msgid "Check Time"
-msgstr "Durée d'Analyse"
-
-msgid "Info"
-msgstr ""
-
-msgid "Warning"
-msgstr "Avertissement"
-
-msgid "Result"
-msgstr "Résultat"
 
 msgid "Start checking at %s\n"
 msgstr "Démarrage du controle à %s\n"
@@ -306,41 +273,8 @@ msgstr " dans %d liens"
 msgid " found"
 msgstr " trouvé"
 
-msgid "url"
-msgstr "URL"
-
-msgid "name"
-msgstr ""
-
-msgid "parenturl"
-msgstr ""
-
-msgid "base"
-msgstr "Base"
-
-msgid "realurl"
-msgstr "Résultat"
-
-msgid "dltime"
-msgstr ""
-
 msgid "%.3f seconds\n"
 msgstr "%.3f secondes\n"
-
-msgid "dlsize"
-msgstr ""
-
-msgid "checktime"
-msgstr "Durée d'Analyse"
-
-msgid "info"
-msgstr ""
-
-msgid "warning"
-msgstr "Avertissement"
-
-msgid "result"
-msgstr "Résultat"
 
 msgid ""
 "\n"
@@ -351,6 +285,42 @@ msgstr ""
 
 msgid " found\n"
 msgstr " trouvé\n"
+
+msgid "Real URL"
+msgstr "URL Réelle"
+
+msgid "Result"
+msgstr "Résultat"
+
+msgid "Base"
+msgstr "Base"
+
+msgid "Name"
+msgstr ""
+
+msgid "Parent URL"
+msgstr "URL Parente"
+
+msgid "Extern"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Warning"
+msgstr "Avertissement"
+
+msgid "D/L Time"
+msgstr "Durée D/L"
+
+msgid "D/L Size"
+msgstr ""
+
+msgid "Check Time"
+msgstr "Durée d'Analyse"
+
+msgid "URL"
+msgstr ""
 
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -628,3 +598,21 @@ msgstr "aucun fichier ou url donnée"
 
 msgid "Hit RETURN to finish"
 msgstr ""
+
+#~ msgid "url"
+#~ msgstr "URL"
+
+#~ msgid "base"
+#~ msgstr "Base"
+
+#~ msgid "realurl"
+#~ msgstr "Résultat"
+
+#~ msgid "checktime"
+#~ msgstr "Durée d'Analyse"
+
+#~ msgid "warning"
+#~ msgstr "Avertissement"
+
+#~ msgid "result"
+#~ msgstr "Résultat"

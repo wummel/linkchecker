@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Jan  5 02:24:32 2003\n"
+"POT-Creation-Date: Sun Jan  5 16:50:27 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -264,12 +264,6 @@ msgstr "Minuten"
 msgid "hours"
 msgstr "Stunden"
 
-msgid "Parent URL"
-msgstr "Vater URL"
-
-msgid "URL"
-msgstr "URL"
-
 msgid ", line %d"
 msgstr ", Zeile %d"
 
@@ -279,35 +273,8 @@ msgstr ", Spalte %d"
 msgid " (cached)\n"
 msgstr " (aus dem Cache)\n"
 
-msgid "Name"
-msgstr "Name"
-
-msgid "Base"
-msgstr "Basis"
-
-msgid "Real URL"
-msgstr "Tats. URL"
-
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
-
-msgid "D/L Size"
-msgstr "D/L Größe"
-
-msgid "Check Time"
-msgstr "Prüfzeit"
-
-msgid "Info"
-msgstr "Info"
-
-msgid "Warning"
-msgstr "Warnung"
-
-msgid "Result"
-msgstr "Ergebnis"
 
 msgid "Start checking at %s\n"
 msgstr "Beginne Prüfen am %s\n"
@@ -333,41 +300,8 @@ msgstr " in %d URLs"
 msgid " found"
 msgstr " gefunden\n"
 
-msgid "url"
-msgstr "Tats. URL"
-
-msgid "name"
-msgstr "Name"
-
-msgid "parenturl"
-msgstr "Tats. URL"
-
-msgid "base"
-msgstr "Basis"
-
-msgid "realurl"
-msgstr "Tats. URL"
-
-msgid "dltime"
-msgstr "D/L Zeit"
-
 msgid "%.3f seconds\n"
 msgstr "%.3f Sekunden\n"
-
-msgid "dlsize"
-msgstr "D/L Größe"
-
-msgid "checktime"
-msgstr "Prüfzeit"
-
-msgid "info"
-msgstr "Info"
-
-msgid "warning"
-msgstr "Warnung"
-
-msgid "result"
-msgstr "Ergebnis"
 
 msgid ""
 "\n"
@@ -378,6 +312,42 @@ msgstr ""
 
 msgid " found\n"
 msgstr " gefunden\n"
+
+msgid "Real URL"
+msgstr "Tats. URL"
+
+msgid "Result"
+msgstr "Ergebnis"
+
+msgid "Base"
+msgstr "Basis"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Parent URL"
+msgstr "Vater URL"
+
+msgid "Extern"
+msgstr ""
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Warning"
+msgstr "Warnung"
+
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+msgid "D/L Size"
+msgstr "D/L Größe"
+
+msgid "Check Time"
+msgstr "Prüfzeit"
+
+msgid "URL"
+msgstr "URL"
 
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -661,3 +631,36 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
+
+#~ msgid "url"
+#~ msgstr "Tats. URL"
+
+#~ msgid "name"
+#~ msgstr "Name"
+
+#~ msgid "parenturl"
+#~ msgstr "Tats. URL"
+
+#~ msgid "base"
+#~ msgstr "Basis"
+
+#~ msgid "realurl"
+#~ msgstr "Tats. URL"
+
+#~ msgid "dltime"
+#~ msgstr "D/L Zeit"
+
+#~ msgid "dlsize"
+#~ msgstr "D/L Größe"
+
+#~ msgid "checktime"
+#~ msgstr "Prüfzeit"
+
+#~ msgid "info"
+#~ msgstr "Info"
+
+#~ msgid "warning"
+#~ msgstr "Warnung"
+
+#~ msgid "result"
+#~ msgstr "Ergebnis"

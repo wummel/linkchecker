@@ -54,7 +54,7 @@ class NntpUrlData (UrlData):
         if '@' in group:
             # request article
             resp,number,id = nntp.stat("<"+group+">")
-            self.setInfo(linkcheck._('Articel number %s found' % number))
+            self.setInfo(linkcheck._('Articel number %s found') % number)
         else:
             # split off trailing articel span
             group = group.split('/',1)[0]

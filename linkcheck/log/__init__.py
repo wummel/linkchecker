@@ -33,25 +33,25 @@ def strtimezone ():
 import linkcheck
 
 LogFields = {
-    "realurl": "Real URL",
-    "result": "Result",
-    "base": "Base",
-    "name": "Name",
-    "parenturl": "Parent URL",
-    "extern": "Extern",
-    "info": "Info",
-    "warning": "Warning",
-    "dltime": "D/L Time",
-    "dlsize": "D/L Size",
-    "checktime": "Check Time",
-    "url": "URL",
+    "realurl":   linkcheck._("Real URL"),
+    "result":    linkcheck._("Result"),
+    "base":      linkcheck._("Base"),
+    "name":      linkcheck._("Name"),
+    "parenturl": linkcheck._("Parent URL"),
+    "extern":    linkcheck._("Extern"),
+    "info":      linkcheck._("Info"),
+    "warning":   linkcheck._("Warning"),
+    "dltime":    linkcheck._("D/L Time"),
+    "dlsize":    linkcheck._("D/L Size"),
+    "checktime": linkcheck._("Check Time"),
+    "url":       linkcheck._("URL"),
 }
 # maximum indent for localized log field names
-MaxIndent = max(map(lambda x: len(linkcheck._(x)), LogFields.values()))+1
+MaxIndent = max(map(lambda x: len(x), LogFields.values()))+1
 # map with spaces between field name and value
 Spaces = {}
 for key,value in LogFields.items():
-    Spaces[key] = " "*(MaxIndent - len(linkcheck._(value)))
+    Spaces[key] = " "*(MaxIndent - len(value))
 
 from StandardLogger import StandardLogger
 from HtmlLogger import HtmlLogger
