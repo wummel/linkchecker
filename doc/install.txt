@@ -11,6 +11,9 @@ Requirements for Unix/Linux or Mac OS X
 1. You need a standard GNU development environment with
    
    a) C compiler (for example the GNU C Compiler gcc)
+      Depending on your distribution, several development packages
+      might be needed to provide a fully functional C development
+      environment.
    b) gettext
 
 2. Python >= 2.3 from http://www.python.org/ with zlib support
