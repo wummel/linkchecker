@@ -88,8 +88,15 @@ def get_test_consumer (confargs, logargs):
     return linkcheck.checker.consumer.Consumer(config, cache)
 
 
-class StandardTest (unittest.TestCase, object):
+class StandardTest (unittest.TestCase):
     """functional test class with ability to test local files"""
+
+    def setUp (self):
+        """check resources, using the provided function
+           check_resources() from test.py
+        """
+        if hasattr(self, "needed_resources"):
+            self.check_resources(self.needed_resources)
 
     def quote (self, url):
         """helper function quote a url"""
@@ -132,4 +139,3 @@ class StandardTest (unittest.TestCase, object):
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
             self.fail(os.linesep.join([url] + consumer.config['logger'].diff))
-
