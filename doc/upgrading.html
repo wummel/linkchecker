@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.3.3: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.3.4: http://docutils.sourceforge.net/" />
 <title>Upgrading</title>
 <meta content="2" name="navigation.order" />
 <meta content="Upgrading" name="navigation.name" />
@@ -32,8 +32,21 @@ window.onload = function() {
 </div>
 <!-- /bfknav -->
 <h1 class="title">Upgrading</h1>
-<h2 class="subtitle" id="migrating-from-1-12-x-to-1-13-0">Migrating from 1.12.x to 1.13.0</h2>
 <div class="document" id="upgrading">
+<div class="section" id="migrating-from-1-x-to-2-0">
+<h1><a name="migrating-from-1-x-to-2-0">Migrating from 1.x to 2.0</a></h1>
+<p>The --output and --file-output parameters can specify the encoding
+now. You should check your scripts if they support the new option
+syntax.</p>
+<p>Some added checks might trigger new warnings, so automated scripts
+or alarms can have more output than with 1.x releases.</p>
+<p>All output (file and console) is now encoded according to a given
+character set encoding which defaults to iso-8859-1. If you
+relied that output was in a specific encoding, you might want to
+use the output encoding option.</p>
+</div>
+<div class="section" id="migrating-from-1-12-x-to-1-13-0">
+<h1><a name="migrating-from-1-12-x-to-1-13-0">Migrating from 1.12.x to 1.13.0</a></h1>
 <p>Since lots of filenames have changed you should check that any
 manually installed versions prior to 1.13.0 are removed. Otherwise
 you will have startup problems.</p>
@@ -53,9 +66,10 @@ exit value.
 For scripts to ignore exit values and therefore restore the old behaviour
 you can append a <tt class="literal"><span class="pre">||</span> <span class="pre">true</span></tt> at the end of the command.</p>
 </div>
+</div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-11-08 13:50 UTC.
+Generated on: 2004-11-15 19:27 UTC.
 </div>
 </body>
 </html>
