@@ -1,8 +1,10 @@
 Next releases:
 
-- rethink intern/extern stuff, at least make new option --extern-strict
+- rethink intern/extern stuff
 
 - recursion into FTP links
+
+- make a nice wxWindows GUI for linkchecker
 
 - SF bug #992389 bit me when I wanted to do absolute imports
   at the checker classes :/
