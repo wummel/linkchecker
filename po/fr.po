@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Thu Jul 22 15:35:24 2004\n"
+"POT-Creation-Date: Thu Aug 19 23:36:24 2004\n"
 "PO-Revision-Date: 2004-01-03 23:24+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: fr <fr@li.org>\n"
@@ -12,13 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "removed %d cached urls from incoming queue"
-msgstr ""
-
-msgid "invalid log option '%s'"
-msgstr "option de log invalide '%s'"
-
-msgid "extern%d: syntax error %s\n"
+msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
 msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
@@ -36,9 +30,8 @@ msgstr "N'obtient pas de réponse du serveur FTP"
 msgid "Missing trailing directory slash in ftp url"
 msgstr ""
 
-#, fuzzy
-msgid "Host %s (%s) found"
-msgstr " trouvé"
+msgid "%s url ignored"
+msgstr "Url %s ignorée"
 
 msgid "URL path is empty, assuming '/' as path"
 msgstr ""
@@ -96,25 +89,33 @@ msgstr ""
 msgid "Unsupported content encoding %r."
 msgstr ""
 
-msgid "%s url ignored"
-msgstr "Url %s ignorée"
-
-msgid "No adresses found"
-msgstr "Aucune adresse trouvée"
-
-msgid "No MX mail host for %s found"
-msgstr "ne pas trouvé un hôte de messagerie %s"
-
-msgid "Verified adress: %s"
+msgid "Invalid mail syntax"
 msgstr ""
 
-msgid "None of the MX mail hosts for %s accepts an SMTP connection: %s"
+#, fuzzy
+msgid "No addresses found"
+msgstr "Aucune adresse trouvée"
+
+#, fuzzy
+msgid "No MX mail host for %(domain)s found"
+msgstr "ne pas trouvé un hôte de messagerie %s"
+
+msgid "Verified address: %(info)s"
+msgstr ""
+
+#, fuzzy
+msgid "MX mail host %(host)s did not accept connections: %(error)s"
 msgstr "Aucun des hôtes de messagerie pour %s n'accepte de connection SMTP: %s"
 
-msgid "found MX mail host %s"
+msgid "Could not connect, but syntax is correct"
+msgstr ""
+
+#, fuzzy
+msgid "Found MX mail host %(host)s"
 msgstr "trouvé un hôte de messagerie %s"
 
-msgid "could not split the mail adress"
+#, fuzzy
+msgid "Could not split the mail address"
 msgstr "impossible de partager l'adresse e-mail"
 
 msgid "No NNTP server specified, skipping this URL"
@@ -138,8 +139,10 @@ msgstr ""
 msgid "URL has invalid port number %s"
 msgstr ""
 
+msgid "Host is empty"
+msgstr ""
+
 msgid ""
-"\n"
 "********** Oops, I did it again. *************\n"
 "\n"
 "You have found an internal error in LinkChecker. Please write a bug report\n"
@@ -154,21 +157,32 @@ msgid ""
 "I can work with ;).\n"
 msgstr ""
 
-msgid ""
-"\n"
-"******** LinkChecker internal error, bailing out ********"
+msgid "******** LinkChecker internal error, bailing out ********"
 msgstr ""
 
 msgid "System info:"
 msgstr ""
 
-msgid "Error"
-msgstr "Erreur"
+msgid "Python %s on %s"
+msgstr ""
 
-msgid "Valid"
-msgstr "Valide"
+msgid "Base URL is not properly quoted"
+msgstr ""
 
-msgid "URL has invalid port number %r"
+msgid "Base reference is not properly quoted"
+msgstr ""
+
+msgid "Parent url is not properly quoted"
+msgstr ""
+
+msgid "Valid: %(result)s"
+msgstr ""
+
+#, fuzzy
+msgid "Error: %(result)s"
+msgstr "Erreur: %s\n"
+
+msgid "URL has invalid port %r"
 msgstr ""
 
 msgid "outside of domain filter, checked only syntax"
@@ -184,7 +198,8 @@ msgstr ""
 msgid "could not parse content: %r"
 msgstr ""
 
-msgid "URL is null or empty"
+#, fuzzy
+msgid "URL is empty"
 msgstr "L'URL est nulle ou vide"
 
 msgid "URL has whitespace at beginning or end"
@@ -202,7 +217,15 @@ msgstr ""
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
-msgid "keyboard interrupt; waiting for %d active threads to finish"
+#, fuzzy
+msgid "Host %s (%s) found"
+msgstr " trouvé"
+
+#, fuzzy
+msgid "invalid log option %r"
+msgstr "option de log invalide '%s'"
+
+msgid "extern%d: syntax error %s\n"
 msgstr ""
 
 msgid "unsupported language"
@@ -240,73 +263,6 @@ msgid ""
 "</html>"
 msgstr ""
 
-msgid "created by %s at %s%s"
-msgstr ""
-
-msgid "Get the newest version at %s%s"
-msgstr "Obtenir la dernière version à %s%s"
-
-msgid "Write comments and bugs to %s%s%s"
-msgstr "Ecrire les commentaires et rapport de bug à %s%s%s"
-
-msgid "# Format of the entries:"
-msgstr "# Format des entrées:"
-
-msgid "Stopped checking at %s (%s)%s"
-msgstr "Arrêt du controle à %s (%s)%s"
-
-msgid ", line %d"
-msgstr ", ligne %d"
-
-msgid ", col %d"
-msgstr ""
-
-msgid " (cached)\n"
-msgstr " (caché)\n"
-
-msgid "%.3f seconds"
-msgstr "%.3f secondes"
-
-msgid "created by %s at %s\n"
-msgstr ""
-
-msgid "Get the newest version at %s\n"
-msgstr "Obtenir la dernière version à %s\n"
-
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-"Ecrire les commentaires et rapport de bug à %s\n"
-"\n"
-
-msgid "Stopped checking at %s (%s)\n"
-msgstr "Arrêt du controle à %s (%s)\n"
-
-msgid "Start checking at %s\n"
-msgstr "Démarrage du controle à %s\n"
-
-msgid " (cached)"
-msgstr " (caché)"
-
-msgid "Thats it. "
-msgstr "Terminé. "
-
-msgid "1 error"
-msgstr "1 erreur"
-
-msgid " errors"
-msgstr " erreurs"
-
-msgid " in 1 link"
-msgstr " dans 1 liens"
-
-msgid " in %d links"
-msgstr " dans %d liens"
-
-msgid " found"
-msgstr " trouvé"
-
 msgid "Real URL"
 msgstr "URL Réelle"
 
@@ -343,38 +299,117 @@ msgstr "Durée d'Analyse"
 msgid "URL"
 msgstr ""
 
-msgid "%.3f seconds\n"
-msgstr "%.3f secondes\n"
+msgid ", line %d"
+msgstr ", ligne %d"
+
+msgid ", col %d"
+msgstr ""
+
+msgid " (cached)"
+msgstr " (caché)"
+
+msgid "%.3f seconds"
+msgstr "%.3f secondes"
+
+msgid "created by %s at %s"
+msgstr ""
+
+#, fuzzy
+msgid "Get the newest version at %(url)s"
+msgstr "Obtenir la dernière version à %s\n"
+
+#, fuzzy
+msgid "Write comments and bugs to %(email)s"
+msgstr ""
+"Ecrire les commentaires et rapport de bug à %s\n"
+"\n"
+
+msgid "# Format of the entries:"
+msgstr "# Format des entrées:"
+
+msgid "Stopped checking at %s (%s)%s"
+msgstr "Arrêt du controle à %s (%s)%s"
+
+#, fuzzy
+msgid "Stopped checking at %s (%s)"
+msgstr "Arrêt du controle à %s (%s)\n"
+
+msgid "Start checking at %s\n"
+msgstr "Démarrage du controle à %s\n"
+
+msgid "Thats it. "
+msgstr "Terminé. "
+
+msgid "1 error"
+msgstr "1 erreur"
+
+msgid " errors"
+msgstr " erreurs"
+
+msgid " in 1 link"
+msgstr " dans 1 liens"
+
+msgid " in %d links"
+msgstr " dans %d liens"
+
+msgid " found"
+msgstr " trouvé"
+
+msgid "Stopped checking at %s (%s)\n"
+msgstr "Arrêt du controle à %s (%s)\n"
+
+msgid "Get the newest version at %s\n"
+msgstr "Obtenir la dernière version à %s\n"
 
 msgid ""
+"Write comments and bugs to %s\n"
 "\n"
-"Thats it. "
 msgstr ""
+"Ecrire les commentaires et rapport de bug à %s\n"
 "\n"
-"Terminé. "
 
-msgid " found\n"
-msgstr " trouvé\n"
+#, fuzzy
+msgid "Get the newest version at %s"
+msgstr "Obtenir la dernière version à %s\n"
 
-msgid "%r at %s, assuming non-compressed content"
+#, fuzzy
+msgid "Write comments and bugs to %s"
 msgstr ""
+"Ecrire les commentaires et rapport de bug à %s\n"
+"\n"
+
+#, fuzzy
+msgid "Start checking at %s"
+msgstr "Démarrage du controle à %s\n"
+
+msgid "seconds"
+msgstr "secondes"
+
+msgid "minutes"
+msgstr ""
+
+msgid "hours"
+msgstr "heures"
 
 msgid "USAGE\tlinkchecker [options] file-or-url...\n"
 msgstr ""
 
+#, fuzzy
 msgid ""
 "NOTES\n"
-"o A ! before any regex negates it. So '!^mailto:' matches everything but\n"
-"  a mailto link.\n"
-"o LinkCheckers commandline parser treats \"ftp.\" links like \"ftp://ftp.\"\n"
-"  and \"www.\" links like \"http://www.\".\n"
+"o A ! before a regular expression negates it. So '!^mailto:' matches\n"
+"  everything but a mailto link.\n"
+"o URLs on the command line starting with \"ftp.\" are treated like\n"
+"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www."
+"\".\n"
 "  You can also give local files as arguments.\n"
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
-"  checking links not pointing to your local host.\n"
-"  Use the -s and -i options to prevent this.\n"
+"  checking links not pointing to your local system.\n"
+"  See the --strict option on how to prevent this.\n"
 "o Javascript links are currently ignored.\n"
-"o If your platform does not support threading, LinkChecker uses -t0.\n"
+"o If your platform does not support threading, LinkChecker disables it\n"
+"  automatically.\n"
 "o You can supply multiple user/password pairs in a configuration file.\n"
 "o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy\n"
 "  on Unix or Windows.\n"
@@ -409,8 +444,7 @@ msgid ""
 "EXAMPLES\n"
 "Check the treasure.calvinsplayground.de domain, but don't recurse into\n"
 "links outside of this domain:\n"
-"  linkchecker -v --status -r5 -Fhtml -itreasure\\.calvinsplayground\\.de \\\n"
-"  -ocolored http://treasure.calvinsplayground.de/\n"
+"  linkchecker -Fhtml -ocolored http://treasure.calvinsplayground.de/\n"
 "\n"
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"
@@ -444,10 +478,12 @@ msgstr ""
 "      linkchecker www.myhomepage.de\n"
 "      linkchecker -r0 ftp.linux.org\n"
 
-msgid "Error: %s\n"
+#, fuzzy
+msgid "Error: %s"
 msgstr "Erreur: %s\n"
 
-msgid "Execute 'linkchecker -h' for help\n"
+#, fuzzy
+msgid "Execute 'linkchecker -h' for help"
 msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
 
 msgid "Could not find profiling file %s."
@@ -471,9 +507,7 @@ msgstr ""
 msgid "Ask for url if none are given on the commandline."
 msgstr ""
 
-msgid ""
-"Generate no more than num threads. Default number of threads is 5.\n"
-"To disable threading specify a non-positive number."
+msgid "Generate no more than num threads. Default number of threads is 5."
 msgstr ""
 
 msgid "Print version and exit."
@@ -493,13 +527,12 @@ msgstr "Avertissement"
 
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
-"any content of the checked link.\n"
-"This applies of course only to pages which are valid, so we can\n"
-"get their content.\n"
+"any content of the checked link. This applies only to valid pages,\n"
+"so we can get their content.\n"
+"\n"
 "Use this to check for pages that contain some form of error\n"
 "message, for example 'This page has moved' or 'Oracle\n"
-"Application Server error'.\n"
-"This option implies -w."
+"Application Server error'. This option implies -w."
 msgstr ""
 
 msgid ""
@@ -510,27 +543,36 @@ msgstr ""
 msgid "Quiet operation. This is only useful with -F."
 msgstr ""
 
-msgid "Specify output as %s. Default output type is text."
+msgid "Specify output as %(loggertypes)s. Default output type is text."
 msgstr ""
 
 msgid ""
-"type[/filename]\n"
-"Output to a file linkchecker-out.<type>, $HOME/.linkchecker_blacklist for\n"
-"'blacklist' output, or <filename> if specified.\n"
-"The <filename> part of the 'none' output type will be ignored,\n"
+"Output to a file linkchecker-out.TYPE, $HOME/.linkchecker_blacklist for\n"
+"'blacklist' output, or FILENAME if specified.\n"
+"The FILENAME part of the 'none' output type will be ignored,\n"
 "else if the file already exists, it will be overwritten.\n"
-"You can specify this option more than once. Valid file output types\n"
-"are %s.\n"
+"You can specify this option more than once. Valid file output TYPEs\n"
+"are %(loggertypes)s. You can specify this option multiple times to output\n"
+"to more than one file.\n"
+"\n"
 "Default is no file output. If console output is not specified with -o,\n"
-"this option suppresses all console output by implying -o none."
+"this option suppresses all console output by implying '-o none'."
 msgstr ""
 
 msgid ""
-"Print debugging information. Provide this option multiple times\n"
-"for even more debugging information."
-msgstr "Affiche des informations de débugage supplémentaires."
+"Print check status every 5 seconds to stderr. When --debug is given,\n"
+"the status check will only be printed after each checked url. This is\n"
+"due to disabled threading during a debug run."
+msgstr ""
 
-msgid "Print check status every 5 seconds to stderr."
+msgid ""
+"Print debugging output for given logger.\n"
+"Available loggers are %(lognamelist)s.\n"
+"Specifying 'all' is an alias for specifying all available loggers.\n"
+"The option can be given multiple times to debug with more\n"
+"than one logger.\n"
+"\n"
+"For accurate results, threading will be disabled during debug runs."
 msgstr ""
 
 msgid ""
@@ -546,7 +588,7 @@ msgstr ""
 
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
-"will enable inifinite recursion. Default depth is 1."
+"will enable inifinite recursion. Default depth is infinite."
 msgstr ""
 
 msgid ""
@@ -639,11 +681,38 @@ msgstr "aucun fichier ou url donnée"
 msgid "Hit RETURN to finish"
 msgstr ""
 
+#~ msgid "Error"
+#~ msgstr "Erreur"
+
+#~ msgid "Valid"
+#~ msgstr "Valide"
+
+#~ msgid "Get the newest version at %s%s"
+#~ msgstr "Obtenir la dernière version à %s%s"
+
+#~ msgid "Write comments and bugs to %s%s%s"
+#~ msgstr "Ecrire les commentaires et rapport de bug à %s%s%s"
+
+#~ msgid " (cached)\n"
+#~ msgstr " (caché)\n"
+
+#~ msgid "%.3f seconds\n"
+#~ msgstr "%.3f secondes\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Thats it. "
+#~ msgstr ""
+#~ "\n"
+#~ "Terminé. "
+
+#~ msgid " found\n"
+#~ msgstr " trouvé\n"
+
+#~ msgid ""
+#~ "Print debugging information. Provide this option multiple times\n"
+#~ "for even more debugging information."
+#~ msgstr "Affiche des informations de débugage supplémentaires."
+
 #~ msgid "found"
 #~ msgstr "trouvé"
-
-#~ msgid "seconds"
-#~ msgstr "secondes"
-
-#~ msgid "hours"
-#~ msgstr "heures"

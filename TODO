@@ -1,8 +1,12 @@
+- intern/extern braucht Bemerkung über file:// links
+
+- testen: id="" Anchor check (email)
+
 - SF bug #992389 bit me when I wanted to do absolute imports
   at the checker classes :/
   When the bug is fixed we can import absolute classes
 
-- cache queue rework?
+- default intern/extern patterns
 
 - document what checks are performed for each url type
 

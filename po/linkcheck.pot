@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Jul 22 15:35:24 2004\n"
+"POT-Creation-Date: Thu Aug 19 23:36:24 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,14 +15,7 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-msgid "removed %d cached urls from incoming queue"
-msgstr ""
-
-msgid "invalid log option '%s'"
-msgstr ""
-
-msgid ""
-"extern%d: syntax error %s\n"
+msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
 msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
@@ -40,7 +33,7 @@ msgstr ""
 msgid "Missing trailing directory slash in ftp url"
 msgstr ""
 
-msgid "Host %s (%s) found"
+msgid "%s url ignored"
 msgstr ""
 
 msgid "URL path is empty, assuming '/' as path"
@@ -96,25 +89,28 @@ msgstr ""
 msgid "Unsupported content encoding %r."
 msgstr ""
 
-msgid "%s url ignored"
+msgid "Invalid mail syntax"
 msgstr ""
 
-msgid "No adresses found"
+msgid "No addresses found"
 msgstr ""
 
-msgid "No MX mail host for %s found"
+msgid "No MX mail host for %(domain)s found"
 msgstr ""
 
-msgid "Verified adress: %s"
+msgid "Verified address: %(info)s"
 msgstr ""
 
-msgid "None of the MX mail hosts for %s accepts an SMTP connection: %s"
+msgid "MX mail host %(host)s did not accept connections: %(error)s"
 msgstr ""
 
-msgid "found MX mail host %s"
+msgid "Could not connect, but syntax is correct"
 msgstr ""
 
-msgid "could not split the mail adress"
+msgid "Found MX mail host %(host)s"
+msgstr ""
+
+msgid "Could not split the mail address"
 msgstr ""
 
 msgid "No NNTP server specified, skipping this URL"
@@ -138,8 +134,10 @@ msgstr ""
 msgid "URL has invalid port number %s"
 msgstr ""
 
+msgid "Host is empty"
+msgstr ""
+
 msgid ""
-"\n"
 "********** Oops, I did it again. *************\n"
 "\n"
 "You have found an internal error in LinkChecker. Please write a bug report\n"
@@ -154,21 +152,31 @@ msgid ""
 "I can work with ;).\n"
 msgstr ""
 
-msgid ""
-"\n"
-"******** LinkChecker internal error, bailing out ********"
+msgid "******** LinkChecker internal error, bailing out ********"
 msgstr ""
 
 msgid "System info:"
 msgstr ""
 
-msgid "Error"
+msgid "Python %s on %s"
 msgstr ""
 
-msgid "Valid"
+msgid "Base URL is not properly quoted"
 msgstr ""
 
-msgid "URL has invalid port number %r"
+msgid "Base reference is not properly quoted"
+msgstr ""
+
+msgid "Parent url is not properly quoted"
+msgstr ""
+
+msgid "Valid: %(result)s"
+msgstr ""
+
+msgid "Error: %(result)s"
+msgstr ""
+
+msgid "URL has invalid port %r"
 msgstr ""
 
 msgid "outside of domain filter, checked only syntax"
@@ -183,7 +191,7 @@ msgstr ""
 msgid "could not parse content: %r"
 msgstr ""
 
-msgid "URL is null or empty"
+msgid "URL is empty"
 msgstr ""
 
 msgid "URL has whitespace at beginning or end"
@@ -201,7 +209,14 @@ msgstr ""
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
-msgid "keyboard interrupt; waiting for %d active threads to finish"
+msgid "Host %s (%s) found"
+msgstr ""
+
+msgid "invalid log option %r"
+msgstr ""
+
+msgid ""
+"extern%d: syntax error %s\n"
 msgstr ""
 
 msgid "unsupported language"
@@ -235,76 +250,6 @@ msgid ""
 "</blockquote>\n"
 "</body>\n"
 "</html>"
-msgstr ""
-
-msgid "created by %s at %s%s"
-msgstr ""
-
-msgid "Get the newest version at %s%s"
-msgstr ""
-
-msgid "Write comments and bugs to %s%s%s"
-msgstr ""
-
-msgid "# Format of the entries:"
-msgstr ""
-
-msgid "Stopped checking at %s (%s)%s"
-msgstr ""
-
-msgid ", line %d"
-msgstr ""
-
-msgid ", col %d"
-msgstr ""
-
-msgid ""
-" (cached)\n"
-msgstr ""
-
-msgid "%.3f seconds"
-msgstr ""
-
-msgid ""
-"created by %s at %s\n"
-msgstr ""
-
-msgid ""
-"Get the newest version at %s\n"
-msgstr ""
-
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-
-msgid ""
-"Stopped checking at %s (%s)\n"
-msgstr ""
-
-msgid ""
-"Start checking at %s\n"
-msgstr ""
-
-msgid " (cached)"
-msgstr ""
-
-msgid "Thats it. "
-msgstr ""
-
-msgid "1 error"
-msgstr ""
-
-msgid " errors"
-msgstr ""
-
-msgid " in 1 link"
-msgstr ""
-
-msgid " in %d links"
-msgstr ""
-
-msgid " found"
 msgstr ""
 
 msgid "Real URL"
@@ -343,20 +288,87 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-msgid ""
-"%.3f seconds\n"
+msgid ", line %d"
+msgstr ""
+
+msgid ", col %d"
+msgstr ""
+
+msgid " (cached)"
+msgstr ""
+
+msgid "%.3f seconds"
+msgstr ""
+
+msgid "created by %s at %s"
+msgstr ""
+
+msgid "Get the newest version at %(url)s"
+msgstr ""
+
+msgid "Write comments and bugs to %(email)s"
+msgstr ""
+
+msgid "# Format of the entries:"
+msgstr ""
+
+msgid "Stopped checking at %s (%s)%s"
+msgstr ""
+
+msgid "Stopped checking at %s (%s)"
 msgstr ""
 
 msgid ""
+"Start checking at %s\n"
+msgstr ""
+
+msgid "Thats it. "
+msgstr ""
+
+msgid "1 error"
+msgstr ""
+
+msgid " errors"
+msgstr ""
+
+msgid " in 1 link"
+msgstr ""
+
+msgid " in %d links"
+msgstr ""
+
+msgid " found"
+msgstr ""
+
+msgid ""
+"Stopped checking at %s (%s)\n"
+msgstr ""
+
+msgid ""
+"Get the newest version at %s\n"
+msgstr ""
+
+msgid ""
+"Write comments and bugs to %s\n"
 "\n"
-"Thats it. "
 msgstr ""
 
-msgid ""
-" found\n"
+msgid "Get the newest version at %s"
 msgstr ""
 
-msgid "%r at %s, assuming non-compressed content"
+msgid "Write comments and bugs to %s"
+msgstr ""
+
+msgid "Start checking at %s"
+msgstr ""
+
+msgid "seconds"
+msgstr ""
+
+msgid "minutes"
+msgstr ""
+
+msgid "hours"
 msgstr ""
 
 msgid ""
@@ -365,17 +377,18 @@ msgstr ""
 
 msgid ""
 "NOTES\n"
-"o A ! before any regex negates it. So '!^mailto:' matches everything but\n"
-"  a mailto link.\n"
-"o LinkCheckers commandline parser treats \"ftp.\" links like \"ftp://ftp.\"\n"
-"  and \"www.\" links like \"http://www.\".\n"
+"o A ! before a regular expression negates it. So '!^mailto:' matches\n"
+"  everything but a mailto link.\n"
+"o URLs on the command line starting with \"ftp.\" are treated like\n"
+"  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www.\".\n"
 "  You can also give local files as arguments.\n"
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
-"  checking links not pointing to your local host.\n"
-"  Use the -s and -i options to prevent this.\n"
+"  checking links not pointing to your local system.\n"
+"  See the --strict option on how to prevent this.\n"
 "o Javascript links are currently ignored.\n"
-"o If your platform does not support threading, LinkChecker uses -t0.\n"
+"o If your platform does not support threading, LinkChecker disables it\n"
+"  automatically.\n"
 "o You can supply multiple user/password pairs in a configuration file.\n"
 "o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy\n"
 "  on Unix or Windows.\n"
@@ -388,8 +401,7 @@ msgid ""
 "EXAMPLES\n"
 "Check the treasure.calvinsplayground.de domain, but don't recurse into\n"
 "links outside of this domain:\n"
-"  linkchecker -v --status -r5 -Fhtml -itreasure\\.calvinsplayground\\.de \\\n"
-"  -ocolored http://treasure.calvinsplayground.de/\n"
+"  linkchecker -Fhtml -ocolored http://treasure.calvinsplayground.de/\n"
 "\n"
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"
@@ -408,12 +420,10 @@ msgid ""
 "  linkchecker -r0 ftp.linux.org\n"
 msgstr ""
 
-msgid ""
-"Error: %s\n"
+msgid "Error: %s"
 msgstr ""
 
-msgid ""
-"Execute 'linkchecker -h' for help\n"
+msgid "Execute 'linkchecker -h' for help"
 msgstr ""
 
 msgid "Could not find profiling file %s."
@@ -434,9 +444,7 @@ msgstr ""
 msgid "Ask for url if none are given on the commandline."
 msgstr ""
 
-msgid ""
-"Generate no more than num threads. Default number of threads is 5.\n"
-"To disable threading specify a non-positive number."
+msgid "Generate no more than num threads. Default number of threads is 5."
 msgstr ""
 
 msgid "Print version and exit."
@@ -455,13 +463,12 @@ msgstr ""
 
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
-"any content of the checked link.\n"
-"This applies of course only to pages which are valid, so we can\n"
-"get their content.\n"
+"any content of the checked link. This applies only to valid pages,\n"
+"so we can get their content.\n"
+"\n"
 "Use this to check for pages that contain some form of error\n"
 "message, for example 'This page has moved' or 'Oracle\n"
-"Application Server error'.\n"
-"This option implies -w."
+"Application Server error'. This option implies -w."
 msgstr ""
 
 msgid ""
@@ -472,27 +479,36 @@ msgstr ""
 msgid "Quiet operation. This is only useful with -F."
 msgstr ""
 
-msgid "Specify output as %s. Default output type is text."
+msgid "Specify output as %(loggertypes)s. Default output type is text."
 msgstr ""
 
 msgid ""
-"type[/filename]\n"
-"Output to a file linkchecker-out.<type>, $HOME/.linkchecker_blacklist for\n"
-"'blacklist' output, or <filename> if specified.\n"
-"The <filename> part of the 'none' output type will be ignored,\n"
+"Output to a file linkchecker-out.TYPE, $HOME/.linkchecker_blacklist for\n"
+"'blacklist' output, or FILENAME if specified.\n"
+"The FILENAME part of the 'none' output type will be ignored,\n"
 "else if the file already exists, it will be overwritten.\n"
-"You can specify this option more than once. Valid file output types\n"
-"are %s.\n"
+"You can specify this option more than once. Valid file output TYPEs\n"
+"are %(loggertypes)s. You can specify this option multiple times to output\n"
+"to more than one file.\n"
+"\n"
 "Default is no file output. If console output is not specified with -o,\n"
-"this option suppresses all console output by implying -o none."
+"this option suppresses all console output by implying '-o none'."
 msgstr ""
 
 msgid ""
-"Print debugging information. Provide this option multiple times\n"
-"for even more debugging information."
+"Print check status every 5 seconds to stderr. When --debug is given,\n"
+"the status check will only be printed after each checked url. This is\n"
+"due to disabled threading during a debug run."
 msgstr ""
 
-msgid "Print check status every 5 seconds to stderr."
+msgid ""
+"Print debugging output for given logger.\n"
+"Available loggers are %(lognamelist)s.\n"
+"Specifying 'all' is an alias for specifying all available loggers.\n"
+"The option can be given multiple times to debug with more\n"
+"than one logger.\n"
+"\n"
+"For accurate results, threading will be disabled during debug runs."
 msgstr ""
 
 msgid ""
@@ -508,7 +524,7 @@ msgstr ""
 
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
-"will enable inifinite recursion. Default depth is 1."
+"will enable inifinite recursion. Default depth is infinite."
 msgstr ""
 
 msgid ""
