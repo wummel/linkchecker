@@ -21,6 +21,8 @@ import os
 import os.path
 import datetime
 
+import linkcheck.strformat
+
 _ = lambda x: x
 Fields = dict(
     realurl=_("Real URL"),
@@ -95,6 +97,14 @@ class Logger (object):
     def comment (self, s, **args):
         """Print given comment and a newline."""
         self.writeln(s=s, **args)
+
+    def wrap (self, lines, width):
+        """Return wrapped version of given lines."""
+        sep = os.linesep+os.linesep
+        text = sep.join(lines)
+        return linkcheck.strformat.wrap(text, width,
+                            subsequent_indent=" "*self.max_indent,
+                            initial_indent=" "*self.max_indent).lstrip()
 
     def write (self, s, **args):
         """Write string to output descriptor."""
