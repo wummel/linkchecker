@@ -39,7 +39,7 @@ Requirements for Windows
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe]
 
 2. Install Python >= 2.3 from http://www.python.org/
-   [ http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe ]
+   [http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe]
 
 
 Setup for Unix/Linux or Mac OS X
