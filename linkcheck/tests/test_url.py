@@ -127,6 +127,9 @@ class TestUrl (unittest.TestCase):
         url = "http://example.com"
         nurl = "http://example.com/"
         self.assertEqual(url_norm(url), nurl)
+        url = "http://example.com?a=b"
+        nurl = "http://example.com/?a=b"
+        self.assertEqual(url_norm(url), nurl)
 
     def test_norm_path_backslashes (self):
         """test url norm backslash path handling"""
