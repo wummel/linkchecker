@@ -6,6 +6,12 @@ Possible improvements people could work on:
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
   the broken anchor name is not displayed as a warning
 
+- [BUGFIX] Displaying redirection info and warning from the cache
+  is not correct when the URL is not a redirected URL.
+  Example: URL http://a redirects to http://b. Both http://a and http://b
+  are now cached. Then a check of http://b will display a (cached)
+  redirection warning.
+
 - [USAGE] make a nice GUI for linkchecker
 
 - [FEATURE] warn if overall size of page (including images/flash/etc.) is
