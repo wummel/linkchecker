@@ -234,8 +234,24 @@ class my_build_scripts(build_scripts):
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
+scripts = ['linkchecker']
+data_files = [('share/locale/de/LC_MESSAGES',
+      ['locale/de/LC_MESSAGES/linkcheck.mo']),
+     ('share/locale/fr/LC_MESSAGES',
+      ['locale/fr/LC_MESSAGES/linkcheck.mo']),
+     ('share/linkchecker', ['linkcheckerrc']),
+     ('share/linkchecker/examples',
+      ['lconline/leer.html',
+       'lconline/index.html', 'lconline/lc_cgi.html',
+       'lc.cgi','lc.fcgi','lc.sz_fcgi']),
+    ]
+if os.name=="nt":
+    scripts.append("linkchecker.bat")
+else:
+    data_files.append()
+
 setup (name = "linkchecker",
-       version = "1.3.6",
+       version = "1.3.7",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
@@ -265,15 +281,6 @@ o a (Fast)CGI web interface (requires HTTP server)
 		   'build_scripts': my_build_scripts,
 		  },
        packages = ['','DNS','linkcheck','linkcheckssl'],
-       scripts = ['linkchecker'],
-       data_files = [('share/locale/de/LC_MESSAGES',
-                      ['locale/de/LC_MESSAGES/linkcheck.mo']),
-                     ('share/locale/fr/LC_MESSAGES',
-                      ['locale/fr/LC_MESSAGES/linkcheck.mo']),
-                     ('share/linkchecker', ['linkcheckerrc']),
-                     ('share/linkchecker/examples',
-                      ['linkchecker.bat', 'lconline/leer.html',
-		       'lconline/index.html', 'lconline/lc_cgi.html',
-		       'lc.cgi','lc.fcgi','lc.sz_fcgi']),
-		    ],
+       scripts = scripts,
+       data_files = data_files,
 )

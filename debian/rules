@@ -38,7 +38,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	$(MAKE) locale
-	./setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
+	./setup.py install --root=$(CURDIR)/debian/$(PACKAGE) --no-compile
 	# remove man pages, we install them with dh_installman
 	rm -r debian/$(PACKAGE)/usr/man
 	# remove files, we install them below
