@@ -304,7 +304,7 @@ o a (Fast)CGI web interface (requires HTTP server)
        packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
                    'linkcheck.dns', 'linkcheck.dns.rdtypes',
                    'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
-                   'linkcheck.HtmlParser', ],
+                   'linkcheck.HtmlParser', 'linkcheck.ftpparse', ],
        ext_modules = [Extension('linkcheck.HtmlParser.htmlsax',
                   sources = ['linkcheck/HtmlParser/htmllex.c',
                    'linkcheck/HtmlParser/htmlparse.c',
