@@ -46,7 +46,7 @@ optcomplete.py Copyright:
 #* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #******************************************************************************\
 
-dnspython (stored as module bk.dns) Copyright:
+dnspython (stored as module linkcheck.dns) Copyright:
 Copyright (C) 2001-2003 Nominum, Inc.
 
 Permission to use, copy, modify, and distribute this software and its
