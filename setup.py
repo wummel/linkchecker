@@ -105,6 +105,7 @@ class MyInstallData (install_data, object):
     """My own data installer to handle permissions"""
 
     def run (self):
+        """adjust permissions on POSIX systems"""
         super(MyInstallData, self).run()
         if os.name == 'posix' and not self.dry_run:
             # Make the data files we just installed world-readable,
