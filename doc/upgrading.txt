@@ -5,4 +5,24 @@
 Upgrading
 =========
 
-XXX
+Migrating from 1.12.x to 1.13.0
+-------------------------------
+
+The default output logger ``text`` has now colored output if the
+output terminal supports it.
+
+The ``-F`` option no longer suppresses normal output. The old behaviour
+can be restored by giving the option ``-onone``.
+
+The --status option is now the default and has been deprecated. The
+old behaviour can be restored by giving the option ``--no-status``.
+
+The default recursion depth is now infinite. The old behaviour
+can be restored by giving the option ``--recursion-level=1``.
+
+The option ``--strict`` has been renamed to ``--extern-strict-all``.
+
+The commandline program ``linkchecker`` returns non-zero exit value
+when errors were encountered. For scripts to ignore exit values
+and therefore restore the old behaviour you can append a `` || true``
+at the end of the command.

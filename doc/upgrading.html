@@ -33,12 +33,25 @@ window.onload = function() {
 </div>
 <!-- /bfknav -->
 <h1 class="title">Upgrading</h1>
+<h2 class="subtitle" id="migrating-from-1-12-x-to-1-13-0">Migrating from 1.12.x to 1.13.0</h2>
 <div class="document" id="upgrading">
-<p>XXX</p>
+<p>The default output logger <tt class="literal"><span class="pre">text</span></tt> has now colored output if the
+output terminal supports it.</p>
+<p>The <tt class="literal"><span class="pre">-F</span></tt> option no longer suppresses normal output. The old behaviour
+can be restored by giving the option <tt class="literal"><span class="pre">-onone</span></tt>.</p>
+<p>The --status option is now the default and has been deprecated. The
+old behaviour can be restored by giving the option <tt class="literal"><span class="pre">--no-status</span></tt>.</p>
+<p>The default recursion depth is now infinite. The old behaviour
+can be restored by giving the option <tt class="literal"><span class="pre">--recursion-level=1</span></tt>.</p>
+<p>The option <tt class="literal"><span class="pre">--strict</span></tt> has been renamed to <tt class="literal"><span class="pre">--extern-strict-all</span></tt>.</p>
+<p>The commandline program <tt class="literal"><span class="pre">linkchecker</span></tt> returns non-zero exit value
+when errors were encountered. For scripts to ignore exit values
+and therefore restore the old behaviour you can append a `` || true``
+at the end of the command.</p>
 </div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-08-28 13:06 UTC.
+Generated on: 2004-08-28 16:54 UTC.
 </div>
 </body>
 </html>
