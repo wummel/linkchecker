@@ -1,4 +1,4 @@
-2.3 "" (released xx.xx.2005)
+2.3 "Napoleon Dynamite" (released xx.xx.2005)
 
   * Use and require Python >= 2.4.
     Type: feature
@@ -9,7 +9,8 @@
     Type: bugfix
     Changed: linkcheck/url.py
 
-  * Document the return value in the help text and man pages.
+  * Document the return value of the linkchecker command line script
+    in the help text and man pages.
     Type: documentation
     Changed: linkchecker, doc/{en,de,fr}/linkchecker.1
 
@@ -37,15 +38,10 @@
     Type: bugfix
     Changed: linkcheck/checker/ftpurl.py
 
-  * Added connection pooling.
+  * Added connection pooling, used for HTTP and FTP connections.
     Type: feature
     Added: linkcheck/checker/pool.py
     Changed: linkcheck/checker/{cache, httpurl, ftpurl}.py
-
-  * If a connection is pooled but busy, wait for the connection to
-    become available for at least 30 seconds.
-    Type: feature
-    Changed: linkcheck/checker/ftpurl.py
 
   * The new per-user configuration file is now stored in
     ~/.linkchecker/linkcheckerrc.
