@@ -314,8 +314,12 @@ class HttpUrlData (ProxyUrlData):
         return 1
 
 
+    def getRobotsTxtUrl (self):
+        return self.urlparts[0]+"://"+self.urlparts[1]+"/robots.txt"
+
+
     def robotsTxtAllowsUrl (self):
-        roboturl = self.urlparts[0]+"://"+self.urlparts[1]+"/robots.txt"
+        roboturl = self.getRobotsTxtUrl()
         debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
         debug(HURT_ME_PLENTY, "url", self.url)
         if not self.config.robotsTxtCache_has_key(roboturl):
