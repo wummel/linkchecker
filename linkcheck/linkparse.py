@@ -75,8 +75,8 @@ class LinkParser (HtmlParser):
         debug(NIGHTMARE, "LinkParser tag", tag, "attrs", attrs)
         debug(NIGHTMARE, "line", self.lineno(), "col", self.column(),
               "old line", self.last_lineno(), "old col", self.last_column())
-        if not self.tags.has_key(tag): return
-        for attr in self.tags[tag]:
+        tags = self.tags.get(tag, self.tags.get(None, []))
+        for attr in tags:
             if attr in attrs:
                 # name of this link
                 if tag=='a' and attr=='href':
