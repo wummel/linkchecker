@@ -84,10 +84,9 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 2 "htmlparse.y"
+#line 1 "htmlparse.y"
 
-/* SAX parser, optimized for WebCleaner
- Copyright (C) 2000-2004  Bastian Kleineidam
+/* Copyright (C) 2000-2004  Bastian Kleineidam
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -162,7 +161,6 @@ static PyObject* resolve_entities;
     if (b==NULL) { Py_DECREF(self); return NULL; } \
     (b)[0] = '\0'
 
-/* call error handler if error object is not NULL */
 #define CHECK_ERROR(ud, label) \
     if (ud->error && PyObject_HasAttrString(ud->handler, "error")==1) { \
 	callback = PyObject_GetAttrString(ud->handler, "error"); \
@@ -231,7 +229,7 @@ typedef int YYSTYPE;
 
 
 /* Line 214 of yacc.c.  */
-#line 235 "htmlparse.c"
+#line 233 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
@@ -401,8 +399,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short yyrline[] =
 {
-       0,   146,   146,   147,   150,   151,   158,   192,   238,   268,
-     288,   308,   328,   348,   369,   390
+       0,   143,   143,   144,   147,   148,   155,   190,   237,   268,
+     289,   310,   331,   352,   374,   396
 };
 #endif
 
@@ -1107,22 +1105,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 146 "htmlparse.y"
+#line 143 "htmlparse.y"
     {;}
     break;
 
   case 3:
-#line 147 "htmlparse.y"
+#line 144 "htmlparse.y"
     {;}
     break;
 
   case 4:
-#line 150 "htmlparse.y"
+#line 147 "htmlparse.y"
     { YYACCEPT; /* wait for more lexer input */ ;}
     break;
 
   case 5:
-#line 152 "htmlparse.y"
+#line 149 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1132,9 +1130,10 @@ yyreduce:
     break;
 
   case 6:
-#line 159 "htmlparse.y"
+#line 156 "htmlparse.y"
     {
-    /* $1 is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
+    /* $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyString, <attrs> is a PyDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1169,9 +1168,10 @@ finish_start:
     break;
 
   case 7:
-#line 193 "htmlparse.y"
+#line 191 "htmlparse.y"
     {
-    /* $1 is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
+    /* $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyString, <attrs> is a PyDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1200,7 +1200,7 @@ finish_start:
         Py_DECREF(result);
         callback=result=NULL;
     }
-    CHECK_ERROR(ud, finish_start);
+    CHECK_ERROR(ud, finish_start_end);
 finish_start_end:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1218,8 +1218,9 @@ finish_start_end:
     break;
 
   case 8:
-#line 239 "htmlparse.y"
+#line 238 "htmlparse.y"
     {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1253,6 +1254,7 @@ finish_end:
   case 9:
 #line 269 "htmlparse.y"
     {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1274,8 +1276,9 @@ finish_comment:
     break;
 
   case 10:
-#line 289 "htmlparse.y"
+#line 290 "htmlparse.y"
     {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1297,8 +1300,9 @@ finish_pi:
     break;
 
   case 11:
-#line 309 "htmlparse.y"
+#line 311 "htmlparse.y"
     {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1320,8 +1324,9 @@ finish_cdata:
     break;
 
   case 12:
-#line 329 "htmlparse.y"
+#line 332 "htmlparse.y"
     {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1343,8 +1348,9 @@ finish_doctype:
     break;
 
   case 13:
-#line 349 "htmlparse.y"
+#line 353 "htmlparse.y"
     {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1367,8 +1373,9 @@ finish_script:
     break;
 
   case 14:
-#line 370 "htmlparse.y"
+#line 375 "htmlparse.y"
     {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1391,8 +1398,9 @@ finish_style:
     break;
 
   case 15:
-#line 391 "htmlparse.y"
+#line 397 "htmlparse.y"
     {
+    /* $1 is a PyString */
     /* Remember this is also called as a lexer error fallback */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1418,7 +1426,7 @@ finish_characters:
     }
 
 /* Line 999 of yacc.c.  */
-#line 1422 "htmlparse.c"
+#line 1430 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1612,7 +1620,7 @@ yyreturn:
 }
 
 
-#line 413 "htmlparse.y"
+#line 420 "htmlparse.y"
 
 
 /* disable python memory interface */
@@ -1627,7 +1635,6 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
     {
         return NULL;
     }
-
     self->handler = NULL;
     /* reset userData */
     self->userData = PyMem_New(UserData, sizeof(UserData));
@@ -1894,7 +1901,7 @@ static PyMemberDef parser_members[] = {
 };
 
 static PyMethodDef parser_methods[] = {
-    {"feed",  (PyCFunction)parser_feed,  METH_VARARGS, "feed data to parse incremental"},
+    {"feed",  (PyCFunction)parser_feed, METH_VARARGS, "feed data to parse incremental"},
     {"reset", (PyCFunction)parser_reset, METH_VARARGS, "reset the parser (no flushing)"},
     {"flush", (PyCFunction)parser_flush, METH_VARARGS, "flush parser buffers"},
     {"debug", (PyCFunction)parser_debug, METH_VARARGS, "set debug level"},

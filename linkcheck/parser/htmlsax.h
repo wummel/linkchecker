@@ -1,5 +1,4 @@
-/*
- Copyright (C) 2000-2004  Bastian Kleineidam
+/* Copyright (C) 2000-2004  Bastian Kleineidam
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -36,7 +35,7 @@
 
 /* user_data type for SAX calls */
 typedef struct {
-    /* the Python SAX class instance to issue callbacks */
+    /* the Python SAX object to issue callbacks */
     PyObject* handler;
     /* Buffer to store still-to-be-scanned characters. After recognizing
      * a complete syntax element, all data up to bufpos will be removed.

@@ -1,7 +1,5 @@
-/* the beginning */
 %{
-/* SAX parser, optimized for WebCleaner
- Copyright (C) 2000-2004  Bastian Kleineidam
+/* Copyright (C) 2000-2004  Bastian Kleineidam
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -76,7 +74,6 @@ static PyObject* resolve_entities;
     if (b==NULL) { Py_DECREF(self); return NULL; } \
     (b)[0] = '\0'
 
-/* call error handler if error object is not NULL */
 #define CHECK_ERROR(ud, label) \
     if (ud->error && PyObject_HasAttrString(ud->handler, "error")==1) { \
 	callback = PyObject_GetAttrString(ud->handler, "error"); \
@@ -157,7 +154,8 @@ element: T_WAIT { YYACCEPT; /* wait for more lexer input */ }
 }
 | T_ELEMENT_START
 {
-    /* $1 is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
+    /* $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyString, <attrs> is a PyDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -191,7 +189,8 @@ finish_start:
 }
 | T_ELEMENT_START_END
 {
-    /* $1 is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
+    /* $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyString, <attrs> is a PyDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -220,7 +219,7 @@ finish_start:
         Py_DECREF(result);
         callback=result=NULL;
     }
-    CHECK_ERROR(ud, finish_start);
+    CHECK_ERROR(ud, finish_start_end);
 finish_start_end:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -237,6 +236,7 @@ finish_start_end:
 }
 | T_ELEMENT_END
 {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -267,6 +267,7 @@ finish_end:
 }
 | T_COMMENT
 {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -287,6 +288,7 @@ finish_comment:
 }
 | T_PI
 {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -307,6 +309,7 @@ finish_pi:
 }
 | T_CDATA
 {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -327,6 +330,7 @@ finish_cdata:
 }
 | T_DOCTYPE
 {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -347,6 +351,7 @@ finish_doctype:
 }
 | T_SCRIPT
 {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -368,6 +373,7 @@ finish_script:
 }
 | T_STYLE
 {
+    /* $1 is a PyString */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -389,6 +395,7 @@ finish_style:
 }
 | T_TEXT
 {
+    /* $1 is a PyString */
     /* Remember this is also called as a lexer error fallback */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -424,7 +431,6 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
     {
         return NULL;
     }
-
     self->handler = NULL;
     /* reset userData */
     self->userData = PyMem_New(UserData, sizeof(UserData));
@@ -691,7 +697,7 @@ static PyMemberDef parser_members[] = {
 };
 
 static PyMethodDef parser_methods[] = {
-    {"feed",  (PyCFunction)parser_feed,  METH_VARARGS, "feed data to parse incremental"},
+    {"feed",  (PyCFunction)parser_feed, METH_VARARGS, "feed data to parse incremental"},
     {"reset", (PyCFunction)parser_reset, METH_VARARGS, "reset the parser (no flushing)"},
     {"flush", (PyCFunction)parser_flush, METH_VARARGS, "flush parser buffers"},
     {"debug", (PyCFunction)parser_debug, METH_VARARGS, "set debug level"},
