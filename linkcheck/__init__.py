@@ -1,6 +1,6 @@
 # __init__.py for this module
 
-import Config,UrlData,OutputReader,sys
+import Config,UrlData,OutputReader,sys,lc_cgi
 
 def checkUrls(config = Config.Configuration()):
     config.log_init()

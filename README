@@ -41,3 +41,5 @@ fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
 Note that the following packages are modified by me:
 httplib.py (renamed to http11lib.py)
 distutils
+fcgi.py
+sz_fcgi.py

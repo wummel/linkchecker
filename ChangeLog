@@ -1,3 +1,7 @@
+26.3.2000
+	* FastCGI fixes
+	* simplified sz_fcgi.py
+
 25.3.2000
 	* FastCGI script fixes
 	* do not close the logging file descriptor
