@@ -306,7 +306,7 @@ class Resolver(object):
         """Process f as a file in the /etc/resolv.conf format.  If f is
         a string, it is used as the name of the file to open; otherwise it
         is treated as the file itself."""
-        if isinstance(f, str) or isinstance(f, unicode):
+        if isinstance(f, basestring):
             f = open(f, 'r')
             want_close = True
         else:
