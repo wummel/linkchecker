@@ -18,7 +18,7 @@
 """
 
 # profiling test
-import sys, re, profile, os
+import sys, profile, os
 sys.path.append(os.getcwd())
 import linkcheck
 
@@ -28,10 +28,10 @@ def runit (config, name):
     url='http://www.heise.de/'
     config['recursionlevel'] = 1
     config['anchors'] = 1
-    config['internlinks'].append(re.compile(r"^https?://www\.heise\.de"))
+    config['internlinks'].append(linkcheck.getLinkPat(r"^https?://www\.heise\.de"))
     # avoid checking of local files (security!)
-    config["externlinks"].append((re.compile("^file:"), 1))
-    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
+    config["externlinks"].append(linkcheck.getLinkPat("^file:", strict=1))
+    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0, config))
     profile.run("linkcheck.checkUrls(config)", name)
 
 if __name__=='__main__':

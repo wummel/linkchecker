@@ -18,6 +18,21 @@
 class error (Exception):
     pass
 
+import re
+def getLinkPat (arg, strict=0):
+    """get a link pattern matcher for intern/extern links"""
+    if arg[0:1] == '!':
+        pattern = arg[1:]
+        negate = 1
+    else:
+        pattern = arg
+        negate = 0
+    return {
+        "pattern": re.compile(pattern),
+        "negate": negate,
+        "strict": strict,
+    }
+
 # i18n suppport
 import sys, os, _linkchecker_configdata, DNS
 def init_gettext ():

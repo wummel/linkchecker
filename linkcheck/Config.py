@@ -538,11 +538,10 @@ class Configuration (UserDict.UserDict):
             while 1:
                 tuple = cfgparser.get(section, "extern%d" % i).split()
                 if len(tuple)!=2: break
-                self["externlinks"].append((re.compile(tuple[0]),
-		                                 int(tuple[1])))
+                self["externlinks"].append(linkcheck.getLinkPat(tuple[0], strict=int(tuple[1])))
                 i += 1
         except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
-        try: self["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
+        try: self["internlinks"].append(linkcheck.getLinkPat(cfgparser.get(section, "internlinks")))
         except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
         try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
 	except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)

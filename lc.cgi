@@ -44,12 +44,12 @@ if form.has_key('strict'): config['strict'] = 1
 if form.has_key("anchors"): config["anchors"] = 1
 if not form.has_key("errors"): config["verbose"] = 1
 if form.has_key("intern"):
-    config["internlinks"].append(re.compile("^(ftp|https?)://%s"%\
+    config["internlinks"].append(linkcheck.getLinkPat("^(ftp|https?)://%s"%\
     linkcheck.lc_cgi.getHostName(form)))
 else:
-    config["internlinks"].append(re.compile(".+"))
+    config["internlinks"].append(linkcheck.getLinkPat(".+"))
 # avoid checking of local files (security!)
-config["externlinks"].append((re.compile("^file:"), 1))
+config["externlinks"].append(linkcheck.getLinkPat("^file:", strict=1))
 
 # start checking
 config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(form["url"].value, 0))

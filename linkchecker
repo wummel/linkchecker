@@ -161,19 +161,6 @@ def printUsage (msg):
     sys.exit(1)
 
 
-def getLinkPat (arg):
-    if arg[0:1] == '!':
-        pattern = arg[1:]
-        negate = 1
-    else:
-        pattern = arg
-        negate = 0
-    return {
-        "pattern": re.compile(pattern),
-        "negate": negate,
-        "strict": 0,
-    }
-
 # Read command line arguments
 try:
     # Note: cut out the name of the script
@@ -233,7 +220,7 @@ for opt,arg in options:
         config["anchors"] = 1
 
     elif opt=="-e" or opt=="--extern":
-        config["externlinks"].append(getLinkPat(arg))
+        config["externlinks"].append(linkcheck.getLinkPat(arg))
 
     elif opt=="-h" or opt=="--help":
         printHelp()
@@ -261,7 +248,7 @@ for opt,arg in options:
         config['interactive'] = 1
 
     elif opt=="-i" or opt=="--intern":
-        config["internlinks"].append(getLinkPat(arg))
+        config["internlinks"].append(linkcheck.getLinkPat(arg))
 
     elif opt=="-l" or opt=="--denyallow":
         config["denyallow"] = 1
