@@ -26,20 +26,6 @@ UnHtmlTable = [ ("&"+x[0]+";", x[1]) for x in entities ]
 HtmlTable.sort()
 UnHtmlTable.sort()
 UnHtmlTable.reverse()
-# standard xml entities
-entities = {
-    'lt': '<',
-    'gt': '>',
-    'amp': '&',
-    'quot': '"',
-    'apos': "'",
-}.items()
-XmlTable = [ (x[1], "&"+x[0]+";") for x in entities ]
-UnXmlTable = [ ("&"+x[0]+";", x[1]) for x in entities ]
-# order matters!
-XmlTable.sort()
-UnXmlTable.sort()   
-UnXmlTable.reverse()
 
 SQLTable = [
     ("'","''")
@@ -143,16 +129,6 @@ def unhtmlify (s):
     return re.sub(r'(?i)&(?P<ent>#x?\d+|[a-z]+);', resolve_entity, s)
 
 
-def xmlify (s):
-    """quote characters for XML"""
-    return applyTable(XmlTable, s)
-
-
-def unxmlify (s):
-    """unquote character from XML"""
-    return applyTable(UnXmlTable, s)
-
-
 def getLineNumber (s, index):
     "return the line number of str[index]"
     i=0
@@ -205,9 +181,11 @@ def strsize (b):
     b /= 1024.0
     return "%.2f GB"
 
+
 def _test ():
     print unhtmlify('&#97;')
     print unhtmlify('&amp;')
+
 
 if __name__=='__main__':
     _test()

@@ -17,7 +17,7 @@
 
 import time
 from linkcheck import Config, i18n
-from linkcheck.StringUtil import xmlify
+from linkcheck.XmlUtils import xmlquote
 from linkcheck.log import strtime, strduration
 from linkcheck.url import url_quote
 from StandardLogger import StandardLogger
@@ -61,7 +61,7 @@ class XMLLogger (StandardLogger):
             self.fd.write(">\n")
             if self.has_field("realurl"):
                 self.fd.write("    <label>%s</label>\n" %\
-                              xmlify(url_quote(node.url)))
+                              xmlquote(url_quote(node.url)))
             self.fd.write("    <data>\n")
             if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("      <dltime>%f</dltime>\n" % node.dltime)
@@ -90,11 +90,12 @@ class XMLLogger (StandardLogger):
                 self.fd.write(' target="%d"' % node.id)
                 self.fd.write(">\n")
                 if self.has_field("url"):
-		    self.fd.write("    <label>%s</label>\n" % xmlify(node.urlName))
+		    self.fd.write("    <label>%s</label>\n" % \
+                                  xmlquote(node.urlName))
                 self.fd.write("    <data>\n")
                 if self.has_field("result"):
                     self.fd.write("      <valid>%d</valid>\n" % \
-		              (node.valid and 1 or 0))
+                                  (node.valid and 1 or 0))
                 self.fd.write("    </data>\n")
                 self.fd.write("  </edge>\n")
         self.fd.flush()
