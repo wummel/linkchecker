@@ -1,6 +1,7 @@
 1.9.5 (released 31.10.2003)
   * Add Zope to servers with broken HEAD support, adjusted the FAQ
     Changed: linkcheck/HttpUrlData.py, FAQ
+    Closes: SF bug 833419
   * Disable psyco usage, it is causing infinite loops (this is a known
     issue with psyco); and it is disabling ctrl-c interrupts (this
     is also a known issue in psyco)
