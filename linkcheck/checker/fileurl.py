@@ -53,6 +53,16 @@ def get_files (dirname):
     return files
 
 
+def prepare_urlpath_for_nt (path):
+    """
+    URLs like 'file://server/path/' result in a path named '/server/path'.
+    However urllib.url2pathname expects '////server/path'.
+    """
+    if '|' not in path:
+        return "////"+path.lstrip("/")
+    return path
+
+
 def get_nt_filename (path):
     """
     Return case sensitive filename for NT path.
@@ -153,7 +163,10 @@ class FileUrl (urlbase.UrlBase):
         return True
 
     def get_os_filename (self):
-        return urllib.url2pathname(self.urlparts[2])
+        path = self.urlparts[2]
+        if os.name == 'nt':
+            path = prepare_urlpath_for_nt(path)
+        return urllib.url2pathname(path)
 
     def is_directory (self):
         filename = self.get_os_filename()

@@ -17,6 +17,11 @@
     Type: bugfix
     Changed: linkcheck/url.py, linkcheck/tests/test_url.py
 
+  * Fix NT path name for network paths.
+    Type: bugfix
+    Closes: SF bug #1117839
+    Changed: linkcheck/checker/fileurl.py
+
 2.3 "Napoleon Dynamite" (released 3.2.2005)
 
   * Use and require Python >= 2.4.
