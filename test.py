@@ -84,6 +84,24 @@ __metaclass__ = type
 
 Resources = ['network']
 
+class TestSkipped (Exception):
+    """Test skipped.
+
+    This can be raised to indicate that a test was deliberatly
+    skipped, but not because a feature wasn't available.  For
+    example, if some resource can't be used, such as the network
+    appears to be unavailable, this should be raised instead of
+    TestFailed.
+    """
+
+class ResourceDenied (TestSkipped):
+    """Test skipped because it requested a disallowed resource.
+
+    This is raised when a test calls requires() for a resource that
+    has not be enabled.  It is used to distinguish between expected
+    and unexpected skips.
+    """
+
 class Options:
     """Configurable properties of the test runner."""
 
@@ -317,8 +335,12 @@ def get_test_hooks(test_files, cfg, tracer=None):
 class CustomTestResult(unittest._TextTestResult):
     """Customised TestResult.
 
-    It can show a progress bar, and displays tracebacks for errors and failures
-    as soon as they happen, in addition to listing them all at the end.
+    It can show a progress bar, and displays tracebacks for errors and
+    failures as soon as they happen, in addition to listing them all at
+    the end.
+
+    Another added feature are configurable resources. Needed resources
+    from tests are checked and if denied the test will be skipped.
     """
 
     __super = unittest._TextTestResult
@@ -330,6 +352,7 @@ class CustomTestResult(unittest._TextTestResult):
 
     def __init__(self, stream, descriptions, verbosity, count, cfg, hooks):
         self.__super_init(stream, descriptions, verbosity)
+        self.skipped = []
         self.count = count
         self.cfg = cfg
         self.hooks = hooks
@@ -358,6 +381,7 @@ class CustomTestResult(unittest._TextTestResult):
                 self.stream.write(": %s" % name)
                 self._lastWidth = width
             self.stream.flush()
+        test.check_resources = self.check_resources
         self.__super_startTest(test)
         for hook in self.hooks:
             hook.startTest(test)
@@ -390,6 +414,9 @@ class CustomTestResult(unittest._TextTestResult):
             self.stream.writeln(self.separator2)
         self.__super_printErrors()
 
+    def printSkipped (self):
+        self.printErrorList("SKIP", self.skipped)
+
     def formatError(self, err):
         return "".join(traceback.format_exception(*err))
 
@@ -409,11 +436,21 @@ class CustomTestResult(unittest._TextTestResult):
         self.failures.append((test, self.formatError(err)))
 
     def addError(self, test, err):
+        if isinstance(err[1], TestSkipped):
+            self.addSkipped(test, err)
+            return
         if self.cfg.immediate_errors:
             self.printTraceback("ERROR", test, err)
         if self.cfg.postmortem:
             pdb.post_mortem(sys.exc_info()[2])
         self.errors.append((test, self.formatError(err)))
+
+    def addSkipped(self, test, err):
+        if self.cfg.immediate_errors:
+            self.printTraceback("SKIPPED", test, err)
+        if self.cfg.postmortem:
+            pdb.post_mortem(sys.exc_info()[2])
+        self.skipped.append((test, self.formatError(err)))
 
     def printErrorList(self, flavour, errors):
         if self.cfg.immediate_errors:
@@ -422,6 +459,19 @@ class CustomTestResult(unittest._TextTestResult):
                 self.stream.writeln("%s: %s" % (flavour, description))
         else:
             self.__super_printErrorList(flavour, errors)
+
+    def check_resources (self, needed_resources):
+        for res in needed_resources:
+            self.requires(res)
+
+    def requires (self, resource, msg=None):
+        if not self.is_resource_enabled(resource):
+            if msg is None:
+                msg = "Use of the `%s' resource not enabled" % resource
+            raise ResourceDenied(msg)
+
+    def is_resource_enabled (self, resource):
+        return resource in self.cfg.resources
 
 
 class CustomTestRunner(unittest.TextTestRunner):
@@ -450,6 +500,7 @@ class CustomTestRunner(unittest.TextTestRunner):
         test(result)
         stopTime = time.time()
         timeTaken = float(stopTime - startTime)
+        result.printSkipped()
         result.printErrors()
         run = result.testsRun
         if not self.cfg.quiet:
@@ -457,6 +508,8 @@ class CustomTestRunner(unittest.TextTestRunner):
             self.stream.writeln("Ran %d test%s in %.3fs" %
                                 (run, run != 1 and "s" or "", timeTaken))
             self.stream.writeln()
+        if result.skipped:
+            self.stream.writeln("SKIPPED TESTS (%d)" % len(result.skipped))
         if not result.wasSuccessful():
             self.stream.write("FAILED (")
             failed, errored = map(len, (result.failures, result.errors))
@@ -474,7 +527,6 @@ class CustomTestRunner(unittest.TextTestRunner):
         return CustomTestResult(self.stream, self.descriptions, self.verbosity,
                                 cfg=self.cfg, count=self.count,
                                 hooks=self.hooks)
-
 
 def main(argv):
     """Main program."""
@@ -641,6 +693,7 @@ def main(argv):
         return 0
     else:
         return 1
+
 
 
 if __name__ == '__main__':
