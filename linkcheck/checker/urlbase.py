@@ -106,9 +106,11 @@ class UrlBase (object):
         self.column = column
         self.name = name
         if self.base_ref:
-            assert not linkcheck.url.url_needs_quoting(self.base_ref)
+            assert not linkcheck.url.url_needs_quoting(self.base_ref), \
+                   "unquoted %r" % self.base_ref
         if self.parent_url:
-            assert not linkcheck.url.url_needs_quoting(self.parent_url)
+            assert not linkcheck.url.url_needs_quoting(self.parent_url), \
+                   "unquoted %r" % self.parent_url
         url = linkcheck.checker.absolute_url(base_url, base_ref, parent_url)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
