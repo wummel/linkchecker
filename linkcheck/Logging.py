@@ -62,7 +62,7 @@ class Logger:
     def __init__(self, **args):
         self.logfields = None # all fields
         if args.has_key('fields'):
-            if type(args['fields']) == ListType:
+            if "all" not in args['fields']:
                 self.logfields = args['fields']
 
 
@@ -72,14 +72,14 @@ class Logger:
         return name in self.logfields
 
 
-   def init(self):
-       raise Exception, "abstract function"
+    def init(self):
+        raise Exception, "abstract function"
 
-   def newUrl(self, urlData):
-       raise Exception, "abstract function"
+    def newUrl(self, urlData):
+        raise Exception, "abstract function"
 
-   def endOfOutput(self, linknumber=-1):
-       raise Exception, "abstract function"
+    def endOfOutput(self, linknumber=-1):
+        raise Exception, "abstract function"
 
 
 
@@ -389,7 +389,7 @@ class ColoredLogger(StandardLogger):
                     self.fd.write("o\n")
                 self.prefix = 0
                 self.currentPage=None
-        if self.logfield("url")
+        if self.logfield("url"):
             if self.prefix:
                 self.fd.write("|\n+- ")
             else:
@@ -581,7 +581,7 @@ class XMLLogger(StandardLogger):
             self.nodeid += 1
             self.fd.write('  <node name="%d" ' % node.id)
             self.fd.write(">\n")
-            if self.logfield("realurl")
+            if self.logfield("realurl"):
                 self.fd.write("    <label>%s</label>\n" % quote(node.url))
             self.fd.write("    <data>\n")
             if node.downloadtime and self.logfield("dltime"):

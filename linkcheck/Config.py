@@ -250,11 +250,11 @@ class Configuration(UserDict.UserDict):
     def robotsTxtCache_set_NoThreads(self, key, val):
         self.robotsTxtCache[key] = val
 
-    def newLogger(self, name, dict={}):
-        namespace = {}
-	namespace.update(self[name])
-	namespace.update(dict)
-        return apply(Loggers[name], (), namespace)
+    def newLogger(self, logtype, dict={}):
+        args = {}
+	args.update(self[logtype])
+	args.update(dict)
+        return apply(Loggers[logtype], (), args)
 
     def incrementLinknumber_NoThreads(self):
         self['linknumber'] += 1
@@ -389,6 +389,17 @@ class Configuration(UserDict.UserDict):
 	    return
 
         section="output"
+        for key in Loggers.keys():
+            if cfgparser.has_section(key):
+                debug(key+": ")
+                for opt in cfgparser.options(key):
+                    try: self[key][opt] = cfgparser.get(key, opt)
+                    except ConfigParser.Error, msg: debug(str(msg)+"\n")
+                try:
+		    self[key]['fields'] = map(string.strip,
+		         string.split(cfgparser.get(key, 'fields'), ','))
+                    debug("fields %s\n"%str(self[key]['fields']))
+                except ConfigParser.Error, msg: debug(str(msg)+"\n")
         try:
             log = cfgparser.get(section, "log")
             if Loggers.has_key(log):
@@ -414,17 +425,6 @@ class Configuration(UserDict.UserDict):
 		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error: pass
-        for key in Loggers.keys():
-            if cfgparser.has_section(key):
-                debug(key+"\n")
-                for opt in cfgparser.options(key):
-                    try: self[key][opt] = cfgparser.get(key, opt)
-                    except ConfigParser.Error, msg: debug(str(msg))
-                try:
-		    self[key]['fields'] = map(string.strip,
-		         string.split(cfgparser.get(key, 'fields'), ','))
-                    debug("fields %s"%str(self[key]['fields']))
-                except ConfigParser.Error, msg: debug(str(msg))
 
         section="checking"
         try:

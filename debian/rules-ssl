@@ -14,6 +14,7 @@ export DH_OPTIONS
 
 nossl:
 	@echo change to nossl version...
+	@cat debian/changelog | sed '1 s/linkchecker-ssl/linkchecker/' >debian/changelog-nossl
 	@cd debian && for i in *-nossl; do \
                 f=`echo $$i | sed -e 's/-nossl//'`; \
                 mv $$f $$f-ssl; \

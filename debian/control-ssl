@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
 Build-Depends: python2-base, python2-dev, debhelper (>= 3.0.0), libssl-dev
 Build-Depends-Indep: gettext
-Standards-Version: 3.5.3
+Standards-Version: 3.5.4
 
 Package: linkchecker-ssl
 Architecture: any
