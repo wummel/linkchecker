@@ -59,6 +59,20 @@ class FtpUrlData (ProxyUrlData):
             self.retrieve(filename)
 
 
+    def isHtml (self):
+        # guess by extension
+        for ro in linkcheck.extensions.values():
+            if ro.search(self.url):
+                return 1
+
+
+    def parseUrl (self):
+        for key,ro in linkcheck.extensions.items():
+            if ro.search(self.url):
+                return getattr(self, "parse_"+key)()
+        return None
+
+
     def login (self, _user, _password):
         """log into ftp server and check the welcome message"""
         # ready to connect

@@ -34,6 +34,16 @@ def getLinkPat (arg, strict=0):
         "strict": strict,
     }
 
+# file extensions we can parse recursively
+extensions = {
+    "html": r'(?i)\.s?html?$',
+    "opera": r'^(?i)opera.adr$', # opera bookmark file
+#    "text": r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$',
+}
+for key in extensions.keys():
+    extensions[key] = re.compile(extensions[key])
+
+
 # i18n suppport
 import sys, os, _linkchecker_configdata
 def init_gettext ():

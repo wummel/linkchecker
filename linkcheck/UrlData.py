@@ -393,7 +393,12 @@ class UrlData:
 
 
     def parseUrl (self):
+        # default parse type is html
         debug(BRING_IT_ON, "Parsing recursively into", self)
+        self.parse_html();
+
+
+    def parse_html (self):
         # search for a possible base reference
         h = LinkParser(self.getContent(), {'base': ['href']})
         baseRef = None
@@ -412,6 +417,37 @@ class UrlData:
                                   self.recursionLevel+1, self.config,
                                   parentName=self.url, baseRef=base,
                                   line=line, column=column, name=name))
+
+
+    def parse_opera (self):
+        # parse an opera bookmark file
+        name = ""
+        lineno = 0
+        for line in self.getContent().splitlines():
+            lineno += 1
+            line = line.strip()
+            if line.startswith("NAME="):
+                name = line[5:]
+            elif line.startswith("URL="):
+                url = line[4:]
+                if url:
+                    self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url,
+                        self.recursionLevel+1, self.config, self.url, None, lineno, name))
+                name = ""
+
+
+    def parse_text (self):
+        # unused at the moment
+        lineno = 0
+        for line in self.getContent().splitlines():
+            lineno += 1
+            i = 0
+            while 1:
+                mo = _url_re.search(line, i)
+                if not mo: break
+                self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(mo.group(),
+                        self.recursionLevel+1, self.config, self.url, None, lineno, ""))
+                i = mo.end()
 
 
     def __str__ (self):

@@ -21,15 +21,6 @@ from UrlData import UrlData, ExcList
 # OSError is thrown on Windows when a file is not found
 ExcList.append(OSError)
 
-# file extensions we can parse recursively
-extensions = {
-    "html": r'(?i)\.s?html?$',
-    "opera": r'^(?i)opera.adr$', # opera bookmark file
-#    "text": r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$',
-}
-for key in extensions.keys():
-    extensions[key] = re.compile(extensions[key])
-
 # if file extension was fruitless, look at the content
 contents = {
     "html": r'(?i)<html>.*</html>',
@@ -119,9 +110,8 @@ class FileUrlData (UrlData):
         self.url = urlparse.urlunsplit(self.urlparts)
 
 
-
     def getCacheKey (self):
-        # use that the host is lowercase
+        # the host in urlparts is lowercase()d
         if self.urlparts:
             self.urlparts[4] = self.anchor
             key = urlparse.urlunsplit(self.urlparts)
@@ -137,7 +127,7 @@ class FileUrlData (UrlData):
 
     def isHtml (self):
         # guess by extension
-        for ro in extensions.values():
+        for ro in linkcheck.extensions.values():
             if ro.search(self.url):
                 return 1
         # try to read content (can fail, so catch error)
@@ -151,46 +141,10 @@ class FileUrlData (UrlData):
 
 
     def parseUrl (self):
-        for key,ro in extensions.items():
+        for key,ro in linkcheck.extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         for key,ro in contents.items():
             if ro.search(self.getContent()[:20]):
                 return getattr(self, "parse_"+key)()
         return None
-
-
-    def parse_html (self):
-        UrlData.parseUrl(self)
-
-
-    def parse_opera (self):
-        # parse an opera bookmark file
-        name = ""
-        lineno = 0
-        for line in self.getContent().splitlines():
-            lineno += 1
-            line = line.strip()
-            if line.startswith("NAME="):
-                name = line[5:]
-            elif line.startswith("URL="):
-                url = line[4:]
-                if url:
-                    self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url,
-                        self.recursionLevel+1, self.config, self.url, None, lineno, name))
-                name = ""
-
-
-    def parse_text (self):
-        # unused at the moment
-        lineno = 0
-        for line in self.getContent().splitlines():
-            lineno += 1
-            i = 0
-            while 1:
-                mo = _url_re.search(line, i)
-                if not mo: break
-                self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(mo.group(),
-                        self.recursionLevel+1, self.config, self.url, None, lineno, ""))
-                i = mo.end()
-
