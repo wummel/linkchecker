@@ -14,15 +14,15 @@ Description: check HTML documents for broken links
  Features:
   o recursive checking
   o multithreaded
-  o output can be colored or normal text, HTML, SQL, CSV or a sitemap
+  o output in colored or normal text, HTML, SQL, CSV or a sitemap
     graph in DOT, GML or XML
-  o HTTP/1.1, FTP, mailto:, nntp:, news:, Gopher, Telnet and local
-    file links are supported
+  o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
+    file links support
   o restrict link checking with regular expression filters for URLs
   o proxy support
-  o give username/password for HTTP and FTP authorization
+  o username/password authorization for HTTP, FTP and Telnet
   o robots.txt exclusion protocol support
-  o i18n support
   o Cookie support
-  o command line interface
-  o (Fast)CGI web interface (requires HTTP server)
+  o i18n support
+  o a command line interface
+  o a (Fast)CGI web interface (requires HTTP server)

@@ -282,16 +282,16 @@ setup (name = "linkchecker",
        url = "http://linkchecker.sourceforge.net/",
        download_url = "http://sourceforge.net/project/showfiles.php?group_id=1913",
        license = "GPL",
-       long_description = """Linkchecker features
+       long_description = """Linkchecker features:
 o recursive checking
-o multithreading
+o multithreaded
 o output in colored or normal text, HTML, SQL, CSV or a sitemap
   graph in DOT, GML or XML.
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
   file links support
-o restriction of link checking with regular expression filters for URLs
+o restrict link checking with regular expression filters for URLs
 o proxy support
-o username/password authorization for HTTP and FTP
+o username/password authorization for HTTP, FTP and Telnet
 o robots.txt exclusion protocol support
 o Cookie support
 o i18n support
