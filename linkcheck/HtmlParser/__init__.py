@@ -59,6 +59,10 @@
    The parser quotes all attribute values.
    Python memory management interface is used.
 
+4. Character encoding aware
+
+   The parser itself is not encoding aware, but all the output are
+   always Python Unicode strings.
 """
 
 import re
@@ -79,30 +83,39 @@ def _resolve_ascii_entity (mo):
         radix = 10
     num = int(num, radix)
     # check 7-bit ASCII char range
-    if 0<=num<=127:
-        return chr(num)
+    if 0 <= num <= 127:
+        return unicode(chr(num))
     # not in range
     return ent
 
 
+_num_re = re.compile(ur'(?i)&#x?(?P<num>\d+);')
 def resolve_ascii_entities (s):
     """resolve entities in 7-bit ASCII range to eliminate obfuscation"""
-    return re.sub(r'(?i)&#x?(?P<num>\d+);', _resolve_ascii_entity, s)
+    return _num_re.sub(_resolve_ascii_entity, s)
 
 
 def _resolve_html_entity (mo):
     """resolve html entity, helper function for resolve_html_entities"""
-    return htmlentitydefs.entitydefs.get(mo.group("entity"), mo.group())
+    ent = mo.group("entity")
+    s = mo.group()
+    entdef = htmlentitydefs.entitydefs.get(ent)
+    if entdef is None:
+        return s
+    # note: entdef is latin-1 encoded
+    return entdef.decode("iso8859-1")
 
 
+_entity_re = re.compile(ur'(?i)&(?P<entity>[a-z]+);')
 def resolve_html_entities (s):
     """resolve html entites in s and return result"""
-    return re.sub(r'(?i)&(?P<entity>[a-z]+);', _resolve_html_entity, s)
+    return _entity_re.sub(_resolve_html_entity, s)
 
 
 def resolve_entities (s):
     """resolve both html and 7-bit ASCII entites in s and return result"""
-    return resolve_html_entities(resolve_ascii_entities(s))
+    s = resolve_ascii_entities(s)
+    return resolve_html_entities(s)
 
 
 def strip_quotes (s):
@@ -112,3 +125,4 @@ def strip_quotes (s):
         (s.startswith('"') and s.endswith('"'))):
         return s[1:-1]
     return s
+

@@ -53,44 +53,54 @@ class HtmlPrinter (object):
 
 
 class HtmlPrettyPrinter (object):
-    """Print out all parsed HTML data"""
+    """Print out all parsed HTML data in encoded form."""
 
-    def __init__ (self, fd=sys.stdout):
+    def __init__ (self, fd=sys.stdout, encoding="iso8859-1"):
         """write to given file descriptor"""
         self.fd = fd
+        self.encoding = encoding
 
     def comment (self, data):
         """print comment"""
+        data = data.encode(self.encoding, "ignore")
         self.fd.write("<!--%s-->" % data)
 
     def start_element (self, tag, attrs):
         """print start element"""
-        self.fd.write("<%s"%tag.replace("/", ""))
+        tag = tag.encode(self.encoding, "ignore")
+        self.fd.write("<%s" % tag.replace("/", ""))
         for key, val in attrs.iteritems():
+            key = key.encode(self.encoding, "ignore")
             if val is None:
-                self.fd.write(" %s"%key)
+                self.fd.write(" %s" % key)
             else:
+                val = val.encode(self.encoding, "ignore")
                 self.fd.write(" %s=\"%s\"" % (key, quote_attrval(val)))
         self.fd.write(">")
 
     def end_element (self, tag):
         """print end element"""
+        tag = tag.encode(self.encoding, "ignore")
         self.fd.write("</%s>" % tag)
 
     def doctype (self, data):
         """print document type"""
+        data = data.encode(self.encoding, "ignore")
         self.fd.write("<!DOCTYPE%s>" % data)
 
     def pi (self, data):
         """print pi"""
+        data = data.encode(self.encoding, "ignore")
         self.fd.write("<?%s?>" % data)
 
     def cdata (self, data):
         """print cdata"""
-        self.fd.write("<![CDATA[%s]]>"%data)
+        data = data.encode(self.encoding, "ignore")
+        self.fd.write("<![CDATA[%s]]>" % data)
 
     def characters (self, data):
         """print characters"""
+        data = data.encode(self.encoding, "ignore")
         self.fd.write(data)
 
 

@@ -104,6 +104,7 @@ static PyObject* list_dict;
 typedef struct {
     PyObject_HEAD
     PyObject* handler;
+    PyObject* encoding;
     UserData* userData;
     void* scanner;
 } parser_object;
@@ -156,7 +157,7 @@ element: T_WAIT { YYACCEPT; /* wait for more lexer input */ }
 | T_ELEMENT_START
 {
     /* $1 is a PyTuple (<tag>, <attrs>)
-       <tag> is a PyString, <attrs> is a PyDict */
+       <tag> is a PyObject, <attrs> is a PyDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -191,14 +192,14 @@ finish_start:
 | T_ELEMENT_START_END
 {
     /* $1 is a PyTuple (<tag>, <attrs>)
-       <tag> is a PyString, <attrs> is a PyDict */
+       <tag> is a PyObject, <attrs> is a PyDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
     PyObject* tag = PyTuple_GET_ITEM($1, 0);
     PyObject* attrs = PyTuple_GET_ITEM($1, 1);
     int error = 0;
-    char* tagname;
+    PyObject* tagname = NULL;
     if (!tag || !attrs) { error = 1; goto finish_start_end; }
     if (PyObject_HasAttrString(ud->handler, "start_element")==1) {
 	callback = PyObject_GetAttrString(ud->handler, "start_element");
@@ -209,9 +210,11 @@ finish_start:
         Py_DECREF(result);
         callback=result=NULL;
     }
-    tagname = PyString_AS_STRING(tag);
+    /* encode tagname in ASCII, ignoring any unknown chars */
+    tagname = PyUnicode_AsEncodedString(tag, "ascii", "ignore");
+    if (tagname==NULL) { error=1; goto finish_start_end; }
     if (PyObject_HasAttrString(ud->handler, "end_element")==1 &&
-	NO_HTML_END_TAG(tagname)) {
+	NO_HTML_END_TAG(PyString_AsString(tagname))) {
 	callback = PyObject_GetAttrString(ud->handler, "end_element");
 	if (callback==NULL) { error=1; goto finish_start_end; }
 	result = PyObject_CallFunction(callback, "O", tag);
@@ -227,6 +230,7 @@ finish_start_end:
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_XDECREF(tag);
+    Py_XDECREF(tagname);
     Py_XDECREF(attrs);
     Py_DECREF($1);
     if (error) {
@@ -237,14 +241,16 @@ finish_start_end:
 }
 | T_ELEMENT_END
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
     int error = 0;
-    char* tagname = PyString_AS_STRING($1);
+    /* encode tagname in ASCII, ignoring any unknown chars */
+    PyObject* tagname = PyUnicode_AsEncodedString($1, "ascii", "ignore");
+    if (tagname==NULL) { error=1; goto finish_end; }
     if (PyObject_HasAttrString(ud->handler, "end_element")==1 &&
-	NO_HTML_END_TAG(tagname)) {
+	NO_HTML_END_TAG(PyString_AsString(tagname))) {
 	callback = PyObject_GetAttrString(ud->handler, "end_element");
 	if (callback==NULL) { error=1; goto finish_end; }
 	result = PyObject_CallFunction(callback, "O", $1);
@@ -257,6 +263,7 @@ finish_start_end:
 finish_end:
     Py_XDECREF(ud->error);
     ud->error = NULL;
+    Py_XDECREF(tagname);
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_DECREF($1);
@@ -268,7 +275,7 @@ finish_end:
 }
 | T_COMMENT
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -289,7 +296,7 @@ finish_comment:
 }
 | T_PI
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -310,7 +317,7 @@ finish_pi:
 }
 | T_CDATA
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -331,7 +338,7 @@ finish_cdata:
 }
 | T_DOCTYPE
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -352,18 +359,21 @@ finish_doctype:
 }
 | T_SCRIPT
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
     int error = 0;
+    PyObject* script = PyUnicode_DecodeASCII("script", 6, "ignore");
+    if (script==NULL) { error=1; goto finish_script; }
     CALLBACK(ud, "characters", "O", $1, finish_script);
-    CALLBACK(ud, "end_element", "s", "script", finish_script);
+    CALLBACK(ud, "end_element", "O", script, finish_script);
     CHECK_ERROR(ud, finish_script);
 finish_script:
     Py_XDECREF(ud->error);
     ud->error = NULL;
     Py_XDECREF(callback);
+    Py_XDECREF(script);
     Py_XDECREF(result);
     Py_DECREF($1);
     if (error) {
@@ -374,18 +384,21 @@ finish_script:
 }
 | T_STYLE
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
     int error = 0;
+    PyObject* style = PyUnicode_DecodeASCII("style", 5, "ignore");
+    if (style==NULL) { error=1; goto finish_style; }
     CALLBACK(ud, "characters", "O", $1, finish_style);
-    CALLBACK(ud, "end_element", "s", "style", finish_style);
+    CALLBACK(ud, "end_element", "O", style, finish_style);
     CHECK_ERROR(ud, finish_style);
 finish_style:
     Py_XDECREF(ud->error);
     ud->error = NULL;
     Py_XDECREF(callback);
+    Py_XDECREF(style);
     Py_XDECREF(result);
     Py_DECREF($1);
     if (error) {
@@ -396,7 +409,7 @@ finish_style:
 }
 | T_TEXT
 {
-    /* $1 is a PyString */
+    /* $1 is a PyUnicode */
     /* Remember this is also called as a lexer error fallback */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -428,16 +441,15 @@ finish_characters:
 /* create parser object */
 static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds) {
     parser_object* self;
-    if ((self = (parser_object*) type->tp_alloc(type, 0)) == NULL)
-    {
+    if ((self = (parser_object*) type->tp_alloc(type, 0)) == NULL) {
         return NULL;
     }
     Py_INCREF(Py_None);
     self->handler = Py_None;
     /* reset userData */
     self->userData = PyMem_New(UserData, sizeof(UserData));
-    if (self->userData == NULL)
-    {
+    if (self->userData == NULL) {
+        Py_DECREF(self->handler);
         Py_DECREF(self);
         return NULL;
     }
@@ -463,11 +475,18 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
     self->userData->exc_tb = NULL;
     self->userData->error = NULL;
     self->scanner = NULL;
-    if (htmllexInit(&(self->scanner), self->userData)!=0)
-    {
+    if (htmllexInit(&(self->scanner), self->userData)!=0) {
+        Py_DECREF(self->handler);
         Py_DECREF(self);
         return NULL;
     }
+    self->encoding = PyString_FromString("iso8859-1");
+    if (self->encoding == NULL) {
+        Py_DECREF(self->handler);
+        Py_DECREF(self);
+        return NULL;
+    }
+    self->userData->encoding = self->encoding;
     return (PyObject*) self;
 }
 
@@ -501,9 +520,9 @@ static int parser_traverse (parser_object* self, visitproc visit, void* arg) {
 
 /* clear all used subobjects participating in reference cycles */
 static int parser_clear (parser_object* self) {
+    self->userData->handler = NULL;
     Py_XDECREF(self->handler);
     self->handler = NULL;
-    self->userData->handler = NULL;
     return 0;
 }
 
@@ -512,6 +531,9 @@ static int parser_clear (parser_object* self) {
 static void parser_dealloc (parser_object* self) {
     htmllexDestroy(self->scanner);
     parser_clear(self);
+    self->userData->encoding = NULL;
+    Py_XDECREF(self->encoding);
+    self->encoding = NULL;
     PyMem_Del(self->userData->buf);
     PyMem_Del(self->userData->tmp_buf);
     PyMem_Del(self->userData);
@@ -570,7 +592,10 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
     if (strlen(self->userData->buf)) {
         /* XXX set line, col */
         int error = 0;
-	PyObject* s = PyString_FromString(self->userData->buf);
+        const char* enc = PyString_AsString(self->encoding);
+	PyObject* s = PyUnicode_Decode(self->userData->buf,
+                                       strlen(self->userData->buf),
+                                       enc, "ignore");
 	PyObject* callback = NULL;
 	PyObject* result = NULL;
 	/* reset buffer */
@@ -701,6 +726,7 @@ static PyObject* parser_gethandler (parser_object* self, void* closure) {
     return self->handler;
 }
 
+
 static int parser_sethandler (parser_object* self, PyObject* value, void* closure) {
     if (value == NULL) {
        PyErr_SetString(PyExc_TypeError, "Cannot delete parser handler");
@@ -709,9 +735,33 @@ static int parser_sethandler (parser_object* self, PyObject* value, void* closur
     Py_DECREF(self->handler);
     Py_INCREF(value);
     self->handler = value;
-    self->userData->handler = self->handler;
+    self->userData->handler = value;
     return 0;
 }
+
+
+static PyObject* parser_getencoding (parser_object* self, void* closure) {
+    Py_INCREF(self->encoding);
+    return self->encoding;
+}
+
+
+static int parser_setencoding (parser_object* self, PyObject* value, void* closure) {
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete encoding");
+        return -1;
+    }
+    if (!PyString_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "encoding must be string");
+        return -1;
+    }
+    Py_DECREF(self->encoding);
+    Py_INCREF(value);
+    self->encoding = value;
+    self->userData->encoding = value;
+    return 0;
+}
+
 
 /* type interface */
 
@@ -722,19 +772,21 @@ static PyMemberDef parser_members[] = {
 static PyGetSetDef parser_getset[] = {
     {"handler", (getter)parser_gethandler, (setter)parser_sethandler,
      "handler object", NULL},
+    {"encoding", (getter)parser_getencoding, (setter)parser_setencoding,
+     "encoding", NULL},
     {NULL}  /* Sentinel */
 };
 
 static PyMethodDef parser_methods[] = {
-    {"feed",  (PyCFunction)parser_feed, METH_VARARGS, "feed data to parse incremental"},
+    {"feed", (PyCFunction)parser_feed, METH_VARARGS, "feed data to parse incremental"},
     {"reset", (PyCFunction)parser_reset, METH_VARARGS, "reset the parser (no flushing)"},
     {"flush", (PyCFunction)parser_flush, METH_VARARGS, "flush parser buffers"},
     {"debug", (PyCFunction)parser_debug, METH_VARARGS, "set debug level"},
-    {"lineno",      (PyCFunction)parser_lineno,      METH_VARARGS, "get the current line number"},
+    {"lineno", (PyCFunction)parser_lineno, METH_VARARGS, "get the current line number"},
     {"last_lineno", (PyCFunction)parser_last_lineno, METH_VARARGS, "get the last line number"},
-    {"column",      (PyCFunction)parser_column,      METH_VARARGS, "get the current column"},
+    {"column", (PyCFunction)parser_column, METH_VARARGS, "get the current column"},
     {"last_column", (PyCFunction)parser_last_column, METH_VARARGS, "get the last column"},
-    {"pos",         (PyCFunction)parser_pos,         METH_VARARGS, "get the current scanner position"},
+    {"pos", (PyCFunction)parser_pos, METH_VARARGS, "get the current scanner position"},
     {NULL} /* Sentinel */
 };
 

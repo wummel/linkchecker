@@ -78,6 +78,8 @@ typedef struct {
     PyObject* exc_tb;
     /* error string */
     PyObject* error;
+    /* encoding string  (default iso8859-1) */
+    PyObject* encoding;
 } UserData;
 
 #endif
