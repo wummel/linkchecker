@@ -149,13 +149,15 @@ def set_intern_url (url, klass, config):
     from HttpUrlData import HttpUrlData
     from HttpsUrlData import HttpsUrlData
     if klass == FileUrlData:
+        debug(BRING_IT_ON, "Add intern pattern ^file:")
         config['internlinks'].append(getLinkPat("^file:"))
     elif klass in [HttpUrlData, HttpsUrlData, FtpUrlData]:
         domain = urlparse.urlsplit(url)[1]
         if domain:
-            domain = re.escape(domain)
-            # add scheme colon to link patter
-            config['internlinks'].append(getLinkPat(":%s"%domain))
+            domain = "://%s"%re.escape(domain)
+            debug(BRING_IT_ON, "Add intern domain", domain)
+            # add scheme colon to link pattern
+            config['internlinks'].append(getLinkPat(domain))
 
 
 class UrlData:
