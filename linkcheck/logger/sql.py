@@ -29,10 +29,12 @@ def sqlify (s):
         return "NULL"
     return "'%s'" % s.replace("'", "''")
 
+
 def intify (s):
     if not s:
         return 0
     return 1
+
 
 class SQLLogger (linkcheck.logger.Logger):
     """SQL output for PostgreSQL, not tested"""
@@ -51,24 +53,21 @@ class SQLLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("-- "+(_("created by %s at %s") % \
-                      (linkcheck.configuration.AppName,
-                       linkcheck.strformat.strtime(self.starttime))))
-            self.fd.write(os.linesep)
-            self.fd.write("-- "+(_("Get the newest version at %s") % \
-                          linkcheck.configuration.Url))
-            self.fd.write(os.linesep)
-            self.fd.write("-- "+(_("Write comments and bugs to %s") % \
-                          linkcheck.configuration.Email))
-            self.fd.write(os.linesep)
-            self.fd.write(os.linesep)
+            self.writeln(u"-- "+(_("created by %s at %s") % \
+                         (linkcheck.configuration.AppName,
+                          linkcheck.strformat.strtime(self.starttime))))
+            self.writeln(u"-- "+(_("Get the newest version at %s") % \
+                         linkcheck.configuration.Url))
+            self.writeln(u"-- "+(_("Write comments and bugs to %s") % \
+                         linkcheck.configuration.Email))
+            self.writeln()
             self.flush()
 
     def new_url (self, url_data):
         """store url check info into the database"""
         if self.fd is None:
             return
-        self.fd.write("insert into %(table)s(urlname,recursionlevel,"
+        self.writeln(u"insert into %(table)s(urlname,recursionlevel,"
               "parentname,baseref,valid,result,warning,info,url,line,col,"
               "name,checktime,dltime,dlsize,cached) values ("
               "%(base_url)s,"
@@ -107,7 +106,6 @@ class SQLLogger (linkcheck.logger.Logger):
                'cached': intify(url_data.cached),
                'separator': self.separator,
               })
-        self.fd.write(os.linesep)
         self.flush()
 
     def end_output (self, linknumber=-1):
@@ -117,10 +115,9 @@ class SQLLogger (linkcheck.logger.Logger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write("-- "+_("Stopped checking at %s (%s)")%\
-                          (linkcheck.strformat.strtime(self.stoptime),
-                           linkcheck.strformat.strduration(duration)))
-            self.fd.write(os.linesep)
+            self.writeln(u"-- "+_("Stopped checking at %s (%s)")%\
+                         (linkcheck.strformat.strtime(self.stoptime),
+                          linkcheck.strformat.strduration(duration)))
         self.flush()
         if self.close_fd:
             self.fd.close()

@@ -69,63 +69,47 @@ class XMLLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.starttime = time.time()
-        self.fd.write('<?xml version="1.0"?>')
-        self.fd.write(os.linesep)
+        self.writeln(u'<?xml version="1.0"?>')
         if self.has_field("intro"):
-            self.fd.write("<!--")
-            self.fd.write(os.linesep)
-            self.fd.write("  "+_("created by %s at %s") %
-              (linkcheck.configuration.AppName,
-               linkcheck.strformat.strtime(self.starttime)))
-            self.fd.write(os.linesep)
-            self.fd.write("  "+_("Get the newest version at %s") %
-                          linkcheck.configuration.Url)
-            self.fd.write(os.linesep)
-            self.fd.write("  "+_("Write comments and bugs to %s") %
-                          linkcheck.configuration.Email)
-            self.fd.write(os.linesep)
-            self.fd.write(os.linesep)
-            self.fd.write("-->")
-            self.fd.write(os.linesep)
-            self.fd.write(os.linesep)
-        self.fd.write('<GraphXML>\n<graph isDirected="true">')
-        self.fd.write(os.linesep)
+            self.writeln(u"<!--")
+            self.writeln(u"  "+_("created by %s at %s") %
+                         (linkcheck.configuration.AppName,
+                          linkcheck.strformat.strtime(self.starttime)))
+            self.writeln(u"  "+_("Get the newest version at %s") %
+                         linkcheck.configuration.Url)
+            self.writeln(u"  "+_("Write comments and bugs to %s") %
+                         linkcheck.configuration.Email)
+            self.writeln(u"-->")
+            self.writeln()
+        self.writeln(u'<GraphXML>')
+        self.writeln(u'<graph isDirected="true">')
         self.flush()
 
     def new_url (self, url_data):
         """write one node and all possible edges"""
-        if self.fd is None: return
+        if self.fd is None:
+            return
         node = url_data
         if node.url and not self.nodes.has_key(node.url):
             node.id = self.nodeid
             self.nodes[node.url] = node
             self.nodeid += 1
-            self.fd.write('  <node name="%d" ' % node.id)
-            self.fd.write(">\n")
+            self.writeln(u'  <node name="%d">' % node.id)
             if self.has_field("realurl"):
-                self.fd.write("    <label>%s</label>" % \
-                              xmlquote(node.url))
-                self.fd.write(os.linesep)
-            self.fd.write("    <data>")
-            self.fd.write(os.linesep)
+                self.writeln(u"    <label>%s</label>" % xmlquote(node.url))
+            self.writeln(u"    <data>")
             if node.dltime >= 0 and self.has_field("dltime"):
-                self.fd.write("      <dltime>%f</dltime>" % node.dltime)
-                self.fd.write(os.linesep)
+                self.writeln(u"      <dltime>%f</dltime>" % node.dltime)
             if node.dlsize >= 0 and self.has_field("dlsize"):
-                self.fd.write("      <dlsize>%d</dlsize>" % node.dlsize)
-                self.fd.write(os.linesep)
+                self.writeln(u"      <dlsize>%d</dlsize>" % node.dlsize)
             if node.checktime and self.has_field("checktime"):
-                self.fd.write("      <checktime>%f</checktime>" \
-                              % node.checktime)
-                self.fd.write(os.linesep)
+                self.writeln(u"      <checktime>%f</checktime>" %
+                             node.checktime)
             if self.has_field("extern"):
-                self.fd.write("      <extern>%d</extern>" % \
-                          (node.extern and 1 or 0))
-                self.fd.write(os.linesep)
-            self.fd.write("    </data>")
-            self.fd.write(os.linesep)
-            self.fd.write("  </node>")
-            self.fd.write(os.linesep)
+                self.writeln(u"      <extern>%d</extern>" %
+                             (node.extern and 1 or 0))
+            self.writeln(u"    </data>")
+            self.writeln(u"  </node>")
         self.write_edges()
 
     def write_edges (self):
@@ -134,26 +118,18 @@ class XMLLogger (linkcheck.logger.Logger):
         """
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
-                self.fd.write("  <edge")
-                self.fd.write(' source="%d"' % \
-                              self.nodes[node.parent_url].id)
-                self.fd.write(' target="%d"' % node.id)
-                self.fd.write(">")
-                self.fd.write(os.linesep)
+                self.write(u"  <edge")
+                self.write(u' source="%d"' % self.nodes[node.parent_url].id)
+                self.writeln(u' target="%d">' % node.id)
                 if self.has_field("url"):
-                    self.fd.write("    <label>%s</label>" % \
-                                  xmlquote(node.base_url))
-                    self.fd.write(os.linesep)
-                self.fd.write("    <data>")
-                self.fd.write(os.linesep)
+                    self.writeln(u"    <label>%s</label>" % \
+                                 xmlquote(node.base_url))
+                self.writeln(u"    <data>")
                 if self.has_field("result"):
-                    self.fd.write("      <valid>%d</valid>" % \
-                                  (node.valid and 1 or 0))
-                    self.fd.write(os.linesep)
-                self.fd.write("    </data>")
-                self.fd.write(os.linesep)
-                self.fd.write("  </edge>")
-                self.fd.write(os.linesep)
+                    self.writeln(u"      <valid>%d</valid>" % \
+                                 (node.valid and 1 or 0))
+                self.writeln(u"    </data>")
+                self.writeln(u"  </edge>")
         self.flush()
 
     def end_output (self, linknumber=-1):
@@ -162,19 +138,16 @@ class XMLLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
-        self.fd.write("</graph>")
-        self.fd.write(os.linesep)
-        self.fd.write("</GraphXML>")
-        self.fd.write(os.linesep)
+        self.writeln(u"</graph>")
+        self.writeln(u"</GraphXML>")
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write("<!-- ")
-            self.fd.write(_("Stopped checking at %s (%s)") % \
-                          (linkcheck.strformat.strtime(self.stoptime),
-                           linkcheck.strformat.strduration(duration)))
-            self.fd.write(os.linesep)
-            self.fd.write("-->")
+            self.writeln(u"<!-- ")
+            self.writeln(_("Stopped checking at %s (%s)") % \
+                         (linkcheck.strformat.strtime(self.stoptime),
+                          linkcheck.strformat.strduration(duration)))
+            self.writeln(u"-->")
         self.flush()
         if self.close_fd:
             self.fd.close()

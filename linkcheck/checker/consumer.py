@@ -25,6 +25,7 @@ except ImportError:
 
 import linkcheck.threader
 import linkcheck.log
+from urlbase import stderr
 
 class Consumer (object):
     """consume urls from the url queue in a threaded manner"""
@@ -129,9 +130,9 @@ class Consumer (object):
             links = self.linknumber
             tocheck = self.cache.incoming_len()
             duration = linkcheck.strformat.strduration(curtime - start_time)
-            print >> sys.stderr, _("Status: %5d URLs queued, "\
-             "%4d URLs checked, %2d active threads, runtime %s")\
-                                 % (tocheck, links, active, duration)
+            print >> stderr, _("Status: %5d URLs queued, "
+                     "%4d URLs checked, %2d active threads, runtime %s") % \
+                                 (tocheck, links, active, duration)
         finally:
             self.lock.release()
 

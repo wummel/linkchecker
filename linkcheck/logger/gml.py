@@ -41,21 +41,16 @@ class GMLLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("# "+(_("created by %s at %s") % \
-                          (linkcheck.configuration.AppName,
-                           linkcheck.strformat.strtime(self.starttime))))
-            self.fd.write(os.linesep)
-            self.fd.write("# "+(_("Get the newest version at %(url)s") %\
-                               {'url': linkcheck.configuration.Url}))
-            self.fd.write(os.linesep)
-            self.fd.write("# "+(_("Write comments and bugs to %(email)s") % \
-                            {'email': linkcheck.configuration.Email}))
-            self.fd.write(os.linesep)
-            self.fd.write(os.linesep)
-            self.fd.write("graph [")
-            self.fd.write(os.linesep)
-            self.fd.write("  directed 1")
-            self.fd.write(os.linesep)
+            self.writeln(u"# "+(_("created by %s at %s") % \
+                         (linkcheck.configuration.AppName,
+                          linkcheck.strformat.strtime(self.starttime))))
+            self.writeln(u"# "+(_("Get the newest version at %(url)s") % \
+                                {'url': linkcheck.configuration.Url}))
+            self.writeln(u"# "+(_("Write comments and bugs to %(email)s") % \
+                                {'email': linkcheck.configuration.Email}))
+            self.writeln()
+            self.writeln(u"graph [")
+            self.writeln(u"  directed 1")
             self.flush()
 
     def new_url (self, url_data):
@@ -67,27 +62,19 @@ class GMLLogger (linkcheck.logger.Logger):
             node.id = self.nodeid
             self.nodes[node.url] = node
             self.nodeid += 1
-            self.fd.write("  node [")
-            self.fd.write(os.linesep)
-            self.fd.write("    id     %d" % node.id)
-            self.fd.write(os.linesep)
+            self.writeln(u"  node [")
+            self.writeln(u"    id     %d" % node.id)
             if self.has_field("realurl"):
-                self.fd.write('    label  "%s"' % node.url)
-                self.fd.write(os.linesep)
+                self.writeln(u'    label  "%s"' % node.url)
             if node.dltime >= 0 and self.has_field("dltime"):
-                self.fd.write("    dltime %d" % node.dltime)
-                self.fd.write(os.linesep)
+                self.writeln(u"    dltime %d" % node.dltime)
             if node.dlsize >= 0 and self.has_field("dlsize"):
-                self.fd.write("    dlsize %d" % node.dlsize)
-                self.fd.write(os.linesep)
+                self.writeln(u"    dlsize %d" % node.dlsize)
             if node.checktime and self.has_field("checktime"):
-                self.fd.write("    checktime %d" % node.checktime)
-                self.fd.write(os.linesep)
+                self.writeln(u"    checktime %d" % node.checktime)
             if self.has_field("extern"):
-                self.fd.write("    extern %d" % (node.extern and 1 or 0))
-                self.fd.write(os.linesep)
-            self.fd.write("  ]")
-            self.fd.write(os.linesep)
+                self.writeln(u"    extern %d" % (node.extern and 1 or 0))
+            self.writeln(u"  ]")
         self.write_edges()
 
     def write_edges (self):
@@ -96,36 +83,28 @@ class GMLLogger (linkcheck.logger.Logger):
         """
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
-                self.fd.write("  edge [")
-                self.fd.write(os.linesep)
-                self.fd.write('    label  "%s"' % node.base_url)
-                self.fd.write(os.linesep)
+                self.writeln(u"  edge [")
+                self.writeln(u'    label  "%s"' % node.base_url)
                 if self.has_field("parenturl"):
-                    self.fd.write("    source %d" % \
-                                  self.nodes[node.parent_url].id)
-                    self.fd.write(os.linesep)
-                self.fd.write("    target %d" % node.id)
-                self.fd.write(os.linesep)
+                    self.writeln(u"    source %d" % \
+                                 self.nodes[node.parent_url].id)
+                self.writeln(u"    target %d" % node.id)
                 if self.has_field("result"):
-                    self.fd.write("    valid  %d" % (node.valid and 1 or 0))
-                    self.fd.write(os.linesep)
-                self.fd.write("  ]")
-                self.fd.write(os.linesep)
+                    self.writeln(u"    valid  %d" % (node.valid and 1 or 0))
+                self.writeln(u"  ]")
         self.flush()
 
     def end_output (self, linknumber=-1):
         """print end of checking info as gml comment"""
         if self.fd is None:
             return
-        self.fd.write("]")
-        self.fd.write(os.linesep)
+        self.writeln(u"]")
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write("# "+_("Stopped checking at %s (%s)")%\
-                          (linkcheck.strformat.strtime(self.stoptime),
-                           linkcheck.strformat.strduration(duration)))
-            self.fd.write(os.linesep)
+            self.writeln(u"# "+_("Stopped checking at %s (%s)")%\
+                         (linkcheck.strformat.strtime(self.stoptime),
+                          linkcheck.strformat.strduration(duration)))
         self.flush()
         if self.close_fd:
             self.fd.close()

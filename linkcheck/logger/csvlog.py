@@ -33,7 +33,6 @@ class CSVLogger (linkcheck.logger.Logger):
         super(CSVLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.separator = args['separator']
-        self.lineterminator = os.linesep
 
     def start_output (self):
         """print checking start info as csv comment"""
@@ -41,43 +40,42 @@ class CSVLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.starttime = time.time()
+        sep = os.linesep
         if self.has_field("intro"):
-            self.fd.write("# "+(_("created by %s at %s") % \
-                          (linkcheck.configuration.AppName,
-                           linkcheck.strformat.strtime(self.starttime))))
-            self.fd.write(self.lineterminator)
-            self.fd.write("# "+(_("Get the newest version at %(url)s") % \
-                          {'url': linkcheck.configuration.Url}))
-            self.fd.write(self.lineterminator)
-            self.fd.write("# "+(_("Write comments and bugs to %(email)s") % \
-                          {'email': linkcheck.configuration.Email}))
-            self.fd.write(self.lineterminator)
-            self.fd.write(_("# Format of the entries:")+self.lineterminator+
-                            "# urlname;"+self.lineterminator+
-                            "# recursionlevel;"+self.lineterminator+
-                            "# parentname;"+self.lineterminator+
-                            "# baseref;"+self.lineterminator+
-                            "# result;"+self.lineterminator+
-                            "# warningstring;"+self.lineterminator+
-                            "# infostring;"+self.lineterminator+
-                            "# valid;"+self.lineterminator+
-                            "# url;"+self.lineterminator+
-                            "# line;"+self.lineterminator+
-                            "# column;"+self.lineterminator+
-                            "# name;"+self.lineterminator+
-                            "# dltime;"+self.lineterminator+
-                            "# dlsize;"+self.lineterminator+
-                            "# checktime;"+self.lineterminator+
-                            "# cached;"+self.lineterminator)
+            self.writeln(u"# "+(_("created by %s at %s") % \
+                         (linkcheck.configuration.AppName,
+                          linkcheck.strformat.strtime(self.starttime))))
+            self.writeln(u"# "+(_("Get the newest version at %(url)s") % \
+                         {'url': linkcheck.configuration.Url}))
+            self.writeln(u"# "+(_("Write comments and bugs to %(email)s") % \
+                         {'email': linkcheck.configuration.Email}))
+            self.writeln(_("# Format of the entries:")+sep+
+                         u"# urlname;"+sep+
+                         u"# recursionlevel;"+sep+
+                         u"# parentname;"+sep+
+                         u"# baseref;"+sep+
+                         u"# result;"+sep+
+                         u"# warningstring;"+sep+
+                         u"# infostring;"+sep+
+                         u"# valid;"+sep+
+                         u"# url;"+sep+
+                         u"# line;"+sep+
+                         u"# column;"+sep+
+                         u"# name;"+sep+
+                         u"# dltime;"+sep+
+                         u"# dlsize;"+sep+
+                         u"# checktime;"+sep+
+                         u"# cached;")
             self.flush()
         self.writer = csv.writer(self.fd, dialect='excel',
-                delimiter=self.separator, lineterminator=self.lineterminator)
+                                 delimiter=self.separator, lineterminator=sep)
 
     def new_url (self, url_data):
         """print csv formatted url check info"""
         if self.fd is None:
             return
-        row = [url_data.base_url, url_data.recursion_level,
+        row = []
+        for s in [url_data.base_url, url_data.recursion_level,
                url_data.parent_url or "", url_data.base_ref or "",
                url_data.result,
                os.linesep.join(url_data.warning),
@@ -86,7 +84,11 @@ class CSVLogger (linkcheck.logger.Logger):
                url_data.line, url_data.column,
                url_data.name, url_data.dltime,
                url_data.dlsize, url_data.checktime,
-               url_data.cached]
+               url_data.cached]:
+            if isinstance(s, unicode):
+                row.append(s.encode(self.output_encoding, "ignore"))
+            else:
+                row.append(s)
         self.writer.writerow(row)
         self.flush()
 
@@ -97,10 +99,9 @@ class CSVLogger (linkcheck.logger.Logger):
         self.stoptime = time.time()
         if self.has_field("outro"):
             duration = self.stoptime - self.starttime
-            self.fd.write("# "+_("Stopped checking at %s (%s)%s")%\
-                          (linkcheck.strformat.strtime(self.stoptime),
-                           linkcheck.strformat.strduration(duration),
-                           self.lineterminator))
+            self.writeln(u"# "+_("Stopped checking at %s (%s)") % \
+                         (linkcheck.strformat.strtime(self.stoptime),
+                          linkcheck.strformat.strduration(duration)))
             self.flush()
         if self.close_fd:
             self.fd.close()
