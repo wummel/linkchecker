@@ -164,16 +164,21 @@ def idna_encode (host):
     """Encode hostname as internationalized domain name (IDN) according
        to RFC 3490."""
     if isinstance(host, unicode):
-        return host.encode('idna').decode('ascii')
-    return host
+        return host.encode('idna').decode('ascii'), True
+    return host, False
 
 
 def url_norm (url):
     """Fix and normalize URL which must be quoted. Supports unicode
-       hostnames according to RFC 3490."""
+       hostnames (IDNA encoding) according to RFC 3490.
+
+       @return (normed url, idna flag)
+    """
     urlparts = list(urlparse.urlsplit(url))
-    urlparts[0] = urllib.unquote(urlparts[0]).lower() # scheme
-    urlparts[1] = idna_encode(urllib.unquote(urlparts[1]).lower()) # host
+    # scheme
+    urlparts[0] = urllib.unquote(urlparts[0]).lower()
+    # host
+    urlparts[1], is_idn = idna_encode(urllib.unquote(urlparts[1]).lower())
     # a leading backslash in path causes urlsplit() to add the
     # path components up to the first slash to host
     # try to find this case...
@@ -233,7 +238,7 @@ def url_norm (url):
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
         res += '#'
-    return res
+    return (res, is_idn)
 
 
 _slashes_ro = re.compile(r"/+")
