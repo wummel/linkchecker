@@ -103,6 +103,11 @@ class LRU (object):
         return self.d.keys()
 
 
+    def setdefault (self, key, failobj=None):
+        if not self.has_key(key):
+            self[key] = failobj
+        return self[key]
+
 
 def _main ():
     a = LRU(4)
