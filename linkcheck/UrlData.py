@@ -479,7 +479,7 @@ class UrlData:
             urls = self.searchInForTag(pattern)
             for url,line,name in urls:
                 self.config.appendUrl(GetUrlDataFrom(url,
-                        self.recursionLevel+1, self.config, self.url, baseRef, line, name))
+         self.recursionLevel+1, self.config, self.url, baseRef, line, name))
 
 
     def searchInForTag (self, pattern):
@@ -575,21 +575,23 @@ def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
                     baseRef=None, line=0, name=None):
     url = get_absolute_url(urlName, baseRef, parentName)
     # test scheme
-    if re.search("^http:", url):
+    if url.startswith("http:"):
         klass = HttpUrlData
-    elif re.search("^ftp:", url):
+    elif url.startswith("ftp:"):
         klass = FtpUrlData
-    elif re.search("^file:", url):
+    elif url.startswith("file:"):
         klass = FileUrlData
-    elif re.search("^telnet:", url):
+    elif url.startswith("telnet:"):
         klass = TelnetUrlData
-    elif re.search("^mailto:", url):
+    elif url.startswith("mailto:"):
         klass = MailtoUrlData
-    elif re.search("^gopher:", url):
+    elif url.startswith("gopher:"):
         klass = GopherUrlData
-    elif re.search("^https:", url):
+    elif url.startswith("https:"):
         klass = HttpsUrlData
-    elif re.search("^(s?news|nntp):", url):
+    elif url.startswith("nttp:") or \
+         url.startswith("news:") or \
+         url.startswith("snews:"):
         klass = NntpUrlData
     # application specific links are ignored
     elif ignored_schemes_re.search(url):
