@@ -9,7 +9,7 @@ TEMPLATE = $(PACKAGE).pot
 MYMAIL := calvin@users.sourceforge.net
 LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
-LANGUAGES = de fr nl es
+LANGUAGES = de fr es
 
 all: template
 
