@@ -3,18 +3,19 @@
 __version__ 	= "v0.8  19/10/1998 ajung"
 __doc__      	= "Multithreaded FastCGI Wrapper"
 
+import thread
+import linkcheck.fcgi
 
-import thread,fcgi
 
-class SZ_FCGI:
-    def __init__(self,func):
+class SZ_FCGI (object):
+    def __init__ (self, func):
         self.func = func
 
     # create a new thread to handle requests
-    def run(self):
+    def run (self):
 	try:
-            while fcgi.isFCGI():
-                req = fcgi.FCGI()
+            while linkcheck.fcgi.isFCGI():
+                req = linkcheck.fcgi.FCGI()
 	        thread.start_new_thread(self.func,(self, req))
 	except:
             import traceback

@@ -15,7 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, StringUtil
+import re
+import linkcheck
+
 
 imgtag_re = re.compile(r"""(?i)\s+alt\s*=\s*(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
 img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>]+)+>""")
@@ -24,8 +26,8 @@ endtag_re = re.compile(r"""(?i)</a\s*>""")
 def image_name(txt):
     mo = imgtag_re.search(txt)
     if mo:
-        name = StringUtil.remove_markup(mo.group('name').strip())
-        return StringUtil.unquote(name)
+        name = linkcheck.StringUtil.remove_markup(mo.group('name').strip())
+        return linkcheck.StringUtil.unquote(name)
     return ''
 
 
@@ -36,7 +38,7 @@ def href_name(txt):
     name = txt[:endtag.start()]
     if img_re.search(name):
         return image_name(name)
-    return StringUtil.unhtmlify(StringUtil.remove_markup(name))
+    return linkcheck.StringUtil.unhtmlify(linkcheck.StringUtil.remove_markup(name))
 
 _tests = (
     "<img src='' alt=''></a>",

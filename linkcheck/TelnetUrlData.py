@@ -16,30 +16,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import telnetlib, urlparse
-from linkcheck import LinkCheckerError, i18n
-from debug import *
-from urllib import splituser, splitport, splitpasswd
-from HostCheckingUrlData import HostCheckingUrlData
-from UrlData import is_valid_port
+import telnetlib
+import urlparse
+import urllib
+import linkcheck
+from linkcheck.debug import *
 
-class TelnetUrlData (HostCheckingUrlData):
+
+class TelnetUrlData (linkcheck.HostCheckingUrlData.HostCheckingUrlData):
     "Url link with telnet scheme"
 
     def buildUrl (self):
         super(TelnetUrlData, self).buildUrl()
         parts = urlparse.urlsplit(self.url)
-        userinfo, self.host = splituser(parts[1])
-        self.host, self.port = splitport(self.host)
+        userinfo, self.host = urllib.splituser(parts[1])
+        self.host, self.port = urllib.splitport(self.host)
         if self.port is not None:
-            if not is_valid_port(self.port):
-                raise LinkCheckerError(i18n._("URL has invalid port number %s")\
+            if not linkcheck.UrlData.is_valid_port(self.port):
+                raise linkcheck.LinkCheckerError(linkcheck.i18n._("URL has invalid port number %s")\
                                       % self.port)
             self.port = int(self.port)
         else:
             self.port = 23
         if userinfo:
-            self.user, self.password = splitpasswd(userinfo)
+            self.user, self.password = urllib.splitpasswd(userinfo)
         else:
             self.user, self.password = self.getUserPassword()
 

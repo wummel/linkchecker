@@ -16,17 +16,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import i18n
-from HttpUrlData import HttpUrlData, supportHttps
+import linkcheck
 from linkcheck.debug import *
 
 
-class HttpsUrlData (HttpUrlData):
+class HttpsUrlData (linkcheck.HttpUrlData.HttpUrlData):
     """Url link with https scheme"""
 
     def _check (self):
-        if supportHttps:
+        if linkcheck.HttpUrlData.supportHttps:
             super(HttpsUrlData, self)._check()
         else:
-            self.setWarning(i18n._("%s url ignored")%self.scheme.capitalize())
+            self.setWarning(linkcheck.i18n._("%s url ignored")%self.scheme.capitalize())
             self.logMe()

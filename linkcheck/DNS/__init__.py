@@ -11,16 +11,22 @@
 
 __version__ = '2.3.0'
 
-import Type,Opcode,Status,Class
-from Base import DnsRequest, DNSError, DiscoverNameServers
+import Type, Opcode, Status, Class
+from Base import DnsRequest, DNSError
 from Lib import DnsResult
 Error=DNSError
 from lazy import *
 Request = DnsRequest
 Result = DnsResult
 
+import linkcheck.DNS.Base
+linkcheck.DNS.Base.DiscoverNameServers()
+
 #
 # $Log$
+# Revision 1.8  2004/07/07 18:01:59  calvin
+# new module layout
+#
 # Revision 1.7  2003/07/04 14:23:22  calvin
 # add coding line
 #

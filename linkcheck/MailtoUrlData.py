@@ -16,8 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, sys, Config, cgi, urllib, i18n
-from linkcheck import LinkCheckerError
+import re
+import sys
+import cgi
+import urllib
+import linkcheck
 from linkcheck.DNS import mxlookup
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
@@ -39,7 +42,7 @@ class MailtoUrlData (HostCheckingUrlData):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
                     self.adresses.extend(AddressList(a).addresslist)
-        Config.debug(BRING_IT_ON, "adresses: ", self.adresses)
+        linkcheck.Config.debug(BRING_IT_ON, "adresses: ", self.adresses)
 
 
     def _cutout_adresses (self):
@@ -66,43 +69,43 @@ class MailtoUrlData (HostCheckingUrlData):
             an answer, print the verified adress as an info.
         """
         if not self.adresses:
-            self.setWarning(i18n._("No adresses found"))
+            self.setWarning(linkcheck.i18n._("No adresses found"))
             return
 
         value = "unknown reason"
         for name,mail in self.adresses:
-            Config.debug(BRING_IT_ON, "checking mail address", mail)
-            Config.debug(HURT_ME_PLENTY, "splitting address")
+            linkcheck.Config.debug(BRING_IT_ON, "checking mail address", mail)
+            linkcheck.Config.debug(HURT_ME_PLENTY, "splitting address")
             user,host = self._split_adress(mail)
-            Config.debug(HURT_ME_PLENTY, "looking up MX mailhost")
+            linkcheck.Config.debug(HURT_ME_PLENTY, "looking up MX mailhost")
             mxrecords = mxlookup(host)
-            Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
+            linkcheck.Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
-                self.setWarning(i18n._("No MX mail host for %s found")%host)
+                self.setWarning(linkcheck.i18n._("No MX mail host for %s found")%host)
                 return
             smtpconnect = 0
             for mxrecord in mxrecords:
                 try:
-                    Config.debug(BRING_IT_ON, "SMTP check for", mxrecord)
+                    linkcheck.Config.debug(BRING_IT_ON, "SMTP check for", mxrecord)
                     self.urlConnection = SMTP(mxrecord[1])
-                    Config.debug(HURT_ME_PLENTY, "SMTP connected!")
+                    linkcheck.Config.debug(HURT_ME_PLENTY, "SMTP connected!")
                     smtpconnect = 1
                     self.urlConnection.helo()
                     info = self.urlConnection.verify(user)
-                    Config.debug(HURT_ME_PLENTY, "SMTP user info", info)
+                    linkcheck.Config.debug(HURT_ME_PLENTY, "SMTP user info", info)
                     if info[0]==250:
-                        self.setInfo(i18n._("Verified adress: %s")%str(info[1]))
+                        self.setInfo(linkcheck.i18n._("Verified adress: %s")%str(info[1]))
                 except:
                     etype, value = sys.exc_info()[:2]
                     #print etype,value
                 if smtpconnect: break
             if not smtpconnect:
-                self.setWarning(i18n._("None of the MX mail hosts for %s accepts an "
+                self.setWarning(linkcheck.i18n._("None of the MX mail hosts for %s accepts an "
                                   "SMTP connection: %s") % (host, str(value)))
                 mxrecord = mxrecords[0][1]
             else:
                 mxrecord = mxrecord[1]
-            self.setValid(i18n._("found MX mail host %s") % mxrecord)
+            self.setValid(linkcheck.i18n._("found MX mail host %s") % mxrecord)
 
 
     def _split_adress (self, adress):
@@ -113,7 +116,7 @@ class MailtoUrlData (HostCheckingUrlData):
             return tuple(split)
         if len(split)==1:
             return (split[0], "localhost")
-        raise LinkCheckerError(i18n._("could not split the mail adress"))
+        raise linkcheck.LinkCheckerError(linkcheck.i18n._("could not split the mail adress"))
 
 
     def closeConnection (self):

@@ -16,21 +16,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, urlparse, urllib2, time, traceback, socket, select, i18n
-from urllib import splituser, splitport, unquote
-from linkcheck import DNS, LinkCheckerError, getLinkPat, httplib2
-from linkcheck.parser import htmlsax
-DNS.DiscoverNameServers()
+import sys
+import re
+import urlparse
+import urllib2
+import urllib
+import time
+import traceback
+import socket
+import select
+import linkcheck
+import linkcheck.DNS
 
-import Config, StringUtil, test_support
-from linkparse import LinkFinder, MetaRobotsFinder, css_url_re
-from debug import *
 
 ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
 
 # helper function for internal errors
 def internal_error ():
-    print >>sys.stderr, i18n._("""\n********** Oops, I did it again. *************
+    print >>sys.stderr, linkcheck.i18n._("""\n********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
@@ -42,19 +45,19 @@ or send mail to %s and include the following information:
 If you disclose some information because its too private to you thats ok.
 I will try to help you nontheless (but you have to give me *something*
 I can work with ;).
-""") % Config.Email
+""") % linkcheck.Config.Email
     etype, value = sys.exc_info()[:2]
     print >>sys.stderr, etype, value
     traceback.print_exc()
     print_app_info()
-    print >>sys.stderr, i18n._("\n******** LinkChecker internal error, bailing out ********")
+    print >>sys.stderr, linkcheck.i18n._("\n******** LinkChecker internal error, bailing out ********")
     sys.exit(1)
 
 
 def print_app_info ():
     import os
-    print >>sys.stderr, i18n._("System info:")
-    print >>sys.stderr, Config.App
+    print >>sys.stderr, linkcheck.i18n._("System info:")
+    print >>sys.stderr, linkcheck.Config.App
     print >>sys.stderr, "Python %s on %s" % (sys.version, sys.platform)
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
         value = os.getenv(key)
@@ -80,8 +83,8 @@ def get_absolute_url (urlName, baseRef, parentName):
 ExcList = [
    IOError,
    ValueError, # from httplib.py
-   LinkCheckerError,
-   DNS.Error,
+   linkcheck.LinkCheckerError,
+   linkcheck.DNS.Error,
    socket.timeout,
    socket.error,
    select.error,
@@ -92,71 +95,6 @@ if hasattr(socket, "sslerror"):
 
 # regular expression for port numbers
 is_valid_port = re.compile(r"\d+").match
-
-
-def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
-                    baseRef=None, line=0, column=0, name=None,
-                    cmdline=None):
-    from FileUrlData import FileUrlData
-    from IgnoredUrlData import IgnoredUrlData, ignored_schemes_re
-    from FtpUrlData import FtpUrlData
-    from GopherUrlData import GopherUrlData
-    from HttpUrlData import HttpUrlData
-    from HttpsUrlData import HttpsUrlData
-    from MailtoUrlData import MailtoUrlData
-    from TelnetUrlData import TelnetUrlData
-    from NntpUrlData import NntpUrlData
-    url = get_absolute_url(urlName, baseRef, parentName)
-    # test scheme
-    if url.startswith("http:"):
-        klass = HttpUrlData
-    elif url.startswith("ftp:"):
-        klass = FtpUrlData
-    elif url.startswith("file:"):
-        klass = FileUrlData
-    elif url.startswith("telnet:"):
-        klass = TelnetUrlData
-    elif url.startswith("mailto:"):
-        klass = MailtoUrlData
-    elif url.startswith("gopher:"):
-        klass = GopherUrlData
-    elif url.startswith("https:"):
-        klass = HttpsUrlData
-    elif url.startswith("nttp:") or \
-         url.startswith("news:") or \
-         url.startswith("snews:"):
-        klass = NntpUrlData
-    # application specific links are ignored
-    elif ignored_schemes_re.search(url):
-        klass = IgnoredUrlData
-    # assume local file
-    else:
-        klass = FileUrlData
-    if config['strict'] and cmdline and \
-       not (config['internlinks'] or config['externlinks']):
-        # set automatic intern/extern stuff if no filter was given
-        set_intern_url(url, klass, config)
-    return klass(urlName, recursionLevel, config, parentName, baseRef,
-                 line=line, column=column, name=name)
-
-
-def set_intern_url (url, klass, config):
-    """Precondition: config['strict'] is true (ie strict checking) and
-       recursion level is zero (ie url given on the command line)"""
-    from FileUrlData import FileUrlData
-    from FtpUrlData import FtpUrlData
-    from HttpUrlData import HttpUrlData
-    from HttpsUrlData import HttpsUrlData
-    if klass == FileUrlData:
-        debug(BRING_IT_ON, "Add intern pattern ^file:")
-        config['internlinks'].append(getLinkPat("^file:"))
-    elif klass in [HttpUrlData, HttpsUrlData, FtpUrlData]:
-        domain = urlparse.urlsplit(url)[1]
-        if domain:
-            domain = "://%s"%re.escape(domain)
-            debug(BRING_IT_ON, "Add intern domain", domain)
-            # add scheme colon to link pattern
-            config['internlinks'].append(getLinkPat(domain))
 
 
 class UrlData (object):
@@ -177,8 +115,8 @@ class UrlData (object):
         self.config = config
         self.parentName = parentName
         self.baseRef = baseRef
-        self.errorString = i18n._("Error")
-        self.validString = i18n._("Valid")
+        self.errorString = linkcheck.i18n._("Error")
+        self.validString = linkcheck.i18n._("Valid")
         self.warningString = None
         self.infoString = None
         self.valid = True
@@ -199,32 +137,25 @@ class UrlData (object):
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
 
-
     def setError (self, s):
         self.valid = False
-        self.errorString = i18n._("Error")+": "+s
-
+        self.errorString = linkcheck.i18n._("Error")+": "+s
 
     def setValid (self, s):
         self.valid = True
-        self.validString = i18n._("Valid")+": "+s
-
+        self.validString = linkcheck.i18n._("Valid")+": "+s
 
     def isParseable (self):
         return False
 
-
     def isHtml (self):
         return False
-
 
     def isHttp (self):
         return False
 
-
     def isFile (self):
         return False
-
 
     def setWarning (self, s):
         if self.warningString:
@@ -232,13 +163,11 @@ class UrlData (object):
         else:
             self.warningString = s
 
-
     def setInfo (self, s):
         if self.infoString:
             self.infoString += "\n"+s
         else:
             self.infoString = s
-
 
     def copyFromCache (self, cacheData):
         """fill attributes from cache data"""
@@ -253,7 +182,6 @@ class UrlData (object):
         self.valid = cacheData["valid"]
         self.dltime = cacheData["dltime"]
 
-
     def getCacheData (self):
         """return all data values that should be put in the cache"""
         return {"errorString": self.errorString,
@@ -263,7 +191,6 @@ class UrlData (object):
                 "valid": self.valid,
                 "dltime": self.dltime,
                }
-
 
     def buildUrl (self):
         if self.baseRef:
@@ -275,20 +202,19 @@ class UrlData (object):
         else:
             self.url = self.urlName
         # unquote url
-        self.url = unquote(self.url)
+        self.url = urllib.unquote(self.url)
         # split into (modifiable) list
         self.urlparts = list(urlparse.urlsplit(self.url))
         # check userinfo@host:port syntax
-        self.userinfo, host = splituser(self.urlparts[1])
-        x, port = splitport(host)
+        self.userinfo, host = urllib.splituser(self.urlparts[1])
+        x, port = urllib.splitport(host)
         if port is not None and not is_valid_port(port):
-            raise LinkCheckerError(i18n._("URL has invalid port number %r")\
+            raise linkcheck.LinkCheckerError(linkcheck.i18n._("URL has invalid port number %r")\
                                   % str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
-
 
     def logMe (self):
         debug(BRING_IT_ON, "logging url")
@@ -296,7 +222,6 @@ class UrlData (object):
         if self.config["verbose"] or not self.valid or \
            (self.warningString and self.config["warnings"]):
             self.config.log_newUrl(self)
-
 
     def check (self):
         try:
@@ -309,11 +234,10 @@ class UrlData (object):
             etype, value = sys.exc_info()[:2]
             if etype!=4:
                 raise
-        except test_support.Error:
+        except linkcheck.test_support.Error:
             raise
         except:
             internal_error()
-
 
     def _check (self):
         debug(BRING_IT_ON, "Checking", self)
@@ -327,7 +251,7 @@ class UrlData (object):
         debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern[0] and (self.config["strict"] or self.extern[1]):
             self.setWarning(
-                  i18n._("outside of domain filter, checked only syntax"))
+                  linkcheck.i18n._("outside of domain filter, checked only syntax"))
             self.logMe()
             return
 
@@ -344,10 +268,10 @@ class UrlData (object):
             debug(HURT_ME_PLENTY, "exception", traceback.format_tb(etb))
             # make nicer error msg for unknown hosts
             if isinstance(evalue, socket.error) and evalue[0]==-2:
-                evalue = i18n._('Hostname not found')
+                evalue = linkcheck.i18n._('Hostname not found')
             # make nicer error msg for bad status line
-            if isinstance(evalue, httplib2.BadStatusLine):
-                evalue = i18n._('Bad HTTP response %r')%str(evalue)
+            if isinstance(evalue, linkcheck.httplib2.BadStatusLine):
+                evalue = linkcheck.i18n._('Bad HTTP response %r')%str(evalue)
             self.setError(str(evalue))
 
         # check content
@@ -372,33 +296,31 @@ class UrlData (object):
         except tuple(ExcList):
             value, tb = sys.exc_info()[1:]
             debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
-            self.setError(i18n._("could not parse content: %r")%str(value))
+            self.setError(linkcheck.i18n._("could not parse content: %r")%str(value))
         # close
         self.closeConnection()
         self.logMe()
         debug(BRING_IT_ON, "caching")
         self.putInCache()
 
-
     def checkSyntax (self):
         debug(BRING_IT_ON, "checking syntax")
         if not self.urlName or self.urlName=="":
-            self.setError(i18n._("URL is null or empty"))
+            self.setError(linkcheck.i18n._("URL is null or empty"))
             self.logMe()
             return False
         if ws_at_start_or_end(self.urlName):
-            self.setError(i18n._("URL has whitespace at beginning or end"))
+            self.setError(linkcheck.i18n._("URL has whitespace at beginning or end"))
             self.logMe()
             return False
         try:
 	    self.buildUrl()
             self.extern = self._getExtern()
-        except LinkCheckerError, msg:
+        except linkcheck.LinkCheckerError, msg:
             self.setError(str(msg))
             self.logMe()
             return False
         return True
-
 
     def checkCache (self):
         debug(BRING_IT_ON, "checking cache")
@@ -410,7 +332,6 @@ class UrlData (object):
                 return False
         return True
 
-
     def closeConnection (self):
         # brute force closing
         if self.urlConnection is not None:
@@ -418,7 +339,6 @@ class UrlData (object):
             except: pass
             # release variable for garbage collection
             self.urlConnection = None
-
 
     def putInCache (self):
         if not self.cached:
@@ -428,18 +348,15 @@ class UrlData (object):
                 self.config.urlSeen_set(key)
             self.cached = True
 
-
     def getCacheKeys (self):
         key = self.getCacheKey()
         if key is None:
             return []
         return [key]
 
-
     def isCached (self):
         key = self.getCacheKey()
         return self.cached or self.config.urlSeen_has_key(key)
-
 
     def getCacheKey (self):
         # note: the host is already lowercase
@@ -452,10 +369,8 @@ class UrlData (object):
                 return urlparse.urlunsplit(self.urlparts[:4]+[''])
         return None
 
-
     def checkConnection (self):
         self.urlConnection = urllib2.urlopen(self.url)
-
 
     def allowsRecursion (self):
         # note: test self.valid before self.isParseable()
@@ -467,14 +382,13 @@ class UrlData (object):
                 self.recursionLevel < self.config["recursionlevel"]) and \
                not self.extern[0] and self.contentAllowsRobots()
 
-
     def contentAllowsRobots (self):
         if not self.isHtml():
             return True
         if not (self.isHttp() or self.isFile()):
             return True
-        h = MetaRobotsFinder(self.getContent())
-        p = htmlsax.parser(h)
+        h = linkcheck.linkparse.MetaRobotsFinder(self.getContent())
+        p = bk.HtmlParser.htmlsax.parser(h)
         h.parser = p
         p.feed(self.getContent())
         p.flush()
@@ -489,8 +403,8 @@ class UrlData (object):
             # do not bother
             return
         debug(HURT_ME_PLENTY, "checking anchor", self.anchor)
-        h = LinkFinder(self.getContent(), tags={'a': ['name'], None: ['id']})
-        p = htmlsax.parser(h)
+        h = linkcheck.linkparse.LinkFinder(self.getContent(), tags={'a': ['name'], None: ['id']})
+        p = bk.HtmlParser.htmlsax.parser(h)
         h.parser = p
         p.feed(self.getContent())
         p.flush()
@@ -499,23 +413,22 @@ class UrlData (object):
         for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == self.anchor:
                 return
-        self.setWarning(i18n._("anchor #%s not found") % self.anchor)
-
+        self.setWarning(linkcheck.i18n._("anchor #%s not found") % self.anchor)
 
     def _getExtern (self):
         if not (self.config["externlinks"] or self.config["internlinks"]):
             return (0, 0)
         # deny and allow external checking
-        Config.debug(HURT_ME_PLENTY, "Url", self.url)
+        linkcheck.Config.debug(HURT_ME_PLENTY, "Url", self.url)
         if self.config["denyallow"]:
             for entry in self.config["externlinks"]:
-                Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                linkcheck.Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (1, entry['strict'])
             for entry in self.config["internlinks"]:
-                Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                linkcheck.Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
@@ -523,24 +436,22 @@ class UrlData (object):
             return (0, 0)
         else:
             for entry in self.config["internlinks"]:
-                Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                linkcheck.Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (0, 0)
             for entry in self.config["externlinks"]:
-                Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                linkcheck.Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (1, entry['strict'])
             return (1,0)
 
-
     def hasContent (self):
         """indicate wether url getContent() can be called"""
         return True
-
 
     def getContent (self):
         """Precondition: urlConnection is an opened URL."""
@@ -552,7 +463,6 @@ class UrlData (object):
             self.dlsize = len(self.data)
         return self.data
 
-
     def checkContent (self, warningregex):
         """if a warning expression was given, call this function to check it
            against the content of this url"""
@@ -560,24 +470,21 @@ class UrlData (object):
             return
         match = warningregex.search(self.getContent())
         if match:
-            self.setWarning(i18n._("Found %r in link contents")%match.group())
-
+            self.setWarning(linkcheck.i18n._("Found %r in link contents")%match.group())
 
     def checkSize (self):
         """if a maximum size was given, call this function to check it
            against the content size of this url"""
         maxbytes = self.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
-            self.setWarning(i18n._("Content size %s is larger than %s")%\
-                         (StringUtil.strsize(self.dlsize),
-                          StringUtil.strsize(maxbytes)))
-
+            self.setWarning(linkcheck.i18n._("Content size %s is larger than %s")%\
+                         (linkcheck.StringUtil.strsize(self.dlsize),
+                          linkcheck.StringUtil.strsize(maxbytes)))
 
     def parseUrl (self):
         # default parse type is html
         debug(BRING_IT_ON, "Parsing recursively into", self)
         self.parse_html();
-
 
     def getUserPassword (self):
         for auth in self.config["authentication"]:
@@ -585,11 +492,10 @@ class UrlData (object):
                 return auth['user'], auth['password']
         return None,None
 
-
     def parse_html (self):
         # search for a possible base reference
-        h = LinkFinder(self.getContent(), tags={'base': ['href']})
-        p = htmlsax.parser(h)
+        h = linkcheck.linkparse.LinkFinder(self.getContent(), tags={'base': ['href']})
+        p = bk.HtmlParser.htmlsax.parser(h)
         h.parser = p
         p.feed(self.getContent())
         p.flush()
@@ -599,10 +505,10 @@ class UrlData (object):
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
             if len(h.urls)>1:
-                self.setWarning(i18n._(
+                self.setWarning(linkcheck.i18n._(
                 "more than one <base> tag found, using only the first one"))
-        h = LinkFinder(self.getContent())
-        p = htmlsax.parser(h)
+        h = linkcheck.linkparse.LinkFinder(self.getContent())
+        p = bk.HtmlParser.htmlsax.parser(h)
         h.parser = p
         p.feed(self.getContent())
         p.flush()
@@ -622,7 +528,6 @@ class UrlData (object):
                                   parentName=self.url, baseRef=base,
                                   line=line, column=column, name=name))
 
-
     def parse_opera (self):
         # parse an opera bookmark file
         name = ""
@@ -640,7 +545,6 @@ class UrlData (object):
            self.recursionLevel+1, self.config, self.url, None, lineno, name))
                 name = ""
 
-
     def parse_text (self):
         """parse a text file with on url per line; comment and blank
            lines are ignored
@@ -654,18 +558,16 @@ class UrlData (object):
             self.config.appendUrl(GetUrlDataFrom(line, self.recursionLevel+1,
                                self.config, parentName=self.url, line=lineno))
 
-
     def parse_css (self):
         """parse a CSS file for url() patterns"""
         lineno = 0
         for line in self.getContent().splitlines():
             lineno += 1
-            for mo in css_url_re.finditer(line):
+            for mo in linkcheck.linkparse.css_url_re.finditer(line):
                 column = mo.start("url")
                 self.config.appendUrl(GetUrlDataFrom(mo.group("url"),
                       self.recursionLevel+1, self.config,
                       parentName=self.url, line=lineno, column=column))
-
 
     def __str__ (self):
         return ("%s link\n"

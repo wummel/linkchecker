@@ -15,8 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, StringUtil, linkname
-from debug import *
+import re
+import linkcheck
+from linkcheck.debug import *
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {
@@ -124,21 +125,21 @@ class LinkFinder (TagFinder):
             if attr in attrs:
                 # name of this link
                 if tag=='a' and attr=='href':
-                    name = StringUtil.unquote(attrs.get('title', ''))
+                    name = linkcheck.StringUtil.unquote(attrs.get('title', ''))
                     if not name:
-                        name = linkname.href_name(self.content[self.parser.pos():])
+                        name = linkcheck.linkname.href_name(self.content[self.parser.pos():])
                 elif tag=='img':
-                    name = StringUtil.unquote(attrs.get('alt', ''))
+                    name = linkcheck.StringUtil.unquote(attrs.get('alt', ''))
                     if not name:
-                        name = StringUtil.unquote(attrs.get('title', ''))
+                        name = linkcheck.StringUtil.unquote(attrs.get('title', ''))
                 else:
                     name = ""
                 # possible codebase
                 if tag in ('applet', 'object'):
-                    base = StringUtil.unquote(attrs.get('codebase'))
+                    base = linkcheck.StringUtil.unquote(attrs.get('codebase'))
                 else:
                     base = ""
-                value = StringUtil.unquote(attrs[attr])
+                value = linkcheck.StringUtil.unquote(attrs[attr])
                 # add link to url list
                 self.addLink(tag, attr, value, name, base)
 

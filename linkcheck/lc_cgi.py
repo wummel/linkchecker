@@ -16,13 +16,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, os, re, time, urlparse
-import Config, i18n
-from linkcheck import getLinkPat, checkUrls
-from linkcheck.log import strtime
-from linkcheck.url import is_valid_url, safe_host_pattern, safe_url_pattern
-from linkcheck.UrlData import GetUrlDataFrom
-from types import StringType
+import sys
+import os
+import re
+import time
+import urlparse
+import types
+import linkcheck
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
@@ -55,7 +55,7 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
         logit(form, env)
         printError(out, why)
         return
-    config = Config.Configuration()
+    config = linkcheck.Config.Configuration()
     config["recursionlevel"] = int(form["level"].value)
     config["log"] = config.newLogger('html', {'fd': out})
     config.setThreads(0)
@@ -63,16 +63,16 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     if form.has_key("anchors"): config["anchors"] = True
     if not form.has_key("errors"): config["verbose"] = True
     if form.has_key("intern"):
-        pat = safe_host_pattern(re.escape(getHostName(form)))
+        pat = linkcheck.url.safe_host_pattern(re.escape(getHostName(form)))
     else:
-        pat = safe_url_pattern
-    config["internlinks"].append(getLinkPat("^%s$" % pat))
+        pat = linkcheck.url.safe_url_pattern
+    config["internlinks"].append(linkcheck.getLinkPat("^%s$" % pat))
     # avoid checking of local files or other nasty stuff
-    config["externlinks"].append(getLinkPat("^%s$" % safe_url_pattern))
-    config["externlinks"].append(getLinkPat(".*", strict=True))
+    config["externlinks"].append(linkcheck.getLinkPat("^%s$" % safe_url_pattern))
+    config["externlinks"].append(linkcheck.getLinkPat(".*", strict=True))
     # start checking
-    config.appendUrl(GetUrlDataFrom(form["url"].value, 0, config))
-    checkUrls(config)
+    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(form["url"].value, 0, config))
+    linkcheck.checkUrls(config)
 
 
 def getHostName (form):
@@ -90,37 +90,37 @@ def checkform (form):
         lang = form['language'].value
         if lang in _supported_langs:
             os.environ['LC_MESSAGES'] = lang
-            i18n.init_gettext()
+            linkcheck.i18n.init_gettext()
         else:
-            raise FormError(i18n._("unsupported language"))
+            raise FormError(linkcheck.i18n._("unsupported language"))
     # check url syntax
     if form.has_key("url"):
         url = form["url"].value
         if not url or url=="http://":
-            raise FormError(i18n._("empty url was given"))
-        if not is_valid_url(url):
-            raise FormError(i18n._("invalid url was given"))
+            raise FormError(linkcheck.i18n._("empty url was given"))
+        if not linkcheck.url.is_valid_url(url):
+            raise FormError(linkcheck.i18n._("invalid url was given"))
     else:
-        raise FormError(i18n._("no url was given"))
+        raise FormError(linkcheck.i18n._("no url was given"))
     # check recursion level
     if form.has_key("level"):
         level = form["level"].value
         if not _is_level(level):
-            raise FormError(i18n._("invalid recursion level"))
+            raise FormError(linkcheck.i18n._("invalid recursion level"))
     # check options
     for option in ("strict", "anchors", "errors", "intern"):
         if form.has_key(option):
             if not form[option].value=="on":
-                raise FormError(i18n._("invalid %s option syntax") % option)
+                raise FormError(linkcheck.i18n._("invalid %s option syntax") % option)
 
 def logit (form, env):
     """log form errors"""
     global _logfile
     if not _logfile:
         return
-    elif type(_logfile) == StringType:
+    elif type(_logfile) == types.StringType:
         _logfile = file(_logfile, "a")
-    _logfile.write("\n"+strtime(time.time())+"\n")
+    _logfile.write("\n"+linkcheck.logger.strtime(time.time())+"\n")
     for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
                 "REMOTE_HOST", "REMOTE_PORT"]:
         if env.has_key(var):
@@ -132,7 +132,7 @@ def logit (form, env):
 
 def printError (out, why):
     """print standard error page"""
-    out.write(i18n._("""<html><head>
+    out.write(linkcheck.i18n._("""<html><head>
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
 <blockquote>

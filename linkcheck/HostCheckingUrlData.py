@@ -16,11 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import socket, urllib
-from UrlData import UrlData
-from linkcheck import i18n
+import socket
+import urllib
+import linkcheck
 
-class HostCheckingUrlData (UrlData):
+class HostCheckingUrlData (linkcheck.UrlData.UrlData):
     "Url link for which we have to connect to a specific host"
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,
@@ -43,4 +43,4 @@ class HostCheckingUrlData (UrlData):
 
     def checkConnection (self):
         ip = socket.gethostbyname(self.host)
-        self.setValid(self.host+"("+ip+") "+i18n._("found"))
+        self.setValid(self.host+"("+ip+") "+linkcheck.i18n._("found"))

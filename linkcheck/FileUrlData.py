@@ -16,12 +16,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, os, urlparse
-from linkcheck import extensions
-from UrlData import UrlData, ExcList
+import re
+import os
+import urlparse
+import linkcheck
 
 # OSError is thrown on Windows when a file is not found
-ExcList.append(OSError)
+linkcheck.UrlData.ExcList.append(OSError)
 
 # if file extension was fruitless, look at the content
 contents = {
@@ -71,7 +72,7 @@ acap        # application configuration access protocol
 |nntp       # news
 )"""
 
-class FileUrlData (UrlData):
+class FileUrlData (linkcheck.UrlData.UrlData):
     "Url link with file scheme"
 
     def __init__ (self,
@@ -112,7 +113,7 @@ class FileUrlData (UrlData):
 
 
     def isHtml (self):
-        if extensions['html'].search(self.url):
+        if linkcheck.extensions['html'].search(self.url):
             return True
         if contents['html'].search(self.getContent()[:20]):
             return True
@@ -125,7 +126,7 @@ class FileUrlData (UrlData):
 
     def isParseable (self):
         # guess by extension
-        for ro in extensions.values():
+        for ro in linkcheck.extensions.values():
             if ro.search(self.url):
                 return True
         # try to read content (can fail, so catch error)
@@ -139,7 +140,7 @@ class FileUrlData (UrlData):
 
 
     def parseUrl (self):
-        for key, ro in extensions.items():
+        for key, ro in linkcheck.extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         for key, ro in contents.items():

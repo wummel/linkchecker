@@ -16,19 +16,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import ConfigParser, sys, os, re, Cookie
-import _linkchecker_configdata, i18n
-from linkcheck import getLinkPat
-from linkcheck.LRU import LRU
-from os.path import expanduser, normpath, normcase, join
-from urllib import getproxies
-from sets import Set
-from debug import *
+import ConfigParser
+import sys
+import os
+import re
+import Cookie
+import sets
+import urllib
+import _linkchecker_configdata
+import linkcheck
+import linkcheck.i18n
+import linkcheck.log
+
 try:
-    import threading as _threading
+    import threading
 except ImportError:
-    import dummy_threading as _threading
-import Threader
+    import dummy_threading as threading
 
 Version = _linkchecker_configdata.version
 AppName = "LinkChecker"
@@ -54,7 +57,7 @@ MAX_COOKIES_CACHE = 500
 
 # path util function
 def norm (path):
-    return normcase(normpath(expanduser(path)))
+    return os.path.normcase(os.path.normpath(os.path.expanduser(path)))
 
 
 def _check_morsel (m, host, path):
@@ -105,7 +108,7 @@ class Configuration (dict):
              'user': 'anonymous',
              'password': '',
             }]
-        self["proxy"] = getproxies()
+        self["proxy"] = urllib.getproxies()
         self["recursionlevel"] = 1
         self["wait"] = 0
         self['cookies'] = False
@@ -161,26 +164,26 @@ class Configuration (dict):
         }
         self['none'] = {}
         self['log'] = self.newLogger('text')
-        self.logLock = _threading.Lock()
+        self.logLock = threading.Lock()
         self["quiet"] = False
         self["warningregex"] = None
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER",None)
         self["threads"] = True
-        self.threader = Threader.Threader()
+        self.threader = linkcheck.Threader.Threader()
         self.setThreads(10)
-        self.urlSeen = Set()
-        self.urlSeenLock = _threading.Lock()
-        self.urlCache = LRU(MAX_URL_CACHE)
-        self.urlCacheLock = _threading.Lock()
-        self.robotsTxtCache = LRU(MAX_ROBOTS_TXT_CACHE)
-        self.robotsTxtCacheLock = _threading.Lock()
+        self.urlSeen = sets.Set()
+        self.urlSeenLock = threading.Lock()
+        self.urlCache = linkcheck.containers.LRU(MAX_URL_CACHE)
+        self.urlCacheLock = threading.Lock()
+        self.robotsTxtCache = linkcheck.containers.LRU(MAX_ROBOTS_TXT_CACHE)
+        self.robotsTxtCacheLock = threading.Lock()
         self.urls = []
         self.urlCounter = 0
-        self.urlsLock = _threading.Lock()
+        self.urlsLock = threading.Lock()
         # basic data lock (eg for cookies, link numbers etc.)
-        self.dataLock = _threading.Lock()
-        self.cookies = LRU(MAX_COOKIES_CACHE)
+        self.dataLock = threading.Lock()
+        self.cookies = linkcheck.containers.LRU(MAX_COOKIES_CACHE)
 
 
     def setThreads (self, num):
@@ -393,8 +396,8 @@ class Configuration (dict):
         cfiles = files[:]
         if not cfiles:
             # system wide config settings
-            config_dir = join(_linkchecker_configdata.install_data, 'share/linkchecker')
-            cfiles.append(norm(join(config_dir, "linkcheckerrc")))
+            config_dir = os.path.join(_linkchecker_configdata.install_data, 'share/linkchecker')
+            cfiles.append(norm(os.path.join(config_dir, "linkcheckerrc")))
             # per user config settings
             cfiles.append(norm("~/.linkcheckerrc"))
         self.readConfig(cfiles)
@@ -501,10 +504,10 @@ class Configuration (dict):
                 if len(ctuple)!=2:
                     error(i18n._("extern%d: syntax error %s\n")%(i, ctuple))
                     break
-                self["externlinks"].append(getLinkPat(ctuple[0], strict=int(ctuple[1])))
+                self["externlinks"].append(linkcheck.getLinkPat(ctuple[0], strict=int(ctuple[1])))
                 i += 1
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["internlinks"].append(getLinkPat(cfgparser.get(section, "internlinks")))
+        try: self["internlinks"].append(linkcheck.getLinkPat(cfgparser.get(section, "internlinks")))
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
 	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)

@@ -9,13 +9,20 @@
     The robots.txt Exclusion Protocol is implemented as specified in
     http://info.webcrawler.com/mak/projects/robots/norobots-rfc.html
 """
-import urlparse, httplib, urllib, urllib2, httplib2, socket, re, zlib, gzip
-from cStringIO import StringIO
+import urlparse
+import httplib
+import urllib
+import urllib2
+import socket
+import re
+import zlib
+import gzip
+import cStringIO as StringIO
+import linkcheck
 
 __all__ = ["RobotFileParser"]
 
 from debug import *
-import i18n
 
 class RobotFileParser (object):
     """ This class provides a set of methods to read, parse and answer
@@ -289,12 +296,12 @@ def decode (page):
         content = page.read()
         try:
             if encoding == 'deflate':
-                fp = StringIO(zlib.decompress(content))
+                fp = StringIO.StringIO(zlib.decompress(content))
             else:
-                fp = gzip.GzipFile('', 'rb', 9, StringIO(content))
+                fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
         except zlib.error, msg:
-            warn(i18n._("%r at %s, assuming non-compressed content") % (str(msg), page.geturl()))
-            fp = StringIO(content)
+            warn(linkcheck.i18n._("%r at %s, assuming non-compressed content") % (str(msg), page.geturl()))
+            fp = StringIO.StringIO(content)
         # remove content-encoding header
         headers = {}
         ceheader = re.compile(r"(?i)content-encoding:")
@@ -309,7 +316,7 @@ class HttpWithGzipHandler (urllib2.HTTPHandler):
     def http_open (self, req):
         return decode(urllib2.HTTPHandler.http_open(self, req))
 
-if hasattr(httplib2, 'HTTPS'):
+if hasattr(linkcheck.httplib2, 'HTTPS'):
     class HttpsWithGzipHandler (urllib2.HTTPSHandler):
         "support gzip encoding"
         def http_open (self, req):
@@ -321,7 +328,7 @@ _handlers = [urllib2.ProxyHandler(urllib.getproxies()),
     urllib2.ProxyBasicAuthHandler, urllib2.ProxyDigestAuthHandler,
     urllib2.HTTPDefaultErrorHandler, urllib2.HTTPRedirectHandler,
 ]
-if hasattr(httplib2, 'HTTPS'):
+if hasattr(linkcheck.httplib2, 'HTTPS'):
     _handlers.append(HttpsWithGzipHandler)
 
 _opener = urllib2.build_opener(*_handlers)

@@ -17,9 +17,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 import time
 try:
-    import threading as _threading
+    import threading
 except ImportError:
-    import dummy_threading as _threading
+    import dummy_threading as threading
+
 
 class Threader (object):
     "A thread generating class"
@@ -63,7 +64,7 @@ class Threader (object):
             func(*args)
         else:
             self._acquire()
-            t = _threading.Thread(None, func, None, args)
+            t = threading.Thread(None, func, None, args)
             t.start()
             self.threads.append(t)
 
