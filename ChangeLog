@@ -19,6 +19,11 @@
     Type: bugfix
     Changed: linkchecker
 
+  * Ensure stored result, info and warning strings are always Unicode.
+    Else there might be encoding errors.
+    Type: bugfix
+    Changed: linkcheck/checker/{urlbase,httpurl}.py
+
 2.4 "Kitchen stories" (released 9.2.2005)
 
   * Work around a Python 2.4 bug when HTTP 302 redirections are
