@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Feb 20 15:22:58 2004\n"
+"POT-Creation-Date: Sat Feb 21 15:59:54 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -175,6 +175,9 @@ msgid "outside of domain filter, checked only syntax"
 msgstr ""
 
 msgid "Hostname not found"
+msgstr ""
+
+msgid "could not parse content: %r"
 msgstr ""
 
 msgid "anchor #%s not found"
