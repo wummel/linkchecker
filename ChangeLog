@@ -1,3 +1,7 @@
+1.9.5 (released xx.xx.xxxx)
+  * catch httplib errors in robotparser
+    Changed: linkcheck/robotparser2.py
+
 1.9.5 (released 31.10.2003)
   * Add Zope to servers with broken HEAD support, adjusted the FAQ
     Changed: linkcheck/HttpUrlData.py, FAQ
