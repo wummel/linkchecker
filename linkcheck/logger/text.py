@@ -128,50 +128,50 @@ class TextLogger (linkcheck.logger.Logger):
     def write_url (self, url_data):
         """write url_data.base_url"""
         self.writeln()
-        self.write(self.field('url')+self.spaces('url'))
-        txt = repr(url_data.base_url)
+        self.write(self.field('url') + self.spaces('url'))
+        txt = unicode(repr(url_data.base_url))
         if url_data.cached:
             txt += _(" (cached)")
         self.writeln(txt, color=self.colorurl)
 
     def write_name (self, url_data):
         """write url_data.name"""
-        self.write(self.field("name")+self.spaces("name"))
-        self.writeln(repr(url_data.name), color=self.colorname)
+        self.write(self.field("name") + self.spaces("name"))
+        self.writeln(unicode(repr(url_data.name)), color=self.colorname)
 
     def write_parent (self, url_data):
         """write url_data.parent_url"""
-        self.write(self.field('parenturl')+self.spaces("parenturl"))
+        self.write(self.field('parenturl') + self.spaces("parenturl"))
         txt = url_data.parent_url
-        txt += _(", line %d")%url_data.line
-        txt += _(", col %d")%url_data.column
+        txt += _(", line %d") % url_data.line
+        txt += _(", col %d") % url_data.column
         self.writeln(txt, color=self.colorparent)
 
     def write_base (self, url_data):
         """write url_data.base_ref"""
-        self.write(self.field("base")+self.spaces("base"))
+        self.write(self.field("base") + self.spaces("base"))
         self.writeln(url_data.base_ref, color=self.colorbase)
 
     def write_real (self, url_data):
         """write url_data.url"""
-        self.write(self.field("realurl")+self.spaces("realurl"))
-        self.writeln(url_data.url, color=self.colorreal)
+        self.write(self.field("realurl") + self.spaces("realurl"))
+        self.writeln(unicode(url_data.url), color=self.colorreal)
 
     def write_dltime (self, url_data):
         """write url_data.dltime"""
-        self.write(self.field("dltime")+self.spaces("dltime"))
-        self.writeln(_("%.3f seconds")%url_data.dltime,
+        self.write(self.field("dltime") + self.spaces("dltime"))
+        self.writeln(_("%.3f seconds") % url_data.dltime,
                      color=self.colordltime)
 
     def write_dlsize (self, url_data):
         """write url_data.dlsize"""
-        self.write(self.field("dlsize")+self.spaces("dlsize"))
+        self.write(self.field("dlsize") + self.spaces("dlsize"))
         self.writeln(linkcheck.strformat.strsize(url_data.dlsize),
                      color=self.colordlsize)
 
     def write_checktime (self, url_data):
         """write url_data.checktime"""
-        self.write(self.field("checktime")+self.spaces("checktime"))
+        self.write(self.field("checktime") + self.spaces("checktime"))
         self.writeln(_("%.3f seconds") % url_data.checktime,
                      color=self.colordltime)
 
@@ -180,7 +180,7 @@ class TextLogger (linkcheck.logger.Logger):
         text = os.linesep.join(url_data.info)
         text = linkcheck.strformat.wrap(text, 65,
                                    subsequent_indent=" "*self.max_indent)
-        self.write(self.field("info")+self.spaces("info"))
+        self.write(self.field("info") + self.spaces("info"))
         self.writeln(text, color=self.colorinfo)
 
     def write_warning (self, url_data):
@@ -188,12 +188,12 @@ class TextLogger (linkcheck.logger.Logger):
         text = os.linesep.join(url_data.warning)
         text = linkcheck.strformat.wrap(text, 65,
                                    subsequent_indent=" "*self.max_indent)
-        self.write(self.field("warning")+self.spaces("warning"))
+        self.write(self.field("warning") + self.spaces("warning"))
         self.writeln(text, color=self.colorwarning)
 
     def write_result (self, url_data):
         """write url_data.result"""
-        self.write(self.field("result")+self.spaces("result"))
+        self.write(self.field("result") + self.spaces("result"))
         if url_data.valid:
             color = self.colorvalid
             self.write(_("Valid"), color=color)
