@@ -195,11 +195,6 @@ You can specify this option more than once. Valid file output types
 are %s.
 Default is no file output. If console output is not specified with -o,
 this option suppresses all console output by implying -o none.""")%linkcheck.LoggerKeys)
-group.add_option("-D", "--debug", action="count",
-                 help=bk.i18n._(
-"""Print debugging information. Provide this option multiple times
-for even more debugging information. Enabling debug will also
-disable threading."""))
 group.add_option("--status", action="store_true", dest="status",
                  help=bk.i18n._(
 """Print check status every 5 seconds to stderr. Does not work with the
@@ -283,6 +278,8 @@ optparser.add_option_group(group)
 group = optparse.OptionGroup(optparser, bk.i18n._("Deprecated options"))
 group.add_option("-R", "--robots-txt", action="store_true")
 optparser.add_option_group(group)
+group.add_option("-D", "--debug", action="count",
+                 help=bk.i18n._("Deprecated options"))
 
 ################# auto completion #####################
 linkcheck.optcomplete.autocomplete(optparser)
@@ -295,11 +292,6 @@ if "--wischiwaschi" in sys.argv:
 # read and parser command line options and arguments
 (options, args) = optparser.parse_args()
 
-# set debug level as early as possible
-if options.debug is not None:
-    if options.status is not None:
-        printUsage(bk.i18n._("the --debug conflicts with --status."))
-    set_debuglevel(options.debug)
 bk.log.debug(linkcheck.LOG_CMDLINE, "Python", sys.version, "on", sys.platform)
 # build a config object for this check session
 config = linkcheck.Config.Configuration()
@@ -370,6 +362,9 @@ if options.strict is not None:
 if options.status is not None:
     config['status'] = options.status
 if options.threads is not None:
+    if options.threads < 1:
+        printUsage(bk.i18n._("Illegal argument %d for option %s") % \
+                   (options.threads, "'-t, --threads'"))
     config.setThreads(options.threads)
 if options.timeout is not None:
     if options.timeout > 0:
@@ -420,9 +415,9 @@ for url in args:
     elif url.startswith("ftp."):
         url = "ftp://%s"%url
     # note that the url could be still unquoted
-    # the GetUrlDataFrom can quote urls that need it
+    # the getUrlDataFrom can quote urls that need it
     # see also bk.url.url_needs_quoting()
-    config.appendUrl(linkcheck.GetUrlDataFrom(url, 0, config, cmdline=True))
+    config.appendUrl(linkcheck.checker.getUrlDataFrom(url, 0, config, cmdline=True))
 
 ############################# check the urls ################################
 if do_profile:

@@ -16,7 +16,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import bk.i18n
-import bk.url
 import bk.ansicolor
 import linkcheck.logger.StandardLogger
 
@@ -52,7 +51,7 @@ class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
                     self.fd.write("\n"+self.field("parenturl")+
                               self.spaces("parenturl")+
 		              self.colorparent+
-                              bk.url.url_quote(urlData.parentName or "")+
+                              (urlData.parentName or "")+
 			      self.colorreset+"\n")
                     self.currentPage = urlData.parentName
                     self.prefix = 1
@@ -92,7 +91,7 @@ class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
-                          self.colorreal+bk.url.url_quote(urlData.url)+
+                          self.colorreal+urlData.url+
                           self.colorreset+"\n")
         if urlData.dltime>=0 and self.has_field("dltime"):
             if self.prefix:

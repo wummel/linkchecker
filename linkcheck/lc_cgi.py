@@ -71,7 +71,7 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     config["externlinks"].append(linkcheck.getLinkPat("^%s$" % safe_url_pattern))
     config["externlinks"].append(linkcheck.getLinkPat(".*", strict=True))
     # start checking
-    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(form["url"].value, 0, config))
+    config.appendUrl(linkcheck.checker.getUrlDataFrom(form["url"].value, 0, config))
     linkcheck.checkUrls(config)
 
 

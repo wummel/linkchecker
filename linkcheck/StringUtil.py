@@ -18,16 +18,8 @@
 
 import re
 import sys
-import htmlentitydefs
 
 markup_re = re.compile("<.*?>", re.DOTALL)
-entities = htmlentitydefs.entitydefs.items()
-HtmlTable = [ (x[1], "&"+x[0]+";") for x in entities ]
-UnHtmlTable = [ ("&"+x[0]+";", x[1]) for x in entities ]
-# order matters!
-HtmlTable.sort()
-UnHtmlTable.sort()
-UnHtmlTable.reverse()
 
 SQLTable = [
     ("'","''")
@@ -88,35 +80,6 @@ def getLastWordBoundary (s, width):
     return width-1
 
 
-def htmlify (s):
-    "Escape special HTML chars and strings"
-    return applyTable(HtmlTable, s)
-
-
-is_charref = re.compile(r'&#x?(?P<num>\d+);').match
-
-def resolve_entity (mo):
-    ent = mo.group(0).lower()
-    ent = applyTable(UnHtmlTable, ent)
-    mo = is_charref(ent)
-    if mo:
-        # convert to number
-        num = mo.group("num")
-        if ent.startswith('#x'):
-            radix = 16
-        else:
-            radix = 10
-        num = int(num, radix)
-        # check char range
-        if 0<=num<=255:
-            return chr(num)
-    return ent
-
-
-def unhtmlify (s):
-    return re.sub(r'(?i)&(?P<ent>#x?\d+|[a-z]+);', resolve_entity, s)
-
-
 def getLineNumber (s, index):
     "return the line number of str[index]"
     i=0
@@ -153,7 +116,7 @@ def remove_markup (s):
 def unquote (s):
     if not s:
         return ''
-    return unhtmlify(stripQuotes(s))
+    return stripQuotes(s)
 
 
 def strsize (b):
@@ -169,11 +132,3 @@ def strsize (b):
     b /= 1024.0
     return "%.2f GB"
 
-
-def _test ():
-    print unhtmlify('&#97;')
-    print unhtmlify('&amp;')
-
-
-if __name__=='__main__':
-    _test()

@@ -18,7 +18,6 @@
 import time
 import linkcheck.logger.StandardLogger
 import bk.i18n
-import bk.url
 
 
 class GMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
@@ -57,7 +56,7 @@ class GMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.fd.write("  node [\n")
 	    self.fd.write("    id     %d\n" % node.id)
             if self.has_field("realurl"):
-                self.fd.write('    label  "%s"\n' % bk.url.url_quote(node.url))
+                self.fd.write('    label  "%s"\n' % node.url)
             if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("    dltime %d\n" % node.dltime)
             if node.dlsize>=0 and self.has_field("dlsize"):

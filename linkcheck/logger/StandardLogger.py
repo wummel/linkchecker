@@ -18,7 +18,6 @@
 import sys
 import time
 import bk.i18n
-import bk.url
 import linkcheck.logger.Logger
 
 
@@ -94,7 +93,7 @@ __init__(self, **args)
                           urlData.name+"\n")
         if urlData.parentName and self.has_field('parenturl'):
             self.fd.write(self.field('parenturl')+self.spaces("parenturl")+
-	                  bk.url.url_quote(urlData.parentName or "")+
+	                  (urlData.parentName or "")+
                           (bk.i18n._(", line %d")%urlData.line)+
                           (bk.i18n._(", col %d")%urlData.column)+"\n")
         if urlData.baseRef and self.has_field('base'):
@@ -102,7 +101,7 @@ __init__(self, **args)
                           urlData.baseRef+"\n")
         if urlData.url and self.has_field('realurl'):
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
-                          bk.url.url_quote(urlData.url)+"\n")
+                          urlData.url+"\n")
         if urlData.dltime>=0 and self.has_field('dltime'):
             self.fd.write(self.field("dltime")+self.spaces("dltime")+
 	                  bk.i18n._("%.3f seconds\n") % urlData.dltime)

@@ -19,7 +19,6 @@ import time
 import xml.sax.saxutils
 import linkcheck.logger.StandardLogger
 import bk.i18n
-import bk.url
 
 
 xmlattr_entities = {
@@ -87,7 +86,7 @@ class XMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.fd.write(">\n")
             if self.has_field("realurl"):
                 self.fd.write("    <label>%s</label>\n" %\
-                              xmlquote(bk.url.url_quote(node.url)))
+                              xmlquote(node.url))
             self.fd.write("    <data>\n")
             if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("      <dltime>%f</dltime>\n" % node.dltime)

@@ -247,7 +247,7 @@ class HttpUrlData (ProxyUrlData.ProxyUrlData):
                 self.setWarning(bk.i18n._("HTTP redirection to non-http url encountered; "
                                 "the original url was %r.")%self.url)
                 # make new UrlData object
-                newobj = linkcheck.checker.GetUrlDataFrom(redirected, self.recursionLevel, self.config,
+                newobj = linkcheck.checker.getUrlDataFrom(redirected, self.recursionLevel, self.config,
                                         parentName=self.parentName, baseRef=self.baseRef,
                                         line=self.line, column=self.column, name=self.name)
                 newobj.warningString = self.warningString

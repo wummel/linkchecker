@@ -507,7 +507,7 @@ class UrlData (object):
             else:
                 base = baseRef
             debug(NIGHTMARE, "Put url %r in queue"%url)
-            self.config.appendUrl(GetUrlDataFrom(url,
+            self.config.appendUrl(linkcheck.checker.getUrlDataFrom(url,
                                   self.recursionLevel+1, self.config,
                                   parentName=self.url, baseRef=base,
                                   line=line, column=column, name=name))
@@ -525,7 +525,7 @@ class UrlData (object):
             elif line.startswith("URL="):
                 url = line[4:]
                 if url:
-                    self.config.appendUrl(GetUrlDataFrom(url,
+                    self.config.appendUrl(linkcheck.checker.getUrlDataFrom(url,
            self.recursionLevel+1, self.config, self.url, None, lineno, name))
                 name = ""
 
@@ -539,7 +539,7 @@ class UrlData (object):
             lineno += 1
             line = line.strip()
             if not line or line.startswith('#'): continue
-            self.config.appendUrl(GetUrlDataFrom(line, self.recursionLevel+1,
+            self.config.appendUrl(linkcheck.checker.getUrlDataFrom(line, self.recursionLevel+1,
                                self.config, parentName=self.url, line=lineno))
 
     def parse_css (self):
@@ -549,7 +549,7 @@ class UrlData (object):
             lineno += 1
             for mo in linkcheck.linkparse.css_url_re.finditer(line):
                 column = mo.start("url")
-                self.config.appendUrl(GetUrlDataFrom(mo.group("url"),
+                self.config.appendUrl(linkcheck.checker.getUrlDataFrom(mo.group("url"),
                       self.recursionLevel+1, self.config,
                       parentName=self.url, line=lineno, column=column))
 

@@ -18,7 +18,6 @@
 import time
 import csv
 import bk.i18n
-import bk.url
 import linkcheck.logger.StandardLogger
 import linkcheck.logger.Logger
 
@@ -68,10 +67,10 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.fd is None:
             return
         row = [urlData.urlName, urlData.recursionLevel,
-               bk.url.url_quote(urlData.parentName or ""), urlData.baseRef,
+               urlData.parentName or "", urlData.baseRef,
                urlData.errorString, urlData.validString,
                urlData.warningString, urlData.infoString,
-               urlData.valid, bk.url.url_quote(urlData.url),
+               urlData.valid, urlData.url,
                urlData.line, urlData.column,
                urlData.name, urlData.dltime,
                urlData.dlsize, urlData.checktime,

@@ -108,7 +108,7 @@ class Configuration (dict):
              'password': '',
             }]
         self["proxy"] = urllib.getproxies()
-        self["recursionlevel"] = 1
+        self["recursionlevel"] = -1
         self["wait"] = 0
         self['cookies'] = False
         self["strict"] = False

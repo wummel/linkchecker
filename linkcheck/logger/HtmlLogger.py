@@ -18,7 +18,6 @@
 import time
 import linkcheck.logger.StandardLogger
 import bk.i18n
-import bk.url
 
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">
@@ -86,8 +85,8 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if urlData.parentName and self.has_field("parenturl"):
             self.fd.write("<tr>\n<td>"+self.field("parenturl")+
                '</td>\n<td><a target="top" href="'+
-               bk.url.url_quote(urlData.parentName or "")+'">'+
-               bk.url.url_quote(urlData.parentName or "")+"</a>")
+               (urlData.parentName or "")+'">'+
+               (urlData.parentName or "")+"</a>")
             if urlData.line:
                 self.fd.write(bk.i18n._(", line %d")%urlData.line)
             if urlData.column:
@@ -98,8 +97,8 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
 	                  urlData.baseRef+"</td>\n</tr>\n")
         if urlData.url and self.has_field("realurl"):
             self.fd.write("<tr>\n<td>"+self.field("realurl")+"</td>\n<td>"+
-	                  '<a target="top" href="'+bk.url.url_quote(urlData.url)+
-			  '">'+bk.url.url_quote(urlData.url)+"</a></td>\n</tr>\n")
+	                  '<a target="top" href="'+urlData.url+
+			  '">'+urlData.url+"</a></td>\n</tr>\n")
         if urlData.dltime>=0 and self.has_field("dltime"):
             self.fd.write("<tr>\n<td>"+self.field("dltime")+"</td>\n<td>"+
 	                  (bk.i18n._("%.3f seconds") % urlData.dltime)+

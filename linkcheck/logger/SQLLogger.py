@@ -18,7 +18,6 @@
 import time
 import linkcheck
 import bk.i18n
-import bk.url
 import linkcheck.logger.StandardLogger
 import linkcheck.logger.Logger
 
@@ -67,7 +66,7 @@ class SQLLogger (linkcheck.logger.StandardLogger.StandardLogger):
 	      (self.dbname,
 	       sqlify(urlData.urlName),
                urlData.recursionLevel,
-	       sqlify(bk.url.url_quote(urlData.parentName or "")),
+	       sqlify((urlData.parentName or "")),
                sqlify(urlData.baseRef),
                sqlify(urlData.errorString),
                sqlify(urlData.validString),
