@@ -72,17 +72,18 @@ class FileUrl (urlbase.UrlBase):
         super(FileUrl, self).__init__(base_url, recursion_level, consumer,
              parent_url=parent_url, base_ref=base_ref,
              line=line, column=column, name=name)
-        if not (parent_url or base_ref or self.base_url.startswith("file:")):
-            self.base_url = os.path.expanduser(self.base_url)
-            if not self.base_url.startswith("/"):
-                self.base_url = os.getcwd()+"/"+self.base_url
-            self.base_url = "file://"+self.base_url
-        self.base_url = self.base_url.replace("\\", "/")
+        base_url = self.base_url
+        if not (parent_url or base_ref or base_url.startswith("file:")):
+            base_url = os.path.expanduser(base_url)
+            if not base_url.startswith("/"):
+                base_url = os.getcwd()+"/"+base_url
+            base_url = "file://"+base_url
+        base_url = base_url.replace("\\", "/")
         # transform c:/windows into /c|/windows
-        self.base_url = re.sub(r"^file://(/?)([a-zA-Z]):", r"file:///\2|",
-                              self.base_url)
+        base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
         # norm base url again after changing
-        self.base_url, is_idn = linkcheck.url.url_norm(self.base_url)
+        if self.base_url != base_url:
+            self.base_url, is_idn = linkcheck.url.url_norm(base_url)
 
     def build_url (self):
         super(FileUrl, self).build_url()
