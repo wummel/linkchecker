@@ -223,14 +223,16 @@ class HtmlLogger (linkcheck.logger.Logger):
         """write url_data.result"""
         if url_data.valid:
             self.fd.write("<tr><td bgcolor=\""+self.colorok+"\">"+
-              self.field("result")+"</td><td bgcolor=\""+self.colorok+"\">"+
-              cgi.escape(url_data.result)+"</td></tr>"+os.linesep)
+             self.field("result")+"</td><td bgcolor=\""+self.colorok+"\">")
+            self.fd.write(_("Valid"))
         else:
             self.errors += 1
             self.fd.write("<tr><td bgcolor=\""+self.colorerror+"\">"+
-                      self.field("result")+"</td><td bgcolor=\""+
-                      self.colorerror+"\">"+
-                      cgi.escape(url_data.result)+"</td></tr>"+os.linesep)
+             self.field("result")+"</td><td bgcolor=\""+self.colorerror+"\">")
+            self.fd.write(_("Error"))
+        if url_data.result:
+              self.fd.write(": "+cgi.escape(url_data.result))
+        self.fd.write("</td></tr>"+os.linesep)
 
     def end_output (self, linknumber=-1):
         """print end of checking info as HTML"""

@@ -212,10 +212,13 @@ class TextLogger (linkcheck.logger.Logger):
         self.fd.write(self.field("result")+self.spaces("result"))
         if url_data.valid:
             color = self.colorvalid
+            self.fd.write(_("Valid"), color=color)
         else:
             self.errors += 1
             color = self.colorinvalid
-        self.fd.write(url_data.result, color=color)
+            self.fd.write(_("Error"), color=color)
+        if url_data.result:
+            self.fd.write(": "+url_data.result, color=color)
         self.fd.write(os.linesep)
 
     def end_output (self, linknumber=-1):
