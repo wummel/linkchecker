@@ -501,9 +501,9 @@ class UrlData:
             # strip quotes
             url = StringUtil.stripQuotes(match.group('value'))
 	    if 'meta' in pattern['tags']:
-	        match = _refresh_re.match(url)
-		if match:
-                    url = match.group("url")
+	        metamatch = _refresh_re.match(url)
+		if metamatch:
+                    url = metamatch.group("url")
             # need to resolve HTML entities
             url = StringUtil.unhtmlify(url)
             lineno= StringUtil.getLineNumber(self.getContent(), match.start())
