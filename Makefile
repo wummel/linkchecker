@@ -50,6 +50,10 @@ dist:	files
 	cd .. && $(TAR) cIhf $(BZ2PACKAGE) $(PACKAGE)
 	cd .. && $(ZIP) -r $(ZIPPACKAGE) $(PACKAGE)
 	fakeroot debian/rules binary
+        
+homepage:	files
+	scp *-out.* shell1.sourceforge.net:/home/groups/linkchecker/htdocs/
+	scp ChangeLog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
 
 package:
 	cd .. && $(TAR) cIhf $(BZ2PACKAGE) $(PACKAGE)
