@@ -17,6 +17,11 @@
     Type: documentation
     Changed: linkchecker, linkchecker.1
 
+  * Recursion into FTP directories and parseable files has been
+    implemented.
+    Type: feature
+    Changed: linkcheck/checker/ftpurl.py
+
 1.13.4 "Shaun of the dead" (released 17.9.2004)
   * Catch HTTP cookie errors and add a warning.
     Type: bugfix
