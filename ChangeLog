@@ -2,6 +2,8 @@
   * parse CSS stylesheet files and check included urls, for example
     background images
     Changed: linkcheck/{File,Http,Ftp,}UrlData.py, linkcheck/linkparser.py
+  * try to use psyco for the commandline linkchecker script
+    Changed: linkchecker
 
 1.9.3 (released 16.10.2003)
   * re-added an updated robot parser which uses urllib2 and can decode
