@@ -4,7 +4,7 @@
 # used by Bastian Kleineidam for LinkChecker
 set -e
 PACKAGE=linkchecker
-PYVER=2.2
+PYVER=2.1
 PYTHON=python
 PYTHONXY=${PYTHON}${PYVER}
 
@@ -14,7 +14,7 @@ dpkg --listfiles $PACKAGE |
         awk '$0~/\.py$/ {print $0"c\n" $0"o"}' |
         xargs rm -f >&2
 
-rmdir /usr/lib/${PYTHONXY}/site-packages/linkcheck 2>/dev/null || true
+rmdir /usr/lib/$PYTHONXY/site-packages/linkcheck 2>/dev/null || true
 
 # for later use of python-central
 #/usr/sbin/register-python-package module remove linkchecker ">=2.0"

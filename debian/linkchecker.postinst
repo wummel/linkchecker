@@ -3,10 +3,10 @@
 # Written 1998 by Gregor Hoffleit <flight@debian.org>.
 # used by Bastian Kleineidam for LinkChecker
 set -e
-PYVER=2.2
+PYVER=2.1
 PYTHON=python
 PYTHONXY=${PYTHON}${PYVER}
-SITEPACKAGES=/usr/lib/${PYTHONXY}/site-packages
+SITEPACKAGES=/usr/lib/$PYTHONXY/site-packages
 DIRLIST=linkcheck
 FILELIST=_linkchecker_configdata.py
 COMMAND="'import sys,py_compile;py_compile.compile(sys.argv[1])'"
@@ -14,8 +14,8 @@ COMMAND="'import sys,py_compile;py_compile.compile(sys.argv[1])'"
 case "$1" in
     configure|abort-upgrade|abort-remove|abort-deconfigure)
         for i in $DIRLIST; do
-            $PYTHON -O /usr/lib/${PYTHONXY}/compileall.py -q $SITEPACKAGES/$i
-            $PYTHON /usr/lib/${PYTHONXY}/compileall.py -q $SITEPACKAGES/$i
+            $PYTHONXY -O /usr/lib/$PYTHONXY/compileall.py -q $SITEPACKAGES/$i
+            $PYTHONXY /usr/lib/$PYTHONXY/compileall.py -q $SITEPACKAGES/$i
         done
 	# use /bin/sh -c, otherwise I get a SyntaxError from Python
 	for i in $FILELIST; do

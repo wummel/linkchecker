@@ -1,9 +1,8 @@
-linkchecker (1.6.1) unstable; urgency=low
+linkchecker (1.6.1-1) unstable; urgency=low
 
-  * FileUrlData.py: remove searching for links in text files, this is
-    error prone.
-  * Standards version 3.5.6.1, no changes
-  * Depend on new 2.3 python version
+  * New upstream release, and made this non-native debian package.
+  * Standards version 3.5.7.0, no changes
+  * Depend on Python version 2.1
 
  -- Bastian Kleineidam <calvin@debian.org>  Tue, 27 Aug 2002 00:10:20 +0200
 
