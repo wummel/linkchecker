@@ -1,6 +1,7 @@
 VERSION=$(shell ./setup.py -V)
 HOST=treasure.calvinsplayground.de
-PROXY=-P$(HOST):5050
+PROXY=
+#PROXY=-P$(HOST):5050
 #HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker

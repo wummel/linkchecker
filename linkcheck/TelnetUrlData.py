@@ -1,13 +1,16 @@
 import telnetlib,re
 from HostCheckingUrlData import HostCheckingUrlData
+from UrlData import LinkCheckException
+
+telnet_re =  re.compile("^telnet:[\w.\-]+$")
 
 class TelnetUrlData(HostCheckingUrlData):
     "Url link with telnet scheme"
     
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
-        if not re.compile("^telnet:[\w.\-]+").match(self.urlName):
-            raise Exception, "Illegal telnet link syntax"
+        if not telnet_re.match(self.urlName):
+            raise LinkCheckException, "Illegal telnet link syntax"
         self.host = string.lower(self.urlName[7:])
 
 

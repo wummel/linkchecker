@@ -1,14 +1,17 @@
 import re,socket,string,DNS,sys
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
+from UrlData import LinkCheckException
 
+mailto_re = re.compile("^mailto:"
+                       "([\-\w.]+@[\-\w.?=]+|[\w\s]+<[\-\w.]+@[\-\w.?=]+>)$")
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
     
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
-        if not re.compile("^mailto:([\-\w.]+@[\-\w.?=]+|[\w\s]+<[\-\w.]+@[\-\w.?=]+>)").match(self.urlName):
-            raise Exception, "Illegal mailto link syntax"
+        if not mailto_re.match(self.urlName):
+            raise LinkCheckException, "Illegal mailto link syntax"
         self.host = self.urlName[7:]
         i = string.find(self.host, "<")
         j = string.find(self.host, ">")
@@ -44,7 +47,8 @@ class MailtoUrlData(HostCheckingUrlData):
             if smtpconnect: break
             
         if not smtpconnect:
-            self.setWarning("None of the mail hosts for "+self.host+" accepts an SMTP connection")
+            self.setWarning("None of the mail hosts for "+self.host+
+	                    " accepts an SMTP connection, "+value)
             mxrecord = mxrecords[0][1]
         else:
             mxrecord = mxrecord[1]

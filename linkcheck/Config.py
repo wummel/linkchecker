@@ -58,9 +58,9 @@ class Configuration(UserDict.UserDict):
         self.urlCache = {}
         self.robotsTxtCache = {}
         try:
-            from threading import *
+            import threading
             self.enableThreading(5)
-        except:
+        except ImportError:
             type, value = sys.exc_info()[:2]
             self.disableThreading()
 
@@ -243,7 +243,7 @@ class Configuration(UserDict.UserDict):
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
-        except:
+        except ConfigParser.Error:
 	    return
         
         section="output"
@@ -253,16 +253,16 @@ class Configuration(UserDict.UserDict):
                 self.data["log"] = Loggers[log]()
             else:
                 self.warn("invalid log option "+log)
-        except: pass
+        except ConfigParser.Error: pass
         try: 
             if cfgparser.getboolean(section, "verbose"):
                 self.data["verbose"] = 1
                 self.data["warnings"] = 1
-        except: pass
+        except ConfigParser.Error: pass
         try: self.data["quiet"] = cfgparser.getboolean(section, "quiet")
-        except: pass
+        except ConfigParser.Error: pass
         try: self.data["warnings"] = cfgparser.getboolean(section, "warnings")
-        except: pass
+        except ConfigParser.Error: pass
     
         section="checking"
         try: 
@@ -271,29 +271,29 @@ class Configuration(UserDict.UserDict):
                 self.disableThreads()
             else:
                 self.enableThreads(num)
-        except: pass
+        except ConfigParser.Error: pass
         try: self.data["anchors"] = cfgparser.getboolean(section, "anchors")
-        except: pass
+        except ConfigParser.Error: pass
         try:
             self.data["proxy"] = cfgparser.get(section, "proxy")
             self.data["proxyport"] = cfgparser.getint(section, "proxyport")
-        except: pass
+        except ConfigParser.Error: pass
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
                 self.error("illegal recursionlevel number: "+`num`)
             self.data["recursionlevel"] = num
-        except: pass
+        except ConfigParser.Error: pass
         try: self.data["robotstxt"] = cfgparser.getboolean(section, "robotstxt")
-        except: pass
+        except ConfigParser.Error: pass
         try: self.data["strict"] = cfgparser.getboolean(section, "strict")
-        except: pass
+        except ConfigParser.Error: pass
         try:
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
                 if Loggers.has_key(arg):
 		    self.data["fileoutput"].append(Loggers[arg](open("pylice-out."+arg, "w")))
-	except:	pass
+	except ConfigParser.Error:	pass
 
         section = "authentication"
 	try:
@@ -304,7 +304,7 @@ class Configuration(UserDict.UserDict):
                 tuple[0] = re.compile(tuple[0])
                 self.data["authentication"].append(tuple)
                 i = i + 1
-        except: pass
+        except ConfigParser.Error: pass
         self.data["authentication"].append((re.compile(".*"), "anonymous", "guest@"))
 
         section = "filtering"
@@ -315,9 +315,9 @@ class Configuration(UserDict.UserDict):
                 if len(tuple)!=2: break
                 self.data["externlinks"].append((re.compile(tuple[0]),
 		                                 int(tuple[1])))
-        except: pass
+        except ConfigParser.Error: pass
         try: self.data["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
-        except: pass
+        except ConfigParser.Error: pass
         try: self.data["allowdeny"] = cfgparser.getboolean(section, "allowdeny")
-	except: pass
+	except ConfigParser.Error: pass
 

@@ -24,8 +24,7 @@ class Threader:
 
     def finish(self):
         self.reduceThreads()
-        for t in self.threads:
-            pass    # dont know how to stop a thread
+        # dont know how to stop a thread
         
     def startThread(self, callable, args):
         "Generate a new thread"

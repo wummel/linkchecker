@@ -7,8 +7,12 @@ LinkTags = [("a",     "href"),
             ("body",  "background"),
             ("frame", "src"),
             ("link",  "href"),
-            ("meta",  "url"),  # <meta http-equiv="refresh" content="5; url=...">
+            # <meta http-equiv="refresh" content="5; url=...">
+            ("meta",  "url"),  
             ("area",  "href")]
+
+class LinkCheckException(Exception):
+    pass
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
@@ -100,9 +104,8 @@ class UrlData:
         try:
 	    self.buildUrl()
             self.extern = self._getExtern(config)
-        except:
-            type, value = sys.exc_info()[:2]
-            self.setError(str(value))
+        except LinkCheckerException, msg:
+            self.setError(msg)
             self.logMe(config)
             return
 
@@ -143,10 +146,11 @@ class UrlData:
 
     def closeConnection(self):
         # brute force closing
-        try: self.urlConnection.close()
-        except: pass
-        # release variable for garbage collection
-        self.urlConnection = None
+        if self.urlConnection is not None:
+            try: self.urlConnection.close()
+            except: pass
+            # release variable for garbage collection
+            self.urlConnection = None
 
     def putInCache(self, config):
         cacheKey = self.getCacheKey()
@@ -276,7 +280,7 @@ from TelnetUrlData import TelnetUrlData
 def GetUrlDataFrom(urlName, 
                    recursionLevel, 
                    parentName = None,
-                   baseRef = None, line = 0, _time = 0):
+                   baseRef = None, line = 0):
     # search for the absolute url
     name=""
     if urlName and ":" in urlName:
@@ -287,21 +291,21 @@ def GetUrlDataFrom(urlName,
         name = string.lower(parentName)
     # test scheme
     if re.compile("^http:").search(name):
-        return HttpUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return HttpUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^ftp:").search(name):
-        return FtpUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return FtpUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^file:").search(name):
-        return FileUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^telnet:").search(name):
-        return TelnetUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return TelnetUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^mailto:").search(name):
-        return MailtoUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return MailtoUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^gopher:").search(name):
-        return GopherUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return GopherUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^javascript:").search(name):
-        return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.compile("^https:").search(name):
-        return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+        return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line)
     # assume local file
-    return FileUrlData(urlName, recursionLevel, parentName, baseRef, line, _time)
+    return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)
 

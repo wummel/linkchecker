@@ -3,17 +3,19 @@ import UrlData
 
 class ParseException(Exception):
     pass
-    
-class OutputReader:
 
-    ws = re.compile("\s+")
-    regex_realUrl = re.compile("^Real URL.+")
-    regex_result = re.compile("^Result.+")
-    regex_base = re.compile("^Base.+")
-    regex_info = re.compile("^Info.+")
-    regex_warning = re.compile("^Warning.+") 
-    regex_parentUrl = re.compile("^Parent URL.+")
-    regex_valid = re.compile("^Valid.*")
+
+ws = re.compile("\s+")
+regex_realUrl = re.compile("^Real URL.+")
+regex_result = re.compile("^Result.+")
+regex_base = re.compile("^Base.+")
+regex_info = re.compile("^Info.+")
+regex_warning = re.compile("^Warning.+") 
+regex_parentUrl = re.compile("^Parent URL.+")
+regex_valid = re.compile("^Valid.*")
+
+
+class OutputReader:
 
     def resetState(self):
         self.urlName = None
@@ -32,7 +34,7 @@ class OutputReader:
         self.resetState()
 
         while line:
-            if OutputReader.ws.match(line):
+            if ws.match(line):
                 if self.state>=2: 
                     #append url
                     urldata = UrlData.GetUrlDataFrom(self.urlName, 0, 
@@ -52,19 +54,19 @@ class OutputReader:
                     raise ParseException, "No Real URL and Result keyword found"
                 self.resetState()
                 
-            elif OutputReader.regex_realUrl.match(line): 
+            elif regex_realUrl.match(line):
                 self.state = self.state+1
                 self.urlName = string.strip(line[8:])
-            elif OutputReader.regex_result.match(line): 
+            elif regex_result.match(line):
                 self.state = self.state+1
                 self.result = string.strip(line[6:])
-            elif OutputReader.regex_info.match(line):
+            elif regex_info.match(line):
                 self.info = string.strip(line[4:])
-            elif OutputReader.regex_base.match(line):
+            elif regex_base.match(line):
                 self.baseRef = string.strip(line[4:])
-            elif OutputReader.regex_warning.match(line):
+            elif regex_warning.match(line):
                 self.warning = string.strip(line[7:])
-            elif OutputReader.regex_parentUrl.match(line):
+            elif regex_parentUrl.match(line):
                 self.parentName = string.strip(line[10:])
                 if ',' in self.parentName:
                     self.parentName,self.linenumber = string.split(self.parentName,",",1)

@@ -9,12 +9,12 @@ class FileUrlData(UrlData):
                  urlName, 
                  recursionLevel, 
                  parentName = None,
-                 baseRef = None, line=0, _time=0):
+                 baseRef = None, line=0):
         UrlData.__init__(self,
                  urlName, 
-                 recursionLevel, 
-                 parentName,
-                 baseRef, line, _time)
+                 recursionLevel,
+                 parentName=parentName,
+                 baseRef=baseRef, line=line)
         if not parentName and not baseRef and \
            not re.compile("^file:").search(self.urlName):
             winre = re.compile("^[a-zA-Z]:")

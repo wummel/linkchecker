@@ -8,9 +8,9 @@ class HostCheckingUrlData(UrlData):
                  urlName, 
                  recursionLevel, 
                  parentName = None,
-                 baseRef = None, line=0, _time=0):
-        UrlData.__init__(self, urlName, recursionLevel, parentName, baseRef, 
-                         line, _time)
+                 baseRef = None, line=0):
+        UrlData.__init__(self, urlName, recursionLevel,
+	                 parentName=parentName, baseRef=baseRef, line=line)
         self.host = None
         self.url = urlName
 
