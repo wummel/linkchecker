@@ -69,8 +69,8 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
         resultlines = [
             "url %s" % url,
-            "real url %s" % url,
             "cache key %s" % url,
+            "real url %s" % url,
             "info Verified address: <calvin> is deliverable",
             "info Verified address: <calvin_cc> is deliverable",
             "info Verified address: <calvin_CC> is deliverable",
@@ -80,10 +80,20 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:news-admins@freshmeat.net?subject="\
                 "Re:%20[fm%20#11093]%20(news-admins)%20Submission%20"\
                 "report%20-%20Pretty%20CoLoRs")
-        resultlines = ["url %s" % url, "real url %s" % url,"valid"]
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % url,
+            "real url %s" % url,
+            "valid",
+        ]
         self.direct(url, resultlines)
         url = self.quote("mailto:"+"foo@foo-bar.de?subject=test")
-        resultlines = ["url %s" % url, "real url %s" % url,"valid"]
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % url,
+            "real url %s" % url,
+            "valid",
+        ]
         self.direct(url, resultlines)
 
     def test_warn_mail (self):
