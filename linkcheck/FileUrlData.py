@@ -71,6 +71,7 @@ acap        # application configuration access protocol
 |nntp       # news
 )"""
 
+is_windows_path = re.compile("^[a-zA-Z]:").search
 
 class FileUrlData (UrlData):
     "Url link with file scheme"
@@ -87,17 +88,14 @@ class FileUrlData (UrlData):
                   recursionLevel,
                   parentName=parentName,
                   baseRef=baseRef, line=line, column=column, name=name)
-        if not parentName and not baseRef and \
-           not re.compile("^file:").search(self.urlName):
+        if not (parentName or baseRef or self.urlName.startswith("file:")):
             self.urlName = os.path.expanduser(self.urlName)
-            winre = re.compile("^[a-zA-Z]:")
-            if winre.search(self.urlName):
+            if is_windows_path(self.urlName):
                 self.adjustWinPath()
-            else:
-                if self.urlName[0:1] != "/":
-                    self.urlName = os.getcwd()+"/"+self.urlName
-                    if winre.search(self.urlName):
-                        self.adjustWinPath()
+            elif not self.urlName.startswith("/"):
+                self.urlName = os.getcwd()+"/"+self.urlName
+                if is_windows_path(self.urlName):
+                    self.adjustWinPath()
             self.urlName = "file://"+self.urlName.replace("\\", "/")
 
 
@@ -120,7 +118,7 @@ class FileUrlData (UrlData):
 
     def adjustWinPath (self):
         "c:\\windows ==> /c|\\windows"
-        self.urlName = "/"+self.urlName[0]+"|"+self.urlName[2:]
+        self.urlName = "/%s|%s" % (self.urlName[0], self.urlName[2:])
 
 
     def isHtml (self):
