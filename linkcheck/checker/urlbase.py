@@ -26,6 +26,7 @@ import time
 import traceback
 import socket
 import select
+import codecs
 
 import linkcheck
 import linkcheck.linkparse
@@ -36,10 +37,12 @@ import linkcheck.httplib2
 import linkcheck.HtmlParser.htmlsax
 
 
+stderr = codecs.getwriter("iso8859-1")(sys.stderr, "ignore")
+
 def internal_error ():
     """print internal error message to stderr"""
-    print >> sys.stderr, os.linesep
-    print >> sys.stderr, _("""********** Oops, I did it again. *************
+    print >> stderr, os.linesep
+    print >> stderr, _("""********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
@@ -54,23 +57,23 @@ I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
 """) % linkcheck.configuration.Email
     etype, value = sys.exc_info()[:2]
-    print >> sys.stderr, etype, value
+    print >> stderr, etype, value
     traceback.print_exc()
     print_app_info()
-    print >> sys.stderr, os.linesep, \
+    print >> stderr, os.linesep, \
             _("******** LinkChecker internal error, bailing out ********")
     sys.exit(1)
 
 
 def print_app_info ():
     """print system and application info to stderr"""
-    print >> sys.stderr, _("System info:")
-    print >> sys.stderr, linkcheck.configuration.App
-    print >> sys.stderr, _("Python %s on %s") % (sys.version, sys.platform)
+    print >> stderr, _("System info:")
+    print >> stderr, linkcheck.configuration.App
+    print >> stderr, _("Python %s on %s") % (sys.version, sys.platform)
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
         value = os.getenv(key)
         if value is not None:
-            print >> sys.stderr, key, "=", repr(value)
+            print >> stderr, key, "=", repr(value)
 
 
 def urljoin (parent, url, scheme):
