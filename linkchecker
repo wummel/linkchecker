@@ -361,11 +361,11 @@ config = linkcheck.configuration.Configuration()
 # init logging
 config.init_logging(debug=options.debug)
 linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s", sys.version, sys.platform)
-# read configuration from config files
-configfiles = []
+# read configuration files
 if options.configfile:
-    configfiles.append(options.configfile)
-config.read(configfiles)
+    config.read(files=[options.configfile])
+else:
+    config.read()
 # apply commandline options and arguments
 constructauth = False
 do_profile = False
