@@ -338,7 +338,7 @@ def autocomplete( parser,
     # Print debug output (if needed).  You can keep a shell with 'tail -f' to
     # the log file to monitor what is happening.
     if debugfn:
-        f = open(debugfn, 'a')
+        f = file(debugfn, 'a')
         print >> f, '---------------------------------------------------------'
         print >> f, 'CWORDS', cwords
         print >> f, 'CLINE', cline

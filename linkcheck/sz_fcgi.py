@@ -18,4 +18,4 @@ class SZ_FCGI:
 	        thread.start_new_thread(self.func,(self, req))
 	except:
             import traceback
-            traceback.print_exc(file = open('traceback', 'a'))
+            traceback.print_exc(file=file('traceback', 'a'))

@@ -60,7 +60,7 @@ __init__(self, **args)
         self.errors = 0
         #self.warnings = 0
         if args.has_key('fileoutput'):
-            self.fd = open(args['filename'], "w")
+            self.fd = file(args['filename'], "w")
 	elif args.has_key('fd'):
             self.fd = args['fd']
         else:
