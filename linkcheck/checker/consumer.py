@@ -84,6 +84,8 @@ class Consumer (object):
         # check syntax
         if not url_data.check_syntax():
             # wrong syntax, do not check any further
+            self.logger_new_url(url_data)
+            self.cache.url_data_cache_add(url_data)
             return
         # check the cache
         if self.cache.check_cache(url_data):
