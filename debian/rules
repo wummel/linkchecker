@@ -1,12 +1,12 @@
 #!/usr/bin/make -f
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
-PACKAGE=linkchecker
-ROOT=$(CURDIR)/debian/$(PACKAGE)
+PACKAGE = linkchecker
+ROOT = $(CURDIR)/debian/$(PACKAGE)
 DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
-PYTHON=python
-CGIDIR=$(ROOT)/usr/lib/cgi-bin/lconline
-HTMLDIR=$(ROOT)/var/www/lconline
+PYTHON = python
+CGIDIR = $(ROOT)/usr/lib/cgi-bin/lconline
+HTMLDIR = $(ROOT)/var/www/lconline
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -18,7 +18,6 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	touch configure-stamp
-
 
 build: configure-stamp build-stamp
 build-stamp:
@@ -40,20 +39,20 @@ install: build
 # remove example files, we install them below
 	rm -r $(ROOT)/usr/share/linkchecker/examples
 # install CGI files
-	install -c -m 644 lconline/*.html $(HTMLDIR)
-	install -c -m 644 lconline/*.de $(HTMLDIR)
-	install -c -m 644 lconline/*.en $(HTMLDIR)
-	install -c -m 644 lconline/check.js $(HTMLDIR)
-	cat lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.cgi
-	cat lc.fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.fcgi
-	cat lc.sz_fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.sz_fcgi
+	install -c -m 644 cgi/lconline/*.html $(HTMLDIR)
+	install -c -m 644 cgi/lconline/*.de $(HTMLDIR)
+	install -c -m 644 cgi/lconline/*.en $(HTMLDIR)
+	install -c -m 644 cgi/lconline/check.js $(HTMLDIR)
+	cat cgi/lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.cgi
+	cat cgi/lc.fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.fcgi
+	cat cgi/lc.sz_fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.sz_fcgi
 	chmod 755 $(CGIDIR)/lc.cgi
 	chmod 755 $(CGIDIR)/lc.fcgi
 	chmod 755 $(CGIDIR)/lc.sz_fcgi
 # install system wide configuration file in etc
 	install -m644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc
 # install bash_completion script
-	install -m644 linkchecker-completion $(ROOT)/etc/bash_completion.d
+	install -m644 config/linkchecker-completion $(ROOT)/etc/bash_completion.d
 # install lintian overrides
 	install -m644 debian/linkchecker.lintian $(ROOT)/usr/share/lintian/overrides/linkchecker
 

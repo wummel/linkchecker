@@ -1,4 +1,4 @@
-README
 debian/README.Debian
 TODO
-FAQ
+doc/faq.txt
+doc/documentation.txt
