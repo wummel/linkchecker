@@ -82,7 +82,7 @@ class Configuration (dict):
         self["recursionlevel"] = -1
         self["wait"] = 0
         self['cookies'] = False
-        self["status"] = True
+        self["status"] = False
         self["fileoutput"] = []
         # Logger configurations
         self["text"] = {
