@@ -8,6 +8,7 @@ include debian/rules debian/changelog debian/copyright debian/control
 include debian/dirs debian/docs debian/links
 include DNS/README
 include test/viewprof.py test/profiletest.py test/*.html
-recursive-include locale *.mo *.po
+recursive-include locale *.po
+recursive-include po *
 recursive-include lconline *
 recursive-include tests *.py

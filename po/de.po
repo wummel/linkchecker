@@ -14,54 +14,44 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-msgid ""
-"\n"
-"Thats it. "
-msgstr ""
-"\n"
-"Das wars. "
-
-msgid " (%.3f seconds)"
-msgstr " (%.3f Sekunden)"
-
-msgid " (cached)\n"
-msgstr " (aus dem Cache)\n"
-
-msgid " errors"
-msgstr " Fehler"
-
-msgid " found\n"
-msgstr " gefunden\n"
-
-#, c-format
-msgid " in %d links"
-msgstr " in %d URLs"
+msgid "Illegal telnet link syntax"
+msgstr "Illegale telnet link Syntax"
 
 msgid " in 1 link"
 msgstr " in einer URL"
 
-msgid " warnings, "
-msgstr " Warnungen, "
+msgid "minutes"
+msgstr "Minuten"
 
-msgid "# Format of the entries:\n"
-msgstr "# Format der Einträge:\n"
+msgid "No newsgroup specified in NNTP URL"
+msgstr ""
 
-#, c-format
+msgid "found"
+msgstr "gefunden"
+
+msgid "outside of domain filter, checked only syntax"
+msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
+
+msgid "Result"
+msgstr "Ergebnis"
+
+msgid "Warning"
+msgstr "Warnung"
+
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
-#, c-format
-msgid "%.3f seconds\n"
-msgstr "%.3f Sekunden\n"
+msgid "Effective URL %s"
+msgstr "Effektive URL %s"
 
 msgid ", line "
 msgstr ", Zeile "
 
-msgid "1 error"
-msgstr "1 Fehler"
+msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
+msgstr "Keiner der Mail Hosts für %s akzeptiert eine SMTP Verbindung: %s"
 
-msgid "1 warning, "
-msgstr "1 Warnung, "
+msgid "%.3f seconds\n"
+msgstr "%.3f Sekunden\n"
 
 msgid ""
 "<html><head><title>LinkChecker Online Error</title></head><body "
@@ -81,87 +71,38 @@ msgstr ""
 "<code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. "
 "</blockquote></body></html>"
 
-msgid "Access denied by robots.txt, checked only syntax"
-msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
+msgid "No adresses found"
+msgstr "Keine Adressen gefunden"
 
-msgid "Base"
-msgstr "Basis"
+msgid "created by %s at %s\n"
+msgstr "erstellt von %s um %s\n"
 
-msgid "Check Time"
-msgstr "Prüfzeit"
+msgid " found\n"
+msgstr " gefunden\n"
 
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
-msgid ""
-"EXAMPLES\n"
-"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
-"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
-"o Local files and syntactic sugar on the command line:\n"
-"      linkchecker c:\\temp\\test.html\n"
-"      linkchecker ../bla.html\n"
-"      linkchecker www.myhomepage.de\n"
-"      linkchecker -r0 ftp.linux.org\n"
-msgstr ""
-"BEISPIELE\n"
-"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
-"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
-"o Lokale Dateien und syntaktischer Zucker in der Kommandozeile:\n"
-"      linkchecker c:\\temp\\test.html\n"
-"      linkchecker ../bla.html\n"
-"      linkchecker www.myhomepage.de\n"
-"      linkchecker -r0 ftp.linux.org\n"
-
-#, c-format
-msgid "Effective URL %s"
-msgstr "Effektive URL %s"
+msgid "1 error"
+msgstr "1 Fehler"
 
 msgid "Error"
 msgstr "Fehler"
 
-#, c-format
-msgid "Error: %s\n"
-msgstr "Fehler: %s\n"
+msgid "1 warning, "
+msgstr "1 Warnung, "
 
-msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
+msgid "Illegal argument '%s' for option "
+msgstr "Ungültiges Argument '%s' für Option "
 
-#, c-format
-msgid "Get the newest version at %s\n"
-msgstr "Die neueste Version gibt es unter %s\n"
-
-msgid "Got no answer from FTP server"
-msgstr "Keine Antwort vom FTP Server"
-
-#, c-format
-msgid "Group %s has %s articles, range %s to %s"
-msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr ""
-"HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
+msgid "hours"
+msgstr "Stunden"
 
 msgid "HTTPS not supported"
 msgstr "HTTPS nicht unterstützt"
 
-msgid "Illegal NNTP link syntax"
-msgstr "Illegale NNTP link Syntax"
+msgid "Start checking at %s\n"
+msgstr "Beginne Prüfen am %s\n"
 
-#, c-format
-msgid "Illegal argument '%s' for option "
-msgstr "Ungültiges Argument '%s' für Option "
-
-msgid "Illegal telnet link syntax"
-msgstr "Illegale telnet link Syntax"
-
-msgid "Info"
-msgstr "Info"
-
-msgid "Javascript url ignored"
-msgstr "Javascript url ignoriert"
-
-msgid "Missing '/' at end of URL"
-msgstr "Fehlendes '/' am Ende der URL"
+msgid "D/L Time"
+msgstr "D/L Zeit"
 
 msgid ""
 "NOTES\n"
@@ -201,46 +142,89 @@ msgstr ""
 "o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
 "  unbedingt derselbe wie der des Benutzers sein!\n"
 
-msgid "No NNTP server specified, checked only syntax"
-msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
-
-msgid "No adresses found"
-msgstr "Keine Adressen gefunden"
-
-msgid "No user or password found"
-msgstr "Kein Benutzername oder Passwort gefunden"
-
-#, c-format
-msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
-msgstr "Keiner der Mail Hosts für %s akzeptiert eine SMTP Verbindung: %s"
-
-msgid "Parent URL"
-msgstr "Vater URL"
-
-msgid "Real URL"
-msgstr "Tats. URL"
-
-msgid "Result"
-msgstr "Ergebnis"
-
-#, c-format
-msgid "Start checking at %s\n"
-msgstr "Beginne Prüfen am %s\n"
-
-#, c-format
-msgid "Stopped checking at %s"
-msgstr "Beende Prüfen am %s"
-
-msgid "Thats it. "
-msgstr "Das wars. "
+msgid "seconds"
+msgstr "Sekunden"
 
 msgid "URL"
 msgstr "URL"
 
+msgid ""
+"EXAMPLES\n"
+"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
+"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
+"o Local files and syntactic sugar on the command line:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n"
+msgstr ""
+"BEISPIELE\n"
+"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
+"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
+"o Lokale Dateien und syntaktischer Zucker in der Kommandozeile:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n"
+
 msgid "URL is null or empty"
 msgstr "URL ist Null oder leer"
 
-#, c-format
+msgid " in %d links"
+msgstr " in %d URLs"
+
+msgid " errors"
+msgstr " Fehler"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "illegal recursionlevel number %d"
+msgstr "illegale recursionlevel Nummer %d"
+
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr ""
+"HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
+
+msgid "Base"
+msgstr "Basis"
+
+msgid "Check Time"
+msgstr "Prüfzeit"
+
+msgid "Stopped checking at %s"
+msgstr "Beende Prüfen am %s"
+
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
+
+msgid "No user or password found"
+msgstr "Kein Benutzername oder Passwort gefunden"
+
+msgid "Get the newest version at %s\n"
+msgstr "Die neueste Version gibt es unter %s\n"
+
+msgid "Got no answer from FTP server"
+msgstr "Keine Antwort vom FTP Server"
+
+msgid "found mail host %s"
+msgstr "Mail host %s gefunden"
+
+msgid "Error: %s\n"
+msgstr "Fehler: %s\n"
+
+msgid "Javascript url ignored"
+msgstr "Javascript url ignoriert"
+
+msgid "could not split the mail adress"
+msgstr "konnte Mail Adresse nicht splitten"
+
+msgid "invalid log option '%s'"
+msgstr "ungültige Log Option '%s'"
+
 msgid ""
 "USAGE\tlinkchecker [options] file_or_url...\n"
 "\n"
@@ -381,17 +365,34 @@ msgstr ""
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option nimmt -w an.\n"
 
+msgid "Articel number %s found"
+msgstr ""
+
+msgid "Access denied by robots.txt, checked only syntax"
+msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
+
+msgid "Missing '/' at end of URL"
+msgstr "Fehlendes '/' am Ende der URL"
+
+msgid "# Format of the entries:\n"
+msgstr "# Format der Einträge:\n"
+
+msgid "warning: no files or urls given"
+msgstr "Warnung: keine Dateien oder URLs angegeben"
+
 msgid "Valid"
 msgstr "Gültig"
 
-msgid "Warning"
-msgstr "Warnung"
+msgid " (cached)\n"
+msgstr " (aus dem Cache)\n"
 
-#, c-format
-msgid "Write comments and bugs to %s\n"
-msgstr "Kommentare und Fehler mailen Sie bitte an %s\n"
+msgid ""
+"\n"
+"Thats it. "
+msgstr ""
+"\n"
+"Das wars. "
 
-#, c-format
 msgid ""
 "Write comments and bugs to %s\n"
 "\n"
@@ -399,51 +400,36 @@ msgstr ""
 "Kommentare und Fehler schreiben Sie bitte an %s\n"
 "\n"
 
-msgid "could not split the mail adress"
-msgstr "konnte Mail Adresse nicht splitten"
+msgid " warnings, "
+msgstr " Warnungen, "
 
-#, c-format
-msgid "created by %s at %s\n"
-msgstr "erstellt von %s um %s\n"
+msgid "Real URL"
+msgstr "Tats. URL"
 
-msgid "found"
-msgstr "gefunden"
+#, fuzzy
+msgid "No NNTP server specified, skipping this URL"
+msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
 
-#, c-format
-msgid "found mail host %s"
-msgstr "Mail host %s gefunden"
+msgid "Parent URL"
+msgstr "Vater URL"
 
-msgid "hours"
-msgstr "Stunden"
+#~ msgid " (%.3f seconds)"
+#~ msgstr " (%.3f Sekunden)"
 
-#, c-format
-msgid "illegal recursionlevel number %d"
-msgstr "illegale recursionlevel Nummer %d"
+#~ msgid "Illegal NNTP link syntax"
+#~ msgstr "Illegale NNTP link Syntax"
 
-#, c-format
-msgid "invalid log option '%s'"
-msgstr "ungültige Log Option '%s'"
+#~ msgid "Thats it. "
+#~ msgstr "Das wars. "
 
-msgid "minutes"
-msgstr "Minuten"
+#~ msgid "Write comments and bugs to %s\n"
+#~ msgstr "Kommentare und Fehler mailen Sie bitte an %s\n"
 
-msgid "outside of domain filter, checked only syntax"
-msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
+#~ msgid "robots.txt:%d: allow without user agents"
+#~ msgstr "robots.txt:%d: allow ohne user agents"
 
-#, c-format
-msgid "robots.txt:%d: allow without user agents"
-msgstr "robots.txt:%d: allow ohne user agents"
+#~ msgid "robots.txt:%d: disallow without user agents"
+#~ msgstr "robots.txt:%d: disallow ohne user agents"
 
-#, c-format
-msgid "robots.txt:%d: disallow without user agents"
-msgstr "robots.txt:%d: disallow ohne user agents"
-
-#, c-format
-msgid "robots.txt:%d: user-agent in the middle of rules"
-msgstr "robots.txt:%d: user-agent zwischen Regeln"
-
-msgid "seconds"
-msgstr "Sekunden"
-
-msgid "warning: no files or urls given"
-msgstr "Warnung: keine Dateien oder URLs angegeben"
+#~ msgid "robots.txt:%d: user-agent in the middle of rules"
+#~ msgstr "robots.txt:%d: user-agent zwischen Regeln"
