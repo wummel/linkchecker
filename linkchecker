@@ -422,10 +422,10 @@ if options.output:
     else:
         logtype, encoding = options.output, "iso-8859-15"
     if not linkcheck.Loggers.has_key(logtype):
-        printUsage(_("Illegal logger type %r in %r for option %s") % \
+        printUsage(_("Unknown logger type %r in %r for option %s") % \
                    (logtype, options.output, "'-o, --output'"))
     if logtype != 'none' and not has_encoding(encoding):
-        printUsage(_("Illegal encoding %r in %r for option %s") % \
+        printUsage(_("Unknown encoding %r in %r for option %s") % \
                    (encoding, options.output, "'-o, --output'"))
     config['logger'] = config.logger_new(logtype, encoding=encoding)
 if options.fileoutput:
@@ -449,18 +449,21 @@ if options.fileoutput:
                         ns['filename'] = suffix
                 else:
                     ns['filename'] = suffix
-        if linkcheck.Loggers.has_key(ftype):
-            # generating loggers with fileoutput can throw
-            # an exception when opening the file
-            try:
-                logger = config.logger_new(ftype, **ns)
-            except OSError, msg:
-                printUsage(_("Illegal argument %r for option %s: %s") % \
-                           (arg, "'-F, --file-output'", str(msg)))
-            config['fileoutput'].append(logger)
-        else:
-            printUsage(_("Illegal argument %r for option %s") % \
-                       (arg, "'-F, --file-output'"))
+        if not linkcheck.Loggers.has_key(ftype):
+            printUsage(_("Unknown logger type %r in %r for option %s") % \
+                       (ftype, options.output, "'-F, --file-output'"))
+        if ftype != 'none' and 'encoding' in ns and \
+           not has_encoding(ns['encoding']):
+            printUsage(_("Unknown encoding %r in %r for option %s") % \
+                       ns['encoding'], options.output, "'-F, --file-output'")
+        # generating loggers with fileoutput can throw
+        # an exception when opening the file
+        try:
+            logger = config.logger_new(ftype, **ns)
+        except OSError, msg:
+            printUsage(_("Illegal argument %r for option %s: %s") % \
+                       (arg, "'-F, --file-output'", str(msg)))
+        config['fileoutput'].append(logger)
 if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.intern:
