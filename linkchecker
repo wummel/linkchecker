@@ -417,6 +417,10 @@ group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
+group.add_option("--no-proxy-for", type="string", action="append",
+                 dest="noproxy", help=_(
+"""Contact hosts that match the given expression directly instead of
+going through a proxy."""))
 optparser.add_option_group(group)
 
 ################# deprecated options ##################
