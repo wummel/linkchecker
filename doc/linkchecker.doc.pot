@@ -1,0 +1,861 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2005-03-11 21:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING"
+
+# type: TH
+#: en/linkchecker.1:1
+#, no-wrap
+msgid "LINKCHECKER"
+msgstr ""
+
+# type: TH
+#: en/linkchecker.1:1
+#, no-wrap
+msgid "10 March 2001"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:3
+#, no-wrap
+msgid "NAME"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:5
+msgid "linkchecker - check HTML documents for broken links"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:6
+#, no-wrap
+msgid "SYNOPSIS"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:14
+msgid "B<linkchecker> [ I<options> ] [ I<file-or-url> ]"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:15
+#, no-wrap
+msgid "DESCRIPTION"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:31
+msgid ""
+"LinkChecker features recursive checking, multithreading, output in colored "
+"or normal text, HTML, SQL, CSV or a sitemap graph in GML or XML, support for "
+"HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local file "
+"links, restriction of link checking with regular expression filters for "
+"URLs, proxy support, username/password authorization for HTTP and FTP, "
+"robots.txt exclusion protocol support, i18n support, a command line "
+"interface and a (Fast)CGI web interface (requires HTTP server)"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:32
+#, no-wrap
+msgid "EXAMPLES"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:36
+#, no-wrap
+msgid ""
+"The most common use checks the given domain recursively, plus any\n"
+"single URL pointing outside of the domain:\n"
+"  B<linkchecker http://treasure.calvinsplayground.de/>\n"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:39
+msgid ""
+"Beware that this checks the whole site which can have several hundred "
+"thousands URLs. Use the -r option to restrict the recursion depth."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:43
+#, no-wrap
+msgid ""
+"Don't connect to mailto: hosts, only check their URL syntax. All other\n"
+"links are checked as usual:\n"
+"  B<linkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org>\n"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:46
+#, no-wrap
+msgid ""
+"Checking a local HTML file on Unix:\n"
+"  B<linkchecker ../bla.html>\n"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:49
+#, no-wrap
+msgid ""
+"Checking a local HTML file on Windows:\n"
+"  B<linkchecker c:\\etemp\\etest.html>\n"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:52
+#, no-wrap
+msgid ""
+"You can skip the B<http://> url part if the domain starts with B<www.>:\n"
+"  B<linkchecker www.myhomepage.de>\n"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:55
+#, no-wrap
+msgid ""
+"You can skip the B<ftp://> url part if the domain starts with B<ftp.>:\n"
+"  B<linkchecker -r0 ftp.linux.org>\n"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:56
+#, no-wrap
+msgid "OPTIONS"
+msgstr ""
+
+# type: SS
+#: en/linkchecker.1:58
+#, no-wrap
+msgid "General options"
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:59
+#, no-wrap
+msgid "B<-h>, B<--help>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:62
+msgid "Help me! Print usage information for this program."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:62
+#, no-wrap
+msgid "B<-f>I<configfile>, B<--config=>I<configfile>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:67
+msgid ""
+"Use I<configfile> as configuration file. As default LinkChecker first "
+"searches B</etc/linkchecker/linkcheckerrc> and then "
+"B<~/.linkchecker/linkcheckerrc>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:67
+#, no-wrap
+msgid "B<-I>, B<--interactive>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:70
+msgid "Ask for url if none are given on the commandline."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:70
+#, no-wrap
+msgid "B<-V>, B<--version>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:73
+msgid "Print version and exit."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:73
+#, no-wrap
+msgid "B<-t>I<num>, B<--threads=>I<num>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:77
+msgid ""
+"Generate no more than I<num> threads. Default number of threads is 10.  To "
+"disable threading specify a non-positive number."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:77
+#, no-wrap
+msgid "B<--priority>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:81
+msgid ""
+"Run with normal thread scheduling priority. Per default LinkChecker runs "
+"with low thread priority to be suitable as a background job."
+msgstr ""
+
+# type: SS
+#: en/linkchecker.1:82
+#, no-wrap
+msgid "Output options"
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:83
+#, no-wrap
+msgid "B<-v>, B<--verbose>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:87
+msgid "Log all checked URLs (implies B<-w>). Default is to log only invalid URLs."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:87
+#, no-wrap
+msgid "B<-w>, B<--warnings>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:90
+msgid "Log warnings."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:90
+#, no-wrap
+msgid "B<-W>I<regex>, B<--warning-regex=>I<regex>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:99
+msgid ""
+"Define a regular expression which prints a warning if it matches any content "
+"of the checked link.  This applies of course only to pages which are valid, "
+"so we can get their content.  Use this to check for pages that contain some "
+"form of error, for example \"This page has moved\" or \"Oracle Application "
+"Server error\".  This option implies B<-w>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:99
+#, no-wrap
+msgid "B<--warning-size-bytes=>I<bytes>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:104
+msgid ""
+"Print a warning if content size is available and exceeds the given number of "
+"I<bytes>.  This option implies B<-w>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:104
+#, no-wrap
+msgid "B<-q>, B<--quiet>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:108
+msgid "Quiet operation, an alias for B<-o none>.  This is only useful with B<-F>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:108
+#, no-wrap
+msgid "B<-o>I<type>, B<--output=>I<type>[B</>I<encoding>]"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:118
+msgid ""
+"Specify output type as B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, "
+"B<xml>, B<none> or B<blacklist>.  Default type is B<text>. The various "
+"output types are documented below.  I<encoding> specifies the output "
+"encoding, the default is B<iso-8859-15>.  Valid encodings are listed at "
+"B<http://docs.python.org/lib/node127.html>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:118
+#, no-wrap
+msgid ""
+"B<-F>I<type>[B</>I<encoding>][B</>I<filename>], "
+"B<--file-output=>I<type>[B</>I<encoding>][B</>I<filename>]"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:135
+msgid ""
+"Output to a file B<linkchecker-out.>I<type>, B<$HOME/.linkchecker/blacklist> "
+"for B<blacklist> output, or I<filename> if specified.  I<encoding> specifies "
+"the output encoding, the default is B<iso-8859-15>.  Valid encodings are "
+"listed at B<http://docs.python.org/lib/node127.html>.  The I<filename> part "
+"of the B<none> output type will be ignored, else if the file already exists, "
+"it will be overwritten.  You can specify this option more than once. Valid "
+"file output types are B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, "
+"B<xml>, B<none> or B<blacklist> Default is no file output. The various "
+"output types are documented below. Note that you can suppress all console "
+"output with the option B<-o none>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:135
+#, no-wrap
+msgid "B<--no-status>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:138
+msgid "Do not print check status messages."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:138
+#, no-wrap
+msgid "B<-D>I<logger>, B<--debug=>I<logger>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:148
+msgid ""
+"Print debugging output for given logger.  Available loggers are B<cmdline>, "
+"B<checking>, B<cache>, B<gui> and B<all>.  Specifying B<all> is an alias for "
+"specifying all available loggers.  The option can be given multiple times to "
+"debug with more than one logger.  For accurate results, threading will be "
+"disabled during debug runs."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:148
+#, no-wrap
+msgid "B<--profile>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:152
+msgid ""
+"Write profiling data into a file named B<linkchecker.prof> in the current "
+"working directory. See also B<--viewprof>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:152
+#, no-wrap
+msgid "B<--viewprof>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:156
+msgid "Print out previously generated profiling data. See also B<--profile>."
+msgstr ""
+
+# type: SS
+#: en/linkchecker.1:157
+#, no-wrap
+msgid "Checking options"
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:158
+#, no-wrap
+msgid "B<-r>I<depth>, B<--recursion-level=>I<depth>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:163
+msgid ""
+"Check recursively all links up to given I<depth>.  A negative depth will "
+"enable inifinite recursion.  Default depth is inifinite."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:163
+#, no-wrap
+msgid "B<-i>I<regex>, B<--intern=>I<regex>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:167
+msgid ""
+"Assume URLs that match the given regular expression as internal.  "
+"LinkChecker descends recursively only to internal URLs, not to external."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:167
+#, no-wrap
+msgid "B<-e>I<regex>, B<--extern=>I<regex>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:171
+msgid ""
+"Assume urls that match the given regular expression as external.  Only "
+"internal HTML links are checked recursively."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:171
+#, no-wrap
+msgid "B<--extern-strict=>I<regex>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:175
+msgid ""
+"Assume urls that match the given regular expression as strict external.  "
+"Only internal HTML links are checked recursively."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:175
+#, no-wrap
+msgid "B<-s>, B<--extern-strict-all>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:180
+msgid ""
+"Check only the syntax of external links, do not try to connect to them.  For "
+"local file urls, only local files are internal. For http and ftp urls, all "
+"urls at the same domain name are internal."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:180
+#, no-wrap
+msgid "B<-d>, B<--denyallow>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:184
+msgid ""
+"Swap checking order to external/internal. Default checking order is "
+"internal/external."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:184
+#, no-wrap
+msgid "B<-C>, B<--cookies>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:190
+msgid ""
+"Accept and send HTTP cookies according to RFC 2109. Only cookies which are "
+"sent back to the originating server are accepted.  Sent and accepted cookies "
+"are provided as additional logging information."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:190
+#, no-wrap
+msgid "B<-a>, B<--anchors>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:195
+msgid ""
+"Check HTTP anchor references.  This option applies to both internal and "
+"external urls. Default is don't check anchors.  This option implies B<-w> "
+"because anchor errors are always warnings."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:195
+#, no-wrap
+msgid "B<--no-anchor-caching>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:200
+msgid ""
+"Treat url#anchora and url#anchorb as equal on caching. This is the default "
+"browser behaviour, but it's not specified in the URI specification. Use with "
+"care."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:200
+#, no-wrap
+msgid "B<-u>I<name>, B<--user=>I<name>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:204
+msgid ""
+"Try username I<name> for HTTP and FTP authorization.  For FTP the default "
+"username is B<anonymous>. See also B<-p>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:204
+#, no-wrap
+msgid "B<-p>I<pwd>, B<--password=>I<pwd>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:208
+msgid ""
+"Try the password I<pwd> for HTTP and FTP authorization.  For FTP the default "
+"password is B<anonymous@>. See also B<-u>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:208
+#, no-wrap
+msgid "B<--timeout=>I<secs>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:212
+msgid ""
+"Set the timeout for connection attempts in seconds. The default timeout is "
+"30 seconds."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:212
+#, no-wrap
+msgid "B<-P>I<secs>, B<--pause=>I<secs>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:217
+msgid ""
+"Pause I<secs> seconds between each url check. This option implies B<-t0>.  "
+"Default is no pause between requests."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:217
+#, no-wrap
+msgid "B<-N>I<server>, B<--nntp-server=>I<server>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:222
+msgid ""
+"Specify an NNTP server for 'news:...' links. Default is the environment "
+"variable NNTP_SERVER. If no host is given, only the syntax of the link is "
+"checked."
+msgstr ""
+
+# type: SS
+#: en/linkchecker.1:223
+#, no-wrap
+msgid "Deprecated options"
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:224
+#, no-wrap
+msgid "B<--status>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:227
+msgid "Print check status every 5 seconds to stderr. This is the default now."
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:228
+#, no-wrap
+msgid "OUTPUT TYPES"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:230
+msgid "Note that by default only errors are logged."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:231
+#, no-wrap
+msgid "B<text>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:234
+msgid "Standard text logger, logging URLs in keyword: argument fashion."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:234
+#, no-wrap
+msgid "B<html>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:239
+msgid ""
+"Log URLs in keyword: argument fashion, formatted as HTML.  Additionally has "
+"links to the referenced pages. Invalid URLs have HTML and CSS syntax check "
+"links appended."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:239
+#, no-wrap
+msgid "B<csv>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:242
+msgid "Log check result in CSV format with one URL per line."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:242
+#, no-wrap
+msgid "B<gml>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:246
+msgid ""
+"Log parent-child relations between linked URLs as a GML graph.  You should "
+"use the B<--verbose> option to get a complete graph."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:246
+#, no-wrap
+msgid "B<dot>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:250
+msgid ""
+"Log parent-child relations between linked URLs as a DOT graph.  You should "
+"use the B<--verbose> option to get a complete graph."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:250
+#, no-wrap
+msgid "B<xml>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:253
+msgid "Log check result as machine-readable XML file."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:253
+#, no-wrap
+msgid "B<sql>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:257
+msgid ""
+"Log check result as SQL script with INSERT commands. An example script to "
+"create the initial SQL table is included as create.sql."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:257
+#, no-wrap
+msgid "B<blacklist>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:262
+msgid ""
+"Suitable for cron jobs. Logs the check result into a file "
+"B<~/.linkchecker/blacklist> which only contains entries with invalid urls "
+"and the number of times they have failed."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:262
+#, no-wrap
+msgid "B<none>"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:265
+msgid "Logs nothing. Suitable for scripts."
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:266
+#, no-wrap
+msgid "NOTES"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:269
+msgid ""
+"A B<!> before any regex negates it. So B<'!^mailto:'> matches everything but "
+"a mailto link."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:273
+msgid ""
+"LinkCheckers commandline parser treats B<ftp.> links like B<ftp://ftp.> and "
+"B<www.> links like B<http://www.>.  You can also give local files as "
+"arguments."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:278
+msgid ""
+"If you have your system configured to automatically establish a connection "
+"to the internet (e.g. with diald), it will connect when checking links not "
+"pointing to your local host.  Use the B<-s> and B<-i> options to prevent "
+"this."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:280
+msgid "Javascript links are currently ignored."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:283
+msgid "If your platform does not support threading, LinkChecker uses B<-t0>."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:285
+msgid "You can supply multiple user/password pairs in a configuration file."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:288
+msgid ""
+"To use proxies set $http_proxy, $https_proxy on Unix or Windows.  On a Mac "
+"use the Internet Config."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:291
+msgid ""
+"When checking B<news:> links the given NNTP host doesn't need to be the same "
+"as the host of the user browsing your pages."
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:292
+#, no-wrap
+msgid "ENVIRONMENT"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:294
+msgid "B<NNTP_SERVER> - specifies default NNTP server"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:296
+msgid "B<http_proxy> - specifies default HTTP proxy server"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:298
+msgid "B<ftp_proxy> - specifies default FTP proxy server"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:300
+msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:301
+#, no-wrap
+msgid "RETURN VALUE"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:303
+msgid "The return value is non-zero when"
+msgstr ""
+
+# type: IP
+#: en/linkchecker.1:303 en/linkchecker.1:305 en/linkchecker.1:307
+#, no-wrap
+msgid "\\(bu"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:305
+msgid "invalid links were found or"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:307
+msgid "link warnings were found and --warnings option was given"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:309
+msgid "a program error occurred."
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:310
+#, no-wrap
+msgid "FILES"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:313
+msgid ""
+"B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - default "
+"configuration files"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:315
+msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:317
+msgid "B<linkchecker-out.>I<type> - default logger file output name"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:319
+msgid "B<http://docs.python.org/lib/node127.html> - valid output encodings"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:320
+#, no-wrap
+msgid "AUTHOR"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:321
+msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
+msgstr ""
