@@ -6,8 +6,7 @@
 set -e
 
 DIRLIST="/usr/lib/python1.5/site-packages/linkcheck"
-FILELIST="CSV.py LinkCheckerConf.py StringUtil.py fcgi.py fintl.py 
-http11lib.py httpslib.py robotparser2.py sz_fcgi.py util1.py"
+FILELIST="LinkCheckerConf.py"
 SITEPACKAGES="/usr/lib/python1.5/site-packages"
 COMMAND="'import sys,py_compile;py_compile.compile(sys.argv[1])'"
 

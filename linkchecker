@@ -23,8 +23,8 @@ import getopt,re,string,os,urlparse
 # 90 seconds timeout for all connections
 #import timeoutsocket
 #timeoutsocket.setDefaultSocketTimeout(90)
-import linkcheck, StringUtil
-from linkcheck import _
+import linkcheck
+from linkcheck import _,StringUtil
 
 
 Usage = _("USAGE\tlinkchecker [options] file-or-url...\n"
@@ -263,7 +263,7 @@ for opt,arg in options:
         config["warnings"] = 1
 
     elif opt=="--wischiwaschi":
-        import util1
+        from linkcheck import util1
         util1.abbuzze()
         sys.exit(0)
     elif opt=="-w" or opt=="--warnings":

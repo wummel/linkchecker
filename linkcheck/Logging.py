@@ -37,7 +37,7 @@ __init__(self, **args)
   files in the appropriate logger section.
 """
 import sys,time,string
-import Config,StringUtil
+import Config, StringUtil
 from linkcheck import _
 
 # HTML shortcuts

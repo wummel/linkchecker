@@ -10,19 +10,18 @@ Package: linkchecker
 Architecture: any
 Depends: python-base (>= 1.5.2), python-base (<< 1.6)
 Suggests: libssl09|libssl095a, httpd
-Description: check/validate/test your HTML documents for broken links/URLs
- Features:
- o recursive checking
- o multithreaded
- o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
-   graph
- o HTTP/1.1, HTTPS, FTP, mailto:, nntp:, news:, Gopher, Telnet and local 
-   file links are supported
-   Javascript links are currently ignored
- o restrict link checking with regular expression filters for URLs
- o proxy support
- o give username/password for HTTP and FTP authorization
- o robots.txt exclusion protocol support 
- o i18n support
- o command line interface
- o (Fast)CGI web interface (requires HTTP server)
+Description: check HTML documents for broken links
+  Features:
+  o recursive checking
+  o multithreaded
+  o output can be colored or normal text, HTML, SQL, CSV or a sitemap
+    graph in GML or XML
+  o HTTP/1.1, HTTPS, FTP, mailto:, nntp:, news:, Gopher, Telnet and local 
+    file links are supported
+  o restrict link checking with regular expression filters for URLs
+  o proxy support
+  o give username/password for HTTP and FTP authorization
+  o robots.txt exclusion protocol support 
+  o i18n support
+  o command line interface
+  o (Fast)CGI web interface (requires HTTP server)

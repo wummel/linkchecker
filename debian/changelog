@@ -1,8 +1,12 @@
 linkchecker (1.2.10) unstable; urgency=low
 
-  * i18n gettext data compilation fixed
+  * broken *.mo i18n files fixed
+  * test/test1.html: add test for missing quotes
+  * debian/control: updated description field
+  * moved all single .py files in linkcheck/ except LinkCheckerConf.py
+    which is automatically generated
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu,  7 Dec 2000 12:24:38 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 14 Dec 2000 23:50:01 +0100
 
 linkchecker (1.2.9) unstable; urgency=low
 
