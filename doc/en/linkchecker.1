@@ -61,8 +61,9 @@ You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
 Help me! Print usage information for this program.
 .TP
 \fB-f\fP\fIconfigfile\fP, \fB--config=\fP\fIconfigfile\fP
-Use \fIfile\fP as configuration file. As default LinkChecker first searches
-/etc/linkchecker/linkcheckerrc and then ~/.linkcheckerrc.
+Use \fIconfigfile\fP as configuration file. As default LinkChecker first
+searches \fB/etc/linkchecker/linkcheckerrc\fP and then
+\fB~/.linkcheckerrc\fP.
 .TP
 \fB-I\fP, \fB--interactive\fP
 Ask for url if none are given on the commandline.
@@ -129,13 +130,17 @@ below. Note that you can suppress all console output
 with the option \fB-o none\fP.
 .TP
 \fB--no-status\fP
-Do not print check status every 5 seconds to stderr. Does not work with the
-\fB--debug\fP option.
+Do not print check status messages.
 .TP
-\fB-D\fP, \fB--debug\fP
-Print debugging information. Provide this option multiple times
-for even more debugging information. Enabling debug will also
-disable threading.
+\fB-D\fP\fIlogger\fP, \fB--debug=\fP\fIlogger\fP
+Print debugging output for given logger.
+Available loggers are \fBcmdline\fP, \fBchecking\fP,
+\fBcache\fP, \fBgui\fP and \fBall\fP.
+Specifying \fBall\fP is an alias for specifying all available loggers.
+The option can be given multiple times to debug with more
+than one logger.
+.BR
+For accurate results, threading will be disabled during debug runs.
 .TP
 \fB--profile\fP
 Write profiling data into a file named \fBlinkchecker.prof\fP
@@ -261,7 +266,7 @@ You can also give local files as arguments.
 If you have your system configured to automatically establish a
 connection to the internet (e.g. with diald), it will connect when
 checking links not pointing to your local host.
-Use the -s and -i options to prevent this.
+Use the \fB-s\fP and \fB-i\fP options to prevent this.
 
 Javascript links are currently ignored.
 
@@ -273,8 +278,8 @@ You can supply multiple user/password pairs in a configuration file.
 To use proxies set $http_proxy, $https_proxy on Unix or Windows.
 On a Mac use the Internet Config.
 
-When checking 'news:' links the given NNTP host doesn't need to be the
-same as the host of the user browsing your pages!
+When checking \fBnews:\fP links the given NNTP host doesn't need to be the
+same as the host of the user browsing your pages.
 
 .SH FILES
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP - default

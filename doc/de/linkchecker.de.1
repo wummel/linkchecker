@@ -19,129 +19,133 @@ Ausgabe als farbigen oder normalen Text, HTML, SQL, CSV oder einen
 Sitemap-Graphen in GML oder XML,
 Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:,
 Gopher, Telnet und lokale Dateiverknüpfungen,
-Einschränkung der Verknüpfungsüberprüfung mit URL Filtern bestehen aus
+Einschränkung der Verknüpfungsüberprüfung mit URL Filtern bestehend aus
 regulären Ausdrücken, Proxy Unterstützung, Benutzer/Passwort
 Authentifizierung für HTTP und FTP, Unterstützung des robots.txt
-Protokolls, Mehrsprachlichkeit, eine Kommandozeilenschnittstelle
+Protokolls, Mehrsprachigkeit, eine Kommandozeilenschnittstelle
 sowie eine CGI Webschnittstelle (benötigt einen HTTP Server).
 
 .SH BEISPIELE
-The most common use checks the given domain recursively, plus any
-single URL pointing outside of the domain:
+Der häufigste Gebrauchsfall prüft eine gegebene Domäne rekursiv,
+inklusive aller einzelnen nach außen zeigenden Verknüpfungen:
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
 
-Beware that this checks the whole site which can have several hundred
-thousands URLs. Use the -r option to restrict the recursion depth.
+Beachten Sie dass dies die komplette Domäne überprüft welche aus
+mehreren hunderttausend URLs bestehen kann. Benutzen Sie die Option -r,
+um die Rekursionstiefe zu beschränken.
 
-Don't connect to mailto: hosts, only check their URL syntax. All other
-links are checked as usual:
+Keine Verbindungen zu mailto: Rechnern, nur die Syntax wird geprüft. Alle
+anderen Verknüpfungen werden wie üblich geprüft:
   \fBlinkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org\fP
 
-Checking a local HTML file on Unix:
+Überprüfung einer lokalen HTML Datei unter Unix:
   \fBlinkchecker ../bla.html\fP
 
-Checking a local HTML file on Windows:
+Überprüfung einer lokalen HTML Datei unter Windows:
   \fBlinkchecker c:\\temp\\test.html\fP
 
-You can skip the \fBhttp://\fP url part if the domain starts with \fBwww.\fP:
+Sie können den \fBhttp://\fP URL Anteil weglassen wenn die Domäne mit
+\fBwww.\fP beginnt:
   \fBlinkchecker www.myhomepage.de\fP
 
-You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
+Sie können den \fBftp://\fP URL Anteil weglassen wenn die Domäne mit
+\fBftp.\fP beginnt:
   \fBlinkchecker -r0 ftp.linux.org\fP
 
 .SH OPTIONEN
 
-.SS General options
+.SS Allgemeine Optionen
 .TP
 \fB-h\fP, \fB--help\fP
-Help me! Print usage information for this program.
+Hilfe! Gebe Gebrauchsanweisung für dieses Programm aus.
 .TP
-\fB-f\fP\fIconfigfile\fP, \fB--config=\fP\fIconfigfile\fP
-Use \fIfile\fP as configuration file. As default LinkChecker first searches
+\fB-f\fP\fIKonfigurationsdatei\fP, \fB--config=\fP\fIKonfigurationsdatei\fP
+Benutze \fIfile\fP as configuration file. As default LinkChecker first searches
 /etc/linkchecker/linkcheckerrc and then ~/.linkcheckerrc.
 .TP
 \fB-I\fP, \fB--interactive\fP
-Ask for url if none are given on the commandline.
+Frage nach URLs, falls keine auf der Kommandozeile eingegeben wurde.
 .TP
 \fB-V\fP, \fB--version\fP
-Print version and exit.
+Drucke die Version und beende das Programm.
 .TP
 \fB-t\fP\fInum\fP, \fB--threads=\fP\fInum\fP
-Generate no more than \fInum\fP threads. Default number of threads is 10.
-To disable threading specify a non-positive number.
+Generiere nicht mehr als \fInum\fP Threads. Standard Anzahl von Threads
+ist 10.
 
-.SS Output options
+.SS Ausgabeoptionen
 .TP
 \fB-v\fP, \fB--verbose\fP
-Log all checked URLs (implies \fB-w\fP). Default is to log only invalid
-URLs.
+Logge alle geprüften URLs (impliziert \fB-w\fP). Standard ist es, nur
+fehlerhafte URLs zu loggen.
 .TP
 \fB-w\fP, \fB--warnings\fP
-Log warnings.
+Logge Warnungen.
 .TP
 \fB-W\fP\fIregex\fP, \fB--warning-regex=\fIregex\fP
-Define a regular expression which prints a warning if it matches any
-content of the checked link.
-This applies of course only to pages which are valid, so we can get
-their content.
-Use this to check for pages that contain some form of error, for example
-'This page has moved' or 'Oracle Application Server error'.
-This option implies \fB-w\fP.
+Definieren Sie einen regulären Ausdruck, der eine Warnung ausgibt
+falls er den Inhalt einer geprüften URL matcht.
+Dies gilt nur für gültige Seiten deren Inhalt wir bekommen können.
+.BR
+Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.
+'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.
+Diese Option impliziert \fB-w\fP.
 .TP
 \fB--warning-size-bytes=\fP\fIbytes\fP
-Print a warning if content size is available and exceeds the given
-number of \fIbytes\fP.
-This option implies \fB-w\fP.
+Drucke eine Warnung wenn die Inhaltsgröße bekannt ist und die
+angegebene Anzahl von \fIbytes\fP Bytes übersteigt.
+Diese Option impliziert \fB-w\fP.
 .TP
 \fB-q\fP, \fB--quiet\fP
-Quiet operation, an alias for \fB-o none\fP.
-This is only useful with \fB-F\fP.
+Keine Ausgabe, ein Alias für \fB-o none\fP. Dies ist nur in Verbindung
+mit \fB-F\fP nützlich.
 .TP
-\fB-o\fP\fItype\fP, \fB--output=\fP\fItype\fP[\fB/\fP\fIencoding\fP]
-Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
-Default type is \fBtext\fP. The various output types are documented
-below.
-\fIencoding\fP specifies the output encoding, the default is
-\fBiso-8859-15\fP.
-Valid encodings are listed at
-\fBhttp://docs.python.org/lib/node127.html\fP.
+\fB-o\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP], \fB--output=\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP]
+Spezifiziere die Ausgabe als \fBtext\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP.
+Standardausgabe ist \fBtext\fP. \fIEnkodierung\fP gibt die
+Ausgabekodierung an, die Standardkodierung ist \fBiso-8859-15\fP.
+Gültige Encodierungen sind unter
+\fBhttp://docs.python.org/lib/node127.html\fP aufgelistet.
 .TP
-\fB-F\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP], \fB--file-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP]
-Output to a file \fBlinkchecker-out.\fP\fItype\fP,
-\fB$HOME/.linkchecker_blacklist\fP for
-\fBblacklist\fP output, or \fIfilename\fP if specified.
-\fIencoding\fP specifies the output encoding, the default is
-\fBiso-8859-15\fP.
-Valid encodings are listed at
-\fBhttp://docs.python.org/lib/node127.html\fP.
-The \fIfilename\fP part of the \fBnone\fP output type will be ignored,
-else if the file already exists, it will be overwritten.
-You can specify this option more than once. Valid file output types
-are \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP
-Default is no file output. The various output types are documented
-below. Note that you can suppress all console output
-with the option \fB-o none\fP.
+\fB-F\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP][\fB/\fP\fIDateiname\fP], \fB--file-output=\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP][\fB/\fP\fIDateiname\fP]
+Ausgabe in eine Datei namens \fBlinkchecker-out.\fP\fITyp\fP,
+\fB$HOME/.linkchecker_blacklist\fP
+bei \fBblacklist\fP Ausgabe, oder \fIDateiname\fP falls angegeben.
+Der \fIDateiname\fP Teil wird beim Ausgabetyp \fBnone\fP ignoriert,
+ansonsten wird die Datei überschreiben falls sie existiert.
+Sie können diese Option mehr als einmal verwenden. Gültige
+Ausgabetypen sind \fBtext\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP.
+Standard ist keine Dateiausgabe. \fIEnkodierung\fP gibt die
+Ausgabekodierung an, die Standardkodierung ist \fBiso-8859-15\fP.
+Gültige Encodierungen sind unter
+\fBhttp://docs.python.org/lib/node127.html\fP aufgelistet.
+Bemerken Sie dass die Option
+\fB-o none\fP jegliche Ausgaben auf der Konsole verhindert.
 .TP
 \fB--no-status\fP
-Do not print check status every 5 seconds to stderr. Does not work with the
-\fB--debug\fP option.
+Gebe keine Statusmeldungen aus.
 .TP
 \fB-D\fP, \fB--debug\fP
-Print debugging information. Provide this option multiple times
-for even more debugging information. Enabling debug will also
-disable threading.
+Gebe Debugmeldungen aus für den angegebenen Logger.
+Verfügbare Logger sind \fBcmdline\fP, \fBchecking\fP,
+\fBcache\fP, \fBgui\fP and \fBall\fP.
+Die Angabe \fBall\fP ist ein Synonym für alle verfügbaren Logger.
+Diese Option kann mehrmals angegeben werden, um
+mit mehr als einem Logger zu debuggen.
+.BR
+Für exakte Resultate wird Threading während einem
+Debuglauf deaktiviert.
 .TP
 \fB--profile\fP
-Write profiling data into a file named \fBlinkchecker.prof\fP
-in the current working directory. See also \fB--viewprof\fP.
+Schreibe Profiling-Daten in eine Datei namens \fBlinkchecker.prof\fP im
+aktuellen Arbeitsverzeichnis. Siehe auch \fB--viewprof\fP.
 .TP
 \fB--viewprof\fP
-Print out previously generated profiling data. See also
-\fB--profile\fP.
+Gebe vorher generierte Profiling-Daten aus. Siehe auch \fB--profile\fP.
 
-.SS Checking options
+.SS Optionen zum Prüfen
 .TP
 \fB-r\fP\fIdepth\fP, \fB--recursion-level=\fP\fIdepth\fP
 Check recursively all links up to given \fIdepth\fP.
@@ -207,7 +211,7 @@ Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked.
 
-.SS Deprecated options
+.SS Alte Optionen
 .TP
 \fB--status\fP
 Print check status every 5 seconds to stderr. This is the default now.
@@ -247,40 +251,43 @@ the number of times they have failed.
 Logs nothing. Suitable for scripts.
 
 .SH BEMERKUNGEN
-A \fB!\fP before any regex negates it. So \fB'!^mailto:'\fP matches
-everything but a mailto link.
+Ein \fB!\fP vor einem regulären Ausdruck negiert diesen. Also matcht
+\fB'!^mailto:'\fP alles außer mailto Links.
 
-LinkCheckers commandline parser treats \fBftp.\fP links like \fBftp://ftp.\fP
-and \fBwww.\fP links like \fBhttp://www.\fP.
-You can also give local files as arguments.
+URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie
+\fBftp://ftp.\fP behandelt, URLs die mit \fBwww.\fP beginnen wie
+\fBhttp://www.\fP.
+Sie können auch lokale Dateien als Argumente angeben.
 
-If you have your system configured to automatically establish a
-connection to the internet (e.g. with diald), it will connect when
-checking links not pointing to your local host.
-Use the -s and -i options to prevent this.
+Falls sich Ihr System automatisch mit dem Internet verbindet
+(z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht
+auf Ihren lokalen Rechner verweisen
+Benutzen Sie die Optionen \fB-s\fP und \fB-i\fP, um dies zu verhindern.
 
-Javascript links are currently ignored.
+Javascript Links werden zur Zeit ignoriert
 
-If your platform does not support threading, LinkChecker uses
-\fB-t0\fP.
+Wenn Ihr System keine Threads unterstützt, benutzt LinkChecker
+automatisch \fB-t0\fP..
 
-You can supply multiple user/password pairs in a configuration file.
+Sie können mehrere user/password Paare in einer Konfigurationsdatei
+angeben
 
-To use proxies set $http_proxy, $https_proxy on Unix or Windows.
-On a Mac use the Internet Config.
+Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter
+Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.
 
-When checking 'news:' links the given NNTP host doesn't need to be the
-same as the host of the user browsing your pages!
+Beim Prüfen von \fBnews:\fP Links muß der angegebene NNTP Rechner nicht
+unbedingt derselbe wie der des Benutzers sein.
 
 .SH DATEIEN
-\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP - default
-configuration files
+\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP -
+Standardkonfigurationsdateien
 
-\fB~/.blacklist\fP - default blacklist logger output filename
+\fB~/.blacklist\fP - Standard Dateiname der blacklist Logger Ausgabe
 
-\fBlinkchecker-out.\fP\fItype\fP - default logger file output name
+\fBlinkchecker-out.\fP\fItype\fP - Standard Dateiname der Logger Ausgabe
 
-\fBhttp://docs.python.org/lib/node127.html\fP - valid output encodings
+\fBhttp://docs.python.org/lib/node127.html\fP - gültige Ausgabe
+Enkodierungen
 
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>
