@@ -231,7 +231,11 @@ class UrlData:
     def copyFrom (self, urlData):
         self.errorString = urlData.errorString
         self.validString = urlData.validString
-        self.warningString = urlData.warningString
+        if self.warningString:
+            if urlData.warningString:
+                self.warningString += "\n"+urlData.warningString
+        else:
+            self.warningString = urlData.warningString
         self.infoString = urlData.infoString
         self.valid = urlData.valid
         self.dltime = urlData.dltime
@@ -311,11 +315,12 @@ class UrlData:
 
         # check the cache
         debug(BRING_IT_ON, "checking cache")
-        if self.config.urlCache_has_key(self.getCacheKey()):
-            self.copyFrom(self.config.urlCache_get(self.getCacheKey()))
-            self.cached = 1
-            self.logMe()
-            return
+        for key in self.getCacheKeys():
+            if self.config.urlCache_has_key(key):
+                self.copyFrom(self.config.urlCache_get(key))
+                self.cached = 1
+                self.logMe()
+                return
 
         # apply filter
         debug(BRING_IT_ON, "extern =", self.extern)
@@ -376,18 +381,21 @@ class UrlData:
 
 
     def putInCache (self):
-        cacheKey = self.getCacheKey()
-        if cacheKey and not self.cached:
-            if type(cacheKey) == type([]):
-                for key in cacheKey:
-                    self.config.urlCache_set(key, self)
-            else:
-                self.config.urlCache_set(cacheKey, self)
+        if not self.cached:
+            for key in self.getCacheKeys():
+                self.config.urlCache_set(key, self)
             self.cached = 1
 
 
+    def getCacheKeys (self):
+        key = self.getCacheKey()
+        if key is None:
+            return []
+        return [key]
+
+
     def getCacheKey (self):
-        # remember that the host is lowercase
+        # note: the host is already lowercase
         if self.urlparts:
             if self.config["noanchorcaching"]:
                 # removed anchor from cache key

@@ -31,12 +31,15 @@ class HostCheckingUrlData (UrlData):
         self.host = None
         self.url = urllib.unquote(self.urlName)
 
+
     def buildUrl (self):
         # to avoid anchor checking
         self.urlparts = None
 
-    def getCacheKey (self):
-        return "%s:%s" % (self.scheme, self.host)
+
+    def getCacheKeys (self):
+        return ["%s:%s" % (self.scheme, self.host)]
+
 
     def checkConnection (self):
         ip = socket.gethostbyname(self.host)

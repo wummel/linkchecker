@@ -108,14 +108,14 @@ class FileUrlData (UrlData):
         self.url = urlparse.urlunsplit(self.urlparts)
 
 
-    def getCacheKey (self):
+    def getCacheKeys (self):
         # the host in urlparts is lowercase()d
         if self.urlparts:
             self.urlparts[4] = self.anchor
             key = urlparse.urlunsplit(self.urlparts)
             self.urlparts[4] = ''
-            return key
-        return None
+            return [key]
+        return []
 
 
     def adjustWinPath (self):

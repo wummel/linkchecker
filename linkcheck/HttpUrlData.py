@@ -41,6 +41,13 @@ _isBrokenAnchorServer = re.compile(r'Microsoft-IIS/').search
 class HttpUrlData (ProxyUrlData):
     "Url link with http scheme"
 
+    def __init__ (self, urlName, recursionLevel, config, parentName=None,
+                  baseRef=None, line=0, column=0, name=""):
+        ProxyUrlData.__init__(self, urlName, recursionLevel, config,
+	                 parentName=parentName, baseRef=baseRef, line=line,
+		         column=column, name=name)
+        self.aliases = []
+
 
     def buildUrl (self):
         ProxyUrlData.buildUrl(self)
@@ -110,6 +117,7 @@ class HttpUrlData (ProxyUrlData):
             self.setWarning(i18n._("Amazon servers block HTTP HEAD requests, "
                                    "using GET instead"))
         # first try
+        redirectCache = [self.url]
         response = self._getHttpResponse()
         self.headers = response.msg
         debug(BRING_IT_ON, response.status, response.reason, self.headers)
@@ -127,26 +135,45 @@ class HttpUrlData (ProxyUrlData):
             tries = 0
             redirected = self.url
             while response.status in [301,302] and self.headers and tries < 5:
-                has301status = (response.status==301)
                 newurl = self.headers.getheader("Location",
                              self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
                 redirected = unquote(redirected)
                 # note: urlparts has to be a list
                 self.urlparts = list(urlparse.urlsplit(redirected))
+                # check internal redirect cache to avoid recursion
+                if redirected in redirectCache:
+                    redirectCache.append(redirected)
+                    self.setError(
+                         i18n._("recursive redirection encountered:\n %s") % \
+                                "\n  => ".join(redirectCache))
+                    return
+                redirectCache.append(redirected)
+                # remember this alias
+                if response.status == 301:
+                    if not has301status:
+                        self.setWarning(i18n._("HTTP 301 (moved permanent) encountered: you "
+                                               "should update this link"))
+                        if not (self.url.endswith('/') or self.url.endswith('.html')):
+                            self.setWarning(i18n._("A HTTP 301 redirection occured and the url has no "
+                                                   "trailing / at the end. All urls which point to (home) "
+                                                   "directories should end with a / to avoid redirection"))
+                        has301status = 1
+                    self.aliases.append(redirected)
                 # check cache again on possibly changed URL
-                if self.config.urlCache_has_key(self.getCacheKey()):
-                    self.copyFrom(self.config.urlCache_get(self.getCacheKey()))
+                key = self.getCacheKey()
+                if self.config.urlCache_has_key(key):
+                    self.copyFrom(self.config.urlCache_get(key))
                     self.cached = 1
                     self.logMe()
                     return
-        # new response data
+                # new response data
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 debug(BRING_IT_ON, "Redirected", self.headers)
                 tries += 1
             if tries >= 5:
-                self.setError(i18n._("too much redirections (>= 5)"))
+                self.setError(i18n._("more than five redirections, aborting"))
                 return
             # user authentication
             if response.status==401:
@@ -195,26 +222,13 @@ class HttpUrlData (ProxyUrlData):
                     self.headers = response.msg
             if response.status not in [301,302]: break
 
-        self.checkWarnings(has301status)
-        self.checkResponse(response)
-
-
-    def checkWarnings (self, has301status):
-        """check url warnings"""
+        # check url warnings
         effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
             self.setWarning(i18n._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
-
-        if has301status:
-            self.setWarning(
-                       i18n._("HTTP 301 (moved permanent) encountered: you "
-                              "should update this link"))
-            if not (self.url.endswith('/') or self.url.endswith('.html')):
-                self.setWarning(
-            i18n._("A HTTP 301 redirection occured and the url has no "
-                    "trailing / at the end. All urls which point to (home) "
-                    "directories should end with a / to avoid redirection"))
+        # check response
+        self.checkResponse(response)
 
 
     def checkResponse (self, response):
@@ -236,6 +250,12 @@ class HttpUrlData (ProxyUrlData):
                 self.setValid(`response.status`+" "+response.reason)
             else:
                 self.setValid("OK")
+
+
+    def getCacheKeys (self):
+        keys = ProxyUrlData.getCacheKeys(self)
+        keys.extend(self.aliases)
+        return keys
 
 
     def _getHttpResponse (self, method="HEAD"):

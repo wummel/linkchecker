@@ -114,13 +114,15 @@ class MailtoUrlData (HostCheckingUrlData):
             return (split[0], "localhost")
         raise LinkCheckerError(i18n._("could not split the mail adress"))
 
+
     def closeConnection (self):
         try: self.urlConnection.quit()
         except: pass
         self.urlConnection = None
 
-    def getCacheKey (self):
-        return "%s:%s" % (self.scheme, str(self.adresses))
+
+    def getCacheKeys (self):
+        return ["%s:%s" % (self.scheme, str(self.adresses))]
 
 
     def hasContent (self):

@@ -90,8 +90,9 @@ class NntpUrlData (UrlData):
             self.setWarning(i18n._("NNTP busy: %s")%str(value))
         return nntp
 
-    def getCacheKey (self):
-        return self.url
+
+    def getCacheKeys (self):
+        return [self.url]
 
 
     def hasContent (self):
