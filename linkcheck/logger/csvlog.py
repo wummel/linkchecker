@@ -39,6 +39,7 @@ class CSVLogger (linkcheck.logger.Logger):
         super(CSVLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.separator = args['separator']
+        self.quotechar = args['quotechar']
 
     def comment (self, s, **args):
         """
@@ -86,7 +87,8 @@ class CSVLogger (linkcheck.logger.Logger):
                 row.append(s)
             self.flush()
         self.writer = csv.writer(self.fd, dialect='excel',
-                        delimiter=self.separator, lineterminator=os.linesep)
+                        delimiter=self.separator, lineterminator=os.linesep,
+                        quotechar=self.quotechar)
         if row:
             self.writer.writerow(row)
 
