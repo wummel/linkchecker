@@ -24,27 +24,12 @@ except ImportError:
     import Config, i18n
 from linkcheck import getLinkPat, checkUrls
 from linkcheck.log import strtime
+from linkcheck.url import is_valid_url, safe_host_pattern, safe_url_pattern
 from linkcheck.UrlData import GetUrlDataFrom
 from types import StringType
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
-
-# adapted from David Wheelers "Secure Programming for Linux and Unix HOWTO"
-_az09 = r"a-z0-9"
-_path = r"\-\_\.\!\~\*\'\(\)"
-_hex_safe = r"2-9a-f"
-_hex_full = r"0-9a-f"
-_safe_scheme_pattern = r"(https?)"
-_safe_host_pattern = r"([%(_az09)s][%(_az09)s\-]*(\.[%(_az09)s][%(_az09)s\-]*)*\.?)" % locals()
-_safe_path_pattern = r"((/([%(_az09)s%(_path)s]|(%%[%(_hex_safe)s][%(_hex_full)s]))+)*/?)" % locals()
-_safe_fragment_pattern = r"(\#([%(_az09)s%(_path)s\+]|(%%[%(_hex_safe)s][%(_hex_full)s]))+)?" % locals()
-_safe_url_pattern = "(?i)"+_safe_scheme_pattern+"://"+_safe_host_pattern+\
-                    _safe_path_pattern+_safe_fragment_pattern
-
-_is_level = re.compile(r"\d").match
-_is_valid_url = re.compile("^%s$"%_safe_url_pattern).match
-
 
 class FormError (Exception):
     """form related errors"""
@@ -81,13 +66,12 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     if form.has_key("anchors"): config["anchors"] = True
     if not form.has_key("errors"): config["verbose"] = True
     if form.has_key("intern"):
-        pat = _safe_scheme_pattern+"://"+re.escape(getHostName(form))+\
-              _safe_path_pattern+_safe_fragment_pattern
+        pat = safe_host_pattern(re.escape(getHostName(form)))
     else:
-        pat = _safe_url_pattern
+        pat = safe_url_pattern
     config["internlinks"].append(getLinkPat("^%s$" % pat))
     # avoid checking of local files or other nasty stuff
-    config["externlinks"].append(getLinkPat("^%s$" % _safe_url_pattern))
+    config["externlinks"].append(getLinkPat("^%s$" % safe_url_pattern))
     config["externlinks"].append(getLinkPat(".*", strict=True))
     # start checking
     config.appendUrl(GetUrlDataFrom(form["url"].value, 0, config))
