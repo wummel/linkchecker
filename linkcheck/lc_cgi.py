@@ -76,7 +76,7 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     config = Config.Configuration()
     config["recursionlevel"] = int(form["level"].value)
     config["log"] = config.newLogger('html', {'fd': out})
-    config.disableThreading()
+    config.setThreads(0)
     if form.has_key('strict'): config['strict'] = True
     if form.has_key("anchors"): config["anchors"] = True
     if not form.has_key("errors"): config["verbose"] = True
