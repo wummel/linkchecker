@@ -9,6 +9,10 @@
     Type: feature
     Changed: linkcheck/logger/{text,html}.py
 
+  * Check if FTP file really exists instead of only the parent dir.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
 1.13.4 "Shaun of the dead" (released 17.9.2004)
   * Catch HTTP cookie errors and add a warning.
     Type: bugfix
