@@ -1,4 +1,4 @@
-- intern/extern braucht Bemerkung über file:// links
+- test.py soll resources beachten
 
 - testen: id="" Anchor check (email)
 
@@ -16,33 +16,3 @@
   right now, the page size is only html content
 
 - save downloaded pages
-
-- error:
-exceptions.AttributeError 'NoneType' object has no attribute 'write'
-Traceback (most recent call last):
-  File "/usr/lib/python2.3/site-packages/linkcheck/UrlData.py", line 303,  in check
-    self._check()
-  File "/usr/lib/python2.3/site-packages/linkcheck/UrlData.py", line 369,  in _check
-    self.parseUrl()
-  File "/usr/lib/python2.3/site-packages/linkcheck/HttpUrlData.py", line 426, in parseUrl
-    self.parse_html()
-  File "/usr/lib/python2.3/site-packages/linkcheck/UrlData.py", line 623, in parse_html
-    line=line, column=column, name=name))
-  File "/usr/lib/python2.3/site-packages/linkcheck/Config.py", line 250, in appendUrl
-    if not urlData.checkCache():
-  File "/usr/lib/python2.3/site-packages/linkcheck/UrlData.py", line 409, in checkCache
-    self.logMe()
-  File "/usr/lib/python2.3/site-packages/linkcheck/UrlData.py", line 298, in logMe
-    self.config.log_newUrl(self)
-  File "/usr/lib/python2.3/site-packages/linkcheck/Config.py", line 355, in log_newUrl
-    self["log"].newUrl(url)
-  File "/usr/lib/python2.3/site-packages/linkcheck/log/ColoredLogger.py", line 91, in newUrl self.fd.write("|  ")
-AttributeError: 'NoneType' object has no attribute 'write'
-System info:
-LinkChecker 1.12.3
-Python 2.3.3 (#1, May  7 2004, 10:31:40)
-[GCC 3.3.3 20040412 (Red Hat Linux 3.3.3-7)] on linux2
-
-******** LinkChecker internal error, bailing out ********
-removed 22 cached urls from incoming queue
-removed 447 cached urls from incoming queue
