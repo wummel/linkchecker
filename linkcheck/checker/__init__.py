@@ -57,6 +57,42 @@ if hasattr(socket, "sslerror"):
     ExcList.append(socket.sslerror)
 
 
+ignored_schemes = r"""^(
+acap        # application configuration access protocol
+|afs        # Andrew File System global file names
+|cid        # content identifier
+|data       # data
+|dav        # dav
+|fax        # fax
+|imap       # internet message access protocol
+|ldap       # Lightweight Directory Access Protocol
+|mailserver # Access to data available from mail servers
+|mid        # message identifier
+|modem      # modem
+|nfs        # network file system protocol
+|opaquelocktoken # opaquelocktoken
+|pop        # Post Office Protocol v3
+|prospero   # Prospero Directory Service
+|rtsp       # real time streaming protocol
+|service    # service location
+|sip        # session initiation protocol
+|tel        # telephone
+|tip        # Transaction Internet Protocol
+|tn3270     # Interactive 3270 emulation sessions
+|vemmi      # versatile multimedia interface
+|wais       # Wide Area Information Servers
+|z39\.50r   # Z39.50 Retrieval
+|z39\.50s   # Z39.50 Session
+|chrome     # Mozilla specific
+|find       # Mozilla specific
+|clsid      # Microsoft specific
+|javascript # JavaScript
+|isbn       # ISBN (int. book numbers)
+):"""
+
+ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
+
+
 
 # main check function
 def checkUrls (config):
@@ -91,7 +127,7 @@ def checkUrls (config):
         config.finish()
         config.log_endOfOutput()
         active = config.threader.active_threads()
-        linkcheck.log.warn(LOG_CHECK, bk.i18n._("keyboard interrupt; waiting for %d active threads to finish") % active)
+        bk.log.warn(linkcheck.LOG_CHECK, bk.i18n._("keyboard interrupt; waiting for %d active threads to finish") % active)
         raise
 
 

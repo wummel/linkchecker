@@ -19,6 +19,8 @@ import sys
 import time
 import bk.i18n
 import linkcheck.logger.Logger
+import linkcheck.StringUtil
+import linkcheck.Config
 
 
 class StandardLogger (linkcheck.logger.Logger.Logger):

@@ -16,45 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re
 import UrlData
 import bk.i18n
-
-ignored_schemes = r"""^(
-acap        # application configuration access protocol
-|afs        # Andrew File System global file names
-|cid        # content identifier
-|data       # data
-|dav        # dav
-|fax        # fax
-|imap       # internet message access protocol
-|ldap       # Lightweight Directory Access Protocol
-|mailserver # Access to data available from mail servers
-|mid        # message identifier
-|modem      # modem
-|nfs        # network file system protocol
-|opaquelocktoken # opaquelocktoken
-|pop        # Post Office Protocol v3
-|prospero   # Prospero Directory Service
-|rtsp       # real time streaming protocol
-|service    # service location
-|sip        # session initiation protocol
-|tel        # telephone
-|tip        # Transaction Internet Protocol
-|tn3270     # Interactive 3270 emulation sessions
-|vemmi      # versatile multimedia interface
-|wais       # Wide Area Information Servers
-|z39\.50r   # Z39.50 Retrieval
-|z39\.50s   # Z39.50 Session
-|chrome     # Mozilla specific
-|find       # Mozilla specific
-|clsid      # Microsoft specific
-|javascript # JavaScript
-|isbn       # ISBN (int. book numbers)
-):"""
-
-ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
-
 
 class IgnoredUrlData (UrlData.UrlData):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""

@@ -17,6 +17,7 @@
 
 import re
 import linkcheck
+import bk.HtmlParser
 
 
 imgtag_re = re.compile(r"""(?i)\s+alt\s*=\s*(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
@@ -38,7 +39,7 @@ def href_name(txt):
     name = txt[:endtag.start()]
     if img_re.search(name):
         return image_name(name)
-    return linkcheck.StringUtil.unhtmlify(linkcheck.StringUtil.remove_markup(name))
+    return bk.HtmlParser.resolve_entities(linkcheck.StringUtil.remove_markup(name))
 
 _tests = (
     "<img src='' alt=''></a>",

@@ -17,6 +17,9 @@
 
 import re
 import linkcheck
+import linkcheck.StringUtil
+import linkcheck.linkname
+import bk.log
 
 
 # ripped mainly from HTML::Tagset.pm
@@ -114,8 +117,8 @@ class LinkFinder (TagFinder):
 
 
     def startElement (self, tag, attrs):
-        debug(NIGHTMARE, "LinkFinder tag", tag, "attrs", attrs)
-        debug(NIGHTMARE, "line", self.parser.lineno(),
+        bk.log.debug(linkcheck.LOG_CHECK, "LinkFinder tag", tag, "attrs", attrs)
+        bk.log.debug(linkcheck.LOG_CHECK, "line", self.parser.lineno(),
               "col", self.parser.column(),
               "old line", self.parser.last_lineno(),
               "old col", self.parser.last_column())
@@ -160,7 +163,7 @@ class LinkFinder (TagFinder):
             # no url found
             return
         for u in urls:
-            debug(NIGHTMARE, "LinkParser add link", tag, attr, u, name, base)
+            bk.log.debug(linkcheck.LOG_CHECK, "LinkParser add link", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))
 

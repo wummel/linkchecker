@@ -25,6 +25,7 @@ import sets
 import urllib
 import _linkchecker_configdata
 import bk.log
+import bk.i18n
 import bk.containers
 import linkcheck
 import linkcheck.Threader
@@ -254,7 +255,7 @@ class Configuration (dict):
         self.urls = [ u for u in self.urls if u.checkCache() ]
         removed = olen - len(self.urls)
         print >>sys.stderr, \
-          i18n._("removed %d cached urls from incoming queue")%removed
+          bk.i18n._("removed %d cached urls from incoming queue")%removed
 
     def getUrl (self):
         """get first url in queue and return it"""
@@ -402,7 +403,7 @@ class Configuration (dict):
             if linkcheck.Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
-                warn(i18n._("invalid log option '%s'") % log)
+                bk.log.warn(bk.i18n._("invalid log option '%s'") % log)
         except ConfigParser.Error, msg:
             bk.log.debug(linkcheck.LOG_CHECK, msg)
         try: 
@@ -496,7 +497,7 @@ class Configuration (dict):
             while 1:
                 ctuple = cfgparser.get(section, "extern%d" % i).split()
                 if len(ctuple)!=2:
-                    error(i18n._("extern%d: syntax error %s\n")%(i, ctuple))
+                    bk.log.error(bk.i18n._("extern%d: syntax error %s\n")%(i, ctuple))
                     break
                 self["externlinks"].append(linkcheck.getLinkPat(ctuple[0], strict=int(ctuple[1])))
                 i += 1

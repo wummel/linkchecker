@@ -20,6 +20,7 @@ import re
 import os
 import urlparse
 import UrlData
+import linkcheck
 
 # if file extension was fruitless, look at the content
 contents = {

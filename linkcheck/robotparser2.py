@@ -297,7 +297,7 @@ def decode (page):
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
         except zlib.error, msg:
-            warn(bk.i18n._("%r at %s, assuming non-compressed content") % (str(msg), page.geturl()))
+            # assuming non-compressed content
             fp = StringIO.StringIO(content)
         # remove content-encoding header
         headers = {}
