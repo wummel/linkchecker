@@ -45,7 +45,7 @@ class HttpUrlData (ProxyUrlData):
         if not self.urlparts[2]:
             self.setWarning(i18n._("URL path is empty, assuming '/' as path"))
             self.urlparts[2] = '/'
-            self.url = urlparse.urlunsplit(self.urlparts)
+            self.url = urlparse.urlunsplit(self.urlparts[:4]+[self.anchor])
 
 
     def checkConnection (self):
@@ -127,7 +127,11 @@ class HttpUrlData (ProxyUrlData):
                              self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
                 redirected = unquote(redirected)
+                # note: urlparts has to be a list
                 self.urlparts = list(urlparse.urlsplit(redirected))
+                # preserve anchor on redirects
+                self.urlparts[4] = self.anchor
+                # new response data
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 debug(BRING_IT_ON, "Redirected", self.headers)
@@ -178,7 +182,7 @@ class HttpUrlData (ProxyUrlData):
                     self.headers = response.msg
             if response.status not in [301,302]: break
 
-        effectiveurl = urlparse.urlunsplit(self.urlparts)
+        effectiveurl = urlparse.urlunsplit(self.urlparts[:4]+[self.anchor])
         if self.url != effectiveurl:
             self.setWarning(i18n._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl

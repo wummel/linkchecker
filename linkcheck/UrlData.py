@@ -186,7 +186,9 @@ class UrlData:
                                   % str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()
+        # safe anchor for later checking and delete it from url parts
         self.anchor = self.urlparts[4]
+        self.urlparts[4] = ''
 
 
     def logMe (self):
@@ -311,11 +313,11 @@ class UrlData:
         # remember that the host is lowercase
         if self.urlparts:
             if self.config["noanchorcaching"]:
-                # remove anchor from cache key
-                return urlparse.urlunsplit(self.urlparts[:4]+[''])
+                # removed anchor from cache key
+                return urlparse.urlunsplit(self.urlparts)
             else:
                 # do not ignore anchor
-                return urlparse.urlunsplit(self.urlparts)
+                return urlparse.urlunsplit(self.urlparts[:4]+[self.anchor])
         return None
 
 
