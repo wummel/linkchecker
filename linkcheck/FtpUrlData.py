@@ -65,14 +65,14 @@ class FtpUrlData (ProxyUrlData):
 
     def isHtml (self):
         # guess by extension
-        for ro in linkcheck.extensions.values():
+        for ro in extensions.values():
             if ro.search(self.url):
                 return 1
         return None
 
 
     def parseUrl (self):
-        for key,ro in linkcheck.extensions.items():
+        for key,ro in extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         return None
