@@ -39,12 +39,16 @@ lognamelist = ", ".join(["%r"%name for name in lognames.keys()])
 
 
 class LinkCheckerError (Exception):
-    """exception to be raised on linkchecker-specific check errors"""
+    """
+    Exception to be raised on linkchecker-specific check errors.
+    """
     pass
 
 
 def get_link_pat (arg, strict=False):
-    """get a link pattern matcher for intern/extern links"""
+    """
+    Get a link pattern matcher for intern/extern links.
+    """
     linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg[0:1] == '!':
         pattern = arg[1:]
@@ -86,8 +90,12 @@ LoggerKeys = ", ".join(["%r"%name for name in Loggers.keys()])
 
 
 def init_i18n ():
-    """Initialize i18n with the configured locale dir. The environment
-       variable LOCPATH can also specify a locale dir."""
+    """
+    Initialize i18n with the configured locale dir. The environment
+    variable LOCPATH can also specify a locale dir.
+
+    @return: C{None}
+    """
     locdir = os.environ.get('LOCPATH')
     if locdir is None:
         locdir = os.path.join(configdata.install_data, 'share', 'locale')

@@ -28,12 +28,16 @@ img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>])+>""")
 endtag_re = re.compile(r"""(?i)</a\s*>""")
 
 def _unquote (txt):
-    """resolve entities and markup from txt"""
+    """
+    Resolve entities and markup from txt.
+    """
     return linkcheck.HtmlParser.resolve_entities(
                   linkcheck.strformat.remove_markup(txt))
 
 def image_name (txt):
-    """return the alt part of the first <img alt=""> tag in txt"""
+    """
+    Return the alt part of the first <img alt=""> tag in txt.
+    """
     mo = imgtag_re.search(txt)
     if mo:
         name = linkcheck.strformat.unquote(mo.group('name').strip())
@@ -42,7 +46,9 @@ def image_name (txt):
 
 
 def href_name (txt):
-    """return the name part of the first <a href="">name</a> link in txt"""
+    """
+    Return the name part of the first <a href="">name</a> link in txt.
+    """
     name = u""
     endtag = endtag_re.search(txt)
     if not endtag:

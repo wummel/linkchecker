@@ -34,19 +34,25 @@ _supported_langs = ('de', 'fr', 'nl', 'C')
 _is_level = re.compile(r'^[0123]$').match
 
 class FormError (Exception):
-    """form related errors"""
+    """
+    Form related errors.
+    """
     pass
 
 
 def startoutput (out=sys.stdout):
-    """print leading HTML headers to given output stream"""
+    """
+    Print leading HTML headers to given output stream.
+    """
     out.write("Content-type: text/html\r\n"
               "Cache-Control: no-cache\r\n"
               "Pragma: no-cache\r\n"
               "\r\n")
 
 def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
-    """see if remote addr is allowed to access the CGI interface"""
+    """
+    See if remote addr is allowed to access the CGI interface.
+    """
     if os.environ.get('REMOTE_ADDR') in hosts and \
        os.environ.get('SERVER_ADDR') in servers:
         return True
@@ -56,7 +62,9 @@ def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
 
 
 def checklink (out=sys.stdout, form={}, env=os.environ):
-    """main cgi function, check the given links and print out the result"""
+    """
+    Main cgi function, check the given links and print out the result.
+    """
     try:
         checkform(form)
     except FormError, why:
@@ -96,14 +104,17 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
 
 
 def get_host_name (form):
-    """return host name of given URL"""
+    """
+    Return host name of given URL.
+    """
     return urlparse.urlparse(form["url"].value)[1]
 
 
 def checkform (form):
-    """check form data. throw exception on error
-       Be sure to NOT print out any user-given data as HTML code, so use
-       only plain strings as exception text.
+    """
+    Check form data. throw exception on error
+    Be sure to NOT print out any user-given data as HTML code, so use
+    only plain strings as exception text.
     """
     # check lang support
     if form.has_key("language"):
@@ -134,7 +145,9 @@ def checkform (form):
                 raise FormError(_("invalid %s option syntax") % option)
 
 def logit (form, env):
-    """log form errors"""
+    """
+    Log form errors.
+    """
     global _logfile
     if not _logfile:
         return
@@ -151,7 +164,9 @@ def logit (form, env):
 
 
 def print_error (out, why):
-    """print standard error page"""
+    """
+    Print standard error page.
+    """
     out.write(_("""<html><head>
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>

@@ -1,14 +1,24 @@
-""" robotparser.py
-
-    Copyright (C) 2000-2005 Bastian Kleineidam
-
-    You can choose between two licenses when using this package:
-    1) GNU GPLv2
-    2) PSF license for Python 2.2
-
-    The robots.txt Exclusion Protocol is implemented as specified in
-    http://www.robotstxt.org/wc/norobots-rfc.html
 """
+robotparser.py
+
+The robots.txt Exclusion Protocol is implemented as specified in
+http://www.robotstxt.org/wc/norobots-rfc.html
+"""
+# Copyright (C) 2000-2005  Bastian Kleineidam
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 import urlparse
 import httplib
 import urllib
@@ -27,34 +37,60 @@ __all__ = ["RobotFileParser"]
 _debug = False
 
 def _msg (prefix, msg):
-    """print debug message"""
+    """
+    Print given prefix and debug message to stderr if the _debug flag is
+    set.
+
+    @return: c{None}
+    """
     if _debug:
         print >> sys.stderr, prefix, msg
+
+# methods for debug, warning and error messages
 debug = lambda txt: _msg("debug:", txt)
 warn = lambda txt: _msg("warning:", txt)
 error = lambda txt: _msg("error:", txt)
 
 class PasswordManager (object):
+    """
+    Simple password manager storing username and password. Suitable
+    for use as an AuthHandler instance in urllib2.
+    """
 
     def __init__ (self, user, password):
+        """
+        Store given username and password.
+        """
         self.user = user
         self.password = password
 
     def add_password (self, realm, uri, user, passwd):
-        # we have already our password
+        """
+        Does nothing since username and password are already stored.
+
+        @return: c{None}
+        """
         pass
 
     def find_user_password (self, realm, authuri):
+        """
+        Get stored username and password.
+
+        @return: A tuple (user, password)
+        @rtype: c{tuple}
+        """
         return self.user, self.password
 
 
 class RobotFileParser (object):
-    """ This class provides a set of methods to read, parse and answer
+    """
+    This class provides a set of methods to read, parse and answer
     questions about a single robots.txt file.
     """
 
     def __init__ (self, url='', user=None, password=None):
-        """Initialize internal entry lists and store given url and
+        """
+        Initialize internal entry lists and store given url and
         credentials.
         """
         self.set_url(url)
@@ -63,7 +99,11 @@ class RobotFileParser (object):
         self._reset()
 
     def _reset (self):
-        """reset internal entry lists"""
+        """
+        Reset internal flags and entry lists.
+
+        @return: c{None}
+        """
         self.entries = []
         self.default_entry = None
         self.disallow_all = False
@@ -71,28 +111,47 @@ class RobotFileParser (object):
         self.last_checked = 0
 
     def mtime (self):
-        """Returns the time the robots.txt file was last fetched.
+        """
+        Returns the time the robots.txt file was last fetched.
 
         This is useful for long-running web spiders that need to
         check for new robots.txt files periodically.
+
+        @return: last modified in time.time() format
+        @rtype: c{number}
         """
         return self.last_checked
 
     def modified (self):
-        """Sets the time the robots.txt file was last fetched to the
-           current time.
+        """
+        Sets the time the robots.txt file was last fetched to the
+        current time.
+
+        @return: c{None}
         """
         import time
         self.last_checked = time.time()
 
     def set_url (self, url):
-        """Sets the URL referring to a robots.txt file."""
+        """
+        Sets the URL referring to a robots.txt file.
+
+        @return: c{None}
+        """
         self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
 
     def get_opener (self):
+        """
+        Construct an URL opener object. It considers the given credentials
+        from the __init__() method and supports proxies.
+
+        @return URL opener
+        @rtype: c{urllib2.OpenerDirector}
+        """
         pwd_manager = PasswordManager(self.user, self.password)
-        handlers = [urllib2.ProxyHandler(urllib.getproxies()),
+        handlers = [
+            urllib2.ProxyHandler(urllib.getproxies()),
             urllib2.UnknownHandler,
             HttpWithGzipHandler,
             urllib2.HTTPBasicAuthHandler(pwd_manager),
@@ -107,7 +166,11 @@ class RobotFileParser (object):
         return urllib2.build_opener(*handlers)
 
     def read (self):
-        """Reads the robots.txt URL and feeds it to the parser."""
+        """
+        Reads the robots.txt URL and feeds it to the parser.
+
+        @return: c{None}
+        """
         self._reset()
         headers = {
             'User-Agent': 'Python RobotFileParser/2.1',
@@ -149,7 +212,11 @@ class RobotFileParser (object):
         self.parse(lines)
 
     def _add_entry (self, entry):
-        """add entry to entry list"""
+        """
+        Add a parsed entry to entry list.
+
+        @return: c{None}
+        """
         if "*" in entry.useragents:
             # the default entry is considered last
             self.default_entry = entry
@@ -157,9 +224,12 @@ class RobotFileParser (object):
             self.entries.append(entry)
 
     def parse (self, lines):
-        """parse the input lines from a robot.txt file.
-           We allow that a user-agent: line is not preceded by
-           one or more blank lines.
+        """
+        Parse the input lines from a robot.txt file.
+        We allow that a user-agent: line is not preceded by
+        one or more blank lines.
+
+        @return: c{None}
         """
         debug("robots.txt parse lines")
         state = 0
@@ -193,8 +263,8 @@ class RobotFileParser (object):
                 if line[0] == "user-agent":
                     if state == 2:
                         warn("line %d: you should insert a blank"
-                              " line before any user-agent"
-                              " directive" % linenumber)
+                             " line before any user-agent"
+                             " directive" % linenumber)
                         self._add_entry(entry)
                         entry = Entry()
                     entry.useragents.append(line[1])
@@ -221,7 +291,12 @@ class RobotFileParser (object):
         debug("Parsed rules:\n%s" % str(self))
 
     def can_fetch (self, useragent, url):
-        """using the parsed robots.txt decide if useragent can fetch url"""
+        """
+        Using the parsed robots.txt decide if useragent can fetch url.
+
+        @return: True if agent can fetch url, else False
+        @rtype: c{bool}
+        """
         debug("Checking robot.txt allowance for:\n"\
               "  user agent: %r\n  url: %r" % (useragent, url))
         if not isinstance(useragent, str):
@@ -245,7 +320,13 @@ class RobotFileParser (object):
         return True
 
     def __str__ (self):
-        """return string representation in robots.txt format"""
+        """
+        Constructs string representation, usable as contents of a
+        robots.txt file.
+
+        @return: robots.txt format
+        @rtype: c{string}
+        """
         lines = [str(entry) for entry in self.entries]
         if self.default_entry is not None:
             lines.append(str(self.default_entry))
@@ -253,11 +334,15 @@ class RobotFileParser (object):
 
 
 class RuleLine (object):
-    """A rule line is a single "Allow:" (allowance==1) or "Disallow:"
-       (allowance==0) followed by a path."""
+    """
+    A rule line is a single "Allow:" (allowance==1) or "Disallow:"
+    (allowance==0) followed by a path.
+    """
 
     def __init__ (self, path, allowance):
-        """initialize with given path and allowance info"""
+        """
+        Initialize with given path and allowance info.
+        """
         if path == '' and not allowance:
             # an empty value means allow all
             allowance = True
@@ -265,30 +350,54 @@ class RuleLine (object):
         self.allowance = allowance
 
     def applies_to (self, path):
-        """return True if pathname applies to this rule"""
+        """
+        Look if given path applies to this rule.
+
+        @return: True if pathname applies to this rule, else False
+        @rtype: c{bool}
+        """
         return self.path == "*" or path.startswith(self.path)
 
     def __str__ (self):
-        """return string representation in robots.txt format"""
+        """
+        Construct string representation in robots.txt format.
+
+        @return: robots.txt format
+        @rtype: c{string}
+        """
         return (self.allowance and "Allow" or "Disallow")+": "+self.path
 
 
 class Entry (object):
-    """An entry has one or more user-agents and zero or more rulelines"""
+    """
+    An entry has one or more user-agents and zero or more rulelines.
+    """
 
     def __init__ (self):
-        """initialize user agent and rule list"""
+        """
+        Initialize user agent and rule list.
+        """
         self.useragents = []
         self.rulelines = []
 
     def __str__ (self):
-        """return string representation in robots.txt format"""
+        """
+        string representation in robots.txt format.
+
+        @return: robots.txt format
+        @rtype: c{string}
+        """
         lines = ["User-agent: %r" % agent for agent in self.useragents]
         lines.extend([str(line) for line in self.rulelines])
         return "\n".join(lines)
 
     def applies_to (self, useragent):
-        """check if this entry applies to the specified agent"""
+        """
+        Check if this entry applies to the specified agent.
+
+        @return: True if this entry applies to the agent, else False.
+        @rtype: c{bool}
+        """
         # split the name token and make it lower case
         if not useragent:
             return True
@@ -303,9 +412,16 @@ class Entry (object):
         return False
 
     def allowance (self, filename):
-        """Preconditions:
+        """
+        Preconditions:
         - our agent applies to this entry
-        - filename is URL decoded"""
+        - filename is URL decoded
+
+        Check if given filename is allowed to acces this entry.
+
+        @return: True if allowed, else False
+        @rtype: c{bool}
+        """
         for line in self.rulelines:
             debug("%s %s %s" % (filename, str(line), line.allowance))
             if line.applies_to(filename):
@@ -334,7 +450,9 @@ class Entry (object):
 ##  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 ##  SOFTWARE.
 def decode (page):
-    """gunzip or deflate a compressed page"""
+    """
+    Gunzip or deflate a compressed page.
+    """
     debug("robots.txt page info %s" % str(page.info()))
     encoding = page.info().get("Content-Encoding")
     if encoding in ('gzip', 'x-gzip', 'deflate'):
@@ -367,19 +485,26 @@ def decode (page):
 
 
 class HttpWithGzipHandler (urllib2.HTTPHandler):
-    "support gzip encoding"
-
+    """
+    Support gzip encoding.
+    """
     def http_open (self, req):
-        """send request and decode answer"""
+        """
+        Send request and decode answer.
+        """
         return decode(urllib2.HTTPHandler.http_open(self, req))
 
 
 if hasattr(linkcheck.httplib2, 'HTTPS'):
     class HttpsWithGzipHandler (urllib2.HTTPSHandler):
-        "support gzip encoding"
+        """
+        Support gzip encoding.
+        """
 
         def http_open (self, req):
-            """send request and decode answer"""
+            """
+            Send request and decode answer.
+            """
             return decode(urllib2.HTTPSHandler.http_open(self, req))
 
 # end of urlutils.py routines

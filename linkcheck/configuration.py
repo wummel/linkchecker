@@ -48,18 +48,23 @@ distribution."""
 
 
 def norm (path):
-    """norm given system path with all available norm funcs in os.path"""
+    """
+    Norm given system path with all available norm funcs in os.path.
+    """
     return os.path.normcase(os.path.normpath(os.path.expanduser(path)))
 
 
 # dynamic options
 class Configuration (dict):
-    """Storage for configuration options. Options can both be given from
-       the command line as well as from configuration files.
+    """
+    Storage for configuration options. Options can both be given from
+    the command line as well as from configuration files.
     """
 
     def __init__ (self):
-        """Initialize the default options"""
+        """
+        Initialize the default options.
+        """
         super(Configuration, self).__init__()
         self["verbose"] = False
         self["warnings"] = False
@@ -130,12 +135,13 @@ class Configuration (dict):
         self["threads"] = 10
 
     def init_logging (self, debug=None):
-        """Load logging.conf file settings to set up the
-           application logging (not to be confused with check loggers).
-           When debug is not None it is expected to be a list of
-           logger names for which debugging will be enabled.
+        """
+        Load logging.conf file settings to set up the
+        application logging (not to be confused with check loggers).
+        When debug is not None it is expected to be a list of
+        logger names for which debugging will be enabled.
 
-           Activating debugging disables threading.
+        Activating debugging disables threading.
         """
         config_dir = _linkchecker_configdata.config_dir
         filename = norm(os.path.join(config_dir, "logging.conf"))
@@ -154,21 +160,27 @@ class Configuration (dict):
                 logging.getLogger(name).setLevel(logging.DEBUG)
 
     def logger_new (self, loggertype, **kwargs):
-        """instantiate new logger and return it"""
+        """
+        Instantiate new logger and return it.
+        """
         args = {}
         args.update(self[loggertype])
         args.update(kwargs)
         return linkcheck.Loggers[loggertype](**args)
 
     def logger_add (self, loggertype, loggerclass, loggerargs=None):
-        """add a new logger type to the known loggers"""
+        """
+        Add a new logger type to the known loggers.
+        """
         if loggerargs is None:
             loggerargs = {}
         linkcheck.Loggers[loggertype] = loggerclass
         self[loggertype] = loggerargs
 
     def read (self, files=None):
-        """read settings from given config files"""
+        """
+        Read settings from given config files.
+        """
         if files is None:
             cfiles = []
         else:
@@ -184,7 +196,9 @@ class Configuration (dict):
         self['logger'] = self.logger_new('text')
 
     def read_config (self, files):
-        """read all the configuration parameters from the given files"""
+        """
+        Read all the configuration parameters from the given files.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "reading configuration from %s", files)
         try:
@@ -199,7 +213,9 @@ class Configuration (dict):
         self.read_filtering_config(cfgparser)
 
     def read_output_config (self, cfgparser):
-        """read configuration options in section "output"."""
+        """
+        Read configuration options in section "output".
+        """
         section = "output"
         for key in linkcheck.Loggers.keys():
             if cfgparser.has_section(key):
@@ -257,7 +273,9 @@ class Configuration (dict):
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_checking_config (self, cfgparser):
-        """read configuration options in section "checking"."""
+        """
+        Read configuration options in section "checking".
+        """
         section = "checking"
         try:
             num = cfgparser.getint(section, "threads")
@@ -303,7 +321,9 @@ class Configuration (dict):
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_authentication_config (self, cfgparser):
-        """read configuration options in section "authentication"."""
+        """
+        Read configuration options in section "authentication".
+        """
         section = "authentication"
         try:
             i = 1
@@ -320,7 +340,9 @@ class Configuration (dict):
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_filtering_config (self, cfgparser):
-        """read configuration options in section "filtering"."""
+        """
+        Read configuration options in section "filtering".
+        """
         section = "filtering"
         try:
             i = 1

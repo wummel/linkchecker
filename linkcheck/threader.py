@@ -23,11 +23,14 @@ except ImportError:
 
 
 class Threader (object):
-    """A thread generating class"""
+    """
+    A thread generating class.
+    """
 
     def __init__ (self, num=5):
-        """store maximum number of threads to generate, and initialize
-           an empty thread list
+        """
+        Store maximum number of threads to generate, and initialize
+        an empty thread list.
         """
         # this allows negative numbers
         self.threads_max = max(num, 1)
@@ -35,32 +38,44 @@ class Threader (object):
         self.threads = []
 
     def _acquire (self):
-        """Wait until we are allowed to start a new thread"""
+        """
+        Wait until we are allowed to start a new thread.
+        """
         while self.active_threads() >= self.threads_max:
             self._reduce_threads()
             time.sleep(0.1)
 
     def _reduce_threads (self):
-        """remove inactive threads"""
+        """
+        Remove inactive threads.
+        """
         self.threads = [ t for t in self.threads if t.isAlive() ]
 
     def active_threads (self):
-        """return number of active threads"""
+        """
+        Return number of active threads.
+        """
         return len(self.threads)
 
     def finished (self):
-        """return True if no active threads are left"""
+        """
+        Return True if no active threads are left.
+        """
         if self.threads_max > 0:
             self._reduce_threads()
         return self.active_threads() == 0
 
     def finish (self):
-        """remove inactive threads"""
+        """
+        Remove inactive threads.
+        """
         self._reduce_threads()
         # XXX don't know how to stop a thread
 
     def start_thread (self, func, args):
-        """Generate a new thread"""
+        """
+        Generate a new thread.
+        """
         if self.threads_max < 1:
             # threading is disabled
             func(*args)
@@ -71,6 +86,8 @@ class Threader (object):
             self.threads.append(t)
 
     def __str__ (self):
-        """string representation of threader state"""
+        """
+        String representation of threader state.
+        """
         return "Threader with %d threads (max %d)" % \
             (self.active_threads(), self.threads_max)

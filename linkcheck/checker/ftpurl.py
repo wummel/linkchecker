@@ -97,8 +97,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             else:
                 self.url_connection.login(_user, _password)
         except EOFError, msg:
+            msg = str(msg)
             raise linkcheck.LinkCheckerError(
-                              _("Remote host has closed connection")+": "+msg)
+                           _("Remote host has closed connection: %s") % msg)
         if not self.url_connection.getwelcome():
             self.close_connection()
             raise linkcheck.LinkCheckerError(

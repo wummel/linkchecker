@@ -61,12 +61,15 @@ refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
 css_url_re = re.compile(ur"url\((?P<url>[^\)]+)\)")
 
 class TagFinder (object):
-    """Base class storing HTML parse messages in a list.
-       TagFinder instances are to be used as HtmlParser handlers.
+    """
+    Base class storing HTML parse messages in a list.
+    TagFinder instances are to be used as HtmlParser handlers.
     """
 
     def __init__ (self, content):
-        """store content in buffer"""
+        """
+        Store content in buffer.
+        """
         super(TagFinder, self).__init__()
         self.content = content
         # warnings and errors during parsing
@@ -76,28 +79,40 @@ class TagFinder (object):
         self.parser = None
 
     def _errorfun (self, msg, name):
-        """append msg to error list"""
+        """
+        Append msg to error list.
+        """
         self.parse_info.append("%s at line %d col %d: %s" % \
             (name, self.parser.last_lineno(), self.parser.last_column(), msg))
 
     def warning (self, msg):
-        """signal a filter/parser warning"""
+        """
+        Signal a filter/parser warning.
+        """
         self._errorfun(msg, "warning")
 
     def error (self, msg):
-        """signal a filter/parser error"""
+        """
+        Signal a filter/parser error.
+        """
         self._errorfun(msg, "error")
 
     def fatal_error (self, msg):
-        """signal a fatal filter/parser error"""
+        """
+        Signal a fatal filter/parser error.
+        """
         self._errorfun(msg, "fatal error")
 
 
 class MetaRobotsFinder (TagFinder):
-    """class for finding robots.txt meta values in HTML"""
+    """
+    Class for finding robots.txt meta values in HTML.
+    """
 
     def __init__ (self, content):
-        """store content in buffer and initialize flags"""
+        """
+        Store content in buffer and initialize flags.
+        """
         super(MetaRobotsFinder, self).__init__(content)
         self.follow = True
         self.index = True
@@ -105,7 +120,9 @@ class MetaRobotsFinder (TagFinder):
 
 
     def start_element (self, tag, attrs):
-        """search for meta robots.txt "nofollow" and "noindex" flags"""
+        """
+        Search for meta robots.txt "nofollow" and "noindex" flags.
+        """
         if tag == 'meta':
             if attrs.get('name') == 'robots':
                 val = attrs.get('content', u'').lower().split(u',')
@@ -114,13 +131,16 @@ class MetaRobotsFinder (TagFinder):
 
 
 class LinkFinder (TagFinder):
-    """Find a list of links. After parsing, self.urls
+    """
+    Find a list of links. After parsing, self.urls
     will be a list of parsed links entries with the format
-    (url, lineno, column, name, codebase)
+    (url, lineno, column, name, codebase).
     """
 
     def __init__ (self, content, tags=None):
-        """store content in buffer and initialize URL list"""
+        """
+        Store content in buffer and initialize URL list.
+        """
         super(LinkFinder, self).__init__(content)
         if tags is None:
             self.tags = LinkTags
@@ -131,7 +151,9 @@ class LinkFinder (TagFinder):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "link finder")
 
     def start_element (self, tag, attrs):
-        """search for links and store found URLs in a list"""
+        """
+        Search for links and store found URLs in a list.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "LinkFinder tag %s attrs %s",
                             tag, attrs)
         linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -160,7 +182,9 @@ class LinkFinder (TagFinder):
                             "LinkFinder finished tag %s", tag)
 
     def get_link_name (self, tag, attrs, attr):
-        """Parse attrs for link name. Return name of link"""
+        """
+        Parse attrs for link name. Return name of link.
+        """
         if tag == 'a' and attr == 'href':
             name = linkcheck.strformat.unquote(attrs.get('title', u''))
             if not name:
@@ -176,7 +200,9 @@ class LinkFinder (TagFinder):
         return name
 
     def add_link (self, tag, attr, url, name, base):
-        """add given url data to url list"""
+        """
+        Add given url data to url list.
+        """
         urls = []
         # look for meta refresh
         if tag == 'meta':

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-"""a csv logger"""
+"""A CSV logger."""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,8 +25,8 @@ import linkcheck.configuration
 
 
 class CSVLogger (linkcheck.logger.Logger):
-    """ CSV output. CSV consists of one line per entry. Entries are
-    separated by a semicolon.
+    """CSV output, consisting of one line per entry. Entries are
+       separated by a semicolon.
     """
     def __init__ (self, **args):
         """store default separator and (os dependent) line terminator"""

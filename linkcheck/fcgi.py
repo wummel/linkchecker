@@ -87,24 +87,32 @@ error = 'fcgi.error'
 # anywhere at the moment
 
 def _error (msg):
-    """Append a string to /tmp/err"""
+    """
+    Append a string to /tmp/err.
+    """
     errf = file('/tmp/err', 'a+')
     errf.write(msg+'\n')
     errf.close()
 
 
 class Record (object):
-    """Class representing FastCGI records"""
+    """
+    Class representing FastCGI records.
+    """
 
     def __init__ (self):
-        """initialize record data"""
+        """
+        Initialize record data.
+        """
         self.version = FCGI_VERSION_1
         self.rec_type = FCGI_UNKNOWN_TYPE
         self.req_id = FCGI_NULL_REQUEST_ID
         self.content = ""
 
     def read_record (self, sock):
-        """read a FastCGI record from socket"""
+        """
+        Read a FastCGI record from socket.
+        """
         s = [ord(x) for x in sock.recv(8)]
         self.version, self.rec_type, padding_length = s[0], s[1], s[6]
         self.req_id, content_length = (s[2]<<8)+s[3], (s[4]<<8)+s[5]
@@ -136,7 +144,9 @@ class Record (object):
             self.protocolStatus = ord(c[4])
 
     def write_record (self, sock):
-        """write a FastCGI request to socket"""
+        """
+        Write a FastCGI request to socket.
+        """
         content = self.content
         if self.rec_type == FCGI_BEGIN_REQUEST:
             content = chr(self.role>>8) + chr(self.role & 255) + \
@@ -219,60 +229,79 @@ def HandleManTypes (r, conn):
 
 
 class FastCGIWriter (object):
-    """File-like object writing FastCGI requests. All read operations
-       return empty data.
+    """
+    File-like object writing FastCGI requests. All read operations
+    return empty data.
     """
 
     def __init__ (self, rec, conn):
-        """initialize with given record and connection"""
+        """
+        Initialize with given record and connection.
+        """
         self.record = rec
         self.conn = conn
         self.closed = False
 
     def close (self):
-        """close this writer"""
+        """
+        Close this writer.
+        """
         if not self.closed:
             self.closed = True
             self.record.content = ""
             self.record.write_record(self.conn)
 
     def isatty (self):
-        """returns False"""
+        """
+        Returns False.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
         return False
 
     def seek (self, pos, mode=0):
-        """does nothing"""
+        """
+        Does nothing.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
 
     def tell (self):
-        """Return zero"""
+        """
+        Return zero.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
         return 0
 
     def read (self, n=-1):
-        """return empty string"""
+        """
+        Return empty string.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
         return ""
 
     def readline (self, length=None):
-        """return empty string"""
+        """
+        Return empty string.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
         return ""
 
     def readlines (self):
-        """return empty list"""
+        """
+        Return empty list.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
         return []
 
     def write (self, s):
-        """write data in record for record to connection"""
+        """
+        Write data in record for record to connection.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
         while s:
@@ -281,17 +310,23 @@ class FastCGIWriter (object):
             self.record.write_record(self.conn)
 
     def get_next_chunk (self, data):
-        """return tuple (chunk of data, newdata)"""
+        """
+        Return tuple (chunk of data, newdata).
+        """
         chunk = data[:8192]
         data = data[8192:]
         return chunk, data
 
     def writelines (self, lines):
-        """write given lines to the connection"""
+        """
+        Write given lines to the connection.
+        """
         self.write(''.join(lines))
 
     def flush (self):
-        """does nothing"""
+        """
+        Does nothing.
+        """
         if self.closed:
             raise ValueError, "I/O operation on closed file"
 

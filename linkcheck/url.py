@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""url utils"""
+"""
+Functions for parsing and matching URL strings.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -70,8 +72,9 @@ is_safe_fragment = re.compile("(?i)^%s$" % _safe_fragment_pattern).match
 
 # snatched form urlparse.py
 def splitparams (path):
-    """Split off parameter part from path.
-       Returns tuple (path-without-param, param)
+    """
+    Split off parameter part from path.
+    Returns tuple (path-without-param, param)
     """
     if '/'  in path:
         i = path.find(';', path.rfind('/'))
@@ -83,7 +86,9 @@ def splitparams (path):
 
 
 def is_safe_js_url (urlstr):
-    """test javascript URLs"""
+    """
+    Test javascript URL strings.
+    """
     url = list(urlparse.urlsplit(urlstr))
     if url[0].lower() != 'http':
         return False
@@ -103,7 +108,9 @@ def is_safe_js_url (urlstr):
 
 
 def is_numeric_port (portstr):
-    """return True iff portstr is a valid port number"""
+    """
+    return True iff portstr is a valid port number
+    """
     if portstr.isdigit():
         port = int(portstr)
         # 65536 == 2**16
@@ -112,20 +119,25 @@ def is_numeric_port (portstr):
 
 
 def safe_host_pattern (host):
-    """return regular expression pattern with given host for URL testing"""
+    """
+    return regular expression pattern with given host for URL testing
+    """
     return "(?i)%s://%s%s(#%s)?" % \
      (_safe_scheme_pattern, host, _safe_path_pattern, _safe_fragment_pattern)
 
 
 # XXX better name/implementation for this function
 def stripsite (url):
-    """remove scheme and host from URL. return host, newurl"""
+    """
+    remove scheme and host from URL. return host, newurl
+    """
     url = urlparse.urlsplit(url)
     return url[1], urlparse.urlunsplit((0, 0, url[2], url[3], url[4]))
 
 
 def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
-    """Parse a query given as a string argument.
+    """
+    Parse a query given as a string argument.
 
     Arguments:
 
@@ -166,8 +178,10 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
 
 
 def idna_encode (host):
-    """Encode hostname as internationalized domain name (IDN) according
-       to RFC 3490."""
+    """
+    Encode hostname as internationalized domain name (IDN) according
+    to RFC 3490.
+    """
     if host and isinstance(host, unicode):
         uhost = host.encode('idna').decode('ascii')
         return uhost, uhost != host
@@ -175,7 +189,9 @@ def idna_encode (host):
 
 
 def url_fix_host (urlparts):
-    """Unquote and fix hostname. Returns is_idn."""
+    """
+    Unquote and fix hostname. Returns is_idn.
+    """
     urlparts[1], is_idn = idna_encode(urllib.unquote(urlparts[1]).lower())
     # a leading backslash in path causes urlsplit() to add the
     # path components up to the first slash to host
@@ -216,7 +232,9 @@ def url_fix_host (urlparts):
 
 
 def url_fix_common_typos (url):
-    """Fix common typos in given URL like forgotten colon."""
+    """
+    Fix common typos in given URL like forgotten colon.
+    """
     if url.startswith("http//"):
         url = "http://" + url[6:]
     elif url.startswith("https//"):
@@ -225,13 +243,17 @@ def url_fix_common_typos (url):
 
 
 def url_fix_mailto_urlsplit (urlparts):
-    """Split query part of mailto url if found."""
+    """
+    Split query part of mailto url if found.
+    """
     if "?" in urlparts[2]:
         urlparts[2], urlparts[3] = urlparts[2].split('?', 1)
 
 
 def url_parse_query (query):
-    """Parse and re-join the given CGI query."""
+    """
+    Parse and re-join the given CGI query.
+    """
     # if ? is in the query, split it off, seen at msdn.microsoft.com
     if '?' in query:
         query, append = query.split('?', 1)
@@ -253,10 +275,12 @@ def url_parse_query (query):
 
 
 def url_norm (url):
-    """Normalize the given URL which must be quoted. Supports unicode
-       hostnames (IDNA encoding) according to RFC 3490.
+    """
+    Normalize the given URL which must be quoted. Supports unicode
+    hostnames (IDNA encoding) according to RFC 3490.
 
-       @return (normed url, idna flag)
+    @return: (normed url, idna flag)
+    @rtype: c{tuple} of length two
     """
     urlparts = list(urlparse.urlsplit(url))
     # scheme
@@ -293,8 +317,9 @@ _samedir_ro = re.compile(r"/\./|/\.$")
 _parentdir_ro = re.compile(r"^/(\.\./)+|/(?!\.\./)[^/]+/\.\.(/|$)")
 _relparentdir_ro = re.compile(r"^(?!\.\./)[^/]+/\.\.(/|$)")
 def collapse_segments (path):
-    """Remove all redundant segments from the given URL path.
-       Precondition: path is an unquoted url path
+    """
+    Remove all redundant segments from the given URL path.
+    Precondition: path is an unquoted url path
     """
     # replace backslashes
     # note: this is _against_ the specification (which would require
@@ -329,7 +354,9 @@ url_is_absolute = re.compile("^[a-z]+:", re.I).match
 
 
 def url_quote (url):
-    """quote given URL"""
+    """
+    Quote given URL.
+    """
     if not url_is_absolute(url):
         return document_quote(url)
     urlparts = list(urlparse.urlsplit(url))
@@ -351,7 +378,9 @@ def url_quote (url):
 
 
 def document_quote (document):
-    """quote given document"""
+    """
+    Quote given document.
+    """
     doc, query = urllib.splitquery(document)
     doc = urllib.quote(doc, '/=,')
     if query:
@@ -360,15 +389,18 @@ def document_quote (document):
 
 
 def match_url (url, domainlist):
-    """return True if host part of url matches an entry in given domain
-       list"""
+    """
+    Return True if host part of url matches an entry in given domain list.
+    """
     if not url:
         return False
     return match_host(url_split(url)[1], domainlist)
 
 
 def match_host (host, domainlist):
-    """return True if host matches an entry in given domain list"""
+    """
+    Return True if host matches an entry in given domain list.
+    """
     if not host:
         return False
     for domain in domainlist:
@@ -386,10 +418,11 @@ if os.name == 'nt':
 _safe_url_chars = _nopathquote_chars + r"a-zA-Z0-9_:\.&#%\?"
 _safe_url_chars_ro = re.compile(r"^[%s]*$" % _safe_url_chars)
 def url_needs_quoting (url):
-    """Check if url needs percent quoting. Note that the method does
-       only check basic character sets, and not any other syntax.
-       The URL might still be syntactically incorrect even when
-       it is properly quoted.
+    """
+    Check if url needs percent quoting. Note that the method does
+    only check basic character sets, and not any other syntax.
+    The URL might still be syntactically incorrect even when
+    it is properly quoted.
     """
     if url.rstrip() != url:
         # handle trailing whitespace as a special case
@@ -399,9 +432,10 @@ def url_needs_quoting (url):
 
 
 def url_split (url):
-    """Split url in a tuple (scheme, hostname, port, document) where
-       hostname is always lowercased.
-       Precondition: url is syntactically correct URI (eg has no whitespace)
+    """
+    Split url in a tuple (scheme, hostname, port, document) where
+    hostname is always lowercased.
+    Precondition: url is syntactically correct URI (eg has no whitespace)
     """
     scheme, netloc = urllib.splittype(url)
     host, document = urllib.splithost(netloc)
@@ -413,5 +447,7 @@ def url_split (url):
 
 
 def url_unicode_split (url):
-    """Like urlparse.urlsplit(), but always returning unicode parts."""
+    """
+    Like urlparse.urlsplit(), but always returning unicode parts.
+    """
     return [unicode(s) for s in urlparse.urlsplit(url)]

@@ -134,7 +134,9 @@ AnsiReset = esc_ansicolor("default")
 
 
 def has_colors (fp):
-    """see if given file is an ANSI color enabled tty"""
+    """
+    Test if given file is an ANSI color enabled tty.
+    """
     # note: the isatty() function ensures that we do not colorize
     # redirected streams, as this is almost never what we want
     if hasattr(fp, "isatty") and fp.isatty():
@@ -155,8 +157,9 @@ def has_colors (fp):
 
 
 def has_colors_nt ():
-    """windows has no curses; check if running in an environment
-       which supports ANSI colors
+    """
+    Check if running in a Windows environment which supports ANSI colors.
+    Do this by searching for a loaded ANSI driver.
     """
     _in = None
     _out = None
@@ -176,7 +179,10 @@ def has_colors_nt ():
 
 
 def colorize (text, color=None):
-    """return text colorized if color is given"""
+    """
+    Colorize text with given color. If color is c{None}, leave the
+    text as-is.
+    """
     if color is not None:
         return '%s%s%s' % (esc_ansicolor(color), text, AnsiReset)
     else:
@@ -184,17 +190,22 @@ def colorize (text, color=None):
 
 
 class Colorizer (object):
-    """prints colored messages to streams"""
+    """
+    Prints colored messages to streams.
+    """
 
     def __init__ (self, fp):
-        """initialize with given stream (file-like object)"""
+        """
+        Initialize with given stream (file-like object).
+        """
         super(Colorizer, self).__init__()
         self._fp = fp
 
     def write (self, s, color=None):
-        """Writes message s in color if output stream is
-           a console stream (stderr or stdout).
-           Else writes without color (i.e. black/white).
+        """
+        Writes message s in color if output stream is
+        a console stream (stderr or stdout).
+        Else writes without color (i.e. black/white).
         """
         if has_colors(self._fp):
             # stdout or stderr can be colorized
@@ -202,7 +213,9 @@ class Colorizer (object):
         self._fp.write(s)
 
     def __getattr__ (self, name):
-        """delegate attribute access to the stored stream object"""
+        """
+        Delegate attribute access to the stored stream object.
+        """
         return getattr(self._fp, name)
 
 
@@ -210,8 +223,9 @@ class ColoredStreamHandler (logging.StreamHandler, object):
     """Send colored log messages to streams (file-like objects)."""
 
     def __init__ (self, strm=None):
-        """Log to given stream (a file-like object) or to stderr if
-           strm is None.
+        """
+        Log to given stream (a file-like object) or to stderr if
+        strm is None.
         """
         super(ColoredStreamHandler, self).__init__(strm=strm)
         self.stream = Colorizer(self.stream)
@@ -224,7 +238,9 @@ class ColoredStreamHandler (logging.StreamHandler, object):
         }
 
     def get_color (self, record):
-        """get appropriate color according to log level"""
+        """
+        Get appropriate color according to log level.
+        """
         return self.colors.get(record.levelno, 'default')
 
     def emit (self, record):

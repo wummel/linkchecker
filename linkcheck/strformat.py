@@ -1,6 +1,8 @@
 # -*- coding: iso-8859-1 -*-
-"""Various string utility functions. Note that these functions are not
-   necessarily optimised for large strings, so use with care."""
+"""
+Various string utility functions. Note that these functions are not
+necessarily optimised for large strings, so use with care.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,7 +27,13 @@ import time
 
 
 def unquote (s):
-    """if string s is not empty, strip quotes from s"""
+    """
+    Remove leading and ending quotes.
+
+    @return: if s evaluates to False, return s as is, else return
+        string with stripped quotes
+    @rtype: string or type of s if evaluting to False
+    """
     if not s:
         return s
     if len(s) < 2:
@@ -43,9 +51,10 @@ _para_win = r"(?:%(sep)s)(?:(?:%(sep)s)\s*)+" % {'sep': '\r\n'}
 _para_ro = re.compile("%s|%s|%s" % (_para_mac, _para_posix, _para_win))
 
 def get_paragraphs (text):
-    """A new paragraph is considered to start at a line which follows
-       one or more blank lines (lines containing nothing or just spaces).
-       The first line of the text also starts a paragraph.
+    """
+    A new paragraph is considered to start at a line which follows
+    one or more blank lines (lines containing nothing or just spaces).
+    The first line of the text also starts a paragraph.
     """
     if not text:
         return []
@@ -53,10 +62,11 @@ def get_paragraphs (text):
 
 
 def wrap (text, width, **kwargs):
-    """Adjust lines of text to be not longer than width. The text will be
-       returned unmodified if width <= 0.
-       See textwrap.wrap() for a list of supported kwargs.
-       Returns text with lines no longer than given width.
+    """
+    Adjust lines of text to be not longer than width. The text will be
+    returned unmodified if width <= 0.
+    See textwrap.wrap() for a list of supported kwargs.
+    Returns text with lines no longer than given width.
     """
     if width <= 0 or not text:
         return text
@@ -67,8 +77,10 @@ def wrap (text, width, **kwargs):
 
 
 def get_line_number (s, index):
-    """Return the line number of s[index]. Lines are assumed to be separated
-       by the ASCII character '\\n'"""
+    """
+    Return the line number of s[index]. Lines are assumed to be separated
+    by the ASCII character '\\n'.
+    """
     i = 0
     if index < 0:
         index = 0
@@ -81,7 +93,9 @@ def get_line_number (s, index):
 
 
 def paginate (text, lines=22):
-    """print text in pages of lines"""
+    """
+    Print text in pages of lines.
+    """
     curline = 1
     for line in text.splitlines():
         print line
@@ -96,7 +110,9 @@ def paginate (text, lines=22):
 _markup_re = re.compile("<.*?>", re.DOTALL)
 
 def remove_markup (s):
-    """remove all <*> html markup tags from s"""
+    """
+    Remove all <*> html markup tags from s.
+    """
     mo = _markup_re.search(s)
     while mo:
         s = s[0:mo.start()] + s[mo.end():]
@@ -105,8 +121,9 @@ def remove_markup (s):
 
 
 def strsize (b):
-    """Return human representation of bytes b. A negative number of bytes
-       raises a value error.
+    """
+    Return human representation of bytes b. A negative number of bytes
+    raises a value error.
     """
     if b < 0:
         raise ValueError("Invalid negative byte number")
@@ -125,13 +142,17 @@ def strsize (b):
 
 
 def strtime (t):
-    """return ISO 8601 formatted time"""
+    """
+    Return ISO 8601 formatted time.
+    """
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)) + \
            strtimezone()
 
 
 def strduration (duration):
-    """return translated and formatted time duration"""
+    """
+    Return translated and formatted time duration.
+    """
     name = _("seconds")
     if duration > 60:
         duration = duration / 60
@@ -143,7 +164,9 @@ def strduration (duration):
 
 
 def strtimezone ():
-    """return timezone info, %z on some platforms, but not supported on all"""
+    """
+    Return timezone info, %z on some platforms, but not supported on all.
+    """
     if time.daylight:
         zone = time.altzone
     else:

@@ -18,74 +18,99 @@
 
 
 class SetList (list):
-    """a list that eliminates all duplicates"""
+    """
+    A list that eliminates all duplicates.
+    """
 
-    def append (self, x):
-        """append only if not already there"""
-        if x not in self:
-            super(SetList, self).append(x)
+    def append (self, item):
+        """
+        Append only if not already there.
+        """
+        if item not in self:
+            super(SetList, self).append(item)
 
-    def extend (self, x):
-        """extend while eliminating duplicates by appending item for item"""
-        for i in x:
-            self.append(i)
+    def extend (self, itemlist):
+        """
+        Extend while eliminating duplicates by appending item for item.
+        """
+        for item in itemlist:
+            self.append(item)
 
-    def insert (self, i, x):
-        """insert only if not already there"""
-        if x not in self:
-            super(SetList, self).insert(i, x)
+    def insert (self, index, item):
+        """
+        Insert item at given index only if it is not already there.
+        """
+        if item not in self:
+            super(SetList, self).insert(index, item)
 
-    def __setitem__ (self, key, value):
-        """set new value, and eliminate a possible duplicate value"""
-        # search index idx with self[i] == value
-        idx = -1
+    def __setitem__ (self, index, item):
+        """
+        Set new value, and eliminate a possible duplicate value.
+        """
+        # search index i with self[i] == item
+        delidx = -1
         for i in range(len(self)):
-            if self[i] == value and i != key:
-                idx = i
+            if self[i] == item and i != index:
+                delidx = i
                 # break here, there can be only one duplicate
                 break
         # insert new value
-        super(SetList, self).__setitem__(key, value)
-        if idx != -1:
+        super(SetList, self).__setitem__(index, item)
+        if delidx != -1:
             # remove duplicate
-            del self[idx]
+            del self[delidx]
 
 
 class ListDict (dict):
-    """a dictionary whose iterators reflect the order in which elements
-       were added
+    """
+    A dictionary whose iterators reflect the order in which elements
+    were added.
     """
 
     def __init__ (self):
-        """initialize sorted key list"""
+        """
+        Initialize sorted key list.
+        """
         # sorted list of keys
         self._keys = []
 
     def __setitem__ (self, key, value):
-        """add key,value to dict, append key to sorted list"""
+        """
+        Add key,value to dict, append key to sorted list.
+        """
         if not self.has_key(key):
             self._keys.append(key)
         super(ListDict, self).__setitem__(key, value)
 
     def __delitem__ (self, key):
-        """remove key from dict"""
+        """
+        Remove key from dict.
+        """
         self._keys.remove(key)
         super(ListDict, self).__delitem__(key)
 
     def values (self):
-        """return sorted list of values"""
+        """
+        Return sorted list of values.
+        """
         return [self[k] for k in self._keys]
 
     def items (self):
-        """return sorted list of items"""
+        """
+        Return sorted list of items.
+        """
         return [(k, self[k]) for k in self._keys]
 
     def keys (self):
-        """return sorted list of keys"""
+        """
+        Return sorted list of keys.
+        """
         return self._keys[:]
 
     def itervalues (self):
-        """return iterator over sorted values"""
+        """
+        Return iterator over sorted values.
+        """
         return iter(self.values())
 
     def iteritems (self):
@@ -93,11 +118,15 @@ class ListDict (dict):
         return iter(self.items())
 
     def iterkeys (self):
-        """return iterator over sorted keys"""
+        """
+        Return iterator over sorted keys.
+        """
         return iter(self.keys())
 
     def clear (self):
-        """remove all dict entires"""
+        """
+        Remove all dict entries.
+        """
         self._keys = []
         super(ListDict, self).clear()
 
@@ -111,20 +140,28 @@ class LRU (object):
     """
 
     class Node (object):
-        """internal node with pointers to sisters"""
+        """
+        Internal node with pointers to sisters.
+        """
 
         def __init__ (self, prev, me):
-            """initialize pointers and data"""
+            """
+            Initialize pointers and data.
+            """
             self.prev = prev
             self.me = me
             self.next = None
 
     def __len__ (self):
-        """number of stored objects in the queue"""
+        """
+        Number of stored objects in the queue.
+        """
         return len(self.d)
 
     def __init__ (self, count, pairs=None):
-        """make new queue with given maximum count, and key/value pairs"""
+        """
+        Make new queue with given maximum count, and key/value pairs.
+        """
         self.count = max(count, 1)
         self.d = {}
         self.first = None
@@ -134,21 +171,29 @@ class LRU (object):
                 self[key] = value
 
     def __contains__ (self, obj):
-        """look if obj is in the queue"""
+        """
+        Look if obj is in the queue.
+        """
         return obj in self.d
 
     def has_key (self, obj):
-        """look if obj is in the queue"""
+        """
+        Look if obj is in the queue.
+        """
         return self.d.has_key(obj)
 
     def __getitem__ (self, obj):
-        """get stored object data, and mark it as LRU"""
+        """
+        Get stored object data, and mark it as LRU.
+        """
         a = self.d[obj].me
         self[a[0]] = a[1]
         return a[1]
 
     def __setitem__ (self, obj, val):
-        """set given object data, and mark it as LRU"""
+        """
+        Set given object data, and mark it as LRU.
+        """
         if obj in self.d:
             del self[obj]
         nobj = self.Node(self.last, (obj, val))
@@ -171,7 +216,9 @@ class LRU (object):
             del a
 
     def __delitem__ (self, obj):
-        """remove object from queue"""
+        """
+        Remove object from queue.
+        """
         nobj = self.d[obj]
         if nobj.prev:
             nobj.prev.next = nobj.next
@@ -184,7 +231,9 @@ class LRU (object):
         del self.d[obj]
 
     def __iter__ (self):
-        """iterate over stored object values"""
+        """
+        Iterate over stored object values.
+        """
         cur = self.first
         while cur != None:
             cur2 = cur.next
@@ -192,7 +241,9 @@ class LRU (object):
             cur = cur2
 
     def iteritems (self):
-        """iterate over stored object items"""
+        """
+        Iterate over stored object items.
+        """
         cur = self.first
         while cur != None:
             cur2 = cur.next
@@ -200,21 +251,29 @@ class LRU (object):
             cur = cur2
 
     def iterkeys (self):
-        """iterate over stored object keys"""
+        """
+        Iterate over stored object keys.
+        """
         return iter(self.d)
 
     def itervalues (self):
-        """iterate over stored object values"""
+        """
+        Iterate over stored object values.
+        """
         for i, j in self.iteritems():
             yield j
 
     def keys (self):
-        """iterate over stored object keys"""
+        """
+        Iterate over stored object keys.
+        """
         return self.d.keys()
 
     def setdefault (self, key, failobj=None):
-        """get given object data, and mark it as LRU. If it is not already
-           stored, store the given failobj."""
+        """
+        Get given object data, and mark it as LRU. If it is not already
+        stored, store the given failobj.
+        """
         if not self.has_key(key):
             self[key] = failobj
         return self[key]

@@ -18,7 +18,12 @@ _scale = {'kB': 1024.0, 'mB': 1024.0*1024.0,
           'KB': 1024.0, 'MB': 1024.0*1024.0}
 
 def _VmB (VmKey):
-    '''Parse /proc/<pid>/status file for given key.'''
+    """
+    Parse /proc/<pid>/status file for given key.
+
+    @return requested number value of status entry
+    @rtype: c{float}
+    """
     if os.name != 'posix':
         # not supported
         return 0.0
@@ -41,15 +46,30 @@ def _VmB (VmKey):
 
 
 def memory (since=0.0):
-    '''Return memory usage in bytes.'''
+    """
+    Get memory usage.
+
+    @return: memory usage in bytes
+    @rtype: c{float}
+    """
     return _VmB('VmSize:') - since
 
 
 def resident (since=0.0):
-    '''Return resident memory usage in bytes.'''
+    """
+    Get resident memory usage.
+
+    @return: resident memory usage in bytes
+    @rtype: c{float}
+    """
     return _VmB('VmRSS:') - since
 
 
 def stacksize (since=0.0):
-    '''Return stack size in bytes.'''
+    """
+    Get stack size.
+
+    @return: stack size in bytes
+    @rtype: c{float}
+    """
     return _VmB('VmStk:') - since

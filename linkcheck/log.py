@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""logging and debug functions"""
+"""
+Logging and debug functions.
+"""
 # Copyright (C) 2003-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -26,30 +28,54 @@ import logging
 #gc.enable()
 #gc.set_debug(gc.DEBUG_LEAK)
 def debug (log, msg, *args):
-    """log a debug message"""
+    """
+    Log a debug message.
+
+    return: c{None}
+    """
     logging.getLogger(log).debug(msg, *args)
 
 
 def info (log, msg, *args):
-    """log an informational message"""
+    """
+    Log an informational message.
+
+    return: c{None}
+    """
     logging.getLogger(log).info(msg, *args)
 
 
 def warn (log, msg, *args):
-    """log a warning"""
+    """
+    Log a warning.
+
+    return: c{None}
+    """
     logging.getLogger(log).warn(msg, *args)
 
 
 def error (log, msg, *args):
-    """log an error"""
+    """
+    Log an error.
+
+    return: c{None}
+    """
     logging.getLogger(log).error(msg, *args)
 
 
 def critical (log, msg, *args):
-    """log a critical error"""
+    """
+    Log a critical error.
+
+    return: c{None}
+    """
     logging.getLogger(log).critical(msg, *args)
 
 
 def exception (log, msg, *args):
-    """log an exception"""
+    """
+    Log an exception.
+
+    return: c{None}
+    """
     logging.getLogger(log).exception(msg, *args)

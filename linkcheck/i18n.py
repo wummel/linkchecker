@@ -26,7 +26,9 @@ supported_languages = ['en']
 default_language = None
 
 def install_builtin (translator, do_unicode):
-    """install _() and _n() gettext methods into default namespace"""
+    """
+    Install _() and _n() gettext methods into default namespace.
+    """
     import __builtin__
     if do_unicode:
         __builtin__.__dict__['_'] = translator.ugettext
@@ -38,19 +40,35 @@ def install_builtin (translator, do_unicode):
         __builtin__.__dict__['_n'] = translator.ngettext
 
 class Translator (gettext.GNUTranslations):
+    """
+    A translation class always installing its gettext methods into the
+    default namespace.
+    """
 
     def install (self, do_unicode):
+        """
+        Install gettext methods into the default namespace.
+        """
         install_builtin(self, do_unicode)
 
 
 class NullTranslator (gettext.NullTranslations):
+    """
+    A translation class always installing its gettext methods into the
+    default namespace.
+    """
 
     def install (self, do_unicode):
+        """
+        Install gettext methods into the default namespace.
+        """
         install_builtin(self, do_unicode)
 
 
 def init (domain, directory):
-    """initialize this gettext i18n module"""
+    """
+    Initialize this gettext i18n module.
+    """
     global default_language
     # get supported languages
     for lang in os.listdir(directory):
@@ -74,7 +92,9 @@ def get_translator (domain, directory, languages=None,
                     translatorklass=Translator,
                     fallback=False,
                     fallbackklass=NullTranslator):
-    """search the appropriate GNUTranslations class"""
+    """
+    Search the appropriate GNUTranslations class.
+    """
     translator = gettext.translation(domain, localedir=directory,
             languages=languages, class_=translatorklass, fallback=fallback)
     if not isinstance(translator, gettext.GNUTranslations):
@@ -83,14 +103,18 @@ def get_translator (domain, directory, languages=None,
 
 
 def get_lang (lang):
-    """return lang if it is supported, or the default language"""
+    """
+    Return lang if it is supported, or the default language.
+    """
     if lang in supported_languages:
         return lang
     return default_language
 
 
 def get_headers_lang (headers):
-    """return preferred supported language in given HTTP headers"""
+    """
+    Return preferred supported language in given HTTP headers.
+    """
     if not headers.has_key('Accept-Language'):
         return default_language
     languages = headers['Accept-Language'].split(",")
@@ -103,7 +127,9 @@ def get_headers_lang (headers):
 
 
 def get_locale ():
-    """return current configured locale"""
+    """
+    Return current configured locale.
+    """
     loc = locale.getdefaultlocale()[0]
     if loc is None:
         loc = 'C'
@@ -131,10 +157,14 @@ lang_transis = {
 }
 
 def lang_name (lang):
-    """return full name of given language"""
+    """
+    Return full name of given language.
+    """
     return lang_names[lang]
 
 
 def lang_trans (lang, curlang):
-    """return translated full name of given language"""
+    """
+    Return translated full name of given language.
+    """
     return lang_transis[lang][curlang]
