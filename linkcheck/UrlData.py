@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, re, urlparse, urllib, time, traceback, socket, select, i18n
-from urllib import splituser, splithost, splitport
+from urllib import splituser, splithost, splitport, unquote
 #try:
 #    from linkcheck import DNS
 #except ImportError:
@@ -175,7 +175,7 @@ class UrlData:
         else:
             self.url = self.urlName
         # unquote url
-        self.url = urllib.unquote(self.url)
+        self.url = unquote(self.url)
         # split into (modifiable) list
         self.urlparts = list(urlparse.urlsplit(self.url))
         # check userinfo@host:port syntax

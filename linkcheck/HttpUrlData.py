@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, urllib, sys, time, re, httplib
+import urlparse, sys, time, re, httplib
+from urllib import unquote
 import Config, StringUtil, i18n
 from linkcheck import robotparser
 from debug import *
@@ -124,7 +125,7 @@ class HttpUrlData (ProxyUrlData):
                 newurl = self.headers.getheader("Location",
                              self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
-                redirected = urllib.unquote(redirected)
+                redirected = unquote(redirected)
                 self.urlparts = urlparse.urlsplit(redirected)
                 response = self._getHttpResponse()
                 self.headers = response.msg
