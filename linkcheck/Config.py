@@ -28,7 +28,7 @@ AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
 Author =  _linkchecker_configdata.author
-HtmlAuthor = string.replace(Author, ' ', '&nbsp;')
+HtmlAuthor = Author.replace(' ', '&nbsp;')
 Copyright = "Copyright © 2000,2001 by "+Author
 HtmlCopyright = "Copyright &copy; 2000,2001 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
@@ -403,7 +403,7 @@ class Configuration(UserDict.UserDict):
                     except ConfigParser.Error, msg: debug(str(msg)+"\n")
                 try:
 		    self[key]['fields'] = map(string.strip,
-		         string.split(cfgparser.get(key, 'fields'), ','))
+		         cfgparser.get(key, 'fields').split(','))
                 except ConfigParser.Error, msg:
 		    debug(BRING_IT_ON, msg)
         try:
@@ -423,9 +423,9 @@ class Configuration(UserDict.UserDict):
         try: self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error: pass
         try:
-            filelist = string.split(cfgparser.get(section, "fileoutput"), ",")
+            filelist = cfgparser.get(section, "fileoutput").split(",")
             for arg in filelist:
-                arg = string.strip(arg)
+                arg = arg.strip()
                 # no file output for the blacklist Logger
                 if Loggers.has_key(arg) and arg != "blacklist":
 		    self['fileoutput'].append(
@@ -470,7 +470,7 @@ class Configuration(UserDict.UserDict):
 	try:
 	    i=1
 	    while 1:
-                auth = string.split(cfgparser.get(section, "entry%d" % i))
+                auth = cfgparser.get(section, "entry%d" % i).split()
 		if len(auth)!=3: break
                 auth[0] = re.compile(auth[0])
                 self["authentication"].insert(0, {'pattern': auth[0],
@@ -483,7 +483,7 @@ class Configuration(UserDict.UserDict):
         try:
             i=1
             while 1:
-                tuple = string.split(cfgparser.get(section, "extern%d" % i))
+                tuple = cfgparser.get(section, "extern%d" % i).split()
                 if len(tuple)!=2: break
                 self["externlinks"].append((re.compile(tuple[0]),
 		                                 int(tuple[1])))

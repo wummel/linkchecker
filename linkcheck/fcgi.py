@@ -160,7 +160,7 @@ class record:
                 cLen & 255,
                 padLen,
                 0]
-        hdr = string.joinfields(map(chr, hdr), '')
+        hdr = ''.join(map(chr, hdr))
 
         sock.send(hdr + content + padLen*'\000')
 
@@ -267,8 +267,8 @@ class FastCGIWriter:
         data = data[8192:]
         return chunk, data
 
-    def writelines(self, list):
-	self.write(string.joinfields(list, ''))
+    def writelines(self, lines):
+	self.write(''.join(lines))
 
     def flush(self):
 	if self.closed:
@@ -304,7 +304,7 @@ class FCGI:
 
         if os.environ.has_key('FCGI_WEB_SERVER_ADDRS'):
             good_addrs=map(string.strip,
-	              string.split(os.environ['FCGI_WEB_SERVER_ADDRS'], ','))
+	              os.environ['FCGI_WEB_SERVER_ADDRS'].split(','))
         else:
             good_addrs=None
 
@@ -396,7 +396,7 @@ class FCGI:
     def getFieldStorage(self):
         method = 'GET'
         if self.env.has_key('REQUEST_METHOD'):
-            method = string.upper(self.env['REQUEST_METHOD'])
+            method = self.env['REQUEST_METHOD'].upper()
         if method == 'GET':
             return cgi.FieldStorage(environ=self.env, keep_blank_values=1)
         else:
@@ -435,7 +435,7 @@ def _test():
 
             try:
                 fs = req.getFieldStorage()
-                size = string.atoi(fs['size'].value)
+                size = int(fs['size'].value)
                 doc = ['*' * size]
             except:
                 doc = ['<HTML><HEAD><TITLE>FCGI TestApp</TITLE></HEAD>\n<BODY>\n']
@@ -443,7 +443,7 @@ def _test():
                 doc.append('<b>request count</b> = %d<br>' % counter)
                 doc.append('<b>pid</b> = %s<br>' % os.getpid())
                 if req.env.has_key('CONTENT_LENGTH'):
-                    cl = string.atoi(req.env['CONTENT_LENGTH'])
+                    cl = int(req.env['CONTENT_LENGTH'])
                     doc.append('<br><b>POST data (%s):</b><br><pre>' % cl)
                     keys = fs.keys()
                     keys.sort()
@@ -465,7 +465,7 @@ def _test():
                 doc.append('</BODY></HTML>\n')
 
 
-            doc = string.join(doc, '')
+            doc = ''.join(doc)
             req.out.write('Content-length: %s\r\n'
                         'Content-type: text/html\r\n'
                         'Cache-Control: no-cache\r\n'

@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import telnetlib,re,string,linkcheck
+import telnetlib, re, linkcheck
 from HostCheckingUrlData import HostCheckingUrlData
 from linkcheck import _
 
@@ -29,7 +29,7 @@ class TelnetUrlData(HostCheckingUrlData):
         HostCheckingUrlData.buildUrl(self)
         if not telnet_re.match(self.urlName):
             raise linkcheck.error, _("Illegal telnet link syntax")
-        self.host = string.lower(self.urlName[7:])
+        self.host = self.urlName[7:].lower()
 
     def get_scheme(self):
         return "telnet"

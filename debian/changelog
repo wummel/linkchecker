@@ -1,3 +1,9 @@
+linkchecker (1.3.12) unstable; urgency=low
+
+  * use string methods where possible
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sat,  1 Dec 2001 12:13:37 +0100
+
 linkchecker (1.3.11) unstable; urgency=low
 
   * setup.py: use os.getcwd(), not "." which breaks on MacOS 9.x

@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import string,re,sys,htmlentitydefs
+import re, sys, htmlentitydefs
 
 markup_re = re.compile("<.*?>", re.DOTALL)
 
@@ -35,19 +35,19 @@ TeXTable = []
 
 def stripHtmlComments(data):
     "Remove <!-- ... --> HTML comments from data"
-    i = string.find(data, "<!--")
+    i = data.find("<!--")
     while i!=-1:
-        j = string.find(data, "-->", i)
+        j = data.find("-->", i)
         if j == -1:
             break
         data = data[:i] + data[j+3:]
-        i = string.find(data, "<!--")
+        i = data.find("<!--")
     return data
 
 
 def stripFenceComments(data):
     "Remove # ... comments from data"
-    lines = string.split(data, "\n")
+    lines = data.split("\n")
     ret = None
     for line in lines:
         if not re.compile("\s*#.*").match(line):
@@ -105,7 +105,7 @@ def indentWith(s, indent):
 def blocktext(s, width):
     "Adjust lines of s to be not wider than width"
     # split into lines
-    s = string.split(s, "\n")
+    s = s.split("\n")
     s.reverse()
     line = None
     ret = ""
@@ -116,8 +116,8 @@ def blocktext(s, width):
             line = s.pop()
         while len(line) > width:
             i = getLastWordBoundary(line, width)
-            ret += string.strip(line[0:i]) + "\n"
-            line = string.strip(line[i:])
+            ret += line[0:i].strip() + "\n"
+            line = line[i:].strip()
     return ret + line
 
 
@@ -130,11 +130,11 @@ def getLastWordBoundary(s, width):
     return width-1
 
 
-def applyTable(table, str):
+def applyTable(table, s):
     "apply a table of replacement pairs to str"
     for mapping in table:
-        str = string.replace(str, mapping[0], mapping[1])
-    return str
+        s = s.replace(mapping[0], mapping[1])
+    return s
 
 
 def texify(str):
@@ -171,7 +171,7 @@ def getLineNumber(str, index):
 
 def paginate(text, lines=22):
     """print text in pages of lines size"""
-    textlines = string.split(text, "\n")
+    textlines = text.split("\n")
     curline = 1
     for line in textlines:
         print line

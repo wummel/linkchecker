@@ -28,7 +28,7 @@ If no test names are given, all tests are run.
 -v is incompatible with -g and does not compare test output files.
 """
 
-import sys,getopt,os,string
+import sys, getopt, os
 
 import test_support
 
@@ -119,10 +119,10 @@ def main(tests=None, testdir=None, verbose=0, quiet=0, generate=0,
         print count(len(good), "test"), "OK."
     if bad:
         print count(len(bad), "test"), "failed:",
-        print string.join(bad)
+        print " ".join(bad)
     if skipped and not quiet:
         print count(len(skipped), "test"), "skipped:",
-        print string.join(skipped)
+        print " ".join(skipped)
 
     return len(bad) > 0
 

@@ -187,7 +187,7 @@ class CSV(UserList.UserList):
 			else:
 				raise Exception("Invalid comment type '" + comment + "'")
 
-		lines = map(string.strip, string.split(data, "\n"))
+		lines = map(string.strip, data.splitlines())
 
 		# Remove all comments that are of type string
 

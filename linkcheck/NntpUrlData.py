@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re,string,time,sys,nntplib,urlparse,linkcheck
+import re, time, sys, nntplib, urlparse, linkcheck
 from linkcheck import _
 from UrlData import ExcList,UrlData
 debug = linkcheck.Config.debug
@@ -37,7 +37,7 @@ class NntpUrlData(UrlData):
         # use nntp instead of news to comply with the unofficial internet
 	# draft of Alfred Gilman which unifies (s)news and nntp URLs
         # note: we use this only internally (for parsing and caching)
-        if string.lower(self.urlName[:4])=='news':
+        if self.urlName[:4].lower()=='news':
             self.url = 'nntp'+self.urlName[4:]
         else:
             self.url = self.urlName
@@ -60,7 +60,7 @@ class NntpUrlData(UrlData):
             self.setInfo(_('Articel number %s found' % number))
         else:
             # split off trailing articel span
-            group = string.split(group,'/',1)[0]
+            group = group.split('/',1)[0]
             if group:
                 # request group info
                 resp,count,first,last,name = nntp.group(group)

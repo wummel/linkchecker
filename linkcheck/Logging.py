@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys,time,string
+import sys, time
 from types import ListType
 import Config, StringUtil
 import linkcheck
@@ -52,7 +52,7 @@ def quote(s):
     for i in range(len(res)):
         c = res[i]
         res[i] = EntityTable.get(c, c)
-    return string.joinfields(res, '')
+    return ''.join(res)
 
 # return formatted time
 def _strtime(t):
@@ -299,7 +299,7 @@ class HtmlLogger(StandardLogger):
             if self.logfield("warning"):
                 self.fd.write("<tr>"+self.tablewarning+_("Warning")+
 	                  "</td>"+self.tablewarning+
-                          string.replace(urlData.warningString, "\n", "<br>")+
+                          urlData.warningString.replace("\n", "<br>")+
 			  "</td></tr>\n")
         if self.logfield("result"):
             if urlData.valid:
