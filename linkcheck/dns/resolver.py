@@ -286,8 +286,10 @@ class Resolver(object):
           'ip6-localhost',
           'ip6-loopback',
         ])
+        # connected and active network interfaces
+        self.interfaces = sets.Set()
         self.search = []
-        self.search_patters = ['www.%s.com', 'www.%s.org', 'www.%s.net', ]
+        self.search_patterns = ['www.%s.com', 'www.%s.org', 'www.%s.net', ]
         self.port = 53
         self.timeout = 2.0
         self.lifetime = 30.0
@@ -333,7 +335,7 @@ class Resolver(object):
         self.add_addrinfo(socket.gethostname())
         # add system specific hosts for all enabled interfaces
         for addr in self.read_local_ifaddrs():
-            self.add_addrinfo(addr)
+            self.add_addrinfo(addr, interface=True)
 
     def read_local_ifaddrs (self):
         """all active interfaces' ip addresses"""
@@ -342,22 +344,26 @@ class Resolver(object):
             return []
         import linkcheck.dns.ifconfig
         ifc = linkcheck.dns.ifconfig.IfConfig()
-        return [ ifc.getAddr(iface) for iface in ifc.getInterfaceList()
-                 if ifc.isUp(iface) ]
+        return [ifc.getAddr(iface) for iface in ifc.getInterfaceList()
+                if ifc.isUp(iface)]
 
-    def add_addrinfo (self, host):
+    def add_addrinfo (self, host, interface=False):
         try:
             addrinfo = socket.gethostbyaddr(host)
         except socket.error:
             self.localhosts.add(host.lower())
+            if interface:
+                self.interfaces.add(host.lower())
             return
         self.localhosts.add(addrinfo[0].lower())
+        if interface:
+            self.interfaces.add(addrinfo[0].lower())
         for h in addrinfo[1]:
             self.localhosts.add(h.lower())
         for h in addrinfo[2]:
             self.localhosts.add(h.lower())
 
-    def _config_win32_nameservers(self, nameservers, split_char=','):
+    def _config_win32_nameservers (self, nameservers, split_char=','):
         """Configure a NameServer registry entry."""
         # we call str() on nameservers to convert it from unicode to ascii
         ns_list = str(nameservers).split(split_char)
@@ -365,12 +371,12 @@ class Resolver(object):
             if not ns in self.nameservers:
                 self.nameservers.append(ns)
 
-    def _config_win32_domain(self, domain):
+    def _config_win32_domain (self, domain):
         """Configure a Domain registry entry."""
         # we call str() on domain to convert it from unicode to ascii
         self.domain = linkcheck.dns.name.from_text(str(domain))
 
-    def _config_win32_search(self, search):
+    def _config_win32_search (self, search):
         """Configure a Search registry entry."""
         # we call str() on search to convert it from unicode to ascii
         search_list = str(search).split(',')
@@ -383,11 +389,13 @@ class Resolver(object):
         try:
             ip, rtype = _winreg.QueryValueEx(key, name)
             if isinstance(ip, basestring) and ip:
-                self.localhosts.add(str(ip).lower())
+                ip = str(ip).lower()
+                self.localhosts.add(ip)
+                self.interfaces.add(ip)
         except WindowsError:
             pass
 
-    def _config_win32_fromkey(self, key):
+    def _config_win32_fromkey (self, key):
         """Extract DNS info from a registry key."""
         try:
             enable_dhcp, rtype = _winreg.QueryValueEx(key, 'EnableDHCP')
