@@ -23,8 +23,8 @@ endtag_re = re.compile(r"""(?i)</a\s*>""")
 def image_name(txt):
     mo = imgtag_re.search(txt)
     if mo:
-        name = StringUtil.stripQuotes(mo.group('name').strip())
-        return StringUtil.remove_markup(name)
+        name = StringUtil.remove_markup(mo.group('name').strip())
+        return StringUtil.unquote(name)
     return ''
 
 
@@ -35,7 +35,7 @@ def href_name(txt):
     name = txt[:endtag.start()]
     if img_re.search(name):
         return image_name(name)
-    return StringUtil.remove_markup(name)
+    return StringUtil.unhtmlify(StringUtil.remove_markup(name))
 
 _tests = (
     "<img src='' alt=''></a>",
