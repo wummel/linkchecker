@@ -101,9 +101,6 @@ test:
 coverage:
 	test/run.sh test.py --coverage
 
-timeouttest:
-	$(PYTHON) $(PACKAGE) -v --timeout=0 mailto:root@aol.com
-
 tar:	distclean
 	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
 
