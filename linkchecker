@@ -479,9 +479,9 @@ cache = linkcheck.checker.cache.Cache()
 consumer = linkcheck.checker.consumer.Consumer(config, cache)
 # syntactic sugar
 for url in args:
-    if url.startswith("www."):
+    if url.lower().startswith("www."):
         url = "http://%s"%url
-    elif url.startswith("ftp."):
+    elif url.lower().startswith("ftp."):
         url = "ftp://%s"%url
     url_data = linkcheck.checker.get_url_from(url, 0, consumer, cmdline=True)
     consumer.append_url(url_data)
