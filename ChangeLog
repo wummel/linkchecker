@@ -22,6 +22,7 @@
   * Ensure stored result, info and warning strings are always Unicode.
     Else there might be encoding errors.
     Type: bugfix
+    Closes: SF bug #1143553
     Changed: linkcheck/checker/{urlbase,httpurl,ftpurl}.py,
       linkcheck/strformat.py
 
