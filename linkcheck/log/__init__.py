@@ -30,29 +30,6 @@ def strtimezone ():
         zone = time.timezone
     return "%+04d" % int(-zone/3600)
 
-import linkcheck
-
-LogFields = {
-    "realurl":   linkcheck._("Real URL"),
-    "result":    linkcheck._("Result"),
-    "base":      linkcheck._("Base"),
-    "name":      linkcheck._("Name"),
-    "parenturl": linkcheck._("Parent URL"),
-    "extern":    linkcheck._("Extern"),
-    "info":      linkcheck._("Info"),
-    "warning":   linkcheck._("Warning"),
-    "dltime":    linkcheck._("D/L Time"),
-    "dlsize":    linkcheck._("D/L Size"),
-    "checktime": linkcheck._("Check Time"),
-    "url":       linkcheck._("URL"),
-}
-# maximum indent for localized log field names
-MaxIndent = max(map(lambda x: len(x), LogFields.values()))+1
-# map with spaces between field name and value
-Spaces = {}
-for key,value in LogFields.items():
-    Spaces[key] = " "*(MaxIndent - len(value))
-
 from StandardLogger import StandardLogger
 from HtmlLogger import HtmlLogger
 from ColoredLogger import ColoredLogger
@@ -74,4 +51,4 @@ Loggers = {
     "xml": XMLLogger,
 }
 # for easy printing: a comma separated logger list
-LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
+LoggerKeys = ", ".join(Loggers.keys())

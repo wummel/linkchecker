@@ -22,13 +22,10 @@ class BlacklistLogger (Logger):
     we have only links on the list which failed for n days.
     """
     def __init__ (self, **args):
-        apply(Logger.__init__, (self,), args)
+        Logger.__init__(self, **args)
         self.errors = 0
         self.blacklist = {}
         self.filename = args['filename']
-
-    def init (self):
-        pass
 
     def newUrl (self, urlData):
         if urlData.valid:

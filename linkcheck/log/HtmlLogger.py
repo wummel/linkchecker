@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from StandardLogger import StandardLogger
-from linkcheck.log import strtime, LogFields
+from linkcheck.log import strtime
 from linkcheck import StringUtil, _, Config
 import time
 
@@ -37,7 +37,7 @@ class HtmlLogger (StandardLogger):
     """Logger with HTML output"""
 
     def __init__ (self, **args):
-        apply(StandardLogger.__init__, (self,), args)
+        StandardLogger.__init__(self, **args)
         self.colorbackground = args['colorbackground']
         self.colorurl = args['colorurl']
         self.colorborder = args['colorborder']
@@ -47,11 +47,12 @@ class HtmlLogger (StandardLogger):
         self.tableok = args['tableok']
 
     def init (self):
+        StandardLogger.init(self)
         if self.fd is None: return
         self.starttime = time.time()
         self.fd.write(HTML_HEADER%(Config.App, self.colorbackground,
                       self.colorlink, self.colorlink, self.colorlink))
-        if self.logfield('intro'):
+        if self.has_field('intro'):
             self.fd.write("<center><h2>"+Config.App+"</h2></center>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
               (_("Start checking at %s\n") % strtime(self.starttime))+
@@ -67,18 +68,18 @@ class HtmlLogger (StandardLogger):
              "<td>\n"+
              "<table align=left border=0 cellspacing=0 cellpadding=3\n"+
              " summary=\"checked link\" bgcolor="+self.colorbackground+">\n")
-        if self.logfield("url"):
+        if self.has_field("url"):
 	    self.fd.write("<tr>\n"+
-             "<td bgcolor="+self.colorurl+">"+LogFields["url"]+"</td>\n"+
+             "<td bgcolor="+self.colorurl+">"+self.field("url")+"</td>\n"+
              "<td bgcolor="+self.colorurl+">"+urlData.urlName)
             if urlData.cached:
                 self.fd.write(_(" (cached)"))
             self.fd.write("</td>\n</tr>\n")
-        if urlData.name and self.logfield("name"):
-            self.fd.write("<tr>\n<td>"+LogFields["name"]+"</td>\n<td>"+
+        if urlData.name and self.has_field("name"):
+            self.fd.write("<tr>\n<td>"+self.field("name")+"</td>\n<td>"+
                           urlData.name+"</td>\n</tr>\n")
-        if urlData.parentName and self.logfield("parenturl"):
-            self.fd.write("<tr>\n<td>"+LogFields["parenturl"]+
+        if urlData.parentName and self.has_field("parenturl"):
+            self.fd.write("<tr>\n<td>"+self.field("parenturl")+
                '</td>\n<td><a target="top" href="'+urlData.parentName+'">'+
                urlData.parentName+"</a>")
             if urlData.line:
@@ -86,46 +87,46 @@ class HtmlLogger (StandardLogger):
             if urlData.column:
                 self.fd.write(_(", col %d")%urlData.column)
             self.fd.write("</td>\n</tr>\n")
-        if urlData.baseRef and self.logfield("base"):
-            self.fd.write("<tr>\n<td>"+LogFields["base"]+"</td>\n<td>"+
+        if urlData.baseRef and self.has_field("base"):
+            self.fd.write("<tr>\n<td>"+self.field("base")+"</td>\n<td>"+
 	                  urlData.baseRef+"</td>\n</tr>\n")
-        if urlData.url and self.logfield("realurl"):
-            self.fd.write("<tr>\n<td>"+LogFields["realurl"]+"</td>\n<td>"+
+        if urlData.url and self.has_field("realurl"):
+            self.fd.write("<tr>\n<td>"+self.field("realurl")+"</td>\n<td>"+
 	                  '<a target="top" href="'+urlData.url+
 			  '">'+urlData.url+"</a></td>\n</tr>\n")
-        if urlData.dltime>=0 and self.logfield("dltime"):
-            self.fd.write("<tr>\n<td>"+LogFields["dltime"]+"</td>\n<td>"+
+        if urlData.dltime>=0 and self.has_field("dltime"):
+            self.fd.write("<tr>\n<td>"+self.field("dltime")+"</td>\n<td>"+
 	                  (_("%.3f seconds") % urlData.dltime)+
 			  "</td>\n</tr>\n")
-        if urlData.dlsize>=0 and self.logfield("dlsize"):
-            self.fd.write("<tr>\n<td>"+LogFields["dlsize"]+"</td>\n<td>"+
+        if urlData.dlsize>=0 and self.has_field("dlsize"):
+            self.fd.write("<tr>\n<td>"+self.field("dlsize")+"</td>\n<td>"+
 	                  StringUtil.strsize(urlData.dlsize)+
 			  "</td>\n</tr>\n")
-        if urlData.checktime and self.logfield("checktime"):
-            self.fd.write("<tr>\n<td>"+LogFields["checktime"]+
+        if urlData.checktime and self.has_field("checktime"):
+            self.fd.write("<tr>\n<td>"+self.field("checktime")+
 	                  "</td>\n<td>"+
 			  (_("%.3f seconds") % urlData.checktime)+
 			  "</td>\n</tr>\n")
-        if urlData.infoString and self.logfield("info"):
-            self.fd.write("<tr>\n<td>"+LogFields["info"]+"</td>\n<td>"+
+        if urlData.infoString and self.has_field("info"):
+            self.fd.write("<tr>\n<td>"+self.field("info")+"</td>\n<td>"+
 	                  StringUtil.htmlify(urlData.infoString)+
 			  "</td>\n</tr>\n")
         if urlData.warningString:
             #self.warnings += 1
-            if self.logfield("warning"):
+            if self.has_field("warning"):
                 self.fd.write("<tr>\n"+
-                    self.tablewarning+LogFields["warning"]+
+                    self.tablewarning+self.field("warning")+
 	            "</td>\n"+self.tablewarning+
                     urlData.warningString.replace("\n", "<br>")+
                     "</td>\n</tr>\n")
-        if self.logfield("result"):
+        if self.has_field("result"):
             if urlData.valid:
                 self.fd.write("<tr>\n"+self.tableok+
-                  LogFields["result"]+"</td>\n"+
+                  self.field("result")+"</td>\n"+
                   self.tableok+urlData.validString+"</td>\n</tr>\n")
             else:
                 self.errors += 1
-                self.fd.write("<tr>\n"+self.tableerror+LogFields["result"]+
+                self.fd.write("<tr>\n"+self.tableerror+self.field("result")+
 	                  "</td>\n"+self.tableerror+
 			  urlData.errorString+"</td>\n</tr>\n")
         self.fd.write("</table></td></tr></table><br clear=all>")
@@ -133,7 +134,7 @@ class HtmlLogger (StandardLogger):
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
-        if self.logfield("outro"):
+        if self.has_field("outro"):
             self.fd.write("\n"+_("Thats it. "))
             #if self.warnings==1:
             #    self.fd.write(_("1 warning, "))

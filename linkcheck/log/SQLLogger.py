@@ -22,14 +22,15 @@ from linkcheck import StringUtil, _, Config
 class SQLLogger (StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
     def __init__ (self, **args):
-        apply(StandardLogger.__init__, (self,), args)
+        StandardLogger.__init__(self, **args)
         self.dbname = args['dbname']
         self.separator = args['separator']
 
     def init (self):
+        StandardLogger.init(self)
         if self.fd is None: return
         self.starttime = time.time()
-        if self.logfield("intro"):
+        if self.has_field("intro"):
             self.fd.write("-- "+(_("created by %s at %s\n") % (Config.AppName,
                        strtime(self.starttime))))
             self.fd.write("-- "+(_("Get the newest version at %s\n") % Config.Url))
@@ -67,7 +68,7 @@ class SQLLogger (StandardLogger):
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
-        if self.logfield("outro"):
+        if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             name = _("seconds")

@@ -14,7 +14,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import time, linkcheck, linkcheck.Config
+import time
+from linkcheck import Config, _
 from linkcheck.StringUtil import xmlify
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
@@ -23,21 +24,22 @@ class XMLLogger (StandardLogger):
     """XML output mirroring the GML structure. Easy to parse with any XML
        tool."""
     def __init__ (self, **args):
-        apply(StandardLogger.__init__, (self,), args)
+        StandardLogger.__init__(self, **args)
         self.nodes = {}
         self.nodeid = 0
 
     def init (self):
+        StandardLogger.init(self)
         if self.fd is None: return
         self.starttime = time.time()
         self.fd.write('<?xml version="1.0"?>\n')
-        if self.logfield("intro"):
+        if self.has_field("intro"):
             self.fd.write("<!--\n")
-            self.fd.write("  "+linkcheck._("created by %s at %s\n") % \
-	              (linkcheck.Config.AppName, strtime(self.starttime)))
-            self.fd.write("  "+linkcheck._("Get the newest version at %s\n") % linkcheck.Config.Url)
-            self.fd.write("  "+linkcheck._("Write comments and bugs to %s\n\n") % \
-	              linkcheck.Config.Email)
+            self.fd.write("  "+_("created by %s at %s\n") % \
+	              (Config.AppName, strtime(self.starttime)))
+            self.fd.write("  "+_("Get the newest version at %s\n") % Config.Url)
+            self.fd.write("  "+_("Write comments and bugs to %s\n\n") % \
+	              Config.Email)
             self.fd.write("-->\n\n")
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
         self.fd.flush()
@@ -52,17 +54,17 @@ class XMLLogger (StandardLogger):
             self.nodeid += 1
             self.fd.write('  <node name="%d" ' % node.id)
             self.fd.write(">\n")
-            if self.logfield("realurl"):
+            if self.has_field("realurl"):
                 self.fd.write("    <label>%s</label>\n" % xmlify(node.url))
             self.fd.write("    <data>\n")
-            if node.dltime>=0 and self.logfield("dltime"):
+            if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("      <dltime>%f</dltime>\n" % node.dltime)
-            if node.dlsize>=0 and self.logfield("dlsize"):
+            if node.dlsize>=0 and self.has_field("dlsize"):
                 self.fd.write("      <dlsize>%d</dlsize>\n" % node.dlsize)
-            if node.checktime and self.logfield("checktime"):
+            if node.checktime and self.has_field("checktime"):
                 self.fd.write("      <checktime>%f</checktime>\n" \
                               % node.checktime)
-            if self.logfield("extern"):
+            if self.has_field("extern"):
                 self.fd.write("      <extern>%d</extern>\n" % \
 	                  (node.extern and 1 or 0))
             self.fd.write("    </data>\n")
@@ -80,10 +82,10 @@ class XMLLogger (StandardLogger):
 		              self.nodes[node.parentName].id)
                 self.fd.write(' target="%d"' % node.id)
                 self.fd.write(">\n")
-                if self.logfield("url"):
+                if self.has_field("url"):
 		    self.fd.write("    <label>%s</label>\n" % xmlify(node.urlName))
                 self.fd.write("    <data>\n")
-                if self.logfield("result"):
+                if self.has_field("result"):
                     self.fd.write("      <valid>%d</valid>\n" % \
 		              (node.valid and 1 or 0))
                 self.fd.write("    </data>\n")
@@ -93,18 +95,18 @@ class XMLLogger (StandardLogger):
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         self.fd.write("</graph>\n</GraphXML>\n")
-        if self.logfield("outro"):
+        if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            name = linkcheck._("seconds")
+            name = _("seconds")
             self.fd.write("<!-- ")
-            self.fd.write(linkcheck._("Stopped checking at %s") % strtime(self.stoptime))
+            self.fd.write(_("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
-                name = linkcheck._("minutes")
+                name = _("minutes")
             if duration > 60:
                 duration = duration / 60
-                name = linkcheck._("hours")
+                name = _("hours")
             self.fd.write(" (%.3f %s)\n" % (duration, name))
             self.fd.write("-->")
         self.fd.flush()

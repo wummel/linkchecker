@@ -15,7 +15,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-from linkcheck.log import Spaces, LogFields
 from StandardLogger import StandardLogger
 from linkcheck import StringUtil, _
 
@@ -65,8 +64,8 @@ class ColoredLogger (StandardLogger):
     """ANSI colorized output"""
 
     def __init__ (self, **args):
+        StandardLogger.__init__(self, **args)
         esc="\x1b[%sm"
-        apply(StandardLogger.__init__, (self,), args)
         self.colorparent = esc % col_num(args['colorparent'])
         self.colorurl = esc % col_num(args['colorurl'])
         self.colorname = esc % col_num(args['colorname'])
@@ -84,12 +83,13 @@ class ColoredLogger (StandardLogger):
 
     def newUrl (self, urlData):
         if self.fd is None: return
-        if self.logfield("parenturl"):
+        if self.has_field("parenturl"):
             if urlData.parentName:
                 if self.currentPage != urlData.parentName:
                     if self.prefix:
                         self.fd.write("o\n")
-                    self.fd.write("\n"+LogFields["parenturl"]+Spaces["parenturl"]+
+                    self.fd.write("\n"+self.field("parenturl")+
+                              self.spaces("parenturl")+
 		              self.colorparent+urlData.parentName+
 			      self.colorreset+"\n")
                     self.currentPage = urlData.parentName
@@ -99,12 +99,12 @@ class ColoredLogger (StandardLogger):
                     self.fd.write("o\n")
                 self.prefix = 0
                 self.currentPage=None
-        if self.logfield("url"):
+        if self.has_field("url"):
             if self.prefix:
                 self.fd.write("|\n+- ")
             else:
                 self.fd.write("\n")
-            self.fd.write(LogFields["url"]+Spaces["url"]+self.colorurl+
+            self.fd.write(self.field("url")+self.spaces("url")+self.colorurl+
 	              urlData.urlName+self.colorreset)
             if urlData.line:
                 self.fd.write(_(", line %d")%urlData.line)
@@ -115,66 +115,66 @@ class ColoredLogger (StandardLogger):
             else:
                 self.fd.write("\n")
 
-        if urlData.name and self.logfield("name"):
+        if urlData.name and self.has_field("name"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(LogFields["name"]+Spaces["name"]+self.colorname+
-                          urlData.name+self.colorreset+"\n")
-        if urlData.baseRef and self.logfield("base"):
+            self.fd.write(self.field("name")+self.spaces("name")+
+                          self.colorname+urlData.name+self.colorreset+"\n")
+        if urlData.baseRef and self.has_field("base"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(LogFields["base"]+Spaces["base"]+self.colorbase+
-	                  urlData.baseRef+self.colorreset+"\n")
+            self.fd.write(self.field("base")+self.spaces("base")+
+                          self.colorbase+urlData.baseRef+self.colorreset+"\n")
             
-        if urlData.url and self.logfield("realurl"):
+        if urlData.url and self.has_field("realurl"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(LogFields["realurl"]+Spaces["realurl"]+self.colorreal+
-	                  urlData.url+self.colorreset+"\n")
-        if urlData.dltime>=0 and self.logfield("dltime"):
+            self.fd.write(self.field("realurl")+self.spaces("realurl")+
+                          self.colorreal+urlData.url+self.colorreset+"\n")
+        if urlData.dltime>=0 and self.has_field("dltime"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(LogFields["dltime"]+Spaces["dltime"]+
+            self.fd.write(self.field("dltime")+self.spaces("dltime")+
                           self.colordltime+
                           (_("%.3f seconds") % urlData.dltime)+
                           self.colorreset+"\n")
-        if urlData.dlsize>=0 and self.logfield("dlsize"):
+        if urlData.dlsize>=0 and self.has_field("dlsize"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(LogFields["dlsize"]+Spaces["dlsize"]+
+            self.fd.write(self.field("dlsize")+self.spaces("dlsize")+
                           self.colordlsize+StringUtil.strsize(urlData.dlsize)+
                           self.colorreset+"\n")
-        if urlData.checktime and self.logfield("checktime"):
+        if urlData.checktime and self.has_field("checktime"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(LogFields["checktime"]+Spaces["checktime"]+
+            self.fd.write(self.field("checktime")+self.spaces("checktime")+
                 self.colordltime+
 	        (_("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
             
-        if urlData.infoString and self.logfield("info"):
+        if urlData.infoString and self.has_field("info"):
             if self.prefix:
-                self.fd.write("|  "+LogFields["info"]+Spaces["info"]+
+                self.fd.write("|  "+self.field("info")+self.spaces("info")+
                       StringUtil.indentWith(StringUtil.blocktext(
-                        urlData.infoString, 65), "|      "+Spaces["info"]))
+                      urlData.infoString, 65), "|      "+self.spaces("info")))
             else:
-                self.fd.write(LogFields["info"]+Spaces["info"]+
+                self.fd.write(self.field("info")+self.spaces("info")+
                       StringUtil.indentWith(StringUtil.blocktext(
-                        urlData.infoString, 65), "    "+Spaces["info"]))
+                        urlData.infoString, 65), "    "+self.spaces("info")))
             self.fd.write(self.colorreset+"\n")
             
         if urlData.warningString:
             #self.warnings += 1
-            if self.logfield("warning"):
+            if self.has_field("warning"):
                 if self.prefix:
                     self.fd.write("|  ")
-                self.fd.write(LogFields["warning"]+Spaces["warning"]+
+                self.fd.write(self.field("warning")+self.spaces("warning")+
 		          self.colorwarning+
 	                  urlData.warningString+self.colorreset+"\n")
 
-        if self.logfield("result"):
+        if self.has_field("result"):
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(LogFields["result"]+Spaces["result"])
+            self.fd.write(self.field("result")+self.spaces("result"))
             if urlData.valid:
                 self.fd.write(self.colorvalid+urlData.validString+
 	                      self.colorreset+"\n")
@@ -186,7 +186,7 @@ class ColoredLogger (StandardLogger):
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
-        if self.logfield("outro"):
+        if self.has_field("outro"):
             if self.prefix:
                 self.fd.write("o\n")
         StandardLogger.endOfOutput(self, linknumber=linknumber)
