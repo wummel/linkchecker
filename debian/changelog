@@ -1,7 +1,10 @@
 linkchecker (1.8.0-2) unstable; urgency=low
 
+  * I *new* I forgot something. Move dh_* in debian/rules from
+    binary-indep to binary-arch.
+    This fixes the build errors (Closes: #171012)
   * Use -r"fakeroot --" instead of -rfakeroot for cvs-buildpackage.
-    This fixes the build error on m68k platforms (Closes: #171012)
+    Just to be sure.
 
  -- Bastian Kleineidam <calvin@debian.org>  Thu, 28 Nov 2002 11:00:32 +0100
 
