@@ -92,6 +92,7 @@
 #define YYSTYPE PyObject*
 #define YYPARSE_PARAM scanner
 #define YYLEX_PARAM scanner
+/* extern functions found in htmllex.l */
 extern int yylex(YYSTYPE* yylvalp, void* scanner);
 extern int htmllexInit (void** scanner, UserData* data);
 extern int htmllexStart (void* scanner, UserData* data, const char* s, int slen);
@@ -187,7 +188,7 @@ typedef struct yyltype
 
 
 /* Line 213 of /usr/share/bison/yacc.c.  */
-#line 191 "htmlparse.c"
+#line 192 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
@@ -356,8 +357,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short yyrline[] =
 {
-       0,    95,    95,    96,    99,   100,   107,   144,   193,   226,
-     257,   288,   319,   350,   390,   430
+       0,    97,    97,    98,   101,   102,   109,   146,   195,   228,
+     259,   290,   321,   352,   392,   432
 };
 #endif
 
@@ -1006,22 +1007,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 95 "htmlparse.y"
+#line 97 "htmlparse.y"
     {}
     break;
 
   case 3:
-#line 96 "htmlparse.y"
+#line 98 "htmlparse.y"
     {}
     break;
 
   case 4:
-#line 99 "htmlparse.y"
+#line 101 "htmlparse.y"
     { YYACCEPT; /* wait for more lexer input */ }
     break;
 
   case 5:
-#line 101 "htmlparse.y"
+#line 103 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1031,7 +1032,7 @@ yyreduce:
     break;
 
   case 6:
-#line 108 "htmlparse.y"
+#line 110 "htmlparse.y"
     {
     /*  is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1071,7 +1072,7 @@ finish_start:
     break;
 
   case 7:
-#line 145 "htmlparse.y"
+#line 147 "htmlparse.y"
     {
     /*  is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1123,7 +1124,7 @@ finish_start_end:
     break;
 
   case 8:
-#line 194 "htmlparse.y"
+#line 196 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1159,7 +1160,7 @@ finish_end:
     break;
 
   case 9:
-#line 227 "htmlparse.y"
+#line 229 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1193,7 +1194,7 @@ finish_comment:
     break;
 
   case 10:
-#line 258 "htmlparse.y"
+#line 260 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1227,7 +1228,7 @@ finish_pi:
     break;
 
   case 11:
-#line 289 "htmlparse.y"
+#line 291 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1261,7 +1262,7 @@ finish_cdata:
     break;
 
   case 12:
-#line 320 "htmlparse.y"
+#line 322 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1295,7 +1296,7 @@ finish_doctype:
     break;
 
   case 13:
-#line 351 "htmlparse.y"
+#line 353 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1338,7 +1339,7 @@ finish_script:
     break;
 
   case 14:
-#line 391 "htmlparse.y"
+#line 393 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1381,7 +1382,7 @@ finish_style:
     break;
 
   case 15:
-#line 431 "htmlparse.y"
+#line 433 "htmlparse.y"
     {
     /* Remember this is also called as a lexer error fallback */
     UserData* ud = yyget_extra(scanner);
@@ -1419,7 +1420,7 @@ finish_characters:
     }
 
 /* Line 1016 of /usr/share/bison/yacc.c.  */
-#line 1423 "htmlparse.c"
+#line 1424 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1638,7 +1639,7 @@ yyreturn:
 }
 
 
-#line 464 "htmlparse.y"
+#line 466 "htmlparse.y"
 
 
 /* disable python memory interface */
@@ -1703,6 +1704,10 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
         self->userData->pos += len;
     }
     RESIZE_BUF(self->userData->tmp_buf);
+    Py_XDECREF(self->userData->tmp_tag);
+    Py_XDECREF(self->userData->tmp_attrs);
+    Py_XDECREF(self->userData->tmp_attrval);
+    Py_XDECREF(self->userData->tmp_attrname);
     self->userData->tmp_tag = self->userData->tmp_attrs =
 	self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     if (len > 0) {

@@ -9,6 +9,7 @@
 #define YYSTYPE PyObject*
 #define YYPARSE_PARAM scanner
 #define YYLEX_PARAM scanner
+/* extern functions found in htmllex.l */
 extern int yylex(YYSTYPE* yylvalp, void* scanner);
 extern int htmllexInit (void** scanner, UserData* data);
 extern int htmllexStart (void* scanner, UserData* data, const char* s, int slen);
@@ -76,6 +77,7 @@ staticforward PyTypeObject parser_type;
 %output="htmlparse.c"
 %pure_parser
 
+/* parser tokens */
 %token T_WAIT
 %token T_ERROR
 %token T_TEXT
@@ -525,6 +527,10 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
         self->userData->pos += len;
     }
     RESIZE_BUF(self->userData->tmp_buf);
+    Py_XDECREF(self->userData->tmp_tag);
+    Py_XDECREF(self->userData->tmp_attrs);
+    Py_XDECREF(self->userData->tmp_attrval);
+    Py_XDECREF(self->userData->tmp_attrname);
     self->userData->tmp_tag = self->userData->tmp_attrs =
 	self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     if (len > 0) {
