@@ -154,7 +154,7 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
     @returns: a list, as G-d intended.
     @rtype: list
     """
-    pairs = [s2 for s1 in qs.split('&') for s2 in s1.split(';')]
+    pairs = [s for s in qs.split('&')]
     r = []
     for name_value in pairs:
         nv = name_value.split('=', 1)
@@ -261,9 +261,9 @@ def url_parse_query (query):
         append = ""
     l = []
     for k, v in parse_qsl(query, True):
-        k = urllib.quote(k, '/-:,')
+        k = urllib.quote(k, '/-:,;')
         if v:
-            v = urllib.quote(v, '/-:,')
+            v = urllib.quote(v, '/-:,;')
             l.append("%s=%s" % (k, v))
         elif v is None:
             l.append(k)

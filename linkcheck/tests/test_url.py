@@ -443,6 +443,13 @@ class TestUrl (unittest.TestCase):
     def _splitparam (self, x):
         self.assertEqual(linkcheck.url.splitparams(x[0]), (x[1][0], x[1][1]))
 
+    def test_cgi_split (self):
+        """
+        Test cgi parameter splitting.
+        """
+        u = "scid=kb;en-us;Q248840"
+        self.assertEqual(linkcheck.url.url_parse_query(u), u)
+
 
 def test_suite ():
     """
