@@ -17,14 +17,12 @@ export DH_OPTIONS
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	$(PYTHON) setup.py config
 	touch configure-stamp
 
 
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	$(PYTHON) setup.py build
 	touch build-stamp
 
 clean:

@@ -2,6 +2,8 @@ linkchecker (1.8.9-1) unstable; urgency=low
 
   * New upstream release.
   * use debian/compat instead of DH_COMPAT
+  * Standards Version 3.5.9.0
+  * remove unnecessary calls to setup.py
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed,  5 Mar 2003 02:42:23 +0100
 
