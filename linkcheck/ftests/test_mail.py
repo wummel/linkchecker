@@ -27,7 +27,7 @@ class TestMail (linkcheck.ftests.StandardTest):
 
     def test_good_mail (self):
         """test some good mailto addrs"""
-        url = self.norm("mailto:Dude <calvin@users.sf.net> , "\
+        url = self.norm(u"mailto:Dude <calvin@users.sf.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
           u"url %s" % url,
@@ -37,7 +37,7 @@ class TestMail (linkcheck.ftests.StandardTest):
           u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm("mailto:Bastian Kleineidam <calvin@users.sf.net>?"\
+        url = self.norm(u"mailto:Bastian Kleineidam <calvin@users.sf.net>?"\
                 "bcc=calvin%40users.sourceforge.net")
         resultlines = [
           u"url %s" % url,
@@ -47,7 +47,7 @@ class TestMail (linkcheck.ftests.StandardTest):
           u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm("mailto:Bastian Kleineidam <calvin@users.sf.net>")
+        url = self.norm(u"mailto:Bastian Kleineidam <calvin@users.sf.net>")
         resultlines = [
             u"url %s" % url,
             u"cache key mailto:calvin@users.sf.net",
@@ -56,7 +56,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm("mailto:o'hara@users.sf.net")
+        url = self.norm(u"mailto:o'hara@users.sf.net")
         resultlines = [
             u"url %s" % url,
             u"cache key mailto:o'hara@users.sf.net",
@@ -65,7 +65,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm("mailto:?to=calvin@users.sf.net&subject=blubb&"\
+        url = self.norm(u"mailto:?to=calvin@users.sf.net&subject=blubb&"\
                 "cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
         resultlines = [
             u"url %s" % url,
@@ -77,7 +77,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm("mailto:news-admins@freshmeat.net?subject="\
+        url = self.norm(u"mailto:news-admins@freshmeat.net?subject="\
                 "Re:%20[fm%20#11093]%20(news-admins)%20Submission%20"\
                 "report%20-%20Pretty%20CoLoRs")
         resultlines = [
@@ -87,7 +87,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm("mailto:foo@foo-bar.de?subject=test")
+        url = self.norm(u"mailto:foo@foo-bar.de?subject=test")
         resultlines = [
             u"url %s" % url,
             u"cache key mailto:foo@foo-bar.de",
@@ -121,7 +121,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm("mailto:")
+        url = self.norm(u"mailto:")
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -134,7 +134,7 @@ class TestMail (linkcheck.ftests.StandardTest):
     def test_bad_mail (self):
         """test some mailto addrs with bad syntax"""
         # ? extension forbidden in <> construct
-        url = self.norm("mailto:Bastian Kleineidam "\
+        url = self.norm(u"mailto:Bastian Kleineidam "\
                          "<calvin@users.sf.net?foo=bar>")
         resultlines = [
             u"url %s" % url,
