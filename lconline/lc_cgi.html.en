@@ -10,6 +10,14 @@
  a:hover { color: #34a4ef }
  //-->
 </style>
+<script type="text/javascript" src="check.js">
+<script type="text/javascript">
+<!--
+function gettext (s) {
+    return s;
+}
+// -->
+</script>
 </head>
 <body text="#192c83" bgcolor="#fff7e5" link="#191c83" vlink="#191c83"
  alink="#191c83">
@@ -20,7 +28,8 @@ target="_top">LinkChecker</a>)
 </center>
 
 <blockquote>
-<form method="POST" action="/cgi-bin/lconline/lc.cgi" target="links">
+<form method="POST" action="/cgi-bin/lconline/lc.cgi" target="links"
+ onsubmit="return(isValid(document.checklinkForm))" name="checklinkForm">
 <table border="0" cellpadding="2" cellspacing="0" summary="">
 <tr height="50">
 <td>Url:</td>

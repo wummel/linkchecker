@@ -189,7 +189,7 @@ o a (Fast)CGI web interface (requires HTTP server)
          ('share/linkchecker/examples',
              ['lconline/leer.html.en', 'lconline/leer.html.de',
               'lconline/index.html', 'lconline/lc_cgi.html.en',
-              'lconline/lc_cgi.html.de',
+              'lconline/lc_cgi.html.de', 'lconline/check.js',
               'lc.cgi','lc.fcgi','lc.sz_fcgi','linkchecker.bat']),
          ('share/man/man1', ['linkchecker.1']),
       ],
