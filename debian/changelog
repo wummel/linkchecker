@@ -1,6 +1,10 @@
 linkchecker (1.5.5) unstable; urgency=low
 
   * linkcheck/linkname.py: fix linkname regular expressions (from 1.4.9)
+  * linkcheck/UrlData.py: (from 1.4.9)
+    - do not allow linebreaks in quoted link attributes
+    - fix name matching (reported by Jerry Nieuviarts <jerry@clubic.com>)
+    - dont use re.DOTALL, the new linkmatcher does not need it
   * linkchecker: documentation typos
   * linkcheck/__init__.py: use getLinkPat function for all config
     entries, not just commandline
