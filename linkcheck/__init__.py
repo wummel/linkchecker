@@ -18,7 +18,6 @@
 
 import os
 import re
-import datetime
 
 import linkcheck.i18n
 import _linkchecker_configdata as configdata
@@ -93,11 +92,4 @@ def init_i18n ():
     if locdir is None:
         locdir = os.path.join(configdata.install_data, 'share', 'locale')
     linkcheck.i18n.init(configdata.name, locdir)
-
-def check_date ():
-    """check for special dates"""
-    now = datetime.date.today()
-    if now.day == 7 and now.month == 1:
-        years = now.year - 2000
-        return _("Happy Birtday for LinkChecker, I am %d years old!") % years
 
