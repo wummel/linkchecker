@@ -55,7 +55,7 @@ Setup for Windows
    Change to the linkchecker-X.X.X/po directory:
    % make win
 3. Compile and install the Python modules
-   Start a DOS command shell and change to the webcleaner-X.X directory:
+   Start a DOS command shell and change to the linkchecker-X.X.X directory:
    c:> python setup.py build -c mingw32 install
 
 
