@@ -1,17 +1,17 @@
-2.0rc2 "" (released xx.xx.xxxx)
+2.0rc2 "El día de la bestia" (released 20.11.2004)
 
   * encode version string for --version output
     Type: bugfix
     Closes: SF bug #1067915
     Changed: linkchecker
 
-  * added shell config note with --home install option
+  * Added shell config note with --home install option.
     Type: documentation
     Closes: SF bug #1067919
     Changed: doc/install.txt
 
-  * recheck robots.txt allowance and intern/extern filters for
-    redirected URLs
+  * Recheck robots.txt allowance and intern/extern filters for
+    redirected URLs.
     Type: bugfix
     Closes: SF bug #1067914
     Changed: linkcheck/checker/httpurl.py
@@ -20,6 +20,10 @@
     sentences.
     Type: feature
     Changed: linkcheck/checker/*.py, po/*
+
+  * Added missing script_dir to the windows installer script.
+    Type: bugfix
+    Changed: install-linkchecker.py
 
 2.0rc1 "The Incredibles" (released 16.11.2004)
 
