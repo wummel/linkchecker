@@ -35,7 +35,8 @@ Requirements for Unix/Linux or Mac OS X
    On most distributions, the distutils module is included in
    an extra "python-dev" package.
 
-3. optcomplete Python module from http://furius.ca/optcomplete/
+3. *Optional, for bash-completion:*
+   optcomplete Python module from http://furius.ca/optcomplete/
 
 Requirements for Windows
 ------------------------
@@ -55,8 +56,6 @@ Requirements for Windows
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe]
    d) gettext
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe]
-
-3. optcomplete Python module from http://furius.ca/optcomplete/
 
 Setup for Unix/Linux or Mac OS X
 --------------------------------

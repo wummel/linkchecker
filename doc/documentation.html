@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.3.4: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.3.7: http://docutils.sourceforge.net/" />
 <title>Documentation</title>
 <meta content="3" name="navigation.order" />
 <meta content="Documentation" name="navigation.name" />
@@ -33,8 +33,8 @@ window.onload = function() {
 </div>
 </div>
 <!-- /bfknav -->
-<h1 class="title">Documentation</h1>
 <div class="document" id="documentation">
+<h1 class="title">Documentation</h1>
 <div class="contents topic" id="contents">
 <p class="topic-title first"><a name="contents">Contents</a></p>
 <ul class="simple">
@@ -46,12 +46,12 @@ window.onload = function() {
 </div>
 <div class="section" id="basic-usage">
 <h1><a class="toc-backref" href="#id2" name="basic-usage">Basic usage</a></h1>
-<p>To check an URL like <tt class="literal"><span class="pre">http://www.myhomepage.org/</span></tt> it is enough to
-execute <tt class="literal"><span class="pre">linkchecker</span> <span class="pre">http://www.myhomepage.org/</span></tt>. This will check the
+<p>To check an URL like <tt class="docutils literal"><span class="pre">http://www.myhomepage.org/</span></tt> it is enough to
+execute <tt class="docutils literal"><span class="pre">linkchecker</span> <span class="pre">http://www.myhomepage.org/</span></tt>. This will check the
 complete domain of www.myhomepage.org recursively. All links pointing
 outside of the domain are also checked for validity.</p>
-<p>For more options, read the man page <tt class="literal"><span class="pre">linkchecker(1)</span></tt> or execute
-<tt class="literal"><span class="pre">linkchecker</span> <span class="pre">-h</span></tt>.</p>
+<p>For more options, read the man page <tt class="docutils literal"><span class="pre">linkchecker(1)</span></tt> or execute
+<tt class="docutils literal"><span class="pre">linkchecker</span> <span class="pre">-h</span></tt>.</p>
 </div>
 <div class="section" id="performed-checks">
 <h1><a class="toc-backref" href="#id3" name="performed-checks">Performed checks</a></h1>
@@ -61,7 +61,7 @@ are errors.
 After the syntax check passes, the URL is queued for connection
 checking. All connection check types are described below.</p>
 <ul>
-<li><p class="first">HTTP links (<tt class="literal"><span class="pre">http:</span></tt>, <tt class="literal"><span class="pre">https:</span></tt>)</p>
+<li><p class="first">HTTP links (<tt class="docutils literal"><span class="pre">http:</span></tt>, <tt class="docutils literal"><span class="pre">https:</span></tt>)</p>
 <p>After connecting to the given HTTP server the given path
 or query is requested. All redirections are followed, and
 if user/password is given it will be used as authorization
@@ -69,13 +69,13 @@ when necessary.
 Permanently moved pages issue a warning.
 All final HTTP status codes other than 2xx are errors.</p>
 </li>
-<li><p class="first">Local files (<tt class="literal"><span class="pre">file:</span></tt>)</p>
+<li><p class="first">Local files (<tt class="docutils literal"><span class="pre">file:</span></tt>)</p>
 <p>A regular, readable file that can be opened is valid. A readable
 directory is also valid. All other files, for example device files,
 unreadable or non-existing files are errors.</p>
 <p>File contents are checked for recursion.</p>
 </li>
-<li><p class="first">Mail links (<tt class="literal"><span class="pre">mailto:</span></tt>)</p>
+<li><p class="first">Mail links (<tt class="docutils literal"><span class="pre">mailto:</span></tt>)</p>
 <p>A mailto: link eventually resolves to a list of email addresses.
 If one address fails, the whole list will fail.
 For each mail address we check the following things:</p>
@@ -89,66 +89,66 @@ If no host accepts SMTP, we print a warning.</li>
 an answer, print the verified address as an info.</li>
 </ol>
 </li>
-<li><p class="first">FTP links (<tt class="literal"><span class="pre">ftp:</span></tt>)</p>
+<li><p class="first">FTP links (<tt class="docutils literal"><span class="pre">ftp:</span></tt>)</p>
 <p>For FTP links we do:</p>
 <ol class="arabic simple">
 <li>connect to the specified host</li>
 <li>try to login with the given user and password. The default
-user is <tt class="literal"><span class="pre">anonymous</span></tt>, the default password is <tt class="literal"><span class="pre">anonymous&#64;</span></tt>.</li>
+user is <tt class="docutils literal"><span class="pre">anonymous</span></tt>, the default password is <tt class="docutils literal"><span class="pre">anonymous&#64;</span></tt>.</li>
 <li>try to change to the given directory</li>
 <li>list the file with the NLST command</li>
 </ol>
 </li>
-<li><p class="first">Gopher links (<tt class="literal"><span class="pre">gopher:</span></tt>)</p>
+<li><p class="first">Gopher links (<tt class="docutils literal"><span class="pre">gopher:</span></tt>)</p>
 <p>We try to send the given selector (or query) to the gopher server.</p>
 </li>
-<li><p class="first">Telnet links (<tt class="literal"><span class="pre">telnet:</span></tt>)</p>
+<li><p class="first">Telnet links (<tt class="docutils literal"><span class="pre">telnet:</span></tt>)</p>
 <p>We try to connect and if user/password are given, login to the
 given telnet server.</p>
 </li>
-<li><p class="first">NNTP links (<tt class="literal"><span class="pre">news:</span></tt>, <tt class="literal"><span class="pre">snews:</span></tt>, <tt class="literal"><span class="pre">nntp</span></tt>)</p>
+<li><p class="first">NNTP links (<tt class="docutils literal"><span class="pre">news:</span></tt>, <tt class="docutils literal"><span class="pre">snews:</span></tt>, <tt class="docutils literal"><span class="pre">nntp</span></tt>)</p>
 <p>We try to connect to the given NNTP server. If a news group or
 article is specified, try to request it from the server.</p>
 </li>
-<li><p class="first">Ignored links (<tt class="literal"><span class="pre">javascript:</span></tt>, etc.)</p>
+<li><p class="first">Ignored links (<tt class="docutils literal"><span class="pre">javascript:</span></tt>, etc.)</p>
 <p>An ignored link will only print a warning. No further checking
 will be made.</p>
 <p>Here is a complete list of recognized, but ignored links. The most
 prominent of them should be JavaScript links.</p>
 <ul class="simple">
-<li><tt class="literal"><span class="pre">acap:</span></tt>      (application configuration access protocol)</li>
-<li><tt class="literal"><span class="pre">afs:</span></tt>       (Andrew File System global file names)</li>
-<li><tt class="literal"><span class="pre">chrome:</span></tt>    (Mozilla specific)</li>
-<li><tt class="literal"><span class="pre">cid:</span></tt>       (content identifier)</li>
-<li><tt class="literal"><span class="pre">clsid:</span></tt>     (Microsoft specific)</li>
-<li><tt class="literal"><span class="pre">data:</span></tt>      (data)</li>
-<li><tt class="literal"><span class="pre">dav:</span></tt>       (dav)</li>
-<li><tt class="literal"><span class="pre">fax:</span></tt>       (fax)</li>
-<li><tt class="literal"><span class="pre">find:</span></tt>      (Mozilla specific)</li>
-<li><tt class="literal"><span class="pre">imap:</span></tt>      (internet message access protocol)</li>
-<li><tt class="literal"><span class="pre">isbn:</span></tt>      (ISBN (int. book numbers))</li>
-<li><tt class="literal"><span class="pre">javascript:</span></tt> (JavaScript)</li>
-<li><tt class="literal"><span class="pre">ldap:</span></tt>      (Lightweight Directory Access Protocol)</li>
-<li><tt class="literal"><span class="pre">mailserver:</span></tt> (Access to data available from mail servers)</li>
-<li><tt class="literal"><span class="pre">mid:</span></tt>       (message identifier)</li>
-<li><tt class="literal"><span class="pre">mms:</span></tt>       (multimedia stream)</li>
-<li><tt class="literal"><span class="pre">modem:</span></tt>     (modem)</li>
-<li><tt class="literal"><span class="pre">nfs:</span></tt>       (network file system protocol)</li>
-<li><tt class="literal"><span class="pre">opaquelocktoken:</span></tt> (opaquelocktoken)</li>
-<li><tt class="literal"><span class="pre">pop:</span></tt>       (Post Office Protocol v3)</li>
-<li><tt class="literal"><span class="pre">prospero:</span></tt>  (Prospero Directory Service)</li>
-<li><tt class="literal"><span class="pre">rsync:</span></tt>     (rsync protocol)</li>
-<li><tt class="literal"><span class="pre">rtsp:</span></tt>      (real time streaming protocol)</li>
-<li><tt class="literal"><span class="pre">service:</span></tt>   (service location)</li>
-<li><tt class="literal"><span class="pre">shttp:</span></tt>     (secure HTTP)</li>
-<li><tt class="literal"><span class="pre">sip:</span></tt>       (session initiation protocol)</li>
-<li><tt class="literal"><span class="pre">tel:</span></tt>       (telephone)</li>
-<li><tt class="literal"><span class="pre">tip:</span></tt>       (Transaction Internet Protocol)</li>
-<li><tt class="literal"><span class="pre">tn3270:</span></tt>    (Interactive 3270 emulation sessions)</li>
-<li><tt class="literal"><span class="pre">vemmi:</span></tt>     (versatile multimedia interface)</li>
-<li><tt class="literal"><span class="pre">wais:</span></tt>      (Wide Area Information Servers)</li>
-<li><tt class="literal"><span class="pre">z39.50r:</span></tt>   (Z39.50 Retrieval)</li>
-<li><tt class="literal"><span class="pre">z39.50s:</span></tt>   (Z39.50 Session)</li>
+<li><tt class="docutils literal"><span class="pre">acap:</span></tt>      (application configuration access protocol)</li>
+<li><tt class="docutils literal"><span class="pre">afs:</span></tt>       (Andrew File System global file names)</li>
+<li><tt class="docutils literal"><span class="pre">chrome:</span></tt>    (Mozilla specific)</li>
+<li><tt class="docutils literal"><span class="pre">cid:</span></tt>       (content identifier)</li>
+<li><tt class="docutils literal"><span class="pre">clsid:</span></tt>     (Microsoft specific)</li>
+<li><tt class="docutils literal"><span class="pre">data:</span></tt>      (data)</li>
+<li><tt class="docutils literal"><span class="pre">dav:</span></tt>       (dav)</li>
+<li><tt class="docutils literal"><span class="pre">fax:</span></tt>       (fax)</li>
+<li><tt class="docutils literal"><span class="pre">find:</span></tt>      (Mozilla specific)</li>
+<li><tt class="docutils literal"><span class="pre">imap:</span></tt>      (internet message access protocol)</li>
+<li><tt class="docutils literal"><span class="pre">isbn:</span></tt>      (ISBN (int. book numbers))</li>
+<li><tt class="docutils literal"><span class="pre">javascript:</span></tt> (JavaScript)</li>
+<li><tt class="docutils literal"><span class="pre">ldap:</span></tt>      (Lightweight Directory Access Protocol)</li>
+<li><tt class="docutils literal"><span class="pre">mailserver:</span></tt> (Access to data available from mail servers)</li>
+<li><tt class="docutils literal"><span class="pre">mid:</span></tt>       (message identifier)</li>
+<li><tt class="docutils literal"><span class="pre">mms:</span></tt>       (multimedia stream)</li>
+<li><tt class="docutils literal"><span class="pre">modem:</span></tt>     (modem)</li>
+<li><tt class="docutils literal"><span class="pre">nfs:</span></tt>       (network file system protocol)</li>
+<li><tt class="docutils literal"><span class="pre">opaquelocktoken:</span></tt> (opaquelocktoken)</li>
+<li><tt class="docutils literal"><span class="pre">pop:</span></tt>       (Post Office Protocol v3)</li>
+<li><tt class="docutils literal"><span class="pre">prospero:</span></tt>  (Prospero Directory Service)</li>
+<li><tt class="docutils literal"><span class="pre">rsync:</span></tt>     (rsync protocol)</li>
+<li><tt class="docutils literal"><span class="pre">rtsp:</span></tt>      (real time streaming protocol)</li>
+<li><tt class="docutils literal"><span class="pre">service:</span></tt>   (service location)</li>
+<li><tt class="docutils literal"><span class="pre">shttp:</span></tt>     (secure HTTP)</li>
+<li><tt class="docutils literal"><span class="pre">sip:</span></tt>       (session initiation protocol)</li>
+<li><tt class="docutils literal"><span class="pre">tel:</span></tt>       (telephone)</li>
+<li><tt class="docutils literal"><span class="pre">tip:</span></tt>       (Transaction Internet Protocol)</li>
+<li><tt class="docutils literal"><span class="pre">tn3270:</span></tt>    (Interactive 3270 emulation sessions)</li>
+<li><tt class="docutils literal"><span class="pre">vemmi:</span></tt>     (versatile multimedia interface)</li>
+<li><tt class="docutils literal"><span class="pre">wais:</span></tt>      (Wide Area Information Servers)</li>
+<li><tt class="docutils literal"><span class="pre">z39.50r:</span></tt>   (Z39.50 Retrieval)</li>
+<li><tt class="docutils literal"><span class="pre">z39.50s:</span></tt>   (Z39.50 Session)</li>
 </ul>
 </li>
 </ul>
@@ -157,7 +157,7 @@ prominent of them should be JavaScript links.</p>
 <h1><a class="toc-backref" href="#id4" name="recursion">Recursion</a></h1>
 <p>Recursion occurs on HTML files, Opera bookmark files and directories.
 Note that the directory recursion reads all files in that
-directory, not just a subset like <tt class="literal"><span class="pre">index.htm*</span></tt>.</p>
+directory, not just a subset like <tt class="docutils literal"><span class="pre">index.htm*</span></tt>.</p>
 </div>
 <div class="section" id="frequently-asked-questions">
 <h1><a class="toc-backref" href="#id5" name="frequently-asked-questions">Frequently asked questions</a></h1>
@@ -240,7 +240,7 @@ extern2=hullabulla.com 1
 # the 1 means strict external ie don't even connect
 </pre>
 <p>and the command
-<tt class="literal"><span class="pre">linkchecker</span> <span class="pre">--intern=www.mycompany.com</span> <span class="pre">www.mycompany.com</span></tt></p>
+<tt class="docutils literal"><span class="pre">linkchecker</span> <span class="pre">--intern=www.mycompany.com</span> <span class="pre">www.mycompany.com</span></tt></p>
 <p><strong>Q: Is LinkCheckers cookie feature insecure?</strong></p>
 <p>A: Cookies can not store more information as is in the HTTP request itself,
 so you are not giving away any more system information.
@@ -269,11 +269,11 @@ cfg['fileoutput'].append(cfg.logger_new(log_format, log_args))
 <p><strong>Q: LinkChecker does not ignore anchor references on caching.</strong></p>
 <p><strong>Q: Some links with anchors are getting checked twice.</strong></p>
 <p>A: This is not a bug.
-It is common practice to believe that if an URL <tt class="literal"><span class="pre">ABC#anchor1</span></tt> works then
-<tt class="literal"><span class="pre">ABC#anchor2</span></tt> works too. That is not specified anywhere and I have seen
+It is common practice to believe that if an URL <tt class="docutils literal"><span class="pre">ABC#anchor1</span></tt> works then
+<tt class="docutils literal"><span class="pre">ABC#anchor2</span></tt> works too. That is not specified anywhere and I have seen
 server-side scripts that fail on some anchors and not on others.
 This is the reason for always checking URLs with different anchors.
-If you really want to disable this, use the <tt class="literal"><span class="pre">--no-anchor-caching</span></tt>
+If you really want to disable this, use the <tt class="docutils literal"><span class="pre">--no-anchor-caching</span></tt>
 option.</p>
 <p><strong>Q: I see LinkChecker gets a /robots.txt file for every site it
 checks. What is that about?</strong></p>
@@ -295,9 +295,9 @@ and look for missing files.</p>
 <p>A: No can do. Use the <a class="reference" href="http://tidy.sourceforge.net/">HTML Tidy</a> program.</p>
 </div>
 </div>
-<hr class="footer" />
+<hr class="docutils footer" />
 <div class="footer">
-Generated on: 2004-11-25 12:54 UTC.
+Generated on: 2005-01-11 11:18 UTC.
 </div>
 </body>
 </html>
