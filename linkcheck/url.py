@@ -69,6 +69,8 @@ def url_norm (url):
 
 def url_quote (url):
     """quote given url"""
+    if not url:
+        return ""
     urlparts = list(urlparse.urlsplit(url))
     urlparts[0] = quote(urlparts[0])
     urlparts[1] = quote(urlparts[1], ':')
