@@ -136,8 +136,9 @@ def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
     # assume local file
     else:
         klass = FileUrlData
-    if config['strict'] and cmdline:
-        # set automatic intern/extern stuff
+    if config['strict'] and cmdline and \
+       not (config['internlinks'] or config['externlinks']):
+        # set automatic intern/extern stuff if no filter was given
         set_intern_url(url, klass, config)
     return klass(urlName, recursionLevel, config, parentName, baseRef,
                  line=line, column=column, name=name)
