@@ -57,9 +57,8 @@ def get_link_pat (arg, strict=False):
     }
 
 
-import linkcheck.logger.standard
+import linkcheck.logger.text
 import linkcheck.logger.html
-import linkcheck.logger.colored
 import linkcheck.logger.gml
 import linkcheck.logger.sql
 import linkcheck.logger.csvlog
@@ -70,9 +69,8 @@ import linkcheck.logger.none
 
 # default logger classes
 Loggers = {
-    "text": linkcheck.logger.standard.StandardLogger,
+    "text": linkcheck.logger.text.TextLogger,
     "html": linkcheck.logger.html.HtmlLogger,
-    "colored": linkcheck.logger.colored.ColoredLogger,
     "gml": linkcheck.logger.gml.GMLLogger,
     "sql": linkcheck.logger.sql.SQLLogger,
     "csv": linkcheck.logger.csvlog.CSVLogger,
