@@ -6,6 +6,8 @@ DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
 PYTHON = python
 CGIDIR = $(ROOT)/usr/lib/cgi-bin/lconline
 HTMLDIR = $(ROOT)/var/www/lconline
+SHARE = $(ROOT)/usr/share/linkchecker
+ETC = $(ROOT)/etc
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 
@@ -22,10 +24,11 @@ binary-post-install/linkchecker::
 	install -m 755 cgi/lc.cgi $(CGIDIR)
 	install -m 755 cgi/lc.fcgi $(CGIDIR)
 # install system wide configuration files in etc
-	install -m 644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc/linkchecker
-	install -m 644 $(ROOT)/usr/share/linkchecker/logging.conf $(ROOT)/etc/linkchecker
+	install -m 644 $(SHARE)/linkcheckerrc $(ETC)/linkchecker/
+	install -m 644 $(SHARE)/logging.conf $(ETC)/linkchecker/
 # install bash_completion script
-	install -m 644 config/linkchecker-completion $(ROOT)/etc/bash_completion.d
+	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
 # install lintian overrides
 	install -m 644 debian/linkchecker.lintian $(ROOT)/usr/share/lintian/overrides/linkchecker
+	dh_python
 
