@@ -178,31 +178,24 @@ msgstr ""
 msgid "unsupported language"
 msgstr ""
 
-#, fuzzy
 msgid "empty url was given"
-msgstr "geen bestanden of URLs gegeven"
+msgstr ""
 
-#, fuzzy
 msgid "invalid url was given"
-msgstr "geen bestanden of URLs gegeven"
+msgstr ""
 
-#, fuzzy
 msgid "no url was given"
 msgstr "geen bestanden of URLs gegeven"
 
-#, fuzzy
 msgid "invalid recursion level syntax"
-msgstr "illegaal recursie nivo nummer %d"
+msgstr "illegaal recursie nivo"
 
-#, fuzzy
 msgid "recursion level greater than 3"
-msgstr "illegaal recursie nivo nummer %d"
+msgstr ""
 
-#, fuzzy
 msgid "invalid %s option syntax"
-msgstr "ungeldige Log Optie '%s'"
+msgstr "ungeldige Optie '%s'"
 
-#, fuzzy
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
@@ -220,7 +213,7 @@ msgid ""
 msgstr ""
 "<html><head><title>LinkChecker Online Fehler</title></head><body text="
 "\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\"alink="
-"\"#191c83\"><blockquote><b>Fehler</b><br>Das LinkChecker Online Skript ist "
+"\"#191c83\"><blockquote><b>Fehler: %s</b><br>Das LinkChecker Online Skript ist "
 "auf einen Fehler gesto&szlig;en. Bitte stellen Sie sicher, da&szlig; die "
 "angegebene URL mit <code>http://</code> beginnt und nur diese Zeichen "
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
@@ -302,9 +295,8 @@ msgstr "Resultaat"
 msgid "Start checking at %s\n"
 msgstr "Begin testen vanaf %s\n"
 
-#, fuzzy
 msgid " (cached)"
-msgstr " (uit de cache)\n"
+msgstr " (uit de cache)"
 
 msgid "Thats it. "
 msgstr "Dat was het. "
@@ -641,6 +633,3 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
-
-#~ msgid "Illegal telnet link syntax"
-#~ msgstr "Illegale Telnet link Syntax"

@@ -2,6 +2,10 @@ linkchecker (1.8.2-1) unstable; urgency=low
 
   * New upstream release.
   * install translated cgi html files
+  * add pointer to common license in copyright
+  * use DH_COMPAT=4, added build-depends: debhelper (>= 4.1.25) to
+    remove /usr/doc manglement stuff and add dh_python support for future
+    versions. There goes woody backport portability :)
 
  -- Bastian Kleineidam <calvin@debian.org>  Sat, 28 Dec 2002 18:23:26 +0100
 

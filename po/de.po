@@ -34,7 +34,7 @@ msgid "Got no answer from FTP server"
 msgstr "Keine Antwort vom FTP Server"
 
 msgid "Missing trailing directory slash in ftp url"
-msgstr ""
+msgstr "Fehlender / am Ende der FTP url"
 
 msgid "found"
 msgstr "gefunden"
@@ -184,7 +184,7 @@ msgid "Found %s in link contents"
 msgstr "Habe %s in Link Inhalt gefunden"
 
 msgid "Content size %s is larger than %s"
-msgstr ""
+msgstr "Inhalt %s is größer als %s"
 
 msgid "more than one <base> tag found, using only the first one"
 msgstr "mehr als ein <base> Tag gefunden, benutze lediglich das erste"
@@ -312,9 +312,8 @@ msgstr "Ergebnis"
 msgid "Start checking at %s\n"
 msgstr "Beginne Prüfen am %s\n"
 
-#, fuzzy
 msgid " (cached)"
-msgstr " (aus dem Cache)\n"
+msgstr " (aus dem Cache)"
 
 msgid "Thats it. "
 msgstr "Das wars. "
@@ -651,6 +650,3 @@ msgstr "keine Dateien oder URLs angegeben"
 
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
-
-#~ msgid "Illegal telnet link syntax"
-#~ msgstr "Illegale Telnet link Syntax"

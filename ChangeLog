@@ -14,7 +14,8 @@
     Changed files: linkcheck/logging/HtmlLogger.py
   * add translated cgi files
     Changed files: setup.py, MANIFEST.in, debian/rules
-    Added files: lconline/*.de
+    Added files: lconline/*.{de,en}
+    Removed files: lconline/{leer.html,lc_cgi.html}
 
 1.8.1
   * Add missing () to function call in proxy handling code

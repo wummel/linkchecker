@@ -1,4 +1,4 @@
-This is linkchecker, written and maintained by Bastian Kleineidam 
+This is linkchecker, written and maintained by Bastian Kleineidam
 <calvin@debian.org> on Sat,  8 Jan 2000 11:00:35 +0100.
 
 The original source can always be found at:
@@ -11,12 +11,4 @@ Copyright (C) 2000-2002 Bastian Kleineidam
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License with
-  the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL;
-  if not, write to the Free Software Foundation, Inc., 59 Temple Place,
-  Suite 330, Boston, MA  02111-1307  USA
+See /usr/share/common-licenses/GPL for more information.

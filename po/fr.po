@@ -175,29 +175,23 @@ msgstr ""
 msgid "unsupported language"
 msgstr ""
 
-#, fuzzy
 msgid "empty url was given"
-msgstr "aucun fichier ou url donnée"
+msgstr "aucun url donnée"
 
-#, fuzzy
 msgid "invalid url was given"
-msgstr "aucun fichier ou url donnée"
+msgstr "aucun url donnée"
 
-#, fuzzy
 msgid "no url was given"
-msgstr "aucun fichier ou url donnée"
+msgstr "aucun url donnée"
 
-#, fuzzy
 msgid "invalid recursion level syntax"
-msgstr "valeur du niveau de récursivité %d illégal"
+msgstr ""
 
-#, fuzzy
 msgid "recursion level greater than 3"
-msgstr "valeur du niveau de récursivité %d illégal"
+msgstr ""
 
-#, fuzzy
 msgid "invalid %s option syntax"
-msgstr "option de log invalide '%s'"
+msgstr ""
 
 msgid ""
 "<html><head>\n"
@@ -291,9 +285,8 @@ msgstr "Résultat"
 msgid "Start checking at %s\n"
 msgstr "Démarrage du controle à %s\n"
 
-#, fuzzy
 msgid " (cached)"
-msgstr " (caché)\n"
+msgstr " (caché)"
 
 msgid "Thats it. "
 msgstr "Terminé. "
@@ -624,6 +617,3 @@ msgstr "aucun fichier ou url donnée"
 
 msgid "Hit RETURN to finish"
 msgstr ""
-
-#~ msgid "Illegal telnet link syntax"
-#~ msgstr "Syntaxe illégale du lien telnet"
