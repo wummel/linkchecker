@@ -113,7 +113,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             raise linkcheck.LinkCheckerError, \
                    _("Got no answer from FTP server")
         # don't set info anymore, this may change every time we log in
-        #self.add_info(unicode(info))
+        #self.add_info(linkcheck.strformat.unicode_safe(info))
 
     def cwd (self):
         """

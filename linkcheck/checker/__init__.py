@@ -31,6 +31,7 @@ import nntplib
 import ftplib
 
 import linkcheck.httplib2
+import linkcheck.strformat
 import linkcheck.dns.exception
 
 
@@ -177,7 +178,7 @@ def set_intern_url (url, klass, config):
     elif klass in [linkcheck.checker.httpurl.HttpUrl,
                    linkcheck.checker.httpsurl.HttpsUrl,
                    linkcheck.checker.ftpurl.FtpUrl]:
-        domain = linkcheck.url.url_unicode_split(url)[1]
+        domain = linkcheck.strformat.url_unicode_split(url)[1]
         domain, is_idn = linkcheck.url.idna_encode(domain)
         if domain:
             domain = "://%s" % re.escape(domain)
@@ -234,15 +235,12 @@ def get_url_from (base_url, recursion_level, consumer,
     @param cmdline: flag if url was given on command line
     @type cmdline: bool
     """
-    default_encoding = "iso8859-15"
-    if not isinstance(base_url, unicode):
-        base_url = unicode(base_url, default_encoding, "ignore")
-    if parent_url is not None and not isinstance(parent_url, unicode):
-        parent_url = unicode(parent_url, default_encoding, "ignore")
-    if base_ref is not None and not isinstance(base_ref, unicode):
-        base_ref = unicode(base_ref, default_encoding, "ignore")
-    if not isinstance(name, unicode):
-        name = unicode(name, default_encoding, "ignore")
+    base_url = linkcheck.strformat.unicode_safe(base_url)
+    if parent_url is not None:
+        parent_url = linkcheck.strformat.unicode_safe(parent_url)
+    if base_ref is not None:
+        base_ref = linkcheck.strformat.unicode_safe(base_ref)
+    name = linkcheck.strformat.unicode_safe(name)
     #if cmdline and linkcheck.url.url_needs_quoting(base_url):
     #    base_url = linkcheck.url.url_quote(base_url)
     url = absolute_url(base_url, base_ref, parent_url)

@@ -29,6 +29,7 @@ import Cookie
 
 import linkcheck
 import linkcheck.url
+import linkcheck.strformat
 import linkcheck.robotparser2
 import linkcheck.httplib2
 import urlbase
@@ -221,6 +222,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     continue
                 raise
             self.headers = response.msg
+            if response.reason:
+                response.reason = \
+                        linkcheck.strformat.unicode_safe(response.reason)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Response: %s %s",
                                 response.status, response.reason)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Headers: %s",
@@ -313,8 +317,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                          self.headers.getheader("Uri", ""))
             # make new url absolute and unicode
             newurl = urlparse.urljoin(redirected, newurl)
-            if not isinstance(newurl, unicode):
-                newurl = unicode(newurl, "iso8859-1", "ignore")
+            newurl = linkcheck.strformat.unicode_safe(newurl)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
@@ -346,7 +349,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             # remember redireced url as alias
             self.aliases.append(redirected)
             # note: urlparts has to be a list
-            self.urlparts = linkcheck.url.url_unicode_split(redirected)
+            self.urlparts = linkcheck.strformat.url_unicode_split(redirected)
             if response.status == 301:
                 if not self.has301status:
                     self.add_warning(
@@ -405,7 +408,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                                    " anchor from request.") % server)
             if response.status == 204:
                 # no content
-                self.add_warning(unicode(response.reason))
+                self.add_warning(
+                            linkcheck.strformat.unicode_safe(response.reason))
             # store cookies for valid links
             if self.consumer.config['cookies']:
                 for c in self.cookies:
@@ -414,7 +418,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     out = self.consumer.cache.store_cookies(self.headers,
                                                             self.urlparts[1])
                     for h in out:
-                        self.add_info(unicode(h))
+                        self.add_info(linkcheck.strformat.unicode_safe(h))
                 except Cookie.CookieError, msg:
                     self.add_warning(_("Could not store cookies: %(msg)s.") %
                                      {'msg': str(msg)})

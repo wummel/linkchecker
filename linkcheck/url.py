@@ -444,9 +444,3 @@ def url_split (url):
         host, port = urllib.splitnport(host, port)
     return scheme, host, port, document
 
-
-def url_unicode_split (url):
-    """
-    Like urlparse.urlsplit(), but always returning unicode parts.
-    """
-    return [unicode(s) for s in urlparse.urlsplit(url)]

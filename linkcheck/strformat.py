@@ -24,6 +24,25 @@ import textwrap
 import sys
 import os
 import time
+import urlparse
+
+
+def unicode_safe (s, encoding="iso-8859-1"):
+    """
+    Return unicode string without raising encoding errors. Unknown
+    characters of the given encoding will be ignored.
+    """
+    assert s is not None, "argument to unicode_safe was None"
+    if isinstance(s, unicode):
+        return s
+    return unicode(s, encoding, "ignore")
+
+
+def url_unicode_split (url):
+    """
+    Like urlparse.urlsplit(), but always returning unicode parts.
+    """
+    return [unicode_safe(s) for s in urlparse.urlsplit(url)]
 
 
 def unquote (s):

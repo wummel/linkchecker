@@ -271,7 +271,8 @@ class UrlBase (object):
         try:
             self.build_url()
         except linkcheck.LinkCheckerError, msg:
-            self.set_result(unicode(str(msg)), valid=False)
+            self.set_result(linkcheck.strformat.unicode_safe(msg),
+                            valid=False)
             return False
         self.set_cache_keys()
         self.extern = self._get_extern(self.url)
@@ -305,7 +306,7 @@ class UrlBase (object):
         else:
             self.url = base_url
         # split into (modifiable) list
-        self.urlparts = linkcheck.url.url_unicode_split(self.url)
+        self.urlparts = linkcheck.strformat.url_unicode_split(self.url)
         # and unsplit again
         self.url = urlparse.urlunsplit(self.urlparts)
         # check userinfo@host:port syntax
@@ -375,7 +376,8 @@ class UrlBase (object):
             # make nicer error msg for bad status line
             if isinstance(evalue, linkcheck.httplib2.BadStatusLine):
                 evalue = _('Bad HTTP response %r') % str(evalue)
-            self.set_result(unicode(str(evalue)), valid=False)
+            self.set_result(linkcheck.strformat.unicode_safe(evalue),
+                            valid=False)
 
         # check content
         warningregex = self.consumer.config["warningregex"]
@@ -387,7 +389,8 @@ class UrlBase (object):
                 value, tb = sys.exc_info()[1:]
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
                                     traceback.format_tb(tb))
-                self.set_result(unicode(str(value)), valid=False)
+                self.set_result(linkcheck.strformat.unicode_safe(value),
+                                valid=False)
 
         self.checktime = time.time() - t
         # check recursion
@@ -686,7 +689,7 @@ class UrlBase (object):
         """
         Return serialized url check data as unicode string.
         """
-        sep = unicode(os.linesep)
+        sep = linkcheck.strformat.unicode_safe(os.linesep)
         assert isinstance(self.base_url, unicode), self
         if self.parent_url is not None:
             assert isinstance(self.parent_url, unicode), self
