@@ -1,0 +1,40 @@
+<!doctype html public "-//w3c//dtd html 4.0//en">
+<html><head>
+<title>LinkChecker Online</title>
+</head>
+<body text="#192c83" bgcolor="#fff7e5" link="#191c83" vlink="#191c83" 
+ alink="#191c83" >
+
+<font face="Lucida,Verdana,Arial,sans-serif">
+<center><h2>LinkChecker Online</h2>
+(powered by <a href="http://linkchecker.sourceforge.net/">LinkChecker</a>)
+</center>
+
+<blockquote>
+<form method="POST" action="http://YOURCGIHOSTHERE/cgi-bin/lc.cgi" 
+ target="links">
+<table border=0>
+<tr><td colspan=2 bgcolor="#fff7e5">
+<font face="Lucida,Verdana,Arial,sans-serif">URL: 
+<input size=70 name="url" value="http://">
+<input type="submit" value="Go!"></font></td></tr>
+<td><font face="Lucida,Verdana,Arial,sans-serif">Recursion Level: <select name="level">
+<option> 0
+<option selected> 1
+<option> 2
+<option> 3
+</select>
+</font></td>
+<td><font face="Lucida,Verdana,Arial,sans-serif">
+Check anchors in HTML: <input type="checkbox" name="anchors" checked>
+</font></td></tr>
+<tr><td>
+<font face="Lucida,Verdana,Arial,sans-serif">
+Log only errors: <input type="checkbox" name="errors">
+</font></td>
+<td><font face="Lucida,Verdana,Arial,sans-serif">
+Check only intern links: <input type="checkbox" name="intern" checked>
+</font></td></tr></table>
+</blockquote>
+</font>
+</body></html>

@@ -17,6 +17,7 @@ o HTTP proxy support
 o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support 
 o internationalization support
+o (Fast)CGI web interface
 
 
 Installing, Requirements, Running
@@ -56,7 +57,7 @@ fintl.py from http://sourceforge.net/snippet/detail.php?type=snippet&id=100059
 
 Note that the following packages are modified by me:
 httplib.py (renamed to http11lib.py and a bug fixed)
-fcgi.py (implemented immediate output)
+fcgi.py (implemented streamed output)
 sz_fcgi.py (simplified the code)
 DNS/Lib.py:566 fixed rdlength name error
 DNS/Base.py: fixed /etc/resolv.conf parser to cope with empty lines
@@ -80,8 +81,8 @@ commandline options and stores them in a Config object.
 (2) Which leads us directly to the Config class. This class stores all
 options and works a little magic: it tries to find out if your platform
 supports threads. If so, they are enabled. If not, they are disabled.
-Several functions are replaced with their non-threaded equivalents if 
-threading is disabled.
+Several functions are replaced with their threaded equivalents if 
+threading is enabled.
 Another thing are config files. A Config object reads config file options
 on initialization so they get handled before any commandline options.
 
@@ -93,7 +94,7 @@ UrlData.check() function.
 Derived from the base class UrlData are the different URL types: 
 HttpUrlData for http:// links, MailtoUrlData for mailto: links and so on.
 
-So UrlData defines the functions which are common for *all* URLs, and
+UrlData defines the functions which are common for *all* URLs, and
 the subclasses define functions needed for their URL type.
 
 (4) Lets look at the output. Every output is defined in a Logger class.
@@ -102,6 +103,7 @@ We call init() once to initialize the Logger. UrlData.check() calls
 newUrl() (through UrlData.logMe()) and after all checking we call
 endOfOutput(). Easy.
 New loggers are created with the Config.newLogger(name, fileoutput) function.
+
 
 Nifty features you did not expect
 ---------------------------------

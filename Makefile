@@ -60,10 +60,11 @@ version:
 
 upload: files packages
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
+	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/linkchecker/htdocs
 	scp VERSION shell1.sourceforge.net:/home/groups/linkchecker/htdocs/raw/
 	scp $(DEBPACKAGE) ../Packages.gz shell1.sourceforge.net:/home/groups/linkchecker/htdocs/debian
 	ncftpput download.sourceforge.net /incoming $(ALLPACKAGES)
-	ssh -C shell1.sourceforge.net cd /home/groups/linkchecker/htdocs/raw && make
+	ssh -C shell1.sourceforge.net 'cd /home/groups/linkchecker/htdocs/raw && make'
 
 test:
 	rm -f test/*.result

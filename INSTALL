@@ -38,3 +38,9 @@ Running LinkChecker
 Type "linkchecker" followed by your URLs you want to check.
 Type "linkchecker -h" for help.
 
+
+(Fast)CGI web interface
+-----------------------
+The *cgi files are three CGI script which you can use to run LinkChecker
+from the web. 
+You can use and adjust the example HTML files to run the script.
