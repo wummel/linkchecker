@@ -237,8 +237,14 @@ class Configuration (dict):
         self.threader.finish()
 
 
-    def appendUrl (self, url):
-        self.urls.put(url)
+    def appendUrl (self, urlData):
+        # check syntax
+        if not urlData.checkSyntax():
+            return
+        # check the cache
+        if not urlData.checkCache():
+            return
+        self.urls.put(urlData)
 
 
     def getUrl (self):

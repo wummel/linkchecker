@@ -311,35 +311,6 @@ class UrlData (object):
             debug(BRING_IT_ON, "sleeping for", self.config['wait'], "seconds")
             time.sleep(self.config['wait'])
         t = time.time()
-        # check syntax
-        debug(BRING_IT_ON, "checking syntax")
-        if not self.urlName or self.urlName=="":
-            self.setError(i18n._("URL is null or empty"))
-            self.logMe()
-            return
-        if ws_at_start_or_end(self.urlName):
-            self.setError(i18n._("URL has whitespace at beginning or end"))
-            self.logMe()
-            return
-        try:
-	    self.buildUrl()
-            self.extern = self._getExtern()
-        except tuple(ExcList):
-            value, tb = sys.exc_info()[1:]
-            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
-            self.setError(str(value))
-            self.logMe()
-            return
-
-        # check the cache
-        debug(BRING_IT_ON, "checking cache")
-        for key in self.getCacheKeys():
-            if self.config.urlCache_has_key(key):
-                self.copyFromCache(self.config.urlCache_get(key))
-                self.cached = True
-                self.logMe()
-                return
-
         # apply filter
         debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern[0] and (self.config["strict"] or self.extern[1]):
@@ -392,6 +363,37 @@ class UrlData (object):
         self.logMe()
         debug(BRING_IT_ON, "caching")
         self.putInCache()
+
+
+    def checkSyntax (self):
+        debug(BRING_IT_ON, "checking syntax")
+        if not self.urlName or self.urlName=="":
+            self.setError(i18n._("URL is null or empty"))
+            self.logMe()
+            return False
+        if ws_at_start_or_end(self.urlName):
+            self.setError(i18n._("URL has whitespace at beginning or end"))
+            self.logMe()
+            return False
+        try:
+	    self.buildUrl()
+            self.extern = self._getExtern()
+        except LinkCheckerError, msg:
+            self.setError(str(msg))
+            self.logMe()
+            return False
+        return True
+
+
+    def checkCache (self):
+        debug(BRING_IT_ON, "checking cache")
+        for key in self.getCacheKeys():
+            if self.config.urlCache_has_key(key):
+                self.copyFromCache(self.config.urlCache_get(key))
+                self.cached = True
+                self.logMe()
+                return False
+        return True
 
 
     def closeConnection (self):
