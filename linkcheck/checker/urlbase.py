@@ -29,6 +29,7 @@ import select
 
 import linkcheck
 import linkcheck.linkparse
+import linkcheck.strformat
 import linkcheck.containers
 import linkcheck.log
 import linkcheck.httplib2
@@ -595,7 +596,8 @@ class UrlBase (object):
             lineno += 1
             for mo in linkcheck.linkparse.css_url_re.finditer(line):
                 column = mo.start("url")
-                url_data = linkcheck.checker.get_url_from(mo.group("url"),
+                url = linkcheck.strformat.unquote(mo.group("url").strip())
+                url_data = linkcheck.checker.get_url_from(url,
                              self.recursion_level+1, self.consumer,
                              parent_url=self.url, line=lineno, column=column)
                 self.consumer.append_url(url_data)
