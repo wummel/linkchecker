@@ -25,7 +25,6 @@ import sys
 import time
 
 import linkcheck.dns.exception
-import linkcheck.dns.ifconfig
 import linkcheck.dns.message
 import linkcheck.dns.name
 import linkcheck.dns.query
@@ -337,6 +336,10 @@ class Resolver(object):
 
     def read_local_ifaddrs (self):
         """all active interfaces' ip addresses"""
+        if os.name!='posix':
+            # only posix is supported
+            return []
+        import linkcheck.dns.ifconfig
         ifc = linkcheck.dns.ifconfig.IfConfig()
         return [ ifc.getAddr(iface) for iface in ifc.getInterfaceList()
                  if ifc.isUp(iface) ]
