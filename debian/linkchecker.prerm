@@ -16,7 +16,4 @@ dpkg --listfiles $PACKAGE |
 
 rmdir /usr/lib/$PYTHONXY/site-packages/linkcheck 2>/dev/null || true
 
-# for later use of python-central
-#/usr/sbin/register-python-package module remove linkchecker ">=2.0"
-
 exit 0

@@ -22,8 +22,6 @@ case "$1" in
 	    /bin/sh -c "$PYTHONXY -O -c $COMMAND $SITEPACKAGES/$i"
 	    /bin/sh -c "$PYTHONXY -c $COMMAND $SITEPACKAGES/$i"
 	done
-        # for later use of python-central
-        #/usr/sbin/register-python-package module configure linkchecker ">=2.0"
     ;;
     *)
         echo "postinst called with unknown argument \`$1'" >&2
