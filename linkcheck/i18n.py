@@ -128,7 +128,7 @@ def get_headers_lang (headers):
                 pref = float(_pref)
             except ValueError:
                 pass
-        pref_languages.append((_pref, lang))
+        pref_languages.append((pref, lang))
     languages = [x[1] for x in sorted(pref_languages)]
     # search for lang
     for lang in languages:
