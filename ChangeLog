@@ -45,6 +45,10 @@
     Type: feature
     Changed: linkchecker
 
+  * Strip quotes from parsed CSS urls.
+    Type: bugfix
+    Changed: linkcheck/checker/urlbase.py
+
 1.13.0 "The Butterfly Effect" (released 1.9.2004)
   * lots of internal code restructuring
     Type: code cleanup
