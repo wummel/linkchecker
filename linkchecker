@@ -39,7 +39,10 @@ socket.setdefaulttimeout(default_timeout)
 from linkcheck.debug import *
 from linkcheck.log import LoggerKeys
 from linkcheck import StringUtil, Config, i18n
+# some default values
 _profile = "linkchecker.prof"
+_username = "anonymous"
+_password = "guest@"
 
 # main usage text
 Usage = i18n._("""USAGE\tlinkchecker [options] file-or-url...
@@ -139,7 +142,7 @@ which are sent back to the originating server are accepted.
 Sent and accepted cookies are provided as additional logging
 information."""))
 
-optparser.add_option("-d", "--denyallow", dest="denyallow",
+optparser.add_option("-d", "--denyallow", action="store_true", dest="denyallow",
                      help=i18n._(
 """Swap checking order to external/internal. Default checking order
 is internal/external."""))
@@ -198,8 +201,8 @@ optparser.add_option("-o", "--output", type="string", dest="output",
 
 optparser.add_option("-p", "--password", type="string", dest="password",
                      help=i18n._(
-"""Try password pwd for HTTP and FTP authorization.
-Default password is 'joe@'. See also -u."""))
+"""Try given password for HTTP and FTP authorization.
+Default password is %r. See also -u.""")%_password)
 
 optparser.add_option("-P", "--pause", type="int", dest="pause",
                      help=i18n._(
@@ -242,8 +245,8 @@ timeout is %d seconds.""") % default_timeout)
 
 optparser.add_option("-u", "--user", type="string", dest="username",
                      help=i18n._(
-"""Try username name for HTTP and FTP authorization.
-Default is 'anonymous'. See also -p."""))
+"""Try given username for HTTP and FTP authorization.
+Default is %r. See also -p.""")%_username)
 
 optparser.add_option("-V", "--version", dest="version",
                      help=i18n._(
@@ -296,8 +299,6 @@ if options.configfile:
     configfiles.append(options.configfile)
 config.read(configfiles)
 # apply commandline options and arguments
-_user = "anonymous"
-_password = "guest@"
 constructauth = False
 do_profile = False
 if options.anchors is not None:
@@ -361,7 +362,7 @@ if options.timeout is not None:
         printUsage(i18n._("Illegal argument %r for option %s") % \
                    (options.timeout, "'--timeout'"))
 if options.username is not None:
-    _user = options.username
+    _username = options.username
     constructauth = True
 if options.version is not None:
     printVersion()
@@ -382,7 +383,7 @@ if options.cookies is not None:
     config['cookies'] = options.cookies
 if constructauth:
     config["authentication"].insert(0, {'pattern': re.compile(".*"),
-                                        'user': _user,
+                                        'user': _username,
 					'password': _password})
 
 # construct the url list
