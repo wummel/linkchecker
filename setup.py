@@ -177,7 +177,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                    'install_data': MyInstallData,
                   },
        packages = ['', 'linkcheck', 'linkcheck.logger',
-                   'bk.HtmlParser', 'linkcheck.DNS'],
+                   'bk.HtmlParser', 'bk.net', 'bk.net.dns',],
        ext_modules = [Extension('bk.HtmlParser.htmlsax',
                   ['bk/HtmlParser/htmllex.c',
                    'bk/HtmlParser/htmlparse.c',
