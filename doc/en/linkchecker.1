@@ -1,7 +1,7 @@
 .TH LINKCHECKER 1 "10 March 2001"
 
 .SH NAME
-linkchecker \- check HTML documents for broken links
+linkchecker - check HTML documents for broken links
 
 .SH SYNOPSIS
 .B linkchecker
@@ -35,11 +35,11 @@ single URL pointing outside of the domain:
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
 
 Beware that this checks the whole site which can have several hundred
-thousands URLs. Use the -r option to restrict the recursion depth.
+thousands URLs. Use the \-r option to restrict the recursion depth.
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
-  \fBlinkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org\fP
+  \fBlinkchecker \-\-intern='!^mailto:' \-\-extern\-strict\-all www.mysite.org\fP
 
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
@@ -51,73 +51,73 @@ You can skip the \fBhttp://\fP url part if the domain starts with \fBwww.\fP:
   \fBlinkchecker www.myhomepage.de\fP
 
 You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
-  \fBlinkchecker -r0 ftp.linux.org\fP
+  \fBlinkchecker \-r0 ftp.linux.org\fP
 
 .SH OPTIONS
 
 .SS General options
 .TP
-\fB-h\fP, \fB--help\fP
+\fB\-h\fP, \fB\-\-help\fP
 Help me! Print usage information for this program.
 .TP
-\fB-f\fP\fIconfigfile\fP, \fB--config=\fP\fIconfigfile\fP
+\fB\-f\fP\fIconfigfile\fP, \fB\-\-config=\fP\fIconfigfile\fP
 Use \fIconfigfile\fP as configuration file. As default LinkChecker first
 searches \fB/etc/linkchecker/linkcheckerrc\fP and then
 \fB~/.linkchecker/linkcheckerrc\fP.
 .TP
-\fB-I\fP, \fB--interactive\fP
+\fB\-I\fP, \fB\-\-interactive\fP
 Ask for url if none are given on the commandline.
 .TP
-\fB-V\fP, \fB--version\fP
+\fB\-V\fP, \fB\-\-version\fP
 Print version and exit.
 .TP
-\fB-t\fP\fInum\fP, \fB--threads=\fP\fInum\fP
+\fB\-t\fP\fInum\fP, \fB\-\-threads=\fP\fInum\fP
 Generate no more than \fInum\fP threads. Default number of threads is 10.
 To disable threading specify a non-positive number.
 
 .SS Output options
 .TP
-\fB-v\fP, \fB--verbose\fP
-Log all checked URLs (implies \fB-w\fP). Default is to log only invalid
+\fB\-v\fP, \fB\-\-verbose\fP
+Log all checked URLs (implies \fB\-w\fP). Default is to log only invalid
 URLs.
 .TP
-\fB-w\fP, \fB--warnings\fP
+\fB\-w\fP, \fB\-\-warnings\fP
 Log warnings.
 .TP
-\fB-W\fP\fIregex\fP, \fB--warning-regex=\fIregex\fP
+\fB\-W\fP\fIregex\fP, \fB\-\-warning\-regex=\fIregex\fP
 Define a regular expression which prints a warning if it matches any
 content of the checked link.
 This applies of course only to pages which are valid, so we can get
 their content.
 Use this to check for pages that contain some form of error, for example
 'This page has moved' or 'Oracle Application Server error'.
-This option implies \fB-w\fP.
+This option implies \fB\-w\fP.
 .TP
-\fB--warning-size-bytes=\fP\fIbytes\fP
+\fB\-\-warning\-size\-bytes=\fP\fIbytes\fP
 Print a warning if content size is available and exceeds the given
 number of \fIbytes\fP.
-This option implies \fB-w\fP.
+This option implies \fB\-w\fP.
 .TP
-\fB-q\fP, \fB--quiet\fP
-Quiet operation, an alias for \fB-o none\fP.
-This is only useful with \fB-F\fP.
+\fB\-q\fP, \fB\-\-quiet\fP
+Quiet operation, an alias for \fB\-o none\fP.
+This is only useful with \fB\-F\fP.
 .TP
-\fB-o\fP\fItype\fP, \fB--output=\fP\fItype\fP[\fB/\fP\fIencoding\fP]
+\fB\-o\fP\fItype\fP, \fB\-\-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP]
 Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
 \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
 Default type is \fBtext\fP. The various output types are documented
 below.
 \fIencoding\fP specifies the output encoding, the default is
-\fBiso-8859-15\fP.
+\fBiso\-8859\-15\fP.
 Valid encodings are listed at
 \fBhttp://docs.python.org/lib/node127.html\fP.
 .TP
-\fB-F\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP], \fB--file-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP]
-Output to a file \fBlinkchecker-out.\fP\fItype\fP,
+\fB\-F\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP], \fB\-\-file\-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP]
+Output to a file \fBlinkchecker\-out.\fP\fItype\fP,
 \fB$HOME/.linkchecker/blacklist\fP for
 \fBblacklist\fP output, or \fIfilename\fP if specified.
 \fIencoding\fP specifies the output encoding, the default is
-\fBiso-8859-15\fP.
+\fBiso\-8859\-15\fP.
 Valid encodings are listed at
 \fBhttp://docs.python.org/lib/node127.html\fP.
 The \fIfilename\fP part of the \fBnone\fP output type will be ignored,
@@ -127,12 +127,12 @@ are \fBtext\fP, \fBhtml\fP, \fBsql\fP,
 \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP
 Default is no file output. The various output types are documented
 below. Note that you can suppress all console output
-with the option \fB-o none\fP.
+with the option \fB\-o none\fP.
 .TP
-\fB--no-status\fP
+\fB\-\-no\-status\fP
 Do not print check status messages.
 .TP
-\fB-D\fP\fIlogger\fP, \fB--debug=\fP\fIlogger\fP
+\fB\-D\fP\fIlogger\fP, \fB\-\-debug=\fP\fIlogger\fP
 Print debugging output for given logger.
 Available loggers are \fBcmdline\fP, \fBchecking\fP,
 \fBcache\fP, \fBgui\fP and \fBall\fP.
@@ -142,83 +142,83 @@ than one logger.
 .BR
 For accurate results, threading will be disabled during debug runs.
 .TP
-\fB--profile\fP
+\fB\-\-profile\fP
 Write profiling data into a file named \fBlinkchecker.prof\fP
-in the current working directory. See also \fB--viewprof\fP.
+in the current working directory. See also \fB\-\-viewprof\fP.
 .TP
-\fB--viewprof\fP
+\fB\-\-viewprof\fP
 Print out previously generated profiling data. See also
-\fB--profile\fP.
+\fB\-\-profile\fP.
 
 .SS Checking options
 .TP
-\fB-r\fP\fIdepth\fP, \fB--recursion-level=\fP\fIdepth\fP
+\fB\-r\fP\fIdepth\fP, \fB\-\-recursion\-level=\fP\fIdepth\fP
 Check recursively all links up to given \fIdepth\fP.
 A negative depth will enable inifinite recursion.
 Default depth is inifinite.
 .TP
-\fB-i\fP\fIregex\fP, \fB--intern=\fIregex\fP
+\fB\-i\fP\fIregex\fP, \fB\-\-intern=\fIregex\fP
 Assume URLs that match the given regular expression as internal.
 LinkChecker descends recursively only to internal URLs, not to external.
 .TP
-\fB-e\fP\fIregex\fP, \fB--extern=\fP\fIregex\fP
+\fB\-e\fP\fIregex\fP, \fB\-\-extern=\fP\fIregex\fP
 Assume urls that match the given regular expression as external.
 Only internal HTML links are checked recursively.
 .TP
-\fB--extern-strict=\fP\fIregex\fP
+\fB\-\-extern\-strict=\fP\fIregex\fP
 Assume urls that match the given regular expression as strict external.
 Only internal HTML links are checked recursively.
 .TP
-\fB-s\fP, \fB--extern-strict-all\fP
+\fB\-s\fP, \fB\-\-extern\-strict\-all\fP
 Check only the syntax of external links, do not try to connect to them.
 For local file urls, only local files are internal. For
 http and ftp urls, all urls at the same domain name are internal.
 .TP
-\fB-d\fP, \fB--denyallow\fP
+\fB\-d\fP, \fB\-\-denyallow\fP
 Swap checking order to external/internal. Default checking order is
 internal/external.
 .TP
-\fB-C\fP, \fB--cookies\fP
+\fB\-C\fP, \fB\-\-cookies\fP
 Accept and send HTTP cookies according to RFC 2109. Only cookies
 which are sent back to the originating server are accepted.
 Sent and accepted cookies are provided as additional logging
 information.
 .TP
-\fB-a\fP, \fB--anchors\fP
+\fB\-a\fP, \fB\-\-anchors\fP
 Check HTTP anchor references.  This option applies to both internal
 and external urls. Default is don't check anchors.
-This option implies -w because anchor errors are always warnings.
+This option implies \-w because anchor errors are always warnings.
 .TP
-\fB--no-anchor-caching\fP
+\fB\-\-no\-anchor\-caching\fP
 Treat url#anchora and url#anchorb as equal on caching. This
 is the default browser behaviour, but it's not specified in
 the URI specification. Use with care.
 .TP
-\fB-u\fP\fIname\fP, \fB--user=\fP\fIname\fP
+\fB\-u\fP\fIname\fP, \fB\-\-user=\fP\fIname\fP
 Try username \fIname\fP for HTTP and FTP authorization.
-For FTP the default username is \fBanonymous\fP. See also \fB-p\fP.
+For FTP the default username is \fBanonymous\fP. See also \fB\-p\fP.
 .TP
-\fB-p\fP\fIpwd\fP, \fB--password=\fP\fIpwd\fP
+\fB\-p\fP\fIpwd\fP, \fB\-\-password=\fP\fIpwd\fP
 Try the password \fIpwd\fP for HTTP and FTP authorization.
-For FTP the default password is \fBanonymous@\fP. See also \fB-u\fP.
+For FTP the default password is \fBanonymous@\fP. See also \fB\-u\fP.
 .TP
-\fB--timeout=\fP\fIsecs\fP
+\fB\-\-timeout=\fP\fIsecs\fP
 Set the timeout for connection attempts in seconds. The default timeout
 is 30 seconds.
 .TP
-\fB-P\fP\fIsecs\fP, \fB--pause=\fP\fIsecs\fP
+\fB\-P\fP\fIsecs\fP, \fB\-\-pause=\fP\fIsecs\fP
 Pause \fIsecs\fP seconds between each url check. This option
-implies \fB-t0\fP.
+implies \fB\-t0\fP.
 Default is no pause between requests.
 .TP
-\fB-N\fP\fIserver\fP, \fB--nntp-server=\fP\fIserver\fP
+\fB\-N\fP\fIserver\fP, \fB\-\-nntp\-server=\fP\fIserver\fP
 Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked.
 
 .SS Deprecated options
 .TP
-\fB--status\fP
+\fB\-\-status\fP
 Print check status every 5 seconds to stderr. This is the default now.
 
 .SH OUTPUT TYPES
@@ -238,11 +238,11 @@ Log check result in CSV format with one URL per line.
 .TP
 \fBgml\fP
 Log parent-child relations between linked URLs as a GML graph.
-You should use the \fB--verbose\fP option to get a complete graph.
+You should use the \fB\-\-verbose\fP option to get a complete graph.
 .TP
 \fBdot\fP
 Log parent-child relations between linked URLs as a DOT graph.
-You should use the \fB--verbose\fP option to get a complete graph.
+You should use the \fB\-\-verbose\fP option to get a complete graph.
 .TP
 \fBxml\fP
 Log check result as machine-readable XML file.
@@ -270,12 +270,12 @@ You can also give local files as arguments.
 If you have your system configured to automatically establish a
 connection to the internet (e.g. with diald), it will connect when
 checking links not pointing to your local host.
-Use the \fB-s\fP and \fB-i\fP options to prevent this.
+Use the \fB\-s\fP and \fB\-i\fP options to prevent this.
 
 Javascript links are currently ignored.
 
 If your platform does not support threading, LinkChecker uses
-\fB-t0\fP.
+\fB\-t0\fP.
 
 You can supply multiple user/password pairs in a configuration file.
 
@@ -292,14 +292,14 @@ same as the host of the user browsing your pages.
 
 \fBftp_proxy\fP - specifies default FTP proxy server
 
-\fBLC_MESSAGES\fP, \fBLANG\fP - specify output language
+\fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP - specify output language
 
 .SH RETURN VALUE
 The return value is non-zero when
 .IP \(bu
 invalid links were found or
 .IP \(bu
-link warnings were found and --warnings option was given
+link warnings were found and \-\-warnings option was given
 .IP \(bu
 a program error occurred.
 
@@ -309,7 +309,7 @@ configuration files
 
 \fB~/.linkchecker/blacklist\fP - default blacklist logger output filename
 
-\fBlinkchecker-out.\fP\fItype\fP - default logger file output name
+\fBlinkchecker\-out.\fP\fItype\fP - default logger file output name
 
 \fBhttp://docs.python.org/lib/node127.html\fP - valid output encodings
 

@@ -1,7 +1,7 @@
 .\" 
 .TH "LINKCHECKER" "1" "10 mars 2001" "" ""
 .SH "NOM"
-linkchecker \- outil permettant de vérifier s'il n'y a pas de liens cassés dans les documents HTML
+linkchecker - outil permettant de vérifier s'il n'y a pas de liens cassés dans les documents HTML
 
 .SH "SYNOPSIS"
 .B linkchecker
@@ -231,31 +231,31 @@ Sur un Mac, utilisez la configuration Internet.
 Pour la vérification des liens \fBnews:\fP, les liens de l'hôte NNTP donné n'ont pas besoin d'être les mêmes que l'hôte de l'utilisateur naviguant.
 
 .SH "ENVIRONNEMENT"
-\fBNNTP_SERVER\fP \- spécifie le serveur NNTP par défaut
+\fBNNTP_SERVER\fP - spécifie le serveur NNTP par défaut
 
-\fBhttp_proxy\fP \- spécifie le proxy HTTP par défaut
+\fBhttp_proxy\fP - spécifie le proxy HTTP par défaut
 
-\fBftp_proxy\fP \- spécifie le proxy FTP par défaut
+\fBftp_proxy\fP - spécifie le proxy FTP par défaut
 
-\fBLC_MESSAGES\fP, \fBLANG\fP \- spécifie la langue en sortie
+\fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP - spécifie la langue en sortie
 
 .SH "DIAGNOSTICS"
 Le code de retour est différent de 0 quand
 .IP \(bu
 il y a eu des liens non valides,
 .IP \(bu
-il y a eu des avertissements sur les liens et l'option --warnings était positionnée,
+il y a eu des avertissements sur les liens et l'option \-\-warnings était positionnée,
 .IP \(bu
 il y a eu une erreur dans le programme.
 
 .SH "FICHIERS"
-\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \- fichiers de configuration par défaut
+\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP - fichiers de configuration par défaut
 
-\fB~/.linkchecker/blacklist\fP \- fichier par défaut des blacklists pour la journalisation
+\fB~/.linkchecker/blacklist\fP - fichier par défaut des blacklists pour la journalisation
 
-\fBlinkchecker\-out.\fP\fItype\fP \- fichier par défaut pour la journalisation
+\fBlinkchecker\-out.\fP\fItype\fP - fichier par défaut pour la journalisation
 
-\fBhttp://docs.python.org/lib/node127.html\fP \- encodages valides de sortie
+\fBhttp://docs.python.org/lib/node127.html\fP - encodages valides de sortie
 
 .SH "AUTEUR"
 Bastian Kleineidam <calvin@users.sourceforge.net>
