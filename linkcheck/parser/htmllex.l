@@ -124,61 +124,6 @@ void yyfree (void* ptr, void* yyscanner) {
 }
 
 #include "htmlparse.h"
-
-/* Find out if the given HTML attribute val must be quoted.
- The string will be surrounded by double quotes if it contains white space
- or <> or ends with /.
- All double quotes inside the string will be replaced with &quot;.
- val must be a Python String object
-*/
-static PyObject* quote_string (PyObject* val) {
-    int quote = 0;
-    int replace = 0;
-    int len = PyString_GET_SIZE(val);
-    char* internal = PyString_AS_STRING(val);
-    int i;
-    PyObject* prefix;
-    for (i=0; i<len; i++) {
-	if (isspace(internal[i]) ||
-	    internal[i]=='<' ||
-	    internal[i]=='>' ||
-	    internal[i]=='\'') {
-            quote = 1;
-	}
-	else if (internal[i]=='"') {
-            replace = 1;
-	}
-    }
-    if (len==0) {
-        /* its an empty string */
-	quote = 1;
-    }
-    else if (internal[len-1]=='/') {
-	quote = 1;
-    }
-    if (replace) {
-	PyObject* nval = PyObject_CallMethod(val, "replace", "ss", "\"", "&quot;");
-	Py_DECREF(val);
-        val = nval;
-    }
-    if (quote==0) {
-        return val;
-    }
-    /* quote suffix */
-    if ((prefix = PyString_FromString("\""))==NULL) return NULL;
-    PyString_Concat(&val, prefix);
-    if (val==NULL) {
-        Py_DECREF(prefix);
-	return NULL;
-    }
-    /* quote prefix */
-    PyString_ConcatAndDel(&prefix, val);
-    if (prefix==NULL) {
-        Py_DECREF(val);
-	return NULL;
-    }
-    return prefix;
-}
 %}
 
 %option noyyalloc noyyrealloc noyyfree
@@ -800,7 +745,8 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
-    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
+    yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities, "O", yyextra->tmp_attrval);
+    if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -817,7 +763,8 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
-    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
+    yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities, "O", yyextra->tmp_attrval);
+    if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -845,7 +792,8 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
-    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
+    yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities, "O", yyextra->tmp_attrval);
+    if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -862,7 +810,8 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
-    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
+    yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities, "O", yyextra->tmp_attrval);
+    if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -879,7 +828,8 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_LINE;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
-    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
+    yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities, "O", yyextra->tmp_attrval);
+    if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -894,8 +844,8 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
-    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
-    if (!yyextra->tmp_attrval) return T_ERROR;
+    yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities, "O", yyextra->tmp_attrval);
+    if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -917,8 +867,8 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
-    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
-    if (!yyextra->tmp_attrval) { return T_ERROR; }
+    yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities, "O", yyextra->tmp_attrval);
+    if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;

@@ -44,6 +44,9 @@ static int yyerror (char* msg) {
     return 0;
 }
 
+/* parser.resolve_entities */
+static PyObject* resolve_entities;
+
 /* macros for easier scanner state manipulation */
 
 /* test whether tag does not need an HTML end tag */
@@ -445,6 +448,7 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
     self->userData->tmp_tag = self->userData->tmp_attrname =
         self->userData->tmp_attrval = self->userData->tmp_attrs =
         self->userData->lexbuf = NULL;
+    self->userData->resolve_entities = resolve_entities;
     self->userData->exc_type = NULL;
     self->userData->exc_val = NULL;
     self->userData->exc_tb = NULL;
@@ -785,5 +789,11 @@ PyMODINIT_FUNC inithtmlsax (void) {
     if (PyModule_AddObject(m, "parser", (PyObject *)&parser_type)==-1) {
         /* init error */
         PyErr_Print();
+    }
+    if ((m = PyImport_ImportModule("linkcheck.parser"))==NULL) {
+        return;
+    }
+    if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities"))==NULL) {
+        return;
     }
 }
