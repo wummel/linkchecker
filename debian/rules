@@ -14,19 +14,14 @@ HTMLDIR = $(ROOT)/var/www/lconline
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-build: configure-stamp build-stamp
+build: build-stamp
 build-stamp:
 	dh_testdir
 	touch build-stamp
 
 clean:
 	dh_testdir
-	rm -f build-stamp configure-stamp
+	rm -f build-stamp
 	$(MAKE) clean
 	dh_clean
 
