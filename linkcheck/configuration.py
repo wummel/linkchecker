@@ -181,6 +181,8 @@ class Configuration (dict):
             # per user config settings
             cfiles.append(norm("~/.linkcheckerrc"))
         self.read_config(cfiles)
+        # re-init logger
+        self['logger'] = self.logger_new('text')
 
     def read_config (self, files):
         """read all the configuration parameters from the given files"""
