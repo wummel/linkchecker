@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu May 27 11:06:41 2004\n"
+"POT-Creation-Date: Thu May 27 22:44:35 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,9 +58,6 @@ msgstr ""
 msgid "more than %d redirections, aborting"
 msgstr ""
 
-msgid "Server %r has no anchor support, removing anchor from request"
-msgstr ""
-
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
 msgstr ""
 
@@ -85,6 +82,9 @@ msgid "unknown"
 msgstr ""
 
 msgid "Server %r did not support HEAD request, used GET for checking"
+msgstr ""
+
+msgid "Server %r had no anchor support, removed anchor from request"
 msgstr ""
 
 msgid "Last modified %s"

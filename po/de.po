@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Thu May 27 11:06:41 2004\n"
+"POT-Creation-Date: Thu May 27 22:44:35 2004\n"
 "PO-Revision-Date: 2004-05-27 01:06+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -54,9 +54,6 @@ msgstr "Erzwungener Proxy %r"
 msgid "more than %d redirections, aborting"
 msgstr "mehr als %d Weiterleitungen, breche ab"
 
-msgid "Server %r has no anchor support, removing anchor from request"
-msgstr "Server %r ohne Anker Unterstützung, lösche Anker von der Anfrage"
-
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
 msgstr "Server unterstützt kein HEAD, verwende GET"
 
@@ -91,6 +88,10 @@ msgstr "unbekannt"
 
 msgid "Server %r did not support HEAD request, used GET for checking"
 msgstr "Server %r unterstützte keine HEAD Anfrage, verwendete GET zum Prüfen"
+
+#, fuzzy
+msgid "Server %r had no anchor support, removed anchor from request"
+msgstr "Server %r ohne Anker Unterstützung, lösche Anker von der Anfrage"
 
 msgid "Last modified %s"
 msgstr "Letzte Änderung %s"

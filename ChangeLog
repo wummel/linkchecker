@@ -23,6 +23,11 @@
     Type: bugfix
     Changed: linkcheck/HttpUrlData.py
 
+  * move contentAllowsRobot check to end of recursion check to avoid
+    unnecessary GET request
+    Type: bugfix
+    Changed: linkcheck/UrlData.py
+
 1.12.2 (release 4.4.2004)
   * use XmlUtils instead of xmlify for XML quoting
     Type: code cleanup
