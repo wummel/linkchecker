@@ -1,6 +1,10 @@
 1.10.2 (release xx.xx.xxxx)
   * fixed CGI safe_url pattern, it was too strict
     Changed: linkcheck/lc_cgi.py
+  * replace backticks with repr() or %r
+    Changed: all .py files containing backticks
+  * make windows DNS nameserver parsing more robust
+    Changed: linkcheck/DNS/Base.py
 
 1.10.1 (release 19.12.2003)
   * added Mandrake .spec file from Chris Green <cmg@dok.org>
