@@ -8,7 +8,8 @@ if sys.version[:5] < "1.5.2":
 
 # add the path to linkcheck module if you do not install with distutils
 sys.path.append("/home/calvin/projects/linkchecker")
-import getopt,re,string,linkcheck
+import getopt,re,string,os
+import linkcheck,StringUtil
 
 Usage = """USAGE\tlinkchecker [options] file_or_url...
 
@@ -26,9 +27,9 @@ OPTIONS
         (under Windows <path-to-program>\\linkcheckerrc).
 -F name, --file-output=name
         Same as output, but write to a file linkchecker-out.<name>.
-        If the file already exists, it is overwritten.
-        You can specify this option more than once.
-        Default is no file output.
+        If the file already exists, it is overwritten. You can specify
+        this option more than once. There is no file output for the
+        blacklist logger. Default is no file output.
 -i regex, --intern=regex
         Assume urls that match the given expression as intern.
 -h, --help
@@ -113,9 +114,12 @@ def printVersion():
     sys.exit(0)
   
 def printHelp():
-    print Usage
-    print Notes
-    print Examples
+    if os.name!='posix':
+        StringUtil.paginate(Usage+"\n"+Notes+"\n"+Examples)
+    else:
+        print Usage
+	print Notes
+	print Examples
     sys.exit(0)
     
 def printUsage(msg):
@@ -189,13 +193,15 @@ for opt,arg in options:
         if linkcheck.Config.Loggers.has_key(arg):
             config["log"] = linkcheck.Config.Loggers[arg]()
         else:
-            printUsage("Legal output arguments are "+linkcheck.Config.LoggerKeys+".")
+            printUsage("Illegal argument '"+arg+"' for option '-o, --output'")
 
     elif opt=="-F" or opt=="--file-output":
-        if linkcheck.Config.Loggers.has_key(arg):
-            config["fileoutput"].append(linkcheck.Config.Loggers[arg](open("linkchecker-out."+arg, "w")))
+        if linkcheck.Config.Loggers.has_key(arg) and arg != "blacklist":
+            config["fileoutput"].append(linkcheck.Config.Loggers[arg](
+	      open(linkcheck.Config.FileOutput[arg], "w")))
         else:
-            printUsage("Legal output arguments are "+linkcheck.Config.LoggerKeys+".")
+            printUsage("Illegal argument '"+arg+\
+	               "' for option '-F, --file-output'")
     
     elif opt=="-i" or opt=="--intern":
         config["internlinks"].append(re.compile(arg))
@@ -225,7 +231,8 @@ for opt,arg in options:
         if int(arg) >= 0:
             config["recursionlevel"] = int(arg)
         else:
-            printUsage("Illegal recursion-level number: "+arg)
+            printUsage("Illegal argument '"+str(arg)+\
+	               "' to option '-r, --recursion-level'")
     
     elif opt=="-R" or opt=="--robots-txt":
         config["robotstxt"] = 1
@@ -263,10 +270,16 @@ if constructauth:
     config["authentication"].insert(0, (re.compile(".*"), _user, _password))
 
 # construct the url list
+# if we use blacklist mode, try to read ~/.blacklist
+if config["log"].__class__ == linkcheck.Logging.BlacklistLogger and \
+   os.path.exists(linkcheck.Config.BlacklistFile):
+    args = open(linkcheck.Config.BlacklistFile).readlines()
+
 if len(args)==0:
-    printUsage("no files or urls given")
+    print "warning: no files or urls given"
 
 for url in args:
+    url = string.strip(url)
     if not (":" in url):
         if re.compile("^ftp\.").match(url):
             url = "ftp://"+url

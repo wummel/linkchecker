@@ -57,11 +57,13 @@ class HttpUrlData(UrlData):
         # first try
         status, statusText, self.mime = self._getHttpRequest()
         Config.debug(str(status)+", "+str(statusText)+", "+str(self.mime)+"\n")
+        has301status = 0
         while 1:
             # follow redirections
             tries = 0
             redirected = self.urlName
             while status in [301,302] and self.mime and tries < 5:
+                has301status = status==301
                 redirected = urlparse.urljoin(redirected, self.mime.getheader("Location"))
                 self.urlTuple = urlparse.urlparse(redirected)
                 status, statusText, self.mime = self._getHttpRequest()
@@ -92,6 +94,9 @@ class HttpUrlData(UrlData):
             self.setWarning("Effective URL "+effectiveurl)
             self.url = effectiveurl
 
+        if has301status:
+            self.setWarning("HTTP 301 (moved permanent) encountered: "
+	                    "you should update this link")
         # check final result
         if status >= 400:
             self.setError(`status`+" "+statusText)

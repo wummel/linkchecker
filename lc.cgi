@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
 import re,cgi,sys,urlparse,time,os
-
-# configuration
 sys.stderr = sys.stdout
+
+# begin user configuration
 dist_dir = "/home/calvin/projects/linkchecker"
-sys.path.insert(0,dist_dir)
 cgi.logfile = "linkchecker.log" # must be an existing file
-# end configuration
+# end user configuration
+
+sys.path.insert(0,dist_dir)
 
 def testit():
     cgi.test()
@@ -19,6 +20,7 @@ import linkcheck
 print "Content-type: text/html"
 print "Cache-Control: no-cache"
 print
+# uncomment the following line to test your CGI values
 #testit()
 form = cgi.FieldStorage()
 if not linkcheck.lc_cgi.checkform(form):
@@ -35,7 +37,7 @@ if form.has_key("intern"):
     linkcheck.lc_cgi.getHostName(form)))
 else:
     config["internlinks"].append(re.compile(".+"))
-# avoid checking of local files
+# avoid checking of local files (security!)
 config["externlinks"].append((re.compile("^file:"), 1))
 
 # start checking

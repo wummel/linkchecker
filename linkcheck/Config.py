@@ -1,16 +1,16 @@
 """Config.py in linkcheck
 
-Because this is the only place to store options, this class has
-quite some important functions.
-
-Further more, the basic Copyright infos are stored here.
+This module stores
+* Metadata (version, copyright, author, ...)
+* Debug and threading options
+* Other configuration options
 """
 
 import ConfigParser,sys,os,re,UserDict,string
 from os.path import expanduser,normpath,normcase,join,isfile
 import Logging
 
-Version = "1.2.2"
+Version = "1.2.3"
 AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
@@ -26,12 +26,27 @@ Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' whithin this
 distribution."""
-Loggers = {"text": Logging.StandardLogger,
-           "html": Logging.HtmlLogger,
-	   "colored": Logging.ColoredLogger,
-	   "gml": Logging.GMLLogger,
-	   "sql": Logging.SQLLogger}
+Loggers = {
+    "text": Logging.StandardLogger,
+    "html": Logging.HtmlLogger,
+    "colored": Logging.ColoredLogger,
+    "gml": Logging.GMLLogger,
+    "sql": Logging.SQLLogger,
+    "blacklist": Logging.BlacklistLogger,
+}
+# for easy printing: a comma separated logger list
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
+
+# File output names
+FileOutput = {
+    "text":    "linkchecker-out.txt",
+    "html":    "linkchecker-out.html",
+    "colored": "linkchecker-out.asc",
+    "gml":     "linkchecker-out.gml",
+    "sql":     "linkchecker-out.sql"
+}
+
+# debug options
 DebugDelim = "==========================================================\n"
 DebugFlag = 0
 
@@ -41,13 +56,21 @@ def debug(msg):
         sys.stderr.write(msg)
         sys.stderr.flush()
 
-
-def _norm(path):
+# path util function
+def norm(path):
     return normcase(normpath(expanduser(path)))
 
+# the blacklist file
+BlacklistFile = norm("~/.blacklist")
 
+# dynamic options
 class Configuration(UserDict.UserDict):
+    """Dynamic options are stored in this class so you can run
+    several checking tasks in one Python interpreter at once
+    """
+
     def __init__(self):
+        """Initialize the default options"""
         UserDict.UserDict.__init__(self)
         self.data["log"] = Loggers["text"]()
         self.data["verbose"] = 0
@@ -76,6 +99,9 @@ class Configuration(UserDict.UserDict):
             self.disableThreading()
 
     def disableThreading(self):
+        """Disable threading by replacing functions with their
+        non-threading equivalents
+	"""
         self.data["threads"] = 0
         self.hasMoreUrls = self.hasMoreUrls_NoThreads
         self.finished = self.finished_NoThreads
@@ -99,6 +125,9 @@ class Configuration(UserDict.UserDict):
         self.dataLock = None
 
     def enableThreading(self, num):
+        """Enable threading by replacing functions with their
+        threading equivalents
+	"""
         import Queue,Threader
         from threading import Lock
         self.data["threads"] = 1
@@ -185,6 +214,8 @@ class Configuration(UserDict.UserDict):
             self.dataLock.release()
 
     def _do_connectNntp(self):
+        """This is done only once per checking task."""
+        if self.data["nntp"]: return
         import nntplib
         timeout = 1
         while timeout:
@@ -202,23 +233,23 @@ class Configuration(UserDict.UserDict):
 
     def hasMoreUrls_Threads(self):
         return not self.urls.empty()
-        
+
     def finished_Threads(self):
         self.threader.reduceThreads()
         return not self.hasMoreUrls() and self.threader.finished()
 
     def finish_Threads(self):
         self.threader.finish()
-        
+
     def appendUrl_Threads(self, url):
         self.urls.put(url)
-        
+
     def getUrl_Threads(self):
         return self.urls.get()
-        
+
     def checkUrl_Threads(self, url):
         self.threader.startThread(url.check, (self,))
-        
+
     def urlCache_has_key_Threads(self, key):
         self.urlCacheLock.acquire()
         ret = self.urlCache.has_key(key)
@@ -230,7 +261,7 @@ class Configuration(UserDict.UserDict):
         ret = self.urlCache[key]
         self.urlCacheLock.release()
         return ret
-    
+
     def urlCache_set_Threads(self, key, val):
         self.urlCacheLock.acquire()
         self.urlCache[key] = val
@@ -247,7 +278,7 @@ class Configuration(UserDict.UserDict):
         ret = self.robotsTxtCache[key]
         self.robotsTxtCacheLock.release()
         return ret
-    
+
     def robotsTxtCache_set_Threads(self, key, val):
         self.robotsTxtCacheLock.acquire()
         self.robotsTxtCache[key] = val
@@ -259,10 +290,10 @@ class Configuration(UserDict.UserDict):
         for log in self.data["fileoutput"]:
             log.newUrl(url)
         self.logLock.release()
-        
+
     def read(self, files = []):
         if not files:
-            files.insert(0,_norm("~/.linkcheckerrc"))
+            files.insert(0,norm("~/.linkcheckerrc"))
             if sys.platform=="win32":
                 if not sys.path[0]:
                     path=os.getcwd()
@@ -270,26 +301,26 @@ class Configuration(UserDict.UserDict):
                     path=sys.path[0]
             else:
                 path="/etc"
-            files.insert(0,_norm(join(path, "linkcheckerrc")))
+            files.insert(0,norm(join(path, "linkcheckerrc")))
         self.readConfig(files)
-    
+
     def warn(self, msg):
         self.message("Config: WARNING: "+msg)
-        
+
     def error(self, msg):
         self.message("Config: ERROR: "+msg)
 
     def message(self, msg):
         sys.stderr.write(msg+"\n")
         sys.stderr.flush()
-    
+
     def readConfig(self, files):
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
         except ConfigParser.Error:
 	    return
-        
+
         section="output"
         try:
             log = cfgparser.get(section, "log")
@@ -310,14 +341,16 @@ class Configuration(UserDict.UserDict):
         try:
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
-                if Loggers.has_key(arg):
-		    self.data["fileoutput"].append(Loggers[arg](open("linkchecker-out."+arg, "w")))
+                # no file output for the blacklist Logger
+                if Loggers.has_key(arg) and arg != "blacklist":
+		    self.data["fileoutput"].append(Loggers[arg](
+		        open(FileOutput[arg], "w")))
 	except ConfigParser.Error: pass
 
         section="checking"
-        try: 
+        try:
             num = cfgparser.getint(section, "threads")
-            if num<=0: 
+            if num<=0:
                 self.disableThreads()
             else:
                 self.enableThreads(num)

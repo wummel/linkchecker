@@ -24,7 +24,7 @@ class FileUrlData(UrlData):
                 if self.urlName[0:1] != "/":
                     self.urlName = os.getcwd()+"/"+self.urlName
                     if winre.search(self.urlName):
-                        self.adjustWindozePath()
+                        self.adjustWinPath()
             self.urlName = "file://"+normpath(self.urlName)
 
 

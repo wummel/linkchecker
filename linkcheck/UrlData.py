@@ -11,8 +11,10 @@ LinkTags = [("a",     "href"),
             ("meta",  "url"),  
             ("area",  "href")]
 
+
 class LinkCheckerException(Exception):
     pass
+
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
@@ -87,10 +89,12 @@ class UrlData:
                          self.urlTuple[5])
         self.url = urlparse.urlunparse(self.urlTuple)
 
+
     def logMe(self, config):
         if config["verbose"] or not self.valid or \
            (self.warningString and config["warnings"]):
             config.log_newUrl(self)
+
 
     def check(self, config):
         Config.debug(Config.DebugDelim+"Checking\n"+str(self)+"\n"+\
@@ -161,19 +165,23 @@ class UrlData:
             # release variable for garbage collection
             self.urlConnection = None
 
+
     def putInCache(self, config):
         cacheKey = self.getCacheKey()
         if cacheKey and not self.cached:
             config.urlCache_set(cacheKey, self)
             self.cached = 1
 
+
     def getCacheKey(self):
         if self.urlTuple:
             return urlparse.urlunparse(self.urlTuple)
         return None
 
+
     def checkConnection(self, config):
         self.urlConnection = urllib.urlopen(self.url)
+
 
     def allowsRecursion(self, config):
         return self.valid and \
@@ -182,8 +190,10 @@ class UrlData:
                self.recursionLevel < config["recursionlevel"] and \
                not self.extern
 
+
     def isHtml(self):
         return 0
+
 
     def checkAnchors(self, anchor):
         if not (anchor!="" and self.isHtml() and self.valid):
@@ -193,6 +203,7 @@ class UrlData:
             if cur_anchor == anchor:
                 return
         self.setWarning("anchor #"+anchor+" not found")
+
 
     def _getExtern(self, config):
         if not (config["externlinks"] or config["internlinks"]):
@@ -215,6 +226,7 @@ class UrlData:
                     return 0
         return (1,0)
 
+
     def getContent(self):
         """Precondition: urlConnection is an opened URL.
         """
@@ -223,17 +235,19 @@ class UrlData:
             self.data = StringUtil.stripHtmlComments(self.urlConnection.read())
             self.downloadtime = time.time() - t
 
+
     def checkContent(self, warningregex):
         self.getContent()
         match = warningregex.search(self.data)
         if match:
             self.setWarning("Found '"+match.group()+"' in link contents")
-    
+
+
     def parseUrl(self, config):
         Config.debug(Config.DebugDelim+"Parsing recursively into\n"+\
                          str(self)+"\n"+Config.DebugDelim)
         self.getContent()
-        
+
         # search for a possible base reference
         bases = self.searchInForTag(self.data, ("base", "href"))
         baseRef = None
@@ -249,6 +263,7 @@ class UrlData:
             for _url,line in urls:
                 config.appendUrl(GetUrlDataFrom(_url,
                         self.recursionLevel+1, self.url, baseRef, line))
+
 
     def searchInForTag(self, data, tag):
         _urls = []
@@ -271,12 +286,14 @@ class UrlData:
         
         return _urls
 
+
     def __str__(self):
         return "urlname="+`self.urlName`+"\nparentName="+`self.parentName`+\
                "\nbaseRef="+`self.baseRef`+"\ncached="+`self.cached`+\
                "\nrecursionLevel="+`self.recursionLevel`+\
                "\nurlConnection="+str(self.urlConnection)+\
 	       "\nline="+`self.line`
+
 
     def _getUserPassword(self, config):
         for rx, _user, _password in config["authentication"]:

@@ -6,15 +6,16 @@ You need Python >= 1.5.2
 You get Python from http://www.python.org
 
 Optionally packages:
-Distutils from http://www.python.org/sigs/distutils-sig/ (be sure to
-get the CVS version, not the latest release!)
+Distutils >= 0.8.1 from http://www.python.org/sigs/distutils-sig/ 
 OpenSSL from http://www.openssl.org
 
 Installation with Distutils:
 If you have the Distutils, try "python setup.py install".
 
 Installation without Distutils:
-Adjust the sys.path.append argument to point to the distribution directory.
+Adjust the sys.path.append argument in the file 'linkchecker' to point 
+to the distribution directory.
+
 If you are a Windows user, adjust the distribution directory in 
-linkchecker.bat accordingly.
+'linkchecker.bat' accordingly.
 

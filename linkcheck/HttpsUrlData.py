@@ -2,7 +2,7 @@ from UrlData import UrlData
 from HttpUrlData import HttpUrlData
 _supportHttps=1
 try: import httpslib
-except: _supportHttps=0
+except ImportError: _supportHttps=0
 
 class HttpsUrlData(HttpUrlData):
     """Url link with https scheme"""

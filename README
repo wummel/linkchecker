@@ -52,16 +52,21 @@ commandline options and stores them in a Config object.
 options and works a little magic: it tries to find out if your platform
 supports threads. If so, they are enabled. If not, they are disabled.
 Note: several functions are replaced with their non-threaded 
-equivalents of threading is disabled.
+equivalents if threading is disabled.
 
 (3) The linkchecker script finally calls linkcheck.checkUrls(), which
 calls linkcheck.Config.checkUrl(), which calls 
 linkcheck.UrlData.check().
 An UrlData object represents a single URL with all attached data like
-validity, check time and so on. Derived from the base class UrlData are
-the different URL types: HttpUrlData for http:// links, MailtoUrlData for
-mailto: links and so on.
+validity, check time and so on. These values are filled when the 
+UrlData.check() function exits.
+Derived from the base class UrlData are the different URL types: 
+HttpUrlData for http:// links, MailtoUrlData for mailto: links and so on.
+
 So UrlData defines the functions which are common for *all* URLs, and
 the subclasses define functions needed for their URL type.
 
-(4) Now look at the documentation in the different .py files.
+(4) Lets look at the output. Every output is defined in a Logger class.
+Each logger has functions init(), newUrl() and endOfOutput().
+You call init() once to initialize the Logger, newUrl() for each new URL
+we checked and endOfOutput() when all URLs are checked. Easy.

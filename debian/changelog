@@ -1,3 +1,13 @@
+linkchecker (1.2.3) unstable; urgency=low
+
+  * Blacklist output support
+  * typo fix for adjustWinPath
+  * added some source code documentation
+  * Improved error messages for wrong options
+  * FileOutput mapping in Config.py
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Tue, 25 Apr 2000 00:01:45 +0200
+
 linkchecker (1.2.2) unstable; urgency=low
 
   * fix for anchor checking (Martin Herbener)

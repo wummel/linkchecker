@@ -1,12 +1,7 @@
 include MANIFEST.in
-include INSTALL
-include LICENSE
-include TODO
-include linkchecker
-include linkchecker.bat
-include lc.cgi
-include lc.fcgi
-include lc.sz_fcgi
+include INSTALL LICENSE TODO
+include linkchecker linkchecker.bat
+include lc.cgi lc.fcgi lc.sz_fcgi
 include Makefile
 include create.sql
 include debian/rules

@@ -401,10 +401,12 @@ class SQLLogger(StandardLogger):
 
 
 class BlacklistLogger:
-    """Updates a blacklist of wrong links"""
-    def __init__(self, filename):
+    """Updates a blacklist of wrong links. If a link on the blacklist
+    is working (again), it is removed from the list. So after n days
+    we have only links on the list which failed for n days.
+    """
+    def __init__(self):
         self.blacklist = {}
-        self.filename = filename
 
     def init(self):
         """initialize the blacklist"""
@@ -418,4 +420,8 @@ class BlacklistLogger:
 
     def endOfOutput(self):
         """write the blacklist"""
-        pass
+        fd = open(Config.BlacklistFile, "w")
+        for url in self.blacklist.keys():
+            if self.blacklist[url] is None:
+                fd.write(url+"\n")
+

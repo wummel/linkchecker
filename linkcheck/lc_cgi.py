@@ -1,3 +1,4 @@
+"""common CGI functions used by the CGI scripts"""
 import re,time,urlparse
 
 def checkform(form):
@@ -17,19 +18,21 @@ def checkform(form):
 def getHostName(form):
     return urlparse.urlparse(form["url"].value)[1]
 
-def logit(form, env):
-    log = open("linkchecker.log","a")
-    log.write("\n"+time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(time.time()))+"\n")
-    for var in ["HTTP_USER_AGENT","REMOTE_ADDR","REMOTE_HOST","REMOTE_PORT"]:
+def logit(form, env, file = "linkchecker.log"):
+    log = open(file, "a")
+    log.write("\n"+time.strftime("%d.%m.%Y %H:%M:%S",
+                   time.localtime(time.time()))+"\n")
+    for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
+                "REMOTE_HOST", "REMOTE_PORT"]:
         if env.has_key(var):
             log.write(var+"="+env[var]+"\n")
-    for key in ["level","url","anchors","errors","intern"]:
+    for key in ["level", "url", "anchors", "errors", "intern"]:
         if form.has_key(key):
             log.write(str(form[key])+"\n")
     log.close()
 
 def printError(out):
-    out.write("""<html><head></head>
+    out.write("""<html><head><title>LinkChecker Online Error</title></head>
 <body text="#192c83" bgcolor="#fff7e5" link="#191c83" vlink="#191c83"
 alink="#191c83">
 <blockquote>

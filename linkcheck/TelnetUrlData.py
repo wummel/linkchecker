@@ -2,11 +2,12 @@ import telnetlib,re,string
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import LinkCheckerException
 
+# regular expression for syntax checking
 telnet_re =  re.compile("^telnet:[\w.\-]+$")
 
 class TelnetUrlData(HostCheckingUrlData):
     "Url link with telnet scheme"
-    
+
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         if not telnet_re.match(self.urlName):
