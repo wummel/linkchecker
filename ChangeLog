@@ -1,3 +1,8 @@
+1.8.23
+  * upated robotparser.py to python2.3 version
+    Changed: linkcheck/robotparser.py
+    Closes: SF bug 784977
+
 1.8.22
   * allow colons in HTML attribute names, used for namespaces
     Changed: linkcheck/parser/htmllex.l
