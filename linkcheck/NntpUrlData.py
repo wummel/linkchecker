@@ -1,4 +1,4 @@
-import re,string,time,nntplib
+import re,string,time,nntplib,sys
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import LinkCheckerException
 
@@ -25,7 +25,7 @@ class NntpUrlData(HostCheckingUrlData):
                 resp,count,first,last,name = nntp.group(self.host)
                 timeout = 0
             except nntplib.error_perm:
-                value = sys.exc_info()[1]
+                type,value = sys.exc_info()[:2]
                 print value
                 if value[0]==505:
                     # 505 too many connections per minute
@@ -35,7 +35,6 @@ class NntpUrlData(HostCheckingUrlData):
                     timeout = 1
                 else:
                     raise
-            resp,count,first,last,name = nntp.group(self.host)
         self.setInfo("Group %s has %s articles, range %s to %s" % \
                      (name, count, first, last))
 
