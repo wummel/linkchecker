@@ -52,6 +52,7 @@ _safe_path_pattern = r"((/([%(_az09)s%(_path)s]|"\
 _safe_fragment_pattern = r"%s*" % _safe_char
 _safe_cgi = r"%s+(=%s+)?" % (_safe_char, _safe_char)
 _safe_query_pattern = r"(%s(&%s)*)?" % (_safe_cgi, _safe_cgi)
+_safe_param_pattern = r"(%s(;%s)*)?" % (_safe_cgi, _safe_cgi)
 safe_url_pattern = r"%s://%s%s(#%s)?" % \
     (_safe_scheme_pattern, _safe_host_pattern,
      _safe_path_pattern, _safe_fragment_pattern)
@@ -60,8 +61,20 @@ is_safe_url = re.compile("(?i)^%s$" % safe_url_pattern).match
 is_safe_domain = re.compile("(?i)^%s$" % _safe_domain_pattern).match
 is_safe_host = re.compile("(?i)^%s$" % _safe_host_pattern).match
 is_safe_path = re.compile("(?i)^%s$" % _safe_path_pattern).match
+is_safe_parameter = re.compile("(?i)^%s$" % _safe_param_pattern).match
 is_safe_query = re.compile("(?i)^%s$" % _safe_query_pattern).match
 is_safe_fragment = re.compile("(?i)^%s$" % _safe_fragment_pattern).match
+
+# snatched form urlparse.py
+def splitparams (path):
+    if '/'  in path:
+        i = path.find(';', path.rfind('/'))
+        if i < 0:
+            return path, ''
+    else:
+        i = path.find(';')
+    return path[:i], path[i+1:]
+
 
 def is_safe_js_url (urlstr):
     """test javascript URLs"""
@@ -101,7 +114,7 @@ def stripsite (url):
     return url[1], urlparse.urlunsplit((0, 0, url[2], url[3], url[4]))
 
 
-def parse_qsl(qs, keep_blank_values=0, strict_parsing=0):
+def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
     """Parse a query given as a string argument.
 
     Arguments:
