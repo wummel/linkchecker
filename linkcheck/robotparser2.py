@@ -93,12 +93,14 @@ class RobotFileParser (object):
     def get_opener (self):
         pwd_manager = PasswordManager(self.user, self.password)
         handlers = [urllib2.ProxyHandler(urllib.getproxies()),
-            urllib2.UnknownHandler, HttpWithGzipHandler,
+            urllib2.UnknownHandler,
+            HttpWithGzipHandler,
             urllib2.HTTPBasicAuthHandler(pwd_manager),
             urllib2.ProxyBasicAuthHandler(pwd_manager),
             urllib2.HTTPDigestAuthHandler(pwd_manager),
             urllib2.ProxyDigestAuthHandler(pwd_manager),
-            urllib2.HTTPDefaultErrorHandler, urllib2.HTTPRedirectHandler,
+            urllib2.HTTPDefaultErrorHandler,
+            urllib2.HTTPRedirectHandler,
         ]
         if hasattr(linkcheck.httplib2, 'HTTPS'):
             handlers.append(HttpsWithGzipHandler)
@@ -349,7 +351,14 @@ def decode (page):
         for h in page.info().keys():
             if not ceheader.match(h):
                 headers[h] = page.info()[h]
-        page = urllib.addinfourl(fp, headers, page.geturl())
+        newpage = urllib.addinfourl(fp, headers, page.geturl())
+        if hasattr(page, "code"):
+            # python 2.4 compatibility
+            newpage.code = page.code
+        if hasattr(page, "msg"):
+            # python 2.4 compatibility
+            newpage.msg = page.msg
+        page = newpage
     return page
 
 
