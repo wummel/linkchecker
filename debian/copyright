@@ -12,8 +12,14 @@ Copyright (C) 2000-2004 Bastian Kleineidam
   (at your option) any later version.
 
 See /usr/share/common-licenses/GPL for more information.
+See also the licenses of included software below.
 
-optcomplete.py Copyright:
+Included software
+=================
+
+linkcheck/optcomplete.py
+------------------------
+
 #******************************************************************************\
 #* Copyright (c) 2003-2004, Martin Blais
 #* All rights reserved.
@@ -46,7 +52,9 @@ optcomplete.py Copyright:
 #* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #******************************************************************************\
 
-dnspython (stored as module linkcheck.dns) Copyright:
+linkcheck/dns/*
+---------------
+
 Copyright (C) 2001-2003 Nominum, Inc.
 
 Permission to use, copy, modify, and distribute this software and its
@@ -61,4 +69,28 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+in linkcheck/robotparser2.py
+----------------------------
+###########################################################################
+# urlutils.py - Simplified urllib handling
+#
+#   Written by Chris Lawrence <lawrencc@debian.org>
+#   (C) 1999-2002 Chris Lawrence
+#
+# This program is freely distributable per the following license:
+#
+##  Permission to use, copy, modify, and distribute this software and its
+##  documentation for any purpose and without fee is hereby granted,
+##  provided that the above copyright notice appears in all copies and that
+##  both that copyright notice and this permission notice appear in
+##  supporting documentation.
+##
+##  I DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL
+##  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL I
+##  BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY
+##  DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+##  WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+##  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
+##  SOFTWARE.
 
