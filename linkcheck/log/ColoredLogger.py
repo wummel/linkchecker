@@ -14,10 +14,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, linkcheck
+import sys
 from linkcheck.log import Spaces, LogFields
 from StandardLogger import StandardLogger
-from linkcheck import StringUtil
+from linkcheck import StringUtil, _
 
 AnsiType = {
     'bold': "1",
@@ -107,11 +107,11 @@ class ColoredLogger (StandardLogger):
             self.fd.write(LogFields["url"]+Spaces["url"]+self.colorurl+
 	              urlData.urlName+self.colorreset)
             if urlData.line:
-                self.fd.write(linkcheck._(", line %d")%urlData.line)
+                self.fd.write(_(", line %d")%urlData.line)
             if urlData.column:
-                self.fd.write(linkcheck._(", col %d")%urlData.column)
+                self.fd.write(_(", col %d")%urlData.column)
             if urlData.cached:
-                self.fd.write(linkcheck._(" (cached)\n"))
+                self.fd.write(_(" (cached)\n"))
             else:
                 self.fd.write("\n")
 
@@ -136,7 +136,7 @@ class ColoredLogger (StandardLogger):
                 self.fd.write("|  ")
             self.fd.write(LogFields["dltime"]+Spaces["dltime"]+
                           self.colordltime+
-                          (linkcheck._("%.3f seconds") % urlData.dltime)+
+                          (_("%.3f seconds") % urlData.dltime)+
                           self.colorreset+"\n")
         if urlData.dlsize>=0 and self.logfield("dlsize"):
             if self.prefix:
@@ -149,7 +149,7 @@ class ColoredLogger (StandardLogger):
                 self.fd.write("|  ")
             self.fd.write(LogFields["checktime"]+Spaces["checktime"]+
                 self.colordltime+
-	        (linkcheck._("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
+	        (_("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
             
         if urlData.infoString and self.logfield("info"):
             if self.prefix:

@@ -14,9 +14,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import time, linkcheck, linkcheck.Config
+import time
 from linkcheck.log import strtime
 from StandardLogger import StandardLogger
+from linkcheck import Config, _
 
 class CSVLogger (StandardLogger):
     """ CSV output. CSV consists of one line per entry. Entries are
@@ -30,12 +31,12 @@ class CSVLogger (StandardLogger):
         if self.fd is None: return
         self.starttime = time.time()
         if self.logfield("intro"):
-            self.fd.write("# "+(linkcheck._("created by %s at %s\n") % (linkcheck.Config.AppName,
+            self.fd.write("# "+(_("created by %s at %s\n") % (Config.AppName,
                       strtime(self.starttime))))
-            self.fd.write("# "+(linkcheck._("Get the newest version at %s\n") % linkcheck.Config.Url))
-            self.fd.write("# "+(linkcheck._("Write comments and bugs to %s\n\n") % \
-	                    linkcheck.Config.Email))
-            self.fd.write(linkcheck._("# Format of the entries:\n")+\
+            self.fd.write("# "+(_("Get the newest version at %s\n") % Config.Url))
+            self.fd.write("# "+(_("Write comments and bugs to %s\n\n") % \
+	                    Config.Email))
+            self.fd.write(_("# Format of the entries:\n")+\
                           "# urlname;\n"
                           "# recursionlevel;\n"
                           "# parentname;\n"
@@ -83,14 +84,14 @@ class CSVLogger (StandardLogger):
         self.stoptime = time.time()
         if self.logfield("outro"):
             duration = self.stoptime - self.starttime
-            name = linkcheck._("seconds")
-            self.fd.write("# "+linkcheck._("Stopped checking at %s") % strtime(self.stoptime))
+            name = _("seconds")
+            self.fd.write("# "+_("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
-                name = linkcheck._("minutes")
+                name = _("minutes")
             if duration > 60:
                 duration = duration / 60
-                name = linkcheck._("hours")
+                name = _("hours")
             self.fd.write(" (%.3f %s)\n" % (duration, name))
             self.fd.flush()
         self.fd = None

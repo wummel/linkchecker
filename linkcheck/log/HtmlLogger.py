@@ -16,8 +16,8 @@
 
 from StandardLogger import StandardLogger
 from linkcheck.log import strtime, LogFields
-from linkcheck import StringUtil
-import time, linkcheck, linkcheck.Config
+from linkcheck import StringUtil, _, Config
+import time
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">
 <html><head><title>%s</title>
@@ -49,12 +49,12 @@ class HtmlLogger (StandardLogger):
     def init (self):
         if self.fd is None: return
         self.starttime = time.time()
-        self.fd.write(HTML_HEADER%(linkcheck.Config.App, self.colorbackground,
+        self.fd.write(HTML_HEADER%(Config.App, self.colorbackground,
                       self.colorlink, self.colorlink, self.colorlink))
         if self.logfield('intro'):
-            self.fd.write("<center><h2>"+linkcheck.Config.App+"</h2></center>"+
-              "<br><blockquote>"+linkcheck.Config.Freeware+"<br><br>"+
-              (linkcheck._("Start checking at %s\n") % strtime(self.starttime))+
+            self.fd.write("<center><h2>"+Config.App+"</h2></center>"+
+              "<br><blockquote>"+Config.Freeware+"<br><br>"+
+              (_("Start checking at %s\n") % strtime(self.starttime))+
 	      "<br>")
         self.fd.flush()
 
@@ -72,7 +72,7 @@ class HtmlLogger (StandardLogger):
              "<td bgcolor="+self.colorurl+">"+LogFields["url"]+"</td>\n"+
              "<td bgcolor="+self.colorurl+">"+urlData.urlName)
             if urlData.cached:
-                self.fd.write(linkcheck._(" (cached)"))
+                self.fd.write(_(" (cached)"))
             self.fd.write("</td>\n</tr>\n")
         if urlData.name and self.logfield("name"):
             self.fd.write("<tr>\n<td>"+LogFields["name"]+"</td>\n<td>"+
@@ -82,9 +82,9 @@ class HtmlLogger (StandardLogger):
                '</td>\n<td><a target="top" href="'+urlData.parentName+'">'+
                urlData.parentName+"</a>")
             if urlData.line:
-                self.fd.write(linkcheck._(", line %d")%urlData.line)
+                self.fd.write(_(", line %d")%urlData.line)
             if urlData.column:
-                self.fd.write(linkcheck._(", col %d")%urlData.column)
+                self.fd.write(_(", col %d")%urlData.column)
             self.fd.write("</td>\n</tr>\n")
         if urlData.baseRef and self.logfield("base"):
             self.fd.write("<tr>\n<td>"+LogFields["base"]+"</td>\n<td>"+
@@ -95,7 +95,7 @@ class HtmlLogger (StandardLogger):
 			  '">'+urlData.url+"</a></td>\n</tr>\n")
         if urlData.dltime>=0 and self.logfield("dltime"):
             self.fd.write("<tr>\n<td>"+LogFields["dltime"]+"</td>\n<td>"+
-	                  (linkcheck._("%.3f seconds") % urlData.dltime)+
+	                  (_("%.3f seconds") % urlData.dltime)+
 			  "</td>\n</tr>\n")
         if urlData.dlsize>=0 and self.logfield("dlsize"):
             self.fd.write("<tr>\n<td>"+LogFields["dlsize"]+"</td>\n<td>"+
@@ -104,7 +104,7 @@ class HtmlLogger (StandardLogger):
         if urlData.checktime and self.logfield("checktime"):
             self.fd.write("<tr>\n<td>"+LogFields["checktime"]+
 	                  "</td>\n<td>"+
-			  (linkcheck._("%.3f seconds") % urlData.checktime)+
+			  (_("%.3f seconds") % urlData.checktime)+
 			  "</td>\n</tr>\n")
         if urlData.infoString and self.logfield("info"):
             self.fd.write("<tr>\n<td>"+LogFields["info"]+"</td>\n<td>"+
@@ -134,39 +134,39 @@ class HtmlLogger (StandardLogger):
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.logfield("outro"):
-            self.fd.write("\n"+linkcheck._("Thats it. "))
+            self.fd.write("\n"+_("Thats it. "))
             #if self.warnings==1:
-            #    self.fd.write(linkcheck._("1 warning, "))
+            #    self.fd.write(_("1 warning, "))
             #else:
-            #    self.fd.write(str(self.warnings)+linkcheck._(" warnings, "))
+            #    self.fd.write(str(self.warnings)+_(" warnings, "))
             if self.errors==1:
-                self.fd.write(linkcheck._("1 error"))
+                self.fd.write(_("1 error"))
             else:
-                self.fd.write(str(self.errors)+linkcheck._(" errors"))
+                self.fd.write(str(self.errors)+_(" errors"))
             if linknumber >= 0:
                 if linknumber == 1:
-                    self.fd.write(linkcheck._(" in 1 link"))
+                    self.fd.write(_(" in 1 link"))
                 else:
-                    self.fd.write(linkcheck._(" in %d links") % linknumber)
-            self.fd.write(linkcheck._(" found")+"\n<br>")
+                    self.fd.write(_(" in %d links") % linknumber)
+            self.fd.write(_(" found")+"\n<br>")
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            name = linkcheck._("seconds")
-            self.fd.write(linkcheck._("Stopped checking at %s") % strtime(self.stoptime))
+            name = _("seconds")
+            self.fd.write(_("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
-                name = linkcheck._("minutes")
+                name = _("minutes")
             if duration > 60:
                 duration = duration / 60
-                name = linkcheck._("hours")
+                name = _("hours")
             self.fd.write("	(%.3f %s)\n" % (duration, name))
             self.fd.write("</blockquote><br><hr noshade size=1><small>"+
-             linkcheck.Config.HtmlAppInfo+"<br>")
-            self.fd.write(linkcheck._("Get the newest version at %s\n") %\
-             ('<a href="'+linkcheck.Config.Url+'" target=_top>'+linkcheck.Config.Url+
+                          Config.HtmlAppInfo+"<br>")
+            self.fd.write(_("Get the newest version at %s\n") %\
+             ('<a href="'+Config.Url+'" target=_top>'+Config.Url+
 	      "</a>.<br>"))
-            self.fd.write(linkcheck._("Write comments and bugs to %s\n\n") %\
-	     ('<a href="mailto:'+linkcheck.Config.Email+'">'+linkcheck.Config.Email+"</a>."))
+            self.fd.write(_("Write comments and bugs to %s\n\n") %\
+	     ('<a href="mailto:'+Config.Email+'">'+Config.Email+"</a>."))
             self.fd.write("</small></body></html>")
         self.fd.flush()
         self.fd = None

@@ -16,8 +16,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time, Cookie
-import _linkchecker_configdata, linkcheck, linkcheck.log
-from os.path import expanduser,normpath,normcase,join,isfile
+import _linkchecker_configdata, linkcheck
+from os.path import expanduser, normpath, normcase, join, isfile
 from types import StringType
 from urllib import getproxies
 from debuglevels import *
