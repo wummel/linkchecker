@@ -20,7 +20,6 @@ import re
 import urlparse
 import os
 import urllib
-import cgi
 
 
 # adapted from David Wheelers "Secure Programming for Linux and Unix HOWTO"

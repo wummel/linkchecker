@@ -10,7 +10,6 @@ Base functionality. Request and Response classes, that sort of thing.
 
 import select
 import socket
-import re
 import string
 import types
 import time
@@ -86,8 +85,8 @@ class DnsRequest (object):
     def processReply (self):
         self.args['elapsed']=(self.time_finish-self.time_start)*1000
         u = Lib.Munpacker(self.reply)
-        r=Lib.DnsResult(u,self.args)
-        r.args=self.args
+        r = Lib.DnsResult(u,self.args)
+        r.args = self.args
         #self.args=None  # mark this DnsRequest object as used.
         return r
         #### TODO TODO TODO ####

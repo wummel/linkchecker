@@ -21,6 +21,7 @@
 
 
 import types
+import time
 import Type
 import Class
 import Opcode
@@ -574,4 +575,152 @@ class Mpacker (RRpacker, Qpacker, Hpacker):
 
 class Munpacker (RRunpacker, Qunpacker, Hunpacker):
     pass
+
+
+# Routines to print an unpacker to stdout, for debugging.
+# These affect the unpacker's current position!
+
+def dumpM (u):
+    print 'HEADER:',
+    (id, qr, opcode, aa, tc, rd, ra, z, rcode,
+              qdcount, ancount, nscount, arcount) = u.getHeader()
+    print 'id=%d,' % id,
+    print 'qr=%d, opcode=%d, aa=%d, tc=%d, rd=%d, ra=%d, z=%d, rcode=%d,' \
+              % (qr, opcode, aa, tc, rd, ra, z, rcode)
+    if tc: print '*** response truncated! ***'
+    if rcode: print '*** nonzero error code! (%d) ***' % rcode
+    print '  qdcount=%d, ancount=%d, nscount=%d, arcount=%d' \
+              % (qdcount, ancount, nscount, arcount)
+    for i in range(qdcount):
+        print 'QUESTION %d:' % i,
+        dumpQ(u)
+    for i in range(ancount):
+        print 'ANSWER %d:' % i,
+        dumpRR(u)
+    for i in range(nscount):
+        print 'AUTHORITY RECORD %d:' % i,
+        dumpRR(u)
+    for i in range(arcount):
+        print 'ADDITIONAL RECORD %d:' % i,
+        dumpRR(u)
+
+
+class DnsResult (object):
+
+    def __init__ (self,u,args):
+        self.header={}
+        self.questions=[]
+        self.answers=[]
+        self.authority=[]
+        self.additional=[]
+        self.args=args
+        self.storeM(u)
+
+    def show (self):
+        print '; <<>> PDG.py 1.0 <<>> %s %s'%(self.args['name'],
+            self.args['qtype'])
+        opt=""
+        if self.args['rd']:
+            opt=opt+'recurs '
+        h=self.header
+        print ';; options: '+opt
+        print ';; got answer:'
+        print ';; ->>HEADER<<- opcode %s, status %s, id %d'%(
+            h['opcode'],h['status'],h['id'])
+        flags=filter(lambda x,h=h:h[x],('qr','aa','rd','ra','tc'))
+        print ';; flags: %s; Ques: %d, Ans: %d, Auth: %d, Addit: %d'%(
+            ''.join(flags),h['qdcount'],h['ancount'],h['nscount'],
+            h['arcount'])
+        print ';; QUESTIONS:'
+        for q in self.questions:
+            print ';;      %s, type = %s, class = %s'%(q['qname'],q['qtypestr'],
+                q['qclassstr'])
+        print
+        print ';; ANSWERS:'
+        for a in self.answers:
+            print '%-20s    %-6r  %-6s  %s'%(a['name'],a['ttl'],a['typename'],
+                a['data'])
+        print
+        print ';; AUTHORITY RECORDS:'
+        for a in self.authority:
+            print '%-20s    %-6r  %-6s  %s'%(a['name'],a['ttl'],a['typename'],
+                a['data'])
+        print
+        print ';; ADDITIONAL RECORDS:'
+        for a in self.additional:
+            print '%-20s    %-6r  %-6s  %s'%(a['name'],a['ttl'],a['typename'],
+                a['data'])
+        print
+        if self.args.has_key('elapsed'):
+            print ';; Total query time: %d msec'%self.args['elapsed']
+        print ';; To SERVER: %s'%(self.args['server'])
+        print ';; WHEN: %s'%time.ctime(time.time())
+
+    def storeM (self,u):
+        (self.header['id'], self.header['qr'], self.header['opcode'],
+          self.header['aa'], self.header['tc'], self.header['rd'],
+          self.header['ra'], self.header['z'], self.header['rcode'],
+          self.header['qdcount'], self.header['ancount'],
+          self.header['nscount'], self.header['arcount']) = u.getHeader()
+        self.header['opcodestr']=Opcode.opcodestr(self.header['opcode'])
+        self.header['status']=Status.statusstr(self.header['rcode'])
+        for i in range(self.header['qdcount']):
+            #print 'QUESTION %d:' % i,
+            self.questions.append(self.storeQ(u))
+        for i in range(self.header['ancount']):
+            #print 'ANSWER %d:' % i,
+            self.answers.append(self.storeRR(u))
+        for i in range(self.header['nscount']):
+            #print 'AUTHORITY RECORD %d:' % i,
+            self.authority.append(self.storeRR(u))
+        for i in range(self.header['arcount']):
+            #print 'ADDITIONAL RECORD %d:' % i,
+            self.additional.append(self.storeRR(u))
+
+    def storeQ (self,u):
+        q={}
+        q['qname'], q['qtype'], q['qclass'] = u.getQuestion()
+        q['qtypestr']=Type.typestr(q['qtype'])
+        q['qclassstr']=Class.classstr(q['qclass'])
+        return q
+
+    def storeRR (self,u):
+        r={}
+        r['name'],r['type'],r['class'],r['ttl'],r['rdlength'] = u.getRRheader()
+        r['typename'] = Type.typestr(r['type'])
+        r['classstr'] = Class.classstr(r['class'])
+        #print 'name=%s, type=%d(%s), class=%d(%s), ttl=%d' \
+        #      % (name,
+        #        type, typename,
+        #        klass, Class.classstr(class),
+        #        ttl)
+        mname = 'get%sdata' % r['typename']
+        if hasattr(u, mname):
+            r['data']=getattr(u, mname)()
+        else:
+            r['data']=u.getbytes(r['rdlength'])
+        return r
+
+
+def dumpQ (u):
+    qname, qtype, qclass = u.getQuestion()
+    print 'qname=%s, qtype=%d(%s), qclass=%d(%s)' \
+              % (qname,
+                 qtype, Type.typestr(qtype),
+                 qclass, Class.classstr(qclass))
+
+
+def dumpRR (u):
+    name, type, klass, ttl, rdlength = u.getRRheader()
+    typename = Type.typestr(type)
+    print 'name=%s, type=%d(%s), class=%d(%s), ttl=%d' \
+              % (name,
+                 type, typename,
+                 klass, Class.classstr(klass),
+                 ttl)
+    mname = 'get%sdata' % typename
+    if hasattr(u, mname):
+        print '  formatted rdata:', getattr(u, mname)()
+    else:
+        print '  binary rdata:', u.getbytes(rdlength)
 

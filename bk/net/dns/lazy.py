@@ -7,7 +7,7 @@
 #
 """routines for lazy people."""
 
-import bk.net.dns.Base
+import Base
 
 def revlookup (name, config):
     "convenience routine for doing a reverse lookup of an address"
