@@ -1,6 +1,6 @@
 1.13.3 "" (released xx.xx.xxxx)
   * Prevent collapsing of relative parent dir paths. This fixes false
-    positives reported URLs of the form "../../foo".
+    positives on URLs of the form "../../foo".
     Closes: SF bug #1025459
     Changed: linkcheck/url.py, linkcheck/tests/test_url.py
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2004-09-08 15:32+CEST\n"
+"POT-Creation-Date: 2004-09-10 13:46+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -214,47 +214,47 @@ msgstr ""
 msgid "Python %s on %s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:223
+#: ../linkcheck/checker/urlbase.py:224
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:242
+#: ../linkcheck/checker/urlbase.py:243
 msgid "Base URL is not properly normed. Normed url is %(url)r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:270
+#: ../linkcheck/checker/urlbase.py:271
 msgid "URL has invalid port %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:307
+#: ../linkcheck/checker/urlbase.py:308
 msgid "outside of domain filter, checked only syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:322
+#: ../linkcheck/checker/urlbase.py:323
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:325
+#: ../linkcheck/checker/urlbase.py:326
 msgid "Bad HTTP response %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:354
+#: ../linkcheck/checker/urlbase.py:355
 msgid "could not parse content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:427
+#: ../linkcheck/checker/urlbase.py:428
 msgid "anchor #%s not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:489
+#: ../linkcheck/checker/urlbase.py:490
 msgid "Found %r in link contents"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:496
+#: ../linkcheck/checker/urlbase.py:497
 msgid "Content size %s is larger than %s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:534
+#: ../linkcheck/checker/urlbase.py:535
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
