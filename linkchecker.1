@@ -100,6 +100,8 @@ Default depth is 1.
 .TP
 \fB-s\fP, \fB--strict\fP
 Check only the syntax of extern links, do not try to connect to them.
+For local file urls, only local files are internal. For
+http and ftp urls, all urls at the same domain name are internal.
 .TP
 \fB-t \fInum\fP, \fB--threads=\fInum\fP
 Generate no more than \fInum\fP threads. Default number of threads is 5.

@@ -101,6 +101,8 @@ For single-letter option arguments the space is not a necessity. So
         Default depth is 1.
 -s, --strict
         Check only syntax of extern links, do not try to connect to them.
+        For local file urls, only local files are internal. For
+        http and ftp urls, all urls at the same domain name are internal.
 -t num, --threads=num
         Generate no more than num threads. Default number of threads is 5.
         To disable threading specify a non-positive number.
@@ -157,7 +159,7 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
 Examples = i18n._("""EXAMPLES
 o Check the treasure.calvinsplayground.de domain, but don't recurse into
   links outside of this domain:
-      linkchecker -v -r5 -ohtml -s -itreasure.calvinsplayground.de \\
+      linkchecker -v -r5 -ohtml -s \\
        http://treasure.calvinsplayground.de/~calvin/ > sample.html
 
 o Don't connect to mailto: hosts, only check their URL syntax. All other
@@ -177,7 +179,7 @@ def printVersion ():
     sys.exit(0)
 
 def printHelp ():
-    """print the program help text"""
+    """print the program help text and exit"""
     if os.name!='posix':
         StringUtil.paginate(Usage+"\n"+Notes+"\n"+Examples)
     else:
@@ -187,13 +189,14 @@ def printHelp ():
     sys.exit(0)
 
 def printUsage (msg):
-    """print a program msg text to stderr"""
+    """print a program msg text to stderr and exit"""
     sys.stderr.write(i18n._("Error: %s\n") % msg)
     sys.stderr.write(i18n._("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
 
 
 def viewprof ():
+    """print profiling data and exit"""
     if not os.path.exists(_profile):
         sys.stderr.write(i18n._("Could not find profiling file %s.")%_profile)
         sys.stderr.write(i18n._("Please run linkchecker with --profile to generate it."))
@@ -263,8 +266,8 @@ constructauth = 0
 do_profile = 0
 for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
-        config["anchors"] = 1
-        config["warnings"] = 1
+        config["anchors"] = "True"
+        config["warnings"] = "True"
 
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append(linkcheck.getLinkPat(arg))
@@ -292,23 +295,23 @@ for opt,arg in options:
 	               "'-F, --file-output'")
 
     elif opt=="-I" or opt=="--interactive":
-        config['interactive'] = 1
+        config['interactive'] = "True"
 
     elif opt=="-i" or opt=="--intern":
         config["internlinks"].append(linkcheck.getLinkPat(arg))
 
     elif opt=="-l" or opt=="--denyallow":
-        config["denyallow"] = 1
+        config["denyallow"] = "True"
 
     elif opt=="-N" or opt=="--nntp-server":
         config["nntpserver"] = arg
 
     elif opt=="--no-anchor-caching":
-        config["noanchorcaching"] = 1
+        config["noanchorcaching"] = "True"
 
     elif opt=="-p" or opt=="--password":
         _password = arg
-        constructauth = 1
+        constructauth = "True"
 
     elif opt=="-P" or opt=="--pause":
         try:
@@ -323,10 +326,10 @@ for opt,arg in options:
                        (`arg`, "'-P, --pause'"))
 
     elif opt=="--profile":
-        do_profile = 1
+        do_profile = "True"
 
     elif opt=="-q" or opt=="--quiet":
-    	config["quiet"] = 1
+    	config["quiet"] = "True"
 
     elif opt=="-r" or opt=="--recursion-level":
         try:
@@ -342,7 +345,7 @@ for opt,arg in options:
     elif opt=="-R" or opt=="--robots-txt": pass
 
     elif opt=="-s" or opt=="--strict":
-        config["strict"] = 1
+        config["strict"] = "True"
 
     elif opt=="-t" or opt=="--threads":
         try:
@@ -366,14 +369,14 @@ for opt,arg in options:
 
     elif opt=="-u" or opt=="--user":
         _user = arg
-        constructauth = 1
+        constructauth = "True"
 
     elif opt=="-V" or opt=="--version":
         printVersion()
 
     elif opt=="-v" or opt=="--verbose":
-        config["verbose"] = 1
-        config["warnings"] = 1
+        config["verbose"] = "True"
+        config["warnings"] = "True"
 
     elif opt=="--viewprof":
         viewprof()
@@ -383,14 +386,14 @@ for opt,arg in options:
         util1.abbuzze()
         sys.exit(0)
     elif opt=="-w" or opt=="--warnings":
-        config["warnings"] = 1
+        config["warnings"] = "True"
 
     elif opt=="-W" or opt=="--warning-regex":
         config["warningregex"] = re.compile(arg)
-        config["warnings"] = 1
+        config["warnings"] = "True"
 
     elif opt=="-C" or opt=="--cookies":
-        config['cookies'] = 1
+        config['cookies'] = "True"
 
 if constructauth:
     config["authentication"].insert(0, {'pattern': re.compile(".*"),
@@ -423,7 +426,7 @@ for url in args:
             url = "ftp://"+url
         elif url.startswith("www."):
             url = "http://"+url
-    config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config))
+    config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config, cmdline="True"))
 
 ############################# check the urls ################################
 if do_profile:

@@ -22,7 +22,7 @@ from urllib import splituser, splithost, splitport, unquote
 #except ImportError:
 #    print >>sys.stderr, "You have to install PyDNS from http://pydns.sf.net/"
 #    raise SystemExit
-from linkcheck import DNS, LinkCheckerError
+from linkcheck import DNS, LinkCheckerError, getLinkPat
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, linkname, test_support, timeoutsocket
@@ -509,7 +509,8 @@ from NntpUrlData import NntpUrlData
 
 
 def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
-                    baseRef=None, line=0, column=0, name=None):
+                    baseRef=None, line=0, column=0, name=None,
+                    cmdline=None):
     url = get_absolute_url(urlName, baseRef, parentName)
     # test scheme
     if url.startswith("http:"):
@@ -536,5 +537,20 @@ def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
     # assume local file
     else:
         klass = FileUrlData
+    if config['strict'] and cmdline:
+        # set automatic intern/extern stuff
+        set_intern_url(url, klass, config)
     return klass(urlName, recursionLevel, config, parentName, baseRef,
                  line=line, column=column, name=name)
+
+
+def set_intern_url (url, klass, config):
+    """Precondition: config['strict'] is true (ie strict checking) and
+       recursion level is zero (ie url given on the command line)"""
+    if klass == FileUrlData:
+        config['internlinks'].append(getLinkPat("^file:"))
+    elif klass in [HttpUrlData, HttpsUrlData, FtpUrlData]:
+        domain = urlparse.urlsplit(url)[1]
+        if domain:
+            domain = re.escape(domain)
+            config['internlinks'].append(getLinkPat(domain))

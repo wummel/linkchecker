@@ -4,6 +4,11 @@
   * enable infinite recursion with a negative -r value
     Changed files: linkcheck/{UrlData,Config}.py, linkchecker,
       linkchecker.1
+  * if -s is given, add some link patterns to urls given on the
+    command line automatically:
+    for local files, add -i "^file:". For http and ftp urls, add
+    the domain name -i "<domain>".
+    Changed files: linkcheck/UrlData.py, linkchecker
 
 1.8.17
   * fix parsing of missing end tag in "</a <a b=c>"

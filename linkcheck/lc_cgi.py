@@ -116,7 +116,7 @@ def logit (form, env):
     if not _logfile:
         return
     elif type(_logfile) == StringType:
-        _logfile = open(_logfile, "a")
+        _logfile = file(_logfile, "a")
     _logfile.write("\n"+strtime(time.time())+"\n")
     for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
                 "REMOTE_HOST", "REMOTE_PORT"]:

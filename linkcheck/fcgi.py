@@ -83,7 +83,7 @@ error = 'fcgi.error'
 
 def _error(msg):
     "Append a string to /tmp/err"
-    errf=open('/tmp/err', 'a+')
+    errf=file('/tmp/err', 'a+')
     errf.write(msg+'\n')
     errf.close()
 
@@ -476,7 +476,7 @@ def _test():
             req.Finish()
     except:
         import traceback
-        f = open('traceback', 'w')
+        f = file('traceback', 'w')
         traceback.print_exc( file = f )
 #        f.write('%s' % doc)
 
