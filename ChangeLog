@@ -1,11 +1,13 @@
-2.7 "" (released xx.xx.xxxx)
+2.7 "Million Dollar Baby" (released 30.3.2005)
 
   * When a host has no MX record, fall back to A records as the mail
     host.
     Type: bugfix
     Changed: linkcheck/checker/mailtourl.py
 
-  * Do not split CGI params on semicolons.
+  * Do not split CGI params on semicolons. This is wrong of course,
+    but not supported by all servers. A later version of the CGI parser
+    engine will split and re-join semicolons.
     Type: bugfix
     Changed: linkcheck/url.py
 
