@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.3
 # -*- coding: iso-8859-1 -*-
 # Originally written by Barry Warsaw <barry@zope.com>
 #
@@ -12,6 +12,8 @@
 # directory (including globbing chars, important for Win32).
 # Made docstring fit in 80 chars wide displays using pydoc.
 #
+# 20030701 calvin@users.sf.net
+# added html parser
 
 # for selftesting
 try:
@@ -155,13 +157,7 @@ Options:
 If `inputfile' is -, standard input is read.
 """)
 
-import os
-import sys
-import time
-import getopt
-import token
-import tokenize
-import operator
+import os, sys, re, time, getopt, token, tokenize, operator, cgi
 
 __version__ = '1.5'
 
@@ -441,6 +437,9 @@ class TokenEater:
         self.__curfile = filename
         self.__freshmodule = 1
 
+    def has_entry (self, msg):
+        return self.__messages.has_key(msg)
+
     def write(self, fp):
         options = self.__options
         timestamp = time.ctime(time.time())
@@ -497,6 +496,89 @@ class TokenEater:
                     print >> fp, '#, docstring'
                 print >> fp, 'msgid', normalize(k)
                 print >> fp, 'msgstr ""\n'
+
+
+from sets import Set
+import sgmllib
+
+class HtmlGettext (sgmllib.SGMLParser, object):
+    """handles all functions by printing the function name and
+       attributes"""
+    def __init__ (self, debug=0):
+        super(HtmlGettext, self).__init__()
+        self.tag = None
+        self.translations = Set()
+        self.data = ""
+
+
+    def unknown_starttag (self, tag, attributes):
+        attrs = {}
+        for key,val in attributes:
+            attrs[key] = val
+        msgid = attrs.get('i18n:translate', None)
+        if msgid == '':
+            if self.tag:
+                raise Exception, "nested i18n:translate is unsupported"
+            self.tag = tag
+            self.data = ""
+        elif msgid is not None:
+            if self.tag:
+                raise Exception, "nested i18n:translate is unsupported"
+            if msgid.startswith("string:"):
+                self.translations.add(msgid[7:].replace(';;', ';'))
+            else:
+                print >>sys.stderr, "tag <%s> has unsupported dynamic msgid %s" % (tag, `msgid`)
+        elif self.tag:
+            # nested tag to translate
+            self.data += "<%s"%tag
+            for key,val in attrs.items():
+                self.data += " %s=\"%s\"" % (key, cgi.escape(val, True))
+            self.data += ">"
+        argument = attrs.get('i18n:attributes', None)
+        if argument is not None:
+            for name, msgid in get_attribute_list(argument):
+                self.translations.add(msgid)
+
+
+    def unknown_endtag (self, tag):
+        if tag==self.tag:
+            self.translations.add(self.data)
+            self.tag = None
+            self.data = ""
+        elif self.tag:
+            self.data += "</%s>"%tag
+
+
+    def handle_data (self, data):
+        if self.tag:
+            self.data += data
+
+
+    def handle_charref (self, ref):
+        self.data += '&#%s;' % ref
+
+
+    def handle_entityref (self, ref):
+        self.data += '&%s;' % ref
+
+
+def get_attribute_list (argument):
+    # Break up the list of attribute settings
+    commandArgs = []
+    # We only want to match semi-colons that are not escaped
+    argumentSplitter =  re.compile('(?<!;);(?!;)')
+    for attributeStmt in argumentSplitter.split(argument):
+        #  remove any leading space and un-escape any semi-colons
+        attributeStmt = attributeStmt.lstrip().replace(';;', ';')
+        # Break each attributeStmt into name and expression
+        stmtBits = attributeStmt.split(' ')
+        if len(stmtBits) < 2:
+            # Error, badly formed attributes command
+            print >>sys.stderr, "Badly formed attributes command '%s'.  Attributes commands must be of the form: 'name expression[;name expression]'" % argument
+        attName = stmtBits[0]
+        attExpr = " ".join(stmtBits[1:])
+        commandArgs.append((attName, attExpr))
+    return commandArgs
 
 
 
@@ -618,6 +700,7 @@ def main():
             expanded.extend(getFilesForName(arg))
     args = expanded
 
+    html_translations = Set()
     # slurp through all the files
     eater = TokenEater(options)
     for filename in args:
@@ -629,15 +712,21 @@ def main():
         else:
             if options.verbose:
                 print _('Working on %s') % filename
-            fp = open(filename)
+            fp = file(filename)
             closep = 1
         try:
-            eater.set_filename(filename)
-            try:
-                tokenize.tokenize(fp.readline, eater)
-            except tokenize.TokenError, e:
-                print >> sys.stderr, '%s: %s, line %d, column %d' % (
-                    e[0], filename, e[1][0], e[1][1])
+            if filename.endswith('.html'):
+                p = HtmlGettext()
+                p.feed(fp.read())
+                p.close()
+                html_translations.update(p.translations)
+            else:
+                eater.set_filename(filename)
+                try:
+                    tokenize.tokenize(fp.readline, eater)
+                except tokenize.TokenError, e:
+                    print >> sys.stderr, '%s: %s, line %d, column %d' % (
+                        e[0], filename, e[1][0], e[1][1])
         finally:
             if closep:
                 fp.close()
@@ -649,13 +738,18 @@ def main():
     else:
         if options.outpath:
             options.outfile = os.path.join(options.outpath, options.outfile)
-        fp = open(options.outfile, 'w')
+        fp = file(options.outfile, 'w')
         closep = 1
     try:
         eater.write(fp)
+        msgs = [msg for msg in html_translations if not eater.has_entry(msg)]
+        for msg in msgs:
+            print >> fp, 'msgid', normalize(msg)
+            print >> fp, 'msgstr ""\n'
     finally:
         if closep:
             fp.close()
+
 
 
 if __name__ == '__main__':
