@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test html anchor parsing and checking"""
+"""
+Test html anchor parsing and checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,15 +24,21 @@ import linkcheck.ftests
 
 
 class TestAnchor (linkcheck.ftests.StandardTest):
-    """test anchor checking of HTML pages"""
+    """
+    Test anchor checking of HTML pages.
+    """
 
     def test_anchor (self):
-        """test anchors"""
+        """
+        Test anchors.
+        """
         self.file_test("anchor.html")
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestAnchor))
     return suite

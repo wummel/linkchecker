@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""define http test support classes for LinkChecker tests"""
+"""
+Define http test support classes for LinkChecker tests.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,59 +27,83 @@ import linkcheck.ftests
 
 
 class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler, object):
-    """http request handler with QUIT stopping the server"""
+    """
+    Http request handler with QUIT stopping the server.
+    """
 
     def do_QUIT (self):
-        """send 200 OK response, and set server.stop to True"""
+        """
+        Send 200 OK response, and set server.stop to True.
+        """
         self.send_response(200)
         self.end_headers()
         self.server.stop = True
 
     def log_message (self, format, *args):
-        """logging is disabled"""
+        """
+        Logging is disabled.
+        """
         pass
 
 
 class StoppableHttpServer (BaseHTTPServer.HTTPServer, object):
-    """http server that reacts to self.stop flag"""
+    """
+    Http server that reacts to self.stop flag.
+    """
 
     def serve_forever (self):
-        """Handle one request at a time until stopped."""
+        """
+        Handle one request at a time until stopped.
+        """
         self.stop = False
         while not self.stop:
             self.handle_request()
 
 
 class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
-    """handler ignoring the query part of requests"""
+    """
+    Handler ignoring the query part of requests.
+    """
 
     def remove_path_query (self):
-        """remove everything after a question mark"""
+        """
+        Remove everything after a question mark.
+        """
         i = self.path.find('?')
         if i != -1:
             self.path = self.path[:i]
 
     def do_GET (self):
-        """removes query part of GET request"""
+        """
+        Removes query part of GET request.
+        """
         self.remove_path_query()
         super(NoQueryHttpRequestHandler, self).do_GET()
 
     def do_HEAD (self):
-        """removes query part of HEAD request"""
+        """
+        Removes query part of HEAD request.
+        """
         self.remove_path_query()
         super(NoQueryHttpRequestHandler, self).do_HEAD()
 
 
 class HttpServerTest (linkcheck.ftests.StandardTest):
-    """start/stop an HTTP server that can be used for testing"""
+    """
+    Start/stop an HTTP server that can be used for testing.
+    """
 
     def __init__ (self, methodName='runTest'):
-        """init test class and store default http server port"""
+        """
+        Init test class and store default http server port.
+        """
         super(HttpServerTest, self).__init__(methodName=methodName)
         self.port = 8001
 
     def start_server (self, handler=NoQueryHttpRequestHandler):
-        """start a new HTTP server in a new thread"""
+        """
+        Start a new HTTP server in a new thread.
+        """
         try:
             import threading
         except ImportError:
@@ -88,14 +114,18 @@ class HttpServerTest (linkcheck.ftests.StandardTest):
         time.sleep(3)
 
     def stop_server (self):
-        """send QUIT request to http server"""
+        """
+        Send QUIT request to http server.
+        """
         conn = httplib.HTTPConnection("localhost:%d"%self.port)
         conn.request("QUIT", "/")
         conn.getresponse()
 
 
 def start_server (port, handler):
-    """start an HTTP server on given port"""
+    """
+    Start an HTTP server on given port.
+    """
     ServerClass = StoppableHttpServer
     server_address = ('', port)
     handler.protocol_version = "HTTP/1.0"

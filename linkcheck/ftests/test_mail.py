@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test mail checking"""
+"""
+Test mail checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -21,12 +23,16 @@ import unittest
 import linkcheck.ftests
 
 class TestMail (linkcheck.ftests.StandardTest):
-    """test mailto: link checking"""
+    """
+    Test mailto: link checking.
+    """
 
     needed_resources = ['network']
 
     def test_good_mail (self):
-        """test some good mailto addrs"""
+        """
+        Test some good mailto addrs.
+        """
         url = self.norm(u"mailto:Dude <calvin@users.sf.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
@@ -99,7 +105,9 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
 
     def test_warn_mail (self):
-        """test some mailto addrs with warnings"""
+        """
+        Test some mailto addrs with warnings.
+        """
         # contains non-quoted characters
         url = u"mailto:calvin@users.sf.net?subject=äöü"
         qurl = self.norm(url)
@@ -134,7 +142,9 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
 
     def test_bad_mail (self):
-        """test some mailto addrs with bad syntax"""
+        """
+        Test some mailto addrs with bad syntax.
+        """
         # ? extension forbidden in <> construct
         url = self.norm(u"mailto:Bastian Kleineidam "\
                          "<calvin@users.sf.net?foo=bar>")
@@ -148,7 +158,9 @@ class TestMail (linkcheck.ftests.StandardTest):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestMail))
     return suite

@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test news checking"""
+"""
+Test news checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -21,12 +23,16 @@ import unittest
 import linkcheck.ftests
 
 class TestHttps (linkcheck.ftests.StandardTest):
-    """test https: link checking"""
+    """
+    Test https: link checking.
+    """
 
     needed_resources = ['network']
 
     def test_https (self):
-        """test some https links"""
+        """
+        Test some https links.
+        """
         url = u"https://sourceforge.net/"
         resultlines = [
             u"url %s" % url,
@@ -38,7 +44,9 @@ class TestHttps (linkcheck.ftests.StandardTest):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestHttps))
     return suite

@@ -25,22 +25,30 @@ import linkcheck.configuration
 
 
 class CSVLogger (linkcheck.logger.Logger):
-    """CSV output, consisting of one line per entry. Entries are
-       separated by a semicolon.
     """
+    CSV output, consisting of one line per entry. Entries are
+    separated by a semicolon.
+    """
+
     def __init__ (self, **args):
-        """store default separator and (os dependent) line terminator"""
+        """
+        Store default separator and (os dependent) line terminator.
+        """
         super(CSVLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.separator = args['separator']
 
     def comment (self, s, **args):
-        """Print CSV comment."""
+        """
+        Print CSV comment.
+        """
         self.write(u"# ")
         self.writeln(s=s, **args)
 
     def start_output (self):
-        """print checking start info as csv comment"""
+        """
+        Print checking start info as csv comment.
+        """
         super(CSVLogger, self).start_output()
         if self.fd is None:
             return
@@ -81,7 +89,9 @@ class CSVLogger (linkcheck.logger.Logger):
             self.writer.writerow(row)
 
     def new_url (self, url_data):
-        """print csv formatted url check info"""
+        """
+        Print csv formatted url check info.
+        """
         if self.fd is None:
             return
         row = []
@@ -103,7 +113,9 @@ class CSVLogger (linkcheck.logger.Logger):
         self.flush()
 
     def end_output (self, linknumber=-1):
-        """print end of checking info as csv comment"""
+        """
+        Print end of checking info as csv comment.
+        """
         if self.fd is None:
             return
         self.stoptime = time.time()

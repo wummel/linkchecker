@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""unit tests for the linkcheck module"""
+"""
+Unit tests for the linkcheck module.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify

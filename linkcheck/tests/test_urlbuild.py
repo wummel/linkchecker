@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test url build method from url data objects"""
+"""
+Test url build method from url data objects.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,7 +22,9 @@ import unittest
 import linkcheck.checker.httpurl
 
 class TestUrlBuild (unittest.TestCase):
-    """test url building"""
+    """
+    Test url building.
+    """
 
     def test_http_build (self):
         parent_url = "http://localhost:8001/linkcheck/ftests/data/http.html"
@@ -34,7 +38,9 @@ class TestUrlBuild (unittest.TestCase):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestUrlBuild))
     return suite

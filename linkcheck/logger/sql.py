@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""an sql logger"""
+"""
+A SQL logger.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -24,35 +26,53 @@ import linkcheck.logger
 
 
 def sqlify (s):
-    """escape special SQL chars and strings"""
+    """
+    Escape special SQL chars and strings.
+    """
     if not s:
         return "NULL"
     return "'%s'" % s.replace("'", "''")
 
 
 def intify (s):
-    if not s:
-        return 0
-    return 1
+    """
+    Coerce a truth value to 0/1.
+
+    @param s: an object (usually a string)
+    @type s: c{object}
+    @return: 1 if object truth value is True, else 0
+    @rtype: c{number}
+    """
+    if s:
+        return 1
+    return 0
 
 
 class SQLLogger (linkcheck.logger.Logger):
-    """SQL output for PostgreSQL, not tested"""
+    """
+    SQL output, should work with any SQL database (not tested).
+    """
 
     def __init__ (self, **args):
-        """initialize database access data"""
+        """
+        Initialize database access data.
+        """
         super(SQLLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.dbname = args['dbname']
         self.separator = args['separator']
 
     def comment (self, s, **args):
-        """Print SQL comment."""
+        """
+        Print SQL comment.
+        """
         self.write(u"-- ")
         self.writeln(s=s, **args)
 
     def start_output (self):
-        """print start of checking info as sql comment"""
+        """
+        Print start of checking info as sql comment.
+        """
         linkcheck.logger.Logger.start_output(self)
         if self.fd is None:
             return
@@ -70,7 +90,9 @@ class SQLLogger (linkcheck.logger.Logger):
             self.flush()
 
     def new_url (self, url_data):
-        """store url check info into the database"""
+        """
+        Store url check info into the database.
+        """
         if self.fd is None:
             return
         self.writeln(u"insert into %(table)s(urlname,recursionlevel,"
@@ -115,7 +137,9 @@ class SQLLogger (linkcheck.logger.Logger):
         self.flush()
 
     def end_output (self, linknumber=-1):
-        """print end of checking info as sql comment"""
+        """
+        Print end of checking info as sql comment.
+        """
         if self.fd is None:
             return
         if self.has_field("outro"):

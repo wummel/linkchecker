@@ -21,15 +21,21 @@ import unittest
 import linkcheck.ftests
 
 class TestFrames (linkcheck.ftests.StandardTest):
-    """test link checking of HTML framesets"""
+    """
+    Test link checking of HTML framesets.
+    """
 
     def test_frames (self):
-        """test links of frames.html"""
+        """
+        Test links of frames.html.
+        """
         self.file_test("frames.html")
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestFrames))
     return suite

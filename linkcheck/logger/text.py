@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""the default logger"""
+"""
+The default text logger.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -28,7 +30,8 @@ import linkcheck.configuration
 
 
 class TextLogger (linkcheck.logger.Logger):
-    """A text logger, colorizing the output if possible.
+    """
+    A text logger, colorizing the output if possible.
 
     Every Logger has to implement the following functions:
     start_output (self)
@@ -62,7 +65,9 @@ class TextLogger (linkcheck.logger.Logger):
     """
 
     def __init__ (self, **args):
-        """initialize error counter and optional file output"""
+        """
+        Initialize error counter and optional file output.
+        """
         super(TextLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.fd = linkcheck.ansicolor.Colorizer(self.fd)
@@ -80,7 +85,9 @@ class TextLogger (linkcheck.logger.Logger):
         self.colorreset = args['colorreset']
 
     def start_output (self):
-        """print generic start checking info"""
+        """
+        Print generic start checking info.
+        """
         super(TextLogger, self).start_output()
         if self.fd is None:
             return
@@ -99,7 +106,9 @@ class TextLogger (linkcheck.logger.Logger):
             self.flush()
 
     def new_url (self, url_data):
-        """print url checking info"""
+        """
+        Print url checking info.
+        """
         if self.fd is None:
             return
         if self.has_field('url'):
@@ -127,7 +136,9 @@ class TextLogger (linkcheck.logger.Logger):
         self.flush()
 
     def write_url (self, url_data):
-        """write url_data.base_url"""
+        """
+        Write url_data.base_url.
+        """
         self.writeln()
         self.write(self.field('url') + self.spaces('url'))
         txt = unicode(repr(url_data.base_url)[1:])
@@ -136,12 +147,16 @@ class TextLogger (linkcheck.logger.Logger):
         self.writeln(txt, color=self.colorurl)
 
     def write_name (self, url_data):
-        """write url_data.name"""
+        """
+        Write url_data.name.
+        """
         self.write(self.field("name") + self.spaces("name"))
         self.writeln(unicode(repr(url_data.name)[1:]), color=self.colorname)
 
     def write_parent (self, url_data):
-        """write url_data.parent_url"""
+        """
+        Write url_data.parent_url.
+        """
         self.write(self.field('parenturl') + self.spaces("parenturl"))
         txt = url_data.parent_url
         txt += _(", line %d") % url_data.line
@@ -149,45 +164,61 @@ class TextLogger (linkcheck.logger.Logger):
         self.writeln(txt, color=self.colorparent)
 
     def write_base (self, url_data):
-        """write url_data.base_ref"""
+        """
+        Write url_data.base_ref.
+        """
         self.write(self.field("base") + self.spaces("base"))
         self.writeln(url_data.base_ref, color=self.colorbase)
 
     def write_real (self, url_data):
-        """write url_data.url"""
+        """
+        Write url_data.url.
+        """
         self.write(self.field("realurl") + self.spaces("realurl"))
         self.writeln(unicode(url_data.url), color=self.colorreal)
 
     def write_dltime (self, url_data):
-        """write url_data.dltime"""
+        """
+        Write url_data.dltime.
+        """
         self.write(self.field("dltime") + self.spaces("dltime"))
         self.writeln(_("%.3f seconds") % url_data.dltime,
                      color=self.colordltime)
 
     def write_dlsize (self, url_data):
-        """write url_data.dlsize"""
+        """
+        Write url_data.dlsize.
+        """
         self.write(self.field("dlsize") + self.spaces("dlsize"))
         self.writeln(linkcheck.strformat.strsize(url_data.dlsize),
                      color=self.colordlsize)
 
     def write_checktime (self, url_data):
-        """write url_data.checktime"""
+        """
+        Write url_data.checktime.
+        """
         self.write(self.field("checktime") + self.spaces("checktime"))
         self.writeln(_("%.3f seconds") % url_data.checktime,
                      color=self.colordltime)
 
     def write_info (self, url_data):
-        """write url_data.info"""
+        """
+        Write url_data.info.
+        """
         self.write(self.field("info") + self.spaces("info"))
         self.writeln(self.wrap(url_data.info, 65), color=self.colorinfo)
 
     def write_warning (self, url_data):
-        """write url_data.warning"""
+        """
+        Write url_data.warning.
+        """
         self.write(self.field("warning") + self.spaces("warning"))
         self.writeln(self.wrap(url_data.warning, 65), color=self.colorwarning)
 
     def write_result (self, url_data):
-        """write url_data.result"""
+        """
+        Write url_data.result.
+        """
         self.write(self.field("result") + self.spaces("result"))
         if url_data.valid:
             color = self.colorvalid
@@ -201,7 +232,9 @@ class TextLogger (linkcheck.logger.Logger):
         self.writeln()
 
     def end_output (self, linknumber=-1):
-        """print end of output info, and flush all output buffers"""
+        """
+        Print end of output info, and flush all output buffers.
+        """
         if self.fd is None:
             return
         if self.has_field('outro'):

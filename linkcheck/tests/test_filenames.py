@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test filename routines"""
+"""
+Test filename routines.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,7 +24,9 @@ from linkcheck.checker.fileurl import get_nt_filename
 
 
 class TestFilenames (unittest.TestCase):
-    """test filename routines"""
+    """
+    Test filename routines.
+    """
 
     def test_nt_filename (self):
         path = os.getcwd()
@@ -35,7 +39,9 @@ class TestFilenames (unittest.TestCase):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestFilenames))
     return suite

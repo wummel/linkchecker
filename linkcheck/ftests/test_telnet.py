@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test telnet checking"""
+"""
+Test telnet checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,7 +24,9 @@ import linkcheck.ftests
 
 
 class TestTelnet (linkcheck.ftests.StandardTest):
-    """test telnet: link checking"""
+    """
+    Test telnet: link checking.
+    """
 
     def test_telnet (self):
         url = u"telnet:"
@@ -62,7 +66,9 @@ class TestTelnet (linkcheck.ftests.StandardTest):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestTelnet))
     return suite

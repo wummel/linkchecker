@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test file parsing"""
+"""
+Test file parsing.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,30 +25,44 @@ import linkcheck.ftests
 
 
 class TestFile (linkcheck.ftests.StandardTest):
-    """test file:// link checking (and file content parsing)"""
+    """
+    Test file:// link checking (and file content parsing).
+    """
 
     def test_html (self):
-        """test links of file.html"""
+        """
+        Test links of file.html.
+        """
         self.file_test("file.html")
 
     def test_text (self):
-        """test links of file.txt"""
+        """
+        Test links of file.txt.
+        """
         self.file_test("file.txt")
 
     def test_asc (self):
-        """test links of file.asc"""
+        """
+        Test links of file.asc.
+        """
         self.file_test("file.asc")
 
     def test_css (self):
-        """test links of file.css"""
+        """
+        Test links of file.css.
+        """
         self.file_test("file.css")
 
     def test_urllist (self):
-        """test url list parsing"""
+        """
+        Test url list parsing.
+        """
         self.file_test("urllist.txt")
 
     def test_files (self):
-        """test some direct file links"""
+        """
+        Test some direct file links.
+        """
         attrs = {'curdir': os.getcwd(),
                  'datadir': 'linkcheck/ftests/data',
                 }
@@ -91,7 +107,9 @@ class TestFile (linkcheck.ftests.StandardTest):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestFile))
     return suite

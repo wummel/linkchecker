@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test news checking"""
+"""
+Test news checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,7 +25,9 @@ import linkcheck.url
 
 
 class TestNews (linkcheck.ftests.StandardTest):
-    """test nntp: and news: link checking"""
+    """
+    Test nntp: and news: link checking.
+    """
 
     needed_resources = ['network']
 
@@ -32,7 +36,9 @@ class TestNews (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines, fields=fields)
 
     def test_news (self):
-        """test news: link"""
+        """
+        Test news: link.
+        """
         # news testing
         url = u"news:comp.os.linux.misc"
         resultlines = [
@@ -55,7 +61,9 @@ class TestNews (linkcheck.ftests.StandardTest):
         self.newstest(url, resultlines)
 
     def test_snews (self):
-        """test snews: link"""
+        """
+        Test snews: link.
+        """
         url = u"snews:de.comp.os.unix.linux.misc"
         nurl = self.norm(url)
         resultlines = [
@@ -83,7 +91,9 @@ class TestNews (linkcheck.ftests.StandardTest):
         self.newstest(url, resultlines)
 
     def test_nntp (self):
-        """nttp scheme with host"""
+        """
+        Nttp scheme with host.
+        """
         url = u"nntp://news.yaako.com/comp.lang.python"
         resultlines = [
             u"url %s" % url,
@@ -94,7 +104,9 @@ class TestNews (linkcheck.ftests.StandardTest):
         self.newstest(url, resultlines)
 
     def test_article_span (self):
-        """article span"""
+        """
+        Article span.
+        """
         url = u"nntp://news.yaako.com/comp.lang.python/1-5"
         resultlines = [
             u"url %s" % url,
@@ -114,7 +126,9 @@ class TestNews (linkcheck.ftests.StandardTest):
         self.newstest(url, resultlines)
 
     def test_host_no_group (self):
-        """host but no group"""
+        """
+        Host but no group.
+        """
         url = u"nntp://news.yaako.com/"
         resultlines = [
             u"url %s" % url,
@@ -127,7 +141,9 @@ class TestNews (linkcheck.ftests.StandardTest):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestNews))
     return suite

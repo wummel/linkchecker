@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test error checking"""
+"""
+Test error checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,10 +25,14 @@ import linkcheck.url
 
 
 class TestError (linkcheck.ftests.StandardTest):
-    """test unrecognized or syntactically wrong links"""
+    """
+    Test unrecognized or syntactically wrong links.
+    """
 
     def test_unrecognized (self):
-        """unrecognized scheme test"""
+        """
+        Unrecognized scheme test.
+        """
         url = u"hutzli:"
         nurl = self.norm(url)
         resultlines = [
@@ -38,7 +44,9 @@ class TestError (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
 
     def test_leading_whitespace (self):
-        """leading whitespace test"""
+        """
+        Leading whitespace test.
+        """
         url = u" http://www.heise.de/"
         nurl = self.norm(url)
         resultlines = [
@@ -59,7 +67,9 @@ class TestError (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
 
     def test_trailing_whitespace (self):
-        """trailing whitespace test"""
+        """
+        Trailing whitespace test.
+        """
         url = u"http://www.heise.de/ "
         nurl = self.norm(url)
         resultlines = [
@@ -82,7 +92,9 @@ class TestError (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
 
     def test_invalid (self):
-        """invalid syntax test"""
+        """
+        Invalid syntax test.
+        """
         # invalid scheme chars
         url = u"äöü?:"
         nurl = self.norm(url)
@@ -116,7 +128,9 @@ class TestError (linkcheck.ftests.StandardTest):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestError))
     return suite

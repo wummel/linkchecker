@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test string formatting operations"""
+"""
+Test string formatting operations.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,10 +25,14 @@ import linkcheck.strformat
 
 
 class TestStrFormat (unittest.TestCase):
-    """test string formatting routines"""
+    """
+    Test string formatting routines.
+    """
 
     def test_unquote (self):
-        """test quote stripping"""
+        """
+        Test quote stripping.
+        """
         self.assertEquals(linkcheck.strformat.unquote(""), "")
         self.assertEquals(linkcheck.strformat.unquote(None), None)
         self.assertEquals(linkcheck.strformat.unquote("'"), "'")
@@ -43,7 +49,9 @@ class TestStrFormat (unittest.TestCase):
         self.assertEquals(linkcheck.strformat.unquote("\"a'"), "a")
 
     def test_wrap (self):
-        """test line wrapping"""
+        """
+        Test line wrapping.
+        """
         s = "11%(sep)s22%(sep)s33%(sep)s44%(sep)s55" % {'sep': os.linesep}
         # testing width <= 0
         self.assertEquals(linkcheck.strformat.wrap(s, -1), s)
@@ -58,14 +66,18 @@ class TestStrFormat (unittest.TestCase):
         self.assertEquals(linkcheck.strformat.wrap(s, 4+l), s2)
 
     def test_remove_markup (self):
-        """test markup removing"""
+        """
+        Test markup removing.
+        """
         self.assertEquals(linkcheck.strformat.remove_markup("<a>"), "")
         self.assertEquals(linkcheck.strformat.remove_markup("<>"), "")
         self.assertEquals(linkcheck.strformat.remove_markup("<<>"), "")
         self.assertEquals(linkcheck.strformat.remove_markup("a < b"), "a < b")
 
     def test_strsize (self):
-        """test byte size strings"""
+        """
+        Test byte size strings.
+        """
         self.assertRaises(ValueError, linkcheck.strformat.strsize, -1)
         self.assertEquals(linkcheck.strformat.strsize(0), "0 Bytes")
         self.assertEquals(linkcheck.strformat.strsize(1), "1 Byte")
@@ -75,7 +87,9 @@ class TestStrFormat (unittest.TestCase):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestStrFormat))
     return suite

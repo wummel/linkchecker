@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test linkname routines"""
+"""
+Test linkname routines.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,23 +22,33 @@ import unittest
 import linkcheck.linkname
 
 class TestLinkname (unittest.TestCase):
-    """test href and image name parsing"""
+    """
+    Test href and image name parsing.
+    """
 
     def image_name_test (self, txt, expected):
-        """helper function calling linkname.image_name()"""
+        """
+        Helper function calling linkname.image_name().
+        """
         self.assertEqual(linkcheck.linkname.image_name(txt), expected)
 
     def href_name_test (self, txt, expected):
-        """helper function calling linkname.href_name()"""
+        """
+        Helper function calling linkname.href_name().
+        """
         self.assertEqual(linkcheck.linkname.href_name(txt), expected)
 
     def test_image_name (self):
-        """test image name parsing"""
+        """
+        Test image name parsing.
+        """
         self.image_name_test("<img src='' alt=''></a>", '')
         self.image_name_test("<img src alt=abc></a>", 'abc')
 
     def test_href_name (self):
-        """test href name parsing"""
+        """
+        Test href name parsing.
+        """
         self.href_name_test("<b>guru guru</a>", 'guru guru')
         self.href_name_test("a\njo</a>", "a\njo")
         self.href_name_test("test<</a>", "test<")
@@ -51,7 +63,9 @@ class TestLinkname (unittest.TestCase):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestLinkname))
     return suite

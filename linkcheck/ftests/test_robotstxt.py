@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test HTML robots.txt parsing"""
+"""
+Test HTML robots.txt parsing.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,15 +25,21 @@ import linkcheck.ftests
 
 
 class TestRobotsTxt (linkcheck.ftests.StandardTest):
-    """test robots.txt directive parsing in HTML files"""
+    """
+    Test robots.txt directive parsing in HTML files.
+    """
 
     def test_norobot (self):
-        """test links of norobot.html"""
+        """
+        Test links of norobot.html.
+        """
         self.file_test("norobots.html")
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestRobotsTxt))
     return suite

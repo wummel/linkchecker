@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test container routines"""
+"""
+Test container routines.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,14 +24,20 @@ import linkcheck.containers
 
 
 class TestListDict (unittest.TestCase):
-    """test list dictionary routines"""
+    """
+    Test list dictionary routines.
+    """
 
     def setUp (self):
-        """set up self.d as empty listdict"""
+        """
+        Set up self.d as empty listdict.
+        """
         self.d = linkcheck.containers.ListDict()
 
     def test_insert (self):
-        """test insertion order"""
+        """
+        Test insertion order.
+        """
         self.assert_(not self.d)
         self.d[2] = 1
         self.d[1] = 2
@@ -37,7 +45,9 @@ class TestListDict (unittest.TestCase):
         self.assert_(1 in self.d)
 
     def test_delete (self):
-        """test deletion order"""
+        """
+        Test deletion order.
+        """
         self.assert_(not self.d)
         self.d[2] = 1
         self.d[1] = 2
@@ -46,7 +56,9 @@ class TestListDict (unittest.TestCase):
         self.assert_(1 not in self.d)
 
     def test_update (self):
-        """test update order"""
+        """
+        Test update order.
+        """
         self.assert_(not self.d)
         self.d[2] = 1
         self.d[1] = 2
@@ -54,7 +66,9 @@ class TestListDict (unittest.TestCase):
         self.assertEqual(self.d[1], 1)
 
     def test_sorting (self):
-        """test sorting"""
+        """
+        Test sorting.
+        """
         self.assert_(not self.d)
         toinsert = random.sample(xrange(10000000), 60)
         for x in toinsert:
@@ -64,21 +78,29 @@ class TestListDict (unittest.TestCase):
 
 
 class TestSetList (unittest.TestCase):
-    """test set list routines"""
+    """
+    Test set list routines.
+    """
 
     def setUp (self):
-        """set up self.l as empty setlist"""
+        """
+        Set up self.l as empty setlist.
+        """
         self.l = linkcheck.containers.SetList()
 
     def test_append (self):
-        """test append and equal elements"""
+        """
+        Test append and equal elements.
+        """
         self.assert_(not self.l)
         self.l.append(1)
         self.l.append(1)
         self.assertEqual(len(self.l), 1)
 
     def test_append2 (self):
-        """test append and equal elements 2"""
+        """
+        Test append and equal elements 2.
+        """
         self.assert_(not self.l)
         self.l.append(1)
         self.l.append(2)
@@ -86,7 +108,9 @@ class TestSetList (unittest.TestCase):
         self.assertEqual(len(self.l), 2)
 
     def test_extend (self):
-        """test extend and equal elements"""
+        """
+        Test extend and equal elements.
+        """
         self.assert_(not self.l)
         self.l.extend([1, 2, 1])
         self.assertEqual(len(self.l), 2)
@@ -94,7 +118,9 @@ class TestSetList (unittest.TestCase):
         self.assertEqual(self.l[1], 2)
 
     def test_setitem (self):
-        """test setting of equal elements"""
+        """
+        Test setting of equal elements.
+        """
         self.assert_(not self.l)
         self.l.extend([1, 2, 3])
         self.l[1] = 3
@@ -104,15 +130,21 @@ class TestSetList (unittest.TestCase):
 
 
 class TestLRU (unittest.TestCase):
-    """test routines of LRU queue"""
+    """
+    Test routines of LRU queue.
+    """
 
     def setUp (self):
-        """set up self.lru as empty LRU queue"""
+        """
+        Set up self.lru as empty LRU queue.
+        """
         self.count = 4
         self.lru = linkcheck.containers.LRU(self.count)
 
     def test_len (self):
-        """test LRU length correctness"""
+        """
+        Test LRU length correctness.
+        """
         self.assertEqual(len(self.lru), 0)
         for i in range(self.count):
             self.lru[str(i)] = str(i)
@@ -122,7 +154,9 @@ class TestLRU (unittest.TestCase):
         self.assertEqual(len(self.lru), self.count)
 
     def test_overflow (self):
-        """test LRU capacity overflow"""
+        """
+        Test LRU capacity overflow.
+        """
         for i in range(self.count):
             self.lru[str(i)] = str(i)
         # overflow (inserting (self.count+1)th element
@@ -132,7 +166,9 @@ class TestLRU (unittest.TestCase):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestListDict))
     suite.addTest(unittest.makeSuite(TestSetList))

@@ -1,14 +1,20 @@
 # -*- coding: iso-8859-1 -*-
-"""test container routines"""
+"""
+Test container routines.
+"""
 
 import unittest
 import os
 
 class TestFcgi (unittest.TestCase):
-    """test FastCGI request parsing routines"""
+    """
+    Test FastCGI request parsing routines.
+    """
 
     def _test_fcgi (self):
-        """test FastCGI request parsing routines"""
+        """
+        Test FastCGI request parsing routines.
+        """
         # XXX inactive
         counter = 0
         try:
@@ -62,7 +68,9 @@ class TestFcgi (unittest.TestCase):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestFcgi))
     return suite

@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Output logging support for different formats"""
+"""
+Output logging support for different formats.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -42,10 +44,14 @@ Fields = dict(
 del _
 
 class Logger (object):
-    """basic logger class enabling logging of checked urls"""
+    """
+    Basic logger class enabling logging of checked urls.
+    """
 
     def __init__ (self, **args):
-        """initialize a logger, looking for field restrictions in kwargs"""
+        """
+        Initialize a logger, looking for field restrictions in kwargs.
+        """
         # what log fields should be in output
         self.logfields = None # log all fields
         if args.has_key('fields'):
@@ -62,7 +68,9 @@ class Logger (object):
         self.output_encoding = args.get("encoding", "iso-8859-1")
 
     def init_fileoutput (self, args):
-        """initialize self.fd file descriptor from args"""
+        """
+        Initialize self.fd file descriptor from args.
+        """
         if args.get('fileoutput'):
             fname = args['filename']
             path = os.path.dirname(fname)
@@ -78,29 +86,39 @@ class Logger (object):
             self.close_fd = False
 
     def encode (self, s):
-        """Encode string with configured output encoding. Encoding
-           errors are ignored.
+        """
+        Encode string with configured output encoding. Encoding
+        errors are ignored.
 
-           @return encoded string
+        @param s: string to encode
+        @type s: c{unicode}
+        @return: encoded string
+        @rtype: c{string}
         """
         if not isinstance(s, unicode):
             raise ValueError("tried to encode non-unicode string %r" % s)
         return s.encode(self.output_encoding, "ignore")
 
     def check_date (self):
-        """check for special dates"""
+        """
+        Check for special dates.
+        """
         now = datetime.date.today()
         if now.day == 7 and now.month == 1:
             msg = _("Happy birthday for LinkChecker, I'm %d years old today!")
             self.comment(msg % (now.year - 2000))
 
     def comment (self, s, **args):
-        """Print a comment and a newline. This method just prints
-           the given string."""
+        """
+        Print a comment and a newline. This method just prints
+        the given string.
+        """
         self.writeln(s=s, **args)
 
     def wrap (self, lines, width):
-        """Return wrapped version of given lines."""
+        """
+        Return wrapped version of given lines.
+        """
         sep = os.linesep+os.linesep
         text = sep.join(lines)
         return linkcheck.strformat.wrap(text, width,
@@ -108,33 +126,45 @@ class Logger (object):
                             initial_indent=" "*self.max_indent).lstrip()
 
     def write (self, s, **args):
-        """Write string to output descriptor."""
+        """
+        Write string to output descriptor.
+        """
         if self.fd is None:
             raise ValueError("write to non-file")
         self.fd.write(self.encode(s), **args)
 
     def writeln (self, s=u"", **args):
-        """Write string to output descriptor plus a newline."""
+        """
+        Write string to output descriptor plus a newline.
+        """
         self.write(s)
         self.write(unicode(os.linesep), **args)
 
     def has_field (self, name):
-        """See if given field name will be logged."""
+        """
+        See if given field name will be logged.
+        """
         if self.logfields is None:
             # log all fields
             return True
         return name in self.logfields
 
     def field (self, name):
-        """return translated field name"""
+        """
+        Return translated field name.
+        """
         return _(Fields[name])
 
     def spaces (self, name):
-        """return indent of spaces for given field name"""
+        """
+        Return indent of spaces for given field name.
+        """
         return self.logspaces[name]
 
     def start_output (self):
-        """start log output"""
+        """
+        Start log output.
+        """
         # map with spaces between field name and value
         if self.logfields is None:
             fields = Fields.keys()
@@ -148,25 +178,34 @@ class Logger (object):
             self.logspaces[key] = u" " * numspaces
 
     def new_url (self, url_data):
-        """log a new url with this logger"""
+        """
+        Log a new url with this logger.
+        """
         raise NotImplementedError, "abstract function"
 
     def end_output (self, linknumber=-1):
-        """end of output, used for cleanup (eg output buffer flushing)"""
+        """
+        End of output, used for cleanup (eg output buffer flushing).
+        """
         raise NotImplementedError, "abstract function"
 
     def __str__ (self):
-        """return class name"""
+        """
+        Return class name.
+        """
         return self.__class__.__name__
 
     def __repr__ (self):
-        """return class name"""
+        """
+        Return class name.
+        """
         return repr(self.__class__.__name__)
 
     def flush (self):
-        """If the logger has internal buffers, flush them.
-           Ignore flush I/O errors since we are not responsible for proper
-           flushing of log output streams.
+        """
+        If the logger has internal buffers, flush them.
+        Ignore flush I/O errors since we are not responsible for proper
+        flushing of log output streams.
         """
         if hasattr(self, "fd"):
             try:

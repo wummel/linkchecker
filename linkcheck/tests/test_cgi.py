@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test cgi form routines"""
+"""
+Test cgi form routines.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,25 +22,35 @@ import unittest
 import linkcheck.lc_cgi
 
 class Store (object):
-    """value storing class implementing FieldStorage interface"""
+    """
+    Value storing class implementing FieldStorage interface.
+    """
 
     def __init__ (self, value):
-        """store given value"""
+        """
+        Store given value.
+        """
         self.value = value
 
 
 class TestCgi (unittest.TestCase):
-    """test cgi routines"""
+    """
+    Test cgi routines.
+    """
 
     def test_form_valid_url (self):
-        """check url validity"""
+        """
+        Check url validity.
+        """
         form = {"url": Store("http://www.heise.de/"),
                 "level": Store("0"),
                }
         linkcheck.lc_cgi.checkform(form)
 
     def test_form_empty_url (self):
-        """check with empty url"""
+        """
+        Check with empty url.
+        """
         form = {"url": Store(""),
                 "level": Store("0"),
                }
@@ -46,7 +58,9 @@ class TestCgi (unittest.TestCase):
                           linkcheck.lc_cgi.checkform, form)
 
     def test_form_default_url (self):
-        """check with default url"""
+        """
+        Check with default url.
+        """
         form = {"url": Store("http://"),
                 "level": Store("0"),
                }
@@ -54,7 +68,9 @@ class TestCgi (unittest.TestCase):
                           linkcheck.lc_cgi.checkform, form)
 
     def test_form_invalid_url (self):
-        """check url (in)validity"""
+        """
+        Check url (in)validity.
+        """
         form = {"url": Store("http://www.foo bar/"),
                 "level": Store("0"),
                }
@@ -62,7 +78,9 @@ class TestCgi (unittest.TestCase):
                           linkcheck.lc_cgi.checkform, form)
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestCgi))
     return suite

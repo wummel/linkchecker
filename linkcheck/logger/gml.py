@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""a gml logger"""
+"""
+A gml logger.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,19 +25,24 @@ import linkcheck.configuration
 
 
 class GMLLogger (linkcheck.logger.Logger):
-    """GML means Graph Modeling Language. Use a GML tool to see
+    """
+    GML means Graph Modeling Language. Use a GML tool to see
     your sitemap graph.
     """
 
     def __init__ (self, **args):
-        """initialize graph node list and internal id counter"""
+        """
+        Initialize graph node list and internal id counter.
+        """
         super(GMLLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.nodes = {}
         self.nodeid = 0
 
     def start_output (self):
-        """print start of checking info as gml comment"""
+        """
+        Print start of checking info as gml comment.
+        """
         super(GMLLogger, self).start_output()
         if self.fd is None:
             return
@@ -55,12 +62,16 @@ class GMLLogger (linkcheck.logger.Logger):
             self.flush()
 
     def comment (self, s, **args):
-        """Print GML comment."""
+        """
+        Print GML comment.
+        """
         self.write(u"# ")
         self.writeln(s=s, **args)
 
     def new_url (self, url_data):
-        """write one node and all possible edges"""
+        """
+        Write one node and all possible edges.
+        """
         if self.fd is None:
             return
         node = url_data
@@ -84,8 +95,9 @@ class GMLLogger (linkcheck.logger.Logger):
         self.write_edges()
 
     def write_edges (self):
-        """write all edges we can find in the graph in a brute-force
-           manner. Better would be a mapping of parent urls.
+        """
+        Write all edges we can find in the graph in a brute-force
+        manner. Better would be a mapping of parent urls.
         """
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
@@ -101,7 +113,9 @@ class GMLLogger (linkcheck.logger.Logger):
         self.flush()
 
     def end_output (self, linknumber=-1):
-        """print end of checking info as gml comment"""
+        """
+        Print end of checking info as gml comment.
+        """
         if self.fd is None:
             return
         self.writeln(u"]")

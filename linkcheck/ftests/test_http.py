@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test http checking"""
+"""
+Test http checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,7 +25,9 @@ import linkcheck.ftests.httptest
 
 
 class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
-    """test http:// link checking"""
+    """
+    Test http:// link checking.
+    """
 
     def test_html (self):
         self.start_server(handler=RedirectHttpRequestHandler)
@@ -49,10 +53,14 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
 
 
 class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHandler):
-    """handler redirecting certain requests"""
+    """
+    Handler redirecting certain requests.
+    """
 
     def redirect (self):
-        """redirect request"""
+        """
+        Redirect request.
+        """
         path = self.path.replace("redirect", "newurl")
         self.send_response(302)
         self.send_header("Location", path)
@@ -60,7 +68,9 @@ class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHa
 
 
     def do_GET (self):
-        """removes query part of GET request"""
+        """
+        Removes query part of GET request.
+        """
         if "redirect" in self.path:
             self.redirect()
         else:
@@ -74,7 +84,9 @@ class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHa
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestHttp))
     return suite

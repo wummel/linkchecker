@@ -21,18 +21,24 @@ import linkcheck.robotparser2
 
 
 class TestRobotParser (unittest.TestCase):
-    """test robots.txt parser (needs internet access)"""
+    """
+    Test robots.txt parser (needs internet access).
+    """
 
     needed_resources = ['network']
 
     def setUp (self):
-        """initialize self.rp as a robots.txt parser"""
+        """
+        Initialize self.rp as a robots.txt parser.
+        """
         if hasattr(self, "needed_resources"):
             self.check_resources(self.needed_resources)
         self.rp = linkcheck.robotparser2.RobotFileParser()
 
     def check (self, a, b):
-        """helper function comparing two results a and b"""
+        """
+        Helper function comparing two results a and b.
+        """
         if not b:
             ac = "access denied"
         else:
@@ -41,7 +47,9 @@ class TestRobotParser (unittest.TestCase):
             self.fail("%s != %s (%s)" % (a, b, ac))
 
     def test_existing_robots (self):
-        """test parsing and access of an existing robots.txt file"""
+        """
+        Test parsing and access of an existing robots.txt file.
+        """
         # robots.txt that exists, gotten to by redirection
         self.rp.set_url('http://www.musi-cal.com/robots.txt')
         self.rp.read()
@@ -78,7 +86,9 @@ class TestRobotParser (unittest.TestCase):
                                      'http://www.musi-cal.com/'), True)
 
     def test_nonexisting_robots (self):
-        """test access of a non-existing robots.txt file"""
+        """
+        Test access of a non-existing robots.txt file.
+        """
         # robots.txt that does not exist
         self.rp.set_url('http://www.lycos.com/robots.txt')
         self.rp.read()
@@ -87,7 +97,9 @@ class TestRobotParser (unittest.TestCase):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestRobotParser))
     return suite

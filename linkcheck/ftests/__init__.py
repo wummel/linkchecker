@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""define standard test support classes funtional for LinkChecker tests"""
+"""
+Define standard test support classes funtional for LinkChecker tests.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -31,11 +33,15 @@ import linkcheck.logger
 
 
 class TestLogger (linkcheck.logger.Logger):
-    """Output logger for automatic regression tests"""
+    """
+    Output logger for automatic regression tests.
+    """
 
     def __init__ (self, **kwargs):
-        """kwargs must have "expected" keyword with the expected logger
-           output lines"""
+        """
+        The kwargs must have "expected" keyword with the expected logger
+        output lines.
+        """
         super(TestLogger, self).__init__(**kwargs)
         # list of expected output lines
         self.expected = kwargs['expected']
@@ -45,11 +51,15 @@ class TestLogger (linkcheck.logger.Logger):
         self.diff = []
 
     def start_output (self):
-        """nothing to do here"""
+        """
+        Nothing to do here.
+        """
         pass
 
     def new_url (self, url_data):
-        """append logger output to self.result"""
+        """
+        Append logger output to self.result.
+        """
         if self.has_field('url'):
             url = u"url %s" % url_data.base_url
             if url_data.cached:
@@ -75,7 +85,9 @@ class TestLogger (linkcheck.logger.Logger):
         # platform dependent
 
     def end_output (self, linknumber=-1):
-        """stores differences between expected and result in self.diff"""
+        """
+        Stores differences between expected and result in self.diff.
+        """
         for line in difflib.unified_diff(self.expected, self.result):
             if not isinstance(line, unicode):
                 line = unicode(line, "iso8859-1", "ignore")
@@ -83,7 +95,9 @@ class TestLogger (linkcheck.logger.Logger):
 
 
 def get_test_consumer (confargs, logargs):
-    """initialize a test configuration object"""
+    """
+    Initialize a test configuration object.
+    """
     config = linkcheck.configuration.Configuration()
     config.logger_add('test', TestLogger)
     config['recursionlevel'] = 1
@@ -97,27 +111,35 @@ def get_test_consumer (confargs, logargs):
 
 
 class StandardTest (unittest.TestCase):
-    """functional test class with ability to test local files"""
+    """
+    Functional test class with ability to test local files.
+    """
 
     def setUp (self):
-        """check resources, using the provided function
-           check_resources() from test.py
+        """
+        Check resources, using the provided function check_resources()
+        from test.py.
         """
         super(StandardTest, self).setUp()
         if hasattr(self, "needed_resources"):
             self.check_resources(self.needed_resources)
 
     def norm (self, url):
-        """helper function to norm a url"""
+        """
+        Helper function to norm a url.
+        """
         return linkcheck.url.url_norm(url)[0]
 
     def get_file (self, filename):
-        """get file name located within 'data' directory"""
+        """
+        Get file name located within 'data' directory.
+        """
         return unicode(os.path.join("linkcheck", "ftests", "data", filename))
 
     def get_resultlines (self, filename):
-        """return contents of file, as list of lines without line endings,
-           ignoring empty lines and lines starting with a hash sign (#).
+        """
+        Return contents of file, as list of lines without line endings,
+        ignoring empty lines and lines starting with a hash sign (#).
         """
         resultfile = self.get_file(filename+".result")
         f = codecs.open(resultfile, "r", "iso8859-1")
@@ -128,7 +150,9 @@ class StandardTest (unittest.TestCase):
         return resultlines
 
     def file_test (self, filename):
-        """check <filename> with expected result in <filename>.result"""
+        """
+        Check <filename> with expected result in <filename>.result.
+        """
         url = self.get_file(filename)
         confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
@@ -144,7 +168,9 @@ class StandardTest (unittest.TestCase):
             self.fail(l.encode("iso8859-1", "ignore"))
 
     def direct (self, url, resultlines, fields=None, recursionlevel=0):
-        """check url with expected result"""
+        """
+        Check url with expected result.
+        """
         assert isinstance(url, unicode), repr(url)
         confargs = {'recursionlevel': recursionlevel}
         logargs = {'expected': resultlines}

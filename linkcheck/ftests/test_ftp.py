@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""test ftp checking"""
+"""
+Test ftp checking.
+"""
 # Copyright (C) 2004-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,12 +24,16 @@ import linkcheck.ftests
 
 
 class TestFtp (linkcheck.ftests.StandardTest):
-    """test ftp: link checking"""
+    """
+    Test ftp: link checking.
+    """
 
     needed_resources = ['network']
 
     def test_ftp (self):
-        """test ftp link"""
+        """
+        Test ftp link.
+        """
         # ftp two slashes
         url = u"ftp://ftp.debian.org/"
         resultlines = [
@@ -39,7 +45,9 @@ class TestFtp (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
 
     def test_ftp_slashes (self):
-        """test ftp links with missing slashes"""
+        """
+        Test ftp links with missing slashes.
+        """
         # ftp one slash
         url = u"ftp:/ftp.debian.org/"
         nurl = self.norm(url)
@@ -75,7 +83,9 @@ class TestFtp (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
 
     def test_ftp_many_slashes (self):
-        """test ftp links with too many slashes"""
+        """
+        Test ftp links with too many slashes.
+        """
         # ftp two dir slashes
         url = u"ftp://ftp.debian.org//debian/"
         nurl = self.norm(url)
@@ -110,7 +120,9 @@ class TestFtp (linkcheck.ftests.StandardTest):
 
 
 def test_suite ():
-    """build and return a TestSuite"""
+    """
+    Build and return a TestSuite.
+    """
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestFtp))
     return suite

@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""an dummy logger"""
+"""
+A dummy logger.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,20 +22,30 @@ import linkcheck.logger
 
 
 class NoneLogger (linkcheck.logger.Logger):
-    """Dummy logger printing nothing."""
+    """
+    Dummy logger printing nothing.
+    """
 
     def comment (self, s, **args):
-        """Do nothing."""
+        """
+        Do nothing.
+        """
         pass
 
     def start_output (self):
-        """do nothing"""
+        """
+        Do nothing.
+        """
         pass
 
     def new_url (self, url_data):
-        """do nothing"""
+        """
+        Do nothing.
+        """
         pass
 
     def end_output (self, linknumber=-1):
-        """do nothing"""
+        """
+        Do nothing.
+        """
         pass

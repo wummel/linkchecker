@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""an xml logger"""
+"""
+An xml logger.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -33,44 +35,60 @@ xmlattr_entities = {
 
 
 def xmlquote (s):
-    """quote characters for XML"""
+    """
+    Quote characters for XML.
+    """
     return xml.sax.saxutils.escape(s)
 
 
 def xmlquoteattr (s):
-    """quote XML attribute, ready for inclusion with double quotes"""
+    """
+    Quote XML attribute, ready for inclusion with double quotes.
+    """
     return xml.sax.saxutils.escape(s, xmlattr_entities)
 
 
 def xmlunquote (s):
-    """unquote characters from XML"""
+    """
+    Unquote characters from XML.
+    """
     return xml.sax.saxutils.unescape(s)
 
 
 def xmlunquoteattr (s):
-    """unquote attributes from XML"""
+    """
+    Unquote attributes from XML.
+    """
     return xml.sax.saxutils.unescape(s, xmlattr_entities)
 
 
 class XMLLogger (linkcheck.logger.Logger):
-    """XML output mirroring the GML structure. Easy to parse with any XML
-       tool."""
+    """
+    XML output mirroring the GML structure. Easy to parse with any XML
+    tool.
+    """
 
     def __init__ (self, **args):
-        """initialize graph node list and internal id counter"""
+        """
+        Initialize graph node list and internal id counter.
+        """
         super(XMLLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.nodes = {}
         self.nodeid = 0
 
     def comment (self, s, **args):
-        """Print HTML comment."""
+        """
+        Print HTML comment.
+        """
         self.write(u"<!-- ")
         self.write(s, **args)
         self.writeln(u" -->")
 
     def start_output (self):
-        """print start of checking info as xml comment"""
+        """
+        Print start of checking info as xml comment.
+        """
         linkcheck.logger.Logger.start_output(self)
         if self.fd is None:
             return
@@ -91,7 +109,9 @@ class XMLLogger (linkcheck.logger.Logger):
         self.flush()
 
     def new_url (self, url_data):
-        """write one node and all possible edges"""
+        """
+        Write one node and all possible edges.
+        """
         if self.fd is None:
             return
         node = url_data
@@ -118,8 +138,9 @@ class XMLLogger (linkcheck.logger.Logger):
         self.write_edges()
 
     def write_edges (self):
-        """write all edges we can find in the graph in a brute-force
-           manner. Better would be a mapping of parent urls.
+        """
+        Write all edges we can find in the graph in a brute-force
+        manner. Better would be a mapping of parent urls.
         """
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
@@ -138,8 +159,8 @@ class XMLLogger (linkcheck.logger.Logger):
         self.flush()
 
     def end_output (self, linknumber=-1):
-        """Finish graph output, and print end of checking info as xml
-           comment.
+        """
+        Finish graph output, and print end of checking info as xml comment.
         """
         if self.fd is None:
             return

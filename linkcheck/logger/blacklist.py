@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""a blacklist logger"""
+"""
+A blacklist logger.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -24,13 +26,16 @@ import linkcheck.logger
 
 
 class BlacklistLogger (linkcheck.logger.Logger):
-    """Updates a blacklist of wrong links. If a link on the blacklist
+    """
+    Updates a blacklist of wrong links. If a link on the blacklist
     is working (again), it is removed from the list. So after n days
     we have only links on the list which failed for n days.
     """
 
     def __init__ (self, **args):
-        """intialize with old blacklist data (if found, else not)"""
+        """
+        Intialize with old blacklist data (if found, else not).
+        """
         super(BlacklistLogger, self).__init__(**args)
         self.blacklist = {}
         if args.get('fileoutput'):
@@ -46,11 +51,15 @@ class BlacklistLogger (linkcheck.logger.Logger):
             self.fd = sys.stdout
 
     def comment (self, s, **args):
-        """Print nothing."""
+        """
+        Print nothing.
+        """
         pass
 
     def new_url (self, url_data):
-        """put invalid url in blacklist, delete valid url from blacklist"""
+        """
+        Put invalid url in blacklist, delete valid url from blacklist.
+        """
         if not url_data.cached:
             key = url_data.getCacheKey()
             if key in self.blacklist:
@@ -63,11 +72,15 @@ class BlacklistLogger (linkcheck.logger.Logger):
                     self.blacklist[key] = 1
 
     def end_output (self, linknumber=-1):
-        """write blacklist file"""
+        """
+        Write blacklist file.
+        """
         self.write_blacklist()
 
     def read_blacklist (self, fd):
-        """read a previously stored blacklist from file fd"""
+        """
+        Read a previously stored blacklist from file fd.
+        """
         for line in fd:
             line = line.rstrip()
             if line.startswith('#') or not line:
@@ -77,7 +90,9 @@ class BlacklistLogger (linkcheck.logger.Logger):
         fd.close()
 
     def write_blacklist (self):
-        """write the blacklist"""
+        """
+        Write the blacklist.
+        """
         oldmask = os.umask(0077)
         for key, value in self.blacklist.items():
             self.fd.write("%d %s" % (value, key))
