@@ -61,6 +61,9 @@ files:	locale
 VERSION:
 	echo $(VERSION) > VERSION
 
+VERSION-DEVEL:
+	echo $(VERSION) > VERSION-DEVEL
+
 upload: distclean dist files VERSION
 	scp debian/changelog $(HTMLDIR)/changes.txt
 	scp README $(HTMLDIR)/readme.txt
@@ -70,9 +73,9 @@ upload: distclean dist files VERSION
 	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
-upload-unstable: distclean dist VERSION-UNSTABLE
-	scp debian/changelog $(HTMLDIR)/changes-unstable.txt
-	scp VERSION-UNSTABLE $(HTMLDIR)/raw/
+upload-devel: distclean dist VERSION-DEVEL
+	scp debian/changelog $(HTMLDIR)/changes-devel.txt
+	scp VERSION-DEVEL $(HTMLDIR)/raw/
 	#scp dist/* $(HTMLDIR)/
 	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"

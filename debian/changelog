@@ -6,8 +6,9 @@ linkchecker (1.5.0) unstable; urgency=low
   * Cookie support
   * Python API for custom loggers
   * Move TestLogger into test_support
+  * negation for extern/intern regular expressions
 
- -- Bastian Kleineidam <calvin@debian.org>  Sun,  5 May 2002 14:11:01 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sun,  5 May 2002 23:08:37 +0200
 
 linkchecker (1.4.3) unstable; urgency=low
 
