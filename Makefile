@@ -1,4 +1,4 @@
-VERSION=$(shell ./setup.py -V)
+VERSION=$(shell ./setup.py -q info --version)
 #HOST=treasure.calvinsplayground.de
 PROXY=
 #PROXY=-P$(HOST):5050
@@ -36,7 +36,7 @@ files:
 
 homepage:	files
 	scp *-out.* shell1.sourceforge.net:/home/groups/linkchecker/htdocs/
-	scp ChangeLog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
+	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
 
 test:
 	rm -f test/*.result

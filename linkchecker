@@ -21,7 +21,7 @@ OPTIONS
         Assume urls that match the given expression as extern.
         Only intern HTTP links are checked recursively.
 -f file, --config=file
-        Use file as configuration file. Pylice first searches
+        Use file as configuration file. LinkChecker first searches
         ~/.linkcheckerrc and then /etc/linkcheckerrc
         (under Windows <path-to-program>\\linkcheckerrc).
 -F name, --file-output=name
@@ -38,7 +38,7 @@ OPTIONS
         is extern/intern.
 -N, --nntp-server
         Specify an NNTP server for news: links. Default is the
-        environment variable NNTP_SERVER. If the variable is not defined,
+        environment variable NNTP_SERVER. If no host is given,
         only the syntax of the link is checked.
 -o name, --output=name
         Specify output as """+linkcheck.Config.LoggerKeys+""".
@@ -71,7 +71,7 @@ OPTIONS
         URLs.
 -w, --warnings
         Log warnings.
--W, --warning-regex
+-W regex, --warning-regex=regex
         Define a regular expression which prints a warning if it matches
         any content of the checked link.
         This applies of course only to pages which are valid, so we can
@@ -94,7 +94,7 @@ o Javascript links are currently ignored
 o If your platform does not support threading, linkchecker assumes -t0
 o You can supply multiple user/password pairs in a configuration file
 o Cookies are not accepted by LinkChecker
-o When checking news: links the given news host doesn't need to be the
+o When checking 'news:' links the given news host doesn't need to be the
   same as the host of the user browsing your pages!
 """
 
@@ -106,6 +106,8 @@ o Local files and syntactic sugar on the command line:
       linkchecker ../bla.html
       linkchecker www.myhomepage.de
       linkchecker -r0 ftp.linux.org
+o Using the -W option:
+      linkchecker -W"traceback" -r5 http://zope.company.com/
 """
 
 def printVersion():
