@@ -1,5 +1,8 @@
 1.13.3 "" (released xx.xx.xxxx)
-  *
+  * Prevent collapsing of relative parent dir paths. This fixes false
+    positives reported URLs of the form "../../foo".
+    Closes: SF bug #1025459
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
 
 1.13.2 "Zatôichi" (released 8.9.2004)
   * Fix permissions of data files on install to be world readable.
