@@ -4,6 +4,9 @@
 VERSION=$(shell ./setup.py --version)
 PACKAGE=linkchecker
 NAME=$(shell ./setup.py --name)
+PACKAGEDIR=/home/groups/l/li/$(PACKAGE)
+HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
+FTPDIR=shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)
 HOST=treasure.calvinsplayground.de
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
@@ -67,12 +70,12 @@ VERSION:
 
 .PHONY: upload
 upload: distclean dist files VERSION
-	scp debian/changelog shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/changes.txt
-	scp README shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/readme.txt
-	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs
-	scp VERSION shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/raw/
-	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/
-	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
+	scp debian/changelog $(HTMLDIR)/changes.txt
+	scp README $(HTMLDIR)/readme.txt
+	scp linkchecker-out.* $(HTMLDIR)
+	scp VERSION $(HTMLDIR)/raw/
+	scp dist/* $(FTPDIR)/
+	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 .PHONY: test
 test:
