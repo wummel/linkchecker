@@ -1,6 +1,7 @@
 1.6.2:
-  * Warn about unknown Content-Encodings.
+  * Warn about unknown Content-Encodings. Dont parse HTML in this case.
   * Support deflate content encoding (snatched from Debians reportbug)
+  * Add appropriate Accept-Encoding header to HTTP request.
 
 1.6.1:
   * FileUrlData.py: remove searching for links in text files, this is
