@@ -26,7 +26,7 @@ class NntpUrlData(HostCheckingUrlData):
                 timeout = 0
             except nntplib.error_perm:
                 type,value = sys.exc_info()[:2]
-                print value
+                print type,value
                 if value[0]==505:
                     # 505 too many connections per minute
                     import random
