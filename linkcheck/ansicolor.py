@@ -200,7 +200,7 @@ class ColoredStreamHandler (logging.StreamHandler, object):
             logging.WARN: 'bold;yellow',
             logging.ERROR: 'light;red',
             logging.CRITICAL: 'bold;red',
-            logging.DEBUG: 'light;white',
+            logging.DEBUG: 'white',
         }
 
     def get_color (self, record):
@@ -221,13 +221,14 @@ class ColoredStreamHandler (logging.StreamHandler, object):
         try:
             msg = self.format(record)
             if not hasattr(types, "UnicodeType"): #if no unicode support...
-                self.stream.write("%s\n" % msg, color=color)
+                self.stream.write("%s" % msg, color=color)
             else:
                 try:
-                    self.stream.write("%s\n" % msg, color=color)
+                    self.stream.write("%s" % msg, color=color)
                 except UnicodeError:
-                    self.stream.write("%s\n" % msg.encode("UTF-8"),
+                    self.stream.write("%s" % msg.encode("UTF-8"),
                                       color=color)
+            self.stream.write(os.linesep)
             self.flush()
         except:
             self.handleError(record)
