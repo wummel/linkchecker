@@ -37,10 +37,10 @@
     Type: feature
     Changed: linkcheck/dns/resolver.py
 
-  * The DNS resolver accepts now Unicode domain names and converts them
+  * LinkChecker accepts now Unicode domain names and converts them
     according to RFC 3490 (http://www.faqs.org/rfcs/rfc3490.html).
     Type: feature
-    Changed: linkcheck/dns/resolver.py
+    Changed: linkcheck/dns/resolver.py, linkcheck/url.py
 
   * Exceptions in the log systems are no more caught.
     Type: feature
@@ -55,7 +55,7 @@
     Type: feature
     Changed: linkcheck/linkname.py
 
-  * Remove all references to the removed 'colored' output logger.
+  * Remove all references to the old 'colored' output logger.
     Type: documentation
     Closes: SF bug #1062011
     Changed: linkchecker.1
