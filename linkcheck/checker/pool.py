@@ -39,6 +39,7 @@ class ConnectionPool (object):
         # open connections
         # {(type, host, user, pass) -> [connection, status, expiration time]}
         self.connections = {}
+        self.expiration_counter = 1
 
     def add_connection (self, key, conn, timeout):
         """
@@ -54,6 +55,11 @@ class ConnectionPool (object):
         @return: Open connection object or None if no connection is available.
         @rtype None or FTPConnection or HTTP(S)Connection
         """
+        if (self.expiration_counter % 100) == 0:
+            self.expiration_counter = 1
+            self.expire_connections()
+        else:
+            self.expiration_counter += 1
         if key not in self.connections:
             # not found
             return None
@@ -84,3 +90,15 @@ class ConnectionPool (object):
         """
         if key in self.connections:
             self.connections[key][1] = 'available'
+
+    def expire_connections (self):
+        """
+        Remove expired connections from this pool.
+        """
+        t = time.time()
+        to_delete = []
+        for key, conn_data in self.connections.iteritems():
+            if conn_data[1] == 'available' and t > conn_data[2]:
+                to_delete.append(key)
+        for key in to_delete:
+            del self.connections[key]

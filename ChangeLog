@@ -23,6 +23,10 @@
     Closes: SF bug #1117839
     Changed: linkcheck/checker/fileurl.py
 
+  * Regularly remove expired connections from the connection pool.
+    Type: feature
+    Changed: linkcheck/checker/pool.py
+
 2.3 "Napoleon Dynamite" (released 3.2.2005)
 
   * Use and require Python >= 2.4.
