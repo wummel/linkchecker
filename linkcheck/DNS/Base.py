@@ -72,19 +72,19 @@ def init_dns_resolver_nt ():
         except EnvironmentError:
             pass
     if key:
-        for server in winreg.stringdisplay(key["NameServer"]):
+        for server in winreg.stringdisplay(key.get("NameServer", "")):
             if server:
                 defaults['server'].append(str(server))
-        for item in winreg.stringdisplay(key["SearchList"]):
+        for item in winreg.stringdisplay(key.get("SearchList", "")):
             if item:
                 pass # domain search not used
         if not defaults['server']:
             # XXX the proper way to test this is to search for
             # the "EnableDhcp" key in the interface adapters...
-            for server in winreg.stringdisplay(key["DhcpNameServer"]):
+            for server in winreg.stringdisplay(key.get("DhcpNameServer", "")):
                 if server:
                     defaults['server'].append(str(server))
-            for item in winreg.stringdisplay(key["DhcpDomain"]):
+            for item in winreg.stringdisplay(key.get("DhcpDomain", "")):
                 if item:
                     pass # domain search not used
 
@@ -97,7 +97,7 @@ def init_dns_resolver_nt ():
             for server in winreg.binipdisplay(values):
                 if server:
                     defaults['server'].append(str(server))
-    except EnvironmentError:
+    except (EnvironmentError, IndexError):
         pass
 
     try: # search interfaces
@@ -310,6 +310,9 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
 
 #
 # $Log$
+# Revision 1.9  2003/12/20 11:27:54  calvin
+# more robust registry indexing
+#
 # Revision 1.8  2003/12/18 14:21:53  calvin
 # missing import
 #
