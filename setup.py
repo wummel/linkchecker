@@ -201,7 +201,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                    'linkcheck.dns', 'linkcheck.dns.rdtypes',
                    'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
                    'linkcheck.HtmlParser', 'linkcheck.tests',
-                   'linkcheck.ftests', ],
+                   'linkcheck.ftests', 'linkcheck.dns.tests', ],
        ext_modules = [Extension('linkcheck.HtmlParser.htmlsax',
                   ['linkcheck/HtmlParser/htmllex.c',
                    'linkcheck/HtmlParser/htmlparse.c',
