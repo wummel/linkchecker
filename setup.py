@@ -1,7 +1,5 @@
 #!/usr/bin/python2.4
-"""setup file for the distuils module"""
 # -*- coding: iso-8859-1 -*-
-
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,22 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""setup file for the distuils module"""
 
+import sys
+if not hasattr(sys, "version_info"):
+    raise SystemExit, "This program requires Python 2.4.0 or later."
+if sys.version_info < (2, 4, 0, 'final', 0):
+    raise SystemExit, "This program requires Python 2.4.0 or later."
 import os
 import stat
 import re
-import sys
 import string
 import glob
-from types import StringType, TupleType
 from distutils.core import setup, Extension, DEBUG
-from distutils.dir_util import remove_tree
-#try:
-#    import py2exe
-#    distklass = py2exe.Distribution
-#except ImportError:
-#    import distutils.dist
-#    distklass = distutils.dist.Distribution
 import distutils.dist
 distklass = distutils.dist.Distribution
 from distutils.command.install import install
@@ -40,6 +35,7 @@ from distutils.command.install_data import install_data
 from distutils.command.build_ext import build_ext
 from distutils.command.build import build
 from distutils.command.clean import clean
+from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
 from distutils import util, log
 from linkcheck import msgfmt
