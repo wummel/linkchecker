@@ -49,8 +49,10 @@ class LCDistribution(Distribution):
 
     def check_ssl(self):
         ok = 0
-        incldirs = self.get_build_ext().include_dirs+self.default_include_dirs
-        libdirs = self.get_build_ext().library_dirs+self.default_library_dirs
+        c = self.get_command_obj('build_ext')
+        c.ensure_finalized()
+        incldirs = c.include_dirs+self.default_include_dirs
+        libdirs = c.library_dirs+self.default_library_dirs
         for d in incldirs:
             if os.path.exists(os.path.join(d, "ssl.h")):
                 self.announce('Found %s/ssl.h' % d)
@@ -61,20 +63,17 @@ class LCDistribution(Distribution):
                 ok = ok + 1
         if ok==2:
             self.announce("Enabling SSL compilation")
+            self.reinitialize_command(c)
             self.ext_modules = [Extension('ssl', ['ssl.c'],
-                        include_dirs=[incldirs],
-                        library_dirs=[libdirs],
+                        include_dirs=incldirs,
+                        library_dirs=libdirs,
                         libraries=['ssl'])]
+            c.ensure_finalized()
         else:
             self.announce(
 """Some necessary SSL files are missing, disabling SSL compilation.
 Use "python setup.py build_ext -I<inclpath> -L<libpath>"
 where the path arguments point to your SSL installation.""")
-
-    def get_build_ext(self):
-        c = self.get_command_obj('build_ext')
-        c.ensure_finalized()
-        return c
 
     def additional_things(self):
         """replace path names and program information in various files"""

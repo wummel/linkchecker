@@ -1,5 +1,5 @@
-# This Makefile is only used by developers! No need for users to
-# call make.
+# This Makefile is only used by developers.
+# You will need a Debian Linux system to use this Makefile!
 VERSION=$(shell python setup.py --version)
 PACKAGE = linkchecker
 NAME = $(shell python setup.py --name)
@@ -9,12 +9,7 @@ PROXY=--proxy= -itreasure.calvinsplayground.de -s
 #HOST=fsinfo.cs.uni-sb.de
 #PROXY=-Pwww-proxy.uni-sb.de:3128
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
-DEBPACKAGE = ../$(PACKAGE)_$(VERSION)_i386.deb
-SRCPACKAGE = dist/$(NAME)-$(VERSION).tar.gz
-#RPMPATH=build/bdist.linux2/rpm
-#RPMPACKAGE=$(RPMPATH)/RPMS/i386/$(PACKAGE)-$(VERSION)-1.i386.rpm
-#SRPMPACKAGE=$(RPMPATH)/SRPMS/$(PACKAGE)-$(VERSION)-1.src.rpm
-ALLPACKAGES = $(DEBPACKAGE) $(SRCPACKAGE) #$(RPMPACKAGE) $(SRPMPACKAGE)
+DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
 SOURCES = \
 linkcheck/Config.py.tmpl \
 linkcheck/FileUrlData.py \
@@ -50,34 +45,33 @@ all:
 	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
-	python setup.py clean --all
+	fakeroot debian/rules clean
 
 distclean:	clean
 	rm -rf dist
-	rm -f $(DEBPACKAGE) $(PACKAGE)-out.* $(TEMPLATEFILES) VERSION
+	rm -f $(PACKAGE)-out.* $(TEMPLATEFILES) VERSION
 
 dist:	mo
 	rm -rf debian/tmp
-	python setup.py sdist #bdist_rpm
+	python setup.py sdist bdist_rpm
 	fakeroot debian/rules binary
+	mv -f ../$(DEBPACKAGE) dist
 
-packages:	dist
-	rm -rf debian/tmp
-	cd .. && dpkg-scanpackages . $(PACKAGE)/override.txt | gzip --best > Packages.gz
+package:
+	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz
 
 files:
 	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
-VERSION: setup.py
+VERSION:
 	echo $(VERSION) > VERSION
 
-upload: files packages VERSION
+upload: files dist package VERSION
 	scp debian/changelog shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/changes.txt
 	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs
 	scp VERSION shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/raw/
-	scp $(DEBPACKAGE) ../Packages.gz shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/debian
-	ncftpput download.sourceforge.net /incoming $(ALLPACKAGES)
-	ssh -tC shell1.sourceforge.net "cd /home/groups/$(PACKAGE)/htdocs/raw && make"
+	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/
+	ssh -tC shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
 
 test:
 	rm -f test/*.result
@@ -103,4 +97,3 @@ mo:
 	# french translation
 	msgfmt -o locale/fr/LC_MESSAGES/linkcheck.mo \
 	locale/fr/LC_MESSAGES/linkcheck.po
-
