@@ -22,15 +22,6 @@ import sys
 if not hasattr(sys, 'version_info') or sys.version_info<(2, 3, 0, 'final', 0):
     raise SystemExit, "This program requires Python 2.3 or later."
 
-# do not use psyco, at the moment (Oct 2003) it has bugs causing
-# infinite loops when threads are enabled, and psyco disables
-# the Ctrl-C break button of the Python interpreter.
-#try:
-#    import psyco
-#    psyco.profile()
-#except ImportError:
-#    pass
-
 import getopt, re, os, pprint, socket, linkcheck
 # set default 60 seconds timeout
 default_timeout = 60
@@ -68,21 +59,27 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
   same as the host of the user browsing your pages!
 """)
 
-Examples = i18n._("""EXAMPLES
-o Check the treasure.calvinsplayground.de domain, but don't recurse into
-  links outside of this domain:
-      linkchecker -v -r5 -ohtml -s \\
-       http://treasure.calvinsplayground.de/~calvin/ > sample.html
+Examples = i18n._(r"""EXAMPLES
+Check the treasure.calvinsplayground.de domain, but don't recurse into
+links outside of this domain:
+  linkchecker -v --status -r5 -Fhtml -itreasure\.calvinsplayground\.de \
+  -ocolored http://treasure.calvinsplayground.de/
 
-o Don't connect to mailto: hosts, only check their URL syntax. All other
-  links are checked as usual:
-      linkchecker --intern='!^mailto:' --strict www.mysite.org
+Don't connect to mailto: hosts, only check their URL syntax. All other
+links are checked as usual:
+  linkchecker --intern='!^mailto:' --strict www.mysite.org
 
-o Local files and syntactic sugar on the command line:
-      linkchecker c:\\temp\\test.html
-      linkchecker ../bla.html
-      linkchecker www.myhomepage.de
-      linkchecker -r0 ftp.linux.org
+Checking a local HTML file on Unix:
+  linkchecker ../bla.html
+
+Checking a local HTML file on Windows:
+  linkchecker c:\temp\test.html
+
+You can skip the "http://" url part if the domain starts with "www.":
+  linkchecker www.myhomepage.de
+
+You can skip the "ftp://" url part if the domain starts with "ftp.":
+  linkchecker -r0 ftp.linux.org
 """)
 
 def printVersion ():
@@ -415,6 +412,14 @@ if do_profile:
     import profile
     profile.run("linkcheck.checkUrls(config)", _profile)
 else:
+    # do not use psyco, at the moment (Oct 2003) it has bugs causing
+    # infinite loops when threads are enabled, and psyco disables
+    # the Ctrl-C break button of the Python interpreter.
+    #try:
+    #    import psyco
+    #    psyco.full()
+    #except ImportError:
+    #    pass
     linkcheck.checkUrls(config)
 #############################################################################
 
