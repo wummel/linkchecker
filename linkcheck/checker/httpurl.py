@@ -47,6 +47,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
 
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url=None, base_ref=None, line=0, column=0, name=""):
+        """initialize basic url data and HTTP specific variables"""
         super(HttpUrl, self).__init__(base_url, recursion_level, consumer,
                parent_url=parent_url, base_ref=base_ref, line=line,
                column=column, name=name)
@@ -376,10 +377,11 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     def get_http_object (self, host, scheme):
         if scheme == "http":
             h = linkcheck.httplib2.HTTPConnection(host)
-        elif scheme == "https":
+        elif scheme == "https" and supportHttps:
             h = linkcheck.httplib2.HTTPSConnection(host)
         else:
-            raise linkcheck.LinkCheckerError("invalid url scheme %s" % scheme)
+            raise linkcheck.LinkCheckerError(
+                                 _("Unsupported HTTP url scheme %r") % scheme)
         if self.consumer.config.get("debug"):
             h.set_debuglevel(1)
         h.connect()
