@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 from distutils.core import setup
+from distutils.dist import Distribution
+import sys
+
+# Hack for linkchecker.bat
+class LCDistribution(Distribution):
+    def __init__(self, attrs=None):
+        Distribution.__init__(self, attrs)
+        if sys.platform=='win32':
+            self.scripts.append('linkchecker.bat')
+
 
 setup (name = "linkchecker",
        version = "1.2.3",
@@ -9,6 +19,7 @@ setup (name = "linkchecker",
        url = "http://linkchecker.sourceforge.net/",
        licence = "GPL",
 
+       distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],
        # uncomment ext_modules to enable HTTPS support
        # you must have an SSL library and the Python header
@@ -17,4 +28,5 @@ setup (name = "linkchecker",
                         'include_dirs': ['/usr/include/openssl'],
                         'library_dirs': ['/usr/lib'],
                         'libs': ['ssl']})],
+       scripts = ['linkchecker'],
        )

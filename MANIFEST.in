@@ -6,7 +6,6 @@ include Makefile
 include create.sql
 include debian/rules
 include debian/changelog
-include debian/control
 include debian/copyright
 include debian/control
 include debian/dirs
