@@ -56,6 +56,3 @@ valid
 url illegalquote1
 name no beginning quote
 error
-url illegalquote2
-name no ending quote
-error

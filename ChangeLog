@@ -1,3 +1,7 @@
+1.7.0
+  * Added new HTML parser written in C as a Python extension module.
+    It is faster and it is more fault tolerant.
+
 1.6.7
   * Removed check for <applet> tags codebase attribute, but honor it
     when checking applet links
