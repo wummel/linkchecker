@@ -8,7 +8,6 @@ include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
 include test/*.py test/*.txt
 include test/output/test_* test/html/*.html
-include rpm_build_script
 include lconline/*.html
 include linkcheck/parser/Makefile linkcheck/parser/htmllex.l
 include linkcheck/parser/htmlparse.y linkcheck/parser/htmlparse.h
