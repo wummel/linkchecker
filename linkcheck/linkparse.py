@@ -72,6 +72,8 @@ class LinkParser (HtmlParser):
 
     def startElement (self, tag, attrs):
         debug(NIGHTMARE, "LinkParser tag", tag, "attrs", attrs)
+        debug(ALWAYS, "line", self.lineno(), "col", self.column(),
+              "old line", self.last_lineno(), "old col", self.last_column())
         if not self.tags.has_key(tag): return
         for attr in self.tags[tag]:
             if attr in attrs:
@@ -104,5 +106,6 @@ class LinkParser (HtmlParser):
             else:
                 # only meta refresh has an url, so return
                 return
-        self.urls.append((url, self.lineno(), self.column(), name, base))
+        self.urls.append((url, self.last_lineno(), self.last_column(),
+                          name, base))
 
