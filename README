@@ -26,14 +26,16 @@ Installing, Requirements, Running
 Read the file INSTALL.
 
 
-License
---------
+License and Credits
+-------------------
 LinkChecker is licensed under the GNU Public License.
 Credits go to Guido van Rossum for making Python. His hovercraft is
 full of eels!
 As this program is directly derived from my Java link checker, additional
 credits go to Robert Forsman (the author of JCheckLinks) and his
 robots.txt parse algorithm.
+Nicolas Chauvat <Nicolas.Chauvat@logilab.fr> supplied a patch for
+an XML output logger.
 I want to thank everybody who gave me feedback, bug reports and
 suggestions.
 

@@ -4,7 +4,7 @@ VERSION=$(shell python setup.py --version)
 PACKAGE = linkchecker
 NAME = $(shell python setup.py --name)
 HOST=fsinfo.cs.uni-sb.de
-LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v
+LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
 SOURCES = \
 linkcheck/Config.py \

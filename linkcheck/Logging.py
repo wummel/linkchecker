@@ -401,7 +401,8 @@ class GMLLogger(StandardLogger):
     """
     def __init__(self, **args):
         apply(StandardLogger.__init__, (self,), args)
-        self.nodes = []
+        self.nodes = {}
+        self.nodeid = 0
 
     def init(self):
         self.starttime = time.time()
@@ -413,40 +414,42 @@ class GMLLogger(StandardLogger):
 	self.fd.write("graph [\n  directed 1\n")
         self.fd.flush()
 
-    def newUrl(self, urlData):
-        self.nodes.append(urlData)
 
-    def endOfOutput(self, linknumber=-1):
-        writtenNodes = {}
-        # write nodes
-        nodeid = 1
-        for node in self.nodes:
-            if node.url and not writtenNodes.has_key(node.url):
-                self.fd.write("  node [\n")
-		self.fd.write("    id     %d\n" % nodeid)
-                self.fd.write('    label  "%s"\n' % node.url)
-                if node.downloadtime:
-                    self.fd.write("    dltime %d\n" % node.downloadtime)
-                if node.checktime:
-                    self.fd.write("    checktime %d\n" % node.checktime)
-                self.fd.write("    extern ")
-		if node.extern: self.fd.write("1")
-		else: self.fd.write("0")
-		self.fd.write("\n  ]\n")
-                writtenNodes[node.url] = nodeid
-                nodeid = nodeid + 1
-        # write edges
-        for node in self.nodes:
-            if node.url and node.parentName:
+    def newUrl(self, urlData):
+        """write one node and all possible edges"""
+        node = urlData
+        if node.url and not self.nodes.has_key(node.url):
+            node.id = self.nodeid
+            self.nodes[node.url] = node
+            self.nodeid = self.nodeid + 1
+            self.fd.write("  node [\n")
+	    self.fd.write("    id     %d\n" % node.id)
+            self.fd.write('    label  "%s"\n' % node.url)
+            if node.downloadtime:
+                self.fd.write("    dltime %d\n" % node.downloadtime)
+            if node.checktime:
+                self.fd.write("    checktime %d\n" % node.checktime)
+            self.fd.write("    extern "+(node.extern and "1" or "0"))
+	    self.fd.write("\n  ]\n")
+        self.writeEdges()
+
+
+    def writeEdges(self):
+        """write all edges we can find in the graph in a brute-force
+           manner. Better would be a mapping of parent urls.
+	"""
+        for node in self.nodes.values():
+            if self.nodes.has_key(node.parentName):
                 self.fd.write("  edge [\n")
 		self.fd.write('    label  "%s"\n' % node.urlName)
-	        self.fd.write("    source %d\n"%writtenNodes[node.parentName])
-                self.fd.write("    target %d\n" % writtenNodes[node.url])
-                self.fd.write("    valid  ")
-                if node.valid: self.fd.write("1")
-                else: self.fd.write("0")
+	        self.fd.write("    source %d\n" % self.nodes[node.parentName])
+                self.fd.write("    target %d\n" % node.id)
+                self.fd.write("    valid  "+(node.valid and "1" or "0"))
                 self.fd.write("\n  ]\n")
-        # end of output
+        self.fd.flush()
+
+
+    def endOfOutput(self, linknumber=-1):
         self.fd.write("]\n")
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
@@ -462,6 +465,86 @@ class GMLLogger(StandardLogger):
         self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
+
+
+class XMLLogger(StandardLogger):
+    """XML output mirroring the GML structure. Easy to parse with any XML
+       tool."""
+    def __init__(self, **args):
+        apply(StandardLogger.__init__, (self,), args)
+        self.nodes = {}
+        self.nodeid = 0
+
+    def init(self):
+        self.starttime = time.time()
+        self.fd.write("<?xml version='1.0'?>\n")
+        self.fd.write("<!--\n")
+        self.fd.write("  "+_("created by %s at %s\n") % \
+	              (Config.AppName, _strtime(self.starttime)))
+        self.fd.write("  "+_("Get the newest version at %s\n") % Config.Url)
+        self.fd.write("  "+_("Write comments and bugs to %s\n\n") % \
+	              Config.Email)
+        self.fd.write("-->\n\n")
+	self.fd.write("<GraphXML>\n<graph isDirected='true'>\n")
+        self.fd.flush()
+
+    def newUrl(self, urlData):
+        """write one node and all possible edges"""
+        node = urlData
+        if node.url and not self.nodes.has_key(node.url):
+            node.id = self.nodeid
+            self.nodes[node.url] = node
+            self.nodeid = self.nodeid + 1
+            self.fd.write("  <node name='%d' " % node.id)
+            self.fd.write(">\n")
+            self.fd.write("    <label>%s</label>\n" % node.url)
+            self.fd.write("    <data>\n")
+            if node.downloadtime:
+                self.fd.write("      <dltime>%d</dltime>\n" \
+                                  % node.downloadtime)
+            if node.checktime:
+                self.fd.write("      <checktime>%d</checktime>\n" \
+                              % node.checktime)
+            self.fd.write("      <extern>%d</extern>\n" % node.extern)
+            self.fd.write("    </data>\n")
+	    self.fd.write("  </node>\n")
+        self.writeEdges()
+
+    def writeEdges(self):
+        """write all edges we can find in the graph in a brute-force
+           manner. Better would be a mapping of parent urls.
+	"""
+        for node in self.nodes.values():
+            if self.nodes.has_key(node.parentName):
+                self.fd.write("  <edge")
+                self.fd.write(" source='%d'" % self.nodes[node.parentName])
+                self.fd.write(" target='%d'" % node.id)
+                self.fd.write(">\n")
+		self.fd.write("    <label>'%s'</label>\n" % node.urlName)
+                self.fd.write("    <data>\n")
+                self.fd.write(" <valid>%d</valid>" % (self.valid and 1 or 0))
+                self.fd.write("    </data>\n")
+                self.fd.write("  </edge>\n")
+        self.fd.flush()
+
+    def endOfOutput(self, linknumber=-1):
+        self.fd.write("</graph>\n</GraphXML>\n")
+        self.stoptime = time.time()
+        duration = self.stoptime - self.starttime
+        name = _("seconds")
+        self.fd.write("<!-- ")
+        self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
+        if duration > 60:
+            duration = duration / 60
+            name = _("minutes")
+        if duration > 60:
+            duration = duration / 60
+            name = _("hours")
+        self.fd.write("	(%.3f %s)\n" % (duration, name))
+        self.fd.write("-->")
+        self.fd.flush()
+        self.fd = None
+
 
 
 class SQLLogger(StandardLogger):

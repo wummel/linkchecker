@@ -53,6 +53,7 @@ Loggers = {
     "sql": Logging.SQLLogger,
     "csv": Logging.CSVLogger,
     "blacklist": Logging.BlacklistLogger,
+    "xml": Logging.XMLLogger,
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
@@ -143,6 +144,9 @@ class Configuration(UserDict.UserDict):
         self.data['blacklist'] = {
             "filename":     "~/.blacklist",
 	}
+        self.data['xml'] = {
+            "filename":     "linkchecker-out.xml",
+        }
         # default values
         self.data['log'] = self.newLogger('text')
         self.data["quiet"] = 0
@@ -470,4 +474,3 @@ class Configuration(UserDict.UserDict):
         except ConfigParser.Error: pass
         try: self.data["allowdeny"] = cfgparser.getboolean(section, "allowdeny")
 	except ConfigParser.Error: pass
-

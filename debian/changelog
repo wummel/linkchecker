@@ -2,8 +2,10 @@ linkchecker (1.2.8) unstable; urgency=low
 
   * INSTALL: more documentation for the CGI scripts
   * Makefile: better cleaning (clean, cleandeb, distclean)
+  * XML output (idea and patch from Nicolas Chauvat
+    <Nicolas.Chauvat@logilab.fr>)
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 10 Nov 2000 11:54:25 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Wed, 15 Nov 2000 23:27:37 +0100
 
 linkchecker (1.2.7) unstable; urgency=low
 
