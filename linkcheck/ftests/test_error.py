@@ -51,7 +51,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "\nhttp://www.heise.de/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %r" % nurl,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "error",
