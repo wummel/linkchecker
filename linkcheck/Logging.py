@@ -429,8 +429,8 @@ class GMLLogger(StandardLogger):
                 self.fd.write("    dltime %d\n" % node.downloadtime)
             if node.checktime:
                 self.fd.write("    checktime %d\n" % node.checktime)
-            self.fd.write("    extern "+(node.extern and "1" or "0"))
-	    self.fd.write("\n  ]\n")
+            self.fd.write("    extern %d\n" % (node.extern and 1 or 0))
+	    self.fd.write("  ]\n")
         self.writeEdges()
 
 
@@ -442,10 +442,11 @@ class GMLLogger(StandardLogger):
             if self.nodes.has_key(node.parentName):
                 self.fd.write("  edge [\n")
 		self.fd.write('    label  "%s"\n' % node.urlName)
-	        self.fd.write("    source %d\n" % self.nodes[node.parentName])
+	        self.fd.write("    source %d\n" % \
+		              self.nodes[node.parentName].id)
                 self.fd.write("    target %d\n" % node.id)
-                self.fd.write("    valid  "+(node.valid and "1" or "0"))
-                self.fd.write("\n  ]\n")
+                self.fd.write("    valid  %d\n" % (node.valid and 1 or 0))
+                self.fd.write("  ]\n")
         self.fd.flush()
 
 
@@ -505,7 +506,8 @@ class XMLLogger(StandardLogger):
             if node.checktime:
                 self.fd.write("      <checktime>%d</checktime>\n" \
                               % node.checktime)
-            self.fd.write("      <extern>%d</extern>\n" % node.extern)
+            self.fd.write("      <extern>%d</extern>\n" % \
+	                  (node.extern and 1 or 0))
             self.fd.write("    </data>\n")
 	    self.fd.write("  </node>\n")
         self.writeEdges()
@@ -517,12 +519,13 @@ class XMLLogger(StandardLogger):
         for node in self.nodes.values():
             if self.nodes.has_key(node.parentName):
                 self.fd.write("  <edge")
-                self.fd.write(" source='%d'" % self.nodes[node.parentName])
+                self.fd.write(" source='%d'" % \
+		              self.nodes[node.parentName].id)
                 self.fd.write(" target='%d'" % node.id)
                 self.fd.write(">\n")
 		self.fd.write("    <label>'%s'</label>\n" % node.urlName)
                 self.fd.write("    <data>\n")
-                self.fd.write(" <valid>%d</valid>" % (self.valid and 1 or 0))
+                self.fd.write(" <valid>%d</valid>" % (node.valid and 1 or 0))
                 self.fd.write("    </data>\n")
                 self.fd.write("  </edge>\n")
         self.fd.flush()
