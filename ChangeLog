@@ -49,6 +49,11 @@
     Type: feature
     Changed: linkchecker
 
+  * a new cache and queueing algorithm makes sure that no URL is
+    checked twice.
+    Type: feature
+    Changed: linkcheck/checker/cache.py
+
 1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request
     Type: bugfix
