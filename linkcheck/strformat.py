@@ -27,7 +27,7 @@ import time
 def unquote (s):
     """if string s is not empty, strip quotes from s"""
     if not s:
-        return ""
+        return s
     if len(s) < 2:
         return s
     if s[0] in ("\"'"):
