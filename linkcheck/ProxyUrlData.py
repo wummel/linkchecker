@@ -21,6 +21,7 @@ class ProxyUrlData (UrlData):
     """urldata with ability for proxying and for urls with user:pass@host
        setting"""
 
+
     def setProxy (self, proxy):
         self.proxy = proxy
         self.proxyauth = None

@@ -27,7 +27,7 @@ class HttpsUrlData (HttpUrlData):
 
     def _check (self):
         if supportHttps:
-            HttpUrlData._check(self)
+            super(HttpsUrlData, self)._check()
         else:
             self.setWarning(i18n._("%s url ignored")%self.scheme.capitalize())
             self.logMe()

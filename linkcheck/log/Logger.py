@@ -21,7 +21,7 @@ class i18ndummy:
     _ = lambda self, s: s
 i18n = i18ndummy()
 
-class Logger:
+class Logger (object):
     Fields = {
         "realurl":   i18n._("Real URL"),
         "result":    i18n._("Result"),
@@ -37,24 +37,29 @@ class Logger:
         "url":       i18n._("URL"),
     }
 
+
     def __init__ (self, **args):
         self.logfields = None # log all fields
         if args.has_key('fields'):
             if "all" not in args['fields']:
                 self.logfields = args['fields']
 
+
     def has_field (self, name):
         if self.logfields is None:
             # log all fields
-            return 1
+            return True
         return name in self.logfields
+
 
     def field (self, name):
         """return translated field name"""
         return i18nreal._(self.Fields[name])
 
+
     def spaces (self, name):
         return self.logspaces[name]
+
 
     def init (self):
         # map with spaces between field name and value
@@ -69,14 +74,18 @@ class Logger:
         for key in fields:
             self.logspaces[key] = " "*(self.max_indent - len(self.field(key)))
 
+
     def newUrl (self, urlData):
         raise Exception, "abstract function"
+
 
     def endOfOutput (self, linknumber=-1):
         raise Exception, "abstract function"
 
+
     def __str__ (self):
         return self.__class__.__name__
+
 
     def __repr__ (self):
         return `self.__class__.__name__`

@@ -26,7 +26,7 @@ except ImportError:
     sys.exit(1)
 
 
-class HtmlParser:
+class HtmlParser (object):
     """Use an internal C SAX parser. We do not define any callbacks
     here for compatibility. Currently recognized callbacks are:
     comment(data): <!--data-->
@@ -46,6 +46,7 @@ class HtmlParser:
         """initialize the internal parser"""
         self.parser = htmlsax.parser(self)
 
+
     def __getattr__ (self, name):
         """delegate unknown attrs to self.parser"""
         return getattr(self.parser, name)
@@ -57,22 +58,27 @@ class HtmlPrinter (HtmlParser):
     def _print (self, *attrs):
         print self.mem, attrs, self.last_lineno(), self.last_column()
 
+
     def _errorfun (self, msg, name):
         """print msg to stderr with name prefix"""
         pos = "%d:%d:" % (self.lineno(), self.column())
         print >> sys.stderr, name, pos, msg
 
+
     def error (self, msg):
         """signal a filter/parser error"""
         self._errorfun(msg, "error:")
+
 
     def warning (self, msg):
         """signal a filter/parser warning"""
         self._errorfun(msg, "warning:")
 
+
     def fatalError (self, msg):
         """signal a fatal filter/parser error"""
         self._errorfun(msg, "fatal error:")
+
 
     def __getattr__ (self, name):
         if hasattr(self.parser, name):

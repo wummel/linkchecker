@@ -160,7 +160,7 @@ def set_intern_url (url, klass, config):
             config['internlinks'].append(getLinkPat(domain))
 
 
-class UrlData:
+class UrlData (object):
     "Representing a URL with additional information like validity etc"
 
     def __init__ (self,

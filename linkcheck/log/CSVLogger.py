@@ -26,7 +26,7 @@ class CSVLogger (StandardLogger):
     separated by a semicolon.
     """
     def __init__ (self, **args):
-        StandardLogger.__init__(self, **args)
+        super(CSVLogger, self).__init__(**args)
         self.separator = args['separator']
         self.lineterminator = "\n"
 
@@ -94,4 +94,3 @@ class CSVLogger (StandardLogger):
             self.fd.flush()
         self.fd.close()
         self.fd = None
-

@@ -27,7 +27,7 @@ class TelnetUrlData (HostCheckingUrlData):
     "Url link with telnet scheme"
 
     def buildUrl (self):
-        HostCheckingUrlData.buildUrl(self)
+        super(TelnetUrlData, self).buildUrl()
         parts = urlparse.urlsplit(self.url)
         userinfo, self.host = splituser(parts[1])
         self.host, self.port = splitport(self.host)
@@ -45,7 +45,7 @@ class TelnetUrlData (HostCheckingUrlData):
 
 
     def checkConnection (self):
-        HostCheckingUrlData.checkConnection(self)
+        super(TelnetUrlData, self).checkConnection()
         self.urlConnection = telnetlib.Telnet()
         self.urlConnection.set_debuglevel(get_debuglevel())
         self.urlConnection.open(self.host, self.port)

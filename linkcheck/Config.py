@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import ConfigParser, sys, os, re, UserDict, string, time, Cookie
+import ConfigParser, sys, os, re, time, Cookie
 import _linkchecker_configdata, i18n
 from linkcheck import getLinkPat
 from os.path import expanduser, normpath, normcase, join, isfile
@@ -60,14 +60,13 @@ def _check_morsel (m, host, path):
 
 
 # dynamic options
-class Configuration (UserDict.UserDict):
+class Configuration (dict):
     """Dynamic options are stored in this class so you can run
     several checking tasks in one Python interpreter at once
     """
 
     def __init__ (self):
         """Initialize the default options"""
-        UserDict.UserDict.__init__(self)
         self.reset()
         # we use "reduceCount" to delay the calling of
 	# Threader.reduceThreads() because we would call it too often.
@@ -443,8 +442,7 @@ class Configuration (UserDict.UserDict):
                         self[key][opt] = cfgparser.get(key, opt)
                     except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
                 try:
-		    self[key]['fields'] = map(string.strip,
-		         cfgparser.get(key, 'fields').split(','))
+		    self[key]['fields'] = [f.strip() for f in cfgparser.get(key, 'fields').split(',')]
                 except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try:
             log = cfgparser.get(section, "log")

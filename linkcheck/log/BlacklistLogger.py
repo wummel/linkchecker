@@ -23,10 +23,11 @@ class BlacklistLogger (Logger):
     we have only links on the list which failed for n days.
     """
     def __init__ (self, **args):
-        Logger.__init__(self, **args)
+        super(BlacklistLogger, self).__init__(**args)
         self.errors = 0
         self.blacklist = {}
         self.filename = args['filename']
+
 
     def newUrl (self, urlData):
         if urlData.valid:
@@ -35,10 +36,10 @@ class BlacklistLogger (Logger):
             self.errors = 1
             self.blacklist[urlData.getCacheKey()] = urlData
 
+
     def endOfOutput (self, linknumber=-1):
         """write the blacklist"""
         fd = open(self.filename, "w")
         for url in self.blacklist.keys():
             if self.blacklist[url] is None:
                 fd.write(url+"\n")
-

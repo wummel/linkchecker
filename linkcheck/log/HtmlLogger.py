@@ -40,7 +40,7 @@ class HtmlLogger (StandardLogger):
     """Logger with HTML output"""
 
     def __init__ (self, **args):
-        StandardLogger.__init__(self, **args)
+        super(HtmlLogger, self).__init__(**args)
         self.colorbackground = args['colorbackground']
         self.colorurl = args['colorurl']
         self.colorborder = args['colorborder']
@@ -48,6 +48,7 @@ class HtmlLogger (StandardLogger):
         self.tablewarning = args['tablewarning']
         self.tableerror = args['tableerror']
         self.tableok = args['tableok']
+
 
     def init (self):
         Logger.init(self)
@@ -61,6 +62,7 @@ class HtmlLogger (StandardLogger):
               (i18n._("Start checking at %s\n") % strtime(self.starttime))+
 	      "<br>")
         self.fd.flush()
+
 
     def newUrl (self, urlData):
         if self.fd is None: return
@@ -135,6 +137,7 @@ class HtmlLogger (StandardLogger):
         self.fd.write("</table></td></tr></table><br clear=\"all\">")
         self.fd.flush()
 
+
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.has_field("outro"):
@@ -174,4 +177,3 @@ class HtmlLogger (StandardLogger):
             self.fd.write("</small></body></html>")
         self.fd.flush()
         self.fd = None
-

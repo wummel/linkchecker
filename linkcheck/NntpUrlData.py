@@ -43,6 +43,7 @@ class NntpUrlData (UrlData):
         self.urlparts = urlparse.urlsplit(self.url)
         Config.debug(BRING_IT_ON, self.urlparts)
 
+
     def checkConnection (self):
         nntpserver = self.urlparts[1] or self.config["nntpserver"]
         if not nntpserver:
@@ -67,6 +68,7 @@ class NntpUrlData (UrlData):
             else:
                 # group name is the empty string
                 self.setWarning(i18n._("No newsgroup specified in NNTP URL"))
+
 
     def _connectNntp (self, nntpserver):
         """This is done only once per checking task. Also, the newly

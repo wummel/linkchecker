@@ -25,9 +25,9 @@ class HostCheckingUrlData (UrlData):
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,
                   baseRef=None, line=0, column=0, name=""):
-        UrlData.__init__(self, urlName, recursionLevel, config,
-	                 parentName=parentName, baseRef=baseRef, line=line,
-		         column=column, name=name)
+        super(HostCheckingUrlData, self).__init__(urlName, recursionLevel,
+                    config, parentName=parentName, baseRef=baseRef,
+                    line=line, column=column, name=name)
         self.host = None
         self.url = urllib.unquote(self.urlName)
 

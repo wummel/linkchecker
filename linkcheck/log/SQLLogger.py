@@ -24,9 +24,10 @@ from linkcheck import StringUtil, i18n, Config
 class SQLLogger (StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
     def __init__ (self, **args):
-        StandardLogger.__init__(self, **args)
+        super(SQLLogger, self).__init__(**args)
         self.dbname = args['dbname']
         self.separator = args['separator']
+
 
     def init (self):
         Logger.init(self)
@@ -39,6 +40,7 @@ class SQLLogger (StandardLogger):
             self.fd.write("-- "+(i18n._("Write comments and bugs to %s\n\n") % \
 	                Config.Email))
             self.fd.flush()
+
 
     def newUrl (self, urlData):
         if self.fd is None: return
@@ -68,6 +70,7 @@ class SQLLogger (StandardLogger):
 	       self.separator))
         self.fd.flush()
 
+
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.has_field("outro"):
@@ -85,4 +88,3 @@ class SQLLogger (StandardLogger):
             self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
-

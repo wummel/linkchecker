@@ -82,12 +82,9 @@ class FileUrlData (UrlData):
                   recursionLevel,
                   parentName = None,
                   baseRef = None, line=0, column=0, name=""):
-        UrlData.__init__(self,
-                  urlName,
-                  config,
-                  recursionLevel,
-                  parentName=parentName,
-                  baseRef=baseRef, line=line, column=column, name=name)
+        super(FileUrlData, self).__init__(urlName, config, recursionLevel,
+                                    parentName=parentName, baseRef=baseRef,
+                                    line=line, column=column, name=name)
         if not (parentName or baseRef or self.urlName.startswith("file:")):
             self.urlName = os.path.expanduser(self.urlName)
             if is_windows_path(self.urlName):
@@ -100,7 +97,7 @@ class FileUrlData (UrlData):
 
 
     def buildUrl (self):
-        UrlData.buildUrl(self)
+        super(FileUrlData, self).buildUrl()
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
         self.url = urlparse.urlunsplit(self.urlparts)

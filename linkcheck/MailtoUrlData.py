@@ -31,7 +31,7 @@ class MailtoUrlData (HostCheckingUrlData):
     "Url link with mailto scheme"
 
     def buildUrl (self):
-        HostCheckingUrlData.buildUrl(self)
+        super(MailtoUrlData, self).buildUrl()
         self.headers = {}
         self.adresses = AddressList(self._cutout_adresses()).addresslist
         for key in ("to", "cc", "bcc"):
@@ -40,6 +40,7 @@ class MailtoUrlData (HostCheckingUrlData):
                     a = urllib.unquote(val)
                     self.adresses.extend(AddressList(a).addresslist)
         Config.debug(BRING_IT_ON, "adresses: ", self.adresses)
+
 
     def _cutout_adresses (self):
         mo = headers_re.search(self.urlName)

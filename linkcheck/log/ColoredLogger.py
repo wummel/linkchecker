@@ -24,7 +24,7 @@ class ColoredLogger (StandardLogger):
     """ANSI colorized output"""
 
     def __init__ (self, **args):
-        StandardLogger.__init__(self, **args)
+        super(ColoredLogger, self).__init__(**args)
         self.colorparent = AnsiColor.esc_ansicolor(args['colorparent'])
         self.colorurl = AnsiColor.esc_ansicolor(args['colorurl'])
         self.colorname = AnsiColor.esc_ansicolor(args['colorname'])
@@ -148,5 +148,5 @@ class ColoredLogger (StandardLogger):
         if self.has_field("outro"):
             if self.prefix:
                 self.fd.write("o\n")
-        StandardLogger.endOfOutput(self, linknumber=linknumber)
+        super(ColoredLogger, self).endOfOutput(linknumber=linknumber)
 

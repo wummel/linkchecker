@@ -56,7 +56,7 @@ __init__(self, **args)
     """
 
     def __init__ (self, **args):
-        Logger.__init__(self, **args)
+        super(StandardLogger, self).__init__(**args)
         self.errors = 0
         #self.warnings = 0
         if args.has_key('fileoutput'):
@@ -66,8 +66,9 @@ __init__(self, **args)
         else:
 	    self.fd = sys.stdout
 
+
     def init (self):
-        Logger.init(self)
+        super(StandardLogger, self).init()
         if self.fd is None: return
         self.starttime = time.time()
         if self.has_field('intro'):

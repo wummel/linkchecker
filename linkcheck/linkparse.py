@@ -61,7 +61,7 @@ class LinkParser (HtmlParser):
     """
 
     def __init__ (self, content, tags=LinkTags):
-        HtmlParser.__init__(self)
+        super(LinkParser, self).__init__()
         self.content = content
         self.tags = tags
         self.urls = []

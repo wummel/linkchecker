@@ -26,9 +26,10 @@ class XMLLogger (StandardLogger):
     """XML output mirroring the GML structure. Easy to parse with any XML
        tool."""
     def __init__ (self, **args):
-        StandardLogger.__init__(self, **args)
+        super(XMLLogger, self).__init__(**args)
         self.nodes = {}
         self.nodeid = 0
+
 
     def init (self):
         Logger.init(self)
@@ -45,6 +46,7 @@ class XMLLogger (StandardLogger):
             self.fd.write("-->\n\n")
 	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
         self.fd.flush()
+
 
     def newUrl (self, urlData):
         """write one node and all possible edges"""
@@ -73,6 +75,7 @@ class XMLLogger (StandardLogger):
 	    self.fd.write("  </node>\n")
         self.writeEdges()
 
+
     def writeEdges (self):
         """write all edges we can find in the graph in a brute-force
            manner. Better would be a mapping of parent urls.
@@ -94,6 +97,7 @@ class XMLLogger (StandardLogger):
                 self.fd.write("  </edge>\n")
         self.fd.flush()
 
+
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         self.fd.write("</graph>\n</GraphXML>\n")
@@ -113,4 +117,3 @@ class XMLLogger (StandardLogger):
             self.fd.write("-->")
         self.fd.flush()
         self.fd = None
-

@@ -26,9 +26,10 @@ class GMLLogger (StandardLogger):
     your sitemap graph.
     """
     def __init__ (self, **args):
-        StandardLogger.__init__(self, **args)
+        super(GMLLogger, self).__init__(**args)
         self.nodes = {}
         self.nodeid = 0
+
 
     def init (self):
         Logger.init(self)
@@ -42,6 +43,7 @@ class GMLLogger (StandardLogger):
   	                    Config.Email))
             self.fd.write("graph [\n  directed 1\n")
             self.fd.flush()
+
 
     def newUrl (self, urlData):
         """write one node and all possible edges"""
@@ -66,6 +68,7 @@ class GMLLogger (StandardLogger):
 	    self.fd.write("  ]\n")
         self.writeEdges()
 
+
     def writeEdges (self):
         """write all edges we can find in the graph in a brute-force
            manner. Better would be a mapping of parent urls.
@@ -82,6 +85,7 @@ class GMLLogger (StandardLogger):
                     self.fd.write("    valid  %d\n" % (node.valid and 1 or 0))
                 self.fd.write("  ]\n")
         self.fd.flush()
+
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
@@ -101,4 +105,3 @@ class GMLLogger (StandardLogger):
             self.fd.write(" (%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
-

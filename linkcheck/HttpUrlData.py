@@ -43,14 +43,14 @@ class HttpUrlData (ProxyUrlData):
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,
                   baseRef=None, line=0, column=0, name=""):
-        ProxyUrlData.__init__(self, urlName, recursionLevel, config,
+        super(HttpUrlData, self).__init__(urlName, recursionLevel, config,
 	                 parentName=parentName, baseRef=baseRef, line=line,
 		         column=column, name=name)
         self.aliases = []
 
 
     def buildUrl (self):
-        ProxyUrlData.buildUrl(self)
+        super(HttpUrlData, self).buildUrl()
         # encode userinfo
         # XXX
         # check for empty paths
@@ -268,7 +268,7 @@ class HttpUrlData (ProxyUrlData):
 
 
     def getCacheKeys (self):
-        keys = ProxyUrlData.getCacheKeys(self)
+        keys = super(HttpUrlData, self).getCacheKeys()
         keys.extend(self.aliases)
         return keys
 

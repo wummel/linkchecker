@@ -20,8 +20,8 @@ import re, sys, htmlentitydefs
 
 markup_re = re.compile("<.*?>", re.DOTALL)
 entities = htmlentitydefs.entitydefs.items()
-HtmlTable = map(lambda x: (x[1], "&"+x[0]+";"), entities)
-UnHtmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities)
+HtmlTable = [ (x[1], "&"+x[0]+";") for x in entities ]
+UnHtmlTable = [ ("&"+x[0]+";", x[1]) for x in entities ]
 # order matters!
 HtmlTable.sort()
 UnHtmlTable.sort()
@@ -33,9 +33,9 @@ entities = {
     'amp': '&',
     'quot': '"',
     'apos': "'",
-}
-XmlTable = map(lambda x: (x[1], "&"+x[0]+";"), entities.items())
-UnXmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities.items())
+}.items()
+XmlTable = [ (x[1], "&"+x[0]+";") for x in entities ]
+UnXmlTable = [ ("&"+x[0]+";", x[1]) for x in entities ]
 # order matters!
 XmlTable.sort()
 UnXmlTable.sort()   
