@@ -1,3 +1,4 @@
+#include "htmlsax.h"
 #line 2 "htmllex.c"
 
 #line 4 "htmllex.c"
