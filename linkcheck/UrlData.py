@@ -296,7 +296,7 @@ class UrlData:
     def _init_html_comments(self):
         # if we find an URL inside HTML comments we ignore it
         # so build a list of intervalls which are HTML comments
-        pattern = re.compile("<!--.*?-->", re.DOTALL)
+        pattern = re.compile("<!--.*?--\s*>", re.DOTALL)
         index = 0
         while 1:
             match = pattern.search(self.data, index)

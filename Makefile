@@ -15,12 +15,12 @@ all:
 	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
-	-python setup.py clean --all
+	-python setup.py clean --all # ignore errors of this command
 	$(MAKE) -C po clean
 	find . -name '*.py[co]' | xargs rm -f
 
 distclean: clean cleandeb
-	rm -rf dist
+	rm -rf dist build # just to be sure clean also the build dir
 	rm -f $(PACKAGE)-out.* VERSION LinkCheckerConf.py MANIFEST Packages.gz
 
 cleandeb:
