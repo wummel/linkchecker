@@ -1,4 +1,4 @@
-3.0 "" (released xx.xx.2005)
+2.3 "" (released xx.xx.2005)
 
   * Use and require Python >= 2.4.
     Type: feature
@@ -46,6 +46,11 @@
     ~/.linkchecker/linkcheckerrc.
     Type: feature
     Changed: linkchecker, linkcheck/configuration.py, doc/{de,en,fr}/*.1
+
+  * Start the log output before appending new urls to the consumer since
+    this can trigger logger.new_url().
+    Type: bugfix
+    Changed: linkcheck/checker/{__init__, consumer}.py
 
 2.2 "Cube" (released 25.01.2005)
 
