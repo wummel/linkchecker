@@ -23,6 +23,7 @@
       linkcheck/ftests/data/*.result
 
   * Added missing script_dir to the windows installer script.
+    Use python.exe instead of pythonw.exe to call linkcheck script.
     Type: bugfix
     Changed: install-linkchecker.py
 
