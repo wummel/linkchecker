@@ -30,7 +30,9 @@ For single-letter option arguments the space is not a necessity.
 So \fI-o colored\fP is the same as \fI-ocolored\fP.
 .TP
 \fB-a\fP, \fB--anchors\fP
-Check HTTP anchor references. Default is don't check anchors.
+Check HTTP anchor references.  This option applies to both intern
+and extern urls. Default is don't check anchors.
+This option implies -w because anchor errors are always warnings.
 .TP
 \fB-C\fP, \fB--cookies\fP
 Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -75,6 +77,11 @@ Help me! Print usage information for this program.
 Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked.
+.TP
+\fB--no-anchor-caching\fP
+Treat url#anchora and url#anchorb as equal on caching. This
+is the default browser behaviour, but it's not specified in
+the URI specification. Use with care.
 .TP
 \fB-o \fItype\fP, \fB--output=\fItype\fP
 Specify output type as \fItext\fP, \fIcolored\fP, \fIhtml\fP, \fIsql\fP,

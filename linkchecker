@@ -38,7 +38,8 @@ OPTIONS
 For single-letter option arguments the space is not a necessity. So
 '-o colored' is the same as '-ocolored'.
 -a, --anchors
-        Check HTTP anchor references. Default is don't check anchors.
+        Check HTTP anchor references. This option applies to both intern
+        and extern urls. Default is don't check anchors.
         This option implies -w because anchor errors are always warnings.
 -C, --cookies
         Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -75,7 +76,7 @@ For single-letter option arguments the space is not a necessity. So
         Specify an NNTP server for 'news:...' links. Default is the
         environment variable NNTP_SERVER. If no host is given,
         only the syntax of the link is checked.
--no-anchor-caching
+--no-anchor-caching
         Treat url#anchora and url#anchorb as equal on caching. This
         is the default browser behaviour, but it's not specified in
         the URI specification. Use with care.
@@ -363,6 +364,9 @@ for opt,arg in options:
         try:
             timeout = int(arg)
         except ValueError:
+            printUsage(i18n._("Illegal argument %s for option %s") % \
+                       (`arg`, "'--timeout'"))
+        if timeout <= 0:
             printUsage(i18n._("Illegal argument %s for option %s") % \
                        (`arg`, "'--timeout'"))
         linkcheck.timeoutsocket.setDefaultSocketTimeout(timeout)
