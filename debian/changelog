@@ -1,3 +1,9 @@
+linkchecker (1.6.0) unstable; urgency=low
+
+  * linkchecker.1: updated manpage
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 14 Jul 2002 12:16:35 +0200
+
 linkchecker (1.5.7) unstable; urgency=low
 
   * linkcheck/log/: add forgotten linkcheck. to StringUtil calls

@@ -340,6 +340,7 @@ if len(args)==0:
     else:
         config.warn(linkcheck._("no files or urls given"))
 
+from linkcheck import UrlData
 for url in args:
     url = url.strip()
     if not (":" in url):
@@ -347,7 +348,7 @@ for url in args:
             url = "ftp://"+url
         elif re.compile("^www\.").match(url):
             url = "http://"+url
-    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0, config))
+    config.appendUrl(UrlData.GetUrlDataFrom(url, 0, config))
 
 # check the urls
 linkcheck.checkUrls(config)
