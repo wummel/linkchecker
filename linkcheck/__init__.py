@@ -39,6 +39,7 @@ def getLinkPat (arg, strict=False):
 extensions = {
     "html": re.compile(r'(?i)\.s?html?$'),
     "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
+    "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
 #    "text": re.compile(r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$'),
 }
 

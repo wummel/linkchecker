@@ -212,6 +212,10 @@ class UrlData (object):
         self.validString = i18n._("Valid")+": "+s
 
 
+    def isParseable (self):
+        return False
+
+
     def isHtml (self):
         return False
 
@@ -342,8 +346,8 @@ class UrlData (object):
             self.checkConnection()
             if self.cached:
                 return
-            if self.anchor and self.config["anchors"]:
-                self.checkAnchors(self.anchor)
+            if self.config["anchors"]:
+                self.checkAnchors()
         except tuple(ExcList):
             type, value, tb = sys.exc_info()
             debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
@@ -417,10 +421,9 @@ class UrlData (object):
 
 
     def allowsRecursion (self):
-        # note: isHtml() might not be working if valid is false, so be
-        # sure to test it first.
+        # note: test self.valid before self.isParseable()
         return self.valid and \
-               self.isHtml() and \
+               self.isParseable() and \
                self.hasContent() and \
                not self.cached and \
                (self.config["recursionlevel"] >= 0 and
@@ -428,15 +431,17 @@ class UrlData (object):
                not self.extern[0]
 
 
-    def checkAnchors (self, anchor):
-        debug(HURT_ME_PLENTY, "checking anchor", anchor)
-        if not (self.valid and anchor and self.isHtml() and self.hasContent()):
+    def checkAnchors (self):
+        if not (self.valid and self.anchor and self.isHtml() and \
+                self.hasContent()):
+            # do not bother
             return
+        debug(HURT_ME_PLENTY, "checking anchor", self.anchor)
         h = LinkParser(self.getContent(), tags={'a': ['name'], None: ['id']})
         for cur_anchor,line,column,name,base in h.urls:
-            if cur_anchor == anchor:
+            if cur_anchor == self.anchor:
                 return
-        self.setWarning(i18n._("anchor #%s not found") % anchor)
+        self.setWarning(i18n._("anchor #%s not found") % self.anchor)
 
 
     def _getExtern (self):
@@ -579,6 +584,15 @@ class UrlData (object):
             if not line or line.startswith('#'): continue
             self.config.appendUrl(GetUrlDataFrom(line, self.recursionLevel+1,
                                   self.config, self.url, None, lineno, ""))
+
+
+    def parse_css (self):
+        """parse a CSS file for url() patterns"""
+        lineno = 0
+        lines = self.getContent().splitlines()
+        for line in lines:
+            lineno += 1
+            # XXX todo: css url pattern matching
 
 
     def __str__ (self):

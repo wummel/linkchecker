@@ -65,7 +65,12 @@ class FtpUrlData (ProxyUrlData):
 
 
     def isHtml (self):
-        # guess by extension
+        if extensions['html'].search(self.url):
+            return True
+        return False
+
+
+    def isParseable (self):
         for ro in extensions.values():
             if ro.search(self.url):
                 return True

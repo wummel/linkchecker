@@ -369,6 +369,20 @@ class HttpUrlData (ProxyUrlData):
         return True
 
 
+    def isParseable (self):
+        if not (self.valid and self.headers):
+            return False
+        if self.headers.gettype()[:9] not in ("text/html", "test/stylesheet"):
+            return False
+        encoding = self.headers.get("Content-Encoding")
+        if encoding and encoding not in _supported_encodings and \
+           encoding!='identity':
+            self.setWarning(i18n._('Unsupported content encoding %s.')%\
+                            `encoding`)
+            return False
+        return True
+
+
     def getRobotsTxtUrl (self):
         return self.urlparts[0]+"://"+self.urlparts[1]+"/robots.txt"
 

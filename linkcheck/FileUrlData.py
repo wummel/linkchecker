@@ -112,6 +112,14 @@ class FileUrlData (UrlData):
 
 
     def isHtml (self):
+        if extensions['html'].search(self.url):
+            return True
+        if contents['html'].search(self.getContent()[:20]):
+            return True
+        return False
+
+
+    def isParseable (self):
         # guess by extension
         for ro in extensions.values():
             if ro.search(self.url):
