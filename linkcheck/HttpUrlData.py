@@ -46,6 +46,8 @@ class HttpUrlData (ProxyUrlData):
 	                 parentName=parentName, baseRef=baseRef, line=line,
 		         column=column, name=name)
         self.aliases = []
+        self.max_redirects = 5
+        self.has301status = False
 
 
     def buildUrl (self):
@@ -111,17 +113,19 @@ class HttpUrlData (ProxyUrlData):
             self.setWarning(i18n._("Access denied by robots.txt, checked only syntax"))
             return
 
-        # amazon servers suck
         if _isAmazonHost(self.urlparts[1]):
             self.setWarning(i18n._("Amazon servers block HTTP HEAD requests, "
                                    "using GET instead"))
-        # first try
+            self.method = "GET"
+        else:
+            # first try with HEAD
+            self.method = "HEAD"
+        fallback = False
         redirectCache = [self.url]
-        response = self._getHttpResponse()
-        self.headers = response.msg
-        debug(BRING_IT_ON, response.status, response.reason, self.headers)
-        has301status = False
-        while 1:
+        while True:
+            response = self._getHttpResponse()
+            self.headers = response.msg
+            debug(BRING_IT_ON, response.status, response.reason, self.headers)
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
@@ -130,126 +134,129 @@ class HttpUrlData (ProxyUrlData):
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
-            # follow redirections
-            tries = 0
-            redirected = self.url
-            while response.status in [301,302] and self.headers and tries < 5:
-                newurl = self.headers.getheader("Location",
-                             self.headers.getheader("Uri", ""))
-                redirected = unquote(urlparse.urljoin(redirected, newurl))
-                # note: urlparts has to be a list
-                self.urlparts = list(urlparse.urlsplit(redirected))
-                # check internal redirect cache to avoid recursion
-                if redirected in redirectCache:
-                    redirectCache.append(redirected)
-                    self.setError(
-                         i18n._("recursive redirection encountered:\n %s") % \
-                                "\n  => ".join(redirectCache))
-                    return
-                redirectCache.append(redirected)
-                # remember this alias
-                if response.status == 301:
-                    if not has301status:
-                        self.setWarning(i18n._("HTTP 301 (moved permanent) encountered: you "
-                                               "should update this link."))
-                        if not (self.url.endswith('/') or self.url.endswith('.html')):
-                            self.setWarning(i18n._("A HTTP 301 redirection occured and the url has no "
-                                                   "trailing / at the end. All urls which point to (home) "
-                                                   "directories should end with a / to avoid redirection."))
-                        has301status = True
-                    self.aliases.append(redirected)
-                # check cache again on possibly changed URL
-                key = self.getCacheKey()
-                if self.config.urlCache_has_key(key):
-                    self.copyFromCache(self.config.urlCache_get(key))
-                    self.cached = True
-                    self.logMe()
-                    return
-                # check if we still have a http url, it could be another
-                # scheme, eg https or news
-                if self.urlparts[0]!="http":
-                    self.setWarning(i18n._("HTTP redirection to non-http url encountered; "
-                                    "the original url was %r.")%self.url)
-                    # make new UrlData object
-                    newobj = GetUrlDataFrom(redirected, self.recursionLevel, self.config,
-                                            parentName=self.parentName, baseRef=self.baseRef,
-                                            line=self.line, column=self.column, name=self.name)
-                    newobj.warningString = self.warningString
-                    newobj.infoString = self.infoString
-                    # append new object to queue
-                    self.config.appendUrl(newobj)
-                    # pretend to be finished and logged
-                    self.cached = True
-                    return
-                # new response data
-                response = self._getHttpResponse()
-                self.headers = response.msg
-                debug(BRING_IT_ON, "Redirected", self.headers)
-                tries += 1
-            if tries >= 5:
-                self.setError(i18n._("more than five redirections, aborting"))
+            # follow all redirections
+            tries, response = self.followRedirections(response)
+            if tries == -1:
+                # already handled
+                return
+            if tries >= self.max_redirects:
+                self.setError(i18n._("more than %d redirections, aborting")%self.max_redirections)
                 return
             # user authentication
-            if response.status==401:
+            if response.status == 401:
 	        if not self.auth:
                     import base64
                     _user, _password = self.getUserPassword()
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
-                response = self._getHttpResponse()
-                self.headers = response.msg
-                debug(BRING_IT_ON, "Authentication", _user, "/", _password)
-            # some servers get the HEAD request wrong:
-            # - Netscape Enterprise Server (no HEAD implemented, 404 error)
-            # - Hyperwave Information Server (501 error)
-            # - Apache/1.3.14 (Unix) (500 error, http://www.rhino3d.de/)
-            # - some advertisings (they want only GET, dont ask why ;)
-            # - Zope server (it has to render the page to get the correct
-            #   content-type)
-            elif response.status in [405,501,500]:
-                # HEAD method not allowed ==> try get
-                self.setWarning(i18n._("Server does not support HEAD "
-             "request (got %d status), falling back to GET")%response.status)
-                response = self._getHttpResponse("GET")
-                self.headers = response.msg
-            elif response.status>=400 and self.headers:
-                server = self.headers.get('Server', '')
-                if _isBrokenHeadServer(server):
-                    self.setWarning(i18n._("Server %r has no HEAD support, falling back to GET")%server)
-                    response = self._getHttpResponse("GET")
-                    self.headers = response.msg
-                elif _isBrokenAnchorServer(server):
-                    self.setWarning(i18n._("Server %r has no anchor support, removing anchor from request")%server)
-                    self.urlparts[4] = ''
-                    response = self._getHttpResponse()
-                    self.headers = response.msg
-            elif self.headers:
-                type = self.headers.gettype()
+                    debug(BRING_IT_ON, "Authentication", _user, "/", _password)
+                continue
+            elif response.status >= 400:
+                if self.headers:
+                    # test for anchor support
+                    server = self.headers.get('Server', '')
+                    if _isBrokenAnchorServer(server) and self.urlparts[4]:
+                        self.setWarning(i18n._("Server %r has no anchor support, removing anchor from request")%server)
+                        self.urlparts[4] = ''
+                        continue
+                if self.method=="HEAD":
+                    # fall back to GET
+                    self.method = "GET"
+                    fallback = True
+                    continue
+            elif self.headers and self.method!="GET":
+                # test for HEAD support
+                mime = self.headers.gettype()
                 poweredby = self.headers.get('X-Powered-By', '')
                 server = self.headers.get('Server', '')
-                if type=='application/octet-stream' and \
+                if mime=='application/octet-stream' and \
                    (poweredby.startswith('Zope') or \
                     server.startswith('Zope')):
                     self.setWarning(i18n._("Zope Server cannot determine"
                                 " MIME type with HEAD, falling back to GET"))
-                    response = self._getHttpResponse("GET")
-                    self.headers = response.msg
-            if response.status not in [301,302]: break
-
+                    continue
+            break
         # check url warnings
         effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
             self.setWarning(i18n._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
         # check response
-        self.checkResponse(response)
+        self.checkResponse(response, fallback)
 
 
-    def checkResponse (self, response):
+    def followRedirections (self, response):
+        """follow all redirections of http response"""
+        redirected = self.url
+        tries = 0
+        while response.status in [301,302] and self.headers and \
+              tries < self.max_redirects:
+            newurl = self.headers.getheader("Location",
+                         self.headers.getheader("Uri", ""))
+            redirected = unquote(urlparse.urljoin(redirected, newurl))
+            # note: urlparts has to be a list
+            self.urlparts = list(urlparse.urlsplit(redirected))
+            # check internal redirect cache to avoid recursion
+            if redirected in redirectCache:
+                redirectCache.append(redirected)
+                self.setError(
+                     i18n._("recursive redirection encountered:\n %s") % \
+                            "\n  => ".join(redirectCache))
+                return -1, response
+            redirectCache.append(redirected)
+            # remember this alias
+            if response.status == 301:
+                if not self.has301status:
+                    self.setWarning(i18n._("HTTP 301 (moved permanent) encountered: you "
+                                           "should update this link."))
+                    if not (self.url.endswith('/') or self.url.endswith('.html')):
+                        self.setWarning(i18n._("A HTTP 301 redirection occured and the url has no "
+                                               "trailing / at the end. All urls which point to (home) "
+                                               "directories should end with a / to avoid redirection."))
+                    self.has301status = True
+                self.aliases.append(redirected)
+            # check cache again on possibly changed URL
+            key = self.getCacheKey()
+            if self.config.urlCache_has_key(key):
+                self.copyFromCache(self.config.urlCache_get(key))
+                self.cached = True
+                self.logMe()
+                return -1, reponse
+            # check if we still have a http url, it could be another
+            # scheme, eg https or news
+            if self.urlparts[0]!="http":
+                self.setWarning(i18n._("HTTP redirection to non-http url encountered; "
+                                "the original url was %r.")%self.url)
+                # make new UrlData object
+                newobj = GetUrlDataFrom(redirected, self.recursionLevel, self.config,
+                                        parentName=self.parentName, baseRef=self.baseRef,
+                                        line=self.line, column=self.column, name=self.name)
+                newobj.warningString = self.warningString
+                newobj.infoString = self.infoString
+                # append new object to queue
+                self.config.appendUrl(newobj)
+                # pretend to be finished and logged
+                self.cached = True
+                return -1, response
+            # new response data
+            response = self._getHttpResponse()
+            self.headers = response.msg
+            debug(BRING_IT_ON, "Redirected", self.headers)
+            tries += 1
+        return tries, response
+
+
+    def checkResponse (self, response, fallback):
         """check final result"""
         if response.status >= 400:
             self.setError("%r %s"%(response.status, response.reason))
         else:
+            if fallback:
+                if self.headers and self.headers.has_key("Server"):
+                    server = self.headers['Server']
+                else:
+                    server = i18n._("unknown")
+                self.setWarning(i18n._("Server %r did not support HEAD request, used GET for checking")%server)
             if response.status == 204:
                 # no content
                 self.setWarning(response.reason)
@@ -275,12 +282,10 @@ class HttpUrlData (ProxyUrlData):
         return keys
 
 
-    def _getHttpResponse (self, method="HEAD"):
+    def _getHttpResponse (self):
         """Put request and return (status code, status text, mime object).
            host can be host:port format
 	"""
-        if _isAmazonHost(self.urlparts[1]):
-            method = "GET"
         if self.proxy:
             host = self.proxy
             scheme = "http"
@@ -299,7 +304,7 @@ class HttpUrlData (ProxyUrlData):
         else:
             path = urlparse.urlunsplit(('', '', qurlparts[2],
             qurlparts[3], qurlparts[4]))
-        self.urlConnection.putrequest(method, path, skip_host=True)
+        self.urlConnection.putrequest(self.method, path, skip_host=True)
         self.urlConnection.putheader("Host", host)
         # userinfo is from http://user@pass:host/
         if self.userinfo:
@@ -337,10 +342,11 @@ class HttpUrlData (ProxyUrlData):
 
     def getContent (self):
         if not self.has_content:
+            self.method = "GET"
             self.has_content = True
             self.closeConnection()
             t = time.time()
-            response = self._getHttpResponse("GET")
+            response = self._getHttpResponse()
             self.headers = response.msg
             self.data = response.read()
             encoding = self.headers.get("Content-Encoding")
