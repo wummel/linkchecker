@@ -1,4 +1,4 @@
-1.13.2
+1.13.2 "" (released xx.xx.xxxx)
   * Fix permissions of data files on install to be world readable.
     Type: bugfix
     Closes: SF bug #1022132
@@ -8,6 +8,10 @@
     Type: bugfix
     Closes: SF bug #1022156
     Changed: linkcheck/logger/sql.py
+
+  * Added notes about access rules for CGI scripts
+    Type: documentation
+    Changed: doc/install.txt
 
 1.13.1 "Old men in new cars" (released 3.9.2004)
   * Fixed RPM generation by adding the generated config file to the
