@@ -78,14 +78,14 @@ class Configuration (UserDict.UserDict):
     def reset (self):
         """Reset to default values"""
         self['linknumber'] = 0
-        self["verbose"] = 0
-        self["warnings"] = 0
-        self["anchors"] = 0
-        self["noanchorcaching"] = 0
+        self["verbose"] = False
+        self["warnings"] = False
+        self["anchors"] = False
+        self["noanchorcaching"] = False
         self["externlinks"] = []
         self["internlinks"] = []
-        self["denyallow"] = 0
-        self["interactive"] = 0
+        self["denyallow"] = False
+        self["interactive"] = False
         # on ftp, password is set by Pythons ftplib
         self["authentication"] = [{'pattern': re.compile(r'^.+'),
 	                          'user': 'anonymous',
@@ -94,9 +94,8 @@ class Configuration (UserDict.UserDict):
         self["proxy"] = getproxies()
         self["recursionlevel"] = 1
         self["wait"] = 0
-        self["robotstxt"] = 1
-        self['cookies'] = 0
-        self["strict"] = 0
+        self['cookies'] = False
+        self["strict"] = False
         self["fileoutput"] = []
         # Logger configurations
         self["text"] = {
@@ -108,9 +107,9 @@ class Configuration (UserDict.UserDict):
             'colorurl':        '#dcd5cf',
             'colorborder':     '#000000',
             'colorlink':       '#191c83',
-            'tablewarning':    '<td bgcolor=#e0954e>',
-            'tableerror':      '<td bgcolor=#db4930>',
-            'tableok':         '<td bgcolor=#3ba557>',
+            'tablewarning':    '<td bgcolor="#e0954e">',
+            'tableerror':      '<td bgcolor="#db4930">',
+            'tableok':         '<td bgcolor="#3ba557">',
         }
         self['colored'] = {
             "filename":     "linkchecker-out.ansi",
@@ -146,7 +145,7 @@ class Configuration (UserDict.UserDict):
             "filename":     "linkchecker-out.xml",
         }
         self['log'] = self.newLogger('text')
-        self["quiet"] = 0
+        self["quiet"] = False
         self["warningregex"] = None
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER",None)
@@ -165,7 +164,7 @@ class Configuration (UserDict.UserDict):
         non-threading equivalents
 	"""
         debug(HURT_ME_PLENTY, "disable threading")
-        self["threads"] = 0
+        self["threads"] = False
         self.hasMoreUrls = self.hasMoreUrls_NoThreads
         self.finished = self.finished_NoThreads
         self.finish = self.finish_NoThreads
@@ -197,7 +196,7 @@ class Configuration (UserDict.UserDict):
         debug(HURT_ME_PLENTY, "enable threading with %d threads" % num)
         import Queue,Threader
         from threading import Lock
-        self["threads"] = "True"
+        self["threads"] = True
         self.hasMoreUrls = self.hasMoreUrls_Threads
         self.finished = self.finished_Threads
         self.finish = self.finish_Threads
@@ -323,7 +322,7 @@ class Configuration (UserDict.UserDict):
     def finished_Threads (self):
         time.sleep(0.1)
         if self.reduceCount==5:
-            self.reduceCount=0
+            self.reduceCount = 0
             self.threader.reduceThreads()
         else:
             self.reduceCount += 1
@@ -456,8 +455,8 @@ class Configuration (UserDict.UserDict):
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
-                self["verbose"] = 1
-                self["warnings"] = 1
+                self["verbose"] = True
+                self["warnings"] = True
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
         try: self["quiet"] = cfgparser.getboolean(section, "quiet")
         except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
@@ -511,7 +510,7 @@ class Configuration (UserDict.UserDict):
 
         section = "authentication"
 	try:
-	    i=1
+	    i = 1
 	    while 1:
                 auth = cfgparser.get(section, "entry%d" % i).split()
 		if len(auth)!=3: break
@@ -524,7 +523,7 @@ class Configuration (UserDict.UserDict):
 
         section = "filtering"
         try:
-            i=1
+            i = 1
             while 1:
                 tuple = cfgparser.get(section, "extern%d" % i).split()
                 if len(tuple)!=2:

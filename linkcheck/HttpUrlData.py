@@ -108,7 +108,7 @@ class HttpUrlData (ProxyUrlData):
         self.headers = None
         self.auth = None
         self.cookies = []
-        if self.config["robotstxt"] and not self.robotsTxtAllowsUrl():
+        if not self.robotsTxtAllowsUrl():
             self.setWarning(i18n._("Access denied by robots.txt, checked only syntax"))
             return
 
