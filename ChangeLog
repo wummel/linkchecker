@@ -1,5 +1,9 @@
 1.13.5 "" (released xx.xx.xxxx)
-  *
+  * Use xgettext with Python support for .pot file creation, adjusted
+    developer documentation.
+    Type: feature
+    Changed: doc/install.txt, po/Makefile, MANIFEST.in
+    Removed: po/pygettext.py, po/msgfmt.py
 
 1.13.4 "Shaun of the dead" (released 17.9.2004)
   * Catch HTTP cookie errors and add a warning.
