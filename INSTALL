@@ -58,4 +58,10 @@ to run the script.
    to point to your CGI script.
 4) load the lconline/index.html file, enter an URL and klick on the
    check button
-   If something goes wrong, check the error log of your web server.
+5) If something goes wrong, check the following:
+   a) look in the error log of your web server
+   b) be sure that you have enabled CGI support in your web server
+      do this by running other CGI scripts from which you know that
+      they are working
+   c) try to run the lc.cgi script by hand
+   d) try the testit() function in the lc.cgi script
