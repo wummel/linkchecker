@@ -158,6 +158,7 @@ def set_intern_url (url, klass, config):
                    linkcheck.checker.httpsurl.HttpsUrl,
                    linkcheck.checker.ftpurl.FtpUrl]:
         domain = urlparse.urlsplit(url)[1]
+        domain, is_idn = linkcheck.url.idna_encode(domain)
         if domain:
             domain = "://%s" % re.escape(domain)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern domain %r",
