@@ -69,7 +69,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s/" % nurl,
-            u"warning Missing trailing directory slash in ftp url",
+            u"warning Missing trailing directory slash in ftp url.",
             u"valid",
         ]
         self.direct(url, resultlines)

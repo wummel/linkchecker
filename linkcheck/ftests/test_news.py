@@ -39,7 +39,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"warning No NNTP server specified, skipping this URL",
+            u"warning No NNTP server was specified, skipping this URL.",
             u"valid",
         ]
         self.newstest(url, resultlines)
@@ -49,7 +49,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"warning No NNTP server specified, skipping this URL",
+            u"warning No NNTP server was specified, skipping this URL.",
             u"valid",
         ]
         self.newstest(url, resultlines)
@@ -63,7 +63,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
             u"warning Base URL is not properly normed. Normed url is %s." % nurl,
-            u"warning No NNTP server specified, skipping this URL",
+            u"warning No NNTP server was specified, skipping this URL.",
             u"valid",
         ]
         self.newstest(url, resultlines)
@@ -77,7 +77,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"cache key %s" % qurl,
             u"real url %s" % qurl,
             u"warning Base URL is not properly normed. Normed url is %s." % qurl,
-            u"warning No NNTP server specified, skipping this URL",
+            u"warning No NNTP server was specified, skipping this URL.",
             u"valid",
         ]
         self.newstest(url, resultlines)
@@ -108,7 +108,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"warning No NNTP server specified, skipping this URL",
+            u"warning No NNTP server was specified, skipping this URL.",
             u"valid",
         ]
         self.newstest(url, resultlines)
@@ -120,7 +120,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"warning No newsgroup specified in NNTP URL",
+            u"warning No newsgroup specified in NNTP URL.",
             u"valid",
         ]
         self.newstest(url, resultlines)
