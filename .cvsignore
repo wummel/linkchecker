@@ -16,3 +16,4 @@ locale
 share
 Packages.gz
 *.prof
+linkchecker-md5sums.txt

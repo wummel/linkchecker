@@ -1,5 +1,5 @@
 # This Makefile is only used by developers.
-PYTHON=python2.1
+PYTHON=python2.2
 VERSION=$(shell $(PYTHON) setup.py --version)
 PACKAGE=linkchecker
 NAME=$(shell $(PYTHON) setup.py --name)
