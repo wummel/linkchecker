@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 """_winreg convenience wrapper (currently readonly)"""
-# Copyright (C) 2001  Bastian Kleineidam (except helper functions below)
+# Copyright (C) 2001-2004  Bastian Kleineidam (except helper functions below)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 """store metadata and options"""
-# Copyright (C) 2000-2003  Bastian Kleineidam
+# Copyright (C) 2000-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
 Author =  _linkchecker_configdata.author
 HtmlAuthor = Author.replace(' ', '&nbsp;')
-Copyright = "Copyright © 2000-2003 "+Author
-HtmlCopyright = "Copyright &copy; 2000-2003 "+HtmlAuthor
+Copyright = "Copyright © 2000-2004 "+Author
+HtmlCopyright = "Copyright &copy; 2000-2004 "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
 Url = _linkchecker_configdata.url

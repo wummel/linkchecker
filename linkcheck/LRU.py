@@ -1,3 +1,6 @@
+# -*- coding: iso-8859-1 -*-
+"""implementation of an LRU queue"""
+
 class LRU (object):
     """
     Implementation of a length-limited O(1) LRU queue.
