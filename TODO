@@ -1,6 +1,9 @@
 Next releases:
 
-- new option --extern-strict
+- Python 2.4 made socket.sslerror a subclass of socket.error; can we
+  use that?
+
+- rethink intern/extern stuff, at least make new option --extern-strict
 
 - recursion into FTP links
 
