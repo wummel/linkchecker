@@ -112,7 +112,7 @@ Setup for Windows
    Change to the ``linkchecker-X.X.X`` directory and run
    ``c:> python setup.py build -c mingw32 bdist_wininst``.
    
-   This generates a binary installer 
+   This generates a binary installer
    ``dist\linkchecker-X.X.X.win32-py2.3.exe`` which you just have to
    execute.
 

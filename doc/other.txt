@@ -47,11 +47,6 @@ like LinkChecker.
   .. _linklint:
      http://www.linklint.org/
 
-- `LinkStatus`_ written in C++
-  
-  .. _LinkStatus:
-     http://linkstatus.paradigma.co.pt/EN/index.html
-
 - `webcheck`_ written in Python
   
   .. _webcheck:
