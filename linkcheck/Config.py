@@ -465,8 +465,7 @@ class Configuration (UserDict.UserDict):
                 self['log'] = self.newLogger(log)
             else:
                 self.warn(linkcheck._("invalid log option '%s'") % log)
-        except ConfigParser.Error, msg:
-            debug(HURT_ME_PLENTY, msg)
+        except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
                 self["verbose"] = 1
