@@ -6,6 +6,8 @@
   * clarify keyboard interrupt warning to wait for active connections
     to finish
     Changed files: linkcheck/__init__.py
+  * resolve &#XXX; number entity references
+    Changed files: linkcheck/StringUtil.py
 
 1.8.8
   * All amazon servers block HEAD requests with timeouts. Use GET as
