@@ -63,6 +63,9 @@ ExcList = [
    select.error,
 ]
 
+if hasattr(socket, "sslerror"):
+    ExcList.append(socket.sslerror)
+
 # regular expression to match an HTML tag with one given attribute
 _linkMatcher = r"""
     (?i)           # case insensitive

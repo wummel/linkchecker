@@ -1,3 +1,9 @@
+linkchecker (1.4.1) unstable; urgency=low
+
+  * Catch socket.sslerror for HTTPS connections.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 20 Mar 2002 00:27:13 +0100
+
 linkchecker (1.4.0) unstable; urgency=low
 
   * linkcheck/linkname.py: workaround for a bug regex matching with
