@@ -14,4 +14,4 @@ url telnet:
 error
 url http://localhost
 warning Missing '/' at end of URL
-error
+valid

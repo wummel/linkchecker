@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 # this file is _not_ the original Python2 regression test suite.
 

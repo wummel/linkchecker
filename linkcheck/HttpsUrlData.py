@@ -15,6 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import httplib
 from UrlData import UrlData
 from HttpUrlData import HttpUrlData
 from linkcheck import _, Config
