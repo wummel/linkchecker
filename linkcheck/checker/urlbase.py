@@ -187,6 +187,7 @@ class UrlBase (object):
                }
 
     def get_cache_keys (self):
+        """return cache key plus all aliases for caching in a list"""
         key = self.get_cache_key()
         if key is None:
             return []
@@ -196,7 +197,10 @@ class UrlBase (object):
         return self.consumer.cache.url_is_cached(self.get_cache_key())
 
     def get_cache_key (self):
-        # note: the host is already lowercase
+        """Get key to store this url data in the cache. Note that
+           this method is only called after self.build_url() succeeds.
+        """
+        assert self.anchor is not None
         if self.urlparts:
             if self.consumer.config["anchorcaching"]:
                 # do not ignore anchor
@@ -223,14 +227,14 @@ class UrlBase (object):
         self.urlparts = list(urlparse.urlsplit(self.url))
         # check userinfo@host:port syntax
         self.userinfo, host = urllib.splituser(self.urlparts[1])
-        x, port = urllib.splitport(host)
-        if port is not None and not linkcheck.url.is_numeric_port(port):
-            raise linkcheck.LinkCheckerError(_("URL has invalid port %r") %\
-                                             str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
+        x, port = urllib.splitport(host)
+        if port is not None and not linkcheck.url.is_numeric_port(port):
+            raise linkcheck.LinkCheckerError(_("URL has invalid port %r") %\
+                                             str(port))
 
     def check (self):
         try:
