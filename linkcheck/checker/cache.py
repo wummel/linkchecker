@@ -108,7 +108,7 @@ class Cache (object):
             self.lock.release()
 
     def incoming_add (self, url_data):
-        """add new URL to list of URLs to check"""
+        """add a new URL to list of URLs to check"""
         self.lock.acquire()
         try:
             linkcheck.log.debug(linkcheck.LOG_CACHE, "Add url %s..", url_data)
@@ -122,6 +122,7 @@ class Cache (object):
                 # url is cached and can be logged
                 url_data.copy_from_cache(self.checked[key])
                 return False
+            # url is not cached, so add to incoming queue
             self.incoming.append(url_data)
             linkcheck.log.debug(linkcheck.LOG_CACHE, "..added.")
             return True
@@ -160,16 +161,20 @@ class Cache (object):
             key = url_data.cache_url_key
             assert key not in self.checked
             assert key in self.in_progress
+            # move entry from self.in_progress to self.checked
             del self.in_progress[key]
             self.checked[key] = data
-            # also append all aliases
+            # also add all aliases to self.checked
             for key in url_data.aliases:
                 self.checked[key] = data
         finally:
             self.lock.release()
 
     def checked_redirect (self, redirect, url_data):
-        """check if redirect is already in cache"""
+        """Check if redirect is already in cache. Used for URL redirections
+           to avoid double checking of already cached URLs.
+           If the redirect URL is found in the cache, the result data is
+           already copied."""
         self.lock.acquire()
         try:
             if redirect in self.checked:
