@@ -9452,11 +9452,9 @@ static int input (yyscan_t yyscanner );
 #define YY_DECL_IS_OURS 1
 /* %if-c-only Standard (non-C++) definition */
 
-extern int yylex \
-               (YYSTYPE * yylval_param ,yyscan_t yyscanner);
+extern int yylex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
 
-#define YY_DECL int yylex \
-               (YYSTYPE * yylval_param , yyscan_t yyscanner)
+#define YY_DECL int yylex (YYSTYPE * yylval_param , yyscan_t yyscanner)
 /* %endif */
 /* %if-c++-only C++ definition */
 /* %endif */
@@ -9494,7 +9492,7 @@ YY_DECL
 
 
   /*********************** EOF ************************/
-#line 9497 "htmllex.c"
+#line 9495 "htmllex.c"
 
     yylval = yylval_param;
 
@@ -10885,7 +10883,7 @@ YY_RULE_SETUP
 #line 981 "htmllex.l"
 ECHO;
 	YY_BREAK
-#line 10888 "htmllex.c"
+#line 10886 "htmllex.c"
 
 	case YY_END_OF_BUFFER:
 		{
