@@ -1,3 +1,9 @@
+linkchecker (1.5.2) unstable; urgency=low
+
+  * add missing import for the log package
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 15 May 2002 19:13:36 +0200
+
 linkchecker (1.5.1) unstable; urgency=low
 
   * debian/control: remove python-ssl from suggests
