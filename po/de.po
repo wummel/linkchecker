@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
 "POT-Creation-Date: 2005-02-01 02:32+0100\n"
-"PO-Revision-Date: 2005-02-01 02:36+0100\n"
+"PO-Revision-Date: 2005-02-01 02:43+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -610,7 +610,7 @@ msgstr "Stunden"
 
 #: ../linkchecker:56
 msgid "USAGE\tlinkchecker [options] file-or-url...\n"
-msgstr "BENUTZUNG\tlinkchecker [options] datei-oder-url...\n"
+msgstr "BENUTZUNG\tlinkchecker [Optionen] datei-oder-url...\n"
 
 #: ../linkchecker:59
 msgid ""
@@ -1139,23 +1139,23 @@ msgstr "Drücken Sie RETURN zum Beenden"
 #: /usr/lib/python2.4/optparse.py:329
 #, python-format
 msgid "usage: %s\n"
-msgstr ""
+msgstr "Syntax: %s\n"
 
 #: /usr/lib/python2.4/optparse.py:348
 msgid "Usage"
-msgstr ""
+msgstr "Syntax"
 
 #: /usr/lib/python2.4/optparse.py:354
 msgid "integer"
-msgstr ""
+msgstr "Nummer"
 
 #: /usr/lib/python2.4/optparse.py:355
 msgid "long integer"
-msgstr ""
+msgstr "Nummer"
 
 #: /usr/lib/python2.4/optparse.py:356
 msgid "floating-point"
-msgstr ""
+msgstr "Fließkommazahl"
 
 #: /usr/lib/python2.4/optparse.py:357
 msgid "complex"
