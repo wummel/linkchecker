@@ -3,29 +3,31 @@ from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from UrlData import LinkCheckerException
 
-mailto_re = re.compile(r"^mailto:"
-                       r"(['\-\w.]+@[\-\w.]+(\?.+)?|"
-		       r"[\w\s]+<['\-\w.]+@[\-\w.]+(\?.+)?>)$")
+# regular expression strings
+tag_str = r"^mailto:"
+adress_str = r"([a-zA-Z]['\-\w.]*)@([\w\-]+(\.[\w\-]+)*))"
+complete_adress_str = "("+adress_str+"|[\w\-\s]*<"+adress_str+">)"
+suffix_str = r"(\?.+)?"
+mailto_str = tag_str+complete_adress_str+\
+             "(\s*,"+complete_adress_str+")*"+suffix_str
+
+# compiled
+mailto_re = re.compile(mailto_str)
+adress_re = re.compile(adress_str)
+
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
     
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
-        if not mailto_re.match(self.urlName):
+        mo = mailto_re.match(self.urlName)
+        if not mo:
             raise LinkCheckerException, "Illegal mailto link syntax"
-        self.host = self.urlName[7:]
-        i = string.find(self.host, "<")
-        j = string.find(self.host, ">")
-        if i!=-1 and j!=-1 and i<j:
-            self.host = self.host[i+1:j]
-        i = string.find(self.host, "@")
-        self.user = self.host[:i]
-        self.host = self.host[(i+1):]
-        i = string.find(self.host, "?")
-        if i!=-1:
-            self.host = self.host[:i]
-        self.host = string.lower(self.host)
-        # do not lower the user name
+        self.adresses = re.findall(adress_re, self.urlName)
+        Config.debug(str(self.adresses))
+        raise Exception, "Nix"
+        self.host = None
+        self.user = None
 
     def checkConnection(self, config):
         DNS.ParseResolvConf()

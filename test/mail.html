@@ -1,0 +1,14 @@
+<!-- extra mail checking -->
+<html><head></head>
+<body>
+<!-- legal -->
+<a href=mailto:calvin@localhost?subject=Hallo!%%&to=Pfuscher>1</a>
+<a href="mailto:Dude <calvin@studcs.uni-sb.de> , Killer <calvin@cs.uni-sb.de>?subject=bla">2</a>
+<a href="mailto:Bastian Kleineidam <calvin@host1>?foo=bar">3</a>
+<a href="mailto:Bastian Kleineidam <calvin@studcs.uni-sb.de>">4</a>
+<a href="mailto:o'hara@doctor.fraggle-hause?subject=הצü">5</a>
+<!-- illegal -->
+<a href="mailto:Bastian Kleineidam <calvin@host1?foo=bar>">3</a>
+<a href="mailto:">6</a>
+</body>
+</html>

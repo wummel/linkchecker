@@ -425,3 +425,33 @@ class BlacklistLogger:
             if self.blacklist[url] is None:
                 fd.write(url+"\n")
 
+
+class CSVLogger(StandardLogger):
+    """ CSV output. CSV consists of one line per entry. Entries are
+    separated by a semicolon.
+    """
+    def init(self):
+        self.fd.write("# created by "+Config.AppName+" at "+
+                _strtime(time.time())+
+		"\n# you get "+Config.AppName+" at "+Config.Url+
+		"\n# write comments and bugs to "+Config.Email+"\n\n")
+        self.fd.flush()
+
+    def newUrl(self, urlData):
+        self.fd.write(`urlData.urlName`+';'+
+		      `urlData.recursionLevel`+';'+
+		      `urlData.parentName`+';'+
+                      `urlData.baseRef`+';'+
+                      `urlData.errorString`+';'+
+                      `urlData.validString`+';'+
+                      `urlData.warningString`+';'+
+                      `urlData.infoString`+';'+
+                      `urlData.valid`+';'+
+                      `urlData.url`+';'+
+                      `urlData.line`+';'+
+                      `urlData.cached`+'\n')
+        self.fd.flush()
+
+    def endOfOutput(self):
+        self.fd = None
+

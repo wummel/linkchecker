@@ -9,19 +9,22 @@ Optionally packages:
 Distutils >= 0.8.1 from http://www.python.org/sigs/distutils-sig/ 
 OpenSSL from http://www.openssl.org
 
+
 Install with Distutils:
 If you have the Distutils, run "python setup.py install".
-How do you run this? Type the three words without the quotes in
-a command shell and press Return. Still clueless? Go away.
 
 
 Install without Distutils:
 Adjust the sys.path.append argument in the file 'linkchecker' to point 
 to the distribution directory.
-Now you can run "python linkchecker" to run LinkChecker.
+Now you can type "python linkchecker" (or on Unix: just "./linkchecker") to 
+run LinkChecker.
 
+Running LinkChecker from any directory:
+Unix users can put the "linkchecker" script somewhere in a directory in 
+their $path.
 For Windows users, I included a batch script 'linkchecker.bat'. You have to
 adjust the distribution directory in this script to point to the directory
 where the 'linkchecker' file is. Now you can copy 'linkchecker.bat' in
-a directory in your PATH and run it from anywhere.
+a directory in your PATH and run it.
 

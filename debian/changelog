@@ -1,4 +1,4 @@
-linkchecker (1.2.3) unstable; urgency=low
+linkchecker (1.3.0) unstable; urgency=low
 
   * Blacklist output support
   * typo fix for adjustWinPath
@@ -8,8 +8,9 @@ linkchecker (1.2.3) unstable; urgency=low
   * linkchecker.bat installation support for windows
   * included test suite in distribution
   * Improved mailto: link parsing
+  * CSV output support
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 27 Apr 2000 10:18:52 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 28 Apr 2000 12:59:13 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 

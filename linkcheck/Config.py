@@ -8,9 +8,10 @@ This module stores
 
 import ConfigParser,sys,os,re,UserDict,string
 from os.path import expanduser,normpath,normcase,join,isfile
+from types import StringType
 import Logging
 
-Version = "1.2.3"
+Version = "1.3.0"
 AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
@@ -32,19 +33,11 @@ Loggers = {
     "colored": Logging.ColoredLogger,
     "gml": Logging.GMLLogger,
     "sql": Logging.SQLLogger,
+    "csv": Logging.CSVLogger,
     "blacklist": Logging.BlacklistLogger,
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
-
-# File output names
-FileOutput = {
-    "text":    "linkchecker-out.txt",
-    "html":    "linkchecker-out.html",
-    "colored": "linkchecker-out.asc",
-    "gml":     "linkchecker-out.gml",
-    "sql":     "linkchecker-out.sql"
-}
 
 # debug options
 DebugDelim = "==========================================================\n"
@@ -86,6 +79,14 @@ class Configuration(UserDict.UserDict):
         self.data["robotstxt"] = 0
         self.data["strict"] = 0
         self.data["fileoutput"] = []
+        self.data["fileoutputnames"] = {
+            "text":    "linkchecker-out.txt",
+            "html":    "linkchecker-out.html",
+            "colored": "linkchecker-out.asc",
+            "gml":     "linkchecker-out.gml",
+            "sql":     "linkchecker-out.sql",
+            "csv":     "linkchecker-out.csv",
+        }
         self.data["quiet"] = 0
         self.data["warningregex"] = None
         self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
@@ -339,12 +340,19 @@ class Configuration(UserDict.UserDict):
         try: self.data["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error: pass
         try:
+	    filenames = eval(cfgparser.get(section, "fileoutputnames"))
+            for key in filenames.keys():
+                if self.data["fileoutputnames"].has_key(key) and \
+                   type(filenames[key]) == StringType:
+                    self.data["fileoutputnames"] = filenames[key]
+        except ConfigParser.Error: pass
+        try:
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
                 # no file output for the blacklist Logger
                 if Loggers.has_key(arg) and arg != "blacklist":
 		    self.data["fileoutput"].append(Loggers[arg](
-		        open(FileOutput[arg], "w")))
+		        open(self.data["fileoutputnames"][arg], "w")))
 	except ConfigParser.Error: pass
 
         section="checking"
