@@ -33,6 +33,7 @@ class UrlData:
         self.time = _time
         self.cached = 0
         self.urlConnection = None
+        self.extern = 1
         
         
     def setError(self, s):
@@ -94,7 +95,9 @@ class UrlData:
             self.setError("URL is null or empty")
             self.logMe(config)
             return
-        try: self.buildUrl()
+        try:
+	    self.buildUrl()
+            self.extern = self._isExtern(config)
         except:
             type, value = sys.exc_info()[:2]
             self.setError(str(value))
@@ -111,7 +114,7 @@ class UrlData:
         
         # apply filter
         Config.debug("DEBUG: checking filter\n")
-        if config["strict"] and self.isExtern(config):
+        if config["strict"] and self.extern:
             self.setWarning("outside of domain filter, checked only syntax")
             self.logMe(config)
             return
@@ -161,7 +164,7 @@ class UrlData:
                self.isHtml() and \
                not self.cached and \
                self.recursionLevel < config["recursionlevel"] and \
-               not self.isExtern(config)
+               not self.extern
 
     def isHtml(self):
         return 0
@@ -174,7 +177,7 @@ class UrlData:
                 return
         self.setWarning("anchor #"+anchor+" not found")
 
-    def isExtern(self, config):
+    def _isExtern(self, config):
         if len(config["externlinks"])==0 and len(config["internlinks"])==0:
             return 0
         # deny and allow external checking

@@ -53,11 +53,11 @@ class HttpUrlData(UrlData):
             self.setWarning("Access denied by robots.txt, checked only syntax")
             return
             
-        status, statusText, self.mime = self.getHttpRequest()
+        status, statusText, self.mime = self._getHttpRequest()
         Config.debug(str(self.mime))
         if status == 401:
             self.auth = base64.encodestring(LinkChecker.User+":"+LinkChecker.Password)
-            status, statusText, self.mime = self.getHttpRequest()
+            status, statusText, self.mime = self._getHttpRequest()
         if status >= 400:
             self.setError(`status`+" "+statusText)
             return
@@ -68,7 +68,7 @@ class HttpUrlData(UrlData):
         while status in [301,302] and self.mime and tries < 5:
             redirected = urlparse.urljoin(redirected, self.mime.getheader("Location"))
             self.urlTuple = urlparse.urlparse(redirected)
-            status, statusText, self.mime = self.getHttpRequest()
+            status, statusText, self.mime = self._getHttpRequest()
             Config.debug("\nRedirected\n"+str(self.mime))
             tries = tries + 1
     
@@ -86,7 +86,7 @@ class HttpUrlData(UrlData):
             self.setValid(`status`+" "+statusText)
 
         
-    def getHttpRequest(self, method="HEAD"):
+    def _getHttpRequest(self, method="HEAD"):
         "Put request and return (status code, status text, mime object)"
         if self.proxy:
             host = self.proxy+":"+`self.proxyport`
@@ -94,7 +94,7 @@ class HttpUrlData(UrlData):
             host = self.urlTuple[1]
         if self.urlConnection:
             self.closeConnection()
-        self.urlConnection = httplib.HTTP(host)
+        self.urlConnection = self._getHTTPObject(host)
         if self.proxy:
             path = urlparse.urlunparse(self.urlTuple)
         else:
@@ -110,10 +110,13 @@ class HttpUrlData(UrlData):
         self.urlConnection.endheaders()
         return self.urlConnection.getreply()
 
+    def _getHTTPObject(self, host):
+        return httplib.HTTP(host)
+
     def getContent(self):
         self.closeConnection()
         t = time.time()
-        self.getHttpRequest("GET")
+        self._getHttpRequest("GET")
         self.urlConnection = self.urlConnection.getfile()
         data = StringUtil.stripHtmlComments(self.urlConnection.read())
         self.time = time.time() - t
@@ -129,7 +132,7 @@ class HttpUrlData(UrlData):
             if config.robotsTxtCache_has_key(self.urlTuple[1]):
                 robotsTxt = config.robotsTxtCache_get(self.urlTuple[1])
             else:
-                robotsTxt = RobotsTxt(self.urlTuple[1], Config.UserAgent)
+                robotsTxt = RobotsTxt(self.urlTuple, Config.UserAgent)
                 Config.debug("DEBUG: "+str(robotsTxt)+"\n")
                 config.robotsTxtCache_set(self.urlTuple[1], robotsTxt)
         except:

@@ -9,5 +9,3 @@ class JavascriptUrlData(UrlData):
 
     def __str__(self):
         return "Javascript link\n"+UrlData.__str__(self)
-    
-    

@@ -51,7 +51,7 @@ class StandardLogger:
         self.errors=0
         self.warnings=0
         self.fd = fd
-        if fd==sys.stdout:
+        if fd==sys.stdout or fd==sys.stderr:
             self.willclose=0
         else:
             self.willclose=1
@@ -282,16 +282,18 @@ class ColoredLogger(StandardLogger):
 
 
 class GMLLogger(StandardLogger):
-
+    """GML means Graph Modeling Language. Use a GML tool to see
+    your sitemap graph.
+    """
     def __init__(self,fd=sys.stdout):
         StandardLogger.__init__(self,fd)
         self.nodes = []
 
     def init(self):
-        self.fd.write("graph [\n  Creator \""+Config.AppName+\
-		    "\"\n  comment \"you get pylice at "+Config.Url+\
-            "\"\n  comment \"write comments and bugs to "+Config.Email+\
-			"\"\n  directed 1\n")
+        self.fd.write("# created by "+Config.AppInfo+" at "+_currentTime()+\
+	    "\n# you get "+Config.AppName+"  at "+Config.Url+\
+            "\n# comment \"write comments and bugs to "+Config.Email+\
+	    "\ngraph [\n  directed 1\n")
         self.fd.flush()
 
     def newUrl(self, urlData):
@@ -303,17 +305,28 @@ class GMLLogger(StandardLogger):
         nodeid = 1
         for node in self.nodes:
             if node.url and not writtenNodes.has_key(node.url):
-                self.fd.write("  node [\n    id "+`nodeid`+"\n    label \""+
-                    node.url+"\"\n  ]\n")
+                self.fd.write("  node [\n")
+		self.fd.write("    id     "+`nodeid`+"\n")
+                self.fd.write('    label  "'+node.url+'"'+"\n")
+                if node.time:
+                    self.fd.write("    dltime "+`node.time`+"\n")
+                self.fd.write("    extern ")
+		if node.extern: self.fd.write("1")
+		else: self.fd.write("0")
+		self.fd.write("\n  ]\n")
                 writtenNodes[node.url] = nodeid
                 nodeid = nodeid + 1
         # write edges
         for node in self.nodes:
             if node.url and node.parentName:
-                self.fd.write("  edge [\n    label \""+node.urlName+\
-				    "\"\n    source "+`writtenNodes[node.parentName]`+\
-                    "\n    target "+`writtenNodes[node.url]`+\
-                    "\n  ]\n")
+                self.fd.write("  edge [\n")
+		self.fd.write('    label  "'+node.urlName+'"\n')
+	        self.fd.write("    source "+`writtenNodes[node.parentName]`+"\n")
+                self.fd.write("    target "+`writtenNodes[node.url]`+"\n")
+                self.fd.write("    valid  ")
+                if node.valid: self.fd.write("1")
+                else: self.fd.write("0")
+                self.fd.write("\n  ]\n")
         # end of output
         self.fd.write("]\n")
         self.fd.flush()
@@ -321,16 +334,15 @@ class GMLLogger(StandardLogger):
 
 
 class SQLLogger(StandardLogger):
-    """ SQL output, only tested with PostgreSQL"""
-
+    """ SQL output for PostgreSQL, not tested"""
     def init(self):
-        self.fd.write("-- created by "+Config.AppName+" at "+_currentTime()+\
-		"\n-- you get pylice at "+Config.Url+\
+        self.fd.write("-- created by "+Config.AppInfo+" at "+_currentTime()+\
+		"\n-- you get "+Config.AppName+" at "+Config.Url+\
 		"\n-- write comments and bugs to "+Config.Email+"\n\n")
         self.fd.flush()
 
     def newUrl(self, urlData):
-        self.fd.write("insert into pylicedb(urlname,"+\
+        self.fd.write("insert into linksdb(urlname,"+\
 		    "recursionlevel,"+\
 			"parentname,"+\
 			"baseref,"+\

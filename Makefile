@@ -1,4 +1,14 @@
-VERSION=0.9.0
+PY_INCLDIR = -I/usr/include/python1.5
+PY_LIBDIR = -L/usr/lib
+SSL_INCLDIR = -I/usr/include/openssl
+SSL_LIBDIR = -L/usr/lib
+
+CC = gcc
+CFLAGS = -O2 -Wall
+LDFLAGS = -shared $(SSL_LIBDIR) $(PY_LIBDIR)
+CPPFLAGS = $(SSL_INCLDIR) $(PY_INCLDIR)
+
+VERSION=1.1.0
 HOST=treasure.calvinsplayground.de
 #HOST=fsinfo.cs.uni-sb.de
 PACKAGE = linkchecker
@@ -9,12 +19,14 @@ ALLPACKAGES = ../$(BZ2PACKAGE) ../$(DEBPACKAGE) ../$(ZIPPACKAGE)
 .PHONY: test clean files install all
 TAR = tar
 ZIP = zip
-prefix = /usr/local
 
-all:
+all:	ssl.so
+
+ssl.so:	ssl.o
+	$(CC) $(LDFLAGS) -o $@ $? -lssl -lcrypto -lpython1.5
 
 clean:
-	rm -f $(ALLPACKAGES) $(PACKAGE)-out.*
+	rm -f ssl.{so,o} $(ALLPACKAGES) $(PACKAGE)-out.*
 
 files: all
 	./$(PACKAGE) -q -Wtext -Whtml -Wgml -Wsql -R -r2 -v -i "$(HOST)" http://$(HOST)/~calvin/
@@ -22,7 +34,7 @@ files: all
 install:	install-dirs
 	install -m644 linkcheck/*.py? $(DESTDIR)/usr/share/$(PACKAGE)/linkcheck
 	install -m644 DNS/*.py? $(DESTDIR)/usr/share/$(PACKAGE)/DNS
-	install -m644 *.py? $(DESTDIR)/usr/share/$(PACKAGE)
+	install -m644 ssl.so *.py? $(DESTDIR)/usr/share/$(PACKAGE)
 	install -m755 $(PACKAGE) $(DESTDIR)/usr/bin
 	install -m644 $(PACKAGE)rc $(DESTDIR)/etc
 	
@@ -30,8 +42,6 @@ install-dirs:
 	install -d -m755 \
 	$(DESTDIR)/usr/share/$(PACKAGE)/linkcheck \
 	$(DESTDIR)/usr/share/$(PACKAGE)/DNS \
-	$(DESTDIR)/usr/share/$(PACKAGE)/GML \
-	$(DESTDIR)/usr/share/$(PACKAGE)/PyLR \
 	$(DESTDIR)/usr/bin \
 	$(DESTDIR)/etc
 

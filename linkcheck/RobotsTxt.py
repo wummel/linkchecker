@@ -1,14 +1,19 @@
 import re,urlparse,string,httplib,urllib,sys,StringUtil,Config
 
 class RobotsTxt:
-    def __init__(self, base, useragent):
+    def __init__(self, urltuple, useragent):
         self.entries = []
         self.disallowAll = 0
         self.allowAll = 0
-        self.base = base
+        self.base = urltuple[0]+"://"+urltuple[1]+"/robots.txt"
         
         try:
-            urlConnection = httplib.HTTP(base)
+            urlConnection = None
+            if urltuple[0]=="http":
+                urlConnection = httplib.HTTP(urltuple[1])
+            else:
+                import httpslib
+                urlConnection = httpslib.HTTPS(urltuple[1])
             urlConnection.putrequest("GET", "/robots.txt")
             urlConnection.putheader("User-agent", useragent)
             urlConnection.endheaders()

@@ -6,8 +6,9 @@ Features:
 o recursive checking
 o multithreaded
 o output can be colored or normal text, HTML, SQL or a GML sitemap graph
-o HTTP, FTP, mailto:, Gopher, Telnet and local file links are supported
-  Javascript and HTTPS links are currently ignored
+o HTTP/1.1, HTTPS, FTP, mailto:, Gopher, Telnet and local file links 
+  are supported
+  Javascript links are currently ignored
 o restrict link checking to your local domain
 o HTTP proxy support
 o give username/password for HTTP and FTP authorization
@@ -23,3 +24,7 @@ robots.txt parse algorithm.
 I want to thank everybody who gave me feedback, bug reports and
 suggestions.
 
+Included packages:
+httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
+PyLR parser from http://starship.python.net/crew/scott/PyLR.html
+DNS see README.dns

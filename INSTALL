@@ -11,8 +11,12 @@ Unix Users:
 1. Edit the file linkchecker.
    Adjust the argument to sys.path.append to point to the distribution 
    directory.
-2. Copy linkchecker to a location in your PATH (or make a symlink).
-3. Check links happily by typing `linkchecker`.
+2. HTTPS support (optional, you need SSLeay)
+   Adjust the paths at the top of the Makefile
+   Type "make" to produce the SSL module
+3. Copy linkchecker to a location in your PATH (or make a symlink).
+4. Check links happily by typing `linkchecker`.
+
 
 Windows Users:
 1. Edit the file linkchecker.
@@ -21,8 +25,11 @@ Windows Users:
 2. Edit the file linkchecker.bat.
    a) Adjust the PYHTON variable to point to python.exe.
    b) Adjust the LINKCHECKER variable to point to the distribution directory.
-3. Add the distribution directory to your PATH.
-4. Check links happily by typing `linkchecker.bat`.
+3. HTTPS support (optional, you need SSLeay)
+   Compile ssl.dll from ssl.c
+4. Add the distribution directory to your PATH.
+5. Check links happily by typing `linkchecker.bat`.
+
 
 You need Python >= 1.5.2
 You get Python from http://www.python.org

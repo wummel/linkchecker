@@ -1,13 +1,30 @@
 from UrlData import UrlData
+from HttpUrlData import HttpUrlData
+_supportHttps=1
+try: import httpslib
+except: _supportHttps=0
 
-class HttpsUrlData(UrlData):
-    "Url link with https scheme"
-    
+class HttpsUrlData(HttpUrlData):
+    """Url link with https scheme"""
+
+    def __init__(self,
+                 urlName,
+                 recursionLevel, 
+                 parentName = None,
+                 baseRef = None,
+                 line = 0, _time = 0):
+        HttpUrlData.__init__(self, urlName, recursionLevel,
+                             parentName, baseRef, line, _time)
+
+    def _getHTTPObject(self, host):
+        return httpslib.HTTPS(host)
+
     def check(self, config):
-        self.setWarning("Https url ignored")
-        self.logMe(config)
-    
+        if _supportHttps:
+            HttpUrlData.check(self, config)
+        else:
+            self.setWarning("HTTPS url ignored")
+            self.logMe(config)
+
     def __str__(self):
         return "HTTPS link\n"+UrlData.__str__(self)
-    
-    

@@ -11,7 +11,7 @@ Copyright = "Copyright © 2000 by "+Author
 HtmlCopyright = "Copyright &copy; 2000 by "+Author
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
-Url = "http://pylice.sourceforge.net/"
+Url = "http://linkchecker.sourceforge.net/"
 Email = "calvin@users.sourceforge.net"
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
