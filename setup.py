@@ -214,7 +214,6 @@ if os.name == 'nt':
     # windows does not have unistd.h
     define_macros.append(('YY_NO_UNISTD_H', None))
 else:
-    macros = []
     # for gcc 3.x we could add -std=gnu99 to get rid of warnings, but
     # that breaks other compilers
     extra_compile_args.append("-pedantic")
