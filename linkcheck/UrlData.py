@@ -353,6 +353,7 @@ class UrlData:
         for rx, user, password in config["authentication"]:
             if rx.match(self.url):
                 return user, password
+        return None,None
 
 
 from FileUrlData import FileUrlData

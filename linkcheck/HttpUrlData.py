@@ -97,11 +97,11 @@ class HttpUrlData(UrlData):
                     import base64,string
                     _user, _password = self._getUserPassword(config)
                     self.auth = "Basic "+\
-                        string.strip(base64.encodestring(_user+":"+_password))
+                        base64.encodestring("%s:%s" % (_user, _password))
                 status, statusText, self.mime = self._getHttpRequest()
                 Config.debug("DEBUG: Authentication "+_user+"/"+_password+"\n")
 
-            # Netscape Enterprise Server returns errors with HEAD
+            # Netscape Enterprise Server 3 returns errors with HEAD
             # request, but valid urls with GET request. Bummer!
             elif status>=400 and self.mime:
                 server = self.mime.getheader("Server")

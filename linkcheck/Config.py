@@ -96,7 +96,9 @@ class Configuration(UserDict.UserDict):
         self.data["externlinks"] = []
         self.data["internlinks"] = []
         self.data["allowdeny"] = 0
-        self.data["authentication"] = []
+        self.data["authentication"] = [(re.compile(r'^.+$'),
+	                               'anonymous',
+	                               'joe@')]
         self.data["proxy"] = 0
         self.data["proxyport"] = 8080
         self.data["recursionlevel"] = 1
@@ -475,7 +477,6 @@ class Configuration(UserDict.UserDict):
                 self.data["authentication"].append(tuple)
                 i = i + 1
         except ConfigParser.Error: pass
-        self.data["authentication"].append((re.compile(".*"), "anonymous", "guest@"))
 
         section = "filtering"
         try:

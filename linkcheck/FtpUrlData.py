@@ -33,6 +33,8 @@ class FtpUrlData(UrlData):
     
     def checkConnection(self, config):
         _user, _password = self._getUserPassword(config)
+        if _user is None or _password is None:
+            raise linkcheck.error, _("No user or password found")
         self.urlConnection = ftplib.FTP(self.urlTuple[1], _user, _password)
         info = self.urlConnection.getwelcome()
         if not info:
