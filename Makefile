@@ -21,7 +21,7 @@ PYLINTBROKEN = linkcheck/lc_cgi.py
 PYLINTFILES = $(filter-out $(PYLINTBROKEN),$(PYFILES))
 
 all:
-	@echo "Read the file doc/install.txt to see how to build and install"
+	@echo "Read the file doc/install.txt to see how to build and install this package."
 
 clean:
 # ignore errors of this command
