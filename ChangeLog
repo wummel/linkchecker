@@ -1,12 +1,15 @@
 2.2 "" (released xx.xx.2005)
 
-  * Write CSV column headers as the first row.
-    Thanks to Hartmut Goebel.
+  * CSV log format changes:
+    - default separator is now a comma, not a semicolon
+    - the quotechar can be configured and defaults to a double quote
+    - write CSV column headers as the first data row
+      (thanks to Hartmut Goebel)
     Type: feature
     Changed: linkcheck/logger/csv.py
 
   * Support bzip-compressed man pages in RPM install script.
-    Also from Hartmut Goebel.
+    From Hartmut Goebel.
     Type: feature
     Changed: install-rpm.sh
 
