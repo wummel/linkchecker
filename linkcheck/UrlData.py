@@ -29,17 +29,36 @@ try:
 except ImportError:
     pass
 
-LinkTags = [("a",     "href"),
-            ("img",   "src"),
-            ("form",  "action"),
-            ("body",  "background"),
-            ("frame", "src"),
-            ("link",  "href"),
-            # <meta http-equiv="refresh" content="x; url=...">
-            ("meta",  "url"),  
-            ("area",  "href")]
+_linkMatcher = r"""
+    (?i)          # case insensitive
+    <             # open tag
+    \s*           # whitespace
+    %s            # tag name
+    \s+           # whitespace
+    [^>]*?        # skip leading attributes
+    %s            # attrib name
+    \s*           # whitespace
+    =             # equal sign
+    \s*           # whitespace
+    (?P<value>    # attribute value
+     ".*?" |      # in double quotes
+     '.*?' |      # in single quotes
+     [^\s>]+)     # unquoted
+    [^>]*         # skip trailing attributes
+    >             # close tag
+    """
 
-
+LinkPatterns = (
+    re.compile(_linkMatcher % ("a", "href"), re.VERBOSE),
+    re.compile(_linkMatcher % ("img",   "src"), re.VERBOSE),
+    re.compile(_linkMatcher % ("form",  "action"), re.VERBOSE),
+    re.compile(_linkMatcher % ("body",  "background"), re.VERBOSE),
+    re.compile(_linkMatcher % ("frame", "src"), re.VERBOSE),
+    re.compile(_linkMatcher % ("link",  "href"), re.VERBOSE),
+    # <meta http-equiv="refresh" content="x; url=...">
+    re.compile(_linkMatcher % ("meta",  "url"), re.VERBOSE),
+    re.compile(_linkMatcher % ("area",  "href"), re.VERBOSE),
+)
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
@@ -290,7 +309,8 @@ class UrlData:
         Config.debug(Config.DebugDelim+"Parsing recursively into\n"+\
                          str(self)+"\n"+Config.DebugDelim)
         # search for a possible base reference
-        bases = self.searchInForTag("base", "href")
+        bases = self.searchInForTag(re.compile(_linkMatcher % ("base",
+	        "href"), re.VERBOSE))
         baseRef = None
         if len(bases)>=1:
             baseRef = bases[0][0]
@@ -298,19 +318,15 @@ class UrlData:
                 self.setWarning("more than one base tag found")
             
         # search for tags and add found tags to URL queue
-        for start,end in LinkTags:
-            urls = self.searchInForTag(start,end)
-            Config.debug("DEBUG: tag=%s %s, urls=%s\n" % (start,end,urls))
+        for pattern in LinkPatterns:
+            urls = self.searchInForTag(pattern)
             for url,line in urls:
                 config.appendUrl(GetUrlDataFrom(url,
                         self.recursionLevel+1, self.url, baseRef, line))
 
 
-    def searchInForTag(self, tag_start, tag_end):
+    def searchInForTag(self, pattern):
         urls = []
-        prefix=r"<\s*"+tag_start+r"\s+[^>]*?"+tag_end+r"\s*=\s*"
-        suffix="[^>]*>"
-        pattern = re.compile(prefix+"([^\"\s>]+|\"[^\"]+\")"+suffix, re.I)
         index = 0
         while 1:
             match = pattern.search(self.getContent(), index)
@@ -318,7 +334,7 @@ class UrlData:
             index = match.end()
             if self._isInComment(match.start()): continue
             # need to strip optional ending quotes for the meta tag
-            urls.append((string.strip(StringUtil.stripQuotes(match.group(1))), 
+            urls.append((string.strip(StringUtil.stripQuotes(match.group('value'))),
                           StringUtil.getLineNumber(self.getContent(), 
                                                    match.start())))
         return urls

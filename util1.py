@@ -1,5 +1,17 @@
 import sys,time,rotor,types
 
+_curses = None
+try:
+    from ncurses import curses
+    _curses = curses
+except ImportError:
+    try:
+        import curses
+        _curses = curses
+    except ImportError:
+        pass
+
+
 _bs = [
 ['\023\335\233\203\2323\016',
  '\023\335\233\215\324\244\016',
@@ -38,15 +50,11 @@ _3 = '\236\177\246\304\351F\203(\005z\375\220\324)\201\266z*j\342\344l\323\0325\
 _4 = '\222\360P\277\330\300\246\3670\256\303\223\036\311['
 
 def abbuzze():
-    try: import curses
-    except ImportError:
-        print "Sorry, this operating system can not wash clothes!"
+    if not _curses:
+        print "Sorry, this operating system can not wash clothes."
         return
-    w = curses.initscr() # initialize the curses library
-    curses.nonl()        # tell curses not to do NL->CR/NL on output
-    curses.noecho()      # don't echo input
-    curses.cbreak()      # take input chars one at a time, no wait for \n
-    curses.meta(1)       # allow 8-bit chars
+    w = _curses.initscr() # initialize the curses library
+    config_curses()
     my,mx = w.getmaxyx()
     b = w.subwin(my-2, mx, 0, 0)
     s = w.subwin(my-2, 0)
@@ -63,7 +71,23 @@ def abbuzze():
     abspann(curses.newwin(8, 30, 0, 0))
     w.erase()
     w.refresh()
-    curses.endwin()
+    _curses.endwin()
+
+def config_curses():
+    _curses.nonl()        # tell curses not to do NL->CR/NL on output
+    _curses.noecho()      # don't echo input
+    _curses.cbreak()      # take input chars one at a time, no wait for \n
+    _curses.meta(1)       # allow 8-bit chars
+    if hasattr(_curses, "start_color"):
+        _curses.start_color() # start the colour system
+        if _curses.has_colors():
+            if _curses.can_change_color():
+                pass
+            else:
+                _curses.init_pair(1, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+                _curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+                _curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+                _curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
 
 
 def waddemol(f):
@@ -136,7 +160,7 @@ if __name__=='__main__':
     try:
         abbuzze()
     except:
-        curses.endwin()
+        _curses.endwin()
         type, value = sys.exc_info()[:2]
         print type,value
         print "Sorry, your washing machine is broken!"
