@@ -1,3 +1,8 @@
+1.10.1 (release xx.xx.xxxx)
+  * added Mandrake .spec file from Chris Green <cmg@dok.org>
+    Added: linkchecker.spec
+    Changed: MANIFEST.in
+
 1.10.0 (released 7.12.2003)
   * catch httplib errors in robotparser
     Changed: linkcheck/robotparser2.py
