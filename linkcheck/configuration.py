@@ -67,6 +67,7 @@ class Configuration (dict):
         self["warnings"] = False
         self["anchors"] = False
         self["anchorcaching"] = True
+        self["externstrictall"] = False
         self["externlinks"] = []
         self["internlinks"] = []
         self["denyallow"] = False
@@ -81,8 +82,7 @@ class Configuration (dict):
         self["recursionlevel"] = -1
         self["wait"] = 0
         self['cookies'] = False
-        self["strict"] = False
-        self["status"] = False
+        self["status"] = True
         self["fileoutput"] = []
         # Logger configurations
         self["text"] = {
@@ -282,7 +282,7 @@ class Configuration (dict):
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
-            self["strict"] = cfgparser.getboolean(section, "strict")
+            self["externstrictall"] = cfgparser.getboolean(section, "externstrictall")
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:

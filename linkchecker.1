@@ -32,7 +32,7 @@ links outside of this domain:
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
-  \fBlinkchecker --intern='!^mailto:' --strict www.mysite.org\fP
+  \fBlinkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org\fP
 
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
@@ -132,7 +132,7 @@ Check recursively all links up to given \fIdepth\fP.
 A negative depth will enable inifinite recursion.
 Default depth is inifinite.
 .TP
-\fB-s\fP, \fB--strict\fP
+\fB-s\fP, \fB--extern-strict-all\fP
 Check only the syntax of external links, do not try to connect to them.
 For local file urls, only local files are internal. For
 http and ftp urls, all urls at the same domain name are internal.

@@ -61,7 +61,7 @@ o URLs on the command line starting with "ftp." are treated like
 o If you have your system configured to automatically establish a
   connection to the internet (e.g. with diald), it will connect when
   checking links not pointing to your local system.
-  See the --strict option on how to prevent this.
+  See the --extern-strict-all option on how to prevent this.
 o Javascript links are currently ignored.
 o If your platform does not support threading, LinkChecker disables it
   automatically.
@@ -80,7 +80,7 @@ links outside of this domain:
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
-  linkchecker --intern='!^mailto:' --strict www.mysite.org
+  linkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org
 
 Checking a local HTML file on Unix:
   linkchecker ../bla.html
@@ -279,25 +279,25 @@ group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
                  help=_(
 """Check recursively all links up to given depth. A negative depth
 will enable inifinite recursion. Default depth is infinite."""))
-group.add_option("-e", "--extern", type="string", action="append", dest="extern",
-                 help=_(
-"""Assume urls that match the given expression as external.
-Only internal HTML links are checked recursively."""))
 group.add_option("-i", "--intern", type="string", action="append", dest="intern",
                  help=_(
 """ regex, --intern=regex
 Assume URLs that match the given expression as internal.
 LinkChecker descends recursively only to internal URLs, not to
 external."""))
+group.add_option("-e", "--extern", type="string", action="append", dest="extern",
+                 help=_(
+"""Assume urls that match the given expression as external.
+Only internal HTML links are checked recursively."""))
+group.add_option("-s", "--extern-strict-all", action="store_true",
+                 dest="externstrictall", help=_(
+"""Check only syntax of external links, do not try to connect to them.
+For local file urls, only local files are internal. For
+http and ftp urls, all urls at the same domain name are internal."""))
 group.add_option("-d", "--denyallow", action="store_true", dest="denyallow",
                  help=_(
 """Swap checking order to external/internal. Default checking order
 is internal/external."""))
-group.add_option("-s", "--strict", action="store_true", dest="strict",
-                 help=_(
-"""Check only syntax of external links, do not try to connect to them.
-For local file urls, only local files are internal. For
-http and ftp urls, all urls at the same domain name are internal."""))
 group.add_option("-C", "--cookies", action="store_true", dest="cookies",
                  help=_(
 """Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -419,8 +419,8 @@ if options.quiet is not None:
     config["quiet"] = options.quiet
 if options.recursionlevel is not None:
     config["recursionlevel"] = options.recursionlevel
-if options.strict is not None:
-    config["strict"] = options.strict
+if options.externstrictall is not None:
+    config["externstrictall"] = options.externstrictall
 if options.status is not None:
     config['status'] = options.status
 if options.threads is not None:
