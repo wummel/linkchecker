@@ -128,7 +128,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             # first try with HEAD
             self.method = "HEAD"
         fallback_GET = False
-        redirect_cache = [self.url]
         while True:
             try:
                 response = self._get_http_response()
@@ -136,7 +135,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
                     self.method = "GET"
-                    redirect_cache = [self.url]
+                    #redirect_cache = [self.url]
                     fallback_GET = True
                     continue
                 raise
@@ -154,13 +153,12 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
             try:
-                tries, response = \
-                    self.follow_redirections(response, redirect_cache)
+                tries, response = self.follow_redirections(response)
             except linkcheck.httplib2.BadStatusLine:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
                     self.method = "GET"
-                    redirect_cache = [self.url]
+                    #XXXredirect_cache = [self.url]
                     fallback_GET = True
                     continue
                 raise
@@ -171,7 +169,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     self.method = "GET"
-                    redirect_cache = [self.url]
+                    #XXXredirect_cache = [self.url]
                     fallback_GET = True
                     continue
                 self.set_result(_("more than %d redirections, aborting") % \
@@ -194,7 +192,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 if self.method == "HEAD":
                     # fall back to GET
                     self.method = "GET"
-                    redirect_cache = [self.url]
+                    #XXXredirect_cache = [self.url]
                     fallback_GET = True
                     continue
             elif self.headers and self.method != "GET":
@@ -218,7 +216,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # check response
         self.check_response(response, fallback_GET)
 
-    def follow_redirections (self, response, redirect_cache):
+    def follow_redirections (self, response):
         """follow all redirections of http response"""
         linkcheck.log.debug(linkcheck.LOG_CHECK, "follow all redirections")
         redirected = self.url
@@ -232,24 +230,21 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.add_info(_("Redirected to %(url)s") % {'url': redirected})
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 redirected)
-            # note: urlparts has to be a list
-            self.urlparts = list(urlparse.urlsplit(redirected))
-            # check internal redirect cache to avoid recursion
-            if redirected in redirect_cache:
-                redirect_cache.append(redirected)
+            # see about recursion
+            all_seen = self.aliases + [self.cache_key]
+            if redirected in all_seen:
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     # fall back to the original url and use GET
-                    self.urlparts = list(urlparse.urlsplit(self.url))
                     return self.max_redirects, response
                 self.set_result(
-                     _("recursive redirection encountered:\n %s") % \
-                            "\n  => ".join(redirect_cache), valid=False)
-                self.consumer.logger_new_url(self)
-                self.consumer.cache.url_data_cache_add(self)
+                          _("recursive redirection encountered:\n %s") % \
+                            "\n  => ".join(all_seen), valid=False)
                 return -1, response
-            redirect_cache.append(redirected)
-            # remember this alias
+            # remember redireced url as alias
+            self.aliases.append(redirected)
+            # note: urlparts has to be a list
+            self.urlparts = list(urlparse.urlsplit(redirected))
             if response.status == 301:
                 if not self.has301status:
                     self.add_warning(
@@ -262,11 +257,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                      "trailing / at the end. All URLs which point to (home) "
                      "directories should end with a / to avoid redirection."))
                     self.has301status = True
-                self.aliases.append(redirected)
-            # check cache again on possibly changed URL
-            if self.consumer.cache.check_cache(self):
-                self.consumer.logger_new_url(self)
-                return -1, response
+            # XXX optimization: check cache again on the changed URL
+            #if self.consumer.cache.is_checked(self):
+            #    return -1, response
             # check if we still have a http url, it could be another
             # scheme, eg https or news
             if self.urlparts[0] != "http":
@@ -324,11 +317,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         modified = self.headers.get('Last-Modified', '')
         if modified:
             self.add_info(_("Last modified %s") % modified)
-
-    def get_cache_keys (self):
-        keys = super(HttpUrl, self).get_cache_keys()
-        keys.extend(self.aliases)
-        return keys
 
     def _get_http_response (self):
         """Put request and return (status code, status text, mime object).

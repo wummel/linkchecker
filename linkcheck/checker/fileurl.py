@@ -85,6 +85,7 @@ class FileUrl (urlbase.UrlBase):
             self.set_result(_("directory"))
             return
         super(FileUrl, self).check_connection()
+        self.set_result(_("file"))
 
     def get_content (self):
         if self.is_directory() and not self.has_content:
@@ -99,14 +100,8 @@ class FileUrl (urlbase.UrlBase):
         self.has_content = True
         return self.data
 
-    def get_cache_key (self):
-        # the host in urlparts is lowercase()d
-        if self.urlparts:
-            self.urlparts[4] = self.anchor
-            key = urlparse.urlunsplit(self.urlparts)
-            self.urlparts[4] = ''
-            return key
-        return None
+    def set_cache_key (self):
+        self.cache_key = self.url
 
     def is_html (self):
         if linkcheck.checker.extensions['html'].search(self.url):

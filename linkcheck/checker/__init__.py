@@ -118,13 +118,7 @@ def _check_urls (consumer):
     start_time = time.time()
     status_time = start_time
     while not consumer.finished():
-        url = consumer.get_url()
-        if url is not None:
-            consumer.check_url(url)
-        else:
-            # active connections are downloading/parsing, so
-            # wait a little
-            time.sleep(0.1)
+        consumer.check_url()
         if consumer.config['status']:
             curtime = time.time()
             if (curtime - status_time) > 5:

@@ -35,7 +35,6 @@ class Consumer (object):
         """initialize consumer data and threads"""
         self.config = config
         self.cache = cache
-        self.urls = []
         self.threader = linkcheck.threader.Threader()
         self._set_threads(config['threads'])
         self.logger = config['logger']
@@ -48,23 +47,6 @@ class Consumer (object):
         # if checking had warnings
         self.warnings = False
 
-    def filter_url_queue (self):
-        """remove already cached URLs from queue"""
-        pass # deadlock!
-        #self.lock.acquire()
-        #try:
-        #    urls = []
-        #    for url_data in self.urls:
-        #        if self.cache.check_cache(url_data):
-        #            self.logger_new_url(url_data)
-        #        else:
-        #            urls.append(url_data)
-        #    self.urls = urls
-        #    print >> sys.stderr, \
-        #      _("removed %d cached URLs from incoming queue") % len(removed)
-        #finally:
-        #    self.lock.release()
-
     def _set_threads (self, num):
         """set number of checker threads to start"""
         linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -75,48 +57,45 @@ class Consumer (object):
         else:
             sys.setcheckinterval(100)
 
-    def check_url (self, url_data):
-        """start new thread checking the given url"""
-        self.threader.start_thread(url_data.check, ())
-
     def append_url (self, url_data):
-        """add new URL to list of URLs to check"""
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
-                            "Put url %s in queue", url_data)
-        # check syntax
-        if not url_data.check_syntax():
-            # wrong syntax, do not check any further
+        """append url to incoming check list"""
+        if not self.cache.incoming_add(url_data):
+            # can be logged
             self.logger_new_url(url_data)
-            self.cache.url_data_cache_add(url_data)
-            return
-        # check the cache
-        if self.cache.check_cache(url_data):
-            # already cached
+
+    def check_url (self):
+        """start new thread checking the given url"""
+        url_data = self.cache.incoming_get_url()
+        if url_data is None:
+            # active connections are downloading/parsing, so
+            # wait a little
+            time.sleep(0.1)
+        elif url_data.cached:
+            # was cached -> can be logged
             self.logger_new_url(url_data)
-            return
-        self.lock.acquire()
-        try:
-            self.urls.append(url_data)
-        finally:
-            self.lock.release()
+        else:
+            # go check this url
+            # this calles either self.checked() or self.interrupted()
+            self.threader.start_thread(url_data.check, ())
+
+    def checked (self, url_data):
+        """put checked url in cache and log it"""
+        # log before putting it in the cache (otherwise we would see
+        # a "(cached)" after every url
+        self.logger_new_url(url_data)
+        if not url_data.cached:
+            self.cache.checked_add(url_data)
+
+    def interrupted (self, url_data):
+        """remove url from active list"""
+        self.cache.in_progress_remove(url_data)
 
     def finished (self):
         """return True if checking is finished"""
         self.lock.acquire()
         try:
-            return self.threader.finished() and len(self.urls) <= 0
-        finally:
-            self.lock.release()
-
-    def get_url (self):
-        """get first url in queue and return it"""
-        self.lock.acquire()
-        try:
-            if not self.urls:
-                return None
-            u = self.urls[0]
-            del self.urls[0]
-            return u
+            return self.threader.finished() and \
+                   self.cache.incoming_len() <= 0
         finally:
             self.lock.release()
 
@@ -134,6 +113,7 @@ class Consumer (object):
             linkcheck.log.warn(linkcheck.LOG_CHECK,
              _("keyboard interrupt; waiting for %d active threads to finish"),
              self.active_threads())
+            self.cache.incoming_debug()
             self.lock.acquire()
             try:
                 self.threader.finish()
@@ -148,7 +128,7 @@ class Consumer (object):
         try:
             active = self.threader.active_threads()
             links = self.linknumber
-            tocheck = len(self.urls)
+            tocheck = self.cache.incoming_len()
             duration = linkcheck.strformat.strduration(curtime - start_time)
             print >> sys.stderr, _("Status: %5d URLs queued, "\
              "%4d URLs checked, %2d active threads, runtime %s")\

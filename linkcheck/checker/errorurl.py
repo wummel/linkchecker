@@ -31,7 +31,7 @@ class ErrorUrl (urlbase.UrlBase):
                         valid=False)
         return False
 
-    def get_cache_key (self):
-        """cache key is the url"""
-        return self.url
+    def set_cache_key (self):
+        """cache key is forbidden"""
+        raise NotImplementedError, "cache key is forbidden"
 

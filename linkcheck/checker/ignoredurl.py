@@ -25,8 +25,6 @@ class IgnoredUrl (urlbase.UrlBase):
 
     def local_check (self):
         self.add_warning(_("%s url ignored")%self.scheme.capitalize())
-        self.consumer.logger_new_url(self)
-        self.consumer.cache.url_data_cache_add(self)
 
     def can_get_content (self):
         return False

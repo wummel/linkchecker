@@ -146,6 +146,10 @@ class UrlBase (object):
         self.data = None
         # if data is filled
         self.has_content = False
+        # cache key, is set by build_url() calling set_cache_key()
+        self.cache_key = None
+        # alias list
+        self.aliases = []
 
     def set_result (self, msg, valid=True):
         """set result string and validity"""
@@ -187,6 +191,7 @@ class UrlBase (object):
         self.info.extend(cache_data["info"])
         self.valid = cache_data["valid"]
         self.dltime = cache_data["dltime"]
+        self.dlsize = cache_data["dlsize"]
         self.cached = True
 
     def get_cache_data (self):
@@ -196,36 +201,38 @@ class UrlBase (object):
                 "info": self.info,
                 "valid": self.valid,
                 "dltime": self.dltime,
+                "dlsize": self.dlsize,
                }
 
-    def get_cache_keys (self):
-        """return cache key plus all aliases for caching in a list"""
-        key = self.get_cache_key()
-        if key is None:
-            return []
-        return [key]
-
-    def get_cache_key (self):
+    def set_cache_key (self):
         """Get key to store this url data in the cache."""
-        assert self.anchor is not None
-        if self.urlparts:
-            if self.consumer.config["anchorcaching"]:
-                # do not ignore anchor
-                return self.url
-            else:
-                # removed anchor from cache key
-                return urlparse.urlunsplit(self.urlparts[:4]+[''])
-        return None
+        assert self.urlparts
+        # construct cache key
+        if self.consumer.config["anchorcaching"]:
+            # do not ignore anchor
+            self.cache_key = self.url
+        else:
+            # removed anchor from cache key
+            self.cache_key =  urlparse.urlunsplit(self.urlparts[:4]+[''])
 
-    def is_cached_or_queued (self):
-        """look if this URL is already stored in the Cache or is pending
-           in the URL queue"""
-        return self.consumer.url_is_queued(self.get_cache_key()) or \
-               self.is_cached()
-
-    def is_cached (self):
-        """look if this URL is already stored in the Cache"""
-        return self.consumer.cache.url_is_cached(self.get_cache_key())
+    def check_syntax (self):
+        """Called before self.check(), this function inspects the
+           url syntax. Success enables further checking, failure
+           immediately logs this url. Syntax checks must not
+           use any network resources.
+        """
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
+        if not self.base_url:
+            self.set_result(_("URL is empty"), valid=False)
+            return False
+        try:
+            self.build_url()
+        except linkcheck.LinkCheckerError, msg:
+            self.set_result(str(msg), valid=False)
+            return False
+        self.set_cache_key()
+        self.extern = self._get_extern()
+        return True
 
     def build_url (self):
         """Construct self.url and self.urlparts out of the given base
@@ -268,17 +275,26 @@ class UrlBase (object):
 
     def check (self):
         """main check function for checking this URL"""
+        assert self.consumer.cache.has_in_progress(self.cache_key)
+        assert not self.consumer.cache.has_checked(self.cache_key)
+        assert not self.cached
         try:
             self.local_check()
+            self.consumer.checked(self)
         except (socket.error, select.error):
+            self.consumer.interrupted(self)
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
             etype, value = sys.exc_info()[:2]
-            if etype != 4:
+            if etype == 4:
+                raise KeyboardInterrupt(value)
+            else:
                 raise
         except KeyboardInterrupt:
+            self.consumer.interrupted(self)
             raise
         except:
+            self.consumer.interrupted(self)
             internal_error()
 
     def local_check (self):
@@ -289,26 +305,18 @@ class UrlBase (object):
                             "sleeping for %d seconds", self.consumer.config['wait'])
             time.sleep(self.consumer.config['wait'])
         t = time.time()
-        if self.consumer.cache.check_cache(self):
-            # was cached from previous queue member
-            self.consumer.logger_new_url(self)
-            return
         # apply filter
         linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
         if self.extern[0] and \
            (self.consumer.config["externstrictall"] or self.extern[1]):
             self.add_info(
                   _("outside of domain filter, checked only syntax"))
-            self.consumer.logger_new_url(self)
-            self.consumer.cache.url_data_cache_add(self)
             return
 
         # check connection
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking connection")
         try:
             self.check_connection()
-            if self.is_cached():
-                return
             if self.consumer.config["anchors"]:
                 self.check_anchors()
         except tuple(linkcheck.checker.ExcList):
@@ -353,27 +361,6 @@ class UrlBase (object):
                             valid=False)
         # close
         self.close_connection()
-        self.consumer.logger_new_url(self)
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "caching")
-        self.consumer.cache.url_data_cache_add(self)
-
-    def check_syntax (self):
-        """Called before self.check(), this function inspects the
-           url syntax. Success enables further checking, failure
-           immediately logs this url. Syntax checks must not
-           use any network resources.
-        """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
-        if not self.base_url:
-            self.set_result(_("URL is empty"), valid=False)
-            return False
-        try:
-            self.build_url()
-            self.extern = self._get_extern()
-        except linkcheck.LinkCheckerError, msg:
-            self.set_result(str(msg), valid=False)
-            return False
-        return True
 
     def close_connection (self):
         """close an opened url connection"""
@@ -397,14 +384,13 @@ class UrlBase (object):
         """return True iff we can recurse into the url's content"""
         # note: test self.valid before self.is_parseable()
         #linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
-        #                    "content=%s, cached=%s, robots=%s",
+        #                    "content=%s, robots=%s",
         #                    self.valid, self.is_parseable(),
-        #                    self.can_get_content(), self.is_cached(),
+        #                    self.can_get_content(),
         #                    self.content_allows_robots())
         return self.valid and \
             self.is_parseable() and \
             self.can_get_content() and \
-            not self.is_cached() and \
             (self.consumer.config["recursionlevel"] < 0 or
              self.recursion_level < self.consumer.config["recursionlevel"]) and \
             not self.extern[0] and self.content_allows_robots()
@@ -562,10 +548,10 @@ class UrlBase (object):
                 base = codebase
             else:
                 base = base_ref
-            self.consumer.append_url(linkcheck.checker.get_url_from(url,
-                           self.recursion_level+1, self.consumer,
-                           parent_url=self.url, base_ref=base,
-                           line=line, column=column, name=name))
+            url_data = linkcheck.checker.get_url_from(url,
+                  self.recursion_level+1, self.consumer, parent_url=self.url,
+                  base_ref=base, line=line, column=column, name=name)
+            self.consumer.append_url(url_data)
 
     def parse_opera (self):
         """parse an opera bookmark file"""
@@ -580,9 +566,10 @@ class UrlBase (object):
             elif line.startswith("URL="):
                 url = line[4:]
                 if url:
-                    self.consumer.append_url(linkcheck.checker.get_url_from(url,
-                       self.recursion_level+1, self.consumer,
-                       self.url, None, lineno, name))
+                    url_data = linkcheck.checker.get_url_from(url,
+                 self.recursion_level+1, self.consumer, parent_url=self.url,
+                 base_ref=None, line=lineno, name=name)
+                    self.consumer.append_url(url_data)
                 name = ""
 
     def parse_text (self):
@@ -594,10 +581,12 @@ class UrlBase (object):
         for line in self.get_content().splitlines():
             lineno += 1
             line = line.strip()
-            if not line or line.startswith('#'): continue
-            self.consumer.append_url(
-                  linkcheck.checker.get_url_from(line, self.recursion_level+1,
-                   self.consumer, parent_url=self.url, line=lineno))
+            if not line or line.startswith('#'):
+                continue
+            url_data = linkcheck.checker.get_url_from(line,
+                              self.recursion_level+1, self.consumer,
+                              parent_url=self.url, line=lineno)
+            self.consumer.append_url(url_data)
 
     def parse_css (self):
         """parse a CSS file for url() patterns"""
@@ -606,10 +595,10 @@ class UrlBase (object):
             lineno += 1
             for mo in linkcheck.linkparse.css_url_re.finditer(line):
                 column = mo.start("url")
-                self.consumer.append_url(
-                             linkcheck.checker.get_url_from(mo.group("url"),
+                url_data = linkcheck.checker.get_url_from(mo.group("url"),
                              self.recursion_level+1, self.consumer,
-                             parent_url=self.url, line=lineno, column=column))
+                             parent_url=self.url, line=lineno, column=column)
+                self.consumer.append_url(url_data)
 
     def __str__ (self):
         """return serialized url check data"""

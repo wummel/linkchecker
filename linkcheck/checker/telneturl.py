@@ -43,8 +43,6 @@ class TelnetUrl (urlbase.UrlBase):
     def local_check (self):
         if not self.host:
             self.set_result(_("Host is empty"), valid=False)
-            self.consumer.logger_new_url(self)
-            self.consumer.cache.url_data_cache_add(self)
             return
         super(TelnetUrl, self).local_check()
 

@@ -28,5 +28,3 @@ class HttpsUrl (httpurl.HttpUrl):
             super(HttpsUrl, self).local_check()
         else:
             self.add_warning(_("%s url ignored")%self.scheme.capitalize())
-            self.consumer.logger_new_url(self)
-            self.consumer.cache.url_data_cache_add(self)
