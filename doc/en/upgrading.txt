@@ -1,0 +1,62 @@
+.. meta::
+  :navigation.order: 2
+  :navigation.name: Upgrading
+
+Upgrading
+=========
+
+Migrating from 2.2 to 2.3
+-------------------------
+
+The per-user config file is now ``~/.linkchecker/linkcheckerrc``
+(previous location was ``~/.linkcheckerrc`` ).
+
+The default blacklist output file is now ``~/.linkchecker/blacklist``
+(previous location was ``~/.blacklist``).
+
+Python >= 2.4 is now required.
+
+
+Migrating from 1.x to 2.0
+-------------------------
+
+The --output and --file-output parameters can specify the encoding
+now. You should check your scripts if they support the new option
+syntax.
+
+Some added checks might trigger new warnings, so automated scripts
+or alarms can have more output than with 1.x releases.
+
+All output (file and console) is now encoded according to a given
+character set encoding which defaults to ISO-8859-15. If you
+relied that output was in a specific encoding, you might want to
+use the output encoding option.
+
+
+Migrating from 1.12.x to 1.13.0
+-------------------------------
+
+Since lots of filenames have changed you should check that any
+manually installed versions prior to 1.13.0 are removed. Otherwise
+you will have startup problems.
+
+The default output logger ``text`` has now colored output if the
+output terminal supports it. The old ``colored`` output logger has
+been removed.
+
+The ``-F`` option no longer suppresses normal output. The old behaviour
+can be restored by giving the option ``-onone``.
+
+The --status option is now the default and has been deprecated. The
+old behaviour can be restored by giving the option ``--no-status``.
+
+The default recursion depth is now infinite. The old behaviour
+can be restored by giving the option ``--recursion-level=1``.
+
+The option ``--strict`` has been renamed to ``--extern-strict-all``.
+
+The commandline program ``linkchecker`` returns now non-zero exit value
+when errors were encountered. Previous versions always return a zero
+exit value.
+For scripts to ignore exit values and therefore restore the old behaviour
+you can append a ``|| true`` at the end of the command.

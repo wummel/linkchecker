@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.7: http://docutils.sourceforge.net/" />
+<title>Upgrading</title>
+<meta content="2" name="navigation.order" />
+<meta content="Upgrading" name="navigation.name" />
+<link rel="stylesheet" href="lc.css" type="text/css" />
+<meta rel="SHORTCUT ICON" href="favicon.png" />
+<link rel="stylesheet" href="navigation.css" type="text/css" />
+<script type="text/javascript">
+window.onload = function() {
+  if (top.location != location) {
+    top.location.href = document.location.href;
+  }
+}
+</script>
+</head>
+<body>
+<!-- bfknav -->
+<div class="navigation">
+<div class="navrow" style="padding: 0em 0em 0em 1em;">
+<a href="./index.html">LinkChecker</a>
+<a href="./install.html">Installation</a>
+<span>Upgrading</span>
+<a href="./documentation.html">Documentation</a>
+<a href="./other.html">Other</a>
+
+</div>
+</div>
+<!-- /bfknav -->
+<div class="document" id="upgrading">
+<h1 class="title">Upgrading</h1>
+<div class="section" id="migrating-from-2-2-to-2-3">
+<h1><a name="migrating-from-2-2-to-2-3">Migrating from 2.2 to 2.3</a></h1>
+<p>The per-user config file is now <tt class="docutils literal"><span class="pre">~/.linkchecker/linkcheckerrc</span></tt>
+(previous location was <tt class="docutils literal"><span class="pre">~/.linkcheckerrc</span></tt> ).</p>
+<p>The default blacklist output file is now <tt class="docutils literal"><span class="pre">~/.linkchecker/blacklist</span></tt>
+(previous location was <tt class="docutils literal"><span class="pre">~/.blacklist</span></tt>).</p>
+<p>Python &gt;= 2.4 is now required.</p>
+</div>
+<div class="section" id="migrating-from-1-x-to-2-0">
+<h1><a name="migrating-from-1-x-to-2-0">Migrating from 1.x to 2.0</a></h1>
+<p>The --output and --file-output parameters can specify the encoding
+now. You should check your scripts if they support the new option
+syntax.</p>
+<p>Some added checks might trigger new warnings, so automated scripts
+or alarms can have more output than with 1.x releases.</p>
+<p>All output (file and console) is now encoded according to a given
+character set encoding which defaults to ISO-8859-15. If you
+relied that output was in a specific encoding, you might want to
+use the output encoding option.</p>
+</div>
+<div class="section" id="migrating-from-1-12-x-to-1-13-0">
+<h1><a name="migrating-from-1-12-x-to-1-13-0">Migrating from 1.12.x to 1.13.0</a></h1>
+<p>Since lots of filenames have changed you should check that any
+manually installed versions prior to 1.13.0 are removed. Otherwise
+you will have startup problems.</p>
+<p>The default output logger <tt class="docutils literal"><span class="pre">text</span></tt> has now colored output if the
+output terminal supports it. The old <tt class="docutils literal"><span class="pre">colored</span></tt> output logger has
+been removed.</p>
+<p>The <tt class="docutils literal"><span class="pre">-F</span></tt> option no longer suppresses normal output. The old behaviour
+can be restored by giving the option <tt class="docutils literal"><span class="pre">-onone</span></tt>.</p>
+<p>The --status option is now the default and has been deprecated. The
+old behaviour can be restored by giving the option <tt class="docutils literal"><span class="pre">--no-status</span></tt>.</p>
+<p>The default recursion depth is now infinite. The old behaviour
+can be restored by giving the option <tt class="docutils literal"><span class="pre">--recursion-level=1</span></tt>.</p>
+<p>The option <tt class="docutils literal"><span class="pre">--strict</span></tt> has been renamed to <tt class="docutils literal"><span class="pre">--extern-strict-all</span></tt>.</p>
+<p>The commandline program <tt class="docutils literal"><span class="pre">linkchecker</span></tt> returns now non-zero exit value
+when errors were encountered. Previous versions always return a zero
+exit value.
+For scripts to ignore exit values and therefore restore the old behaviour
+you can append a <tt class="docutils literal"><span class="pre">||</span> <span class="pre">true</span></tt> at the end of the command.</p>
+</div>
+</div>
+<hr class="docutils footer" />
+<div class="footer">
+Generated on: 2005-01-31 13:00 UTC.
+</div>
+</body>
+</html>

@@ -1,0 +1,194 @@
+.. meta::
+  :navigation.order: 1
+  :navigation.name: Installation
+
+Installation
+============
+
+If you are upgrading from older versions of LinkChecker you should
+also read the `upgrading documentation`_.
+
+.. _upgrading documentation:
+   upgrading.html
+
+
+Requirements for Unix/Linux or Mac OS X
+---------------------------------------
+
+1. You need a standard GNU development environment with
+   
+   - C compiler (for example the GNU C Compiler gcc)
+     
+     Depending on your distribution, several development packages
+     might be needed to provide a fully functional C development
+     environment.
+   
+   Note for developers: if you want to regenerate the po/linkchecker.pot
+   template from the source files, you will need xgettext with Python
+   support. This is available in gettext >= 0.12.
+
+2. Python >= 2.4 from http://www.python.org/ with zlib support
+   
+   Be sure to also have installed the included distutils module.
+   On most distributions, the distutils module is included in
+   an extra "python-dev" package.
+
+3. *Optional, for bash-completion:*
+   optcomplete Python module from http://furius.ca/optcomplete/
+
+4. *Optional (speedup for i386 compatible PCs)*
+   Psyco from http://psyco.sourceforge.net/
+   [http://osdn.dl.sourceforge.net/sourceforge/psyco/psyco-1.4-src.tar.gz]
+
+Requirements for Windows
+------------------------
+
+1. Install Python >= 2.4 from http://www.python.org/
+   [http://www.python.org/ftp/python/2.4/python-2.4.msi]
+
+2. *Only needed if you compile from source:*
+   install the MinGW suite from http://mingw.sourceforge.net/
+   Be sure to install in the given order:
+   
+   a) MingGW
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe]
+   b) MSYS
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
+
+3. *Optional (speedup for i386 compatible PCs)*
+   Psyco from http://psyco.sourceforge.net/
+   [http://osdn.dl.sourceforge.net/sourceforge/psyco/psyco-1.4.win32-py2.4.exe]
+
+Setup for Unix/Linux or Mac OS X
+--------------------------------
+
+1. Install check
+   
+   Be sure to have installed all required Unix/Linux software listed above.
+
+2. Compile Python modules
+   
+   Run ``python setup.py build`` to compile the Python files.
+   For help about the setup.py script options, run
+   ``python setup.py --help``.
+   The CC environment variable is checked before compilation, so you can
+   change the default C compiler with ``export CC=myccompiler``.
+
+3.
+   a) Installation as root
+      
+      Run ``su -c 'python setup.py install'`` to install LinkChecker.
+   
+   b) Installation as a normal user
+      
+      Run ``python setup.py install --home $HOME``. Note that you have
+      to adjust your PATH and PYTHONPATH environment variables, eg. by
+      adding the commands ``export PYTHONPATH=$HOME/lib/python`` and
+      ``export PATH=$PATH:$HOME/bin`` to your shell configuration
+      file.
+      
+      For more information look at the `Modifying Python's search path`_
+      documentation.
+      
+      .. _Modifying Python's search path:
+         http://docs.python.org/inst/search-path.html#SECTION000410000000000000000
+
+   If you downloaded Psyco please read the `psyco installation docs`_.
+   
+   .. _psyco installation docs:
+      http://psyco.sourceforge.net/psycoguide/node2.html
+
+Setup for Windows - the binary .exe installer:
+----------------------------------------------
+
+1. Install check
+   
+   Be sure to have installed all required windows software listed above.
+
+2. Execute the ``linkchecker-x.xx.win32-py2.4.exe`` file and follow
+   the instructions.
+
+Setup for Windows - compiling from source:
+------------------------------------------
+
+1. Install check
+   
+   Be sure to have installed all required Unix/Linux software listed above.
+
+2. Preparing Python for the MinGW compiler
+   
+   Search the file python24.dll in your windows folder.
+   After you found it, launch MSYS. Change into the windows folder,
+   for example ``cd c:\winnt\system32``. Then execute
+   ``pexports python24.dll > python24.def``.
+   Then use the dlltool with
+   ``dlltool --dllname python24.dll --def python24.def --output-lib
+   libpython24.a``.
+   The resulting library has to be placed in the same directory as
+   python24.lib. (Should be the libs directory under your Python installation
+   directory, for example ``c:\Python24\Libs\``.)
+
+3. Generate and execute the LinkChecker installer
+   
+   Close the MSYS application (by typing ``exit``) and open a DOS command
+   prompt.
+   Change to the ``linkchecker-X.X.X`` directory and run
+   ``python setup.py build -c mingw32 bdist_wininst``.
+   
+   This generates a binary installer
+   ``dist\linkchecker-X.X.X.win32-py2.4.exe`` which you just have to
+   execute.
+
+   If you downloaded Psyco please read the `psyco installation docs`_.
+   
+   .. _psyco installation docs:
+      http://psyco.sourceforge.net/psycoguide/node2.html
+
+After installation
+------------------
+
+LinkChecker is now installed. Have fun!
+See the `main page`_ on how to configure and start LinkChecker.
+
+.. _main page: index.html
+
+Installation for other platforms
+--------------------------------
+
+If you happen to install LinkChecker on other platforms (for example
+Mac OS 9.x) then drop me a note.
+
+(Fast)CGI web interface
+-----------------------
+
+The included CGI scripts can run LinkChecker with a nice graphical web
+interface.
+You can use and adjust the example HTML files in the lconline directory
+to run the script.
+
+1. Choose a CGI script. The simplest is lc.cgi and you need a web server
+   with CGI support.
+   The script lc.fcgi (I tested this a while ago) needs a web server
+   with FastCGI support.
+
+2. Copy the script of your choice in the CGI directory.
+   Note that only the local host (ie. 127.0.0.1) can access this
+   script. If you want to enable access from other hosts you have
+   to adjust the ALLOWED_HOSTS and ALLOWED_SERVERS variables in
+   the lc.cgi (or lc.fcgi) script.
+
+3. Adjust the "action=..." parameter in lconline/lc_cgi.html
+   to point to your CGI script.
+
+4. load the lconline/index.html file, enter an URL and klick on the
+   check button
+
+5. If something goes wrong, check the following:
+   
+   a) look in the error log of your web server
+   b) be sure that you have enabled CGI support in your web server
+      do this by running other CGI scripts which you know are
+      working
+   c) try to run the lc.cgi script by hand
+   d) try the testit() function in the lc.cgi script
+
