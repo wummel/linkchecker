@@ -751,6 +751,13 @@ RX_DATA [-a-zA-Z0-9_:]+
     UPDATE_LINE;
 }
 
+<S_ATTR4>\\\" {
+    /* backslash escapes seen at freshmeat.net */
+    UPDATE_BUFPOS;
+    UPDATE_COLUMN;
+    BEGIN(S_STRING);
+}
+
 <S_ATTR4>\" {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
