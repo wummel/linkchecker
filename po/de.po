@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Fri Feb 20 00:32:30 2004\n"
+"POT-Creation-Date: Fri Feb 20 15:22:58 2004\n"
 "PO-Revision-Date: 2004-01-29 22:37+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -182,6 +182,10 @@ msgstr "Fehler"
 
 msgid "Valid"
 msgstr "Gültig"
+
+#, fuzzy
+msgid "URL has invalid port number %r"
+msgstr "URL hat ungültige Portnummer %s"
 
 msgid "URL is null or empty"
 msgstr "URL ist Null oder leer"
