@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Oct 15 02:58:18 2002\n"
+"POT-Creation-Date: Sun Nov  3 00:41:18 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -167,6 +167,13 @@ msgid "Found %s in link contents"
 msgstr ""
 
 msgid "more than one base tag found"
+msgstr ""
+
+msgid ""
+"Could not parse HTML content (%s).\n"
+"You may have a syntax error.\n"
+"LinkChecker is skipping the remaining content for the link type\n"
+"<%s %s>."
 msgstr ""
 
 msgid "keyboard interrupt"

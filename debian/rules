@@ -6,6 +6,7 @@ ROOT=$(CURDIR)/debian/$(PACKAGE)
 DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
 PYTHON=python2.2
 CGIDIR=$(ROOT)/usr/lib/cgi-bin/lconline
+HTMLDIR=$(ROOT)/var/www/lconline
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -44,7 +45,7 @@ install: build
 	# remove example files, we install them below
 	rm -r $(ROOT)/usr/share/linkchecker/examples
 	# install CGI files
-	install -c -m 644 lconline/*.html $(CGIDIR)
+	install -c -m 644 lconline/*.html $(HTMLDIR)
 	cat lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.cgi
 	chmod 755 $(CGIDIR)/lc.cgi
 	# install system wide configuration file in etc

@@ -2,3 +2,4 @@ etc
 usr/share/doc/linkchecker/examples
 usr/share/doc/linkchecker/lconline
 usr/lib/cgi-bin/lconline
+var/www/lconline
