@@ -28,11 +28,8 @@ default_language = None
 def init (domain, directory):
     """initialize this gettext i18n module"""
     global default_language
-    try:
-        gettext.install(domain, directory)
-    except IOError:
-        # keep default gettext function
-        pass
+    # install static translation service
+    gettext.install(domain, directory)
     # get supported languages
     for lang in os.listdir(directory):
         path = os.path.join(directory, lang)
@@ -45,6 +42,12 @@ def init (domain, directory):
         default_language = loc
     else:
         default_language = "en"
+
+
+def get_translator (domain, directory, language, translatorklass=None):
+    languages = [get_lang(language)]
+    return gettext.translation(domain,
+        localedir=directory, languages=languages, class_=translatorklass)
 
 
 def get_lang (lang):
