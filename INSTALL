@@ -3,19 +3,16 @@
 
 Requirements
 ------------
-Python >= 2.0 from http://www.python.org/
+Python >= 2.1 from http://www.python.org/
+For HTTPS support you need to compile Python with the SSL _socket
+module.
 
-
-Optionally packages
--------------------
-OpenSSL from http://www.openssl.org/
+LinkChecker does *not* run with Python 2.2b2 due to a regex bug in
+Python!
 
 
 Setup
 -----
-Run "python setup.py config" to configure.
-You can provide additional parameters, for example Linux users
-can run "python setup.py config -lcrypto" to use the SSL module.
 Run "python setup.py build" to build.
 Run "python setup.py install" to install.
 Run "python setup.py --help" for help.

@@ -1,7 +1,6 @@
 # French translation for LinkChecker.
 # Jerome Couderc <j.couderc@ifrance.com>, 2000.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -25,7 +24,6 @@ msgstr ""
 msgid "No newsgroup specified in NNTP URL"
 msgstr ""
 
-#, fuzzy
 msgid "No mail host for %s found"
 msgstr "trouvé un hôte de messagerie %s"
 
@@ -53,7 +51,6 @@ msgstr ""
 msgid "Verified adress: %s"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "EXAMPLES\n"
 "o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
@@ -94,7 +91,6 @@ msgstr ""
 msgid "%.3f seconds\n"
 msgstr "%.3f secondes\n"
 
-#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
@@ -250,7 +246,6 @@ msgstr ""
 "        'Oracle Application Server error'.\n"
 "        This option implies -w.\n"
 
-#, fuzzy
 msgid "realurl"
 msgstr "Résultat"
 
@@ -281,7 +276,6 @@ msgstr "Erreur"
 msgid "info"
 msgstr ""
 
-#, fuzzy
 msgid "base"
 msgstr "Base"
 
@@ -291,7 +285,6 @@ msgstr "Valide"
 msgid "hours"
 msgstr "heures"
 
-#, fuzzy
 msgid "HTTPS url ignored"
 msgstr "Url Javascript ignorée"
 
@@ -346,7 +339,6 @@ msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
 msgid "HTTP 301 (moved permanent) encountered: you should update this link"
 msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
 
-#, fuzzy
 msgid "checktime"
 msgstr "Durée d'Analyse"
 
@@ -392,7 +384,6 @@ msgstr "impossible de partager l'adresse e-mail"
 msgid "Error: %s\n"
 msgstr "Erreur: %s\n"
 
-#, fuzzy
 msgid ""
 "NOTES\n"
 "o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
@@ -443,11 +434,9 @@ msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
 msgstr ""
 
-#, fuzzy
 msgid "result"
 msgstr "Résultat"
 
-#, fuzzy
 msgid "warning"
 msgstr "Avertissement"
 
@@ -482,7 +471,6 @@ msgstr "L'URL est nulle ou vide"
 msgid "Real URL"
 msgstr "URL Réelle"
 
-#, fuzzy
 msgid "No NNTP server specified, skipping this URL"
 msgstr "Auncun serveur NNTP spécifié, analyse de la syntaxe seulement"
 
@@ -491,15 +479,3 @@ msgstr "# Format des entrées:\n"
 
 msgid "Parent URL"
 msgstr "URL Parente"
-
-#~ msgid "1 warning, "
-#~ msgstr "1 avertissement, "
-
-#~ msgid " warnings, "
-#~ msgstr " avertissements, "
-
-#~ msgid "HTTPS not supported"
-#~ msgstr "HTTPS not supported"
-
-#~ msgid "Illegal NNTP link syntax"
-#~ msgstr "Syntaxe illégale du lien NNTP"

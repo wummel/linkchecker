@@ -50,7 +50,6 @@ So for example 1.1.5 is the fifth release of the 1.1 development package.
 
 Included packages
 -----------------
-httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
 DNS from http://pydns.sourceforge.net/
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
 fintl.py from http://sourceforge.net/snippet/detail.php?type=snippet&id=100059
