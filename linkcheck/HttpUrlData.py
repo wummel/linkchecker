@@ -15,8 +15,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import httplib,urlparse,sys,time,re,robotparser
-import Config,StringUtil
+import httplib,urlparse,sys,time,re
+import Config,StringUtil,robotparser2
 from UrlData import UrlData
 from urllib import splittype, splithost
 from linkcheck import _
@@ -196,16 +196,14 @@ class HttpUrlData(UrlData):
         return self.mime.gettype()=="text/html"
 
     def robotsTxtAllowsUrl(self, config):
-        if not config.robotsTxtCache_has_key(self.url):
-            roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]
-            rp = robotparser.RobotFileParser()
-            rp.set_url(roboturl)
-            print roboturl
+        roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]
+        if not config.robotsTxtCache_has_key(roboturl):
+            rp = robotparser2.RobotFileParser(roboturl)
+            robotparser2.debug=1
             rp.read()
-            print "2"
-            robotsTxt = rp.can_fetch(Config.UserAgent, self.url)
-            config.robotsTxtCache_set(self.urlTuple[0:2], robotsTxt)
-        return config.robotsTxtCache_get(self.url)
+            config.robotsTxtCache_set(roboturl, rp)
+        rp = config.robotsTxtCache_get(roboturl)
+        return rp.can_fetch(Config.UserAgent, self.url)
 
 
     def closeConnection(self):

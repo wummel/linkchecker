@@ -8,19 +8,24 @@ LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v -itreasure.calvinspla
 DEBPACKAGE=$(PACKAGE)_$(VERSION)_i386.deb
 
 DESTDIR=/.
-.PHONY: test clean files homepage dist install all
+.PHONY: test clean files upload dist install all
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
 	fakeroot debian/rules clean
+	rm -f .time.po
 
 distclean:	clean
 	rm -rf dist
 	rm -f $(PACKAGE)-out.* VERSION
 
-dist:
+.time.po:
+	$(MAKE) -C po
+	touch .time.po
+
+dist:	.time.po
 	rm -rf debian/tmp
 	python setup.py sdist --formats=gztar,zip bdist_rpm bdist_wininst
 	fakeroot debian/rules binary
@@ -29,7 +34,7 @@ dist:
 package:
 	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz
 
-files:
+files:	.time.po
 	./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/~calvin/
 
 VERSION:
@@ -42,7 +47,7 @@ upload: dist package files VERSION
 	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/
 	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make"
 
-test:
+test:	.time.po
 	rm -f test/*.result
 	@for i in test/*.html; do \
 	  echo "Testing $$i. Results are in $$i.result"; \
