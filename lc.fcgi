@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import sys, re
+import sys, re, os
 dist_dir = "/home/calvin/projects/linkchecker"
 sys.path.insert(0,dist_dir)
-import fcgi, linkcheck
+import fcgi
 
 # main
 try:
@@ -13,6 +13,13 @@ try:
                       "Cache-Control: no-cache\r\n"
                       "\r\n")
         form = req.getFieldStorage()
+        if form['language'].value == 'de':
+            os.environ['LC_MESSAGES'] = 'de'
+        elif form['language'].value == 'fr':
+            os.environ['LC_MESSAGES'] = 'fr'
+        else:
+            os.environ['LC_MESSAGES'] = 'C'
+        import linkcheck
         if not linkcheck.lc_cgi.checkform(form):
             linkcheck.lc_cgi.logit(form, req.env)
             linkcheck.lc_cgi.printError(req.out)
