@@ -20,6 +20,14 @@
     Type: bugfix
     Changed: linkchecker, linkcheck/configuration.py
 
+  * Also accept quoted CSS urls.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
+  * Eliminate duplicate link reporting in the link parser.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
 2.5 "Spanglish" (released 4.3.2005)
 
   * Added spanish translation, thanks to Servilio Afre Puentes.
