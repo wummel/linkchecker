@@ -27,6 +27,7 @@ try:
                       "\r\n")
         form = req.getFieldStorage()
         import linkcheck
+        import linkcheck.lc_cgi
         if not linkcheck.lc_cgi.checkform(form):
             linkcheck.lc_cgi.logit(form, req.env)
             linkcheck.lc_cgi.printError(req.out)
@@ -40,13 +41,15 @@ try:
         if form.has_key("anchors"): config["anchors"] = 1
         if not form.has_key("errors"): config["verbose"] = 1
         if form.has_key("intern"):
-            config["internlinks"].append(linkcheck.getLinkPat("^(ftp|https?)://"+linkcheck.lc_cgi.getHostName(form)))
+            config["internlinks"].append(linkcheck.getLinkPat(
+                   "^(ftp|https?)://"+linkcheck.lc_cgi.getHostName(form)))
         else:
             config["internlinks"].append(linkcheck.getLinkPat(".+"))
         # avoid checking of local files
         config["externlinks"].append(linkcheck.getLinkPat("^file:", strict=1))
         # start checking
-        config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(form["url"].value, 0))
+        config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(
+                         form["url"].value, 0, config))
         linkcheck.checkUrls(config)
         req.Finish()
 except:

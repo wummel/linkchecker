@@ -15,7 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, thread, sz_fcgi, linkcheck
+import sys, re, thread, sz_fcgi
+import linkcheck
+import linkcheck.lc_cgi
 
 def func (fcg, req):
     req.out.write("Content-type: text/html\r\n"
@@ -36,13 +38,15 @@ def func (fcg, req):
     if form.has_key("anchors"): config["anchors"] = 1
     if not form.has_key("errors"): config["verbose"] = 1
     if form.has_key("intern"):
-        config["internlinks"].append(linkcheck.getLinkPat("^(ftp|https?)://"+linkcheck.lc_cgi.getHostName(form)))
+        config["internlinks"].append(linkcheck.getLinkPat(
+                  "^(ftp|https?)://"+linkcheck.lc_cgi.getHostName(form)))
     else:
         config["internlinks"].append(linkcheck.getLinkPat(".+"))
     # avoid checking of local files
     config["externlinks"].append(linkcheck.getLinkPat("^file:", strict=1))
     # start checking
-    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(form["url"].value, 0))
+    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(
+                     form["url"].value, 0, config))
     linkcheck.checkUrls(config)
     req.Finish()
     thread.exit()

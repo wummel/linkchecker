@@ -33,6 +33,7 @@ print "Pragma: no-cache"
 print
 form = cgi.FieldStorage()
 import linkcheck
+import linkcheck.lc_cgi
 if not linkcheck.lc_cgi.checkform(form):
     linkcheck.lc_cgi.logit(form, form)
     linkcheck.lc_cgi.printError(sys.stdout)
@@ -52,5 +53,6 @@ else:
 config["externlinks"].append(linkcheck.getLinkPat("^file:", strict=1))
 
 # start checking
-config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(form["url"].value, 0))
+config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(
+                 form["url"].value, 0, config))
 linkcheck.checkUrls(config)
