@@ -76,7 +76,7 @@ class NntpUrlData(UrlData):
                 timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
-                debug("NNTP: "+value+"\n")
+                debug("NNTP: %s\n" % value)
                 if re.compile("^505").search(str(value)):
                     import whrandom
                     time.sleep(whrandom.randint(10,20))

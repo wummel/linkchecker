@@ -147,9 +147,9 @@ class TimeoutSocket:
         self._timeout = timeout
     # end set_timeout
 
-    def connect(self, addr, port=None, dumbhack=None):
+    def connect(self, addr, dumbhack=None):
         # In case we were called as connect(host, port)
-        if port != None:  addr = (addr, port)
+        #if port != None:  addr = (addr, port)
 
         # Shortcuts
         sock    = self._sock
@@ -221,10 +221,9 @@ class TimeoutSocket:
 
     def send(self, data, flags=0):
         sock = self._sock
-        timeout = self._timeout
         totallen = 0
         while data:
-            r,w,e = select.select([],[sock], [], timeout)
+            r,w,e = select.select([],[sock], [], self._timeout)
             if not w:
                 raise Timeout("Send timed out")
             sentlen = sock.send(data, flags)
@@ -279,12 +278,12 @@ class TimeoutFile:
                 break 
             bufsize = self._bufsize
             if size > 0:
-                bufsize = min(bufsize, size - datalen )
+                bufsize = min(bufsize, size - datalen)
             buf = self.recv(bufsize)
             if not buf:
                 break
             data = data + buf
-        if size > 0 and datalen > size:
+        if datalen > size > 0:
             self._sock._inqueue = data[size:]
             data = data[:size]
         return data

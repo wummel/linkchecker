@@ -4,8 +4,6 @@ linkchecker (1.2.6) unstable; urgency=low
   * configuration changes: distutils are now required; because of that
     we have no more .tmpl files
   * fix db name in create.sql
-  * added timeoutsocket.py to supply a timeout for socket.connect()
-    calls
   * fix tag parsing when a quoted tag attribute value contains a >
     character
 

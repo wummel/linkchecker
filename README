@@ -104,13 +104,3 @@ We call init() once to initialize the Logger. UrlData.check() calls
 newUrl() (through UrlData.logMe()) and after all checking we call
 endOfOutput(). Easy.
 New loggers are created with the Config.newLogger(name, fileoutput) function.
-
-
-Nifty features you did not expect
----------------------------------
-o Included brain enhancer. Just read Python code to gain intelligence.
-o Wash-O-matic. LinkChecker has a secret option which washes all your 
-  dirty clothes in a matter of seconds.
-o Y10K-Compatibility(tm) guaranteed. Trust me on that one.
-o There is no spoon. Wake up already!
-

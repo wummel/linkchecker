@@ -6,8 +6,8 @@ if sys.version[:5] < "1.5.2":
     raise SystemExit, "This program requires Python 1.5.2 or later."
 import getopt,re,string,os,urlparse
 # 90 seconds timeout for all connections
-import timeoutsocket
-timeoutsocket.setDefaultSocketTimeout(90)
+#import timeoutsocket
+#timeoutsocket.setDefaultSocketTimeout(90)
 import linkcheck, StringUtil
 from linkcheck import _
 

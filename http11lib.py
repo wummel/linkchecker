@@ -195,7 +195,7 @@ class HTTPConnection:
   def connect(self):
     """Connect to the host and port specified in __init__."""
     self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self.sock.connect(self.host, self.port)
+    self.sock.connect((self.host, self.port))
 
   def close(self):
     """Close the connection to the HTTP server."""
