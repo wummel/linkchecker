@@ -365,7 +365,7 @@ class UrlData:
             t = time.time()
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
-            self.setInfo("D/L size %s"%StringUtil.strsize(len(self.data)))
+            self.checkSize(len(self.data))
         return self.data
 
 
@@ -381,8 +381,10 @@ class UrlData:
     def checkSize (self, sizebytes):
         """if a maximum size was given, call this function to check it
            against the content size of this url"""
-        if sizebytes >= self.config["warnsizebytes"]:
-            self.setWarning(linkcheck._("Content size %s is larger than %s")%\
+        self.setInfo("D/L size %s"%StringUtil.strsize(sizebytes))
+        if self.config["warnsizebytes"] is not None:
+            if sizebytes >= self.config["warnsizebytes"]:
+                self.setWarning(linkcheck._("Content size %s is larger than %s")%\
                          (StringUtil.strsize(sizebytes),
                           StringUtil.strsize(self.config["warnsizebytes"])))
 
