@@ -2,7 +2,7 @@ XGETTEXT := xgettext
 MSGFMT := msgfmt
 MSGMERGE := msgmerge
 POSOURCES = $(shell find ../linkcheck -name \*.py) \
-	../linkchecker
+	../linkchecker /usr/lib/python2.4/optparse.py
 LDIR = ../share/locale
 PACKAGE = linkchecker
 TEMPLATE = $(PACKAGE).pot
