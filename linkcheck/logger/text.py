@@ -19,7 +19,6 @@
 import sys
 import os
 import time
-import gettext
 
 import linkcheck
 import linkcheck.ansicolor
@@ -87,20 +86,15 @@ class TextLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         if self.has_field('intro'):
-            self.fd.write(linkcheck.configuration.AppInfo)
-            self.fd.write(os.linesep)
-            self.fd.write(linkcheck.configuration.Freeware)
-            self.fd.write(os.linesep)
-            self.fd.write(_("Get the newest version at %s") %
-                          linkcheck.configuration.Url)
-            self.fd.write(os.linesep)
-            self.fd.write(_("Write comments and bugs to %s") %
-                          linkcheck.configuration.Email)
-            self.fd.write(os.linesep)
-            self.fd.write(os.linesep)
-            self.fd.write(_("Start checking at %s") %
-                          linkcheck.strformat.strtime(self.starttime))
-            self.fd.write(os.linesep)
+            self.writeln(linkcheck.configuration.AppInfo)
+            self.writeln(linkcheck.configuration.Freeware)
+            self.writeln(_("Get the newest version at %s") %
+                         linkcheck.configuration.Url)
+            self.writeln(_("Write comments and bugs to %s") %
+                         linkcheck.configuration.Email)
+            self.writeln()
+            self.writeln(_("Start checking at %s") %
+                         linkcheck.strformat.strtime(self.starttime))
             self.flush()
 
     def new_url (self, url_data):
@@ -133,113 +127,103 @@ class TextLogger (linkcheck.logger.Logger):
 
     def write_url (self, url_data):
         """write url_data.base_url"""
-        self.fd.write(os.linesep+self.field('url')+self.spaces('url'))
+        self.writeln()
+        self.write(self.field('url')+self.spaces('url'))
         txt = repr(url_data.base_url)
         if url_data.cached:
             txt += _(" (cached)")
-        self.fd.write(txt, color=self.colorurl)
-        self.fd.write(os.linesep)
+        self.writeln(txt, color=self.colorurl)
 
     def write_name (self, url_data):
         """write url_data.name"""
-        self.fd.write(self.field("name")+self.spaces("name"))
-        self.fd.write(repr(url_data.name), color=self.colorname)
-        self.fd.write(os.linesep)
+        self.write(self.field("name")+self.spaces("name"))
+        self.writeln(repr(url_data.name), color=self.colorname)
 
     def write_parent (self, url_data):
         """write url_data.parent_url"""
-        self.fd.write(self.field('parenturl')+self.spaces("parenturl"))
+        self.write(self.field('parenturl')+self.spaces("parenturl"))
         txt = url_data.parent_url
         txt += _(", line %d")%url_data.line
         txt += _(", col %d")%url_data.column
-        self.fd.write(txt, color=self.colorparent)
-        self.fd.write(os.linesep)
+        self.writeln(txt, color=self.colorparent)
 
     def write_base (self, url_data):
         """write url_data.base_ref"""
-        self.fd.write(self.field("base")+self.spaces("base"))
-        self.fd.write(url_data.base_ref, color=self.colorbase)
-        self.fd.write(os.linesep)
+        self.write(self.field("base")+self.spaces("base"))
+        self.writeln(url_data.base_ref, color=self.colorbase)
 
     def write_real (self, url_data):
         """write url_data.url"""
-        self.fd.write(self.field("realurl")+self.spaces("realurl"))
-        self.fd.write(url_data.url, color=self.colorreal)
-        self.fd.write(os.linesep)
+        self.write(self.field("realurl")+self.spaces("realurl"))
+        self.writeln(url_data.url, color=self.colorreal)
 
     def write_dltime (self, url_data):
         """write url_data.dltime"""
-        self.fd.write(self.field("dltime")+self.spaces("dltime"))
-        self.fd.write(_("%.3f seconds")%url_data.dltime,
-                      color=self.colordltime)
-        self.fd.write(os.linesep)
+        self.write(self.field("dltime")+self.spaces("dltime"))
+        self.writeln(_("%.3f seconds")%url_data.dltime,
+                     color=self.colordltime)
 
     def write_dlsize (self, url_data):
         """write url_data.dlsize"""
-        self.fd.write(self.field("dlsize")+self.spaces("dlsize"))
-        self.fd.write(linkcheck.strformat.strsize(url_data.dlsize),
-                      color=self.colordlsize)
-        self.fd.write(os.linesep)
+        self.write(self.field("dlsize")+self.spaces("dlsize"))
+        self.writeln(linkcheck.strformat.strsize(url_data.dlsize),
+                     color=self.colordlsize)
 
     def write_checktime (self, url_data):
         """write url_data.checktime"""
-        self.fd.write(self.field("checktime")+self.spaces("checktime"))
-        self.fd.write(_("%.3f seconds") % url_data.checktime,
-                      color=self.colordltime)
-        self.fd.write(os.linesep)
+        self.write(self.field("checktime")+self.spaces("checktime"))
+        self.writeln(_("%.3f seconds") % url_data.checktime,
+                     color=self.colordltime)
 
     def write_info (self, url_data):
         """write url_data.info"""
         text = os.linesep.join(url_data.info)
         text = linkcheck.strformat.wrap(text, 65,
                                    subsequent_indent=" "*self.max_indent)
-        self.fd.write(self.field("info")+self.spaces("info"))
-        self.fd.write(text, color=self.colorinfo)
-        self.fd.write(os.linesep)
+        self.write(self.field("info")+self.spaces("info"))
+        self.writeln(text, color=self.colorinfo)
 
     def write_warning (self, url_data):
         """write url_data.warning"""
         text = os.linesep.join(url_data.warning)
         text = linkcheck.strformat.wrap(text, 65,
                                    subsequent_indent=" "*self.max_indent)
-        self.fd.write(self.field("warning")+self.spaces("warning"))
-        self.fd.write(text, color=self.colorwarning)
-        self.fd.write(os.linesep)
+        self.write(self.field("warning")+self.spaces("warning"))
+        self.writeln(text, color=self.colorwarning)
 
     def write_result (self, url_data):
         """write url_data.result"""
-        self.fd.write(self.field("result")+self.spaces("result"))
+        self.write(self.field("result")+self.spaces("result"))
         if url_data.valid:
             color = self.colorvalid
-            self.fd.write(_("Valid"), color=color)
+            self.write(_("Valid"), color=color)
         else:
             self.errors += 1
             color = self.colorinvalid
-            self.fd.write(_("Error"), color=color)
+            self.write(_("Error"), color=color)
         if url_data.result:
-            self.fd.write(": "+url_data.result, color=color)
-        self.fd.write(os.linesep)
+            self.write(u": "+url_data.result, color=color)
+        self.writeln()
 
     def end_output (self, linknumber=-1):
         """print end of output info, and flush all output buffers"""
         if self.fd is None:
             return
         if self.has_field('outro'):
-            self.fd.write(os.linesep+_("Thats it.")+" ")
+            self.writeln()
+            self.write(_("Thats it.")+" ")
             if linknumber >= 0:
-                self.fd.write(gettext.ngettext("%d link checked.",
-                               "%d links checked.", linknumber) % linknumber)
-                self.fd.write(" ")
+                self.write(_n("%d link checked.", "%d links checked.",
+                              linknumber) % linknumber)
+                self.write(u" ")
 
-            self.fd.write(gettext.ngettext("%d error found.",
-                             "%d errors found.", self.errors) % self.errors)
-            self.fd.write(os.linesep)
+            self.writeln(_n("%d error found.", "%d errors found.",
+                            self.errors) % self.errors)
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write(_("Stopped checking at %s (%s)") % \
-                          (linkcheck.strformat.strtime(self.stoptime),
-                           linkcheck.strformat.strduration(duration)))
-            self.fd.write(os.linesep)
+            self.writeln(_("Stopped checking at %s (%s)") % \
+                         (linkcheck.strformat.strtime(self.stoptime),
+                          linkcheck.strformat.strduration(duration)))
         self.flush()
         if self.close_fd:
             self.fd.close()
