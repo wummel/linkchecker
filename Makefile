@@ -42,6 +42,7 @@ dist:	locale config
 	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_rpm
 	rm -f $(MD5SUMS)
 	md5sum dist/* > $(MD5SUMS)
+	for f in dist/*; do gpg --detach-sign --armor $$f; done
 
 # to build in the current directory (assumes python 2.2)
 localbuild:
