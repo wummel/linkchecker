@@ -168,15 +168,15 @@ class Configuration(UserDict.UserDict):
 
     def connectNntp_NoThreads(self):
         if not self.data.has_key("nntp"):
-            _do_connectNntp()
+            self._do_connectNntp()
 
     def connectNntp_Threads(self):
         if not self.data.has_key("nntp"):
             self.dataLock.acquire()
-            _do_connectNntp()
+            self._do_connectNntp()
             self.dataLock.release()
 
-    def _co_connectNntp():
+    def _do_connectNntp(self):
         import nntplib
         try:
             self.data["nntp"] = nntplib.NNTP(self.data["nntpserver"])
