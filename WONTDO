@@ -3,7 +3,7 @@ This is a list of things LinkChecker *wont* do for you.
 1) Support JavaScript
    See the FAQ
 
-2) Print unreachable/dead documents
+2) Print unreachable/dead documents of your website.
    This would require
    - file system access to your web repository
    - access to your web server configuration
