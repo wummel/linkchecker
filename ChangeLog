@@ -5,6 +5,11 @@
     issue with psyco); and it is disabling ctrl-c interrupts (this
     is also a known issue in psyco)
     Changed: linkchecker
+  * use internal debug logger
+    Changed: linkcheck/robotparser2.py
+  * do not hardcode Accept-Encoding header in HTTP request
+    Added: linkcheck/httplib2.py
+    Changed: linkcheck/robotparser2.py
 
 1.9.4 (released 22.10.2003)
   * parse CSS stylesheet files and check included urls, for example
