@@ -115,7 +115,7 @@ def htmlify (s):
     return applyTable(HtmlTable, s)
 
 
-is_charref = re.compile(r'(?i)x?(?P<num>\d+)').match
+is_charref = re.compile(r'&#x?(?P<num>\d+);').match
 
 def resolve_entity (mo):
     ent = mo.group(0).lower()
@@ -125,7 +125,7 @@ def resolve_entity (mo):
     if mo:
         # convert to number
         num = mo.group("num")
-        if ent.startswith('x'):
+        if ent.startswith('#x'):
             radix = 16
         else:
             radix = 10
@@ -137,7 +137,7 @@ def resolve_entity (mo):
 
 
 def unhtmlify (s):
-    return re.sub(r'(?i)&(x?\d+|[a-z]+);', s, resolve_entity)
+    return re.sub(r'(?i)&(#x?\d+|[a-z]+);', resolve_entity, s)
 
 
 def xmlify (s):
@@ -201,3 +201,9 @@ def strsize (b):
         return "%.2f MB"%b
     b /= 1024.0
     return "%.2f GB"
+
+def _test ():
+    print unhtmlify('&#97;')
+
+if __name__=='__main__':
+    _test()
