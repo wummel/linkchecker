@@ -1,4 +1,4 @@
-python setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES
+python2.4 setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES
 # 'brp-compress' compresses the manpages without distutils knowing.
 # The sed scripts append ".gz" resp. ".bz2" suffixes to the affected
 # manpage filenames.
