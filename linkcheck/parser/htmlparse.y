@@ -448,12 +448,12 @@ static void parser_dealloc (PyObject* self) {
 
 /* flush parser buffers, isueing any remaining data as character data */
 static PyObject* parser_flush (PyObject* self, PyObject* args) {
-    int res=0;
+    int res = 0;
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    parser_object* p = (parser_object*)self;
     /* reset parser variables */
     RESIZE_BUF(p->userData->tmp_buf);
     Py_XDECREF(p->userData->tmp_tag);
@@ -492,54 +492,54 @@ static PyObject* parser_flush (PyObject* self, PyObject* args) {
 
 /* return the current parser line number */
 static PyObject* parser_lineno (PyObject* self, PyObject* args) {
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    parser_object* p = (parser_object*)self;
     return Py_BuildValue("i", p->userData->lineno);
 }
 
 
 /* return the last parser line number */
 static PyObject* parser_last_lineno (PyObject* self, PyObject* args) {
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    parser_object* p = (parser_object*)self;
     return Py_BuildValue("i", p->userData->last_lineno);
 }
 
 
 /* return the current parser column number */
 static PyObject* parser_column (PyObject* self, PyObject* args) {
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    parser_object* p = (parser_object*)self;
     return Py_BuildValue("i", p->userData->column);
 }
 
 
 /* return the last parser column number */
 static PyObject* parser_last_column (PyObject* self, PyObject* args) {
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    parser_object* p = (parser_object*)self;
     return Py_BuildValue("i", p->userData->last_column);
 }
 
 
 static PyObject* parser_pos (PyObject* self, PyObject* args) {
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    parser_object* p = (parser_object*)self;
     return Py_BuildValue("i", p->userData->pos);
 }
 
@@ -549,12 +549,12 @@ static PyObject* parser_feed(PyObject* self, PyObject* args) {
     /* set up the parse string */
     int slen = 0;
     char* s = NULL;
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "t#", &s, &slen)) {
 	PyErr_SetString(PyExc_TypeError, "string arg required");
 	return NULL;
     }
     /* parse */
-    parser_object* p = (parser_object*)self;
     if (htmllexStart(p->scanner, p->userData, s, slen)!=0) {
 	PyErr_SetString(PyExc_MemoryError, "could not start scanner");
  	return NULL;
@@ -580,11 +580,11 @@ static PyObject* parser_feed(PyObject* self, PyObject* args) {
 
 /* reset the parser. This will erase all buffered data! */
 static PyObject* parser_reset(PyObject* self, PyObject* args) {
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
 	return NULL;
     }
-    parser_object* p = (parser_object*)self;
     if (htmllexDestroy(p->scanner)!=0) {
         PyErr_SetString(PyExc_MemoryError, "could not destroy scanner data");
         return NULL;
@@ -614,11 +614,11 @@ static PyObject* parser_reset(PyObject* self, PyObject* args) {
 /* set the debug level, if its >0, debugging is on, =0 means off */
 static PyObject* parser_debug(PyObject* self, PyObject* args) {
     int debug;
+    parser_object* p = (parser_object*)self;
     if (!PyArg_ParseTuple(args, "i", &debug)) {
         return NULL;
     }
     yydebug = debug;
-    parser_object* p = (parser_object*)self;
     debug = htmllexDebug(&(p->scanner), debug);
     return PyInt_FromLong((long)debug);
 }
