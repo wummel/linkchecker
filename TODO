@@ -1,10 +1,5 @@
 Next releases:
 
-- logger methods should get called with unicode strings (using
-  the unicode-output from the html parser)
-
-- use output encoding for loggers
-
 - check unknown encoding config (both command line and config file)
 
 - rethink intern/extern stuff
