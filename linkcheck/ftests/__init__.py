@@ -50,6 +50,8 @@ class TestLogger (linkcheck.logger.Logger):
             if url_data.cached:
                 url += " (cached)"
             self.result.append(url)
+        if self.has_field('realurl'):
+            self.result.append("real url %s" % url_data.url)
         if self.has_field('name') and url_data.name:
             self.result.append("name %s" % url_data.name)
         if self.has_field('base') and url_data.base_ref:
