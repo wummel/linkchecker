@@ -178,19 +178,13 @@ class TextLogger (linkcheck.logger.Logger):
 
     def write_info (self, url_data):
         """write url_data.info"""
-        text = os.linesep.join(url_data.info)
-        text = linkcheck.strformat.wrap(text, 65,
-                                   subsequent_indent=" "*self.max_indent)
         self.write(self.field("info") + self.spaces("info"))
-        self.writeln(text, color=self.colorinfo)
+        self.writeln(self.wrap(url_data.info, 65), color=self.colorinfo)
 
     def write_warning (self, url_data):
         """write url_data.warning"""
-        text = os.linesep.join(url_data.warning)
-        text = linkcheck.strformat.wrap(text, 65,
-                                   subsequent_indent=" "*self.max_indent)
         self.write(self.field("warning") + self.spaces("warning"))
-        self.writeln(text, color=self.colorwarning)
+        self.writeln(self.wrap(url_data.warning, 65), color=self.colorwarning)
 
     def write_result (self, url_data):
         """write url_data.result"""
