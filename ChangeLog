@@ -42,6 +42,10 @@
     Type: feature
     Changed: linkcheck/dns/resolver.py
 
+  * Exceptions in the log systems are no more caught.
+    Type: feature
+    Changed: linkcheck/ansicolor.py
+
 1.13.5 "Die Musterknaben" (released 22.9.2004)
   * Use xgettext with Python support for .pot file creation, adjusted
     developer documentation.
