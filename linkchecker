@@ -157,7 +157,6 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
         if option.help:
             text = linkcheck.strformat.wrap(option.help, self.help_width)
             help_lines = text.splitlines()
-            print help_lines
             result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
             result.extend(["%*s%s\n" % (self.help_position, "", line)
                            for line in help_lines[1:]])
