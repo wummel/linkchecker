@@ -238,6 +238,12 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             redirected, is_idn = linkcheck.url.url_norm(newurl)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
+            # check extern filter again
+            self.extern = self._get_extern(redirected)
+            if self.is_extern():
+                self.add_info(
+                          _("outside of domain filter, checked only syntax"))
+                return -1, response
             # see about recursive redirect
             all_seen = self.aliases + [self.cache_url_key]
             if redirected in all_seen:
