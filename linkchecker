@@ -473,6 +473,11 @@ if has_optcomplete:
 # build a config object for this check session
 config = linkcheck.configuration.Configuration()
 # initialize logging
+if options.debug:
+    allowed_debugs = linkcheck.lognames.keys()
+    for _name in options.debug:
+        if _name not in allowed_debugs:
+            print_usage(_("Invalid debug level %(level)r") % {'level': _name})
 config.init_logging(debug=options.debug)
 linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s",
                     sys.version, sys.platform)
@@ -484,8 +489,7 @@ try:
         config.read()
 except linkcheck.LinkCheckerError, msg:
     # config error
-    linkcheck.log.error("%s", msg)
-    sys.exit(1)
+    print_usage(str(msg))
 # apply commandline options and arguments
 constructauth = False
 do_profile = False
