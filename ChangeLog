@@ -23,6 +23,10 @@
     Type: bugfix
     Changed: linkcheck/checker/mailtourl.py
 
+  * If mail VRFY command fails, print a warning message.
+    Type: feature
+    Changed: linkcheck/checker/mailtourl.py
+
 2.0 "I Kina spiser de hunde" (released 7.12.2004)
 
   * Regenerate the HTML parser with new Bison version 1.875d.
