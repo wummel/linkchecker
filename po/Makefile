@@ -37,6 +37,6 @@ $(TEMPLATE): $(POSOURCES)
 
 clean:
 	@for f in $(LANGUAGES); do rm -f $(LDIR)/$$f/$(LFILE); done
-	rm -f *.mo
+	rm -f *.mo *.bak
 
 .PHONY: mofiles clean
