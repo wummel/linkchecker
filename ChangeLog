@@ -3,7 +3,7 @@
     Changed: linkchecker, po/*.po
   * use Set() instead of hashmap
     Changed: linkcheck/Config.py
-  * fix mime-type checking to allow parsing of external stylesheets
+  * fix mime-type checking to allow parsing of .css stylesheets
     Changed: linkcheck/HttpUrlData.py
 
 1.10.2 (release 3.1.2004)
