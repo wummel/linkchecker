@@ -228,7 +228,7 @@ o a (Fast)CGI web interface (requires HTTP server)
              ['cgi/lconline/leer.html.en', 'cgi/lconline/leer.html.de',
               'cgi/lconline/index.html', 'cgi/lconline/lc_cgi.html.en',
               'cgi/lconline/lc_cgi.html.de', 'cgi/lconline/check.js',
-              'cgi/lc.cgi', 'cgi/lc.fcgi', 'cgi/lc.sz_fcgi',
+              'cgi/lc.cgi', 'cgi/lc.fcgi',
               'linkchecker.bat',
               'config/linkchecker-completion', 'config/linkcheck-cron.sh']),
          ('share/man/man1', ['linkchecker.1']),

@@ -45,10 +45,8 @@ install: build
 	install -c -m 644 cgi/lconline/check.js $(HTMLDIR)
 	cat cgi/lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.cgi
 	cat cgi/lc.fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.fcgi
-	cat cgi/lc.sz_fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.sz_fcgi
 	chmod 755 $(CGIDIR)/lc.cgi
 	chmod 755 $(CGIDIR)/lc.fcgi
-	chmod 755 $(CGIDIR)/lc.sz_fcgi
 # install system wide configuration files in etc
 	install -m644 $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc/linkchecker
 	install -m644 $(ROOT)/usr/share/linkchecker/logging.conf $(ROOT)/etc/linkchecker
