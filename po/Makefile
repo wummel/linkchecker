@@ -1,41 +1,34 @@
-# we use the scripts in Tools/i18n of the Python 2.3 distribution
-PYTHON := python2.3
-I18NTOOLS := .
-GETTEXT := $(PYTHON) $(I18NTOOLS)/pygettext.py -k i18n._
-#MSGFMT := $(PYTHON) $(I18NTOOLS)/msgfmt.py
-MSGFMT := msgfmt -c
+# use scripts found in Tools/i18n of the Python distribution
+GETTEXT := python pygettext.py
+MSGFMT := msgfmt
 MSGMERGE := msgmerge
-SOURCES = $(shell find ../linkcheck -name \*.py) \
-../linkchecker
-
+POSOURCES = $(shell find ../linkcheck -name \*.py) \
+	../linkchecker
 LDIR = ../share/locale
 PACKAGE = linkchecker
 LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
 LANGUAGES = de fr nl
-MOS = $(patsubst %, %.mo, $(LANGUAGES) )
 
-all:	$(MOS)
-
-win:
-	@for l in $(LANGUAGES); do \
-	  if [ ! -d $(LDIR)/$$l/LC_MESSAGES ]; then \
-	    mkdir -p $(LDIR)/$$l/LC_MESSAGES; \
+mofiles:
+	for la in $(LANGUAGES); do \
+	  if [ ! -d $(LDIR)/$$la/LC_MESSAGES ]; then \
+	    mkdir -p $(LDIR)/$$la/LC_MESSAGES; \
 	  fi; \
-	  $(MSGFMT) -o$(LDIR)/$$l/$(LFILE) $$l.po; \
+	  $(MSGFMT) -o $(LDIR)/$$la/$(LFILE) $$l.po; \
 	done
 
 %.po:	$(PACKAGE).pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
 
 $(PACKAGE).pot: $(SOURCES)
-	$(GETTEXT) --default-domain=$(PACKAGE) --no-location $(SOURCES)
+	$(GETTEXT) -w 80 --default-domain=$(PACKAGE) $(POSOURCES)
 
 %.mo:	%.po
 	if [ ! -d $(LDIR)/$*/LC_MESSAGES ]; then \
 	  mkdir -p $(LDIR)/$*/LC_MESSAGES; \
 	fi
-	$(MSGFMT) -o$(LDIR)/$*/$(LFILE) $<
+	$(MSGFMT) -c --statistics -o $(LDIR)/$*/$(LFILE) $<
 
 clean:
 	for f in $(LANGUAGES); do rm -f $(LDIR)/$$f/$(LFILE); done
