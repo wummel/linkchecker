@@ -98,7 +98,7 @@ For single-letter option arguments the space is not a necessity. So
         message, for example 'This page has moved' or 'Oracle
         Application Server error'.
         This option implies -w.\n") % linkcheck.Config.LoggerKeys
-"""
+""")
 
 Notes = _("""NOTES
 o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL

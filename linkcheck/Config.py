@@ -106,7 +106,6 @@ class Configuration(UserDict.UserDict):
         self["robotstxt"] = 1
         self["strict"] = 0
         self["fileoutput"] = []
-        self["loggingfields"] = "all"
         # Logger configurations
         self["text"] = {
             "filename": "linkchecker-out.txt",
@@ -155,7 +154,6 @@ class Configuration(UserDict.UserDict):
             "filename":     "linkchecker-out.xml",
         }
         self['test'] = {} #  no args for test logger
-        # default values
         self['log'] = self.newLogger('text')
         self["quiet"] = 0
         self["warningregex"] = None
@@ -424,22 +422,24 @@ class Configuration(UserDict.UserDict):
                          self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error: pass
         for key in Loggers.keys():
+            debug(key+"\n")
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
                     try: self[key][opt] = cfgparser.get(key, opt)
-                    except ConfigParser.Error: pass
-        try:
-            self['loggingfields'] = map(string.strip, string.split(
-	        cfgparser.get(section, 'loggingfields'), ","))
-	except ConfigParser.Error: pass
+                    except ConfigParser.Error, msg: debug(str(msg))
+                try:
+		    self[key]['fields'] = map(string.strip,
+		         string.split(cfgparser.get(key, 'fields'), ','))
+                    debug("fields %s"%str(self[key]['fields']))
+                except ConfigParser.Error, msg: debug(str(msg))
 
         section="checking"
         try:
             num = cfgparser.getint(section, "threads")
             if num<=0:
-                self.disableThreads()
+                self.disableThreading()
             else:
-                self.enableThreads(num)
+                self.enableThreading(num)
         except ConfigParser.Error: pass
         try: self["anchors"] = cfgparser.getboolean(section, "anchors")
         except ConfigParser.Error: pass
@@ -455,9 +455,10 @@ class Configuration(UserDict.UserDict):
         except ConfigParser.Error: pass
         try: self["strict"] = cfgparser.getboolean(section, "strict")
         except ConfigParser.Error: pass
-        try: 
-            self["warningregex"] = re.compile(cfgparser.get(section,
-            "warningregex"))
+        try:
+            warn = cfgparser.get(section, "warningregex")
+            if warn:
+                self["warningregex"] = re.compile(warn)
         except ConfigParser.Error: pass
         try:
             self["nntpserver"] = cfgparser.get(section, "nntpserver")
@@ -488,3 +489,4 @@ class Configuration(UserDict.UserDict):
         except ConfigParser.Error: pass
         try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
 	except ConfigParser.Error: pass
+        self['log'] = self.newLogger('text')

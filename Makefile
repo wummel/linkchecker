@@ -8,7 +8,7 @@ NAME = $(shell $(PYTHON) setup.py --name)
 HOST=treasure.calvinsplayground.de
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
-DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
+DEBPACKAGE = $(PACKAGE)_$(VERSION)_all.deb $(PACKAGE)-ssl_$(VERSION)_i386.deb
 PULLHOST=phoenix.net.uni-sb.de
 PULLPATH=/home/calvin/temp/linkchecker
 
@@ -28,7 +28,7 @@ distclean: clean cleandeb
 	rm -f $(PACKAGE)-out.* VERSION $(PACKAGE)Conf.py MANIFEST Packages.gz
 
 cleandeb:
-	rm -rf debian/$(PACKAGE) debian/tmp
+	rm -rf debian/$(PACKAGE) debian/$(PACKAGE)-ssl debian/tmp
 	rm -f debian/*.debhelper debian/{files,substvars}
 	rm -f configure-stamp build-stamp
 
@@ -36,11 +36,12 @@ dist:	locale
 	# cleandeb because distutils choke on dangling symlinks
 	# (linkchecker.1 -> undocumented.1)
 	$(MAKE) cleandeb
+	fakeroot debian/rules binary
 	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_rpm
 	# extra run without SSL compilation
 	python setup.py bdist_wininst
-	fakeroot dpkg-buildpackage -sgpg -pgpg
-	cp -f ../$(DEBPACKAGE) dist
+	#fakeroot dpkg-buildpackage -sgpg -pgpg
+	mv -f ../$(DEBPACKAGE) dist
 
 package:
 	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz

@@ -239,7 +239,10 @@ class UrlData:
         warningregex = config["warningregex"]
         if warningregex and self.valid:
             debug("DEBUG: checking content\n")
-            self.checkContent(warningregex)
+            try:  self.checkContent(warningregex)
+            except tuple(ExcList):
+                type, value = sys.exc_info()[:2]
+                self.setError(str(value))
 
         self.checktime = time.time() - t
         # check recursion

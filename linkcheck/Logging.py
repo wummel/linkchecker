@@ -40,6 +40,7 @@ __init__(self, **args)
   files in the appropriate logger section.
 """
 import sys,time,string
+from types import ListType
 import Config, StringUtil
 import linkcheck
 _ = linkcheck._
@@ -52,7 +53,7 @@ LogFields = {
     "parenturl": "Parent URL",
     "info": "Info",
     "warning": "Warning",
-    "downloadtime": "D/L Time",
+    "dltime": "D/L Time",
     "checktime": "Check Time",
     "url": "URL",
 }
@@ -100,20 +101,23 @@ class StandardLogger:
         else:
 	    self.fd = sys.stdout
         self.logfields = None # all fields
-        if args.has_key('logfields'):
-            if type(args['logfields']) == ListType:
-                self.logfields = args
+        if args.has_key('fields'):
+            if type(args['fields']) == ListType:
+                self.logfields = args['fields']
 
     def logfield(self, name):
-        return self.logfields and name in self.logfields
+        if self.logfields is None:
+            return 1
+        return name in self.logfields
 
     def init(self):
-        self.starttime = time.time()
-        self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
-        self.fd.write(_("Get the newest version at %s\n") % Config.Url)
-        self.fd.write(_("Write comments and bugs to %s\n\n") % Config.Email)
-        self.fd.write(_("Start checking at %s\n") % _strtime(self.starttime))
-        self.fd.flush()
+        if self.logfield('intro'):
+            self.starttime = time.time()
+            self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
+            self.fd.write(_("Get the newest version at %s\n") % Config.Url)
+            self.fd.write(_("Write comments and bugs to %s\n\n") % Config.Email)
+            self.fd.write(_("Start checking at %s\n") % _strtime(self.starttime))
+            self.fd.flush()
 
 
     def newUrl(self, urlData):
@@ -125,69 +129,70 @@ class StandardLogger:
                 self.fd.write("\n")
         if urlData.name and self.logfield('name'):
             self.fd.write(_(LogFields["name"])+Spaces["name"]+urlData.name+"\n")
-        if urlData.parentName and self.logfield('parentname'):
-            self.fd.write(_("Parent URL")+Spaces["Parent URL"]+
+        if urlData.parentName and self.logfield('parenturl'):
+            self.fd.write(_(LogFields['parenturl'])+Spaces["parenturl"]+
 	                  urlData.parentName+_(", line ")+
 	                  str(urlData.line)+"\n")
-        if urlData.baseRef:
-            self.fd.write(_("Base")+Spaces["Base"]+urlData.baseRef+"\n")
-        if urlData.url:
-            self.fd.write(_("Real URL")+Spaces["Real URL"]+urlData.url+"\n")
-        if urlData.downloadtime:
-            self.fd.write(_("D/L Time")+Spaces["D/L Time"]+
+        if urlData.baseRef and self.logfield('base'):
+            self.fd.write(_(LogFields["base"])+Spaces["base"]+urlData.baseRef+"\n")
+        if urlData.url and self.logfield('realurl'):
+            self.fd.write(_(LogFields["realurl"])+Spaces["realurl"]+urlData.url+"\n")
+        if urlData.downloadtime and self.logfield('dltime'):
+            self.fd.write(_(LogFields["dltime"])+Spaces["dltime"]+
 	                  _("%.3f seconds\n") % urlData.downloadtime)
-        if urlData.checktime:
-            self.fd.write(_("Check Time")+Spaces["Check Time"]+
+        if urlData.checktime and self.logfield('checktime'):
+            self.fd.write(_(LogFields["checktime"])+Spaces["checktime"]+
 	                  _("%.3f seconds\n") % urlData.checktime)
-        if urlData.infoString:
-            self.fd.write(_("Info")+Spaces["Info"]+
+        if urlData.infoString and self.logfield('info'):
+            self.fd.write(_(LogFields["info"])+Spaces["info"]+
 	                  StringUtil.indent(
                           StringUtil.blocktext(urlData.infoString, 65),
 			  MaxIndent)+"\n")
-        if urlData.warningString:
+        if urlData.warningString and self.logfield('warning'):
             self.warnings += 1
-            self.fd.write(_("Warning")+Spaces["Warning"]+
+            self.fd.write(_(LogFields["warning"])+Spaces["warning"]+
 	                  StringUtil.indent(
                           StringUtil.blocktext(urlData.warningString, 65),
 			  MaxIndent)+"\n")
-        
-        self.fd.write(_("Result")+Spaces["Result"])
-        if urlData.valid:
-            self.fd.write(urlData.validString+"\n")
-        else:
-            self.errors += 1
-            self.fd.write(urlData.errorString+"\n")
+
+        if self.logfield('result'):
+            self.fd.write(_(LogFields["result"])+Spaces["result"])
+            if urlData.valid:
+                self.fd.write(urlData.validString+"\n")
+            else:
+                self.errors += 1
+                self.fd.write(urlData.errorString+"\n")
         self.fd.flush()
 
 
     def endOfOutput(self, linknumber=-1):
-        self.fd.write(_("\nThats it. "))
-
-        if self.warnings==1:
-            self.fd.write(_("1 warning, "))
-        else:
-            self.fd.write(str(self.warnings)+_(" warnings, "))
-        if self.errors==1:
-            self.fd.write(_("1 error"))
-        else:
-            self.fd.write(str(self.errors)+_(" errors"))
-        if linknumber >= 0:
-            if linknumber == 1:
-                self.fd.write(_(" in 1 link"))
+        if self.logfield('outro'):
+            self.fd.write(_("\nThats it. "))
+            if self.warnings==1:
+                self.fd.write(_("1 warning, "))
             else:
-                self.fd.write(_(" in %d links") % linknumber)
-        self.fd.write(_(" found\n"))
-        self.stoptime = time.time()
-        duration = self.stoptime - self.starttime
-        name = _("seconds")
-        self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
-        if duration > 60:
-            duration = duration / 60
-            name = _("minutes")
-        if duration > 60:
-            duration = duration / 60
-            name = _("hours")
-        self.fd.write("	(%.3f %s)\n" % (duration, name))
+                self.fd.write(str(self.warnings)+_(" warnings, "))
+            if self.errors==1:
+                self.fd.write(_("1 error"))
+            else:
+                self.fd.write(str(self.errors)+_(" errors"))
+            if linknumber >= 0:
+                if linknumber == 1:
+                    self.fd.write(_(" in 1 link"))
+                else:
+                    self.fd.write(_(" in %d links") % linknumber)
+            self.fd.write(_(" found\n"))
+            self.stoptime = time.time()
+            duration = self.stoptime - self.starttime
+            name = _("seconds")
+            self.fd.write(_("Stopped checking at %s") % _strtime(self.stoptime))
+            if duration > 60:
+                duration = duration / 60
+                name = _("minutes")
+            if duration > 60:
+                duration = duration / 60
+                name = _("hours")
+            self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
 
