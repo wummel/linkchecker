@@ -63,9 +63,8 @@ def checkUrls(config = Config.Configuration()):
         while not config.finished():
             if config.hasMoreUrls():
                 config.checkUrl(config.getUrl())
+        config.log_endOfOutput()
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-	raise
-    config.log_endOfOutput()
-
+        sys.stderr.write("linkcheck: warning: keyboard interrupt\n")

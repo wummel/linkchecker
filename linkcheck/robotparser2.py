@@ -4,7 +4,7 @@
 
     You can choose between two licenses when using this package:
     1) GNU GPLv2
-    2) BEOPEN PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1
+    2) PYTHON 2.0 OPEN SOURCE LICENSE
 
     The robots.txt Exclusion Protocol is implemented as specified in
     http://info.webcrawler.com/mak/projects/robots/norobots-rfc.html

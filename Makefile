@@ -60,6 +60,7 @@ upload: distclean dist package files VERSION
 
 uploadpull: distclean dist package files VERSION
 	# shit, need to make pull, scp upload is not working any more
+	# aha, sourceforge fixed the shells, use upload again :)
 	ssh -t $(PULLHOST) "cd $(PULLPATH) && make clean"
 	scp debian/changelog README linkchecker-out.* VERSION $(PULLHOST):$(PULLPATH)
 	scp dist/* $(PULLHOST):$(PULLPATH)/dist
