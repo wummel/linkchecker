@@ -47,7 +47,8 @@ def _check_morsel (m, host, path):
 
 class Cache (object):
     """Store and provide routines for cached data. Currently there are
-       caches for cookies, check urls and robots.txt contents.
+       caches for cookies, checked urls, FTP connections and robots.txt
+       contents.
 
        All public operations (except __init__()) are thread-safe.
     """
@@ -58,6 +59,9 @@ class Cache (object):
         self.lock = threading.Lock()
         # already checked urls
         self.checked = {}
+        # open FTP connections
+        # {(host,user,pass) -> [connection, status]}
+        self.ftp_connections = {}
         # urls that are being checked
         self.in_progress = {}
         # to-be-checked urls
@@ -193,6 +197,44 @@ class Cache (object):
                 rp = self.robots_txt[roboturl]
             return rp.can_fetch(linkcheck.configuration.UserAgent,
                                 url_data.url)
+        finally:
+            self.lock.release()
+
+    def get_ftp_connection (self, host, username, password):
+        """Get open FTP connection to given host. Return None if no such
+           connection is available.
+        """
+        self.lock.acquire()
+        try:
+            key = (host, username, password)
+            if key in self.ftp_connections:
+                conn_and_status = self.ftp_connections[key]
+                if conn_and_status[1] == 'busy':
+                    # connection is in use
+                    return None
+                conn_and_status[1] = 'busy'
+                return conn_and_status[0]
+        finally:
+            self.lock.release()
+
+    def add_ftp_connection (self, host, username, password, conn):
+        """Store open FTP connection into cache for reuse."""
+        self.lock.acquire()
+        try:
+            key = (host, username, password)
+            cached = key in self.ftp_connections
+            if not cached:
+                self.ftp_connections[key] = [conn, 'busy']
+            return cached
+        finally:
+            self.lock.release()
+
+    def release_ftp_connection (self, host, username, password):
+        """Store open FTP connection into cache for reuse."""
+        self.lock.acquire()
+        try:
+            key = (host, username, password)
+            self.ftp_connections[key][1] = 'available'
         finally:
             self.lock.release()
 
