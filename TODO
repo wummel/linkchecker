@@ -1,6 +1,8 @@
 Next releases:
 
-- test redirection wrt. changed domain and relative redirect
+- windows .exe installer
+
+- url norming should not fix url syntax errors... think about that
 
 - rethink intern/extern stuff
 
