@@ -1,3 +1,9 @@
+linkchecker (1.8.14-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 29 Apr 2003 03:09:33 +0200
+
 linkchecker (1.8.13-1) unstable; urgency=low
 
   * New upstream version
