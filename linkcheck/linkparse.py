@@ -113,23 +113,18 @@ class LinkParser (HtmlParser):
 
     def _errorfun (self, msg, name):
         """append msg to error list"""
-        pos = "%d:%d" % (self.lineno(), self.column())
-        self.parse_info.append("%s: %s: %s" % (name, pos, msg))
-        print >> sys.stderr, name, pos, msg
-
+        self.parse_info.append("%s at line %d col %d: %s" % \
+                (name, self.last_lineno(), self.last_column(), msg))
 
     def error (self, msg):
         """signal a filter/parser error"""
-        self._errorfun(msg, "error:")
-
+        self._errorfun(msg, "error")
 
     def warning (self, msg):
         """signal a filter/parser warning"""
-        self._errorfun(msg, "warning:")
-
+        self._errorfun(msg, "warning")
 
     def fatalError (self, msg):
         """signal a fatal filter/parser error"""
-        self._errorfun(msg, "fatal error:")
-
+        self._errorfun(msg, "fatal error")
 
