@@ -18,7 +18,7 @@
 from StandardLogger import StandardLogger
 from Logger import Logger
 import time
-from linkcheck.log import strtime
+from linkcheck.log import strtime, strduration
 from linkcheck import StringUtil, i18n, Config
 
 class SQLLogger (StandardLogger):

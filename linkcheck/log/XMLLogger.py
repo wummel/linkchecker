@@ -18,7 +18,7 @@
 import time
 from linkcheck import Config, i18n
 from linkcheck.StringUtil import xmlify
-from linkcheck.log import strtime
+from linkcheck.log import strtime, strduration
 from StandardLogger import StandardLogger
 from Logger import Logger
 
