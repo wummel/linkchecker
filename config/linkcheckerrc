@@ -3,9 +3,10 @@
 # commandline options override these settings!
 
 [output]
-# turn on/off debug messages
-# use higher numbers for more debugging
-#debug=2
+# interactive operation
+#interactive=0
+# enable debug messages; see 'linkchecker -h' for valid debug names
+#debug=all
 # print status output
 #status=1
 # change the logging type
@@ -145,8 +146,6 @@
 # warn if size info exceeds given maximum of bytes
 #warnsizebytes=2000
 #nntpserver=
-# interactive operation
-#interactive=0
 # disable anchor caching
 #noanchorcaching=1
 
