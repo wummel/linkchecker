@@ -381,12 +381,12 @@ class UrlData (object):
         try:
             if self.allowsRecursion():
                 self.parseUrl()
+            # check content size
+            self.checkSize()
         except tuple(ExcList):
             value, tb = sys.exc_info()[1:]
             debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
-            self.setError(str(value))
-        # check content size
-        self.checkSize()
+            self.setError(i18n._("could not parse content: %r")%str(value))
         # close
         self.closeConnection()
         self.logMe()
