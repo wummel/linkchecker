@@ -20,6 +20,8 @@
     Changed files: linkchecker
   * added AnsiColors.py and debug.py to split out some functions
     Changed files: a lot .py files using these things
+  * use yy_size_t for parser alloc definitions, fixes build errors on 64bit
+    architectures
 
 1.8.2
   * - ignore invalid html attribute characters

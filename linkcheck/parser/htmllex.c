@@ -6677,10 +6677,10 @@ char *yytext;
 #define SET_ERROR(s)
 
 /* use Pythons memory management */
-void* yyalloc (size_t bytes, void* yyscanner) {
+void* yyalloc (yy_size_t bytes, void* yyscanner) {
     return PyMem_Malloc(bytes);
 }
-void* yyrealloc (void* ptr, size_t bytes, void* yyscanner) {
+void* yyrealloc (void* ptr, yy_size_t bytes, void* yyscanner) {
     return PyMem_Realloc(ptr, bytes);
 }
 void yyfree (void* ptr, void* yyscanner) {
