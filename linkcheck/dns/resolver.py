@@ -22,6 +22,7 @@
 import socket
 import sets
 import sys
+import os
 import time
 
 import linkcheck.dns.exception
