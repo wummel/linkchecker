@@ -90,6 +90,8 @@ class Configuration (dict):
         # Therefore we count this variable up to 5 and then we call
         # reduceThreads(). Ok, this is a hack but ItWorksForMe(tm).
         self.reduceCount = 0
+        # dns configuration
+        self.dnsconfig = bk.net.resolver_config()
 
     def reset (self):
         """Reset to default values"""
