@@ -1,3 +1,10 @@
+1.6.7
+  * Removed check for <applet> tags codebase attribute, but honor it
+    when checking applet links
+  * Handle <applet> tags archive attribute as a comma separated list
+  * Fix a deep flaw in tag searching, which ignored tags with more
+    than one link attribute in it.
+
 1.6.6
   * Use the new HTTPConnection/HTTPResponse interface of httplib
     Closes: SF bug #634679

@@ -100,7 +100,7 @@ _linkMatcher = r"""
 # ripped mainly from HTML::Tagset.pm
 LinkTags = (
     (['a'],       ['href']),
-    (['applet'],  ['archive', 'codebase', 'src']),
+    (['applet'],  ['archive', 'src']),
     (['area'],    ['href']),
     (['bgsound'], ['src']),
     (['blockquote'], ['cite']),
@@ -117,7 +117,7 @@ LinkTags = (
     (['isindex'], ['action']),
     (['layer'],   ['background', 'src']),
     (['link'],    ['href']),
-    (['object'],  ['classid', 'codebase', 'data', 'archive', 'usemap']),
+    (['object'],  ['classid', 'data', 'archive', 'usemap']),
     (['q'],       ['cite']),
     (['script'],  ['src', 'for']),
     (['body', 'table', 'td', 'th', 'tr'], ['background']),
@@ -131,11 +131,11 @@ _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
 LinkPatterns = []
 for _tags,_attrs in LinkTags:
     _tag = '(%s)'%'|'.join(_tags)
-    _attr = '(%s)'%'|'.join(_attrs)
-    LinkPatterns.append({'pattern': re.compile(_linkMatcher % (_tag, _attr),
-                                               re.VERBOSE),
-                         'tags': _tags,
-                         'attrs': _attrs})
+    for _attr in _attrs:
+        LinkPatterns.append({'pattern': re.compile(_linkMatcher %
+            (_tag, _attr), re.VERBOSE),
+            'tags': _tags,
+            'attrs': _attrs})
 AnchorPattern = {
     'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE),
     'tags': ['a'],
@@ -148,8 +148,6 @@ BasePattern = {
     'attrs': ['href'],
 }
 
-#CommentPattern = re.compile("<!--.*?--\s*>", re.DOTALL)
-# Workaround for Python 2.0 re module bug
 CommentPatternBegin = re.compile(r"<!--")
 CommentPatternEnd = re.compile(r"--\s*>")
 
@@ -226,6 +224,8 @@ class UrlData:
 
     def buildUrl (self):
         if self.baseRef:
+            if ":" not in self.baseRef:
+                self.baseRef = urlparse.urljoin(self.parentName, self.baseRef)
             self.url = urlparse.urljoin(self.baseRef, self.urlName)
         elif self.parentName:
             self.url = urlparse.urljoin(self.parentName, self.urlName)
@@ -385,7 +385,7 @@ class UrlData:
         if not (anchor!="" and self.isHtml() and self.valid):
             return
         self.getContent()
-        for cur_anchor,line,name in self.searchInForTag(AnchorPattern):
+        for cur_anchor,line,name,base in self.searchInForTag(AnchorPattern):
             if cur_anchor == anchor:
                 return
         self.setWarning(linkcheck._("anchor #%s not found") % anchor)
@@ -479,27 +479,40 @@ class UrlData:
         if len(bases)>=1:
             baseRef = bases[0][0]
             if len(bases)>1:
-                self.setWarning(linkcheck._("more than one base tag found"))
+                self.setWarning(linkcheck._("more than one <base> tag found, using only the first one"))
 
         # search for tags and add found tags to URL queue
         for pattern in LinkPatterns:
             urls = self.searchInForTag(pattern)
-            for url,line,name in urls:
+            for url,line,name,codebase in urls:
+                if codebase:
+                    base = codebase
+                else:
+                    base = baseRef
                 self.config.appendUrl(GetUrlDataFrom(url,
-         self.recursionLevel+1, self.config, self.url, baseRef, line, name))
+                                      self.recursionLevel+1, self.config,
+                                      self.url, base, line, name))
 
 
     def searchInForTag (self, pattern):
-        debug(HURT_ME_PLENTY, "Searching for tags", `pattern['tags']`,
-	      "attributes", `pattern['attrs']`)
+        tags = pattern['tags']
+        attrs = pattern['attrs']
+        debug(HURT_ME_PLENTY, "Searching for <%s %s=value>"%(tags, attrs))
         urls = []
-        index = 0
-        if 'a' in pattern['tags'] and 'href' in pattern['attrs']:
+        if 'applet' in tags and ('archive' in attrs or 'src' in attrs):
+            codebasetag = 'applet'
+        elif 'object' in tags and \
+            ('classid' in attrs or 'data' in attrs or 'archive' in attrs):
+            codebasetag = 'object'
+        else:
+            codebasetag = None
+        if 'a' in tags and 'href' in attrs:
             tag = 'a'
-        elif 'img' in pattern['tags']:
+        elif 'img' in tags:
             tag = 'img'
         else:
             tag = ''
+        index = 0
         while 1:
             try:
                 match = pattern['pattern'].search(self.getContent(), index)
@@ -507,14 +520,27 @@ class UrlData:
                 self.setError(linkcheck._("""Could not parse HTML content (%s).
 You may have a syntax error.
 LinkChecker is skipping the remaining content for the link type
-<%s %s>.""") % (msg, "|".join(pattern['tags']), "|".join(pattern['attrs'])))
+<%s %s>.""") % (msg, "|".join(tags), "|".join(attrs)))
                 break
             if not match: break
             index = match.end()
-            if self.is_in_comment(match.start()): continue
+            start = match.start()
+            if self.is_in_comment(start): continue
             # strip quotes
             url = StringUtil.stripQuotes(match.group('value'))
-	    if 'meta' in pattern['tags']:
+            # look for applet and object codebase
+            codebase = None
+            if codebasetag:
+                cbr = re.compile(_linkMatcher%(codebasetag, "codebase"),
+                                 re.VERBOSE)
+                codebase = cbr.search(self.getContent()[start:])
+                if codebase and codebase.start()==0:
+                    codebase = StringUtil.stripQuotes(codebase.group('value'))
+                    codebase = StringUtil.unhtmlify(codebase)
+                else:
+                    codebase = None
+            # look for meta refresh
+	    elif 'meta' in pattern['tags']:
 	        metamatch = _refresh_re.match(url)
 		if metamatch:
                     url = metamatch.group("url")
@@ -528,7 +554,7 @@ LinkChecker is skipping the remaining content for the link type
             name = self.searchInForName(tag, match.start(), match.end())
             debug(HURT_ME_PLENTY, "Found", `url`, "name", `name`,
                   "at line", lineno)
-            urls.append((url, lineno, name))
+            urls.append((url, lineno, name, codebase))
         return urls
 
 
@@ -575,7 +601,9 @@ from NntpUrlData import NntpUrlData
 
 
 def get_absolute_url (urlName, baseRef, parentName):
-    """search for the absolute url"""
+    """Search for the absolute url to detect the link type. This does not
+       join any url fragments together! Returns the url in lower case to
+       simplify urltype matching."""
     if urlName and ":" in urlName:
         return urlName.lower()
     elif baseRef and ":" in baseRef:
