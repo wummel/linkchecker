@@ -37,7 +37,8 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
           u"url %s" % url,
-          u"cache key mailto:calvin@users.sf.net,calvin@users.sourceforge.net",
+          u"cache key mailto:calvin@users.sf.net,"
+           u"calvin@users.sourceforge.net",
           u"real url %s" % url,
           u"info Verified address: <calvin> is deliverable.",
           u"valid",
@@ -47,7 +48,8 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "bcc=calvin%40users.sourceforge.net")
         resultlines = [
           u"url %s" % url,
-          u"cache key mailto:calvin@users.sf.net,calvin@users.sourceforge.net",
+          u"cache key mailto:calvin@users.sf.net,"
+           u"calvin@users.sourceforge.net",
           u"real url %s" % url,
           u"info Verified address: <calvin> is deliverable.",
           u"valid",
@@ -71,11 +73,12 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:?to=calvin@users.sf.net&subject=blubb&"\
-                "cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
+        url = self.norm(u"mailto:?to=calvin@users.sf.net&subject=blubb&"
+                       u"cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
         resultlines = [
             u"url %s" % url,
-            u"cache key mailto:calvin@users.sf.net,calvin_CC@users.sf.net,calvin_cc@users.sf.net",
+            u"cache key mailto:calvin@users.sf.net,"
+             u"calvin_CC@users.sf.net,calvin_cc@users.sf.net",
             u"real url %s" % url,
             u"info Verified address: <calvin> is deliverable.",
             u"info Verified address: <calvin_cc> is deliverable.",
@@ -83,8 +86,8 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:news-admins@freshmeat.net?subject="\
-                "Re:%20[fm%20#11093]%20(news-admins)%20Submission%20"\
+        url = self.norm(u"mailto:news-admins@freshmeat.net?subject="
+                "Re:%20[fm%20#11093]%20(news-admins)%20Submission%20"
                 "report%20-%20Pretty%20CoLoRs")
         resultlines = [
             u"url %s" % url,
@@ -99,7 +102,8 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:foo@foo-bar.de",
             u"real url %s" % url,
-            u"info Unverified address: Cannot VRFY user; try RCPT to attempt delivery. But mail will be sent anyway.",
+            u"info Unverified address: Cannot VRFY user; "
+             u"try RCPT to attempt delivery. But mail will be sent anyway.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -116,7 +120,8 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"cache key mailto:calvin@users.sf.net",
             u"real url %s" % qurl,
             u"info Verified address: <calvin> is deliverable.",
-            u"warning Base URL is not properly normed. Normed url is %s." % qurl,
+            u"warning Base URL is not properly normed. "
+             u"Normed url is %s." % qurl,
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -127,7 +132,8 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"cache key mailto:calvin@users.sf.net",
             u"real url %s" % qurl,
             u"info Verified address: <calvin> is deliverable.",
-            u"warning Base URL is not properly normed. Normed url is %s." % qurl,
+            u"warning Base URL is not properly normed. "
+             u"Normed url is %s." % qurl,
             u"valid",
         ]
         self.direct(url, resultlines)

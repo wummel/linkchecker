@@ -51,10 +51,14 @@ def startoutput (out=sys.stdout):
               "Pragma: no-cache\r\n"
               "\r\n")
 
-def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
+def checkaccess (out=sys.stdout, hosts=None, servers=None, env=os.environ):
     """
     See if remote addr is allowed to access the CGI interface.
     """
+    if hosts is None:
+        hosts = []
+    if servers is None:
+        servers = []
     if os.environ.get('REMOTE_ADDR') in hosts and \
        os.environ.get('SERVER_ADDR') in servers:
         return True
@@ -63,17 +67,18 @@ def checkaccess (out=sys.stdout, hosts=[], servers=[], env=os.environ):
     return False
 
 
-def checklink (out=sys.stdout, form={}, env=os.environ):
+def checklink (out=sys.stdout, form=None, env=os.environ):
     """
     Main cgi function, check the given links and print out the result.
     """
+    if form is None:
+        form = {}
     try:
         checkform(form)
     except FormError, why:
         logit(form, env)
         print_error(out, why)
         return
-    import linkcheck.configuration
     config = linkcheck.configuration.Configuration()
     config["recursionlevel"] = int(form["level"].value)
     config["logger"] = config.logger_new('html', fd=out)

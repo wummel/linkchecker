@@ -22,8 +22,6 @@ import re
 import time
 import sys
 import nntplib
-import socket
-import urlparse
 import random
 
 import linkcheck

@@ -19,7 +19,6 @@ Handle http links.
 """
 
 import urlparse
-import sys
 import time
 import re
 import zlib

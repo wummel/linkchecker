@@ -19,7 +19,6 @@ Test HTML robots.txt parsing.
 """
 
 import unittest
-import os
 
 import linkcheck.ftests
 

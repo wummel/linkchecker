@@ -20,7 +20,6 @@ http://www.graphviz.org/cvs/doc/info/lang.html.
 """
 
 import time
-import os
 
 import linkcheck.configuration
 

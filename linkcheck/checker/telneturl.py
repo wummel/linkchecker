@@ -19,10 +19,8 @@ Handle telnet: links.
 """
 
 import telnetlib
-import urlparse
 import urllib
 
-import linkcheck
 import urlbase
 
 

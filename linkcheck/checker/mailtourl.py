@@ -18,7 +18,6 @@
 Handle for mailto: links.
 """
 
-import sys
 import cgi
 import urllib
 import smtplib

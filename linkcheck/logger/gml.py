@@ -19,7 +19,6 @@ A gml logger.
 """
 
 import time
-import os
 
 import linkcheck.configuration
 

@@ -20,7 +20,6 @@ Base URL handler.
 
 import sys
 import os
-import re
 import urlparse
 import urllib2
 import urllib

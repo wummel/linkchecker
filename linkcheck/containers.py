@@ -266,7 +266,7 @@ class LRU (object):
         """
         Iterate over stored object values.
         """
-        for i, j in self.iteritems():
+        for dummy, j in self.iteritems():
             yield j
 
     def keys (self):

@@ -19,7 +19,6 @@ Test http checking.
 """
 
 import unittest
-import os
 
 import linkcheck.ftests.httptest
 

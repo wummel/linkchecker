@@ -18,7 +18,6 @@
 An xml logger.
 """
 
-import os
 import time
 import xml.sax.saxutils
 
