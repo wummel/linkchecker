@@ -1,4 +1,4 @@
-# use beta flex from ftp://ftp.uncg.edu/people/wlestes/ for reentrant
+# use beta flex from http://lex.sf.net/ for reentrant
 # bison parser support
 FLEX=/home/calvin/src/flex-2.5.27/flex
 PYTHON=python2.2
