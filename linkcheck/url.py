@@ -184,7 +184,9 @@ def url_norm (url):
     urlparts[3] = '&'.join(l)
     if not urlparts[2]:
         # empty path should be a slash, but not in certain schemes
-        if urlparts[0] not in urlparse.non_hierarchical:
+        # note that in relative links, urlparts[0] might be empty
+        # in this case, do not make any assumptions
+        if urlparts[0] and urlparts[0] not in urlparse.non_hierarchical:
             urlparts[2] = '/'
     else:
         # fix redundant path parts
@@ -199,7 +201,7 @@ def url_norm (url):
     urlparts[2] = urllib.quote(urlparts[2], nopathquote) # path
     res = urlparse.urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
-        # append trailing empty fragment
+        # re-append trailing empty fragment
         res += '#'
     return res
 
