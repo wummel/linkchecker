@@ -20,6 +20,7 @@ import re
 import time
 import sys
 import nntplib
+import socket
 import urlparse
 import random
 
@@ -30,6 +31,70 @@ import linkcheck.log
 from linkcheck.i18n import _
 
 random.seed()
+
+class NoNetrcNNTP (nntplib.NNTP):
+    """NNTP class ignoring possible entries in ~/.netrc"""
+
+    def __init__ (self, host, port=nntplib.NNTP_PORT, user=None,
+                  password=None, readermode=None):
+        """Initialize an instance.  Arguments:
+        - host: hostname to connect to
+        - port: port to connect to (default the standard NNTP port)
+        - user: username to authenticate with
+        - password: password to use with username
+        - readermode: if true, send 'mode reader' command after
+                      connecting.
+
+        readermode is sometimes necessary if you are connecting to an
+        NNTP server on the local machine and intend to call
+        reader-specific comamnds, such as `group'.  If you get
+        unexpected NNTPPermanentErrors, you might need to set
+        readermode.
+        """
+        self.host = host
+        self.port = port
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((self.host, self.port))
+        self.file = self.sock.makefile('rb')
+        self.debugging = 0
+        self.welcome = self.getresp()
+
+        # 'mode reader' is sometimes necessary to enable 'reader' mode.
+        # However, the order in which 'mode reader' and 'authinfo' need to
+        # arrive differs between some NNTP servers. Try to send
+        # 'mode reader', and if it fails with an authorization failed
+        # error, try again after sending authinfo.
+        readermode_afterauth = 0
+        if readermode:
+            try:
+                self.welcome = self.shortcmd('mode reader')
+            except nntplib.NNTPPermanentError:
+                # error 500, probably 'not implemented'
+                pass
+            except nntplib.NNTPTemporaryError, e:
+                if user and e.response[:3] == '480':
+                    # Need authorization before 'mode reader'
+                    readermode_afterauth = 1
+                else:
+                    raise
+        # Perform NNRP authentication if needed.
+        if user:
+            resp = self.shortcmd('authinfo user '+user)
+            if resp[:3] == '381':
+                if not password:
+                    raise nntplib.NNTPReplyError(resp)
+                else:
+                    resp = self.shortcmd(
+                            'authinfo pass '+password)
+                    if resp[:3] != '281':
+                        raise nntplib.NNTPPermanentError(resp)
+            if readermode_afterauth:
+                try:
+                    self.welcome = self.shortcmd('mode reader')
+                except nntplib.NNTPPermanentError:
+                    # error 500, probably 'not implemented'
+                    pass
+
 
 class NntpUrl (urlbase.UrlBase):
     "Url link with NNTP scheme"
@@ -79,7 +144,7 @@ class NntpUrl (urlbase.UrlBase):
         while tries < 5:
             tries += 1
             try:
-                nntp = nntplib.NNTP(nntpserver)
+                nntp = NoNetrcNNTP(nntpserver)
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
                 if re.compile("^50[45]").search(str(value)):
