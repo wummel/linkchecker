@@ -24,6 +24,7 @@ import linkcheck.strformat
 import linkcheck.linkname
 import linkcheck.log
 
+MAX_NAMELEN = 256
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {
@@ -191,9 +192,9 @@ class LinkFinder (TagFinder):
             name = linkcheck.strformat.unquote(attrs.get('title', u''))
             if not name:
                 pos = self.parser.pos()
-                # Look for name only up to characters from current
+                # Look for name only up to MAX_NAMELEN characters from current
                 # position, to limit the amount of data to encode.
-                data = self.content[pos:pos+500]
+                data = self.content[pos:pos+MAX_NAMELEN]
                 data = data.decode(self.parser.encoding, "ignore")
                 name = linkcheck.linkname.href_name(data)
         elif tag == 'img':
