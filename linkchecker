@@ -227,7 +227,7 @@ optparser = LCOptionParser()
 group = optparse.OptionGroup(optparser, _("General options"))
 group.add_option("-f", "--config", type="string", dest="configfile",
                  help=_(
-"""Use file as configuration file. As default LinkChecker first
+"""Use CONFIGFILE as configuration file. As default LinkChecker first
 searches /etc/linkchecker/linkcheckerrc and then ~/.linkcheckerrc
 (under Windows <path-to-program>\\linkcheckerrc)."""))
 group.add_option("-I", "--interactive", action="store_true",
@@ -370,7 +370,7 @@ group.add_option("--timeout", type="int", dest="timeout",
 timeout is %d seconds.""") % default_timeout)
 group.add_option("-P", "--pause", type="int", dest="pause",
                  help=_(
-"""Pause <secs> seconds between each url check. This option implies -t0.
+"""Pause PAUSE seconds between each url check. This option implies -t0.
 Default is no pause between requests."""))
 group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
                  help=_(
