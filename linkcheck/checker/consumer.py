@@ -73,6 +73,7 @@ class Consumer (object):
         self.errors = False
         # if checking had warnings
         self.warnings = False
+        self.logger_start_output()
 
     def _set_threads (self, num):
         """

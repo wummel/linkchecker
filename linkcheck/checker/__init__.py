@@ -127,7 +127,6 @@ def _check_urls (consumer):
     @type consumer: linkcheck.consumer.Consumer
     @return: None
     """
-    consumer.logger_start_output()
     start_time = time.time()
     status_time = start_time
     while not consumer.finished():
