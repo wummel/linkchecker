@@ -134,103 +134,99 @@ class HtmlLogger (linkcheck.logger.Logger):
 
     def write_table_end (self):
         """end html table"""
-        self.fd.write("</table></td></tr></table><br clear=\"all\">")
+        self.write(u"</table></td></tr></table><br clear=\"all\">")
 
     def write_url (self, url_data):
         """write url_data.base_url"""
-        self.fd.write("<tr>"+os.linesep+
-             "<td bgcolor=\""+self.colorurl+"\">"+self.field("url")+"</td>"+
-             os.linesep+
-             "<td bgcolor=\""+self.colorurl+"\">"+
-             cgi.escape(repr(url_data.base_url)))
+        self.writeln(u"<tr>")
+        self.writeln(u"<td bgcolor=\""+self.colorurl+u"\">"+
+                     self.field("url")+u"</td>")
+        self.write(u"<td bgcolor=\""+self.colorurl+u"\">"+
+                   cgi.escape(repr(url_data.base_url)))
         if url_data.cached:
-            self.fd.write(_(" (cached)"))
-        self.fd.write("</td></tr>"+os.linesep)
+            self.write(_(" (cached)"))
+        self.writeln(u"</td></tr>")
 
     def write_name (self, url_data):
         """write url_data.name"""
-        self.fd.write("<tr><td>"+self.field("name")+"</td><td>"+
-                      cgi.escape(repr(url_data.name))+"</td></tr>"+os.linesep)
+        self.writeln(u"<tr><td>"+self.field("name")+u"</td><td>"+
+                     cgi.escape(repr(url_data.name))+u"</td></tr>")
 
     def write_parent (self, url_data):
         """write url_data.parent_url"""
-        self.fd.write("<tr><td>"+self.field("parenturl")+
-               '</td><td><a target="top" href="'+
-               url_data.parent_url+'">'+
-               cgi.escape(url_data.parent_url)+"</a>")
-        self.fd.write(_(", line %d")%url_data.line)
-        self.fd.write(_(", col %d")%url_data.column)
+        self.write(u"<tr><td>"+self.field("parenturl")+
+                   u'</td><td><a target="top" href="'+
+                   url_data.parent_url+u'">'+
+                   cgi.escape(url_data.parent_url)+u"</a>")
+        self.write(_(", line %d") % url_data.line)
+        self.write(_(", col %d") % url_data.column)
         if not url_data.valid:
             # on errors show HTML and CSS validation for parent url
             vhtml = validate_html % {'uri': url_data.parent_url}
             vcss = validate_css % {'uri': url_data.parent_url}
-            self.fd.write(os.linesep)
-            self.fd.write('(<a href="'+vhtml+'">HTML</a>)')
-            self.fd.write(os.linesep)
-            self.fd.write('(<a href="'+vcss+'">CSS</a>)')
-        self.fd.write("</td></tr>"+os.linesep)
+            self.writeln()
+            self.writeln(u'(<a href="'+vhtml+u'">HTML</a>)')
+            self.write(u'(<a href="'+vcss+u'">CSS</a>)')
+        self.writeln(u"</td></tr>")
 
     def write_base (self, url_data):
         """write url_data.base_ref"""
-        self.fd.write("<tr><td>"+self.field("base")+"</td><td>"+
-                      cgi.escape(url_data.base_ref)+"</td></tr>"+os.linesep)
+        self.writeln(u"<tr><td>"+self.field("base")+u"</td><td>"+
+                     cgi.escape(url_data.base_ref)+u"</td></tr>")
 
     def write_real (self, url_data):
         """write url_data.url"""
-        self.fd.write("<tr><td>"+self.field("realurl")+"</td><td>"+
-                      '<a target="top" href="'+url_data.url+
-                      '">'+cgi.escape(url_data.url)+"</a></td></tr>"+
-                      os.linesep)
+        self.writeln("<tr><td>"+self.field("realurl")+u"</td><td>"+
+                     u'<a target="top" href="'+url_data.url+
+                     u'">'+cgi.escape(url_data.url)+u"</a></td></tr>")
 
     def write_dltime (self, url_data):
         """write url_data.dltime"""
-        self.fd.write("<tr><td>"+self.field("dltime")+"</td><td>"+
-                      (_("%.3f seconds") % url_data.dltime)+
-                      "</td></tr>"+os.linesep)
+        self.writeln(u"<tr><td>"+self.field("dltime")+u"</td><td>"+
+                     (_("%.3f seconds") % url_data.dltime)+
+                     u"</td></tr>")
 
     def write_dlsize (self, url_data):
         """write url_data.dlsize"""
-        self.fd.write("<tr><td>"+self.field("dlsize")+"</td><td>"+
-                      linkcheck.strformat.strsize(url_data.dlsize)+
-                      "</td></tr>"+os.linesep)
+        self.writeln(u"<tr><td>"+self.field("dlsize")+u"</td><td>"+
+                     linkcheck.strformat.strsize(url_data.dlsize)+
+                     u"</td></tr>")
 
     def write_checktime (self, url_data):
         """write url_data.checktime"""
-        self.fd.write("<tr><td>"+self.field("checktime")+
-                      "</td><td>"+
-                      (_("%.3f seconds") % url_data.checktime)+
-                      "</td></tr>"+os.linesep)
+        self.writeln(u"<tr><td>"+self.field("checktime")+u"</td><td>"+
+                     (_("%.3f seconds") % url_data.checktime)+u"</td></tr>")
 
     def write_info (self, url_data):
         """write url_data.info"""
         text = os.linesep.join(url_data.info)
-        self.fd.write("<tr><td valign=\"top\">"+self.field("info")+
-            "</td><td>"+cgi.escape(text).replace(os.linesep, "<br>")+
-            "</td></tr>"+os.linesep)
+        self.writeln(u"<tr><td valign=\"top\">"+self.field("info")+
+               u"</td><td>"+cgi.escape(text).replace(os.linesep, "<br>")+
+               u"</td></tr>")
 
     def write_warning (self, url_data):
         """write url_data.warning"""
-        sep = "<br>"+os.linesep
+        sep = u"<br>"+os.linesep
         text = sep.join([cgi.escape(x) for x in url_data.warning])
-        self.fd.write("<tr><td bgcolor=\""+self.colorwarning+"\" "+
-                      "valign=\"top\">"+self.field("warning")+
-                      "</td><td bgcolor=\""+self.colorwarning+"\">"+
-                      text+"</td></tr>"+os.linesep)
+        self.writeln(u"<tr><td bgcolor=\""+self.colorwarning+u"\" "+
+                     u"valign=\"top\">"+self.field("warning")+
+                     u"</td><td bgcolor=\""+self.colorwarning+u"\">"+
+                     text+u"</td></tr>")
 
     def write_result (self, url_data):
         """write url_data.result"""
         if url_data.valid:
-            self.fd.write("<tr><td bgcolor=\""+self.colorok+"\">"+
-             self.field("result")+"</td><td bgcolor=\""+self.colorok+"\">")
-            self.fd.write(_("Valid"))
+            self.write(u"<tr><td bgcolor=\""+self.colorok+u"\">"+
+             self.field("result")+u"</td><td bgcolor=\""+self.colorok+u"\">")
+            self.write(_("Valid"))
         else:
             self.errors += 1
-            self.fd.write("<tr><td bgcolor=\""+self.colorerror+"\">"+
-             self.field("result")+"</td><td bgcolor=\""+self.colorerror+"\">")
-            self.fd.write(_("Error"))
+            self.write(u"<tr><td bgcolor=\""+self.colorerror+u"\">"+
+           self.field("result")+u"</td><td bgcolor=\""+self.colorerror+u"\">")
+            self.write(_("Error"))
         if url_data.result:
-              self.fd.write(": "+cgi.escape(url_data.result))
-        self.fd.write("</td></tr>"+os.linesep)
+              self.write(u": "+cgi.escape(url_data.result))
+        self.writeln(u"</td></tr>")
 
     def end_output (self, linknumber=-1):
         """print end of checking info as HTML"""
@@ -245,23 +241,21 @@ class HtmlLogger (linkcheck.logger.Logger):
                 self.write(u" ")
             self.writeln(_n("%d error found.", "%d errors found.",
                          self.errors) % self.errors)
-            self.fd.write("<br>"+os.linesep)
+            self.writeln(u"<br>")
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.fd.write(_("Stopped checking at %s (%s)")%\
-                          (linkcheck.strformat.strtime(self.stoptime),
-                           linkcheck.strformat.strduration(duration)))
-            self.fd.write(os.linesep)
-            self.fd.write("</blockquote><br><hr noshade size=\"1\"><small>"+
-                          linkcheck.configuration.HtmlAppInfo+"<br>")
-            self.fd.write(_("Get the newest version at %s") %\
-             ('<a href="'+linkcheck.configuration.Url+'" target="_top">'+
-             linkcheck.configuration.Url+
-              "</a>.<br>")+os.linesep)
-            self.fd.write(_("Write comments and bugs to %s") %\
-             ('<a href="mailto:'+linkcheck.configuration.Email+'">'+
-             linkcheck.configuration.Email+"</a>.")+os.linesep)
-            self.fd.write("</small></body></html>"+os.linesep)
+            self.writeln(_("Stopped checking at %s (%s)") % \
+                         (linkcheck.strformat.strtime(self.stoptime),
+                          linkcheck.strformat.strduration(duration)))
+            self.writeln(u"</blockquote><br><hr noshade size=\"1\"><small>"+
+                         linkcheck.configuration.HtmlAppInfo+u"<br>")
+            self.writeln(_("Get the newest version at %s") % \
+             (u'<a href="'+linkcheck.configuration.Url+u'" target="_top">'+
+              linkcheck.configuration.Url+u"</a>.<br>"))
+            self.writeln(_("Write comments and bugs to %s") % \
+             (u'<a href="mailto:'+linkcheck.configuration.Email+u'">'+
+             linkcheck.configuration.Email+u"</a>."))
+            self.writeln(u"</small></body></html>")
         self.flush()
         if self.close_fd:
             self.fd.close()
