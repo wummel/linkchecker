@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Dec 31 01:00:03 2002\n"
+"POT-Creation-Date: Tue Dec 31 01:45:45 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -118,8 +118,8 @@ msgstr ""
 msgid "NNTP busy: %s"
 msgstr ""
 
-msgid "Illegal telnet link syntax"
-msgstr "Syntaxe illégale du lien telnet"
+msgid "URL has invalid port number %s"
+msgstr ""
 
 msgid ""
 "\n"
@@ -150,9 +150,6 @@ msgstr "Erreur"
 
 msgid "Valid"
 msgstr "Valide"
-
-msgid "URL has invalid port number %s"
-msgstr ""
 
 msgid "URL is null or empty"
 msgstr "L'URL est nulle ou vide"
@@ -627,3 +624,6 @@ msgstr "aucun fichier ou url donnée"
 
 msgid "Hit RETURN to finish"
 msgstr ""
+
+#~ msgid "Illegal telnet link syntax"
+#~ msgstr "Syntaxe illégale du lien telnet"

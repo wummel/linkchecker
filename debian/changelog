@@ -1,6 +1,7 @@
 linkchecker (1.8.2-1) unstable; urgency=low
 
   * New upstream release.
+  * install translated cgi html files
 
  -- Bastian Kleineidam <calvin@debian.org>  Sat, 28 Dec 2002 18:23:26 +0100
 

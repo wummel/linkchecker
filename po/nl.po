@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Dec 31 01:00:03 2002\n"
+"POT-Creation-Date: Tue Dec 31 01:45:45 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -121,8 +121,8 @@ msgstr ""
 msgid "NNTP busy: %s"
 msgstr ""
 
-msgid "Illegal telnet link syntax"
-msgstr "Illegale Telnet link Syntax"
+msgid "URL has invalid port number %s"
+msgstr ""
 
 msgid ""
 "\n"
@@ -153,9 +153,6 @@ msgstr "Fout"
 
 msgid "Valid"
 msgstr "Geldig"
-
-msgid "URL has invalid port number %s"
-msgstr ""
 
 msgid "URL is null or empty"
 msgstr "URL is nul of leeg"
@@ -644,3 +641,6 @@ msgstr "geen bestanden of URLs gegeven"
 
 msgid "Hit RETURN to finish"
 msgstr "Toets RETURN om te beëindigen"
+
+#~ msgid "Illegal telnet link syntax"
+#~ msgstr "Illegale Telnet link Syntax"

@@ -47,6 +47,7 @@ install: build
 	# install CGI files
 	install -c -m 644 lconline/*.html $(HTMLDIR)
 	install -c -m 644 lconline/*.de $(HTMLDIR)
+	install -c -m 644 lconline/*.en $(HTMLDIR)
 	cat lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.cgi
 	cat lc.fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.fcgi
 	cat lc.sz_fcgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(CGIDIR)/lc.sz_fcgi
