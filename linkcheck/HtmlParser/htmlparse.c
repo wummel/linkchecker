@@ -1,7 +1,7 @@
-/* A Bison parser, made by GNU Bison 1.875a.  */
+/* A Bison parser, made by GNU Bison 1.875d.  */
 
 /* Skeleton parser for Yacc-like parsing with Bison,
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -199,9 +199,8 @@ typedef struct {
 staticforward PyTypeObject parser_type;
 
 /* use Pythons memory management */
-#define malloc PyMem_Malloc
-#define realloc PyMem_Realloc
-#define free PyMem_Free
+#define YYMALLOC PyMem_Malloc
+#define YYFREE PyMem_Free
 
 
 
@@ -231,22 +230,29 @@ typedef int YYSTYPE;
 
 
 /* Line 214 of yacc.c.  */
-#line 235 "htmlparse.c"
+#line 234 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
+# ifndef YYFREE
+#  define YYFREE free
+# endif
+# ifndef YYMALLOC
+#  define YYMALLOC malloc
+# endif
+
 /* The parser invokes alloca or malloc; define the necessary symbols.  */
 
-# if YYSTACK_USE_ALLOCA
-#  define YYSTACK_ALLOC alloca
+# ifdef YYSTACK_USE_ALLOCA
+#  if YYSTACK_USE_ALLOCA
+#   define YYSTACK_ALLOC alloca
+#  endif
 # else
-#  ifndef YYSTACK_USE_ALLOCA
-#   if defined (alloca) || defined (_ALLOCA_H)
-#    define YYSTACK_ALLOC alloca
-#   else
-#    ifdef __GNUC__
-#     define YYSTACK_ALLOC __builtin_alloca
-#    endif
+#  if defined (alloca) || defined (_ALLOCA_H)
+#   define YYSTACK_ALLOC alloca
+#  else
+#   ifdef __GNUC__
+#    define YYSTACK_ALLOC __builtin_alloca
 #   endif
 #  endif
 # endif
@@ -259,20 +265,20 @@ typedef int YYSTYPE;
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
 #   define YYSIZE_T size_t
 #  endif
-#  define YYSTACK_ALLOC malloc
-#  define YYSTACK_FREE free
+#  define YYSTACK_ALLOC YYMALLOC
+#  define YYSTACK_FREE YYFREE
 # endif
 #endif /* ! defined (yyoverflow) || YYERROR_VERBOSE */
 
 
 #if (! defined (yyoverflow) \
      && (! defined (__cplusplus) \
-	 || (YYSTYPE_IS_TRIVIAL)))
+	 || (defined (YYSTYPE_IS_TRIVIAL) && YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
-  short yyss;
+  short int yyss;
   YYSTYPE yyvs;
   };
 
@@ -282,13 +288,13 @@ union yyalloc
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
 # define YYSTACK_BYTES(N) \
-     ((N) * (sizeof (short) + sizeof (YYSTYPE))				\
+     ((N) * (sizeof (short int) + sizeof (YYSTYPE))			\
       + YYSTACK_GAP_MAXIMUM)
 
 /* Copy COUNT objects from FROM to TO.  The source and destination do
    not overlap.  */
 # ifndef YYCOPY
-#  if 1 < __GNUC__
+#  if defined (__GNUC__) && 1 < __GNUC__
 #   define YYCOPY(To, From, Count) \
       __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
 #  else
@@ -324,7 +330,7 @@ union yyalloc
 #if defined (__STDC__) || defined (__cplusplus)
    typedef signed char yysigned_char;
 #else
-   typedef short yysigned_char;
+   typedef short int yysigned_char;
 #endif
 
 /* YYFINAL -- State number of the termination state. */
@@ -399,10 +405,10 @@ static const yysigned_char yyrhs[] =
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const unsigned short yyrline[] =
+static const unsigned short int yyrline[] =
 {
-       0,   145,   145,   146,   149,   150,   157,   192,   242,   276,
-     297,   318,   339,   360,   385,   410
+       0,   144,   144,   145,   148,   149,   156,   191,   241,   275,
+     296,   317,   338,   359,   384,   409
 };
 #endif
 
@@ -411,9 +417,9 @@ static const unsigned short yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals. */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "T_WAIT", "T_ERROR", "T_TEXT", 
-  "T_ELEMENT_START", "T_ELEMENT_START_END", "T_ELEMENT_END", "T_SCRIPT", 
-  "T_STYLE", "T_PI", "T_COMMENT", "T_CDATA", "T_DOCTYPE", "$accept", 
+  "$end", "error", "$undefined", "T_WAIT", "T_ERROR", "T_TEXT",
+  "T_ELEMENT_START", "T_ELEMENT_START_END", "T_ELEMENT_END", "T_SCRIPT",
+  "T_STYLE", "T_PI", "T_COMMENT", "T_CDATA", "T_DOCTYPE", "$accept",
   "elements", "element", 0
 };
 #endif
@@ -421,7 +427,7 @@ static const char *const yytname[] =
 # ifdef YYPRINT
 /* YYTOKNUM[YYLEX-NUM] -- Internal token number corresponding to
    token YYLEX-NUM.  */
-static const unsigned short yytoknum[] =
+static const unsigned short int yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269
@@ -522,7 +528,7 @@ static const unsigned char yystos[] =
 
 #define YYACCEPT	goto yyacceptlab
 #define YYABORT		goto yyabortlab
-#define YYERROR		goto yyerrlab1
+#define YYERROR		goto yyerrorlab
 
 
 /* Like YYERROR except do call yyerror.  This remains here temporarily
@@ -557,11 +563,11 @@ while (0)
    are run).  */
 
 #ifndef YYLLOC_DEFAULT
-# define YYLLOC_DEFAULT(Current, Rhs, N)         \
-  Current.first_line   = Rhs[1].first_line;      \
-  Current.first_column = Rhs[1].first_column;    \
-  Current.last_line    = Rhs[N].last_line;       \
-  Current.last_column  = Rhs[N].last_column;
+# define YYLLOC_DEFAULT(Current, Rhs, N)		\
+   ((Current).first_line   = (Rhs)[1].first_line,	\
+    (Current).first_column = (Rhs)[1].first_column,	\
+    (Current).last_line    = (Rhs)[N].last_line,	\
+    (Current).last_column  = (Rhs)[N].last_column)
 #endif
 
 /* YYLEX -- calling `yylex' with the right arguments.  */
@@ -605,17 +611,17 @@ do {								\
 
 /*------------------------------------------------------------------.
 | yy_stack_print -- Print the state stack from its BOTTOM up to its |
-| TOP (cinluded).                                                   |
+| TOP (included).                                                   |
 `------------------------------------------------------------------*/
 
 #if defined (__STDC__) || defined (__cplusplus)
 static void
-yy_stack_print (short *bottom, short *top)
+yy_stack_print (short int *bottom, short int *top)
 #else
 static void
 yy_stack_print (bottom, top)
-    short *bottom;
-    short *top;
+    short int *bottom;
+    short int *top;
 #endif
 {
   YYFPRINTF (stderr, "Stack now");
@@ -645,9 +651,9 @@ yy_reduce_print (yyrule)
 #endif
 {
   int yyi;
-  unsigned int yylineno = yyrline[yyrule];
+  unsigned int yylno = yyrline[yyrule];
   YYFPRINTF (stderr, "Reducing stack by rule %d (line %u), ",
-             yyrule - 1, yylineno);
+             yyrule - 1, yylno);
   /* Print the symbols being reduced, and their result.  */
   for (yyi = yyprhs[yyrule]; 0 <= yyrhs[yyi]; yyi++)
     YYFPRINTF (stderr, "%s ", yytname [yyrhs[yyi]]);
@@ -684,7 +690,7 @@ int yydebug;
    SIZE_MAX < YYSTACK_BYTES (YYMAXDEPTH)
    evaluated with infinite-precision integer arithmetic.  */
 
-#if YYMAXDEPTH == 0
+#if defined (YYMAXDEPTH) && YYMAXDEPTH == 0
 # undef YYMAXDEPTH
 #endif
 
@@ -882,9 +888,9 @@ int yynerrs;
      to reallocate them elsewhere.  */
 
   /* The state stack.  */
-  short	yyssa[YYINITDEPTH];
-  short *yyss = yyssa;
-  register short *yyssp;
+  short int yyssa[YYINITDEPTH];
+  short int *yyss = yyssa;
+  register short int *yyssp;
 
   /* The semantic value stack.  */
   YYSTYPE yyvsa[YYINITDEPTH];
@@ -921,6 +927,7 @@ int yynerrs;
   yyssp = yyss;
   yyvsp = yyvs;
 
+
   goto yysetstate;
 
 /*------------------------------------------------------------.
@@ -946,7 +953,7 @@ int yynerrs;
 	   these so that the &'s don't force the real ones into
 	   memory.  */
 	YYSTYPE *yyvs1 = yyvs;
-	short *yyss1 = yyss;
+	short int *yyss1 = yyss;
 
 
 	/* Each stack pointer address is followed by the size of the
@@ -974,7 +981,7 @@ int yynerrs;
 	yystacksize = YYMAXDEPTH;
 
       {
-	short *yyss1 = yyss;
+	short int *yyss1 = yyss;
 	union yyalloc *yyptr =
 	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
 	if (! yyptr)
@@ -1107,22 +1114,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 145 "htmlparse.y"
+#line 144 "htmlparse.y"
     {;}
     break;
 
   case 3:
-#line 146 "htmlparse.y"
+#line 145 "htmlparse.y"
     {;}
     break;
 
   case 4:
-#line 149 "htmlparse.y"
+#line 148 "htmlparse.y"
     { YYACCEPT; /* wait for more lexer input */ ;}
     break;
 
   case 5:
-#line 151 "htmlparse.y"
+#line 150 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1132,7 +1139,7 @@ yyreduce:
     break;
 
   case 6:
-#line 158 "htmlparse.y"
+#line 157 "htmlparse.y"
     {
     /* $1 is a PyTuple (<tag>, <attrs>)
        <tag> is a PyObject, <attrs> is a PyDict */
@@ -1170,7 +1177,7 @@ finish_start:
     break;
 
   case 7:
-#line 193 "htmlparse.y"
+#line 192 "htmlparse.y"
     {
     /* $1 is a PyTuple (<tag>, <attrs>)
        <tag> is a PyObject, <attrs> is a PyDict */
@@ -1223,7 +1230,7 @@ finish_start_end:
     break;
 
   case 8:
-#line 243 "htmlparse.y"
+#line 242 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1260,7 +1267,7 @@ finish_end:
     break;
 
   case 9:
-#line 277 "htmlparse.y"
+#line 276 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1284,7 +1291,7 @@ finish_comment:
     break;
 
   case 10:
-#line 298 "htmlparse.y"
+#line 297 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1308,7 +1315,7 @@ finish_pi:
     break;
 
   case 11:
-#line 319 "htmlparse.y"
+#line 318 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1332,7 +1339,7 @@ finish_cdata:
     break;
 
   case 12:
-#line 340 "htmlparse.y"
+#line 339 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1356,7 +1363,7 @@ finish_doctype:
     break;
 
   case 13:
-#line 361 "htmlparse.y"
+#line 360 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1384,7 +1391,7 @@ finish_script:
     break;
 
   case 14:
-#line 386 "htmlparse.y"
+#line 385 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1412,7 +1419,7 @@ finish_style:
     break;
 
   case 15:
-#line 411 "htmlparse.y"
+#line 410 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     /* Remember this is also called as a lexer error fallback */
@@ -1439,8 +1446,8 @@ finish_characters:
 
     }
 
-/* Line 999 of yacc.c.  */
-#line 1444 "htmlparse.c"
+/* Line 1010 of yacc.c.  */
+#line 1451 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1481,18 +1488,33 @@ yyerrlab:
 	{
 	  YYSIZE_T yysize = 0;
 	  int yytype = YYTRANSLATE (yychar);
+	  const char* yyprefix;
 	  char *yymsg;
-	  int yyx, yycount;
+	  int yyx;
 
-	  yycount = 0;
 	  /* Start YYX at -YYN if negative to avoid negative indexes in
 	     YYCHECK.  */
-	  for (yyx = yyn < 0 ? -yyn : 0;
-	       yyx < (int) (sizeof (yytname) / sizeof (char *)); yyx++)
+	  int yyxbegin = yyn < 0 ? -yyn : 0;
+
+	  /* Stay within bounds of both yycheck and yytname.  */
+	  int yychecklim = YYLAST - yyn;
+	  int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+	  int yycount = 0;
+
+	  yyprefix = ", expecting ";
+	  for (yyx = yyxbegin; yyx < yyxend; ++yyx)
 	    if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-	      yysize += yystrlen (yytname[yyx]) + 15, yycount++;
-	  yysize += yystrlen ("syntax error, unexpected ") + 1;
-	  yysize += yystrlen (yytname[yytype]);
+	      {
+		yysize += yystrlen (yyprefix) + yystrlen (yytname [yyx]);
+		yycount += 1;
+		if (yycount == 5)
+		  {
+		    yysize = 0;
+		    break;
+		  }
+	      }
+	  yysize += (sizeof ("syntax error, unexpected ")
+		     + yystrlen (yytname[yytype]));
 	  yymsg = (char *) YYSTACK_ALLOC (yysize);
 	  if (yymsg != 0)
 	    {
@@ -1501,16 +1523,13 @@ yyerrlab:
 
 	      if (yycount < 5)
 		{
-		  yycount = 0;
-		  for (yyx = yyn < 0 ? -yyn : 0;
-		       yyx < (int) (sizeof (yytname) / sizeof (char *));
-		       yyx++)
+		  yyprefix = ", expecting ";
+		  for (yyx = yyxbegin; yyx < yyxend; ++yyx)
 		    if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
 		      {
-			const char *yyq = ! yycount ? ", expecting " : " or ";
-			yyp = yystpcpy (yyp, yyq);
+			yyp = yystpcpy (yyp, yyprefix);
 			yyp = yystpcpy (yyp, yytname[yyx]);
-			yycount++;
+			yyprefix = " or ";
 		      }
 		}
 	      yyerror (yymsg);
@@ -1531,25 +1550,27 @@ yyerrlab:
       /* If just tried and failed to reuse lookahead token after an
 	 error, discard it.  */
 
-      /* Return failure if at end of input.  */
-      if (yychar == YYEOF)
+      if (yychar <= YYEOF)
         {
-	  /* Pop the error token.  */
-          YYPOPSTACK;
-	  /* Pop the rest of the stack.  */
-	  while (yyss < yyssp)
-	    {
-	      YYDSYMPRINTF ("Error: popping", yystos[*yyssp], yyvsp, yylsp);
-	      yydestruct (yystos[*yyssp], yyvsp);
-	      YYPOPSTACK;
-	    }
-	  YYABORT;
+          /* If at end of input, pop the error token,
+	     then the rest of the stack, then return failure.  */
+	  if (yychar == YYEOF)
+	     for (;;)
+	       {
+		 YYPOPSTACK;
+		 if (yyssp == yyss)
+		   YYABORT;
+		 YYDSYMPRINTF ("Error: popping", yystos[*yyssp], yyvsp, yylsp);
+		 yydestruct (yystos[*yyssp], yyvsp);
+	       }
         }
+      else
+	{
+	  YYDSYMPRINTF ("Error: discarding", yytoken, &yylval, &yylloc);
+	  yydestruct (yytoken, &yylval);
+	  yychar = YYEMPTY;
 
-      YYDSYMPRINTF ("Error: discarding", yytoken, &yylval, &yylloc);
-      yydestruct (yytoken, &yylval);
-      yychar = YYEMPTY;
-
+	}
     }
 
   /* Else will try to reuse lookahead token after shifting the error
@@ -1557,9 +1578,27 @@ yyerrlab:
   goto yyerrlab1;
 
 
-/*----------------------------------------------------.
-| yyerrlab1 -- error raised explicitly by an action.  |
-`----------------------------------------------------*/
+/*---------------------------------------------------.
+| yyerrorlab -- error raised explicitly by YYERROR.  |
+`---------------------------------------------------*/
+yyerrorlab:
+
+#ifdef __GNUC__
+  /* Pacify GCC when the user code never invokes YYERROR and the label
+     yyerrorlab therefore never appears in user code.  */
+  if (0)
+     goto yyerrorlab;
+#endif
+
+  yyvsp -= yylen;
+  yyssp -= yylen;
+  yystate = *yyssp;
+  goto yyerrlab1;
+
+
+/*-------------------------------------------------------------.
+| yyerrlab1 -- common code for both syntax error and YYERROR.  |
+`-------------------------------------------------------------*/
 yyerrlab1:
   yyerrstatus = 3;	/* Each real token shifted decrements this.  */
 
@@ -1583,9 +1622,8 @@ yyerrlab1:
 
       YYDSYMPRINTF ("Error: popping", yystos[*yyssp], yyvsp, yylsp);
       yydestruct (yystos[yystate], yyvsp);
-      yyvsp--;
-      yystate = *--yyssp;
-
+      YYPOPSTACK;
+      yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
     }
 
@@ -1634,13 +1672,8 @@ yyreturn:
 }
 
 
-#line 434 "htmlparse.y"
+#line 433 "htmlparse.y"
 
-
-/* disable python memory interface */
-#undef malloc
-#undef realloc
-#undef free
 
 /* create parser object */
 static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds) {
