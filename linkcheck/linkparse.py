@@ -49,10 +49,12 @@ LinkTags = {
     'th':       ['background'],
     'tr':       ['background'],
     'xmp':      ['href'],
+    None:       ['style'],
 }
 
 # matcher for <meta http-equiv=refresh> tags
 _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
+_style_background_re = re.compile(r"background-image:\s*url\((?P<url>.+?)\)")
 
 class LinkParser (HtmlParser):
     """Parse the content for a list of links. After parsing, the urls
@@ -76,8 +78,9 @@ class LinkParser (HtmlParser):
         debug(NIGHTMARE, "LinkParser tag", tag, "attrs", attrs)
         debug(NIGHTMARE, "line", self.lineno(), "col", self.column(),
               "old line", self.last_lineno(), "old col", self.last_column())
-        tags = self.tags.get(tag, self.tags.get(None, []))
-        for attr in tags:
+        tagattrs = self.tags.get(tag, [])
+        tagattrs.extend(self.tags.get(None, []))
+        for attr in tagattrs:
             if attr in attrs:
                 # name of this link
                 if tag=='a' and attr=='href':
@@ -86,6 +89,8 @@ class LinkParser (HtmlParser):
                         name = linkname.href_name(self.content[self.pos():])
                 elif tag=='img':
                     name = StringUtil.unquote(attrs.get('alt', ''))
+                    if not name:
+                        name = StringUtil.unquote(attrs.get('title', ''))
                 else:
                     name = ""
                 # possible codebase
@@ -93,21 +98,27 @@ class LinkParser (HtmlParser):
                     base = StringUtil.unquote(attrs.get('codebase'))
                 else:
                     base = ""
-                # add link to url list
                 value = StringUtil.unquote(attrs[attr])
+                # add link to url list
                 self.addLink(tag, attr, value, name, base)
 
 
     def addLink (self, tag, attr, url, name, base):
-        debug(NIGHTMARE, "LinkParser add link", tag, attr, url, name, base)
         # look for meta refresh
         if tag=='meta':
-            metamatch = _refresh_re.match(url)
-            if metamatch:
-                url = metamatch.group("url")
+            mo = _refresh_re.match(url)
+            if mo:
+                url = mo.group("url")
             else:
                 # only meta refresh has an url, so return
                 return
+        elif attr=='style':
+            mo = _style_background_re.search(url)
+            if mo:
+               url = mo.group("url")
+            else:
+                return
+        debug(NIGHTMARE, "LinkParser add link", tag, attr, url, name, base)
         self.urls.append((url, self.last_lineno(), self.last_column(),
                           name, base))
 

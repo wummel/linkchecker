@@ -432,7 +432,7 @@ class UrlData (object):
         debug(HURT_ME_PLENTY, "checking anchor", anchor)
         if not (self.valid and anchor and self.isHtml() and self.hasContent()):
             return
-        h = LinkParser(self.getContent(), {'a': ['name'], None: ['id']})
+        h = LinkParser(self.getContent(), tags={'a': ['name'], None: ['id']})
         for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == anchor:
                 return
@@ -526,7 +526,7 @@ class UrlData (object):
 
     def parse_html (self):
         # search for a possible base reference
-        h = LinkParser(self.getContent(), {'base': ['href']})
+        h = LinkParser(self.getContent(), tags={'base': ['href']})
         baseRef = None
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
