@@ -20,25 +20,27 @@ import sys
 import os
 import os.path
 
-# dummy translator
-_ = lambda x: x
+class TranslatedFields (dict):
+   """store translated field names"""
+   def __getitem__ (self, key):
+       val = super(TranslatedFields, self).__getitem__(key)
+       return _(val)
 
-# known field names, translated
-Fields = {
-    "realurl":   _("Real URL"),
-    "cachekey":  _("Cache key"),
-    "result":    _("Result"),
-    "base":      _("Base"),
-    "name":      _("Name"),
-    "parenturl": _("Parent URL"),
-    "extern":    _("Extern"),
-    "info":      _("Info"),
-    "warning":   _("Warning"),
-    "dltime":    _("D/L Time"),
-    "dlsize":    _("D/L Size"),
-    "checktime": _("Check Time"),
-    "url":       _("URL"),
-}
+Fields = TranslatedFields(
+    realurl="Real URL",
+    cachekey="Cache key",
+    result="Result",
+    base="Base",
+    name="Name",
+    parenturl="Parent URL",
+    extern="Extern",
+    info="Info",
+    warning="Warning",
+    dltime="D/L Time",
+    dlsize="D/L Size",
+    checktime="Check Time",
+    url="URL",
+)
 
 
 class Logger (object):
