@@ -405,16 +405,16 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                                    " anchor from request.") % server)
             if response.status == 204:
                 # no content
-                self.add_warning(response.reason)
+                self.add_warning(unicode(response.reason))
             # store cookies for valid links
             if self.consumer.config['cookies']:
                 for c in self.cookies:
-                    self.add_info("Cookie: %s." % c)
+                    self.add_info(_("Store cookie: %s.") % c)
                 try:
                     out = self.consumer.cache.store_cookies(self.headers,
                                                             self.urlparts[1])
                     for h in out:
-                        self.add_info(h)
+                        self.add_info(unicode(h))
                 except Cookie.CookieError, msg:
                     self.add_warning(_("Could not store cookies: %(msg)s.") %
                                      {'msg': str(msg)})
