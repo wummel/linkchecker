@@ -1,9 +1,12 @@
 1.12.1 (release xx.xx.xxxx)
   * raise IncompleteRead instead of ValueError on malformed chunked
     HTTP data
-    Changed: linkchecker/httplib2.py
+    Changed: linkcheck/httplib2.py
   * catch errors earlier in recursion check
-    Changed: linkchecker/UrlData.py
+    Changed: linkcheck/UrlData.py
+  * quote url in log output
+    Changed: linkcheck/log/*.py
+    Added: linkcheck/url.py
 
 1.12.0 (release 31.1.2004)
   * added LRU.setdefault function
