@@ -220,9 +220,8 @@ def url_fix_common_typos (url):
 
 
 def url_norm (url):
-    """Normalize and, if fixit is True, fix the given URL which must be
-       quoted. Supports unicode hostnames (IDNA encoding) according to
-       RFC 3490.
+    """Normalize the given URL which must be quoted. Supports unicode
+       hostnames (IDNA encoding) according to RFC 3490.
 
        @return (normed url, idna flag)
     """
