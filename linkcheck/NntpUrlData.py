@@ -96,4 +96,4 @@ class NntpUrlData (UrlData):
 
 
     def hasContent (self):
-        return 0
+        return False

@@ -63,4 +63,4 @@ class IgnoredUrlData (UrlData):
         self.logMe()
 
     def hasContent (self):
-        return 0
+        return False

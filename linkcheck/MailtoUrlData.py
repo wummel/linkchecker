@@ -126,5 +126,5 @@ class MailtoUrlData (HostCheckingUrlData):
 
 
     def hasContent (self):
-        return 0
+        return False
 

@@ -68,8 +68,8 @@ class FtpUrlData (ProxyUrlData):
         # guess by extension
         for ro in extensions.values():
             if ro.search(self.url):
-                return 1
-        return None
+                return True
+        return False
 
 
     def parseUrl (self):

@@ -125,15 +125,15 @@ class FileUrlData (UrlData):
         # guess by extension
         for ro in extensions.values():
             if ro.search(self.url):
-                return 1
+                return True
         # try to read content (can fail, so catch error)
         try:
             for ro in contents.values():
                 if ro.search(self.getContent()[:20]):
-                    return 1
+                    return True
         except IOError:
             pass
-        return None
+        return False
 
 
     def parseUrl (self):

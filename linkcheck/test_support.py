@@ -21,7 +21,7 @@ class TestSkipped (Error):
         """
 
 
-verbose = 1		# Flag set to 0 by regrtest.py
+verbose = True		# Flag set to 0 by regrtest.py
 
 def unload (name):
 	import sys
@@ -80,17 +80,17 @@ class TestLogger (Logger):
         pass
 
     def newUrl (self, urlData):
-        print 'url',urlData.urlName
+        print 'url', urlData.urlName
         if urlData.cached:
             print "cached"
         if urlData.name:
-            print "name",urlData.name
+            print "name", urlData.name
         if urlData.baseRef:
-            print "baseurl",urlData.baseRef
+            print "baseurl", urlData.baseRef
         if urlData.infoString:
-            print "info",urlData.infoString
+            print "info", urlData.infoString
         if urlData.warningString:
-            print "warning",urlData.warningString
+            print "warning", urlData.warningString
         if urlData.valid:
             print "valid"
         else:
