@@ -35,7 +35,6 @@ Included packages:
 httplib from http://www.lyra.org/greg/python/
 httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
 DNS see DNS/README
-distutils from http://www.python.org/sigs/distutils-sig/
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
 
 Note that the following packages are modified by me:

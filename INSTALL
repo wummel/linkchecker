@@ -5,42 +5,15 @@ Requirements:
 You need Python >= 1.5.2
 You get Python from http://www.python.org
 
-Installation:
-Execute "python setup.py install --create-uninstall", optionally with your 
-custom options (see below). 
-Now check links with "linkchecker" (Unix users) resp. "linkchecker.bat" 
-(Windows users).
+Optionally packages:
+Distutils from http://www.python.org/sigs/distutils-sig/
+OpenSSL from http://www.openssl.org
 
-To enable HTTPS support, edit the file setup.py.
-Use the "build_ext" command to supply options for SSL compilation support.
+Installation with Distutils:
+If you have the Distutils, try "python setup.py install".
 
-Here is the usage guide for setup.py:
-Global options:
-  --verbose (-v)        run verbosely (default)
-  --print-version (-V)  print version
-  --quiet (-q)          run quietly (turns verbosity off)
-  --dry-run (-n)        don't actually do anything
-  --force (-f)          skip dependency checking between files
-  --help (-h)           show this help message
+Installation without Distutils:
+Adjust the sys.path.append argument to point to the distribution directory.
+If you are a Windows user, adjust the distribution directory in 
+linkchecker.bat accordingly.
 
-Options for 'build_ext' command:
-  --build-lib (-b)     directory for compiled extension modules
-  --build-temp (-t)    directory for temporary files (build by-products)
-  --inplace (-i)       ignore build-lib and put compiled extensions into the
-  --include-dirs (-I)  list of directories to search for header files
-  --define (-D)        C preprocessor macros to define
-  --undef (-U)         C preprocessor macros to undefine
-  --libs (-l)          external C libraries to link with
-  --library-dirs (-L)  directories to search for external C libraries
-  --rpath (-R)         directories to search for shared C libraries at runtime
-  --link-objects (-O)  extra explicit link objects to include in the link
-  --debug (-g)         compile/link with debugging information
-
-usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
-   or: setup.py --help
-   or: setup.py --help-commands
-   or: setup.py cmd --help
-
-For example your openssl headers are in /usr/local/include/openssl and
-the library is in /usr/local/lib:
-./setup.py build_ext -I/usr/local/include/openssl -L/usr/local/lib
