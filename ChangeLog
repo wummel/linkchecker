@@ -27,6 +27,10 @@
     Type: feature
     Changed: linkcheck/checker/pool.py
 
+  * Documentation and pylint cleanups.
+    Type: feature
+    Changed: linkchech/*.py
+
 2.3 "Napoleon Dynamite" (released 3.2.2005)
 
   * Use and require Python >= 2.4.
