@@ -1,4 +1,4 @@
-2.5 "" (released xx.xx.xxxx)
+2.5 "Spanglish" (released xx.xx.xxxx)
 
   * Added spanish translation, thanks to Servilio Afre Puentes.
     Type: feature
@@ -25,6 +25,11 @@
     Closes: SF bug #1143553
     Changed: linkcheck/checker/{urlbase,httpurl,ftpurl}.py,
       linkcheck/strformat.py
+
+  * Fix -h help option on Windows systems
+    Type: bugfix
+    Closes: SF bug #1149987
+    Changed: linkchecker
 
 2.4 "Kitchen stories" (released 9.2.2005)
 
