@@ -25,7 +25,7 @@ class ErrorUrl (urlbase.UrlBase):
 
     def check_syntax (self):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
-        self.url = linkcheck.url.url_norm(self.base_url)
+        self.url, is_idn = linkcheck.url.url_norm(self.base_url)
         self.set_result(_("URL is unrecognized or has invalid syntax"),
                         valid=False)
         return False

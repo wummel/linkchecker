@@ -192,8 +192,8 @@ def get_url_from (base_url, recursion_level, consumer,
         base_ref = unicode(base_ref, default_encoding, "ignore")
     if not isinstance(name, unicode):
         name = unicode(name, default_encoding, "ignore")
-    if cmdline and linkcheck.url.url_needs_quoting(base_url):
-        base_url = linkcheck.url.url_quote(base_url)
+    #if cmdline and linkcheck.url.url_needs_quoting(base_url):
+    #    base_url = linkcheck.url.url_quote(base_url)
     url = absolute_url(base_url, base_ref, parent_url)
     # test scheme
     if url.startswith("http:"):

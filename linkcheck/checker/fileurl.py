@@ -82,7 +82,7 @@ class FileUrl (urlbase.UrlBase):
         self.base_url = re.sub(r"^file://(/?)([a-zA-Z]):", r"file:///\2|",
                               self.base_url)
         # norm base url again after changing
-        self.base_url = linkcheck.url.url_norm(self.base_url)
+        self.base_url, is_idn = linkcheck.url.url_norm(self.base_url)
 
     def build_url (self):
         super(FileUrl, self).build_url()

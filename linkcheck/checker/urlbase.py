@@ -244,7 +244,7 @@ class UrlBase (object):
            url information self.base_url, self.parent_url and self.base_ref.
         """
         # norm base url
-        base_url = linkcheck.url.url_norm(self.base_url)
+        base_url, is_idn = linkcheck.url.url_norm(self.base_url)
         if self.base_url != base_url:
             self.add_warning(
               _("Base URL is not properly normed. Normed url is %(url)s.") % \

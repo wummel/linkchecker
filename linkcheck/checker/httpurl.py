@@ -228,7 +228,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
               tries < self.max_redirects:
             newurl = self.headers.getheader("Location",
                          self.headers.getheader("Uri", ""))
-            redirected = linkcheck.url.url_norm(
+            redirected, is_idn = linkcheck.url.url_norm(
                                       urlparse.urljoin(redirected, newurl))
             if not isinstance(redirected, unicode):
                 redirected = unicode(redirected, "iso8859-1", "ignore")
