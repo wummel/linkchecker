@@ -4,27 +4,9 @@
 VERSION=$(shell python setup.py --version)
 PACKAGE = linkchecker
 NAME = $(shell python setup.py --name)
-HOST=fsinfo.cs.uni-sb.de
-LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v
+HOST=treasure.calvinsplayground.de
+LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
-SOURCES = \
-linkcheck/Config.py \
-linkcheck/FileUrlData.py \
-linkcheck/FtpUrlData.py \
-linkcheck/GopherUrlData.py \
-linkcheck/HostCheckingUrlData.py \
-linkcheck/HttpUrlData.py \
-linkcheck/HttpsUrlData.py \
-linkcheck/JavascriptUrlData.py \
-linkcheck/Logging.py \
-linkcheck/MailtoUrlData.py \
-linkcheck/NntpUrlData.py \
-linkcheck/TelnetUrlData.py \
-linkcheck/Threader.py \
-linkcheck/UrlData.py \
-linkcheck/__init__.py \
-linkcheck/lc_cgi.py \
-linkchecker
 
 DESTDIR=/.
 .PHONY: test clean distclean package files upload dist locale all

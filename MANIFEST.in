@@ -10,6 +10,6 @@ include debian/prerm
 include DNS/README
 include test/viewprof.py test/profiletest.py test/*.html
 recursive-include locale *.mo
-recursive-include po *
+recursive-include po *.po *.py Makefile
 recursive-include lconline *
 recursive-include tests *.py
