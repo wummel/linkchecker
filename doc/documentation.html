@@ -44,22 +44,56 @@ outside of the domain are also checked for validity.</p>
 </div>
 <div class="section" id="performed-checks">
 <h1><a name="performed-checks">Performed checks</a></h1>
+<p>All URLs have to pass a preliminary syntax test. Minor quoting
+mistakes will issue a warning, all other invalid syntax issues
+are errors.
+After the syntax check passes, the URL is queued for connection
+checking. All connection check types are described below.</p>
 <ul>
 <li><p class="first">HTTP links (<tt class="literal"><span class="pre">http:</span></tt>, <tt class="literal"><span class="pre">https:</span></tt>)</p>
 </li>
 <li><p class="first">Local files (<tt class="literal"><span class="pre">file:</span></tt>)</p>
+<p>A regular, readable file that can be opened is valid. A readable
+directory is also valid. All other files, for example device files,
+unreadable or non-existing files are errors.</p>
+<p>File contents are checked for recursion.</p>
 </li>
 <li><p class="first">Mail links (<tt class="literal"><span class="pre">mailto:</span></tt>)</p>
+<p>A mailto: link eventually resolves to a list of email addresses.
+If one address fails, the whole list will fail.
+For each mail address we check the following things:</p>
+<ol class="arabic simple">
+<li>Look up the MX DNS records. If we found no MX record,
+print an error.</li>
+<li>Check if one of the mail hosts accept an SMTP connection.
+Check hosts with higher priority first.
+If no host accepts SMTP, we print a warning.</li>
+<li>Try to verify the address with the VRFY command. If we got
+an answer, print the verified address as an info.</li>
+</ol>
 </li>
 <li><p class="first">FTP links (<tt class="literal"><span class="pre">ftp:</span></tt>)</p>
+<p>For FTP links we do:</p>
+<ol class="arabic simple">
+<li>connect to the specified host</li>
+<li>try to login with the given user and password. The default
+user is <tt class="literal"><span class="pre">anonymous</span></tt>, the default password is <tt class="literal"><span class="pre">anonymous&#64;</span></tt>.</li>
+<li>try to change to the given directory</li>
+<li>list the file with the NLST command</li>
+</ol>
 </li>
 <li><p class="first">Gopher links (<tt class="literal"><span class="pre">gopher:</span></tt>)</p>
+<p>Try to send the given selector (or query) to the gopher server.</p>
 </li>
 <li><p class="first">Telnet links (<tt class="literal"><span class="pre">telnet:</span></tt>)</p>
+<p>We try to connect and, if user/password are given, login to the
+given telnet server.</p>
 </li>
 <li><p class="first">NNTP links (<tt class="literal"><span class="pre">news:</span></tt>, <tt class="literal"><span class="pre">snews:</span></tt>, <tt class="literal"><span class="pre">nntp</span></tt>)</p>
 </li>
 <li><p class="first">Ignored links (<tt class="literal"><span class="pre">javascript:</span></tt>, etc.)</p>
+<p>An ignored link will only print a warning. No further checking
+will be made.</p>
 <p>Here is a complete list of recognized, but ignored links. The most
 prominent of them should be JavaScript links.</p>
 <ul class="simple">
@@ -100,10 +134,16 @@ prominent of them should be JavaScript links.</p>
 </li>
 </ul>
 </div>
+<div class="section" id="recursion">
+<h1><a name="recursion">Recursion</a></h1>
+<p>Recursion occurs on HTML files, Opera bookmark files and directories.
+Note that the directory recursion reads all files in that
+directory, not just a subset like <tt class="literal"><span class="pre">index.htm*</span></tt>.</p>
+</div>
 </div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-08-25 20:21 UTC.
+Generated on: 2004-08-27 20:46 UTC.
 </div>
 </body>
 </html>

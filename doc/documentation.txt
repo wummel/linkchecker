@@ -19,21 +19,61 @@ For more options, read the man page ``linkchecker(1)`` or execute
 Performed checks
 ----------------
 
+All URLs have to pass a preliminary syntax test. Minor quoting
+mistakes will issue a warning, all other invalid syntax issues
+are errors.
+After the syntax check passes, the URL is queued for connection
+checking. All connection check types are described below.
+
 - HTTP links (``http:``, ``https:``)
 
 - Local files (``file:``)
-
+  
+  A regular, readable file that can be opened is valid. A readable
+  directory is also valid. All other files, for example device files,
+  unreadable or non-existing files are errors.
+  
+  File contents are checked for recursion.
+  
 - Mail links (``mailto:``)
+  
+  A mailto: link eventually resolves to a list of email addresses.
+  If one address fails, the whole list will fail.
+  For each mail address we check the following things:
+  
+  1) Look up the MX DNS records. If we found no MX record,
+     print an error.
+  2) Check if one of the mail hosts accept an SMTP connection.
+     Check hosts with higher priority first.
+     If no host accepts SMTP, we print a warning.
+  3) Try to verify the address with the VRFY command. If we got
+     an answer, print the verified address as an info.
 
 - FTP links (``ftp:``)
+  
+  For FTP links we do:
+  
+  1) connect to the specified host
+  2) try to login with the given user and password. The default
+     user is ``anonymous``, the default password is ``anonymous@``.
+  3) try to change to the given directory
+  4) list the file with the NLST command
 
 - Gopher links (``gopher:``)
+  
+  Try to send the given selector (or query) to the gopher server.
 
 - Telnet links (``telnet:``)
+  
+  We try to connect and, if user/password are given, login to the
+  given telnet server.
 
 - NNTP links (``news:``, ``snews:``, ``nntp``)
 
 - Ignored links (``javascript:``, etc.)
+  
+  An ignored link will only print a warning. No further checking
+  will be made.
   
   Here is a complete list of recognized, but ignored links. The most
   prominent of them should be JavaScript links.
@@ -71,4 +111,12 @@ Performed checks
   - ``wais:``      (Wide Area Information Servers)
   - ``z39.50r:``   (Z39.50 Retrieval)
   - ``z39.50s:``   (Z39.50 Session)
+
+
+Recursion
+---------
+
+Recursion occurs on HTML files, Opera bookmark files and directories.
+Note that the directory recursion reads all files in that
+directory, not just a subset like ``index.htm*``.
 
