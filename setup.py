@@ -149,7 +149,7 @@ class MyConfig(config):
         if self.library_dirs is None:
             self.library_dirs = []
         elif type(self.library_dirs) is StringType:
-            self.library_dirs = [self.library_dirs]
+            self.library_dirs = string.split(self.library_dirs, os.pathsep)
 
 
     def run (self):

@@ -2,9 +2,9 @@ linkchecker (1.2.9) unstable; urgency=low
 
   * changed specification and better documentation of intern/extern
     checking; see the FAQ for detailed information
-  * added a man page
-  * setup.py: fix for distutils debugging function dump_dirs
-  * setup.py: fix to handle man pages correctly with bdist_rpm target
+  * linkchecker.1: added a man page
+  * setup.py: overloaded distutils debugging function dump_dirs
+  * setup.py: handle man pages correctly with bdist_rpm target
 
  -- Bastian Kleineidam <calvin@users.sourceforge.net>  Wed, 22 Nov 2000 12:42:02 +0100
 
