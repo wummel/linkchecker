@@ -1,6 +1,5 @@
 build-stamp
 .files-stamp
-test.prof
 *-out.*
 *.so
 *.o

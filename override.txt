@@ -1,0 +1,2 @@
+# override file for the Debian package tool dpkg-scanpackages
+linkchecker optional web
