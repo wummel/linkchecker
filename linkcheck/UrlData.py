@@ -24,7 +24,7 @@ LinkTags = [("a",     "href"),
             ("body",  "background"),
             ("frame", "src"),
             ("link",  "href"),
-            # <meta http-equiv="refresh" content="5; url=...">
+            # <meta http-equiv="refresh" content="x; url=...">
             ("meta",  "url"),  
             ("area",  "href")]
 
@@ -59,6 +59,7 @@ class UrlData:
         self.urlConnection = None
         self.extern = 1
         self.data = None
+        self.html_comments = []
         
         
     def setError(self, s):
@@ -216,7 +217,7 @@ class UrlData:
         if not (anchor!="" and self.isHtml() and self.valid):
             return
         self.getContent()
-        for cur_anchor,line in self.searchInForTag(self.data, ("a", "name")):
+        for cur_anchor,line in self.searchInForTag("a", "name"):
             if cur_anchor == anchor:
                 return
         self.setWarning("anchor #"+anchor+" not found")
@@ -245,17 +246,35 @@ class UrlData:
 
 
     def getContent(self):
-        """Precondition: urlConnection is an opened URL.
-        """
+        """Precondition: urlConnection is an opened URL."""
         if not self.data:
             t = time.time()
-            self.data = StringUtil.stripHtmlComments(self.urlConnection.read())
+            self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
+            self._init_html_comments()
+        return self.data
+
+
+    def _init_html_comments(self):
+        # if we find an URL inside HTML comments we ignore it
+        # so build a list of intervalls which are HTML comments
+        pattern = re.compile("<!--.*?-->")
+        index = 0
+        while 1:
+            match = pattern.search(self.data, index)
+            if not match: break
+            index = match.end()
+            self.html_comments.append(match.span())
+
+    def _isInComment(self, index):
+        for low,high in self.html_comments:
+            if low < index and index < high:
+                return 1
+        return 0
 
 
     def checkContent(self, warningregex):
-        self.getContent()
-        match = warningregex.search(self.data)
+        match = warningregex.search(self.getContent())
         if match:
             self.setWarning("Found '"+match.group()+"' in link contents")
 
@@ -263,10 +282,8 @@ class UrlData:
     def parseUrl(self, config):
         Config.debug(Config.DebugDelim+"Parsing recursively into\n"+\
                          str(self)+"\n"+Config.DebugDelim)
-        self.getContent()
-
         # search for a possible base reference
-        bases = self.searchInForTag(self.data, ("base", "href"))
+        bases = self.searchInForTag("base", "href")
         baseRef = None
         if len(bases)>=1:
             baseRef = bases[0][0]
@@ -274,34 +291,30 @@ class UrlData:
                 self.setWarning("more than one base tag found")
             
         # search for tags and add found tags to URL queue
-        for tag in LinkTags:
-            urls = self.searchInForTag(self.data, tag)
-            Config.debug("DEBUG: "+str(tag)+" urls="+str(urls)+"\n")
-            for _url,line in urls:
-                config.appendUrl(GetUrlDataFrom(_url,
+        for start,end in LinkTags:
+            urls = self.searchInForTag(start,end)
+            Config.debug("DEBUG: tag=%s %s, urls=%s\n" % (start,end,urls))
+            for url,line in urls:
+                config.appendUrl(GetUrlDataFrom(url,
                         self.recursionLevel+1, self.url, baseRef, line))
 
 
-    def searchInForTag(self, data, tag):
-        _urls = []
-        _prefix="<\s*"+tag[0]+"\s+[^>]*?"+tag[1]+"\s*=\s*"
-        _suffix="[^>]*>"
-        _patterns = [re.compile(_prefix+"\"([^\"]+)\""+_suffix, re.I),
-                     re.compile(_prefix+"([^\s>]+)"   +_suffix, re.I)]
-        cutofflines = 0
-        for _pattern in _patterns:
-            while 1:
-                _match = _pattern.search(data)
-                if not _match: break
-                # need to strip optional ending quotes for the <meta url=> tag
-                linenumberbegin = StringUtil.getLineNumber(data, _match.start(0))
-                linenumberend = StringUtil.getLineNumber(data, _match.end(0))
-                cutofflines = cutofflines + linenumberend - linenumberbegin
-                _urls.append((string.strip(StringUtil.rstripQuotes(_match.group(1))),
-                     linenumberbegin + cutofflines))
-                data = data[:_match.start(0)] + data[_match.end(0):]
-        
-        return _urls
+    def searchInForTag(self, tag_start, tag_end):
+        urls = []
+        prefix=r"<\s*"+tag_start+r"\s+[^>]*?"+tag_end+r"\s*=\s*"
+        suffix="[^>]*>"
+        pattern = re.compile(prefix+"([^\"\s>]+|\"[^\"]+\")"+suffix, re.I)
+        index = 0
+        while 1:
+            match = pattern.search(self.getContent(), index)
+            if not match: break
+            index = match.end()
+            if self._isInComment(match.start()): continue
+            # need to strip optional ending quotes for the meta tag
+            urls.append((string.strip(StringUtil.stripQuotes(match.group(1))), 
+                          StringUtil.getLineNumber(self.getContent(), 
+                                                   match.start())))
+        return urls
 
 
     def __str__(self):
@@ -313,9 +326,9 @@ class UrlData:
 
 
     def _getUserPassword(self, config):
-        for rx, _user, _password in config["authentication"]:
+        for rx, user, password in config["authentication"]:
             if rx.match(self.url):
-                return _user, _password
+                return user, password
 
 
 from FileUrlData import FileUrlData
@@ -341,23 +354,23 @@ def GetUrlDataFrom(urlName,
     elif parentName and ":" in parentName:
         name = string.lower(parentName)
     # test scheme
-    if re.compile("^http:").search(name):
+    if re.search("^http:", name):
         return HttpUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^ftp:").search(name):
+    if re.search("^ftp:", name):
         return FtpUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^file:").search(name):
+    if re.search("^file:", name):
         return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^telnet:").search(name):
+    if re.search("^telnet:", name):
         return TelnetUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^mailto:").search(name):
+    if re.search("^mailto:", name):
         return MailtoUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^gopher:").search(name):
+    if re.search("^gopher:", name):
         return GopherUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^javascript:").search(name):
+    if re.search("^javascript:", name):
         return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^https:").search(name):
+    if re.search("^https:", name):
         return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.compile("^news:").search(name):
+    if re.search("^news:", name):
         return NntpUrlData(urlName, recursionLevel, parentName, baseRef, line)
     # assume local file
     return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)

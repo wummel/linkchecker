@@ -33,7 +33,15 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	# Add here commands to install the package into debian/tmp.
-	$(MAKE) install DESTDIR=`pwd`/debian/tmp
+	# ha! the root option finally made it into distutils
+	./setup.py install --root=`pwd`/debian/tmp
+	# german translation mit Rezepten von Zlatko :)
+	msgfmt -o linkcheck.mo linkcheck/linkcheck.po
+	install -c -m 644 linkcheck.mo debian/tmp/usr/share/locale/de/LC_MESSAGES/
+	# remove following line if Distutils have script support
+	#install -c -m 755 linkchecker debian/tmp/usr/bin/
+	install -c -m 644 linkcheckerrc debian/tmp/etc/
+	install -c -m 644 DNS/README debian/tmp/usr/share/doc/$(PACKAGE)/README.dns
 
 
 # Build architecture-independent files here.

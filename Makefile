@@ -1,9 +1,9 @@
 VERSION=$(shell ./setup.py --version)
-HOST=treasure.calvinsplayground.de
-PROXY=
+#HOST=treasure.calvinsplayground.de
+#PROXY=
 #PROXY=-P$(HOST):5050
-#HOST=fsinfo.cs.uni-sb.de
-#PROXY=-Pwww-proxy.uni-sb.de:3128
+HOST=fsinfo.cs.uni-sb.de
+PROXY=-Pwww-proxy.uni-sb.de:3128
 PACKAGE = linkchecker
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
 ALLPACKAGES = ../$(DEBPACKAGE)
@@ -13,21 +13,11 @@ TAR = tar
 ZIP = zip
 
 all:
+	@echo "run ./setup.py --help to see how to install"
 
 clean:
 	./setup.py clean --all
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
-
-install:
-	# ha! the root option finally made it into distutils
-	./setup.py install --root=$(DESTDIR)
-	# german translation mit Rezepten von Zlatko :)
-	msgfmt -o linkcheck.mo linkcheck/linkcheck.po
-	install -c -m 644 linkcheck.mo $(DESTDIR)/usr/share/locale/de/LC_MESSAGES/
-	# remove following line if Distutils have script support
-	#install -c -m 755 linkchecker $(DESTDIR)/usr/bin/
-	install -c -m 644 linkcheckerrc $(DESTDIR)/etc/
-	install -c -m 644 DNS/README $(DESTDIR)/usr/share/doc/$(PACKAGE)/README.dns
 
 dist:
 	./setup.py sdist

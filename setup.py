@@ -22,13 +22,11 @@ from Template import Template
 import sys,os,string
 
 # Autodetect the existence of an SSL library (this is pretty shitty)
-# Autodetect Windows platforms to include the linkchecker.bat script
 class LCDistribution(Distribution):
     default_include_dirs = ['/usr/include/openssl',
                             '/usr/local/include/openssl']
     def run_commands (self):
         self.check_ssl()
-        self.check_windows()
         for cmd in self.commands:
             self.run_command (cmd)
 
@@ -45,16 +43,6 @@ class LCDistribution(Distribution):
             self.announce("SSL header file ssl.h missing, "
                           "disabling SSL compilation.\n"
 			  "Use the -I option for the build_ext command.")
-
-    def check_windows(self):
-        if sys.platform=='win32':
-            inst = self.find_command_obj("install")
-            inst.ensure_ready()
-            t = Template("linkchecker.bat.tmpl")
-            f = open("linkchecker.bat","w")
-	    f.write(t.fill_in({"path_to_linkchecker": inst.install_scripts}))
-            f.close()
-            self.scripts.append('linkchecker.bat')
 
     def has_ssl(self):
         incls = self.find_command_obj("build_ext").include_dirs
@@ -89,5 +77,5 @@ o robots.txt exclusion protocol support
 """,
        distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],
-       scripts = ['linkchecker'],
+       scripts = ['linkchecker', 'linkchecker.bat'],
 )

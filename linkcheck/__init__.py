@@ -30,7 +30,7 @@ try:
 except ImportError:
     def gettext(msg):
         return msg
-import Config,UrlData,OutputReader,sys,lc_cgi
+import Config,UrlData,sys,lc_cgi
 
 def checkUrls(config = Config.Configuration()):
     """ checkUrls gets a complete configuration object as parameter where all
