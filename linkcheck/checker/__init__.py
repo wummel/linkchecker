@@ -59,10 +59,6 @@ ExcList = [
     ftplib.error_perm,
     ftplib.error_proto,
 ]
-# XXX remove this when depending on python >= 2.4
-if hasattr(socket, "sslerror") and sys.version_info < (2, 4, 0, 'final', 0):
-    ExcList.append(socket.sslerror)
-
 
 ignored_schemes = r"""^(
 acap        # application configuration access protocol
