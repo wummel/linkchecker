@@ -1,4 +1,5 @@
 -- tested with postgresql
+-- you can add a unique sequence id to the table if you want
 
 drop table linksdb;
 
@@ -14,7 +15,7 @@ create table linksdb (
     valid          int,
     url            varchar(50),
     line           int,
-    colum          int,
+    col            int,
     name           varchar(50),
     checktime      int,
     dltime         int,
