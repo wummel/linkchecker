@@ -97,21 +97,10 @@ class NoNetrcNNTP (nntplib.NNTP):
 
 
 class NntpUrl (urlbase.UrlBase):
-    "Url link with NNTP scheme"
-
-    def build_url (self):
-        # use nntp instead of news to comply with the unofficial internet
-        # draft of Alfred Gilman which unifies (s)news and nntp URLs
-        # note: we use this only internally (for parsing and caching)
-        if self.base_url[:4].lower() == 'news':
-            self.url = 'nntp'+self.base_url[4:]
-        else:
-            self.url = self.base_url
-        self.urlparts = urlparse.urlsplit(self.url)
-        linkcheck.log.debug(linkcheck.LOG_CHECK, self.urlparts)
+    """Url link with NNTP scheme"""
 
     def check_connection (self):
-        nntpserver = self.urlparts[1] or self.consumer.config["nntpserver"]
+        nntpserver = self.host or self.consumer.config["nntpserver"]
         if not nntpserver:
             self.add_warning(_("No NNTP server specified, skipping this URL"))
             return
@@ -157,9 +146,6 @@ class NntpUrl (urlbase.UrlBase):
         if value is not None:
             self.add_warning(_("NNTP busy: %s")%str(value))
         return nntp
-
-    def get_cache_keys (self):
-        return [self.url]
 
     def can_get_content (self):
         return False
