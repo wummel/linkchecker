@@ -35,7 +35,7 @@ class TestTelnet (linkcheck.ftests.StandardTest):
             "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://www.imadoofus.com"
+        url = "telnet://www.imarealdoofus.com"
         resultlines = [
             "url %r" % url,
             "cache key %s" % url,
@@ -43,7 +43,7 @@ class TestTelnet (linkcheck.ftests.StandardTest):
             "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://user@www.imadoofus.com"
+        url = "telnet://user@www.imarealdoofus.com"
         resultlines = [
             "url %r" % url,
             "cache key %s" % url,
@@ -51,7 +51,7 @@ class TestTelnet (linkcheck.ftests.StandardTest):
             "error",
         ]
         self.direct(url, resultlines)
-        url = "telnet://user:pass@www.imadoofus.com"
+        url = "telnet://user:pass@www.imarealdoofus.com"
         resultlines = [
             "url %r" % url,
             "cache key %s" % url,

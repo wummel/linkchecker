@@ -31,7 +31,7 @@ class TestError (linkcheck.ftests.StandardTest):
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %r" % url,
-            "cache key %s" % nurl,
+            "cache key None",
             "real url %s" % nurl,
             "error",
         ]
@@ -43,7 +43,7 @@ class TestError (linkcheck.ftests.StandardTest):
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %r" % url,
-            "cache key %s" % nurl,
+            "cache key None",
             "real url %s" % nurl,
             "error",
         ]
@@ -52,7 +52,7 @@ class TestError (linkcheck.ftests.StandardTest):
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %r" % url,
-            "cache key %s" % nurl,
+            "cache key None",
             "real url %s" % nurl,
             "error",
         ]
@@ -88,7 +88,7 @@ class TestError (linkcheck.ftests.StandardTest):
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %r" % url,
-            "cache key %s" % nurl,
+            "cache key None",
             "real url %s" % nurl,
             "error",
         ]
@@ -98,7 +98,7 @@ class TestError (linkcheck.ftests.StandardTest):
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %r" % url,
-            "cache key %s" % nurl,
+            "cache key None",
             "real url %s" % nurl,
             "error",
         ]
@@ -108,7 +108,7 @@ class TestError (linkcheck.ftests.StandardTest):
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
             "url %r" % url,
-            "cache key %s" % nurl,
+            "cache key None",
             "real url %s" % nurl,
             "error",
         ]
