@@ -172,7 +172,7 @@ class UrlData:
             self.url = urlparse.urljoin(self.baseRef, self.urlName)
         elif self.parentName:
             self.url = urlparse.urljoin(self.parentName, self.urlName)
-        else: 
+        else:
             self.url = self.urlName
         # unquote url
         self.url = urllib.unquote(self.url)
@@ -308,9 +308,14 @@ class UrlData:
 
 
     def getCacheKey (self):
-        # use that the host is lowercase
+        # remember that the host is lowercase
         if self.urlparts:
-            return urlparse.urlunsplit(self.urlparts)
+            if self.config["anchors"]:
+                # do not ignore anchor
+                return urlparse.urlunsplit(self.urlparts)
+            else:
+                # remove anchor from cache key
+                return urlparse.urlunsplit(self.urlparts[:4]+[''])
         return None
 
 
