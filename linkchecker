@@ -248,7 +248,7 @@ for opt,arg in options:
         configfiles.append(arg)
 config.read(configfiles)
 # disable threading for debugging
-if linkcheck.Config.DebugLevel > 0:
+if get_debuglevel() > 0:
     config.disableThreading()
 # apply commandline options and arguments
 _user = "anonymous"
@@ -385,7 +385,7 @@ if len(args)==0:
         urls = raw_input(i18n._("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
     else:
-        config.warn(i18n._("no files or urls given"))
+        warn(i18n._("no files or urls given"))
 
 # syntactic sugar
 from linkcheck import UrlData
