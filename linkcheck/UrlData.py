@@ -47,7 +47,7 @@ If you disclose some information because its too private to you thats ok.
 I will try to help you nontheless (but you have to give me *something*
 I can work with ;).
 """) % Config.Email
-    type,value = sys.exc_info()[:2]
+    type, value = sys.exc_info()[:2]
     print >>sys.stderr, type, value
     traceback.print_exc()
     print_app_info()
@@ -236,17 +236,27 @@ class UrlData (object):
             self.infoString = s
 
 
-    def copyFrom (self, urlData):
-        self.errorString = urlData.errorString
-        self.validString = urlData.validString
+    def copyFromCache (self, cacheData):
+        self.errorString = cacheData["errorString"]
+        self.validString = cacheData["validString"]
         if self.warningString:
-            if urlData.warningString:
-                self.warningString += "\n"+urlData.warningString
+            if cacheData["warningString"]:
+                self.warningString += "\n"+cacheData["warningString"]
         else:
-            self.warningString = urlData.warningString
-        self.infoString = urlData.infoString
-        self.valid = urlData.valid
-        self.dltime = urlData.dltime
+            self.warningString = cacheData["warningString"]
+        self.infoString = cacheData["infoString"]
+        self.valid = cacheData["valid"]
+        self.dltime = cacheData["dltime"]
+
+
+    def getCacheData (self):
+        return {"errorString": self.errorString,
+                "validString": self.validString,
+                "warningString": self.warningString,
+                "infoString": self.infoString,
+                "valid": self.valid,
+                "dltime": self.dltime,
+               }
 
 
     def buildUrl (self):
@@ -319,7 +329,7 @@ class UrlData (object):
 	    self.buildUrl()
             self.extern = self._getExtern()
         except tuple(ExcList):
-            type, value, tb = sys.exc_info()
+            value, tb = sys.exc_info()[1:]
             debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
             self.setError(str(value))
             self.logMe()
@@ -329,7 +339,7 @@ class UrlData (object):
         debug(BRING_IT_ON, "checking cache")
         for key in self.getCacheKeys():
             if self.config.urlCache_has_key(key):
-                self.copyFrom(self.config.urlCache_get(key))
+                self.copyFromCache(self.config.urlCache_get(key))
                 self.cached = True
                 self.logMe()
                 return
@@ -351,8 +361,8 @@ class UrlData (object):
             if self.config["anchors"]:
                 self.checkAnchors()
         except tuple(ExcList):
-            type, value, tb = sys.exc_info()
-            debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
+            value, tb = sys.exc_info()[1:]
+            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
             self.setError(str(value))
 
         # check content
@@ -361,8 +371,8 @@ class UrlData (object):
             debug(BRING_IT_ON, "checking content")
             try:  self.checkContent(warningregex)
             except tuple(ExcList):
-                type, value, tb = sys.exc_info()
-                debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
+                value, tb = sys.exc_info()[1:]
+                debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
                 self.setError(str(value))
 
         self.checktime = time.time() - t
@@ -371,8 +381,8 @@ class UrlData (object):
         if self.allowsRecursion():
             try: self.parseUrl()
             except tuple(ExcList):
-                type, value, tb = sys.exc_info()
-                debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
+                value, tb = sys.exc_info()[1:]
+                debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
                 self.setError(str(value))
         # check content size
         self.checkSize()
@@ -394,8 +404,9 @@ class UrlData (object):
 
     def putInCache (self):
         if not self.cached:
+            data = self.getCacheData()
             for key in self.getCacheKeys():
-                self.config.urlCache_set(key, self)
+                self.config.urlCache_set(key, data)
             self.cached = True
 
 

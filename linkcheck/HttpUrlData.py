@@ -161,7 +161,7 @@ class HttpUrlData (ProxyUrlData):
                 # check cache again on possibly changed URL
                 key = self.getCacheKey()
                 if self.config.urlCache_has_key(key):
-                    self.copyFrom(self.config.urlCache_get(key))
+                    self.copyFromCache(self.config.urlCache_get(key))
                     self.cached = True
                     self.logMe()
                     return
