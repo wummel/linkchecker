@@ -18,6 +18,10 @@ Direct download links are in brackets.
      [ http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe ]
    b) MSYS
      [ http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.9.exe ]
+   c) libiconv
+     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe ]
+   d) gettext
+     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe ]
 2. Install Python >= 2.3 from http://www.python.org/
    [ http://www.python.org/ftp/python/2.3.2/Python-2.3.2-1.exe ]
 
@@ -47,7 +51,10 @@ Setup for Windows
    The resulting library has to be placed in the same directory as
    python23.lib. (Should be the libs directory under your Python installation
    directory.)
-2. Compile and install the Python modules
+2. Compile gettext translations
+   Change to the linkchecker-X.X.X/po directory:
+   % make win
+3. Compile and install the Python modules
    Start a DOS command shell and change to the webcleaner-X.X directory:
    c:> python setup.py build -c mingw32 install
 
