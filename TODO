@@ -1,11 +1,6 @@
 Next releases:
 
-- when I add the anchor to the file:// cache key why are links checked
-  twice?
-
 - rethink intern/extern stuff, at least make new option --extern-strict
-
-- think of a more suited solution for anchor checking
 
 - recursion into FTP links
 
