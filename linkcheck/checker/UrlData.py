@@ -17,6 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
+import os
 import re
 import urlparse
 import urllib2
@@ -27,6 +28,7 @@ import socket
 import select
 import linkcheck
 import bk.log
+import bk.i18n
 
 
 ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
@@ -55,7 +57,6 @@ I can work with ;).
 
 
 def print_app_info ():
-    import os
     print >>sys.stderr, bk.i18n._("System info:")
     print >>sys.stderr, linkcheck.Config.App
     print >>sys.stderr, "Python %s on %s" % (sys.version, sys.platform)

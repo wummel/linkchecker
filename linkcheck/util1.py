@@ -21,17 +21,15 @@ import time
 import rotor
 import types
 
-_curses = None
 _color = 0
 try:
     from ncurses import curses
-    _curses = curses
 except ImportError:
     try:
         import curses
-        _curses = curses
     except ImportError:
-        pass
+        print "Sorry, this operating system can not wash clothes."
+        sys.exit(1)
 
 _bs = [
 ['\023\335\233\203\2323\016',
@@ -70,11 +68,8 @@ _2 = '\035\177\271uC\203\016\306h\2016OHT\352Gw\3770\202fl\013S\021\016\370'
 _3 = '\236\177\246\304\351F\203(\005z\375\220\324)\201\266z*j\342\344l\323\0325\374:Z\313\212hD\256\334?a\034\274\315\004r\012a\334\237$\203w\037'
 _4 = '\222\360P\277\330\300\246\3670\256\303\223\036\311['
 
-def abbuzze():
-    if not _curses:
-        print "Sorry, this operating system can not wash clothes."
-        return
-    w = _curses.initscr() # initialize the curses library
+def abbuzze ():
+    w = curses.initscr() # initialize the curses library
     config_curses()
     my,mx = w.getmaxyx()
     b = w.subwin(my-2, mx, 0, 0)
@@ -94,29 +89,29 @@ def abbuzze():
     abspann(curses.newwin(8, 30, 0, 0))
     w.erase()
     w.refresh()
-    _curses.endwin()
+    curses.endwin()
 
-def config_curses():
+def config_curses ():
     global _color
-    _curses.nonl()            # tell curses not to do NL->CR/NL on output
-    _curses.noecho()          # don't echo input
-    _curses.cbreak()          # take input chars one at a time, no wait for \n
-    if hasattr(_curses, "start_color") and hasattr(_curses, "set_color"):
+    curses.nonl()            # tell curses not to do NL->CR/NL on output
+    curses.noecho()          # don't echo input
+    curses.cbreak()          # take input chars one at a time, no wait for \n
+    if hasattr(curses, "start_color") and hasattr(curses, "set_color"):
         _color = 1
-        _curses.start_color() # start the colour system
-        if _curses.has_colors():
-            if _curses.can_change_color():
+        curses.start_color() # start the colour system
+        if curses.has_colors():
+            if curses.can_change_color():
                 pass
             else:
-                _curses.init_pair(1, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
-                _curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
-                _curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
-                _curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+                curses.init_pair(1, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+                curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+                curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+                curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
 
-def waddemol(f):
+def waddemol (f):
     time.sleep(float(f))
 
-def nassmache(henne):
+def nassmache (henne):
     if type(henne) == types.StringType:
         return rotor.newrotor('ramdoesiger Malaker').decrypt(henne)
     hase = []
@@ -124,7 +119,7 @@ def nassmache(henne):
         hase.append(nassmache(ei))
     return hase
 
-def allahopp(w, s, y=2):
+def allahopp (w, s, y=2):
     w.erase()
     w.move(0,y)
     for i in range(len(s)):
@@ -133,7 +128,7 @@ def allahopp(w, s, y=2):
         w.refresh()
     waddemol(0.7)
 
-def tadaaa(w, l):
+def tadaaa (w, l):
     w.erase()
     my,mx = w.getmaxyx()
     for p in range(mx/2):
@@ -141,13 +136,13 @@ def tadaaa(w, l):
         w.refresh()
         waddemol(0.15)
 
-def hotzenplotz(w,y,x,l):
+def hotzenplotz (w,y,x,l):
     for li in l:
         w.move(y,x)
         w.addstr(li)
         y += 1
 
-def wischi(w, ls):
+def wischi (w, ls):
     my,mx = w.getmaxyx()
     f = 0.2
     i=0
@@ -163,10 +158,10 @@ def wischi(w, ls):
         w.refresh()
         waddemol(f)
 
-def waschi(w, l):
+def waschi (w, l):
     wischi(w,l)
 
-def abspann(w):
+def abspann (w):
     w.erase()
     w.border(0, 0, 0, 0, 0, 0, 0, 0)
     w.refresh()
@@ -184,6 +179,6 @@ if __name__=='__main__':
     try:
         abbuzze()
     except:
-        _curses.endwin()
+        curses.endwin()
         print sys.exc_info()[:2]
         print "Sorry, your washing machine is broken!"

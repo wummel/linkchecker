@@ -25,6 +25,7 @@ import nntplib
 import ftplib
 import linkcheck.httplib2
 import bk.net.dns.Base
+import bk.i18n
 
 
 # we catch these exceptions, all other exceptions are internal

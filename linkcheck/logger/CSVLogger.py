@@ -18,6 +18,7 @@
 import time
 import csv
 import bk.i18n
+import bk.url
 import linkcheck.logger.StandardLogger
 import linkcheck.logger.Logger
 
@@ -63,7 +64,6 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.flush()
         self.writer = csv.writer(self.fd, dialect='excel', delimiter=self.separator, lineterminator=self.lineterminator)
 
-
     def newUrl (self, urlData):
         if self.fd is None:
             return
@@ -78,7 +78,6 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
                urlData.cached]
         self.writer.writerow(row)
         self.flush()
-
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None:

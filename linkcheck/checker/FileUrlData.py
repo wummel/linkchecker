@@ -91,13 +91,11 @@ class FileUrlData (linkcheck.checker.UrlData.UrlData):
         self.urlName = re.sub(r"^file://(/?)([a-zA-Z]):", r"file:///\2|",
                               self.urlName)
 
-
     def buildUrl (self):
         super(FileUrlData, self).buildUrl()
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
         self.url = urlparse.urlunsplit(self.urlparts)
-
 
     def getCacheKeys (self):
         # the host in urlparts is lowercase()d
@@ -108,7 +106,6 @@ class FileUrlData (linkcheck.checker.UrlData.UrlData):
             return [key]
         return []
 
-
     def isHtml (self):
         if linkcheck.extensions['html'].search(self.url):
             return True
@@ -116,10 +113,8 @@ class FileUrlData (linkcheck.checker.UrlData.UrlData):
             return True
         return False
 
-
     def isFile (self):
         return True
-
 
     def isParseable (self):
         # guess by extension
@@ -134,7 +129,6 @@ class FileUrlData (linkcheck.checker.UrlData.UrlData):
         except IOError:
             pass
         return False
-
 
     def parseUrl (self):
         for key, ro in linkcheck.extensions.items():

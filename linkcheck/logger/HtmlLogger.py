@@ -16,7 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import time
-import linkcheck
+import linkcheck.logger.StandardLogger
+import bk.i18n
+import bk.url
 
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">

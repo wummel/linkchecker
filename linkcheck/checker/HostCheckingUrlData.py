@@ -18,7 +18,9 @@
 
 import socket
 import urllib
-import linkcheck
+import bk.i18n
+import linkcheck.checker.UrlData
+
 
 class HostCheckingUrlData (linkcheck.checker.UrlData.UrlData):
     "Url link for which we have to connect to a specific host"
@@ -31,16 +33,13 @@ class HostCheckingUrlData (linkcheck.checker.UrlData.UrlData):
         self.host = None
         self.url = urllib.unquote(self.urlName)
 
-
     def buildUrl (self):
         # to avoid anchor checking
         self.urlparts = None
 
-
     def getCacheKeys (self):
         return ["%s:%s" % (self.scheme, self.host)]
 
-
     def checkConnection (self):
         ip = socket.gethostbyname(self.host)
-        self.setValid(self.host+"("+ip+") "+bk.i18n._("found"))
+        self.setValid(bk.i18n._("Host %s (%s) found") % (self.host, ip))

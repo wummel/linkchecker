@@ -17,7 +17,9 @@
 
 import time
 import xml.sax.saxutils
-import linkcheck
+import linkcheck.logger.StandardLogger
+import bk.i18n
+import bk.url
 
 
 xmlattr_entities = {

@@ -24,7 +24,13 @@ import zlib
 import gzip
 import socket
 import cStringIO as StringIO
+import bk.url
+import bk.i18n
 import linkcheck
+import linkcheck.robotparser2
+import linkcheck.httplib2
+import linkcheck.checker.ProxyUrlData
+
 supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
                hasattr(socket, "ssl")
 
@@ -47,7 +53,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         self.has301status = False
         self.no_anchor = False # remove anchor in request url
 
-
     def buildUrl (self):
         super(HttpUrlData, self).buildUrl()
         # encode userinfo
@@ -57,7 +62,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             self.setWarning(bk.i18n._("URL path is empty, assuming '/' as path"))
             self.urlparts[2] = '/'
             self.url = urlparse.urlunsplit(self.urlparts)
-
 
     def checkConnection (self):
         """
@@ -195,7 +199,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         # check response
         self.checkResponse(response, fallback_GET)
 
-
     def followRedirections (self, response, redirectCache):
         """follow all redirections of http response"""
         redirected = self.url
@@ -244,7 +247,7 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
                 self.setWarning(bk.i18n._("HTTP redirection to non-http url encountered; "
                                 "the original url was %r.")%self.url)
                 # make new UrlData object
-                newobj = linkcheck.UrlData.GetUrlDataFrom(redirected, self.recursionLevel, self.config,
+                newobj = linkcheck.checker.GetUrlDataFrom(redirected, self.recursionLevel, self.config,
                                         parentName=self.parentName, baseRef=self.baseRef,
                                         line=self.line, column=self.column, name=self.name)
                 newobj.warningString = self.warningString
@@ -260,7 +263,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             debug(BRING_IT_ON, "Redirected", self.headers)
             tries += 1
         return tries, response
-
 
     def checkResponse (self, response, fallback_GET):
         """check final result"""
@@ -293,12 +295,10 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         if modified:
             self.setInfo(bk.i18n._("Last modified %s") % modified)
 
-
     def getCacheKeys (self):
         keys = super(HttpUrlData, self).getCacheKeys()
         keys.extend(self.aliases)
         return keys
-
 
     def _getHttpResponse (self):
         """Put request and return (status code, status text, mime object).
@@ -347,7 +347,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         self.urlConnection.endheaders()
         return self.urlConnection.getresponse()
 
-
     def getHTTPObject (self, host, scheme):
         if scheme=="http":
             h = linkcheck.httplib2.HTTPConnection(host)
@@ -358,7 +357,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         h.set_debuglevel(get_debuglevel())
         h.connect()
         return h
-
 
     def getContent (self):
         if not self.has_content:
@@ -382,7 +380,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             self.downloadtime = time.time() - t
         return self.data
 
-
     def isHtml (self):
         if not (self.valid and self.headers):
             return False
@@ -395,17 +392,14 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             return False
         return True
 
-
     def isHttp (self):
         return True
-
 
     def getContentType (self):
         ptype = self.headers.get('Content-Type', 'application/octet-stream')
         if ";" in ptype:
             ptype = ptype.split(';')[0]
         return ptype
-
 
     def isParseable (self):
         if not (self.valid and self.headers):
@@ -419,7 +413,6 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             return False
         return True
 
-
     def parseUrl (self):
         ptype = self.getContentType()
         if ptype=="text/html":
@@ -428,10 +421,8 @@ class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             self.parse_css()
         return None
 
-
     def getRobotsTxtUrl (self):
         return "%s://%s/robots.txt"%tuple(self.urlparts[0:2])
-
 
     def robotsTxtAllowsUrl (self):
         roboturl = self.getRobotsTxtUrl()

@@ -16,7 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import time
-import linkcheck
+import linkcheck.logger.StandardLogger
+import bk.i18n
+import bk.url
 
 
 class GMLLogger (linkcheck.logger.StandardLogger.StandardLogger):

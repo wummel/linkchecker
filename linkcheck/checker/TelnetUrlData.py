@@ -20,6 +20,7 @@ import telnetlib
 import urlparse
 import urllib
 import linkcheck
+import linkcheck.checker.HostCheckingUrlData
 
 
 class TelnetUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
@@ -31,6 +32,7 @@ class TelnetUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
         userinfo, self.host = urllib.splituser(parts[1])
         self.host, self.port = urllib.splitport(self.host)
         if self.port is not None:
+            # XXX is_valid_port move?
             if not linkcheck.UrlData.is_valid_port(self.port):
                 raise linkcheck.LinkCheckerError(bk.i18n._("URL has invalid port number %s")\
                                       % self.port)
@@ -41,7 +43,6 @@ class TelnetUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
             self.user, self.password = urllib.splitpasswd(userinfo)
         else:
             self.user, self.password = self.getUserPassword()
-
 
     def checkConnection (self):
         super(TelnetUrlData, self).checkConnection()
@@ -56,7 +57,6 @@ class TelnetUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
                 self.urlConnection.write(self.password+"\n")
                 # XXX how to tell if we are logged in??
         self.urlConnection.write("exit\n")
-
 
     def hasContent (self):
         return False

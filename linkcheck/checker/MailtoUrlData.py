@@ -23,7 +23,9 @@ import urllib
 import smtplib
 import rfc822
 import linkcheck
+import linkcheck.checker.HostCheckingUrlData
 import bk.log
+import bk.i18n
 import bk.net.dns.lazy
 
 # regular expression for RFC2368 compliant mailto: scanning
@@ -43,7 +45,6 @@ class MailtoUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
                     self.adresses.extend(rfc822.AddressList(a).addresslist)
         bk.log.debug(BRING_IT_ON, "adresses: ", self.adresses)
 
-
     def _cutout_adresses (self):
         mo = headers_re.search(self.urlName)
         if mo:
@@ -53,7 +54,6 @@ class MailtoUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
                 self.headers.setdefault(key, []).extend(val)
             return self.urlName[7:mo.start()]
         return self.urlName[7:]
-
 
     def checkConnection (self):
         """Verify a list of email adresses. If one adress fails,
@@ -106,7 +106,6 @@ class MailtoUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
                 mxrecord = mxrecord[1]
             self.setValid(bk.i18n._("found MX mail host %s") % mxrecord)
 
-
     def _split_adress (self, adress):
         split = adress.split("@", 1)
         if len(split)==2:
@@ -117,16 +116,13 @@ class MailtoUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
             return (split[0], "localhost")
         raise linkcheck.LinkCheckerError(bk.i18n._("could not split the mail adress"))
 
-
     def closeConnection (self):
         try: self.urlConnection.quit()
         except: pass
         self.urlConnection = None
 
-
     def getCacheKeys (self):
         return ["%s:%s" % (self.scheme, str(self.adresses))]
-
 
     def hasContent (self):
         return False

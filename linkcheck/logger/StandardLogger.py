@@ -18,6 +18,7 @@
 import sys
 import time
 import bk.i18n
+import bk.url
 import linkcheck.logger.Logger
 
 

@@ -14,13 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-from UrlData import UrlData
-from urllib import splittype, splithost, splituser
+import linkcheck.checker.UrlData
+import urllib
+
 
 class ProxyUrlData (linkcheck.checker.UrlData.UrlData):
     """urldata with ability for proxying and for urls with user:pass@host
        setting"""
-
 
     def setProxy (self, proxy):
         self.proxy = proxy
@@ -28,9 +28,9 @@ class ProxyUrlData (linkcheck.checker.UrlData.UrlData):
         if self.proxy:
             if self.proxy[:7].lower() != "http://":
                 self.proxy = "http://"+self.proxy
-            self.proxy = splittype(self.proxy)[1]
-            self.proxy = splithost(self.proxy)[0]
-            self.proxyauth, self.proxy = splituser(self.proxy)
+            self.proxy = urllib.splittype(self.proxy)[1]
+            self.proxy = urllib.splithost(self.proxy)[0]
+            self.proxyauth, self.proxy = urllib.splituser(self.proxy)
             if self.proxyauth is not None:
                 if ":" not in self.proxyauth: self.proxyauth += ":"
                 import base64

@@ -24,7 +24,7 @@ import Cookie
 import sets
 import urllib
 import _linkchecker_configdata
-import bk
+import bk.log
 import bk.containers
 import linkcheck
 import linkcheck.Threader

@@ -23,7 +23,9 @@ import nntplib
 import urlparse
 import random
 import linkcheck
+import linkcheck.checker.UrlData
 import bk.log
+import bk.i18n
 
 random.seed()
 
@@ -40,7 +42,6 @@ class NntpUrlData (linkcheck.checker.UrlData.UrlData):
             self.url = self.urlName
         self.urlparts = urlparse.urlsplit(self.url)
         bk.log.debug(BRING_IT_ON, self.urlparts)
-
 
     def checkConnection (self):
         nntpserver = self.urlparts[1] or self.config["nntpserver"]
@@ -67,7 +68,6 @@ class NntpUrlData (linkcheck.checker.UrlData.UrlData):
                 # group name is the empty string
                 self.setWarning(bk.i18n._("No newsgroup specified in NNTP URL"))
 
-
     def _connectNntp (self, nntpserver):
         """This is done only once per checking task. Also, the newly
         introduced error codes 504 and 505 (both inclining "Too busy, retry
@@ -90,10 +90,8 @@ class NntpUrlData (linkcheck.checker.UrlData.UrlData):
             self.setWarning(bk.i18n._("NNTP busy: %s")%str(value))
         return nntp
 
-
     def getCacheKeys (self):
         return [self.url]
-
 
     def hasContent (self):
         return False

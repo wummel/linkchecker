@@ -17,7 +17,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re
-import linkcheck
+import linkcheck.checker.UrlData
+import bk.i18n
 
 ignored_schemes = r"""^(
 acap        # application configuration access protocol

@@ -17,13 +17,18 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ftplib
+import urllib
+import bk.i18n
 import linkcheck
+import linkcheck.checker.ProxyUrlData
+import linkcheck.checker.HttpUrlData
 
 
 class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
     """
     Url link with ftp scheme.
     """
+
     def checkConnection (self):
         # proxy support (we support only http)
         self.setProxy(self.config["proxy"].get(self.scheme))
@@ -52,12 +57,10 @@ class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             self.retrieve(filename)
         return None
 
-
     def isHtml (self):
         if linkcheck.extensions['html'].search(self.url):
             return True
         return False
-
 
     def isParseable (self):
         for ro in linkcheck.extensions.values():
@@ -65,13 +68,11 @@ class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
                 return True
         return False
 
-
     def parseUrl (self):
         for key,ro in linkcheck.extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
         return None
-
 
     def login (self, _user, _password):
         """log into ftp server and check the welcome message"""
@@ -89,7 +90,6 @@ class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         # dont set info anymore, this may change every time we logged in
         #self.setInfo(info)
 
-
     def cwd (self):
         """change directory to given path"""
         # leeched from webcheck
@@ -99,7 +99,6 @@ class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         for d in dirs:
             self.urlConnection.cwd(d)
         return filename
-
 
     def retrieve (self, filename):
         """initiate download of given filename"""
@@ -118,7 +117,6 @@ class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
             #page = conn.makefile().read(size)
         #else:
         #    page = conn.makefile().read()
-
 
     def closeConnection (self):
         try: self.urlConnection.closet()

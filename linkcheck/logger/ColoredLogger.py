@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import bk.i18n
+import bk.url
 import bk.ansicolor
 import linkcheck.logger.StandardLogger
 
