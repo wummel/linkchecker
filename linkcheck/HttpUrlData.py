@@ -195,6 +195,12 @@ class HttpUrlData (ProxyUrlData):
                     self.headers = response.msg
             if response.status not in [301,302]: break
 
+        self.checkWarnings(has301status)
+        self.checkResponse(response)
+
+
+    def checkWarnings (self, has301status):
+        """check url warnings"""
         effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
             self.setWarning(i18n._("Effective URL %s") % effectiveurl)
@@ -210,7 +216,9 @@ class HttpUrlData (ProxyUrlData):
                     "trailing / at the end. All urls which point to (home) "
                     "directories should end with a / to avoid redirection"))
 
-        # check final result
+
+    def checkResponse (self, response):
+        """check final result"""
         if response.status >= 400:
             self.setError(`response.status`+" "+response.reason)
         else:
