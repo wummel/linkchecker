@@ -31,7 +31,8 @@ from linkcheck.i18n import _
 contents = {
     "html": re.compile(r'(?i)<html>.*</html>'),
     "opera" : re.compile(r'Opera Hotlist'),
-#    "text" : re.compile(r'[\w\s]+'),
+# XXX TODO
+#    "text" : re.compile(r'(?i)# LinkChecker URL list'),
 }
 
 
