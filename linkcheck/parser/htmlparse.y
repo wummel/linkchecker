@@ -44,6 +44,7 @@ static int yyerror (char* msg) {
 
 /* parser.resolve_entities */
 static PyObject* resolve_entities;
+static PyObject* sorted_dict;
 
 /* macros for easier scanner state manipulation */
 
@@ -431,7 +432,8 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
     {
         return NULL;
     }
-    self->handler = NULL;
+    Py_INCREF(Py_None);
+    self->handler = Py_None;
     /* reset userData */
     self->userData = PyMem_New(UserData, sizeof(UserData));
     if (self->userData == NULL)
@@ -439,7 +441,7 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
         Py_DECREF(self);
         return NULL;
     }
-    self->userData->handler = NULL;
+    self->userData->handler = self->handler;
     self->userData->buf = NULL;
     CLEAR_BUF_DECREF(self, self->userData->buf);
     self->userData->nextpos = 0;
@@ -455,6 +457,7 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
         self->userData->tmp_attrval = self->userData->tmp_attrs =
         self->userData->lexbuf = NULL;
     self->userData->resolve_entities = resolve_entities;
+    self->userData->sorted_dict = sorted_dict;
     self->userData->exc_type = NULL;
     self->userData->exc_val = NULL;
     self->userData->exc_tb = NULL;
@@ -471,10 +474,15 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
 
 /* initialize parser object */
 static int parser_init (parser_object* self, PyObject* args, PyObject* kwds) {
-    PyObject* handler;
-    if (!PyArg_ParseTuple(args, "O", &handler)) {
-	return -1;
+    PyObject* handler = NULL;
+    static char *kwlist[] = {"handler", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O", kwlist, &handler)) {
+        return -1;
     }
+    if (handler==NULL) {
+        return 0;
+    }
+    Py_DECREF(self->handler);
     Py_INCREF(handler);
     self->handler = handler;
     self->userData->handler = self->handler;
@@ -484,7 +492,7 @@ static int parser_init (parser_object* self, PyObject* args, PyObject* kwds) {
 
 /* traverse all used subobjects participating in reference cycles */
 static int parser_traverse (parser_object* self, visitproc visit, void* arg) {
-    if (self->handler && visit(self->handler, arg) < 0) {
+    if (visit(self->handler, arg) < 0) {
         return -1;
     }
     return 0;
@@ -560,7 +568,7 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
 	self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     self->userData->bufpos = 0;
     if (strlen(self->userData->buf)) {
-        // XXX set line, col
+        /* XXX set line, col */
         int error = 0;
 	PyObject* s = PyString_FromString(self->userData->buf);
 	PyObject* callback = NULL;
@@ -688,11 +696,32 @@ static PyObject* parser_debug (parser_object* self, PyObject* args) {
 }
 
 
+static PyObject* parser_gethandler (parser_object* self, void* closure) {
+    Py_INCREF(self->handler);
+    return self->handler;
+}
+
+static int parser_sethandler (parser_object* self, PyObject* value, void* closure) {
+    if (value == NULL) {
+       PyErr_SetString(PyExc_TypeError, "Cannot delete parser handler");
+       return -1;
+    }
+    Py_DECREF(self->handler);
+    Py_INCREF(value);
+    self->handler = value;
+    self->userData->handler = self->handler;
+    return 0;
+}
+
 /* type interface */
 
 static PyMemberDef parser_members[] = {
-    {"handler", T_OBJECT_EX, offsetof(parser_object, handler), 0,
-     "handler class"},
+    {NULL}  /* Sentinel */
+};
+
+static PyGetSetDef parser_getset[] = {
+    {"handler", (getter)parser_gethandler, (setter)parser_sethandler,
+     "handler object", NULL},
     {NULL}  /* Sentinel */
 };
 
@@ -743,7 +772,7 @@ static PyTypeObject parser_type = {
     0,              /* tp_iternext */
     parser_methods, /* tp_methods */
     parser_members, /* tp_members */
-    0,              /* tp_getset */
+    parser_getset,  /* tp_getset */
     0,              /* tp_base */
     0,              /* tp_dict */
     0,              /* tp_descr_get */
@@ -756,7 +785,7 @@ static PyTypeObject parser_type = {
 
 
 /* python module interface 
-     "Create a new HTML parser object with given handler.\n"
+     "Create a new HTML parser object with handler (which may be None).\n"
      "\n"
      "Used callbacks (they don't have to be defined) of a handler are:\n"
      "comment(data): <!--data-->\n"
@@ -796,10 +825,13 @@ PyMODINIT_FUNC inithtmlsax (void) {
         /* init error */
         PyErr_Print();
     }
-    if ((m = PyImport_ImportModule("linkcheck.parser"))==NULL) {
+    if ((m = PyImport_ImportModule("wc.parser"))==NULL) {
         return;
     }
     if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities"))==NULL) {
+        return;
+    }
+    if ((sorted_dict = PyObject_GetAttrString(m, "SortedDict"))==NULL) {
         return;
     }
 }
