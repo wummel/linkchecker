@@ -1,0 +1,16 @@
+# $Id$
+# $Source$
+#
+
+# install this file into /etc/bash_completion.d/linkchecker on a
+# Debian Linux System
+
+_lcoptcomplete ()
+{
+    COMPREPLY=( $( \
+	COMP_LINE=$COMP_LINE  COMP_POINT=$COMP_POINT \
+	COMP_WORDS="${COMP_WORDS[*]}"  COMP_CWORD=$COMP_CWORD \
+	OPTPARSE_AUTO_COMPLETE=1 $1 ) )
+}
+
+complete -F _lcoptcomplete linkchecker
