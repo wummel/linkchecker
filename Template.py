@@ -21,6 +21,12 @@ Limitations:
    Parameters to subscriptions must not have brackets inside.
    In code fragments, this is allowed, so you can use
    ${OUT = OUT + trunk[idx[1](data())]}
+
+Example:
+import Template
+
+t = Template.Template("blabla.tmpl")
+open("blabla","w").write(t.fill_in({"var1":1,"var2":'hui'}))
 """
 import sys, string, re
 from types import StringType
@@ -71,7 +77,7 @@ class Template:
             raise TemplateError, "could not read data"
 
 
-    def fill_in(self, dict):
+    def fill_in(self, dict={}):
         "parse the template and fill in values"
         try:
             namechars = 'abcdefghijklmnopqrstuvwxyz' \

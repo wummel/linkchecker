@@ -5,8 +5,11 @@ linkchecker (1.2.3) unstable; urgency=low
   * added some source code documentation
   * Improved error messages for wrong options
   * FileOutput mapping in Config.py
+  * linkchecker.bat installation support for windows
+  * included test suite in distribution
+  * Improved mailto: link parsing
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Tue, 25 Apr 2000 00:01:45 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 27 Apr 2000 10:18:52 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 

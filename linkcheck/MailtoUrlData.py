@@ -3,8 +3,9 @@ from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from UrlData import LinkCheckerException
 
-mailto_re = re.compile("^mailto:"
-                       "([\-\w.]+@[\-\w.?=]+|[\w\s]+<['\-\w.]+@[\-\w.?=]+>)$")
+mailto_re = re.compile(r"^mailto:"
+                       r"(['\-\w.]+@[\-\w.]+(\?.+)?|"
+		       r"[\w\s]+<['\-\w.]+@[\-\w.]+(\?.+)?>)$")
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
     

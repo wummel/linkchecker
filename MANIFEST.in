@@ -11,6 +11,5 @@ include debian/control
 include debian/dirs
 include debian/docs
 include debian/files
-include debian/postinst.debhelper
-include debian/prerm.debhelper
 include DNS/README
+recursive-include test *.html *.py

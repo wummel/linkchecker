@@ -23,7 +23,7 @@ install:
 	# do what I mean, Distutils!
 	cp -a /tmp/usr/* $(DESTDIR)/usr
 	# remove following line if Distutils have script support
-	install -c -m 755 linkchecker $(DESTDIR)/usr/bin/
+	#install -c -m 755 linkchecker $(DESTDIR)/usr/bin/
 	install -c -m 644 linkcheckerrc $(DESTDIR)/etc/
 	install -c -m 644 DNS/README $(DESTDIR)/usr/share/doc/$(PACKAGE)/README.dns
 
