@@ -329,6 +329,11 @@ class TestUrl (unittest.TestCase):
         url = "/a/b?http://"
         self.assert_(not linkcheck.url.url_is_absolute(url), repr(url))
 
+    def test_nopathquote_chars (self):
+        url = "file:///c|/msys/"
+        nurl = url
+        self.assertEqual(linkcheck.url.url_norm(url), nurl)
+
 def test_suite ():
     """build and return a TestSuite"""
     suite = unittest.TestSuite()
