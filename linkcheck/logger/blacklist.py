@@ -33,7 +33,7 @@ class BlacklistLogger (linkcheck.logger.Logger):
         """intialize with old blacklist data (if found, else not)"""
         super(BlacklistLogger, self).__init__(**args)
         self.blacklist = {}
-        if args.has_key('fileoutput'):
+        if args.get('fileoutput'):
             self.fileoutput = True
             filename = args['filename']
             if os.path.exists(filename):
