@@ -5,6 +5,8 @@ Next releases:
 
 - rethink intern/extern stuff, at least make new option --extern-strict
 
+- think of a more suited solution for anchor checking
+
 - recursion into FTP links
 
 - recursion into text files which have one URL per line
