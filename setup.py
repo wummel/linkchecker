@@ -29,7 +29,6 @@ import string
 import glob
 from distutils.core import setup, Extension, DEBUG
 import distutils.dist
-distklass = distutils.dist.Distribution
 from distutils.command.install import install
 from distutils.command.install_data import install_data
 from distutils.command.build_ext import build_ext
@@ -140,7 +139,7 @@ class MyInstallData (install_data, object):
                 os.chmod(path, mode)
 
 
-class MyDistribution (distklass, object):
+class MyDistribution (distutils.dist.Distribution, object):
     """
     Custom distribution class generating config file.
     """
