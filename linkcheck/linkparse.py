@@ -53,10 +53,10 @@ LinkTags = {
 
 # matcher for <meta http-equiv=refresh> tags
 _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
-_css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
+css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
 
 class TagFinder (object):
-    """base class putting message in list"""
+    """base class storing parse messages in a list"""
     def __init__ (self, content):
         self.content = content
         # warnings and errors during parsing
@@ -151,7 +151,7 @@ class LinkFinder (TagFinder):
             if mo:
                 urls.append(mo.group("url"))
         elif attr=='style':
-            for mo in _css_url_re.finditer(url):
+            for mo in css_url_re.finditer(url):
                 urls.append(mo.group("url"))
         else:
             urls.append(url)
@@ -162,4 +162,5 @@ class LinkFinder (TagFinder):
             debug(NIGHTMARE, "LinkParser add link", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))
+
 

@@ -23,7 +23,7 @@ from linkcheck.parser import htmlsax
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, test_support
-from linkparse import LinkFinder, MetaRobotsFinder
+from linkparse import LinkFinder, MetaRobotsFinder, css_url_re
 from debug import *
 
 ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
@@ -634,22 +634,24 @@ class UrlData (object):
            UNUSED and UNTESTED, just use linkchecker `cat file.txt`
         """
         lineno = 0
-        lines = self.getContent().splitlines()
-        for line in lines:
+        for line in self.getContent().splitlines():
             lineno += 1
             line = line.strip()
             if not line or line.startswith('#'): continue
             self.config.appendUrl(GetUrlDataFrom(line, self.recursionLevel+1,
-                                  self.config, self.url, None, lineno, ""))
+                               self.config, parentName=self.url, line=lineno))
 
 
     def parse_css (self):
         """parse a CSS file for url() patterns"""
         lineno = 0
-        lines = self.getContent().splitlines()
-        for line in lines:
+        for line in self.getContent().splitlines():
             lineno += 1
-            # XXX todo: css url pattern matching
+            for mo in css_url_re.finditer(line):
+                column = mo.start("url")
+                self.config.appendUrl(GetUrlDataFrom(mo.group("url"),
+                      self.recursionLevel+1, self.config,
+                      parentName=self.url, line=lineno, column=column))
 
 
     def __str__ (self):

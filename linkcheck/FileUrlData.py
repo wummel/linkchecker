@@ -135,10 +135,10 @@ class FileUrlData (UrlData):
 
 
     def parseUrl (self):
-        for key,ro in extensions.items():
+        for key, ro in extensions.items():
             if ro.search(self.url):
                 return getattr(self, "parse_"+key)()
-        for key,ro in contents.items():
+        for key, ro in contents.items():
             if ro.search(self.getContent()[:20]):
                 return getattr(self, "parse_"+key)()
         return None
