@@ -1,5 +1,6 @@
-21.3.2000
+21.3.2000 Version 1.1.2
 	* distutils fixes
+	* linkchecker.bat: quote the path
 
 20.3.2000
 	* fix a bug in reporting download time

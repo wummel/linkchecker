@@ -11,6 +11,7 @@ custom options (see below).
 Now check links with "linkchecker" (Unix users) resp. "linkchecker.bat" 
 (Windows users).
 
+To enable HTTPS support, edit the file setup.py.
 Use the "build_ext" command to supply options for SSL compilation support.
 
 Here is the usage guide for setup.py:

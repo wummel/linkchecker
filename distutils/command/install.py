@@ -17,23 +17,39 @@ _uninstall_template = """#!/usr/bin/env python
 
 filelist = %s
 
-if __name__ == '__main__':
-    import os
-    paths = filelist.keys()
+def _remove_paths(paths):
+    missing = []
+    failed = []
     # sort to catch all files before removing directories
     paths.sort()
     paths.reverse()
     for f in paths:
-        print "removing",f
-        if os.path.exists(f) and not os.path.isdir(f):
-            os.remove(f)
-        elif os.path.isdir(f):
-            if os.listdir(f):
-                print "warning: directory "+f+" not empty so not removed"
+        try:
+            print "removing",f
+            if os.path.exists(f) and not os.path.isdir(f):
+                os.remove(f)
+            elif os.path.isdir(f):
+                if os.listdir(f):
+                    print "warning: directory", f,\
+                          "not empty so not removed"
+                else:
+                    os.rmdir(f)
             else:
-                os.rmdir(f)
-        else:
-            raise AttributeError, "Unknown file type "+f
+                # file is missing
+                missing.append(f)
+        except OSError:
+            failed.append(f)
+    return (failed,missing)
+
+if __name__ == '__main__':
+    import os, string
+    failed,missing = _remove_paths(filelist.keys())
+    if missing:
+        print "These files were not found:"
+        print string.join(missing,'\\n')
+    if failed:
+        print "These files could not be removed:"
+        print string.join(failed,'\\n')
 """
 
 class install (Command):
