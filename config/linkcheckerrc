@@ -67,6 +67,15 @@
 # default encoding is iso-8859-15
 #encoding=utf_16
 
+# DOT logger
+[dot]
+#filename=linkchecker-out.dot
+#fields=all
+# valid encodings are listed in http://docs.python.org/lib/node127.html
+# default encoding is ascii since the original DOT format does not
+# support other charsets
+#encoding=iso-8859-15
+
 # CSV logger
 [csv]
 #filename=linkchecker-out.csv

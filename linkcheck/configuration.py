@@ -112,26 +112,27 @@ class Configuration (dict):
             'colorok':         '#3ba557',
         }
         self['gml'] = {
-            "filename":     "linkchecker-out.gml",
+            "filename": "linkchecker-out.gml",
         }
         self['sql'] = {
-            "filename":     "linkchecker-out.sql",
+            "filename": "linkchecker-out.sql",
             'separator': ';',
             'dbname': 'linksdb',
         }
         self['csv'] = {
-            "filename":     "linkchecker-out.csv",
+            "filename": "linkchecker-out.csv",
             'separator': ',',
             "quotechar": '"',
         }
         self['blacklist'] = {
-            "filename":     "~/.linkchecker_blacklist",
+            "filename": "~/.linkchecker_blacklist",
         }
         self['xml'] = {
-            "filename":     "linkchecker-out.xml",
+            "filename": "linkchecker-out.xml",
         }
         self['dot'] = {
-            "filename":     "linkchecker-out.dot",
+            "filename": "linkchecker-out.dot",
+            "encoding": "ascii",
         }
         self['none'] = {}
         self['logger'] = self.logger_new('text')
