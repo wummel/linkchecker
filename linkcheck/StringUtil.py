@@ -20,8 +20,11 @@ import re, sys, htmlentitydefs
 markup_re = re.compile("<.*?>", re.DOTALL)
 entities = htmlentitydefs.entitydefs.items()
 HtmlTable = map(lambda x: (x[1], "&"+x[0]+";"), entities)
+UnHtmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities)
 # order matters!
 HtmlTable.sort()
+UnHtmlTable.sort()
+UnHtmlTable.reverse()
 # standard xml entities
 entities = {
     'lt': '<',
@@ -119,8 +122,7 @@ is_charref = re.compile(r'&#x?(?P<num>\d+);').match
 
 def resolve_entity (mo):
     ent = mo.group(0).lower()
-    if htmlentitydefs.entitydefs.has_key(ent):
-        return htmlentitydefs.entitydefs[ent]
+    ent = applyTable(UnHtmlTable, ent)
     mo = is_charref(ent)
     if mo:
         # convert to number
@@ -137,7 +139,7 @@ def resolve_entity (mo):
 
 
 def unhtmlify (s):
-    return re.sub(r'(?i)&(#x?\d+|[a-z]+);', resolve_entity, s)
+    return re.sub(r'(?i)&(?P<ent>#x?\d+|[a-z]+);', resolve_entity, s)
 
 
 def xmlify (s):
@@ -204,6 +206,7 @@ def strsize (b):
 
 def _test ():
     print unhtmlify('&#97;')
+    print unhtmlify('&amp;')
 
 if __name__=='__main__':
     _test()
