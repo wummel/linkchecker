@@ -13,6 +13,19 @@
     Type: documentation
     Changed: doc/install.txt
 
+  * Updated french translation. Thanks, Yann Verley!
+    Type: feature
+    Changed: po/fr.po
+
+  * initialize i18n at program start
+    Type: bugfix
+    Changed: linkchecker, linkcheck/lc_cgi.py
+
+  * Make initialization function for i18n, and allow LOCPATH to override
+    the locale directory.
+    Type: feature
+    Changed: linkcheck/__init__.py
+
 1.13.1 "Old men in new cars" (released 3.9.2004)
   * Fixed RPM generation by adding the generated config file to the
     installed files list.
