@@ -1,3 +1,5 @@
 1.6.1:
   * FileUrlData.py: remove searching for links in text files, this is
     error prone. Just handle *.html and Opera Bookmarks.
+  * Make separate ChangeLog from debian/changelog. For previous
+    changes, see debian/changelog.
