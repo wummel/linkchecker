@@ -18,7 +18,7 @@
 import re, cgi, sys, urlparse, time, os
 sys.stderr = sys.stdout
 
-def testit():
+def testit ():
     cgi.test()
     sys.exit(0)
 

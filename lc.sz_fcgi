@@ -14,11 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-import sys,re,thread
 
-import sz_fcgi, linkcheck
+import sys, re, thread, sz_fcgi, linkcheck
 
-def func(fcg, req):
+def func (fcg, req):
     req.out.write("Content-type: text/html\r\n"
                   "Cache-Control: no-cache\r\n"
                   "Pragma: no-cache\r\n"
