@@ -8,7 +8,7 @@ include cgi/lc.cgi cgi/lc.fcgi cgi/lc.sz_fcgi cgi/README
 include Makefile linkchecker.spec
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
-include test/*.py test/*.sh
+include test.py test/*.py test/*.sh
 include cgi/lconline/*.html cgi/lconline/*.de cgi/lconline/*.en
 include cgi/lconline/check.js
 include linkcheck/HtmlParser/Makefile
