@@ -19,6 +19,7 @@
 import unittest
 
 import linkcheck.ftests
+import linkcheck.url
 
 
 class TestNews (linkcheck.ftests.StandardTest):
@@ -34,30 +35,16 @@ class TestNews (linkcheck.ftests.StandardTest):
         """test news: link"""
         # news testing
         url = "news:comp.os.linux.misc"
-        rurl = "nntp:comp.os.linux.misc"
         resultlines = [
             "url %s" % url,
-            "cache key %s" % rurl,
-            "real url %s" % rurl,
+            "cache key %s" % url,
+            "real url %s" % url,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
         self.newstest(url, resultlines)
         # no group
         url = "news:"
-        rurl = "nntp:"
-        resultlines = [
-            "url %s" % url,
-            "cache key %s" % rurl,
-            "real url %s" % rurl,
-            "warning No NNTP server specified, skipping this URL",
-            "valid",
-        ]
-        self.newstest(url, resultlines)
-
-    def test_snews (self):
-        """test snews: link"""
-        url = "snews:de.comp.os.unix.linux.misc"
         resultlines = [
             "url %s" % url,
             "cache key %s" % url,
@@ -67,15 +54,27 @@ class TestNews (linkcheck.ftests.StandardTest):
         ]
         self.newstest(url, resultlines)
 
+    def test_snews (self):
+        """test snews: link"""
+        url = "snews:de.comp.os.unix.linux.misc"
+        nurl = linkcheck.url.url_norm("snews:de.comp.os.unix.linux.misc")
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % nurl,
+            "real url %s" % nurl,
+            "warning No NNTP server specified, skipping this URL",
+            "valid",
+        ]
+        self.newstest(url, resultlines)
+
     def test_illegal (self):
         # illegal syntax
         url = "§$%&/´`(§%"
         qurl = self.quote("news:"+url)
-        rurl = qurl.replace("news:", "nntp:")
         resultlines = [
             "url %s" % qurl,
-            "cache key %s" % rurl,
-            "real url %s" % rurl,
+            "cache key %s" % qurl,
+            "real url %s" % qurl,
             "warning Base URL is not properly quoted",
             "warning No NNTP server specified, skipping this URL",
             "valid",
@@ -104,11 +103,10 @@ class TestNews (linkcheck.ftests.StandardTest):
         ]
         self.newstest(url, resultlines)
         url = "news:comp.lang.python/1-5"
-        rurl = "nntp:comp.lang.python/1-5"
         resultlines = [
             "url %s" % url,
-            "cache key %s" % rurl,
-            "real url %s" % rurl,
+            "cache key %s" % url,
+            "real url %s" % url,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
