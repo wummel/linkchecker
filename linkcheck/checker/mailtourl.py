@@ -198,7 +198,8 @@ class MailtoUrl (urlbase.UrlBase):
             return
         try:
             self.url_connection.quit()
-        except smtplib.SMTPException:
+        except:
+            # ignore close errors
             pass
         self.url_connection = None
 
