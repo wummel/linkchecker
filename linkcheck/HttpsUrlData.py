@@ -27,7 +27,7 @@ class HttpsUrlData (HttpUrlData):
 
     def _getHTTPObject (self, host):
         h = httplib.HTTPSConnection(host)
-        h.set_debuglevel(DebugLevel)
+        h.set_debuglevel(get_debuglevel())
         h.connect()
         return h
 

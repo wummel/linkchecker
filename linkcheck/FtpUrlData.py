@@ -82,7 +82,7 @@ class FtpUrlData (ProxyUrlData):
         # ready to connect
         try:
             self.urlConnection = ftplib.FTP()
-            self.urlConnection.set_debuglevel(debug.DebugLevel)
+            self.urlConnection.set_debuglevel(get_debuglevel())
             self.urlConnection.connect(self.urlparts[1])
             self.urlConnection.login(_user, _password)
         except EOFError:

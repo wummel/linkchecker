@@ -328,7 +328,7 @@ for opt,arg in options:
 
     elif opt=="-t" or opt=="--threads":
         num = int(arg)
-        if config["threads"] and not linkcheck.Config.DebugLevel:
+        if config["threads"] and get_debuglevel()>0:
             if num>1:
                 config.enableThreading(num)
             else:

@@ -46,7 +46,7 @@ class TelnetUrlData (HostCheckingUrlData):
     def checkConnection (self):
         HostCheckingUrlData.checkConnection(self)
         self.urlConnection = telnetlib.Telnet()
-        self.urlConnection.set_debuglevel(DebugLevel)
+        self.urlConnection.set_debuglevel(get_debuglevel())
         self.urlConnection.open(self.host, self.port)
         if self.user:
             self.urlConnection.read_until("login: ", 10)
