@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sat Apr  3 18:47:17 2004\n"
+"POT-Creation-Date: Sun Apr  4 11:47:12 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,10 +213,7 @@ msgstr ""
 msgid "no url was given"
 msgstr ""
 
-msgid "invalid recursion level syntax"
-msgstr ""
-
-msgid "recursion level greater than 3"
+msgid "invalid recursion level"
 msgstr ""
 
 msgid "invalid %s option syntax"

@@ -44,6 +44,18 @@
     Changed: test/test_*.py, Makefile
     Added: test/run.sh
 
+  * preserve the order in which HTML attributes have been parsed
+    Type: feature
+    Changed: linkcheck/parser/{__init__.py,htmllex.l}
+
+  * handle and correct missing start quotes in HTML attributes
+    Type: feature
+    Changed: linkcheck/parser/htmllex.l
+
+  * full parsing of .css files
+    Type: feature
+    Changed: linkcheck/{Http,}UrlData.py, linkcheck/linkparse.py
+
 
 1.12.1 (release 21.2.2004)
   * raise IncompleteRead instead of ValueError on malformed chunked

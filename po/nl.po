@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Sat Apr  3 18:47:17 2004\n"
+"POT-Creation-Date: Sun Apr  4 11:47:12 2004\n"
 "PO-Revision-Date: 2004-02-20 15:26+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -214,11 +214,9 @@ msgstr ""
 msgid "no url was given"
 msgstr "geen bestanden of URLs gegeven"
 
-msgid "invalid recursion level syntax"
+#, fuzzy
+msgid "invalid recursion level"
 msgstr "illegaal recursie nivo"
-
-msgid "recursion level greater than 3"
-msgstr ""
 
 msgid "invalid %s option syntax"
 msgstr "ungeldige Optie '%s'"
