@@ -31,7 +31,6 @@ If no test names are given, all tests are run.
 
 import sys, getopt, os
 
-sys.path.insert(0, os.getcwd())
 from linkcheck import test_support
 
 def main(tests=None, testdir=None, verbose=0, quiet=0, generate=0,

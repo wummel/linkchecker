@@ -1,19 +1,18 @@
 test_base
-url file:///home/calvin/projects/linkchecker/test/html/base1.html
+url file:///home/calvin/projects/linkchecker/test/html/codebase.html
+valid
+url test.txt
+baseurl file:///home/calvin/projects/linkchecker/test/html/base/
+valid
+url test.txt
+cached
+baseurl file:///home/calvin/projects/linkchecker/test/html/base/
 valid
 url file:///home/calvin/projects/linkchecker/test/html/base2.html
 valid
-url file:///home/calvin/projects/linkchecker/test/html/codebase.html
+url file:///home/calvin/projects/linkchecker/test/html/base1.html
 valid
 url misc.html
 valid
 url misc.html
-cached
-valid
-url test.txt
-baseurl file:///home/calvin/projects/linkchecker/test/html/base/
-valid
-url test.txt
-cached
-baseurl file:///home/calvin/projects/linkchecker/test/html/base/
 valid

@@ -10,7 +10,7 @@ HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
 HOST=www.debian.org
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
-TEST=env LANG=C ftp_proxy="" http_proxy="" $(PYTHON) test/regrtest.py
+TEST=test/run.sh test/regrtest.py
 OFFLINETESTS = test_base test_misc test_file test_frames
 ONLINETESTS = test_mail test_http test_https test_news test_ftp test_telnet
 DESTDIR=/.

@@ -39,6 +39,11 @@
     Changed: linkcheck/{Http,}UrlData.py
     Closes: SF bug 928895
 
+  * updated regression tests
+    Type: feature
+    Changed: test/test_*.py, Makefile.am
+    Added: test/run.sh
+
 
 1.12.1 (release 21.2.2004)
   * raise IncompleteRead instead of ValueError on malformed chunked

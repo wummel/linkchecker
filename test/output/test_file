@@ -1,33 +1,32 @@
 test_file
-url file:///home/calvin/projects/linkchecker/test/html/file.html
+url file:///home/calvin/projects/linkchecker/test/html/file.asc
 valid
 url file:///home/calvin/projects/linkchecker/test/html/file.txt
 valid
-url file:///home/calvin/projects/linkchecker/test/html/file.asc
+url file:///home/calvin/projects/linkchecker/test/html/file.html
 valid
-url http.html
-name relative url
-valid
-url http.html#isnix
-name bad anchor
-warning anchor #isnix not found
-valid
-url http.html#iswas
-name good anchor
-valid
-url file:///etc/group
+url file:/etc/
+name good dir
+error
+url file:etc/group
+name bad file
+error
+url file:/etc/group
 name good file
 valid
 url file://etc/group
 name bad file
 error
-url file:/etc/group
-cached
+url file:///etc/group
 name good file
 valid
-url file:etc/group
-name bad file
-error
-url file:/etc/
-name good dir
-error
+url http.html#iswas
+name good anchor
+valid
+url http.html#isnix
+name bad anchor
+warning anchor #isnix not found
+valid
+url http.html
+name relative url
+valid
