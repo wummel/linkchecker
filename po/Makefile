@@ -20,7 +20,7 @@ all:	$(MOS)
 %.po:	$(PACAKGE).pot
 	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
 
-$(PACAKGE).pot: $(SOURCES)
+$(PACKAGE).pot: $(SOURCES)
 	$(GETTEXT) --default-domain=$(PACKAGE) --no-location $(SOURCES)
 
 %.mo:	%.po
