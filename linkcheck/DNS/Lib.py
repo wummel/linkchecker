@@ -244,7 +244,6 @@ def testpacker():
     timing.start()
     for i in R:
         u = Unpacker(p.buf)
-
         res = (u.getaddr(),
                u.getbytes(20),
                u.getname(),
@@ -254,10 +253,10 @@ def testpacker():
                u.getname(),
                u.getbytes(26),
                u.getname())
+        print res
     timing.finish()
     print timing.milli(), "ms total for unpacking"
     print round(timing.milli() / i, 4), 'ms per unpacking'
-    #for item in res: print item
 
 
 # Pack/unpack RR toplevel format (section 3.2.1)
@@ -631,6 +630,9 @@ if __name__ == "__main__":
     testpacker()
 #
 # $Log$
+# Revision 1.4  2003/01/05 17:39:19  calvin
+# pychecker fixes
+#
 # Revision 1.3  2002/11/26 23:27:43  calvin
 # update to Python >= 2.2.1
 #

@@ -9,16 +9,22 @@ This code is covered by the standard Python License.
     Base functionality. Request and Response classes, that sort of thing.
 """
 
-import socket, string, types, time
-import Type,Class,Opcode
-import asyncore
+import select, socket, string, types, time, asyncore
 
 class DNSError(Exception): pass
 
-defaults= { 'protocol':'udp', 'port':53, 'opcode':Opcode.QUERY,
-            'qtype':Type.A, 'rd':1, 'timing':1, 'timeout': 30 }
+import Lib, Type, Class, Opcode
 
-defaults['server']=[]
+defaults = {
+    'protocol':'udp',
+    'port':53,
+    'opcode':Opcode.QUERY,
+    'qtype':Type.A,
+    'rd':1,
+    'timing':1,
+    'timeout': 30,
+    'server': [],
+}
 
 def ParseResolvConf(resolv_path="/etc/resolv.conf"):
     "parses the /etc/resolv.conf file and sets defaults for name servers"
@@ -82,7 +88,6 @@ class DnsRequest:
         self.s = socket.socket(a,b)
 
     def processUDPReply(self):
-        import time,select
         if self.args['timeout'] > 0:
             r,w,e = select.select([self.s],[],[],self.args['timeout'])
             if not len(r):
@@ -93,7 +98,6 @@ class DnsRequest:
         return self.processReply()
 
     def processTCPReply(self):
-        import time, Lib
         self.f = self.s.makefile('r')
         header = self.f.read(2)
         if len(header) < 2:
@@ -107,7 +111,6 @@ class DnsRequest:
         return self.processReply()
 
     def processReply(self):
-        import Lib
         self.args['elapsed']=(self.time_finish-self.time_start)*1000
         u = Lib.Munpacker(self.reply)
         r=Lib.DnsResult(u,self.args)
@@ -138,7 +141,6 @@ class DnsRequest:
 
     def req(self,*name,**args):
         " needs a refactoring "
-        import time, Lib
         self.argparse(name,args)
         #if not self.args:
         #    raise DNSError,'reinitialize request before reuse'
@@ -221,6 +223,7 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
     " an asynchronous request object. out of date, probably broken "
     def __init__(self,*name,**args):
         DnsRequest.__init__(self, *name, **args)
+        asyncore.dispatcher_with_send.__init__(self, *name, **args)
         # XXX todo
         if args.has_key('done') and args['done']:
             self.donefunc=args['done']
@@ -229,7 +232,6 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
         #self.realinit(name,args) # XXX todo
         self.async=1
     def conn(self):
-        import time
         self.connect((self.ns,self.port))
         self.time_start=time.time()
         if self.args.has_key('start') and self.args['start']:
@@ -252,6 +254,9 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
 
 #
 # $Log$
+# Revision 1.5  2003/01/05 17:39:19  calvin
+# pychecker fixes
+#
 # Revision 1.4  2002/11/26 23:27:42  calvin
 # update to Python >= 2.2.1
 #
