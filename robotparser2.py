@@ -36,7 +36,7 @@ class RobotFileParser:
             connection.endheaders()
             status, text, mime = connection.getreply()
             if status in [301,302]:
-                tries += 1
+                tries = tries + 1
                 self.set_url(mime.getheader("Location"))
             else:
                 break
@@ -56,7 +56,7 @@ class RobotFileParser:
         
         for line in lines:
             line = string.strip(line)
-            linenumber += 1
+            linenumber = linenumber + 1
             if not line:
                 if state==1:
                     _debug("line %d: no rules found" % linenumber)
@@ -128,7 +128,7 @@ class RobotFileParser:
     def __str__(self):
         ret = ""
         for entry in self.entries:
-            ret += str(entry) + "\n"
+            ret = ret + str(entry) + "\n"
         return ret
 
 class RuleLine:
@@ -151,9 +151,9 @@ class Entry:
     def __str__(self):
         ret = ""
         for agent in self.useragents:
-            ret += "User-agent: "+agent+"\n"
+            ret = ret + "User-agent: "+agent+"\n"
         for line in self.rulelines:
-            ret += str(line) + "\n"
+            ret = ret + str(line) + "\n"
         return ret
 
     def applies_to(self, useragent):

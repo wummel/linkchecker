@@ -3,10 +3,25 @@
 
 Requirements
 ------------
-Python >= 2.0 from http://www.python.org/
+Python >= 1.5.2 from http://www.python.org/
+Distutils >= 0.9.1 from http://www.python.org/sigs/distutils-sig/
+Python 1.6 includes the Distutils 0.9.1,
+Python 2.0 includes the Distutils 1.0.1
+
+
+Optionally packages
+-------------------
+OpenSSL from http://www.openssl.org/
+You will need Perl for Win32 (available from
+http://www.activestate.com/ActivePerl) if you want to install OpenSSL
+on Windows!
+
 
 Setup
 -----
+Run "python setup.py config" to configure.
+Linux users should run "python setup.py config -lcrypto" to use the SSL 
+module.
 Run "python setup.py install" to install.
 Run "python setup.py --help" for help.
 Debian users can build the .deb package with "debian/rules binary" as
@@ -21,9 +36,26 @@ to check.
 Type "linkchecker -h" for help.
 
 
+Note
+----
+If you want to make your own distribution with "python setup.py sdist",
+you will need Distutils >= 0.9.4. Older versions are hanging when
+they try to parse the MANIFEST.in file.
+
+
 (Fast)CGI web interface
 -----------------------
-The *cgi files are three CGI script which you can use to run LinkChecker
+The *cgi files are three CGI scripts which you can use to run LinkChecker
 with a nice graphical web interface.
 You can use and adjust the example HTML files in the lconline directory
 to run the script.
+1) Choose a CGI script. The simplest is lc.cgi and you need a web server
+   with CGI support.
+   The scripts lc.fcgi (I tested this a while ago) and lc.sz_fcgi 
+   (untested) need a web server with FastCGI support.
+2) Copy the script of your choice in the CGI directory.
+3) Adjust the "action=..." parameter in lconline/lc_cgi.html
+   to point to your CGI script.
+4) load the lconline/index.html file, enter an URL and klick on the
+   check button
+   If something goes wrong, check the error log of your web server.

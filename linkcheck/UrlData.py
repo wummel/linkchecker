@@ -37,8 +37,8 @@ _linkMatcher = r"""
     <              # open tag
     \s*            # whitespace
     %s             # tag name
-    [^>]*?         # skip leading attributes
     \s+            # whitespace
+    [^>]*?         # skip leading attributes
     %s             # attrib name
     \s*            # whitespace
     =              # equal sign
@@ -91,7 +91,8 @@ class UrlData:
         self.extern = 1
         self.data = None
         self.html_comments = []
-
+        
+        
     def setError(self, s):
         self.valid=0
         self.errorString = _("Error")+": "+s
@@ -233,6 +234,7 @@ class UrlData:
 
 
     def allowsRecursion(self, config):
+        Config.debug("extern: %s\n" % str(self.extern))
         return self.valid and \
                self.isHtml() and \
                not self.cached and \

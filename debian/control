@@ -2,24 +2,27 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@users.sourceforge.net>
-Standards-Version: 3.0.1
+Build-Depends: python-base (>= 1.5.2), python-base (<< 1.6), python-dev (>= 1.5.2), python-dev (<< 1.6), python-distutils (>= 0.9.4), debhelper
+Build-Depends-Indep: gettext
+Standards-Version: 3.1.1
 
 Package: linkchecker
-Architecture: i386
-Depends: python-base (= 1.5.2)
-Suggests: libssl09|libssl095a
+Architecture: any
+Depends: python-base (>= 1.5.2), python-base (<< 1.6)
+Suggests: libssl09|libssl095a, httpd
 Description: check/validate/test your HTML documents for broken links/URLs
  Features:
  o recursive checking
  o multithreaded
  o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
    graph
- o HTTP/1.1, HTTPS, FTP, mailto:, news:, Gopher, Telnet and local file links
-   are supported
+ o HTTP/1.1, HTTPS, FTP, mailto:, nntp:, news:, Gopher, Telnet and local 
+   file links are supported
    Javascript links are currently ignored
  o restrict link checking with regular expression filters for URLs
- o HTTP proxy support
+ o proxy support
  o give username/password for HTTP and FTP authorization
  o robots.txt exclusion protocol support 
- o internationalization support
- o (Fast)CGI web interface
+ o i18n support
+ o command line interface
+ o (Fast)CGI web interface (requires HTTP server)

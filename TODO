@@ -1,11 +1,6 @@
 High priority
 
-o Proxy geht nicht:
-  - getrennter http/https/ftp proxy
-  - environment Variablen werden bei RobotParser benutzt, also muﬂ ich
-    das auch machen.
-
-o Robot parser testen
+o Use Python 2.0 features
 
 o I want to be able to supply a "break" command even when multiple
   threads are running.

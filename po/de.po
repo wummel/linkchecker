@@ -95,8 +95,9 @@ msgstr "Ungültiges Argument '%s' für Option "
 msgid "hours"
 msgstr "Stunden"
 
-msgid "HTTPS not supported"
-msgstr "HTTPS nicht unterstützt"
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Javascript url ignoriert"
 
 msgid "Start checking at %s\n"
 msgstr "Beginne Prüfen am %s\n"
@@ -412,6 +413,9 @@ msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
 
 msgid "Parent URL"
 msgstr "Vater URL"
+
+#~ msgid "HTTPS not supported"
+#~ msgstr "HTTPS nicht unterstützt"
 
 #~ msgid " (%.3f seconds)"
 #~ msgstr " (%.3f Sekunden)"

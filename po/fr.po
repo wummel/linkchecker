@@ -87,8 +87,9 @@ msgstr "Argumen illégal '%s' pour l'option "
 msgid "hours"
 msgstr "heures"
 
-msgid "HTTPS not supported"
-msgstr "HTTPS not supported"
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Url Javascript ignorée"
 
 msgid "Start checking at %s\n"
 msgstr "Démarrage du controle à %s\n"
@@ -408,6 +409,9 @@ msgstr "Auncun serveur NNTP spécifié, analyse de la syntaxe seulement"
 
 msgid "Parent URL"
 msgstr "URL Parente"
+
+#~ msgid "HTTPS not supported"
+#~ msgstr "HTTPS not supported"
 
 #~ msgid "Illegal NNTP link syntax"
 #~ msgstr "Syntaxe illégale du lien NNTP"

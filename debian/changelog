@@ -1,13 +1,30 @@
-linkchecker (1.3.0) unstable; urgency=low
+linkchecker (1.2.8) unstable; urgency=low
 
-  * require Python 2.0 so we can get rid of the robots.txt parser
-    and use the one provided within the Python library
-  * added <script src=> urls for link testing. Thanks to Tomas Cox
-    <cox@idecnet.com> for the suggestion
-  * we get now all proxy configuration values from $http_proxy,
-    $https_proxy  on Unix,Windows and from Internet Config on the Mac
+  * INSTALL: more documentation for the CGI scripts
+  * Makefile: better cleaning (clean, cleandeb, distclean)
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu,  2 Nov 2000 11:17:16 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu,  9 Nov 2000 12:35:03 +0100
+
+linkchecker (1.2.7) unstable; urgency=low
+
+  * new robot.txt parser module which is interface compatible with the
+    one in Python 2.0
+  * debian/control: new fields Build-Depends, Build-Depends-Indep
+  * debian/control: Architecture is any, not i386
+  * debian/control: Standards version 3.1.1,
+  * debian/control: depend on Python 1.5.2
+  * debian/copyright: first line was too long
+  * debian/postinst: compile .py files
+  * debian/rules: new configuration target
+  * debian/prerm: new file, delete compiled .py files
+  * use Python tools for i18n (backported from Python 2.0)
+  * proxy configuration is now detected automatically from system
+    (environment) variables. NOTE: this means the --proxy options
+    are gone!
+  * add <script src=> to url list
+  * include ssl.c again (was missing in 1.2.6)
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat,  4 Nov 2000 10:45:08 +0100
 
 linkchecker (1.2.6) unstable; urgency=low
 

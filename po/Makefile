@@ -1,7 +1,7 @@
-# we use the scripts in Tools/i18n of the Python distribution
-I18NTOOLS=/usr/local/src/Python-2.0/Tools/i18n
-GETTEXT=$(I18NTOOLS)/pygettext.py
-MSGFMT=$(I18NTOOLS)/msgfmt.py
+# we use the scripts in Tools/i18n of the Python 2.0 distribution
+I18NTOOLS=.
+GETTEXT=python $(I18NTOOLS)/pygettext.py
+MSGFMT=python $(I18NTOOLS)/msgfmt.py
 MSGMERGE=msgmerge
 SOURCES=\
 ../linkcheck/Config.py \

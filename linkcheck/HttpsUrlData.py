@@ -18,20 +18,21 @@
 from UrlData import UrlData
 from HttpUrlData import HttpUrlData
 from linkcheck import _
-import httplib,socket
-_supportHttps=hasattr(socket, 'ssl')
+_supportHttps=1
+try: import httpslib
+except ImportError: _supportHttps=0
 
 class HttpsUrlData(HttpUrlData):
     """Url link with https scheme"""
 
     def _getHTTPObject(self, host):
-        return httplib.HTTPS(host)
+        return httpslib.HTTPS(host)
 
     def check(self, config):
         if _supportHttps:
             HttpUrlData.check(self, config)
         else:
-            self.setWarning(_("HTTPS not supported"))
+            self.setWarning(_("HTTPS url ignored"))
             self.logMe(config)
 
     def get_scheme(self):

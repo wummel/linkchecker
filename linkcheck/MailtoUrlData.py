@@ -18,7 +18,7 @@
 import os,re,string,DNS,sys,Config,cgi,urllib,linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
-from smtplib import SMTP,SMTPException
+from smtplib import SMTP
 from linkcheck import _
 
 # regular expression for RFC2368 compliant mailto: scanning
@@ -32,10 +32,7 @@ if os.name=='posix':
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
-
-    def get_scheme(self):
-        return "mailto"
-
+    
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         self.headers = {}
@@ -88,8 +85,9 @@ class MailtoUrlData(HostCheckingUrlData):
                     info = self.urlConnection.verify(user)
                     if info[0]==250:
                         self.setInfo("Verified adress: "+info[1])
-                except SMTPException:
-                    pass
+                except:
+                    type, value = sys.exc_info()[:2]
+                    #print type,value
                 if smtpconnect: break
             
             if not smtpconnect:
@@ -120,3 +118,7 @@ class MailtoUrlData(HostCheckingUrlData):
 
     def getCacheKey(self):
         return self.get_scheme()+":"+str(self.adresses)
+
+
+    def get_scheme(self):
+        return "mailto"

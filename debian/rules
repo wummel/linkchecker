@@ -1,47 +1,50 @@
 #!/usr/bin/make -f
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
-DOC_DIR = debian/tmp/usr/share/doc/linkchecker
+PACKAGE=linkchecker
+DOCDIR = debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
 # This is the debhelper compatability version to use.
-export DH_COMPAT=1
+export DH_COMPAT=2
 
-build: build-stamp
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	python setup.py config -lcrypto
+	touch configure-stamp
+
+
+build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-
-	# Add here commands to compile the package.
-	rm -rf debian/tmp
+	rm -rf debian/$(PACKAGE)
 	python setup.py build
-
 	touch build-stamp
 
 clean:
 	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-
-	# Add here commands to clean up after the build process.
-	python setup.py clean --all
-
+	rm -f build-stamp configure-stamp
+	$(MAKE) clean
 	dh_clean
 
 install: build
 	dh_testdir
-	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	# ha! the root option finally made it into distutils
-	python setup.py install --root=`pwd`/debian/tmp
+	$(MAKE) locale
+	python setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
 	# install additional doc files
-	install -c -m 644 DNS/README $(DOC_DIR)/README_DNS.txt
-	install -d -m 755 $(DOC_DIR)/test
-	install -c -m 644 test/*.html test/*.py $(DOC_DIR)/test
-	install -d -m 755 $(DOC_DIR)/tests
-	install -c -m 644 tests/*.py $(DOC_DIR)/tests
+	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
+	install -d -m 755 $(DOCDIR)/test
+	install -c -m 644 test/*.html test/*.py $(DOCDIR)/test
+	install -d -m 755 $(DOCDIR)/tests
+	install -c -m 644 tests/*.py $(DOCDIR)/tests
 
 
 # Build architecture-independent files here.
@@ -80,4 +83,4 @@ binary-arch: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: build clean binary-indep binary-arch binary install configure

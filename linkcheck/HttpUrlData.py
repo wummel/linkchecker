@@ -15,7 +15,7 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-import httplib,urlparse,sys,time,re
+import http11lib,urlparse,sys,time,re
 import Config,StringUtil,robotparser2
 from UrlData import UrlData
 from urllib import splittype, splithost
@@ -67,7 +67,8 @@ class HttpUrlData(UrlData):
         | "503"   ; Service Unavailable
         | extension-code
         """
-        self.proxy = config['proxy'].get(self.get_scheme(), None)
+        
+        self.proxy = config["proxy"].get(self.get_scheme(), None)
         if self.proxy:
             self.proxy = splittype(self.proxy)[1]
             self.proxy = splithost(self.proxy)[0]
@@ -176,7 +177,7 @@ class HttpUrlData(UrlData):
         return self.urlConnection.getreply()
 
     def _getHTTPObject(self, host):
-        return httplib.HTTP(host)
+        return http11lib.HTTP(host)
 
     def getContent(self):
         if not self.data:
@@ -193,13 +194,12 @@ class HttpUrlData(UrlData):
     def isHtml(self):
         if not (self.valid and self.mime):
             return 0
-        return self.mime.gettype()=="text/html"
+        return self.mime.gettype()[:9]=="text/html"
 
     def robotsTxtAllowsUrl(self, config):
         roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]
         if not config.robotsTxtCache_has_key(roboturl):
             rp = robotparser2.RobotFileParser(roboturl)
-            robotparser2.debug=1
             rp.read()
             config.robotsTxtCache_set(roboturl, rp)
         rp = config.robotsTxtCache_get(roboturl)

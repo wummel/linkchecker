@@ -27,7 +27,9 @@ ExcList.extend([
 ])
 
 class FtpUrlData(UrlData):
-    """Url link with ftp scheme."""
+    """
+    Url link with ftp scheme. 
+    """
     
     def checkConnection(self, config):
         _user, _password = self._getUserPassword(config)

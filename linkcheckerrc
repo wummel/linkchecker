@@ -113,4 +113,4 @@
 # At the moment, authentication is used/needed for http[s] and ftp links.
 [authentication]
 #entry1=^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
-#entry2=^ftp://void.cs.uni-sb.de calvin schnuckl
+#entry2=^ftp://void.cs.uni-sb.de calvin hutzli

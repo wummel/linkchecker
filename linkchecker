@@ -2,8 +2,8 @@
 
 # imports and checks
 import sys
-if (not hasattr(sys, 'version_info')) or sys.version_info < (2,0,0,'final',0):
-    raise SystemExit, "This program requires Python 2.0 or later."
+if sys.version[:5] < "1.5.2":
+    raise SystemExit, "This program requires Python 1.5.2 or later."
 import getopt,re,string,os,urlparse
 # 90 seconds timeout for all connections
 #import timeoutsocket

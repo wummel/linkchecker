@@ -28,7 +28,7 @@ ExcList.extend([nntplib.error_reply,
 
 class NntpUrlData(UrlData):
     "Url link with NNTP scheme"
-
+    
     def get_scheme(self):
         return "nntp"
 

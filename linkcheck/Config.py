@@ -21,8 +21,8 @@ This module stores
 * Other configuration options
 """
 
-import ConfigParser,sys,os,re,UserDict,string,time
-import Logging,LinkCheckerConf
+import ConfigParser, sys, os, re, UserDict, string, time
+import Logging, LinkCheckerConf
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 from urllib import getproxies
@@ -377,8 +377,11 @@ class Configuration(UserDict.UserDict):
         used in the linkchecker module.
         """
         debug("DEBUG: reading configuration from %s\n" % files)
-        cfgparser = ConfigParser.ConfigParser()
-        cfgparser.read(files)
+        try:
+            cfgparser = ConfigParser.ConfigParser()
+            cfgparser.read(files)
+        except ConfigParser.Error:
+	    return
 
         section="output"
         try:
@@ -387,16 +390,16 @@ class Configuration(UserDict.UserDict):
                 self.data['log'] = self.newLogger(log)
             else:
                 self.warn(_("invalid log option '%s'") % log)
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: 
             if cfgparser.getboolean(section, "verbose"):
                 self.data["verbose"] = 1
                 self.data["warnings"] = 1
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: self.data["quiet"] = cfgparser.getboolean(section, "quiet")
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: self.data["warnings"] = cfgparser.getboolean(section, "warnings")
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try:
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
@@ -404,12 +407,12 @@ class Configuration(UserDict.UserDict):
                 if Loggers.has_key(arg) and arg != "blacklist":
 		    self.data['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
-	except ConfigParser.NoOptionError: pass
+	except ConfigParser.Error: pass
         for key in Loggers.keys():
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
                     try: self.data[key][opt] = cfgparser.get(key, opt)
-                    except ConfigParser.NoOptionError: pass
+                    except ConfigParser.Error: pass
 
         section="checking"
         try:
@@ -418,28 +421,28 @@ class Configuration(UserDict.UserDict):
                 self.disableThreads()
             else:
                 self.enableThreads(num)
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: self.data["anchors"] = cfgparser.getboolean(section, "anchors")
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
                 self.error(_("illegal recursionlevel number %d") % num)
             self.data["recursionlevel"] = num
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: 
             self.data["robotstxt"] = cfgparser.getboolean(section, 
             "robotstxt")
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: self.data["strict"] = cfgparser.getboolean(section, "strict")
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: 
             self.data["warningregex"] = re.compile(cfgparser.get(section,
             "warningregex"))
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try:
             self.data["nntpserver"] = cfgparser.get(section, "nntpserver")
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
 
         section = "authentication"
 	try:
@@ -450,7 +453,7 @@ class Configuration(UserDict.UserDict):
                 tuple[0] = re.compile(tuple[0])
                 self.data["authentication"].append(tuple)
                 i = i + 1
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
 
         section = "filtering"
         try:
@@ -461,9 +464,9 @@ class Configuration(UserDict.UserDict):
                 self.data["externlinks"].append((re.compile(tuple[0]),
 		                                 int(tuple[1])))
                 i = i + 1
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: self.data["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
-        except ConfigParser.NoOptionError: pass
+        except ConfigParser.Error: pass
         try: self.data["allowdeny"] = cfgparser.getboolean(section, "allowdeny")
-	except ConfigParser.NoOptionError: pass
+	except ConfigParser.Error: pass
 
