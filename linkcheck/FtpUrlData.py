@@ -16,7 +16,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ftplib, i18n
-from linkcheck import Config, error, extensions, debug
+from linkcheck import Config, error, extensions
+from debug import *
 from urllib import splitpasswd
 from ProxyUrlData import ProxyUrlData
 from HttpUrlData import HttpUrlData
