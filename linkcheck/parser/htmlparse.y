@@ -825,7 +825,7 @@ PyMODINIT_FUNC inithtmlsax (void) {
         /* init error */
         PyErr_Print();
     }
-    if ((m = PyImport_ImportModule("wc.parser"))==NULL) {
+    if ((m = PyImport_ImportModule("linkcheck.parser"))==NULL) {
         return;
     }
     if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities"))==NULL) {
