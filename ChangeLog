@@ -6,8 +6,8 @@
       FileUrlData.py
   * Print size information if its available
     Changed files: FtpUrlData.py, UrlData.py, HttpUrlData.py
-  * Add --warning-size-bytes to print warning if content size exceeds
-    the given byte limit
+  * Add --warning-size-bytes option to print warning if content size
+    exceeds the given byte limit
     Changed files: FtpUrlData.py, HttpUrlData.py, linkchecker, Config.py,
       linkchecker.1
   * Updated translations
