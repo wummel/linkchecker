@@ -50,39 +50,40 @@ static PyObject* list_dict;
 static PyObject* set_encoding;
 /* set_doctype helper function */
 static PyObject* set_doctype;
+/* the unicode string u'meta' */
+static PyObject* u_meta;
 
 /* macros for easier scanner state manipulation */
 
 /* clear buffer b, returning NULL on error */
 #define CLEAR_BUF(b) \
     b = PyMem_Resize(b, char, 1); \
-    if (b==NULL) return NULL; \
+    if (b == NULL) return NULL; \
     (b)[0] = '\0'
 
 /* clear buffer b, returning NULL and decref self on error */
 #define CLEAR_BUF_DECREF(self, b) \
     b = PyMem_Resize(b, char, 1); \
-    if (b==NULL) { Py_DECREF(self); return NULL; } \
+    if (b == NULL) { Py_DECREF(self); return NULL; } \
     (b)[0] = '\0'
 
 #define CHECK_ERROR(ud, label) \
-    if (ud->error && PyObject_HasAttrString(ud->handler, "error")==1) { \
+    if (ud->error && PyObject_HasAttrString(ud->handler, "error") == 1) { \
 	callback = PyObject_GetAttrString(ud->handler, "error"); \
-	if (!callback) { error=1; goto label; } \
+	if (!callback) { error = 1; goto label; } \
 	result = PyObject_CallFunction(callback, "O", ud->error); \
-	if (!result) { error=1; goto label; } \
+	if (!result) { error = 1; goto label; } \
     }
 
 /* generic callback macro */
 #define CALLBACK(ud, attr, format, arg, label) \
-    if (PyObject_HasAttrString(ud->handler, attr)==1) { \
+    if (PyObject_HasAttrString(ud->handler, attr) == 1) { \
 	callback = PyObject_GetAttrString(ud->handler, attr); \
-	if (callback==NULL) { error=1; goto label; } \
+	if (callback == NULL) { error = 1; goto label; } \
 	result = PyObject_CallFunction(callback, format, arg); \
-	if (result==NULL) { error=1; goto label; } \
-	Py_DECREF(callback); \
-	Py_DECREF(result); \
-        callback=result=NULL; \
+	if (result == NULL) { error = 1; goto label; } \
+	Py_CLEAR(callback); \
+	Py_CLEAR(result); \
     }
 
 /* set old line and column */
@@ -115,10 +116,10 @@ static int html_end_tag (PyObject* ptag, PyObject* parser) {
     char* doctype;
     int ret = 1;
     pdoctype = PyObject_GetAttrString(parser, "doctype");
-    if (pdoctype==NULL) return -1;
+    if (pdoctype == NULL) return -1;
     doctype = PyString_AsString(pdoctype);
     if (doctype == NULL) { Py_DECREF(pdoctype); return -1; }
-    if (strcmp(doctype, "HTML")==0) {
+    if (strcmp(doctype, "HTML") == 0) {
         char* tag = PyString_AsString(ptag);
         if (tag == NULL) { Py_DECREF(pdoctype); return -1; }
         ret = strcmp(tag, "area")!=0 &&
@@ -188,19 +189,23 @@ element: T_WAIT { YYACCEPT; /* wait for more lexer input */ }
     PyObject* tag = PyTuple_GET_ITEM($1, 0);
     PyObject* attrs = PyTuple_GET_ITEM($1, 1);
     int error = 0;
-    if (tag==NULL || attrs==NULL) { error = 1; goto finish_start; }
-    /* set encoding */
-    result = PyObject_CallFunction(set_encoding, "OOO", ud->parser, tag, attrs);
-    if (result==NULL) { error=1; goto finish_start; }
-    Py_DECREF(result); result = NULL;
-    if (PyObject_HasAttrString(ud->handler, "start_element")==1) {
+    int cmp;
+    if (tag == NULL || attrs == NULL) { error = 1; goto finish_start; }
+    cmp = PyObject_RichCompareBool(tag, u_meta, Py_EQ);
+    if (cmp == -1) { error = 1; goto finish_start; }
+    if (cmp == 1) {
+        /* set encoding */
+        result = PyObject_CallFunction(set_encoding, "OO", ud->parser, attrs);
+        if (result == NULL) { error = 1; goto finish_start; }
+        Py_CLEAR(result);
+    }
+    if (PyObject_HasAttrString(ud->handler, "start_element") == 1) {
 	callback = PyObject_GetAttrString(ud->handler, "start_element");
-	if (!callback) { error=1; goto finish_start; }
+	if (!callback) { error = 1; goto finish_start; }
 	result = PyObject_CallFunction(callback, "OO", tag, attrs);
-	if (!result) { error=1; goto finish_start; }
-	Py_DECREF(callback);
-        Py_DECREF(result);
-        callback = result = NULL;
+	if (!result) { error = 1; goto finish_start; }
+	Py_CLEAR(callback);
+        Py_CLEAR(result);
     }
     CHECK_ERROR(ud, finish_start);
 finish_start:
@@ -227,27 +232,31 @@ finish_start:
     PyObject* tag = PyTuple_GET_ITEM($1, 0);
     PyObject* attrs = PyTuple_GET_ITEM($1, 1);
     int error = 0;
+    int cmp;
     char* fname;
     PyObject* tagname;
-    if (tag==NULL || attrs==NULL) { error = 1; goto finish_start_end; }
+    if (tag == NULL || attrs == NULL) { error = 1; goto finish_start_end; }
     tagname = PyUnicode_AsEncodedString(tag, "ascii", "ignore");
-    if (tagname==NULL) { error=1; goto finish_start_end; }
-    /* set encoding */
-    result = PyObject_CallFunction(set_encoding, "OOO", ud->parser, tag, attrs);
-    if (result==NULL) { error=1; goto finish_start_end; }
-    Py_DECREF(result); result = NULL;
+    if (tagname == NULL) { error = 1; goto finish_start_end; }
+    cmp = PyObject_RichCompareBool(tag, u_meta, Py_EQ);
+    if (cmp == -1) { error = 1; goto finish_start; }
+    if (cmp == 1) {
+        /* set encoding */
+        result = PyObject_CallFunction(set_encoding, "OO", ud->parser, attrs);
+        if (result == NULL) { error = 1; goto finish_start_end; }
+        Py_CLEAR(result);
+    }
     if (html_end_tag(tagname, ud->parser))
         fname = "start_end_element";
     else
         fname = "start_element";
-    if (PyObject_HasAttrString(ud->handler, fname)==1) {
+    if (PyObject_HasAttrString(ud->handler, fname) == 1) {
 	callback = PyObject_GetAttrString(ud->handler, fname);
-	if (!callback) { error=1; goto finish_start_end; }
+	if (!callback) { error = 1; goto finish_start_end; }
 	result = PyObject_CallFunction(callback, "OO", tag, attrs);
-	if (!result) { error=1; goto finish_start_end; }
-	Py_DECREF(callback);
-        Py_DECREF(result);
-        callback = result = NULL;
+	if (!result) { error = 1; goto finish_start_end; }
+	Py_CLEAR(callback);
+        Py_CLEAR(result);
     }
     CHECK_ERROR(ud, finish_start_end);
 finish_start_end:
@@ -273,16 +282,15 @@ finish_start_end:
     int error = 0;
     /* encode tagname in ASCII, ignoring any unknown chars */
     PyObject* tagname = PyUnicode_AsEncodedString($1, "ascii", "ignore");
-    if (tagname==NULL) { error=1; goto finish_end; }
-    if (PyObject_HasAttrString(ud->handler, "end_element")==1 &&
+    if (tagname == NULL) { error = 1; goto finish_end; }
+    if (PyObject_HasAttrString(ud->handler, "end_element") == 1 &&
 	html_end_tag(tagname, ud->parser)) {
 	callback = PyObject_GetAttrString(ud->handler, "end_element");
-	if (callback==NULL) { error=1; goto finish_end; }
+	if (callback == NULL) { error = 1; goto finish_end; }
 	result = PyObject_CallFunction(callback, "O", $1);
-	if (result==NULL) { error=1; goto finish_end; }
-	Py_DECREF(callback);
-	Py_DECREF(result);
-        callback = result = NULL;
+	if (result == NULL) { error = 1; goto finish_end; }
+	Py_CLEAR(callback);
+	Py_CLEAR(result);
     }
     CHECK_ERROR(ud, finish_end);
 finish_end:
@@ -370,8 +378,8 @@ finish_cdata:
     int error = 0;
     /* set encoding */
     result = PyObject_CallFunction(set_doctype, "OO", ud->parser, $1);
-    if (result==NULL) { error=1; goto finish_doctype; }
-    Py_DECREF(result); result = NULL;
+    if (result == NULL) { error = 1; goto finish_doctype; }
+    Py_CLEAR(result);
     CALLBACK(ud, "doctype", "O", $1, finish_doctype);
     CHECK_ERROR(ud, finish_doctype);
 finish_doctype:
@@ -394,7 +402,7 @@ finish_doctype:
     PyObject* result = NULL;
     int error = 0;
     PyObject* script = PyUnicode_DecodeASCII("script", 6, "ignore");
-    if (script==NULL) { error=1; goto finish_script; }
+    if (script == NULL) { error = 1; goto finish_script; }
     CALLBACK(ud, "characters", "O", $1, finish_script);
     CALLBACK(ud, "end_element", "O", script, finish_script);
     CHECK_ERROR(ud, finish_script);
@@ -419,7 +427,7 @@ finish_script:
     PyObject* result = NULL;
     int error = 0;
     PyObject* style = PyUnicode_DecodeASCII("style", 5, "ignore");
-    if (style==NULL) { error=1; goto finish_style; }
+    if (style == NULL) { error = 1; goto finish_style; }
     CALLBACK(ud, "characters", "O", $1, finish_style);
     CALLBACK(ud, "end_element", "O", style, finish_style);
     CHECK_ERROR(ud, finish_style);
@@ -529,7 +537,7 @@ static int parser_init (parser_object* self, PyObject* args, PyObject* kwds) {
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O", kwlist, &handler)) {
         return -1;
     }
-    if (handler==NULL) {
+    if (handler == NULL) {
         return 0;
     }
     Py_DECREF(self->handler);
@@ -633,18 +641,18 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
 	PyObject* result = NULL;
 	/* reset buffer */
 	CLEAR_BUF(self->userData->buf);
-	if (s==NULL) { error=1; goto finish_flush; }
-	if (PyObject_HasAttrString(self->handler, "characters")==1) {
+	if (s == NULL) { error = 1; goto finish_flush; }
+	if (PyObject_HasAttrString(self->handler, "characters") == 1) {
 	    callback = PyObject_GetAttrString(self->handler, "characters");
-	    if (callback==NULL) { error=1; goto finish_flush; }
+	    if (callback == NULL) { error = 1; goto finish_flush; }
 	    result = PyObject_CallFunction(callback, "O", s);
-	    if (result==NULL) { error=1; goto finish_flush; }
+	    if (result == NULL) { error = 1; goto finish_flush; }
 	}
     finish_flush:
 	Py_XDECREF(callback);
 	Py_XDECREF(result);
 	Py_XDECREF(s);
-	if (error==1) {
+	if (error == 1) {
 	    return NULL;
 	}
     }
@@ -933,37 +941,40 @@ PyMODINIT_FUNC inithtmlsax (void) {
     if (PyType_Ready(&parser_type) < 0) {
         return;
     }
-    if ((m = Py_InitModule3("htmlsax", htmlsax_methods, "SAX HTML parser routines"))==NULL) {
+    if ((m = Py_InitModule3("htmlsax", htmlsax_methods, "SAX HTML parser routines")) == NULL) {
         return;
     }
     Py_INCREF(&parser_type);
-    if (PyModule_AddObject(m, "parser", (PyObject *)&parser_type)==-1) {
+    if (PyModule_AddObject(m, "parser", (PyObject *)&parser_type) == -1) {
         /* init error */
         PyErr_Print();
     }
-    if ((m = PyImport_ImportModule("linkcheck.HtmlParser"))==NULL) {
+    if ((m = PyImport_ImportModule("linkcheck.HtmlParser")) == NULL) {
         return;
     }
-    if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities"))==NULL) {
+    if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities")) == NULL) {
         Py_DECREF(m);
         return;
     }
-    if ((set_encoding = PyObject_GetAttrString(m, "set_encoding"))==NULL) {
+    if ((set_encoding = PyObject_GetAttrString(m, "set_encoding")) == NULL) {
         Py_DECREF(resolve_entities);
         Py_DECREF(m);
         return;
     }
-    if ((set_doctype = PyObject_GetAttrString(m, "set_doctype"))==NULL) {
+    if ((set_doctype = PyObject_GetAttrString(m, "set_doctype")) == NULL) {
         Py_DECREF(resolve_entities);
         Py_DECREF(set_encoding);
         Py_DECREF(m);
         return;
     }
     Py_DECREF(m);
-    if ((m = PyImport_ImportModule("linkcheck.containers"))==NULL) {
+    if ((u_meta = PyString_Decode("meta", 4, "ascii", "ignore")) == NULL) {
         return;
     }
-    if ((list_dict = PyObject_GetAttrString(m, "ListDict"))==NULL) {
+    if ((m = PyImport_ImportModule("linkcheck.containers")) == NULL) {
+        return;
+    }
+    if ((list_dict = PyObject_GetAttrString(m, "ListDict")) == NULL) {
         Py_DECREF(m);
         return;
     }
