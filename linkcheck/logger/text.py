@@ -67,25 +67,19 @@ class TextLogger (linkcheck.logger.Logger):
         """initialize error counter and optional file output"""
         super(TextLogger, self).__init__(**args)
         self.init_fileoutput(args)
-        self.colorparent = linkcheck.ansicolor.esc_ansicolor(
-                                                        args['colorparent'])
-        self.colorurl = linkcheck.ansicolor.esc_ansicolor(args['colorurl'])
-        self.colorname = linkcheck.ansicolor.esc_ansicolor(args['colorname'])
-        self.colorreal = linkcheck.ansicolor.esc_ansicolor(args['colorreal'])
-        self.colorbase = linkcheck.ansicolor.esc_ansicolor(args['colorbase'])
-        self.colorvalid = linkcheck.ansicolor.esc_ansicolor(
-                                                          args['colorvalid'])
-        self.colorinvalid = linkcheck.ansicolor.esc_ansicolor(
-                                                        args['colorinvalid'])
-        self.colorinfo = linkcheck.ansicolor.esc_ansicolor(args['colorinfo'])
-        self.colorwarning = linkcheck.ansicolor.esc_ansicolor(
-                                                        args['colorwarning'])
-        self.colordltime = linkcheck.ansicolor.esc_ansicolor(
-                                                         args['colordltime'])
-        self.colordlsize = linkcheck.ansicolor.esc_ansicolor(
-                                                         args['colordlsize'])
-        self.colorreset = linkcheck.ansicolor.esc_ansicolor(
-                                                         args['colorreset'])
+        esc = linkcheck.ansicolor.esc_ansicolor
+        self.colorparent = esc(args['colorparent'])
+        self.colorurl = esc(args['colorurl'])
+        self.colorname = esc(args['colorname'])
+        self.colorreal = esc(args['colorreal'])
+        self.colorbase = esc(args['colorbase'])
+        self.colorvalid = esc(args['colorvalid'])
+        self.colorinvalid = esc(args['colorinvalid'])
+        self.colorinfo = esc(args['colorinfo'])
+        self.colorwarning = esc(args['colorwarning'])
+        self.colordltime = esc(args['colordltime'])
+        self.colordlsize = esc(args['colordlsize'])
+        self.colorreset = esc(args['colorreset'])
         self.errors = 0
 
     def start_output (self):
@@ -117,35 +111,43 @@ class TextLogger (linkcheck.logger.Logger):
             return
         if self.has_field('url'):
             self.fd.write(os.linesep+self.field('url')+self.spaces('url')+
-                          repr(url_data.base_url))
+                          self.colorurl+repr(url_data.base_url))
             if url_data.cached:
-                self.fd.write(_(" (cached)")+os.linesep)
-            else:
-                self.fd.write(os.linesep)
+                self.fd.write(_(" (cached)"))
+            self.fd.write(self.colorreset+os.linesep)
         if url_data.name and self.has_field('name'):
             self.fd.write(self.field("name")+self.spaces("name")+
-                          repr(url_data.name)+os.linesep)
+                          self.colorname+repr(url_data.name)+self.colorreset+
+                          os.linesep)
         if url_data.parent_url and self.has_field('parenturl'):
             self.fd.write(self.field('parenturl')+self.spaces("parenturl")+
-                          url_data.parent_url+
+                          self.colorparent+url_data.parent_url+
                           (_(", line %d")%url_data.line)+
-                          (_(", col %d")%url_data.column)+os.linesep)
+                          (_(", col %d")%url_data.column)+
+                          self.colorreset+os.linesep)
         if url_data.base_ref and self.has_field('base'):
             self.fd.write(self.field("base")+self.spaces("base")+
-                          repr(url_data.base_ref)+os.linesep)
+                          self.colorbase+repr(url_data.base_ref)+
+                          self.colorreset+os.linesep)
         if url_data.url and self.has_field('realurl'):
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
-                          url_data.url+os.linesep)
+                          self.colorreal+url_data.url+
+                          self.colorreset+os.linesep)
         if url_data.dltime >= 0 and self.has_field('dltime'):
             self.fd.write(self.field("dltime")+self.spaces("dltime")+
-                          (_("%.3f seconds")%url_data.dltime)+os.linesep)
+                          self.colordltime+
+                          (_("%.3f seconds")%url_data.dltime)+
+                          self.colorreset+os.linesep)
         if url_data.dlsize >= 0 and self.has_field('dlsize'):
             self.fd.write(self.field("dlsize")+self.spaces("dlsize")+
+                          self.colordlsize+
                           linkcheck.strformat.strsize(url_data.dlsize)+
-                          os.linesep)
+                          self.colorreset+os.linesep)
         if url_data.checktime and self.has_field('checktime'):
             self.fd.write(self.field("checktime")+self.spaces("checktime")+
-                          (_("%.3f seconds") % url_data.checktime)+os.linesep)
+                          self.colordltime+
+                          (_("%.3f seconds") % url_data.checktime)+
+                          self.colorreset+os.linesep)
         if url_data.info and self.has_field('info'):
             text = os.linesep.join(url_data.info)
             text = linkcheck.strformat.wrap(text, 65,
@@ -158,12 +160,16 @@ class TextLogger (linkcheck.logger.Logger):
                 text = linkcheck.strformat.wrap(text, 65,
                                      subsequent_indent=" "*self.max_indent)
                 self.fd.write(self.field("warning")+self.spaces("warning")+
-                              text+os.linesep)
+                              self.colorwarning+text+
+                              self.colorreset+os.linesep)
         if self.has_field('result'):
             self.fd.write(self.field("result")+self.spaces("result"))
-            if not url_data.valid:
+            if url_data.valid:
+                self.fd.write(self.colorvalid)
+            else:
                 self.errors += 1
-            self.fd.write(url_data.result+os.linesep)
+                self.fd.write(self.colorinvalid)
+            self.fd.write(url_data.result+self.colorreset+os.linesep)
         self.flush()
 
     def end_output (self, linknumber=-1):
