@@ -8,6 +8,10 @@ Upgrading
 Migrating from 1.12.x to 1.13.0
 -------------------------------
 
+Since lots of filenames have changed you should check that any
+manually installed versions prior to 1.13.0 are removed. Otherwise
+you will have startup problems.
+
 The default output logger ``text`` has now colored output if the
 output terminal supports it.
 
