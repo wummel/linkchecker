@@ -1,6 +1,7 @@
 1.8.0
   * Require Python >= 2.2.1, remove httplib.
   * Add again python-dns, the Debian package maintainer is unresponsive
+  * You must now use named constants for ANSII color codes
 
 1.7.1
   * Fix memory leak in HTML parser flushing error path
