@@ -595,7 +595,7 @@ class UrlBase (object):
                 self.consumer.append_url(url_data)
 
     def __str__ (self):
-        return repr(self)
+        return self.__repr__()
 
     def __repr__ (self):
         """return serialized url check data"""
