@@ -1,5 +1,5 @@
 include README FAQ INSTALL LICENSE TODO draft-gilman-news-url-00.txt
-include norobots-rfc.html guruguru.bmp WONTDO
+include norobots-rfc.html guruguru.bmp WONTDO MANIFEST.in
 include linkcheckerrc linkchecker linkchecker.bat linkchecker.1 create.sql
 include lc.cgi lc.fcgi lc.sz_fcgi
 include Makefile
@@ -10,8 +10,8 @@ include test/*.py test/*.txt
 include test/output/test_* test/html/*.html
 include rpm_build_script
 include lconline/*.html
-include linkcheck/parser/htmllex.l
-include linkcheck/parser/htmlparse.y
+include linkcheck/parser/Makefile linkcheck/parser/htmllex.l
+include linkcheck/parser/htmlparse.y linkcheck/parser/htmlparse.h
 include linkcheck/parser/htmlsax.h
 recursive-include share *.mo
 recursive-include po *.po *.py Makefile
