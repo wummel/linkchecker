@@ -67,7 +67,7 @@ files:
 VERSION:
 	echo $(VERSION) > VERSION
 
-upload: files dist package VERSION
+upload: dist package files VERSION
 	scp debian/changelog shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/changes.txt
 	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs
 	scp VERSION shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/raw/
