@@ -1,7 +1,8 @@
 # we use the scripts in Tools/i18n of the Python 2.0 distribution
 I18NTOOLS=.
 GETTEXT=python $(I18NTOOLS)/pygettext.py
-MSGFMT=python $(I18NTOOLS)/msgfmt.py
+#MSGFMT=python $(I18NTOOLS)/msgfmt.py
+MSGFMT=msgfmt
 MSGMERGE=msgmerge
 SOURCES=\
 ../linkcheck/Config.py \
@@ -36,7 +37,8 @@ all:
 	touch .time.pot
 
 %.mo:	%.po
-	$(MSGFMT) $< && mv $@ ../locale/$*/LC_MESSAGES/$(PACKAGE).mo
-	
+	$(MSGFMT) $< -o $@ && mkdir -p ../locale/$*/LC_MESSAGES && mv $@ ../locale/$*/LC_MESSAGES/$(PACKAGE).mo
+
 clean:
 	rm -f .time.pot
+	rm -rf ../locale
