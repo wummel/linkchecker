@@ -118,7 +118,8 @@ def viewprof ():
     if not os.path.exists(_profile):
         sys.stderr.write(_("Could not find profiling file %s.")%_profile)
         sys.stderr.write(os.linesep)
-        sys.stderr.write(_("Please run linkchecker with --profile to generate it."))
+        sys.stderr.write(
+                  _("Please run linkchecker with --profile to generate it."))
         sys.stderr.write(os.linesep)
         sys.exit(1)
     import pstats
@@ -199,8 +200,8 @@ group.add_option("-f", "--config", type="string", dest="configfile",
 """Use file as configuration file. As default LinkChecker first
 searches /etc/linkcheckerrc and then ~/.linkcheckerrc
 (under Windows <path-to-program>\\linkcheckerrc)."""))
-group.add_option("-I", "--interactive", action="store_true", dest="interactive",
-                 help=_(
+group.add_option("-I", "--interactive", action="store_true",
+                 dest="interactive", help=_(
 """Ask for url if none are given on the commandline."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
                  help=_(
@@ -360,7 +361,8 @@ linkcheck.optcomplete.autocomplete(optparser)
 config = linkcheck.configuration.Configuration()
 # init logging
 config.init_logging(debug=options.debug)
-linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s", sys.version, sys.platform)
+linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s",
+                    sys.version, sys.platform)
 # read configuration files
 if options.configfile:
     config.read(files=[options.configfile])
@@ -471,7 +473,8 @@ linkcheck.log.debug(linkcheck.LOG_CMDLINE, "configuration: %s",
 # interactive input
 if len(args) <= 0:
     if config['interactive']:
-        urls = raw_input(_("enter one or more urls, separated by white-space\n--> "))
+        urls = raw_input(
+                  _("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
     else:
         linkcheck.log.warn(linkcheck.LOG_CMDLINE, _("no files or urls given"))
