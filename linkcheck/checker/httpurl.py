@@ -158,7 +158,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
                     self.method = "GET"
-                    #XXXredirect_cache = [self.url]
+                    # reset aliases
+                    self.aliases = []
                     fallback_GET = True
                     continue
                 raise
@@ -169,7 +170,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     self.method = "GET"
-                    #XXXredirect_cache = [self.url]
+                    # reset aliases
+                    self.aliases = []
                     fallback_GET = True
                     continue
                 self.set_result(_("more than %d redirections, aborting") % \
@@ -192,7 +194,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 if self.method == "HEAD":
                     # fall back to GET
                     self.method = "GET"
-                    #XXXredirect_cache = [self.url]
+                    # reset aliases
+                    self.aliases = []
                     fallback_GET = True
                     continue
             elif self.headers and self.method != "GET":
