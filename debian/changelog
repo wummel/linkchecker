@@ -1,3 +1,12 @@
+linkchecker (1.2.9) unstable; urgency=low
+
+  * changed specification and better documentation of intern/extern
+    checking; see the FAQ for detailed information
+  * added a man page
+  * setup.py: fix for distutils debugging function dump_dirs
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 20 Nov 2000 19:47:02 +0100
+
 linkchecker (1.2.8) unstable; urgency=low
 
   * INSTALL: more documentation for the CGI scripts

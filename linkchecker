@@ -27,42 +27,45 @@ import linkcheck, StringUtil
 from linkcheck import _
 
 
-Usage = _("USAGE\tlinkchecker [options] file_or_url...\n"
+Usage = _("USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
 "OPTIONS\n"
+"For single-letter option arguments the space is not a necessity. So\n"
+"'-o colored' is the same as '-ocolored'.\n"
 "-a, --anchors\n"
 "        Check anchor references. Default is don't check anchors.\n"
+"-d, --denyallow\n"
+"        Swap checking order to extern/intern. Default checking order\n"
+"        is intern/extern.\n"
 "-D, --debug\n"
 "        Print additional debugging information.\n"
 "-e regex, --extern=regex\n"
 "        Assume urls that match the given expression as extern.\n"
-"        Only intern HTTP links are checked recursively.\n"
+"        Only intern HTML links are checked recursively.\n"
 "-f file, --config=file\n"
 "        Use file as configuration file. LinkChecker first searches\n"
 "        ~/.linkcheckerrc and then /etc/linkcheckerrc\n"
 "        (under Windows <path-to-program>\\linkcheckerrc).\n"
-"-F name, --file-output=name\n"
-"        Same as output, but write to a file linkchecker-out.<name>.\n"
+"-F type, --file-output=type\n"
+"        Same as output, but write to a file linkchecker-out.<type>.\n"
 "        If the file already exists, it is overwritten. You can specify\n"
 "        this option more than once. There is no file output for the\n"
 "        blacklist logger. Default is no file output.\n"
 "-i regex, --intern=regex\n"
-"        Assume urls that match the given expression as intern.\n"
+"        Assume URLs that match the given expression as intern.\n"
+"        LinkChecker descends recursively only to intern URLs, not to extern.\n"
 "-h, --help\n"
 "        Help me! Print usage information for this program.\n"
-"-l, --allowdeny\n"
-"        Swap checking order to intern/extern. Default checking order\n"
-"        is extern/intern.\n"
-"-N, --nntp-server\n"
+"-N server, --nntp-server=server\n"
 "        Specify an NNTP server for 'news:...' links. Default is the\n"
 "        environment variable NNTP_SERVER. If no host is given,\n"
 "        only the syntax of the link is checked.\n"
-"-o name, --output=name\n"
-"        Specify output as %s.\n"
-"        Default is text.\n"
+"-o type, --output=type\n"
+"        Specify output type as %s.\n"
+"        Default type is text.\n"
 "-p pwd, --password=pwd\n"
-"        Try given password for HTML and FTP authorization.\n"
-"        Default is 'guest@'. See -u.\n"
+"        Try password pwd for HTML and FTP authorization.\n"
+"        Default password is 'guest@'. See also -u.\n"
 "-q, --quiet\n"
 "        Quiet operation. This is only useful with -F.\n"
 "-r depth, --recursion-level=depth\n"
@@ -76,8 +79,8 @@ Usage = _("USAGE\tlinkchecker [options] file_or_url...\n"
 "        Generate no more than num threads. Default number of threads is 5.\n"
 "        To disable threading specify a non-positive number.\n"
 "-u name, --user=name\n"
-"        Try given username for HTML and FTP authorization.\n"
-"        Default is 'anonymous'. See -p.\n"
+"        Try username name for HTML and FTP authorization.\n"
+"        Default is 'anonymous'. See also -p.\n"
 "-V, --version\n"
 "        Print version and exit.\n"
 "-v, --verbose\n"
@@ -90,30 +93,30 @@ Usage = _("USAGE\tlinkchecker [options] file_or_url...\n"
 "        any content of the checked link.\n"
 "        This applies of course only to pages which are valid, so we can\n"
 "        get their content.\n"
-"        You can use this to check for pages that contain some form of\n"
-"        error message, for example 'This page has moved' or\n"
-"        'Oracle Application Server error'.\n"
+"        Use this to check for pages that contain some form of error\n"
+"        message, for example 'This page has moved' or 'Oracle\n"
+"        Application Server error'.\n"
 "        This option implies -w.\n") % linkcheck.Config.LoggerKeys
 
 Notes = _("NOTES\n"
 "o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
 "  starts with 'www.' resp. 'ftp.'\n"
-"  You can also give local files as arguments\n"
+"  You can also give local files as arguments.\n"
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
-"  checking links not pointing to your local host\n"
-"  Use the -s and -i options to prevent this (see EXAMPLES)\n"
-"o Javascript links are currently ignored\n"
-"o If your platform does not support threading, LinkChecker uses -t0\n"
-"o You can supply multiple user/password pairs in a configuration file\n"
-"o Cookies are not accepted by LinkChecker\n"
+"  checking links not pointing to your local host.\n"
+"  Use the -s and -i options to prevent this.\n"
+"o Javascript links are currently ignored.\n"
+"o If your platform does not support threading, LinkChecker uses -t0.\n"
+"o You can supply multiple user/password pairs in a configuration file.\n"
+"o Cookies are not accepted by LinkChecker.\n"
 "o To use proxies set $http_proxy, $https_proxy on Unix or Windows.\n"
 "  On a Mac use the Internet Config.\n"
 "o When checking 'news:' links the given NNTP host doesn't need to be the\n"
 "  same as the host of the user browsing your pages!\n")
 
 Examples = _("EXAMPLES\n"
-"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
+"o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
 "    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
 "o Local files and syntactic sugar on the command line:\n"
 "      linkchecker c:\\temp\\test.html\n"
@@ -144,7 +147,7 @@ def printUsage(msg):
 try:
     # Note: cut out the name of the script
     options, args = getopt.getopt(sys.argv[1:],
-    "aDe:f:F:hi:lN:o:p:qr:Rst:u:VvwW:", # short options
+    "adDe:f:F:hi:N:o:p:qr:Rst:u:VvwW:", # short options
     ["anchors",                       # long options
     "config=",
     "debug", 
@@ -153,7 +156,7 @@ try:
     "nntp-server=",
     "help",
     "intern=",
-    "allowdeny",
+    "denyallow",
     "output=",
     "password=",
     "quiet",
@@ -214,8 +217,8 @@ for opt,arg in options:
     elif opt=="-i" or opt=="--intern":
         config["internlinks"].append(re.compile(arg))
     
-    elif opt=="-l" or opt=="--allowdeny":
-        config["allowdeny"] = 1
+    elif opt=="-l" or opt=="--denyallow":
+        config["denyallow"] = 1
     
     elif opt=="-N" or opt=="--nntp-server":
         config["nntpserver"] = arg

@@ -85,24 +85,18 @@
 # Basic NNTP server. Overrides NNTP_SERVER environment variable.
 #nntpserver=news.uni-stuttgart.de
 
-# filtering options
+# filtering options (see FAQ)
 # for each extern link we can specify if it is strict or not
-# extern means we do not recurse into extern HTML pages
-# strict means we do not even make a network connection to extern URLs,
-# we only check their syntax
-# Note that if you specify any extern patterns you should specify the
-# intern pattern as well. If the intern pattern is not specified than
-# no URL will be intern (==> all URLs will be extern) and thats not
-# what you wanted.
 [filtering]
 # everything with 'lconline' in the URL name is extern
 # extern1=lconline 0
-# everything with 'bookmark' in the URL name is extern and we make
-# no network connection to such URLs (strict)
+# everything with 'bookmark' in the URL name is strict
 # extern2=bookmark 1
 # links to our domain are intern
 # internlinks=calvinsplayground\.de
-#allowdeny=0
+# check only syntax of all mail adresses
+# extern3=^mailto: 1
+#denyallow=0
 
 # You can provide different user/password pairs for different link types.
 # Entries are a triple (link regular expression, username, password),

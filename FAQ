@@ -7,4 +7,42 @@ A: You have to quote special characters (e.g. spaces) in the subject field.
 
 Q: I have a pretty large site to check. How can I restrict link checking
    to check only my own pages?
-A: Look at the options --intern, --extern, --strict and --recursion-level.
+A: Look at the options --intern, --extern, --strict, --allowdeny  and 
+   --recursion-level.
+
+
+Q: I dont get this extern/intern stuff.
+A: When it comes to checking there are three types of URLs:
+   1) strict URLs:
+      we do only syntax checking
+   2) extern URLs:
+      like 1), but we additionally check if they are valid by connect()ing 
+      to them
+   3) intern URLs:
+      like 2), but we additionally check if they are HTML pages and if so,
+      we descend recursively into this link and check all the links in the
+      HTML content.
+      The --recursion-level option restricts the number of such recursive
+      descends.
+
+   LinkChecker provides four options which affect URLs to fall in one
+   of those three categories: --intern, --extern, --strict and
+   --denyallow.
+   By default all URLs are intern. With --extern you specify what URLs
+   are extern. With --intern you specify what URLs are intern. 
+   Now imagine you have both --extern and --intern. What happens
+   when an URL matches both patterns? Or when it matches none? In this
+   situation the --denyallow option specifies the order in which we match
+   the URL. By default it is intern/extern, with --denyallow the order is
+   extern/intern. Either way, the first match counts, and if none matches,
+   the last checked category is the category for the URL.
+   Finally, with --strict all extern URLs are strict.
+   
+   Oh, and just to boggle your mind: you can have more than one extern
+   regular expression in a config file and for each of those expressions
+   you can specify if those matched extern URLs should be strict or not.
+
+   An example. Assume we want to check only urls of our domains named
+   'mydomain.com' and 'myotherdomain.com'. Then we specify
+   -i'^http://my(other)?domain\.com' as intern regular expression, all other
+   urls are treated extern.

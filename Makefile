@@ -49,6 +49,7 @@ VERSION:
 
 upload: distclean dist package files VERSION
 	scp debian/changelog shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/changes.txt
+	scp README shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/readme.txt
 	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs
 	scp VERSION shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/raw/
 	scp dist/* shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)/

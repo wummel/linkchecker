@@ -36,7 +36,7 @@ __init__(self, **args)
   default parameters. Adjust these parameters in the configuration
   files in the appropriate logger section.
 """
-import sys,time
+import sys,time,string
 import Config,StringUtil
 from linkcheck import _
 
@@ -59,6 +59,21 @@ MaxIndent = max(map(lambda x: len(_(x)), KeyWords))+1
 Spaces = {}
 for key in KeyWords:
     Spaces[key] = " "*(MaxIndent - len(_(key)))
+
+EntityTable = {
+    '<': '&lt;',
+    '>': '&gt;',
+    '&': '&amp;',
+    '"': '&quot;',
+    '\'': '&apos;',
+}
+
+def quote(s):
+    res = list(s)
+    for i in range(len(res)):
+        c = res[i]
+        res[i] = EntityTable.get(c, c)
+    return string.joinfields(res, '')
 
 # return formatted time
 def _strtime(t):
@@ -478,7 +493,7 @@ class XMLLogger(StandardLogger):
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write("<?xml version='1.0'?>\n")
+        self.fd.write('<?xml version="1.0"?>\n')
         self.fd.write("<!--\n")
         self.fd.write("  "+_("created by %s at %s\n") % \
 	              (Config.AppName, _strtime(self.starttime)))
@@ -486,7 +501,7 @@ class XMLLogger(StandardLogger):
         self.fd.write("  "+_("Write comments and bugs to %s\n\n") % \
 	              Config.Email)
         self.fd.write("-->\n\n")
-	self.fd.write("<GraphXML>\n<graph isDirected='true'>\n")
+	self.fd.write('<GraphXML>\n<graph isDirected="true">\n')
         self.fd.flush()
 
     def newUrl(self, urlData):
@@ -496,15 +511,15 @@ class XMLLogger(StandardLogger):
             node.id = self.nodeid
             self.nodes[node.url] = node
             self.nodeid = self.nodeid + 1
-            self.fd.write("  <node name='%d' " % node.id)
+            self.fd.write('  <node name="%d" ' % node.id)
             self.fd.write(">\n")
-            self.fd.write("    <label>%s</label>\n" % node.url)
+            self.fd.write("    <label>%s</label>\n" % quote(node.url))
             self.fd.write("    <data>\n")
             if node.downloadtime:
-                self.fd.write("      <dltime>%d</dltime>\n" \
+                self.fd.write("      <dltime>%f</dltime>\n" \
                                   % node.downloadtime)
             if node.checktime:
-                self.fd.write("      <checktime>%d</checktime>\n" \
+                self.fd.write("      <checktime>%f</checktime>\n" \
                               % node.checktime)
             self.fd.write("      <extern>%d</extern>\n" % \
 	                  (node.extern and 1 or 0))
@@ -519,13 +534,14 @@ class XMLLogger(StandardLogger):
         for node in self.nodes.values():
             if self.nodes.has_key(node.parentName):
                 self.fd.write("  <edge")
-                self.fd.write(" source='%d'" % \
+                self.fd.write(' source="%d"' % \
 		              self.nodes[node.parentName].id)
-                self.fd.write(" target='%d'" % node.id)
+                self.fd.write(' target="%d"' % node.id)
                 self.fd.write(">\n")
-		self.fd.write("    <label>'%s'</label>\n" % node.urlName)
+		self.fd.write("    <label>%s</label>\n" % quote(node.urlName))
                 self.fd.write("    <data>\n")
-                self.fd.write(" <valid>%d</valid>" % (node.valid and 1 or 0))
+                self.fd.write("      <valid>%d</valid>\n" % \
+		              (node.valid and 1 or 0))
                 self.fd.write("    </data>\n")
                 self.fd.write("  </edge>\n")
         self.fd.flush()

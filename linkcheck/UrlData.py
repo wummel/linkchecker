@@ -177,6 +177,7 @@ class UrlData:
         
         # apply filter
         debug("DEBUG: checking filter\n")
+        debug("DEBUG: extern = %s\n" % str(self.extern))
         if self.extern and (config["strict"] or self.extern[1]):
             self.setWarning(_("outside of domain filter, checked only syntax"))
             self.logMe(config)
@@ -262,21 +263,23 @@ class UrlData:
         if not (config["externlinks"] or config["internlinks"]):
             return 0
         # deny and allow external checking
-        if config["allowdeny"]:
-            for pat in config["internlinks"]:
-                if pat.search(self.url):
-                    return 0
+        if config["denyallow"]:
             for pat, strict in config["externlinks"]:
                 if pat.search(self.url):
                     return (1, strict)
+            for pat in config["internlinks"]:
+                if pat.search(self.url):
+                    return 0
+            return 0
         else:
-            for pat, strict in config["externlinks"]:
-                if pat.search(self.url):
-                    return (1, strict)
             for pat in config["internlinks"]:
                 if pat.search(self.url):
                     return 0
-        return (1,0)
+            for pat, strict in config["externlinks"]:
+                if pat.search(self.url):
+                    return (1, strict)
+            return (1,0)
+        raise ValueError, "internal error in UrlData._getExtern"
 
 
     def getContent(self):

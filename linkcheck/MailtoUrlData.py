@@ -70,7 +70,7 @@ class MailtoUrlData(HostCheckingUrlData):
             return
 
         for name,mail in self.adresses:
-            Config.debug("DEBUG: checking mail address %s" % mail)
+            Config.debug("DEBUG: checking mail address %s\n" % mail)
             user,host = self._split_adress(mail)
             mxrecords = DNS.mxlookup(host)
             if not len(mxrecords):

@@ -92,7 +92,7 @@ class Configuration(UserDict.UserDict):
         self.data["anchors"] = 0
         self.data["externlinks"] = []
         self.data["internlinks"] = []
-        self.data["allowdeny"] = 0
+        self.data["denyallow"] = 0
         self.data["authentication"] = [(re.compile(r'^.+'),
 	                               'anonymous',
 	                               'joe@')]
@@ -472,5 +472,5 @@ class Configuration(UserDict.UserDict):
         except ConfigParser.Error: pass
         try: self.data["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
         except ConfigParser.Error: pass
-        try: self.data["allowdeny"] = cfgparser.getboolean(section, "allowdeny")
+        try: self.data["denyallow"] = cfgparser.getboolean(section, "denyallow")
 	except ConfigParser.Error: pass

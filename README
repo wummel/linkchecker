@@ -1,24 +1,22 @@
                       LinkChecker
                      =============
 
-With LinkChecker you can check your HTML documents for broken links.
+LinkChecker checks HTML documents for broken links.
 
-Features:
----------
+It features
 o recursive checking
-o multithreaded
-o output can be colored or normal text, HTML, SQL, CSV, or a sitemap
+o multithreading
+o output in colored or normal text, HTML, SQL, CSV or a sitemap
   graph in GML or XML.
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
-  file links are supported.
-  Javascript links are currently ignored
-o restrict link checking with regular expression filters for URLs
+  file links support
+o restriction of link checking with regular expression filters for URLs
 o proxy support
-o give username/password for HTTP and FTP authorization
+o username/password authorization for HTTP and FTP
 o robots.txt exclusion protocol support
 o i18n support
-o command line interface
-o (Fast)CGI web interface (requires HTTP server)
+o a command line interface
+o a (Fast)CGI web interface (requires HTTP server)
 
 
 Installing, Requirements, Running
@@ -106,4 +104,4 @@ Each logger has functions init(), newUrl() and endOfOutput().
 We call init() once to initialize the Logger. UrlData.check() calls
 newUrl() (through UrlData.logMe()) and after all checking we call
 endOfOutput(). Easy.
-New loggers are created with the Config.newLogger(name, fileoutput) function.
+New loggers are created with the Config.newLogger function.

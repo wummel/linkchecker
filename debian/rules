@@ -64,9 +64,9 @@ binary-arch: build install
 #	dh_installpam
 #	dh_installinit
 #	dh_installcron
-#	dh_installmanpages
+	dh_installmanpages
 #	dh_installinfo
-	dh_undocumented linkchecker.1
+#	dh_undocumented linkchecker.1
 	dh_installchangelogs 
 	dh_link
 	dh_strip

@@ -17,14 +17,14 @@
 #    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from types import StringType
-from distutils.core import setup
+from distutils.core import setup, DEBUG
 from distutils.dist import Distribution
 from distutils.extension import Extension
 from distutils.command.install import install
 from distutils.command.config import config
 from distutils import util
 from distutils.file_util import write_file
-import os
+import os,string
 
 
 class LCInstall(install):
@@ -46,6 +46,24 @@ class LCInstall(install):
         data.append('outputs = %s' % pformat(self.get_outputs()))
 	self.distribution.create_conf_file(self.install_lib, data)
 
+    # sent a patch for this, but here it is for compatibility
+    def dump_dirs (self, msg):
+        if DEBUG:
+            from distutils.fancy_getopt import longopt_xlate
+            print msg + ":"
+            for opt in self.user_options:
+                opt_name = opt[0]
+                if opt_name[-1] == "=":
+                    opt_name = opt_name[0:-1]
+                if self.negative_opt.has_key(opt_name):
+                    opt_name = string.translate(self.negative_opt[opt_name],
+                                                longopt_xlate)
+                    val = not getattr(self, opt_name)
+                else:
+                    opt_name = string.translate(opt_name, longopt_xlate)
+                    val = getattr(self, opt_name)
+                print "  %s: %s" % (opt_name, val)
+
 
 class LCConfig(config):
     user_options = config.user_options + [
@@ -55,25 +73,37 @@ class LCConfig(config):
          "directories to search for SSL library files"),
         ]
 
+
     def initialize_options (self):
         config.initialize_options(self)
         self.ssl_include_dirs = None
         self.ssl_library_dirs = None
 
+
     def finalize_options(self):
         # we have some default include and library directories
+        # suitable for each platform
         self.basic_finalize_options()
         if self.ssl_include_dirs is None:
-            self.ssl_include_dirs = ['/usr/include/openssl',
-                                     '/usr/local/include/openssl']
+            if os.name=='posix':
+                self.ssl_include_dirs = ['/usr/include/openssl',
+                                         '/usr/local/include/openssl']
+            else:
+                # dont know default incldirs on other platforms
+                self.ssl_include_dirs = []
         if self.ssl_library_dirs is None:
-            self.ssl_library_dirs = ['/usr/lib',
-                                     '/usr/local/lib']
+            if os.name=='posix':
+                self.ssl_library_dirs = ['/usr/lib', '/usr/local/lib']
+            else:
+                # dont know default libdirs on other platforms
+                self.ssl_library_dirs = []
+
 
     def basic_finalize_options(self):
         """fix up types of option values"""
         # this should be in config.finalize_options
         # I submitted a patch
+        # ok, its in 1.0.1, but I still leave this here for compatibility
         if self.include_dirs is None:
             self.include_dirs = self.distribution.include_dirs or []
         elif type(self.include_dirs) is StringType:
@@ -153,8 +183,8 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "LinkChecker",
-       version = "1.2.8",
-       description = "check links of HTML pages",
+       version = "1.2.9",
+       description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
        maintainer = myname,
@@ -162,24 +192,20 @@ setup (name = "LinkChecker",
        url = "http://linkchecker.sourceforge.net/",
        licence = "GPL",
        long_description =
-"""With LinkChecker you can check your HTML documents for broken links.
-
-Features:
----------
+"""LinkChecker features
 o recursive checking
-o multithreaded
-o output can be colored or normal text, HTML, SQL, CSV or a sitemap
+o multithreading
+o output in colored or normal text, HTML, SQL, CSV or a sitemap
   graph in GML or XML.
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
-  file links are supported.
-  Javascript links are currently ignored
-o restrict link checking with regular expression filters for URLs
+  file links support
+o restriction of link checking with regular expression filters for URLs
 o proxy support
-o give username/password for HTTP and FTP authorization
+o username/password authorization for HTTP and FTP
 o robots.txt exclusion protocol support
 o i18n support
-o command line interface
-o (Fast)CGI web interface (requires HTTP server)
+o a command line interface
+o a (Fast)CGI web interface (requires HTTP server)
 """,
        distclass = LCDistribution,
        cmdclass = {'config': LCConfig, 'install': LCInstall},
@@ -191,5 +217,11 @@ o (Fast)CGI web interface (requires HTTP server)
                       ['locale/fr/LC_MESSAGES/linkcheck.mo']),
                      ('share/linkchecker',['linkchecker.bat',
 		                           'linkcheckerrc',]),
+                     ('share/linkchecker',
+                      ['lc.cgi','lc.fcgi','lc.sz_fcgi']),
+                     ('share/linkchecker/lconline',
+                      ['lconline/leer.html','lconline/index.html',
+                       'lconline/lc_cgi.html']),
+                     ('man/man1', ['linkchecker.1']),
 		    ],
 )
