@@ -8,6 +8,8 @@
     Changed files: linkcheck/parser/htmllex.l
   * build parser with flex 2.5.25
     Changed files: linkcheck/parser/{Makefile, htmllex.c}
+  * put shared code of cgi scripts in lc_cgi.py
+    Changed files: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py
 
 1.8.1
   * Add missing () to function call in proxy handling code

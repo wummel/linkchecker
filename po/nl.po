@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Dec 12 00:41:25 2002\n"
+"POT-Creation-Date: Mon Dec 30 23:58:28 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -178,13 +178,39 @@ msgstr ""
 msgid "keyboard interrupt"
 msgstr ""
 
+msgid "Unsupported language"
+msgstr ""
+
+msgid "Empty url was given"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid url was given"
+msgstr "geen bestanden of URLs gegeven"
+
+#, fuzzy
+msgid "No url was given"
+msgstr "geen bestanden of URLs gegeven"
+
+#, fuzzy
+msgid "Invalid recursion level syntax"
+msgstr "illegaal recursie nivo nummer %d"
+
+msgid "Recursion level greater than 3"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid %s option syntax"
+msgstr "ungeldige Log Optie '%s'"
+
+#, fuzzy
 msgid ""
 "<html><head>\n"
 "<title>LinkChecker Online Error</title></head>\n"
 "<body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 "
 "alink=#191c83>\n"
 "<blockquote>\n"
-"<b>Error</b><br>\n"
+"<b>Error: %s</b><br>\n"
 "The LinkChecker Online script has encountered an error. Please ensure\n"
 "that your provided URL link begins with <code>http://</code> and\n"
 "contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>\n"
