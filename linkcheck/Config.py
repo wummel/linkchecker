@@ -90,6 +90,7 @@ class Configuration(UserDict.UserDict):
 
     def reset(self):
         """Reset to default values"""
+        self.data['linknumber'] = 0
         self.data["verbose"] = 0
         self.data["warnings"] = 0
         self.data["anchors"] = 0
@@ -180,6 +181,7 @@ class Configuration(UserDict.UserDict):
         self.robotsTxtCache_get = self.robotsTxtCache_get_NoThreads
         self.robotsTxtCache_set = self.robotsTxtCache_set_NoThreads
         self.robotsTxtCacheLock = None
+        self.incrementLinknumber = self.incrementLinknumber_NoThreads
         self.log_newUrl = self.log_newUrl_NoThreads
         self.logLock = None
         self.urls = []
@@ -208,6 +210,7 @@ class Configuration(UserDict.UserDict):
         self.robotsTxtCache_get = self.robotsTxtCache_get_Threads
         self.robotsTxtCache_set = self.robotsTxtCache_set_Threads
         self.robotsTxtCacheLock = Lock()
+        self.incrementLinknumber = self.incrementLinknumber_Threads
         self.log_newUrl = self.log_newUrl_Threads
         self.logLock = Lock()
         self.urls = Queue.Queue(0)
@@ -254,6 +257,9 @@ class Configuration(UserDict.UserDict):
     def newLogger(self, name, dict={}):
         return apply(Loggers[name], (), dictjoin(self.data[name],dict))
 
+    def incrementLinknumber_NoThreads(self):
+        self.data['linknumber'] = self.data['linknumber'] + 1
+    
     def log_newUrl_NoThreads(self, url):
         if not self.data["quiet"]: self.data["log"].newUrl(url)
         for log in self.data["fileoutput"]:
@@ -265,9 +271,10 @@ class Configuration(UserDict.UserDict):
             log.init()
 
     def log_endOfOutput(self):
-        if not self.data["quiet"]: self.data["log"].endOfOutput()
+        if not self.data["quiet"]:
+            self.data["log"].endOfOutput(linknumber=self.data['linknumber'])
         for log in self.data["fileoutput"]:
-            log.endOfOutput()
+            log.endOfOutput(linknumber=self.linknumber)
 
     def connectNntp_NoThreads(self):
         if not self.data.has_key("nntp"):
@@ -281,6 +288,13 @@ class Configuration(UserDict.UserDict):
             finally:
                 self.dataLock.release()
 
+    def incrementLinknumber_Threads(self):
+        try:
+            self.dataLock.acquire()
+            self.data['linknumber'] = self.data['linknumber'] + 1
+        finally:
+            self.dataLock.release()
+    
     def _do_connectNntp(self):
         """This is done only once per checking task."""
         import nntplib

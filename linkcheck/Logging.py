@@ -76,7 +76,6 @@ class StandardLogger:
     def __init__(self, **args):
         self.errors = 0
         self.warnings = 0
-        self.linknumber = 0
         if args.has_key('fileoutput'):
             self.fd = open(args['filename'], "w")
 	elif args.has_key('fd'):
@@ -95,7 +94,6 @@ class StandardLogger:
 
 
     def newUrl(self, urldata):
-        self.linknumber = self.linknumber+1
         self.fd.write("\n"+_("URL")+Spaces["URL"]+urldata.urlName)
         if urldata.cached:
             self.fd.write(_(" (cached)\n"))
@@ -136,7 +134,7 @@ class StandardLogger:
         self.fd.flush()
 
 
-    def endOfOutput(self):
+    def endOfOutput(self, linknumber=-1):
         self.fd.write(_("\nThats it. "))
 
         if self.warnings==1:
@@ -147,10 +145,12 @@ class StandardLogger:
             self.fd.write(_("1 error"))
         else:
             self.fd.write(str(self.errors)+_(" errors"))
-        if self.linknumber == 1:
-            self.fd.write(_(" in 1 link found\n"))
-        else:
-            self.fd.write(_(" in %d links found\n") % self.linknumber)
+        if linknumber >= 0:
+            if linknumber == 1:
+                self.fd.write(_(" in 1 link"))
+            else:
+                self.fd.write(_(" in %d links") % linknumber)
+        self.fd.write(_(" found\n"))
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
         name = _("seconds")
@@ -194,7 +194,6 @@ class HtmlLogger(StandardLogger):
 
 
     def newUrl(self, urlData):
-        self.linknumber = self.linknumber+1
         self.fd.write("<table align=left border=\"0\" cellspacing=\"0\""
               " cellpadding=\"1\" bgcolor="+self.colorborder+
               "><tr><td><table align=left border=\"0\" cellspacing=\"0\""
@@ -251,7 +250,7 @@ class HtmlLogger(StandardLogger):
         self.fd.flush()        
 
         
-    def endOfOutput(self):
+    def endOfOutput(self, linknumber=-1):
         self.fd.write(MyFont+_("\nThats it. "))
         if self.warnings==1:
             self.fd.write(_("1 warning, "))
@@ -261,11 +260,12 @@ class HtmlLogger(StandardLogger):
             self.fd.write(_("1 error"))
         else:
             self.fd.write(str(self.errors)+_(" errors"))
-        if self.linknumber == 1:
-            self.fd.write(_(" in 1 link found\n"))
-        else:
-            self.fd.write(_(" in %d links found\n") % self.linknumber)
-        self.fd.write("<br>")
+        if linknumber >= 0:
+            if linknumber == 1:
+                self.fd.write(_(" in 1 link"))
+            else:
+                self.fd.write(_(" in %d links") % linknumber)
+        self.fd.write(" found<br>\n")
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
         name = _("seconds")
@@ -307,7 +307,6 @@ class ColoredLogger(StandardLogger):
         self.prefix = 0
 
     def newUrl(self, urlData):
-        self.linknumber = self.linknumber+1
         if urlData.parentName:
             if self.currentPage != urlData.parentName:
                 if self.prefix:
@@ -413,7 +412,6 @@ class GMLLogger(StandardLogger):
         self.fd.flush()
 
     def newUrl(self, urlData):
-        self.linknumber = self.linknumber+1
         self.nodes.append(urlData)
 
     def endOfOutput(self):
@@ -480,7 +478,6 @@ class SQLLogger(StandardLogger):
         self.fd.flush()
 
     def newUrl(self, urlData):
-        self.linknumber = self.linknumber+1
         self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
               "baseref,errorstring,validstring,warningstring,infoString,"
 	      "valid,url,line,checktime,downloadtime,cached) values "
@@ -534,7 +531,6 @@ class BlacklistLogger:
         pass
 
     def newUrl(self, urlData):
-        self.linknumber = self.linknumber+1
         if urlData.valid:
             self.blacklist[urlData.getCacheKey()] = None
         elif not urlData.cached:
@@ -581,7 +577,6 @@ class CSVLogger(StandardLogger):
         self.fd.flush()
 
     def newUrl(self, urlData):
-        self.linknumber = self.linknumber+1
         self.fd.write(
 	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%d%s%d\n" % (
 	    urlData.urlName, self.separator,
