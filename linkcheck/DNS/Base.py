@@ -1,7 +1,7 @@
 # $Id$
 import os, sys, re, getopt, socket
 import Lib,Type,Class,Opcode
-#import asyncore
+from linkcheck.DNS import Error
 
 defaults= {
     'protocol': 'udp',
