@@ -23,11 +23,11 @@ if not hasattr(sys, 'version_info') or sys.version_info<(2, 3, 0, 'final', 0):
     raise SystemExit, "This program requires Python 2.3 or later."
 
 # try to use psyco
-try:
-    import psyco
-    psyco.profile()
-except ImportError:
-    pass
+#try:
+#    import psyco
+#    psyco.profile()
+#except ImportError:
+#    pass
 
 import getopt, re, os, pprint, socket, linkcheck
 # set default 30 seconds timeout
