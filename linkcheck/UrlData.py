@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, re, urlparse, urllib, time, traceback, socket, select
-import DNS, Config, StringUtil, linkcheck, linkname
+import DNS, Config, StringUtil, linkcheck, linkname, test_support
 from debuglevels import *
 debug = Config.debug
 
@@ -89,43 +89,40 @@ _linkMatcher = r"""
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = (
-    ("a",       ["href"]),
-    ("applet",  ["archive", "codebase", "src"]),
-    ("area",    ["href"]),
-    ("bgsound", ["src"]),
-    ("blockquote", ["cite"]),
-    ("body",    ["background"]),
-    ("del",     ["cite"]),
-    ("embed",   ["pluginspage", "src"]),
-    ("form",    ["action"]),
-    ("frame",   ["src", "longdesc"]),
-    ('head',    ['profile']),
-    ("iframe",  ["src", "longdesc"]),
-    ("ilayer",  ["background"]),
-    ("img",     ["src", "lowsrc", "longdesc", "usemap"]),
-    ('input',   ['src', 'usemap']),
-    ('ins',     ['cite']),
-    ('isindex', ['action']),
-    ('layer',   ['background', 'src']),
-    ("link",    ["href"]),
-    ("meta",    ["url"]), # <meta http-equiv="refresh" content="x; url=...">
-    ('object',  ['classid', 'codebase', 'data', 'archive', 'usemap']),
-    ('q',       ['cite']),
-    ('script',  ['src', 'for']),
-    ('table',   ['background']),
-    ('td',      ['background']),
-    ('th',      ['background']),
-    ('tr',      ['background']),
-    ('xmp',     ['href']),
+    (['a'],       ['href']),
+    (['applet'],  ['archive', 'codebase', 'src']),
+    (['area'],    ['href']),
+    (['bgsound'], ['src']),
+    (['blockquote'], ['cite']),
+    (['del'],     ['cite']),
+    (['embed'],   ['pluginspage', 'src']),
+    (['form'],    ['action']),
+    (['frame'],   ['src', 'longdesc']),
+    (['head'],    ['profile']),
+    (['iframe'],  ['src', 'longdesc']),
+    (['ilayer'],  ['background']),
+    (['img'],     ['src', 'lowsrc', 'longdesc', 'usemap']),
+    (['input'],   ['src', 'usemap']),
+    (['ins'],     ['cite']),
+    (['isindex'], ['action']),
+    (['layer'],   ['background', 'src']),
+    (['link'],    ['href']),
+    (['meta'],    ['url']), # <meta http-equiv='refresh' content='x; url=...'>
+    (['object'],  ['classid', 'codebase', 'data', 'archive', 'usemap']),
+    (['q'],       ['cite']),
+    (['script'],  ['src', 'for']),
+    (['body', 'table', 'td', 'th', 'tr'],   ['background']),
+    (['xmp'],     ['href']),
 )
 
 LinkPatterns = []
-for tag,attrs in LinkTags:
-    for attr in attrs:
-        LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
-                                                   re.VERBOSE|re.DOTALL),
-                             'tag': tag,
-	                     'attr': attr})
+for tags,attrs in LinkTags:
+    attr = '(%s)'%'|'.join(attrs)
+    tag = '(%s)'%'|'.join(tags)
+    LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
+                                               re.VERBOSE|re.DOTALL),
+                         'tag': tag,
+                         'attr': attr})
 AnchorPattern = {
     'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE|re.DOTALL),
     'tag': 'a',
@@ -245,6 +242,8 @@ class UrlData:
             type, value = sys.exc_info()[:2]
             if type!=4:
                 raise
+        except test_support.Error:
+            raise
         except:
             internal_error()
 
@@ -463,7 +462,7 @@ class UrlData:
             url = StringUtil.stripQuotes(match.group('value')).strip()
             # need to resolve HTML entities
             url = StringUtil.unhtmlify(url)
-            lineno=StringUtil.getLineNumber(self.getContent(), match.start())
+            lineno= StringUtil.getLineNumber(self.getContent(), match.start())
             # extra feature: get optional name for this bookmark
             name = self.searchInForName(pattern['tag'], pattern['attr'],
 	                                match.start(), match.end())
