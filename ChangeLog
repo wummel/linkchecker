@@ -1,8 +1,14 @@
 1.8.5
   * fix config.warn to warn
     Changed files: linkcheck/__init.py
-  * rebuild parser with flex 2.5.26
-    Changed files: wc/parser/htmllex.c
+  * parser changes:
+    o recognise "<! --" HTML comments (seen at Eonline)
+    o recognise "<! !>" HTML comments (seen at www.nba.com)
+    o rebuild with flex 2.5.26
+    Changed files: wc/parser/htmllex.[lc]
+  * added another url exclusion example to the FAQ
+    numerate questions and answers
+    Changed files: FAQ
 
 1.8.4
   * Improve error message for failing htmlsax module import

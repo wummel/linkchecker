@@ -1,25 +1,25 @@
-Q: LinkChecker produced an error, but my web page is ok with
+Q1: LinkChecker produced an error, but my web page is ok with
    Netscape/IE/Opera/...
    Is this a bug in LinkChecker?
-A: Please check your web pages first. Are they really ok? Use
+A1: Please check your web pages first. Are they really ok? Use
    a syntax highlighting editor! Use HTML Tidy from www.w3c.org!
    Check if the web server is accepting HEAD requests as well.
    Check if you are using a Proxy which produces the error.
 
 
-Q: I still get an error, but the page is definitely ok.
-Q: I get an error "too much redirections", but the URL displays ok in my
+Q2.1: I still get an error, but the page is definitely ok.
+Q2.2: I get an error "too much redirections", but the URL displays ok in my
    browser.
-A: The difference between LinkChecker and web browsers is the type of HTTP
+A2: The difference between LinkChecker and web browsers is the type of HTTP
    request. LinkChecker does a HEAD request, browsers do a GET request of
    the same URL. Now, a lot of servers are broken when it comes to HEAD
    support. LinkChecker tries to detect some of them, but can not catch all.
    Nevertheless, this is an error. If the URL is on your own web server,
-   go check that your server is handling HEAD requests!
+   make sure that your server is handling HEAD requests!
 
 
-Q: How can I tell LinkChecker which proxy to use?
-A: LinkChecker works transparently with proxies. In a Unix or Windows
+Q3: How can I tell LinkChecker which proxy to use?
+A3: LinkChecker works transparently with proxies. In a Unix or Windows
    environment, set the http_proxy, https_proxy, ftp_proxy or gopher_proxy
    environment variables to a URL that identifies the proxy server before
    starting LinkChecker. For example
@@ -30,28 +30,28 @@ A: LinkChecker works transparently with proxies. In a Unix or Windows
    from Internet Config.
 
 
-Q: The link "mailto:john@company.com?subject=Hello John" is reported
+Q4: The link "mailto:john@company.com?subject=Hello John" is reported
    as an error.
-A: You have to quote special characters (e.g. spaces) in the subject field.
+A4: You have to quote special characters (e.g. spaces) in the subject field.
    The correct link should be "mailto:...?subject=Hello%20John"
    Unfortunately browsers like IE and Netscape do not enforce this.
 
 
-Q: Has LinkChecker JavaScript support?
-A: No, it never will. JavaScript sucks. If your page is not
+Q5: Has LinkChecker JavaScript support?
+A5: No, it never will. JavaScript sucks. If your page is not
    working without JS then your web design is broken.
    Learn PHP or Zope or ASP, and use JavaScript just as an addon for your
    web pages.
 
 
-Q: I have a pretty large site to check. How can I restrict link checking
+Q6: I have a pretty large site to check. How can I restrict link checking
    to check only my own pages?
-A: Look at the options --intern, --extern, --strict, --denyallow  and
+A6: Look at the options --intern, --extern, --strict, --denyallow  and
    --recursion-level.
 
 
-Q: I dont get this --extern/--intern stuff.
-A: When it comes to checking there are three types of URLs:
+Q7: I dont get this --extern/--intern stuff.
+A7: When it comes to checking there are three types of URLs:
    1) strict extern URLs:
       We do only syntax checking. Intern URLs are never strict.
    2) extern URLs:
@@ -89,10 +89,21 @@ A: When it comes to checking there are three types of URLs:
    Another example. We dont want to check mailto urls. Then its
    -i'!^mailto:'. The '!' negates an expression. With --strict, we dont
    even connect to any mail hosts.
+   
+   Yet another example. We check our site www.mycompany.com, dont recurse
+   into extern links point outside from our site and want to ignore links to
+   hollowood.com and hullabulla.com completely.
+   This can only be done with a configuration entry like
+   [filtering]
+   extern1=hollowood.com 1
+   extern2=hullabulla.com 1
+   # the 1 means strict extern ie dont even connect
+   and a the command line
+   linkchecker --intern=www.mycompany.com www.mycompany.com
 
 
-Q: Are Cookies insecure?
-A: Cookies can not store more information as is in the HTTP request itself,
+Q8: Are Cookies insecure?
+A8: Cookies can not store more information as is in the HTTP request itself,
    so you are not giving away any more system information.
    After storing however, the cookies are sent out to the server on request.
    Not to every server, but only to the one who the cookie originated from!
@@ -102,8 +113,8 @@ A: Cookies can not store more information as is in the HTTP request itself,
    are lost. So the tracking is restricted to the checking time.
 
 
-Q: I want to have my own logging class. How can I use it in LinkChecker?
-A: Currently, only a Python API lets you define new logging classes.
+Q9: I want to have my own logging class. How can I use it in LinkChecker?
+A9: Currently, only a Python API lets you define new logging classes.
    Define your own logging class as a subclass of StandardLogger or any other
    logging class in the log module.
    Then call the addLogger function in Config.Configuration to register
@@ -117,6 +128,11 @@ A: Currently, only a Python API lets you define new logging classes.
    cfg.addLogger(log_format, MyLogger.MyLogger)
    cfg['fileoutput'].append(cfg.newLogger(log_format, log_args)) 
 
-Q: LinkChecker does not ignore anchor references on caching.
-A: This is not a bug. There are ways to dynamically deliver
-   content based on anchors.
+Q10.1: LinkChecker does not ignore anchor references on caching.
+Q10.2: Some links with anchors are getting checked twice.
+A10: This is not a bug.
+   Its common practice to believe that if an URL ABC#anchor1 works then
+   ABC#anchor2 works too. Thats not specified anywhere and I have seen
+   server-side scripts that fail on some anchors and not on others.
+   This is the reason for always checking URLs with different anchors.
+
