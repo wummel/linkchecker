@@ -1,6 +1,7 @@
 1.8.3
-  * add missing imports for StringUtil in log classes
-    Changed files: linkcheck/log/{Standard,SQl,Html,Colored}.Loggerpy
+  * add missing imports for StringUtil in log classes, defer i18n of log
+    field names (used for CGI scripts)
+    Changed files: linkcheck/log/*.py
   * fixed wrong debug level comparison from > to >=
     Changed files: linkcheck/Config.py
   * JavaScript checks in the CGI scripts
