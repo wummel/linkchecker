@@ -31,6 +31,10 @@ def sqlify (s):
         return "NULL"
     return "'%s'" % s.replace("'", "''")
 
+def intify (s):
+    if not s:
+        return 0
+    return 1
 
 class SQLLogger (linkcheck.logger.Logger):
     """SQL output for PostgreSQL, not tested"""
@@ -73,7 +77,7 @@ class SQLLogger (linkcheck.logger.Logger):
               "%(recursion_level)d,"
               "%(url_parent)s,"
               "%(base_ref)s,"
-              "%(valid)s,"
+              "%(valid)d,"
               "%(result)s,"
               "%(warning)s,"
               "%(info)s,"
@@ -84,14 +88,14 @@ class SQLLogger (linkcheck.logger.Logger):
               "%(checktime)d,"
               "%(dltime)d,"
               "%(dlsize)d,"
-              "%(cached)s"
+              "%(cached)d"
               ")%(separator)s" % \
               {'table': self.dbname,
                'base_url': sqlify(url_data.base_url),
                'recursion_level': url_data.recursion_level,
                'url_parent': sqlify((url_data.parent_url or "")),
                'base_ref': sqlify((url_data.base_ref or "")),
-               'valid': url_data.valid,
+               'valid': intify(url_data.valid),
                'result': sqlify(url_data.result),
                'warning': sqlify(os.linesep.join(url_data.warning)),
                'info': sqlify(os.linesep.join(url_data.info)),
@@ -102,7 +106,7 @@ class SQLLogger (linkcheck.logger.Logger):
                'checktime': url_data.checktime,
                'dltime': url_data.dltime,
                'dlsize': url_data.dlsize,
-               'cached': url_data.cached,
+               'cached': intify(url_data.cached),
                'separator': self.separator,
               })
         self.fd.write(os.linesep)
