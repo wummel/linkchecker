@@ -1,0 +1,3 @@
+python setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES
+# brp-compress gzips the man pages without distutils knowing...
+sed -i -e 's/linkchecker\.1/linkchecker\.1\.gz/' INSTALLED_FILES
