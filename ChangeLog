@@ -34,9 +34,16 @@
     Type: feature
     Changed: linkchecker
 
-  * the default recursion level is now infinite
+  * The default recursion level is now infinite.
     Type: feature
     Changed: linkchecker
+
+  * The 'outside of domain filter' is no more a warning but an informational
+    message. A warning is inappropriate since the user is in full control
+    over what links are extern or intern.
+    Type: feature
+    Closes: SF bug 1013206
+    Changed: linkcheck/urlbase.py
 
   * renamed --strict to --extern-strict-all
     Type: feature
