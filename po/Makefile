@@ -39,11 +39,9 @@ all:
 	$(GETTEXT) --default-domain=$(PACKAGE) --no-location $(SOURCES)
 	touch .time.pot
 
-# for GNU msgfmt use -o flag:
-#$(MSGFMT) $< -o $@ && mkdir -p ../locale/$*/LC_MESSAGES && mv $@ ../locale/$*/LC_MESSAGES/$(PACKAGE).mo
 %.mo:	%.po
-	$(MSGFMT) $< && mkdir -p ../locale/$*/LC_MESSAGES && mv $@ ../locale/$*/LC_MESSAGES/$(PACKAGE).mo
+	$(MSGFMT) $< -o ../locale/$*/LC_MESSAGES/$(PACKAGE).mo
 
 clean:
 	rm -f .time.pot
-	rm -rf ../locale
+	for d in ../locale/*; do echo $$d; done
