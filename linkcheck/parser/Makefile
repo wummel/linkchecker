@@ -1,12 +1,13 @@
-# use beta flex from http://lex.sf.net/ for reentrant
-# bison parser support
+# parser needs flex >= 2.5.xx from http://lex.sf.net/
+# for reentrant bison parser support!
 FLEX=flex
-PYTHON=python2.3
+PYVER=2.3
+PYTHON=python$(PYVER)
 
 all: htmllex.c htmlparse.c
 
 %.o:	%.c
-	gcc -g -O -Wall -pedantic -Wstrict-prototypes -fPIC -I. -I/usr/include/$(PYTHON) -c $< -o $@
+	gcc -g -O2 -Wall -pedantic -Wstrict-prototypes -fPIC -I. -I/usr/include/$(PYTHON) -c $< -o $@
 
 htmlparse.h htmlparse.c:	htmlparse.y htmlsax.h
 	bison htmlparse.y
@@ -21,3 +22,6 @@ test:	testsax
 
 clean:
 	rm -f htmlparse.c htmlparse.h htmllex.c *.o *.output
+
+splint:
+	splint -initallelements +posixlib -I/usr/include/linux -I. -I/usr/include/$(PYTHON) htmllex.c | less
