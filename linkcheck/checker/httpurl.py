@@ -230,6 +230,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                          self.headers.getheader("Uri", ""))
             redirected = linkcheck.url.url_norm(
                                       urlparse.urljoin(redirected, newurl))
+            if not isinstance(redirected, unicode):
+                redirected = unicode(redirected, "iso8859-1", "ignore")
             self.add_info(_("Redirected to %(url)s") % {'url': redirected})
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 redirected)
