@@ -167,7 +167,7 @@ class Configuration (dict):
         When debug is not None it is expected to be a list of
         logger names for which debugging will be enabled.
 
-        Activating debugging disables threading.
+        If no thread debugging is enabled, threading will be disabled.
         """
         config_dir = _linkchecker_configdata.config_dir
         filename = normpath(os.path.join(config_dir, "logging.conf"))
@@ -177,8 +177,9 @@ class Configuration (dict):
         logging.getLogger(linkcheck.LOG).addHandler(handler)
         if debug is not None:
             self['debug'] = True
-            # debugging disables threading
-            self['threads'] = 0
+            # disable threading if no thread debugging
+            if "thread" not in debug:
+                self['threads'] = 0
             # set debugging on given logger names
             if 'all' in debug:
                 debug = linkcheck.lognames.values()
