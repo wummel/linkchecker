@@ -64,9 +64,13 @@ class HtmlLogger (linkcheck.logger.Logger):
         self.colorurl = args['colorurl']
         self.colorborder = args['colorborder']
         self.colorlink = args['colorlink']
-        self.tablewarning = args['tablewarning']
-        self.tableerror = args['tableerror']
-        self.tableok = args['tableok']
+        self.colorwarning = args['colorwarning']
+        self.colorerror = args['colorerror']
+        self.colorok = args['colorok']
+
+    def field (self, name):
+        """return non-space-breakable field name"""
+        return super(HtmlLogger, self).field(name).replace(" ", "&nbsp;")
 
     def start_output (self):
         """print start of checking info"""
@@ -201,29 +205,30 @@ class HtmlLogger (linkcheck.logger.Logger):
     def write_info (self, url_data):
         """write url_data.info"""
         text = os.linesep.join(url_data.info)
-        self.fd.write("<tr><td>"+self.field("info")+"</td><td>"+
-            cgi.escape(text).replace(os.linesep, "<br>")+
+        self.fd.write("<tr><td valign=\"top\">"+self.field("info")+
+            "</td><td>"+cgi.escape(text).replace(os.linesep, "<br>")+
             "</td></tr>"+os.linesep)
 
     def write_warning (self, url_data):
         """write url_data.warning"""
-        text = os.linesep.join(url_data.warning)
-        self.fd.write("<tr>"+
-                      self.tablewarning+self.field("warning")+
-                      "</td>"+self.tablewarning+
-                      cgi.escape(text).replace(os.linesep, "<br>")+
-                      "</td></tr>"+os.linesep)
+        sep = "<br>"+os.linesep
+        text = sep.join([cgi.escape(x) for x in url_data.warning])
+        self.fd.write("<tr><td bgcolor=\""+self.colorwarning+"\" "+
+                      "valign=\"top\">"+self.field("warning")+
+                      "</td><td bgcolor=\""+self.colorwarning+"\">"+
+                      text+"</td></tr>"+os.linesep)
 
     def write_result (self, url_data):
         """write url_data.result"""
         if url_data.valid:
-            self.fd.write("<tr>"+self.tableok+
-              self.field("result")+"</td>"+self.tableok+
+            self.fd.write("<tr><td bgcolor=\""+self.colorok+"\">"+
+              self.field("result")+"</td>"+self.colorok+
               cgi.escape(url_data.result)+"</td></tr>"+os.linesep)
         else:
             self.errors += 1
-            self.fd.write("<tr>"+self.tableerror+self.field("result")+
-                      "</td>"+self.tableerror+
+            self.fd.write("<tr><td bgcolor=\""+self.colorerror+"\">"+
+                      self.field("result")+"</td><td bgcolor=\""+
+                      self.colorerror+"\">"+
                       cgi.escape(url_data.result)+"</td></tr>"+os.linesep)
 
     def end_output (self, linknumber=-1):
