@@ -195,7 +195,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     self.set_result(
                          _("Enforced proxy %r ignored, aborting.") % newproxy,
                          valid=False)
-                    return
+                    return response, fallback_GET
                 response = self._get_http_response()
                 # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
@@ -212,7 +212,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 raise
             if tries == -1:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "already handled")
-                return
+                return response, fallback_GET
             if tries >= self.max_redirects:
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
@@ -223,7 +223,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     continue
                 self.set_result(_("more than %d redirections, aborting") % \
                                 self.max_redirects, valid=False)
-                return
+                return response, fallback_GET
             # user authentication
             if response.status == 401:
                 if not self.auth:
