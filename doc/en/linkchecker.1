@@ -226,7 +226,7 @@ Note that by default only errors are logged.
 
 .TP
 \fBtext\fP
-Standard text logger, logging URLs in keyword: argument fashion
+Standard text logger, logging URLs in keyword: argument fashion.
 .TP
 \fBhtml\fP
 Log URLs in keyword: argument fashion, formatted as HTML.
@@ -280,6 +280,15 @@ On a Mac use the Internet Config.
 
 When checking \fBnews:\fP links the given NNTP host doesn't need to be the
 same as the host of the user browsing your pages.
+
+.SH ENVIRONMENT
+\fBNNTP_SERVER\fP - specifies default NNTP server
+
+\fBhttp_proxy\fP - specifies default HTTP proxy server
+
+\fBftp_proxy\fP - specifies default FTP proxy server
+
+\fBLC_MESSAGES\fP, \fBLANG\fP - specify output language
 
 .SH FILES
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP - default
