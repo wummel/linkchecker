@@ -378,7 +378,11 @@ class UrlData:
     def putInCache (self):
         cacheKey = self.getCacheKey()
         if cacheKey and not self.cached:
-            self.config.urlCache_set(cacheKey, self)
+            if type(cacheKey) == type([]):
+                for key in cacheKey:
+                    self.config.urlCache_set(key, self)
+            else:
+                self.config.urlCache_set(cacheKey, self)
             self.cached = 1
 
 
