@@ -94,8 +94,6 @@ class Options:
                                 # basedir)
     follow_symlinks = True      # should symlinks to subdirectories be
                                 # followed? (hardcoded, may cause loops)
-    pattern = None              # test filename pattern
-
     # available resources
     resources = []
 
