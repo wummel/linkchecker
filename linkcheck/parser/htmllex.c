@@ -9,7 +9,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 26
+#define YY_FLEX_SUBMINOR_VERSION 27
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -7094,7 +7094,7 @@ struct yyguts_t
 #endif
 
     YYSTYPE * yylval_r;
-#ifdef YYLTYPE
+#if defined(YYLTYPE) || defined(YYLTYPE_IS_DECLARED)
     YYLTYPE * yylloc_r;
 #endif
 
@@ -7106,10 +7106,10 @@ static int yy_init_globals YY_PARAMS(( YY_PROTO_ONLY_ARG ));
 #endif /* !yyIN_HEADER YY-END-DISCARD-FROM-HEADER */
 
 #ifndef yyIN_HEADER /* YY-DISCARD-FROM-HEADER */
-/* This must go here because YYSTYPE and YYLSTYPE are included
+/* This must go here because YYSTYPE and YYLTYPE are included
  * from bison output in section 1.*/
 #    define yylval YY_G(yylval_r)
-#  ifdef YYLTYPE
+#  if defined(YYLTYPE) || defined(YYLTYPE_IS_DECLARED)
 #    define yylloc YY_G(yylloc_r)
 #  endif
 
@@ -7175,7 +7175,7 @@ void yyset_lineno YY_PARAMS(( int line_number YY_PROTO_LAST_ARG ));
 YYSTYPE * yyget_lval YY_PARAMS(( YY_PROTO_ONLY_ARG ));
 #endif
 void yyset_lval YY_PARAMS(( YYSTYPE * yylvalp YY_PROTO_LAST_ARG ));
-#ifdef YYLTYPE
+#if defined(YYLTYPE) || defined(YYLTYPE_IS_DECLARED)
 #ifndef YY_NO_GET_LLOC
    YYLTYPE *yyget_lloc YY_PARAMS(( YY_PROTO_ONLY_ARG ));
 #endif
@@ -7307,7 +7307,7 @@ static int yy_top_state YY_PARAMS(( YY_PROTO_ONLY_ARG ));
 /* If the bison pure parser is used, then bison will provide
    one or two additional arguments. */
 
-#  ifdef YYLTYPE 
+#  if defined(YYLTYPE) || defined(YYLTYPE_IS_DECLARED)
 #        define YY_LEX_PROTO YY_PARAMS((YYSTYPE * yylvalp, YYLTYPE * yyllocp YY_PROTO_LAST_ARG))
 #        define YY_LEX_DECLARATION YYFARGS2(YYSTYPE *,yylvalp, YYLTYPE *,yyllocp)
 #  else
@@ -7353,7 +7353,7 @@ YY_DECL
 #line 7354 "htmllex.c"
 
     yylval = yylvalp;
-#ifdef YYLTYPE
+#if defined(YYLTYPE) || defined(YYLTYPE_IS_DECLARED)
     yylloc = yyllocp;
 #endif
 
@@ -9304,7 +9304,7 @@ void yyset_lval YYFARGS1( YYSTYPE * ,yylvalp)
 }
 #endif /* !YY_NO_SET_LVAL */
 
-#ifdef YYLTYPE
+#if defined(YYLTYPE) || defined(YYLTYPE_IS_DECLARED)
 #ifndef YY_NO_GET_LLOC
 YYLTYPE *yyget_lloc  YYFARGS0(void)
 {

@@ -2,10 +2,10 @@
   * fix config.warn to warn
     Changed files: linkcheck/__init.py
   * parser changes:
-    o recognise "<! --" HTML comments (seen at Eonline)
+    o recognise "<! -- -->" HTML comments (seen at Eonline)
     o recognise "<! !>" HTML comments (seen at www.nba.com)
-    o rebuild with flex 2.5.26
-    Changed files: wc/parser/htmllex.[lc]
+    o rebuild with flex 2.5.27
+    Changed files: linkcheck/parser/htmllex.[lc]
   * added another url exclusion example to the FAQ
     numerate questions and answers
     Changed files: FAQ

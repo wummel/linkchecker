@@ -1,6 +1,6 @@
 # use beta flex from ftp://ftp.uncg.edu/people/wlestes/ for reentrant
 # bison parser support
-FLEX=/home/calvin/src/flex-2.5.26/flex
+FLEX=/home/calvin/src/flex-2.5.27/flex
 
 all: htmllex.c htmlparse.c
 
