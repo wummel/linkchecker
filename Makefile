@@ -46,8 +46,11 @@ cleandeb:
 	rm -f debian/*.debhelper debian/{files,substvars}
 	rm -f configure-stamp build-stamp
 
-config:
+config:	MANIFEST
 	$(PYTHON) setup.py config -lcrypto
+
+MANIFEST: MANIFEST.in setup.py
+	$(PYTHON) setup.py sdist --manifest-only
 
 locale:
 	$(MAKE) -C po
