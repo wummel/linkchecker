@@ -448,7 +448,7 @@ msgstr "Fehlendes '/' am Ende der URL"
 
 msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
-msgstr "Server unterstützt kein HEAD, verwende GET"
+msgstr "Server unterstützt keine HEAD Anfrage (bekam Status %d), verwende GET"
 
 msgid "result"
 msgstr "Ergebnis"
