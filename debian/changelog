@@ -1,3 +1,10 @@
+linkchecker (2.7-1) unstable; urgency=low
+
+  * New upstream release.
+    (Closes: #301529) - mailto-check is incomplete
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 29 Mar 2005 17:43:01 +0200
+
 linkchecker (2.6-1) unstable; urgency=low
 
   * New upstream release.

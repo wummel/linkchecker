@@ -358,7 +358,7 @@ elif os.name == 'nt':
              ]))
 
 setup (name = "linkchecker",
-       version = "2.6",
+       version = "2.7",
        description = "check websites and HTML documents for broken links",
        keywords = "link,url,checking,verfication",
        author = myname,
