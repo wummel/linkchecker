@@ -56,6 +56,7 @@ ExcList = [
     ftplib.error_perm,
     ftplib.error_proto,
 ]
+# XXX remove this when depending on python >= 2.4
 if hasattr(socket, "sslerror"):
     ExcList.append(socket.sslerror)
 

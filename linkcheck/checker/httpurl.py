@@ -246,6 +246,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                      _("recursive redirection encountered:\n %s") % \
                             "\n  => ".join(redirect_cache), valid=False)
                 self.consumer.logger_new_url(self)
+                self.consumer.cache.url_data_cache_add(self)
                 return -1, response
             redirect_cache.append(redirected)
             # remember this alias

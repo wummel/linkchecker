@@ -217,6 +217,12 @@ class UrlBase (object):
                 return urlparse.urlunsplit(self.urlparts[:4]+[''])
         return None
 
+    def is_cached_or_queued (self):
+        """look if this URL is already stored in the Cache or is pending
+           in the URL queue"""
+        return self.consumer.url_is_queued(self.get_cache_key()) or \
+               self.is_cached()
+
     def is_cached (self):
         """look if this URL is already stored in the Cache"""
         return self.consumer.cache.url_is_cached(self.get_cache_key())
@@ -294,6 +300,7 @@ class UrlBase (object):
             self.add_info(
                   _("outside of domain filter, checked only syntax"))
             self.consumer.logger_new_url(self)
+            self.consumer.cache.url_data_cache_add(self)
             return
 
         # check connection
