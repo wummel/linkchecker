@@ -24,8 +24,7 @@ if sys.version[:5] < "2.0":
 import getopt, re, os, urlparse, pprint, linkcheck
 from linkcheck.debuglevels import *
 from linkcheck import _,StringUtil
-if os.name!='nt':
-    from linkcheck import timeoutsocket
+
 
 Usage = _("""USAGE\tlinkchecker [options] file-or-url...
 
@@ -33,17 +32,18 @@ OPTIONS
 For single-letter option arguments the space is not a necessity. So
 '-o colored' is the same as '-ocolored'.
 -a, --anchors
-        Check anchor references. Default is don't check anchors.
+        Check HTTP anchor references. Default is don't check anchors.
 -d, --denyallow
         Swap checking order to extern/intern. Default checking order
         is intern/extern.
 -D, --debug
-        Print additional debugging information.
+        Print debugging information. Provide this option multiple times
+        for even more debugging information.
 -e regex, --extern=regex
         Assume urls that match the given expression as extern.
         Only intern HTML links are checked recursively.
 -f file, --config=file
-        Use file as configuration file. Ad default LinkChecker first
+        Use file as configuration file. As default LinkChecker first
         searches /etc/linkcheckerrc and then ~/.linkcheckerrc
         (under Windows <path-to-program>\\linkcheckerrc).
 -F type[/filename], --file-output=type[/filename]
@@ -64,8 +64,7 @@ For single-letter option arguments the space is not a necessity. So
         environment variable NNTP_SERVER. If no host is given,
         only the syntax of the link is checked.
 -o type, --output=type
-        Specify output type as %s.
-        Default type is text.
+        Specify output type as %s. Default type is text.
 -p pwd, --password=pwd
         Try password pwd for HTML and FTP authorization.
         Default password is 'joe@'. See also -u.
@@ -286,10 +285,7 @@ for opt,arg in options:
                 config.disableThreading()
 
     elif opt=="--timeout":
-        if os.name!='nt':
-            timeoutsocket.setDefaultSocketTimeout(int(arg))
-        else:
-            print >> sys.stderr, _("warning: timeoutsocket is not support on this system")
+        linkcheck.timeoutsocket.setDefaultSocketTimeout(int(arg))
 
     elif opt=="-u" or opt=="--user":
         _user = arg
@@ -331,7 +327,7 @@ if len(args)==0:
         urls = raw_input(_("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
     else:
-        print _("warning: no files or urls given")
+        config.warn(_("no files or urls given"))
 
 for url in args:
     url = url.strip()

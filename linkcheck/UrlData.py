@@ -243,6 +243,7 @@ class UrlData:
         except:
             internal_error()
 
+
     def _check(self, config):
         debug(BRING_IT_ON, "Checking", self)
         if self.recursionLevel and config['wait']:

@@ -205,7 +205,7 @@ class CSV(UserList.UserList):
 			if found_comment:
 				del lines[lines__pos]
 			else:
-				lines__pos = lines__pos + 1
+				lines__pos += 1
 
 		# Process the input data
 
@@ -242,15 +242,15 @@ class CSV(UserList.UserList):
 			done__any = 0
 			for field in entry:
 				if done__any:
-					str = str + separator
+					str += separator
 				else:
 					done__any = 1
 				if type(field) != types.StringType:
 					field = `field`
 				if len(field) > 0 and (string.find(field, separator) != -1 or (field[0] == " " or field[-1] == " ")):
-					str = str + "\"" + field + "\""
+					str += '"%s"'%field
 				else:
-					str = str + field
+					str += field
 
 			return str
 
@@ -259,7 +259,7 @@ class CSV(UserList.UserList):
 			str = line__make(self.fields__title) + "\n\n"
 		else:
 			str = ""
-		str = str + string.join(map(line__make, self.data), "\n") + "\n"
+		str += string.join(map(line__make, self.data), "\n") + "\n"
 
 		return str
 
@@ -342,7 +342,7 @@ class CSV(UserList.UserList):
 		else:
 			str = ""
 		for entry in self:
-			str = str + string.join(map(string.ljust, map(lambda a : (type(a) == types.StringType and [a] or [eval("`a`")])[0], entry.data), columns__width), "  ") + "\n"
+			str += string.join(map(string.ljust, map(lambda a : (type(a) == types.StringType and [a] or [eval("`a`")])[0], entry.data), columns__width), "  ") + "\n"
 
 		return str
 

@@ -314,18 +314,22 @@ class Configuration(UserDict.UserDict):
         self.threader.startThread(url.check, (self,))
 
     def urlCache_has_key_Threads(self, key):
+        ret = None
         try:
             self.urlCacheLock.acquire()
-            return self.urlCache.has_key(key)
+            ret = self.urlCache.has_key(key)
         finally:
             self.urlCacheLock.release()
+        return ret
 
     def urlCache_get_Threads(self, key):
+        ret = None
         try:
             self.urlCacheLock.acquire()
-            return self.urlCache[key]
+            ret = self.urlCache[key]
         finally:
             self.urlCacheLock.release()
+        return ret
 
     def urlCache_set_Threads(self, key, val):
         try:
@@ -335,18 +339,22 @@ class Configuration(UserDict.UserDict):
             self.urlCacheLock.release()
 
     def robotsTxtCache_has_key_Threads(self, key):
+        ret = None
         try:
             self.robotsTxtCacheLock.acquire()
-            return self.robotsTxtCache.has_key(key)
+            ret = self.robotsTxtCache.has_key(key)
         finally:
             self.robotsTxtCacheLock.release()
+        return ret
 
     def robotsTxtCache_get_Threads(self, key):
+        ret = None
         try:
             self.robotsTxtCacheLock.acquire()
-            return self.robotsTxtCache[key]
+            ret = self.robotsTxtCache[key]
         finally:
             self.robotsTxtCacheLock.release()
+        return ret
 
     def robotsTxtCache_set_Threads(self, key, val):
         try:
@@ -374,15 +382,14 @@ class Configuration(UserDict.UserDict):
         self.readConfig(files)
 
     def warn(self, msg):
-        self.message("Config: WARNING: "+msg)
+        self.message(_("warning: %s")%msg)
 
     def error(self, msg):
-        self.message("Config: ERROR: "+msg)
+        self.message(_("error: %s")%msg)
 
 
     def message(self, msg):
-        sys.stderr.write(msg+"\n")
-        sys.stderr.flush()
+        print >> sys.stderr, msg
 
 
     def readConfig(self, files):

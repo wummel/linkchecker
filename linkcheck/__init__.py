@@ -29,9 +29,7 @@ try:
 except IOError:
     _ = lambda s: s
 
-#import timeoutsocket
-#timeoutsocket.setDefaultSocketTimeout(20)
-
+import timeoutsocket
 import Config, UrlData, sys, lc_cgi
 from debuglevels import *
 debug = Config.debug
@@ -57,4 +55,4 @@ def checkUrls(config):
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-        sys.stderr.write("linkcheck: warning: keyboard interrupt\n")
+        sys.stderr.write(_("linkcheck: warning: keyboard interrupt\n"))

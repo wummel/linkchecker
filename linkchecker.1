@@ -11,7 +11,7 @@ linkchecker \- check your HTML documents for broken links
 ]
 .SH DESCRIPTION
 .LP
-linkchecker features
+LinkChecker features
 recursive checking,
 multithreading,
 output in colored or normal text, HTML, SQL, CSV or a sitemap
@@ -30,21 +30,22 @@ For single-letter option arguments the space is not a necessity.
 So \fI-o colored\fP is the same as \fI-ocolored\fP.
 .TP
 \fB-a\fP, \fB--anchors\fP
-Check anchor references. Default is don't check anchors.
+Check HTTP anchor references. Default is don't check anchors.
 .TP
 \fB-d\fP, \fB--denyallow\fP
 Swap checking order to extern/intern. Default checking order is
 intern/extern.
 .TP
 \fB-D\fP, \fB--debug\fP
-Print debugging information.
+Print debugging information. Provide this option multiple times
+for even more debugging information.
 .TP
 \fB-e \fIregex\fP, \fB--extern=\fIregex\fP
 Assume urls that match the given regular expression as extern.
 Only intern HTML links are checked recursively.
 .TP
 \fB-f \fIfile\fP, \fB--config=\fIfile\fP
-Use \fIfile\fP as configuration file. linkchecker first searches for
+Use \fIfile\fP as configuration file. LinkChecker first searches for
 ~/.linkcheckerrc and then /etc/linkcheckerrc on Unix systems.
 Under Windows systems we read <path-to-program>\\linkcheckerrc.
 .TP
@@ -60,7 +61,7 @@ Ask for url if none are given on the commandline.
 .TP
 \fB-i \fIregex\fP, \fB--intern=\fIregex\fP
 Assume URLs that match the given regular expression as intern.
-linkchecker descends recursively only to intern URLs, not to extern.
+LinkChecker descends recursively only to intern URLs, not to extern.
 .TP
 \fB-h\fP, \fB--help\fP
 Help me! Print usage information for this program.
@@ -128,7 +129,7 @@ Use this to check for pages that contain some form of error, for example
 'This page has moved' or 'Oracle Application Server error'.
 This option implies \fB-w\fP.
 .SH NOTES
-Linkchecker assumes an \fIhttp://\fP resp. \fIftp://\fP link when a 
+LinkChecker assumes an \fIhttp://\fP resp. \fIftp://\fP link when a 
 commandline URL starts with \fIwww.\fP resp. \fIftp.\fP
 You can also give local files as arguments.
 
@@ -139,12 +140,12 @@ Use the -s and -i options to prevent this.
 
 Javascript links are currently ignored.
 
-If your platform does not support threading, linkchecker uses 
+If your platform does not support threading, LinkChecker uses 
 \fB-t0\fP.
 
 You can supply multiple user/password pairs in a configuration file.
 
-Cookies are not accepted by linkchecker.
+Cookies are not accepted by LinkChecker.
 
 To use proxies set $http_proxy, $https_proxy on Unix or Windows.
 On a Mac use the Internet Config.
@@ -158,8 +159,6 @@ same as the host of the user browsing your pages!
 http://treasure.calvinsplayground.de/~calvin/
 
 \fPLocal files and syntactic sugar on the command line:
-.br
-\fIlinkchecker c:\\temp\\test.html
 .br
 linkchecker ../bla.html
 .br
