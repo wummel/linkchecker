@@ -1,16 +1,12 @@
-- testen: id="" Anchor check (email)
-
-- SF bug #992389 bit me when I wanted to do absolute imports
-  at the checker classes :/
-  When the bug is fixed we can import absolute classes
-
-- default intern/extern patterns
+- doc framework
 
 - document what checks are performed for each url type
 
 - SF request #952051: is query considered in url cache keys?
 
-- doc framework
+- SF bug #992389 bit me when I wanted to do absolute imports
+  at the checker classes :/
+  When the bug is fixed we can import absolute classes
 
 - warn if overall size of page (including images/flash/etc.) is too big
   right now, the page size is only html content
