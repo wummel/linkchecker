@@ -797,9 +797,10 @@ msgid ""
 "to more than one file. Default is no file output. Note that you can\n"
 "suppress all console output with the option '-o none'."
 msgstr ""
-"Ausgabe in eine Datei namens linkchecker-out.<typ>, $HOME/.linkchecker_blacklist\n"
-"bei 'blacklist' Ausgabe, oder <datename> falls angegeben.\n"
-"Der <dateiname> Teil wird beim Ausgabetyp 'none' ignoriert,\n"
+"Ausgabe in eine Datei namens linkchecker-out.<TYPE>,\n"
+"$HOME/.linkchecker_blacklist\n"
+"bei 'blacklist' Ausgabe, oder <FILENAME> falls angegeben.\n"
+"Der <FILENAME> Teil wird beim Ausgabetyp 'none' ignoriert,\n"
 "ansonsten wird die Datei überschreiben falls sie existiert.\n"
 "Sie können diese Option mehr als einmal verwenden. Gültige\n"
 "Ausgabetypen sind %(loggertypes)s.\n"
@@ -808,7 +809,7 @@ msgstr ""
 
 #: ../linkchecker:293
 msgid "Do not print check status messages."
-msgstr "Geben keine Statusmeldungen aus."
+msgstr "Gebe keine Statusmeldungen aus."
 
 #: ../linkchecker:296
 #, python-format
