@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Sun Dec  7 11:48:16 2003\n"
+"POT-Creation-Date: Wed Dec 10 21:29:27 2003\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: fr <fr@li.org>\n"
@@ -84,6 +84,9 @@ msgstr ""
 
 msgid "Effective URL %s"
 msgstr "URL effective %s"
+
+msgid "Last modified %s"
+msgstr ""
 
 msgid "Unsupported content encoding %s."
 msgstr ""
