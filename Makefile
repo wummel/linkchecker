@@ -8,9 +8,9 @@ CFLAGS = -O6 -Wall
 LDFLAGS = -shared $(SSL_LIBDIR) $(PY_LIBDIR)
 CPPFLAGS = $(SSL_INCLDIR) $(PY_INCLDIR)
 
-VERSION=1.1.0
-HOST=treasure.calvinsplayground.de
-#HOST=fsinfo.cs.uni-sb.de
+VERSION=1.1.1
+#HOST=treasure.calvinsplayground.de
+HOST=fsinfo.cs.uni-sb.de
 PACKAGE = linkchecker
 BZ2PACKAGE = $(PACKAGE)-$(VERSION).tar.bz2
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb

@@ -1,4 +1,8 @@
-29.2.2000
+2.3.2000
+	* two small comment changes in GML and SQL output
+	* linkchecker -V works again :)
+
+29.2.2000 Version 1.1.0
 	* GML output additions
 	* HTTPS support
 	* Colored output fixes

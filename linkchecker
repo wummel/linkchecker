@@ -94,7 +94,7 @@ o Local files and syntactic sugar on the command line:
 """
 
 def printVersion():
-    print Config.AppInfo
+    print linkcheck.Config.AppInfo
     sys.exit(0)
   
 def printHelp():

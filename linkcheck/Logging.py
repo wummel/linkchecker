@@ -58,7 +58,7 @@ class StandardLogger:
 
 
     def init(self):
-        self.fd.write(Config.AppName+"\n"+\
+        self.fd.write(Config.AppInfo+"\n"+\
                       Config.Freeware+"\n"+\
                       "Get the newest version at "+Config.Url+"\n"+\
                       "Write comments and bugs to "+Config.Email+"\n\n"+\
@@ -293,9 +293,9 @@ class GMLLogger(StandardLogger):
         self.nodes = []
 
     def init(self):
-        self.fd.write("# created by "+Config.AppInfo+" at "+_currentTime()+\
-	    "\n# you get "+Config.AppName+"  at "+Config.Url+\
-            "\n# comment \"write comments and bugs to "+Config.Email+\
+        self.fd.write("# created by "+Config.AppName+" at "+_currentTime()+\
+	    "\n# you get "+Config.AppName+" at "+Config.Url+\
+            "\n# write comments and bugs to "+Config.Email+\
 	    "\ngraph [\n  directed 1\n")
         self.fd.flush()
 
@@ -339,7 +339,7 @@ class GMLLogger(StandardLogger):
 class SQLLogger(StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
     def init(self):
-        self.fd.write("-- created by "+Config.AppInfo+" at "+_currentTime()+\
+        self.fd.write("-- created by "+Config.AppName+" at "+_currentTime()+\
 		"\n-- you get "+Config.AppName+" at "+Config.Url+\
 		"\n-- write comments and bugs to "+Config.Email+"\n\n")
         self.fd.flush()

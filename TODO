@@ -1,6 +1,2 @@
 Is there a way to cleanly stop arbitrary Thread objects 
 (with exit handler)? Mail me solutions!
-
-configure script and Debian package cleanups
-
-SSL support
