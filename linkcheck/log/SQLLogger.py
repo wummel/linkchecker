@@ -15,6 +15,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from StandardLogger import StandardLogger
+import time, linkcheck
+from linkcheck.log import strtime
+from linkcheck import Config
 
 class SQLLogger (StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
@@ -29,7 +32,7 @@ class SQLLogger (StandardLogger):
         self.starttime = time.time()
         if self.logfield("intro"):
             self.fd.write("-- "+(linkcheck._("created by %s at %s\n") % (Config.AppName,
-                       _strtime(self.starttime))))
+                       strtime(self.starttime))))
             self.fd.write("-- "+(linkcheck._("Get the newest version at %s\n") % Config.Url))
             self.fd.write("-- "+(linkcheck._("Write comments and bugs to %s\n\n") % \
 	                Config.Email))
@@ -42,18 +45,18 @@ class SQLLogger (StandardLogger):
 	      "valid,url,line,name,checktime,downloadtime,cached) values "
               "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%s,%d,%d,%d)%s\n" % \
 	      (self.dbname,
-	       StringUtil.sqlify(urlData.urlName),
+	       linkcheck.StringUtil.sqlify(urlData.urlName),
                urlData.recursionLevel,
-	       StringUtil.sqlify(urlData.parentName),
-               StringUtil.sqlify(urlData.baseRef),
-               StringUtil.sqlify(urlData.errorString),
-               StringUtil.sqlify(urlData.validString),
-               StringUtil.sqlify(urlData.warningString),
-               StringUtil.sqlify(urlData.infoString),
+	       linkcheck.StringUtil.sqlify(urlData.parentName),
+               linkcheck.StringUtil.sqlify(urlData.baseRef),
+               linkcheck.StringUtil.sqlify(urlData.errorString),
+               linkcheck.StringUtil.sqlify(urlData.validString),
+               linkcheck.StringUtil.sqlify(urlData.warningString),
+               linkcheck.StringUtil.sqlify(urlData.infoString),
                urlData.valid,
-               StringUtil.sqlify(urlData.url),
+               linkcheck.StringUtil.sqlify(urlData.url),
                urlData.line,
-               StringUtil.sqlify(urlData.name),
+               linkcheck.StringUtil.sqlify(urlData.name),
                urlData.checktime,
                urlData.downloadtime,
                urlData.cached,
@@ -67,7 +70,7 @@ class SQLLogger (StandardLogger):
             duration = self.stoptime - self.starttime
             name = linkcheck._("seconds")
             self.fd.write("-- "+linkcheck._("Stopped checking at %s") % \
-	              _strtime(self.stoptime))
+	              strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
                 name = linkcheck._("minutes")

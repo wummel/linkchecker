@@ -15,6 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+# return formatted time
+def strtime (t):
+    return time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(t))
+
 import time, linkcheck
 
 LogFields = {
@@ -58,8 +62,4 @@ Loggers = {
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
-
-# return formatted time
-def _strtime (t):
-    return time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(t))
 

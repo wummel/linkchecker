@@ -14,7 +14,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import time
+import time, linkcheck
+from linkcheck import Config
+from linkcheck.log import strtime
 from StandardLogger import StandardLogger
 
 class CSVLogger (StandardLogger):
@@ -30,7 +32,7 @@ class CSVLogger (StandardLogger):
         self.starttime = time.time()
         if self.logfield("intro"):
             self.fd.write("# "+(linkcheck._("created by %s at %s\n") % (Config.AppName,
-                      _strtime(self.starttime))))
+                      strtime(self.starttime))))
             self.fd.write("# "+(linkcheck._("Get the newest version at %s\n") % Config.Url))
             self.fd.write("# "+(linkcheck._("Write comments and bugs to %s\n\n") % \
 	                    Config.Email))
@@ -80,7 +82,7 @@ class CSVLogger (StandardLogger):
         if self.logfield("outro"):
             duration = self.stoptime - self.starttime
             name = linkcheck._("seconds")
-            self.fd.write("# "+linkcheck._("Stopped checking at %s") % _strtime(self.stoptime))
+            self.fd.write("# "+linkcheck._("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
                 name = linkcheck._("minutes")

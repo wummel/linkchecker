@@ -17,7 +17,7 @@
 import sys, time, linkcheck
 from Logger import Logger
 from linkcheck import Config
-from linkcheck.log import LogFields, Spaces
+from linkcheck.log import LogFields, Spaces, strtime, MaxIndent
 
 class StandardLogger (Logger):
     """Standard text logger.
@@ -72,7 +72,7 @@ __init__(self, **args)
             self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
             self.fd.write(linkcheck._("Get the newest version at %s\n") % Config.Url)
             self.fd.write(linkcheck._("Write comments and bugs to %s\n\n") % Config.Email)
-            self.fd.write(linkcheck._("Start checking at %s\n") % linkcheck.log._strtime(self.starttime))
+            self.fd.write(linkcheck._("Start checking at %s\n") % linkcheck.log.strtime(self.starttime))
             self.fd.flush()
 
 
@@ -102,15 +102,15 @@ __init__(self, **args)
 	                  linkcheck._("%.3f seconds\n") % urlData.checktime)
         if urlData.infoString and self.logfield('info'):
             self.fd.write(linkcheck._(LogFields["info"])+Spaces["info"]+
-	                  StringUtil.indent(
-                          StringUtil.blocktext(urlData.infoString, 65),
+	                  linkcheck.StringUtil.indent(
+                          linkcheck.StringUtil.blocktext(urlData.infoString, 65),
 			  MaxIndent)+"\n")
         if urlData.warningString:
             #self.warnings += 1
             if self.logfield('warning'):
                 self.fd.write(linkcheck._(LogFields["warning"])+Spaces["warning"]+
-	                  StringUtil.indent(
-                          StringUtil.blocktext(urlData.warningString, 65),
+	                  linkcheck.StringUtil.indent(
+                          linkcheck.StringUtil.blocktext(urlData.warningString, 65),
 			  MaxIndent)+"\n")
 
         if self.logfield('result'):
@@ -144,7 +144,7 @@ __init__(self, **args)
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             name = linkcheck._("seconds")
-            self.fd.write(linkcheck._("Stopped checking at %s") % linkcheck.log._strtime(self.stoptime))
+            self.fd.write(linkcheck._("Stopped checking at %s") % linkcheck.log.strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
                 name = linkcheck._("minutes")

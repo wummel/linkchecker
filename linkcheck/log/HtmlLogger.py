@@ -15,7 +15,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from StandardLogger import StandardLogger
-import time
+from linkcheck import Config
+from linkcheck.log import strtime
+import time, linkcheck
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//EN">
 <html><head><title>%s</title>
@@ -52,7 +54,7 @@ class HtmlLogger (StandardLogger):
         if self.logfield('intro'):
             self.fd.write("<center><h2>"+Config.App+"</h2></center>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
-              (linkcheck._("Start checking at %s\n") % _strtime(self.starttime))+
+              (linkcheck._("Start checking at %s\n") % strtime(self.starttime))+
 	      "<br><br>")
         self.fd.flush()
 
@@ -140,7 +142,7 @@ class HtmlLogger (StandardLogger):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             name = linkcheck._("seconds")
-            self.fd.write(linkcheck._("Stopped checking at %s") % _strtime(self.stoptime))
+            self.fd.write(linkcheck._("Stopped checking at %s") % strtime(self.stoptime))
             if duration > 60:
                 duration = duration / 60
                 name = linkcheck._("minutes")

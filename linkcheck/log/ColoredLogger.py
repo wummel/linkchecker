@@ -14,6 +14,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import linkcheck
+from linkcheck.log import Spaces
 from StandardLogger import StandardLogger
 
 class ColoredLogger (StandardLogger):
