@@ -37,11 +37,14 @@ __version__ = "1.1"
 MESSAGES = {}
 
 
-def usage (code, msg=''):
+def usage (ecode, msg=''):
+    """
+    Print usage and msg and exit with given code.
+    """
     print >> sys.stderr, __doc__
     if msg:
         print >> sys.stderr, msg
-    sys.exit(code)
+    sys.exit(ecode)
 
 
 def add (msgid, transtr, fuzzy):
@@ -54,19 +57,21 @@ def add (msgid, transtr, fuzzy):
 
 
 def generate ():
-    "Return the generated output."
+    """
+    Return the generated output.
+    """
     global MESSAGES
     keys = MESSAGES.keys()
     # the keys are sorted in the .mo file
     keys.sort()
     offsets = []
     ids = strs = ''
-    for id in keys:
+    for _id in keys:
         # For each string, we need size and file offset.  Each string is NUL
         # terminated; the NUL does not count into the size.
-        offsets.append((len(ids), len(id), len(strs), len(MESSAGES[id])))
-        ids += id + '\0'
-        strs += MESSAGES[id] + '\0'
+        offsets.append((len(ids), len(_id), len(strs), len(MESSAGES[_id])))
+        ids += _id + '\0'
+        strs += MESSAGES[_id] + '\0'
     output = ''
     # The header is 7 32-bit unsigned integers.  We don't use hash tables, so
     # the keys start right after the index tables.
@@ -119,6 +124,7 @@ def make (filename, outfile):
     fuzzy = 0
 
     # Parse the catalog
+    msgid = msgstr = ''
     lno = 0
     for l in lines:
         lno += 1

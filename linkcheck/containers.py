@@ -73,6 +73,7 @@ class ListDict (dict):
         """
         Initialize sorted key list.
         """
+        super(ListDict, self).__init__()
         # sorted list of keys
         self._keys = []
 

@@ -82,6 +82,11 @@ def print_app_info ():
 
 
 def urljoin (parent, url, scheme):
+    """
+    If url is relative, join parent and url. Else leave url as-is.
+
+    @return join url
+    """
     if url.startswith(scheme+":"):
         return url
     return urlparse.urljoin(parent, url)

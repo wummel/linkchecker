@@ -127,10 +127,16 @@ class DOTLogger (linkcheck.logger.Logger):
 
 
 def dotquote (s):
+    """
+    Escape disallowed characters in DOT format strings.
+    """
     return s.replace('"', '\\"')
 
 
 def dotedge (s):
+    """
+    Escape disallowed characters in DOT edge labels.
+    """
     s = s.replace("\n", "\\n")
     s = s.replace("\r", "\\r")
     s = s.replace("\l", "\\l")

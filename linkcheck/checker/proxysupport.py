@@ -56,6 +56,9 @@ class ProxySupport (object):
 
 
     def ignore_proxy_host (self):
+        """
+        Check if self.host is in the no-proxy-for ignore list.
+        """
         for ro in self.consumer.config["noproxyfor"]:
             if ro.search(self.host):
                 return True

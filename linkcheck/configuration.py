@@ -150,6 +150,10 @@ class Configuration (dict):
         self.init_geoip()
 
     def init_geoip (self):
+        """
+        If GeoIP.dat file is found, initialize a standard geoip DB and
+        store it in self["geoip"]; else this value will be None.
+        """
         geoip_dat = "/usr/share/GeoIP/GeoIP.dat"
         if _has_geoip and os.path.exists(geoip_dat):
             self["geoip"] = GeoIP.open(geoip_dat, GeoIP.GEOIP_STANDARD)
@@ -332,7 +336,8 @@ class Configuration (dict):
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
-            self["externstrictall"] = cfgparser.getboolean(section, "externstrictall")
+            self["externstrictall"] = \
+                          cfgparser.getboolean(section, "externstrictall")
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:

@@ -79,6 +79,9 @@ class Cache (object):
         self.pool = linkcheck.checker.pool.ConnectionPool()
 
     def incoming_is_empty (self):
+        """
+        Check if incoming queue is empty.
+        """
         self.lock.acquire()
         try:
             return len(self.incoming) <= 0
@@ -144,6 +147,12 @@ class Cache (object):
             self.lock.release()
 
     def has_incoming (self, key):
+        """
+        Check if incoming queue has an entry with the given key.
+
+        @param key: Usually obtained from url_data.cache_url_key
+        @type key: String
+        """
         self.lock.acquire()
         try:
             return key in self.incoming
@@ -151,6 +160,12 @@ class Cache (object):
             self.lock.release()
 
     def has_in_progress (self, key):
+        """
+        Check if in-progress queue has an entry with the given key.
+
+        @param key: Usually obtained from url_data.cache_url_key
+        @type key: String
+        """
         self.lock.acquire()
         try:
             return key in self.in_progress
@@ -158,7 +173,9 @@ class Cache (object):
             self.lock.release()
 
     def in_progress_remove (self, url_data):
-        """remove url from in-progress cache"""
+        """
+        Remove url from in-progress cache.
+        """
         self.lock.acquire()
         try:
             key = url_data.cache_url_key
@@ -168,7 +185,9 @@ class Cache (object):
             self.lock.release()
 
     def checked_add (self, url_data):
-        """cache checked url data"""
+        """
+        Cache checked url data.
+        """
         self.lock.acquire()
         try:
             data = url_data.get_cache_data()

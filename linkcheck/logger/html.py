@@ -272,7 +272,7 @@ class HtmlLogger (linkcheck.logger.Logger):
            self.field("result")+u"</td><td bgcolor=\""+self.colorerror+u"\">")
             self.write(_("Error"))
         if url_data.result:
-              self.write(u": "+cgi.escape(url_data.result))
+            self.write(u": "+cgi.escape(url_data.result))
         self.writeln(u"</td></tr>")
 
     def end_output (self, linknumber=-1):

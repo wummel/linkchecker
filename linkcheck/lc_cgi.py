@@ -30,6 +30,9 @@ import linkcheck.configuration
 import linkcheck.url
 import linkcheck.i18n
 import linkcheck.strformat
+import linkcheck.checker
+import linkcheck.checker.cache
+import linkcheck.checker.consumer
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
@@ -98,9 +101,6 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
     config["externlinks"].append(
              linkcheck.get_link_pat("^%s$" % linkcheck.url.safe_url_pattern))
     config["externlinks"].append(linkcheck.get_link_pat(".*", strict=True))
-    import linkcheck.checker
-    import linkcheck.checker.cache
-    import linkcheck.checker.consumer
     cache = linkcheck.checker.cache.Cache()
     consumer = linkcheck.checker.consumer.Consumer(config, cache)
     # start checking

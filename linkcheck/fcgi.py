@@ -122,7 +122,7 @@ class Record (object):
             data = sock.recv(content_length - len(self.content))
             self.content += data
         if padding_length != 0:
-            _padding = sock.recv(padding_length)
+            sock.recv(padding_length)
 
         # Parse the content information
         c = self.content
@@ -220,12 +220,13 @@ def HandleManTypes (r, conn):
     if r.rec_type == FCGI_GET_VALUES:
         r.rec_type = FCGI_GET_VALUES_RESULT
         v = {}
-        vars = {'FCGI_MAX_CONNS' : FCGI_MAX_CONNS,
+        _vars = {'FCGI_MAX_CONNS' : FCGI_MAX_CONNS,
                 'FCGI_MAX_REQS'  : FCGI_MAX_REQS,
                 'FCGI_MPXS_CONNS': FCGI_MPXS_CONNS}
         for i in r.values.keys():
-            if vars.has_key(i): v[i]=vars[i]
-        r.values = vars
+            if _vars.has_key(i):
+                v[i] = _vars[i]
+        r.values = _vars
         r.write_record(conn)
 
 
@@ -334,7 +335,6 @@ class FastCGIWriter (object):
 _isFCGI = 1         # assume it is until we find out for sure
 
 def isFCGI ():
-    global _isFCGI
     return _isFCGI
 
 
@@ -469,8 +469,8 @@ def _startup ():
         s = socket.fromfd(sys.stdin.fileno(), socket.AF_INET,
                           socket.SOCK_STREAM)
         s.getpeername()
-    except socket.error, (err, errmsg):
-        if err != errno.ENOTCONN:   # must be a non-fastCGI environment
+    except socket.error, msg:
+        if msg[0] != errno.ENOTCONN:   # must be a non-fastCGI environment
             global _isFCGI
             _isFCGI = 0
             return
