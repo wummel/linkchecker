@@ -32,6 +32,9 @@ try:
 except ImportError:
     def gettext(msg):
         return msg
+# set _ as an alias for gettext
+_ = gettext
+
 import Config,UrlData,sys,lc_cgi
 
 def checkUrls(config = Config.Configuration()):

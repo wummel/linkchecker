@@ -18,6 +18,7 @@
 import re,string,time,nntplib
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import LinkCheckerException
+from linkcheck import _
 
 nntp_re =  re.compile("^news:[\w.\-]+$")
 
@@ -27,17 +28,17 @@ class NntpUrlData(HostCheckingUrlData):
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         if not nntp_re.match(self.urlName):
-            raise LinkCheckerException, "Illegal NNTP link syntax"
+            raise LinkCheckerException, _("Illegal NNTP link syntax")
         self.host = string.lower(self.urlName[5:])
 
 
     def checkConnection(self, config):
         if not config["nntpserver"]:
-            self.setWarning("No NNTP server specified, checked only syntax")
+            self.setWarning(_("No NNTP server specified, checked only syntax"))
         config.connectNntp()
         nntp = config["nntp"]
         resp,count,first,last,name = nntp.group(self.host)
-        self.setInfo("Group %s has %s articles, range %s to %s" % \
+        self.setInfo(_("Group %s has %s articles, range %s to %s") % \
                      (name, count, first, last))
 
 

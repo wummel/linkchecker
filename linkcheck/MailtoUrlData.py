@@ -20,6 +20,7 @@ from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from UrlData import LinkCheckerException
+from linkcheck import _
 
 
 # regular expression for RFC2368 compliant mailto: scanning
@@ -62,7 +63,7 @@ class MailtoUrlData(HostCheckingUrlData):
             an answer, print the verified adress as an info.
         """
         if not self.adresses:
-            self.setWarning("No adresses found")
+            self.setWarning(_("No adresses found"))
             return
 
         DNS.ParseResolvConf()
@@ -87,12 +88,12 @@ class MailtoUrlData(HostCheckingUrlData):
                 if smtpconnect: break
             
             if not smtpconnect:
-                self.setWarning("None of the mail hosts for "+host+
-                                " accepts an SMTP connection: "+str(value))
+                self.setWarning(_("None of the mail hosts for %s accepts an "
+                                  "SMTP connection: %s") % (host, value))
                 mxrecord = mxrecords[0][1]
             else:
                 mxrecord = mxrecord[1]
-            self.setValid("found mail host "+mxrecord)
+            self.setValid(_("found mail host %s") % mxrecord)
 
 
     def _split_adress(self, adress):
@@ -103,7 +104,7 @@ class MailtoUrlData(HostCheckingUrlData):
             return tuple(split)
         if len(split)==1:
             return (split[0], "localhost")
-        raise LinkCheckerException, "could not split the mail adress"
+        raise LinkCheckerException, _("could not split the mail adress")
 
 
     def closeConnection(self):

@@ -18,6 +18,7 @@
 import telnetlib,re,string
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import LinkCheckerException
+from linkcheck import _
 
 # regular expression for syntax checking
 telnet_re =  re.compile("^telnet:[\w.\-]+$")
@@ -28,7 +29,7 @@ class TelnetUrlData(HostCheckingUrlData):
     def buildUrl(self):
         HostCheckingUrlData.buildUrl(self)
         if not telnet_re.match(self.urlName):
-            raise LinkCheckerException, "Illegal telnet link syntax"
+            raise LinkCheckerException, _("Illegal telnet link syntax")
         self.host = string.lower(self.urlName[7:])
 
 

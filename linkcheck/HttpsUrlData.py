@@ -17,6 +17,7 @@
 """
 from UrlData import UrlData
 from HttpUrlData import HttpUrlData
+from linkcheck import _
 _supportHttps=1
 try: import httpslib
 except ImportError: _supportHttps=0
@@ -40,7 +41,7 @@ class HttpsUrlData(HttpUrlData):
         if _supportHttps:
             HttpUrlData.check(self, config)
         else:
-            self.setWarning("HTTPS url ignored")
+            self.setWarning(_("HTTPS url ignored"))
             self.logMe(config)
 
     def __str__(self):

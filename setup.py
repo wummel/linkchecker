@@ -55,7 +55,7 @@ class LCDistribution(Distribution):
                                            
     def additional_things(self):
         inst = self.get_command_obj("install")
-        inst.ensure_ready()
+        inst.ensure_finalized()
         t = Template("linkcheck/__init__.py.tmpl")
         f = open("linkcheck/__init__.py","w")
         f.write(t.fill_in({"install_data": inst.install_data}))

@@ -17,6 +17,7 @@
 """
 import socket,string
 from UrlData import UrlData
+from linkcheck import _
 
 class HostCheckingUrlData(UrlData):
     "Url link for which we have to connect to a specific host"
@@ -40,7 +41,7 @@ class HostCheckingUrlData(UrlData):
 
     def checkConnection(self, config):
         ip = socket.gethostbyname(self.host)
-        self.setValid(self.host+"("+ip+") found")
+        self.setValid(self.host+"("+ip+") "+_("found"))
 
     def __str__(self):
         return "host="+`self.host`+"\n"+UrlData.__str__(self)

@@ -25,6 +25,7 @@ import ConfigParser,sys,os,re,UserDict,string
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 import Logging
+from linkcheck import _
 
 Version = "1.2.3"
 AppName = "LinkChecker"
@@ -240,7 +241,7 @@ class Configuration(UserDict.UserDict):
                 timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
-                self.debug(value)
+                self.debug("NNTP: "+value+"\n")
                 if re.compile("^505").search(str(value)):
                     import whrandom,time
                     time.sleep(whrandom.randint(30,60))

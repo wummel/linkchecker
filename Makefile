@@ -7,6 +7,23 @@ PROXY=
 PACKAGE = linkchecker
 DEBPACKAGE = $(PACKAGE)_$(VERSION)_i386.deb
 ALLPACKAGES = ../$(DEBPACKAGE)
+SOURCES = linkcheck/Config.py \
+linkcheck/FileUrlData.py \
+linkcheck/FtpUrlData.py \
+linkcheck/GopherUrlData.py \
+linkcheck/HostCheckingUrlData.py \
+linkcheck/HttpUrlData.py \
+linkcheck/HttpsUrlData.py \
+linkcheck/JavascriptUrlData.py \
+linkcheck/Logging.py \
+linkcheck/MailtoUrlData.py \
+linkcheck/NntpUrlData.py \
+linkcheck/RobotsTxt.py \
+linkcheck/TelnetUrlData.py \
+linkcheck/Threader.py \
+linkcheck/UrlData.py \
+linkcheck/__init__.py
+
 DESTDIR=/.
 .PHONY: test clean files homepage dist install all
 TAR = tar
@@ -20,8 +37,6 @@ clean:
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 dist:
-	# german translation
-	msgfmt -o locale/de/LC_MESSAGES/linkcheck.mo locale/de/LC_MESSAGES/linkcheck.po
 	./setup.py sdist
 	fakeroot debian/rules binary
         
@@ -37,3 +52,13 @@ test:
 	  echo "Testing $$i. Results are in $$i.result"; \
 	  ./$(PACKAGE) -r1 -o text -t0 -N"news.rz.uni-sb.de" -v -a $$i > $$i.result 2>&1; \
         done
+
+po:
+	xgettext --default-domain=linkcheck \
+	--join-existing --keyword --keyword=_ \
+	--output-dir=locale/de/LC_MESSAGES/ --sort-output $(SOURCES)
+
+mo:
+	# german translation
+	msgfmt -o locale/de/LC_MESSAGES/linkcheck.mo \
+	locale/de/LC_MESSAGES/linkcheck.po

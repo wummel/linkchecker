@@ -30,8 +30,8 @@ endOfOutput(self)
   Called at the end of checking to close filehandles and such.
 """
 import sys,time
-import Config,StringUtil,linkcheck
-_ = linkcheck.gettext
+import Config,StringUtil
+from linkcheck import _
 
 # ANSI color codes
 ESC="\x1b"

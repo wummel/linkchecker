@@ -16,6 +16,7 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 import re,urlparse,string,httplib,urllib,sys,StringUtil,Config
+from linkcheck import _
 
 class RobotsTxt:
     def __init__(self, urltuple, useragent):
@@ -45,7 +46,7 @@ class RobotsTxt:
                 self.parseUrl(urlConnection)
         except:
             type, value = sys.exc_info()[:2]
-            Config.debug("Hoppla. "+str(value))
+            Config.debug("DEBUG: RobotsTxt error:"+str(value)+"\n")
             self.allowAll = 1
             
     def parseUrl(self, urlConnection):
@@ -73,14 +74,16 @@ class RobotsTxt:
             if re.compile("^user-agent:.+").match(line):
                 if state==2:
                     raise ParseException, \
-                    "robots.txt:"+`linenumber`+": user-agent in the middle of rules"
+                    _("robots.txt:%d: user-agent in the middle of rules") % \
+                    linenumber
                 entry.useragents.append(string.strip(line[11:]))
                 state = 1
                 
             elif re.compile("^disallow:.+").match(line):
                 if state==0:
                     raise ParseException, \
-                    "robots.txt:"+`linenumber`+": disallow without user agents"
+                    _("robots.txt:%d: disallow without user agents") % \
+                    linenumber
                 line = string.strip(line[9:])
                 entry.rulelines.append(RuleLine(line, 0))
                 state = 2
@@ -88,7 +91,8 @@ class RobotsTxt:
             elif re.compile("^allow:.+").match(line):
                 if state==0:
                     raise ParseException, \
-                    "robots.txt:"+`linenumber`+": allow without user agents"
+                    _("robots.txt:%d: allow without user agents") % \
+                    linenumber
                 line = string.strip(line[6:])
                 entry.rulelines.append(RuleLine(line, 1))
                 
@@ -169,7 +173,7 @@ class Entry:
         
     def allowance(self, filename):
         """Preconditions:
-        - out agent applies to this entry
+        - our agent applies to this entry
         - file is URL decoded"""
         for line in self.rulelines:
             if line.appliesTo(filename):

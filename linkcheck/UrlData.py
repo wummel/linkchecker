@@ -17,6 +17,7 @@
 """
 import sys,re,string,urlparse,urllib,time
 import Config,StringUtil
+from linkcheck import _
 
 LinkTags = [("a",     "href"),
             ("img",   "src"),
@@ -46,8 +47,8 @@ class UrlData:
         self.recursionLevel = recursionLevel
         self.parentName = parentName
         self.baseRef = baseRef
-        self.errorString = "Error"
-        self.validString = "Valid"
+        self.errorString = _("Error")
+        self.validString = _("Valid")
         self.warningString = None
         self.infoString = None
         self.valid = 1
@@ -64,11 +65,11 @@ class UrlData:
         
     def setError(self, s):
         self.valid=0
-        self.errorString = "Error: " + s
+        self.errorString = _("Error")+": "+s
         
     def setValid(self, s):
         self.valid=1
-        self.validString = "Valid: " + s
+        self.validString = _("Valid")+": "+s
         
     def isHtml(self):
         return 0
@@ -121,7 +122,7 @@ class UrlData:
         # check syntax
         Config.debug("DEBUG: checking syntax\n")
         if not self.urlName or self.urlName=="":
-            self.setError("URL is null or empty")
+            self.setError(_("URL is null or empty"))
             self.logMe(config)
             return
         try:
@@ -144,7 +145,7 @@ class UrlData:
         # apply filter
         Config.debug("DEBUG: checking filter\n")
         if self.extern and (config["strict"] or self.extern[1]):
-            self.setWarning("outside of domain filter, checked only syntax")
+            self.setWarning(_("outside of domain filter, checked only syntax"))
             self.logMe(config)
             return
 

@@ -18,6 +18,7 @@
 import re,string,os,urlparse
 from UrlData import UrlData
 from os.path import normpath
+from linkcheck import _
 
 class FileUrlData(UrlData):
     "Url link with file scheme"

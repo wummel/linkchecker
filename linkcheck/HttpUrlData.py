@@ -19,6 +19,8 @@ import http11lib,urlparse,sys,time,re
 from UrlData import UrlData
 from RobotsTxt import RobotsTxt
 import Config,StringUtil
+from linkcheck import _
+
 
 class HttpUrlData(UrlData):
     "Url link with http scheme"
@@ -67,8 +69,10 @@ class HttpUrlData(UrlData):
         self.auth = None
         self.proxy = config["proxy"]
         self.proxyport = config["proxyport"]
+        if not self.urlTuple[2]:
+            self.setWarning(_("Missing '/' at end of URL"))
         if config["robotstxt"] and not self.robotsTxtAllowsUrl(config):
-            self.setWarning("Access denied by robots.txt, checked only syntax")
+            self.setWarning(_("Access denied by robots.txt, checked only syntax"))
             return
             
         # first try
@@ -108,12 +112,12 @@ class HttpUrlData(UrlData):
 
         effectiveurl = urlparse.urlunparse(self.urlTuple)
         if self.url != effectiveurl:
-            self.setWarning("Effective URL "+effectiveurl)
+            self.setWarning(_("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
 
         if has301status:
-            self.setWarning("HTTP 301 (moved permanent) encountered: "
-	                    "you should update this link")
+            self.setWarning(_("HTTP 301 (moved permanent) encountered: "
+	                    "you should update this link"))
         # check final result
         if status >= 400:
             self.setError(`status`+" "+statusText)
@@ -130,7 +134,7 @@ class HttpUrlData(UrlData):
     def _getHttpRequest(self, method="HEAD"):
         "Put request and return (status code, status text, mime object)"
         if self.proxy:
-            Config.debug("Using proxy "+self.proxy)
+            Config.debug("DEBUG: using proxy "+self.proxy+"\n")
             host = self.proxy+":"+`self.proxyport`
         else:
             host = self.urlTuple[1]

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-05-01 11:50+0200\n"
+"POT-Creation-Date: 2000-05-29 01:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,64 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: Logging.py:82
-msgid "Get the newest version at "
-msgstr "Die neueste Version gibt es unter "
-
-#: Logging.py:83
-msgid "Write comments and bugs to "
-msgstr "Kommentare und Fehler mailen Sie bitte an "
-
-#: Logging.py:84
-msgid "Start checking at "
-msgstr "Beginne Prüfen am "
-
-#: Logging.py:89
-msgid "URL"
-msgstr "URL"
-
-#: Logging.py:95
-msgid "Parent URL"
-msgstr "Vater URL"
-
-#: Logging.py:96
-msgid ", line "
-msgstr ", Zeile "
-
-#: Logging.py:99
-msgid "Base"
-msgstr "Basis"
-
-#: Logging.py:101
-msgid "Real URL"
-msgstr "Tats. URL"
-
-#: Logging.py:103
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
-#: Logging.py:104 Logging.py:107
-#, c-format
-msgid "%.3f seconds\n"
-msgstr "%.3f Sekunden\n"
-
-#: Logging.py:106
-msgid "Check Time"
-msgstr "Prüfzeit"
-
-#: Logging.py:109
-msgid "Info"
-msgstr "Info"
-
-#: Logging.py:115
-msgid "Warning"
-msgstr "Warnung"
-
-#: Logging.py:120
-msgid "Result"
-msgstr "Ergebnis"
-
-#: Logging.py:130
+#: Logging.py:130 linkcheck/Logging.py:148
 msgid ""
 "\n"
 "Thats it. "
@@ -79,31 +22,211 @@ msgstr ""
 "\n"
 "Das wars. "
 
-#: Logging.py:133
-msgid "1 warning, "
-msgstr "1 Warnung, "
-
-#: Logging.py:135
-msgid " warnings, "
-msgstr " Warnungen, "
-
-#: Logging.py:137
-msgid "1 error"
-msgstr "1 Fehler"
-
-#: Logging.py:139
-msgid " errors"
-msgstr " Fehler"
-
-#: Logging.py:140
-msgid " found.\n"
-msgstr " gefunden.\n"
-
-#: Logging.py:142
-msgid "Stopped checking at "
-msgstr "Beende Prüfen am "
-
-#: Logging.py:143
+#: Logging.py:143 linkcheck/Logging.py:161 linkcheck/Logging.py:251
 #, c-format
 msgid " (%.3f seconds)"
 msgstr " (%.3f Sekunden)"
+
+#: Logging.py:139 linkcheck/Logging.py:157 linkcheck/Logging.py:247
+msgid " errors"
+msgstr " Fehler"
+
+#: linkcheck/Logging.py:248
+msgid " found."
+msgstr " gefunden"
+
+#: Logging.py:140 linkcheck/Logging.py:158
+msgid " found.\n"
+msgstr " gefunden.\n"
+
+#: Logging.py:135 linkcheck/Logging.py:153 linkcheck/Logging.py:243
+msgid " warnings, "
+msgstr " Warnungen, "
+
+#: linkcheck/Logging.py:312 linkcheck/Logging.py:317
+#, c-format
+msgid "%.3f seconds"
+msgstr "%.3f Sekunden"
+
+#: Logging.py:104 Logging.py:107 linkcheck/Logging.py:122
+#: linkcheck/Logging.py:125
+#, c-format
+msgid "%.3f seconds\n"
+msgstr "%.3f Sekunden\n"
+
+#: Logging.py:96 linkcheck/Logging.py:114 linkcheck/Logging.py:291
+msgid ", line "
+msgstr ", Zeile "
+
+#: Logging.py:137 linkcheck/Logging.py:155 linkcheck/Logging.py:245
+msgid "1 error"
+msgstr "1 Fehler"
+
+#: Logging.py:133 linkcheck/Logging.py:151 linkcheck/Logging.py:241
+msgid "1 warning, "
+msgstr "1 Warnung, "
+
+#: linkcheck/HttpUrlData.py:75
+msgid "Access denied by robots.txt, checked only syntax"
+msgstr "Zugriff verwehrt durch robots.txt; prüfe lediglich Syntax"
+
+#: Logging.py:99 linkcheck/Logging.py:117 linkcheck/Logging.py:202
+#: linkcheck/Logging.py:300
+msgid "Base"
+msgstr "Basis"
+
+#: Logging.py:106 linkcheck/Logging.py:124 linkcheck/Logging.py:213
+#: linkcheck/Logging.py:316
+msgid "Check Time"
+msgstr "Prüfzeit"
+
+#: Logging.py:103 linkcheck/Logging.py:121 linkcheck/Logging.py:209
+#: linkcheck/Logging.py:311
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+#: linkcheck/HttpUrlData.py:115
+#, c-format
+msgid "Effective URL %s"
+msgstr "Effektive URL %s"
+
+#: linkcheck/UrlData.py:50 linkcheck/UrlData.py:68
+msgid "Error"
+msgstr "Fehler"
+
+#: Logging.py:82 linkcheck/Logging.py:100 linkcheck/Logging.py:253
+#: linkcheck/Logging.py:365 linkcheck/Logging.py:415
+msgid "Get the newest version at "
+msgstr "Die neueste Version gibt es unter "
+
+#: linkcheck/FtpUrlData.py:34
+msgid "Got no answer from FTP server"
+msgstr "Keine Antwort vom FTP Server"
+
+#: linkcheck/NntpUrlData.py:41
+#, c-format
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
+
+#: linkcheck/HttpUrlData.py:119
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr "HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
+
+#: linkcheck/HttpsUrlData.py:44
+msgid "HTTPS url ignored"
+msgstr "HTTPS url ignoriert"
+
+#: linkcheck/NntpUrlData.py:31
+msgid "Illegal NNTP link syntax"
+msgstr "Illegale NNTP link syntax"
+
+#: linkcheck/TelnetUrlData.py:32
+msgid "Illegal telnet link syntax"
+msgstr "Illegale telnet link syntax"
+
+#: Logging.py:109 linkcheck/Logging.py:127 linkcheck/Logging.py:218
+#: linkcheck/Logging.py:321 linkcheck/Logging.py:325
+msgid "Info"
+msgstr "Info"
+
+#: linkcheck/JavascriptUrlData.py:25
+msgid "Javascript url ignored"
+msgstr "Javascript url ignoriert"
+
+#: linkcheck/HttpUrlData.py:73
+msgid "Missing '/' at end of URL"
+msgstr "Fehlendes '/' am Ende der URL"
+
+#: linkcheck/NntpUrlData.py:37
+msgid "No NNTP server specified, checked only syntax"
+msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
+
+#: linkcheck/MailtoUrlData.py:66
+msgid "No adresses found"
+msgstr "Keine Adressen gefunden"
+
+#: linkcheck/MailtoUrlData.py:91
+#, c-format
+msgid "None of the mail hosts for %s accepts an SMTP connection: %s"
+msgstr "Keiner der Mail Hosts für %s akzeptiert eine SMTP Verbindung: %s"
+
+#: Logging.py:95 linkcheck/Logging.py:113 linkcheck/Logging.py:196
+#: linkcheck/Logging.py:275
+msgid "Parent URL"
+msgstr "Vater URL"
+
+#: Logging.py:101 linkcheck/Logging.py:119 linkcheck/Logging.py:205
+#: linkcheck/Logging.py:306
+msgid "Real URL"
+msgstr "Tats. URL"
+
+#: Logging.py:120 linkcheck/Logging.py:138 linkcheck/Logging.py:227
+#: linkcheck/Logging.py:231 linkcheck/Logging.py:339
+msgid "Result"
+msgstr "Ergebnis"
+
+#: Logging.py:84 linkcheck/Logging.py:102 linkcheck/Logging.py:179
+msgid "Start checking at "
+msgstr "Beginne Prüfen am "
+
+#: Logging.py:142 linkcheck/Logging.py:160 linkcheck/Logging.py:250
+msgid "Stopped checking at "
+msgstr "Beende Prüfen am "
+
+#: linkcheck/Logging.py:239
+msgid "Thats it. "
+msgstr "Das wars. "
+
+#: Logging.py:89 linkcheck/Logging.py:107 linkcheck/Logging.py:289
+msgid "URL"
+msgstr "URL"
+
+#: linkcheck/UrlData.py:125
+msgid "URL is null or empty"
+msgstr "URL ist Null oder leer"
+
+#: linkcheck/UrlData.py:51 linkcheck/UrlData.py:72
+msgid "Valid"
+msgstr "Gültig"
+
+#: Logging.py:115 linkcheck/Logging.py:133 linkcheck/Logging.py:223
+#: linkcheck/Logging.py:334
+msgid "Warning"
+msgstr "Warnung"
+
+#: Logging.py:83 linkcheck/Logging.py:101 linkcheck/Logging.py:255
+#: linkcheck/Logging.py:366 linkcheck/Logging.py:416
+msgid "Write comments and bugs to "
+msgstr "Kommentare und Fehler mailen Sie bitte an "
+
+#: linkcheck/MailtoUrlData.py:107
+msgid "could not split the mail adress"
+msgstr "konnte Mail Adresse nicht splitten"
+
+#: linkcheck/HostCheckingUrlData.py:44
+msgid "found"
+msgstr "gefunden"
+
+#: linkcheck/MailtoUrlData.py:96
+#, c-format
+msgid "found mail host %s"
+msgstr "Mail host %s gefunden"
+
+#: linkcheck/UrlData.py:148
+msgid "outside of domain filter, checked only syntax"
+msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
+
+#: linkcheck/RobotsTxt.py:94
+#, c-format
+msgid "robots.txt:%d: allow without user agents"
+msgstr "robots.txt:%d: allow ohne user agents"
+
+#: linkcheck/RobotsTxt.py:85
+#, c-format
+msgid "robots.txt:%d: disallow without user agents"
+msgstr "robots.txt:%d: disallow ohne user agents"
+
+#: linkcheck/RobotsTxt.py:77
+#, c-format
+msgid "robots.txt:%d: user-agent in the middle of rules"
+msgstr "robots.txt:%d: user-agent zwischen Regeln"

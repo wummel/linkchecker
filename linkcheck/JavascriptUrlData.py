@@ -16,12 +16,13 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 from UrlData import UrlData
+from linkcheck import _
 
 class JavascriptUrlData(UrlData):
     "Url link with javascript scheme"
 
     def check(self, config):
-        self.setWarning("Javascript url ignored")
+        self.setWarning(_("Javascript url ignored"))
         self.logMe(config)
 
     def __str__(self):
