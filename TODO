@@ -1,13 +1,11 @@
 Possible improvements people could work on:
 
-- [FEATURE] .dot output logger
-  http://www.graphviz.org/cvs/doc/info/lang.html
-
-- [OPTIMIZATION] Connection pooling. Right now we open for every link a
-  new connection.
+- [OPTIMIZATION] HTTP connection pooling. Right now we open for every
+  HTTP link a new connection.
   Must be thread-safe, must handle timeouts and connection expiration
   (HTTP: only pool persistent (ie. HTTP/1.1) connections; Keepalive
    header parsing).
+  Note: FTP connection pooling is already there, but without timeouts.
 
 - [USAGE] rethink intern/extern stuff
 
