@@ -11,6 +11,7 @@
 
   * Make sure that URLs are always Unicode strings and not None.
     Type: bugfix
+    Closes: SF bug #1168720
     Changed: linkcheck/linkparse.py, linkcheck/containers.py
 
 2.6 "Lord of the Rings" (released 15.3.2005)
