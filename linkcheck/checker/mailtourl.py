@@ -153,13 +153,21 @@ class MailtoUrl (urlbase.UrlBase):
         if len(answers) == 0:
             self.add_warning(_("No MX mail host for %(domain)s found.") % \
                             {'domain': domain})
-            return
-        # sort according to preference (lower preference means this
-        # host should be preferred
-        mxdata = [(rdata.preference,
-                   rdata.exchange.to_text(omit_final_dot=True))
-                   for rdata in answers]
-        mxdata.sort()
+            answers = linkcheck.dns.resolver.query(domain, 'A')
+            if len(answers) == 0:
+                self.set_result(_("No host for %(domain)s found.") % \
+                                 {'domain': domain}, valid=False)
+                return
+            # set preference to zero
+            mxdata = [(0, rdata.to_text(omit_final_dot=True))
+                      for rdata in answers]
+        else:
+            mxdata = [(rdata.preference,
+                       rdata.exchange.to_text(omit_final_dot=True))
+                       for rdata in answers]
+            # sort according to preference (lower preference means this
+            # host should be preferred)
+            mxdata.sort()
         # debug output
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "found %d MX mailhosts:", len(answers))
