@@ -148,11 +148,13 @@ myemail = "calvin@users.sourceforge.net"
 setup (name = "linkchecker",
        version = "1.10.2",
        description = "check HTML documents for broken links",
+       keywords = "link,url,checking,verfication",
        author = myname,
        author_email = myemail,
        maintainer = myname,
        maintainer_email = myemail,
        url = "http://linkchecker.sourceforge.net/",
+       download_url = "http://sourceforge.net/project/showfiles.php?group_id=1913",
        license = "GPL",
        long_description = """Linkchecker features
 o recursive checking
