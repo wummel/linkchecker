@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2004-08-31 22:29+CEST\n"
+"POT-Creation-Date: 2004-08-31 23:49+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -554,12 +554,12 @@ msgstr ""
 
 msgid ""
 "Try given username for HTTP and FTP authorization.\n"
-"Default is %r. See also -p."
+"For FTP the default username is \014Banonymous\014P. See also -p."
 msgstr ""
 
 msgid ""
 "Try given password for HTTP and FTP authorization.\n"
-"Default password is %r. See also -u."
+"For FTP the default password is 'anonymous@'. See also -u."
 msgstr ""
 
 msgid ""
