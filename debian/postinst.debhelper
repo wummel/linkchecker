@@ -1,7 +1,0 @@
-# Automatically added by dh_installdocs
-if [ "$1" = "configure" ]; then
-	if [ -d /usr/doc -a ! -e /usr/doc/linkchecker -a -d /usr/share/doc/linkchecker ]; then
-		ln -sf ../share/doc/linkchecker /usr/doc/linkchecker
-	fi
-fi
-# End automatically added section
