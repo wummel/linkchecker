@@ -18,7 +18,7 @@
 import httplib,urlparse,sys,time,re
 import Config,StringUtil,robotparser2
 from UrlData import UrlData
-from urllib import splittype, splithost
+from urllib import splittype, splithost, splituser, splitpasswd
 from linkcheck import _
 from debuglevels import *
 

@@ -2,8 +2,9 @@ linkchecker (1.3.7) unstable; urgency=low
 
   * fix typo in DNS/Base.py Windows Registry handling
   * minor code cleanups
+  * add missing split* import for proxy handling (Closes: #115931)
 
- -- Bastian Kleineidam <calvin@debian.org>  Tue, 16 Oct 2001 21:27:15 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 17 Oct 2001 14:40:34 +0200
 
 linkchecker (1.3.6) unstable; urgency=low
 
