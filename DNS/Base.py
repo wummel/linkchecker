@@ -17,20 +17,20 @@ def ParseResolvConf():
     global defaults
     lines=open("/etc/resolv.conf").readlines()
     for line in lines:
-	line = string.strip(line)
-	if (not line) or line[0]==';' or line[0]=='#':
-	    continue
-	fields=string.split(line)
-	if fields[0]=='domain':
-	    defaults['domain']=fields[1]
-	if fields[0]=='search':
-	    pass
-	if fields[0]=='options':
-	    pass
-	if fields[0]=='sortlist':
-	    pass
-	if fields[0]=='nameserver':
-	    defaults['server'].append(fields[1])
+        line = string.strip(line)
+        if (not line) or line[0]==';' or line[0]=='#':
+            continue
+        fields=string.split(line)
+        if fields[0]=='domain':
+            defaults['domain']=fields[1]
+        if fields[0]=='search':
+            pass
+        if fields[0]=='options':
+            pass
+        if fields[0]=='sortlist':
+            pass
+        if fields[0]=='nameserver':
+            defaults['server'].append(fields[1])
 
 
 

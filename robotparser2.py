@@ -1,4 +1,5 @@
-"""
+""" robotparser2.py
+
     Copyright (C) 2000  Bastian Kleineidam
 """
 import re,string,urlparse,urllib

@@ -1,4 +1,4 @@
-"""__init__.py in linkcheck
+""" linkcheck/__init__.py
 
     Copyright (C) 2000  Bastian Kleineidam
 

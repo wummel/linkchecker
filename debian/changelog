@@ -3,7 +3,7 @@ linkchecker (1.2.8) unstable; urgency=low
   * INSTALL: more documentation for the CGI scripts
   * Makefile: better cleaning (clean, cleandeb, distclean)
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu,  9 Nov 2000 12:35:03 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 10 Nov 2000 11:54:25 +0100
 
 linkchecker (1.2.7) unstable; urgency=low
 

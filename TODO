@@ -1,13 +1,1 @@
-High priority
-
-o Use Python 2.0 features
-
-o I want to be able to supply a "break" command even when multiple
-  threads are running.
-  The thread implementation of Python is somewhat sparse and does not allow
-  suspending/stopping of threads. What I am doing is to call sys.exit(1).
-
-o Parse output and make a site map graphic (PNG format)
-  Use an existing layout algorithm.
-
-Low priority
+Feature complete, only fixes.

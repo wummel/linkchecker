@@ -1,4 +1,5 @@
-"""
+""" linkcheck/FtpUrlData.py
+
     Copyright (C) 2000  Bastian Kleineidam
 
     This program is free software; you can redistribute it and/or modify
