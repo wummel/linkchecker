@@ -3,6 +3,10 @@
     Type: bugfix
     Changed: linkcheck/HttpUrlData.py
 
+  * really fall back to GET with Zope servers; fixes infinite loop
+    Type: bugfix
+    Changed: linkcheck/HttpUrlData.py
+
   * better error msg on BadStatusLine error
     Type: feature
     Changed: linkcheck/UrlData.py
