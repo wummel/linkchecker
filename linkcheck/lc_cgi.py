@@ -66,9 +66,12 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
     config["recursionlevel"] = int(form["level"].value)
     config["log"] = config.newLogger('html', {'fd': out})
     config.setThreads(0)
-    if form.has_key('strict'): config['strict'] = True
-    if form.has_key("anchors"): config["anchors"] = True
-    if not form.has_key("errors"): config["verbose"] = True
+    if form.has_key('externstrictall'):
+        config['externstrictall'] = True
+    if form.has_key("anchors"):
+        config["anchors"] = True
+    if not form.has_key("errors"):
+        config["verbose"] = True
     if form.has_key("intern"):
         pat = linkcheck.url.safe_host_pattern(re.escape(get_host_name(form)))
     else:
@@ -118,7 +121,7 @@ def checkform (form):
         if not _is_level(level):
             raise FormError(_("invalid recursion level"))
     # check options
-    for option in ("strict", "anchors", "errors", "intern"):
+    for option in ("externstrictall", "anchors", "errors", "intern"):
         if form.has_key(option):
             if not form[option].value == "on":
                 raise FormError(_("invalid %s option syntax") % option)

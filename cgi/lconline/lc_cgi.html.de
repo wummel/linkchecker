@@ -73,8 +73,8 @@ target="_top">LinkChecker</a>)
   <option value="nl">Niederländisch</option>
   </select>
 </td>
-<td>Prüfe strikt interne Links:</td>
-<td><input type="checkbox" name="strict"></td>
+<td>Prüfe nur interne Links:</td>
+<td><input type="checkbox" name="externstrictall"></td>
 </tr>
 </table>
 </blockquote>
