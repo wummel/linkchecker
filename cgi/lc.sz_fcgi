@@ -16,7 +16,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, thread, sz_fcgi
+import thread
+import sz_fcgi
+import linkcheck
 import linkcheck.lc_cgi
 
 # access

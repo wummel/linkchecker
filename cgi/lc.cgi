@@ -16,7 +16,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, cgi, sys, urlparse, time, os
+import sys
+import cgi
+
+import linkcheck
+import linkcheck.lc_cgi
+
+
 # log errors to stdout
 sys.stderr = sys.stdout
 
@@ -26,7 +32,6 @@ ALLOWED_SERVERS = ['127.0.0.1']
 # uncomment the following lines to test your CGI values
 #cgi.test()
 #sys.exit(0)
-import linkcheck.lc_cgi
 linkcheck.lc_cgi.startoutput()
 if linkcheck.lc_cgi.checkaccess(hosts=ALLOWED_HOSTS,
                                 servers=ALLOWED_SERVERS):
