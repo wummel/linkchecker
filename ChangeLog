@@ -1,4 +1,4 @@
-1.13.2 "" (released xx.xx.xxxx)
+1.13.2 "Zatôichi" (released 8.9.2004)
   * Fix permissions of data files on install to be world readable.
     Type: bugfix
     Closes: SF bug #1022132
@@ -26,7 +26,7 @@
     Type: feature
     Changed: linkcheck/__init__.py
 
-  * Removed debug print statement when issueing linkchecker --help
+  * Removed debug print statement when issueing linkchecker --help.
     Type: bugfix
     Changed: linkchecker
 
