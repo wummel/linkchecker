@@ -3,6 +3,8 @@ url file:///home/calvin/projects/linkchecker/test/html/misc.html
 valid
 url file:///home/calvin/projects/linkchecker/test/html/anchor.html
 valid
+url file:///home/calvin/projects/linkchecker/test/html/norobots.html
+valid
 url http://localhost/
 info Last modified Mon, 28 Apr 2003 07:50:08 GMT
 valid
