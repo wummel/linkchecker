@@ -82,30 +82,34 @@ class Configuration(UserDict.UserDict):
         """Initialize the default options"""
         UserDict.UserDict.__init__(self)
         self.reset()
+        # we use this variable to delay the calling of
+	# Threader.reduceThreads() because we would call it too often.
+        # Therefore we count this variable up to 5 and then we call
+        # reduceThreads(). Ok, this is a hack but ItWorksForMe(tm).
         self.reduceCount = 0
 
     def reset(self):
         """Reset to default values"""
-        self.data['linknumber'] = 0
-        self.data["verbose"] = 0
-        self.data["warnings"] = 0
-        self.data["anchors"] = 0
-        self.data["externlinks"] = []
-        self.data["internlinks"] = []
-        self.data["denyallow"] = 0
-        self.data["authentication"] = [(re.compile(r'^.+'),
-	                               'anonymous',
-	                               'joe@')]
-        self.data["proxy"] = getproxies()
-        self.data["recursionlevel"] = 1
-        self.data["robotstxt"] = 0
-        self.data["strict"] = 0
-        self.data["fileoutput"] = []
+        self['linknumber'] = 0
+        self["verbose"] = 0
+        self["warnings"] = 0
+        self["anchors"] = 0
+        self["externlinks"] = []
+        self["internlinks"] = []
+        self["denyallow"] = 0
+        self["authentication"] = [(re.compile(r'^.+'),
+	                          'anonymous',
+	                          'joe@')]
+        self["proxy"] = getproxies()
+        self["recursionlevel"] = 1
+        self["robotstxt"] = 0
+        self["strict"] = 0
+        self["fileoutput"] = []
         # Logger configurations
-        self.data["text"] = {
+        self["text"] = {
             "filename": "linkchecker-out.txt",
         }
-        self.data['html'] = {
+        self['html'] = {
             "filename":        "linkchecker-out.html",
             'colorbackground': '"#fff7e5"',
             'colorurl':        '"#dcd5cf"',
@@ -116,7 +120,7 @@ class Configuration(UserDict.UserDict):
             'tableok':         '<td bgcolor="#3ba557">',
         }
         ESC="\x1b"
-        self.data['colored'] = {
+        self['colored'] = {
             "filename":     "linkchecker-out.ansi",
             'colorparent':  ESC+"[37m",   # white
             'colorurl':     ESC+"[0m",    # standard
@@ -129,29 +133,29 @@ class Configuration(UserDict.UserDict):
             'colordltime':  ESC+"[0m",    # standard
             'colorreset':   ESC+"[0m",    # reset to standard
         }
-        self.data['gml'] = {
+        self['gml'] = {
             "filename":     "linkchecker-out.gml",
         }
-        self.data['sql'] = {
+        self['sql'] = {
             "filename":     "linkchecker-out.sql",
             'separator': ';',
             'dbname': 'linksdb',
         }
-        self.data['csv'] = {
+        self['csv'] = {
             "filename":     "linkchecker-out.csv",
             'separator': ';',
         }
-        self.data['blacklist'] = {
+        self['blacklist'] = {
             "filename":     "~/.blacklist",
 	}
-        self.data['xml'] = {
+        self['xml'] = {
             "filename":     "linkchecker-out.xml",
         }
         # default values
-        self.data['log'] = self.newLogger('text')
-        self.data["quiet"] = 0
-        self.data["warningregex"] = None
-        self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
+        self['log'] = self.newLogger('text')
+        self["quiet"] = 0
+        self["warningregex"] = None
+        self["nntpserver"] = os.environ.get("NNTP_SERVER",None)
         self.urlCache = {}
         self.robotsTxtCache = {}
         try:
@@ -165,7 +169,7 @@ class Configuration(UserDict.UserDict):
         """Disable threading by replacing functions with their
         non-threading equivalents
 	"""
-        self.data["threads"] = 0
+        self["threads"] = 0
         self.hasMoreUrls = self.hasMoreUrls_NoThreads
         self.finished = self.finished_NoThreads
         self.finish = self.finish_NoThreads
@@ -193,7 +197,7 @@ class Configuration(UserDict.UserDict):
 	"""
         import Queue,Threader
         from threading import Lock
-        self.data["threads"] = 1
+        self["threads"] = 1
         self.hasMoreUrls = self.hasMoreUrls_Threads
         self.finished = self.finished_Threads
         self.finish = self.finish_Threads
@@ -253,33 +257,33 @@ class Configuration(UserDict.UserDict):
 
     def newLogger(self, name, dict={}):
         namespace = {}
-	namespace.update(self.data[name])
+	namespace.update(self[name])
 	namespace.update(dict)
         return apply(Loggers[name], (), namespace)
 
     def incrementLinknumber_NoThreads(self):
-        self.data['linknumber'] = self.data['linknumber'] + 1
+        self['linknumber'] = self['linknumber'] + 1
     
     def log_newUrl_NoThreads(self, url):
-        if not self.data["quiet"]: self.data["log"].newUrl(url)
-        for log in self.data["fileoutput"]:
+        if not self["quiet"]: self["log"].newUrl(url)
+        for log in self["fileoutput"]:
             log.newUrl(url)
 
     def log_init(self):
-        if not self.data["quiet"]: self.data["log"].init()
-        for log in self.data["fileoutput"]:
+        if not self["quiet"]: self["log"].init()
+        for log in self["fileoutput"]:
             log.init()
 
     def log_endOfOutput(self):
-        if not self.data["quiet"]:
-            self.data["log"].endOfOutput(linknumber=self.data['linknumber'])
-        for log in self.data["fileoutput"]:
-            log.endOfOutput(linknumber=self.data['linknumber'])
+        if not self["quiet"]:
+            self["log"].endOfOutput(linknumber=self['linknumber'])
+        for log in self["fileoutput"]:
+            log.endOfOutput(linknumber=self['linknumber'])
 
     def incrementLinknumber_Threads(self):
         try:
             self.dataLock.acquire()
-            self.data['linknumber'] = self.data['linknumber'] + 1
+            self['linknumber'] = self['linknumber'] + 1
         finally:
             self.dataLock.release()
 
@@ -352,8 +356,8 @@ class Configuration(UserDict.UserDict):
     def log_newUrl_Threads(self, url):
         try:
             self.logLock.acquire()
-            if not self.data["quiet"]: self.data["log"].newUrl(url)
-            for log in self.data["fileoutput"]:
+            if not self["quiet"]: self["log"].newUrl(url)
+            for log in self["fileoutput"]:
                 log.newUrl(url)
         finally:
             self.logLock.release()
@@ -392,31 +396,31 @@ class Configuration(UserDict.UserDict):
         try:
             log = cfgparser.get(section, "log")
             if Loggers.has_key(log):
-                self.data['log'] = self.newLogger(log)
+                self['log'] = self.newLogger(log)
             else:
                 self.warn(_("invalid log option '%s'") % log)
         except ConfigParser.Error: pass
         try: 
             if cfgparser.getboolean(section, "verbose"):
-                self.data["verbose"] = 1
-                self.data["warnings"] = 1
+                self["verbose"] = 1
+                self["warnings"] = 1
         except ConfigParser.Error: pass
-        try: self.data["quiet"] = cfgparser.getboolean(section, "quiet")
+        try: self["quiet"] = cfgparser.getboolean(section, "quiet")
         except ConfigParser.Error: pass
-        try: self.data["warnings"] = cfgparser.getboolean(section, "warnings")
+        try: self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error: pass
         try:
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
                 # no file output for the blacklist Logger
                 if Loggers.has_key(arg) and arg != "blacklist":
-		    self.data['fileoutput'].append(
+		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error: pass
         for key in Loggers.keys():
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
-                    try: self.data[key][opt] = cfgparser.get(key, opt)
+                    try: self[key][opt] = cfgparser.get(key, opt)
                     except ConfigParser.Error: pass
 
         section="checking"
@@ -427,36 +431,36 @@ class Configuration(UserDict.UserDict):
             else:
                 self.enableThreads(num)
         except ConfigParser.Error: pass
-        try: self.data["anchors"] = cfgparser.getboolean(section, "anchors")
+        try: self["anchors"] = cfgparser.getboolean(section, "anchors")
         except ConfigParser.Error: pass
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
                 self.error(_("illegal recursionlevel number %d") % num)
-            self.data["recursionlevel"] = num
+            self["recursionlevel"] = num
         except ConfigParser.Error: pass
         try: 
-            self.data["robotstxt"] = cfgparser.getboolean(section, 
+            self["robotstxt"] = cfgparser.getboolean(section, 
             "robotstxt")
         except ConfigParser.Error: pass
-        try: self.data["strict"] = cfgparser.getboolean(section, "strict")
+        try: self["strict"] = cfgparser.getboolean(section, "strict")
         except ConfigParser.Error: pass
         try: 
-            self.data["warningregex"] = re.compile(cfgparser.get(section,
+            self["warningregex"] = re.compile(cfgparser.get(section,
             "warningregex"))
         except ConfigParser.Error: pass
         try:
-            self.data["nntpserver"] = cfgparser.get(section, "nntpserver")
+            self["nntpserver"] = cfgparser.get(section, "nntpserver")
         except ConfigParser.Error: pass
 
         section = "authentication"
 	try:
 	    i=1
 	    while 1:
-                tuple = string.split(cfgparser.get(section, "entry"+`i`))
+                tuple = string.split(cfgparser.get(section, "entry%d" % i))
 		if len(tuple)!=3: break
                 tuple[0] = re.compile(tuple[0])
-                self.data["authentication"].insert(0, tuple)
+                self["authentication"].insert(0, tuple)
                 i = i + 1
         except ConfigParser.Error: pass
 
@@ -464,13 +468,13 @@ class Configuration(UserDict.UserDict):
         try:
             i=1
             while 1:
-                tuple = string.split(cfgparser.get(section, "extern"+`i`))
+                tuple = string.split(cfgparser.get(section, "extern%d" % i))
                 if len(tuple)!=2: break
-                self.data["externlinks"].append((re.compile(tuple[0]),
+                self["externlinks"].append((re.compile(tuple[0]),
 		                                 int(tuple[1])))
                 i = i + 1
         except ConfigParser.Error: pass
-        try: self.data["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
+        try: self["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
         except ConfigParser.Error: pass
-        try: self.data["denyallow"] = cfgparser.getboolean(section, "denyallow")
+        try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
 	except ConfigParser.Error: pass

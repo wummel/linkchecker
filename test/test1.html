@@ -1,18 +1,21 @@
 Just some HTTP links
-<a href="http://www.garantiertnixgutt.bla">
-<a href="http://www.heise.de">
-<a href="http:/www.heise.de">
-<a href="http:www.heise.de">
-<a href="http://">
-<a href="http:/">
-<a href="http:">
-<a href="http://www.blubb.de/stalter&sohn">
-<a name="iswas"> <!-- anchor for test2.html -->
-<a href=http://slashdot.org/>
-<a href="http://treasure.calvinsplayground.de/~calvin/software/#isnix">
-<a href="https://www.heise.de"> <!-- ignore -->
-<a href="HtTP://WWW.hEIsE.DE">
+<a href="http://www.garantiertnixgutt.bla"> <!-- bad url -->
+<a href="http://www.heise.de"> <!-- ok -->
+<a href="http:/www.heise.de">  <!-- one slash -->
+<a href="http:www.heise.de">   <!-- no slash -->
+<a href="http://">             <!-- no url -->
+<a href="http:/">              <!-- no url, one slash -->
+<a href="http:">               <!-- no url, no slash -->
+<a href="http://www.blubb.de/stalter&sohn"> <!-- unquoted ampersand -->
+<a name="iswas">               <!-- anchor for test2.html -->
+<a href=http://slashdot.org/>  <!-- unquoted -->
+<!-- invalid anchor -->
+<a href="http://treasure.calvinsplayground.de/~calvin/software/#isnix"> 
+<!-- authorization (user=calvin, pass=calvin) -->
+<a href="http://treasure.calvinsplayground.de/~calvin/isnich/">
+<a href="https://www.heise.de"> <!-- https -->
+<a href="HtTP://WWW.hEIsE.DE"> <!-- should be cached -->
 <a href="HTTP://WWW.HEISE.DE"> <!-- should be cached -->
-<!-- <a href=http://nocheckin> -->
+<!-- <a href=http://nocheckin> no check because of comment -->
 <!-- check the parser at end of file -->
 <a href="g

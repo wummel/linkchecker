@@ -11,7 +11,7 @@ A: Look at the options --intern, --extern, --strict, --allowdeny  and
    --recursion-level.
 
 
-Q: I dont get this extern/intern stuff.
+Q: I dont get this --extern/--intern stuff.
 A: When it comes to checking there are three types of URLs:
    1) strict URLs:
       we do only syntax checking
@@ -29,7 +29,7 @@ A: When it comes to checking there are three types of URLs:
    of those three categories: --intern, --extern, --strict and
    --denyallow.
    By default all URLs are intern. With --extern you specify what URLs
-   are extern. With --intern you specify what URLs are intern. 
+   are extern. With --intern you specify what URLs are intern.
    Now imagine you have both --extern and --intern. What happens
    when an URL matches both patterns? Or when it matches none? In this
    situation the --denyallow option specifies the order in which we match

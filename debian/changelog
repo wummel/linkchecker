@@ -5,12 +5,14 @@ linkchecker (1.2.9) unstable; urgency=low
   * linkchecker.1: added a man page
   * setup.py: overloaded distutils debugging function dump_dirs
   * setup.py: handle man pages correctly with bdist_rpm target
-  * correct order with user/password authentication entries (report and
-    fix by Jamie Heilman <jamie@audible.transient.net>)
-  * default password is joe@, not guest@ (report and fix by Jamie
-    Heilman <jamie@audible.transient.net>)
+  * linkcheck/Config.py: correct order with user/password authentication
+    entries (report and fix by Jamie Heilman <jamie@audible.transient.net>)
+  * linkchecker: default password is joe@, not guest@ (report and fix by 
+    Jamie Heilman <jamie@audible.transient.net>)
+  * test/*.html: comments in the test suite files
+  * Config.py: dont use internals of the UserDict class
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 30 Nov 2000 18:13:52 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon,  4 Dec 2000 11:56:03 +0100
 
 linkchecker (1.2.8) unstable; urgency=low
 

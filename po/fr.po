@@ -103,6 +103,73 @@ msgstr "1 avertissement, "
 msgid "Illegal argument '%s' for option "
 msgstr "Argumen illégal '%s' pour l'option "
 
+msgid "hours"
+msgstr "heures"
+
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Url Javascript ignorée"
+
+msgid "Start checking at %s\n"
+msgstr "Démarrage du controle à %s\n"
+
+msgid "D/L Time"
+msgstr "Durée D/L"
+
+msgid "seconds"
+msgstr "secondes"
+
+msgid "URL"
+msgstr ""
+
+msgid "URL is null or empty"
+msgstr "L'URL est nulle ou vide"
+
+msgid " in %d links"
+msgstr " dans %d liens"
+
+msgid " errors"
+msgstr " erreurs"
+
+msgid "Info"
+msgstr ""
+
+msgid "illegal recursionlevel number %d"
+msgstr "valeur du niveau de récursivité %d illégal"
+
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
+
+msgid "Base"
+msgstr "Base"
+
+msgid "Check Time"
+msgstr "Durée d'Analyse"
+
+msgid "Stopped checking at %s"
+msgstr "Arrêt du controle à %s"
+
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Le groupe %s a %s articles, de %s à %s"
+
+msgid "No user or password found"
+msgstr "Aucun utilisateur ou mot de passe trouvé"
+
+msgid "Get the newest version at %s\n"
+msgstr "Obtenir la dernière version à %s\n"
+
+msgid "Got no answer from FTP server"
+msgstr "N'obtient pas de réponse du serveur FTP"
+
+msgid "found mail host %s"
+msgstr "trouvé un hôte de messagerie %s"
+
+msgid "Javascript url ignored"
+msgstr "Url Javascript ignorée"
+
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -144,7 +211,7 @@ msgid ""
 "        Default type is text.\n"
 "-p pwd, --password=pwd\n"
 "        Try password pwd for HTML and FTP authorization.\n"
-"        Default password is 'guest@'. See also -u.\n"
+"        Default password is 'joe@'. See also -u.\n"
 "-q, --quiet\n"
 "        Quiet operation. This is only useful with -F.\n"
 "-r depth, --recursion-level=depth\n"
@@ -251,73 +318,6 @@ msgstr ""
 "        error message, for example 'This page has moved' or\n"
 "        'Oracle Application Server error'.\n"
 "        This option implies -w.\n"
-
-msgid "hours"
-msgstr "heures"
-
-#, fuzzy
-msgid "HTTPS url ignored"
-msgstr "Url Javascript ignorée"
-
-msgid "Start checking at %s\n"
-msgstr "Démarrage du controle à %s\n"
-
-msgid "D/L Time"
-msgstr "Durée D/L"
-
-msgid "seconds"
-msgstr "secondes"
-
-msgid "URL"
-msgstr ""
-
-msgid "URL is null or empty"
-msgstr "L'URL est nulle ou vide"
-
-msgid " in %d links"
-msgstr " dans %d liens"
-
-msgid " errors"
-msgstr " erreurs"
-
-msgid "Info"
-msgstr ""
-
-msgid "illegal recursionlevel number %d"
-msgstr "valeur du niveau de récursivité %d illégal"
-
-msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
-
-msgid "Base"
-msgstr "Base"
-
-msgid "Check Time"
-msgstr "Durée d'Analyse"
-
-msgid "Stopped checking at %s"
-msgstr "Arrêt du controle à %s"
-
-msgid "Group %s has %s articles, range %s to %s"
-msgstr "Le groupe %s a %s articles, de %s à %s"
-
-msgid "No user or password found"
-msgstr "Aucun utilisateur ou mot de passe trouvé"
-
-msgid "Get the newest version at %s\n"
-msgstr "Obtenir la dernière version à %s\n"
-
-msgid "Got no answer from FTP server"
-msgstr "N'obtient pas de réponse du serveur FTP"
-
-msgid "found mail host %s"
-msgstr "trouvé un hôte de messagerie %s"
-
-msgid "Javascript url ignored"
-msgstr "Url Javascript ignorée"
 
 msgid "could not split the mail adress"
 msgstr "impossible de partager l'adresse e-mail"

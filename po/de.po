@@ -111,6 +111,74 @@ msgstr "1 Warnung, "
 msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
 
+msgid "hours"
+msgstr "Stunden"
+
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Javascript url ignoriert"
+
+msgid "Start checking at %s\n"
+msgstr "Beginne Prüfen am %s\n"
+
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+msgid "seconds"
+msgstr "Sekunden"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL is null or empty"
+msgstr "URL ist Null oder leer"
+
+msgid " in %d links"
+msgstr " in %d URLs"
+
+msgid " errors"
+msgstr " Fehler"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "illegal recursionlevel number %d"
+msgstr "illegale recursionlevel Nummer %d"
+
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
+
+msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+msgstr ""
+"HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
+
+msgid "Base"
+msgstr "Basis"
+
+msgid "Check Time"
+msgstr "Prüfzeit"
+
+msgid "Stopped checking at %s"
+msgstr "Beende Prüfen am %s"
+
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
+
+msgid "No user or password found"
+msgstr "Kein Benutzername oder Passwort gefunden"
+
+msgid "Get the newest version at %s\n"
+msgstr "Die neueste Version gibt es unter %s\n"
+
+msgid "Got no answer from FTP server"
+msgstr "Keine Antwort vom FTP Server"
+
+msgid "found mail host %s"
+msgstr "Mail host %s gefunden"
+
+msgid "Javascript url ignored"
+msgstr "Javascript url ignoriert"
+
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -152,7 +220,7 @@ msgid ""
 "        Default type is text.\n"
 "-p pwd, --password=pwd\n"
 "        Try password pwd for HTML and FTP authorization.\n"
-"        Default password is 'guest@'. See also -u.\n"
+"        Default password is 'joe@'. See also -u.\n"
 "-q, --quiet\n"
 "        Quiet operation. This is only useful with -F.\n"
 "-r depth, --recursion-level=depth\n"
@@ -255,74 +323,6 @@ msgstr ""
 "        Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option impliziert -w.\n"
-
-msgid "hours"
-msgstr "Stunden"
-
-#, fuzzy
-msgid "HTTPS url ignored"
-msgstr "Javascript url ignoriert"
-
-msgid "Start checking at %s\n"
-msgstr "Beginne Prüfen am %s\n"
-
-msgid "D/L Time"
-msgstr "D/L Zeit"
-
-msgid "seconds"
-msgstr "Sekunden"
-
-msgid "URL"
-msgstr "URL"
-
-msgid "URL is null or empty"
-msgstr "URL ist Null oder leer"
-
-msgid " in %d links"
-msgstr " in %d URLs"
-
-msgid " errors"
-msgstr " Fehler"
-
-msgid "Info"
-msgstr "Info"
-
-msgid "illegal recursionlevel number %d"
-msgstr "illegale recursionlevel Nummer %d"
-
-msgid "Execute 'linkchecker -h' for help\n"
-msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
-
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
-msgstr ""
-"HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
-
-msgid "Base"
-msgstr "Basis"
-
-msgid "Check Time"
-msgstr "Prüfzeit"
-
-msgid "Stopped checking at %s"
-msgstr "Beende Prüfen am %s"
-
-msgid "Group %s has %s articles, range %s to %s"
-msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
-
-msgid "No user or password found"
-msgstr "Kein Benutzername oder Passwort gefunden"
-
-msgid "Get the newest version at %s\n"
-msgstr "Die neueste Version gibt es unter %s\n"
-
-msgid "Got no answer from FTP server"
-msgstr "Keine Antwort vom FTP Server"
-
-msgid "found mail host %s"
-msgstr "Mail host %s gefunden"
-
-msgid "Javascript url ignored"
-msgstr "Javascript url ignoriert"
 
 msgid "could not split the mail adress"
 msgstr "konnte Mail Adresse nicht splitten"
