@@ -52,7 +52,9 @@ def print_duration (duration):
     print >> stderr, msg,
 
 
-class Consumer (threading.Lock):
+lock_klass = threading.RLock().__class__
+
+class Consumer (lock_klass):
     """
     Consume urls from the url queue in a thread-safe manner.
     """
