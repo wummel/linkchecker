@@ -72,7 +72,7 @@ Type "linkchecker -h" for help.
 Running under Windows platforms
 -------------------------------
 
-Double-click on "linkchecker.bat" on your desktop.
+Start "Check URL" in your LinkChecker program group.
 URL input is interactive.
 Another way is executing "python.exe linkchecker" in the Python
 Scripts directory.
