@@ -5,12 +5,12 @@
 
 PACKAGE=linkchecker-ssl
 
+#DEBHELPER#
+
 dpkg --listfiles $PACKAGE |
         awk '$0~/\.py$/ {print $0"c\n" $0"o"}' |
         xargs rm -f >&2
 
 rmdir /usr/lib/python2.0/site-packages/linkcheckssl 2>/dev/null || true
-
-#DEBHELPER#
 
 exit 0
