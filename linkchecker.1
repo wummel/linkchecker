@@ -32,6 +32,12 @@ So \fI-o colored\fP is the same as \fI-ocolored\fP.
 \fB-a\fP, \fB--anchors\fP
 Check HTTP anchor references. Default is don't check anchors.
 .TP
+\fB-C\fP, \fB--cookies\fP
+Accept and send HTTP cookies according to RFC 2109. Only cookies
+which are sent back to the originating server are accepted.
+Sent and accepted cookies are provided as additional logging
+information.
+.TP
 \fB-d\fP, \fB--denyallow\fP
 Swap checking order to extern/intern. Default checking order is
 intern/extern.
@@ -45,18 +51,17 @@ Assume urls that match the given regular expression as extern.
 Only intern HTML links are checked recursively.
 .TP
 \fB-f \fIfile\fP, \fB--config=\fIfile\fP
-Use \fIfile\fP as configuration file. LinkChecker first searches for
-~/.linkcheckerrc and then /etc/linkcheckerrc on Unix systems.
-Under Windows systems we read <path-to-program>\\linkcheckerrc.
+Use \fIfile\fP as configuration file. As default LinkChecker first searches
+/etc/linkcheckerrc and then ~/.linkcheckerrc.
 .TP
 \fB-F \fItype\fP[\fI/filename\fP], \fB--file-output=\fItype\fP[\fI/filename\fP]
-Same as output, but write to a file \fIlinkchecker-out.<type>\fP
+Same as -o, but write to a file \fIlinkchecker-out.<type>\fP
 or \fIfilename\fP if specified. If the file already exists, it is
 overwritten. You can specify this option more than once. There
 is no file output for the blacklist logger. Default is no file
 output.
 .TP
-\fB-I\rP, \fB--interactive\fP
+\fB-I\fP, \fB--interactive\fP
 Ask for url if none are given on the commandline.
 .TP
 \fB-i \fIregex\fP, \fB--intern=\fIregex\fP
@@ -144,8 +149,6 @@ If your platform does not support threading, LinkChecker uses
 \fB-t0\fP.
 
 You can supply multiple user/password pairs in a configuration file.
-
-Cookies are not accepted by LinkChecker.
 
 To use proxies set $http_proxy, $https_proxy on Unix or Windows.
 On a Mac use the Internet Config.
