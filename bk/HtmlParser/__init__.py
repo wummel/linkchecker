@@ -102,7 +102,7 @@ def resolve_html_entities (s):
 
 def resolve_entities (s):
     """resolve both html and 7-bit ASCII entites in s and return result"""
-    return resolve_ascii_entities(resolve_html_entities(s))
+    return resolve_html_entities(resolve_ascii_entities(s))
 
 
 def strip_quotes (s):
