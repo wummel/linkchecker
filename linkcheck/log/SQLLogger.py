@@ -26,7 +26,6 @@ class SQLLogger (StandardLogger):
         self.dbname = args['dbname']
         self.separator = args['separator']
 
-
     def init (self):
         if self.fd is None: return
         self.starttime = time.time()
@@ -80,5 +79,4 @@ class SQLLogger (StandardLogger):
             self.fd.write("	(%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
-
 

@@ -40,7 +40,6 @@ class GMLLogger (StandardLogger):
             self.fd.write("graph [\n  directed 1\n")
             self.fd.flush()
 
-
     def newUrl (self, urlData):
         """write one node and all possible edges"""
         if self.fd is None: return
@@ -62,7 +61,6 @@ class GMLLogger (StandardLogger):
 	    self.fd.write("  ]\n")
         self.writeEdges()
 
-
     def writeEdges (self):
         """write all edges we can find in the graph in a brute-force
            manner. Better would be a mapping of parent urls.
@@ -79,7 +77,6 @@ class GMLLogger (StandardLogger):
                     self.fd.write("    valid  %d\n" % (node.valid and 1 or 0))
                 self.fd.write("  ]\n")
         self.fd.flush()
-
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
@@ -99,5 +96,4 @@ class GMLLogger (StandardLogger):
             self.fd.write(" (%.3f %s)\n" % (duration, name))
         self.fd.flush()
         self.fd = None
-
 

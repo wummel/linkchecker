@@ -64,7 +64,6 @@ __init__(self, **args)
         else:
 	    self.fd = sys.stdout
 
-
     def init (self):
         if self.fd is None: return
         self.starttime = time.time()
@@ -121,7 +120,6 @@ __init__(self, **args)
                 self.errors += 1
                 self.fd.write(urlData.errorString+"\n")
         self.fd.flush()
-
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return

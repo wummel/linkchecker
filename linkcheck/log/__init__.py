@@ -15,11 +15,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-# return formatted time
-def strtime (t):
-    return time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(t))
+import time
 
-import time, linkcheck
+def strtime (t):
+    """return ISO 8601 formatted time"""
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)) + \
+           strtimezone()
+
+def strtimezone ():
+    """return timezone info, %z on some platforms, but not supported on all"""
+    if time.daylight:
+        zone = time.altzone
+    else:
+        zone = time.timezone
+    return "%+04d" % int(-zone/3600)
+
+import linkcheck
 
 LogFields = {
     "realurl": "Real URL",
@@ -35,7 +46,9 @@ LogFields = {
     "checktime": "Check Time",
     "url": "URL",
 }
+# maximum indent for localized log field names
 MaxIndent = max(map(lambda x: len(linkcheck._(x)), LogFields.values()))+1
+# map with spaces between field name and value
 Spaces = {}
 for key,value in LogFields.items():
     Spaces[key] = " "*(MaxIndent - len(linkcheck._(value)))
@@ -62,4 +75,3 @@ Loggers = {
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
-

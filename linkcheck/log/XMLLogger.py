@@ -110,4 +110,3 @@ class XMLLogger (StandardLogger):
         self.fd.flush()
         self.fd = None
 
-

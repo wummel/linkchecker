@@ -75,7 +75,6 @@ class CSVLogger (StandardLogger):
             urlData.cached))
         self.fd.flush()
 
-
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         self.stoptime = time.time()

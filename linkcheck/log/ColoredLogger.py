@@ -129,12 +129,10 @@ class ColoredLogger (StandardLogger):
 	                      self.colorreset+"\n")
         self.fd.flush()
 
-
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
         if self.logfield("outro"):
             if self.prefix:
                 self.fd.write("o\n")
         StandardLogger.endOfOutput(self, linknumber=linknumber)
-
 

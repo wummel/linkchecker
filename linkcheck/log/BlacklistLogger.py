@@ -44,4 +44,3 @@ class BlacklistLogger (Logger):
             if self.blacklist[url] is None:
                 fd.write(url+"\n")
 
-

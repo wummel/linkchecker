@@ -21,12 +21,10 @@ class Logger:
             if "all" not in args['fields']:
                 self.logfields = args['fields']
 
-
     def logfield (self, name):
         if self.logfields is None:
             return 1
         return name in self.logfields
-
 
     def init (self):
         raise Exception, "abstract function"

@@ -58,7 +58,6 @@ class HtmlLogger (StandardLogger):
 	      "<br><br>")
         self.fd.flush()
 
-
     def newUrl (self, urlData):
         if self.fd is None: return
         self.fd.write('<table align=left border=0 cellspacing=0'
@@ -116,10 +115,8 @@ class HtmlLogger (StandardLogger):
                 self.fd.write("<tr>"+self.tableerror+linkcheck._("Result")+
 	                  "</td>"+self.tableerror+
 			  urlData.errorString+"</td></tr>\n")
-
         self.fd.write("</table></td></tr></table><br clear=all><br>")
         self.fd.flush()
-
 
     def endOfOutput (self, linknumber=-1):
         if self.fd is None: return
