@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-19 12:18+0100\n"
-"PO-Revision-Date: 2004-11-19 12:48+0100\n"
+"POT-Creation-Date: 2004-11-19 12:53+0100\n"
+"PO-Revision-Date: 2004-11-19 14:00+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -450,8 +450,9 @@ msgid "Error"
 msgstr "Fehler"
 
 #: ../linkcheck/logger/html.py:237
-msgid "Thats it. "
-msgstr "Das wars. "
+#: ../linkcheck/logger/text.py:214
+msgid "That's it."
+msgstr "Das war's."
 
 #: ../linkcheck/logger/html.py:252
 #: ../linkcheck/logger/sql.py:59
@@ -472,10 +473,6 @@ msgstr "Schreiben Sie Kommentare und Fehler an %s"
 #: ../linkcheck/logger/csvlog.py:52
 msgid "# Format of the entries:"
 msgstr "# Format der Einträge:"
-
-#: ../linkcheck/logger/text.py:214
-msgid "Thats it."
-msgstr "Das war's."
 
 #: ../linkcheck/lc_cgi.py:115
 msgid "unsupported language"

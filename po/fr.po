@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newnewfr\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-19 12:18+0100\n"
-"PO-Revision-Date: 2004-11-19 12:50+0100\n"
+"POT-Creation-Date: 2004-11-19 12:53+0100\n"
+"PO-Revision-Date: 2004-11-19 14:01+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: français <kde-francophone@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -449,8 +449,9 @@ msgid "Error"
 msgstr "Erreur"
 
 #: ../linkcheck/logger/html.py:237
-msgid "Thats it. "
-msgstr "Terminé. "
+#: ../linkcheck/logger/text.py:214
+msgid "That's it."
+msgstr "Fin."
 
 #: ../linkcheck/logger/html.py:252
 #: ../linkcheck/logger/sql.py:59
@@ -471,10 +472,6 @@ msgstr "Écrivez des commentaires et rapports de bogue à %s."
 #: ../linkcheck/logger/csvlog.py:52
 msgid "# Format of the entries:"
 msgstr "# Format des entrées :"
-
-#: ../linkcheck/logger/text.py:214
-msgid "Thats it."
-msgstr "Fin."
 
 #: ../linkcheck/lc_cgi.py:115
 msgid "unsupported language"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sf.net\n"
-"POT-Creation-Date: 2004-11-19 12:18+0100\n"
+"POT-Creation-Date: 2004-11-19 12:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -423,8 +423,8 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:237
-msgid "Thats it. "
+#: ../linkcheck/logger/html.py:237 ../linkcheck/logger/text.py:214
+msgid "That's it."
 msgstr ""
 
 #: ../linkcheck/logger/html.py:252 ../linkcheck/logger/sql.py:59
@@ -441,10 +441,6 @@ msgstr ""
 
 #: ../linkcheck/logger/csvlog.py:52
 msgid "# Format of the entries:"
-msgstr ""
-
-#: ../linkcheck/logger/text.py:214
-msgid "Thats it."
 msgstr ""
 
 #: ../linkcheck/lc_cgi.py:115
