@@ -154,11 +154,12 @@ class Configuration (dict):
             'separator': ';',
         }
         self['blacklist'] = {
-            "filename":     "~/.blacklist",
+            "filename":     "~/.linkchecker_blacklist",
 	}
         self['xml'] = {
             "filename":     "linkchecker-out.xml",
         }
+        self['none'] = {}
         self['log'] = self.newLogger('text')
         self["quiet"] = False
         self["warningregex"] = None
@@ -408,8 +409,8 @@ class Configuration (dict):
             filelist = cfgparser.get(section, "fileoutput").split(",")
             for arg in filelist:
                 arg = arg.strip()
-                # no file output for the blacklist Logger
-                if Loggers.has_key(arg) and arg != "blacklist":
+                # no file output for the blacklist and none Logger
+                if Loggers.has_key(arg) and arg not in ["blacklist", "none"]:
 		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
