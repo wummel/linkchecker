@@ -1,4 +1,4 @@
-""" robotparser2.py
+""" implements the robots.txt inclusion protocol
 
     Copyright (C) 2000  Bastian Kleineidam
 

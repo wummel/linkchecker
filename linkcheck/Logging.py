@@ -1,44 +1,20 @@
-""" linkcheck/Logger.py
+"""Output logging support for different formats"""
+#    Copyright (C) 2000,2001  Bastian Kleineidam
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-    Copyright (C) 2000  Bastian Kleineidam
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-Every Logger has to implement the following functions:
-init(self)
-  Called once to initialize the Logger. Why do we not use __init__(self)?
-  Because we initialize the start time in init and __init__ gets not
-  called at the time the checking starts but when the logger object is
-  created.
-  Another reason is that we dont want might create several loggers
-  as a default and then switch to another configured output. So we
-  must not print anything out at __init__ time.
-
-newUrl(self,urlData)
-  Called every time an url finished checking. All data we checked is in
-  the UrlData object urlData.
-
-endOfOutput(self)
-  Called at the end of checking to close filehandles and such.
-
-Passing parameters to the constructor:
-__init__(self, **args)
-  The args dictionary is filled in Config.py. There you can specify
-  default parameters. Adjust these parameters in the configuration
-  files in the appropriate logger section.
-"""
 import sys,time,string
 from types import ListType
 import Config, StringUtil
@@ -83,6 +59,30 @@ def _strtime(t):
 
 class StandardLogger:
     """Standard text logger.
+
+Every Logger has to implement the following functions:
+init(self)
+  Called once to initialize the Logger. Why do we not use __init__(self)?
+  Because we initialize the start time in init and __init__ gets not
+  called at the time the checking starts but when the logger object is
+  created.
+  Another reason is that we dont want might create several loggers
+  as a default and then switch to another configured output. So we
+  must not print anything out at __init__ time.
+
+newUrl(self,urlData)
+  Called every time an url finished checking. All data we checked is in
+  the UrlData object urlData.
+
+endOfOutput(self)
+  Called at the end of checking to close filehandles and such.
+
+Passing parameters to the constructor:
+__init__(self, **args)
+  The args dictionary is filled in Config.py. There you can specify
+  default parameters. Adjust these parameters in the configuration
+  files in the appropriate logger section.
+
     Informal text output format spec:
     Output consists of a set of URL logs separated by one or more
     blank lines.

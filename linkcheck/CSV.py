@@ -1,3 +1,4 @@
+"""read/write Comma Separated Values (CSV)"""
 # CSV 0.17  8 June 1999    Copyright ©Laurence Tratt 1998 - 1999
 # e-mail: tratt@dcs.kcl.ac.uk
 # home-page: http://eh.org/~laurie/comp/python/csv/index.html
