@@ -1,69 +1,105 @@
-                     Installation
-                    ==============
+.. meta::
+  :navigation.order: 2
+  :navigation.name: Installation
+
+Installation
+============
 
 Requirements for Unix/Linux or Mac OS X
 --------------------------------------
+
 1. You need a standard GNU development environment with
+   
    a) C compiler (for example the GNU C Compiler gcc)
    b) gettext
+
 2. Python >= 2.3 from http://www.python.org/ with zlib support
 
 
 Requirements for Windows
 ------------------------
-Direct download links are in brackets.
+
 1. Install the MinGW suite from http://mingw.sourceforge.net.
    Be sure to install in the given order:
+   
    a) MingGW
-     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe ]
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe]
    b) MSYS
-     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe ]
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
    c) libiconv
-     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe ]
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe]
    d) gettext
-     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe ]
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe]
+
 2. Install Python >= 2.3 from http://www.python.org/
-   [ http://www.python.org/ftp/python/2.3.3/Python-2.3.3.exe ]
+   [ http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe ]
 
 
 Setup for Unix/Linux or Mac OS X
--------------------------------
-0. Help note
-   Run "python setup.py --help" for help about command options
-1. Compile Python modules
-   Run "python setup.py build" to compile the Python files.
-   The CC environment variable is checked before compilation, so you can
-   change the default C compiler with "export CC=myccompiler".
-2. Install Python modules
-   Run "python setup.py install" to install everything.
+--------------------------------
 
+1. Install check
+   
+   Be sure to have installed all required Unix/Linux software listed above.
+
+2. Compile Python modules
+   Run ``python setup.py build`` to compile the Python files.
+   For help about the setup.py script options, run
+   ``python setup.py --help``.
+   The CC environment variable is checked before compilation, so you can
+   change the default C compiler with ``export CC=myccompiler``.
+
+3.
+   a) Installation as root
+      
+      Run ``su -c 'python setup.py install'`` to install the proxy.
+   
+   b) Installation as a normal user
+      
+      Run ``python setup.py install --home $HOME``.
+
+4. Enjoy
+   
+   LinkChecker is now installed
+   See the `main page`_ on how to configure and start LinkChecker.
+   
+   .. _main page:
+      index.html
 
 Setup for Windows
 -----------------
-0. Install check
-   Be sure to have installed all required software listed above.
-1. Preparing Python for the MinGW compiler
+
+1. Install check
+   
+   Be sure to have installed all required Unix/Linux software listed above.
+
+2. Preparing Python for the MinGW compiler
+   
    Search the file python23.dll in your windows folder.
-   After you found it, launch MSYS. Then change into your windows folder,
-   for example with:
-   % cd c:\winnt\system32
-   After that execute:
-   % pexports python23.dll > python23.def
-   Then use the dlltool
-   % dlltool --dllname python23.dll --def python23.def --output-lib libpython23.a
+   After you found it, launch MSYS. Change into the windows folder,
+   for example ``% cd c:\winnt\system32``. Then execute
+   ``% pexports python23.dll > python23.def``.
+   Then use the dlltool with
+   ``% dlltool --dllname python23.dll --def python23.def --output-lib
+   libpython23.a``.
    The resulting library has to be placed in the same directory as
    python23.lib. (Should be the libs directory under your Python installation
-   directory.)
-2. Compile gettext translations
-   Change to the linkchecker-X.X.X/po directory:
-   % make win
-3. Compile and install the Python modules
-   Start a DOS command shell and change to the linkchecker-X.X.X directory:
-   c:> python setup.py build -c mingw32 install
+   directory, for example ``c:\Python23\Libs\``.)
+
+3. Compile gettext translations
+
+   Change to the linkchecker-X.X.X/po directory and run ``% make win``.
+
+4. Compile and install the LinkChecker Python modules
+   
+   Close the MSYS application and open a DOS command prompt.
+   Change to the linkchecker-X.X.X directory and run
+   ``c:> python setup.py build -c mingw32 install``.
 
 
 Installation for other platforms
 --------------------------------
+
 If you happen to install LinkChecker on other platforms (for example
 Mac OS 9.x) then drop me a note.
 
@@ -74,19 +110,26 @@ The *cgi files are three CGI scripts which you can use to run LinkChecker
 with a nice graphical web interface.
 You can use and adjust the example HTML files in the lconline directory
 to run the script.
+
 1. Choose a CGI script. The simplest is lc.cgi and you need a web server
    with CGI support.
    The scripts lc.fcgi (I tested this a while ago) and lc.sz_fcgi
    (untested) need a web server with FastCGI support.
+
 2. Copy the script of your choice in the CGI directory.
+
 3. Adjust the "action=..." parameter in lconline/lc_cgi.html
    to point to your CGI script.
+
 4. load the lconline/index.html file, enter an URL and klick on the
    check button
+
 5. If something goes wrong, check the following:
+   
    a) look in the error log of your web server
    b) be sure that you have enabled CGI support in your web server
       do this by running other CGI scripts from which you know that
       they are working
    c) try to run the lc.cgi script by hand
    d) try the testit() function in the lc.cgi script
+
