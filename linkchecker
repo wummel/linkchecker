@@ -11,7 +11,7 @@ sys.path.insert(0, "/usr/share/linkchecker")
 
 import linkcheck
 
-Usage = """USAGE\tpylice [options] file_or_url...
+Usage = """USAGE\tlinkchecker [options] file_or_url...
 
 OPTIONS
 -a, --anchors
@@ -22,8 +22,9 @@ OPTIONS
 	Assume urls that match the given expression as extern.
 	Only intern HTTP links are checked recursively.
 -f file, --config=file
-	Use file as configuration file. Pylice first searches ~/.pylicerc
-	and then /etc/pylicerc (under Windows <path-to-program>\\pylicerc).
+	Use file as configuration file. Pylice first searches
+	~/.linkcheckerrc and then /etc/linkcheckerrc
+	(under Windows <path-to-program>\\linkcheckerrc).
 -i regex, --intern=regex
 	Assume urls that match the given expression as intern.
 -h, --help
@@ -35,7 +36,7 @@ OPTIONS
 	Specify output as """+linkcheck.Config.LoggerKeys+""".
 	Default is text.
 -W name, --file-output=name
-	Same as output, but write to a file pylice-out.<name>.
+	Same as output, but write to a file linkchecker-out.<name>.
 	If the file already exists, it is overwritten.
 	You can specify this option more than once. 
 	Default is no file output.
@@ -78,18 +79,18 @@ o If you have your system configured to automatically establish a
   checking links not pointing to your local host.
   Use the -s and -i options to prevent this (see EXAMPLES).
 o Javascript and https links are currently ignored
-o If your platform does not support threading, pylice assumes -t0
+o If your platform does not support threading, linkchecker assumes -t0
 """
 
 Examples = """EXAMPLES
-o pylice -v -o html -r2 -s -i treasure.calvinsplayground.de \\
+o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\
     http://treasure.calvinsplayground.de/~calvin/ > sample.html
   generates the included sample.html file
 o Local files and syntactic sugar on the command line:
-      pylice c:\\temp\\test.html
-      pylice ../bla.html
-      pylice www.myhomepage.de
-      pylice -r0 ftp.linux.org
+      linkchecker c:\\temp\\test.html
+      linkchecker ../bla.html
+      linkchecker www.myhomepage.de
+      linkchecker -r0 ftp.linux.org
 """
 
 def printVersion():
@@ -103,7 +104,7 @@ def printHelp():
     sys.exit(0)
     
 def printUsage(msg):
-    sys.stderr.write("Error: "+str(msg)+"\nType pylice -h for help\n")
+    sys.stderr.write("Error: "+str(msg)+"\nType linkchecker -h for help\n")
     sys.exit(1)
 
 
@@ -171,7 +172,7 @@ for opt,arg in options:
 
     elif opt=="-W" or opt=="--file-output":
         if linkcheck.Config.Loggers.has_key(arg):
-            config["fileoutput"].append(linkcheck.Config.Loggers[arg](open("pylice-out."+arg, "w")))
+            config["fileoutput"].append(linkcheck.Config.Loggers[arg](open("linkchecker-out."+arg, "w")))
         else:
             printUsage("Legal output arguments are "+linkcheck.Config.LoggerKeys+".")
     
