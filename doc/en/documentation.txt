@@ -199,8 +199,8 @@ an addon for your web pages.
 **Q: I don't get this --extern/--intern stuff.**
 
 A: When it comes to checking there are three types of URLs. Note
-that local files are also represented als URLs (ie file://). So
-local files can be external URLs.
+that local files are also represented als URLs (with ``file:`` prefix).
+So local files can be external URLs.
 
 1) strict external URLs:
    We do only syntax checking. Internal URLs are never strict.
