@@ -11,12 +11,11 @@ HOST=www.debian.org
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
 TEST := test/run.sh test/regrtest.py
-OFFLINETESTS = test_base test_misc test_file test_frames
-DESTDIR=/.
-MD5SUMS=linkchecker-md5sums.txt
-
+DESTDIR = /.
+MD5SUMS := linkchecker-md5sums.txt
 PYCHECKEROPTS := -F config/pycheckrc
-PYCHECKERFILES := linkcheck/*.py linkcheck/logger/*.py linkcheck/checker/*.py
+#PYLINTOPTS := -F config/pylintrc
+PYFILES := linkcheck/*.py linkcheck/logger/*.py linkcheck/checker/*.py
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
@@ -25,8 +24,8 @@ clean:
 # ignore errors of this command
 	-$(PYTHON) setup.py clean --all
 	$(MAKE) -C po clean
-	rm -f bk/HtmlParser/htmlsax.so
-	rm -f bk/HtmlParser/*.output
+	rm -f linkcheck/HtmlParser/htmlsax.so
+	rm -f linkcheck/HtmlParser/*.output
 	find . -name '*.py[co]' | xargs rm -f
 
 distclean: clean cleandeb
@@ -49,9 +48,9 @@ dist:	releasecheck distclean locale config
 
 # to build in the current directory (assumes python 2.3)
 localbuild:
-	$(MAKE) -C linkcheck/parser
+	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
-	cp -f build/lib.linux-i686-2.3/linkcheck/parser/htmlsax.so linkcheck/parser
+	cp -f build/lib.linux-i686-2.3/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
 
 
 # produce the .deb Debian package
@@ -85,10 +84,7 @@ homepage: files VERSION
 	cp $(MD5SUMS) $(HTMLDIR)/
 
 test:
-	$(TEST) $(OFFLINETESTS)
-
-onlinetest:
-	$(TEST) $(ONLINETESTS)
+	env PYTHONPATH=. python test.py -fupv
 
 locale:
 	$(MAKE) -C po
@@ -105,7 +101,13 @@ releasecheck:
 	fi
 
 pycheck:
-	-env PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYCHECKERFILES)
+	-env PYTHONPATH=. PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYFILES)
+
+pylint:
+	-env PYTHONPATH=. pylint $(PYLINTOPTS) $(PYFILES)
+
+reindent:
+	$(PYTHON) config/reindent.py -r -v linkcheck
 
 .PHONY: all clean cleandeb distclean files upload test timeouttest locale
 .PHONY: onlinetest config dist deb_local deb_signed deb_unsigned tar
