@@ -8,6 +8,11 @@ This release:
 
 Next releases:
 
+- recursion into FTP links
+
+- recursion into text files which have one URL per line
+  (make a magic for easier detection)
+
 - SF bug #992389 bit me when I wanted to do absolute imports
   at the checker classes :/
   When the bug is fixed we can import absolute classes
