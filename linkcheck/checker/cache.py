@@ -199,6 +199,8 @@ class Cache (linkcheck.lock.AssertLock):
             for key in url_data.aliases:
                 linkcheck.log.debug(linkcheck.LOG_CACHE,
                                     "Cache alias %r...", key)
+                assert key not in self.checked, \
+                       key + u", " + unicode(self.checked[key])
                 self.checked[key] = data
         finally:
             self.release()
