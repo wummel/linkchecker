@@ -1,45 +1,65 @@
                      Installation
                     ==============
 
-Requirements
-------------
-Python >= 2.3 from http://www.python.org/
-For HTTPS support you need to compile Python with the SSL _socket
-module.
+Requirements for Unix/Linux
+---------------------------
+1. You need a standard GNU development environment with
+   a) C compiler (for example the GNU C Compiler gcc)
+   b) gettext
+2. Python >= 2.3 from http://www.python.org/
 
 
-Installation
-------------
-o Unix platforms
-  - open a commandline window and change to the linkchecker-x.x.x
-    directory
-  - run "python setup.py install" to install
-    The CC environment variable is checked before compilation, so you can
-    change the default C compiler with "export CC=myccompiler".
-  - run "python setup.py --help" for help about install options
+Requirements for Windows
+------------------------
+Direct download links are in brackets.
+1. Install the MinGW suite from http://mingw.sourceforge.net.
+   Be sure to install in the given order:
+   a) MingGW
+     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe ]
+   b) MSYS
+     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.9.exe ]
+   c) libiconv
+     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe ]
+   d) gettext
+     [ http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe ]
+2. Install Python >= 2.3 from http://www.python.org/
+   [ http://www.python.org/ftp/python/2.3.2/Python-2.3.2-1.exe ]
 
 
-o Windows platforms
-  - make sure that python.exe is in your PATH
-  - open a commandline window (cmd.exe) and change to the
-    linkchecker-x.x.x directory
-  - run "python.exe setup.py install" to install
-  - run "python.exe setup.py --help" for help about install options
+Setup for Unix/Linux
+--------------------
+0. Help note
+   Run "python setup.py --help" for help about command options
+1. Compile Python modules
+   Run "python setup.py build" to compile the Python files.
+   The CC environment variable is checked before compilation, so you can
+   change the default C compiler with "export CC=myccompiler".
+2. Install Python modules
+   Run "python setup.py install" to install everything.
 
 
-o MacOS 9.x platforms
-  - open the Python IDE
-  - open the setup.py file
-  - run it (click on "Run all")
-  - in the popup window, select the "install" command and click "Add"
-  - click "Ok"; this will copy files into the Python folder
+Setup for Windows
+-----------------
+0. Install check
+   Be sure to have installed all required software listed above.
+1. Preparing Python for the MinGW compiler
+   Search the file python23.dll in your windows folder.
+   After you found it, launch MSYS and do:
+   % pexports python23.dll > python23.def
+   Then use the dlltool
+   % dlltool --dllname python23.dll --def python23.def --output-lib libpython23.a
+   The resulting library has to be placed in the same directory as
+   python23.lib. (Should be the libs directory under your Python installation
+   directory.)
+2. Compile and install the Python modules
+   Change to the webcleaner-X.X directory and do:
+   c:> python setup.py build -c mingw32 install
 
 
-o MacOS X platforms
-  - not tested
-
-After installation, the system wide configuration file is in
-<prefix>/share/linkchecker/linkcheckerrc.
+Installation for other platforms
+--------------------------------
+If you happen to install LinkChecker on other platforms (for example
+MacOS 9.x or MacOS X) then drop me a note.
 
 
 (Fast)CGI web interface
@@ -48,16 +68,16 @@ The *cgi files are three CGI scripts which you can use to run LinkChecker
 with a nice graphical web interface.
 You can use and adjust the example HTML files in the lconline directory
 to run the script.
-1) Choose a CGI script. The simplest is lc.cgi and you need a web server
+1. Choose a CGI script. The simplest is lc.cgi and you need a web server
    with CGI support.
    The scripts lc.fcgi (I tested this a while ago) and lc.sz_fcgi
    (untested) need a web server with FastCGI support.
-2) Copy the script of your choice in the CGI directory.
-3) Adjust the "action=..." parameter in lconline/lc_cgi.html
+2. Copy the script of your choice in the CGI directory.
+3. Adjust the "action=..." parameter in lconline/lc_cgi.html
    to point to your CGI script.
-4) load the lconline/index.html file, enter an URL and klick on the
+4. load the lconline/index.html file, enter an URL and klick on the
    check button
-5) If something goes wrong, check the following:
+5. If something goes wrong, check the following:
    a) look in the error log of your web server
    b) be sure that you have enabled CGI support in your web server
       do this by running other CGI scripts from which you know that
