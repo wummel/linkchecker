@@ -1,4 +1,4 @@
-import re,string
+import re,string,time,nntplib
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import LinkCheckerException
 
@@ -19,9 +19,23 @@ class NntpUrlData(HostCheckingUrlData):
             self.setWarning("No NNTP server specified, checked only syntax")
         config.connectNntp()
         nntp = config["nntp"]
-        import time
-        time.sleep(10)
-        resp,count,first,last,name = nntp.group(self.host)
+        timeout = 1
+        while timeout:
+            try:
+                resp,count,first,last,name = nntp.group(self.host)
+                timeout = 0
+            except nntplib.error_perm:
+                value = sys.exc_info()[1]
+                print value
+                if value[0]==505:
+                    # 505 too many connections per minute
+                    import random
+                    time.sleep(random.randint(30,60))
+                    # try again
+                    timeout = 1
+                else:
+                    raise
+            resp,count,first,last,name = nntp.group(self.host)
         self.setInfo("Group %s has %s articles, range %s to %s" % \
                      (name, count, first, last))
 
