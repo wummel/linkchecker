@@ -25,6 +25,16 @@ function gettext (s) {
     }
     return s;
 }
+submitted = false;
+function submit_once() {
+    if (submitted) {
+        alert("Ihre Anfrage wird bearbeitet.\\nBitte haben Sie ein wenig Geduld.");
+        event.returnValue = 0;    // work-around for IE
+        return 0;
+    }
+    submitted = true;
+    return 1;
+}
 // -->
 </script>
 </head>
@@ -38,7 +48,9 @@ target="_top">LinkChecker</a>)
 
 <blockquote>
 <form method="POST" action="/cgi-bin/lconline/lc.cgi" target="links"
- onsubmit="return(isValid(document.checklinkForm))" name="checklinkForm">
+ onclick="return submit_once()"
+ onsubmit="return(isValid(document.checklinkForm))"
+ name="checklinkForm">
 <table border="0" cellpadding="2" cellspacing="0" summary="">
 <tr height="50">
 <td>Url:</td>
