@@ -1,8 +1,8 @@
-#!/usr/bin/python2.3
+#! /usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 # Originally written by Barry Warsaw <barry@zope.com>
 #
-# Minimally patched to make it even more xgettext compatible 
+# Minimally patched to make it even more xgettext compatible
 # by Peter Funk <pf@artcom-gmbh.de>
 #
 # 2002-11-22 Jürgen Hermann <jh@web.de>
@@ -12,8 +12,6 @@
 # directory (including globbing chars, important for Win32).
 # Made docstring fit in 80 chars wide displays using pydoc.
 #
-# 20030701 calvin@users.sf.net
-# added html parser
 
 # for selftesting
 try:
@@ -27,17 +25,17 @@ __doc__ = _("""pygettext -- Python equivalent of xgettext(1)
 Many systems (Solaris, Linux, Gnu) provide extensive tools that ease the
 internationalization of C programs. Most of these tools are independent of
 the programming language and can be used from within Python programs.
-Martin von Loewis' work[1] helps considerably in this regard. 
+Martin von Loewis' work[1] helps considerably in this regard.
 
 There's one problem though; xgettext is the program that scans source code
 looking for message strings, but it groks only C (or C++). Python
 introduces a few wrinkles, such as dual quoting characters, triple quoted
-strings, and raw strings. xgettext understands none of this. 
+strings, and raw strings. xgettext understands none of this.
 
 Enter pygettext, which uses Python's standard tokenize module to scan
 Python source code, generating .pot files identical to what GNU xgettext[2]
 generates for C and C++ code. From there, the standard GNU tools can be
-used. 
+used.
 
 A word about marking Python strings as candidates for translation. GNU
 xgettext recognizes the following keywords: gettext, dgettext, dcgettext,
@@ -45,7 +43,7 @@ and gettext_noop. But those can be a lot of text to include all over your
 code. C and C++ have a trick: they use the C preprocessor. Most
 internationalized C source includes a #define for gettext() to _() so that
 what has to be written in the source is much less. Thus these are both
-translatable strings: 
+translatable strings:
 
     gettext("Translatable String")
     _("Translatable String")
@@ -61,7 +59,7 @@ NOTE: pygettext attempts to be option and feature compatible with GNU
 xgettext where ever possible. However some options are still missing or are
 not fully implemented. Also, xgettext's use of command line switches with
 option arguments is broken, and in these cases, pygettext just defines
-additional switches. 
+additional switches.
 
 Usage: pygettext [options] inputfile ...
 
@@ -157,7 +155,15 @@ Options:
 If `inputfile' is -, standard input is read.
 """)
 
-import os, sys, re, time, getopt, token, tokenize, operator, cgi
+import os
+import imp
+import sys
+import glob
+import time
+import getopt
+import token
+import tokenize
+import operator
 
 __version__ = '1.5'
 
@@ -252,19 +258,17 @@ def normalize(s):
 
 
 def containsAny(str, set):
-    """ Check whether 'str' contains ANY of the chars in 'set'
-    """
+    """Check whether 'str' contains ANY of the chars in 'set'"""
     return 1 in [c in str for c in set]
 
 
 def _visit_pyfiles(list, dirname, names):
-    """ Helper for getFilesForName().
-    """
+    """Helper for getFilesForName()."""
     # get extension for python source files
     if not globals().has_key('_py_ext'):
-        import imp
         global _py_ext
-        _py_ext = [triple[0] for triple in imp.get_suffixes() if triple[2] == imp.PY_SOURCE][0]
+        _py_ext = [triple[0] for triple in imp.get_suffixes()
+                   if triple[2] == imp.PY_SOURCE][0]
 
     # don't recurse into CVS directories
     if 'CVS' in names:
@@ -272,20 +276,18 @@ def _visit_pyfiles(list, dirname, names):
 
     # add all *.py files to list
     list.extend(
-        [os.path.join(dirname, file)
-            for file in names
-                if os.path.splitext(file)[1] == _py_ext])
+        [os.path.join(dirname, file) for file in names
+         if os.path.splitext(file)[1] == _py_ext]
+        )
 
 
 def _get_modpkg_path(dotted_name, pathlist=None):
-    """ Get the filesystem path for a module or a package.
+    """Get the filesystem path for a module or a package.
 
-        Return the file system path to a file for a module,
-        and to a directory for a package. Return None if
-        the name is not found, or is a builtin or extension module.
+    Return the file system path to a file for a module, and to a directory for
+    a package. Return None if the name is not found, or is a builtin or
+    extension module.
     """
-    import imp
-
     # split off top-most name
     parts = dotted_name.split('.', 1)
 
@@ -306,8 +308,10 @@ def _get_modpkg_path(dotted_name, pathlist=None):
     else:
         # plain name
         try:
-            file, pathname, description = imp.find_module(dotted_name, pathlist)
-            if file: file.close()
+            file, pathname, description = imp.find_module(
+                dotted_name, pathlist)
+            if file:
+                file.close()
             if description[2] not in [imp.PY_SOURCE, imp.PKG_DIRECTORY]:
                 pathname = None
         except ImportError:
@@ -317,15 +321,12 @@ def _get_modpkg_path(dotted_name, pathlist=None):
 
 
 def getFilesForName(name):
-    """ Get a list of module files for a filename, a module or package name,
-        or a directory.
+    """Get a list of module files for a filename, a module or package name,
+    or a directory.
     """
-    import imp
-
     if not os.path.exists(name):
         # check for glob chars
         if containsAny(name, "*?[]"):
-            import glob
             files = glob.glob(name)
             list = []
             for file in files:
@@ -411,7 +412,7 @@ class TokenEater:
     def __openseen(self, ttype, tstring, lineno):
         if ttype == tokenize.OP and tstring == ')':
             # We've seen the last of the translatable strings.  Record the
-            # line number of the first line of the strings and update the list 
+            # line number of the first line of the strings and update the list
             # of messages seen.  Reset state for the next batch.  If there
             # were no strings inside _(), then just ignore this entry.
             if self.__data:
@@ -422,8 +423,13 @@ class TokenEater:
         elif ttype not in [tokenize.COMMENT, token.INDENT, token.DEDENT,
                            token.NEWLINE, tokenize.NL]:
             # warn if we see anything else than STRING or whitespace
-            print >>sys.stderr, _('*** %(file)s:%(lineno)s: Seen unexpected token "%(token)s"') % {
-                'token': tstring, 'file': self.__curfile, 'lineno': self.__lineno}
+            print >> sys.stderr, _(
+                '*** %(file)s:%(lineno)s: Seen unexpected token "%(token)s"'
+                ) % {
+                'token': tstring,
+                'file': self.__curfile,
+                'lineno': self.__lineno
+                }
             self.__state = self.__waiting
 
     def __addentry(self, msg, lineno=None, isdocstring=0):
@@ -437,12 +443,9 @@ class TokenEater:
         self.__curfile = filename
         self.__freshmodule = 1
 
-    def has_entry (self, msg):
-        return self.__messages.has_key(msg)
-
     def write(self, fp):
         options = self.__options
-        timestamp = time.ctime(time.time())
+        timestamp = time.strftime('%Y-%m-%d %H:%M+%Z')
         # The time stamp in the header doesn't have the same format as that
         # generated by xgettext...
         print >> fp, pot_header % {'time': timestamp, 'version': __version__}
@@ -496,89 +499,6 @@ class TokenEater:
                     print >> fp, '#, docstring'
                 print >> fp, 'msgid', normalize(k)
                 print >> fp, 'msgstr ""\n'
-
-
-from sets import Set
-import sgmllib
-
-class HtmlGettext (sgmllib.SGMLParser, object):
-    """handles all functions by printing the function name and
-       attributes"""
-    def __init__ (self, debug=0):
-        super(HtmlGettext, self).__init__()
-        self.tag = None
-        self.translations = Set()
-        self.data = ""
-
-
-    def unknown_starttag (self, tag, attributes):
-        attrs = {}
-        for key,val in attributes:
-            attrs[key] = val
-        msgid = attrs.get('i18n:translate', None)
-        if msgid == '':
-            if self.tag:
-                raise Exception, "nested i18n:translate is unsupported"
-            self.tag = tag
-            self.data = ""
-        elif msgid is not None:
-            if self.tag:
-                raise Exception, "nested i18n:translate is unsupported"
-            if msgid.startswith("string:"):
-                self.translations.add(msgid[7:].replace(';;', ';'))
-            else:
-                print >>sys.stderr, "tag <%s> has unsupported dynamic msgid %s" % (tag, `msgid`)
-        elif self.tag:
-            # nested tag to translate
-            self.data += "<%s"%tag
-            for key,val in attrs.items():
-                self.data += " %s=\"%s\"" % (key, cgi.escape(val, True))
-            self.data += ">"
-        argument = attrs.get('i18n:attributes', None)
-        if argument is not None:
-            for name, msgid in get_attribute_list(argument):
-                self.translations.add(msgid)
-
-
-    def unknown_endtag (self, tag):
-        if tag==self.tag:
-            self.translations.add(self.data)
-            self.tag = None
-            self.data = ""
-        elif self.tag:
-            self.data += "</%s>"%tag
-
-
-    def handle_data (self, data):
-        if self.tag:
-            self.data += data
-
-
-    def handle_charref (self, ref):
-        self.data += '&#%s;' % ref
-
-
-    def handle_entityref (self, ref):
-        self.data += '&%s;' % ref
-
-
-def get_attribute_list (argument):
-    # Break up the list of attribute settings
-    commandArgs = []
-    # We only want to match semi-colons that are not escaped
-    argumentSplitter =  re.compile('(?<!;);(?!;)')
-    for attributeStmt in argumentSplitter.split(argument):
-        #  remove any leading space and un-escape any semi-colons
-        attributeStmt = attributeStmt.lstrip().replace(';;', ';')
-        # Break each attributeStmt into name and expression
-        stmtBits = attributeStmt.split(' ')
-        if len(stmtBits) < 2:
-            # Error, badly formed attributes command
-            print >>sys.stderr, "Badly formed attributes command '%s'.  Attributes commands must be of the form: 'name expression[;name expression]'" % argument
-        attName = stmtBits[0]
-        attExpr = " ".join(stmtBits[1:])
-        commandArgs.append((attName, attExpr))
-    return commandArgs
 
 
 
@@ -662,7 +582,7 @@ def main():
         elif opt in ('-x', '--exclude-file'):
             options.excludefilename = arg
         elif opt in ('-X', '--no-docstrings'):
-            fp = file(arg)
+            fp = open(arg)
             try:
                 while 1:
                     line = fp.readline()
@@ -681,7 +601,7 @@ def main():
     # initialize list of strings to exclude
     if options.excludefilename:
         try:
-            fp = file(options.excludefilename)
+            fp = open(options.excludefilename)
             options.toexclude = fp.readlines()
             fp.close()
         except IOError:
@@ -700,7 +620,6 @@ def main():
             expanded.extend(getFilesForName(arg))
     args = expanded
 
-    html_translations = Set()
     # slurp through all the files
     eater = TokenEater(options)
     for filename in args:
@@ -712,21 +631,15 @@ def main():
         else:
             if options.verbose:
                 print _('Working on %s') % filename
-            fp = file(filename)
+            fp = open(filename)
             closep = 1
         try:
-            if filename.endswith('.html'):
-                p = HtmlGettext()
-                p.feed(fp.read())
-                p.close()
-                html_translations.update(p.translations)
-            else:
-                eater.set_filename(filename)
-                try:
-                    tokenize.tokenize(fp.readline, eater)
-                except tokenize.TokenError, e:
-                    print >> sys.stderr, '%s: %s, line %d, column %d' % (
-                        e[0], filename, e[1][0], e[1][1])
+            eater.set_filename(filename)
+            try:
+                tokenize.tokenize(fp.readline, eater)
+            except tokenize.TokenError, e:
+                print >> sys.stderr, '%s: %s, line %d, column %d' % (
+                    e[0], filename, e[1][0], e[1][1])
         finally:
             if closep:
                 fp.close()
@@ -738,24 +651,19 @@ def main():
     else:
         if options.outpath:
             options.outfile = os.path.join(options.outpath, options.outfile)
-        fp = file(options.outfile, 'w')
+        fp = open(options.outfile, 'w')
         closep = 1
     try:
         eater.write(fp)
-        msgs = [msg for msg in html_translations if not eater.has_entry(msg)]
-        for msg in msgs:
-            print >> fp, 'msgid', normalize(msg)
-            print >> fp, 'msgstr ""\n'
     finally:
         if closep:
             fp.close()
-
 
 
 if __name__ == '__main__':
     main()
     # some more test strings
     _(u'a unicode string')
-    _('*** Seen unexpected token "%(token)s"' % {'token': 'test'}) # this one creates a warning
+    # this one creates a warning
+    _('*** Seen unexpected token "%(token)s"') % {'token': 'test'}
     _('more' 'than' 'one' 'string')
-
