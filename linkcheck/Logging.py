@@ -1,10 +1,26 @@
-"""Logger classes.
+""" Logger classes.
+    Copyright (C) 2000  Bastian Kleineidam
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 Every Logger has to implement the following functions:
 init(self)
   Called once to initialize the Logger. Why do we not use __init__(self)?
   Because we initialize the start time in init and __init__ gets not
-  called at the time the checking starts.
+  called at the time the checking starts but when the logger object is
+  created.
 
 newUrl(self,urlData)
   Called every time an url finished checking. All data we checked is in
@@ -40,6 +56,8 @@ TableError="<td bgcolor=\"db4930\">"
 TableOK="<td bgcolor=\"3ba557\">"
 RowEnd="</td></tr>\n"
 MyFont="<font face=\"Lucida,Verdana,Arial,sans-serif,Helvetica\">"
+
+# keywords
 KeyWords = ["Real URL",
     "Result",
     "Base",
@@ -48,12 +66,12 @@ KeyWords = ["Real URL",
     "Warning",
     "D/L Time",
     "Check Time",
+    "URL",
 ]
-MaxIndent = max(map(len, KeyWords))+1
+MaxIndent = max(map(lambda x: len(_(x)), KeyWords))+1
 Spaces = {}
 for key in KeyWords:
-    Spaces[key] = " "*(MaxIndent - len(key))
-
+    Spaces[key] = " "*(MaxIndent - len(_(key)))
 
 # return formatted time
 def _strtime(t):
@@ -158,7 +176,7 @@ class HtmlLogger(StandardLogger):
               "<center><h2>"+MyFont+Config.AppName+"</font>"+
               "</center></h2>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
-              "Start checking at "+_strtime(self.starttime)+"<br><br>")
+              _("Start checking at ")+_strtime(self.starttime)+"<br><br>")
         self.fd.flush()
 
 
@@ -175,38 +193,42 @@ class HtmlLogger(StandardLogger):
         self.fd.write("</font>"+RowEnd)
         
         if urlData.parentName:
-            self.fd.write("<tr><td>"+MyFont+"Parent URL</font></td><td>"+
-			      MyFont+"<a href=\""+urlData.parentName+"\">"+
-                  urlData.parentName+"</a> line "+str(urlData.line)+
-                  "</font>"+RowEnd)
+            self.fd.write("<tr><td>"+MyFont+_("Parent URL")+
+	                  "</font></td><td>"+
+			  MyFont+"<a href=\""+urlData.parentName+"\">"+
+                          urlData.parentName+"</a> line "+str(urlData.line)+
+                          "</font>"+RowEnd)
         if urlData.baseRef:
-            self.fd.write("<tr><td>"+MyFont+"Base</font></td><td>"+MyFont+
-                  urlData.baseRef+"</font>"+RowEnd)
+            self.fd.write("<tr><td>"+MyFont+_("Base")+"</font></td><td>"+
+	                  MyFont+urlData.baseRef+"</font>"+RowEnd)
         if urlData.url:
-            self.fd.write("<tr><td>"+MyFont+"Real URL</font></td><td>"+MyFont+
-                  "<a href=\""+StringUtil.htmlify(urlData.url)+"\">"+
-                  urlData.url+"</a></font>"+RowEnd)
+            self.fd.write("<tr><td>"+MyFont+_("Real URL")+"</font></td><td>"+
+	                  MyFont+"<a href=\""+StringUtil.htmlify(urlData.url)+
+			  "\">"+urlData.url+"</a></font>"+RowEnd)
         if urlData.downloadtime:
-            self.fd.write("<tr><td>"+MyFont+"D/L Time</font></td><td>"+MyFont+
-                  ("%.3f" % urlData.downloadtime)+" seconds</font>"+RowEnd)
+            self.fd.write("<tr><td>"+MyFont+_("D/L Time")+"</font></td><td>"+
+	                  MyFont+("%.3f" % urlData.downloadtime)+
+			  " seconds</font>"+RowEnd)
         if urlData.checktime:
-            self.fd.write("<tr><td>"+MyFont+"Check Time</font></td><td>"+
-	          MyFont+("%.3f" % urlData.checktime)+" seconds</font>"+
-		  RowEnd)
+            self.fd.write("<tr><td>"+MyFont+_("Check Time")+
+	                  "</font></td><td>"+MyFont+
+			  ("%.3f" % urlData.checktime)+" seconds</font>"+
+                          RowEnd)
         if urlData.infoString:
-            self.fd.write("<tr><td>"+MyFont+"Info</font></td><td>"+MyFont+
-                  StringUtil.htmlify(urlData.infoString)+"</font>"+RowEnd)
+            self.fd.write("<tr><td>"+MyFont+_("Info")+"</font></td><td>"+
+	                  MyFont+StringUtil.htmlify(urlData.infoString)+
+			  "</font>"+RowEnd)
         if urlData.warningString:
             self.warnings = self.warnings+1
-            self.fd.write("<tr>"+TableWarning+MyFont+"Warning</font></td>"+
-                  TableWarning+MyFont+urlData.warningString+
-                  "</font>"+RowEnd)
+            self.fd.write("<tr>"+TableWarning+MyFont+_("Warning")+
+	                  "</font></td>"+TableWarning+MyFont+
+			  urlData.warningString+"</font>"+RowEnd)
         if urlData.valid:
-            self.fd.write("<tr>"+TableOK+MyFont+"Result</font></td>"+
+            self.fd.write("<tr>"+TableOK+MyFont+_("Result")+"</font></td>"+
                   TableOK+MyFont+urlData.validString+"</font>"+RowEnd)
         else:
             self.errors = self.errors+1
-            self.fd.write("<tr>"+TableError+MyFont+"Result</font></td>"+
+            self.fd.write("<tr>"+TableError+MyFont+_("Result")+"</font></td>"+
                   TableError+MyFont+urlData.errorString+"</font>"+RowEnd)
         
         self.fd.write("</table></td></tr></table><br clear=all><br>")
@@ -214,25 +236,25 @@ class HtmlLogger(StandardLogger):
 
         
     def endOfOutput(self):
-        self.fd.write(MyFont+"Thats it. ")
+        self.fd.write(MyFont+_("Thats it. "))
         if self.warnings==1:
-            self.fd.write("1 warning, ")
+            self.fd.write(_("1 warning, "))
         else:
-            self.fd.write(str(self.warnings)+" warnings, ")
+            self.fd.write(str(self.warnings)+_(" warnings, "))
         if self.errors==1:
-            self.fd.write("1 error")
+            self.fd.write(_("1 error"))
         else:
-            self.fd.write(str(self.errors)+" errors")
-        self.fd.write(" found.<br>")
+            self.fd.write(str(self.errors)+_(" errors"))
+        self.fd.write(_(" found.")+"<br>")
         self.stoptime = time.time()
-        self.fd.write("Stopped checking at"+_strtime(self.stoptime)+
-              (" (%.3f seconds)" % (self.stoptime - self.starttime))+
-	      "</font></blockquote><br><hr noshade size=1><small>"+
-              MyFont+Config.HtmlAppInfo+"<br>Get the newest version at "
-              "<a href=\""+Config.Url+"\">"+Config.Url+
-              "</a>.<br>Write comments and bugs to <a href=\"mailto:"+
-              Config.Email+"\">"+Config.Email+
-              "</a>.</font></small></body></html>")
+        self.fd.write(_("Stopped checking at ")+_strtime(self.stoptime)+
+             (_(" (%.3f seconds)") % (self.stoptime - self.starttime))+
+	     "</font></blockquote><br><hr noshade size=1><small>"+
+             MyFont+Config.HtmlAppInfo+"<br>"+_("Get the newest version at ")+
+             "<a href=\""+Config.Url+"\">"+Config.Url+
+             "</a>.<br>"+_("Write comments and bugs to ")+"<a href=\"mailto:"+
+             Config.Email+"\">"+Config.Email+
+             "</a>.</font></small></body></html>")
         self.fd.flush()        
         self.fd = None
 
@@ -250,8 +272,8 @@ class ColoredLogger(StandardLogger):
             if self.currentPage != urlData.parentName:
                 if self.prefix:
                     self.fd.write("o\n")
-                self.fd.write("\nParent URL "+COL_PARENT+urlData.parentName+
-  	                      COL_RESET+"\n")
+                self.fd.write("\n"+_("Parent URL")+Spaces["Parent URL"]+
+		              COL_PARENT+urlData.parentName+COL_RESET+"\n")
                 self.currentPage = urlData.parentName
                 self.prefix = 1
         else:
@@ -264,8 +286,9 @@ class ColoredLogger(StandardLogger):
             self.fd.write("|\n+- ")
         else:
             self.fd.write("\n")
-        self.fd.write("URL       "+COL_URL+urlData.urlName+COL_RESET)
-        if urlData.line: self.fd.write(", line "+`urlData.line`+"")
+        self.fd.write(_("URL")+Spaces["URL"]+COL_URL+urlData.urlName+
+	              COL_RESET)
+        if urlData.line: self.fd.write(_(", line ")+`urlData.line`+"")
         if urlData.cached:
             self.fd.write(" (cached)\n")
         else:
@@ -274,44 +297,46 @@ class ColoredLogger(StandardLogger):
         if urlData.baseRef:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write("Base      "+COL_BASE+urlData.baseRef+COL_RESET+"\n")
+            self.fd.write(_("Base")+Spaces["Base"]+COL_BASE+urlData.baseRef+
+	                  COL_RESET+"\n")
             
         if urlData.url:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write("Real URL  "+COL_REAL+urlData.url+COL_RESET+"\n")
+            self.fd.write(_("Real URL")+Spaces["Real URL"]+COL_REAL+
+	                  urlData.url+COL_RESET+"\n")
         if urlData.downloadtime:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write("D/L Time  "+COL_DLTIME+
-	        ("%.3f" % urlData.downloadtime)+" seconds"+COL_RESET+"\n")
+            self.fd.write(_("D/L Time")+Spaces["D/L Time"]+COL_DLTIME+
+	        (_("%.3f seconds") % urlData.downloadtime)+COL_RESET+"\n")
         if urlData.checktime:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write("Check Time "+COL_DLTIME+
-	        ("%.3f" % urlData.checktime)+" seconds"+COL_RESET+"\n")
+            self.fd.write(_("Check Time")+Spaces["Check Time"]+COL_DLTIME+
+	        (_("%.3f seconds") % urlData.checktime)+COL_RESET+"\n")
             
         if urlData.infoString:
             if self.prefix:
-                self.fd.write("|   Info      "+
+                self.fd.write("|  "+_("Info")+Spaces["Info"]+
                       StringUtil.indentWith(StringUtil.blocktext(
-                        urlData.infoString, 65), "|             "))
+                        urlData.infoString, 65), "|      "+Spaces["Info"]))
             else:
-                self.fd.write("Info          "+
+                self.fd.write(_("Info")+Spaces["Info"]+
                       StringUtil.indentWith(StringUtil.blocktext(
-                        urlData.infoString, 65), "              "))
+                        urlData.infoString, 65), "    "+Spaces["Info"]))
             self.fd.write(COL_RESET+"\n")
             
         if urlData.warningString:
             self.warnings = self.warnings+1
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write("Warning   "+COL_WARNING+urlData.warningString+
-			            COL_RESET+"\n")
+            self.fd.write(_("Warning")+Spaces["Warning"]+COL_WARNING+
+	                  urlData.warningString+COL_RESET+"\n")
 
         if self.prefix:
             self.fd.write("|  ")
-        self.fd.write("Result    ")
+        self.fd.write(_("Result")+Spaces["Result"])
         if urlData.valid:
             self.fd.write(COL_VALID+urlData.validString+COL_RESET+"\n")
         else:
@@ -337,8 +362,8 @@ class GMLLogger(StandardLogger):
     def init(self):
         self.fd.write("# created by "+Config.AppName+" at "+
 	     _strtime(time.time())+
-	    "\n# you get "+Config.AppName+" at "+Config.Url+
-            "\n# write comments and bugs to "+Config.Email+
+	    "\n# "+_("Get the newest version at ")+Config.Url+
+            "\n# "+_("Write comments and bugs to ")+Config.Email+
 	    "\ngraph [\n  directed 1\n")
         self.fd.flush()
 
@@ -387,8 +412,8 @@ class SQLLogger(StandardLogger):
     def init(self):
         self.fd.write("-- created by "+Config.AppName+" at "+
                 _strtime(time.time())+
-		"\n-- you get "+Config.AppName+" at "+Config.Url+
-		"\n-- write comments and bugs to "+Config.Email+"\n\n")
+		"\n-- "+_("Get the newest version at ")+Config.Url+
+		"\n-- "+_("Write comments and bugs to ")+Config.Email+"\n\n")
         self.fd.flush()
 
     def newUrl(self, urlData):
@@ -422,7 +447,10 @@ class BlacklistLogger:
         self.blacklist = {}
 
     def init(self):
-        """initialize the blacklist"""
+        """initialize the blacklist
+        We do nothing here because we have read the blacklist in the
+        linkchecker script already.
+	"""
         pass
 
     def newUrl(self, urlData):

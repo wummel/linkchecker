@@ -1,3 +1,20 @@
+"""
+    Copyright (C) 2000  Bastian Kleineidam
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""
 import re,socket,string,DNS,sys,Config
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
@@ -27,6 +44,17 @@ class MailtoUrlData(HostCheckingUrlData):
 	                    re.findall(adress_re, self.urlName))
 
     def checkConnection(self, config):
+        """Verify a list of email adresses. If one adress fails,
+        the whole list will fail.
+        For each mail adress we check the following things:
+        (1) Look up the MX DNS records. If we found no MX record,
+	    print an error.
+        (2) Check if one of the mail hosts accept an SMTP connection.
+            Check hosts with higher priority first.
+            If no host accepts SMTP, we print a warning.
+        (3) Try to verify the adress with the VRFY command. If we got
+            an answer, print the verified adress as an info.
+        """
         DNS.ParseResolvConf()
         for user,host in self.adresses:
             mxrecords = DNS.mxlookup(host)

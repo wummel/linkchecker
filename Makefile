@@ -22,7 +22,7 @@ install:
 	# ha! the root option finally made it into distutils
 	./setup.py install --root=$(DESTDIR)
 	# german translation mit Rezepten von Zlatko :)
-	msgfmt -o linkcheck.mo linkcheck/messages.po
+	msgfmt -o linkcheck.mo linkcheck/linkcheck.po
 	install -c -m 644 linkcheck.mo $(DESTDIR)/usr/share/locale/de/LC_MESSAGES/
 	# remove following line if Distutils have script support
 	#install -c -m 755 linkchecker $(DESTDIR)/usr/bin/

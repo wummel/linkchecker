@@ -11,7 +11,7 @@ Code fragments start with a dollar sign followed either by
    evaluates to the str() value of the given expression
    example: $printit()
    
-2) python statements
+2) {python statements}
    append arbitrary objects to the output list
 
 Limitations:
@@ -19,7 +19,11 @@ Limitations:
    No further syntax verification is done.
 2) Parameters to function calls must not have parantheses inside.
    Parameters to subscriptions must not have brackets inside.
-   In code fragments, this is allowed, so you can use
+   So this is not allowed:
+   $func((tuple1,tuple2)) $func(map[key])
+   But this is allowed:
+   $func(param)[1] $a[x][y][z](blubb)
+   In code fragments, you can write every Python code:
    ${OUT = OUT + trunk[idx[1](data())]}
 
 Example:
@@ -27,6 +31,9 @@ import Template
 
 t = Template.Template("blabla.tmpl")
 open("blabla","w").write(t.fill_in({"var1":1,"var2":'hui'}))
+
+blabla.tmpl:
+Hello, this is a demo. var1 is $var1, and var2 is $var2.
 """
 import sys, string, re
 from types import StringType
@@ -43,10 +50,10 @@ STRING   = 3
 # slicings and function calls
 identifier = "[a-zA-Z_][a-zA-Z0-9_]*"
 attributeref = identifier + "(\." + identifier + ")*"
-subscription = "(\[.*?\])?"                        # optional
-callargs = "(\(.*?\))?"                            # optional
+subscription = "\[.*\]"
+callargs = "\(.*\)"
 # now the whole regex
-regexvar = re.compile("^" + attributeref + subscription + callargs)
+regexvar = re.compile("^"+attributeref+"("+subscription+"|"+callargs+")*")
 
 
 class TemplateError(StandardError):

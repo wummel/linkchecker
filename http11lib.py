@@ -11,6 +11,7 @@
 # for tracking:
 #   $Id$
 #
+# Modified by Bastian Kleineidam to squish a bug.
 
 import socket,string,mimetools,httplib
 

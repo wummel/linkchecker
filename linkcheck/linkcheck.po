@@ -1,0 +1,109 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-05-01 11:50+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: Logging.py:82
+msgid "Get the newest version at "
+msgstr "Die neueste Version gibt es unter "
+
+#: Logging.py:83
+msgid "Write comments and bugs to "
+msgstr "Kommentare und Fehler mailen Sie bitte an "
+
+#: Logging.py:84
+msgid "Start checking at "
+msgstr "Beginne Prüfen am "
+
+#: Logging.py:89
+msgid "URL"
+msgstr "URL"
+
+#: Logging.py:95
+msgid "Parent URL"
+msgstr "Vater URL"
+
+#: Logging.py:96
+msgid ", line "
+msgstr ", Zeile "
+
+#: Logging.py:99
+msgid "Base"
+msgstr "Basis"
+
+#: Logging.py:101
+msgid "Real URL"
+msgstr "Tats. URL"
+
+#: Logging.py:103
+msgid "D/L Time"
+msgstr "D/L Zeit"
+
+#: Logging.py:104 Logging.py:107
+#, c-format
+msgid "%.3f seconds\n"
+msgstr "%.3f Sekunden\n"
+
+#: Logging.py:106
+msgid "Check Time"
+msgstr "Prüfzeit"
+
+#: Logging.py:109
+msgid "Info"
+msgstr "Info"
+
+#: Logging.py:115
+msgid "Warning"
+msgstr "Warnung"
+
+#: Logging.py:120
+msgid "Result"
+msgstr "Ergebnis"
+
+#: Logging.py:130
+msgid ""
+"\n"
+"Thats it. "
+msgstr ""
+"\n"
+"Das wars. "
+
+#: Logging.py:133
+msgid "1 warning, "
+msgstr "1 Warnung, "
+
+#: Logging.py:135
+msgid " warnings, "
+msgstr " Warnungen, "
+
+#: Logging.py:137
+msgid "1 error"
+msgstr "1 Fehler"
+
+#: Logging.py:139
+msgid " errors"
+msgstr " Fehler"
+
+#: Logging.py:140
+msgid " found.\n"
+msgstr " gefunden.\n"
+
+#: Logging.py:142
+msgid "Stopped checking at "
+msgstr "Beende Prüfen am "
+
+#: Logging.py:143
+#, c-format
+msgid " (%.3f seconds)"
+msgstr " (%.3f Sekunden)"

@@ -26,7 +26,7 @@ the translation into other languages.
 You ARE NOT REQUIRED to release the sourcecode of your program, since 
 linking of your program against GPL code is avoided by this module.  
 Although it is possible to use the GNU gettext library by using the 
-*intl.so* module written by Martin von L÷wis if this is available.  But it is 
+*intl.so* module written by Martin von Löwis if this is available.  But it is
 not required to use it in the  first place.
 """
 # Copyright 1999 by <mailto: pf@artcom-gmbh.de> (Peter Funk)
@@ -48,7 +48,7 @@ not required to use it in the  first place.
 _default_localedir = '/usr/share/locale'
 _default_domain = 'python'
 
-# check out, if Martin v. L÷wis 'intl' module interface to the GNU gettext
+# check out, if Martin v. Löwis 'intl' module interface to the GNU gettext
 # library is available and use it only, if it is available: 
 try:
     from intl import *

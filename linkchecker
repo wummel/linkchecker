@@ -170,6 +170,14 @@ except:
     type, value = sys.exc_info()[:2]
     printUsage(value)
 
+# check for environment variables (currently only http_proxy)
+if os.environ.has_key("http_proxy"):
+    proxy = re.compile("(.+):(.+)").match(os.environ["http_proxy"])
+    if proxy:
+        config["proxy"] = proxy.group(1)
+        config["proxyport"] = int(proxy.group(2))
+    else:
+        config["proxy"] = os.environ["http_proxy"]
 
 # apply options and arguments
 _user = "anonymous"
