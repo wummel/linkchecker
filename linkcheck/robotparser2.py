@@ -7,7 +7,7 @@
     2) PSF license for Python 2.2
 
     The robots.txt Exclusion Protocol is implemented as specified in
-    http://info.webcrawler.com/mak/projects/robots/norobots-rfc.html
+    http://www.robotstxt.org/wc/norobots-rfc.html
 """
 import urlparse
 import httplib
@@ -34,15 +34,32 @@ debug = lambda txt: _msg("debug:", txt)
 warn = lambda txt: _msg("warning:", txt)
 error = lambda txt: _msg("error:", txt)
 
+class PasswordManager (object):
+
+    def __init__ (self, user, password):
+        self.user = user
+        self.password = password
+
+    def add_password (realm, uri, user, passwd):
+        # we have already our password
+        pass
+
+    def find_user_password (realm, authuri):
+        return self.user, self.password
+
 
 class RobotFileParser (object):
     """ This class provides a set of methods to read, parse and answer
     questions about a single robots.txt file.
     """
 
-    def __init__ (self, url=''):
-        """initialize internal entry lists and store given url"""
+    def __init__ (self, url='', user=None, password=None):
+        """Initialize internal entry lists and store given url and
+        credentials.
+        """
         self.set_url(url)
+        self.user = user
+        self.password = password
         self._reset()
 
     def _reset (self):
@@ -63,7 +80,7 @@ class RobotFileParser (object):
 
     def modified (self):
         """Sets the time the robots.txt file was last fetched to the
-        current time.
+           current time.
         """
         import time
         self.last_checked = time.time()
@@ -72,6 +89,20 @@ class RobotFileParser (object):
         """Sets the URL referring to a robots.txt file."""
         self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
+
+    def get_opener (self):
+        pwd_manager = PasswordManager(self.user, self.password)
+        handlers = [urllib2.ProxyHandler(urllib.getproxies()),
+            urllib2.UnknownHandler, HttpWithGzipHandler,
+            urllib2.HTTPBasicAuthHandler(pwd_manager),
+            urllib2.ProxyBasicAuthHandler(pwd_manager),
+            urllib2.HTTPDigestAuthHandler(pwd_manager),
+            urllib2.ProxyDigestAuthHandler(pwd_manager),
+            urllib2.HTTPDefaultErrorHandler, urllib2.HTTPRedirectHandler,
+        ]
+        if hasattr(linkcheck.httplib2, 'HTTPS'):
+            handlers.append(HttpsWithGzipHandler)
+        return urllib2.build_opener(*handlers)
 
     def read (self):
         """Reads the robots.txt URL and feeds it to the parser."""
@@ -82,7 +113,7 @@ class RobotFileParser (object):
         }
         req = urllib2.Request(self.url, None, headers)
         try:
-            f = _opener.open(req)
+            f = self.get_opener().open(req)
         except urllib2.HTTPError, x:
             if x.code in (401, 403):
                 self.disallow_all = True
@@ -113,7 +144,6 @@ class RobotFileParser (object):
         while line:
             lines.append(line.strip())
             line = f.readline()
-        debug("robots.txt parse lines")
         self.parse(lines)
 
     def _add_entry (self, entry):
@@ -129,6 +159,7 @@ class RobotFileParser (object):
            We allow that a user-agent: line is not preceded by
            one or more blank lines.
         """
+        debug("robots.txt parse lines")
         state = 0
         linenumber = 0
         entry = Entry()
@@ -337,17 +368,6 @@ if hasattr(linkcheck.httplib2, 'HTTPS'):
         def http_open (self, req):
             """send request and decode answer"""
             return decode(urllib2.HTTPSHandler.http_open(self, req))
-
-
-_handlers = [urllib2.ProxyHandler(urllib.getproxies()),
-    urllib2.UnknownHandler, HttpWithGzipHandler,
-    urllib2.ProxyBasicAuthHandler, urllib2.ProxyDigestAuthHandler,
-    urllib2.HTTPDefaultErrorHandler, urllib2.HTTPRedirectHandler,
-]
-if hasattr(linkcheck.httplib2, 'HTTPS'):
-    _handlers.append(HttpsWithGzipHandler)
-
-_opener = urllib2.build_opener(*_handlers)
 
 # end of urlutils.py routines
 ###########################################################################
