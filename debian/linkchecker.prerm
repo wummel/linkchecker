@@ -13,7 +13,6 @@ dpkg --listfiles $PACKAGE |
         xargs rm -f >&2
 
 rmdir /usr/lib/$PYTHON/site-packages/linkcheck 2>/dev/null || true
-rmdir /usr/lib/$PYTHON/site-packages/DNS 2>/dev/null || true
 
 # for later use of python-central
 #/usr/sbin/register-python-package module remove linkchecker ">=2.0"

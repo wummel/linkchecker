@@ -90,9 +90,6 @@ _linkMatcher = r"""
     """
 
 
-# disable meta tag for now, the modified linkmatcher does not allow it
-# (['meta'],    ['url']), # <meta http-equiv='refresh' content='x; url=...'>
-
 # ripped mainly from HTML::Tagset.pm
 LinkTags = (
     (['a'],       ['href']),
@@ -118,7 +115,11 @@ LinkTags = (
     (['script'],  ['src', 'for']),
     (['body', 'table', 'td', 'th', 'tr'], ['background']),
     (['xmp'],     ['href']),
+    (['meta'],    ['content']),
 )
+
+# matcher for <meta http-equiv=refresh> tags
+_refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
 
 LinkPatterns = []
 for _tags,_attrs in LinkTags:
@@ -499,6 +500,10 @@ class UrlData:
             if self.is_in_comment(match.start()): continue
             # strip quotes
             url = StringUtil.stripQuotes(match.group('value'))
+	    if 'meta' in pattern['tags']:
+	        match = _refresh_re.match(url)
+		if match:
+                    url = match.group("url")
             # need to resolve HTML entities
             url = StringUtil.unhtmlify(url)
             lineno= StringUtil.getLineNumber(self.getContent(), match.start())
