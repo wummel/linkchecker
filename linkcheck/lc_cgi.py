@@ -20,7 +20,7 @@ import linkcheck
 from types import StringType
 
 _logfile = None
-_supported_langs = ('de', 'fr', 'C')
+_supported_langs = ('de', 'fr', 'nl', 'C')
 
 def checkform(form):
     if form.has_key("language"):
@@ -59,8 +59,7 @@ def logit(form, env):
         return
     elif type(_logfile) == StringType:
         _logfile = open(_logfile, "a")
-    _logfile.write("\n"+time.strftime("%d.%m.%Y %H:%M:%S",
-                   time.localtime(time.time()))+"\n")
+    _logfile.write("\n"+linkcheck.log.strtime(time.time())+"\n")
     for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
                 "REMOTE_HOST", "REMOTE_PORT"]:
         if env.has_key(var):

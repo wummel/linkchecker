@@ -1,3 +1,10 @@
+linkchecker (1.5.4) unstable; urgency=low
+
+  * linkcheck/log/__init__.py: use ISO 8601 conform timestamps
+  * linkcheck/lc_cgi.py: added Nederlands (dutch) to supported languages
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sat,  1 Jun 2002 11:11:58 +0200
+
 linkchecker (1.5.3) unstable; urgency=low
 
   * linkcheck/DNS/Base.py: import Error exception (from 1.4.7)
