@@ -1,3 +1,14 @@
+2.7 "" (released xx.xx.xxxx)
+
+  * When a host has no MX record, fall back to A records as the mail
+    host.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
+  * Do not split CGI params on semicolons.
+    Type: bugfix
+    Changed: linkcheck/url.py
+
 2.6 "Lord of the Rings" (released 15.3.2005)
 
   * Run with low priority. New option --priority to run with normal
