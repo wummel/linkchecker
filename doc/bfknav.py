@@ -24,6 +24,7 @@ class Node (object):
        HTML output."""
 
     def __init__ (self, name, order, filename):
+        """Initialize node information"""
         self.name = name
         self.order = order
         self.filename = filename
@@ -34,19 +35,23 @@ class Node (object):
         self.parent = None
 
     def get_url (self, level):
+        """Get relative URL to this node."""
         if self.children:
             return self.children[0].get_url(level)
         else:
             return "../"*level + self.filename
 
     def addChildren (self, nodes):
+        """Add given nodes as children of this node, setting parent
+           and level information accordingly.
+        """
         for node in nodes:
             node.parent = self
             node.level = self.level + 1
             self.children.append(node)
 
     def write_nav (self, fp, active):
-        """write node navigation"""
+        """Write HTML node navigation."""
         descend = has_node(active, self.children)
         if self.active or descend:
             self.write_active(fp)
@@ -60,6 +65,7 @@ class Node (object):
             self.children[0].write_nav(fp, active)
 
     def write_inactive (self, fp, level):
+        """Write HTML of inactive navigation node."""
         s = '<a href="%s">%s' % (self.get_url(level), self.name)
         if self.children:
             s += ' &gt;'
@@ -67,6 +73,7 @@ class Node (object):
         fp.write(s)
 
     def write_active (self, fp):
+        """Write HTML of active navigation node."""
         s = "<span>"
         #if not self.children:
         #    s += '&gt; '
@@ -105,9 +112,10 @@ class Node (object):
 
 
 def parse_navtree (dirname):
-    """parse a hierarchy of .nav files into a tree structure,
+    """Parse a hierarchy of .nav files into a tree structure,
        consisting of lists of lists. The list entries are sorted in
-       navigation order."""
+       navigation order.
+    """
     nodes = []
     files = os.listdir(dirname)
     for f in files:
@@ -134,6 +142,7 @@ def parse_navtree (dirname):
 
 
 def get_nav_node (navfile, htmlname):
+    """Get a Node() instance with info of given navfile."""
     flocals = {}
     execfile(navfile, {}, flocals)
     order = flocals.get('order', sys.maxint)
@@ -187,7 +196,7 @@ def write_nav (filename, nav):
     """write navigation into filename"""
     lines = []
     skip = False
-    f = file(filename)
+    f = open(filename)
     for line in f:
         if not skip:
             lines.append(line)
@@ -198,7 +207,7 @@ def write_nav (filename, nav):
             skip = False
             lines.append(line)
     f.close()
-    f = file(filename, 'w')
+    f = open(filename, 'w')
     for line in lines:
         f.write(line)
     f.close()
