@@ -45,6 +45,11 @@ all:
 %.mo:	%.po
 	$(MSGFMT) -o$(LDIR)/$*/$(LFILE) $<
 
-.PHONY: clean
 clean:
-	rm -f .time.pot $(MOS)
+	rm -f $(MOS)
+
+distclean:	clean
+	rm -f .time.pot
+
+.PHONY: all clean distclean
+
