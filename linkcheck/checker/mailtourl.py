@@ -37,21 +37,21 @@ class MailtoUrl (urlconnect.UrlConnect):
     def build_url (self):
         super(MailtoUrl, self).build_url()
         self.headers = {}
-        self.adresses = email.Utils.getaddresses([self.cutout_adresses()])
+        self.addresses = email.Utils.getaddresses([self.cutout_addresses()])
         for key in ("to", "cc", "bcc"):
             if self.headers.has_key(key):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
-                    self.adresses.extend(email.Utils.getaddresses([a]))
+                    self.addresses.extend(email.Utils.getaddresses([a]))
         # check syntax of emails
-        for name, addr in self.adresses:
-            username, domain = addr.split('@')
+        for name, addr in self.addresses:
+            username, domain = self._split_address(addr)
             if not linkcheck.url.is_valid_domain(domain):
                 raise linkcheck.LinkCheckerError(_("Invalid mail syntax"))
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "adresses: %s",
-                            self.adresses)
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "addresses: %s",
+                            self.addresses)
 
-    def cutout_adresses (self):
+    def cutout_addresses (self):
         # cut off leading mailto: and unquote
         url = urllib.unquote(self.base_url[7:])
         # search for cc, bcc, to and store in headers
@@ -86,35 +86,35 @@ class MailtoUrl (urlconnect.UrlConnect):
         return addrs
 
     def check_connection (self):
-        """Verify a list of email adresses. If one adress fails,
+        """Verify a list of email addresses. If one address fails,
         the whole list will fail.
-        For each mail adress we check the following things:
+        For each mail address we check the following things:
         (1) Look up the MX DNS records. If we found no MX record,
             print an error.
         (2) Check if one of the mail hosts accept an SMTP connection.
             Check hosts with higher priority first.
             If no host accepts SMTP, we print a warning.
-        (3) Try to verify the adress with the VRFY command. If we got
-            an answer, print the verified adress as an info.
+        (3) Try to verify the address with the VRFY command. If we got
+            an answer, print the verified address as an info.
         """
-        if not self.adresses:
-            self.add_warning(_("No adresses found"))
+        if not self.addresses:
+            self.add_warning(_("No addresses found"))
             return
 
         value = "unknown reason"
-        for name, mail in self.adresses:
+        for name, mail in self.addresses:
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "checking mail address %r", mail)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "splitting address")
-            user, host = self._split_adress(mail)
+            username, domain = self._split_address(mail)
             linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                "looking up MX mailhost %r", host)
-            answers = linkcheck.dns.resolver.query(host, 'MX')
+                                "looking up MX mailhost %r", domain)
+            answers = linkcheck.dns.resolver.query(domain, 'MX')
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "found %d MX mailhosts", len(answers))
             if len(answers) == 0:
-                self.add_warning(_("No MX mail host for %(host)s found") % \
-                                {'host': host})
+                self.add_warning(_("No MX mail host for %(domain)s found") % \
+                                {'domain': domain})
                 return
             smtpconnect = 0
             for rdata in answers:
@@ -128,18 +128,17 @@ class MailtoUrl (urlconnect.UrlConnect):
                                         "SMTP connected!")
                     smtpconnect = 1
                     self.url_connection.helo()
-                    info = self.url_connection.verify(user)
+                    info = self.url_connection.verify(username)
                     linkcheck.log.debug(linkcheck.LOG_CHECK,
                                         "SMTP user info %r", info)
                     if info[0] == 250:
-                        self.add_info(_("Verified adress: %(info)s") % \
+                        self.add_info(_("Verified address: %(info)s") % \
                                      {'info': str(info[1])})
-                except:
-                    etype, value = sys.exc_info()[:2]
+                except smtplib.SMTPException, msg:
                     self.add_warning(
                       _("MX mail host %(host)s did not accept connections: "\
                         "%(error)s") % \
-                        {'host': rdata.exchange, 'error': str(value)})
+                        {'host': rdata.exchange, 'error': str(msg)})
                 if smtpconnect:
                     break
             if not smtpconnect:
@@ -148,23 +147,36 @@ class MailtoUrl (urlconnect.UrlConnect):
                 self.set_result(_("Found MX mail host %(host)s") % \
                               {'host': rdata.exchange})
 
-    def _split_adress (self, adress):
-        split = adress.split("@", 1)
+    def _split_address (self, address):
+        split = address.split("@", 1)
         if len(split) == 2:
             if not split[1]:
                 return (split[0], "localhost")
             return tuple(split)
         if len(split) == 1:
             return (split[0], "localhost")
-        raise linkcheck.LinkCheckerError(_("could not split the mail adress"))
+        raise linkcheck.LinkCheckerError(
+                                  _("Could not split the mail address"))
 
     def close_connection (self):
-        try: self.url_connection.quit()
-        except: pass
+        """close a possibly opened SMTP connection"""
+        if self.url_connection is None:
+            # no connection is open
+            return
+        try:
+            self.url_connection.quit()
+        except smtplib.SMTPException:
+            pass
         self.url_connection = None
 
     def get_cache_keys (self):
-        return ["%s:%s" % (self.scheme, str(self.adresses))]
+        """The cache key is a comma separated list of emails."""
+        emails = [addr[1] for addr in self.addresses]
+        emails.sort()
+        return ["%s:%s" % (self.scheme, ",".join(emails))]
 
     def can_get_content (self):
+        """mailto: urls do not have any content
+           @return False
+        """
         return False
