@@ -83,7 +83,7 @@ release: releasecheck dist upload homepage
 	$(PYTHON) setup.py register
 
 homepage:
-	$(MAKE) -C doc homepage
+	$(MAKE) -C doc/en homepage
 
 dist: locale config
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm

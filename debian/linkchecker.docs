@@ -1,4 +1,4 @@
 debian/README.Debian
 TODO
-doc/upgrading.txt
-doc/documentation.txt
+doc/en/upgrading.txt
+doc/en/documentation.txt
