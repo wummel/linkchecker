@@ -14,16 +14,32 @@
 #define FLEX_BETA
 #endif
 
+/* %if-c++-only */
+/* %endif */
+
+/* %if-c-only */
+    
+/* %endif */
+
+/* %if-c-only */
+
+/* %endif */
+
 /* First, we deal with  platform-specific or compiler-specific issues. */
 
 /* begin standard C headers. */
+/* %if-c-only */
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+/* %endif */
 
+/* %if-tables-serialization */
+/* %endif */
 /* end standard C headers. */
 
+/* %if-c-or-c++ */
 /* flex integer type definitions */
 
 #ifndef FLEXINT_H
@@ -79,6 +95,11 @@ typedef unsigned int flex_uint32_t;
 
 #endif /* ! FLEXINT_H */
 
+/* %endif */
+
+/* %if-c++-only */
+/* %endif */
+
 #ifdef __cplusplus
 
 /* The "const" storage-class-modifier is valid. */
@@ -99,8 +120,13 @@ typedef unsigned int flex_uint32_t;
 #define yyconst
 #endif
 
+/* %not-for-header */
+
 /* Returned upon end-of-file. */
 #define YY_NULL 0
+/* %ok-for-header */
+
+/* %not-for-header */
 
 /* Promotes a possibly negative, possibly signed char to an unsigned
  * integer for use as an array index.  If the signed char is negative,
@@ -108,6 +134,9 @@ typedef unsigned int flex_uint32_t;
  * double cast.
  */
 #define YY_SC_TO_UI(c) ((unsigned int) (unsigned char) c)
+/* %ok-for-header */
+
+/* %if-reentrant */
 
 /* An opaque pointer. */
 #ifndef YY_TYPEDEF_YY_SCANNER_T
@@ -127,6 +156,10 @@ typedef void* yyscan_t;
 #define yy_flex_debug yyg->yy_flex_debug_r
 
 int yylex_init (yyscan_t* scanner);
+/* %endif */
+
+/* %if-not-reentrant */
+/* %endif */
 
 /* Enter a start condition.  This macro really ought to take a parameter,
  * but we do it the disgusting crufty way forced on us by the ()-less
@@ -158,6 +191,14 @@ int yylex_init (yyscan_t* scanner);
 #define YY_TYPEDEF_YY_BUFFER_STATE
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
+
+/* %if-not-reentrant */
+/* %endif */
+
+/* %if-c-only */
+/* %if-not-reentrant */
+/* %endif */
+/* %endif */
 
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
@@ -195,7 +236,12 @@ typedef unsigned int yy_size_t;
 #define YY_STRUCT_YY_BUFFER_STATE
 struct yy_buffer_state
 	{
+/* %if-c-only */
 	FILE *yy_input_file;
+/* %endif */
+
+/* %if-c++-only */
+/* %endif */
 
 	char *yy_ch_buf;		/* input buffer */
 	char *yy_buf_pos;		/* current position in input buffer */
@@ -256,6 +302,15 @@ struct yy_buffer_state
 	};
 #endif /* !YY_STRUCT_YY_BUFFER_STATE */
 
+/* %if-c-only Standard (non-C++) definition */
+/* %not-for-header */
+
+/* %if-not-reentrant */
+/* %endif */
+/* %ok-for-header */
+
+/* %endif */
+
 /* We provide macros for accessing buffer states in case in the
  * future we want to put the buffer states in a more general
  * "scanner state".
@@ -270,6 +325,15 @@ struct yy_buffer_state
  * NULL or when we need an lvalue. For internal use only.
  */
 #define YY_CURRENT_BUFFER_LVALUE yyg->yy_buffer_stack[yyg->yy_buffer_stack_top]
+
+/* %if-c-only Standard (non-C++) definition */
+
+/* %if-not-reentrant */
+/* %not-for-header */
+
+/* %ok-for-header */
+
+/* %endif */
 
 void yyrestart (FILE *input_file ,yyscan_t yyscanner );
 void yy_switch_to_buffer (YY_BUFFER_STATE new_buffer ,yyscan_t yyscanner );
@@ -288,6 +352,8 @@ static void yy_init_buffer (YY_BUFFER_STATE b,FILE *file ,yyscan_t yyscanner );
 YY_BUFFER_STATE yy_scan_buffer (char *base,yy_size_t size ,yyscan_t yyscanner );
 YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str ,yyscan_t yyscanner );
 YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,int len ,yyscan_t yyscanner );
+
+/* %endif */
 
 void *yyalloc (yy_size_t ,yyscan_t yyscanner );
 void *yyrealloc (void *,yy_size_t ,yyscan_t yyscanner );
@@ -317,10 +383,13 @@ void yyfree (void * ,yyscan_t yyscanner );
 
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
+/* %% [1.0] yytext/yyin/yyout/yy_state_type/yylineno etc. def's & init go here */
 /* Begin user sect3 */
 
 #define yywrap(n) 1
 #define YY_SKIP_YYWRAP
+
+#define FLEX_DEBUG
 
 typedef unsigned char YY_CHAR;
 
@@ -6935,21 +7004,28 @@ static yyconst flex_int32_t yy_nxt[][256] =
 
     } ;
 
+/* %if-c-only Standard (non-C++) definition */
+
 static yy_state_type yy_get_previous_state (yyscan_t yyscanner );
 static yy_state_type yy_try_NUL_trans (yy_state_type current_state  ,yyscan_t yyscanner);
 static int yy_get_next_buffer (yyscan_t yyscanner );
 static void yy_fatal_error (yyconst char msg[] ,yyscan_t yyscanner );
+
+/* %endif */
 
 /* Done after the current pattern has been matched and before the
  * corresponding action - sets up yytext.
  */
 #define YY_DO_BEFORE_ACTION \
 	yyg->yytext_ptr = yy_bp; \
+/* %% [2.0] code to fiddle yytext and yyleng for yymore() goes here \ */\
 	yyleng = (size_t) (yy_cp - yy_bp); \
 	yyg->yy_hold_char = *yy_cp; \
 	*yy_cp = '\0'; \
+/* %% [3.0] code to copy yytext_ptr to yytext[] goes here, if %array \ */\
 	yyg->yy_c_buf_p = yy_cp;
 
+/* %% [4.0] data tables for the DFA and the user's section 1 definitions go here */
 #define YY_NUM_RULES 87
 #define YY_END_OF_BUFFER 88
 /* This struct is not used in this scanner,
@@ -7011,6 +7087,19 @@ static yyconst yy_state_type yy_NUL_trans[209] =
         0,    0,    0,  199,    0,  201,    0,    0,    0,  206,
 
         0,  201,    0,    0,    0,    0,  206,    0
+    } ;
+
+static yyconst flex_int32_t yy_rule_linenum[87] =
+    {   0,
+      210,  216,  225,  231,  237,  242,  247,  254,  259,  264,
+      270,  276,  284,  291,  297,  306,  312,  318,  323,  329,
+      338,  344,  350,  356,  364,  372,  381,  400,  419,  424,
+      432,  439,  445,  451,  457,  463,  469,  475,  481,  487,
+      492,  500,  507,  513,  519,  525,  531,  537,  543,  549,
+      554,  561,  570,  579,  585,  591,  600,  617,  623,  630,
+      637,  644,  661,  678,  683,  689,  706,  723,  738,  754,
+      761,  777,  784,  790,  796,  805,  815,  826,  833,  842,
+      852,  863,  869,  877,  885,  893
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -7118,9 +7207,6 @@ static yyconst yy_state_type yy_NUL_trans[209] =
 /* return a token, setting the nextpos value back to the bufpos */
 #define RETURN(tok) yyextra->nextpos = yyextra->bufpos; return tok
 
-/* XXX todo */
-#define SET_ERROR(s)
-
 /* use Pythons memory management */
 void* yyalloc (yy_size_t bytes, void* yyscanner) {
     return PyMem_Malloc(bytes);
@@ -7189,7 +7275,6 @@ static PyObject* quote_string (PyObject* val) {
     return prefix;
 }
 /* uncomment the next line for debugging */
-/*%option debug*/
 
 
 
@@ -7207,7 +7292,7 @@ static PyObject* quote_string (PyObject* val) {
 
 
 
-#line 7211 "htmllex.c"
+#line 7296 "htmllex.c"
 
 #define INITIAL 0
 #define S_PI 1
@@ -7232,11 +7317,18 @@ static PyObject* quote_string (PyObject* val) {
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
+/* %if-c-only */
 #include <unistd.h>
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
 #endif
+
+/* %if-c-only Reentrant structure and macros (non-C++). */
+/* %if-reentrant */
 
 /* Holds the entire state of the reentrant scanner. */
 struct yyguts_t
@@ -7274,10 +7366,14 @@ struct yyguts_t
 
     }; /* end struct yyguts_t */
 
+/* %if-reentrant */
+
     /* This must go here because YYSTYPE and YYLTYPE are included
      * from bison output in section 1.*/
     #    define yylval yyg->yylval_r
     
+/* %endif */
+
 /* Accessor methods to globals.
    These are made visible to non-reentrant scanners for convenience. */
 
@@ -7307,9 +7403,14 @@ int yyget_lineno (yyscan_t yyscanner );
 
 void yyset_lineno (int line_number ,yyscan_t yyscanner );
 
+/* %if-bison-bridge */
+
 YYSTYPE * yyget_lval (yyscan_t yyscanner );
 
 void yyset_lval (YYSTYPE * yylval_param ,yyscan_t yyscanner );
+
+/* %endif */
+/* %endif End reentrant structures and macros. */
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -7323,6 +7424,12 @@ extern int yywrap (yyscan_t yyscanner );
 #endif
 #endif
 
+/* %not-for-header */
+
+/* %ok-for-header */
+
+/* %endif */
+
 #ifndef yytext_ptr
 static void yy_flex_strncpy (char *,yyconst char *,int ,yyscan_t yyscanner);
 #endif
@@ -7332,14 +7439,22 @@ static int yy_flex_strlen (yyconst char * ,yyscan_t yyscanner);
 #endif
 
 #ifndef YY_NO_INPUT
+/* %if-c-only Standard (non-C++) definition */
+/* %not-for-header */
 
 #ifdef __cplusplus
 static int yyinput (yyscan_t yyscanner );
 #else
 static int input (yyscan_t yyscanner );
 #endif
+/* %ok-for-header */
 
+/* %endif */
 #endif
+
+/* %if-c-only */
+
+/* %endif */
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
@@ -7348,10 +7463,14 @@ static int input (yyscan_t yyscanner );
 
 /* Copy whatever the last rule matched to the standard output. */
 #ifndef ECHO
+/* %if-c-only Standard (non-C++) definition */
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
 #define ECHO (void) fwrite( yytext, yyleng, 1, yyout )
+/* %endif */
+/* %if-c++-only C++ definition */
+/* %endif */
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -7359,6 +7478,7 @@ static int input (yyscan_t yyscanner );
  */
 #ifndef YY_INPUT
 #define YY_INPUT(buf,result,max_size) \
+/* %% [5.0] fread()/read() definition of YY_INPUT goes here unless we're doing C++ \ */\
 	errno=0; \
 	while ( (result = read( fileno(yyin), (char *) buf, max_size )) < 0 ) \
 	{ \
@@ -7371,6 +7491,8 @@ static int input (yyscan_t yyscanner );
 		clearerr(yyin); \
 	}\
 \
+/* %if-c++-only C++ definition \ */\
+/* %endif */
 
 #endif
 
@@ -7389,20 +7511,39 @@ static int input (yyscan_t yyscanner );
 
 /* Report a fatal error. */
 #ifndef YY_FATAL_ERROR
+/* %if-c-only */
 #define YY_FATAL_ERROR(msg) yy_fatal_error( msg , yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 #endif
 
+/* %if-tables-serialization structures and prototypes */
+/* %not-for-header */
+
+/* %ok-for-header */
+
+/* %not-for-header */
+
+/* %tables-yydmap generated elements */
+/* %endif */
 /* end tables serialization structures and prototypes */
+
+/* %ok-for-header */
 
 /* Default declaration of generated scanner - a define so the user can
  * easily add parameters.
  */
 #ifndef YY_DECL
 #define YY_DECL_IS_OURS 1
+/* %if-c-only Standard (non-C++) definition */
 
 extern int yylex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
 
 #define YY_DECL int yylex (YYSTYPE * yylval_param , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only C++ definition */
+/* %endif */
 #endif /* !YY_DECL */
 
 /* Code executed at the beginning of each rule, after yytext and yyleng
@@ -7417,8 +7558,11 @@ extern int yylex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
 #define YY_BREAK break;
 #endif
 
+/* %% [6.0] YY_RULE_SETUP definition goes here */
 #define YY_RULE_SETUP \
 	YY_USER_ACTION
+
+/* %not-for-header */
 
 /** The main scanner function which does all the work.
  */
@@ -7429,11 +7573,12 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 203 "htmllex.l"
+/* %% [7.0] user's declarations go here */
+#line 200 "htmllex.l"
 
 
   /*********************** EOF ************************/
-#line 7437 "htmllex.c"
+#line 7582 "htmllex.c"
 
     yylval = yylval_param;
 
@@ -7449,10 +7594,18 @@ YY_DECL
 			yyg->yy_start = 1;	/* first start state */
 
 		if ( ! yyin )
+/* %if-c-only */
 			yyin = stdin;
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 
 		if ( ! yyout )
+/* %if-c-only */
 			yyout = stdout;
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 
 		if ( ! YY_CURRENT_BUFFER ) {
 			yyensure_buffer_stack (yyscanner);
@@ -7465,6 +7618,7 @@ YY_DECL
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
+/* %% [8.0] yymore()-related code goes here */
 		yy_cp = yyg->yy_c_buf_p;
 
 		/* Support of yytext. */
@@ -7475,6 +7629,7 @@ YY_DECL
 		 */
 		yy_bp = yy_cp;
 
+/* %% [9.0] code to set up and find next match goes here */
 		yy_current_state = yyg->yy_start;
 yy_match:
 		while ( (yy_current_state = yy_nxt[yy_current_state][ YY_SC_TO_UI(*yy_cp) ]) > 0 )
@@ -7491,14 +7646,35 @@ yy_match:
 		yy_current_state = -yy_current_state;
 
 yy_find_action:
+/* %% [10.0] code to find the action number goes here */
 		yy_act = yy_accept[yy_current_state];
 
 		YY_DO_BEFORE_ACTION;
 
+/* %% [11.0] code for yylineno update goes here */
+
 do_action:	/* This label is used only to access EOF actions. */
+
+/* %% [12.0] debug code goes here */
+		if ( yy_flex_debug )
+			{
+			if ( yy_act == 0 )
+				fprintf( stderr, "--scanner backing up\n" );
+			else if ( yy_act < 87 )
+				fprintf( stderr, "--accepting rule at line %ld (\"%s\")\n",
+				         (long)yy_rule_linenum[yy_act], yytext );
+			else if ( yy_act == 87 )
+				fprintf( stderr, "--accepting default rule (\"%s\")\n",
+				         yytext );
+			else if ( yy_act == 88 )
+				fprintf( stderr, "--(end of buffer or a NUL)\n" );
+			else
+				fprintf( stderr, "--EOF (start condition %d)\n", YY_START );
+			}
 
 		switch ( yy_act )
 	{ /* beginning of action switch */
+/* %% [13.0] actions go here */
 			case 0: /* must back up */
 			/* undo the effects of YY_DO_BEFORE_ACTION */
 			*yy_cp = yyg->yy_hold_char;
@@ -7524,7 +7700,7 @@ case YY_STATE_EOF(S_ATTR4):
 case YY_STATE_EOF(S_ATTR5):
 case YY_STATE_EOF(S_APOSSTRING):
 case YY_STATE_EOF(S_STRING):
-#line 206 "htmllex.l"
+#line 203 "htmllex.l"
 {
     /* wait for more data */
     return T_WAIT;
@@ -7534,7 +7710,7 @@ case YY_STATE_EOF(S_STRING):
 /* Note: eonline had some "<! --" comments */
 case 1:
 YY_RULE_SETUP
-#line 213 "htmllex.l"
+#line 210 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7543,7 +7719,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 219 "htmllex.l"
+#line 216 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7556,7 +7732,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 228 "htmllex.l"
+#line 225 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7566,7 +7742,7 @@ YY_RULE_SETUP
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 234 "htmllex.l"
+#line 231 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7575,7 +7751,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 240 "htmllex.l"
+#line 237 "htmllex.l"
 {
     return T_WAIT;
 }
@@ -7583,7 +7759,7 @@ YY_RULE_SETUP
 /* Note: www.nba.com ad some <! Copyright !> comment */
 case 6:
 YY_RULE_SETUP
-#line 245 "htmllex.l"
+#line 242 "htmllex.l"
 {
     UPDATE_BUFPOS;
     BEGIN(S_COMMENT2);
@@ -7591,7 +7767,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 250 "htmllex.l"
+#line 247 "htmllex.l"
 {
     UPDATE_BUFPOS;
     SETLVAL;
@@ -7602,7 +7778,7 @@ YY_RULE_SETUP
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 257 "htmllex.l"
+#line 254 "htmllex.l"
 {
     UPDATE_BUFPOS;
     APPEND_TO_TMP(yyleng);
@@ -7611,7 +7787,7 @@ YY_RULE_SETUP
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 262 "htmllex.l"
+#line 259 "htmllex.l"
 {
     UPDATE_BUFPOS;
     APPEND_TO_TMP(yyleng);
@@ -7619,7 +7795,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 267 "htmllex.l"
+#line 264 "htmllex.l"
 {
     return T_WAIT;
 }
@@ -7627,7 +7803,7 @@ YY_RULE_SETUP
 /*********************** DOCTYPE ************************/
 case 11:
 YY_RULE_SETUP
-#line 273 "htmllex.l"
+#line 270 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7636,7 +7812,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 279 "htmllex.l"
+#line 276 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7648,7 +7824,7 @@ YY_RULE_SETUP
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 287 "htmllex.l"
+#line 284 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7658,7 +7834,7 @@ YY_RULE_SETUP
 /*********************** CDATA ************************/
 case 14:
 YY_RULE_SETUP
-#line 294 "htmllex.l"
+#line 291 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7667,7 +7843,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 300 "htmllex.l"
+#line 297 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7680,7 +7856,7 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 309 "htmllex.l"
+#line 306 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7690,7 +7866,7 @@ YY_RULE_SETUP
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 315 "htmllex.l"
+#line 312 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7699,7 +7875,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 321 "htmllex.l"
+#line 318 "htmllex.l"
 {
     return T_WAIT;
 }
@@ -7707,7 +7883,7 @@ YY_RULE_SETUP
 /*********************** PI ************************/
 case 19:
 YY_RULE_SETUP
-#line 326 "htmllex.l"
+#line 323 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7716,7 +7892,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 332 "htmllex.l"
+#line 329 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7729,7 +7905,7 @@ YY_RULE_SETUP
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 341 "htmllex.l"
+#line 338 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7739,7 +7915,7 @@ YY_RULE_SETUP
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 347 "htmllex.l"
+#line 344 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7748,7 +7924,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 353 "htmllex.l"
+#line 350 "htmllex.l"
 {
     return T_WAIT;
 }
@@ -7760,7 +7936,7 @@ case 24:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 359 "htmllex.l"
+#line 356 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7771,7 +7947,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 367 "htmllex.l"
+#line 364 "htmllex.l"
 {
     /* actually accept a lot of tag chars, which may be illegal,
      but we dont care, its the browsers job */
@@ -7783,7 +7959,7 @@ YY_RULE_SETUP
 case 26:
 /* rule 26 can match eol */
 YY_RULE_SETUP
-#line 375 "htmllex.l"
+#line 372 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7795,7 +7971,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 384 "htmllex.l"
+#line 381 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7817,7 +7993,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 403 "htmllex.l"
+#line 400 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -7839,7 +8015,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 422 "htmllex.l"
+#line 419 "htmllex.l"
 {
     return T_WAIT;
 }
@@ -7848,7 +8024,7 @@ YY_RULE_SETUP
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
-#line 427 "htmllex.l"
+#line 424 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7860,7 +8036,7 @@ YY_RULE_SETUP
 case 31:
 /* rule 31 can match eol */
 YY_RULE_SETUP
-#line 435 "htmllex.l"
+#line 432 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7874,7 +8050,7 @@ case 32:
 yyg->yy_c_buf_p = yy_cp = yy_bp + 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 442 "htmllex.l"
+#line 439 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7887,7 +8063,7 @@ case 33:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 448 "htmllex.l"
+#line 445 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7900,7 +8076,7 @@ case 34:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 454 "htmllex.l"
+#line 451 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7913,7 +8089,7 @@ case 35:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 460 "htmllex.l"
+#line 457 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7926,7 +8102,7 @@ case 36:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 466 "htmllex.l"
+#line 463 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7939,7 +8115,7 @@ case 37:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 472 "htmllex.l"
+#line 469 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7952,7 +8128,7 @@ case 38:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 478 "htmllex.l"
+#line 475 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7965,7 +8141,7 @@ case 39:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 484 "htmllex.l"
+#line 481 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7974,7 +8150,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 490 "htmllex.l"
+#line 487 "htmllex.l"
 {
     return T_WAIT;
 }
@@ -7983,7 +8159,7 @@ YY_RULE_SETUP
 case 41:
 /* rule 41 can match eol */
 YY_RULE_SETUP
-#line 495 "htmllex.l"
+#line 492 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -7995,7 +8171,7 @@ YY_RULE_SETUP
 case 42:
 /* rule 42 can match eol */
 YY_RULE_SETUP
-#line 503 "htmllex.l"
+#line 500 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8009,7 +8185,7 @@ case 43:
 yyg->yy_c_buf_p = yy_cp = yy_bp + 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 510 "htmllex.l"
+#line 507 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8022,7 +8198,7 @@ case 44:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 516 "htmllex.l"
+#line 513 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8035,7 +8211,7 @@ case 45:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 522 "htmllex.l"
+#line 519 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8048,7 +8224,7 @@ case 46:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 528 "htmllex.l"
+#line 525 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8061,7 +8237,7 @@ case 47:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 534 "htmllex.l"
+#line 531 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8074,7 +8250,7 @@ case 48:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 540 "htmllex.l"
+#line 537 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8087,7 +8263,7 @@ case 49:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 546 "htmllex.l"
+#line 543 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8096,7 +8272,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 552 "htmllex.l"
+#line 549 "htmllex.l"
 {
     return T_WAIT;
 }
@@ -8104,7 +8280,7 @@ YY_RULE_SETUP
 /*********************** ATTRS ************************/
 case 51:
 YY_RULE_SETUP
-#line 557 "htmllex.l"
+#line 554 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8114,7 +8290,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 564 "htmllex.l"
+#line 561 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8126,7 +8302,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 573 "htmllex.l"
+#line 570 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8138,7 +8314,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 582 "htmllex.l"
+#line 579 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8148,7 +8324,7 @@ YY_RULE_SETUP
 case 55:
 /* rule 55 can match eol */
 YY_RULE_SETUP
-#line 588 "htmllex.l"
+#line 585 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8158,7 +8334,7 @@ YY_RULE_SETUP
 case 56:
 /* rule 56 can match eol */
 YY_RULE_SETUP
-#line 594 "htmllex.l"
+#line 591 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8170,7 +8346,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 603 "htmllex.l"
+#line 600 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8191,7 +8367,7 @@ YY_RULE_SETUP
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 620 "htmllex.l"
+#line 617 "htmllex.l"
 {
     /* this also skips whitespace! */
     UPDATE_BUFPOS;
@@ -8200,7 +8376,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 626 "htmllex.l"
+#line 623 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8209,7 +8385,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 633 "htmllex.l"
+#line 630 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8218,7 +8394,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 640 "htmllex.l"
+#line 637 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8228,7 +8404,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 647 "htmllex.l"
+#line 644 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8248,7 +8424,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 664 "htmllex.l"
+#line 661 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8269,7 +8445,7 @@ YY_RULE_SETUP
 case 64:
 /* rule 64 can match eol */
 YY_RULE_SETUP
-#line 681 "htmllex.l"
+#line 678 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8277,7 +8453,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 686 "htmllex.l"
+#line 683 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8286,7 +8462,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 692 "htmllex.l"
+#line 689 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8306,7 +8482,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 709 "htmllex.l"
+#line 706 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8327,7 +8503,7 @@ YY_RULE_SETUP
 case 68:
 /* rule 68 can match eol */
 YY_RULE_SETUP
-#line 726 "htmllex.l"
+#line 723 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8345,7 +8521,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 741 "htmllex.l"
+#line 738 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8365,7 +8541,7 @@ YY_RULE_SETUP
 case 70:
 /* rule 70 can match eol */
 YY_RULE_SETUP
-#line 757 "htmllex.l"
+#line 754 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8374,7 +8550,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 764 "htmllex.l"
+#line 761 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8394,7 +8570,7 @@ YY_RULE_SETUP
 case 72:
 /* rule 72 can match eol */
 YY_RULE_SETUP
-#line 780 "htmllex.l"
+#line 777 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8408,7 +8584,7 @@ case 73:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 787 "htmllex.l"
+#line 784 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8417,7 +8593,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 793 "htmllex.l"
+#line 790 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8426,7 +8602,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 799 "htmllex.l"
+#line 796 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8442,7 +8618,7 @@ case 76:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 808 "htmllex.l"
+#line 805 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8459,7 +8635,7 @@ case 77:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 818 "htmllex.l"
+#line 815 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8474,7 +8650,7 @@ YY_RULE_SETUP
 case 78:
 /* rule 78 can match eol */
 YY_RULE_SETUP
-#line 829 "htmllex.l"
+#line 826 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8484,7 +8660,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 836 "htmllex.l"
+#line 833 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8500,7 +8676,7 @@ case 80:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 845 "htmllex.l"
+#line 842 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8517,7 +8693,7 @@ case 81:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 855 "htmllex.l"
+#line 852 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8531,7 +8707,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 866 "htmllex.l"
+#line 863 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8541,7 +8717,7 @@ YY_RULE_SETUP
 case 83:
 /* rule 83 can match eol */
 YY_RULE_SETUP
-#line 872 "htmllex.l"
+#line 869 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8552,7 +8728,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 880 "htmllex.l"
+#line 877 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_COLUMN;
@@ -8564,7 +8740,7 @@ YY_RULE_SETUP
 case 85:
 /* rule 85 can match eol */
 YY_RULE_SETUP
-#line 888 "htmllex.l"
+#line 885 "htmllex.l"
 {
     UPDATE_BUFPOS;
     UPDATE_LINE;
@@ -8575,17 +8751,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 896 "htmllex.l"
+#line 893 "htmllex.l"
 {
     return T_WAIT;
 }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 900 "htmllex.l"
+#line 897 "htmllex.l"
 ECHO;
 	YY_BREAK
-#line 8589 "htmllex.c"
+#line 8765 "htmllex.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -8650,6 +8826,7 @@ ECHO;
 
 			else
 				{
+/* %% [14.0] code to do back-up for compressed tables and set up yy_cp goes here */
 				yy_cp = yyg->yy_c_buf_p;
 				goto yy_find_action;
 				}
@@ -8715,6 +8892,14 @@ ECHO;
 	} /* end of action switch */
 		} /* end of scanning one token */
 } /* end of yylex */
+/* %ok-for-header */
+
+/* %if-c++-only */
+/* %not-for-header */
+
+/* %ok-for-header */
+
+/* %endif */
 
 /* yy_get_next_buffer - try to read in a new buffer
  *
@@ -8723,7 +8908,11 @@ ECHO;
  *	EOB_ACT_CONTINUE_SCAN - continue scanning from current position
  *	EOB_ACT_END_OF_FILE - end of file
  */
+/* %if-c-only */
 static int yy_get_next_buffer (yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	register char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
@@ -8850,16 +9039,24 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
 
+/* %if-c-only */
+/* %not-for-header */
+
     static yy_state_type yy_get_previous_state (yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
 	register yy_state_type yy_current_state;
 	register char *yy_cp;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
+/* %% [15.0] code to get the start state into yy_current_state goes here */
 	yy_current_state = yyg->yy_start;
 
 	for ( yy_cp = yyg->yytext_ptr + YY_MORE_ADJ; yy_cp < yyg->yy_c_buf_p; ++yy_cp )
 		{
+/* %% [16.0] code to find the next state goes here */
 		if ( *yy_cp )
 			{
 			yy_current_state = yy_nxt[yy_current_state][YY_SC_TO_UI(*yy_cp)];
@@ -8881,10 +9078,15 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
  * synopsis
  *	next_state = yy_try_NUL_trans( current_state );
  */
+/* %if-c-only */
     static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
 	register int yy_is_jam;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
+/* %% [17.0] code to find the next state, and perhaps do backing up, goes here */
 	register char *yy_cp = yyg->yy_c_buf_p;
 
 	yy_current_state = yy_NUL_trans[yy_current_state];
@@ -8902,6 +9104,11 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	return yy_is_jam ? 0 : yy_current_state;
 }
 
+/* %if-c-only */
+
+/* %endif */
+
+/* %if-c-only */
 #ifndef YY_NO_INPUT
 #ifdef __cplusplus
     static int yyinput (yyscan_t yyscanner)
@@ -8909,6 +9116,9 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
     static int input  (yyscan_t yyscanner)
 #endif
 
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
 	int c;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
@@ -8973,16 +9183,24 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	*yyg->yy_c_buf_p = '\0';	/* preserve yytext */
 	yyg->yy_hold_char = *++yyg->yy_c_buf_p;
 
+/* %% [19.0] update BOL and yylineno */
+
 	return c;
 }
+/* %if-c-only */
 #endif	/* ifndef YY_NO_INPUT */
+/* %endif */
 
 /** Immediately switch to a different input stream.
  * @param input_file A readable stream.
  * @param yyscanner The scanner object.
  * @note This function does not reset the start condition to @c INITIAL .
  */
+/* %if-c-only */
     void yyrestart  (FILE * input_file , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
@@ -9000,7 +9218,11 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
  * @param new_buffer The new input buffer.
  * @param yyscanner The scanner object.
  */
+/* %if-c-only */
     void yy_switch_to_buffer  (YY_BUFFER_STATE  new_buffer , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
@@ -9032,7 +9254,11 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	yyg->yy_did_buffer_switch_on_eof = 1;
 }
 
+/* %if-c-only */
 static void yy_load_buffer_state  (yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	yyg->yy_n_chars = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
@@ -9047,7 +9273,11 @@ static void yy_load_buffer_state  (yyscan_t yyscanner)
  * @param yyscanner The scanner object.
  * @return the allocated buffer state.
  */
+/* %if-c-only */
     YY_BUFFER_STATE yy_create_buffer  (FILE * file, int  size , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
 	YY_BUFFER_STATE b;
     
@@ -9075,7 +9305,11 @@ static void yy_load_buffer_state  (yyscan_t yyscanner)
  * @param b a buffer created with yy_create_buffer()
  * @param yyscanner The scanner object.
  */
+/* %if-c-only */
     void yy_delete_buffer (YY_BUFFER_STATE  b , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
@@ -9091,11 +9325,22 @@ static void yy_load_buffer_state  (yyscan_t yyscanner)
 	yyfree((void *) b ,yyscanner );
 }
 
+/* %if-c-only */
+
+/* %endif */
+
+/* %if-c++-only */
+/* %endif */
+
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
  */
+/* %if-c-only */
     static void yy_init_buffer  (YY_BUFFER_STATE  b, FILE * file , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 
 {
 	int oerrno = errno;
@@ -9115,8 +9360,13 @@ static void yy_load_buffer_state  (yyscan_t yyscanner)
         b->yy_bs_column = 0;
     }
 
+/* %if-c-only */
+
         b->yy_is_interactive = 0;
     
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 	errno = oerrno;
 }
 
@@ -9124,7 +9374,11 @@ static void yy_load_buffer_state  (yyscan_t yyscanner)
  * @param b the buffer state to be flushed, usually @c YY_CURRENT_BUFFER.
  * @param yyscanner The scanner object.
  */
+/* %if-c-only */
     void yy_flush_buffer (YY_BUFFER_STATE  b , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	if ( ! b )
@@ -9148,13 +9402,18 @@ static void yy_load_buffer_state  (yyscan_t yyscanner)
 		yy_load_buffer_state(yyscanner );
 }
 
+/* %if-c-or-c++ */
 /** Pushes the new state onto the stack. The new state becomes
  *  the current state. This function will allocate the stack
  *  if necessary.
  *  @param new_buffer The new state.
  *  @param yyscanner The scanner object.
  */
+/* %if-c-only */
 void yypush_buffer_state (YY_BUFFER_STATE new_buffer , yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	if (new_buffer == NULL)
@@ -9180,12 +9439,18 @@ void yypush_buffer_state (YY_BUFFER_STATE new_buffer , yyscan_t yyscanner)
 	yy_load_buffer_state(yyscanner );
 	yyg->yy_did_buffer_switch_on_eof = 1;
 }
+/* %endif */
 
+/* %if-c-or-c++ */
 /** Removes and deletes the top of the stack, if present.
  *  The next element becomes the new top.
  *  @param yyscanner The scanner object.
  */
+/* %if-c-only */
 void yypop_buffer_state (yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	if (!YY_CURRENT_BUFFER)
@@ -9201,11 +9466,17 @@ void yypop_buffer_state (yyscan_t yyscanner)
 		yyg->yy_did_buffer_switch_on_eof = 1;
 	}
 }
+/* %endif */
 
+/* %if-c-or-c++ */
 /* Allocates the stack if it does not exist.
  *  Guarantees space for at least one push.
  */
+/* %if-c-only */
 static void yyensure_buffer_stack (yyscan_t yyscanner)
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 {
 	int num_to_alloc;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
@@ -9244,7 +9515,9 @@ static void yyensure_buffer_stack (yyscan_t yyscanner)
 		yyg->yy_buffer_stack_max = num_to_alloc;
 	}
 }
+/* %endif */
 
+/* %if-c-only */
 /** Setup the input buffer state to scan directly from a user-specified character buffer.
  * @param base the character buffer
  * @param size the size in bytes of the character buffer
@@ -9279,7 +9552,9 @@ YY_BUFFER_STATE yy_scan_buffer  (char * base, yy_size_t  size , yyscan_t yyscann
 
 	return b;
 }
+/* %endif */
 
+/* %if-c-only */
 /** Setup the input buffer state to scan a string. The next call to yylex() will
  * scan from a @e copy of @a str.
  * @param str a NUL-terminated string to scan
@@ -9293,7 +9568,9 @@ YY_BUFFER_STATE yy_scan_string (yyconst char * str , yyscan_t yyscanner)
     
 	return yy_scan_bytes(str,strlen(str) ,yyscanner);
 }
+/* %endif */
 
+/* %if-c-only */
 /** Setup the input buffer state to scan the given bytes. The next call to yylex() will
  * scan from a @e copy of @a bytes.
  * @param bytes the byte buffer to scan
@@ -9330,16 +9607,21 @@ YY_BUFFER_STATE yy_scan_bytes  (yyconst char * bytes, int  len , yyscan_t yyscan
 
 	return b;
 }
+/* %endif */
 
 #ifndef YY_EXIT_FAILURE
 #define YY_EXIT_FAILURE 2
 #endif
 
+/* %if-c-only */
 static void yy_fatal_error (yyconst char* msg , yyscan_t yyscanner)
 {
     	(void) fprintf( stderr, "%s\n", msg );
 	exit( YY_EXIT_FAILURE );
 }
+/* %endif */
+/* %if-c++-only */
+/* %endif */
 
 /* Redefine yyless() so it works in section 3 code. */
 
@@ -9360,6 +9642,9 @@ static void yy_fatal_error (yyconst char* msg , yyscan_t yyscanner)
 
 /* Accessor  methods (get/set functions) to struct members. */
 
+/* %if-c-only */
+/* %if-reentrant */
+
 /** Get the user-defined data for this scanner.
  * @param yyscanner The scanner object.
  */
@@ -9368,6 +9653,8 @@ YY_EXTRA_TYPE yyget_extra  (yyscan_t yyscanner)
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yyextra;
 }
+
+/* %endif */
 
 /** Get the current line number.
  * @param yyscanner The scanner object.
@@ -9432,6 +9719,8 @@ char *yyget_text  (yyscan_t yyscanner)
     return yytext;
 }
 
+/* %if-reentrant */
+
 /** Set the user-defined data. This data is never touched by the scanner.
  * @param user_defined The data to be associated with this scanner.
  * @param yyscanner The scanner object.
@@ -9441,6 +9730,8 @@ void yyset_extra (YY_EXTRA_TYPE  user_defined , yyscan_t yyscanner)
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yyextra = user_defined ;
 }
+
+/* %endif */
 
 /** Set the current line number.
  * @param line_number
@@ -9502,7 +9793,12 @@ void yyset_debug (int  bdebug , yyscan_t yyscanner)
     yy_flex_debug = bdebug ;
 }
 
+/* %endif */
+
+/* %if-reentrant */
 /* Accessor methods for yylval and yylloc */
+
+/* %if-bison-bridge */
 
 YYSTYPE * yyget_lval  (yyscan_t yyscanner)
 {
@@ -9515,6 +9811,8 @@ void yyset_lval (YYSTYPE *  yylval_param , yyscan_t yyscanner)
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yylval = yylval_param;
 }
+
+/* %endif */
 
 static int yy_init_globals (yyscan_t yyscanner)
 {
@@ -9574,6 +9872,9 @@ int yylex_init(yyscan_t* ptr_yy_globals)
     return yy_init_globals ( *ptr_yy_globals );
 }
 
+/* %endif */
+
+/* %if-c-only SNIP! this currently causes conflicts with the c++ scanner */
 /* yylex_destroy is for both reentrant and non-reentrant scanners. */
 int yylex_destroy  (yyscan_t yyscanner)
 {
@@ -9594,10 +9895,13 @@ int yylex_destroy  (yyscan_t yyscanner)
         yyfree(yyg->yy_start_stack ,yyscanner );
         yyg->yy_start_stack = NULL;
 
+/* %if-reentrant */
     /* Destroy the main struct (reentrant only). */
     yyfree ( yyscanner , yyscanner );
+/* %endif */
     return 0;
 }
+/* %endif */
 
 /*
  * Internal utility routines.
@@ -9625,7 +9929,12 @@ static int yy_flex_strlen (yyconst char * s , yyscan_t yyscanner)
 }
 #endif
 
+/* %if-tables-serialization definitions */
+/* %define-yytables   The name for this specific scanner's tables. */
 #define YYTABLES_NAME "yytables"
+/* %endif */
+
+/* %ok-for-header */
 
 #undef YY_NEW_FILE
 #undef YY_FLUSH_BUFFER
@@ -9639,16 +9948,20 @@ static int yy_flex_strlen (yyconst char * s , yyscan_t yyscanner)
 #undef YY_DECL_IS_OURS
 #undef YY_DECL
 #endif
-#line 900 "htmllex.l"
+#line 897 "htmllex.l"
 
 
 
 int htmllexInit (void** scanner, UserData* data) {
     yylex_init(scanner);
-    /* uncomment the next line for debugging */
-    /*yyset_debug(1,*scanner);*/
     yyset_extra(data,*scanner);
     return 0;
+}
+
+int htmllexDebug (void** scanner, int debug) {
+    int old = yyget_debug(*scanner);
+    yyset_debug(debug,*scanner);
+    return old;
 }
 
 /* prepare scanner for calls to yylex() */

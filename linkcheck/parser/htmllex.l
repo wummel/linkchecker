@@ -96,9 +96,6 @@
 /* return a token, setting the nextpos value back to the bufpos */
 #define RETURN(tok) yyextra->nextpos = yyextra->bufpos; return tok
 
-/* XXX todo */
-#define SET_ERROR(s)
-
 /* use Pythons memory management */
 void* yyalloc (yy_size_t bytes, void* yyscanner) {
     return PyMem_Malloc(bytes);
@@ -172,7 +169,7 @@ static PyObject* quote_string (PyObject* val) {
 %option 8bit outfile="htmllex.c"
 %option align full
 /* uncomment the next line for debugging */
-/*%option debug*/
+%option debug
 %option nounput nomain noyywrap noyymore noreject
 %option bison-bridge reentrant never-interactive
 %option warn
@@ -901,10 +898,14 @@ RX_DATA [-a-zA-Z0-9_]+
 
 int htmllexInit (void** scanner, UserData* data) {
     yylex_init(scanner);
-    /* uncomment the next line for debugging */
-    /*yyset_debug(1, *scanner);*/
     yyset_extra(data, *scanner);
     return 0;
+}
+
+int htmllexDebug (void** scanner, int debug) {
+    int old = yyget_debug(*scanner);
+    yyset_debug(debug, *scanner);
+    return old;
 }
 
 /* prepare scanner for calls to yylex() */
