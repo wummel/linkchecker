@@ -1,0 +1,8 @@
+url 
+cache key None
+real url None
+error
+url file://%(curdir)s/linkcheck/ftests/data/misc.html
+cache key file://%(curdir)s/linkcheck/ftests/data/misc.html
+real url file://%(curdir)s/linkcheck/ftests/data/misc.html
+valid
