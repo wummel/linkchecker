@@ -58,6 +58,10 @@
     Type: feature
     Changed: linkcheck/httplib2.py
 
+  * Do not install unit tests. Only include them in the source distribution.
+    Type: feature
+    Changed: MANIFEST.in, setup.py
+
 2.1 "Shogun Assassin" (released 11.1.2005)
 
   * Added XHTML support to the HTML parser.
