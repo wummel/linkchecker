@@ -1,5 +1,8 @@
 2.3 "" (released xx.xx.2005)
 
+  * Use and require Python >= 2.4.
+    Type: feature
+    Changed: doc/install.txt, linkcheck/__init__.py, some scripts
 
 2.2 "Cube" (released 25.01.2005)
 
