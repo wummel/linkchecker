@@ -1,8 +1,9 @@
 linkchecker (1.3.0) unstable; urgency=low
 
   * require Python 2.0
+  * fix agent matching in robotparser2.py
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat, 13 Jan 2001 11:52:30 +0100
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu,  1 Feb 2001 01:51:27 +0100
 
 linkchecker (1.2.14) unstable; urgency=low
 

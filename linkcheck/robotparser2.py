@@ -39,6 +39,7 @@ class RobotFileParser:
     def read(self):
         import httplib
         tries = 0
+        # limit number of redirections to 5
         while tries<5:
             connection = httplib.HTTP(self.host)
             connection.putrequest("GET", self.path)
@@ -134,7 +135,6 @@ class RobotFileParser:
             return 1
         # search for given user agent matches
         # the first match counts
-        useragent = string.lower(useragent)
         url = urllib.quote(urlparse.urlparse(url)[2])
         for entry in self.entries:
             if entry.applies_to(useragent):
@@ -179,10 +179,12 @@ class Entry:
         return ret
 
     def applies_to(self, useragent):
-        "check if this entry applies to the specified agent"
+        """check if this entry applies to the specified agent"""
+        useragent = string.lower(useragent)
         for agent in self.useragents:
-            if agent=="*":
+            if agent=='*' or useragent=='*':
                 return 1
+            agent = string.lower(agent)
             if re.match(agent, useragent):
                 return 1
         return 0
@@ -192,6 +194,7 @@ class Entry:
         - our agent applies to this entry
         - filename is URL decoded"""
         for line in self.rulelines:
+            _debug((filename, str(line), line.allowance))
             if line.applies_to(filename):
                 return line.allowance
         return 1
@@ -208,9 +211,16 @@ def _test():
     else:
         rp.parse(open(sys.argv[1]).readlines())
     print rp.can_fetch('*', 'http://www.musi-cal.com/')
-    print rp.can_fetch('Musi-Cal-Robot/1.0',
+    print rp.can_fetch('CherryPickerSE',
                        'http://www.musi-cal.com/cgi-bin/event-search'
 		       '?city=San+Francisco')
+    print rp.can_fetch('CherryPickerSE/1.0',
+                       'http://www.musi-cal.com/cgi-bin/event-search'
+		       '?city=San+Francisco')
+    print rp.can_fetch('CherryPickerSE/1.5',
+                       'http://www.musi-cal.com/cgi-bin/event-search'
+		       '?city=San+Francisco')
+    print rp.can_fetch('ExtractorPro', 'http://www.musi-cal.com/blubba')
 
 if __name__ == '__main__':
     _test()
