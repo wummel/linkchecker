@@ -15,6 +15,10 @@
     Type: feature
     Changed: linkcheck/optcomplete.py
 
+  * also quote query parts of urls
+    Type: bugfix
+    Changed: linkcheck/{HttpUrlData, url}.py
+
 1.12.2 (release 4.4.2004)
   * use XmlUtils instead of xmlify for XML quoting
     Type: code cleanup
