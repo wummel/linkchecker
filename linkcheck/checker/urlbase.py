@@ -90,7 +90,7 @@ class UrlBase (object):
                   line = -1, column = -1, name = u""):
         """Initialize check data, and store given variables.
 
-           @base_url - unquoted and/or unnormed url
+           @base_url - unquoted and possibly unnormed url
            @recursion_level - on what check level lies the base url
            @config - Configuration instance
            @parent_url - quoted and normed url of parent or None
@@ -594,11 +594,8 @@ class UrlBase (object):
                              parent_url=self.url, line=lineno, column=column)
                 self.consumer.append_url(url_data)
 
-    def __str__ (self):
-        return self.__repr__()
-
-    def __repr__ (self):
-        """return serialized url check data"""
+    def serialized (self):
+        """return serialized url check data as unicode string"""
         sep = unicode(os.linesep)
         assert isinstance(self.base_url, unicode), self.base_url
         if self.parent_url is not None:
@@ -617,3 +614,10 @@ class UrlBase (object):
             u"column=%d" % self.column,
             u"name=%s" % self.name,
            ])
+
+    def __str__ (self):
+        s = self.serialized()
+        return self.consumer.config['logger'].encode(s)
+
+    def __repr__ (self):
+        return u"<%s >" % self.serialized()
