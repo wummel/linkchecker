@@ -3,11 +3,13 @@ linkchecker (1.2.6) unstable; urgency=low
   * made a FAQ
   * configuration changes: distutils are now required; because of that
     we have no more .tmpl files
-  * correct db name in create.sql
+  * fix db name in create.sql
   * added timeoutsocket.py to supply a timeout for socket.connect()
     calls
+  * fix tag parsing when a quoted tag attribute value contains a >
+    character
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Mon, 16 Oct 2000 14:55:51 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat, 28 Oct 2000 17:52:53 +0200
 
 linkchecker (1.2.5) unstable; urgency=low
 

@@ -33,22 +33,22 @@ except ImportError:
     pass
 
 _linkMatcher = r"""
-    (?i)          # case insensitive
-    <             # open tag
-    \s*           # whitespace
-    %s            # tag name
-    \s+           # whitespace
-    [^>]*?        # skip leading attributes
-    %s            # attrib name
-    \s*           # whitespace
-    =             # equal sign
-    \s*           # whitespace
-    (?P<value>    # attribute value
-     ".*?" |      # in double quotes
-     '.*?' |      # in single quotes
-     [^\s>]+)     # unquoted
-    [^>]*         # skip trailing attributes
-    >             # close tag
+    (?i)           # case insensitive
+    <              # open tag
+    \s*            # whitespace
+    %s             # tag name
+    \s+            # whitespace
+    [^>]*?         # skip leading attributes
+    %s             # attrib name
+    \s*            # whitespace
+    =              # equal sign
+    \s*            # whitespace
+    (?P<value>     # attribute value
+     ".*?" |       # in double quotes
+     '.*?' |       # in single quotes
+     [^\s>]+)      # unquoted
+    ([^">]|".*?")* # skip trailing attributes
+    >              # close tag
     """
 
 LinkPatterns = (
