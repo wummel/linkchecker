@@ -3,14 +3,15 @@ linkchecker (1.2.3) unstable; urgency=low
   * typo fix for adjustWinPath
   * added some source code documentation
   * improved error messages for wrong options
-  * configuration file option for output filenames
+  * configuration file options for logger output
   * linkchecker.bat installation support for windows
   * included test suite in distribution
   * blacklist output support
   * CSV output support
   * SSL autodetection in setup.py
   * added GPL copyright header to each of my .py files
-  * i18n support and german translation of the logger outputs
+  * i18n support
+  * german translation
   * use http_proxy environment variable if present
   * be RFC822 and RFC2368 compliant when scanning mail syntax
   * fix for incorrect line number in logger output (reported by Michael

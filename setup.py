@@ -18,6 +18,7 @@
 
 from distutils.core import setup
 from distutils.dist import Distribution
+from distutils.extension import Extension
 from Template import Template
 import sys,os,string
 
@@ -35,10 +36,10 @@ class LCDistribution(Distribution):
         if incldir:
             self.announce("SSL header file ssl.h found, "
                           "enabling SSL compilation.")
-            self.ext_modules = [('ssl', {'sources': ['ssl.c'],
-                        'include_dirs': [incldir],
-                        'library_dirs': ['/usr/lib'],
-                        'libs': ['ssl']})]
+            self.ext_modules = [Extension('ssl', ['ssl.c'],
+                        include_dirs=[incldir],
+                        library_dirs=['/usr/lib'],
+                        libraries=['ssl'])]
         else:
             self.announce("SSL header file ssl.h missing, "
                           "disabling SSL compilation.\n"

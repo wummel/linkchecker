@@ -69,9 +69,6 @@ def debug(msg):
 def norm(path):
     return normcase(normpath(expanduser(path)))
 
-# the blacklist file
-BlacklistFile = norm("~/.blacklist")
-
 # dynamic options
 class Configuration(UserDict.UserDict):
     """Dynamic options are stored in this class so you can run
@@ -95,14 +92,48 @@ class Configuration(UserDict.UserDict):
         self.data["robotstxt"] = 0
         self.data["strict"] = 0
         self.data["fileoutput"] = []
-        self.data["fileoutputnames"] = {
-            "text":    "linkchecker-out.txt",
-            "html":    "linkchecker-out.html",
-            "colored": "linkchecker-out.asc",
-            "gml":     "linkchecker-out.gml",
-            "sql":     "linkchecker-out.sql",
-            "csv":     "linkchecker-out.csv",
+        # Logger configurations
+        self.data["text"] = {
+            "filename": "linkchecker-out.txt",
         }
+        self.data['html'] = {
+            "filename":        "linkchecker-out.html",
+            'colorbackground': '"#fff7e5"',
+            'colorurl':        '"#dcd5cf"',
+            'colorborder':     '"#000000"',
+            'colorlink':       '"#191c83"',
+            'tablewarning':    '<td bgcolor="#e0954e">',
+            'tableerror':      '<td bgcolor="#db4930">',
+            'tableok':         '<td bgcolor="#3ba557">',
+        }
+        ESC="\x1b"
+        self.data['colored'] = {
+            "filename": "linkchecker-out.ansi",
+            'colorparent':  ESC+"[37m",   # white
+            'colorurl':     ESC+"[0m",    # standard
+            'colorreal':    ESC+"[36m",   # cyan
+            'colorbase':    ESC+"[35m",   # magenty
+            'colorvalid':   ESC+"[1;32m", # green
+            'colorinvalid': ESC+"[1;31m", # red
+            'colorinfo':    ESC+"[0m",    # standard
+            'colorwarning': ESC+"[1;33m", # yellow
+            'colordltime':  ESC+"[0m",    # standard
+            'colorreset':   ESC+"[0m",    # reset to standard
+        }
+        self.data['gml'] = {
+            "filename":     "linkchecker-out.gml",
+        }
+        self.data['sql'] = {
+            "filename":     "linkchecker-out.sql",
+            'separator': ';',
+            'dbname': 'linksdb',
+        }
+        self.data['csv'] = {
+            "filename":     "linkchecker-out.csv",
+        }
+        self.data['blacklist'] = {
+            "filename":     "~/.blacklist",
+	}
         self.data["quiet"] = 0
         self.data["warningregex"] = None
         self.data["nntpserver"] = os.environ.get("NNTP_SERVER",None)
@@ -204,7 +235,15 @@ class Configuration(UserDict.UserDict):
         
     def robotsTxtCache_set_NoThreads(self, key, val):
         self.robotsTxtCache[key] = val
-        
+
+    def newLogger(self, name, fileout):
+        if fileout:
+            self.data['fileoutput'].append(apply(Loggers[name], (fileout,),
+	                                         self.data[name]))
+        else:
+            self.data['log'] = apply(Loggers[name], (fileout,),
+	                             self.data[name])
+
     def log_newUrl_NoThreads(self, url):
         if not self.data["quiet"]: self.data["log"].newUrl(url)
         for log in self.data["fileoutput"]:
@@ -324,11 +363,16 @@ class Configuration(UserDict.UserDict):
     def error(self, msg):
         self.message("Config: ERROR: "+msg)
 
+
     def message(self, msg):
         sys.stderr.write(msg+"\n")
         sys.stderr.flush()
 
+
     def readConfig(self, files):
+        """this big function reads all the configuration parameters
+        used in the linkchecker module.
+        """
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
@@ -339,7 +383,7 @@ class Configuration(UserDict.UserDict):
         try:
             log = cfgparser.get(section, "log")
             if Loggers.has_key(log):
-                self.data["log"] = Loggers[log]()
+                self.data["log"] = self.newLogger(log)
             else:
                 self.warn("invalid log option "+log)
         except ConfigParser.Error: pass
@@ -353,20 +397,17 @@ class Configuration(UserDict.UserDict):
         try: self.data["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error: pass
         try:
-	    filenames = eval(cfgparser.get(section, "fileoutputnames"))
-            for key in filenames.keys():
-                if self.data["fileoutputnames"].has_key(key) and \
-                   type(filenames[key]) == StringType:
-                    self.data["fileoutputnames"][key] = filenames[key]
-        except ConfigParser.Error: pass
-        try:
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
                 # no file output for the blacklist Logger
                 if Loggers.has_key(arg) and arg != "blacklist":
-		    self.data["fileoutput"].append(Loggers[arg](
-		        open(self.data["fileoutputnames"][arg], "w")))
+		    self.data["fileoutput"].append(self.newLogger(arg, 1))
 	except ConfigParser.Error: pass
+        for key in Loggers.keys():
+            if cfgparser.has_section(key):
+                for opt in cfgparser.options(key):
+                    try: self.data[key][opt] = cfgparser.get(key, opt)
+                    except ConfigParser.Error: pass
 
         section="checking"
         try:

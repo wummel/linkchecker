@@ -28,32 +28,19 @@ newUrl(self,urlData)
 
 endOfOutput(self)
   Called at the end of checking to close filehandles and such.
+
+Passing parameters to the constructor:
+__init__(self, fileoutput=None, **args)
+  The fileoutput flag specifies if output goes to a file.
+  The args dictionary is filled in Config.py. There you can specify
+  default parameters. Adjust these parameters in the configuration
+  files in the appropriate logger section.
 """
 import sys,time
 import Config,StringUtil
 from linkcheck import _
 
-# ANSI color codes
-ESC="\x1b"
-COL_PARENT  =ESC+"[37m"   # white
-COL_URL     =ESC+"[0m"    # standard
-COL_REAL    =ESC+"[36m"   # cyan
-COL_BASE    =ESC+"[35m"   # magenty
-COL_VALID   =ESC+"[1;32m" # green
-COL_INVALID =ESC+"[1;31m" # red
-COL_INFO    =ESC+"[0m"    # standard
-COL_WARNING =ESC+"[1;33m" # yellow
-COL_DLTIME  =ESC+"[0m"    # standard
-COL_RESET   =ESC+"[0m"    # reset to standard
-
-# HTML colors
-ColorBackground="\"#fff7e5\""
-ColorUrl="\"#dcd5cf\""
-ColorBorder="\"#000000\""
-ColorLink="\"#191c83\""
-TableWarning="<td bgcolor=\"#e0954e\">"
-TableError="<td bgcolor=\"db4930\">"
-TableOK="<td bgcolor=\"3ba557\">"
+# HTML shortcuts
 RowEnd="</td></tr>\n"
 MyFont="<font face=\"Lucida,Verdana,Arial,sans-serif,Helvetica\">"
 
@@ -87,26 +74,25 @@ class StandardLogger:
     Unknown keywords will be ignored.
     """
 
-    def __init__(self, fd=sys.stdout):
+    def __init__(self, fileout=None, **args):
         self.errors=0
         self.warnings=0
-        self.fd = fd
+        self.fd = fileout and args['filename'] or sys.stdout
 
 
     def init(self):
         self.starttime = time.time()
-        self.fd.write(Config.AppInfo+"\n"+
-                      Config.Freeware+"\n"+
-                      _("Get the newest version at ")+Config.Url+"\n"+
-                      _("Write comments and bugs to ")+Config.Email+"\n\n"+
-                      _("Start checking at ")+_strtime(self.starttime)+"\n")
+        self.fd.write("%s\n%s\n" % (Config.AppInfo, Config.Freeware))
+        self.fd.write(_("Get the newest version at %s\n") % Config.Url)
+        self.fd.write(_("Write comments and bugs to %s\n\n") % Config.Email)
+        self.fd.write(_("Start checking at %s\n") % _strtime(self.starttime))
         self.fd.flush()
 
 
     def newUrl(self, urldata):
         self.fd.write("\n"+_("URL")+Spaces["URL"]+urldata.urlName)
         if urldata.cached:
-            self.fd.write(" (cached)\n")
+            self.fd.write(_(" (cached)\n"))
         else:
             self.fd.write("\n")
         if urldata.parentName:
@@ -157,9 +143,9 @@ class StandardLogger:
             self.fd.write(str(self.errors)+_(" errors"))
         self.fd.write(_(" found.\n"))
         self.stoptime = time.time()
-        self.fd.write(_("Stopped checking at ")+_strtime(self.stoptime)+
-	              (_(" (%.3f seconds)") %
-		      (self.stoptime - self.starttime))+"\n")
+        self.fd.write(_("Stopped checking at %s (%.3f seconds)\n") % \
+	               (_strtime(self.stoptime),
+		        (self.stoptime - self.starttime)))
         self.fd.flush()
         self.fd = None
 
@@ -176,7 +162,8 @@ class HtmlLogger(StandardLogger):
               "<center><h2>"+MyFont+Config.AppName+"</font>"+
               "</center></h2>"+
               "<br><blockquote>"+Config.Freeware+"<br><br>"+
-              _("Start checking at ")+_strtime(self.starttime)+"<br><br>")
+              (_("Start checking at %s\n") % _strtime(self.starttime))+
+	      "<br><br>")
         self.fd.flush()
 
 
@@ -189,7 +176,7 @@ class HtmlLogger(StandardLogger):
               MyFont+"URL</font></td><td bgcolor="+ColorUrl+">"+MyFont+
               StringUtil.htmlify(urlData.urlName))
         if urlData.cached:
-            self.fd.write("(cached)")
+            self.fd.write(_(" (cached)\n"))
         self.fd.write("</font>"+RowEnd)
         
         if urlData.parentName:
@@ -207,12 +194,12 @@ class HtmlLogger(StandardLogger):
 			  "\">"+urlData.url+"</a></font>"+RowEnd)
         if urlData.downloadtime:
             self.fd.write("<tr><td>"+MyFont+_("D/L Time")+"</font></td><td>"+
-	                  MyFont+("%.3f" % urlData.downloadtime)+
-			  " seconds</font>"+RowEnd)
+	                  MyFont+(_("%.3f seconds") % urlData.downloadtime)+
+			  "</font>"+RowEnd)
         if urlData.checktime:
             self.fd.write("<tr><td>"+MyFont+_("Check Time")+
 	                  "</font></td><td>"+MyFont+
-			  ("%.3f" % urlData.checktime)+" seconds</font>"+
+			  (_("%.3f seconds") % urlData.checktime)+"</font>"+
                           RowEnd)
         if urlData.infoString:
             self.fd.write("<tr><td>"+MyFont+_("Info")+"</font></td><td>"+
@@ -236,7 +223,7 @@ class HtmlLogger(StandardLogger):
 
         
     def endOfOutput(self):
-        self.fd.write(MyFont+_("Thats it. "))
+        self.fd.write(MyFont+_("\nThats it. "))
         if self.warnings==1:
             self.fd.write(_("1 warning, "))
         else:
@@ -245,16 +232,18 @@ class HtmlLogger(StandardLogger):
             self.fd.write(_("1 error"))
         else:
             self.fd.write(str(self.errors)+_(" errors"))
-        self.fd.write(_(" found.")+"<br>")
+        self.fd.write(_(" found.\n")+"<br>")
         self.stoptime = time.time()
-        self.fd.write(_("Stopped checking at ")+_strtime(self.stoptime)+
-             (_(" (%.3f seconds)") % (self.stoptime - self.starttime))+
-	     "</font></blockquote><br><hr noshade size=1><small>"+
-             MyFont+Config.HtmlAppInfo+"<br>"+_("Get the newest version at ")+
-             "<a href=\""+Config.Url+"\">"+Config.Url+
-             "</a>.<br>"+_("Write comments and bugs to ")+"<a href=\"mailto:"+
-             Config.Email+"\">"+Config.Email+
-             "</a>.</font></small></body></html>")
+        self.fd.write(_("Stopped checking at %s (%.3f seconds)\n") %\
+	              (_strtime(self.stoptime),
+                       (self.stoptime - self.starttime)))
+	self.fd.write("</font></blockquote><br><hr noshade size=1><small>"+
+             MyFont+Config.HtmlAppInfo+"<br>")
+	self.fd.write(_("Get the newest version at %s\n") %\
+             ("<a href=\""+Config.Url+"\">"+Config.Url+"</a>.<br>"))
+        self.fd.write(_("Write comments and bugs to %s\n") %\
+	     ("<a href=\"mailto:"+Config.Email+"\">"+Config.Email+"</a>."))
+	self.fd.write("</font></small></body></html>")
         self.fd.flush()        
         self.fd = None
 
@@ -262,8 +251,8 @@ class HtmlLogger(StandardLogger):
 class ColoredLogger(StandardLogger):
     """ANSI colorized output"""
 
-    def __init__(self, fd=sys.stdout):
-        StandardLogger.__init__(self, fd)
+    def __init__(self, fileout=None, **args):
+        StandardLogger.__init__(self, fileout, args)
         self.currentPage = None
         self.prefix = 0
 
@@ -290,7 +279,7 @@ class ColoredLogger(StandardLogger):
 	              COL_RESET)
         if urlData.line: self.fd.write(_(", line ")+`urlData.line`+"")
         if urlData.cached:
-            self.fd.write(" (cached)\n")
+            self.fd.write(_(" (cached)\n"))
         else:
             self.fd.write("\n")
             
@@ -355,16 +344,17 @@ class GMLLogger(StandardLogger):
     """GML means Graph Modeling Language. Use a GML tool to see
     your sitemap graph.
     """
-    def __init__(self,fd=sys.stdout):
-        StandardLogger.__init__(self,fd)
+    def __init__(self, fileout=None, **args):
+        StandardLogger.__init__(self, fileout, args)
         self.nodes = []
 
     def init(self):
-        self.fd.write("# created by "+Config.AppName+" at "+
-	     _strtime(time.time())+
-	    "\n# "+_("Get the newest version at ")+Config.Url+
-            "\n# "+_("Write comments and bugs to ")+Config.Email+
-	    "\ngraph [\n  directed 1\n")
+        self.starttime = time.time()
+        self.fd.write(_("# created by %s at %s\n" % (Config.AppName,
+                      _strtime(self.starttime)))
+	self.fd.write(_("# Get the newest version at %s\n") % Config.Url)
+        self.fd.write(_("# Write comments and bugs to %s\n\n") % Config.Email)
+	self.fd.write("graph [\n  directed 1\n")
         self.fd.flush()
 
     def newUrl(self, urlData):
@@ -377,12 +367,12 @@ class GMLLogger(StandardLogger):
         for node in self.nodes:
             if node.url and not writtenNodes.has_key(node.url):
                 self.fd.write("  node [\n")
-		self.fd.write("    id     "+`nodeid`+"\n")
-                self.fd.write('    label  "'+node.url+'"'+"\n")
+		self.fd.write("    id     %d\n" % nodeid)
+                self.fd.write('    label  "%s"\n' % node.url)
                 if node.downloadtime:
-                    self.fd.write("    dltime "+`node.downloadtime`+"\n")
+                    self.fd.write("    dltime %d\n" % node.downloadtime)
                 if node.checktime:
-                    self.fd.write("    checktime "+`node.checktime`+"\n")
+                    self.fd.write("    checktime %d\n" % node.checktime)
                 self.fd.write("    extern ")
 		if node.extern: self.fd.write("1")
 		else: self.fd.write("0")
@@ -393,48 +383,66 @@ class GMLLogger(StandardLogger):
         for node in self.nodes:
             if node.url and node.parentName:
                 self.fd.write("  edge [\n")
-		self.fd.write('    label  "'+node.urlName+'"\n')
-	        self.fd.write("    source "+`writtenNodes[node.parentName]`+
-		              "\n")
-                self.fd.write("    target "+`writtenNodes[node.url]`+"\n")
+		self.fd.write('    label  "%s"\n' % node.urlName)
+	        self.fd.write("    source %d\n"%writtenNodes[node.parentName])
+                self.fd.write("    target %d\n" % writtenNodes[node.url])
                 self.fd.write("    valid  ")
                 if node.valid: self.fd.write("1")
                 else: self.fd.write("0")
                 self.fd.write("\n  ]\n")
         # end of output
         self.fd.write("]\n")
+        self.stoptime = time.time()
+        self.fd.write(_("# Stopped checking at %s (%.3f seconds)\n") %\
+                      (_strtime(self.stoptime),
+		       (self.stoptime - self.starttime)))
         self.fd.flush()
         self.fd = None
 
 
 class SQLLogger(StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
+    def __init__(self, fileout=None, **args):
+        StandardLogger.__init__(self, fileout, args)
+        self.dbname = args['dbname']
+        self.commandsep = args['commandsep']
+
     def init(self):
-        self.fd.write("-- created by "+Config.AppName+" at "+
-                _strtime(time.time())+
-		"\n-- "+_("Get the newest version at ")+Config.Url+
-		"\n-- "+_("Write comments and bugs to ")+Config.Email+"\n\n")
+        self.starttime = time.time()
+        self.fd.write(_("-- created by %s at %s\n" % (Config.AppName,
+                      _strtime(self.starttime)))
+        self.fd.write(_("-- Get the newest version at %s\n") % Config.Url)
+        self.fd.write(_("-- Write comments and bugs to %s\n\n") % Config.Email)
         self.fd.flush()
 
     def newUrl(self, urlData):
-        self.fd.write("insert into linksdb(urlname,recursionlevel,parentname,"
-	              "baseref,errorstring,validstring,warningstring,"
-		      "infoString,valid,url,line,cached) values '"+
-                      urlData.urlName+"',"+
-		      `urlData.recursionLevel`+","+
-		      StringUtil.sqlify(urlData.parentName)+","+
-                      StringUtil.sqlify(urlData.baseRef)+","+
-                      StringUtil.sqlify(urlData.errorString)+","+
-                      StringUtil.sqlify(urlData.validString)+","+
-                      StringUtil.sqlify(urlData.warningString)+","+
-                      StringUtil.sqlify(urlData.infoString)+","+
-                      `urlData.valid`+","+
-                      StringUtil.sqlify(urlData.url)+","+
-                      `urlData.line`+","+
-                      `urlData.cached`+");\n")
+        self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
+              "baseref,errorstring,validstring,warningstring,infoString,"
+	      "valid,url,line,checktime,downloadtime,cached) values ('%s',"
+              "%d,'%s','%s','%s','%s','%s','%s',%d,'%s',%d,%d,%d,%d)%s\n" % \
+	      (self.dbname,
+	       StringUtil.sqlify(urlData.urlName),
+               urlData.recursionLevel,
+	       StringUtil.sqlify(urlData.parentName),
+               StringUtil.sqlify(urlData.baseRef),
+               StringUtil.sqlify(urlData.errorString),
+               StringUtil.sqlify(urlData.validString),
+               StringUtil.sqlify(urlData.warningString),
+               StringUtil.sqlify(urlData.infoString),
+               urlData.valid,
+               StringUtil.sqlify(urlData.url),
+               urlData.line,
+               urlData.checktime,
+               urlData.downloadtime,
+               urlData.cached,
+	       self.commandsep))
         self.fd.flush()
 
     def endOfOutput(self):
+        self.stoptime = time.time()
+        self.fd.write(_("-- Stopped checking at %s (%.3f seconds)\n") %\
+                      (_strtime(self.stoptime),
+		       (self.stoptime - self.starttime)))
         self.fd = None
 
 
@@ -443,14 +451,11 @@ class BlacklistLogger:
     is working (again), it is removed from the list. So after n days
     we have only links on the list which failed for n days.
     """
-    def __init__(self):
+    def __init__(self, fileout=None, **args):
         self.blacklist = {}
+        self.filename = args['filename']
 
     def init(self):
-        """initialize the blacklist
-        We do nothing here because we have read the blacklist in the
-        linkchecker script already.
-	"""
         pass
 
     def newUrl(self, urlData):
@@ -461,7 +466,7 @@ class BlacklistLogger:
 
     def endOfOutput(self):
         """write the blacklist"""
-        fd = open(Config.BlacklistFile, "w")
+        fd = open(args['filename'], "w")
         for url in self.blacklist.keys():
             if self.blacklist[url] is None:
                 fd.write(url+"\n")
@@ -471,28 +476,56 @@ class CSVLogger(StandardLogger):
     """ CSV output. CSV consists of one line per entry. Entries are
     separated by a semicolon.
     """
+    def __init__(self, fileout=None, **args):
+        StandardLogger.__init__(self, fileout, args)
+        self.separator = args['separator']
+
     def init(self):
-        self.fd.write("# created by "+Config.AppName+" at "+
-                _strtime(time.time())+
-		"\n# you get "+Config.AppName+" at "+Config.Url+
-		"\n# write comments and bugs to "+Config.Email+"\n\n")
+        self.starttime = time.time()
+        self.fd.write(_("# created by %s at %s\n") % (Config.AppName,
+                      _strtime(self.starttime)))
+	self.fd.write(_("# Get the newest version at %s\n") % Config.Url)
+	self.fd.write(_("# Write comments and bugs to %s\n\n") % Config.Email)
+        self.fd.write(_("# Format of the entries:\n")+\
+                      "# urlname;\n"
+                      "# recursionlevel;\n"
+                      "# parentname;\n"
+                      "# baseref;\n"
+                      "# errorstring;\n"
+                      "# validstring;\n"
+                      "# warningstring;\n"
+                      "# infostring;\n"
+                      "# valid;\n"
+                      "# url;\n"
+                      "# line;\n"
+                      "# downloadtime;\n"
+                      "# checktime;\n"
+                      "# cached;\n")
         self.fd.flush()
 
     def newUrl(self, urlData):
-        self.fd.write(`urlData.urlName`+';'+
-		      `urlData.recursionLevel`+';'+
-		      `urlData.parentName`+';'+
-                      `urlData.baseRef`+';'+
-                      `urlData.errorString`+';'+
-                      `urlData.validString`+';'+
-                      `urlData.warningString`+';'+
-                      `urlData.infoString`+';'+
-                      `urlData.valid`+';'+
-                      `urlData.url`+';'+
-                      `urlData.line`+';'+
-                      `urlData.cached`+'\n')
+        self.fd.write(
+	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%%s%d%s%d%s%d\n" % (
+	    urlData.urlName, self.separator,
+	    urlData.recursionLevel, self.separator,
+	    urlData.parentName, self.separator,
+            urlData.baseRef, self.separator,
+            urlData.errorString, self.separator,
+            urlData.validString, self.separator,
+            urlData.warningString, self.separator,
+            urlData.infoString, self.separator,
+            urlData.valid, self.separator,
+            urlData.url, self.separator,
+            urlData.line, self.separator,
+            urlData.downloadtime, self.separator,
+            urlData.checktime, self.separator,
+            urlData.cached))
         self.fd.flush()
 
     def endOfOutput(self):
+        self.stoptime = time.time()
+        self.fd.write(_("# Stopped checking at %s (%.3f seconds)\n") %\
+                      (_strtime(self.stoptime),
+		       (self.stoptime - self.starttime)))
         self.fd = None
 

@@ -8,9 +8,59 @@
 #warnings=0
 #quiet=0
 #fileoutput = text colored html gml sql
-# customize your output filenames
-#fileoutputnames = {'text': 'myoutput.txt', 'html': 'mylinks.htm'}
 
+# each Logger can have separate configuration parameters
+# standard text logger
+[text]
+#filename=linkchecker-out.txt
+
+# GML logger
+[gml]
+#filename=linkchecker-out.gml
+
+# CSV logger
+[csv]
+#filename=linkchecker-out.csv
+#separator=;
+
+# SQL logger
+[sql]
+#filename=linkchecker-out.sql
+#dbname=linksdb
+#commandsep=;
+
+# HTML logger
+[html]
+#filename=linkchecker-out.html
+#colorbackground=
+#colorurl=
+#colorborder=
+#colorlink=
+#tablewarning=
+#tableok=
+#tableok=
+#rowend=
+#myfont=
+
+# ANSI color logger
+[colored]
+#filename=linkchecker-out.ansi
+#colorparent=
+#colorurl=
+#colorreal=
+#colorbase=
+#colorvalid=
+#colorinvalid=
+#colorinfo=
+#colorwarning=
+#colordltime=
+#colorreset=
+
+# blacklist logger
+[blacklist]
+#filename=~/.blacklist
+
+# checking options
 [checking]
 #threads=5
 #anchors=0
@@ -22,6 +72,7 @@
 #warningregex="Request failed"
 #nntpserver=news.uni-stuttgart.de
 
+# filtering options
 # for each extern link we can specify if it is strict or not
 [filtering]
 # strict avoid checking of local files

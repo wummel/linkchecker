@@ -13,103 +13,100 @@ import getopt,re,string,os
 import linkcheck,StringUtil
 from linkcheck import _
 
-Usage = _("""USAGE\tlinkchecker [options] file_or_url...
+Usage = _("USAGE\tlinkchecker [options] file_or_url...\n"
+"\n"
+"OPTIONS\n"
+"-a, --anchors\n"
+"        Check anchor references. Default is don't check anchors.\n"
+"-D, --debug\n"
+"        Print additional debugging information.\n"
+"-e regex, --extern=regex\n"
+"        Assume urls that match the given expression as extern.\n"
+"        Only intern HTTP links are checked recursively.\n"
+"-f file, --config=file\n"
+"        Use file as configuration file. LinkChecker first searches\n"
+"        ~/.linkcheckerrc and then /etc/linkcheckerrc\n"
+"        (under Windows <path-to-program>\\linkcheckerrc).\n"
+"-F name, --file-output=name\n"
+"        Same as output, but write to a file linkchecker-out.<name>.\n"
+"        If the file already exists, it is overwritten. You can specify\n"
+"        this option more than once. There is no file output for the\n"
+"        blacklist logger. Default is no file output.\n"
+"-i regex, --intern=regex\n"
+"        Assume urls that match the given expression as intern.\n"
+"-h, --help\n"
+"        Help me! Print usage information for this program.\n"
+"-l, --allowdeny\n"
+"        Swap checking order to intern/extern. Default checking order\n"
+"        is extern/intern.\n"
+"-N, --nntp-server\n"
+"        Specify an NNTP server for 'news:...' links. Default is the\n"
+"        environment variable NNTP_SERVER. If no host is given,\n"
+"        only the syntax of the link is checked.\n"
+"-o name, --output=name\n"
+"        Specify output as %s.\n"
+"        Default is text.\n"
+"-p pwd, --password=pwd\n"
+"        Try given password for HTML and FTP authorization.\n"
+"        Default is 'guest@'. See -u.\n"
+"-P host[:port], --proxy=host[:port]\n"
+"        Use specified proxy for HTTP requests.\n"
+"        Standard port is 8080. Default is to use no proxy.\n"
+"-q, --quiet\n"
+"        Quiet operation. This is only useful with -F.\n"
+"-r depth, --recursion-level=depth\n"
+"        Check recursively all links up to given depth (depth >= 0).\n"
+"        Default depth is 1.\n"
+"-R, --robots-txt\n"
+"        Obey the robots exclusion standard.\n"
+"-s, --strict\n"
+"        Check only syntax of extern links, do not try to connect to them.\n"
+"-t num, --threads=num\n"
+"        Generate no more than num threads. Default number of threads is 5.\n"
+"        To disable threading specify a non-positive number.\n"
+"-u name, --user=name\n"
+"        Try given username for HTML and FTP authorization.\n"
+"        Default is 'anonymous'. See -p.\n"
+"-V, --version\n"
+"        Print version and exit.\n"
+"-v, --verbose\n"
+"        Log all checked URLs (implies -w). Default is to log only invalid\n"
+"        URLs.\n"
+"-w, --warnings\n"
+"        Log warnings.\n"
+"-W regex, --warning-regex=regex\n"
+"        Define a regular expression which prints a warning if it matches\n"
+"        any content of the checked link.\n"
+"        This applies of course only to pages which are valid, so we can\n"
+"        get their content.\n"
+"        You can use this to check for pages that contain some form of\n"
+"        error message, for example 'This page has moved' or\n"
+"        'Oracle Application Server error'.\n"
+"        This option implies -w.\n") % linkcheck.Config.LoggerKeys)
 
-OPTIONS
--a, --anchors
-        Check anchor references. Default is don't check anchors.
--D, --debug
-        Print additional debugging information.
--e regex, --extern=regex
-        Assume urls that match the given expression as extern.
-        Only intern HTTP links are checked recursively.
--f file, --config=file
-        Use file as configuration file. LinkChecker first searches
-        ~/.linkcheckerrc and then /etc/linkcheckerrc
-        (under Windows <path-to-program>\\linkcheckerrc).
--F name, --file-output=name
-        Same as output, but write to a file linkchecker-out.<name>.
-        If the file already exists, it is overwritten. You can specify
-        this option more than once. There is no file output for the
-        blacklist logger. Default is no file output.
--i regex, --intern=regex
-        Assume urls that match the given expression as intern.
--h, --help
-        Help me! Print usage information for this program.
--l, --allowdeny
-        Swap checking order to intern/extern. Default checking order
-        is extern/intern.
--N, --nntp-server
-        Specify an NNTP server for 'news:...' links. Default is the
-        environment variable NNTP_SERVER. If no host is given,
-        only the syntax of the link is checked.
--o name, --output=name
-        Specify output as %s.
-        Default is text.
--p pwd, --password=pwd
-        Try given password for HTML and FTP authorization.
-        Default is 'guest@'. See -u.
--P host[:port], --proxy=host[:port]
-        Use specified proxy for HTTP requests.
-        Standard port is 8080. Default is to use no proxy.
--q, --quiet
-        Quiet operation. This is only useful with -F.
--r depth, --recursion-level=depth
-        Check recursively all links up to given depth (depth >= 0).
-        Default depth is 1.
--R, --robots-txt
-        Obey the robots exclusion standard.
--s, --strict
-        Check only syntax of extern links, do not try to connect to them.
--t num, --threads=num
-        Generate no more than num threads. Default number of threads is 5.
-        To disable threading specify a non-positive number.
--u name, --user=name
-        Try given username for HTML and FTP authorization.
-        Default is 'anonymous'. See -p.
--V, --version
-        Print version and exit.
--v, --verbose
-        Log all checked URLs (implies -w). Default is to log only invalid
-        URLs.
--w, --warnings
-        Log warnings.
--W regex, --warning-regex=regex
-        Define a regular expression which prints a warning if it matches
-        any content of the checked link.
-        This applies of course only to pages which are valid, so we can
-        get their content.
-        You can use this to check for pages that contain some form of
-        error message, for example "This page has moved" or
-        "Oracle Application Server error".
-        This option implies -w.
-""") % linkcheck.Config.LoggerKeys
+Notes = _("NOTES\n"
+"o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
+"  starts with 'www.' resp. 'ftp.'\n"
+"  You can also give local files as arguments\n"
+"o If you have your system configured to automatically establish a\n"
+"  connection to the internet (e.g. with diald), it will connect when\n"
+"  checking links not pointing to your local host\n"
+"  Use the -s and -i options to prevent this (see EXAMPLES)\n"
+"o Javascript links are currently ignored\n"
+"o If your platform does not support threading, LinkChecker uses -t0\n"
+"o You can supply multiple user/password pairs in a configuration file\n"
+"o Cookies are not accepted by LinkChecker\n"
+"o When checking 'news:' links the given NNTP host doesn't need to be the\n"
+"  same as the host of the user browsing your pages!\n")
 
-Notes = _("""NOTES
-o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL
-  starts with "www." resp. "ftp."
-  You can also give local files as arguments
-o If you have your system configured to automatically establish a
-  connection to the internet (e.g. with diald), it will connect when
-  checking links not pointing to your local host
-  Use the -s and -i options to prevent this (see EXAMPLES)
-o Javascript links are currently ignored
-o If your platform does not support threading, linkchecker assumes -t0
-o You can supply multiple user/password pairs in a configuration file
-o Cookies are not accepted by LinkChecker
-o When checking 'news:' links the given news host doesn't need to be the
-  same as the host of the user browsing your pages!
-""")
-
-Examples = _("""EXAMPLES
-o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\
-    http://treasure.calvinsplayground.de/~calvin/ > sample.html
-o Local files and syntactic sugar on the command line:
-      linkchecker c:\\temp\\test.html
-      linkchecker ../bla.html
-      linkchecker www.myhomepage.de
-      linkchecker -r0 ftp.linux.org
-""")
+Examples = _("EXAMPLES\n"
+"o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\\n"
+"    http://treasure.calvinsplayground.de/~calvin/ > sample.html\n"
+"o Local files and syntactic sugar on the command line:\n"
+"      linkchecker c:\\temp\\test.html\n"
+"      linkchecker ../bla.html\n"
+"      linkchecker www.myhomepage.de\n"
+"      linkchecker -r0 ftp.linux.org\n")
 
 def printVersion():
     print linkcheck.Config.AppInfo
@@ -285,8 +282,8 @@ if constructauth:
 # construct the url list
 # if we use blacklist mode, try to read ~/.blacklist
 if config["log"].__class__ == linkcheck.Logging.BlacklistLogger and \
-   os.path.exists(linkcheck.Config.BlacklistFile):
-    args = open(linkcheck.Config.BlacklistFile).readlines()
+   os.path.exists(config['log'].filename):
+    args = open(config['log'].filename).readlines()
 
 if len(args)==0:
     print _("warning: no files or urls given")

@@ -13,7 +13,7 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
-	$(MAKE)
+	python setup.py build
 
 	touch build-stamp
 
@@ -23,7 +23,7 @@ clean:
 	rm -f build-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
+	python setup.py clean --all
 
 	dh_clean
 
@@ -33,7 +33,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	# ha! the root option finally made it into distutils
-	./setup.py install --root=`pwd`/debian/tmp
+	python setup.py install --root=`pwd`/debian/tmp
 	# put the README of the DNS package in doc (only on Debian)
 	install -c -m 644 DNS/README debian/tmp/usr/share/doc/linkchecker/README.dns
 

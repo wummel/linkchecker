@@ -1,4 +1,6 @@
-VERSION=$(shell ./setup.py --version)
+# This Makefile is only used by developers! No need for users to
+# call make.
+VERSION=$(shell python setup.py --version)
 HOST=treasure.calvinsplayground.de
 PROXY=
 #PROXY=-P$(HOST):5050
@@ -31,14 +33,14 @@ TAR = tar
 ZIP = zip
 
 all:
-	@echo "run python setup.py --help to see how to install"
+	@echo "run python setup.py --help to see how to build and install"
 
 clean:
-	./setup.py clean --all
+	python setup.py clean --all
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 dist:
-	./setup.py sdist
+	python setup.py sdist bdist_rpm
 	fakeroot debian/rules binary
         
 files:
@@ -55,11 +57,19 @@ test:
         done
 
 po:
+	# german translation
 	xgettext --default-domain=linkcheck \
 	--join-existing --keyword --keyword=_ \
 	--output-dir=locale/de/LC_MESSAGES/ --sort-output $(SOURCES)
+	# french translation
+	#xgettext --default-domain=linkcheck \
+	#--join-existing --keyword --keyword=_ \
+	#--output-dir=locale/fr/LC_MESSAGES/ --sort-output $(SOURCES)
 
 mo:
 	# german translation
 	msgfmt -o locale/de/LC_MESSAGES/linkcheck.mo \
 	locale/de/LC_MESSAGES/linkcheck.po
+	# french translation
+	#msgfmt -o locale/fr/LC_MESSAGES/linkcheck.mo \
+	#locale/fr/LC_MESSAGES/linkcheck.po
