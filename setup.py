@@ -199,4 +199,5 @@ o a (Fast)CGI web interface (requires HTTP server)
               'lc.cgi','lc.fcgi','lc.sz_fcgi','linkchecker.bat']),
          ('share/man/man1', ['linkchecker.1']),
       ],
+      #classifiers = ['Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',]
 )
