@@ -344,11 +344,10 @@ only the syntax of the link is checked."""))
 optparser.add_option_group(group)
 
 ################# deprecated options ##################
+group = optparse.OptionGroup(optparser, _("Deprecated options"))
 group.add_option("--status", action="store_true", dest="status",
                  help=_(
-"""Print check status every 5 seconds to stderr. When --debug is
-given, the status check will only be printed after each checked url.
-This is due to disabled threading during a debug run."""))
+"""Print check status every 5 seconds to stderr. This is the default."""))
 optparser.add_option_group(group)
 
 ################# auto completion #####################
