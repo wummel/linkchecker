@@ -10,9 +10,9 @@ This code is covered by the standard Python License.
     Base functionality. Request and Response classes, that sort of thing.
 """
 
-import select, socket, string, types, time, asyncore
+import select, socket, string, types, time, asyncore, os
 
-class DNSError(Exception): pass
+class DNSError (Exception): pass
 
 import Lib, Type, Class, Opcode
 
@@ -27,35 +27,90 @@ defaults = {
     'server': [],
 }
 
-def ParseResolvConf(resolv_path="/etc/resolv.conf"):
-    "parses the /etc/resolv.conf file and sets defaults for name servers"
-    global defaults
-    lines=open(resolv_path).readlines()
-    for line in lines:
-        line = string.strip(line)
-        if not line or line[0]==';' or line[0]=='#':
-            continue
-        fields=string.split(line)
-        if len(fields) == 0: 
-            continue
-        if fields[0]=='domain':
-            defaults['domain']=fields[1]
-        if fields[0]=='search':
-            pass
-        if fields[0]=='options':
-            pass
-        if fields[0]=='sortlist':
-            pass
-        if fields[0]=='nameserver':
-            defaults['server'].append(fields[1])
-
-def DiscoverNameServers():
-    import sys
-    if sys.platform in ('win32', 'nt'):
-        import win32dns
-        defaults['server']=win32dns.RegistryResolve()
+def DiscoverNameServers ():
+    import os
+    if os.name=='posix':
+        init_dns_resolver_posix()
+    elif os.name=='nt':
+        init_dns_resolver_nt()
     else:
-        return ParseResolvConf()
+        # other platforms not supported (what about Mac?)
+        pass
+    if not defaults['server']:
+        # last fallback: localhost
+        defaults['server'].append('127.0.0.1')
+
+
+def init_dns_resolver_posix ():
+    "Set up the DnsLookupConnection class with /etc/resolv.conf information"
+    if not os.path.exists('/etc/resolv.conf'):
+        return
+    for line in file('/etc/resolv.conf', 'r').readlines():
+        line = line.strip()
+        if (not line) or line[0]==';' or line[0]=='#':
+            continue
+        m = re.match(r'^search\s+(\.?.+)$', line)
+        if m:
+            for domain in m.group(1).split():
+                # domain search path not used
+                pass
+        m = re.match(r'^nameserver\s+(\S+)\s*$', line)
+        if m:
+            defaults['server'].append(m.group(1))
+
+
+def init_dns_resolver_nt ():
+    import winreg
+    key = None
+    try:
+        key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
+               r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters")
+    except EnvironmentError:
+        try: # for Windows ME
+            key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
+                    r"SYSTEM\CurrentControlSet\Services\VxD\MSTCP")
+        except EnvironmentError:
+            pass
+    if key:
+        for server in winreg.stringdisplay(key["NameServer"]):
+            if server:
+                defaults['server'].append(str(server))
+        for item in winreg.stringdisplay(key["SearchList"]):
+            if item:
+                pass # domain search not used
+        if not defaults['server']:
+            # XXX the proper way to test this is to search for
+            # the "EnableDhcp" key in the interface adapters...
+            for server in winreg.stringdisplay(key["DhcpNameServer"]):
+                if server:
+                    defaults['server'].append(str(server))
+            for item in winreg.stringdisplay(key["DhcpDomain"]):
+                if item:
+                    pass # domain search not used
+
+    try: # search adapters
+        key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
+  r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DNSRegisteredAdapters")
+        for subkey in key.subkeys():
+            count, counttype = subkey['DNSServerAddressCount']
+            values, valuestype = subkey['DNSServerAddresses']
+            for server in winreg.binipdisplay(values):
+                if server:
+                    defaults['server'].append(str(server))
+    except EnvironmentError:
+        pass
+
+    try: # search interfaces
+        key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
+           r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces")
+        for subkey in key.subkeys():
+            for server in winreg.stringdisplay(subkey.get('NameServer', '')):
+                if server:
+                    defaults['server'].append(str(server))
+    except EnvironmentError:
+        pass
+
+
 
 class DnsRequest:
     """ high level Request object """
@@ -255,6 +310,9 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
 
 #
 # $Log$
+# Revision 1.7  2003/12/18 14:20:37  calvin
+# update nameserver parsing
+#
 # Revision 1.6  2003/07/04 14:23:22  calvin
 # add coding line
 #
