@@ -150,8 +150,8 @@ class Consumer (object):
             links = self.linknumber
             tocheck = len(self.urls)
             duration = linkcheck.strformat.strduration(curtime - start_time)
-            print >> sys.stderr, _("%5d urls queued, %4d links checked, "\
-                                   "%2d active threads, runtime %s")\
+            print >> sys.stderr, _("Status: %5d urls queued, "\
+             "%4d urls checked, %2d active threads, runtime %s")\
                                  % (tocheck, links, active, duration)
         finally:
             self.lock.release()
