@@ -54,7 +54,7 @@ class HttpUrlData(UrlData):
             return
             
         status, statusText, self.mime = self._getHttpRequest()
-        Config.debug(str(self.mime))
+        Config.debug(str(status)+", "+str(statusText)+", "+str(self.mime)+"\n")
         if status == 401:
             self.auth = base64.encodestring(LinkChecker.User+":"+LinkChecker.Password)
             status, statusText, self.mime = self._getHttpRequest()
@@ -78,12 +78,15 @@ class HttpUrlData(UrlData):
             self.url = effectiveurl
         
         # check final result
-        if status == 204:
-            self.setWarning(statusText)
         if status >= 400:
             self.setError(`status`+" "+statusText)
         else:
-            self.setValid(`status`+" "+statusText)
+            if status == 204:
+                self.setWarning(statusText)
+            if status >= 200:
+                self.setValid(`status`+" "+statusText)
+            else:
+                self.setValid("OK")
 
         
     def _getHttpRequest(self, method="HEAD"):
@@ -123,9 +126,16 @@ class HttpUrlData(UrlData):
         return data
         
     def isHtml(self):
-        if self.mime:
-            return self.valid and self.mime.gettype()=="text/html"
-        return 0
+        if not (self.valid and self.mime):
+            return 0
+        # some web servers (Zope) only know the mime-type when they have
+        # to render the whole page. Before that, they return
+        # "application/octet-stream"
+        if self.mime.gettype()=="application/octet-stream":
+            self.closeConnection()
+            self.mime = self._getHttpRequest("GET")[2]
+            if not self.mime: return 0
+        return self.mime.gettype()=="text/html"
 
     def robotsTxtAllowsUrl(self, config):
         try:

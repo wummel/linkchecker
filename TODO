@@ -1,2 +1,6 @@
 Is there a way to cleanly stop arbitrary Thread objects 
 (with exit handler)? Mail me solutions!
+
+Internationalization support.
+
+Use the Distutils to compile the modules when they are stable enough.

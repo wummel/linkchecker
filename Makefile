@@ -58,6 +58,6 @@ test:
 	rm -f test/*.result
 	@for i in test/*.html; do \
 	  echo "Testing $$i. Results are in $$i.result"; \
-	  ./$(PACKAGE) -v -a $$i > $$i.result 2>&1; \
+	  ./$(PACKAGE) -t0 -v -a $$i > $$i.result 2>&1; \
         done
         

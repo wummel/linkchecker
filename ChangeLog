@@ -1,3 +1,9 @@
+3.3.2000
+	* ignore HTTP status replies < 200 because some pages return -1 
+	  and binary data (Gabor Liptak <gaborliptak@usa.net>)
+	* if HEAD reveals MIME type "application/octet", use GET method.
+	  this is needed for Zope pages (Bug Tracker submission)
+
 2.3.2000
 	* two small comment changes in GML and SQL output
 	* linkchecker -V works again :)
