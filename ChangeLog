@@ -14,6 +14,14 @@
     Closes: SF bug 1014283
     Changed: linkcheck/logger/html.py
 
+  * fix endless loop on broken urls with non-empty anchor
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * For news: or nntp: urls, the entries ~/.netrc are now ignored.
+    Type: bugfix
+    Changed: linkcheck/checker/nntpurl.py
+
 1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request
     Type: bugfix

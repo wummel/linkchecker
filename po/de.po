@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Mon Aug 23 22:19:41 2004\n"
+"POT-Creation-Date: Tue Aug 24 17:06:26 2004\n"
 "PO-Revision-Date: 2004-05-27 01:06+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: de <de@li.org>\n"
@@ -19,6 +19,12 @@ msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
 msgstr ""
 "%5d URLs zu prüfen, %4d Verknüpfungen überprüft, %2d aktive Threads, "
 "Laufzeit %s"
+
+msgid "Added trailing slash to directory"
+msgstr ""
+
+msgid "directory"
+msgstr ""
 
 msgid "No user or password found"
 msgstr "Kein Benutzername oder Passwort gefunden"
@@ -300,6 +306,9 @@ msgstr ""
 
 msgid "Real URL"
 msgstr "Tats. URL"
+
+msgid "Cache key"
+msgstr ""
 
 msgid "Result"
 msgstr "Ergebnis"
