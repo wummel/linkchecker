@@ -50,9 +50,13 @@ cached
 name should be cached
 warning Path is empty
 valid
-url http://www.heise.de/?quoted=ü
+url http://www.heise.de/?quoted=&uuml;
 name html entities
 valid
-url illegalquote1"
+url mailto:postmaster@aol.de
+name postmaster@aol.de
+warning No MX mail host for aol.de found
+valid
+url illegalquote1&quot;
 name no beginning quote
 error
