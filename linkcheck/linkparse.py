@@ -85,7 +85,7 @@ class TagFinder (object):
         """
         Append msg to error list.
         """
-        self.parse_info.append("%s at line %d col %d: %s" % \
+        self.parse_info.append(u"%s at line %d col %d: %s" % \
             (name, self.parser.last_lineno(), self.parser.last_column(), msg))
 
     def warning (self, msg):
