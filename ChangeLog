@@ -18,6 +18,10 @@
     Type: bugfix
     Changed: linkcheck/checker/httpheaders.py
 
+  * HTTP connections with pending data will not be cached.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
 2.6 "Lord of the Rings" (released 15.3.2005)
 
   * Run with low priority. New option --priority to run with normal
