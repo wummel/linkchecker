@@ -41,10 +41,33 @@ def _text (*args, **kwargs):
     text = " ".join(map(str, args))
     print >>sys.stderr, colorize(text, color=kwargs.get('color'))
 
+# memory leak debugging
+#import gc, os
+#gc.set_debug(gc.DEBUG_LEAK)
+
 # debug function, using the debug level
 def debug (level, *args):
+    #_text("collected %d"%gc.collect())
+    #_text("objects %d"%len(gc.get_objects()))
+    #_text("garbage %d"%len(gc.garbage))
+    #if gc.garbage:
+    #    for o in gc.garbage:
+    #        _text("O %s"%repr(o))
+    #_text("Mem: %s"%usedmemory())
     if level <= _debuglevel:
         _text(*args)
+
+def usedmemory ():
+    pid = os.getpid()
+    fp = file('/proc/%d/status'%pid)
+    try:
+        for line in fp.readlines():
+            if line.startswith('VmRSS:'):
+                return line[6:].strip()
+    finally:
+        fp.close()
+    return val
+
 
 def info (*args):
     args = list(args)
