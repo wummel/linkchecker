@@ -78,6 +78,9 @@ class TestUrl (unittest.TestCase):
         url = "http://example.com/a*+-();b"
         nurl = url
         self.assertEqual(url_norm(url), nurl)
+        url = "http://www.company.com/path/doc.html?url=/path2/doc2.html?foo=bar"
+        nurl = url
+        self.assertEqual(url_norm(url), nurl)
 
     def test_norm_case_sensitivity (self):
         """test url norm case sensitivity"""
@@ -370,6 +373,28 @@ class TestUrl (unittest.TestCase):
         encurl, is_idn = linkcheck.url.idna_encode(url)
         self.assert_(not is_idn)
         self.assert_(not encurl)
+
+    def test_match_host (self):
+        """test host matching"""
+        self.assert_(not linkcheck.url.match_host("localhost", [".localhost"]))
+        self.assert_(linkcheck.url.match_host("a.localhost", [".localhost"]))
+        self.assert_(linkcheck.url.match_host("localhost", ["localhost"]))
+
+    def test_splitparam (self):
+        """path parameter split test"""
+        p = [
+            ("", ("", "")),
+            ("/", ("/", "")),
+            ("a", ("a", "")),
+            ("a;", ("a", "")),
+            ("a/b;c/d;e", ("a/b;c/d", "e")),
+        ]
+        for x in p:
+            self._splitparam(x)
+
+    def _splitparam (self, x):
+        self.assertEqual(linkcheck.url.splitparams(x[0]), (x[1][0], x[1][1]))
+
 
 def test_suite ():
     """build and return a TestSuite"""
