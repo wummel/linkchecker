@@ -426,7 +426,7 @@ class HTTPResponse:
                 try:
                     chunk_left = int(line, 16)
                 except ValueError, msg:
-                    raise IncompleteRead(msg)
+                    raise IncompleteRead("Invalid chunk length at %r"%line)
                 if chunk_left == 0:
                     break
             if amt is None:
