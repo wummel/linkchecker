@@ -74,6 +74,9 @@ class FileUrl (urlbase.UrlBase):
         super(FileUrl, self).build_url()
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
+        if self.is_directory() and not self.urlparts[2].endswith('/'):
+            self.add_warning(_("Added trailing slash to directory"))
+            self.urlparts[2] += '/'
         self.url = urlparse.urlunsplit(self.urlparts)
 
     def check_connection (self):
