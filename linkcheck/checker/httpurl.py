@@ -501,8 +501,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         elif scheme == "https" and supportHttps:
             h = linkcheck.httplib2.HTTPSConnection(host)
         else:
-            raise linkcheck.LinkCheckerError(
-                                 _("Unsupported HTTP url scheme %r") % scheme)
+            raise linkcheck.LinkCheckerError, \
+                                 _("Unsupported HTTP url scheme %r") % scheme
         if self.consumer.config.get("debug"):
             h.set_debuglevel(1)
         h.connect()

@@ -96,7 +96,7 @@ class Logger (object):
         @rtype: string
         """
         if not isinstance(s, unicode):
-            raise ValueError("tried to encode non-unicode string %r" % s)
+            raise ValueError, "tried to encode non-unicode string %r" % s
         return s.encode(self.output_encoding, "replace")
 
     def check_date (self):
@@ -130,7 +130,7 @@ class Logger (object):
         Write string to output descriptor.
         """
         if self.fd is None:
-            raise ValueError("write to non-file")
+            raise ValueError, "write to non-file"
         self.fd.write(self.encode(s), **args)
 
     def writeln (self, s=u"", **args):

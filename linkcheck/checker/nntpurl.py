@@ -84,8 +84,8 @@ class NntpUrl (urlbase.UrlBase):
                 else:
                     raise
         if nntp is None:
-            raise linkcheck.LinkCheckerError(
-               _("NTTP server too busy; tried more than %d times.") % tries)
+            raise linkcheck.LinkCheckerError, \
+               _("NTTP server too busy; tried more than %d times.") % tries
         if value is not None:
             self.add_warning(_("NNTP busy: %s.") % str(value))
         return nntp

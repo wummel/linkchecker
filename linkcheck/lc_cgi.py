@@ -130,26 +130,26 @@ def checkform (form):
             os.environ['LC_MESSAGES'] = lang
             linkcheck.init_i18n()
         else:
-            raise FormError(_("unsupported language"))
+            raise FormError, _("unsupported language")
     # check url syntax
     if form.has_key("url"):
         url = form["url"].value
         if not url or url == "http://":
-            raise FormError(_("empty url was given"))
+            raise FormError, _("empty url was given")
         if not linkcheck.url.is_safe_url(url):
-            raise FormError(_("disallowed url was given"))
+            raise FormError, _("disallowed url was given")
     else:
-        raise FormError(_("no url was given"))
+        raise FormError, _("no url was given")
     # check recursion level
     if form.has_key("level"):
         level = form["level"].value
         if not _is_level(level):
-            raise FormError(_("invalid recursion level"))
+            raise FormError, _("invalid recursion level")
     # check options
     for option in ("externstrictall", "anchors", "errors", "intern"):
         if form.has_key(option):
             if not form[option].value == "on":
-                raise FormError(_("invalid %s option syntax") % option)
+                raise FormError, _("invalid %s option syntax") % option
 
 def logit (form, env):
     """

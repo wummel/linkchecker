@@ -317,8 +317,8 @@ class UrlBase (object):
         self.host, self.port = urllib.splitport(host)
         if self.port is not None:
             if not linkcheck.url.is_numeric_port(self.port):
-                raise linkcheck.LinkCheckerError(
-                         _("URL has invalid port %r") % str(self.port))
+                raise linkcheck.LinkCheckerError, \
+                         _("URL has invalid port %r") % str(self.port)
             self.port = int(self.port)
 
     def check (self):
@@ -334,7 +334,7 @@ class UrlBase (object):
             # error: (4, 'Interrupted system call')
             etype, value = sys.exc_info()[:2]
             if etype == 4:
-                raise KeyboardInterrupt(value)
+                raise KeyboardInterrupt, value
             else:
                 raise
         except KeyboardInterrupt:

@@ -362,7 +362,7 @@ class FCGI (object):
         self.conn, addr = _sock.accept()
         # Check if the connection is from a legal address
         if good_addrs != None and addr not in good_addrs:
-            raise error('Connection from invalid server!')
+            raise error, 'Connection from invalid server!'
 
         stdin = data = ""
         self.env = {}

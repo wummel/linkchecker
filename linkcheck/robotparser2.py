@@ -81,8 +81,8 @@ class MyHTTPRedirectHandler (urllib2.HTTPRedirectHandler):
             visited = new.redirect_dict = req.redirect_dict
             if (visited.get(newurl, 0) >= self.max_repeats or
                 len(visited) >= self.max_redirections):
-                raise HTTPError(req.get_full_url(), code,
-                                self.inf_msg + msg, headers, fp)
+                raise HTTPError, (req.get_full_url(), code,
+                                  self.inf_msg + msg, headers, fp)
         else:
             visited = new.redirect_dict = req.redirect_dict = {}
         visited[newurl] = visited.get(newurl, 0) + 1
