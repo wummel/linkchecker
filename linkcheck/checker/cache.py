@@ -149,7 +149,7 @@ class Cache (object):
         self.lock.acquire()
         try:
             key = url_data.cache_url_key
-            assert key in self.in_progress
+            assert key in self.in_progress, key
             del self.in_progress[key]
         finally:
             self.lock.release()
@@ -160,14 +160,11 @@ class Cache (object):
         try:
             data = url_data.get_cache_data()
             key = url_data.cache_url_key
-            assert key not in self.checked
-            assert key in self.in_progress
+            assert key not in self.checked, key+u", "+unicode(self.checked[key])
+            assert key in self.in_progress, key
             # move entry from self.in_progress to self.checked
             del self.in_progress[key]
             self.checked[key] = data
-            # also add all aliases to self.checked
-            for key in url_data.aliases:
-                self.checked[key] = data
         finally:
             self.lock.release()
 
