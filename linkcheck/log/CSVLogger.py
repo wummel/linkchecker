@@ -59,7 +59,7 @@ class CSVLogger (StandardLogger):
                       "# checktime;"+self.lineterminator+\
                       "# cached;"+self.lineterminator)
             self.fd.flush()
-        self.writer = csv.writer(self.fd, dialect='excel', delimitor=self.separator, lineterminator=self.lineterminator)
+        self.writer = csv.writer(self.fd, dialect='excel', delimiter=self.separator, lineterminator=self.lineterminator)
 
 
     def newUrl (self, urlData):
