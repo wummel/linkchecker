@@ -4,8 +4,7 @@ linkchecker (1.3.9) unstable; urgency=low
   * on Windows, install a .bat file on the Desktop (with interactive
     input)
   * updated german .po file
-  * support Mozilla-specific chrome: links
-  * disable timeoutsocket, it does not work for me
+  * support Mozilla-specific chrome:// links
   * fix colored logging
 
  -- Bastian Kleineidam <calvin@debian.org>  Sat, 17 Nov 2001 15:03:14 +0100

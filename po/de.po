@@ -1,7 +1,6 @@
 # German translation for LinkChecker.
 # Bastian Kleineidam <calvin@users.sourceforge.net>, 2000.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -14,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: ENCODING\n"
 
 msgid "Illegal telnet link syntax"
-msgstr "Illegale telnet link Syntax"
+msgstr "Illegale Telnet link Syntax"
 
 msgid " in 1 link"
 msgstr " in einer URL"
@@ -25,7 +24,6 @@ msgstr "Minuten"
 msgid "No newsgroup specified in NNTP URL"
 msgstr "Keine Newsgroup in der NNTP URL spezifiziert"
 
-#, fuzzy
 msgid "No mail host for %s found"
 msgstr "Mail host %s gefunden"
 
@@ -47,14 +45,12 @@ msgstr "Warnung"
 msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
 
-#, fuzzy
 msgid "warning: timeoutsocket is not support on this system"
 msgstr "Warnung: timeoutsocket wird auf diesem System nicht unterstützt"
 
 msgid "Verified adress: %s"
 msgstr "Gültige Adresse: %s"
 
-#, fuzzy
 msgid ""
 "EXAMPLES\n"
 "o linkchecker -v -ohtml -r2 -s -itreasure.calvinsplayground.de \\\n"
@@ -83,7 +79,6 @@ msgstr "Effektive URL %s"
 msgid ", line "
 msgstr ", Zeile "
 
-#, fuzzy
 msgid "url"
 msgstr "Tats. URL"
 
@@ -96,7 +91,6 @@ msgstr "Name"
 msgid "%.3f seconds\n"
 msgstr "%.3f Sekunden\n"
 
-#, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
 "\n"
@@ -296,11 +290,9 @@ msgstr "1 Fehler"
 msgid "Error"
 msgstr "Fehler"
 
-#, fuzzy
 msgid "info"
 msgstr "Info"
 
-#, fuzzy
 msgid "base"
 msgstr "Basis"
 
@@ -310,7 +302,6 @@ msgstr "Gültig"
 msgid "hours"
 msgstr "Stunden"
 
-#, fuzzy
 msgid "HTTPS url ignored"
 msgstr "Javascript url ignoriert"
 
@@ -359,7 +350,6 @@ msgstr "illegale recursionlevel Nummer %d"
 msgid "Remote host has closed connection"
 msgstr ""
 
-#, fuzzy
 msgid "parenturl"
 msgstr "Tats. URL"
 
@@ -370,7 +360,6 @@ msgid "HTTP 301 (moved permanent) encountered: you should update this link"
 msgstr ""
 "HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
 
-#, fuzzy
 msgid "checktime"
 msgstr "Prüfzeit"
 
@@ -416,7 +405,6 @@ msgstr "konnte Mail Adresse nicht splitten"
 msgid "Error: %s\n"
 msgstr "Fehler: %s\n"
 
-#, fuzzy
 msgid ""
 "NOTES\n"
 "o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
@@ -464,16 +452,13 @@ msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
 msgid "Missing '/' at end of URL"
 msgstr "Fehlendes '/' am Ende der URL"
 
-#, fuzzy
 msgid ""
 "Server does not support HEAD request (got %d status), falling back to GET"
 msgstr "Server unterstützt kein HEAD, verwende GET"
 
-#, fuzzy
 msgid "result"
 msgstr "Ergebnis"
 
-#, fuzzy
 msgid "warning"
 msgstr "Warnung"
 
@@ -501,7 +486,6 @@ msgstr ""
 "Kommentare und Fehler schreiben Sie bitte an %s\n"
 "\n"
 
-#, fuzzy
 msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
 msgstr "Server unterstützt kein HEAD, verwende GET"
 
@@ -511,7 +495,6 @@ msgstr "URL ist Null oder leer"
 msgid "Real URL"
 msgstr "Tats. URL"
 
-#, fuzzy
 msgid "No NNTP server specified, skipping this URL"
 msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
 
