@@ -159,8 +159,8 @@ class TestUrl (unittest.TestCase):
         url = "http://example.com/a/../a/b"
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
 
-    def test_norm_path_relative (self):
-        """test url norm relative path handling"""
+    def test_norm_path_dots (self):
+        """test url norm relative path handling with dots"""
         # normalize redundant path segments
         url = '/foo/bar/.'
         nurl = '/foo/bar/'
@@ -199,16 +199,16 @@ class TestUrl (unittest.TestCase):
         nurl = '/foo'
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
         url = '/foo.'
-        nurl = '/foo.'
+        nurl = url
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
         url = '/.foo'
-        nurl = '/.foo'
+        nurl = url
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
         url = '/foo..'
-        nurl = '/foo..'
+        nurl = url
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
         url = '/..foo'
-        nurl = '/..foo'
+        nurl = url
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
         url = '/./../foo'
         nurl = '/foo'
@@ -222,6 +222,12 @@ class TestUrl (unittest.TestCase):
         url = '/foo/../bar'
         nurl = '/bar'
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
+        url = '../../../images/miniXmlButton.gif'
+        nurl = url
+        self.assertEqual(linkcheck.url.url_norm(url), nurl)
+
+    def test_norm_path_slashes (self):
+        """test url norm relative path handling with slashes"""
         url = '/foo//'
         nurl = '/foo/'
         self.assertEqual(linkcheck.url.url_norm(url), nurl)

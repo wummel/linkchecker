@@ -205,7 +205,7 @@ def url_norm (url):
 
 _slashes_ro = re.compile(r"/+")
 _samedir_ro = re.compile(r"/\./|/\.$")
-_parentdir_ro = re.compile(r"^/(\.\./)+|/[^/]+/\.\.(/|$)")
+_parentdir_ro = re.compile(r"^/(\.\./)+|/[^/\.]+/\.\.(/|$)")
 def collapse_segments (path):
     """Remove all redundant segments from the given URL path.
        Precondition: path is an unquoted url path
