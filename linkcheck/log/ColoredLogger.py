@@ -49,7 +49,8 @@ class ColoredLogger (StandardLogger):
                         self.fd.write("o\n")
                     self.fd.write("\n"+self.field("parenturl")+
                               self.spaces("parenturl")+
-		              self.colorparent+url_quote(urlData.parentName)+
+		              self.colorparent+
+                              url_quote(urlData.parentName or "")+
 			      self.colorreset+"\n")
                     self.currentPage = urlData.parentName
                     self.prefix = 1

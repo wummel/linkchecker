@@ -66,7 +66,7 @@ class CSVLogger (StandardLogger):
     def newUrl (self, urlData):
         if self.fd is None: return
         row = [urlData.urlName, urlData.recursionLevel,
-               url_quote(urlData.parentName), urlData.baseRef,
+               url_quote(urlData.parentName or ""), urlData.baseRef,
                urlData.errorString, urlData.validString,
                urlData.warningString, urlData.infoString,
                urlData.valid, url_quote(urlData.url),

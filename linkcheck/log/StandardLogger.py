@@ -94,7 +94,7 @@ __init__(self, **args)
                           urlData.name+"\n")
         if urlData.parentName and self.has_field('parenturl'):
             self.fd.write(self.field('parenturl')+self.spaces("parenturl")+
-	                  url_quote(urlData.parentName)+
+	                  url_quote(urlData.parentName or "")+
                           (i18n._(", line %d")%urlData.line)+
                           (i18n._(", col %d")%urlData.column)+"\n")
         if urlData.baseRef and self.has_field('base'):

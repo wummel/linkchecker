@@ -53,7 +53,7 @@ class SQLLogger (StandardLogger):
 	      (self.dbname,
 	       StringUtil.sqlify(urlData.urlName),
                urlData.recursionLevel,
-	       StringUtil.sqlify(url_quote(urlData.parentName)),
+	       StringUtil.sqlify(url_quote(urlData.parentName or "")),
                StringUtil.sqlify(urlData.baseRef),
                StringUtil.sqlify(urlData.errorString),
                StringUtil.sqlify(urlData.validString),
