@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Base URL handler"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #
@@ -398,6 +399,7 @@ class UrlData:
         # sure to test it first.
         return self.valid and \
                self.isHtml() and \
+               self.hasContent() and \
                not self.cached and \
                (self.config["recursionlevel"] >= 0 and
                 self.recursionLevel < self.config["recursionlevel"]) and \
@@ -406,7 +408,7 @@ class UrlData:
 
     def checkAnchors (self, anchor):
         debug(HURT_ME_PLENTY, "checking anchor", anchor)
-        if not (self.valid and anchor and self.isHtml()):
+        if not (self.valid and anchor and self.isHtml() and self.hasContent()):
             return
         h = LinkParser(self.getContent(), {'a': ['name'], None: ['id']})
         for cur_anchor,line,column,name,base in h.urls:
@@ -450,6 +452,11 @@ class UrlData:
             return (1,0)
 
 
+    def hasContent (self):
+        """indicate wether url getContent() can be called"""
+        return 1
+
+
     def getContent (self):
         """Precondition: urlConnection is an opened URL."""
         if not self.has_content:
@@ -464,6 +471,8 @@ class UrlData:
     def checkContent (self, warningregex):
         """if a warning expression was given, call this function to check it
            against the content of this url"""
+        if not self.hasContent():
+            return
         match = warningregex.search(self.getContent())
         if match:
             self.setWarning(i18n._("Found %s in link contents") % \

@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Fast HTML parser module written in C"""
 # Copyright (C) 2000-2002  Bastian Kleineidam
 #

@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 # sz_fcgi.py - Multithreaded FastCGI Wrapper
 __version__ 	= "v0.8  19/10/1998 ajung"
 __doc__      	= "Multithreaded FastCGI Wrapper"

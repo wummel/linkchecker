@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """various string utils"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #

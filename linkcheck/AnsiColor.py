@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """ANSI Color definitions and functions"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #

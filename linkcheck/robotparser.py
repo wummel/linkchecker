@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """ robotparser.py
 
     Copyright (C) 2000  Bastian Kleineidam

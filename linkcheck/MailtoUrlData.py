@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Handle for mailto: links"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #
@@ -120,3 +121,8 @@ class MailtoUrlData (HostCheckingUrlData):
 
     def getCacheKey (self):
         return "%s:%s" % (self.scheme, str(self.adresses))
+
+
+    def hasContent (self):
+        return 0
+

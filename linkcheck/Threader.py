@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Threading support"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #

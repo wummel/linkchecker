@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 # $Id$
 #
 # This file is part of the pydns project.
@@ -20,6 +21,9 @@ Result = DnsResult
 
 #
 # $Log$
+# Revision 1.7  2003/07/04 14:23:22  calvin
+# add coding line
+#
 # Revision 1.6  2003/01/05 17:52:53  calvin
 # fix
 #

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: iso-8859-1 -*-
 """print headers of an url"""
 
 import httplib, urlparse, sys

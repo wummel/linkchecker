@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """common CGI functions used by the CGI scripts"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #

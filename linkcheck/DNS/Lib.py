@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """
  $Id$
 
@@ -630,6 +631,9 @@ if __name__ == "__main__":
     testpacker()
 #
 # $Log$
+# Revision 1.5  2003/07/04 14:23:22  calvin
+# add coding line
+#
 # Revision 1.4  2003/01/05 17:39:19  calvin
 # pychecker fixes
 #

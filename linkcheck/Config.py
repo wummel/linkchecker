@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """store metadata and options"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #

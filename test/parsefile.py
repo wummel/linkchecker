@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 import sys, os
 sys.path.insert(0, os.getcwd())
 from linkcheck.parser.htmllib import HtmlPrinter

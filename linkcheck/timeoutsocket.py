@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 
 ####
 # Copyright 2000,2001 by Timothy O'Malley <timo@alum.mit.edu>

@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """
  $Id$
 
@@ -40,6 +41,9 @@ def statusstr(status):
 
 #
 # $Log$
+# Revision 1.4  2003/07/04 14:23:22  calvin
+# add coding line
+#
 # Revision 1.3  2002/11/26 23:27:43  calvin
 # update to Python >= 2.2.1
 #

@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 #------------------------------------------------------------------------
 #               Copyright (c) 1998 by Total Control Software
 #                         All Rights Reserved

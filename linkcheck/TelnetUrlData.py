@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Handle telnet: links"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #
@@ -56,3 +57,8 @@ class TelnetUrlData (HostCheckingUrlData):
                 self.urlConnection.write(self.password+"\n")
                 # XXX how to tell if we are logged in??
         self.urlConnection.write("exit\n")
+
+
+    def hasContent (self):
+        return 0
+

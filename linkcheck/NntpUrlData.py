@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Handle nntp: and news: links"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #
@@ -91,3 +92,7 @@ class NntpUrlData (UrlData):
 
     def getCacheKey (self):
         return self.url
+
+
+    def hasContent (self):
+        return 0

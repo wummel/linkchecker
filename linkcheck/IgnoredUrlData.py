@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Handle for uncheckable application-specific links"""
 # Copyright (C) 2001-2003  Bastian Kleineidam
 #
@@ -60,3 +61,6 @@ class IgnoredUrlData (UrlData):
     def _check (self):
         self.setWarning(i18n._("%s url ignored")%self.scheme.capitalize())
         self.logMe()
+
+    def hasContent (self):
+        return 0

@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Handle local file: links"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #

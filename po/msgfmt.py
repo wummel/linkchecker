@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+# -*- coding: iso-8859-1 -*-
 # Written by Martin v. Löwis <loewis@informatik.hu-berlin.de>
 
 """Generate binary message catalog from textual translation description.

@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """
  $Id$
 
@@ -113,6 +114,9 @@ if __name__=="__main__":
 
 #
 # $Log$
+# Revision 1.2  2003/07/04 14:23:22  calvin
+# add coding line
+#
 # Revision 1.1  2002/11/26 23:27:43  calvin
 # update to Python >= 2.2.1
 #

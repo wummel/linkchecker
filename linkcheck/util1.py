@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """spam"""
 # Copyright (C) 2000-2003  Bastian Kleineidam
 #

@@ -1,4 +1,5 @@
 #!/usr/bin/python -O
+# -*- coding: iso-8859-1 -*-
 
 # Copyright (C) 2000-2002  Bastian Kleineidam
 #
@@ -114,6 +115,7 @@ class MyDistribution (Distribution):
 
     def create_conf_file (self, directory, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
+        data.insert(0, "# -*- coding: iso-8859-1 -*-")
         if not directory:
             directory = os.getcwd()
         filename = os.path.join(directory, self.config_file)

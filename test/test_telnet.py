@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 import os, linkcheck
 config = linkcheck.Config.Configuration()
 config.addLogger('test', linkcheck.test_support.TestLogger)
