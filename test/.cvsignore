@@ -1,2 +1,4 @@
 *.result
 *.prof
+*.pyc
+config.py

@@ -23,7 +23,8 @@ from distutils.command.install import install
 from distutils.command.config import config
 import os
 
-config_file = "config.py"
+# put the config file in the test dir to prevent installation
+config_file = "test/config.py"
 
 class LCInstall(install):
     def run(self):
@@ -64,22 +65,17 @@ class LCConfig(config):
                   headers=None, include_dirs=None,
                   other_libraries=[]):
         self._check_compiler()
-        return self.try_link("int main (vlid) { }",
+        return self.try_link("int main (void) { }",
                              headers, include_dirs,
 			     [library]+other_libraries, library_dirs)
 
 
     def run (self):
-        if 'bdist_wininst' in self.distribution.commands and os.name!='nt':
-            self.announce("bdist_wininst command found on non-Windows "
-	                  "platform. Disabling SSL compilation")
-            have_ssl = 0
-        else:
-            have_ssl = self.check_lib("ssl",
-	                              library_dirs = self.ssl_library_dirs,
-				      include_dirs = self.ssl_include_dirs,
-                                      other_libraries = ["crypto"],
-                                      headers = ["ssl.h"])
+        have_ssl = self.check_lib("ssl",
+                                  library_dirs = self.ssl_library_dirs,
+                                  include_dirs = self.ssl_include_dirs,
+                                  other_libraries = ["crypto"],
+                                  headers = ["ssl.h"])
         f = open(config_file,'w')
 	f.write("have_ssl = %d\n" % (have_ssl))
         f.write("ssl_library_dirs = %s\n" % `self.ssl_library_dirs`)
@@ -91,29 +87,23 @@ class LCConfig(config):
 class LCDistribution(Distribution):
 
     def run_commands (self):
-        if 'config' not in self.commands:
+        if "config" not in self.commands:
             self.check_ssl()
-        self.additional_things()
         Distribution.run_commands(self)
 
     def check_ssl(self):
         if not os.path.exists(config_file):
             raise SystemExit, 'Please configure LinkChecker by running ' \
 	                      '"python setup.py config".'
-        import config
-        if config.have_ssl:
+        from test import config
+        if 'bdist_wininst' in self.commands and os.name!='nt':
+            self.announce("bdist_wininst command found on non-Windows "
+	                  "platform. Disabling SSL compilation")
+        elif config.have_ssl:
             self.ext_modules = [Extension('ssl', ['ssl.c'],
                         include_dirs=config.ssl_include_dirs,
                         library_dirs=config.ssl_library_dirs,
                         libraries=config.libraries)]
-
-    def additional_things(self):
-        if 'bdist_wininst' in self.commands or os.name=='nt':
-            # enabling windows files
-            self.scripts.append('linkchecker.bat')
-        elif os.name=='posix':
-            # for local run
-            os.chmod("linkchecker", 0755)
 
 
 setup (name = "LinkChecker",
@@ -153,5 +143,6 @@ o (Fast)CGI web interface
                       ['locale/fr/LC_MESSAGES/linkcheck.mo',
 		       'locale/fr/LC_MESSAGES/linkcheck.po']),
                      ('/etc', ['linkcheckerrc']),
+                     ('share/linkchecker',['linkchecker.bat']),
 		    ],
 )

@@ -1,6 +1,6 @@
 include MANIFEST.in
 include INSTALL LICENSE TODO
-include *.tmpl linkcheckerrc
+include linkcheckerrc
 include lc.cgi lc.fcgi lc.sz_fcgi
 include Makefile
 include create.sql
@@ -11,7 +11,6 @@ include debian/control
 include debian/dirs
 include debian/docs
 include DNS/README
-include linkcheck/*.tmpl
-include test/viewprof.py test/profiletest.py.tmpl test/*.html
+include test/viewprof.py test/profiletest.py test/*.html
 recursive-include locale *.mo *.po
 recursive-include lconline *

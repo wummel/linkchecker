@@ -17,10 +17,7 @@
 """
 
 # profiling test
-import sys,re,profile,pstats
-# add the path to linkcheck module if you do not install with distutils
-$syspath
-import linkcheck
+import sys,re,profile,pstats,linkcheck
 #linkcheck.Config.DebugFlag = 1
 
 def runit(config, name):
