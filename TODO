@@ -10,4 +10,6 @@ Possible improvements people could work on:
 - [FEATURE] warn if overall size of page (including images/flash/etc.) is
   too big. Right now, the page size is only html content.
 
-- [FEATURE] Option to save downloaded pages.
+- [FEATURE] Option to save downloaded pages. This could also be used to
+  build an internal cache, however there are already a plethora of
+  caching proxies we could use for that.
