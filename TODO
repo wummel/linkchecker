@@ -7,19 +7,8 @@ Possible improvements people could work on:
   comma-separated list of hosts, that should be contacted
   directly and not over a proxy.
 
-- [FEATURE] Prevent LinkChecker from taking too much CPU resources.
-  Windows:
-  http://msdn.microsoft.com/library/en-us/dllproc/base/scheduling_priorities.asp
-  win32process.SetPriorityClass(
-                              win32process.GetCurrentProcess(),
-                              win32process.BELOW_NORMAL_PRIORITY_CLASS)
-  Linux:
-  os.nice(+5)
-
 - [FEATURE] Optional python-geoip support, logging the country
   for URLs.
-
-- [INSTALL] build .mo file with improved msgfmt.py from roundup
 
 - [USAGE] rethink intern/extern stuff
 

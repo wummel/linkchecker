@@ -1,6 +1,9 @@
 2.6 "" (released xx.xx.xxxx)
 
-  *
+  * New option --low-priority to decrease the priority of spawned
+    threads.
+    Type: feature
+    Changed: linkchecker, linkcheck/threader.py
 
 2.5 "Spanglish" (released 4.3.2005)
 
