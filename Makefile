@@ -6,6 +6,9 @@ NAME=$(shell python setup.py --name)
 HOST=treasure.calvinsplayground.de
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -R -t0 -v -itreasure.calvinsplayground.de -s
 DEBPACKAGE=$(PACKAGE)_$(VERSION)_i386.deb
+I18NTOOLS=/usr/local/src/Python-2.0/Tools/i18n
+GETTEXT=$(I18NTOOLS)/pygettext.py
+MSGFMT=$(I18NTOOLS)/msgfmt.py
 SOURCES=\
 linkcheck/Config.py \
 linkcheck/FileUrlData.py \
@@ -67,20 +70,16 @@ test:
 	  ./$(PACKAGE) -r1 -o text -N"news.rz.uni-sb.de" -v -a $$i > $$i.result 2>&1; \
         done
 
+# we use pygettext.py in Tools/i18n of the Python distribution
 po:
 	# german translation
-	xgettext --default-domain=linkcheck --no-location \
-	--join-existing --keyword --keyword=_ \
-	--output-dir=locale/de/LC_MESSAGES/ --sort-output $(SOURCES)
+	$(GETTEXT) --default-domain=linkcheck --no-location \
+	--output-dir=locale/de/LC_MESSAGES/ $(SOURCES)
 	# french translation
-	xgettext --default-domain=linkcheck --no-location \
-	--join-existing --keyword --keyword=_ \
-	--output-dir=locale/fr/LC_MESSAGES/ --sort-output $(SOURCES)
+	$(GETTEXT) --default-domain=linkcheck --no-location \
+	--output-dir=locale/fr/LC_MESSAGES/ $(SOURCES)
 
 mo:
-	# german translation
-	msgfmt -o locale/de/LC_MESSAGES/linkcheck.mo \
-	locale/de/LC_MESSAGES/linkcheck.po
-	# french translation
-	msgfmt -o locale/fr/LC_MESSAGES/linkcheck.mo \
-	locale/fr/LC_MESSAGES/linkcheck.po
+	@for l in "de fr"; do \
+	    (cd locale/$l/LC_MESSAGES && $(MSGFMT) linkcheck.po); \
+	done
