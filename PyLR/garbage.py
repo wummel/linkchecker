@@ -88,3 +88,5 @@
                 self.ntfirstmap[p.lhs][p.lhs] = [Grammar.EPS]
 	    else:
 		self.ntfirstmap[p.lhs] = {p.lhs: [Grammar.EPS]}
+
+

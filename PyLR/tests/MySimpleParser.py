@@ -6,7 +6,7 @@ class mysimpleparser(SimpleParser):
 
 def _test():
     p = mysimpleparser()
-    p.parse("dd",1)
+    p.pyparse("c",1)
 
 
 if __name__=='__main__':

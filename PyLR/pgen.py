@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-import PyLR, PyLR.Grammar, sys, getopt
-from PyLR.Parsers import GrammarParser
+import PyLR
 
-class ParserParser(GrammarParser):
+class ParserParser(PyLR.GrammarParser):
     def __init__(self):
-	GrammarParser.__init__(self)
+	PyLR.GrammarParser.__init__(self)
 	self.result = [] # to be populated with productions
 	self.funcmap = {}
 	self.usercode = ""
@@ -56,19 +55,19 @@ class ParserParser(GrammarParser):
     def lexdef(self, ld):
 	self.lexdef = ld
 
-    def addcode(self, code):
-	self.usercode = self.usercode + "\n" + code
+    def addcode(self, ucode):
+	self.usercode = self.usercode + "\n" + ucode
 
     def classname(self, name):
 	self.classname = name
 
     def parse(self, text, outf, verbose=0):
 	global g, toks, lexer
-	PyLR.Parser.Parser.parse(self, text, verbose)
+	PyLR.Parser.parse(self, text, verbose)
 	# insert the functionnames
 	for p in self.result:
-	    funcname = self.funcmap.get(tuple(p.RHS), "unspecified")
-	    p.setfuncname(funcname)
+            if self.funcmap.has_key(tuple(p.rhs)):
+                p.funcname = self.funcmap[tuple(p.rhs)]
 	#evaluate the lexer
 	exec(self.usercode)
 	lexer = eval(self.lexdef)
@@ -77,11 +76,11 @@ class ParserParser(GrammarParser):
 	toks = lexer.getTokenList()
 	# change the symbols to their numbers
 	for p in self.result:
-	    for si in range(len(p.RHS)):
-		if p.RHS[si] in toks:
-		    p.RHS[si] = toks.indexof(p.RHS[si])
+	    for si in range(len(p.rhs)):
+		if p.rhs[si] in toks:
+		    p.rhs[si] = toks.index(p.rhs[si])
 
-	g = PyLR.Grammar.LALRGrammar(self.result, toks)
+	g = PyLR.Grammar.Grammar(self.result, toks)
 	print g
  	g.extrasource = self.usercode
  	print "done parsing, about to start parser generation (writing to %s)" % outf
@@ -93,11 +92,12 @@ class ParserParser(GrammarParser):
 
 
 def main():
+    import sys
     usage = "pgen.py infile outfile"
     args = sys.argv[1:]
     if len(args) != 2:
 	print usage
-	sys.exit(0)
+	sys.exit(1)
     inf = args[0]
     outf = args[1]
     if inf == "-":
@@ -105,7 +105,8 @@ def main():
     else:
 	f = open(inf)
     pspec = f.read()
-#    f.close() # dont close stdin
+    if f!=sys.stdin:
+        f.close() # dont close stdin
     global pp # for use with python -i pgen.py <inf> <outf>
     pp = ParserParser()
     verbose=1

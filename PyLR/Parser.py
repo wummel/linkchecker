@@ -1,5 +1,7 @@
 __version__ = "$Id$"
 
+import PyLRengine
+
 class Parser:
     def __init__(self, lexer, actiontable, gototable, prodinfo):
 	self.lexer = lexer
@@ -13,12 +15,27 @@ class Parser:
             sys.stderr.write("Parser: error: forgot to supply a parser function\n")
             raise
 
-    # the unspecified function (the default for all productions)
     def unspecified(*args):
-        return args[1]
+        """the unspecified function (the default for all productions)"""
+        if len(args)>1:
+            return args[1]
+        return None
 
     def parse(self, text, verbose=0):
+        self.lexer.settext(text)
+        self.engine = PyLRengine.NewEngine(self.prodinfo, self.actions,
+                                           self.gotos)
+        while 1:
+            tok, val = self.lexer.scan(verbose)
+            if not self.engine.parse(tok, val):
+                break
+
+        # return final value
+        return None
+
+    def pyparse(self, text, verbose=0):
         """The parse algorithm for an LR-parser.
+        Written in Python for ease of debugging the parser.
         Reference: [Aho,Seti,Ullmann: Compilerbau Teil 1, p. 266]
         """
 	self.lexer.settext(text)
@@ -26,29 +43,30 @@ class Parser:
         stack = [0]
         tok, val = self.lexer.scan(verbose)
 	while 1:
+            if verbose:
+                print "\nstack=",stack
             state = stack[-1]
+            if verbose:
+                print "state=",state
             action = self.actions[state][tok]
             if verbose:
-                print
-                print "stack=",stack
-                print "state=",state
                 print "action=",action
             if action[0]=='s':
-                # push the symbol and the state
+                # push the symbol and the new state
                 stack = stack + [tok, action[1]]
                 tok, val = self.lexer.scan(verbose)
             elif action[0]=='r':
                 # action[1]-1: compensate previous augmentation
                 P = self.prodinfo[action[1]-1]
+                print "P=",P
                 # reduce P=A->b by popping 2*|b| from the stack
-                popped = stack[-2*p[0]:]
-                stack = stack[:-2*P[0]]
+                if P[0]:
+                    stack = stack[:-2*P[0]]
                 goto = self.gotos[stack[-1]][P[2]]
                 # push A and the goto symbol
                 stack = stack + [P[2], goto]
                 if verbose:
 		    print "reduce",P
-                P[1]
             elif action[0]=='a':
                 return
             else:

@@ -8,9 +8,7 @@
 # , add code, state how to initialize the lexer
 #
 _class GrammarParser
-_code import PyLR.Lexers
-_code import PyLR.Parser
-_lex PyLR.Lexers.GrammarLex()
+_lex PyLR.GrammarLexer()
 
 #
 # this is the Grammar spec part, where you specify

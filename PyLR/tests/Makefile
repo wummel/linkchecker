@@ -1,3 +1,3 @@
 all:
-#	python MySimpleParser.py
-	python MyMathParser.py
+	python MySimpleParser.py
+#	python MyMathParser.py

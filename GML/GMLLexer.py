@@ -13,7 +13,7 @@ class GMLLexer(PyLR.Lexer):
         PyLR.Lexer.__init__(self)
         self.addpat(r"[-+]?(\d+\.\d*|\d*\.\d+)([Ee][-+]?\d+)?",
 	              "REAL", _realfunc)
-        self.addpat(r"[-+]?\d+", "INT", _intfunc)
+        self.addpat(r"[-+]?\d+", "INTEGER", _intfunc)
         self.addpat(r"\[", "LSQB")
         self.addpat(r"\]", "RSQB")
         self.addpat(r'"([^&"]+|&[a-zA-Z]+;)*"', "STRING")

@@ -53,7 +53,9 @@ class Grammar:
 	self.productions = productions
         self.tokens = tokens
 	self.terminals = range(len(tokens))
-	self.nonterminals = map(lambda p: p.lhs, self.productions)
+        self._genNonterminals()
+        self._reduceGrammar()
+        self._genNonterminals() # second try with reduced grammar
         for p in self.productions:
             for s in p.rhs:
                 if (s not in self.terminals) and (s not in self.nonterminals):
@@ -62,7 +64,6 @@ class Grammar:
         if self.verbose:
             print "Terminals:", self.terminals
             print "Nonterminals:", self.nonterminals
-        self._reduceGrammar()
         # build map with productions who have the same lhs
 	self.lhsprods = {}
 	for lhs in self.nonterminals:
@@ -77,6 +78,12 @@ class Grammar:
 	self._genNTFIRSTmap()
 	# help make shifts work with only kernel items
 	self._genTFIRSTmap()
+
+    def _genNonterminals(self):
+        self.nonterminals = []
+        for p in self.productions:
+            if p.lhs not in self.nonterminals:
+                self.nonterminals.append(p.lhs)
 
     def _reduceGrammar(self):
         """Definitions:
@@ -151,23 +158,27 @@ class Grammar:
 
     def _genDerivedEpsilons(self):
 	"""determines the nonterminals that can derive epsilon"""
-	res = {}
+	self.lhseps = {}
+        self.lhsdereps = {}
+        pi = 1
 	for p in self.productions:
 	    if not p.rhs:
-		res[p.lhs] = 1
-        self.lhseps = res.keys()
+		self.lhseps[p.lhs] = self.lhsdereps[p.lhs] = pi
+            pi = pi + 1
         added=1
         while added:
             added=0
             for p in self.productions:
-                if filter(lambda x,r=res: not r.has_key(x), p.rhs) and \
-		   not res.has_key(p.lhs):
-                    res[p.lhs]=added=1
-        self.lhsdereps = res.keys()
-
+                add_it=1
+                for r in p.rhs:
+                    if not self.lhsdereps.has_key(r):
+                        add_it=0
+                if add_it and not self.lhsdereps.has_key(p.lhs):
+                    self.lhsdereps[p.lhs]=self.productions.index(p)
+                    added=1
 
     def _genFIRSTmap(self):
-	"""return dictionary d with d[A] = FIRST(A) for all symbols A
+	"""make dictionary d with d[A] = FIRST(A) for all symbols A
 	"""
 	self.firstmap = {}
 	for sym in [Grammar.EPS, Grammar.DummyLA]+self.terminals:
@@ -186,7 +197,7 @@ class Grammar:
 			for a in f.keys():
 			    if not firsts.has_key(a):
 				added = firsts[a] = 1
-			if not Y in self.lhsdereps:
+			if not self.lhsdereps.has_key(Y):
 			    break
 		self.firstmap[nt] = firsts
 	for s in self.firstmap.keys():
@@ -198,17 +209,17 @@ class Grammar:
 	precondition: we already have calculated FIRST for all single
 	symbols and stored the values in self.firstmap
         """
-        assert gs_list, "list must be nonempty"
 	res = {}
         allhaveeps=1
 	for X in gs_list:
             set = self.firstmap[X]
 	    for s in set:
-                res[s] = 1
+                if s != Grammar.EPS:
+                    res[s] = 1
             if not Grammar.EPS in set:
                 allhaveeps=0
                 break
-	if allhaveeps:        
+	if allhaveeps:
 	    res[Grammar.EPS] = 1
 	return res.keys()
 
@@ -226,10 +237,10 @@ class Grammar:
     def _genFOLLOWmap(self):
         """dictionary d with d[A] = FOLLOW(A) for all nonterminals A
         """
-	self.FOLLOWmap = {}
+	self.followmap = {}
         for nt in self.nonterminals+self.terminals:
-	    self.FOLLOWmap[nt] = []
-	self.FOLLOWmap[self.productions[0].lhs] = [0] # 0 is EOF token
+	    self.followmap[nt] = []
+	self.followmap[self.productions[0].lhs] = [0] # 0 is EOF token
         added=1
         while added:
             added=0
@@ -238,20 +249,20 @@ class Grammar:
                     B = p.rhs[i-1]
                     beta = p.rhs[i]
                     for f in self.firstmap[beta]:
-                        if f != Grammar.EPS and f not in self.FOLLOWmap[B]:
-                            self.FOLLOWmap[B].append(f)
+                        if f != Grammar.EPS and f not in self.followmap[B]:
+                            self.followmap[B].append(f)
                             added=1
             for p in self.productions:
                 for i in range(len(p.rhs)):
                     B = p.rhs[i]
                     dereps=1
                     for X in p.rhs[(i+1):]:
-                        if X in self.terminals or (X not in self.lhsdereps):
+                        if X in self.terminals or (not self.lhsdereps.has_key(X)):
                             dereps=0
                     if dereps:
-		        for f in self.FOLLOWmap[p.lhs]:
-                            if f not in self.FOLLOWmap[B]:
-                                self.FOLLOWmap[B].append(f)
+		        for f in self.followmap[p.lhs]:
+                            if f not in self.followmap[B]:
+                                self.followmap[B].append(f)
                                 added=1
 
     def _closure(self, items):
@@ -275,14 +286,14 @@ class Grammar:
 			newpart = Grammar.EPS
                     stringofsyms = [newpart, term]
                     first = self.FIRST(stringofsyms)
-#                    if self.verbose:
-#                        print "First",stringofsyms,"=",first
+                    if self.verbose:
+                        print "First",stringofsyms,"=",first
 		    for t in first:
                         item = ((self.productions.index(p), 0), t)
-			if not res.has_key(item) and t != Grammar.EPS:
+			if not res.has_key(item):
 			    more.append(item)
                     if term == 0 and newpart == Grammar.EPS:
-                        item = (self.productions.index(p), 0, 0)
+                        item = ((self.productions.index(p), 0), 0)
                         if not res.has_key(item):
                             more.append(item)
 	    for item in more:
@@ -306,11 +317,18 @@ class Grammar:
 	(B may == A)
 	"""
 	self.ntfirstmap = {}
-        for p in self.nonterminals:
-            self.ntfirstmap[p] = {}
 	for p in self.productions:
-	    if p.rhs and p.rhs[0] in self.nonterminals:
-		self.ntfirstmap[p.lhs][p.rhs[0]] = 0
+	    if p.rhs and (p.rhs[0] in self.nonterminals):
+		first = self.FIRST(p.rhs[1:])
+		first.sort()
+		if not self.ntfirstmap.has_key(p.lhs):
+		    self.ntfirstmap[p.lhs] = {}
+		if not self.ntfirstmap[p.lhs].has_key(p.rhs[0]):
+		    self.ntfirstmap[p.lhs][p.rhs[0]] = []
+		for i in first:
+		    if i not in self.ntfirstmap[p.lhs].get(p.rhs[0], []):
+			self.ntfirstmap[p.lhs][p.rhs[0]] = first
+
         foundmore = 1
 	while foundmore:
 	    foundmore = 0
@@ -322,12 +340,25 @@ class Grammar:
 			d = self.ntfirstmap[rnt]
 			for k in d.keys():
 			    if not self.ntfirstmap[nt].has_key(k):
+				fos = self.FIRST(d[k]+ self.ntfirstmap[nt][rnt])
 				foundmore = 1
- 				self.ntfirstmap[nt][k] = 0
+ 				fos.sort()
+ 				self.ntfirstmap[nt][k] = fos
+ 			    else:
+ 				fos = self.FIRST(d[k] + self.ntfirstmap[nt][rnt])
+ 				fos.sort()
+ 				if fos != self.ntfirstmap[nt][k]:  # then res[nt][k] is contained in fos
+ 				    foundmore = 1
+ 				    self.ntfirstmap[nt][k] = fos
+	#
 	# this part accounts for the fact that a nonterminal will
 	# produce exactly itself in zero steps
+	#
 	for p in self.productions:
-            self.ntfirstmap[p.lhs][p.lhs] = 0
+	    if self.ntfirstmap.has_key(p.lhs):
+                self.ntfirstmap[p.lhs][p.lhs] = [Grammar.EPS]
+	    else:
+		self.ntfirstmap[p.lhs] = {p.lhs: [Grammar.EPS]}
 	
     def _genTFIRSTmap(self):
 	"""for each nonterminal C, compute the set of all terminals a, such
@@ -341,7 +372,7 @@ class Grammar:
         for nt in self.nonterminals:
             self.tfirstmap[nt] = []
 	for p in self.productions:
-	    if p.rhs and p.rhs[0] in self.terminals:
+	    if p.rhs and (p.rhs[0] in self.terminals):
 		self.tfirstmap[p.lhs].append(p.rhs[0])
         foundmore = 1
 	while foundmore:
@@ -380,9 +411,9 @@ class Grammar:
 	for item in itemset:
             propagates[item] = []
 	    C = self._closure({(item, Grammar.DummyLA):0})
-#            if self.verbose:
-#                print "\nClosure of",self._strLR1Item((item, Grammar.DummyLA))
-#                self._printClosure(C)
+            if self.verbose:
+                print "\nClosure of",self._strLR1Item((item, Grammar.DummyLA))
+                self._printClosure(C)
 	    for (cpi, cri), t in C.keys():
 		if cri == len(self.productions[cpi].rhs):
 		    continue
@@ -402,8 +433,6 @@ class Grammar:
         keys = closure.keys()
         for k in keys:
             print self._strLR1Item(k)
-#        print reduce(lambda i1, i2, s=self: s._strLR1Item(i1)+\
-#	             "\n"+s._strLR1Item(i2), closure.keys())
 
     def _genKernelitems(self):
 	self.kernelitems = todo = [[(0, 0)]]
@@ -411,14 +440,15 @@ class Grammar:
 	while newtodo:
 	    newtodo = []
 	    for items in todo:
-		for s in self.nonterminals + self.terminals:
+		for s in self.terminals + self.nonterminals:
 		    g = self._goto(items, s)
-		    if g and g not in self.kernelitems and g not in newtodo:
+		    if g and g not in self.kernelitems:
 			newtodo.append(g)
             if self.verbose:
 	        print "found %d more kernels" % (len(newtodo))
             self.kernelitems = self.kernelitems + newtodo
             todo = newtodo
+        self.kernelitems.sort()
         if self.verbose:
             print "generated kernelitems:"
             i=0
@@ -488,6 +518,7 @@ class Grammar:
         return res+`item[1]`
 
     def _printLATable(self, la_table):
+        print la_table
         for i in range(len(self.kernelitems)):
             for j in range(len(self.kernelitems[i])):
                 pref = "I"+`i`+": "+self._strItem(self.kernelitems[i][j])
@@ -523,12 +554,12 @@ class Grammar:
 				added_la = 1
 				la_table[pstate][inner].append(pt)
 		state_i = state_i + 1
-        if self.verbose:
-            print "Lookahead table:"
-            self._printLATable(la_table)
+        #
 	# this section just reorganizes the above data
 	# to the state it's used in later...
 	if self.verbose:
+            print "Lookahead table:"
+            self._printLATable(la_table)
 	    print "reorganizing the data..."
 	self.LALRitems = []
 	state_i = 0
@@ -554,23 +585,21 @@ class Grammar:
 	state_i = 0
 	errentry = ("", -1)
 	for state in self.LALRitems:
-	    res.append([errentry] * len(self.terminals))
+            if self.lhsdereps.has_key(self.productions[1].lhs):
+                res.append([("a",-1)]+[errentry] * (len(self.terminals)-1))
+            else:
+                res.append([errentry] * len(self.terminals))
 	    for (prodind, rhsind), term in state:
 		if rhsind == len(self.productions[prodind].rhs):
 		    if prodind != 0:
 			new = ("r", prodind)
-			old = res[state_i][self.terminals.index(term)]
-			if old != errentry and old != new:
-			    print "Conflict[%d,%d]:" % (state_i,
-			    self.terminals.index(term)), old, "->", new
-			res[state_i][self.terminals.index(term)] = new
 		    else:
 			new = ("a", -1)
-			old = res[state_i][self.terminals.index(term)]
-			if old != errentry and old != new:
-			    print "Conflict[%d,%d]:" % (state_i,
-			    self.terminals.index(term)), old, "->", new
-			res[state_i][self.terminals.index(term)] = new
+		    old = res[state_i][self.terminals.index(term)]
+		    if old != errentry and old != new:
+		        print "Conflict[%d,%s]:" % (state_i,
+		        self.tokens[term]), old, "->", new
+		    res[state_i][self.terminals.index(term)] = new
 
 		# calculate reduction by epsilon productions 
 		elif self.productions[prodind].rhs[rhsind] in self.nonterminals:
@@ -578,10 +607,10 @@ class Grammar:
 		    ntfirst = self.firstmap[nt]
 		    ntfirsts = self.ntfirstmap.get(nt, {})
 		    for k in ntfirsts.keys():
-			if k in self.lhseps:
-			    reduceself.terminals = self.followmap[k]
-			    print `((prodind, rhsind), term)`, reduceself.terminals
-			    for r in reduceself.terminals:
+			if self.lhseps.get(k,0):
+			    reduceterms = self.followmap[k]
+#			    print `((prodind, rhsind), term)`, reduceterms
+			    for r in reduceterms:
    				inner = self.terminals.index(r)
    				old = res[state_i][inner]
    				new = ("r", self.lhseps[k])
@@ -624,18 +653,15 @@ class Grammar:
 	return res
 
     def gototable(self):
-	items = self.kernelitems
 	res = []
 	state_i = 0
-	nonterms = self.nonterminals
-	err = None
-	for state in items:
-	    res.append([err] * len(nonterms))
+	for state in self.kernelitems:
+	    res.append([None] * len(self.nonterminals))
 	    nonterm_i = 0
-	    for nt in nonterms:
+	    for nt in self.nonterminals:
 		goto = self._goto(state, nt)
-		if goto in items:
-		    res[state_i][nonterm_i] = items.index(goto)
+		if goto:
+		    res[state_i][nonterm_i] = self.kernelitems.index(goto)
 		nonterm_i = nonterm_i + 1
 	    state_i = state_i + 1
 	return res
@@ -690,9 +716,9 @@ def _makeprod(x):
 def _bootstrap():
     # dang, how did scott bootstrap the GrammarParser??
     # have to make this by hand
-
+    import PyLR
     # define the productions
-    toks = GrammarLex().getTokenList()
+    toks = PyLR.GrammarLexer().getTokenList()
     prods = map(_makeprod,
         [("pspec", ["gspec"]),
          ("pspec", ["pydefs", "gspec"]),
@@ -713,25 +739,16 @@ def _bootstrap():
          ("rhsidlist", [], "rhseps"),
 	 ("idlist", ["idlist", toks.index("ID")], "idl_idlistID"),
 	 ("idlist", [toks.index("ID")], "idlistID")])
-#    print string.join(map(lambda x: str(x), prods), "\n")
-    g = Grammar(prods, toks, 1)
-    # produce the parser
-    g.writefile("GrammarParser.py", "GrammarParser", "GrammarLexer()")
+    g = Grammar(prods, toks)
+    g.writefile("GrammarParser.py", "GrammarParser", "PyLR.GrammarLexer()")
 
 def _test():
-    # first a non-productive Grammar
-    try:
-        Grammar([Production("S", ["S"])], ["EOF"])
-        assert 0, "Bummer!"
-    except ParseError: pass
-
-    # now a simple Grammar
+    # a simple Grammar with epsilon production
     toks = ["EOF","c","d"]
     prods = map(_makeprod,
-      [("S", ["C","C"]),
-       ("C", [toks.index("c"), "C"]),
-       ("C", [toks.index("d")])])
-    g = Grammar(prods, toks)
+    [("S", [toks.index("c"), toks.index("d"), "S"]),
+     ("S", [])])
+    g = Grammar(prods, toks, 1)
     g.extrasource = "import SimpleLexer"
     g.writefile("tests/SimpleParser.py", "SimpleParser", "SimpleLexer.SimpleLexer()")
 

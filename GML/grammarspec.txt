@@ -8,11 +8,15 @@
 # (2) add character,lowercase,uppercase definitions
 # (3) skip whitespace definition, this is obvious
 # (4) use digit+ in mantissa
-# (5) either intpart or fraction of a real must contain a number
-# (6) comments can be on a separate or at the end of the line
+#
+# additions are
+# (1) no empty list is allowed
+# (2) either intpart or fraction of a real must contain a number
+# (3) comments can be on a separate or at the end of the line
+# 
 #
 # gml:        list
-# list:       (whitespace* key whitespace+ value)*
+# list:       (whitespace* key whitespace+ value)+
 # value:      integer | real | string | "[" list "]"
 # key:        character (character | digit)*
 # integer:    sign digit+
@@ -28,18 +32,18 @@
 #
 # Note that integers and reals can have prefixed zeros, e.g. 001 is 1
 
-_class GMLParser  
-_code import GMLLexer
-_lex GMLLexer.GMLLexer()
+_class GMLBaseParser  
+_code import GML
+_lex GML.GMLLexer()
 
-# manually reduced
+# the grammar
 """
-list:  list KEY value (key_value) | 
-       (endoflist) ;
-value: INTEGER | 
-       REAL | 
-       STRING | 
-       LSQB list RSQB (beginlist) ;
+gml:      list (feddich);
+list:     list keyvalue (gml_key_value)| keyvalue;
+keyvalue: KEY value (key_value);
+value:    INTEGER |
+          REAL |
+          STRING |
+          LSQB list RSQB (gmllist);
 """
-
 
