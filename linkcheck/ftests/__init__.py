@@ -50,6 +50,8 @@ class TestLogger (linkcheck.logger.Logger):
             if url_data.cached:
                 url += " (cached)"
             self.result.append(url)
+        if self.has_field('cachekey'):
+            self.result.append("cache key %s" % url_data.get_cache_key())
         if self.has_field('realurl'):
             self.result.append("real url %s" % url_data.url)
         if self.has_field('name') and url_data.name:
@@ -107,11 +109,14 @@ class StandardTest (unittest.TestCase):
         return os.path.join("linkcheck", "ftests", "data", filename)
 
     def get_resultlines (self, filename):
-        """return contents of file, as list of lines"""
+        """return contents of file, as list of lines without line endings,
+           ignoring empty lines and lines starting with a hash sign (#).
+        """
         resultfile = self.get_file(filename+".result")
         f = open(resultfile)
         resultlines = [line.rstrip('\r\n') % {'curdir': os.getcwd()} \
-                       for line in f]
+                       for line in f \
+                       if line.strip() and not line.startswith('#')]
         f.close()
         return resultlines
 
