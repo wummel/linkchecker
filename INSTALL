@@ -1,0 +1,28 @@
+                 LinkChecker installation
+                ==========================
+
+First, decompress the archive.
+With linkchecker-x.x.x.tar.bz2 do "tar xIvf linkchecker-x.x.x.tar.bz2".
+With linkchecker-x.x.x.zip do "unzip linkchecker-x.x.x.zip" or use Winzip.
+With linkchecker-x.x.x.deb do "dpkg -i linkchecker-x.x.x.deb" as root and you 
+are done.
+
+Unix Users:
+1. Edit the file linkchecker.
+   Adjust the argument to sys.path.append to point to the distribution 
+   directory.
+2. Copy linkchecker to a location in your PATH (or make a symlink).
+3. Check links happily by typing `linkchecker`.
+
+Windows Users:
+1. Edit the file linkchecker.
+   Adjust the argument to sys.path.append to point to the distribution
+   directory.
+2. Edit the file linkchecker.bat.
+   a) Adjust the PYHTON variable to point to python.exe.
+   b) Adjust the LINKCHECKER variable to point to the distribution directory.
+3. Add the distribution directory to your PATH.
+4. Check links happily by typing `linkchecker.bat`.
+
+You need Python >= 1.5.2
+You get Python from http://www.python.org

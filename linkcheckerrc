@@ -1,0 +1,24 @@
+# sample resource file
+# see linkchecker -h for help on these options
+
+[output]
+#debug=1
+#log=colored
+#verbose=1
+#warnings=1
+#quiet=0
+
+[checking]
+#threads=15
+#anchors=1
+#externlinks=
+#internlinks=
+#allowdeny=1
+#password=calvin@
+#user=anonymous
+#recursionlevel=1
+#robotstxt=1
+#strict=1
+#proxy=
+#proxyport=8080
+

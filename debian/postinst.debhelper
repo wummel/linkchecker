@@ -1,0 +1,7 @@
+# Automatically added by dh_installdocs
+if [ "$1" = "configure" ]; then
+	if [ -d /usr/doc -a ! -e /usr/doc/pylice -a -d /usr/share/doc/pylice ]; then
+		ln -sf ../share/doc/pylice /usr/doc/pylice
+	fi
+fi
+# End automatically added section

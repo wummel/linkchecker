@@ -1,0 +1,107 @@
+pylice (0.9.0) unstable; urgency=low
+
+  * See ChangeLog
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Mon, 21 Feb 2000 16:26:22 +0100
+
+pylice (0.8.0) unstable; urgency=low
+
+  * See ChangeLog
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Thu, 10 Feb 2000 21:32:55 +0000
+
+pylice (0.7.0) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Thu, 27 Jan 2000 23:15:24 +0100
+
+pylice (0.6.2) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Wed, 26 Jan 2000 11:41:28 +0100
+
+pylice (0.6.1) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Tue, 25 Jan 2000 21:11:15 +0100
+
+pylice (0.6.0) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Wed, 19 Jan 2000 00:25:55 +0100
+
+pylice (0.5.0) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Tue, 18 Jan 2000 00:39:31 +0100
+
+pylice (0.4.4) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Mon, 17 Jan 2000 12:21:10 +0100
+
+pylice (0.4.3) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Fri, 14 Jan 2000 02:10:20 +0100
+
+pylice (0.4.2) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Thu, 13 Jan 2000 21:48:23 +0100
+
+pylice (0.4.1) unstable; urgency=low
+
+  * See CHANGES 
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Wed, 12 Jan 2000 13:34:42 +0100
+
+pylice (0.4.0) unstable; urgency=low
+
+  * See CHANGES 
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Tue, 11 Jan 2000 13:48:53 +0100
+
+pylice (0.3.0) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Tue, 11 Jan 2000 00:01:37 +0100
+
+pylice (0.2.1) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Mon, 10 Jan 2000 22:01:54 +0100
+
+pylice (0.2.0) unstable; urgency=low
+
+  * See CHANGES
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Mon, 10 Jan 2000 21:28:38 +0100
+
+pylice (0.1.0) unstable; urgency=low
+
+  * New release. Missing features: robots.txt exclusion standard,
+    proxy setting, user/password setting and
+    mailto:, telnet:, gopher: link checking
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Sun,  9 Jan 2000 14:32:15 +0100
+
+pylice (0.0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Bastian Kleineidam <calvin@cs.uni-sb.de>  Sat,  8 Jan 2000 11:00:35 +0100
+
+Local variables:
+mode: debian-changelog
+End:

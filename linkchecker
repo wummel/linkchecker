@@ -1,0 +1,247 @@
+#!/usr/bin/env python
+
+import getopt,sys,re,string
+
+if sys.version[:5] < "1.5.2":
+    print "This program requires Python 1.5.2 or later."
+    sys.exit(1)
+    
+# add the path to linkcheck module
+sys.path.insert(0, "/usr/share/linkchecker")
+
+import linkcheck
+
+Usage = """USAGE\tpylice [options] file_or_url...
+
+OPTIONS
+-a, --anchors
+	Check anchor references. Default is don't check anchors.
+-D, --debug
+	Print additional debugging information.
+-e regex, --extern=regex
+	Assume urls that match the given expression as extern.
+	Only intern HTTP links are checked recursively.
+-f file, --config=file
+	Use file as configuration file. Pylice first searches ~/.pylicerc
+	and then /etc/pylicerc (under Windows <path-to-program>\\pylicerc).
+-i regex, --intern=regex
+	Assume urls that match the given expression as intern.
+-h, --help
+	Help me! Print usage information for this program.
+-l, --allowdeny
+	Swap checking order to intern/extern. Default checking order 
+	is extern/intern.
+-o name, --output=name
+	Specify output as """+linkcheck.Config.LoggerKeys+""".
+	Default is text.
+-W name, --file-output=name
+	Same as output, but write to a file pylice-out.<name>.
+	If the file already exists, it is overwritten.
+	You can specify this option more than once. 
+	Default is no file output.
+-p pwd, --password=pwd
+	Try given password for HTML and FTP authorization.
+	Default is 'joe@'. See -u. 
+-P host[:port], --proxy=host[:port]
+	Use specified proxy for HTTP requests.
+	Standard port is 8080. Default is to use no proxy.
+-q, --quiet
+	Quiet operation. This is only useful with -W.
+-r depth, --recursion-level=depth
+	Check recursively all links up to given depth (depth >= 0).
+	Default depth is 1.
+-R, --robots-txt
+	Obey the robots exclusion standard.
+-s, --strict
+	Check only syntax of extern links, do not try to connect to them.
+-t num, --threads=num
+	Generate no more than num threads. Default number of threads is 5.
+	To disable threading specify a non-positive number.
+-u name, --user=name  
+	Try given username for HTML and FTP authorization. 
+	Default is 'anonymous'. See -p. 
+-V, --version
+	Print version and exit.
+-v, --verbose
+	Log all checked URLs (implies -w). Default is to log only invalid 
+	URLs.
+-w, --warnings
+	Log warnings.
+"""
+
+Notes = """NOTES
+o Pylice assumes an http:// resp. ftp:// link when a commandline URL
+  starts with "www." resp. "ftp.".
+  You can also give local files as arguments.
+o If you have your system configured to automatically establish a
+  connection to the internet (e.g. with diald), it will connect when
+  checking links not pointing to your local host.
+  Use the -s and -i options to prevent this (see EXAMPLES).
+o Javascript and https links are currently ignored
+o If your platform does not support threading, pylice assumes -t0
+"""
+
+Examples = """EXAMPLES
+o pylice -v -o html -r2 -s -i treasure.calvinsplayground.de \\
+    http://treasure.calvinsplayground.de/~calvin/ > sample.html
+  generates the included sample.html file
+o Local files and syntactic sugar on the command line:
+      pylice c:\\temp\\test.html
+      pylice ../bla.html
+      pylice www.myhomepage.de
+      pylice -r0 ftp.linux.org
+"""
+
+def printVersion():
+    print Config.AppInfo
+    sys.exit(0)
+  
+def printHelp():
+    print Usage
+    print Notes
+    print Examples
+    sys.exit(0)
+    
+def printUsage(msg):
+    sys.stderr.write("Error: "+str(msg)+"\nType pylice -h for help\n")
+    sys.exit(1)
+
+
+# Read command line arguments
+try:
+    # Note: cut out the name of the script
+    options, args = getopt.getopt(sys.argv[1:], "aDe:f:hi:lP:o:p:qr:Rst:u:VvwW:",
+    ["anchors",
+    "config=",
+    "debug", 
+    "extern=",
+    "file-output=",
+    "help",
+    "intern=",
+    "allowdeny",
+    "output=",
+    "proxy=",
+    "password=",
+    "quiet",
+    "recursion-level=",
+    "robots-txt",
+    "strict",
+    "threads=",
+    "user=",
+    "version",
+    "verbose",
+    "warnings"])
+except getopt.error:
+    type, value = sys.exc_info()[:2]
+    printUsage(value)
+
+# apply configuration
+config = linkcheck.Config.Configuration()
+try:
+    configfile = []
+    for opt,arg in options:
+        if opt=="-f" or opt=="--config":
+            configfile.append(arg)
+    config.read(configfile)
+except:
+    type, value = sys.exc_info()[:2]
+    printUsage(value)
+
+
+# apply options and arguments
+constructAuth = 0
+for opt,arg in options:
+    if opt=="-a" or opt=="--anchors":
+        config["anchors"] = 1
+
+    elif opt=="-D" or opt=="--debug":
+        linkcheck.Config.DebugFlag = 1
+    
+    elif opt=="-e" or opt=="--extern":
+        config["externlinks"].append(re.compile(arg))
+    
+    elif opt=="-h" or opt=="--help":
+        printHelp()
+    
+    elif opt=="-o" or opt=="--output":
+        if linkcheck.Config.Loggers.has_key(arg):
+            config["log"] = linkcheck.Config.Loggers[arg]()
+        else:
+            printUsage("Legal output arguments are "+linkcheck.Config.LoggerKeys+".")
+
+    elif opt=="-W" or opt=="--file-output":
+        if linkcheck.Config.Loggers.has_key(arg):
+            config["fileoutput"].append(linkcheck.Config.Loggers[arg](open("pylice-out."+arg, "w")))
+        else:
+            printUsage("Legal output arguments are "+linkcheck.Config.LoggerKeys+".")
+    
+    elif opt=="-i" or opt=="--intern":
+        config["internlinks"].append(re.compile(arg))
+    
+    elif opt=="-l" or opt=="--allowdeny":
+        config["allowdeny"] = 1
+    
+    elif opt=="-P" or opt=="--proxy":
+        proxy = re.compile("(.+):(.+)").match(arg)
+        if proxy:
+            config["proxy"] = proxy.group(1)
+            config["proxyport"] = int(proxy.group(2))
+        else:
+            config["proxy"] = arg
+    
+    elif opt=="-p" or opt=="--password":
+        config["password"]=arg
+        constructAuth=constructAuth+1
+        
+    elif opt=="-q" or opt=="--quiet":
+    	config["quiet"]=1
+    
+    elif opt=="-r" or opt=="--recursion-level":
+        if int(arg) >= 0:
+            config["recursionlevel"] = int(arg)
+        else:
+            printUsage("Illegal recursion-level number: "+arg)
+    
+    elif opt=="-R" or opt=="--robots-txt":
+        config["robotstxt"] = 1
+    
+    elif opt=="-s" or opt=="--strict":
+        config["strict"] = 1
+    
+    elif opt=="-t" or opt=="--threads":
+        num = int(arg)
+        if config["threads"]:
+            if num>0:
+                config.enableThreading(num)
+            else:
+                config.disableThreading()
+    
+    elif opt=="-u" or opt=="--user":
+        config["user"] = arg
+        constructAuth=constructAuth+1
+    
+    elif opt=="-V" or opt=="--version":
+        printVersion()
+
+    elif opt=="-v" or opt=="--verbose":
+        config["verbose"] = 1
+        config["warnings"] = 1
+    
+    elif opt=="-w" or opt=="--warnings":
+        config["warnings"] = 1
+
+if constructAuth and constructAuth!=2:
+    sys.stderr.write("Warning: try to give me both Username and Password\n")
+
+if len(args)==0:
+    printUsage("no files or urls given")
+
+for url in args:
+    if not (":" in url):
+        if re.compile("^ftp\.").match(url):
+            url = "ftp://"+url
+        elif re.compile("^www\.").match(url):
+            url = "http://"+url
+    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
+
+linkcheck.checkUrls(config)

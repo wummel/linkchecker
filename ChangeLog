@@ -1,0 +1,148 @@
+25.2.2000
+	* changed the name to LinkChecker. My old Java LinkChecker will 
+	  disappear because I do not maintain it anymore.
+
+21.2.2000
+	* add -q, --quiet option
+	* convert all url host to lowercase
+	* log the download time for urls
+
+20.2.2000
+	* add Graph Modelling Language (GML) output for sitemaps
+	* add SQL output
+
+19.2.2000
+	* second try with HTTP/1.1: additionally close response
+	* remove deprecated options
+	* new option -W, --file-output
+	* fix typo for --password option
+
+18.2.2000
+	* add "-" to mail adress syntax (Baz <B.Rowlingson@lancaster.ac.uk>)
+	* fix typo in pylice (David J. MacKenzie <djm@web.us.uu.net>)
+
+10.2.2000 Version 0.8.0
+	* clean the CVS dir
+	* fixes for configuration
+	* first version of configuration parsing
+
+9.2.2000
+	* do not pass anchor in HTTP requests
+	* fixes for configuration parsing
+
+8.2.2000
+	* fixed bad finished_NoThreads function
+	* backed out HTTP/1.1 support. This library is buggy and
+	  does not close some filehandles. Eventually you will get
+	  a "Too many open files" error
+	* strip whitespace from parsed urls
+
+6.2.2000
+	* fixed some bugs, the test suite is running again
+
+5.2.2000
+	* made "LinkChecker" module
+	* configuration is dynamic; no more class variables
+	* print line number
+	* more agressive closing of filehandles
+
+27.1.2000 Version 0.7.0
+	* put pylicerc in /etc for .deb package
+	* HTTP/1.1 support with httplib.py from Greg Stein
+	* DNS MX lookup for mail adresses
+	  use the DNS module from Guido van Rossum and Anthony Baxter
+	  MX lookup was a suggestion to LinkChecker from
+	  Jimmy Engelbrecht <jimmy@e.kth.se>
+
+26.1.2000 Version 0.6.2
+	* refined HTML link syntax to handle non-quoted URLs
+	* fix: set urlTuple to None if we cannot check anchors
+	* fixed anchor checking again
+
+25.1.2000 Version 0.6.1
+	* fixed the HTML link syntax
+
+24.1.2000
+	* fix: -e option did not work properly
+	* fix: reenabled LinkChecker Online, updated to 0.6.0
+
+21.1.2000 Version 0.6.0
+	* fix: add hostname for relative redirections
+	* Added TODO list
+
+20.1.2000
+	* Added documentation for the LinkChecker class
+
+19.1.2000
+	* HTTP Proxy support
+	* CGI logging
+
+18.1.2000 Version 0.5.0
+	* anchor checking in local HTML files
+	* configuration file
+	* HTTP Authorization support
+	* Send HTTP HEAD method to check and GET method to get contents
+	* Still missing: Proxy support (including HTTP status code 305)
+
+17.1.2000
+	* cut parameter, query and fragment of local file names
+	* limit number of redirections to 5
+
+14.1.2000 Version 0.4.3
+	* pylice.bat fix: now it really works
+	* fix for local Windows file arguments
+
+14.1.2000 Version 0.4.2
+	* StringUtil.indentWith: use string multiplying
+	* Still missing: HTTP authorization and Proxy support
+	* pylice.bat fix: pass parameters
+
+13.1.2000 Version 0.4.1
+	* Windows python.bat script
+	* installation updates
+	* additional .zip package for Windows
+
+12.1.2000 Version 0.4.0
+	* fixed LinkChecker.NumThreads setting: if the platform
+	  does not support threading, it is disabled automagically
+	* robots.txt parsing
+	* split up UrlData.py
+	* simplified option parsing
+	* strip optional quotes from urls
+	* use quit() not close() to disconnect from FTP servers
+
+11.1.2000 Version 0.3.0
+	* try to finger for mailto: links
+	* try to connect for telnet: links
+	* removed time.sleep(1) commands, they are not necessary
+	* restrict CGI to recursion level 3
+	* make UrlCache and RobotsTxtCache thread safe
+	* fixed the 'No more open files' bug by closing all connections
+	* fixed thread synchronization in LinkChecker while loop
+	* you can specify -t 0 on the commandline to disable threading
+	* STILL MISSING: 
+	  HTTP authorization, Proxy and robots.txt parsing
+
+10.1.2000 Version 0.2.0
+	* configure option to disable threading: LinkChecker.threadsupport
+	* do not rely on self.mime in HttpUrlData, this could be None
+	* flush stdout after each log entry
+	* use LinkChecker.User and LinkChecker.Password in FTP connections
+	* make sure redirection is not cyclic
+
+9.1.2000 Version 0.1.0
+	* HTTP request
+	* FTP request
+	* fixed MaxRecursionLevel setting
+	* fixed name clash of variable and function warning
+	* ColoredLogger
+	* small doc changes
+	* CGI and HTML files for LinkChecker Online,
+	  but I still have to install Python on my http server
+	  (will try this tomorrow)
+
+8.1.2000
+	* Properties, Threader, LinkChecker, UrlData, Logging
+
+7.1.2000 Version 0.0.1
+	* Option processing

@@ -1,0 +1,45 @@
+# a GML parser
+# Here is the GML grammar
+# corrected from me because the original at
+# http://www.uni-passau.de/Graphlet/GML had some errors
+#
+# corrections are
+# (1) use instring* in string
+# (2) add character,lowercase,uppercase definitions
+# (3) skip whitespace definition, this is obvious
+# (4) use digit+ in mantissa
+# (5) either intpart or fraction of a real must contain a number
+# (6) comments can be on a separate or at the end of the line
+#
+# gml:        list
+# list:       (whitespace* key whitespace+ value)*
+# value:      integer | real | string | "[" list "]"
+# key:        character (character | digit)*
+# integer:    sign digit+
+# real:       sign (digit+ "." digit* | digit* "." digit+) mantissa
+# string:     """ instring* """
+# sign:       "+" | "-" |
+# digit:      "0"..."9"
+# character:  lowercase | uppercase
+# lowercase:  "a"..."z"
+# uppercase:  "A"..."Z"
+# mantissa:   ("E"|"e") sign digit+ |
+# instring:   <ASCII except "&" and """> | "&" character+ ";"
+#
+# Note that integers and reals can have prefixed zeros, e.g. 001 is 1
+
+_class GMLParser  
+_code import GMLLexer
+_lex GMLLexer.GMLLexer()
+
+# manually reduced
+"""
+list:  list KEY value (key_value) | 
+       (endoflist) ;
+value: INTEGER | 
+       REAL | 
+       STRING | 
+       LSQB list RSQB (beginlist) ;
+"""
+
+

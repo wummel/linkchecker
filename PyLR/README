@@ -1,0 +1,44 @@
+You must have python 1.5b1 or newer to run PyLR, as it works with the
+builtin package support of that version.
+
+To build:
+
+1) decide whether you want the PyLRengine module to be a shared library.  
+If not, comment out the '*shared*' line  in Setup.
+
+2)type make -f Makefile boot; make
+
+that should build the package. 
+
+
+To install:
+
+If you want to install PyLR in your python distribution, just copy
+over the PyLR directory to your site-packages directory.  If you want
+to save a little space, take a look at the __init__ file doc string in
+the top directory and it shows the necessary files (distribution minus
+Makefile, sedscript, etc).  Also, there is a script (pgen.py) you may want
+in /usr/local/bin or something more accessible as executable from your shell.
+
+There is html documentation in the doc/ directory.
+
+
+
+To test:
+
+pgen.py PyLR/tstpspec tst
+diff tst PyLR/Parsers/gram.py
+
+the only difference should be the date line.
+
+
+Feedback:
+
+send comments/suggestions/bugreports/contributions to
+scott@chronis.icgroup.com
+
+
+
+thanks,
+
+scott

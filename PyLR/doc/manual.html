@@ -1,0 +1,313 @@
+<html>
+<title> PyLR maual </title>
+<!-- Changed by: Scott, 12-Dec-1997 -->
+<body bgcolor="#ffffff">
+
+  <CENTER>
+<h2>PyLR Manual</h2>
+  </CENTER>
+
+This is the PyLR parser generator manual.  PyLR is a parser generator package for
+use with python (version 1.5b1 or better).  This manual addresses how to use the 
+package to produce parsers.  
+<p>
+  <UL>
+    <LI> <A HREF="#Audience">Intended Audience</A> </LI>
+
+    <LI> <A HREF="#Basics">The Basics</A> </LI>
+    <UL>
+      <LI> <A HREF="#Lexer">Writing a Lexer</A> </LI>
+
+      <LI> <A HREF="#Grammar">Writing a Grammar</A> </LI>
+
+      <LI> <A HREF="#Parser">Putting it together, producing the parser</A> </LI>
+    </UL>
+
+    <LI> <A HREF="#Struct">PyLR Structure Overview</A> </LI>
+
+    <LI> <A HREF="#API">Programming with the Classes</A> </LI>
+  </UL>
+
+  <HR>
+<p>
+<p>
+  <A NAME="Audience"> <center> <h3> Audience </h3></center></A>
+Parsing can be very complicated stuff, and it helps to understand what exactly is
+happening when something is parsed when writing a parser.  Unfortunately (for the impatient), 
+the topic of Parsing has been the subject of many a dissertation.  This document will present 
+two views on the data it presents.  One is a technical view which will contain terms <EM>without 
+defining them</EM>.  These terms are generally understood by those who have studied parsing theory
+(such as LALR, shift-reduce, etc), and probably not understood by those that haven't.  For this 
+reason, I have attempted to include an intuitive view whenever possible, particularly in the
+section <A HREF="#Basics">The Basics</A>.  There should be enough in that section to let anyone 
+interested who is interested and familiar with python write a parser.
+<HR><p>
+<A NAME="Basics"><center><h3>The Basics</h3></center></A> <br>
+
+This section refers to writing lexers, Grammars, and then producing a parser with
+these parts.  In PyLR, a lexer is part of a parser.  This simplifies the interface to 
+actually doing the parsing.  There is an 'engine' which takes the output of the lexer and triggers
+the back end of parsing.  So we'll start with writing a lexer.
+<UL>
+  <LI> 
+<A NAME="Lexer"><h4>Writing a Lexer</h4></A><br>
+When some text is to be parsed, it first has to go through lexical analysis.  This
+process is done with a lexer.  PyLR provides a base Lexer class to help write a lexer. 
+The process isn't hard.  A lexer just returns the atomic parts of the text.  You define what is
+atomic by using regular expressions to match the atomic parts.  Each atomic definition 
+you give is automatically given a token value (an int).  When the lexer scans text, it returns 
+a stream of <TT>(token, value)</TT> pairs where the the token is the token value that was assigned 
+to the match definition and the the value is an arbitrary python value (class, string, int, whatever).
+The <TT>(token, value)</TT> pair is then passed to the parser for further processing.
+<p>
+
+
+  Frequently, lexers will return the matched text as the
+<TT>value</TT> in the <TT>(token, value)</TT> pair.  This is the
+default when you subclass the provided Lexer class.  However, there
+are a lot of different things you may want to happen upon finding a
+match.  For example, sometimes you will want to match something but
+not use the match or pass it on to the parser. 
+<p>
+
+ There is a function in the base class that
+provides for all these and more options. It is the <br>
+<TT>.addmatch(compiled_regex, tokenname="", function=None,
+flags=MAPTOK|EXECFN)</TT> <br> method.  This method requires only a regular
+expression as its argument, but in practice, token names should be passed along with
+the re.  This practice will make your grammar more readable and easier
+to write later. <br> The <TT>function</TT> argument, if specified, will make the
+lexer execute that function with the resulting match object as it's
+one and only argument.  The lexer will then return the return value of
+the function as the <TT>value</TT> in the <TT>(token, value)</TT> pair
+it returns. By default, the lexer will just return the token and the associated
+matched text.
+<br>
+ The <TT>flags</TT> argument not only defaults to the reasonable MAPTOK|EXECFN, but also adopts to
+the values of the other arguments you pass.  This way, you dont' have to bother with them much.  The one
+time it's common to use the flags is when you want the lexer to match something but not return anything until
+the next match.  It is common to have whitespace treated in this fashion.  For this option, you use
+<TT>.addmatch(re.compile(r"\s+"), "", None, Lexer.SKIPTOK)</TT>.  The example below utilizes all these
+options.
+<p>
+  Finally, please note the call of the <TT>.seteof()</TT> function at the end of the <TT>__init__</TT>
+method.  This is necessary for all subclassed lexers.  The reason it is there is that the token value
+of EOF is expected to be one greater than any other token value by the parser.  <EM>Your lexer will not
+work with the parser api without this call.</EM>
+<p>
+Example
+<pre>
+from PyLR import Lexer
+import re, string
+
+#
+# this function will handle matches to an integer.  It passes the
+# integer value to the parser and does the conversion here.
+#
+def intfunc(m):
+    return string.atoi(m.group(0))
+
+
+class mathlex(Lexer.Lexer):
+
+    #
+    # define the atomic parts with regular expressions
+    # 
+
+    INT = re.compile(r"([1-9]([0-9]+)?)|0")  # matches an integer
+    LPAREN = re.compile(r"\(")              # matches '('
+    RPAREN = re.compile(r"\)")              # matches ')' 
+    
+    TIMES = re.compile(r"\*")               # matches '*'
+    PLUS = re.compile(r"\+")                # matches '+'
+    WS = re.compile(r"\s+")                 # matches whitespace
+
+
+    def __init__(self):
+        #
+        # initialize with the base class
+ 	#
+	Lexer.Lexer.__init__(self)
+	#
+	# addmatch examples
+	#
+	self.addmatch(self.INT, idfunc, "INT")
+	for p,t in ( (self.PLUS, "PLUS"), (self.TIMES,"TIMES"),
+		     (self.LPAREN, "LPAREN"), (self.RPAREN, "RPAREN"),):
+	    self.addmatch(p, None, t)
+	self.addmatch(self.ws, None, "", Lexer.SKIPTOK)
+	self.seteof()
+
+
+# create the lexer
+lexer = mathlex()
+# test it with the interactivetest method
+lexer.interactivetest()
+</pre>
+
+ </LI>
+<hr>
+  <LI> <A NAME="Grammar"><h4>Writing a Grammar</h4></A><br>
+The grammar you write is somewhat easier than the lexer.  You don't have
+to code anything.  There is a program in the PyLR distribution called <TT>pgen.py</TT> 
+that will take your Grammar specification and produce a parser for you. The parser that is 
+produced is of the shift-reduce variety of LR parsers and uses LALR(1) items to help produce
+the parsing tables.  In other words, it uses a parsing algorithm that is quite efficient (implemented
+in C) and will handle most modern day programming language constructs without a problem.  These 
+qualities have made this parsing algorithm a very commonly used one in compiler construction since 
+October 1982.
+<p>
+  When you write a grammar, you are specifying a <EM>context free grammar</EM> in normal form,
+with a few addons to help generate the parser in Python.  In other words, you specify a series 
+of productions.  For example, to specify a very simple math grammar that will work with the
+above lexer, you may state something like this:
+
+<pre>
+expression: expression PLUS term 
+     |      term;
+
+term: term TIMES factor 
+  |   factor;
+
+factor: LPAREN expression RPAREN 
+   |    INT;
+</pre>
+
+The identifiers in all uppercase are conventionally <EM>terminal symbols</EM>.  
+These will be identified by the lexer and returned to the parser.  The identifiers 
+in all lowercase are the <EM>nonterminal symbols</EM>. Each nonterminal must appear 
+on the left somewhere.  The corresponding right side may have terminals or non terminals. 
+You may not have empty (epsilon) right hand sides (yet).
+<p>
+Whenever the parser recognizes a production, it will call a function.  You may specify 
+the name of the method of the parser class to be invoked for a production by adding 
+a parenthesized name to the right of the production.  The above grammar rewritten with 
+method name specifications looks like this (This part will become more clear after the next step,
+stay with it!).
+
+<pre>
+expression: expression PLUS term (addfunc)
+     |      term;
+
+term: term TIMES factor (timesfunc)
+  |   factor;
+
+factor: LPAREN expression RPAREN (parenfunc)
+   |    INT;
+</pre>
+
+ </LI>
+
+  <LI> <A NAME="Parser"><h4>Putting it all together: making the parser</h4></A><br>
+    When you create a parser, you are creating a class that is intended to act like
+a class in library code.  That is, it will mostly be used by subclassing that class.
+The parser you create will parse what it was intended to, but it won't do anything
+with the parse tree unless you subclass it and define some special methods.
+<p>
+Those methods must have the name specified in the grammar you wrote.  For example, if you
+built a parser for the above grammar, in order for it to actually add things together,
+you would have to subclass the class that was produced and then define the methods
+<TT>addfunc</TT>, <TT>timesfunc</TT>, and <TT>parenfunc</TT>.  When each of these methods is called
+it will be passed the values on the right hand side of the corresponding production as arguments.
+Those values are either the value returned by the lexer, if the symbol is terminal, or
+a value returned by one of these special methods, if the symbol is a nonterminal.
+<p>
+In the above example, since the rest of the productions only have one item, it doesn't really matter
+whether or not they have methods, the parser just calls a reasonable default.
+<p>
+As you can see, we've defined most of what is necessary for building a parser.  But the above should tell 
+you that there are a few other things that you may want to define, like the name of the class that
+is produced, or what lexer is used with the parser.  Describing these things along with a grammar like
+the example above is writing a parser specification for PyLR.  A reasonable parser specification for the 
+example we've been following:
+<pre>
+_class SimpleMathParser
+_lex mathlex.mathlex()
+_code from PyLR.Lexers import mathlex
+"""
+expression: expression PLUS term (addfunc)
+     |      term;
+
+term: term TIMES factor (timesfunc)
+  |   factor;
+
+factor: LPAREN expression RPAREN (parenfunc)
+   |    INT;
+"""
+</pre>
+the <TT>_class </TT> keyword defines the name of the class that the parser will take
+the <TT>_lex</TT> keyword defines the code used to intialize that parser's lexer
+the <TT>_code</TT> keyword defines extra code at the top of the output file.  Multiple
+instances of this keyword will cause the extra source code (in python) to be accumulated.
+the triple quotes delimit the grammar section.
+<p><em>
+Please note, the above syntax is subject to change as this is an alpha release and I feel
+that it can be improved upon.</em>
+<p>
+  now you can create a parser.  Just use the <TT>pgen.py</TT> script and it will output
+your source code:
+<pre>
+pgen.py mathparserspec tst.py
+chronis 3:34am $ python
+Python 1.5b1 (#1, Nov 27 1997, 19:51:47)  [GCC 2.7.2] on linux2
+Copyright 1991-1995 Stichting Mathematisch Centrum, Amsterdam
+>>> import tst
+>>> dir(tst)
+['PyLR', 'SimpleMathParser', '__builtins__', '__doc__', '__file__', '__name__', '_actiontable', '_gototable', '_prodinfo', 'mathlex']
+>>> print tst.SimpleMathParser.__doc__
+
+    this class was produced automatically by the PyLR parser generator.
+    It is meant to be subclassed to produce a parser for the grammar
+
+expression -> expression PLUS term           (addfunc)
+        | term;                              (unspecified)
+term -> term TIMES factor                    (timesfunc)
+        | factor;                            (unspecified)
+factor -> LPAREN expression RPAREN           (parenfunc)
+        | INT;                               (unspecified)
+
+    While parsing input, if one of the above productions is recognized,
+    a method of your sub-class (whose name is indicated in parens to the 
+    right) will be invoked. Names marked 'unspecified' will not me invoked. 
+    
+    usage: 
+
+class MySimpleMathParser(SimpleMathParser):
+    # ...define the methods for the productions... 
+
+p = MySimpleMathParser(); p.parse(text)
+    
+>>> class MP(tst.SimpleMathParser):
+...     def __init__(self):
+...             tst.SimpleMathParser.__init__(self)
+...     def addfunc(self, left, plus, right):
+...             print "%d + %d" % (left, right)
+...             return left + right
+...     def parenfunc(self, lp, expr, rp):
+...             print "handling parens"
+...             return expr
+...     def timesfunc(self, left, times, right):
+...             print "%d * %d" % (left, right)
+...             return left * right
+... 
+>>> mp = mathparser()
+>>> mp.parse("4 * (3 + 2 * 5)")
+2 * 5
+3 + 10
+handling parens
+4 * 13
+
+
+</pre>
+
+ </LI>
+</UL>
+
+
+<A NAME="Struct"><center><h3>Structure</h3></center></A>
+Nothing yet, sorry it's an alpha, read the source.
+
+<A NAME="API"><center><h3>API</h3></center></A>
+Nothing yet, sorry it's an alpha.  Read the source.
+
+</html>

@@ -1,0 +1,10 @@
+Use leading '_' for private functions.
+
+Is there a way to cleanly stop arbitrary Thread objects 
+(with exit handler)? Mail me solutions!
+
+Patch the PyLR parser module to suit my needs.
+
+Write a graph layout algorithm.
+
+Write a little tool to produce an image of the GML output.

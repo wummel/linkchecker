@@ -1,0 +1,51 @@
+#
+# this is a Grammar Spec for parsing PyLR style
+# Grammars
+#
+
+#
+# this is the pydefs section, where you name the output class
+# , add code, state how to initialize the lexer
+#
+_class GrammarParser
+_code import PyLR.Lexers
+_code import PyLR.Parser
+_lex PyLR.Lexers.GrammarLex()
+
+#
+# this is the Grammar spec part, where you specify
+# the productions and optionally their corresponding 
+# method names in the generated Parser class (or subclasses
+# of it)
+#
+"""
+pspec: gspec |
+      pydefs gspec;
+
+gspec:  GDEL lhsdeflist GDEL;
+
+pydefs:  pydefs pydef |
+         pydef;
+
+pydef: LEX (lexdef) |
+       CODE (addcode) |
+       CLASS (classname);
+
+lhsdeflist:  lhsdeflist lhsdef |
+            lhsdef;
+
+lhsdef:  ID COLON rhslist SCOLON (lhsdef);
+
+rhslist: rhs (singletolist) |
+         rhslist OR rhs (rhslist_OR_rhs);
+
+rhs:    rhsidlist (rhs_idlist) |   
+        rhsidlist LPAREN ID RPAREN (rhs_idlist_func);
+
+rhsidlist: idlist 
+	|  (rhseps);
+
+
+idlist: idlist ID (idl_idlistID) |
+          ID (idlistID);
+"""
