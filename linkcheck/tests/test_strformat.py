@@ -48,11 +48,14 @@ class TestStrFormat (unittest.TestCase):
         # testing width <= 0
         self.assertEquals(linkcheck.strformat.wrap(s, -1), s)
         self.assertEquals(linkcheck.strformat.wrap(s, 0), s)
-        s2 = "11 22%(sep)s33 44%(sep)s55" % {'sep': os.linesep}
+        l = len(os.linesep)
+        gap = " "*l
+        s2 = "11%(gap)s22%(sep)s33%(gap)s44%(sep)s55" % \
+             {'sep': os.linesep, 'gap': gap}
         # splitting lines
         self.assertEquals(linkcheck.strformat.wrap(s2, 2), s)
         # combining lines
-        self.assertEquals(linkcheck.strformat.wrap(s, 5), s2)
+        self.assertEquals(linkcheck.strformat.wrap(s, 4+l), s2)
 
     def test_remove_markup (self):
         """test markup removing"""
