@@ -1,7 +1,5 @@
 # -*- coding: iso-8859-1 -*-
 """
- $Id$
-
  This file is part of the pydns project.
  Homepage: http://pydns.sourceforge.net
 
