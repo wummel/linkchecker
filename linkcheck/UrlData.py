@@ -361,7 +361,7 @@ class UrlData (object):
             debug(HURT_ME_PLENTY, "exception", traceback.format_tb(etb))
             # make nicer error msg for unknown hosts
             if isinstance(evalue, socket.error) and evalue[0]==-2:
-                evalue = i18n._('Host not found')
+                evalue = i18n._('Hostname not found')
             self.setError(str(evalue))
 
         # check content
