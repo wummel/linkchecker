@@ -1,5 +1,12 @@
 Possible improvements people could work on:
 
+- [FEATURE] have an option (e.g. --no-proxy),
+  that lets linkchecker ignore all proxy settings in the
+  environment. And it would be nice when there where an
+  environment variable (e.g. $NO_PROXY) that holds a
+  comma-separated list of hosts, that should be contacted
+  directly and not over a proxy.
+
 - [USAGE] rethink intern/extern stuff
 
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
