@@ -272,7 +272,7 @@ class UrlData (object):
         self.userinfo, host = splituser(self.urlparts[1])
         x, port = splitport(host)
         if port is not None and not is_valid_port(port):
-            raise LinkCheckerError(i18n._("URL has invalid port number %s")\
+            raise LinkCheckerError(i18n._("URL has invalid port number %r")\
                                   % str(port))
         # set host lowercase and without userinfo
         self.urlparts[1] = host.lower()
@@ -368,7 +368,8 @@ class UrlData (object):
         warningregex = self.config["warningregex"]
         if warningregex and self.valid:
             debug(BRING_IT_ON, "checking content")
-            try:  self.checkContent(warningregex)
+            try:
+                self.checkContent(warningregex)
             except tuple(ExcList):
                 value, tb = sys.exc_info()[1:]
                 debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
