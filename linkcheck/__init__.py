@@ -21,6 +21,7 @@ class error (Exception):
 import re
 def getLinkPat (arg, strict=0):
     """get a link pattern matcher for intern/extern links"""
+    debug(BRING_IT_ON, "Link pattern", `arg`)
     if arg[0:1] == '!':
         pattern = arg[1:]
         negate = 1
