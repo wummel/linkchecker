@@ -49,6 +49,5 @@ typedef struct {
     /* error string */
     char* error;
 } UserData;
-extern char* stpcpy(char* src, const char* dest);
 
 #endif
