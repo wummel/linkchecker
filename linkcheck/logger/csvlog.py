@@ -84,7 +84,7 @@ class CSVLogger (linkcheck.logger.Logger):
                url_data.result,
                os.linesep.join(url_data.warning),
                os.linesep.join(url_data.info),
-               url_data.valid, url_data.url,
+               url_data.valid, url_data.url or "",
                url_data.line, url_data.column,
                url_data.name, url_data.dltime,
                url_data.dlsize, url_data.checktime,
