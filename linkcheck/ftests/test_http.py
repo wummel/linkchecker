@@ -19,6 +19,8 @@ Test http checking.
 """
 
 import unittest
+import os
+import re
 
 import linkcheck.ftests.httptest
 
@@ -47,6 +49,22 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
                 u"error",
             ]
             self.direct(url, resultlines, recursionlevel=0)
+            # test setting proxy and no-proxy-for
+            os.environ["http_proxy"] = "http://imadoofus:8877"
+            confargs = {"noproxyfor": [re.compile("localhost")]}
+            url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
+                  self.port
+            nurl = url
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % nurl,
+                u"real url %s" % nurl,
+                u"info Ignoring proxy setting 'imadoofus:8877'",
+                u"valid",
+            ]
+            self.direct(url, resultlines, recursionlevel=0,
+                        confargs=confargs)
+            del os.environ["http_proxy"]
         finally:
             self.stop_server()
 
