@@ -137,14 +137,16 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         """
         # set the proxy, so a 407 status after this is an error
         self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
+        # initialize check data
         self.headers = None
         self.auth = None
         self.cookies = []
+        # check robots.txt
         if not self.allows_robots(self.url):
             self.add_warning(
                        _("Access denied by robots.txt, checked only syntax."))
             return
-
+        # check for amazon server quirk
         if _is_amazon(self.urlparts[1]):
             self.add_warning(_("Amazon servers block HTTP HEAD requests, "
                                "using GET instead."))
@@ -152,6 +154,17 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         else:
             # first try with HEAD
             self.method = "HEAD"
+        # check the http connection
+        response, fallback_GET = self.check_http_connection()
+        # check url warnings
+        effectiveurl = urlparse.urlunsplit(self.urlparts)
+        if self.url != effectiveurl:
+            self.add_warning(_("Effective URL %s.") % effectiveurl)
+            self.url = effectiveurl
+        # check response
+        self.check_response(response, fallback_GET)
+
+    def check_http_connection (self):
         # flag if second try should be done with GET
         fallback_GET = False
         while True:
@@ -165,7 +178,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     fallback_GET = True
                     continue
                 raise
-            self.headers = response.msg
             if response.reason:
                 response.reason = \
                         linkcheck.strformat.unicode_safe(response.reason)
@@ -185,7 +197,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                          valid=False)
                     return
                 response = self._get_http_response()
-                self.headers = response.msg
                 # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
             try:
@@ -247,13 +258,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     self.method = "GET"
                     continue
             break
-        # check url warnings
-        effectiveurl = urlparse.urlunsplit(self.urlparts)
-        if self.url != effectiveurl:
-            self.add_warning(_("Effective URL %s.") % effectiveurl)
-            self.url = effectiveurl
-        # check response
-        self.check_response(response, fallback_GET)
+        return response, fallback_GET
 
     def follow_redirections (self, response):
         """
@@ -336,7 +341,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                 return -1, response
             # new response data
             response = self._get_http_response()
-            self.headers = response.msg
             tries += 1
         return tries, response
 
@@ -384,8 +388,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
 
     def _get_http_response (self):
         """
-        Put request and return (status code, status text, mime object).
-        Host can be host:port format.
+        Send HTTP request and get response object.
         """
         if self.proxy:
             host = self.proxy
@@ -434,6 +437,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         response = self.url_connection.getresponse()
         self.persistent = headers.http_persistent(response)
         self.timeout = headers.http_timeout(response)
+        self.headers = response.msg
         return response
 
     def get_http_object (self, host, scheme):
