@@ -222,7 +222,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """write url_data.result"""
         if url_data.valid:
             self.fd.write("<tr><td bgcolor=\""+self.colorok+"\">"+
-              self.field("result")+"</td>"+self.colorok+
+              self.field("result")+"</td><td bgcolor=\""+self.colorok+"\">"+
               cgi.escape(url_data.result)+"</td></tr>"+os.linesep)
         else:
             self.errors += 1
