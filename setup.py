@@ -63,7 +63,7 @@ class LCDistribution(Distribution):
         if sys.platform=='win32':
             t = Template("linkchecker.bat.tmpl")
             f = open("linkchecker.bat","w")
-            f.write(t.fill_in({"path_to_linkchecker": inst.install_scripts}))
+            f.write(t.fill_in({"install_scripts": inst.install_scripts}))
             f.close()
             self.scripts.append('linkchecker.bat')
 
@@ -94,5 +94,7 @@ o internationalization support (currently english and german)
        distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],
        scripts = ['linkchecker'],
-       data = ['locale/de/LC_MESSAGES/linkcheck.po'],
+       data = ['locale/de/LC_MESSAGES/linkcheck.mo',
+               'locale/de/LC_MESSAGES/linkcheck.po',
+              ],
 )

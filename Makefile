@@ -13,13 +13,15 @@ TAR = tar
 ZIP = zip
 
 all:
-	@echo "run ./setup.py --help to see how to install"
+	@echo "run python setup.py --help to see how to install"
 
 clean:
 	./setup.py clean --all
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 dist:
+	# german translation
+	msgfmt -o locale/de/LC_MESSAGES/linkcheck.mo locale/de/LC_MESSAGES/linkcheck.po
 	./setup.py sdist
 	fakeroot debian/rules binary
         

@@ -32,9 +32,6 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	# Add here commands to install the package into debian/tmp.
-	# german translation
-	msgfmt -o locale/de/LC_MESSAGES/linkcheck.mo locale/de/LC_MESSAGES/linkcheck.po
 	# ha! the root option finally made it into distutils
 	./setup.py install --root=`pwd`/debian/tmp
 	install -c -m 644 linkcheckerrc debian/tmp/etc/

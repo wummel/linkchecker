@@ -2,7 +2,9 @@
                      =============
 
 With LinkChecker you can check your HTML documents for broken links.
-Features:
+
+Features
+--------
 o recursive checking
 o multithreaded
 o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap 
@@ -16,6 +18,9 @@ o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support 
 o internationalization support (currently english and german)
 
+
+License
+--------
 LinkChecker is licensed under the GNU Public License.
 Credits go to Guido van Rossum for making Python. His hovercraft is
 full of eels!
@@ -25,7 +30,9 @@ robots.txt parse algorithm.
 I want to thank everybody who gave me feedback, bug reports and
 suggestions.
 
-Versioning:
+
+Versioning
+----------
 Version numbers have the same meaning as Linux Kernel version numbers.
 The first number is the major package version. The second number is
 the minor package version. An odd second number stands for development
@@ -33,11 +40,14 @@ versions, an even number for stable version. The third number is a
 package release sequence number.
 So for example 1.1.5 is the fifth release of the 1.1 development package.
 
-Included packages:
+
+Included packages
+-----------------
 httplib from http://www.lyra.org/greg/python/
 httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
 DNS see DNS/README
 fcgi.py and sz_fcgi.py from http://saarland.sz-sb.de/~ajung/sz_fcgi/
+fintl.py from http://sourceforge.net/snippet/detail.php?type=snippet&id=100059
 
 Note that the following packages are modified by me:
 httplib.py (renamed to http11lib.py and a bug fixed)
@@ -45,7 +55,15 @@ fcgi.py (implemented immediate output)
 sz_fcgi.py (simplified the code)
 
 
-The big picture (if you want to hack on the code):
+Internationalization
+--------------------
+For german output execute "export LC_MESSAGES=de" in bash and
+"setenv LC_MESSAGES de" in tcsh.
+Under Windows, execute "set LC_MESSAGES=de".
+
+Code design
+-----------
+Only if you want to hack on the code.
 
 (1) Look at the linkchecker script. This thing just reads all the
 commandline options and stores them in a Config object.

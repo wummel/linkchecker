@@ -21,13 +21,13 @@ Debian users can build the .deb package with "debian/rules binary".
 Install without Distutils:
 Adjust the sys.path.append argument in the file 'linkchecker' to point 
 to the distribution directory.
-Unix users copy now the 'linkchecker' file to a directory in their $path.
-For Windows users, I included a batch script 'linkchecker.bat'. You have to
-adjust the directory in this script to point to the directory
-where the 'linkchecker' file is. Now you can copy 'linkchecker.bat' in
-a directory in your PATH.
+Copy 'linkcheck/__init__.py.tmpl' to 'linkcheck/__init__.py' and 
+replace $install_data with the distribution directory.
+Windows users copy 'linkchecker.bat.tmpl' to 'linkchecker.bat' and
+replace $install_scripts with the distribution directory.
+After all, put the distribution directory in your path.
 
-Running LinkChecker from any directory:
+Running LinkChecker:
 Type "linkchecker" followed by your URLs you want to check.
-Type "linkchecker -h" for help on the commandline syntax.
+Type "linkchecker -h" for help.
 
