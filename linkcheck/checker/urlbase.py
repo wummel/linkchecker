@@ -306,10 +306,12 @@ class UrlBase (object):
 
         self.checktime = time.time() - t
         # check recursion
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking recursion")
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking recursion...")
         try:
             if self.allows_recursion():
                 self.parse_url()
+            else:
+                linkcheck.log.debug(linkcheck.LOG_CHECK, "...no recursion")
             # check content size
             self.check_size()
         except tuple(linkcheck.checker.ExcList):
@@ -360,6 +362,11 @@ class UrlBase (object):
     def allows_recursion (self):
         """return True iff we can recurse into the url's content"""
         # note: test self.valid before self.is_parseable()
+        #linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
+        #                    "content=%s, cached=%s, robots=%s",
+        #                    self.valid, self.is_parseable(),
+        #                    self.can_get_content(), self.is_cached(),
+        #                    self.content_allows_robots())
         return self.valid and \
             self.is_parseable() and \
             self.can_get_content() and \
