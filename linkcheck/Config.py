@@ -290,10 +290,10 @@ class Configuration(UserDict.UserDict):
                 timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
-                self.debug("NNTP: "+value+"\n")
+                debug("NNTP: "+value+"\n")
                 if re.compile("^505").search(str(value)):
                     import whrandom
-                    time.sleep(whrandom.randint(30,60))
+                    time.sleep(whrandom.randint(10,20))
                 else:
                     raise
 
@@ -301,7 +301,7 @@ class Configuration(UserDict.UserDict):
         return not self.urls.empty()
 
     def finished_Threads(self):
-        time.sleep(0.3)
+        time.sleep(0.1)
         self.threader.reduceThreads()
         return not self.hasMoreUrls() and self.threader.finished()
 

@@ -58,7 +58,7 @@ test:
 	rm -f test/*.result
 	@for i in test/*.html; do \
 	  echo "Testing $$i. Results are in $$i.result"; \
-	  ./$(PACKAGE) -r1 -o text -t0 -N"news.rz.uni-sb.de" -v -a $$i > $$i.result 2>&1; \
+	  ./$(PACKAGE) -r1 -o text -N"news.rz.uni-sb.de" -v -a $$i > $$i.result 2>&1; \
         done
 
 po:
