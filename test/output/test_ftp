@@ -4,13 +4,13 @@ valid
 url ftp:/ftp.debian.org/pub
 error
 url ftp://ftp.debian.org/pub
-info 220 raff.debian.org FTP server (vsftpd)
+info 220 saens.debian.org FTP server (vsftpd)
 valid
 url ftp://ftp.debian.org//pub
-info 220 raff.debian.org FTP server (vsftpd)
+info 220 saens.debian.org FTP server (vsftpd)
 valid
 url ftp://ftp.debian.org////////pub
-info 220 raff.debian.org FTP server (vsftpd)
+info 220 saens.debian.org FTP server (vsftpd)
 valid
 url ftp:///ftp.debian.org/pub
 cached
