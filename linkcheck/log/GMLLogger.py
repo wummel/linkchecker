@@ -18,6 +18,7 @@
 import time
 from linkcheck import Config, i18n
 from linkcheck.log import strtime, strduration
+from linkcheck.url import url_quote
 from StandardLogger import StandardLogger
 from Logger import Logger
 
@@ -56,7 +57,7 @@ class GMLLogger (StandardLogger):
             self.fd.write("  node [\n")
 	    self.fd.write("    id     %d\n" % node.id)
             if self.has_field("realurl"):
-                self.fd.write('    label  "%s"\n' % node.url)
+                self.fd.write('    label  "%s"\n' % url_quote(node.url))
             if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("    dltime %d\n" % node.dltime)
             if node.dlsize>=0 and self.has_field("dlsize"):

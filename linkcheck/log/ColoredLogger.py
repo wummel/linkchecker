@@ -17,6 +17,7 @@
 
 from StandardLogger import StandardLogger
 from linkcheck import StringUtil, i18n, AnsiColor
+from linkcheck.url import url_quote
 
 
 class ColoredLogger (StandardLogger):
@@ -88,7 +89,8 @@ class ColoredLogger (StandardLogger):
             if self.prefix:
                 self.fd.write("|  ")
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
-                          self.colorreal+urlData.url+self.colorreset+"\n")
+                          self.colorreal+url_quote(urlData.url)+
+                          self.colorreset+"\n")
         if urlData.dltime>=0 and self.has_field("dltime"):
             if self.prefix:
                 self.fd.write("|  ")

@@ -17,6 +17,7 @@
 
 import sys, time
 from linkcheck import Config, i18n
+from linkcheck.url import url_quote
 from Logger import Logger
 from linkcheck.log import strtime, strduration
 from linkcheck import StringUtil
@@ -101,7 +102,7 @@ __init__(self, **args)
                           urlData.baseRef+"\n")
         if urlData.url and self.has_field('realurl'):
             self.fd.write(self.field("realurl")+self.spaces("realurl")+
-                          urlData.url+"\n")
+                          url_quote(urlData.url)+"\n")
         if urlData.dltime>=0 and self.has_field('dltime'):
             self.fd.write(self.field("dltime")+self.spaces("dltime")+
 	                  i18n._("%.3f seconds\n") % urlData.dltime)

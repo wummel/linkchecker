@@ -19,6 +19,7 @@ from StandardLogger import StandardLogger
 from Logger import Logger
 import time
 from linkcheck.log import strtime, strduration
+from linkcheck.url import url_quote
 from linkcheck import StringUtil, i18n, Config
 
 class SQLLogger (StandardLogger):
@@ -59,7 +60,7 @@ class SQLLogger (StandardLogger):
                StringUtil.sqlify(urlData.warningString),
                StringUtil.sqlify(urlData.infoString),
                urlData.valid,
-               StringUtil.sqlify(urlData.url),
+               StringUtil.sqlify(url_quote(urlData.url)),
                urlData.line,
                urlData.column,
                StringUtil.sqlify(urlData.name),

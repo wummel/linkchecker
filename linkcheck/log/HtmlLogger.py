@@ -18,6 +18,7 @@
 from StandardLogger import StandardLogger
 from Logger import Logger
 from linkcheck.log import strtime, strduration
+from linkcheck.url import url_quote
 from linkcheck import StringUtil, i18n, Config
 import time
 
@@ -96,8 +97,8 @@ class HtmlLogger (StandardLogger):
 	                  urlData.baseRef+"</td>\n</tr>\n")
         if urlData.url and self.has_field("realurl"):
             self.fd.write("<tr>\n<td>"+self.field("realurl")+"</td>\n<td>"+
-	                  '<a target="top" href="'+urlData.url+
-			  '">'+urlData.url+"</a></td>\n</tr>\n")
+	                  '<a target="top" href="'+url_quote(urlData.url)+
+			  '">'+url_quote(urlData.url)+"</a></td>\n</tr>\n")
         if urlData.dltime>=0 and self.has_field("dltime"):
             self.fd.write("<tr>\n<td>"+self.field("dltime")+"</td>\n<td>"+
 	                  (i18n._("%.3f seconds") % urlData.dltime)+
