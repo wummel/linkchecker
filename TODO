@@ -1,10 +1,11 @@
 Possible improvements people could work on:
 
-- add --no-proxy-for and --low-priority to man pages
-
 - use po4a to manage manpages
 
-- [USAGE] rethink intern/extern stuff
+- add --no-proxy-for and --low-priority to man pages
+
+- [USAGE] rethink intern/extern stuff. Especially when specifying
+  --extern one should not have to also specify --intern suddenly.
 
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
   the broken anchor name is not displayed as a warning
