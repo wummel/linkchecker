@@ -1,0 +1,27 @@
+The following changes were made to the original dnspython 1.3.1
+sources:
+
+* moved everything into the linkcheck package
+  Changed: *.py
+
+* moved unittests and adapted them for the schooltool.org test runner
+  Changed: tests/*.py
+
+* fixed missing random import
+  Changed: renderer.py
+
+* honor EnableDHCP flag in Windows registry config
+  Changed: resolver.py
+
+* strip() lines from /etc/resolv.conf
+  Changed: resolver.py
+
+* minor syntax cleanups
+  Changed: *.py
+
+* added set of localhost addresses to resolver config
+  Changed: resolver.py
+  Added: IfConfig.py
+
+* added search patters for domain names
+  Changed: resolver.py
