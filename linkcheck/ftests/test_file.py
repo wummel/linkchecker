@@ -47,19 +47,19 @@ class TestFile (linkcheck.ftests.StandardTest):
                  'datadir': 'linkcheck/ftests/data',
                 }
         # good file
-        url = "file://%(curdir)s/%(datadir)s/file.txt"%attrs
+        url = "file://%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = ["url %s" % url, "valid"]
         self.direct(url, resultlines)
         # bad file
-        url = "file:/%(curdir)s/%(datadir)s/file.txt"%attrs
+        url = "file:/%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = ["url %s" % url, "error"]
         self.direct(url, resultlines)
         # good file
-        url = "file:%(curdir)s/%(datadir)s/file.txt"%attrs
+        url = "file:%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = ["url %s" % url, "valid"]
         self.direct(url, resultlines)
         # good dir
-        url = "file://%(curdir)s/%(datadir)s/"%attrs
+        url = "file://%(curdir)s/%(datadir)s/" % attrs
         resultlines = ["url %s" % url, "valid"]
         self.direct(url, resultlines)
 

@@ -22,7 +22,7 @@ import time
 
 from linkcheck.i18n import _
 
-import httplib2
+import httplib2, ftests
 
 # logger areas
 LOG = "linkcheck"
