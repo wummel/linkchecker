@@ -26,6 +26,10 @@
     Type: feature
     Changed: linkcheck/__init__.py
 
+  * Removed debug print statement when issueing linkchecker --help
+    Type: bugfix
+    Changed: linkchecker
+
 1.13.1 "Old men in new cars" (released 3.9.2004)
   * Fixed RPM generation by adding the generated config file to the
     installed files list.
