@@ -7,6 +7,8 @@
   * HTML parser objects are now subclassable and collectable by the cyclic
     garbage collector
     Changed: linkcheck/parser/htmlparse.y
+  * made some minor parser fixes for attribute scanning and JavaScript
+    Changed: linkcheck/parser/htmllex.l
 
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing
