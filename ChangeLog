@@ -22,7 +22,7 @@
 
   * Added windows binary installer script and configuration.
     Type: feature
-    Changed: setup.py, setup.cfg
+    Changed: setup.py, setup.cfg, doc/install.txt
     Added: install-linkchecker.py
 
 1.13.0 "The Butterfly Effect" (released 1.9.2004)
