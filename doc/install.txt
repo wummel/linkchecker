@@ -1,5 +1,5 @@
 .. meta::
-  :navigation.order: 2
+  :navigation.order: 1
   :navigation.name: Installation
 
 Installation
@@ -17,6 +17,10 @@ Requirements for Unix/Linux or Mac OS X
    b) gettext
 
 2. Python >= 2.3 from http://www.python.org/ with zlib support
+   
+   Be sure to also have installed the included distutils module.
+   On most distributions, the distutils module is included in
+   an extra "python-dev" package.
 
 
 Requirements for Windows
@@ -55,7 +59,7 @@ Setup for Unix/Linux or Mac OS X
 3.
    a) Installation as root
       
-      Run ``su -c 'python setup.py install'`` to install the proxy.
+      Run ``su -c 'python setup.py install'`` to install LinkChecker.
    
    b) Installation as a normal user
       
