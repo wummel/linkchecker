@@ -135,7 +135,7 @@ class HttpUrlData (ProxyUrlData):
                 self.headers = response.msg
                 self.proxy, self.proxyauth = oldproxy
             # follow all redirections
-            tries, response = self.followRedirections(response)
+            tries, response = self.followRedirections(response, redirectCache)
             if tries == -1:
                 # already handled
                 return
@@ -185,7 +185,7 @@ class HttpUrlData (ProxyUrlData):
         self.checkResponse(response, fallback)
 
 
-    def followRedirections (self, response):
+    def followRedirections (self, response, redirectCache):
         """follow all redirections of http response"""
         redirected = self.url
         tries = 0
@@ -221,7 +221,7 @@ class HttpUrlData (ProxyUrlData):
                 self.copyFromCache(self.config.urlCache_get(key))
                 self.cached = True
                 self.logMe()
-                return -1, reponse
+                return -1, response
             # check if we still have a http url, it could be another
             # scheme, eg https or news
             if self.urlparts[0]!="http":
