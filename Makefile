@@ -82,10 +82,10 @@ upload-devel: distclean dist VERSION-DEVEL
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 test:
-	$(PYTHON) test/regrtest.py $(OFFLINETESTS)
+	env LANG=C $(PYTHON) test/regrtest.py $(OFFLINETESTS)
 
 onlinetest:
-	$(PYTHON) test/regrtest.py $(ONLINETESTS)
+	env LANG=C $(PYTHON) test/regrtest.py $(ONLINETESTS)
 
 locale:
 	$(MAKE) -C po
