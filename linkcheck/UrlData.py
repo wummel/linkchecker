@@ -377,13 +377,13 @@ class UrlData (object):
         self.checktime = time.time() - t
         # check recursion
         debug(BRING_IT_ON, "checking recursion")
-        if self.allowsRecursion():
-            try:
+        try:
+            if self.allowsRecursion():
                 self.parseUrl()
-            except tuple(ExcList):
-                value, tb = sys.exc_info()[1:]
-                debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
-                self.setError(str(value))
+        except tuple(ExcList):
+            value, tb = sys.exc_info()[1:]
+            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
+            self.setError(str(value))
         # check content size
         self.checkSize()
         # close
