@@ -26,13 +26,51 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
     """test http:// link checking"""
 
     def test_html (self):
-        self.start_server()
-        url = u"http://localhost:%d/linkcheck/ftests/data/http.html"%self.port
-        resultlines = self.get_resultlines("http.html")
+        self.start_server(handler=RedirectHttpRequestHandler)
         try:
+            url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
+                  self.port
+            resultlines = self.get_resultlines("http.html")
             self.direct(url, resultlines, recursionlevel=1)
+            url = u"http://localhost:%d/redirect1" % self.port
+            nurl = url
+            rurl = url.replace("redirect", "newurl")
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % nurl,
+                u"real url %s" % rurl,
+                u"info Redirected to %s." % rurl,
+                u"warning Effective URL %s." % rurl,
+                u"error",
+            ]
+            self.direct(url, resultlines, recursionlevel=0)
         finally:
             self.stop_server()
+
+
+class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHandler):
+    """handler redirecting certain requests"""
+
+    def redirect (self):
+        """redirect request"""
+        path = self.path.replace("redirect", "newurl")
+        self.send_response(302)
+        self.send_header("Location", path)
+        self.end_headers()
+
+
+    def do_GET (self):
+        """removes query part of GET request"""
+        if "redirect" in self.path:
+            self.redirect()
+        else:
+            super(RedirectHttpRequestHandler, self).do_GET()
+
+    def do_HEAD (self):
+        if "redirect" in self.path:
+            self.redirect()
+        else:
+            super(RedirectHttpRequestHandler, self).do_HEAD()
 
 
 def test_suite ():
