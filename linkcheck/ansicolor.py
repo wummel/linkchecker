@@ -139,7 +139,9 @@ def has_colors (fp):
     # redirected streams, as this is almost never what we want
     if hasattr(fp, "isatty") and fp.isatty():
         if os.name == 'nt':
-            return has_colors_nt()
+            # XXX disabled for windows platforms
+            return False
+            #return has_colors_nt()
         try:
             import curses
             curses.setupterm()
