@@ -4,7 +4,7 @@ import re,cgi,sys,urlparse,time,os
 sys.stderr = sys.stdout
 
 # begin user configuration
-dist_dir = "/home/calvin/projects/linkchecker"
+dist_dir = "/home/calvin/linkchecker"
 cgi.logfile = "linkchecker.log" # must be an existing file
 # end user configuration
 
