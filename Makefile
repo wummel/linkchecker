@@ -78,7 +78,7 @@ upload:
 	for f in dist/*; do gpg --detach-sign --armor $$f; done
 	ncftpput upload.sourceforge.net /incoming dist/*
 
-homepage: VERSION
+homepage: files VERSION
 	cp ChangeLog $(HTMLDIR)/changes.txt
 	cp README $(HTMLDIR)/readme.txt
 	cp linkchecker-out.*.gz $(HTMLDIR)
