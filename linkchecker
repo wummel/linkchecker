@@ -172,7 +172,8 @@ except:
 
 # check for environment variables (currently only http_proxy)
 if os.environ.has_key("http_proxy"):
-    proxy = re.compile("(.+):(.+)").match(os.environ["http_proxy"])
+    proxy = re.compile("(?:http://)?(.+):(.+)").match(
+            os.environ["http_proxy"])
     if proxy:
         config["proxy"] = proxy.group(1)
         config["proxyport"] = int(proxy.group(2))

@@ -3,16 +3,14 @@ High priority
 o DNS (and some URLs) seem to hang sometimes. This is not entirely true.
   The SMTP connect has a very long timeout (>200 seconds).
   But I can not use the signal module with threads.
-  For convenient timeout setting I have to wait for Python 1.6 and urllib2.
+  Wait for Python 1.6 and urllib2.
 
 o I want to be able to supply a "break" command even when multiple
   threads are running.
   The thread implementation of Python is somewhat sparse and does not allow
   suspending/stopping of threads. What I am doing is to call sys.exit(1). 
-  This kills the entire Python interpreter.
-
-o Internationalization
 
 o Parse GML output and make a site map graphic (PNG format)
-
+  Use an existing layout algorithm.
+  
 Low priority

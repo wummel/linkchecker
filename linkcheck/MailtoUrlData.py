@@ -20,17 +20,24 @@ from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from UrlData import LinkCheckerException
 
-# regular expression strings
-tag_str = r"^mailto:"
-adress_str = r"([a-zA-Z]['\-\w.]*)@([\w\-]+(?:\.[\w\-]+)*)"
-complete_adress_str = "("+adress_str+"|[\w\-\s]*<"+adress_str+">)"
-suffix_str = r"(\?.+)?"
-mailto_str = tag_str+complete_adress_str+\
-             "(\s*,"+complete_adress_str+")*"+suffix_str
+# regular expression strings for partially RFC822 compliant adress scanning
+# XXX far from complete mail adress scanning; enhance only when needed!
+word = r"[\w\-%']+"
+words = r"[\w\-%'\s]+"
+dotwords = "("+word+r"(?:\."+word+")*)
+adress = dotwords+"@"+dotwords
+route_adress = words+"<"+adress+">"
+mailbox = "("+adress+"|"+route_adress+")"
+mailboxes = mailbox+r"?(,+"+mailbox+")*"
+
+# regular expression strings for RFC2368 compliant mailto: scanning
+header = word+"="+word
+headers = "?"+header+"(&"+header+")*
+mailto = "^mailto:"+mailboxes+headers
 
 # compiled
-adress_re = re.compile(adress_str)
-mailto_re = re.compile(mailto_str)
+adress_re = re.compile(adress)
+mailto_re = re.compile(mailto)
 
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
@@ -40,6 +47,7 @@ class MailtoUrlData(HostCheckingUrlData):
         mo = mailto_re.match(self.urlName)
         if not mo:
             raise LinkCheckerException, "Illegal mailto link syntax"
+        # note: this catches also cc= headers and such!
         self.adresses = map(lambda x: (x[0], string.lower(x[1])),
 	                    re.findall(adress_re, self.urlName))
 

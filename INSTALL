@@ -8,7 +8,9 @@ You get Python from http://www.python.org
 Optionally packages:
 Distutils >= 0.8.1 from http://www.python.org/sigs/distutils-sig/ 
 OpenSSL from http://www.openssl.org
-
+You will need Perl for Win32 (available from
+http://www.activestate.com/ActivePerl) if you want to install OpenSSL 
+on Windows!
 
 Install with Distutils:
 If you have the Distutils, run "python setup.py install".
