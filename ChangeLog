@@ -1,3 +1,8 @@
+1.10.4 (release xx.xx.xxxx)
+  * added LRU.setdefault function
+    Changed: linkcheck/LRU.py
+    Closes: SF bug 885916
+
 1.10.3 (release 10.1.2004)
   * use the optparser module for command line parsing
     Changed: linkchecker, po/*.po
