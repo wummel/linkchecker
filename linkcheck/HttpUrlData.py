@@ -191,6 +191,7 @@ class HttpUrlData (ProxyUrlData):
                     server.startswith('Zope')):
                     self.setWarning(i18n._("Zope Server cannot determine"
                                 " MIME type with HEAD, falling back to GET"))
+                    self.method = "GET"
                     continue
             break
         # check url warnings
