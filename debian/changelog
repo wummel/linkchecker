@@ -1,3 +1,10 @@
+linkchecker (1.4.3) unstable; urgency=low
+
+  * UrlData.py: also catch Timeout and other exception on retrieving
+    recursive content
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 29 Apr 2002 20:22:04 +0200
+
 linkchecker (1.4.2) unstable; urgency=low
 
   * move DNS package into linkchecker to prevent clash with the original

@@ -317,7 +317,11 @@ class UrlData:
         # check recursion
         debug(BRING_IT_ON, "checking recursion")
         if self.allowsRecursion(config):
-            self.parseUrl(config)
+            try: self.parseUrl(config)
+            except tuple(ExcList):
+                type, value, tb = sys.exc_info()
+                debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
+                self.setError(str(value))
         self.closeConnection()
         self.logMe(config)
         debug(BRING_IT_ON, "caching")
