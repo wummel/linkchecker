@@ -54,10 +54,8 @@ def wrap (text, width, **kwargs):
        See textwrap.wrap() for a list of supported kwargs.
        Returns text with lines no longer than given width.
     """
-    if width <= 0:
+    if width <= 0 or not text:
         return text
-    if not text:
-        return ""
     ret = []
     for para in get_paragraphs(text):
         ret.extend(textwrap.wrap(para.strip(), width, **kwargs))
