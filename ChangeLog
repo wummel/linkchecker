@@ -4,7 +4,7 @@
   * use "startswith" string method instead of a regex
     Changed files: linkchecker, linkcheck/UrlData.py
   * Note about supported languages, updated documentation.
-    Changed files: README
+    Changed files: README, linkchecker
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.
