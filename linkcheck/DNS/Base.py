@@ -92,8 +92,7 @@ def init_dns_resolver_nt ():
         key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
   r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DNSRegisteredAdapters")
         for subkey in key.subkeys():
-            count, counttype = subkey['DNSServerAddressCount']
-            values, valuestype = subkey['DNSServerAddresses']
+            values = subkey.get("DNSServerAddresses", "")
             for server in winreg.binipdisplay(values):
                 if server:
                     defaults['server'].append(str(server))
@@ -300,7 +299,7 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
         if self.args['protocol'] == 'udp':
             self.response=self.processUDPReply()
             if self.donefunc:
-                apply(self.donefunc,(self,))
+                self.donefunc(*self)
     def handle_connect(self):
         self.send(self.request)
     def handle_write(self):
@@ -310,6 +309,9 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
 
 #
 # $Log$
+# Revision 1.10  2003/12/28 23:01:51  calvin
+# fix nt dns init and remove apply() use
+#
 # Revision 1.9  2003/12/20 11:27:54  calvin
 # more robust registry indexing
 #
