@@ -1,3 +1,9 @@
+linkchecker (1.2.4) unstable; urgency=low
+
+  * Fixed parsing of /etc/resolv.conf with empty lines
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 23 Jun 2000 23:26:08 +0200
+
 linkchecker (1.2.3) unstable; urgency=low
 
   * typo fix for adjustWinPath

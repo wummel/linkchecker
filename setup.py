@@ -92,7 +92,7 @@ class LCDistribution(Distribution):
 
 
 setup (name = "linkchecker",
-       version = "1.2.3",
+       version = "1.2.4",
        description = "check links of HTML pages",
        author = "Bastian Kleineidam",
        author_email = "calvin@users.sourceforge.net",

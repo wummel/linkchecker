@@ -54,6 +54,7 @@ httplib.py (renamed to http11lib.py and a bug fixed)
 fcgi.py (implemented immediate output)
 sz_fcgi.py (simplified the code)
 DNS/Lib.py:566 fixed rdlength name error
+DNS/Base.py: fixed /etc/resolv.conf parser to cope with empty lines
 
 
 Internationalization

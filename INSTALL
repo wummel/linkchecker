@@ -8,6 +8,7 @@ You need Python >= 1.5.2 from http://www.python.org/
 Optionally packages
 -------------------
 Distutils >= 0.9 from http://www.python.org/sigs/distutils-sig/ 
+(Note: there is currently no 0.9 version so just use the CVS code)
 OpenSSL from http://www.openssl.org/
 You will need Perl for Win32 (available from
 http://www.activestate.com/ActivePerl) if you want to install OpenSSL 
