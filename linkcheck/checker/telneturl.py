@@ -21,28 +21,22 @@ import urlparse
 import urllib
 
 import linkcheck
-import urlconnect
+import urlbase
 
 from linkcheck.i18n import _
 
 
-class TelnetUrl (urlconnect.UrlConnect):
+class TelnetUrl (urlbase.UrlBase):
     """Url link with telnet scheme"""
 
     def build_url (self):
         super(TelnetUrl, self).build_url()
-        parts = urlparse.urlsplit(self.url)
-        userinfo, self.host = urllib.splituser(parts[1])
-        self.host, self.port = urllib.splitport(self.host)
-        if self.port is not None:
-            if not linkcheck.url.is_numeric_port(self.port):
-                raise linkcheck.LinkCheckerError(
-                       _("URL has invalid port number %s") % self.port)
-            self.port = int(self.port)
-        else:
+        # default port
+        if self.port is None:
             self.port = 23
-        if userinfo:
-            self.user, self.password = urllib.splitpasswd(userinfo)
+        # split user/pass
+        if self.userinfo:
+            self.user, self.password = urllib.splitpasswd(self.userinfo)
         else:
             self.user, self.password = self.get_user_password()
 
