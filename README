@@ -81,7 +81,7 @@ commandline options and stores them in a Config object.
 
 (2) Which leads us directly to the Config class. This class stores all
 options and works a little magic: it tries to find out if your platform
-supports threads. If so, they are enabled. If not, they are disabled.
+supports threads. If so, threading is enabled. If not, it is disabled.
 Several functions are replaced with their threaded equivalents if 
 threading is enabled.
 Another thing are config files. A Config object reads config file options

@@ -1,8 +1,8 @@
 -- tested with postgresql
 
-drop table linkdb;
+drop table linksdb;
 
-create table linkdb (
+create table linksdb (
     urlname        varchar(50) not null,
     recursionlevel int not null,
     parentname     varchar(50),

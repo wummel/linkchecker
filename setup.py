@@ -173,7 +173,7 @@ o (Fast)CGI web interface
                      ('share/locale/fr/LC_MESSAGES',
                       ['locale/fr/LC_MESSAGES/linkcheck.mo',
 		       'locale/fr/LC_MESSAGES/linkcheck.po']),
-                     ('/etc', ['linkcheckerrc']),
-                     ('share/linkchecker',['linkchecker.bat']),
+                     ('share/linkchecker',['linkchecker.bat',
+		                           'linkcheckerrc',]),
 		    ],
 )

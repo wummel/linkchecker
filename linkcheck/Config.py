@@ -355,11 +355,8 @@ class Configuration(UserDict.UserDict):
     def read(self, files = []):
         if not files:
             files.insert(0,norm("~/.linkcheckerrc"))
-            if os.name=='nt':
-                path=os.getcwd()
-            else:
-                path="/etc"
-            files.insert(0,norm(join(path, "linkcheckerrc")))
+            config_dir = join(LinkCheckerConf.install_data, 'linkchecker')
+            files.insert(0,norm(join(config_dir, "linkcheckerrc")))
         self.readConfig(files)
 
     def warn(self, msg):

@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
+DOC_DIR = debian/tmp/usr/share/doc/linkchecker
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -35,8 +36,12 @@ install: build
 	dh_installdirs
 	# ha! the root option finally made it into distutils
 	python setup.py install --root=`pwd`/debian/tmp
-	# put the README of the DNS package in doc (only on Debian)
-	install -c -m 644 DNS/README debian/tmp/usr/share/doc/linkchecker/README.dns
+	# install additional doc files
+	install -c -m 644 DNS/README $(DOC_DIR)/README_DNS.txt
+	install -d -m 755 $(DOC_DIR)/test
+	install -c -m 644 test/*.html test/*.py $(DOC_DIR)/test
+	install -d -m 755 $(DOC_DIR)/tests
+	install -c -m 644 tests/*.py $(DOC_DIR)/tests
 
 
 # Build architecture-independent files here.
@@ -48,7 +53,7 @@ binary-arch: build install
 #	dh_testversion
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf	
+#	dh_installdebconf
 	dh_installdocs
 #	dh_installexamples
 #	dh_installmenu
@@ -60,7 +65,7 @@ binary-arch: build install
 #	dh_installinfo
 	dh_undocumented linkchecker.1
 	dh_installchangelogs 
-#	dh_link
+	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms

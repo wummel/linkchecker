@@ -1,8 +1,11 @@
 linkchecker (1.2.6) unstable; urgency=low
 
-  * placeholder
+  * made a FAQ
+  * configuration changes: distutils are now required; because of that
+    we have no more .tmpl files
+  * correct db name in create.sql
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 17 Sep 2000 11:22:29 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 13 Oct 2000 23:44:29 +0200
 
 linkchecker (1.2.5) unstable; urgency=low
 
