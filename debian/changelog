@@ -1,8 +1,12 @@
 linkchecker (1.5.1) unstable; urgency=low
 
   * debian/control: remove python-ssl from suggests
+  * linkcheck/UrlData.py: remove non-greedy *? from linkmatcher to avoid
+    the maximum recursion limit error (from 1.4.6)
+  * linkcheck/HttpUrlData.py: replace empty paths with a slash; adjust
+    warning message (from 1.4.6)
 
- -- Bastian Kleineidam <calvin@debian.org>  Mon, 13 May 2002 01:24:06 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 14 May 2002 22:46:42 +0200
 
 linkchecker (1.5.0) unstable; urgency=low
 
