@@ -1,7 +1,7 @@
 include README FAQ INSTALL LICENSE TODO draft-gilman-news-url-00.txt
 include WONTDO MANIFEST.in linkchecker-completion
 include linkcheckerrc linkchecker linkchecker.bat linkchecker.1 create.sql
-include lc.cgi lc.fcgi lc.sz_fcgi
+include lc.cgi lc.fcgi lc.sz_fcgi linkcheck-cron.sh
 include Makefile linkchecker.spec create.sql
 include debian/rules debian/changelog debian/copyright debian/control
 include debian/linkchecker.*
