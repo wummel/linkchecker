@@ -24,4 +24,4 @@ homepage: nav apidocs
 
 
 clean:
-	rm -f $(NAVFILES) $(HTMLFILES)
+	rm -f $(NAVFILES) $(HTMLFILES) *.pyc *.pyo
