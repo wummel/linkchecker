@@ -43,8 +43,8 @@ If you disclose some information because its too private to you thats ok.
 I will try to help you nontheless (but you have to give me *something*
 I can work with ;).
 """) % Config.Email
-    type, value = sys.exc_info()[:2]
-    print >>sys.stderr, type, value
+    etype, value = sys.exc_info()[:2]
+    print >>sys.stderr, etype, value
     traceback.print_exc()
     print_app_info()
     print >>sys.stderr, i18n._("\n******** LinkChecker internal error, bailing out ********")
@@ -300,8 +300,8 @@ class UrlData (object):
         except (socket.error, select.error):
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
-            type, value = sys.exc_info()[:2]
-            if type!=4:
+            etype, value = sys.exc_info()[:2]
+            if etype!=4:
                 raise
         except test_support.Error:
             raise

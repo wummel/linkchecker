@@ -1,20 +1,24 @@
 # This Makefile is only used by developers.
-PYTHON=python2.3
-VERSION=$(shell $(PYTHON) setup.py --version)
-PACKAGE=linkchecker
-NAME=$(shell $(PYTHON) setup.py --name)
-PACKAGEDIR=/home/groups/l/li/$(PACKAGE)
+PYTHON := python2.3
+VERSION = $(shell $(PYTHON) setup.py --version)
+PACKAGE := linkchecker
+NAME = $(shell $(PYTHON) setup.py --name)
+PACKAGEDIR = /home/groups/l/li/$(PACKAGE)
 #HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
 HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
 #HOST=treasure.calvinsplayground.de
 HOST=www.debian.org
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
-TEST=test/run.sh test/regrtest.py
+TEST := test/run.sh test/regrtest.py
 OFFLINETESTS = test_base test_misc test_file test_frames
 ONLINETESTS = test_mail test_http test_https test_news test_ftp test_telnet
 DESTDIR=/.
 MD5SUMS=linkchecker-md5sums.txt
+
+PYCHECKEROPTS := -F pycheckrc
+PYCHECKERFILES := linkcheck/*.py linkcheck/parser/*.py \
+                  linkcheck/DNS/*.py linkcheck/log/*.py
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
@@ -100,6 +104,9 @@ timeouttest:
 
 tar:	distclean
 	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
+
+pycheck:
+	-env PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYCHECKERFILES)
 
 .PHONY: all clean cleandeb distclean files upload test timeouttest locale
 .PHONY: onlinetest config dist deb_local deb_signed deb_unsigned tar

@@ -55,7 +55,7 @@ class NntpUrlData (UrlData):
             group = group[1:]
         if '@' in group:
             # request article
-            resp,number,id = nntp.stat("<"+group+">")
+            resp,number,mid = nntp.stat("<"+group+">")
             self.setInfo(i18n._('Articel number %s found') % number)
         else:
             # split off trailing articel span

@@ -1,0 +1,203 @@
+# Sample defaults file for PyChecker 0.8.12
+# This file should be called:  .pycheckrc
+# It should be placed in your home directory (value of $HOME).
+# If $HOME is not set, it will look in the current directory.
+
+# bool: warnings for Doc Strings
+noDocModule = 0
+noDocClass = 0
+noDocFunc = 0
+
+# bool: when checking if class data members (attributes) are set
+#       check all members or __init__() only
+onlyCheckInitForMembers = 0
+
+# bool: warn when all module variables are not used (including private vars)
+allVariablesUsed = 0
+
+# bool: produce warnings for each occurrence of a warning for global (xxx)
+reportAllGlobals = 0
+
+# bool: warn when private module variables are not used (_var)
+privateVariableUsed = 1
+
+# bool: warn when imports are not used
+importUsed = 1
+
+# bool: warn when import and from ... import are used for same module
+mixImport = 1
+
+# bool: warn when imports are not used in __init__.py
+packageImportUsed = 1
+
+# bool: warn when a module reimports another module (import & from/import)
+moduleImportErrors = 1
+
+# bool: warn when modules import themselves
+reimportSelf = 1
+
+# bool: warn when local variables are not used
+localVariablesUsed = 1
+
+# bool:  assume a, b, and c are used in this case:  a, b, c = func()
+unusedLocalTuple = 0
+
+# bool:  warn when class attributes (data members) are unused
+membersUsed = 0
+
+# bool: warn when Subclass.__init__ is not called in a subclass
+baseClassInitted = 1
+
+# bool: warn when Subclass needs to override methods that only throw exceptions
+abstractClasses = 1
+
+# bool: warn when __init__ is defined in a subclass
+initDefinedInSubclass = 0
+
+# bool: warn when __init__ returns None
+returnNoneFromInit = 1
+
+# bool: warn when code is not reachable
+unreachableCode = 0
+
+# bool: warn when a constant is used in a conditional statement (if '':)
+constantConditions = 1
+
+# bool: warn when 1 is used in a conditional statement, (if 1: while 1: etc)
+constant1 = 1
+
+# bool: warn when iterating over a string in a for loop
+stringIteration = 1
+
+# bool: warn when setting a variable to different types
+inconsistentTypes = 0
+
+# bool: warn when setting a tuple of variables to a non-sequence (a, b = None)
+unpackNonSequence = 1
+
+# bool: warn when setting a tuple of variables to the wrong length (a, b = 1,)
+unpackLength = 1
+
+# bool: warn when using strings exceptions or 
+#       other classes not derived from Exception to raise/catch exceptions
+badExceptions = 1
+
+# bool: warn when statements appear to have no effect
+noEffect = 1
+
+# bool: warn when using (expr % 1), it has no effect on integers and strings
+modulo1 = 1
+
+# bool: warn if using (expr is const-literal), 
+# doesn't always work on integers and strings
+isLiteral = 1
+
+# bool: warn when using a deprecated module or function
+deprecated = 1
+
+# bool: warn when the class attribute does not exist
+classAttrExists = 1
+
+# bool: warn when calling an attribute not a method
+callingAttribute = 1
+
+# bool: warn when using named arguments: func(a=1, b=2), where def func(a, b):
+#       def func2(a, b, **kw): doesn't generate a warning
+namedArgs = 0
+
+# str: name of 'self' parameter
+methodArgName = 'self'
+
+# bool: warn when method/function arguments are unused
+argumentsUsed = 1
+
+# bool: ignore if self is unused in methods
+ignoreSelfUnused = 0
+
+# bool: warn if functions/classes/methods names are redefined in same scope
+redefiningFunction = 1
+
+# bool:  check if an overriden method has the same signature
+#	 as base class method (__init__() methods are not checked)
+checkOverridenMethods = 1
+
+# int: warnings for code complexity, max value before generating a warning
+maxLines = 200
+maxBranches = 50
+maxReturns = 10
+maxArgs = 10
+maxLocals = 25
+maxReferences = 5
+
+
+# bool:  ignore all warnings from standard library components
+#	 (this includes anything under the standard library, eg, site-packages)
+ignoreStandardLibrary = 1
+
+
+# list of strings: ignore unused locals/arguments if name is one of
+unusedNames = [ '_', 'empty', 'unused', 'dummy', ]
+
+
+# list of strings: ignore warnings generated from these modules
+blacklist = [ 'Tkinter', 'wxPython', 'gtk', 'GTK', 'GDK', ]
+
+
+# list of strings: ignore global variables not used if name is one of
+variablesToIgnore = [ '__all__', '__version__', '__copyright__', '__date__',]
+
+
+# bool: print the PyChecker parse of modules, classes, etc.
+printParse = 0
+
+# bool: turn debugging of PyChecker on
+debug = 0
+
+# bool: check that attributes of objects exist
+checkObjectAttrs = 1
+
+# bool: various warnings about incorrect usage of __slots__
+slots = 1
+
+# bool: check if __slots__ is empty
+emptySlots = 1
+
+# bool: check for using properties in classic classes
+classicProperties = 1
+
+# bool: check for integer division (may be problem between Python versions)
+intDivide = 1
+
+# bool: check if local variables shadow a global variable with same name
+shadows = 1
+
+# bool: check if input() is used, which is a security problem, use raw_input()
+usesInput = 1
+
+# bool: check for using +variable, since it is almost always has no effect
+unaryPositive = 1
+
+# bool: check for modifying a parameter with a default value
+#       (value must be: list, dict, instance)
+#       modifying the value may have undesirable/unexpected side-effects
+modifyDefaultValue = 1
+
+# bool: check if the exec statement is used (possible security problem)
+usesExec = 0
+
+# bool: check consistent return values
+checkReturnValues = 1
+
+# bool: check if using implict and explicit return values
+checkImplicitReturns = 1
+
+# dict: suppress warnings, key is module.class.method or module.function
+#	value is a string of command line arguments (can omit -- for long args)
+#       { 'module1': 'no-namedargs maxlines=0',
+#	  'module2.my_func': 'argsused',
+#	  'module3.my_class': 'no-initreturn', }
+suppressions = {}
+
+# dict: suppress warnings where keys can be regular expressions
+suppressionRegexs = {}
+

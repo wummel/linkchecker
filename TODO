@@ -1,3 +1,5 @@
+- quote urls in warnings/errors
+
 - use linkcheck/url.py in HttpUrlData.py
 
 - replace the debug() function with the logging module

@@ -93,8 +93,8 @@ class MailtoUrlData (HostCheckingUrlData):
                     if info[0]==250:
                         self.setInfo(i18n._("Verified adress: %s")%str(info[1]))
                 except:
-                    type, value = sys.exc_info()[:2]
-                    #print type,value
+                    etype, value = sys.exc_info()[:2]
+                    #print etype,value
                 if smtpconnect: break
             if not smtpconnect:
                 self.setWarning(i18n._("None of the MX mail hosts for %s accepts an "

@@ -20,6 +20,7 @@ import urlparse, sys, time, re, httplib2, zlib, gzip, robotparser2, socket
 from urllib import quote, unquote
 from cStringIO import StringIO
 import Config, i18n
+from linkcheck import LinkCheckerError
 from debug import *
 from ProxyUrlData import ProxyUrlData
 from UrlData import ExcList, GetUrlDataFrom
