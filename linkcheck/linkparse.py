@@ -141,20 +141,21 @@ class LinkFinder (TagFinder):
             if attr in attrs:
                 # name of this link
                 if tag == 'a' and attr == 'href':
-                    name = linkcheck.strformat.unquote(attrs.get('title', ''))
+                    name = linkcheck.strformat.unquote(
+                                          attrs.get('title', u''))
                     if not name:
                         name = linkcheck.linkname.href_name(
                                             self.content[self.parser.pos():])
                 elif tag == 'img':
-                    name = linkcheck.strformat.unquote(attrs.get('alt', ''))
+                    name = linkcheck.strformat.unquote(attrs.get('alt', u''))
                     if not name:
                         name = linkcheck.strformat.unquote(
-                                                     attrs.get('title', ''))
+                                                     attrs.get('title', u''))
                 else:
-                    name = ""
+                    name = u""
                 # possible codebase
                 if tag in ('applet', 'object'):
-                    base = linkcheck.strformat.unquote(attrs.get('codebase'))
+                    base = linkcheck.strformat.unquote(attrs.get('codebase', ''))
                 else:
                     base = ""
                 value = linkcheck.strformat.unquote(attrs[attr])
