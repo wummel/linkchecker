@@ -76,6 +76,12 @@ def print_app_info ():
             print >> sys.stderr, key, "=", repr(value)
 
 
+def urljoin (parent, url, scheme):
+    if url.startswith(scheme+":"):
+        return url
+    return urlparse.urljoin(parent, url)
+
+
 class UrlBase (object):
     """An URL with additional information like validity etc."""
 
@@ -206,11 +212,11 @@ class UrlBase (object):
             # use base reference as parent url
             if ":" not in self.base_ref:
                 # some websites have a relative base reference
-                self.base_ref = urlparse.urljoin(self.parent_url,
-                                                 self.base_ref)
-            self.url = urlparse.urljoin(self.base_ref, self.base_url)
+                self.base_ref = urljoin(self.parent_url, self.base_ref,
+                                        self.scheme)
+            self.url = urljoin(self.base_ref, self.base_url, self.scheme)
         elif self.parent_url:
-            self.url = urlparse.urljoin(self.parent_url, self.base_url)
+            self.url = urljoin(self.parent_url, self.base_url, self.scheme)
         else:
             self.url = self.base_url
         # split into (modifiable) list
