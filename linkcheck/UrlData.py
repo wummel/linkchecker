@@ -53,24 +53,45 @@ _linkMatcher = r"""
     >              # close tag
     """
 
+# ripped mainly from HTML::Tagset.pm
 LinkTags = (
-    ("a", "href"),
-    ("img",   "src"),
-    ("form",  "action"),
-    ("body",  "background"),
-    ("frame", "src"),
-    ("link",  "href"),
-    ("meta",  "url"), # <meta http-equiv="refresh" content="x; url=...">
-    ("area",  "href"),
-    ("script", "src"),
+    ("a",       ["href"]),
+    ("applet",  ["archive", "codebase", "src"]),
+    ("area",    ["href"]),
+    ("bgsound", ["src"]),
+    ("blockquote", ["cite"]),
+    ("body",    ["background"]),
+    ("del",     ["cite"]),
+    ("embed",   ["pluginspage", "src"]),
+    ("form",    ["action"]),
+    ("frame",   ["src", "longdesc"]),
+    ('head',    ['profile']),
+    ("iframe",  ["src", "longdesc"]),
+    ("ilayer",  ["background"]),
+    ("img",     ["src", "lowsrc", "longdesc", "usemap"]),
+    ('input',   ['src', 'usemap']),
+    ('ins',     ['cite']),
+    ('isindex', ['action']),
+    ('layer',   ['background', 'src']),
+    ("link",    ["href"]),
+    ("meta",    ["url"]), # <meta http-equiv="refresh" content="x; url=...">
+    ('object',  ['classid', 'codebase', 'data', 'archive', 'usemap']),
+    ('q',       ['cite']),
+    ('script',  ['src', 'for']),
+    ('table',   ['background']),
+    ('td',      ['background']),
+    ('th',      ['background']),
+    ('tr',      ['background']),
+    ('xmp',     ['href']),
 )
 
 LinkPatterns = []
-for tag,attr in LinkTags:
-    LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
-                                               re.VERBOSE),
-                         'tag': tag,
-			 'attr': attr})
+for tag,attrs in LinkTags:
+    for attr in attrs:
+        LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
+                                                   re.VERBOSE),
+                             'tag': tag,
+	                     'attr': attr})
 AnchorPattern = {
     'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE),
     'tag': 'a',

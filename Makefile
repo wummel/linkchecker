@@ -33,14 +33,14 @@ cleandeb:
 	rm -f configure-stamp build-stamp
 
 dist:	locale
-	fakeroot debian/rules binary
 	# cleandeb because distutils choke on dangling symlinks
 	# (linkchecker.1 -> undocumented.1)
 	$(MAKE) cleandeb
 	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_rpm
 	# extra run without SSL compilation
-	$(PYTHON) setup.py bdist_wininst
-	mv -f ../$(DEBPACKAGE) dist
+	python setup.py bdist_wininst
+	fakeroot dpkg-buildpackage -sgpg -pgpg
+	cp -f ../$(DEBPACKAGE) dist
 
 package:
 	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz

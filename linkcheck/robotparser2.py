@@ -11,6 +11,8 @@
 """
 import re,string,urlparse,urllib
 
+__all__ = ['RobotFileParser']
+
 debug = 0
 
 def _debug(msg):
@@ -180,12 +182,15 @@ class Entry:
 
     def applies_to(self, useragent):
         """check if this entry applies to the specified agent"""
-        useragent = string.lower(useragent)
+        # split the name token and make it lower case
+        useragent = string.lower(string.split(useragent,"/")[0])
         for agent in self.useragents:
-            if agent=='*' or useragent=='*':
+            if agent=='*':
+                # we have the catch-all agent
                 return 1
             agent = string.lower(agent)
-            if re.match(agent, useragent):
+            # don't forget to re.escape
+            if re.search(re.escape(useragent), agent):
                 return 1
         return 0
 
@@ -199,6 +204,11 @@ class Entry:
                 return line.allowance
         return 1
 
+def _check(a,b):
+    if a!=b:
+        print "failed\n"
+    else:
+        print "ok\n"
 
 def _test():
     global debug
@@ -210,17 +220,29 @@ def _test():
         rp.read()
     else:
         rp.parse(open(sys.argv[1]).readlines())
-    print rp.can_fetch('*', 'http://www.musi-cal.com/')
-    print rp.can_fetch('CherryPickerSE',
+    # test for re.escape
+    _check(rp.can_fetch('*', 'http://www.musi-cal.com/'), 1)
+    # this should match the first rule, which is a disallow
+    _check(rp.can_fetch('', 'http://www.musi-cal.com/'), 0)
+    # various cherry pickers
+    _check(rp.can_fetch('CherryPickerSE',
                        'http://www.musi-cal.com/cgi-bin/event-search'
-		       '?city=San+Francisco')
-    print rp.can_fetch('CherryPickerSE/1.0',
+		       '?city=San+Francisco'), 0)
+    _check(rp.can_fetch('CherryPickerSE/1.0',
                        'http://www.musi-cal.com/cgi-bin/event-search'
-		       '?city=San+Francisco')
-    print rp.can_fetch('CherryPickerSE/1.5',
+		       '?city=San+Francisco'), 0)
+    _check(rp.can_fetch('CherryPickerSE/1.5',
                        'http://www.musi-cal.com/cgi-bin/event-search'
-		       '?city=San+Francisco')
-    print rp.can_fetch('ExtractorPro', 'http://www.musi-cal.com/blubba')
+		       '?city=San+Francisco'), 0)
+    # case sensitivity
+    _check(rp.can_fetch('ExtractorPro', 'http://www.musi-cal.com/blubba'), 0)
+    _check(rp.can_fetch('extractorpro', 'http://www.musi-cal.com/blubba'), 0)
+    # substring test
+    _check(rp.can_fetch('toolpak/1.1', 'http://www.musi-cal.com/blubba'), 0)
+    # tests for catch-all * agent
+    _check(rp.can_fetch('spam', 'http://www.musi-cal.com/musician/me'), 0)
+    _check(rp.can_fetch('spam', 'http://www.musi-cal.com/Musician/me'), 1)
+    _check(rp.can_fetch('spam', 'http://www.musi-cal.com/'), 1)
 
 if __name__ == '__main__':
     _test()

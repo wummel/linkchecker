@@ -165,15 +165,15 @@ class MyDistribution(Distribution):
             raise SystemExit, "please run 'python setup.py config'"
             #self.announce("generating default configuration")
             #self.run_command('config')
-        import LinkCheckerConf
+        import linkcheckerConf
         if 'bdist_wininst' in self.commands and os.name!='nt':
             self.announce("bdist_wininst command found on non-Windows "
-                          "platform. Disabling SSL compilation")
-        elif LinkCheckerConf.have_ssl:
+	                  "platform. Disabling SSL compilation")
+        elif linkcheckerConf.have_ssl:
             self.ext_modules = [Extension('ssl', ['ssl.c'],
-                        include_dirs=LinkCheckerConf.ssl_include_dirs,
-                        library_dirs=LinkCheckerConf.ssl_library_dirs,
-                        libraries=LinkCheckerConf.libraries)]
+                        include_dirs=linkcheckerConf.ssl_include_dirs,
+                        library_dirs=linkcheckerConf.ssl_library_dirs,
+                        libraries=linkcheckerConf.libraries)]
 
 
     def create_conf_file(self, directory, data=[]):
@@ -203,7 +203,7 @@ setup (name = "linkchecker",
        url = "http://linkchecker.sourceforge.net/",
        licence = "GPL",
        long_description =
-"""LinkChecker features
+"""Linkchecker features
 o recursive checking
 o multithreading
 o output in colored or normal text, HTML, SQL, CSV or a sitemap
