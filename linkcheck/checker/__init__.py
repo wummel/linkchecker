@@ -176,7 +176,7 @@ def absolute_url (base_url, base_ref, parent_url):
         return base_ref.lower()
     elif parent_url and linkcheck.url.url_is_absolute(parent_url):
         return parent_url.lower()
-    return ""
+    return u""
 
 
 def get_url_from (base_url, recursion_level, consumer,
