@@ -79,7 +79,7 @@ acap        # application configuration access protocol
 |s?news     # news
 |nntp       # news
 )"""
-_url = r"(?i)%s:[-a-zA-Z0-9$_.+!*'/(),;]+" % _schemes
+_url = r"(?i)%s:[-a-zA-Z0-9$_.+!?*'/(),;]+" % _schemes
 _url_re = re.compile(_url, re.VERBOSE)
 
 
@@ -146,8 +146,10 @@ class FileUrlData (UrlData):
             if ro.search(self.getContent()):
                 return getattr(self, "parse_"+key)()
 
+
     def parse_html (self):
         UrlData.parseUrl(self)
+
 
     def parse_opera (self):
         # parse an opera bookmark file
@@ -165,6 +167,7 @@ class FileUrlData (UrlData):
                         self.recursionLevel+1, self.config, self.url, None, lineno, name))
                 name = ""
 
+
     def parse_text (self):
         lineno = 0
         for line in self.getContent().splitlines():
@@ -176,6 +179,4 @@ class FileUrlData (UrlData):
                 self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(mo.group(),
                         self.recursionLevel+1, self.config, self.url, None, lineno, ""))
                 i = mo.end()
-
-        return
 

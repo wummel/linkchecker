@@ -1,5 +1,4 @@
-"""Handle https links"""
-# Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000-2002  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,24 +14,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from UrlData import UrlData
-from HttpUrlData import HttpUrlData
-import httplib, linkcheck, Config
-_supportHttps = hasattr(httplib, "HTTPS")
+class Logger:
+    def __init__ (self, **args):
+        self.logfields = None # all fields
+        if args.has_key('fields'):
+            if "all" not in args['fields']:
+                self.logfields = args['fields']
 
 
-class HttpsUrlData (HttpUrlData):
-    """Url link with https scheme"""
+    def logfield (self, name):
+        if self.logfields is None:
+            return 1
+        return name in self.logfields
 
-    def _getHTTPObject (self, host):
-        h = httplib.HTTPS()
-        h.set_debuglevel(Config.DebugLevel)
-        h.connect(host)
-        return h
 
-    def _check (self):
-        if _supportHttps:
-            HttpUrlData._check(self)
-        else:
-            self.setWarning(linkcheck._("%s url ignored")%self.scheme.capitalize())
-            self.logMe()
+    def init (self):
+        raise Exception, "abstract function"
+
+    def newUrl (self, urlData):
+        raise Exception, "abstract function"
+
+    def endOfOutput (self, linknumber=-1):
+        raise Exception, "abstract function"

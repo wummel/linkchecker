@@ -14,7 +14,16 @@ SOURCES=\
 ../linkcheck/HostCheckingUrlData.py \
 ../linkcheck/HttpUrlData.py \
 ../linkcheck/HttpsUrlData.py \
-../linkcheck/Logging.py \
+../linkcheck/log/__init__.py \
+../linkcheck/log/Logger.py \
+../linkcheck/log/BlacklistLogger.py \
+../linkcheck/log/CSVLogger.py \
+../linkcheck/log/ColoredLogger.py \
+../linkcheck/log/GMLLogger.py \
+../linkcheck/log/HtmlLogger.py \
+../linkcheck/log/SQLLogger.py \
+../linkcheck/log/StandardLogger.py \
+../linkcheck/log/XMLLogger.py \
 ../linkcheck/MailtoUrlData.py \
 ../linkcheck/NntpUrlData.py \
 ../linkcheck/TelnetUrlData.py \

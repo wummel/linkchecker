@@ -25,6 +25,20 @@ UnHtmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities)
 HtmlTable.sort()
 UnHtmlTable.sort()
 UnHtmlTable.reverse()
+# standard xml entities
+entities = {
+    'lt': '<',
+    'gt': '>',
+    'amp': '&',
+    'quot': '"',
+    'apos': "'",
+}
+XmlTable = map(lambda x: (x[1], "&"+x[0]+";"), entities.items())
+UnXmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities.items())
+# order matters!
+XmlTable.sort()
+UnXmlTable.sort()   
+UnXmlTable.reverse()
 
 SQLTable = [
     ("'","''")
@@ -97,6 +111,14 @@ def htmlify (s):
 
 def unhtmlify (s):
     return applyTable(UnHtmlTable, s)
+
+def xmlify (s):
+    """quote characters for XML"""
+    return applyTable(XmlTable, s)
+
+def unxmlify (s):
+    """unquote character from XML"""
+    return applyTable(UnXmlTable, s)
 
 def getLineNumber (s, index):
     "return the line number of str[index]"

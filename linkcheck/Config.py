@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time, Cookie
-import Logging, _linkchecker_configdata, linkcheck
+import _linkchecker_configdata, linkcheck
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 from urllib import getproxies
@@ -38,19 +38,6 @@ Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
-# default logger classes
-Loggers = {
-    "text": Logging.StandardLogger,
-    "html": Logging.HtmlLogger,
-    "colored": Logging.ColoredLogger,
-    "gml": Logging.GMLLogger,
-    "sql": Logging.SQLLogger,
-    "csv": Logging.CSVLogger,
-    "blacklist": Logging.BlacklistLogger,
-    "xml": Logging.XMLLogger,
-}
-# for easy printing: a comma separated logger list
-LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
 
 # debug options
 DebugDelim = "==========================================================\n"
@@ -126,13 +113,13 @@ class Configuration (UserDict.UserDict):
         }
         self['html'] = {
             "filename":        "linkchecker-out.html",
-            'colorbackground': '"#fff7e5"',
-            'colorurl':        '"#dcd5cf"',
-            'colorborder':     '"#000000"',
-            'colorlink':       '"#191c83"',
-            'tablewarning':    '<td bgcolor="#e0954e">',
-            'tableerror':      '<td bgcolor="#db4930">',
-            'tableok':         '<td bgcolor="#3ba557">',
+            'colorbackground': '#fff7e5',
+            'colorurl':        '#dcd5cf',
+            'colorborder':     '#000000',
+            'colorlink':       '#191c83',
+            'tablewarning':    '<td bgcolor=#e0954e>',
+            'tableerror':      '<td bgcolor=#db4930>',
+            'tableok':         '<td bgcolor=#3ba557>',
         }
         self['colored'] = {
             "filename":     "linkchecker-out.ansi",
@@ -301,12 +288,11 @@ class Configuration (UserDict.UserDict):
         args = {}
 	args.update(self[logtype])
 	args.update(dict)
-        return apply(Loggers[logtype], (), args)
+        return apply(linkcheck.log.Loggers[logtype], (), args)
 
     def addLogger(self, logtype, loggerClass, logargs={}):
         "add a new logger type"
-        global Loggers
-        Loggers[logtype] = loggerClass
+        linkcheck.log.Loggers[logtype] = loggerClass
         self[logtype] = logargs
 
     def incrementLinknumber_NoThreads (self):
@@ -462,7 +448,7 @@ class Configuration (UserDict.UserDict):
 	    return
 
         section="output"
-        for key in Loggers.keys():
+        for key in linkcheck.log.Loggers.keys():
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
                     try:
@@ -474,7 +460,7 @@ class Configuration (UserDict.UserDict):
                 except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)
         try:
             log = cfgparser.get(section, "log")
-            if Loggers.has_key(log):
+            if linkcheck.log.Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
                 self.warn(linkcheck._("invalid log option '%s'") % log)
@@ -495,7 +481,7 @@ class Configuration (UserDict.UserDict):
             for arg in filelist:
                 arg = arg.strip()
                 # no file output for the blacklist Logger
-                if Loggers.has_key(arg) and arg != "blacklist":
+                if linkcheck.log.Loggers.has_key(arg) and arg != "blacklist":
 		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
 	except ConfigParser.Error, msg: debug(HURT_ME_PLENTY, msg)

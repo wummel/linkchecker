@@ -61,13 +61,13 @@
 [html]
 #filename=linkchecker-out.html
 # colors for the various parts
-#colorbackground="#fff7e5"
-#colorurl="#dcd5cf"
-#colorborder="#000000"
-#colorlink="#191c83"
-#tablewarning=<td bgcolor="#e0954e">
-#tableerror=<td bgcolor="#db4930">
-#tableok=<td bgcolor="#3ba557">
+#colorbackground=#fff7e5
+#colorurl=#dcd5cf
+#colorborder=#000000
+#colorlink=#191c83
+#tablewarning=<td bgcolor=#e0954e>
+#tableerror=<td bgcolor=#db4930>
+#tableok=<td bgcolor=#3ba557>
 #fields=all
 
 # ANSI color logger

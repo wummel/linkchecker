@@ -112,7 +112,7 @@ For single-letter option arguments the space is not a necessity. So
         message, for example 'This page has moved' or 'Oracle
         Application Server error'.
         This option implies -w.
-""") % linkcheck.Config.LoggerKeys
+""") % linkcheck.log.LoggerKeys
 
 Notes = linkcheck._("""NOTES
 o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL
@@ -239,7 +239,7 @@ for opt,arg in options:
         printHelp()
 
     elif opt=="-o" or opt=="--output":
-        if linkcheck.Config.Loggers.has_key(arg):
+        if linkcheck.log.Loggers.has_key(arg):
             config['log'] = config.newLogger(arg)
         else:
             printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +\
@@ -251,7 +251,7 @@ for opt,arg in options:
             type, ns['filename'] = arg.split('/', 1)
             if not ns['filename']: raise ValueError
         except ValueError: type = arg
-        if linkcheck.Config.Loggers.has_key(type) and type != "blacklist":
+        if linkcheck.log.Loggers.has_key(type) and type != "blacklist":
             config['fileoutput'].append(config.newLogger(type, ns))
         else:
             printUsage((linkcheck._("Illegal argument '%s' for option ") % arg) +\
@@ -339,7 +339,8 @@ if constructauth:
 
 # construct the url list
 # if we use blacklist mode, try to read ~/.blacklist
-if config["log"].__class__ == linkcheck.Logging.BlacklistLogger and \
+from linkcheck.log.BlacklistLogger import BlacklistLogger
+if config["log"].__class__ == BlacklistLogger and \
    os.path.exists(config['log'].filename):
     args = open(config['log'].filename).readlines()
 

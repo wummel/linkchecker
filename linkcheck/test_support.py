@@ -1,5 +1,6 @@
 """Supporting definitions for the Python regression test."""
 import linkcheck
+from linkcheck.log.Logger import Logger
 
 class Error (Exception):
         """Base class for regression test exceptions."""
@@ -72,7 +73,7 @@ def findfile (file, here=__file__):
 	return file
 
 
-class TestLogger (linkcheck.Logging.Logger):
+class TestLogger (Logger):
     """ Output for regression test """
     def init (self):
         pass

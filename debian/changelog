@@ -5,8 +5,9 @@ linkchecker (1.5.1) unstable; urgency=low
     the maximum recursion limit error (from 1.4.6)
   * linkcheck/HttpUrlData.py: replace empty paths with a slash; adjust
     warning message (from 1.4.6)
+  * updated translations
 
- -- Bastian Kleineidam <calvin@debian.org>  Tue, 14 May 2002 22:46:42 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 14 May 2002 23:31:12 +0200
 
 linkchecker (1.5.0) unstable; urgency=low
 
