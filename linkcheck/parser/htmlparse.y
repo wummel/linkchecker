@@ -43,17 +43,11 @@ static int yyerror (char* msg) {
     strcmp(tag, "meta")==0 || \
     strcmp(tag, "param")==0)
 
-/* resize buf to an empty string */
-#define RESIZE_BUF(buf) \
-    buf = PyMem_Resize(buf, char, 1); \
-    if (buf==NULL) return NULL; \
-    buf[0] = '\0'
-
-/* set buf to an empty string */
-#define NEW_BUF(buf) \
-    buf = PyMem_New(char, 1); \
-    if (buf==NULL) return NULL; \
-    buf[0] = '\0'
+/* clear b to an empty string, returning NULL on error */
+#define CLEAR_BUF(b) \
+    b = PyMem_Resize(b, char, 1); \
+    if (b==NULL) return NULL; \
+    (b)[0] = '\0'
 
 /* call error handler if error object is not NULL */
 #define CHECK_ERROR(ud, label) \
@@ -412,7 +406,8 @@ static PyObject* htmlsax_parser_new(PyObject* self, PyObject* args) {
     /* reset userData */
     p->userData = PyMem_New(UserData, sizeof(UserData));
     p->userData->handler = handler;
-    NEW_BUF(p->userData->buf);
+    p->userData->buf = NULL;
+    CLEAR_BUF(p->userData->buf);
     p->userData->nextpos =
 	p->userData->bufpos =
 	p->userData->pos =
@@ -421,7 +416,8 @@ static PyObject* htmlsax_parser_new(PyObject* self, PyObject* args) {
 	p->userData->last_column =
 	p->userData->lineno =
 	p->userData->last_lineno = 1;
-    NEW_BUF(p->userData->tmp_buf);
+    p->userData->tmp_buf = NULL;
+    CLEAR_BUF(p->userData->tmp_buf);
     p->userData->tmp_tag = p->userData->tmp_attrname =
 	p->userData->tmp_attrval = p->userData->tmp_attrs =
 	p->userData->lexbuf = NULL;
@@ -455,7 +451,7 @@ static PyObject* parser_flush (PyObject* self, PyObject* args) {
         return NULL;
     }
     /* reset parser variables */
-    RESIZE_BUF(p->userData->tmp_buf);
+    CLEAR_BUF(p->userData->tmp_buf);
     Py_XDECREF(p->userData->tmp_tag);
     Py_XDECREF(p->userData->tmp_attrs);
     Py_XDECREF(p->userData->tmp_attrval);
@@ -470,7 +466,7 @@ static PyObject* parser_flush (PyObject* self, PyObject* args) {
 	PyObject* callback = NULL;
 	PyObject* result = NULL;
 	/* reset buffer */
-	RESIZE_BUF(p->userData->buf);
+	CLEAR_BUF(p->userData->buf);
 	if (s==NULL) { error=1; goto finish_flush; }
 	if (PyObject_HasAttrString(p->userData->handler, "characters")==1) {
 	    callback = PyObject_GetAttrString(p->userData->handler, "characters");
@@ -590,8 +586,8 @@ static PyObject* parser_reset(PyObject* self, PyObject* args) {
         return NULL;
     }
     /* reset buffer */
-    RESIZE_BUF(p->userData->buf);
-    RESIZE_BUF(p->userData->tmp_buf);
+    CLEAR_BUF(p->userData->buf);
+    CLEAR_BUF(p->userData->tmp_buf);
     p->userData->bufpos =
 	p->userData->pos =
 	p->userData->nextpos = 0;
