@@ -4,6 +4,7 @@ valid
 url telnet:localhost
 error
 url telnet:
+cached
 error
 url telnet://swindon.city.ac.uk
 valid

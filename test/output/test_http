@@ -53,6 +53,6 @@ valid
 url http://www.heise.de/?quoted=ü
 name html entities
 valid
-url illegalquote1
+url illegalquote1"
 name no beginning quote
 error
