@@ -48,10 +48,6 @@ def get_dest_dir ():
     return os.path.join(get_prg_path(), "LinkChecker")
 
 
-def get_python_exe ():
-    return os.path.join(sys.prefix, "python.exe")
-
-
 # install routines
 
 def do_install ():
@@ -68,9 +64,9 @@ def create_shortcuts ():
     except OSError:
         pass
     path = os.path.join(dest_dir, "Check URL.lnk")
-    arguments = os.path.join(sys.prefix, "Scripts", "linkchecker")
-    arguments += " --interactive"
-    create_shortcut(get_python_exe(), "Check URL", path, arguments)
+    script = os.path.join(sys.prefix, "Scripts", "linkchecker.cmd")
+    arguments = "--interactive"
+    create_shortcut(script, "Check URL", path, arguments)
     file_created(path)
 
     target = os.path.join(sys.prefix,
@@ -88,7 +84,9 @@ def create_shortcuts ():
 
 
 def fix_configdata ():
-    """Fix install and config paths in the config file."""
+    """
+    Fix install and config paths in the config file.
+    """
     name = "_linkchecker_configdata.py"
     conffile = os.path.join(sys.prefix, "Lib", "site-packages", name)
     lines = []
@@ -116,8 +114,10 @@ win_path_scheme = {
 }
 
 def fix_install_path (line):
-    """Replace placeholders written by bdist_wininst with those specified
-       in windows install path scheme."""
+    """
+    Replace placeholders written by bdist_wininst with those specified
+    in windows install path scheme.
+    """
     key, eq, val = line.split()
     # unescape string (do not use eval())
     val = val[1:-1].replace("\\\\", "\\")

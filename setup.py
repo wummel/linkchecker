@@ -23,6 +23,7 @@ if not hasattr(sys, "version_info"):
 if sys.version_info < (2, 4, 0, 'final', 0):
     raise SystemExit, "This program requires Python 2.4.0 or later."
 import os
+import platform
 import stat
 import re
 import string
@@ -31,12 +32,14 @@ from distutils.core import setup, Extension, DEBUG
 import distutils.dist
 from distutils.command.install import install
 from distutils.command.install_data import install_data
+from distutils.command.build_scripts import build_scripts, first_line_re
 from distutils.command.build_ext import build_ext
 from distutils.command.build import build
 from distutils.command.clean import clean
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
-from distutils import util, log
+from distutils.dep_util import newer
+from distutils import util, log, sysconfig
 
 # cross compile config
 cc = os.environ.get("CC")
@@ -135,6 +138,102 @@ class MyInstallData (install_data, object):
                     mode |= 011
                 mode |= 044
                 os.chmod(path, mode)
+
+
+class MyBuildScripts (build_scripts, object):
+    """
+    My own script builder to handle windows scripts.
+    """
+
+    def run (self):
+        """
+        Copy each script, and set execute permissions on POSIX systems.
+        """
+        if not self.scripts:
+            return
+        self.mkpath(self.build_dir)
+        outfiles = []
+        for script in self.scripts:
+            outfiles.append(self.handle_script(util.convert_path(script)))
+        if os.name == 'posix':
+            for file in outfiles:
+                if self.dry_run:
+                    log.info("changing mode of %s", file)
+                else:
+                    oldmode = os.stat(file)[stat.ST_MODE] & 07777
+                    newmode = (oldmode | 0555) & 07777
+                    if newmode != oldmode:
+                        log.info("changing mode of %s from %o to %o",
+                                 file, oldmode, newmode)
+                        os.chmod(file, newmode)
+
+    def handle_script (self, script):
+        """
+        Copy script; if it's marked as a Python script in the Unix way
+        (first line matches 'first_line_re', ie. starts with "\#!" and
+        contains "python"), then adjust the first line to refer to the
+        current Python interpreter as we copy.
+        On Windows, such scripts get a ".cmd" extension.
+        """
+        adjust = 0
+        outfile = os.path.join(self.build_dir, os.path.basename(script))
+        if not self.force and not newer(script, outfile):
+            log.debug("not copying %s (up-to-date)", script)
+            return outfile
+
+        # Always open the file, but ignore failures in dry-run mode --
+        # that way, we'll get accurate feedback if we can read the
+        # script.
+        try:
+            f = open(script, "r")
+        except IOError:
+            if not self.dry_run:
+                raise
+            f = None
+        else:
+            first_line = f.readline()
+            if not first_line:
+                self.warn("%s is an empty file (skipping)" % script)
+                return outfile
+
+            match = first_line_re.match(first_line)
+            if match:
+                adjust = 1
+                post_interp = match.group(1) or ''
+
+        if adjust:
+            if platform.system() == 'Windows' and \
+               platform.release() in ['NT', 'XP'] and \
+               not outfile.endswith(".cmd"):
+                outfile += ".cmd"
+            self.adjust(f, script, post_interp, outfile)
+            f.close()
+        else:
+            f.close()
+            self.copy_file(script, outfile)
+        return outfile
+
+
+    def adjust (self, f, script, post_interp, outfile):
+        log.info("copying and adjusting %s -> %s", script, self.build_dir)
+        if not self.dry_run:
+            outf = open(outfile, "w")
+            if outfile.endswith('.cmd'):
+                pat = '@%s%s -x "%%~f0" %%* & exit /b\n'
+            else:
+                pat = "#!%s%s\n"
+            if not sysconfig.python_build:
+                outf.write(pat %
+                           (self.executable,
+                            post_interp))
+            else:
+                outf.write(pat %
+                           (os.path.join(
+                    sysconfig.get_config_var("BINDIR"),
+                    "python" + sysconfig.get_config_var("EXE")),
+                            post_interp))
+            outf.writelines(f.readlines())
+            outf.close()
 
 
 class MyDistribution (distutils.dist.Distribution, object):
@@ -302,10 +401,12 @@ extra_compile_args = []
 library_dirs = []
 # libraries
 libraries = []
-
+# scripts
 scripts = ['linkchecker']
 if win_compiling:
     scripts.append('install-linkchecker.py')
+# for MyInstallScripts
+cmd_scripts = ['linkchecker']
 
 if os.name == 'nt':
     # windows does not have unistd.h
@@ -341,7 +442,7 @@ if os.name == 'posix':
     data_files.append(('share/man/fr/man1', ['doc/fr/linkchecker.1']))
     data_files.append(('share/linkchecker/examples',
               ['config/linkchecker-completion', 'config/linkcheck-cron.sh']))
-elif os.name == 'nt':
+elif win_compiling:
     data_files.append(('share/linkchecker/doc',
              ['doc/en/documentation.html',
               'doc/en/index.html',
@@ -386,6 +487,7 @@ o a (Fast)CGI web interface (requires HTTP server)
        distclass = MyDistribution,
        cmdclass = {'install': MyInstall,
                    'install_data': MyInstallData,
+                   'build_scripts': MyBuildScripts,
                    'build_ext': MyBuildExt,
                    'build': MyBuild,
                    'clean': MyClean,

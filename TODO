@@ -21,13 +21,6 @@ Possible improvements people could work on:
   build an internal cache, however there are already a plethora of
   caching proxies we could use for that.
 
-- [FEATURE] for the Windows install name the script linkchecker.cmd and
-  put as the first line:
-  @python -x "%~f0" %* & exit /b
-  This way one can run "linkchecker" instead of
-  "python c:\python2.4\scripts\linkchecker" if c:\python2.4\scripts is
-  in the PATH.
-
 - [BUGFIX] CGI parameters should also be splitted on semicolons, but
   the join routine must also use semicolons then where apropriate.
   

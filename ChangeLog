@@ -10,6 +10,11 @@
     Closes: SF bug #1173841
     Changed: linkcheck/url.py, linkcheck/tests/test_url.py
 
+  * On Windows NT and XP systems, the command line scripts is now named
+    "linkchecker.cmd" to facilitate execution.
+    Type: feature
+    Changed: setup.py, install-linkchecker.py, doc/en/index.txt
+
 2.7 "Million Dollar Baby" (released 30.3.2005)
 
   * When a host has no MX record, fall back to A records as the mail

@@ -6,13 +6,19 @@ include config/reindent.py install-linkchecker.py install-rpm.sh
 include linkchecker
 include cgi/lc.cgi cgi/lc.fcgi cgi/README
 include Makefile
-include debian/rules debian/changelog debian/copyright debian/control
+include debian/rules
+include debian/changelog
+include debian/copyright
+include debian/control
 include debian/linkchecker.dirs
 include debian/linkchecker.docs
 include debian/linkchecker.examples
 include debian/linkchecker.links
 include debian/linkchecker.postinst
-include debian/compat debian/NEWS.Debian debian/README.Debian debian/watch
+include debian/compat
+include debian/NEWS.Debian
+include debian/README.Debian
+include debian/watch
 include test.py test/*.py test/*.sh
 include cgi/lconline/*.html cgi/lconline/*.de cgi/lconline/*.en
 include cgi/lconline/check.js
