@@ -3,7 +3,6 @@ High priority
 o DNS (and some URLs) seem to hang sometimes. This is not entirely true.
   The SMTP connect has a very long timeout (>200 seconds).
   But I can not use the signal module with threads.
-  Wait for Python 1.6 and urllib2.
 
 o I want to be able to supply a "break" command even when multiple
   threads are running.

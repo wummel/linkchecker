@@ -19,103 +19,100 @@
 from distutils.core import setup
 from distutils.dist import Distribution
 from distutils.extension import Extension
-from Template import Template
-import sys,os,string
+from distutils.command.install import install
+from distutils.command.config import config
+import os
 
-def change_root_inv(root, pathname):
-    """the (partially) inverse function of change_root"""
-    if (not root) or \
-       (len(root)<len(pathname)) or \
-       (path[:len(root)]!=root):
-        return pathname
+config_file = "config.py"
 
-    path = pathname[len(root):]
-    if os.name == 'posix':
-        if path[0]!='/': path = '/'+path
-    elif os.name == 'nt':
-        if path[0]!='\\': path = '\\'+path
-        path = os.path.splitdrive(root)[0] + path
-    return path
+class LCInstall(install):
+    def run(self):
+        install.run(self)
+        self.create_conf_file()
+
+    def create_conf_file(self):
+        from distutils.fancy_getopt import longopt_xlate
+        filename = os.path.join(self.install_lib,
+                                self.distribution.get_name() + "Conf.py")
+        data = []
+        self.execute(write_file, (filename, data),
+                     "creating %s" % filename)
+
+
+class LCConfig(config):
+    user_options = config.user_options + [
+        ('ssl-include-dirs=', None,
+         "directories to search for SSL header files"),
+        ('ssl-library-dirs=', None,
+         "directories to search for SSL library files"),
+        ]
+
+    def initialize_options (self):
+        config.initialize_options(self)
+        self.ssl_include_dirs = None
+        self.ssl_library_dirs = None
+
+    def finalize_options(self):
+        if self.ssl_include_dirs is None:
+            self.ssl_include_dirs = ['/usr/include/openssl',
+                                     '/usr/local/include/openssl']
+        if self.ssl_library_dirs is None:
+            self.ssl_library_dirs = ['/usr/lib',
+                                     '/usr/local/lib']
+
+    def check_lib(self, library, library_dirs=None,
+                  headers=None, include_dirs=None,
+                  other_libraries=[]):
+        self._check_compiler()
+        return self.try_link("int main (vlid) { }",
+                             headers, include_dirs,
+			     [library]+other_libraries, library_dirs)
+
+
+    def run (self):
+        if 'bdist_wininst' in self.distribution.commands and os.name!='nt':
+            self.announce("bdist_wininst command found on non-Windows "
+	                  "platform. Disabling SSL compilation")
+            have_ssl = 0
+        else:
+            have_ssl = self.check_lib("ssl",
+	                              library_dirs = self.ssl_library_dirs,
+				      include_dirs = self.ssl_include_dirs,
+                                      other_libraries = ["crypto"],
+                                      headers = ["ssl.h"])
+        f = open(config_file,'w')
+	f.write("have_ssl = %d\n" % (have_ssl))
+        f.write("ssl_library_dirs = %s\n" % `self.ssl_library_dirs`)
+        f.write("ssl_include_dirs = %s\n" % `self.ssl_include_dirs`)
+        f.write("libraries = %s\n" % `['ssl', 'crypto']`)
+        f.close()
+
 
 class LCDistribution(Distribution):
-    default_include_dirs = ['/usr/include/openssl',
-                            '/usr/local/include/openssl']
-    default_library_dirs = ['/usr/lib',
-                            '/usr/local/lib']
+
     def run_commands (self):
-        self.check_ssl()
+        if 'config' not in self.commands:
+            self.check_ssl()
         self.additional_things()
         Distribution.run_commands(self)
 
     def check_ssl(self):
-        if 'bdist_wininst' in self.commands and os.name!='nt':
-            self.announce(
-"""bdist_wininst command found on non-Windows platform.
-Disabling SSL compilation""")
-            return
-        ok = 0
-        c = self.get_command_obj('build_ext')
-        c.ensure_finalized()
-        incldirs = c.include_dirs+self.default_include_dirs
-        libdirs = c.library_dirs+self.default_library_dirs
-        for d in incldirs:
-            if os.path.exists(os.path.join(d, "ssl.h")):
-                self.announce('Found %s/ssl.h' % d)
-                ok = ok + 1
-        for d in libdirs:
-            if os.path.exists(os.path.join(d, "libssl.so")):
-                self.announce('Found %s/libssl.so' % d)
-                ok = ok + 1
-        if ok==2:
-            self.announce("Enabling SSL compilation")
-            self.reinitialize_command(c)
+        if not os.path.exists(config_file):
+            raise SystemExit, 'Please configure LinkChecker by running ' \
+	                      '"python setup.py config".'
+        import config
+        if config.have_ssl:
             self.ext_modules = [Extension('ssl', ['ssl.c'],
-                        include_dirs=incldirs,
-                        library_dirs=libdirs,
-                        libraries=['ssl'])]
-            c.ensure_finalized()
-        else:
-            self.announce(
-"""Some necessary SSL files are missing, disabling SSL compilation.
-Use "python setup.py build_ext -I<inclpath> -L<libpath>"
-where the path arguments point to your SSL installation.""")
+                        include_dirs=config.ssl_include_dirs,
+                        library_dirs=config.ssl_library_dirs,
+                        libraries=config.libraries)]
 
     def additional_things(self):
-        """replace path names and program information in various files"""
-        self.announce("Filling template values.")
-        inst = self.get_command_obj("install")
-        inst.ensure_finalized()
-        data = {
-          'install_data': inst.install_data,
-          "install_scripts": change_root_inv(inst.root, inst.install_scripts),
-          "syspath": "# sys.path augmentation not needed",
-          'author': self.get_author(),
-          'version': self.get_version(),
-          'url': self.get_url(),
-          'appname': self.get_name(),
-          'email': self.get_author_email(),
-          'long_description': self.get_long_description(),
-          'python': os.path.normpath(sys.executable),
-        }
-        files = [
-            'linkchecker',
-            'linkchecker.bat',
-            'test/profiletest.py',
-            'linkcheck/__init__.py',
-            'linkcheck/Config.py',
-            'install.py',
-            'README',
-        ]
-        for name in files:
-            t = Template(name+".tmpl")
-            f = open(name,"w")
-            f.write(t.fill_in(data))
-            f.close()
-        # append system specific files
-        if os.name=='nt':
+        if 'bdist_wininst' in self.commands or os.name=='nt':
+            # enabling windows files
             self.scripts.append('linkchecker.bat')
         elif os.name=='posix':
-            self.data_files.append(('/etc', ['linkcheckerrc']))
+            # for local run
             os.chmod("linkchecker", 0755)
 
 
@@ -146,6 +143,7 @@ o internationalization support
 o (Fast)CGI web interface
 """,
        distclass = LCDistribution,
+       cmdclass = {'config': LCConfig, 'install': LCInstall},
        packages = ['','DNS','linkcheck'],
        scripts = ['linkchecker'],
        data_files = [('share/locale/de/LC_MESSAGES',
@@ -154,5 +152,6 @@ o (Fast)CGI web interface
                      ('share/locale/fr/LC_MESSAGES',
                       ['locale/fr/LC_MESSAGES/linkcheck.mo',
 		       'locale/fr/LC_MESSAGES/linkcheck.po']),
+                     ('/etc', ['linkcheckerrc']),
 		    ],
 )

@@ -1,17 +1,18 @@
-#!$python
+#!/usr/bin/env python
 
+# imports and checks
 import sys
-
-# no i18n at this point
 if sys.version[:5] < "1.5.2":
-    sys.stderr.write("This program requires Python 1.5.2 or later.\n")
-    sys.exit(1)
-
-# add the path to linkcheck module if you do not install with distutils
-$syspath
+    raise SystemExit, "This program requires Python 1.5.2 or later."
 import getopt,re,string,os,urlparse
-import linkcheck,StringUtil
+try:
+   import linkcheck
+except ImportError:
+   raise SystemExit, "Could not load linkcheck module. " \
+                     "LinkChecker is not correct installed."
+import StringUtil
 from linkcheck import _
+
 
 Usage = _("USAGE\tlinkchecker [options] file_or_url...\n"
 "\n"

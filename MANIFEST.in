@@ -14,3 +14,4 @@ include DNS/README
 include linkcheck/*.tmpl
 include test/viewprof.py test/profiletest.py.tmpl test/*.html
 recursive-include locale *.mo *.po
+recursive-include lconline *

@@ -21,24 +21,23 @@ This module stores
 * Other configuration options
 """
 
-import ConfigParser,sys,os,re,UserDict,string,time
+import ConfigParser,sys,os,re,UserDict,string,time,Logging,LinkCheckerConf
 from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
-import Logging
 from linkcheck import _
 
-Version = "$version"
-AppName = "$appname"
+Version = LinkCheckerConf.version
+AppName = LinkCheckerConf.name
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
-Author =  "$author"
+Author =  LinkCheckerConf.author
 HtmlAuthor = string.replace(Author, ' ', '&nbsp;')
 Copyright = "Copyright © 2000 by "+Author
 HtmlCopyright = "Copyright &copy; 2000 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
-Url = "$url"
-Email = "$email"
+Url = LinkCheckerConf.url
+Email = LinkCheckerConf.email
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' whithin this
@@ -90,7 +89,7 @@ class Configuration(UserDict.UserDict):
         self.data["externlinks"] = []
         self.data["internlinks"] = []
         self.data["allowdeny"] = 0
-        self.data["authentication"] = [(re.compile(r'^.+$'),
+        self.data["authentication"] = [(re.compile(r'^.+'),
 	                               'anonymous',
 	                               'joe@')]
         self.data["proxy"] = 0

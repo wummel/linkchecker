@@ -1,7 +1,24 @@
                       LinkChecker
                      =============
 
-$long_description
+With LinkChecker you can check your HTML documents for broken links.
+
+Features:
+---------
+o recursive checking
+o multithreaded
+o output can be colored or normal text, HTML, SQL, CSV or a GML sitemap
+  graph
+o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
+  file links are supported.
+  Javascript links are currently ignored
+o restrict link checking with regular expression filters for URLs
+o HTTP proxy support
+o give username/password for HTTP and FTP authorization
+o robots.txt exclusion protocol support
+o internationalization support
+o (Fast)CGI web interface
+
 
 Installing, Requirements, Running
 ---------------------------------
@@ -10,7 +27,7 @@ Read the file INSTALL.
 
 License
 --------
-$appname is licensed under the GNU Public License.
+LinkChecker is licensed under the GNU Public License.
 Credits go to Guido van Rossum for making Python. His hovercraft is
 full of eels!
 As this program is directly derived from my Java link checker, additional

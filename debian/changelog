@@ -1,3 +1,9 @@
+linkchecker (1.2.6) unstable; urgency=low
+
+  * placeholder
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sun, 17 Sep 2000 11:22:29 +0200
+
 linkchecker (1.2.5) unstable; urgency=low
 
   * fix /etc/resolv.conf parsing again (this time for real?)
