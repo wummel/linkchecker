@@ -166,7 +166,7 @@ def print_usage (msg):
 def viewprof ():
     """print profiling data and exit"""
     if not has_pstats:
-        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+        linkcheck.log.error(linkcheck.LOG_CMDLINE,
                            _("The `pstats' Python module is not installed,"
                            " therefore the --viewprof option is disabled."))
         sys.exit(1)
