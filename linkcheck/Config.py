@@ -178,11 +178,18 @@ class Configuration(UserDict.UserDict):
 
     def _do_connectNntp(self):
         import nntplib
+        timeout = 1
+        while timeout:
         try:
             self.data["nntp"] = nntplib.NNTP(self.data["nntpserver"])
-        except:
-            print sys.exc_info()[:2]
-            raise
+            timeout = 0
+        except nntplib.error_perm:
+            value = sys.exc_info()[1]
+            if re.compile("^505").search(str(value)):
+                import whrandom,time
+                time.sleep(whrandom.randint(30,60))
+            else:
+                raise
 
     def hasMoreUrls_Threads(self):
         return not self.urls.empty()
