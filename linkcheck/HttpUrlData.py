@@ -30,11 +30,15 @@ ExcList.extend([httplib.error,])
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
-_isAmazonHost = re.compile(r'www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').match
+# Amazon blocks HEAD requests at all
+_isAmazonHost = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
+# Servers not supporting HEAD request (eg returning 404 errors)
+_isBrokenHeadServer = re.compile(r'Netscape-Enterprise/').search
+# Server not supporting anchors in urls (eg returning 404 errors)
+_isBrokenAnchorServer = re.compile(r'Microsoft-IIS/').search
 
 class HttpUrlData (ProxyUrlData):
     "Url link with http scheme"
-    netscape_re = re.compile("Netscape-Enterprise/")
 
 
     def buildUrl (self):
@@ -45,7 +49,7 @@ class HttpUrlData (ProxyUrlData):
         if not self.urlparts[2]:
             self.setWarning(i18n._("URL path is empty, assuming '/' as path"))
             self.urlparts[2] = '/'
-            self.url = urlparse.urlunsplit(self.urlparts[:4]+[self.anchor])
+            self.url = urlparse.urlunsplit(self.urlparts)
 
 
     def checkConnection (self):
@@ -129,8 +133,6 @@ class HttpUrlData (ProxyUrlData):
                 redirected = unquote(redirected)
                 # note: urlparts has to be a list
                 self.urlparts = list(urlparse.urlsplit(redirected))
-                # we saved the anchor already, this one gets removed
-                self.urlparts[4] = ''
                 # new response data
                 response = self._getHttpResponse()
                 self.headers = response.msg
@@ -163,11 +165,15 @@ class HttpUrlData (ProxyUrlData):
                 response = self._getHttpResponse("GET")
                 self.headers = response.msg
             elif response.status>=400 and self.headers:
-                server = self.headers.getheader("Server")
-                if server and self.netscape_re.search(server):
-                    self.setWarning(i18n._("Netscape Enterprise Server"
-                     " with no HEAD support, falling back to GET"))
+                server = self.headers.get('Server', '')
+                if _isBrokenHeadServer(server):
+                    self.setWarning(i18n._("Server %s has no HEAD support, falling back to GET") % `server`)
                     response = self._getHttpResponse("GET")
+                    self.headers = response.msg
+                elif _isBrokenAnchorServer(server):
+                    self.setWarning(i18n.("Server %s has no anchor support, removing anchor from request") % `server`)
+                    self.urlparts[4] = ''
+                    response = self._getHttpResponse()
                     self.headers = response.msg
             elif self.headers:
                 type = self.headers.gettype()
@@ -182,7 +188,7 @@ class HttpUrlData (ProxyUrlData):
                     self.headers = response.msg
             if response.status not in [301,302]: break
 
-        effectiveurl = urlparse.urlunsplit(self.urlparts[:4]+[self.anchor])
+        effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
             self.setWarning(i18n._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
