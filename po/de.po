@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Nov  8 03:14:09 2002\n"
+"POT-Creation-Date: Mon Nov 18 21:31:48 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
@@ -183,7 +183,8 @@ msgstr "Anker #%s nicht gefunden"
 msgid "Found %s in link contents"
 msgstr "Habe %s in Link Inhalt gefunden"
 
-msgid "more than one base tag found"
+#, fuzzy
+msgid "more than one <base> tag found, using only the first one"
 msgstr "mehr als ein base Tag gefunden"
 
 msgid ""
