@@ -153,7 +153,7 @@ setup (name = "linkchecker",
        maintainer = myname,
        maintainer_email = myemail,
        url = "http://linkchecker.sourceforge.net/",
-       licence = "GPL",
+       license = "GPL",
        long_description = """Linkchecker features
 o recursive checking
 o multithreading
