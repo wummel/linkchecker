@@ -458,7 +458,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         key = (scheme, self.urlparts[1], _user, _password)
         conn = self.consumer.cache.get_connection(key)
         if conn is not None:
-            # reuse cached HTTP(S) connection
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                "reuse cached HTTP(S) connection %s", conn)
             return conn
         if scheme == "http":
             h = linkcheck.httplib2.HTTPConnection(host)
