@@ -1,3 +1,10 @@
+linkchecker (1.8.6-1) unstable; urgency=low
+
+  * New upstream release.
+  * added glibc 2.3 dependency; fixes htmlsax import errors
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 26 Jan 2003 15:39:58 +0100
+
 linkchecker (1.8.5-1) unstable; urgency=low
 
   * New upstream release.

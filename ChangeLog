@@ -1,3 +1,6 @@
+1.8.6
+  * include a fixed robotparser.py (from Python 2.2 CVS maint branch)
+
 1.8.5
   * fix config.warn to warn
     Changed files: linkcheck/__init.py
