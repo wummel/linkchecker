@@ -4,7 +4,7 @@
     Changed: linkcheck/httplib2.py
   * catch errors earlier in recursion check
     Changed: linkcheck/UrlData.py
-  * quote url in log output
+  * quote url and parent url in log output
     Changed: linkcheck/log/*.py
     Added: linkcheck/url.py
 

@@ -20,6 +20,7 @@ from linkcheck.log import strtime, strduration
 from StandardLogger import StandardLogger
 from Logger import Logger
 from linkcheck import Config, i18n
+from linkcheck.url import url_quote
 
 class CSVLogger (StandardLogger):
     """ CSV output. CSV consists of one line per entry. Entries are
@@ -65,10 +66,10 @@ class CSVLogger (StandardLogger):
     def newUrl (self, urlData):
         if self.fd is None: return
         row = [urlData.urlName, urlData.recursionLevel,
-               urlData.parentName, urlData.baseRef,
+               url_quote(urlData.parentName), urlData.baseRef,
                urlData.errorString, urlData.validString,
                urlData.warningString, urlData.infoString,
-               urlData.valid, urlData.url,
+               urlData.valid, url_quote(urlData.url),
                urlData.line, urlData.column,
                urlData.name, urlData.dltime,
                urlData.dlsize, urlData.checktime,

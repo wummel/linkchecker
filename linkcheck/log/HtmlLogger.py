@@ -86,7 +86,8 @@ class HtmlLogger (StandardLogger):
         if urlData.parentName and self.has_field("parenturl"):
             self.fd.write("<tr>\n<td>"+self.field("parenturl")+
                '</td>\n<td><a target="top" href="'+
-               urlData.parentName+'">'+urlData.parentName+"</a>")
+               url_quote(urlData.parentName)+'">'+
+               url_quote(urlData.parentName)+"</a>")
             if urlData.line:
                 self.fd.write(i18n._(", line %d")%urlData.line)
             if urlData.column:
