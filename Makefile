@@ -18,8 +18,8 @@ TESTFILES := $(wildcard linkcheck/tests/*.py linkcheck/ftests/*.py)
 PYCHECKEROPTS := -F config/pycheckrc
 PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint.$(PYTHON)
 PYLINTOPTS := 
-PYLINTBROKEN = 
-PYLINTFILES = $(filter-out $(PYLINTBROKEN),$(PYFILES))
+PYLINTIGNORE = linkcheck/httplib2.py
+PYLINTFILES = $(filter-out $(PYLINTIGNORE),$(PYFILES))
 
 all:
 	@echo "Read the file doc/install.txt to see how to build and install this package."

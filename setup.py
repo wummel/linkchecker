@@ -42,7 +42,6 @@ from distutils.command.build import build
 from distutils.command.clean import clean
 from distutils.file_util import write_file
 from distutils import util
-
 from linkcheck import msgfmt
 
 # cross compile config
