@@ -20,13 +20,10 @@ Url consumer class.
 
 import sys
 import time
-try:
-    import threading
-except ImportError:
-    import dummy_threading as threading
 
 import linkcheck.threader
 import linkcheck.log
+import linkcheck.lock
 import linkcheck.strformat
 import linkcheck.checker.geoip
 from urlbase import stderr
@@ -52,9 +49,7 @@ def print_duration (duration):
     print >> stderr, msg,
 
 
-lock_klass = threading.RLock().__class__
-
-class Consumer (lock_klass):
+class Consumer (linkcheck.lock.AssertLock):
     """
     Consume urls from the url queue in a thread-safe manner.
     """
@@ -76,20 +71,6 @@ class Consumer (lock_klass):
         # if checking had warnings
         self.warnings = False
         self.logger_start_output()
-
-    def acquire (self):
-        """
-        Acquire lock.
-        """
-        linkcheck.log.debug(linkcheck.LOG_THREAD, "acquire data lock")
-        super(Consumer, self).acquire()
-
-    def release (self):
-        """
-        Release lock.
-        """
-        linkcheck.log.debug(linkcheck.LOG_THREAD, "release data lock")
-        super(Consumer, self).release()
 
     def _set_threads (self, num):
         """
@@ -190,13 +171,15 @@ class Consumer (lock_klass):
         """
         Print check status looking at url queues.
         """
+        # avoid deadlock by requesting cache data before locking
+        tocheck = self.cache.incoming_len()
         self.acquire()
         try:
             print >> stderr, _("Status:"),
             active = self.threader.active_threads()
             print_active(active)
             print_links(self.linknumber)
-            print_tocheck(self.cache.incoming_len())
+            print_tocheck(tocheck)
             print_duration(curtime - start_time)
             print >> stderr
         finally:
