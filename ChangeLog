@@ -1,6 +1,10 @@
 1.8.20
   * fix setting of domain in set_intern_url
     Changed: linkcheck/UrlData.py
+  * - parse JS strings and comments
+    - accept "<!- " as comment begin
+    Changed: linkcheck/parser/htmlex.l
+    Closes: SF bug 768661
 
 1.8.19
   * add scheme colon in set_intern_url
