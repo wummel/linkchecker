@@ -69,20 +69,27 @@ files:	locale localbuild
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
-sign-stamp: release-stamp
-	for f in dist/*; do gpg --detach-sign --armor $$f; done
-	touch $@
+release: releasecheck dist upload homepage
+	mozilla -remote "openUrl(https://sourceforge.net/projects/linkchecker, new-tab)"
+	@echo "Make SF release and press return..."
+	@read
+	@echo "Uploading new LinkChecker Homepage..."
+	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 
-release-stamp: releasecheck distclean locale config
+dist: locale config
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
-	touch $@
 
 releasecheck:
 	@if grep -i xxxx ChangeLog > /dev/null; then \
 	  echo "Could not release: edit ChangeLog release date"; false; \
 	fi
 
-upload: sign-stamp
+upload:
+	for f in dist/*; do \
+	  if [ ! -f $${f}.asc ]; then \
+	    gpg --detach-sign --armor $$f; \
+	  fi; \
+	done
 	ncftpput upload.sourceforge.net /incoming dist/*
 
 test:
