@@ -23,6 +23,7 @@ import stat
 import re
 import sys
 import string
+import glob
 from types import StringType, TupleType
 from distutils.core import setup, Extension, DEBUG
 #try:
@@ -36,9 +37,12 @@ distklass = distutils.dist.Distribution
 from distutils.command.install import install
 from distutils.command.install_data import install_data
 from distutils.command.build_ext import build_ext
+from distutils.command.build import build
+from distutils.command.clean import clean
 from distutils.file_util import write_file
 from distutils import util
 
+from linkcheck import msgfmt
 
 # cross compile config
 cc = os.environ.get("CC")
@@ -92,8 +96,9 @@ class MyInstall (install, object):
 	self.distribution.create_conf_file(data, directory=self.install_lib)
 
     def get_outputs (self):
-        """add the generated config file from distribution.create_conf_file()
-           to the list of outputs.
+        """
+        Add the generated config file from distribution.create_conf_file()
+        to the list of outputs.
         """
         outs = super(MyInstall, self).get_outputs()
         outs.append(self.distribution.get_conf_filename(self.install_lib))
@@ -119,10 +124,14 @@ class MyInstall (install, object):
 
 
 class MyInstallData (install_data, object):
-    """My own data installer to handle permissions"""
+    """
+    My own data installer to handle permissions.
+    """
 
     def run (self):
-        """adjust permissions on POSIX systems"""
+        """
+        Adjust permissions on POSIX systems.
+        """
         super(MyInstallData, self).run()
         if os.name == 'posix' and not self.dry_run:
             # Make the data files we just installed world-readable,
@@ -136,10 +145,14 @@ class MyInstallData (install_data, object):
 
 
 class MyDistribution (distklass, object):
-    """custom distribution class generating config file"""
+    """
+    Custom distribution class generating config file.
+    """
 
     def run_commands (self):
-        """generate config file and run commands"""
+        """
+        Generate config file and run commands.
+        """
         cwd = os.getcwd()
         data = []
         data.append('config_dir = %r' % os.path.join(cwd, "config"))
@@ -149,12 +162,15 @@ class MyDistribution (distklass, object):
         super(MyDistribution, self).run_commands()
 
     def get_conf_filename (self, directory):
-        """get name for config file"""
+        """
+        Get name for config file.
+        """
         return os.path.join(directory, "_%s_configdata.py"%self.get_name())
 
     def create_conf_file (self, data, directory=None):
-        """create local config file from given data (list of lines) in
-           the directory (or current directory if not given)
+        """
+        Create local config file from given data (list of lines) in
+        the directory (or current directory if not given).
         """
         data.insert(0, "# this file is automatically created by setup.py")
         data.insert(0, "# -*- coding: iso-8859-1 -*-")
@@ -208,6 +224,56 @@ class MyBuildExt (build_ext, object):
             self.build_extension(ext)
 
 
+def list_message_files(package, suffix=".po"):
+    """
+    Return list of all found message files and their installation paths.
+    """
+    _files = glob.glob("po/*" + suffix)
+    _list = []
+    for _file in _files:
+        # basename (without extension) is a locale name
+        _locale = os.path.splitext(os.path.basename(_file))[0]
+        _list.append((_file, os.path.join(
+            "share", "locale", _locale, "LC_MESSAGES", "%s.mo" % package)))
+    return _list
+
+
+class MyBuild (build, object):
+    """
+    Custom build command.
+    """
+
+    def build_message_files (self):
+        """
+        For each po/*.po, build .mo file in target locale directory.
+        """
+        for (_src, _dst) in list_message_files(self.distribution.get_name()):
+            _build_dst = os.path.join("build", _dst)
+            self.mkpath(os.path.dirname(_build_dst))
+            self.announce("Compiling %s -> %s" % (_src, _build_dst))
+            msgfmt.make(_src, _build_dst)
+
+    def run (self):
+        self.build_message_files()
+        build.run(self)
+
+
+class MyClean (clean, object):
+    """
+    Custom clean command.
+    """
+
+    def run (self):
+        if self.all:
+            # remove share directory
+            directory = os.path.join("build", "share")
+            if os.path.exists(directory):
+                remove_tree(directory, dry_run=self.dry_run)
+            else:
+                log.warn("'%s' does not exist -- can't clean it", directory)
+        clean.run(self)
+
+
 # global include dirs
 include_dirs = []
 # global macros
@@ -242,14 +308,6 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 data_files = [
-         ('share/locale/de/LC_MESSAGES',
-             ['share/locale/de/LC_MESSAGES/linkchecker.mo']),
-         ('share/locale/fr/LC_MESSAGES',
-             ['share/locale/fr/LC_MESSAGES/linkchecker.mo']),
-         ('share/locale/nl/LC_MESSAGES',
-             ['share/locale/nl/LC_MESSAGES/linkchecker.mo']),
-         ('share/locale/es/LC_MESSAGES',
-             ['share/locale/es/LC_MESSAGES/linkchecker.mo']),
          ('share/linkchecker',
              ['config/linkcheckerrc', 'config/logging.conf', ]),
          ('share/linkchecker/examples',
@@ -304,6 +362,8 @@ o a (Fast)CGI web interface (requires HTTP server)
        cmdclass = {'install': MyInstall,
                    'install_data': MyInstallData,
                    'build_ext': MyBuildExt,
+                   'build': MyBuild,
+                   'clean': MyClean,
                   },
        packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
                    'linkcheck.dns', 'linkcheck.dns.rdtypes',
