@@ -1,6 +1,8 @@
 test_misc
 url file:///home/calvin/projects/linkchecker/test/html/misc.html
 valid
+url http://localhost/
+valid
 url hutzli:nixgutt
 name bad scheme
 error
@@ -25,6 +27,4 @@ cached
 valid
 url misc.html
 cached
-valid
-url http://localhost/
 valid

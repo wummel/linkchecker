@@ -372,7 +372,7 @@ class UrlData:
     def parseUrl (self):
         debug(BRING_IT_ON, "Parsing recursively into", self)
         # search for a possible base reference
-        h = LinkParser(self.getContent(), {'a': ['base']})
+        h = LinkParser(self.getContent(), {'base': ['href']})
         baseRef = None
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
