@@ -53,7 +53,6 @@ localbuild:
 	$(PYTHON) setup.py build
 	cp -f build/lib.linux-i686-2.3/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
 
-
 # produce the .deb Debian package
 deb_local: cleandeb
 # standard for local use
@@ -85,7 +84,7 @@ homepage: files VERSION
 	cp $(MD5SUMS) $(HTMLDIR)/
 
 test:
-	test/run.sh test.py --resource=network -fupv
+	test/run.sh test.py --resource=network --search-in=linkcheck -fupv
 
 coverage:
 	test/run.sh test.py --coverage
