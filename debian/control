@@ -8,7 +8,7 @@ Standards-Version: 3.6.1
 Package: linkchecker
 Architecture: any
 Depends: ${python:Depends}, python-optcomplete
-Conflicts: linkchecker-ssl, python2.3-psyco (<< 1.4)
+Conflicts: linkchecker-ssl
 Suggests: apache | httpd, python-psyco
 Description: check HTML documents for broken links
  Features:
