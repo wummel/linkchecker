@@ -1,17 +1,17 @@
-# German translation for LinkChecker.
-# Copyright (C) 2000
-# Bastian Kleineidam <calvin@users.sourceforge.net>, 2000.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LinkChecker 1.2.3\n"
-"POT-Creation-Date: 2000-05-29 01:35+0200\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-05-30 12:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=latin-1\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
 #: Logging.py:130 linkcheck/Logging.py:148
@@ -94,6 +94,11 @@ msgstr "Effektive URL %s"
 msgid "Error"
 msgstr "Fehler"
 
+#: linkchecker:128
+#, c-format
+msgid "Error: %s\n"
+msgstr "Fehler: %s\n"
+
 #: Logging.py:82 linkcheck/Logging.py:100 linkcheck/Logging.py:253
 #: linkcheck/Logging.py:365 linkcheck/Logging.py:415
 msgid "Get the newest version at "
@@ -119,6 +124,11 @@ msgstr "HTTPS url ignoriert"
 #: linkcheck/NntpUrlData.py:31
 msgid "Illegal NNTP link syntax"
 msgstr "Illegale NNTP link Syntax"
+
+#: linkchecker:208 linkchecker:216 linkchecker:247
+#, c-format
+msgid "Illegal argument '%s' for option "
+msgstr "Ungültiges Argument '%s' für Option "
 
 #: linkcheck/TelnetUrlData.py:32
 msgid "Illegal telnet link syntax"
@@ -177,6 +187,10 @@ msgstr "Beende Prüfen am "
 msgid "Thats it. "
 msgstr "Das wars. "
 
+#: linkchecker:129
+msgid "Execute 'linkchecker -h' for help\n"
+msgstr "Führen Sie 'linkchecker -h' aus um Hilfe zu erhalten\n"
+
 #: Logging.py:89 linkcheck/Logging.py:107 linkcheck/Logging.py:289
 msgid "URL"
 msgstr "URL"
@@ -184,6 +198,10 @@ msgstr "URL"
 #: linkcheck/UrlData.py:125
 msgid "URL is null or empty"
 msgstr "URL ist Null oder leer"
+
+#: linkchecker:16
+msgid "USAGE\tlinkchecker [options] file_or_url..."
+msgstr ""
 
 #: linkcheck/UrlData.py:51 linkcheck/UrlData.py:72
 msgid "Valid"
@@ -230,3 +248,7 @@ msgstr "robots.txt:%d: disallow ohne user agents"
 #, c-format
 msgid "robots.txt:%d: user-agent in the middle of rules"
 msgstr "robots.txt:%d: user-agent zwischen Regeln"
+
+#: linkchecker:292
+msgid "warning: no files or urls given"
+msgstr "Warnung: keine Dateien oder URLs angegeben"

@@ -2,16 +2,18 @@
 
 import sys
 
+# no i18n at this point
 if sys.version[:5] < "1.5.2":
     print "This program requires Python 1.5.2 or later."
     sys.exit(1)
 
 # add the path to linkcheck module if you do not install with distutils
-sys.path.append("/home/calvin/projects/linkchecker")
+#sys.path.append("/home/calvin/projects/linkchecker")
 import getopt,re,string,os
 import linkcheck,StringUtil
+from linkcheck import _
 
-Usage = """USAGE\tlinkchecker [options] file_or_url...
+Usage = _("""USAGE\tlinkchecker [options] file_or_url...
 
 OPTIONS
 -a, --anchors
@@ -42,7 +44,7 @@ OPTIONS
         environment variable NNTP_SERVER. If no host is given,
         only the syntax of the link is checked.
 -o name, --output=name
-        Specify output as """+linkcheck.Config.LoggerKeys+""".
+        Specify output as %s.
         Default is text.
 -p pwd, --password=pwd
         Try given password for HTML and FTP authorization.
@@ -81,9 +83,9 @@ OPTIONS
         error message, for example "This page has moved" or
         "Oracle Application Server error".
         This option implies -w.
-"""
+""") % linkcheck.Config.LoggerKeys
 
-Notes = """NOTES
+Notes = _("""NOTES
 o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL
   starts with "www." resp. "ftp."
   You can also give local files as arguments
@@ -97,9 +99,9 @@ o You can supply multiple user/password pairs in a configuration file
 o Cookies are not accepted by LinkChecker
 o When checking 'news:' links the given news host doesn't need to be the
   same as the host of the user browsing your pages!
-"""
+""")
 
-Examples = """EXAMPLES
+Examples = _("""EXAMPLES
 o linkchecker -v -o html -r2 -s -i treasure.calvinsplayground.de \\
     http://treasure.calvinsplayground.de/~calvin/ > sample.html
 o Local files and syntactic sugar on the command line:
@@ -107,7 +109,7 @@ o Local files and syntactic sugar on the command line:
       linkchecker ../bla.html
       linkchecker www.myhomepage.de
       linkchecker -r0 ftp.linux.org
-"""
+""")
 
 def printVersion():
     print linkcheck.Config.AppInfo
@@ -123,7 +125,8 @@ def printHelp():
     sys.exit(0)
     
 def printUsage(msg):
-    sys.stderr.write("Error: "+str(msg)+"\nType linkchecker -h for help\n")
+    sys.stderr.write(_("Error: %s\n") % msg)
+    sys.stderr.write(_("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
 
 
@@ -202,15 +205,16 @@ for opt,arg in options:
         if linkcheck.Config.Loggers.has_key(arg):
             config["log"] = linkcheck.Config.Loggers[arg]()
         else:
-            printUsage("Illegal argument '"+arg+"' for option '-o, --output'")
+            printUsage((_("Illegal argument '%s' for option ") % arg) +\
+	               "'-o, --output'")
 
     elif opt=="-F" or opt=="--file-output":
         if linkcheck.Config.Loggers.has_key(arg) and arg != "blacklist":
             config["fileoutput"].append(linkcheck.Config.Loggers[arg](
 	      open(config["fileoutputnames"][arg], "w")))
         else:
-            printUsage("Illegal argument '"+arg+\
-	               "' for option '-F, --file-output'")
+            printUsage((_("Illegal argument '%s' for option ") % arg) +\
+	               "'-F, --file-output'")
     
     elif opt=="-i" or opt=="--intern":
         config["internlinks"].append(re.compile(arg))
@@ -240,8 +244,8 @@ for opt,arg in options:
         if int(arg) >= 0:
             config["recursionlevel"] = int(arg)
         else:
-            printUsage("Illegal argument '"+str(arg)+\
-	               "' to option '-r, --recursion-level'")
+            printUsage((_("Illegal argument '%s' for option ") % arg) +
+	               "'-r, --recursion-level'")
     
     elif opt=="-R" or opt=="--robots-txt":
         config["robotstxt"] = 1
@@ -285,7 +289,7 @@ if config["log"].__class__ == linkcheck.Logging.BlacklistLogger and \
     args = open(linkcheck.Config.BlacklistFile).readlines()
 
 if len(args)==0:
-    print "warning: no files or urls given"
+    print _("warning: no files or urls given")
 
 for url in args:
     url = string.strip(url)

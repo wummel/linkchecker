@@ -22,7 +22,8 @@ linkcheck/RobotsTxt.py \
 linkcheck/TelnetUrlData.py \
 linkcheck/Threader.py \
 linkcheck/UrlData.py \
-linkcheck/__init__.py
+linkcheck/__init__.py.tmpl \
+linkchecker
 
 DESTDIR=/.
 .PHONY: test clean files homepage dist install all
