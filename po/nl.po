@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Sep 26 22:05:37 2002\n"
+"POT-Creation-Date: Tue Oct 15 02:58:18 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -39,13 +39,13 @@ msgstr "gevonden"
 msgid "Path is empty"
 msgstr ""
 
-msgid "Using HTTP Proxy %s"
+msgid "Using Proxy %s"
 msgstr ""
 
 msgid "Access denied by robots.txt, checked only syntax"
 msgstr "Toegang geweigerd door robots.txt; alleen syntax gecontroleerd"
 
-msgid "Enforced HTTP Proxy %s"
+msgid "Enforced Proxy %s"
 msgstr ""
 
 msgid "too much redirections (>= 5)"
