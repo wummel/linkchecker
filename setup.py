@@ -35,6 +35,7 @@ import distutils.dist
 distklass = distutils.dist.Distribution
 from distutils.command.install import install
 from distutils.command.install_data import install_data
+from distutils.command.build_ext import build_ext
 from distutils.file_util import write_file
 from distutils import util
 
@@ -98,7 +99,7 @@ class MyInstall (install, object):
         outs.append(self.distribution.get_conf_filename(self.install_lib))
         return outs
 
-    # sent a patch for this, but here it is for compatibility
+    # compatibility bugfix for Python << 2.5
     def dump_dirs (self, msg):
         if DEBUG:
             from distutils.fancy_getopt import longopt_xlate
@@ -178,6 +179,33 @@ class MyDistribution (distklass, object):
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
+
+def cc_supports_option (cc, option):
+    prog = "int main(){}\n"
+    cc_cmd = "%s -E %s -" % (cc[0], option)
+    _in, _out = os.popen4(cc_cmd)
+    _in.write(prog)
+    _in.close()
+    while _out.read(): pass
+    return _out.close() is None
+
+
+class MyBuildExt (build_ext, object):
+
+    def build_extensions (self):
+        # For gcc 3.x we can add -std=gnu99 to get rid of warnings.
+        extra = []
+        if self.compiler.compiler_type == 'unix':
+            option = "-std=gnu99"
+            if cc_supports_option(self.compiler.compiler, option):
+                extra.append(option)
+        # First, sanity-check the 'extensions' list
+        self.check_extensions_list(self.extensions)
+        for ext in self.extensions:
+            ext.extra_compile_args.extend(extra)
+            self.build_extension(ext)
+
+
 # global include dirs
 include_dirs = []
 # global macros
@@ -197,9 +225,6 @@ if os.name == 'nt':
     # windows does not have unistd.h
     define_macros.append(('YY_NO_UNISTD_H', None))
 else:
-    # For gcc 3.x we could add -std=gnu99 to get rid of warnings, but
-    # that breaks other compilers. And detecting GNU gcc 3.x is
-    # hard within this framework.
     extra_compile_args.append("-pedantic")
     if win_compiling:
         # we are cross compiling with mingw
@@ -274,6 +299,7 @@ o a (Fast)CGI web interface (requires HTTP server)
        distclass = MyDistribution,
        cmdclass = {'install': MyInstall,
                    'install_data': MyInstallData,
+                   'build_ext': MyBuildExt,
                   },
        packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
                    'linkcheck.dns', 'linkcheck.dns.rdtypes',
