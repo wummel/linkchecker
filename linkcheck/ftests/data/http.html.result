@@ -19,42 +19,42 @@ url http:/localhost:8001/
 cache key http:///localhost%%3A8001/
 real url http:///localhost%%3A8001/
 name one slash
-warning Base URL is not properly normed. Normed url is 'http:///localhost%%3A8001/'.
+warning Base URL is not properly normed. Normed url is http:///localhost%%3A8001/.
 error
 
 url http:localhost:8001/ (cached)
 cache key http:///localhost%%3A8001/
 real url http:///localhost%%3A8001/
 name no slash
-warning Base URL is not properly normed. Normed url is 'http:///localhost%%3A8001/'.
+warning Base URL is not properly normed. Normed url is http:///localhost%%3A8001/.
 error
 
 url http://
 cache key http:///
 real url http:///
 name no url
-warning Base URL is not properly normed. Normed url is 'http:///'.
+warning Base URL is not properly normed. Normed url is http:///.
 error
 
 url http:/ (cached)
 cache key http:///
 real url http:///
 name no url, one slash
-warning Base URL is not properly normed. Normed url is 'http:///'.
+warning Base URL is not properly normed. Normed url is http:///.
 error
 
 url http: (cached)
 cache key http:///
 real url http:///
 name no url, no slash
-warning Base URL is not properly normed. Normed url is 'http:///'.
+warning Base URL is not properly normed. Normed url is http:///.
 error
 
 url http://localhost:8001/stalter&sohn
 cache key http://localhost:8001/stalter%%26sohn
 real url http://localhost:8001/stalter%%26sohn
 name unquoted ampersand
-warning Base URL is not properly normed. Normed url is 'http://localhost:8001/stalter%%26sohn'.
+warning Base URL is not properly normed. Normed url is http://localhost:8001/stalter%%26sohn.
 error
 
 url http://slashdot.org/
@@ -67,14 +67,14 @@ url HtTP://LoCAlHOst:8001/ (cached)
 cache key http://localhost:8001/
 real url http://localhost:8001/
 name should be cached
-warning Base URL is not properly normed. Normed url is 'http://localhost:8001/'.
+warning Base URL is not properly normed. Normed url is http://localhost:8001/.
 valid
 
 url HTTP://LOCALHOST:8001/ (cached)
 cache key http://localhost:8001/
 real url http://localhost:8001/
 name should be cached
-warning Base URL is not properly normed. Normed url is 'http://localhost:8001/'.
+warning Base URL is not properly normed. Normed url is http://localhost:8001/.
 valid
 
 url http://localhost:8001/?d=directory&p=page
@@ -89,11 +89,11 @@ real url http://localhost:8001/?d=directory&p=page1
 name should not be cached
 valid
 
-url http://localhost:8001/?quoted=\xfc
+url http://localhost:8001/?quoted=ü
 cache key http://localhost:8001/?quoted=%%FC
 real url http://localhost:8001/?quoted=%%FC
 name html entities
-warning Base URL is not properly normed. Normed url is 'http://localhost:8001/?quoted=%%FC'.
+warning Base URL is not properly normed. Normed url is http://localhost:8001/?quoted=%%FC.
 valid
 
 url http://localhost:8001/ (cached)

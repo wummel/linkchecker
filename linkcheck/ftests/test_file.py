@@ -53,39 +53,39 @@ class TestFile (linkcheck.ftests.StandardTest):
         # good file
         url = u"file://%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
         ]
         self.direct(url, resultlines)
         # bad file
         url = u"file:/%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "error",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"error",
         ]
         self.direct(url, resultlines)
         # good file (missing double slash)
         url = u"file:%(curdir)s/%(datadir)s/file.txt" % attrs
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key file://%(curdir)s/%(datadir)s/file.txt" % attrs,
-            "real url file://%(curdir)s/%(datadir)s/file.txt" % attrs,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "valid",
+            u"url %s" % url,
+            u"cache key file://%(curdir)s/%(datadir)s/file.txt" % attrs,
+            u"real url file://%(curdir)s/%(datadir)s/file.txt" % attrs,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"valid",
         ]
         self.direct(url, resultlines)
         # good dir
         url = u"file://%(curdir)s/%(datadir)s/" % attrs
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
         ]
         self.direct(url, resultlines)
 

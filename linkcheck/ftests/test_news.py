@@ -36,49 +36,49 @@ class TestNews (linkcheck.ftests.StandardTest):
         # news testing
         url = u"news:comp.os.linux.misc"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "warning No NNTP server specified, skipping this URL",
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"warning No NNTP server specified, skipping this URL",
+            u"valid",
         ]
         self.newstest(url, resultlines)
         # no group
         url = u"news:"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "warning No NNTP server specified, skipping this URL",
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"warning No NNTP server specified, skipping this URL",
+            u"valid",
         ]
         self.newstest(url, resultlines)
 
     def test_snews (self):
         """test snews: link"""
         url = u"snews:de.comp.os.unix.linux.misc"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "warning No NNTP server specified, skipping this URL",
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"warning No NNTP server specified, skipping this URL",
+            u"valid",
         ]
         self.newstest(url, resultlines)
 
     def test_illegal (self):
         # illegal syntax
         url = u"news:§$%&/´`(§%"
-        qurl = self.quote(url)
+        qurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % qurl,
-            "real url %s" % qurl,
-            "warning Base URL is not properly normed. Normed url is %s." % qurl,
-            "warning No NNTP server specified, skipping this URL",
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % qurl,
+            u"real url %s" % qurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % qurl,
+            u"warning No NNTP server specified, skipping this URL",
+            u"valid",
         ]
         self.newstest(url, resultlines)
 
@@ -86,10 +86,10 @@ class TestNews (linkcheck.ftests.StandardTest):
         """nttp scheme with host"""
         url = u"nntp://news.yaako.com/comp.lang.python"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
         ]
         self.newstest(url, resultlines)
 
@@ -97,19 +97,19 @@ class TestNews (linkcheck.ftests.StandardTest):
         """article span"""
         url = u"nntp://news.yaako.com/comp.lang.python/1-5"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
         ]
         self.newstest(url, resultlines)
         url = u"news:comp.lang.python/1-5"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "warning No NNTP server specified, skipping this URL",
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"warning No NNTP server specified, skipping this URL",
+            u"valid",
         ]
         self.newstest(url, resultlines)
 
@@ -117,11 +117,11 @@ class TestNews (linkcheck.ftests.StandardTest):
         """host but no group"""
         url = u"nntp://news.yaako.com/"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "warning No newsgroup specified in NNTP URL",
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"warning No newsgroup specified in NNTP URL",
+            u"valid",
         ]
         self.newstest(url, resultlines)
 

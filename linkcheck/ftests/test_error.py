@@ -28,56 +28,56 @@ class TestError (linkcheck.ftests.StandardTest):
     def test_unrecognized (self):
         """unrecognized scheme test"""
         url = u"hutzli:"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key None",
-            "real url %s" % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key None",
+            u"real url %s" % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
 
     def test_leading_whitespace (self):
         """leading whitespace test"""
         url = u" http://www.heise.de/"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key None",
-            "real url %s" % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key None",
+            u"real url %s" % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
         url = u"\nhttp://www.heise.de/"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key None",
-            "real url %s" % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key None",
+            u"real url %s" % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
 
     def test_trailing_whitespace (self):
         """trailing whitespace test"""
         url = u"http://www.heise.de/ "
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
         url = u"http://www.heise.de/\n"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
 
@@ -85,32 +85,32 @@ class TestError (linkcheck.ftests.StandardTest):
         """invalid syntax test"""
         # invalid scheme chars
         url = u"äöü?:"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key None",
-            "real url %s" % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key None",
+            u"real url %s" % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
         # missing scheme alltogether
         url = u"?äöü?"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key None",
-            "real url %s" % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key None",
+            u"real url %s" % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
         # really fucked up
         url = u"@³²¼][½ ³@] ¬½"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key None",
-            "real url %s" % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key None",
+            u"real url %s" % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
 

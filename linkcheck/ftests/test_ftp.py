@@ -31,10 +31,10 @@ class TestFtp (linkcheck.ftests.StandardTest):
         # ftp two slashes
         url = u"ftp://ftp.debian.org/"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
         ]
         self.direct(url, resultlines)
 
@@ -42,35 +42,35 @@ class TestFtp (linkcheck.ftests.StandardTest):
         """test ftp links with missing slashes"""
         # ftp one slash
         url = u"ftp:/ftp.debian.org/"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "error",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"error",
         ]
         self.direct(url, resultlines)
         # missing path
         url = u"ftp://ftp.debian.org"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"valid",
         ]
         self.direct(url, resultlines)
         # missing trailing dir slash
         url = u"ftp://ftp.debian.org/debian"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s/" % nurl,
-            "warning Missing trailing directory slash in ftp url",
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s/" % nurl,
+            u"warning Missing trailing directory slash in ftp url",
+            u"valid",
         ]
         self.direct(url, resultlines)
 
@@ -78,33 +78,33 @@ class TestFtp (linkcheck.ftests.StandardTest):
         """test ftp links with too many slashes"""
         # ftp two dir slashes
         url = u"ftp://ftp.debian.org//debian/"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"valid",
         ]
         self.direct(url, resultlines)
         # ftp many dir slashes
         url = u"ftp://ftp.debian.org////////debian/"
-        nurl = linkcheck.url.url_norm(url)
+        nurl = self.norm(url)
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % nurl,
-            "real url %s" % nurl,
-            "warning Base URL is not properly normed. Normed url is %s." % nurl,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"valid",
         ]
         self.direct(url, resultlines)
         # ftp three slashes
         url = u"ftp:///ftp.debian.org/"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "error",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"error",
         ]
         self.direct(url, resultlines)
 

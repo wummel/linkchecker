@@ -27,12 +27,12 @@ class TestHttps (linkcheck.ftests.StandardTest):
 
     def test_https (self):
         """test some https links"""
-        url = "https://sourceforge.net/"
+        url = u"https://sourceforge.net/"
         resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "valid",
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
         ]
         self.direct(url, resultlines)
 

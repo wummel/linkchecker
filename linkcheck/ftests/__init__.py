@@ -108,9 +108,9 @@ class StandardTest (unittest.TestCase):
         if hasattr(self, "needed_resources"):
             self.check_resources(self.needed_resources)
 
-    def quote (self, url):
-        """helper function to quote a url"""
-        return linkcheck.url.url_norm(url)
+    def norm (self, url):
+        """helper function to norm a url"""
+        return linkcheck.url.url_norm(url)[0]
 
     def get_file (self, filename):
         """get file name located within 'data' directory"""
