@@ -57,8 +57,8 @@ install: build
 	rm -rf debian/$(PACKAGE)/usr/man
 	rm -rf debian/$(PACKAGE)/usr/bin
 	rm -rf debian/$(PACKAGE)/usr/share
-	rm -rf debian/$(PACKAGE)/usr/lib/python2.0/site-lib/linkchecker
-	rm -rf debian/$(PACKAGE)/usr/lib/python2.0/site-lib/*.py
+	rm -rf debian/$(PACKAGE)/usr/lib/python2.0/site-packages/{linkcheck,DNS}
+	rm -rf debian/$(PACKAGE)/usr/lib/python2.0/site-packages/*.py
 
 
 # Build architecture-independent files here.
@@ -79,7 +79,7 @@ binary-arch: build install
 #	dh_installman linkchecker.1
 #	dh_installinfo
 #	dh_undocumented linkchecker.1
-	dh_installchangelogs 
+	dh_installchangelogs
 #	dh_link
 	dh_strip
 	dh_compress
