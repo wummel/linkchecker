@@ -22,6 +22,6 @@ rem set LC_MESSAGES=fr
 
 rem If you see $python or $install_scripts on the next line, then you
 rem are looking at a skeleton .bat file suited only for installation.
-rem Look in c:\python21\scripts or wherever Python is installed for
+rem Look in c:\python23\scripts or wherever Python is installed for
 rem the executable .bat file.
 $python -O $install_scripts\linkchecker --interactive %*
