@@ -1,6 +1,8 @@
 linkchecker (1.8.8-1) unstable; urgency=low
 
   * New upstream release.
+  * Drop the glibc depends, its not needed. glibc should be fixed
+    on testing itself.
 
  -- Bastian Kleineidam <calvin@debian.org>  Thu,  6 Feb 2003 02:15:43 +0100
 
