@@ -17,7 +17,7 @@
 
 import time
 from linkcheck import Config, i18n
-from linkcheck.log import strtime
+from linkcheck.log import strtime, strduration
 from StandardLogger import StandardLogger
 from Logger import Logger
 
@@ -93,15 +93,7 @@ class GMLLogger (StandardLogger):
         if self.has_field("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            name = i18n._("seconds")
-            self.fd.write("# "+i18n._("Stopped checking at %s") % \
-	              strtime(self.stoptime))
-            if duration > 60:
-                duration = duration / 60
-                name = i18n._("minutes")
-            if duration > 60:
-                duration = duration / 60
-                name = i18n._("hours")
-            self.fd.write(" (%.3f %s)\n" % (duration, name))
+            self.fd.write("# "+i18n._("Stopped checking at %s (%s)\n")%\
+	                  (strtime(self.stoptime), strduration(duration)))
         self.fd.flush()
         self.fd = None

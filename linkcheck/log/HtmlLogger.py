@@ -17,7 +17,7 @@
 
 from StandardLogger import StandardLogger
 from Logger import Logger
-from linkcheck.log import strtime
+from linkcheck.log import strtime, strduration
 from linkcheck import StringUtil, i18n, Config
 import time
 
@@ -157,15 +157,8 @@ class HtmlLogger (StandardLogger):
             self.fd.write(i18n._(" found")+"\n<br>")
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            name = i18n._("seconds")
-            self.fd.write(i18n._("Stopped checking at %s") % strtime(self.stoptime))
-            if duration > 60:
-                duration = duration / 60
-                name = i18n._("minutes")
-            if duration > 60:
-                duration = duration / 60
-                name = i18n._("hours")
-            self.fd.write("	(%.3f %s)\n" % (duration, name))
+            self.fd.write(i18n._("Stopped checking at %s (%s)\n")%\
+                          (strtime(self.stoptime), strduration(duration)))
             self.fd.write("</blockquote><br><hr noshade size=\"1\"><small>"+
                           Config.HtmlAppInfo+"<br>")
             self.fd.write(i18n._("Get the newest version at %s\n") %\
