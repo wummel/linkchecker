@@ -32,10 +32,8 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
 # Amazon blocks HEAD requests at all
 _isAmazonHost = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
-# Servers not supporting HEAD request (eg returning 404 errors)
-_isBrokenHeadServer = re.compile(r'(Netscape-Enterprise|Zope)/').search
 # Server not supporting anchors in urls (eg returning 404 errors)
-_isBrokenAnchorServer = re.compile(r'Microsoft-IIS/').search
+_isBrokenAnchorServer = re.compile(r'(Microsoft-IIS|Apache)/').search
 
 
 class HttpUrlData (ProxyUrlData):
@@ -49,6 +47,7 @@ class HttpUrlData (ProxyUrlData):
         self.aliases = []
         self.max_redirects = 5
         self.has301status = False
+        self.no_anchor = False # remove anchor in request url
 
 
     def buildUrl (self):
@@ -121,7 +120,7 @@ class HttpUrlData (ProxyUrlData):
         else:
             # first try with HEAD
             self.method = "HEAD"
-        fallback = False
+        fallback_GET = False
         redirectCache = [self.url]
         while True:
             try:
@@ -131,7 +130,7 @@ class HttpUrlData (ProxyUrlData):
                 if self.method=="HEAD":
                     self.method = "GET"
                     redirectCache = [self.url]
-                    fallback = True
+                    fallback_GET = True
                     continue
                 raise
             self.headers = response.msg
@@ -154,7 +153,7 @@ class HttpUrlData (ProxyUrlData):
                     # Microsoft servers tend to recurse HEAD requests
                     self.method = "GET"
                     redirectCache = [self.url]
-                    fallback = True
+                    fallback_GET = True
                     continue
                 self.setError(i18n._("more than %d redirections, aborting")%self.max_redirects)
                 return
@@ -168,18 +167,14 @@ class HttpUrlData (ProxyUrlData):
                     debug(BRING_IT_ON, "Authentication", _user, "/", _password)
                 continue
             elif response.status >= 400:
-                if self.headers:
-                    # test for anchor support
-                    server = self.headers.get('Server', '')
-                    if _isBrokenAnchorServer(server) and self.urlparts[4]:
-                        self.setWarning(i18n._("Server %r has no anchor support, removing anchor from request")%server)
-                        self.urlparts[4] = ''
-                        continue
+                if self.headers and self.urlparts[4]:
+                    self.no_anchor = True
+                    continue
                 if self.method=="HEAD":
                     # fall back to GET
                     self.method = "GET"
                     redirectCache = [self.url]
-                    fallback = True
+                    fallback_GET = True
                     continue
             elif self.headers and self.method!="GET":
                 # test for HEAD support
@@ -200,7 +195,7 @@ class HttpUrlData (ProxyUrlData):
             self.setWarning(i18n._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
         # check response
-        self.checkResponse(response, fallback)
+        self.checkResponse(response, fallback_GET)
 
 
     def followRedirections (self, response, redirectCache):
@@ -269,17 +264,19 @@ class HttpUrlData (ProxyUrlData):
         return tries, response
 
 
-    def checkResponse (self, response, fallback):
+    def checkResponse (self, response, fallback_GET):
         """check final result"""
         if response.status >= 400:
             self.setError("%r %s"%(response.status, response.reason))
         else:
-            if fallback:
-                if self.headers and self.headers.has_key("Server"):
-                    server = self.headers['Server']
-                else:
-                    server = i18n._("unknown")
+            if self.headers and self.headers.has_key("Server"):
+                server = self.headers['Server']
+            else:
+                server = i18n._("unknown")
+            if fallback_GET:
                 self.setWarning(i18n._("Server %r did not support HEAD request, used GET for checking")%server)
+            if self.no_anchor:
+                self.setWarning(i18n._("Server %r had no anchor support, removed anchor from request")%server)
             if response.status == 204:
                 # no content
                 self.setWarning(response.reason)
@@ -320,8 +317,10 @@ class HttpUrlData (ProxyUrlData):
             self.closeConnection()
         self.urlConnection = self.getHTTPObject(host, scheme)
         # quote url before submit
-        url = url_quote(self.url)
-        qurlparts = urlparse.urlsplit(url)
+        url = url_quote(urlparse.urlunsplit(self.urlparts))
+        qurlparts = list(urlparse.urlsplit(url))
+        if self.no_anchor:
+            qurlparts[4] = ''
         if self.proxy:
             path = urlparse.urlunsplit(qurlparts)
         else:
