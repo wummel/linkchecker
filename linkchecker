@@ -7,7 +7,7 @@ if sys.version[:5] < "1.5.2":
     sys.exit(1)
     
 # add the path to linkcheck module
-sys.path.insert(0, "/usr/share/linkchecker")
+#sys.path.insert(0, "/home/calvin/projects/linkchecker")
 
 import linkcheck
 

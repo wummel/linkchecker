@@ -12,7 +12,6 @@ build: build-stamp
 build-stamp:
 	dh_testdir
 
-	
 	# Add here commands to compile the package.
 	$(MAKE)
 
@@ -32,7 +31,7 @@ install: build
 	dh_testdir
 #	dh_testroot
 	dh_clean -k
-#	dh_installdirs
+	dh_installdirs
 	# Add here commands to install the package into debian/tmp.
 	$(MAKE) install DESTDIR=`pwd`/debian/tmp
 

@@ -20,11 +20,26 @@ full of eels!
 As this program is directly derived from my Java link checker, additional
 credits go to Robert Forsman (the author of JCheckLinks) and his
 robots.txt parse algorithm.
-
 I want to thank everybody who gave me feedback, bug reports and
 suggestions.
 
+Versioning:
+Version numbers have the same meaning as Linux Kernel version numbers.
+The first number is the major package version. The second number is
+the minor package version. An odd second number stands for development
+versions, an even number for stable version. The third number is a
+package release sequence number.
+So for example 1.1.5 is the fifth release of the 1.1 development package.
+
 Included packages:
+http11lib from http://www.lyra.org/greg/python/
 httpslib from http://home.att.net/~nvsoft1/ssl_wrapper.html
-PyLR parser from http://starship.python.net/crew/scott/PyLR.html
+PyLR parser generator from http://starship.python.net/crew/scott/PyLR.html
 DNS see README.dns
+distutils from http://www.python.org/sigs/distutils-sig/
+fcgi.py from ???
+sz_fcgi.py from ???
+
+BEWARE: the PyLR and http11lib packages are modified by me!
+It seems that http11lib and distutils will be included in Python 1.6, but
+for now I provide them myself.

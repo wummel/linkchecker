@@ -1,19 +1,16 @@
                  LinkChecker installation
                 ==========================
 
-First, decompress the archive.
-With linkchecker-x.x.x.tar.bz2 do "tar xIvf linkchecker-x.x.x.tar.bz2".
-With linkchecker-x.x.x.zip do "unzip linkchecker-x.x.x.zip" or use Winzip.
-With linkchecker-x.x.x.deb do "dpkg -i linkchecker-x.x.x.deb" as root and you 
-are done.
+Requirements:
+You need Python >= 1.5.2
+You get Python from http://www.python.org
 
 Unix Users:
 1. Edit the file linkchecker.
    Adjust the argument to sys.path.append to point to the distribution 
    directory.
 2. HTTPS support (optional, you need SSLeay)
-   Adjust the paths at the top of the Makefile
-   Type "make" to produce the SSL module
+   See below
 3. Copy linkchecker to a location in your PATH (or make a symlink).
 4. Check links happily by typing `linkchecker`.
 
@@ -23,13 +20,39 @@ Windows Users:
    Adjust the argument to sys.path.append to point to the distribution
    directory.
 2. Edit the file linkchecker.bat.
-   a) Adjust the PYHTON variable to point to python.exe.
+   a) Adjust the PYTHON variable to point to python.exe.
    b) Adjust the LINKCHECKER variable to point to the distribution directory.
 3. HTTPS support (optional, you need SSLeay)
-   Compile ssl.dll from ssl.c
+   See below
 4. Add the distribution directory to your PATH.
 5. Check links happily by typing `linkchecker.bat`.
 
 
-You need Python >= 1.5.2
-You get Python from http://www.python.org
+HTTPS support:
+Run "python setup.py build_ext" to compile the ssl library.
+Here is the overall usage guide for setup.py:
+Global options:
+  --verbose (-v)  run verbosely (default)
+  --quiet (-q)    run quietly (turns verbosity off)
+  --dry-run (-n)  don't actually do anything
+  --force (-f)    skip dependency checking between files
+  --help (-h)     show this help message
+
+Options for 'build_ext' command:
+  --build-dir (-d)     directory for compiled extension modules
+  --include-dirs (-I)  list of directories to search for header files
+  --define (-D)        C preprocessor macros to define
+  --undef (-U)         C preprocessor macros to undefine
+  --libs (-l)          external C libraries to link with
+  --library-dirs (-L)  directories to search for external C libraries
+  --rpath (-R)         directories to search for shared C libraries at runtime
+  --link-objects (-O)  extra explicit link objects to include in the link
+
+usage: ./setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
+   or: ./setup.py --help
+   or: ./setup.py --help-commands
+   or: ./setup.py cmd --help
+
+For example your openssl headers are in /usr/local/include/openssl and
+the library is in /usr/local/lib:
+./setup.py build_ext -I/usr/local/include/openssl -L/usr/local/lib

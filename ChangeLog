@@ -1,3 +1,11 @@
+19.3.2000
+	* report the duration of checking a link (Check Time)
+	* rename httplib.py to http11lib.py so it does not silently
+	  replace the standard library httplib.py
+
+12.3.2000
+	* first version of distutils setup.py
+
 11.3.2000
 	* Better debugging:
 	  -D implies -t0

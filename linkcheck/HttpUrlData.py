@@ -99,7 +99,6 @@ class HttpUrlData(UrlData):
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self._getHTTPObject(host)
-        print host
         if self.proxy:
             path = urlparse.urlunparse(self.urlTuple)
         else:
@@ -109,9 +108,7 @@ class HttpUrlData(UrlData):
             if self.urlTuple[4]:
                 path = path + "?" + self.urlTuple[4]
         self.urlConnection.putrequest(method, path)
-        print path
         self.urlConnection.putheader("Host", self.urlTuple[1])
-        print self.urlTuple[1]
         if auth:
             self.urlConnection.putheader("Authorization", auth)
         self.urlConnection.putheader("User-agent", Config.UserAgent)

@@ -18,7 +18,7 @@ class UrlData:
                  recursionLevel, 
                  parentName = None,
                  baseRef = None,
-                 line = 0, _time = 0):
+                 line = None, _time = None):
         self.urlName = urlName
         self.recursionLevel = recursionLevel
         self.parentName = parentName
@@ -30,7 +30,8 @@ class UrlData:
         self.valid = 1
         self.url = None
         self.line = line
-        self.time = _time
+        self.downloadtime = _time
+        self.checktime = None
         self.cached = 0
         self.urlConnection = None
         self.extern = 1
@@ -65,7 +66,7 @@ class UrlData:
         self.warningString = urlData.warningString
         self.infoString = urlData.infoString
         self.valid = urlData.valid
-        self.time = urlData.time
+        self.downloadtime = urlData.downloadtime
 
     def buildUrl(self):
         if self.baseRef:
@@ -89,6 +90,7 @@ class UrlData:
     def check(self, config):
         Config.debug(Config.DebugDelim+"Checking\n"+str(self)+"\n"+\
                      Config.DebugDelim)
+        t = time.time()
         # check syntax
         Config.debug("DEBUG: checking syntax\n")
         if not self.urlName or self.urlName=="":
@@ -128,7 +130,8 @@ class UrlData:
         except:
             type, value = sys.exc_info()[:2]
             self.setError(str(value))
-        
+
+        self.checktime = time.time() - t
         # check recursion
         Config.debug("DEBUG: checking recursion\n")
         if self.allowsRecursion(config):
@@ -203,7 +206,7 @@ class UrlData:
         """
         t = time.time()
         data = StringUtil.stripHtmlComments(self.urlConnection.read())
-        self.time = time.time() - t
+        self.downloadtime = time.time() - t
         return data
 
     def parseUrl(self, config):
@@ -216,8 +219,8 @@ class UrlData:
         baseRef = None
         if len(bases)>=1:
             baseRef = bases[0][0]
-        if len(bases)>1:
-            self.setWarning("more than one base tag found")
+            if len(bases)>1:
+                self.setWarning("more than one base tag found")
             
         # search for tags and add found tags to URL queue
         for tag in LinkTags:
