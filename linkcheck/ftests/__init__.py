@@ -105,6 +105,7 @@ def get_test_consumer (confargs, logargs):
     config["anchors"] = True
     config["verbose"] = True
     config['threads'] = 0
+    config['geoip'] = None
     config.update(confargs)
     cache = linkcheck.checker.cache.Cache()
     return linkcheck.checker.consumer.Consumer(config, cache)
