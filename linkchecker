@@ -505,3 +505,8 @@ else:
 # interactive input end
 if config['interactive']:
     raw_input(_("Hit RETURN to finish"))
+
+# if errors are encountered, exit with non-zero status
+# same applies to warnings when --warnings options was given
+if consumer.errors or (consumer.warnings and config['warnings']):
+    sys.exit(1)
