@@ -1,6 +1,6 @@
 This release:
 
-- use Colorizer in text output
+- add links to validator.w3.org for urls in html output
 
 - fix all tests
 
