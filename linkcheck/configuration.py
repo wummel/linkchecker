@@ -197,7 +197,7 @@ class Configuration (dict):
             config_dir = _linkchecker_configdata.config_dir
             cfiles.append(norm(os.path.join(config_dir, "linkcheckerrc")))
             # per user config settings
-            cfiles.append(norm("~/.linkcheckerrc"))
+            cfiles.append(norm("~/.linkchecker/linkcheckerrc"))
         self.read_config(cfiles)
         # re-init logger
         self['logger'] = self.logger_new('text')

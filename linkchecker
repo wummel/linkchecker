@@ -245,7 +245,7 @@ group = optparse.OptionGroup(optparser, _("General options"))
 group.add_option("-f", "--config", type="string", dest="configfile",
                  help=_(
 """Use CONFIGFILE as configuration file. As default LinkChecker first
-searches /etc/linkchecker/linkcheckerrc and then ~/.linkcheckerrc
+searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/linkcheckerrc
 (under Windows <path-to-program>\\linkcheckerrc)."""))
 group.add_option("-I", "--interactive", action="store_true",
                  dest="interactive", help=_(
