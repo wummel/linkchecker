@@ -1,3 +1,9 @@
+1.8.21
+  * detect recursive redirections; the maximum of five redirections is
+    still there though
+  * after every HTTP redirection, check the URL cache again
+    Closes: SF bug 776851
+
 1.8.20
   * fix setting of domain in set_intern_url
     Changed: linkcheck/UrlData.py
