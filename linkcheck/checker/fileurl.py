@@ -18,7 +18,6 @@
 
 import re
 import os
-import cgi
 import time
 import urlparse
 import urllib
