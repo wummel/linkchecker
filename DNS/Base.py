@@ -81,7 +81,7 @@ def init_dns_resolver_nt():
     # XXX search for "EnableDhcp", "DhcpNameServer"
 
     try: # search adapters
-        key = winreg.handle_key(winreg.HKEY_LOCAL_MACHINE,
+        key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
   r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DNSRegisteredAdapters")
         for subkey in key.subkeys():
             count, counttype = subkey['DNSServerAddressCount']
@@ -93,7 +93,7 @@ def init_dns_resolver_nt():
         pass
 
     try: # search interfaces
-        key = winreg.handle_key(winreg.HKEY_LOCAL_MACHINE,
+        key = winreg.key_handle(winreg.HKEY_LOCAL_MACHINE,
            r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces")
         for subkey in key.subkeys():
             for server in winreg.stringdisplay(subkey.get('NameServer', '')):
