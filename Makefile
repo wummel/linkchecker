@@ -39,9 +39,10 @@ cleandeb:
 config:
 	./setup.py config -lcrypto
 
+# no more rpm package; too much trouble, cannot test
 .PHONY: dist
 dist:	locale config
-	./setup.py sdist --formats=gztar,zip bdist_rpm
+	./setup.py sdist --formats=gztar,zip # bdist_rpm
 	# extra run without SSL compilation
 	./setup.py bdist_wininst
 
