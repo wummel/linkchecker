@@ -1,6 +1,21 @@
 2.4 "" (released xx.xx.xxxx)
 
-  *
+  * Work around a Python 2.4 bug when HTTP 302 redirections are
+    encountered in urllib2.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
+  * Be sure to use Unicode HTML parser messages.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
+  * Make sure that FTP connections are opened when they are reused.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * Added ! to the list of unquoted URL path characters.
+    Type: bugfix
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
 
 2.3 "Napoleon Dynamite" (released 3.2.2005)
 

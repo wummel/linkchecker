@@ -54,6 +54,49 @@ debug = lambda txt: _msg("debug:", txt)
 warn = lambda txt: _msg("warning:", txt)
 error = lambda txt: _msg("error:", txt)
 
+class MyHTTPRedirectHandler (urllib2.HTTPRedirectHandler):
+    """
+    Work around for bug http://www.python.org/sf/1117588
+    """
+
+    def http_error_302 (self, req, fp, code, msg, headers):
+        if 'location' in headers:
+            newurl = headers.get('location')
+        elif 'uri' in headers:
+            newurl = headers.get('uri')
+        else:
+            return
+        newurl = urlparse.urljoin(req.get_full_url(), newurl)
+
+        # XXX Probably want to forget about the state of the current
+        # request, although that might interact poorly with other
+        # handlers that also use handler-specific request attributes
+        new = self.redirect_request(req, fp, code, msg, headers, newurl)
+        if new is None:
+            return
+
+        # loop detection
+        # .redirect_dict has a key url if url was previously visited.
+        if hasattr(req, 'redirect_dict'):
+            visited = new.redirect_dict = req.redirect_dict
+            if (visited.get(newurl, 0) >= self.max_repeats or
+                len(visited) >= self.max_redirections):
+                raise HTTPError(req.get_full_url(), code,
+                                self.inf_msg + msg, headers, fp)
+        else:
+            visited = new.redirect_dict = req.redirect_dict = {}
+        visited[newurl] = visited.get(newurl, 0) + 1
+
+        # Don't close the fp until we are sure that we won't use it
+        # with HTTPError.
+        fp.read()
+        fp.close()
+
+        return self.parent.open(new)
+
+    http_error_301 = http_error_303 = http_error_307 = http_error_302
+
+
 class PasswordManager (object):
     """
     Simple password manager storing username and password. Suitable
@@ -162,7 +205,7 @@ class RobotFileParser (object):
             urllib2.HTTPDigestAuthHandler(pwd_manager),
             urllib2.ProxyDigestAuthHandler(pwd_manager),
             urllib2.HTTPDefaultErrorHandler,
-            urllib2.HTTPRedirectHandler,
+            MyHTTPRedirectHandler,
         ]
         if hasattr(linkcheck.httplib2, 'HTTPS'):
             handlers.append(HttpsWithGzipHandler)
