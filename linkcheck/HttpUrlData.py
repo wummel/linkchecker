@@ -19,7 +19,7 @@ import urlparse, urllib, sys, time, re, httplib, robotparser
 import Config, StringUtil, i18n
 from debug import *
 # XXX not dynamic
-if DebugLevel > 0:
+if get_debuglevel() > 0:
     robotparser.debug = 1
 from ProxyUrlData import ProxyUrlData
 
@@ -241,7 +241,7 @@ class HttpUrlData (ProxyUrlData):
 
     def _getHTTPObject (self, host):
         h = httplib.HTTPConnection(host)
-        h.set_debuglevel(DebugLevel)
+        h.set_debuglevel(get_debuglevel())
         h.connect()
         return h
 

@@ -238,7 +238,7 @@ except getopt.error:
 # set debug level as early as possible
 for opt,arg in options:
     if opt=="-D" or opt=="--debug":
-        linkcheck.Config.DebugLevel += 1
+        set_debuglevel(get_debuglevel()+1)
 debug(BRING_IT_ON, "Python", sys.version, "on", sys.platform)
 # read configuration from config files
 config = linkcheck.Config.Configuration()
