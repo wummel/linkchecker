@@ -277,7 +277,8 @@ class HttpUrlData (UrlData):
         if self.headers.gettype()[:9]!="text/html":
             return 0
         encoding = self.headers.get("Content-Encoding")
-        if encoding and encoding not in _supported_encodings:
+        if encoding and encoding not in _supported_encodings and \
+           encoding!='identity':
             self.setWarning(linkcheck._('Unsupported content encoding %s.')%\
                             `encoding`)
             return 0
