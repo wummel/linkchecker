@@ -80,8 +80,8 @@
 # separately if its strict or not. See the [filtering] section
 #strict=0
 # proxy parameters
-#proxy=www-proxy.uni-sb.de
-#proxyport=3128
+#proxy = www-proxy.uni-sb.de
+#proxyport = 3128
 # supply a regular expression for which warnings are printed if found
 # in any HTML files.
 #warningregex="Request failed"
@@ -99,12 +99,12 @@
 # what you wanted.
 [filtering]
 # everything with 'lconline' in the URL name is extern
-extern1=lconline 0
+# extern1=lconline 0
 # everything with 'bookmark' in the URL name is extern and we make
 # no network connection to such URLs (strict)
-extern2=bookmark 1
+# extern2=bookmark 1
 # links to our domain are intern
-internlinks=calvinsplayground\.de
+# internlinks=calvinsplayground\.de
 #allowdeny=0
 
 # You can provide different user/password pairs for different link types.
