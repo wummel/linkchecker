@@ -19,7 +19,19 @@ Test url build method from url data objects.
 """
 
 import unittest
+import linkcheck.configuration
 import linkcheck.checker.httpurl
+import linkcheck.checker.cache
+import linkcheck.checker.consumer
+
+def get_test_consumer ():
+    """
+    Initialize a test configuration object.
+    """
+    config = linkcheck.configuration.Configuration()
+    cache = linkcheck.checker.cache.Cache()
+    return linkcheck.checker.consumer.Consumer(config, cache)
+
 
 class TestUrlBuild (unittest.TestCase):
     """
@@ -30,7 +42,7 @@ class TestUrlBuild (unittest.TestCase):
         parent_url = "http://localhost:8001/linkcheck/ftests/data/http.html"
         base_url = "http://"
         recursion_level = 0
-        consumer = None
+        consumer = get_test_consumer()
         o = linkcheck.checker.httpurl.HttpUrl(base_url, recursion_level,
                consumer, parent_url=parent_url)
         o.build_url()
