@@ -25,3 +25,5 @@ homepage: nav apidocs
 
 clean:
 	rm -f $(NAVFILES) $(HTMLFILES) *.pyc *.pyo
+
+.PHONY: all clean homepage nav apidocs
