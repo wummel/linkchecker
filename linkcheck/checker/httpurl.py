@@ -257,9 +257,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                      "trailing / at the end. All URLs which point to (home) "
                      "directories should end with a / to avoid redirection."))
                     self.has301status = True
-            # XXX optimization: check cache again on the changed URL
-            #if self.consumer.cache.is_checked(self):
-            #    return -1, response
+            # check cache again on the changed URL
+            if self.consumer.cache.checked_redirect(redirected, self):
+                return -1, response
             # check if we still have a http url, it could be another
             # scheme, eg https or news
             if self.urlparts[0] != "http":

@@ -173,11 +173,14 @@ class Cache (object):
         finally:
             self.lock.release()
 
-    def has_checked (self, key):
-        """true if key is in checked cache"""
+    def checked_redirect (self, redirect, url_data):
+        """check if redirect is already in cache"""
         self.lock.acquire()
         try:
-            return key in self.checked
+            if redirect in self.checked:
+                url_data.copy_from_cache(self.checked[key])
+                return True
+            return False
         finally:
             self.lock.release()
 
