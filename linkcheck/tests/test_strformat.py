@@ -28,7 +28,7 @@ class TestStrFormat (unittest.TestCase):
     def test_unquote (self):
         """test quote stripping"""
         self.assertEquals(linkcheck.strformat.unquote(""), "")
-        self.assertEquals(linkcheck.strformat.unquote(None), "")
+        self.assertEquals(linkcheck.strformat.unquote(None), None)
         self.assertEquals(linkcheck.strformat.unquote("'"), "'")
         self.assertEquals(linkcheck.strformat.unquote("\""), "\"")
         self.assertEquals(linkcheck.strformat.unquote("\"\""), "")
