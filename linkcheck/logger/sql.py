@@ -49,7 +49,7 @@ class SQLLogger (linkcheck.logger.Logger):
     def comment (self, s, **args):
         """Print SQL comment."""
         self.write(u"-- ")
-        self.write(s, **args)
+        self.writeln(s=s, **args)
 
     def start_output (self):
         """print start of checking info as sql comment"""

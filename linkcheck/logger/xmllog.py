@@ -67,7 +67,7 @@ class XMLLogger (linkcheck.logger.Logger):
         """Print HTML comment."""
         self.write(u"<!-- ")
         self.write(s, **args)
-        self.write(u" -->")
+        self.writeln(u" -->")
 
     def start_output (self):
         """print start of checking info as xml comment"""
