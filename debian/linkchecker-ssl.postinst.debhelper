@@ -1,0 +1,7 @@
+# Automatically added by dh_installdocs
+if [ "$1" = "configure" ]; then
+	if [ -d /usr/doc -a ! -e /usr/doc/linkchecker-ssl -a -d /usr/share/doc/linkchecker-ssl ]; then
+		ln -sf ../share/doc/linkchecker-ssl /usr/doc/linkchecker-ssl
+	fi
+fi
+# End automatically added section

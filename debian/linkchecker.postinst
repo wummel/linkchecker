@@ -1,0 +1,31 @@
+#!/bin/sh -e
+#
+# Written 1998 by Gregor Hoffleit <flight@debian.org>.
+# used by Bastian Kleineidam for LinkChecker
+
+DIRLIST="/usr/lib/python1.5/site-packages/linkcheck"
+FILELIST="linkcheckerConf.py"
+SITEPACKAGES="/usr/lib/python1.5/site-packages"
+COMMAND="'import sys,py_compile;py_compile.compile(sys.argv[1])'"
+
+case "$1" in
+    configure|abort-upgrade|abort-remove|abort-deconfigure)
+        for i in $DIRLIST; do
+            python -O /usr/lib/python1.5/compileall.py -q $i
+            python /usr/lib/python1.5/compileall.py -q $i
+        done
+	# use /bin/sh -c, otherwise I get a SyntaxError from Python
+	for i in $FILELIST; do
+	    /bin/sh -c "python -O -c $COMMAND $SITEPACKAGES/$i"
+	    /bin/sh -c "python -c $COMMAND $SITEPACKAGES/$i"
+	done
+    ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
