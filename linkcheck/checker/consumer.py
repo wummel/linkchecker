@@ -17,12 +17,14 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
+import time
 try:
     import threading
 except ImportError:
     import dummy_threading as threading
 
 import linkcheck.threader
+import linkcheck.log
 
 from linkcheck.i18n import _
 
@@ -118,13 +120,26 @@ class Consumer (object):
         finally:
             self.lock.release()
 
-    def finish (self):
-        """finish checking and send of-of-output message to logger"""
+    def no_more_threads (self):
+        """return True if no more active threads are running"""
         self.lock.acquire()
         try:
-            self.threader.finish()
+            return self.threader.finished()
         finally:
             self.lock.release()
+
+    def abort (self):
+        """abort checking and send of-of-output message to logger"""
+        while not self.no_more_threads():
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+             _("keyboard interrupt; waiting for %d active threads to finish"),
+             self.active_threads())
+            self.lock.acquire()
+            try:
+                self.threader.finish()
+            finally:
+                self.lock.release()
+            time.sleep(2)
         self.logger_end_output()
 
     def print_status (self, curtime, start_time):
