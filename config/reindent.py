@@ -1,4 +1,4 @@
-#! /usr/bin/python2.3
+#! /usr/bin/python2.4
 
 # Released to the public domain, by Tim Peters, 03 October 2000.
 

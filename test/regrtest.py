@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.4
 # -*- coding: iso-8859-1 -*-
 
 # this file is _not_ the original Python2 regression test suite.

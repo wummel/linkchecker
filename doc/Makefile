@@ -9,7 +9,7 @@ all: $(HTMLFILES)
 	./rest2htmlnav --stylesheet-path=lc.css --time $< $@
 
 nav: all
-	python bfknav.py
+	python2.4 bfknav.py
 
 homepage: nav
 	cp *.html *.css *.jpg *.png $(HTMLDIR)/htdocs

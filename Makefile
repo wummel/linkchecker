@@ -1,5 +1,5 @@
 # This Makefile is only used by developers.
-PYVER := 2.3
+PYVER := 2.4
 PYTHON := python$(PYVER)
 PACKAGE := linkchecker
 NAME = $(shell $(PYTHON) setup.py --name)

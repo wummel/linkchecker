@@ -2,14 +2,14 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends: python-dev (>= 2.3), python-dev (<< 2.4), python, debhelper (>= 4.1.51), gettext, cdbs
+Build-Depends: python2.4-dev, python, debhelper (>= 4.1.51), gettext, cdbs
 Standards-Version: 3.6.1
 
 Package: linkchecker
 Architecture: any
-Depends: ${python:Depends}, python-optcomplete
+Depends: ${python:Depends}, python2.4-optcomplete
 Conflicts: linkchecker-ssl
-Suggests: apache | httpd, python-psyco
+Suggests: apache | httpd, python2.4-psyco
 Description: check HTML documents for broken links
  Features:
   o recursive checking

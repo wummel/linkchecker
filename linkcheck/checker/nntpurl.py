@@ -74,7 +74,7 @@ class NntpUrl (urlbase.UrlBase):
         while tries < 5:
             tries += 1
             try:
-                nntp = NNTP(nntpserver, usenetrc=False)
+                nntp = nntplib.NNTP(nntpserver, usenetrc=False)
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
                 if re.compile("^50[45]").search(str(value)):
