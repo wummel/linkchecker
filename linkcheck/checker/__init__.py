@@ -109,11 +109,7 @@ def check_urls (consumer):
     try:
         _check_urls(consumer)
     except KeyboardInterrupt:
-        consumer.finish()
-        linkcheck.log.warn(linkcheck.LOG_CHECK,
-             _("keyboard interrupt; waiting for %d active threads to finish"),
-             consumer.active_threads())
-        raise
+        consumer.abort()
 
 
 def _check_urls (consumer):
