@@ -28,8 +28,8 @@ import linkcheck.configuration
 from linkcheck.i18n import _
 
 
-class StandardLogger (linkcheck.logger.Logger):
-    """Standard text logger.
+class TextLogger (linkcheck.logger.Logger):
+    """A text logger, colorizing the output if possible.
 
     Every Logger has to implement the following functions:
     start_output (self)
@@ -64,18 +64,32 @@ class StandardLogger (linkcheck.logger.Logger):
 
     def __init__ (self, **args):
         """initialize error counter and optional file output"""
-        super(StandardLogger, self).__init__(**args)
+        super(TextLogger, self).__init__(**args)
+        self.init_fileoutput(args)
+        self.colorparent = linkcheck.ansicolor.esc_ansicolor(
+                                                        args['colorparent'])
+        self.colorurl = linkcheck.ansicolor.esc_ansicolor(args['colorurl'])
+        self.colorname = linkcheck.ansicolor.esc_ansicolor(args['colorname'])
+        self.colorreal = linkcheck.ansicolor.esc_ansicolor(args['colorreal'])
+        self.colorbase = linkcheck.ansicolor.esc_ansicolor(args['colorbase'])
+        self.colorvalid = linkcheck.ansicolor.esc_ansicolor(
+                                                          args['colorvalid'])
+        self.colorinvalid = linkcheck.ansicolor.esc_ansicolor(
+                                                        args['colorinvalid'])
+        self.colorinfo = linkcheck.ansicolor.esc_ansicolor(args['colorinfo'])
+        self.colorwarning = linkcheck.ansicolor.esc_ansicolor(
+                                                        args['colorwarning'])
+        self.colordltime = linkcheck.ansicolor.esc_ansicolor(
+                                                         args['colordltime'])
+        self.colordlsize = linkcheck.ansicolor.esc_ansicolor(
+                                                         args['colordlsize'])
+        self.colorreset = linkcheck.ansicolor.esc_ansicolor(
+                                                         args['colorreset'])
         self.errors = 0
-        if args.has_key('fileoutput'):
-            self.fd = file(args['filename'], "w")
-        elif args.has_key('fd'):
-            self.fd = args['fd']
-        else:
-            self.fd = sys.stdout
 
     def start_output (self):
         """print generic start checking info"""
-        super(StandardLogger, self).start_output()
+        super(TextLogger, self).start_output()
         if self.fd is None:
             return
         self.starttime = time.time()

@@ -20,26 +20,26 @@ import time
 import csv
 import os
 
-import linkcheck.logger.standard
 import linkcheck.logger
 import linkcheck.configuration
 
 from linkcheck.i18n import _
 
 
-class CSVLogger (linkcheck.logger.standard.StandardLogger):
+class CSVLogger (linkcheck.logger.Logger):
     """ CSV output. CSV consists of one line per entry. Entries are
     separated by a semicolon.
     """
     def __init__ (self, **args):
         """store default separator and (os dependent) line terminator"""
         super(CSVLogger, self).__init__(**args)
+        self.init_fileoutput(args)
         self.separator = args['separator']
         self.lineterminator = os.linesep
 
     def start_output (self):
         """print checking start info as csv comment"""
-        linkcheck.logger.Logger.start_output(self)
+        super(CSVLogger, self).start_output()
         if self.fd is None:
             return
         self.starttime = time.time()

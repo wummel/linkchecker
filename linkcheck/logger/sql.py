@@ -20,7 +20,6 @@ import time
 import os
 
 import linkcheck
-import linkcheck.logger.standard
 import linkcheck.logger
 
 from linkcheck.i18n import _
@@ -33,12 +32,13 @@ def sqlify (s):
     return "'%s'" % s.replace("'", "''")
 
 
-class SQLLogger (linkcheck.logger.standard.StandardLogger):
+class SQLLogger (linkcheck.logger.Logger):
     """SQL output for PostgreSQL, not tested"""
 
     def __init__ (self, **args):
         """initialize database access data"""
         super(SQLLogger, self).__init__(**args)
+        self.init_fileoutput(args)
         self.dbname = args['dbname']
         self.separator = args['separator']
 

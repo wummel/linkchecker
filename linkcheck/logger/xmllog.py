@@ -20,7 +20,6 @@ import os
 import time
 import xml.sax.saxutils
 
-import linkcheck.logger.standard
 import linkcheck.logger
 import linkcheck.configuration
 
@@ -55,13 +54,14 @@ def xmlunquoteattr (s):
     return xml.sax.saxutils.unescape(s, xmlattr_entities)
 
 
-class XMLLogger (linkcheck.logger.standard.StandardLogger):
+class XMLLogger (linkcheck.logger.Logger):
     """XML output mirroring the GML structure. Easy to parse with any XML
        tool."""
 
     def __init__ (self, **args):
         """initialize graph node list and internal id counter"""
         super(XMLLogger, self).__init__(**args)
+        self.init_fileoutput(args)
         self.nodes = {}
         self.nodeid = 0
 

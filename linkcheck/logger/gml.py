@@ -19,13 +19,12 @@
 import time
 import os
 
-import linkcheck.logger.standard
 import linkcheck.configuration
 
 from linkcheck.i18n import _
 
 
-class GMLLogger (linkcheck.logger.standard.StandardLogger):
+class GMLLogger (linkcheck.logger.Logger):
     """GML means Graph Modeling Language. Use a GML tool to see
     your sitemap graph.
     """
@@ -33,12 +32,13 @@ class GMLLogger (linkcheck.logger.standard.StandardLogger):
     def __init__ (self, **args):
         """initialize graph node list and internal id counter"""
         super(GMLLogger, self).__init__(**args)
+        self.init_fileoutput(args)
         self.nodes = {}
         self.nodeid = 0
 
     def start_output (self):
         """print start of checking info as gml comment"""
-        linkcheck.logger.Logger.init(self)
+        super(GMLLogger, self).start_output()
         if self.fd is None:
             return
         self.starttime = time.time()

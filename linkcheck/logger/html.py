@@ -21,7 +21,6 @@ import cgi
 import os
 
 import linkcheck.logger
-import linkcheck.logger.standard
 import linkcheck.strformat
 import linkcheck.configuration
 
@@ -46,12 +45,13 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 <body bgcolor="%s" link="%s" vlink="%s" alink="%s">
 """
 
-class HtmlLogger (linkcheck.logger.standard.StandardLogger):
+class HtmlLogger (linkcheck.logger.Logger):
     """Logger with HTML output"""
 
     def __init__ (self, **args):
         """initialize default HTML color values"""
         super(HtmlLogger, self).__init__(**args)
+        self.init_fileoutput(args)
         self.colorbackground = args['colorbackground']
         self.colorurl = args['colorurl']
         self.colorborder = args['colorborder']
@@ -62,7 +62,7 @@ class HtmlLogger (linkcheck.logger.standard.StandardLogger):
 
     def start_output (self):
         """print start of checking info"""
-        linkcheck.logger.Logger.start_output(self)
+        super(HtmlLogger, self).start_output()
         if self.fd is None:
             return
         self.starttime = time.time()

@@ -53,6 +53,15 @@ class Logger (object):
                 # only log given fields
                 self.logfields = kwargs['fields']
 
+    def init_fileoutput (self, args):
+        """initialize self.fd file descriptor from args"""
+        if args.has_key('fileoutput'):
+            self.fd = file(args['filename'], "w")
+        elif args.has_key('fd'):
+            self.fd = args['fd']
+        else:
+            self.fd = sys.stdout
+
     def has_field (self, name):
         """see if given field name will be logged"""
         if self.logfields is None:
