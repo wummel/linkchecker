@@ -108,8 +108,8 @@ def checkform (form):
         url = form["url"].value
         if not url or url == "http://":
             raise FormError(_("empty url was given"))
-        if not linkcheck.url.is_valid_url(url):
-            raise FormError(_("invalid url was given"))
+        if not linkcheck.url.is_safe_url(url):
+            raise FormError(_("disallowed url was given"))
     else:
         raise FormError(_("no url was given"))
     # check recursion level
