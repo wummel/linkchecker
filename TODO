@@ -13,11 +13,7 @@ Possible improvements people could work on:
 
 - [USAGE] make a nice GUI for linkchecker
 
-- [OPTIMIZATION] SF bug #992389 bit me when I wanted to do absolute imports
-  at the checker classes :/
-  When the bug is fixed we can import absolute classes
-
 - [FEATURE] warn if overall size of page (including images/flash/etc.) is
-  too big right now, the page size is only html content
+  too big. Right now, the page size is only html content.
 
-- [FEATURE] save downloaded pages
+- [FEATURE] Option to save downloaded pages.
