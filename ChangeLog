@@ -3,3 +3,5 @@
     error prone. Just handle *.html and Opera Bookmarks.
   * Make separate ChangeLog from debian/changelog. For previous
     changes, see debian/changelog.
+  * Default socket timeout is now 10 seconds
+  * updated linkcheck/timeoutsocket.py to newest version

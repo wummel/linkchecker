@@ -22,6 +22,9 @@ if sys.version[:5] < "2.0":
     raise SystemExit, "This program requires Python 2.0 or later."
 
 import getopt, re, os, urlparse, pprint, linkcheck
+import linkcheck.timeoutsocket
+# set default 10 seconds timeout
+linkcheck.timeoutsocket.setDefaultSocketTimeout(10)
 from linkcheck.debuglevels import *
 from linkcheck import StringUtil
 debug = linkcheck.debug
@@ -92,7 +95,7 @@ For single-letter option arguments the space is not a necessity. So
         To disable threading specify a non-positive number.
 --timeout=secs
         Set the timeout for TCP connection attempts in seconds. The default
-        timeout is system dependant.
+        timeout is 10 seconds.
 -u name, --user=name
         Try username name for HTTP and FTP authorization.
         Default is 'anonymous'. See also -p.
