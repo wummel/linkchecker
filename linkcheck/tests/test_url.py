@@ -70,6 +70,10 @@ class TestUrl (unittest.TestCase):
         url = "http://example.com/?q=1%2a2"
         nurl = "http://example.com/?q=1%2A2"
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
+        # the no-quote chars
+        url = "http://example.com/a*+-();b"
+        nurl = url
+        self.assertEqual(linkcheck.url.url_norm(url), nurl)
 
     def test_norm_case_sensitivity (self):
         """test url norm case sensitivity"""
@@ -243,8 +247,8 @@ class TestUrl (unittest.TestCase):
         url = 'nntp:'
         nurl = 'nntp:///'
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
-        url = "news:§$%&/´`(§%"
-        nurl = 'news:%A7%24%25%26/%B4%60%28%A7%25'
+        url = "news:§$%&/´`§%"
+        nurl = 'news:%A7%24%25%26/%B4%60%A7%25'
         self.assertEqual(linkcheck.url.url_norm(url), nurl)
         # javascript url
         url = "javascript:loadthis()"
