@@ -1,10 +1,9 @@
 build-stamp
 .files-stamp
 *-out.*
-*.so
-*.o
 build
 dist
 MANIFEST
 VERSION
 LinkCheckerConf.py
+locale
