@@ -7,7 +7,6 @@ NAME=$(shell ./setup.py --name)
 HOST=treasure.calvinsplayground.de
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
-DEBPACKAGE = $(PACKAGE)_$(VERSION)_all.deb $(PACKAGE)-ssl_$(VERSION)_i386.deb
 OFFLINETESTS = test_base test_misc test_file test_frames
 ONLINETESTS = test_mail test_http test_https test_news test_ftp
 
@@ -24,7 +23,7 @@ clean:
 
 distclean: clean cleandeb
 	rm -rf dist build # just to be sure clean also the build dir
-	rm -f $(PACKAGE)-out.* VERSION $(PACKAGE)Conf.py MANIFEST Packages.gz
+	rm -f $(PACKAGE)-out.* VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 
 cleandeb:
 	rm -rf debian/$(PACKAGE) debian/$(PACKAGE)-ssl debian/tmp
@@ -43,8 +42,11 @@ deb:
 	fakeroot debian/rules binary
 	fakeroot dpkg-buildpackage -sgpg -pgpg -k959C340F
 
-package:
-	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz
+packages:
+	-cd .. && dpkg-scanpackages . | gzip --best > Packages.gz
+
+sources:
+	-cd .. && dpkg-scansources  . | gzip --best > Sources.gz
 
 files:	locale
 	env http_proxy="" ./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/~calvin/
@@ -52,7 +54,7 @@ files:	locale
 VERSION:
 	echo $(VERSION) > VERSION
 
-upload: distclean dist package files VERSION
+upload: distclean dist files VERSION
 	scp debian/changelog shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/changes.txt
 	scp README shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs/readme.txt
 	scp linkchecker-out.* shell1.sourceforge.net:/home/groups/$(PACKAGE)/htdocs

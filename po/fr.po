@@ -31,11 +31,17 @@ msgstr "trouvé"
 msgid "outside of domain filter, checked only syntax"
 msgstr "outside of domain filter, analyse de la syntaxe seulement"
 
+msgid "warning: no files or urls given"
+msgstr "attention: aucun fichier ou url donnée"
+
 msgid "Result"
 msgstr "Résultat"
 
 msgid "Warning"
 msgstr "Avertissement"
+
+msgid "Illegal argument '%s' for option "
+msgstr "Argumen illégal '%s' pour l'option "
 
 #, fuzzy
 msgid ""
@@ -229,6 +235,9 @@ msgstr ""
 msgid "%.3f seconds\n"
 msgstr "%.3f secondes\n"
 
+msgid "realurl"
+msgstr ""
+
 msgid ""
 "<html><head><title>LinkChecker Online Error</title></head><body "
 "text=\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" "
@@ -257,21 +266,27 @@ msgstr "Erreur"
 msgid "1 warning, "
 msgstr "1 avertissement, "
 
-msgid "Illegal argument '%s' for option "
-msgstr "Argumen illégal '%s' pour l'option "
+msgid "info"
+msgstr ""
+
+#, fuzzy
+msgid "base"
+msgstr "Base"
+
+msgid "Valid"
+msgstr "Valide"
 
 msgid "hours"
 msgstr "heures"
-
-#, fuzzy
-msgid "HTTPS url ignored"
-msgstr "Url Javascript ignorée"
 
 msgid "Start checking at %s\n"
 msgstr "Démarrage du controle à %s\n"
 
 msgid "D/L Time"
 msgstr "Durée D/L"
+
+msgid "Base"
+msgstr "Base"
 
 msgid "seconds"
 msgstr "secondes"
@@ -303,8 +318,16 @@ msgstr "Exécuter 'linkchecker -h' pour obtenir l'aide\n"
 msgid "HTTP 301 (moved permanent) encountered: you should update this link"
 msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
 
-msgid "Base"
-msgstr "Base"
+#, fuzzy
+msgid "checktime"
+msgstr "Durée d'Analyse"
+
+msgid "dltime"
+msgstr ""
+
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Url Javascript ignorée"
 
 msgid "Check Time"
 msgstr "Durée d'Analyse"
@@ -314,6 +337,9 @@ msgstr "Arrêt du controle à %s"
 
 msgid "Group %s has %s articles, range %s to %s"
 msgstr "Le groupe %s a %s articles, de %s à %s"
+
+msgid "Javascript url ignored"
+msgstr "Url Javascript ignorée"
 
 msgid "No user or password found"
 msgstr "Aucun utilisateur ou mot de passe trouvé"
@@ -327,8 +353,8 @@ msgstr "N'obtient pas de réponse du serveur FTP"
 msgid "found mail host %s"
 msgstr "trouvé un hôte de messagerie %s"
 
-msgid "Javascript url ignored"
-msgstr "Url Javascript ignorée"
+msgid "parenturl"
+msgstr ""
 
 msgid "could not split the mail adress"
 msgstr "impossible de partager l'adresse e-mail"
@@ -391,11 +417,13 @@ msgstr "Il manque '/' à la fin de l'URL"
 msgid "# Format of the entries:\n"
 msgstr "# Format des entrées:\n"
 
-msgid "warning: no files or urls given"
-msgstr "attention: aucun fichier ou url donnée"
+#, fuzzy
+msgid "result"
+msgstr "Résultat"
 
-msgid "Valid"
-msgstr "Valide"
+#, fuzzy
+msgid "warning"
+msgstr "Avertissement"
 
 msgid " (cached)\n"
 msgstr " (caché)\n"

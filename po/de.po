@@ -31,11 +31,17 @@ msgstr "gefunden"
 msgid "outside of domain filter, checked only syntax"
 msgstr "außerhalb des Domain Filters; prüfe lediglich Syntax"
 
+msgid "warning: no files or urls given"
+msgstr "Warnung: keine Dateien oder URLs angegeben"
+
 msgid "Result"
 msgstr "Ergebnis"
 
 msgid "Warning"
 msgstr "Warnung"
+
+msgid "Illegal argument '%s' for option "
+msgstr "Ungültiges Argument '%s' für Option "
 
 #, fuzzy
 msgid ""
@@ -225,6 +231,9 @@ msgstr ""
 msgid "%.3f seconds\n"
 msgstr "%.3f Sekunden\n"
 
+msgid "realurl"
+msgstr ""
+
 msgid ""
 "<html><head><title>LinkChecker Online Error</title></head><body "
 "text=\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" "
@@ -261,21 +270,28 @@ msgstr "Fehler"
 msgid "1 warning, "
 msgstr "1 Warnung, "
 
-msgid "Illegal argument '%s' for option "
-msgstr "Ungültiges Argument '%s' für Option "
+#, fuzzy
+msgid "info"
+msgstr "Info"
+
+#, fuzzy
+msgid "base"
+msgstr "Basis"
+
+msgid "Valid"
+msgstr "Gültig"
 
 msgid "hours"
 msgstr "Stunden"
-
-#, fuzzy
-msgid "HTTPS url ignored"
-msgstr "Javascript url ignoriert"
 
 msgid "Start checking at %s\n"
 msgstr "Beginne Prüfen am %s\n"
 
 msgid "D/L Time"
 msgstr "D/L Zeit"
+
+msgid "Base"
+msgstr "Basis"
 
 msgid "seconds"
 msgstr "Sekunden"
@@ -308,8 +324,16 @@ msgid "HTTP 301 (moved permanent) encountered: you should update this link"
 msgstr ""
 "HTTP 301 (moved permanent) gefunden: Sie sollten diesen Link aktualisieren"
 
-msgid "Base"
-msgstr "Basis"
+#, fuzzy
+msgid "checktime"
+msgstr "Prüfzeit"
+
+msgid "dltime"
+msgstr ""
+
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Javascript url ignoriert"
 
 msgid "Check Time"
 msgstr "Prüfzeit"
@@ -319,6 +343,9 @@ msgstr "Beende Prüfen am %s"
 
 msgid "Group %s has %s articles, range %s to %s"
 msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
+
+msgid "Javascript url ignored"
+msgstr "Javascript url ignoriert"
 
 msgid "No user or password found"
 msgstr "Kein Benutzername oder Passwort gefunden"
@@ -332,8 +359,8 @@ msgstr "Keine Antwort vom FTP Server"
 msgid "found mail host %s"
 msgstr "Mail host %s gefunden"
 
-msgid "Javascript url ignored"
-msgstr "Javascript url ignoriert"
+msgid "parenturl"
+msgstr ""
 
 msgid "could not split the mail adress"
 msgstr "konnte Mail Adresse nicht splitten"
@@ -395,11 +422,13 @@ msgstr "Fehlendes '/' am Ende der URL"
 msgid "# Format of the entries:\n"
 msgstr "# Format der Einträge:\n"
 
-msgid "warning: no files or urls given"
-msgstr "Warnung: keine Dateien oder URLs angegeben"
+#, fuzzy
+msgid "result"
+msgstr "Ergebnis"
 
-msgid "Valid"
-msgstr "Gültig"
+#, fuzzy
+msgid "warning"
+msgstr "Warnung"
 
 msgid " (cached)\n"
 msgstr " (aus dem Cache)\n"

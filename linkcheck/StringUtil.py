@@ -17,11 +17,9 @@
 
 import string,re,sys,htmlentitydefs
 
-HtmlTable = []
-UnHtmlTable = []
-for ent,ch in htmlentitydefs.entitydefs.items():
-    HtmlTable.append((ch, "&"+ent+";"))
-    UnHtmlTable.append(("&"+ent+";", ch))
+entities = htmlentitydefs.entitydefs.items()
+HtmlTable = map(lambda x: (x[1], "&"+x[0]+";"), entities)
+UnHtmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities)
 # order matters!
 HtmlTable.sort()
 UnHtmlTable.sort()
@@ -153,8 +151,10 @@ def htmlify(str):
     "Escape special HTML chars and strings"
     return applyTable(HtmlTable, str)
 
+
 def unhtmlify(str):
     return applyTable(UnHtmlTable, str)
+
 
 def getLineNumber(str, index):
     "return the line number of str[index]"

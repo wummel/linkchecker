@@ -2,14 +2,14 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends: python2-base, python2-dev, debhelper (>= 3.0.0), libssl096-dev
+Build-Depends: python2-base, python2-dev, debhelper (>= 3.0.0)
 Build-Depends-Indep: gettext
 Standards-Version: 3.5.2
 
 Package: linkchecker
 Architecture: all
 Depends: python2-base
-Suggests: linkchecker-ssl
+Suggests: linkchecker-ssl (>= ${Source-Version})
 Description: check HTML documents for broken links
  Features:
   o recursive checking
@@ -25,10 +25,3 @@ Description: check HTML documents for broken links
   o i18n support
   o command line interface
   o (Fast)CGI web interface (requires HTTP server)
-
-Package: linkchecker-ssl
-Architecture: any
-Depends: linkchecker (>= 1.3.0)
-Description: HTTPS support for LinkChecker
- Includes the Python modules 'ssl' and 'httpslib' to support https://
- links.

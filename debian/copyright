@@ -1,10 +1,10 @@
-This is LinkChecker, written and maintained by Bastian Kleineidam 
-<calvin@users.sourceforge.net> on Sat,  8 Jan 2000 11:00:35 +0100.
+This is linkchecker, written and maintained by Bastian Kleineidam 
+<calvin@debian.org> on Sat,  8 Jan 2000 11:00:35 +0100.
 
 The original source can always be found at:
 	http://linkchecker.sourceforge.net/
 
-Copyright (C) 2000  Bastian Kleineidam
+Copyright (C) 2000,2001 Bastian Kleineidam
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

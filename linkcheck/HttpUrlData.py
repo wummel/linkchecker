@@ -188,7 +188,8 @@ class HttpUrlData(UrlData):
         return httplib.HTTP(host)
 
     def getContent(self):
-        if not self.data:
+        if not self.has_content:
+            self.has_content = 1
             self.closeConnection()
             t = time.time()
             status, statusText, self.mime = self._getHttpRequest("GET")
@@ -198,11 +199,13 @@ class HttpUrlData(UrlData):
             self._init_html_comments()
             Config.debug("DEBUG: comment spans %s\n" % self.html_comments)
         return self.data
+
         
     def isHtml(self):
         if not (self.valid and self.mime):
             return 0
         return self.mime.gettype()[:9]=="text/html"
+
 
     def robotsTxtAllowsUrl(self, config):
         roboturl="%s://%s/robots.txt" % self.urlTuple[0:2]

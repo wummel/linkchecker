@@ -52,6 +52,7 @@ _linkMatcher = r"""
     >              # close tag
     """
 
+
 # ripped mainly from HTML::Tagset.pm
 LinkTags = (
     ("a",       ["href"]),
@@ -103,6 +104,11 @@ BasePattern = {
     'attr': 'href',
 }
 
+CommentPattern = re.compile("<!--.*?--\s*>", re.DOTALL)
+
+# Workaround for Python 2.0 re module bug
+CommentPatternBegin = re.compile("<!--")
+CommentPatternEnd = re.compile("--\s*>")
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
@@ -133,6 +139,7 @@ class UrlData:
         self.extern = 1
         self.data = None
         self.html_comments = []
+        self.has_content = 0
         
         
     def setError(self, s):
@@ -327,7 +334,8 @@ class UrlData:
 
     def getContent(self):
         """Precondition: urlConnection is an opened URL."""
-        if not self.data:
+        if not self.has_content:
+            self.has_content = 1
             t = time.time()
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
@@ -339,13 +347,16 @@ class UrlData:
     def _init_html_comments(self):
         # if we find an URL inside HTML comments we ignore it
         # so build a list of intervalls which are HTML comments
-        pattern = re.compile("<!--.*?--\s*>", re.DOTALL)
         index = 0
         while 1:
-            match = pattern.search(self.data, index)
+            match = CommentPatternBegin.search(self.getContent(), index)
             if not match: break
-            index = match.end()
-            self.html_comments.append(match.span())
+            start = match.start()
+            index = match.end() + 1
+            end = CommentPatternEnd.search(self.getContent(), index)
+            if not match: break
+            index = match.end() + 1
+            self.html_comments.append(start, match.end())
 
     def _isInComment(self, index):
         for low,high in self.html_comments:

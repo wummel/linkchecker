@@ -152,7 +152,7 @@ class MyConfig(config):
 class MyDistribution(Distribution):
     def __init__(self, attrs=None):
         Distribution.__init__(self, attrs=attrs)
-        self.config_file = self.get_name()+"Conf.py"
+        self.config_file = "_"+self.get_name()+"_configdata.py"
 
 
     def run_commands(self):
@@ -166,15 +166,16 @@ class MyDistribution(Distribution):
             raise SystemExit, "please run 'python setup.py config'"
             #self.announce("generating default configuration")
             #self.run_command('config')
-        import linkcheckerConf
+        import _linkchecker_configdata
         if 'bdist_wininst' in self.commands and os.name!='nt':
             self.announce("bdist_wininst command found on non-Windows "
 	                  "platform. Disabling SSL compilation")
-        elif linkcheckerConf.have_ssl:
-            self.ext_modules = [Extension('ssl', ['ssl.c'],
-                        include_dirs=linkcheckerConf.ssl_include_dirs,
-                        library_dirs=linkcheckerConf.ssl_library_dirs,
-                        libraries=linkcheckerConf.libraries)]
+        elif _linkchecker_configdata.have_ssl:
+            self.ext_modules = [Extension('linkcheckssl',
+	                ['linkcheckssl/ssl.c'],
+                        include_dirs=_linkchecker_configdata.ssl_include_dirs,
+                        library_dirs=_linkchecker_configdata.ssl_library_dirs,
+                        libraries=_linkchecker_configdata.libraries)]
 
 
     def create_conf_file(self, directory, data=[]):
@@ -224,7 +225,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                    'install': MyInstall,
                    'install_data': MyInstallData,
 		  },
-       packages = ['','DNS','linkcheck'],
+       packages = ['','DNS','linkcheck','linkcheckssl'],
        scripts = ['linkchecker'],
        data_files = [('share/locale/de/LC_MESSAGES',
                       ['locale/de/LC_MESSAGES/linkcheck.mo']),

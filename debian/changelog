@@ -6,7 +6,28 @@ linkchecker (1.3.0) unstable; urgency=low
     Jamie Heilman <jamie@audible.transient.net>)
   * config file option to control which fields the loggers should print
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 22 Feb 2001 01:35:50 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 22 Feb 2001 01:35:50 +0100
+
+linkchecker (1.2.15) unstable; urgency=low
+
+  * remove ssl modules for main linkchecker package; make a separate 
+    package linkchecker-ssl for non-US
+  * adjust build-depends and depends
+  * fix anchor checking
+  * debian standards version 3.5.2.0
+  * require python-distutils >= 1.0.1, removed old compatibility code
+  * added FAQ entry for broken links
+  * change email address to calvin@debian.org
+  * add DNS.Error to caught exceptions
+  * add all html link tags (ripped from HTML::Tagset.pm)
+  * updated robotparser2.py to newest version
+  * catch errors when calling UrlData.checkContent
+  * added linkcheckerrc to the conffiles
+  * disable threading in the lc.cgi script so the machine wont be
+    hogged (closes: Bug#86788)
+  * fix https support: add -lssl when compiling ssl module
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun,  4 Mar 2001 20:55:02 +0100
 
 linkchecker (1.2.14) unstable; urgency=low
 
