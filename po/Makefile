@@ -11,10 +11,11 @@ LFILE = LC_MESSAGES/$(PACKAGE).mo
 LANGUAGES = de fr nl
 
 mofiles:
-	for la in $(LANGUAGES); do \
+	@for la in $(LANGUAGES); do \
 	  if [ ! -d $(LDIR)/$$la/LC_MESSAGES ]; then \
 	    mkdir -p $(LDIR)/$$la/LC_MESSAGES; \
 	  fi; \
+	  echo "Formatting language catalog $${la}:"; \
 	  $(MSGFMT) -c --statistics -o $(LDIR)/$$la/$(LFILE) $$la.po; \
 	done
 
