@@ -44,8 +44,6 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.files = []
         # last part of URL filename
         self.filename = None
-        # if FTP connection was reused
-        self.reuse = False
 
     def check_connection (self):
         # proxy support (we support only http)
@@ -65,11 +63,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.login()
         self.filename = self.cwd()
         self.listfile()
-        if self.is_directory():
-            self.url_connection.cwd(self.filename)
-            self.files = self.get_files()
-        else:
-            self.files = []
+        self.files = []
         return None
 
     def get_user_password (self):
@@ -78,18 +72,26 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return urllib.splitpasswd(self.userinfo)
         return super(FtpUrl, self).get_user_password()
 
+    def get_ftp_connection (self, hostport, _user, _password):
+        cache_get = self.consumer.cache.get_ftp_connection
+        # wait at most 300*0.1=30 seconds for connection to become available
+        for dummy in xrange(300):
+            conn = cache_get(hostport, _user, _password)
+            if conn != "busy":
+                return conn
+            time.sleep(0.1)
+        return None
+
     def login (self):
         """
         Log into ftp server and check the welcome message.
         """
         _user, _password = self.get_user_password()
         # ready to connect
-        conn = self.consumer.cache.get_ftp_connection(
-                                     self.urlparts[1], _user, _password)
+        conn = self.get_ftp_connection(self.urlparts[1], _user, _password)
         if conn is not None:
             # reuse cached FTP connection
             self.url_connection = conn
-            self.reuse = True
             return
         try:
             self.url_connection = ftplib.FTP()
@@ -113,7 +115,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # don't set info anymore, this may change every time we log in
         #self.add_info(info)
         # add to cached connections
-        self.reuse = self.consumer.cache.add_ftp_connection(
+        self.consumer.cache.add_ftp_connection(
                       self.urlparts[1], _user, _password, self.url_connection)
 
     def cwd (self):
@@ -201,6 +203,8 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return self.data
         t = time.time()
         if self.is_directory():
+            self.url_connection.cwd(self.filename)
+            self.files = self.get_files()
             self.data = linkcheck.checker.get_index_html(self.files)
         else:
             # download file in BINARY mode
@@ -217,8 +221,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return self.data
 
     def close_connection (self):
-        if self.reuse:
-            _user, _password = self.get_user_password()
-            self.consumer.cache.release_ftp_connection(
+        _user, _password = self.get_user_password()
+        self.consumer.cache.release_ftp_connection(
                                           self.urlparts[1], _user, _password)
         self.url_connection = None

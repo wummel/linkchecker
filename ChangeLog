@@ -33,6 +33,15 @@
     Type: bugfix
     Changed: linkcheck/checker/mailtourl.py
 
+  * Do not list FTP directory contents when they are not needed.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * If an FTP connection is pooled but busy, wait for the connection to
+    become available for at least 30 seconds.
+    Type: feature
+    Changed: linkcheck/checker/ftpurl.py
+
 2.2 "Cube" (released 25.01.2005)
 
   * CSV log format changes:
