@@ -303,7 +303,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             if self.consumer.config['cookies']:
                 for c in self.cookies:
                     self.add_info("Cookie: %s" % c)
-                out = self.consumer.config.storeCookies(self.headers, self.urlparts[1])
+                out = self.consumer.cache.store_cookies(self.headers,
+                                                        self.urlparts[1])
                 for h in out:
                     self.add_info(h)
             if response.status >= 200:
@@ -361,8 +362,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.consumer.config['cookies']:
-            self.cookies = self.consumer.config.getCookies(self.urlparts[1],
-                                                  self.urlparts[2])
+            self.cookies = self.consumer.cache.get_cookies(self.urlparts[1],
+                                                           self.urlparts[2])
             for c in self.cookies:
                 self.url_connection.putheader("Cookie", c)
         self.url_connection.endheaders()

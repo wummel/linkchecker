@@ -46,7 +46,7 @@ def _check_morsel (m, host, path):
     if m["expires"]:
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Cookie expires %s",
                             m["expires"])
-        # XXX
+        # XXX check cookie expiration
     return m.output(header='').strip()
 
 
