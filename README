@@ -26,7 +26,7 @@ Read the file INSTALL.
 
 Running the program
 -------------------
-o Unix platforms
+o Unix or Mac OS X platforms
   The local configuration file is $HOME/.linkcheckerrc
   Type "linkchecker" followed by your URLs you want to check.
   Type "linkchecker -h" for help.
@@ -37,7 +37,7 @@ o Windows platforms
   Another way is executing "python.exe linkchecker" in the Python
   Scripts directory.
 
-o MacOS 9.x platforms
+o Mac OS 9.x platforms
   Read the MacOS Python documentation to find out about passing
   commandline options to Python scripts.
 

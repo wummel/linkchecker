@@ -1,8 +1,8 @@
                      Installation
                     ==============
 
-Requirements for Unix/Linux
----------------------------
+Requirements for Unix/Linux or Mac OS X
+--------------------------------------
 1. You need a standard GNU development environment with
    a) C compiler (for example the GNU C Compiler gcc)
    b) gettext
@@ -26,8 +26,8 @@ Direct download links are in brackets.
    [ http://www.python.org/ftp/python/2.3.3/Python-2.3.3.exe ]
 
 
-Setup for Unix/Linux
---------------------
+Setup for Unix/Linux or Mac OS X
+-------------------------------
 0. Help note
    Run "python setup.py --help" for help about command options
 1. Compile Python modules
@@ -62,7 +62,7 @@ Setup for Windows
 Installation for other platforms
 --------------------------------
 If you happen to install LinkChecker on other platforms (for example
-MacOS 9.x or MacOS X) then drop me a note.
+Mac OS 9.x) then drop me a note.
 
 
 (Fast)CGI web interface
