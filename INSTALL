@@ -37,10 +37,10 @@ o Windows platforms
 
   For help on setup.py options, run "python.exe setup.py --help".
 
-  To run the program, change to the scripts directory of your python
-  installation and type "linkchecker.bat" followed by your URLs you
-  want to check.
-  Type "linkchecker.bat -h" for help.
+  To run the program, double-click on "linkchecker.bat" on your
+  desktop. URL input is interactive.
+  Another way is executing "python.exe linkchecker" in the Python
+  Scripts directory.
 
 
 o MacOS 9.x platforms

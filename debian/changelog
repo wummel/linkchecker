@@ -2,9 +2,10 @@ linkchecker (1.3.11) unstable; urgency=low
 
   * setup.py: use os.getcwd(), not "." which breaks on MacOS 9.x
   * added platform-specific install instructions
-  * use Pythons internal gettext module, get rid of fintl.py
-  * use Pythons internal robot.txt parser, get rid of
+  * use Pythons builtin gettext module, get rid of fintl.py
+  * use Pythons builtin robot.txt parser, get rid of
     robotparser2.py
+  * update Python gettext utilities in po/ to newest version
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 28 Nov 2001 17:57:20 +0100
 
