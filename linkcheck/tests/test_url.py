@@ -384,6 +384,8 @@ class TestUrl (unittest.TestCase):
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
         url = "\nhttp://www.imadoofus.com/"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        url = "http://www.imadoofus.com/#a!"
+        self.assert_(not linkcheck.url.url_needs_quoting(url), repr(url))
 
     def test_absolute_url (self):
         url = "hutzli:"
