@@ -1,6 +1,8 @@
 test_misc
 url file:///home/calvin/projects/linkchecker/test/html/misc.html
 valid
+url file:///home/calvin/projects/linkchecker/test/html/anchor.html
+valid
 url http://localhost/
 valid
 url hutzli:nixgutt
@@ -15,4 +17,7 @@ cached
 valid
 url misc.html
 cached
+valid
+url #myid
+name Bla
 valid

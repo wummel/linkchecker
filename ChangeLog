@@ -1,3 +1,10 @@
+1.8.16
+  * also look at id attributes on anchor check
+    (Closes SF Bug #741131)
+    Changed files: linkcheck/{linkparser,UrlData}.py
+  * minor parser cleanups
+    Changed files: linkcheck/parser/*
+
 1.8.15
   * Fix compile errors with C variable declarations in HTML parser.
     Thanks to Fazal Majid <fazal@majid.fm>
