@@ -26,6 +26,7 @@ import httpurl
 
 from linkcheck.i18n import _
 
+# XXX downloading of files is missing!
 
 class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
     """Url link with ftp scheme."""
@@ -83,7 +84,12 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             if self.consumer.config.get("debug"):
                 self.url_connection.set_debuglevel(1)
             self.url_connection.connect(self.urlparts[1])
-            self.url_connection.login(_user, _password)
+            if _user is None:
+                self.url_connection.login()
+            elif _password is None:
+                self.url_connection.login(_user)
+            else:
+                self.url_connection.login(_user, _password)
         except EOFError:
             raise linkcheck.LinkCheckerError(
                                        _("Remote host has closed connection"))
@@ -91,7 +97,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.close_connection()
             raise linkcheck.LinkCheckerError(
                                        _("Got no answer from FTP server"))
-        # dont set info anymore, this may change every time we logged in
+        # don't set info anymore, this may change every time we logged in
         #self.add_info(info)
 
     def cwd (self):
@@ -99,7 +105,8 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         # leeched from webcheck
         dirs = self.urlparts[2].split('/')
         filename = dirs.pop()
-        if len(dirs) and not dirs[0]: del dirs[0]
+        if len(dirs) and not dirs[0]:
+            del dirs[0]
         for d in dirs:
             self.url_connection.cwd(d)
         return filename
@@ -113,14 +120,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return
         except ftplib.error_perm:
             pass
+        # XXX use TYPE A for directories
         self.url_connection.voidcmd('TYPE I')
-        conn, size = self.url_connection.ntransfercmd('RETR %s'%filename)
-        if size:
-            self.dlsize = size
-            # dont download data XXX recursion
-            #page = conn.makefile().read(size)
-        #else:
-        #    page = conn.makefile().read()
+        self.url_connection.nlst(filename)
 
     def close_connection (self):
         try: self.url_connection.closet()
