@@ -32,8 +32,8 @@ if not hasattr(sys, 'version_info') or sys.version_info<(2, 3, 0, 'final', 0):
 #    pass
 
 import getopt, re, os, pprint, socket, linkcheck
-# set default 30 seconds timeout
-socket.setdefaulttimeout(30)
+# set default 60 seconds timeout
+socket.setdefaulttimeout(60)
 # import several helper debugging things
 from linkcheck.debug import *
 from linkcheck.log import LoggerKeys
