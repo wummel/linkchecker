@@ -29,7 +29,7 @@
 
   * Documentation and pylint cleanups.
     Type: feature
-    Changed: linkchech/*.py
+    Changed: linkcheck/*.py
 
 2.3 "Napoleon Dynamite" (released 3.2.2005)
 
