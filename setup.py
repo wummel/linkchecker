@@ -29,7 +29,16 @@ import os
 class LCInstall(install):
     def run(self):
         install.run(self)
-        self.distribution.create_conf_file(self.install_lib)
+        # we have to write a configuration file because we need the
+        # <install_data>/share/locale directory (and other stuff
+        # like author, url, ...)
+        if self.root:
+            install_data = self.install_data[len(self.root):]
+        else:
+            install_data = self.install_data
+        data = ['install_data = %s' % \
+                `os.path.join(install_data, 'share')`]
+        self.distribution.create_conf_file(self.install_lib, data)
 
 
 class LCConfig(config):
@@ -46,6 +55,8 @@ class LCConfig(config):
         self.ssl_library_dirs = None
 
     def finalize_options(self):
+        # we have some default include and library directories
+        self.basic_finalize_options()
         if self.ssl_include_dirs is None:
             self.ssl_include_dirs = ['/usr/include/openssl',
                                      '/usr/local/include/openssl']
@@ -53,21 +64,34 @@ class LCConfig(config):
             self.ssl_library_dirs = ['/usr/lib',
                                      '/usr/local/lib']
 
-    def check_lib(self, library, library_dirs=None,
-                  headers=None, include_dirs=None,
-                  other_libraries=[]):
-        self._check_compiler()
-        return self.try_link("int main (void) { }",
-                             headers, include_dirs,
-			     [library]+other_libraries, library_dirs)
+    def basic_finalize_options(self):
+        """fix up types of option values"""
+        # this should be in config.finalize_options
+        # I submitted a patch
+        if self.include_dirs is None:
+            self.include_dirs = self.distribution.include_dirs or []
+        elif type(self.include_dirs) is StringType:
+            self.include_dirs = string.split(self.include_dirs, os.pathsep)
+
+        if self.libraries is None:
+            self.libraries = []
+        elif type(self.libraries) is StringType:
+            self.libraries = [self.libraries]
+
+        if self.library_dirs is None:
+            self.library_dirs = []
+        elif type(self.library_dirs) is StringType:
+            self.library_dirs = [self.library_dirs]
 
 
     def run (self):
+        # try to compile a test program with SSL
+        config.run(self)
         have_ssl = self.check_lib("ssl",
                                   library_dirs = self.ssl_library_dirs,
                                   include_dirs = self.ssl_include_dirs,
-                                  other_libraries = ["crypto"],
                                   headers = ["ssl.h"])
+        # write the result in the configuration file
         data = []
 	data.append("have_ssl = %d" % (have_ssl))
         data.append("ssl_library_dirs = %s" % `self.ssl_library_dirs`)
@@ -88,8 +112,9 @@ class LCDistribution(Distribution):
 
     def check_ssl(self):
         if not os.path.exists(self.config_file):
-            self.announce("generating default configuration")
-            self.run_command('config')
+            raise SystemExit, "please run 'python setup.py config'"
+            #self.announce("generating default configuration")
+            #self.run_command('config')
         import LinkCheckerConf
         if 'bdist_wininst' in self.commands and os.name!='nt':
             self.announce("bdist_wininst command found on non-Windows "
