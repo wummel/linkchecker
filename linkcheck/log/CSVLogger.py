@@ -57,7 +57,7 @@ class CSVLogger (StandardLogger):
     def newUrl (self, urlData):
         if self.fd is None: return
         self.fd.write(
-	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%d%s%d\n" % (
+	    "%s%s%d%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s%s%s%d%s%d%s%s%s%d%s%d%s%d\n" % (
 	    urlData.urlName, self.separator,
 	    urlData.recursionLevel, self.separator,
 	    urlData.parentName, self.separator,
