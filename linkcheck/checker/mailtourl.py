@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle for mailto: links"""
+"""
+Handle for mailto: links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -29,7 +31,9 @@ import linkcheck.dns.resolver
 
 
 class MailtoUrl (urlbase.UrlBase):
-    """Url link with mailto scheme"""
+    """
+    Url link with mailto scheme.
+    """
 
     def build_url (self):
         super(MailtoUrl, self).build_url()
@@ -83,7 +87,8 @@ class MailtoUrl (urlbase.UrlBase):
         return addrs
 
     def check_connection (self):
-        """Verify a list of email addresses. If one address fails,
+        """
+        Verify a list of email addresses. If one address fails,
         the whole list will fail.
         For each mail address we check the following things:
         (1) Look up the MX DNS records. If we found no MX record,
@@ -103,7 +108,9 @@ class MailtoUrl (urlbase.UrlBase):
 
 
     def check_smtp_domain (self, name, mail):
-        """Check a single mail address"""
+        """
+        Check a single mail address.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "checking mail address %r", mail)
         linkcheck.log.debug(linkcheck.LOG_CHECK, "splitting address")
@@ -131,7 +138,9 @@ class MailtoUrl (urlbase.UrlBase):
         self.check_smtp_connect(mxdata, username)
 
     def check_smtp_connect (self, mxdata, username):
-        """mxdata is a list of (preference, host) tuples to check for"""
+        """
+        mxdata is a list of (preference, host) tuples to check for
+        """
         smtpconnect = 0
         for preference, host in mxdata:
             try:
@@ -180,7 +189,9 @@ class MailtoUrl (urlbase.UrlBase):
                                   _("Could not split the mail address"))
 
     def close_connection (self):
-        """close a possibly opened SMTP connection"""
+        """
+        Close a possibly opened SMTP connection.
+        """
         if self.url_connection is None:
             # no connection is open
             return
@@ -191,7 +202,9 @@ class MailtoUrl (urlbase.UrlBase):
         self.url_connection = None
 
     def set_cache_keys (self):
-        """The cache key is a comma separated list of emails."""
+        """
+        The cache key is a comma separated list of emails.
+        """
         emails = [addr[1] for addr in self.addresses]
         emails.sort()
         self.cache_url_key = u"%s:%s" % (self.scheme, u",".join(emails))
@@ -199,7 +212,9 @@ class MailtoUrl (urlbase.UrlBase):
         # cache_content_key remains None, recursion is not allowed
 
     def can_get_content (self):
-        """mailto: URLs do not have any content
-           @return False
+        """
+        mailto: URLs do not have any content
+
+        @return: c{False}
         """
         return False

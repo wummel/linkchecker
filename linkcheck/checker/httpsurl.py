@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle https links"""
+"""
+Handle https links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,10 +21,14 @@
 import httpurl
 
 class HttpsUrl (httpurl.HttpUrl):
-    """Url link with https scheme"""
+    """
+    Url link with https scheme.
+    """
 
     def local_check (self):
-        """check connection if SSL is supported, else ignore"""
+        """
+        Check connection if SSL is supported, else ignore.
+        """
         if httpurl.supportHttps:
             super(HttpsUrl, self).local_check()
         else:

@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle http links"""
+"""
+Handle http links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -43,11 +45,15 @@ _is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 
 
 class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
-    "Url link with http scheme"
+    """
+    Url link with http scheme.
+    """
 
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url=None, base_ref=None, line=0, column=0, name=u""):
-        """initialize basic url data and HTTP specific variables"""
+        """
+        Initialize basic url data and HTTP specific variables.
+        """
         super(HttpUrl, self).__init__(base_url, recursion_level, consumer,
                parent_url=parent_url, base_ref=base_ref, line=line,
                column=column, name=name)
@@ -348,8 +354,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.add_info(_("Last modified %s.") % modified)
 
     def _get_http_response (self):
-        """Put request and return (status code, status text, mime object).
-           Host can be host:port format.
+        """
+        Put request and return (status code, status text, mime object).
+        Host can be host:port format.
         """
         if self.proxy:
             host = self.proxy

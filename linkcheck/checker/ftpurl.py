@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle FTP links"""
+"""
+Handle FTP links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -28,7 +30,9 @@ import httpurl
 
 
 class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
-    """Url link with ftp scheme."""
+    """
+    Url link with ftp scheme.
+    """
 
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None,
@@ -75,7 +79,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return super(FtpUrl, self).get_user_password()
 
     def login (self):
-        """log into ftp server and check the welcome message"""
+        """
+        Log into ftp server and check the welcome message.
+        """
         _user, _password = self.get_user_password()
         # ready to connect
         conn = self.consumer.cache.get_ftp_connection(
@@ -111,8 +117,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                       self.urlparts[1], _user, _password, self.url_connection)
 
     def cwd (self):
-        """Change to URL parent directory. Return filename of last path
-           component.
+        """
+        Change to URL parent directory. Return filename of last path
+        component.
         """
         dirname = self.urlparts[2].strip('/')
         dirs = dirname.split('/')
@@ -123,7 +130,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         return filename
 
     def listfile (self):
-        """see if filename is in the current FTP directory"""
+        """
+        See if filename is in the current FTP directory.
+        """
         if not self.filename:
             return
         files = self.get_files()
@@ -141,8 +150,9 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         raise ftplib.error_perm, "550 File not found"
 
     def get_files (self):
-        """Get list of filenames in directory. Subdirectories have an
-           ending slash.
+        """
+        Get list of filenames in directory. Subdirectories have an
+        ending slash.
         """
         # Rudimentary LIST output parsing. An entry is assumed to have
         # the following form:

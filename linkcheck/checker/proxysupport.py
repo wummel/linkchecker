@@ -18,10 +18,14 @@
 import urllib
 
 class ProxySupport (object):
-    """get support for proxying and for urls with user:pass@host setting"""
+    """
+    Get support for proxying and for urls with user:pass@host setting.
+    """
 
     def set_proxy (self, proxy):
-        """parse given proxy information and store parsed values"""
+        """
+        Parse given proxy information and store parsed values.
+        """
         self.proxy = proxy
         self.proxyauth = None
         if self.proxy:

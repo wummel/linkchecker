@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle nntp: and news: links"""
+"""
+Handle nntp: and news: links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -31,11 +33,14 @@ import linkcheck.log
 random.seed()
 
 class NoNetrcNNTP (nntplib.NNTP):
-    """NNTP class ignoring possible entries in ~/.netrc"""
+    """
+    NNTP class ignoring possible entries in ~/.netrc.
+    """
 
     def __init__ (self, host, port=nntplib.NNTP_PORT, user=None,
                   password=None, readermode=None):
-        """Initialize an instance.  Arguments:
+        """
+        Initialize an instance.  Arguments:
         - host: hostname to connect to
         - port: port to connect to (default the standard NNTP port)
         - user: username to authenticate with
@@ -95,7 +100,9 @@ class NoNetrcNNTP (nntplib.NNTP):
 
 
 class NntpUrl (urlbase.UrlBase):
-    """Url link with NNTP scheme"""
+    """
+    Url link with NNTP scheme.
+    """
 
     def check_connection (self):
         nntpserver = self.host or self.consumer.config["nntpserver"]
@@ -124,9 +131,11 @@ class NntpUrl (urlbase.UrlBase):
                 self.add_warning(_("No newsgroup specified in NNTP URL."))
 
     def _connectNntp (self, nntpserver):
-        """This is done only once per checking task. Also, the newly
+        """
+        This is done only once per checking task. Also, the newly
         introduced error codes 504 and 505 (both inclining "Too busy, retry
-        later", are caught."""
+        later", are caught.
+        """
         tries = 0
         nntp = value = None
         while tries < 5:

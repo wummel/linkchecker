@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Base URL handler"""
+"""
+Base URL handler.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -40,7 +42,9 @@ import linkcheck.HtmlParser.htmlsax
 stderr = codecs.getwriter("iso8859-1")(sys.stderr, errors="ignore")
 
 def internal_error ():
-    """print internal error message to stderr"""
+    """
+    Print internal error message to stderr.
+    """
     print >> stderr, os.linesep
     print >> stderr, _("""********** Oops, I did it again. *************
 
@@ -66,7 +70,9 @@ I can work with ;) .
 
 
 def print_app_info ():
-    """print system and application info to stderr"""
+    """
+    Print system and application info to stderr.
+    """
     print >> stderr, _("System info:")
     print >> stderr, linkcheck.configuration.App
     print >> stderr, _("Python %s on %s") % (sys.version, sys.platform)
@@ -83,21 +89,24 @@ def urljoin (parent, url, scheme):
 
 
 class UrlBase (object):
-    """An URL with additional information like validity etc."""
+    """
+    An URL with additional information like validity etc.
+    """
 
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None, base_ref = None,
                   line = -1, column = -1, name = u""):
-        """Initialize check data, and store given variables.
+        """
+        Initialize check data, and store given variables.
 
-           @base_url - unquoted and possibly unnormed url
-           @recursion_level - on what check level lies the base url
-           @config - Configuration instance
-           @parent_url - quoted and normed url of parent or None
-           @base_ref - quoted and normed url of <base href=""> or None
-           @line - line number of url in parent content
-           @column - column number of url in parent content
-           @name - name of url or empty
+        @base_url - unquoted and possibly unnormed url
+        @recursion_level - on what check level lies the base url
+        @config - Configuration instance
+        @parent_url - quoted and normed url of parent or None
+        @base_ref - quoted and normed url of <base href=""> or None
+        @line - line number of url in parent content
+        @column - column number of url in parent content
+        @name - name of url or empty
         """
         self.base_ref = base_ref
         # note that self.base_url must not be modified
@@ -157,36 +166,52 @@ class UrlBase (object):
         self.aliases = []
 
     def set_result (self, msg, valid=True):
-        """set result string and validity"""
+        """
+        Set result string and validity.
+        """
         self.result = msg
         self.valid = valid
 
     def is_parseable (self):
-        """return True iff content of this url is parseable"""
+        """
+        Return True iff content of this url is parseable.
+        """
         return False
 
     def is_html (self):
-        """return True iff content of this url is HTML formatted"""
+        """
+        Return True iff content of this url is HTML formatted.
+        """
         return False
 
     def is_http (self):
-        """return True for http:// URLs"""
+        """
+        Return True for http:// URLs.
+        """
         return False
 
     def is_file (self):
-        """return True for file:// URLs"""
+        """
+        Return True for file:// URLs.
+        """
         return False
 
     def add_warning (self, s):
-        """add a warning string"""
+        """
+        Add a warning string.
+        """
         self.warning.append(s)
 
     def add_info (self, s):
-        """add an info string"""
+        """
+        Add an info string.
+        """
         self.info.append(s)
 
     def copy_from_cache (self, cache_data):
-        """fill attributes from cache data"""
+        """
+        Fill attributes from cache data.
+        """
         self.result = cache_data["result"]
         self.warning.extend(cache_data["warning"])
         self.info.extend(cache_data["info"])
@@ -196,7 +221,9 @@ class UrlBase (object):
         self.cached = True
 
     def get_cache_data (self):
-        """return all data values that should be put in the cache"""
+        """
+        Return all data values that should be put in the cache.
+        """
         return {"result": self.result,
                 "warning": self.warning,
                 "info": self.info,
@@ -206,7 +233,9 @@ class UrlBase (object):
                }
 
     def set_cache_keys (self):
-        """Set keys for URL checking and content recursion."""
+        """
+        Set keys for URL checking and content recursion.
+        """
         # remove anchor from content cache key since we assume
         # URLs with different anchors to have the same content
         self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
@@ -230,10 +259,11 @@ class UrlBase (object):
                             self.cache_url_key)
 
     def check_syntax (self):
-        """Called before self.check(), this function inspects the
-           url syntax. Success enables further checking, failure
-           immediately logs this url. Syntax checks must not
-           use any network resources.
+        """
+        Called before self.check(), this function inspects the
+        url syntax. Success enables further checking, failure
+        immediately logs this url. Syntax checks must not
+        use any network resources.
         """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         if not self.base_url:
@@ -249,8 +279,9 @@ class UrlBase (object):
         return True
 
     def build_url (self):
-        """Construct self.url and self.urlparts out of the given base
-           url information self.base_url, self.parent_url and self.base_ref.
+        """
+        Construct self.url and self.urlparts out of the given base
+        url information self.base_url, self.parent_url and self.base_ref.
         """
         # norm base url
         base_url, is_idn = linkcheck.url.url_norm(self.base_url)
@@ -292,7 +323,9 @@ class UrlBase (object):
             self.port = int(self.port)
 
     def check (self):
-        """main check function for checking this URL"""
+        """
+        Main check function for checking this URL.
+        """
         try:
             self.local_check()
             self.consumer.checked(self)
@@ -313,7 +346,9 @@ class UrlBase (object):
             internal_error()
 
     def local_check (self):
-        """local check function can be overridden in subclasses"""
+        """
+        Local check function can be overridden in subclasses.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
         if self.recursion_level and self.consumer.config['wait']:
             linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -375,7 +410,9 @@ class UrlBase (object):
         self.close_connection()
 
     def close_connection (self):
-        """close an opened url connection"""
+        """
+        Close an opened url connection.
+        """
         # brute force closing
         if self.url_connection is not None:
             try:
@@ -387,13 +424,16 @@ class UrlBase (object):
             self.url_connection = None
 
     def check_connection (self):
-        """The basic connection check uses urllib2.urlopen to initialize
-           a connection object.
+        """
+        The basic connection check uses urllib2.urlopen to initialize
+        a connection object.
         """
         self.url_connection = urllib2.urlopen(self.url)
 
     def allows_recursion (self):
-        """return True iff we can recurse into the url's content"""
+        """
+        Return True iff we can recurse into the url's content.
+        """
         #linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
         #                    "content=%s, extern=%s, robots=%s",
         #                    self.valid, self.is_parseable(),
@@ -409,8 +449,9 @@ class UrlBase (object):
             not self.extern[0] and self.content_allows_robots()
 
     def content_allows_robots (self):
-        """return True if the content of this URL forbids robots to
-           search for recursive links.
+        """
+        Return True if the content of this URL forbids robots to
+        search for recursive links.
         """
         if not self.is_html():
             return True
@@ -491,11 +532,15 @@ class UrlBase (object):
             return (1, 0)
 
     def can_get_content (self):
-        """indicate wether url get_content() can be called"""
+        """
+        Indicate wether url get_content() can be called.
+        """
         return True
 
     def get_content (self):
-        """Precondition: url_connection is an opened URL."""
+        """
+        Precondition: url_connection is an opened URL.
+        """
         if not self.has_content:
             t = time.time()
             self.data = self.url_connection.read()
@@ -505,8 +550,9 @@ class UrlBase (object):
         return self.data
 
     def check_content (self, warningregex):
-        """If a warning expression was given, call this function to check it
-           against the content of this url.
+        """
+        If a warning expression was given, call this function to check it
+        against the content of this url.
         """
         if not self.can_get_content():
             return
@@ -515,8 +561,10 @@ class UrlBase (object):
             self.add_warning(_("Found %r in link contents.") % match.group())
 
     def check_size (self):
-        """if a maximum size was given, call this function to check it
-           against the content size of this url"""
+        """
+        If a maximum size was given, call this function to check it
+        against the content size of this url.
+        """
         maxbytes = self.consumer.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
             self.add_warning(_("Content size %s is larger than %s.") % \
@@ -524,16 +572,18 @@ class UrlBase (object):
                           linkcheck.strformat.strsize(maxbytes)))
 
     def parse_url (self):
-        """Parse url content and search for recursive links.
-           Default parse type is html.
+        """
+        Parse url content and search for recursive links.
+        Default parse type is html.
         """
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "Parsing recursively into %s", self)
         self.parse_html()
 
     def get_user_password (self):
-        """Get tuple (user, password) from configured authentication.
-           Both user and password can be None if not specified.
+        """
+        Get tuple (user, password) from configured authentication.
+        Both user and password can be None if not specified.
         """
         for auth in self.consumer.config["authentication"]:
             if auth['pattern'].match(self.url):
@@ -541,8 +591,9 @@ class UrlBase (object):
         return None, None
 
     def parse_html (self):
-        """Parse into HTML content and search for URLs to check.
-           Found URLs are added to the URL queue.
+        """
+        Parse into HTML content and search for URLs to check.
+        Found URLs are added to the URL queue.
         """
         h = linkcheck.linkparse.LinkFinder(self.get_content())
         p = linkcheck.HtmlParser.htmlsax.parser(h)
@@ -565,7 +616,9 @@ class UrlBase (object):
             self.consumer.append_url(url_data)
 
     def parse_opera (self):
-        """parse an opera bookmark file"""
+        """
+        Parse an opera bookmark file.
+        """
         name = ""
         lineno = 0
         lines = self.get_content().splitlines()
@@ -584,8 +637,9 @@ class UrlBase (object):
                 name = ""
 
     def parse_text (self):
-        """parse a text file with on url per line; comment and blank
-           lines are ignored
+        """
+        Parse a text file with on url per line; comment and blank
+        lines are ignored.
         """
         lineno = 0
         for line in self.get_content().splitlines():
@@ -599,7 +653,9 @@ class UrlBase (object):
             self.consumer.append_url(url_data)
 
     def parse_css (self):
-        """parse a CSS file for url() patterns"""
+        """
+        Parse a CSS file for url() patterns.
+        """
         lineno = 0
         for line in self.get_content().splitlines():
             lineno += 1
@@ -612,7 +668,9 @@ class UrlBase (object):
                 self.consumer.append_url(url_data)
 
     def serialized (self):
-        """return serialized url check data as unicode string"""
+        """
+        Return serialized url check data as unicode string.
+        """
         sep = unicode(os.linesep)
         assert isinstance(self.base_url, unicode), self
         if self.parent_url is not None:

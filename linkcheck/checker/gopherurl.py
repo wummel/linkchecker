@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle Gopher links"""
+"""
+Handle Gopher links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,5 +21,7 @@
 import urlbase
 
 class GopherUrl (urlbase.UrlBase):
-    "Url link with gopher scheme"
+    """
+    Url link with gopher scheme.
+    """
     pass

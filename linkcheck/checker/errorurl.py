@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle for unknown links"""
+"""
+Handle for unknown links.
+"""
 # Copyright (C) 2001-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -21,7 +23,9 @@ import urlbase
 import linkcheck
 
 class ErrorUrl (urlbase.UrlBase):
-    """Unknown URL links"""
+    """
+    Unknown URL links.
+    """
 
     def check_syntax (self):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
@@ -31,6 +35,8 @@ class ErrorUrl (urlbase.UrlBase):
         return False
 
     def set_cache_keys (self):
-        """cache key is forbidden"""
+        """
+        Cache key is forbidden.
+        """
         raise NotImplementedError, "cache keys are forbidden"
 

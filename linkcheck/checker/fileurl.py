@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle local file: links"""
+"""
+Handle local file: links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -37,8 +39,9 @@ contents = {
 
 
 def get_files (dirname):
-    """Get lists of files in directory. Does only allow regular files
-       and directories, no symlinks.
+    """
+    Get lists of files in directory. Does only allow regular files
+    and directories, no symlinks.
     """
     files = []
     for entry in os.listdir(dirname):
@@ -51,7 +54,9 @@ def get_files (dirname):
 
 
 def get_nt_filename (path):
-    """return case sensitive filename for NT path"""
+    """
+    Return case sensitive filename for NT path.
+    """
     head, tail = os.path.split(path)
     if not tail:
         return path
@@ -64,7 +69,9 @@ def get_nt_filename (path):
 
 
 class FileUrl (urlbase.UrlBase):
-    "Url link with file scheme"
+    """
+    Url link with file scheme.
+    """
 
     def __init__ (self, base_url, recursion_level, consumer,
                   parent_url = None,

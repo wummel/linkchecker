@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle telnet: links"""
+"""
+Handle telnet: links.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,7 +27,9 @@ import urlbase
 
 
 class TelnetUrl (urlbase.UrlBase):
-    """Url link with telnet scheme"""
+    """
+    Url link with telnet scheme.
+    """
 
     def build_url (self):
         super(TelnetUrl, self).build_url()

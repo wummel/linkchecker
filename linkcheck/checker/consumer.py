@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""url consumer class"""
+"""
+Url consumer class.
+"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -28,10 +30,14 @@ import linkcheck.log
 from urlbase import stderr
 
 class Consumer (object):
-    """consume urls from the url queue in a threaded manner"""
+    """
+    Consume urls from the url queue in a threaded manner.
+    """
 
     def __init__ (self, config, cache):
-        """initialize consumer data and threads"""
+        """
+        Initialize consumer data and threads.
+        """
         self.config = config
         self.cache = cache
         self.threader = linkcheck.threader.Threader()
@@ -47,7 +53,9 @@ class Consumer (object):
         self.warnings = False
 
     def _set_threads (self, num):
-        """set number of checker threads to start"""
+        """
+        Set number of checker threads to start.
+        """
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "set threading with %d threads", num)
         self.threader.threads_max = num
@@ -57,7 +65,9 @@ class Consumer (object):
             sys.setcheckinterval(100)
 
     def append_url (self, url_data):
-        """append url to incoming check list"""
+        """
+        Append url to incoming check list.
+        """
         if not self.cache.incoming_add(url_data):
             # can be logged
             self.logger_new_url(url_data)
@@ -78,7 +88,9 @@ class Consumer (object):
             self.threader.start_thread(url_data.check, ())
 
     def checked (self, url_data):
-        """put checked url in cache and log it"""
+        """
+        Put checked url in cache and log it.
+        """
         # log before putting it in the cache (otherwise we would see
         # a "(cached)" after every url
         self.logger_new_url(url_data)
@@ -88,11 +100,15 @@ class Consumer (object):
             self.cache.in_progress_remove(url_data)
 
     def interrupted (self, url_data):
-        """remove url from active list"""
+        """
+        Remove url from active list.
+        """
         self.cache.in_progress_remove(url_data)
 
     def finished (self):
-        """return True if checking is finished"""
+        """
+        Return True if checking is finished.
+        """
         self.lock.acquire()
         try:
             return self.threader.finished() and \
@@ -101,7 +117,9 @@ class Consumer (object):
             self.lock.release()
 
     def no_more_threads (self):
-        """return True if no more active threads are running"""
+        """
+        Return True if no more active threads are running.
+        """
         self.lock.acquire()
         try:
             return self.threader.finished()
@@ -109,7 +127,9 @@ class Consumer (object):
             self.lock.release()
 
     def abort (self):
-        """abort checking and send of-of-output message to logger"""
+        """
+        Abort checking and send of-of-output message to logger.
+        """
         while not self.no_more_threads():
             linkcheck.log.warn(linkcheck.LOG_CHECK,
              _("keyboard interrupt; waiting for %d active threads to finish"),
@@ -123,7 +143,9 @@ class Consumer (object):
         self.logger_end_output()
 
     def print_status (self, curtime, start_time):
-        """print check status looking at url queues"""
+        """
+        Print check status looking at url queues.
+        """
         self.lock.acquire()
         try:
             active = self.threader.active_threads()
@@ -137,7 +159,9 @@ class Consumer (object):
             self.lock.release()
 
     def logger_start_output (self):
-        """start output of all configured loggers"""
+        """
+        Start output of all configured loggers.
+        """
         self.lock.acquire()
         try:
             self.logger.start_output()
@@ -147,7 +171,9 @@ class Consumer (object):
             self.lock.release()
 
     def logger_new_url (self, url_data):
-        """send new url to all configured loggers"""
+        """
+        Send new url to all configured loggers.
+        """
         self.lock.acquire()
         try:
             self.linknumber += 1
@@ -168,7 +194,9 @@ class Consumer (object):
         #    self.filter_queue(self)
 
     def logger_end_output (self):
-        """end output of all configured loggers"""
+        """
+        End output of all configured loggers.
+        """
         self.lock.acquire()
         try:
             self.logger.end_output(linknumber=self.linknumber)
@@ -178,7 +206,9 @@ class Consumer (object):
             self.lock.release()
 
     def active_threads (self):
-        """return number of active threads"""
+        """
+        Return number of active threads.
+        """
         self.lock.acquire()
         try:
             return self.threader.active_threads()

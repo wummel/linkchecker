@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
-"""Handle for uncheckable application-specific links"""
+"""
+Handle for uncheckable application-specific links.
+"""
 # Copyright (C) 2001-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,7 +21,9 @@
 import urlbase
 
 class IgnoredUrl (urlbase.UrlBase):
-    """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
+    """
+    Some schemes are defined in <http://www.w3.org/Addressing/schemes>.
+    """
 
     def local_check (self):
         self.add_warning(_("%s URL ignored.") % self.scheme.capitalize())
