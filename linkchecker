@@ -42,6 +42,7 @@ import linkcheck.checker
 import linkcheck.checker.cache
 import linkcheck.checker.consumer
 import linkcheck.configuration
+# optional modules
 try:
     import optcomplete
     has_optcomplete = True
@@ -52,6 +53,11 @@ try:
     has_profile = True
 except ImportError:
     has_profile = False
+try:
+    import pstats
+    has_pstats = True
+except ImportError:
+    has_pstats = False
 
 # default profiling filename
 _profile = "linkchecker.prof"
@@ -159,14 +165,18 @@ def print_usage (msg):
 
 def viewprof ():
     """print profiling data and exit"""
+    if not has_pstats:
+        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+                           _("The `pstats' Python module is not installed,"
+                           " therefore the --viewprof option is disabled."))
+        sys.exit(1)
     if not os.path.exists(_profile):
-        sys.stderr.write(_("Could not find profiling file %s.")%_profile)
-        sys.stderr.write(os.linesep)
+        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+                           _("Could not find profiling file %r.") % _profile)
         sys.stderr.write(
                   _("Please run linkchecker with --profile to generate it."))
         sys.stderr.write(os.linesep)
         sys.exit(1)
-    import pstats
     stats = pstats.Stats(_profile)
     stats.strip_dirs().sort_stats("cumulative").print_stats(100)
     sys.exit(0)
@@ -589,6 +599,11 @@ for url in args:
     consumer.append_url(url_data)
 
 ############################# check the urls ################################
+if do_profile and not has_profile:
+    linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+                       _("The `profile' Python module is not installed,"
+                       " therefore the --profile option is disabled."))
+
 if do_profile and has_profile:
     run = True
     if os.path.exists(_profile):
