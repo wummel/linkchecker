@@ -27,7 +27,7 @@ a command line interface and
 a (Fast)CGI web interface (requires HTTP server)
 .SH OPTIONS
 For single-letter option arguments the space is not a necessity.
-So \fI-o colored\fP is the same as \fI-ocolored\fP.
+So \fB-o colored\fP is the same as \fB-ocolored\fP.
 .TP
 \fB-a\fP, \fB--anchors\fP
 Check HTTP anchor references.  This option applies to both internal
@@ -63,8 +63,8 @@ Output to a file \fBlinkchecker-out.\fP\fItype\fP,
 The \fIfilename\fP part of the \fBnone\fP output type will be ignored,
 else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types
-are \fItext\fP, \fIcolored\fP, \fIhtml\fP, \fIsql\fP,
-\fIcsv\fP, \fIgml\fP, \fIxml\fP, \fInone\fP or \fIblacklist\fP
+are \fBtext\fP, \fBcolored\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP
 Default is no file output. If console output is not specified with
 \fB-o\fP, this option suppresses all console output by implying
 \fB-o none\fP.
@@ -90,17 +90,17 @@ is the default browser behaviour, but it's not specified in
 the URI specification. Use with care.
 .TP
 \fB-o\fP \fItype\fP, \fB--output=\fP\fItype\fP
-Specify output type as \fItext\fP, \fIcolored\fP, \fIhtml\fP, \fIsql\fP,
-\fIcsv\fP, \fIgml\fP, \fIxml\fP, \fInone\fP or \fIblacklist\fP.
-Default type is \fItext\fP.
+Specify output type as \fBtext\fP, \fBcolored\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
+Default type is \fBtext\fP.
 .TP
 \fB-p\fP \fIpwd\fP, \fB--password=\fP\fIpwd\fP
 Try the password \fIpwd\fP for HTTP and FTP authorization.
-The default password is \fIguest@\fP. See also \fB-u\fP.
+The default password is \fBguest@\fP. See also \fB-u\fP.
 .TP
 \fB-P\fP \fIsecs\fP, \fB--pause=\fP\fIsecs\fP
 Pause \fIsecs\fP seconds between each url check. This option
-implies -t0.
+implies \fB-t0\fP.
 Default is no pause between requests.
 .TP
 \fB-q\fP, \fB--quiet\fP
@@ -129,7 +129,7 @@ is 30 seconds.
 .TP
 \fB-u\fP \fIname\fP, \fB--user=\fP\fIname\fP
 Try username \fIname\fP for HTTP and FTP authorization.
-Default is \fIanonymous\fP. See also \fB-p\fP.
+Default is \fBanonymous\fP. See also \fB-p\fP.
 .TP
 \fB-V\fP, \fB--version\fP
 Print version and exit.
@@ -155,11 +155,11 @@ Print a warning if content size is available and exceeds the given
 number of \fIbytes\fP.
 This option implies \fB-w\fP.
 .SH NOTES
-A \fI!\fP before any regex negates it. So \fI'!^mailto:'\fP matches
+A \fB!\fP before any regex negates it. So \fB'!^mailto:'\fP matches
 everything but a mailto link.
 
-LinkCheckers commandline parser treats \fIftp.\fP links like \fIftp://ftp.\fP
-and \fIwww.\fP links like \fIhttp://www.\fP.
+LinkCheckers commandline parser treats \fBftp.\fP links like \fBftp://ftp.\fP
+and \fBwww.\fP links like \fBhttp://www.\fP.
 You can also give local files as arguments.
 
 If you have your system configured to automatically establish a
@@ -184,21 +184,21 @@ same as the host of the user browsing your pages!
 Check the treasure.calvinsplayground.de domain, but don't recurse into
 links outside of this domain:
 .br
-\fIlinkchecker -v -r5 -ohtml -s -itreasure.calvinsplayground.de \\
+\fBlinkchecker -v -r5 -ohtml -s -itreasure.calvinsplayground.de \\
 .br
 http://treasure.calvinsplayground.de/~calvin/ > sample.html\fP
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
 .br
-\fIlinkchecker --intern='!^mailto:' --strict www.mysite.org\fP
+\fBlinkchecker --intern='!^mailto:' --strict www.mysite.org\fP
 
 Local files and syntactic sugar on the command line:
 .br
-\fIlinkchecker ../bla.html\fP
+\fBlinkchecker ../bla.html\fP
 .br
-\fIlinkchecker www.myhomepage.de\fP
+\fBlinkchecker www.myhomepage.de\fP
 .br
-\fIlinkchecker -r0 ftp.linux.org\fP
+\fBlinkchecker -r0 ftp.linux.org\fP
 .SH AUTHOR
 Bastian Kleineidam <calvin@debian.org>
