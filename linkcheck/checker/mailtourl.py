@@ -120,7 +120,10 @@ class MailtoUrl (urlbase.UrlBase):
                     preference = rdata.preference
                     linkcheck.log.debug(linkcheck.LOG_CHECK,
                               "SMTP check for %r (pref %d)", host, preference)
-                    self.url_connection = smtplib.SMTP(host)
+                    self.url_connection = smtplib.SMTP()
+                    if self.consumer.config.get("debug"):
+                        self.url_connection.set_debuglevel(1)
+                    self.url_connection.connect(host)
                     linkcheck.log.debug(linkcheck.LOG_CHECK,
                                         "SMTP connected!")
                     smtpconnect = 1
