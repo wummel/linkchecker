@@ -1,8 +1,12 @@
 linkchecker (1.4.1) unstable; urgency=low
 
   * Catch socket.sslerror for HTTPS connections.
+  * Pregenerate directory structure for .mo files, make dist will fail
+    if they are not there.
+  * Fix DNS configuration in some Windows platforms (untested, no
+    platform available for me).
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed, 20 Mar 2002 00:27:13 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 20 Mar 2002 23:59:30 +0100
 
 linkchecker (1.4.0) unstable; urgency=low
 
