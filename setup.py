@@ -1,4 +1,5 @@
 #!/usr/bin/python -O
+"""setup file for the distuils module"""
 # -*- coding: iso-8859-1 -*-
 
 # Copyright (C) 2000-2004  Bastian Kleineidam
@@ -17,18 +18,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from types import StringType
-from distutils.core import setup, DEBUG
-from distutils.dist import Distribution
-from distutils.extension import Extension
+import os, re, sys, string
+from types import StringType, TupleType
+from distutils.core import setup, Extension, DEBUG
+try:
+    import py2exe
+    distklass = py2exe.Distribution
+except ImportError:
+    import distutils.dist
+    distklass = distutils.dist.Distribution
 from distutils.command.install import install
-from distutils.command.install_data import install_data
-from distutils.command.config import config
-from distutils import util
 from distutils.file_util import write_file
-from distutils.dep_util import newer
+from distutils import util
 
-import os, string, re, sys
+
+def p (path):
+    """norm a path name to platform specific notation"""
+    return os.path.normpath(path)
+
 
 def get_nt_desktop_path (default=""):
     if os.environ.has_key("ALLUSERSPROFILE"):
@@ -37,23 +44,26 @@ def get_nt_desktop_path (default=""):
         return os.path.join(os.environ["USERPROFILE"], "Desktop")
     return default
 
-class MyInstall (install):
+
+class MyInstall (install, object):
+
     def run (self):
-        install.run(self)
+        super(MyInstall, self).run()
         # we have to write a configuration file because we need the
-        # <install_data>/share/locale directory (and other stuff
-        # like author, url, ...)
-        # install data
+        # <install_data> directory (and other stuff like author, url, ...)
         data = []
         for d in ['purelib', 'platlib', 'lib', 'headers', 'scripts', 'data']:
-            attr = 'install_'+d
+            attr = 'install_%s'%d
             if self.root:
-                val = getattr(self, attr)[len(self.root):]
+                # cut off root path prefix
+                cutoff = len(self.root)
+                # don't strip the path separator
+                if self.root.endswith(os.sep):
+                    cutoff -= 1
+                val = getattr(self, attr)[cutoff:]
             else:
                 val = getattr(self, attr)
-            data.append("%s = %s" % (attr, `val`))
-        from pprint import pformat
-        data.append('outputs = %s' % pformat(self.get_outputs()))
+            data.append("%s = %r" % (attr, val))
 	self.distribution.create_conf_file(self.install_lib, data)
         if os.name=="nt":
             # copy batch file to desktop
@@ -92,6 +102,7 @@ class MyInstall (install):
 
 class MyInstallData (install_data):
     """My own data installer to handle .man pages"""
+
     def copy_file (self, filename, dirname):
         (out, _) = install_data.copy_file(self, filename, dirname)
         # match for man pages
@@ -100,18 +111,19 @@ class MyInstallData (install_data):
         return (out, _)
 
 
-class MyDistribution (Distribution):
+class MyDistribution (distklass, object):
+
     def __init__ (self, attrs=None):
-        Distribution.__init__(self, attrs=attrs)
-        self.config_file = "_"+self.get_name()+"_configdata.py"
+        super(MyDistribution, self).__init__(attrs=attrs)
+        self.config_file = "_%s_configdata.py"%self.get_name()
 
     def run_commands (self):
         cwd = os.getcwd()
         data = []
-        data.append('config_dir = %s' % `os.path.join(cwd, "config")`)
-        data.append("install_data = %s" % `cwd`)
+        data.append('config_dir = %r' % os.path.join(cwd, "config"))
+        data.append("install_data = %r" % cwd)
         self.create_conf_file("", data)
-        Distribution.run_commands(self)
+        super(MyDistribution, self).run_commands()
 
     def create_conf_file (self, directory, data=[]):
         data.insert(0, "# this file is automatically created by setup.py")
@@ -121,15 +133,16 @@ class MyDistribution (Distribution):
         filename = os.path.join(directory, self.config_file)
         # add metadata
         metanames = ("name", "version", "author", "author_email",
-                         "maintainer", "maintainer_email", "url",
-                         "licence", "description", "long_description",
-                         "keywords", "platforms", "fullname", "contact",
-                         "contact_email", "licence", "fullname")
+                     "maintainer", "maintainer_email", "url",
+                     "license", "description", "long_description",
+                     "keywords", "platforms", "fullname", "contact",
+                     "contact_email", "fullname")
         for name in metanames:
               method = "get_" + name
-              cmd = "%s = %s" % (name, `getattr(self.metadata, method)()`)
+              cmd = "%s = %r" % (name, getattr(self.metadata, method)())
               data.append(cmd)
         # write the config file
+        data.append('appname = "LinkChecker"')
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
@@ -138,10 +151,17 @@ class MyDistribution (Distribution):
         util.execute(write_file, (filename, data),
                  "creating %s" % filename, self.verbose>=1, self.dry_run)
 
+
 if os.name=='nt':
+    # windows does not have unistd.h
     macros = [('YY_NO_UNISTD_H', None)]
+    cargs = []
 else:
     macros = []
+    # for gcc 3.x we could add -std=gnu99 to get rid of warnings, but
+    # that breaks other compilers
+    cargs = ["-pedantic"]
+
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
@@ -176,7 +196,7 @@ o a (Fast)CGI web interface (requires HTTP server)
        cmdclass = {'install': MyInstall,
                    'install_data': MyInstallData,
                   },
-       packages = ['', 'linkcheck', 'linkcheck.logger', 'linkcheck.checker',
+       packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
                    'bk.HtmlParser', 'bk.net', 'bk.net.dns',],
        ext_modules = [Extension('bk.HtmlParser.htmlsax',
                   ['bk/HtmlParser/htmllex.c',
