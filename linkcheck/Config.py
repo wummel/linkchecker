@@ -188,7 +188,6 @@ class Configuration(UserDict.UserDict):
         self.logLock = None
         self.urls = []
         self.threader = None
-        self.connectNntp = self.connectNntp_NoThreads
         self.dataLock = None
 
     def enableThreading(self, num):
@@ -217,7 +216,6 @@ class Configuration(UserDict.UserDict):
         self.logLock = Lock()
         self.urls = Queue.Queue(0)
         self.threader = Threader.Threader(num)
-        self.connectNntp = self.connectNntp_Threads
         self.dataLock = Lock()
 
     def hasMoreUrls_NoThreads(self):
@@ -278,41 +276,12 @@ class Configuration(UserDict.UserDict):
         for log in self.data["fileoutput"]:
             log.endOfOutput(linknumber=self.data['linknumber'])
 
-    def connectNntp_NoThreads(self):
-        if not self.data.has_key("nntp"):
-            self._do_connectNntp()
-
-    def connectNntp_Threads(self):
-        if not self.data.has_key("nntp"):
-            try:
-                self.dataLock.acquire()
-                self._do_connectNntp()
-            finally:
-                self.dataLock.release()
-
     def incrementLinknumber_Threads(self):
         try:
             self.dataLock.acquire()
             self.data['linknumber'] = self.data['linknumber'] + 1
         finally:
             self.dataLock.release()
-    
-    def _do_connectNntp(self):
-        """This is done only once per checking task."""
-        import nntplib
-        timeout = 1
-        while timeout:
-            try:
-                self.data["nntp"]=nntplib.NNTP(self.data["nntpserver"] or "")
-                timeout = 0
-            except nntplib.error_perm:
-                value = sys.exc_info()[1]
-                debug("NNTP: "+value+"\n")
-                if re.compile("^505").search(str(value)):
-                    import whrandom
-                    time.sleep(whrandom.randint(10,20))
-                else:
-                    raise
 
     def hasMoreUrls_Threads(self):
         return not self.urls.empty()
@@ -320,7 +289,7 @@ class Configuration(UserDict.UserDict):
     def finished_Threads(self):
         time.sleep(0.1)
         self.threader.reduceThreads()
-        debug("finished?\n")
+        #debug("finished?\n")
         return self.threader.finished() and self.urls.empty()
 
     def finish_Threads(self):

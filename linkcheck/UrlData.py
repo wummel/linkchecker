@@ -18,6 +18,7 @@
 import sys,re,string,urlparse,urllib,time
 import Config,StringUtil,linkcheck
 from linkcheck import _
+debug = linkcheck.Config.debug
 
 ExcList = [
    IOError,
@@ -136,7 +137,7 @@ class UrlData:
 
 
     def logMe(self, config):
-        Config.debug("DEBUG: logging url\n")
+        debug("DEBUG: logging url\n")
         config.incrementLinknumber()
         if config["verbose"] or not self.valid or \
            (self.warningString and config["warnings"]):
@@ -144,11 +145,11 @@ class UrlData:
 
 
     def check(self, config):
-        Config.debug(Config.DebugDelim+"Checking\n"+str(self)+"\n"+\
+        debug(Config.DebugDelim+"Checking\n"+str(self)+"\n"+\
                      Config.DebugDelim)
         t = time.time()
         # check syntax
-        Config.debug("DEBUG: checking syntax\n")
+        debug("DEBUG: checking syntax\n")
         if not self.urlName or self.urlName=="":
             self.setError(_("URL is null or empty"))
             self.logMe(config)
@@ -163,7 +164,7 @@ class UrlData:
             return
 
         # check the cache
-        Config.debug("DEBUG: checking cache\n")
+        debug("DEBUG: checking cache\n")
         if config.urlCache_has_key(self.getCacheKey()):
             self.copyFrom(config.urlCache_get(self.getCacheKey()))
             self.cached = 1
@@ -171,14 +172,14 @@ class UrlData:
             return
         
         # apply filter
-        Config.debug("DEBUG: checking filter\n")
+        debug("DEBUG: checking filter\n")
         if self.extern and (config["strict"] or self.extern[1]):
             self.setWarning(_("outside of domain filter, checked only syntax"))
             self.logMe(config)
             return
 
         # check connection
-        Config.debug("DEBUG: checking connection\n")
+        debug("DEBUG: checking connection\n")
         try:
             self.checkConnection(config)
             if self.urlTuple and config["anchors"]:
@@ -190,12 +191,12 @@ class UrlData:
         # check content
         warningregex = config["warningregex"]
         if warningregex and self.valid:
-            Config.debug("DEBUG: checking content\n")
+            debug("DEBUG: checking content\n")
             self.checkContent(warningregex)
 
         self.checktime = time.time() - t
         # check recursion
-        Config.debug("DEBUG: checking recursion\n")
+        debug("DEBUG: checking recursion\n")
         if self.allowsRecursion(config):
             self.parseUrl(config)
         self.closeConnection()
@@ -280,7 +281,7 @@ class UrlData:
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
             self._init_html_comments()
-            Config.debug("DEBUG: comment spans %s\n" % self.html_comments)
+            debug("DEBUG: comment spans %s\n" % self.html_comments)
         return self.data
 
 
@@ -309,8 +310,8 @@ class UrlData:
 
 
     def parseUrl(self, config):
-        Config.debug(Config.DebugDelim+"Parsing recursively into\n"+\
-                         str(self)+"\n"+Config.DebugDelim)
+        debug(Config.DebugDelim+"Parsing recursively into\n"+\
+              str(self)+"\n"+Config.DebugDelim)
         # search for a possible base reference
         bases = self.searchInForTag(re.compile(_linkMatcher % ("base",
 	        "href"), re.VERBOSE))
@@ -397,7 +398,7 @@ def GetUrlDataFrom(urlName,
         return JavascriptUrlData(urlName, recursionLevel, parentName, baseRef, line)
     if re.search("^https:", name):
         return HttpsUrlData(urlName, recursionLevel, parentName, baseRef, line)
-    if re.search("^news:", name):
+    if re.search("^(s?news|nntp):", name):
         return NntpUrlData(urlName, recursionLevel, parentName, baseRef, line)
     # assume local file
     return FileUrlData(urlName, recursionLevel, parentName, baseRef, line)
