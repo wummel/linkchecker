@@ -30,7 +30,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "hutzli:"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "error",
@@ -42,7 +42,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = " http://www.heise.de/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "error",
@@ -51,7 +51,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "\nhttp://www.heise.de/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % nurl,
+            "url %r" % nurl,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "error",
@@ -63,7 +63,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "http://www.heise.de/ "
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -73,7 +73,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "http://www.heise.de/\n"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -87,7 +87,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "äöü?:"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "error",
@@ -97,7 +97,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "?äöü?"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "error",
@@ -107,7 +107,7 @@ class TestError (linkcheck.ftests.StandardTest):
         url = "@³²¼][½ ³@] ¬½"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "error",

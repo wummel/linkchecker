@@ -28,7 +28,7 @@ class TestTelnet (linkcheck.ftests.StandardTest):
         url = "telnet:"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -37,7 +37,7 @@ class TestTelnet (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = "telnet://www.imadoofus.com"
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",
@@ -45,7 +45,7 @@ class TestTelnet (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = "telnet://user@www.imadoofus.com"
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",
@@ -53,7 +53,7 @@ class TestTelnet (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = "telnet://user:pass@www.imadoofus.com"
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",

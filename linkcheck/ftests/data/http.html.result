@@ -1,35 +1,35 @@
-url http://localhost:8001/linkcheck/ftests/data/http.html
+url 'http://localhost:8001/linkcheck/ftests/data/http.html'
 cache key http://localhost:8001/linkcheck/ftests/data/http.html
 real url http://localhost:8001/linkcheck/ftests/data/http.html
 valid
 
-url http://www.garantiertnixgutt.bla/
+url 'http://www.garantiertnixgutt.bla/'
 cache key http://www.garantiertnixgutt.bla/
 real url http://www.garantiertnixgutt.bla/
 name bad url
 error
 
-url http://localhost:8000/
+url 'http://localhost:8000/'
 cache key http://localhost:8000/
 real url http://localhost:8000/
 name ok
 error
 
-url http:/localhost:8000/
+url 'http:/localhost:8000/'
 cache key http:///localhost%%3A8000/
 real url http:///localhost%%3A8000/
 name one slash
 warning Base URL is not properly normed. Normed url is 'http:///localhost%%3A8000/'.
 error
 
-url http:localhost:8000/ (cached)
+url 'http:localhost:8000/' (cached)
 cache key http:///localhost%%3A8000/
 real url http:///localhost%%3A8000/
 name no slash
 warning Base URL is not properly normed. Normed url is 'http:///localhost%%3A8000/'.
 error
 
-url http://
+url 'http://'
 cache key http:///
 real url http:///
 name no url

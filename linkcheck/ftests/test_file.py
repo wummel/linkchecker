@@ -49,7 +49,7 @@ class TestFile (linkcheck.ftests.StandardTest):
         # good file
         url = "file://%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
@@ -58,7 +58,7 @@ class TestFile (linkcheck.ftests.StandardTest):
         # bad file
         url = "file:/%(curdir)s/%(datadir)s/file.txt" % attrs
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",
@@ -68,7 +68,7 @@ class TestFile (linkcheck.ftests.StandardTest):
         url = "file:%(curdir)s/%(datadir)s/file.txt" % attrs
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key file://%(curdir)s/%(datadir)s/file.txt" % attrs,
             "real url file://%(curdir)s/%(datadir)s/file.txt" % attrs,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -78,7 +78,7 @@ class TestFile (linkcheck.ftests.StandardTest):
         # good dir
         url = "file://%(curdir)s/%(datadir)s/" % attrs
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",

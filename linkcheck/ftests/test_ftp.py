@@ -31,7 +31,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
         # ftp two slashes
         url = "ftp://ftp.debian.org/"
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
@@ -44,7 +44,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
         url = "ftp:/ftp.debian.org/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -55,7 +55,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
         url = "ftp://ftp.debian.org"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -66,7 +66,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
         url = "ftp://ftp.debian.org/debian"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Missing trailing directory slash in ftp url",
@@ -80,7 +80,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
         url = "ftp://ftp.debian.org//debian/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -91,7 +91,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
         url = "ftp://ftp.debian.org////////debian/"
         nurl = linkcheck.url.url_norm(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % nurl,
             "real url %s" % nurl,
             "warning Base URL is not properly normed. Normed url is %r." % nurl,
@@ -101,7 +101,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
         # ftp three slashes
         url = "ftp:///ftp.debian.org/"
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",

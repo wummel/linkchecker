@@ -30,7 +30,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:Dude <calvin@users.sf.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "info Verified address: <calvin> is deliverable",
@@ -40,7 +40,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:Bastian Kleineidam <calvin@users.sf.net>?"\
                 "bcc=calvin%40users.sf.net")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "info Verified address: <calvin> is deliverable",
@@ -49,7 +49,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = self.quote("mailto:Bastian Kleineidam <calvin@users.sf.net>")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "info Verified address: <calvin> is deliverable",
@@ -58,7 +58,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = self.quote("mailto:o'hara@users.sf.net")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "info Verified address: <o'hara> is deliverable",
@@ -68,7 +68,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:?to=calvin@users.sf.net&subject=blubb&"\
                 "cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "info Verified address: <calvin> is deliverable",
@@ -81,7 +81,7 @@ class TestMail (linkcheck.ftests.StandardTest):
                 "Re:%20[fm%20#11093]%20(news-admins)%20Submission%20"\
                 "report%20-%20Pretty%20CoLoRs")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
@@ -89,7 +89,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = self.quote("mailto:"+"foo@foo-bar.de?subject=test")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "valid",
@@ -102,7 +102,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = "mailto:calvin@users.sf.net?subject=הצü"
         qurl = self.quote(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % qurl,
             "real url %s" % qurl,
             "info Verified address: <calvin> is deliverable",
@@ -113,7 +113,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = "mailto:calvin@users.sf.net?subject=Halli hallo"
         qurl = self.quote(url)
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % qurl,
             "real url %s" % qurl,
             "info Verified address: <calvin> is deliverable",
@@ -123,7 +123,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         self.direct(url, resultlines)
         url = self.quote("mailto:")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "warning No addresses found",
@@ -137,7 +137,7 @@ class TestMail (linkcheck.ftests.StandardTest):
         url = self.quote("mailto:Bastian Kleineidam "\
                          "<calvin@users.sf.net?foo=bar>")
         resultlines = [
-            "url %s" % url,
+            "url %r" % url,
             "cache key %s" % url,
             "real url %s" % url,
             "error",
