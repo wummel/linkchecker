@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import telnetlib, urlparse, i18n
-from linkcheck import Config, error
+import telnetlib, urlparse
+from linkcheck import Config, error, i18n
 from urllib import splituser, splithost, splitport, splitpasswd
 from HostCheckingUrlData import HostCheckingUrlData
 from UrlData import is_valid_port

@@ -17,6 +17,7 @@
 
 import socket, urllib
 from UrlData import UrlData
+from linkcheck import i18n
 
 class HostCheckingUrlData (UrlData):
     "Url link for which we have to connect to a specific host"
