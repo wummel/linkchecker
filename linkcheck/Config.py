@@ -46,9 +46,9 @@ This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
 
-MAX_URL_CACHE = 10000
-MAX_ROBOTS_TXT_CACHE = 1000
-MAX_COOKIES_CACHE = 200
+MAX_URL_CACHE = 30000
+MAX_ROBOTS_TXT_CACHE = 5000
+MAX_COOKIES_CACHE = 500
 
 
 # path util function
