@@ -541,7 +541,9 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     else:
                         f = gzip.GzipFile('', 'rb', 9,
                                           StringIO.StringIO(self.data))
-                except zlib.error:
+                except zlib.error, msg:
+                    self.add_warning(_("Decompress error %(err)s") % \
+                                     {"err": str(msg)})
                     f = StringIO.StringIO(self.data)
                 self.data = f.read()
             self.downloadtime = time.time() - t
