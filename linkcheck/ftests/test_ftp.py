@@ -24,35 +24,38 @@ import linkcheck.ftests
 class TestFtp (linkcheck.ftests.StandardTest):
     """test ftp: link checking"""
 
+    needed_resources = ['network']
+
     def test_ftp (self):
         """test some ftp links"""
         # ftp one slash
         url = "ftp:/ftp.debian.org/"
-        resultlines = ["url %s" % url, "error"]
+        resultlines = ["url %s" % url, "real url %s" % url, "error"]
         self.direct(url, resultlines)
         # ftp two slashes
         url = "ftp://ftp.debian.org/"
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.direct(url, resultlines)
         # ftp two dir slashes
         url = "ftp://ftp.debian.org//debian/"
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.direct(url, resultlines)
         # missing trailing dir slash
         url = "ftp://ftp.debian.org/debian"
         resultlines = [
             "url %s" % url,
+            "real url %s" % url, 
             "warning Missing trailing directory slash in ftp url",
             "valid",
         ]
         self.direct(url, resultlines)
         # ftp many dir slashes
         url = "ftp://ftp.debian.org////////debian/"
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.direct(url, resultlines)
         # ftp three slashes
         url = "ftp:///ftp.debian.org/"
-        resultlines = ["url %s" % url, "error"]
+        resultlines = ["url %s" % url, "real url %s" % url, "error"]
         self.direct(url, resultlines)
 
 

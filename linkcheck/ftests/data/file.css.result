@@ -1,6 +1,9 @@
 url file://%(curdir)s/linkcheck/ftests/data/file.css
+real url file://%(curdir)s/linkcheck/ftests/data/file.css
 valid
 url file.html
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 valid
 url file.html (cached)
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 valid

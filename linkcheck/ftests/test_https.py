@@ -23,10 +23,12 @@ import linkcheck.ftests
 class TestHttps (linkcheck.ftests.StandardTest):
     """test https: link checking"""
 
-    def test_mail (self):
+    needed_resources = ['network']
+
+    def test_https (self):
         """test some https links"""
         url = "https://sourceforge.net/"
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.direct(url, resultlines)
 
 

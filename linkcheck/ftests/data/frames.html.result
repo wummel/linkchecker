@@ -1,6 +1,9 @@
 url file://%(curdir)s/linkcheck/ftests/data/frames.html
+real url file://%(curdir)s/linkcheck/ftests/data/frames.html
 valid
 url frames.html (cached)
+real url file://%(curdir)s/linkcheck/ftests/data/frames.html
 valid
 url frames.html (cached)
+real url file://%(curdir)s/linkcheck/ftests/data/frames.html
 valid

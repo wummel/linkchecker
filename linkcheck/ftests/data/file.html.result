@@ -1,26 +1,34 @@
 url file://%(curdir)s/linkcheck/ftests/data/file.html
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 valid
 url file.html (cached)
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name relative url
 valid
 url file.html#isnix
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name bad anchor
 warning anchor #isnix not found
 valid
 url file.html#iswas
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name good anchor
 valid
 url #isnix (cached)
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name bad anchor
 warning anchor #isnix not found
 valid
 url #iswas (cached)
+real url file://%(curdir)s/linkcheck/ftests/data/file.html
 name good anchor
 valid
 url hutzli:nixgutt
+real url hutzli:nixgutt
 name bad scheme
 error
 url javascript:loadthis()
+real url javascript:loadthis()
 name javascript url
 warning Javascript url ignored
 valid

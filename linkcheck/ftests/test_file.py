@@ -48,19 +48,23 @@ class TestFile (linkcheck.ftests.StandardTest):
                 }
         # good file
         url = "file://%(curdir)s/%(datadir)s/file.txt" % attrs
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.direct(url, resultlines)
         # bad file
         url = "file:/%(curdir)s/%(datadir)s/file.txt" % attrs
-        resultlines = ["url %s" % url, "error"]
+        resultlines = ["url %s" % url, "real url %s" % url, "error"]
         self.direct(url, resultlines)
-        # good file
+        # good file (missing double slash)
         url = "file:%(curdir)s/%(datadir)s/file.txt" % attrs
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = [
+            "url %s" % url,
+            "real url file://%(curdir)s/%(datadir)s/file.txt" % attrs ,
+            "valid",
+        ]
         self.direct(url, resultlines)
         # good dir
         url = "file://%(curdir)s/%(datadir)s/" % attrs
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.direct(url, resultlines)
 
 

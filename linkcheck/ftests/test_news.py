@@ -24,16 +24,20 @@ import linkcheck.ftests
 class TestNews (linkcheck.ftests.StandardTest):
     """test nntp: and news: link checking"""
 
+    needed_resources = ['network']
+
     def newstest (self, url, resultlines):
-        fields = ['url', 'warning', 'result', ]
+        fields = ['url', 'realurl', 'warning', 'result', ]
         self.direct(url, resultlines, fields=fields)
 
     def test_news (self):
         """test some news links"""
         # news testing
         url = "news:comp.os.linux.misc"
+        rurl = "nntp:comp.os.linux.misc"
         resultlines = [
             "url %s" % url,
+            "real url %s" % rurl,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
@@ -42,22 +46,27 @@ class TestNews (linkcheck.ftests.StandardTest):
         url = "snews:de.comp.os.unix.linux.misc"
         resultlines = [
             "url %s" % url,
+            "real url %s" % url,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
         self.newstest(url, resultlines)
         # no group
         url = "news:"
+        rurl = "nntp:"
         resultlines = [
             "url %s" % url,
+            "real url %s" % rurl,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]
         self.newstest(url, resultlines)
         # illegal syntax
         url = "§$%&/´`(§%"
+        qurl = self.quote("news:"+url)
         resultlines = [
-            "url %s" % self.quote("news:"+url),
+            "url %s" % qurl,
+            "real url %s" % qurl.replace("news:", "nntp:"),
             "warning Base URL is not properly quoted",
             "warning No NNTP server specified, skipping this URL",
             "valid",
@@ -65,24 +74,27 @@ class TestNews (linkcheck.ftests.StandardTest):
         self.newstest("news:"+url, resultlines)
         # nttp scheme with host
         url = "nntp://news.yaako.com/comp.lang.python"
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.newstest(url, resultlines)
         # article span
         url = "nntp://news.yaako.com/comp.lang.python/1-5"
-        resultlines = ["url %s" % url, "valid"]
+        resultlines = ["url %s" % url, "real url %s" % url, "valid"]
         self.newstest(url, resultlines)
         # host but no group
         url = "nntp://news.yaako.com/"
         resultlines = [
             "url %s" % url,
+            "real url %s" % url, 
             "warning No newsgroup specified in NNTP URL",
             "valid",
         ]
         self.newstest(url, resultlines)
         # article span
         url = "news:comp.lang.python/1-5"
+        rurl = "nntp:comp.lang.python/1-5"
         resultlines = [
             "url %s" % url,
+            "real url %s" % rurl,
             "warning No NNTP server specified, skipping this URL",
             "valid",
         ]

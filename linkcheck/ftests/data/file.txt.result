@@ -1,2 +1,3 @@
 url file://%(curdir)s/linkcheck/ftests/data/file.txt
+real url file://%(curdir)s/linkcheck/ftests/data/file.txt
 valid

@@ -1,5 +1,7 @@
 url file://%(curdir)s/linkcheck/ftests/data/anchor.html
+real url file://%(curdir)s/linkcheck/ftests/data/anchor.html
 valid
 url #myid
+real url file://%(curdir)s/linkcheck/ftests/data/anchor.html
 name Bla
 valid
