@@ -14,6 +14,8 @@ o Unix platforms
   - open a commandline window and change to the linkchecker-x.x.x
     directory
   - run "python setup.py install" to install
+    The CC environment variable is checked before compilation, so you can
+    change the default C compiler with "export CC=myccompiler".
   - run "python setup.py --help" for help about install options
 
 
