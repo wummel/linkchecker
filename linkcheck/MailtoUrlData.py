@@ -4,7 +4,7 @@ from smtplib import SMTP
 from UrlData import LinkCheckerException
 
 mailto_re = re.compile("^mailto:"
-                       "([\-\w.]+@[\-\w.?=]+|[\w\s]+<[\-\w.]+@[\-\w.?=]+>)$")
+                       "([\-\w.]+@[\-\w.?=]+|[\w\s]+<['\-\w.]+@[\-\w.?=]+>)$")
 class MailtoUrlData(HostCheckingUrlData):
     "Url link with mailto scheme"
     
@@ -48,7 +48,7 @@ class MailtoUrlData(HostCheckingUrlData):
             
         if not smtpconnect:
             self.setWarning("None of the mail hosts for "+self.host+
-	                    " accepts an SMTP connection, "+value)
+	                    " accepts an SMTP connection: "+str(value))
             mxrecord = mxrecords[0][1]
         else:
             mxrecord = mxrecord[1]

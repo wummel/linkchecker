@@ -3,6 +3,7 @@
 	* Fixed wrong _time argument in HttpsUrlData.py 
 	  (Peter <peterw@waybeat.com.au>)
 	* Fixed missing env argument in lc.cgi
+	* allow a quote (') in mail adresses (e.g. o'hara@foo.com)
 
 26.3.2000
 	* FastCGI fixes
