@@ -2,10 +2,7 @@ Q: LinkChecker produced an error, but my web page is ok with
    Netscape/IE/Opera/...
    Is this a bug in LinkChecker?
 A: Please check your web pages first. Are they really ok? Use
-   a syntax highlighting Editor!! Use HTML Tidy!!!
-   Ah, this is a good idea, I will not debug ANY web pages
-   which produce any output with the official HTML validator
-   "HTML Tidy" from www.w3c.org.
+   a syntax highlighting Editor! Use HTML Tidy from www.w3c.org!
    Check if the web server is accepting HEAD requests as well.
 
 

@@ -98,7 +98,7 @@ threads=5
 anchors=0
 recursionlevel=1
 # obey robots.txt exclusion?
-robotstxt=1
+robotstxt=0
 # overall strict checking. You can specify for each extern URL
 # separately if its strict or not. See the [filtering] section
 strict=0

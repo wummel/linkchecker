@@ -23,7 +23,7 @@ configure-stamp:
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	rm -rf debian/$(PACKAGE)
+	rm -rf debian/$(PACKAGE) debian/$(PACKAGE)-ssl
 	./setup.py build
 	touch build-stamp
 
@@ -39,7 +39,7 @@ install: build
 	dh_installdirs
 	$(MAKE) locale
 	./setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
-	# remove man pages, we install them with dh_installmanpages
+	# remove man pages, we install them with dh_installman
 	rm -rf debian/$(PACKAGE)/usr/man
 	# remove example files, we install them with dh_installexamples
 	rm -rf debian/$(PACKAGE)/usr/share/linkchecker

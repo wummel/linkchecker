@@ -9,9 +9,6 @@ Python >= 2.0 from http://www.python.org/
 Optionally packages
 -------------------
 OpenSSL from http://www.openssl.org/
-You will need Perl for Win32 (available from
-http://www.activestate.com/ActivePerl) if you want to install OpenSSL
-on Windows!
 
 
 Setup

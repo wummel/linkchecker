@@ -354,7 +354,7 @@ class ColoredLogger(StandardLogger):
             if self.currentPage != urlData.parentName:
                 if self.prefix:
                     self.fd.write("o\n")
-                self.fd.write("\n"+_("Parent URL")+Spaces["Parent URL"]+
+                self.fd.write("\n"+_("Parent URL")+Spaces["parenturl"]+
 		              self.colorparent+urlData.parentName+
 			      self.colorreset+"\n")
                 self.currentPage = urlData.parentName
@@ -369,7 +369,7 @@ class ColoredLogger(StandardLogger):
             self.fd.write("|\n+- ")
         else:
             self.fd.write("\n")
-        self.fd.write(_("URL")+Spaces["URL"]+self.colorurl+urlData.urlName+
+        self.fd.write(_("URL")+Spaces["url"]+self.colorurl+urlData.urlName+
 	              self.colorreset)
         if urlData.line: self.fd.write(_(", line ")+`urlData.line`+"")
         if urlData.cached:
@@ -380,52 +380,52 @@ class ColoredLogger(StandardLogger):
         if urlData.name:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Name")+Spaces["Name"]+self.colorname+
+            self.fd.write(_("Name")+Spaces["name"]+self.colorname+
                           urlData.name+self.colorreset+"\n")
         if urlData.baseRef:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Base")+Spaces["Base"]+self.colorbase+
+            self.fd.write(_("Base")+Spaces["base"]+self.colorbase+
 	                  urlData.baseRef+self.colorreset+"\n")
             
         if urlData.url:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Real URL")+Spaces["Real URL"]+self.colorreal+
+            self.fd.write(_("Real URL")+Spaces["realurl"]+self.colorreal+
 	                  urlData.url+self.colorreset+"\n")
         if urlData.downloadtime:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("D/L Time")+Spaces["D/L Time"]+self.colordltime+
+            self.fd.write(_("D/L Time")+Spaces["dltime"]+self.colordltime+
 	        (_("%.3f seconds") % urlData.downloadtime)+self.colorreset+"\n")
         if urlData.checktime:
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Check Time")+Spaces["Check Time"]+
+            self.fd.write(_("Check Time")+Spaces["checktime"]+
                 self.colordltime+
 	        (_("%.3f seconds") % urlData.checktime)+self.colorreset+"\n")
             
         if urlData.infoString:
             if self.prefix:
-                self.fd.write("|  "+_("Info")+Spaces["Info"]+
+                self.fd.write("|  "+_("Info")+Spaces["info"]+
                       StringUtil.indentWith(StringUtil.blocktext(
-                        urlData.infoString, 65), "|      "+Spaces["Info"]))
+                        urlData.infoString, 65), "|      "+Spaces["info"]))
             else:
-                self.fd.write(_("Info")+Spaces["Info"]+
+                self.fd.write(_("Info")+Spaces["info"]+
                       StringUtil.indentWith(StringUtil.blocktext(
-                        urlData.infoString, 65), "    "+Spaces["Info"]))
+                        urlData.infoString, 65), "    "+Spaces["info"]))
             self.fd.write(self.colorreset+"\n")
             
         if urlData.warningString:
             self.warnings += 1
             if self.prefix:
                 self.fd.write("|  ")
-            self.fd.write(_("Warning")+Spaces["Warning"]+self.colorwarning+
+            self.fd.write(_("Warning")+Spaces["warning"]+self.colorwarning+
 	                  urlData.warningString+self.colorreset+"\n")
 
         if self.prefix:
             self.fd.write("|  ")
-        self.fd.write(_("Result")+Spaces["Result"])
+        self.fd.write(_("Result")+Spaces["result"])
         if urlData.valid:
             self.fd.write(self.colorvalid+urlData.validString+
 	                  self.colorreset+"\n")

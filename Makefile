@@ -1,10 +1,9 @@
 # This Makefile is only used by developers.
 # You will need a Debian Linux system to use this Makefile because
 # some targets produce Debian .deb packages
-PYTHON=python2.0
-VERSION=$(shell $(PYTHON) setup.py --version)
-PACKAGE = linkchecker
-NAME = $(shell $(PYTHON) setup.py --name)
+VERSION=$(shell ./setup.py --version)
+PACKAGE=linkchecker
+NAME=$(shell ./setup.py --name)
 HOST=treasure.calvinsplayground.de
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
@@ -21,7 +20,7 @@ all:
 	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
-	-$(PYTHON) setup.py clean --all # ignore errors of this command
+	-./setup.py clean --all # ignore errors of this command
 	$(MAKE) -C po clean
 	find . -name '*.py[co]' | xargs rm -f
 
@@ -35,15 +34,16 @@ cleandeb:
 	rm -f configure-stamp build-stamp
 
 dist:	locale
+	./setup.py sdist --formats=gztar,zip bdist_rpm
+	# extra run without SSL compilation
+	python setup.py bdist_wininst
+
+deb:
 	# cleandeb because distutils choke on dangling symlinks
 	# (linkchecker.1 -> undocumented.1)
 	$(MAKE) cleandeb
 	fakeroot debian/rules binary
-	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_rpm
-	# extra run without SSL compilation
-	python setup.py bdist_wininst
-	#fakeroot dpkg-buildpackage -sgpg -pgpg
-	mv -f ../$(DEBPACKAGE) dist
+	fakeroot dpkg-buildpackage -sgpg -pgpg -k959C340F
 
 package:
 	cd dist && dpkg-scanpackages . ../override.txt | gzip --best > Packages.gz

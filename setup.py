@@ -134,6 +134,7 @@ class MyConfig(config):
     def run (self):
         # try to compile a test program with SSL
         config.run(self)
+        self.libraries.append('ssl')
         have_ssl = self.check_lib("ssl",
                                   library_dirs = self.ssl_library_dirs,
                                   include_dirs = self.ssl_include_dirs,
