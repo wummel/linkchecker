@@ -1,3 +1,12 @@
+linkchecker (1.3.21) unstable; urgency=low
+
+  * really fix the keyboardinterrupt thing
+  * enable log=XXX configfile setting, which was always overwritten with
+    'text'
+  * update example linkcheckerrc file and documentation
+
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 14 Feb 2002 16:34:30 +0100
+
 linkchecker (1.3.20) unstable; urgency=low
 
   * fix keyboard interrupt

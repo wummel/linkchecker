@@ -399,36 +399,39 @@ class Configuration(UserDict.UserDict):
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
-        except ConfigParser.Error:
+        except ConfigParser.Error, msg:
+            debug(BRING_IT_ON, msg)
 	    return
 
         section="output"
         for key in Loggers.keys():
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
-                    try: self[key][opt] = cfgparser.get(key, opt)
-                    except ConfigParser.Error, msg: debug(str(msg)+"\n")
+                    try:
+                        self[key][opt] = cfgparser.get(key, opt)
+                    except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
                 try:
 		    self[key]['fields'] = map(string.strip,
 		         cfgparser.get(key, 'fields').split(','))
-                except ConfigParser.Error, msg:
-		    debug(BRING_IT_ON, msg)
+                except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try:
             log = cfgparser.get(section, "log")
             if Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
                 self.warn(_("invalid log option '%s'") % log)
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg:
+            debug(BRING_IT_ON, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
                 self["verbose"] = 1
                 self["warnings"] = 1
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try: self["quiet"] = cfgparser.getboolean(section, "quiet")
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg:
+            debug(BRING_IT_ON, msg)
         try: self["warnings"] = cfgparser.getboolean(section, "warnings")
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try:
             filelist = cfgparser.get(section, "fileoutput").split(",")
             for arg in filelist:
@@ -437,7 +440,7 @@ class Configuration(UserDict.UserDict):
                 if Loggers.has_key(arg) and arg != "blacklist":
 		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
-	except ConfigParser.Error: pass
+	except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
 
         section="checking"
         try:
@@ -446,31 +449,31 @@ class Configuration(UserDict.UserDict):
                 self.disableThreading()
             else:
                 self.enableThreading(num)
-        except ConfigParser.Error: pass
+        except ConfigParser.Error: debug(BRING_IT_ON, msg)
         try: self["anchors"] = cfgparser.getboolean(section, "anchors")
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try:
             num = cfgparser.getint(section, "recursionlevel")
             if num<0:
                 self.error(_("illegal recursionlevel number %d") % num)
             self["recursionlevel"] = num
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try: 
             self["robotstxt"] = cfgparser.getboolean(section, "robotstxt")
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try: self["strict"] = cfgparser.getboolean(section, "strict")
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try:
             warn = cfgparser.get(section, "warningregex")
             if warn:
                 self["warningregex"] = re.compile(warn)
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try:
             self["nntpserver"] = cfgparser.get(section, "nntpserver")
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try:
             self["interactive"] = cfgparser.getboolean(section, "interactive")
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
 
         section = "authentication"
 	try:
@@ -483,7 +486,7 @@ class Configuration(UserDict.UserDict):
 		                                  'user': auth[1],
 						  'password': auth[2]})
                 i += 1
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
 
         section = "filtering"
         try:
@@ -494,9 +497,8 @@ class Configuration(UserDict.UserDict):
                 self["externlinks"].append((re.compile(tuple[0]),
 		                                 int(tuple[1])))
                 i += 1
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try: self["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
-        except ConfigParser.Error: pass
+        except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)
         try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
-	except ConfigParser.Error: pass
-        self['log'] = self.newLogger('text')
+	except ConfigParser.Error, msg: debug(BRING_IT_ON, msg)

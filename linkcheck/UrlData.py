@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, re, urlparse, urllib, time, DNS, traceback
-import Config, StringUtil, linkcheck, linkname
+import sys, re, urlparse, urllib, time, traceback, socket, select
+import DNS, Config, StringUtil, linkcheck, linkname
 debug = Config.debug
 from linkcheck import _
 from debuglevels import *
@@ -32,6 +32,8 @@ If you disclose some information because its too private to you thats ok.
 I will try to help you nontheless (but you have to give me *something*
 I can work with ;).
 """) % Config.Email
+    type,value = sys.exc_info()[:2]
+    print >> sys.stderr, type, value
     import traceback
     traceback.print_exc()
     print_app_info()
@@ -58,13 +60,9 @@ ExcList = [
    linkcheck.error,
    DNS.Error,
    linkcheck.timeoutsocket.Timeout,
+   socket.error,
+   select.error,
 ]
-try:
-    import socket
-    ExcList.append(socket.error)
-except ImportError:
-    pass
-
 
 # regular expression to match an HTML tag with one given attribute
 _linkMatcher = r"""
@@ -241,7 +239,7 @@ class UrlData:
             self._check(config)
         except KeyboardInterrupt:
             pass
-        except socket.error:
+        except (socket.error, select.error):
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
             type, value = sys.exc_info()[:2]

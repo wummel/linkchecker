@@ -55,4 +55,4 @@ def checkUrls(config):
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-        sys.stderr.write(_("linkcheck: warning: keyboard interrupt\n"))
+        config.warn(_("keyboard interrupt"))

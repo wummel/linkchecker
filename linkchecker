@@ -78,7 +78,7 @@ For single-letter option arguments the space is not a necessity. So
         Check recursively all links up to given depth (depth >= 0).
         Default depth is 1.
 -R, --robots-txt
-        Obey the robots exclusion standard.
+        Obey the robots exclusion standard (this is the default).
 -s, --strict
         Check only syntax of extern links, do not try to connect to them.
 -t num, --threads=num
