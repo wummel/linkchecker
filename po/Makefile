@@ -26,6 +26,7 @@ SOURCES=\
 ../linkcheck/log/XMLLogger.py \
 ../linkcheck/MailtoUrlData.py \
 ../linkcheck/NntpUrlData.py \
+../linkcheck/ProxyUrlData.py \
 ../linkcheck/TelnetUrlData.py \
 ../linkcheck/Threader.py \
 ../linkcheck/UrlData.py \
