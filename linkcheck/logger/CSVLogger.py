@@ -38,7 +38,7 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
             return
         self.starttime = time.time()
         if self.has_field("intro"):
-            self.fd.write("# "+(bk.i18n._("created by %s at %s%s") % (linkcheck.Config.AppName, linkcheck.logger.strtime(self.starttime), self.lineterminator)))
+            self.fd.write("# "+(bk.i18n._("created by %s at %s%s") % (linkcheck.Config.AppName, bk.strtime.strtime(self.starttime), self.lineterminator)))
             self.fd.write("# "+(bk.i18n._("Get the newest version at %s%s") % (linkcheck.Config.Url, self.lineterminator)))
             self.fd.write("# "+(bk.i18n._("Write comments and bugs to %s%s%s") % \
 	                    (linkcheck.Config.Email, self.lineterminator, self.lineterminator)))
@@ -86,8 +86,8 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
         if self.has_field("outro"):
             duration = self.stoptime - self.starttime
             self.fd.write("# "+bk.i18n._("Stopped checking at %s (%s)%s")%\
-                          (linkcheck.logger.strtime(self.stoptime),
-                           linkcheck.logger.strduration(duration), self.lineterminator))
+                          (bk.strtime.strtime(self.stoptime),
+                           bk.strtime.strduration(duration), self.lineterminator))
             self.flush()
         self.fd.close()
         self.fd = None

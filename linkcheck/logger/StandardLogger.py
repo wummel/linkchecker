@@ -76,7 +76,7 @@ __init__(self, **args)
             self.fd.write("%s\n%s\n" % (linkcheck.Config.AppInfo, linkcheck.Config.Freeware))
             self.fd.write(bk.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url)
             self.fd.write(bk.i18n._("Write comments and bugs to %s\n\n") % linkcheck.Config.Email)
-            self.fd.write(bk.i18n._("Start checking at %s\n") % linkcheck.logger.strtime(self.starttime))
+            self.fd.write(bk.i18n._("Start checking at %s\n") % bk.strtime.strtime(self.starttime))
             self.flush()
 
     def newUrl (self, urlData):
@@ -156,8 +156,8 @@ __init__(self, **args)
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.fd.write(bk.i18n._("Stopped checking at %s (%s)\n") % \
-                          (linkcheck.logger.strtime(self.stoptime),
-                           linkcheck.logger.strduration(duration)))
+                          (bk.strtime.strtime(self.stoptime),
+                           bk.strtime.strduration(duration)))
         self.flush()
         self.fd = None
 

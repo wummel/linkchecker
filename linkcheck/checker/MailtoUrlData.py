@@ -23,7 +23,7 @@ import urllib
 import smtplib
 import rfc822
 import linkcheck
-import linkcheck.checker.HostCheckingUrlData
+import HostCheckingUrlData
 import bk.log
 import bk.i18n
 import bk.net.dns.lazy
@@ -31,7 +31,7 @@ import bk.net.dns.lazy
 # regular expression for RFC2368 compliant mailto: scanning
 headers_re = re.compile(r"\?(.+)$")
 
-class MailtoUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
+class MailtoUrlData (HostCheckingUrlData.HostCheckingUrlData):
     "Url link with mailto scheme"
 
     def buildUrl (self):

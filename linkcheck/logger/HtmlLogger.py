@@ -59,7 +59,7 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.fd.write("<center><h2>"+linkcheck.Config.App+"</h2></center>"+
               "<br><blockquote>"+linkcheck.Config.Freeware+"<br><br>"+
               (bk.i18n._("Start checking at %s\n") % \
-               linkcheck.logger.strtime(self.starttime))+
+               bk.strtime.strtime(self.starttime))+
 	      "<br>")
         self.flush()
 
@@ -160,8 +160,8 @@ class HtmlLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.fd.write(bk.i18n._("Stopped checking at %s (%s)\n")%\
-                          (linkcheck.logger.strtime(self.stoptime),
-                           linkcheck.logger.strduration(duration)))
+                          (bk.strtime.strtime(self.stoptime),
+                           bk.strtime.strduration(duration)))
             self.fd.write("</blockquote><br><hr noshade size=\"1\"><small>"+
                           linkcheck.Config.HtmlAppInfo+"<br>")
             self.fd.write(bk.i18n._("Get the newest version at %s\n") %\

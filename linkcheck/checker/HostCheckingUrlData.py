@@ -19,10 +19,10 @@
 import socket
 import urllib
 import bk.i18n
-import linkcheck.checker.UrlData
+import UrlData
 
 
-class HostCheckingUrlData (linkcheck.checker.UrlData.UrlData):
+class HostCheckingUrlData (UrlData.UrlData):
     "Url link for which we have to connect to a specific host"
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,

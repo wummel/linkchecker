@@ -23,13 +23,13 @@ import nntplib
 import urlparse
 import random
 import linkcheck
-import linkcheck.checker.UrlData
+import UrlData
 import bk.log
 import bk.i18n
 
 random.seed()
 
-class NntpUrlData (linkcheck.checker.UrlData.UrlData):
+class NntpUrlData (UrlData.UrlData):
     "Url link with NNTP scheme"
 
     def buildUrl (self):

@@ -95,6 +95,15 @@ def checkUrls (config):
         raise
 
 
+# file extensions we can parse recursively
+extensions = {
+    "html": re.compile(r'(?i)\.s?html?$'),
+    "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
+    "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
+#    "text": re.compile(r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$'),
+}
+
+
 import linkcheck.checker.FileUrlData
 import linkcheck.checker.IgnoredUrlData
 import linkcheck.checker.FtpUrlData
@@ -104,14 +113,6 @@ import linkcheck.checker.HttpsUrlData
 import linkcheck.checker.MailtoUrlData
 import linkcheck.checker.TelnetUrlData
 import linkcheck.checker.NntpUrlData
-
-# file extensions we can parse recursively
-extensions = {
-    "html": re.compile(r'(?i)\.s?html?$'),
-    "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
-    "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
-#    "text": re.compile(r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$'),
-}
 
 
 def set_intern_url (url, klass, config):

@@ -15,6 +15,7 @@ import urllib
 import urllib2
 import socket
 import re
+import sys
 import zlib
 import gzip
 import cStringIO as StringIO
@@ -22,7 +23,15 @@ import linkcheck
 
 __all__ = ["RobotFileParser"]
 
-from debug import *
+_debug = False
+
+def msg (prefix, msg):
+    if _debug:
+        print >>sys.stderr, prefix, msg
+debug = lambda txt: msg("debug:", txt)
+warn = lambda txt: msg("warning:", txt)
+error = lambda txt: msg("error:", txt)
+
 
 class RobotFileParser (object):
     """ This class provides a set of methods to read, parse and answer
@@ -74,34 +83,34 @@ class RobotFileParser (object):
         except urllib2.HTTPError, x:
             if x.code in (401, 403):
                 self.disallow_all = True
-                debug(BRING_IT_ON, "robotst.txt disallow all")
+                debug("robotst.txt disallow all")
             else:
                 self.allow_all = True
-                debug(BRING_IT_ON, "robots.txt allow all")
+                debug("robots.txt allow all")
             return
         except (socket.gaierror, socket.error, urllib2.URLError), x:
             # no network
             self.allow_all = True
-            debug(BRING_IT_ON, "robots.txt allow all")
+            debug("robots.txt allow all")
             return
         except IOError, data:
             if data and data[0] == 'http error' and data[1] == 404:
                 self.allow_all = True
-                debug(BRING_IT_ON, "robots.txt allow all")
+                debug("robots.txt allow all")
             else:
                 self.allow_all = True
-                debug(BRING_IT_ON, "robots.txt allow all")
+                debug("robots.txt allow all")
             return
         except httplib.HTTPException:
             self.allow_all = True
-            debug(BRING_IT_ON, "robots.txt allow all")
+            debug("robots.txt allow all")
             return
         lines = []
         line = f.readline()
         while line:
             lines.append(line.strip())
             line = f.readline()
-        debug(BRING_IT_ON, "robots.txt parse lines")
+        debug("robots.txt parse lines")
         self.parse(lines)
 
     def _add_entry (self, entry):
@@ -123,7 +132,7 @@ class RobotFileParser (object):
             linenumber += 1
             if not line:
                 if state==1:
-                    debug(BRING_IT_ON, "line %d: warning: you should insert"
+                    warn("line %d: you should insert"
                           " allow: or disallow: directives below any"
                           " user-agent: line" % linenumber)
                     entry = Entry()
@@ -145,7 +154,7 @@ class RobotFileParser (object):
                 line[1] = urllib.unquote(line[1].strip())
                 if line[0] == "user-agent":
                     if state==2:
-                        debug(BRING_IT_ON, "line %d: warning: you should insert a blank"
+                        warn("line %d: you should insert a blank"
                               " line before any user-agent"
                               " directive" % linenumber)
                         self._add_entry(entry)
@@ -154,29 +163,28 @@ class RobotFileParser (object):
                     state = 1
                 elif line[0] == "disallow":
                     if state==0:
-                        debug(BRING_IT_ON, "line %d: error: you must insert a user-agent:"
+                        error("line %d: you must insert a user-agent:"
                               " directive before this line" % linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 0))
                         state = 2
                 elif line[0] == "allow":
                     if state==0:
-                        debug(BRING_IT_ON, "line %d: error: you must insert a user-agent:"
+                        error("line %d: you must insert a user-agent:"
                                " directive before this line" % linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 1))
                 else:
-                    debug(BRING_IT_ON, "line %d: warning: unknown key %s" % (linenumber,
-                               line[0]))
+                    warn("line %d: unknown key %s" % (linenumber, line[0]))
             else:
-                debug(BRING_IT_ON, "line %d: error: malformed line %s"%(linenumber, line))
+                error("line %d: malformed line %s"%(linenumber, line))
         if state==2:
             self.entries.append(entry)
-        debug(BRING_IT_ON, "Parsed rules:\n%s" % str(self))
+        debug("Parsed rules:\n%s" % str(self))
 
     def can_fetch (self, useragent, url):
         """using the parsed robots.txt decide if useragent can fetch url"""
-        debug(BRING_IT_ON, "Checking robot.txt allowance for:\n  user agent: %r\n  url: %r"%(useragent, url))
+        debug("Checking robot.txt allowance for:\n  user agent: %r\n  url: %r"%(useragent, url))
         if self.disallow_all:
             return False
         if self.allow_all:
@@ -250,7 +258,7 @@ class Entry (object):
         - our agent applies to this entry
         - filename is URL decoded"""
         for line in self.rulelines:
-            debug(BRING_IT_ON, (filename, str(line), line.allowance))
+            debug("%s %s %s" % (filename, str(line), line.allowance))
             if line.applies_to(filename):
                 return line.allowance
         return True
@@ -278,7 +286,7 @@ class Entry (object):
 ##  SOFTWARE.
 def decode (page):
     "gunzip or deflate a compressed page"
-    debug(BRING_IT_ON, "robots.txt page info %s"%str(page.info()))
+    debug("robots.txt page info %s"%str(page.info()))
     encoding = page.info().get("Content-Encoding") 
     if encoding in ('gzip', 'x-gzip', 'deflate'):
         # cannot seek in socket descriptors, so must get content now

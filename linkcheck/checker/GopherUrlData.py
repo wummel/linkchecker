@@ -16,8 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import linkcheck.checker.UrlData
+import UrlData
 
-class GopherUrlData (linkcheck.checker.UrlData.UrlData):
+class GopherUrlData (UrlData.UrlData):
     "Url link with gopher scheme"
     pass

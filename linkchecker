@@ -29,6 +29,7 @@ import pprint
 import socket
 import optparse
 import bk.log
+import bk.i18n
 import linkcheck
 import linkcheck.optcomplete
 import linkcheck.checker
@@ -44,10 +45,10 @@ _username = "anonymous"
 _password = "guest@"
 
 # main usage text
-Usage = linkcheck.i18n._("""USAGE\tlinkchecker [options] file-or-url...
+Usage = bk.i18n._("""USAGE\tlinkchecker [options] file-or-url...
 """)
 
-Notes = linkcheck.i18n._("""NOTES
+Notes = bk.i18n._("""NOTES
 o A ! before any regex negates it. So '!^mailto:' matches everything but
   a mailto link.
 o LinkCheckers commandline parser treats "ftp." links like "ftp://ftp."
@@ -67,7 +68,7 @@ o When checking 'news:' links the given NNTP host doesn't need to be the
   same as the host of the user browsing your pages!
 """)
 
-Examples = linkcheck.i18n._(r"""EXAMPLES
+Examples = bk.i18n._(r"""EXAMPLES
 Check the treasure.calvinsplayground.de domain, but don't recurse into
 links outside of this domain:
   linkchecker -v --status -r5 -Fhtml -itreasure\.calvinsplayground\.de \
@@ -97,16 +98,16 @@ def printVersion ():
 
 def printUsage (msg):
     """print a program msg text to stderr and exit"""
-    sys.stderr.write(linkcheck.i18n._("Error: %s\n") % msg)
-    sys.stderr.write(linkcheck.i18n._("Execute 'linkchecker -h' for help\n"))
+    sys.stderr.write(bk.i18n._("Error: %s\n") % msg)
+    sys.stderr.write(bk.i18n._("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
 
 
 def viewprof ():
     """print profiling data and exit"""
     if not os.path.exists(_profile):
-        sys.stderr.write(linkcheck.i18n._("Could not find profiling file %s.")%_profile)
-        sys.stderr.write(linkcheck.i18n._("Please run linkchecker with --profile to generate it."))
+        sys.stderr.write(bk.i18n._("Could not find profiling file %s.")%_profile)
+        sys.stderr.write(bk.i18n._("Please run linkchecker with --profile to generate it."))
         sys.exit(1)
     import pstats
     stats = pstats.Stats(_profile)
@@ -137,36 +138,36 @@ class LCOptionParser (optparse.OptionParser):
 optparser = LCOptionParser()
 
 ################# general options ##################
-group = optparse.OptionGroup(optparser, linkcheck.i18n._("General options"))
+group = optparse.OptionGroup(optparser, bk.i18n._("General options"))
 group.add_option("-f", "--config", type="string", dest="configfile",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Use file as configuration file. As default LinkChecker first
 searches /etc/linkcheckerrc and then ~/.linkcheckerrc
 (under Windows <path-to-program>\\linkcheckerrc)."""))
 group.add_option("-I", "--interactive", action="store_true", dest="interactive",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Ask for url if none are given on the commandline."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Generate no more than num threads. Default number of threads is 5.
 To disable threading specify a non-positive number."""))
 
 group.add_option("-V", "--version", action="store_true", dest="version",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Print version and exit."""))
 optparser.add_option_group(group)
 
 
 ################# output options ##################
-group = optparse.OptionGroup(optparser, linkcheck.i18n._("Output options"))
+group = optparse.OptionGroup(optparser, bk.i18n._("Output options"))
 group.add_option("-v", "--verbose", action="store_true", dest="verbose",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Log all checked URLs (implies -w). Default is to log only invalid
 URLs."""))
 group.add_option("-w", "--warnings", action="store_true", dest="warnings",
-                 help=linkcheck.i18n._("""Log warnings."""))
+                 help=bk.i18n._("""Log warnings."""))
 group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Define a regular expression which prints a warning if it matches
 any content of the checked link.
 This applies of course only to pages which are valid, so we can
@@ -176,17 +177,17 @@ message, for example 'This page has moved' or 'Oracle
 Application Server error'.
 This option implies -w."""))
 group.add_option("--warning-size-bytes", dest="warningsizebytes",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Print a warning if content size is available and exceeds the given
 number of bytes. This option implies -w."""))
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Quiet operation. This is only useful with -F."""))
 group.add_option("-o", "--output", type="string", dest="output",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Specify output as %s. Default output type is text.""")%linkcheck.LoggerKeys)
 group.add_option("-F", "--file-output", type="string", action="append",
-                 dest="fileoutput", help=linkcheck.i18n._(
+                 dest="fileoutput", help=bk.i18n._(
 """type[/filename]
 Output to a file linkchecker-out.<type>, $HOME/.linkchecker_blacklist for
 'blacklist' output, or <filename> if specified.
@@ -197,81 +198,81 @@ are %s.
 Default is no file output. If console output is not specified with -o,
 this option suppresses all console output by implying -o none.""")%linkcheck.LoggerKeys)
 group.add_option("-D", "--debug", action="count",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Print debugging information. Provide this option multiple times
 for even more debugging information."""))
 group.add_option("--status", action="store_true", dest="status",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Print check status every 5 seconds to stderr."""))
 group.add_option("--profile", action="store_true", dest="profile",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Write profiling data into a file named %s in the
 current working directory. See also --viewprof.""")%_profile)
 group.add_option("--viewprof", action="store_true", dest="viewprof",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Print out previously generated profiling data. See also --profile."""))
 optparser.add_option_group(group)
 
 
 ################# checking options ##################
-group = optparse.OptionGroup(optparser, linkcheck.i18n._("Checking options"))
+group = optparse.OptionGroup(optparser, bk.i18n._("Checking options"))
 group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Check recursively all links up to given depth. A negative depth
 will enable inifinite recursion. Default depth is 1."""))
 group.add_option("-e", "--extern", type="string", action="append", dest="extern",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Assume urls that match the given expression as external.
 Only internal HTML links are checked recursively."""))
 group.add_option("-i", "--intern", type="string", action="append", dest="intern",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """ regex, --intern=regex
 Assume URLs that match the given expression as internal.
 LinkChecker descends recursively only to internal URLs, not to
 external."""))
 group.add_option("-d", "--denyallow", action="store_true", dest="denyallow",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Swap checking order to external/internal. Default checking order
 is internal/external."""))
 group.add_option("-s", "--strict", action="store_true", dest="strict",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Check only syntax of external links, do not try to connect to them.
 For local file urls, only local files are internal. For
 http and ftp urls, all urls at the same domain name are internal."""))
 group.add_option("-C", "--cookies", action="store_true", dest="cookies",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Accept and send HTTP cookies according to RFC 2109. Only cookies
 which are sent back to the originating server are accepted.
 Sent and accepted cookies are provided as additional logging
 information."""))
 group.add_option("-a", "--anchors", action="store_true", dest="anchors",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Check HTTP anchor references. This option applies to both internal
 and external urls. Default is don't check anchors.
 This option implies -w because anchor errors are always warnings."""))
 group.add_option("--no-anchor-caching", action="store_false", dest="anchorcaching",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Treat url#anchora and url#anchorb as equal on caching. This
 is the default browser behaviour, but it's not specified in
 the URI specification. Use with care."""))
 group.add_option("-u", "--user", type="string", dest="username",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Try given username for HTTP and FTP authorization.
 Default is %r. See also -p.""")%_username)
 group.add_option("-p", "--password", type="string", dest="password",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Try given password for HTTP and FTP authorization.
 Default password is %r. See also -u.""")%_password)
 group.add_option("--timeout", type="int", dest="timeout",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Set the timeout for TCP connection attempts in seconds. The default
 timeout is %d seconds.""") % default_timeout)
 group.add_option("-P", "--pause", type="int", dest="pause",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Pause <secs> seconds between each url check. This option implies -t0.
 Default is no pause between requests."""))
 group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
-                 help=linkcheck.i18n._(
+                 help=bk.i18n._(
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
@@ -279,7 +280,7 @@ optparser.add_option_group(group)
 
 
 ################# deprecated options ##################
-group = optparse.OptionGroup(optparser, linkcheck.i18n._("Deprecated options"))
+group = optparse.OptionGroup(optparser, bk.i18n._("Deprecated options"))
 group.add_option("-R", "--robots-txt", action="store_true")
 optparser.add_option_group(group)
 
@@ -317,7 +318,7 @@ if options.output:
     if linkcheck.Loggers.has_key(options.output):
         config['log'] = config.newLogger(options.output)
     else:
-        printUsage(linkcheck.i18n._("Illegal argument %r for option %s") % \
+        printUsage(bk.i18n._("Illegal argument %r for option %s") % \
                    (options.output, "'-o, --output'"))
 if options.fileoutput:
     ns = {'fileoutput': 1}
@@ -330,7 +331,7 @@ if options.fileoutput:
         if linkcheck.Loggers.has_key(ftype):
             config['fileoutput'].append(config.newLogger(ftype, ns))
         else:
-            printUsage(linkcheck.i18n._("Illegal argument %r for option %s") % \
+            printUsage(bk.i18n._("Illegal argument %r for option %s") % \
                        (ftype, "'-F, --file-output'"))
     if not options.output:
         config['log'] = config.newLogger('none')
@@ -351,7 +352,7 @@ if options.pause is not None:
     if options.pause >= 0:
         config["wait"] = options.pause
     else:
-        printUsage(linkcheck.i18n._("Illegal argument %d for option %s") % \
+        printUsage(bk.i18n._("Illegal argument %d for option %s") % \
                    (options.pause, "'-P, --pause'"))
 if options.profile is not None:
     do_profile = options.profile
@@ -369,7 +370,7 @@ if options.timeout is not None:
     if options.timeout > 0:
         socket.setdefaulttimeout(options.timeout)
     else:
-        printUsage(linkcheck.i18n._("Illegal argument %r for option %s") % \
+        printUsage(bk.i18n._("Illegal argument %r for option %s") % \
                    (options.timeout, "'--timeout'"))
 if options.username is not None:
     _username = options.username
@@ -401,10 +402,10 @@ bk.log.debug(linkcheck.LOG_CMDLINE, "configuration:", pprint.pformat(config.item
 # interactive input
 if len(args)==0:
     if config['interactive']:
-        urls = raw_input(linkcheck.i18n._("enter one or more urls, separated by white-space\n--> "))
+        urls = raw_input(bk.i18n._("enter one or more urls, separated by white-space\n--> "))
         args = urls.split()
     else:
-        bk.log.warn(linkcheck.LOG_CMDLINE, linkcheck.i18n._("no files or urls given"))
+        bk.log.warn(linkcheck.LOG_CMDLINE, bk.i18n._("no files or urls given"))
 
 # syntactic sugar
 for url in args:
@@ -434,4 +435,4 @@ else:
 
 # interactive input end
 if config['interactive']:
-    raw_input(linkcheck.i18n._("Hit RETURN to finish"))
+    raw_input(bk.i18n._("Hit RETURN to finish"))

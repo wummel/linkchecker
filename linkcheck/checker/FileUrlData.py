@@ -19,7 +19,7 @@
 import re
 import os
 import urlparse
-import linkcheck.checker.UrlData
+import UrlData
 
 # if file extension was fruitless, look at the content
 contents = {
@@ -69,7 +69,7 @@ acap        # application configuration access protocol
 |nntp       # news
 )"""
 
-class FileUrlData (linkcheck.checker.UrlData.UrlData):
+class FileUrlData (UrlData.UrlData):
     "Url link with file scheme"
 
     def __init__ (self,

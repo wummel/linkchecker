@@ -16,11 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import linkcheck.checker.HttpUrlData
 import bk.i18n
+import HttpUrlData
 
 
-class HttpsUrlData (linkcheck.checker.HttpUrlData.HttpUrlData):
+class HttpsUrlData (HttpUrlData.HttpUrlData):
     """Url link with https scheme"""
 
     def _check (self):

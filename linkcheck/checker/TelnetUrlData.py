@@ -20,10 +20,10 @@ import telnetlib
 import urlparse
 import urllib
 import linkcheck
-import linkcheck.checker.HostCheckingUrlData
+import HostCheckingUrlData
 
 
-class TelnetUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
+class TelnetUrlData (HostCheckingUrlData.HostCheckingUrlData):
     "Url link with telnet scheme"
 
     def buildUrl (self):

@@ -29,7 +29,7 @@ import bk.i18n
 import linkcheck
 import linkcheck.robotparser2
 import linkcheck.httplib2
-import linkcheck.checker.ProxyUrlData
+import ProxyUrlData
 
 supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
                hasattr(socket, "ssl")
@@ -40,7 +40,7 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 _isAmazonHost = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 
 
-class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
+class HttpUrlData (ProxyUrlData.ProxyUrlData):
     "Url link with http scheme"
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,

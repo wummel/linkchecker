@@ -20,11 +20,11 @@ import ftplib
 import urllib
 import bk.i18n
 import linkcheck
-import linkcheck.checker.ProxyUrlData
-import linkcheck.checker.HttpUrlData
+import ProxyUrlData
+import HttpUrlData
 
 
-class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
+class FtpUrlData (ProxyUrlData.ProxyUrlData):
     """
     Url link with ftp scheme.
     """
@@ -33,7 +33,7 @@ class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
         # proxy support (we support only http)
         self.setProxy(self.config["proxy"].get(self.scheme))
         if self.proxy:
-            http = linkcheck.HttpUrlData.HttpUrlData(self.urlName,
+            http = HttpUrlData.HttpUrlData(self.urlName,
                   self.recursionLevel,
                   self.config,
                   parentName=self.parentName,
