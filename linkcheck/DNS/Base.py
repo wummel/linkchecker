@@ -10,7 +10,7 @@ This code is covered by the standard Python License.
     Base functionality. Request and Response classes, that sort of thing.
 """
 
-import select, socket, string, types, time, asyncore, os
+import select, socket, re, string, types, time, asyncore, os
 
 class DNSError (Exception): pass
 
@@ -310,6 +310,9 @@ class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):
 
 #
 # $Log$
+# Revision 1.8  2003/12/18 14:21:53  calvin
+# missing import
+#
 # Revision 1.7  2003/12/18 14:20:37  calvin
 # update nameserver parsing
 #
