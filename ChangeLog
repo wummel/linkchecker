@@ -1,8 +1,10 @@
 1.8.21
   * detect recursive redirections; the maximum of five redirections is
     still there though
-  * after every HTTP redirection, check the URL cache again
+  * after every HTTP 301 or 302 redirection, check the URL cache again
     Closes: SF bug 776851
+  * put all HTTP 301 redirection answers also in the url cache as
+    aliases of the original url
 
 1.8.20
   * fix setting of domain in set_intern_url
