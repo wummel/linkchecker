@@ -365,6 +365,7 @@ class UrlData:
             t = time.time()
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
+            self.setInfo("D/L size %s"%StringUtil.strsize(len(self.data)))
         return self.data
 
 
