@@ -1,3 +1,10 @@
+2.8 "" (released xx.xx.xxxx)
+
+  * Correct AttributeError in blacklist logger.
+    Type: bugfix
+    Closes: SF bug #1173823
+    Changed: linkcheck/logger/blacklist.py
+
 2.7 "Million Dollar Baby" (released 30.3.2005)
 
   * When a host has no MX record, fall back to A records as the mail
