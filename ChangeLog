@@ -3,6 +3,7 @@
     - removed timeoutsocket.py and robotparser.py, using upstream
     - use True/False for boolean values
     - use csv module
+    - use new-style classes
     Closes: SF bug 784977
     Changed: a lot
   * update po makefiles and tools
