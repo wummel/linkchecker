@@ -60,7 +60,7 @@ def do_install ():
 
 
 def create_shortcuts ():
-    """Create program shortcuts"""
+    """Create program shortcuts."""
     dest_dir = get_dest_dir()
     try:
         os.mkdir(dest_dir)
@@ -88,7 +88,7 @@ def create_shortcuts ():
 
 
 def fix_configdata ():
-    """fix install and config paths in the config file"""
+    """Fix install and config paths in the config file."""
     name = "_linkchecker_configdata.py"
     conffile = os.path.join(sys.prefix, "Lib", "site-packages", name)
     lines = []
@@ -101,7 +101,7 @@ def fix_configdata ():
     f.write("".join(lines))
     f.close()
 
-# windows install scheme for python >= 2.3
+# windows install path scheme for python >= 2.3
 # snatched from PC/bdist_wininst/install.c
 # this is used to fix install_* paths when cross compiling for windows
 win_path_scheme = {
@@ -117,7 +117,7 @@ win_path_scheme = {
 
 def fix_install_path (line):
     """Replace placeholders written by bdist_wininst with those specified
-       in win_path_scheme."""
+       in windows install path scheme."""
     key, eq, val = line.split()
     # unescape string (do not use eval())
     val = val[1:-1].replace("\\\\", "\\")
@@ -134,4 +134,7 @@ if __name__ == '__main__':
     if "-install" == sys.argv[1]:
         do_install()
     elif "-remove" == sys.argv[1]:
+        # nothing to do since the crated shortcuts are automatically
+        # removed
         pass
+
