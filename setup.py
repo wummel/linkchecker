@@ -136,7 +136,10 @@ class MyDistribution (Distribution):
         util.execute(write_file, (filename, data),
                  "creating %s" % filename, self.verbose>=1, self.dry_run)
 
-
+if os.name=='nt':
+    macros = [('YY_NO_UNISTD_H', None)]
+else:
+    macros = []
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
@@ -175,6 +178,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                   ['linkcheck/parser/htmllex.c',
                    'linkcheck/parser/htmlparse.c'],
                   include_dirs = ["linkcheck/parser"],
+                  define_macros = macros,
                   )],
 
        scripts = ['linkchecker'],
