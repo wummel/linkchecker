@@ -9,7 +9,7 @@ Package: linkchecker
 Architecture: any
 Depends: python (>= 2.3), python (<< 2.4)
 Conflicts: linkchecker-ssl
-Suggests: httpd
+Suggests: httpd, python-psyco
 Description: check HTML documents for broken links
  Features:
   o recursive checking
