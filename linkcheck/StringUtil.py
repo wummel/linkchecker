@@ -17,6 +17,8 @@
 
 import string,re,sys,htmlentitydefs
 
+markup_re = re.compile("<.*?>", re.DOTALL)
+
 entities = htmlentitydefs.entitydefs.items()
 HtmlTable = map(lambda x: (x[1], "&"+x[0]+";"), entities)
 UnHtmlTable = map(lambda x: ("&"+x[0]+";", x[1]), entities)
@@ -183,3 +185,11 @@ def paginate(text, lines=22):
 if __name__=='__main__':
     print htmlify("הצü")
     print unhtmlify("&auml;&nbsp;&auml;&amp;auml;")
+
+
+def remove_markup(s):
+    mo = markup_re.search(s)
+    while mo:
+        s = s[0:mo.start()] + s[mo.end():]
+        mo = markup_re.search(s)
+    return s

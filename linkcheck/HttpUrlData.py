@@ -101,6 +101,9 @@ class HttpUrlData(UrlData):
                 status, statusText, self.mime = self._getHttpRequest()
                 Config.debug("DEBUG: Redirected\n"+str(self.mime))
                 tries += 1
+            if tries >= 5:
+                self.setError(_("too much redirections (>= 5)"))
+                return
 
             # authentication
             if status==401:

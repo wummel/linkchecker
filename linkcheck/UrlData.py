@@ -16,7 +16,7 @@
 #    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys,re,string,urlparse,urllib,time,DNS
-import Config,StringUtil,linkcheck
+import Config,StringUtil,linkcheck,linkname
 from linkcheck import _
 debug = linkcheck.Config.debug
 
@@ -89,11 +89,11 @@ LinkPatterns = []
 for tag,attrs in LinkTags:
     for attr in attrs:
         LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
-                                                   re.VERBOSE),
+                                                   re.VERBOSE|re.DOTALL),
                              'tag': tag,
 	                     'attr': attr})
 AnchorPattern = {
-    'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE),
+    'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE|re.DOTALL),
     'tag': 'a',
     'attr': 'name',
 }
@@ -159,12 +159,14 @@ class UrlData:
         else:
             self.warningString = s
 
+
     def setInfo(self, s):
         if self.infoString:
             self.infoString += "\n"+s
         else:
             self.infoString = s
-            
+
+
     def copyFrom(self, urlData):
         self.errorString = urlData.errorString
         self.validString = urlData.validString
@@ -172,6 +174,7 @@ class UrlData:
         self.infoString = urlData.infoString
         self.valid = urlData.valid
         self.downloadtime = urlData.downloadtime
+
 
     def buildUrl(self):
         if self.baseRef:
@@ -186,6 +189,8 @@ class UrlData:
                          self.urlTuple[2],self.urlTuple[3],self.urlTuple[4],
                          self.urlTuple[5])
         self.url = urlparse.urlunparse(self.urlTuple)
+        # resolve HTML entities
+        self.url = StringUtil.unhtmlify(self.url)
 
 
     def logMe(self, config):
@@ -412,24 +417,19 @@ class UrlData:
             urls.append((url, lineno, name))
         return urls
 
+
     def searchInForName(self, tag, attr, start, end):
         name=""
         if tag=='img':
-            all = self.getContent()[start:end]
-            mo = re.search("(?i)\s+alt\s*=\s*(?P<name>(\".+?\"|[^\s>]+))", all)
-            if mo:
-                name = StringUtil.stripQuotes(mo.group('name'))
-                name = StringUtil.unhtmlify(name)
+            name = linkname.image_name(self.getContent()[start:end])
         elif tag=='a' and attr=='href':
-            all = self.getContent()[end:]
-            mo = re.search("(?i)(?P<name>.*?)</a\s*>", all)
-            if mo:
-                name = mo.group('name')
+            name = linkname.href_name(self.getContent()[end:])
         return name
 
 
     def get_scheme(self):
         return "none"
+
 
     def __str__(self):
         return ("%s link\n"
