@@ -25,17 +25,17 @@ import gettext
 supported_languages = ['en']
 default_language = None
 
-def install_builtin (self, do_unicode):
+def install_builtin (translator, do_unicode):
     """install _() and _n() gettext methods into default namespace"""
     import __builtin__
     if do_unicode:
-        __builtin__.__dict__['_'] = self.ugettext
+        __builtin__.__dict__['_'] = translator.ugettext
         # also install ngettext
-        __builtin__.__dict__['_n'] = self.ungettext
+        __builtin__.__dict__['_n'] = translator.ungettext
     else:
-        __builtin__.__dict__['_'] = self.gettext
+        __builtin__.__dict__['_'] = translator.gettext
         # also install ngettext
-        __builtin__.__dict__['_n'] = self.ngettext
+        __builtin__.__dict__['_n'] = translator.ngettext
 
 class Translator (gettext.GNUTranslations):
 
