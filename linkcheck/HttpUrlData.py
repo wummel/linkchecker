@@ -23,6 +23,9 @@ from debug import *
 if get_debuglevel() > 0:
     robotparser.debug = 1
 from ProxyUrlData import ProxyUrlData
+from UrlData import ExcList
+
+ExcList.extend([httplib.error,])
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
@@ -38,8 +41,8 @@ class HttpUrlData (ProxyUrlData):
         # XXX
         # check for empty paths
         if not self.urlparts[2]:
-            self.setWarning(i18n._("Path is empty"))
-            self.urlparts[2] = "/"
+            self.setWarning(i18n._("URL path is empty, assuming '/' as path"))
+            self.urlparts[2] = '/'
             self.url = urlparse.urlunsplit(self.urlparts)
 
 
@@ -249,11 +252,13 @@ class HttpUrlData (ProxyUrlData):
         self.urlConnection.endheaders()
         return self.urlConnection.getresponse()
 
+
     def _getHTTPObject (self, host):
         h = httplib.HTTPConnection(host)
         h.set_debuglevel(get_debuglevel())
         h.connect()
         return h
+
 
     def getContent (self):
         if not self.has_content:
@@ -276,6 +281,7 @@ class HttpUrlData (ProxyUrlData):
             self.downloadtime = time.time() - t
         return self.data
 
+
     def isHtml (self):
         if not (self.valid and self.headers):
             return 0
@@ -288,6 +294,7 @@ class HttpUrlData (ProxyUrlData):
                             `encoding`)
             return 0
         return 1
+
 
     def robotsTxtAllowsUrl (self):
         roboturl = self.urlparts[0]+"://"+self.urlparts[1]+"/robots.txt"
