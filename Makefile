@@ -76,6 +76,8 @@ release: releasecheck dist upload homepage
 	@read
 	@echo "Uploading new LinkChecker Homepage..."
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
+	@echo "Register at Python Package Index..."
+	$(PYTHON) setup.py register
 
 homepage:
 	$(MAKE) -C doc homepage
