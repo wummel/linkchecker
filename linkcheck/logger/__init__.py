@@ -117,7 +117,8 @@ class Logger (object):
         # maximum indent for localized log field names
         self.max_indent = max([len(x) for x in values])+1
         for key in fields:
-            self.logspaces[key] = " "*(self.max_indent - len(self.field(key)))
+            numspaces = (self.max_indent - len(self.field(key)))
+            self.logspaces[key] = u" " * numspaces
 
     def new_url (self, url_data):
         """log a new url with this logger"""
