@@ -203,7 +203,7 @@ static PyObject* quote_string (PyObject* val) {
 RX_WHITE_SPACE	[\n\r\ \t\b\012]
 RX_EQUAL	=
 RX_NAME	[a-zA-Z]([-a-zA-Z0-9_])*
-RX_DATA [-a-zA-Z0-9_]+
+RX_DATA [-a-zA-Z0-9_:]+
 
 %%
 
