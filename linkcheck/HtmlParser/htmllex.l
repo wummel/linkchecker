@@ -102,8 +102,7 @@
         PYSTRING_TMP(yyextra->tmp_attrname); \
 	RESIZE_BUF(yyextra->tmp_buf, 1); \
         if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname, Py_None)==-1) return T_ERROR; \
-        Py_DECREF(yyextra->tmp_attrname); \
-        yyextra->tmp_attrname = NULL; \
+        Py_CLEAR(yyextra->tmp_attrname); \
     }
 
 /* update the buffer and scanner positions */
@@ -702,13 +701,9 @@ RX_DATA  [-a-zA-Z0-9_:]+
     PYSTRING_TMP(yyextra->tmp_attrname);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     if (yyextra->tmp_attrval!=NULL) return T_ERROR;
-    Py_INCREF(Py_None);
-    yyextra->tmp_attrval = Py_None;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-                       yyextra->tmp_attrval)==-1) return T_ERROR;
-    /*Py_DECREF(yyextra->tmp_attrname);*/
-    /*Py_DECREF(yyextra->tmp_attrval);*/
-    yyextra->tmp_attrname = yyextra->tmp_attrval = NULL;
+                         Py_None)==-1) return T_ERROR;
+    Py_CLEAR(yyextra->tmp_attrname);
     APPEND_TO_TMP(yyleng);
     BEGIN(S_ATTR2);
 }
@@ -750,10 +745,9 @@ RX_DATA  [-a-zA-Z0-9_:]+
                                                  "O", yyextra->tmp_attrval);
     if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		       yyextra->tmp_attrval)==-1) return T_ERROR;
-    Py_DECREF(yyextra->tmp_attrname);
-    Py_DECREF(yyextra->tmp_attrval);
-    yyextra->tmp_attrname = yyextra->tmp_attrval = NULL;
+		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    Py_CLEAR(yyextra->tmp_attrname);
+    Py_CLEAR(yyextra->tmp_attrval);
     SCRIPT_CHECK;
     SET_ATTR_LVAL;
     RETURN(T_ELEMENT_START);
@@ -776,10 +770,9 @@ RX_DATA  [-a-zA-Z0-9_:]+
                                                  "O", yyextra->tmp_attrval);
     if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		       yyextra->tmp_attrval)==-1) return T_ERROR;
-    Py_DECREF(yyextra->tmp_attrname);
-    Py_DECREF(yyextra->tmp_attrval);
-    yyextra->tmp_attrname = yyextra->tmp_attrval = NULL;
+		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    Py_CLEAR(yyextra->tmp_attrname);
+    Py_CLEAR(yyextra->tmp_attrval);
     SCRIPT_CHECK;
     SET_ATTR_LVAL;
     RETURN(T_ELEMENT_START);
@@ -793,10 +786,9 @@ RX_DATA  [-a-zA-Z0-9_:]+
                                                  "O", yyextra->tmp_attrval);
     if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		       yyextra->tmp_attrval)==-1) return T_ERROR;
-    Py_DECREF(yyextra->tmp_attrname);
-    Py_DECREF(yyextra->tmp_attrval);
-    yyextra->tmp_attrname = yyextra->tmp_attrval = NULL;
+		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    Py_CLEAR(yyextra->tmp_attrname);
+    Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(INITIAL);
     SET_ATTR_LVAL;
     RETURN(T_ELEMENT_START_END);
@@ -810,10 +802,9 @@ RX_DATA  [-a-zA-Z0-9_:]+
                                                  "O", yyextra->tmp_attrval);
     if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		       yyextra->tmp_attrval)==-1) return T_ERROR;
-    Py_DECREF(yyextra->tmp_attrname);
-    Py_DECREF(yyextra->tmp_attrval);
-    yyextra->tmp_attrname = yyextra->tmp_attrval = NULL;
+		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    Py_CLEAR(yyextra->tmp_attrname);
+    Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(S_ATTR1);
 }
 
@@ -831,10 +822,9 @@ RX_DATA  [-a-zA-Z0-9_:]+
                                                  "O", yyextra->tmp_attrval);
     if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		       yyextra->tmp_attrval)==-1) return T_ERROR;
-    Py_DECREF(yyextra->tmp_attrname);
-    Py_DECREF(yyextra->tmp_attrval);
-    yyextra->tmp_attrname = yyextra->tmp_attrval = NULL;
+		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    Py_CLEAR(yyextra->tmp_attrname);
+    Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(S_ATTR1);
 }
 
@@ -864,10 +854,9 @@ RX_DATA  [-a-zA-Z0-9_:]+
                                                  "O", yyextra->tmp_attrval);
     if (yyextra->tmp_attrval==NULL) return T_ERROR;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		       yyextra->tmp_attrval)==-1) return T_ERROR;
-    Py_DECREF(yyextra->tmp_attrname);
-    Py_DECREF(yyextra->tmp_attrval);
-    yyextra->tmp_attrval = yyextra->tmp_attrname = NULL;
+		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    Py_CLEAR(yyextra->tmp_attrname);
+    Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(S_ATTR1);
 }
 
