@@ -44,6 +44,7 @@ SQLTable = [
     ("'","''")
 ]
 
+
 def stripQuotes (s):
     "Strip optional quotes"
     if len(s)<2:
@@ -54,9 +55,11 @@ def stripQuotes (s):
         s = s[:-1]
     return s
 
+
 def indent (s, level):
     "indent each line of s with <level> spaces"
     return indentWith(s, level * " ")
+
 
 def indentWith (s, indent):
     "indent each line of s with given indent argument"
@@ -66,6 +69,7 @@ def indentWith (s, indent):
             s = s[0:(i+1)] + indent + s[(i+1):]
         i += 1
     return s
+
 
 def blocktext (s, width):
     "Adjust lines of s to be not wider than width"
@@ -85,6 +89,7 @@ def blocktext (s, width):
             line = line[i:].strip()
     return ret + line
 
+
 def getLastWordBoundary (s, width):
     """Get maximal index i of a whitespace char in s with 0 < i < width.
     Note: if s contains no whitespace this returns width-1"""
@@ -93,11 +98,13 @@ def getLastWordBoundary (s, width):
         return match.end()
     return width-1
 
+
 def applyTable (table, s):
     "apply a table of replacement pairs to str"
     for mapping in table:
         s = s.replace(mapping[0], mapping[1])
     return s
+
 
 def sqlify (s):
     "Escape special SQL chars and strings"
@@ -105,20 +112,25 @@ def sqlify (s):
         return "NULL"
     return "'%s'"%applyTable(SQLTable, s)
 
+
 def htmlify (s):
     "Escape special HTML chars and strings"
     return applyTable(HtmlTable, s)
 
+
 def unhtmlify (s):
     return applyTable(UnHtmlTable, s)
+
 
 def xmlify (s):
     """quote characters for XML"""
     return applyTable(XmlTable, s)
 
+
 def unxmlify (s):
     """unquote character from XML"""
     return applyTable(UnXmlTable, s)
+
 
 def getLineNumber (s, index):
     "return the line number of str[index]"
@@ -130,6 +142,7 @@ def getLineNumber (s, index):
             line += 1
         i += 1
     return line
+
 
 def paginate (text, lines=22):
     """print text in pages of lines size"""
@@ -143,9 +156,17 @@ def paginate (text, lines=22):
             print "press return to continue..."
             sys.stdin.read(1)
 
+
 def remove_markup (s):
     mo = markup_re.search(s)
     while mo:
         s = s[0:mo.start()] + s[mo.end():]
         mo = markup_re.search(s)
     return s
+
+
+def unquote (s):
+    if not s:
+        return ''
+    return unhtmlify(stripQuotes(s))
+

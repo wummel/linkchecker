@@ -46,6 +46,14 @@ class HtmlParser:
         """feed some data to the parser"""
         self.parser.feed(data)
 
+    def lineno (self):
+        """return current parser line number"""
+        return self.parser.lineno()
+
+    def pos (self):
+        """return current parser buffer position"""
+        return self.parser.pos()
+
     def flush (self):
         """flush all data"""
         self.parser.flush()
@@ -55,7 +63,7 @@ class HtmlParser:
         self.parser.reset()
 
 
-class HtmlPrinter(HtmlParser):
+class HtmlPrinter (HtmlParser):
     """handles all functions by printing the function name and
        attributes"""
     def __getattr__ (self, name):

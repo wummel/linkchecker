@@ -271,8 +271,6 @@ class HttpUrlData (ProxyUrlData):
                     f = gzip.GzipFile('', 'rb', 9, StringIO(self.data))
                 self.data = f.read()
             self.downloadtime = time.time() - t
-            self.init_html_comments()
-            Config.debug(HURT_ME_PLENTY, "comment spans", self.html_comments)
         return self.data
 
     def isHtml (self):

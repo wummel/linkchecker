@@ -15,6 +15,7 @@ extern int htmllexStart (void* scanner, UserData* data, const char* s, int slen)
 extern int htmllexStop (void* scanner, UserData* data);
 extern int htmllexDestroy (void* scanner);
 extern void* yyget_extra(void*);
+extern int yyget_lineno(void*);
 #define YYERROR_VERBOSE 1
 /* standard error reporting, indicating an internal error */
 
@@ -69,7 +70,7 @@ staticforward PyTypeObject parser_type;
 %}
 
 /* parser options */
-/*%verbose*/
+%verbose
 /*%debug*/
 %defines
 %output="htmlparse.c"
@@ -486,6 +487,7 @@ static PyObject* htmlsax_parser(PyObject* self, PyObject* args) {
     NEW_BUF(p->userData->buf);
     p->userData->nextpos = 0;
     p->userData->bufpos = 0;
+    p->userData->pos = 0;
     NEW_BUF(p->userData->tmp_buf);
     p->userData->tmp_tag = p->userData->tmp_attrname =
 	p->userData->tmp_attrval = p->userData->tmp_attrs =
@@ -500,7 +502,7 @@ static PyObject* htmlsax_parser(PyObject* self, PyObject* args) {
 }
 
 
-static void parser_dealloc(parser_object* self) {
+static void parser_dealloc (parser_object* self) {
     htmllexDestroy(self->scanner);
     Py_DECREF(self->userData->handler);
     PyMem_Del(self->userData->buf);
@@ -510,40 +512,69 @@ static void parser_dealloc(parser_object* self) {
 }
 
 
-static PyObject* parser_flush(parser_object* self, PyObject* args) {
+static PyObject* parser_flush (parser_object* self, PyObject* args) {
     /* flush parser buffers */
     int res=0;
+    int len = strlen(self->userData->buf);
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    if (strlen(self->userData->buf)) {
-	PyObject* s = PyString_FromString(self->userData->buf);
-	PyObject* callback = NULL;
-	PyObject* result = NULL;
-	if (s==NULL) return NULL;
-	if (PyObject_HasAttrString(self->userData->handler, "characters")==1) {
-	    callback = PyObject_GetAttrString(self->userData->handler, "characters");
-	    if (callback==NULL) return NULL;
-	    result = PyObject_CallFunction(callback, "O", s);
-	    if (result==NULL) return NULL;
-	}
-	Py_DECREF(callback);
-	Py_DECREF(result);
-	Py_DECREF(s);
-	/* reset buffer */
-	RESIZE_BUF(self->userData->buf);
-        self->userData->bufpos = 0;
+    /* update internal parser variables */
+    if (len > self->userData->bufpos) {
+        self->userData->pos += len;
     }
     RESIZE_BUF(self->userData->tmp_buf);
     self->userData->tmp_tag = self->userData->tmp_attrs =
 	self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
+    if (len > 0) {
+        int error = 0;
+	PyObject* s = PyString_FromString(self->userData->buf);
+	PyObject* callback = NULL;
+	PyObject* result = NULL;
+	/* reset buffer */
+	RESIZE_BUF(self->userData->buf);
+	if (s==NULL) { error=1; goto finish_flush; }
+	self->userData->bufpos = self->userData->nextpos = 0;
+	if (PyObject_HasAttrString(self->userData->handler, "characters")==1) {
+	    callback = PyObject_GetAttrString(self->userData->handler, "characters");
+	    if (callback==NULL) { error=1; goto finish_flush; }
+	    result = PyObject_CallFunction(callback, "O", s);
+	    if (result==NULL) { error=1; goto finish_flush; }
+	}
+    finish_flush:
+        Py_XDECREF(s);
+	Py_XDECREF(callback);
+	Py_XDECREF(result);
+	if (error) {
+            return NULL;
+	}
+    }
     return Py_BuildValue("i", res);
 }
 
 
+/* return the current parser line number */
+static PyObject* parser_lineno (parser_object* self, PyObject* args) {
+    if (!PyArg_ParseTuple(args, "")) {
+	PyErr_SetString(PyExc_TypeError, "no args required");
+        return NULL;
+    }
+    return Py_BuildValue("i", yyget_lineno(self->scanner));
+}
+
+
+static PyObject* parser_pos (parser_object* self, PyObject* args) {
+    if (!PyArg_ParseTuple(args, "")) {
+	PyErr_SetString(PyExc_TypeError, "no args required");
+        return NULL;
+    }
+    return Py_BuildValue("i", self->userData->pos);
+}
+
+
 /* feed a chunk of data to the parser */
-static PyObject* parser_feed(parser_object* self, PyObject* args) {
+static PyObject* parser_feed (parser_object* self, PyObject* args) {
     /* set up the parse string */
     int slen = 0;
     char* s = NULL;
@@ -588,6 +619,7 @@ static PyObject* parser_reset(parser_object* self, PyObject* args) {
     RESIZE_BUF(self->userData->buf);
     RESIZE_BUF(self->userData->tmp_buf);
     self->userData->bufpos = 0;
+    self->userData->pos = 0;
     self->userData->tmp_tag = self->userData->tmp_attrs =
         self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     self->scanner = NULL;
@@ -608,6 +640,10 @@ static PyMethodDef parser_methods[] = {
     {"reset", (PyCFunction) parser_reset, METH_VARARGS},
     /* flush the parser buffers */
     {"flush", (PyCFunction) parser_flush, METH_VARARGS},
+    /* get the current line number */
+    {"lineno", (PyCFunction) parser_lineno, METH_VARARGS},
+    /* get the current scanner position */
+    {"pos", (PyCFunction) parser_pos, METH_VARARGS},
     {NULL, NULL}
 };
 

@@ -25,6 +25,8 @@ typedef struct {
     int bufpos;
     /* current position of next syntax element */
     int nextpos;
+    /* position in the stream of data already seen, counting from zero */
+    int pos;
     /* temporary vars */
     void* lexbuf;
     char* tmp_buf;

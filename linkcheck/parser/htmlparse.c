@@ -98,6 +98,7 @@ extern int htmllexStart (void* scanner, UserData* data, const char* s, int slen)
 extern int htmllexStop (void* scanner, UserData* data);
 extern int htmllexDestroy (void* scanner);
 extern void* yyget_extra(void*);
+extern int yyget_lineno(void*);
 #define YYERROR_VERBOSE 1
 /* standard error reporting, indicating an internal error */
 
@@ -186,7 +187,7 @@ typedef struct yyltype
 
 
 /* Line 213 of /usr/share/bison/yacc.c.  */
-#line 190 "htmlparse.c"
+#line 191 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
@@ -355,8 +356,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short yyrline[] =
 {
-       0,    94,    94,    95,    98,    99,   106,   143,   192,   225,
-     256,   287,   318,   349,   389,   429
+       0,    95,    95,    96,    99,   100,   107,   144,   193,   226,
+     257,   288,   319,   350,   390,   430
 };
 #endif
 
@@ -1005,22 +1006,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 94 "htmlparse.y"
-    {}
-    break;
-
-  case 3:
 #line 95 "htmlparse.y"
     {}
     break;
 
+  case 3:
+#line 96 "htmlparse.y"
+    {}
+    break;
+
   case 4:
-#line 98 "htmlparse.y"
+#line 99 "htmlparse.y"
     { YYACCEPT; /* wait for more lexer input */ }
     break;
 
   case 5:
-#line 100 "htmlparse.y"
+#line 101 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1030,7 +1031,7 @@ yyreduce:
     break;
 
   case 6:
-#line 107 "htmlparse.y"
+#line 108 "htmlparse.y"
     {
     /*  is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1070,7 +1071,7 @@ finish_start:
     break;
 
   case 7:
-#line 144 "htmlparse.y"
+#line 145 "htmlparse.y"
     {
     /*  is a tuple (<tag>, <attrs>); <attrs> is a dictionary */
     UserData* ud = yyget_extra(scanner);
@@ -1122,7 +1123,7 @@ finish_start_end:
     break;
 
   case 8:
-#line 193 "htmlparse.y"
+#line 194 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1158,7 +1159,7 @@ finish_end:
     break;
 
   case 9:
-#line 226 "htmlparse.y"
+#line 227 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1192,7 +1193,7 @@ finish_comment:
     break;
 
   case 10:
-#line 257 "htmlparse.y"
+#line 258 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1226,7 +1227,7 @@ finish_pi:
     break;
 
   case 11:
-#line 288 "htmlparse.y"
+#line 289 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1260,7 +1261,7 @@ finish_cdata:
     break;
 
   case 12:
-#line 319 "htmlparse.y"
+#line 320 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1294,7 +1295,7 @@ finish_doctype:
     break;
 
   case 13:
-#line 350 "htmlparse.y"
+#line 351 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1337,7 +1338,7 @@ finish_script:
     break;
 
   case 14:
-#line 390 "htmlparse.y"
+#line 391 "htmlparse.y"
     {
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
@@ -1380,7 +1381,7 @@ finish_style:
     break;
 
   case 15:
-#line 430 "htmlparse.y"
+#line 431 "htmlparse.y"
     {
     /* Remember this is also called as a lexer error fallback */
     UserData* ud = yyget_extra(scanner);
@@ -1418,7 +1419,7 @@ finish_characters:
     }
 
 /* Line 1016 of /usr/share/bison/yacc.c.  */
-#line 1422 "htmlparse.c"
+#line 1423 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1637,7 +1638,7 @@ yyreturn:
 }
 
 
-#line 463 "htmlparse.y"
+#line 464 "htmlparse.y"
 
 
 /* disable python memory interface */
@@ -1664,6 +1665,7 @@ static PyObject* htmlsax_parser(PyObject* self, PyObject* args) {
     NEW_BUF(p->userData->buf);
     p->userData->nextpos = 0;
     p->userData->bufpos = 0;
+    p->userData->pos = 0;
     NEW_BUF(p->userData->tmp_buf);
     p->userData->tmp_tag = p->userData->tmp_attrname =
 	p->userData->tmp_attrval = p->userData->tmp_attrs =
@@ -1678,7 +1680,7 @@ static PyObject* htmlsax_parser(PyObject* self, PyObject* args) {
 }
 
 
-static void parser_dealloc(parser_object* self) {
+static void parser_dealloc (parser_object* self) {
     htmllexDestroy(self->scanner);
     Py_DECREF(self->userData->handler);
     PyMem_Del(self->userData->buf);
@@ -1688,40 +1690,69 @@ static void parser_dealloc(parser_object* self) {
 }
 
 
-static PyObject* parser_flush(parser_object* self, PyObject* args) {
+static PyObject* parser_flush (parser_object* self, PyObject* args) {
     /* flush parser buffers */
     int res=0;
+    int len = strlen(self->userData->buf);
     if (!PyArg_ParseTuple(args, "")) {
 	PyErr_SetString(PyExc_TypeError, "no args required");
         return NULL;
     }
-    if (strlen(self->userData->buf)) {
-	PyObject* s = PyString_FromString(self->userData->buf);
-	PyObject* callback = NULL;
-	PyObject* result = NULL;
-	if (s==NULL) return NULL;
-	if (PyObject_HasAttrString(self->userData->handler, "characters")==1) {
-	    callback = PyObject_GetAttrString(self->userData->handler, "characters");
-	    if (callback==NULL) return NULL;
-	    result = PyObject_CallFunction(callback, "O", s);
-	    if (result==NULL) return NULL;
-	}
-	Py_DECREF(callback);
-	Py_DECREF(result);
-	Py_DECREF(s);
-	/* reset buffer */
-	RESIZE_BUF(self->userData->buf);
-        self->userData->bufpos = 0;
+    /* update internal parser variables */
+    if (len > self->userData->bufpos) {
+        self->userData->pos += len;
     }
     RESIZE_BUF(self->userData->tmp_buf);
     self->userData->tmp_tag = self->userData->tmp_attrs =
 	self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
+    if (len > 0) {
+        int error = 0;
+	PyObject* s = PyString_FromString(self->userData->buf);
+	PyObject* callback = NULL;
+	PyObject* result = NULL;
+	/* reset buffer */
+	RESIZE_BUF(self->userData->buf);
+	if (s==NULL) { error=1; goto finish_flush; }
+	self->userData->bufpos = self->userData->nextpos = 0;
+	if (PyObject_HasAttrString(self->userData->handler, "characters")==1) {
+	    callback = PyObject_GetAttrString(self->userData->handler, "characters");
+	    if (callback==NULL) { error=1; goto finish_flush; }
+	    result = PyObject_CallFunction(callback, "O", s);
+	    if (result==NULL) { error=1; goto finish_flush; }
+	}
+    finish_flush:
+        Py_XDECREF(s);
+	Py_XDECREF(callback);
+	Py_XDECREF(result);
+	if (error) {
+            return NULL;
+	}
+    }
     return Py_BuildValue("i", res);
 }
 
 
+/* return the current parser line number */
+static PyObject* parser_lineno (parser_object* self, PyObject* args) {
+    if (!PyArg_ParseTuple(args, "")) {
+	PyErr_SetString(PyExc_TypeError, "no args required");
+        return NULL;
+    }
+    return Py_BuildValue("i", yyget_lineno(self->scanner));
+}
+
+
+static PyObject* parser_pos (parser_object* self, PyObject* args) {
+    if (!PyArg_ParseTuple(args, "")) {
+	PyErr_SetString(PyExc_TypeError, "no args required");
+        return NULL;
+    }
+    return Py_BuildValue("i", self->userData->pos);
+}
+
+
 /* feed a chunk of data to the parser */
-static PyObject* parser_feed(parser_object* self, PyObject* args) {
+static PyObject* parser_feed (parser_object* self, PyObject* args) {
     /* set up the parse string */
     int slen = 0;
     char* s = NULL;
@@ -1766,6 +1797,7 @@ static PyObject* parser_reset(parser_object* self, PyObject* args) {
     RESIZE_BUF(self->userData->buf);
     RESIZE_BUF(self->userData->tmp_buf);
     self->userData->bufpos = 0;
+    self->userData->pos = 0;
     self->userData->tmp_tag = self->userData->tmp_attrs =
         self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
     self->scanner = NULL;
@@ -1786,6 +1818,10 @@ static PyMethodDef parser_methods[] = {
     {"reset", (PyCFunction) parser_reset, METH_VARARGS},
     /* flush the parser buffers */
     {"flush", (PyCFunction) parser_flush, METH_VARARGS},
+    /* get the current line number */
+    {"lineno", (PyCFunction) parser_lineno, METH_VARARGS},
+    /* get the current scanner position */
+    {"pos", (PyCFunction) parser_pos, METH_VARARGS},
     {NULL, NULL}
 };
 

@@ -43,6 +43,13 @@ dist:	locale config
 	rm -f $(MD5SUMS)
 	md5sum dist/* > $(MD5SUMS)
 
+# to build in the current directory (assumes python 2.2)
+localbuild:
+	$(MAKE) -C linkcheck/parser
+	$(PYTHON) setup.py build
+	cp -f build/lib.linux-i686-2.2/linkcheck/parser/htmlsax.so linkcheck/parser
+
+
 # produce the .deb Debian package
 deb_local: cleandeb
 	# standard for local use

@@ -6,7 +6,7 @@ Build-Depends-Indep: python2.1-dev, debhelper (>= 3.0.0), gettext
 Standards-Version: 3.5.7.1
 
 Package: linkchecker
-Architecture: all
+Architecture: any
 Depends: python2.1, python-dns
 Conflicts: linkchecker-ssl
 Description: check HTML documents for broken links

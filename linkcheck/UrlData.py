@@ -24,6 +24,7 @@ except ImportError:
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, linkcheck, linkname, test_support, timeoutsocket
+from linkparse import LinkParser
 from debuglevels import *
 debug = Config.debug
 
@@ -76,81 +77,6 @@ ExcList = [
 if hasattr(socket, "sslerror"):
     ExcList.append(socket.sslerror)
 
-# regular expression to match an HTML tag with one given attribute
-_linkMatcher = r"""
-    (?i)           # case insensitive
-    <              # open tag
-    \s*            # whitespace
-    %s             # tag name
-    \s+            # whitespace
-    ([^"'>]|"[^"\n]*"|'[^'\n]*')*         # skip leading attributes
-    %s             # attrib name
-    \s*            # whitespace
-    =              # equal sign
-    \s*            # whitespace
-    (?P<value>     # attribute value
-     "[^"\n]*" |   # in double quotes
-     '[^'\n]*' |   # in single quotes
-     [^\s>]+)      # unquoted
-    ([^"'>]|"[^"\n]*"|'[^'\n]*')*         # skip trailing attributes
-    >              # close tag
-    """
-
-
-# ripped mainly from HTML::Tagset.pm
-LinkTags = (
-    (['a'],       ['href']),
-    (['applet'],  ['archive', 'src']),
-    (['area'],    ['href']),
-    (['bgsound'], ['src']),
-    (['blockquote'], ['cite']),
-    (['del'],     ['cite']),
-    (['embed'],   ['pluginspage', 'src']),
-    (['form'],    ['action']),
-    (['frame'],   ['src', 'longdesc']),
-    (['head'],    ['profile']),
-    (['iframe'],  ['src', 'longdesc']),
-    (['ilayer'],  ['background']),
-    (['img'],     ['src', 'lowsrc', 'longdesc', 'usemap']),
-    (['input'],   ['src', 'usemap']),
-    (['ins'],     ['cite']),
-    (['isindex'], ['action']),
-    (['layer'],   ['background', 'src']),
-    (['link'],    ['href']),
-    (['object'],  ['classid', 'data', 'archive', 'usemap']),
-    (['q'],       ['cite']),
-    (['script'],  ['src', 'for']),
-    (['body', 'table', 'td', 'th', 'tr'], ['background']),
-    (['xmp'],     ['href']),
-    (['meta'],    ['content']),
-)
-
-# matcher for <meta http-equiv=refresh> tags
-_refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
-
-LinkPatterns = []
-for _tags,_attrs in LinkTags:
-    _tag = '(%s)'%'|'.join(_tags)
-    for _attr in _attrs:
-        LinkPatterns.append({'pattern': re.compile(_linkMatcher %
-            (_tag, _attr), re.VERBOSE),
-            'tags': _tags,
-            'attrs': _attrs})
-AnchorPattern = {
-    'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE),
-    'tags': ['a'],
-    'attrs': ['name'],
-}
-
-BasePattern = {
-    'pattern': re.compile(_linkMatcher % ("base", "href"), re.VERBOSE),
-    'tags': ['base'],
-    'attrs': ['href'],
-}
-
-CommentPatternBegin = re.compile(r"<!--")
-CommentPatternEnd = re.compile(r"--\s*>")
-
 # regular expression for port numbers
 port_re = re.compile(r"\d+")
 
@@ -184,7 +110,6 @@ class UrlData:
         self.urlConnection = None
         self.extern = (1, 0)
         self.data = None
-        self.html_comments = []
         self.has_content = 0
         url = get_absolute_url(self.urlName, self.baseRef, self.parentName)
         # assume file link if no scheme is found
@@ -269,7 +194,6 @@ class UrlData:
         except test_support.Error:
             raise
         except:
-            type, value = sys.exc_info()[:2]
             internal_error()
 
 
@@ -374,6 +298,8 @@ class UrlData:
 
 
     def allowsRecursion (self):
+        # note: isHtml() might not be working if valid is false, so be
+        # sure to test it first.
         return self.valid and \
                self.isHtml() and \
                not self.cached and \
@@ -382,10 +308,11 @@ class UrlData:
 
 
     def checkAnchors (self, anchor):
-        if not (anchor!="" and self.isHtml() and self.valid):
+        debug(HURT_ME_PLENTY, "checking anchor", anchor)
+        if not (self.valid and anchor and self.isHtml()):
             return
-        self.getContent()
-        for cur_anchor,line,name,base in self.searchInForTag(AnchorPattern):
+        h = LinkParser(self.getContent(), {'a': ['name']})
+        for cur_anchor,line,name,base in h.urls:
             if cur_anchor == anchor:
                 return
         self.setWarning(linkcheck._("anchor #%s not found") % anchor)
@@ -433,35 +360,7 @@ class UrlData:
             t = time.time()
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
-            self.init_html_comments()
         return self.data
-
-
-    def init_html_comments (self):
-        # if we find an URL inside HTML comments we ignore it
-        # so build a list of intervalls which are HTML comments
-        index = 0
-        while 1:
-            match = CommentPatternBegin.search(self.getContent(), index)
-            if not match:
-	        break
-            start = match.start()
-            index = match.end() + 1
-            match = CommentPatternEnd.search(self.getContent(), index)
-            if not match:
-                # hmm, we found no matching comment end.
-                # we *dont* ignore links here and break
-	        break
-            index = match.end() + 1
-            self.html_comments.append((start, match.end()))
-        debug(NIGHTMARE, "comment spans", self.html_comments)
-
-
-    def is_in_comment (self, index):
-        for low,high in self.html_comments:
-            if low < index < high:
-                return 1
-        return 0
 
 
     def checkContent (self, warningregex):
@@ -473,98 +372,21 @@ class UrlData:
     def parseUrl (self):
         debug(BRING_IT_ON, "Parsing recursively into", self)
         # search for a possible base reference
-        bases = self.searchInForTag(BasePattern)
-
+        h = LinkParser(self.getContent(), {'a': ['base']})
         baseRef = None
-        if len(bases)>=1:
-            baseRef = bases[0][0]
-            if len(bases)>1:
+        if len(h.urls)>=1:
+            baseRef = h.urls[0][0]
+            if len(h.urls)>1:
                 self.setWarning(linkcheck._("more than one <base> tag found, using only the first one"))
-
-        # search for tags and add found tags to URL queue
-        for pattern in LinkPatterns:
-            urls = self.searchInForTag(pattern)
-            for url,line,name,codebase in urls:
-                if codebase:
-                    base = codebase
-                else:
-                    base = baseRef
-                self.config.appendUrl(GetUrlDataFrom(url,
-                                      self.recursionLevel+1, self.config,
-                                      self.url, base, line, name))
-
-
-    def searchInForTag (self, pattern):
-        tags = pattern['tags']
-        attrs = pattern['attrs']
-        debug(HURT_ME_PLENTY, "Searching for <%s %s=value>"%(tags, attrs))
-        urls = []
-        if 'applet' in tags and ('archive' in attrs or 'src' in attrs):
-            codebasetag = 'applet'
-        elif 'object' in tags and \
-            ('classid' in attrs or 'data' in attrs or 'archive' in attrs):
-            codebasetag = 'object'
-        else:
-            codebasetag = None
-        if 'a' in tags and 'href' in attrs:
-            tag = 'a'
-        elif 'img' in tags:
-            tag = 'img'
-        else:
-            tag = ''
-        index = 0
-        while 1:
-            try:
-                match = pattern['pattern'].search(self.getContent(), index)
-            except RuntimeError, msg:
-                self.setError(linkcheck._("""Could not parse HTML content (%s).
-You may have a syntax error.
-LinkChecker is skipping the remaining content for the link type
-<%s %s>.""") % (msg, "|".join(tags), "|".join(attrs)))
-                break
-            if not match: break
-            index = match.end()
-            start = match.start()
-            if self.is_in_comment(start): continue
-            # strip quotes
-            url = StringUtil.stripQuotes(match.group('value'))
-            # look for applet and object codebase
-            codebase = None
-            if codebasetag:
-                cbr = re.compile(_linkMatcher%(codebasetag, "codebase"),
-                                 re.VERBOSE)
-                codebase = cbr.search(self.getContent()[start:])
-                if codebase and codebase.start()==0:
-                    codebase = StringUtil.stripQuotes(codebase.group('value'))
-                    codebase = StringUtil.unhtmlify(codebase)
-                else:
-                    codebase = None
-            # look for meta refresh
-	    elif 'meta' in pattern['tags']:
-	        metamatch = _refresh_re.match(url)
-		if metamatch:
-                    url = metamatch.group("url")
-		else:
-		    # ignore other contents (not for refresh)
-		    continue
-            # need to resolve HTML entities
-            url = StringUtil.unhtmlify(url)
-            lineno= StringUtil.getLineNumber(self.getContent(), match.start())
-            # extra feature: get optional name for this bookmark
-            name = self.searchInForName(tag, match.start(), match.end())
-            debug(HURT_ME_PLENTY, "Found", `url`, "name", `name`,
-                  "at line", lineno)
-            urls.append((url, lineno, name, codebase))
-        return urls
-
-
-    def searchInForName (self, tag, start, end):
-        name=""
-        if tag=='a':
-            name = linkname.href_name(self.getContent()[end:])
-        elif tag=='img':
-            name = linkname.image_name(self.getContent()[start:end])
-        return name
+        h = LinkParser(self.getContent())
+        for url,line,name,codebase in h.urls:
+            if codebase:
+                base = codebase
+            else:
+                base = baseRef
+            self.config.appendUrl(GetUrlDataFrom(url,
+                                  self.recursionLevel+1, self.config,
+                                  self.url, base, line, name))
 
 
     def __str__ (self):

@@ -131,7 +131,7 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 setup (name = "linkchecker",
-       version = "1.6.7",
+       version = "1.7.0",
        description = "check HTML documents for broken links",
        author = myname,
        author_email = myemail,
@@ -158,6 +158,12 @@ o a (Fast)CGI web interface (requires HTTP server)
        distclass = MyDistribution,
        cmdclass = {'install': MyInstall},
        packages = ['', 'linkcheck', 'linkcheck.log'],
+       ext_modules = [Extension('linkcheck.parser.htmlsax',
+                  ['linkcheck/parser/htmllex.c',
+                   'linkcheck/parser/htmlparse.c'],
+                  include_dirs = ["linkcheck/parser"],
+                  )],
+
        scripts = ['linkchecker'],
        data_files = [
          ('share/locale/de/LC_MESSAGES',
