@@ -1,5 +1,5 @@
 .. meta::
-  :navigation.order: 4
+  :navigation.order: 5
   :navigation.name: Other
 
 Other link checkers

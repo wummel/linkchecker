@@ -1,5 +1,5 @@
 .. meta::
-  :navigation.order: 3
+  :navigation.order: 4
   :navigation.name: FAQ
 
 Frequently asked questions
