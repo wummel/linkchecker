@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-01-31 16:33+0100\n"
+"POT-Creation-Date: 2005-02-01 02:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -673,11 +673,11 @@ msgstr ""
 msgid "Please run linkchecker with --profile to generate it."
 msgstr ""
 
-#: ../linkchecker:244
+#: ../linkchecker:245
 msgid "General options"
 msgstr ""
 
-#: ../linkchecker:247
+#: ../linkchecker:248
 msgid ""
 "Use CONFIGFILE as configuration file. As default LinkChecker first\n"
 "searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/"
@@ -685,33 +685,33 @@ msgid ""
 "(under Windows <path-to-program>\\linkcheckerrc)."
 msgstr ""
 
-#: ../linkchecker:252
+#: ../linkchecker:253
 msgid "Ask for url if none are given on the commandline."
 msgstr ""
 
-#: ../linkchecker:255
+#: ../linkchecker:256
 msgid "Generate no more than num threads. Default number of threads is 10."
 msgstr ""
 
-#: ../linkchecker:259
+#: ../linkchecker:260
 msgid "Print version and exit."
 msgstr ""
 
-#: ../linkchecker:264
+#: ../linkchecker:265
 msgid "Output options"
 msgstr ""
 
-#: ../linkchecker:267
+#: ../linkchecker:268
 msgid ""
 "Log all checked URLs (implies -w). Default is to log only invalid\n"
 "URLs."
 msgstr ""
 
-#: ../linkchecker:270
+#: ../linkchecker:271
 msgid "Log warnings."
 msgstr ""
 
-#: ../linkchecker:273
+#: ../linkchecker:274
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -722,17 +722,17 @@ msgid ""
 "Application Server error'. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:282
+#: ../linkchecker:283
 msgid ""
 "Print a warning if content size is available and exceeds the given\n"
 "number of bytes. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:286
+#: ../linkchecker:287
 msgid "Quiet operation. This is only useful with -F."
 msgstr ""
 
-#: ../linkchecker:290
+#: ../linkchecker:291
 #, python-format
 msgid ""
 "Specify output as %(loggertypes)s. Default output type is text.\n"
@@ -740,7 +740,7 @@ msgid ""
 "Valid encodings are listed at http://docs.python.org/lib/node127.html."
 msgstr ""
 
-#: ../linkchecker:297
+#: ../linkchecker:298
 #, python-format
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for\n"
@@ -755,11 +755,11 @@ msgid ""
 "suppress all console output with the option '-o none'."
 msgstr ""
 
-#: ../linkchecker:310
+#: ../linkchecker:311
 msgid "Do not print check status messages."
 msgstr ""
 
-#: ../linkchecker:313
+#: ../linkchecker:314
 #, python-format
 msgid ""
 "Print debugging output for given logger.\n"
@@ -771,28 +771,28 @@ msgid ""
 "For accurate results, threading will be disabled during debug runs."
 msgstr ""
 
-#: ../linkchecker:323
+#: ../linkchecker:324
 #, python-format
 msgid ""
 "Write profiling data into a file named %s in the\n"
 "current working directory. See also --viewprof."
 msgstr ""
 
-#: ../linkchecker:327
+#: ../linkchecker:328
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr ""
 
-#: ../linkchecker:332
+#: ../linkchecker:333
 msgid "Checking options"
 msgstr ""
 
-#: ../linkchecker:335
+#: ../linkchecker:336
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable inifinite recursion. Default depth is infinite."
 msgstr ""
 
-#: ../linkchecker:339
+#: ../linkchecker:340
 msgid ""
 " regex, --intern=regex\n"
 "Assume URLs that match the given expression as internal.\n"
@@ -800,32 +800,32 @@ msgid ""
 "external."
 msgstr ""
 
-#: ../linkchecker:345
+#: ../linkchecker:346
 msgid ""
 "Assume urls that match the given expression as external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:349
+#: ../linkchecker:350
 msgid ""
 "Assume urls that match the given expression as strict external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:353
+#: ../linkchecker:354
 msgid ""
 "Check only syntax of external links, do not try to connect to them.\n"
 "For local file urls, only local files are internal. For\n"
 "http and ftp urls, all urls at the same domain name are internal."
 msgstr ""
 
-#: ../linkchecker:358
+#: ../linkchecker:359
 msgid ""
 "Swap checking order to external/internal. Default checking order\n"
 "is internal/external."
 msgstr ""
 
-#: ../linkchecker:362
+#: ../linkchecker:363
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -833,112 +833,188 @@ msgid ""
 "information."
 msgstr ""
 
-#: ../linkchecker:368
+#: ../linkchecker:369
 msgid ""
 "Check HTTP anchor references. This option applies to both internal\n"
 "and external urls. Default is don't check anchors.\n"
 "This option implies -w because anchor errors are always warnings."
 msgstr ""
 
-#: ../linkchecker:373
+#: ../linkchecker:374
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
 "is the default browser behaviour, but it's not specified in\n"
 "the URI specification. Use with care."
 msgstr ""
 
-#: ../linkchecker:378
+#: ../linkchecker:379
 msgid ""
 "Try given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. See also -p."
 msgstr ""
 
-#: ../linkchecker:382
+#: ../linkchecker:383
 msgid ""
 "Try given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. See also -u."
 msgstr ""
 
-#: ../linkchecker:386
+#: ../linkchecker:387
 #, python-format
 msgid ""
 "Set the timeout for TCP connection attempts in seconds. The default\n"
 "timeout is %d seconds."
 msgstr ""
 
-#: ../linkchecker:390
+#: ../linkchecker:391
 msgid ""
 "Pause PAUSE seconds between each url check. This option implies -t0.\n"
 "Default is no pause between requests."
 msgstr ""
 
-#: ../linkchecker:394
+#: ../linkchecker:395
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
 "only the syntax of the link is checked."
 msgstr ""
 
-#: ../linkchecker:400
+#: ../linkchecker:401
 msgid "Deprecated options"
 msgstr ""
 
-#: ../linkchecker:403
+#: ../linkchecker:404
 msgid "Print check status every 5 seconds to stderr. This is the default."
 msgstr ""
 
-#: ../linkchecker:443 ../linkchecker:471
+#: ../linkchecker:444 ../linkchecker:472
 #, python-format
 msgid "Unknown logger type %r in %r for option %s"
 msgstr ""
 
-#: ../linkchecker:446 ../linkchecker:475
+#: ../linkchecker:447 ../linkchecker:476
 #, python-format
 msgid "Unknown encoding %r in %r for option %s"
 msgstr ""
 
-#: ../linkchecker:482
+#: ../linkchecker:483
 #, python-format
 msgid "Illegal argument %r for option %s: %s"
 msgstr ""
 
-#: ../linkchecker:503 ../linkchecker:517
+#: ../linkchecker:504 ../linkchecker:518
 #, python-format
 msgid "Illegal argument %d for option %s"
 msgstr ""
 
-#: ../linkchecker:524
+#: ../linkchecker:525
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr ""
 
-#: ../linkchecker:567
+#: ../linkchecker:568
 msgid ""
 "enter one or more urls, separated by white-space\n"
 "--> "
 msgstr ""
 
-#: ../linkchecker:570
+#: ../linkchecker:571
 msgid "no files or urls given"
 msgstr ""
 
-#: ../linkchecker:588
+#: ../linkchecker:589
 #, python-format
 msgid ""
 "Overwrite profiling file %r?\n"
 "Press Ctrl-C to cancel, RETURN to continue."
 msgstr ""
 
-#: ../linkchecker:594
+#: ../linkchecker:595
 msgid "Canceled."
 msgstr ""
 
-#: ../linkchecker:609
+#: ../linkchecker:610
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
 msgstr ""
 
-#: ../linkchecker:619
+#: ../linkchecker:620
 msgid "Hit RETURN to finish"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:329
+#, python-format
+msgid "usage: %s\n"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:348
+msgid "Usage"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:354
+msgid "integer"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:355
+msgid "long integer"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:356
+msgid "floating-point"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:357
+msgid "complex"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:365
+#, python-format
+msgid "option %s: invalid %s value: %r"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:373
+#, python-format
+msgid "option %s: invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1136
+msgid "show this help message and exit"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1141
+msgid "show program's version number and exit"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1164
+msgid "%prog [options]"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1374 /usr/lib/python2.4/optparse.py:1413
+#, python-format
+msgid "%s option requires an argument"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1376 /usr/lib/python2.4/optparse.py:1415
+#, python-format
+msgid "%s option requires %d arguments"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1385
+#, python-format
+msgid "%s option does not take a value"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1402 /usr/lib/python2.4/optparse.py:1556
+#, python-format
+msgid "no such option: %s"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1502
+msgid "options"
+msgstr ""
+
+#: /usr/lib/python2.4/optparse.py:1559
+#, python-format
+msgid "ambiguous option: %s (%s?)"
 msgstr ""
