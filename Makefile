@@ -10,11 +10,14 @@ HOST=www.debian.org
 #LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -s
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -s -r1
 DESTDIR = /.
+PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
+	linkcheck/checker/*.py)
+TESTFILES := $(wildcard linkcheck/tests/*.py linkcheck/ftests/*.py)
 PYCHECKEROPTS := -F config/pycheckrc
+PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint
 PYLINTOPTS := 
-# --ignore=httplib2.py
-PYFILES := linkcheck/*.py linkcheck/logger/*.py linkcheck/checker/*.py
-TESTFILES := linkcheck/tests/*.py linkcheck/ftests/*.py
+PYLINTBROKEN = linkcheck/lc_cgi.py
+PYLINTFILES = $(filter-out $(PYLINTBROKEN),$(PYFILES))
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
@@ -98,7 +101,7 @@ pycheck:
 	-env PYTHONPATH=. PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYFILES)
 
 pylint:
-	-env PYTHONPATH=. PYLINTRC=config/pylintrc pylint $(PYLINTOPTS) $(PYFILES) $(TESTFILES)
+	$(PYLINT) $(PYLINTOPTS) $(PYLINTFILES) $(TESTFILES)
 
 reindent:
 	$(PYTHON) config/reindent.py -r -v linkcheck
