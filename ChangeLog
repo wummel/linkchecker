@@ -1,4 +1,4 @@
-1.9.6 (released 7.12.2003)
+1.10.0 (released 7.12.2003)
   * catch httplib errors in robotparser
     Changed: linkcheck/robotparser2.py
     Closes: SF bug 836864
