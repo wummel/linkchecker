@@ -290,6 +290,15 @@ same as the host of the user browsing your pages.
 
 \fBLC_MESSAGES\fP, \fBLANG\fP - specify output language
 
+.SH RETURN VALUE
+The return value is non-zero when
+.IP \(bu
+invalid links were found or
+.IP \(bu
+link warnings were found and --warnings option was given
+.IP \(bu
+a program error occurred.
+
 .SH FILES
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP - default
 configuration files

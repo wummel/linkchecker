@@ -235,6 +235,15 @@ Pour la vérification des liens \fBnews:\fP, les liens de l'hôte NNTP donné n'ont
 
 \fBLC_MESSAGES\fP, \fBLANG\fP \- spécifie la langue en sortie
 
+.SH RETURN VALUE
+The return value is non-zero when
+.IP \(bu
+invalid links were found or
+.IP \(bu
+link warnings were found and --warnings option was given
+.IP \(bu
+a program error occurred.
+
 .SH "FICHIERS"
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkcheckerrc\fP \- fichiers de configuration par défaut
 
