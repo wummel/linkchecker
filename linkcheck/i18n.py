@@ -25,7 +25,7 @@ import gettext
 
 # more supported languages are added in init()
 supported_languages = ['en']
-default_language = None
+default_language = 'en'
 
 def install_builtin (translator, do_unicode):
     """
@@ -72,18 +72,15 @@ def init (domain, directory):
     Initialize this gettext i18n module.
     """
     global default_language
-    # get supported languages
-    for lang in os.listdir(directory):
-        path = os.path.join(directory, lang)
-        if not os.path.isdir(path):
-            continue
-        if os.path.exists(os.path.join(path, 'LC_MESSAGES', '%s.mo'%domain)):
-            supported_languages.append(lang)
+    if os.path.isdir(directory):
+        # get supported languages
+        for lang in os.listdir(directory):
+            path = os.path.join(directory, lang, 'LC_MESSAGES')
+            if os.path.exists(os.path.join(path, '%s.mo' % domain)):
+                supported_languages.append(lang)
     loc = get_locale()
     if loc in supported_languages:
         default_language = loc
-    else:
-        default_language = "en"
     # install translation service routines into default namespace
     translator = get_translator(domain, directory, fallback=True)
     do_unicode = True
