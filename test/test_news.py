@@ -2,7 +2,7 @@
 import os, linkcheck
 config = linkcheck.Config.Configuration()
 config.addLogger('test', linkcheck.test_support.TestLogger)
-config['recursionlevel'] = True
+config['recursionlevel'] = 1
 config['log'] = config.newLogger('test')
 config["anchors"] = True
 config["verbose"] = True
