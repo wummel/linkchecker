@@ -131,10 +131,11 @@ class Consumer (linkcheck.lock.AssertLock):
         """
         Return True if checking is finished.
         """
+        # avoid deadlock by requesting cache data before locking
+        tocheck = self.cache.incoming_len()
         self.acquire()
         try:
-            return self.threader.finished() and \
-                   self.cache.incoming_len() <= 0
+            return self.threader.finished() and tocheck <= 0
         finally:
             self.release()
 
