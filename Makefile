@@ -1,5 +1,6 @@
 # This Makefile is only used by developers.
-PYTHON := python2.3
+PYVER := 2.3
+PYTHON := python$(PYVER)
 PACKAGE := linkchecker
 NAME = $(shell $(PYTHON) setup.py --name)
 PACKAGEDIR = /home/groups/l/li/$(PACKAGE)
@@ -49,11 +50,11 @@ config:
 locale:
 	$(MAKE) -C po
 
-# to build in the current directory (assumes python 2.3)
+# to build in the current directory
 localbuild:
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
-	cp -f build/lib.linux-i686-2.3/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
+	cp -f build/lib.linux-i686-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
 
 # produce the .deb Debian package
 deb_local: cleandeb
@@ -105,7 +106,7 @@ tar:	distclean
 	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
 
 pycheck:
-	-env PYTHONPATH=. PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYFILES)
+	-env PYTHONPATH=. PYTHONVER=$(PYVER) pychecker $(PYCHECKEROPTS) $(PYFILES)
 
 pylint:
 	$(PYLINT) $(PYLINTOPTS) $(PYLINTFILES) $(TESTFILES)
