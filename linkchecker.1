@@ -29,84 +29,85 @@ a (Fast)CGI web interface (requires HTTP server)
 For single-letter option arguments the space is not a necessity.
 So \fI-o colored\fP is the same as \fI-ocolored\fP.
 .TP
-\fB-a, --anchors\fP
+\fB-a\fP, \fB--anchors\fP
 Check anchor references. Default is don't check anchors.
 .TP
-\fB-d, --denyallow\fP
+\fB-d\fP, \fB--denyallow\fP
 Swap checking order to extern/intern. Default checking order is
 intern/extern.
 .TP
-\fB-D, --debug\fP
+\fB-D\fP, \fB--debug\fP
 Print debugging information.
 .TP
-\fB-e \fIregex\fB, --extern=\fIregex\fP
+\fB-e \fIregex\fP, \fB--extern=\fIregex\fP
 Assume urls that match the given regular expression as extern.
 Only intern HTML links are checked recursively.
 .TP
-\fB-f \fIfile\fB, --config=\fIfile\fP
+\fB-f \fIfile\fP, \fB--config=\fIfile\fP
 Use \fIfile\fP as configuration file. LinkChecker first searches for
 ~/.linkcheckerrc and then /etc/linkcheckerrc on Unix systems.
 Under Windows systems we read <path-to-program>\\linkcheckerrc.
 .TP
-\fB-F \fItype\fB, --file-output=\fItype\fP
-Same as output, but write to a file \fIlinkchecker-out.<type>\fP.
-If the file already exists, it is overwritten. You can specify this
-option more than once. There is no file output for the blacklist
-logger. Default is no file output.
+\fB-F \fItype\fP[\fI/filename\fP], \fB--file-output=\fItype\fP[\fI/filename\fP]
+Same as output, but write to a file \fIlinkchecker-out.<type>\fP
+or \fIfilename\fP if specified. If the file already exists, it is
+overwritten. You can specify this option more than once. There
+is no file output for the blacklist logger. Default is no file
+output.
 .TP
-\fB-i \fIregex\fB, --intern=\fIregex\fP
+\fB-i \fIregex\fP, \fB--intern=\fIregex\fP
 Assume URLs that match the given regular expression as intern.
 LinkChecker descends recursively only to intern URLs, not to extern.
 .TP
-\fB-h, --help\fP
+\fB-h\fP, \fB--help\fP
 Help me! Print usage information for this program.
 .TP
-\fB-N \fIserver\fB, --nntp-server=\fIserver\fP
+\fB-N \fIserver\fP, \fB--nntp-server=\fIserver\fP
 Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked.
 .TP
-\fB-o \fItype\fB, --output=\fItype\fP
+\fB-o \fItype\fP, \fB--output=\fItype\fP
 Specify output type as \fItext\fP, \fIcolored\fP, \fIhtml\fP, \fIsql\fP,
 \fIcsv\fP, \fIgml\fP, \fIxml\fP or \fIblacklist\fP.
 Default type is \fItext\fP.
 .TP
-\fB-p \fIpwd\fB, --password=\fIpwd\fP
+\fB-p \fIpwd\fP, \fB--password=\fIpwd\fP
 Try the password \fIpwd\fB for HTML and FTP authorization.
 The default password is \fIguest@\fP. See also \fB-u\fP.
 .TP
-\fB-q, --quiet\fP
+\fB-q\fP, \fB--quiet\fP
 Quiet operation. This is only useful with \fB-F\fP.
 .TP
-\fB-r \fIdepth\fB, --recursion-level=\fIdepth\fP
+\fB-r \fIdepth\fP, \fB--recursion-level=\fIdepth\fP
 Check recursively all links up to given \fIdepth\fP (depth >= 0).
 Default depth is 1.
 .TP
-\fB-R, --robots-txt\fP
+\fB-R\fP, \fB--robots-txt\fP
 Obey the robots exclusion standard.
 .TP
-\fB-s, --strict\fP
+\fB-s\fP, \fB--strict\fP
 Check only the syntax of extern links, do not try to connect to them.
 .TP
-\fB-t \fInum\fB, --threads=\fInum\fP
+\fB-t \fInum\fP, \fB--threads=\fInum\fP
 Generate no more than \fInum\fP threads. Default number of threads is 5.
 To disable threading specify a non-positive number.
 .TP
-\fB-u \fIname\fB, --user=\fIname\fP
+\fB-u \fIname\fP, \fB--user=\fIname\fP
 Try username \fIname\fP for HTML and FTP authorization.
 Default is \fIanonymous\fP. See also \fB-p\fP.
 .TP
-\fB-V, --version\fP
+\fB-V\fP, \fB--version\fP
 Print version and exit.
 .TP
-\fB-v, --verbose\fP
+\fB-v\fP, \fB--verbose\fP
 Log all checked URLs (implies \fB-w\fP). Default is to log only invalid
 URLs.
 .TP
-\fB-w, --warnings\fP
+\fB-w\fP, \fB--warnings\fP
 Log warnings.
 .TP
-\fB-W \fIregex\fB, --warning-regex=\fIregex\fP
+\fB-W \fIregex\fP, \fB--warning-regex=\fIregex\fP
 Define a regular expression which prints a warning if it matches any
 content of the checked link.
 This applies of course only to pages which are valid, so we can get

@@ -1,91 +1,98 @@
-# sample resource file
-# to modify, just uncomment the line
+# sample resource file with default values
 # see linkchecker -h for help on these options
 # commandline options override these settings!
 
 [output]
 # turn on/off debug messages
-#debug=0
+debug=0
 # use the color logger
-#log=colored
+log=text
 # turn on/off --verbose
-#verbose=0
+verbose=0
 # turn on/off --warnings
-#warnings=0
+warnings=0
 # turn on/off --quiet
-#quiet=0
+quiet=0
 # additional file output
-#fileoutput = text colored html gml sql
+fileoutput=
+#fileoutput = text, colored, html, gml, sql XXX
+# what fields should each logger print out?
+fields = all
+# field = url, parent url, base url
+# fields names: XXX
+# url
+# parent url
+# base url
 
 # each Logger can have separate configuration parameters
 # standard text logger
 [text]
-#filename=linkchecker-out.txt
+filename=linkchecker-out.txt
 
 # GML logger
 [gml]
-#filename=linkchecker-out.gml
+filename=linkchecker-out.gml
 
 # CSV logger
 [csv]
-#filename=linkchecker-out.csv
-#separator=;
+filename=linkchecker-out.csv
+separator=;
 
 # SQL logger
 [sql]
-#filename=linkchecker-out.sql
-#dbname=linksdb
-#commandsep=;
+filename=linkchecker-out.sql
+dbname=linksdb
+commandsep=;
 
 # HTML logger
 [html]
-#filename=linkchecker-out.html
+filename=linkchecker-out.html
 # colors for the various parts
-#colorbackground="#ffffff"
-#colorurl=blue
-#colorborder=
-#colorlink=
-#tablewarning=
-#tableok=
-#tableerror=
+colorbackground="#fff7e5"
+colorurl="#dcd5cf"
+colorborder="#000000"
+colorlink="#191c83"
+tablewarning=<td bgcolor="#e0954e">
+tableerror=<td bgcolor="#db4930">
+tableok=<td bgcolor="#3ba557">
 
 # ANSI color logger
 [colored]
-#filename=linkchecker-out.ansi
-# colors for the various parts
-#colorparent=
-#colorurl=
-#colorname=
-#colorreal=
-#colorbase=
-#colorvalid=
-#colorinvalid=
-#colorinfo=
-#colorwarning=
-#colordltime=
-#colorreset=
+filename=linkchecker-out.ansi
+# colors for the various parts (\x1b = ESC)
+colorparent="\x1b[37m"
+colorurl="\x1b[0m"
+colorname="\x1b[0m"
+colorreal="\x1b[36m"
+colorbase="\x1b[35m"
+colorvalid="\x1b[1;32m"
+colorinvalid="\x1b[1;31m"
+colorinfo="\x1b[0m"
+colorwarning="\x1b[1;33m"
+colordltime="\x1b[0m"
+colorreset="\x1b[0m"
 
 # blacklist logger
 [blacklist]
-#filename=~/.blacklist
+filename=~/.blacklist
 
 # checking options
 [checking]
 # number of threads
-#threads=5
+threads=5
 # check anchors?
-#anchors=0
-#recursionlevel=1
+anchors=0
+recursionlevel=1
 # obey robots.txt exclusion?
-#robotstxt=0
+robotstxt=1
 # overall strict checking. You can specify for each extern URL
 # separately if its strict or not. See the [filtering] section
-#strict=0
+strict=0
 # supply a regular expression for which warnings are printed if found
 # in any HTML files.
-#warningregex="Request failed"
+warningregex=
 # Basic NNTP server. Overrides NNTP_SERVER environment variable.
-#nntpserver=news.uni-stuttgart.de
+nntpserver=
 
 # filtering options (see FAQ)
 # for each extern link we can specify if it is strict or not
@@ -98,7 +105,7 @@
 # internlinks=calvinsplayground\.de
 # check only syntax of all mail adresses
 # extern3=^mailto: 1
-#denyallow=0
+denyallow=0
 
 # You can provide different user/password pairs for different link types.
 # Entries are a triple (link regular expression, username, password),

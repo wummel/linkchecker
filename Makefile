@@ -68,11 +68,7 @@ uploadpull: distclean dist package files VERSION
 	ssh -C -t shell1.sourceforge.net "cd /home/groups/$(PACKAGE) && make pull"
 
 test:
-	rm -f test/*.result
-	@for i in test/*.html; do \
-	  echo "Testing $$i. Results are in $$i.result"; \
-	  ./$(PACKAGE) -r1 -ucalvin -pcalvin -otext -N"news.rz.uni-sb.de" -v -a $$i > $$i.result 2>&1; \
-        done
+	python2 test/regrtest.py
 
 locale:
 	$(MAKE) -C po

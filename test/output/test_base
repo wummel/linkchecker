@@ -1,0 +1,10 @@
+test_base
+url file:///home/calvin/projects/linkchecker/test/output/base1.html
+realurl file:/home/calvin/projects/linkchecker/test/output/base1.html
+error Error: [Errno 2] No such file or directory: '/home/calvin/projects/linkchecker/test/output/base1.html'
+url file:///home/calvin/projects/linkchecker/test/output/base2.html
+realurl file:/home/calvin/projects/linkchecker/test/output/base2.html
+error Error: [Errno 2] No such file or directory: '/home/calvin/projects/linkchecker/test/output/base2.html'
+url file:///home/calvin/projects/linkchecker/test/output/base3.html
+realurl file:/home/calvin/projects/linkchecker/test/output/base3.html
+error Error: [Errno 2] No such file or directory: '/home/calvin/projects/linkchecker/test/output/base3.html'

@@ -44,22 +44,22 @@ import Config, StringUtil
 import linkcheck
 _ = linkcheck._
 
-# keywords
-KeyWords = ["Real URL",
-    "Result",
-    "Base",
-    "Name",
-    "Parent URL",
-    "Info",
-    "Warning",
-    "D/L Time",
-    "Check Time",
-    "URL",
-]
-MaxIndent = max(map(lambda x: len(_(x)), KeyWords))+1
+LogFields = {
+    "realurl": "Real URL",
+    "result": "Result",
+    "base": "Base",
+    "name": "Name",
+    "parenturl": "Parent URL",
+    "info": "Info",
+    "warning": "Warning",
+    "downloadtime": "D/L Time",
+    "checktime": "Check Time",
+    "url": "URL",
+}
+MaxIndent = max(map(lambda x: len(_(x)), LogFields.values()))+1
 Spaces = {}
-for key in KeyWords:
-    Spaces[key] = " "*(MaxIndent - len(_(key)))
+for key,value in LogFields.items():
+    Spaces[key] = " "*(MaxIndent - len(_(value)))
 
 EntityTable = {
     '<': '&lt;',
@@ -99,7 +99,13 @@ class StandardLogger:
             self.fd = args['fd']
         else:
 	    self.fd = sys.stdout
+        self.logfields = None # all fields
+        if args.has_key('logfields'):
+            if type(args['logfields']) == ListType:
+                self.logfields = args
 
+    def logfield(self, name):
+        return self.logfields and name in self.logfields
 
     def init(self):
         self.starttime = time.time()
@@ -111,14 +117,15 @@ class StandardLogger:
 
 
     def newUrl(self, urlData):
-        self.fd.write("\n"+_("URL")+Spaces["URL"]+urlData.urlName)
-        if urlData.cached:
-            self.fd.write(_(" (cached)\n"))
-        else:
-            self.fd.write("\n")
-        if urlData.name:
-            self.fd.write(_("Name")+Spaces["Name"]+urlData.name+"\n")
-        if urlData.parentName:
+        if self.logfield('url'):
+            self.fd.write("\n"+_(LogFields['url'])+Spaces['url']+urlData.urlName)
+            if urlData.cached:
+                self.fd.write(_(" (cached)\n"))
+            else:
+                self.fd.write("\n")
+        if urlData.name and self.logfield('name'):
+            self.fd.write(_(LogFields["name"])+Spaces["name"]+urlData.name+"\n")
+        if urlData.parentName and self.logfield('parentname'):
             self.fd.write(_("Parent URL")+Spaces["Parent URL"]+
 	                  urlData.parentName+_(", line ")+
 	                  str(urlData.line)+"\n")
@@ -739,3 +746,33 @@ class CSVLogger(StandardLogger):
         self.fd.flush()
         self.fd = None
 
+class TestLogger:
+    """ Output for regression test """
+    def __init__(self, **args):
+        pass
+
+    def init(self):
+        pass
+
+    def newUrl(self, urlData):
+        print 'url',urlData.urlName
+        if urlData.cached:
+            print "cached"
+        if urlData.name:
+            print "name",urlData.name
+        if urlData.parentName:
+            print "parenturl",urlData.parentName
+	    print "line",urlData.line
+        if urlData.baseRef:
+            print "baseurl",urlData.baseRef
+        if urlData.infoString:
+            print "info",urlData.infoString
+        if urlData.warningString:
+            print "warning",urlData.warningString
+        if urlData.valid:
+            print "valid",urlData.validString
+        else:
+            print "error",urlData.errorString
+
+    def endOfOutput(self, linknumber=-1):
+        pass

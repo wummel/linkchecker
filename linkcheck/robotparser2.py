@@ -137,7 +137,7 @@ class RobotFileParser:
             return 1
         # search for given user agent matches
         # the first match counts
-        url = urllib.quote(urlparse.urlparse(url)[2])
+        url = urllib.quote(urlparse.urlparse(url)[2]) or "/"
         for entry in self.entries:
             if entry.applies_to(useragent):
                 return entry.allowance(url)
@@ -222,6 +222,8 @@ def _test():
         rp.parse(open(sys.argv[1]).readlines())
     # test for re.escape
     _check(rp.can_fetch('*', 'http://www.musi-cal.com/'), 1)
+    # empty url path
+    _check(rp.can_fetch('*', 'http://www.musi-cal.com'), 1)
     # this should match the first rule, which is a disallow
     _check(rp.can_fetch('', 'http://www.musi-cal.com/'), 0)
     # various cherry pickers

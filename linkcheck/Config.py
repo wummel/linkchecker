@@ -54,6 +54,7 @@ Loggers = {
     "csv": Logging.CSVLogger,
     "blacklist": Logging.BlacklistLogger,
     "xml": Logging.XMLLogger,
+    "test": Logging.TestLogger,
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
@@ -102,9 +103,10 @@ class Configuration(UserDict.UserDict):
 	                          'joe@')]
         self["proxy"] = getproxies()
         self["recursionlevel"] = 1
-        self["robotstxt"] = 0
+        self["robotstxt"] = 1
         self["strict"] = 0
         self["fileoutput"] = []
+        self["loggingfields"] = "all"
         # Logger configurations
         self["text"] = {
             "filename": "linkchecker-out.txt",
@@ -152,6 +154,7 @@ class Configuration(UserDict.UserDict):
         self['xml'] = {
             "filename":     "linkchecker-out.xml",
         }
+        self['test'] = {} #  no args for test logger
         # default values
         self['log'] = self.newLogger('text')
         self["quiet"] = 0
@@ -412,8 +415,9 @@ class Configuration(UserDict.UserDict):
         try: self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error: pass
         try:
-            filelist = string.split(cfgparser.get(section, "fileoutput"))
+            filelist = string.split(cfgparser.get(section, "fileoutput"), ",")
             for arg in filelist:
+                arg = string.strip(arg)
                 # no file output for the blacklist Logger
                 if Loggers.has_key(arg) and arg != "blacklist":
 		    self['fileoutput'].append(
@@ -424,6 +428,10 @@ class Configuration(UserDict.UserDict):
                 for opt in cfgparser.options(key):
                     try: self[key][opt] = cfgparser.get(key, opt)
                     except ConfigParser.Error: pass
+        try:
+            self['loggingfields'] = map(string.strip, string.split(
+	        cfgparser.get(section, 'loggingfields'), ","))
+	except ConfigParser.Error: pass
 
         section="checking"
         try:

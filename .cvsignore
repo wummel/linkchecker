@@ -6,6 +6,7 @@ dist
 foo
 MANIFEST
 VERSION
-LinkCheckerConf.py
+linkcheckerConf.py
+js
 locale
 Packages.gz

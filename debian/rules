@@ -60,7 +60,6 @@ binary-indep: build install
 
 # Build architecture-dependent files here.
 binary-arch: build install
-#	dh_testversion
 	dh_testdir
 	dh_testroot
 #	dh_installdebconf
@@ -71,7 +70,7 @@ binary-arch: build install
 #	dh_installpam
 #	dh_installinit
 #	dh_installcron
-	dh_installmanpages
+	dh_installman linkchecker.1
 #	dh_installinfo
 #	dh_undocumented linkchecker.1
 	dh_installchangelogs 
@@ -79,8 +78,6 @@ binary-arch: build install
 	dh_strip
 	dh_compress
 	dh_fixperms
-	# You may want to make some executables suid here.
-#	dh_suidregister
 #	dh_makeshlibs
 	dh_installdeb
 #	dh_perl
