@@ -27,16 +27,7 @@ class TestFtp (linkcheck.ftests.StandardTest):
     needed_resources = ['network']
 
     def test_ftp (self):
-        """test some ftp links"""
-        # ftp one slash
-        url = "ftp:/ftp.debian.org/"
-        resultlines = [
-            "url %s" % url,
-            "cache key %s" % url,
-            "real url %s" % url,
-            "error",
-        ]
-        self.direct(url, resultlines)
+        """test ftp link"""
         # ftp two slashes
         url = "ftp://ftp.debian.org/"
         resultlines = [
@@ -46,12 +37,25 @@ class TestFtp (linkcheck.ftests.StandardTest):
             "valid",
         ]
         self.direct(url, resultlines)
-        # ftp two dir slashes
-        url = "ftp://ftp.debian.org//debian/"
+
+    def test_ftp_missing_slashes (self):
+        """test ftp links with missing slashes"""
+        # ftp one slash
+        url = "ftp:/ftp.debian.org/"
         resultlines = [
             "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
+            "error",
+        ]
+        self.direct(url, resultlines)
+        # missing trailing slash
+        url = "ftp://ftp.debian.org"
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % url,
+            "real url %s" % url,
+            "warning Missing trailing directory slash in ftp url",
             "valid",
         ]
         self.direct(url, resultlines)
@@ -65,12 +69,26 @@ class TestFtp (linkcheck.ftests.StandardTest):
             "valid",
         ]
         self.direct(url, resultlines)
+
+    def test_ftp_many_slashes (self):
+        """test ftp links with too many slashes"""
+        # ftp two dir slashes
+        url = "ftp://ftp.debian.org//debian/"
+        resultlines = [
+            "url %s" % url,
+            "cache key %s" % url,
+            "real url %s" % url,
+            "warning Too many directory slashes",
+            "valid",
+        ]
+        self.direct(url, resultlines)
         # ftp many dir slashes
         url = "ftp://ftp.debian.org////////debian/"
         resultlines = [
             "url %s" % url,
             "cache key %s" % url,
             "real url %s" % url,
+            "warning too many directory slashes",
             "valid",
         ]
         self.direct(url, resultlines)
