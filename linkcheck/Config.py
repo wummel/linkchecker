@@ -310,11 +310,8 @@ class Configuration(UserDict.UserDict):
     def read(self, files = []):
         if not files:
             files.insert(0,norm("~/.linkcheckerrc"))
-            if sys.platform=="win32":
-                if not sys.path[0]:
-                    path=os.getcwd()
-                else:
-                    path=sys.path[0]
+            if os.name=='nt':
+                path=os.getcwd()
             else:
                 path="/etc"
             files.insert(0,norm(join(path, "linkcheckerrc")))

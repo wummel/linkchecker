@@ -34,7 +34,7 @@ install: build
 	dh_installdirs
 	# ha! the root option finally made it into distutils
 	./setup.py install --root=`pwd`/debian/tmp
-	install -c -m 644 linkcheckerrc debian/tmp/etc
+	# put the README of the DNS package in doc (only on Debian)
 	install -c -m 644 DNS/README debian/tmp/usr/share/doc/$(PACKAGE)/README.dns
 
 

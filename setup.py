@@ -26,7 +26,7 @@ class LCDistribution(Distribution):
                             '/usr/local/include/openssl']
     def run_commands (self):
         self.check_ssl()
-        self.replace_vars()
+        self.additional_things()
         for cmd in self.commands:
             self.run_command (cmd)
 
@@ -53,20 +53,21 @@ class LCDistribution(Distribution):
         return 0
 
                                            
-    def replace_vars(self):
+    def additional_things(self):
         inst = self.get_command_obj("install")
         inst.ensure_ready()
         t = Template("linkcheck/__init__.py.tmpl")
         f = open("linkcheck/__init__.py","w")
         f.write(t.fill_in({"install_data": inst.install_data}))
         f.close()
-        if sys.platform=='win32':
+        if os.name=='nt':
             t = Template("linkchecker.bat.tmpl")
             f = open("linkchecker.bat","w")
             f.write(t.fill_in({"install_scripts": inst.install_scripts}))
             f.close()
             self.scripts.append('linkchecker.bat')
-            self.scripts.append('linkcheckerrc')
+        elif os.name=='posix':
+            self.data_files.append(('/etc', ['linkcheckerrc']))
 
 
 setup (name = "linkchecker",
@@ -90,7 +91,7 @@ o restrict link checking with regular expression filters for URLs
 o HTTP proxy support
 o give username/password for HTTP and FTP authorization
 o robots.txt exclusion protocol support
-o internationalization support (currently english and german)
+o internationalization support
 """,
        distclass = LCDistribution,
        packages = ['','DNS','linkcheck'],
