@@ -1,5 +1,6 @@
 # This Makefile is only used by developers.
-# You will need a Debian Linux system to use this Makefile!
+# You will need a Debian Linux system to use this Makefile because
+# some targets produce Debian .deb packages
 VERSION=$(shell python setup.py --version)
 PACKAGE = linkchecker
 NAME = $(shell python setup.py --name)
@@ -34,10 +35,11 @@ all:
 clean:
 	-python setup.py clean --all
 	$(MAKE) -C po clean
+	find . -name '*.py[co]' | xargs rm -f
 
 distclean: clean cleandeb
 	rm -rf dist
-	rm -f $(PACKAGE)-out.* VERSION LinkCheckerConf.py* MANIFEST
+	rm -f $(PACKAGE)-out.* VERSION LinkCheckerConf.py MANIFEST Packages.gz
 
 cleandeb:
 	rm -rf debian/$(PACKAGE) debian/tmp

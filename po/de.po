@@ -1,6 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# German translation for LinkChecker.
+# Bastian Kleineidam <calvin@users.sourceforge.net>, 2000.
 #
 #, fuzzy
 msgid ""
@@ -24,7 +23,7 @@ msgid "minutes"
 msgstr "Minuten"
 
 msgid "No newsgroup specified in NNTP URL"
-msgstr ""
+msgstr "Keine newsgroup in der NNTP URL spezifiziert"
 
 msgid "found"
 msgstr "gefunden"
@@ -367,7 +366,7 @@ msgstr ""
 "        Diese Option nimmt -w an.\n"
 
 msgid "Articel number %s found"
-msgstr ""
+msgstr "Artikel nummer %s wurde gefunden"
 
 msgid "Access denied by robots.txt, checked only syntax"
 msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"

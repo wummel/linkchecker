@@ -1,6 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# French translation for LinkChecker.
+# Jerome Couderc <j.couderc@ifrance.com>, 2000.
 #
 #, fuzzy
 msgid ""
