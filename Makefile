@@ -29,12 +29,6 @@ distclean: clean cleandeb
 	rm -f VERSION _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 	# clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-*
-	rm -rf linkcheckssl/ssl.so
-
-.PHONY: localbuild
-localbuild: config
-	$(PYTHON) setup.py build
-	cp -f build/lib.linux-i686-2.1/linkcheckssl/ssl.so linkcheckssl
 
 .PHONY: cleandeb
 cleandeb:
@@ -49,9 +43,7 @@ config:
 # no rpm package; too much trouble, cannot test
 .PHONY: dist
 dist:	locale config
-	$(PYTHON) setup.py sdist --formats=gztar,zip # bdist_rpm
-	# extra run without SSL compilation
-	$(PYTHON) setup.py bdist_wininst --bitmap="guruguru.bmp"
+	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_wininst
 
 deb:
 	# cleandeb because distutils choke on dangling symlinks

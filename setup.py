@@ -152,7 +152,7 @@ o a (Fast)CGI web interface (requires HTTP server)
 """,
        distclass = MyDistribution,
        cmdclass = {'install': MyInstall},
-       packages = ['','DNS','linkcheck','linkcheckssl'],
+       packages = ['','DNS','linkcheck'],
        scripts = ['linkchecker'],
        data_files = [('share/locale/de/LC_MESSAGES',
       ['locale/de/LC_MESSAGES/linkcheck.mo']),
