@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Aug  5 14:35:36 2003\n"
+"POT-Creation-Date: Thu Aug  7 12:15:33 2003\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -53,13 +53,17 @@ msgid ""
 " %s"
 msgstr ""
 
-msgid "HTTP 301 (moved permanent) encountered: you should update this link"
+#, fuzzy
+msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr "HTTP 301 (déplacé) rencontré: vous devez mettre à jour ce lien"
 
 msgid ""
 "A HTTP 301 redirection occured and the url has no trailing / at the end. All "
 "urls which point to (home) directories should end with a / to avoid "
-"redirection"
+"redirection."
+msgstr ""
+
+msgid "HTTP redirection to non-http url encountered; the original url was %s."
 msgstr ""
 
 msgid "more than five redirections, aborting"
