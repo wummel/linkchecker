@@ -237,12 +237,16 @@ class HttpUrlData (ProxyUrlData):
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self._getHTTPObject(host)
+        # quote parts before submit
+        map(quote, self.urlparts[2:5])
         if self.proxy:
             path = urlparse.urlunsplit(self.urlparts)
         else:
             path = urlparse.urlunsplit(('', '', self.urlparts[2],
             self.urlparts[3], self.urlparts[4]))
-        self.urlConnection.putrequest(method, quote(path), skip_host=1)
+        # unquote parts again
+        map(unquote, self.urlparts[2:5])
+        self.urlConnection.putrequest(method, path, skip_host=1)
         self.urlConnection.putheader("Host", host)
         # userinfo is from http://user@pass:host/
         if self.userinfo:
