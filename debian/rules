@@ -48,7 +48,7 @@ install: build
 	install -c -m 644 test/output/test_* $(DOCDIR)/test/output
 	# install CGI files
 	install -c -m 644 lconline/*.html $(DOCDIR)/lconline
-	cat lc.cgi | sed 's#/usr/bin/python#/usr/bin/python2.1#' > $(ROOT)/usr/lib/cgi-bin/lconline/lc.cgi
+	cat lc.cgi | sed 's#/usr/bin/python#/usr/bin/$(PYTHON)#' > $(ROOT)/usr/lib/cgi-bin/lconline/lc.cgi
 	# install system wide configuration file in etc
 	mv $(ROOT)/usr/share/linkchecker/linkcheckerrc $(ROOT)/etc
 
