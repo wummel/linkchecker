@@ -81,6 +81,7 @@ class Configuration (dict):
         self["externstrictall"] = False
         self["externlinks"] = []
         self["internlinks"] = []
+        self["noproxyfor"] = []
         self["denyallow"] = False
         self["interactive"] = False
         # on ftp, password is set by Pythons ftplib
@@ -212,6 +213,8 @@ class Configuration (dict):
     def read (self, files=None):
         """
         Read settings from given config files.
+
+        @raises: LinkCheckerError on syntax errors in the config file(s)
         """
         if files is None:
             cfiles = []
@@ -333,9 +336,13 @@ class Configuration (dict):
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
-            wr = cfgparser.get(section, "warningregex")
-            if wr:
-                self["warningregex"] = re.compile(wr)
+            arg = cfgparser.get(section, "warningregex")
+            if arg:
+                try:
+                    self["warningregex"] = re.compile(arg)
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("syntax error in warningregex %r: %s\n"), arg, msg)
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -352,6 +359,19 @@ class Configuration (dict):
                                     "anchorcaching")
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            i = 1
+            while 1:
+                arg = cfgparser.get(section, "noproxyfor%d" % i)
+                try:
+                    arg = re.compile(arg)
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("syntax error in noproxyfor%d %r: %s"), i, arg, msg)
+                self["noproxyfor"].append(arg)
+                i += 1
+        except ConfigParser.Error, msg:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_authentication_config (self, cfgparser):
         """
@@ -362,9 +382,13 @@ class Configuration (dict):
             i = 1
             while 1:
                 auth = cfgparser.get(section, "entry%d" % i).split()
-                if len(auth)!=3:
+                if len(auth) != 3:
                     break
-                auth[0] = re.compile(auth[0])
+                try:
+                    auth[0] = re.compile(auth[0])
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("syntax error in entry%d %r: %s"), i, auth[0], msg)
                 self["authentication"].insert(0, {'pattern': auth[0],
                                                   'user': auth[1],
                                                   'password': auth[2]})
@@ -383,7 +407,7 @@ class Configuration (dict):
                 ctuple = cfgparser.get(section, "extern%d" % i).split()
                 if len(ctuple)!=2:
                     linkcheck.log.error(
-                               _("extern%d: syntax error %s\n")%(i, ctuple))
+                            _("extern%d: syntax error %s\n") % (i, ctuple))
                     break
                 self["externlinks"].append(
                     linkcheck.get_link_pat(ctuple[0], strict=int(ctuple[1])))

@@ -145,18 +145,24 @@ none    Logs nothing. Suitable for scripts.
 
 
 def encode (s, codec="iso8859-15"):
-    """Encode string with given codec for screen print."""
+    """
+    Encode string with given codec for screen print.
+    """
     return s.encode(codec, "ignore")
 
 
 def print_version ():
-    """print the program version and exit"""
+    """
+    Print the program version and exit.
+    """
     print encode(linkcheck.configuration.AppInfo)
     sys.exit(0)
 
 
 def print_usage (msg):
-    """print a program msg text to stderr and exit"""
+    """
+    Print a program msg text to stderr and exit.
+    """
     sys.stderr.write(encode(_("Error: %s") % msg))
     sys.stderr.write(os.linesep)
     sys.stderr.write(encode(_("Execute 'linkchecker -h' for help")))
@@ -165,7 +171,9 @@ def print_usage (msg):
 
 
 def viewprof ():
-    """print profiling data and exit"""
+    """
+    Print profiling data and exit.
+    """
     if not has_pstats:
         linkcheck.log.error(linkcheck.LOG_CMDLINE,
                            _("The `pstats' Python module is not installed,"
@@ -183,6 +191,19 @@ def viewprof ():
     sys.exit(0)
 
 
+def try_compile_re (arg):
+    """
+    Try to compile the regular expression. On error print an error message
+    and exit.
+    """
+    try:
+        return re.compile(arg)
+    except re.error, msg:
+        linkcheck.log.error(linkcheck.LOG_CMDLINE,
+           _("Syntax error in %r: %s", arg, msg))
+        sys.exit(1)
+
+
 def has_encoding (encoding):
     try:
         codecs.lookup(encoding)
@@ -192,7 +213,9 @@ def has_encoding (encoding):
 
 
 class LCHelpFormatter (optparse.IndentedHelpFormatter):
-    """help formatter indenting paragraph-wise"""
+    """
+    Help formatter indenting paragraph-wise.
+    """
 
     def format_option (self, option):
         # The help for each option consists of two parts:
@@ -231,22 +254,32 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
 
 
 class LCOptionParser (optparse.OptionParser, object):
-    """option parser with custom help text layout"""
+    """
+    Option parser with custom help text layout.
+    """
 
     def __init__ (self):
-        """initializing using our own help formatter class"""
+        """
+        Initializing using our own help formatter class.
+        """
         super(LCOptionParser, self).__init__(formatter=LCHelpFormatter())
 
     def error (self, msg):
-        """print usage info and given message"""
+        """
+        Print usage info and given message.
+        """
         print_usage(msg)
 
     def get_usage (self):
-        """return translated usage text"""
+        """
+        Return translated usage text.
+        """
         return Usage
 
     def print_help (self, file=None):
-        """print translated help text"""
+        """
+        Print translated help text.
+        """
         s = u"%s\n%s\n%s\n%s" % (self.format_help(), Notes, Retval, Examples)
         s = s.encode("iso-8859-1", "replace")
         if os.name != 'posix':
@@ -418,7 +451,7 @@ group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
 group.add_option("--no-proxy-for", type="string", action="append",
-                 dest="noproxy", help=_(
+                 dest="noproxyfor", help=_(
 """Contact hosts that match the given expression directly instead of
 going through a proxy."""))
 optparser.add_option_group(group)
@@ -444,10 +477,15 @@ config.init_logging(debug=options.debug)
 linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s",
                     sys.version, sys.platform)
 # read configuration files
-if options.configfile:
-    config.read(files=[options.configfile])
-else:
-    config.read()
+try:
+    if options.configfile:
+        config.read(files=[options.configfile])
+    else:
+        config.read()
+except linkcheck.LinkCheckerError, msg:
+    # config error
+    linkcheck.log.error("%s", msg)
+    sys.exit(1)
 # apply commandline options and arguments
 constructauth = False
 do_profile = False
@@ -464,6 +502,9 @@ if options.externstrict:
     pats = [linkcheck.get_link_pat(arg, strict=True) \
             for arg in options.externstrict]
     config["externlinks"].extend(pats)
+if options.noproxyfor:
+    ros = [try_compile_re(arg) for arg in options.noproxyfor]
+    config["noproxyfor"].extend(ros)
 if options.output:
     if "/" in options.output:
         logtype, encoding = options.output.split("/", 1)
@@ -567,14 +608,14 @@ if options.viewprof:
 if options.warnings is not None:
     config["warnings"] = options.warnings
 if options.warningregex is not None:
-    config["warningregex"] = re.compile(options.warningregex)
+    config["warningregex"] = try_compile_re(options.warningregex)
     config["warnings"] = True
 if options.warningsizebytes is not None:
     config["warnsizebytes"] = options.warningsizebytes
 if options.cookies is not None:
     config['cookies'] = options.cookies
 if constructauth:
-    config["authentication"].append({'pattern': re.compile(".+"),
+    config["authentication"].append({'pattern': try_compile_re(".+"),
                                      'user': _username,
                                      'password': _password})
 
