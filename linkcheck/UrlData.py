@@ -19,10 +19,11 @@
 import sys, re, urlparse, urllib2, time, traceback, socket, select, i18n
 from urllib import splituser, splitport, unquote
 from linkcheck import DNS, LinkCheckerError, getLinkPat
+from linkcheck.parser import htmlsax
 DNS.DiscoverNameServers()
 
 import Config, StringUtil, test_support
-from linkparse import LinkParser, MetaRobotsParser
+from linkparse import LinkFinder, MetaRobotsFinder
 from debug import *
 
 ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
@@ -450,7 +451,12 @@ class UrlData (object):
     def contentAllowsRobots (self):
         if not self.isHtml():
             return True
-        return MetaRobotsParser(self.getContent()).follow
+        h = MetaRobotsFinder(self.getContent())
+        p = htmlsax.parser(h)
+        h.parser = p
+        p.feed(self.getContent())
+        p.flush()
+        return h.follow
 
 
     def checkAnchors (self):
@@ -459,7 +465,11 @@ class UrlData (object):
             # do not bother
             return
         debug(HURT_ME_PLENTY, "checking anchor", self.anchor)
-        h = LinkParser(self.getContent(), tags={'a': ['name'], None: ['id']})
+        h = LinkFinder(self.getContent(), tags={'a': ['name'], None: ['id']})
+        p = htmlsax.parser(h)
+        h.parser = p
+        p.feed(self.getContent())
+        p.flush()
         for cur_anchor,line,column,name,base in h.urls:
             if cur_anchor == self.anchor:
                 return
@@ -552,14 +562,22 @@ class UrlData (object):
 
     def parse_html (self):
         # search for a possible base reference
-        h = LinkParser(self.getContent(), tags={'base': ['href']})
+        h = LinkFinder(self.getContent(), tags={'base': ['href']})
+        p = htmlsax.parser(h)
+        h.parser = p
+        p.feed(self.getContent())
+        p.flush()
         baseRef = None
         if len(h.urls)>=1:
             baseRef = h.urls[0][0]
             if len(h.urls)>1:
                 self.setWarning(i18n._(
                 "more than one <base> tag found, using only the first one"))
-        h = LinkParser(self.getContent())
+        h = LinkFinder(self.getContent())
+        p = htmlsax.parser(h)
+        h.parser = p
+        p.feed(self.getContent())
+        p.flush()
         for s in h.parse_info:
             # the parser had warnings/errors
             self.setWarning(s)

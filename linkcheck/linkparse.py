@@ -17,7 +17,6 @@
 
 import re, StringUtil, linkname
 from debug import *
-from linkcheck.parser.htmllib import HtmlParser
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {
@@ -56,10 +55,9 @@ LinkTags = {
 _refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
 _css_url_re = re.compile(r"url\((?P<url>[^\)]+)\)")
 
-class TagParser (HtmlParser):
-    """basic parser class putting message in list"""
+class TagFinder (object):
+    """base class putting message in list"""
     def __init__ (self, content):
-        super(TagParser, self).__init__()
         self.content = content
         # warnings and errors during parsing
         self.parse_info = []
@@ -68,7 +66,7 @@ class TagParser (HtmlParser):
     def _errorfun (self, msg, name):
         """append msg to error list"""
         self.parse_info.append("%s at line %d col %d: %s" % \
-                (name, self.last_lineno(), self.last_column(), msg))
+            (name, self.parser.last_lineno(), self.parser.last_column(), msg))
 
 
     def error (self, msg):
@@ -86,15 +84,12 @@ class TagParser (HtmlParser):
         self._errorfun(msg, "fatal error")
 
 
-class MetaRobotsParser (TagParser):
-    """parser class for robots.txt meta values in HTML"""
+class MetaRobotsFinder (TagFinder):
+    """class for finding robots.txt meta values in HTML"""
     def __init__ (self, content):
-        super(MetaRobotsParser, self).__init__(content)
+        super(MetaRobotsFinder, self).__init__(content)
         self.follow = True
         self.index = True
-        self.feed(self.content)
-        debug(HURT_ME_PLENTY, "flushing")
-        self.flush()
 
 
     def startElement (self, tag, attrs):
@@ -105,25 +100,24 @@ class MetaRobotsParser (TagParser):
                 self.index = 'noindex' not in val
 
 
-class LinkParser (TagParser):
-    """Parse the content for a list of links. After parsing, the urls
+class LinkFinder (TagFinder):
+    """find a list of links. After parsing, the urls
     will have a list of parsed links entries with the format
     (url, lineno, column, name, base)
     """
 
     def __init__ (self, content, tags=LinkTags):
-        super(LinkParser, self).__init__(content)
+        super(LinkFinder, self).__init__(content)
         self.tags = tags
         self.urls = []
-        self.feed(self.content)
-        debug(HURT_ME_PLENTY, "flushing")
-        self.flush()
 
 
     def startElement (self, tag, attrs):
-        debug(NIGHTMARE, "LinkParser tag", tag, "attrs", attrs)
-        debug(NIGHTMARE, "line", self.lineno(), "col", self.column(),
-              "old line", self.last_lineno(), "old col", self.last_column())
+        debug(NIGHTMARE, "LinkFinder tag", tag, "attrs", attrs)
+        debug(NIGHTMARE, "line", self.parser.lineno(),
+              "col", self.parser.column(),
+              "old line", self.parser.last_lineno(),
+              "old col", self.parser.last_column())
         tagattrs = self.tags.get(tag, [])
         tagattrs.extend(self.tags.get(None, []))
         for attr in tagattrs:
@@ -132,7 +126,7 @@ class LinkParser (TagParser):
                 if tag=='a' and attr=='href':
                     name = StringUtil.unquote(attrs.get('title', ''))
                     if not name:
-                        name = linkname.href_name(self.content[self.pos():])
+                        name = linkname.href_name(self.content[self.parser.pos():])
                 elif tag=='img':
                     name = StringUtil.unquote(attrs.get('alt', ''))
                     if not name:
@@ -166,6 +160,6 @@ class LinkParser (TagParser):
             return
         for u in urls:
             debug(NIGHTMARE, "LinkParser add link", tag, attr, u, name, base)
-            self.urls.append((u, self.last_lineno(), self.last_column(),
-                              name, base))
+            self.urls.append((u, self.parser.last_lineno(),
+                              self.parser.last_column(), name, base))
 
