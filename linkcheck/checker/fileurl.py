@@ -18,12 +18,14 @@
 
 import re
 import os
+import os.path
 import time
 import urlparse
 import urllib
 
 import urlbase
 import linkcheck
+import linkcheck.log
 import linkcheck.checker
 
 # if file extension lookup was unsuccessful, look at the content
@@ -46,6 +48,19 @@ def get_files (dirname):
             continue
         files.append(entry)
     return files
+
+
+def get_nt_filename (path):
+    """return case sensitive filename for NT path"""
+    head, tail = os.path.split(path)
+    if not tail:
+        return path
+    for fname in os.listdir(head):
+        if fname.lower() == tail.lower():
+            return os.path.join(get_nt_filename(head), fname)
+    linkcheck.log.error(linkcheck.LOG_CHECK, "could not find %r in %r",
+                        tail, head)
+    return path
 
 
 class FileUrl (urlbase.UrlBase):
@@ -79,8 +94,23 @@ class FileUrl (urlbase.UrlBase):
     def check_connection (self):
         if self.is_directory():
             self.set_result(_("directory"))
+        else:
+            super(FileUrl, self).check_connection()
+            self.check_case_sensitivity()
+
+    def check_case_sensitivity (self):
+        if os.name != 'nt':
             return
-        super(FileUrl, self).check_connection()
+        # Check if url and windows path name match cases
+        # else there might be problems when copying such
+        # files on web servers that are case sensitive.
+        path = self.get_os_filename()
+        realpath = get_nt_filename(path)
+        if path != realpath:
+            self.add_warning(_("The URL path %r is not the same as the " \
+                               "system path %r. You should always use " \
+                               "the system path in URLs.") % (path, realpath))
+        pass
 
     def get_content (self):
         if not self.valid:
