@@ -8,7 +8,7 @@
     Changed: linkcheck/{Mailto,Nntp,Telnet,}UrlData.py
   * added robots.txt FAQ, updated links
     Removed: norobots-rfc.html
-    Changed: FAQ, WONTDO
+    Changed: FAQ, WONTDO, TODO
   * add iso-8859-1 coding line to all .py files
     Changed: *.py
   * Correctly quote the HTML output
