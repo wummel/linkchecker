@@ -1,4 +1,4 @@
-2.4 "" (released xx.xx.xxxx)
+2.4 "Kitchen stories" (released 9.2.2005)
 
   * Work around a Python 2.4 bug when HTTP 302 redirections are
     encountered in urllib2.
