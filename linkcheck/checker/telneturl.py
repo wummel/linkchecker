@@ -48,7 +48,6 @@ class TelnetUrl (urlbase.UrlBase):
         super(TelnetUrl, self).local_check()
 
     def check_connection (self):
-        super(TelnetUrl, self).check_connection()
         self.url_connection = telnetlib.Telnet()
         if self.consumer.config.get("debug"):
             self.url_connection.set_debuglevel(1)
