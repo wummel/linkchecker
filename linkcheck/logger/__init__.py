@@ -22,6 +22,7 @@ _ = lambda x: x
 # known field names, translated
 Fields = {
     "realurl":   _("Real URL"),
+    "cachekey":  _("Cache key"),
     "result":    _("Result"),
     "base":      _("Base"),
     "name":      _("Name"),
