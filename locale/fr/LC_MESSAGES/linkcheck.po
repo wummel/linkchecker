@@ -410,7 +410,7 @@ msgstr "valeur du niveau de récursivité %d illégal"
 
 #, c-format
 msgid "invalid log option '%s'"
-msgstr "option de log invalide '%'"
+msgstr "option de log invalide '%s'"
 
 msgid "minutes"
 msgstr ""

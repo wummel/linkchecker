@@ -27,7 +27,7 @@ script from everywhere.
 Install with Distutils
 ----------------------
 The Distutils package has a lot of install options to tweak and ease
-your installation.
+your installation. Type "python setup.py --help" for options.
 To install LinkChecker run "python setup.py install".
 Debian users can build the .deb package with "debian/rules binary".
 

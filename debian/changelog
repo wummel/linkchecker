@@ -2,22 +2,14 @@ linkchecker (1.2.4) unstable; urgency=low
 
   * fixed parsing of /etc/resolv.conf with empty lines
   * french translation from Jerome Couderc <j.couderc@ifrance.com>
-    and Michael Gensheimer <michael@gensheimer.net>
   * fix for HTTP HEAD requests from bad/dumb/old servers
   * CGI script fixes
-  * LinkChecker Online HTML pages added
-<<<<<<< changelog
-  * fixed bug in config file parser with external link specification
-=======
+  * LinkChecker Online HTML pages added to source
   * news: link support for links which specify a NNTP server
   * fixed parsing of extern? config file options (was endless loop)
->>>>>>> 1.35
+  * look more carefully for Zope servers
 
-<<<<<<< changelog
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 13 Jul 2000 20:48:32 +0200
-=======
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 14 Jul 2000 05:23:08 +0200
->>>>>>> 1.35
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat, 19 Aug 2000 17:17:12 +0200
 
 linkchecker (1.2.3) unstable; urgency=low
 

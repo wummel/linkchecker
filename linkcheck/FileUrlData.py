@@ -19,6 +19,8 @@ import re,string,os,urlparse,urllib
 from UrlData import UrlData
 from linkcheck import _
 
+html_re = re.compile(r'\.s?html?$')
+
 class FileUrlData(UrlData):
     "Url link with file scheme"
 
@@ -59,7 +61,7 @@ class FileUrlData(UrlData):
 
 
     def isHtml(self):
-        return self.valid and re.compile("\.s?html?$").search(self.url)
+        return self.valid and html_re.search(self.url)
 
 
     def __str__(self):
