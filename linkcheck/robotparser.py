@@ -9,8 +9,7 @@
     The robots.txt Exclusion Protocol is implemented as specified in
     http://info.webcrawler.com/mak/projects/robots/norobots-rfc.html
 """
-import re, urlparse, urllib2
-from urllib import quote
+import re,urlparse,urllib
 
 __all__ = ["RobotFileParser"]
 
@@ -40,7 +39,7 @@ class RobotFileParser:
         self.host, self.path = urlparse.urlparse(url)[1:3]
 
     def read(self):
-        opener = urllib2.build_opener()
+        opener = URLopener()
         f = opener.open(self.url)
         lines = []
         line = f.readline()
@@ -132,7 +131,7 @@ class RobotFileParser:
             return 1
         # search for given user agent matches
         # the first match counts
-        url = quote(urlparse.urlparse(url)[2]) or "/"
+        url = urllib.quote(urlparse.urlparse(url)[2]) or "/"
         for entry in self.entries:
             if entry.applies_to(useragent):
                 return entry.allowance(url)
@@ -151,7 +150,7 @@ class RuleLine:
     """A rule line is a single "Allow:" (allowance==1) or "Disallow:"
        (allowance==0) followed by a path."""
     def __init__(self, path, allowance):
-        self.path = quote(path)
+        self.path = urllib.quote(path)
         self.allowance = allowance
 
     def applies_to(self, filename):
@@ -198,6 +197,20 @@ class Entry:
             if line.applies_to(filename):
                 return line.allowance
         return 1
+
+class URLopener(urllib.FancyURLopener):
+    def __init__(self, *args):
+        apply(urllib.FancyURLopener.__init__, (self,) + args)
+        self.errcode = 200
+
+    def http_error_default(self, url, fp, errcode, errmsg, headers):
+        self.errcode = errcode
+        return urllib.FancyURLopener.http_error_default(self, url, fp, errcode,
+                                                        errmsg, headers)
+
+    def prompt_user_passwd (self, host, realm):
+        """Do not ask interactively any password; return None, None"""
+        return None, None
 
 
 def _check(a,b):
