@@ -31,7 +31,7 @@ class HostCheckingUrlData (UrlData):
 
     def buildUrl (self):
         # to avoid anchor checking
-        self.urlTuple=None
+        self.urlparts = None
 
     def getCacheKey (self):
         return "%s:%s" % (self.scheme, self.host)

@@ -2,7 +2,8 @@ from UrlData import UrlData
 from urllib import splittype, splithost, splituser, splitpasswd
 
 class ProxyUrlData (UrlData):
-    """urldata with ability for proxying"""
+    """urldata with ability for proxying and for urls with user:pass@host
+       setting"""
 
     def setProxy (self, proxy):
         self.proxy = proxy
@@ -18,4 +19,10 @@ class ProxyUrlData (UrlData):
                 import base64
                 self.proxyauth = base64.encodestring(self.proxyauth).strip()
                 self.proxyauth = "Basic "+self.proxyauth
+
+    def getUserPassword (self):
+        for auth in self.config["authentication"]:
+            if auth['pattern'].match(self.url):
+                return auth['user'], auth['password']
+        return None,None
 

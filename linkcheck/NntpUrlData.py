@@ -39,16 +39,16 @@ class NntpUrlData (UrlData):
             self.url = 'nntp'+self.urlName[4:]
         else:
             self.url = self.urlName
-        self.urlTuple = urlparse.urlparse(self.url)
-        debug(BRING_IT_ON, self.urlTuple)
+        self.urlparts = urlparse.urlsplit(self.url)
+        debug(BRING_IT_ON, self.urlparts)
 
     def checkConnection (self):
-        nntpserver = self.urlTuple[1] or self.config["nntpserver"]
+        nntpserver = self.urlparts[1] or self.config["nntpserver"]
         if not nntpserver:
             self.setWarning(linkcheck._("No NNTP server specified, skipping this URL"))
             return
         nntp = self._connectNntp(nntpserver)
-        group = self.urlTuple[2]
+        group = self.urlparts[2]
         while group[:1]=='/':
             group = group[1:]
         if '@' in group:

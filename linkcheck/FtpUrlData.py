@@ -50,7 +50,9 @@ class FtpUrlData (ProxyUrlData):
         if _user is None or _password is None:
             raise linkcheck.error, linkcheck._("No user or password found")
         try:
-            self.urlConnection = ftplib.FTP(self.urlTuple[1], _user, _password)
+            self.urlConnection = ftplib.FTP()
+            self.urlConnection.connect(self.urlparts[1])
+            self.urlConnection.login(_user, _password)
         except EOFError:
             raise linkcheck.error, linkcheck._("Remote host has closed connection")
         info = self.urlConnection.getwelcome()

@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, sys, time, re
+import urlparse, urllib, sys, time, re
 import httplib
 import Config, StringUtil, robotparser, linkcheck
 if Config.DebugLevel > 0:
@@ -31,13 +31,11 @@ class HttpUrlData (ProxyUrlData):
 
     def buildUrl (self):
         ProxyUrlData.buildUrl(self)
-        if not self.urlTuple[2]:
+        # check for empty paths
+        if not self.urlparts[2]:
             self.setWarning(linkcheck._("Path is empty"))
-            self.urlTuple = (self.urlTuple[0], self.urlTuple[1], "/",
-                self.urlTuple[3], self.urlTuple[4], self.urlTuple[5])
-            self.url = urlparse.urlunparse(self.urlTuple)
-            # resolve HTML entities
-            self.url = StringUtil.unhtmlify(self.url)
+            self.urlparts[2] = "/"
+            self.url = urlparse.urlunsplit(self.urlparts)
 
 
     def checkConnection (self):
@@ -98,7 +96,6 @@ class HttpUrlData (ProxyUrlData):
         Config.debug(BRING_IT_ON, response.status, response.reason, self.headers)
         has301status = 0
         while 1:
-
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
@@ -112,11 +109,11 @@ class HttpUrlData (ProxyUrlData):
             redirected = self.urlName
             while response.status in [301,302] and self.headers and tries < 5:
                 has301status = (response.status==301)
-                
                 newurl = self.headers.getheader("Location",
-                                    self.headers.getheader("Uri", ""))
+                             self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
-                self.urlTuple = urlparse.urlparse(redirected)
+                redirected = urllib.unquote(redirected)
+                self.urlparts = urlparse.urlsplit(redirected)
                 response = self._getHttpResponse()
                 self.headers = response.msg
                 Config.debug(BRING_IT_ON, "Redirected", self.headers)
@@ -168,7 +165,7 @@ class HttpUrlData (ProxyUrlData):
                     self.headers = response.msg
             if response.status not in [301,302]: break
 
-        effectiveurl = urlparse.urlunparse(self.urlTuple)
+        effectiveurl = urlparse.urlunsplit(self.urlparts)
         if self.url != effectiveurl:
             self.setWarning(linkcheck._("Effective URL %s") % effectiveurl)
             self.url = effectiveurl
@@ -193,7 +190,7 @@ class HttpUrlData (ProxyUrlData):
             if self.config['cookies']:
                 for c in self.cookies:
                     self.setInfo("Cookie: %s"%c)
-                out = self.config.storeCookies(self.headers, self.urlTuple[1])
+                out = self.config.storeCookies(self.headers, self.urlparts[1])
                 for h in out:
                     self.setInfo(h)
             if response.status >= 200:
@@ -208,16 +205,16 @@ class HttpUrlData (ProxyUrlData):
         if self.proxy:
             host = self.proxy
         else:
-            host = self.urlTuple[1]
+            host = self.urlparts[1]
         Config.debug(HURT_ME_PLENTY, "host", host)
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self._getHTTPObject(host)
         if self.proxy:
-            path = urlparse.urlunparse(self.urlTuple)
+            path = urlparse.urlunsplit(self.urlparts)
         else:
-            path = urlparse.urlunparse(('', '', self.urlTuple[2],
-            self.urlTuple[3], self.urlTuple[4], ''))
+            path = urlparse.urlunsplit(('', '', self.urlparts[2],
+            self.urlparts[3], self.urlparts[4]))
         self.urlConnection.putrequest(method, path, skip_host=1)
         self.urlConnection.putheader("Host", host)
         if self.auth:
@@ -230,8 +227,8 @@ class HttpUrlData (ProxyUrlData):
         self.urlConnection.putheader("User-Agent", Config.UserAgent)
         self.urlConnection.putheader("Accept-Encoding", "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.config['cookies']:
-            self.cookies = self.config.getCookies(self.urlTuple[1],
-                                                  self.urlTuple[2])
+            self.cookies = self.config.getCookies(self.urlparts[1],
+                                                  self.urlparts[2])
             for c in self.cookies:
                 self.urlConnection.putheader("Cookie", c)
         self.urlConnection.endheaders()
@@ -278,7 +275,7 @@ class HttpUrlData (ProxyUrlData):
         return 1
 
     def robotsTxtAllowsUrl (self):
-        roboturl = "%s://%s/robots.txt" % self.urlTuple[0:2]
+        roboturl = self.urlparts[0]+"://"+self.urlparts[1]+"/robots.txt"
         Config.debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
         Config.debug(HURT_ME_PLENTY, "url", self.url)
         if not self.config.robotsTxtCache_has_key(roboturl):

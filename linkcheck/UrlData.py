@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, re, urlparse, urllib, time, traceback, socket, select
+from urllib import splituser, splithost, splitport
 #try:
 #    from linkcheck import DNS
 #except ImportError:
@@ -159,20 +160,18 @@ class UrlData:
             self.url = urlparse.urljoin(self.parentName, self.urlName)
         else: 
             self.url = self.urlName
-        self.urlTuple = urlparse.urlparse(self.url)
-        # make host lowercase
-        self.urlTuple = (self.urlTuple[0], self.urlTuple[1].lower(),
-                         self.urlTuple[2], self.urlTuple[3], self.urlTuple[4],
-                         self.urlTuple[5])
-        self.url = urlparse.urlunparse(self.urlTuple)
-        # resolve HTML entities
-        self.url = StringUtil.unhtmlify(self.url)
-        # check host:port syntax
-        host = self.urlTuple[1]
-        if ":" in host:
-            host,port = host.split(":", 1)
-            if not port_re.match(port):
-                raise linkcheck.error(linkcheck._("URL has invalid port number"))
+        # unquote url
+        self.url = urllib.unquote(self.url)
+        # split into (modifiable) list
+        self.urlparts = list(urlparse.urlsplit(self.url))
+        # check userinfo@host:port syntax
+        self.userinfo, host = splituser(self.urlparts[1])
+        x, port = splitport(host)
+        if port is not None and not port_re.match(port):
+            raise linkcheck.error(linkcheck._("URL has invalid port number %s")\
+                                  % str(port))
+        # set host lowercase and without userinfo
+        self.urlparts[1] = host.lower()
 
 
     def logMe (self):
@@ -242,8 +241,8 @@ class UrlData:
         debug(BRING_IT_ON, "checking connection")
         try:
             self.checkConnection()
-            if self.urlTuple and self.config["anchors"]:
-                self.checkAnchors(self.urlTuple[5])
+            if self.urlparts and self.config["anchors"]:
+                self.checkAnchors(self.urlparts[4])
         except tuple(ExcList):
             type, value, tb = sys.exc_info()
             debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
@@ -291,8 +290,8 @@ class UrlData:
 
 
     def getCacheKey (self):
-        if self.urlTuple:
-            return urlparse.urlunparse(self.urlTuple)
+        if self.urlparts:
+            return urlparse.urlunsplit(self.urlparts)
         return None
 
 
@@ -409,13 +408,6 @@ class UrlData:
              (self.scheme, self.urlName, self.parentName, self.baseRef,
               self.cached, self.recursionLevel, self.urlConnection, self.line,
               self.column, self.name))
-
-
-    def _getUserPassword (self):
-        for auth in self.config["authentication"]:
-            if auth['pattern'].match(self.url):
-                return auth['user'], auth['password']
-        return None,None
 
 
 from FileUrlData import FileUrlData
