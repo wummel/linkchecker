@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os, re, sys, string
+import os
+import re
+import sys
+import string
 from types import StringType, TupleType
 from distutils.core import setup, Extension, DEBUG
 try:
@@ -69,21 +72,6 @@ class MyInstall (install, object):
                 cdir = os.path.join(val, "share", "linkchecker")
                 data.append('config_dir = %r' % cdir)
 	self.distribution.create_conf_file(data, directory=self.install_lib)
-        if os.name=="nt":
-            # copy batch file to desktop
-            path = get_nt_desktop_path(default=self.install_scripts)
-            path = os.path.join(path, "linkchecker.bat")
-            data = open("linkchecker.bat").readlines()
-            data = map(string.strip, data)
-            data = map(lambda s: s.replace("$python", sys.executable), data)
-            data = map(lambda s, self=self: s.replace("$install_scripts",
-              self.install_scripts), data)
-            self.distribution.create_file(path, data)
-            # copy README file to desktop
-            path = get_nt_desktop_path(default=self.install_data)
-            path = os.path.join(path, "LinkChecker_Readme.txt")
-            data = [ line.strip() for line in open("README").readlines() ]
-            self.distribution.create_file(path, data)
 
     def get_outputs (self):
         """add the generated config file from distribution.create_conf_file()
@@ -239,7 +227,6 @@ o a (Fast)CGI web interface (requires HTTP server)
               'cgi/lconline/index.html', 'cgi/lconline/lc_cgi.html.en',
               'cgi/lconline/lc_cgi.html.de', 'cgi/lconline/check.js',
               'cgi/lc.cgi', 'cgi/lc.fcgi',
-              'linkchecker.bat',
               'config/linkchecker-completion', 'config/linkcheck-cron.sh']),
          ('share/man/man1', ['linkchecker.1']),
       ],
