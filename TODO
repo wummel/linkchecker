@@ -1,3 +1,6 @@
+- after a failed HEAD request, try always GET and see if that fails
+  too
+
 - replace the debug() function with the logging module
   we'll see how we can insert multiple debug levels into this thing
 
