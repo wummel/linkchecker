@@ -4,13 +4,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Tue Sep 24 13:32:13 2002\n"
+"POT-Creation-Date: Thu Sep 26 17:09:12 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: ENCODING\n"
+
+msgid "Using Proxy %s"
+msgstr "Verwende Proxy %s"
 
 msgid "Result"
 msgstr "Ergebnis"
@@ -19,7 +22,7 @@ msgid "Illegal argument '%s' for option "
 msgstr "Ungültiges Argument '%s' für Option "
 
 msgid "NNTP busy: %s"
-msgstr ""
+msgstr "NNTP beschäftigt: %s"
 
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
@@ -46,7 +49,7 @@ msgid "Execute 'linkchecker -h' for help\n"
 msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten\n"
 
 msgid "more than one base tag found"
-msgstr ""
+msgstr "mehr als ein base Tag gefunden"
 
 msgid "created by %s at %s\n"
 msgstr "erstellt von %s um %s\n"
@@ -86,7 +89,7 @@ msgid "Remote host has closed connection"
 msgstr "Entfernter Rechner hat die Verbindung geschlossen"
 
 msgid "Path is empty"
-msgstr ""
+msgstr "Pfad ist leer"
 
 msgid "checktime"
 msgstr "Prüfzeit"
@@ -101,7 +104,7 @@ msgid "No user or password found"
 msgstr "Kein Benutzername oder Passwort gefunden"
 
 msgid "anchor #%s not found"
-msgstr ""
+msgstr "Anker #%s nicht gefunden"
 
 msgid "Got no answer from FTP server"
 msgstr "Keine Antwort vom FTP Server"
@@ -290,7 +293,7 @@ msgid ""
 msgstr "Server unterstützt keine HEAD Anfrage (bekam Status %d), verwende GET"
 
 msgid "URL has invalid port number"
-msgstr ""
+msgstr "URL hat ungültige Portnummer"
 
 msgid "warning"
 msgstr "Warnung"

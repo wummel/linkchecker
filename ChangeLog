@@ -4,14 +4,18 @@
   * use "startswith" string method instead of a regex
     Changed files: linkchecker, linkcheck/UrlData.py
   * Add a note about supported languages, updated the documentation.
-    Changed files: README, linkchecker
+    Changed files: README, linkchecker, FAQ
   * Remove --robots-txt option from documentation, it is per default
     enabled and you cannot disable it from the command line.
     Changed files: linkchecker, po/*.po
   * fix --extern argument creation
     Changed files: linkchecker, linkcheck/UrlData.py
   * Print help if PyDNS module is not installed
-    Changed files: linkcheck/MailtoUrlData.py
+    Changed files: linkcheck/UrlData.py
+  * Print information if a proxy was used.
+    Changed files: linkcheck/HttpUrlData.py
+  * Updated german documentation
+    Changed files: po/de.po
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.
