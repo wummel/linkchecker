@@ -163,8 +163,8 @@ class HtmlLogger (linkcheck.logger.Logger):
         self.fd.write(_(", col %d")%url_data.column)
         if not url_data.valid:
             # on errors show HTML and CSS validation for parent url
-            vhtml = validate_html % {'url': url_data.parent_url}
-            vcss = validate_css % {'url': url_data.parent_url}
+            vhtml = validate_html % {'uri': url_data.parent_url}
+            vcss = validate_css % {'uri': url_data.parent_url}
             self.fd.write(os.linesep)
             self.fd.write('(<a href="'+vhtml+'">HTML</a>)')
             self.fd.write(os.linesep)
