@@ -30,52 +30,7 @@ SQLTable = [
     ("'","''")
 ]
 
-TeXTable = []
-
-def stripHtmlComments(data):
-    "Remove <!-- ... --> HTML comments from data"
-    i = data.find("<!--")
-    while i!=-1:
-        j = data.find("-->", i)
-        if j == -1:
-            break
-        data = data[:i] + data[j+3:]
-        i = data.find("<!--")
-    return data
-
-
-def stripFenceComments(data):
-    "Remove # ... comments from data"
-    lines = data.split("\n")
-    ret = None
-    for line in lines:
-        if not re.compile("\s*#.*").match(line):
-            if ret:
-                ret += "\n" + line
-            else:
-                ret = line
-    return ret
-
-
-def rstripQuotes(s):
-    "Strip optional ending quotes"
-    if len(s)<1:
-        return s
-    if s[-1]=="\"" or s[-1]=="'":
-        s = s[:-1]
-    return s
-
-
-def lstripQuotes(s):
-    "Strip optional leading quotes"
-    if len(s)<1:
-        return s
-    if s[0]=="\"" or s[0]=="'":
-        s = s[1:]
-    return s
-
-
-def stripQuotes(s):
+def stripQuotes (s):
     "Strip optional quotes"
     if len(s)<2:
         return s
@@ -85,13 +40,11 @@ def stripQuotes(s):
         s = s[:-1]
     return s
 
-
-def indent(s, level):
+def indent (s, level):
     "indent each line of s with <level> spaces"
     return indentWith(s, level * " ")
 
-
-def indentWith(s, indent):
+def indentWith (s, indent):
     "indent each line of s with given indent argument"
     i = 0
     while i < len(s):
@@ -100,8 +53,7 @@ def indentWith(s, indent):
         i += 1
     return s
 
-
-def blocktext(s, width):
+def blocktext (s, width):
     "Adjust lines of s to be not wider than width"
     # split into lines
     s = s.split("\n")
@@ -119,8 +71,7 @@ def blocktext(s, width):
             line = line[i:].strip()
     return ret + line
 
-
-def getLastWordBoundary(s, width):
+def getLastWordBoundary (s, width):
     """Get maximal index i of a whitespace char in s with 0 < i < width.
     Note: if s contains no whitespace this returns width-1"""
     match = re.compile(".*\s").match(s[0:width])
@@ -128,47 +79,37 @@ def getLastWordBoundary(s, width):
         return match.end()
     return width-1
 
-
-def applyTable(table, s):
+def applyTable (table, s):
     "apply a table of replacement pairs to str"
     for mapping in table:
         s = s.replace(mapping[0], mapping[1])
     return s
 
-
-def texify(str):
-    "Escape special TeX chars and strings"
-    return applyTable(TeXTable, str)
-
-
-def sqlify(str):
+def sqlify (s):
     "Escape special SQL chars and strings"
-    if not str:
+    if not s:
         return "NULL"
-    return "'"+applyTable(SQLTable, str)+"'"
+    return "'%s'"%applyTable(SQLTable, s)
 
-
-def htmlify(str):
+def htmlify (s):
     "Escape special HTML chars and strings"
-    return applyTable(HtmlTable, str)
+    return applyTable(HtmlTable, s)
 
+def unhtmlify (s):
+    return applyTable(UnHtmlTable, s)
 
-def unhtmlify(str):
-    return applyTable(UnHtmlTable, str)
-
-
-def getLineNumber(str, index):
+def getLineNumber (s, index):
     "return the line number of str[index]"
     i=0
     if index<0: index=0
     line=1
     while i<index:
-        if str[i]=='\n': 
+        if s[i]=='\n':
             line += 1
         i += 1
     return line
 
-def paginate(text, lines=22):
+def paginate (text, lines=22):
     """print text in pages of lines size"""
     textlines = text.split("\n")
     curline = 1
@@ -180,13 +121,7 @@ def paginate(text, lines=22):
             print "press return to continue..."
             sys.stdin.read(1)
 
-
-if __name__=='__main__':
-    print htmlify("הצü")
-    print unhtmlify("&auml;&nbsp;&auml;&amp;auml;")
-
-
-def remove_markup(s):
+def remove_markup (s):
     mo = markup_re.search(s)
     while mo:
         s = s[0:mo.start()] + s[mo.end():]

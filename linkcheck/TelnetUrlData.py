@@ -30,10 +30,10 @@ _port = r"\d+"
 telnet_re =  re.compile(r"^telnet://(%s)?(?P<host>%s)(:(?P<port>%s))?(/)?$"%\
                         (_userpassword, _host, _port))
 
-class TelnetUrlData(HostCheckingUrlData):
+class TelnetUrlData (HostCheckingUrlData):
     "Url link with telnet scheme"
 
-    def buildUrl(self):
+    def buildUrl (self):
         HostCheckingUrlData.buildUrl(self)
         mo = telnet_re.match(self.urlName)
         if not mo:
@@ -45,8 +45,8 @@ class TelnetUrlData(HostCheckingUrlData):
         if not self.port:
             self.port = 23
 
-    def checkConnection(self, config):
-        HostCheckingUrlData.checkConnection(self, config)
+    def checkConnection (self):
+        HostCheckingUrlData.checkConnection(self)
         self.urlConnection = telnetlib.Telnet()
         self.urlConnection.open(self.host, self.port)
         if self.user:
@@ -56,4 +56,3 @@ class TelnetUrlData(HostCheckingUrlData):
                 self.urlConnection.read_until("Password: ", 10)
                 self.urlConnection.write(self.password+"\n")
         self.urlConnection.write("exit\n")
-

@@ -1,3 +1,9 @@
+linkchecker (1.5.0) unstable; urgency=low
+
+  * More syntax checking for host:port network locations
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sat,  4 May 2002 00:21:45 +0200
+
 linkchecker (1.4.3) unstable; urgency=low
 
   * UrlData.py: also catch Timeout and other exception on retrieving

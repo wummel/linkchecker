@@ -103,6 +103,7 @@ class Configuration(UserDict.UserDict):
         self["recursionlevel"] = 1
         self["wait"] = 0
         self["robotstxt"] = 1
+        self['cookies'] = 0
         self["strict"] = 0
         self["fileoutput"] = []
         # Logger configurations
@@ -186,6 +187,8 @@ class Configuration(UserDict.UserDict):
         self.robotsTxtCache_set = self.robotsTxtCache_set_NoThreads
         self.robotsTxtCacheLock = None
         self.incrementLinknumber = self.incrementLinknumber_NoThreads
+        self.setCookies = self.setCookies_NoThreads
+        self.storeCookies = self.storeCookies_NoThreads
         self.log_newUrl = self.log_newUrl_NoThreads
         self.logLock = None
         self.urls = []
@@ -215,6 +218,8 @@ class Configuration(UserDict.UserDict):
         self.robotsTxtCache_set = self.robotsTxtCache_set_Threads
         self.robotsTxtCacheLock = Lock()
         self.incrementLinknumber = self.incrementLinknumber_Threads
+        self.setCookies = self.setCookies_Threads
+        self.storeCookies = self.storeCookies_Threads
         self.log_newUrl = self.log_newUrl_Threads
         self.logLock = Lock()
         self.urls = Queue.Queue(0)
@@ -224,39 +229,47 @@ class Configuration(UserDict.UserDict):
 
     def hasMoreUrls_NoThreads(self):
         return len(self.urls)
-        
+
     def finished_NoThreads(self):
         return not self.hasMoreUrls_NoThreads()
 
     def finish_NoThreads(self):
         pass
-        
+
     def appendUrl_NoThreads(self, url):
         self.urls.append(url)
-        
+
     def getUrl_NoThreads(self):
         return self.urls.pop(0)
-        
+
     def checkUrl_NoThreads(self, url):
-        url.check(self)
-    
+        url.check()
+
     def urlCache_has_key_NoThreads(self, key):
         return self.urlCache.has_key(key)
-        
+
     def urlCache_get_NoThreads(self, key):
         return self.urlCache[key]
-        
+
     def urlCache_set_NoThreads(self, key, val):
         self.urlCache[key] = val
 
     def robotsTxtCache_has_key_NoThreads(self, key):
         return self.robotsTxtCache.has_key(key)
-        
+
     def robotsTxtCache_get_NoThreads(self, key):
         return self.robotsTxtCache[key]
-        
+
     def robotsTxtCache_set_NoThreads(self, key, val):
         self.robotsTxtCache[key] = val
+
+    def storeCookies_NoThreads(self, headers):
+        pass
+        # XXX
+
+    def setCookies_NoThreads(self, urlConnection):
+        pass
+        # XXX
 
     def newLogger(self, logtype, dict={}):
         args = {}
@@ -266,7 +279,7 @@ class Configuration(UserDict.UserDict):
 
     def incrementLinknumber_NoThreads(self):
         self['linknumber'] += 1
-    
+
     def log_newUrl_NoThreads(self, url):
         if not self["quiet"]: self["log"].newUrl(url)
         for log in self["fileoutput"]:
@@ -312,7 +325,7 @@ class Configuration(UserDict.UserDict):
         return self.urls.get()
 
     def checkUrl_Threads(self, url):
-        self.threader.startThread(url.check, (self,))
+        self.threader.startThread(url.check, ())
 
     def urlCache_has_key_Threads(self, key):
         ret = None
@@ -372,6 +385,20 @@ class Configuration(UserDict.UserDict):
                 log.newUrl(url)
         finally:
             self.logLock.release()
+
+    def storeCookies_Threads(self, headers):
+        try:
+            self.dataLock.acquire()
+            # XXX
+        finally:
+            self.dataLock.release()
+
+    def setCookies_Threads(self, urlConnection):
+        try:
+            self.dataLock.acquire()
+            # XXX
+        finally:
+            self.dataLock.release()
 
     def read(self, files = []):
         if not files:

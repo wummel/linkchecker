@@ -18,27 +18,24 @@
 import socket, linkcheck
 from UrlData import UrlData
 
-class HostCheckingUrlData(UrlData):
+class HostCheckingUrlData (UrlData):
     "Url link for which we have to connect to a specific host"
 
-    def __init__(self, urlName, recursionLevel, parentName = None,
-                 baseRef = None, line=0, name=""):
-        UrlData.__init__(self, urlName, recursionLevel,
+    def __init__ (self, urlName, recursionLevel, config, parentName=None,
+                  baseRef=None, line=0, name=""):
+        UrlData.__init__(self, urlName, recursionLevel, config,
 	                 parentName=parentName, baseRef=baseRef, line=line,
-			 name=name)
+		         name=name)
         self.host = None
         self.url = urlName
 
-
-    def buildUrl(self):
+    def buildUrl (self):
         # to avoid anchor checking
         self.urlTuple=None
 
-
-    def getCacheKey(self):
+    def getCacheKey (self):
         return "%s:%s" % (self.scheme, self.host)
 
-
-    def checkConnection(self, config):
+    def checkConnection (self):
         ip = socket.gethostbyname(self.host)
         self.setValid(self.host+"("+ip+") "+linkcheck._("found"))

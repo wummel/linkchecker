@@ -26,10 +26,10 @@ ExcList.extend([nntplib.error_reply,
                nntplib.error_proto,
                ])
 
-class NntpUrlData(UrlData):
+class NntpUrlData (UrlData):
     "Url link with NNTP scheme"
 
-    def buildUrl(self):
+    def buildUrl (self):
         # use nntp instead of news to comply with the unofficial internet
 	# draft of Alfred Gilman which unifies (s)news and nntp URLs
         # note: we use this only internally (for parsing and caching)
@@ -40,9 +40,8 @@ class NntpUrlData(UrlData):
         self.urlTuple = urlparse.urlparse(self.url)
         debug(BRING_IT_ON, self.urlTuple)
 
-
-    def checkConnection(self, config):
-        nntpserver = self.urlTuple[1] or config["nntpserver"]
+    def checkConnection (self):
+        nntpserver = self.urlTuple[1] or self.config["nntpserver"]
         if not nntpserver:
             self.setWarning(linkcheck._("No NNTP server specified, skipping this URL"))
             return
@@ -66,8 +65,7 @@ class NntpUrlData(UrlData):
                 # group name is the empty string
                 self.setWarning(linkcheck._("No newsgroup specified in NNTP URL"))
 
-
-    def _connectNntp(self, nntpserver):
+    def _connectNntp (self, nntpserver):
         """This is done only once per checking task."""
         timeout = 1
         while timeout:
@@ -84,6 +82,5 @@ class NntpUrlData(UrlData):
                     raise
         return nntp
 
-
-    def getCacheKey(self):
+    def getCacheKey (self):
         return self.url

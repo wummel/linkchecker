@@ -28,10 +28,10 @@ headers_re = re.compile(r"\?(.+)$")
 # or read entries from the registry (Windows systems)
 linkcheck.DNS.init_dns_resolver()
 
-class MailtoUrlData(HostCheckingUrlData):
+class MailtoUrlData (HostCheckingUrlData):
     "Url link with mailto scheme"
 
-    def buildUrl(self):
+    def buildUrl (self):
         HostCheckingUrlData.buildUrl(self)
         self.headers = {}
         self.adresses = AddressList(self._cutout_adresses()).addresslist
@@ -42,8 +42,7 @@ class MailtoUrlData(HostCheckingUrlData):
                     self.adresses.extend(AddressList(a).addresslist)
         Config.debug(BRING_IT_ON, "adresses: ", self.adresses)
 
-
-    def _cutout_adresses(self):
+    def _cutout_adresses (self):
         mo = headers_re.search(self.urlName)
         if mo:
             headers = cgi.parse_qs(mo.group(1), strict_parsing=1)
@@ -54,7 +53,7 @@ class MailtoUrlData(HostCheckingUrlData):
         return self.urlName[7:]
 
 
-    def checkConnection(self, config):
+    def checkConnection (self):
         """Verify a list of email adresses. If one adress fails,
         the whole list will fail.
         For each mail adress we check the following things:
@@ -97,7 +96,6 @@ class MailtoUrlData(HostCheckingUrlData):
                     type, value = sys.exc_info()[:2]
                     #print type,value
                 if smtpconnect: break
-            
             if not smtpconnect:
                 self.setWarning(linkcheck._("None of the MX mail hosts for %s accepts an "
                                   "SMTP connection: %s") % (host, str(value)))
@@ -107,7 +105,7 @@ class MailtoUrlData(HostCheckingUrlData):
             self.setValid(linkcheck._("found MX mail host %s") % mxrecord)
 
 
-    def _split_adress(self, adress):
+    def _split_adress (self, adress):
         split = adress.split("@", 1)
         if len(split)==2:
             if not split[1]:
@@ -117,12 +115,10 @@ class MailtoUrlData(HostCheckingUrlData):
             return (split[0], "localhost")
         raise linkcheck.error, linkcheck._("could not split the mail adress")
 
-
-    def closeConnection(self):
+    def closeConnection (self):
         try: self.urlConnection.quit()
         except: pass
         self.urlConnection = None
 
-
-    def getCacheKey(self):
+    def getCacheKey (self):
         return "%s:%s" % (self.scheme, str(self.adresses))

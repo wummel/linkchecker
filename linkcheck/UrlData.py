@@ -143,21 +143,26 @@ BasePattern = {
 
 #CommentPattern = re.compile("<!--.*?--\s*>", re.DOTALL)
 # Workaround for Python 2.0 re module bug
-CommentPatternBegin = re.compile("<!--")
-CommentPatternEnd = re.compile("--\s*>")
+CommentPatternBegin = re.compile(r"<!--")
+CommentPatternEnd = re.compile(r"--\s*>")
+
+# regular expression for port numbers
+port_re = re.compile(r"\d+")
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
 
-    def __init__(self,
-                 urlName,
-                 recursionLevel,
-                 parentName = None,
-                 baseRef = None,
-                 line = 0,
-		 name = ""):
+    def __init__ (self,
+                  urlName,
+                  recursionLevel,
+                  config,
+                  parentName = None,
+                  baseRef = None,
+                  line = 0,
+		  name = ""):
         self.urlName = urlName
         self.recursionLevel = recursionLevel
+        self.config = config
         self.parentName = parentName
         self.baseRef = baseRef
         self.errorString = linkcheck._("Error")
@@ -180,30 +185,30 @@ class UrlData:
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
 
-    def setError(self, s):
+    def setError (self, s):
         self.valid=0
         self.errorString = linkcheck._("Error")+": "+s
 
-    def setValid(self, s):
+    def setValid (self, s):
         self.valid=1
         self.validString = linkcheck._("Valid")+": "+s
 
-    def isHtml(self):
+    def isHtml (self):
         return 0
 
-    def setWarning(self, s):
+    def setWarning (self, s):
         if self.warningString:
             self.warningString += "\n" + s
         else:
             self.warningString = s
 
-    def setInfo(self, s):
+    def setInfo (self, s):
         if self.infoString:
             self.infoString += "\n"+s
         else:
             self.infoString = s
 
-    def copyFrom(self, urlData):
+    def copyFrom (self, urlData):
         self.errorString = urlData.errorString
         self.validString = urlData.validString
         self.warningString = urlData.warningString
@@ -212,7 +217,7 @@ class UrlData:
         self.downloadtime = urlData.downloadtime
 
 
-    def buildUrl(self):
+    def buildUrl (self):
         if self.baseRef:
             self.url = urlparse.urljoin(self.baseRef, self.urlName)
         elif self.parentName:
@@ -227,19 +232,25 @@ class UrlData:
         self.url = urlparse.urlunparse(self.urlTuple)
         # resolve HTML entities
         self.url = StringUtil.unhtmlify(self.url)
+        # check host:port syntax
+        host = self.urlTuple[1]
+        if ":" in host:
+            host,port = host.split(":", 1)
+            if not port_re.match(port):
+                raise linkcheck.error("URL has invalid port number")
 
 
-    def logMe(self, config):
+    def logMe (self):
         debug(BRING_IT_ON, "logging url")
-        config.incrementLinknumber()
-        if config["verbose"] or not self.valid or \
-           (self.warningString and config["warnings"]):
-            config.log_newUrl(self)
+        self.config.incrementLinknumber()
+        if self.config["verbose"] or not self.valid or \
+           (self.warningString and self.config["warnings"]):
+            self.config.log_newUrl(self)
 
 
-    def check(self, config):
+    def check (self):
         try:
-            self._check(config)
+            self._check()
         except KeyboardInterrupt:
             pass
         except (socket.error, select.error):
@@ -251,52 +262,53 @@ class UrlData:
         except test_support.Error:
             raise
         except:
+            type, value = sys.exc_info()[:2]
             internal_error()
 
 
-    def _check(self, config):
+    def _check (self):
         debug(BRING_IT_ON, "Checking", self)
-        if self.recursionLevel and config['wait']:
-            debug(BRING_IT_ON, "sleeping for", config['wait'], "seconds")
-            time.sleep(config['wait'])
+        if self.recursionLevel and self.config['wait']:
+            debug(BRING_IT_ON, "sleeping for", self.config['wait'], "seconds")
+            time.sleep(self.config['wait'])
         t = time.time()
         # check syntax
         debug(BRING_IT_ON, "checking syntax")
         if not self.urlName or self.urlName=="":
             self.setError(linkcheck._("URL is null or empty"))
-            self.logMe(config)
+            self.logMe()
             return
         try:
 	    self.buildUrl()
-            self.extern = self._getExtern(config)
+            self.extern = self._getExtern()
         except tuple(ExcList):
             type, value, tb = sys.exc_info()
             debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
             self.setError(str(value))
-            self.logMe(config)
+            self.logMe()
             return
 
         # check the cache
         debug(BRING_IT_ON, "checking cache")
-        if config.urlCache_has_key(self.getCacheKey()):
-            self.copyFrom(config.urlCache_get(self.getCacheKey()))
+        if self.config.urlCache_has_key(self.getCacheKey()):
+            self.copyFrom(self.config.urlCache_get(self.getCacheKey()))
             self.cached = 1
-            self.logMe(config)
+            self.logMe()
             return
-        
+
         # apply filter
         debug(BRING_IT_ON, "extern =", self.extern)
-        if self.extern and (config["strict"] or self.extern[1]):
+        if self.extern and (self.config["strict"] or self.extern[1]):
             self.setWarning(
                   linkcheck._("outside of domain filter, checked only syntax"))
-            self.logMe(config)
+            self.logMe()
             return
 
         # check connection
         debug(BRING_IT_ON, "checking connection")
         try:
-            self.checkConnection(config)
-            if self.urlTuple and config["anchors"]:
+            self.checkConnection()
+            if self.urlTuple and self.config["anchors"]:
                 self.checkAnchors(self.urlTuple[5])
         except tuple(ExcList):
             type, value, tb = sys.exc_info()
@@ -304,7 +316,7 @@ class UrlData:
             self.setError(str(value))
 
         # check content
-        warningregex = config["warningregex"]
+        warningregex = self.config["warningregex"]
         if warningregex and self.valid:
             debug(BRING_IT_ON, "checking content")
             try:  self.checkContent(warningregex)
@@ -316,19 +328,19 @@ class UrlData:
         self.checktime = time.time() - t
         # check recursion
         debug(BRING_IT_ON, "checking recursion")
-        if self.allowsRecursion(config):
-            try: self.parseUrl(config)
+        if self.allowsRecursion():
+            try: self.parseUrl()
             except tuple(ExcList):
                 type, value, tb = sys.exc_info()
                 debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
                 self.setError(str(value))
         self.closeConnection()
-        self.logMe(config)
+        self.logMe()
         debug(BRING_IT_ON, "caching")
-        self.putInCache(config)
+        self.putInCache()
 
 
-    def closeConnection(self):
+    def closeConnection (self):
         # brute force closing
         if self.urlConnection is not None:
             try: self.urlConnection.close()
@@ -337,32 +349,32 @@ class UrlData:
             self.urlConnection = None
 
 
-    def putInCache(self, config):
+    def putInCache (self):
         cacheKey = self.getCacheKey()
         if cacheKey and not self.cached:
-            config.urlCache_set(cacheKey, self)
+            self.config.urlCache_set(cacheKey, self)
             self.cached = 1
 
 
-    def getCacheKey(self):
+    def getCacheKey (self):
         if self.urlTuple:
             return urlparse.urlunparse(self.urlTuple)
         return None
 
 
-    def checkConnection(self, config):
+    def checkConnection (self):
         self.urlConnection = urllib.urlopen(self.url)
 
 
-    def allowsRecursion(self, config):
+    def allowsRecursion (self):
         return self.valid and \
                self.isHtml() and \
                not self.cached and \
-               self.recursionLevel < config["recursionlevel"] and \
+               self.recursionLevel < self.config["recursionlevel"] and \
                not self.extern
 
 
-    def checkAnchors(self, anchor):
+    def checkAnchors (self, anchor):
         if not (anchor!="" and self.isHtml() and self.valid):
             return
         self.getContent()
@@ -372,30 +384,30 @@ class UrlData:
         self.setWarning("anchor #"+anchor+" not found")
 
 
-    def _getExtern(self, config):
-        if not (config["externlinks"] or config["internlinks"]):
+    def _getExtern (self):
+        if not (self.config["externlinks"] or self.config["internlinks"]):
             return 0
         # deny and allow external checking
-        if config["denyallow"]:
-            for pat, strict in config["externlinks"]:
+        if self.config["denyallow"]:
+            for pat, strict in self.config["externlinks"]:
                 if pat.search(self.url):
                     return (1, strict)
-            for pat in config["internlinks"]:
+            for pat in self.config["internlinks"]:
                 if pat.search(self.url):
                     return 0
             return 0
         else:
-            for pat in config["internlinks"]:
+            for pat in self.config["internlinks"]:
                 if pat.search(self.url):
                     return 0
-            for pat, strict in config["externlinks"]:
+            for pat, strict in self.config["externlinks"]:
                 if pat.search(self.url):
                     return (1, strict)
             return (1,0)
         raise linkcheck.error, "internal error in UrlData._getExtern"
 
 
-    def getContent(self):
+    def getContent (self):
         """Precondition: urlConnection is an opened URL."""
         if not self.has_content:
             self.has_content = 1
@@ -406,7 +418,7 @@ class UrlData:
         return self.data
 
 
-    def init_html_comments(self):
+    def init_html_comments (self):
         # if we find an URL inside HTML comments we ignore it
         # so build a list of intervalls which are HTML comments
         index = 0
@@ -426,20 +438,20 @@ class UrlData:
         debug(NIGHTMARE, "comment spans", self.html_comments)
 
 
-    def is_in_comment(self, index):
+    def is_in_comment (self, index):
         for low,high in self.html_comments:
             if low < index < high:
                 return 1
         return 0
 
 
-    def checkContent(self, warningregex):
+    def checkContent (self, warningregex):
         match = warningregex.search(self.getContent())
         if match:
             self.setWarning("Found '"+match.group()+"' in link contents")
 
 
-    def parseUrl(self, config):
+    def parseUrl (self):
         debug(BRING_IT_ON, "Parsing recursively into", self)
         # search for a possible base reference
         bases = self.searchInForTag(BasePattern)
@@ -454,11 +466,11 @@ class UrlData:
         for pattern in LinkPatterns:
             urls = self.searchInForTag(pattern)
             for url,line,name in urls:
-                config.appendUrl(GetUrlDataFrom(url,
-                        self.recursionLevel+1, self.url, baseRef, line, name))
+                self.config.appendUrl(GetUrlDataFrom(url,
+                        self.recursionLevel+1, self.config, self.url, baseRef, line, name))
 
 
-    def searchInForTag(self, pattern):
+    def searchInForTag (self, pattern):
         debug(HURT_ME_PLENTY, "Searching for tag", `pattern['tag']`,
 	      "attribute", `pattern['attr']`)
         urls = []
@@ -481,7 +493,7 @@ class UrlData:
         return urls
 
 
-    def searchInForName(self, tag, attr, start, end):
+    def searchInForName (self, tag, attr, start, end):
         name=""
         if tag=='img':
             name = linkname.image_name(self.getContent()[start:end])
@@ -490,7 +502,7 @@ class UrlData:
         return name
 
 
-    def __str__(self):
+    def __str__ (self):
         return ("%s link\n"
 	       "urlname=%s\n"
 	       "parentName=%s\n"
@@ -505,8 +517,8 @@ class UrlData:
 	     self.name))
 
 
-    def _getUserPassword(self, config):
-        for auth in config["authentication"]:
+    def _getUserPassword (self):
+        for auth in self.config["authentication"]:
             if auth['pattern'].match(self.url):
                 return auth['user'], auth['password']
         return None,None
@@ -523,7 +535,7 @@ from TelnetUrlData import TelnetUrlData
 from NntpUrlData import NntpUrlData
 
 
-def get_absolute_url(urlName, baseRef, parentName):
+def get_absolute_url (urlName, baseRef, parentName):
     """search for the absolute url"""
     if urlName and ":" in urlName:
         return urlName.lower()
@@ -534,8 +546,8 @@ def get_absolute_url(urlName, baseRef, parentName):
     return ""
 
 
-def GetUrlDataFrom(urlName, recursionLevel, parentName=None,
-                   baseRef=None, line=0, name=None):
+def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,
+                    baseRef=None, line=0, name=None):
     url = get_absolute_url(urlName, baseRef, parentName)
     # test scheme
     if re.search("^http:", url):
@@ -560,5 +572,5 @@ def GetUrlDataFrom(urlName, recursionLevel, parentName=None,
     # assume local file
     else:
         klass = FileUrlData
-    return klass(urlName, recursionLevel, parentName, baseRef, line, name)
-
+    return klass(urlName, recursionLevel, config, parentName, baseRef, line,
+                 name)

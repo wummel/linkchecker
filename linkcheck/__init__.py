@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-class error(Exception):
+class error (Exception):
     pass
 
 # i18n suppport
@@ -39,7 +39,7 @@ debug = Config.debug
 
 
 # main check function
-def checkUrls(config):
+def checkUrls (config):
     """ checkUrls gets a complete configuration object as parameter where all
     runtime-dependent options are stored.
     If you call checkUrls more than once, you can specify different

@@ -17,6 +17,6 @@
 
 from UrlData import UrlData
 
-class GopherUrlData(UrlData):
+class GopherUrlData (UrlData):
     "Url link with gopher scheme"
     pass

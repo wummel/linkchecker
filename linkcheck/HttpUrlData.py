@@ -24,11 +24,11 @@ from urllib import splittype, splithost, splituser, splitpasswd
 from debuglevels import *
 
 
-class HttpUrlData(UrlData):
+class HttpUrlData (UrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
 
-    def checkConnection(self, config):
+    def checkConnection (self):
         """
         Check a URL with HTTP protocol.
         Here is an excerpt from RFC 1945 with common response codes:
@@ -70,27 +70,26 @@ class HttpUrlData(UrlData):
         | extension-code
         """
 
-        self._setProxy(config["proxy"].get(self.scheme))
-        self.mime = None
+        self._setProxy(self.config["proxy"].get(self.scheme))
+        self.headers = None
         self.auth = None
         self.proxyauth = None
         if not self.urlTuple[2]:
             self.setWarning(linkcheck._("Missing '/' at end of URL"))
-        if config["robotstxt"] and not self.robotsTxtAllowsUrl(config):
+        if self.config["robotstxt"] and not self.robotsTxtAllowsUrl():
             self.setWarning(linkcheck._("Access denied by robots.txt, checked only syntax"))
             return
 
         # first try
-        status, statusText, self.mime = self._getHttpRequest()
-        Config.debug(BRING_IT_ON, status, statusText, self.mime)
+        status, statusText, self.headers = self._getHttpRequest()
+        Config.debug(BRING_IT_ON, status, statusText, self.headers)
         has301status = 0
         while 1:
 
             # proxy enforcement (overrides standard proxy)
-            if status == 305 and self.mime:
-                self._setProxy(self.mime.get("Location"))
-                status, statusText, self.mime = self._getHttpRequest()
-
+            if status == 305 and self.headers:
+                self._setProxy(self.headers.getheader("Location"))
+                status, statusText, self.headers = self._getHttpRequest()
             # proxy authentication
             if status==407:
                 if not (self.proxyuser and self.proxypass):
@@ -99,34 +98,33 @@ class HttpUrlData(UrlData):
                     import base64
                     self.proxyauth = "Basic "+base64.encodestring("%s:%s" % \
 			(self.proxyuser, self.proxypass))
-                    status, statusText, self.mime = self._getHttpRequest()
-
+                    status, statusText, self.headers = self._getHttpRequest()
             # follow redirections
             tries = 0
             redirected = self.urlName
-            while status in [301,302] and self.mime and tries < 5:
+            while status in [301,302] and self.headers and tries < 5:
                 has301status = (status==301)
-                newurl = self.mime.get("Location", self.mime.get("Uri", ""))
+                
+                newurl = self.headers.getheader("Location",
+                                    self.headers.getheader("Uri", ""))
                 redirected = urlparse.urljoin(redirected, newurl)
                 self.urlTuple = urlparse.urlparse(redirected)
-                status, statusText, self.mime = self._getHttpRequest()
-                Config.debug(BRING_IT_ON, "Redirected", self.mime)
+                status, statusText, self.headers = self._getHttpRequest()
+                Config.debug(BRING_IT_ON, "Redirected", self.headers)
                 tries += 1
             if tries >= 5:
                 self.setError(linkcheck._("too much redirections (>= 5)"))
                 return
-
             # user authentication
             if status==401:
 	        if not self.auth:
                     import base64
-                    _user, _password = self._getUserPassword(config)
+                    _user, _password = self._getUserPassword()
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
-                status, statusText, self.mime = self._getHttpRequest()
+                status, statusText, self.headers = self._getHttpRequest()
                 Config.debug(BRING_IT_ON, "Authentication", _user, "/",
 		             _password)
-
             # some servers get the HEAD request wrong:
             # - Netscape Enterprise Server (no HEAD implemented, 404 error)
             # - Hyperwave Information Server (501 error)
@@ -138,24 +136,23 @@ class HttpUrlData(UrlData):
                 # HEAD method not allowed ==> try get
                 self.setWarning(linkcheck._("Server does not support HEAD request (got "
                                   "%d status), falling back to GET")%status)
-                status, statusText, self.mime = self._getHttpRequest("GET")
-            elif status>=400 and self.mime:
-                server = self.mime.getheader("Server")
+                status, statusText, self.headers = self._getHttpRequest("GET")
+            elif status>=400 and self.headers:
+                server = self.headers.getheader("Server")
                 if server and self.netscape_re.search(server):
                     self.setWarning(linkcheck._("Netscape Enterprise Server with no "
                                       "HEAD support, falling back to GET"))
-                    status,statusText,self.mime = self._getHttpRequest("GET")
-            elif self.mime:
-                type = self.mime.gettype()
-                poweredby = self.mime.getheader('X-Powered-By')
-                server = self.mime.getheader('Server')
+                    status,statusText,self.headers = self._getHttpRequest("GET")
+            elif self.headers:
+                type = self.headers.gettype()
+                poweredby = self.headers.getheader('X-Powered-By')
+                server = self.headers.getheader('Server')
                 if type=='application/octet-stream' and \
                    ((poweredby and poweredby[:4]=='Zope') or \
                     (server and server[:4]=='Zope')):
                     self.setWarning(linkcheck._("Zope Server cannot determine MIME type"
                                       " with HEAD, falling back to GET"))
-                    status,statusText,self.mime = self._getHttpRequest("GET")
-
+                    status,statusText,self.headers = self._getHttpRequest("GET")
             if status not in [301,302]: break
 
         effectiveurl = urlparse.urlunparse(self.urlTuple)
@@ -183,9 +180,11 @@ class HttpUrlData(UrlData):
                 self.setValid(`status`+" "+statusText)
             else:
                 self.setValid("OK")
+            # store cookies for valid links
+            if self.config['cookies']:
+                self.config.storeCookies(self.headers)
 
-
-    def _setProxy(self, proxy):
+    def _setProxy (self, proxy):
         self.proxy = proxy
         self.proxyuser = None
         self.proxypass = None
@@ -198,8 +197,7 @@ class HttpUrlData(UrlData):
             if self.proxyuser:
                 self.proxyuser, self.proxypass = splitpasswd(self.proxyuser)
 
-
-    def _getHttpRequest(self, method="HEAD"):
+    def _getHttpRequest (self, method="HEAD"):
         """Put request and return (status code, status text, mime object).
            host can be host:port format
 	"""
@@ -226,23 +224,23 @@ class HttpUrlData(UrlData):
         if self.parentName:
             self.urlConnection.putheader("Referer", self.parentName)
         self.urlConnection.putheader("User-agent", Config.UserAgent)
+        if self.config['cookies']:
+            self.config.setCookies(self.urlConnection)
         self.urlConnection.endheaders()
         return self.urlConnection.getreply()
 
-
-    def _getHTTPObject(self, host):
+    def _getHTTPObject (self, host):
         h = httplib.HTTP()
         h.set_debuglevel(Config.DebugLevel)
         h.connect(host)
         return h
 
-
-    def getContent(self):
+    def getContent (self):
         if not self.has_content:
             self.has_content = 1
             self.closeConnection()
             t = time.time()
-            status, statusText, self.mime = self._getHttpRequest("GET")
+            status, statusText, self.headers = self._getHttpRequest("GET")
             self.urlConnection = self.urlConnection.getfile()
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
@@ -250,29 +248,26 @@ class HttpUrlData(UrlData):
             Config.debug(HURT_ME_PLENTY, "comment spans", self.html_comments)
         return self.data
 
-
-    def isHtml(self):
-        if not (self.valid and self.mime):
+    def isHtml (self):
+        if not (self.valid and self.headers):
             return 0
-        return self.mime.gettype()[:9]=="text/html"
+        return self.headers.gettype()[:9]=="text/html"
 
-
-    def robotsTxtAllowsUrl(self, config):
+    def robotsTxtAllowsUrl (self):
         roboturl = "%s://%s/robots.txt" % self.urlTuple[0:2]
         Config.debug(HURT_ME_PLENTY, "robots.txt url", roboturl)
         Config.debug(HURT_ME_PLENTY, "url", self.url)
-        if not config.robotsTxtCache_has_key(roboturl):
+        if not self.config.robotsTxtCache_has_key(roboturl):
             rp = robotparser.RobotFileParser()
             rp.set_url(roboturl)
             rp.read()
-            config.robotsTxtCache_set(roboturl, rp)
-        rp = config.robotsTxtCache_get(roboturl)
+            self.config.robotsTxtCache_set(roboturl, rp)
+        rp = self.config.robotsTxtCache_get(roboturl)
         return rp.can_fetch(Config.UserAgent, self.url)
 
-
-    def closeConnection(self):
-        if self.mime:
-            try: self.mime.close()
-            except: pass
-            self.mime = None
+    def closeConnection (self):
+        #if self.headers:
+        #    try: self.headers.close()
+        #    except: pass
+        #    self.headers = None
         UrlData.closeConnection(self)

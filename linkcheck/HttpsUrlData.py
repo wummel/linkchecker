@@ -22,19 +22,18 @@ import linkcheck, Config
 _supportHttps = hasattr(httplib, "HTTPS")
 
 
-class HttpsUrlData(HttpUrlData):
+class HttpsUrlData (HttpUrlData):
     """Url link with https scheme"""
 
-    def _getHTTPObject(self, host):
+    def _getHTTPObject (self, host):
         h = httplib.HTTPS()
         h.set_debuglevel(Config.DebugLevel)
         h.connect(host)
         return h
 
-
-    def _check(self, config):
+    def _check (self):
         if _supportHttps:
-            HttpUrlData._check(self, config)
+            HttpUrlData._check(self)
         else:
             self.setWarning(linkcheck._("HTTPS url ignored"))
-            self.logMe(config)
+            self.logMe()

@@ -86,16 +86,18 @@ _url_re = re.compile(_url, re.VERBOSE)
 class FileUrlData (UrlData):
     "Url link with file scheme"
 
-    def __init__(self,
-                 urlName, 
-                 recursionLevel, 
-                 parentName = None,
-                 baseRef = None, line=0, name=""):
+    def __init__ (self,
+                  urlName,
+                  config,
+                  recursionLevel,
+                  parentName = None,
+                  baseRef = None, line=0, name=""):
         UrlData.__init__(self,
-                 urlName, 
-                 recursionLevel,
-                 parentName=parentName,
-                 baseRef=baseRef, line=line, name=name)
+                  urlName,
+                  config,
+                  recursionLevel,
+                  parentName=parentName,
+                  baseRef=baseRef, line=line, name=name)
         if not parentName and not baseRef and \
            not re.compile("^file:").search(self.urlName):
             self.urlName = os.path.expanduser(self.urlName)
@@ -136,18 +138,18 @@ class FileUrlData (UrlData):
         return None
 
 
-    def parseUrl (self, config):
+    def parseUrl (self):
         for key,ro in extensions.items():
             if ro.search(self.url):
-                return getattr(self, "parse_"+key)(config)
+                return getattr(self, "parse_"+key)()
         for key,ro in contents.items():
             if ro.search(self.getContent()):
-                return getattr(self, "parse_"+key)(config)
+                return getattr(self, "parse_"+key)()
 
-    def parse_html (self, config):
-        UrlData.parseUrl(self, config)
+    def parse_html (self):
+        UrlData.parseUrl(self)
 
-    def parse_opera (self, config):
+    def parse_opera (self):
         # parse an opera bookmark file
         name = ""
         lineno = 0
@@ -159,11 +161,11 @@ class FileUrlData (UrlData):
             elif line.startswith("URL="):
                 url = line[4:]
                 if url:
-                    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url,
-                        self.recursionLevel+1, self.url, None, lineno, name))
+                    self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url,
+                        self.recursionLevel+1, self.config, self.url, None, lineno, name))
                 name = ""
 
-    def parse_text (self, config):
+    def parse_text (self):
         lineno = 0
         for line in self.getContent().splitlines():
             lineno += 1
@@ -171,8 +173,8 @@ class FileUrlData (UrlData):
             while 1:
                 mo = _url_re.search(line, i)
                 if not mo: break
-                config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(mo.group(),
-                        self.recursionLevel+1, self.url, None, lineno, ""))
+                self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(mo.group(),
+                        self.recursionLevel+1, self.config, self.url, None, lineno, ""))
                 i = mo.end()
 
         return

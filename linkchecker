@@ -33,6 +33,9 @@ For single-letter option arguments the space is not a necessity. So
 '-o colored' is the same as '-ocolored'.
 -a, --anchors
         Check HTTP anchor references. Default is don't check anchors.
+-C, --cookies
+        Accept and send HTTP cookies according to RFC 2109. See the
+        FAQ for security-related questions about cookies.
 -d, --denyallow
         Swap checking order to extern/intern. Default checking order
         is intern/extern.
@@ -137,11 +140,11 @@ o Local files and syntactic sugar on the command line:
       linkchecker -r0 ftp.linux.org
 """)
 
-def printVersion():
+def printVersion ():
     print linkcheck.Config.AppInfo
     sys.exit(0)
 
-def printHelp():
+def printHelp ():
     if os.name!='posix':
         StringUtil.paginate(Usage+"\n"+Notes+"\n"+Examples)
     else:
@@ -150,7 +153,7 @@ def printHelp():
 	print Examples
     sys.exit(0)
 
-def printUsage(msg):
+def printUsage (msg):
     sys.stderr.write(linkcheck._("Error: %s\n") % msg)
     sys.stderr.write(linkcheck._("Execute 'linkchecker -h' for help\n"))
     sys.exit(1)
@@ -160,9 +163,10 @@ def printUsage(msg):
 try:
     # Note: cut out the name of the script
     options, args = getopt.getopt(sys.argv[1:],
-    "adDe:f:F:hIi:N:o:p:P:qr:Rst:u:VvwW:", # short options
+    "adCDe:f:F:hIi:N:o:p:P:qr:Rst:u:VvwW:", # short options
     ["anchors",                       # long options
     "config=",
+    "cookies",
     "debug", 
     "extern=",
     "file-output=",
@@ -310,6 +314,9 @@ for opt,arg in options:
         config["warningregex"] = re.compile(arg)
         config["warnings"] = 1
 
+    elif opt=="-C" or opt=="--cookies":
+        config['cookies'] = 1
+
 if constructauth:
     config["authentication"].insert(0, {'pattern': re.compile(".*"),
                                         'user': _user,
@@ -337,7 +344,7 @@ for url in args:
             url = "ftp://"+url
         elif re.compile("^www\.").match(url):
             url = "http://"+url
-    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0))
+    config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url, 0, config))
 
 # check the urls
 linkcheck.checkUrls(config)

@@ -25,13 +25,13 @@ ExcList.extend([
    ftplib.error_proto,
 ])
 
-class FtpUrlData(UrlData):
+class FtpUrlData (UrlData):
     """
-    Url link with ftp scheme. 
+    Url link with ftp scheme.
     """
 
-    def checkConnection(self, config):
-        _user, _password = self._getUserPassword(config)
+    def checkConnection (self):
+        _user, _password = self._getUserPassword()
         if _user is None or _password is None:
             raise linkcheck.error, linkcheck._("No user or password found")
         try:
@@ -45,7 +45,7 @@ class FtpUrlData(UrlData):
         self.setInfo(info)
 
 
-    def closeConnection(self):
+    def closeConnection (self):
         try: self.urlConnection.quit()
         except: pass
         self.urlConnection = None
