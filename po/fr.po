@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
-"POT-Creation-Date: Sun Jan  4 09:54:39 2004\n"
+"POT-Creation-Date: Sun Jan  4 10:23:05 2004\n"
 "PO-Revision-Date: 2004-01-03 23:24+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: fr <fr@li.org>\n"
@@ -183,10 +183,10 @@ msgstr ""
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
-msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
+msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
-msgid "keyboard interrupt; waiting for %d active threads to finish"
+msgid "%5d urls queued, %4d links checked, %2d active threads, runtime %s"
 msgstr ""
 
 msgid "unsupported language"

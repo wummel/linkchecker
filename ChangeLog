@@ -3,6 +3,8 @@
     Changed: linkchecker, po/*.po
   * use Set() instead of hashmap
     Changed: linkcheck/Config.py
+  * fix mime-type checking to allow parsing of external stylesheets
+    Changed: linkcheck/HttpUrlData.py
 
 1.10.2 (release 3.1.2004)
   * fixed CGI safe_url pattern, it was too strict
