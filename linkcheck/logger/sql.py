@@ -66,28 +66,45 @@ class SQLLogger (linkcheck.logger.Logger):
         """store url check info into the database"""
         if self.fd is None:
             return
-        self.fd.write("insert into %s(urlname,recursionlevel,parentname,"
-              "baseref,valid,result,warning,info,url,line,col,name,"
-              "checktime,dltime,dlsize,cached) values "
-              "(%s,%d,%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%d,%d,%d,%d)%s" % \
-              (self.dbname,
-               sqlify(url_data.base_url),
-               url_data.recursionLevel,
-               sqlify((url_data.parent_url or "")),
-               sqlify(url_data.base_ref),
-               url_data.valid,
-               sqlify(url_data.result),
-               sqlify(os.linesep.join(url_data.warning)),
-               sqlify(os.linesep.join(url_data.info)),
-               sqlify(linkcheck.url.url_quote(url_data.url)),
-               url_data.line,
-               url_data.column,
-               sqlify(url_data.name),
-               url_data.checktime,
-               url_data.dltime,
-               url_data.dlsize,
-               url_data.cached,
-               self.separator))
+        self.fd.write("insert into %(table)s(urlname,recursionlevel,"
+              "parentname,baseref,valid,result,warning,info,url,line,col,"
+              "name,checktime,dltime,dlsize,cached) values ("
+              "%(base_url)s,"
+              "%(recursion_level)d,"
+              "%(url_parent)s,"
+              "%(base_ref)s,"
+              "%(valid)s,"
+              "%(result)s,"
+              "%(warning)s,"
+              "%(info)s,"
+              "%(url)s,"
+              "%(line)d,"
+              "%(column)d,"
+              "%(name)s,"
+              "%(checktime)d,"
+              "%(dltime)d,"
+              "%(dlsize)d,"
+              "%(cached)s"
+              ")%(separator)s" % \
+              {'table': self.dbname,
+               'base_url': sqlify(url_data.base_url),
+               'recursion_level': url_data.recursion_level,
+               'url_parent': sqlify((url_data.parent_url or "")),
+               'base_ref': sqlify((url_data.base_ref or "")),
+               'valid': url_data.valid,
+               'result': sqlify(url_data.result),
+               'warning': sqlify(os.linesep.join(url_data.warning)),
+               'info': sqlify(os.linesep.join(url_data.info)),
+               'url': sqlify(linkcheck.url.url_quote(url_data.url)),
+               'line': url_data.line,
+               'column': url_data.column,
+               'name': sqlify(url_data.name),
+               'checktime': url_data.checktime,
+               'dltime': url_data.dltime,
+               'dlsize': url_data.dlsize,
+               'cached': url_data.cached,
+               'separator': self.separator,
+              })
         self.fd.write(os.linesep)
         self.flush()
 

@@ -79,8 +79,8 @@ class CSVLogger (linkcheck.logger.Logger):
         """print csv formatted url check info"""
         if self.fd is None:
             return
-        row = [url_data.base_url, url_data.recursionLevel,
-               url_data.parent_url or "", url_data.base_ref,
+        row = [url_data.base_url, url_data.recursion_level,
+               url_data.parent_url or "", url_data.base_ref or "",
                url_data.result,
                os.linesep.join(url_data.warning),
                os.linesep.join(url_data.info),
