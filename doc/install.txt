@@ -18,10 +18,16 @@ Requirements for Unix/Linux or Mac OS X
 1. You need a standard GNU development environment with
    
    a) C compiler (for example the GNU C Compiler gcc)
+      
       Depending on your distribution, several development packages
       might be needed to provide a fully functional C development
       environment.
+   
    b) gettext
+      
+      Note for developers: if you want to regenerate the .pot template
+      from the source files, you will need xgettext with Python support.
+      This is available in gettext >= 0.12.
 
 2. Python >= 2.3 from http://www.python.org/ with zlib support
    
@@ -57,6 +63,7 @@ Setup for Unix/Linux or Mac OS X
    Be sure to have installed all required Unix/Linux software listed above.
 
 2. Compile Python modules
+   
    Run ``python setup.py build`` to compile the Python files.
    For help about the setup.py script options, run
    ``python setup.py --help``.

@@ -39,12 +39,17 @@ also read the <a class="reference" href="upgrading.html">upgrading documentation
 <h1><a name="requirements-for-unix-linux-or-mac-os-x">Requirements for Unix/Linux or Mac OS X</a></h1>
 <ol class="arabic">
 <li><p class="first">You need a standard GNU development environment with</p>
-<ol class="loweralpha simple">
-<li>C compiler (for example the GNU C Compiler gcc)
-Depending on your distribution, several development packages
+<ol class="loweralpha">
+<li><p class="first">C compiler (for example the GNU C Compiler gcc)</p>
+<p>Depending on your distribution, several development packages
 might be needed to provide a fully functional C development
-environment.</li>
-<li>gettext</li>
+environment.</p>
+</li>
+<li><p class="first">gettext</p>
+<p>Note for developers: if you want to regenerate the .pot template
+from the source files, you will need xgettext with Python support.
+This is available in gettext &gt;= 0.12.</p>
+</li>
 </ol>
 </li>
 <li><p class="first">Python &gt;= 2.3 from <a class="reference" href="http://www.python.org/">http://www.python.org/</a> with zlib support</p>
@@ -79,8 +84,8 @@ Be sure to install in the given order:<ol class="loweralpha">
 <li><p class="first">Install check</p>
 <p>Be sure to have installed all required Unix/Linux software listed above.</p>
 </li>
-<li><p class="first">Compile Python modules
-Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span></tt> to compile the Python files.
+<li><p class="first">Compile Python modules</p>
+<p>Run <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build</span></tt> to compile the Python files.
 For help about the setup.py script options, run
 <tt class="literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">--help</span></tt>.
 The CC environment variable is checked before compilation, so you can
@@ -175,7 +180,7 @@ they are working</li>
 </div>
 <hr class="footer" />
 <div class="footer">
-Generated on: 2004-09-05 10:53 UTC.
+Generated on: 2004-09-20 09:21 UTC.
 </div>
 </body>
 </html>
