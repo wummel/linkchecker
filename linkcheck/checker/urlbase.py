@@ -413,15 +413,16 @@ class UrlBase (object):
         """
         Close an opened url connection.
         """
-        # brute force closing
-        if self.url_connection is not None:
-            try:
-                self.url_connection.close()
-            except:
-                # ignore close errors
-                pass
-            # release variable for garbage collection
-            self.url_connection = None
+        if self.url_connection is None:
+            # no connection is open
+            return
+        try:
+            self.url_connection.close()
+        except:
+            # ignore close errors
+            pass
+        # release variable for garbage collection
+        self.url_connection = None
 
     def check_connection (self):
         """
