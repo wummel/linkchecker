@@ -18,6 +18,8 @@
 import re,time,urlparse
 from linkcheck import _
 
+_logfile = None
+
 def checkform(form):
     for key in ["level","url"]:
         if not form.has_key(key) or form[key].value == "": return 0
@@ -35,18 +37,21 @@ def checkform(form):
 def getHostName(form):
     return urlparse.urlparse(form["url"].value)[1]
 
-def logit(form, env, file = "linkchecker.log"):
-    log = open(file, "a")
-    log.write("\n"+time.strftime("%d.%m.%Y %H:%M:%S",
+def logit(form, env):
+    global _logfile
+    if not _logfile:
+        return
+    elif type(_logfile) == StringType:
+        _logfile = open(_logfile, "a")
+    _logfile.write("\n"+time.strftime("%d.%m.%Y %H:%M:%S",
                    time.localtime(time.time()))+"\n")
     for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
                 "REMOTE_HOST", "REMOTE_PORT"]:
         if env.has_key(var):
-            log.write(var+"="+env[var]+"\n")
+            _logfile.write(var+"="+env[var]+"\n")
     for key in ["level", "url", "anchors", "errors", "intern"]:
         if form.has_key(key):
-            log.write(str(form[key])+"\n")
-    log.close()
+            _logfile.write(str(form[key])+"\n")
 
 def printError(out):
     out.write(_("<html><head><title>LinkChecker Online Error</title></head>"

@@ -4,9 +4,13 @@ linkchecker (1.3.2) unstable; urgency=low
   * only enable threading with 2 or more threads, not with only 1 thread
   * new debug function with variable arguments
   * more than one debug level; enable them with multiple -D options
-  * workaround broken HEAD with some Apache servers by using GET
+  * workaround for broken HEAD with some Apache servers by using GET
+  * enable out-of-the-box CGI scripts for Debian package in
+    http://localhost/doc/linkchecker/lconline/
+  * change logging config in the CGI scripts, the log file can be 
+    enabled in linkcheck/lc_cgi.py
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed, 23 May 2001 21:30:06 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 24 May 2001 12:53:51 +0200
 
 linkchecker (1.3.1) unstable; urgency=low
 

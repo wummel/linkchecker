@@ -46,8 +46,10 @@ _ = gettext
 #timeoutsocket.setDefaultSocketTimeout(20)
 
 import Config,UrlData,sys,lc_cgi
+from debuglevels import *
+debug = Config.debug
 
-def checkUrls(config = Config.Configuration()):
+def checkUrls(config):
     """ checkUrls gets a complete configuration object as parameter where all
     runtime-dependent options are stored.
     If you call checkUrls more than once, you can specify different
@@ -56,6 +58,7 @@ def checkUrls(config = Config.Configuration()):
     In the config object there are functions to get a new URL (getUrl) and
     to check it (checkUrl).
     """
+    debug(HURT_ME_PLENTY, "threads", config['threads'])
     config.log_init()
     try:
         while not config.finished():

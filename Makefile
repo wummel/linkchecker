@@ -1,6 +1,4 @@
 # This Makefile is only used by developers.
-# You will need a Debian Linux system to use this Makefile because
-# some targets produce Debian .deb packages
 VERSION=$(shell ./setup.py --version)
 PACKAGE=linkchecker
 NAME=$(shell ./setup.py --name)
@@ -31,7 +29,7 @@ distclean: clean cleandeb
 
 .PHONY: cleandeb
 cleandeb:
-	rm -rf debian/$(PACKAGE) debian/$(PACKAGE)-ssl debian/tmp
+	rm -rf debian/$(PACKAGE) debian/tmp
 	rm -f debian/*.debhelper debian/{files,substvars}
 	rm -f configure-stamp build-stamp
 
@@ -39,28 +37,19 @@ cleandeb:
 config:
 	./setup.py config -lcrypto
 
-# no more rpm package; too much trouble, cannot test
+# no rpm package; too much trouble, cannot test
 .PHONY: dist
 dist:	locale config
 	./setup.py sdist --formats=gztar,zip # bdist_rpm
 	# extra run without SSL compilation
 	./setup.py bdist_wininst
 
-.PHONY: deb
 deb:
 	# cleandeb because distutils choke on dangling symlinks
 	# (linkchecker.1 -> undocumented.1)
 	$(MAKE) cleandeb
 	fakeroot debian/rules binary
 	env CVSROOT=:pserver:anonymous@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k959C340F -rfakeroot 
-
-.PHONY: packages
-packages:
-	-cd .. && dpkg-scanpackages . | gzip --best > Packages.gz
-
-.PHONY: sources
-sources:
-	-cd .. && dpkg-scansources  . | gzip --best > Sources.gz
 
 .PHONY: files
 files:	locale

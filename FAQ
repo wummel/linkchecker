@@ -13,6 +13,13 @@ A: You have to quote special characters (e.g. spaces) in the subject field.
    Unfortunately browsers like IE and Netscape do not enforce this.
 
 
+Q: Has LinkChecker JavaScript support?
+A: No. It never will. JavaScript sucks. If your page is not
+   working without JS, then your web design is broken (or you
+   cannot code ;). Learn PHP or Zope or ASP, but use JavaScript just
+   as an addon for your web pages.
+
+
 Q: I have a pretty large site to check. How can I restrict link checking
    to check only my own pages?
 A: Look at the options --intern, --extern, --strict, --allowdeny  and 

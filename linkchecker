@@ -69,8 +69,8 @@ For single-letter option arguments the space is not a necessity. So
         Try password pwd for HTML and FTP authorization.
         Default password is 'joe@'. See also -u.
 -P secs, --pause=secs
-        Pause <secs> seconds between each url check. Don't forget to
-	disable threading with -t0 when you really want to wait.
+        Pause <secs> seconds between each url check. This option
+	implies -t0.
         Default is no pause between requests.
 -q, --quiet
         Quiet operation. This is only useful with -F.
@@ -190,9 +190,6 @@ configfiles = []
 for opt,arg in options:
     if opt=="-f" or opt=="--config":
         configfiles.append(arg)
-    elif opt=="-D" or opt=="--debug":
-        linkcheck.Config.DebugLevel += 1
-        config.disableThreading()
 config.read(configfiles)
 
 # apply options and arguments
@@ -202,6 +199,10 @@ constructauth = 0
 for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
         config["anchors"] = 1
+
+    elif opt=="-D" or opt=="--debug":
+        linkcheck.Config.DebugLevel += 1
+        config.disableThreading()
 
     elif opt=="-e" or opt=="--extern":
         config["externlinks"].append((re.compile(arg), 0))

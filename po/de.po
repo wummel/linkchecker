@@ -135,6 +135,10 @@ msgstr "Gültig"
 msgid "hours"
 msgstr "Stunden"
 
+#, fuzzy
+msgid "HTTPS url ignored"
+msgstr "Javascript url ignoriert"
+
 msgid "Start checking at %s\n"
 msgstr "Beginne Prüfen am %s\n"
 
@@ -182,6 +186,140 @@ msgstr ""
 msgid "checktime"
 msgstr "Prüfzeit"
 
+msgid "dltime"
+msgstr ""
+
+msgid "invalid log option '%s'"
+msgstr "ungültige Log Option '%s'"
+
+msgid "Netscape Enterprise Server with no HEAD support, falling back to GET"
+msgstr ""
+
+msgid "Check Time"
+msgstr "Prüfzeit"
+
+msgid "Stopped checking at %s"
+msgstr "Beende Prüfen am %s"
+
+msgid "Group %s has %s articles, range %s to %s"
+msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
+
+msgid "Javascript url ignored"
+msgstr "Javascript url ignoriert"
+
+msgid "No user or password found"
+msgstr "Kein Benutzername oder Passwort gefunden"
+
+msgid "Get the newest version at %s\n"
+msgstr "Die neueste Version gibt es unter %s\n"
+
+msgid "Got no answer from FTP server"
+msgstr "Keine Antwort vom FTP Server"
+
+msgid "found mail host %s"
+msgstr "Mail host %s gefunden"
+
+msgid "parenturl"
+msgstr ""
+
+msgid "could not split the mail adress"
+msgstr "konnte Mail Adresse nicht splitten"
+
+msgid "Error: %s\n"
+msgstr "Fehler: %s\n"
+
+#, fuzzy
+msgid ""
+"NOTES\n"
+"o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
+"  starts with 'www.' resp. 'ftp.'\n"
+"  You can also give local files as arguments.\n"
+"o If you have your system configured to automatically establish a\n"
+"  connection to the internet (e.g. with diald), it will connect when\n"
+"  checking links not pointing to your local host.\n"
+"  Use the -s and -i options to prevent this.\n"
+"o Javascript links are currently ignored.\n"
+"o If your platform does not support threading, LinkChecker uses -t0.\n"
+"o You can supply multiple user/password pairs in a configuration file.\n"
+"o Cookies are not accepted by LinkChecker.\n"
+"o To use proxies set $http_proxy, $https_proxy on Unix or Windows.\n"
+"  On a Mac use the Internet Config.\n"
+"o When checking 'news:' links the given NNTP host doesn't need to be the\n"
+"  same as the host of the user browsing your pages!\n"
+msgstr ""
+"KOMMENTARE\n"
+"o LinkChecker verwendet eine http:// bzw. ftp:// URL wenn eine URL auf der\n"
+"  Kommandozeile mit 'www.' bzw. 'ftp.' beginnt\n"
+"  Sie können auch lokale Dateien als Argumente angeben\n"
+"o Falls sich Ihr System automatisch mit dem Internet verbindet\n"
+"  (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht\n"
+"  auf Ihren lokalen Rechner verweisen\n"
+"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe "
+"BEISPIELE)\n"
+"o Javascript Links werden zur Zeit ignoriert\n"
+"o Wenn Ihr System keine Threads unterstützt verwendet LinkChecker die\n"
+"  Option -t0\n"
+"o Sie können mehrere user/password Paare in einer Konfigurationsdatei\n"
+"  angeben\n"
+"o Cookies werden von LinkChecker nicht akzeptiert\n"
+"o Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter\n"
+"  Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.\n"
+"o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
+"  unbedingt derselbe wie der des Benutzers sein!\n"
+
+msgid "Articel number %s found"
+msgstr "Artikel nummer %s wurde gefunden"
+
+msgid "Access denied by robots.txt, checked only syntax"
+msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
+
+msgid "Missing '/' at end of URL"
+msgstr "Fehlendes '/' am Ende der URL"
+
+msgid "# Format of the entries:\n"
+msgstr "# Format der Einträge:\n"
+
+msgid "Server does not support HEAD request, falling back to GET"
+msgstr ""
+
+#, fuzzy
+msgid "warning"
+msgstr "Warnung"
+
+msgid " (cached)\n"
+msgstr " (aus dem Cache)\n"
+
+msgid "Real URL"
+msgstr "Tats. URL"
+
+msgid ""
+"\n"
+"Thats it. "
+msgstr ""
+"\n"
+"Das wars. "
+
+msgid ""
+"Write comments and bugs to %s\n"
+"\n"
+msgstr ""
+"Kommentare und Fehler schreiben Sie bitte an %s\n"
+"\n"
+
+msgid "Zope Server cannot determine MIME type with HEAD, falling back to GET"
+msgstr ""
+
+msgid " warnings, "
+msgstr " Warnungen, "
+
+#, fuzzy
+msgid "result"
+msgstr "Ergebnis"
+
+#, fuzzy
+msgid "No NNTP server specified, skipping this URL"
+msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
+
 #, fuzzy
 msgid ""
 "USAGE\tlinkchecker [options] file-or-url...\n"
@@ -225,6 +363,10 @@ msgid ""
 "-p pwd, --password=pwd\n"
 "        Try password pwd for HTML and FTP authorization.\n"
 "        Default password is 'joe@'. See also -u.\n"
+"-P secs, --pause=secs\n"
+"        Pause <secs> seconds between each url check. Don't forget to\n"
+"\tdisable threading with -t0 when you really want to wait.\n"
+"        Default is no pause between requests.\n"
 "-q, --quiet\n"
 "        Quiet operation. This is only useful with -F.\n"
 "-r depth, --recursion-level=depth\n"
@@ -328,135 +470,6 @@ msgstr ""
 "        Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "        'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'.\n"
 "        Diese Option impliziert -w.\n"
-
-msgid "dltime"
-msgstr ""
-
-#, fuzzy
-msgid "HTTPS url ignored"
-msgstr "Javascript url ignoriert"
-
-msgid "Check Time"
-msgstr "Prüfzeit"
-
-msgid "Stopped checking at %s"
-msgstr "Beende Prüfen am %s"
-
-msgid "Group %s has %s articles, range %s to %s"
-msgstr "Gruppe %s hat %s Artikel, von %s bis %s"
-
-msgid "Javascript url ignored"
-msgstr "Javascript url ignoriert"
-
-msgid "No user or password found"
-msgstr "Kein Benutzername oder Passwort gefunden"
-
-msgid "Get the newest version at %s\n"
-msgstr "Die neueste Version gibt es unter %s\n"
-
-msgid "Got no answer from FTP server"
-msgstr "Keine Antwort vom FTP Server"
-
-msgid "found mail host %s"
-msgstr "Mail host %s gefunden"
-
-msgid "parenturl"
-msgstr ""
-
-msgid "could not split the mail adress"
-msgstr "konnte Mail Adresse nicht splitten"
-
-msgid "invalid log option '%s'"
-msgstr "ungültige Log Option '%s'"
-
-msgid "Error: %s\n"
-msgstr "Fehler: %s\n"
-
-#, fuzzy
-msgid ""
-"NOTES\n"
-"o LinkChecker assumes an http:// resp. ftp:// link when a commandline URL\n"
-"  starts with 'www.' resp. 'ftp.'\n"
-"  You can also give local files as arguments.\n"
-"o If you have your system configured to automatically establish a\n"
-"  connection to the internet (e.g. with diald), it will connect when\n"
-"  checking links not pointing to your local host.\n"
-"  Use the -s and -i options to prevent this.\n"
-"o Javascript links are currently ignored.\n"
-"o If your platform does not support threading, LinkChecker uses -t0.\n"
-"o You can supply multiple user/password pairs in a configuration file.\n"
-"o Cookies are not accepted by LinkChecker.\n"
-"o To use proxies set $http_proxy, $https_proxy on Unix or Windows.\n"
-"  On a Mac use the Internet Config.\n"
-"o When checking 'news:' links the given NNTP host doesn't need to be the\n"
-"  same as the host of the user browsing your pages!\n"
-msgstr ""
-"KOMMENTARE\n"
-"o LinkChecker verwendet eine http:// bzw. ftp:// URL wenn eine URL auf der\n"
-"  Kommandozeile mit 'www.' bzw. 'ftp.' beginnt\n"
-"  Sie können auch lokale Dateien als Argumente angeben\n"
-"o Falls sich Ihr System automatisch mit dem Internet verbindet\n"
-"  (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht\n"
-"  auf Ihren lokalen Rechner verweisen\n"
-"  Benutzen Sie die Optionen -s und -i um dies zu verhindern (siehe "
-"BEISPIELE)\n"
-"o Javascript Links werden zur Zeit ignoriert\n"
-"o Wenn Ihr System keine Threads unterstützt verwendet LinkChecker die\n"
-"  Option -t0\n"
-"o Sie können mehrere user/password Paare in einer Konfigurationsdatei\n"
-"  angeben\n"
-"o Cookies werden von LinkChecker nicht akzeptiert\n"
-"o Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter\n"
-"  Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.\n"
-"o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
-"  unbedingt derselbe wie der des Benutzers sein!\n"
-
-msgid "Articel number %s found"
-msgstr "Artikel nummer %s wurde gefunden"
-
-msgid "Access denied by robots.txt, checked only syntax"
-msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax"
-
-msgid "Missing '/' at end of URL"
-msgstr "Fehlendes '/' am Ende der URL"
-
-msgid "# Format of the entries:\n"
-msgstr "# Format der Einträge:\n"
-
-#, fuzzy
-msgid "result"
-msgstr "Ergebnis"
-
-#, fuzzy
-msgid "warning"
-msgstr "Warnung"
-
-msgid " (cached)\n"
-msgstr " (aus dem Cache)\n"
-
-msgid ""
-"\n"
-"Thats it. "
-msgstr ""
-"\n"
-"Das wars. "
-
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
-msgstr ""
-"Kommentare und Fehler schreiben Sie bitte an %s\n"
-"\n"
-
-msgid " warnings, "
-msgstr " Warnungen, "
-
-msgid "Real URL"
-msgstr "Tats. URL"
-
-#, fuzzy
-msgid "No NNTP server specified, skipping this URL"
-msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax"
 
 msgid "Parent URL"
 msgstr "Vater URL"

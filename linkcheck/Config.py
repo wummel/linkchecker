@@ -24,7 +24,7 @@ from linkcheck import _
 from debuglevels import *
 
 Version = _linkchecker_configdata.version
-AppName = _linkchecker_configdata.name
+AppName = "LinkChecker"
 App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
 Author =  _linkchecker_configdata.author
@@ -60,6 +60,7 @@ DebugLevel = 0
 # note: debugging with more than 1 thread can be painful
 def debug(level, *args):
     if DebugLevel > level:
+        sys.stderr.write("DEBUG: ")
         for arg in args:
             sys.stderr.write(" %s"%arg)
         sys.stderr.write("\n")
@@ -94,10 +95,10 @@ class Configuration(UserDict.UserDict):
         self["externlinks"] = []
         self["internlinks"] = []
         self["denyallow"] = 0
-        self["authentication"] = {'pattern': re.compile(r'^.+'),
+        self["authentication"] = [{'pattern': re.compile(r'^.+'),
 	                          'user': 'anonymous',
-	                          'pass': 'joe@',
-				 }
+	                          'password': 'joe@',
+				 }]
         self["proxy"] = getproxies()
         self["recursionlevel"] = 1
         self["wait"] = 0
@@ -169,6 +170,7 @@ class Configuration(UserDict.UserDict):
         """Disable threading by replacing functions with their
         non-threading equivalents
 	"""
+        debug(HURT_ME_PLENTY, "disable threading")
         self["threads"] = 0
         self.hasMoreUrls = self.hasMoreUrls_NoThreads
         self.finished = self.finished_NoThreads
@@ -470,7 +472,7 @@ class Configuration(UserDict.UserDict):
                 auth[0] = re.compile(auth[0])
                 self["authentication"].insert(0, {'pattern': auth[0],
 		                                  'user': auth[1],
-						  'pass': auth[2]})
+						  'password': auth[2]})
                 i += 1
         except ConfigParser.Error: pass
 

@@ -13,24 +13,25 @@ export DH_COMPAT=3
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
-nossl:
-	@echo already nossl version environments
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	./setup.py config -lcrypto
+	touch configure-stamp
 
 
-ssl:
-	@echo change to ssl version...
-	@cat debian/changelog | sed '1 s/linkchecker/linkchecker-ssl/' >debian/changelog-ssl
-	@cd debian && for i in *-ssl; do \
-                f=`echo $$i | sed -e 's/-ssl//'`; \
-                mv $$f $$f-nossl; \
-                mv $$i $$f; \
-                echo -n "$$f "; \
-        done
-	@chmod +x debian/rules
-	@echo done
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	rm -rf debian/linkchecker debian/linkchecker-ssl
+	./setup.py build
+	touch build-stamp
 
-
-include debian/rules.mk
+clean:
+	dh_testdir
+	rm -f build-stamp configure-stamp
+	$(MAKE) clean
+	dh_clean
 
 install: build
 	dh_testdir
@@ -40,8 +41,8 @@ install: build
 	./setup.py install --root=`pwd`/debian/$(PACKAGE) --no-compile
 	# remove man pages, we install them with dh_installman
 	rm -r debian/$(PACKAGE)/usr/man
-	# remove example files, we install them with dh_installexamples
-	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples/
+	# remove files, we install them below
+	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples
 	# remove any SSL related files
 	rm -r debian/$(PACKAGE)/usr/lib/python2.0/site-packages/linkcheckssl
 	# install additional doc files
@@ -49,6 +50,9 @@ install: build
 	install -c -m 644 test/*.py $(DOCDIR)/test
 	install -c -m 644 test/html/*.html $(DOCDIR)/test/html
 	install -c -m 644 test/output/test_* $(DOCDIR)/test/output
+	# install CGI files
+	install -c -m 644 lconline/*.html $(DOCDIR)/lconline
+	install -c -m 755 lc.cgi debian/$(PACKAGE)/usr/lib/cgi-bin/lconline
 	# install system wide configuration file in etc
 	mv debian/$(PACKAGE)/usr/share/linkchecker/linkcheckerrc debian/$(PACKAGE)/etc
 
@@ -59,7 +63,7 @@ binary-indep: build install
 	dh_testroot
 #	dh_installdebconf
 	dh_installdocs
-	dh_installexamples lc.* lconline/*.html
+#	dh_installexamples
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installpam

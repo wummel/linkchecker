@@ -9,7 +9,7 @@ Standards-Version: 3.5.4
 Package: linkchecker
 Architecture: all
 Depends: python2-base
-Suggests: linkchecker-ssl (>= ${Source-Version})
+Suggests: linkchecker-ssl
 Description: check HTML documents for broken links
  Features:
   o recursive checking

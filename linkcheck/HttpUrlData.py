@@ -125,13 +125,13 @@ class HttpUrlData(UrlData):
             #   content-type
             elif status in [405,501,500]:
                 # HEAD method not allowed ==> try get
+                self.setWarning(_("Server does not support HEAD request, falling back to GET"))
                 status, statusText, self.mime = self._getHttpRequest("GET")
-                Config.debug("DEBUG: HEAD not supported\n")
             elif status>=400 and self.mime:
                 server = self.mime.getheader("Server")
                 if server and self.netscape_re.search(server):
+                    self.setWarning(_("Netscape Enterprise Server with no HEAD support, falling back to GET"))
                     status, statusText, self.mime = self._getHttpRequest("GET")
-                    Config.debug("DEBUG: Netscape Enterprise Server detected\n")
             elif self.mime:
                 type = self.mime.gettype()
                 poweredby = self.mime.getheader('X-Powered-By')
@@ -139,6 +139,7 @@ class HttpUrlData(UrlData):
                 if type=='application/octet-stream' and \
                    ((poweredby and poweredby[:4]=='Zope') or \
                     (server and server[:4]=='Zope')):
+                    self.setWarning(_("Zope Server cannot determine MIME type with HEAD, falling back to GET"))
                     status,statusText,self.mime = self._getHttpRequest("GET")
 
             if status not in [301,302]: break

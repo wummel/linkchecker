@@ -1,29 +1,22 @@
 #!/usr/bin/env python2
-#    Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000,2001  Bastian Kleineidam
 #
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program; if not, write to the Free Software
-#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re,cgi,sys,urlparse,time,os
 sys.stderr = sys.stdout
-
-# begin user configuration
-dist_dir = "/home/calvin/projects/linkchecker"
-cgi.logfile = "linkchecker.log" # must be an existing file
-# end user configuration
-
-sys.path.insert(0,dist_dir)
 
 def testit():
     cgi.test()
@@ -54,7 +47,7 @@ if form.has_key('strict'): config['strict'] = 1
 if form.has_key("anchors"): config["anchors"] = 1
 if not form.has_key("errors"): config["verbose"] = 1
 if form.has_key("intern"):
-    config["internlinks"].append(re.compile("^(ftp|https?)://"+\
+    config["internlinks"].append(re.compile("^(ftp|https?)://%s"%\
     linkcheck.lc_cgi.getHostName(form)))
 else:
     config["internlinks"].append(re.compile(".+"))

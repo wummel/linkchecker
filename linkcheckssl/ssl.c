@@ -2,8 +2,7 @@
  */
 
 #include "Python.h"
-#if defined(WITH_THREAD) && !defined(HAVE_GETHOSTBYNAME_R) &&\
-	!defined(MS_WINDOWS)
+#if defined(WITH_THREAD) && !defined(HAVE_GETHOSTBYNAME_R) && !defined(MS_WINDOWS)
 #include "thread.h"
 #endif
 
@@ -24,38 +23,6 @@
 #include "ssl.h"
 #include "err.h"
 
-/*
-   some hacks to choose between K&R or ANSI style function
-   definitions.  For NT to build this as an extension module (ie, DLL)
-   it must be compiled by the C++ compiler, as it takes the address of
-   a static data item exported from the main Python DLL.
-*/
-#ifdef MS_WINDOWS
-#define FORCE_ANSI_FUNC_DEFS
-#endif
-
-#if defined(PYOS_OS2)
-#define FORCE_ANSI_FUNC_DEFS
-#endif
-
-#ifdef FORCE_ANSI_FUNC_DEFS
-#define BUILD_FUNC_DEF_1( fnname, arg1type, arg1name )	\
-fnname( arg1type arg1name )
-
-#define BUILD_FUNC_DEF_2( fnname, arg1type, arg1name, arg2type, arg2name ) \
-fnname( arg1type arg1name, arg2type arg2name )
-
-#else /* !FORCE_ANSI_FN_DEFS */
-#define BUILD_FUNC_DEF_1( fnname, arg1type, arg1name )	\
-fnname( arg1name )	\
-	arg1type arg1name;
-
-#define BUILD_FUNC_DEF_2( fnname, arg1type, arg1name, arg2type, arg2name ) \
-fnname( arg1name, arg2name )	\
-	arg1type arg1name;	\
-	arg2type arg2name;
-#endif /* !FORCE_ANSI_FN_DEFS */
-
 /* Global variable holding the exception type for errors detected
    by this module (but not argument type or memory errors, etc.). */
 
@@ -75,13 +42,12 @@ typedef struct {
 
 staticforward PyTypeObject SSL_Type;
 #define PySslObject_Check(v)	((v)->ob_type == &SSL_Type)
+#define PY_SSL_ERR_MAX 256
 
 /*
  * raise an error according to errno, return NULL
  */
-static PyObject *
-PySsl_errno ()
-{
+static PyObject* PySsl_errno (void) {
 #ifdef MS_WINDOWS
     if (WSAGetLastError()) {
         PyObject *v = Py_BuildValue("(is)",WSAGetLastError(),"winsock error");
@@ -99,9 +65,7 @@ PySsl_errno ()
 /*
  * format SSl error string
  */
-static int
-BUILD_FUNC_DEF_2 (PySsl_err_str, unsigned long, e, char *, buf)
-{
+static int PySsl_err_str (unsigned long e, char* buf) {
     unsigned long l = ERR_GET_LIB(e);
     unsigned long f = ERR_GET_FUNC(e);
     unsigned long r = ERR_GET_REASON(e);
@@ -124,11 +88,7 @@ BUILD_FUNC_DEF_2 (PySsl_err_str, unsigned long, e, char *, buf)
 /*
  * report SSL core errors
  */
-static PySslObject *
-PySsl_errors ()
-{
-#define PY_SSL_ERR_MAX 256
-
+static PySslObject* PySsl_errors (void) {
     unsigned long e;
     char buf[2 * PY_SSL_ERR_MAX];
     char *bf = buf;
@@ -148,9 +108,7 @@ PySsl_errors ()
 /*
  * report SSL application layer errors
  */
-static PySslObject *
-BUILD_FUNC_DEF_2 (PySsl_app_errors, SSL *, s, int, ret)
-{
+static PySslObject* PySsl_app_errors (SSL* s, int ret) {
     int err = SSL_get_error(s,ret);
     char *str;
 
@@ -190,9 +148,7 @@ BUILD_FUNC_DEF_2 (PySsl_app_errors, SSL *, s, int, ret)
 
 /* ssl.read(len) method */
 
-static PyObject *
-BUILD_FUNC_DEF_2 (PySslObj_read, PySslObject *, self, PyObject *, args)
-{
+static PyObject* PySslObj_read (PySslObject* self, PyObject* args) {
     int len, n;
     PyObject *buf;
 
@@ -226,9 +182,7 @@ BUILD_FUNC_DEF_2 (PySslObj_read, PySslObject *, self, PyObject *, args)
 
 /* ssl.write(data,len) method */
 
-static PyObject *
-BUILD_FUNC_DEF_2 (PySslObj_write, PySslObject *, self, PyObject *, args)
-{
+static PyObject* PySslObj_write (PySslObject* self, PyObject * args) {
     char *buf;
     int len, n;
     if (!PyArg_ParseTuple(args, "si", &buf, &len))
@@ -248,9 +202,7 @@ BUILD_FUNC_DEF_2 (PySslObj_write, PySslObject *, self, PyObject *, args)
 
 /* ssl.server() method */
 
-static PyObject *
-BUILD_FUNC_DEF_2 (PySslObj_server, PySslObject *, self, PyObject *, args)
-{
+static PyObject* PySslObj_server (PySslObject* self, PyObject* args) {
     if (!PyArg_NoArgs(args))
         return (NULL);
     return (PyString_FromString(self->server));
@@ -258,9 +210,7 @@ BUILD_FUNC_DEF_2 (PySslObj_server, PySslObject *, self, PyObject *, args)
 
 /* ssl.issuer() method */
 
-static PyObject *
-BUILD_FUNC_DEF_2 (PySslObj_issuer, PySslObject *, self, PyObject *, args)
-{
+static PyObject* PySslObj_issuer (PySslObject* self, PyObject* args) {
     if (!PyArg_NoArgs(args))
         return (NULL);
     return (PyString_FromString(self->issuer));
@@ -276,9 +226,7 @@ static PyMethodDef PySslObj_methods[] = {
     { NULL, NULL}
 };
 
-static void
-BUILD_FUNC_DEF_1 (PySsl_dealloc, PySslObject *, self)
-{
+static void PySsl_dealloc (PySslObject * self) {
     if (self->server_cert)		/* possible not to have one? */
         X509_free(self->server_cert);
     SSL_CTX_free(self->ctx);
@@ -287,9 +235,7 @@ BUILD_FUNC_DEF_1 (PySsl_dealloc, PySslObject *, self)
     PyMem_DEL(self);
 }
 
-static PyObject *
-BUILD_FUNC_DEF_2 (PySsl_getattr, PySslObject *, self, char *, name)
-{
+static PyObject* PySsl_getattr (PySslObject* self, char * name) {
     return (Py_FindMethod(PySslObj_methods,(PyObject *)self,name));
 }
 
@@ -316,9 +262,7 @@ staticforward PyTypeObject SSL_Type = {
  * C function called for new object initialization
  * Note: SSL protocol version 2, 3, or 2+3 set at compile time
  */
-static PySslObject *
-BUILD_FUNC_DEF_1 (newPySslObject, int, sock_fd)
-{
+static PySslObject* newPySslObject (int sock_fd) {
     PySslObject *self;
     SSL_METHOD *meth;
     int ret;
@@ -371,9 +315,7 @@ BUILD_FUNC_DEF_1 (newPySslObject, int, sock_fd)
 /*
  * Python function called for new object initialization
  */
-static PyObject *
-BUILD_FUNC_DEF_2 (PySsl_ssl_new, PyObject *, self, PyObject *, args)
-{
+static PyObject* PySsl_ssl_new (PyObject* self, PyObject* args) {
     int sock_fd;
     if (!PyArg_ParseTuple(args, "i", &sock_fd))
         return (NULL);
@@ -383,7 +325,7 @@ BUILD_FUNC_DEF_2 (PySsl_ssl_new, PyObject *, self, PyObject *, args)
 /* List of functions exported by this module. */
 
 static PyMethodDef PySsl_methods[] = {
-    {"ssl", (PyCFunction)PySsl_ssl_new, 1},
+    {"ssl", (PyCFunction)PySsl_ssl_new, METH_VARARGS},
     {NULL, NULL} /* sentinel */
 
 };
@@ -392,8 +334,10 @@ static PyMethodDef PySsl_methods[] = {
  * Initialize this module, called when the first 'import ssl' is done
  */
 void
-initssl ()
-{
+#ifdef WIN32
+__declspec(dllexport)
+#endif
+initssl (void) {
     PyObject *m, *d;
     m = Py_InitModule("ssl", PySsl_methods);
     d = PyModule_GetDict(m);
