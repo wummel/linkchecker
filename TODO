@@ -4,11 +4,6 @@ Possible improvements people could work on:
 
 - use po4a to manage manpages
 
-- [FEATURE] have an option (e.g. --no-proxy-for),
-  that lets linkchecker contact the given host directly instead
-  of going through a proxy. Should be a regex, should be able to
-  give option multiple times, and also in the config file.
-
 - [USAGE] rethink intern/extern stuff
 
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
