@@ -233,14 +233,12 @@ def collapse_segments (path):
     return path
 
 
-def is_absolute (url):
-    """return True iff url is absolute"""
-    return ":" in url
+url_is_absolute = re.compile("^[a-z]+:", re.I).match
 
 
 def url_quote (url):
     """quote given url"""
-    if not is_absolute(url):
+    if not url_is_absolute(url):
         return document_quote(url)
     urlparts = list(urlparse.urlsplit(url))
     urlparts[0] = urllib.quote(urlparts[0]) # scheme

@@ -293,6 +293,16 @@ class TestUrl (unittest.TestCase):
         url = "\nhttp://www.imadoofus.com/"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
 
+    def test_absolute_url (self):
+        url = "hutzli:"
+        self.assert_(linkcheck.url.url_is_absolute(url), repr(url))
+        url = "file:/"
+        self.assert_(linkcheck.url.url_is_absolute(url), repr(url))
+        url = ":"
+        self.assert_(not linkcheck.url.url_is_absolute(url), repr(url))
+        url = "/a/b?http://"
+        self.assert_(not linkcheck.url.url_is_absolute(url), repr(url))
+
 def test_suite ():
     """build and return a TestSuite"""
     suite = unittest.TestSuite()
