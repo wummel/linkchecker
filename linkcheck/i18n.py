@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 """internationalization support"""
-# Copyright (C) 2000-2003  Bastian Kleineidam
+# Copyright (C) 2000-2004  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ def init_gettext ():
     try:
         import gettext
         domain = 'linkcheck'
-        localedir = os.path.join(install_data, 'share/locale')
+        localedir = os.path.join(install_data, 'share', 'locale')
         _ = gettext.translation(domain, localedir).gettext
     except (IOError, ImportError):
         # default gettext function
