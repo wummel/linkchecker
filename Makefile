@@ -66,7 +66,7 @@ VERSION-DEVEL:
 	echo $(VERSION) > VERSION-DEVEL
 
 upload: distclean dist files VERSION
-	scp debian/changelog $(HTMLDIR)/changes.txt
+	scp ChangeLog $(HTMLDIR)/changes.txt
 	scp README $(HTMLDIR)/readme.txt
 	scp linkchecker-out.*.gz $(HTMLDIR)
 	scp VERSION $(HTMLDIR)/raw/
@@ -75,7 +75,7 @@ upload: distclean dist files VERSION
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 upload-devel: distclean dist VERSION-DEVEL
-	scp debian/changelog $(HTMLDIR)/changes-devel.txt
+	scp ChangeLog $(HTMLDIR)/changes-devel.txt
 	scp VERSION-DEVEL $(HTMLDIR)/raw/
 	#scp dist/* $(HTMLDIR)/
 	ncftpput upload.sourceforge.net /incoming dist/* && read -p "Make new SF file releases and then press Enter:"
