@@ -1,4 +1,4 @@
-1.10.2 (release xx.xx.xxxx)
+1.10.2 (release 3.1.2004)
   * fixed CGI safe_url pattern, it was too strict
     Changed: linkcheck/lc_cgi.py
   * replace backticks with repr() or %r
@@ -11,6 +11,7 @@
   * limit cached data
     Changed: linkcheck/{UrlData,Config}.py
     Added: linkcheck/LRU.py
+    Closes: SF bug 864516
   * use dummy_threading module and get rid of the _NoThreads
     functions
     Changed: linkchecker, linkcheck/{Config,Threader}.py,

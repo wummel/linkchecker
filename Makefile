@@ -39,7 +39,6 @@ cleandeb:
 config:
 	$(PYTHON) setup.py config -lcrypto
 
-# no rpm package; too much trouble, cannot test
 dist:	locale config
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 	rm -f $(MD5SUMS)
