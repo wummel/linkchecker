@@ -12,6 +12,6 @@ include lconline/check.js lconline/README.negotiation
 include linkcheck/parser/Makefile linkcheck/parser/htmllex.l
 include linkcheck/parser/htmlparse.y linkcheck/parser/htmlparse.h
 include linkcheck/parser/htmlsax.h
+include po/*.po po/*.pot po/*.py po/Makefile
 recursive-include share *.mo
-recursive-include po *.po *.py Makefile
 exclude _linkchecker_configdata.py
