@@ -1,4 +1,4 @@
-2.0 "I Kina spiser de hunde" (released xx.xx.2004)
+2.0 "I Kina spiser de hunde" (released 7.12.2004)
 
   * Regenerate the HTML parser with new Bison version 1.875d.
     Also use the now supported Bison memory macros YYMALLOC and
