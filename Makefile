@@ -30,6 +30,7 @@ linkcheck/TelnetUrlData.py \
 linkcheck/Threader.py \
 linkcheck/UrlData.py \
 linkcheck/__init__.py.tmpl \
+linkcheck/lc_cgi.py \
 linkchecker
 
 DESTDIR=/.

@@ -35,6 +35,7 @@ def dictjoin(d1, d2):
         d[key] = d2[key]
     return d
 
+
 Version = "1.2.3"
 AppName = "LinkChecker"
 App = AppName+" "+Version
@@ -149,6 +150,7 @@ class Configuration(UserDict.UserDict):
         self.data['blacklist'] = {
             "filename":     "~/.blacklist",
 	}
+        # default values
         self.data['log'] = self.newLogger('text')
         self.data["quiet"] = 0
         self.data["warningregex"] = None

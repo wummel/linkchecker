@@ -11,14 +11,16 @@
 </center>
 
 <blockquote>
-<form method="POST" action="http://YOURCGIHOSTHERE/cgi-bin/lc.cgi" 
+<form method="POST" 
+ action="http://treasure.calvinsplayground.de/cgi-bin/calvin/lc.cgi" 
  target="links">
 <table border=0>
 <tr><td colspan=2 bgcolor="#fff7e5">
 <font face="Lucida,Verdana,Arial,sans-serif">URL: 
 <input size=70 name="url" value="http://">
 <input type="submit" value="Go!"></font></td></tr>
-<td><font face="Lucida,Verdana,Arial,sans-serif">Recursion Level: <select name="level">
+<td><font face="Lucida,Verdana,Arial,sans-serif">Recursion Level: 
+<select name="level">
 <option> 0
 <option selected> 1
 <option> 2
@@ -34,7 +36,21 @@ Log only errors: <input type="checkbox" name="errors">
 </font></td>
 <td><font face="Lucida,Verdana,Arial,sans-serif">
 Check only intern links: <input type="checkbox" name="intern" checked>
-</font></td></tr></table>
+</font></td>
+</tr>
+<tr>
+<td><font face="Lucida,Verdana,Arial,sans-serif">
+Output language: <select name="language">
+<option selected> English
+<option value="de"> Deutsch
+<option value="fr"> Fran&ccedil;ais
+</select>
+</font></td>
+<td><font face="Lucida,Verdana,Arial,sans-serif">
+Check strict intern links: <input type="checkbox" name="strict">
+</font></td>
+</tr>
+</table>
 </blockquote>
 </font>
 </body></html>

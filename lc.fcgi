@@ -22,7 +22,8 @@ try:
         config["recursionlevel"] = int(form["level"].value)
         config["log"] = config.newLogger('html', {'fd':req.out})
         config.disableThreading()
-        if form.has_key("anchors"):    config["anchors"] = 1
+        if form.has_key('strict'): config['strict'] = 1
+        if form.has_key("anchors"): config["anchors"] = 1
         if not form.has_key("errors"): config["verbose"] = 1
         if form.has_key("intern"):
             config["internlinks"].append(re.compile("^(ftp|https?)://"+\

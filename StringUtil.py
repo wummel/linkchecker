@@ -29,7 +29,9 @@ HtmlTable = [
         ("<","&lt;"),
         (">","&gt;"),
         ("é","&eacute;"),
-        ("è","&egrave;")
+        ("è","&egrave;"),
+        ("à","&agrave;"),
+        ("ç","&ccedil;"),
     ]
 
 SQLTable = [

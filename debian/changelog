@@ -2,6 +2,7 @@ linkchecker (1.2.4) unstable; urgency=low
 
   * Fixed parsing of /etc/resolv.conf with empty lines
   * french translation from Jerome Couderc <j.couderc@ifrance.com>
+  * CGI script fixes
 
  -- Bastian Kleineidam <calvin@users.sourceforge.net>  Tue, 27 Jun 2000 00:34:30 +0200
 

@@ -265,7 +265,7 @@ class HtmlLogger(StandardLogger):
                 self.fd.write(_(" in 1 link"))
             else:
                 self.fd.write(_(" in %d links") % linknumber)
-        self.fd.write(" found<br>\n")
+        self.fd.write(_(" found\n")+"<br>")
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
         name = _("seconds")

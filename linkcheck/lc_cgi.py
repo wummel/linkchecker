@@ -16,6 +16,7 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 import re,time,urlparse
+from linkcheck import _
 
 def checkform(form):
     for key in ["level","url"]:
@@ -48,15 +49,15 @@ def logit(form, env, file = "linkchecker.log"):
     log.close()
 
 def printError(out):
-    out.write("""<html><head><title>LinkChecker Online Error</title></head>
-<body text="#192c83" bgcolor="#fff7e5" link="#191c83" vlink="#191c83"
-alink="#191c83">
-<blockquote>
-<b>Error</b><br>
-The LinkChecker Online script has encountered an error. Please ensure
-that your provided URL link begins with <code>http://</code> and 
-contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>
-Errors are logged.
-</blockquote>
-</body>
-</html>""")
+    out.write(_("<html><head><title>LinkChecker Online Error</title></head>"
+"<body text=\"#192c83\" bgcolor=\"#fff7e5\" link=\"#191c83\" vlink=\"#191c83\""
+"alink=\"#191c83\">"
+"<blockquote>"
+"<b>Error</b><br>"
+"The LinkChecker Online script has encountered an error. Please ensure "
+"that your provided URL link begins with <code>http://</code> and "
+"contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>"
+"Errors are logged."
+"</blockquote>"
+"</body>"
+"</html>"))
