@@ -24,8 +24,6 @@ import urlbase
 import proxysupport
 import httpurl
 
-from linkcheck.i18n import _
-
 # XXX downloading of files is missing!
 
 class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):

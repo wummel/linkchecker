@@ -18,8 +18,6 @@
 
 import urlbase
 
-from linkcheck.i18n import _
-
 class IgnoredUrl (urlbase.UrlBase):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 

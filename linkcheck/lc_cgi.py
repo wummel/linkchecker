@@ -26,7 +26,6 @@ import types
 import linkcheck.configuration
 import linkcheck.url
 import linkcheck.strformat
-from linkcheck.i18n import _
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')

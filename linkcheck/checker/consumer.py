@@ -26,8 +26,6 @@ except ImportError:
 import linkcheck.threader
 import linkcheck.log
 
-from linkcheck.i18n import _
-
 class Consumer (object):
     """consume urls from the url queue in a threaded manner"""
 

@@ -35,8 +35,6 @@ import linkcheck.log
 import linkcheck.httplib2
 import linkcheck.HtmlParser.htmlsax
 
-from linkcheck.i18n import _
-
 
 def internal_error ():
     """print internal error message to stderr"""

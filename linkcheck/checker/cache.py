@@ -28,8 +28,6 @@ import linkcheck.containers
 import linkcheck.configuration
 import linkcheck.threader
 
-from linkcheck.i18n import _
-
 
 def _check_morsel (m, host, path):
     """check given cookie morsel against the desired host and path"""

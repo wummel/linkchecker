@@ -25,7 +25,6 @@ import urllib
 
 import urlbase
 import linkcheck
-from linkcheck.i18n import _
 
 # if file extension lookup was unsuccessful, look at the content
 contents = {

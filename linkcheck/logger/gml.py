@@ -21,8 +21,6 @@ import os
 
 import linkcheck.configuration
 
-from linkcheck.i18n import _
-
 
 class GMLLogger (linkcheck.logger.Logger):
     """GML means Graph Modeling Language. Use a GML tool to see

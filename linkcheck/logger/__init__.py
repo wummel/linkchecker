@@ -38,9 +38,6 @@ Fields = {
     "url":       _("URL"),
 }
 
-# real translator
-from linkcheck.i18n import _
-
 
 class Logger (object):
     """basic logger class enabling logging of checked urls"""

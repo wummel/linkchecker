@@ -23,8 +23,6 @@ import urllib
 import linkcheck
 import urlbase
 
-from linkcheck.i18n import _
-
 
 class TelnetUrl (urlbase.UrlBase):
     """Url link with telnet scheme"""

@@ -24,8 +24,6 @@ import linkcheck.logger
 import linkcheck.strformat
 import linkcheck.configuration
 
-from linkcheck.i18n import _
-
 
 # ss=1 enables show source
 validate_html = "http://validator.w3.org/check?ss=1&amp;uri=%(uri)s"

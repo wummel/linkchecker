@@ -32,8 +32,6 @@ import linkcheck.httplib2
 import urlbase
 import proxysupport
 
-from linkcheck.i18n import _
-
 supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
                hasattr(socket, "ssl")
 

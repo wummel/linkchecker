@@ -24,15 +24,15 @@ import gettext
 # default gettext function
 _ = lambda s: s
 
-# more supported languages are added in init_gettext
+# more supported languages are added in init()
 supported_languages = ['en']
 default_language = None
 
 def init (domain, directory):
     """initialize this gettext i18n module"""
-    global _, default_language
+    global default_language
     try:
-        _ = gettext.translation(domain, directory).gettext
+        klass = gettext.install(domain, directory)
     except IOError:
         # keep default gettext function
         pass

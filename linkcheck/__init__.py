@@ -16,11 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys
+import os
 import re
-import time
 
-from linkcheck.i18n import _
+import linkcheck.i18n
+import _linkchecker_configdata as configdata
 
 # application log areas
 LOG = "linkcheck"
@@ -83,4 +83,11 @@ Loggers = {
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = ", ".join(["%r"%name for name in Loggers.keys()])
+
+
+def init_i18n ():
+    locdir = os.environ.get('LOCPATH')
+    if locdir is None:
+        locdir = os.path.join(configdata.install_data, 'share', 'locale')
+    linkcheck.i18n.init(configdata.name, locdir)
 

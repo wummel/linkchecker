@@ -23,8 +23,6 @@ import os
 import linkcheck.logger
 import linkcheck.configuration
 
-from linkcheck.i18n import _
-
 
 class CSVLogger (linkcheck.logger.Logger):
     """ CSV output. CSV consists of one line per entry. Entries are

@@ -22,8 +22,6 @@ import os
 import linkcheck
 import linkcheck.logger
 
-from linkcheck.i18n import _
-
 
 def sqlify (s):
     """escape special SQL chars and strings"""

@@ -27,8 +27,6 @@ import urlbase
 import linkcheck.log
 import linkcheck.dns.resolver
 
-from linkcheck.i18n import _
-
 
 class MailtoUrl (urlbase.UrlBase):
     """Url link with mailto scheme"""

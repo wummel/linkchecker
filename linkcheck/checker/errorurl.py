@@ -19,7 +19,6 @@
 import urlbase
 
 import linkcheck
-from linkcheck.i18n import _
 
 class ErrorUrl (urlbase.UrlBase):
     """Unknown URL links"""

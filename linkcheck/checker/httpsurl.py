@@ -18,8 +18,6 @@
 
 import httpurl
 
-from linkcheck.i18n import _
-
 class HttpsUrl (httpurl.HttpUrl):
     """Url link with https scheme"""
 

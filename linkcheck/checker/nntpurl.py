@@ -28,8 +28,6 @@ import linkcheck
 import urlbase
 import linkcheck.log
 
-from linkcheck.i18n import _
-
 random.seed()
 
 class NoNetrcNNTP (nntplib.NNTP):

@@ -29,8 +29,6 @@ import linkcheck
 import linkcheck.log
 import linkcheck.containers
 
-from linkcheck.i18n import _
-
 Version = _linkchecker_configdata.version
 AppName = "LinkChecker"
 App = AppName+" "+Version

@@ -28,8 +28,6 @@ import ftplib
 import linkcheck.httplib2
 import linkcheck.dns.exception
 
-from linkcheck.i18n import _
-
 
 # we catch these exceptions, all other exceptions are internal
 # or system errors

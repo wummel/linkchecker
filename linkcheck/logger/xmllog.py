@@ -23,8 +23,6 @@ import xml.sax.saxutils
 import linkcheck.logger
 import linkcheck.configuration
 
-from linkcheck.i18n import _
-
 
 xmlattr_entities = {
     "&": "&amp;",

@@ -26,8 +26,6 @@ import linkcheck.logger
 import linkcheck.strformat
 import linkcheck.configuration
 
-from linkcheck.i18n import _
-
 
 class TextLogger (linkcheck.logger.Logger):
     """A text logger, colorizing the output if possible.
