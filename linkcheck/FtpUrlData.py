@@ -16,7 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ftplib, linkcheck
-from UrlData import UrlData,ExcList
+from ProxyUrlData import ProxyUrlData
+from HttpUrlData import HttpUrlData
+from UrlData import ExcList
 
 ExcList.extend([
    ftplib.error_reply,
@@ -25,14 +27,24 @@ ExcList.extend([
    ftplib.error_proto,
 ])
 
-class FtpUrlData (UrlData):
+class FtpUrlData (ProxyUrlData):
     """
     Url link with ftp scheme.
     """
-
     def checkConnection (self):
-        _proxy = self.config["proxy"].get(self.scheme)
-        # XXX proxy support (we support http and ftp!)
+        # proxy support (we support only http)
+        self.setProxy(self.config["proxy"].get(self.scheme))
+        if self.proxy:
+            http = HttpUrlData(self.urlName,
+                  self.recursionLevel,
+                  self.config,
+                  self.parentName,
+                  self.baseRef,
+                  self.line,
+		  self.name)
+            http.buildUrl
+            return http.check()
+        # no proxy
         _user, _password = self._getUserPassword()
         if _user is None or _password is None:
             raise linkcheck.error, linkcheck._("No user or password found")

@@ -1,3 +1,9 @@
+1.6.4
+  * Support for ftp proxies
+    Changed files: linkcheck/FtpUrlData.py, linkcheck/HttpUrlData.py
+    Added files: linkcheck/ProxyUrlData.py
+  * Updated german translation
+
 1.6.3:
   * Generate md5sum checksums for distributed files
     Changed files: Makefile

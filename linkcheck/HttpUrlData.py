@@ -19,18 +19,17 @@ import httplib, urlparse, sys, time, re
 import Config, StringUtil, robotparser, linkcheck
 if Config.DebugLevel > 0:
     robotparser.debug = 1
-from UrlData import UrlData
-from urllib import splittype, splithost, splituser, splitpasswd
+from ProxyUrlData import ProxyUrlData
 from debuglevels import *
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
-class HttpUrlData (UrlData):
+class HttpUrlData (ProxyUrlData):
     "Url link with http scheme"
     netscape_re = re.compile("Netscape-Enterprise/")
 
     def buildUrl (self):
-        UrlData.buildUrl(self)
+        ProxyUrlData.buildUrl(self)
         if not self.urlTuple[2]:
             self.setWarning(linkcheck._("Path is empty"))
             self.urlTuple = (self.urlTuple[0], self.urlTuple[1], "/",
@@ -82,9 +81,9 @@ class HttpUrlData (UrlData):
         | extension-code
         """
         # set the proxy, so a 407 status after this is an error
-        self._setProxy(self.config["proxy"].get(self.scheme))
+        self.setProxy(self.config["proxy"].get(self.scheme))
         if self.proxy:
-            self.setInfo(linkcheck._("Using HTTP Proxy %s")%`self.proxy`)
+            self.setInfo(linkcheck._("Using Proxy %s")%`self.proxy`)
         self.headers = None
         self.auth = None
         self.cookies = []
@@ -101,8 +100,8 @@ class HttpUrlData (UrlData):
             # proxy enforcement (overrides standard proxy)
             if status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
-                self._setProxy(self.headers.getheader("Location"))
-                self.setInfo(linkcheck._("Enforced HTTP Proxy %s")%`self.proxy`)
+                self.setProxy(self.headers.getheader("Location"))
+                self.setInfo(linkcheck._("Enforced Proxy %s")%`self.proxy`)
                 status, statusText, self.headers = self._getHttpRequest()
                 self.proxy, self.proxyauth = oldproxy
             # follow redirections
@@ -193,21 +192,6 @@ class HttpUrlData (UrlData):
                 self.setValid(`status`+" "+statusText)
             else:
                 self.setValid("OK")
-
-    def _setProxy (self, proxy):
-        self.proxy = proxy
-        self.proxyauth = None
-        if self.proxy:
-            if self.proxy[:7].lower() != "http://":
-                self.proxy = "http://"+self.proxy
-            self.proxy = splittype(self.proxy)[1]
-            self.proxy = splithost(self.proxy)[0]
-            self.proxyauth, self.proxy = splituser(self.proxy)
-            if self.proxyauth is not None:
-                if ":" not in self.proxyauth: self.proxyauth += ":"
-                import base64
-                self.proxyauth = base64.encodestring(self.proxyauth).strip()
-                self.proxyauth = "Basic "+self.proxyauth
 
     def _getHttpRequest (self, method="HEAD"):
         """Put request and return (status code, status text, mime object).
