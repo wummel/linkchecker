@@ -45,24 +45,61 @@ class FtpUrlData (ProxyUrlData):
 		  name=self.name)
             http.buildUrl()
             return http.check()
-        # no proxy
-        _user, _password = self._getUserPassword()
+        # using no proxy here
+        # get login credentials
+        if self.userinfo:
+            _user, _password = splitpasswd(self.userinfo)
+        else:
+            _user, _password = self.getUserPassword()
         if _user is None or _password is None:
             raise linkcheck.error, linkcheck._("No user or password found")
+        self.login(_user, _password)
+        filename = self.cwd()
+        if filename:
+            self.retrieve(filename)
+
+
+    def login (self, _user, _password):
+        """log into ftp server and check the welcome message"""
+        # ready to connect
         try:
             self.urlConnection = ftplib.FTP()
             self.urlConnection.connect(self.urlparts[1])
             self.urlConnection.login(_user, _password)
         except EOFError:
             raise linkcheck.error, linkcheck._("Remote host has closed connection")
-        info = self.urlConnection.getwelcome()
-        if not info:
+        if not self.urlConnection.getwelcome():
             self.closeConnection()
             raise linkcheck.error, linkcheck._("Got no answer from FTP server")
-        self.setInfo(info)
+        # dont set info anymore, this may change every time we logged in
+        #self.setInfo(info)
+
+
+    def cwd (self):
+        """change directory to given path"""
+        # leeched from webcheck
+        dirs = self.urlparts[2].split('/')
+        filename = dirs.pop()
+        if len(dirs) and not dirs[0]: del dirs[0]
+        for d in dirs:
+            self.urlConnection.cwd(d)
+        return filename
+
+
+    def retrieve (self, filename):
+        """intiate download of given filename"""
+        self.urlConnection.voidcmd('TYPE I')
+        conn, size = self.urlConnection.ntransfercmd('RETR %s'%filename)
+        if size:
+            self.checkSize(size)
+            #page = conn.makefile().read(size)
+        #else:
+        #    page = conn.makefile().read()
 
 
     def closeConnection (self):
-        try: self.urlConnection.quit()
-        except: pass
+        try:
+            self.urlConnection.quit()
+        except ftplib.all_errors:
+            self.urlConnection.close()
         self.urlConnection = None
