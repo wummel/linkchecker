@@ -168,11 +168,12 @@ class MailtoUrl (urlbase.UrlBase):
             pass
         self.url_connection = None
 
-    def set_cache_key (self):
+    def set_cache_keys (self):
         """The cache key is a comma separated list of emails."""
         emails = [addr[1] for addr in self.addresses]
         emails.sort()
-        self.cache_key = "%s:%s" % (self.scheme, ",".join(emails))
+        self.cache_url_key = "%s:%s" % (self.scheme, ",".join(emails))
+        # cache_content_key remains None, recursion is not allowed
 
     def can_get_content (self):
         """mailto: URLs do not have any content

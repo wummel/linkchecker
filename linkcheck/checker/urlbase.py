@@ -146,8 +146,9 @@ class UrlBase (object):
         self.data = None
         # if data is filled
         self.has_content = False
-        # cache key, is set by build_url() calling set_cache_key()
-        self.cache_key = None
+        # cache keys, are set by build_url() calling set_cache_keys()
+        self.cache_url_key = None
+        self.cache_content_key = None
         # alias list
         self.aliases = []
 
@@ -200,15 +201,17 @@ class UrlBase (object):
                 "dlsize": self.dlsize,
                }
 
-    def set_cache_key (self):
-        """Get key to store this url data in the cache."""
+    def set_cache_keys (self):
+        """Set keys for URL checking and content recursion."""
+        # removed anchor from content cache key
+        self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[''])
         # construct cache key
         if self.consumer.config["anchorcaching"]:
             # do not ignore anchor
-            self.cache_key = self.url
+            self.cache_url_key = self.url
         else:
-            # removed anchor from cache key
-            self.cache_key =  urlparse.urlunsplit(self.urlparts[:4]+[''])
+            # no anchor caching
+            self.cache_url_key = self.cache_content_key
 
     def check_syntax (self):
         """Called before self.check(), this function inspects the
@@ -225,7 +228,7 @@ class UrlBase (object):
         except linkcheck.LinkCheckerError, msg:
             self.set_result(str(msg), valid=False)
             return False
-        self.set_cache_key()
+        self.set_cache_keys()
         self.extern = self._get_extern()
         return True
 
@@ -504,12 +507,18 @@ class UrlBase (object):
         self.parse_html()
 
     def get_user_password (self):
+        """Get tuple (user, password) from configured authentication.
+           Both user and password can be None if not specified.
+        """
         for auth in self.consumer.config["authentication"]:
             if auth['pattern'].match(self.url):
                 return auth['user'], auth['password']
         return None, None
 
     def parse_html (self):
+        """Parse into HTML content and search for URLs to check.
+           Found URLs are added to the URL queue.
+        """
         # search for a possible base reference
         h = linkcheck.linkparse.LinkFinder(self.get_content(),
                                            tags={'base': ['href']})

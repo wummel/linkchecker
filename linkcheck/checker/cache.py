@@ -83,7 +83,7 @@ class Cache (object):
         self.lock.acquire()
         try:
             for i, url_data in enumerate(self.incoming):
-                key = url_data.cache_key
+                key = url_data.cache_url_key
                 if key not in self.in_progress:
                     del self.incoming[i]
                     if key in self.checked:
@@ -114,7 +114,7 @@ class Cache (object):
                 # wrong syntax, do not check any further
                 return False
             # check the cache
-            key = url_data.cache_key
+            key = url_data.cache_url_key
             if key in self.checked:
                 # url is cached and can be logged
                 url_data.copy_from_cache(self.checked[key])
@@ -143,7 +143,7 @@ class Cache (object):
         """remove url from in-progress cache"""
         self.lock.acquire()
         try:
-            key = url_data.cache_key
+            key = url_data.cache_url_key
             assert key in self.in_progress
             del self.in_progress[key]
         finally:
@@ -154,7 +154,7 @@ class Cache (object):
         self.lock.acquire()
         try:
             data = url_data.get_cache_data()
-            key = url_data.cache_key
+            key = url_data.cache_url_key
             assert key not in self.checked
             assert key in self.in_progress
             del self.in_progress[key]

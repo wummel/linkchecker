@@ -99,9 +99,6 @@ class FileUrl (urlbase.UrlBase):
         self.has_content = True
         return self.data
 
-    def set_cache_key (self):
-        self.cache_key = self.url
-
     def is_html (self):
         if linkcheck.checker.extensions['html'].search(self.url):
             return True

@@ -233,8 +233,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.add_info(_("Redirected to %(url)s") % {'url': redirected})
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 redirected)
-            # see about recursion
-            all_seen = self.aliases + [self.cache_key]
+            # see about recursive redirect
+            all_seen = self.aliases + [self.cache_url_key]
             if redirected in all_seen:
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
