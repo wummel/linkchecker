@@ -6,6 +6,7 @@ POSOURCES = $(shell find ../linkcheck -name \*.py) \
 	../linkchecker
 LDIR = ../share/locale
 PACKAGE = linkchecker
+TEMPLATE = $(PACKAGE).pot
 LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
 LANGUAGES = de fr nl
@@ -15,13 +16,13 @@ mofiles:
 	  if [ ! -d $(LDIR)/$$la/LC_MESSAGES ]; then \
 	    mkdir -p $(LDIR)/$$la/LC_MESSAGES; \
 	  fi; \
-	  $(MSGFMT) -o $(LDIR)/$$la/$(LFILE) $$la.po; \
+	  $(MSGFMT) -c --statistics -o $(LDIR)/$$la/$(LFILE) $$la.po; \
 	done
 
-%.po:	$(PACKAGE).pot
-	$(MSGMERGE) $@ $(PACKAGE).pot -o $@
+%.po:	$(TEMPLATE)
+	$(MSGMERGE) -U --suffix=.bak $@ $<
 
-$(PACKAGE).pot: $(SOURCES)
+$(TEMPLATE): $(POSOURCES)
 	$(GETTEXT) -w 80 --default-domain=$(PACKAGE) $(POSOURCES)
 
 %.mo:	%.po
@@ -31,6 +32,7 @@ $(PACKAGE).pot: $(SOURCES)
 	$(MSGFMT) -c --statistics -o $(LDIR)/$*/$(LFILE) $<
 
 clean:
-	for f in $(LANGUAGES); do rm -f $(LDIR)/$$f/$(LFILE); done
+	@for f in $(LANGUAGES); do rm -f $(LDIR)/$$f/$(LFILE); done
+	rm -f *.mo
 
-.PHONY: all clean
+.PHONY: mofiles clean
