@@ -54,6 +54,11 @@
     Type: feature
     Changed: linkcheck/checker/cache.py
 
+  * the given user/password authententication is now also used to
+    get robots.txt files.
+    Type: feature
+    Changed: linkcheck/robotparser2.py, linkcheck/checker/cache.py
+
 1.12.3 "The Princess Bride" (released 27.5.2004)
   * fall back to GET on bad status line of a HEAD request
     Type: bugfix
