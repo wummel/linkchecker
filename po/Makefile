@@ -3,7 +3,7 @@ PYTHON := python2.3
 I18NTOOLS := .
 GETTEXT := $(PYTHON) $(I18NTOOLS)/pygettext.py -k i18n._
 #MSGFMT := $(PYTHON) $(I18NTOOLS)/msgfmt.py
-MSGFMT=msgfmt -c
+MSGFMT := msgfmt -c
 MSGMERGE := msgmerge
 SOURCES = $(shell find ../linkcheck -name \*.py) \
 ../linkchecker
