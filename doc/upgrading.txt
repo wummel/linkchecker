@@ -26,4 +26,4 @@ The commandline program ``linkchecker`` returns now non-zero exit value
 when errors were encountered. Previous versions always return a zero
 exit value.
 For scripts to ignore exit values and therefore restore the old behaviour
-you can append a `` || true`` at the end of the command.
+you can append a ``|| true`` at the end of the command.
