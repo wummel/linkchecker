@@ -26,6 +26,7 @@ import string
 import glob
 from types import StringType, TupleType
 from distutils.core import setup, Extension, DEBUG
+from distutils.dir_util import remove_tree
 #try:
 #    import py2exe
 #    distklass = py2exe.Distribution
