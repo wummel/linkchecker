@@ -16,6 +16,9 @@ Possible improvements people could work on:
   Linux:
   os.nice(+5)
 
+- [FEATURE] Optional python-geoip support, logging the country
+  for URLs.
+
 - [INSTALL] build .mo file with improved msgfmt.py from roundup
 
 - [USAGE] rethink intern/extern stuff
