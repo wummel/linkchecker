@@ -18,6 +18,8 @@ ETC = $(ROOT)/etc
 common-install-impl::
 # remove example files, we install them below
 	rm -r $(ROOT)/usr/share/linkchecker/examples
+	rm $(ROOT)/usr/share/man/de/man1/linkchecker.de.1*
+	rm $(ROOT)/usr/share/man/fr/man1/linkchecker.fr.1*
 # install system wide configuration files in etc
 	mv $(SHARE)/linkcheckerrc $(ETC)/linkchecker/
 	mv $(SHARE)/logging.conf $(ETC)/linkchecker/
