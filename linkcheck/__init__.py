@@ -5,6 +5,15 @@ This is the only entry point into the linkcheck module and is used
 of course by the linkchecker script.
 """
 
+# i18n suppport
+try:
+    import fintl
+    gettext = fintl.gettext
+    fintl.bindtextdomain('linkcheck')
+    fintl.textdomain('linkcheck')
+except ImportError:
+    def gettext(msg):
+        return msg
 import Config,UrlData,OutputReader,sys,lc_cgi
 
 def checkUrls(config = Config.Configuration()):
@@ -24,5 +33,5 @@ def checkUrls(config = Config.Configuration()):
     except KeyboardInterrupt:
         config.finish()
         config.log_endOfOutput()
-        sys.exit(1) # this is not good(tm)
+        sys.exit(1) # XXX this is not good(tm)
     config.log_endOfOutput()

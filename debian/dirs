@@ -3,3 +3,4 @@ usr/lib/python1.5/site-packages/linkcheck
 usr/bin
 etc
 usr/share/doc/linkchecker
+usr/share/locale/de/LC_MESSAGES

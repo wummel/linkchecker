@@ -13,7 +13,9 @@ newUrl(self,urlData)
 endOfOutput(self)
   Called at the end of checking to close filehandles and such.
 """
-import sys,time,Config,StringUtil
+import sys,time
+import Config,StringUtil,linkcheck
+_ = linkcheck.gettext
 
 # ANSI color codes
 ESC="\x1b"
@@ -38,6 +40,20 @@ TableError="<td bgcolor=\"db4930\">"
 TableOK="<td bgcolor=\"3ba557\">"
 RowEnd="</td></tr>\n"
 MyFont="<font face=\"Lucida,Verdana,Arial,sans-serif,Helvetica\">"
+KeyWords = ["Real URL",
+    "Result",
+    "Base",
+    "Parent URL",
+    "Info",
+    "Warning",
+    "D/L Time",
+    "Check Time",
+]
+MaxIndent = max(map(len, KeyWords))+1
+Spaces = {}
+for key in KeyWords:
+    Spaces[key] = " "*(MaxIndent - len(key))
+
 
 # return formatted time
 def _strtime(t):
@@ -50,16 +66,6 @@ class StandardLogger:
     blank lines.
     A URL log consists of two or more lines. Each line consists of
     keyword and data, separated by whitespace.
-    Keywords:
-    Real URL (necessary)
-    Result   (necessary)
-    Base
-    Parent URL
-    Info
-    Warning
-    D/L Time
-    Check Time
-    
     Unknown keywords will be ignored.
     """
 
@@ -73,38 +79,45 @@ class StandardLogger:
         self.starttime = time.time()
         self.fd.write(Config.AppInfo+"\n"+
                       Config.Freeware+"\n"+
-                      "Get the newest version at "+Config.Url+"\n"+
-                      "Write comments and bugs to "+Config.Email+"\n\n"+
-                      "Start checking at "+_strtime(self.starttime)+"\n")
+                      _("Get the newest version at ")+Config.Url+"\n"+
+                      _("Write comments and bugs to ")+Config.Email+"\n\n"+
+                      _("Start checking at ")+_strtime(self.starttime)+"\n")
         self.fd.flush()
 
 
     def newUrl(self, urldata):
-        self.fd.write("\nURL        "+urldata.urlName)
+        self.fd.write("\n"+_("URL")+Spaces["URL"]+urldata.urlName)
         if urldata.cached:
             self.fd.write(" (cached)\n")
         else:
             self.fd.write("\n")
         if urldata.parentName:
-            self.fd.write("Parent URL "+urldata.parentName+", line "+
+            self.fd.write(_("Parent URL")+Spaces["Parent URL"]+
+	                  urldata.parentName+_(", line ")+
 	                  str(urldata.line)+"\n")
         if urldata.baseRef:
-            self.fd.write("Base       "+urldata.baseRef+"\n")
+            self.fd.write(_("Base")+Spaces["Base"]+urldata.baseRef+"\n")
         if urldata.url:
-            self.fd.write("Real URL   "+urldata.url+"\n")
+            self.fd.write(_("Real URL")+Spaces["Real URL"]+urldata.url+"\n")
         if urldata.downloadtime:
-            self.fd.write("D/L Time   %.3f seconds\n" % urldata.downloadtime)
+            self.fd.write(_("D/L Time")+Spaces["D/L Time"]+
+	                  _("%.3f seconds\n") % urldata.downloadtime)
         if urldata.checktime:
-            self.fd.write("Check Time %.3f seconds\n" % urldata.checktime)
+            self.fd.write(_("Check Time")+Spaces["Check Time"]+
+	                  _("%.3f seconds\n") % urldata.checktime)
         if urldata.infoString:
-            self.fd.write("Info       "+StringUtil.indent(
-                StringUtil.blocktext(urldata.infoString, 65), 11)+"\n")
+            self.fd.write(_("Info")+Spaces["Info"]+
+	                  StringUtil.indent(
+                          StringUtil.blocktext(urldata.infoString, 65),
+			  MaxIndent)+"\n")
         if urldata.warningString:
             self.warnings = self.warnings+1
-            self.fd.write("Warning    "+StringUtil.indent(
-                StringUtil.blocktext(urldata.warningString, 65), 11)+"\n")
+            self.fd.write(_("Warning")+Spaces["Warning"]+
+	                  StringUtil.indent(
+                          StringUtil.blocktext(urldata.warningString, 65),
+			  MaxIndent)+"\n")
         
-        self.fd.write("Result     ")
+        self.fd.write(_("Result")+Spaces["Result"])
         if urldata.valid:
             self.fd.write(urldata.validString+"\n")
         else:
@@ -114,21 +127,21 @@ class StandardLogger:
 
 
     def endOfOutput(self):
-        self.fd.write("\nThats it. ")
+        self.fd.write(_("\nThats it. "))
 
         if self.warnings==1:
-            self.fd.write("1 warning, ")
+            self.fd.write(_("1 warning, "))
         else:
-            self.fd.write(str(self.warnings)+" warnings, ")
+            self.fd.write(str(self.warnings)+_(" warnings, "))
         if self.errors==1:
-            self.fd.write("1 error")
+            self.fd.write(_("1 error"))
         else:
-            self.fd.write(str(self.errors)+" errors")
-        self.fd.write(" found.\n")
+            self.fd.write(str(self.errors)+_(" errors"))
+        self.fd.write(_(" found.\n"))
         self.stoptime = time.time()
-        self.fd.write("Stopped checking at "+_strtime(self.stoptime)+
-	              (" (%.3f seconds)" % (self.stoptime - self.starttime))+
-                      "\n")
+        self.fd.write(_("Stopped checking at ")+_strtime(self.stoptime)+
+	              (_(" (%.3f seconds)") %
+		      (self.stoptime - self.starttime))+"\n")
         self.fd.flush()
         self.fd = None
 

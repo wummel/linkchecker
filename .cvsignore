@@ -1,10 +1,10 @@
 build-stamp
 .files-stamp
 test.prof
-sample.html
 *-out.*
 *.so
 *.o
+*.mo
 build
 linkchecker-*.tar.gz
 MANIFEST

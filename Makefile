@@ -19,9 +19,11 @@ clean:
 	rm -rf $(ALLPACKAGES) $(PACKAGE)-out.*
 
 install:
-	./setup.py install --prefix=/tmp/usr
-	# do what I mean, Distutils!
-	cp -a /tmp/usr/* $(DESTDIR)/usr
+	# ha! the root option finally made it into distutils
+	./setup.py install --root=$(DESTDIR)
+	# german translation mit Rezepten von Zlatko :)
+	msgfmt -o linkcheck.mo linkcheck/messages.po
+	install -c -m 644 linkcheck.mo $(DESTDIR)/usr/share/locale/de/LC_MESSAGES/
 	# remove following line if Distutils have script support
 	#install -c -m 755 linkchecker $(DESTDIR)/usr/bin/
 	install -c -m 644 linkcheckerrc $(DESTDIR)/etc/
