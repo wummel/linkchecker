@@ -10,12 +10,13 @@ HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
 HOST=www.debian.org
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
 LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s -r1
-TEST := test/run.sh test/regrtest.py
 DESTDIR = /.
 MD5SUMS := linkchecker-md5sums.txt
 PYCHECKEROPTS := -F config/pycheckrc
-#PYLINTOPTS := -F config/pylintrc
+PYLINTOPTS := 
+# --ignore=httplib2.py
 PYFILES := linkcheck/*.py linkcheck/logger/*.py linkcheck/checker/*.py
+TESTFILES := linkcheck/tests/*.py linkcheck/ftests/*.py
 
 all:
 	@echo "Read the file INSTALL to see how to build and install"
@@ -84,7 +85,7 @@ homepage: files VERSION
 	cp $(MD5SUMS) $(HTMLDIR)/
 
 test:
-	env PYTHONPATH=. python test.py -fupv
+	test/run.sh test.py --resource=network -fupv
 
 locale:
 	$(MAKE) -C po
@@ -104,7 +105,7 @@ pycheck:
 	-env PYTHONPATH=. PYTHONVER=2.3 pychecker $(PYCHECKEROPTS) $(PYFILES)
 
 pylint:
-	-env PYTHONPATH=. pylint $(PYLINTOPTS) $(PYFILES)
+	-env PYTHONPATH=. PYLINTRC=config/pylintrc pylint $(PYLINTOPTS) $(PYFILES) $(TESTFILES)
 
 reindent:
 	$(PYTHON) config/reindent.py -r -v linkcheck
