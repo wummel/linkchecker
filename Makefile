@@ -39,7 +39,7 @@ config:
 
 # no rpm package; too much trouble, cannot test
 dist:	locale config
-	$(PYTHON) setup.py sdist --formats=gztar,zip bdist_wininst
+	$(PYTHON) setup.py sdist --formats=gztar,zip
 	rm -f $(MD5SUMS)
 	md5sum dist/* > $(MD5SUMS)
 

@@ -1,6 +1,8 @@
 1.7.0
   * Added new HTML parser written in C as a Python extension module.
     It is faster and it is more fault tolerant.
+    Of course, this means I cannot provide .exe installers any more
+    since the distutils dont provide cross-compilation.
 
 1.6.7
   * Removed check for <applet> tags codebase attribute, but honor it
