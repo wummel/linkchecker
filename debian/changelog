@@ -6,10 +6,18 @@ linkchecker (1.2.4) unstable; urgency=low
   * fix for HTTP HEAD requests from bad/dumb/old servers
   * CGI script fixes
   * LinkChecker Online HTML pages added
+<<<<<<< changelog
+  * fixed bug in config file parser with external link specification
+=======
   * news: link support for links which specify a NNTP server
   * fixed parsing of extern? config file options (was endless loop)
+>>>>>>> 1.35
 
+<<<<<<< changelog
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 13 Jul 2000 20:48:32 +0200
+=======
  -- Bastian Kleineidam <calvin@users.sourceforge.net>  Fri, 14 Jul 2000 05:23:08 +0200
+>>>>>>> 1.35
 
 linkchecker (1.2.3) unstable; urgency=low
 

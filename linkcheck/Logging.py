@@ -280,7 +280,7 @@ class HtmlLogger(StandardLogger):
 	self.fd.write("</font></blockquote><br><hr noshade size=1><small>"+
              MyFont+Config.HtmlAppInfo+"<br>")
 	self.fd.write(_("Get the newest version at %s\n") %\
-             ("<a href=\""+Config.Url+"\">"+Config.Url+"</a>.<br>"))
+             ("<a href=\""+Config.Url+"\" target=\"_top\">"+Config.Url+"</a>.<br>"))
         self.fd.write(_("Write comments and bugs to %s\n\n") %\
 	     ("<a href=\"mailto:"+Config.Email+"\">"+Config.Email+"</a>."))
 	self.fd.write("</font></small></body></html>")
