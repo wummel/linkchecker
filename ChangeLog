@@ -4,6 +4,9 @@
     Changed: linkcheck/{File,Http,Ftp,}UrlData.py, linkcheck/linkparser.py
   * try to use psyco for the commandline linkchecker script
     Changed: linkchecker
+  * when decompression of compressed HTML pages fails, assume the page
+    is not compressed
+    Changed: linkcheck/{robotparser2,HttpUrlData}.py
 
 1.9.3 (released 16.10.2003)
   * re-added an updated robot parser which uses urllib2 and can decode

@@ -16,8 +16,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urlparse, sys, time, re, httplib, robotparser2
+import urlparse, sys, time, re, httplib, zlib, gzip robotparser2
 from urllib import quote, unquote
+from cStringIO import StringIO
 import Config, i18n
 from debug import *
 # XXX not dynamic
@@ -343,13 +344,13 @@ class HttpUrlData (ProxyUrlData):
             self.data = response.read()
             encoding = self.headers.get("Content-Encoding")
             if encoding in _supported_encodings:
-                from cStringIO import StringIO
-                if encoding == 'deflate':
-                    import zlib
-                    f = StringIO(zlib.decompress(self.data))
-                else:
-                    import gzip
-                    f = gzip.GzipFile('', 'rb', 9, StringIO(self.data))
+                try:
+                    if encoding == 'deflate':
+                        f = StringIO(zlib.decompress(self.data))
+                    else:
+                        f = gzip.GzipFile('', 'rb', 9, StringIO(self.data))
+                except zlib.error:
+                    f = StringIO(self.data)
                 self.data = f.read()
             self.downloadtime = time.time() - t
         return self.data

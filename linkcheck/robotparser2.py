@@ -284,14 +284,17 @@ def decode (page):
     encoding = page.info().get("Content-Encoding") 
     if encoding in ('gzip', 'x-gzip', 'deflate'):
         from cStringIO import StringIO
+        import zlib, gzip
         # cannot seek in socket descriptors, so must get content now
         content = page.read()
-        if encoding == 'deflate':
-            import zlib
-            fp = StringIO(zlib.decompress(content))
-        else:
-            import gzip
-            fp = gzip.GzipFile('', 'rb', 9, StringIO(content))
+        try:
+            if encoding == 'deflate':
+                fp = StringIO(zlib.decompress(content))
+            else:
+                fp = gzip.GzipFile('', 'rb', 9, StringIO(content))
+        except zlib.error, msg:
+            # XXX warning
+            fp = StringIO(content)
         # remove content-encoding header
         headers = {}
         ceheader = re.compile(r"(?i)content-encoding:")
