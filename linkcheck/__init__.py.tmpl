@@ -23,10 +23,12 @@ of course by the linkchecker script.
 
 # i18n suppport
 try:
-    import fintl
+    import fintl,os
     gettext = fintl.gettext
-    fintl.bindtextdomain('linkcheck')
-    fintl.textdomain('linkcheck')
+    domain = 'linkcheck'
+    localedir = os.path.join('$install_data', 'locale')
+    fintl.bindtextdomain(domain, localedir)
+    fintl.textdomain(domain)
 except ImportError:
     def gettext(msg):
         return msg

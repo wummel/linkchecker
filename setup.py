@@ -26,7 +26,7 @@ class LCDistribution(Distribution):
                             '/usr/local/include/openssl']
     def run_commands (self):
         self.check_ssl()
-        self.replace_in_scripts()
+        self.replace_vars()
         for cmd in self.commands:
             self.run_command (cmd)
 
@@ -53,10 +53,14 @@ class LCDistribution(Distribution):
         return 0
 
                                            
-    def replace_in_scripts(self):
+    def replace_vars(self):
+        inst = self.find_command_obj("install")
+        inst.ensure_ready()
+        t = Template("linkcheck/__init__.py.tmpl")
+        f = open("linkcheck/__init__.py","w")
+        f.write(t.fill_in({"install_data": inst.install_data}))
+        f.close()
         if sys.platform=='win32':
-            inst = self.find_command_obj("install")
-            inst.ensure_ready()
             t = Template("linkchecker.bat.tmpl")
             f = open("linkchecker.bat","w")
             f.write(t.fill_in({"path_to_linkchecker": inst.install_scripts}))
