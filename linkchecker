@@ -39,8 +39,8 @@ OPTIONS
 For single-letter option arguments the space is not a necessity. So
 '-o colored' is the same as '-ocolored'.
 -a, --anchors
-        Check HTTP anchor references. This option applies to both intern
-        and extern urls. Default is don't check anchors.
+        Check HTTP anchor references. This option applies to both internal
+        and external urls. Default is don't check anchors.
         This option implies -w because anchor errors are always warnings.
 -C, --cookies
         Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -48,14 +48,14 @@ For single-letter option arguments the space is not a necessity. So
         Sent and accepted cookies are provided as additional logging
         information.
 -d, --denyallow
-        Swap checking order to extern/intern. Default checking order
-        is intern/extern.
+        Swap checking order to external/internal. Default checking order
+        is internal/external.
 -D, --debug
         Print debugging information. Provide this option multiple times
         for even more debugging information.
 -e regex, --extern=regex
-        Assume urls that match the given expression as extern.
-        Only intern HTML links are checked recursively.
+        Assume urls that match the given expression as external.
+        Only internal HTML links are checked recursively.
 -f file, --config=file
         Use file as configuration file. As default LinkChecker first
         searches /etc/linkcheckerrc and then ~/.linkcheckerrc
@@ -69,8 +69,9 @@ For single-letter option arguments the space is not a necessity. So
 -I, --interactive
         Ask for url if none are given on the commandline.
 -i regex, --intern=regex
-        Assume URLs that match the given expression as intern.
-        LinkChecker descends recursively only to intern URLs, not to extern.
+        Assume URLs that match the given expression as internal.
+        LinkChecker descends recursively only to internal URLs, not to
+        external.
 -h, --help
         Help me! Print usage information for this program.
 -N server, --nntp-server=server
@@ -102,7 +103,7 @@ For single-letter option arguments the space is not a necessity. So
         will enable inifinite recursion.
         Default depth is 1.
 -s, --strict
-        Check only syntax of extern links, do not try to connect to them.
+        Check only syntax of external links, do not try to connect to them.
         For local file urls, only local files are internal. For
         http and ftp urls, all urls at the same domain name are internal.
 -t num, --threads=num
