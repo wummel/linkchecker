@@ -84,6 +84,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:news-admins@freshmeat.net",
             u"real url %s" % url,
+            u"warning Unverified address: VRFY command is disabled.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -92,6 +93,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:foo@foo-bar.de",
             u"real url %s" % url,
+            u"info Unverified address: Cannot VRFY user; try RCPT to attempt delivery. But mail will be sent anyway.",
             u"valid",
         ]
         self.direct(url, resultlines)
