@@ -201,7 +201,7 @@ group.add_option("-I", "--interactive", action="store_true", dest="interactive",
 """Ask for url if none are given on the commandline."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
                  help=_(
-"""Generate no more than num threads. Default number of threads is 5."""))
+"""Generate no more than num threads. Default number of threads is 10."""))
 
 group.add_option("-V", "--version", action="store_true", dest="version",
                  help=_(

@@ -137,12 +137,12 @@ Check only the syntax of external links, do not try to connect to them.
 For local file urls, only local files are internal. For
 http and ftp urls, all urls at the same domain name are internal.
 .TP
-\fB--status\fP
-Print check status every 5 seconds to stderr. Does not work with the
+\fB--no-status\fP
+Do not print check status every 5 seconds to stderr. Does not work with the
 \fB--debug\fP option.
 .TP
 \fB-t\fP \fInum\fP, \fB--threads=\fP\fInum\fP
-Generate no more than \fInum\fP threads. Default number of threads is 5.
+Generate no more than \fInum\fP threads. Default number of threads is 10.
 To disable threading specify a non-positive number.
 .TP
 \fB--timeout=\fP\fIsecs\fP
