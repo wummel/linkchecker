@@ -9,7 +9,7 @@ If LinkChecker does not fit your requirements, you can check out the
 competition. All of these programs have also an `Open Source license`_
 like LinkChecker.
 
-.. _`Open Source licenses`:
+.. _`Open Source license`:
    http://www.opensource.org/licenses/
 
 - `checkbot`_ written in Perl
