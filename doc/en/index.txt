@@ -2,9 +2,9 @@
   :navigation.order: 0
   :navigation.name: LinkChecker
 
-=================================================================
-LinkChecker - check  websites and HTML documents for broken links
-=================================================================
+================================================================
+LinkChecker - check websites and HTML documents for broken links
+================================================================
 
 .. contents::
 
