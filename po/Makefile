@@ -25,7 +25,7 @@ mofiles:
 
 template: $(TEMPLATE)
 $(TEMPLATE): $(POSOURCES)
-	$(XGETTEXT) -j -w 80 --default-domain=$(PACKAGE) --language=Python \
+	$(XGETTEXT) -w 80 --default-domain=$(PACKAGE) --language=Python \
 	  --copyright-holder="Bastian Kleineidam <$(MYMAIL)>" \
 	  --msgid-bugs-address=$(MYMAIL) -o $(TEMPLATE) \
 	  --keyword=_n:1,2 $(POSOURCES)
