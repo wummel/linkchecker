@@ -1,13 +1,7 @@
-- all threads should regularly poll a status variable
-  this can be used to make ctrl-c working faster, and to print messages
-
-- use optparse instead of getopt with more flexible commandline help
-
 - replace the debug() function with the logging module
   we'll see how we can insert multiple debug levels into this thing
 
-- use the Set type instead of hashmaps (did I use hashmaps for sets here?)
-
 include some web check and/or spider features:
 - warn if overall size of page (including images/flash/etc.) is too big
+  right now, the page size is only html content
 - save downloaded pages
