@@ -66,20 +66,24 @@ class NntpUrlData (UrlData):
                 self.setWarning(linkcheck._("No newsgroup specified in NNTP URL"))
 
     def _connectNntp (self, nntpserver):
-        """This is done only once per checking task."""
-        timeout = 1
-        while timeout:
+        """This is done only once per checking task. Also, the newly
+        introduced error codes 504 and 505 (both inclining "Too busy, retry
+        later", are caught."""
+        tries = 0
+        nntp = None
+        while tries < 5:
+            tries += 1
             try:
                 nntp=nntplib.NNTP(nntpserver)
-                timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
-                debug(BRING_IT_ON, "NNTP:", value)
-                if re.compile("^505").search(str(value)):
+                if re.compile("^50[45]").search(str(value)):
                     import whrandom
                     time.sleep(whrandom.randint(10,20))
                 else:
                     raise
+        if nttp is None:
+            raise linkcheck.error(_("NTTP server too busy; tried more than %d times")%tries)
         return nntp
 
     def getCacheKey (self):
