@@ -162,11 +162,8 @@ class HttpUrlData(UrlData):
         if self.proxy:
             path = urlparse.urlunparse(self.urlTuple)
         else:
-            path = self.urlTuple[2]
-            if self.urlTuple[3]:
-                path = path + ";" + self.urlTuple[3]
-            if self.urlTuple[4]:
-                path = path + "?" + self.urlTuple[4]
+            path = urlparse.urlunparse(('', '', self.urlTuple[2],
+            self.urlTuple[3], self.urlTuple[4], ''))
         self.urlConnection.putrequest(method, path)
         self.urlConnection.putheader("Host", self.urlTuple[1])
         if self.auth:
