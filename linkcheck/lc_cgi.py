@@ -15,13 +15,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os, re, time, urlparse
+import sys, os, re, time, urlparse
 import linkcheck
+_ = linkcheck._
 from types import StringType
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
 
+_is_level = re.compile(r"\d").match
+_is_valid_url = re.compile(r"^https?://[-\w./=%?~]+$").match
 
 class FormError (Exception):
     """form related errors"""
@@ -81,14 +84,14 @@ def checkform (form):
         url = form["url"].value
         if not url or url=="http://":
             raise FormError(_("Empty url was given"))
-        if not re.match(r"^https?://[-\w./=%?~]+$", url):
+        if not _is_valid_url(url):
             raise FormError(_("Invalid url was given"))
     else:
         raise FormError(_("No url was given"))
     # check recursion level
     if form.has_key("level"):
         level = form["level"].value
-        if not re.match(r"\d", level):
+        if not _is_level(level):
             raise FormError(_("Invalid recursion level syntax"))
         if int(level) > 3:
             raise FormError(_("Recursion level greater than 3"))
@@ -130,3 +133,11 @@ Errors are logged.
 </blockquote>
 </body>
 </html>""") % why)
+
+if __name__=='__main__':
+    class store:
+        def __init__(self, value):
+            self.value = value
+    checklink(form={"url": store("http://localhost"),
+                "level": store("0"),
+              })
