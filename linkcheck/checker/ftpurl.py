@@ -98,7 +98,7 @@ class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return
         try:
             self.url_connection = ftplib.FTP()
-            if self.consumer.config.get("debug"):
+            if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
                 self.url_connection.set_debuglevel(1)
             self.url_connection.connect(self.urlparts[1])
             if _user is None:

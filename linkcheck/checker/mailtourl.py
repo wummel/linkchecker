@@ -184,7 +184,7 @@ class MailtoUrl (urlbase.UrlBase):
                 linkcheck.log.debug(linkcheck.LOG_CHECK,
                         "SMTP check for %r (preference %d)", host, preference)
                 self.url_connection = smtplib.SMTP()
-                if self.consumer.config.get("debug"):
+                if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
                     self.url_connection.set_debuglevel(1)
                 self.url_connection.connect(host)
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "SMTP connected!")
