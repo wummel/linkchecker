@@ -17,6 +17,7 @@
 from StandardLogger import StandardLogger
 import time, linkcheck, linkcheck.Config
 from linkcheck.log import strtime
+from linkcheck import StringUtil
 
 class SQLLogger (StandardLogger):
     """ SQL output for PostgreSQL, not tested"""
@@ -44,19 +45,19 @@ class SQLLogger (StandardLogger):
               " values "
               "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%d,%d,%d,%d)%s\n" % \
 	      (self.dbname,
-	       linkcheck.StringUtil.sqlify(urlData.urlName),
+	       StringUtil.sqlify(urlData.urlName),
                urlData.recursionLevel,
-	       linkcheck.StringUtil.sqlify(urlData.parentName),
-               linkcheck.StringUtil.sqlify(urlData.baseRef),
-               linkcheck.StringUtil.sqlify(urlData.errorString),
-               linkcheck.StringUtil.sqlify(urlData.validString),
-               linkcheck.StringUtil.sqlify(urlData.warningString),
-               linkcheck.StringUtil.sqlify(urlData.infoString),
+	       StringUtil.sqlify(urlData.parentName),
+               StringUtil.sqlify(urlData.baseRef),
+               StringUtil.sqlify(urlData.errorString),
+               StringUtil.sqlify(urlData.validString),
+               StringUtil.sqlify(urlData.warningString),
+               StringUtil.sqlify(urlData.infoString),
                urlData.valid,
-               linkcheck.StringUtil.sqlify(urlData.url),
+               StringUtil.sqlify(urlData.url),
                urlData.line,
                urlData.column,
-               linkcheck.StringUtil.sqlify(urlData.name),
+               StringUtil.sqlify(urlData.name),
                urlData.checktime,
                urlData.dltime,
                urlData.dlsize,

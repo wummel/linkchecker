@@ -17,6 +17,7 @@
 import sys, linkcheck
 from linkcheck.log import Spaces
 from StandardLogger import StandardLogger
+from linkcheck import StringUtil
 
 AnsiType = {
     'bold': "1",
@@ -153,11 +154,11 @@ class ColoredLogger (StandardLogger):
         if urlData.infoString and self.logfield("info"):
             if self.prefix:
                 self.fd.write("|  "+linkcheck._("Info")+Spaces["info"]+
-                      linkcheck.StringUtil.indentWith(linkcheck.StringUtil.blocktext(
+                      StringUtil.indentWith(StringUtil.blocktext(
                         urlData.infoString, 65), "|      "+Spaces["info"]))
             else:
                 self.fd.write(linkcheck._("Info")+Spaces["info"]+
-                      linkcheck.StringUtil.indentWith(linkcheck.StringUtil.blocktext(
+                      StringUtil.indentWith(StringUtil.blocktext(
                         urlData.infoString, 65), "    "+Spaces["info"]))
             self.fd.write(self.colorreset+"\n")
             

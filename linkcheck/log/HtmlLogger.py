@@ -16,6 +16,7 @@
 
 from StandardLogger import StandardLogger
 from linkcheck.log import strtime
+from linkcheck import StringUtil
 import time, linkcheck, linkcheck.Config
 
 HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">
@@ -107,7 +108,7 @@ class HtmlLogger (StandardLogger):
 			  "</td>\n</tr>\n")
         if urlData.infoString and self.logfield("info"):
             self.fd.write("<tr>\n<td>"+linkcheck._("Info")+"</td>\n<td>"+
-	                  linkcheck.StringUtil.htmlify(urlData.infoString)+
+	                  StringUtil.htmlify(urlData.infoString)+
 			  "</td>\n</tr>\n")
         if urlData.warningString:
             #self.warnings += 1

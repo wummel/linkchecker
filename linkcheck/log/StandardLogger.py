@@ -17,6 +17,7 @@
 import sys, time, linkcheck, linkcheck.Config
 from Logger import Logger
 from linkcheck.log import LogFields, Spaces, strtime, MaxIndent
+from linkcheck import StringUtil
 
 class StandardLogger (Logger):
     """Standard text logger.
@@ -104,15 +105,15 @@ __init__(self, **args)
 	                  linkcheck._("%.3f seconds\n") % urlData.checktime)
         if urlData.infoString and self.logfield('info'):
             self.fd.write(linkcheck._(LogFields["info"])+Spaces["info"]+
-	                  linkcheck.StringUtil.indent(
-                          linkcheck.StringUtil.blocktext(urlData.infoString, 65),
+	                  StringUtil.indent(
+                              StringUtil.blocktext(urlData.infoString, 65),
 			  MaxIndent)+"\n")
         if urlData.warningString:
             #self.warnings += 1
             if self.logfield('warning'):
                 self.fd.write(linkcheck._(LogFields["warning"])+Spaces["warning"]+
-	                  linkcheck.StringUtil.indent(
-                          linkcheck.StringUtil.blocktext(urlData.warningString, 65),
+	                  StringUtil.indent(
+                              StringUtil.blocktext(urlData.warningString, 65),
 			  MaxIndent)+"\n")
 
         if self.logfield('result'):
