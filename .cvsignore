@@ -4,7 +4,10 @@ build-stamp
 *.so
 *.o
 build
+dist
 linkchecker
+linkchecker.bat
 linkchecker-*.tar.gz
 MANIFEST
 VERSION
+README

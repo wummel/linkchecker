@@ -1,0 +1,175 @@
+
+Internet-Draft                              Alfred S. Gilman
+draft-gilman-news-url-00                                                   
+August 31, 1997                                                 
+Expires six months after above date
+
+                       The 'news' URL scheme
+
+Status of This Memo
+
+This document is an Internet-Draft.  Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its areas,
+and its working groups.  Note that other groups may also distribute
+working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any
+time.  It is inappropriate to use Internet-Drafts as reference
+material or to cite them other than as ``work in progress.''
+
+To learn the current status of any Internet-Draft, please check the
+``1id-abstracts.txt'' listing contained in the Internet-Drafts Shadow
+Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast), or
+ftp.isi.edu (US West Coast).
+
+Abstract
+
+This document defines the format of Uniform Resource Locators
+(URLs) identifying news messages and groups.  The syntax of
+'news' URLs from RFC 1738 is extended to allow specification of
+the site from which the message is to be sought and to
+incorporate protections via 'snews' URLs.  This combines into the
+'news' scheme enough capability so that the previously-proposed
+'nntp' scheme can be retired and URL usage simplified.
+
+1. Introduction
+
+The news URL scheme is used to designate a message or a set of
+messages circulating through the Internet by methods compatible
+with the practices followed by the Usenet community.  In its
+simplest form, a news URL contains a Usenet newsgroup name.
+
+Further capabilities are the ability to designate an unique
+message as the located resource, to specify that the News server
+at a particular site is to be queried for the resource identified
+and to request secure dialog via the variant snews scheme name.
+
+This draft is one of a suite of documents intended replace RFC
+1738 [3], "Uniform Resource Locators", and RFC 1808 [4],
+"Relative Uniform Resource Locators".  The suite is composed of a
+general document [RFC URL SYNTAX] for all URL schemes and
+scheme-specific documents for each scheme.
+
+2. Syntax of a news URL
+
+Following the syntax conventions of [RFC URL SYNTAX], a news
+URL has the form:
+
+   newsURL    =  scheme ":" [ news-site ] [ refbygroup | message ]
+   scheme     =  "news" | "snews" | "nntp"
+   news-site  =  "//" site "/"
+   refbygroup = group [ "/" messageno [ "-" messageno ] ] 
+   message    = local-part "@" domain
+
+Sites take the form defined for the generic URL syntax in section
+4.1.3 of [RFC-URL-SYNTAX].  Messages take the form specified for
+the value of a Message-ID field in RFC 822 [1] or RFC 1036 [2],
+without the leading "<" or trailing ">".
+
+Note that the refbygroup and message cases are distinguished by
+the absense in the first case and presence in the latter case of
+one and only one commercial at sign "@".
+
+Groups take the form of a dotted name of a News group as allowed
+in the value of the Newsgroups header field defined in RFC 1036.
+Messagenos take the form of an integer message number as numbered
+by a particular server.  As these numbers will vary between
+copies of the same message available from different servers,
+reference by message ID is preferred to reference to messages by
+means of these numbers.
+
+Note that all URLs of this scheme are in the category of absolute
+URLs, in the terms of [RFC URL SYNTAX].
+
+3. Semantics and operations
+
+When the scheme is news, the default port (in site) is 119.
+When the scheme is snews, the default port (in site) is 563.
+
+A news URL designates a message or message-carrying subchannel
+known as a newsgroup.  When a news URL is activated, message
+reading and writing from and to News is initiated, if that
+service is available.  
+
+If an individual message has been identified, interaction starts
+by reading that message.  If an individual group or range of
+messages in such a group had been identified, interaction starts
+by reading an index of messages.  If no message or group is
+identified, interaction starts by reading an index of groups.  No
+immediate write or PUT of a message is performed when a news URL
+is activated.
+
+Note that user agents may extend the ability to refer to groups
+by use of "*" as a string wild-card.
+
+4. Examples
+
+An URL to read a newsgroup from anywhere (usually locally):
+
+    <news:alt.adoptive.parenting>
+
+An URL to read a specific message from anywhere (usually locally):
+
+    <news:EFGJG4.7A@deshaw.com>
+
+An URL to read a specific message from a designated site:
+
+    <news://binky.capnet.state.tx.us/5rb1or$67v@news.jumpnet.com>
+
+An URL to read a newsgroup from a designated site:
+
+    <news://adenine.c.dna.affrc.go.jp/misc.transport.air-industry.cargo>
+
+5. Acknowledgements
+
+This document was derived from RFC 1738 [3]; the acknowledgements
+from that specifications still applies.
+
+6. References
+
+[1] Crocker, D., "Standard for the Format of ARPA Internet Text
+Messages", RFC 822, University of Delaware, August 1982.
+
+[2] Horton, M. and R. Adams, "Standard For Interchange of USENET
+Messages", RFC 1036, AT&T Bell Laboratories, Center for Seismic
+Studies, December 1987.
+
+[3] Berners-Lee, T., Masinter, L., and M. McCahill, Editors,
+"Uniform Resource Locators (URL)", RFC 1738, CERN, Xerox
+Corporation, University of Minnesota, December 1994.
+
+[4] Fielding, R., "Relative Uniform Resource Locators", RFC 1808,
+UC Irvine, June 1995.
+
+[RFC-URL-SYNTAX] Berners-Lee, T., Fielding, R., Masinter L.,
+"Uniform Resource Locators (URL): Generic Syntax and Semantics",
+Work in Progress <draft-fielding-url-syntax-05>, MIT/LCS,
+U.C. Irvine, Xerox Corporation, May 1997.
+
+Appendix
+
+A. Changes from RFC 1738
+
+RFC 1738 defined two distinct URL schemes designated news and
+nntp.  Both schemes, however, accessed the same pool of News
+message traffic.  In no case was the scheme name significant in
+distinguishing references to different messages or to different
+groups.  Various implementations have blurred the distinction by
+extending the syntax of news to include explicit remote
+references including designation of a site.
+
+This draft provides a unified syntax for a graceful migration
+to the use of news and snews and not nntp as scheme names.
+
+B. Author contact information:
+
+Alfred S. Gilman
+1101 S. Arlington Ridge Rd.
+Unit 712
+Arlington VA     22202-1926
+asgilman@access.digex.net
+
+
+
