@@ -196,7 +196,9 @@ class Cache (object):
             self.lock.release()
 
     def store_cookies (self, headers, host):
-        """thread-safe cookie cache setter function"""
+        """Thread-safe cookie cache setter function. Can raise the
+           exception Cookie.CookieError.
+        """
         self.lock.acquire()
         try:
             output = []
@@ -210,7 +212,7 @@ class Cache (object):
             self.lock.release()
 
     def get_cookies (self, host, path):
-        """thread-safe cookie cache getter function"""
+        """Thread-safe cookie cache getter function."""
         self.lock.acquire()
         try:
             linkcheck.log.debug(linkcheck.LOG_CACHE,
