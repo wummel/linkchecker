@@ -70,7 +70,10 @@ class Cache (object):
         # already checked urls
         self.checked = {}
         # open FTP connections
-        # {(host,user,pass) -> [connection, status]}
+        # {(host,user,pass) -> [connection, status, timeout]}
+        self.ftp_connections = {}
+        # open HTTP connections
+        # {(host,user,pass) -> [connection, status, timeout]}
         self.ftp_connections = {}
         # urls that are being checked
         self.in_progress = {}
@@ -228,8 +231,7 @@ class Cache (object):
             key = (host, username, password)
             if key in self.ftp_connections:
                 conn_data = self.ftp_connections[key]
-                t = time.time()
-                if conn_data[2] - t > FTP_CONNECTION_TIMEOUT:
+                if time.time() > conn_data[2]:
                     # timed out
                     del self.ftp_connections[key]
                     return None
@@ -252,7 +254,8 @@ class Cache (object):
             key = (host, username, password)
             cached = key in self.ftp_connections
             if not cached:
-                self.ftp_connections[key] = [conn, 'busy', time.time()]
+                timeout = time.time() + FTP_CONNECTION_TIMEOUT
+                self.ftp_connections[key] = [conn, 'busy', timeout]
             return cached
         finally:
             self.lock.release()
