@@ -19,6 +19,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
+import stat
 import re
 import sys
 import string
@@ -49,7 +50,7 @@ def get_nt_desktop_path (default=""):
     return default
 
 
-class MyInstall (install, object):
+class MyInstall (install):
 
     def run (self):
         super(MyInstall, self).run()
@@ -101,7 +102,19 @@ class MyInstall (install, object):
 
 
 class MyInstallData (install_data):
-    """My own data installer to handle .man pages"""
+    """My own data installer to handle permissions and .man pages"""
+
+    def run (self):
+        super(MyInstallData, self).run()
+        if os.name == 'posix' and not self.dry_run:
+            # Make the data files we just installed world-readable,
+            # and the directories world-executable as well.
+            for path in self.get_outputs():
+                mode = os.stat(path)[stat.ST_MODE]
+                if stat.S_ISDIR(mode):
+                    mode |= 011
+                mode |= 044
+                os.chmod(path, mode)
 
     def copy_file (self, filename, dirname):
         (out, _) = install_data.copy_file(self, filename, dirname)
