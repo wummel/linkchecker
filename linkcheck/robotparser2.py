@@ -29,10 +29,10 @@ class RobotFileParser (object):
     questions about a single robots.txt file.
 
     """
+
     def __init__ (self, url=''):
         self.set_url(url)
         self._reset()
-
 
     def _reset (self):
         self.entries = []
@@ -40,7 +40,6 @@ class RobotFileParser (object):
         self.disallow_all = False
         self.allow_all = False
         self.last_checked = 0
-
 
     def mtime (self):
         """Returns the time the robots.txt file was last fetched.
@@ -51,7 +50,6 @@ class RobotFileParser (object):
         """
         return self.last_checked
 
-
     def modified (self):
         """Sets the time the robots.txt file was last fetched to the
         current time.
@@ -60,12 +58,10 @@ class RobotFileParser (object):
         import time
         self.last_checked = time.time()
 
-
     def set_url (self, url):
         """Sets the URL referring to a robots.txt file."""
         self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
-
 
     def read (self):
         """Reads the robots.txt URL and feeds it to the parser."""
@@ -108,14 +104,12 @@ class RobotFileParser (object):
         debug(BRING_IT_ON, "robots.txt parse lines")
         self.parse(lines)
 
-
     def _add_entry (self, entry):
         if "*" in entry.useragents:
             # the default entry is considered last
             self.default_entry = entry
         else:
             self.entries.append(entry)
-
 
     def parse (self, lines):
         """parse the input lines from a robot.txt file.
@@ -180,7 +174,6 @@ class RobotFileParser (object):
             self.entries.append(entry)
         debug(BRING_IT_ON, "Parsed rules:\n%s" % str(self))
 
-
     def can_fetch (self, useragent, url):
         """using the parsed robots.txt decide if useragent can fetch url"""
         debug(BRING_IT_ON, "Checking robot.txt allowance for:\n  user agent: %r\n  url: %r"%(useragent, url))
@@ -200,7 +193,6 @@ class RobotFileParser (object):
         # agent not found ==> access granted
         return True
 
-
     def __str__ (self):
         lines = [str(entry) for entry in self.entries]
         if self.default_entry is not None:
@@ -208,9 +200,10 @@ class RobotFileParser (object):
         return "\n\n".join(lines)
 
 
-class RuleLine:
+class RuleLine (object):
     """A rule line is a single "Allow:" (allowance==1) or "Disallow:"
        (allowance==0) followed by a path."""
+
     def __init__ (self, path, allowance):
         if path == '' and not allowance:
             # an empty value means allow all
@@ -218,27 +211,24 @@ class RuleLine:
         self.path = urllib.quote(path)
         self.allowance = allowance
 
-
     def applies_to (self, filename):
         return self.path=="*" or filename.startswith(self.path)
-
 
     def __str__ (self):
         return (self.allowance and "Allow" or "Disallow")+": "+self.path
 
 
-class Entry:
+class Entry (object):
     """An entry has one or more user-agents and zero or more rulelines"""
+
     def __init__ (self):
         self.useragents = []
         self.rulelines = []
-
 
     def __str__ (self):
         lines = ["User-agent: %r"%agent for agent in self.useragents]
         lines.extend([str(line) for line in self.rulelines])
         return "\n".join(lines)
-
 
     def applies_to (self, useragent):
         """check if this entry applies to the specified agent"""
@@ -254,7 +244,6 @@ class Entry:
             if useragent in agent:
                 return True
         return False
-
 
     def allowance (self, filename):
         """Preconditions:
@@ -300,7 +289,7 @@ def decode (page):
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
         except zlib.error, msg:
-            warn(linkcheck.i18n._("%r at %s, assuming non-compressed content") % (str(msg), page.geturl()))
+            warn(bk.i18n._("%r at %s, assuming non-compressed content") % (str(msg), page.geturl()))
             fp = StringIO.StringIO(content)
         # remove content-encoding header
         headers = {}
