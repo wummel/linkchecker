@@ -227,9 +227,10 @@ class Cache (object):
                 conn_and_status = self.ftp_connections[key]
                 if conn_and_status[1] == 'busy':
                     # connection is in use
-                    return None
+                    return "busy"
                 conn_and_status[1] = 'busy'
                 return conn_and_status[0]
+            return None
         finally:
             self.lock.release()
 
