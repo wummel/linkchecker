@@ -26,7 +26,5 @@ valid
 url misc.html
 cached
 valid
-url http://localhost
-info Using Proxy 'localhost:3128'
-warning Path is empty
+url http://localhost/
 valid
