@@ -154,6 +154,7 @@ class Configuration (dict):
             self.enableThreading(10)
         except ImportError:
             type, value = sys.exc_info()[:2]
+            debug(HURT_ME_PLENTY, "no threading available")
             self.disableThreading()
         self.cookies = {}
 
@@ -473,6 +474,7 @@ class Configuration (dict):
         try:
             num = cfgparser.getint(section, "threads")
             if num > 0:
+                debug(HURT_ME_PLENTY, "set threading with %d threads", num)
                 self.enableThreading(num)
             else:
                 self.disableThreading()
