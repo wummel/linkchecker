@@ -3,13 +3,13 @@
 
 #include "Python.h"
 
-/* require Python >= 2.0 */
+/* require Python >= 2.3 */
 #ifndef PY_VERSION_HEX
-#error please install Python >= 2.0
+#error please install Python >= 2.3
 #endif
 
-#if PY_VERSION_HEX < 0x02000000
-#error please install Python >= 2.0
+#if PY_VERSION_HEX < 0x02030000
+#error please install Python >= 2.3
 #endif
 
 /* user_data type for SAX calls */
