@@ -30,6 +30,11 @@ import _linkchecker_configdata
 import linkcheck
 import linkcheck.log
 import linkcheck.containers
+try:
+    import GeoIP
+    _has_geoip = True
+except ImportError:
+    _has_geoip = False
 
 Version = _linkchecker_configdata.version
 AppName = u"LinkChecker"
@@ -141,6 +146,14 @@ class Configuration (dict):
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
         self["threads"] = 10
+        self.init_geoip()
+
+    def init_geoip (self):
+        geoip_dat = "/usr/share/GeoIP/GeoIP.dat"
+        if _has_geoip and os.path.exists(geoip_dat):
+            self["geoip"] = GeoIP.open(geoip_dat, GeoIP.GEOIP_STANDARD)
+        else:
+            self["geoip"] = None
 
     def init_logging (self, debug=None):
         """
