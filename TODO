@@ -1,8 +1,21 @@
-(1) I want to be able to supply a "break" command even when multiple
+High priority
+
+o A FastCGI script.
+
+o Stable release? Yes, of course. But I have to wait for the
+distutils package to stabilize.
+
+o DNS (and some URLs) seem to hang sometimes. Why?
+
+o I want to be able to supply a "break" command even when multiple
 threads are running.
 So a thread has to check regularly if a break command was issued? No,
 I do not want this. The thread has to be interrupted from outside, but
 there is at the moment no way how to do this with Python threads. What I
 am doing is to call sys.exit(1). This kills the entire Python interpreter.
 
-(2) Internationalization
+o Internationalization
+
+o Parse GML output and make a site map graphic (PNG format)
+
+Low priority

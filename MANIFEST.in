@@ -17,4 +17,5 @@ include debian/docs
 include debian/files
 include debian/postinst.debhelper
 include debian/prerm.debhelper
-include distutils/README.txt
+include DNS/README
+include distutils/README
