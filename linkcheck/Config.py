@@ -1,6 +1,6 @@
 """ linkcheck/Config.py
 
-    Copyright (C) 2000  Bastian Kleineidam
+    Copyright (C) 2000,2001  Bastian Kleineidam
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ App = AppName+" "+Version
 UserAgent = AppName+"/"+Version
 Author =  LinkCheckerConf.author
 HtmlAuthor = string.replace(Author, ' ', '&nbsp;')
-Copyright = "Copyright © 2000 by "+Author
-HtmlCopyright = "Copyright &copy; 2000 by "+HtmlAuthor
+Copyright = "Copyright © 2000,2001 by "+Author
+HtmlCopyright = "Copyright &copy; 2000,2001 by "+HtmlAuthor
 AppInfo = App+"              "+Copyright
 HtmlAppInfo = App+", "+HtmlCopyright
 Url = LinkCheckerConf.url

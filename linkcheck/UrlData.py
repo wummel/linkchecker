@@ -66,10 +66,22 @@ LinkTags = (
 
 LinkPatterns = []
 for tag,attr in LinkTags:
-    pattern = re.compile(_linkMatcher % (tag, attr), re.VERBOSE)
-    pattern.tag = tag
-    pattern.attr = attr
-    LinkPatterns.append(pattern)
+    LinkPatterns.append({'pattern': re.compile(_linkMatcher % (tag, attr),
+                                               re.VERBOSE),
+                         'tag': tag,
+			 'attr': attr})
+AnchorPattern = {
+    'pattern': re.compile(_linkMatcher % ("a", "name"), re.VERBOSE),
+    'tag': 'a',
+    'attr': 'name',
+}
+
+BasePattern = {
+    'pattern': re.compile(_linkMatcher % ("base", "href"), re.VERBOSE),
+    'tag': 'base',
+    'attr': 'href',
+}
+
 
 class UrlData:
     "Representing a URL with additional information like validity etc"
@@ -260,10 +272,7 @@ class UrlData:
         if not (anchor!="" and self.isHtml() and self.valid):
             return
         self.getContent()
-        pattern = re.compile(_linkMatcher % ("a", "name"), re.VERBOSE)
-        pattern.tag = "a"
-        pattern.attr = "name"
-        for cur_anchor,line in self.searchInForTag(pattern):
+        for cur_anchor,line in self.searchInForTag(AnchorPattern):
             if cur_anchor == anchor:
                 return
         self.setWarning("anchor #"+anchor+" not found")
@@ -331,10 +340,7 @@ class UrlData:
         debug(Config.DebugDelim+"Parsing recursively into\n"+\
               str(self)+"\n"+Config.DebugDelim)
         # search for a possible base reference
-        pattern = re.compile(_linkMatcher % ("base", "href"), re.VERBOSE)
-        pattern.tag = "base"
-        pattern.attr = "href"
-        bases = self.searchInForTag(pattern)
+        bases = self.searchInForTag(BasePattern)
 	        
         baseRef = None
         if len(bases)>=1:
@@ -352,11 +358,11 @@ class UrlData:
 
     def searchInForTag(self, pattern):
         debug("Searching for tag %s, attribute %s" \
-	      % (pattern.tag, pattern.attr))
+	      % (pattern['tag'], pattern['attr']))
         urls = []
         index = 0
         while 1:
-            match = pattern.search(self.getContent(), index)
+            match = pattern['pattern'].search(self.getContent(), index)
             if not match: break
             index = match.end()
             if self._isInComment(match.start()): continue
@@ -364,7 +370,7 @@ class UrlData:
             url = string.strip(StringUtil.stripQuotes(match.group('value')))
             lineno=StringUtil.getLineNumber(self.getContent(), match.start())
             # extra feature: get optional name for this bookmark
-            name = self.searchInForName(pattern.tag, pattern.attr,
+            name = self.searchInForName(pattern['tag'], pattern['attr'],
 	                                match.start(), match.end())
             urls.append((url, lineno, name))
         return urls

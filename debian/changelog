@@ -1,3 +1,9 @@
+linkchecker (1.2.14) unstable; urgency=low
+
+  * fixed Python 2.0 bug: TypeError: object has read-only attributes
+
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Thu, 11 Jan 2001 21:29:00 +0100
+
 linkchecker (1.2.13) unstable; urgency=low
 
   * linkcheck/HttpUrlData.py:
