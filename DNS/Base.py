@@ -1,6 +1,5 @@
 # $Id$
 import sys, re, getopt, socket
-from string import lower
 import DNS,DNS.Lib,DNS.Type,DNS.Class,DNS.Opcode
 #import asyncore
 
@@ -40,7 +39,7 @@ def init_dns_resolver_posix():
         m = re.match(r'^search\s+\.?(.*)$', line)
         if m:
             for domain in m.group(1).split():
-                defaults['search_domains'].append('.'+lower(domain))
+                defaults['search_domains'].append('.'+domain.lower())
         m = re.match(r'^nameserver\s+(\S+)\s*$', line)
         if m: defaults['server'].append(m.group(1))
         m = re.match(r'^domain\s+(\S+)\s*$', line)
@@ -65,7 +64,7 @@ def init_dns_resolver_nt():
         defaults['server'].append(nameserver)
     searchlist = key.get("SearchList", [])
     for domain in searchlist:
-        defaults['search_domains'].append('.'+lower(domain))
+        defaults['search_domains'].append('.'+domain.lower())
 
 
 class DnsRequest:

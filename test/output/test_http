@@ -31,7 +31,7 @@ error
 url http://slashdot.org/
 name unquoted
 valid
-url http://fsinfo.cs.uni-sb.de/~calvin/software/#isnix
+url http://fsinfo.cs.uni-sb.de/~calvin/#isnix
 name invalid anchor
 error
 url HtTP://WWW.hEIsE.DE

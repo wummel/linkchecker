@@ -85,7 +85,7 @@ class Packer:
 				list.append(label)
 		keys = []
 		for i in range(len(list)):
-			key = string.upper(string.joinfields(list[i:], '.'))
+			key = string.joinfields(list[i:], '.').upper()
 			keys.append(key)
 			if self.index.has_key(key):
 				pointer = self.index[key]

@@ -4,10 +4,9 @@ import Base
 
 def revlookup(name): 
     "convenience routine for doing a reverse lookup of an address"
-    import string
-    a = string.split(name, '.')
+    a = name.split('.')
     a.reverse()  
-    b = string.join(a, '.')+'.in-addr.arpa'
+    b = '.'.join(a)+'.in-addr.arpa'
     # this will only return one of any records returned.
     return Base.DnsRequest(b, qtype = 'ptr').req().answers[0]['data']
 

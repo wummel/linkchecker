@@ -37,7 +37,7 @@ Url = _linkchecker_configdata.url
 Email = _linkchecker_configdata.author_email
 Freeware = AppName+""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
-under certain conditions. Look at the file `LICENSE' whithin this
+under certain conditions. Look at the file `LICENSE' within this
 distribution."""
 Loggers = {
     "text": Logging.StandardLogger,

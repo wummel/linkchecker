@@ -57,39 +57,50 @@ class HttpUrlData(UrlData):
         | "301"   ; Moved Permanently
         | "302"   ; Moved Temporarily
         | "304"   ; Not Modified
+        | "305"   ; Use Proxy
         | "400"   ; Bad Request
         | "401"   ; Unauthorized
         | "403"   ; Forbidden
         | "404"   ; Not Found
         | "405"   ; Method not allowed
+        | "407"   ; Proxy Authentication Required
         | "500"   ; Internal Server Error
         | "501"   ; Not Implemented
         | "502"   ; Bad Gateway
         | "503"   ; Service Unavailable
         | extension-code
         """
-        
-        self.proxy = config["proxy"].get(self.get_scheme(), None)
-        if self.proxy:
-            self.proxy = splittype(self.proxy)[1]
-            self.proxy = splithost(self.proxy)[0]
+
+        self._setProxy(config["proxy"].get(self.get_scheme()))
         self.mime = None
         self.auth = None
+        self.proxyauth = None
         if not self.urlTuple[2]:
             self.setWarning(_("Missing '/' at end of URL"))
         if config["robotstxt"] and not self.robotsTxtAllowsUrl(config):
             self.setWarning(_("Access denied by robots.txt, checked only syntax"))
             return
-            
+
         # first try
-        status, statusText, self.mime = self._getHttpRequest()
+        status, statusText, self.mime = self._getHttpRequest(self.urlTuple[1])
         Config.debug(BRING_IT_ON, status, statusText, self.mime)
         has301status = 0
         while 1:
-            # proxy enforcement
+
+            # proxy enforcement (overrides standard proxy)
             if status == 305 and self.mime:
-                status, statusText, self.mime = self._getHttpRequest(
-		                             proxy=self.mime.get("Location"))
+                self._setProxy(self.mime.get("Location"))
+                status, statusText, self.mime = self._getHttpRequest()
+
+            # proxy authentication
+            if status==407:
+                if not (self.proxyuser and self.proxypass):
+                    break
+                if not self.proxyauth:
+                    import base64
+                    self.proxyauth = "Basic "+base64.encodestring("%s:%s" % \
+			(self.proxyuser, self.proxypass))
+                    status, statusText, self.mime = self._getHttpRequest()
 
             # follow redirections
             tries = 0
@@ -106,10 +117,10 @@ class HttpUrlData(UrlData):
                 self.setError(_("too much redirections (>= 5)"))
                 return
 
-            # authentication
+            # user authentication
             if status==401:
 	        if not self.auth:
-                    import base64,string
+                    import base64
                     _user, _password = self._getUserPassword(config)
                     self.auth = "Basic "+\
                         base64.encodestring("%s:%s" % (_user, _password))
@@ -170,20 +181,31 @@ class HttpUrlData(UrlData):
             else:
                 self.setValid("OK")
 
-        
-    def _getHttpRequest(self, method="HEAD", proxy=None):
-        "Put request and return (status code, status text, mime object)"
-        if self.proxy and not proxy:
-            proxy = self.proxy
-        if proxy:
-            Config.debug(BRING_IT_ON, "using proxy", proxy)
-            host = proxy
+
+    def _setProxy(self, proxy):
+        self.proxy = proxy
+        self.proxyuser = None
+        self.proxypass = None
+        if self.proxy:
+            self.proxy = splittype(self.proxy)[1]
+            self.proxy = splithost(self.proxy)[0]
+            self.proxyuser, self.proxy = splituser(self.proxy)
+            self.proxyuser, self.proxypass = splitpasswd(self.proxyuser)
+
+
+    def _getHttpRequest(self, method="HEAD"):
+        """Put request and return (status code, status text, mime object).
+           host can be host:port format
+	"""
+        if self.proxy:
+            host = self.proxy
         else:
-            host = self.urlTuple[1]
+            host = self.urltuple[1]
+
         if self.urlConnection:
             self.closeConnection()
         self.urlConnection = self._getHTTPObject(host)
-        if proxy:
+        if self.proxy:
             path = urlparse.urlunparse(self.urlTuple)
         else:
             path = urlparse.urlunparse(('', '', self.urlTuple[2],
@@ -192,6 +214,9 @@ class HttpUrlData(UrlData):
         self.urlConnection.putheader("Host", host)
         if self.auth:
             self.urlConnection.putheader("Authorization", self.auth)
+        if self.proxyauth:
+            self.urlConnection.putheader("Proxy-Authorization",
+	        self.proxyauth)
         self.urlConnection.putheader("User-agent", Config.UserAgent)
         self.urlConnection.endheaders()
         return self.urlConnection.getreply()
