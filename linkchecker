@@ -35,7 +35,7 @@ default_timeout = 60
 socket.setdefaulttimeout(default_timeout)
 
 import linkcheck
-# initialize i18n
+# initialize i18n, puts _() function into global namespace
 linkcheck.init_i18n()
 import linkcheck.log
 import linkcheck.optcomplete
@@ -190,7 +190,7 @@ class LCOptionParser (optparse.OptionParser, object):
     """option parser with custom help text layout"""
 
     def __init__ (self):
-        # use our own formatter
+        """initializing using our own help formatter class"""
         super(LCOptionParser, self).__init__(formatter=LCHelpFormatter())
 
     def error (self, msg):
@@ -373,12 +373,12 @@ optparser.add_option_group(group)
 ################# auto completion #####################
 linkcheck.optcomplete.autocomplete(optparser)
 
-# read and parser command line options and arguments
+# read and parse command line options and arguments
 (options, args) = optparser.parse_args()
 
-# build a config object for this check session, also initializes logging
+# build a config object for this check session
 config = linkcheck.configuration.Configuration()
-# init logging
+# initialize logging
 config.init_logging(debug=options.debug)
 linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s",
                     sys.version, sys.platform)
@@ -498,14 +498,15 @@ if len(args) <= 0:
     else:
         linkcheck.log.warn(linkcheck.LOG_CMDLINE, _("no files or urls given"))
 
+# initialize the cache and the consumer model
 cache = linkcheck.checker.cache.Cache()
 consumer = linkcheck.checker.consumer.Consumer(config, cache)
 # syntactic sugar
 for url in args:
     if url.lower().startswith("www."):
-        url = "http://%s"%url
+        url = "http://%s" % url
     elif url.lower().startswith("ftp."):
-        url = "ftp://%s"%url
+        url = "ftp://%s" % url
     url_data = linkcheck.checker.get_url_from(url, 0, consumer, cmdline=True)
     consumer.append_url(url_data)
 
