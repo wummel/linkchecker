@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Dec 30 23:58:28 2002\n"
+"POT-Creation-Date: Tue Dec 31 00:52:53 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <fr@li.org>\n"
@@ -291,6 +291,10 @@ msgstr "Résultat"
 
 msgid "Start checking at %s\n"
 msgstr "Démarrage du controle à %s\n"
+
+#, fuzzy
+msgid " (cached)"
+msgstr " (caché)\n"
 
 msgid "Thats it. "
 msgstr "Terminé. "

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Dec 30 23:58:28 2002\n"
+"POT-Creation-Date: Tue Dec 31 00:52:53 2002\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Hans Bausewein <hans.bausewein@comerwell.xs4all.nl>\n"
 "Language-Team: LANGUAGE <nl@li.org>\n"
@@ -302,6 +302,10 @@ msgstr "Resultaat"
 
 msgid "Start checking at %s\n"
 msgstr "Begin testen vanaf %s\n"
+
+#, fuzzy
+msgid " (cached)"
+msgstr " (uit de cache)\n"
 
 msgid "Thats it. "
 msgstr "Dat was het. "

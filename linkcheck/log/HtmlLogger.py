@@ -18,7 +18,7 @@ from StandardLogger import StandardLogger
 from linkcheck.log import strtime
 import time, linkcheck, linkcheck.Config
 
-HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0//EN">
+HTML_HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.01//EN">
 <html><head><title>%s</title>
 <style type="text/css">\n<!--
  h2 { font-family: Verdana,sans-serif; font-size: 22pt;
@@ -54,75 +54,80 @@ class HtmlLogger (StandardLogger):
             self.fd.write("<center><h2>"+linkcheck.Config.App+"</h2></center>"+
               "<br><blockquote>"+linkcheck.Config.Freeware+"<br><br>"+
               (linkcheck._("Start checking at %s\n") % strtime(self.starttime))+
-	      "<br><br>")
+	      "<br>")
         self.fd.flush()
 
     def newUrl (self, urlData):
         if self.fd is None: return
-        self.fd.write('<table align=left border=0 cellspacing=0'
-              ' cellpadding=1 bgcolor='+self.colorborder+' summary=Border'
-              '><tr><td><table align=left border=0 cellspacing=0'
-              ' cellpadding=3 summary="checked link" bgcolor='+
-	      self.colorbackground+">")
+        self.fd.write("<br clear=all><br>\n"+
+             "<table align=left border=0 cellspacing=0 cellpadding=1\n"+
+             " bgcolor="+self.colorborder+" summary=Border>\n"+
+             "<tr>\n"+
+             "<td>\n"+
+             "<table align=left border=0 cellspacing=0 cellpadding=3\n"+
+             " summary=\"checked link\" bgcolor="+self.colorbackground+">\n")
         if self.logfield("url"):
-	    self.fd.write("<tr><td bgcolor="+self.colorurl+">"+linkcheck._("URL")+
-              "</td><td bgcolor="+self.colorurl+">"+urlData.urlName)
+	    self.fd.write("<tr>\n"+
+             "<td bgcolor="+self.colorurl+">"+linkcheck._("URL")+"</td>\n"+
+             "<td bgcolor="+self.colorurl+">"+urlData.urlName)
             if urlData.cached:
-                self.fd.write(linkcheck._(" (cached)\n"))
-            self.fd.write("</td></tr>\n")
+                self.fd.write(linkcheck._(" (cached)"))
+            self.fd.write("</td>\n</tr>\n")
         if urlData.name and self.logfield("name"):
-            self.fd.write("<tr><td>"+linkcheck._("Name")+"</td><td>"+
-                          urlData.name+"</td></tr>\n")
+            self.fd.write("<tr>\n<td>"+linkcheck._("Name")+"</td>\n<td>"+
+                          urlData.name+"</td>\n</tr>\n")
         if urlData.parentName and self.logfield("parenturl"):
-            self.fd.write("<tr><td>"+linkcheck._("Parent URL")+"</td><td>"+
-			  '<a href="'+urlData.parentName+'">'+
-                          urlData.parentName+"</a>")
+            self.fd.write("<tr>\n<td>"+linkcheck._("Parent URL")+
+               '</td>\n<td><a target="top" href="'+urlData.parentName+'">'+
+               urlData.parentName+"</a>")
             if urlData.line:
                 self.fd.write(linkcheck._(", line %d")%urlData.line)
             if urlData.column:
                 self.fd.write(linkcheck._(", col %d")%urlData.column)
-            self.fd.write("</td></tr>\n")
+            self.fd.write("</td>\n</tr>\n")
         if urlData.baseRef and self.logfield("base"):
-            self.fd.write("<tr><td>"+linkcheck._("Base")+"</td><td>"+
-	                  urlData.baseRef+"</td></tr>\n")
+            self.fd.write("<tr>\n<td>"+linkcheck._("Base")+"</td>\n<td>"+
+	                  urlData.baseRef+"</td>\n</tr>\n")
         if urlData.url and self.logfield("realurl"):
-            self.fd.write("<tr><td>"+linkcheck._("Real URL")+"</td><td>"+
-	                  '<a href="'+urlData.url+
-			  '">'+urlData.url+"</a></td></tr>\n")
+            self.fd.write("<tr>\n<td>"+linkcheck._("Real URL")+"</td>\n<td>"+
+	                  '<a target="top" href="'+urlData.url+
+			  '">'+urlData.url+"</a></td>\n</tr>\n")
         if urlData.dltime>=0 and self.logfield("dltime"):
-            self.fd.write("<tr><td>"+linkcheck._("D/L Time")+"</td><td>"+
+            self.fd.write("<tr>\n<td>"+linkcheck._("D/L Time")+"</td>\n<td>"+
 	                  (linkcheck._("%.3f seconds") % urlData.dltime)+
-			  "</td></tr>\n")
+			  "</td>\n</tr>\n")
         if urlData.dlsize>=0 and self.logfield("dlsize"):
-            self.fd.write("<tr><td>"+linkcheck._("D/L Size")+"</td><td>"+
+            self.fd.write("<tr>\n<td>"+linkcheck._("D/L Size")+"</td>\n<td>"+
 	                  StringUtil.strsize(urlData.dlsize)+
-			  "</td></tr>\n")
+			  "</td>\n</tr>\n")
         if urlData.checktime and self.logfield("checktime"):
-            self.fd.write("<tr><td>"+linkcheck._("Check Time")+
-	                  "</td><td>"+
+            self.fd.write("<tr>\n<td>"+linkcheck._("Check Time")+
+	                  "</td>\n<td>"+
 			  (linkcheck._("%.3f seconds") % urlData.checktime)+
-			  "</td></tr>\n")
+			  "</td>\n</tr>\n")
         if urlData.infoString and self.logfield("info"):
-            self.fd.write("<tr><td>"+linkcheck._("Info")+"</td><td>"+
+            self.fd.write("<tr>\n<td>"+linkcheck._("Info")+"</td>\n<td>"+
 	                  linkcheck.StringUtil.htmlify(urlData.infoString)+
-			  "</td></tr>\n")
+			  "</td>\n</tr>\n")
         if urlData.warningString:
             #self.warnings += 1
             if self.logfield("warning"):
-                self.fd.write("<tr>"+self.tablewarning+linkcheck._("Warning")+
-	                  "</td>"+self.tablewarning+
-                          urlData.warningString.replace("\n", "<br>")+
-			  "</td></tr>\n")
+                self.fd.write("<tr>\n"+
+                    self.tablewarning+linkcheck._("Warning")+
+	            "</td>\n"+self.tablewarning+
+                    urlData.warningString.replace("\n", "<br>")+
+                    "</td>\n</tr>\n")
         if self.logfield("result"):
             if urlData.valid:
-                self.fd.write("<tr>"+self.tableok+linkcheck._("Result")+"</td>"+
-                  self.tableok+urlData.validString+"</td></tr>\n")
+                self.fd.write("<tr>\n"+self.tableok+
+                  linkcheck._("Result")+"</td>\n"+
+                  self.tableok+urlData.validString+"</td>\n</tr>\n")
             else:
                 self.errors += 1
-                self.fd.write("<tr>"+self.tableerror+linkcheck._("Result")+
-	                  "</td>"+self.tableerror+
-			  urlData.errorString+"</td></tr>\n")
-        self.fd.write("</table></td></tr></table><br clear=all><br>")
+                self.fd.write("<tr>\n"+self.tableerror+linkcheck._("Result")+
+	                  "</td>\n"+self.tableerror+
+			  urlData.errorString+"</td>\n</tr>\n")
+        self.fd.write("</table></td></tr></table><br clear=all>")
         self.fd.flush()
 
     def endOfOutput (self, linknumber=-1):
