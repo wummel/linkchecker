@@ -128,7 +128,7 @@ class UrlBase (object):
         # the anchor part of url
         self.anchor = None
         # the result message string
-        self.result = ""
+        self.result = u""
         # cached or not
         self.cached = False
         # valid or not
@@ -302,7 +302,8 @@ class UrlBase (object):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
         if self.recursion_level and self.consumer.config['wait']:
             linkcheck.log.debug(linkcheck.LOG_CHECK,
-                            "sleeping for %d seconds", self.consumer.config['wait'])
+                                "sleeping for %d seconds",
+                                self.consumer.config['wait'])
             time.sleep(self.consumer.config['wait'])
         t = time.time()
         # apply filter
@@ -324,11 +325,11 @@ class UrlBase (object):
             linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
                                 traceback.format_tb(etb))
             # make nicer error msg for unknown hosts
-            if isinstance(evalue, socket.error) and evalue[0]==-2:
+            if isinstance(evalue, socket.error) and evalue[0] == -2:
                 evalue = _('Hostname not found')
             # make nicer error msg for bad status line
             if isinstance(evalue, linkcheck.httplib2.BadStatusLine):
-                evalue = _('Bad HTTP response %r')%str(evalue)
+                evalue = _('Bad HTTP response %r') % str(evalue)
             self.set_result(str(evalue), valid=False)
 
         # check content
