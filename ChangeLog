@@ -7,7 +7,11 @@
     Changed files: README, linkchecker
   * Remove --robots-txt option from documentation, it is per default
     enabled and you cannot disable it from the command line.
-    Changed Files: linkchecker, po/*.po
+    Changed files: linkchecker, po/*.po
+  * fix --extern argument creation
+    Changed files: linkchecker, linkcheck/UrlData.py
+  * Print help if PyDNS module is not installed
+    Changed files: linkcheck/MailtoUrlData.py
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.
