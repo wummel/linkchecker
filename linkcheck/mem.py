@@ -1,10 +1,10 @@
 # -*- coding: iso-8859-1 -*-
-""" Copied from the Python Cookbook recipe at
-    http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/286222
+"""
+Copied from the Python Cookbook recipe at
+http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/286222
 
-    To find the memory usage in a particular section of code these
-    functions are typically used as follows:
-
+To find the memory usage in a particular section of code these
+functions are typically used as follows:
     m0 = memory()
     ...
     m1 = memory(m0)

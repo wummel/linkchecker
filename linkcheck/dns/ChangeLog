@@ -1,4 +1,4 @@
-The following changes were made to the original dnspython 1.3.1
+The following changes were made to the original dnspython 1.3.2
 sources:
 
 * moved everything into the linkcheck package
@@ -21,7 +21,7 @@ sources:
 
 * added set of localhost addresses to resolver config
   Changed: resolver.py
-  Added: IfConfig.py
+  Added: ifconfig.py
 
 * added search patters for domain names
   Changed: resolver.py

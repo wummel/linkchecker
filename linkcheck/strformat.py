@@ -1,8 +1,4 @@
 # -*- coding: iso-8859-1 -*-
-"""
-Various string utility functions. Note that these functions are not
-necessarily optimised for large strings, so use with care.
-"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,6 +14,10 @@ necessarily optimised for large strings, so use with care.
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""
+Various string utility functions. Note that these functions are not
+necessarily optimised for large strings, so use with care.
+"""
 
 import re
 import textwrap

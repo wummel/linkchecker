@@ -1,7 +1,4 @@
 # -*- coding: iso-8859-1 -*-
-"""
-An xml logger.
-"""
 # Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,6 +14,9 @@ An xml logger.
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""
+An xml logger.
+"""
 
 import os
 import time
