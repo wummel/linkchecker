@@ -146,10 +146,13 @@ class TestUrl (unittest.TestCase):
         # For schemes that define an empty path to be equivalent to a
         # path of "/", use "/".
         url = "http://example.com"
-        nurl = "http://example.com/"
+        nurl = "http://example.com"
         self.assertEqual(url_norm(url), nurl)
         url = "http://example.com?a=b"
         nurl = "http://example.com/?a=b"
+        self.assertEqual(url_norm(url), nurl)
+        url = "http://example.com#foo"
+        nurl = "http://example.com/#foo"
         self.assertEqual(url_norm(url), nurl)
 
     def test_norm_path_backslashes (self):
@@ -316,7 +319,7 @@ class TestUrl (unittest.TestCase):
         self.assertEqual(url_norm(url), nurl)
         # using netloc and path
         url = 'nntp:'
-        nurl = 'nntp:///'
+        nurl = 'nntp://'
         self.assertEqual(url_norm(url), nurl)
         url = "news:§$%&/´`§%"
         nurl = 'news:%A7%24%25%26/%B4%60%A7%25'

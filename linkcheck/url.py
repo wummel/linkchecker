@@ -292,10 +292,13 @@ def url_norm (url):
     # query
     urlparts[3] = url_parse_query(urlparts[3])
     if not urlparts[2]:
-        # empty path should be a slash, but not in certain schemes
+        # empty path is allowed if url is non-hierarchical, or if both
+        # query and fragment are also empty
         # note that in relative links, urlparts[0] might be empty
         # in this case, do not make any assumptions
-        if urlparts[0] and urlparts[0] not in urlparse.non_hierarchical:
+        if urlparts[0] and \
+           urlparts[0] not in urlparse.non_hierarchical and \
+           (urlparts[3] or urlparts[4]):
             urlparts[2] = '/'
     else:
         # fix redundant path parts

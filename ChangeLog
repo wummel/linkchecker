@@ -5,6 +5,11 @@
     Closes: SF bug #1173823
     Changed: linkcheck/logger/blacklist.py
 
+  * Do not enforce an optional slash in empty URI paths. This resulted
+    in spurious warnings.
+    Closes: SF bug #1173841
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
+
 2.7 "Million Dollar Baby" (released 30.3.2005)
 
   * When a host has no MX record, fall back to A records as the mail

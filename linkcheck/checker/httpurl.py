@@ -63,20 +63,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.no_anchor = False # remove anchor in request url
         self.persistent = False
 
-    def build_url (self):
-        """
-        Call super.build_url() and add a missing trailing slash to
-        the URL if the URL path is empty.
-        """
-        super(HttpUrl, self).build_url()
-        # encode userinfo
-        # XXX
-        # check for empty paths
-        if not self.urlparts[2]:
-            self.add_warning(_("URL path is empty, assuming '/' as path."))
-            self.urlparts[2] = '/'
-            self.url = urlparse.urlunsplit(self.urlparts)
-
     def allows_robots (self, url):
         """
         Fetch and parse the robots.txt of given url. Checks if LinkChecker

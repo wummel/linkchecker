@@ -30,13 +30,12 @@ warning Base URL is not properly normed. Normed url is http:///localhost%%3A8001
 error
 
 url http://
-cache key http:///
-real url http:///
+cache key http://
+real url http://
 name no url
-warning Base URL is not properly normed. Normed url is http:///.
 error
 
-url http:/ (cached)
+url http:/
 cache key http:///
 real url http:///
 name no url, one slash
@@ -44,10 +43,10 @@ warning Base URL is not properly normed. Normed url is http:///.
 error
 
 url http: (cached)
-cache key http:///
-real url http:///
+cache key http://
+real url http://
 name no url, no slash
-warning Base URL is not properly normed. Normed url is http:///.
+warning Base URL is not properly normed. Normed url is http://.
 error
 
 url http://localhost:8001/stalter&sohn
