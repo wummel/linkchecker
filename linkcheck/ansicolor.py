@@ -61,7 +61,7 @@ The current version of this module is always available from its web site at
 http://www.eyrie.org/~eagle/software/ansicolor/. It is also part of the Perl
 core distribution as of 5.6.0.
 """
-# Copyright (C) 2000-2004  Bastian Kleineidam
+# Copyright (C) 2000-2005  Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

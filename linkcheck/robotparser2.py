@@ -1,6 +1,6 @@
 """ robotparser.py
 
-    Copyright (C) 2000-2004 Bastian Kleineidam
+    Copyright (C) 2000-2005 Bastian Kleineidam
 
     You can choose between two licenses when using this package:
     1) GNU GPLv2

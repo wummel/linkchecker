@@ -1,6 +1,6 @@
 #!/bin/sh
 # this script is intended to be run daily from cron
-# GNU GPL Copyright (C) 2004  Bastian Kleineidam
+# GNU GPL Copyright (C) 2004-2005  Bastian Kleineidam
 
 # Put here your url(s) you want to check, separated by whitespace.
 # Urls can also be local files, eg "/var/www/index.html".
