@@ -111,17 +111,17 @@ def strsize (b):
     if b < 0:
         raise ValueError("Invalid negative byte number")
     if b == 1:
-        return "%d Byte" % b
+        return u"%d Byte" % b
     if b < 1024:
-        return "%d Bytes" % b
+        return u"%d Bytes" % b
     b /= 1024.0
     if b < 1024:
-        return "%.2f kB" % b
+        return u"%.2f kB" % b
     b /= 1024.0
     if b < 1024:
-        return "%.2f MB" % b
+        return u"%.2f MB" % b
     b /= 1024.0
-    return "%.2f GB"
+    return u"%.2f GB"
 
 
 def strtime (t):
@@ -139,7 +139,7 @@ def strduration (duration):
     if duration > 60:
         duration = duration / 60
         name = _("hours")
-    return " %.3f %s" % (duration, name)
+    return u" %.3f %s" % (duration, name)
 
 
 def strtimezone ():
