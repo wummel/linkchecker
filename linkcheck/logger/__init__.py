@@ -20,16 +20,8 @@ import sys
 import os
 import os.path
 
-class TranslatedFields (dict):
-   """store translated field names"""
-
-   def __getitem__ (self, key):
-       val = super(TranslatedFields, self).__getitem__(key)
-       return _(val)
-
-
 _ = lambda x: x
-Fields = TranslatedFields(
+Fields = dict(
     realurl=_("Real URL"),
     cachekey=_("Cache key"),
     result=_("Result"),
@@ -103,7 +95,7 @@ class Logger (object):
 
     def field (self, name):
         """return translated field name"""
-        return Fields[name]
+        return _(Fields[name])
 
     def spaces (self, name):
         """return indent of spaces for given field name"""
