@@ -26,7 +26,7 @@ import traceback
 import socket
 import select
 import linkcheck
-import linkcheck.DNS
+import bk.log
 
 
 ws_at_start_or_end = re.compile(r"(^\s+)|(\s+$)").search
@@ -77,9 +77,6 @@ def get_absolute_url (urlName, baseRef, parentName):
         return parentName.lower()
     return ""
 
-
-if hasattr(socket, "sslerror"):
-    ExcList.append(socket.sslerror)
 
 # regular expression for port numbers
 is_valid_port = re.compile(r"\d+").match
@@ -405,16 +402,16 @@ class UrlData (object):
         if not (self.config["externlinks"] or self.config["internlinks"]):
             return (0, 0)
         # deny and allow external checking
-        linkcheck.Config.debug(HURT_ME_PLENTY, "Url", self.url)
+        bk.log.debug(HURT_ME_PLENTY, "Url", self.url)
         if self.config["denyallow"]:
             for entry in self.config["externlinks"]:
-                linkcheck.Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                bk.log.debug(HURT_ME_PLENTY, "Extern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (1, entry['strict'])
             for entry in self.config["internlinks"]:
-                linkcheck.Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                bk.log.debug(HURT_ME_PLENTY, "Intern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
@@ -422,13 +419,13 @@ class UrlData (object):
             return (0, 0)
         else:
             for entry in self.config["internlinks"]:
-                linkcheck.Config.debug(HURT_ME_PLENTY, "Intern entry", entry)
+                bk.log.debug(HURT_ME_PLENTY, "Intern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):
                     return (0, 0)
             for entry in self.config["externlinks"]:
-                linkcheck.Config.debug(HURT_ME_PLENTY, "Extern entry", entry)
+                bk.log.debug(HURT_ME_PLENTY, "Extern entry", entry)
                 match = entry['pattern'].search(self.url)
                 if (entry['negate'] and not match) or \
                    (match and not entry['negate']):

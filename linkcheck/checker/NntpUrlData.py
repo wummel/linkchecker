@@ -16,20 +16,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re, time, sys, nntplib, urlparse, random
-from linkcheck import linkcheck.LinkCheckerError, Config
-from UrlData import ExcList, UrlData
-from debug import *
+import re
+import time
+import sys
+import nntplib
+import urlparse
+import random
+import linkcheck
+import bk.log
+
 random.seed()
 
-ExcList.extend([nntplib.error_reply,
-               nntplib.error_temp,
-               nntplib.error_perm,
-               nntplib.error_proto,
-               EOFError,
-               ])
-
-class NntpUrlData (UrlData):
+class NntpUrlData (linkcheck.checker.UrlData.UrlData):
     "Url link with NNTP scheme"
 
     def buildUrl (self):
@@ -41,7 +39,7 @@ class NntpUrlData (UrlData):
         else:
             self.url = self.urlName
         self.urlparts = urlparse.urlsplit(self.url)
-        Config.debug(BRING_IT_ON, self.urlparts)
+        bk.log.debug(BRING_IT_ON, self.urlparts)
 
 
     def checkConnection (self):

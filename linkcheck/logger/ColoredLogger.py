@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import bk.i18n
-import linkcheck.AnsiColor
+import bk.ansicolor
 import linkcheck.logger.StandardLogger
 
 
@@ -25,18 +25,18 @@ class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
 
     def __init__ (self, **args):
         super(ColoredLogger, self).__init__(**args)
-        self.colorparent = linkcheck.AnsiColor.esc_ansicolor(args['colorparent'])
-        self.colorurl = linkcheck.AnsiColor.esc_ansicolor(args['colorurl'])
-        self.colorname = linkcheck.AnsiColor.esc_ansicolor(args['colorname'])
-        self.colorreal = linkcheck.AnsiColor.esc_ansicolor(args['colorreal'])
-        self.colorbase = linkcheck.AnsiColor.esc_ansicolor(args['colorbase'])
-        self.colorvalid = linkcheck.AnsiColor.esc_ansicolor(args['colorvalid'])
-        self.colorinvalid = linkcheck.AnsiColor.esc_ansicolor(args['colorinvalid'])
-        self.colorinfo = linkcheck.AnsiColor.esc_ansicolor(args['colorinfo'])
-        self.colorwarning = linkcheck.AnsiColor.esc_ansicolor(args['colorwarning'])
-        self.colordltime = linkcheck.AnsiColor.esc_ansicolor(args['colordltime'])
-        self.colordlsize = linkcheck.AnsiColor.esc_ansicolor(args['colordlsize'])
-        self.colorreset = linkcheck.AnsiColor.esc_ansicolor(args['colorreset'])
+        self.colorparent = bk.ansicolor.esc_ansicolor(args['colorparent'])
+        self.colorurl = bk.ansicolor.esc_ansicolor(args['colorurl'])
+        self.colorname = bk.ansicolor.esc_ansicolor(args['colorname'])
+        self.colorreal = bk.ansicolor.esc_ansicolor(args['colorreal'])
+        self.colorbase = bk.ansicolor.esc_ansicolor(args['colorbase'])
+        self.colorvalid = bk.ansicolor.esc_ansicolor(args['colorvalid'])
+        self.colorinvalid = bk.ansicolor.esc_ansicolor(args['colorinvalid'])
+        self.colorinfo = bk.ansicolor.esc_ansicolor(args['colorinfo'])
+        self.colorwarning = bk.ansicolor.esc_ansicolor(args['colorwarning'])
+        self.colordltime = bk.ansicolor.esc_ansicolor(args['colordltime'])
+        self.colordlsize = bk.ansicolor.esc_ansicolor(args['colordlsize'])
+        self.colorreset = bk.ansicolor.esc_ansicolor(args['colorreset'])
         self.currentPage = None
         self.prefix = 0
 

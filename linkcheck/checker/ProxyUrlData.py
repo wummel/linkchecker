@@ -17,7 +17,7 @@
 from UrlData import UrlData
 from urllib import splittype, splithost, splituser
 
-class ProxyUrlData (UrlData):
+class ProxyUrlData (linkcheck.checker.UrlData.UrlData):
     """urldata with ability for proxying and for urls with user:pass@host
        setting"""
 

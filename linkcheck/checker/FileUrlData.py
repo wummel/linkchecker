@@ -19,10 +19,7 @@
 import re
 import os
 import urlparse
-import linkcheck.checker
-
-# OSError is thrown on Windows when a file is not found
-linkcheck.checker.ExcList.append(OSError)
+import linkcheck.checker.UrlData
 
 # if file extension was fruitless, look at the content
 contents = {
@@ -72,7 +69,7 @@ acap        # application configuration access protocol
 |nntp       # news
 )"""
 
-class FileUrlData (linkcheck.UrlData.UrlData):
+class FileUrlData (linkcheck.checker.UrlData.UrlData):
     "Url link with file scheme"
 
     def __init__ (self,

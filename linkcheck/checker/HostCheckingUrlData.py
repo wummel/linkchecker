@@ -20,7 +20,7 @@ import socket
 import urllib
 import linkcheck
 
-class HostCheckingUrlData (linkcheck.UrlData.UrlData):
+class HostCheckingUrlData (linkcheck.checker.UrlData.UrlData):
     "Url link for which we have to connect to a specific host"
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,

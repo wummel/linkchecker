@@ -26,7 +26,6 @@ import bk.strtime
 # logger areas
 LOG_CMDLINE = "linkcheck.cmdline"
 LOG_CHECK = "linkcheck.check"
-LOG_DNS = "linkcheck.dns"
 LOG_GUI = "linkcheck.gui"
 
 

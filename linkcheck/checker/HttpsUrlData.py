@@ -17,14 +17,13 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import linkcheck
-from linkcheck.debug import *
 
 
-class HttpsUrlData (linkcheck.HttpUrlData.HttpUrlData):
+class HttpsUrlData (linkcheck.checker.HttpUrlData.HttpUrlData):
     """Url link with https scheme"""
 
     def _check (self):
-        if linkcheck.HttpUrlData.supportHttps:
+        if linkcheck.checker.HttpUrlData.supportHttps:
             super(HttpsUrlData, self)._check()
         else:
             self.setWarning(bk.i18n._("%s url ignored")%self.scheme.capitalize())

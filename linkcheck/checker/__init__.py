@@ -21,21 +21,40 @@ import socket
 import select
 import re
 import urlparse
-import linkcheck
-import linkcheck.DNS
+import nntplib
+import ftplib
+import linkcheck.httplib2
+import bk.net.dns.Base
 
 
 # we catch these exceptions, all other exceptions are internal
 # or system errors
 ExcList = [
-   IOError,
-   ValueError, # from httplib.py
-   linkcheck.LinkCheckerError,
-   linkcheck.DNS.Error,
-   socket.timeout,
-   socket.error,
-   select.error,
+    IOError,
+    OSError, # OSError is thrown on Windows when a file is not found
+    ValueError, # from httplib.py
+    linkcheck.LinkCheckerError,
+    bk.net.dns.Base.DNSError,
+    socket.timeout,
+    socket.error,
+    select.error,
+    # nttp errors (including EOFError)
+    nntplib.error_reply,
+    nntplib.error_temp,
+    nntplib.error_perm,
+    nntplib.error_proto,
+    EOFError,
+    # http error
+    linkcheck.httplib2.error,
+    # ftp errors
+    ftplib.error_reply,
+    ftplib.error_temp,
+    ftplib.error_perm,
+    ftplib.error_proto,
 ]
+if hasattr(socket, "sslerror"):
+    ExcList.append(socket.sslerror)
+
 
 
 # main check function

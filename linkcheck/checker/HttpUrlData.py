@@ -25,11 +25,8 @@ import gzip
 import socket
 import cStringIO as StringIO
 import linkcheck
-from linkcheck.debug import *
 supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
                hasattr(socket, "ssl")
-
-linkcheck.UrlData.ExcList.extend([linkcheck.httplib2.error,])
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
@@ -37,7 +34,7 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 _isAmazonHost = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 
 
-class HttpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
+class HttpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
     "Url link with http scheme"
 
     def __init__ (self, urlName, recursionLevel, config, parentName=None,

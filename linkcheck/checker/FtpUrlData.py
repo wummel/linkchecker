@@ -18,16 +18,9 @@
 
 import ftplib
 import linkcheck
-from linkcheck.debug import *
 
-linkcheck.UrlData.ExcList.extend([
-   ftplib.error_reply,
-   ftplib.error_temp,
-   ftplib.error_perm,
-   ftplib.error_proto,
-])
 
-class FtpUrlData (linkcheck.ProxyUrlData.ProxyUrlData):
+class FtpUrlData (linkcheck.checker.ProxyUrlData.ProxyUrlData):
     """
     Url link with ftp scheme.
     """

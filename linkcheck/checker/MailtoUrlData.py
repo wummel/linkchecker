@@ -20,29 +20,28 @@ import re
 import sys
 import cgi
 import urllib
+import smtplib
+import rfc822
 import linkcheck
-from linkcheck.DNS import mxlookup
-from rfc822 import AddressList
-from HostCheckingUrlData import HostCheckingUrlData
-from smtplib import SMTP
-from debug import *
+import bk.log
+import bk.net.dns.lazy
 
 # regular expression for RFC2368 compliant mailto: scanning
 headers_re = re.compile(r"\?(.+)$")
 
-class MailtoUrlData (HostCheckingUrlData):
+class MailtoUrlData (linkcheck.checker.HostCheckingUrlData.HostCheckingUrlData):
     "Url link with mailto scheme"
 
     def buildUrl (self):
         super(MailtoUrlData, self).buildUrl()
         self.headers = {}
-        self.adresses = AddressList(self._cutout_adresses()).addresslist
+        self.adresses = rfc822.AddressList(self._cutout_adresses()).addresslist
         for key in ("to", "cc", "bcc"):
             if self.headers.has_key(key):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
-                    self.adresses.extend(AddressList(a).addresslist)
-        linkcheck.Config.debug(BRING_IT_ON, "adresses: ", self.adresses)
+                    self.adresses.extend(rfc822.AddressList(a).addresslist)
+        bk.log.debug(BRING_IT_ON, "adresses: ", self.adresses)
 
 
     def _cutout_adresses (self):
@@ -74,25 +73,25 @@ class MailtoUrlData (HostCheckingUrlData):
 
         value = "unknown reason"
         for name,mail in self.adresses:
-            linkcheck.Config.debug(BRING_IT_ON, "checking mail address", mail)
-            linkcheck.Config.debug(HURT_ME_PLENTY, "splitting address")
+            bk.log.debug(BRING_IT_ON, "checking mail address", mail)
+            bk.log.debug(HURT_ME_PLENTY, "splitting address")
             user,host = self._split_adress(mail)
-            linkcheck.Config.debug(HURT_ME_PLENTY, "looking up MX mailhost")
-            mxrecords = mxlookup(host)
-            linkcheck.Config.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
+            bk.log.debug(HURT_ME_PLENTY, "looking up MX mailhost")
+            mxrecords = bk.net.dns.lazy.mxlookup(host, config.dnsconfig)
+            bk.log.debug(HURT_ME_PLENTY, "found mailhosts", mxrecords)
             if not len(mxrecords):
                 self.setWarning(bk.i18n._("No MX mail host for %s found")%host)
                 return
             smtpconnect = 0
             for mxrecord in mxrecords:
                 try:
-                    linkcheck.Config.debug(BRING_IT_ON, "SMTP check for", mxrecord)
-                    self.urlConnection = SMTP(mxrecord[1])
-                    linkcheck.Config.debug(HURT_ME_PLENTY, "SMTP connected!")
+                    bk.log.debug(BRING_IT_ON, "SMTP check for", mxrecord)
+                    self.urlConnection = smtplib.SMTP(mxrecord[1])
+                    bk.log.debug(HURT_ME_PLENTY, "SMTP connected!")
                     smtpconnect = 1
                     self.urlConnection.helo()
                     info = self.urlConnection.verify(user)
-                    linkcheck.Config.debug(HURT_ME_PLENTY, "SMTP user info", info)
+                    bk.log.debug(HURT_ME_PLENTY, "SMTP user info", info)
                     if info[0]==250:
                         self.setInfo(bk.i18n._("Verified adress: %s")%str(info[1]))
                 except:

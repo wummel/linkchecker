@@ -18,6 +18,6 @@
 
 import linkcheck
 
-class GopherUrlData (linkcheck.UrlData.UrlData):
+class GopherUrlData (linkcheck.checker.UrlData.UrlData):
     "Url link with gopher scheme"
     pass

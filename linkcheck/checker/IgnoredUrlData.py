@@ -55,7 +55,7 @@ acap        # application configuration access protocol
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
 
-class IgnoredUrlData (linkcheck.UrlData.UrlData):
+class IgnoredUrlData (linkcheck.checker.UrlData.UrlData):
     """Some schemes are defined in http://www.w3.org/Addressing/schemes"""
 
     def _check (self):
