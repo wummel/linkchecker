@@ -5,6 +5,15 @@
 Upgrading
 =========
 
+Migrating from 2.2 to 2.3
+-------------------------
+
+The old config file ``~/.linkcheckerrc`` should be moved to
+``~/.linkchecker/linkcheckerrc``.
+
+Python >= 2.4 is now required.
+
+
 Migrating from 1.x to 2.0
 -------------------------
 
