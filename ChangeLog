@@ -1,11 +1,12 @@
-2.5 "Spanglish" (released xx.xx.xxxx)
+2.5 "Spanglish" (released 4.3.2005)
 
   * Added spanish translation, thanks to Servilio Afre Puentes.
     Type: feature
     Changed: po/Makefile
     Added: po/es.po
 
-  * Ignore a missing locale/ dir instead of crashing.
+  * Ignore a missing locale/ dir and fall back to the default locale
+    instead of crashing.
     Type: bugfix
     Changed: linkcheck/i18n.py
 
