@@ -44,8 +44,8 @@ class install_ext (Command):
         # putting files in the right package dir is already done when we
         # build.
         if self.destdir:
-            self.install_dir = self.destdir+self.install_dir
-            ddlen = len(self.destdir)
+            self.install_dir = util.add_path_prefix(self.destdir,
+	                       self.install_dir)
         if self.create_uninstall and not self.force:
             # turn on self.force to catch all previous installed files
             oldforce = self.force
@@ -56,7 +56,9 @@ class install_ext (Command):
         else:
             outfiles = self.copy_tree (self.build_dir, self.install_dir)
         if self.destdir:
-            outfiles = map(lambda s,l=ddlen: s[l:], outfiles)
-        self.distribution.outfiles = self.distribution.outfiles + outfiles
+            for i in range(len(outfiles)):
+                outfiles[i] = util.remove_path_prefix(self.destdir,
+                              outfiles[i])
+        self.distribution.outfiles.extend(outfiles)
 
 # class InstallExt

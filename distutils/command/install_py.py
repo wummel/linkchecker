@@ -4,7 +4,7 @@ __revision__ = "$Id$"
 
 import sys, string
 from distutils.core import Command
-from distutils.util import copy_tree
+from distutils import util
 
 class install_py (Command):
 
@@ -51,8 +51,8 @@ class install_py (Command):
         # directory to the installation directory (that's the beauty of
         # having a build directory!)
         if self.destdir:
-            self.install_dir = self.destdir+self.install_dir
-            ddlen = len(self.destdir)
+            self.install_dir = util.add_path_prefix(self.destdir,
+                               self.install_dir)
         if self.create_uninstall and not self.force:
             # turn on self.force to catch all previous installed files
             oldforce = self.force
@@ -87,8 +87,10 @@ class install_py (Command):
         # we're compiling optimally or not, and couldn't pick what to do
         # even if we did know.  ;-(
         if self.destdir:
-            outfiles = map(lambda s,l=ddlen: s[l:], outfiles)
-        self.distribution.outfiles = self.distribution.outfiles + outfiles
+            for i in range(len(outfiles)):
+                outfiles[i] = util.remove_path_prefix(self.destdir,
+                              outfiles[i])
+        self.distribution.outfiles.extend(outfiles)
 
     # run ()
 

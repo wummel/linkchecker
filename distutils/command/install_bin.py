@@ -4,6 +4,7 @@ Implement the Distutils "install_bin" command to install programs
 and scripts."""
 
 from distutils.core import Command
+from distutils import util
 import os,types,string
 
 class install_bin(Command):
@@ -50,8 +51,8 @@ class install_bin(Command):
 	# (currently only @INSTALL_BIN@ with install_dir)
         real_install_dir = self.install_dir
         if self.destdir:
-            self.install_dir = self.destdir+self.install_dir
-            ddlen = len(self.destdir)
+            self.install_dir = util.add_path_prefix(self.destdir,
+	                  self.install_dir)
         # create the install directory
         outfiles = self.mkpath(self.install_dir)
         # copy the files
@@ -65,8 +66,9 @@ class install_bin(Command):
         else:
             outfiles.extend(self.run_copy_files(real_install_dir))
         if self.destdir:
-            # cut off destdir prefix
-            outfiles = map(lambda s,l=ddlen: s[l:], outfiles)
+            for i in range(len(outfiles)):
+                outfiles[i] = util.remove_path_prefix(self.destdir,
+                              outfiles[i])
         self.distribution.outfiles.extend(outfiles)
 
     def run_copy_files(self, real_install_dir):

@@ -9,7 +9,7 @@ __revision__ = "$Id$"
 import sys, os, string
 from types import *
 from distutils.core import Command
-from distutils.util import write_file
+from distutils import util
 from distutils.errors import DistutilsOptionError
 
 _uninstall_template = """#!/usr/bin/env python
@@ -192,16 +192,25 @@ class install (Command):
                         os.path.join (effective_prefix,
                                       "lib",
                                       "python")      # + sys.version[:3] ???
+            if self.install_bin is None:
+                self.install_bin = os.path.join(self.exec_prefix,"bin")
             # end if self.install_platlib ...
 
+        elif os.name=='nt':
+            if self.install_lib is None:
+                self.install_lib = os.path.join(effective_prefix,
+                                   "lib")
+            if self.install_platlib is None:
+                self.install_platlib = os.path.join(effective_prefix,
+                                       "lib")
+            if self.install_bin is None:
+                self.install_bin = effective_prefix
         else:
             raise DistutilsPlatformError, \
                   "duh, I'm clueless (for now) about installing on %s" % os.name
 
         # end if/else on os.name
 
-        if self.install_bin is None:
-            self.install_bin = os.path.join(self.exec_prefix,"bin")
 
         # 'path_file' and 'extra_dirs' are how we handle distributions that
         # want to be installed to their own directory, but aren't
@@ -295,9 +304,10 @@ class install (Command):
             base = self.base
 
         filename = os.path.join (base, self.path_file + ".pth")
-        self.execute (write_file,
+        self.execute (util.write_file,
                       (filename, [self.extra_dirs]),
                       "creating %s" % filename)
+
 
     def create_uninstall_file(self):
         """Create an uninstall file <distribution name>_uninstall.py.
@@ -325,7 +335,7 @@ class install (Command):
         self.distribution.outfiles.append(uninstall_script_c)
 
         if self.destdir:
-            base = self.destdir + base
+            base = util.add_path_prefix(self.destdir,base)
         path = os.path.join(base, filename)
         cpath = os.path.join(base, cfilename)
         if not os.path.exists(path):
@@ -337,9 +347,10 @@ class install (Command):
         for f in self.distribution.outfiles:
             # to eliminate duplicates we use a dictionary
             filelist[f] = 1
-        f = open(path, "w")
-        f.write(_uninstall_template % filelist)
-        f.close()
+        if not self.dry_run:
+            f = open(path, "w")
+            f.write(_uninstall_template % filelist)
+            f.close()
         # byte-compile the script
         from py_compile import compile
         self.make_file (path, cpath, compile, (path,),

@@ -11,6 +11,7 @@ __all__ = ['build',
            'install',
            'install_py',
            'install_ext',
+           'install_bin',
            'clean',
            'sdist',
           ]

@@ -19,7 +19,7 @@ class FileUrlData(UrlData):
            not re.compile("^file:").search(self.urlName):
             winre = re.compile("^[a-zA-Z]:")
             if winre.search(self.urlName):
-                self.adjustWindozePath()
+                self.adjustWinPath()
             else:
                 if self.urlName[0:1] != "/":
                     self.urlName = os.getcwd()+"/"+self.urlName
@@ -34,7 +34,7 @@ class FileUrlData(UrlData):
         self.url = urlparse.urlunparse(self.urlTuple[:3] + ('','',''))
 
 
-    def adjustWindozePath(self):
+    def adjustWinPath(self):
         "c:\\windows ==> /c|\\windows"
         self.urlName = "/"+self.urlName[0]+"|"+self.urlName[2:]
 
