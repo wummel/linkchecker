@@ -28,6 +28,7 @@ except ImportError:
 import linkcheck.threader
 import linkcheck.log
 import linkcheck.strformat
+import linkcheck.checker.geoip
 from urlbase import stderr
 
 
@@ -241,3 +242,15 @@ class Consumer (object):
         finally:
             self.lock.release()
 
+    def get_country_name (self, host):
+        """
+        Return country code for host if found, else None.
+        """
+        self.lock.acquire()
+        try:
+            gi = self.config["geoip"]
+            if gi:
+                return linkcheck.checker.geoip.get_country(gi, host)
+            return None
+        finally:
+            self.lock.release()
