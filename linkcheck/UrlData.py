@@ -64,6 +64,19 @@ def print_app_info ():
             print >> sys.stderr, key, "=", `value`
 
 
+def get_absolute_url (urlName, baseRef, parentName):
+    """Search for the absolute url to detect the link type. This does not
+       join any url fragments together! Returns the url in lower case to
+       simplify urltype matching."""
+    if urlName and ":" in urlName:
+        return urlName.lower()
+    elif baseRef and ":" in baseRef:
+        return baseRef.lower()
+    elif parentName and ":" in parentName:
+        return parentName.lower()
+    return ""
+
+
 # we catch these exceptions, all other exceptions are internal
 # or system errors
 ExcList = [
@@ -219,7 +232,7 @@ class UrlData:
             self.extern = self._getExtern()
         except tuple(ExcList):
             type, value, tb = sys.exc_info()
-            debug(HURT_ME_PLENTY, "exception",  traceback.format_tb(tb))
+            debug(HURT_ME_PLENTY, "exception", traceback.format_tb(tb))
             self.setError(str(value))
             self.logMe()
             return
@@ -430,7 +443,8 @@ class UrlData:
         # parse an opera bookmark file
         name = ""
         lineno = 0
-        for line in self.getContent().splitlines():
+        lines = self.getContent().splitlines()
+        for line in lines:
             lineno += 1
             line = line.strip()
             if line.startswith("NAME="):
@@ -438,23 +452,24 @@ class UrlData:
             elif line.startswith("URL="):
                 url = line[4:]
                 if url:
-                    self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(url,
-                        self.recursionLevel+1, self.config, self.url, None, lineno, name))
+                    self.config.appendUrl(GetUrlDataFrom(url,
+           self.recursionLevel+1, self.config, self.url, None, lineno, name))
                 name = ""
 
 
     def parse_text (self):
-        # unused at the moment
+        """parse a text file with on url per line; comment and blank
+           lines are ignored
+           UNUSED and UNTESTED, just use linkchecker `cat file.txt`
+        """
         lineno = 0
-        for line in self.getContent().splitlines():
+        lines = self.getContent().splitlines()
+        for line in line:
             lineno += 1
-            i = 0
-            while 1:
-                mo = _url_re.search(line, i)
-                if not mo: break
-                self.config.appendUrl(linkcheck.UrlData.GetUrlDataFrom(mo.group(),
-                        self.recursionLevel+1, self.config, self.url, None, lineno, ""))
-                i = mo.end()
+            line = line.strip()
+            if not line or line.startswith('#'): continue
+            self.config.appendUrl(GetUrlDataFrom(line, self.recursionLevel+1,
+                                  self.config, self.url, None, lineno, ""))
 
 
     def __str__ (self):
@@ -482,19 +497,6 @@ from HttpsUrlData import HttpsUrlData
 from MailtoUrlData import MailtoUrlData
 from TelnetUrlData import TelnetUrlData
 from NntpUrlData import NntpUrlData
-
-
-def get_absolute_url (urlName, baseRef, parentName):
-    """Search for the absolute url to detect the link type. This does not
-       join any url fragments together! Returns the url in lower case to
-       simplify urltype matching."""
-    if urlName and ":" in urlName:
-        return urlName.lower()
-    elif baseRef and ":" in baseRef:
-        return baseRef.lower()
-    elif parentName and ":" in parentName:
-        return parentName.lower()
-    return ""
 
 
 def GetUrlDataFrom (urlName, recursionLevel, config, parentName=None,

@@ -36,12 +36,10 @@ def getLinkPat (arg, strict=0):
 
 # file extensions we can parse recursively
 extensions = {
-    "html": r'(?i)\.s?html?$',
-    "opera": r'^(?i)opera.adr$', # opera bookmark file
-#    "text": r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$',
+    "html": re.compile(r'(?i)\.s?html?$'),
+    "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
+#    "text": re.compile(r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$'),
 }
-for key in extensions.keys():
-    extensions[key] = re.compile(extensions[key])
 
 
 # i18n suppport
@@ -58,9 +56,9 @@ def init_gettext ():
         _ = lambda s: s
 init_gettext()
 
-import Config, UrlData
+import UrlData
+from Config import debug
 from debuglevels import *
-debug = Config.debug
 
 
 # main check function

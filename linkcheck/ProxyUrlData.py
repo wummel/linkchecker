@@ -1,5 +1,5 @@
 from UrlData import UrlData
-from urllib import splittype, splithost, splituser, splitpasswd
+from urllib import splittype, splithost, splituser
 
 class ProxyUrlData (UrlData):
     """urldata with ability for proxying and for urls with user:pass@host

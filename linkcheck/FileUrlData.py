@@ -23,12 +23,10 @@ ExcList.append(OSError)
 
 # if file extension was fruitless, look at the content
 contents = {
-    "html": r'(?i)<html>.*</html>',
-    "opera" : r'Opera Hotlist',
-#    "text" : r'[\w\s]+',
+    "html": re.compile(r'(?i)<html>.*</html>'),
+    "opera" : re.compile(r'Opera Hotlist'),
+#    "text" : re.compile(r'[\w\s]+'),
 }
-for key in contents.keys():
-    contents[key] = re.compile(contents[key])
 
 _schemes = r"""(
 acap        # application configuration access protocol

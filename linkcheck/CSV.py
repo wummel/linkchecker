@@ -341,7 +341,7 @@ class CSV(UserList.UserList):
 		else:
 			str = ""
 		for entry in self:
-			str += string.join(map(string.ljust, map(lambda a : (type(a) == types.StringType and [a] or [eval("`a`")])[0], entry.data), columns__width), "  ") + "\n"
+			str += string.join(map(string.ljust, map(lambda a : ((type(a)==types.StringType) and [a] or [eval("`a`")])[0], entry.data), columns__width), "  ") + "\n"
 
 		return str
 

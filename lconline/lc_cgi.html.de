@@ -10,7 +10,7 @@
  a:hover { color: #34a4ef }
  //-->
 </style>
-<script type="text/javascript" src="check.js">
+<script type="text/javascript" src="check.js"></script>
 <script type="text/javascript">
 <!--
 function gettext (s) {

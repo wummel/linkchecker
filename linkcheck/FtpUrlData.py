@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ftplib, linkcheck
+from urllib import splitpasswd
 from ProxyUrlData import ProxyUrlData
 from HttpUrlData import HttpUrlData
 from UrlData import ExcList
@@ -57,6 +58,7 @@ class FtpUrlData (ProxyUrlData):
         filename = self.cwd()
         if filename:
             self.retrieve(filename)
+        return None
 
 
     def isHtml (self):
@@ -64,6 +66,7 @@ class FtpUrlData (ProxyUrlData):
         for ro in linkcheck.extensions.values():
             if ro.search(self.url):
                 return 1
+        return None
 
 
     def parseUrl (self):
