@@ -264,7 +264,8 @@ class Cache (object):
         self.lock.acquire()
         try:
             key = (host, username, password)
-            self.ftp_connections[key][1] = 'available'
+            if key in self.ftp_connections:
+                self.ftp_connections[key][1] = 'available'
         finally:
             self.lock.release()
 
