@@ -664,5 +664,7 @@ static PyMethodDef htmlsax_methods[] = {
 
 /* initialization of the htmlsaxhtmlop module */
 void inithtmlsax(void) {
-    Py_InitModule("htmlsax", htmlsax_methods);
+    if (!Py_InitModule("htmlsax", htmlsax_methods)) {
+        return;
+    }
 }
