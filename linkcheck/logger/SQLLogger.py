@@ -17,6 +17,23 @@
 
 import time
 import linkcheck
+import linkcheck.i18n
+import linkcheck.logger.StandardLogger
+import linkcheck.logger.Logger
+
+
+def applyTable (table, s):
+    "apply a table of replacement pairs to str"
+    for mapping in table:
+        s = s.replace(mapping[0], mapping[1])
+    return s
+
+
+def sqlify (s):
+    "Escape special SQL chars and strings"
+    if not s:
+        return "NULL"
+    return "'%s'"%applyTable(SQLTable, s)
 
 
 class SQLLogger (linkcheck.logger.StandardLogger.StandardLogger):
@@ -33,7 +50,7 @@ class SQLLogger (linkcheck.logger.StandardLogger.StandardLogger):
         self.starttime = time.time()
         if self.has_field("intro"):
             self.fd.write("-- "+(linkcheck.i18n._("created by %s at %s\n") % (linkcheck.Config.AppName,
-                       linkcheck.logger.strtime(self.starttime))))
+                       linkcheck.strtime(self.starttime))))
             self.fd.write("-- "+(linkcheck.i18n._("Get the newest version at %s\n") % linkcheck.Config.Url))
             self.fd.write("-- "+(linkcheck.i18n._("Write comments and bugs to %s\n\n") % \
 	                linkcheck.Config.Email))
@@ -47,19 +64,19 @@ class SQLLogger (linkcheck.logger.StandardLogger.StandardLogger):
               " values "
               "(%s,%d,%s,%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%d,%d,%d,%d)%s\n" % \
 	      (self.dbname,
-	       linkcheck.StringUtil.sqlify(urlData.urlName),
+	       sqlify(urlData.urlName),
                urlData.recursionLevel,
-	       linkcheck.StringUtil.sqlify(linkcheck.url.url_quote(urlData.parentName or "")),
-               linkcheck.StringUtil.sqlify(urlData.baseRef),
-               linkcheck.StringUtil.sqlify(urlData.errorString),
-               linkcheck.StringUtil.sqlify(urlData.validString),
-               linkcheck.StringUtil.sqlify(urlData.warningString),
-               linkcheck.StringUtil.sqlify(urlData.infoString),
+	       sqlify(linkcheck.url.url_quote(urlData.parentName or "")),
+               sqlify(urlData.baseRef),
+               sqlify(urlData.errorString),
+               sqlify(urlData.validString),
+               sqlify(urlData.warningString),
+               sqlify(urlData.infoString),
                urlData.valid,
-               linkcheck.StringUtil.sqlify(linkcheck.url.url_quote(urlData.url)),
+               sqlify(linkcheck.url.url_quote(urlData.url)),
                urlData.line,
                urlData.column,
-               linkcheck.StringUtil.sqlify(urlData.name),
+               sqlify(urlData.name),
                urlData.checktime,
                urlData.dltime,
                urlData.dlsize,

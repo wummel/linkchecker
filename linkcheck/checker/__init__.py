@@ -17,6 +17,25 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import time
+import socket
+import select
+import re
+import urlparse
+import linkcheck
+import linkcheck.DNS
+
+
+# we catch these exceptions, all other exceptions are internal
+# or system errors
+ExcList = [
+   IOError,
+   ValueError, # from httplib.py
+   linkcheck.LinkCheckerError,
+   linkcheck.DNS.Error,
+   socket.timeout,
+   socket.error,
+   select.error,
+]
 
 
 # main check function
@@ -65,6 +84,32 @@ import linkcheck.checker.HttpsUrlData
 import linkcheck.checker.MailtoUrlData
 import linkcheck.checker.TelnetUrlData
 import linkcheck.checker.NntpUrlData
+
+# file extensions we can parse recursively
+extensions = {
+    "html": re.compile(r'(?i)\.s?html?$'),
+    "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
+    "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
+#    "text": re.compile(r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$'),
+}
+
+
+def set_intern_url (url, klass, config):
+    """Precondition: config['strict'] is true (ie strict checking) and
+       recursion level is zero (ie url given on the command line)"""
+    if klass == linkcheck.checker.FileUrlData.FileUrlData:
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern pattern ^file:")
+        config['internlinks'].append(getLinkPat("^file:"))
+    elif klass in [linkcheck.checker.HttpUrlData.HttpUrlData,
+                   linkcheck.checker.HttpsUrlData.HttpsUrlData,
+                   linkcheck.checker.FtpUrlData.FtpUrlData]:
+        domain = urlparse.urlsplit(url)[1]
+        if domain:
+            domain = "://%s"%re.escape(domain)
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern domain", domain)
+            # add scheme colon to link pattern
+            config['internlinks'].append(getLinkPat(domain))
+
 
 def getUrlDataFrom (urlName, recursionLevel, config, parentName=None,
                     baseRef=None, line=0, column=0, name=None,

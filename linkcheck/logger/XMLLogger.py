@@ -16,7 +16,36 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import time
+import xml.sax.saxutils
 import linkcheck
+
+
+xmlattr_entities = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+}
+
+
+def xmlquote (s):
+    """quote characters for XML"""
+    return xml.sax.saxutils.escape(s)
+
+
+def xmlquoteattr (s):
+    """quote XML attribute, ready for inclusion with double quotes"""
+    return xml.sax.saxutils.escape(s, xmlattr_entities)
+
+
+def xmlunquote (s):
+    """unquote characters from XML"""
+    return xml.sax.saxutils.unescape(s)
+
+
+def xmlunquoteattr (s):
+    """unquote attributes from XML"""
+    return xml.sax.saxutils.unescape(s, xmlattr_entities)
 
 
 class XMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
@@ -56,7 +85,7 @@ class XMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
             self.fd.write(">\n")
             if self.has_field("realurl"):
                 self.fd.write("    <label>%s</label>\n" %\
-                              linkcheck.XmlUtils.xmlquote(linkcheck.url.url_quote(node.url)))
+                              xmlquote(linkcheck.url.url_quote(node.url)))
             self.fd.write("    <data>\n")
             if node.dltime>=0 and self.has_field("dltime"):
                 self.fd.write("      <dltime>%f</dltime>\n" % node.dltime)
@@ -85,7 +114,7 @@ class XMLLogger (linkcheck.logger.StandardLogger.StandardLogger):
                 self.fd.write(">\n")
                 if self.has_field("url"):
 		    self.fd.write("    <label>%s</label>\n" % \
-                                  linkcheck.XmlUtils.linkcheck.xmlquote(node.urlName))
+                                  xmlquote(node.urlName))
                 self.fd.write("    <data>\n")
                 if self.has_field("result"):
                     self.fd.write("      <valid>%d</valid>\n" % \

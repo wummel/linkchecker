@@ -19,10 +19,10 @@
 import re
 import os
 import urlparse
-import linkcheck.UrlData
+import linkcheck.checker
 
 # OSError is thrown on Windows when a file is not found
-linkcheck.UrlData.ExcList.append(OSError)
+linkcheck.checker.ExcList.append(OSError)
 
 # if file extension was fruitless, look at the content
 contents = {

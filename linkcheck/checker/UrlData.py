@@ -78,18 +78,6 @@ def get_absolute_url (urlName, baseRef, parentName):
     return ""
 
 
-# we catch these exceptions, all other exceptions are internal
-# or system errors
-ExcList = [
-   IOError,
-   ValueError, # from httplib.py
-   linkcheck.LinkCheckerError,
-   linkcheck.DNS.Error,
-   socket.timeout,
-   socket.error,
-   select.error,
-]
-
 if hasattr(socket, "sslerror"):
     ExcList.append(socket.sslerror)
 
@@ -226,15 +214,13 @@ class UrlData (object):
     def check (self):
         try:
             self._check()
-        except KeyboardInterrupt:
-            raise
         except (socket.error, select.error):
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
             etype, value = sys.exc_info()[:2]
             if etype!=4:
                 raise
-        except linkcheck.test_support.Error:
+        except (KeyboardInterrupt, linkcheck.test_support.Error):
             raise
         except:
             internal_error()

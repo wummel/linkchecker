@@ -17,7 +17,9 @@
 
 import time
 import csv
-import linkcheck
+import linkcheck.i18n
+import linkcheck.logger.StandardLogger
+import linkcheck.logger.Logger
 
 
 class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
@@ -30,7 +32,7 @@ class CSVLogger (linkcheck.logger.StandardLogger.StandardLogger):
         self.lineterminator = "\n"
 
     def init (self):
-        linkcheck.logger.Logger.init(self)
+        linkcheck.logger.Logger.Logger.init(self)
         if self.fd is None:
             return
         self.starttime = time.time()

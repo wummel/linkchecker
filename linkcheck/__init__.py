@@ -16,9 +16,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import re
 import sys
-import urlparse
+import re
+import time
+import linkcheck.i18n
 
 
 # logger areas
@@ -32,9 +33,36 @@ class LinkCheckerError (Exception):
     pass
 
 
+def strtime (t):
+    """return ISO 8601 formatted time"""
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)) + \
+           strtimezone()
+
+
+def strduration (duration):
+    """return string formatted time duration"""
+    name = linkcheck.i18n._("seconds")
+    if duration > 60:
+        duration = duration / 60
+        name = linkcheck.i18n._("minutes")
+    if duration > 60:
+        duration = duration / 60
+        name = linkcheck.i18n._("hours")
+    return " %.3f %s"%(duration, name)
+
+
+def strtimezone ():
+    """return timezone info, %z on some platforms, but not supported on all"""
+    if time.daylight:
+        zone = time.altzone
+    else:
+        zone = time.timezone
+    return "%+04d" % int(-zone/3600)
+
+
 def getLinkPat (arg, strict=False):
     """get a link pattern matcher for intern/extern links"""
-    linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
+    bk.log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg[0:1] == '!':
         pattern = arg[1:]
         negate = True
@@ -48,48 +76,37 @@ def getLinkPat (arg, strict=False):
     }
 
 
-# file extensions we can parse recursively
-extensions = {
-    "html": re.compile(r'(?i)\.s?html?$'),
-    "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
-    "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
-#    "text": re.compile(r'(?i)\.(txt|xml|tsv|csv|sgml?|py|java|cc?|cpp|h)$'),
-}
-
-
-import linkcheck.FileUrlData
-import linkcheck.IgnoredUrlData
-import linkcheck.FtpUrlData
-import linkcheck.GopherUrlData
-import linkcheck.HttpUrlData
-import linkcheck.HttpsUrlData
-import linkcheck.MailtoUrlData
-import linkcheck.TelnetUrlData
-import linkcheck.NntpUrlData
-
-def set_intern_url (url, klass, config):
-    """Precondition: config['strict'] is true (ie strict checking) and
-       recursion level is zero (ie url given on the command line)"""
-    if klass == linkcheck.FileUrlData.FileUrlData:
-        linkcheck.log.debug(LOG_CHECK, "Add intern pattern ^file:")
-        config['internlinks'].append(getLinkPat("^file:"))
-    elif klass in [linkcheck.HttpUrlData.HttpUrlData,
-                   linkcheck.HttpsUrlData.HttpsUrlData,
-                   linkcheck.FtpUrlData.FtpUrlData]:
-        domain = urlparse.urlsplit(url)[1]
-        if domain:
-            domain = "://%s"%re.escape(domain)
-            debug(BRING_IT_ON, "Add intern domain", domain)
-            # add scheme colon to link pattern
-            config['internlinks'].append(getLinkPat(domain))
-
-
-import linkcheck.logger
-
 def printStatus (config, curtime, start_time):
     tocheck = len(config.urls)
     links = config['linknumber']
     active = config.threader.active_threads()
-    duration = linkcheck.logger.strduration(curtime - start_time)
+    duration = strduration(curtime - start_time)
     print >>sys.stderr, linkcheck.i18n._("%5d urls queued, %4d links checked, %2d active threads, runtime %s")%\
                                (tocheck, links, active, duration)
+
+
+import linkcheck.logger.StandardLogger
+import linkcheck.logger.HtmlLogger
+import linkcheck.logger.ColoredLogger
+import linkcheck.logger.GMLLogger
+import linkcheck.logger.SQLLogger
+import linkcheck.logger.CSVLogger
+import linkcheck.logger.BlacklistLogger
+import linkcheck.logger.XMLLogger
+import linkcheck.logger.NoneLogger
+
+
+# default logger classes
+Loggers = {
+    "text": linkcheck.logger.StandardLogger.StandardLogger,
+    "html": linkcheck.logger.HtmlLogger.HtmlLogger,
+    "colored": linkcheck.logger.ColoredLogger.ColoredLogger,
+    "gml": linkcheck.logger.GMLLogger.GMLLogger,
+    "sql": linkcheck.logger.SQLLogger.SQLLogger,
+    "csv": linkcheck.logger.CSVLogger.CSVLogger,
+    "blacklist": linkcheck.logger.BlacklistLogger.BlacklistLogger,
+    "xml": linkcheck.logger.XMLLogger.XMLLogger,
+    "none": linkcheck.logger.NoneLogger.NoneLogger,
+}
+# for easy printing: a comma separated logger list
+LoggerKeys = ", ".join(Loggers.keys())

@@ -15,10 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import linkcheck
+import linkcheck.i18n
+import linkcheck.AnsiColor
+import linkcheck.logger.StandardLogger
 
 
-class ColoredLogger (linkcheck.logger.StandardLogger):
+class ColoredLogger (linkcheck.logger.StandardLogger.StandardLogger):
     """ANSI colorized output"""
 
     def __init__ (self, **args):

@@ -86,20 +86,6 @@ def getLastWordBoundary (s, width):
     return width-1
 
 
-def applyTable (table, s):
-    "apply a table of replacement pairs to str"
-    for mapping in table:
-        s = s.replace(mapping[0], mapping[1])
-    return s
-
-
-def sqlify (s):
-    "Escape special SQL chars and strings"
-    if not s:
-        return "NULL"
-    return "'%s'"%applyTable(SQLTable, s)
-
-
 def htmlify (s):
     "Escape special HTML chars and strings"
     return applyTable(HtmlTable, s)

@@ -24,10 +24,11 @@ import Cookie
 import sets
 import urllib
 import _linkchecker_configdata
+import bk
+import bk.containers
 import linkcheck
 import linkcheck.i18n
-import linkcheck.log
-
+import linkcheck.Threader
 try:
     import threading
 except ImportError:
@@ -69,7 +70,7 @@ def _check_morsel (m, host, path):
         return None
     # check expiry date (if its stored)
     if m["expires"]:
-        debug(BRING_IT_ON, "Cookie expires", m["expires"])
+        bk.log.debug(linkcheck.LOG_CHECK, "Cookie expires", m["expires"])
         # XXX
     return m.output(header='').strip()
 
@@ -89,7 +90,6 @@ class Configuration (dict):
         # Therefore we count this variable up to 5 and then we call
         # reduceThreads(). Ok, this is a hack but ItWorksForMe(tm).
         self.reduceCount = 0
-
 
     def reset (self):
         """Reset to default values"""
@@ -174,54 +174,46 @@ class Configuration (dict):
         self.setThreads(10)
         self.urlSeen = sets.Set()
         self.urlSeenLock = threading.Lock()
-        self.urlCache = linkcheck.containers.LRU(MAX_URL_CACHE)
+        self.urlCache = bk.containers.LRU(MAX_URL_CACHE)
         self.urlCacheLock = threading.Lock()
-        self.robotsTxtCache = linkcheck.containers.LRU(MAX_ROBOTS_TXT_CACHE)
+        self.robotsTxtCache = bk.containers.LRU(MAX_ROBOTS_TXT_CACHE)
         self.robotsTxtCacheLock = threading.Lock()
         self.urls = []
         self.urlCounter = 0
         self.urlsLock = threading.Lock()
         # basic data lock (eg for cookies, link numbers etc.)
         self.dataLock = threading.Lock()
-        self.cookies = linkcheck.containers.LRU(MAX_COOKIES_CACHE)
-
+        self.cookies = bk.containers.LRU(MAX_COOKIES_CACHE)
 
     def setThreads (self, num):
-        debug(HURT_ME_PLENTY, "set threading with %d threads"%num)
+        bk.log.debug(linkcheck.LOG_CHECK, "set threading with %d threads"%num)
         self.threader.threads_max = num
         if num>0:
             sys.setcheckinterval(50)
         else:
             sys.setcheckinterval(100)
 
-
     def newLogger (self, logtype, dict={}):
         args = {}
 	args.update(self[logtype])
 	args.update(dict)
-        from linkcheck.log import Loggers
-        return Loggers[logtype](**args)
-
+        return linkcheck.Loggers[logtype](**args)
 
     def addLogger(self, logtype, loggerClass, logargs={}):
         "add a new logger type"
-        from linkcheck.log import Loggers
-        Loggers[logtype] = loggerClass
+        linkcheck.Loggers[logtype] = loggerClass
         self[logtype] = logargs
-
 
     def log_init (self):
         if not self["quiet"]: self["log"].init()
         for log in self["fileoutput"]:
             log.init()
 
-
     def log_endOfOutput (self):
         if not self["quiet"]:
             self["log"].endOfOutput(linknumber=self['linknumber'])
         for log in self["fileoutput"]:
             log.endOfOutput(linknumber=self['linknumber'])
-
 
     def incrementLinknumber (self):
         try:
@@ -230,18 +222,14 @@ class Configuration (dict):
         finally:
             self.dataLock.release()
 
-
     def hasMoreUrls (self):
         return self.urls
-
 
     def finished (self):
         return self.threader.finished() and not self.urls
 
-
     def finish (self):
         self.threader.finish()
-
 
     def appendUrl (self, urlData):
         self.urlsLock.acquire()
@@ -260,7 +248,6 @@ class Configuration (dict):
         finally:
             self.urlsLock.release()
 
-
     def filterUrlQueue (self):
         """remove already cached urls from queue"""
         # note: url lock must be acquired
@@ -269,7 +256,6 @@ class Configuration (dict):
         removed = olen - len(self.urls)
         print >>sys.stderr, \
           i18n._("removed %d cached urls from incoming queue")%removed
-
 
     def getUrl (self):
         """get first url in queue and return it"""
@@ -281,10 +267,8 @@ class Configuration (dict):
         finally:
             self.urlsLock.release()
 
-
     def checkUrl (self, url):
         self.threader.start_thread(url.check, ())
-
 
     def urlSeen_has_key (self, key):
         self.urlSeenLock.acquire()
@@ -293,14 +277,12 @@ class Configuration (dict):
         finally:
             self.urlSeenLock.release()
 
-
     def urlSeen_set (self, key):
         self.urlSeenLock.acquire()
         try:
             self.urlSeen.add(key)
         finally:
             self.urlSeenLock.release()
-
 
     def urlCache_has_key (self, key):
         self.urlCacheLock.acquire()
@@ -309,7 +291,6 @@ class Configuration (dict):
         finally:
             self.urlCacheLock.release()
 
-
     def urlCache_get (self, key):
         self.urlCacheLock.acquire()
         try:
@@ -317,15 +298,13 @@ class Configuration (dict):
         finally:
             self.urlCacheLock.release()
 
-
     def urlCache_set (self, key, val):
         self.urlCacheLock.acquire()
         try:
-            debug(NIGHTMARE, "caching", repr(key))
+            bk.log.debug(linkcheck.LOG_CHECK, "caching", repr(key))
             self.urlCache[key] = val
         finally:
             self.urlCacheLock.release()
-
 
     def robotsTxtCache_has_key (self, key):
         self.robotsTxtCacheLock.acquire()
@@ -334,7 +313,6 @@ class Configuration (dict):
         finally:
             self.robotsTxtCacheLock.release()
 
-
     def robotsTxtCache_get (self, key):
         self.robotsTxtCacheLock.acquire()
         try:
@@ -342,14 +320,12 @@ class Configuration (dict):
         finally:
             self.robotsTxtCacheLock.release()
 
-
     def robotsTxtCache_set (self, key, val):
         self.robotsTxtCacheLock.acquire()
         try:
             self.robotsTxtCache[key] = val
         finally:
             self.robotsTxtCacheLock.release()
-
 
     def log_newUrl (self, url):
         self.logLock.acquire()
@@ -361,25 +337,23 @@ class Configuration (dict):
         finally:
             self.logLock.release()
 
-
     def storeCookies (self, headers, host):
         self.dataLock.acquire()
         try:
             output = []
             for h in headers.getallmatchingheaders("Set-Cookie"):
                 output.append(h)
-                debug(BRING_IT_ON, "Store Cookie", h)
+                bk.log.debug(linkcheck.LOG_CHECK, "Store Cookie", h)
                 c = self.cookies.setdefault(host, Cookie.SimpleCookie())
                 c.load(h)
             return output
         finally:
             self.dataLock.release()
 
-
     def getCookies (self, host, path):
         self.dataLock.acquire()
         try:
-            debug(BRING_IT_ON, "Get Cookie", host, path)
+            bk.log.debug(linkcheck.LOG_CHECK, "Get Cookie", host, path)
             if not self.cookies.has_key(host):
                 return []
             cookievals = []
@@ -391,7 +365,6 @@ class Configuration (dict):
         finally:
             self.dataLock.release()
 
-
     def read (self, files = []):
         cfiles = files[:]
         if not cfiles:
@@ -402,86 +375,107 @@ class Configuration (dict):
             cfiles.append(norm("~/.linkcheckerrc"))
         self.readConfig(cfiles)
 
-
     def readConfig (self, files):
         """this big function reads all the configuration parameters
         used in the linkchecker module."""
-        debug(BRING_IT_ON, "reading configuration from", files)
-        from linkcheck.log import Loggers
+        bk.log.debug(linkcheck.LOG_CHECK, "reading configuration from", files)
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
         except ConfigParser.Error, msg:
-            debug(BRING_IT_ON, msg)
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
 	    return
 
         section="output"
-        for key in Loggers.keys():
+        for key in linkcheck.Loggers.keys():
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
                     try:
                         self[key][opt] = cfgparser.get(key, opt)
-                    except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+                    except ConfigParser.Error, msg:
+                        bk.log.debug(linkcheck.LOG_CHECK, msg)
                 try:
 		    self[key]['fields'] = [f.strip() for f in cfgparser.get(key, 'fields').split(',')]
-                except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+                except ConfigParser.Error, msg:
+                    bk.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             log = cfgparser.get(section, "log")
-            if Loggers.has_key(log):
+            if linkcheck.Loggers.has_key(log):
                 self['log'] = self.newLogger(log)
             else:
                 warn(i18n._("invalid log option '%s'") % log)
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
         try: 
             if cfgparser.getboolean(section, "verbose"):
                 self["verbose"] = True
                 self["warnings"] = True
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["quiet"] = cfgparser.getboolean(section, "quiet")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["status"] = cfgparser.getboolean(section, "status")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["warnings"] = cfgparser.getboolean(section, "warnings")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["quiet"] = cfgparser.getboolean(section, "quiet")
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["status"] = cfgparser.getboolean(section, "status")
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["warnings"] = cfgparser.getboolean(section, "warnings")
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             filelist = cfgparser.get(section, "fileoutput").split(",")
             for arg in filelist:
                 arg = arg.strip()
                 # no file output for the blacklist and none Logger
-                if Loggers.has_key(arg) and arg not in ["blacklist", "none"]:
+                if linkcheck.Loggers.has_key(arg) and arg not in ["blacklist", "none"]:
 		    self['fileoutput'].append(
                          self.newLogger(arg, {'fileoutput':1}))
-	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+	except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
 
         section="checking"
         try:
             num = cfgparser.getint(section, "threads")
             self.setThreads(num)
-        except ConfigParser.Error: debug(NIGHTMARE, msg)
-        try: self["anchors"] = cfgparser.getboolean(section, "anchors")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["anchors"] = cfgparser.getboolean(section, "anchors")
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             num = cfgparser.getint(section, "recursionlevel")
             self["recursionlevel"] = num
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["strict"] = cfgparser.getboolean(section, "strict")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["strict"] = cfgparser.getboolean(section, "strict")
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             wr = cfgparser.get(section, "warningregex")
             if wr:
                 self["warningregex"] = re.compile(wr)
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["warnsizebytes"] = int(cfgparser.get(section, "warnsizebytes"))
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["warnsizebytes"] = int(cfgparser.get(section, "warnsizebytes"))
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["nntpserver"] = cfgparser.get(section, "nntpserver")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["interactive"] = cfgparser.getboolean(section, "interactive")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["anchorcaching"] = cfgparser.getboolean(section, "anchorcaching")
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
 
         section = "authentication"
 	try:
@@ -494,7 +488,8 @@ class Configuration (dict):
 		                                  'user': auth[1],
 						  'password': auth[2]})
                 i += 1
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
 
         section = "filtering"
         try:
@@ -506,8 +501,13 @@ class Configuration (dict):
                     break
                 self["externlinks"].append(linkcheck.getLinkPat(ctuple[0], strict=int(ctuple[1])))
                 i += 1
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["internlinks"].append(linkcheck.getLinkPat(cfgparser.get(section, "internlinks")))
-        except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
-        try: self["denyallow"] = cfgparser.getboolean(section, "denyallow")
-	except ConfigParser.Error, msg: debug(NIGHTMARE, msg)
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["internlinks"].append(linkcheck.getLinkPat(cfgparser.get(section, "internlinks")))
+        except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self["denyallow"] = cfgparser.getboolean(section, "denyallow")
+	except ConfigParser.Error, msg:
+            bk.log.debug(linkcheck.LOG_CHECK, msg)

@@ -17,10 +17,10 @@
 
 import sys
 import os
-import linkcheck
+import linkcheck.logger.Logger
 
 
-class BlacklistLogger (linkcheck.logger.Logger):
+class BlacklistLogger (linkcheck.logger.Logger.Logger):
     """Updates a blacklist of wrong links. If a link on the blacklist
     is working (again), it is removed from the list. So after n days
     we have only links on the list which failed for n days.
