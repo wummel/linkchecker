@@ -7,8 +7,8 @@ class FtpUrlData(UrlData):
     """
     
     def checkConnection(self, config):
-        self.urlConnection = ftplib.FTP(self.urlTuple[1], 
-                             config["user"], config["password"])
+        _user, _password = self._getUserPassword(config)
+        self.urlConnection = ftplib.FTP(self.urlTuple[1], _user, _password)
         info = self.urlConnection.getwelcome()
         if not info:
             self.closeConnection()

@@ -56,7 +56,8 @@ class HttpUrlData(UrlData):
         status, statusText, self.mime = self._getHttpRequest()
         Config.debug(str(status)+", "+str(statusText)+", "+str(self.mime)+"\n")
         if status == 401:
-            self.auth = base64.encodestring(LinkChecker.User+":"+LinkChecker.Password)
+            _user, _password = self._getUserPassword(config)
+            self.auth = base64.encodestring(_user+":"+_password)
             status, statusText, self.mime = self._getHttpRequest()
         if status >= 400:
             self.setError(`status`+" "+statusText)

@@ -2,23 +2,34 @@
 # see linkchecker -h for help on these options
 
 [output]
-#debug=1
-#log=colored
-#verbose=1
-#warnings=1
-#quiet=0
+debug=0
+log=text
+verbose=0
+warnings=0
+quiet=0
+#fileoutput = text colored html gml sql
 
 [checking]
-#threads=15
-#anchors=1
-#externlinks=
-#internlinks=
-#allowdeny=1
-#password=calvin@
-#user=anonymous
-#recursionlevel=1
-#robotstxt=1
-#strict=1
-#proxy=
-#proxyport=8080
+threads=5
+anchors=0
+recursionlevel=1
+robotstxt=0
+strict=0
+#proxy=www-proxy.uni-sb.de
+#proxyport=3128
 
+[filtering]
+externlinks=
+internlinks=
+allowdeny=0
+
+# You can provide different user/password pairs for different link types.
+# Entries are a triple with (link regular expression, username, password),
+# separated by whitespace.
+# If the regular expression matches, the given user/password pair is used
+# for authentication. The commandline options -u,-p match every link
+# and therefore override the entries given here. The first match wins.
+# At the moment, authentication is used/needed for http[s] and ftp links.
+[authentication]
+entry1=^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/.* lebowski lebowski
+#entry2=^ftp://void.cs.uni-sb.de calvin hutzli

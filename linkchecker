@@ -138,18 +138,20 @@ except getopt.error:
 # apply configuration
 config = linkcheck.Config.Configuration()
 try:
-    configfile = []
+    configfiles = []
     for opt,arg in options:
         if opt=="-f" or opt=="--config":
-            configfile.append(arg)
-    config.read(configfile)
+            configfiles.append(arg)
+    config.read(configfiles)
 except:
     type, value = sys.exc_info()[:2]
     printUsage(value)
 
 
 # apply options and arguments
-constructAuth = 0
+_user = "anonymous"
+_password = "guest@"
+constructauth = 0
 for opt,arg in options:
     if opt=="-a" or opt=="--anchors":
         config["anchors"] = 1
@@ -190,8 +192,8 @@ for opt,arg in options:
             config["proxy"] = arg
     
     elif opt=="-p" or opt=="--password":
-        config["password"]=arg
-        constructAuth=constructAuth+1
+        _password=arg
+        constructAuth=1
         
     elif opt=="-q" or opt=="--quiet":
     	config["quiet"]=1
@@ -217,8 +219,8 @@ for opt,arg in options:
                 config.disableThreading()
     
     elif opt=="-u" or opt=="--user":
-        config["user"] = arg
-        constructAuth=constructAuth+1
+        _user = arg
+        constructauth = 1
     
     elif opt=="-V" or opt=="--version":
         printVersion()
@@ -230,8 +232,8 @@ for opt,arg in options:
     elif opt=="-w" or opt=="--warnings":
         config["warnings"] = 1
 
-if constructAuth and constructAuth!=2:
-    sys.stderr.write("Warning: try to give me both Username and Password\n")
+if constructauth:
+    congif["authentication"].insert(0, (re.compile(".*"), _user, _password))
 
 if len(args)==0:
     printUsage("no files or urls given")

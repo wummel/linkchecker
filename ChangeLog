@@ -1,3 +1,6 @@
+7.3.2000
+	* support for multiple user/password pairs
+
 3.3.2000
 	* ignore HTTP status replies < 200 because some pages return -1 
 	  and binary data (Gabor Liptak <gaborliptak@usa.net>)

@@ -1,4 +1,4 @@
-import ConfigParser,sys,os,re,UserDict
+import ConfigParser,sys,os,re,UserDict,string
 from os.path import expanduser,normpath,normcase,join,isfile
 import Logging
 
@@ -47,8 +47,7 @@ class Configuration(UserDict.UserDict):
         self.data["externlinks"] = []
         self.data["internlinks"] = []
         self.data["allowdeny"] = 0
-        self.data["user"] = "anonymous"
-        self.data["password"] = "joe@"
+        self.data["authentication"] = []
         self.data["proxy"] = 0
         self.data["proxyport"] = 8080
         self.data["recursionlevel"] = 1
@@ -218,17 +217,17 @@ class Configuration(UserDict.UserDict):
         self.logLock.release()
         
     def read(self, files = []):
-        files.insert(0,_norm("~/.pylicerc"))
-        if sys.platform=="win32":
-            if not sys.path[0]:
-                path=os.getcwd()
+        if not files:
+            files.insert(0,_norm("~/.pylicerc"))
+            if sys.platform=="win32":
+                if not sys.path[0]:
+                    path=os.getcwd()
+                else:
+                    path=sys.path[0]
             else:
-                path=sys.path[0]
-        else:
-            path="/etc"
-        files.insert(0,_norm(join(path, "pylicerc")))
-        if len(files):
-            self.readConfig(files)
+                path="/etc"
+            files.insert(0,_norm(join(path, "pylicerc")))
+        self.readConfig(files)
     
     def warn(self, msg):
         self.message("Config: WARNING: "+msg)
@@ -244,7 +243,8 @@ class Configuration(UserDict.UserDict):
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
-        except: return
+        except:
+	    return
         
         section="output"
         try:
@@ -274,16 +274,6 @@ class Configuration(UserDict.UserDict):
         except: pass
         try: self.data["anchors"] = cfgparser.getboolean(section, "anchors")
         except: pass
-        try: self.data["externlinks"].append(re.compile(cfgparser.get(section, "externlinks")))
-        except: pass
-        try: self.data["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
-        except: pass
-        try: self.data["allowdeny"] = cfgparser.getboolean(section, "allowdeny")
-        except: pass
-        try: self.data["password"] = cfgparser.get(section, "password")
-        except: pass
-        try: self.data["user"] = cfgparser.get(section, "user")
-        except: pass
         try:
             self.data["proxy"] = cfgparser.get(section, "proxy")
             self.data["proxyport"] = cfgparser.getint(section, "proxyport")
@@ -302,6 +292,26 @@ class Configuration(UserDict.UserDict):
             filelist = string.split(cfgparser.get(section, "fileoutput"))
             for arg in filelist:
                 if Loggers.has_key(arg):
-                    self.data["fileoutput"].append(Loggers[arg](open("pylice-out."+arg, "w")))
-        except:
-            pass
+		    self.data["fileoutput"].append(Loggers[arg](open("pylice-out."+arg, "w")))
+	except:	pass
+
+        section = "authentication"
+	try:
+	    i=1
+	    while 1:
+                tuple = string.split(cfgparser.get(section, "entry"+`i`))
+		if len(tuple)!=3: break
+                tuple[0] = re.compile(tuple[0])
+                self.data["authentication"].append(tuple)
+                i = i + 1
+        except: pass
+        self.data["authentication"].append((re.compile(".*"), "anonymous", "guest@"))
+
+        section = "filtering"
+        try: self.data["externlinks"].append(re.compile(cfgparser.get(section, "externlinks")))
+        except: pass
+        try: self.data["internlinks"].append(re.compile(cfgparser.get(section, "internlinks")))
+        except: pass
+        try: self.data["allowdeny"] = cfgparser.getboolean(section, "allowdeny")
+	except: pass
+

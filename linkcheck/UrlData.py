@@ -254,6 +254,12 @@ class UrlData:
                "\nrecursionLevel="+`self.recursionLevel`+\
                "\nurlConnection="+str(self.urlConnection)
 
+    def _getUserPassword(self, config):
+        for rx, _user, _password in config["authentication"]:
+            if rx.match(self.url):
+                return _user, _password
+
+
 from FileUrlData import FileUrlData
 from FtpUrlData import FtpUrlData
 from GopherUrlData import GopherUrlData
