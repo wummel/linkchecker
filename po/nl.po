@@ -3,11 +3,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Aug  7 12:34:43 2003\n"
+"Project-Id-Version: $Id$\n"
+"POT-Creation-Date: Mon Aug 11 14:46:19 2003\n"
 "PO-Revision-Date: 2003-06-20 22:30+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
-"Language-Team: LANGUAGE <nl@li.org>\n"
+"Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -229,20 +229,22 @@ msgstr ""
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt. </"
 "blockquote></body></html>"
 
-msgid "created by %s at %s\n"
+#, fuzzy
+msgid "created by %s at %s%s"
 msgstr "gemaakt door %s om %s\n"
 
-msgid "Get the newest version at %s\n"
+#, fuzzy
+msgid "Get the newest version at %s%s"
 msgstr "Haal de nieuwste versie op van %s\n"
 
-msgid ""
-"Write comments and bugs to %s\n"
-"\n"
+#, fuzzy
+msgid "Write comments and bugs to %s%s%s"
 msgstr ""
 "Stuur commentaar en bugs aan %s\n"
 "\n"
 
-msgid "# Format of the entries:\n"
+#, fuzzy
+msgid "# Format of the entries:"
 msgstr "# Format der Einträge:\n"
 
 msgid "seconds"
@@ -268,6 +270,19 @@ msgstr " (uit de cache)\n"
 
 msgid "%.3f seconds"
 msgstr "%.3f Seconden"
+
+msgid "created by %s at %s\n"
+msgstr "gemaakt door %s om %s\n"
+
+msgid "Get the newest version at %s\n"
+msgstr "Haal de nieuwste versie op van %s\n"
+
+msgid ""
+"Write comments and bugs to %s\n"
+"\n"
+msgstr ""
+"Stuur commentaar en bugs aan %s\n"
+"\n"
 
 msgid "Start checking at %s\n"
 msgstr "Begin testen vanaf %s\n"
@@ -422,7 +437,7 @@ msgid ""
 "        To disable threading specify a non-positive number.\n"
 "--timeout=secs\n"
 "        Set the timeout for TCP connection attempts in seconds. The default\n"
-"        timeout is 10 seconds.\n"
+"        timeout is 30 seconds.\n"
 "-u name, --user=name\n"
 "        Try username name for HTTP and FTP authorization.\n"
 "        Default is 'anonymous'. See also -p.\n"
