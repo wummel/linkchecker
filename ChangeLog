@@ -65,6 +65,11 @@
     Closes: SF bug #1062034
     Changed: linkchecker, linkchecker.1
 
+  * ANSI color support for the colored text logger is now detected
+    on Windows systems.
+    Type: feature
+    Changed: linkcheck/ansicolor.py
+
 1.13.5 "Die Musterknaben" (released 22.9.2004)
   * Use xgettext with Python support for .pot file creation, adjusted
     developer documentation.
