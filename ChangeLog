@@ -5,6 +5,8 @@
   * Fixed Ctrl-C only interrupting one single thread, not the whole
     program.
     Changed files: linkcheck/UrlData.py, linkcheck/__init__.py
+  * HTML syntax cleanup and relative cgi form url for the cgi scripts
+    Changed files: lconline/*.html
 
 1.6.4
   * Support for ftp proxies
