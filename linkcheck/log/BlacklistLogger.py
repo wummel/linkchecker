@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os
+import sys, os
 from Logger import Logger
 from linkcheck.Config import norm
 
@@ -28,9 +28,17 @@ class BlacklistLogger (Logger):
         super(BlacklistLogger, self).__init__(**args)
         self.errors = 0
         self.blacklist = {}
-        self.filename = norm(args['filename'])
-        if os.path.exists(self.filename):
-            self.readBlacklist()
+        if args.has_key('fileoutput'):
+            self.fileoutput = True
+            filename = args['filename']
+            if os.path.exists(filename):
+                self.readBlacklist(file(filename, "r"))
+            self.fd = file(filename, "w")
+	elif args.has_key('fd'):
+            self.fd = args['fd']
+        else:
+            self.fileoutput = False
+	    self.fd = sys.stdout
 
 
     def newUrl (self, urlData):
@@ -50,23 +58,22 @@ class BlacklistLogger (Logger):
         self.writeBlacklist()
 
 
-    def readBlacklist (self):
-        fd = file(self.filename)
+    def readBlacklist (self, fd):
         for line in fd:
-            value, key = line.split(1)
+            line = line.rstrip()
+            if line.startswith('#') or not line:
+                continue
+            value, key = line.split(None, 1)
             self.blacklist[key] = int(value)
         fd.close()
 
 
     def writeBlacklist (self):
         """write the blacklist"""
-        oldmask = None
-        if not os.path.exists(self.filename):
-            oldmask = os.umask(0077)
-        fd = file(self.filename, "w")
+        oldmask = os.umask(0077)
         for key, value in self.blacklist.items():
-            fd.write("%d %s\n" % (value, key))
-        fd.close()
+            self.fd.write("%d %s\n" % (value, key))
+        if self.fileoutput:
+            self.fd.close()
         # restore umask
-        if oldmask is not None:
-            os.umask(oldmask)
+        os.umask(oldmask)
