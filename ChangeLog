@@ -42,6 +42,11 @@
     Type: feature
     Changed: linkchecker, doc/install.txt
 
+  * The build script setup.py uses -std=gnu99 when using GNU gcc compilers.
+    This gets rid of several compile warnings.
+    Type: feature
+    Changed: setup.py
+
 2.1 "Shogun Assassin" (released 11.1.2005)
 
   * Added XHTML support to the HTML parser.
