@@ -8,7 +8,7 @@ Package: linkchecker
 Architecture: any
 Depends: python-base
 Suggests: libssl09, libssl09-dev
-Description: LinkChecker is a link checker written in Python
+Description: a link checker written in Python
  With LinkChecker you can check your HTML documents for broken links.
  Features:
  o recursive checking

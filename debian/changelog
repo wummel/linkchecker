@@ -15,8 +15,9 @@ linkchecker (1.2.3) unstable; urgency=low
   * be RFC822 and RFC2368 compliant when scanning mail syntax
   * fix for incorrect line number in logger output (reported by Michael
     Schmitz)
+  * Debian package is now lintian clean
 
- -- Bastian Kleineidam <calvin@users.sourceforge.net>  Tue, 16 May 2000 14:53:23 +0200
+ -- Bastian Kleineidam <calvin@users.sourceforge.net>  Sat, 27 May 2000 00:01:34 +0200
 
 linkchecker (1.2.2) unstable; urgency=low
 

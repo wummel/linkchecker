@@ -35,7 +35,7 @@ install: build
 	# ha! the root option finally made it into distutils
 	./setup.py install --root=`pwd`/debian/tmp
 	# put the README of the DNS package in doc (only on Debian)
-	install -c -m 644 DNS/README debian/tmp/usr/share/doc/$(PACKAGE)/README.dns
+	install -c -m 644 DNS/README debian/tmp/usr/share/doc/linkchecker/README.dns
 
 
 # Build architecture-independent files here.
@@ -46,7 +46,7 @@ binary-indep: build install
 binary-arch: build install
 #	dh_testversion
 	dh_testdir
-#	dh_testroot
+	dh_testroot
 #	dh_installdebconf	
 	dh_installdocs
 #	dh_installexamples
@@ -57,10 +57,10 @@ binary-arch: build install
 #	dh_installcron
 #	dh_installmanpages
 #	dh_installinfo
-	dh_undocumented
+	dh_undocumented linkchecker.1
 	dh_installchangelogs 
 #	dh_link
-#	dh_strip
+	dh_strip
 	dh_compress
 	dh_fixperms
 	# You may want to make some executables suid here.
@@ -68,7 +68,7 @@ binary-arch: build install
 #	dh_makeshlibs
 	dh_installdeb
 #	dh_perl
-#	dh_shlibdeps
+	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
