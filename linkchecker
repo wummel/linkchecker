@@ -248,11 +248,11 @@ You can specify this option more than once. Valid file output TYPEs
 are %(loggertypes)s. You can specify this option multiple times to output
 to more than one file. Default is no file output.""") % \
 {'loggertypes': linkcheck.LoggerKeys})
-group.add_option("--status", action="store_true", dest="status",
+group.add_option("--no-status", action="store_false", dest="status",
                  help=_(
-"""Print check status every 5 seconds to stderr. When --debug is given,
-the status check will only be printed after each checked url. This is
-due to disabled threading during a debug run."""))
+"""Do not print check status every 5 seconds to stderr. When --debug is
+given, the status check will only be printed after each checked url.
+This is due to disabled threading during a debug run."""))
 group.add_option("-D", "--debug", type="string", action="append",
                  metavar="LOGGER",
                  help=_("""Print debugging output for given logger.
