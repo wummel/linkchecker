@@ -1,19 +1,19 @@
 """store metadata and options"""
-#    Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000,2001  Bastian Kleineidam
 #
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program; if not, write to the Free Software
-#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import ConfigParser, sys, os, re, UserDict, string, time
 import Logging, _linkchecker_configdata
@@ -21,6 +21,7 @@ from os.path import expanduser,normpath,normcase,join,isfile
 from types import StringType
 from urllib import getproxies
 from linkcheck import _
+from debuglevels import *
 
 Version = _linkchecker_configdata.version
 AppName = _linkchecker_configdata.name
@@ -54,12 +55,14 @@ LoggerKeys = reduce(lambda x, y: x+", "+y, Loggers.keys())
 
 # debug options
 DebugDelim = "==========================================================\n"
-DebugFlag = 0
+DebugLevel = 0
 
 # note: debugging with more than 1 thread can be painful
-def debug(msg):
-    if DebugFlag:
-        sys.stderr.write(msg)
+def debug(level, *args):
+    if DebugLevel > level:
+        for arg in args:
+            sys.stderr.write(" %s"%arg)
+        sys.stderr.write("\n")
         sys.stderr.flush()
 
 # path util function
@@ -91,9 +94,10 @@ class Configuration(UserDict.UserDict):
         self["externlinks"] = []
         self["internlinks"] = []
         self["denyallow"] = 0
-        self["authentication"] = [(re.compile(r'^.+'),
-	                          'anonymous',
-	                          'joe@')]
+        self["authentication"] = {'pattern': re.compile(r'^.+'),
+	                          'user': 'anonymous',
+	                          'pass': 'joe@',
+				 }
         self["proxy"] = getproxies()
         self["recursionlevel"] = 1
         self["wait"] = 0
@@ -382,7 +386,7 @@ class Configuration(UserDict.UserDict):
     def readConfig(self, files):
         """this big function reads all the configuration parameters
         used in the linkchecker module."""
-        debug("DEBUG: reading configuration from %s\n" % files)
+        debug(BRING_IT_ON, "reading configuration from", files)
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
@@ -392,15 +396,14 @@ class Configuration(UserDict.UserDict):
         section="output"
         for key in Loggers.keys():
             if cfgparser.has_section(key):
-                debug(key+": ")
                 for opt in cfgparser.options(key):
                     try: self[key][opt] = cfgparser.get(key, opt)
                     except ConfigParser.Error, msg: debug(str(msg)+"\n")
                 try:
 		    self[key]['fields'] = map(string.strip,
 		         string.split(cfgparser.get(key, 'fields'), ','))
-                    debug("fields %s\n"%str(self[key]['fields']))
-                except ConfigParser.Error, msg: debug(str(msg)+"\n")
+                except ConfigParser.Error, msg:
+		    debug(BRING_IT_ON, msg)
         try:
             log = cfgparser.get(section, "log")
             if Loggers.has_key(log):
@@ -462,10 +465,12 @@ class Configuration(UserDict.UserDict):
 	try:
 	    i=1
 	    while 1:
-                tuple = string.split(cfgparser.get(section, "entry%d" % i))
-		if len(tuple)!=3: break
-                tuple[0] = re.compile(tuple[0])
-                self["authentication"].insert(0, tuple)
+                auth = string.split(cfgparser.get(section, "entry%d" % i))
+		if len(auth)!=3: break
+                auth[0] = re.compile(auth[0])
+                self["authentication"].insert(0, {'pattern': auth[0],
+		                                  'user': auth[1],
+						  'pass': auth[2]})
                 i += 1
         except ConfigParser.Error: pass
 

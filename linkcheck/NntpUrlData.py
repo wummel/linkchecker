@@ -1,24 +1,25 @@
 """Handle nntp: and news: links"""
-#    Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000,2001  Bastian Kleineidam
 #
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program; if not, write to the Free Software
-#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import re,string,time,sys,nntplib,urlparse,linkcheck
 from linkcheck import _
 from UrlData import ExcList,UrlData
 debug = linkcheck.Config.debug
+from debuglevels import *
 
 ExcList.extend([nntplib.error_reply,
                nntplib.error_temp,
@@ -41,7 +42,7 @@ class NntpUrlData(UrlData):
         else:
             self.url = self.urlName
         self.urlTuple = urlparse.urlparse(self.url)
-        debug("DEBUG: %s\n" % `self.urlTuple`)
+        debug(BRING_IT_ON, self.urlTuple)
 
 
     def checkConnection(self, config):
@@ -79,7 +80,7 @@ class NntpUrlData(UrlData):
                 timeout = 0
             except nntplib.error_perm:
                 value = sys.exc_info()[1]
-                debug("NNTP: %s\n" % value)
+                debug(BRING_IT_ON, "NNTP:", value)
                 if re.compile("^505").search(str(value)):
                     import whrandom
                     time.sleep(whrandom.randint(10,20))

@@ -1,8 +1,12 @@
 linkchecker (1.3.2) unstable; urgency=low
 
   * new option --pause
+  * only enable threading with 2 or more threads, not with only 1 thread
+  * new debug function with variable arguments
+  * more than one debug level; enable them with multiple -D options
+  * workaround broken HEAD with some Apache servers by using GET
 
- -- Bastian Kleineidam <calvin@debian.org>  Fri, 18 May 2001 21:05:24 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 23 May 2001 21:30:06 +0200
 
 linkchecker (1.3.1) unstable; urgency=low
 

@@ -1,24 +1,25 @@
 """Base URL handler"""
-#    Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000,2001  Bastian Kleineidam
 #
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program; if not, write to the Free Software
-#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys,re,string,urlparse,urllib,time,DNS
 import Config,StringUtil,linkcheck,linkname
 from linkcheck import _
 debug = linkcheck.Config.debug
+from debuglevels import *
 
 ExcList = [
    IOError,
@@ -194,7 +195,7 @@ class UrlData:
 
 
     def logMe(self, config):
-        debug("DEBUG: logging url\n")
+        debug(BRING_IT_ON, "logging url")
         config.incrementLinknumber()
         if config["verbose"] or not self.valid or \
            (self.warningString and config["warnings"]):
@@ -202,13 +203,13 @@ class UrlData:
 
 
     def check(self, config):
-        debug(Config.DebugDelim+"Checking\n"+str(self)+"\n"+\
-                     Config.DebugDelim)
-        if self.recursionlevel and config['wait']:
-            time.sleep(config['wait']);
+        debug(BRING_IT_ON, "Checking", self)
+        if self.recursionLevel and config['wait']:
+            debug(BRING_IT_ON, "sleeping for", config['wait'], "seconds")
+            time.sleep(config['wait'])
         t = time.time()
         # check syntax
-        debug("DEBUG: checking syntax\n")
+        debug(BRING_IT_ON, "checking syntax")
         if not self.urlName or self.urlName=="":
             self.setError(_("URL is null or empty"))
             self.logMe(config)
@@ -223,7 +224,7 @@ class UrlData:
             return
 
         # check the cache
-        debug("DEBUG: checking cache\n")
+        debug(BRING_IT_ON, "checking cache")
         if config.urlCache_has_key(self.getCacheKey()):
             self.copyFrom(config.urlCache_get(self.getCacheKey()))
             self.cached = 1
@@ -231,15 +232,14 @@ class UrlData:
             return
         
         # apply filter
-        debug("DEBUG: checking filter\n")
-        debug("DEBUG: extern = %s\n" % str(self.extern))
+        debug(BRING_IT_ON, "extern =", self.extern)
         if self.extern and (config["strict"] or self.extern[1]):
             self.setWarning(_("outside of domain filter, checked only syntax"))
             self.logMe(config)
             return
 
         # check connection
-        debug("DEBUG: checking connection\n")
+        debug(BRING_IT_ON, "checking connection")
         try:
             self.checkConnection(config)
             if self.urlTuple and config["anchors"]:
@@ -251,7 +251,7 @@ class UrlData:
         # check content
         warningregex = config["warningregex"]
         if warningregex and self.valid:
-            debug("DEBUG: checking content\n")
+            debug(BRING_IT_ON, "checking content")
             try:  self.checkContent(warningregex)
             except tuple(ExcList):
                 type, value = sys.exc_info()[:2]
@@ -259,7 +259,7 @@ class UrlData:
 
         self.checktime = time.time() - t
         # check recursion
-        debug("DEBUG: checking recursion\n")
+        debug(BRING_IT_ON, "checking recursion")
         if self.allowsRecursion(config):
             self.parseUrl(config)
         self.closeConnection()
@@ -294,7 +294,6 @@ class UrlData:
 
 
     def allowsRecursion(self, config):
-        Config.debug("extern: %s\n" % str(self.extern))
         return self.valid and \
                self.isHtml() and \
                not self.cached and \
@@ -347,7 +346,7 @@ class UrlData:
             self.data = self.urlConnection.read()
             self.downloadtime = time.time() - t
             self._init_html_comments()
-            debug("DEBUG: comment spans %s\n" % self.html_comments)
+            debug(NIGHTMARE, "comment spans", self.html_comments)
         return self.data
 
 
@@ -379,8 +378,7 @@ class UrlData:
 
 
     def parseUrl(self, config):
-        debug(Config.DebugDelim+"Parsing recursively into\n"+\
-              str(self)+"\n"+Config.DebugDelim)
+        debug(BRING_IT_ON, "Parsing recursively into", self)
         # search for a possible base reference
         bases = self.searchInForTag(BasePattern)
 
@@ -399,11 +397,10 @@ class UrlData:
 
 
     def searchInForTag(self, pattern):
-        debug("Searching for tag %s, attribute %s\n" \
-	      % (pattern['tag'], pattern['attr']))
+        debug(HURT_ME_PLENTY, "Searching for tag", pattern['tag'],
+	      "attribute", pattern['attr'])
         urls = []
         index = 0
-        debug("hulla")
         while 1:
             match = pattern['pattern'].search(self.getContent(), index)
             if not match: break
@@ -450,9 +447,9 @@ class UrlData:
 
 
     def _getUserPassword(self, config):
-        for rx, user, password in config["authentication"]:
-            if rx.match(self.url):
-                return user, password
+        for auth in config["authentication"]:
+            if auth['pattern'].match(self.url):
+                return auth['user'], auth['password']
         return None,None
 
 

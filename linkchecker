@@ -191,7 +191,7 @@ for opt,arg in options:
     if opt=="-f" or opt=="--config":
         configfiles.append(arg)
     elif opt=="-D" or opt=="--debug":
-        linkcheck.Config.DebugFlag = 1
+        linkcheck.Config.DebugLevel += 1
         config.disableThreading()
 config.read(configfiles)
 
@@ -266,8 +266,8 @@ for opt,arg in options:
 
     elif opt=="-t" or opt=="--threads":
         num = int(arg)
-        if config["threads"] and not linkcheck.Config.DebugFlag:
-            if num>0:
+        if config["threads"] and not linkcheck.Config.DebugLevel:
+            if num>1:
                 config.enableThreading(num)
             else:
                 config.disableThreading()
@@ -295,7 +295,9 @@ for opt,arg in options:
         config["warnings"] = 1
 
 if constructauth:
-    config["authentication"].insert(0, (re.compile(".*"), _user, _password))
+    config["authentication"].insert(0, {'pattern': re.compile(".*"),
+                                        'user': _user,
+					'pass': _password})
 
 # construct the url list
 # if we use blacklist mode, try to read ~/.blacklist

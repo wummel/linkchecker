@@ -1,25 +1,26 @@
 """Handle for mailto: links"""
-#    Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000,2001  Bastian Kleineidam
 #
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program; if not, write to the Free Software
-#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os,re,string,DNS,sys,Config,cgi,urllib,linkcheck
 from rfc822 import AddressList
 from HostCheckingUrlData import HostCheckingUrlData
 from smtplib import SMTP
 from linkcheck import _
+from debuglevels import *
 
 # regular expression for RFC2368 compliant mailto: scanning
 word = r"[-a-zA-Z0-9,./%]+"
@@ -42,7 +43,7 @@ class MailtoUrlData(HostCheckingUrlData):
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
                     self.adresses.extend(AddressList(a).addresslist)
-        Config.debug("DEBUG: mailto headers: %s\n" % self.headers)
+        Config.debug(BRING_IT_ON, "mailto headers:", self.headers)
 
 
     def _cutout_adresses(self):

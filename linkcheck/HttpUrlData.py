@@ -1,25 +1,26 @@
 """Handle http links"""
-#    Copyright (C) 2000,2001  Bastian Kleineidam
+# Copyright (C) 2000,2001  Bastian Kleineidam
 #
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program; if not, write to the Free Software
-#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import httplib,urlparse,sys,time,re
 import Config,StringUtil,robotparser2
 from UrlData import UrlData
 from urllib import splittype, splithost
 from linkcheck import _
+from debuglevels import *
 
 class HttpUrlData(UrlData):
     "Url link with http scheme"
@@ -82,7 +83,7 @@ class HttpUrlData(UrlData):
             
         # first try
         status, statusText, self.mime = self._getHttpRequest()
-        Config.debug(str(status)+", "+str(statusText)+", "+str(self.mime)+"\n")
+        Config.debug(BRING_IT_ON, status, statusText, self.mime)
         has301status = 0
         while 1:
             # proxy enforcement
@@ -118,10 +119,11 @@ class HttpUrlData(UrlData):
             # some servers get the HEAD request wrong:
             # - Netscape Enterprise Server III (no HEAD implemented, 404 error)
             # - Hyperwave Information Server (501 error)
+            # - Apache/1.3.14 (Unix) (500 error, http://www.rhino3d.de/)
             # - some advertisings (they want only GET, dont ask why ;)
             # - Zope server (it has to render the page to get the correct
             #   content-type
-            elif status in [405,501]:
+            elif status in [405,501,500]:
                 # HEAD method not allowed ==> try get
                 status, statusText, self.mime = self._getHttpRequest("GET")
                 Config.debug("DEBUG: HEAD not supported\n")
