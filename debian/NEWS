@@ -1,6 +1,6 @@
 linkchecker (1.13.0-1) unstable; urgency=low
 
-  * For upgrading your configurations and scripts older linkchecker
+  * For upgrading your configurations and scripts from older linkchecker
     versions (<< 1.13.0), see /usr/share/doc/linkchecker/upgrading.txt.gz.
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 28 Jul 2004 16:32:00 +0200
