@@ -125,7 +125,7 @@ class Configuration (dict):
             "quotechar": '"',
         }
         self['blacklist'] = {
-            "filename": "~/.linkchecker_blacklist",
+            "filename": "~/.linkchecker/blacklist",
         }
         self['xml'] = {
             "filename": "linkchecker-out.xml",
