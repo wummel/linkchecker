@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2004-09-14 22:04+CEST\n"
+"POT-Creation-Date: 2004-09-17 18:35+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: ../linkcheck/checker/consumer.py:112
+#: ../linkcheck/checker/consumer.py:114
 msgid "keyboard interrupt; waiting for %d active threads to finish"
 msgstr ""
 
-#: ../linkcheck/checker/consumer.py:130
+#: ../linkcheck/checker/consumer.py:132
 msgid "Status: %5d URLs queued, %4d URLs checked, %2d active threads, runtime %s"
 msgstr ""
 
@@ -218,47 +218,47 @@ msgstr ""
 msgid "Python %s on %s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:224
+#: ../linkcheck/checker/urlbase.py:226
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:243
+#: ../linkcheck/checker/urlbase.py:245
 msgid "Base URL is not properly normed. Normed url is %(url)r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:271
+#: ../linkcheck/checker/urlbase.py:273
 msgid "URL has invalid port %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:308
+#: ../linkcheck/checker/urlbase.py:310
 msgid "outside of domain filter, checked only syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:323
+#: ../linkcheck/checker/urlbase.py:325
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:326
+#: ../linkcheck/checker/urlbase.py:328
 msgid "Bad HTTP response %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:355
+#: ../linkcheck/checker/urlbase.py:357
 msgid "could not parse content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:428
+#: ../linkcheck/checker/urlbase.py:430
 msgid "anchor #%s not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:490
+#: ../linkcheck/checker/urlbase.py:492
 msgid "Found %r in link contents"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:497
+#: ../linkcheck/checker/urlbase.py:499
 msgid "Content size %s is larger than %s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:535
+#: ../linkcheck/checker/urlbase.py:537
 msgid "more than one <base> tag found, using only the first one"
 msgstr ""
 
@@ -535,48 +535,48 @@ msgstr ""
 msgid "Could not find profiling file %s."
 msgstr ""
 
-#: ../linkchecker:121
+#: ../linkchecker:122
 msgid "Please run linkchecker with --profile to generate it."
 msgstr ""
 
-#: ../linkchecker:196
+#: ../linkchecker:197
 msgid "General options"
 msgstr ""
 
-#: ../linkchecker:198
+#: ../linkchecker:199
 msgid ""
 "Use file as configuration file. As default LinkChecker first\n"
 "searches /etc/linkcheckerrc and then ~/.linkcheckerrc\n"
 "(under Windows <path-to-program>\\linkcheckerrc)."
 msgstr ""
 
-#: ../linkchecker:203
+#: ../linkchecker:204
 msgid "Ask for url if none are given on the commandline."
 msgstr ""
 
-#: ../linkchecker:206
+#: ../linkchecker:207
 msgid "Generate no more than num threads. Default number of threads is 10."
 msgstr ""
 
-#: ../linkchecker:210
+#: ../linkchecker:211
 msgid "Print version and exit."
 msgstr ""
 
-#: ../linkchecker:216
+#: ../linkchecker:217
 msgid "Output options"
 msgstr ""
 
-#: ../linkchecker:218
+#: ../linkchecker:219
 msgid ""
 "Log all checked URLs (implies -w). Default is to log only invalid\n"
 "URLs."
 msgstr ""
 
-#: ../linkchecker:222
+#: ../linkchecker:223
 msgid "Log warnings."
 msgstr ""
 
-#: ../linkchecker:224
+#: ../linkchecker:225
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -587,21 +587,21 @@ msgid ""
 "Application Server error'. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:233
+#: ../linkchecker:234
 msgid ""
 "Print a warning if content size is available and exceeds the given\n"
 "number of bytes. This option implies -w."
 msgstr ""
 
-#: ../linkchecker:237
+#: ../linkchecker:238
 msgid "Quiet operation. This is only useful with -F."
 msgstr ""
 
-#: ../linkchecker:240
+#: ../linkchecker:241
 msgid "Specify output as %(loggertypes)s. Default output type is text."
 msgstr ""
 
-#: ../linkchecker:245
+#: ../linkchecker:246
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker_blacklist for\n"
 "'blacklist' output, or FILENAME if specified.\n"
@@ -612,11 +612,11 @@ msgid ""
 "to more than one file. Default is no file output."
 msgstr ""
 
-#: ../linkchecker:255
+#: ../linkchecker:256
 msgid "Do not print check status messages."
 msgstr ""
 
-#: ../linkchecker:259
+#: ../linkchecker:260
 msgid ""
 "Print debugging output for given logger.\n"
 "Available loggers are %(lognamelist)s.\n"
@@ -627,27 +627,27 @@ msgid ""
 "For accurate results, threading will be disabled during debug runs."
 msgstr ""
 
-#: ../linkchecker:268
+#: ../linkchecker:269
 msgid ""
 "Write profiling data into a file named %s in the\n"
 "current working directory. See also --viewprof."
 msgstr ""
 
-#: ../linkchecker:272
+#: ../linkchecker:273
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr ""
 
-#: ../linkchecker:278
+#: ../linkchecker:279
 msgid "Checking options"
 msgstr ""
 
-#: ../linkchecker:280
+#: ../linkchecker:281
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable inifinite recursion. Default depth is infinite."
 msgstr ""
 
-#: ../linkchecker:284
+#: ../linkchecker:285
 msgid ""
 " regex, --intern=regex\n"
 "Assume URLs that match the given expression as internal.\n"
@@ -655,32 +655,32 @@ msgid ""
 "external."
 msgstr ""
 
-#: ../linkchecker:290
+#: ../linkchecker:291
 msgid ""
 "Assume urls that match the given expression as external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:294
+#: ../linkchecker:295
 msgid ""
 "Assume urls that match the given expression as strict external.\n"
 "Only internal HTML links are checked recursively."
 msgstr ""
 
-#: ../linkchecker:298
+#: ../linkchecker:299
 msgid ""
 "Check only syntax of external links, do not try to connect to them.\n"
 "For local file urls, only local files are internal. For\n"
 "http and ftp urls, all urls at the same domain name are internal."
 msgstr ""
 
-#: ../linkchecker:303
+#: ../linkchecker:304
 msgid ""
 "Swap checking order to external/internal. Default checking order\n"
 "is internal/external."
 msgstr ""
 
-#: ../linkchecker:307
+#: ../linkchecker:308
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -688,45 +688,45 @@ msgid ""
 "information."
 msgstr ""
 
-#: ../linkchecker:313
+#: ../linkchecker:314
 msgid ""
 "Check HTTP anchor references. This option applies to both internal\n"
 "and external urls. Default is don't check anchors.\n"
 "This option implies -w because anchor errors are always warnings."
 msgstr ""
 
-#: ../linkchecker:318
+#: ../linkchecker:319
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
 "is the default browser behaviour, but it's not specified in\n"
 "the URI specification. Use with care."
 msgstr ""
 
-#: ../linkchecker:323
+#: ../linkchecker:324
 msgid ""
 "Try given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. See also -p."
 msgstr ""
 
-#: ../linkchecker:327
+#: ../linkchecker:328
 msgid ""
 "Try given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. See also -u."
 msgstr ""
 
-#: ../linkchecker:331
+#: ../linkchecker:332
 msgid ""
 "Set the timeout for TCP connection attempts in seconds. The default\n"
 "timeout is %d seconds."
 msgstr ""
 
-#: ../linkchecker:335
+#: ../linkchecker:336
 msgid ""
 "Pause <secs> seconds between each url check. This option implies -t0.\n"
 "Default is no pause between requests."
 msgstr ""
 
-#: ../linkchecker:339
+#: ../linkchecker:340
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
@@ -734,31 +734,32 @@ msgid ""
 msgstr ""
 
 #: ../linkchecker:347
-msgid ""
-"Print check status every 5 seconds to stderr. When --debug is\n"
-"given, the status check will only be printed after each checked url.\n"
-"This is due to disabled threading during a debug run."
+msgid "Deprecated options"
 msgstr ""
 
-#: ../linkchecker:386 ../linkchecker:400 ../linkchecker:441
+#: ../linkchecker:349
+msgid "Print check status every 5 seconds to stderr. This is the default."
+msgstr ""
+
+#: ../linkchecker:387 ../linkchecker:401 ../linkchecker:442
 msgid "Illegal argument %r for option %s"
 msgstr ""
 
-#: ../linkchecker:420 ../linkchecker:434
+#: ../linkchecker:421 ../linkchecker:435
 msgid "Illegal argument %d for option %s"
 msgstr ""
 
-#: ../linkchecker:474
+#: ../linkchecker:476
 msgid ""
 "enter one or more urls, separated by white-space\n"
 "--> "
 msgstr ""
 
-#: ../linkchecker:477
+#: ../linkchecker:479
 msgid "no files or urls given"
 msgstr ""
 
-#: ../linkchecker:508
+#: ../linkchecker:510
 msgid "Hit RETURN to finish"
 msgstr ""
 
