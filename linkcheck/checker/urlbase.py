@@ -394,13 +394,13 @@ class UrlBase (object):
 
     def allows_recursion (self):
         """return True iff we can recurse into the url's content"""
+        #linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
+        #                    "content=%s, extern=%s, robots=%s",
+        #                    self.valid, self.is_parseable(),
+        #                    self.can_get_content(),
+        #                    self.extern[0],
+        #                    self.content_allows_robots())
         # note: test self.valid before self.is_parseable()
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
-                            "content=%s, extern=%s, robots=%s",
-                            self.valid, self.is_parseable(),
-                            self.can_get_content(),
-                            self.extern[0],
-                            self.content_allows_robots())
         return self.valid and \
             self.is_parseable() and \
             self.can_get_content() and \
