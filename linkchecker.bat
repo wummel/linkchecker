@@ -19,4 +19,4 @@ rem uncomment the next line to enable german output
 rem set LC_MESSAGES=de
 rem uncomment the next line to enable french output
 rem set LC_MESSAGES=fr
-"python.exe" "linkchecker" %*
+"python.exe -O" "linkchecker" %*

@@ -279,6 +279,9 @@ msgstr ""
 "o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
 "  unbedingt derselbe wie der des Benutzers sein!\n"
 
+msgid "warning: timeoutsocket not support on this platform"
+msgstr ""
+
 msgid "Articel number %s found"
 msgstr "Artikel nummer %s wurde gefunden"
 

@@ -3,6 +3,7 @@
 # GNU copyright 1997 to 1999 by Joey Hess.
 PACKAGE=linkchecker
 DOCDIR = debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)
+PYTHON=python2.1
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -16,7 +17,7 @@ export DH_OPTIONS
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	./setup.py config -lcrypto
+	$(PYTHON) setup.py config -lcrypto
 	touch configure-stamp
 
 
@@ -24,7 +25,7 @@ build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
 	rm -rf debian/linkchecker debian/linkchecker-ssl
-	./setup.py build
+	$(PYTHON) setup.py build
 	touch build-stamp
 
 clean:
@@ -38,13 +39,13 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	$(MAKE) locale
-	./setup.py install --root=$(CURDIR)/debian/$(PACKAGE) --no-compile
+	$(PYTHON) setup.py install --root=$(CURDIR)/debian/$(PACKAGE) --no-compile
 	# remove man pages, we install them with dh_installman
 	rm -r debian/$(PACKAGE)/usr/man
 	# remove files, we install them below
 	rm -r debian/$(PACKAGE)/usr/share/linkchecker/examples
 	# remove any SSL related files
-	rm -r debian/$(PACKAGE)/usr/lib/python2.0/site-packages/linkcheckssl
+	rm -r debian/$(PACKAGE)/usr/lib/$(PYTHON)/site-packages/linkcheckssl
 	# install additional doc files
 	install -c -m 644 DNS/README $(DOCDIR)/README_DNS.txt
 	install -c -m 644 test/*.py $(DOCDIR)/test
@@ -61,26 +62,14 @@ install: build
 binary-indep: build install
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf
 	dh_installdocs
-#	dh_installexamples
-#	dh_installmenu
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installinit
-#	dh_installcron
 	dh_installman linkchecker.1
-#	dh_installinfo
-#	dh_undocumented linkchecker.1
 	dh_installchangelogs 
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
-#	dh_makeshlibs
 	dh_installdeb
-#	dh_perl
-#	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

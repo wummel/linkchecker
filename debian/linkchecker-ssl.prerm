@@ -3,6 +3,7 @@
 # Written 1998 by Gregor Hoffleit <flight@debian.org>.
 # used by Bastian Kleineidam for LinkChecker
 
+PYTHON=python2.1
 PACKAGE=linkchecker-ssl
 
 #DEBHELPER#
@@ -11,6 +12,6 @@ dpkg --listfiles $PACKAGE |
         awk '$0~/\.py$/ {print $0"c\n" $0"o"}' |
         xargs rm -f >&2
 
-rmdir /usr/lib/python2.0/site-packages/linkcheckssl 2>/dev/null || true
+rmdir /usr/lib/$PYTHON/site-packages/linkcheckssl 2>/dev/null || true
 
 exit 0

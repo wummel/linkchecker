@@ -16,7 +16,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-# import all from _winreg
 from _winreg import *
 from types import StringType
 
@@ -46,7 +45,6 @@ class key_handle:
         keys = []
         while 1:
             try:
-                #print repr(EnumKey(self._key, i))
                 keys.append(key_handle(self._key, EnumKey(self._key, i)))
             except EnvironmentError:
                 break

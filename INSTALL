@@ -13,12 +13,12 @@ OpenSSL from http://www.openssl.org/
 
 Setup
 -----
-Run "python2 setup.py config" to configure.
+Run "python setup.py config" to configure.
 You can provide additional parameters, for example Linux users
-can run "python2 setup.py config -lcrypto" to use the SSL module.
-Run "python2 setup.py build" to build.
-Run "python2 setup.py install" to install.
-Run "python2 setup.py --help" for help.
+can run "python setup.py config -lcrypto" to use the SSL module.
+Run "python setup.py build" to build.
+Run "python setup.py install" to install.
+Run "python setup.py --help" for help.
 
 After installation, the system wide configuration file is in
 <prefix>/share/linkchecker/linkcheckerrc.

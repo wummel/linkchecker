@@ -1,10 +1,10 @@
 # This Makefile is only used by developers.
-VERSION=$(shell ./setup.py --version)
+PYTHON=python2.1
+VERSION=$(shell $(PYTHON) setup.py --version)
 PACKAGE=linkchecker
-NAME=$(shell ./setup.py --name)
+NAME=$(shell $(PYTHON) setup.py --name)
 PACKAGEDIR=/home/groups/l/li/$(PACKAGE)
 HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
-FTPDIR=shell1.sourceforge.net:/home/groups/ftp/pub/$(PACKAGE)
 #HOST=treasure.calvinsplayground.de
 HOST=linkchecker.sourceforge.net
 #LCOPTS=-ocolored -Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -R -t0 -v -s
@@ -19,7 +19,7 @@ all:
 
 .PHONY: clean
 clean:
-	-./setup.py clean --all # ignore errors of this command
+	-$(PYTHON) setup.py clean --all # ignore errors of this command
 	$(MAKE) -C po clean
 	find . -name '*.py[co]' | xargs rm -f
 
@@ -33,8 +33,8 @@ distclean: clean cleandeb
 
 .PHONY: localbuild
 localbuild: config
-	./setup.py build
-	cp -f build/lib.linux-i686-2.0/linkcheckssl/ssl.so linkcheckssl
+	$(PYTHON) setup.py build
+	cp -f build/lib.linux-i686-2.1/linkcheckssl/ssl.so linkcheckssl
 
 .PHONY: cleandeb
 cleandeb:
@@ -44,14 +44,14 @@ cleandeb:
 
 .PHONY: config
 config:
-	./setup.py config -lcrypto
+	$(PYTHON) setup.py config -lcrypto
 
 # no rpm package; too much trouble, cannot test
 .PHONY: dist
 dist:	locale config
-	./setup.py sdist --formats=gztar,zip # bdist_rpm
+	$(PYTHON) setup.py sdist --formats=gztar,zip # bdist_rpm
 	# extra run without SSL compilation
-	./setup.py bdist_wininst --bitmap="guruguru.bmp"
+	$(PYTHON) setup.py bdist_wininst --bitmap="guruguru.bmp"
 
 deb:
 	# cleandeb because distutils choke on dangling symlinks
@@ -62,7 +62,7 @@ deb:
 
 .PHONY: files
 files:	locale
-	env http_proxy="" ./$(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
+	env http_proxy="" $(PYTHON) $(PACKAGE) $(LCOPTS) -i$(HOST) http://$(HOST)/
 
 VERSION:
 	echo $(VERSION) > VERSION
@@ -73,17 +73,16 @@ upload: distclean dist files VERSION
 	scp README $(HTMLDIR)/readme.txt
 	scp linkchecker-out.* $(HTMLDIR)
 	scp VERSION $(HTMLDIR)/raw/
-	scp dist/* $(FTPDIR)/
 	scp dist/* $(HTMLDIR)/
 	ssh -C -t shell1.sourceforge.net "cd $(PACKAGEDIR) && make"
 
 .PHONY: test
 test:
-	python2 test/regrtest.py $(OFFLINETESTS)
+	$(PYTHON) test/regrtest.py $(OFFLINETESTS)
 
 .PHONY: onlinetest
 onlinetest:
-	python2 test/regrtest.py $(ONLINETESTS)
+	$(PYTHON) test/regrtest.py $(ONLINETESTS)
 
 .PHONY: locale
 locale:
@@ -91,4 +90,4 @@ locale:
 
 .PHONY: timeouttest
 timeouttest:
-	./$(PACKAGE) -DDD --timeout=2 mailto:calvin@cs.uni-sb.de
+	$(PYTHON) $(PACKAGE) -DDD --timeout=2 mailto:calvin@cs.uni-sb.de

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/python -O
 
 # Copyright (C) 2000,2001  Bastian Kleineidam
 #
