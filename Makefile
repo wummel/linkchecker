@@ -37,7 +37,7 @@ TAR = tar
 ZIP = zip
 
 all:
-	@echo "run python setup.py --help to see how to build and install"
+	@echo "Read the file INSTALL to see how to build and install"
 
 clean:
 	python setup.py clean --all
@@ -47,12 +47,21 @@ dist:
 	python setup.py sdist bdist_rpm
 	fakeroot debian/rules binary
 
+packages:
+	cd .. && dpkg-scanpackages . linkchecker/override.txt | gzip --best > Packages.gz
+
 files:
 	./$(PACKAGE) $(LCOPTS) $(PROXY) -i$(HOST) http://$(HOST)/~calvin/
 
-upload:
+version:
+	echo $(VERSION) > VERSION
+
+upload: version file dist packages
 	scp debian/changelog shell1.sourceforge.net:/home/groups/linkchecker/htdocs/changes.txt
+	scp VERSION shell1.sourceforge.net:/home/groups/linkchecker/htdocs/raw/
+	scp $(DEBPACKAGE) ../Packages.gz shell1.sourceforge.net:/home/groups/linkchecker/htdocs/debian
 	ncftpput download.sourceforge.net /incoming $(ALLPACKAGES)
+	ssh -C calvin@shell1.sourceforge.net cd /home/groups/linkchecker/htdocs/raw && make
 
 test:
 	rm -f test/*.result
