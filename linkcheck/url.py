@@ -64,7 +64,7 @@ is_safe_query = re.compile("(?i)^%s$"%_safe_query_pattern).match
 is_safe_fragment = re.compile("(?i)^%s$"%_safe_fragment_pattern).match
 
 def is_safe_js_url (urlstr):
-    """test javascript urls"""
+    """test javascript URLs"""
     url = urlparse.urlsplit(urlstr)
     if url[0].lower() != 'http':
         return False
@@ -89,14 +89,14 @@ def is_numeric_port (portstr):
 
 
 def safe_host_pattern (host):
-    """return regular expression pattern with given host for url testing"""
+    """return regular expression pattern with given host for URL testing"""
     return "(?i)%s://%s%s(#%s)?" % \
      (_safe_scheme_pattern, host, _safe_path_pattern, _safe_fragment_pattern)
 
 
 # XXX better name/implementation for this function
 def stripsite (url):
-    """remove scheme and host from url. return host, newurl"""
+    """remove scheme and host from URL. return host, newurl"""
     url = urlparse.urlsplit(url)
     return url[1], urlparse.urlunsplit((0, 0, url[2], url[3], url[4]))
 
@@ -139,7 +139,7 @@ def parse_qsl(qs, keep_blank_values=0, strict_parsing=0):
 
 
 def url_norm (url):
-    """fix and normalize url which must be quoted"""
+    """fix and normalize URL which must be quoted"""
     urlparts = list(urlparse.urlsplit(url))
     urlparts[0] = urllib.unquote(urlparts[0]).lower() # scheme
     urlparts[1] = urllib.unquote(urlparts[1]).lower() # host
@@ -207,7 +207,7 @@ _slashes_ro = re.compile(r"/+")
 _samedir_ro = re.compile(r"/\./|/\.$")
 _parentdir_ro = re.compile(r"^/(\.\./)+|/[^/]+/\.\.(/|$)")
 def collapse_segments (path):
-    """Remove all redundant segments from the given url path.
+    """Remove all redundant segments from the given URL path.
        Precondition: path is an unquoted url path
     """
     # replace backslashes
@@ -237,7 +237,7 @@ url_is_absolute = re.compile("^[a-z]+:", re.I).match
 
 
 def url_quote (url):
-    """quote given url"""
+    """quote given URL"""
     if not url_is_absolute(url):
         return document_quote(url)
     urlparts = list(urlparse.urlsplit(url))

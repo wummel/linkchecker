@@ -96,7 +96,7 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
 
 
 def get_host_name (form):
-    """return host name of given url"""
+    """return host name of given URL"""
     return urlparse.urlparse(form["url"].value)[1]
 
 

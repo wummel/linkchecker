@@ -147,11 +147,11 @@ class UrlBase (object):
         return False
 
     def is_http (self):
-        """return True for http:// urls"""
+        """return True for http:// URLs"""
         return False
 
     def is_file (self):
-        """return True for file:// urls"""
+        """return True for file:// URLs"""
         return False
 
     def add_warning (self, s):

@@ -175,7 +175,7 @@ class MailtoUrl (urlbase.UrlBase):
         return ["%s:%s" % (self.scheme, ",".join(emails))]
 
     def can_get_content (self):
-        """mailto: urls do not have any content
+        """mailto: URLs do not have any content
            @return False
         """
         return False

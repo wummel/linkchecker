@@ -118,7 +118,7 @@ class LinkFinder (TagFinder):
     """
 
     def __init__ (self, content, tags=None):
-        """store content in buffer and initialize url list"""
+        """store content in buffer and initialize URL list"""
         super(LinkFinder, self).__init__(content)
         if tags is None:
             self.tags = LinkTags
@@ -127,7 +127,7 @@ class LinkFinder (TagFinder):
         self.urls = []
 
     def start_element (self, tag, attrs):
-        """search for links and store found urls in url list"""
+        """search for links and store found URLs in a list"""
         linkcheck.log.debug(linkcheck.LOG_CHECK, "LinkFinder tag %s attrs %s",
                             tag, attrs)
         linkcheck.log.debug(linkcheck.LOG_CHECK,

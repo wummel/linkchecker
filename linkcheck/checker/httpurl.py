@@ -257,8 +257,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     if not (self.url.endswith('/') or \
                        self.url.endswith('.html')):
                         self.add_warning(
-                       _("A HTTP 301 redirection occured and the url has no "
-                     "trailing / at the end. All urls which point to (home) "
+                       _("A HTTP 301 redirection occured and the URL has no "
+                     "trailing / at the end. All URLs which point to (home) "
                      "directories should end with a / to avoid redirection."))
                     self.has301status = True
                 self.aliases.append(redirected)

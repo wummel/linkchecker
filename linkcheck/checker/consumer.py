@@ -49,7 +49,7 @@ class Consumer (object):
         self.warnings = False
 
     def filter_url_queue (self):
-        """remove already cached urls from queue"""
+        """remove already cached URLs from queue"""
         pass # deadlock!
         #self.lock.acquire()
         #try:
@@ -61,7 +61,7 @@ class Consumer (object):
         #            urls.append(url_data)
         #    self.urls = urls
         #    print >> sys.stderr, \
-        #      _("removed %d cached urls from incoming queue") % len(removed)
+        #      _("removed %d cached URLs from incoming queue") % len(removed)
         #finally:
         #    self.lock.release()
 
@@ -80,7 +80,7 @@ class Consumer (object):
         self.threader.start_thread(url_data.check, ())
 
     def append_url (self, url_data):
-        """add new url to list of urls to check"""
+        """add new URL to list of URLs to check"""
         linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "Put url %s in queue", url_data)
         # check syntax
@@ -150,8 +150,8 @@ class Consumer (object):
             links = self.linknumber
             tocheck = len(self.urls)
             duration = linkcheck.strformat.strduration(curtime - start_time)
-            print >> sys.stderr, _("Status: %5d urls queued, "\
-             "%4d urls checked, %2d active threads, runtime %s")\
+            print >> sys.stderr, _("Status: %5d URLs queued, "\
+             "%4d URLs checked, %2d active threads, runtime %s")\
                                  % (tocheck, links, active, duration)
         finally:
             self.lock.release()
