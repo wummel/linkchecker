@@ -19,7 +19,8 @@
   * Updated the warning and info messages to be always complete
     sentences.
     Type: feature
-    Changed: linkcheck/checker/*.py, po/*
+    Changed: linkcheck/checker/*.py, po/*, linkcheck/ftests/*.py,
+      linkcheck/ftests/data/*.result
 
   * Added missing script_dir to the windows installer script.
     Type: bugfix
