@@ -2,9 +2,6 @@ import re, string, StringUtil
 
 __version__ = "$Id$"
 
-class PyLRSyntaxError(SyntaxError):
-    pass
-
 class Lexer:
     """This is a lexer class for PyLR.
     You add regular expressions with addpat(). The pattern added earlier
@@ -28,7 +25,7 @@ class Lexer:
     def rewind(self):
         self.textindex = 0
 
-    def addpat(self, pat, tokname=None, func=None, skip=0):
+    def addpat(self, pat, tokname="", func=None, skip=0):
         """add search pattern to the lexer"""
         if tokname=="EOF":
             raise AttributeError, "EOF is a reserved token word"
@@ -46,7 +43,7 @@ class Lexer:
 
     def scan(self, verbose=0):
 	if self.textindex >= len(self.text):
-            if verbose: print "tok=0, val=EOF"
+            if verbose: print "tok=EOF(0), val=EOF"
 	    return (0, "EOF")
 	for i in self.irange:
             tok = self.toklist[i]
@@ -61,8 +58,9 @@ class Lexer:
                     val = apply(tok[2], (mo,))
                 else:
                     val = mo.group(0)
-                if verbose: print "tok="+`i`+", val="+`val`
+                if verbose:
+		    print "tok="+self.toklist[i][0]+"("+`i`+")"+", val="+`val`
                 return (i, val)
-        raise PyLRSyntaxError, "line "+\
+        raise SyntaxError, "line "+\
             `StringUtil.getLineNumber(self.text, self.textindex)`+\
             ", near \""+self.text[self.textindex:self.textindex + 10]+"\""

@@ -1,6 +1,6 @@
 __version__ = "$Id$"
 
-import sys,time,string,types,parsertemplate,Lexer,Set
+import sys,time,string,types,parsertemplate,Lexer
 
 class ParseError(SyntaxError):
     pass
@@ -22,13 +22,14 @@ class Production:
     def __repr__(self):
         return self.getrep()
 
-    def getrep(self, toklist=None):
+    def getrep(self, toklist=None, nofname=0):
 	s = self.lhs+":"
         for t in self.rhs:
             if type(t)==types.IntType and toklist:
                 s = s+" "+toklist[t]
             else:
                 s = s+" "+str(t)
+        if nofname: return s
         return s+" ("+self.funcname+")"
 
     def items(self):
@@ -259,10 +260,11 @@ class Grammar:
         res = {}
         for item in items.keys():
             res[item]=0
+        todo = items.keys()
         more = 1
 	while more:
             more = []
-	    for prodind, rhsind, term in res.keys():
+	    for (prodind, rhsind), term in todo:
                 prod = self.productions[prodind]
 		if rhsind >= len(prod.rhs):
 		    continue
@@ -271,16 +273,21 @@ class Grammar:
 			newpart = prod.rhs[rhsind + 1]
 		    except IndexError:
 			newpart = Grammar.EPS
-		    for t in self.FIRST([newpart, term]):
-                        item = (self.productions.index(p), 0, t)
-			if not res.has_key(item):
+                    stringofsyms = [newpart, term]
+                    first = self.FIRST(stringofsyms)
+#                    if self.verbose:
+#                        print "First",stringofsyms,"=",first
+		    for t in first:
+                        item = ((self.productions.index(p), 0), t)
+			if not res.has_key(item) and t != Grammar.EPS:
 			    more.append(item)
-#                    if term == 0 and newpart == Grammar.EPS:
-#                        item = (self.productions.index(p), 0, 0)
-#                        if not res.has_key(item):
-#                            more.append(item)
+                    if term == 0 and newpart == Grammar.EPS:
+                        item = (self.productions.index(p), 0, 0)
+                        if not res.has_key(item):
+                            more.append(item)
 	    for item in more:
 		res[item]=0
+            todo = more
 	return res
 
     def prodinfotable(self):
@@ -370,10 +377,13 @@ class Grammar:
 	spontaneous = []
 	propagates = {}
 	gotomap = {}
-	for kpi, kri in itemset:
-            propagates[(kpi,kri)] = []
-	    C = self._closure({(kpi, kri, Grammar.DummyLA):0})
-	    for cpi, cri, t in C.keys():
+	for item in itemset:
+            propagates[item] = []
+	    C = self._closure({(item, Grammar.DummyLA):0})
+#            if self.verbose:
+#                print "\nClosure of",self._strLR1Item((item, Grammar.DummyLA))
+#                self._printClosure(C)
+	    for (cpi, cri), t in C.keys():
 		if cri == len(self.productions[cpi].rhs):
 		    continue
 		X = self.productions[cpi].rhs[cri]
@@ -385,8 +395,15 @@ class Grammar:
 		if t != Grammar.DummyLA:
 		    spontaneous.append((newstate, (cpi, cri+1), t))
 		else:
-                    propagates[(kpi, kri)].append((newstate, (cpi, cri+1)))
+                    propagates[item].append((newstate, (cpi, cri+1)))
 	return spontaneous, propagates
+
+    def _printClosure(self, closure):
+        keys = closure.keys()
+        for k in keys:
+            print self._strLR1Item(k)
+#        print reduce(lambda i1, i2, s=self: s._strLR1Item(i1)+\
+#	             "\n"+s._strLR1Item(i2), closure.keys())
 
     def _genKernelitems(self):
 	self.kernelitems = todo = [[(0, 0)]]
@@ -396,14 +413,20 @@ class Grammar:
 	    for items in todo:
 		for s in self.nonterminals + self.terminals:
 		    g = self._goto(items, s)
-		    if g and g not in self.kernelitems:
+		    if g and g not in self.kernelitems and g not in newtodo:
 			newtodo.append(g)
             if self.verbose:
 	        print "found %d more kernels" % (len(newtodo))
             self.kernelitems = self.kernelitems + newtodo
             todo = newtodo
         if self.verbose:
-            print "generated kernelitems:",self.kernelitems
+            print "generated kernelitems:"
+            i=0
+            for itemset in self.kernelitems:
+                print "I"+`i`+":"
+                i = i+1
+                for item in itemset:
+                    print "    "+self._strItem(item)
 
     def _initLALR1items(self):
 	self._genKernelitems()
@@ -424,9 +447,54 @@ class Grammar:
                     la_table[ns][inner].append(t)
 	    props[i] = pr
         if self.verbose:
-            print "Lookahead table:",la_table
-            print "Propagations:",props
+            print "Initial Lookahead table:"
+	    self._printLATable(la_table)
+            print "Propagations:"
+	    self._printProps(props)
 	return la_table, props
+
+    def _printProps(self, props):
+        keys = props.keys()
+        keys.sort()
+        for i in keys:
+            for item in props[i].keys():
+                if not props[i][item]:
+                    continue
+                print "I"+`i`+": "+self._strItem(item)
+                for ns, itemto in props[i][item]:
+                    print "\tI"+`ns`+": "+self._strItem(itemto)
+
+    def _strItem(self, item):
+        p =  self.productions[item[0]]
+	res = p.lhs+" -> "
+        if not item[1]:
+            res = res+" ."
+        i=1
+        for r in p.rhs:
+            if r in self.terminals:
+                res = res+" "+self.tokens[r]
+            else:
+                res = res+" "+str(r)
+            if i==item[1]:
+                res = res+" ."
+            i = i + 1
+        return res
+
+    def _strLR1Item(self, item):
+        res = self._strItem(item[0])+","
+        res = res+" "*(20-len(res))
+	if item[1]>=0:
+	    return res+self.tokens[item[1]]
+        return res+`item[1]`
+
+    def _printLATable(self, la_table):
+        for i in range(len(self.kernelitems)):
+            for j in range(len(self.kernelitems[i])):
+                pref = "I"+`i`+": "+self._strItem(self.kernelitems[i][j])
+                print pref+" "*(25-len(pref)),
+                for tok in la_table[i][j]:
+                    print self.tokens[tok],
+                print
 
     def _genLALR1items(self):
 	la_table, props = self._initLALR1items()
@@ -455,9 +523,9 @@ class Grammar:
 				added_la = 1
 				la_table[pstate][inner].append(pt)
 		state_i = state_i + 1
-
         if self.verbose:
-            print "Lookahead table:",la_table
+            print "Lookahead table:"
+            self._printLATable(la_table)
 	# this section just reorganizes the above data
 	# to the state it's used in later...
 	if self.verbose:
@@ -476,33 +544,33 @@ class Grammar:
 	    self.LALRitems.append(inner)
 	    state_i = state_i + 1
         if self.verbose:
-            print "LALR items:",self.LALRitems
+            print "LALR items:"
+	    for itemset in self.LALRitems:
+                for item in itemset:
+                    print self._strLR1Item(item)
 
     def actiontable(self):
 	res = []
 	state_i = 0
-        terms = self.terminals[:]
-        terms.append(Grammar.EPS)
-	
 	errentry = ("", -1)
 	for state in self.LALRitems:
-	    res.append([errentry] * len(terms))
+	    res.append([errentry] * len(self.terminals))
 	    for (prodind, rhsind), term in state:
 		if rhsind == len(self.productions[prodind].rhs):
 		    if prodind != 0:
 			new = ("r", prodind)
-			old = res[state_i][terms.index(term)]
+			old = res[state_i][self.terminals.index(term)]
 			if old != errentry and old != new:
 			    print "Conflict[%d,%d]:" % (state_i,
-			    terms.index(term)), old, "->", new
-			res[state_i][terms.index(term)] = new
+			    self.terminals.index(term)), old, "->", new
+			res[state_i][self.terminals.index(term)] = new
 		    else:
 			new = ("a", -1)
-			old = res[state_i][terms.index(term)]
+			old = res[state_i][self.terminals.index(term)]
 			if old != errentry and old != new:
 			    print "Conflict[%d,%d]:" % (state_i,
-			    terms.index(term)), old, "->", new
-			res[state_i][terms.index(term)] = new
+			    self.terminals.index(term)), old, "->", new
+			res[state_i][self.terminals.index(term)] = new
 
 		# calculate reduction by epsilon productions 
 		elif self.productions[prodind].rhs[rhsind] in self.nonterminals:
@@ -511,10 +579,10 @@ class Grammar:
 		    ntfirsts = self.ntfirstmap.get(nt, {})
 		    for k in ntfirsts.keys():
 			if k in self.lhseps:
-			    reduceterms = self.followmap[k]
-			    print `((prodind, rhsind), term)`, reduceterms
-			    for r in reduceterms:
-   				inner = terms.index(r)
+			    reduceself.terminals = self.followmap[k]
+			    print `((prodind, rhsind), term)`, reduceself.terminals
+			    for r in reduceself.terminals:
+   				inner = self.terminals.index(r)
    				old = res[state_i][inner]
    				new = ("r", self.lhseps[k])
   			        if old != errentry and old != new:
@@ -525,7 +593,7 @@ class Grammar:
 		    # calculate the shifts that occur but whose normal items aren't in the kernel
 		    tfirsts = self.tfirstmap[nt]
 		    for t in tfirsts:
-			inner = terms.index(t)
+			inner = self.terminals.index(t)
 			g = self._goto(self.kernelitems[state_i], t)
 			old = res[state_i][inner]
 			try:
@@ -541,7 +609,7 @@ class Grammar:
 		# compute the rest of the shifts that occur 'normally' in the kernel
 		else:
 		    t = self.productions[prodind].rhs[rhsind]
-		    inner = terms.index(t)
+		    inner = self.terminals.index(t)
 		    gt = self._goto(self.kernelitems[state_i], t)
 		    if gt in self.kernelitems:
 			news = self.kernelitems.index(gt)
@@ -552,6 +620,7 @@ class Grammar:
 			    inner), old, "->", new
 			res[state_i][inner] = new
 	    state_i = state_i + 1
+        # action[1]-1: compensate previous augmentation
 	return res
 
     def gototable(self):
@@ -621,10 +690,9 @@ def _makeprod(x):
 def _bootstrap():
     # dang, how did scott bootstrap the GrammarParser??
     # have to make this by hand
-    import Lexers
 
     # define the productions
-    toks = Lexers.GrammarLex().getTokenList()
+    toks = GrammarLex().getTokenList()
     prods = map(_makeprod,
         [("pspec", ["gspec"]),
          ("pspec", ["pydefs", "gspec"]),
@@ -647,10 +715,8 @@ def _bootstrap():
 	 ("idlist", [toks.index("ID")], "idlistID")])
 #    print string.join(map(lambda x: str(x), prods), "\n")
     g = Grammar(prods, toks, 1)
-
-#    g.extrasources = "import PyLR.Parsers"
     # produce the parser
-    g.writefile("./Parsers/GrammarParser.py", "GrammarParser", "PyLR.Lexers.GrammarLex()")
+    g.writefile("GrammarParser.py", "GrammarParser", "GrammarLexer()")
 
 def _test():
     # first a non-productive Grammar
@@ -658,10 +724,19 @@ def _test():
         Grammar([Production("S", ["S"])], ["EOF"])
         assert 0, "Bummer!"
     except ParseError: pass
-    # now a simple Grammar
-    import Lexers
-    toks = Lexers.MathLex().getTokenList()
 
+    # now a simple Grammar
+    toks = ["EOF","c","d"]
+    prods = map(_makeprod,
+      [("S", ["C","C"]),
+       ("C", [toks.index("c"), "C"]),
+       ("C", [toks.index("d")])])
+    g = Grammar(prods, toks)
+    g.extrasource = "import SimpleLexer"
+    g.writefile("tests/SimpleParser.py", "SimpleParser", "SimpleLexer.SimpleLexer()")
+
+    # now a math Grammar
+    toks = ["EOF","INT","PLUS","TIMES","LPAR","RPAR"]
     prods = map(_makeprod,
         [("expression", ["expression",toks.index("PLUS"),"term"], "addfunc"),
          ("expression", ["term"]),
@@ -669,8 +744,9 @@ def _test():
          ("term", ["factor"]),
          ("factor", [toks.index("LPAR"), "expression", toks.index("RPAR")], "parenfunc"),
 	 ("factor", [toks.index("INT")])])
-    g = Grammar(prods, toks, 1)
-    g.writefile("Parsers/MathParser.py", "MathParser", "PyLR.Lexers.MathLex()")
+    g = Grammar(prods, toks)
+    g.extrasource = "import MathLexer"
+    g.writefile("tests/MathParser.py", "MathParser", "MathLexer.MathLexer()")
 
 if __name__=='__main__':
 #    _bootstrap()

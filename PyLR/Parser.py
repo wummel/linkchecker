@@ -24,25 +24,31 @@ class Parser:
 	self.lexer.settext(text)
         # push the start state on the stack
         stack = [0]
+        tok, val = self.lexer.scan(verbose)
 	while 1:
-	    tok, val = self.lexer.scan(verbose)
             state = stack[-1]
             action = self.actions[state][tok]
             if verbose:
-                print "action",action
+                print
+                print "stack=",stack
+                print "state=",state
+                print "action=",action
             if action[0]=='s':
                 # push the symbol and the state
                 stack = stack + [tok, action[1]]
+                tok, val = self.lexer.scan(verbose)
             elif action[0]=='r':
+                # action[1]-1: compensate previous augmentation
                 P = self.prodinfo[action[1]-1]
                 # reduce P=A->b by popping 2*|b| from the stack
+                popped = stack[-2*p[0]:]
                 stack = stack[:-2*P[0]]
                 goto = self.gotos[stack[-1]][P[2]]
                 # push A and the goto symbol
                 stack = stack + [P[2], goto]
                 if verbose:
 		    print "reduce",P
-                P[1](tok, val)
+                P[1]
             elif action[0]=='a':
                 return
             else:
