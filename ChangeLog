@@ -2,6 +2,9 @@
   * - ignore invalid html attribute characters
     - ignore trailing garbage on html end tags
     - fixed debugging code with flex
+    - use flex memory management interface
+    - use only double quotes for attribute quoting
+    - check quoting of all attributes
     Changed files: linkcheck/parser/htmllex.l
   * build parser with flex 2.5.25
     Changed files: linkcheck/parser/{Makefile, htmllex.c}

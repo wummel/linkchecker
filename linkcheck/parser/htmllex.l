@@ -100,21 +100,27 @@
 #define SET_ERROR(s)
 
 /* use Pythons memory management */
-#define malloc PyMem_Malloc
-#define realloc PyMem_Realloc
-#define free PyMem_Free
+void* yyalloc (size_t bytes, void* yyscanner) {
+    return PyMem_Malloc(bytes);
+}
+void* yyrealloc (void* ptr, size_t bytes, void* yyscanner) {
+    return PyMem_Realloc(ptr, bytes);
+}
+void yyfree (void* ptr, void* yyscanner) {
+    PyMem_Free(ptr);
+}
 
 #include "htmlparse.h"
 
-/* Find out if and how we must quote the value as an HTML attribute.
- - quote if it contains white space or <> or ends with /
- - quote with " if it contains '
- - quote with ' if it contains "
-
- val is a Python String object
+/* Find out if the given HTML attribute val must be quoted.
+ The string will be surrounded by double quotes if it contains white space
+ or <> or ends with /.
+ All double quotes inside the string will be replaced with &quot;.
+ val must be a Python String object
 */
 static PyObject* quote_string (PyObject* val) {
-    char* quote = NULL;
+    int quote = 0;
+    int replace = 0;
     int len = PyString_GET_SIZE(val);
     char* internal = PyString_AS_STRING(val);
     int i;
@@ -124,28 +130,29 @@ static PyObject* quote_string (PyObject* val) {
 	return val;
     }
     for (i=0; i<len; i++) {
-	if (!quote && (isspace(internal[i]) ||
-		       internal[i]=='<' ||
-		       internal[i]=='>')) {
-            quote = "\"";
-	}
-	else if (internal[i]=='\'') {
-	    quote = "\"";
-            break;
+	if (isspace(internal[i]) ||
+	    internal[i]=='<' ||
+	    internal[i]=='>' ||
+	    internal[i]=='\'') {
+            quote = 1;
 	}
 	else if (internal[i]=='"') {
-	    quote = "'";
-            break;
+            replace = 1;
 	}
     }
-    if (!quote && internal[len-1]=='/') {
-	quote = "\"";
+    if (internal[len-1]=='/') {
+	quote = 1;
     }
-    if (quote==NULL) {
+    if (replace) {
+	PyObject* nval = PyObject_CallMethod(val, "replace", "ss", "\"", "&quot;");
+	Py_DECREF(val);
+        val = nval;
+    }
+    if (!quote) {
         return val;
     }
     /* quote suffix */
-    if ((prefix = PyString_FromString(quote))==NULL) return NULL;
+    if ((prefix = PyString_FromString("\""))==NULL) return NULL;
     PyString_Concat(&val, prefix);
     if (val==NULL) {
         Py_DECREF(prefix);
@@ -161,6 +168,7 @@ static PyObject* quote_string (PyObject* val) {
 }
 %}
 
+%option noyyalloc noyyrealloc noyyfree
 %option 8bit outfile="htmllex.c"
 %option align full
 /* uncomment the next line for debugging */
@@ -611,6 +619,7 @@ RX_DATA [-a-zA-Z0-9_]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
+    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -627,6 +636,7 @@ RX_DATA [-a-zA-Z0-9_]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
+    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -654,6 +664,7 @@ RX_DATA [-a-zA-Z0-9_]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
+    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -670,6 +681,7 @@ RX_DATA [-a-zA-Z0-9_]+
     UPDATE_COLUMN;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
+    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -686,6 +698,7 @@ RX_DATA [-a-zA-Z0-9_]+
     UPDATE_LINE;
     PYSTRING_TMP(yyextra->tmp_attrval);
     CLEAR_BUF(yyextra->tmp_buf);
+    yyextra->tmp_attrval = quote_string(yyextra->tmp_attrval);
     if (PyDict_SetItem(yyextra->tmp_attrs,
 		       yyextra->tmp_attrname,
 		       yyextra->tmp_attrval)==-1) return T_ERROR;
@@ -825,10 +838,6 @@ RX_DATA [-a-zA-Z0-9_]+
 }
 
 %%
-
-#undef malloc
-#undef realloc
-#undef free
 
 int htmllexInit (void** scanner, UserData* data) {
     yylex_init(scanner);
