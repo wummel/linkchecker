@@ -19,8 +19,8 @@ case "$1" in
         done
 	# use /bin/sh -c, otherwise I get a SyntaxError from Python
 	for i in $FILELIST; do
-	    /bin/sh -c "$PYTHON -O -c $COMMAND $SITEPACKAGES/$i"
-	    /bin/sh -c "$PYTHON -c $COMMAND $SITEPACKAGES/$i"
+	    /bin/sh -c "$PYTHONXY -O -c $COMMAND $SITEPACKAGES/$i"
+	    /bin/sh -c "$PYTHONXY -c $COMMAND $SITEPACKAGES/$i"
 	done
         # for later use of python-central
         #/usr/sbin/register-python-package module configure linkchecker ">=2.0"

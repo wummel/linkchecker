@@ -31,9 +31,3 @@ error
 url file:/etc/
 name good dir
 valid
-url file:///etc/group
-cached
-valid
-url file:///etc/group
-cached
-valid
