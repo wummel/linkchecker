@@ -92,7 +92,7 @@ class UrlBase (object):
            @recursion_level - on what check level lies the base url
            @config - Configuration instance
            @parent_url - quoted and normed url of parent or None
-           @base_ref - quoted and normed url of <base href> or None
+           @base_ref - quoted and normed url of <base href=""> or None
            @line - line number of url in parent content
            @column - column number of url in parent content
            @name - name of url or empty
@@ -100,27 +100,12 @@ class UrlBase (object):
         self.base_ref = base_ref
         # note that self.base_url must not be modified
         self.base_url = base_url
-        self.url = None
-        self.urlparts = None
         self.parent_url = parent_url
-        self.anchor = None
         self.recursion_level = recursion_level
         self.consumer = consumer
-        self.result = ""
-        self.cached = False
-        self.valid = True
-        self.warning = linkcheck.containers.SetList()
-        self.info = linkcheck.containers.SetList()
         self.line = line
         self.column = column
         self.name = name
-        self.dltime = -1
-        self.dlsize = -1
-        self.checktime = 0
-        self.url_connection = None
-        self.extern = (1, 0)
-        self.data = None
-        self.has_content = False
         if self.base_ref:
             assert not linkcheck.url.url_needs_quoting(self.base_ref)
         if self.parent_url:
@@ -128,6 +113,39 @@ class UrlBase (object):
         url = linkcheck.checker.absolute_url(base_url, base_ref, parent_url)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
+
+        # self.url is constructed by self.build_url() out of base_url
+        # and (base_ref or parent) as absolute and normed url.
+        # This the real url we use when checking so it also referred to
+        # as 'real url'
+        self.url = None
+        # a splitted version of url for convenience
+        self.urlparts = None
+        # the anchor part of url
+        self.anchor = None
+        # the result message string
+        self.result = ""
+        # cached or not
+        self.cached = False
+        # valid or not
+        self.valid = True
+        # list of warnings (without duplicates)
+        self.warning = linkcheck.containers.SetList()
+        # list of infos (without duplicates)
+        self.info = linkcheck.containers.SetList()
+        # download time
+        self.dltime = -1
+        # download size
+        self.dlsize = -1
+        # check time
+        self.checktime = 0
+        # connection object
+        self.url_connection = None
+        self.extern = (1, 0)
+        # data of url content
+        self.data = None
+        # if data is filled
+        self.has_content = False
 
     def set_result (self, msg, valid=True):
         """set result string and validity"""
@@ -200,9 +218,13 @@ class UrlBase (object):
         return None
 
     def is_cached (self):
+        """look if this URL is already stored in the Cache"""
         return self.consumer.cache.url_is_cached(self.get_cache_key())
 
     def build_url (self):
+        """Construct self.url and self.urlparts out of the given base
+           url information self.base_url, self.parent_url and self.base_ref.
+        """
         # norm base url
         base_url = linkcheck.url.url_norm(self.base_url)
         if self.base_url != base_url:
@@ -239,6 +261,7 @@ class UrlBase (object):
             self.port = int(self.port)
 
     def check (self):
+        """main check function for checking this URL"""
         try:
             self.local_check()
         except (socket.error, select.error):
@@ -253,6 +276,7 @@ class UrlBase (object):
             internal_error()
 
     def local_check (self):
+        """local check function can be overridden in subclasses"""
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
         if self.recursion_level and self.consumer.config['wait']:
             linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -357,6 +381,9 @@ class UrlBase (object):
             self.url_connection = None
 
     def check_connection (self):
+        """The basic connection check uses urllib2.urlopen to initialize
+           a connection object.
+        """
         self.url_connection = urllib2.urlopen(self.url)
 
     def allows_recursion (self):
@@ -376,6 +403,9 @@ class UrlBase (object):
             not self.extern[0] and self.content_allows_robots()
 
     def content_allows_robots (self):
+        """return True if the content of this URL forbids robots to
+           search for recursive links.
+        """
         if not self.is_html():
             return True
         if not (self.is_http() or self.is_file()):
