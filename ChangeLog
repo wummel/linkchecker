@@ -1,3 +1,10 @@
+1.9.3
+  * re-added an updated robot parser which uses urllib2 and can decode
+    compressed transfer encodings.
+    Added: linkcheck/robotparser2.py
+  * more restrictive url validity checking when running in CGI mode
+    Changed: linkcheck/lc_cgi.py
+
 1.9.2
   * parser fixes:
     - do not #include <stdint.h>, fixes build on some FreeBSD, Windows
