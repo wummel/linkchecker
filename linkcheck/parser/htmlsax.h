@@ -29,6 +29,11 @@
 #error please install Python >= 2.3
 #endif
 
+/* this will be in Python 2.4 */
+#ifndef Py_RETURN_NONE
+#define Py_RETURN_NONE do {Py_INCREF(Py_None); return Py_None;} while (0)
+#endif
+
 /* user_data type for SAX calls */
 typedef struct {
     /* the Python SAX class instance to issue callbacks */
@@ -52,12 +57,17 @@ typedef struct {
     unsigned int column;
     /* last value of column counter */
     unsigned int last_column;
-    /* temporary vars */
+    /* input buffer of lexer, must be deleted when the parsing stops */
     void* lexbuf;
+    /* temporary character buffer */
     char* tmp_buf;
+    /* temporary HTML start or end tag name */
     PyObject* tmp_tag;
+    /* temporary HTML start tag attribute name */
     PyObject* tmp_attrname;
+    /* temporary HTML start tag attribute value */
     PyObject* tmp_attrval;
+    /* temporary HTML start tag attribute list */
     PyObject* tmp_attrs;
     /* stored Python exception (if error occurred in scanner) */
     PyObject* exc_type;

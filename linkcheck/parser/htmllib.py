@@ -16,53 +16,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+__version__ = "$Revision$"[11:-2]
+__date__    = "$Date$"[7:-2]
+
 import sys
 try:
     import htmlsax
-except ImportError:
+except ImportError, msg:
     exctype, value = sys.exc_info()[:2]
     print >>sys.stderr, "Could not import the parser module `htmlsax':", value
     print >>sys.stderr, "Please check your installation of LinkChecker."
     sys.exit(1)
 
 
-class HtmlParser (object):
-    """Use an internal C SAX parser. We do not define any callbacks
-    here for compatibility. Currently recognized callbacks are:
-    comment(data): <!--data-->
-    startElement(tag, attrs): <tag {attr1:value1,attr2:value2,..}>
-    endElement(tag): </tag>
-    doctype(data): <!DOCTYPE data?>
-    pi(name, data=None): <?name data?>
-    cdata(data): <![CDATA[data]]>
-    characters(data): data
-
-    additionally, there are error and warning callbacks:
-    error(msg)
-    warning(msg)
-    fatalError(msg)
-    """
-    def __init__ (self):
-        """initialize the internal parser"""
-        self.parser = htmlsax.parser(self)
-
-
-    def __getattr__ (self, name):
-        """delegate unknown attrs to self.parser"""
-        return getattr(self.parser, name)
-
-
-class HtmlPrinter (HtmlParser):
-    """handles all functions by printing the function name and
-       attributes"""
+class HtmlPrinter (object):
+    """handles all functions by printing the function name and attributes"""
     def _print (self, *attrs):
-        print self.mem, attrs, self.last_lineno(), self.last_column()
+        print self.mem, attrs
 
 
     def _errorfun (self, msg, name):
         """print msg to stderr with name prefix"""
-        pos = "%d:%d:" % (self.lineno(), self.column())
-        print >> sys.stderr, name, pos, msg
+        print >> sys.stderr, name, msg
 
 
     def error (self, msg):
@@ -81,14 +56,18 @@ class HtmlPrinter (HtmlParser):
 
 
     def __getattr__ (self, name):
-        if hasattr(self.parser, name):
-            return getattr(self.parser, name)
+        """remember the func name"""
         self.mem = name
         return self._print
 
 
+def quote_attrval (val):
+    """quote a HTML attribute to be able to wrap it in double quotes"""
+    return val.replace('"', '&quot;')
+
+
 def _test():
-    p = HtmlPrinter()
+    p = htmlsax.parser(HtmlPrinter())
     p.feed("<hTml>")
     p.feed("<a href>")
     p.feed("<a href=''>")
@@ -111,10 +90,11 @@ def _test():
     p.feed("<!DOCTYPE \"vla foo>")
     p.flush()
 
-
 def _broken ():
-    p = HtmlPrinter()
-    p.feed("<img bo\\\nrder=0>")
+    p = htmlsax.parser(HtmlPrinter())
+    # turn on debugging
+    p.debug(1)
+    p.feed("""<base href="http://www.msnbc.com/news/">""")
     p.flush()
 
 
