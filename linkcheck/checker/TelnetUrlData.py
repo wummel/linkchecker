@@ -21,6 +21,7 @@ import urlparse
 import urllib
 import linkcheck
 import HostCheckingUrlData
+import bk.i18n
 
 
 class TelnetUrlData (HostCheckingUrlData.HostCheckingUrlData):
@@ -47,7 +48,8 @@ class TelnetUrlData (HostCheckingUrlData.HostCheckingUrlData):
     def checkConnection (self):
         super(TelnetUrlData, self).checkConnection()
         self.urlConnection = telnetlib.Telnet()
-        self.urlConnection.set_debuglevel(get_debuglevel())
+        if self.config.get("debug"):
+            self.urlConnection.set_debuglevel(1)
         self.urlConnection.open(self.host, self.port)
         if self.user:
             self.urlConnection.read_until("login: ", 10)

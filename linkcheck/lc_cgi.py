@@ -23,6 +23,10 @@ import time
 import urlparse
 import types
 import linkcheck
+import linkcheck.checker
+import bk.url
+import bk.i18n
+import bk.strtime
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
@@ -68,7 +72,7 @@ def checklink (out=sys.stdout, form={}, env=os.environ):
         pat = bk.url.safe_url_pattern
     config["internlinks"].append(linkcheck.getLinkPat("^%s$" % pat))
     # avoid checking of local files or other nasty stuff
-    config["externlinks"].append(linkcheck.getLinkPat("^%s$" % safe_url_pattern))
+    config["externlinks"].append(linkcheck.getLinkPat("^%s$" % bk.url.safe_url_pattern))
     config["externlinks"].append(linkcheck.getLinkPat(".*", strict=True))
     # start checking
     config.appendUrl(linkcheck.checker.getUrlDataFrom(form["url"].value, 0, config))

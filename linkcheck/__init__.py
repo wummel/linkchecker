@@ -49,15 +49,6 @@ def getLinkPat (arg, strict=False):
     }
 
 
-def printStatus (config, curtime, start_time):
-    tocheck = len(config.urls)
-    links = config['linknumber']
-    active = config.threader.active_threads()
-    duration = bk.strtime.strduration(curtime - start_time)
-    print >>sys.stderr, bk.i18n._("%5d urls queued, %4d links checked, %2d active threads, runtime %s")%\
-                               (tocheck, links, active, duration)
-
-
 import linkcheck.logger.StandardLogger
 import linkcheck.logger.HtmlLogger
 import linkcheck.logger.ColoredLogger

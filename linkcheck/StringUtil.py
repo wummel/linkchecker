@@ -21,10 +21,6 @@ import sys
 
 markup_re = re.compile("<.*?>", re.DOTALL)
 
-SQLTable = [
-    ("'","''")
-]
-
 
 def stripQuotes (s):
     "Strip optional quotes"

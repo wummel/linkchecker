@@ -17,6 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import time
+import sys
 import socket
 import select
 import re
@@ -94,6 +95,15 @@ ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
 
 
+def printStatus (config, curtime, start_time):
+    tocheck = len(config.urls)
+    links = config['linknumber']
+    active = config.threader.active_threads()
+    duration = bk.strtime.strduration(curtime - start_time)
+    print >>sys.stderr, bk.i18n._("%5d urls queued, %4d links checked, %2d active threads, runtime %s")%\
+                               (tocheck, links, active, duration)
+
+
 # main check function
 def checkUrls (config):
     """ checkUrls gets a complete configuration object as parameter where all
@@ -156,7 +166,7 @@ def set_intern_url (url, klass, config):
        recursion level is zero (ie url given on the command line)"""
     if klass == linkcheck.checker.FileUrlData.FileUrlData:
         bk.log.debug(linkcheck.LOG_CHECK, "Add intern pattern ^file:")
-        config['internlinks'].append(getLinkPat("^file:"))
+        config['internlinks'].append(linkcheck.getLinkPat("^file:"))
     elif klass in [linkcheck.checker.HttpUrlData.HttpUrlData,
                    linkcheck.checker.HttpsUrlData.HttpsUrlData,
                    linkcheck.checker.FtpUrlData.FtpUrlData]:
@@ -165,7 +175,7 @@ def set_intern_url (url, klass, config):
             domain = "://%s"%re.escape(domain)
             bk.log.debug(linkcheck.LOG_CHECK, "Add intern domain", domain)
             # add scheme colon to link pattern
-            config['internlinks'].append(getLinkPat(domain))
+            config['internlinks'].append(linkcheck.getLinkPat(domain))
 
 
 def get_absolute_url (urlName, baseRef, parentName):

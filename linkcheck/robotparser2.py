@@ -20,6 +20,7 @@ import zlib
 import gzip
 import cStringIO as StringIO
 import linkcheck
+import linkcheck.httplib2
 
 __all__ = ["RobotFileParser"]
 
@@ -297,7 +298,7 @@ def decode (page):
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
         except zlib.error, msg:
-            # assuming non-compressed content
+            warn("uncompressing had error %s, assuming non-compressed content"%str(msg))
             fp = StringIO.StringIO(content)
         # remove content-encoding header
         headers = {}

@@ -29,6 +29,11 @@ def applyTable (table, s):
     return s
 
 
+SQLTable = [
+    ("'","''")
+]
+
+
 def sqlify (s):
     "Escape special SQL chars and strings"
     if not s:

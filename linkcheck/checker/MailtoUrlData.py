@@ -77,7 +77,7 @@ class MailtoUrlData (HostCheckingUrlData.HostCheckingUrlData):
             bk.log.debug(linkcheck.LOG_CHECK, "splitting address")
             user,host = self._split_adress(mail)
             bk.log.debug(linkcheck.LOG_CHECK, "looking up MX mailhost")
-            mxrecords = bk.net.dns.lazy.mxlookup(host, config.dnsconfig)
+            mxrecords = bk.net.dns.lazy.mxlookup(host, self.config.dnsconfig)
             bk.log.debug(linkcheck.LOG_CHECK, "found mailhosts", mxrecords)
             if not len(mxrecords):
                 self.setWarning(bk.i18n._("No MX mail host for %s found")%host)

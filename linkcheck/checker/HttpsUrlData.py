@@ -24,7 +24,7 @@ class HttpsUrlData (HttpUrlData.HttpUrlData):
     """Url link with https scheme"""
 
     def _check (self):
-        if linkcheck.checker.HttpUrlData.supportHttps:
+        if HttpUrlData.supportHttps:
             super(HttpsUrlData, self)._check()
         else:
             self.setWarning(bk.i18n._("%s url ignored")%self.scheme.capitalize())
