@@ -39,18 +39,16 @@ also read the <a class="reference" href="upgrading.html">upgrading documentation
 <h1><a name="requirements-for-unix-linux-or-mac-os-x">Requirements for Unix/Linux or Mac OS X</a></h1>
 <ol class="arabic">
 <li><p class="first">You need a standard GNU development environment with</p>
-<ol class="loweralpha">
+<ul>
 <li><p class="first">C compiler (for example the GNU C Compiler gcc)</p>
 <p>Depending on your distribution, several development packages
 might be needed to provide a fully functional C development
 environment.</p>
 </li>
-<li><p class="first">gettext</p>
-<p>Note for developers: if you want to regenerate the .pot template
-from the source files, you will need xgettext with Python support.
-This is available in gettext &gt;= 0.12.</p>
-</li>
-</ol>
+</ul>
+<p>Note for developers: if you want to regenerate the po/linkchecker.pot
+template from the source files, you will need xgettext with Python
+support. This is available in gettext &gt;= 0.12.</p>
 </li>
 <li><p class="first">Python &gt;= 2.4 from <a class="reference" href="http://www.python.org/">http://www.python.org/</a> with zlib support</p>
 <p>Be sure to also have installed the included distutils module.
@@ -78,10 +76,6 @@ Be sure to install in the given order:<ol class="loweralpha">
 [<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe</a>]</li>
 <li>MSYS
 [<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe</a>]</li>
-<li>libiconv
-[<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe</a>]</li>
-<li>gettext
-[<a class="reference" href="http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe">http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe</a>]</li>
 </ol>
 </li>
 <li><em>Optional (speedup for i386 compatible PCs)</em>
@@ -151,10 +145,6 @@ The resulting library has to be placed in the same directory as
 python24.lib. (Should be the libs directory under your Python installation
 directory, for example <tt class="docutils literal"><span class="pre">c:\Python24\Libs\</span></tt>.)</p>
 </li>
-<li><p class="first">Compile gettext translations</p>
-<p>Still in the MSYS window, change to the <tt class="docutils literal"><span class="pre">linkchecker-X.X.X\po</span></tt>
-directory and run <tt class="docutils literal"><span class="pre">make</span></tt>.</p>
-</li>
 <li><p class="first">Generate and execute the LinkChecker installer</p>
 <p>Close the MSYS application (by typing <tt class="docutils literal"><span class="pre">exit</span></tt>) and open a DOS command
 prompt.
@@ -211,7 +201,7 @@ working</li>
 </div>
 <hr class="docutils footer" />
 <div class="footer">
-Generated on: 2005-01-24 20:28 UTC.
+Generated on: 2005-03-04 20:27 UTC.
 </div>
 </body>
 </html>

@@ -17,17 +17,15 @@ Requirements for Unix/Linux or Mac OS X
 
 1. You need a standard GNU development environment with
    
-   a) C compiler (for example the GNU C Compiler gcc)
-      
-      Depending on your distribution, several development packages
-      might be needed to provide a fully functional C development
-      environment.
+   - C compiler (for example the GNU C Compiler gcc)
+     
+     Depending on your distribution, several development packages
+     might be needed to provide a fully functional C development
+     environment.
    
-   b) gettext
-      
-      Note for developers: if you want to regenerate the .pot template
-      from the source files, you will need xgettext with Python support.
-      This is available in gettext >= 0.12.
+   Note for developers: if you want to regenerate the po/linkchecker.pot
+   template from the source files, you will need xgettext with Python
+   support. This is available in gettext >= 0.12.
 
 2. Python >= 2.4 from http://www.python.org/ with zlib support
    
@@ -56,10 +54,6 @@ Requirements for Windows
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe]
    b) MSYS
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
-   c) libiconv
-      [http://osdn.dl.sourceforge.net/sourceforge/mingw/libiconv-1.8.0-2003.02.01-1.exe]
-   d) gettext
-      [http://osdn.dl.sourceforge.net/sourceforge/mingw/gettext-0.11.5-2003.02.01-1.exe]
 
 3. *Optional (speedup for i386 compatible PCs)*
    Psyco from http://psyco.sourceforge.net/
@@ -134,12 +128,7 @@ Setup for Windows - compiling from source:
    python24.lib. (Should be the libs directory under your Python installation
    directory, for example ``c:\Python24\Libs\``.)
 
-3. Compile gettext translations
-   
-   Still in the MSYS window, change to the ``linkchecker-X.X.X\po``
-   directory and run ``make``.
-
-4. Generate and execute the LinkChecker installer
+3. Generate and execute the LinkChecker installer
    
    Close the MSYS application (by typing ``exit``) and open a DOS command
    prompt.
