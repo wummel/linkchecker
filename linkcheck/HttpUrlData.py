@@ -212,6 +212,7 @@ class HttpUrlData (UrlData):
 	"""
         if self.proxy:
             host = self.proxy
+            self.setInfo(_("Using Proxy %s")%self.proxy)
         else:
             host = self.urlTuple[1]
         Config.debug(HURT_ME_PLENTY, "host", host)
