@@ -270,6 +270,8 @@ class Resolver(object):
             elif filename:
                 self.read_resolv_conf(filename)
                 self.read_local_hosts()
+        if len(self.search) == 0:
+            self.search.add(self.domain)
 
     def reset(self):
         """Reset all resolver configuration to the defaults."""
@@ -288,7 +290,7 @@ class Resolver(object):
         ])
         # connected and active network interfaces
         self.interfaces = sets.Set()
-        self.search = []
+        self.search = sets.Set()
         self.search_patterns = ['www.%s.com', 'www.%s.org', 'www.%s.net', ]
         self.port = 53
         self.timeout = 2.0
@@ -323,7 +325,7 @@ class Resolver(object):
                     self.domain = linkcheck.dns.name.from_text(tokens[1])
                 elif tokens[0] == 'search':
                     for suffix in tokens[1:]:
-                        self.search.append(linkcheck.dns.name.from_text(suffix))
+                        self.search.add(linkcheck.dns.name.from_text(suffix))
         finally:
             if want_close:
                 f.close()
@@ -339,8 +341,8 @@ class Resolver(object):
 
     def read_local_ifaddrs (self):
         """all active interfaces' ip addresses"""
-        if os.name!='posix':
-            # only posix is supported
+        if not sys.platform.startswith('linux'):
+            # only Linux is supported right now
             return []
         import linkcheck.dns.ifconfig
         ifc = linkcheck.dns.ifconfig.IfConfig()
@@ -382,7 +384,7 @@ class Resolver(object):
         search_list = str(search).split(',')
         for s in search_list:
             if not s in self.search:
-                self.search.append(linkcheck.dns.name.from_text(s))
+                self.search.add(linkcheck.dns.name.from_text(s))
 
     def _config_win32_add_ifaddr (self, key, name):
         """Add interface ip address to self.localhosts."""
