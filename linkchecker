@@ -72,7 +72,7 @@ For single-letter option arguments the space is not a necessity. So
         Specify output type as %s.
         Default type is text.
 -p pwd, --password=pwd
-        Try password pwd for HTML and FTP authorization.
+        Try password pwd for HTTP and FTP authorization.
         Default password is 'joe@'. See also -u.
 -P secs, --pause=secs
         Pause <secs> seconds between each url check. This option
@@ -94,7 +94,7 @@ For single-letter option arguments the space is not a necessity. So
         Set the timeout for TCP connection attempts in seconds. The default
         timeout is system dependant.
 -u name, --user=name
-        Try username name for HTML and FTP authorization.
+        Try username name for HTTP and FTP authorization.
         Default is 'anonymous'. See also -p.
 -V, --version
         Print version and exit.
