@@ -18,7 +18,7 @@
     Type: bugfix
     Changed: linkcheck/url.py, linkcheck/tests/test_url.py
 
-  * Fix NT path name for network paths.
+  * Fix Windows path name for network paths.
     Type: bugfix
     Closes: SF bug #1117839
     Changed: linkcheck/checker/fileurl.py
