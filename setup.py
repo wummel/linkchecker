@@ -60,6 +60,8 @@ def cnormpath (path):
     if win_compiling:
         # replace slashes with backslashes
         path = path.replace("/", "\\")
+    if not os.path.isabs(path):
+        path= os.path.join(sys.prefix, path)
     return path
 
 
@@ -83,6 +85,7 @@ class MyInstall (install, object):
         super(MyInstall, self).run()
         # we have to write a configuration file because we need the
         # <install_data> directory (and other stuff like author, url, ...)
+        # all paths are made absolute by cnormpath()
         data = []
         for d in ['purelib', 'platlib', 'lib', 'headers', 'scripts', 'data']:
             attr = 'install_%s' % d
