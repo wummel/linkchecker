@@ -423,7 +423,10 @@ class HTTPResponse:
                 i = line.find(';')
                 if i >= 0:
                     line = line[:i] # strip chunk-extensions
-                chunk_left = int(line, 16)
+                try:
+                    chunk_left = int(line, 16)
+                except ValueError, msg:
+                    raise IncompleteRead(msg)
                 if chunk_left == 0:
                     break
             if amt is None:
