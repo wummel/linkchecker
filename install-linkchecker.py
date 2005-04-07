@@ -36,6 +36,10 @@ win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
 # path retrieving functions
 
+def get_python_exe ():
+    return os.path.join(sys.prefix, "python.exe")
+
+
 def get_prg_path ():
     try:
         return get_special_folder_path("CSIDL_COMMON_PROGRAMS")
@@ -67,13 +71,15 @@ def create_shortcuts ():
         directory_created(dest_dir)
     except OSError:
         pass
-    path = os.path.join(dest_dir, "Check URL.lnk")
-    script = os.path.join(sys.prefix, "Scripts", "linkchecker")
     if platform.release() in win_bat_releases:
-        script += ".bat"
-
-    arguments = "--interactive"
-    create_shortcut(script, "Check URL", path, arguments)
+        exe = os.path.join(sys.prefix, "Scripts", "linkchecker.bat")
+        arguments = "--interactive"
+    else:
+        exe = get_python_exe()
+        arguments = os.path.join(sys.prefix, "Scripts", "linkchecker")
+        arguments += " --interactive"
+    path = os.path.join(dest_dir, "Check URL.lnk")
+    create_shortcut(exe, "Check URL", path, arguments)
     file_created(path)
 
     target = os.path.join(sys.prefix,
