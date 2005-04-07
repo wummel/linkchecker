@@ -25,6 +25,7 @@ import sys
 import os
 import time
 import urlparse
+import pydoc
 
 
 def unicode_safe (s, encoding="iso-8859-1"):
@@ -124,19 +125,11 @@ def get_line_number (s, index):
     return line
 
 
-def paginate (text, lines=22):
+def paginate (text):
     """
     Print text in pages of lines.
     """
-    curline = 1
-    for line in text.splitlines():
-        print line
-        curline += 1
-        isatty = hasattr(sys.stdin, "isatty") and sys.stdin.isatty()
-        if curline >= lines and isatty:
-            curline = 1
-            print "press return to continue..."
-            sys.stdin.read(1)
+    pydoc.pager(text)
 
 
 _markup_re = re.compile("<.*?>", re.DOTALL)

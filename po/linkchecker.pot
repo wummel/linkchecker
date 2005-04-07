@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-04-01 11:24+0200\n"
+"POT-Creation-Date: 2005-04-07 15:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -621,15 +621,15 @@ msgstr ""
 msgid "extern%d: syntax error %s\n"
 msgstr ""
 
-#: ../linkcheck/strformat.py:188
+#: ../linkcheck/strformat.py:181
 msgid "seconds"
 msgstr ""
 
-#: ../linkcheck/strformat.py:191
+#: ../linkcheck/strformat.py:184
 msgid "minutes"
 msgstr ""
 
-#: ../linkcheck/strformat.py:194
+#: ../linkcheck/strformat.py:187
 msgid "hours"
 msgstr ""
 

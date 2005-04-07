@@ -23,4 +23,3 @@ Possible improvements people could work on:
 
 - [BUGFIX] CGI parameters should also be splitted on semicolons, but
   the join routine must also use semicolons then where apropriate.
-  
