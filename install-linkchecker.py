@@ -25,10 +25,14 @@
 
 import sys
 import os
+import platform
 
-if not sys.platform.startswith('win'):
+if platform.system() != 'Windows':
     # not for us
     sys.exit()
+
+# releases supporting our special .bat files
+win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
 # path retrieving functions
 
@@ -64,7 +68,10 @@ def create_shortcuts ():
     except OSError:
         pass
     path = os.path.join(dest_dir, "Check URL.lnk")
-    script = os.path.join(sys.prefix, "Scripts", "linkchecker.cmd")
+    script = os.path.join(sys.prefix, "Scripts", "linkchecker")
+    if platform.release() in win_bat_releases:
+        script += ".bat"
+
     arguments = "--interactive"
     create_shortcut(script, "Check URL", path, arguments)
     file_created(path)
