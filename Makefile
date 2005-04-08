@@ -101,7 +101,7 @@ upload:
 	done
 	ncftpput upload.sourceforge.net /incoming dist/*
 
-test:
+test:	localbuild
 	test/run.sh test.py --resource=network --search-in=linkcheck -fupv
 
 coverage:
