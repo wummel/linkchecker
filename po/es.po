@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: linkchecker 2.4\n"
+"Project-Id-Version: linkchecker 2.8\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-04-01 11:24+0200\n"
-"PO-Revision-Date: 2005-03-02 21:10-0500\n"
+"POT-Creation-Date: 2005-04-13 23:06+0200\n"
+"PO-Revision-Date: 2005-04-12 11:47-0400\n"
 "Last-Translator: Servilio Afre Puentes <servilio@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,8 +84,8 @@ msgstr "Denegado el acceso por robots.txt, chequeando sólo la sintaxis."
 #, fuzzy
 msgid "Amazon servers block HTTP HEAD requests, using GET instead."
 msgstr ""
-"Los servidores de Amazon bloquean las peticiones HTTP HEAD, usando GET en "
-"cambio."
+"Los servidores de Amazon bloquean las peticiones HTTP HEAD, usando GET\n"
+"en cambio."
 
 #: ../linkcheck/checker/httpurl.py:147
 #, python-format
@@ -95,12 +95,12 @@ msgstr "URL efectivo %s."
 #: ../linkcheck/checker/httpurl.py:184
 #, fuzzy, python-format
 msgid "Enforced proxy %r."
-msgstr "Imponiendo Proxy %r."
+msgstr "Proxy %r impuesto."
 
 #: ../linkcheck/checker/httpurl.py:188
 #, fuzzy, python-format
 msgid "Enforced proxy %r ignored, aborting."
-msgstr "Imponiendo Proxy %r."
+msgstr "Ignorado el proxy %r impuesto, abortando."
 
 #: ../linkcheck/checker/httpurl.py:214
 #, python-format
@@ -187,7 +187,7 @@ msgstr "Esquema %r de URL HTTP no soportado"
 #: ../linkcheck/checker/httpurl.py:487
 #, python-format
 msgid "Decompress error %(err)s"
-msgstr ""
+msgstr "Error de descompresión %(err)s"
 
 #: ../linkcheck/checker/httpurl.py:509 ../linkcheck/checker/httpurl.py:537
 #, python-format
@@ -272,7 +272,7 @@ msgstr "El URL tiene un puerto %r inválido"
 #: ../linkcheck/checker/urlbase.py:363
 #, python-format
 msgid "URL is located in %s."
-msgstr ""
+msgstr "El URL está localizado en %s."
 
 #: ../linkcheck/checker/urlbase.py:393
 msgid "Hostname not found"
@@ -406,10 +406,10 @@ msgstr "Falta el \"slash\" final en el URL de FTP."
 #: ../linkcheck/checker/proxysupport.py:45
 #, python-format
 msgid "Ignoring proxy setting %r"
-msgstr ""
+msgstr "Ignorando el ajuste del proxy %r"
 
 #: ../linkcheck/checker/proxysupport.py:49
-#, fuzzy, python-format
+#, python-format
 msgid "Using proxy %r."
 msgstr "Usando Proxy %r."
 
@@ -657,32 +657,32 @@ msgstr "opción de registro %r inválida"
 #: ../linkcheck/configuration.py:352
 #, python-format
 msgid "syntax error in warningregex %r: %s\n"
-msgstr ""
+msgstr "error de sintaxis en warningregex %r: %s\n"
 
 #: ../linkcheck/configuration.py:377
 #, python-format
 msgid "syntax error in noproxyfor%d %r: %s"
-msgstr ""
+msgstr "error de sintaxis en noproxyfor%d %r: %s"
 
 #: ../linkcheck/configuration.py:398
 #, python-format
 msgid "syntax error in entry%d %r: %s"
-msgstr ""
+msgstr "error de sintaxis en la entrada%d %r: %s"
 
 #: ../linkcheck/configuration.py:417
 #, python-format
 msgid "extern%d: syntax error %s\n"
 msgstr "extern%d: error de sintaxis %s\n"
 
-#: ../linkcheck/strformat.py:188
+#: ../linkcheck/strformat.py:181
 msgid "seconds"
 msgstr "segundos"
 
-#: ../linkcheck/strformat.py:191
+#: ../linkcheck/strformat.py:184
 msgid "minutes"
 msgstr "minutos"
 
-#: ../linkcheck/strformat.py:194
+#: ../linkcheck/strformat.py:187
 msgid "hours"
 msgstr "horas"
 
@@ -874,7 +874,7 @@ msgstr ""
 "--viewprof está deshabilitada."
 
 #: ../linkchecker:184
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find profiling file %r."
 msgstr "No se pudo encontrar el archivo %s de perfilado."
 
@@ -885,7 +885,7 @@ msgstr "Por favor, corra linkchecker con --profile para generarlo."
 #: ../linkchecker:203
 #, python-format
 msgid "Syntax error in %r: %s"
-msgstr ""
+msgstr "Error de sintaxis en %r: %s"
 
 #: ../linkchecker:295
 msgid "General options"
@@ -920,6 +920,9 @@ msgid ""
 "Run with normal thread scheduling priority. Per default LinkChecker\n"
 "runs with low thread priority to be suitable as a background job."
 msgstr ""
+"Correr con prioridad normal de planificación de hilo. Por omision\n"
+"LinkChecker corre con prioridad baja de hilo para ser usado como un\n"
+"trabajo desatendido."
 
 #: ../linkchecker:320
 msgid "Output options"
@@ -1189,6 +1192,8 @@ msgid ""
 "Contact hosts that match the given expression directly instead of\n"
 "going through a proxy."
 msgstr ""
+"Contactar directamente los anfitriones que coinciden con la expresión\n"
+"dada en vez de ir a través de un proxy."
 
 #: ../linkchecker:460
 msgid "Deprecated options"
@@ -1203,7 +1208,7 @@ msgstr ""
 #: ../linkchecker:480
 #, python-format
 msgid "Invalid debug level %(level)r"
-msgstr ""
+msgstr "Nivel de depuración inválido %(level)r"
 
 #: ../linkchecker:518 ../linkchecker:546
 #, python-format
@@ -1235,6 +1240,8 @@ msgid ""
 "Using DOT or GML loggers without verbose output gives an incomplete sitemap "
 "graph."
 msgstr ""
+"Usando los registradores DOT o GML sin salida verbosa da un grafo de "
+"incompleto del mapa del sitio."
 
 #: ../linkchecker:649
 msgid ""

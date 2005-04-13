@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-04-01 11:24+0200\n"
+"POT-Creation-Date: 2005-04-13 23:06+0200\n"
 "PO-Revision-Date: 2005-02-02 09:10+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: français <kde-francophone@kde.org>\n"
@@ -673,15 +673,15 @@ msgstr ""
 msgid "extern%d: syntax error %s\n"
 msgstr "extern%d : erreur de syntaxe %s\n"
 
-#: ../linkcheck/strformat.py:188
+#: ../linkcheck/strformat.py:181
 msgid "seconds"
 msgstr "seconde(s)"
 
-#: ../linkcheck/strformat.py:191
+#: ../linkcheck/strformat.py:184
 msgid "minutes"
 msgstr "minute(s)"
 
-#: ../linkcheck/strformat.py:194
+#: ../linkcheck/strformat.py:187
 msgid "hours"
 msgstr "heure(s)"
 
