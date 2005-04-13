@@ -19,6 +19,7 @@ Store cached data during checking.
 """
 
 import Cookie
+import collections
 
 import linkcheck
 import linkcheck.log
@@ -66,7 +67,7 @@ class Cache (linkcheck.lock.AssertLock):
         # urls that are being checked
         self.in_progress = {}
         # to-be-checked urls
-        self.incoming = []
+        self.incoming = collections.deque()
         # downloaded robots.txt files
         self.robots_txt = {}
         # stored cookies

@@ -1,5 +1,9 @@
 2.9 "" (released x.x.xxxx)
 
+  * Use optimized collections.deque object for incoming URL list
+    Type: optimization
+    Changed: linkcheck/checker/cache.py
+
 2.8 "Robots" (released 8.4.2005)
 
   * Correct AttributeError in blacklist logger.
