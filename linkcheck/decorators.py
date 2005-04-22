@@ -2,45 +2,61 @@
 Simple decorators (usable in Python >= 2.4).
 """
 import warnings
+import signal
 
 def deprecated (func):
     """
     A decorator which can be used to mark functions as deprecated.
     It emits a warning when the function is called.
     """
-    def newFunc (*args, **kwargs):
+    def newfunc (*args, **kwargs):
         warnings.warn("Call to deprecated function %s." % func.__name__,
                       category=DeprecationWarning)
         return func(*args, **kwargs)
-    newFunc.__name__ = func.__name__
-    newFunc.__doc__ = func.__doc__
-    newFunc.__dict__.update(func.__dict__)
-    return newFunc
+    newfunc.__name__ = func.__name__
+    newfunc.__doc__ = func.__doc__
+    newfunc.__dict__.update(func.__dict__)
+    return newfunc
+
+
+def signal_handler( signal_number ):
+    """
+    A decorator to set the specified function as handler for a signal.
+    This function is the 'outer' decorator, called with only the
+    (non-function) arguments.
+
+    From http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/410666
+    """
+    # create the 'real' decorator which takes only a function as an argument
+    def newfunc (function):
+        signal.signal(signal_number, function)
+        return function
+    return newfunc
 
 
 def _synchronized (lock, func):
     """
     Call function with aqcuired lock.
     """
-    def newFunc (*args, **kwargs):
+    def newfunc (*args, **kwargs):
         lock.acquire(True) # blocking
         try:
             return func(*args, **kwargs)
         finally:
             lock.release()
-    newFunc.__name__ = func.__name__
-    newFunc.__doc__ = func.__doc__
-    newFunc.__dict__.update(func.__dict__)
-    return newFunc
+    newfunc.__name__ = func.__name__
+    newfunc.__doc__ = func.__doc__
+    newfunc.__dict__.update(func.__dict__)
+    return newfunc
 
 
 def synchronized (lock):
     """
     A decorator calling a function with aqcuired lock.
     """
-    def newFunc (func):
-        return _synchronized(lock, func)
-    return newFunc
+    def newfunc (function):
+        return _synchronized(lock, function)
+    return newfunc
 
 
 if __name__ == '__main__':
