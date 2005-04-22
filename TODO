@@ -25,3 +25,6 @@ Possible improvements people could work on:
   using both '&' or ';' must be possible to separate CGI parameters.
   For compatibility the join routine must not change the used separators,
   so information on what separator was used has to be available.
+
+- [FEATURE] Also print number of encountered warnings (even if they are not
+  displayed).
