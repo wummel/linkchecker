@@ -299,10 +299,12 @@ option.
 **Q: I see LinkChecker gets a /robots.txt file for every site it
 checks. What is that about?**
 
-A: LinkChecker follows the robots.txt exclusion standard. To avoid
+A: LinkChecker follows the `robots.txt exclusion standard`_. To avoid
 misuse of LinkChecker, you cannot turn this feature off.
 See the `Web Robot pages`_ and the `Spidering report`_ for more info.
 
+.. _`robots.txt exclusion standard`:
+   http://www.robotstxt.org/wc/norobots-rfc.html
 .. _`Web Robot pages`:
    http://www.robotstxt.org/wc/robots.html
 .. _`Spidering report`:
