@@ -64,7 +64,7 @@ I can work with ;) .
     traceback.print_exc()
     print_app_info()
     print >> stderr, os.linesep, \
-            _("******** LinkChecker internal error, bailing out ********")
+            _("******** LinkChecker internal error, over and out ********")
     sys.exit(1)
 
 
