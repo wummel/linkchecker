@@ -92,7 +92,7 @@ class CSVLogger (linkcheck.logger.Logger):
         if row:
             self.writer.writerow(row)
 
-    def new_url (self, url_data):
+    def log_url (self, url_data):
         """
         Print csv formatted url check info.
         """
@@ -116,7 +116,7 @@ class CSVLogger (linkcheck.logger.Logger):
         self.writer.writerow(row)
         self.flush()
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         Print end of checking info as csv comment.
         """

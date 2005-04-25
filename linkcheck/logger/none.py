@@ -38,13 +38,13 @@ class NoneLogger (linkcheck.logger.Logger):
         """
         pass
 
-    def new_url (self, url_data):
+    def log_filter_url (self, url_data, do_filter):
         """
         Do nothing.
         """
         pass
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         Do nothing.
         """

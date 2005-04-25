@@ -42,7 +42,7 @@ class TextLogger (linkcheck.logger.Logger):
     as a default and then switch to another configured output. So we
     must not print anything out at __init__ time.
 
-    C{def new_url (self, url_data)}
+    C{def log_filter_url (self, url_data, do_filter)}
     Called every time an url finished checking. All data we checked is in
     the UrlData object url_data.
 
@@ -105,7 +105,7 @@ class TextLogger (linkcheck.logger.Logger):
                          linkcheck.strformat.strtime(self.starttime))
             self.flush()
 
-    def new_url (self, url_data):
+    def log_url (self, url_data):
         """
         Print url checking info.
         """
@@ -224,14 +224,13 @@ class TextLogger (linkcheck.logger.Logger):
             color = self.colorvalid
             self.write(_("Valid"), color=color)
         else:
-            self.errors += 1
             color = self.colorinvalid
             self.write(_("Error"), color=color)
         if url_data.result:
             self.write(u": "+url_data.result, color=color)
         self.writeln()
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         Print end of output info, and flush all output buffers.
         """
@@ -240,11 +239,14 @@ class TextLogger (linkcheck.logger.Logger):
         if self.has_field('outro'):
             self.writeln()
             self.write(_("That's it.")+" ")
-            if linknumber >= 0:
+            if self.number >= 0:
                 self.write(_n("%d link checked.", "%d links checked.",
-                              linknumber) % linknumber)
+                              self.number) % self.number)
                 self.write(u" ")
 
+            self.write(_n("%d warning found.", "%d warnings found.",
+                            self.warnings) % self.warnings)
+            self.write(u" ")
             self.writeln(_n("%d error found.", "%d errors found.",
                             self.errors) % self.errors)
             self.stoptime = time.time()

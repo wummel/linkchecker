@@ -89,7 +89,7 @@ class SQLLogger (linkcheck.logger.Logger):
             self.writeln()
             self.flush()
 
-    def new_url (self, url_data):
+    def log_url (self, url_data):
         """
         Store url check info into the database.
         """
@@ -136,7 +136,7 @@ class SQLLogger (linkcheck.logger.Logger):
               })
         self.flush()
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         Print end of checking info as sql comment.
         """

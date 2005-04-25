@@ -107,7 +107,7 @@ class HtmlLogger (linkcheck.logger.Logger):
             self.check_date()
         self.flush()
 
-    def new_url (self, url_data):
+    def log_url (self, url_data):
         """
         Print url checking info as HTML.
         """
@@ -267,7 +267,6 @@ class HtmlLogger (linkcheck.logger.Logger):
              self.field("result")+u"</td><td bgcolor=\""+self.colorok+u"\">")
             self.write(_("Valid"))
         else:
-            self.errors += 1
             self.write(u"<tr><td bgcolor=\""+self.colorerror+u"\">"+
            self.field("result")+u"</td><td bgcolor=\""+self.colorerror+u"\">")
             self.write(_("Error"))
@@ -275,7 +274,7 @@ class HtmlLogger (linkcheck.logger.Logger):
             self.write(u": "+cgi.escape(url_data.result))
         self.writeln(u"</td></tr>")
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         Print end of checking info as HTML.
         """
@@ -284,10 +283,13 @@ class HtmlLogger (linkcheck.logger.Logger):
         if self.has_field("outro"):
             self.writeln()
             self.write(_("That's it.")+" ")
-            if linknumber >= 0:
+            if self.number >= 0:
                 self.write(_n("%d link checked.", "%d links checked.",
-                           linknumber) % linknumber)
+                           self.number) % self.number)
                 self.write(u" ")
+            self.write(_n("%d warning found.", "%d warnings found.",
+                            self.warnings) % self.warnings)
+            self.write(u" ")
             self.writeln(_n("%d error found.", "%d errors found.",
                          self.errors) % self.errors)
             self.writeln(u"<br>")

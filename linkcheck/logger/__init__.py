@@ -62,8 +62,12 @@ class Logger (object):
         self.logspaces = {}
         # maximum indent of spaces for alignment
         self.max_indent = 0
+        # number of logged urls
+        self.number = 0
         # number of encountered errors
         self.errors = 0
+        # number of encountered warningss
+        self.warnings = 0
         # encoding of output
         self.output_encoding = args.get("encoding", "iso-8859-1")
 
@@ -177,13 +181,25 @@ class Logger (object):
             numspaces = (self.max_indent - len(self.field(key)))
             self.logspaces[key] = u" " * numspaces
 
-    def new_url (self, url_data):
+    def log_filter_url (self, url_data, do_print):
+        """
+        Log a new url with this logger if do_filter is True. Else
+        only update accounting data
+        """
+        self.number += 1
+        if not url_data.valid:
+            self.errors += 1
+        self.warnings += len(url_data.warning)
+        if do_print:
+            self.log_url(url_data)
+
+    def log_url (self, url_data):
         """
         Log a new url with this logger.
         """
         raise NotImplementedError, "abstract function"
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         End of output, used for cleanup (eg output buffer flushing).
         """

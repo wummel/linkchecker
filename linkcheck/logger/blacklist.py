@@ -56,7 +56,7 @@ class BlacklistLogger (linkcheck.logger.Logger):
         """
         pass
 
-    def new_url (self, url_data):
+    def log_url (self, url_data):
         """
         Put invalid url in blacklist, delete valid url from blacklist.
         """
@@ -71,7 +71,7 @@ class BlacklistLogger (linkcheck.logger.Logger):
                 if not url_data.valid:
                     self.blacklist[key] = 1
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         Write blacklist file.
         """

@@ -66,7 +66,7 @@ class DOTLogger (linkcheck.logger.Logger):
         self.write(u"// ")
         self.writeln(s=s, **args)
 
-    def new_url (self, url_data):
+    def log_url (self, url_data):
         """
         Write one node and all possible edges.
         """
@@ -106,7 +106,7 @@ class DOTLogger (linkcheck.logger.Logger):
                 self.writeln(u"  ];")
         self.flush()
 
-    def end_output (self, linknumber=-1):
+    def end_output (self):
         """
         Print end of checking info as DOT comment.
         """
