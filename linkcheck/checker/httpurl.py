@@ -141,11 +141,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.method = "HEAD"
         # check the http connection
         response, fallback_GET = self.check_http_connection()
-        # check url warnings
-        effectiveurl = urlparse.urlunsplit(self.urlparts)
-        if self.url != effectiveurl:
-            self.add_warning(_("Effective URL %s.") % effectiveurl)
-            self.url = effectiveurl
         # check response
         self.check_response(response, fallback_GET)
 
@@ -301,12 +296,6 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
                     self.add_warning(
                            _("HTTP 301 (moved permanent) encountered: you"
                              " should update this link."))
-                    if not (self.url.endswith('/') or \
-                       self.url.endswith('.html')):
-                        self.add_warning(
-                       _("A HTTP 301 redirection occured and the URL has no "
-                     "trailing / at the end. All URLs which point to (home) "
-                     "directories should end with a / to avoid redirection."))
                     self.has301status = True
             # check cache again on the changed URL
             if self.consumer.cache.checked_redirect(redirected, self):
@@ -346,8 +335,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             else:
                 server = _("unknown")
             if fallback_GET:
-                self.add_warning(_("Server %r did not support HEAD request,"\
-                                   " used GET for checking.") % server)
+                self.add_warning(_("Server %r did not support HEAD request; "\
+                                  "a GET request was used instead.") % server)
             if self.no_anchor:
                 self.add_warning(_("Server %r had no anchor support, removed"\
                                    " anchor from request.") % server)

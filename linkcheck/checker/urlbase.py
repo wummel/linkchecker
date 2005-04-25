@@ -279,6 +279,11 @@ class UrlBase (object):
             return False
         try:
             self.build_url()
+            # check url warnings
+            effectiveurl = urlparse.urlunsplit(self.urlparts)
+            if self.url != effectiveurl:
+                self.add_warning(_("Effective URL %s.") % effectiveurl)
+                self.url = effectiveurl
         except linkcheck.LinkCheckerError, msg:
             self.set_result(linkcheck.strformat.unicode_safe(msg),
                             valid=False)
