@@ -19,20 +19,50 @@ Logging and debug functions.
 """
 
 # public api
-__all__ = ["debug", "info", "warn", "error", "critical", "exception", ]
+__all__ = ["debug", "info", "warn", "error", "critical", "exception",
+           "trace", "is_debug"]
 
 import logging
 import traceback
 import inspect
 import cStringIO as StringIO
+import linecache
+import sys
 
 # memory leak debugging
 #import gc
 #gc.enable()
 #gc.set_debug(gc.DEBUG_LEAK)
 
-PRINT_LOCALVARS = False
+# call tracing
 
+tracelog = ""
+
+def trace (log):
+    """
+    Start tracing of the current thread (and the current thread only).
+    """
+    global tracelog
+    tracelog = log
+    sys.settrace(_traceit)
+
+
+def _traceit (frame, event, arg):
+    """
+    Print current executed line.
+    """
+    if event == "line":
+        lineno = frame.f_lineno
+        filename = frame.f_globals["__file__"]
+        if filename.endswith(".pyc") or filename.endswith(".pyo"):
+            filename = filename[:-1]
+        name = frame.f_globals["__name__"]
+        line = linecache.getline(filename, lineno)
+        debug(tracelog, "%s:%s: %s", name, lineno, line.rstrip())
+    return _traceit
+
+
+PRINT_LOCALVARS = False
 def _stack_format (stack):
     """
     Format a stack trace to a message.
