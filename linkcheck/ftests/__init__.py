@@ -56,7 +56,7 @@ class TestLogger (linkcheck.logger.Logger):
         """
         pass
 
-    def new_url (self, url_data):
+    def log_url (self, url_data):
         """
         Append logger output to self.result.
         """

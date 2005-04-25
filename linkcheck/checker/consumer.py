@@ -64,11 +64,6 @@ class Consumer (linkcheck.lock.AssertLock):
         self.threader = linkcheck.threader.Threader(num=config['threads'])
         self.logger = config['logger']
         self.fileoutput = config['fileoutput']
-        self.linknumber = 0
-        # if checking had errors
-        self.errors = False
-        # if checking had warnings
-        self.warnings = False
         self.logger_start_output()
 
     def append_url (self, url_data):
@@ -77,7 +72,7 @@ class Consumer (linkcheck.lock.AssertLock):
         """
         if not self.cache.incoming_add(url_data):
             # can be logged
-            self.logger_new_url(url_data)
+            self.logger_log_url(url_data)
 
     def check_url (self):
         """
@@ -90,7 +85,7 @@ class Consumer (linkcheck.lock.AssertLock):
             time.sleep(0.1)
         elif url_data.cached:
             # was cached -> can be logged
-            self.logger_new_url(url_data)
+            self.logger_log_url(url_data)
         else:
             # go check this url
             # this calls either self.checked() or self.interrupted()
@@ -102,7 +97,7 @@ class Consumer (linkcheck.lock.AssertLock):
         """
         # log before putting it in the cache (otherwise we would see
         # a "(cached)" after every url
-        self.logger_new_url(url_data)
+        self.logger_log_url(url_data)
         if not url_data.cached:
             self.cache.checked_add(url_data)
         else:
@@ -167,7 +162,7 @@ class Consumer (linkcheck.lock.AssertLock):
             print >> stderr, _("Status:"),
             active = self.threader.active_threads()
             print_active(active)
-            print_links(self.linknumber)
+            print_links(self.logger.number)
             print_tocheck(tocheck)
             print_duration(curtime - start_time)
             print >> stderr
@@ -186,25 +181,20 @@ class Consumer (linkcheck.lock.AssertLock):
         finally:
             self.release()
 
-    def logger_new_url (self, url_data):
+    def logger_log_url (self, url_data):
         """
         Send new url to all configured loggers.
         """
         self.acquire()
         try:
-            self.linknumber += 1
-            do_filter = (self.linknumber % 1000) == 0
-            if not url_data.valid:
-                self.errors = True
-            if url_data.warning and self.config["warnings"]:
-                self.warnings = True
-            if (self.config["verbose"] or not url_data.valid or
-                (url_data.warning and self.config["warnings"])):
-                self.logger.new_url(url_data)
-                for log in self.fileoutput:
-                    log.new_url(url_data)
+            do_print = self.config["verbose"] or not url_data.valid or \
+                (url_data.warning and self.config["warnings"])
+            self.logger.log_filter_url(url_data, do_print)
+            for log in self.fileoutput:
+                log.log_filter_url(url_data, do_print)
         finally:
             self.release()
+        # do_filter = (self.linknumber % 1000) == 0
         # XXX deadlock!
         #if do_filter:
         #    self.filter_queue(self)
@@ -215,9 +205,9 @@ class Consumer (linkcheck.lock.AssertLock):
         """
         self.acquire()
         try:
-            self.logger.end_output(linknumber=self.linknumber)
+            self.logger.end_output()
             for logger in self.fileoutput:
-                logger.end_output(linknumber=self.linknumber)
+                logger.end_output()
         finally:
             self.release()
 
