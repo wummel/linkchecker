@@ -322,8 +322,8 @@ group.add_option("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
 """Log all checked URLs (implies -w). Default is to log only invalid
 URLs."""))
-group.add_option("-w", "--warnings", action="store_true", dest="warnings",
-                 help=_("""Log warnings."""))
+group.add_option("--no-warnings", action="store_false", dest="warnings",
+                 help=_("""Don't log warnings. Default is to log warnings."""))
 group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
                  help=_(
 """Define a regular expression which prints a warning if it matches
@@ -461,6 +461,8 @@ group = optparse.OptionGroup(optparser, _("Deprecated options"))
 group.add_option("--status", action="store_true", dest="status",
                  help=_(
 """Print check status every 5 seconds to stderr. This is the default."""))
+group.add_option("-w", "--warnings", action="store_true", dest="warnings",
+                 help=_("""Log warnings."""))
 optparser.add_option_group(group)
 
 ################# auto completion #####################
@@ -496,6 +498,8 @@ do_profile = False
 if not options.priority:
     import linkcheck.threader
     linkcheck.threader.set_thread_priority(linkcheck.threader.PRIO_LOW)
+if options.warnings is not None:
+    config["warnings"] = options.warnings
 if options.anchors is not None:
     config["anchors"] = options.anchors
     config["warnings"] = True
@@ -609,8 +613,6 @@ if options.verbose is not None:
         config["warnings"] = True
 if options.viewprof:
     viewprof()
-if options.warnings is not None:
-    config["warnings"] = options.warnings
 if options.warningregex is not None:
     config["warningregex"] = try_compile_re(options.warningregex)
     config["warnings"] = True
@@ -704,7 +706,7 @@ Psyco >= 1.4 is needed."""))
 if config['interactive']:
     raw_input(_("Hit RETURN to finish"))
 
-# if errors are encountered, exit with non-zero status
-# same applies to warnings when --warnings options was given
-if consumer.errors or (consumer.warnings and config['warnings']):
+# if errors or warnings are encountered, exit with non-zero status
+if consumer.logger.errors or \
+  (consumer.logger.warnings and config['warnings']):
     sys.exit(1)

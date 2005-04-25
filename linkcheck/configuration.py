@@ -74,7 +74,7 @@ class Configuration (dict):
         """
         super(Configuration, self).__init__()
         self["verbose"] = False
-        self["warnings"] = False
+        self["warnings"] = True
         self['quiet'] = False
         self["anchors"] = False
         self["anchorcaching"] = True
@@ -279,6 +279,10 @@ class Configuration (dict):
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
+            self["warnings"] = cfgparser.getboolean(section, "warnings")
+        except ConfigParser.Error, msg:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
             if cfgparser.getboolean(section, "verbose"):
                 self["verbose"] = True
                 self["warnings"] = True
@@ -292,10 +296,6 @@ class Configuration (dict):
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["status"] = cfgparser.getboolean(section, "status")
-        except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
