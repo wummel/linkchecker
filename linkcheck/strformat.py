@@ -21,7 +21,6 @@ necessarily optimised for large strings, so use with care.
 
 import re
 import textwrap
-import sys
 import os
 import time
 import urlparse
