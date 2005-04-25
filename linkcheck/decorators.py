@@ -3,6 +3,7 @@ Simple decorators (usable in Python >= 2.4).
 """
 import warnings
 import signal
+import os
 
 def deprecated (func):
     """
@@ -19,7 +20,7 @@ def deprecated (func):
     return newfunc
 
 
-def signal_handler( signal_number ):
+def signal_handler (signal_number):
     """
     A decorator to set the specified function as handler for a signal.
     This function is the 'outer' decorator, called with only the
@@ -29,7 +30,8 @@ def signal_handler( signal_number ):
     """
     # create the 'real' decorator which takes only a function as an argument
     def newfunc (function):
-        signal.signal(signal_number, function)
+        if os.name == 'posix':
+            signal.signal(signal_number, function)
         return function
     return newfunc
 
