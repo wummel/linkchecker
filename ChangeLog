@@ -1,3 +1,10 @@
+3.0 "" (released xx.xx.xxxx)
+
+  * Displaying warnings is now the default. One can disable warnings
+    with the --no-warnings option.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration.py
+
 2.9 "Sweat" (released 22.4.2005)
 
   * Use collections.deque object for incoming URL list. This is faster
