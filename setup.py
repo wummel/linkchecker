@@ -104,6 +104,25 @@ class MyInstall (install, object):
         outs.append(self.distribution.get_conf_filename(self.install_lib))
         return outs
 
+    # compatibility bugfix for Python << 2.5, << 2.4.1, << 2.3.5
+    # remove this method when depending on one of the above versions
+    def dump_dirs (self, msg):
+        if DEBUG:
+            from distutils.fancy_getopt import longopt_xlate
+            print msg + ":"
+            for opt in self.user_options:
+                opt_name = opt[0]
+                if opt_name[-1] == "=":
+                    opt_name = opt_name[0:-1]
+                if self.negative_opt.has_key(opt_name):
+                    opt_name = string.translate(self.negative_opt[opt_name],
+                                                longopt_xlate)
+                    val = not getattr(self, opt_name)
+                else:
+                    opt_name = string.translate(opt_name, longopt_xlate)
+                    val = getattr(self, opt_name)
+                print "  %s: %s" % (opt_name, val)
+
 
 class MyInstallData (install_data, object):
     """
