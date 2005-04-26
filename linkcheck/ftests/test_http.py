@@ -51,7 +51,6 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             u"cache key %s" % nurl,
             u"real url %s" % rurl,
             u"info Redirected to %s." % rurl,
-            u"warning Effective URL %s." % rurl,
             u"error",
         ]
         self.direct(url, resultlines, recursionlevel=0)
@@ -64,14 +63,12 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             u"cache key %s" % nurl,
             u"real url %s" % rurl,
             u"info Redirected to %s." % rurl,
-            u"warning Effective URL %s." % rurl,
             u"valid",
             u"url newurl.html (cached)",
             u"cache key %s" % nurl.replace("redirect", "newurl"),
             u"real url %s" % rurl.replace("redirect", "newurl"),
             u"name Recursive Redirect",
             u"info Redirected to %s." % rurl,
-            u"warning Effective URL %s." % rurl,
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99)
