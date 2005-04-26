@@ -256,8 +256,6 @@ class UrlBase (object):
             # do not ignore anchor
             parts = self.urlparts[:]
             parts[4] = self.anchor
-            if self.userinfo:
-                parts[1] = self.userinfo+u"@"+parts[1]
             self.cache_url_key = urlparse.urlunsplit(parts)
         else:
             # no anchor caching
@@ -325,8 +323,11 @@ class UrlBase (object):
         self.url = urlparse.urlunsplit(self.urlparts)
         # check userinfo@host:port syntax
         self.userinfo, host = urllib.splituser(self.urlparts[1])
-        # set host lowercase and without userinfo
-        self.urlparts[1] = host.lower()
+        # set host lowercase
+        if self.userinfo:
+            self.urlparts[1] = "%s@%s" % (self.userinfo, host.lower())
+        else:
+            self.urlparts[1] = host.lower()
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
         self.host, self.port = urllib.splitport(host)
