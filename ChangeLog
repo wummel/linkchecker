@@ -9,6 +9,10 @@
     Type: bugfix
     Changed: linkcheck/url.py
 
+  * The number of encountered warnings is printed on program end.
+    Type: feature
+    Changed: linkcheck/logger/{text,html}.py
+
 2.9 "Sweat" (released 22.4.2005)
 
   * Use collections.deque object for incoming URL list. This is faster

@@ -24,6 +24,3 @@ Possible improvements people could work on:
 - [FEATURE] Option to save downloaded pages. This could also be used to
   build an internal cache, however there are already a plethora of
   caching proxies we could use for that.
-
-- [FEATURE] Also print number of encountered warnings (even if they are not
-  displayed).
