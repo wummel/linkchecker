@@ -141,6 +141,10 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             self.method = "HEAD"
         # check the http connection
         response, fallback_GET = self.check_http_connection()
+        # redirections might have changed the URL
+        newurl = urlparse.urlunsplit(self.urlparts)
+        if self.url != newurl:
+            self.url = newurl
         # check response
         self.check_response(response, fallback_GET)
 
