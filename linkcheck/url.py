@@ -151,12 +151,22 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
         false (the default), errors are silently ignored. If true,
         errors raise a ValueError exception.
     @type strict_parsing: bool
-    @returns: a list, as G-d intended.
-    @rtype: list
+    @returns: list of triples (key, value, separator) where key and value
+      are the splitted CGI parameter and separator the used separator
+      for this CGI parameter which is either a semicolon or an ampersand
+    @rtype: list of triples
     """
-    pairs = [s for s in qs.split('&')]
+    pairs = []
+    name_value_amp = qs.split('&')
+    for name_value in name_value_amp:
+        if ';' in name_value:
+            pairs.extend([[x, ';'] for x in name_value.split(';')])
+            pairs[-1][1] = '&'
+        else:
+            pairs.append([name_value, '&'])
+    pairs[-1][1] = ''
     r = []
-    for name_value in pairs:
+    for name_value, sep in pairs:
         nv = name_value.split('=', 1)
         if len(nv) != 2:
             if strict_parsing:
@@ -172,7 +182,7 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
                 value = urllib.unquote(nv[1].replace('+', ' '))
             else:
                 value = nv[1]
-            r.append((name, value))
+            r.append((name, value, sep))
     return r
 
 
@@ -260,17 +270,17 @@ def url_parse_query (query):
     else:
         append = ""
     l = []
-    for k, v in parse_qsl(query, True):
+    for k, v, sep in parse_qsl(query, True):
         k = urllib.quote(k, '/-:,;')
         if v:
             v = urllib.quote(v, '/-:,;')
-            l.append("%s=%s" % (k, v))
+            l.append("%s=%s%s" % (k, v, sep))
         elif v is None:
-            l.append(k)
+            l.append("%s%s" % (k, sep))
         else:
             # some sites do not work when the equal sign is missing
-            l.append("%s=" % k)
-    return '&'.join(l) + append
+            l.append("%s=%s" % (k, sep))
+    return ''.join(l) + append
 
 
 def url_norm (url):
@@ -367,14 +377,14 @@ def url_quote (url):
     urlparts[2] = urllib.quote(urlparts[2], '/=,') # path
     urlparts[3] = urllib.quote(urlparts[3], '&=,') # query
     l = []
-    for k, v in parse_qsl(urlparts[3], True): # query
+    for k, v, sep in parse_qsl(urlparts[3], True): # query
         k = urllib.quote(k, '/-:,')
         if v:
             v = urllib.quote(v, '/-:,')
-            l.append("%s=%s" % (k, v))
+            l.append("%s=%s%s" % (k, v, sep))
         else:
-            l.append(k)
-    urlparts[3] = '&'.join(l)
+            l.append("%s%s" % (k, sep))
+    urlparts[3] = ''.join(l)
     urlparts[4] = urllib.quote(urlparts[4]) # anchor
     return urlparse.urlunsplit(urlparts)
 

@@ -5,6 +5,10 @@
     Type: feature
     Changed: linkchecker, linkcheck/configuration.py
 
+  * CGI parameters in URLs are now properly splitted and normed.
+    Type: bugfix
+    Changed: linkcheck/url.py
+
 2.9 "Sweat" (released 22.4.2005)
 
   * Use collections.deque object for incoming URL list. This is faster

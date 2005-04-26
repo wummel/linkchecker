@@ -25,10 +25,5 @@ Possible improvements people could work on:
   build an internal cache, however there are already a plethora of
   caching proxies we could use for that.
 
-- [BUGFIX] CGI parameters should also be splitted on semicolons, ie.
-  using both '&' or ';' must be possible to separate CGI parameters.
-  For compatibility the join routine must not change the used separators,
-  so information on what separator was used has to be available.
-
 - [FEATURE] Also print number of encountered warnings (even if they are not
   displayed).
