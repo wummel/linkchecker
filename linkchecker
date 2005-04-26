@@ -313,6 +313,10 @@ group.add_option("--priority", action="store_true", dest="priority",
                  help=_(
 """Run with normal thread scheduling priority. Per default LinkChecker
 runs with low thread priority to be suitable as a background job."""))
+
+group.add_option("--disable-psyco", action="store_false", dest="psyco",
+                 default=True, help=_(
+"""Do not use psyco runtime compilation even if it is installed."""))
 optparser.add_option_group(group)
 
 
@@ -669,13 +673,13 @@ for url in args:
 if do_profile and not has_profile:
     linkcheck.log.warn(linkcheck.LOG_CMDLINE,
                        _("The `profile' Python module is not installed,"
-                       " therefore the --profile option is disabled."))
+                         " therefore the --profile option is disabled."))
 
 if do_profile and has_profile:
     run = True
     if os.path.exists(_profile):
-        question = _("""Overwrite profiling file %r?
-Press Ctrl-C to cancel, RETURN to continue.""") % _profile
+        question = _("Overwrite profiling file %r?\n"
+                     "Press Ctrl-C to cancel, RETURN to continue.") % _profile
         try:
             raw_input(question)
         except KeyboardInterrupt:
@@ -685,7 +689,7 @@ Press Ctrl-C to cancel, RETURN to continue.""") % _profile
             run = False
     if run:
         profile.run("linkcheck.checker.check_urls(consumer)", _profile)
-else:
+elif options.psyco:
     try:
         import psyco
         # psyco >= 1.4.0 final is needed
@@ -694,8 +698,8 @@ else:
         else:
             # warn about old psyco version
             linkcheck.log.warn(linkcheck.LOG_CMDLINE, 
-         _("""Psyco is installed but not used since the version is too old.
-Psyco >= 1.4 is needed."""))
+         _("Psyco is installed but not used since the version is too old.\n"
+           "Psyco >= 1.4 is needed."))
     except ImportError:
         # no psyco available, just ignore
         pass
