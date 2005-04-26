@@ -11,6 +11,10 @@ Possible improvements people could work on:
   Example: URL http://a redirects to http://b. Both http://a and http://b
   are now cached. Then a check of http://b will display a (cached)
   redirection warning.
+  Possible solutions:
+    * do not cache aliases
+    * generate separate urldata instances for aliases with the proper
+      warnings (one still has to define what "proper" means here).
 
 - [USAGE] make a nice GUI for linkchecker
 
