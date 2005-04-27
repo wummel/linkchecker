@@ -28,15 +28,16 @@ import pprint
 import socket
 import optparse
 
-# set default 60 seconds timeout
+# set default 60 seconds socket timeout before importing anything else
 default_timeout = 60
 socket.setdefaulttimeout(default_timeout)
 
 import linkcheck
 # initialize i18n, puts _() function into global namespace
 linkcheck.init_i18n()
-# override optparse gettext method
+# override optparse gettext method with the one from init_i18n()
 optparse._ = _
+# now import the rest of the linkchecker gang
 import linkcheck.log
 import linkcheck.checker
 import linkcheck.checker.cache
@@ -462,11 +463,8 @@ optparser.add_option_group(group)
 
 ################# deprecated options ##################
 group = optparse.OptionGroup(optparser, _("Deprecated options"))
-group.add_option("--status", action="store_true", dest="status",
-                 help=_(
-"""Print check status every 5 seconds to stderr. This is the default."""))
 group.add_option("-w", "--warnings", action="store_true", dest="warnings",
-                 help=_("""Log warnings."""))
+                 help=_("""Log warnings. This is the default."""))
 optparser.add_option_group(group)
 
 ################# auto completion #####################
