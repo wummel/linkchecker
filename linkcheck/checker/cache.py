@@ -199,12 +199,6 @@ class Cache (linkcheck.lock.AssertLock):
             # move entry from self.in_progress to self.checked
             del self.in_progress[key]
             self.checked[key] = data
-            # add all aliases also to checked cache to avoid recursion
-            for key in url_data.aliases:
-                if key not in self.checked and key not in self.in_progress:
-                    linkcheck.log.debug(linkcheck.LOG_CACHE,
-                                        "Cache alias %r...", key)
-                    self.checked[key] = data
         finally:
             self.release()
 

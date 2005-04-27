@@ -166,12 +166,6 @@ class UrlBase (object):
         # cache keys, are set by build_url() calling set_cache_keys()
         self.cache_url_key = None
         self.cache_content_key = None
-        # Store a list of aliases since the same resource can be known
-        # under several URLs. This is used for example on HTTP 30[12]
-        # redirections.
-        # Note that aliases are saved as-is, not through the cache-key-
-        # generating method set_cache_keys().
-        self.aliases = []
 
     def set_result (self, msg, valid=True):
         """
