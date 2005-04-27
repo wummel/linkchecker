@@ -1,7 +1,8 @@
 3.0 "" (released xx.xx.xxxx)
 
   * Displaying warnings is now the default. One can disable warnings
-    with the --no-warnings option.
+    with the --no-warnings option. The old --warnings option is
+    deprecated.
     Type: feature
     Changed: linkchecker, linkcheck/configuration.py
 
@@ -12,6 +13,10 @@
   * The number of encountered warnings is printed on program end.
     Type: feature
     Changed: linkcheck/logger/{text,html}.py
+
+  * The deprecated --status option has been removed.
+    Type: feature
+    Changed: linkchecker
 
 2.9 "Sweat" (released 22.4.2005)
 
