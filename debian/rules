@@ -8,12 +8,12 @@ include /usr/share/cdbs/1/class/python-distutils.mk
 
 PACKAGE = linkchecker
 ROOT = $(CURDIR)/debian/$(PACKAGE)
-DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
 DEB_PYTHON_COMPILE_VERSION = 2.4
 PYTHON = python$(DEB_PYTHON_COMPILE_VERSION)
+DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
 CGIDIR = $(ROOT)/usr/lib/cgi-bin/lconline
 HTMLDIR = $(ROOT)/var/www/lconline
-SHARE = $(ROOT)/usr/share/linkchecker
+SHARE = $(ROOT)/usr/share/$(PACKAGE)
 ETC = $(ROOT)/etc
 
 common-configure-arch::
@@ -23,8 +23,8 @@ common-install-impl::
 # remove example files, we install them with dh_installexamples
 	rm -r $(ROOT)/usr/share/linkchecker/examples
 # install system wide configuration files in etc
-	mv $(SHARE)/linkcheckerrc $(ETC)/linkchecker/
-	mv $(SHARE)/logging.conf $(ETC)/linkchecker/
+	mv $(SHARE)/linkcheckerrc $(ETC)/$(PACKAGE)/
+	mv $(SHARE)/logging.conf $(ETC)/$(PACKAGE)/
 # install CGI files
 	install -m 644 cgi/lconline/*.html $(HTMLDIR)
 	install -m 644 cgi/lconline/*.de $(HTMLDIR)
@@ -35,3 +35,6 @@ common-install-impl::
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
 
+binary-post-install/linkchecker::
+# remove the README file which somehow gets installed
+	rm $(DOCDIR)/README
