@@ -7,8 +7,8 @@
 URL="http://www.imadoofus.org/"
 
 PATH="/bin:/usr/bin"
-LOGFILE="$HOME/.linkchecker_blacklist"
+LOGFILE="$HOME/.linkchecker/blacklist"
 
-linkchecker -Fblacklist/$LOGFILE $URL
+linkchecker -Fblacklist $URL
 # this awk script complains if urls fail for at least two script runs
 [ -r $LOGFILE ] && awk '/^[[:digit:]]+/ {if ($1 > 1) printf "URL %s failed for %d days.", $2, $1; }' $LOGFILE
