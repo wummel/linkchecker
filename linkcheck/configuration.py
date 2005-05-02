@@ -229,9 +229,13 @@ class Configuration (dict):
         if not cfiles:
             # system wide config settings
             config_dir = _linkchecker_configdata.config_dir
-            cfiles.append(normpath(os.path.join(config_dir, "linkcheckerrc")))
+	    path = normpath(os.path.join(config_dir, "linkcheckerrc"))
+	    if os.path.exists(path):
+	        cfiles.append(path)
             # per user config settings
-            cfiles.append(normpath("~/.linkchecker/linkcheckerrc"))
+	    path = normpath("~/.linkchecker/linkcheckerrc")
+	    if os.path.exists(path):
+	        cfiles.append(path)
         self.read_config(cfiles)
         # re-init logger
         self['logger'] = self.logger_new('text')
