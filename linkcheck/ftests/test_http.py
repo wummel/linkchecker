@@ -64,11 +64,15 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             u"real url %s" % rurl,
             u"info Redirected to %s." % rurl,
             u"valid",
+            u"url newurl.html",
+            u"cache key %s" % rurl,
+            u"real url %s" % rurl,
+            u"name Recursive Redirect",
+            u"valid",
             u"url newurl.html (cached)",
             u"cache key %s" % nurl.replace("redirect", "newurl"),
             u"real url %s" % rurl.replace("redirect", "newurl"),
             u"name Recursive Redirect",
-            u"info Redirected to %s." % rurl,
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99)

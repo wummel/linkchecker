@@ -1,5 +1,11 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * If a default config file (either /etc/linkchecker/linkcheckerrc or
+    ~/.linkchecker/linkcheckerrc) does not exist it is not added to
+    the config file list.
+    Type: bugfix
+    Changed: linkcheck/configuration.py
+
   * Displaying warnings is now the default. One can disable warnings
     with the --no-warnings option. The old --warnings option is
     deprecated.
@@ -17,6 +23,16 @@
   * The deprecated --status option has been removed.
     Type: feature
     Changed: linkchecker
+
+  * New option --disable-psyco to disable psyco compilation regardless
+    if it is installed.
+    Type: feature
+    Changed: linkchecker
+
+  * Since URL aliases from redirections do not represent the real
+    URL with regards to warnings, the aliases are no longer cached.
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py, linkcheck/checker/httpurl.py
 
 2.9 "Sweat" (released 22.4.2005)
 
