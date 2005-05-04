@@ -20,7 +20,8 @@ from docutils import writers, nodes, languages, utils
 from docutils.writers import html4css1
 from docutils.parsers.rst.directives.html import MetaBody
 
-import sys, os
+import sys
+import os
 
 class NavInfo (object):
     """store nav info"""
@@ -86,7 +87,7 @@ class HTMLNavTranslator (html4css1.HTMLTranslator):
         elif navattr=='name':
             self.nav_info.name = val
         elif navattr=='visible':
-            self.nav_info.visible = (val!='0')
+            self.nav_info.visible = val.lower() not in ['0', 'false']
         else:
             print >> sys.stderr, "unknown navigation attr", repr(navattr)
 
