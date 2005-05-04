@@ -62,6 +62,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.has301status = False
         self.no_anchor = False # remove anchor in request url
         self.persistent = False
+        # URLs seen through 301/302 redirections
+        self.aliases = []
 
     def allows_robots (self, url):
         """
@@ -128,7 +130,7 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
         self.cookies = []
         # check robots.txt
         if not self.allows_robots(self.url):
-            self.add_warning(
+            self.add_info(
                        _("Access denied by robots.txt, checked only syntax."))
             return
         # check for amazon server quirk
