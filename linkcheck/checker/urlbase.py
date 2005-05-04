@@ -85,7 +85,7 @@ def urljoin (parent, url, scheme):
     """
     If url is relative, join parent and url. Else leave url as-is.
 
-    @return join url
+    @return joined url
     """
     if url.startswith(scheme+":"):
         return url
@@ -297,7 +297,7 @@ class UrlBase (object):
                           the URL %r instead.""") % (self.base_url, base_url))
         elif self.base_url != base_url:
             self.add_warning(
-              _("Base URL is not properly normed. Normed url is %(url)r.") % \
+              _("Base URL is not properly normed. Normed URL is %(url)s.") % \
                {'url': base_url})
         # make url absolute
         if self.base_ref:
