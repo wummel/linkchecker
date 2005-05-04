@@ -274,7 +274,7 @@ class UrlBase (object):
             # check url warnings
             effectiveurl = urlparse.urlunsplit(self.urlparts)
             if self.url != effectiveurl:
-                self.add_warning(_("Effective URL %s.") % effectiveurl)
+                self.add_warning(_("Effective URL %r.") % effectiveurl)
                 self.url = effectiveurl
         except linkcheck.LinkCheckerError, msg:
             self.set_result(linkcheck.strformat.unicode_safe(msg),
@@ -292,12 +292,12 @@ class UrlBase (object):
         # norm base url
         base_url, is_idn = linkcheck.url.url_norm(self.base_url)
         if is_idn:
-            self.add_warning(_("""URL %s has a unicode domain name which
+            self.add_warning(_("""URL %r has a unicode domain name which
                           is not yet widely supported. You should use
-                          the URL %s instead.""") % (self.base_url, base_url))
+                          the URL %r instead.""") % (self.base_url, base_url))
         elif self.base_url != base_url:
             self.add_warning(
-              _("Base URL is not properly normed. Normed url is %(url)s.") % \
+              _("Base URL is not properly normed. Normed url is %(url)r.") % \
                {'url': base_url})
         # make url absolute
         if self.base_ref:
