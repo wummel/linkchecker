@@ -16,12 +16,47 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """General navigation writer reading .nav file info"""
 
-import sys, os
+import sys
+import os
+import re
 from cStringIO import StringIO
 
+_slashes_ro = re.compile(r"/+")
+_thisdir_ro = re.compile(r"^\./")
+_samedir_ro = re.compile(r"/\./|/\.$")
+_parentdir_ro = re.compile(r"^/(\.\./)+|/(?!\.\./)[^/]+/\.\.(/|$)")
+_relparentdir_ro = re.compile(r"^(?!\.\./)[^/]+/\.\.(/|$)")
+def collapse_segments (path):
+    """
+    Remove all redundant segments from the given URL path.
+    Precondition: path is an unquoted url path
+    """
+    # shrink multiple slashes to one slash
+    path = _slashes_ro.sub("/", path)
+    # collapse redundant path segments
+    path = _thisdir_ro.sub("", path)
+    path = _samedir_ro.sub("/", path)
+    # collapse parent path segments
+    # note: here we exploit the fact that the replacements happen
+    # to be from left to right (see also _parentdir_ro above)
+    newpath = _parentdir_ro.sub("/", path)
+    while newpath != path:
+        path = newpath
+        newpath = _parentdir_ro.sub("/", path)
+    # collapse parent path segments of relative paths
+    # (ie. without leading slash)
+    newpath = _relparentdir_ro.sub("", path)
+    while newpath != path:
+        path = newpath
+        newpath = _relparentdir_ro.sub("", path)
+    return path
+
+
 class Node (object):
-    """Node class for use in a navigation tree, with abilities to write
-       HTML output."""
+    """
+    Node class for use in a navigation tree, with abilities to write
+    HTML output.
+    """
 
     def __init__ (self, name, order, filename):
         """Initialize node information"""
@@ -37,13 +72,15 @@ class Node (object):
     def get_url (self, level):
         """Get relative URL to this node."""
         if self.children:
-            return self.children[0].get_url(level)
+            url = self.children[0].get_url(level)
         else:
-            return "../"*level + self.filename
+            url = "../"*level + self.filename
+        return collapse_segments(url)
 
     def addChildren (self, nodes):
-        """Add given nodes as children of this node, setting parent
-           and level information accordingly.
+        """
+        Add given nodes as children of this node, setting parent
+        and level information accordingly.
         """
         for node in nodes:
             node.parent = self
@@ -112,9 +149,10 @@ class Node (object):
 
 
 def parse_navtree (dirname):
-    """Parse a hierarchy of .nav files into a tree structure,
-       consisting of lists of lists. The list entries are sorted in
-       navigation order.
+    """
+    Parse a hierarchy of .nav files into a tree structure,
+    consisting of lists of lists. The list entries are sorted in
+    navigation order.
     """
     nodes = []
     files = os.listdir(dirname)
@@ -172,8 +210,10 @@ def has_node (node, nodes):
 
 
 def generate_nav (start, nodes):
-    """write one navigation tree level into HTML files, with given
-       start node as root node"""
+    """
+    Write one navigation tree level into HTML files, with given
+    start node as root node.
+    """
     for node in nodes:
         print node.filename
         if node.children:
