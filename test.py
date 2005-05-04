@@ -47,8 +47,10 @@ Options:
   -v                    verbose (print dots for each test run)
   -vv                   very verbose (print test names)
   -q                    quiet (do not print anything on success)
+  -c                    colorize output
   -w                    enable warnings about omitted test cases
   -d                    invoke pdb when an exception occurs
+  -1                    report only the first failure in doctests
   -p                    show progress bar (can be combined with -v or -vv)
   -u                    select unit tests (default)
   -f                    select functional tests
@@ -59,7 +61,8 @@ Options:
   --list-hooks          list all loaded test hooks
   --coverage            create code coverage reports
   --search-in dir       limit directory tree walk to dir (optimisation)
-  --immediate-errors    show errors as soon as they happen
+  --immediate-errors    show errors as soon as they happen (default)
+  --delayed-errors      show errors after all unit tests were run
   --resource name       enable given resource; currently only 'network'
                         is allowed
 """
@@ -76,6 +79,7 @@ import types
 import getopt
 import unittest
 import traceback
+import linecache
 import pdb
 from sets import Set
 
@@ -137,15 +141,20 @@ class Options:
     quiet = 0                   # do not print anything on success (-q)
     warn_omitted = False        # produce warnings when a test case is
                                 # not included in a test suite (-w)
+    first_doctest_failure = False # report first doctest failure (-1)
+    print_import_time = True    # print time taken to import test modules
+                                # (currently hardcoded)
     progress = False            # show running progress (-p)
+    colorize = False            # colorize output (-c)
     coverage = False            # produce coverage reports (--coverage)
     coverdir = 'coverage'       # where to put them (currently hardcoded)
-    immediate_errors = False    # show tracebacks twice (currently hardcoded)
+    immediate_errors = True     # show tracebacks twice (--immediate-errors,
+                                # --delayed-errors)
     screen_width = 80           # screen width (autodetected)
 
 
 def compile_matcher(regex):
-    """Returns a function that takes one argument and returns True or False.
+    """Return a function that takes one argument and returns True or False.
 
     Regex is a regular expression.  Empty regex matches everything.  There
     is one expression: if the regex starts with "!", the meaning of it is
@@ -182,45 +191,59 @@ def walk_with_symlinks(top, func, arg):
 
 
 def get_test_files(cfg):
-    """Returns a list of test module filenames."""
+    """Return a list of test module filenames."""
     matcher = compile_matcher(cfg.pathname_regex)
-    results = []
+    allresults = []
     test_names = []
-    if cfg.unit_tests:
-        test_names.append('tests')
     if cfg.functional_tests:
         test_names.append('ftests')
+    if cfg.unit_tests:
+        test_names.append('tests')
     baselen = len(cfg.basedir) + 1
-    def visit_dir(ignored, dir, files):
-        if os.path.basename(dir) not in test_names:
-            for name in test_names:
-                if name + '.py' in files:
-                    path = os.path.join(dir, name + '.py')
-                    if matcher(path[baselen:]):
-                        results.append(path)
+    def visit(ignored, dir, files):
+        # Ignore files starting with a dot.
+        # Do not not descend into subdirs containing a dot.
+        remove = []
+        for idx, file in enumerate(files):
+            if file.startswith('.'):
+                remove.append(idx)
+            elif '.' in file and os.path.isdir(os.path.join(dir, file)):
+                remove.append(idx)
+        remove.reverse()
+        for idx in remove:
+            del files[idx]
+        # Skip non-test directories, but look for tests.py and/or ftests.py
+        if os.path.basename(dir) != test_name:
+            if test_name + '.py' in files:
+                path = os.path.join(dir, test_name + '.py')
+                if matcher(path[baselen:]):
+                    results.append(path)
             return
         if '__init__.py' not in files:
             print >> sys.stderr, "%s is not a package" % dir
             return
         for file in files:
-            visit_file(dir, file)
-    def visit_file(dir, file):
-        if file.startswith('test') and file.endswith('.py'):
-            path = os.path.join(dir, file)
-            if matcher(path[baselen:]):
-                results.append(path)
+            if file.startswith('test') and file.endswith('.py'):
+                path = os.path.join(dir, file)
+                if matcher(path[baselen:]):
+                    results.append(path)
     if cfg.follow_symlinks:
         walker = walk_with_symlinks
     else:
         walker = os.path.walk
-    for dir in cfg.search_in:
-        walker(dir, visit_dir, None)
-    results.sort()
-    return results
+
+    for test_name in test_names:
+        results = []
+        for dir in cfg.search_in:
+            walker(dir, visit, None)
+        results.sort()
+        allresults += results
+
+    return allresults
 
 
 def import_module(filename, cfg, tracer=None):
-    """Imports and returns a module."""
+    """Import and return a module."""
     filename = os.path.splitext(filename)[0]
     modname = filename[len(cfg.basedir):].replace(os.path.sep, '.')
     if modname.startswith('.'):
@@ -236,7 +259,7 @@ def import_module(filename, cfg, tracer=None):
 
 
 def filter_testsuite(suite, matcher, level=None):
-    """Returns a flattened list of test cases that match the given matcher."""
+    """Return a flattened list of test cases that match the given matcher."""
     if not isinstance(suite, unittest.TestSuite):
         raise TypeError('not a TestSuite', suite)
     results = []
@@ -254,7 +277,7 @@ def filter_testsuite(suite, matcher, level=None):
 
 
 def get_all_test_cases(module):
-    """Returns a list of all test case classes defined in a given module."""
+    """Return a list of all test case classes defined in a given module."""
     results = []
     for name in dir(module):
         if not name.startswith('Test'):
@@ -267,7 +290,7 @@ def get_all_test_cases(module):
 
 
 def get_test_classes_from_testsuite(suite):
-    """Returns a set of test case classes used in a test suite."""
+    """Return a set of test case classes used in a test suite."""
     if not isinstance(suite, unittest.TestSuite):
         raise TypeError('not a TestSuite', suite)
     results = Set()
@@ -281,15 +304,24 @@ def get_test_classes_from_testsuite(suite):
 
 
 def get_test_cases(test_files, cfg, tracer=None):
-    """Returns a list of test cases from a given list of test modules."""
+    """Return a list of test cases from a given list of test modules."""
     matcher = compile_matcher(cfg.test_regex)
     results = []
+    startTime = time.time()
     for file in test_files:
         module = import_module(file, cfg, tracer=tracer)
+        try:
+            func = module.test_suite
+        except AttributeError:
+            print >> sys.stderr
+            print >> sys.stderr, ("%s: WARNING: there is no test_suite"
+                                  " function" % file)
+            print >> sys.stderr
+            continue
         if tracer is not None:
-            test_suite = tracer.runfunc(module.test_suite)
+            test_suite = tracer.runfunc(func)
         else:
-            test_suite = module.test_suite()
+            test_suite = func()
         if test_suite is None:
             continue
         if cfg.warn_omitted:
@@ -308,11 +340,18 @@ def get_test_cases(test_files, cfg, tracer=None):
             continue
         filtered = filter_testsuite(test_suite, matcher, cfg.level)
         results.extend(filtered)
+    stopTime = time.time()
+    timeTaken = float(stopTime - startTime)
+    if cfg.print_import_time:
+        nmodules = len(test_files)
+        plural = (nmodules != 1) and 's' or ''
+        print "Imported %d module%s in %.3fs" % (nmodules, plural, timeTaken)
+        print
     return results
 
 
 def get_test_hooks(test_files, cfg, tracer=None):
-    """Returns a list of test hooks from a given list of test modules."""
+    """Return a list of test hooks from a given list of test modules."""
     results = []
     dirs = Set(map(os.path.dirname, test_files))
     for dir in list(dirs):
@@ -330,6 +369,252 @@ def get_test_hooks(test_files, cfg, tracer=None):
                 hooks = module.test_hooks()
             results.extend(hooks)
     return results
+
+
+def extract_tb(tb, limit=None):
+    """Improved version of traceback.extract_tb.
+
+    Includes a dict with locals in every stack frame instead of the line.
+    """
+    list = []
+    while tb is not None and (limit is None or len(list) < limit):
+        frame = tb.tb_frame
+        code = frame.f_code
+        name = code.co_name
+        filename = code.co_filename
+        lineno = tb.tb_lineno
+        locals = frame.f_locals
+        list.append((filename, lineno, name, locals))
+        tb = tb.tb_next
+    return list
+
+
+
+colorcodes = {'gray': 0, 'red': 1, 'green': 2, 'yellow': 3,
+              'blue': 4, 'magenta': 5, 'cyan': 6, 'white': 7}
+
+colormap = {'fail': 'red',
+            'pass': 'green',
+            'count': 'white',
+            'title': 'white',
+            'separator': 'dark white',
+            'longtestname': 'yellow',
+            'filename': 'dark green',
+            'lineno': 'green',
+            'testname': 'dark yellow',
+            'excname': 'red',
+            'excstring': 'yellow',
+            'tbheader': 'dark white',
+            'doctest_ignored': 'gray',
+            'doctest_title': 'dark white',
+            'doctest_code': 'yellow',
+            'doctest_expected': 'green',
+            'doctest_got': 'red'}
+
+
+def colorize(texttype, text):
+    """Colorize text by ANSI escape codes in a color provided in colormap."""
+    color = colormap[texttype]
+    if color.startswith('dark '):
+        light = 0
+        color = color[len('dark '):] # strip the 'dark' prefix
+    else:
+        light = 1
+    code = 30 + colorcodes[color]
+    return '\033[%d;%dm' % (light, code)+ text + '\033[0;0m'
+
+
+def colorize_zope_doctest_output(lines):
+    """Colorize output formatted by the doctest engine included with Zope 3.
+
+    Returns a new sequence of colored strings.
+
+    `lines` is a sequence of strings.
+
+    The typical structure of the doctest output looks either like this:
+
+        File "...", line 123, in foo.bar.baz.doctest_quux
+        Failed example:
+            f(2, 3)
+        Expected:
+            6
+        Got:
+            5
+
+    Or, if an exception has occured, like this:
+
+        File "...", line 123, in foo.bar.baz.doctest_quux
+        Failed example:
+            f(2, 3)
+        Exception raised:
+            Traceback (most recent call last):
+              File "...", line 123, in __init__
+                self.do_something(a, b, c)
+              File "...", line ...
+                ...
+            FooError: something bad happened
+
+    If some assumption made by this function is not met, the original sequence
+    is returned without any modifications.
+    """
+    # XXX bug: doctest may report several failures in one test, they are
+    #          separated by a horizontal dash line.  Only the first one of
+    #          them is now colorized properly.
+    header = lines[0]
+    if not header.startswith('File "'):
+        return lines # not a doctest failure report?
+
+    # Dissect the header in a rather nasty way.
+    header = header[len('File "'):]
+    fn_end = header.find('"')
+    if fn_end == -1:
+        return lines
+    filename = header[:fn_end]
+    header = header[fn_end+len('", line '):]
+    parts = header.split(', in ')
+    if len(parts) != 2:
+        return lines
+    lineno, testname = parts
+    filename = colorize('filename', filename)
+    lineno = colorize('lineno', lineno)
+    testname = colorize('testname', testname)
+    result = ['File "%s", line %s, in %s' % (filename, lineno, testname)]
+
+    # Colorize the 'Failed example:' section.
+    if lines[1] != 'Failed example:':
+        return lines
+    result.append(colorize('doctest_title', lines[1]))
+    remaining = lines[2:]
+    terminators = ['Expected:', 'Expected nothing', 'Exception raised:']
+    while remaining and remaining[0] not in terminators:
+        line = remaining.pop(0)
+        result.append(colorize('doctest_code', line))
+    if not remaining:
+        return lines
+
+    if remaining[0] in ('Expected:', 'Expected nothing'):
+        result.append(colorize('doctest_title', remaining.pop(0))) # Expected:
+        while remaining and remaining[0] not in ('Got:', 'Got nothing'):
+            line = remaining.pop(0)
+            result.append(colorize('doctest_expected', line))
+        if not remaining or remaining[0] not in ('Got:', 'Got nothing'):
+            return lines
+        result.append(colorize('doctest_title', remaining.pop(0))) # Got:
+        while remaining:
+            line = remaining.pop(0)
+            result.append(colorize('doctest_got', line))
+    elif remaining[0] == 'Exception raised:':
+        result.append(colorize('doctest_title', remaining.pop(0))) # E. raised:
+        while remaining:
+            line = remaining.pop(0)
+            # TODO: Scrape and colorize the traceback.
+            result.append(colorize('doctest_got', line))
+    else:
+        return lines
+
+    return result
+
+
+def colorize_exception_only(lines):
+    """Colorize result of traceback.format_exception_only."""
+    if len(lines) > 1:
+        return lines # SyntaxError?  We won't deal with that for now.
+    lines = lines[0].splitlines()
+
+    # First, colorize the first line, which usually contains the name
+    # and the string of the exception.
+    result = []
+    doctest = 'Failed doctest test for' in lines[0]
+    # TODO: We only deal with the output from Zope 3's doctest module.
+    #       A colorizer for the Python's doctest module would be nice too.
+    if doctest:
+        # If we have a doctest, we do not care about this header.  All the
+        # interesting things are below, formatted by the doctest runner.
+        for lineno in range(4):
+            result.append(colorize('doctest_ignored', lines[lineno]))
+        beef = colorize_zope_doctest_output(lines[4:])
+        result.extend(beef)
+        return '\n'.join(result)
+    else:
+        # A simple exception.  Try to colorize the first row, leave others be.
+        excline = lines[0].split(': ', 1)
+        if len(excline) == 2:
+            excname = colorize('excname', excline[0])
+            excstring = colorize('excstring', excline[1])
+            result.append('%s: %s' % (excname, excstring))
+        else:
+            result.append(colorize('excstring', lines[0]))
+        result.extend(lines[1:])
+        return '\n'.join(result)
+
+
+def format_exception(etype, value, tb, limit=None, basedir=None, color=False):
+    """Improved version of traceback.format_exception.
+
+    Includes Zope-specific extra information in tracebacks.
+
+    If color is True, ANSI codes are used to colorize output.
+    """
+    # Show stack trace.
+    list = []
+    if tb:
+        list = ['Traceback (most recent call last):\n']
+        if color:
+            list[0] = colorize('tbheader', list[0])
+        w = list.append
+
+        for filename, lineno, name, locals in extract_tb(tb, limit):
+            line = linecache.getline(filename, lineno)
+            if color and 'zope/testing/doctest.py' not in filename:
+                filename = colorize('filename', filename)
+                lineno = colorize('lineno', str(lineno))
+                name = colorize('testname', name)
+                w('  File "%s", line %s, in %s\n' % (filename, lineno, name))
+                if line:
+                    w('    %s\n' % line.strip())
+            elif color:
+                s = '  File "%s", line %s, in %s\n' % (filename, lineno, name)
+                w(colorize('doctest_ignored', s))
+                if line:
+                    w('    %s\n' % colorize('doctest_ignored', line.strip()))
+            else:
+                w('  File "%s", line %s, in %s\n' % (filename, lineno, name))
+                if line:
+                    w('    %s\n' % line.strip())
+
+            tb_info = locals.get('__traceback_info__')
+            if tb_info is not None:
+                w('  Extra information: %s\n' % repr(tb_info))
+            tb_supplement = locals.get('__traceback_supplement__')
+            if tb_supplement is not None:
+                tb_supplement = tb_supplement[0](*tb_supplement[1:])
+                # TODO these should be hookable
+                from zope.tales.tales import TALESTracebackSupplement
+                from zope.pagetemplate.pagetemplate \
+                        import PageTemplateTracebackSupplement
+                if isinstance(tb_supplement, PageTemplateTracebackSupplement):
+                    template = tb_supplement.manageable_object.pt_source_file()
+                    if template:
+                        w('  Template "%s"\n' % template)
+                elif isinstance(tb_supplement, TALESTracebackSupplement):
+                    w('  Template "%s", line %s, column %s\n'
+                      % (tb_supplement.source_url, tb_supplement.line,
+                         tb_supplement.column))
+                    line = linecache.getline(tb_supplement.source_url,
+                                             tb_supplement.line)
+                    if line:
+                        w('    %s\n' % line.strip())
+                    w('  Expression: %s\n' % tb_supplement.expression)
+                else:
+                    w('  __traceback_supplement__ = %r\n' % (tb_supplement, ))
+
+    # Add the representation of the exception itself.
+    lines = traceback.format_exception_only(etype, value)
+    if color:
+        lines = colorize_exception_only(lines)
+    list.extend(lines)
+
+    return list
 
 
 class CustomTestResult(unittest._TextTestResult):
@@ -362,11 +647,11 @@ class CustomTestResult(unittest._TextTestResult):
             self._maxWidth = cfg.screen_width - len("xxxx/xxxx (xxx.x%): ") - 1
 
     def startTest(self, test):
+        n = self.testsRun + 1
         if self.cfg.progress:
             # verbosity == 0: 'xxxx/xxxx (xxx.x%)'
             # verbosity == 1: 'xxxx/xxxx (xxx.x%): test name'
             # verbosity >= 2: 'xxxx/xxxx (xxx.x%): test name ... ok'
-            n = self.testsRun + 1
             self.stream.write("\r%4d" % n)
             if self.count:
                 self.stream.write("/%d (%5.1f%%)"
@@ -382,7 +667,8 @@ class CustomTestResult(unittest._TextTestResult):
                 self._lastWidth = width
             self.stream.flush()
         test.check_resources = self.check_resources
-        self.__super_startTest(test)
+        self.__super_startTest(test)  # increments testsRun by one and prints
+        self.testsRun = n # override the testsRun calculation
         for hook in self.hooks:
             hook.startTest(test)
 
@@ -391,42 +677,54 @@ class CustomTestResult(unittest._TextTestResult):
             hook.stopTest(test)
         self.__super_stopTest(test)
 
+    def getDescription(self, test):
+        return test.id() # package.module.class.method
+
     def getShortDescription(self, test):
-        s = self.getDescription(test)
+        s = test.id() # package.module.class.method
         if len(s) > self._maxWidth:
-            # s is 'testname (package.module.class)'
-            # try to shorten it to 'testname (...age.module.class)'
-            # if it is still too long, shorten it to 'testnam...'
-            # limit case is 'testname (...)'
-            pos = s.find(" (")
-            if pos + len(" (...)") > self._maxWidth:
-                s = s[:self._maxWidth - 3] + "..."
-            else:
-                s = "%s...%s" % (s[:pos + 2], s[pos + 5 - self._maxWidth:])
+            namelen = len(s.split('.')[-1])
+            left = max(0, (self._maxWidth - namelen) / 2 - 1)
+            right = self._maxWidth - left - 3
+            s = "%s...%s" % (s[:left], s[-right:])
         return s
 
     def printErrors(self):
+        w = self.stream.writeln
         if self.cfg.progress and not (self.dots or self.showAll):
-            self.stream.writeln()
+            w()
         if self.cfg.immediate_errors and (self.errors or self.failures):
-            self.stream.writeln(self.separator1)
-            self.stream.writeln("Tests that failed")
-            self.stream.writeln(self.separator2)
+            if self.cfg.colorize:
+                w(colorize('separator', self.separator1))
+                w(colorize('title', "Tests that failed"))
+                w(colorize('separator', self.separator2))
+            else:
+                w(self.separator1)
+                w("Tests that failed")
+                w(self.separator2)
         self.__super_printErrors()
 
     def printSkipped (self):
         self.printErrorList("SKIP", self.skipped)
 
     def formatError(self, err):
-        return "".join(traceback.format_exception(*err))
+        return "".join(format_exception(basedir=self.cfg.basedir,
+                                        color=self.cfg.colorize, *err))
 
     def printTraceback(self, kind, test, err):
-        self.stream.writeln()
-        self.stream.writeln(self.separator1)
-        self.stream.writeln("%s: %s" % (kind, test))
-        self.stream.writeln(self.separator2)
-        self.stream.writeln(self.formatError(err))
-        self.stream.writeln()
+        w = self.stream.writeln
+        if self.cfg.colorize:
+            c = colorize
+        else:
+            c = lambda texttype, text: text
+        w()
+        w(c('separator', self.separator1))
+        kind = c('fail', kind)
+        description = c('longtestname', self.getDescription(test))
+        w("%s: %s" % (kind, description))
+        w(c('separator', self.separator2))
+        w(self.formatError(err))
+        w()
 
     def addFailure(self, test, err):
         if self.cfg.immediate_errors:
@@ -484,17 +782,23 @@ class CustomTestRunner(unittest.TextTestRunner):
     __super_init = __super.__init__
     __super_run = __super.run
 
-    def __init__(self, cfg, hooks=None):
-        self.__super_init(verbosity=cfg.verbosity)
+    def __init__(self, cfg, hooks=None, stream=sys.stderr, count=None):
+        self.__super_init(verbosity=cfg.verbosity, stream=stream)
         self.cfg = cfg
         if hooks is not None:
             self.hooks = hooks
         else:
             self.hooks = []
+        self.count = count
 
     def run(self, test):
         """Run the given test case or test suite."""
-        self.count = test.countTestCases()
+        if self.count is None:
+            self.count = test.countTestCases()
+        if self.cfg.colorize:
+            c = colorize
+        else:
+            c = lambda texttype, text: text
         result = self._makeResult()
         startTime = time.time()
         test(result)
@@ -504,23 +808,27 @@ class CustomTestRunner(unittest.TextTestRunner):
         result.printErrors()
         run = result.testsRun
         if not self.cfg.quiet:
-            self.stream.writeln(result.separator2)
-            self.stream.writeln("Ran %d test%s in %.3fs" %
-                                (run, run != 1 and "s" or "", timeTaken))
+            self.stream.writeln(c('separator', result.separator2))
+            run_str = c('count', str(run))
+            time_str = c('count', '%.3f' % timeTaken)
+            self.stream.writeln("Ran %s test%s in %ss" %
+                                (run_str, run != 1 and "s" or "", time_str))
             self.stream.writeln()
         if result.skipped:
             self.stream.writeln("SKIPPED TESTS (%d)" % len(result.skipped))
         if not result.wasSuccessful():
-            self.stream.write("FAILED (")
+            self.stream.write(c('fail', "FAILED"))
+
             failed, errored = map(len, (result.failures, result.errors))
             if failed:
-                self.stream.write("failures=%d" % failed)
+                self.stream.write(" (failures=%s" % c('count', str(failed)))
             if errored:
                 if failed: self.stream.write(", ")
-                self.stream.write("errors=%d" % errored)
+                else: self.stream.write("(")
+                self.stream.write("errors=%s" % c('count', str(errored)))
             self.stream.writeln(")")
         elif not self.cfg.quiet:
-            self.stream.writeln("OK")
+            self.stream.writeln(c('pass', "OK"))
         return result
 
     def _makeResult(self):
@@ -557,12 +865,18 @@ def main(argv):
             pass
 
     # Option processing
-    opts, args = getopt.gnu_getopt(argv[1:], 'hvpqufwd',
-                                   ['list-files', 'list-tests', 'list-hooks',
-                                    'level=', 'all-levels', 'coverage',
-                                    'search-in=', 'immediate-errors', 'help',
-                                    'resource=',
-                                   ])
+    try:
+        opts, args = getopt.gnu_getopt(argv[1:], 'hvpcqufwd1s:',
+                               ['list-files', 'list-tests', 'list-hooks',
+                                'level=', 'all-levels', 'coverage',
+                                'search-in=', 'immediate-errors',
+                                'delayed-errors', 'help',
+                                'resource=',
+                               ])
+    except getopt.error, e:
+        print >> sys.stderr, '%s: %s' % (argv[0], e)
+        print >> sys.stderr, 'run %s -h for help' % argv[0]
+        return 1
     for k, v in opts:
         if k in ['-h', '--help']:
             print __doc__
@@ -573,6 +887,8 @@ def main(argv):
         elif k == '-p':
             cfg.progress = True
             cfg.quiet = False
+        elif k == '-c':
+            cfg.colorize = True
         elif k == '-q':
             cfg.verbosity = 0
             cfg.progress = False
@@ -585,6 +901,8 @@ def main(argv):
             cfg.postmortem = True
         elif k == '-w':
             cfg.warn_omitted = True
+        elif k == '-1':
+            cfg.first_doctest_failure = True
         elif k == '--list-files':
             cfg.list_files = True
             cfg.run_tests = False
@@ -608,11 +926,11 @@ def main(argv):
                 cfg.level = int(v)
             except ValueError:
                 print >> sys.stderr, '%s: invalid level: %s' % (argv[0], v)
-                print >> sys.stderr, 'run %s -h for help'
+                print >> sys.stderr, 'run %s -h for help' % argv[0]
                 return 1
         elif k == '--all-levels':
             cfg.level = None
-        elif k == '--search-in':
+        elif k in ('-s', '--search-in'):
             dir = os.path.abspath(v)
             if not dir.startswith(cfg.basedir):
                 print >> sys.stderr, ('%s: argument to --search-in (%s) must'
@@ -622,9 +940,11 @@ def main(argv):
             cfg.search_in += (dir, )
         elif k == '--immediate-errors':
             cfg.immediate_errors = True
+        elif k == '--delayed-errors':
+            cfg.immediate_errors = False
         else:
             print >> sys.stderr, '%s: invalid option: %s' % (argv[0], k)
-            print >> sys.stderr, 'run %s -h for help'
+            print >> sys.stderr, 'run %s -h for help' % argv[0]
             return 1
     if args:
         cfg.pathname_regex = args[0]
@@ -632,13 +952,24 @@ def main(argv):
         cfg.test_regex = args[1]
     if len(args) > 2:
         print >> sys.stderr, '%s: too many arguments: %s' % (argv[0], args[2])
-        print >> sys.stderr, 'run %s -h for help'
+        print >> sys.stderr, 'run %s -h for help' % argv[0]
         return 1
     if not cfg.unit_tests and not cfg.functional_tests:
         cfg.unit_tests = True
 
     if not cfg.search_in:
         cfg.search_in = (cfg.basedir, )
+
+    # Do not print "Imported %d modules in %.3fs" if --list-* was specified
+    if cfg.list_tests or cfg.list_hooks or cfg.list_files:
+        cfg.print_import_time = False
+
+    # Set up the python path
+    sys.path[0] = cfg.basedir
+    # XXX The following bit is SchoolTool specific: we need the Zope3 tree in
+    #     sys.path, in addition to basedir.
+    sys.path.insert(1, os.path.join(os.path.dirname(cfg.basedir),
+                                    'Zope3', 'src'))
 
     # Set up tracing before we start importing things
     tracer = None
@@ -663,6 +994,17 @@ def main(argv):
     if cfg.list_hooks or cfg.run_tests:
         test_hooks = get_test_hooks(test_files, cfg, tracer=tracer)
 
+    # Configure doctests
+    if cfg.first_doctest_failure:
+        # The doctest module in Python 2.3 does not have this feature
+        try:
+            from zope.testing import doctest
+        except ImportError:
+            print >> sys.stderr, ("cannot import zope.testing.doctest,"
+                                  " ignoring -1")
+        else:
+            doctest.set_unittest_reportflags(doctest.REPORT_ONLY_FIRST_FAILURE)
+
     # Configure the logging module
     import logging
     logging.basicConfig()
@@ -678,7 +1020,7 @@ def main(argv):
     if cfg.list_hooks:
         print "\n".join([str(hook) for hook in test_hooks])
     if cfg.run_tests:
-        runner = CustomTestRunner(cfg, test_hooks)
+        runner = CustomTestRunner(cfg, test_hooks, count=len(test_cases))
         suite = unittest.TestSuite()
         suite.addTests(test_cases)
         if tracer is not None:
@@ -693,7 +1035,6 @@ def main(argv):
         return 0
     else:
         return 1
-
 
 
 if __name__ == '__main__':
