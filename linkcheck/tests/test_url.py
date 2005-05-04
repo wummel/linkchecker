@@ -276,6 +276,9 @@ class TestUrl (unittest.TestCase):
         url = 'b/../../foo/'
         nurl = '../foo/'
         self.assertEqual(url_norm(url), nurl)
+        url = './foo'
+        nurl = 'foo'
+        self.assertEqual(url_norm(url), nurl)
 
     def test_norm_path_relative_slashes (self):
         """

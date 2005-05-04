@@ -6,6 +6,10 @@
     Type: bugfix
     Changed: linkcheck/configuration.py
 
+  * Redundant dot path at beginning of relative urls are now removed.
+    Type: feature
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
+
   * Displaying warnings is now the default. One can disable warnings
     with the --no-warnings option. The old --warnings option is
     deprecated.

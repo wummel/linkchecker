@@ -325,6 +325,7 @@ def url_norm (url):
 
 
 _slashes_ro = re.compile(r"/+")
+_thisdir_ro = re.compile(r"^\./")
 _samedir_ro = re.compile(r"/\./|/\.$")
 _parentdir_ro = re.compile(r"^/(\.\./)+|/(?!\.\./)[^/]+/\.\.(/|$)")
 _relparentdir_ro = re.compile(r"^(?!\.\./)[^/]+/\.\.(/|$)")
@@ -345,6 +346,7 @@ def collapse_segments (path):
     # shrink multiple slashes to one slash
     path = _slashes_ro.sub("/", path)
     # collapse redundant path segments
+    path = _thisdir_ro.sub("", path)
     path = _samedir_ro.sub("/", path)
     # collapse parent path segments
     # note: here we exploit the fact that the replacements happen
