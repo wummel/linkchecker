@@ -135,8 +135,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             return
         # check for amazon server quirk
         if _is_amazon(self.urlparts[1]):
-            self.add_warning(_("Amazon servers block HTTP HEAD requests, "
-                               "using GET instead."))
+            self.add_info(_("Amazon servers block HTTP HEAD requests, "
+                            "using GET instead."))
             self.method = "GET"
         else:
             # first try with HEAD
@@ -341,8 +341,8 @@ class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
             else:
                 server = _("unknown")
             if fallback_GET:
-                self.add_warning(_("Server %r did not support HEAD request; "\
-                                  "a GET request was used instead.") % server)
+                self.add_info(_("Server %r did not support HEAD request; "\
+                                "a GET request was used instead.") % server)
             if self.no_anchor:
                 self.add_warning(_("Server %r had no anchor support, removed"\
                                    " anchor from request.") % server)
