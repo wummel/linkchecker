@@ -254,7 +254,4 @@ class TextLogger (linkcheck.logger.Logger):
             self.writeln(_("Stopped checking at %s (%s)") % \
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
-        self.flush()
-        if self.close_fd:
-            self.fd.close()
-        self.fd = None
+        self.close_fileoutput()

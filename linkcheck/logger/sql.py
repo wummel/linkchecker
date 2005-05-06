@@ -148,7 +148,4 @@ class SQLLogger (linkcheck.logger.Logger):
             self.comment(_("Stopped checking at %s (%s)") % \
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
-        self.flush()
-        if self.close_fd:
-            self.fd.close()
-        self.fd = None
+        self.close_fileoutput()

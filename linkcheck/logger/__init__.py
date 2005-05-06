@@ -76,11 +76,11 @@ class Logger (object):
         Initialize self.fd file descriptor from args.
         """
         if args.get('fileoutput'):
-            fname = args['filename']
-            path = os.path.dirname(fname)
+            filename = args['filename']
+            path = os.path.dirname(filename)
             if path and not os.path.isdir(path):
                 os.makedirs(path)
-            self.fd = file(args['filename'], "w")
+            self.fd = file(filename, "wb")
             self.close_fd = True
         elif args.has_key('fd'):
             self.fd = args['fd']
@@ -88,6 +88,15 @@ class Logger (object):
         else:
             self.fd = sys.stdout
             self.close_fd = False
+
+    def close_fileoutput (self):
+        """
+        Flush and close the file output denoted by self.fd.
+        """
+        self.flush()
+        if self.close_fd:
+            self.fd.close()
+        self.fd = None
 
     def encode (self, s):
         """

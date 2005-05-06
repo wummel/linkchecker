@@ -307,7 +307,4 @@ class HtmlLogger (linkcheck.logger.Logger):
              (u'<a href="mailto:'+linkcheck.configuration.Email+u'">'+
              linkcheck.configuration.Email+u"</a>."))
             self.writeln(u"</small></body></html>")
-        self.flush()
-        if self.close_fd:
-            self.fd.close()
-        self.fd = None
+        self.close_fileoutput()

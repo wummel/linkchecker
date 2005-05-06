@@ -37,18 +37,12 @@ class BlacklistLogger (linkcheck.logger.Logger):
         Intialize with old blacklist data (if found, else not).
         """
         super(BlacklistLogger, self).__init__(**args)
+        self.init_fileoutput(args)
         self.blacklist = {}
         if args.get('fileoutput'):
-            self.fileoutput = True
             filename = args['filename']
             if os.path.exists(filename):
-                self.read_blacklist(file(filename, "r"))
-            self.fd = file(filename, "w")
-        elif args.has_key('fd'):
-            self.fd = args['fd']
-        else:
-            self.fileoutput = False
-            self.fd = sys.stdout
+                self.read_blacklist(filename)
 
     def comment (self, s, **args):
         """
@@ -77,10 +71,11 @@ class BlacklistLogger (linkcheck.logger.Logger):
         """
         self.write_blacklist()
 
-    def read_blacklist (self, fd):
+    def read_blacklist (self, filename):
         """
         Read a previously stored blacklist from file fd.
         """
+        fd = file(filename)
         for line in fd:
             line = line.rstrip()
             if line.startswith('#') or not line:
@@ -97,7 +92,6 @@ class BlacklistLogger (linkcheck.logger.Logger):
         for key, value in self.blacklist.items():
             self.fd.write("%d %s" % (value, key))
             self.fd.write(os.linesep)
-        if self.fileoutput:
-            self.fd.close()
+        self.close_fileoutput()
         # restore umask
         os.umask(oldmask)
