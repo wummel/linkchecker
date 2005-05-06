@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-05-04 14:48+0200\n"
+"POT-Creation-Date: 2005-05-06 16:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,8 @@ msgstr ""
 msgid ""
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"
-"  B<linkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org>\n"
+"  B<linkchecker --intern=\\(aq!^mailto:\\(aq --extern-strict-all "
+"www.mysite.org>\n"
 msgstr ""
 
 # type: Plain text
@@ -294,8 +295,8 @@ msgid ""
 "Specify output type as B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, "
 "B<xml>, B<none> or B<blacklist>.  Default type is B<text>. The various "
 "output types are documented below.  I<encoding> specifies the output "
-"encoding, the default is B<iso-8859-15>.  Valid encodings are listed at "
-"B<http://docs.python.org/lib/node127.html>."
+"encoding, the default is that of your locale.  Valid encodings are listed at "
+"B<http://docs.python.org/lib/standard-encodings.html>."
 msgstr ""
 
 # type: TP
@@ -311,14 +312,14 @@ msgstr ""
 msgid ""
 "Output to a file B<linkchecker-out.>I<type>, B<$HOME/.linkchecker/blacklist> "
 "for B<blacklist> output, or I<filename> if specified.  I<encoding> specifies "
-"the output encoding, the default is B<iso-8859-15>.  Valid encodings are "
-"listed at B<http://docs.python.org/lib/node127.html>.  The I<filename> part "
-"of the B<none> output type will be ignored, else if the file already exists, "
-"it will be overwritten.  You can specify this option more than once. Valid "
-"file output types are B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, "
-"B<xml>, B<none> or B<blacklist> Default is no file output. The various "
-"output types are documented below. Note that you can suppress all console "
-"output with the option B<-o none>."
+"the output encoding, the default is that of your locale.  Valid encodings "
+"are listed at B<http://docs.python.org/lib/standard-encodings.html>.  The "
+"I<filename> part of the B<none> output type will be ignored, else if the "
+"file already exists, it will be overwritten.  You can specify this option "
+"more than once. Valid file output types are B<text>, B<html>, B<sql>, "
+"B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist> Default is no file "
+"output. The various output types are documented below. Note that you can "
+"suppress all console output with the option B<-o none>."
 msgstr ""
 
 # type: TP
@@ -560,8 +561,8 @@ msgstr ""
 # type: Plain text
 #: en/linkchecker.1:222
 msgid ""
-"Specify an NNTP server for 'news:...' links. Default is the environment "
-"variable NNTP_SERVER. If no host is given, only the syntax of the link is "
+"Specify an NNTP server for B<news:> links. Default is the environment "
+"variable B<NNTP_SERVER>. If no host is given, only the syntax of the link is "
 "checked."
 msgstr ""
 
@@ -726,8 +727,8 @@ msgstr ""
 # type: Plain text
 #: en/linkchecker.1:273
 msgid ""
-"A B<!> before any regex negates it. So B<'!^mailto:'> matches everything but "
-"a mailto link."
+"A B<!> before any regex negates it. So B<!^mailto:> matches everything but a "
+"mailto link."
 msgstr ""
 
 # type: Plain text
@@ -859,7 +860,9 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:323
-msgid "B<http://docs.python.org/lib/node127.html> - valid output encodings"
+msgid ""
+"B<http://docs.python.org/lib/standard-encodings.html> - valid output "
+"encodings"
 msgstr ""
 
 # type: SH

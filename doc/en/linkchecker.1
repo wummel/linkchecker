@@ -39,7 +39,7 @@ thousands URLs. Use the \-r option to restrict the recursion depth.
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
-  \fBlinkchecker \-\-intern='!^mailto:' \-\-extern\-strict\-all www.mysite.org\fP
+  \fBlinkchecker \-\-intern=\(aq!^mailto:\(aq \-\-extern\-strict\-all www.mysite.org\fP
 
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
@@ -216,8 +216,8 @@ implies \fB\-t0\fP.
 Default is no pause between requests.
 .TP
 \fB\-N\fP\fIserver\fP, \fB\-\-nntp\-server=\fP\fIserver\fP
-Specify an NNTP server for 'news:...' links. Default is the
-environment variable NNTP_SERVER. If no host is given,
+Specify an NNTP server for \fBnews:\fP links. Default is the
+environment variable \fBNNTP_SERVER\fP. If no host is given,
 only the syntax of the link is checked.
 .TP
 \fB\-\-no\-proxy\-for=\fP\fIregex\fP
@@ -268,7 +268,7 @@ urls and the number of times they have failed.
 Logs nothing. Suitable for scripts.
 
 .SH NOTES
-A \fB!\fP before any regex negates it. So \fB'!^mailto:'\fP matches
+A \fB!\fP before any regex negates it. So \fB!^mailto:\fP matches
 everything but a mailto link.
 
 LinkCheckers commandline parser treats \fBftp.\fP links like \fBftp://ftp.\fP

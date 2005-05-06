@@ -5,10 +5,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-03-11 23:05+0100\n"
-"PO-Revision-Date: 2005-03-11 23:06+0100\n"
-"Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2005-05-06 16:09+0200\n"
+"PO-Revision-Date: 2005-05-07 00:42+0100\n"
+"Last-Translator: Yann Verley <yann.verley@free.fr>\n"
+"Language-Team: kde-francophone@kde.org\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -87,11 +87,11 @@ msgstr "Faites attention, car ceci vérifie le site en entier, celui-ci pouvant 
 msgid ""
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"
-"  B<linkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org>\n"
+"  B<linkchecker --intern=\\(aq!^mailto:\\(aq --extern-strict-all www.mysite.org>\n"
 msgstr ""
 "Pour ne pas se connecter aux hôtes mailto:, seulement vérifier leur syntaxe.\n"
 "Tous les autres liens sont vérifiés comme d'habitude :\n"
-"  B<linkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org>\n"
+"  B<linkchecker --intern=\\(aq!^mailto:\\(aq --extern-strict-all www.mysite.org>\n"
 
 # type: Plain text
 #: en/linkchecker.1:46
@@ -280,7 +280,8 @@ msgstr "B<-o>I<type>[B</>I<encodage>], B<--output=>I<type>[B</>I<encodage>]"
 
 # type: Plain text
 #: en/linkchecker.1:118
-msgid "Specify output type as B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist>.  Default type is B<text>. The various output types are documented below.  I<encoding> specifies the output encoding, the default is B<iso-8859-15>.  Valid encodings are listed at B<http://docs.python.org/lib/node127.html>."
+#, fuzzy
+msgid "Specify output type as B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist>.  Default type is B<text>. The various output types are documented below.  I<encoding> specifies the output encoding, the default is that of your locale.  Valid encodings are listed at B<http://docs.python.org/lib/standard-encodings.html>."
 msgstr "Spécifier le type de sortie. Les types possibles sont B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> ou B<blacklist>. Le type par défaut est B<text>. Les différents types de sortie sont documentés ci-dessous. I<encodage> permet de spécifier l'encodage de sortie, la valeur par défaut étant B<iso-8859-15>. Les encodages valides sont disponibles sur B<http://docs.python.org/lib/node127.html>."
 
 # type: TP
@@ -291,7 +292,8 @@ msgstr "B<-F>I<type>[B</>I<encodage>][B</>I<nom_fichier>], B<--file-output=>I<ty
 
 # type: Plain text
 #: en/linkchecker.1:135
-msgid "Output to a file B<linkchecker-out.>I<type>, B<$HOME/.linkchecker/blacklist> for B<blacklist> output, or I<filename> if specified.  I<encoding> specifies the output encoding, the default is B<iso-8859-15>.  Valid encodings are listed at B<http://docs.python.org/lib/node127.html>.  The I<filename> part of the B<none> output type will be ignored, else if the file already exists, it will be overwritten.  You can specify this option more than once. Valid file output types are B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist> Default is no file output. The various output types are documented below. Note that you can suppress all console output with the option B<-o none>."
+#, fuzzy
+msgid "Output to a file B<linkchecker-out.>I<type>, B<$HOME/.linkchecker/blacklist> for B<blacklist> output, or I<filename> if specified.  I<encoding> specifies the output encoding, the default is that of your locale.  Valid encodings are listed at B<http://docs.python.org/lib/standard-encodings.html>.  The I<filename> part of the B<none> output type will be ignored, else if the file already exists, it will be overwritten.  You can specify this option more than once. Valid file output types are B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist> Default is no file output. The various output types are documented below. Note that you can suppress all console output with the option B<-o none>."
 msgstr "Enregistrer la sortie dans un fichier B<linkchecker-out.>I<type>, B<$HOME/.linkchecker/blacklist> pour la sortie B<blacklist>, ou dans I<nom_fichier> si spécifié. I<encodage> permet de spécifier l'encodage de sortie, la valeur par défaut étant B<iso-8859-15>. Les encodages valides sont disponibles sur B<http://docs.python.org/lib/node127.html>.La partie I<nom_fichier> du type de sortie B<none> est ignorée, sinon, si le fichier existe déjà, il sera écrasé.Vous pouvez spécifier l'option plusieurs fois. Les types de sortie valides pour les fichiers sont B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> ou B<blacklist>.Par défaut, il n'y a pas de fichier de sortie. Les différents types de sortie sont documentés ci-dessous. Il faut noter que vous pouvez supprimer toutes les sorties console avec l'option B<-o none>."
 
 # type: TP
@@ -495,8 +497,8 @@ msgstr "B<-N>I<serveur>, B<--nntp-server=>I<serveur>"
 
 # type: Plain text
 #: en/linkchecker.1:222
-msgid "Specify an NNTP server for 'news:...' links. Default is the environment variable NNTP_SERVER. If no host is given, only the syntax of the link is checked."
-msgstr "Spécifier un serveur NNTP pour les liens « news: ». Par défaut, la variable d'environnement NNTP_SERVER est utilisée. Si aucun hôte n'est donné, LinkChecker n'effectue qu'une vérification de la syntaxe du lien."
+msgid "Specify an NNTP server for B<news:> links. Default is the environment variable B<NNTP_SERVER>. If no host is given, only the syntax of the link is checked."
+msgstr "Spécifier un serveur NNTP pour les liens « news: ». Par défaut, la variable d'environnement B<NNTP_SERVER> est utilisée. Si aucun hôte n'est donné, LinkChecker n'effectue qu'une vérification de la syntaxe du lien."
 
 # type: TP
 #: en/linkchecker.1:222
@@ -644,8 +646,8 @@ msgstr "NOTES"
 
 # type: Plain text
 #: en/linkchecker.1:273
-msgid "A B<!> before any regex negates it. So B<'!^mailto:'> matches everything but a mailto link."
-msgstr "Un B<!> avant une expression rationnelle l'inverse. Ainsi B<'!^mailto:'> correspond à tout sauf un lien mailto."
+msgid "A B<!> before any regex negates it. So B<!^mailto:> matches everything but a mailto link."
+msgstr "Un B<!> avant une expression rationnelle l'inverse. Ainsi B<!^mailto:> correspond à tout sauf un lien mailto."
 
 # type: Plain text
 #: en/linkchecker.1:277
@@ -765,8 +767,8 @@ msgstr "B<linkchecker-out.>I<type> - fichier par défaut pour la journalisation"
 
 # type: Plain text
 #: en/linkchecker.1:323
-msgid "B<http://docs.python.org/lib/node127.html> - valid output encodings"
-msgstr "B<http://docs.python.org/lib/node127.html> - encodages valides de sortie"
+msgid "B<http://docs.python.org/lib/standard-encodings.html> - valid output encodings"
+msgstr "B<http://docs.python.org/lib/standard-encodings.html> - encodages valides de sortie"
 
 # type: SH
 #: en/linkchecker.1:324
