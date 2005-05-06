@@ -32,4 +32,4 @@ class HttpsUrl (httpurl.HttpUrl):
         if httpurl.supportHttps:
             super(HttpsUrl, self).local_check()
         else:
-            self.add_warning(_("%s URL ignored.") % self.scheme.capitalize())
+            self.add_info(_("%s URL ignored.") % self.scheme.capitalize())
