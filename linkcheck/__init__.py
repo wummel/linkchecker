@@ -69,7 +69,7 @@ def get_link_pat (arg, strict=False):
     @rtype: dict
     """
     linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
-    if arg[0:1] == '!':
+    if arg.startswith('!'):
         pattern = arg[1:]
         negate = True
     else:
