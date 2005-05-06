@@ -377,7 +377,8 @@ Specifying 'all' is an alias for specifying all available loggers.
 The option can be given multiple times to debug with more
 than one logger.
 
-For accurate results, threading will be disabled during debug runs.""") % \
+For accurate results, threading and the psyco optimization module will
+be disabled during debug runs.""") % \
 {"lognamelist": linkcheck.lognamelist})
 group.add_option("--profile", action="store_true", dest="profile",
                  help=_(
@@ -482,6 +483,10 @@ if options.debug:
     for _name in options.debug:
         if _name not in allowed_debugs:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
+    # disable psyco if debugging is enabled to prevent that stack lists
+    # have PsycoFrame objects instead of types.FrameType
+    options.psyco = False
+
 config.init_logging(debug=options.debug)
 linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s",
                     sys.version, sys.platform)
