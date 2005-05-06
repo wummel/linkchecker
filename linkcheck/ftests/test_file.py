@@ -91,7 +91,7 @@ class TestFile (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key file://%(curdir)s/%(datadir)s/file.txt" % attrs,
             u"real url file://%(curdir)s/%(datadir)s/file.txt" % attrs,
-            u"warning Base URL is not properly normed. Normed url is %s." % nurl,
+            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
             u"valid",
         ]
         self.direct(url, resultlines)

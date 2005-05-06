@@ -121,7 +121,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"real url %s" % qurl,
             u"info Verified address: <calvin> is deliverable.",
             u"warning Base URL is not properly normed. "
-             u"Normed url is %s." % qurl,
+             u"Normed URL is %s." % qurl,
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -133,7 +133,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"real url %s" % qurl,
             u"info Verified address: <calvin> is deliverable.",
             u"warning Base URL is not properly normed. "
-             u"Normed url is %s." % qurl,
+             u"Normed URL is %s." % qurl,
             u"valid",
         ]
         self.direct(url, resultlines)
