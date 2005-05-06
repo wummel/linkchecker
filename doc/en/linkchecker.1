@@ -112,18 +112,18 @@ Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
 Default type is \fBtext\fP. The various output types are documented
 below.
 \fIencoding\fP specifies the output encoding, the default is
-\fBiso\-8859\-15\fP.
+that of your locale.
 Valid encodings are listed at
-\fBhttp://docs.python.org/lib/node127.html\fP.
+\fBhttp://docs.python.org/lib/standard-encodings.html\fP.
 .TP
 \fB\-F\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP], \fB\-\-file\-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP]
 Output to a file \fBlinkchecker\-out.\fP\fItype\fP,
 \fB$HOME/.linkchecker/blacklist\fP for
 \fBblacklist\fP output, or \fIfilename\fP if specified.
 \fIencoding\fP specifies the output encoding, the default is
-\fBiso\-8859\-15\fP.
+that of your locale.
 Valid encodings are listed at
-\fBhttp://docs.python.org/lib/node127.html\fP.
+\fBhttp://docs.python.org/lib/standard-encodings.html\fP.
 The \fIfilename\fP part of the \fBnone\fP output type will be ignored,
 else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types
@@ -319,7 +319,7 @@ configuration files
 
 \fBlinkchecker\-out.\fP\fItype\fP - default logger file output name
 
-\fBhttp://docs.python.org/lib/node127.html\fP - valid output encodings
+\fBhttp://docs.python.org/lib/standard-encodings.html\fP - valid output encodings
 
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>

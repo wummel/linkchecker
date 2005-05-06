@@ -6,6 +6,16 @@
     Type: bugfix
     Changed: linkcheck/configuration.py
 
+  * The default output encoding is now that of your locale, and not
+    the hardcoded iso-8859-15 anymore.
+    Type: feature
+    Changed: linkcheck/logger/__init__.py
+
+  * Do not generate an empty user config dir ~/.linkchecker by default,
+    only when needed.
+    Type: feature
+    Changed: linkchecker
+
   * Redundant dot path at beginning of relative urls are now removed.
     Type: feature
     Changed: linkcheck/url.py, linkcheck/tests/test_url.py

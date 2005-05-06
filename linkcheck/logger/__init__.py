@@ -18,6 +18,7 @@
 Output logging support for different formats.
 """
 
+import locale
 import sys
 import os
 import os.path
@@ -69,7 +70,7 @@ class Logger (object):
         # number of encountered warningss
         self.warnings = 0
         # encoding of output
-        self.output_encoding = args.get("encoding", "iso-8859-1")
+        self.output_encoding = args.get("encoding", locale.getpreferredencoding())
 
     def init_fileoutput (self, args):
         """
