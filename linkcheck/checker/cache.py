@@ -249,7 +249,7 @@ class Cache (linkcheck.lock.AssertLock):
 
     def add_connection (self, key, connection, timeout):
         """
-        Store open connection into cache for reuse.
+        Store open connection into pool for reuse.
         """
         self.acquire()
         try:
@@ -259,11 +259,11 @@ class Cache (linkcheck.lock.AssertLock):
 
     def release_connection (self, key):
         """
-        Store open connection into cache for reuse.
+        Remove connection from pool.
         """
         self.acquire()
         try:
-            return self.pool.release_connection(key)
+            self.pool.release_connection(key)
         finally:
             self.release()
 

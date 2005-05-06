@@ -144,4 +144,3 @@ class Threader (object):
         return "Threader with %d threads (max %d)" % \
             (self.active_threads(), self.threads_max)
 
-

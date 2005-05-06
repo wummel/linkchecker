@@ -117,7 +117,7 @@ class Consumer (linkcheck.lock.AssertLock):
         tocheck = self.cache.incoming_len()
         self.acquire()
         try:
-            return self.threader.finished() and tocheck <= 0
+            return self.threader.finished() and tocheck == 0
         finally:
             self.release()
 
@@ -157,10 +157,10 @@ class Consumer (linkcheck.lock.AssertLock):
         """
         # avoid deadlock by requesting cache data before locking
         tocheck = self.cache.incoming_len()
+        active = self.active_threads()
         self.acquire()
         try:
             print >> stderr, _("Status:"),
-            active = self.threader.active_threads()
             print_active(active)
             print_links(self.logger.number)
             print_tocheck(tocheck)
