@@ -31,8 +31,8 @@ Faites attention, car ceci vérifie le site en entier, celui\-ci pouvant
 avoir plusieurs centaines de milliers d'URL. Utilisez l'option \fB\-r\fP pour 
 restreindre la profondeur de la récursion.
 
-Don't connect to mailto: hosts, only check their URL syntax. All other
-links are checked as usual:
+Pour ne pas se connecter aux hôtes mailto:, seulement vérifier leur syntaxe.
+Tous les autres liens sont vérifiés comme d'habitude :
   \fBlinkchecker \-\-intern=\(aq!^mailto:\(aq \-\-extern\-strict\-all www.mysite.org\fP
 
 Pour vérifier un fichier HTML local sur Unix :
@@ -204,9 +204,9 @@ option implique \fB\-t0\fP. Par défaut, il n'y a pas de pause entre les
 requêtes.
 .TP
 \fB\-N\fP\fIserveur\fP, \fB\-\-nntp\-server=\fP\fIserveur\fP
-Specify an NNTP server for \fBnews:\fP links. Default is the environment 
-variable \fBNNTP_SERVER\fP. If no host is given, only the syntax of the link is 
-checked.
+Spécifier un serveur NNTP pour les liens «\ news:\ ». Par défaut, la 
+variable d'environnement \fBNNTP_SERVER\fP est utilisée. Si aucun hôte n'est 
+donné, LinkChecker n'effectue qu'une vérification de la syntaxe du lien.
 .TP
 \fB\-\-no\-proxy\-for=\fP\fIregex\fP
 Contact hosts that match the given expression directly instead of going 
@@ -262,8 +262,8 @@ que les entrées avec des URL invalides et le nombre de fois qu'elles ont
 Ne rien journaliser du tout. Approprié pour les scripts.
 
 .SH NOTES
-A \fB!\fP before any regex negates it. So \fB!^mailto:\fP matches everything but a 
-mailto link.
+Un \fB!\fP avant une expression rationnelle l'inverse. Ainsi \fB!^mailto:\fP 
+correspond à tout sauf un lien mailto.
 
 Les URL sur la ligne de commande commençant par \fBftp.\fP sont traitées 
 comme \fBftp://ftp.\fP, les URL commençant par \fBwww.\fP sont traitées comme 
@@ -317,8 +317,8 @@ journalisation
 
 \fBlinkchecker\-out.\fP\fItype\fP \- fichier par défaut pour la journalisation
 
-\fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- valid output 
-encodings
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- encodages valides de 
+sortie
 
 .SH AUTEUR
 Bastian Kleineidam <calvin@users.sourceforge.net>

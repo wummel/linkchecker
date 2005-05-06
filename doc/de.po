@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2005-05-06 16:09+0200\n"
-"PO-Revision-Date: 2005-05-07 00:40+0100\n"
+"PO-Revision-Date: 2005-05-07 00:56+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -766,7 +766,7 @@ msgstr "B<linkchecker-out.>I<type> - Standard Dateiname der Logausgabe"
 # type: Plain text
 #: en/linkchecker.1:323
 msgid "B<http://docs.python.org/lib/standard-encodings.html> - valid output encodings"
-msgstr "<http://docs.python.org/lib/standard-encodings.html> - gültige Ausgabe Enkodierungen"
+msgstr "B<http://docs.python.org/lib/standard-encodings.html> - gültige Ausgabe Enkodierungen"
 
 # type: SH
 #: en/linkchecker.1:324

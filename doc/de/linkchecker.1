@@ -29,8 +29,8 @@ Beachten Sie dass dies die komplette Domäne überprüft welche aus mehreren
 hunderttausend URLs bestehen kann. Benutzen Sie die Option \-r,um die 
 Rekursionstiefe zu beschränken.
 
-Don't connect to mailto: hosts, only check their URL syntax. All other
-links are checked as usual:
+Keine Verbindungen zu mailto: Rechnern, nur die URL Syntax wird geprüft. Alle
+anderen Verknüpfungen werden wie üblich geprüft:
   \fBlinkchecker \-\-intern=\(aq!^mailto:\(aq \-\-extern\-strict\-all www.mysite.org\fP
 
 Überprüfung einer lokalen HTML Datei unter Unix:
@@ -96,23 +96,26 @@ Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit
 \fB\-F\fP nützlich.
 .TP
 \fB\-o\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP], \fB\-\-output=\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP]
-Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, 
-\fBxml\fP, \fBnone\fP or \fBblacklist\fP.  Default type is \fBtext\fP. The various 
-output types are documented below.  \fIencoding\fP specifies the output 
-encoding, the default is that of your locale.  Valid encodings are listed at 
-\fBhttp://docs.python.org/lib/standard\-encodings.html\fP.
+Spezifiziere die Ausgabe als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, 
+\fBdot\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP. Standardausgabe ist 
+\fBtext\fP. \fIEnkodierung\fP gibt die Ausgabekodierung an, die Standardkodierung 
+erfolgt mit dem eingestellten Zeichensatz des Systems. Gültige 
+Enkodierungen sind unter 
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet.
 .TP
 \fB\-F\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP][\fB/\fP\fIDateiname\fP], \fB\-\-file\-output=\fP\fITyp\fP[\fB/\fP\fIEnkodierung\fP][\fB/\fP\fIDateiname\fP]
-Output to a file \fBlinkchecker\-out.\fP\fItype\fP, \fB$HOME/.linkchecker/blacklist\fP 
-for \fBblacklist\fP output, or \fIfilename\fP if specified.  \fIencoding\fP specifies 
-the output encoding, the default is that of your locale.  Valid encodings 
-are listed at \fBhttp://docs.python.org/lib/standard\-encodings.html\fP.  The 
-\fIfilename\fP part of the \fBnone\fP output type will be ignored, else if the 
-file already exists, it will be overwritten.  You can specify this option 
-more than once. Valid file output types are \fBtext\fP, \fBhtml\fP, \fBsql\fP, 
-\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP Default is no file 
-output. The various output types are documented below. Note that you can 
-suppress all console output with the option \fB\-o none\fP.
+Ausgabe in eine Datei namens \fBlinkchecker\-out.\fP\fITyp\fP, 
+\fB$HOME/.linkchecker/blacklist\fP bei \fBblacklist\fP Ausgabe, oder \fIDateiname\fP 
+falls angegeben. Der \fIDateiname\fP Teil wird beim Ausgabetyp \fBnone\fP 
+ignoriert, ansonsten wird die Datei überschreiben falls sie existiert. Sie 
+können diese Option mehr als einmal verwenden. Gültige Ausgabetypen sind 
+\fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP oder 
+\fBblacklist\fP. Standard ist keine Dateiausgabe. \fIEnkodierung\fP gibt die 
+Ausgabekodierung an, die Standardkodierung erfolgt mit dem eingestellten 
+Zeichensatz des Systems. Gültige Enkodierungen sind unter 
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet. Beachten 
+Sie dass Sie mit der Option\fB\-o none\fP jegliche Ausgaben auf der Konsole 
+verhindern können.
 .TP
 \fB\-\-no\-status\fP
 Gebe keine Statusmeldungen aus.
@@ -195,9 +198,9 @@ URL.Diese Option impliziert \fB\-t0\fP.  Standard ist keine Pause zwischen dem
 Prüfen.
 .TP
 \fB\-N\fP\fIServer\fP, \fB\-\-nntp\-server=\fP\fIServer\fP
-Specify an NNTP server for \fBnews:\fP links. Default is the environment 
-variable \fBNNTP_SERVER\fP. If no host is given, only the syntax of the link is 
-checked.
+Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die 
+Umgebungsvariable \fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird 
+lediglich auf korrekte Syntax des Links geprüft.
 .TP
 \fB\-\-no\-proxy\-for=\fP\fIregex\fP
 Rechner welche den angegebenen regulären Ausdruck entsprechen sollen direkt 
@@ -250,8 +253,8 @@ und die Anzahl der Fehlversuche enthält.
 Gibt nichts aus. Für Skripte geeignet.
 
 .SH BEMERKUNGEN
-A \fB!\fP before any regex negates it. So \fB!^mailto:\fP matches everything but a 
-mailto link.
+Ein \fB!\fP vor einem regulären Ausdruck negiert diesen. Also matcht 
+\fB!^mailto:\fP alles außer mailto Links.
 
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 
 behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können 
@@ -303,8 +306,8 @@ Ausgabe
 
 \fBlinkchecker\-out.\fP\fItype\fP \- Standard Dateiname der Logausgabe
 
-\fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- valid output 
-encodings
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- gültige Ausgabe 
+Enkodierungen
 
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>
