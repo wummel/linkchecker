@@ -39,7 +39,7 @@ thousands URLs. Use the \-r option to restrict the recursion depth.
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
-  \fBlinkchecker \-\-intern=\(aq!^mailto:\(aq \-\-extern\-strict\-all www.mysite.org\fP
+  \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
 
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
@@ -161,26 +161,11 @@ Check recursively all links up to given \fIdepth\fP.
 A negative depth will enable inifinite recursion.
 Default depth is inifinite.
 .TP
-\fB\-i\fP\fIregex\fP, \fB\-\-intern=\fIregex\fP
-Assume URLs that match the given regular expression as internal.
-LinkChecker descends recursively only to internal URLs, not to external.
+\fB\-\-no\-follow\-url=\fP\fIregex\fP
+Check but do not recurse into URLs matching the given regex.
 .TP
-\fB\-e\fP\fIregex\fP, \fB\-\-extern=\fP\fIregex\fP
-Assume urls that match the given regular expression as external.
-Only internal HTML links are checked recursively.
-.TP
-\fB\-\-extern\-strict=\fP\fIregex\fP
-Assume urls that match the given regular expression as strict external.
-Only internal HTML links are checked recursively.
-.TP
-\fB\-s\fP, \fB\-\-extern\-strict\-all\fP
-Check only the syntax of external links, do not try to connect to them.
-For local file urls, only local files are internal. For
-http and ftp urls, all urls at the same domain name are internal.
-.TP
-\fB\-d\fP, \fB\-\-denyallow\fP
-Swap checking order to external/internal. Default checking order is
-internal/external.
+\fB\-\-ignore\-url=\fP\fIregex\fP
+Only check syntax of URLs matching the given regex.
 .TP
 \fB\-C\fP, \fB\-\-cookies\fP
 Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -189,8 +174,7 @@ Sent and accepted cookies are provided as additional logging
 information.
 .TP
 \fB\-a\fP, \fB\-\-anchors\fP
-Check HTTP anchor references.  This option applies to both internal
-and external urls. Default is don't check anchors.
+Check HTTP anchor references. Default is don't check anchors.
 This option implies \fB\-w\fP because anchor errors are always warnings.
 .TP
 \fB\-\-no\-anchor\-caching\fP
@@ -262,7 +246,7 @@ script to create the initial SQL table is included as create.sql.
 \fBblacklist\fP
 Suitable for cron jobs. Logs the check result into a file
 \fB~/.linkchecker/blacklist\fP which only contains entries with invalid
-urls and the number of times they have failed.
+URLs and the number of times they have failed.
 .TP
 \fBnone\fP
 Logs nothing. Suitable for scripts.

@@ -31,9 +31,9 @@ Faites attention, car ceci vérifie le site en entier, celui\-ci pouvant
 avoir plusieurs centaines de milliers d'URL. Utilisez l'option \fB\-r\fP pour 
 restreindre la profondeur de la récursion.
 
-Pour ne pas se connecter aux hôtes mailto:, seulement vérifier leur syntaxe.
-Tous les autres liens sont vérifiés comme d'habitude :
-  \fBlinkchecker \-\-intern=\(aq!^mailto:\(aq \-\-extern\-strict\-all www.mysite.org\fP
+Don't connect to mailto: hosts, only check their URL syntax. All other
+links are checked as usual:
+  \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
 
 Pour vérifier un fichier HTML local sur Unix :
   \fBlinkchecker ../bla.html\fP
@@ -146,28 +146,11 @@ Vérifier récursivement tous les liens jusqu'à une
 \fIrofondeur\fPdonnée. Une profondeur négative permet d'avoir une récursion 
 infinie. Par défaut, la récursion est infinie.
 .TP
-\fB\-i\fP\fIregex\fP, \fB\-\-intern=\fP\fIregex\fP
-Supposer que les URL correspondant à l'expression rationnelle donnée sont 
-internes. LinkChecker ne descend récursivement que sur les URL internes, et 
-pas sur les externes.
+\fB\-\-no\-follow\-url=\fP\fIregex\fP
+Check but do not recurse into URLs matching the given regex.
 .TP
-\fB\-e\fP\fIregex\fP, \fB\-\-extern=\fP\fIregex\fP
-Supposer que les URL correspondant à l'expression donnée sont 
-externes. Seuls les liens HTML internes sont vérifiés récursivement.
-.TP
-\fB\-\-extern\-strict=\fP\fIregex\fP
-Supposer que les URL correspondant à l'expression donnée sont strictement 
-externes. Seuls les liens HTML internes sont vérifiés récursivement.
-.TP
-\fB\-s\fP, \fB\-\-extern\-strict\-all\fP
-Ne vérifier que la syntaxe des liens externes, sans que l'on essaie de s'y 
-connecter. Pour les URL locales, seuls les fichiers locaux sont 
-internes. Pour les URL HTTP et FTP, toutes les URL avec le même nom de 
-domaine sont internes.
-.TP
-\fB\-d\fP, \fB\-\-denyallow\fP
-Inverser l'ordre de vérification en externe/interne. L'ordre de 
-vérification par défaut est interne/externe.
+\fB\-\-ignore\-url=\fP\fIregex\fP
+Only check syntax of URLs matching the given regex.
 .TP
 \fB\-C\fP, \fB\-\-cookies\fP
 Accepter et envoyer des cookies HTTP en accord avec le RFC 2109. Seuls les 
@@ -176,10 +159,8 @@ acceptés et envoyés sont fournis comme une information supplémentaire
 dans les journaux.
 .TP
 \fB\-a\fP, \fB\-\-anchors\fP
-Vérifier les références ancrées. Cette option s'applique aux URL 
-internes et externes. Par défaut, il n'y a pas de vérification des 
-ancres. Cette option implique \fB\-w\fP parce que les erreurs d'ancre sont 
-toujours des avertissements.
+Check HTTP anchor references. Default is don't check anchors.  This option 
+implies \fB\-w\fP because anchor errors are always warnings.
 .TP
 \fB\-\-no\-anchor\-caching\fP
 Traiter url#anchora et url#anchorb comme égales dans le cache. Ceci est le 
@@ -253,10 +234,9 @@ script d'exemple montrant la création de la table SQL initiale est
 inclus\ : create.sql.
 .TP
 \fBblacklist\fP
-Approprié pour les tâches cron. Journaliser le résultat de la 
-vérification dans un fichier \fB~/.linkchecker/blacklist\fP qui ne contient 
-que les entrées avec des URL invalides et le nombre de fois qu'elles ont 
-échoué.
+Suitable for cron jobs. Logs the check result into a file 
+\fB~/.linkchecker/blacklist\fP which only contains entries with invalid URLs 
+and the number of times they have failed.
 .TP
 \fBnone\fP
 Ne rien journaliser du tout. Approprié pour les scripts.

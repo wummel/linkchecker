@@ -194,53 +194,6 @@ Unfortunately browsers like IE and Netscape do not enforce this.</p>
 web design is broken.
 Use PHP or Zope or ASP for dynamic content, and use JavaScript just as
 an addon for your web pages.</p>
-<p><strong>Q: I don't get this --extern/--intern stuff.</strong></p>
-<p>A: When it comes to checking there are three types of URLs. Note
-that local files are also represented als URLs (with <tt class="docutils literal"><span class="pre">file:</span></tt> prefix).
-So local files can be external URLs.</p>
-<ol class="arabic simple">
-<li>strict external URLs:
-We do only syntax checking. Internal URLs are never strict.</li>
-<li>external URLs:
-Like 1), but we additionally check if they are valid by connect()ing
-to them</li>
-<li>internal URLs:
-Like 2), but we additionally check if they are HTML pages and if so,
-we descend recursively into this link and check all the links in the
-HTML content.
-The --recursion-level option restricts the number of such recursive
-descends.</li>
-</ol>
-<p>LinkChecker provides four options which affect URLs to fall in one
-of those three categories: --intern, --extern, --extern-strict-all and
---denyallow.
-By default all URLs are internal. With --extern you specify what URLs
-are external. With --intern you specify what URLs are internal.
-Now imagine you have both --extern and --intern. What happens
-when an URL matches both patterns? Or when it matches none? In this
-situation the --denyallow option specifies the order in which we match
-the URL. By default it is internal/external, with --denyallow the order is
-external/internal. Either way, the first match counts, and if none matches,
-the last checked category is the category for the URL.
-Finally, with --extern-strict-all all external URLs are strict.</p>
-<p>Oh, and just to boggle your mind: you can have more than one external
-regular expression in a config file and for each of those expressions
-you can specify if those matched external URLs should be strict or not.</p>
-<p>An example. We don't want to check mailto urls. Then its
--i'!^mailto:'. The '!' negates an expression. With --extern-strictall,
-we don't even connect to any mail hosts.</p>
-<p>Another example. We check our site www.mycompany.com, don't recurse
-into external links point outside from our site and want to ignore links
-to hollowood.com and hullabulla.com completely.
-This can only be done with a configuration entry like</p>
-<pre class="literal-block">
-[filtering]
-extern1=hollowood.com 1
-extern2=hullabulla.com 1
-# the 1 means strict external ie don't even connect
-</pre>
-<p>and the command
-<tt class="docutils literal"><span class="pre">linkchecker</span> <span class="pre">--intern=www.mycompany.com</span> <span class="pre">www.mycompany.com</span></tt></p>
 <p><strong>Q: Is LinkCheckers cookie feature insecure?</strong></p>
 <p>A: Cookies can not store more information as is in the HTTP request itself,
 so you are not giving away any more system information.
@@ -297,7 +250,7 @@ and look for missing files.</p>
 </div>
 <hr class="docutils footer" />
 <div class="footer">
-Generated on: 2005-05-04 13:01 UTC.
+Generated on: 2005-05-06 23:44 UTC.
 </div>
 </body>
 </html>

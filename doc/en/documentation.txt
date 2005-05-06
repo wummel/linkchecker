@@ -196,61 +196,6 @@ Use PHP or Zope or ASP for dynamic content, and use JavaScript just as
 an addon for your web pages.
 
 
-**Q: I don't get this --extern/--intern stuff.**
-
-A: When it comes to checking there are three types of URLs. Note
-that local files are also represented als URLs (with ``file:`` prefix).
-So local files can be external URLs.
-
-1) strict external URLs:
-   We do only syntax checking. Internal URLs are never strict.
-2) external URLs:
-   Like 1), but we additionally check if they are valid by connect()ing
-   to them
-3) internal URLs:
-   Like 2), but we additionally check if they are HTML pages and if so,
-   we descend recursively into this link and check all the links in the
-   HTML content.
-   The --recursion-level option restricts the number of such recursive
-   descends.
-
-LinkChecker provides four options which affect URLs to fall in one
-of those three categories: --intern, --extern, --extern-strict-all and
---denyallow.
-By default all URLs are internal. With --extern you specify what URLs
-are external. With --intern you specify what URLs are internal.
-Now imagine you have both --extern and --intern. What happens
-when an URL matches both patterns? Or when it matches none? In this
-situation the --denyallow option specifies the order in which we match
-the URL. By default it is internal/external, with --denyallow the order is
-external/internal. Either way, the first match counts, and if none matches,
-the last checked category is the category for the URL.
-Finally, with --extern-strict-all all external URLs are strict.
-
-Oh, and just to boggle your mind: you can have more than one external
-regular expression in a config file and for each of those expressions
-you can specify if those matched external URLs should be strict or not.
-
-An example. We don't want to check mailto urls. Then its
--i'!^mailto:'. The '!' negates an expression. With --extern-strictall,
-we don't even connect to any mail hosts.
-
-Another example. We check our site www.mycompany.com, don't recurse
-into external links point outside from our site and want to ignore links
-to hollowood.com and hullabulla.com completely.
-This can only be done with a configuration entry like
-
-::
-
-  [filtering]
-  extern1=hollowood.com 1
-  extern2=hullabulla.com 1
-  # the 1 means strict external ie don't even connect
-
-and the command
-``linkchecker --intern=www.mycompany.com www.mycompany.com``
-
-
 **Q: Is LinkCheckers cookie feature insecure?**
 
 A: Cookies can not store more information as is in the HTTP request itself,
