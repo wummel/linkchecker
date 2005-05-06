@@ -637,15 +637,6 @@ if (linkcheck.logger.gml.GMLLogger in klasses or \
            _("Using DOT or GML loggers without verbose output"
              " gives an incomplete sitemap graph."))
 
-# try to generate empty config dir if not already there
-userconfdir = linkcheck.configuration.normpath("~/.linkchecker")
-if not os.path.exists(userconfdir):
-    try:
-        os.mkdir(userconfdir, 0700)
-    except OSError:
-        # ignore errors
-        pass
-
 # interactive input
 if len(args) <= 0:
     if config['interactive']:
