@@ -293,7 +293,7 @@ class TestUrl (unittest.TestCase):
 
     def test_mail_url (self):
         """
-        Test mailto urls.
+        Test mailto URLs.
         """
         # no netloc and no path
         url = 'mailto:'
@@ -334,7 +334,7 @@ class TestUrl (unittest.TestCase):
 
     def test_norm_with_auth (self):
         """
-        Test norming of urls with authentication tokens.
+        Test norming of URLs with authentication tokens.
         """
         url = "telnet://user@www.imadoofus.org"
         nurl = url
