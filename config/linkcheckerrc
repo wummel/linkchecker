@@ -14,14 +14,15 @@
 # turn on/off --verbose
 #verbose=1
 # turn on/off --warnings
-#warnings=1
+#warnings=0
 # turn on/off --quiet
 #quiet=1
 # additional file output
 #fileoutput = text, html, gml, sql
 
-# fields names:
-# all       (for all fields)
+##################### logger configuration ##########################
+# logger output part names:
+# all       (for all parts)
 # realurl   (the full url link)
 # result    (valid or invalid, with messages)
 # extern    (1 or 0, only in some logger types reported)
@@ -41,7 +42,7 @@
 # standard text logger
 [text]
 #filename=linkchecker-out.txt
-#fields=all
+#parts=all
 # colors for the various parts, syntax is <color> or <type>;<color>
 # type can be bold, light, blink, invert
 # color can be default, black, red, green, yellow, blue, purple, cyan, white,
@@ -57,12 +58,12 @@
 #colorwarning=bold;yellow
 #colordltime=default
 #colorreset=default
-#fields=all
+#parts=all
 
 # GML logger
 [gml]
 #filename=linkchecker-out.gml
-#fields=all
+#parts=all
 # valid encodings are listed in http://docs.python.org/lib/node127.html
 # default encoding is iso-8859-15
 #encoding=utf_16
@@ -70,7 +71,7 @@
 # DOT logger
 [dot]
 #filename=linkchecker-out.dot
-#fields=all
+#parts=all
 # valid encodings are listed in http://docs.python.org/lib/node127.html
 # default encoding is ascii since the original DOT format does not
 # support other charsets
@@ -81,14 +82,14 @@
 #filename=linkchecker-out.csv
 #separator=,
 #quotechar="
-#fields=all
+#parts=all
 
 # SQL logger
 [sql]
 #filename=linkchecker-out.sql
 #dbname=linksdb
 #separator=;
-#fields=all
+#parts=all
 
 # HTML logger
 [html]
@@ -101,11 +102,11 @@
 #colorwarning=#e0954e
 #colorerror=#db4930
 #colorok=#3ba557
-#fields=all
+#parts=all
 
 # blacklist logger
 [blacklist]
-#filename=~/.blacklist
+#filename=~/.linkchecker/blacklist
 
 # xml logger
 [xml]
@@ -118,8 +119,6 @@
 # check anchors?
 #anchors=0
 #recursionlevel=1
-# obey robots.txt exclusion?
-#robotstxt=1
 # overall strict checking. You can specify for each extern URL
 # separately if its strict or not. See the [filtering] section
 #strict=0
