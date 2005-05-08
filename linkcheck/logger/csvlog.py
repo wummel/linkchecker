@@ -57,7 +57,7 @@ class CSVLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         row = []
-        if self.has_field("intro"):
+        if self.has_part("intro"):
             self.comment(_("created by %s at %s") % \
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
@@ -123,7 +123,7 @@ class CSVLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.stoptime = time.time()
-        if self.has_field("outro"):
+        if self.has_part("outro"):
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %s (%s)") % \
                          (linkcheck.strformat.strtime(self.stoptime),

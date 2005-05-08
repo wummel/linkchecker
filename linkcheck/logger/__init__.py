@@ -51,15 +51,15 @@ class Logger (object):
 
     def __init__ (self, **args):
         """
-        Initialize a logger, looking for field restrictions in kwargs.
+        Initialize a logger, looking for part restrictions in kwargs.
         """
-        # what log fields should be in output
-        self.logfields = None # log all fields
-        if args.has_key('fields'):
-            if "all" not in args['fields']:
-                # only log given fields
-                self.logfields = args['fields']
-        # number of spaces before log fields for alignment
+        # what log parts should be in output
+        self.logparts = None # log all parts
+        if args.has_key('parts'):
+            if "all" not in args['parts']:
+                # only log given parts
+                self.logparts = args['parts']
+        # number of spaces before log parts for alignment
         self.logspaces = {}
         # maximum indent of spaces for alignment
         self.max_indent = 0
@@ -154,24 +154,24 @@ class Logger (object):
         self.write(s)
         self.write(unicode(os.linesep), **args)
 
-    def has_field (self, name):
+    def has_part (self, name):
         """
-        See if given field name will be logged.
+        See if given part name will be logged.
         """
-        if self.logfields is None:
-            # log all fields
+        if self.logparts is None:
+            # log all parts
             return True
-        return name in self.logfields
+        return name in self.logparts
 
-    def field (self, name):
+    def part (self, name):
         """
-        Return translated field name.
+        Return translated part name.
         """
         return _(Fields[name])
 
     def spaces (self, name):
         """
-        Return indent of spaces for given field name.
+        Return indent of spaces for given part name.
         """
         return self.logspaces[name]
 
@@ -179,16 +179,16 @@ class Logger (object):
         """
         Start log output.
         """
-        # map with spaces between field name and value
-        if self.logfields is None:
-            fields = Fields.keys()
+        # map with spaces between part name and value
+        if self.logparts is None:
+            parts = Fields.keys()
         else:
-            fields = self.logfields
-        values = [self.field(x) for x in fields]
-        # maximum indent for localized log field names
+            parts = self.logparts
+        values = [self.part(x) for x in parts]
+        # maximum indent for localized log part names
         self.max_indent = max([len(x) for x in values])+1
-        for key in fields:
-            numspaces = (self.max_indent - len(self.field(key)))
+        for key in parts:
+            numspaces = (self.max_indent - len(self.part(key)))
             self.logspaces[key] = u" " * numspaces
 
     def log_filter_url (self, url_data, do_print):

@@ -72,11 +72,11 @@ class HtmlLogger (linkcheck.logger.Logger):
         self.colorerror = args['colorerror']
         self.colorok = args['colorok']
 
-    def field (self, name):
+    def part (self, name):
         """
-        Return non-space-breakable field name.
+        Return non-space-breakable part name.
         """
-        return super(HtmlLogger, self).field(name).replace(" ", "&nbsp;")
+        return super(HtmlLogger, self).part(name).replace(" ", "&nbsp;")
 
     def comment (self, s, **args):
         """
@@ -97,7 +97,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         self.write(HTML_HEADER % (linkcheck.configuration.App,
                    self.colorbackground,
                    self.colorlink, self.colorlink, self.colorlink))
-        if self.has_field('intro'):
+        if self.has_part('intro'):
             self.write(u"<center><h2>"+linkcheck.configuration.App+
                        "</h2></center><br><blockquote>"+
                        linkcheck.configuration.Freeware+"<br><br>"+
@@ -114,27 +114,27 @@ class HtmlLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.write_table_start()
-        if self.has_field("url"):
+        if self.has_part("url"):
             self.write_url(url_data)
-        if url_data.name and self.has_field("name"):
+        if url_data.name and self.has_part("name"):
             self.write_name(url_data)
-        if url_data.parent_url and self.has_field("parenturl"):
+        if url_data.parent_url and self.has_part("parenturl"):
             self.write_parent(url_data)
-        if url_data.base_ref and self.has_field("base"):
+        if url_data.base_ref and self.has_part("base"):
             self.write_base(url_data)
-        if url_data.url and self.has_field("realurl"):
+        if url_data.url and self.has_part("realurl"):
             self.write_real(url_data)
-        if url_data.dltime >= 0 and self.has_field("dltime"):
+        if url_data.dltime >= 0 and self.has_part("dltime"):
             self.write_dltime(url_data)
-        if url_data.dlsize >= 0 and self.has_field("dlsize"):
+        if url_data.dlsize >= 0 and self.has_part("dlsize"):
             self.write_dlsize(url_data)
-        if url_data.checktime and self.has_field("checktime"):
+        if url_data.checktime and self.has_part("checktime"):
             self.write_checktime(url_data)
-        if url_data.info and self.has_field("info"):
+        if url_data.info and self.has_part("info"):
             self.write_info(url_data)
-        if url_data.warning and self.has_field("warning"):
+        if url_data.warning and self.has_part("warning"):
             self.write_warning(url_data)
-        if self.has_field("result"):
+        if self.has_part("result"):
             self.write_result(url_data)
         self.write_table_end()
         self.flush()
@@ -167,7 +167,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         self.writeln(u"<tr>")
         self.writeln(u"<td bgcolor=\""+self.colorurl+u"\">"+
-                     self.field("url")+u"</td>")
+                     self.part("url")+u"</td>")
         self.write(u"<td bgcolor=\""+self.colorurl+u"\">"+
                    cgi.escape(repr(url_data.base_url)[1:]))
         if url_data.cached:
@@ -178,14 +178,14 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.name.
         """
-        self.writeln(u"<tr><td>"+self.field("name")+u"</td><td>"+
+        self.writeln(u"<tr><td>"+self.part("name")+u"</td><td>"+
                      cgi.escape(repr(url_data.name)[1:])+u"</td></tr>")
 
     def write_parent (self, url_data):
         """
         Write url_data.parent_url.
         """
-        self.write(u"<tr><td>"+self.field("parenturl")+
+        self.write(u"<tr><td>"+self.part("parenturl")+
                    u'</td><td><a target="top" href="'+
                    url_data.parent_url+u'">'+
                    cgi.escape(url_data.parent_url)+u"</a>")
@@ -204,14 +204,14 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.base_ref.
         """
-        self.writeln(u"<tr><td>"+self.field("base")+u"</td><td>"+
+        self.writeln(u"<tr><td>"+self.part("base")+u"</td><td>"+
                      cgi.escape(url_data.base_ref)+u"</td></tr>")
 
     def write_real (self, url_data):
         """
         Write url_data.url.
         """
-        self.writeln("<tr><td>"+self.field("realurl")+u"</td><td>"+
+        self.writeln("<tr><td>"+self.part("realurl")+u"</td><td>"+
                      u'<a target="top" href="'+url_data.url+
                      u'">'+cgi.escape(url_data.url)+u"</a></td></tr>")
 
@@ -219,7 +219,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.dltime.
         """
-        self.writeln(u"<tr><td>"+self.field("dltime")+u"</td><td>"+
+        self.writeln(u"<tr><td>"+self.part("dltime")+u"</td><td>"+
                      (_("%.3f seconds") % url_data.dltime)+
                      u"</td></tr>")
 
@@ -227,7 +227,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.dlsize.
         """
-        self.writeln(u"<tr><td>"+self.field("dlsize")+u"</td><td>"+
+        self.writeln(u"<tr><td>"+self.part("dlsize")+u"</td><td>"+
                      linkcheck.strformat.strsize(url_data.dlsize)+
                      u"</td></tr>")
 
@@ -235,7 +235,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.checktime.
         """
-        self.writeln(u"<tr><td>"+self.field("checktime")+u"</td><td>"+
+        self.writeln(u"<tr><td>"+self.part("checktime")+u"</td><td>"+
                      (_("%.3f seconds") % url_data.checktime)+u"</td></tr>")
 
     def write_info (self, url_data):
@@ -243,7 +243,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         Write url_data.info.
         """
         text = os.linesep.join(url_data.info)
-        self.writeln(u"<tr><td valign=\"top\">"+self.field("info")+
+        self.writeln(u"<tr><td valign=\"top\">"+self.part("info")+
                u"</td><td>"+cgi.escape(text).replace(os.linesep, "<br>")+
                u"</td></tr>")
 
@@ -254,7 +254,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         sep = u"<br>"+os.linesep
         text = sep.join([cgi.escape(x) for x in url_data.warning])
         self.writeln(u"<tr><td bgcolor=\""+self.colorwarning+u"\" "+
-                     u"valign=\"top\">"+self.field("warning")+
+                     u"valign=\"top\">"+self.part("warning")+
                      u"</td><td bgcolor=\""+self.colorwarning+u"\">"+
                      text+u"</td></tr>")
 
@@ -264,11 +264,11 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         if url_data.valid:
             self.write(u"<tr><td bgcolor=\""+self.colorok+u"\">"+
-             self.field("result")+u"</td><td bgcolor=\""+self.colorok+u"\">")
+             self.part("result")+u"</td><td bgcolor=\""+self.colorok+u"\">")
             self.write(_("Valid"))
         else:
             self.write(u"<tr><td bgcolor=\""+self.colorerror+u"\">"+
-           self.field("result")+u"</td><td bgcolor=\""+self.colorerror+u"\">")
+           self.part("result")+u"</td><td bgcolor=\""+self.colorerror+u"\">")
             self.write(_("Error"))
         if url_data.result:
             self.write(u": "+cgi.escape(url_data.result))
@@ -280,7 +280,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
-        if self.has_field("outro"):
+        if self.has_part("outro"):
             self.writeln()
             self.write(_("That's it.")+" ")
             if self.number >= 0:

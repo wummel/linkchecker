@@ -92,7 +92,7 @@ class TextLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.starttime = time.time()
-        if self.has_field('intro'):
+        if self.has_part('intro'):
             self.writeln(linkcheck.configuration.AppInfo)
             self.writeln(linkcheck.configuration.Freeware)
             self.writeln(_("Get the newest version at %s") %
@@ -111,27 +111,27 @@ class TextLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
-        if self.has_field('url'):
+        if self.has_part('url'):
             self.write_url(url_data)
-        if url_data.name and self.has_field('name'):
+        if url_data.name and self.has_part('name'):
             self.write_name(url_data)
-        if url_data.parent_url and self.has_field('parenturl'):
+        if url_data.parent_url and self.has_part('parenturl'):
             self.write_parent(url_data)
-        if url_data.base_ref and self.has_field('base'):
+        if url_data.base_ref and self.has_part('base'):
             self.write_base(url_data)
-        if url_data.url and self.has_field('realurl'):
+        if url_data.url and self.has_part('realurl'):
             self.write_real(url_data)
-        if url_data.dltime >= 0 and self.has_field('dltime'):
+        if url_data.dltime >= 0 and self.has_part('dltime'):
             self.write_dltime(url_data)
-        if url_data.dlsize >= 0 and self.has_field('dlsize'):
+        if url_data.dlsize >= 0 and self.has_part('dlsize'):
             self.write_dlsize(url_data)
-        if url_data.checktime and self.has_field('checktime'):
+        if url_data.checktime and self.has_part('checktime'):
             self.write_checktime(url_data)
-        if url_data.info and self.has_field('info'):
+        if url_data.info and self.has_part('info'):
             self.write_info(url_data)
-        if url_data.warning and self.has_field('warning'):
+        if url_data.warning and self.has_part('warning'):
             self.write_warning(url_data)
-        if self.has_field('result'):
+        if self.has_part('result'):
             self.write_result(url_data)
         self.flush()
 
@@ -140,7 +140,7 @@ class TextLogger (linkcheck.logger.Logger):
         Write url_data.base_url.
         """
         self.writeln()
-        self.write(self.field('url') + self.spaces('url'))
+        self.write(self.part('url') + self.spaces('url'))
         txt = unicode(repr(url_data.base_url)[1:])
         if url_data.cached:
             txt += _(" (cached)")
@@ -150,14 +150,14 @@ class TextLogger (linkcheck.logger.Logger):
         """
         Write url_data.name.
         """
-        self.write(self.field("name") + self.spaces("name"))
+        self.write(self.part("name") + self.spaces("name"))
         self.writeln(unicode(repr(url_data.name)[1:]), color=self.colorname)
 
     def write_parent (self, url_data):
         """
         Write url_data.parent_url.
         """
-        self.write(self.field('parenturl') + self.spaces("parenturl"))
+        self.write(self.part('parenturl') + self.spaces("parenturl"))
         txt = url_data.parent_url
         txt += _(", line %d") % url_data.line
         txt += _(", col %d") % url_data.column
@@ -167,21 +167,21 @@ class TextLogger (linkcheck.logger.Logger):
         """
         Write url_data.base_ref.
         """
-        self.write(self.field("base") + self.spaces("base"))
+        self.write(self.part("base") + self.spaces("base"))
         self.writeln(url_data.base_ref, color=self.colorbase)
 
     def write_real (self, url_data):
         """
         Write url_data.url.
         """
-        self.write(self.field("realurl") + self.spaces("realurl"))
+        self.write(self.part("realurl") + self.spaces("realurl"))
         self.writeln(unicode(url_data.url), color=self.colorreal)
 
     def write_dltime (self, url_data):
         """
         Write url_data.dltime.
         """
-        self.write(self.field("dltime") + self.spaces("dltime"))
+        self.write(self.part("dltime") + self.spaces("dltime"))
         self.writeln(_("%.3f seconds") % url_data.dltime,
                      color=self.colordltime)
 
@@ -189,7 +189,7 @@ class TextLogger (linkcheck.logger.Logger):
         """
         Write url_data.dlsize.
         """
-        self.write(self.field("dlsize") + self.spaces("dlsize"))
+        self.write(self.part("dlsize") + self.spaces("dlsize"))
         self.writeln(linkcheck.strformat.strsize(url_data.dlsize),
                      color=self.colordlsize)
 
@@ -197,7 +197,7 @@ class TextLogger (linkcheck.logger.Logger):
         """
         Write url_data.checktime.
         """
-        self.write(self.field("checktime") + self.spaces("checktime"))
+        self.write(self.part("checktime") + self.spaces("checktime"))
         self.writeln(_("%.3f seconds") % url_data.checktime,
                      color=self.colordltime)
 
@@ -205,21 +205,21 @@ class TextLogger (linkcheck.logger.Logger):
         """
         Write url_data.info.
         """
-        self.write(self.field("info") + self.spaces("info"))
+        self.write(self.part("info") + self.spaces("info"))
         self.writeln(self.wrap(url_data.info, 65), color=self.colorinfo)
 
     def write_warning (self, url_data):
         """
         Write url_data.warning.
         """
-        self.write(self.field("warning") + self.spaces("warning"))
+        self.write(self.part("warning") + self.spaces("warning"))
         self.writeln(self.wrap(url_data.warning, 65), color=self.colorwarning)
 
     def write_result (self, url_data):
         """
         Write url_data.result.
         """
-        self.write(self.field("result") + self.spaces("result"))
+        self.write(self.part("result") + self.spaces("result"))
         if url_data.valid:
             color = self.colorvalid
             self.write(_("Valid"), color=color)
@@ -236,7 +236,7 @@ class TextLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
-        if self.has_field('outro'):
+        if self.has_part('outro'):
             self.writeln()
             self.write(_("That's it.")+" ")
             if self.number >= 0:

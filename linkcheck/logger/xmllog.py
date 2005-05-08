@@ -93,7 +93,7 @@ class XMLLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         self.writeln(u'<?xml version="1.0"?>')
-        if self.has_field("intro"):
+        if self.has_part("intro"):
             self.comment(_("created by %s at %s") %
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
@@ -119,17 +119,17 @@ class XMLLogger (linkcheck.logger.Logger):
             self.nodes[node.url] = node
             self.nodeid += 1
             self.writeln(u'  <node name="%d">' % node.id)
-            if self.has_field("realurl"):
+            if self.has_part("realurl"):
                 self.writeln(u"    <label>%s</label>" % xmlquote(node.url))
             self.writeln(u"    <data>")
-            if node.dltime >= 0 and self.has_field("dltime"):
+            if node.dltime >= 0 and self.has_part("dltime"):
                 self.writeln(u"      <dltime>%f</dltime>" % node.dltime)
-            if node.dlsize >= 0 and self.has_field("dlsize"):
+            if node.dlsize >= 0 and self.has_part("dlsize"):
                 self.writeln(u"      <dlsize>%d</dlsize>" % node.dlsize)
-            if node.checktime and self.has_field("checktime"):
+            if node.checktime and self.has_part("checktime"):
                 self.writeln(u"      <checktime>%f</checktime>" %
                              node.checktime)
-            if self.has_field("extern"):
+            if self.has_part("extern"):
                 self.writeln(u"      <extern>%d</extern>" %
                              (node.extern and 1 or 0))
             self.writeln(u"    </data>")
@@ -139,18 +139,18 @@ class XMLLogger (linkcheck.logger.Logger):
     def write_edges (self):
         """
         Write all edges we can find in the graph in a brute-force
-        manner. Better would be a mapping of parent urls.
+        manner. Better would be a mapping of parent URLs.
         """
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
                 self.write(u"  <edge")
                 self.write(u' source="%d"' % self.nodes[node.parent_url].id)
                 self.writeln(u' target="%d">' % node.id)
-                if self.has_field("url"):
+                if self.has_part("url"):
                     self.writeln(u"    <label>%s</label>" % \
                                  xmlquote(node.base_url))
                 self.writeln(u"    <data>")
-                if self.has_field("result"):
+                if self.has_part("result"):
                     self.writeln(u"      <valid>%d</valid>" % \
                                  (node.valid and 1 or 0))
                 self.writeln(u"    </data>")
@@ -165,7 +165,7 @@ class XMLLogger (linkcheck.logger.Logger):
             return
         self.writeln(u"</graph>")
         self.writeln(u"</GraphXML>")
-        if self.has_field("outro"):
+        if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %s (%s)") % \

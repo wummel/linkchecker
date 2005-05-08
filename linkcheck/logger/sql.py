@@ -77,7 +77,7 @@ class SQLLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.starttime = time.time()
-        if self.has_field("intro"):
+        if self.has_part("intro"):
             self.comment(_("created by %s at %s") % \
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
@@ -142,7 +142,7 @@ class SQLLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
-        if self.has_field("outro"):
+        if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %s (%s)") % \

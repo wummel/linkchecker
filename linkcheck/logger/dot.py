@@ -46,7 +46,7 @@ class DOTLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         self.starttime = time.time()
-        if self.has_field("intro"):
+        if self.has_part("intro"):
             self.comment(_("created by %s at %s") % \
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
@@ -78,22 +78,22 @@ class DOTLogger (linkcheck.logger.Logger):
             self.nodes[node.url] = node
             self.nodeid += 1
             self.writeln(u"  %d [" % node.id)
-            if self.has_field("realurl"):
+            if self.has_part("realurl"):
                 self.writeln(u'    href="%s",' % dotquote(node.url))
-            if node.dltime >= 0 and self.has_field("dltime"):
+            if node.dltime >= 0 and self.has_part("dltime"):
                 self.writeln(u"    dltime=%d," % node.dltime)
-            if node.dlsize >= 0 and self.has_field("dlsize"):
+            if node.dlsize >= 0 and self.has_part("dlsize"):
                 self.writeln(u"    dlsize=%d," % node.dlsize)
-            if node.checktime and self.has_field("checktime"):
+            if node.checktime and self.has_part("checktime"):
                 self.writeln(u"    checktime=%d," % node.checktime)
-            if self.has_field("extern"):
+            if self.has_part("extern"):
                 self.writeln(u"    extern=%d," % (node.extern and 1 or 0))
             self.writeln(u"  ];")
 
     def write_edges (self):
         """
         Write all edges we can find in the graph in a brute-force
-        manner. Better would be a mapping of parent urls.
+        manner. Better would be a mapping of parent URLs.
         """
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
@@ -101,7 +101,7 @@ class DOTLogger (linkcheck.logger.Logger):
                 target = node.id
                 self.writeln(u"  %d -> %d [" % (source, target))
                 self.writeln(u'    label="%s",' % dotedge(node.name))
-                if self.has_field("result"):
+                if self.has_part("result"):
                     self.writeln(u"    valid=%d," % (node.valid and 1 or 0))
                 self.writeln(u"  ];")
         self.flush()
@@ -114,7 +114,7 @@ class DOTLogger (linkcheck.logger.Logger):
             return
         self.write_edges()
         self.writeln(u"}")
-        if self.has_field("outro"):
+        if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %s (%s)")%\
