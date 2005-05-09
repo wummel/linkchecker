@@ -1,8 +1,5 @@
 Possible improvements people could work on:
 
-- [USAGE] rethink intern/extern stuff. Especially when specifying
-  --extern one should not have to also specify --intern suddenly.
-
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
   the broken anchor name is not displayed as a warning
 

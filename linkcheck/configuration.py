@@ -78,11 +78,9 @@ class Configuration (dict):
         self['quiet'] = False
         self["anchors"] = False
         self["anchorcaching"] = True
-        self["externstrictall"] = False
         self["externlinks"] = []
         self["internlinks"] = []
         self["noproxyfor"] = []
-        self["denyallow"] = False
         self["interactive"] = False
         # on ftp, password is set by Pythons ftplib
         self["authentication"] = []
@@ -270,8 +268,8 @@ class Configuration (dict):
                     except ConfigParser.Error, msg:
                         linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
                 try:
-                    self[key]['fields'] = [f.strip() \
-                            for f in cfgparser.get(key, 'fields').split(',')]
+                    self[key]['parts'] = [f.strip() \
+                            for f in cfgparser.get(key, 'parts').split(',')]
                 except ConfigParser.Error, msg:
                     linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -339,11 +337,6 @@ class Configuration (dict):
         try:
             num = cfgparser.getint(section, "recursionlevel")
             self["recursionlevel"] = num
-        except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            self["externstrictall"] = \
-                          cfgparser.getboolean(section, "externstrictall")
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -415,23 +408,32 @@ class Configuration (dict):
         try:
             i = 1
             while 1:
-                ctuple = cfgparser.get(section, "extern%d" % i).split()
+                ctuple = cfgparser.get(section, "nofollow%d" % i).split()
                 if len(ctuple)!=2:
                     linkcheck.log.error(
-                            _("extern%d: syntax error %s\n") % (i, ctuple))
+                            _("nofollow%d: syntax error %s\n") % (i, ctuple))
                     break
                 self["externlinks"].append(
-                    linkcheck.get_link_pat(ctuple[0], strict=int(ctuple[1])))
+                    linkcheck.get_link_pat(ctuple[0], strict=0))
+                i += 1
+        except ConfigParser.Error, msg:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            i = 1
+            while 1:
+                ctuple = cfgparser.get(section, "ignore%d" % i).split()
+                if len(ctuple)!=2:
+                    linkcheck.log.error(
+                            _("ignore%d: syntax error %s\n") % (i, ctuple))
+                    break
+                self["externlinks"].append(
+                    linkcheck.get_link_pat(ctuple[0], strict=1))
                 i += 1
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["internlinks"].append(
                linkcheck.get_link_pat(cfgparser.get(section, "internlinks")))
-        except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            self["denyallow"] = cfgparser.getboolean(section, "denyallow")
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 

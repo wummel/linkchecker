@@ -27,12 +27,13 @@ import linkcheck
 import urlbase
 import proxysupport
 import httpurl
+import internpaturl
 import linkcheck.ftpparse._ftpparse as ftpparse
 
 DEFAULT_TIMEOUT_SECS = 300
 
 
-class FtpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
+class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     """
     Url link with ftp scheme.
     """

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-05-08 22:12+0200\n"
+"POT-Creation-Date: 2005-05-09 23:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -618,7 +618,12 @@ msgstr ""
 
 #: ../linkcheck/configuration.py:414
 #, python-format
-msgid "extern%d: syntax error %s\n"
+msgid "nofollow%d: syntax error %s\n"
+msgstr ""
+
+#: ../linkcheck/configuration.py:427
+#, python-format
+msgid "ignore%d: syntax error %s\n"
 msgstr ""
 
 #: ../linkcheck/strformat.py:180

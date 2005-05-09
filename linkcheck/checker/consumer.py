@@ -51,7 +51,7 @@ def print_duration (duration):
 
 class Consumer (linkcheck.lock.AssertLock):
     """
-    Consume urls from the url queue in a thread-safe manner.
+    Consume URLs from the URL queue in a thread-safe manner.
     """
 
     def __init__ (self, config, cache):

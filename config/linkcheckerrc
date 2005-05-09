@@ -119,9 +119,6 @@
 # check anchors?
 #anchors=0
 #recursionlevel=1
-# overall strict checking. You can specify for each extern URL
-# separately if its strict or not. See the [filtering] section
-#strict=0
 # supply a regular expression for which warnings are printed if found
 # in any HTML files.
 #warningregex=Oracle DB Error
@@ -135,15 +132,14 @@
 # filtering options (see FAQ)
 # for each extern link we can specify if it is strict or not
 [filtering]
-# everything with 'lconline' in the URL name is extern
-# extern1=lconline 0
-# everything with 'bookmark' in the URL name is strict
-# extern2=bookmark 1
-# links to our domain are intern
-# internlinks=calvinsplayground\.de
-# check only syntax of all mail adresses
-# extern3=^mailto: 1
-#denyallow=0
+# ignore everything with 'lconline' in the URL name
+#ignore1=lconline
+# and ignore everything with 'bookmark' in the URL name
+#ignore2=bookmark
+# and ignore all mailto: URLs
+#ignore3=^mailto:
+# do not recurse into the following URLs
+#nofollow1=http://justahomepage/bla
 # specify hosts to contact directly without a proxy
 # value is a regular expression
 #noproxy1=*\.intra

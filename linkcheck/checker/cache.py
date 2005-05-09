@@ -51,7 +51,7 @@ def _check_morsel (m, host, path):
 class Cache (linkcheck.lock.AssertLock):
     """
     Store and provide routines for cached data. Currently there are
-    caches for cookies, checked urls, FTP connections and robots.txt
+    caches for cookies, checked URLs, FTP connections and robots.txt
     contents.
 
     All public operations (except __init__()) are thread-safe.
@@ -62,11 +62,11 @@ class Cache (linkcheck.lock.AssertLock):
         Initialize the default options.
         """
         super(Cache, self).__init__()
-        # already checked urls
+        # already checked URLs
         self.checked = {}
-        # urls that are being checked
+        # URLs that are being checked
         self.in_progress = {}
-        # to-be-checked urls
+        # to-be-checked URLs
         self.incoming = collections.deque()
         # downloaded robots.txt files
         self.robots_txt = {}

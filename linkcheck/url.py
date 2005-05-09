@@ -339,7 +339,7 @@ def collapse_segments (path):
     # backslashes to be left alone, and finally quoted with '%5C')
     # But replacing has several positive effects:
     # - Prevents path attacks on Windows systems (using \.. parent refs)
-    # - Fixes bad urls where users used backslashes instead of slashes.
+    # - Fixes bad URLs where users used backslashes instead of slashes.
     #   This is a far more probable case than users having an intentional
     #   backslash in the path name.
     path = path.replace('\\', '/')

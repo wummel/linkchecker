@@ -22,14 +22,14 @@ import urllib
 
 class ProxySupport (object):
     """
-    Get support for proxying and for urls with user:pass@host setting.
+    Get support for proxying and for URLs with user:pass@host setting.
     """
 
     def set_proxy (self, proxy):
         """
         Parse given proxy information and store parsed values.
         Note that only http:// proxies are supported, both for ftp://
-        and http:// urls.
+        and http:// URLs.
         """
         self.proxy = proxy
         self.proxyauth = None

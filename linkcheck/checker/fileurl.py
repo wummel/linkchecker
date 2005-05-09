@@ -255,3 +255,19 @@ class FileUrl (urlbase.UrlBase):
             if ro.search(self.get_content()[:30]):
                 getattr(self, "parse_"+key)()
                 return
+
+    def get_intern_pattern (self):
+        """
+        Get pattern for intern URL matching.
+
+        @return non-empty regex pattern or None
+        @rtype String or None
+        """
+        absolute = linkcheck.checker.absolute_url
+        url = absolute(self.base_url, self.base_ref, self.parent_url)
+        if not url:
+            return None
+        parts = linkcheck.strformat.url_unicode_split(url)
+        path = parts[2]
+        return "file://%s" % re.escape(path)
+

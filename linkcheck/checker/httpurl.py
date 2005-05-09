@@ -34,6 +34,7 @@ import linkcheck.robotparser2
 import linkcheck.httplib2
 import httpheaders as headers
 import urlbase
+import internpaturl
 import proxysupport
 
 supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
@@ -45,7 +46,7 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 _is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 
 
-class HttpUrl (urlbase.UrlBase, proxysupport.ProxySupport):
+class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     """
     Url link with http scheme.
     """

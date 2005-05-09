@@ -160,34 +160,6 @@ import linkcheck.checker.nntpurl
 import linkcheck.checker.errorurl
 
 
-def set_intern_url (url, klass, config):
-    """
-    Add intern url pattern for url given on the command line.
-
-    @param url: URL to add
-    @type url: string
-    @param klass: URL class
-    @type klass: class object
-    @param config: configuration data
-    @type config: linkcheck.configuration.Configuration
-    """
-    linkcheck.log.debug(linkcheck.LOG_CHECK, "Set intern url for %r", url)
-    if klass == linkcheck.checker.fileurl.FileUrl:
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern pattern ^file:")
-        config['internlinks'].append(linkcheck.get_link_pat("^file:"))
-    elif klass in [linkcheck.checker.httpurl.HttpUrl,
-                   linkcheck.checker.httpsurl.HttpsUrl,
-                   linkcheck.checker.ftpurl.FtpUrl]:
-        domain = linkcheck.strformat.url_unicode_split(url)[1]
-        domain, is_idn = linkcheck.url.idna_encode(domain)
-        if domain:
-            domain = "://%s" % re.escape(domain)
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "Add intern domain %r",
-                                domain)
-            # add scheme colon to link pattern
-            config['internlinks'].append(linkcheck.get_link_pat(domain))
-
-
 def absolute_url (base_url, base_ref, parent_url):
     """
     Search for the absolute url to detect the link type. This does not
@@ -212,7 +184,7 @@ def absolute_url (base_url, base_ref, parent_url):
 
 def get_url_from (base_url, recursion_level, consumer,
                   parent_url=None, base_ref=None, line=0, column=0,
-                  name=u"", cmdline=None):
+                  name=u"", cmdline=True):
     """
     Get url data from given base data.
 
@@ -232,8 +204,6 @@ def get_url_from (base_url, recursion_level, consumer,
     @type column: number
     @param name: link name
     @type name: string
-    @param cmdline: flag if url was given on command line
-    @type cmdline: bool
     """
     base_url = linkcheck.strformat.unicode_safe(base_url)
     if parent_url is not None:
@@ -241,8 +211,6 @@ def get_url_from (base_url, recursion_level, consumer,
     if base_ref is not None:
         base_ref = linkcheck.strformat.unicode_safe(base_ref)
     name = linkcheck.strformat.unicode_safe(name)
-    #if cmdline and linkcheck.url.url_needs_quoting(base_url):
-    #    base_url = linkcheck.url.url_quote(base_url)
     url = absolute_url(base_url, base_ref, parent_url)
     # test scheme
     if url.startswith("http:"):
@@ -272,13 +240,17 @@ def get_url_from (base_url, recursion_level, consumer,
     else:
         # error url, no further checking, just log this
         klass = linkcheck.checker.errorurl.ErrorUrl
-    if cmdline and not (consumer.config['internlinks'] or
-                        consumer.config['externlinks']):
-        # set automatic intern/extern stuff if no filter was given
-        set_intern_url(url, klass, consumer.config)
-    return klass(base_url, recursion_level, consumer,
-                 parent_url=parent_url, base_ref=base_ref,
-                 line=line, column=column, name=name)
+    url_data = klass(base_url, recursion_level, consumer,
+                     parent_url=parent_url, base_ref=base_ref,
+                     line=line, column=column, name=name)
+    if cmdline:
+        # add intern URL regex to config for every URL that was given
+        # on the command line
+        pat = url_data.get_intern_pattern()
+        linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Pattern %r", pat)
+        if pat:
+            consumer.config['internlinks'].append(linkcheck.get_link_pat(pat))
+    return url_data
 
 
 def get_index_html (urls):

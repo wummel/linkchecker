@@ -23,6 +23,9 @@ try:
 except ImportError:
     import dummy_threading as threading
 
+import linkcheck
+import linkcheck.log
+
 lock_klass = threading.RLock().__class__
 
 class AssertLock (lock_klass):
@@ -36,6 +39,7 @@ class AssertLock (lock_klass):
         Acquire lock.
         """
         assert not self.is_locked(), "deadlock"
+        #linkcheck.log.debug(linkcheck.LOG_THREAD, "Acquire %s", self, tb=True)
         super(AssertLock, self).acquire(blocking=blocking)
 
     def release (self):
@@ -43,6 +47,7 @@ class AssertLock (lock_klass):
         Release lock.
         """
         assert self.is_locked(), "double release"
+        #linkcheck.log.debug(linkcheck.LOG_THREAD, "Release %s", self, tb=True)
         super(AssertLock, self).release()
 
     def is_locked (self):
@@ -50,3 +55,4 @@ class AssertLock (lock_klass):
         See if this lock is owned.
         """
         return self._is_owned()
+

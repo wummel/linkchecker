@@ -518,54 +518,34 @@ class UrlBase (object):
         @rtype: bool
         """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
-        return self.extern[0] and \
-           (self.consumer.config["externstrictall"] or self.extern[1])
+        return self.extern[0] and self.extern[1]
 
     def _get_extern (self, url):
         """
-        Match URL against intern and extern link patterns, according
-        to the configured denyallow order.
+        Match URL against extern and intern link patterns. If no pattern
+        matches the URL is extern.
 
         @return: a tuple (is_extern, is_strict)
         @rtype: tuple (bool, bool)
         """
-        if not (self.consumer.config["externlinks"] or \
-           self.consumer.config["internlinks"]):
-            return (0, 0)
-        # deny and allow external checking
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Url %r", url)
-        if self.consumer.config["denyallow"]:
-            for entry in self.consumer.config["externlinks"]:
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
-                                    entry)
-                match = entry['pattern'].search(url)
-                if (entry['negate'] and not match) or \
-                   (match and not entry['negate']):
-                    return (1, entry['strict'])
-            for entry in self.consumer.config["internlinks"]:
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
-                                    entry)
-                match = entry['pattern'].search(url)
-                if (entry['negate'] and not match) or \
-                   (match and not entry['negate']):
-                    return (0, 0)
-            return (0, 0)
-        else:
-            for entry in self.consumer.config["internlinks"]:
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
-                                    entry)
-                match = entry['pattern'].search(url)
-                if (entry['negate'] and not match) or \
-                   (match and not entry['negate']):
-                    return (0, 0)
-            for entry in self.consumer.config["externlinks"]:
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
-                                    entry)
-                match = entry['pattern'].search(url)
-                if (entry['negate'] and not match) or \
-                   (match and not entry['negate']):
-                    return (1, entry['strict'])
-            return (1, 0)
+        for entry in self.consumer.config["externlinks"]:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
+                                entry)
+            match = entry['pattern'].search(url)
+            if (entry['negate'] and not match) or \
+               (match and not entry['negate']):
+                linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
+                return (1, entry['strict'])
+        for entry in self.consumer.config["internlinks"]:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
+                                entry)
+            match = entry['pattern'].search(url)
+            if (entry['negate'] and not match) or \
+               (match and not entry['negate']):
+                linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern URL %r", url)
+                return (0, 0)
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
+        return (1, 0)
 
     def can_get_content (self):
         """
@@ -725,6 +705,15 @@ class UrlBase (object):
             u"column=%d" % self.column,
             u"name=%r" % self.name,
            ])
+
+    def get_intern_pattern (self):
+        """
+        Get pattern for intern URL matching.
+
+        @return non-empty regex pattern or None
+        @rtype String or None
+        """
+        return None
 
     def __str__ (self):
         """
