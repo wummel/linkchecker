@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2005-05-07  1:44+0200\n"
-"PO-Revision-Date: 2005-05-07 01:46+0100\n"
+"PO-Revision-Date: 2005-05-09 23:51+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -364,7 +364,7 @@ msgstr "B<--no-follow-url=>I<regex>"
 # type: Plain text
 #: en/linkchecker.1:166
 msgid "Check but do not recurse into URLs matching the given regex."
-msgstr ""
+msgstr "Prüfe URLs, welche den angegebenen regulären Ausdruck entsprechen, aber verhindere die rekursive Prüfung."
 
 # type: TP
 #: en/linkchecker.1:166
@@ -375,7 +375,7 @@ msgstr "B<--ignore-url=>I<regex>"
 # type: Plain text
 #: en/linkchecker.1:169
 msgid "Only check syntax of URLs matching the given regex."
-msgstr ""
+msgstr "Prüfe lediglich die Syntax von URLs welche dem angegebenen regulären Ausdruck entsprechen."
 
 # type: TP
 #: en/linkchecker.1:169
