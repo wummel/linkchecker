@@ -99,6 +99,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
+            u"info News group comp.lang.python found.",
             u"valid",
         ]
         self.newstest(url, resultlines)
@@ -112,6 +113,7 @@ class TestNews (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
+            u"info News group comp.lang.python found.",
             u"valid",
         ]
         self.newstest(url, resultlines)

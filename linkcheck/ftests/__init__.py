@@ -73,10 +73,9 @@ class TestLogger (linkcheck.logger.Logger):
             self.result.append(u"name %s" % url_data.name)
         if self.has_part('base') and url_data.base_ref:
             self.result.append(u"baseurl %s" % url_data.base_ref)
-        # Do not print info (as it may change with each check call)
-        #if self.has_part('info'):
-        #    for info in url_data.info:
-        #        self.result.append(u"info %s" % info)
+        if self.has_part('info'):
+            for info in url_data.info:
+                self.result.append(u"info %s" % info)
         if self.has_part('warning'):
             for warning in url_data.warning:
                 self.result.append(u"warning %s" % warning)
