@@ -183,7 +183,8 @@ class StandardTest (unittest.TestCase):
         if fields is not None:
             logargs['fields'] = fields
         consumer = get_test_consumer(confargs, logargs)
-        url_data = linkcheck.checker.get_url_from(url, 0, consumer)
+        url_data = linkcheck.checker.get_url_from(
+                                          url, 0, consumer, cmdline=False)
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
