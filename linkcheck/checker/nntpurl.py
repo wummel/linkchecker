@@ -59,8 +59,7 @@ class NntpUrl (urlbase.UrlBase):
             if group:
                 # request group info
                 resp, count, first, last, name = nntp.group(group)
-                self.add_info(_("Group %s has %s articles, range %s to %s.")%\
-                             (name, count, first, last))
+                self.add_info(_("News group %s found.") % name)
             else:
                 # group name is the empty string
                 self.add_warning(_("No newsgroup specified in NNTP URL."))
