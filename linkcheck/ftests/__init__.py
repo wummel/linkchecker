@@ -60,26 +60,27 @@ class TestLogger (linkcheck.logger.Logger):
         """
         Append logger output to self.result.
         """
-        if self.has_field('url'):
+        if self.has_part('url'):
             url = u"url %s" % url_data.base_url
             if url_data.cached:
                 url += u" (cached)"
             self.result.append(url)
-        if self.has_field('cachekey'):
+        if self.has_part('cachekey'):
             self.result.append(u"cache key %s" % url_data.cache_url_key)
-        if self.has_field('realurl'):
+        if self.has_part('realurl'):
             self.result.append(u"real url %s" % url_data.url)
-        if self.has_field('name') and url_data.name:
+        if self.has_part('name') and url_data.name:
             self.result.append(u"name %s" % url_data.name)
-        if self.has_field('base') and url_data.base_ref:
+        if self.has_part('base') and url_data.base_ref:
             self.result.append(u"baseurl %s" % url_data.base_ref)
-        if self.has_field('info'):
-            for info in url_data.info:
-                self.result.append(u"info %s" % info)
-        if self.has_field('warning'):
+        # Do not print info (as it may change with each check call)
+        #if self.has_part('info'):
+        #    for info in url_data.info:
+        #        self.result.append(u"info %s" % info)
+        if self.has_part('warning'):
             for warning in url_data.warning:
                 self.result.append(u"warning %s" % warning)
-        if self.has_field('result'):
+        if self.has_part('result'):
             self.result.append(url_data.valid and u"valid" or u"error")
         # note: do not append url_data.result since this is
         # platform dependent
