@@ -341,6 +341,50 @@ def isFCGI ():
 _init = None
 _sock = None
 
+cgivars = [
+    "AUTH_TYPE",
+    "CONTENT_LENGTH",
+    "CONTENT_TYPE",
+    "DATE_GMT",
+    "DATE_LOCAL",
+    "DOCUMENT_NAME",
+    "DOCUMENT_ROOT",
+    "DOCUMENT_URI",
+    "GATEWAY_INTERFACE",
+    "LAST_MODIFIED",
+    "PATH",
+    "PATH_INFO",
+    "PATH_TRANSLATED",
+    "QUERY_STRING",
+    "REMOTE_ADDR",
+    "REMOTE_HOST",
+    "REMOTE_IDENT",
+    "REMOTE_USER",
+    "REQUEST_METHOD",
+    "SCRIPT_NAME",
+    "SERVER_NAME",
+    "SERVER_PORT",
+    "SERVER_PROTOCOL",
+    "SERVER_ROOT",
+    "SERVER_SOFTWARE",
+    "HTTP_ACCEPT",
+    "HTTP_CONNECTION",
+    "HTTP_HOST",
+    "HTTP_PRAGMA",
+    "HTTP_REFERER",
+    "HTTP_USER_AGENT",
+]
+
+def set_cgi_env (env):
+    """filter the environment variables used by CGI scripts"""
+    toremove = []
+    for key in env:
+        if key not in cgivars:
+            toremove.append(key)
+    for key in toremove:
+        del env[key]
+
+
 class FCGI (object):
 
     def __init__ (self):
@@ -349,13 +393,14 @@ class FCGI (object):
             _startup()
         if not isFCGI():
             self.have_finished = 1
-            self.stdin, self.out, self.err, self.env = \
-                                sys.stdin, sys.stdout, sys.stderr, os.environ
+            set_cgi_env(os.environ)
+            self.env = os.environ
+            self.stdin, self.out, self.err = sys.stdin, sys.stdout, sys.stderr
             return
 
         if os.environ.has_key('FCGI_WEB_SERVER_ADDRS'):
             addrs = os.environ['FCGI_WEB_SERVER_ADDRS'].split(',')
-            good_addrs = [ addr.strip for addr in addrs ]
+            good_addrs = [ addr.strip() for addr in addrs ]
         else:
             good_addrs = None
 
@@ -458,9 +503,6 @@ class FCGI (object):
             return cgi.FieldStorage(fp=self.stdin, environ=self.env,
                                     keep_blank_values=1)
 
-
-
-Accept = FCGI       # alias for backward compatibility
 
 def _startup ():
     global _init
