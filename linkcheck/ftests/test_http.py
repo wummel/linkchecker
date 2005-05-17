@@ -36,7 +36,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
                   self.port
             resultlines = self.get_resultlines("http.html")
-            self.direct(url, resultlines, recursionlevel=1)
+            self.direct(url, resultlines, recursionlevel=1, cmdline=True)
             self.redirect_test()
             self.noproxyfor_test()
         finally:

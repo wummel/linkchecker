@@ -150,7 +150,7 @@ class StandardTest (unittest.TestCase):
         f.close()
         return resultlines
 
-    def file_test (self, filename, confargs=None):
+    def file_test (self, filename, confargs=None, cmdline=True):
         """
         Check <filename> with expected result in <filename>.result.
         """
@@ -160,7 +160,7 @@ class StandardTest (unittest.TestCase):
         logargs = {'expected': self.get_resultlines(filename)}
         consumer = get_test_consumer(confargs, logargs)
         url_data = linkcheck.checker.get_url_from(
-                                      url, 0, consumer, cmdline=True)
+                                      url, 0, consumer, cmdline=cmdline)
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
@@ -170,7 +170,7 @@ class StandardTest (unittest.TestCase):
             self.fail(l.encode("iso8859-1", "ignore"))
 
     def direct (self, url, resultlines, fields=None, recursionlevel=0,
-                confargs=None):
+                confargs=None, cmdline=False):
         """
         Check url with expected result.
         """
@@ -184,7 +184,7 @@ class StandardTest (unittest.TestCase):
             logargs['fields'] = fields
         consumer = get_test_consumer(confargs, logargs)
         url_data = linkcheck.checker.get_url_from(
-                                          url, 0, consumer, cmdline=False)
+                                          url, 0, consumer, cmdline=cmdline)
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
         if consumer.config['logger'].diff:
