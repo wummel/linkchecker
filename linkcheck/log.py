@@ -28,19 +28,20 @@ import inspect
 import cStringIO as StringIO
 import linecache
 import sys
+try:
+    import thread as _thread
+except ImportError:
+    import dummy_thread as _thread
 
 # memory leak debugging
 #import gc
 #gc.enable()
 #gc.set_debug(gc.DEBUG_LEAK)
 
-# call tracing
-
-def trace ():
-    """
-    Start tracing of the current thread (and the current thread only).
-    """
-    sys.settrace(_traceit)
+# tracing
+_trace_ignore = set()
+def trace_ignore (names):
+    _trace_ignore.update(names)
 
 
 def _traceit (frame, event, arg):
@@ -48,14 +49,23 @@ def _traceit (frame, event, arg):
     Print current executed line.
     """
     if event == "line":
-        lineno = frame.f_lineno
-        filename = frame.f_globals["__file__"]
-        if filename.endswith(".pyc") or filename.endswith(".pyo"):
-            filename = filename[:-1]
         name = frame.f_globals["__name__"]
-        line = linecache.getline(filename, lineno)
-        print "TRACE %s:%d: %s" % (name, lineno, line.rstrip())
+        if name not in _trace_ignore:
+            lineno = frame.f_lineno
+            filename = frame.f_globals["__file__"]
+            if filename.endswith(".pyc") or filename.endswith(".pyo"):
+                filename = filename[:-1]
+            line = linecache.getline(filename, lineno)
+            print "THREAD(%d) %s:%d: %s" % \
+                         (_thread.get_ident(), name, lineno, line.rstrip())
     return _traceit
+
+def trace ():
+    """
+    Start tracing of the current thread (and the current thread only).
+    """
+    sys.settrace(_traceit)
+
 
 
 PRINT_LOCALVARS = False
