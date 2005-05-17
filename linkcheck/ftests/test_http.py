@@ -53,7 +53,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             u"info Redirected to %s." % rurl,
             u"error",
         ]
-        self.direct(url, resultlines, recursionlevel=0)
+        self.direct(url, resultlines, recursionlevel=0, cmdline=True)
         url = u"http://localhost:%d/linkcheck/ftests/data/redirect.html" % \
               self.port
         nurl = url
@@ -75,7 +75,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             u"name Recursive Redirect",
             u"valid",
         ]
-        self.direct(url, resultlines, recursionlevel=99)
+        self.direct(url, resultlines, recursionlevel=99, cmdline=True)
 
     def noproxyfor_test (self):
         """
@@ -94,7 +94,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=0,
-                    confargs=confargs)
+                    confargs=confargs, cmdline=True)
         del os.environ["http_proxy"]
 
 
