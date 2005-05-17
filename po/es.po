@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 2.8\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-04-13 23:06+0200\n"
+"POT-Creation-Date: 2005-05-17 22:22+0200\n"
 "PO-Revision-Date: 2005-04-12 11:47-0400\n"
 "Last-Translator: Servilio Afre Puentes <servilio@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -42,14 +42,14 @@ msgstr[1] "%2d hilos activos,"
 msgid "runtime %s"
 msgstr "tiempo de corrida %s"
 
-#: ../linkcheck/checker/consumer.py:147
+#: ../linkcheck/checker/consumer.py:142
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] "interrupción por teclado, esperando a que termine %d hilo activo"
 msgstr[1] "interrupción por teclado, esperando a que terminen %d hilos activos"
 
-#: ../linkcheck/checker/consumer.py:167
+#: ../linkcheck/checker/consumer.py:163
 msgid "Status:"
 msgstr "Estado:"
 
@@ -75,124 +75,6 @@ msgid ""
 msgstr ""
 "El camino %r del URL no es el mismo que el camino %r del sistema.\n"
 "Debería usar siempre el camino del sistema en los URLs."
-
-#: ../linkcheck/checker/httpurl.py:132 ../linkcheck/checker/httpurl.py:281
-msgid "Access denied by robots.txt, checked only syntax."
-msgstr "Denegado el acceso por robots.txt, chequeando sólo la sintaxis."
-
-#: ../linkcheck/checker/httpurl.py:136
-#, fuzzy
-msgid "Amazon servers block HTTP HEAD requests, using GET instead."
-msgstr ""
-"Los servidores de Amazon bloquean las peticiones HTTP HEAD, usando GET\n"
-"en cambio."
-
-#: ../linkcheck/checker/httpurl.py:147
-#, python-format
-msgid "Effective URL %s."
-msgstr "URL efectivo %s."
-
-#: ../linkcheck/checker/httpurl.py:184
-#, fuzzy, python-format
-msgid "Enforced proxy %r."
-msgstr "Proxy %r impuesto."
-
-#: ../linkcheck/checker/httpurl.py:188
-#, fuzzy, python-format
-msgid "Enforced proxy %r ignored, aborting."
-msgstr "Ignorado el proxy %r impuesto, abortando."
-
-#: ../linkcheck/checker/httpurl.py:214
-#, python-format
-msgid "more than %d redirections, aborting"
-msgstr "más de %d redirecciones, abortando"
-
-#: ../linkcheck/checker/httpurl.py:268
-#, python-format
-msgid "Redirected to %(url)s."
-msgstr "Redireccionado a %(url)s."
-
-#: ../linkcheck/checker/httpurl.py:276 ../linkcheck/checker/urlbase.py:377
-msgid "Outside of domain filter, checked only syntax."
-msgstr "Fuera del filtro de dominio, se chequeó sólo la sintaxis."
-
-#: ../linkcheck/checker/httpurl.py:292
-#, python-format
-msgid ""
-"recursive redirection encountered:\n"
-" %s"
-msgstr ""
-"se encontró redirección recursiva:\n"
-" %s"
-
-#: ../linkcheck/checker/httpurl.py:302
-msgid "HTTP 301 (moved permanent) encountered: you should update this link."
-msgstr ""
-"Se encontró \"HTTP 301 (movido permanentemente)\": debería actualizar\n"
-"este enlace."
-
-#: ../linkcheck/checker/httpurl.py:307
-msgid ""
-"A HTTP 301 redirection occured and the URL has no trailing / at the end. All "
-"URLs which point to (home) directories should end with a / to avoid "
-"redirection."
-msgstr ""
-"Ocurrió una redirección HTTP 301 y el URL no tiene '/' al final.\n"
-"Todos los URLs apuntando a directorios (de inicio) deben terminar con\n"
-"un '/' para evitar la redirección."
-
-#: ../linkcheck/checker/httpurl.py:318
-#, python-format
-msgid "HTTP redirection to non-http url encountered; the original url was %r."
-msgstr ""
-"Se encontró una redirección HTTP hacia un URL no-HTTP; el URL original\n"
-"era %r."
-
-#: ../linkcheck/checker/httpurl.py:347
-msgid "unknown"
-msgstr "desconocido"
-
-#: ../linkcheck/checker/httpurl.py:349
-#, python-format
-msgid "Server %r did not support HEAD request, used GET for checking."
-msgstr "El servidor %r no soportó el pedido HEAD, se usó GET para chequear."
-
-#: ../linkcheck/checker/httpurl.py:352
-#, python-format
-msgid "Server %r had no anchor support, removed anchor from request."
-msgstr ""
-"El servidor %r no tenía soporte para ancla, se eliminó el ancla del\n"
-"pedido."
-
-#: ../linkcheck/checker/httpurl.py:361
-#, fuzzy, python-format
-msgid "Store cookie: %s."
-msgstr "Almacenar \"cookie\": %s."
-
-#: ../linkcheck/checker/httpurl.py:368
-#, python-format
-msgid "Could not store cookies: %(msg)s."
-msgstr "No se pudieron almacenar las \"cookies\": %(msg)s."
-
-#: ../linkcheck/checker/httpurl.py:376
-#, python-format
-msgid "Last modified %s."
-msgstr "Última modificación %s."
-
-#: ../linkcheck/checker/httpurl.py:456
-#, python-format
-msgid "Unsupported HTTP url scheme %r"
-msgstr "Esquema %r de URL HTTP no soportado"
-
-#: ../linkcheck/checker/httpurl.py:487
-#, python-format
-msgid "Decompress error %(err)s"
-msgstr "Error de descompresión %(err)s"
-
-#: ../linkcheck/checker/httpurl.py:509 ../linkcheck/checker/httpurl.py:537
-#, python-format
-msgid "Unsupported content encoding %r."
-msgstr "Codificación contenido %r no soportada."
 
 #: ../linkcheck/checker/errorurl.py:35
 msgid "URL is unrecognized or has invalid syntax"
@@ -232,7 +114,8 @@ msgstr ""
 "con que pueda trabajar ;) .\n"
 
 #: ../linkcheck/checker/urlbase.py:67
-msgid "******** LinkChecker internal error, bailing out ********"
+#, fuzzy
+msgid "******** LinkChecker internal error, over and out ********"
 msgstr "******** Error interno de LinkChecker, saliéndose ********"
 
 #: ../linkcheck/checker/urlbase.py:75
@@ -244,24 +127,29 @@ msgstr "Información del sistema:"
 msgid "Python %s on %s"
 msgstr "Pitón %s en %s"
 
-#: ../linkcheck/checker/urlbase.py:278
+#: ../linkcheck/checker/urlbase.py:270
 msgid "URL is empty"
 msgstr "El URL está vacío"
 
-#: ../linkcheck/checker/urlbase.py:298
-#, python-format
+#: ../linkcheck/checker/urlbase.py:277
+#, fuzzy, python-format
+msgid "Effective URL %r."
+msgstr "URL efectivo %s."
+
+#: ../linkcheck/checker/urlbase.py:295
+#, fuzzy, python-format
 msgid ""
-"URL %s has a unicode domain name which\n"
+"URL %r has a unicode domain name which\n"
 "                          is not yet widely supported. You should use\n"
-"                          the URL %s instead."
+"                          the URL %r instead."
 msgstr ""
 "El URL %s tiene un nombre de dominio unicode el cual\n"
 "                          no es ampliamente soportado aún. Debería\n"
 "                          usar el URL %s en cambio."
 
-#: ../linkcheck/checker/urlbase.py:303
-#, python-format
-msgid "Base URL is not properly normed. Normed url is %(url)s."
+#: ../linkcheck/checker/urlbase.py:300
+#, fuzzy, python-format
+msgid "Base URL is not properly normed. Normed URL is %(url)s."
 msgstr "El URL base no está propiamente normado. El URL normado es %(url)s."
 
 #: ../linkcheck/checker/urlbase.py:331
@@ -273,6 +161,10 @@ msgstr "El URL tiene un puerto %r inválido"
 #, python-format
 msgid "URL is located in %s."
 msgstr "El URL está localizado en %s."
+
+#: ../linkcheck/checker/urlbase.py:377 ../linkcheck/checker/httpurl.py:278
+msgid "Outside of domain filter, checked only syntax."
+msgstr "Fuera del filtro de dominio, se chequeó sólo la sintaxis."
 
 #: ../linkcheck/checker/urlbase.py:393
 msgid "Hostname not found"
@@ -293,12 +185,12 @@ msgstr "no se pudo analizar el contenido: %r"
 msgid "Anchor #%s not found."
 msgstr "No se encontró el ancla #%s."
 
-#: ../linkcheck/checker/urlbase.py:597
+#: ../linkcheck/checker/urlbase.py:573
 #, python-format
 msgid "Found %r in link contents."
 msgstr "Se encontró %r en los contenidos del enlace."
 
-#: ../linkcheck/checker/urlbase.py:606
+#: ../linkcheck/checker/urlbase.py:582
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr "El tamaño del contenido %s es más grande que %s."
@@ -373,33 +265,33 @@ msgstr "Se encontró el artículo número %s."
 
 #: ../linkcheck/checker/nntpurl.py:62
 #, python-format
-msgid "Group %s has %s articles, range %s to %s."
-msgstr "El grupo %s tiene %s articulos, en el rango %s a %s."
+msgid "News group %s found."
+msgstr ""
 
-#: ../linkcheck/checker/nntpurl.py:66
+#: ../linkcheck/checker/nntpurl.py:65
 msgid "No newsgroup specified in NNTP URL."
 msgstr "No se especificó ningún grupo de noticias en el URL NTTP."
 
-#: ../linkcheck/checker/nntpurl.py:88
+#: ../linkcheck/checker/nntpurl.py:87
 #, python-format
 msgid "NTTP server too busy; tried more than %d times."
 msgstr "El servidor NTTP está demasiado ocupado; se intentó más de %d veces."
 
-#: ../linkcheck/checker/nntpurl.py:90
+#: ../linkcheck/checker/nntpurl.py:89
 #, python-format
 msgid "NNTP busy: %s."
 msgstr "NTTP ocupado: %s."
 
-#: ../linkcheck/checker/ftpurl.py:113
+#: ../linkcheck/checker/ftpurl.py:114
 #, python-format
 msgid "Remote host has closed connection: %r"
 msgstr "El servidor remoto ha cerrado la conexión: %r."
 
-#: ../linkcheck/checker/ftpurl.py:117
+#: ../linkcheck/checker/ftpurl.py:118
 msgid "Got no answer from FTP server"
 msgstr "No se obtuvo respuesta del servidor FTP"
 
-#: ../linkcheck/checker/ftpurl.py:149
+#: ../linkcheck/checker/ftpurl.py:150
 msgid "Missing trailing directory slash in ftp url."
 msgstr "Falta el \"slash\" final en el URL de FTP."
 
@@ -413,59 +305,158 @@ msgstr "Ignorando el ajuste del proxy %r"
 msgid "Using proxy %r."
 msgstr "Usando Proxy %r."
 
-#: ../linkcheck/logger/__init__.py:30
+#: ../linkcheck/checker/httpurl.py:135 ../linkcheck/checker/httpurl.py:283
+msgid "Access denied by robots.txt, checked only syntax."
+msgstr "Denegado el acceso por robots.txt, chequeando sólo la sintaxis."
+
+#: ../linkcheck/checker/httpurl.py:139
+#, fuzzy
+msgid "Amazon servers block HTTP HEAD requests, using GET instead."
+msgstr ""
+"Los servidores de Amazon bloquean las peticiones HTTP HEAD, usando GET\n"
+"en cambio."
+
+#: ../linkcheck/checker/httpurl.py:186
+#, fuzzy, python-format
+msgid "Enforced proxy %r."
+msgstr "Proxy %r impuesto."
+
+#: ../linkcheck/checker/httpurl.py:190
+#, fuzzy, python-format
+msgid "Enforced proxy %r ignored, aborting."
+msgstr "Ignorado el proxy %r impuesto, abortando."
+
+#: ../linkcheck/checker/httpurl.py:216
+#, python-format
+msgid "more than %d redirections, aborting"
+msgstr "más de %d redirecciones, abortando"
+
+#: ../linkcheck/checker/httpurl.py:270
+#, python-format
+msgid "Redirected to %(url)s."
+msgstr "Redireccionado a %(url)s."
+
+#: ../linkcheck/checker/httpurl.py:294
+#, python-format
+msgid ""
+"recursive redirection encountered:\n"
+" %s"
+msgstr ""
+"se encontró redirección recursiva:\n"
+" %s"
+
+#: ../linkcheck/checker/httpurl.py:304
+msgid "HTTP 301 (moved permanent) encountered: you should update this link."
+msgstr ""
+"Se encontró \"HTTP 301 (movido permanentemente)\": debería actualizar\n"
+"este enlace."
+
+#: ../linkcheck/checker/httpurl.py:314
+#, python-format
+msgid "HTTP redirection to non-http url encountered; the original url was %r."
+msgstr ""
+"Se encontró una redirección HTTP hacia un URL no-HTTP; el URL original\n"
+"era %r."
+
+#: ../linkcheck/checker/httpurl.py:344
+msgid "unknown"
+msgstr "desconocido"
+
+#: ../linkcheck/checker/httpurl.py:346
+#, fuzzy, python-format
+msgid "Server %r did not support HEAD request; a GET request was used instead."
+msgstr "El servidor %r no soportó el pedido HEAD, se usó GET para chequear."
+
+#: ../linkcheck/checker/httpurl.py:349
+#, python-format
+msgid "Server %r had no anchor support, removed anchor from request."
+msgstr ""
+"El servidor %r no tenía soporte para ancla, se eliminó el ancla del\n"
+"pedido."
+
+#: ../linkcheck/checker/httpurl.py:358
+#, fuzzy, python-format
+msgid "Store cookie: %s."
+msgstr "Almacenar \"cookie\": %s."
+
+#: ../linkcheck/checker/httpurl.py:365
+#, python-format
+msgid "Could not store cookies: %(msg)s."
+msgstr "No se pudieron almacenar las \"cookies\": %(msg)s."
+
+#: ../linkcheck/checker/httpurl.py:373
+#, python-format
+msgid "Last modified %s."
+msgstr "Última modificación %s."
+
+#: ../linkcheck/checker/httpurl.py:453
+#, python-format
+msgid "Unsupported HTTP url scheme %r"
+msgstr "Esquema %r de URL HTTP no soportado"
+
+#: ../linkcheck/checker/httpurl.py:484
+#, python-format
+msgid "Decompress error %(err)s"
+msgstr "Error de descompresión %(err)s"
+
+#: ../linkcheck/checker/httpurl.py:506 ../linkcheck/checker/httpurl.py:534
+#, python-format
+msgid "Unsupported content encoding %r."
+msgstr "Codificación contenido %r no soportada."
+
+#: ../linkcheck/logger/__init__.py:31
 msgid "Real URL"
 msgstr "URL real"
 
-#: ../linkcheck/logger/__init__.py:31
+#: ../linkcheck/logger/__init__.py:32
 msgid "Cache key"
 msgstr "Llave del \"cache\""
 
-#: ../linkcheck/logger/__init__.py:32
+#: ../linkcheck/logger/__init__.py:33
 msgid "Result"
 msgstr "Resultado"
 
-#: ../linkcheck/logger/__init__.py:33
+#: ../linkcheck/logger/__init__.py:34
 msgid "Base"
 msgstr "Base"
 
-#: ../linkcheck/logger/__init__.py:34
+#: ../linkcheck/logger/__init__.py:35
 msgid "Name"
 msgstr "Nombre"
 
-#: ../linkcheck/logger/__init__.py:35
+#: ../linkcheck/logger/__init__.py:36
 msgid "Parent URL"
 msgstr "URL padre"
 
-#: ../linkcheck/logger/__init__.py:36
+#: ../linkcheck/logger/__init__.py:37
 msgid "Extern"
 msgstr "Externo"
 
-#: ../linkcheck/logger/__init__.py:37
+#: ../linkcheck/logger/__init__.py:38
 msgid "Info"
 msgstr "Información"
 
-#: ../linkcheck/logger/__init__.py:38
+#: ../linkcheck/logger/__init__.py:39
 msgid "Warning"
 msgstr "Advertencia"
 
-#: ../linkcheck/logger/__init__.py:39
+#: ../linkcheck/logger/__init__.py:40
 msgid "D/L Time"
 msgstr "Tiempo de bajada"
 
-#: ../linkcheck/logger/__init__.py:40
+#: ../linkcheck/logger/__init__.py:41
 msgid "D/L Size"
 msgstr "Tamaño de bajada"
 
-#: ../linkcheck/logger/__init__.py:41
+#: ../linkcheck/logger/__init__.py:42
 msgid "Check Time"
 msgstr "Tiempo de chequeo"
 
-#: ../linkcheck/logger/__init__.py:42
+#: ../linkcheck/logger/__init__.py:43
 msgid "URL"
 msgstr "URL"
 
-#: ../linkcheck/logger/__init__.py:108
+#: ../linkcheck/logger/__init__.py:122
 #, python-format
 msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr "¡Cumpleaños feliz para LinkChecker, cumplo %d años hoy!"
@@ -490,8 +481,8 @@ msgid "Write comments and bugs to %(email)s"
 msgstr "Escriba comentarios y errores a %(email)s"
 
 #: ../linkcheck/logger/dot.py:120 ../linkcheck/logger/gml.py:124
-#: ../linkcheck/logger/html.py:296 ../linkcheck/logger/sql.py:148
-#: ../linkcheck/logger/xmllog.py:171 ../linkcheck/logger/text.py:252
+#: ../linkcheck/logger/html.py:298 ../linkcheck/logger/sql.py:148
+#: ../linkcheck/logger/xmllog.py:171 ../linkcheck/logger/text.py:254
 #: ../linkcheck/logger/csvlog.py:128
 #, python-format
 msgid "Stopped checking at %s (%s)"
@@ -526,35 +517,42 @@ msgstr "%.3f segundos"
 msgid "Valid"
 msgstr "Válido"
 
-#: ../linkcheck/logger/html.py:273 ../linkcheck/logger/text.py:229
+#: ../linkcheck/logger/html.py:272 ../linkcheck/logger/text.py:228
 msgid "Error"
 msgstr "Error"
 
-#: ../linkcheck/logger/html.py:286 ../linkcheck/logger/text.py:242
+#: ../linkcheck/logger/html.py:285 ../linkcheck/logger/text.py:241
 msgid "That's it."
 msgstr "Eso es."
 
-#: ../linkcheck/logger/html.py:288 ../linkcheck/logger/text.py:244
+#: ../linkcheck/logger/html.py:287 ../linkcheck/logger/text.py:243
 #, python-format
 msgid "%d link checked."
 msgid_plural "%d links checked."
 msgstr[0] "%d enlace chequeado."
 msgstr[1] "%d enlaces chequeados."
 
-#: ../linkcheck/logger/html.py:291 ../linkcheck/logger/text.py:248
+#: ../linkcheck/logger/html.py:290 ../linkcheck/logger/text.py:247
+#, fuzzy, python-format
+msgid "%d warning found."
+msgid_plural "%d warnings found."
+msgstr[0] "%d error encontrado."
+msgstr[1] "%d errores encontrados"
+
+#: ../linkcheck/logger/html.py:293 ../linkcheck/logger/text.py:250
 #, python-format
 msgid "%d error found."
 msgid_plural "%d errors found."
 msgstr[0] "%d error encontrado."
 msgstr[1] "%d errores encontrados"
 
-#: ../linkcheck/logger/html.py:301 ../linkcheck/logger/sql.py:84
+#: ../linkcheck/logger/html.py:303 ../linkcheck/logger/sql.py:84
 #: ../linkcheck/logger/xmllog.py:100 ../linkcheck/logger/text.py:98
 #, python-format
 msgid "Get the newest version at %s"
 msgstr "Obtenga la versión más reciente en %s"
 
-#: ../linkcheck/logger/html.py:304 ../linkcheck/logger/sql.py:86
+#: ../linkcheck/logger/html.py:306 ../linkcheck/logger/sql.py:86
 #: ../linkcheck/logger/xmllog.py:102 ../linkcheck/logger/text.py:100
 #, python-format
 msgid "Write comments and bugs to %s"
@@ -564,32 +562,32 @@ msgstr "Escriba comentarios y errores a %s"
 msgid "Format of the entries:"
 msgstr "Formato de las entradas:"
 
-#: ../linkcheck/lc_cgi.py:133
+#: ../linkcheck/lc_cgi.py:131
 msgid "unsupported language"
 msgstr "lenguaje sin soporte"
 
-#: ../linkcheck/lc_cgi.py:138
+#: ../linkcheck/lc_cgi.py:136
 msgid "empty url was given"
 msgstr "se dió un URL vacío"
 
-#: ../linkcheck/lc_cgi.py:140
+#: ../linkcheck/lc_cgi.py:138
 msgid "disallowed url was given"
 msgstr "se dió un URL no permitido"
 
-#: ../linkcheck/lc_cgi.py:142
+#: ../linkcheck/lc_cgi.py:140
 msgid "no url was given"
 msgstr "no se dió un URL"
 
-#: ../linkcheck/lc_cgi.py:147
+#: ../linkcheck/lc_cgi.py:145
 msgid "invalid recursion level"
 msgstr "nivel de recursión inválido"
 
-#: ../linkcheck/lc_cgi.py:152
+#: ../linkcheck/lc_cgi.py:150
 #, python-format
 msgid "invalid %s option syntax"
 msgstr "opción de sintaxis %s inválida"
 
-#: ../linkcheck/lc_cgi.py:177
+#: ../linkcheck/lc_cgi.py:175
 #, python-format
 msgid ""
 "<html><head>\n"
@@ -649,52 +647,56 @@ msgstr "DEPURACIÓN"
 msgid "NOTSET"
 msgstr "NODEFINIDO"
 
-#: ../linkcheck/configuration.py:278
+#: ../linkcheck/configuration.py:280
 #, python-format
 msgid "invalid log option %r"
 msgstr "opción de registro %r inválida"
 
-#: ../linkcheck/configuration.py:352
+#: ../linkcheck/configuration.py:349
 #, python-format
 msgid "syntax error in warningregex %r: %s\n"
 msgstr "error de sintaxis en warningregex %r: %s\n"
 
-#: ../linkcheck/configuration.py:377
+#: ../linkcheck/configuration.py:374
 #, python-format
 msgid "syntax error in noproxyfor%d %r: %s"
 msgstr "error de sintaxis en noproxyfor%d %r: %s"
 
-#: ../linkcheck/configuration.py:398
+#: ../linkcheck/configuration.py:395
 #, python-format
 msgid "syntax error in entry%d %r: %s"
 msgstr "error de sintaxis en la entrada%d %r: %s"
 
-#: ../linkcheck/configuration.py:417
-#, python-format
-msgid "extern%d: syntax error %s\n"
+#: ../linkcheck/configuration.py:414
+#, fuzzy, python-format
+msgid "nofollow%d: syntax error %s\n"
 msgstr "extern%d: error de sintaxis %s\n"
 
-#: ../linkcheck/strformat.py:181
+#: ../linkcheck/configuration.py:427
+#, fuzzy, python-format
+msgid "ignore%d: syntax error %s\n"
+msgstr "extern%d: error de sintaxis %s\n"
+
+#: ../linkcheck/strformat.py:180
 msgid "seconds"
 msgstr "segundos"
 
-#: ../linkcheck/strformat.py:184
+#: ../linkcheck/strformat.py:183
 msgid "minutes"
 msgstr "minutos"
 
-#: ../linkcheck/strformat.py:187
+#: ../linkcheck/strformat.py:186
 msgid "hours"
 msgstr "horas"
 
-#: ../linkchecker:69
+#: ../linkchecker:70
 msgid "USAGE\tlinkchecker [options] file-or-url...\n"
 msgstr "USO\\tlinkchecker [opciones] archivo-o-URL...\n"
 
-#: ../linkchecker:72
+#: ../linkchecker:73
+#, fuzzy
 msgid ""
 "NOTES\n"
-"o A ! before a regular expression negates it. So '!^mailto:' matches\n"
-"  everything but a mailto link.\n"
 "o URLs on the command line starting with \"ftp.\" are treated like\n"
 "  \"ftp://ftp.\", URLs starting with \"www.\" are treated like \"http://www."
 "\".\n"
@@ -702,7 +704,7 @@ msgid ""
 "o If you have your system configured to automatically establish a\n"
 "  connection to the internet (e.g. with diald), it will connect when\n"
 "  checking links not pointing to your local system.\n"
-"  See the --extern-strict-all option on how to prevent this.\n"
+"  See the --ignore-url option on how to prevent this.\n"
 "o Javascript links are currently ignored.\n"
 "o If your platform does not support threading, LinkChecker disables it\n"
 "  automatically.\n"
@@ -736,7 +738,18 @@ msgstr ""
 "o ¡Cuando se chequean los enlaces 'news:' el servidor NTTP no necesita ser\n"
 "  el mismo que el servidor del usuario navegando sus páginas!\n"
 
-#: ../linkchecker:93
+#: ../linkchecker:92
+msgid ""
+"REGULAR EXPRESSIONS\n"
+"Only Python regular expressions are accepted by LinkChecker.\n"
+"See http://www.amk.ca/python/howto/regex/ for an introduction in\n"
+"regular expressions.\n"
+"\n"
+"The only addition is that if the regular expression starts with\n"
+"an exclamation mark `!' it negates the following expression.\n"
+msgstr ""
+
+#: ../linkchecker:101
 msgid ""
 "RETURN VALUE\n"
 "The return value is non-zero when\n"
@@ -751,7 +764,8 @@ msgstr ""
 "   --warnings\n"
 " o ocurrió un error del programa\n"
 
-#: ../linkchecker:100
+#: ../linkchecker:108
+#, fuzzy
 msgid ""
 "EXAMPLES\n"
 "The most common use checks the given domain recursively, plus any\n"
@@ -762,7 +776,7 @@ msgid ""
 "\n"
 "Don't connect to mailto: hosts, only check their URL syntax. All other\n"
 "links are checked as usual:\n"
-"  linkchecker --intern='!^mailto:' --extern-strict-all www.mysite.org\n"
+"  linkchecker --ignore-url=^mailto: www.mysite.org\n"
 "\n"
 "Checking a local HTML file on Unix:\n"
 "  linkchecker ../bla.html\n"
@@ -802,7 +816,8 @@ msgstr ""
 "\"ftp.\":\n"
 "  linkchecker -r0 ftp.linux.org\n"
 
-#: ../linkchecker:124
+#: ../linkchecker:132
+#, fuzzy
 msgid ""
 "OUTPUT TYPES\n"
 "Note that by default only errors are logged.\n"
@@ -822,7 +837,7 @@ msgid ""
 "blacklist\n"
 "        Suitable for cron jobs. Logs the check result into a file\n"
 "        ~/.linkchecker/blacklist which only contains entries with invalid\n"
-"        urls and the number of times they have failed.\n"
+"        URLs and the number of times they have failed.\n"
 "none    Logs nothing. Suitable for scripts.\n"
 msgstr ""
 "TIPOS DE SALIDA\n"
@@ -856,16 +871,16 @@ msgstr ""
 "\n"
 "none    No registra nada. Apropiado para guiones.\n"
 
-#: ../linkchecker:166
+#: ../linkchecker:174
 #, python-format
 msgid "Error: %s"
 msgstr "Error: %s"
 
-#: ../linkchecker:168
+#: ../linkchecker:176
 msgid "Execute 'linkchecker -h' for help"
 msgstr "Ejecute 'linkchecker -h' para obtener ayuda"
 
-#: ../linkchecker:179
+#: ../linkchecker:187
 msgid ""
 "The `pstats' Python module is not installed, therefore the --viewprof option "
 "is disabled."
@@ -873,25 +888,25 @@ msgstr ""
 "El módulo `pstats' de Python no está instalado, por tanto la opción\n"
 "--viewprof está deshabilitada."
 
-#: ../linkchecker:184
+#: ../linkchecker:192
 #, python-format
 msgid "Could not find profiling file %r."
 msgstr "No se pudo encontrar el archivo %s de perfilado."
 
-#: ../linkchecker:186
+#: ../linkchecker:194
 msgid "Please run linkchecker with --profile to generate it."
 msgstr "Por favor, corra linkchecker con --profile para generarlo."
 
-#: ../linkchecker:203
+#: ../linkchecker:211
 #, python-format
 msgid "Syntax error in %r: %s"
 msgstr "Error de sintaxis en %r: %s"
 
-#: ../linkchecker:295
+#: ../linkchecker:304
 msgid "General options"
 msgstr "Opciones generales"
 
-#: ../linkchecker:298
+#: ../linkchecker:307
 msgid ""
 "Use CONFIGFILE as configuration file. As default LinkChecker first\n"
 "searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/"
@@ -903,19 +918,19 @@ msgstr ""
 "~/.linkchecker/linkcheckerrc (en Windows\n"
 "<path-to-program>\\linkcheckerrc)."
 
-#: ../linkchecker:303
+#: ../linkchecker:312
 msgid "Ask for url if none are given on the commandline."
 msgstr "Pedir URL si no se da ninguno en la línea de comandos."
 
-#: ../linkchecker:306
+#: ../linkchecker:315
 msgid "Generate no more than num threads. Default number of threads is 10."
 msgstr "No generar mas de num de hilos. Por omisión el número de hilos es 10."
 
-#: ../linkchecker:310
+#: ../linkchecker:319
 msgid "Print version and exit."
 msgstr "Imprimir versión y salir."
 
-#: ../linkchecker:314
+#: ../linkchecker:323
 msgid ""
 "Run with normal thread scheduling priority. Per default LinkChecker\n"
 "runs with low thread priority to be suitable as a background job."
@@ -924,11 +939,15 @@ msgstr ""
 "LinkChecker corre con prioridad baja de hilo para ser usado como un\n"
 "trabajo desatendido."
 
-#: ../linkchecker:320
+#: ../linkchecker:328
+msgid "Do not use psyco runtime compilation even if it is installed."
+msgstr ""
+
+#: ../linkchecker:333
 msgid "Output options"
 msgstr "Opciones de salida"
 
-#: ../linkchecker:323
+#: ../linkchecker:336
 msgid ""
 "Log all checked URLs (implies -w). Default is to log only invalid\n"
 "URLs."
@@ -936,11 +955,11 @@ msgstr ""
 "Registra todos los URLs chequeados (implica -w). Por omisión se\n"
 "registran sólo los URLs inválidos."
 
-#: ../linkchecker:326
-msgid "Log warnings."
-msgstr "Registrar advertencias."
+#: ../linkchecker:339
+msgid "Don't log warnings. Default is to log warnings."
+msgstr ""
 
-#: ../linkchecker:329
+#: ../linkchecker:343
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -958,7 +977,7 @@ msgstr ""
 "de error, por ejemplo 'Esta página se ha mudado' o 'Error del Servidor\n"
 "de Aplicación Oracle'. Esta opción implica -w."
 
-#: ../linkchecker:338
+#: ../linkchecker:353
 msgid ""
 "Print a warning if content size is available and exceeds the given\n"
 "number of bytes. This option implies -w."
@@ -966,11 +985,11 @@ msgstr ""
 "Imprimir una advertencia si el tamaño del contenido está disponible y\n"
 "excede el número dado de bytes. Esta opción implica -w."
 
-#: ../linkchecker:342
+#: ../linkchecker:357
 msgid "Quiet operation. This is only useful with -F."
 msgstr "Operación callada. Esta es sólo útil con -F."
 
-#: ../linkchecker:346
+#: ../linkchecker:361
 #, python-format
 msgid ""
 "Specify output as %(loggertypes)s. Default output type is text.\n"
@@ -982,7 +1001,7 @@ msgstr ""
 "por omisión es \"iso-8859-1\". Las codificaciones válidas están listadas\n"
 "en http://docs.python.org/lib/node127.html."
 
-#: ../linkchecker:353
+#: ../linkchecker:368
 #, python-format
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for\n"
@@ -1011,12 +1030,12 @@ msgstr ""
 "archivo. Note que puede suprimir toda salida hacia la consola con la\n"
 "opción '-o none'."
 
-#: ../linkchecker:366
+#: ../linkchecker:381
 msgid "Do not print check status messages."
 msgstr "No imprimir mensajes de estado del chequeo."
 
-#: ../linkchecker:369
-#, python-format
+#: ../linkchecker:384
+#, fuzzy, python-format
 msgid ""
 "Print debugging output for given logger.\n"
 "Available loggers are %(lognamelist)s.\n"
@@ -1024,7 +1043,8 @@ msgid ""
 "The option can be given multiple times to debug with more\n"
 "than one logger.\n"
 "\n"
-"For accurate results, threading will be disabled during debug runs."
+"For accurate results, threading and the psyco optimization module will\n"
+"be disabled during debug runs."
 msgstr ""
 "Imprimir salida de depuración para el registrador dado.\n"
 "Los registradores disponibles son %(lognamelist)s.\n"
@@ -1035,7 +1055,7 @@ msgstr ""
 "Para resultados acertados, se desahabilitará el uso de hilos durante\n"
 "las corridas de depuración."
 
-#: ../linkchecker:379
+#: ../linkchecker:395
 #, python-format
 msgid ""
 "Write profiling data into a file named %s in the\n"
@@ -1044,16 +1064,16 @@ msgstr ""
 "Escribir datos de perfilamiento en un archivo llamado %s en el\n"
 "directorio de trabajo actual. Vea también --viewprof."
 
-#: ../linkchecker:383
+#: ../linkchecker:399
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr ""
 "Imprimir datos de perfilamiento generados previamente. Vea también --profile."
 
-#: ../linkchecker:388
+#: ../linkchecker:404
 msgid "Checking options"
 msgstr "Opciones de chequeo"
 
-#: ../linkchecker:391
+#: ../linkchecker:408
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable inifinite recursion. Default depth is infinite."
@@ -1062,55 +1082,19 @@ msgstr ""
 "dada. Una profundidad negativa habilitará la recursión infinita. Por\n"
 "omisión la profundidad es infinita."
 
-#: ../linkchecker:395
+#: ../linkchecker:413
 msgid ""
-" regex, --intern=regex\n"
-"Assume URLs that match the given expression as internal.\n"
-"LinkChecker descends recursively only to internal URLs, not to\n"
-"external."
+"Check but do not recurse into URLs matching the given regular\n"
+"expression. This option can be given multiple times."
 msgstr ""
-" regex, --intern=regex\n"
-"Asumir como internos los URLs que coinciden con la expresión dada.\n"
-"LinkChecker desciende recursivamente solo hacia URLs internos, no hacia\n"
-"externos."
-
-#: ../linkchecker:401
-msgid ""
-"Assume urls that match the given expression as external.\n"
-"Only internal HTML links are checked recursively."
-msgstr ""
-"Asumir como externos los URLs que coinciden con la expresión dada.\n"
-"Sólo enlaces HTML internos son chequeados recursivamente."
-
-#: ../linkchecker:405
-msgid ""
-"Assume urls that match the given expression as strict external.\n"
-"Only internal HTML links are checked recursively."
-msgstr ""
-"Asumir como estrictamente externos los URLs que coinciden conla\n"
-"expresión dada.\n"
-"Sólo enlaces HTML internos se chequean recursivamente."
-
-#: ../linkchecker:409
-msgid ""
-"Check only syntax of external links, do not try to connect to them.\n"
-"For local file urls, only local files are internal. For\n"
-"http and ftp urls, all urls at the same domain name are internal."
-msgstr ""
-"Chequear sólo la sintaxis de los enlaces externos, no intentar\n"
-"conectarse a ellos.  Para URLs de archivos locales, sólo archivos\n"
-"locales son internos. Para URLs de HTTP y FTP, todos los URLs en el\n"
-"mismo nombre de dominio son internos."
-
-#: ../linkchecker:414
-msgid ""
-"Swap checking order to external/internal. Default checking order\n"
-"is internal/external."
-msgstr ""
-"Intercambiar orden de chequeo a externo/interno. El orden de chequeo\n"
-"por omisión es interno/externo."
 
 #: ../linkchecker:418
+msgid ""
+"Only check syntax of URLs matching the given regular expression.\n"
+" This option can be given multiple times."
+msgstr ""
+
+#: ../linkchecker:422
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -1122,10 +1106,10 @@ msgstr ""
 "enviadas y aceptadas se proveen como información adicional de\n"
 "registro."
 
-#: ../linkchecker:424
+#: ../linkchecker:428
+#, fuzzy
 msgid ""
-"Check HTTP anchor references. This option applies to both internal\n"
-"and external urls. Default is don't check anchors.\n"
+"Check HTTP anchor references. Default is don't check anchors.\n"
 "This option implies -w because anchor errors are always warnings."
 msgstr ""
 "Chequear referencias de anclas HTTP. Esta opción aplica a URLs\n"
@@ -1133,7 +1117,7 @@ msgstr ""
 "Esta opción implica -w porque los errores de las anclas son siempre\n"
 "advertencias."
 
-#: ../linkchecker:429
+#: ../linkchecker:432
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
 "is the default browser behaviour, but it's not specified in\n"
@@ -1143,7 +1127,7 @@ msgstr ""
 "comportamiento por omisión del navegador, pero no se especifica en la\n"
 "especificación del URI. Use con cuidado."
 
-#: ../linkchecker:434
+#: ../linkchecker:437
 msgid ""
 "Try given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. See also -p."
@@ -1152,7 +1136,7 @@ msgstr ""
 "FTP. Para FTP el nombre de usuario por omisión es 'anonymous'. Vea\n"
 "también -p."
 
-#: ../linkchecker:438
+#: ../linkchecker:441
 msgid ""
 "Try given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. See also -u."
@@ -1160,7 +1144,7 @@ msgstr ""
 "Intentar la contraseña dada para la autorización HTTP y FTP. Para FTP\n"
 "la contraseña por omisión es 'anonymous@'. Vea también -u."
 
-#: ../linkchecker:442
+#: ../linkchecker:446
 #, python-format
 msgid ""
 "Set the timeout for TCP connection attempts in seconds. The default\n"
@@ -1169,15 +1153,16 @@ msgstr ""
 "Pone el tiempo de espera para intentos de conexión en segundos. El\n"
 "tiempo de espera por omisión es de %d segundos."
 
-#: ../linkchecker:446
+#: ../linkchecker:451
+#, fuzzy
 msgid ""
-"Pause PAUSE seconds between each url check. This option implies -t0.\n"
-"Default is no pause between requests."
+"Pause the given amount of seconds between each url check. This option\n"
+"disables threading (with -t0). Default is no pause between requests."
 msgstr ""
 "Pausa PAUSA segundos entre cada chequeo de URL. Esta opción implica\n"
 "-t0. Por omisión no hay pausa entre pedidos."
 
-#: ../linkchecker:450
+#: ../linkchecker:455
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
@@ -1187,55 +1172,46 @@ msgstr ""
 "la variable del entorno NNTP_SERVER. Si no se da un anfitrión, sólo se\n"
 "chequea la sintaxis del enlace."
 
-#: ../linkchecker:455
+#: ../linkchecker:461
+#, fuzzy
 msgid ""
-"Contact hosts that match the given expression directly instead of\n"
-"going through a proxy."
+"Contact hosts that match the given regular expression directly instead\n"
+"of going through a proxy. This option can be given multiple times."
 msgstr ""
 "Contactar directamente los anfitriones que coinciden con la expresión\n"
 "dada en vez de ir a través de un proxy."
 
-#: ../linkchecker:460
-msgid "Deprecated options"
-msgstr "Opciones deprecadas"
-
-#: ../linkchecker:463
-msgid "Print check status every 5 seconds to stderr. This is the default."
-msgstr ""
-"Imprimir estatus del chequeo cada 5 segundos hacia\n"
-"stderr. Comportamiento por omisión."
-
-#: ../linkchecker:480
+#: ../linkchecker:479
 #, python-format
 msgid "Invalid debug level %(level)r"
 msgstr "Nivel de depuración inválido %(level)r"
 
-#: ../linkchecker:518 ../linkchecker:546
+#: ../linkchecker:523 ../linkchecker:551
 #, python-format
 msgid "Unknown logger type %r in %r for option %s"
 msgstr "Tipo %r de registrador desconocido en %r para la opción %s"
 
-#: ../linkchecker:521 ../linkchecker:550
+#: ../linkchecker:526 ../linkchecker:555
 #, python-format
 msgid "Unknown encoding %r in %r for option %s"
 msgstr "Codificación %r desconocida en %r para la opción %s"
 
-#: ../linkchecker:557
+#: ../linkchecker:562
 #, python-format
 msgid "Illegal argument %r for option %s: %s"
 msgstr "Argumento ilegal %r para la opción %s: %s"
 
-#: ../linkchecker:578 ../linkchecker:592
+#: ../linkchecker:578 ../linkchecker:590
 #, python-format
 msgid "Illegal argument %d for option %s"
 msgstr "Argumento ilegal %d para la opción %s"
 
-#: ../linkchecker:599
+#: ../linkchecker:597
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr "Argumento ilegal %r para la opción %s"
 
-#: ../linkchecker:633
+#: ../linkchecker:629
 msgid ""
 "Using DOT or GML loggers without verbose output gives an incomplete sitemap "
 "graph."
@@ -1243,19 +1219,21 @@ msgstr ""
 "Usando los registradores DOT o GML sin salida verbosa da un grafo de "
 "incompleto del mapa del sitio."
 
-#: ../linkchecker:649
+#: ../linkchecker:636
+#, fuzzy
 msgid ""
-"enter one or more urls, separated by white-space\n"
+"enter one or more URLs, separated by white-space\n"
 "--> "
 msgstr ""
 "entre uno o más URLs, separados por espaciadores\n"
 "--> "
 
-#: ../linkchecker:652
-msgid "no files or urls given"
+#: ../linkchecker:639
+#, fuzzy
+msgid "no files or URLs given"
 msgstr "no se han dado archivos o URLs"
 
-#: ../linkchecker:669
+#: ../linkchecker:656
 msgid ""
 "The `profile' Python module is not installed, therefore the --profile option "
 "is disabled."
@@ -1263,7 +1241,7 @@ msgstr ""
 "El módulo `profile' de Python no está instalado, por tanto la opción --"
 "profile está deshabilitada."
 
-#: ../linkchecker:675
+#: ../linkchecker:662
 #, python-format
 msgid ""
 "Overwrite profiling file %r?\n"
@@ -1272,11 +1250,11 @@ msgstr ""
 "¿Sobreescribir archivo %r de perfilamiento?\n"
 "Presione Ctrl-C para cancelar, RETORNO para continuar."
 
-#: ../linkchecker:681
+#: ../linkchecker:668
 msgid "Canceled."
 msgstr "Cancelado."
 
-#: ../linkchecker:695
+#: ../linkchecker:682
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
@@ -1284,7 +1262,7 @@ msgstr ""
 "Psyco está instalado pero no se usó, pues la versión es demasiado vieja.\n"
 "Se necesita Psyco >= 1.4"
 
-#: ../linkchecker:705
+#: ../linkchecker:692
 msgid "Hit RETURN to finish"
 msgstr "Presione RETORNO para finalizar"
 
@@ -1363,6 +1341,72 @@ msgstr "opciones"
 #, python-format
 msgid "ambiguous option: %s (%s?)"
 msgstr "opción ambigua: %s (¿%s?)"
+
+#~ msgid ""
+#~ "A HTTP 301 redirection occured and the URL has no trailing / at the end. "
+#~ "All URLs which point to (home) directories should end with a / to avoid "
+#~ "redirection."
+#~ msgstr ""
+#~ "Ocurrió una redirección HTTP 301 y el URL no tiene '/' al final.\n"
+#~ "Todos los URLs apuntando a directorios (de inicio) deben terminar con\n"
+#~ "un '/' para evitar la redirección."
+
+#~ msgid "Group %s has %s articles, range %s to %s."
+#~ msgstr "El grupo %s tiene %s articulos, en el rango %s a %s."
+
+#~ msgid "Log warnings."
+#~ msgstr "Registrar advertencias."
+
+#~ msgid ""
+#~ " regex, --intern=regex\n"
+#~ "Assume URLs that match the given expression as internal.\n"
+#~ "LinkChecker descends recursively only to internal URLs, not to\n"
+#~ "external."
+#~ msgstr ""
+#~ " regex, --intern=regex\n"
+#~ "Asumir como internos los URLs que coinciden con la expresión dada.\n"
+#~ "LinkChecker desciende recursivamente solo hacia URLs internos, no hacia\n"
+#~ "externos."
+
+#~ msgid ""
+#~ "Assume urls that match the given expression as external.\n"
+#~ "Only internal HTML links are checked recursively."
+#~ msgstr ""
+#~ "Asumir como externos los URLs que coinciden con la expresión dada.\n"
+#~ "Sólo enlaces HTML internos son chequeados recursivamente."
+
+#~ msgid ""
+#~ "Assume urls that match the given expression as strict external.\n"
+#~ "Only internal HTML links are checked recursively."
+#~ msgstr ""
+#~ "Asumir como estrictamente externos los URLs que coinciden conla\n"
+#~ "expresión dada.\n"
+#~ "Sólo enlaces HTML internos se chequean recursivamente."
+
+#~ msgid ""
+#~ "Check only syntax of external links, do not try to connect to them.\n"
+#~ "For local file urls, only local files are internal. For\n"
+#~ "http and ftp urls, all urls at the same domain name are internal."
+#~ msgstr ""
+#~ "Chequear sólo la sintaxis de los enlaces externos, no intentar\n"
+#~ "conectarse a ellos.  Para URLs de archivos locales, sólo archivos\n"
+#~ "locales son internos. Para URLs de HTTP y FTP, todos los URLs en el\n"
+#~ "mismo nombre de dominio son internos."
+
+#~ msgid ""
+#~ "Swap checking order to external/internal. Default checking order\n"
+#~ "is internal/external."
+#~ msgstr ""
+#~ "Intercambiar orden de chequeo a externo/interno. El orden de chequeo\n"
+#~ "por omisión es interno/externo."
+
+#~ msgid "Deprecated options"
+#~ msgstr "Opciones deprecadas"
+
+#~ msgid "Print check status every 5 seconds to stderr. This is the default."
+#~ msgstr ""
+#~ "Imprimir estatus del chequeo cada 5 segundos hacia\n"
+#~ "stderr. Comportamiento por omisión."
 
 #~ msgid "URL path is empty, assuming '/' as path."
 #~ msgstr "El camino del URL está vacío, asumiendo '/' como camino."
