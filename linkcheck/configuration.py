@@ -73,6 +73,8 @@ class Configuration (dict):
         Initialize the default options.
         """
         super(Configuration, self).__init__()
+        self['debug'] = False
+        self['trace'] = False
         self["verbose"] = False
         self["warnings"] = True
         self['quiet'] = False
@@ -173,7 +175,7 @@ class Configuration (dict):
         handler = linkcheck.ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
         logging.getLogger(linkcheck.LOG).addHandler(handler)
-        if debug is not None:
+        if debug:
             self['debug'] = True
             # disable threading if no thread debugging
             if "thread" not in debug:

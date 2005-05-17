@@ -390,6 +390,8 @@ than one logger.
 For accurate results, threading and the psyco optimization module will
 be disabled during debug runs.""") % \
 {"lognamelist": linkcheck.lognamelist})
+group.add_option("--trace", action="store_true", dest="trace",
+                 help=_("""Print tracing information."""))
 group.add_option("--profile", action="store_true", dest="profile",
                  help=_(
 """Write profiling data into a file named %s in the
@@ -479,6 +481,9 @@ if options.debug:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
     # disable psyco if debugging is enabled to prevent that stack lists
     # have PsycoFrame objects instead of types.FrameType
+    options.psyco = False
+if options.trace:
+    # disable psyco for tracing
     options.psyco = False
 
 config.init_logging(debug=options.debug)
@@ -641,6 +646,8 @@ if len(args) <= 0:
 # initialize the cache and the consumer model
 cache = linkcheck.checker.cache.Cache()
 consumer = linkcheck.checker.consumer.Consumer(config, cache)
+if options.trace:
+    linkcheck.log.trace()
 # syntactic sugar
 for url in args:
     if url.lower().startswith("www."):
