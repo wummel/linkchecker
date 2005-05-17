@@ -36,14 +36,10 @@ import sys
 
 # call tracing
 
-tracelog = None
-def trace (log):
+def trace ():
     """
     Start tracing of the current thread (and the current thread only).
     """
-    global tracelog
-    if tracelog is None:
-        tracelog = log
     sys.settrace(_traceit)
 
 
@@ -58,7 +54,7 @@ def _traceit (frame, event, arg):
             filename = filename[:-1]
         name = frame.f_globals["__name__"]
         line = linecache.getline(filename, lineno)
-        info(tracelog, "%s:%s: %s", name, lineno, line.rstrip())
+        print "TRACE %s:%d: %s" % (name, lineno, line.rstrip())
     return _traceit
 
 
