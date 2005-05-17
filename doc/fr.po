@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-05-07  1:44+0200\n"
+"POT-Creation-Date: 2005-05-17 22:32+0200\n"
 "PO-Revision-Date: 2005-05-07 00:42+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: kde-francophone@kde.org\n"
@@ -800,20 +800,31 @@ msgstr "Ne rien journaliser du tout. Approprié pour les scripts."
 # type: SH
 #: en/linkchecker.1:254
 #, no-wrap
+msgid "REGULAR EXPRESSIONS"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:258
+msgid ""
+"Only Python regular expressions are accepted by LinkChecker.  See B<http://"
+"www.amk.ca/python/howto/regex/> for an introduction in regular expressions."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:261
+msgid ""
+"The only addition is that if the regular expression starts with an "
+"exclamation mark B<!> it negates the following expression."
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:262
+#, no-wrap
 msgid "NOTES"
 msgstr "NOTES"
 
 # type: Plain text
-#: en/linkchecker.1:257
-msgid ""
-"A B<!> before any regex negates it. So B<!^mailto:> matches everything but a "
-"mailto link."
-msgstr ""
-"Un B<!> avant une expression rationnelle l'inverse. Ainsi B<!^mailto:> "
-"correspond à tout sauf un lien mailto."
-
-# type: Plain text
-#: en/linkchecker.1:261
+#: en/linkchecker.1:266
 msgid ""
 "LinkCheckers commandline parser treats B<ftp.> links like B<ftp://ftp.> and "
 "B<www.> links like B<http://www.>.  You can also give local files as "
@@ -824,7 +835,7 @@ msgstr ""
 "www.>. Vous pouvez aussi mettre des noms de fichiers locaux comme arguments."
 
 # type: Plain text
-#: en/linkchecker.1:266
+#: en/linkchecker.1:271
 msgid ""
 "If you have your system configured to automatically establish a connection "
 "to the internet (e.g. with diald), it will connect when checking links not "
@@ -837,26 +848,26 @@ msgstr ""
 "B<-s> et B<-i> pour éviter cela."
 
 # type: Plain text
-#: en/linkchecker.1:268
+#: en/linkchecker.1:273
 msgid "Javascript links are currently ignored."
 msgstr "Les liens javascript sont ignorés actuellement."
 
 # type: Plain text
-#: en/linkchecker.1:271
+#: en/linkchecker.1:276
 msgid "If your platform does not support threading, LinkChecker uses B<-t0>."
 msgstr ""
 "Si votre plate-forme n'accepte pas le multithreading, LinkChecker utilise B<-"
 "t0>."
 
 # type: Plain text
-#: en/linkchecker.1:273
+#: en/linkchecker.1:278
 msgid "You can supply multiple user/password pairs in a configuration file."
 msgstr ""
 "Vous pouvez fournir plusieurs paires nom d'utilisateur/mot de passe dans un "
 "fichier de configuration."
 
 # type: Plain text
-#: en/linkchecker.1:276
+#: en/linkchecker.1:281
 msgid ""
 "To use proxies set $http_proxy, $https_proxy on Unix or Windows.  On a Mac "
 "use the Internet Config."
@@ -865,7 +876,7 @@ msgstr ""
 "Windows.Sur un Mac, utilisez la configuration Internet."
 
 # type: Plain text
-#: en/linkchecker.1:279
+#: en/linkchecker.1:284
 msgid ""
 "When checking B<news:> links the given NNTP host doesn't need to be the same "
 "as the host of the user browsing your pages."
@@ -874,73 +885,73 @@ msgstr ""
 "n'ont pas besoin d'être les mêmes que l'hôte de l'utilisateur naviguant."
 
 # type: SH
-#: en/linkchecker.1:280
+#: en/linkchecker.1:285
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr "ENVIRONNEMENT"
 
 # type: Plain text
-#: en/linkchecker.1:282
+#: en/linkchecker.1:287
 msgid "B<NNTP_SERVER> - specifies default NNTP server"
 msgstr "B<NNTP_SERVER> - spécifie le serveur NNTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:284
+#: en/linkchecker.1:289
 msgid "B<http_proxy> - specifies default HTTP proxy server"
 msgstr "B<http_proxy> - spécifie le proxy HTTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:286
+#: en/linkchecker.1:291
 msgid "B<ftp_proxy> - specifies default FTP proxy server"
 msgstr "B<ftp_proxy> - spécifie le proxy FTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:288
+#: en/linkchecker.1:293
 msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
 msgstr "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - spécifie la langue en sortie"
 
 # type: SH
-#: en/linkchecker.1:289
+#: en/linkchecker.1:294
 #, no-wrap
 msgid "RETURN VALUE"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:291
+#: en/linkchecker.1:296
 msgid "The return value is non-zero when"
 msgstr "Le code de retour est différent de 0 quand"
 
 # type: IP
-#: en/linkchecker.1:291 en/linkchecker.1:293 en/linkchecker.1:295
+#: en/linkchecker.1:296 en/linkchecker.1:298 en/linkchecker.1:300
 #, no-wrap
 msgid "\\(bu"
 msgstr "\\(bu"
 
 # type: Plain text
-#: en/linkchecker.1:293
+#: en/linkchecker.1:298
 msgid "invalid links were found or"
 msgstr "il y a eu des liens non valides,"
 
 # type: Plain text
-#: en/linkchecker.1:295
+#: en/linkchecker.1:300
 msgid "link warnings were found and --warnings option was given"
 msgstr ""
 "il y a eu des avertissements sur les liens et l'option --warnings était "
 "positionnée,"
 
 # type: Plain text
-#: en/linkchecker.1:297
+#: en/linkchecker.1:302
 msgid "a program error occurred."
 msgstr "il y a eu une erreur dans le programme."
 
 # type: SH
-#: en/linkchecker.1:298
+#: en/linkchecker.1:303
 #, no-wrap
 msgid "FILES"
 msgstr "FICHIERS"
 
 # type: Plain text
-#: en/linkchecker.1:301
+#: en/linkchecker.1:306
 msgid ""
 "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - default "
 "configuration files"
@@ -949,19 +960,19 @@ msgstr ""
 "fichiers de configuration par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:303
+#: en/linkchecker.1:308
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr ""
 "B<~/.linkchecker/blacklist> - fichier par défaut des blacklists pour la "
 "journalisation"
 
 # type: Plain text
-#: en/linkchecker.1:305
+#: en/linkchecker.1:310
 msgid "B<linkchecker-out.>I<type> - default logger file output name"
 msgstr "B<linkchecker-out.>I<type> - fichier par défaut pour la journalisation"
 
 # type: Plain text
-#: en/linkchecker.1:307
+#: en/linkchecker.1:312
 msgid ""
 "B<http://docs.python.org/lib/standard-encodings.html> - valid output "
 "encodings"
@@ -970,13 +981,13 @@ msgstr ""
 "sortie"
 
 # type: SH
-#: en/linkchecker.1:308
+#: en/linkchecker.1:313
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTEUR"
 
 # type: Plain text
-#: en/linkchecker.1:309
+#: en/linkchecker.1:314
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>\n"
@@ -990,6 +1001,14 @@ msgstr ""
 "\n"
 "N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute "
 "erreur dans cette page de manuel."
+
+# type: Plain text
+#~ msgid ""
+#~ "A B<!> before any regex negates it. So B<!^mailto:> matches everything "
+#~ "but a mailto link."
+#~ msgstr ""
+#~ "Un B<!> avant une expression rationnelle l'inverse. Ainsi B<!^mailto:> "
+#~ "correspond à tout sauf un lien mailto."
 
 # type: TP
 #~ msgid "B<-i>I<regex>, B<--intern=>I<regex>"

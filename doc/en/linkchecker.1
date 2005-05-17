@@ -251,10 +251,15 @@ URLs and the number of times they have failed.
 \fBnone\fP
 Logs nothing. Suitable for scripts.
 
-.SH NOTES
-A \fB!\fP before any regex negates it. So \fB!^mailto:\fP matches
-everything but a mailto link.
+.SH REGULAR EXPRESSIONS
+Only Python regular expressions are accepted by LinkChecker.
+See \fBhttp://www.amk.ca/python/howto/regex/\fP for an introduction in
+regular expressions.
 
+The only addition is that if the regular expression starts with
+an exclamation mark \fB!\fP it negates the following expression.
+
+.SH NOTES
 LinkCheckers commandline parser treats \fBftp.\fP links like \fBftp://ftp.\fP
 and \fBwww.\fP links like \fBhttp://www.\fP.
 You can also give local files as arguments.

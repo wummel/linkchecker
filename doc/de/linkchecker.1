@@ -237,10 +237,15 @@ und die Anzahl der Fehlversuche enthält.
 \fBnone\fP
 Gibt nichts aus. Für Skripte geeignet.
 
-.SH BEMERKUNGEN
-Ein \fB!\fP vor einem regulären Ausdruck negiert diesen. Also matcht 
-\fB!^mailto:\fP alles außer mailto Links.
+.SH "REGULAR EXPRESSIONS"
+Only Python regular expressions are accepted by LinkChecker.  See 
+\fBhttp://www.amk.ca/python/howto/regex/\fP for an introduction in regular 
+expressions.
 
+The only addition is that if the regular expression starts with an 
+exclamation mark \fB!\fP it negates the following expression.
+
+.SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 
 behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können 
 auch lokale Dateien als Argumente angeben.

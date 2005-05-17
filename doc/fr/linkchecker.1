@@ -241,10 +241,15 @@ and the number of times they have failed.
 \fBnone\fP
 Ne rien journaliser du tout. Approprié pour les scripts.
 
-.SH NOTES
-Un \fB!\fP avant une expression rationnelle l'inverse. Ainsi \fB!^mailto:\fP 
-correspond à tout sauf un lien mailto.
+.SH "REGULAR EXPRESSIONS"
+Only Python regular expressions are accepted by LinkChecker.  See 
+\fBhttp://www.amk.ca/python/howto/regex/\fP for an introduction in regular 
+expressions.
 
+The only addition is that if the regular expression starts with an 
+exclamation mark \fB!\fP it negates the following expression.
+
+.SH NOTES
 Les URL sur la ligne de commande commençant par \fBftp.\fP sont traitées 
 comme \fBftp://ftp.\fP, les URL commençant par \fBwww.\fP sont traitées comme 
 \fBhttp://www.\fP. Vous pouvez aussi mettre des noms de fichiers locaux comme 
