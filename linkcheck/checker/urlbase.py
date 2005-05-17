@@ -529,16 +529,12 @@ class UrlBase (object):
         @rtype: tuple (bool, bool)
         """
         for entry in self.consumer.config["externlinks"]:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern entry %r",
-                                entry)
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
                 return (1, entry['strict'])
         for entry in self.consumer.config["internlinks"]:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern entry %r",
-                                entry)
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
@@ -628,7 +624,8 @@ class UrlBase (object):
                 base_ref = h.base_ref
             url_data = linkcheck.checker.get_url_from(url,
                   self.recursion_level+1, self.consumer, parent_url=self.url,
-                  base_ref=base_ref, line=line, column=column, name=name)
+                  base_ref=base_ref, line=line, column=column, name=name,
+                  cmdline=False)
             self.consumer.append_url(url_data)
 
     def parse_opera (self):
@@ -648,7 +645,8 @@ class UrlBase (object):
                 if url:
                     url_data = linkcheck.checker.get_url_from(url,
                               self.recursion_level+1, self.consumer,
-                              parent_url=self.url, line=lineno, name=name)
+                              parent_url=self.url, line=lineno, name=name,
+                              cmdline=False)
                     self.consumer.append_url(url_data)
                 name = ""
 
@@ -665,7 +663,8 @@ class UrlBase (object):
                 continue
             url_data = linkcheck.checker.get_url_from(line,
                               self.recursion_level+1, self.consumer,
-                              parent_url=self.url, line=lineno)
+                              parent_url=self.url, line=lineno,
+                              cmdline=False)
             self.consumer.append_url(url_data)
 
     def parse_css (self):
@@ -680,7 +679,8 @@ class UrlBase (object):
                 url = linkcheck.strformat.unquote(mo.group("url").strip())
                 url_data = linkcheck.checker.get_url_from(url,
                              self.recursion_level+1, self.consumer,
-                             parent_url=self.url, line=lineno, column=column)
+                             parent_url=self.url, line=lineno, column=column,
+                             cmdline=False)
                 self.consumer.append_url(url_data)
 
     def serialized (self):

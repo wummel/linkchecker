@@ -317,7 +317,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 newobj = linkcheck.checker.get_url_from(
                           redirected, self.recursion_level, self.consumer,
                           parent_url=self.parent_url, base_ref=self.base_ref,
-                          line=self.line, column=self.column, name=self.name)
+                          line=self.line, column=self.column, name=self.name,
+                          cmdline=False)
                 newobj.warning = self.warning
                 newobj.info = self.info
                 # append new object to queue
