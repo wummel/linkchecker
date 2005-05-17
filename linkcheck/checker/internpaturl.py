@@ -43,6 +43,8 @@ class InternPatternUrl (urlbase.UrlBase):
         domain, is_idn = linkcheck.url.idna_encode(domain)
         if not (domain and scheme):
             return None
-        path = parts[2]
+        path, params = linkcheck.url.splitparams(parts[2])
+        segments = path.split('/')[:-1]
+        path = "/".join(segments)
         args = tuple(re.escape(x) for x in (scheme, domain, path))
         return "%s://%s%s" % args
