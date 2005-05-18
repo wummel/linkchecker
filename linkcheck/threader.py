@@ -124,7 +124,7 @@ class Threader (object):
         """
         self._reduce_threads()
 
-    def start_thread (self, func, args):
+    def start_thread (self, func, args, name=None):
         """
         Generate a new thread.
         """
@@ -133,7 +133,7 @@ class Threader (object):
             func(*args)
         else:
             self._acquire()
-            t = threading.Thread(None, func, None, args)
+            t = threading.Thread(None, func, name, args)
             t.start()
             self.threads.append(t)
 
