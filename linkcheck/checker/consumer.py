@@ -89,7 +89,13 @@ class Consumer (linkcheck.lock.AssertLock):
         else:
             # go check this url
             # this calls either self.checked() or self.interrupted()
-            self.threader.start_thread(url_data.check, ())
+            if url_data.parent_url and \
+               not linkcheck.url.url_is_absolute(url_data.base_url):
+                name = url_data.parent_url
+            else:
+                name = u""
+            name += url_data.base_url
+            self.threader.start_thread(url_data.check, (), name=name)
 
     def checked (self, url_data):
         """
@@ -136,7 +142,14 @@ class Consumer (linkcheck.lock.AssertLock):
         Abort checking and send end-of-output message to logger.
         """
         # wait for threads to finish
+        num_waited = 0
+        wait_max = 30
         while not self.no_more_threads():
+            if num_waited > wait_max:
+                linkcheck.log.error(linkcheck.LOG_CHECK,
+                                    "Thread wait timeout")
+                self.logger_end_output()
+                sys.exit(1)
             num = self.active_threads()
             msg = \
             _n("keyboard interrupt; waiting for %d active thread to finish",
@@ -148,6 +161,7 @@ class Consumer (linkcheck.lock.AssertLock):
                 self.threader.finish()
             finally:
                 self.release()
+            num_waited += 1
             time.sleep(2)
         self.logger_end_output()
 
