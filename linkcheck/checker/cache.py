@@ -277,7 +277,7 @@ class Cache (linkcheck.lock.AssertLock):
             output = []
             for h in headers.getallmatchingheaders("Set-Cookie"):
                 output.append(h)
-                linkcheck.log.debug(linkcheck.LOG_CACHE, "Store Cookie %s", h)
+                linkcheck.log.debug(linkcheck.LOG_CACHE, "Store cookie %s", h)
                 c = self.cookies.setdefault(host, Cookie.SimpleCookie())
                 c.load(h)
             return output
@@ -291,7 +291,7 @@ class Cache (linkcheck.lock.AssertLock):
         self.acquire()
         try:
             linkcheck.log.debug(linkcheck.LOG_CACHE,
-                                "Get Cookie %s (%s)", host, path)
+                                "Get cookies for host %r path %r", host, path)
             if not self.cookies.has_key(host):
                 return []
             cookievals = []
