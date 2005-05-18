@@ -264,6 +264,9 @@ class UrlBase (object):
         url syntax. Success enables further checking, failure
         immediately logs this url. Syntax checks must not
         use any network resources.
+
+        @return: True if syntax is correct, else False.
+        @rtype: bool
         """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         if not self.base_url:
