@@ -404,13 +404,11 @@ class TestUrl (unittest.TestCase):
         self.assert_(not linkcheck.url.url_is_absolute(url), repr(url))
 
     def test_nopathquote_chars (self):
-        # XXX use platform resource
-        if os.name != 'nt':
-            return
-        url = "file:///c|/msys/"
-        nurl = url
-        self.assertEqual(url_norm(url), nurl)
-        self.assert_(not linkcheck.url.url_needs_quoting(url))
+        if os.name == 'nt':
+            url = "file:///c|/msys/"
+            nurl = url
+            self.assertEqual(url_norm(url), nurl)
+            self.assert_(not linkcheck.url.url_needs_quoting(url))
 
     def test_idn_encoding (self):
         """
