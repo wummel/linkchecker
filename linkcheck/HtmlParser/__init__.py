@@ -66,7 +66,7 @@ import htmlentitydefs
 
 def _resolve_ascii_entity (mo):
     """
-    Resolve one &#XXX; entity if it is an ASCII character. Else leave as is.
+    Resolve one &#XYZ; entity if it is an ASCII character. Else leave as is.
 
     @param mo: matched v{_num_re} object with a "num" match group
     @type mo: MatchObject instance
