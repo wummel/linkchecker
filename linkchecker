@@ -647,6 +647,8 @@ if len(args) <= 0:
 cache = linkcheck.checker.cache.Cache()
 consumer = linkcheck.checker.consumer.Consumer(config, cache)
 if options.trace:
+    config["trace"] = True
+    linkcheck.log.trace_filter([r"^linkcheck"])
     linkcheck.log.trace()
 # syntactic sugar
 for url in args:
