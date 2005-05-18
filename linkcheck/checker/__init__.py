@@ -115,7 +115,10 @@ def check_urls (consumer):
     try:
         _check_urls(consumer)
     except KeyboardInterrupt:
-        consumer.abort()
+        try:
+            consumer.abort()
+        except:
+            sys.exit(1)
 
 
 def _check_urls (consumer):
