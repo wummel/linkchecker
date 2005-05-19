@@ -112,6 +112,17 @@ class UrlBase (object):
         @param column: column number of url in parent content
         @param name: name of url or empty
         """
+        self.init(base_ref, base_url, parent_url, recursion_level,
+                  consumer, line, column, name)
+        self.reset()
+        self.check_syntax()
+
+
+    def init (self, base_ref, base_url, parent_url, recursion_level,
+              consumer, line, column, name):
+        """
+        Initialize internal data.
+        """
         self.base_ref = base_ref
         # note that self.base_url must not be modified
         self.base_url = base_url
@@ -131,6 +142,7 @@ class UrlBase (object):
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
 
+    def reset (self):
         # self.url is constructed by self.build_url() out of base_url
         # and (base_ref or parent) as absolute and normed url.
         # This the real url we use when checking so it also referred to
@@ -166,7 +178,6 @@ class UrlBase (object):
         # cache keys, are set by build_url() calling set_cache_keys()
         self.cache_url_key = None
         self.cache_content_key = None
-        self.check_syntax()
 
     def set_result (self, msg, valid=True):
         """

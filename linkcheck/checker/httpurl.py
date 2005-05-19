@@ -51,14 +51,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     Url link with http scheme.
     """
 
-    def __init__ (self, base_url, recursion_level, consumer,
-                  parent_url=None, base_ref=None, line=0, column=0, name=u""):
+    def reset (self):
         """
-        Initialize basic url data and HTTP specific variables.
+        Initialize HTTP specific variables.
         """
-        super(HttpUrl, self).__init__(base_url, recursion_level, consumer,
-               parent_url=parent_url, base_ref=base_ref, line=line,
-               column=column, name=name)
+        super(HttpUrl, self).reset()
         self.max_redirects = 5
         self.has301status = False
         self.no_anchor = False # remove anchor in request url

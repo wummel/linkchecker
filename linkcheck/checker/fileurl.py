@@ -83,18 +83,16 @@ class FileUrl (urlbase.UrlBase):
     Url link with file scheme.
     """
 
-    def __init__ (self, base_url, recursion_level, consumer,
-                  parent_url = None,
-                  base_ref = None, line=0, column=0, name=u""):
+    def init (self, base_ref, base_url, parent_url, recursion_level,
+              consumer, line, column, name):
         """
         Besides the usual initialization the URL is normed according
         to the platform:
          - the base URL is made an absolute file:// URL
          - under Windows platform the drive specifier is normed
         """
-        super(FileUrl, self).__init__(base_url, recursion_level, consumer,
-             parent_url=parent_url, base_ref=base_ref,
-             line=line, column=column, name=name)
+        super(FileUrl, self).init(base_ref, base_url, parent_url,
+                               recursion_level, consumer, line, column, name)
         base_url = self.base_url
         if not (parent_url or base_ref or base_url.startswith("file:")):
             base_url = os.path.expanduser(base_url)

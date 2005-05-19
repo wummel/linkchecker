@@ -38,15 +38,11 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     Url link with ftp scheme.
     """
 
-    def __init__ (self, base_url, recursion_level, consumer,
-                  parent_url = None,
-                  base_ref = None, line=0, column=0, name=u""):
+    def reset (self):
         """
         Initialize FTP url data.
         """
-        super(FtpUrl, self).__init__(base_url, recursion_level, consumer,
-             parent_url=parent_url, base_ref=base_ref,
-             line=line, column=column, name=name)
+        super(FtpUrl, self).reset()
         # list of files for recursion
         self.files = []
         # last part of URL filename
