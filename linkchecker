@@ -701,6 +701,6 @@ if config['interactive']:
     raw_input(_("Hit RETURN to finish"))
 
 # if errors or warnings are encountered, exit with non-zero status
-if consumer.logger.errors or \
-  (consumer.logger.warnings and config['warnings']):
+if config['logger'].errors or \
+  (config['logger'].warnings and config['warnings']):
     sys.exit(1)
