@@ -145,9 +145,9 @@ def get_locale ():
     loc = None
     try:
         loc = locale.getdefaultlocale()[0]
-    except ValueError:
-        # workaround (XXX delete this when python2.5 is fixed)
-        pass
+    except ValueError, msg:
+        # workaround for XXX
+        print >>sys.stderr, "WARNING", msg
     if loc is None:
         return 'C'
     loc = locale.normalize(loc)

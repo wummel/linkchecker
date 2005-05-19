@@ -59,7 +59,7 @@ class ProxySupport (object):
         """
         Check if self.host is in the no-proxy-for ignore list.
         """
-        for ro in self.consumer.config["noproxyfor"]:
+        for ro in self.consumer.config("noproxyfor"):
             if ro.search(self.host):
                 return True
         return False

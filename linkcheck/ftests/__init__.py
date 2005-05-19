@@ -163,9 +163,9 @@ class StandardTest (unittest.TestCase):
                                       url, 0, consumer, cmdline=cmdline)
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
-        if consumer.config['logger'].diff:
+        if consumer.config('logger').diff:
             sep = unicode(os.linesep)
-            l = [url] + consumer.config['logger'].diff
+            l = [url] + consumer.config('logger').diff
             l = sep.join(l)
             self.fail(l.encode("iso8859-1", "ignore"))
 
@@ -187,8 +187,8 @@ class StandardTest (unittest.TestCase):
                                           url, 0, consumer, cmdline=cmdline)
         consumer.append_url(url_data)
         linkcheck.checker.check_urls(consumer)
-        if consumer.config['logger'].diff:
+        if consumer.config('logger').diff:
             sep = unicode(os.linesep)
-            l = [url] + consumer.config['logger'].diff
+            l = [url] + consumer.config('logger').diff
             l = sep.join(l)
             self.fail(l.encode("iso8859-1", "ignore"))

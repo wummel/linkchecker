@@ -29,6 +29,7 @@ import cStringIO as StringIO
 import linecache
 import sys
 import re
+import time
 try:
     import thread as _thread
 except ImportError:
@@ -71,8 +72,8 @@ def _traceit (frame, event, arg):
         if filename.endswith(".pyc") or filename.endswith(".pyo"):
             filename = filename[:-1]
         line = linecache.getline(filename, lineno)
-        print "THREAD(%d) %s:%d: %s" % \
-                     (_thread.get_ident(), name, lineno, line.rstrip())
+        print "THREAD(%d) %.2f %s:%d: %s" % \
+               (_thread.get_ident(), time.time(), name, lineno, line.rstrip())
     return _traceit
 
 def trace ():

@@ -140,8 +140,9 @@ class UrlBase (object):
         self.urlparts = None
         # the anchor part of url
         self.anchor = None
-        # the result message string
+        # the result message string and flag
         self.result = u""
+        self.has_result = False
         # cached or not
         self.cached = False
         # valid or not
@@ -166,11 +167,17 @@ class UrlBase (object):
         # cache keys, are set by build_url() calling set_cache_keys()
         self.cache_url_key = None
         self.cache_content_key = None
+        self.check_syntax()
 
     def set_result (self, msg, valid=True):
         """
         Set result string and validity.
         """
+        if self.has_result:
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                  "Double result %r (previous %r)", msg, self.result)
+        else:
+            self.has_result = True
         self.result = msg
         self.valid = valid
 
@@ -245,8 +252,8 @@ class UrlBase (object):
         linkcheck.log.debug(linkcheck.LOG_CACHE, "Content cache key %r",
                             self.cache_content_key)
         # construct cache key
-        if self.consumer.config["anchorcaching"] and \
-           self.consumer.config["anchors"]:
+        if self.consumer.config("anchorcaching") and \
+           self.consumer.config("anchors"):
             # do not ignore anchor
             parts = self.urlparts[:]
             parts[4] = self.anchor
@@ -271,7 +278,7 @@ class UrlBase (object):
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         if not self.base_url:
             self.set_result(_("URL is empty"), valid=False)
-            return False
+            return
         try:
             self.build_url()
             # check url warnings
@@ -282,10 +289,9 @@ class UrlBase (object):
         except linkcheck.LinkCheckerError, msg:
             self.set_result(linkcheck.strformat.unicode_safe(msg),
                             valid=False)
-            return False
+            return
         self.set_cache_keys()
         self.extern = self._get_extern(self.url)
-        return True
 
     def build_url (self):
         """
@@ -338,7 +344,7 @@ class UrlBase (object):
         """
         Main check function for checking this URL.
         """
-        if self.consumer.config["trace"]:
+        if self.consumer.config("trace"):
             linkcheck.log.trace()
         try:
             self.local_check()
@@ -372,11 +378,11 @@ class UrlBase (object):
         Local check function can be overridden in subclasses.
         """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
-        if self.recursion_level and self.consumer.config['wait']:
+        if self.recursion_level and self.consumer.config('wait'):
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "sleeping for %d seconds",
-                                self.consumer.config['wait'])
-            time.sleep(self.consumer.config['wait'])
+                                self.consumer.config('wait'))
+            time.sleep(self.consumer.config('wait'))
         t = time.time()
         if self.is_extern():
             self.add_info(_("Outside of domain filter, checked only syntax."))
@@ -387,7 +393,7 @@ class UrlBase (object):
         try:
             self.check_connection()
             self.add_country_info()
-            if self.consumer.config["anchors"]:
+            if self.consumer.config("anchors"):
                 self.check_anchors()
         except tuple(linkcheck.checker.ExcList):
             etype, evalue, etb = sys.exc_info()
@@ -403,7 +409,7 @@ class UrlBase (object):
                             valid=False)
 
         # check content
-        warningregex = self.consumer.config["warningregex"]
+        warningregex = self.consumer.config("warningregex")
         if warningregex and self.valid:
             linkcheck.log.debug(linkcheck.LOG_CHECK, "checking content")
             try:
@@ -469,8 +475,8 @@ class UrlBase (object):
         return self.valid and \
             self.is_parseable() and \
             self.can_get_content() and \
-            (self.consumer.config["recursionlevel"] < 0 or
-            self.recursion_level < self.consumer.config["recursionlevel"]) and \
+            (self.consumer.config("recursionlevel") < 0 or
+            self.recursion_level < self.consumer.config("recursionlevel")) and \
             not self.extern[0] and self.content_allows_robots()
 
     def content_allows_robots (self):
@@ -533,13 +539,13 @@ class UrlBase (object):
         @return: a tuple (is_extern, is_strict)
         @rtype: tuple (bool, bool)
         """
-        for entry in self.consumer.config["externlinks"]:
+        for entry in self.consumer.config("externlinks"):
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
                 return (1, entry['strict'])
-        for entry in self.consumer.config["internlinks"]:
+        for entry in self.consumer.config("internlinks"):
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
@@ -582,7 +588,7 @@ class UrlBase (object):
         If a maximum size was given, call this function to check it
         against the content size of this url.
         """
-        maxbytes = self.consumer.config["warnsizebytes"]
+        maxbytes = self.consumer.config("warnsizebytes")
         if maxbytes is not None and self.dlsize >= maxbytes:
             self.add_warning(_("Content size %s is larger than %s.") % \
                          (linkcheck.strformat.strsize(self.dlsize),
@@ -602,7 +608,7 @@ class UrlBase (object):
         Get tuple (user, password) from configured authentication.
         Both user and password can be None if not specified.
         """
-        for auth in self.consumer.config["authentication"]:
+        for auth in self.consumer.config("authentication"):
             if auth['pattern'].match(self.url):
                 return auth['user'], auth['password']
         return None, None
@@ -728,7 +734,7 @@ class UrlBase (object):
         @rtype: string
         """
         s = self.serialized()
-        return self.consumer.config['logger'].encode(s)
+        return self.consumer.config('logger').encode(s)
 
     def __repr__ (self):
         """

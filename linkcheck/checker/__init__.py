@@ -134,13 +134,14 @@ def _check_urls (consumer):
     start_time = time.time()
     status_time = start_time
     while not consumer.finished():
-        consumer.check_url()
-        if consumer.config['status']:
+        if not consumer.check_url():
+            time.sleep(0.1)
+        if consumer.config('status'):
             curtime = time.time()
             if (curtime - status_time) > 5:
                 consumer.print_status(curtime, start_time)
                 status_time = curtime
-    consumer.logger_end_output()
+    consumer.end_log_output()
 
 
 # file extensions we can parse recursively
@@ -252,7 +253,7 @@ def get_url_from (base_url, recursion_level, consumer,
         pat = url_data.get_intern_pattern()
         linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Pattern %r", pat)
         if pat:
-            consumer.config['internlinks'].append(linkcheck.get_link_pat(pat))
+            consumer.config_append('internlinks', linkcheck.get_link_pat(pat))
     return url_data
 
 

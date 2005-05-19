@@ -48,13 +48,11 @@ def _check_morsel (m, host, path):
     return m.output(header='').strip()
 
 
-class Cache (linkcheck.lock.AssertLock):
+class Cache (object):
     """
     Store and provide routines for cached data. Currently there are
     caches for cookies, checked URLs, FTP connections and robots.txt
     contents.
-
-    All public operations (except __init__()) are thread-safe.
     """
 
     def __init__ (self):
@@ -63,10 +61,13 @@ class Cache (linkcheck.lock.AssertLock):
         """
         super(Cache, self).__init__()
         # already checked URLs
+        # {cache key (string) -> cache data (dict)}
         self.checked = {}
         # URLs that are being checked
+        # {cache key (string) -> urldata (UrlData)}
         self.in_progress = {}
         # to-be-checked URLs
+        # [urldata (UrlData)]
         self.incoming = collections.deque()
         # downloaded robots.txt files
         self.robots_txt = {}
@@ -79,11 +80,7 @@ class Cache (linkcheck.lock.AssertLock):
         """
         Check if incoming queue is empty.
         """
-        self.acquire()
-        try:
-            return len(self.incoming) <= 0
-        finally:
-            self.release()
+        return len(self.incoming) <= 0
 
     def incoming_get_url (self):
         """
@@ -91,57 +88,44 @@ class Cache (linkcheck.lock.AssertLock):
         return it. If no such url is available return None. The
         url might be already cached.
         """
-        self.acquire()
-        try:
-            for i, url_data in enumerate(self.incoming):
-                key = url_data.cache_url_key
-                if key in self.checked:
-                    del self.incoming[i]
-                    # url is cached and can be logged
-                    url_data.copy_from_cache(self.checked[key])
-                    return url_data
-                elif key not in self.in_progress:
-                    del self.incoming[i]
-                    self.in_progress[key] = url_data
-                    return url_data
-            return None
-        finally:
-            self.release()
+        for i, url_data in enumerate(self.incoming):
+            key = url_data.cache_url_key
+            if key in self.checked:
+                del self.incoming[i]
+                # url is cached and can be logged
+                url_data.copy_from_cache(self.checked[key])
+                return url_data
+            elif key not in self.in_progress:
+                del self.incoming[i]
+                self.in_progress[key] = url_data
+                return url_data
+        return None
 
     def incoming_len (self):
         """
         Return number of entries in incoming queue.
         """
-        self.acquire()
-        try:
-            return len(self.incoming)
-        finally:
-            self.release()
+        return len(self.incoming)
 
     def incoming_add (self, url_data):
         """
         Add a new URL to list of URLs to check.
         """
-        self.acquire()
-        try:
-            linkcheck.log.debug(linkcheck.LOG_CACHE,
-                                "Add url %s...", repr(url_data))
-            # check syntax
-            if not url_data.check_syntax():
-                # wrong syntax, do not check any further
-                return False
-            # check the cache
-            key = url_data.cache_url_key
-            if key in self.checked:
-                # url is cached and can be logged
-                url_data.copy_from_cache(self.checked[key])
-                return False
-            # url is not cached, so add to incoming queue
-            self.incoming.append(url_data)
-            linkcheck.log.debug(linkcheck.LOG_CACHE, "...added.")
-            return True
-        finally:
-            self.release()
+        linkcheck.log.debug(linkcheck.LOG_CACHE,
+                            "Add url %s...", repr(url_data))
+        if url_data.has_result:
+            # do not check any further
+            return False
+        # check the cache
+        key = url_data.cache_url_key
+        if key in self.checked:
+            # url is cached and can be logged
+            url_data.copy_from_cache(self.checked[key])
+            return False
+        # url is not cached, so add to incoming queue
+        self.incoming.append(url_data)
+        linkcheck.log.debug(linkcheck.LOG_CACHE, "...added.")
+        return True
 
     def has_incoming (self, key):
         """
@@ -150,11 +134,7 @@ class Cache (linkcheck.lock.AssertLock):
         @param key: Usually obtained from url_data.cache_url_key
         @type key: String
         """
-        self.acquire()
-        try:
-            return key in self.incoming
-        finally:
-            self.release()
+        return key in self.incoming
 
     def has_in_progress (self, key):
         """
@@ -163,44 +143,32 @@ class Cache (linkcheck.lock.AssertLock):
         @param key: Usually obtained from url_data.cache_url_key
         @type key: String
         """
-        self.acquire()
-        try:
-            return key in self.in_progress
-        finally:
-            self.release()
+        return key in self.in_progress
 
     def in_progress_remove (self, url_data, ignore_missing=False):
         """
         Remove url from in-progress cache. If url is not cached and
         ignore_missing evaluates True, raise AssertionError.
         """
-        self.acquire()
-        try:
-            key = url_data.cache_url_key
-            if key in self.in_progress:
-                del self.in_progress[key]
-            else:
-                assert ignore_missing, repr(key)
-        finally:
-            self.release()
+        key = url_data.cache_url_key
+        if key in self.in_progress:
+            del self.in_progress[key]
+        else:
+            assert ignore_missing, repr(key)
 
     def checked_add (self, url_data):
         """
         Cache checked url data.
         """
-        self.acquire()
-        try:
-            data = url_data.get_cache_data()
-            key = url_data.cache_url_key
-            linkcheck.log.debug(linkcheck.LOG_CACHE, "Cache key %r...", key)
-            assert key not in self.checked, \
-                   key + u", " + unicode(self.checked[key])
-            assert key in self.in_progress, key
-            # move entry from self.in_progress to self.checked
-            del self.in_progress[key]
-            self.checked[key] = data
-        finally:
-            self.release()
+        data = url_data.get_cache_data()
+        key = url_data.cache_url_key
+        linkcheck.log.debug(linkcheck.LOG_CACHE, "Cache key %r...", key)
+        assert key not in self.checked, \
+               key + u", " + unicode(self.checked[key])
+        assert key in self.in_progress, key
+        # move entry from self.in_progress to self.checked
+        del self.in_progress[key]
+        self.checked[key] = data
 
     def checked_redirect (self, redirect, url_data):
         """
@@ -209,96 +177,69 @@ class Cache (linkcheck.lock.AssertLock):
         If the redirect URL is found in the cache, the result data is
         already copied.
         """
-        self.acquire()
-        try:
-            if redirect in self.checked:
-                url_data.copy_from_cache(self.checked[redirect])
-                return True
-            return False
-        finally:
-            self.release()
+        if redirect in self.checked:
+            url_data.copy_from_cache(self.checked[redirect])
+            return True
+        return False
 
     def robots_txt_allows_url (self, roboturl, url, user, password):
         """
         Ask robots.txt allowance.
         """
-        self.acquire()
-        try:
-            if roboturl not in self.robots_txt:
-                rp = linkcheck.robotparser2.RobotFileParser(
-                                                user=user, password=password)
-                rp.set_url(roboturl)
-                rp.read()
-                self.robots_txt[roboturl] = rp
-            else:
-                rp = self.robots_txt[roboturl]
-            return rp.can_fetch(linkcheck.configuration.UserAgent, url)
-        finally:
-            self.release()
+        if roboturl not in self.robots_txt:
+            rp = linkcheck.robotparser2.RobotFileParser(
+                                            user=user, password=password)
+            rp.set_url(roboturl)
+            rp.read()
+            self.robots_txt[roboturl] = rp
+        else:
+            rp = self.robots_txt[roboturl]
+        return rp.can_fetch(linkcheck.configuration.UserAgent, url)
 
     def get_connection (self, key):
         """
         Get open connection to given host. Return None if no such
         connection is available (or the old one timed out).
         """
-        self.acquire()
-        try:
-            return self.pool.get_connection(key)
-        finally:
-            self.release()
+        return self.pool.get_connection(key)
 
     def add_connection (self, key, connection, timeout):
         """
         Store open connection into pool for reuse.
         """
-        self.acquire()
-        try:
-            self.pool.add_connection(key, connection, timeout)
-        finally:
-            self.release()
+        self.pool.add_connection(key, connection, timeout)
 
     def release_connection (self, key):
         """
         Remove connection from pool.
         """
-        self.acquire()
-        try:
-            self.pool.release_connection(key)
-        finally:
-            self.release()
+        self.pool.release_connection(key)
 
     def store_cookies (self, headers, host):
         """
         Thread-safe cookie cache setter function. Can raise the
         exception Cookie.CookieError.
         """
-        self.acquire()
-        try:
-            output = []
-            for h in headers.getallmatchingheaders("Set-Cookie"):
-                output.append(h)
-                linkcheck.log.debug(linkcheck.LOG_CACHE, "Store cookie %s", h)
-                c = self.cookies.setdefault(host, Cookie.SimpleCookie())
-                c.load(h)
-            return output
-        finally:
-            self.release()
+        output = []
+        for h in headers.getallmatchingheaders("Set-Cookie"):
+            output.append(h)
+            linkcheck.log.debug(linkcheck.LOG_CACHE, "Store cookie %s", h)
+            c = self.cookies.setdefault(host, Cookie.SimpleCookie())
+            c.load(h)
+        return output
 
     def get_cookies (self, host, path):
         """
         Thread-safe cookie cache getter function.
         """
-        self.acquire()
-        try:
-            linkcheck.log.debug(linkcheck.LOG_CACHE,
-                                "Get cookies for host %r path %r", host, path)
-            if not self.cookies.has_key(host):
-                return []
-            cookievals = []
-            for m in self.cookies[host].values():
-                val = _check_morsel(m, host, path)
-                if val:
-                    cookievals.append(val)
-            return cookievals
-        finally:
-            self.release()
+        linkcheck.log.debug(linkcheck.LOG_CACHE,
+                            "Get cookies for host %r path %r", host, path)
+        if not self.cookies.has_key(host):
+            return []
+        cookievals = []
+        for m in self.cookies[host].values():
+            val = _check_morsel(m, host, path)
+            if val:
+                cookievals.append(val)
+        return cookievals
+

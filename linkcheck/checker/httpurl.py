@@ -78,8 +78,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         roboturl = self.get_robots_txt_url()
         user, password = self.get_user_password()
-        return self.consumer.cache.robots_txt_allows_url(roboturl, url,
-                                                         user, password)
+        return self.consumer.robots_txt_allows_url(roboturl, url,
+                                                   user, password)
 
     def check_connection (self):
         """
@@ -124,15 +124,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         | extension-code
         """
         # set the proxy, so a 407 status after this is an error
-        self.set_proxy(self.consumer.config["proxy"].get(self.scheme))
+        self.set_proxy(self.consumer.config("proxy").get(self.scheme))
         # initialize check data
         self.headers = None
         self.auth = None
         self.cookies = []
         # check robots.txt
         if not self.allows_robots(self.url):
-            self.add_info(
+            # remove all previously stored results
+            self.add_warning(
                        _("Access denied by robots.txt, checked only syntax."))
+            self.set_result(u"syntax OK")
             return
         # check for amazon server quirk
         if _is_amazon(self.urlparts[1]):
@@ -144,12 +146,23 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.method = "HEAD"
         # check the http connection
         response, fallback_GET = self.check_http_connection()
+        if self.headers and self.headers.has_key("Server"):
+            server = self.headers['Server']
+        else:
+            server = _("unknown")
+        if fallback_GET:
+            self.add_info(_("Server %r did not support HEAD request; "\
+                            "a GET request was used instead.") % server)
+        if self.no_anchor:
+            self.add_warning(_("Server %r had no anchor support, removed"\
+                               " anchor from request.") % server)
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
             self.url = newurl
         # check response
-        self.check_response(response, fallback_GET)
+        if response:
+            self.check_response(response)
 
     def check_http_connection (self):
         """
@@ -205,7 +218,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 raise
             if tries == -1:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "already handled")
-                return response, fallback_GET
+                return None, fallback_GET
             if tries >= self.max_redirects:
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
@@ -276,11 +289,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if self.is_extern():
                 self.add_info(
                           _("Outside of domain filter, checked only syntax."))
+                self.set_result(u"filtered")
                 return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
                 self.add_warning(
                        _("Access denied by robots.txt, checked only syntax."))
+                self.set_result(u"syntax OK")
                 return -1, response
             # see about recursive redirect
             all_seen = [self.cache_url_key] + self.aliases
@@ -330,7 +345,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             tries += 1
         return tries, response
 
-    def check_response (self, response, fallback_GET):
+    def check_response (self, response):
         """
         Check final result and log it.
         """
@@ -338,27 +353,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.set_result(u"%r %s" % (response.status, response.reason),
                             valid=False)
         else:
-            if self.headers and self.headers.has_key("Server"):
-                server = self.headers['Server']
-            else:
-                server = _("unknown")
-            if fallback_GET:
-                self.add_info(_("Server %r did not support HEAD request; "\
-                                "a GET request was used instead.") % server)
-            if self.no_anchor:
-                self.add_warning(_("Server %r had no anchor support, removed"\
-                                   " anchor from request.") % server)
             if response.status == 204:
                 # no content
                 self.add_warning(
                             linkcheck.strformat.unicode_safe(response.reason))
             # store cookies for valid links
-            if self.consumer.config['cookies']:
+            if self.consumer.config('cookies'):
                 for c in self.cookies:
                     self.add_info(_("Store cookie: %s.") % c)
                 try:
-                    out = self.consumer.cache.store_cookies(self.headers,
-                                                            self.urlparts[1])
+                    out = self.consumer.store_cookies(self.headers,
+                                                      self.urlparts[1])
                     for h in out:
                         self.add_info(linkcheck.strformat.unicode_safe(h))
                 except Cookie.CookieError, msg:
@@ -414,9 +419,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                       linkcheck.configuration.UserAgent)
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
-        if self.consumer.config['cookies']:
-            self.cookies = self.consumer.cache.get_cookies(self.urlparts[1],
-                                                           self.urlparts[2])
+        if self.consumer.config('cookies'):
+            self.cookies = self.consumer.get_cookies(self.urlparts[1],
+                                                     self.urlparts[2])
             for c in self.cookies:
                 self.url_connection.putheader("Cookie", c)
         self.url_connection.endheaders()
@@ -439,7 +444,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         _user, _password = self.get_user_password()
         key = (scheme, self.urlparts[1], _user, _password)
-        conn = self.consumer.cache.get_connection(key)
+        conn = self.consumer.get_connection(key)
         if conn is not None:
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "reuse cached HTTP(S) connection %s", conn)
@@ -566,7 +571,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # add to cached connections
         _user, _password = self.get_user_password()
         key = ("http", self.urlparts[1], _user, _password)
-        cache_add = self.consumer.cache.add_connection
+        cache_add = self.consumer.add_connection
         # note: only cache the connection when it is persistent
         # and all pending content has been received
         if not self.persistent or not self.has_content or \

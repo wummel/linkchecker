@@ -4,6 +4,7 @@ Simple decorators (usable in Python >= 2.4).
 import warnings
 import signal
 import os
+import thread
 
 def deprecated (func):
     """
