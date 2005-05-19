@@ -94,14 +94,14 @@ Only Python regular expressions are accepted by LinkChecker.
 See http://www.amk.ca/python/howto/regex/ for an introduction in
 regular expressions.
 
-The only addition is that if the regular expression starts with
-an exclamation mark `!' it negates the following expression.
+The only addition is that a leading exclamation mark `!' negates
+the regular expression.
 """)
 
 Retval = _(r"""RETURN VALUE
 The return value is non-zero when
  o invalid links were found or
- o link warnings were found and --warnings option was given
+ o warnings were found and the --no-warnings option was not given
  o a program error occurred
 """)
 
@@ -303,6 +303,7 @@ optparser = LCOptionParser()
 ################# general options ##################
 group = optparse.OptionGroup(optparser, _("General options"))
 group.add_option("-f", "--config", type="string", dest="configfile",
+                 metavar="FILENAME",
                  help=_(
 """Use CONFIGFILE as configuration file. As default LinkChecker first
 searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/linkcheckerrc
@@ -311,6 +312,7 @@ group.add_option("-I", "--interactive", action="store_true",
                  dest="interactive", help=_(
 """Ask for url if none are given on the commandline."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
+                 metavar="NUMBER",
                  help=_(
 """Generate no more than num threads. Default number of threads is 10."""))
 
@@ -325,7 +327,7 @@ runs with low thread priority to be suitable as a background job."""))
 
 group.add_option("--disable-psyco", action="store_false", dest="psyco",
                  default=True, help=_(
-"""Do not use psyco runtime compilation even if it is installed."""))
+"""Do not use the psyco optimization module even if it is installed."""))
 optparser.add_option_group(group)
 
 
@@ -380,7 +382,7 @@ group.add_option("--no-status", action="store_false", dest="status",
                  default=True, help=_(
 """Do not print check status messages."""))
 group.add_option("-D", "--debug", type="string", action="append",
-                 metavar="LOGGER",
+                 metavar="STRING",
                  help=_("""Print debugging output for given logger.
 Available loggers are %(lognamelist)s.
 Specifying 'all' is an alias for specifying all available loggers.
@@ -391,7 +393,8 @@ For accurate results, threading and the psyco optimization module will
 be disabled during debug runs.""") % \
 {"lognamelist": linkcheck.lognamelist})
 group.add_option("--trace", action="store_true", dest="trace",
-                 help=_("""Print tracing information."""))
+                 help=_("""Print tracing information. The psyco optimization
+module will be disabled during traced runs."""))
 group.add_option("--profile", action="store_true", dest="profile",
                  help=_(
 """Write profiling data into a file named %s in the
@@ -435,10 +438,12 @@ group.add_option("--no-anchor-caching", action="store_false",
 is the default browser behaviour, but it's not specified in
 the URI specification. Use with care."""))
 group.add_option("-u", "--user", type="string", dest="username",
+                 metavar="STRING",
                  help=_(
 """Try given username for HTTP and FTP authorization.
 For FTP the default username is 'anonymous'. See also -p."""))
 group.add_option("-p", "--password", type="string", dest="password",
+                 metavar="STRING",
                  help=_(
 """Try given password for HTTP and FTP authorization.
 For FTP the default password is 'anonymous@'. See also -u."""))
@@ -453,6 +458,7 @@ group.add_option("-P", "--pause", type="int", dest="pause",
 """Pause the given amount of seconds between each url check. This option
 disables threading (with -t0). Default is no pause between requests."""))
 group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
+                 metavar="STRING",
                  help=_(
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
