@@ -191,6 +191,10 @@ class Consumer (object):
         for logger in self._config['fileoutput']:
             logger.start_output()
 
+    @synchronized(_lock)
+    def log_url (self, url_data):
+        self._log_url(url_data)
+
     def _log_url (self, url_data):
         """
         Send new url to all configured loggers.
