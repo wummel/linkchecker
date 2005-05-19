@@ -143,7 +143,8 @@ def _check_urls (consumer):
             consumer.log_url(url_data)
         else:
             # go check this url
-            if url_data.parent_url and not url_is_absolute(url_data.base_url):
+            if url_data.parent_url and not \
+               linkcheck.url.url_is_absolute(url_data.base_url):
                 name = url_data.parent_url
             else:
                 name = u""
