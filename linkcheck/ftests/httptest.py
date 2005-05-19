@@ -117,7 +117,7 @@ class HttpServerTest (linkcheck.ftests.StandardTest):
         """
         Send QUIT request to http server.
         """
-        conn = httplib.HTTPConnection("localhost:%d"%self.port)
+        conn = httplib.HTTPConnection("localhost:%d" % self.port)
         conn.request("QUIT", "/")
         conn.getresponse()
 
