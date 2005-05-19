@@ -58,7 +58,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         super(HttpUrl, self).reset()
         self.max_redirects = 5
         self.has301status = False
-        self.no_anchor = False # remove anchor in request url
+        # some servers do not support anchors in requests
+        # this flag tells us to remove the anchor in request url
+        self.no_anchor = False
+        # flag if check had to fallback from HEAD to GET method
+        self.fallback_get = False
+        # flag if connection is persistent
         self.persistent = False
         # URLs seen through 301/302 redirections
         self.aliases = []
@@ -142,12 +147,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # first try with HEAD
             self.method = "HEAD"
         # check the http connection
-        response, fallback_GET = self.check_http_connection()
+        response = self.check_http_connection()
         if self.headers and self.headers.has_key("Server"):
             server = self.headers['Server']
         else:
             server = _("unknown")
-        if fallback_GET:
+        if self.fallback_get:
             self.add_info(_("Server %r did not support HEAD request; "\
                             "a GET request was used instead.") % server)
         if self.no_anchor:
@@ -166,11 +171,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         Check HTTP connection and return get response and a flag
         if the check algorithm had to fall back to the GET method.
 
-        @return: (response, fallback_GET)
-        @rtype: tuple (HttpResponse, bool)
+        @return: response or None if url is already handled
+        @rtype: HttpResponse or None
         """
-        # flag if second try should be done with GET
-        fallback_GET = False
         while True:
             try:
                 response = self._get_http_response()
@@ -179,7 +182,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if self.method == "HEAD":
                     self.method = "GET"
                     self.aliases = []
-                    fallback_GET = True
+                    self.fallback_get = True
                     continue
                 raise
             if response.reason:
@@ -199,7 +202,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     self.set_result(
                          _("Enforced proxy %r ignored, aborting.") % newproxy,
                          valid=False)
-                    return response, fallback_GET
+                    return response
                 response = self._get_http_response()
                 # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
@@ -210,22 +213,22 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if self.method == "HEAD":
                     self.method = "GET"
                     self.aliases = []
-                    fallback_GET = True
+                    self.fallback_get = True
                     continue
                 raise
             if tries == -1:
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "already handled")
-                return None, fallback_GET
+                return None
             if tries >= self.max_redirects:
                 if self.method == "HEAD":
                     # Microsoft servers tend to recurse HEAD requests
                     self.method = "GET"
                     self.aliases = []
-                    fallback_GET = True
+                    self.fallback_get = True
                     continue
                 self.set_result(_("more than %d redirections, aborting") % \
                                 self.max_redirects, valid=False)
-                return response, fallback_GET
+                return response
             # user authentication
             if response.status == 401:
                 if not self.auth:
@@ -240,11 +243,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if self.headers and self.urlparts[4] and not self.no_anchor:
                     self.no_anchor = True
                     continue
-                # retry with GET
+                # retry with GET (but do not set fallback flag)
                 if self.method == "HEAD":
                     self.method = "GET"
                     self.aliases = []
-                    fallback_GET = True
                     continue
             elif self.headers and self.method == "HEAD":
                 # test for HEAD support
@@ -256,10 +258,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     # Zope server could not get Content-Type with HEAD
                     self.method = "GET"
                     self.aliases = []
-                    fallback_GET = True
+                    self.fallback_get = True
                     continue
             break
-        return response, fallback_GET
+        return response
 
     def follow_redirections (self, response):
         """
