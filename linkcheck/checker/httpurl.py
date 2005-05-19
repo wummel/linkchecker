@@ -285,8 +285,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
             # check extern filter again
-            self.extern = self._get_extern(redirected)
-            if self.is_extern():
+            extern = self.get_extern(redirected)
+            if extern[0] and extern[0]:
                 self.add_info(
                           _("Outside of domain filter, checked only syntax."))
                 self.set_result(u"filtered")
@@ -320,7 +320,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                              " should update this link."))
                     self.has301status = True
             # check cache again on the changed URL
-            if self.consumer.cache.checked_redirect(redirected, self):
+            if self.consumer.checked_redirect(redirected, self):
                 return -1, response
             # check if we still have a http url, it could be another
             # scheme, eg https or news
