@@ -95,29 +95,15 @@ class Consumer (object):
             # can be logged
             self._log_url(url_data)
 
-    @synchronized(_lock)
-    def check_url (self):
+    def check_url (self, url_data, name):
         """
-        Start new thread checking the given url.
+        Check given URL data, spawning a new thread with given name.
+        This eventually calls either Consumer.checked() or
+        Consumer.interrupted().
+        This method is not thread safe (hence it should only be called
+        from a single thread).
         """
-        url_data = self._cache.incoming_get_url()
-        if url_data is None:
-            # active connections are downloading/parsing
-            pass
-        elif url_data.cached:
-            # was cached -> can be logged
-            self._log_url(url_data)
-        else:
-            # go check this url
-            # this calls either self.checked() or self.interrupted()
-            if url_data.parent_url and \
-               not linkcheck.url.url_is_absolute(url_data.base_url):
-                name = url_data.parent_url
-            else:
-                name = u""
-            name += url_data.base_url
-            self._threader.start_thread(url_data.check, (), name=name)
-        return url_data and not url_data.cached
+        self._threader.start_thread(url_data.check, (), name=name)
 
     @synchronized(_lock)
     def checked (self, url_data):

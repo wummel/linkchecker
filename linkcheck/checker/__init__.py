@@ -134,8 +134,21 @@ def _check_urls (consumer):
     start_time = time.time()
     status_time = start_time
     while not consumer.finished():
-        if not consumer.check_url():
+        url_data = consumer.incoming_get_url()
+        if url_data is None:
+            # wait for incoming queue to fill
             time.sleep(0.1)
+        elif url_data.cached:
+            # was cached -> can be logged
+            consumer.log_url(url_data)
+        else:
+            # go check this url
+            if url_data.parent_url and not url_is_absolute(url_data.base_url):
+                name = url_data.parent_url
+            else:
+                name = u""
+            name += url_data.base_url
+            consumer.check_url(url_data, name)
         if consumer.config('status'):
             curtime = time.time()
             if (curtime - status_time) > 5:
