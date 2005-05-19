@@ -159,7 +159,6 @@ class UrlBase (object):
         self.checktime = 0
         # connection object
         self.url_connection = None
-        self.extern = (1, 0)
         # data of url content
         self.data = None
         # if data is filled
@@ -291,7 +290,6 @@ class UrlBase (object):
                             valid=False)
             return
         self.set_cache_keys()
-        self.extern = self._get_extern(self.url)
 
     def build_url (self):
         """
@@ -384,7 +382,8 @@ class UrlBase (object):
                                 self.consumer.config('wait'))
             time.sleep(self.consumer.config('wait'))
         t = time.time()
-        if self.is_extern():
+        extern = self.get_extern(self.url)
+        if extern[0] and extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
             return
 
@@ -469,7 +468,7 @@ class UrlBase (object):
         #                    "content=%s, extern=%s, robots=%s",
         #                    self.valid, self.is_parseable(),
         #                    self.can_get_content(),
-        #                    self.extern[0],
+        #                    self.get_extern(self.url)[0],
         #                    self.content_allows_robots())
         # note: test self.valid before self.is_parseable()
         return self.valid and \
@@ -477,7 +476,7 @@ class UrlBase (object):
             self.can_get_content() and \
             (self.consumer.config("recursionlevel") < 0 or
             self.recursion_level < self.consumer.config("recursionlevel")) and \
-            not self.extern[0] and self.content_allows_robots()
+            not self.get_extern(self.url)[0] and self.content_allows_robots()
 
     def content_allows_robots (self):
         """
@@ -521,17 +520,7 @@ class UrlBase (object):
                 return
         self.add_warning(_("Anchor #%s not found.") % self.anchor)
 
-    def is_extern (self):
-        """
-        Determine if this URL is extern or not.
-
-        @return: True if URL is extern, else False
-        @rtype: bool
-        """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "extern=%s", self.extern)
-        return self.extern[0] and self.extern[1]
-
-    def _get_extern (self, url):
+    def get_extern (self, url):
         """
         Match URL against extern and intern link patterns. If no pattern
         matches the URL is extern.
