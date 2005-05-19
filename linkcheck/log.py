@@ -18,10 +18,6 @@
 Logging and debug functions.
 """
 
-# public api
-__all__ = ["debug", "info", "warn", "error", "critical", "exception",
-           "trace", "is_debug"]
-
 import logging
 import os
 import inspect
@@ -45,12 +41,21 @@ _trace_ignore = set()
 _trace_filter = set()
 
 def trace_ignore (names):
+    """
+    Add given names to trace ignore list.
+    """
     _trace_ignore.update(names)
 
 def trace_filter (patterns):
+    """
+    Add given patterns to trace filter list.
+    """
     _trace_filter.update([re.compile(pat) for pat in patterns])
 
 def trace_clear ():
+    """
+    Clear all trace ignores and filters.
+    """
     global _trace_ignore
     global _trace_filter
     _trace_ignore = set()
@@ -81,7 +86,6 @@ def trace ():
     Start tracing of the current thread (and the current thread only).
     """
     sys.settrace(_traceit)
-
 
 
 PRINT_LOCALVARS = False
