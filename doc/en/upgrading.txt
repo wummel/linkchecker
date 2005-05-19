@@ -15,6 +15,12 @@ been removed.
 
 The previously deprecated --status option has been removed.
 
+The options --intern, --extern and --extern-strict have been replaced
+by --ignore-url and --no-follow-url.
+
+The configuration file format has changed. See the distributed
+linkcheckerrc default config for the new syntax.
+
 
 Migrating from 2.2 to 2.3
 -------------------------
