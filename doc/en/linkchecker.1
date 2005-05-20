@@ -10,8 +10,7 @@ linkchecker - check HTML documents for broken links
 ]
 [
 .I file-or-url
-..
-]
+]...
 
 .SH DESCRIPTION
 .LP
@@ -69,9 +68,9 @@ searches \fB/etc/linkchecker/linkcheckerrc\fP and then
 \fB\-I\fP, \fB\-\-interactive\fP
 Ask for URL if none are given on the commandline.
 .TP
-\fB\-t\fP\fInum\fP, \fB\-\-threads=\fP\fInum\fP
-Generate no more than \fInum\fP threads. Default number of threads is 10.
-To disable threading specify a non-positive number.
+\fB\-t\fP\fINUMBER\fP, \fB\-\-threads=\fP\fINUMBER\fP
+Generate no more than the given number of threads. Default number
+of threads is 10. To disable threading specify a non-positive number.
 .TP
 \fB--priority\fP
 Run with normal thread scheduling priority. Per default LinkChecker runs
@@ -94,39 +93,39 @@ Don't log warnings. Default is to log warnings.
 \fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fIREGEX\fP
 Define a regular expression which prints a warning if it matches any
 content of the checked link.
-This applies of course only to pages which are valid, so we can get
-their content.
+This applies only to valid pages, so we can get their content.
+
 Use this to check for pages that contain some form of error, for example
 "This page has moved" or "Oracle Application Server error".
 .TP
-\fB\-\-warning\-size\-bytes=\fP\fIbytes\fP
-Print a warning if content size is available and exceeds the given
+\fB\-\-warning\-size\-bytes=\fP\fINUMBER\fP
+Print a warning if content size info is available and exceeds the given
 number of \fIbytes\fP.
 .TP
 \fB\-q\fP, \fB\-\-quiet\fP
 Quiet operation, an alias for \fB\-o none\fP.
 This is only useful with \fB\-F\fP.
 .TP
-\fB\-o\fP\fItype\fP[\fB/\fP\fIencoding\fP], \fB\-\-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP]
+\fB\-o\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP], \fB\-\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
 Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
 \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
 Default type is \fBtext\fP. The various output types are documented
 below.
-\fIencoding\fP specifies the output encoding, the default is
+The \fIENCODING\fP specifies the output encoding, the default is
 that of your locale.
 Valid encodings are listed at
 \fBhttp://docs.python.org/lib/standard-encodings.html\fP.
 .TP
-\fB\-F\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP], \fB\-\-file\-output=\fP\fItype\fP[\fB/\fP\fIencoding\fP][\fB/\fP\fIfilename\fP]
-Output to a file \fBlinkchecker\-out.\fP\fItype\fP,
+\fB\-F\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP], \fB\-\-file\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP]
+Output to a file \fBlinkchecker\-out.\fP\fITYPE\fP,
 \fB$HOME/.linkchecker/blacklist\fP for
-\fBblacklist\fP output, or \fIfilename\fP if specified.
-\fIencoding\fP specifies the output encoding, the default is
+\fBblacklist\fP output, or \fIFILENAME\fP if specified.
+The \fIENCODING\fP specifies the output encoding, the default is
 that of your locale.
 Valid encodings are listed at
 \fBhttp://docs.python.org/lib/standard-encodings.html\fP.
-The \fIfilename\fP part of the \fBnone\fP output type will be ignored,
-else if the file already exists, it will be overwritten.
+The \fIFILENAME\fP and \fIENCODING\fP parts of the \fBnone\fP output type
+will be ignored, else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types
 are \fBtext\fP, \fBhtml\fP, \fBsql\fP,
 \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP
@@ -137,15 +136,20 @@ with the option \fB\-o none\fP.
 \fB\-\-no\-status\fP
 Do not print check status messages.
 .TP
-\fB\-D\fP\fIlogger\fP, \fB\-\-debug=\fP\fIlogger\fP
-Print debugging output for given logger.
+\fB\-D\fP\fISTRING\fP, \fB\-\-debug=\fP\fISTRING\fP
+Print debugging output for the given logger.
 Available loggers are \fBcmdline\fP, \fBchecking\fP,
 \fBcache\fP, \fBgui\fP and \fBall\fP.
 Specifying \fBall\fP is an alias for specifying all available loggers.
 The option can be given multiple times to debug with more
 than one logger.
 .BR
-For accurate results, threading will be disabled during debug runs.
+For accurate results, threading and the psyco optimization module will
+be disabled during debug runs.
+.TP
+\fB\-\-trace\fP
+Print tracing information. The psyco optimization module will be disabled
+during traced runs.
 .TP
 \fB\-\-profile\fP
 Write profiling data into a file named \fBlinkchecker.prof\fP
@@ -157,16 +161,18 @@ Print out previously generated profiling data. See also
 
 .SS Checking options
 .TP
-\fB\-r\fP\fIdepth\fP, \fB\-\-recursion\-level=\fP\fIdepth\fP
-Check recursively all links up to given \fIdepth\fP.
-A negative depth will enable inifinite recursion.
-Default depth is inifinite.
+\fB\-r\fP\fINUMBER\fP, \fB\-\-recursion\-level=\fP\fINUMBER\fP
+Check recursively all links up to given depth.
+A negative depth will enable infinite recursion.
+Default depth is infinite.
 .TP
-\fB\-\-no\-follow\-url=\fP\fIregex\fP
-Check but do not recurse into URLs matching the given regex.
+\fB\-\-no\-follow\-url=\fP\fIREGEX\fP
+Check but do not recurse into URLs matching the given regular
+expression. This option can be given multiple times.
 .TP
-\fB\-\-ignore\-url=\fP\fIregex\fP
-Only check syntax of URLs matching the given regex.
+\fB\-\-ignore\-url=\fP\fIREGEX\fP
+Only check syntax of URLs matching the given regular expression.
+This option can be given multiple times.
 .TP
 \fB\-C\fP, \fB\-\-cookies\fP
 Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -175,44 +181,39 @@ Sent and accepted cookies are provided as additional logging
 information.
 .TP
 \fB\-a\fP, \fB\-\-anchors\fP
-Check HTTP anchor references. Default is don't check anchors.
-This option implies \fB\-w\fP because anchor errors are always warnings.
+Check HTTP anchor references. Default is not to check anchors.
 .TP
 \fB\-\-no\-anchor\-caching\fP
 Treat url#anchora and url#anchorb as equal on caching. This
 is the default browser behaviour, but it's not specified in
 the URI specification. Use with care.
 .TP
-\fB\-u\fP\fIname\fP, \fB\-\-user=\fP\fIname\fP
-Try username \fIname\fP for HTTP and FTP authorization.
-For FTP the default username is \fBanonymous\fP. See also \fB\-p\fP.
+\fB\-u\fP\fISTRING\fP, \fB\-\-user=\fP\fISTRING\fP
+Try the given username for HTTP and FTP authorization.
+For FTP the default username is \fBanonymous\fP. For HTTP there is
+no default username. See also \fB\-p\fP.
 .TP
-\fB\-p\fP\fIpwd\fP, \fB\-\-password=\fP\fIpwd\fP
-Try the password \fIpwd\fP for HTTP and FTP authorization.
-For FTP the default password is \fBanonymous@\fP. See also \fB\-u\fP.
+\fB\-p\fP\fISTRING\fP, \fB\-\-password=\fP\fISTRING\fP
+Try the given password for HTTP and FTP authorization.
+For FTP the default password is \fBanonymous@\fP. For HTTP there is
+no default password. See also \fB\-u\fP.
 .TP
-\fB\-\-timeout=\fP\fIsecs\fP
+\fB\-\-timeout=\fP\fINUMBER\fP
 Set the timeout for connection attempts in seconds. The default timeout
 is 30 seconds.
 .TP
-\fB\-P\fP\fIsecs\fP, \fB\-\-pause=\fP\fIsecs\fP
-Pause \fIsecs\fP seconds between each url check. This option
-implies \fB\-t0\fP.
-Default is no pause between requests.
+\fB\-P\fP\fINUMBER\fP, \fB\-\-pause=\fP\fINUMBER\fP
+Pause the given number of seconds between each url check. This option
+disables threading. Default is no pause between requests.
 .TP
-\fB\-N\fP\fIserver\fP, \fB\-\-nntp\-server=\fP\fIserver\fP
+\fB\-N\fP\fISTRING\fP, \fB\-\-nntp\-server=\fP\fISTRING\fP
 Specify an NNTP server for \fBnews:\fP links. Default is the
 environment variable \fBNNTP_SERVER\fP. If no host is given,
 only the syntax of the link is checked.
 .TP
-\fB\-\-no\-proxy\-for=\fP\fIregex\fP
-Contact hosts that match the given expression directly instead of
-going through a proxy.
-
-.SS Deprecated options
-.TP
-\fB\-\-status\fP
-Print check status every 5 seconds to stderr. This is the default now.
+\fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
+Contact hosts that match the given regular expression directly instead of
+going through a proxy. This option can be given multiple times.
 
 .SH OUTPUT TYPES
 Note that by default only errors are logged.
@@ -257,12 +258,13 @@ Only Python regular expressions are accepted by LinkChecker.
 See \fBhttp://www.amk.ca/python/howto/regex/\fP for an introduction in
 regular expressions.
 
-The only addition is that if the regular expression starts with
-an exclamation mark \fB!\fP it negates the following expression.
+The only addition is that a leading exclamation mark negates the regular
+expression.
 
 .SH NOTES
-LinkCheckers commandline parser treats \fBftp.\fP links like \fBftp://ftp.\fP
-and \fBwww.\fP links like \fBhttp://www.\fP.
+URLs on the commandline starting with \fBftp.\fP are treated like
+\fBftp://ftp.\fP, URLs starting with \fBwww.\fP are treated like
+\fBhttp://www.\fP.
 You can also give local files as arguments.
 
 If you have your system configured to automatically establish a
@@ -272,8 +274,8 @@ Use the \fB\-s\fP and \fB\-i\fP options to prevent this.
 
 Javascript links are currently ignored.
 
-If your platform does not support threading, LinkChecker uses
-\fB\-t0\fP.
+If your platform does not support threading, LinkChecker disables it
+automatically.
 
 You can supply multiple user/password pairs in a configuration file.
 
@@ -297,7 +299,7 @@ The return value is non-zero when
 .IP \(bu
 invalid links were found or
 .IP \(bu
-link warnings were found and \-\-warnings option was given
+link warnings were found and warnings are enabled
 .IP \(bu
 a program error occurred.
 
@@ -307,9 +309,11 @@ configuration files
 
 \fB~/.linkchecker/blacklist\fP - default blacklist logger output filename
 
-\fBlinkchecker\-out.\fP\fItype\fP - default logger file output name
+\fBlinkchecker\-out.\fP\fITYPE\fP - default logger file output name
 
 \fBhttp://docs.python.org/lib/standard-encodings.html\fP - valid output encodings
+
+\fBhttp://www.amk.ca/python/howto/regex/\fP - regular expression documentation
 
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>
