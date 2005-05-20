@@ -86,7 +86,7 @@ o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
   on Unix or Windows.
   On a Mac use the Internet Config.
 o When checking 'news:' links the given NNTP host doesn't need to be the
-  same as the host of the user browsing your pages!
+  same as the host of the user browsing your pages.
 """)
 
 RegularExpressions = _("""REGULAR EXPRESSIONS
@@ -94,14 +94,14 @@ Only Python regular expressions are accepted by LinkChecker.
 See http://www.amk.ca/python/howto/regex/ for an introduction in
 regular expressions.
 
-The only addition is that a leading exclamation mark `!' negates
+The only addition is that a leading exclamation mark negates
 the regular expression.
 """)
 
 Retval = _(r"""RETURN VALUE
 The return value is non-zero when
  o invalid links were found or
- o warnings were found and the --no-warnings option was not given
+ o warnings were found warnings are enabled
  o a program error occurred
 """)
 
@@ -314,8 +314,8 @@ group.add_option("-I", "--interactive", action="store_true",
 group.add_option("-t", "--threads", type="int", dest="threads",
                  metavar="NUMBER",
                  help=_(
-"""Generate no more than num threads. Default number of threads is 10.
-To disable threading specify a non-positive number."""))
+"""Generate no more than the given number of threads. Default number
+of threads is 10. To disable threading specify a non-positive number."""))
 group.add_option("--priority", action="store_true", dest="priority",
                  help=_(
 """Run with normal thread scheduling priority. Per default LinkChecker
@@ -348,28 +348,31 @@ Application Server error'."""))
 group.add_option("--warning-size-bytes", dest="warningsizebytes",
                  metavar="NUMBER",
                  help=_(
-"""Print a warning if content size is available and exceeds the given
-number of bytes."""))
+"""Print a warning if content size info is available and exceeds the
+given number of bytes."""))
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
-"""Quiet operation. This is only useful with -F."""))
+"""Quiet operation, an alias for '-o none'.
+This is only useful with -F."""))
 group.add_option("-o", "--output", type="string", dest="output",
                  metavar="TYPE[/ENCODING]",
                  help=_(
 """Specify output as %(loggertypes)s. Default output type is text.
-ENCODING specifies the output encoding, the default is "iso-8859-15".
-Valid encodings are listed at http://docs.python.org/lib/node127.html.""") % \
+The ENCODING specifies the output encoding, the default is that of your
+locale.
+Valid encodings are listed at http://docs.python.org/lib/standard-encodings.html.""") % \
 {'loggertypes': linkcheck.LoggerKeys})
 group.add_option("-F", "--file-output", type="string", action="append",
                  dest="fileoutput", metavar="TYPE[/ENCODING][/FILENAME]",
                  help=_(
 """Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for
 'blacklist' output, or FILENAME if specified.
-ENCODING specifies the output encoding, the default is "iso-8859-15".
-Valid encodings are listed at http://docs.python.org/lib/node127.html.
+The ENCODING specifies the output encoding, the default is that of your
+locale.
+Valid encodings are listed at http://docs.python.org/lib/standard-encodings.html.
 The FILENAME and ENCODING parts of the 'none' output type will be ignored,
 else if the file already exists, it will be overwritten.
-You can specify this option more than once. Valid file output TYPEs
+You can specify this option more than once. Valid file output types
 are %(loggertypes)s. You can specify this option multiple times to output
 to more than one file. Default is no file output. Note that you can
 suppress all console output with the option '-o none'.""") % \
@@ -379,7 +382,7 @@ group.add_option("--no-status", action="store_false", dest="status",
 """Do not print check status messages."""))
 group.add_option("-D", "--debug", type="string", action="append",
                  metavar="STRING",
-                 help=_("""Print debugging output for given logger.
+                 help=_("""Print debugging output for the given logger.
 Available loggers are %(lognamelist)s.
 Specifying 'all' is an alias for specifying all available loggers.
 The option can be given multiple times to debug with more
@@ -407,7 +410,7 @@ group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
                  metavar="NUMBER",
                  help=_(
 """Check recursively all links up to given depth. A negative depth
-will enable inifinite recursion. Default depth is infinite."""))
+will enable infinite recursion. Default depth is infinite."""))
 group.add_option("--no-follow-url", type="string", action="append",
                  metavar="REGEX",
                  dest="extern", help=_(
@@ -426,8 +429,7 @@ Sent and accepted cookies are provided as additional logging
 information."""))
 group.add_option("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
-"""Check HTTP anchor references. Default is don't check anchors.
-This option implies -w because anchor errors are always warnings."""))
+"""Check HTTP anchor references. Default is not to check anchors."""))
 group.add_option("--no-anchor-caching", action="store_false",
                  dest="anchorcaching", help=_(
 """Treat url#anchora and url#anchorb as equal on caching. This
@@ -436,23 +438,25 @@ the URI specification. Use with care."""))
 group.add_option("-u", "--user", type="string", dest="username",
                  metavar="STRING",
                  help=_(
-"""Try given username for HTTP and FTP authorization.
-For FTP the default username is 'anonymous'. See also -p."""))
+"""Try the given username for HTTP and FTP authorization.
+For FTP the default username is 'anonymous'. For HTTP there is
+no default username. See also -p."""))
 group.add_option("-p", "--password", type="string", dest="password",
                  metavar="STRING",
                  help=_(
-"""Try given password for HTTP and FTP authorization.
-For FTP the default password is 'anonymous@'. See also -u."""))
+"""Try the given password for HTTP and FTP authorization.
+For FTP the default password is 'anonymous@'. For HTTP there is
+no default password. See also -u."""))
 group.add_option("--timeout", type="int", dest="timeout",
                  metavar="NUMBER",
                  help=_(
-"""Set the timeout for TCP connection attempts in seconds. The default
+"""Set the timeout for connection attempts in seconds. The default
 timeout is %d seconds.""") % default_timeout)
 group.add_option("-P", "--pause", type="int", dest="pause",
                  metavar="NUMBER",
                  help=_(
-"""Pause the given amount of seconds between each url check. This option
-disables threading (with -t0). Default is no pause between requests."""))
+"""Pause the given number of seconds between each url check. This option
+disables threading. Default is no pause between requests."""))
 group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
                  metavar="STRING",
                  help=_(
