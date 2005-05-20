@@ -10,6 +10,7 @@ linkchecker - check HTML documents for broken links
 ]
 [
 .I file-or-url
+..
 ]
 
 .SH DESCRIPTION
@@ -31,13 +32,13 @@ a (Fast)CGI web interface (requires HTTP server)
 
 .SH EXAMPLES
 The most common use checks the given domain recursively, plus any
-single URL pointing outside of the domain:
+URL pointing outside of the domain:
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
 
 Beware that this checks the whole site which can have several hundred
 thousands URLs. Use the \-r option to restrict the recursion depth.
 
-Don't connect to mailto: hosts, only check their URL syntax. All other
+Don't connect to \fBmailto:\fP hosts, only check their URL syntax. All other
 links are checked as usual:
   \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
 
@@ -60,16 +61,13 @@ You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
 \fB\-h\fP, \fB\-\-help\fP
 Help me! Print usage information for this program.
 .TP
-\fB\-f\fP\fIconfigfile\fP, \fB\-\-config=\fP\fIconfigfile\fP
-Use \fIconfigfile\fP as configuration file. As default LinkChecker first
+\fB\-f\fP\fIFILENAME\fP, \fB\-\-config=\fP\fIFILENAME\fP
+Use \fIFILENAME\fP as configuration file. As default LinkChecker first
 searches \fB/etc/linkchecker/linkcheckerrc\fP and then
 \fB~/.linkchecker/linkcheckerrc\fP.
 .TP
 \fB\-I\fP, \fB\-\-interactive\fP
-Ask for url if none are given on the commandline.
-.TP
-\fB\-V\fP, \fB\-\-version\fP
-Print version and exit.
+Ask for URL if none are given on the commandline.
 .TP
 \fB\-t\fP\fInum\fP, \fB\-\-threads=\fP\fInum\fP
 Generate no more than \fInum\fP threads. Default number of threads is 10.
@@ -78,29 +76,32 @@ To disable threading specify a non-positive number.
 \fB--priority\fP
 Run with normal thread scheduling priority. Per default LinkChecker runs
 with low thread priority to be suitable as a background job.
+.TP
+\fB--disable-psyco\fP
+Do not use the psyco optimization module even if it is installed.
+.TP
+\fB\-V\fP, \fB\-\-version\fP
+Print version and exit.
 
 .SS Output options
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
-Log all checked URLs (implies \fB\-w\fP). Default is to log only invalid
-URLs.
+Log all checked URLs. Default is to log only errors and warnings.
 .TP
-\fB\-w\fP, \fB\-\-warnings\fP
-Log warnings.
+\fB\-\-no-warnings\fP
+Don't log warnings. Default is to log warnings.
 .TP
-\fB\-W\fP\fIregex\fP, \fB\-\-warning\-regex=\fIregex\fP
+\fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fIREGEX\fP
 Define a regular expression which prints a warning if it matches any
 content of the checked link.
 This applies of course only to pages which are valid, so we can get
 their content.
 Use this to check for pages that contain some form of error, for example
 "This page has moved" or "Oracle Application Server error".
-This option implies \fB\-w\fP.
 .TP
 \fB\-\-warning\-size\-bytes=\fP\fIbytes\fP
 Print a warning if content size is available and exceeds the given
 number of \fIbytes\fP.
-This option implies \fB\-w\fP.
 .TP
 \fB\-q\fP, \fB\-\-quiet\fP
 Quiet operation, an alias for \fB\-o none\fP.

@@ -305,38 +305,34 @@ group = optparse.OptionGroup(optparser, _("General options"))
 group.add_option("-f", "--config", type="string", dest="configfile",
                  metavar="FILENAME",
                  help=_(
-"""Use CONFIGFILE as configuration file. As default LinkChecker first
+"""Use FILENAME as configuration file. Per default LinkChecker first
 searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/linkcheckerrc
 (under Windows <path-to-program>\\linkcheckerrc)."""))
 group.add_option("-I", "--interactive", action="store_true",
                  dest="interactive", help=_(
-"""Ask for url if none are given on the commandline."""))
+"""Ask for URL if none are given on the commandline."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
                  metavar="NUMBER",
                  help=_(
-"""Generate no more than num threads. Default number of threads is 10."""))
-
-group.add_option("-V", "--version", action="store_true", dest="version",
-                 help=_(
-"""Print version and exit."""))
-
+"""Generate no more than num threads. Default number of threads is 10.
+To disable threading specify a non-positive number."""))
 group.add_option("--priority", action="store_true", dest="priority",
                  help=_(
 """Run with normal thread scheduling priority. Per default LinkChecker
 runs with low thread priority to be suitable as a background job."""))
-
 group.add_option("--disable-psyco", action="store_false", dest="psyco",
                  default=True, help=_(
 """Do not use the psyco optimization module even if it is installed."""))
 optparser.add_option_group(group)
-
+group.add_option("-V", "--version", action="store_true", dest="version",
+                 help=_(
+"""Print version and exit."""))
 
 ################# output options ##################
 group = optparse.OptionGroup(optparser, _("Output options"))
 group.add_option("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
-"""Log all checked URLs (implies -w). Default is to log only invalid
-URLs."""))
+"""Log all checked URLs. Default is to log only errors and warnings."""))
 group.add_option("--no-warnings", action="store_false", dest="warnings",
                  help=_("""Don't log warnings. Default is to log warnings."""))
 group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
@@ -348,12 +344,12 @@ so we can get their content.
 
 Use this to check for pages that contain some form of error
 message, for example 'This page has moved' or 'Oracle
-Application Server error'. This option implies -w."""))
+Application Server error'."""))
 group.add_option("--warning-size-bytes", dest="warningsizebytes",
                  metavar="NUMBER",
                  help=_(
 """Print a warning if content size is available and exceeds the given
-number of bytes. This option implies -w."""))
+number of bytes."""))
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation. This is only useful with -F."""))
