@@ -61,8 +61,9 @@ LinkChecker zuerst nach \fB/etc/linkchecker/linkcheckerrc\fP und dann
 Frage nach URLs, falls keine auf der Kommandozeile eingegeben wurden.
 .TP
 \fB\-t\fP\fINUMMER\fP, \fB\-\-threads=\fP\fINUMMER\fP
-Generate no more than the given number of threads. Default number of threads 
-is 10. To disable threading specify a non\-positive number.
+Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl 
+von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht 
+positive Nummer an.
 .TP
 \fB\-\-priority\fP
 Starte mit normaler Threadpriorität. Als Standard läuft LinkChecker mit 
@@ -77,33 +78,36 @@ Gebe die Version aus und beende das Programm.
 .SS Ausgabeoptionen
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
-Log all checked URLs. Default is to log only errors and warnings.
+Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und 
+Warnungen auszugeben.
 .TP
 \fB\-\-no\-warnings\fP
 Don't log warnings. Default is to log warnings.
 .TP
 \fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fP\fIREGEX\fP
-Define a regular expression which prints a warning if it matches any content 
-of the checked link.  This applies only to valid pages, so we can get their 
-content.
+Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er 
+auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige 
+Seiten deren Inhalt wir bekommen können.
 
-Use this to check for pages that contain some form of error, for example 
-"This page has moved" or "Oracle Application Server error".
+Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler 
+enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle 
+Applikationsfehler".
 .TP
 \fB\-\-warning\-size\-bytes=\fP\fINUMMER\fP
-Print a warning if content size info is available and exceeds the given 
-number of \fIbytes\fP.
+Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die 
+angegebene Anzahl von Bytes übersteigt.
 .TP
 \fB\-q\fP, \fB\-\-quiet\fP
 Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit 
 \fB\-F\fP nützlich.
 .TP
 \fB\-o\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP], \fB\-\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP]
-Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, 
-\fBxml\fP, \fBnone\fP or \fBblacklist\fP.  Default type is \fBtext\fP. The various 
-output types are documented below.  The \fIENCODING\fP specifies the output 
-encoding, the default is that of your locale.  Valid encodings are listed at 
-\fBhttp://docs.python.org/lib/standard\-encodings.html\fP.
+Spezifiziere die Ausgabe als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, 
+\fBdot\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP. Standardausgabe ist \fBtext\fP. Die 
+verschiedenen Ausgabetypen sind weiter unten erklärt. \fIEnkodierung\fP gibt 
+die Ausgabekodierung an, die Standardkodierung erfolgt mit dem eingestellten 
+Zeichensatz des Systems. Gültige Enkodierungen sind unter 
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet.
 .TP
 \fB\-F\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP], \fB\-\-file\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP]
 Ausgabe in eine Datei namens \fBlinkchecker\-out.\fP\fITYP\fP, 
@@ -123,12 +127,12 @@ verhindern können.
 Gebe keine Statusmeldungen aus.
 .TP
 \fB\-D\fP\fINAME\fP, \fB\-\-debug=\fP\fINAME\fP
-Print debugging output for the given logger.  Available loggers are 
-\fBcmdline\fP, \fBchecking\fP, \fBcache\fP, \fBgui\fP and \fBall\fP.  Specifying \fBall\fP is 
-an alias for specifying all available loggers.  The option can be given 
-multiple times to debug with more than one logger.  For accurate results, 
-threading and the psyco optimization module will be disabled during debug 
-runs.
+Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind 
+\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP and \fBall\fP. Die Angabe \fBall\fP ist 
+ein Synonym für alle verfügbaren Logger. Diese Option kann mehrmals 
+angegeben werden, um mit mehr als einem Logger zu testen. Um akkurate 
+Ergebnisse zu erzielen, werden Threads und die psyco Laufzeitkompilierung 
+während Testdurchläufen deaktiviert.
 .TP
 \fB\-\-trace\fP
 Print tracing information. The psyco optimization module will be disabled 
@@ -144,16 +148,17 @@ Gebe vorher generierte Profiling\-Daten aus. Siehe auch \fB\-\-profile\fP.
 .SS "Optionen zum Prüfen"
 .TP
 \fB\-r\fP\fINUMMER\fP, \fB\-\-recursion\-level=\fP\fINUMMER\fP
-Check recursively all links up to given depth.  A negative depth will enable 
-infinite recursion.  Default depth is infinite.
+Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe 
+bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
 .TP
 \fB\-\-no\-follow\-url=\fP\fIREGEX\fP
-Check but do not recurse into URLs matching the given regular 
-expression. This option can be given multiple times.
+Prüfe URLs, welche dem angegebenen regulären Ausdruck entsprechen, aber 
+verhindere die rekursive Prüfung. Diese Option kann mehrmals angegeben 
+werden.
 .TP
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
-Only check syntax of URLs matching the given regular expression.  This 
-option can be given multiple times.
+Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären 
+Ausdruck entsprechen. Diese Option kann mehrmals angegeben werden.
 .TP
 \fB\-C\fP, \fB\-\-cookies\fP
 Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich Cookies, die 
@@ -162,7 +167,7 @@ Gesendete und akzeptierte Cookies werden als zusätzlicheLoginformation
 aufgeführt.
 .TP
 \fB\-a\fP, \fB\-\-anchors\fP
-Check HTTP anchor references. Default is not to check anchors.
+Prüfe HTTP Anker Verweise. Standard ist keine Überprüfung.
 .TP
 \fB\-\-no\-anchor\-caching\fP
 Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar 
@@ -170,9 +175,9 @@ Standard bei Browsern, aber in der URI Spezifikation nicht
 enthalten. Benutzen Sie diese Option mit Vorsicht.
 .TP
 \fB\-u\fP\fINAME\fP, \fB\-\-user=\fP\fINAME\fP
-Try the given username for HTTP and FTP authorization.  For FTP the default 
-username is \fBanonymous\fP. For HTTP there is no default username. See also 
-\fB\-p\fP.
+Verwende den angegebenen Benutzernamen für HTTP und FTP 
+Authorisierung. Für FTP ist der Standardname \fBanonymous\fP. Für HTTP gibt 
+es keinen Standardnamen. Siehe auch \fB\-p\fP.
 .TP
 \fB\-p\fP\fINAME\fP, \fB\-\-password=\fP\fINAME\fP
 Verwende das angegebene Passwort für HTTP und FTP Authorisierung. Für FTP 
@@ -184,8 +189,9 @@ Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout
 ist 30 Sekunden.
 .TP
 \fB\-P\fP\fINUMMER\fP, \fB\-\-pause=\fP\fINUMMER\fP
-Pause the given number of seconds between each url check. This option 
-disables threading. Default is no pause between requests.
+Pausiere die angegebene Anzahl von Sekunden zwischen dem Prüfen jeder 
+URL.Diese Option deaktiviert Threads. Standard ist keine Pause zwischen dem 
+Prüfen.
 .TP
 \fB\-N\fP\fINAME\fP, \fB\-\-nntp\-server=\fP\fINAME\fP
 Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die 
@@ -193,11 +199,12 @@ Umgebungsvariable \fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird
 lediglich auf korrekte Syntax des Links geprüft.
 .TP
 \fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
-Contact hosts that match the given regular expression directly instead of 
-going through a proxy. This option can be given multiple times.
+Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt 
+und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals 
+angegeben werden.
 
 .SH AUSGABETYPEN
-Note that by default only errors and warnings are logged.
+Beachten Sie, dass normalerweise nur Fehler und Warnungen ausgegeben werden.
 
 .TP
 \fBtext\fP
@@ -246,9 +253,9 @@ The only addition is that a leading exclamation mark negates the regular
 expression.
 
 .SH BEMERKUNGEN
-URLs on the commandline starting with \fBftp.\fP are treated like 
-\fBftp://ftp.\fP, URLs starting with \fBwww.\fP are treated like \fBhttp://www.\fP.  
-You can also give local files as arguments.
+URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 
+behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können 
+auch lokale Dateien angeben.
 
 Falls sich Ihr System automatisch mit dem Internet verbindet (z.B. mit 
 diald), wird es dies tun wenn Sie Links prüfen, die nicht auf Ihren lokalen 
@@ -257,8 +264,8 @@ verhindern.
 
 Javascript Links werden zur Zeit ignoriert.
 
-If your platform does not support threading, LinkChecker disables it 
-automatically.
+Wenn Ihr System keine Threads unterstützt, deaktiviert diese LinkChecker 
+automatisch.
 
 Sie können mehrere Benutzer/Passwort Paare in einer Konfigurationsdatei 
 angeben.
@@ -283,7 +290,7 @@ Der Rückgabewert ist nicht Null falls
 .IP \(bu
 ungültige Verknüpfungen gefunden wurden oder
 .IP \(bu
-link warnings were found and warnings are enabled
+Warnungen gefunden wurden und Warnungen aktiviert sind
 .IP \(bu
 ein Programmfehler aufgetreten ist.
 
@@ -299,7 +306,8 @@ Ausgabe
 \fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- gültige Ausgabe 
 Enkodierungen
 
-\fBhttp://www.amk.ca/python/howto/regex/\fP \- regular expression documentation
+\fBhttp://www.amk.ca/python/howto/regex/\fP \- Dokumentation zu regulären 
+Ausdrücken
 
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2005-05-22 20:44+0200\n"
-"PO-Revision-Date: 2005-05-22 21:49+0100\n"
+"PO-Revision-Date: 2005-05-22 23:07+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -186,9 +186,8 @@ msgstr "B<-t>I<NUMMER>, B<--threads=>I<NUMMER>"
 
 # type: Plain text
 #: en/linkchecker.1:74
-#, fuzzy
 msgid "Generate no more than the given number of threads. Default number of threads is 10. To disable threading specify a non-positive number."
-msgstr "Generiere nicht mehr als I<Nummer> Threads. Standard Anzahl von Threadsist 10. Um Threads zu deaktivieren, geben Sie eine nicht positive Nummer an."
+msgstr "Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht positive Nummer an."
 
 # type: TP
 #: en/linkchecker.1:74
@@ -237,9 +236,8 @@ msgstr "B<-v>, B<--verbose>"
 
 # type: Plain text
 #: en/linkchecker.1:89
-#, fuzzy
 msgid "Log all checked URLs. Default is to log only errors and warnings."
-msgstr "Logge alle geprüften URLs (impliziert B<-w>). Standard ist es, nur fehlerhafte URLs zu loggen."
+msgstr "Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und Warnungen auszugeben."
 
 # type: TP
 #: en/linkchecker.1:89
@@ -260,14 +258,13 @@ msgstr "B<-W>I<REGEX>, B<--warning-regex=>I<REGEX>"
 
 # type: Plain text
 #: en/linkchecker.1:97
-#, fuzzy
 msgid "Define a regular expression which prints a warning if it matches any content of the checked link.  This applies only to valid pages, so we can get their content."
-msgstr "Definieren Sie einen regulären Ausdruck, der eine Warnung ausgibt falls er den Inhalt einer geprüften URL matcht. Dies gilt nur für gültige Seiten deren Inhalt wir bekommen können. Benutzen Sie dies, um nach Seiten zu suchen welche bestimmte Fehler enthalten, zum Beispiel \"Diese Seite wurde entfernt\" oder \"Oracle Applikationsfehler\". Diese Option impliziert B<-w>."
+msgstr "Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige Seiten deren Inhalt wir bekommen können."
 
 # type: Plain text
 #: en/linkchecker.1:100
 msgid "Use this to check for pages that contain some form of error, for example \"This page has moved\" or \"Oracle Application Server error\"."
-msgstr ""
+msgstr "Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler enthalten, zum Beispiel \"Diese Seite wurde entfernt\" oder \"Oracle Applikationsfehler\"."
 
 # type: TP
 #: en/linkchecker.1:100
@@ -277,9 +274,8 @@ msgstr "B<--warning-size-bytes=>I<NUMMER>"
 
 # type: Plain text
 #: en/linkchecker.1:104
-#, fuzzy
 msgid "Print a warning if content size info is available and exceeds the given number of I<bytes>."
-msgstr "Gebe eine Warnung aus wenn die Inhaltsgröße bekannt ist und die angegebene Anzahl von Bytes übersteigt. Diese Option impliziert B<-w>."
+msgstr "Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene Anzahl von Bytes übersteigt."
 
 # type: TP
 #: en/linkchecker.1:104
@@ -300,9 +296,8 @@ msgstr "B<-o>I<TYP>[B</>I<ENKODIERUNG>], B<--output=>I<TYP>[B</>I<ENKODIERUNG>]"
 
 # type: Plain text
 #: en/linkchecker.1:118
-#, fuzzy
 msgid "Specify output type as B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist>.  Default type is B<text>. The various output types are documented below.  The I<ENCODING> specifies the output encoding, the default is that of your locale.  Valid encodings are listed at B<http://docs.python.org/lib/standard-encodings.html>."
-msgstr "Spezifiziere die Ausgabe als B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> oder B<blacklist>. Standardausgabe ist B<text>. I<Enkodierung> gibt die Ausgabekodierung an, die Standardkodierung erfolgt mit dem eingestellten Zeichensatz des Systems. Gültige Enkodierungen sind unter B<http://docs.python.org/lib/standard-encodings.html> aufgelistet."
+msgstr "Spezifiziere die Ausgabe als B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> oder B<blacklist>. Standardausgabe ist B<text>. Die verschiedenen Ausgabetypen sind weiter unten erklärt. I<Enkodierung> gibt die Ausgabekodierung an, die Standardkodierung erfolgt mit dem eingestellten Zeichensatz des Systems. Gültige Enkodierungen sind unter B<http://docs.python.org/lib/standard-encodings.html> aufgelistet."
 
 # type: TP
 #: en/linkchecker.1:118
@@ -334,9 +329,8 @@ msgstr "B<-D>I<NAME>, B<--debug=>I<NAME>"
 
 # type: Plain text
 #: en/linkchecker.1:149
-#, fuzzy
 msgid "Print debugging output for the given logger.  Available loggers are B<cmdline>, B<checking>, B<cache>, B<gui> and B<all>.  Specifying B<all> is an alias for specifying all available loggers.  The option can be given multiple times to debug with more than one logger.  For accurate results, threading and the psyco optimization module will be disabled during debug runs."
-msgstr "Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind B<cmdline>, B<checking>,B<cache>, B<gui> and B<all>. Die Angabe B<all> ist ein Synonym für alle verfügbaren Logger. Diese Option kann mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um akkurate Ergebnisse zu erzielen werden Threads während bei Testdurchläufen deaktiviert."
+msgstr "Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind B<cmdline>, B<checking>,B<cache>, B<gui> and B<all>. Die Angabe B<all> ist ein Synonym für alle verfügbaren Logger. Diese Option kann mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um akkurate Ergebnisse zu erzielen, werden Threads und die psyco Laufzeitkompilierung während Testdurchläufen deaktiviert."
 
 # type: TP
 #: en/linkchecker.1:149
@@ -385,9 +379,8 @@ msgstr "B<-r>I<NUMMER>, B<--recursion-level=>I<NUMMER>"
 
 # type: Plain text
 #: en/linkchecker.1:168
-#, fuzzy
 msgid "Check recursively all links up to given depth.  A negative depth will enable infinite recursion.  Default depth is infinite."
-msgstr "Prüfe rekursiv alle URLs bis zu der angegebenen I<Tiefe>. Eine negative Tiefe erwirkt unendliche Rekursion. Standard Tiefe ist unendlich."
+msgstr "Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe bewirkt unendliche Rekursion. Standard Tiefe ist unendlich."
 
 # type: TP
 #: en/linkchecker.1:168
@@ -397,9 +390,8 @@ msgstr "B<--no-follow-url=>I<REGEX>"
 
 # type: Plain text
 #: en/linkchecker.1:172
-#, fuzzy
 msgid "Check but do not recurse into URLs matching the given regular expression. This option can be given multiple times."
-msgstr "Prüfe URLs, welche den angegebenen regulären Ausdruck entsprechen, aber verhindere die rekursive Prüfung."
+msgstr "Prüfe URLs, welche dem angegebenen regulären Ausdruck entsprechen, aber verhindere die rekursive Prüfung. Diese Option kann mehrmals angegeben werden."
 
 # type: TP
 #: en/linkchecker.1:172
@@ -409,9 +401,8 @@ msgstr "B<--ignore-url=>I<REGEX>"
 
 # type: Plain text
 #: en/linkchecker.1:176
-#, fuzzy
 msgid "Only check syntax of URLs matching the given regular expression.  This option can be given multiple times."
-msgstr "Prüfe lediglich die Syntax von URLs welche dem angegebenen regulären Ausdruck entsprechen."
+msgstr "Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären Ausdruck entsprechen. Diese Option kann mehrmals angegeben werden."
 
 # type: TP
 #: en/linkchecker.1:176
@@ -432,9 +423,8 @@ msgstr "B<-a>, B<--anchors>"
 
 # type: Plain text
 #: en/linkchecker.1:185
-#, fuzzy
 msgid "Check HTTP anchor references. Default is not to check anchors."
-msgstr "Prüfe HTTP Anker Verweise. Standard ist keine Überprüfung. Diese Option impliziert B<-w> weil Ankerfehler immer Warnungen sind."
+msgstr "Prüfe HTTP Anker Verweise. Standard ist keine Überprüfung."
 
 # type: TP
 #: en/linkchecker.1:185
@@ -455,9 +445,8 @@ msgstr "B<-u>I<NAME>, B<--user=>I<NAME>"
 
 # type: Plain text
 #: en/linkchecker.1:195
-#, fuzzy
 msgid "Try the given username for HTTP and FTP authorization.  For FTP the default username is B<anonymous>. For HTTP there is no default username. See also B<-p>."
-msgstr "Verwende den angegebenen Benutzernamen für HTTP und FTP Authorisierung. Für FTP ist der Standardname B<anonymous>. Siehe auch B<-p>."
+msgstr "Verwende den angegebenen Benutzernamen für HTTP und FTP Authorisierung. Für FTP ist der Standardname B<anonymous>. Für HTTP gibt es keinen Standardnamen. Siehe auch B<-p>."
 
 # type: TP
 #: en/linkchecker.1:195
@@ -489,9 +478,8 @@ msgstr "B<-P>I<NUMMER>, B<--pause=>I<NUMMER>"
 
 # type: Plain text
 #: en/linkchecker.1:208
-#, fuzzy
 msgid "Pause the given number of seconds between each url check. This option disables threading. Default is no pause between requests."
-msgstr "Pausiere die angegebene Zahl von Sekunden zwischen dem Prüfen jeder URL.Diese Option impliziert B<-t0>.  Standard ist keine Pause zwischen dem Prüfen."
+msgstr "Pausiere die angegebene Anzahl von Sekunden zwischen dem Prüfen jeder URL.Diese Option deaktiviert Threads. Standard ist keine Pause zwischen dem Prüfen."
 
 # type: TP
 #: en/linkchecker.1:208
@@ -512,9 +500,8 @@ msgstr "B<--no-proxy-for=>I<REGEX>"
 
 # type: Plain text
 #: en/linkchecker.1:217
-#, fuzzy
 msgid "Contact hosts that match the given regular expression directly instead of going through a proxy. This option can be given multiple times."
-msgstr "Rechner welche den angegebenen regulären Ausdruck entsprechen sollen direkt und nicht über einen Proxy angesprochen werden."
+msgstr "Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals angegeben werden."
 
 # type: SH
 #: en/linkchecker.1:218
@@ -524,9 +511,8 @@ msgstr "AUSGABETYPEN"
 
 # type: Plain text
 #: en/linkchecker.1:220
-#, fuzzy
 msgid "Note that by default only errors and warnings are logged."
-msgstr "Beachten Sie dass normalerweise nur Fehler geloggt werden."
+msgstr "Beachten Sie, dass normalerweise nur Fehler und Warnungen ausgegeben werden."
 
 # type: TP
 #: en/linkchecker.1:221
@@ -651,9 +637,8 @@ msgstr "BEMERKUNGEN"
 
 # type: Plain text
 #: en/linkchecker.1:269
-#, fuzzy
 msgid "URLs on the commandline starting with B<ftp.> are treated like B<ftp://ftp.>, URLs starting with B<www.> are treated like B<http://www.>.  You can also give local files as arguments."
-msgstr "URLs von der Kommandozeile die mit B<ftp.> beginnen werden wie B<ftp://ftp.> behandelt, URLs die mit B<www.> beginnen wie B<http://www.>. Sie können auch lokale Dateien als Argumente angeben."
+msgstr "URLs von der Kommandozeile die mit B<ftp.> beginnen werden wie B<ftp://ftp.> behandelt, URLs die mit B<www.> beginnen wie B<http://www.>. Sie können auch lokale Dateien angeben."
 
 # type: Plain text
 #: en/linkchecker.1:274
@@ -667,9 +652,8 @@ msgstr "Javascript Links werden zur Zeit ignoriert."
 
 # type: Plain text
 #: en/linkchecker.1:279
-#, fuzzy
 msgid "If your platform does not support threading, LinkChecker disables it automatically."
-msgstr "Wenn Ihr System keine Threads unterstützt, benutzt LinkChecker automatisch B<-t0>."
+msgstr "Wenn Ihr System keine Threads unterstützt, deaktiviert diese LinkChecker automatisch."
 
 # type: Plain text
 #: en/linkchecker.1:281
@@ -738,9 +722,8 @@ msgstr "ungültige Verknüpfungen gefunden wurden oder"
 
 # type: Plain text
 #: en/linkchecker.1:303
-#, fuzzy
 msgid "link warnings were found and warnings are enabled"
-msgstr "Warnungen gefunden wurden und die Option --warnings wurde angegeben oder"
+msgstr "Warnungen gefunden wurden und Warnungen aktiviert sind"
 
 # type: Plain text
 #: en/linkchecker.1:305
@@ -776,7 +759,7 @@ msgstr "B<http://docs.python.org/lib/standard-encodings.html> - gültige Ausgabe
 # type: Plain text
 #: en/linkchecker.1:317
 msgid "B<http://www.amk.ca/python/howto/regex/> - regular expression documentation"
-msgstr ""
+msgstr "B<http://www.amk.ca/python/howto/regex/> - Dokumentation zu regulären Ausdrücken"
 
 # type: SH
 #: en/linkchecker.1:318
