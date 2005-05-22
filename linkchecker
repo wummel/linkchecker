@@ -130,7 +130,7 @@ You can skip the "ftp://" url part if the domain starts with "ftp.":
 """)
 
 Logertypes = _(r"""OUTPUT TYPES
-Note that by default only errors are logged.
+Note that by default only errors and warnings are logged.
 
 text    Standard text output, logging URLs in keyword: argument fashion.
 html    Log URLs in keyword: argument fashion, formatted as HTML.
