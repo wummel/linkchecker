@@ -267,7 +267,10 @@ class FileUrl (urlbase.UrlBase):
             return None
         parts = linkcheck.strformat.url_unicode_split(url)
         path, params = linkcheck.url.splitparams(parts[2])
-        segments = path.split('/')[:-1]
+        segments = path.split('/')
+        if not self.is_directory():
+            # cut off filename to have a directory
+            segments = segments[:-1]
         path = "/".join(segments)
         return "file://%s" % re.escape(path)
 
