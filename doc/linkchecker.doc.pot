@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-05-20 19:33+0200\n"
+"POT-Creation-Date: 2005-05-22 21:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -575,7 +575,7 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:220
-msgid "Note that by default only errors are logged."
+msgid "Note that by default only errors and warnings are logged."
 msgstr ""
 
 # type: TP

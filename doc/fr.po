@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-05-20 19:33+0200\n"
+"POT-Creation-Date: 2005-05-22 20:44+0200\n"
 "PO-Revision-Date: 2005-05-07 00:42+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: kde-francophone@kde.org\n"
@@ -690,7 +690,8 @@ msgstr "OUTPUT TYPES"
 
 # type: Plain text
 #: en/linkchecker.1:220
-msgid "Note that by default only errors are logged."
+#, fuzzy
+msgid "Note that by default only errors and warnings are logged."
 msgstr "Notez que seules les erreurs sont journalisées par défaut."
 
 # type: TP
