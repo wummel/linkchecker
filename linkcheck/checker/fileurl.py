@@ -266,6 +266,8 @@ class FileUrl (urlbase.UrlBase):
         if not url:
             return None
         parts = linkcheck.strformat.url_unicode_split(url)
-        path = parts[2]
+        path, params = linkcheck.url.splitparams(parts[2])
+        segments = path.split('/')[:-1]
+        path = "/".join(segments)
         return "file://%s" % re.escape(path)
 
