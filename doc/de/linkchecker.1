@@ -70,7 +70,8 @@ Starte mit normaler Threadpriorität. Als Standard läuft LinkChecker mit
 niedriger Threadpriorität, um als Hintergrundprozess geeignet zu sein.
 .TP
 \fB\-\-disable\-psyco\fP
-Do not use the psyco optimization module even if it is installed.
+Verwende nicht die Psyco Laufzeitoptimmierung, auch wenn diese installiert 
+ist.
 .TP
 \fB\-V\fP, \fB\-\-version\fP
 Gebe die Version aus und beende das Programm.
@@ -82,7 +83,7 @@ Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und
 Warnungen auszugeben.
 .TP
 \fB\-\-no\-warnings\fP
-Don't log warnings. Default is to log warnings.
+Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen.
 .TP
 \fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fP\fIREGEX\fP
 Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er 
@@ -135,8 +136,8 @@ Ergebnisse zu erzielen, werden Threads und die psyco Laufzeitkompilierung
 während Testdurchläufen deaktiviert.
 .TP
 \fB\-\-trace\fP
-Print tracing information. The psyco optimization module will be disabled 
-during traced runs.
+Gebe Trace\-Information aus. Die Psyco Laufzeitoptimierung wird währung 
+Trace\-Durchläufen deaktiviert.
 .TP
 \fB\-\-profile\fP
 Schreibe Profiling\-Daten in eine Datei namens \fBlinkchecker.prof\fP im 
@@ -245,12 +246,12 @@ und die Anzahl der Fehlversuche enthält.
 Gibt nichts aus. Für Skripte geeignet.
 
 .SH "REGULÄRE AUSDRÜCKE"
-Only Python regular expressions are accepted by LinkChecker.  See 
-\fBhttp://www.amk.ca/python/howto/regex/\fP for an introduction in regular 
-expressions.
+Lediglich Pythons reguläre Ausdrücke werden von LinkChecker 
+akzeptiert. Siehe \fBhttp://www.amk.ca/python/howto/regex/\fP für eine 
+Einführung in reguläre Ausdrücke.
 
-The only addition is that a leading exclamation mark negates the regular 
-expression.
+Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird 
+falls er mit einem Ausrufezeichen beginnt.
 
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 

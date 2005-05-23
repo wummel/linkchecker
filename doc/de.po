@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2005-05-22 20:44+0200\n"
-"PO-Revision-Date: 2005-05-22 23:07+0100\n"
+"PO-Revision-Date: 2005-05-23 17:52+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -209,7 +209,7 @@ msgstr "B<--disable-psyco>"
 # type: Plain text
 #: en/linkchecker.1:81
 msgid "Do not use the psyco optimization module even if it is installed."
-msgstr ""
+msgstr "Verwende nicht die Psyco Laufzeitoptimmierung, auch wenn diese installiert ist."
 
 # type: TP
 #: en/linkchecker.1:81
@@ -248,7 +248,7 @@ msgstr "B<--no-warnings>"
 # type: Plain text
 #: en/linkchecker.1:92
 msgid "Don't log warnings. Default is to log warnings."
-msgstr ""
+msgstr "Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen."
 
 # type: TP
 #: en/linkchecker.1:92
@@ -341,7 +341,7 @@ msgstr "B<--trace>"
 # type: Plain text
 #: en/linkchecker.1:153
 msgid "Print tracing information. The psyco optimization module will be disabled during traced runs."
-msgstr ""
+msgstr "Gebe Trace-Information aus. Die Psyco Laufzeitoptimierung wird währung Trace-Durchläufen deaktiviert."
 
 # type: TP
 #: en/linkchecker.1:153
@@ -622,12 +622,12 @@ msgstr "REGULÄRE AUSDRÜCKE"
 # type: Plain text
 #: en/linkchecker.1:260
 msgid "Only Python regular expressions are accepted by LinkChecker.  See B<http://www.amk.ca/python/howto/regex/> for an introduction in regular expressions."
-msgstr ""
+msgstr "Lediglich Pythons reguläre Ausdrücke werden von LinkChecker akzeptiert. Siehe B<http://www.amk.ca/python/howto/regex/> für eine Einführung in reguläre Ausdrücke."
 
 # type: Plain text
 #: en/linkchecker.1:263
 msgid "The only addition is that a leading exclamation mark negates the regular expression."
-msgstr ""
+msgstr "Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird falls er mit einem Ausrufezeichen beginnt."
 
 # type: SH
 #: en/linkchecker.1:264
