@@ -1,6 +1,7 @@
 PYVER := 2.4
 PYTHON := python$(PYVER)
+OPTS := --copyright="Copyright (C) 2005 Bastian Kleineidam" --threads
 
 glade:
-	$(PYTHON) simple-glade-codegen.py glinkchecker.glade "Copyright (C) 2005 Bastian Kleineidam"
+	$(PYTHON) simple-glade-codegen.py $(OPTS) glinkchecker.glade
 
