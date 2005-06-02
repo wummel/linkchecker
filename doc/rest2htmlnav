@@ -2,8 +2,6 @@
 
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
 # Copyright: This module has been placed in the public domain.
 """
 Produces custom HTML and machine-parseable navigation info

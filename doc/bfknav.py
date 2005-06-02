@@ -88,7 +88,9 @@ class Node (object):
             self.children.append(node)
 
     def write_nav (self, fp, active):
-        """Write HTML node navigation."""
+        """
+        Write HTML node navigation.
+        """
         descend = has_node(active, self.children)
         if self.active or descend:
             self.write_active(fp)
@@ -102,7 +104,9 @@ class Node (object):
             self.children[0].write_nav(fp, active)
 
     def write_inactive (self, fp, level):
-        """Write HTML of inactive navigation node."""
+        """
+        Write HTML of inactive navigation node.
+        """
         s = '<a href="%s">%s' % (self.get_url(level), self.name)
         if self.children:
             s += ' &gt;'
@@ -110,7 +114,9 @@ class Node (object):
         fp.write(s)
 
     def write_active (self, fp):
-        """Write HTML of active navigation node."""
+        """
+        Write HTML of active navigation node.
+        """
         s = "<span>"
         #if not self.children:
         #    s += '&gt; '
@@ -180,7 +186,9 @@ def parse_navtree (dirname):
 
 
 def get_nav_node (navfile, htmlname):
-    """Get a Node() instance with info of given navfile."""
+    """
+    Get a Node() instance with info of given navfile.
+    """
     flocals = {}
     execfile(navfile, {}, flocals)
     order = flocals.get('order', sys.maxint)
@@ -189,7 +197,9 @@ def get_nav_node (navfile, htmlname):
 
 
 def print_nodes (nodes):
-    """print a tree structure to stdout"""
+    """
+    Print a tree structure to stdout.
+    """
     for node in nodes:
         print " "*node.level+node.name
         if node.children:
@@ -197,9 +207,10 @@ def print_nodes (nodes):
 
 
 def has_node (node, nodes):
-    """look for node in a tree structure
+    """
+    Look for node in a tree structure.
 
-       @return True if node is found
+    @return True if node is found
     """
     for n in nodes:
         if node.filename == n.filename:
@@ -233,7 +244,9 @@ def generate_nav (start, nodes):
 
 
 def write_nav (filename, nav):
-    """write navigation into filename"""
+    """
+    Write navigation into filename.
+    """
     lines = []
     skip = False
     f = open(filename)
