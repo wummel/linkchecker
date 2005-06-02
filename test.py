@@ -996,14 +996,16 @@ def main(argv):
 
     # Configure doctests
     if cfg.first_doctest_failure:
+        import doctest
         # The doctest module in Python 2.3 does not have this feature
+        if hasattr(doctest, 'REPORT_ONLY_FIRST_FAILURE'):
+            doctest.set_unittest_reportflags(doctest.REPORT_ONLY_FIRST_FAILURE)
+        # Also apply the flag to zope.testing.doctest, if it exists
         try:
             from zope.testing import doctest
-        except ImportError:
-            print >> sys.stderr, ("cannot import zope.testing.doctest,"
-                                  " ignoring -1")
-        else:
             doctest.set_unittest_reportflags(doctest.REPORT_ONLY_FIRST_FAILURE)
+        except ImportError:
+            pass
 
     # Configure the logging module
     import logging

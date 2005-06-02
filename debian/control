@@ -33,8 +33,8 @@ Package: linkchecker-gui
 Architecture: all
 Depends: linkchecker, python2.4-glade2
 Description: check websites and HTML documents for broken links (GUI version)
- Provides a graphical interface to check links of websites and HTML
- documents.
+ Provides a graphical interface "glinkchecker" to check links of websites
+ and HTML  documents.
  Features:
   o recursive checking
   o multithreaded
