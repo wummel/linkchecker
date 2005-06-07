@@ -147,13 +147,17 @@ def has_colors (fp):
             #return has_colors_nt()
         try:
             import curses
+        except ImportError:
+            # no curses available
+            return False
+        try:
             curses.setupterm()
             if curses.tigetnum("colors") >= 8:
                 # more than 8 colors: allright!
                 return True
-        except ImportError:
-            # no curses :(
-            pass
+        except curses.error:
+            # initialize error, eg. no terminfo database found
+            return False
     return False
 
 
