@@ -1,5 +1,10 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * Catch curses.setupterm() errors.
+    Type: bugfix
+    Closes: SF bug #1216092
+    Changed: linkcheck/ansicolor.py
+
   * If a default config file (either /etc/linkchecker/linkcheckerrc or
     ~/.linkchecker/linkcheckerrc) does not exist it is not added to
     the config file list.
