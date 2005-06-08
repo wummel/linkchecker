@@ -1,6 +1,18 @@
 linkchecker (3.0-1) unstable; urgency=low
 
   * New upstream release.
+    - only generates ~/.linkchecker/ when it is needed
+      (Closes: #307876)
+    - uses new URL filtering instead of --intern/--extern
+      (Closes: #307915)
+    - fixes man page quotes, url vs. URL and encoding URLs.
+      (Closes: #307917, #307916, #307808)
+    - uses the preferred encoding instead of a hardcoded one
+      (Closes: #307810)
+    - removes unused robotstxt config var
+      (Closes: #308146)
+    - fixes bash-completion script
+      (Closes: #309076)
   * Remove unnecessary README documentation file
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 27 Apr 2005 12:11:10 +0200
