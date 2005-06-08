@@ -5,6 +5,11 @@
     Closes: SF bug #1216092
     Changed: linkcheck/ansicolor.py
 
+  * Only call _optcomplete bash completion function when it exists.
+    Type: bugfix
+    Closes: Debian bug #309076
+    Changed: config/linkchecker-completion
+
   * If a default config file (either /etc/linkchecker/linkcheckerrc or
     ~/.linkchecker/linkcheckerrc) does not exist it is not added to
     the config file list.
