@@ -1,4 +1,13 @@
 # install this file into /etc/bash_completion.d/linkchecker on a
 # Debian Linux System
 
-complete -F _optcomplete linkchecker
+have linkchecker &&
+_linkcheck() {
+    if type _optcomplete >/dev/null 2>&1; then
+        _optcomplete "$@"
+    else
+        _filedir
+    fi
+    return 0
+}
+[ "$have" ] && complete -F _linkcheck linkchecker
