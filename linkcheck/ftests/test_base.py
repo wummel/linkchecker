@@ -45,6 +45,12 @@ class TestBase (linkcheck.ftests.StandardTest):
         """
         self.file_test("base3.html")
 
+    def test_base4 (self):
+        """
+        Test links of base4.html.
+        """
+        self.file_test("base4.html")
+
 
 def test_suite ():
     """

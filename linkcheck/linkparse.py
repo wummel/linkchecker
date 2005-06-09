@@ -108,6 +108,19 @@ class TagFinder (object):
         """
         self._errorfun(msg, "fatal error")
 
+    def start_element (self, tag, attrs):
+        """
+        Does nothing, override in a subclass.
+        """
+        pass
+
+    def start_end_element (self, tag, attrs):
+        """
+        Delegate a combined start/end element (eg. <br/>) to
+        the start_element method. Ignore the end element part.
+        """
+        self.start_element(tag, attrs)
+
 
 class MetaRobotsFinder (TagFinder):
     """
@@ -122,7 +135,6 @@ class MetaRobotsFinder (TagFinder):
         self.follow = True
         self.index = True
         linkcheck.log.debug(linkcheck.LOG_CHECK, "meta robots finder")
-
 
     def start_element (self, tag, attrs):
         """
