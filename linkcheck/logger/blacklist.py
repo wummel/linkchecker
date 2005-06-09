@@ -55,7 +55,7 @@ class BlacklistLogger (linkcheck.logger.Logger):
         Put invalid url in blacklist, delete valid url from blacklist.
         """
         if not url_data.cached:
-            key = url_data.get_cache_key()
+            key = url_data.cache_url_key
             if key in self.blacklist:
                 if url_data.valid:
                     del self.blacklist[key]
