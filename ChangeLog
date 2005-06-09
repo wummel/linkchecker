@@ -1,5 +1,11 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * The old intern/extern URL configuration has been replaced with
+    a new and hopefully simpler one. Please see the documentation on
+    how to upgrade to the new option syntax.
+    Type: feature
+    Changed: linkchecker, linkcheck/*.py
+
   * Honor XHTML in tag browser.
     Type: bugfix
     Closes: SF bug #1217356
@@ -24,11 +30,13 @@
   * The default output encoding is now that of your locale, and not
     the hardcoded iso-8859-15 anymore.
     Type: feature
+    Closes: Debian bug #307810
     Changed: linkcheck/logger/__init__.py
 
   * Do not generate an empty user config dir ~/.linkchecker by default,
     only when needed.
     Type: feature
+    Closes: Debian bug #307876
     Changed: linkchecker
 
   * Redundant dot path at beginning of relative urls are now removed.
