@@ -1,5 +1,10 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * Honor XHTML in tag browser.
+    Type: bugfix
+    Closes: SF bug #1217356
+    Changed: linkcheck/linkparse.py
+
   * Catch curses.setupterm() errors.
     Type: bugfix
     Closes: SF bug #1216092
