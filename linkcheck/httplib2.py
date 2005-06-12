@@ -295,7 +295,7 @@ class HTTPResponse:
         if not line:
             # Presumably, the server closed the connection before
             # sending a valid response.
-            raise BadStatusLine, line
+            raise BadStatusLine(line)
         try:
             [version, status, reason] = line.split(None, 2)
         except ValueError:
@@ -309,7 +309,7 @@ class HTTPResponse:
         if not version.startswith('HTTP/'):
             if self.strict:
                 self.close()
-                raise BadStatusLine, line
+                raise BadStatusLine(line)
             else:
                 # assume it's a Simple-Response from an 0.9 server
                 self.fp = LineAndFileWrapper(line, self.fp)
@@ -319,9 +319,9 @@ class HTTPResponse:
         try:
             status = int(status)
             if status < 100 or status > 999:
-                raise BadStatusLine, line
+                raise BadStatusLine(line)
         except ValueError:
-            raise BadStatusLine, line
+            raise BadStatusLine(line)
         return version, status, reason
 
     def begin(self):
@@ -351,7 +351,7 @@ class HTTPResponse:
         elif version == 'HTTP/0.9':
             self.version = 9
         else:
-            raise UnknownProtocol, version
+            raise UnknownProtocol(version)
 
         if self.version == 9:
             self.chunked = 0
@@ -496,7 +496,7 @@ class HTTPResponse:
                 try:
                     chunk_left = int(line, 16)
                 except ValueError, msg:
-                    raise IncompleteRead, "Invalid chunk length at %r" % line
+                    raise IncompleteRead("Invalid chunk length at %r" % line)
                 if chunk_left == 0:
                     break
             if amt is None:
@@ -548,20 +548,20 @@ class HTTPResponse:
         while amt > 0:
             chunk = self.fp.read(amt)
             if not chunk:
-                raise IncompleteRead, s
+                raise IncompleteRead(s)
             s += chunk
             amt -= len(chunk)
         return s
 
     def getheader(self, name, default=None):
         if self.msg is None:
-            raise ResponseNotReady
+            raise ResponseNotReady()
         return self.msg.getheader(name, default)
 
     def getheaders(self):
         """Return list of (header, value) tuples."""
         if self.msg is None:
-            raise ResponseNotReady
+            raise ResponseNotReady()
         return self.msg.items()
 
 
@@ -595,7 +595,7 @@ class HTTPConnection:
                 try:
                     port = int(host[i+1:])
                 except ValueError:
-                    raise InvalidURL, "nonnumeric port: '%s'" % host[i+1:]
+                    raise InvalidURL("nonnumeric port: '%s'" % host[i+1:])
                 host = host[:i]
             else:
                 port = self.default_port
@@ -645,7 +645,7 @@ class HTTPConnection:
             if self.auto_open:
                 self.connect()
             else:
-                raise NotConnected
+                raise NotConnected()
 
         # send the data to the server. if we get a broken pipe, then close
         # the socket. we want to reconnect when somebody tries to send again.
@@ -714,7 +714,7 @@ class HTTPConnection:
         if self.__state == _CS_IDLE:
             self.__state = _CS_REQ_STARTED
         else:
-            raise CannotSendRequest
+            raise CannotSendRequest()
 
         # Save the method we use, we need it later in the response phase
         self._method = method
@@ -782,7 +782,7 @@ class HTTPConnection:
         For example: h.putheader('Accept', 'text/html')
         """
         if self.__state != _CS_REQ_STARTED:
-            raise CannotSendHeader
+            raise CannotSendHeader()
 
         str = '%s: %s' % (header, value)
         self._output(str)
@@ -793,7 +793,7 @@ class HTTPConnection:
         if self.__state == _CS_REQ_STARTED:
             self.__state = _CS_REQ_SENT
         else:
-            raise CannotSendHeader
+            raise CannotSendHeader()
 
         self._send_output()
 
@@ -853,7 +853,7 @@ class HTTPConnection:
         #                  isclosed() status to become true.
         #
         if self.__state != _CS_REQ_SENT or self.__response:
-            raise ResponseNotReady
+            raise ResponseNotReady()
 
         if self.debuglevel > 0:
             response = self.response_class(self.sock, self.debuglevel,
@@ -1026,7 +1026,7 @@ class FakeSocket(SharedSocketClient):
 
     class _closedsocket:
         def __getattr__(self, name):
-            raise error, (9, 'Bad file descriptor')
+            raise error(9, 'Bad file descriptor')
 
     def __init__(self, sock, ssl):
         sock = SharedSocket(sock)
@@ -1039,7 +1039,7 @@ class FakeSocket(SharedSocketClient):
 
     def makefile(self, mode, bufsize=None):
         if mode != 'r' and mode != 'rb':
-            raise UnimplementedFileMode
+            raise UnimplementedFileMode()
         return SSLFile(self._shared, self._ssl, bufsize)
 
     def send(self, stuff, flags = 0):
