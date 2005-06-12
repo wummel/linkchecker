@@ -1,5 +1,14 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * Always norm the URL before sending a request.
+    Type: bugfix
+    Changed: linkcheck/checker/urlbase.py
+    
+  * Send complete email address on SMTP VRFY command. Avoids a spurious
+    warning about incomplete email addresses.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
   * The old intern/extern URL configuration has been replaced with
     a new and hopefully simpler one. Please see the documentation on
     how to upgrade to the new option syntax.
