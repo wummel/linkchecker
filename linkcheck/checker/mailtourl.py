@@ -175,9 +175,9 @@ class MailtoUrl (urlbase.UrlBase):
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "MX host %r, preference %d", host, preference)
         # connect
-        self.check_smtp_connect(mxdata, username)
+        self.check_smtp_connect(mxdata, username, domain)
 
-    def check_smtp_connect (self, mxdata, username):
+    def check_smtp_connect (self, mxdata, username, domain):
         """
         Connect to SMTP servers and check emails.
 
@@ -198,7 +198,7 @@ class MailtoUrl (urlbase.UrlBase):
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "SMTP connected!")
                 smtpconnect = 1
                 self.url_connection.helo()
-                info = self.url_connection.verify(username)
+                info = self.url_connection.verify("%s@%s" % (username, domain))
                 linkcheck.log.debug(linkcheck.LOG_CHECK,
                                     "SMTP user info %r", info)
                 d = {'info': str(info[1])}
