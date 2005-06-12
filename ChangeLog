@@ -1,5 +1,9 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * Limit memory consumption of psyco optimizer.
+    Type: feature
+    Changed: linkchecker
+
   * Always norm the URL before sending a request.
     Type: bugfix
     Changed: linkcheck/checker/urlbase.py
