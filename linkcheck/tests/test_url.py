@@ -195,6 +195,8 @@ class TestUrl (unittest.TestCase):
         self.assertEqual(url_norm(url), nurl)
         url = "http://example.com/a/../a/b"
         self.assertEqual(url_norm(url), nurl)
+        url = "http://example.com/../a/b"
+        self.assertEqual(url_norm(url), nurl)
 
     def test_norm_path_relative_dots (self):
         """
