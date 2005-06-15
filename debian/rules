@@ -6,9 +6,10 @@ common-install-impl::
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
 
+DEB_CLEAN_EXCLUDE = gui/glinkchecker.py.orig
+DEB_PYTHON_COMPILE_VERSION = 2.4
 PACKAGE = linkchecker
 ROOT = $(CURDIR)/debian/$(PACKAGE)
-DEB_PYTHON_COMPILE_VERSION = 2.4
 PYTHON = python$(DEB_PYTHON_COMPILE_VERSION)
 DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
 CGIDIR = $(ROOT)/usr/lib/cgi-bin/lconline
