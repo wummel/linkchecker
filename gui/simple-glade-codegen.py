@@ -21,6 +21,7 @@
 #
 # - Added command line options --charset, --copyright, --threads
 # - Regenerate helper module if this code generator was modified
+# - Use sys.executable as interpreter name
 
 """
 A code generator that uses pygtk, glade and SimpleGladeApp.py.
@@ -44,6 +45,7 @@ config = {
     "charset": "iso-8859-1",
     "copyright": "Copyright (C) %d" % datetime.date.today().year,
     "threads": "pass",
+    "interpreter": sys.executable
 }
 
 def read_config (args):
@@ -60,7 +62,7 @@ def read_config (args):
 
 
 header_format = """\
-#!/usr/bin/env python
+#!%(interpreter)s
 # -*- coding: %(charset)s -*-
 # %(copyright)s
 
