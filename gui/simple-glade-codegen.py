@@ -94,7 +94,6 @@ import gtk
 import SimpleGladeApp
 
 glade_dir = ""
-root_widgets = {}
 
 # Put your modules and data here
 
@@ -144,11 +143,11 @@ def main ():
 """
 
 instance_format = u"""\
-%(t)sroot_widgets[%(root)r] = %(class)s()
+%(t)s%(root)s = %(class)s()
 """
 run_format = u"""\
 
-%(t)sroot_widgets[%(root)r].run()
+%(t)s%(root)s.run()
 
 if __name__ == "__main__":
 %(t)smain()
@@ -283,12 +282,10 @@ class SimpleGladeCodeWriter (xml.sax.handler.ContentHandler):
             return None
         self.code += main_format % self.data
 
-        for root in self.roots_list:
-            self.data["class"] = self.capitalize_symbol(root)
-            self.data["root"] = self.uncapitalize_symbol(root)
-            self.code += instance_format % self.data
-
-        self.data["root"] = self.uncapitalize_symbol(self.roots_list[0])
+        root = self.roots_list[0]
+        self.data["class"] = self.capitalize_symbol(root)
+        self.data["root"] = self.uncapitalize_symbol(root)
+        self.code += instance_format % self.data
         self.code += run_format % self.data
 
         try:
