@@ -22,6 +22,7 @@
 # - Added command line options (see usage() function)
 # - Regenerate helper module if this code generator was modified
 # - Use sys.executable as interpreter name
+# - Add global root widget map
 
 """
 A code generator that uses pygtk, glade and SimpleGladeApp.py.
