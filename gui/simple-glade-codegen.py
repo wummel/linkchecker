@@ -17,9 +17,16 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 #
-# Changes 20050525 by Bastian Kleineidam:
+# Changes by Bastian Kleineidam:
 #
-# - Added command line options --charset, --copyright, --threads
+# - Added command line options:
+#   --charset STRING
+#           Specify output character set for generated files. The
+#           output files will be encoded with the given character set.
+#   --copyright STRING
+#           Add given copyright notice as comment
+#   --threads
+#           Call gtk.gdk.threads_init() in the main() routine
 # - Regenerate helper module if this code generator was modified
 # - Use sys.executable as interpreter name
 
@@ -29,10 +36,10 @@ A code generator that uses pygtk, glade and SimpleGladeApp.py.
 
 import sys
 import os
-import stat
 import re
 import codecs
 import tokenize
+import locale
 import getopt
 import datetime
 import shutil
@@ -42,26 +49,32 @@ from xml.sax._exceptions import SAXParseException
 
 # default config
 config = {
-    "charset": "iso-8859-1",
-    "copyright": "Copyright (C) %d" % datetime.date.today().year,
-    "threads": "pass",
-    "interpreter": sys.executable
+    "charset": u"iso-8859-1",
+    "copyright": u"Copyright (C) %d" % datetime.date.today().year,
+    "threads": u"pass",
+    "interpreter": unicode(sys.executable)
 }
 
 def read_config (args):
+    encoding = locale.getpreferredencoding()
     longopts = ["threads", "charset=", "copyright="]
     opts, args = getopt.getopt(args, "", longopts)
     for opt, arg in opts:
         if opt == "--threads":
-            config["threads"] = "gtk.gdk.threads_init()"
+            config["threads"] = u"gtk.gdk.threads_init()"
         elif opt == "--copyright":
-            config["copyright"] = arg
+            config["copyright"] = arg.decode(encoding)
         elif opt == "--charset":
-            config["charset"] = arg
+            charset = arg.decode(encoding)
+            try:
+                codecs.lookup(charset)
+            except LookupError:
+                raise getopt.GetoptError("Unknown charset %r" % arg)
+            config["charset"] = charset
     return args
 
 
-header_format = """\
+header_format = u"""\
 #!%(interpreter)s
 # -*- coding: %(charset)s -*-
 # %(copyright)s
@@ -86,7 +99,7 @@ glade_dir = ""
 
 """
 
-class_format = """\
+class_format = u"""\
 class %(class)s (SimpleGladeApp.SimpleGladeApp):
 
 %(t)sdef __init__ (self, glade_path="%(glade)s", root="%(root)s", domain=None):
@@ -104,7 +117,7 @@ class %(class)s (SimpleGladeApp.SimpleGladeApp):
 
 """
 
-callback_format = """\
+callback_format = u"""\
 %(t)sdef %(handler)s (self, widget, *args):
 %(t)s%(t)s#context %(class)s.%(handler)s {
 %(t)s%(t)sprint "%(handler)s called with self.%%s" %% widget.get_name()
@@ -112,7 +125,7 @@ callback_format = """\
 
 """
 
-creation_format = """\
+creation_format = u"""\
 %(t)sdef %(handler)s (self, str1, str2, int1, int2):
 %(t)s%(t)s#context %(class)s.%(handler)s {
 %(t)s%(t)swidget = gtk.Label("%(handler)s")
@@ -122,14 +135,14 @@ creation_format = """\
 
 """
 
-main_format = """\
+main_format = u"""\
 def main ():
 """
 
-instance_format = """\
+instance_format = u"""\
 %(t)s%(root)s = %(class)s()
 """
-run_format = """\
+run_format = u"""\
 
 %(t)s%(root)s.run()
 
@@ -276,9 +289,11 @@ class SimpleGladeCodeWriter (xml.sax.handler.ContentHandler):
 
         try:
             charset = config["charset"]
-            self.output = codecs.open(self.output_file, "w", charset)
-            self.output.write(self.code)
-            self.output.close()
+            fo = codecs.open(self.output_file, "w", charset)
+            try:
+                fo.write(self.code)
+            finally:
+                fo.close()
         except IOError, e:
             print >> sys.stderr, "Error writing output:", e
             return None
@@ -329,8 +344,8 @@ def is_older (filename):
     Check if given filename is older that this program.
     """
     program = sys.argv[0]
-    t0 = os.stat(program)[stat.ST_MTIME]
-    t1 = os.stat(filename)[stat.ST_MTIME]
+    t0 = os.path.getmtime(program)
+    t1 = os.path.getmtime(filename)
     return t0 > t1
 
 def main (args):
@@ -383,15 +398,19 @@ def main (args):
         shutil.copy(output_file, output_file_orig)
     os.chmod(output_file, 0755)
     if not os.path.isfile(helper_module) or is_older(helper_module):
-        open(helper_module, "w").write(SimpleGladeApp_content % config)
+        fo = codecs.open(helper_module, "w", "ascii")
+        try:
+            fo.write(SimpleGladeApp_content % config)
+        finally:
+            fo.close()
     print "Wrote", output_file
     return 0
 
 
 SimpleGladeApp_py = "SimpleGladeApp.py"
 
-SimpleGladeApp_content = """\
-# -*- coding: %(charset)s -*-
+SimpleGladeApp_content = u"""\
+# -*- coding: ascii -*-
 # Copyright (C) 2004 Sandino Flores Moreno
 
 # This library is free software; you can redistribute it and/or
