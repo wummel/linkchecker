@@ -93,6 +93,7 @@ import gtk
 import SimpleGladeApp
 
 glade_dir = ""
+root_widgets = {}
 
 # Put your modules and data here
 
@@ -142,7 +143,7 @@ def main ():
 """
 
 instance_format = u"""\
-%(t)s%(root)s = %(class)s()
+%(t)sroot_widgets[%(root)r] = %(class)s()
 """
 run_format = u"""\
 
