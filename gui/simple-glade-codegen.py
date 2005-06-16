@@ -148,7 +148,7 @@ instance_format = u"""\
 """
 run_format = u"""\
 
-%(t)s%(root)s.run()
+%(t)sroot_widgets[%(root)r].run()
 
 if __name__ == "__main__":
 %(t)smain()
