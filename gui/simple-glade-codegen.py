@@ -49,23 +49,23 @@ from xml.sax._exceptions import SAXParseException
 
 # default config
 config = {
-    "charset": u"iso-8859-1",
+    "charset": locale.getpreferredencoding(),
     "copyright": u"Copyright (C) %d" % datetime.date.today().year,
     "threads": u"pass",
     "interpreter": unicode(sys.executable)
 }
 
 def read_config (args):
-    encoding = locale.getpreferredencoding()
+    preferred_encoding = config["charset"]
     longopts = ["threads", "charset=", "copyright="]
     opts, args = getopt.getopt(args, "", longopts)
     for opt, arg in opts:
         if opt == "--threads":
             config["threads"] = u"gtk.gdk.threads_init()"
         elif opt == "--copyright":
-            config["copyright"] = arg.decode(encoding)
+            config["copyright"] = arg.decode(preferred_encoding)
         elif opt == "--charset":
-            charset = arg.decode(encoding)
+            charset = arg.decode(preferred_encoding)
             try:
                 codecs.lookup(charset)
             except LookupError:
