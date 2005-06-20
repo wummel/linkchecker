@@ -88,18 +88,24 @@ class Cache (object):
         return it. If no such url is available return None. The
         url might be already cached.
         """
+        res = None
+        to_delete = None
         for i, url_data in enumerate(self.incoming):
             key = url_data.cache_url_key
             if key in self.checked:
-                del self.incoming[i]
+                to_delete = i
                 # url is cached and can be logged
                 url_data.copy_from_cache(self.checked[key])
-                return url_data
+                res = url_data
+                break
             elif key not in self.in_progress:
-                del self.incoming[i]
+                to_delete = i
                 self.in_progress[key] = url_data
-                return url_data
-        return None
+                res = url_data
+                break
+        if to_delete is not None:
+            del self.incoming[i]
+        return res
 
     def incoming_len (self):
         """
