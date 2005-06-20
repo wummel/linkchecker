@@ -84,6 +84,11 @@
     Type: bugfix
     Changed: linkcheck/checker/cache.py, linkcheck/checker/httpurl.py
 
+  * The ignored url type honors now intern/extern filters.
+    Type: bugfix
+    Changed: linkcheck/checker/ignoreurl.py
+    Closes: SF #1223956
+
 2.9 "Sweat" (released 22.4.2005)
 
   * Use collections.deque object for incoming URL list. This is faster
