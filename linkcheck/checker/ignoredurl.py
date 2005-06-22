@@ -29,7 +29,8 @@ class IgnoredUrl (urlbase.UrlBase):
         """
         Only logs that this URL is ignored.
         """
-        if self.is_extern():
+        extern = self.get_extern(self.url)
+        if extern[0] and extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
         else:
             self.add_warning(_("%s URL ignored.") % self.scheme.capitalize())
