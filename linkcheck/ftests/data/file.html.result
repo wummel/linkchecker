@@ -39,5 +39,5 @@ url javascript:loadthis()
 cache key javascript:loadthis()
 real url javascript:loadthis()
 name javascript url
-info Javascript URL ignored.
+warning Javascript URL ignored.
 valid

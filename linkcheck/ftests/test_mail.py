@@ -40,7 +40,9 @@ class TestMail (linkcheck.ftests.StandardTest):
           u"cache key mailto:calvin@users.sf.net,"
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
-          u"info Verified address: <calvin> is deliverable.",
+          u"info Verified address: <calvin@users.sf.net> is deliverable.",
+          u"info Verified address: <calvin@users.sourceforge.net> is "\
+           "deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
@@ -51,7 +53,9 @@ class TestMail (linkcheck.ftests.StandardTest):
           u"cache key mailto:calvin@users.sf.net,"
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
-          u"info Verified address: <calvin> is deliverable.",
+          u"info Verified address: <calvin@users.sf.net> is deliverable.",
+          u"info Verified address: <calvin@users.sourceforge.net> is "\
+           "deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
@@ -60,7 +64,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:calvin@users.sf.net",
             u"real url %s" % url,
-            u"info Verified address: <calvin> is deliverable.",
+            u"info Verified address: <calvin@users.sf.net> is deliverable.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -69,7 +73,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:o'hara@users.sf.net",
             u"real url %s" % url,
-            u"info Verified address: <o'hara> is deliverable.",
+            u"info Verified address: <o'hara@users.sf.net> is deliverable.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -80,9 +84,9 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"cache key mailto:calvin@users.sf.net,"
              u"calvin_CC@users.sf.net,calvin_cc@users.sf.net",
             u"real url %s" % url,
-            u"info Verified address: <calvin> is deliverable.",
-            u"info Verified address: <calvin_cc> is deliverable.",
-            u"info Verified address: <calvin_CC> is deliverable.",
+           u"info Verified address: <calvin@users.sf.net> is deliverable.",
+           u"info Verified address: <calvin_cc@users.sf.net> is deliverable.",
+           u"info Verified address: <calvin_CC@users.sf.net> is deliverable.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -103,7 +107,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"cache key mailto:foo@foo-bar.de",
             u"real url %s" % url,
             u"info Unverified address: Cannot VRFY user; "
-             u"try RCPT to attempt delivery. But mail will be sent anyway.",
+            u"try RCPT to attempt delivery. But mail will be sent anyway.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -119,7 +123,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:calvin@users.sf.net",
             u"real url %s" % qurl,
-            u"info Verified address: <calvin> is deliverable.",
+            u"info Verified address: <calvin@users.sf.net> is deliverable.",
             u"warning Base URL is not properly normed. "
              u"Normed URL is %s." % qurl,
             u"valid",
@@ -131,7 +135,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:calvin@users.sf.net",
             u"real url %s" % qurl,
-            u"info Verified address: <calvin> is deliverable.",
+            u"info Verified address: <calvin@users.sf.net> is deliverable.",
             u"warning Base URL is not properly normed. "
              u"Normed URL is %s." % qurl,
             u"valid",

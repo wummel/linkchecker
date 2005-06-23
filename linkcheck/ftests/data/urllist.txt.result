@@ -22,5 +22,5 @@ valid
 url javascript:loadthis()
 cache key javascript:loadthis()
 real url javascript:loadthis()
-info Javascript URL ignored.
+warning Javascript URL ignored.
 valid
