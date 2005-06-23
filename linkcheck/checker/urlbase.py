@@ -329,8 +329,11 @@ class UrlBase (object):
             self.url = urljoin(self.parent_url, base_url, self.scheme)
         else:
             self.url = base_url
-        # note: urljoin can unnorm the url, so norm the url
-        self.url, is_idn = linkcheck.url.url_norm(self.url)
+        # note: urljoin can unnorm the url path, so norm it again
+        urlparts = list(urlparse.urlsplit(self.url))
+        if urlparts[2]:
+            urlparts[2] = linkcheck.url.collapse_segments(urlparts[2])
+        self.url = urlparse.urlunsplit(urlparts)
         # split into (modifiable) list
         self.urlparts = linkcheck.strformat.url_unicode_split(self.url)
         # and unsplit again
