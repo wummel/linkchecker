@@ -5,7 +5,6 @@ Test container routines.
 
 import unittest
 import os
-import sys
 
 import linkcheck.fcgi
 

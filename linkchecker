@@ -20,7 +20,6 @@ Check HTML pages for broken links.
 """
 
 import sys
-import getopt
 import codecs
 import re
 import os

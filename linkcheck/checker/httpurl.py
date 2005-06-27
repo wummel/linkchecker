@@ -33,7 +33,6 @@ import linkcheck.strformat
 import linkcheck.robotparser2
 import linkcheck.httplib2
 import httpheaders as headers
-import urlbase
 import internpaturl
 import proxysupport
 

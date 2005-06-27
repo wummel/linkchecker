@@ -18,7 +18,6 @@
 A blacklist logger.
 """
 
-import sys
 import os
 
 import linkcheck

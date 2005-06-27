@@ -5,9 +5,7 @@
 import socket
 import array
 import fcntl
-import os
 import struct
-import re
 import linkcheck.log
 
 

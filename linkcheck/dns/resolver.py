@@ -22,7 +22,6 @@
 import socket
 import sets
 import sys
-import os
 import time
 import encodings.idna
 

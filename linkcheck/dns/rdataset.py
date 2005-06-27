@@ -19,7 +19,6 @@
 import random
 import StringIO
 import struct
-import sets
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdatatype

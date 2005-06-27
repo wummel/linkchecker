@@ -25,7 +25,6 @@ import cgi
 import socket
 import select
 import re
-import urlparse
 import urllib
 import nntplib
 import ftplib

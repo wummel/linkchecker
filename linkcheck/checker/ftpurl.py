@@ -24,7 +24,6 @@ import urllib
 import cStringIO as StringIO
 
 import linkcheck
-import urlbase
 import proxysupport
 import httpurl
 import internpaturl
