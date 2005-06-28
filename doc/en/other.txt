@@ -47,6 +47,11 @@ like LinkChecker.
   .. _linklint:
      http://www.linklint.org/
 
+- `W3C Link Checker`_ HTML interface only
+
+  .. _W3C Link Checker:
+     http://validator.w3.org/checklink/
+
 - `webcheck`_ written in Python
   
   .. _webcheck:
