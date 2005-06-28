@@ -73,7 +73,7 @@ class TestMail (linkcheck.ftests.StandardTest):
             u"url %s" % url,
             u"cache key mailto:o'hara@users.sf.net",
             u"real url %s" % url,
-            u"info Verified address: <o'hara@users.sf.net> is deliverable.",
+            u"warning Unverified address: <o'hara@users.sf.net> Unrouteable address.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -85,8 +85,8 @@ class TestMail (linkcheck.ftests.StandardTest):
              u"calvin_CC@users.sf.net,calvin_cc@users.sf.net",
             u"real url %s" % url,
            u"info Verified address: <calvin@users.sf.net> is deliverable.",
-           u"info Verified address: <calvin_cc@users.sf.net> is deliverable.",
-           u"info Verified address: <calvin_CC@users.sf.net> is deliverable.",
+            u"warning Unverified address: <calvin_cc@users.sf.net> Unrouteable address.",
+            u"warning Unverified address: <calvin_CC@users.sf.net> Unrouteable address.",
             u"valid",
         ]
         self.direct(url, resultlines)
