@@ -48,7 +48,7 @@ LinkTags = {
     'isindex':  [u'action'],
     'layer':    [u'background', u'src'],
     'link':     [u'href'],
-    'meta':     [u'content'],
+    'meta':     [u'content', u'href'],
     'object':   [u'classid', u'data', u'archive', u'usemap'],
     'q':        [u'cite'],
     'script':   [u'src', u'for'],
@@ -147,6 +147,18 @@ class MetaRobotsFinder (TagFinder):
                 self.index = u'noindex' not in val
 
 
+def is_meta_url (attr, attrs):
+    res = False
+    if attr == "content":
+        equiv = attrs.get_true('http-equiv', u'').lower()
+	scheme = attrs.get_true('scheme', u'').lower()
+        res = equiv in (u'refresh',) or scheme in (u'dcterms.uri',)
+    if attr == "href":
+        rel = attrs.get_true('rel', u'').lower()
+        res = rel in (u'shortcut icon', u'icon')
+    return res
+
+
 class LinkFinder (TagFinder):
     """
     Find a list of links. After parsing, self.urls
@@ -186,10 +198,8 @@ class LinkFinder (TagFinder):
         for attr in tagattrs:
             if attr not in attrs:
                 continue
-            if tag == "meta":
-                refresh = attrs.get_true('http-equiv', u'').lower()
-                if refresh != 'refresh':
-                    continue
+            if tag == "meta" and not is_meta_url(attr, attrs):
+                continue
             # name of this link
             name = self.get_link_name(tag, attrs, attr)
             # possible codebase
@@ -239,6 +249,8 @@ class LinkFinder (TagFinder):
             mo = refresh_re.match(url)
             if mo:
                 urls.append(mo.group("url"))
+            else:
+                urls.append(url)
         elif attr == u'style':
             for mo in css_url_re.finditer(url):
                 u = mo.group("url")
