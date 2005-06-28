@@ -1,5 +1,10 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * Added checks for more <meta> URL entries, especially favicons
+    was added.
+    Type: feature
+    Changed: linkcheck/linkparse.py
+
   * Limit memory consumption of psyco optimizer.
     Type: feature
     Changed: linkchecker
