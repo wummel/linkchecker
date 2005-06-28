@@ -12,6 +12,9 @@ def deprecated (func):
     It emits a warning when the function is called.
     """
     def newfunc (*args, **kwargs):
+        """
+        Print deprecated warning and execute original function.
+        """
         warnings.warn("Call to deprecated function %s." % func.__name__,
                       category=DeprecationWarning)
         return func(*args, **kwargs)
@@ -31,6 +34,9 @@ def signal_handler (signal_number):
     """
     # create the 'real' decorator which takes only a function as an argument
     def newfunc (function):
+        """
+        Register function as signal handler.
+        """
         if os.name == 'posix':
             signal.signal(signal_number, function)
         return function
@@ -42,6 +48,9 @@ def _synchronized (lock, func):
     Call function with aqcuired lock.
     """
     def newfunc (*args, **kwargs):
+        """
+        Execute function synchronized.
+        """
         lock.acquire(True) # blocking
         try:
             return func(*args, **kwargs)
@@ -58,6 +67,9 @@ def synchronized (lock):
     A decorator calling a function with aqcuired lock.
     """
     def newfunc (function):
+        """
+        Execute function synchronized.
+        """
         return _synchronized(lock, function)
     return newfunc
 
