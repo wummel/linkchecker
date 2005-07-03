@@ -13,6 +13,8 @@ linkchecker (3.0-1) unstable; urgency=low
       (Closes: #308146)
     - fixes bash-completion script
       (Closes: #309076)
+    - fixes invalid log leve
+      (Closes: #316737)
   * Remove unnecessary README documentation file
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 27 Apr 2005 12:11:10 +0200
