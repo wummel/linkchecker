@@ -70,13 +70,14 @@ class IfConfig (object):
         return iflist
 
     def getFlags (self, ifname):
-        """ Get the flags for an interface
+        """
+        Get the flags for an interface
         """
         ifreq = struct.pack("32s", ifname)
         try:
             result = self._fcntl(self.SIOCGIFFLAGS, ifreq)
         except IOError, msg:
-            linkcheck.log.warn(linkcheck.LOG_NET,
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
                  "error getting flags for interface %r: %s", ifname, msg)
             return 0
         # extract the interface's flags from the return value
@@ -85,17 +86,25 @@ class IfConfig (object):
         return flags
 
     def getAddr (self, ifname):
-        """Get the inet addr for an interface"""
+        """
+        Get the inet addr for an interface.
+        """
         return self._getaddr(ifname, self.SIOCGIFADDR)
 
     def getMask (self, ifname):
-        """Get the netmask for an interface"""
+        """
+        Get the netmask for an interface.
+        """
         return self._getaddr(ifname, self.SIOCGIFNETMASK)
 
     def getBroadcast (self, ifname):
-        """Get the broadcast addr for an interface"""
+        """
+        Get the broadcast addr for an interface.
+        """
         return self._getaddr(ifname, self.SIOCGIFBRDADDR)
 
     def isUp (self, ifname):
-        """Check whether interface 'ifname' is UP"""
+        """
+        Check whether interface 'ifname' is UP.
+        """
         return (self.getFlags(ifname) & self.IFF_UP) != 0
