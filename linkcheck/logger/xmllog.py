@@ -107,7 +107,7 @@ class XMLLogger (linkcheck.logger.Logger):
         self.writeln(u'<graph isDirected="true">')
         self.flush()
 
-    def low_url (self, url_data):
+    def log_url (self, url_data):
         """
         Write one node and all possible edges.
         """
@@ -130,9 +130,8 @@ class XMLLogger (linkcheck.logger.Logger):
                 self.writeln(u"      <checktime>%f</checktime>" %
                              node.checktime)
             if self.has_part("extern"):
-                extern = node.get_extern(node.url)
                 self.writeln(u"      <extern>%d</extern>" %
-                             (extern[0] and 1 or 0))
+                             (node.extern[0] and 1 or 0))
             self.writeln(u"    </data>")
             self.writeln(u"  </node>")
         self.write_edges()
