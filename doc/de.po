@@ -56,7 +56,7 @@ msgstr "BESCHREIBUNG"
 # type: Plain text
 #: en/linkchecker.1:31
 msgid "LinkChecker features recursive checking, multithreading, output in colored or normal text, HTML, SQL, CSV or a sitemap graph in GML or XML, support for HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local file links, restriction of link checking with regular expression filters for URLs, proxy support, username/password authorization for HTTP and FTP, robots.txt exclusion protocol support, i18n support, a command line interface and a (Fast)CGI web interface (requires HTTP server)"
-msgstr "LinkChecker bietet rekursives Prüfen, Multithreading,Ausgabe als farbigen oder normalen Text, HTML, SQL, CSV oder einen Sitemap-Graphen in GML oder XML,Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet und lokale Dateiverknüpfungen,Einschränkung der Verknüpfungsüberprüfung mit URL Filtern bestehend aus regulären Ausdrücken, Proxy Unterstützung, Benutzer/Passwort Authentifizierung für HTTP und FTP, Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, eine Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt einen HTTP Server)."
+msgstr "LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen oder normalen Text, HTML, SQL, CSV oder einen Sitemap-Graphen in GML oder XML, Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet und lokale Dateiverknüpfungen, Einschränkung der Verknüpfungsüberprüfung mit URL Filtern bestehend aus regulären Ausdrücken, Proxy Unterstützung, Benutzer/Passwort Authentifizierung für HTTP und FTP, Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, eine Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt einen HTTP Server)."
 
 # type: SH
 #: en/linkchecker.1:32
@@ -79,7 +79,7 @@ msgstr ""
 # type: Plain text
 #: en/linkchecker.1:39
 msgid "Beware that this checks the whole site which can have several hundred thousands URLs. Use the -r option to restrict the recursion depth."
-msgstr "Beachten Sie dass dies die komplette Domäne überprüft welche aus mehreren hunderttausend URLs bestehen kann. Benutzen Sie die Option -r,um die Rekursionstiefe zu beschränken."
+msgstr "Beachten Sie dass dies die komplette Domäne überprüft welche aus mehreren hunderttausend URLs bestehen kann. Benutzen Sie die Option -r, um die Rekursionstiefe zu beschränken."
 
 # type: Plain text
 #: en/linkchecker.1:43
@@ -446,7 +446,7 @@ msgstr "B<-u>I<NAME>, B<--user=>I<NAME>"
 # type: Plain text
 #: en/linkchecker.1:195
 msgid "Try the given username for HTTP and FTP authorization.  For FTP the default username is B<anonymous>. For HTTP there is no default username. See also B<-p>."
-msgstr "Verwende den angegebenen Benutzernamen für HTTP und FTP Authorisierung. Für FTP ist der Standardname B<anonymous>. Für HTTP gibt es keinen Standardnamen. Siehe auch B<-p>."
+msgstr "Verwende den angegebenen Benutzernamen für HTTP und FTP Autorisierung. Für FTP ist der Standardname B<anonymous>. Für HTTP gibt es keinen Standardnamen. Siehe auch B<-p>."
 
 # type: TP
 #: en/linkchecker.1:195
@@ -457,7 +457,7 @@ msgstr "B<-p>I<NAME>, B<--password=>I<NAME>"
 # type: Plain text
 #: en/linkchecker.1:200
 msgid "Try the given password for HTTP and FTP authorization.  For FTP the default password is B<anonymous@>. For HTTP there is no default password. See also B<-u>."
-msgstr "Verwende das angegebene Passwort für HTTP und FTP Authorisierung. Für FTP ist das Standardpasswort B<anonymous@>. Für HTTP gibt es kein Standardpasswort. Siehe auch B<-u>."
+msgstr "Verwende das angegebene Passwort für HTTP und FTP Autorisierung. Für FTP ist das Standardpasswort B<anonymous@>. Für HTTP gibt es kein Standardpasswort. Siehe auch B<-u>."
 
 # type: TP
 #: en/linkchecker.1:200
@@ -479,7 +479,7 @@ msgstr "B<-P>I<NUMMER>, B<--pause=>I<NUMMER>"
 # type: Plain text
 #: en/linkchecker.1:208
 msgid "Pause the given number of seconds between each url check. This option disables threading. Default is no pause between requests."
-msgstr "Pausiere die angegebene Anzahl von Sekunden zwischen dem Prüfen jeder URL.Diese Option deaktiviert Threads. Standard ist keine Pause zwischen dem Prüfen."
+msgstr "Pausiere die angegebene Anzahl von Sekunden zwischen dem Prüfen jeder URL. Diese Option deaktiviert Threads. Standard ist keine Pause zwischen dem Prüfen."
 
 # type: TP
 #: en/linkchecker.1:208
