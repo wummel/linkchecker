@@ -1,4 +1,4 @@
-3.0 "" (released xx.xx.xxxx)
+3.0 "The Jacket" (released xx.7.2005)
 
   * Allow empty relative URLs. Note that a completely missing URL is
     still an error (ie. <a href=""> is valid, <a href> is an error).
