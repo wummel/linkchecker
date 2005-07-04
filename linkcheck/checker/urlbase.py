@@ -178,6 +178,8 @@ class UrlBase (object):
         # cache keys, are set by build_url() calling set_cache_keys()
         self.cache_url_key = None
         self.cache_content_key = None
+        # extern flags (is_extern, is_strict), both enabled as default
+        self.extern = (1, 1)
 
     def set_result (self, msg, valid=True):
         """
@@ -403,8 +405,8 @@ class UrlBase (object):
                                 self.consumer.config('wait'))
             time.sleep(self.consumer.config('wait'))
         t = time.time()
-        extern = self.get_extern(self.url)
-        if extern[0] and extern[1]:
+        self.set_extern(self.url)
+        if self.extern[0] and self.extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
             return
 
@@ -489,7 +491,7 @@ class UrlBase (object):
         #                    "content=%s, extern=%s, robots=%s",
         #                    self.valid, self.is_parseable(),
         #                    self.can_get_content(),
-        #                    self.get_extern(self.url)[0],
+        #                    self.extern[0],
         #                    self.content_allows_robots())
         # note: test self.valid before self.is_parseable()
         return self.valid and \
@@ -497,7 +499,7 @@ class UrlBase (object):
             self.can_get_content() and \
             (self.consumer.config("recursionlevel") < 0 or
             self.recursion_level < self.consumer.config("recursionlevel")) and \
-            not self.get_extern(self.url)[0] and self.content_allows_robots()
+            not self.extern[0] and self.content_allows_robots()
 
     def content_allows_robots (self):
         """
@@ -541,28 +543,31 @@ class UrlBase (object):
                 return
         self.add_warning(_("Anchor #%s not found.") % self.anchor)
 
-    def get_extern (self, url):
+    def set_extern (self, url):
         """
         Match URL against extern and intern link patterns. If no pattern
-        matches the URL is extern.
+        matches the URL is extern. Sets self.extern to a tuple (bool,
+        bool) with content (is_extern, is_strict).
 
-        @return: a tuple (is_extern, is_strict)
-        @rtype: tuple (bool, bool)
+        @return: None
         """
         for entry in self.consumer.config("externlinks"):
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
-                return (1, entry['strict'])
+                self.extern = (1, entry['strict'])
+                return
         for entry in self.consumer.config("internlinks"):
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern URL %r", url)
-                return (0, 0)
+                self.extern = (0, 0)
+                return
         linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
-        return (1, 0)
+        self.extern = (1, 0)
+        return
 
     def can_get_content (self):
         """

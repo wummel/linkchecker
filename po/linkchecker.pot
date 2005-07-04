@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-07-04 23:46+0200\n"
+"POT-Creation-Date: 2005-07-05 00:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,16 +109,16 @@ msgstr ""
 msgid "Python %s on %s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:291
+#: ../linkcheck/checker/urlbase.py:293
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:298
+#: ../linkcheck/checker/urlbase.py:300
 #, python-format
 msgid "Effective URL %r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:314
+#: ../linkcheck/checker/urlbase.py:316
 #, python-format
 msgid ""
 "URL %r has a unicode domain name which\n"
@@ -126,51 +126,51 @@ msgid ""
 "                          the URL %r instead."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:319
+#: ../linkcheck/checker/urlbase.py:321
 #, python-format
 msgid "Base URL is not properly normed. Normed URL is %(url)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:359
+#: ../linkcheck/checker/urlbase.py:361
 #, python-format
 msgid "URL has invalid port %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:393
+#: ../linkcheck/checker/urlbase.py:395
 #, python-format
 msgid "URL is located in %s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:408 ../linkcheck/checker/httpurl.py:289
+#: ../linkcheck/checker/urlbase.py:410 ../linkcheck/checker/httpurl.py:289
 #: ../linkcheck/checker/ignoredurl.py:34
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:424
+#: ../linkcheck/checker/urlbase.py:426
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:427
+#: ../linkcheck/checker/urlbase.py:429
 #, python-format
 msgid "Bad HTTP response %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:458
+#: ../linkcheck/checker/urlbase.py:460
 #, python-format
 msgid "could not parse content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:542
+#: ../linkcheck/checker/urlbase.py:544
 #, python-format
 msgid "Anchor #%s not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:594
+#: ../linkcheck/checker/urlbase.py:599
 #, python-format
 msgid "Found %r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:603
+#: ../linkcheck/checker/urlbase.py:608
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr ""
@@ -445,9 +445,9 @@ msgstr ""
 msgid "Write comments and bugs to %(email)s"
 msgstr ""
 
-#: ../linkcheck/logger/dot.py:121 ../linkcheck/logger/gml.py:125
+#: ../linkcheck/logger/dot.py:120 ../linkcheck/logger/gml.py:124
 #: ../linkcheck/logger/html.py:298 ../linkcheck/logger/sql.py:148
-#: ../linkcheck/logger/xmllog.py:172 ../linkcheck/logger/text.py:254
+#: ../linkcheck/logger/xmllog.py:171 ../linkcheck/logger/text.py:254
 #: ../linkcheck/logger/csvlog.py:128
 #, python-format
 msgid "Stopped checking at %s (%s)"
@@ -997,56 +997,51 @@ msgstr ""
 msgid "Illegal argument %r for option %s: %s"
 msgstr ""
 
-#: ../linkchecker:588 ../linkchecker:600
-#, python-format
-msgid "Illegal argument %d for option %s"
-msgstr ""
-
-#: ../linkchecker:607
+#: ../linkchecker:588 ../linkchecker:606
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr ""
 
-#: ../linkchecker:639
+#: ../linkchecker:638
 msgid ""
 "Using DOT or GML loggers without verbose output gives an incomplete sitemap "
 "graph."
 msgstr ""
 
-#: ../linkchecker:646
+#: ../linkchecker:645
 msgid ""
 "enter one or more URLs, separated by white-space\n"
 "--> "
 msgstr ""
 
-#: ../linkchecker:649
+#: ../linkchecker:648
 msgid "no files or URLs given"
 msgstr ""
 
-#: ../linkchecker:670
+#: ../linkchecker:669
 msgid ""
 "The `profile' Python module is not installed, therefore the --profile option "
 "is disabled."
 msgstr ""
 
-#: ../linkchecker:676
+#: ../linkchecker:675
 #, python-format
 msgid ""
 "Overwrite profiling file %r?\n"
 "Press Ctrl-C to cancel, RETURN to continue."
 msgstr ""
 
-#: ../linkchecker:682
+#: ../linkchecker:681
 msgid "Canceled."
 msgstr ""
 
-#: ../linkchecker:696
+#: ../linkchecker:695
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
 msgstr ""
 
-#: ../linkchecker:706
+#: ../linkchecker:705
 msgid "Hit RETURN to finish"
 msgstr ""
 

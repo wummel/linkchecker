@@ -87,8 +87,7 @@ class DOTLogger (linkcheck.logger.Logger):
             if node.checktime and self.has_part("checktime"):
                 self.writeln(u"    checktime=%d," % node.checktime)
             if self.has_part("extern"):
-                extern = node.get_extern(node.url)
-                self.writeln(u"    extern=%d," % (extern[0] and 1 or 0))
+                self.writeln(u"    extern=%d," % (node.extern[0] and 1 or 0))
             self.writeln(u"  ];")
 
     def write_edges (self):

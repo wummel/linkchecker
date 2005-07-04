@@ -283,8 +283,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
             # check extern filter again
-            extern = self.get_extern(redirected)
-            if extern[0] and extern[0]:
+            self.set_extern(redirected)
+            if self.extern[0] and self.extern[0]:
                 self.add_info(
                           _("Outside of domain filter, checked only syntax."))
                 self.set_result(u"filtered")
