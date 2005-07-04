@@ -1,6 +1,8 @@
 linkchecker (3.0-1) unstable; urgency=low
 
   * New upstream release.
+    Thanks to the various Debian bug reporters these bugs are fixed
+    upstream:
     - only generates ~/.linkchecker/ when it is needed
       (Closes: #307876)
     - uses new URL filtering instead of --intern/--extern
