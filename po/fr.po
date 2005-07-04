@@ -1,10 +1,15 @@
+# traduction de fr.po en français
+# French translation for LinkChecker.
+# Jerome Couderc <j.couderc@ifrance.com>, 2000.
+# Yann Verley <yann.verley@free.fr>, 2004, 2005.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
 "POT-Creation-Date: 2005-07-04 01:39+0200\n"
 "PO-Revision-Date: 2005-05-17 22:26+0100\n"
-"Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
+"Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: français <kde-francophone@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
