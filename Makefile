@@ -5,12 +5,9 @@ PACKAGE := linkchecker
 NAME := $(shell $(PYTHON) setup.py --name)
 VERSION := $(shell $(PYTHON) setup.py --version)
 PACKAGEDIR = /home/groups/l/li/$(PACKAGE)
-#HTMLDIR=shell1.sourceforge.net:$(PACKAGEDIR)/htdocs
 HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
-#HOST=treasure.calvinsplayground.de
 HOST=www.debian.org
-#LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v
-LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -r1 --trace
+LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -r1 -t0
 DESTDIR = /.
 PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
@@ -69,7 +66,7 @@ deb_signed: cleandeb
 	env CVSROOT=:ext:calvin@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k32EC6F3E -r"fakeroot --" -I.cvsignore
 
 files:	locale localbuild
-	env http_proxy="" LANG=C $(PYTHON) $(PACKAGE) $(LCOPTS) http://$(HOST)/
+	test/run.sh linkchecker $(LCOPTS) http://$(HOST)/
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
