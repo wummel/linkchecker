@@ -130,8 +130,9 @@ class XMLLogger (linkcheck.logger.Logger):
                 self.writeln(u"      <checktime>%f</checktime>" %
                              node.checktime)
             if self.has_part("extern"):
+                extern = node.get_extern(node.url)
                 self.writeln(u"      <extern>%d</extern>" %
-                             (node.extern and 1 or 0))
+                             (extern[0] and 1 or 0))
             self.writeln(u"    </data>")
             self.writeln(u"  </node>")
         self.write_edges()

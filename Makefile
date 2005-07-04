@@ -10,7 +10,7 @@ HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
 #HOST=treasure.calvinsplayground.de
 HOST=www.debian.org
 #LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v
-LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -r1
+LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -r1 --trace
 DESTDIR = /.
 PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)

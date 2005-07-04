@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-07-04 22:27+0200\n"
+"POT-Creation-Date: 2005-07-04 23:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -445,9 +445,9 @@ msgstr ""
 msgid "Write comments and bugs to %(email)s"
 msgstr ""
 
-#: ../linkcheck/logger/dot.py:120 ../linkcheck/logger/gml.py:124
+#: ../linkcheck/logger/dot.py:121 ../linkcheck/logger/gml.py:125
 #: ../linkcheck/logger/html.py:298 ../linkcheck/logger/sql.py:148
-#: ../linkcheck/logger/xmllog.py:171 ../linkcheck/logger/text.py:254
+#: ../linkcheck/logger/xmllog.py:172 ../linkcheck/logger/text.py:254
 #: ../linkcheck/logger/csvlog.py:128
 #, python-format
 msgid "Stopped checking at %s (%s)"
