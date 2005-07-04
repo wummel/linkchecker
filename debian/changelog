@@ -15,7 +15,7 @@ linkchecker (3.0-1) unstable; urgency=low
       (Closes: #308146)
     - fixes bash-completion script
       (Closes: #309076)
-    - fixes invalid log leve
+    - fixes invalid log level
       (Closes: #316737)
     - fixes german man page typos
       (Closes: #313994)
