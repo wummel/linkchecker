@@ -100,8 +100,8 @@ class GMLLogger (linkcheck.logger.Logger):
         for node in self.nodes.values():
             if self.nodes.has_key(node.parent_url):
                 self.writeln(u"  edge [")
-                self.writeln(u'    label  "%s"' % node.base_url)
-                if self.has_part("parenturl"):
+                self.writeln(u'    label  "%s"' % (node.base_url or u""))
+                if self.has_part("parenturl") and node.parent_url:
                     self.writeln(u"    source %d" % \
                                  self.nodes[node.parent_url].id)
                 self.writeln(u"    target %d" % node.id)

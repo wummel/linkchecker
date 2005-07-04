@@ -93,6 +93,8 @@ class FileUrl (urlbase.UrlBase):
         """
         super(FileUrl, self).init(base_ref, base_url, parent_url,
                                recursion_level, consumer, line, column, name)
+        if self.base_url is None:
+            return
         base_url = self.base_url
         if not (parent_url or base_ref or base_url.startswith("file:")):
             base_url = os.path.expanduser(base_url)

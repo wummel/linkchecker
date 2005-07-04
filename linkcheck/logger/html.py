@@ -169,7 +169,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         self.writeln(u"<td bgcolor=\""+self.colorurl+u"\">"+
                      self.part("url")+u"</td>")
         self.write(u"<td bgcolor=\""+self.colorurl+u"\">"+
-                   cgi.escape(repr(url_data.base_url)[1:]))
+                   cgi.escape(repr(url_data.base_url or u"")[1:]))
         if url_data.cached:
             self.write(_(" (cached)"))
         self.writeln(u"</td></tr>")

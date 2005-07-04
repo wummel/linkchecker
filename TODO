@@ -1,8 +1,5 @@
 Possible improvements people could work on:
 
-- [BUGFIX] Accept empty (relative) URIs. Solution: adjust check_syntax()
-  Note: the empty string ('') seems to be already in the cache (?)
-
 - [FEATURE] Assign numbers to warnings and let the user configure which to
   ignore.
 

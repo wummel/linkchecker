@@ -61,7 +61,7 @@ class TestLogger (linkcheck.logger.Logger):
         Append logger output to self.result.
         """
         if self.has_part('url'):
-            url = u"url %s" % url_data.base_url
+            url = u"url %s" % (url_data.base_url or u"")
             if url_data.cached:
                 url += u" (cached)"
             self.result.append(url)

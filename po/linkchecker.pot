@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-07-04 01:39+0200\n"
+"POT-Creation-Date: 2005-07-04 22:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,15 +59,15 @@ msgstr ""
 msgid "%s URL ignored."
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:117
+#: ../linkcheck/checker/fileurl.py:119
 msgid "Added trailing slash to directory."
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:127
+#: ../linkcheck/checker/fileurl.py:129
 msgid "directory"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:143
+#: ../linkcheck/checker/fileurl.py:145
 #, python-format
 msgid ""
 "The URL path %r is not the same as the system path %r. You should always use "
@@ -109,16 +109,16 @@ msgstr ""
 msgid "Python %s on %s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:290
+#: ../linkcheck/checker/urlbase.py:291
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:297
+#: ../linkcheck/checker/urlbase.py:298
 #, python-format
 msgid "Effective URL %r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:313
+#: ../linkcheck/checker/urlbase.py:314
 #, python-format
 msgid ""
 "URL %r has a unicode domain name which\n"
@@ -126,51 +126,51 @@ msgid ""
 "                          the URL %r instead."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:318
+#: ../linkcheck/checker/urlbase.py:319
 #, python-format
 msgid "Base URL is not properly normed. Normed URL is %(url)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:354
+#: ../linkcheck/checker/urlbase.py:359
 #, python-format
 msgid "URL has invalid port %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:388
+#: ../linkcheck/checker/urlbase.py:393
 #, python-format
 msgid "URL is located in %s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:403 ../linkcheck/checker/httpurl.py:289
+#: ../linkcheck/checker/urlbase.py:408 ../linkcheck/checker/httpurl.py:289
 #: ../linkcheck/checker/ignoredurl.py:34
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:419
+#: ../linkcheck/checker/urlbase.py:424
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:422
+#: ../linkcheck/checker/urlbase.py:427
 #, python-format
 msgid "Bad HTTP response %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:453
+#: ../linkcheck/checker/urlbase.py:458
 #, python-format
 msgid "could not parse content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:537
+#: ../linkcheck/checker/urlbase.py:542
 #, python-format
 msgid "Anchor #%s not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:589
+#: ../linkcheck/checker/urlbase.py:594
 #, python-format
 msgid "Found %r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:598
+#: ../linkcheck/checker/urlbase.py:603
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr ""

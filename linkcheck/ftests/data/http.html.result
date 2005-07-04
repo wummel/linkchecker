@@ -95,6 +95,11 @@ name html entities
 warning Base URL is not properly normed. Normed URL is http://localhost:8001/?quoted=%%FC.
 valid
 
+url  (cached)
+cache key http://localhost:8001/linkcheck/ftests/data/http.html
+real url http://localhost:8001/linkcheck/ftests/data/http.html
+valid
+
 url http.html (cached)
 cache key http://localhost:8001/linkcheck/ftests/data/http.html
 real url http://localhost:8001/linkcheck/ftests/data/http.html

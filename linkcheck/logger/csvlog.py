@@ -99,12 +99,12 @@ class CSVLogger (linkcheck.logger.Logger):
         if self.fd is None:
             return
         row = []
-        for s in [url_data.base_url, url_data.recursion_level,
-               url_data.parent_url or "", url_data.base_ref or "",
+        for s in [url_data.base_url or u"", url_data.recursion_level,
+               url_data.parent_url or u"", url_data.base_ref or u"",
                url_data.result,
                os.linesep.join(url_data.warning),
                os.linesep.join(url_data.info),
-               url_data.valid, url_data.url or "",
+               url_data.valid, url_data.url or u"",
                url_data.line, url_data.column,
                url_data.name, url_data.dltime,
                url_data.dlsize, url_data.checktime,

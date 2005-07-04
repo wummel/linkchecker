@@ -207,7 +207,8 @@ class LinkFinder (TagFinder):
                 codebase = unquote(attrs.get_true('codebase', u''))
             else:
                 codebase = u''
-            value = unquote(attrs.get_true(attr, u''))
+            # note: value can be None
+            value = unquote(attrs.get(attr))
             # add link to url list
             self.add_link(tag, attr, value, name, codebase)
         linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -242,7 +243,7 @@ class LinkFinder (TagFinder):
         assert isinstance(attr, unicode), repr(attr)
         assert isinstance(name, unicode), repr(name)
         assert isinstance(base, unicode), repr(base)
-        assert isinstance(url, unicode), repr(url)
+        assert isinstance(url, unicode) or url is None, repr(url)
         urls = []
         # look for meta refresh
         if tag == u'meta':
@@ -261,7 +262,7 @@ class LinkFinder (TagFinder):
             # no url found
             return
         for u in urls:
-            assert isinstance(u, unicode), repr(u)
+            assert isinstance(u, unicode) or u is None, repr(u)
             linkcheck.log.debug(linkcheck.LOG_CHECK,
               u"LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),

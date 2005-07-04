@@ -141,7 +141,7 @@ class TextLogger (linkcheck.logger.Logger):
         """
         self.writeln()
         self.write(self.part('url') + self.spaces('url'))
-        txt = unicode(repr(url_data.base_url)[1:])
+        txt = unicode(repr(url_data.base_url or u"")[1:])
         if url_data.cached:
             txt += _(" (cached)")
         self.writeln(txt, color=self.colorurl)

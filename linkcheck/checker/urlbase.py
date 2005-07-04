@@ -286,7 +286,8 @@ class UrlBase (object):
         @rtype: bool
         """
         linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
-        if not self.base_url:
+        if (self.base_url is None) or \
+           (not self.base_url and not self.parent_url):
             self.set_result(_("URL is empty"), valid=False)
             return
         try:
@@ -326,7 +327,11 @@ class UrlBase (object):
                                         self.scheme)
             self.url = urljoin(self.base_ref, base_url, self.scheme)
         elif self.parent_url:
-            self.url = urljoin(self.parent_url, base_url, self.scheme)
+            # strip the parent url query and anchor
+            urlparts = list(urlparse.urlsplit(self.parent_url))
+            urlparts[3] = urlparts[4] = ""
+            parent_url = urlparse.urlunsplit(urlparts)
+            self.url = urljoin(parent_url, base_url, self.scheme)
         else:
             self.url = base_url
         # note: urljoin can unnorm the url path, so norm it again
@@ -704,7 +709,8 @@ class UrlBase (object):
         Return serialized url check data as unicode string.
         """
         sep = linkcheck.strformat.unicode_safe(os.linesep)
-        assert isinstance(self.base_url, unicode), self
+        if self.base_url is not None:
+            assert isinstance(self.base_url, unicode), self
         if self.parent_url is not None:
             assert isinstance(self.parent_url, unicode), self
         if self.base_ref is not None:

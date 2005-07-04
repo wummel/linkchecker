@@ -1,5 +1,12 @@
 3.0 "" (released xx.xx.xxxx)
 
+  * Allow empty relative URLs. Note that a completely missing URL is
+    still an error (ie. <a href=""> is valid, <a href> is an error).
+    Type: bugfix
+    Closes: SF bug #
+    Changed: linkcheck/linkparse.py, linkcheck/logger/*.py,
+      linkcheck/checker/urlbase.py
+
   * Added checks for more <meta> URL entries, especially favicons
     was added.
     Type: feature

@@ -148,7 +148,7 @@ class XMLLogger (linkcheck.logger.Logger):
                 self.writeln(u' target="%d">' % node.id)
                 if self.has_part("url"):
                     self.writeln(u"    <label>%s</label>" % \
-                                 xmlquote(node.base_url))
+                                 xmlquote(node.base_url or u""))
                 self.writeln(u"    <data>")
                 if self.has_part("result"):
                     self.writeln(u"      <valid>%d</valid>" % \

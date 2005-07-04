@@ -206,7 +206,7 @@ def get_url_from (base_url, recursion_level, consumer,
     Get url data from given base data.
 
     @param base_url: base url from a link tag
-    @type base_url: string
+    @type base_url: string or None
     @param recursion_level: current recursion level
     @type recursion_level: number
     @param consumer: consumer object
@@ -222,7 +222,8 @@ def get_url_from (base_url, recursion_level, consumer,
     @param name: link name
     @type name: string
     """
-    base_url = linkcheck.strformat.unicode_safe(base_url)
+    if base_url is not None:
+        base_url = linkcheck.strformat.unicode_safe(base_url)
     if parent_url is not None:
         parent_url = linkcheck.strformat.unicode_safe(parent_url)
     if base_ref is not None:
