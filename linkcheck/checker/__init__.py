@@ -100,6 +100,17 @@ acap        # application configuration access protocol
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
 
+def abort (consumer):
+    """
+    Try to abort consumer. Exit on errors.
+    """
+    try:
+        consumer.abort()
+    except:
+        # XXX print an error message?
+        sys.exit(1)
+
+
 def check_urls (consumer):
     """
     Main check function; checks all configured URLs until interrupted
@@ -114,10 +125,10 @@ def check_urls (consumer):
     try:
         _check_urls(consumer)
     except KeyboardInterrupt:
-        try:
-            consumer.abort()
-        except:
-            sys.exit(1)
+        abort(consumer)
+    except:
+        abort(consumer)
+        internal_error()
 
 
 def _check_urls (consumer):
@@ -147,7 +158,10 @@ def _check_urls (consumer):
                 name = url_data.parent_url
             else:
                 name = u""
-            name += url_data.base_url
+            if url_data.base_url:
+                name += url_data.base_url
+            if not name:
+                name = None
             consumer.check_url(url_data, name)
         if consumer.config('status'):
             curtime = time.time()
