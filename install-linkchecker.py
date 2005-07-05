@@ -25,6 +25,7 @@
 
 import sys
 import os
+import re
 import platform
 
 if platform.system() != 'Windows':
@@ -61,6 +62,9 @@ def get_dest_dir ():
 def do_install ():
     fix_configdata()
     create_shortcuts()
+    if platform.release() in win_bat_releases:
+        script = os.path.join(sys.prefix, "Scripts", "linkchecker")
+        handle_script(script)
 
 
 def create_shortcuts ():
@@ -112,9 +116,9 @@ def fix_configdata ():
     f.write("".join(lines))
     f.close()
 
-# windows install path scheme for python >= 2.3
-# snatched from PC/bdist_wininst/install.c
-# this is used to fix install_* paths when cross compiling for windows
+# Windows install path scheme for python >= 2.3.
+# Snatched from PC/bdist_wininst/install.c.
+# This is used to fix install_* paths when installing on Windows.
 win_path_scheme = {
     "purelib": ("PURELIB", "Lib\\site-packages\\"),
     "platlib": ("PLATLIB", "Lib\\site-packages\\"),
@@ -143,11 +147,37 @@ def fix_install_path (line):
             val = os.path.join(sys.prefix, val)
     return "%s = %r%s" % (key, val, os.linesep)
 
+
+# check if Python is called on the first line with this expression
+first_line_re = re.compile('^#!.*python[0-9.]*([ \t].*)?$')
+
+def handle_script (script):
+    f = open(script, "r")
+    first_line = f.readline()
+    match = first_line_re.match(first_line)
+    if match:
+        post_interp = match.group(1) or ''
+    else:
+        post_interp = ""
+    adjust(f, script, post_interp)
+    f.close()
+
+
+def adjust (f, script, post_interp):
+    outfile = script+".bat"
+    print "copying and adjusting %s -> %s" % (script, outfile)
+    outf = open(outfile, "w")
+    pat = '@%s%s -x "%%~f0" %%* & exit /b\n'
+    outf.write(pat % (get_python_exe(), post_interp))
+    outf.writelines(f.readlines())
+    outf.close()
+    file_created(outfile)
+
+
 if __name__ == '__main__':
     if "-install" == sys.argv[1]:
         do_install()
     elif "-remove" == sys.argv[1]:
-        # nothing to do since the crated shortcuts are automatically
-        # removed
+        # nothing to do since the created files are removed automatically
         pass
 

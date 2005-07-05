@@ -1,5 +1,10 @@
 3.0 "The Jacket" (released xx.7.2005)
 
+  * Fix hard coded python.exe path in the batch file linkchecker.bat.
+    Type: bugfix
+    Closes: SF bug #1206858
+    Changed: setup.py, install-linkchecker.py
+
   * Allow empty relative URLs. Note that a completely missing URL is
     still an error (ie. <a href=""> is valid, <a href> is an error).
     Type: bugfix
