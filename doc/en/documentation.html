@@ -226,9 +226,9 @@ misuse of LinkChecker, you cannot turn this feature off.
 See the <a class="reference" href="http://www.robotstxt.org/wc/robots.html">Web Robot pages</a> and the <a class="reference" href="http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt">Spidering report</a> for more info.</p>
 <p><strong>Q: Ctrl-C does not stop LinkChecker immediately. Why is that so?</strong></p>
 <p>A: The Python interpreter has to wait for all threads to finish, and
-this means waiting for all open sockets to close. The default timeout
-for sockets is 30 seconds, hence the delay.
-You can change the default socket timeout with the --timeout option.</p>
+this means waiting for all open connections to close. The default timeout
+for connections is 30 seconds, hence the delay.
+You can change the default connection timeout with the --timeout option.</p>
 <p><strong>Q: How do I print unreachable/dead documents of my website with
 LinkChecker?</strong></p>
 <p>A: No can do. This would require file system access to your web
@@ -241,7 +241,7 @@ and look for missing files.</p>
 </div>
 <hr class="docutils footer" />
 <div class="footer">
-Generated on: 2005-06-28 13:08 UTC.
+Generated on: 2005-07-05 22:20 UTC.
 </div>
 </body>
 </html>

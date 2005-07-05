@@ -259,9 +259,9 @@ See the `Web Robot pages`_ and the `Spidering report`_ for more info.
 **Q: Ctrl-C does not stop LinkChecker immediately. Why is that so?**
 
 A: The Python interpreter has to wait for all threads to finish, and
-this means waiting for all open sockets to close. The default timeout
-for sockets is 30 seconds, hence the delay.
-You can change the default socket timeout with the --timeout option.
+this means waiting for all open connections to close. The default timeout
+for connections is 30 seconds, hence the delay.
+You can change the default connection timeout with the --timeout option.
 
 
 **Q: How do I print unreachable/dead documents of my website with

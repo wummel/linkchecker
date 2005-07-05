@@ -76,10 +76,8 @@ Start "Check URL" in your LinkChecker program group.
 URL input is interactive.
 
 Another way is executing on the command line.
-If there is a file ``linkchecker.cmd`` in your Python Scripts directory
-you can run eg. ``c:\Python24\Scripts\linkchecker.cmd``.
-If you put the Python Scripts directory in your ``PATH`` Environment
-variable, you can just run ``linkchecker``.
+If there is a file ``linkchecker.bat`` in your Python Scripts directory
+you can run eg. ``c:\Python24\Scripts\linkchecker.bat``.
 
 If there is only a ``linkchecker`` file in your Python Scripts
 directory, you have to run eg.
