@@ -45,6 +45,21 @@ def unicode_safe (s, encoding="iso-8859-1"):
     return unicode(str(s), encoding, "ignore")
 
 
+def ascii_safe (s):
+    """
+    Get ASCII string without raising encoding errors. Unknown
+    characters of the given encoding will be ignored.
+
+    @param s: the Unicode string to be encoded
+    @type s: unicode or None
+    @return: encoded ASCII version of s, or s itself if s evaluated to False
+    @rtype: string
+    """
+    if s:
+        s = s.encode('ascii', 'ignore')
+    return s
+
+
 def url_unicode_split (url):
     """
     Like urlparse.urlsplit(), but always returning unicode parts.
