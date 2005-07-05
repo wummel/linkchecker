@@ -22,13 +22,13 @@ import urlparse
 import time
 import re
 import zlib
-import gzip
 import socket
 import cStringIO as StringIO
 import Cookie
 
 import linkcheck
 import linkcheck.url
+import linkcheck.gzip2
 import linkcheck.strformat
 import linkcheck.robotparser2
 import linkcheck.httplib2
@@ -481,7 +481,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     if encoding == 'deflate':
                         f = StringIO.StringIO(zlib.decompress(self.data))
                     else:
-                        f = gzip.GzipFile('', 'rb', 9,
+                        f = linkcheck.gzip2.GzipFile('', 'rb', 9,
                                           StringIO.StringIO(self.data))
                 except zlib.error, msg:
                     self.add_warning(_("Decompress error %(err)s") % \

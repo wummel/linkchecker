@@ -1,5 +1,11 @@
 3.0 "The Jacket" (released xx.7.2005)
 
+  * Use our own gzip module to cope with incomplete gzip streams.
+    Type: bugfix
+    Closes: SF bug #1158475
+    Changed: linkcheck/checker/httpurl.py
+    Added: linkcheck/gzip2.py
+
   * Fix hard coded python.exe path in the batch file linkchecker.bat.
     Type: bugfix
     Closes: SF bug #1206858
@@ -24,7 +30,7 @@
   * Always norm the URL before sending a request.
     Type: bugfix
     Changed: linkcheck/checker/urlbase.py
-    
+
   * Send complete email address on SMTP VRFY command. Avoids a spurious
     warning about incomplete email addresses.
     Type: bugfix
