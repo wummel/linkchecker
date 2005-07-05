@@ -20,6 +20,7 @@ linkchecker (3.0-1) unstable; urgency=low
     - fixes german man page typos
       (Closes: #313994)
   * Remove unnecessary README documentation file
+  * Updated standards version to 3.6.2.1
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 27 Apr 2005 12:11:10 +0200
 
