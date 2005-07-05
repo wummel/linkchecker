@@ -133,6 +133,9 @@ class Threader (object):
             func(*args)
         else:
             self._acquire()
+            # thread names must be ASCII to avoid conversion problems
+            assert isinstance(name, str) or name is None, \
+                   "Invalid name %r" % name
             t = threading.Thread(None, func, name, args)
             t.start()
             self.threads.append(t)

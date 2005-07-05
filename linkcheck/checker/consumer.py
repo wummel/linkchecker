@@ -103,6 +103,7 @@ class Consumer (object):
         This method is not thread safe (hence it should only be called
         from a single thread).
         """
+        name = linkcheck.strformat.ascii_safe(name)
         self._threader.start_thread(url_data.check, (), name=name)
 
     @synchronized(_lock)
