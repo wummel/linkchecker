@@ -2,13 +2,9 @@
 PYVER := 2.4
 PYTHON := python$(PYVER)
 PACKAGE := linkchecker
-NAME := $(shell $(PYTHON) setup.py --name)
 VERSION := $(shell $(PYTHON) setup.py --version)
-PACKAGEDIR = /home/groups/l/li/$(PACKAGE)
-HTMLDIR=/home/calvin/public_html/linkchecker.sf.net/htdocs
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -r1 -t0
-DESTDIR = /.
 PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
 TESTFILES := $(wildcard linkcheck/tests/*.py linkcheck/ftests/*.py)
@@ -70,10 +66,9 @@ files:	locale localbuild
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
-release: releasecheck dist upload homepage
-	mozilla -remote "OpenUrl(https://sourceforge.net/projects/linkchecker,new-tab)"
-	@echo "Make SF release and press return..."
-	@read
+release: releasecheck dist sign_distfiles homepage
+	@echo "Starting releaseforge..."
+	@releaseforge
 	@echo "Uploading new LinkChecker Homepage..."
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 	@echo "Register at Python Package Index..."
@@ -90,13 +85,12 @@ releasecheck:
 	  echo "Could not release: edit ChangeLog release date"; false; \
 	fi
 
-upload:
+sign_distfiles:
 	for f in dist/*; do \
 	  if [ ! -f $${f}.asc ]; then \
 	    gpg --detach-sign --armor $$f; \
 	  fi; \
 	done
-	ncftpput upload.sourceforge.net /incoming dist/*
 
 test:	localbuild
 	test/run.sh test.py --resource=network --search-in=linkcheck -fupvcw
