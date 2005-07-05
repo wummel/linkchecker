@@ -1,5 +1,15 @@
 3.0 "The Jacket" (released xx.7.2005)
 
+  * Catch all check errors, not just the ones inside of URL checking.
+    Type: bugfix
+    Changed: linkcheck/checker/__init__.py
+
+  * Ensure that the name of a newly created thread is ASCII. Else there
+    can be encoding errors.
+    Type: bugfix
+    Changed: linkcheck/strformat.py, linkcheck/checker/consumer.py,
+      linkcheck/threader.py
+
   * Use our own gzip module to cope with incomplete gzip streams.
     Type: bugfix
     Closes: SF bug #1158475
