@@ -1,4 +1,4 @@
-3.0 "The Jacket" (released xx.7.2005)
+3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.
     Type: bugfix
