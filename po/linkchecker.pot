@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-07-05 00:18+0200\n"
+"POT-Creation-Date: 2005-07-08 17:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,14 +43,14 @@ msgstr[1] ""
 msgid "runtime %s"
 msgstr ""
 
-#: ../linkcheck/checker/consumer.py:163
+#: ../linkcheck/checker/consumer.py:164
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:178
+#: ../linkcheck/checker/consumer.py:179
 msgid "Status:"
 msgstr ""
 
@@ -627,15 +627,15 @@ msgstr ""
 msgid "ignore%d: syntax error %s\n"
 msgstr ""
 
-#: ../linkcheck/strformat.py:180
+#: ../linkcheck/strformat.py:195
 msgid "seconds"
 msgstr ""
 
-#: ../linkcheck/strformat.py:183
+#: ../linkcheck/strformat.py:198
 msgid "minutes"
 msgstr ""
 
-#: ../linkcheck/strformat.py:186
+#: ../linkcheck/strformat.py:201
 msgid "hours"
 msgstr ""
 

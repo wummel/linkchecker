@@ -12,5 +12,5 @@ nav: all
 	python2.4 ../bfknav.py
 
 homepage: nav
-	cp *.html *.css *.jpg *.png $(HTMLDIR)/htdocs
+	cp *.html *.css *.jpg *.png *.ico $(HTMLDIR)/htdocs
 
