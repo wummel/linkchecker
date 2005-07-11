@@ -57,6 +57,35 @@ Fast HTML parser module written in C with the following features:
  4. Character encoding aware
     The parser itself is not encoding aware, but all the output are
     always Python Unicode strings.
+
+USAGE
+First make a HTML SAX handler object. Used callbacks (they don't have to
+be defined) of a handler are:
+  comment(data): <!--data-->
+  start_element(tag, attrs): <tag {attr1:value1, attr2:value2, ..}>
+  start_end_element(tag, attrs): <tag {attr1:value1, attr2:value2, ..}>
+  end_element(tag): </tag>
+  doctype(data): <!DOCTYPE data?>
+  pi(name, data=None): <?name data?>
+  cdata(data): <![CDATA[data]]>
+  characters(data): data
+
+Additionally, there are error and warning callbacks:
+  warning(msg)
+  error(msg)
+  fatal_error(msg)
+
+Then create a new HTML parser object with the handler as parameter.
+
+EXAMPLE
+  # prints out the parsed HTML
+  handler = HtmlParser.htmllib.HtmlPrettyPrinter()
+  parser = HtmlParser.htmlsax.parser(handler)
+  parser.feed("<html><body>Blubb</body></html>")
+  parser.flush()
+
+*/
+
 """
 
 import re

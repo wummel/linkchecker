@@ -169,7 +169,7 @@ finish_html_end_tag:
 %output="htmlparse.c"
 %pure_parser
 
-/* parser tokens */
+/* parser tokens, see below for what they mean */
 %token T_WAIT
 %token T_ERROR
 %token T_TEXT
@@ -183,14 +183,21 @@ finish_html_end_tag:
 %token T_CDATA
 %token T_DOCTYPE
 
-/* the finish_ labels are for error recovery */
+/* note: the finish_ labels are for error recovery */
 %%
 
-elements: element {}
-    | elements element {}
-    ;
+elements: element {
+    /* parse a single element */
+}
+| elements element {
+    /* parse a list of elements */
+}
+;
 
-element: T_WAIT { YYACCEPT; /* wait for more lexer input */ }
+element: T_WAIT {
+    /* wait for more lexer input */
+    YYACCEPT;
+}
 | T_ERROR
 {
     /* an error occured in the scanner, the python exception must be set */
@@ -200,8 +207,9 @@ element: T_WAIT { YYACCEPT; /* wait for more lexer input */ }
 }
 | T_ELEMENT_START
 {
-    /* $1 is a PyTuple (<tag>, <attrs>)
-       <tag> is a PyObject, <attrs> is a PyDict */
+    /* parsed HTML start tag (eg. <a href="blubb">)
+       $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyObject, <attrs> is a ListDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -243,8 +251,9 @@ finish_start:
 }
 | T_ELEMENT_START_END
 {
-    /* $1 is a PyTuple (<tag>, <attrs>)
-       <tag> is a PyObject, <attrs> is a PyDict */
+    /* parsed HTML start-end tag (eg. <br/>)
+       $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyObject, <attrs> is a ListDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -293,7 +302,8 @@ finish_start_end:
 }
 | T_ELEMENT_END
 {
-    /* $1 is a PyUnicode */
+    /* parsed HTML end tag (eg. </b>)
+       $1 is a PyUnicode with the tag name */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -331,7 +341,8 @@ finish_end:
 }
 | T_COMMENT
 {
-    /* $1 is a PyUnicode */
+    /* parsed HTML comment (eg. <!-- bla -->)
+       $1 is a PyUnicode with the comment content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -373,7 +384,8 @@ finish_pi:
 }
 | T_CDATA
 {
-    /* $1 is a PyUnicode */
+    /* parsed HTML CDATA (eg. <![CDATA[spam and eggs ...]]>)
+       $1 is a PyUnicode with the CDATA content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -394,7 +406,8 @@ finish_cdata:
 }
 | T_DOCTYPE
 {
-    /* $1 is a PyUnicode */
+    /* parsed HTML doctype (eg. <!DOCTYPE imadoofus system>)
+       $1 is a PyUnicode with the doctype content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -419,7 +432,8 @@ finish_doctype:
 }
 | T_SCRIPT
 {
-    /* $1 is a PyUnicode */
+    /* parsed HTML script content (plus end tag which is omitted)
+       $1 is a PyUnicode with the script content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -427,6 +441,7 @@ finish_doctype:
     PyObject* script = PyUnicode_DecodeASCII("script", 6, "ignore");
     CHECK_ERROR((script == NULL), finish_script);
     CALLBACK(ud, "characters", "O", $1, finish_script);
+    /* emit the omitted end tag */
     CALLBACK(ud, "end_element", "O", script, finish_script);
     CHECK_PARSER_ERROR(ud, finish_script);
 finish_script:
@@ -444,7 +459,8 @@ finish_script:
 }
 | T_STYLE
 {
-    /* $1 is a PyUnicode */
+    /* parsed HTML style content (plus end tag which is omitted)
+       $1 is a PyUnicode with the style content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -452,6 +468,7 @@ finish_script:
     PyObject* style = PyUnicode_DecodeASCII("style", 5, "ignore");
     CHECK_ERROR((style == NULL), finish_style);
     CALLBACK(ud, "characters", "O", $1, finish_style);
+    /* emit the omitted end tag */
     CALLBACK(ud, "end_element", "O", style, finish_style);
     CHECK_PARSER_ERROR(ud, finish_style);
 finish_style:
@@ -469,8 +486,10 @@ finish_style:
 }
 | T_TEXT
 {
-    /* $1 is a PyUnicode */
-    /* Remember this is also called as a lexer error fallback */
+    /* parsed HTML text data
+       $1 is a PyUnicode with the text */
+    /* Remember this is also called as a lexer fallback when no
+       HTML structure element could be recognized. */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -785,12 +804,14 @@ static PyObject* parser_debug (parser_object* self, PyObject* args) {
 }
 
 
+/* get SAX handler object */
 static PyObject* parser_gethandler (parser_object* self, void* closure) {
     Py_INCREF(self->handler);
     return self->handler;
 }
 
 
+/* set SAX handler object */
 static int parser_sethandler (parser_object* self, PyObject* value, void* closure) {
     if (value == NULL) {
        PyErr_SetString(PyExc_TypeError, "Cannot delete parser handler");
@@ -804,12 +825,14 @@ static int parser_sethandler (parser_object* self, PyObject* value, void* closur
 }
 
 
+/* get parser encoding */
 static PyObject* parser_getencoding (parser_object* self, void* closure) {
     Py_INCREF(self->encoding);
     return self->encoding;
 }
 
 
+/* set parser encoding */
 static int parser_setencoding (parser_object* self, PyObject* value, void* closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_TypeError, "Cannot delete encoding");
@@ -826,12 +849,14 @@ static int parser_setencoding (parser_object* self, PyObject* value, void* closu
 }
 
 
+/* get parser doctype */
 static PyObject* parser_getdoctype (parser_object* self, void* closure) {
     Py_INCREF(self->doctype);
     return self->doctype;
 }
 
 
+/* set parser doctype */
 static int parser_setdoctype (parser_object* self, PyObject* value, void* closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_TypeError, "Cannot delete doctype");
@@ -930,25 +955,6 @@ static PyTypeObject parser_type = {
     0,              /* tp_del */
 };
 
-
-/* python module interface 
-     "Create a new HTML parser object with handler (which may be None).\n"
-     "\n"
-     "Used callbacks (they don't have to be defined) of a handler are:\n"
-     "comment(data): <!--data-->\n"
-     "start_element(tag, attrs): <tag {attr1:value1,attr2:value2,..}>\n"
-     "end_element(tag): </tag>\n"
-     "doctype(data): <!DOCTYPE data?>\n"
-     "pi(name, data=None): <?name data?>\n"
-     "cdata(data): <![CDATA[data]]>\n"
-     "characters(data): data\n"
-     "\n"
-     "Additionally, there are error and warning callbacks:\n"
-     "error(msg)\n"
-     "warning(msg)\n"
-     "fatal_error(msg)\n"},
-
-*/
 
 static PyMethodDef htmlsax_methods[] = {
     {NULL} /* Sentinel */

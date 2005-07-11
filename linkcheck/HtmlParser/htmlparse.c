@@ -452,8 +452,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short int yyrline[] =
 {
-       0,   189,   189,   190,   193,   194,   201,   244,   294,   332,
-     353,   374,   395,   420,   445,   470
+       0,   189,   189,   192,   197,   201,   208,   252,   303,   342,
+     364,   385,   407,   433,   460,   487
 };
 #endif
 
@@ -1160,21 +1160,28 @@ yyreduce:
     {
         case 2:
 #line 189 "htmlparse.y"
-    {;}
+    {
+    /* parse a single element */
+;}
     break;
 
   case 3:
-#line 190 "htmlparse.y"
-    {;}
+#line 192 "htmlparse.y"
+    {
+    /* parse a list of elements */
+;}
     break;
 
   case 4:
-#line 193 "htmlparse.y"
-    { YYACCEPT; /* wait for more lexer input */ ;}
+#line 197 "htmlparse.y"
+    {
+    /* wait for more lexer input */
+    YYACCEPT;
+;}
     break;
 
   case 5:
-#line 195 "htmlparse.y"
+#line 202 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1184,10 +1191,11 @@ yyreduce:
     break;
 
   case 6:
-#line 202 "htmlparse.y"
+#line 209 "htmlparse.y"
     {
-    /* $1 is a PyTuple (<tag>, <attrs>)
-       <tag> is a PyObject, <attrs> is a PyDict */
+    /* parsed HTML start tag (eg. <a href="blubb">)
+       $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyObject, <attrs> is a ListDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1230,10 +1238,11 @@ finish_start:
     break;
 
   case 7:
-#line 245 "htmlparse.y"
+#line 253 "htmlparse.y"
     {
-    /* $1 is a PyTuple (<tag>, <attrs>)
-       <tag> is a PyObject, <attrs> is a PyDict */
+    /* parsed HTML start-end tag (eg. <br/>)
+       $1 is a PyTuple (<tag>, <attrs>)
+       <tag> is a PyObject, <attrs> is a ListDict */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1283,9 +1292,10 @@ finish_start_end:
     break;
 
   case 8:
-#line 295 "htmlparse.y"
+#line 304 "htmlparse.y"
     {
-    /* $1 is a PyUnicode */
+    /* parsed HTML end tag (eg. </b>)
+       $1 is a PyUnicode with the tag name */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1324,9 +1334,10 @@ finish_end:
     break;
 
   case 9:
-#line 333 "htmlparse.y"
+#line 343 "htmlparse.y"
     {
-    /* $1 is a PyUnicode */
+    /* parsed HTML comment (eg. <!-- bla -->)
+       $1 is a PyUnicode with the comment content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1348,7 +1359,7 @@ finish_comment:
     break;
 
   case 10:
-#line 354 "htmlparse.y"
+#line 365 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1372,9 +1383,10 @@ finish_pi:
     break;
 
   case 11:
-#line 375 "htmlparse.y"
+#line 386 "htmlparse.y"
     {
-    /* $1 is a PyUnicode */
+    /* parsed HTML CDATA (eg. <![CDATA[spam and eggs ...]]>)
+       $1 is a PyUnicode with the CDATA content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1396,9 +1408,10 @@ finish_cdata:
     break;
 
   case 12:
-#line 396 "htmlparse.y"
+#line 408 "htmlparse.y"
     {
-    /* $1 is a PyUnicode */
+    /* parsed HTML doctype (eg. <!DOCTYPE imadoofus system>)
+       $1 is a PyUnicode with the doctype content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1424,9 +1437,10 @@ finish_doctype:
     break;
 
   case 13:
-#line 421 "htmlparse.y"
+#line 434 "htmlparse.y"
     {
-    /* $1 is a PyUnicode */
+    /* parsed HTML script content (plus end tag which is omitted)
+       $1 is a PyUnicode with the script content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1434,6 +1448,7 @@ finish_doctype:
     PyObject* script = PyUnicode_DecodeASCII("script", 6, "ignore");
     CHECK_ERROR((script == NULL), finish_script);
     CALLBACK(ud, "characters", "O", yyvsp[0], finish_script);
+    /* emit the omitted end tag */
     CALLBACK(ud, "end_element", "O", script, finish_script);
     CHECK_PARSER_ERROR(ud, finish_script);
 finish_script:
@@ -1452,9 +1467,10 @@ finish_script:
     break;
 
   case 14:
-#line 446 "htmlparse.y"
+#line 461 "htmlparse.y"
     {
-    /* $1 is a PyUnicode */
+    /* parsed HTML style content (plus end tag which is omitted)
+       $1 is a PyUnicode with the style content */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1462,6 +1478,7 @@ finish_script:
     PyObject* style = PyUnicode_DecodeASCII("style", 5, "ignore");
     CHECK_ERROR((style == NULL), finish_style);
     CALLBACK(ud, "characters", "O", yyvsp[0], finish_style);
+    /* emit the omitted end tag */
     CALLBACK(ud, "end_element", "O", style, finish_style);
     CHECK_PARSER_ERROR(ud, finish_style);
 finish_style:
@@ -1480,10 +1497,12 @@ finish_style:
     break;
 
   case 15:
-#line 471 "htmlparse.y"
+#line 488 "htmlparse.y"
     {
-    /* $1 is a PyUnicode */
-    /* Remember this is also called as a lexer error fallback */
+    /* parsed HTML text data
+       $1 is a PyUnicode with the text */
+    /* Remember this is also called as a lexer fallback when no
+       HTML structure element could be recognized. */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
@@ -1508,7 +1527,7 @@ finish_characters:
     }
 
 /* Line 1010 of yacc.c.  */
-#line 1512 "htmlparse.c"
+#line 1531 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1733,7 +1752,7 @@ yyreturn:
 }
 
 
-#line 494 "htmlparse.y"
+#line 513 "htmlparse.y"
 
 
 /* create parser object */
@@ -2028,12 +2047,14 @@ static PyObject* parser_debug (parser_object* self, PyObject* args) {
 }
 
 
+/* get SAX handler object */
 static PyObject* parser_gethandler (parser_object* self, void* closure) {
     Py_INCREF(self->handler);
     return self->handler;
 }
 
 
+/* set SAX handler object */
 static int parser_sethandler (parser_object* self, PyObject* value, void* closure) {
     if (value == NULL) {
        PyErr_SetString(PyExc_TypeError, "Cannot delete parser handler");
@@ -2047,12 +2068,14 @@ static int parser_sethandler (parser_object* self, PyObject* value, void* closur
 }
 
 
+/* get parser encoding */
 static PyObject* parser_getencoding (parser_object* self, void* closure) {
     Py_INCREF(self->encoding);
     return self->encoding;
 }
 
 
+/* set parser encoding */
 static int parser_setencoding (parser_object* self, PyObject* value, void* closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_TypeError, "Cannot delete encoding");
@@ -2069,12 +2092,14 @@ static int parser_setencoding (parser_object* self, PyObject* value, void* closu
 }
 
 
+/* get parser doctype */
 static PyObject* parser_getdoctype (parser_object* self, void* closure) {
     Py_INCREF(self->doctype);
     return self->doctype;
 }
 
 
+/* set parser doctype */
 static int parser_setdoctype (parser_object* self, PyObject* value, void* closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_TypeError, "Cannot delete doctype");
@@ -2173,25 +2198,6 @@ static PyTypeObject parser_type = {
     0,              /* tp_del */
 };
 
-
-/* python module interface 
-     "Create a new HTML parser object with handler (which may be None).\n"
-     "\n"
-     "Used callbacks (they don't have to be defined) of a handler are:\n"
-     "comment(data): <!--data-->\n"
-     "start_element(tag, attrs): <tag {attr1:value1,attr2:value2,..}>\n"
-     "end_element(tag): </tag>\n"
-     "doctype(data): <!DOCTYPE data?>\n"
-     "pi(name, data=None): <?name data?>\n"
-     "cdata(data): <![CDATA[data]]>\n"
-     "characters(data): data\n"
-     "\n"
-     "Additionally, there are error and warning callbacks:\n"
-     "error(msg)\n"
-     "warning(msg)\n"
-     "fatal_error(msg)\n"},
-
-*/
 
 static PyMethodDef htmlsax_methods[] = {
     {NULL} /* Sentinel */
