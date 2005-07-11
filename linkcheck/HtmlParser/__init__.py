@@ -45,6 +45,8 @@ Fast HTML parser module written in C with the following features:
      1. NULL bytes are changed into spaces
      2. <!-- ... --> inside a <script> or <style> are not treated as
         comments but as DATA
+     3. Rewrites all tag and attribute names to lowercase for easier
+        matching.
 
  3. Speed
     The FLEX code has options to generate a large but fast scanner.
@@ -57,6 +59,9 @@ Fast HTML parser module written in C with the following features:
  4. Character encoding aware
     The parser itself is not encoding aware, but all the output are
     always Python Unicode strings.
+
+ 5. Retain HTML attribute order
+    The parser keeps the order in which HTML tag attributes are parsed.
 
 USAGE
 First make a HTML SAX handler object. Used callbacks (they don't have to
