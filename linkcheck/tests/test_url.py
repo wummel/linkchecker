@@ -329,9 +329,22 @@ class TestUrl (unittest.TestCase):
         url = "news:§$%&/´`§%"
         nurl = 'news:%A7%24%25%26/%B4%60%A7%25'
         self.assertEqual(url_norm(url), nurl)
+        url = "news:comp.infosystems.www.servers.unix"
+        nurl = url
+        self.assertEqual(url_norm(url), nurl)
         # javascript url
         url = "javascript:loadthis()"
         nurl = url
+        self.assertEqual(url_norm(url), nurl)
+        # ldap url
+        url = "ldap://[2001:db8::7]/c=GB?objectClass?one"
+        nurl = "ldap://%5B2001:db8::7%5D/c=GB%3FobjectClass%3Fone"
+        self.assertEqual(url_norm(url), nurl)
+        url = "tel:+1-816-555-1212"
+        nurl = url
+        self.assertEqual(url_norm(url), nurl)
+        url = "urn:oasis:names:specification:docbook:dtd:xml:4.1.2"
+        nurl = "urn:oasis%3Anames%3Aspecification%3Adocbook%3Adtd%3Axml%3A4.1.2"
         self.assertEqual(url_norm(url), nurl)
 
     def test_norm_with_auth (self):
