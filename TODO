@@ -1,5 +1,8 @@
 Possible improvements people could work on:
 
+- [FEATURE] Add tests cases specified in
+  http://intertwingly.net/stories/2004/08/04/urlnorm.py
+
 - [FEATURE] Assign numbers to warnings and let the user configure which to
   ignore.
 
