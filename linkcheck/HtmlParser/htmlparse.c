@@ -103,8 +103,8 @@
  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 /* Python module definition of a SAX html parser */
-#include "htmlsax.h"
-#include "structmember.h"
+#include "htmlsax.h"      /* SAX interface (includes Python.h) */
+#include "structmember.h" /* Python include for object definition */
 #include <string.h>
 #include <stdio.h>
 
@@ -128,6 +128,8 @@ static int yyerror (char* msg) {
     fprintf(stderr, "htmlsax: internal parse error: %s\n", msg);
     return 0;
 }
+
+/* existing Python methods */
 
 /* parser.resolve_entities */
 static PyObject* resolve_entities;
@@ -154,21 +156,29 @@ static PyObject* u_meta;
     if (b == NULL) { Py_DECREF(self); return NULL; } \
     (b)[0] = '\0'
 
-#define CHECK_ERROR(ud, label) \
-    if (ud->error && PyObject_HasAttrString(ud->handler, "error") == 1) { \
-	callback = PyObject_GetAttrString(ud->handler, "error"); \
-	if (!callback) { error = 1; goto label; } \
-	result = PyObject_CallFunction(callback, "O", ud->error); \
-	if (!result) { error = 1; goto label; } \
+/* check an error condition and if true set error flag and goto given label */
+#define CHECK_ERROR(cond, label) \
+    if (cond) { \
+        error = 1; \
+        goto label; \
     }
 
-/* generic callback macro */
+/* check the parser error flag and if set goto given label */
+#define CHECK_PARSER_ERROR(ud, label) \
+    if (ud->error && PyObject_HasAttrString(ud->handler, "error") == 1) { \
+	callback = PyObject_GetAttrString(ud->handler, "error"); \
+	CHECK_ERROR((!callback), label); \
+	result = PyObject_CallFunction(callback, "O", ud->error); \
+	CHECK_ERROR((!result), label); \
+    }
+
+/* generic Python callback macro */
 #define CALLBACK(ud, attr, format, arg, label) \
     if (PyObject_HasAttrString(ud->handler, attr) == 1) { \
 	callback = PyObject_GetAttrString(ud->handler, attr); \
-	if (callback == NULL) { error = 1; goto label; } \
+	CHECK_ERROR((callback == NULL), label); \
 	result = PyObject_CallFunction(callback, format, arg); \
-	if (result == NULL) { error = 1; goto label; } \
+	CHECK_ERROR((result == NULL), label); \
 	Py_CLEAR(callback); \
 	Py_CLEAR(result); \
     }
@@ -197,18 +207,24 @@ staticforward PyTypeObject parser_type;
 #define YYMALLOC PyMem_Malloc
 #define YYFREE PyMem_Free
 
-/* Test whether tag does not need an HTML end tag. Return -1 on error. */
+/* Test whether tag does not need an HTML end tag.
+   @ptag: ASCII encoded Python string in lowercase (!)
+   @parser: SAX parser object
+   @return: < 0 on error, > 0 if HTML end tag is needed, else 0
+*/
 static int html_end_tag (PyObject* ptag, PyObject* parser) {
-    PyObject* pdoctype;
+    PyObject* pdoctype = NULL;
     char* doctype;
+    int error = 0;
     int ret = 1;
     pdoctype = PyObject_GetAttrString(parser, "doctype");
-    if (pdoctype == NULL) return -1;
+    CHECK_ERROR((pdoctype == NULL), finish_html_end_tag);
     doctype = PyString_AsString(pdoctype);
-    if (doctype == NULL) { Py_DECREF(pdoctype); return -1; }
+    CHECK_ERROR((doctype == NULL), finish_html_end_tag);
+    /* check for HTML (else it's presumably XHTML) */
     if (strcmp(doctype, "HTML") == 0) {
         char* tag = PyString_AsString(ptag);
-        if (tag == NULL) { Py_DECREF(pdoctype); return -1; }
+        CHECK_ERROR((tag == NULL), finish_html_end_tag);
         ret = strcmp(tag, "area")!=0 &&
             strcmp(tag, "base")!=0 &&
             strcmp(tag, "basefont")!=0 &&
@@ -223,8 +239,11 @@ static int html_end_tag (PyObject* ptag, PyObject* parser) {
             strcmp(tag, "meta")!=0 &&
             strcmp(tag, "param")!=0;
     }
-    /* it is not HTML (presumably XHTML) */
-    Py_DECREF(pdoctype);
+finish_html_end_tag:
+    Py_XDECREF(pdoctype);
+    if (error) {
+        return -1;
+    }
     return ret;
 }
 
@@ -256,7 +275,7 @@ typedef int YYSTYPE;
 
 
 /* Line 214 of yacc.c.  */
-#line 260 "htmlparse.c"
+#line 279 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
@@ -433,8 +452,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short int yyrline[] =
 {
-       0,   170,   170,   171,   174,   175,   182,   225,   276,   309,
-     330,   351,   372,   397,   422,   447
+       0,   189,   189,   190,   193,   194,   201,   244,   294,   332,
+     353,   374,   395,   420,   445,   470
 };
 #endif
 
@@ -1140,22 +1159,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 170 "htmlparse.y"
+#line 189 "htmlparse.y"
     {;}
     break;
 
   case 3:
-#line 171 "htmlparse.y"
+#line 190 "htmlparse.y"
     {;}
     break;
 
   case 4:
-#line 174 "htmlparse.y"
+#line 193 "htmlparse.y"
     { YYACCEPT; /* wait for more lexer input */ ;}
     break;
 
   case 5:
-#line 176 "htmlparse.y"
+#line 195 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1165,7 +1184,7 @@ yyreduce:
     break;
 
   case 6:
-#line 183 "htmlparse.y"
+#line 202 "htmlparse.y"
     {
     /* $1 is a PyTuple (<tag>, <attrs>)
        <tag> is a PyObject, <attrs> is a PyDict */
@@ -1176,24 +1195,24 @@ yyreduce:
     PyObject* attrs = PyTuple_GET_ITEM(yyvsp[0], 1);
     int error = 0;
     int cmp;
-    if (tag == NULL || attrs == NULL) { error = 1; goto finish_start; }
+    CHECK_ERROR((tag == NULL || attrs == NULL), finish_start);
     cmp = PyObject_RichCompareBool(tag, u_meta, Py_EQ);
-    if (cmp == -1) { error = 1; goto finish_start; }
+    CHECK_ERROR((cmp == -1), finish_start);
     if (cmp == 1) {
         /* set encoding */
         result = PyObject_CallFunction(set_encoding, "OO", ud->parser, attrs);
-        if (result == NULL) { error = 1; goto finish_start; }
+        CHECK_ERROR((result == NULL), finish_start);
         Py_CLEAR(result);
     }
     if (PyObject_HasAttrString(ud->handler, "start_element") == 1) {
 	callback = PyObject_GetAttrString(ud->handler, "start_element");
-	if (!callback) { error = 1; goto finish_start; }
+	CHECK_ERROR((!callback), finish_start);
 	result = PyObject_CallFunction(callback, "OO", tag, attrs);
-	if (!result) { error = 1; goto finish_start; }
+	CHECK_ERROR((!result), finish_start);
 	Py_CLEAR(callback);
         Py_CLEAR(result);
     }
-    CHECK_ERROR(ud, finish_start);
+    CHECK_PARSER_ERROR(ud, finish_start);
 finish_start:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1211,7 +1230,7 @@ finish_start:
     break;
 
   case 7:
-#line 226 "htmlparse.y"
+#line 245 "htmlparse.y"
     {
     /* $1 is a PyTuple (<tag>, <attrs>)
        <tag> is a PyObject, <attrs> is a PyDict */
@@ -1224,30 +1243,29 @@ finish_start:
     int cmp;
     char* fname;
     PyObject* tagname;
-    if (tag == NULL || attrs == NULL) { error = 1; goto finish_start_end; }
+    CHECK_ERROR((tag == NULL || attrs == NULL), finish_start_end);
     tagname = PyUnicode_AsEncodedString(tag, "ascii", "ignore");
-    if (tagname == NULL) { error = 1; goto finish_start_end; }
+    CHECK_ERROR((tagname == NULL), finish_start_end);
     cmp = PyObject_RichCompareBool(tag, u_meta, Py_EQ);
-    if (cmp == -1) { error = 1; goto finish_start; }
+    CHECK_ERROR((cmp == -1), finish_start_end);
     if (cmp == 1) {
         /* set encoding */
         result = PyObject_CallFunction(set_encoding, "OO", ud->parser, attrs);
-        if (result == NULL) { error = 1; goto finish_start_end; }
+        CHECK_ERROR((result == NULL), finish_start_end);
         Py_CLEAR(result);
     }
-    if (html_end_tag(tagname, ud->parser))
-        fname = "start_end_element";
-    else
-        fname = "start_element";
+    cmp = html_end_tag(tagname, ud->parser);
+    CHECK_ERROR((cmp < 0), finish_start_end);
+    fname = (cmp == 0 ? "start_element" : "start_end_element");
     if (PyObject_HasAttrString(ud->handler, fname) == 1) {
 	callback = PyObject_GetAttrString(ud->handler, fname);
-	if (!callback) { error = 1; goto finish_start_end; }
+	CHECK_ERROR((!callback), finish_start_end);
 	result = PyObject_CallFunction(callback, "OO", tag, attrs);
-	if (!result) { error = 1; goto finish_start_end; }
+	CHECK_ERROR((!result), finish_start_end);
 	Py_CLEAR(callback);
         Py_CLEAR(result);
     }
-    CHECK_ERROR(ud, finish_start_end);
+    CHECK_PARSER_ERROR(ud, finish_start_end);
 finish_start_end:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1265,26 +1283,31 @@ finish_start_end:
     break;
 
   case 8:
-#line 277 "htmlparse.y"
+#line 295 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
     PyObject* callback = NULL;
     PyObject* result = NULL;
     int error = 0;
+    int cmp;
     /* encode tagname in ASCII, ignoring any unknown chars */
     PyObject* tagname = PyUnicode_AsEncodedString(yyvsp[0], "ascii", "ignore");
-    if (tagname == NULL) { error = 1; goto finish_end; }
-    if (PyObject_HasAttrString(ud->handler, "end_element") == 1 &&
-	html_end_tag(tagname, ud->parser)) {
+    if (tagname == NULL) {
+        error = 1;
+        goto finish_end;
+    }
+    cmp = html_end_tag(tagname, ud->parser);
+    CHECK_ERROR((cmp < 0), finish_end);
+    if (PyObject_HasAttrString(ud->handler, "end_element") == 1 && cmp > 0) {
 	callback = PyObject_GetAttrString(ud->handler, "end_element");
-	if (callback == NULL) { error = 1; goto finish_end; }
+	CHECK_ERROR((callback == NULL), finish_end);
 	result = PyObject_CallFunction(callback, "O", yyvsp[0]);
-	if (result == NULL) { error = 1; goto finish_end; }
+	CHECK_ERROR((result == NULL), finish_end);
 	Py_CLEAR(callback);
 	Py_CLEAR(result);
     }
-    CHECK_ERROR(ud, finish_end);
+    CHECK_PARSER_ERROR(ud, finish_end);
 finish_end:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1301,7 +1324,7 @@ finish_end:
     break;
 
   case 9:
-#line 310 "htmlparse.y"
+#line 333 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1309,7 +1332,7 @@ finish_end:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "comment", "O", yyvsp[0], finish_comment);
-    CHECK_ERROR(ud, finish_comment);
+    CHECK_PARSER_ERROR(ud, finish_comment);
 finish_comment:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1325,7 +1348,7 @@ finish_comment:
     break;
 
   case 10:
-#line 331 "htmlparse.y"
+#line 354 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1333,7 +1356,7 @@ finish_comment:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "pi", "O", yyvsp[0], finish_pi);
-    CHECK_ERROR(ud, finish_pi);
+    CHECK_PARSER_ERROR(ud, finish_pi);
 finish_pi:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1349,7 +1372,7 @@ finish_pi:
     break;
 
   case 11:
-#line 352 "htmlparse.y"
+#line 375 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1357,7 +1380,7 @@ finish_pi:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "cdata", "O", yyvsp[0], finish_cdata);
-    CHECK_ERROR(ud, finish_cdata);
+    CHECK_PARSER_ERROR(ud, finish_cdata);
 finish_cdata:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1373,7 +1396,7 @@ finish_cdata:
     break;
 
   case 12:
-#line 373 "htmlparse.y"
+#line 396 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1382,10 +1405,10 @@ finish_cdata:
     int error = 0;
     /* set encoding */
     result = PyObject_CallFunction(set_doctype, "OO", ud->parser, yyvsp[0]);
-    if (result == NULL) { error = 1; goto finish_doctype; }
+    CHECK_ERROR((result == NULL), finish_doctype);
     Py_CLEAR(result);
     CALLBACK(ud, "doctype", "O", yyvsp[0], finish_doctype);
-    CHECK_ERROR(ud, finish_doctype);
+    CHECK_PARSER_ERROR(ud, finish_doctype);
 finish_doctype:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1401,7 +1424,7 @@ finish_doctype:
     break;
 
   case 13:
-#line 398 "htmlparse.y"
+#line 421 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1409,10 +1432,10 @@ finish_doctype:
     PyObject* result = NULL;
     int error = 0;
     PyObject* script = PyUnicode_DecodeASCII("script", 6, "ignore");
-    if (script == NULL) { error = 1; goto finish_script; }
+    CHECK_ERROR((script == NULL), finish_script);
     CALLBACK(ud, "characters", "O", yyvsp[0], finish_script);
     CALLBACK(ud, "end_element", "O", script, finish_script);
-    CHECK_ERROR(ud, finish_script);
+    CHECK_PARSER_ERROR(ud, finish_script);
 finish_script:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1429,7 +1452,7 @@ finish_script:
     break;
 
   case 14:
-#line 423 "htmlparse.y"
+#line 446 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1437,10 +1460,10 @@ finish_script:
     PyObject* result = NULL;
     int error = 0;
     PyObject* style = PyUnicode_DecodeASCII("style", 5, "ignore");
-    if (style == NULL) { error = 1; goto finish_style; }
+    CHECK_ERROR((style == NULL), finish_style);
     CALLBACK(ud, "characters", "O", yyvsp[0], finish_style);
     CALLBACK(ud, "end_element", "O", style, finish_style);
-    CHECK_ERROR(ud, finish_style);
+    CHECK_PARSER_ERROR(ud, finish_style);
 finish_style:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1457,7 +1480,7 @@ finish_style:
     break;
 
   case 15:
-#line 448 "htmlparse.y"
+#line 471 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     /* Remember this is also called as a lexer error fallback */
@@ -1466,7 +1489,7 @@ finish_style:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "characters", "O", yyvsp[0], finish_characters);
-    CHECK_ERROR(ud, finish_characters);
+    CHECK_PARSER_ERROR(ud, finish_characters);
 finish_characters:
     Py_XDECREF(ud->error);
     ud->error = NULL;
@@ -1485,7 +1508,7 @@ finish_characters:
     }
 
 /* Line 1010 of yacc.c.  */
-#line 1489 "htmlparse.c"
+#line 1512 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1710,7 +1733,7 @@ yyreturn:
 }
 
 
-#line 471 "htmlparse.y"
+#line 494 "htmlparse.y"
 
 
 /* create parser object */
