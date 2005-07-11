@@ -25,6 +25,8 @@ import sys
 import time
 import encodings.idna
 
+import linkcheck
+import linkcheck.log
 import linkcheck.dns.exception
 import linkcheck.dns.message
 import linkcheck.dns.name
@@ -655,4 +657,6 @@ def query(qname, rdtype=linkcheck.dns.rdatatype.A, rdclass=linkcheck.dns.rdatacl
     global default_resolver
     if default_resolver is None:
         default_resolver = Resolver()
+    linkcheck.log.debug(linkcheck.LOG_DNS,
+                        "Query %s %s %s", qname, rdtype, rdclass)
     return default_resolver.query(qname, rdtype, rdclass, tcp)

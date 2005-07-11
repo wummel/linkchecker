@@ -77,7 +77,7 @@ class IfConfig (object):
         try:
             result = self._fcntl(self.SIOCGIFFLAGS, ifreq)
         except IOError, msg:
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            linkcheck.log.warn(linkcheck.LOG_DNS,
                  "error getting flags for interface %r: %s", ifname, msg)
             return 0
         # extract the interface's flags from the return value

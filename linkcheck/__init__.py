@@ -33,6 +33,7 @@ import _linkchecker_configdata as configdata
 LOG = "linkcheck"
 LOG_CMDLINE = "linkcheck.cmdline"
 LOG_CHECK = "linkcheck.check"
+LOG_DNS = "linkcheck.dns"
 LOG_CACHE = "linkcheck.cache"
 LOG_GUI = "linkcheck.gui"
 LOG_THREAD = "linkcheck.thread"
@@ -41,6 +42,7 @@ lognames = {
     "checking": LOG_CHECK,
     "cache": LOG_CACHE,
     "gui": LOG_GUI,
+    "dns": LOG_DNS,
     "thread": LOG_THREAD,
     "all": LOG,
     }

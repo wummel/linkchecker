@@ -3,6 +3,11 @@
   * Updated documentation for the HTML parser.
     Type: feature
     Changed: linkcheck/HtmlParser/*
+    
+  * Added new DNS debug level and use it for DNS routines.
+    Type: feature
+    Changed: linkcheck/__init__.py, doc/en/linkchecker.1,
+      linkcheck/dns/{ifconfig,resolver}.py
 
 3.0 "The Jacket" (released 8.7.2005)
 
