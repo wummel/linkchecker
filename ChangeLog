@@ -1,3 +1,9 @@
+3.1 "" (released xx.xx.xxxx)
+
+  * Updated documentation for the HTML parser.
+    Type: feature
+    Changed: linkcheck/HtmlParser/*
+
 3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.
