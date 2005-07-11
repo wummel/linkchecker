@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-05-22 20:44+0200\n"
-"PO-Revision-Date: 2005-05-23 17:52+0100\n"
+"POT-Creation-Date: 2005-07-11 17:38+0200\n"
+"PO-Revision-Date: 2005-07-11 17:39+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@debian.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -329,8 +329,8 @@ msgstr "B<-D>I<NAME>, B<--debug=>I<NAME>"
 
 # type: Plain text
 #: en/linkchecker.1:149
-msgid "Print debugging output for the given logger.  Available loggers are B<cmdline>, B<checking>, B<cache>, B<gui> and B<all>.  Specifying B<all> is an alias for specifying all available loggers.  The option can be given multiple times to debug with more than one logger.  For accurate results, threading and the psyco optimization module will be disabled during debug runs."
-msgstr "Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind B<cmdline>, B<checking>,B<cache>, B<gui> and B<all>. Die Angabe B<all> ist ein Synonym für alle verfügbaren Logger. Diese Option kann mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um akkurate Ergebnisse zu erzielen, werden Threads und die psyco Laufzeitkompilierung während Testdurchläufen deaktiviert."
+msgid "Print debugging output for the given logger.  Available loggers are B<cmdline>, B<checking>, B<cache>, B<gui>, B<dns> and B<all>.  Specifying B<all> is an alias for specifying all available loggers.  The option can be given multiple times to debug with more than one logger.  For accurate results, threading and the psyco optimization module will be disabled during debug runs."
+msgstr "Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind B<cmdline>, B<checking>,B<cache>, B<gui>, B<dns> und B<all>. Die Angabe B<all> ist ein Synonym für alle verfügbaren Logger. Diese Option kann mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um akkurate Ergebnisse zu erzielen, werden Threads und die psyco Laufzeitkompilierung während Testdurchläufen deaktiviert."
 
 # type: TP
 #: en/linkchecker.1:149
