@@ -23,6 +23,8 @@ import os
 import urlparse
 import urllib
 
+urlparse.uses_netloc.append('ldap')
+
 # constants defining url part indexes
 SCHEME = 0
 HOSTNAME = DOMAIN = 1
@@ -229,7 +231,9 @@ def url_fix_host (urlparts):
             userpass += "@"
         else:
             userpass = ""
-        host, port = urllib.splitnport(host)
+        newhost, port = urllib.splitnport(host)
+        if port is not None:
+            host = newhost
         # remove trailing dot
         if host.endswith("."):
             host = host[:-1]
@@ -301,18 +305,18 @@ def url_norm (url):
     is_idn = url_fix_host(urlparts)
     # query
     urlparts[3] = url_parse_query(urlparts[3])
-    if not urlparts[2]:
-        # empty path is allowed if url is non-hierarchical, or if both
-        # query and fragment are also empty
-        # note that in relative links, urlparts[0] might be empty
-        # in this case, do not make any assumptions
-        if urlparts[0] and \
-           urlparts[0] not in urlparse.non_hierarchical and \
-           (urlparts[3] or urlparts[4]):
-            urlparts[2] = '/'
-    else:
-        # fix redundant path parts
-        urlparts[2] = collapse_segments(urlparts[2])
+    is_hierarchical = urlparts[0] not in urlparse.non_hierarchical
+    if is_hierarchical:
+        # URL has a hierarchical path we should norm
+        if not urlparts[2]:
+            # Empty path is allowed if both query and fragment are also empty.
+            # Note that in relative links, urlparts[0] might be empty.
+            # In this case, do not make any assumptions.
+            if urlparts[0] and (urlparts[3] or urlparts[4]):
+                urlparts[2] = '/'
+        else:
+            # fix redundant path parts
+            urlparts[2] = collapse_segments(urlparts[2])
     # quote parts again
     urlparts[0] = urllib.quote(urlparts[0]) # scheme
     urlparts[1] = urllib.quote(urlparts[1], '@:') # host
