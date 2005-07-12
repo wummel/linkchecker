@@ -658,7 +658,7 @@ class HTTPConnection:
         try:
             self.sock.sendall(str)
         except socket.error, v:
-            if v[0] == 32:      # Broken pipe
+            if v[0] == errno.EPIPE:
                 self.close()
             raise
 
@@ -805,7 +805,7 @@ class HTTPConnection:
             self._send_request(method, url, body, headers)
         except socket.error, v:
             # trap 'Broken pipe' if we're allowed to automatically reconnect
-            if v[0] != 32 or not self.auto_open:
+            if v[0] != errno.EPIPE or not self.auto_open:
                 raise
             # try one more time
             self._send_request(method, url, body, headers)
