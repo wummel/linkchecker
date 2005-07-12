@@ -51,7 +51,7 @@ Requirements for Windows
    Be sure to install in the given order:
    
    a) MingGW
-      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-3.1.0-1.exe]
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-4.1.0.exe]
    b) MSYS
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
 
