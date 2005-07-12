@@ -55,6 +55,7 @@ class GzipFile:
     """
 
     myfileobj = None
+    max_read_chunk = 10 * 1024 * 1024   # 10Mb
 
     def __init__(self, filename=None, mode=None,
                  compresslevel=9, fileobj=None):
@@ -215,14 +216,14 @@ class GzipFile:
             try:
                 while True:
                     self._read(readsize)
-                    readsize = readsize * 2
+                    readsize = min(self.max_read_chunk, readsize * 2)
             except EOFError:
                 size = self.extrasize
         else:               # just get some more of it
             try:
                 while size > self.extrasize:
                     self._read(readsize)
-                    readsize = readsize * 2
+                    readsize = min(self.max_read_chunk, readsize * 2)
             except EOFError:
                 if size > self.extrasize:
                     size = self.extrasize
@@ -336,7 +337,10 @@ class GzipFile:
             return
         self.close()
 
-    def flush(self):
+    def flush(self,zlib_mode=zlib.Z_SYNC_FLUSH):
+        if self.mode == WRITE:
+            # Ensure the compressor's buffer is flushed
+            self.fileobj.write(self.compress.flush(zlib_mode))
         self.fileobj.flush()
 
     def fileno(self):
