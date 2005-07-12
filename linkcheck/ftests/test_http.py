@@ -31,8 +31,8 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
     """
 
     def test_html (self):
-        self.start_server(handler=RedirectHttpRequestHandler)
         try:
+            self.start_server(handler=RedirectHttpRequestHandler)
             url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
                   self.port
             resultlines = self.get_resultlines("http.html")
