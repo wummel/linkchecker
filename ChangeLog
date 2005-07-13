@@ -15,6 +15,14 @@
     Changed: linkchecker, linkcheck/checker/*.py,
       linkcheck/configuration.py
 
+  * Add compatibility fix for HTTP/0.9 servers, from Python CVS.
+    Type: bugfix
+    Changed: linkcheck/httplib2.py
+
+  * Add buffer flush fix for gzip files, from Python CVS.
+    Type: bugfix
+    Changed: linkcheck/gzip2.py
+
 3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.
