@@ -77,6 +77,7 @@ class Configuration (dict):
         self['trace'] = False
         self["verbose"] = False
         self["warnings"] = True
+        self["ignorewarnings"] = []
         self['quiet'] = False
         self["anchors"] = False
         self["anchorcaching"] = True
@@ -270,18 +271,10 @@ class Configuration (dict):
                     except ConfigParser.Error, msg:
                         linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
                 try:
-                    self[key]['parts'] = [f.strip() \
-                            for f in cfgparser.get(key, 'parts').split(',')]
+                    self[key]['parts'] = [f.strip() for f in \
+                         cfgparser.get(key, 'parts').split(',')]
                 except ConfigParser.Error, msg:
                     linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            logger = cfgparser.get(section, "log")
-            if linkcheck.Loggers.has_key(logger):
-                self['logger'] = self.logger_new(logger)
-            else:
-                linkcheck.log.warn(_("invalid log option %r"), logger)
-        except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error, msg:
@@ -300,6 +293,14 @@ class Configuration (dict):
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["status"] = cfgparser.getboolean(section, "status")
+        except ConfigParser.Error, msg:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            logger = cfgparser.get(section, "log")
+            if linkcheck.Loggers.has_key(logger):
+                self['logger'] = self.logger_new(logger)
+            else:
+                linkcheck.log.warn(_("invalid log option %r"), logger)
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -418,6 +419,11 @@ class Configuration (dict):
                 self["externlinks"].append(
                     linkcheck.get_link_pat(ctuple[0], strict=0))
                 i += 1
+        except ConfigParser.Error, msg:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self['ignorewarnings'] = [f.strip() for f in \
+                 cfgparser.get(section, 'ignorewarnings').split(',')]
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:

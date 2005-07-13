@@ -144,6 +144,10 @@
 # value is a regular expression
 #noproxy1=*\.intra
 #noproxy2=.*myinternurl.*
+# Ignore specified warnings (see linkchecker -h for the list of
+# recognized warnings). Add a comma-separated list of warnings here
+# you want to be ignored by the output loggers.
+#ignorewarnings=url-not-normed,url-unicode-domain,anchor-not-found
 
 # You can provide different user/password pairs for different link types.
 # Entries are a triple (link regular expression, username, password),

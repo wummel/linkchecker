@@ -70,22 +70,22 @@ Usage = _("""USAGE\tlinkchecker [options] file-or-url...
 """)
 
 Notes = _("""NOTES
-o URLs on the command line starting with "ftp." are treated like
-  "ftp://ftp.", URLs starting with "www." are treated like "http://www.".
-  You can also give local files as arguments.
-o If you have your system configured to automatically establish a
-  connection to the internet (e.g. with diald), it will connect when
-  checking links not pointing to your local system.
-  See the --ignore-url option on how to prevent this.
-o Javascript links are currently ignored.
-o If your platform does not support threading, LinkChecker disables it
-  automatically.
-o You can supply multiple user/password pairs in a configuration file.
-o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
-  on Unix or Windows.
-  On a Mac use the Internet Config.
-o When checking 'news:' links the given NNTP host doesn't need to be the
-  same as the host of the user browsing your pages.
+ o URLs on the command line starting with "ftp." are treated like
+   "ftp://ftp.", URLs starting with "www." are treated like "http://www.".
+   You can also give local files as arguments.
+ o If you have your system configured to automatically establish a
+   connection to the internet (e.g. with diald), it will connect when
+   checking links not pointing to your local system.
+   See the --ignore-url option on how to prevent this.
+ o Javascript links are currently ignored.
+ o If your platform does not support threading, LinkChecker disables it
+   automatically.
+ o You can supply multiple user/password pairs in a configuration file.
+ o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
+   on Unix or Windows.
+   On a Mac use the Internet Config.
+ o When checking 'news:' links the given NNTP host doesn't need to be the
+   same as the host of the user browsing your pages.
 """)
 
 RegularExpressions = _("""REGULAR EXPRESSIONS
@@ -128,7 +128,7 @@ You can skip the "ftp://" url part if the domain starts with "ftp.":
   linkchecker -r0 ftp.linux.org
 """)
 
-Logertypes = _(r"""OUTPUT TYPES
+LoggerTypes = _(r"""OUTPUT TYPES
 Note that by default only errors and warnings are logged.
 
 text    Standard text output, logging URLs in keyword: argument fashion.
@@ -150,6 +150,12 @@ blacklist
 none    Logs nothing. Suitable for scripts.
 """)
 
+Warnings = _(r"""IGNORE WARNINGS
+The following warnings are recognized in the ignorewarnings config
+file entry:
+""")
+for tag, desc in linkcheck.checker.Warnings.items():
+    Warnings += " o %s%s   %s%s" % (tag, os.linesep, desc, os.linesep)
 
 def encode (s, codec="iso8859-15"):
     """
@@ -287,8 +293,8 @@ class LCOptionParser (optparse.OptionParser, object):
         """
         Print translated help text.
         """
-        s = u"%s\n%s\n%s\n%s\n%s" % (self.format_help(), RegularExpressions,
-                                     Notes, Retval, Examples)
+        s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
+           Examples, LoggerTypes, RegularExpressions, Notes, Retval, Warnings)
         s = s.encode("iso-8859-1", "replace")
         if os.name != 'posix':
             linkcheck.strformat.paginate(s)

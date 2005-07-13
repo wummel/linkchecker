@@ -199,7 +199,7 @@ class Logger (object):
         self.number += 1
         if not url_data.valid:
             self.errors += 1
-        self.warnings += len(url_data.warning)
+        self.warnings += len(url_data.warnings)
         if do_print:
             self.log_url(url_data)
 

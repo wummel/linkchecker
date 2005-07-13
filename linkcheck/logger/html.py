@@ -132,7 +132,7 @@ class HtmlLogger (linkcheck.logger.Logger):
             self.write_checktime(url_data)
         if url_data.info and self.has_part("info"):
             self.write_info(url_data)
-        if url_data.warning and self.has_part("warning"):
+        if url_data.warnings and self.has_part("warning"):
             self.write_warning(url_data)
         if self.has_part("result"):
             self.write_result(url_data)
@@ -249,10 +249,10 @@ class HtmlLogger (linkcheck.logger.Logger):
 
     def write_warning (self, url_data):
         """
-        Write url_data.warning.
+        Write url_data.warnings.
         """
         sep = u"<br>"+os.linesep
-        text = sep.join([cgi.escape(x) for x in url_data.warning])
+        text = sep.join([cgi.escape(x[1]) for x in url_data.warnings])
         self.writeln(u"<tr><td bgcolor=\""+self.colorwarning+u"\" "+
                      u"valign=\"top\">"+self.part("warning")+
                      u"</td><td bgcolor=\""+self.colorwarning+u"\">"+

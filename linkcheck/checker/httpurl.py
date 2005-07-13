@@ -134,7 +134,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if not self.allows_robots(self.url):
             # remove all previously stored results
             self.add_warning(
-                       _("Access denied by robots.txt, checked only syntax."))
+                       _("Access denied by robots.txt, checked only syntax."),
+                       linkcheck.checker.WARN_HTTP_ROBOTS_DENIED)
             self.set_result(u"syntax OK")
             return
         # check for amazon server quirk
@@ -156,7 +157,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                             "a GET request was used instead.") % server)
         if self.no_anchor:
             self.add_warning(_("Server %r had no anchor support, removed"\
-                               " anchor from request.") % server)
+                               " anchor from request.") % server,
+                             linkcheck.checker.WARN_HTTP_NO_ANCHOR_SUPPORT)
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
@@ -292,7 +294,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
                 self.add_warning(
-                       _("Access denied by robots.txt, checked only syntax."))
+                       _("Access denied by robots.txt, checked only syntax."),
+                       tag="http-robots-denied")
                 self.set_result(u"syntax OK")
                 return -1, response
             # see about recursive redirect
@@ -315,7 +318,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if not self.has301status:
                     self.add_warning(
                            _("HTTP 301 (moved permanent) encountered: you"
-                             " should update this link."))
+                             " should update this link."),
+                           tag="http-moved-permanent")
                     self.has301status = True
             # check cache again on the changed URL
             if self.consumer.checked_redirect(redirected, self):
@@ -325,7 +329,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if self.urlparts[0] != "http":
                 self.add_warning(
                            _("HTTP redirection to non-http url encountered; "
-                             "the original url was %r.") % self.url)
+                             "the original url was %r.") % self.url,
+                           tag="http-wrong-redirect")
                 # make new Url object
                 newobj = linkcheck.checker.get_url_from(
                           redirected, self.recursion_level, self.consumer,
@@ -354,7 +359,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if response.status == 204:
                 # no content
                 self.add_warning(
-                            linkcheck.strformat.unicode_safe(response.reason))
+                            linkcheck.strformat.unicode_safe(response.reason),
+                            tag="http-empty-content")
             # store cookies for valid links
             if self.consumer.config('cookies'):
                 for c in self.cookies:
@@ -366,7 +372,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                         self.add_info(linkcheck.strformat.unicode_safe(h))
                 except Cookie.CookieError, msg:
                     self.add_warning(_("Could not store cookies: %(msg)s.") %
-                                     {'msg': str(msg)})
+                                     {'msg': str(msg)},
+                                     tag="http-cookie-store-error")
             if response.status >= 200:
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
@@ -485,7 +492,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                           StringIO.StringIO(self.data))
                 except zlib.error, msg:
                     self.add_warning(_("Decompress error %(err)s") % \
-                                     {"err": str(msg)})
+                                     {"err": str(msg)},
+                                     tag="http-decompress-error")
                     f = StringIO.StringIO(self.data)
                 self.data = f.read()
             self.downloadtime = time.time() - t
@@ -506,7 +514,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
-            self.add_warning(_('Unsupported content encoding %r.') % encoding)
+            self.add_warning(_('Unsupported content encoding %r.') % encoding,
+                             tag="http-unsupported-encoding")
             return False
         return True
 
@@ -534,7 +543,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
-            self.add_warning(_('Unsupported content encoding %r.') % encoding)
+            self.add_warning(_('Unsupported content encoding %r.') % encoding,
+                             tag="http-unsupported-encoding")
             return False
         return True
 

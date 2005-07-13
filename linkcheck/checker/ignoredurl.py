@@ -33,7 +33,8 @@ class IgnoredUrl (urlbase.UrlBase):
         if self.extern[0] and self.extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
         else:
-            self.add_warning(_("%s URL ignored.") % self.scheme.capitalize())
+            self.add_warning(_("%s URL ignored.") % self.scheme.capitalize(),
+                             tag="ignore-url")
 
     def can_get_content (self):
         """

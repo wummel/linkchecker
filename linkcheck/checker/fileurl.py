@@ -116,7 +116,8 @@ class FileUrl (urlbase.UrlBase):
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
         if self.is_directory() and not self.urlparts[2].endswith('/'):
-            self.add_warning(_("Added trailing slash to directory."))
+            self.add_warning(_("Added trailing slash to directory."),
+                           tag="file-missing-slash")
             self.urlparts[2] += '/'
         self.url = urlparse.urlunsplit(self.urlparts)
 
@@ -144,7 +145,8 @@ class FileUrl (urlbase.UrlBase):
         if path != realpath:
             self.add_warning(_("The URL path %r is not the same as the " \
                                "system path %r. You should always use " \
-                               "the system path in URLs.") % (path, realpath))
+                               "the system path in URLs.") % (path, realpath),
+                               tag="file-system-path")
         pass
 
     def get_content (self):

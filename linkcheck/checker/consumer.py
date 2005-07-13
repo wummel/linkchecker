@@ -31,7 +31,7 @@ import linkcheck.lock
 import linkcheck.strformat
 import linkcheck.checker.geoip
 from linkcheck.decorators import synchronized
-from urlbase import stderr
+from linkcheck.checker import stderr
 
 # global lock for synchronizing all the checker threads
 _lock = thread.allocate_lock()
@@ -200,8 +200,13 @@ class Consumer (object):
         """
         Send new url to all configured loggers.
         """
+        has_warnings = False
+        for tag, content in url_data.warnings:
+            if tag not in self._config["ignorewarnings"]:
+                has_warnings = True
+                break
         do_print = self._config["verbose"] or not url_data.valid or \
-            (url_data.warning and self._config["warnings"])
+            (has_warnings and self._config["warnings"])
         self._config['logger'].log_filter_url(url_data, do_print)
         for log in self._config['fileoutput']:
             log.log_filter_url(url_data, do_print)

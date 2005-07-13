@@ -24,61 +24,18 @@ import urlparse
 import urllib2
 import urllib
 import time
-import traceback
 import socket
 import select
-import codecs
+import traceback
 
 import linkcheck
 import linkcheck.linkparse
+import linkcheck.checker
 import linkcheck.strformat
 import linkcheck.containers
 import linkcheck.log
 import linkcheck.httplib2
 import linkcheck.HtmlParser.htmlsax
-
-
-stderr = codecs.getwriter("iso8859-1")(sys.stderr, errors="ignore")
-
-def internal_error ():
-    """
-    Print internal error message to stderr.
-    """
-    print >> stderr, os.linesep
-    print >> stderr, _("""********** Oops, I did it again. *************
-
-You have found an internal error in LinkChecker. Please write a bug report
-at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
-or send mail to %s and include the following information:
-- the URL or file you are testing
-- your commandline arguments and/or configuration.
-- the output of a debug run with option "-Dall" of the executed command
-- the system information below.
-
-Disclosing some of the information above due to privacy reasons is ok.
-I will try to help you nonetheless, but you have to give me something
-I can work with ;) .
-""") % linkcheck.configuration.Email
-    etype, value = sys.exc_info()[:2]
-    print >> stderr, etype, value
-    traceback.print_exc()
-    print_app_info()
-    print >> stderr, os.linesep, \
-            _("******** LinkChecker internal error, over and out ********")
-    sys.exit(1)
-
-
-def print_app_info ():
-    """
-    Print system and application info to stderr.
-    """
-    print >> stderr, _("System info:")
-    print >> stderr, linkcheck.configuration.App
-    print >> stderr, _("Python %s on %s") % (sys.version, sys.platform)
-    for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
-        value = os.getenv(key)
-        if value is not None:
-            print >> stderr, key, "=", repr(value)
 
 
 def urljoin (parent, url, scheme):
@@ -160,7 +117,7 @@ class UrlBase (object):
         # valid or not
         self.valid = True
         # list of warnings (without duplicates)
-        self.warning = linkcheck.containers.SetList()
+        self.warnings = linkcheck.containers.SetList()
         # list of infos (without duplicates)
         self.info = linkcheck.containers.SetList()
         # download time
@@ -217,11 +174,11 @@ class UrlBase (object):
         """
         return False
 
-    def add_warning (self, s):
+    def add_warning (self, s, tag=None):
         """
         Add a warning string.
         """
-        self.warning.append(s)
+        self.warnings.append((tag, s))
 
     def add_info (self, s):
         """
@@ -234,7 +191,7 @@ class UrlBase (object):
         Fill attributes from cache data.
         """
         self.result = cache_data["result"]
-        self.warning.extend(cache_data["warning"])
+        self.warnings.extend(cache_data["warnings"])
         self.info.extend(cache_data["info"])
         self.valid = cache_data["valid"]
         self.dltime = cache_data["dltime"]
@@ -246,7 +203,7 @@ class UrlBase (object):
         Return all data values that should be put in the cache.
         """
         return {"result": self.result,
-                "warning": self.warning,
+                "warnings": self.warnings,
                 "info": self.info,
                 "valid": self.valid,
                 "dltime": self.dltime,
@@ -297,7 +254,8 @@ class UrlBase (object):
             # check url warnings
             effectiveurl = urlparse.urlunsplit(self.urlparts)
             if self.url != effectiveurl:
-                self.add_warning(_("Effective URL %r.") % effectiveurl)
+                self.add_warning(_("Effective URL %r.") % effectiveurl,
+                                 tag="url-effective-url")
                 self.url = effectiveurl
         except linkcheck.LinkCheckerError, msg:
             self.set_result(linkcheck.strformat.unicode_safe(msg),
@@ -315,11 +273,12 @@ class UrlBase (object):
         if is_idn:
             self.add_warning(_("""URL %r has a unicode domain name which
                           is not yet widely supported. You should use
-                          the URL %r instead.""") % (self.base_url, base_url))
+                          the URL %r instead.""") % (self.base_url, base_url),
+                          tag="url-unicode-domain")
         elif self.base_url != base_url:
             self.add_warning(
               _("Base URL is not properly normed. Normed URL is %(url)s.") % \
-               {'url': base_url})
+               {'url': base_url}, tag="url-unnormed")
         # make url absolute
         if self.base_ref:
             # use base reference as parent url
@@ -384,7 +343,7 @@ class UrlBase (object):
             raise
         except:
             self.consumer.interrupted(self)
-            internal_error()
+            linkcheck.checker.internal_error()
 
     def add_country_info (self):
         """
@@ -541,7 +500,8 @@ class UrlBase (object):
         for cur_anchor, line, column, name, base in h.urls:
             if cur_anchor == self.anchor:
                 return
-        self.add_warning(_("Anchor #%s not found.") % self.anchor)
+        self.add_warning(_("Anchor #%s not found.") % self.anchor,
+                         tag="url-anchor-not-found")
 
     def set_extern (self, url):
         """
@@ -596,7 +556,8 @@ class UrlBase (object):
             return
         match = warningregex.search(self.get_content())
         if match:
-            self.add_warning(_("Found %r in link contents.") % match.group())
+            self.add_warning(_("Found %r in link contents.") % match.group(),
+                             tag="url-warnregex-found")
 
     def check_size (self):
         """
@@ -607,7 +568,8 @@ class UrlBase (object):
         if maxbytes is not None and self.dlsize >= maxbytes:
             self.add_warning(_("Content size %s is larger than %s.") % \
                          (linkcheck.strformat.strsize(self.dlsize),
-                          linkcheck.strformat.strsize(maxbytes)))
+                          linkcheck.strformat.strsize(maxbytes)),
+                          tag="url-content-too-large")
 
     def parse_url (self):
         """

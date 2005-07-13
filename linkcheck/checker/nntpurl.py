@@ -43,7 +43,8 @@ class NntpUrl (urlbase.UrlBase):
         nntpserver = self.host or self.consumer.config("nntpserver")
         if not nntpserver:
             self.add_warning(
-                    _("No NNTP server was specified, skipping this URL."))
+                    _("No NNTP server was specified, skipping this URL."),
+                    tag="nntp-no-server")
             return
         nntp = self._connect_nntp(nntpserver)
         group = self.urlparts[2]
@@ -62,7 +63,8 @@ class NntpUrl (urlbase.UrlBase):
                 self.add_info(_("News group %s found.") % name)
             else:
                 # group name is the empty string
-                self.add_warning(_("No newsgroup specified in NNTP URL."))
+                self.add_warning(_("No newsgroup specified in NNTP URL."),
+                            tag="nttp-no-newsgroup")
 
     def _connect_nntp (self, nntpserver):
         """
@@ -86,7 +88,8 @@ class NntpUrl (urlbase.UrlBase):
             raise linkcheck.LinkCheckerError, \
                _("NTTP server too busy; tried more than %d times.") % tries
         if value is not None:
-            self.add_warning(_("NNTP busy: %s.") % str(value))
+            self.add_warning(_("NNTP busy: %s.") % str(value),
+                             tag="nttp-busy")
         return nntp
 
     def can_get_content (self):

@@ -23,6 +23,8 @@ import sys
 import os
 import cgi
 import socket
+import codecs
+import traceback
 import select
 import re
 import urllib
@@ -59,6 +61,43 @@ ExcList = [
     ftplib.error_perm,
     ftplib.error_proto,
 ]
+
+# registered warnings
+Warnings = {
+    "url-effective-url":
+        _("The effective URL is different from the original."),
+    "url-unicode-domain": _("URL uses a unicode domain."),
+    "url-unnormed": _("URL is not normed."),
+    "url-anchor-not-found": _("URL anchor was not found."),
+    "url-warnregex-found":
+        _("The warning regular expression was found in the URL contents."),
+    "url-content-too-large": _("The URL content is too large."),
+    "file-missing-slash": _("The file: URL is missing a trailing slash."),
+    "file-system-path":
+        _("The file: path is not the same as the system specific path."),
+    "ftp-missing-slash": _("The ftp: URL is missing a trailing slash."),
+    "http-robots-denied": _("The http: URL checking has been denied."),
+    "http-no-anchor-support": _("The HTTP server had no anchor support."),
+    "http-moved-permanent": _("The URL has moved permanently."),
+    "http-wrong-redirect":
+        _("The URL has been redirected to an URL of a different type."),
+    "http-empty-content": _("The URL had no content."),
+    "http-cookie-store-error": _("An error occurred while storing a cookie."),
+    "http-decompress-error":
+        _("An error occurred while decompressing the URL content."),
+    "http-unsupported-encoding":
+        _("The URL content is encoded with an unknown encoding."),
+    "ignored-url": _("The URL has been ignored."),
+    "mail-no-addresses": _("The mailto: URL contained no addresses."),
+    "mail-no-mx-host": _("The mail MX host could not be found."),
+    "mail-unverified-address":
+        _("The mailto: address could not be verified."),
+    "mail-no-connection":
+        _("No connection to a MX host could be established."),
+    "nntp-no-server": _("No NNTP server was found."),
+    "nntp-no-newsgroup": _("The NNTP newsgroup could not be found."),
+    "nntp-busy": _("The NNTP server was busy."),
+}
 
 ignored_schemes = r"""^(
 acap        # application configuration access protocol
@@ -98,6 +137,48 @@ acap        # application configuration access protocol
 ):"""
 
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
+
+stderr = codecs.getwriter("iso8859-1")(sys.stderr, errors="ignore")
+
+def internal_error ():
+    """
+    Print internal error message to stderr.
+    """
+    print >> stderr, os.linesep
+    print >> stderr, _("""********** Oops, I did it again. *************
+
+You have found an internal error in LinkChecker. Please write a bug report
+at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
+or send mail to %s and include the following information:
+- the URL or file you are testing
+- your commandline arguments and/or configuration.
+- the output of a debug run with option "-Dall" of the executed command
+- the system information below.
+
+Disclosing some of the information above due to privacy reasons is ok.
+I will try to help you nonetheless, but you have to give me something
+I can work with ;) .
+""") % linkcheck.configuration.Email
+    etype, value = sys.exc_info()[:2]
+    print >> stderr, etype, value
+    traceback.print_exc()
+    print_app_info()
+    print >> stderr, os.linesep, \
+            _("******** LinkChecker internal error, over and out ********")
+    sys.exit(1)
+
+
+def print_app_info ():
+    """
+    Print system and application info to stderr.
+    """
+    print >> stderr, _("System info:")
+    print >> stderr, linkcheck.configuration.App
+    print >> stderr, _("Python %s on %s") % (sys.version, sys.platform)
+    for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
+        value = os.getenv(key)
+        if value is not None:
+            print >> stderr, key, "=", repr(value)
 
 
 def abort (consumer):

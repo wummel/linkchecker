@@ -129,7 +129,7 @@ class TextLogger (linkcheck.logger.Logger):
             self.write_checktime(url_data)
         if url_data.info and self.has_part('info'):
             self.write_info(url_data)
-        if url_data.warning and self.has_part('warning'):
+        if url_data.warnings and self.has_part('warning'):
             self.write_warning(url_data)
         if self.has_part('result'):
             self.write_result(url_data)
@@ -213,7 +213,8 @@ class TextLogger (linkcheck.logger.Logger):
         Write url_data.warning.
         """
         self.write(self.part("warning") + self.spaces("warning"))
-        self.writeln(self.wrap(url_data.warning, 65), color=self.colorwarning)
+        log_warnings = [x[1] for x in url_data.warnings]
+        self.writeln(self.wrap(log_warnings, 65), color=self.colorwarning)
 
     def write_result (self, url_data):
         """

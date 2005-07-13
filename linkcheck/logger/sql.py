@@ -95,6 +95,7 @@ class SQLLogger (linkcheck.logger.Logger):
         """
         if self.fd is None:
             return
+        log_warnings = [x[1] for x in url_data.warnings]
         self.writeln(u"insert into %(table)s(urlname,recursionlevel,"
               "parentname,baseref,valid,result,warning,info,url,line,col,"
               "name,checktime,dltime,dlsize,cached) values ("
@@ -122,7 +123,7 @@ class SQLLogger (linkcheck.logger.Logger):
                'base_ref': sqlify((url_data.base_ref or u"")),
                'valid': intify(url_data.valid),
                'result': sqlify(url_data.result),
-               'warning': sqlify(os.linesep.join(url_data.warning)),
+               'warning': sqlify(os.linesep.join(log_warnings)),
                'info': sqlify(os.linesep.join(url_data.info)),
                'url': sqlify(linkcheck.url.url_quote(url_data.url or u"")),
                'line': url_data.line,

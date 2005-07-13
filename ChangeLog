@@ -9,6 +9,12 @@
     Changed: linkcheck/__init__.py, doc/en/linkchecker.1,
       linkcheck/dns/{ifconfig,resolver}.py
 
+  * Use tags for different LinkChecker warnings and allow them to
+    be filtered with a configuration file entry.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/*.py,
+      linkcheck/configuration.py
+
 3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.

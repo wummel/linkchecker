@@ -102,7 +102,7 @@ class CSVLogger (linkcheck.logger.Logger):
         for s in [url_data.base_url or u"", url_data.recursion_level,
                url_data.parent_url or u"", url_data.base_ref or u"",
                url_data.result,
-               os.linesep.join(url_data.warning),
+               os.linesep.join([x[1] for x in url_data.warnings]),
                os.linesep.join(url_data.info),
                url_data.valid, url_data.url or u"",
                url_data.line, url_data.column,

@@ -142,7 +142,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if "%s/" % self.filename in files:
             if not self.url.endswith('/'):
                 self.add_warning(
-                         _("Missing trailing directory slash in ftp url."))
+                         _("Missing trailing directory slash in ftp url."),
+                         tag="ftp-missing-slash")
                 self.url += '/'
             return
         raise ftplib.error_perm, "550 File not found"
