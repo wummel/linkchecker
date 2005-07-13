@@ -135,7 +135,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # remove all previously stored results
             self.add_warning(
                        _("Access denied by robots.txt, checked only syntax."),
-                       linkcheck.checker.WARN_HTTP_ROBOTS_DENIED)
+                       tag="http-robots-denied")
             self.set_result(u"syntax OK")
             return
         # check for amazon server quirk
@@ -158,7 +158,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.no_anchor:
             self.add_warning(_("Server %r had no anchor support, removed"\
                                " anchor from request.") % server,
-                             linkcheck.checker.WARN_HTTP_NO_ANCHOR_SUPPORT)
+                             tag="http-no-anchor-support")
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
