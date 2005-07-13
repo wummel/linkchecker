@@ -1,8 +1,5 @@
 Possible improvements people could work on:
 
-- [FEATURE] Assign numbers to warnings and let the user configure which to
-  ignore.
-
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
   the broken anchor name is not displayed as a warning
 
