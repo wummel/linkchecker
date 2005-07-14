@@ -144,9 +144,15 @@ class UrlBase (object):
         """
         if self.has_result:
             linkcheck.log.warn(linkcheck.LOG_CHECK,
-                  "Double result %r (previous %r)", msg, self.result)
+              "Double result %r (previous %r) for %s", msg, self.result, self)
         else:
             self.has_result = True
+        if not isinstance(msg, unicode):
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                               "Non-unicode result for %s: %r", self, msg)
+        elif not msg:
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                               "Empty result for %s", self)
         self.result = msg
         self.valid = valid
 
