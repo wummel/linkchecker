@@ -24,6 +24,7 @@ import urlparse
 import urllib2
 import urllib
 import time
+import errno
 import socket
 import select
 import traceback
