@@ -25,6 +25,7 @@ import urlparse
 import httplib
 import urllib
 import urllib2
+import time
 import socket
 import re
 import sys
@@ -33,7 +34,6 @@ import gzip
 import cStringIO as StringIO
 import linkcheck
 import linkcheck.configuration
-import linkcheck.httplib2
 
 __all__ = ["RobotFileParser"]
 
@@ -133,7 +133,6 @@ class RobotFileParser (object):
 
         @return: None
         """
-        import time
         self.last_checked = time.time()
 
     def set_url (self, url):
@@ -165,7 +164,7 @@ class RobotFileParser (object):
             urllib2.HTTPDefaultErrorHandler,
             urllib2.HTTPRedirectHandler,
         ]
-        if hasattr(linkcheck.httplib2, 'HTTPS'):
+        if hasattr(httplib, 'HTTPS'):
             handlers.append(HttpsWithGzipHandler)
         return urllib2.build_opener(*handlers)
 
@@ -499,7 +498,7 @@ class HttpWithGzipHandler (urllib2.HTTPHandler):
         return decode(urllib2.HTTPHandler.http_open(self, req))
 
 
-if hasattr(linkcheck.httplib2, 'HTTPS'):
+if hasattr(httplib, 'HTTPS'):
     class HttpsWithGzipHandler (urllib2.HTTPSHandler):
         """
         Support gzip encoding.
