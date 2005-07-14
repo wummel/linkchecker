@@ -38,13 +38,11 @@ import linkcheck.dns.exception
 
 # we catch these exceptions, all other exceptions are internal
 # or system errors
-ExcList = [
+ExcCacheList = [
     IOError,
     OSError, # OSError is thrown on Windows when a file is not found
-    ValueError, # from httplib.py
     linkcheck.LinkCheckerError,
     linkcheck.dns.exception.DNSException,
-    socket.timeout,
     socket.error,
     select.error,
     # nttp errors (including EOFError)
@@ -62,10 +60,20 @@ ExcList = [
     ftplib.error_proto,
 ]
 
+# Exceptions that do not put the URL in the cache so that the URL can
+# be checked again.
+ExcNoCacheList = [
+    socket.timeout,
+]
+
+ExcList = ExcCacheList + ExcNoCacheList
+
 # registered warnings
 Warnings = {
     "url-effective-url":
         _("The effective URL is different from the original."),
+    "url-error-getting-content":
+        _("Could not get the content of the URL."),
     "url-unicode-domain": _("URL uses a unicode domain."),
     "url-unnormed": _("URL is not normed."),
     "url-anchor-not-found": _("URL anchor was not found."),

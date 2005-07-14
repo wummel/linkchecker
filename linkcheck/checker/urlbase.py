@@ -137,6 +137,8 @@ class UrlBase (object):
         self.cache_content_key = None
         # extern flags (is_extern, is_strict), both enabled as default
         self.extern = (1, 1)
+        # flag if the result should be cached
+        self.caching = True
 
     def set_result (self, msg, valid=True):
         """
@@ -383,16 +385,14 @@ class UrlBase (object):
             if self.consumer.config("anchors"):
                 self.check_anchors()
         except tuple(linkcheck.checker.ExcList):
-            etype, evalue, etb = sys.exc_info()
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
-                                traceback.format_tb(etb))
+            value = self.handle_exception()
             # make nicer error msg for unknown hosts
-            if isinstance(evalue, socket.error) and evalue[0] == -2:
-                evalue = _('Hostname not found')
+            if isinstance(value, socket.error) and value[0] == -2:
+                value = _('Hostname not found')
             # make nicer error msg for bad status line
-            if isinstance(evalue, linkcheck.httplib2.BadStatusLine):
-                evalue = _('Bad HTTP response %r') % str(evalue)
-            self.set_result(linkcheck.strformat.unicode_safe(evalue),
+            if isinstance(value, linkcheck.httplib2.BadStatusLine):
+                value = _('Bad HTTP response %r') % str(value)
+            self.set_result(linkcheck.strformat.unicode_safe(value),
                             valid=False)
 
         # check content
@@ -402,9 +402,7 @@ class UrlBase (object):
             try:
                 self.check_content(warningregex)
             except tuple(linkcheck.checker.ExcList):
-                value, tb = sys.exc_info()[1:]
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
-                                    traceback.format_tb(tb))
+                value = self.handle_exception()
                 self.set_result(linkcheck.strformat.unicode_safe(value),
                                 valid=False)
 
@@ -419,11 +417,9 @@ class UrlBase (object):
             # check content size
             self.check_size()
         except tuple(linkcheck.checker.ExcList):
-            value, tb = sys.exc_info()[1:]
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
-                                traceback.format_tb(tb))
-            self.set_result(_("could not parse content: %r") % str(value),
-                            valid=False)
+            value = self.handle_exception()
+            self.add_warning(_("could not get content: %r") % str(value),
+                            tag="url-error-getting-content")
         # close
         self.close_connection()
 
@@ -440,6 +436,21 @@ class UrlBase (object):
             # ignore close errors
             pass
         self.url_connection = None
+
+    def handle_exception (self):
+        """
+        An exception occurred. Log it and set the cache flag.
+        """
+        etype, value, tb = sys.exc_info()
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
+                            traceback.format_tb(tb))
+        # note: etype must be the exact class, not a subclass
+        if (etype in linkcheck.checker.ExcNoCacheList) or \
+           (etype == socket.error and value[0]==errno.EBADF) or \
+            not value:
+            # EBADF occurs when operating on an already socket
+            self.caching = False
+        return value
 
     def check_connection (self):
         """

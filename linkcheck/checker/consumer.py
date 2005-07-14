@@ -114,7 +114,7 @@ class Consumer (object):
         # log before putting it in the cache (otherwise we would see
         # a "(cached)" after every url
         self._log_url(url_data)
-        if not url_data.cached:
+        if not url_data.cached and url_data.caching:
             self._cache.checked_add(url_data)
         else:
             self._cache.in_progress_remove(url_data)
