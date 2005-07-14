@@ -76,7 +76,7 @@ def udp(q, where, timeout=None, port=53, af=None):
     @param q: the query
     @type q: linkcheck.dns.message.Message
     @param where: where to send the message
-    @type where: string
+    @type where: string containing an IPv4 or IPv6 address
     @param timeout: The number of seconds to wait before the query times out.
     If None, the default, wait forever.
     @type timeout: float
@@ -156,7 +156,7 @@ def tcp(q, where, timeout=None, port=53, af=None):
     @param q: the query
     @type q: linkcheck.dns.message.Message object
     @param where: where to send the message
-    @type where: string
+    @type where: string containing an IPv4 or IPv6 address
     @param timeout: The number of seconds to wait before the query times out.
     If None, the default, wait forever.
     @type timeout: float
@@ -207,7 +207,7 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
     """Return a generator for the responses to a zone transfer.
 
     @param where: where to send the message
-    @type where: string
+    @type where: string containing an IPv4 or IPv6 address
     @param zone: The name of the zone to transfer
     @type zone: linkcheck.dns.name.Name object or string
     @param rdtype: The type of zone transfer.  The default is

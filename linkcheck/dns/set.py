@@ -224,6 +224,18 @@ class Set(object):
     def __iter__(self):
         return iter(self.items)
 
+    def __getitem__(self, i):
+        return self.items[i]
+
+    def __delitem__(self, i):
+        del self.items[i]
+
+    def __getslice__(self, i, j):
+        return self.items[i:j]
+
+    def __delslice__(self, i, j):
+        del self.items[i:j]
+
     def issubset(self, other):
         """Is I{self} a subset of I{other}?
 
