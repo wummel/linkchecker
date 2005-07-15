@@ -4,7 +4,7 @@ PYTHON := python$(PYVER)
 PACKAGE := linkchecker
 VERSION := $(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
-LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -v -r1 -t0
+LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -t0
 PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
 TESTFILES := $(wildcard linkcheck/tests/*.py linkcheck/ftests/*.py)
@@ -107,5 +107,6 @@ pylint:
 reindent:
 	$(PYTHON) config/reindent.py -r -v linkcheck
 
-.PHONY: all clean cleandeb distclean files upload test timeouttest locale
+.PHONY: all clean cleandeb dist distclean homepage files upload locale
 .PHONY: deb_local deb_signed tar releasecheck pycheck pylint reindent
+.PHONY: sign_distfiles
