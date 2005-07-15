@@ -1,6 +1,7 @@
 linkchecker (3.1-1) unstable; urgency=low
 
   * New upstream release.
+    - bogus errors are not cached anymore (Closes: #307877)
 
  -- Bastian Kleineidam <calvin@debian.org>  Mon, 11 Jul 2005 17:11:48 +0200
 
