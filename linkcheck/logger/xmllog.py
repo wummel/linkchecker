@@ -88,7 +88,7 @@ class XMLLogger (linkcheck.logger.Logger):
         """
         Write start of checking info as xml comment.
         """
-        # XXX wrap file with codecs
+        self.output_encoding = encoding
         self.starttime = time.time()
         self.writeln(u'<?xml version="%s" encoding="%s"?>' % \
                      (xmlquoteattr(version), xmlquoteattr(encoding)))
