@@ -130,17 +130,20 @@ You can skip the "ftp://" url part if the domain starts with "ftp.":
 
 LoggerTypes = _(r"""OUTPUT TYPES
 Note that by default only errors and warnings are logged.
+You should use the --verbose option to get the complete URL list,
+especially when outputting a sitemap graph format.
 
 text    Standard text output, logging URLs in keyword: argument fashion.
 html    Log URLs in keyword: argument fashion, formatted as HTML.
         Additionally has links to the referenced pages. Invalid URLs have
         HTML and CSS syntax check links appended.
 csv     Log check result in CSV format with one URL per line.
-gml     Log parent-child relations between linked URLs as a GML graph.
-        You should use the --verbose option to get a complete graph.
-dot     Log parent-child relations between linked URLs as a DOT graph.
-        You should use the --verbose option to get a complete graph.
-xml     Log check result as machine-readable XML file.
+gml     Log parent-child relations between linked URLs as a GML sitemap
+        graph.
+dot     Log parent-child relations between linked URLs as a DOT sitemap
+        graph.
+gxml    Log check result as a GraphXML sitemap graph.
+xml     Log check result as machine-readable XML.
 sql     Log check result as SQL script with INSERT commands. An example
         script to create the initial SQL table is included as create.sql.
 blacklist
