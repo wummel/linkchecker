@@ -732,12 +732,9 @@ msgstr "B<gml>"
 
 # type: Plain text
 #: en/linkchecker.1:237
-#, fuzzy
 msgid "Log parent-child relations between linked URLs as a GML sitemap graph."
 msgstr ""
-"Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als GML Graphen aus. "
-"Sie sollten die Option B<--verbose> benutzen, um einen vollständigen Graphen "
-"zu erhalten."
+"Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als GML Graphen aus."
 
 # type: TP
 #: en/linkchecker.1:237
@@ -747,24 +744,20 @@ msgstr "B<dot>"
 
 # type: Plain text
 #: en/linkchecker.1:240
-#, fuzzy
 msgid "Log parent-child relations between linked URLs as a DOT sitemap graph."
 msgstr ""
-"Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als DOT Graphen aus. "
-"Sie sollten die Option B<--verbose> benutzen, um einen vollständigen Graphen "
-"zu erhalten."
+"Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als DOT Graphen aus."
 
 # type: TP
 #: en/linkchecker.1:240
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "B<gxml>"
-msgstr "B<gml>"
+msgstr "B<gxml>"
 
 # type: Plain text
 #: en/linkchecker.1:243
-#, fuzzy
 msgid "Log check result as a GraphXML sitemap graph."
-msgstr "Gebe Prüfresultat als maschinenlesbare XML-Datei aus."
+msgstr "Gebe Prüfresultat als GraphXML-Datei aus."
 
 # type: TP
 #: en/linkchecker.1:243
@@ -774,7 +767,6 @@ msgstr "B<xml>"
 
 # type: Plain text
 #: en/linkchecker.1:246
-#, fuzzy
 msgid "Log check result as machine-readable XML."
 msgstr "Gebe Prüfresultat als maschinenlesbare XML-Datei aus."
 

@@ -53,114 +53,108 @@ msgstr "Status:"
 
 #: ../linkcheck/checker/__init__.py:74
 msgid "The effective URL is different from the original."
-msgstr ""
+msgstr "Die effektive URL unterscheidet sich vom Original."
 
 #: ../linkcheck/checker/__init__.py:76
 msgid "Could not get the content of the URL."
-msgstr ""
+msgstr "Konnte den Inhalt der URL nicht bekommen."
 
 #: ../linkcheck/checker/__init__.py:77
 msgid "URL uses a unicode domain."
-msgstr ""
+msgstr "Die URL benutzt eine Unicode Domäne."
 
 #: ../linkcheck/checker/__init__.py:78
-#, fuzzy
 msgid "URL is not normed."
-msgstr "%s URL ignoriert."
+msgstr "URL ist nicht genormt."
 
 #: ../linkcheck/checker/__init__.py:79
-#, fuzzy
 msgid "URL anchor was not found."
-msgstr "Anker #%s nicht gefunden."
+msgstr "URL Anker wurde nicht gefunden."
 
 #: ../linkcheck/checker/__init__.py:81
 msgid "The warning regular expression was found in the URL contents."
-msgstr ""
+msgstr "Der reguläre Ausdruck für Warnungen wurde in den URL Inhalten gefunden."
 
 #: ../linkcheck/checker/__init__.py:82
 msgid "The URL content is too large."
-msgstr ""
+msgstr "Der URL Inhalt ist zu groß."
 
 #: ../linkcheck/checker/__init__.py:83
 msgid "The file: URL is missing a trailing slash."
-msgstr ""
+msgstr "Der file: URL fehlt ein abschließender Schrägstrich."
 
 #: ../linkcheck/checker/__init__.py:85
-#, fuzzy
 msgid "The file: path is not the same as the system specific path."
 msgstr ""
-"Der URL Pfad %r ist nicht derselbe wie der Systempfad %r. Sie sollten immer "
-"den Systempfad in URLs benutzen."
+"Der file: Pfad ist nicht derselbe wie der Systempfad."
 
 #: ../linkcheck/checker/__init__.py:86
 msgid "The ftp: URL is missing a trailing slash."
-msgstr ""
+msgstr "Der ftp: URL fehlt ein abschließender Schrägstrich."
 
 #: ../linkcheck/checker/__init__.py:87
 msgid "The http: URL checking has been denied."
-msgstr ""
+msgstr "Die http: URL Überprüfung wurde verweigert."
 
 #: ../linkcheck/checker/__init__.py:88
 msgid "The HTTP server had no anchor support."
-msgstr ""
+msgstr "Der HTTP Server unterstützt keine Anker."
 
 #: ../linkcheck/checker/__init__.py:89
 msgid "The URL has moved permanently."
-msgstr ""
+msgstr "Die URL wurde dauerhaft verschoben."
 
 #: ../linkcheck/checker/__init__.py:91
 msgid "The URL has been redirected to an URL of a different type."
-msgstr ""
+msgstr "Die URL wurde zu einem anderen URL Typ umgeleitet."
 
 #: ../linkcheck/checker/__init__.py:92
 msgid "The URL had no content."
-msgstr ""
+msgstr "Die URL besitzt keinen Inhalt."
 
 #: ../linkcheck/checker/__init__.py:93
 msgid "An error occurred while storing a cookie."
-msgstr ""
+msgstr "Ein Fehler trat auf während des Speicherns eines Cookies."
 
 #: ../linkcheck/checker/__init__.py:95
 msgid "An error occurred while decompressing the URL content."
-msgstr ""
+msgstr "Ein Fehler trat beim Dekomprimieren des URL Inhalts auf."
 
 #: ../linkcheck/checker/__init__.py:97
 msgid "The URL content is encoded with an unknown encoding."
-msgstr ""
+msgstr "Der URL Inhalt ist in einer Unbekannten Kodierung verfasst."
 
 #: ../linkcheck/checker/__init__.py:98
-#, fuzzy
 msgid "The URL has been ignored."
-msgstr "%s URL ignoriert."
+msgstr "Die URL wurde ignoriert."
 
 #: ../linkcheck/checker/__init__.py:99
 msgid "The mailto: URL contained no addresses."
-msgstr ""
+msgstr "Die mailto: URL enthält keine Addressen."
 
 #: ../linkcheck/checker/__init__.py:100
 msgid "The mail MX host could not be found."
-msgstr ""
+msgstr "Der Mail MX Rechner konnte nicht gefunden werden."
 
 #: ../linkcheck/checker/__init__.py:102
 msgid "The mailto: address could not be verified."
-msgstr ""
+msgstr "Die mailto: Addresse konnte nicht überprüft werden."
 
 #: ../linkcheck/checker/__init__.py:104
 msgid "No connection to a MX host could be established."
-msgstr ""
+msgstr "Keine Verbindung zu einem MX Rechner konnte hergestellt werden."
 
 #: ../linkcheck/checker/__init__.py:105
-#, fuzzy
 msgid "No NNTP server was found."
-msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax."
+msgstr "Kein NNTP Server wurde gefunden."
 
 #: ../linkcheck/checker/__init__.py:106
 msgid "The NNTP newsgroup could not be found."
-msgstr ""
+msgstr "Die NNTP Nachrichtengruppe konnte nicht gefunden werden."
 
 #: ../linkcheck/checker/__init__.py:107
 msgid "The NNTP server was busy."
-msgstr ""
+msgstr "Der NNTP Server war beschäftigt."
 
 #: ../linkcheck/checker/__init__.py:156
 #, python-format
@@ -282,9 +276,9 @@ msgid "Bad HTTP response %r"
 msgstr "Ungültige HTTP Antwort %r"
 
 #: ../linkcheck/checker/urlbase.py:422
-#, fuzzy, python-format
+#, python-format
 msgid "could not get content: %r"
-msgstr "Konnte Inhalt nicht parsen: %r"
+msgstr "konnte Inhalt nicht parsen: %r"
 
 #: ../linkcheck/checker/urlbase.py:521
 #, python-format
@@ -787,7 +781,6 @@ msgid "USAGE\tlinkchecker [options] file-or-url...\n"
 msgstr "BENUTZUNG\tlinkchecker [Optionen] datei-oder-url...\n"
 
 #: ../linkchecker:72
-#, fuzzy
 msgid ""
 "NOTES\n"
 " o URLs on the command line starting with \"ftp.\" are treated like\n"
@@ -824,7 +817,7 @@ msgstr ""
 "  angeben.\n"
 "o Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter\n"
 "  Unix oder Windows. Auf einem Mac benutzen Sie die Internet Config.\n"
-"o Beim Prüfen von 'news:' Links muß der angegebene NNTP Rechner nicht\n"
+"o Beim Prüfen von 'news:' Links muss der angegebene NNTP Rechner nicht\n"
 "  unbedingt derselbe wie der des Benutzers sein.\n"
 
 #: ../linkchecker:91
@@ -942,6 +935,8 @@ msgstr ""
 "AUSGABETYPEN\n"
 "Beachten Sie, dass normalerweise nur Fehler und Warnungen ausgegeben "
 "werden.\n"
+"Sie sollten die Option --verbose benutzen, um eine vollständige URL Liste\n"
+"zu erhalten, besonders wenn Sie ein Graphformat ausgeben lassen.\n"
 "\n"
 "text    Standard Textausgabe in \"Schlüssel: Wert\"-Form.\n"
 "html    Gebe URLs in \"Schlüssel: Wert\"-Form als HTML formatiert aus.\n"
@@ -951,12 +946,9 @@ msgstr ""
 "csv     Gebe Prüfresultat in CSV-Format aus mit einer URL pro Zeile.\n"
 "gml     Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als GML "
 "Graphen aus.\n"
-"        Sie sollten die Option --verbose benutzen um einen vollständigen "
-"Graphen zu erhalten.\n"
 "dot     Gebe Vater-Kind Beziehungen zwischen verknüpften URLs als DOT "
 "Graphen aus.\n"
-"        Sie sollten die Option --verbose benutzen um einen vollständigen "
-"Graphen zu erhalten.\n"
+"gxml    Gebe Prüfresultat als GraphXML-Datei aus.\n"
 "xml     Gebe Prüfresultat als maschinenlesbare XML-Datei aus.\n"
 "sql     Gebe Prüfresultat als SQL Skript mit INSERT Befehlen aus. Ein "
 "Beispielskript,\n"
@@ -1462,79 +1454,3 @@ msgstr "Optionen"
 msgid "ambiguous option: %s (%s?)"
 msgstr "Mehrdeutige Option: %s (%s?)"
 
-#~ msgid "Illegal argument %d for option %s"
-#~ msgstr "Ungültiges Argument %d für Option %s"
-
-#~ msgid "Group %s has %s articles, range %s to %s."
-#~ msgstr "Gruppe %s hat %s Artikel, von %s bis %s."
-
-#~ msgid ""
-#~ " regex, --intern=regex\n"
-#~ "Assume URLs that match the given expression as internal.\n"
-#~ "LinkChecker descends recursively only to internal URLs, not to\n"
-#~ "external."
-#~ msgstr ""
-#~ "Behandle URLs welche diesen regulären Ausdruck matchen als intern.\n"
-#~ "LinkChecker steigt nur in interne URLs rekursiv ab, nicht in externe."
-
-#~ msgid ""
-#~ "Assume urls that match the given expression as external.\n"
-#~ "Only internal HTML links are checked recursively."
-#~ msgstr ""
-#~ "Behandle URLs welche diesen regulären Ausdruck matchen als extern.\n"
-#~ "Nur interne HTTP Links werden rekursiv geprüft."
-
-#~ msgid ""
-#~ "Assume urls that match the given expression as strict external.\n"
-#~ "Only internal HTML links are checked recursively."
-#~ msgstr ""
-#~ "Behandle URLs welche diesen regulären Ausdruck matchen als strikt "
-#~ "extern.\n"
-#~ "Nur interne HTTP Links werden rekursiv geprüft."
-
-#~ msgid ""
-#~ "Check only syntax of external links, do not try to connect to them.\n"
-#~ "For local file urls, only local files are internal. For\n"
-#~ "http and ftp urls, all urls at the same domain name are internal."
-#~ msgstr ""
-#~ "Prüfe lediglich die Syntax von externen URLs. Es wird keine.\n"
-#~ "Verbindung zu diesen Rechner aufgebaut.\n"
-#~ "Bei lokalen Dateiurls sind lediglich lokale Dateien intern. Bei http\n"
-#~ "und ftp URLs sind alle URLs mit demselben Domänennamen intern."
-
-#~ msgid ""
-#~ "Swap checking order to external/internal. Default checking order\n"
-#~ "is internal/external."
-#~ msgstr ""
-#~ "Tausche die Prüfreihenfolge zu extern/intern. Standardreihenfolge\n"
-#~ "ist intern/extern."
-
-#~ msgid "Deprecated options"
-#~ msgstr "Alte Optionen"
-
-#~ msgid "Print check status every 5 seconds to stderr. This is the default."
-#~ msgstr ""
-#~ "Gebe Prüfstatus alle 5 Sekunden an stderr aus. Dies ist die "
-#~ "Voreinstellung."
-
-#~ msgid "Log warnings."
-#~ msgstr "Logge Warnungen."
-
-#~ msgid ""
-#~ "A HTTP 301 redirection occured and the URL has no trailing / at the end. "
-#~ "All URLs which point to (home) directories should end with a / to avoid "
-#~ "redirection."
-#~ msgstr ""
-#~ "Es ist eine HTTP 301 Weiterleitung aufgetreten und die URL endet nicht "
-#~ "mit /. Alle URLs, die auf (Home-) Verzeichnisse verweisen, sollten mit "
-#~ "einem / enden, um Weiterleitungen zu verhindern."
-
-#~ msgid "URL path is empty, assuming '/' as path."
-#~ msgstr "URL Pfad ist leer, verwende '/'."
-
-#~ msgid ""
-#~ "Zope Server cannot determine MIME type with HEAD, falling back to GET."
-#~ msgstr "Server unterstützt kein HEAD, verwende GET."
-
-#~ msgid "Anonymous Proxy"
-#~ msgstr "Anonymer Proxy"
