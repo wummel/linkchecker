@@ -25,6 +25,7 @@ if sys.version_info < (2, 4, 0, 'final', 0):
     raise SystemExit, "The installation script of this program requires" + \
                       " Python 2.4.0 or later."
 import os
+import popen2
 import platform
 import stat
 import re
@@ -197,13 +198,21 @@ class MyDistribution (distutils.dist.Distribution, object):
 
 
 def cc_supports_option (cc, option):
+    """
+    Check if the given C compiler supports the given option.
+
+    @return: True if the compiler supports the option, else False
+    @rtype: bool
+    """
     prog = "int main(){}\n"
     cc_cmd = "%s -E %s -" % (cc[0], option)
-    _in, _out = os.popen4(cc_cmd)
-    _in.write(prog)
-    _in.close()
-    while _out.read(): pass
-    return _out.close() is None
+    pipe = popen2.Popen4(cc_cmd)
+    pipe.tochild.write(prog)
+    pipe.tochild.close()
+    status = pipe.wait()
+    if os.WIFEXITED(status):
+        return os.WEXITSTATUS(status)==0
+    return False
 
 
 class MyBuildExt (build_ext, object):

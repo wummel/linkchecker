@@ -33,6 +33,12 @@
     Type: feature
     Changed: linkcheck/checker/httpurl.py
 
+  * Fix detection code of supported GCC command line options. this
+    fixes a build error on some Unix systems (eg. FreeBSD).
+    Type: bugfix
+    Closes: SF bug #1238906
+    Changed: setup.py
+
 3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.
