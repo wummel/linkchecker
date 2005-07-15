@@ -131,10 +131,10 @@ class XMLLogger (linkcheck.logger.Logger):
         """
         Write XML end tag.
         """
-        self.write(self.indent*self.level)
-        self.writeln(u"<%s>" % xmlquote(name))
         self.level -= 1
         assert self.level >= 0
+        self.write(self.indent*self.level)
+        self.writeln(u"</%s>" % xmlquote(name))
 
     def xml_tag (self, name, content, attrs=None):
         """
