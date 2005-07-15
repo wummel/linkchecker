@@ -51,9 +51,12 @@ class CustomXMLLogger (linkcheck.logger.xmllog.XMLLogger):
         if url_data.name and self.has_part('name'):
             self.xml_tag(u"name", unicode(url_data.name or u""))
         if url_data.parent_url and self.has_part('parenturl'):
-            self.xml_tag(u"parent", unicode(url_data.parent_url or u""))
-            self.xml_tag(u"parentline", u"%d" % url_data.line)
-            self.xml_tag(u"parentcolumn", u"%d" % url_data.column)
+            attrs = {
+                u'line': u"%d" % url_data.line,
+                u'column': u"%d" % url_data.column,
+            }
+            self.xml_tag(u"parent", unicode(url_data.parent_url or u""),
+                         attrs=attrs)
         if url_data.base_ref and self.has_part('base'):
             self.xml_tag(u"baseref", unicode(url_data.base_ref))
         if self.has_part("realurl"):
