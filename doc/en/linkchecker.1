@@ -217,6 +217,8 @@ going through a proxy. This option can be given multiple times.
 
 .SH OUTPUT TYPES
 Note that by default only errors and warnings are logged.
+You should use the \fB\-\-verbose\fP option to get the complete URL list,
+especially when outputting a sitemap graph format.
 
 .TP
 \fBtext\fP
@@ -231,15 +233,16 @@ HTML and CSS syntax check links appended.
 Log check result in CSV format with one URL per line.
 .TP
 \fBgml\fP
-Log parent-child relations between linked URLs as a GML graph.
-You should use the \fB\-\-verbose\fP option to get a complete graph.
+Log parent-child relations between linked URLs as a GML sitemap graph.
 .TP
 \fBdot\fP
-Log parent-child relations between linked URLs as a DOT graph.
-You should use the \fB\-\-verbose\fP option to get a complete graph.
+Log parent-child relations between linked URLs as a DOT sitemap graph.
+.TP
+\fBgxml\fP
+Log check result as a GraphXML sitemap graph.
 .TP
 \fBxml\fP
-Log check result as machine-readable XML file.
+Log check result as machine-readable XML.
 .TP
 \fBsql\fP
 Log check result as SQL script with INSERT commands. An example

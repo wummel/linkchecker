@@ -5,6 +5,12 @@
 Upgrading
 =========
 
+Migrating from 3.0 to 3.1
+-------------------------
+
+The ``xml`` output logger has been renamed to ``gxml``.
+
+
 Migrating from 2.x to 3.0
 -------------------------
 

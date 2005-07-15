@@ -205,7 +205,9 @@ und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals
 angegeben werden.
 
 .SH AUSGABETYPEN
-Beachten Sie, dass normalerweise nur Fehler und Warnungen ausgegeben werden.
+Note that by default only errors and warnings are logged.  You should use 
+the \fB\-\-verbose\fP option to get the complete URL list, especially when 
+outputting a sitemap graph format.
 
 .TP
 \fBtext\fP
@@ -220,17 +222,16 @@ Verknüpfungen zur HTML und CSS Syntaxprüfung angehängt.
 Gebe Prüfresultat in CSV\-Format aus mit einer URL pro Zeile.
 .TP
 \fBgml\fP
-Gebe Vater\-Kind Beziehungen zwischen verknüpften URLs als GML Graphen 
-aus. Sie sollten die Option \fB\-\-verbose\fP benutzen, um einen vollständigen 
-Graphen zu erhalten.
+Log parent\-child relations between linked URLs as a GML sitemap graph.
 .TP
 \fBdot\fP
-Gebe Vater\-Kind Beziehungen zwischen verknüpften URLs als DOT Graphen 
-aus. Sie sollten die Option \fB\-\-verbose\fP benutzen, um einen vollständigen 
-Graphen zu erhalten.
+Log parent\-child relations between linked URLs as a DOT sitemap graph.
+.TP
+\fBgxml\fP
+Log check result as a GraphXML sitemap graph.
 .TP
 \fBxml\fP
-Gebe Prüfresultat als maschinenlesbare XML\-Datei aus.
+Log check result as machine\-readable XML.
 .TP
 \fBsql\fP
 Gebe Prüfresultat als SQL Skript mit INSERT Befehlen aus. Ein 
