@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-An xml logger.
+Base class for XML loggers.
 """
 
 import time
@@ -73,26 +73,25 @@ class XMLLogger (linkcheck.logger.Logger):
         """
         super(XMLLogger, self).__init__(**args)
         self.init_fileoutput(args)
-        self.nodes = {}
-        self.nodeid = 0
+        self.indent = u"  "
+        self.level = 0
 
     def comment (self, s, **args):
         """
-        Print HTML comment.
+        Write XML comment.
         """
         self.write(u"<!-- ")
         self.write(s, **args)
         self.writeln(u" -->")
 
-    def start_output (self):
+    def xml_start_output (self, version="1.0", encoding="utf8"):
         """
-        Print start of checking info as xml comment.
+        Write start of checking info as xml comment.
         """
-        linkcheck.logger.Logger.start_output(self)
-        if self.fd is None:
-            return
+        # XXX wrap file with codecs
         self.starttime = time.time()
-        self.writeln(u'<?xml version="1.0"?>')
+        self.writeln(u'<?xml version="%s" encoding="%s"?>' % \
+                     (xmlquoteattr(version), xmlquoteattr(encoding)))
         if self.has_part("intro"):
             self.comment(_("created by %s at %s") %
                          (linkcheck.configuration.AppName,
@@ -103,72 +102,48 @@ class XMLLogger (linkcheck.logger.Logger):
                          linkcheck.configuration.Email)
             self.check_date()
             self.writeln()
-        self.writeln(u'<GraphXML>')
-        self.writeln(u'<graph isDirected="true">')
-        self.flush()
 
-    def log_url (self, url_data):
+    def xml_end_output (self):
         """
-        Write one node and all possible edges.
+        Write end of checking info as xml comment.
         """
-        if self.fd is None:
-            return
-        node = url_data
-        if node.url and not self.nodes.has_key(node.url):
-            node.id = self.nodeid
-            self.nodes[node.url] = node
-            self.nodeid += 1
-            self.writeln(u'  <node name="%d">' % node.id)
-            if self.has_part("realurl"):
-                self.writeln(u"    <label>%s</label>" % xmlquote(node.url))
-            self.writeln(u"    <data>")
-            if node.dltime >= 0 and self.has_part("dltime"):
-                self.writeln(u"      <dltime>%f</dltime>" % node.dltime)
-            if node.dlsize >= 0 and self.has_part("dlsize"):
-                self.writeln(u"      <dlsize>%d</dlsize>" % node.dlsize)
-            if node.checktime and self.has_part("checktime"):
-                self.writeln(u"      <checktime>%f</checktime>" %
-                             node.checktime)
-            if self.has_part("extern"):
-                self.writeln(u"      <extern>%d</extern>" %
-                             (node.extern[0] and 1 or 0))
-            self.writeln(u"    </data>")
-            self.writeln(u"  </node>")
-        self.write_edges()
-
-    def write_edges (self):
-        """
-        Write all edges we can find in the graph in a brute-force
-        manner. Better would be a mapping of parent URLs.
-        """
-        for node in self.nodes.values():
-            if self.nodes.has_key(node.parent_url):
-                self.write(u"  <edge")
-                self.write(u' source="%d"' % self.nodes[node.parent_url].id)
-                self.writeln(u' target="%d">' % node.id)
-                if self.has_part("url"):
-                    self.writeln(u"    <label>%s</label>" % \
-                                 xmlquote(node.base_url or u""))
-                self.writeln(u"    <data>")
-                if self.has_part("result"):
-                    self.writeln(u"      <valid>%d</valid>" % \
-                                 (node.valid and 1 or 0))
-                self.writeln(u"    </data>")
-                self.writeln(u"  </edge>")
-        self.flush()
-
-    def end_output (self):
-        """
-        Finish graph output, and print end of checking info as xml comment.
-        """
-        if self.fd is None:
-            return
-        self.writeln(u"</graph>")
-        self.writeln(u"</GraphXML>")
         if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %s (%s)") % \
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
-        self.close_fileoutput()
+
+    def xml_starttag (self, name, attrs=None):
+        """
+        Write XML start tag.
+        """
+        self.write(self.indent*self.level)
+        self.write(u"<%s" % xmlquote(name))
+        if attrs:
+            for name, value in attrs.items():
+                args = (xmlquote(name), xmlquoteattr(value))
+                self.write(u' %s="%s"' % args)
+        self.writeln(u">");
+        self.level += 1
+
+    def xml_endtag (self, name):
+        """
+        Write XML end tag.
+        """
+        self.write(self.indent*self.level)
+        self.writeln(u"<%s>" % xmlquote(name))
+        self.level -= 1
+        assert self.level >= 0
+
+    def xml_tag (self, name, content, attrs=None):
+        """
+        Write XML tag with content.
+        """
+        self.write(self.indent*self.level)
+        self.write(u"<%s" % xmlquote(name))
+        if attrs:
+            for name, value in attrs.items():
+                args = (xmlquote(name), xmlquoteattr(value))
+                self.write(u' %s="%s"' % args)
+        self.writeln(u">%s</%s>" % (xmlquote(content), xmlquote(name)))

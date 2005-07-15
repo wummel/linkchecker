@@ -138,6 +138,9 @@ class Configuration (dict):
         self['xml'] = {
             "filename": "linkchecker-out.xml",
         }
+        self['gxml'] = {
+            "filename": "linkchecker-out.gxml",
+        }
         self['dot'] = {
             "filename": "linkchecker-out.dot",
             "encoding": "ascii",

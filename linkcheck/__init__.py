@@ -92,7 +92,8 @@ import linkcheck.logger.dot
 import linkcheck.logger.sql
 import linkcheck.logger.csvlog
 import linkcheck.logger.blacklist
-import linkcheck.logger.xmllog
+import linkcheck.logger.gxml
+import linkcheck.logger.customxml
 import linkcheck.logger.none
 
 
@@ -105,7 +106,8 @@ Loggers = {
     "sql": linkcheck.logger.sql.SQLLogger,
     "csv": linkcheck.logger.csvlog.CSVLogger,
     "blacklist": linkcheck.logger.blacklist.BlacklistLogger,
-    "xml": linkcheck.logger.xmllog.XMLLogger,
+    "gxml": linkcheck.logger.gxml.GraphXMLLogger,
+    "xml": linkcheck.logger.customxml.CustomXMLLogger,
     "none": linkcheck.logger.none.NoneLogger,
 }
 # for easy printing: a comma separated logger list

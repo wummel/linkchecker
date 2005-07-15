@@ -39,6 +39,11 @@
     Closes: SF bug #1238906
     Changed: setup.py
 
+  * Renamed the old "xml" output logger to "gxml" and added a new
+    "xml" output logger which writes a custom XML format.
+    Type: feature
+    Changed: linkchecker, linkcheck/logger/*xml*.py
+
 3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.
