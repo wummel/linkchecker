@@ -44,6 +44,55 @@ _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 # Amazon blocks all HEAD requests
 _is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 
+# Stolen from Python CVS urllib2.py
+# Mapping status codes to official W3C names
+httpresponses = {
+    100: 'Continue',
+    101: 'Switching Protocols',
+    
+    200: 'OK',
+    201: 'Created',
+    202: 'Accepted',
+    203: 'Non-Authoritative Information',
+    204: 'No Content',
+    205: 'Reset Content',
+    206: 'Partial Content',
+    
+    300: 'Multiple Choices',
+    301: 'Moved Permanently',
+    302: 'Found',
+    303: 'See Other',
+    304: 'Not Modified',
+    305: 'Use Proxy',
+    306: '(Unused)',
+    307: 'Temporary Redirect',
+    
+    400: 'Bad Request',
+    401: 'Unauthorized',
+    402: 'Payment Required',
+    403: 'Forbidden',
+    404: 'Not Found',
+    405: 'Method Not Allowed',
+    406: 'Not Acceptable',
+    407: 'Proxy Authentication Required',
+    408: 'Request Timeout',
+    409: 'Conflict',
+    410: 'Gone',
+    411: 'Length Required',
+    412: 'Precondition Failed',
+    413: 'Request Entity Too Large',
+    414: 'Request-URI Too Long',
+    415: 'Unsupported Media Type',
+    416: 'Requested Range Not Satisfiable',
+    417: 'Expectation Failed',
+    
+    500: 'Internal Server Error',
+    501: 'Not Implemented',
+    502: 'Bad Gateway',
+    503: 'Service Unavailable',
+    504: 'Gateway Timeout',
+    505: 'HTTP Version Not Supported',
+}
 
 class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     """
@@ -98,31 +147,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             be fulfilled
           - 5xx: Server Error - The server failed to fulfill an apparently
             valid request
-
-        The individual values of the numeric status codes defined for
-        HTTP/1.0, and an example set of corresponding Reason-Phrase's, are
-        presented below. The reason phrases listed here are only recommended
-        -- they may be replaced by local equivalents without affecting the
-        protocol. These codes are fully defined in Section 9.
-        Status-Code    = "200"   ; OK
-        | "201"   ; Created
-        | "202"   ; Accepted
-        | "204"   ; No Content
-        | "301"   ; Moved Permanently
-        | "302"   ; Moved Temporarily
-        | "304"   ; Not Modified
-        | "305"   ; Use Proxy
-        | "400"   ; Bad Request
-        | "401"   ; Unauthorized
-        | "403"   ; Forbidden
-        | "404"   ; Not Found
-        | "405"   ; Method not allowed
-        | "407"   ; Proxy Authentication Required
-        | "500"   ; Internal Server Error
-        | "501"   ; Not Implemented
-        | "502"   ; Bad Gateway
-        | "503"   ; Service Unavailable
-        | extension-code
         """
         # set the proxy, so a 407 status after this is an error
         self.set_proxy(self.consumer.config("proxy").get(self.scheme))
@@ -434,6 +458,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.persistent = headers.http_persistent(response)
         self.timeout = headers.http_timeout(response)
         self.headers = response.msg
+        # If possible, use official W3C HTTP response name
+        if response.status in httpresponses:
+            response.reason = httpresponses[response.status]
         return response
 
     def get_http_object (self, host, scheme):

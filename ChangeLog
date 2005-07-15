@@ -28,6 +28,11 @@
     Type: feature
     Changed: linkcheck/checker/{__init__, urlbase}.py
 
+  * For HTTP return codes, try to use the official W3C name when it
+    is defined.
+    Type: feature
+    Changed: linkcheck/checker/httpurl.py
+
 3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.
