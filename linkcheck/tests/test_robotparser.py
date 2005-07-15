@@ -103,9 +103,8 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestRobotParser))
-    return suite
+    return unittest.makeSuite(TestRobotParser)
+
 
 if __name__ == '__main__':
     unittest.main()

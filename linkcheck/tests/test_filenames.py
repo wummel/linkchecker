@@ -42,9 +42,8 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestFilenames))
-    return suite
+    return unittest.makeSuite(TestFilenames)
+
 
 if __name__ == '__main__':
     unittest.main()

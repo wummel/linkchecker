@@ -81,9 +81,8 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestLinkparser))
-    return suite
+    return unittest.makeSuite(TestLinkparser)
+
 
 if __name__ == '__main__':
     unittest.main()

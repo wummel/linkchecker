@@ -155,9 +155,7 @@ class TestNtoAAtoN (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestNtoAAtoN))
-    return suite
+    return unittest.makeSuite(TestNtoAAtoN)
 
 
 if __name__ == '__main__':

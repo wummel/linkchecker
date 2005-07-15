@@ -113,9 +113,7 @@ class TestUpdate (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestUpdate))
-    return suite
+    return unittest.makeSuite(TestUpdate)
 
 
 if __name__ == '__main__':

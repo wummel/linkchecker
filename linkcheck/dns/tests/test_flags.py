@@ -59,9 +59,7 @@ class TestFlags (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestFlags))
-    return suite
+    return unittest.makeSuite(TestFlags)
 
 
 if __name__ == '__main__':

@@ -151,9 +151,7 @@ class TestMessage (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestMessage))
-    return suite
+    return unittest.makeSuite(TestMessage)
 
 
 if __name__ == '__main__':

@@ -175,9 +175,7 @@ class TestTokenizer (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestTokenizer))
-    return suite
+    return unittest.makeSuite(TestTokenizer)
 
 
 if __name__ == '__main__':

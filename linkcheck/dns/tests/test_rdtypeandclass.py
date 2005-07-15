@@ -124,9 +124,7 @@ class TestRdTypeAndClass (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestRdTypeAndClass))
-    return suite
+    return unittest.makeSuite(TestRdTypeAndClass)
 
 
 if __name__ == '__main__':

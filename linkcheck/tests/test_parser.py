@@ -224,9 +224,8 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestParser))
-    return suite
+    return unittest.makeSuite(TestParser)
+
 
 if __name__ == '__main__':
     unittest.main()

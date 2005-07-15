@@ -94,9 +94,8 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestStrFormat))
-    return suite
+    return unittest.makeSuite(TestStrFormat)
+
 
 if __name__ == '__main__':
     unittest.main()

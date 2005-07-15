@@ -80,9 +80,7 @@ class TestResolver (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestResolver))
-    return suite
+    return unittest.makeSuite(TestResolver)
 
 
 if __name__ == '__main__':

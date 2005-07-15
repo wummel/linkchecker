@@ -38,9 +38,8 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestFrames))
-    return suite
+    return unittest.makeSuite(TestFrames)
+
 
 if __name__ == '__main__':
     unittest.main()

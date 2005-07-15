@@ -132,9 +132,7 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestHttp))
-    return suite
+    return unittest.makeSuite(TestHttp)
 
 
 if __name__ == '__main__':

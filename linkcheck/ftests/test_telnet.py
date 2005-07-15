@@ -69,9 +69,7 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestTelnet))
-    return suite
+    return unittest.makeSuite(TestTelnet)
 
 
 if __name__ == '__main__':

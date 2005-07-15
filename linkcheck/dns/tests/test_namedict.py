@@ -101,9 +101,7 @@ class TestNameDict (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestNameDict))
-    return suite
+    return unittest.makeSuite(TestNameDict)
 
 
 if __name__ == '__main__':

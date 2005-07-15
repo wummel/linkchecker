@@ -53,9 +53,7 @@ class TestRRset (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestRRset))
-    return suite
+    return unittest.makeSuite(TestRRset)
 
 
 if __name__ == '__main__':

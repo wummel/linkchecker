@@ -66,9 +66,8 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestLinkname))
-    return suite
+    return unittest.makeSuite(TestLinkname)
+
 
 if __name__ == '__main__':
     unittest.main()

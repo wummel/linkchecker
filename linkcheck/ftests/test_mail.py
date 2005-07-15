@@ -171,9 +171,7 @@ def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestMail))
-    return suite
+    return unittest.makeSuite(TestMail)
 
 
 if __name__ == '__main__':

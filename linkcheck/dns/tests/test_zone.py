@@ -356,9 +356,7 @@ class TestZone (unittest.TestCase):
 
 
 def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestZone))
-    return suite
+    return unittest.makeSuite(TestZone)
 
 
 if __name__ == '__main__':

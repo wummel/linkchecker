@@ -170,13 +170,6 @@ class TestSet(unittest.TestCase):
         s1.update(u)
         self.failUnless(s1 == e)
 
-
-def test_suite ():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestSet))
-    return suite
-
-
     def testGetitem(self):
         s1 = S([1, 2, 3])
         i0 = s1[0]
@@ -208,6 +201,11 @@ def test_suite ():
         del s1[0:2]
         i1 = s1[0]
         self.failUnless(i1 == 1 or i1 == 2 or i1 == 3)
+
+
+def test_suite ():
+    return unittest.makeSuite(TestSet)
+
 
 if __name__ == '__main__':
     unittest.main()
