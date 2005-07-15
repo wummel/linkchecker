@@ -92,11 +92,8 @@ sign_distfiles:
 	  fi; \
 	done
 
-test:	localbuild
-	test/run.sh test.py --resource=network --search-in=linkcheck -fupvcw
-
-coverage:
-	test/run.sh test.py --coverage
+check:	localbuild
+	test/test.sh
 
 tar:	distclean
 	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
