@@ -108,8 +108,12 @@
 [blacklist]
 #filename=~/.linkchecker/blacklist
 
-# xml logger
+# custom xml logger
 [xml]
+#encoding=iso-8859-1
+
+# GraphXML logger
+[gxml]
 #encoding=iso-8859-1
 
 # checking options
