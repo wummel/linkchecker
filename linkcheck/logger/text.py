@@ -86,7 +86,7 @@ class TextLogger (linkcheck.logger.Logger):
 
     def start_output (self):
         """
-        Print generic start checking info.
+        Write generic start checking info.
         """
         super(TextLogger, self).start_output()
         if self.fd is None:
@@ -107,7 +107,7 @@ class TextLogger (linkcheck.logger.Logger):
 
     def log_url (self, url_data):
         """
-        Print url checking info.
+        Write url checking info.
         """
         if self.fd is None:
             return
@@ -233,7 +233,7 @@ class TextLogger (linkcheck.logger.Logger):
 
     def end_output (self):
         """
-        Print end of output info, and flush all output buffers.
+        Write end of output info, and flush all output buffers.
         """
         if self.fd is None:
             return

@@ -124,7 +124,7 @@ class Logger (object):
 
     def comment (self, s, **args):
         """
-        Print a comment and a newline. This method just prints
+        Write a comment and a newline. This method just prints
         the given string.
         """
         self.writeln(s=s, **args)

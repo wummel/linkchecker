@@ -80,7 +80,7 @@ class HtmlLogger (linkcheck.logger.Logger):
 
     def comment (self, s, **args):
         """
-        Print HTML comment.
+        Write HTML comment.
         """
         self.write(u"<!-- ")
         self.write(s, **args)
@@ -88,7 +88,7 @@ class HtmlLogger (linkcheck.logger.Logger):
 
     def start_output (self):
         """
-        Print start of checking info.
+        Write start of checking info.
         """
         super(HtmlLogger, self).start_output()
         if self.fd is None:
@@ -109,7 +109,7 @@ class HtmlLogger (linkcheck.logger.Logger):
 
     def log_url (self, url_data):
         """
-        Print url checking info as HTML.
+        Write url checking info as HTML.
         """
         if self.fd is None:
             return
@@ -276,7 +276,7 @@ class HtmlLogger (linkcheck.logger.Logger):
 
     def end_output (self):
         """
-        Print end of checking info as HTML.
+        Write end of checking info as HTML.
         """
         if self.fd is None:
             return

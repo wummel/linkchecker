@@ -40,7 +40,7 @@ class GraphXMLLogger (linkcheck.logger.xmllog.XMLLogger):
 
     def start_output (self):
         """
-        Print start of checking info as xml comment.
+        Write start of checking info as xml comment.
         """
         super(GraphXMLLogger, self).start_output()
         self.xml_start_output()

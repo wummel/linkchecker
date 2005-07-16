@@ -40,7 +40,7 @@ class DOTLogger (linkcheck.logger.Logger):
 
     def start_output (self):
         """
-        Print start of checking info as DOT comment.
+        Write start of checking info as DOT comment.
         """
         super(DOTLogger, self).start_output()
         if self.fd is None:
@@ -61,7 +61,7 @@ class DOTLogger (linkcheck.logger.Logger):
 
     def comment (self, s, **args):
         """
-        Print DOT comment.
+        Write DOT comment.
         """
         self.write(u"// ")
         self.writeln(s=s, **args)
@@ -108,7 +108,7 @@ class DOTLogger (linkcheck.logger.Logger):
 
     def end_output (self):
         """
-        Print end of checking info as DOT comment.
+        Write end of checking info as DOT comment.
         """
         if self.fd is None:
             return

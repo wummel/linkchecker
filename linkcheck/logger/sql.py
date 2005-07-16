@@ -64,14 +64,14 @@ class SQLLogger (linkcheck.logger.Logger):
 
     def comment (self, s, **args):
         """
-        Print SQL comment.
+        Write SQL comment.
         """
         self.write(u"-- ")
         self.writeln(s=s, **args)
 
     def start_output (self):
         """
-        Print start of checking info as sql comment.
+        Write start of checking info as sql comment.
         """
         linkcheck.logger.Logger.start_output(self)
         if self.fd is None:
@@ -139,7 +139,7 @@ class SQLLogger (linkcheck.logger.Logger):
 
     def end_output (self):
         """
-        Print end of checking info as sql comment.
+        Write end of checking info as sql comment.
         """
         if self.fd is None:
             return

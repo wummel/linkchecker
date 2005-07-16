@@ -45,7 +45,7 @@ class BlacklistLogger (linkcheck.logger.Logger):
 
     def comment (self, s, **args):
         """
-        Print nothing.
+        Write nothing.
         """
         pass
 

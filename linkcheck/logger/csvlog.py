@@ -43,14 +43,14 @@ class CSVLogger (linkcheck.logger.Logger):
 
     def comment (self, s, **args):
         """
-        Print CSV comment.
+        Write CSV comment.
         """
         self.write(u"# ")
         self.writeln(s=s, **args)
 
     def start_output (self):
         """
-        Print checking start info as csv comment.
+        Write checking start info as csv comment.
         """
         super(CSVLogger, self).start_output()
         if self.fd is None:
@@ -94,7 +94,7 @@ class CSVLogger (linkcheck.logger.Logger):
 
     def log_url (self, url_data):
         """
-        Print csv formatted url check info.
+        Write csv formatted url check info.
         """
         if self.fd is None:
             return
@@ -118,7 +118,7 @@ class CSVLogger (linkcheck.logger.Logger):
 
     def end_output (self):
         """
-        Print end of checking info as csv comment.
+        Write end of checking info as csv comment.
         """
         if self.fd is None:
             return

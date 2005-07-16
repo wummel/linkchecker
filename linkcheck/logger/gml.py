@@ -40,7 +40,7 @@ class GMLLogger (linkcheck.logger.Logger):
 
     def start_output (self):
         """
-        Print start of checking info as gml comment.
+        Write start of checking info as gml comment.
         """
         super(GMLLogger, self).start_output()
         if self.fd is None:
@@ -62,7 +62,7 @@ class GMLLogger (linkcheck.logger.Logger):
 
     def comment (self, s, **args):
         """
-        Print GML comment.
+        Write GML comment.
         """
         self.write(u"# ")
         self.writeln(s=s, **args)
@@ -112,7 +112,7 @@ class GMLLogger (linkcheck.logger.Logger):
 
     def end_output (self):
         """
-        Print end of checking info as gml comment.
+        Write end of checking info as gml comment.
         """
         if self.fd is None:
             return
