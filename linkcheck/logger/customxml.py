@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-An xml logger.
+An XML logger.
 """
 
 import time
@@ -31,7 +31,7 @@ class CustomXMLLogger (linkcheck.logger.xmllog.XMLLogger):
 
     def start_output (self):
         """
-        Print start of checking info as xml comment.
+        Write start of checking info as xml comment.
         """
         super(CustomXMLLogger, self).start_output()
         if self.fd is None:
@@ -42,6 +42,7 @@ class CustomXMLLogger (linkcheck.logger.xmllog.XMLLogger):
 
     def log_url (self, url_data):
         """
+        Log URL data in custom XML format.
         """
         if self.fd is None:
             return
@@ -61,6 +62,8 @@ class CustomXMLLogger (linkcheck.logger.xmllog.XMLLogger):
             self.xml_tag(u"baseref", unicode(url_data.base_ref))
         if self.has_part("realurl"):
             self.xml_tag(u"realurl", unicode(url_data.url))
+        if self.has_part("extern"):
+            self.xml_tag(u"extern", u"%d" % (url_data.extern[0] and 1 or 0))
         if url_data.dltime >= 0 and self.has_part("dltime"):
             self.xml_tag(u"dltime", u"%f" % url_data.dltime)
         if url_data.dlsize >= 0 and self.has_part("dlsize"):
@@ -68,15 +71,17 @@ class CustomXMLLogger (linkcheck.logger.xmllog.XMLLogger):
         if url_data.checktime and self.has_part("checktime"):
             self.xml_tag(u"checktime", u"%f" % url_data.checktime)
         if url_data.info and self.has_part('info'):
-            self.xml_tag(u"info", self.wrap(url_data.info, 65))
+            self.xml_starttag(u"infos")
+            for info in url_data.info:
+                self.xml_tag(u"info", info)
+            self.xml_endtag(u"infos")
         if url_data.warnings and self.has_part('warning'):
-            log_warnings = [x[1] for x in url_data.warnings]
-            self.xml_tag(u"warnings", self.wrap(log_warnings, 65))
+            self.xml_starttag(u"warnings")
+            for tag, data in url_data.warnings:
+                self.xml_tag(u"warning", data, attrs={u"tag": tag})
+            self.xml_endtag(u"warnings")
         if self.has_part("result"):
             self.xml_tag(u"valid", u"%d" % (url_data.valid and 1 or 0))
-        # XXX extern?
-        if self.has_part("extern"):
-            self.xml_tag(u"extern", u"%d" % (url_data.extern[0] and 1 or 0))
         self.xml_endtag(u'urldata')
         self.flush()
 
