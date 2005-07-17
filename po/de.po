@@ -906,7 +906,6 @@ msgstr ""
 "  linkchecker -r0 ftp.linux.org\n"
 
 #: ../linkchecker:131
-#, fuzzy
 msgid ""
 "OUTPUT TYPES\n"
 "Note that by default only errors and warnings are logged.\n"
@@ -968,6 +967,9 @@ msgid ""
 "The following warnings are recognized in the ignorewarnings config\n"
 "file entry:\n"
 msgstr ""
+"WARNUNGEN IGNORIEREN\n"
+"Die folgenden Warnungen werden vom ignorewarnings Konfigurationseintrag\n"
+"erkannt:\n"
 
 #: ../linkchecker:182
 #, python-format
