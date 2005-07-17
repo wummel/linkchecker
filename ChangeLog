@@ -44,6 +44,11 @@
     Type: feature
     Changed: linkchecker, linkcheck/logger/*xml*.py
 
+  * Use correct number of checked URLs in status output.
+    Type: bugfix
+    Closes: SF bug #1239943
+    Changed: linkcheck/checker/consumer.py
+
 3.0 "The Jacket" (released 8.7.2005)
 
   * Catch all check errors, not just the ones inside of URL checking.

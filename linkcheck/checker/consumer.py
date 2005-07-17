@@ -67,6 +67,8 @@ class Consumer (object):
         Initialize consumer data and threads.
         """
         super(Consumer, self).__init__()
+        # number of consumed URLs
+        self._number = 0
         self._config = config
         self._cache = cache
         self._threader = linkcheck.threader.Threader(num=config['threads'])
@@ -114,7 +116,7 @@ class Consumer (object):
         # log before putting it in the cache (otherwise we would see
         # a "(cached)" after every url
         self._log_url(url_data)
-        if not url_data.cached and url_data.caching:
+        if url_data.caching and not url_data.cached:
             self._cache.checked_add(url_data)
         else:
             self._cache.in_progress_remove(url_data)
@@ -178,7 +180,7 @@ class Consumer (object):
         # avoid deadlock by requesting cache data before locking
         print >> stderr, _("Status:"),
         print_active(self._threader.active_threads())
-        print_links(self._config['logger'].number)
+        print_links(self._number)
         print_tocheck(self._cache.incoming_len())
         print_duration(curtime - start_time)
         print >> stderr
@@ -200,6 +202,7 @@ class Consumer (object):
         """
         Send new url to all configured loggers.
         """
+        self._number += 1
         has_warnings = False
         for tag, content in url_data.warnings:
             if tag not in self._config["ignorewarnings"]:
@@ -210,10 +213,6 @@ class Consumer (object):
         self._config['logger'].log_filter_url(url_data, do_print)
         for log in self._config['fileoutput']:
             log.log_filter_url(url_data, do_print)
-        # do_filter = (self.linknumber % 1000) == 0
-        # XXX deadlock!
-        #if do_filter:
-        #    self.filter_queue(self)
 
     @synchronized(_lock)
     def end_log_output (self):
