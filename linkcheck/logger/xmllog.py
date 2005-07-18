@@ -143,7 +143,7 @@ class XMLLogger (linkcheck.logger.Logger):
         self.write(self.indent*self.level)
         self.write(u"<%s" % xmlquote(name))
         if attrs:
-            for name, value in attrs.items():
-                args = (xmlquote(name), xmlquoteattr(value))
+            for aname, avalue in attrs.items():
+                args = (xmlquote(aname), xmlquoteattr(avalue))
                 self.write(u' %s="%s"' % args)
         self.writeln(u">%s</%s>" % (xmlquote(content), xmlquote(name)))
