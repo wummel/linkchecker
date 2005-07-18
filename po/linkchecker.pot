@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-07-18 01:29+0200\n"
+"POT-Creation-Date: 2005-07-18 10:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -531,8 +531,8 @@ msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr ""
 
 #: ../linkcheck/logger/dot.py:50 ../linkcheck/logger/gml.py:50
-#: ../linkcheck/logger/xmllog.py:96 ../linkcheck/logger/csvlog.py:61
-#: ../linkcheck/logger/sql.py:81
+#: ../linkcheck/logger/csvlog.py:61 ../linkcheck/logger/sql.py:81
+#: ../linkcheck/logger/xmllog.py:96
 #, python-format
 msgid "created by %s at %s"
 msgstr ""
@@ -550,23 +550,11 @@ msgid "Write comments and bugs to %(email)s"
 msgstr ""
 
 #: ../linkcheck/logger/dot.py:120 ../linkcheck/logger/gml.py:124
-#: ../linkcheck/logger/xmllog.py:113 ../linkcheck/logger/csvlog.py:128
-#: ../linkcheck/logger/html.py:298 ../linkcheck/logger/sql.py:149
-#: ../linkcheck/logger/text.py:255
+#: ../linkcheck/logger/csvlog.py:128 ../linkcheck/logger/html.py:298
+#: ../linkcheck/logger/sql.py:149 ../linkcheck/logger/text.py:255
+#: ../linkcheck/logger/xmllog.py:113
 #, python-format
 msgid "Stopped checking at %s (%s)"
-msgstr ""
-
-#: ../linkcheck/logger/xmllog.py:99 ../linkcheck/logger/html.py:303
-#: ../linkcheck/logger/sql.py:84 ../linkcheck/logger/text.py:98
-#, python-format
-msgid "Get the newest version at %s"
-msgstr ""
-
-#: ../linkcheck/logger/xmllog.py:101 ../linkcheck/logger/html.py:306
-#: ../linkcheck/logger/sql.py:86 ../linkcheck/logger/text.py:100
-#, python-format
-msgid "Write comments and bugs to %s"
 msgstr ""
 
 #: ../linkcheck/logger/csvlog.py:69
@@ -630,6 +618,18 @@ msgid "%d error found."
 msgid_plural "%d errors found."
 msgstr[0] ""
 msgstr[1] ""
+
+#: ../linkcheck/logger/html.py:303 ../linkcheck/logger/sql.py:84
+#: ../linkcheck/logger/text.py:98 ../linkcheck/logger/xmllog.py:99
+#, python-format
+msgid "Get the newest version at %s"
+msgstr ""
+
+#: ../linkcheck/logger/html.py:306 ../linkcheck/logger/sql.py:86
+#: ../linkcheck/logger/text.py:100 ../linkcheck/logger/xmllog.py:101
+#, python-format
+msgid "Write comments and bugs to %s"
+msgstr ""
 
 #: ../linkcheck/lc_cgi.py:131
 msgid "unsupported language"
