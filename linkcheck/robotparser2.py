@@ -207,6 +207,12 @@ class RobotFileParser (object):
             self.allow_all = True
             debug("robots.txt allow all")
             return
+        except ValueError:
+            # XXX bug workaround:
+            # urllib2.AbstractDigestAuthHandler raises ValueError on
+            # failed authorisation
+            self.disallow_all = True
+            debug("robotst.txt disallow all")
         lines = []
         line = f.readline()
         while line:

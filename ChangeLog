@@ -9,6 +9,11 @@
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
+  * Workaround a urllib2.py bug raising ValueError on some failed
+    HTTP authorisations.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
 3.1 "Suspicious" (released 18.7.2005)
 
   * Updated documentation for the HTML parser.
