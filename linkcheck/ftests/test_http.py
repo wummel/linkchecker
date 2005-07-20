@@ -37,12 +37,36 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
                   self.port
             resultlines = self.get_resultlines("http.html")
             self.direct(url, resultlines, recursionlevel=1, cmdline=True)
-            self.redirect_test()
+            self.redirect_http_test()
             self.noproxyfor_test()
         finally:
             self.stop_server()
 
-    def redirect_test (self):
+    def test_redirect (self):
+        try:
+            self.start_server(handler=RedirectHttpsRequestHandler)
+            self.redirect_https_test()
+        finally:
+            self.stop_server()
+
+    def redirect_https_test (self):
+        url = u"http://localhost:%d/redirect1" % self.port
+        nurl = url
+        rurl = url.replace('redirect', 'newurl')
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"info Redirected to %s." % rurl.replace('http:', 'https:'),
+            u"info The redirected URL is outside of the domain filter, " \
+            u"checked only syntax.",
+            u"warning Redirection to different URL type encountered; the " \
+            u"original URL was u'http://localhost:%d/redirect1'." % self.port,
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=0, cmdline=True)
+
+    def redirect_http_test (self):
         url = u"http://localhost:%d/redirect1" % self.port
         nurl = url
         rurl = url.replace("redirect", "newurl")
@@ -127,6 +151,18 @@ class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHa
         else:
             super(RedirectHttpRequestHandler, self).do_HEAD()
 
+class RedirectHttpsRequestHandler (RedirectHttpRequestHandler):
+
+    def redirect (self):
+        """
+        Redirect request.
+        """
+        path = self.path.replace("redirect", "newurl")
+        port = self.server.server_address[1]
+        url = "https://localhost:%d%s" % (port, path)
+        self.send_response(302)
+        self.send_header("Location", url)
+        self.end_headers()
 
 def test_suite ():
     """

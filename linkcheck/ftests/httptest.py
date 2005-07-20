@@ -28,7 +28,7 @@ import linkcheck.ftests
 
 class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler, object):
     """
-    Http request handler with QUIT stopping the server.
+    HTTP request handler with QUIT stopping the server.
     """
 
     def do_QUIT (self):
@@ -48,7 +48,7 @@ class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler, ob
 
 class StoppableHttpServer (BaseHTTPServer.HTTPServer, object):
     """
-    Http server that reacts to self.stop flag.
+    HTTP server that reacts to self.stop flag.
     """
 
     def serve_forever (self):
