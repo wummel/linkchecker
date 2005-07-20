@@ -1,6 +1,13 @@
 3.2 "" (released xx.xx.xxxx)
 
-  * 
+  * Fixed typo in redirection handling code.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+  
+  * Handle all redirections to different URL types, not just HTTP ->
+    non-HTTP.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
 
 3.1 "Suspicious" (released 18.7.2005)
 
