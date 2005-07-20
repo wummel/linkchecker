@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-07-18 10:16+0200\n"
+"POT-Creation-Date: 2005-07-20 18:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -245,8 +245,7 @@ msgstr ""
 msgid "URL is located in %s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:378 ../linkcheck/checker/httpurl.py:315
-#: ../linkcheck/checker/ignoredurl.py:34
+#: ../linkcheck/checker/urlbase.py:378 ../linkcheck/checker/ignoredurl.py:34
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
@@ -269,12 +268,12 @@ msgstr ""
 msgid "Anchor #%s not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:577
+#: ../linkcheck/checker/urlbase.py:578
 #, python-format
 msgid "Found %r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:587
+#: ../linkcheck/checker/urlbase.py:588
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr ""
@@ -385,7 +384,7 @@ msgstr ""
 msgid "Using proxy %r."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:161 ../linkcheck/checker/httpurl.py:321
+#: ../linkcheck/checker/httpurl.py:161
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
 
@@ -427,48 +426,56 @@ msgstr ""
 msgid "Redirected to %(url)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:334
+#: ../linkcheck/checker/httpurl.py:316
+#, python-format
+msgid "Redirection to different URL type encountered; the original URL was %r."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:323
+msgid "The redirected URL is outside of the domain filter, checked only syntax."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:330
+msgid "Access to redirected URL denied by robots.txt, checked only syntax."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:344
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
 " %s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:344
+#: ../linkcheck/checker/httpurl.py:354
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:355
-#, python-format
-msgid "HTTP redirection to non-http url encountered; the original url was %r."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:391
+#: ../linkcheck/checker/httpurl.py:395
 #, python-format
 msgid "Store cookie: %s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:398
+#: ../linkcheck/checker/httpurl.py:402
 #, python-format
 msgid "Could not store cookies: %(msg)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:407
+#: ../linkcheck/checker/httpurl.py:411
 #, python-format
 msgid "Last modified %s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:490
+#: ../linkcheck/checker/httpurl.py:494
 #, python-format
 msgid "Unsupported HTTP url scheme %r"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:521
+#: ../linkcheck/checker/httpurl.py:525
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:544 ../linkcheck/checker/httpurl.py:573
+#: ../linkcheck/checker/httpurl.py:548 ../linkcheck/checker/httpurl.py:577
 #, python-format
 msgid "Unsupported content encoding %r."
 msgstr ""
