@@ -348,12 +348,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # check cache again on the changed URL
             if self.consumer.checked_redirect(redirected, self):
                 return -1, response
-            # check if we still have a http url, it could be another
-            # scheme, eg https or news
-            if self.urlparts[0] != "http":
+            # check if we still have the same scheme type, it could be a
+	    # different one
+            if self.urlparts[0] != self.scheme:
                 self.add_warning(
-                           _("HTTP redirection to non-http url encountered; "
-                             "the original url was %r.") % self.url,
+                           _("Redirection to different URL type encountered; "
+                             "the original URL was %r.") % self.url,
                            tag="http-wrong-redirect")
                 # make new Url object
                 newobj = linkcheck.checker.get_url_from(
@@ -361,7 +361,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                           parent_url=self.parent_url, base_ref=self.base_ref,
                           line=self.line, column=self.column, name=self.name,
                           cmdline=False)
-                newobj.warning = self.warning
+                newobj.warnings = self.warnings
                 newobj.info = self.info
                 # append new object to queue
                 self.consumer.append_url(newobj)
