@@ -543,7 +543,8 @@ class UrlBase (object):
                 linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern URL %r", url)
                 self.extern = (0, 0)
                 return
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "Explicit extern URL %r", url)
         self.extern = (1, 0)
         return
 
