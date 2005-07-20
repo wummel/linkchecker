@@ -308,17 +308,27 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             redirected, is_idn = linkcheck.url.url_norm(newurl)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
+            urlparts = linkcheck.strformat.url_unicode_split(redirected)
+            # check if we still have the same scheme type, it could be a
+	    # different one
+            if urlparts[0] != self.scheme:
+                self.add_warning(
+                           _("Redirection to different URL type encountered; "
+                             "the original URL was %r.") % self.url,
+                           tag="http-wrong-redirect")
             # check extern filter again
             self.set_extern(redirected)
             if self.extern[0] and self.extern[0]:
                 self.add_info(
-                          _("Outside of domain filter, checked only syntax."))
+                          _("The redirected URL is outside of the domain " \
+                            "filter, checked only syntax."))
                 self.set_result(u"filtered")
                 return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
                 self.add_warning(
-                       _("Access denied by robots.txt, checked only syntax."),
+                       _("Access to redirected URL denied by robots.txt, " \
+                         "checked only syntax."),
                        tag="http-robots-denied")
                 self.set_result(u"syntax OK")
                 return -1, response
@@ -337,7 +347,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # remember redireced url as alias
             self.aliases.append(redirected)
             # note: urlparts has to be a list
-            self.urlparts = linkcheck.strformat.url_unicode_split(redirected)
+            self.urlparts = urlparts
             if response.status == 301:
                 if not self.has301status:
                     self.add_warning(
@@ -348,14 +358,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # check cache again on the changed URL
             if self.consumer.checked_redirect(redirected, self):
                 return -1, response
-            # check if we still have the same scheme type, it could be a
-	    # different one
+            # in case of changed scheme make new URL object
             if self.urlparts[0] != self.scheme:
-                self.add_warning(
-                           _("Redirection to different URL type encountered; "
-                             "the original URL was %r.") % self.url,
-                           tag="http-wrong-redirect")
-                # make new Url object
                 newobj = linkcheck.checker.get_url_from(
                           redirected, self.recursion_level, self.consumer,
                           parent_url=self.parent_url, base_ref=self.base_ref,
