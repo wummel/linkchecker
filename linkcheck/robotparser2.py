@@ -213,6 +213,7 @@ class RobotFileParser (object):
             # failed authorisation
             self.disallow_all = True
             debug("robotst.txt disallow all")
+            return
         lines = []
         line = f.readline()
         while line:
