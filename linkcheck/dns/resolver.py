@@ -608,7 +608,7 @@ class Resolver(object):
                     # rcode in it.  Remove the server from the mix if
                     # the rcode isn't SERVFAIL.
                     #
-                    if rcode != dns.rcode.SERVFAIL:
+                    if rcode != linkcheck.dns.rcode.SERVFAIL:
                         nameservers.remove(nameserver)
                     response = None
                 #

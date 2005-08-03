@@ -15,6 +15,10 @@
     Closes: SF bug #1250555
     Changed: linkcheck/robotparser2.py
 
+  * Fix invalid import in DNS resolver.
+    Type: bugfix
+    Changed: linkcheck/dns/resolver.py
+
 3.1 "Suspicious" (released 18.7.2005)
 
   * Updated documentation for the HTML parser.
