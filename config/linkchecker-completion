@@ -1,5 +1,6 @@
-# install this file into /etc/bash_completion.d/linkchecker on a
-# Debian Linux System
+# Install this file into directory /etc/bash_completion.d/ on a
+# Debian Linux system. For other system read the documentation that
+# comes with the bash-completion package.
 
 have linkchecker &&
 _linkcheck() {
