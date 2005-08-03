@@ -1,5 +1,7 @@
 Possible improvements people could work on:
 
+- [BUGFIX] The URL in the log output is double normed.
+
 - [BUGFIX] when an URL is found in the cache and it has a broken anchor,
   the broken anchor name is not displayed as a warning
 
