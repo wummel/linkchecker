@@ -1,4 +1,4 @@
-3.2 "" (released xx.xx.xxxx)
+3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
   * Fixed typo in redirection handling code.
     Type: bugfix
@@ -12,6 +12,7 @@
   * Workaround a urllib2.py bug raising ValueError on some failed
     HTTP authorisations.
     Type: bugfix
+    Closes: SF bug #1250555
     Changed: linkcheck/robotparser2.py
 
 3.1 "Suspicious" (released 18.7.2005)
