@@ -70,7 +70,7 @@ def _wait_for_writable(s, expiration):
     _wait_for([], [s], [s], expiration)
 
 
-def udp(q, where, timeout=None, port=53, af=None):
+def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     """Return the response obtained after sending a query via UDP.
 
     @param q: the query
@@ -87,6 +87,11 @@ def udp(q, where, timeout=None, port=53, af=None):
     If the inference attempt fails, AF_INET is used.
     @type af: int
     @rtype: linkcheck.dns.message.Message object
+    @param source: source address.  The default is the IPv4 wildcard address.
+    @type source: string
+    @param source_port: The port from which to send the message.
+    The default is 0.
+    @type port: int
     """
     wire = q.to_wire()
     if af is None:
@@ -96,12 +101,18 @@ def udp(q, where, timeout=None, port=53, af=None):
             af = linkcheck.dns.inet.AF_INET
     if af == linkcheck.dns.inet.AF_INET:
         destination = (where, port)
+        if source is not None:
+            source = (source, source_port)
     elif af == linkcheck.dns.inet.AF_INET6:
         destination = (where, port, 0, 0)
+        if source is not None:
+            source = (source, source_port, 0, 0)
     s = socket.socket(af, socket.SOCK_DGRAM, 0)
     try:
         expiration = _compute_expiration(timeout)
         s.setblocking(0)
+        if source is not None:
+            s.bind(source)
         _wait_for_writable(s, expiration)
         s.sendto(wire, destination)
         _wait_for_readable(s, expiration)
@@ -147,10 +158,12 @@ def _connect(s, address):
         s.connect(address)
     except socket.error:
         (ty, v) = sys.exc_info()[:2]
-        if v[0] != errno.EINPROGRESS and v[0] != errno.EWOULDBLOCK:
+        if v[0] != errno.EINPROGRESS and \
+           v[0] != errno.EWOULDBLOCK and \
+           v[0] != errno.EALREADY:
             raise ty, v
 
-def tcp(q, where, timeout=None, port=53, af=None):
+def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     """Return the response obtained after sending a query via TCP.
 
     @param q: the query
@@ -166,7 +179,12 @@ def tcp(q, where, timeout=None, port=53, af=None):
     causes the address family to use to be inferred from the form of of where.
     If the inference attempt fails, AF_INET is used.
     @type af: int
-    @rtype: linkcheck.dns.message.Message object"""
+    @rtype: linkcheck.dns.message.Message object
+    @param source: source address.  The default is the IPv4 wildcard address.
+    @type source: string
+    @param source_port: The port from which to send the message.
+    The default is 0.
+    @type port: int"""
 
     wire = q.to_wire()
     if af is None:
@@ -176,12 +194,18 @@ def tcp(q, where, timeout=None, port=53, af=None):
             af = linkcheck.dns.inet.AF_INET
     if af == linkcheck.dns.inet.AF_INET:
         destination = (where, port)
+        if source is not None:
+            source = (source, source_port)
     elif af == linkcheck.dns.inet.AF_INET6:
         destination = (where, port, 0, 0)
+        if source is not None:
+            source = (source, source_port, 0, 0)
     s = socket.socket(af, socket.SOCK_STREAM, 0)
     try:
         expiration = _compute_expiration(timeout)
         s.setblocking(0)
+        if source is not None:
+            s.bind(source)
         _connect(s, destination)
 
         l = len(wire)
@@ -203,7 +227,7 @@ def tcp(q, where, timeout=None, port=53, af=None):
 
 def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.rdataclass.IN,
         timeout=None, port=53, keyring=None, keyname=None, relativize=True,
-        af=None, lifetime=None):
+        af=None, lifetime=None, source=None, source_port=0):
     """Return a generator for the responses to a zone transfer.
 
     @param where: where to send the message
@@ -236,7 +260,12 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
     If None, the default, then there is no limit on the time the transfer may
     take.
     @type lifetime: float
-    @rtype: generator of linkcheck.dns.message.Message objects."""
+    @rtype: generator of linkcheck.dns.message.Message objects.
+    @param source: source address.  The default is the IPv4 wildcard address.
+    @type source: string
+    @param source_port: The port from which to send the message.
+    The default is 0.
+    @type port: int"""
 
     if isinstance(zone, str):
         zone = linkcheck.dns.name.from_text(zone)
@@ -251,9 +280,15 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
             af = linkcheck.dns.inet.AF_INET
     if af == linkcheck.dns.inet.AF_INET:
         destination = (where, port)
+        if source is not None:
+            source = (source, source_port)
     elif af == linkcheck.dns.inet.AF_INET6:
         destination = (where, port, 0, 0)
+        if source is not None:
+            source = (source, source_port, 0, 0)
     s = socket.socket(af, socket.SOCK_STREAM, 0)
+    if source is not None:
+        s.bind(source)
     expiration = _compute_expiration(lifetime)
     _connect(s, destination)
     l = len(wire)

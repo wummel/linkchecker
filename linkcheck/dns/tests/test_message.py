@@ -149,6 +149,13 @@ class TestMessage (unittest.TestCase):
             m = linkcheck.dns.message.from_wire(badwire)
         self.assertRaises(linkcheck.dns.message.ShortHeader, bad)
 
+    def test_RespondingToResponse(self):
+        def bad():
+            q = linkcheck.dns.message.make_query('foo', 'A')
+            r1 = linkcheck.dns.message.make_response(q)
+            r2 = linkcheck.dns.message.make_response(r1)
+        self.assertRaises(linkcheck.dns.exception.FormError, bad)
+
 
 def test_suite ():
     return unittest.makeSuite(TestMessage)
