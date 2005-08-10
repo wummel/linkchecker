@@ -31,7 +31,7 @@ distclean: clean cleandeb
 	rm -rf dist build
 	rm -f _$(PACKAGE)_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
-	rm -f $(PACKAGE)-out* $(PACKAGE).prof $(PACKAGE)-md5sums.txt
+	rm -f $(PACKAGE)-out* $(PACKAGE).prof
 	rm -rf $(PACKAGE)-$(VERSION)
 
 cleandeb:

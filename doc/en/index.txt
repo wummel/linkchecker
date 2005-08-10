@@ -30,12 +30,9 @@ Download
 ========
 
 Download the latest packages from `LinkChecker download section`_.
-There are also `Md5sum checksums`_ from above files.
 
 .. _LinkChecker download section:
    http://sourceforge.net/project/showfiles.php?group_id=1913
-.. _Md5sum checksums:
-   linkchecker-md5sums.txt
 
 Requirements and installation instructions are located at the
 `install documentation`_. To see what has changed between releases
