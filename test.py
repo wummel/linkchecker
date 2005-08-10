@@ -961,7 +961,8 @@ def main(argv):
         cfg.search_in = (cfg.basedir, )
 
     # Do not print "Imported %d modules in %.3fs" if --list-* was specified
-    if cfg.list_tests or cfg.list_hooks or cfg.list_files:
+    # or if quiet mode is enabled.
+    if cfg.quiet or cfg.list_tests or cfg.list_hooks or cfg.list_files:
         cfg.print_import_time = False
 
     # Set up the python path
