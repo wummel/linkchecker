@@ -215,15 +215,24 @@ def cc_supports_option (cc, option):
     return False
 
 
+def cc_remove_option (compiler, option):
+    for optlist in (compiler.compiler, compiler.compiler_so):
+        if option in optlist:
+            optlist.remove(option)
+
+
 class MyBuildExt (build_ext, object):
 
     def build_extensions (self):
-        # For gcc 3.x we can add -std=gnu99 to get rid of warnings.
+        # For gcc >= 3 we can add -std=gnu99 to get rid of warnings.
         extra = []
         if self.compiler.compiler_type == 'unix':
             option = "-std=gnu99"
             if cc_supports_option(self.compiler.compiler, option):
                 extra.append(option)
+                if platform.machine() == 'm68k':
+                    # work around ICE on m68k machines in gcc 4.0.1
+                    cc_remove_option(self.compiler, "-O3")
         # First, sanity-check the 'extensions' list
         self.check_extensions_list(self.extensions)
         for ext in self.extensions:
@@ -386,8 +395,8 @@ setup (name = "linkchecker",
        long_description = """Linkchecker features:
 o recursive checking
 o multithreaded
-o output in colored or normal text, HTML, SQL, CSV or a sitemap
-  graph in DOT, GML or XML.
+o output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
+  graph in different formats
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
   file links support
 o restrict link checking with regular expression filters for URLs
