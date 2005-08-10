@@ -13,8 +13,8 @@ Features
 
 - recursive checking
 - multithreading
-- output in colored or normal text, HTML, SQL, CSV or a sitemap
-  graph in GML or XML.
+- output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
+  graph in different formats
 - HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
   file links support
 - restriction of link checking with regular expression filters for URLs

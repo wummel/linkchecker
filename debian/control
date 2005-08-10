@@ -18,8 +18,8 @@ Description: check websites and HTML documents for broken links
  Features:
   o recursive checking
   o multithreaded
-  o output in colored or normal text, HTML, SQL, CSV or a sitemap
-    graph in DOT, GML or XML
+  o output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
+    graph in different formats
   o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
     file links support
   o restrict link checking with regular expression filters for URLs
