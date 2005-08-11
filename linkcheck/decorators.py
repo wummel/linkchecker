@@ -29,6 +29,11 @@ def g ():
     "this function is deprecated"
     pass
 
+@notimplemented
+def h ():
+    "todo"
+    pass
+
 """
 import warnings
 import signal
@@ -102,3 +107,18 @@ def synchronized (lock):
         return _synchronized(lock, function)
     return newfunc
 
+
+def notimplemented (func)
+    """
+    Raises a NotImplementedError if the function is called.
+    def newfunc (*args, **kwargs):
+    """
+    def newfunc (*args, **kwargs):
+        """
+        Raise NotImplementedError
+        """
+        raise NotImplementedError("%s not implemented" % func.__name__)
+    newfunc.__name__ = func.__name__
+    newfunc.__doc__ = func.__doc__
+    newfunc.__dict__.update(func.__dict__)
+    return newfunc
