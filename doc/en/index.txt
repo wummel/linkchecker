@@ -126,7 +126,7 @@ is documented on the `installation page`.
 
 .. image:: http://sourceforge.net/sflogo.php?group_id=1913&type=1
    :align: right
-   :target: http://sourceforge.net/
+   :target: http://sourceforge.net/projects/linkchecker/
    :alt: SourceForge Logo
    :width: 88
    :height: 31
