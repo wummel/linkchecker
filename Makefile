@@ -62,11 +62,11 @@ deb_signed: cleandeb
 	env CVSROOT=:ext:calvin@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k32EC6F3E -r"fakeroot --" -I.cvsignore
 
 files:	locale localbuild
-	test/run.sh linkchecker $(LCOPTS) http://$(HOST)/
+	-test/run.sh linkchecker $(LCOPTS) http://$(HOST)/
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
-release: releasecheck dist sign_distfiles homepage
+release: releasecheck distclean dist sign_distfiles homepage
 	@echo "Starting releaseforge..."
 	@releaseforge
 	@echo "Uploading new LinkChecker Homepage..."
@@ -81,7 +81,7 @@ dist: locale MANIFEST
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 
 releasecheck:
-	@if grep -i xxxx ChangeLog > /dev/null; then \
+	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog > /dev/null; then \
 	  echo "Could not release: edit ChangeLog release date"; false; \
 	fi
 
@@ -95,9 +95,6 @@ sign_distfiles:
 check:	localbuild
 	test/test.sh
 
-tar:	distclean
-	cd .. && tar cjvf linkchecker.tar.bz2 linkchecker
-
 pycheck:
 	-env PYTHONPATH=. PYTHONVER=$(PYVER) pychecker $(PYCHECKEROPTS) $(PYFILES)
 
@@ -107,6 +104,6 @@ pylint:
 reindent:
 	$(PYTHON) config/reindent.py -r -v linkcheck
 
-.PHONY: all clean cleandeb dist distclean homepage files upload locale
-.PHONY: deb_local deb_signed tar releasecheck pycheck pylint reindent
+.PHONY: all clean cleandeb dist distclean homepage files locale
+.PHONY: deb_local deb_signed releasecheck pycheck pylint reindent
 .PHONY: sign_distfiles
