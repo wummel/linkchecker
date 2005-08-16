@@ -89,6 +89,16 @@ class TestStrFormat (unittest.TestCase):
         self.assertEquals(linkcheck.strformat.strsize(1023), "1023 Bytes")
         self.assertEquals(linkcheck.strformat.strsize(1024), "1.00 kB")
 
+    def test_is_ascii (self):
+        self.assert_(linkcheck.strformat.is_ascii("abcd./"))
+        self.assert_(not linkcheck.strformat.is_ascii("ä"))
+        self.assert_(not linkcheck.strformat.is_ascii(u"ä"))
+
+    def test_indent (self):
+        s = "bla"
+        self.assertEquals(linkcheck.strformat.indent(s, ""), s)
+        self.assertEquals(linkcheck.strformat.indent(s, " "), " "+s)
+
 
 def test_suite ():
     """

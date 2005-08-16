@@ -424,6 +424,9 @@ class TestUrl (unittest.TestCase):
             nurl = url
             self.assertEqual(url_norm(url), nurl)
             self.assert_(not linkcheck.url.url_needs_quoting(url))
+        url = "http://hulla/a/b/!?c=d"
+        nurl = url
+        self.assertEqual(url_norm(url), nurl)
 
     def test_idn_encoding (self):
         """
