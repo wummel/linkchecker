@@ -60,6 +60,17 @@ def ascii_safe (s):
     return s
 
 
+def is_ascii (s):
+    """
+    Test if a string can be encoded in ASCII.
+    """
+    try:
+        s.encode('ascii', 'strict')
+        return True
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return False
+
+
 def url_unicode_split (url):
     """
     Like urlparse.urlsplit(), but always returning unicode parts.
@@ -121,6 +132,14 @@ def wrap (text, width, **kwargs):
     for para in get_paragraphs(text):
         ret.extend(textwrap.wrap(para.strip(), width, **kwargs))
     return os.linesep.join(ret)
+
+
+def indent (text, indent_string="  "):
+    """
+    Indent each line of text with the given indent string.
+    """
+    lines = str(text).splitlines()
+    return os.linesep.join(["%s%s" % (indent_string, x) for x in lines])
 
 
 def get_line_number (s, index):
