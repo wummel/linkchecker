@@ -53,25 +53,31 @@ def deprecated (func):
                       category=DeprecationWarning)
         return func(*args, **kwargs)
     newfunc.__name__ = func.__name__
-    newfunc.__doc__ = func.__doc__
+    newfunc.__doc__ += func.__doc__
     newfunc.__dict__.update(func.__dict__)
     return newfunc
 
 
 def signal_handler (signal_number):
     """
+    From http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/410666
+
     A decorator to set the specified function as handler for a signal.
     This function is the 'outer' decorator, called with only the
     (non-function) arguments.
-
-    From http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/410666
+    If signal_number is not a valid signal (for example signal.SIGN),
+    no handler is set.
     """
     # create the 'real' decorator which takes only a function as an argument
     def newfunc (function):
         """
         Register function as signal handler.
         """
-        if os.name == 'posix':
+        # note: actually the kill(2) function uses the signal number of 0
+        # for a special case, but for signal(2) only positive integers
+        # are allowed
+        is_valid_signal = 0 < signal_number < signal.NSIG
+        if is_valid_signal and os.name == 'posix':
             signal.signal(signal_number, function)
         return function
     return newfunc
@@ -91,7 +97,7 @@ def _synchronized (lock, func):
         finally:
             lock.release()
     newfunc.__name__ = func.__name__
-    newfunc.__doc__ = func.__doc__
+    newfunc.__doc__ += func.__doc__
     newfunc.__dict__.update(func.__dict__)
     return newfunc
 
@@ -108,7 +114,7 @@ def synchronized (lock):
     return newfunc
 
 
-def notimplemented (func)
+def notimplemented (func):
     """
     Raises a NotImplementedError if the function is called.
     def newfunc (*args, **kwargs):
