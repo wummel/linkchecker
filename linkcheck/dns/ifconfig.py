@@ -3,6 +3,7 @@
 """
 
 import socket
+import errno
 import array
 import fcntl
 import struct
@@ -40,30 +41,47 @@ class IfConfig (object):
         # create a socket so we have a handle to query
         self.sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    def _fcntl (self, func, args):
+    def _ioctl (self, func, args):
         return fcntl.ioctl(self.sockfd.fileno(), func, args)
 
     def _getaddr (self, ifname, func):
         ifreq = struct.pack("32s", ifname)
         try:
-            result = self._fcntl(func, ifreq)
+            result = self._ioctl(func, ifreq)
         except IOError, msg:
-            linkcheck.log.warn(linkcheck.LOG,
+            linkcheck.log.warn(linkcheck.LOG_DNS,
                   "error getting addr for interface %r: %s", ifname, msg)
             return None
         return socket.inet_ntoa(result[20:24])
 
     def getInterfaceList (self):
-        """ Get all interface names in a list
         """
-        buf = array.array('c', '\0' * 1024)
-        ifconf = struct.pack("iP", buf.buffer_info()[1], buf.buffer_info()[0])
-        result = self._fcntl(self.SIOCGIFCONF, ifconf)
+        Get all interface names in a list.
+        """
+        # initial 8kB buffer to hold interface data
+        bufsize = 8192
+        # 80kB buffer should be enough for most boxen
+        max_bufsize = bufsize * 10
+        while True:
+            buf = array.array('c', '\0' * bufsize)
+            ifreq = struct.pack("iP", buf.buffer_info()[1], buf.buffer_info()[0])
+            try:
+                result = self._ioctl(self.SIOCGIFCONF, ifreq)
+                break
+            except IOError, msg:
+                # in case of EINVAL the buffer size was too small
+                if msg[0] != errno.EINVAL or bufsize == max_bufsize:
+                    raise
+            # increase buffer
+            bufsize += 8192
         # loop over interface names
+        # XXX on *BSD, struct ifreq is not hardcoded 32, but dynamic.
+        ifreq_size = 32
+        data = buf.tostring()
         iflist = []
         size, ptr = struct.unpack("iP", result)
-        for idx in range(0, size, 32):
-            ifconf = buf.tostring()[idx:idx+32]
+        for i in range(0, size, ifreq_size):
+            ifconf = data[i:i+ifreq_size]
             name, dummy = struct.unpack("16s16s", ifconf)
             name, dummy = name.split('\0', 1)
             iflist.append(name)
@@ -75,7 +93,7 @@ class IfConfig (object):
         """
         ifreq = struct.pack("32s", ifname)
         try:
-            result = self._fcntl(self.SIOCGIFFLAGS, ifreq)
+            result = self._ioctl(self.SIOCGIFFLAGS, ifreq)
         except IOError, msg:
             linkcheck.log.warn(linkcheck.LOG_DNS,
                  "error getting flags for interface %r: %s", ifname, msg)
@@ -88,23 +106,43 @@ class IfConfig (object):
     def getAddr (self, ifname):
         """
         Get the inet addr for an interface.
+        @param ifname: interface name
+        @type ifname: string
         """
         return self._getaddr(ifname, self.SIOCGIFADDR)
 
     def getMask (self, ifname):
         """
         Get the netmask for an interface.
+        @param ifname: interface name
+        @type ifname: string
         """
         return self._getaddr(ifname, self.SIOCGIFNETMASK)
 
     def getBroadcast (self, ifname):
         """
         Get the broadcast addr for an interface.
+        @param ifname: interface name
+        @type ifname: string
         """
         return self._getaddr(ifname, self.SIOCGIFBRDADDR)
 
     def isUp (self, ifname):
         """
-        Check whether interface 'ifname' is UP.
+        Check whether interface is UP.
+        @param ifname: interface name
+        @type ifname: string
         """
         return (self.getFlags(ifname) & self.IFF_UP) != 0
+
+    def isLoopback (self, ifname):
+        """
+        Check whether interface is a loopback device.
+        @param ifname: interface name
+        @type ifname: string
+        """
+        # since not all systems have IFF_LOOPBACK as a flag defined,
+        # the ifname is tested first
+        if ifname == 'lo':
+            return True
+        return (self.getFlags(ifname) & self.IFF_LOOPBACK) != 0
