@@ -430,7 +430,7 @@ def match_host (host, domainlist):
     return False
 
 
-_nopathquote_chars = "-;/=,~*+()@"
+_nopathquote_chars = "-;/=,~*+()@!"
 if os.name == 'nt':
     _nopathquote_chars += "|"
 _safe_url_chars = re.escape(_nopathquote_chars + "_:.&#%?[]!")+"a-zA-Z0-9"
