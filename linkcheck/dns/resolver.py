@@ -342,14 +342,18 @@ class Resolver(object):
             self.add_addrinfo(addr, interface=True)
 
     def read_local_ifaddrs (self):
-        """all active interfaces' ip addresses"""
+        """
+        IP addresses for all active interfaces.
+        @return: list of IP addresses
+        @rtype: list of strings
+        """
         if not sys.platform.startswith('linux'):
             # only Linux is supported right now
             return []
         import linkcheck.dns.ifconfig
         ifc = linkcheck.dns.ifconfig.IfConfig()
-        return [ifc.getAddr(iface) for iface in ifc.getInterfaceList()
-                if ifc.isUp(iface)]
+        return [ifc.getAddr(iface) for iface in ifc.getInterfaceList() \
+                if ifc.isUp(iface) and not ifc.isLoopback(iface)]
 
     def add_addrinfo (self, host, interface=False):
         try:
