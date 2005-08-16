@@ -243,3 +243,10 @@ def quote_attrval (s):
     s = s.replace('&', "&amp;")
     s = s.replace('"', "&quot;")
     return s
+
+
+def quote_val (s):
+    s = s.replace('&', "&amp;")
+    s = s.replace('<', "&lt;")
+    s = s.replace('>', "&gt;")
+    return s
