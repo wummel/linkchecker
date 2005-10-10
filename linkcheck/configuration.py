@@ -434,7 +434,7 @@ class Configuration (dict):
             while 1:
                 ctuple = cfgparser.get(section, "ignore%d" % i).split()
                 if len(ctuple)!=2:
-                    linkcheck.log.error(
+                    linkcheck.log.error(linkcheck.LOG_CHECK,
                             _("ignore%d: syntax error %s\n") % (i, ctuple))
                     break
                 self["externlinks"].append(
