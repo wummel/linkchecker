@@ -76,14 +76,23 @@ class Consumer (object):
 
     @synchronized(_lock)
     def config (self, key):
+        """
+        Get config value.
+        """
         return self._config[key]
 
     @synchronized(_lock)
     def config_append (self, key, val):
+        """
+        Append config value.
+        """
         self._config[key].append(val)
 
     @synchronized(_lock)
     def __getattr__ (self, name):
+        """
+        Delegate access to the internal cache if possible.
+        """
         if hasattr(self._cache, name):
             return getattr(self._cache, name)
         raise AttributeError(name)
@@ -139,6 +148,9 @@ class Consumer (object):
 
     @synchronized(_lock)
     def finish (self):
+        """
+        Finish consuming URLs.
+        """
         self._threader.finish()
 
     @synchronized(_lock)
@@ -196,6 +208,9 @@ class Consumer (object):
 
     @synchronized(_lock)
     def log_url (self, url_data):
+        """
+        Log given URL.
+        """
         self._log_url(url_data)
 
     def _log_url (self, url_data):
