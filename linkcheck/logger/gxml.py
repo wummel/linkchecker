@@ -18,8 +18,6 @@
 A GraphXML logger.
 """
 
-import time
-
 import linkcheck.logger.xmllog
 import linkcheck.configuration
 
