@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 # snatched from pythoncard CVS
+# Documentation is at:
+# http://docs.python.org/dist/postinstallation-script.html
 
 # THIS FILE IS ONLY FOR USE WITH MS WINDOWS
 # It is run as parts of the bdist_wininst installer
@@ -9,28 +11,17 @@
 # [bdist_wininst]
 # install-script=install-linkchecker.py
 
-# available functions:
-# create_shortcut(target, description, filename[, arguments[,
-#                 workdir[, iconpath[, iconindex]]]])
-# - create shortcut
-#
-# file_created(path)
-#  - register 'path' so that the uninstaller removes it
-#
-# directory_created(path)
-# - register 'path' so that the uninstaller removes it
-#
-# get_special_folder_location(csidl_string)
-# - get windows specific paths
-
 import sys
+if not sys.platform.startswith('win'):
+    # not for us
+    sys.exit()
+if not hasattr(sys, "version_info"):
+    raise SystemExit, "This program requires Python 2.4 or later."
+if sys.version_info < (2, 4, 0, 'final', 0):
+    raise SystemExit, "This program requires Python 2.4 or later."
 import os
 import re
 import platform
-
-if platform.system() != 'Windows':
-    # not for us
-    sys.exit()
 
 # releases supporting our special .bat files
 win_bat_releases = ['NT', 'XP', '2000', '2003Server']
@@ -145,6 +136,7 @@ def fix_install_path (line):
         if oldpath in val:
             val = val.replace(oldpath, newpath)
             val = os.path.join(sys.prefix, val)
+            val = os.path.normpath(val)
     return "%s = %r%s" % (key, val, os.linesep)
 
 
