@@ -5,6 +5,9 @@ HTMLDIR := /home/calvin/public_html/linkchecker.sf.net
 
 all: $(HTMLFILES)
 
+clean:
+	rm -f $(HTMLFILES) $(NAVFILES)
+
 %.html:	%.txt ../htmlnav.py ../bfknav.py
 	../rest2htmlnav --stylesheet-path=lc.css --time $< $@
 

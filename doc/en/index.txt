@@ -8,6 +8,14 @@ LinkChecker - check websites and HTML documents for broken links
 
 .. contents::
 
+News
+====
+
+Due to time restrictions I will take a break from LinkChecker development.
+Your bug reports will be added to the TODO list and when development starts
+again they will be answered.
+
+
 Features
 ========
 
@@ -49,7 +57,7 @@ Screenshots
 
    +----------------------------+----------------------------+
    | .. image:: shot1_thumb.jpg | .. image:: shot2_thumb.jpg |
-   |      :align: middle        |      :align: middle        |
+   |      :align: center        |      :align: center        |
    |      :target: shot1.png    |      :target: shot2.png    |
    +----------------------------+----------------------------+
    | Commandline interface      | Web interface              |
