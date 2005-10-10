@@ -53,7 +53,8 @@ def deprecated (func):
                       category=DeprecationWarning)
         return func(*args, **kwargs)
     newfunc.__name__ = func.__name__
-    newfunc.__doc__ += func.__doc__
+    if func.__doc__ is not None:
+        newfunc.__doc__ += func.__doc__
     newfunc.__dict__.update(func.__dict__)
     return newfunc
 
@@ -97,7 +98,8 @@ def _synchronized (lock, func):
         finally:
             lock.release()
     newfunc.__name__ = func.__name__
-    newfunc.__doc__ += func.__doc__
+    if func.__doc__ is not None:
+        newfunc.__doc__ += func.__doc__
     newfunc.__dict__.update(func.__dict__)
     return newfunc
 
@@ -125,6 +127,7 @@ def notimplemented (func):
         """
         raise NotImplementedError("%s not implemented" % func.__name__)
     newfunc.__name__ = func.__name__
-    newfunc.__doc__ = func.__doc__
+    if func.__doc__ is not None:
+        newfunc.__doc__ = func.__doc__
     newfunc.__dict__.update(func.__dict__)
     return newfunc
