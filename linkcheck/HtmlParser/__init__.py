@@ -200,7 +200,7 @@ def strip_quotes (s):
 
 _encoding_ro = re.compile(r"charset=(?P<encoding>[-0-9a-zA-Z]+)")
 
-def set_encoding (self, attrs):
+def set_encoding (parsobj, attrs):
     """
     Set document encoding for the HTML parser according to the <meta>
     tag attribute information.
@@ -217,13 +217,13 @@ def set_encoding (self, attrs):
             try:
                 encoding = encoding.encode("ascii")
                 codecs.lookup(encoding)
-                self.encoding = encoding
+                parsobj.encoding = encoding
             except LookupError:
                 # ignore unknown encodings
                 pass
 
 
-def set_doctype (self, doctype):
+def set_doctype (parsobj, doctype):
     """
     Set document type of the HTML parser according to the given
     document type string.
@@ -233,5 +233,5 @@ def set_doctype (self, doctype):
     @return: None
     """
     if u"XHTML" in doctype:
-        self.doctype = "XHTML"
+        parsobj.doctype = "XHTML"
 

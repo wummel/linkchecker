@@ -37,7 +37,7 @@
     (b)[(n)-1] = '\0'
 
 /* make python unicode string from tmp_buf and assign it to a */
-#define PYSTRING_TMP(a) { \
+#define PYSTRING_TMP_UNICODE(a) { \
     PyObject* pencoding; \
     char* encoding; \
     pencoding = PyObject_GetAttrString(yyextra->parser, "encoding"); \
@@ -50,10 +50,24 @@
     if ((a)==NULL) return T_ERROR; \
 }
 
+#define PYSTRING_TMP_ASCII(a) { \
+    (a) = PyUnicode_Decode(yyextra->tmp_buf, strlen(yyextra->tmp_buf),  \
+                           "ascii", "ignore"); \
+    if ((a)==NULL) return T_ERROR; \
+}
+
 /* set return value from tmp_buf */
-#define SETLVAL { \
+#define SETLVAL_UNICODE { \
     PyObject* s; \
-    PYSTRING_TMP(s); \
+    PYSTRING_TMP_UNICODE(s); \
+    RESIZE_BUF(yyextra->tmp_buf, 1); \
+    *yylval = s; \
+    }
+
+/* set return value from tmp_buf */
+#define SETLVAL_ASCII { \
+    PyObject* s; \
+    PYSTRING_TMP_ASCII(s); \
     RESIZE_BUF(yyextra->tmp_buf, 1); \
     *yylval = s; \
     }
@@ -99,7 +113,7 @@
  */
 #define FLUSH_ATTRS \
     if (strlen(yyextra->tmp_buf) > 0) { \
-        PYSTRING_TMP(yyextra->tmp_attrname); \
+        PYSTRING_TMP_UNICODE(yyextra->tmp_attrname); \
 	RESIZE_BUF(yyextra->tmp_buf, 1); \
         if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname, Py_None)==-1) return T_ERROR; \
         Py_CLEAR(yyextra->tmp_attrname); \
@@ -213,7 +227,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_COMMENT>--[ ]*> {
     UPDATE_COLUMN;
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_COMMENT);
 }
@@ -255,7 +269,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_COMMENT2>!> {
     UPDATE_COLUMN;
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_COMMENT);
 }
@@ -283,7 +297,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_DOCTYPE>> {
     UPDATE_COLUMN;
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_DOCTYPE);
 }
@@ -302,7 +316,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <S_CDATA>\]*\]\]> {
     UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng-3);
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_CDATA);
 }
@@ -335,7 +349,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <S_PI>\?+> {
     UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng-2);
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_PI);
 }
@@ -347,7 +361,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_PI>> {
     UPDATE_COLUMN;
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_PI);
 }
@@ -377,7 +391,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <S_TAGSTART>{RX_WHITE_SPACE}+ {
     UPDATE_LINE;
     LOWER_TMP;
-    PYSTRING_TMP(yyextra->tmp_tag);
+    PYSTRING_TMP_ASCII(yyextra->tmp_tag);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     BEGIN(S_ATTR1);
 }
@@ -390,11 +404,11 @@ RX_DATA  [-a-zA-Z0-9_:]+
 	RESIZE_BUF(yyextra->tmp_buf, 4);
         strcpy(yyextra->tmp_buf, "</>");
         yyextra->tmp_attrs = NULL;
-        SETLVAL;
+        SETLVAL_UNICODE;
         RETURN(T_TEXT);
     }
     LOWER_TMP;
-    PYSTRING_TMP(yyextra->tmp_tag);
+    PYSTRING_TMP_ASCII(yyextra->tmp_tag);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     SET_ATTR_LVAL;
     RETURN(T_ELEMENT_START_END);
@@ -408,11 +422,11 @@ RX_DATA  [-a-zA-Z0-9_:]+
 	RESIZE_BUF(yyextra->tmp_buf, 3);
         strcpy(yyextra->tmp_buf, "<>");
         yyextra->tmp_attrs = NULL;
-	SETLVAL;
+	SETLVAL_UNICODE;
         RETURN(T_TEXT);
     }
     LOWER_TMP;
-    PYSTRING_TMP(yyextra->tmp_tag);
+    PYSTRING_TMP_ASCII(yyextra->tmp_tag);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     SCRIPT_CHECK;
     SET_ATTR_LVAL;
@@ -426,7 +440,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
   /*********************** SCRIPT ************************/
 <S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*> {
     UPDATE_LINE;
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_SCRIPT);
 }
@@ -597,7 +611,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
   /*********************** STYLE ************************/
 <S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt][Yy][Ll][Ee]{RX_WHITE_SPACE}*> {
     UPDATE_LINE;
-    SETLVAL;
+    SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_STYLE);
 }
@@ -691,7 +705,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <S_ATTR2,S_ATTR3>{RX_WHITE_SPACE}*{RX_EQUAL}{RX_WHITE_SPACE}* {
     UPDATE_LINE;
     LOWER_TMP;
-    PYSTRING_TMP(yyextra->tmp_attrname);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrname);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     BEGIN(S_ATTR4);
 }
@@ -699,7 +713,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <S_ATTR3>{RX_NAME} {
     UPDATE_COLUMN;
     LOWER_TMP;
-    PYSTRING_TMP(yyextra->tmp_attrname);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrname);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     if (yyextra->tmp_attrval!=NULL) return T_ERROR;
     if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
@@ -740,7 +754,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_ATTR4>> {
     UPDATE_COLUMN;
-    PYSTRING_TMP(yyextra->tmp_attrval);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval);
@@ -765,7 +779,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_ATTR5>> {
     UPDATE_COLUMN;
-    PYSTRING_TMP(yyextra->tmp_attrval);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval);
@@ -781,7 +795,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_ATTR5>\/> {
     UPDATE_COLUMN;
-    PYSTRING_TMP(yyextra->tmp_attrval);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval);
@@ -797,7 +811,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_ATTR5>{RX_WHITE_SPACE}+|[\"] {
     UPDATE_LINE;
-    PYSTRING_TMP(yyextra->tmp_attrval);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval);
@@ -817,7 +831,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_APOSSTRING>\' {
     UPDATE_COLUMN;
-    PYSTRING_TMP(yyextra->tmp_attrval);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval);
@@ -849,7 +863,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 <S_STRING>\" {
     UPDATE_COLUMN;
-    PYSTRING_TMP(yyextra->tmp_attrval);
+    PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval);
@@ -887,7 +901,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <S_TAGEND>{RX_WHITE_SPACE}*> {
     UPDATE_LINE;
     LOWER_TMP;
-    SETLVAL;
+    SETLVAL_ASCII;
     BEGIN(INITIAL);
     RETURN(T_ELEMENT_END);
 }
@@ -896,7 +910,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     UPDATE_LINE;
     LOWER_TMP;
     yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
-    SETLVAL;
+    SETLVAL_ASCII;
     BEGIN(S_TAGEND);
     RETURN(T_ELEMENT_END);
 }
@@ -905,7 +919,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     UPDATE_LINE;
     LOWER_TMP;
     yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
-    SETLVAL;
+    SETLVAL_ASCII;
     yyextra->tmp_attrs = PyObject_CallObject(yyextra->list_dict, NULL);
     if (yyextra->tmp_attrs==NULL) {
         return T_ERROR;
@@ -923,7 +937,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <S_TAGEND2>> {
     UPDATE_COLUMN;
     LOWER_TMP;
-    SETLVAL;
+    SETLVAL_ASCII;
     BEGIN(INITIAL);
     RETURN(T_ELEMENT_END);
 }
@@ -936,7 +950,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     UPDATE_LINE;
     LOWER_TMP;
     yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
-    SETLVAL;
+    SETLVAL_ASCII;
     BEGIN(S_TAGEND);
     RETURN(T_ELEMENT_END);
 }
@@ -945,7 +959,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     UPDATE_LINE;
     LOWER_TMP;
     yyextra->error = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf);
-    SETLVAL;
+    SETLVAL_ASCII;
     yyextra->tmp_attrs = PyObject_CallObject(yyextra->list_dict, NULL);
     if (yyextra->tmp_attrs==NULL) {
         return T_ERROR;
@@ -961,21 +975,21 @@ RX_DATA  [-a-zA-Z0-9_:]+
 <INITIAL>[^<]+ {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
-    SETLVAL;
+    SETLVAL_UNICODE;
     RETURN(T_TEXT);
 }
 
 <INITIAL><[^\012 \t\b\r\nA-Za-z!?/] {
     UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
-    SETLVAL;
+    SETLVAL_UNICODE;
     RETURN(T_TEXT);
 }
 
 <INITIAL><{RX_WHITE_SPACE}+[^A-Za-z/] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
-    SETLVAL;
+    SETLVAL_UNICODE;
     RETURN(T_TEXT);
 }
 
