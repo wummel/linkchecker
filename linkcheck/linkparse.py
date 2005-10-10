@@ -250,7 +250,7 @@ class LinkFinder (TagFinder):
             mo = refresh_re.match(url)
             if mo:
                 urls.append(mo.group("url"))
-            else:
+            elif attr != 'content':
                 urls.append(url)
         elif attr == u'style':
             for mo in css_url_re.finditer(url):
