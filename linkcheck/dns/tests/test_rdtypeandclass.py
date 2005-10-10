@@ -48,7 +48,7 @@ class TestRdTypeAndClass (unittest.TestCase):
 
     def test_class_bytext_unknown(self):
         def bad():
-            junk = linkcheck.dns.rdataclass.from_text('XXX')
+            junk = linkcheck.dns.rdataclass.from_text('XYZ')
         self.assertRaises(linkcheck.dns.rdataclass.UnknownRdataclass, bad)
 
     def test_class_totext1(self):
@@ -103,7 +103,7 @@ class TestRdTypeAndClass (unittest.TestCase):
 
     def test_type_bytext_unknown(self):
         def bad():
-            junk = linkcheck.dns.rdatatype.from_text('XXX')
+            junk = linkcheck.dns.rdatatype.from_text('XYZ')
         self.assertRaises(linkcheck.dns.rdatatype.UnknownRdatatype, bad)
 
     def test_type_totext1(self):
