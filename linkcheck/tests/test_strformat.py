@@ -99,6 +99,17 @@ class TestStrFormat (unittest.TestCase):
         self.assertEquals(linkcheck.strformat.indent(s, ""), s)
         self.assertEquals(linkcheck.strformat.indent(s, " "), " "+s)
 
+    def test_stripall (self):
+        self.assertEquals(linkcheck.strformat.stripall("a\tb"), "ab")
+        self.assertEquals(linkcheck.strformat.stripall(" a\t b"), "ab")
+        self.assertEquals(linkcheck.strformat.stripall(" \r\na\t \nb\r"), "ab")
+
+    def test_limit (self):
+        self.assertEquals(linkcheck.strformat.limit("", 0), "")
+        self.assertEquals(linkcheck.strformat.limit("a", 0), "")
+        self.assertEquals(linkcheck.strformat.limit("1", 1), "1")
+        self.assertEquals(linkcheck.strformat.limit("11", 1), "1...")
+
 
 def test_suite ():
     """
