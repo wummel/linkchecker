@@ -28,7 +28,6 @@ import os
 import popen2
 import platform
 import stat
-import re
 import string
 import glob
 from distutils.core import setup, Extension, DEBUG
@@ -42,8 +41,9 @@ from distutils.command.build import build
 from distutils.command.clean import clean
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
-from distutils.dep_util import newer
-from distutils import util, log, sysconfig
+from distutils.sysconfig import get_python_version
+from distutils.errors import DistutilsPlatformError
+from distutils import util, log
 
 # cross compile config
 cc = os.environ.get("CC")
