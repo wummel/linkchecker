@@ -593,6 +593,28 @@ class TestName (unittest.TestCase):
             (n, cused) = linkcheck.dns.name.from_wire(w, 0)
         self.assertRaises(linkcheck.dns.name.BadLabelType, bad)
 
+    def testParent1(self):
+        n = linkcheck.dns.name.from_text('foo.bar.')
+        self.failUnless(n.parent() == linkcheck.dns.name.from_text('bar.'))
+        self.failUnless(n.parent().parent() == linkcheck.dns.name.root)
+
+    def testParent2(self):
+        n = linkcheck.dns.name.from_text('foo.bar', None)
+        self.failUnless(n.parent() == linkcheck.dns.name.from_text('bar', None))
+        self.failUnless(n.parent().parent() == linkcheck.dns.name.empty)
+
+    def testParent3(self):
+        def bad():
+            n = linkcheck.dns.name.root
+            n.parent()
+        self.failUnlessRaises(linkcheck.dns.name.NoParent, bad)
+
+    def testParent4(self):
+        def bad():
+            n = linkcheck.dns.name.empty
+            n.parent()
+        self.failUnlessRaises(linkcheck.dns.name.NoParent, bad)
+
 
 def test_suite ():
     return unittest.makeSuite(TestName)

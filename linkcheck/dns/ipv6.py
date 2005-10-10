@@ -49,6 +49,7 @@ def inet_ntoa(address):
     #
     # Compress the longest subsequence of 0-value chunks to ::
     #
+    start = 0
     best_start = 0
     best_len = 0
     last_was_zero = False

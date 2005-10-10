@@ -116,6 +116,9 @@ class Answer(object):
         self.rrset = rrset
         self.expiration = time.time() + min_ttl
 
+    def __str__ (self):
+        return str(self.rrset)
+
     def __getattr__(self, attr):
         if attr == 'name':
             return self.rrset.name
@@ -335,7 +338,6 @@ class Resolver(object):
             self.nameservers.append('127.0.0.1')
 
     def read_local_hosts (self):
-        # XXX is this default list of localhost stuff complete?
         self.add_addrinfo(socket.gethostname())
         # add system specific hosts for all enabled interfaces
         for addr in self.read_local_ifaddrs():
@@ -353,7 +355,7 @@ class Resolver(object):
         import linkcheck.dns.ifconfig
         ifc = linkcheck.dns.ifconfig.IfConfig()
         return [ifc.getAddr(iface) for iface in ifc.getInterfaceList() \
-                if ifc.isUp(iface) and not ifc.isLoopback(iface)]
+                if ifc.isUp(iface)]
 
     def add_addrinfo (self, host, interface=False):
         try:
@@ -500,8 +502,14 @@ class Resolver(object):
     def _compute_timeout(self, start):
         now = time.time()
         if now < start:
-            # Time going backwards is bad.  Just give up.
-            raise Timeout
+            if start - now > 1:
+                # Time going backwards is bad.  Just give up.
+                raise Timeout
+            else:
+                # Time went backwards, but only a little. This can
+                # happen, e.g. under vmware with older linux kernels.
+                # Pretend it didn't happen.
+                now = start
         duration = now - start
         if duration >= self.lifetime:
             raise Timeout
@@ -673,17 +681,50 @@ class Resolver(object):
 
 default_resolver = None
 
+def get_default_resolver ():
+    global default_resolver
+    if default_resolver is None:
+        default_resolver = Resolver()
+
 def query(qname, rdtype=linkcheck.dns.rdatatype.A, rdclass=linkcheck.dns.rdataclass.IN,
-          tcp=False):
+          tcp=False, resolver=None):
     """Query nameservers to find the answer to the question.
 
     This is a convenience function that uses the default resolver
     object to make the query.
     @see: L{linkcheck.dns.resolver.Resolver.query} for more information on the
     parameters."""
-    global default_resolver
-    if default_resolver is None:
-        default_resolver = Resolver()
-    linkcheck.log.debug(linkcheck.LOG_DNS,
-                        "Query %s %s %s", qname, rdtype, rdclass)
-    return default_resolver.query(qname, rdtype, rdclass, tcp)
+    linkcheck.log.debug(linkcheck.LOG_DNS, "Query %s %s %s", qname, rdtype, rdclass)
+    if resolver is None:
+        resolver = get_default_resolver()
+    return resolver.query(qname, rdtype, rdclass, tcp)
+
+def zone_for_name(name, rdclass=linkcheck.dns.rdataclass.IN,
+                  tcp=False, resolver=None):
+    """Find the name of the zone which contains the specified name.
+
+    @param name: the query name
+    @type name: absolute linkcheck.dns.name.Name object or string
+    @ivar rdclass: The query class
+    @type rdclass: int
+    @param tcp: use TCP to make the query (default is False).
+    @type tcp: bool
+    @param resolver: the resolver to use
+    @type resolver: linkcheck.dns.resolver.Resolver object or None
+    @rtype: dns.name.Name"""
+
+    if isinstance(name, str):
+        name = linkcheck.dns.name.from_text(name, linkcheck.dns.name.root)
+    if resolver is None:
+        resolver = get_default_resolver()
+    if not name.is_absolute():
+        raise NotAbsolute, name
+    while 1:
+        try:
+            answer = resolver.query(name, linkcheck.dns.rdatatype.SOA, rdclass, tcp)
+            return name
+        except (linkcheck.dns.resolver.NXDOMAIN, linkcheck.dns.resolver.NoAnswer):
+            try:
+                name = name.parent()
+            except NoParent:
+                raise NoRootSoa

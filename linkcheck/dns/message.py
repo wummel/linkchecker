@@ -245,8 +245,10 @@ class Message(object):
     def is_response(self, other):
         """Is other a response to self?
         @rtype: bool"""
+        if self.id != other.id:
+            linkcheck.log.warn(linkcheck.LOG_DNS,
+                "DNS message IDs differ\n%s\n----\n%s\n----", self, other)
         if other.flags & linkcheck.dns.flags.QR == 0 or \
-           self.id != other.id or \
            linkcheck.dns.opcode.from_flags(self.flags) != \
            linkcheck.dns.opcode.from_flags(other.flags):
             return False

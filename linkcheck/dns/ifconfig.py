@@ -75,16 +75,18 @@ class IfConfig (object):
             # increase buffer
             bufsize += 8192
         # loop over interface names
-        # XXX on *BSD, struct ifreq is not hardcoded 32, but dynamic.
-        ifreq_size = 32
         data = buf.tostring()
         iflist = []
         size, ptr = struct.unpack("iP", result)
-        for i in range(0, size, ifreq_size):
+        i = 0
+        while i < size:
+            # XXX on *BSD, struct ifreq is not hardcoded 32, but dynamic.
+            ifreq_size = 32
             ifconf = data[i:i+ifreq_size]
             name, dummy = struct.unpack("16s16s", ifconf)
             name, dummy = name.split('\0', 1)
             iflist.append(name)
+            i += ifreq_size
         return iflist
 
     def getFlags (self, ifname):
