@@ -133,7 +133,7 @@
 # disable anchor caching
 #noanchorcaching=1
 
-# filtering options (see FAQ)
+# filtering options
 # for each extern link we can specify if it is strict or not
 [filtering]
 # ignore everything with 'lconline' in the URL name
