@@ -8,13 +8,6 @@ LinkChecker - check websites and HTML documents for broken links
 
 .. contents::
 
-News
-====
-
-Due to time restrictions I will take a break from LinkChecker development.
-Your bug reports will be added to the TODO list and when development starts
-again they will be answered.
-
 
 Features
 ========
