@@ -1,6 +1,14 @@
 3.3 "" (released xx.xx.xxxx)
 
-  * 
+  * Fix parsing of ignore and nofollow in configuration files.
+    Type: bugfix
+    Changed: linkcheck/configuration.py
+    Closes: SF bug #1311964
+
+  * Ignore refresh meta content without a recognizable URL.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+    Closes: SF bug #1294456
 
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
