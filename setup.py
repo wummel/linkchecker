@@ -15,15 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-"""setup file for the distuils module"""
+"""
+Setup file for the distuils module.
+"""
 
 import sys
 if not hasattr(sys, "version_info"):
-    raise SystemExit, "The installation script of this program requires" + \
-                      " Python 2.4.0 or later."
+    raise SystemExit, "This program requires Python 2.4 or later."
 if sys.version_info < (2, 4, 0, 'final', 0):
-    raise SystemExit, "The installation script of this program requires" + \
-                      " Python 2.4.0 or later."
+    raise SystemExit, "This program requires Python 2.4 or later."
 import os
 import popen2
 import platform
@@ -32,7 +32,9 @@ import re
 import string
 import glob
 from distutils.core import setup, Extension, DEBUG
+from distutils.spawn import find_executable
 import distutils.dist
+from distutils.command.bdist_wininst import bdist_wininst
 from distutils.command.install import install
 from distutils.command.install_data import install_data
 from distutils.command.build_ext import build_ext
@@ -66,7 +68,7 @@ def cnormpath (path):
         # replace slashes with backslashes
         path = path.replace("/", "\\")
     if not os.path.isabs(path):
-        path= os.path.join(sys.prefix, path)
+        path= normpath(os.path.join(sys.prefix, path))
     return path
 
 
@@ -93,7 +95,7 @@ class MyInstall (install, object):
                 cdir = os.path.join(val, "share", "linkchecker")
                 data.append('config_dir = %r' % cnormpath(cdir))
             data.append("%s = %r" % (attr, cnormpath(val)))
-	self.distribution.create_conf_file(data, directory=self.install_lib)
+        self.distribution.create_conf_file(data, directory=self.install_lib)
 
     def get_outputs (self):
         """
@@ -105,7 +107,7 @@ class MyInstall (install, object):
         return outs
 
     # compatibility bugfix for Python << 2.5, << 2.4.1, << 2.3.5
-    # remove this method when depending on one of the above versions
+    # XXX remove this method when depending on one of the above versions
     def dump_dirs (self, msg):
         if DEBUG:
             from distutils.fancy_getopt import longopt_xlate
@@ -197,6 +199,93 @@ class MyDistribution (distutils.dist.Distribution, object):
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
 
+class MyBdistWininst (bdist_wininst, object):
+    """
+    Custom bdist_wininst command supporting cross compilation.
+    """
+
+    def run (self):
+        if (not win_compiling and
+            (self.distribution.has_ext_modules() or
+             self.distribution.has_c_libraries())):
+            raise DistutilsPlatformError \
+                  ("distribution contains extensions and/or C libraries; "
+                   "must be compiled on a Windows 32 platform")
+
+        if not self.skip_build:
+            self.run_command('build')
+
+        install = self.reinitialize_command('install', reinit_subcommands=1)
+        install.root = self.bdist_dir
+        install.skip_build = self.skip_build
+        install.warn_dir = 0
+
+        install_lib = self.reinitialize_command('install_lib')
+        # we do not want to include pyc or pyo files
+        install_lib.compile = 0
+        install_lib.optimize = 0
+
+        # If we are building an installer for a Python version other
+        # than the one we are currently running, then we need to ensure
+        # our build_lib reflects the other Python version rather than ours.
+        # Note that for target_version!=sys.version, we must have skipped the
+        # build step, so there is no issue with enforcing the build of this
+        # version.
+        target_version = self.target_version
+        if not target_version:
+            assert self.skip_build, "Should have already checked this"
+            target_version = sys.version[0:3]
+        plat_specifier = ".%s-%s" % (util.get_platform(), target_version)
+        build = self.get_finalized_command('build')
+        build.build_lib = os.path.join(build.build_base,
+                                       'lib' + plat_specifier)
+
+        # Use a custom scheme for the zip-file, because we have to decide
+        # at installation time which scheme to use.
+        for key in ('purelib', 'platlib', 'headers', 'scripts', 'data'):
+            value = string.upper(key)
+            if key == 'headers':
+                value = value + '/Include/$dist_name'
+            setattr(install,
+                    'install_' + key,
+                    value)
+
+        log.info("installing to %s", self.bdist_dir)
+        install.ensure_finalized()
+
+        # avoid warning of 'install_lib' about installing
+        # into a directory not in sys.path
+        sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
+
+        install.run()
+
+        del sys.path[0]
+
+        # And make an archive relative to the root of the
+        # pseudo-installation tree.
+        from tempfile import mktemp
+        archive_basename = mktemp()
+        fullname = self.distribution.get_fullname()
+        arcname = self.make_archive(archive_basename, "zip",
+                                    root_dir=self.bdist_dir)
+        # create an exe containing the zip-file
+        self.create_exe(arcname, fullname, self.bitmap)
+        # remove the zip-file again
+        log.debug("removing temporary file '%s'", arcname)
+        os.remove(arcname)
+
+        if not self.keep_temp:
+            remove_tree(self.bdist_dir, dry_run=self.dry_run)
+
+    def get_exe_bytes (self):
+        if win_compiling:
+            # wininst-X.Y.exe is in the same directory as bdist_wininst
+            directory = os.path.dirname(distutils.command.__file__)
+            filename = os.path.join(directory, "wininst-7.1.exe")
+            return open(filename, "rb").read()
+        return super(MyBdistWininst, self).get_exe_bytes()
+
+
 def cc_supports_option (cc, option):
     """
     Check if the given C compiler supports the given option.
@@ -222,8 +311,15 @@ def cc_remove_option (compiler, option):
 
 
 class MyBuildExt (build_ext, object):
+    """
+    Custom build extension command.
+    """
 
     def build_extensions (self):
+        """
+        Add -std=gnu99 to build options if supported.
+        And compress extension libraries.
+        """
         # For gcc >= 3 we can add -std=gnu99 to get rid of warnings.
         extra = []
         if self.compiler.compiler_type == 'unix':
@@ -240,9 +336,33 @@ class MyBuildExt (build_ext, object):
                 if opt not in ext.extra_compile_args:
                     ext.extra_compile_args.append(opt)
             self.build_extension(ext)
+        self.compress_extensions()
+
+    def compress_extensions (self):
+        """
+        Run UPX compression over built extension libraries.
+        """
+        # currently upx supports only .dll files
+        if os.name != 'nt':
+            return
+        upx = find_executable("upx")
+        if upx is None:
+            # upx not found
+            return
+        for filename in self.get_outputs():
+            compress_library(upx, filename)
 
 
-def list_message_files(package, suffix=".po"):
+def compress_library (upx, filename):
+    """
+    Compresses a dynamic library file with upx (currently only .dll
+    files are supported).
+    """
+    log.info("upx-compressing %s", filename)
+    os.system('%s -q --best "%s"' % (upx, filename))
+
+
+def list_message_files (package, suffix=".po"):
     """
     Return list of all found message files and their installation paths.
     """
@@ -411,6 +531,7 @@ o a (Fast)CGI web interface (requires HTTP server)
        distclass = MyDistribution,
        cmdclass = {'install': MyInstall,
                    'install_data': MyInstallData,
+                   'bdist_wininst': MyBdistWininst,
                    'build_ext': MyBuildExt,
                    'build': MyBuild,
                    'clean': MyClean,
