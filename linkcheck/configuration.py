@@ -414,13 +414,9 @@ class Configuration (dict):
         try:
             i = 1
             while 1:
-                ctuple = cfgparser.get(section, "nofollow%d" % i).split()
-                if len(ctuple)!=2:
-                    linkcheck.log.error(
-                            _("nofollow%d: syntax error %s\n") % (i, ctuple))
-                    break
-                self["externlinks"].append(
-                    linkcheck.get_link_pat(ctuple[0], strict=0))
+                val = cfgparser.get(section, "nofollow%d" % i)
+                pat = linkcheck.get_link_pat(val, strict=0)
+                self["externlinks"].append(pat)
                 i += 1
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
@@ -432,13 +428,10 @@ class Configuration (dict):
         try:
             i = 1
             while 1:
-                ctuple = cfgparser.get(section, "ignore%d" % i).split()
-                if len(ctuple)!=2:
-                    linkcheck.log.error(linkcheck.LOG_CHECK,
-                            _("ignore%d: syntax error %s\n") % (i, ctuple))
-                    break
-                self["externlinks"].append(
-                    linkcheck.get_link_pat(ctuple[0], strict=1))
+                # XXX backwards compatibility: split and ignore second part
+                val = cfgparser.get(section, "ignore%d" % i).split()[0]
+                pat = linkcheck.get_link_pat(val, strict=1)
+                self["externlinks"].append(pat)
                 i += 1
         except ConfigParser.Error, msg:
             linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
