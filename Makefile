@@ -13,6 +13,7 @@ PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint.$(PYTHON)
 PYLINTOPTS := 
 PYLINTIGNORE = linkcheck/httplib2.py
 PYLINTFILES = $(filter-out $(PYLINTIGNORE),$(PYFILES))
+PYFLAKES:=pyflakes
 
 .PHONY: all
 all:
@@ -117,6 +118,13 @@ pycheck:
 .PHONY: pylint
 pylint:
 	$(PYLINT) $(PYLINTOPTS) $(PYLINTFILES) $(TESTFILES)
+
+.PHONY: pyflakes
+pyflakes:
+	$(PYFLAKES) *.py test linkcheck | \
+          grep -v "redefinition of unused 'linkcheck'" | \
+          grep -v "undefined name '_'" | \
+	  grep -v "undefined name '_n'"
 
 .PHONY: reindent
 reindent:
