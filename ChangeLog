@@ -3,12 +3,18 @@
   * Fix parsing of ignore and nofollow in configuration files.
     Type: bugfix
     Changed: linkcheck/configuration.py
-    Closes: SF bug #1311964
+    Closes: SF bug #1311964, #1270783
 
   * Ignore refresh meta content without a recognizable URL.
     Type: bugfix
     Changed: linkcheck/linkparse.py
     Closes: SF bug #1294456
+
+  * Catch CGI syntax errors in mailto: URLs, and add an appropriate
+    warning about the error.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+    Closes: SF bug #1290563
 
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 

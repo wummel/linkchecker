@@ -107,10 +107,13 @@ class MailtoUrl (urlbase.UrlBase):
             elif mode == 2:
                 mode = 0
         if i < (len(url) - 1):
-            headers = cgi.parse_qs(url[(i+1):], strict_parsing=True)
-            for key, val in headers.items():
-                key = key.lower()
-                self.headers.setdefault(key, []).extend(val)
+            try:
+                headers = cgi.parse_qs(url[(i+1):], strict_parsing=True)
+                for key, val in headers.items():
+                    key = key.lower()
+                    self.headers.setdefault(key, []).extend(val)
+            except ValueError, err:
+                self.add_warning(_("Error parsing CGI values: %s") % str(err))
             addrs = url[:i]
         else:
             addrs = url
