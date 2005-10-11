@@ -192,6 +192,7 @@ def idna_encode (host):
     """
     Encode hostname as internationalized domain name (IDN) according
     to RFC 3490.
+    @raise: UnicodeError if hostname is not properly IDN encoded.
     """
     if host and isinstance(host, unicode):
         uhost = host.encode('idna').decode('ascii')
@@ -325,6 +326,8 @@ def url_norm (url):
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
         res += '#'
+    if isinstance(url, unicode):
+        res = unicode(res)
     return (res, is_idn)
 
 
