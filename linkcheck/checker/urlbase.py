@@ -266,7 +266,7 @@ class UrlBase (object):
                 self.add_warning(_("Effective URL %r.") % effectiveurl,
                                  tag="url-effective-url")
                 self.url = effectiveurl
-        except tuple(ExcSyntaxList), msg:
+        except tuple(linkcheck.checker.ExcSyntaxList), msg:
             self.set_result(linkcheck.strformat.unicode_safe(msg),
                             valid=False)
             return
@@ -473,8 +473,8 @@ class UrlBase (object):
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "... no, cannot get content.")
             return False
-        if self.consumer.config("recursionlevel") >= 0 and
-            self.recursion_level >= self.consumer.config("recursionlevel"):
+        if self.consumer.config("recursionlevel") >= 0 and \
+           self.recursion_level >= self.consumer.config("recursionlevel"):
             linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "... no, maximum recursion level reached.")
             return False
