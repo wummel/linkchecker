@@ -3,7 +3,7 @@
 FLEX = flex
 PYVER = 2.4
 PYTHON = python$(PYVER)
-SPARSE=/home/calvin/src/sparse/check
+SPARSE=sparse
 
 all: htmllex.c htmlparse.c
 
