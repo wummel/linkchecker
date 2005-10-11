@@ -16,6 +16,13 @@
     Changed: linkcheck/checker/mailtourl.py
     Closes: SF bug #1290563
 
+  * Initialize the i18n on module load time, so one does not have
+    to call init_i18n() manually anymore. Fixes parts in the code
+    (ie. the CGI script) that forgot to do this.
+    Type: feature
+    Changed: linkcheck/__init__.py
+    Closes: SF bug #1277577
+
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
   * Fixed typo in redirection handling code.
