@@ -409,12 +409,9 @@ class UrlBase (object):
 
         self.checktime = time.time() - t
         # check recursion
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking recursion...")
         try:
             if self.allows_recursion():
                 self.parse_url()
-            else:
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "...no recursion")
             # check content size
             self.check_size()
         except tuple(linkcheck.checker.ExcList):
@@ -464,19 +461,28 @@ class UrlBase (object):
         """
         Return True iff we can recurse into the url's content.
         """
-        #linkcheck.log.debug(linkcheck.LOG_CHECK, "valid=%s, parseable=%s, "\
-        #                    "content=%s, extern=%s, robots=%s",
-        #                    self.valid, self.is_parseable(),
-        #                    self.can_get_content(),
-        #                    self.extern[0],
-        #                    self.content_allows_robots())
-        # note: test self.valid before self.is_parseable()
-        return self.valid and \
-            self.is_parseable() and \
-            self.can_get_content() and \
-            (self.consumer.config("recursionlevel") < 0 or
-            self.recursion_level < self.consumer.config("recursionlevel")) and \
-            not self.extern[0] and self.content_allows_robots()
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking recursion...")
+        # Test self.valid before self.is_parseable().
+        if not self.valid:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, invalid.")
+            return False
+        if not self.is_parseable():
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, not parseable.")
+            return False
+        if not self.can_get_content():
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                "... no, cannot get content.")
+            return False
+        if self.consumer.config("recursionlevel") >= 0 and
+            self.recursion_level >= self.consumer.config("recursionlevel"):
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                "... no, maximum recursion level reached.")
+            return False
+        if self.extern[0]:
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, extern.")
+            return False
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "... yes.")
+        return True
 
     def content_allows_robots (self):
         """
