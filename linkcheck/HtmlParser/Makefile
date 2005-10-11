@@ -1,13 +1,17 @@
 # this parser needs flex >= 2.5.xx from http://lex.sf.net/
 # for reentrant bison parser support!
 FLEX = flex
-PYVER = 2.3
+PYVER = 2.4
 PYTHON = python$(PYVER)
+SPARSE=/home/calvin/src/sparse/check
 
 all: htmllex.c htmlparse.c
 
 %.o:	%.c
 	gcc -g -std=c99 -O3 -Wall -pedantic -Wstrict-prototypes -fPIC -I. -I/usr/include/$(PYTHON) -c $< -o $@
+
+sparse:
+	$(SPARSE) -D__STDC__ -I. -I/usr/include/$(PYTHON) s_util.h s_util.c htmlsax.h htmlparse.h htmlparse.c htmllex.c
 
 htmlparse.h htmlparse.c:	htmlparse.y htmlsax.h
 	bison htmlparse.y
