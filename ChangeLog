@@ -23,6 +23,10 @@
     Changed: linkcheck/__init__.py
     Closes: SF bug #1277577
 
+  * Compress libraries in the .exe installer with UPX compressor.
+    Type: feature
+    Changed: setup.py
+
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
   * Fixed typo in redirection handling code.

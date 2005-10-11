@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-07-20 18:06+0200\n"
+"POT-Creation-Date: 2005-10-11 14:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,122 +43,122 @@ msgstr[1] ""
 msgid "runtime %s"
 msgstr ""
 
-#: ../linkcheck/checker/consumer.py:166
+#: ../linkcheck/checker/consumer.py:178
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:181
+#: ../linkcheck/checker/consumer.py:193
 msgid "Status:"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:74
+#: ../linkcheck/checker/__init__.py:81
 msgid "The effective URL is different from the original."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:76
+#: ../linkcheck/checker/__init__.py:83
 msgid "Could not get the content of the URL."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:77
+#: ../linkcheck/checker/__init__.py:84
 msgid "URL uses a unicode domain."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:78
+#: ../linkcheck/checker/__init__.py:85
 msgid "URL is not normed."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:79
+#: ../linkcheck/checker/__init__.py:86
 msgid "URL anchor was not found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:81
+#: ../linkcheck/checker/__init__.py:88
 msgid "The warning regular expression was found in the URL contents."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:82
+#: ../linkcheck/checker/__init__.py:89
 msgid "The URL content is too large."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:83
+#: ../linkcheck/checker/__init__.py:90
 msgid "The file: URL is missing a trailing slash."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:85
+#: ../linkcheck/checker/__init__.py:92
 msgid "The file: path is not the same as the system specific path."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:86
+#: ../linkcheck/checker/__init__.py:93
 msgid "The ftp: URL is missing a trailing slash."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:87
+#: ../linkcheck/checker/__init__.py:94
 msgid "The http: URL checking has been denied."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:88
+#: ../linkcheck/checker/__init__.py:95
 msgid "The HTTP server had no anchor support."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:89
+#: ../linkcheck/checker/__init__.py:96
 msgid "The URL has moved permanently."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:91
+#: ../linkcheck/checker/__init__.py:98
 msgid "The URL has been redirected to an URL of a different type."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:92
+#: ../linkcheck/checker/__init__.py:99
 msgid "The URL had no content."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:93
+#: ../linkcheck/checker/__init__.py:100
 msgid "An error occurred while storing a cookie."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:95
+#: ../linkcheck/checker/__init__.py:102
 msgid "An error occurred while decompressing the URL content."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:97
+#: ../linkcheck/checker/__init__.py:104
 msgid "The URL content is encoded with an unknown encoding."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:98
+#: ../linkcheck/checker/__init__.py:105
 msgid "The URL has been ignored."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:99
+#: ../linkcheck/checker/__init__.py:106
 msgid "The mailto: URL contained no addresses."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:100
+#: ../linkcheck/checker/__init__.py:107
 msgid "The mail MX host could not be found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:102
+#: ../linkcheck/checker/__init__.py:109
 msgid "The mailto: address could not be verified."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:104
+#: ../linkcheck/checker/__init__.py:111
 msgid "No connection to a MX host could be established."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:105
+#: ../linkcheck/checker/__init__.py:112
 msgid "No NNTP server was found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:106
+#: ../linkcheck/checker/__init__.py:113
 msgid "The NNTP newsgroup could not be found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:107
+#: ../linkcheck/checker/__init__.py:114
 msgid "The NNTP server was busy."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:156
+#: ../linkcheck/checker/__init__.py:163
 #, python-format
 msgid ""
 "********** Oops, I did it again. *************\n"
@@ -176,15 +176,15 @@ msgid ""
 "I can work with ;) .\n"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:175
+#: ../linkcheck/checker/__init__.py:182
 msgid "******** LinkChecker internal error, over and out ********"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:183
+#: ../linkcheck/checker/__init__.py:190
 msgid "System info:"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:185
+#: ../linkcheck/checker/__init__.py:192
 #, python-format
 msgid "Python %s on %s"
 msgstr ""
@@ -194,15 +194,15 @@ msgstr ""
 msgid "%s URL ignored."
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:119
+#: ../linkcheck/checker/fileurl.py:120
 msgid "Added trailing slash to directory."
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:130
+#: ../linkcheck/checker/fileurl.py:131
 msgid "directory"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:146
+#: ../linkcheck/checker/fileurl.py:147
 #, python-format
 msgid ""
 "The URL path %r is not the same as the system path %r. You should always use "
@@ -290,45 +290,50 @@ msgstr ""
 msgid "Invalid mail syntax"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:136
+#: ../linkcheck/checker/mailtourl.py:116
+#, python-format
+msgid "Error parsing CGI values: %s"
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:139
 msgid "No addresses found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:155
+#: ../linkcheck/checker/mailtourl.py:158
 #, python-format
 msgid "No MX mail host for %(domain)s found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:160
+#: ../linkcheck/checker/mailtourl.py:163
 #, python-format
 msgid "No host for %(domain)s found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:208
+#: ../linkcheck/checker/mailtourl.py:211
 #, python-format
 msgid "Verified address: %(info)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:212
+#: ../linkcheck/checker/mailtourl.py:215
 #, python-format
 msgid "Unverified address: %(info)s. But mail will be sent anyway."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:215
+#: ../linkcheck/checker/mailtourl.py:218
 #, python-format
 msgid "Unverified address: %(info)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:219
+#: ../linkcheck/checker/mailtourl.py:222
 #, python-format
 msgid "MX mail host %(host)s did not accept connections: %(error)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:225
+#: ../linkcheck/checker/mailtourl.py:228
 msgid "Could not connect, but syntax is correct"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:227
+#: ../linkcheck/checker/mailtourl.py:230
 #, python-format
 msgid "Found MX mail host %(host)s"
 msgstr ""
@@ -728,25 +733,15 @@ msgstr ""
 msgid "syntax error in entry%d %r: %s"
 msgstr ""
 
-#: ../linkcheck/configuration.py:420
-#, python-format
-msgid "nofollow%d: syntax error %s\n"
-msgstr ""
-
-#: ../linkcheck/configuration.py:438
-#, python-format
-msgid "ignore%d: syntax error %s\n"
-msgstr ""
-
-#: ../linkcheck/strformat.py:195
+#: ../linkcheck/strformat.py:214
 msgid "seconds"
 msgstr ""
 
-#: ../linkcheck/strformat.py:198
+#: ../linkcheck/strformat.py:217
 msgid "minutes"
 msgstr ""
 
-#: ../linkcheck/strformat.py:201
+#: ../linkcheck/strformat.py:220
 msgid "hours"
 msgstr ""
 
