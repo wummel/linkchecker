@@ -36,8 +36,15 @@ import linkcheck.strformat
 import linkcheck.dns.exception
 
 
-# we catch these exceptions, all other exceptions are internal
-# or system errors
+# Catch these exception on syntax checks.
+ExcSyntaxList = [
+    linkcheck.LinkCheckerError,
+    # .encode('idna') raises this
+    UnicodeError,
+]
+
+# Catch these exceptions on content and connect checks. All other
+# exceptions are internal or system errors
 ExcCacheList = [
     IOError,
     OSError, # OSError is thrown on Windows when a file is not found

@@ -266,7 +266,7 @@ class UrlBase (object):
                 self.add_warning(_("Effective URL %r.") % effectiveurl,
                                  tag="url-effective-url")
                 self.url = effectiveurl
-        except linkcheck.LinkCheckerError, msg:
+        except tuple(ExcSyntaxList), msg:
             self.set_result(linkcheck.strformat.unicode_safe(msg),
                             valid=False)
             return
