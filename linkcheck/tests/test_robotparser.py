@@ -54,7 +54,7 @@ class TestRobotParser (unittest.TestCase):
         Test parsing and access of an existing robots.txt file.
         """
         # robots.txt that exists, gotten to by redirection
-        self.rp.set_url('http://www.musi-cal.com/robots.txt')
+        self.rp.set_url('http://web.archive.org/web/20050312093828/http://www.musi-cal.com/robots.txt')
         self.rp.read()
         # test for re.escape
         self.check(self.rp.can_fetch('*', 'http://www.musi-cal.com/'), True)
