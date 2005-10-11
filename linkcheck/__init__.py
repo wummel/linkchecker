@@ -135,3 +135,5 @@ def init_i18n ():
     logging.addLevelName(logging.DEBUG, _('DEBUG'))
     logging.addLevelName(logging.NOTSET, _('NOTSET'))
 
+# initialize i18n, puts _() function into global namespace
+init_i18n()
