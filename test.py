@@ -229,14 +229,17 @@ def get_test_files(cfg):
                 if matcher(path[baselen:]):
                     results.append(path)
             return
+        test_files = [f for f in files if \
+                      f.startswith('test') and f.endswith(".py")]
         if '__init__.py' not in files:
-            print >> sys.stderr, "%s is not a package" % dir
+            if test_files:
+                # Python test files found, but no __init__.py
+                print >> sys.stderr, "%s is not a package" % dir
             return
-        for file in files:
-            if file.startswith('test') and file.endswith('.py'):
-                path = os.path.join(dir, file)
-                if matcher(path[baselen:]):
-                    results.append(path)
+        for file in test_files:
+            path = os.path.join(dir, file)
+            if matcher(path[baselen:]):
+                results.append(path)
     if cfg.follow_symlinks:
         walker = walk_with_symlinks
     else:
