@@ -19,4 +19,3 @@ Unit tests for the linkcheck module.
 """
 
 import linkcheck
-linkcheck.init_i18n()
