@@ -685,6 +685,7 @@ def get_default_resolver ():
     global default_resolver
     if default_resolver is None:
         default_resolver = Resolver()
+    return default_resolver
 
 def query(qname, rdtype=linkcheck.dns.rdatatype.A, rdclass=linkcheck.dns.rdataclass.IN,
           tcp=False, resolver=None):
