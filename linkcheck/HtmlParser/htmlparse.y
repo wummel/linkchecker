@@ -32,7 +32,7 @@ extern int htmllexDebug (void** scanner, int debug);
 extern int htmllexStart (void* scanner, UserData* data, const char* s, int slen);
 extern int htmllexStop (void* scanner, UserData* data);
 extern int htmllexDestroy (void* scanner);
-extern void* yyget_extra(void*);
+extern UserData* yyget_extra(void* scanner);
 extern int yyget_lineno(void*);
 #define YYERROR_VERBOSE 1
 
