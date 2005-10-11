@@ -361,6 +361,11 @@ class TestUrl (unittest.TestCase):
         nurl = url
         self.assertEqual(url_norm(url), nurl)
 
+    def test_norm_invalid (self):
+        url = u"הצü?:"
+        nurl = u"%E4%F6%FC?:"
+        self.assertEqual(url_norm(url), nurl)
+
     def test_fixing (self):
         """
         Test url fix method.

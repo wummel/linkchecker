@@ -276,9 +276,9 @@ def url_parse_query (query):
         append = ""
     l = []
     for k, v, sep in parse_qsl(query, True):
-        k = urllib.quote(k, '/-:,;')
+        k = url_quote_part(k, '/-:,;')
         if v:
-            v = urllib.quote(v, '/-:,;')
+            v = url_quote_part(v, '/-:,;')
             l.append("%s=%s%s" % (k, v, sep))
         elif v is None:
             l.append("%s%s" % (k, sep))
@@ -319,9 +319,9 @@ def url_norm (url):
             # fix redundant path parts
             urlparts[2] = collapse_segments(urlparts[2])
     # quote parts again
-    urlparts[0] = urllib.quote(urlparts[0]) # scheme
-    urlparts[1] = urllib.quote(urlparts[1], '@:') # host
-    urlparts[2] = urllib.quote(urlparts[2], _nopathquote_chars) # path
+    urlparts[0] = url_quote_part(urlparts[0]) # scheme
+    urlparts[1] = url_quote_part(urlparts[1], '@:') # host
+    urlparts[2] = url_quote_part(urlparts[2], _nopathquote_chars) # path
     res = urlparse.urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
@@ -381,29 +381,39 @@ def url_quote (url):
     if not url_is_absolute(url):
         return document_quote(url)
     urlparts = list(urlparse.urlsplit(url))
-    urlparts[0] = urllib.quote(urlparts[0]) # scheme
-    urlparts[1] = urllib.quote(urlparts[1], ':') # host
-    urlparts[2] = urllib.quote(urlparts[2], '/=,') # path
-    urlparts[3] = urllib.quote(urlparts[3], '&=,') # query
+    urlparts[0] = url_quote_part(urlparts[0]) # scheme
+    urlparts[1] = url_quote_part(urlparts[1], ':') # host
+    urlparts[2] = url_quote_part(urlparts[2], '/=,') # path
+    urlparts[3] = url_quote_part(urlparts[3], '&=,') # query
     l = []
     for k, v, sep in parse_qsl(urlparts[3], True): # query
-        k = urllib.quote(k, '/-:,')
+        k = url_quote_part(k, '/-:,')
         if v:
-            v = urllib.quote(v, '/-:,')
+            v = url_quote_part(v, '/-:,')
             l.append("%s=%s%s" % (k, v, sep))
         else:
             l.append("%s%s" % (k, sep))
     urlparts[3] = ''.join(l)
-    urlparts[4] = urllib.quote(urlparts[4]) # anchor
+    urlparts[4] = url_quote_part(urlparts[4]) # anchor
     return urlparse.urlunsplit(urlparts)
 
+
+def url_quote_part (s, safechars='/'):
+    """
+    Wrap urllib.quote() to support unicode strings. A unicode string
+    is first converted to ISO-8859-1, invalid characters are ignored.
+    After that urllib.quote() is called.
+    """
+    if isinstance(s, unicode):
+        s = s.encode("iso-8859-1", "ignore")
+    return urllib.quote(s, safechars)
 
 def document_quote (document):
     """
     Quote given document.
     """
     doc, query = urllib.splitquery(document)
-    doc = urllib.quote(doc, '/=,')
+    doc = url_quote_part(doc, '/=,')
     if query:
         return "%s?%s" % (doc, query)
     return doc
