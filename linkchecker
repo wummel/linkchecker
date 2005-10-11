@@ -32,9 +32,7 @@ default_timeout = 60
 socket.setdefaulttimeout(default_timeout)
 
 import linkcheck
-# initialize i18n, puts _() function into global namespace
-linkcheck.init_i18n()
-# override optparse gettext method with the one from init_i18n()
+# override optparse gettext method with the one from linkcheck.init_i18n()
 optparse._ = _
 # now import the rest of the linkchecker gang
 import linkcheck.log
