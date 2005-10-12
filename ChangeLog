@@ -27,6 +27,11 @@
     Type: feature
     Changed: setup.py
 
+  * Ensure that base_url is Unicode for local files.
+    Type: bugfix
+    Changed: linkcheck/checker/fileurl.py
+    Closes: Debian bug #332870
+
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
   * Fixed typo in redirection handling code.
