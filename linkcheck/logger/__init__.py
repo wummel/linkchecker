@@ -70,7 +70,8 @@ class Logger (object):
         # number of encountered warningss
         self.warnings = 0
         # encoding of output
-        self.output_encoding = args.get("encoding", locale.getpreferredencoding())
+        preferred = locale.getpreferredencoding()
+        self.output_encoding = args.get("encoding", preferred)
 
     def init_fileoutput (self, args):
         """
