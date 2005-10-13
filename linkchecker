@@ -488,7 +488,6 @@ if has_optcomplete:
 
 # read and parse command line options and arguments
 (options, args) = optparser.parse_args()
-
 # build a config object for this check session
 config = linkcheck.configuration.Configuration()
 # initialize logging
@@ -505,14 +504,18 @@ if options.trace:
     options.psyco = False
 
 config.init_logging(debug=options.debug)
-linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Python %s on %s",
+linkcheck.log.debug(linkcheck.LOG_CMDLINE, _("Python %s on %s"),
                     sys.version, sys.platform)
 # read configuration files
 try:
+    files = []
     if options.configfile:
-        config.read(files=[options.configfile])
-    else:
-        config.read()
+        if os.path.isfile(options.configfile):
+            files.append(options.configfile)
+        else:
+            linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+                      _("Unreadable config file: %r"), options.configfile)
+    config.read(files=files)
 except linkcheck.LinkCheckerError, msg:
     # config error
     print_usage(str(msg))

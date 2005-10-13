@@ -234,12 +234,12 @@ class Configuration (dict):
             # system wide config settings
             config_dir = _linkchecker_configdata.config_dir
             path = normpath(os.path.join(config_dir, "linkcheckerrc"))
-            if os.path.exists(path):
-                cfiles.append(path)
+            cfiles.append(path)
             # per user config settings
             path = normpath("~/.linkchecker/linkcheckerrc")
-            if os.path.exists(path):
-                cfiles.append(path)
+            cfiles.append(path)
+        # weed out invalid files
+        cfiles = [f for f in cfiles if os.path.isfile(f)]
         self.read_config(cfiles)
         # re-init logger
         self['logger'] = self.logger_new('text')
