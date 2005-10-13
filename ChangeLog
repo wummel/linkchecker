@@ -1,4 +1,4 @@
-3.3 "" (released xx.xx.xxxx)
+3.3 "Four Brothers" (released 14.10.2005)
 
   * Fix parsing of ignore and nofollow in configuration files.
     Type: bugfix
