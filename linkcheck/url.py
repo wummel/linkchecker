@@ -271,7 +271,7 @@ def url_parse_query (query):
     # if ? is in the query, split it off, seen at msdn.microsoft.com
     if '?' in query:
         query, append = query.split('?', 1)
-        append = '?'+append
+        append = '?'+url_parse_query(append)
     else:
         append = ""
     l = []
@@ -318,10 +318,13 @@ def url_norm (url):
         else:
             # fix redundant path parts
             urlparts[2] = collapse_segments(urlparts[2])
+    # anchor
+    urlparts[4] = urllib.unquote(urlparts[4])
     # quote parts again
     urlparts[0] = url_quote_part(urlparts[0]) # scheme
     urlparts[1] = url_quote_part(urlparts[1], '@:') # host
     urlparts[2] = url_quote_part(urlparts[2], _nopathquote_chars) # path
+    urlparts[4] = url_quote_part(urlparts[4]) # anchor
     res = urlparse.urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
