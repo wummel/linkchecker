@@ -1,6 +1,8 @@
-Possible improvements people could work on:
+- Move proxy support to a more prominent place in the documentation.
 
-- update python download link (2.4.2)
+- queue mutated error (note: press ctrl-c, perhaps only under windows?):
+  linkchecker --no-warnings www.cornellcollege.edu
+  linkchecker -uatra2005 -paccess --no-warnings --ignore-url=^mailto: www.atra-tr.org
 
 - [FEATURE] postmortem debugging with pdb.pm()
 
