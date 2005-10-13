@@ -16,6 +16,7 @@ class TestFcgi (unittest.TestCase):
     def _test_non_fcgi_env (self):
         os.environ = {}
         req = linkcheck.fcgi.FCGI()
+        fs = req.getFieldStorage()
         doc = ['<HTML><HEAD><TITLE>FCGI TestApp</TITLE></HEAD>\n'
                '<BODY>\n']
         doc.append('<H2>FCGI TestApp</H2><P>')
