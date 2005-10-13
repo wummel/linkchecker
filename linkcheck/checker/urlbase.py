@@ -481,6 +481,9 @@ class UrlBase (object):
         if self.extern[0]:
             linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, extern.")
             return False
+        if not self.content_allows_robots():
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, robots.")
+            return False
         linkcheck.log.debug(linkcheck.LOG_CHECK, "... yes.")
         return True
 
