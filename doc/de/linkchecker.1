@@ -205,9 +205,9 @@ und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals
 angegeben werden.
 
 .SH AUSGABETYPEN
-Note that by default only errors and warnings are logged.  You should use 
-the \fB\-\-verbose\fP option to get the complete URL list, especially when 
-outputting a sitemap graph format.
+Beachten Sie, dass standardmäßig nur Fehler und Warnungen protokolliert 
+werden. Sie sollten die \fB\-\-verbose\fP Option benutzen, um eine komplette URL 
+Liste zu erhalten, besonders bei Ausgabe eines Sitemap\-Graphen.
 
 .TP
 \fBtext\fP
@@ -254,6 +254,11 @@ Einführung in reguläre Ausdrücke.
 Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird 
 falls er mit einem Ausrufezeichen beginnt.
 
+.SH "PROXY UNTERSTÜTZUNG"
+Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, 
+$ftp_proxy, $gopher_proxy unter Unix oder Windows. Auf einem Mac benutzen 
+Sie die Internet Konfiguration.
+
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 
 behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können 
@@ -271,9 +276,6 @@ automatisch.
 
 Sie können mehrere Benutzer/Passwort Paare in einer Konfigurationsdatei 
 angeben.
-
-Um Proxies zu benutzen, setzen Sie $http_proxy, $https_proxy unter Unix oder 
-Windows. Auf einem Mac benutzen Sie die Internet Config.
 
 Beim Prüfen von \fBnews:\fP Links muß der angegebene NNTP Rechner nicht 
 unbedingt derselbe wie der des Benutzers sein.

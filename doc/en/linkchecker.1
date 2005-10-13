@@ -264,6 +264,11 @@ regular expressions.
 The only addition is that a leading exclamation mark negates the regular
 expression.
 
+.SH PROXY SUPPORT
+To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
+on Unix or Windows.
+On a Mac use the Internet Config.
+
 .SH NOTES
 URLs on the commandline starting with \fBftp.\fP are treated like
 \fBftp://ftp.\fP, URLs starting with \fBwww.\fP are treated like
@@ -281,9 +286,6 @@ If your platform does not support threading, LinkChecker disables it
 automatically.
 
 You can supply multiple user/password pairs in a configuration file.
-
-To use proxies set $http_proxy, $https_proxy on Unix or Windows.
-On a Mac use the Internet Config.
 
 When checking \fBnews:\fP links the given NNTP host doesn't need to be the
 same as the host of the user browsing your pages.

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-07-15 23:57+0200\n"
+"POT-Creation-Date: 2005-10-13 19:24+0200\n"
 "PO-Revision-Date: 2005-05-07 00:42+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: kde-francophone@kde.org\n"
@@ -861,11 +861,27 @@ msgstr ""
 # type: SH
 #: en/linkchecker.1:267
 #, no-wrap
+msgid "PROXY SUPPORT"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:271
+#, fuzzy
+msgid ""
+"To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on "
+"Unix or Windows.  On a Mac use the Internet Config."
+msgstr ""
+"Pour utiliser les proxys, positionnez $http_proxy, $https_proxy sur Unix ou "
+"Windows.Sur un Mac, utilisez la configuration Internet."
+
+# type: SH
+#: en/linkchecker.1:272
+#, no-wrap
 msgid "NOTES"
 msgstr "NOTES"
 
 # type: Plain text
-#: en/linkchecker.1:272
+#: en/linkchecker.1:277
 #, fuzzy
 msgid ""
 "URLs on the commandline starting with B<ftp.> are treated like B<ftp://ftp."
@@ -877,7 +893,7 @@ msgstr ""
 "www.>. Vous pouvez aussi mettre des noms de fichiers locaux comme arguments."
 
 # type: Plain text
-#: en/linkchecker.1:277
+#: en/linkchecker.1:282
 msgid ""
 "If you have your system configured to automatically establish a connection "
 "to the internet (e.g. with diald), it will connect when checking links not "
@@ -890,12 +906,12 @@ msgstr ""
 "B<-s> et B<-i> pour éviter cela."
 
 # type: Plain text
-#: en/linkchecker.1:279
+#: en/linkchecker.1:284
 msgid "Javascript links are currently ignored."
 msgstr "Les liens javascript sont ignorés actuellement."
 
 # type: Plain text
-#: en/linkchecker.1:282
+#: en/linkchecker.1:287
 #, fuzzy
 msgid ""
 "If your platform does not support threading, LinkChecker disables it "
@@ -905,23 +921,14 @@ msgstr ""
 "t0>."
 
 # type: Plain text
-#: en/linkchecker.1:284
+#: en/linkchecker.1:289
 msgid "You can supply multiple user/password pairs in a configuration file."
 msgstr ""
 "Vous pouvez fournir plusieurs paires nom d'utilisateur/mot de passe dans un "
 "fichier de configuration."
 
 # type: Plain text
-#: en/linkchecker.1:287
-msgid ""
-"To use proxies set $http_proxy, $https_proxy on Unix or Windows.  On a Mac "
-"use the Internet Config."
-msgstr ""
-"Pour utiliser les proxys, positionnez $http_proxy, $https_proxy sur Unix ou "
-"Windows.Sur un Mac, utilisez la configuration Internet."
-
-# type: Plain text
-#: en/linkchecker.1:290
+#: en/linkchecker.1:292
 msgid ""
 "When checking B<news:> links the given NNTP host doesn't need to be the same "
 "as the host of the user browsing your pages."
@@ -930,55 +937,55 @@ msgstr ""
 "n'ont pas besoin d'être les mêmes que l'hôte de l'utilisateur naviguant."
 
 # type: SH
-#: en/linkchecker.1:291
+#: en/linkchecker.1:293
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr "ENVIRONNEMENT"
 
 # type: Plain text
-#: en/linkchecker.1:293
+#: en/linkchecker.1:295
 msgid "B<NNTP_SERVER> - specifies default NNTP server"
 msgstr "B<NNTP_SERVER> - spécifie le serveur NNTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:295
+#: en/linkchecker.1:297
 msgid "B<http_proxy> - specifies default HTTP proxy server"
 msgstr "B<http_proxy> - spécifie le proxy HTTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:297
+#: en/linkchecker.1:299
 msgid "B<ftp_proxy> - specifies default FTP proxy server"
 msgstr "B<ftp_proxy> - spécifie le proxy FTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:299
+#: en/linkchecker.1:301
 msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
 msgstr "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - spécifie la langue en sortie"
 
 # type: SH
-#: en/linkchecker.1:300
+#: en/linkchecker.1:302
 #, no-wrap
 msgid "RETURN VALUE"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:302
+#: en/linkchecker.1:304
 msgid "The return value is non-zero when"
 msgstr "Le code de retour est différent de 0 quand"
 
 # type: IP
-#: en/linkchecker.1:302 en/linkchecker.1:304 en/linkchecker.1:306
+#: en/linkchecker.1:304 en/linkchecker.1:306 en/linkchecker.1:308
 #, no-wrap
 msgid "\\(bu"
 msgstr "\\(bu"
 
 # type: Plain text
-#: en/linkchecker.1:304
+#: en/linkchecker.1:306
 msgid "invalid links were found or"
 msgstr "il y a eu des liens non valides,"
 
 # type: Plain text
-#: en/linkchecker.1:306
+#: en/linkchecker.1:308
 #, fuzzy
 msgid "link warnings were found and warnings are enabled"
 msgstr ""
@@ -986,18 +993,18 @@ msgstr ""
 "positionnée,"
 
 # type: Plain text
-#: en/linkchecker.1:308
+#: en/linkchecker.1:310
 msgid "a program error occurred."
 msgstr "il y a eu une erreur dans le programme."
 
 # type: SH
-#: en/linkchecker.1:309
+#: en/linkchecker.1:311
 #, no-wrap
 msgid "FILES"
 msgstr "FICHIERS"
 
 # type: Plain text
-#: en/linkchecker.1:312
+#: en/linkchecker.1:314
 msgid ""
 "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - default "
 "configuration files"
@@ -1006,20 +1013,20 @@ msgstr ""
 "fichiers de configuration par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:314
+#: en/linkchecker.1:316
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr ""
 "B<~/.linkchecker/blacklist> - fichier par défaut des blacklists pour la "
 "journalisation"
 
 # type: Plain text
-#: en/linkchecker.1:316
+#: en/linkchecker.1:318
 #, fuzzy
 msgid "B<linkchecker-out.>I<TYPE> - default logger file output name"
 msgstr "B<linkchecker-out.>I<type> - fichier par défaut pour la journalisation"
 
 # type: Plain text
-#: en/linkchecker.1:318
+#: en/linkchecker.1:320
 msgid ""
 "B<http://docs.python.org/lib/standard-encodings.html> - valid output "
 "encodings"
@@ -1028,19 +1035,19 @@ msgstr ""
 "sortie"
 
 # type: Plain text
-#: en/linkchecker.1:320
+#: en/linkchecker.1:322
 msgid ""
 "B<http://www.amk.ca/python/howto/regex/> - regular expression documentation"
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:321
+#: en/linkchecker.1:323
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTEUR"
 
 # type: Plain text
-#: en/linkchecker.1:322
+#: en/linkchecker.1:324
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>\n"
