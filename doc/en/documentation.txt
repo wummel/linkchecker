@@ -149,6 +149,10 @@ conditions. They are checked in this order:
 5. It must not match the ignored URL list. This is controlled with
    the ``--ignore-url`` option.
 
+6. The Robots Exclusion Protocol must allow links in the URL to be
+   followed recursively. This is checked by searching for a
+   "nofollow" directive in the HTML header data.
+
 Note that the directory recursion reads all files in that
 directory, not just a subset like ``index.htm*``.
 
