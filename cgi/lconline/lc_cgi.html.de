@@ -28,7 +28,7 @@ function gettext (s) {
 submitted = false;
 function submit_once() {
     if (submitted) {
-        alert("Ihre Anfrage wird bearbeitet.\\nBitte haben Sie ein wenig Geduld.");
+        alert("Ihre Anfrage wird bearbeitet.\nBitte haben Sie ein wenig Geduld.");
         event.returnValue = 0;    // work-around for IE
         return 0;
     }
@@ -48,16 +48,17 @@ target="_top">LinkChecker</a>)
 
 <blockquote>
 <form method="POST" action="/cgi-bin/lconline/lc.cgi" target="links"
- onclick="return submit_once()"
+
  onsubmit="return(isValid(document.checklinkForm))"
  name="checklinkForm">
 <table border="0" cellpadding="2" cellspacing="0" summary="">
-<tr height="50">
+<tr>
 <td>Url:</td>
 <td colspan="4"><input size="70" name="url" value="http://">
-  <input type="submit" value="Go!">
+  <input type="submit" value="Go!" onclick="return submit_once()">
 </td>
 </tr>
+<tr>
 <td rowspan="3" valign="top">Optionen:</td>
 <td>Rekursionstiefe:</td>
 <td><select name="level">
@@ -89,5 +90,6 @@ target="_top">LinkChecker</a>)
 <td><input type="checkbox" name="externstrictall"></td>
 </tr>
 </table>
+</form>
 </blockquote>
 </body></html>
