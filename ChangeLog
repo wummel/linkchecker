@@ -44,6 +44,11 @@
     Changed: linkchecker, doc/en/documentation.txt,
       doc/{en,de}/linkchecker.1
 
+  * Make sure that given proxy values are reasonably well-formed.
+    Else abort checking of the current URL.
+    Type: feature
+    Changed: linkcheck/checker/proxysupport.py
+
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
   * Fixed typo in redirection handling code.
