@@ -21,7 +21,6 @@ Output logging support for different formats.
 import locale
 import sys
 import os
-import os.path
 import datetime
 
 import linkcheck.strformat

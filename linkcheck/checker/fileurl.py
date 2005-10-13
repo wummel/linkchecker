@@ -20,7 +20,6 @@ Handle local file: links.
 
 import re
 import os
-import os.path
 import time
 import urlparse
 import urllib
