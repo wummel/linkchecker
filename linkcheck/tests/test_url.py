@@ -89,6 +89,12 @@ class TestUrl (unittest.TestCase):
         url = "http://www.company.com/path/doc.html?url=/path2/doc2.html?foo=bar"
         nurl = url
         self.assertEqual(url_norm(url), nurl)
+        url = "http://example.com/#a b"
+        nurl = "http://example.com/#a%20b"
+        self.assertEqual(url_norm(url), nurl)
+        url = "http://example.com/?u=http://example2.com?b=c "
+        nurl ="http://example.com/?u=http://example2.com?b=c%20"
+        self.assertEqual(url_norm(url), nurl)
 
     def test_norm_case_sensitivity (self):
         """
@@ -412,6 +418,8 @@ class TestUrl (unittest.TestCase):
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
         url = "http://www.imadoofus.com/#a!"
         self.assert_(not linkcheck.url.url_needs_quoting(url), repr(url))
+        url = "http://www.imadoofus.com/#a b"
+        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
 
     def test_absolute_url (self):
         url = "hutzli:"
