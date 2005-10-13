@@ -55,4 +55,3 @@ class AssertLock (lock_klass):
         See if this lock is owned.
         """
         return self._is_owned()
-

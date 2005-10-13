@@ -479,4 +479,3 @@ class Configuration (dict):
         """
         fp.write("[filtering]%s" % os.linesep)
         # XXX todo
-

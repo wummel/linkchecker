@@ -478,4 +478,3 @@ def url_split (url):
         host = host.lower()
         host, port = urllib.splitnport(host, port)
     return scheme, host, port, document
-

@@ -41,4 +41,3 @@ class ErrorUrl (urlbase.UrlBase):
         Cache key is forbidden.
         """
         raise NotImplementedError, "cache keys are forbidden"
-

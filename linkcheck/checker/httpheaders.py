@@ -97,4 +97,3 @@ def get_content_encoding (headers):
     @rtype: string
     """
     return headers.get("Content-Encoding", "").strip()
-

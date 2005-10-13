@@ -248,4 +248,3 @@ class Cache (object):
             if val:
                 cookievals.append(val)
         return cookievals
-

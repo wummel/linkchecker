@@ -277,4 +277,3 @@ class FileUrl (urlbase.UrlBase):
             segments = segments[:-1]
         path = "/".join(segments)
         return "file://%s" % re.escape(path)
-

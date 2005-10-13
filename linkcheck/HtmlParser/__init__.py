@@ -33,14 +33,14 @@ Fast HTML parser module written in C with the following features:
     not need the bison error recovery.
     Incomplete data is rescanned the next time the parser calls yylex() or
     when it is being flush()ed.
-    
+
     The following syntax errors will be recognized correctly:
      1. missing quotes around attribute values
      2. "</...>" end tags in script modus
      3. missing ">" in tags
      4. invalid tag names
      5. invalid characters inside tags or tag attributes
-    
+
     Additionally the parser has the following features:
      1. NULL bytes are changed into spaces
      2. <!-- ... --> inside a <script> or <style> are not treated as
@@ -234,4 +234,3 @@ def set_doctype (parsobj, doctype):
     """
     if u"XHTML" in doctype:
         parsobj.doctype = "XHTML"
-

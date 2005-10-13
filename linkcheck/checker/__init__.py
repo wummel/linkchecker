@@ -385,4 +385,3 @@ def get_index_html (urls):
         lines.append('<a href="%s">%s</a>' % (url, name))
     lines.extend(["</body>", "</html>"])
     return os.linesep.join(lines)
-

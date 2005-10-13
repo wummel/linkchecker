@@ -151,7 +151,7 @@ def is_meta_url (attr, attrs):
     res = False
     if attr == "content":
         equiv = attrs.get_true('http-equiv', u'').lower()
-	scheme = attrs.get_true('scheme', u'').lower()
+        scheme = attrs.get_true('scheme', u'').lower()
         res = equiv in (u'refresh',) or scheme in (u'dcterms.uri',)
     if attr == "href":
         rel = attrs.get_true('rel', u'').lower()

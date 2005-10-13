@@ -49,7 +49,7 @@ _is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
 httpresponses = {
     100: 'Continue',
     101: 'Switching Protocols',
-    
+
     200: 'OK',
     201: 'Created',
     202: 'Accepted',
@@ -57,7 +57,7 @@ httpresponses = {
     204: 'No Content',
     205: 'Reset Content',
     206: 'Partial Content',
-    
+
     300: 'Multiple Choices',
     301: 'Moved Permanently',
     302: 'Found',
@@ -66,7 +66,7 @@ httpresponses = {
     305: 'Use Proxy',
     306: '(Unused)',
     307: 'Temporary Redirect',
-    
+
     400: 'Bad Request',
     401: 'Unauthorized',
     402: 'Payment Required',
@@ -85,7 +85,7 @@ httpresponses = {
     415: 'Unsupported Media Type',
     416: 'Requested Range Not Satisfiable',
     417: 'Expectation Failed',
-    
+
     500: 'Internal Server Error',
     501: 'Not Implemented',
     502: 'Bad Gateway',
@@ -310,7 +310,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                 redirected)
             urlparts = linkcheck.strformat.url_unicode_split(redirected)
             # check if we still have the same scheme type, it could be a
-	    # different one
+            # different one
             if urlparts[0] != self.scheme:
                 self.add_warning(
                            _("Redirection to different URL type encountered; "
@@ -621,4 +621,3 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 # ignore close errors
                 pass
         self.url_connection = None
-
