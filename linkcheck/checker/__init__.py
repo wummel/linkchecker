@@ -19,6 +19,7 @@ Main functions for link checking.
 """
 
 import time
+import locale
 import sys
 import os
 import cgi
@@ -153,7 +154,8 @@ acap        # application configuration access protocol
 
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
-stderr = codecs.getwriter("iso8859-1")(sys.stderr, errors="ignore")
+_encoding = locale.getpreferredencoding()
+stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
 
 def internal_error ():
     """
