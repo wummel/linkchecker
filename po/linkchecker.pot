@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-10-13 23:35+0200\n"
+"POT-Creation-Date: 2005-10-14 00:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,163 +54,9 @@ msgstr[1] ""
 msgid "Status:"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:81
-msgid "The effective URL is different from the original."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:83
-msgid "Could not get the content of the URL."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:84
-msgid "URL uses a unicode domain."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:85
-msgid "URL is not normed."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:86
-msgid "URL anchor was not found."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:88
-msgid "The warning regular expression was found in the URL contents."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:89
-msgid "The URL content is too large."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:90
-msgid "The file: URL is missing a trailing slash."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:92
-msgid "The file: path is not the same as the system specific path."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:93
-msgid "The ftp: URL is missing a trailing slash."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:94
-msgid "The http: URL checking has been denied."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:95
-msgid "The HTTP server had no anchor support."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:96
-msgid "The URL has moved permanently."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:98
-msgid "The URL has been redirected to an URL of a different type."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:99
-msgid "The URL had no content."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:100
-msgid "An error occurred while storing a cookie."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:102
-msgid "An error occurred while decompressing the URL content."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:104
-msgid "The URL content is encoded with an unknown encoding."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:105
-msgid "The URL has been ignored."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:106
-msgid "The mailto: URL contained no addresses."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:107
-msgid "The mail MX host could not be found."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:109
-msgid "The mailto: address could not be verified."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:111
-msgid "No connection to a MX host could be established."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:112
-msgid "No NNTP server was found."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:113
-msgid "The NNTP newsgroup could not be found."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:114
-msgid "The NNTP server was busy."
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:164
-#, python-format
-msgid ""
-"********** Oops, I did it again. *************\n"
-"\n"
-"You have found an internal error in LinkChecker. Please write a bug report\n"
-"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
-"or send mail to %s and include the following information:\n"
-"- the URL or file you are testing\n"
-"- your commandline arguments and/or configuration.\n"
-"- the output of a debug run with option \"-Dall\" of the executed command\n"
-"- the system information below.\n"
-"\n"
-"Disclosing some of the information above due to privacy reasons is ok.\n"
-"I will try to help you nonetheless, but you have to give me something\n"
-"I can work with ;) .\n"
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:183
-msgid "******** LinkChecker internal error, over and out ********"
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:191
-msgid "System info:"
-msgstr ""
-
-#: ../linkcheck/checker/__init__.py:193 ../linkchecker:507
-#, python-format
-msgid "Python %s on %s"
-msgstr ""
-
 #: ../linkcheck/checker/httpsurl.py:35 ../linkcheck/checker/ignoredurl.py:36
 #, python-format
 msgid "%s URL ignored."
-msgstr ""
-
-#: ../linkcheck/checker/fileurl.py:119
-msgid "Added trailing slash to directory."
-msgstr ""
-
-#: ../linkcheck/checker/fileurl.py:130
-msgid "directory"
-msgstr ""
-
-#: ../linkcheck/checker/fileurl.py:146
-#, python-format
-msgid ""
-"The URL path %r is not the same as the system path %r. You should always use "
-"the system path in URLs."
-msgstr ""
-
-#: ../linkcheck/checker/errorurl.py:35
-msgid "URL is unrecognized or has invalid syntax"
 msgstr ""
 
 #: ../linkcheck/checker/urlbase.py:259
@@ -394,6 +240,145 @@ msgstr ""
 msgid "Using proxy %r."
 msgstr ""
 
+#: ../linkcheck/checker/__init__.py:81
+msgid "The effective URL is different from the original."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:83
+msgid "Could not get the content of the URL."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:84
+msgid "URL uses a unicode domain."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:85
+msgid "URL is not normed."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:86
+msgid "URL anchor was not found."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:88
+msgid "The warning regular expression was found in the URL contents."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:89
+msgid "The URL content is too large."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:90
+msgid "The file: URL is missing a trailing slash."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:92
+msgid "The file: path is not the same as the system specific path."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:93
+msgid "The ftp: URL is missing a trailing slash."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:94
+msgid "The http: URL checking has been denied."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:95
+msgid "The HTTP server had no anchor support."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:96
+msgid "The URL has moved permanently."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:98
+msgid "The URL has been redirected to an URL of a different type."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:99
+msgid "The URL had no content."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:100
+msgid "An error occurred while storing a cookie."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:102
+msgid "An error occurred while decompressing the URL content."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:104
+msgid "The URL content is encoded with an unknown encoding."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:105
+msgid "The URL has been ignored."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:106
+msgid "The mailto: URL contained no addresses."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:107
+msgid "The mail MX host could not be found."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:109
+msgid "The mailto: address could not be verified."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:111
+msgid "No connection to a MX host could be established."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:112
+msgid "No NNTP server was found."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:113
+msgid "The NNTP newsgroup could not be found."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:114
+msgid "The NNTP server was busy."
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:164
+#, python-format
+msgid ""
+"********** Oops, I did it again. *************\n"
+"\n"
+"You have found an internal error in LinkChecker. Please write a bug report\n"
+"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
+"or send mail to %s and include the following information:\n"
+"- the URL or file you are testing\n"
+"- your commandline arguments and/or configuration.\n"
+"- the output of a debug run with option \"-Dall\" of the executed command\n"
+"- the system information below.\n"
+"\n"
+"Disclosing some of the information above due to privacy reasons is ok.\n"
+"I will try to help you nonetheless, but you have to give me something\n"
+"I can work with ;) .\n"
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:183
+msgid "******** LinkChecker internal error, over and out ********"
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:191
+msgid "System info:"
+msgstr ""
+
+#: ../linkcheck/checker/__init__.py:193 ../linkchecker:507
+#, python-format
+msgid "Python %s on %s"
+msgstr ""
+
+#: ../linkcheck/checker/errorurl.py:35
+msgid "URL is unrecognized or has invalid syntax"
+msgstr ""
+
 #: ../linkcheck/checker/httpurl.py:161
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
@@ -488,6 +473,21 @@ msgstr ""
 #: ../linkcheck/checker/httpurl.py:548 ../linkcheck/checker/httpurl.py:577
 #, python-format
 msgid "Unsupported content encoding %r."
+msgstr ""
+
+#: ../linkcheck/checker/fileurl.py:119
+msgid "Added trailing slash to directory."
+msgstr ""
+
+#: ../linkcheck/checker/fileurl.py:130
+msgid "directory"
+msgstr ""
+
+#: ../linkcheck/checker/fileurl.py:146
+#, python-format
+msgid ""
+"The URL path %r is not the same as the system path %r. You should always use "
+"the system path in URLs."
 msgstr ""
 
 #: ../linkcheck/logger/__init__.py:30
@@ -648,6 +648,46 @@ msgstr ""
 msgid "Write comments and bugs to %s"
 msgstr ""
 
+#: ../linkcheck/__init__.py:130
+msgid "CRITICAL"
+msgstr ""
+
+#: ../linkcheck/__init__.py:131
+msgid "ERROR"
+msgstr ""
+
+#: ../linkcheck/__init__.py:132
+msgid "WARN"
+msgstr ""
+
+#: ../linkcheck/__init__.py:133
+msgid "WARNING"
+msgstr ""
+
+#: ../linkcheck/__init__.py:134
+msgid "INFO"
+msgstr ""
+
+#: ../linkcheck/__init__.py:135
+msgid "DEBUG"
+msgstr ""
+
+#: ../linkcheck/__init__.py:136
+msgid "NOTSET"
+msgstr ""
+
+#: ../linkcheck/strformat.py:214
+msgid "seconds"
+msgstr ""
+
+#: ../linkcheck/strformat.py:217
+msgid "minutes"
+msgstr ""
+
+#: ../linkcheck/strformat.py:220
+msgid "hours"
+msgstr ""
+
 #: ../linkcheck/lc_cgi.py:131
 msgid "unsupported language"
 msgstr ""
@@ -690,34 +730,6 @@ msgid ""
 "</html>"
 msgstr ""
 
-#: ../linkcheck/__init__.py:130
-msgid "CRITICAL"
-msgstr ""
-
-#: ../linkcheck/__init__.py:131
-msgid "ERROR"
-msgstr ""
-
-#: ../linkcheck/__init__.py:132
-msgid "WARN"
-msgstr ""
-
-#: ../linkcheck/__init__.py:133
-msgid "WARNING"
-msgstr ""
-
-#: ../linkcheck/__init__.py:134
-msgid "INFO"
-msgstr ""
-
-#: ../linkcheck/__init__.py:135
-msgid "DEBUG"
-msgstr ""
-
-#: ../linkcheck/__init__.py:136
-msgid "NOTSET"
-msgstr ""
-
 #: ../linkcheck/configuration.py:306
 #, python-format
 msgid "invalid log option %r"
@@ -736,18 +748,6 @@ msgstr ""
 #: ../linkcheck/configuration.py:401
 #, python-format
 msgid "syntax error in entry%d %r: %s"
-msgstr ""
-
-#: ../linkcheck/strformat.py:214
-msgid "seconds"
-msgstr ""
-
-#: ../linkcheck/strformat.py:217
-msgid "minutes"
-msgstr ""
-
-#: ../linkcheck/strformat.py:220
-msgid "hours"
 msgstr ""
 
 #: ../linkchecker:69
