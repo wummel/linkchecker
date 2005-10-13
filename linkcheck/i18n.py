@@ -26,6 +26,7 @@ import gettext
 # more supported languages are added in init()
 supported_languages = ['en']
 default_language = 'en'
+default_encoding = locale.getpreferredencoding()
 
 def install_builtin (translator, do_unicode):
     """

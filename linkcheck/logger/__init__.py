@@ -24,6 +24,7 @@ import os
 import datetime
 
 import linkcheck.strformat
+import linkcheck.i18n
 
 _ = lambda x: x
 Fields = dict(
@@ -69,8 +70,8 @@ class Logger (object):
         # number of encountered warningss
         self.warnings = 0
         # encoding of output
-        preferred = locale.getpreferredencoding()
-        self.output_encoding = args.get("encoding", preferred)
+        default = linkcheck.i18n.default_encoding
+        self.output_encoding = args.get("encoding", default)
 
     def init_fileoutput (self, args):
         """

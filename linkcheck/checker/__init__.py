@@ -154,7 +154,7 @@ acap        # application configuration access protocol
 
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
-_encoding = locale.getpreferredencoding()
+_encoding = linkcheck.i18n.default_encoding
 stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
 
 def internal_error ():

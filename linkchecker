@@ -37,6 +37,7 @@ import linkcheck
 optparse._ = _
 # now import the rest of the linkchecker gang
 import linkcheck.log
+import linkcheck.i18n
 import linkcheck.checker
 import linkcheck.checker.cache
 import linkcheck.checker.consumer
@@ -301,8 +302,7 @@ class LCOptionParser (optparse.OptionParser, object):
         s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
                  Examples, LoggerTypes, RegularExpressions,
                  ProxySupport, Notes, Retval, Warnings)
-        encoding = locale.getpreferredencoding()
-        s = s.encode(encoding, "replace")
+        s = s.encode(linkcheck.i18n.default_encoding, "replace")
         if os.name != 'posix':
             linkcheck.strformat.paginate(s)
         else:
@@ -541,7 +541,7 @@ if options.output:
     if "/" in options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
-        logtype, encoding = options.output, "iso-8859-15"
+        logtype, encoding = options.output, linkcheck.i18n.default_encoding
     if not linkcheck.Loggers.has_key(logtype.lower()):
         print_usage(_("Unknown logger type %r in %r for option %s") % \
                    (logtype, options.output, "'-o, --output'"))
