@@ -20,6 +20,7 @@ Check HTML pages for broken links.
 """
 
 import sys
+import locale
 import codecs
 import re
 import os
@@ -79,11 +80,14 @@ Notes = _("""NOTES
  o If your platform does not support threading, LinkChecker disables it
    automatically.
  o You can supply multiple user/password pairs in a configuration file.
- o To use proxies set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
-   on Unix or Windows.
-   On a Mac use the Internet Config.
  o When checking 'news:' links the given NNTP host doesn't need to be the
    same as the host of the user browsing your pages.
+""")
+
+ProxySupport = _("""PROXY SUPPORT
+To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
+on Unix or Windows.
+On a Mac use the Internet Config.
 """)
 
 RegularExpressions = _("""REGULAR EXPRESSIONS
@@ -294,9 +298,11 @@ class LCOptionParser (optparse.OptionParser, object):
         """
         Print translated help text.
         """
-        s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
-           Examples, LoggerTypes, RegularExpressions, Notes, Retval, Warnings)
-        s = s.encode("iso-8859-1", "replace")
+        s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
+                 Examples, LoggerTypes, RegularExpressions,
+                 ProxySupport, Notes, Retval, Warnings)
+        encoding = locale.getpreferredencoding()
+        s = s.encode(encoding, "replace")
         if os.name != 'posix':
             linkcheck.strformat.paginate(s)
         else:
