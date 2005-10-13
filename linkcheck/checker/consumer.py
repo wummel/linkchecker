@@ -164,11 +164,20 @@ class Consumer (object):
         """
         Abort checking and send end-of-output message to logger.
         """
+        # While loop to disable keyboard interrupts and system exits
+        # (triggered from internal errors while finishing up) during abort.
+        self.num_waited = 0
+        while True:
+            try:
+                self._abort()
+                break
+            except (KeyboardInterrupt, SystemExit):
+                pass
+
+    def _abort (self):
         # wait for threads to finish
-        num_waited = 0
-        wait_max = 30
         while not self.no_more_threads():
-            if num_waited > wait_max:
+            if self.num_waited > 30:
                 linkcheck.log.error(linkcheck.LOG_CHECK,
                                     "Thread wait timeout")
                 self.end_log_output()
@@ -180,7 +189,7 @@ class Consumer (object):
                num)
             linkcheck.log.warn(linkcheck.LOG_CHECK, msg, num)
             self.finish()
-            num_waited += 1
+            self.num_waited += 1
             time.sleep(2)
         self.end_log_output()
 
