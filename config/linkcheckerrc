@@ -150,7 +150,8 @@
 #noproxy2=.*myinternurl.*
 # Ignore specified warnings (see linkchecker -h for the list of
 # recognized warnings). Add a comma-separated list of warnings here
-# you want to be ignored by the output loggers.
+# that prevent a valid URL from being logged. Note that the warning
+# will be logged in invalid URLs.
 #ignorewarnings=url-unnormed,url-unicode-domain,anchor-not-found
 
 # You can provide different user/password pairs for different link types.
