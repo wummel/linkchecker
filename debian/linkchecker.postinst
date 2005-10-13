@@ -4,12 +4,11 @@
 # see: dh_installdeb(1)
 
 case "$1" in
-    configure|reconfigure|abort-upgrade|abort-remove|abort-deconfigure)
-        break
+configure|reconfigure|abort-upgrade|abort-remove|abort-deconfigure)
     ;;
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
+*)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
     ;;
 esac
 
