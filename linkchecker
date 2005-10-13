@@ -87,7 +87,7 @@ Notes = _("""NOTES
 
 ProxySupport = _("""PROXY SUPPORT
 To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
-on Unix or Windows.
+on Unix or Windows to the proxy URL (for example http://localhost:8080).
 On a Mac use the Internet Config.
 """)
 

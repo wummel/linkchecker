@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-10-13 19:27+0200\n"
+"POT-Creation-Date: 2005-10-13 19:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -730,7 +730,8 @@ msgstr ""
 #: en/linkchecker.1:271
 msgid ""
 "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on "
-"Unix or Windows.  On a Mac use the Internet Config."
+"Unix or Windows to the proxy URL (for example http://localhost:8080).  On a "
+"Mac use the Internet Config."
 msgstr ""
 
 # type: SH
