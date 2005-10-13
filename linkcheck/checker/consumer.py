@@ -37,21 +37,33 @@ _lock = thread.allocate_lock()
 
 
 def print_tocheck (tocheck):
+    """
+    Print the number of queued URLs.
+    """
     msg = _n("%5d URL queued,", "%5d URLs queued,", tocheck) % tocheck
     print >> stderr, msg,
 
 
 def print_links (links):
+    """
+    Print the number of checked URLs.
+    """
     msg = _n("%4d URL checked,", "%4d URLs checked,", links) % links
     print >> stderr, msg,
 
 
 def print_active (active):
+    """
+    Print the number of active threads.
+    """
     msg = _n("%2d active thread,", "%2d active threads,", active) % active
     print >> stderr, msg,
 
 
 def print_duration (duration):
+    """
+    Print the run time.
+    """
     msg = _("runtime %s") % linkcheck.strformat.strduration(duration)
     print >> stderr, msg,
 
@@ -174,6 +186,10 @@ class Consumer (object):
                 pass
 
     def _abort (self):
+        """
+        Abort checking and send end-of-output message to logger.
+        Private method not disabling exceptions.
+        """
         # wait for threads to finish
         while not self.no_more_threads():
             if self.num_waited > 30:

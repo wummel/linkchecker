@@ -101,6 +101,9 @@ class UrlBase (object):
         self.scheme = url.split(":", 1)[0] or "file"
 
     def reset (self):
+        """
+        Reset all variables to default values.
+        """
         # self.url is constructed by self.build_url() out of base_url
         # and (base_ref or parent) as absolute and normed url.
         # This the real url we use when checking so it also referred to

@@ -228,6 +228,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             ftpcmd = "RETR %s" % self.filename
             buf = StringIO.StringIO()
             def stor_data (s):
+                """Helper method storing given data"""
                 buf.write(s)
             self.url_connection.retrbinary(ftpcmd, stor_data)
             self.data = buf.getvalue()

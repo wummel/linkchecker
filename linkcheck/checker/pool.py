@@ -21,6 +21,9 @@ Store and retrieve open connections.
 import time
 
 class ConnectionPool (object):
+    """
+    Connection pool class, storing a set of connections for URL retrieval.
+    """
 
     def __init__ (self):
         """

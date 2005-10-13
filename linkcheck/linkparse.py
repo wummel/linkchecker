@@ -148,6 +148,9 @@ class MetaRobotsFinder (TagFinder):
 
 
 def is_meta_url (attr, attrs):
+    """
+    Check if the meta attributes contain a URL.
+    """
     res = False
     if attr == "content":
         equiv = attrs.get_true('http-equiv', u'').lower()
