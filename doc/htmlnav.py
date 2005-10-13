@@ -55,6 +55,49 @@ class Writer (html4css1.Writer):
         writers.Writer.__init__(self)
         self.translator_class = HTMLFileNavTranslator
 
+    def visit_image(self, node):
+        """
+        Like html4css1.visit_image(), but with align="middle" enforcement.
+        """
+        atts = node.non_default_attributes()
+        # The XHTML standard only allows align="middle"
+        if atts.get('align') == u"center":
+            atts['align'] = u"middle"
+        if atts.has_key('classes'):
+            del atts['classes']         # prevent duplication with node attrs
+        atts['src'] = atts['uri']
+        del atts['uri']
+        if atts.has_key('scale'):
+            if html4css1.Image and not (atts.has_key('width')
+                              and atts.has_key('height')):
+                try:
+                    im = html4css1.Image.open(str(atts['src']))
+                except (IOError, # Source image can't be found or opened
+                        UnicodeError):  # PIL doesn't like Unicode paths.
+                    pass
+                else:
+                    if not atts.has_key('width'):
+                        atts['width'] = im.size[0]
+                    if not atts.has_key('height'):
+                        atts['height'] = im.size[1]
+                    del im
+            if atts.has_key('width'):
+                atts['width'] = int(round(atts['width']
+                                          * (float(atts['scale']) / 100)))
+            if atts.has_key('height'):
+                atts['height'] = int(round(atts['height']
+                                           * (float(atts['scale']) / 100)))
+            del atts['scale']
+        if not atts.has_key('alt'):
+            atts['alt'] = atts['src']
+        if isinstance(node.parent, nodes.TextElement):
+            self.context.append('')
+        else:
+            div_atts = self.image_div_atts(node)
+            self.body.append(self.starttag({}, 'div', '', **div_atts))
+            self.context.append('</div>\n')
+        self.body.append(self.emptytag(node, 'img', '', **atts))
+
 
 class HTMLNavTranslator (html4css1.HTMLTranslator):
     """ability to parse navigation meta info"""
@@ -110,11 +153,13 @@ class HTMLFileNavTranslator (HTMLNavTranslator):
 
     def get_topframe_bashing (self):
         return """<script type="text/javascript">
+<![CDATA[
 window.onload = function() {
   if (top.location != location) {
     top.location.href = document.location.href;
   }
 }
+]]>
 </script>
 """
 
@@ -143,5 +188,5 @@ window.onload = function() {
         p.append("favicon.png")
         p = "/".join(p)
         p = utils.relative_path(self.settings._destination, p)
-        return '<meta rel="SHORTCUT ICON" href="%s" />\n' % p
+        return '<link rel="shortcut icon" type="image/x-icon" href="%s" />\n' % p
 
