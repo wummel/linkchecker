@@ -10,7 +10,7 @@ Documentation
 Basic usage
 -----------
 
-To check an URL like ``http://www.myhomepage.org/`` it is enough to
+To check a URL like ``http://www.myhomepage.org/`` it is enough to
 execute ``linkchecker http://www.myhomepage.org/``. This will check the
 complete domain of www.myhomepage.org recursively. All links pointing
 outside of the domain are also checked for validity.
@@ -129,12 +129,12 @@ checking. All connection check types are described below.
 Recursion
 ---------
 
-Before descending recursively into an URL, it has to fulfill several
+Before descending recursively into a URL, it has to fulfill several
 conditions. They are checked in this order:
 
-1. An URL must be valid.
+1. A URL must be valid.
 
-2. An URL must be parseable. This currently includes HTML files,
+2. A URL must be parseable. This currently includes HTML files,
    Opera bookmarks files, and directories. If a file type cannot
    be determined (for example it does not have a common HTML file
    extension, and the content does not look like HTML), it is assumed
@@ -248,7 +248,7 @@ After this append a new Logging instance to the fileoutput.
 **Q: Some links with anchors are getting checked twice.**
 
 A: This is not a bug.
-It is common practice to believe that if an URL ``ABC#anchor1`` works then
+It is common practice to believe that if a URL ``ABC#anchor1`` works then
 ``ABC#anchor2`` works too. That is not specified anywhere and I have seen
 server-side scripts that fail on some anchors and not on others.
 This is the reason for always checking URLs with different anchors.
