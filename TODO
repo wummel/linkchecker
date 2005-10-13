@@ -1,7 +1,3 @@
-- queue mutated error (note: press ctrl-c, perhaps only under windows?):
-  linkchecker --no-warnings www.cornellcollege.edu
-  linkchecker -uatra2005 -paccess --no-warnings --ignore-url=^mailto: www.atra-tr.org
-
 - [FEATURE] postmortem debugging with pdb.pm()
 
 - [BUGFIX] The URL in the log output is double normed.
@@ -17,7 +13,3 @@
 - [FEATURE] Option to save downloaded pages. This could also be used to
   build an internal cache, however there are already a plethora of
   caching proxies we could use for that.
-
-> One other problem that I've noticed is that the ignore parameters from the
-> configuration file are not used and that both the url-not-normed and the
-> url-unnormed do not work as well.
