@@ -1,5 +1,3 @@
-- Move proxy support to a more prominent place in the documentation.
-
 - queue mutated error (note: press ctrl-c, perhaps only under windows?):
   linkchecker --no-warnings www.cornellcollege.edu
   linkchecker -uatra2005 -paccess --no-warnings --ignore-url=^mailto: www.atra-tr.org

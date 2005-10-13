@@ -41,7 +41,8 @@
 
   * Improved documentation about recursion and proxy support.
     Type: documentation
-    Changed: linkchecker, doc/en/documentation.txt
+    Changed: linkchecker, doc/en/documentation.txt,
+      doc/{en,de}/linkchecker.1
 
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
