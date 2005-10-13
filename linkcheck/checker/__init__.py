@@ -198,17 +198,6 @@ def print_app_info ():
             print >> stderr, key, "=", repr(value)
 
 
-def abort (consumer):
-    """
-    Try to abort consumer. Exit on errors.
-    """
-    try:
-        consumer.abort()
-    except:
-        # XXX print an error message?
-        sys.exit(1)
-
-
 def check_urls (consumer):
     """
     Main check function; checks all configured URLs until interrupted
@@ -222,10 +211,10 @@ def check_urls (consumer):
     """
     try:
         _check_urls(consumer)
-    except KeyboardInterrupt:
-        abort(consumer)
+    except (KeyboardInterrupt, SystemExit):
+        consumer.abort()
     except:
-        abort(consumer)
+        consumer.abort()
         internal_error()
 
 
