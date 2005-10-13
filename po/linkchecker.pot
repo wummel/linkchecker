@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-10-13 19:28+0200\n"
+"POT-Creation-Date: 2005-10-13 22:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,14 +43,14 @@ msgstr[1] ""
 msgid "runtime %s"
 msgstr ""
 
-#: ../linkcheck/checker/consumer.py:178
+#: ../linkcheck/checker/consumer.py:187
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:193
+#: ../linkcheck/checker/consumer.py:202
 msgid "Status:"
 msgstr ""
 
@@ -379,12 +379,17 @@ msgstr ""
 msgid "Missing trailing directory slash in ftp url."
 msgstr ""
 
-#: ../linkcheck/checker/proxysupport.py:45
+#: ../linkcheck/checker/proxysupport.py:42
+#, python-format
+msgid "Proxy value %r must start with 'http://'."
+msgstr ""
+
+#: ../linkcheck/checker/proxysupport.py:49
 #, python-format
 msgid "Ignoring proxy setting %r"
 msgstr ""
 
-#: ../linkcheck/checker/proxysupport.py:49
+#: ../linkcheck/checker/proxysupport.py:53
 #, python-format
 msgid "Using proxy %r."
 msgstr ""
@@ -772,7 +777,7 @@ msgstr ""
 msgid ""
 "PROXY SUPPORT\n"
 "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy\n"
-"on Unix or Windows.\n"
+"on Unix or Windows to the proxy URL (for example http://localhost:8080).\n"
 "On a Mac use the Internet Config.\n"
 msgstr ""
 

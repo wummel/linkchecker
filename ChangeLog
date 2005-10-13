@@ -49,6 +49,14 @@
     Type: feature
     Changed: linkcheck/checker/proxysupport.py
 
+  * Correctly catch internal errors in the check URL loop, and
+    disable raising certain exceptions while the abort routine finishes
+    up.
+    Fixes the "dequeue mutated during iteration" errors.
+    Type: bugfix
+    Changed: linkcheck/checker/{__init__,consumer}.py
+    Closes: SF bug #1325570, #1312865, #1307775, #1292919, #1264865
+
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
   * Fixed typo in redirection handling code.
