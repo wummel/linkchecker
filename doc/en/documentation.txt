@@ -129,13 +129,28 @@ checking. All connection check types are described below.
 Recursion
 ---------
 
-Recursion occurs on HTML files, Opera bookmark files and directories.
+Before descending recursively into an URL, it has fullfill several
+conditions. They are checked in this order:
+
+1. An URL must be valid.
+
+2. An URL must be parseable. This currently includes HTML files,
+   Opera bookmarks files, and directories. If a file type cannot
+   be determined (for example it does not have a common HTML file
+   extension, and the content does not look like HTML), it is assumed
+   to be non-parseable.
+
+3. The URL content must be retrievable. This is usually the case
+   except for example mailto: or unknown URL types.
+
+4. The maximum recursion level must not be exceeded. It is configured
+   with the ``--recursion-level`` option and is unlimited per default.
+
+5. It must not match the ignored URL list. This is controlled with
+   the ``--ignore-url`` option.
+
 Note that the directory recursion reads all files in that
 directory, not just a subset like ``index.htm*``.
-
-.. meta::
-  :navigation.order: 4
-  :navigation.name: FAQ
 
 
 Frequently asked questions
