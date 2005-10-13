@@ -32,6 +32,17 @@
     Changed: linkcheck/checker/fileurl.py
     Closes: Debian bug #332870
 
+  * The default encoding for program and logger output will be the
+    preferred encoding now. It is determined from your current locale
+    system settings.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/__init__.py,
+      linkcheck/i18n.py, linkcheck/logger/__init__.py
+
+  * Improved documentation about recursion and proxy support.
+    Type: documentation
+    Changed: linkchecker, doc/en/documentation.txt
+
 3.2 "Kiss kiss bang bang" (released 3.8.2005)
 
   * Fixed typo in redirection handling code.
