@@ -172,7 +172,7 @@ class Consumer (object):
                 linkcheck.log.error(linkcheck.LOG_CHECK,
                                     "Thread wait timeout")
                 self.end_log_output()
-                sys.exit(1)
+                return
             num = self.active_threads()
             msg = \
             _n("keyboard interrupt; waiting for %d active thread to finish",
