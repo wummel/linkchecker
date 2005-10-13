@@ -18,7 +18,6 @@
 Url consumer class.
 """
 
-import sys
 import time
 try:
     import thread

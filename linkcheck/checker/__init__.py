@@ -19,7 +19,6 @@ Main functions for link checking.
 """
 
 import time
-import locale
 import sys
 import os
 import cgi

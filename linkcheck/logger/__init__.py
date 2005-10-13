@@ -18,7 +18,6 @@
 Output logging support for different formats.
 """
 
-import locale
 import sys
 import os
 import datetime
