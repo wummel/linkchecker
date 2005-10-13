@@ -44,7 +44,7 @@ Requirements for Windows
 ------------------------
 
 1. Install Python >= 2.4 from http://www.python.org/
-   [http://www.python.org/ftp/python/2.4.1/python-2.4.1.msi]
+   [http://www.python.org/ftp/python/2.4.2/python-2.4.2.msi]
 
 2. *Only needed if you compile from source:*
    install the MinGW suite from http://mingw.sourceforge.net/
