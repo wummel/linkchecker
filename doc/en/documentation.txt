@@ -129,7 +129,7 @@ checking. All connection check types are described below.
 Recursion
 ---------
 
-Before descending recursively into an URL, it has fullfill several
+Before descending recursively into an URL, it has to fulfill several
 conditions. They are checked in this order:
 
 1. An URL must be valid.
