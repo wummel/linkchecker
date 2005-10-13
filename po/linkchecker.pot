@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2005-10-13 22:18+0200\n"
+"POT-Creation-Date: 2005-10-13 23:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,148 +17,148 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../linkcheck/checker/consumer.py:41
+#: ../linkcheck/checker/consumer.py:40
 #, python-format
 msgid "%5d URL queued,"
 msgid_plural "%5d URLs queued,"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:46
+#: ../linkcheck/checker/consumer.py:45
 #, python-format
 msgid "%4d URL checked,"
 msgid_plural "%4d URLs checked,"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:51
+#: ../linkcheck/checker/consumer.py:50
 #, python-format
 msgid "%2d active thread,"
 msgid_plural "%2d active threads,"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:56
+#: ../linkcheck/checker/consumer.py:55
 #, python-format
 msgid "runtime %s"
 msgstr ""
 
-#: ../linkcheck/checker/consumer.py:187
+#: ../linkcheck/checker/consumer.py:186
 #, python-format
 msgid "keyboard interrupt; waiting for %d active thread to finish"
 msgid_plural "keyboard interrupt; waiting for %d active threads to finish"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/consumer.py:202
+#: ../linkcheck/checker/consumer.py:201
 msgid "Status:"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:82
+#: ../linkcheck/checker/__init__.py:81
 msgid "The effective URL is different from the original."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:84
+#: ../linkcheck/checker/__init__.py:83
 msgid "Could not get the content of the URL."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:85
+#: ../linkcheck/checker/__init__.py:84
 msgid "URL uses a unicode domain."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:86
+#: ../linkcheck/checker/__init__.py:85
 msgid "URL is not normed."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:87
+#: ../linkcheck/checker/__init__.py:86
 msgid "URL anchor was not found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:89
+#: ../linkcheck/checker/__init__.py:88
 msgid "The warning regular expression was found in the URL contents."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:90
+#: ../linkcheck/checker/__init__.py:89
 msgid "The URL content is too large."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:91
+#: ../linkcheck/checker/__init__.py:90
 msgid "The file: URL is missing a trailing slash."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:93
+#: ../linkcheck/checker/__init__.py:92
 msgid "The file: path is not the same as the system specific path."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:94
+#: ../linkcheck/checker/__init__.py:93
 msgid "The ftp: URL is missing a trailing slash."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:95
+#: ../linkcheck/checker/__init__.py:94
 msgid "The http: URL checking has been denied."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:96
+#: ../linkcheck/checker/__init__.py:95
 msgid "The HTTP server had no anchor support."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:97
+#: ../linkcheck/checker/__init__.py:96
 msgid "The URL has moved permanently."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:99
+#: ../linkcheck/checker/__init__.py:98
 msgid "The URL has been redirected to an URL of a different type."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:100
+#: ../linkcheck/checker/__init__.py:99
 msgid "The URL had no content."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:101
+#: ../linkcheck/checker/__init__.py:100
 msgid "An error occurred while storing a cookie."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:103
+#: ../linkcheck/checker/__init__.py:102
 msgid "An error occurred while decompressing the URL content."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:105
+#: ../linkcheck/checker/__init__.py:104
 msgid "The URL content is encoded with an unknown encoding."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:106
+#: ../linkcheck/checker/__init__.py:105
 msgid "The URL has been ignored."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:107
+#: ../linkcheck/checker/__init__.py:106
 msgid "The mailto: URL contained no addresses."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:108
+#: ../linkcheck/checker/__init__.py:107
 msgid "The mail MX host could not be found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:110
+#: ../linkcheck/checker/__init__.py:109
 msgid "The mailto: address could not be verified."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:112
+#: ../linkcheck/checker/__init__.py:111
 msgid "No connection to a MX host could be established."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:113
+#: ../linkcheck/checker/__init__.py:112
 msgid "No NNTP server was found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:114
+#: ../linkcheck/checker/__init__.py:113
 msgid "The NNTP newsgroup could not be found."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:115
+#: ../linkcheck/checker/__init__.py:114
 msgid "The NNTP server was busy."
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:165
+#: ../linkcheck/checker/__init__.py:164
 #, python-format
 msgid ""
 "********** Oops, I did it again. *************\n"
@@ -176,15 +176,15 @@ msgid ""
 "I can work with ;) .\n"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:184
+#: ../linkcheck/checker/__init__.py:183
 msgid "******** LinkChecker internal error, over and out ********"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:192
+#: ../linkcheck/checker/__init__.py:191
 msgid "System info:"
 msgstr ""
 
-#: ../linkcheck/checker/__init__.py:194
+#: ../linkcheck/checker/__init__.py:193 ../linkchecker:507
 #, python-format
 msgid "Python %s on %s"
 msgstr ""
@@ -263,17 +263,17 @@ msgstr ""
 msgid "could not get content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:527
+#: ../linkcheck/checker/urlbase.py:530
 #, python-format
 msgid "Anchor #%s not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:584
+#: ../linkcheck/checker/urlbase.py:587
 #, python-format
 msgid "Found %r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:594
+#: ../linkcheck/checker/urlbase.py:597
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr ""
@@ -490,59 +490,59 @@ msgstr ""
 msgid "Unsupported content encoding %r."
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:31
+#: ../linkcheck/logger/__init__.py:30
 msgid "Real URL"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:32
+#: ../linkcheck/logger/__init__.py:31
 msgid "Cache key"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:33
+#: ../linkcheck/logger/__init__.py:32
 msgid "Result"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:34
+#: ../linkcheck/logger/__init__.py:33
 msgid "Base"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:35
+#: ../linkcheck/logger/__init__.py:34
 msgid "Name"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:36
+#: ../linkcheck/logger/__init__.py:35
 msgid "Parent URL"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:37
+#: ../linkcheck/logger/__init__.py:36
 msgid "Extern"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:38
+#: ../linkcheck/logger/__init__.py:37
 msgid "Info"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:39
+#: ../linkcheck/logger/__init__.py:38
 msgid "Warning"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:40
+#: ../linkcheck/logger/__init__.py:39
 msgid "D/L Time"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:41
+#: ../linkcheck/logger/__init__.py:40
 msgid "D/L Size"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:42
+#: ../linkcheck/logger/__init__.py:41
 msgid "Check Time"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:43
+#: ../linkcheck/logger/__init__.py:42
 msgid "URL"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:123
+#: ../linkcheck/logger/__init__.py:122
 #, python-format
 msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr ""
@@ -1103,71 +1103,76 @@ msgid ""
 "of going through a proxy. This option can be given multiple times."
 msgstr ""
 
-#: ../linkchecker:499
+#: ../linkchecker:498
 #, python-format
 msgid "Invalid debug level %(level)r"
 msgstr ""
 
-#: ../linkchecker:546 ../linkchecker:574
+#: ../linkchecker:517
+#, python-format
+msgid "Unreadable config file: %r"
+msgstr ""
+
+#: ../linkchecker:549 ../linkchecker:577
 #, python-format
 msgid "Unknown logger type %r in %r for option %s"
 msgstr ""
 
-#: ../linkchecker:549 ../linkchecker:578
+#: ../linkchecker:552 ../linkchecker:581
 #, python-format
 msgid "Unknown encoding %r in %r for option %s"
 msgstr ""
 
-#: ../linkchecker:585
+#: ../linkchecker:588
 #, python-format
 msgid "Illegal argument %r for option %s: %s"
 msgstr ""
 
-#: ../linkchecker:601 ../linkchecker:619
+#: ../linkchecker:604 ../linkchecker:622
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr ""
 
-#: ../linkchecker:651
+#: ../linkchecker:654
 msgid ""
 "Using DOT or GML loggers without verbose output gives an incomplete sitemap "
 "graph."
 msgstr ""
 
-#: ../linkchecker:658
+#: ../linkchecker:661
 msgid ""
 "enter one or more URLs, separated by white-space\n"
 "--> "
 msgstr ""
 
-#: ../linkchecker:661
+#: ../linkchecker:664
 msgid "no files or URLs given"
 msgstr ""
 
-#: ../linkchecker:682
+#: ../linkchecker:685
 msgid ""
 "The `profile' Python module is not installed, therefore the --profile option "
 "is disabled."
 msgstr ""
 
-#: ../linkchecker:688
+#: ../linkchecker:691
 #, python-format
 msgid ""
 "Overwrite profiling file %r?\n"
 "Press Ctrl-C to cancel, RETURN to continue."
 msgstr ""
 
-#: ../linkchecker:694
+#: ../linkchecker:697
 msgid "Canceled."
 msgstr ""
 
-#: ../linkchecker:708
+#: ../linkchecker:711
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
 msgstr ""
 
-#: ../linkchecker:718
+#: ../linkchecker:721
 msgid "Hit RETURN to finish"
 msgstr ""
 
