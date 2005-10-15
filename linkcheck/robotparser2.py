@@ -34,25 +34,9 @@ import gzip
 import cStringIO as StringIO
 import linkcheck
 import linkcheck.configuration
+import linkcheck.log
 
 __all__ = ["RobotFileParser"]
-
-_debug = False
-
-def _msg (prefix, msg):
-    """
-    Print given prefix and debug message to stderr if the _debug flag is
-    set.
-
-    @return: None
-    """
-    if _debug:
-        print >> sys.stderr, prefix, msg
-
-# methods for debug, warning and error messages
-debug = lambda txt: _msg("debug:", txt)
-warn = lambda txt: _msg("warning:", txt)
-error = lambda txt: _msg("error:", txt)
 
 
 class PasswordManager (object):
@@ -181,45 +165,54 @@ class RobotFileParser (object):
         }
         req = urllib2.Request(self.url, None, headers)
         try:
-            f = self.get_opener().open(req)
+            self._read_content(req)
         except urllib2.HTTPError, x:
             if x.code in (401, 403):
                 self.disallow_all = True
-                debug("robotst.txt disallow all")
+                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                    "%s disallow all", self.url)
             else:
                 self.allow_all = True
-                debug("robots.txt allow all")
-            return
+                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                    "%s allow all", self.url)
         except (socket.gaierror, socket.error, urllib2.URLError), x:
             # no network
             self.allow_all = True
-            debug("robots.txt allow all")
-            return
-        except IOError, data:
-            if data and data[0] == 'http error' and data[1] == 404:
-                self.allow_all = True
-                debug("robots.txt allow all")
-            else:
-                self.allow_all = True
-                debug("robots.txt allow all")
-            return
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "%s allow all", self.url)
+        except IOError, msg:
+            self.allow_all = True
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "%s allow all", self.url)
         except httplib.HTTPException:
             self.allow_all = True
-            debug("robots.txt allow all")
-            return
+            linkcheck.log.debug(linkcheck.LOG_CHECK, "%s allow all", self.url)
         except ValueError:
             # XXX bug workaround:
             # urllib2.AbstractDigestAuthHandler raises ValueError on
             # failed authorisation
             self.disallow_all = True
-            debug("robotst.txt disallow all")
-            return
-        lines = []
-        line = f.readline()
-        while line:
-            lines.append(line.strip())
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                "%s disallow all", self.url)
+
+    def _read_content (self, req):
+        """
+        Read robots.txt content.
+        @raise: urllib2.HTTPError on HTTP failure codes
+        @raise: socket.gaierror, socket.error, urllib2.URLError on network
+          errors
+        @raise: httplib.HTTPException, IOError on HTTP errors
+        @raise: ValueError on bad digest auth (a bug)
+        """
+        f = self.get_opener().open(req)
+        ct = f.info().get("Content-Type")
+        if ct and ct.lower().startswith("text/plain"):
+            lines = []
             line = f.readline()
-        self.parse(lines)
+            while line:
+                lines.append(line.strip())
+                line = f.readline()
+            self.parse(lines)
+        else:
+            self.allow_all = True
 
     def _add_entry (self, entry):
         """
@@ -241,7 +234,7 @@ class RobotFileParser (object):
 
         @return: None
         """
-        debug("robots.txt parse lines")
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "%s parse lines", self.url)
         state = 0
         linenumber = 0
         entry = Entry()
@@ -250,9 +243,9 @@ class RobotFileParser (object):
             linenumber += 1
             if not line:
                 if state == 1:
-                    warn("line %d: you should insert"
-                          " allow: or disallow: directives below any"
-                          " user-agent: line" % linenumber)
+                    linkcheck.log.debug(linkcheck.LOG_CHECK,
+                         "%s line %d: allow or disallow directives without" \
+                         " any user-agent line", self.url, linenumber)
                     entry = Entry()
                     state = 0
                 elif state == 2:
@@ -272,33 +265,40 @@ class RobotFileParser (object):
                 line[1] = urllib.unquote(line[1].strip())
                 if line[0] == "user-agent":
                     if state == 2:
-                        warn("line %d: you should insert a blank"
-                             " line before any user-agent"
-                             " directive" % linenumber)
+                        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                          "%s line %d: missing blank line before user-agent" \
+                          " directive", linenumber)
                         self._add_entry(entry)
                         entry = Entry()
                     entry.useragents.append(line[1])
                     state = 1
                 elif line[0] == "disallow":
                     if state == 0:
-                        error("line %d: you must insert a user-agent:"
-                              " directive before this line" % linenumber)
+                        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                          "%s line %d: missing user-agent directive before" \
+                          " this line", self.url, linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 0))
                         state = 2
                 elif line[0] == "allow":
                     if state == 0:
-                        error("line %d: you must insert a user-agent:"
-                               " directive before this line" % linenumber)
+                        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                          "%s line %d: missing user-agent directive before" \
+                          " this line", self.url, linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 1))
                 else:
-                    warn("line %d: unknown key %s" % (linenumber, line[0]))
+                    linkcheck.log.debug(linkcheck.LOG_CHECK,
+                             "%s line %d: unknown key %s",
+                             self.url, linenumber, line[0])
             else:
-                error("line %d: malformed line %s" % (linenumber, line))
+                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                    "%s line %d: malformed line %s",
+                    self.url, linenumber, line)
         if state == 2:
             self.entries.append(entry)
-        debug("Parsed rules:\n%s" % str(self))
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "Parsed rules:\n%s", str(self))
 
     def can_fetch (self, useragent, url):
         """
@@ -307,8 +307,9 @@ class RobotFileParser (object):
         @return: True if agent can fetch url, else False
         @rtype: bool
         """
-        debug("Checking robot.txt allowance for:\n"\
-              "  user agent: %r\n  url: %r" % (useragent, url))
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+              "%s check allowance for:\n" \
+              "  user agent: %r\n  url: %r", self.url, useragent, url)
         if not isinstance(useragent, str):
             useragent = useragent.encode("ascii", "ignore")
         if not isinstance(url, str):
@@ -433,7 +434,8 @@ class Entry (object):
         @rtype: bool
         """
         for line in self.rulelines:
-            debug("%s %s %s" % (filename, str(line), line.allowance))
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+               "%s %s %s", filename, str(line), line.allowance)
             if line.applies_to(filename):
                 return line.allowance
         return True
@@ -463,7 +465,8 @@ def decode (page):
     """
     Gunzip or deflate a compressed page.
     """
-    debug("robots.txt page info %s" % str(page.info()))
+    linkcheck.log.debug(linkcheck.LOG_CHECK,
+      "robots.txt page info %d %s", page.code, str(page.info()))
     encoding = page.info().get("Content-Encoding")
     if encoding in ('gzip', 'x-gzip', 'deflate'):
         # cannot seek in socket descriptors, so must get content now
@@ -474,8 +477,9 @@ def decode (page):
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
         except zlib.error, msg:
-            warn("uncompressing had error "\
-                 "%s, assuming non-compressed content" % str(msg))
+            linkcheck.log.debug(linkcheck.LOG_CHECK,
+                 "uncompressing had error "
+                 "%s, assuming non-compressed content", str(msg))
             fp = StringIO.StringIO(content)
         # remove content-encoding header
         headers = httplib.HTTPMessage(StringIO.StringIO(""))
