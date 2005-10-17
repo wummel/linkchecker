@@ -1,3 +1,9 @@
+3.4 "" (released xx.xx.xxxx)
+
+  * Ignore decoding errors when retrieving the robots.txt URL.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
 3.3 "Four Brothers" (released 14.10.2005)
 
   * Fix parsing of ignore and nofollow in configuration files.
