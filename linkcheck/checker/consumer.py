@@ -71,6 +71,13 @@ def print_duration (duration):
 class Consumer (object):
     """
     Consume URLs from the URL queue in a thread-safe manner.
+    All public methods are synchronized, with the exception of
+    abort() which calls locking methods itself, and check_url()
+    which just spawns another checker thread.
+
+    Additionally all public methods of the Cache() object
+    are included as synchronized proxy functions via __getattr__().
+    The synchronization uses a global variable _lock defined above.
     """
 
     def __init__ (self, config, cache):
