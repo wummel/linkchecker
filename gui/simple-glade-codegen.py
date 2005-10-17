@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python2.4
 # -*- coding: iso-8859-1 -*-
 # Copyright (C) 2004 Sandino Flores Moreno
 
