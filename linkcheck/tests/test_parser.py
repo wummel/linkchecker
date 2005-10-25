@@ -23,6 +23,7 @@ import linkcheck.HtmlParser.htmlsax
 import linkcheck.HtmlParser.htmllib
 import cStringIO as StringIO
 import unittest
+from linkcheck.tests import MsgTestCase
 
 
 # list of tuples (<test pattern>, <expected parse output>)
@@ -138,7 +139,7 @@ flushtests = [
 ]
 
 
-class TestParser (unittest.TestCase):
+class TestParser (MsgTestCase):
     """
     Test html parser.
     """
