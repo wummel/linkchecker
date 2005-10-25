@@ -182,7 +182,6 @@ window.onload = function() {
         link = html4css1.HTMLTranslator.stylesheet_link
         return link % p
 
-
     def get_favicon (self):
         p = self.settings.stylesheet_path.split("/")[:-1]
         p.append("favicon.png")
