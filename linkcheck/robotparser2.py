@@ -28,7 +28,6 @@ import urllib2
 import time
 import socket
 import re
-import sys
 import zlib
 import gzip
 import cStringIO as StringIO
