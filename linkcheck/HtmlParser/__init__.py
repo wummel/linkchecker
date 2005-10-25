@@ -209,8 +209,8 @@ def set_encoding (parsobj, attrs):
     @type attrs: dict
     @return: None
     """
-    if attrs.get('http-equiv', u'').lower() == u"content-type":
-        content = attrs.get('content', u'')
+    if attrs.get_true('http-equiv', u'').lower() == u"content-type":
+        content = attrs.get_true('content', u'')
         mo = _encoding_ro.search(content)
         if mo:
             encoding = mo.group("encoding").encode("ascii")
