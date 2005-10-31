@@ -509,8 +509,9 @@ def from_text(text, origin = root):
         raise ValueError, "origin must be a Name or None"
     labels = []
     label = ''
-    edigits = 0
     escaping = False
+    edigits = 0
+    total = 0
     if text == '@':
         text = ''
     if text:

@@ -303,6 +303,16 @@ class TestZone (unittest.TestCase):
         self.assertEqual(ns, [linkcheck.dns.name.from_text('ns1', None),
                                linkcheck.dns.name.from_text('ns2', None)])
 
+    def testIterateAllRdatasets(self):
+        z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
+        ns = [n for n, r in z.iterate_rdatasets()]
+        ns.sort()
+        self.failUnless(ns == [linkcheck.dns.name.from_text('@', None),
+                               linkcheck.dns.name.from_text('@', None),
+                               linkcheck.dns.name.from_text('bar.foo', None),
+                               linkcheck.dns.name.from_text('ns1', None),
+                               linkcheck.dns.name.from_text('ns2', None)])
+
     def testIterateRdatas(self):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
         l = list(z.iterate_rdatas('A'))
@@ -315,6 +325,40 @@ class TestZone (unittest.TestCase):
                 3600,
                 linkcheck.dns.rdata.from_text(linkcheck.dns.rdataclass.IN, linkcheck.dns.rdatatype.A,
                                     '10.0.0.2'))]
+        self.assertEqual(l, exl)
+
+    def testIterateAllRdatas(self):
+        z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
+        l = list(z.iterate_rdatas())
+        l.sort()
+        exl = [(linkcheck.dns.name.from_text('@', None),
+                3600,
+                linkcheck.dns.rdata.from_text(linkcheck.dns.rdataclass.IN,
+                                       linkcheck.dns.rdatatype.NS, 'ns1')),
+               (linkcheck.dns.name.from_text('@', None),
+                3600,
+                linkcheck.dns.rdata.from_text(linkcheck.dns.rdataclass.IN,
+                                       linkcheck.dns.rdatatype.NS, 'ns2')),
+               (linkcheck.dns.name.from_text('@', None),
+                3600,
+                linkcheck.dns.rdata.from_text(linkcheck.dns.rdataclass.IN,
+                                       linkcheck.dns.rdatatype.SOA,
+                                       'foo bar 1 2 3 4 5')),
+               (linkcheck.dns.name.from_text('bar.foo', None),
+                300,
+                linkcheck.dns.rdata.from_text(linkcheck.dns.rdataclass.IN,
+                                       linkcheck.dns.rdatatype.MX,
+                                       '0 blaz.foo')),
+               (linkcheck.dns.name.from_text('ns1', None),
+                3600,
+                linkcheck.dns.rdata.from_text(linkcheck.dns.rdataclass.IN,
+                                       linkcheck.dns.rdatatype.A,
+                                       '10.0.0.1')),
+               (linkcheck.dns.name.from_text('ns2', None),
+                3600,
+                linkcheck.dns.rdata.from_text(linkcheck.dns.rdataclass.IN,
+                                       linkcheck.dns.rdatatype.A,
+                                       '10.0.0.2'))]
         self.assertEqual(l, exl)
 
     def testTTLs(self):

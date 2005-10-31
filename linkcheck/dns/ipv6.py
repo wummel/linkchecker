@@ -49,9 +49,9 @@ def inet_ntoa(address):
     #
     # Compress the longest subsequence of 0-value chunks to ::
     #
-    start = 0
     best_start = 0
     best_len = 0
+    start = -1
     last_was_zero = False
     for i in xrange(8):
         if chunks[i] != '0':

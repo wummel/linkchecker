@@ -91,7 +91,7 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
-    @type port: int
+    @type source_port: int
     """
     wire = q.to_wire()
     if af is None:
@@ -184,7 +184,7 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
-    @type port: int"""
+    @type source_port: int"""
 
     wire = q.to_wire()
     if af is None:
@@ -250,7 +250,8 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
     @param keyname: The name of the TSIG key to use
     @type keyname: linkcheck.dns.name.Name object or string
     @param relativize: If True, all names in the zone will be relativized to
-    the zone origin.
+    the zone origin. It is essential that the relativize setting matches
+    the one specified to dns.zone.from_xfr().
     @type relativize: bool
     @param af: the address family to use.  The default is None, which
     causes the address family to use to be inferred from the form of of where.
@@ -265,7 +266,7 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
-    @type port: int"""
+    @type source_port: int"""
 
     if isinstance(zone, str):
         zone = linkcheck.dns.name.from_text(zone)

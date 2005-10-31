@@ -56,6 +56,17 @@ class NoNameservers(linkcheck.dns.exception.DNSException):
     """No non-broken nameservers are available to answer the query."""
     pass
 
+class NotAbsolute(linkcheck.dns.exception.DNSException):
+    """Raised if an absolute domain name is required but a relative name
+    was provided."""
+    pass
+
+class NoRootSOA(linkcheck.dns.exception.DNSException):
+    """Raised if for some reason there is no SOA at the root name.
+    This should never happen!"""
+    pass
+
+
 class Answer(object):
     """DNS stub resolver answer
 
