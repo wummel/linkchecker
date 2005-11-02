@@ -16,80 +16,146 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 Fast HTML parser module written in C with the following features:
- 1. Reentrant
-    As soon as any HTML string data is available, we try to feed it
-    to the HTML parser. This means that the parser has to scan possible
-    incomplete data, recognizing as much as it can. Incomplete trailing
-    data is saved for subsequent callsm, or it is just flushed into the
-    output buffer with the flush() function.
-    A reset() brings the parser back to its initial state, throwing away all
-    buffered data.
 
- 2. Coping with HTML syntax errors
-    The parser recognizes as much as it can and passes the rest
-    of the data as TEXT tokens.
-    The scanner only passes complete recognized HTML syntax elements to
-    the parser. Invalid syntax elements are passed as TEXT. This way we do
-    not need the bison error recovery.
-    Incomplete data is rescanned the next time the parser calls yylex() or
-    when it is being flush()ed.
+- Reentrant
+  As soon as any HTML string data is available, we try to feed it
+  to the HTML parser. This means that the parser has to scan possible
+  incomplete data, recognizing as much as it can. Incomplete trailing
+  data is saved for subsequent calls, or it is just flushed into the
+  output buffer with the flush() function.
+  A reset() brings the parser back to its initial state, throwing away all
+  buffered data.
 
-    The following syntax errors will be recognized correctly:
-     1. missing quotes around attribute values
-     2. "</...>" end tags in script modus
-     3. missing ">" in tags
-     4. invalid tag names
-     5. invalid characters inside tags or tag attributes
+- Coping with HTML syntax errors
+  The parser recognizes as much as it can and passes the rest
+  of the data as TEXT tokens.
+  The scanner only passes complete recognized HTML syntax elements to
+  the parser. Invalid syntax elements are passed as TEXT. This way we do
+  not need the bison error recovery.
+  Incomplete data is rescanned the next time the parser calls yylex() or
+  when it is being flush()ed.
 
-    Additionally the parser has the following features:
-     1. NULL bytes are changed into spaces
-     2. <!-- ... --> inside a <script> or <style> are not treated as
-        comments but as DATA
-     3. Rewrites all tag and attribute names to lowercase for easier
-        matching.
+  The following syntax errors will be recognized correctly:
 
- 3. Speed
-    The FLEX code has options to generate a large but fast scanner.
-    The parser ignores forbidden or unnecessary HTML end tags.
-    The parser converts tag and attribute names to lower case for easier
-    matching.
-    The parser quotes all attribute values.
-    Python memory management interface is used.
+    - Unquoted attribute values.
+    - Missing beginning quote of attribute values.
+    - Invalid "</...>" end tags in script modus.
+    - Missing ">" in tags.
+    - Invalid characters in tag or attribute names.
 
- 4. Character encoding aware
-    The parser itself is not encoding aware, but all the output are
-    always Python Unicode strings.
+ The following syntax errors will not be recognized:
 
- 5. Retain HTML attribute order
-    The parser keeps the order in which HTML tag attributes are parsed.
+    - Missing end quote of attribute values. On the TODO list.
+    - Unknown HTML tag or attribute names.
+    - Invalid nesting of tags.
+
+  Additionally the parser has the following features:
+
+    - NULL bytes are changed into spaces
+    - <!-- ... --> inside a <script> or <style> are not treated as
+       comments but as DATA
+    - Rewrites all tag and attribute names to lowercase for easier
+       matching.
+
+- Speed
+  The FLEX code is configured to generate a large but fast scanner.
+  The parser ignores forbidden or unnecessary HTML end tags.
+  The parser converts tag and attribute names to lower case for easier
+  matching.
+  The parser quotes all attribute values.
+  Python memory management interface is used.
+
+- Character encoding aware
+  The parser itself is not encoding aware, but output strings are
+  always Python Unicode strings.
+
+- Retain HTML attribute order
+  The parser keeps the order in which HTML tag attributes are parsed.
+  The attributes are stored in a custom dictionary class ListDict which
+  iterates over the dictionary keys in insertion order.
 
 USAGE
-First make a HTML SAX handler object. Used callbacks (they don't have to
-be defined) of a handler are:
-  comment(data): <!--data-->
-  start_element(tag, attrs): <tag {attr1:value1, attr2:value2, ..}>
-  start_end_element(tag, attrs): <tag {attr1:value1, attr2:value2, ..}>
-  end_element(tag): </tag>
-  doctype(data): <!DOCTYPE data?>
-  pi(name, data=None): <?name data?>
-  cdata(data): <![CDATA[data]]>
-  characters(data): data
+
+First make a HTML SAX handler object. Missing callback functions are
+ignored. The object returned from callbacks is also ignored.
+Note that a missing attribute value is stored as the value None
+in the ListDict (ie. "<a href>" with lead to a {href: None} dict entry).
+
+Used callbacks of a handler are:
+
+- Comments: <!--data-->
+  def comment (data)
+  @param data:
+  @type data: Unicode string
+
+- Start tag: <tag {attr1:value1, attr2:value2, ..}>
+  def start_element (tag, attrs)
+  @param tag: tag name
+  @type tag: Unicode string
+  @param attrs: tag attributes
+  @type attrs: ListDict
+
+- Start-end tag: <tag {attr1:value1, attr2:value2, ..}/>
+  def start_end_element(tag, attrs):
+  @param tag: tag name
+  @type tag: Unicode string
+  @param attrs: tag attributes
+  @type attrs: ListDict
+
+- End tag: </tag>
+  def end_element (tag)
+  @param tag: tag name
+  @type tag: Unicode string
+
+- Document type: <!DOCTYPE data>
+  def doctype (data)
+  @param data: doctype string data
+  @type data: Unicode string
+
+- Processing instruction (PI): <?name data?>
+  def pi (name, data=None)
+  @param name: instruction name
+  @type name: Unicode string
+  @param data: instruction data
+  @type data: Unicode string
+
+- Character data: <![CDATA[data]]>
+  def cdata (data)
+  @param data: character data
+  @type data: Unicode string
+
+- Characters: data
+  def characters(data): data
+  @param data: data
+  @type data: Unicode string
 
 Additionally, there are error and warning callbacks:
-  warning(msg)
-  error(msg)
-  fatal_error(msg)
 
-Then create a new HTML parser object with the handler as parameter.
+- Parser warning.
+  def warning (msg)
+  @param msg: warning message
+  @type msg: Unicode string
+
+- Parser error.
+  def error (msg)
+  @param msg: error message
+  @type msg: Unicode string
+
+- Fatal parser error
+  def fatal_error (msg)
+  @param msg: error message
+  @type msg: Unicode string
 
 EXAMPLE
-  # prints out the parsed HTML
-  handler = HtmlParser.htmllib.HtmlPrettyPrinter()
-  parser = HtmlParser.htmlsax.parser(handler)
-  parser.feed("<html><body>Blubb</body></html>")
-  parser.flush()
 
-*/
+ # This handler prints out the parsed HTML.
+ handler = HtmlParser.htmllib.HtmlPrettyPrinter()
+ # Create a new HTML parser object with the handler as parameter.
+ parser = HtmlParser.htmlsax.parser(handler)
+ # Feed data.
+ parser.feed("<html><body>Blubb</body></html>")
+ # Flush for finishing things up.
+ parser.flush()
 
 """
 

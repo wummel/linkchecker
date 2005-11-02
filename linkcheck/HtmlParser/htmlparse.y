@@ -15,7 +15,9 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-/* Python module definition of a SAX html parser */
+/* A SAX HTML parser. Includes Python module definition to make it
+   usable for Python programs.
+*/
 #include "htmlsax.h"      /* SAX interface (includes Python.h) */
 #include "structmember.h" /* Python include for object definition */
 #include <string.h>

@@ -14,7 +14,8 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-/* Find recognizable tokens in (probably bad formatted) HTML streams.
+/* HTML lexical anaylizer. Finds recognizable tokens in (probably
+   bad formatted) HTML streams.
    Unrecognizable character data is passed on as a TEXT token.
 */
 
