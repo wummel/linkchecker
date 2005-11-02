@@ -13,36 +13,22 @@
  You should have received a copy of the GNU General Public License
  along with this program; if not, write to the Free Software
  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+ */
+/*
+ Includes header definitions for the HTML Sax parser Python module.
+ */
 #ifndef HTMLSAX_H
 #define HTMLSAX_H
 
 #include "Python.h"
 
-/* require Python >= 2.3 */
+/* require Python >= 2.4 */
 #ifndef PY_VERSION_HEX
-#error please install Python >= 2.3
+#error please install Python >= 2.4
 #endif
 
-#if PY_VERSION_HEX < 0x02030000
-#error please install Python >= 2.3
-#endif
-
-/* Py_RETURN_NONE is in Python 2.4 */
-#ifndef Py_RETURN_NONE
-#define Py_RETURN_NONE do {Py_INCREF(Py_None); return Py_None;} while (0)
-#endif
-
-/* Py_CLEAR is in Python 2.4 */
-#ifndef Py_CLEAR
-#define Py_CLEAR(op)                            \
-        do {                                    \
-                if (op) {                       \
-                        PyObject *tmp = (PyObject *)(op);       \
-                        (op) = NULL;            \
-                        Py_DECREF(tmp);         \
-                }                               \
-        } while (0)
+#if PY_VERSION_HEX < 0x02040000
+#error please install Python >= 2.4
 #endif
 
 /* user_data type for SAX calls */
