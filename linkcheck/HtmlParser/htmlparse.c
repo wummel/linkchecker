@@ -102,7 +102,9 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-/* Python module definition of a SAX html parser */
+/* A SAX HTML parser. Includes Python module definition to make it
+   usable for Python programs.
+*/
 #include "htmlsax.h"      /* SAX interface (includes Python.h) */
 #include "structmember.h" /* Python include for object definition */
 #include <string.h>
@@ -163,14 +165,21 @@ static PyObject* u_meta;
         goto label; \
     }
 
-/* check the parser error flag and if set goto given label */
+/* check the parser error list and call error callback */
 #define CHECK_PARSER_ERROR(ud, label) \
-    if (ud->error && PyObject_HasAttrString(ud->handler, "error") == 1) { \
-	callback = PyObject_GetAttrString(ud->handler, "error"); \
-	CHECK_ERROR((!callback), label); \
-	result = PyObject_CallFunction(callback, "O", ud->error); \
-	CHECK_ERROR((!result), label); \
-    }
+    if (PyObject_HasAttrString(ud->handler, "error") == 1) { \
+        callback = PyObject_GetAttrString(ud->handler, "error"); \
+        CHECK_ERROR((!callback), label); \
+        for (int i=0; i < PyList_Size(ud->errors); i++) { \
+            PyObject* msg = PyList_GetItem(ud->errors, i); \
+            CHECK_ERROR((!msg), label); \
+            result = PyObject_CallFunction(callback, "O", msg); \
+            CHECK_ERROR((!result), label); \
+        } \
+    } \
+    Py_DECREF(ud->errors); \
+    ud->errors = PyList_New(0); \
+    CHECK_ERROR((!ud->errors), label)
 
 /* generic Python callback macro */
 #define CALLBACK(ud, attr, format, arg, label) \
@@ -275,7 +284,7 @@ typedef int YYSTYPE;
 
 
 /* Line 213 of yacc.c.  */
-#line 279 "htmlparse.c"
+#line 288 "htmlparse.c"
 
 #if ! defined (yyoverflow) || YYERROR_VERBOSE
 
@@ -448,8 +457,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short int yyrline[] =
 {
-       0,   189,   189,   192,   197,   201,   208,   252,   303,   342,
-     364,   385,   407,   433,   460,   487
+       0,   198,   198,   201,   206,   210,   217,   259,   308,   345,
+     365,   384,   404,   428,   453,   478
 };
 #endif
 
@@ -1184,21 +1193,21 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 189 "htmlparse.y"
+#line 198 "htmlparse.y"
     {
     /* parse a single element */
 ;}
     break;
 
   case 3:
-#line 192 "htmlparse.y"
+#line 201 "htmlparse.y"
     {
     /* parse a list of elements */
 ;}
     break;
 
   case 4:
-#line 197 "htmlparse.y"
+#line 206 "htmlparse.y"
     {
     /* wait for more lexer input */
     YYACCEPT;
@@ -1206,7 +1215,7 @@ yyreduce:
     break;
 
   case 5:
-#line 202 "htmlparse.y"
+#line 211 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1216,7 +1225,7 @@ yyreduce:
     break;
 
   case 6:
-#line 209 "htmlparse.y"
+#line 218 "htmlparse.y"
     {
     /* parsed HTML start tag (eg. <a href="blubb">)
        $1 is a PyTuple (<tag>, <attrs>)
@@ -1247,8 +1256,6 @@ yyreduce:
     }
     CHECK_PARSER_ERROR(ud, finish_start);
 finish_start:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_XDECREF(tag);
@@ -1263,7 +1270,7 @@ finish_start:
     break;
 
   case 7:
-#line 253 "htmlparse.y"
+#line 260 "htmlparse.y"
     {
     /* parsed HTML start-end tag (eg. <br/>)
        $1 is a PyTuple (<tag>, <attrs>)
@@ -1301,8 +1308,6 @@ finish_start:
     }
     CHECK_PARSER_ERROR(ud, finish_start_end);
 finish_start_end:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_XDECREF(tag);
@@ -1317,7 +1322,7 @@ finish_start_end:
     break;
 
   case 8:
-#line 304 "htmlparse.y"
+#line 309 "htmlparse.y"
     {
     /* parsed HTML end tag (eg. </b>)
        $1 is a PyUnicode with the tag name */
@@ -1344,8 +1349,6 @@ finish_start_end:
     }
     CHECK_PARSER_ERROR(ud, finish_end);
 finish_end:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(tagname);
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -1359,7 +1362,7 @@ finish_end:
     break;
 
   case 9:
-#line 343 "htmlparse.y"
+#line 346 "htmlparse.y"
     {
     /* parsed HTML comment (eg. <!-- bla -->)
        $1 is a PyUnicode with the comment content */
@@ -1370,8 +1373,6 @@ finish_end:
     CALLBACK(ud, "comment", "O", (yyvsp[0]), finish_comment);
     CHECK_PARSER_ERROR(ud, finish_comment);
 finish_comment:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_DECREF((yyvsp[0]));
@@ -1384,7 +1385,7 @@ finish_comment:
     break;
 
   case 10:
-#line 365 "htmlparse.y"
+#line 366 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1394,8 +1395,6 @@ finish_comment:
     CALLBACK(ud, "pi", "O", (yyvsp[0]), finish_pi);
     CHECK_PARSER_ERROR(ud, finish_pi);
 finish_pi:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_DECREF((yyvsp[0]));
@@ -1408,7 +1407,7 @@ finish_pi:
     break;
 
   case 11:
-#line 386 "htmlparse.y"
+#line 385 "htmlparse.y"
     {
     /* parsed HTML CDATA (eg. <![CDATA[spam and eggs ...]]>)
        $1 is a PyUnicode with the CDATA content */
@@ -1419,8 +1418,6 @@ finish_pi:
     CALLBACK(ud, "cdata", "O", (yyvsp[0]), finish_cdata);
     CHECK_PARSER_ERROR(ud, finish_cdata);
 finish_cdata:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_DECREF((yyvsp[0]));
@@ -1433,7 +1430,7 @@ finish_cdata:
     break;
 
   case 12:
-#line 408 "htmlparse.y"
+#line 405 "htmlparse.y"
     {
     /* parsed HTML doctype (eg. <!DOCTYPE imadoofus system>)
        $1 is a PyUnicode with the doctype content */
@@ -1448,8 +1445,6 @@ finish_cdata:
     CALLBACK(ud, "doctype", "O", (yyvsp[0]), finish_doctype);
     CHECK_PARSER_ERROR(ud, finish_doctype);
 finish_doctype:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_DECREF((yyvsp[0]));
@@ -1462,7 +1457,7 @@ finish_doctype:
     break;
 
   case 13:
-#line 434 "htmlparse.y"
+#line 429 "htmlparse.y"
     {
     /* parsed HTML script content (plus end tag which is omitted)
        $1 is a PyUnicode with the script content */
@@ -1477,8 +1472,6 @@ finish_doctype:
     CALLBACK(ud, "end_element", "O", script, finish_script);
     CHECK_PARSER_ERROR(ud, finish_script);
 finish_script:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(script);
     Py_XDECREF(result);
@@ -1492,7 +1485,7 @@ finish_script:
     break;
 
   case 14:
-#line 461 "htmlparse.y"
+#line 454 "htmlparse.y"
     {
     /* parsed HTML style content (plus end tag which is omitted)
        $1 is a PyUnicode with the style content */
@@ -1507,8 +1500,6 @@ finish_script:
     CALLBACK(ud, "end_element", "O", style, finish_style);
     CHECK_PARSER_ERROR(ud, finish_style);
 finish_style:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(style);
     Py_XDECREF(result);
@@ -1522,7 +1513,7 @@ finish_style:
     break;
 
   case 15:
-#line 488 "htmlparse.y"
+#line 479 "htmlparse.y"
     {
     /* parsed HTML text data
        $1 is a PyUnicode with the text */
@@ -1535,8 +1526,6 @@ finish_style:
     CALLBACK(ud, "characters", "O", (yyvsp[0]), finish_characters);
     CHECK_PARSER_ERROR(ud, finish_characters);
 finish_characters:
-    Py_XDECREF(ud->error);
-    ud->error = NULL;
     Py_XDECREF(callback);
     Py_XDECREF(result);
     Py_DECREF((yyvsp[0]));
@@ -1552,7 +1541,7 @@ finish_characters:
     }
 
 /* Line 1037 of yacc.c.  */
-#line 1556 "htmlparse.c"
+#line 1545 "htmlparse.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1780,7 +1769,7 @@ yyreturn:
 }
 
 
-#line 513 "htmlparse.y"
+#line 502 "htmlparse.y"
 
 
 /* create parser object */
@@ -1818,21 +1807,29 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
     self->userData->exc_type = NULL;
     self->userData->exc_val = NULL;
     self->userData->exc_tb = NULL;
-    self->userData->error = NULL;
+    self->userData->errors = PyList_New(0);
+    if (self->userData->errors == NULL) {
+        Py_DECREF(self->handler);
+        Py_DECREF(self);
+        return NULL;
+    }
     self->scanner = NULL;
     if (htmllexInit(&(self->scanner), self->userData)!=0) {
+        Py_DECREF(self->userData->errors);
         Py_DECREF(self->handler);
         Py_DECREF(self);
         return NULL;
     }
     self->encoding = PyString_FromString("iso8859-1");
     if (self->encoding == NULL) {
+        Py_DECREF(self->userData->errors);
         Py_DECREF(self->handler);
         Py_DECREF(self);
         return NULL;
     }
     self->doctype = PyString_FromString("HTML");
     if (self->doctype == NULL) {
+        Py_DECREF(self->userData->errors);
         Py_DECREF(self->encoding);
         Py_DECREF(self->handler);
         Py_DECREF(self);

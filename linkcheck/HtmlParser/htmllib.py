@@ -45,47 +45,15 @@ class HtmlPrinter (object):
         """
         print >> self.fd, self.mem, attrs
 
-    def _errorfun (self, msg, name):
-        """
-        Print message to stderr with name prefix.
-
-        @param msg: message to print
-        @type msg: string
-        @param name: print this before the message
-        @type name: string
-        @return: None
-        """
-        print >> sys.stderr, name, msg
-
     def error (self, msg):
         """
-        Report filter/parser error.
+        Print filter/parser error.
 
         @param msg: message to print
         @type msg: string
         @return: None
         """
-        self._errorfun(msg, "error:")
-
-    def warning (self, msg):
-        """
-        Report a filter/parser warning.
-
-        @param msg: message to print
-        @type msg: string
-        @return: None
-        """
-        self._errorfun(msg, "warning:")
-
-    def fatal_error (self, msg):
-        """
-        Report a fatal filter/parser error.
-
-        @param msg: message to print
-        @type msg: string
-        @return: None
-        """
-        self._errorfun(msg, "fatal error:")
+        print >> sys.stderr, "error", msg
 
     def __getattr__ (self, name):
         """
@@ -103,6 +71,7 @@ class HtmlPrinter (object):
 class HtmlPrettyPrinter (object):
     """
     Print out all parsed HTML data in encoded form.
+    Also stores error and warnings messages.
     """
 
     def __init__ (self, fd=sys.stdout, encoding="iso8859-1"):
@@ -116,6 +85,7 @@ class HtmlPrettyPrinter (object):
         """
         self.fd = fd
         self.encoding = encoding
+        self.errors = []
 
     def comment (self, data):
         """
@@ -229,6 +199,16 @@ class HtmlPrettyPrinter (object):
         """
         data = data.encode(self.encoding, "ignore")
         self.fd.write(data)
+
+    def error (self, msg):
+        """
+        Store error message.
+
+        @param msg: message to print
+        @type msg: string
+        @return: None
+        """
+        self.errors.append(msg)
 
 
 def quote_attrval (s):
