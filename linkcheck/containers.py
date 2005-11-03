@@ -136,7 +136,8 @@ class ListDict (dict):
     def get_true (self, key, default):
         """
         Return default element if key is not in the dict, or if self[key]
-        evaluates to False.
+        evaluates to False. Useful for example if value is None, but
+        default value should be an empty string.
         """
         if key not in self or not self[key]:
             return default
