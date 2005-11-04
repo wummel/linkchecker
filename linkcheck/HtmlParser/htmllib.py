@@ -45,16 +45,6 @@ class HtmlPrinter (object):
         """
         print >> self.fd, self.mem, attrs
 
-    def error (self, msg):
-        """
-        Print filter/parser error.
-
-        @param msg: message to print
-        @type msg: string
-        @return: None
-        """
-        print >> sys.stderr, "error", msg
-
     def __getattr__ (self, name):
         """
         Remember the called method name in self.mem.
@@ -85,7 +75,6 @@ class HtmlPrettyPrinter (object):
         """
         self.fd = fd
         self.encoding = encoding
-        self.errors = []
 
     def comment (self, data):
         """
@@ -199,16 +188,6 @@ class HtmlPrettyPrinter (object):
         """
         data = data.encode(self.encoding, "ignore")
         self.fd.write(data)
-
-    def error (self, msg):
-        """
-        Store error message.
-
-        @param msg: message to print
-        @type msg: string
-        @return: None
-        """
-        self.errors.append(msg)
 
 
 def quote_attrval (s):

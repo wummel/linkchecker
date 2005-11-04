@@ -74,8 +74,6 @@ typedef struct {
     PyObject* exc_type;
     PyObject* exc_val;
     PyObject* exc_tb;
-    /* list of errors */
-    PyObject* errors;
     /* the parser object itself */
     PyObject* parser;
 } UserData;

@@ -14,10 +14,15 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-/* HTML lexical anaylizer. Finds recognizable tokens in (probably
-   bad formatted) HTML streams.
-   Unrecognizable character data is passed on as a TEXT token.
-*/
+
+/* Lexical analyzer for finding recognizable tokens in (probably
+ * bad formatted) HTML streams.
+ * Unrecognizable character data is passed on as a TEXT token.
+ *
+ * Note that you cannot rely on the "longest match" preference of
+ * flex here since input data might be truncated at any given position.
+ * This explains some of the more complicated lookahead rules below.
+ */
 
 %{
 #include "htmlsax.h"
@@ -31,11 +36,14 @@
 /* type of user-specified data */
 #define YY_EXTRA_TYPE UserData*
 
-/* Return T_ERROR if argument is NULL. Returning T_ERROR is the standard
- * error-out reaction for this lexer.
- */
+/* Returning T_ERROR is the standard error-out reaction for this lexer. */
+/* Return T_ERROR if argument is NULL. */
 #define CHECK_NULL(a) \
     if ((a) == NULL) return T_ERROR
+
+/* Return T_ERROR if argument is -1 (minus one). */
+#define CHECK_MINUSONE(a) \
+    if ((a) == -1) return T_ERROR
 
 /* resize buffer b, returning T_ERROR on error */
 #define RESIZE_BUF(b, n) \
@@ -117,29 +125,22 @@
     if (strlen(yyextra->tmp_buf) > 0) { \
         PYSTRING_TMP_UNICODE(yyextra->tmp_attrname); \
 	RESIZE_BUF(yyextra->tmp_buf, 1); \
-        if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname, Py_None)==-1) return T_ERROR; \
+        CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname, Py_None)); \
         Py_CLEAR(yyextra->tmp_attrname); \
     }
 
-/* add error message to error list */
-#define ADD_ERROR(msg) \
-    if (PyList_Append(yyextra->errors, msg) != 0) { \
-        Py_DECREF(msg); \
-        return T_ERROR; \
-    }
-
 /* update the buffer and scanner positions */
-#define _UPDATE_BUFPOS yyextra->bufpos += yyleng; yyextra->pos += yyleng
+#define UPDATE_BUFPOS yyextra->bufpos += yyleng; yyextra->pos += yyleng
 
 /* update the column position; use this *only* in rules that cannot match
  the newline char '\n'!
  */
-#define UPDATE_COLUMN _UPDATE_BUFPOS; yyextra->column += yyleng
+#define UPDATE_COLUMN UPDATE_BUFPOS; yyextra->column += yyleng
 
 /* update the line and column position; use this in rules that can match the
  newline char '\n'.
  */
-#define UPDATE_LINE _UPDATE_BUFPOS; { \
+#define UPDATE_LINE UPDATE_BUFPOS; { \
     int i; \
     for (i=0; i<yyleng; ++i) { \
         if (yytext[i] == '\n') { \
@@ -234,17 +235,11 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <INITIAL><![ ]+-- {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromString("malformed comment begin `<! --'"));
-    ADD_ERROR(msg);
     UPDATE_COLUMN;
     BEGIN(S_COMMENT);
 }
 
 <INITIAL><!-/[ ] {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromString("malformed comment begin `<!- '"));
-    ADD_ERROR(msg);
     UPDATE_COLUMN;
     BEGIN(S_COMMENT);
 }
@@ -257,9 +252,6 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_COMMENT>--[ ]+> {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromString("malformed comment end `-- >'"));
-    ADD_ERROR(msg);
     UPDATE_COLUMN;
     SETLVAL_UNICODE;
     BEGIN(INITIAL);
@@ -267,9 +259,6 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_COMMENT>-> {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromString("malformed comment end `->'"));
-    ADD_ERROR(msg);
     UPDATE_COLUMN;
     SETLVAL_UNICODE;
     BEGIN(INITIAL);
@@ -306,7 +295,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
    /* Note: www.nba.com had some <! Copyright !> comment */
-<INITIAL><![ ]+ {
+<INITIAL><![ ]+/[^-] {
     UPDATE_COLUMN;
     BEGIN(S_COMMENT2);
 }
@@ -738,12 +727,18 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_ATTR2>\\\n {
+<S_ATTR2>\\\r?\n {
     /* Line continuations */
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromString("invalid line continuation `\\\\n'"));
-    ADD_ERROR(msg);
     UPDATE_LINE;
+}
+
+<S_ATTR2>\\\r?[^\n] {
+    UPDATE_COLUMN;
+    APPEND_TO_TMP(yyleng);
+}
+
+<S_ATTR2>\\\r? {
+    return T_WAIT;
 }
 
 <S_ATTR2>{RX_WHITE_SPACE}+ {
@@ -765,8 +760,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     PYSTRING_TMP_UNICODE(yyextra->tmp_attrname);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     if (yyextra->tmp_attrval != NULL) return T_ERROR;
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-                         Py_None) == -1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname, Py_None));
     Py_CLEAR(yyextra->tmp_attrname);
     APPEND_TO_TMP(yyleng);
     BEGIN(S_ATTR2);
@@ -805,8 +799,8 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RESIZE_BUF(yyextra->tmp_buf, 1);
     CHECK_NULL(yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval));
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
+                                    yyextra->tmp_attrval));
     Py_CLEAR(yyextra->tmp_attrname);
     Py_CLEAR(yyextra->tmp_attrval);
     SCRIPT_CHECK;
@@ -829,8 +823,8 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RESIZE_BUF(yyextra->tmp_buf, 1);
     CHECK_NULL(yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval));
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
+                                    yyextra->tmp_attrval));
     Py_CLEAR(yyextra->tmp_attrname);
     Py_CLEAR(yyextra->tmp_attrval);
     SCRIPT_CHECK;
@@ -844,8 +838,8 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RESIZE_BUF(yyextra->tmp_buf, 1);
     CHECK_NULL(yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval));
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
+                                    yyextra->tmp_attrval));
     Py_CLEAR(yyextra->tmp_attrname);
     Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(INITIAL);
@@ -854,16 +848,13 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_ATTR5>[\"] {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromString("missing beginning quote in attribute"));
-    ADD_ERROR(msg);
     UPDATE_COLUMN;
     PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     CHECK_NULL(yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval));
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
+                                    yyextra->tmp_attrval));
     Py_CLEAR(yyextra->tmp_attrname);
     Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(S_ATTR1);
@@ -875,17 +866,21 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RESIZE_BUF(yyextra->tmp_buf, 1);
     CHECK_NULL(yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval));
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
+                                    yyextra->tmp_attrval));
     Py_CLEAR(yyextra->tmp_attrname);
     Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(S_ATTR1);
 }
 
-<S_APOSSTRING>\\ {
+<S_APOSSTRING>\\/\r?[^\n] {
     UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_APOSSTRING_ESC);
+}
+
+<S_APOSSTRING>\\ {
+    return T_WAIT;
 }
 
 <S_APOSSTRING>\' {
@@ -894,14 +889,14 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RESIZE_BUF(yyextra->tmp_buf, 1);
     CHECK_NULL(yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval));
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
+                                    yyextra->tmp_attrval));
     Py_CLEAR(yyextra->tmp_attrname);
     Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(S_ATTR1);
 }
 
-<S_APOSSTRING>[^']+ {
+<S_APOSSTRING>[^\\']+ {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -913,26 +908,34 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_APOSSTRING);
 }
 
-<S_STRING>\\ {
-    UPDATE_COLUMN;
-    APPEND_TO_TMP(yyleng);
-    BEGIN(S_STRING_ESC);
-}
-
 <S_STRING>\" {
     UPDATE_COLUMN;
     PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
     CHECK_NULL(yyextra->tmp_attrval = PyObject_CallFunction(yyextra->resolve_entities,
                                                  "O", yyextra->tmp_attrval));
-    if (PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
-		         yyextra->tmp_attrval)==-1) return T_ERROR;
+    CHECK_MINUSONE(PyObject_SetItem(yyextra->tmp_attrs, yyextra->tmp_attrname,
+                                    yyextra->tmp_attrval));
     Py_CLEAR(yyextra->tmp_attrname);
     Py_CLEAR(yyextra->tmp_attrval);
     BEGIN(S_ATTR1);
 }
 
-<S_STRING>[^"]+ {
+<S_STRING>\\/\r?[^\n] {
+    UPDATE_COLUMN;
+    APPEND_TO_TMP(yyleng);
+    BEGIN(S_STRING_ESC);
+}
+
+<S_STRING,S_APOSSTRING>\\\r?\n {
+    UPDATE_LINE;
+}
+
+<S_STRING>\\ {
+    return T_WAIT;
+}
+
+<S_STRING>[^\\"]+ {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -964,9 +967,6 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_TAGEND><{RX_WHITE_SPACE}*\/{RX_WHITE_SPACE}*/[A-Za-z] {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf));
-    ADD_ERROR(msg);
     UPDATE_LINE;
     LOWER_TMP;
     SETLVAL_ASCII;
@@ -975,9 +975,6 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_TAGEND><{RX_WHITE_SPACE}*/[A-Za-z] {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf));
-    ADD_ERROR(msg);
     UPDATE_LINE;
     LOWER_TMP;
     SETLVAL_ASCII;
@@ -990,6 +987,10 @@ RX_DATA  [-a-zA-Z0-9_:]+
     UPDATE_LINE;
     /* ignore any trailing garbage of this end tag */
     BEGIN(S_TAGEND2);
+}
+
+<S_TAGEND>. {
+    return T_WAIT;
 }
 
 <S_TAGEND2>> {
@@ -1005,9 +1006,6 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_TAGEND2><{RX_WHITE_SPACE}*\/{RX_WHITE_SPACE}*/[A-Za-z] {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf));
-    ADD_ERROR(msg);
     UPDATE_LINE;
     LOWER_TMP;
     SETLVAL_ASCII;
@@ -1016,9 +1014,6 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_TAGEND2><{RX_WHITE_SPACE}*/[A-Za-z] {
-    PyObject* msg;
-    CHECK_NULL(msg = PyString_FromFormat("missing > in end tag `%s'", yyextra->tmp_buf));
-    ADD_ERROR(msg);
     UPDATE_LINE;
     LOWER_TMP;
     SETLVAL_ASCII;
@@ -1076,7 +1071,7 @@ int htmllexDebug (void** scanner, int debug) {
 int htmllexStart (void* scanner, UserData* data, const char* s, int slen) {
     /* append s to data buffer and scan those bytes.
      As Flex does not distinguish between NUL and EOF characters,
-     we must replace NUL with ' '. */
+     replace NUL with ' '. */
     int len = strlen(data->buf);
     int i;
     RESIZE_BUF(data->buf, len + slen + 1);
@@ -1117,6 +1112,7 @@ int htmllexStop (void* scanner, UserData* data) {
             data->buf[j] = data->buf[i];
 	}
 	data->buf[j] = '\0';
+        /* Can return T_ERROR, which is guaranteed to be non-zero. */
 	RESIZE_BUF(data->buf, len-data->nextpos + 1);
         data->bufpos -= data->nextpos;
 	data->nextpos = 0;

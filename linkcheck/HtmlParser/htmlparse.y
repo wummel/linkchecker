@@ -78,22 +78,6 @@ static PyObject* u_meta;
         goto label; \
     }
 
-/* check the parser error list and call error callback */
-#define CHECK_PARSER_ERROR(ud, label) \
-    if (PyObject_HasAttrString(ud->handler, "error") == 1) { \
-        callback = PyObject_GetAttrString(ud->handler, "error"); \
-        CHECK_ERROR((!callback), label); \
-        for (int i=0; i < PyList_Size(ud->errors); i++) { \
-            PyObject* msg = PyList_GetItem(ud->errors, i); \
-            CHECK_ERROR((!msg), label); \
-            result = PyObject_CallFunction(callback, "O", msg); \
-            CHECK_ERROR((!result), label); \
-        } \
-    } \
-    Py_DECREF(ud->errors); \
-    ud->errors = PyList_New(0); \
-    CHECK_ERROR((!ud->errors), label)
-
 /* generic Python callback macro */
 #define CALLBACK(ud, attr, format, arg, label) \
     if (PyObject_HasAttrString(ud->handler, attr) == 1) { \
@@ -243,7 +227,6 @@ element: T_WAIT {
 	Py_CLEAR(callback);
         Py_CLEAR(result);
     }
-    CHECK_PARSER_ERROR(ud, finish_start);
 finish_start:
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -292,7 +275,6 @@ finish_start:
 	Py_CLEAR(callback);
         Py_CLEAR(result);
     }
-    CHECK_PARSER_ERROR(ud, finish_start_end);
 finish_start_end:
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -330,7 +312,6 @@ finish_start_end:
 	Py_CLEAR(callback);
 	Py_CLEAR(result);
     }
-    CHECK_PARSER_ERROR(ud, finish_end);
 finish_end:
     Py_XDECREF(tagname);
     Py_XDECREF(callback);
@@ -351,7 +332,6 @@ finish_end:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "comment", "O", $1, finish_comment);
-    CHECK_PARSER_ERROR(ud, finish_comment);
 finish_comment:
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -370,7 +350,6 @@ finish_comment:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "pi", "O", $1, finish_pi);
-    CHECK_PARSER_ERROR(ud, finish_pi);
 finish_pi:
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -390,7 +369,6 @@ finish_pi:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "cdata", "O", $1, finish_cdata);
-    CHECK_PARSER_ERROR(ud, finish_cdata);
 finish_cdata:
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -414,7 +392,6 @@ finish_cdata:
     CHECK_ERROR((result == NULL), finish_doctype);
     Py_CLEAR(result);
     CALLBACK(ud, "doctype", "O", $1, finish_doctype);
-    CHECK_PARSER_ERROR(ud, finish_doctype);
 finish_doctype:
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -438,7 +415,6 @@ finish_doctype:
     CALLBACK(ud, "characters", "O", $1, finish_script);
     /* emit the omitted end tag */
     CALLBACK(ud, "end_element", "O", script, finish_script);
-    CHECK_PARSER_ERROR(ud, finish_script);
 finish_script:
     Py_XDECREF(callback);
     Py_XDECREF(script);
@@ -463,7 +439,6 @@ finish_script:
     CALLBACK(ud, "characters", "O", $1, finish_style);
     /* emit the omitted end tag */
     CALLBACK(ud, "end_element", "O", style, finish_style);
-    CHECK_PARSER_ERROR(ud, finish_style);
 finish_style:
     Py_XDECREF(callback);
     Py_XDECREF(style);
@@ -486,7 +461,6 @@ finish_style:
     PyObject* result = NULL;
     int error = 0;
     CALLBACK(ud, "characters", "O", $1, finish_characters);
-    CHECK_PARSER_ERROR(ud, finish_characters);
 finish_characters:
     Py_XDECREF(callback);
     Py_XDECREF(result);
@@ -536,29 +510,20 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
     self->userData->exc_type = NULL;
     self->userData->exc_val = NULL;
     self->userData->exc_tb = NULL;
-    self->userData->errors = PyList_New(0);
-    if (self->userData->errors == NULL) {
-        Py_DECREF(self->handler);
-        Py_DECREF(self);
-        return NULL;
-    }
     self->scanner = NULL;
     if (htmllexInit(&(self->scanner), self->userData)!=0) {
-        Py_DECREF(self->userData->errors);
         Py_DECREF(self->handler);
         Py_DECREF(self);
         return NULL;
     }
     self->encoding = PyString_FromString("iso8859-1");
     if (self->encoding == NULL) {
-        Py_DECREF(self->userData->errors);
         Py_DECREF(self->handler);
         Py_DECREF(self);
         return NULL;
     }
     self->doctype = PyString_FromString("HTML");
     if (self->doctype == NULL) {
-        Py_DECREF(self->userData->errors);
         Py_DECREF(self->encoding);
         Py_DECREF(self->handler);
         Py_DECREF(self);
