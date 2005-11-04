@@ -27,129 +27,131 @@ from linkcheck.tests import MsgTestCase
 
 
 # list of tuples
-# (<test pattern>, <expected parse output>, <no. of expected errors>)
+# (<test pattern>, <expected parse output>)
 parsetests = [
     # start tags
-    ("""<a  b="c" >""", """<a b="c">""", 0),
-    ("""<a  b='c' >""", """<a b="c">""", 0),
-    ("""<a  b=c" >""", """<a b="c">""", 1),
-    ("""<a  b=c' >""", """<a b="c'">""", 0),
-    ("""<a  b="c >""", """<a  b="c >""", 0),
-    ("""<a  b="" >""", """<a b="">""", 0),
-    ("""<a  b='' >""", """<a b="">""", 0),
-    ("""<a  b=>""", """<a b="">""", 0),
-    ("""<a  b= >""", """<a b="">""", 0),
-    ("""<a  =c>""", """<a c>""", 0),
-    ("""<a  =c >""", """<a c>""", 0),
-    ("""<a  =>""", """<a>""", 0),
-    ("""<a  = >""", """<a>""", 0),
-    ("""<a  b= "c" >""", """<a b="c">""", 0),
-    ("""<a  b ="c" >""", """<a b="c">""", 0),
-    ("""<a  b = "c" >""", """<a b="c">""", 0),
-    ("""<a >""", """<a>""", 0),
-    ("""< a>""", """<a>""", 0),
-    ("""< a >""", """<a>""", 0),
-    ("""<>""", """<>""", 0),
-    ("""< >""", """< >""", 0),
-    ("""<aä>""", """<a>""", 0),
-    ("""<a aä="b">""", """<a a="b">""", 0),
-    ("""<a a="bä">""", """<a a="bä">""", 0),
+    ("""<a  b="c" >""", """<a b="c">"""),
+    ("""<a  b='c' >""", """<a b="c">"""),
+    ("""<a  b=c" >""", """<a b="c">"""),
+    ("""<a  b=c' >""", """<a b="c'">"""),
+    ("""<a  b="c >""", """<a  b="c >"""),
+    ("""<a  b="" >""", """<a b="">"""),
+    ("""<a  b='' >""", """<a b="">"""),
+    ("""<a  b=>""", """<a b="">"""),
+    ("""<a  b= >""", """<a b="">"""),
+    ("""<a  =c>""", """<a c>"""),
+    ("""<a  =c >""", """<a c>"""),
+    ("""<a  =>""", """<a>"""),
+    ("""<a  = >""", """<a>"""),
+    ("""<a  b= "c" >""", """<a b="c">"""),
+    ("""<a  b ="c" >""", """<a b="c">"""),
+    ("""<a  b = "c" >""", """<a b="c">"""),
+    ("""<a >""", """<a>"""),
+    ("""< a>""", """<a>"""),
+    ("""< a >""", """<a>"""),
+    ("""<>""", """<>"""),
+    ("""< >""", """< >"""),
+    ("""<aä>""", """<a>"""),
+    ("""<a aä="b">""", """<a a="b">"""),
+    ("""<a a="bä">""", """<a a="bä">"""),
     # reduce test
-    ("""<a  b="c"><""", """<a b="c"><""", 0),
-    ("""d>""", """d>""", 0),
+    ("""<a  b="c"><""", """<a b="c"><"""),
+    ("""d>""", """d>"""),
     # numbers in tag
-    ("""<h1>bla</h1>""", """<h1>bla</h1>""", 0),
+    ("""<h1>bla</h1>""", """<h1>bla</h1>"""),
     # more start tags
-    ("""<a  b=c"><a b="c">""", """<a b="c"><a b="c">""", 1),
-    ("""<a  b=/c/></a><br>""", """<a b="/c/"></a><br>""", 0),
-    ("""<br/>""", """<br>""", 0),
-    ("""<a  b="50%"><br>""", """<a b="50%"><br>""", 0),
+    ("""<a  b=c"><a b="c">""", """<a b="c"><a b="c">"""),
+    ("""<a  b=/c/></a><br>""", """<a b="/c/"></a><br>"""),
+    ("""<br/>""", """<br>"""),
+    ("""<a  b="50%"><br>""", """<a b="50%"><br>"""),
     # comments
-    ("""<!---->< 1>""", """<!----><1>""", 0),
-    ("""<!-- a - b -->< 2>""", """<!-- a - b --><2>""", 0),
-    ("""<!----->< 3>""", """<!-----><3>""", 0),
-    ("""<!------>< 4>""", """<!------><4>""", 0),
-    ("""<!------->< 5>""", """<!-------><5>""", 0),
-    ("""<!-- -->< 7>""", """<!-- --><7>""", 0),
-    ("""<!---- />-->""", """<!---- />-->""", 0),
-    ("""<!-- a-2 -->< 9>""", """<!-- a-2 --><9>""", 0),
-    ("""<!-- --- -->< 10>""", """<!-- --- --><10>""", 0),
+    ("""<!---->< 1>""", """<!----><1>"""),
+    ("""<!-- a - b -->< 2>""", """<!-- a - b --><2>"""),
+    ("""<!----->< 3>""", """<!-----><3>"""),
+    ("""<!------>< 4>""", """<!------><4>"""),
+    ("""<!------->< 5>""", """<!-------><5>"""),
+    ("""<!-- -->< 7>""", """<!-- --><7>"""),
+    ("""<!---- />-->""", """<!---- />-->"""),
+    ("""<!-- a-2 -->< 9>""", """<!-- a-2 --><9>"""),
+    ("""<!-- --- -->< 10>""", """<!-- --- --><10>"""),
     # invalid comments
-    ("""<!-- -- >< 8>""", """<!-- --><8>""", 1),
-    ("""<!---- >< 6>""", """<!----><6>""", 1),
-    ("""<!- blubb -->""", """<!-- blubb -->""", 1),
-    ("""<!-- blubb ->""", """<!-- blubb -->""", 1),
-    ("""<!- blubb ->""", """<!-- blubb -->""", 2),
-    ("""<! -- blubb -->""", """<!-- blubb -->""", 1),
-    ("""<!-- blubb -- >""", """<!-- blubb -->""", 1),
+    ("""<!-- -- >< 8>""", """<!-- --><8>"""),
+    ("""<!---- >< 6>""", """<!----><6>"""),
+    ("""<!- blubb -->""", """<!-- blubb -->"""),
+    ("""<!-- blubb ->""", """<!-- blubb -->"""),
+    ("""<!- blubb ->""", """<!-- blubb -->"""),
+    ("""<! -- blubb -->""", """<!-- blubb -->"""),
+    ("""<!-- blubb -- >""", """<!-- blubb -->"""),
     # end tags
-    ("""</a>""", """</a>""", 0),
-    ("""</ a>""", """</a>""", 0),
-    ("""</ a >""", """</a>""", 0),
-    ("""</a >""", """</a>""", 0),
-    ("""< / a>""", """</a>""", 0),
-    ("""< /a>""", """</a>""", 0),
-    ("""</aä>""", """</a>""", 0),
+    ("""</a>""", """</a>"""),
+    ("""</ a>""", """</a>"""),
+    ("""</ a >""", """</a>"""),
+    ("""</a >""", """</a>"""),
+    ("""< / a>""", """</a>"""),
+    ("""< /a>""", """</a>"""),
+    ("""</aä>""", """</a>"""),
     # start and end tag (HTML doctype assumed)
-    ("""<a/>""", """<a/>""", 0),
-    ("""<meta/>""", """<meta>""", 0),
-    ("""<MetA/>""", """<meta>""", 0),
+    ("""<a/>""", """<a/>"""),
+    ("""<meta/>""", """<meta>"""),
+    ("""<MetA/>""", """<meta>"""),
     # declaration tags
     ("""<!DOCtype adrbook SYSTEM "adrbook.dtd">""",
-     """<!DOCTYPE adrbook SYSTEM "adrbook.dtd">""", 0),
+     """<!DOCTYPE adrbook SYSTEM "adrbook.dtd">"""),
     # misc
     ("""<?xmL version="1.0" encoding="latin1"?>""",
-     """<?xmL version="1.0" encoding="latin1"?>""", 0),
+     """<?xmL version="1.0" encoding="latin1"?>"""),
     # javascript
-    ("""<script >\n</script>""", """<script>\n</script>""", 0),
+    ("""<script >\n</script>""", """<script>\n</script>"""),
     ("""<sCrIpt lang="a">bla </a> fasel</scripT>""",
-     """<script lang="a">bla </a> fasel</script>""", 0),
+     """<script lang="a">bla </a> fasel</script>"""),
     # line continuation (Dr. Fun webpage)
-    ("<img bo\\\nrder=0 >", """<img border="0">""", 1),
+    ("""<img bo\\\nrder=0 >""", """<img border="0">"""),
+    ("""<img align="mid\\\ndle">""", """<img align="middle">"""),
+    ("""<img align='mid\\\ndle'>""", """<img align="middle">"""),
     # href with $
-    ("""<a href="123$456">""", """<a href="123$456">""", 0),
+    ("""<a href="123$456">""", """<a href="123$456">"""),
     # quoting
-    ("""<a  href=/ >""", """<a href="/">""", 0),
-    ("""<a  href= />""", """<a href="/">""", 0),
-    ("""<a  href= >""", """<a href="">""", 0),
-    ("""<a  href="'" >""", """<a href="'">""", 0),
-    ("""<a  href='"' >""", """<a href="&quot;">""", 0),
-    ("""<a  href="bla" %]" >""", """<a href="bla">""", 0),
-    ("""<a  href=bla" >""", """<a href="bla">""", 1),
+    ("""<a  href=/ >""", """<a href="/">"""),
+    ("""<a  href= />""", """<a href="/">"""),
+    ("""<a  href= >""", """<a href="">"""),
+    ("""<a  href="'" >""", """<a href="'">"""),
+    ("""<a  href='"' >""", """<a href="&quot;">"""),
+    ("""<a  href="bla" %]" >""", """<a href="bla">"""),
+    ("""<a  href=bla" >""", """<a href="bla">"""),
     ("""<a onmouseover=MM_swapImage('nav1','',"""\
      """'/images/dwnavpoint_over.gif',1);movein(this); b="c">""",
      """<a onmouseover="MM_swapImage('nav1','',"""\
-     """'/images/dwnavpoint_over.gif',1);movein(this);" b="c">""", 0),
+     """'/images/dwnavpoint_over.gif',1);movein(this);" b="c">"""),
     ("""<a onClick=location.href('/index.htm') b="c">""",
-     """<a onclick="location.href('/index.htm')" b="c">""", 0),
+     """<a onclick="location.href('/index.htm')" b="c">"""),
     # entity resolving
-    ("""<a  href="&#109;ailto:" >""", """<a href="mailto:">""", 0),
+    ("""<a  href="&#109;ailto:" >""", """<a href="mailto:">"""),
     # non-ascii characters
     ("""<Üzgür> fahr </langsamer> ¹²³¼½¬{""",
-     """<Üzgür> fahr </langsamer> ¹²³¼½¬{""", 0),
+     """<Üzgür> fahr </langsamer> ¹²³¼½¬{"""),
     # mailto link
     ("""<a  href=mailto:calvin@LocalHost?subject=Hallo&to=michi>1</a>""",
-     """<a href="mailto:calvin@LocalHost?subject=Hallo&amp;to=michi">1</a>""", 0),
+     """<a href="mailto:calvin@LocalHost?subject=Hallo&amp;to=michi">1</a>"""),
     # doctype XHTML
     ("""<!DOCTYPe html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><MeTa a="b"/>""",
-     """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><meta a="b"/>""", 0),
+     """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><meta a="b"/>"""),
     # missing > in end tag
-    ("""</td <td  a="b" >""", """</td><td a="b">""", 1),
-    ("""</td<td  a="b" >""", """</td><td a="b">""", 1),
+    ("""</td <td  a="b" >""", """</td><td a="b">"""),
+    ("""</td<td  a="b" >""", """</td><td a="b">"""),
     # missing beginning quote
-    ("""<td a=b">""", """<td a="b">""", 1),
-    # missing end quote (TODO)
-    #("""<td a="b>""", """<td a="b">""", 1),
-    #("""<td a="b></td>""", """<td a="b"></td>""", 1),
-    #("""<td a="b c="d"></td>""", """<td a="b" c="d"></td>""", 1),
-    #("""<a  b="c><a b="c">""", """<a b="c><a b=" c>""", 1),
+    ("""<td a=b">""", """<td a="b">"""),
+    # missing end quote (XXX TODO)
+    #("""<td a="b>\n""", """<td a="b">\n"""),
+    #("""<td a="b></td>\na""", """<td a="b"></td>\na"""),
+    #("""<a  b="c><a b="c>\n""", """<a b="c"><a b="c">\n"""),
+    #("""<td a="b c="d"></td>\n""", """<td a="b" c="d"></td>\n"""),
 ]
 
 flushtests = [
-    ("<", "<", 0),
-    ("<a", "<a", 0),
-    ("<!a", "<!a", 0),
-    ("<?a", "<?a", 0),
+    ("<", "<"),
+    ("<a", "<a"),
+    ("<!a", "<!a"),
+    ("<?a", "<?a"),
 ]
 
 
@@ -169,14 +171,14 @@ class TestParser (MsgTestCase):
         """
         Parse all test patterns in one go.
         """
-        for _in, _out, _errs in parsetests:
+        for _in, _out in parsetests:
             out = StringIO.StringIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
             self.htmlparser.handler = handler
             self.htmlparser.feed(_in)
-            self.check_results(self.htmlparser, _in, _out, _errs, out)
+            self.check_results(self.htmlparser, _in, _out, out)
 
-    def check_results (self, htmlparser, _in, _out, _errs, out):
+    def check_results (self, htmlparser, _in, _out, out):
         """
         Check parse results.
         """
@@ -185,30 +187,25 @@ class TestParser (MsgTestCase):
         msg = "Test error; in: %r, out: %r, expect: %r" % \
            (_in, res, _out)
         self.assertEqual(res, _out, msg=msg)
-        num = len(htmlparser.handler.errors)
-        errors = ", ".join(htmlparser.handler.errors)
-        msg = "Number of errors parsing %r: %d, expected: %d\nErrors: %s" % \
-              (_in, num, _errs, errors)
-        self.assertEqual(num, _errs, msg=msg)
         htmlparser.reset()
 
     def test_feed (self):
         """
         Parse all test patterns sequentially.
         """
-        for _in, _out, _errs in parsetests:
+        for _in, _out in parsetests:
             out = StringIO.StringIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
             self.htmlparser.handler = handler
             for c in _in:
                 self.htmlparser.feed(c)
-            self.check_results(self.htmlparser, _in, _out, _errs, out)
+            self.check_results(self.htmlparser, _in, _out, out)
 
     def test_interwoven (self):
         """
         Parse all test patterns on two parsers interwoven.
         """
-        for _in, _out, _errs in parsetests:
+        for _in, _out in parsetests:
             out = StringIO.StringIO()
             out2 = StringIO.StringIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
@@ -218,19 +215,19 @@ class TestParser (MsgTestCase):
             for c in _in:
                 self.htmlparser.feed(c)
                 self.htmlparser2.feed(c)
-            self.check_results(self.htmlparser, _in, _out, _errs, out)
-            self.check_results(self.htmlparser2, _in, _out, _errs, out2)
+            self.check_results(self.htmlparser, _in, _out, out)
+            self.check_results(self.htmlparser2, _in, _out, out2)
 
     def test_flush (self):
         """
         Test parser flushing.
         """
-        for _in, _out, _errs in flushtests:
+        for _in, _out in flushtests:
             out = StringIO.StringIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
             self.htmlparser.handler = handler
             self.htmlparser.feed(_in)
-            self.check_results(self.htmlparser, _in, _out, _errs, out)
+            self.check_results(self.htmlparser, _in, _out, out)
 
     def test_entities (self):
         """
