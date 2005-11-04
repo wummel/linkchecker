@@ -77,36 +77,9 @@ class TagFinder (object):
         """
         super(TagFinder, self).__init__()
         self.content = content
-        # warnings and errors during parsing
-        self.parse_info = []
         # parser object will be initialized when it is used as
         # a handler object
         self.parser = None
-
-    def _errorfun (self, msg, name):
-        """
-        Append msg to error list.
-        """
-        self.parse_info.append(u"%s at line %d col %d: %s" % \
-            (name, self.parser.last_lineno(), self.parser.last_column(), msg))
-
-    def warning (self, msg):
-        """
-        Signal a filter/parser warning.
-        """
-        self._errorfun(msg, "warning")
-
-    def error (self, msg):
-        """
-        Signal a filter/parser error.
-        """
-        self._errorfun(msg, "error")
-
-    def fatal_error (self, msg):
-        """
-        Signal a fatal filter/parser error.
-        """
-        self._errorfun(msg, "fatal error")
 
     def start_element (self, tag, attrs):
         """

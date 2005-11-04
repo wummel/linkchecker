@@ -633,9 +633,6 @@ class UrlBase (object):
         p.flush()
         h.parser = None
         p.handler = None
-        for s in h.parse_info:
-            # the parser had warnings/errors
-            self.add_warning(s)
         for url, line, column, name, codebase in h.urls:
             if codebase:
                 base_ref = codebase
