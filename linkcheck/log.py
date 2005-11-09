@@ -99,7 +99,7 @@ def _stack_format (stack):
     s = StringIO.StringIO()
     s.write('Traceback:')
     s.write(os.linesep)
-    for frame, fname, lineno, method, lines, i  in reversed(stack):
+    for frame, fname, lineno, method, lines, dummy in reversed(stack):
         s.write('  File %r, line %d, in %s' % (fname, lineno, method))
         s.write(os.linesep)
         s.write('    %s' % lines[0].lstrip())
