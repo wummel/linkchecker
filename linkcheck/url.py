@@ -268,6 +268,8 @@ def url_parse_query (query):
     """
     Parse and re-join the given CGI query.
     """
+    if isinstance(query, unicode):
+        query = query.encode('ascii', 'ignore')
     # if ? is in the query, split it off, seen at msdn.microsoft.com
     if '?' in query:
         query, append = query.split('?', 1)
