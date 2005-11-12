@@ -84,6 +84,15 @@ from sets import Set
 
 __metaclass__ = type
 
+RCS_IGNORE = [
+    "SCCS",
+    "BitKeeper",
+    "CVS",
+    ".pc",
+    ".hg",
+    ".svn",
+    ".git",
+]
 
 class TestSkipped (Exception):
     """Test skipped.
@@ -217,7 +226,7 @@ def get_test_files(cfg):
                 remove.append(idx)
             elif '.' in file and os.path.isdir(os.path.join(dir, file)):
                 remove.append(idx)
-            elif file in ["CVS", ".svn", ".git"]:
+            elif file in RCS_IGNORE:
                 remove.append(idx)
         remove.reverse()
         for idx in remove:
