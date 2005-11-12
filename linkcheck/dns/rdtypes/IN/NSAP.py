@@ -38,10 +38,10 @@ class NSAP(linkcheck.dns.rdata.Rdata):
         address = tok.get_string()
         t = tok.get_eol()
         if address[0:2] != '0x':
-            raise linkcheck.dns.exception.SyntaxError, 'string does not start with 0x'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'string does not start with 0x'
         address = address[2:].replace('.', '')
         if len(address) % 2 != 0:
-            raise linkcheck.dns.exception.SyntaxError, 'hexstring has odd length'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'hexstring has odd length'
         address = address.decode('hex_codec')
         return cls(rdclass, rdtype, address)
 

@@ -184,7 +184,7 @@ class Tokenizer(object):
         @type want_comment: bool
         @rtype: (int, string) tuple
         @raises linkcheck.dns.exception.UnexpectedEnd: input ended prematurely
-        @raises linkcheck.dns.exception.SyntaxError: input was badly formed
+        @raises linkcheck.dns.exception.DNSSyntaxError: input was badly formed
         """
 
         if not self.ungotten_token is None:
@@ -215,7 +215,7 @@ class Tokenizer(object):
                         continue
                     elif c == ')':
                         if not self.multiline > 0:
-                            raise linkcheck.dns.exception.SyntaxError
+                            raise linkcheck.dns.exception.DNSSyntaxError
                         self.multiline -= 1
                         self.skip_whitespace()
                         continue
@@ -243,7 +243,7 @@ class Tokenizer(object):
                             return (COMMENT, token)
                         elif c == '':
                             if self.multiline:
-                                raise linkcheck.dns.exception.SyntaxError, \
+                                raise linkcheck.dns.exception.DNSSyntaxError, \
                                       'unbalanced parentheses'
                             return (EOF, '')
                         elif self.multiline:
@@ -274,10 +274,10 @@ class Tokenizer(object):
                         if c == '':
                             raise linkcheck.dns.exception.UnexpectedEnd
                         if not (c2.isdigit() and c3.isdigit()):
-                            raise linkcheck.dns.exception.SyntaxError
+                            raise linkcheck.dns.exception.DNSSyntaxError
                         c = chr(int(c) * 100 + int(c2) * 10 + int(c3))
                 elif c == '\n':
-                    raise linkcheck.dns.exception.SyntaxError, 'newline in quoted string'
+                    raise linkcheck.dns.exception.DNSSyntaxError, 'newline in quoted string'
             elif c == '\\':
                 #
                 # Treat \ followed by a delimiter as the
@@ -290,7 +290,7 @@ class Tokenizer(object):
             token += c
         if token == '' and ttype != QUOTED_STRING:
             if self.multiline:
-                raise linkcheck.dns.exception.SyntaxError, 'unbalanced parentheses'
+                raise linkcheck.dns.exception.DNSSyntaxError, 'unbalanced parentheses'
             ttype = EOF
         return (ttype, token)
 
@@ -328,28 +328,28 @@ class Tokenizer(object):
     def get_int(self):
         """Read the next token and interpret it as an integer.
 
-        @raises linkcheck.dns.exception.SyntaxError:
+        @raises linkcheck.dns.exception.DNSSyntaxError:
         @rtype: int
         """
 
         (ttype, value) = self.get()
         if ttype != IDENTIFIER:
-            raise linkcheck.dns.exception.SyntaxError, 'expecting an identifier'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'expecting an identifier'
         if not value.isdigit():
-            raise linkcheck.dns.exception.SyntaxError, 'expecting an integer'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'expecting an integer'
         return int(value)
 
     def get_uint8(self):
         """Read the next token and interpret it as an 8-bit unsigned
         integer.
 
-        @raises linkcheck.dns.exception.SyntaxError:
+        @raises linkcheck.dns.exception.DNSSyntaxError:
         @rtype: int
         """
 
         value = self.get_int()
         if value < 0 or value > 255:
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   '%d is not an unsigned 8-bit integer' % value
         return value
 
@@ -357,13 +357,13 @@ class Tokenizer(object):
         """Read the next token and interpret it as a 16-bit unsigned
         integer.
 
-        @raises linkcheck.dns.exception.SyntaxError:
+        @raises linkcheck.dns.exception.DNSSyntaxError:
         @rtype: int
         """
 
         value = self.get_int()
         if value < 0 or value > 65535:
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   '%d is not an unsigned 16-bit integer' % value
         return value
 
@@ -371,51 +371,51 @@ class Tokenizer(object):
         """Read the next token and interpret it as a 32-bit unsigned
         integer.
 
-        @raises linkcheck.dns.exception.SyntaxError:
+        @raises linkcheck.dns.exception.DNSSyntaxError:
         @rtype: int
         """
         (ttype, value) = self.get()
         if ttype != IDENTIFIER:
-            raise linkcheck.dns.exception.SyntaxError, 'expecting an identifier'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'expecting an identifier'
         if not value.isdigit():
-            raise linkcheck.dns.exception.SyntaxError, 'expecting an integer'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'expecting an integer'
         value = long(value)
         if value < 0 or value > 4294967296L:
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   '%d is not an unsigned 32-bit integer' % value
         return value
 
     def get_string(self, origin=None):
         """Read the next token and interpret it as a string.
 
-        @raises linkcheck.dns.exception.SyntaxError:
+        @raises linkcheck.dns.exception.DNSSyntaxError:
         @rtype: string
         """
         (ttype, t) = self.get()
         if ttype != IDENTIFIER and ttype != QUOTED_STRING:
-            raise linkcheck.dns.exception.SyntaxError, 'expecting a string'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'expecting a string'
         return t
 
     def get_name(self, origin=None):
         """Read the next token and interpret it as a DNS name.
 
-        @raises linkcheck.dns.exception.SyntaxError:
+        @raises linkcheck.dns.exception.DNSSyntaxError:
         @rtype: linkcheck.dns.name.Name object"""
         (ttype, t) = self.get()
         if ttype != IDENTIFIER:
-            raise linkcheck.dns.exception.SyntaxError, 'expecting an identifier'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'expecting an identifier'
         return linkcheck.dns.name.from_text(t, origin)
 
     def get_eol(self):
         """Read the next token and raise an exception if it isn't EOL or
         EOF.
 
-        @raises linkcheck.dns.exception.SyntaxError:
+        @raises linkcheck.dns.exception.DNSSyntaxError:
         @rtype: string
         """
 
         (ttype, t) = self.get()
         if ttype != EOL and ttype != EOF:
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   'expected EOL or EOF, got %d "%s"' % (ttype, t)
         return t

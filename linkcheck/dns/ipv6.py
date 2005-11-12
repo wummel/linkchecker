@@ -32,19 +32,19 @@ def inet_ntoa(address):
 
     if len(address) != 16:
         raise ValueError, "IPv6 addresses are 16 bytes long"
-    hex = address.encode('hex_codec')
+    hexip = address.encode('hex_codec')
     chunks = []
     i = 0
-    l = len(hex)
+    l = len(hexip)
     while i < l:
-        chunk = hex[i : i + 4]
+        ipchunk = hexip[i : i + 4]
         # strip leading zeros.  we do this with an re instead of
         # with lstrip() because lstrip() didn't support chars until
         # python 2.2.2
-        m = _leading_zero.match(chunk)
+        m = _leading_zero.match(ipchunk)
         if not m is None:
-            chunk = m.group(1)
-        chunks.append(chunk)
+            ipchunk = m.group(1)
+        chunks.append(ipchunk)
         i += 4
     #
     # Compress the longest subsequence of 0-value chunks to ::
@@ -80,13 +80,13 @@ def inet_ntoa(address):
                 prefix = '::'
             else:
                 prefix = '::ffff:'
-            hex = prefix + linkcheck.dns.ipv4.inet_ntoa(address[12:])
+            hexip = prefix + linkcheck.dns.ipv4.inet_ntoa(address[12:])
         else:
-            hex = ':'.join(chunks[:best_start]) + '::' + \
+            hexip = ':'.join(chunks[:best_start]) + '::' + \
                   ':'.join(chunks[best_start + best_len:])
     else:
-        hex = ':'.join(chunks)
-    return hex
+        hexip = ':'.join(chunks)
+    return hexip
 
 _v4_ending = re.compile(r'(.*):(\d+)\.(\d+)\.(\d+)\.(\d+)$')
 _colon_colon_start = re.compile(r'::.*')
@@ -98,7 +98,7 @@ def inet_aton(text):
     @param text: the textual address
     @type text: string
     @rtype: string
-    @raises linkcheck.dns.exception.SyntaxError: the text was not properly formatted
+    @raises linkcheck.dns.exception.DNSSyntaxError: the text was not properly formatted
     """
 
     #
@@ -132,25 +132,25 @@ def inet_aton(text):
     chunks = text.split(':')
     l = len(chunks)
     if l > 8:
-        raise linkcheck.dns.exception.SyntaxError
+        raise linkcheck.dns.exception.DNSSyntaxError
     seen_empty = False
     canonical = []
     for c in chunks:
         if c == '':
             if seen_empty:
-                raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
             seen_empty = True
             for i in xrange(0, 8 - l + 1):
                 canonical.append('0000')
         else:
             lc = len(c)
             if lc > 4:
-                raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
             if lc != 4:
                 c = ('0' * (4 - lc)) + c
             canonical.append(c)
     if l < 8 and not seen_empty:
-        raise linkcheck.dns.exception.SyntaxError
+        raise linkcheck.dns.exception.DNSSyntaxError
     text = ''.join(canonical)
 
     #

@@ -39,7 +39,7 @@ class AAAA(linkcheck.dns.rdata.Rdata):
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
         (ttype, address) = tok.get()
         if ttype != linkcheck.dns.tokenizer.IDENTIFIER:
-            raise linkcheck.dns.exception.SyntaxError
+            raise linkcheck.dns.exception.DNSSyntaxError
         t = tok.get_eol()
         return cls(rdclass, rdtype, address)
 

@@ -743,15 +743,15 @@ class _TextReader(object):
         name = self.last_name
         token = self.tok.get()
         if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-            raise linkcheck.dns.exception.SyntaxError
+            raise linkcheck.dns.exception.DNSSyntaxError
         # Class
         try:
             rdclass = linkcheck.dns.rdataclass.from_text(token[1])
             token = self.tok.get()
             if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError
-        except linkcheck.dns.exception.SyntaxError:
-            raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
+        except linkcheck.dns.exception.DNSSyntaxError:
+            raise linkcheck.dns.exception.DNSSyntaxError
         except:
             rdclass = linkcheck.dns.rdataclass.IN
         # Type
@@ -775,15 +775,15 @@ class _TextReader(object):
         name = self.last_name
         token = self.tok.get()
         if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-            raise linkcheck.dns.exception.SyntaxError
+            raise linkcheck.dns.exception.DNSSyntaxError
         # TTL
         try:
             ttl = int(token[1], 0)
             token = self.tok.get()
             if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError
-        except linkcheck.dns.exception.SyntaxError:
-            raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
+        except linkcheck.dns.exception.DNSSyntaxError:
+            raise linkcheck.dns.exception.DNSSyntaxError
         except:
             ttl = 0
         # Class
@@ -791,12 +791,12 @@ class _TextReader(object):
             rdclass = linkcheck.dns.rdataclass.from_text(token[1])
             token = self.tok.get()
             if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
             if rdclass == linkcheck.dns.rdataclass.ANY or rdclass == linkcheck.dns.rdataclass.NONE:
                 deleting = rdclass
                 rdclass = self.zone_rdclass
-        except linkcheck.dns.exception.SyntaxError:
-            raise linkcheck.dns.exception.SyntaxError
+        except linkcheck.dns.exception.DNSSyntaxError:
+            raise linkcheck.dns.exception.DNSSyntaxError
         except:
             rdclass = linkcheck.dns.rdataclass.IN
         # Type
@@ -852,7 +852,7 @@ def from_text(text):
     @param text: The text format message.
     @type text: string
     @raises UnknownHeaderField:
-    @raises linkcheck.dns.exception.SyntaxError:
+    @raises linkcheck.dns.exception.DNSSyntaxError:
     @rtype: linkcheck.dns.message.Message object"""
 
     # 'text' can also be a file, but we don't publish that fact
@@ -870,7 +870,7 @@ def from_file(f):
     @param f: file or string.  If I{f} is a string, it is treated
     as the name of a file to open.
     @raises UnknownHeaderField:
-    @raises linkcheck.dns.exception.SyntaxError:
+    @raises linkcheck.dns.exception.DNSSyntaxError:
     @rtype: linkcheck.dns.message.Message object"""
     if sys.hexversion >= 0x02030000:
         # allow Unicode filenames; turn on universal newline support

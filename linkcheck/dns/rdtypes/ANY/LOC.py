@@ -30,7 +30,7 @@ def _exponent_of(what, desc):
             exp = i - 1
             break
     if exp is None or exp < 0:
-        raise linkcheck.dns.exception.SyntaxError, "%s value out of bounds" % desc
+        raise linkcheck.dns.exception.DNSSyntaxError, "%s value out of bounds" % desc
     return exp
 
 def _float_to_tuple(what):
@@ -70,10 +70,10 @@ def _encode_size(what, desc):
 def _decode_size(what, desc):
     exponent = what & 0x0F
     if exponent > 9:
-        raise linkcheck.dns.exception.SyntaxError, "bad %s exponent" % desc
+        raise linkcheck.dns.exception.DNSSyntaxError, "bad %s exponent" % desc
     base = (what & 0xF0) >> 4
     if base > 9:
-        raise linkcheck.dns.exception.SyntaxError, "bad %s base" % desc
+        raise linkcheck.dns.exception.DNSSyntaxError, "bad %s base" % desc
     return long(base) * pow(10, exponent)
 
 class LOC(linkcheck.dns.rdata.Rdata):
@@ -165,15 +165,15 @@ class LOC(linkcheck.dns.rdata.Rdata):
             if '.' in t:
                 (seconds, milliseconds) = t.split('.')
                 if not seconds.isdigit():
-                    raise linkcheck.dns.exception.SyntaxError, \
+                    raise linkcheck.dns.exception.DNSSyntaxError, \
                           'bad latitude seconds value'
                 latitude[2] = int(seconds)
                 if latitude[2] >= 60:
-                    raise linkcheck.dns.exception.SyntaxError, \
+                    raise linkcheck.dns.exception.DNSSyntaxError, \
                           'latitude seconds >= 60'
                 l = len(milliseconds)
                 if l == 0 or l > 3 or not milliseconds.isdigit():
-                    raise linkcheck.dns.exception.SyntaxError, \
+                    raise linkcheck.dns.exception.DNSSyntaxError, \
                           'bad latitude milliseconds value'
                 if l == 1:
                     m = 100
@@ -189,7 +189,7 @@ class LOC(linkcheck.dns.rdata.Rdata):
         if t == 'S':
             latitude[0] *= -1
         elif t != 'N':
-            raise linkcheck.dns.exception.SyntaxError, 'bad latitude hemisphere value'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'bad latitude hemisphere value'
 
         longitude[0] = tok.get_int()
         t = tok.get_string()
@@ -199,15 +199,15 @@ class LOC(linkcheck.dns.rdata.Rdata):
             if '.' in t:
                 (seconds, milliseconds) = t.split('.')
                 if not seconds.isdigit():
-                    raise linkcheck.dns.exception.SyntaxError, \
+                    raise linkcheck.dns.exception.DNSSyntaxError, \
                           'bad longitude seconds value'
                 longitude[2] = int(seconds)
                 if longitude[2] >= 60:
-                    raise linkcheck.dns.exception.SyntaxError, \
+                    raise linkcheck.dns.exception.DNSSyntaxError, \
                           'longitude seconds >= 60'
                 l = len(milliseconds)
                 if l == 0 or l > 3 or not milliseconds.isdigit():
-                    raise linkcheck.dns.exception.SyntaxError, \
+                    raise linkcheck.dns.exception.DNSSyntaxError, \
                           'bad longitude milliseconds value'
                 if l == 1:
                     m = 100
@@ -223,7 +223,7 @@ class LOC(linkcheck.dns.rdata.Rdata):
         if t == 'W':
             longitude[0] *= -1
         elif t != 'E':
-            raise linkcheck.dns.exception.SyntaxError, 'bad longitude hemisphere value'
+            raise linkcheck.dns.exception.DNSSyntaxError, 'bad longitude hemisphere value'
 
         t = tok.get_string()
         if t[-1] == 'm':
@@ -248,7 +248,7 @@ class LOC(linkcheck.dns.rdata.Rdata):
                         (ttype, value) = tok.get()
                         if ttype != linkcheck.dns.tokenizer.EOL and \
                                ttype != linkcheck.dns.tokenizer.EOF:
-                            raise linkcheck.dns.exception.SyntaxError, \
+                            raise linkcheck.dns.exception.DNSSyntaxError, \
                                   "expected EOL or EOF"
 
         return cls(rdclass, rdtype, latitude, longitude, altitude,

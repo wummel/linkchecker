@@ -396,7 +396,7 @@ class TestZone (unittest.TestCase):
         def bad():
             z = linkcheck.dns.zone.from_text(bad_directive_text, 'example.',
                                       relativize=True)
-        self.assertRaises(linkcheck.dns.exception.SyntaxError, bad)
+        self.assertRaises(linkcheck.dns.exception.DNSSyntaxError, bad)
 
 
 def test_suite ():

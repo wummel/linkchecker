@@ -59,9 +59,9 @@ class NSEC(linkcheck.dns.rdata.Rdata):
                 break
             nrdtype = linkcheck.dns.rdatatype.from_text(value)
             if nrdtype == 0:
-                raise linkcheck.dns.exception.SyntaxError, "NSEC with bit 0"
+                raise linkcheck.dns.exception.DNSSyntaxError, "NSEC with bit 0"
             if nrdtype > 65535:
-                raise linkcheck.dns.exception.SyntaxError, "NSEC with bit > 65535"
+                raise linkcheck.dns.exception.DNSSyntaxError, "NSEC with bit > 65535"
             rdtypes.append(nrdtype)
         rdtypes.sort()
         window = 0

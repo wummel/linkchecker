@@ -98,7 +98,7 @@ class KEYBase(linkcheck.dns.rdata.Rdata):
             for flag in flag_names:
                 v = _flags_from_text.get(flag)
                 if v is None:
-                    raise linkcheck.dns.exception.SyntaxError, 'unknown flag %s' % flag
+                    raise linkcheck.dns.exception.DNSSyntaxError, 'unknown flag %s' % flag
                 flags &= ~v[1]
                 flags |= v[0]
         protocol = tok.get_string()
@@ -107,7 +107,7 @@ class KEYBase(linkcheck.dns.rdata.Rdata):
         else:
             protocol = _protocol_from_text.get(protocol)
             if protocol is None:
-                raise linkcheck.dns.exception.SyntaxError, \
+                raise linkcheck.dns.exception.DNSSyntaxError, \
                       'unknown protocol %s' % protocol
 
         algorithm = linkcheck.dns.dnssec.algorithm_from_text(tok.get_string())
@@ -117,7 +117,7 @@ class KEYBase(linkcheck.dns.rdata.Rdata):
             if t[0] == linkcheck.dns.tokenizer.EOL or t[0] == linkcheck.dns.tokenizer.EOF:
                 break
             if t[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
             chunks.append(t[1])
         b64 = ''.join(chunks)
         key = b64.decode('base64_codec')

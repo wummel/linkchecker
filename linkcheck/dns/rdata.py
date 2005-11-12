@@ -304,7 +304,7 @@ class GenericRdata(Rdata):
 
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
         if tok.get_string() != r'\#':
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   r'generic rdata does not start with \#'
         length = tok.get_int()
         chunks = []
@@ -316,7 +316,7 @@ class GenericRdata(Rdata):
         hex = ''.join(chunks)
         data = hex.decode('hex_codec')
         if len(data) != length:
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   'generic rdata hex data has wrong length'
         return cls(rdclass, rdtype, data)
 

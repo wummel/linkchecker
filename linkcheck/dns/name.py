@@ -34,11 +34,11 @@ NAMERELN_SUBDOMAIN = 2
 NAMERELN_EQUAL = 3
 NAMERELN_COMMONANCESTOR = 4
 
-class EmptyLabel(linkcheck.dns.exception.SyntaxError):
+class EmptyLabel(linkcheck.dns.exception.DNSSyntaxError):
     """Raised if a label is empty."""
     pass
 
-class BadEscape(linkcheck.dns.exception.SyntaxError):
+class BadEscape(linkcheck.dns.exception.DNSSyntaxError):
     """Raised if an escaped code in a text format name is invalid."""
     pass
 
@@ -59,7 +59,7 @@ class NameTooLong(linkcheck.dns.exception.FormError):
     """Raised if a name is > 255 octets long."""
     pass
 
-class LabelTooLong(linkcheck.dns.exception.SyntaxError):
+class LabelTooLong(linkcheck.dns.exception.DNSSyntaxError):
     """Raised if a label is > 63 octets long."""
     pass
 

@@ -84,14 +84,14 @@ class CERT(linkcheck.dns.rdata.Rdata):
         key_tag = tok.get_uint16()
         algorithm = linkcheck.dns.dnssec.algorithm_from_text(tok.get_string())
         if algorithm < 0 or algorithm > 255:
-            raise linkcheck.dns.exception.SyntaxError, "bad algorithm type"
+            raise linkcheck.dns.exception.DNSSyntaxError, "bad algorithm type"
         chunks = []
         while 1:
             t = tok.get()
             if t[0] == linkcheck.dns.tokenizer.EOL or t[0] == linkcheck.dns.tokenizer.EOF:
                 break
             if t[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
             chunks.append(t[1])
         b64 = ''.join(chunks)
         certificate = b64.decode('base64_codec')

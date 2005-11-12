@@ -18,7 +18,7 @@
 
 import linkcheck.dns.exception
 
-class BadTTL(linkcheck.dns.exception.SyntaxError):
+class BadTTL(linkcheck.dns.exception.DNSSyntaxError):
     pass
 
 def from_text(text):

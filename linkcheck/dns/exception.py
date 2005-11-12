@@ -24,11 +24,11 @@ class FormError(DNSException):
     """DNS message is malformed."""
     pass
 
-class SyntaxError(DNSException):
+class DNSSyntaxError(DNSException):
     """Text input is malformed."""
     pass
 
-class UnexpectedEnd(SyntaxError):
+class UnexpectedEnd(DNSSyntaxError):
     """Raised if text input ends unexpectedly."""
     pass
 

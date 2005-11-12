@@ -48,9 +48,9 @@ class TXT(linkcheck.dns.rdata.Rdata):
             if ttype == linkcheck.dns.tokenizer.EOL or ttype == linkcheck.dns.tokenizer.EOF:
                 break
             if ttype != linkcheck.dns.tokenizer.QUOTED_STRING:
-                raise linkcheck.dns.exception.SyntaxError, "expected a quoted string"
+                raise linkcheck.dns.exception.DNSSyntaxError, "expected a quoted string"
             if len(s) > 255:
-                raise linkcheck.dns.exception.SyntaxError, "string too long"
+                raise linkcheck.dns.exception.DNSSyntaxError, "string too long"
             strings.append(s)
         if len(strings) == 0:
             raise linkcheck.dns.exception.UnexpectedEnd

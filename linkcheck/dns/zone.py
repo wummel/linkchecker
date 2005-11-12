@@ -583,13 +583,13 @@ class _MasterReader(object):
             name = name.relativize(self.zone.origin)
         token = self.tok.get()
         if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-            raise linkcheck.dns.exception.SyntaxError
+            raise linkcheck.dns.exception.DNSSyntaxError
         # TTL
         try:
             ttl = linkcheck.dns.ttl.from_text(token[1])
             token = self.tok.get()
             if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.ttl.BadTTL:
             ttl = self.ttl
         # Class
@@ -597,18 +597,18 @@ class _MasterReader(object):
             rdclass = linkcheck.dns.rdataclass.from_text(token[1])
             token = self.tok.get()
             if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError
-        except linkcheck.dns.exception.SyntaxError:
-            raise linkcheck.dns.exception.SyntaxError
+                raise linkcheck.dns.exception.DNSSyntaxError
+        except linkcheck.dns.exception.DNSSyntaxError:
+            raise linkcheck.dns.exception.DNSSyntaxError
         except:
             rdclass = self.zone.rdclass
         if rdclass != self.zone.rdclass:
-            raise linkcheck.dns.exception.SyntaxError, "RR class is not zone's class"
+            raise linkcheck.dns.exception.DNSSyntaxError, "RR class is not zone's class"
         # Type
         try:
             rdtype = linkcheck.dns.rdatatype.from_text(token[1])
         except:
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   "unknown rdatatype '%s'" % token[1]
         n = self.zone.nodes.get(name)
         if n is None:
@@ -617,7 +617,7 @@ class _MasterReader(object):
         try:
             rd = linkcheck.dns.rdata.from_text(rdclass, rdtype, self.tok,
                                      self.current_origin, False)
-        except linkcheck.dns.exception.SyntaxError:
+        except linkcheck.dns.exception.DNSSyntaxError:
             # Catch and reraise.
             (ty, va) = sys.exc_info()[:2]
             raise ty, va
@@ -629,7 +629,7 @@ class _MasterReader(object):
             # helpful filename:line info.
 
             (ty, va) = sys.exc_info()[:2]
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   "caught exception %s: %s" % (str(ty), str(va))
 
         rd.choose_relativity(self.zone.origin, self.relativize)
@@ -668,7 +668,7 @@ class _MasterReader(object):
                     if u == '$TTL':
                         token = self.tok.get()
                         if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                            raise linkcheck.dns.exception.SyntaxError, "bad $TTL"
+                            raise linkcheck.dns.exception.DNSSyntaxError, "bad $TTL"
                         self.ttl = linkcheck.dns.ttl.from_text(token[1])
                         self.tok.get_eol()
                     elif u == '$ORIGIN':
@@ -677,7 +677,7 @@ class _MasterReader(object):
                     elif u == '$INCLUDE' and self.allow_include:
                         token = self.tok.get()
                         if token[0] != linkcheck.dns.tokenizer.QUOTED_STRING:
-                            raise linkcheck.dns.exception.SyntaxError, \
+                            raise linkcheck.dns.exception.DNSSyntaxError, \
                                   "bad filename in $INCLUDE"
                         filename = token[1]
                         token = self.tok.get()
@@ -687,7 +687,7 @@ class _MasterReader(object):
                             self.tok.get_eol()
                         elif token[0] != linkcheck.dns.tokenizer.EOL and \
                              token[0] != linkcheck.dns.tokenizer.EOF:
-                            raise linkcheck.dns.exception.SyntaxError, \
+                            raise linkcheck.dns.exception.DNSSyntaxError, \
                                   "bad origin in $INCLUDE"
                         else:
                             new_origin = self.current_origin
@@ -701,16 +701,16 @@ class _MasterReader(object):
                                                            filename)
                         self.current_origin = new_origin
                     else:
-                        raise linkcheck.dns.exception.SyntaxError, \
+                        raise linkcheck.dns.exception.DNSSyntaxError, \
                               "Unknown master file directive '" + u + "'"
                     continue
                 self.tok.unget(token)
                 self._rr_line()
-        except linkcheck.dns.exception.SyntaxError, detail:
+        except linkcheck.dns.exception.DNSSyntaxError, detail:
             (filename, line_number) = self.tok.where()
             if detail is None:
                 detail = "syntax error"
-            raise linkcheck.dns.exception.SyntaxError, \
+            raise linkcheck.dns.exception.DNSSyntaxError, \
                   "%s:%d: %s" % (filename, line_number, detail)
 
         # Now that we're done reading, do some basic checking of the zone.

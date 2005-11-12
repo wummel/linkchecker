@@ -55,13 +55,13 @@ class TestTokenizer (unittest.TestCase):
         def bad():
             tok = linkcheck.dns.tokenizer.Tokenizer(r'"foo\01')
             (ttype, value) = tok.get()
-        self.assertRaises(linkcheck.dns.exception.SyntaxError, bad)
+        self.assertRaises(linkcheck.dns.exception.DNSSyntaxError, bad)
 
     def testQuotedString7(self):
         def bad():
             tok = linkcheck.dns.tokenizer.Tokenizer('"foo\nbar"')
             (ttype, value) = tok.get()
-        self.assertRaises(linkcheck.dns.exception.SyntaxError, bad)
+        self.assertRaises(linkcheck.dns.exception.DNSSyntaxError, bad)
 
     def testEmpty1(self):
         tok = linkcheck.dns.tokenizer.Tokenizer('')
@@ -129,13 +129,13 @@ class TestTokenizer (unittest.TestCase):
         def bad():
             tok = linkcheck.dns.tokenizer.Tokenizer('foo)')
             tokens = list(iter(tok))
-        self.assertRaises(linkcheck.dns.exception.SyntaxError, bad)
+        self.assertRaises(linkcheck.dns.exception.DNSSyntaxError, bad)
 
     def testMultiline4(self):
         def bad():
             tok = linkcheck.dns.tokenizer.Tokenizer('((foo)')
             tokens = list(iter(tok))
-        self.assertRaises(linkcheck.dns.exception.SyntaxError, bad)
+        self.assertRaises(linkcheck.dns.exception.DNSSyntaxError, bad)
 
     def testUnget1(self):
         tok = linkcheck.dns.tokenizer.Tokenizer('foo')
