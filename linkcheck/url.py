@@ -51,7 +51,7 @@ _safe_char = r"([%(_az09)s%(_path)s\+]|"\
 _safe_scheme_pattern = r"(https?|ftp)"
 _safe_domain_pattern = r"([%(_az09)s][%(_az09)s\-]*"\
                        r"(\.[%(_az09)s][%(_az09)s\-]*)*\.?)" % _basic
-_safe_host_pattern = _safe_domain_pattern+r"(:(80|8080|8000))?" % _basic
+_safe_host_pattern = _safe_domain_pattern+r"(:(80|8080|8000|443))?" % _basic
 _safe_path_pattern = r"((/([%(_az09)s%(_path)s]|"\
                      r"(%%[%(_hex_safe)s][%(_hex_full)s]))+)*/?)" % _basic
 _safe_fragment_pattern = r"%s*" % _safe_char
@@ -92,7 +92,7 @@ def is_safe_js_url (urlstr):
     Test javascript URL strings.
     """
     url = list(urlparse.urlsplit(urlstr))
-    if url[0].lower() != 'http':
+    if url[0].lower() not in ('http', 'https'):
         return False
     if not is_safe_host(url[1]):
         return False
