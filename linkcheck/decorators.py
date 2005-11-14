@@ -38,6 +38,8 @@ def h ():
 import warnings
 import signal
 import os
+import sys
+import time
 
 
 def deprecated (func):
@@ -126,6 +128,24 @@ def notimplemented (func):
         Raise NotImplementedError
         """
         raise NotImplementedError("%s not implemented" % func.__name__)
+    newfunc.__name__ = func.__name__
+    if func.__doc__ is not None:
+        newfunc.__doc__ = func.__doc__
+    newfunc.__dict__.update(func.__dict__)
+    return newfunc
+
+
+def timeit (func, log=sys.stderr):
+    """
+    Print execution time of the function. For quick'n'dirty profiling.
+    """
+    def newfunc (*args, **kwargs):
+        """
+        Execute function and print execution time.
+        """
+        t = time.time()
+        func(*args, **kwargs)
+        print >>log, func.__name__, "took %0.2f seconds" % (time.time() - t)
     newfunc.__name__ = func.__name__
     if func.__doc__ is not None:
         newfunc.__doc__ = func.__doc__
