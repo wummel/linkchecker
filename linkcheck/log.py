@@ -22,71 +22,11 @@ import logging
 import os
 import inspect
 import cStringIO as StringIO
-import linecache
-import sys
-import re
-import time
-try:
-    import thread as _thread
-except ImportError:
-    import dummy_thread as _thread
 
 # memory leak debugging
 #import gc
 #gc.enable()
 #gc.set_debug(gc.DEBUG_LEAK)
-
-# tracing
-_trace_ignore = set()
-_trace_filter = set()
-
-def trace_ignore (names):
-    """
-    Add given names to trace ignore list.
-    """
-    _trace_ignore.update(names)
-
-def trace_filter (patterns):
-    """
-    Add given patterns to trace filter list.
-    """
-    _trace_filter.update([re.compile(pat) for pat in patterns])
-
-def trace_clear ():
-    """
-    Clear all trace ignores and filters.
-    """
-    global _trace_ignore
-    global _trace_filter
-    _trace_ignore = set()
-    _trace_filter = set()
-
-def _traceit (frame, event, arg):
-    """
-    Print current executed line.
-    """
-    if event == "line":
-        name = frame.f_globals["__name__"]
-        if name in _trace_ignore:
-            return _traceit
-        for pat in _trace_filter:
-            if not pat.match(name):
-                return _traceit
-        lineno = frame.f_lineno
-        filename = frame.f_globals["__file__"]
-        if filename.endswith(".pyc") or filename.endswith(".pyo"):
-            filename = filename[:-1]
-        line = linecache.getline(filename, lineno)
-        print "THREAD(%d) %.2f %s:%d: %s" % \
-               (_thread.get_ident(), time.time(), name, lineno, line.rstrip())
-    return _traceit
-
-def trace ():
-    """
-    Start tracing of the current thread (and the current thread only).
-    """
-    sys.settrace(_traceit)
-
 
 PRINT_LOCALVARS = False
 def _stack_format (stack):
