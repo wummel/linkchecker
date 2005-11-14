@@ -337,7 +337,7 @@ class UrlBase (object):
         Main check function for checking this URL.
         """
         if self.consumer.config("trace"):
-            linkcheck.log.trace()
+            linkcheck.trace.trace_on()
         try:
             self.local_check()
             self.consumer.checked(self)

@@ -668,8 +668,8 @@ cache = linkcheck.checker.cache.Cache()
 consumer = linkcheck.checker.consumer.Consumer(config, cache)
 if options.trace:
     config["trace"] = True
-    linkcheck.log.trace_filter([r"^linkcheck"])
-    linkcheck.log.trace()
+    linkcheck.trace.trace_filter([r"^linkcheck"])
+    linkcheck.trace.trace_on()
 # syntactic sugar
 for url in args:
     if url.lower().startswith("www."):
