@@ -588,7 +588,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.parse_html()
         elif ptype == "text/css":
             self.parse_css()
-        return None
 
     def get_robots_txt_url (self):
         """

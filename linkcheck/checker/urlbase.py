@@ -464,7 +464,8 @@ class UrlBase (object):
         """
         Return True iff we can recurse into the url's content.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking recursion...")
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "checking recursion of %r ...", self.url)
         # Test self.valid before self.is_parseable().
         if not self.valid:
             linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, invalid.")
@@ -487,7 +488,7 @@ class UrlBase (object):
         if not self.content_allows_robots():
             linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, robots.")
             return False
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "... yes.")
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "... yes, recursion.")
         return True
 
     def content_allows_robots (self):
@@ -607,8 +608,6 @@ class UrlBase (object):
         Parse url content and search for recursive links.
         Default parse type is html.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
-                            "Parsing recursively into %s", self)
         self.parse_html()
 
     def get_user_password (self):
@@ -626,6 +625,7 @@ class UrlBase (object):
         Parse into HTML content and search for URLs to check.
         Found URLs are added to the URL queue.
         """
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "Parsing HTML %s", self)
         h = linkcheck.linkparse.LinkFinder(self.get_content())
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
@@ -648,6 +648,8 @@ class UrlBase (object):
         """
         Parse an opera bookmark file.
         """
+        linkcheck.log.debug(linkcheck.LOG_CHECK,
+                            "Parsing Opera bookmarks %s", self)
         name = ""
         lineno = 0
         lines = self.get_content().splitlines()
@@ -671,6 +673,7 @@ class UrlBase (object):
         Parse a text file with on url per line; comment and blank
         lines are ignored.
         """
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "Parsing text %s", self)
         lineno = 0
         for line in self.get_content().splitlines():
             lineno += 1
@@ -687,6 +690,7 @@ class UrlBase (object):
         """
         Parse a CSS file for url() patterns.
         """
+        linkcheck.log.debug(linkcheck.LOG_CHECK, "Parsing CSS %s", self)
         lineno = 0
         for line in self.get_content().splitlines():
             lineno += 1
@@ -750,3 +754,4 @@ class UrlBase (object):
         @rtype: unicode
         """
         return u"<%s >" % self.serialized()
+

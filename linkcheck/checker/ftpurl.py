@@ -203,11 +203,11 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         Parse URL target for links.
         """
         if self.is_directory():
-            return self.parse_html()
+            self.parse_html()
+            return
         for key, ro in linkcheck.checker.extensions.items():
             if ro.search(self.url):
-                return getattr(self, "parse_"+key)()
-        return None
+                getattr(self, "parse_"+key)()
 
     def get_content (self):
         """
