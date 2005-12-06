@@ -117,30 +117,22 @@ class Cache (object):
         """
         Add a new URL to list of URLs to check.
         """
-        linkcheck.log.debug(linkcheck.LOG_CACHE,
-                            "Add url %s...", repr(url_data))
+        linkcheck.log.debug(linkcheck.LOG_CACHE, "Add url %r ...", url_data)
         if url_data.has_result:
             # do not check any further
+            linkcheck.log.debug(linkcheck.LOG_CACHE, "... no, has result")
             return False
         # check the cache
         key = url_data.cache_url_key
         if key in self.checked:
             # url is cached and can be logged
             url_data.copy_from_cache(self.checked[key])
+            linkcheck.log.debug(linkcheck.LOG_CACHE, "... no, cached")
             return False
         # url is not cached, so add to incoming queue
         self.incoming.append(url_data)
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "...added.")
+        linkcheck.log.debug(linkcheck.LOG_CACHE, "... yes, added.")
         return True
-
-    def has_incoming (self, key):
-        """
-        Check if incoming queue has an entry with the given key.
-
-        @param key: Usually obtained from url_data.cache_url_key
-        @type key: String
-        """
-        return key in self.incoming
 
     def has_in_progress (self, key):
         """
@@ -168,7 +160,7 @@ class Cache (object):
         """
         data = url_data.get_cache_data()
         key = url_data.cache_url_key
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "Cache key %r...", key)
+        linkcheck.log.debug(linkcheck.LOG_CACHE, "Caching %r", key)
         assert key not in self.checked, \
                key + u", " + unicode(self.checked[key])
         assert key in self.in_progress, key
