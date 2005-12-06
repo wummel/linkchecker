@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-10-13 19:44+0200\n"
+"POT-Creation-Date: 2005-12-06 12:49+0100\n"
 "PO-Revision-Date: 2005-05-07 00:42+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: kde-francophone@kde.org\n"
@@ -1048,7 +1048,7 @@ msgid "AUTHOR"
 msgstr "AUTEUR"
 
 # type: Plain text
-#: en/linkchecker.1:324
+#: en/linkchecker.1:325
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>\n"
@@ -1062,6 +1062,17 @@ msgstr ""
 "\n"
 "N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute "
 "erreur dans cette page de manuel."
+
+# type: SH
+#: en/linkchecker.1:326
+#, no-wrap
+msgid "COPYRIGHT"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:327
+msgid "Copyright \\(co 2000-2005 Bastian Kleineidam"
+msgstr ""
 
 # type: Plain text
 #, fuzzy
