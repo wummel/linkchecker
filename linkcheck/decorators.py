@@ -41,6 +41,18 @@ import os
 import sys
 import time
 
+def update_func_meta (fake_func, real_func):
+    """
+    Set meta information (eg. __doc__) of fake function to that
+    of the real function.
+    @return fake_func
+    """
+    fake_func.__module__ = real_func.__module__
+    fake_func.__name__ = real_func.__name__
+    fake_func.__doc__ = real_func.__doc__
+    fake_func.__dict__.update(real_func.__dict__)
+    return fake_func
+
 
 def deprecated (func):
     """
@@ -54,11 +66,7 @@ def deprecated (func):
         warnings.warn("Call to deprecated function %s." % func.__name__,
                       category=DeprecationWarning)
         return func(*args, **kwargs)
-    newfunc.__name__ = func.__name__
-    if func.__doc__ is not None:
-        newfunc.__doc__ += func.__doc__
-    newfunc.__dict__.update(func.__dict__)
-    return newfunc
+    return update_func_meta(newfunc, func)
 
 
 def signal_handler (signal_number):
@@ -99,23 +107,14 @@ def _synchronized (lock, func):
             return func(*args, **kwargs)
         finally:
             lock.release()
-    newfunc.__name__ = func.__name__
-    if func.__doc__ is not None:
-        newfunc.__doc__ += func.__doc__
-    newfunc.__dict__.update(func.__dict__)
-    return newfunc
+    return update_func_meta(newfunc, func)
 
 
 def synchronized (lock):
     """
     A decorator calling a function with aqcuired lock.
     """
-    def newfunc (function):
-        """
-        Execute function synchronized.
-        """
-        return _synchronized(lock, function)
-    return newfunc
+    return lambda func: _synchronized(lock, func)
 
 
 def notimplemented (func):
@@ -128,11 +127,7 @@ def notimplemented (func):
         Raise NotImplementedError
         """
         raise NotImplementedError("%s not implemented" % func.__name__)
-    newfunc.__name__ = func.__name__
-    if func.__doc__ is not None:
-        newfunc.__doc__ = func.__doc__
-    newfunc.__dict__.update(func.__dict__)
-    return newfunc
+    return update_func_meta(newfunc, func)
 
 
 def timeit (func, log=sys.stderr):
@@ -146,8 +141,4 @@ def timeit (func, log=sys.stderr):
         t = time.time()
         func(*args, **kwargs)
         print >>log, func.__name__, "took %0.2f seconds" % (time.time() - t)
-    newfunc.__name__ = func.__name__
-    if func.__doc__ is not None:
-        newfunc.__doc__ = func.__doc__
-    newfunc.__dict__.update(func.__dict__)
-    return newfunc
+    return update_func_meta(newfunc, func)
