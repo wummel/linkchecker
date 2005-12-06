@@ -9,7 +9,7 @@ LinkChecker - check websites and HTML documents for broken links
 .. contents::
 
 The latest version of this document is available at
-http://linkchecker.sf.net/.
+http://linkchecker.sourceforge.net/.
 
 Features
 ========
