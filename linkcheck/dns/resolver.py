@@ -300,6 +300,7 @@ class Resolver(object):
           'localhost',
           'loopback',
           '127.0.0.1',
+          '0.0.0.0',
           '::1',
           'ip6-localhost',
           'ip6-loopback',
@@ -738,5 +739,5 @@ def zone_for_name(name, rdclass=linkcheck.dns.rdataclass.IN,
         except (linkcheck.dns.resolver.NXDOMAIN, linkcheck.dns.resolver.NoAnswer):
             try:
                 name = name.parent()
-            except NoParent:
-                raise NoRootSoa
+            except linkcheck.dns.name.NoParent:
+                raise NoRootSOA
