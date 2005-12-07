@@ -20,7 +20,6 @@ Define standard test support classes funtional for LinkChecker tests.
 
 import os
 import codecs
-import unittest
 import difflib
 
 import linkcheck
