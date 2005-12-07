@@ -1,4 +1,0 @@
-url file://%(curdir)s/linkcheck/ftests/data/norobots.html
-cache key file://%(curdir)s/linkcheck/ftests/data/norobots.html
-real url file://%(curdir)s/linkcheck/ftests/data/norobots.html
-valid
