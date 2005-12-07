@@ -20,9 +20,9 @@ Test mail checking.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
-class TestMail (linkcheck.ftests.StandardTest):
+class TestMail (linkcheck.checker.tests.StandardTest):
     """
     Test mailto: link checking.
     """

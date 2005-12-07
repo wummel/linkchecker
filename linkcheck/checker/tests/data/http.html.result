@@ -1,6 +1,6 @@
-url http://localhost:8001/linkcheck/ftests/data/http.html
-cache key http://localhost:8001/linkcheck/ftests/data/http.html
-real url http://localhost:8001/linkcheck/ftests/data/http.html
+url http://localhost:8001/%(datadir)s/http.html
+cache key http://localhost:8001/%(datadir)s/http.html
+real url http://localhost:8001/%(datadir)s/http.html
 valid
 
 url http://www.garantiertnixgutt.bla/
@@ -96,29 +96,29 @@ warning Base URL is not properly normed. Normed URL is http://localhost:8001/?qu
 valid
 
 url  (cached)
-cache key http://localhost:8001/linkcheck/ftests/data/http.html
-real url http://localhost:8001/linkcheck/ftests/data/http.html
+cache key http://localhost:8001/%(datadir)s/http.html
+real url http://localhost:8001/%(datadir)s/http.html
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/linkcheck/ftests/data/http.html
-real url http://localhost:8001/linkcheck/ftests/data/http.html
+cache key http://localhost:8001/%(datadir)s/http.html
+real url http://localhost:8001/%(datadir)s/http.html
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/linkcheck/ftests/data/http.html
-real url http://localhost:8001/linkcheck/ftests/data/http.html
+cache key http://localhost:8001/%(datadir)s/http.html
+real url http://localhost:8001/%(datadir)s/http.html
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/linkcheck/ftests/data/http.html
-real url http://localhost:8001/linkcheck/ftests/data/http.html
+cache key http://localhost:8001/%(datadir)s/http.html
+real url http://localhost:8001/%(datadir)s/http.html
 name CSS urls
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/linkcheck/ftests/data/http.html
-real url http://localhost:8001/linkcheck/ftests/data/http.html
+cache key http://localhost:8001/%(datadir)s/http.html
+real url http://localhost:8001/%(datadir)s/http.html
 name CSS urls
 valid
 

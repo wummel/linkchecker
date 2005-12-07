@@ -20,11 +20,11 @@ Test news checking.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 import linkcheck.url
 
 
-class TestNews (linkcheck.ftests.StandardTest):
+class TestNews (linkcheck.checker.tests.StandardTest):
     """
     Test nntp: and news: link checking.
     """

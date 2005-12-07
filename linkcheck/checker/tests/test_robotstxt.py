@@ -20,10 +20,10 @@ Test HTML robots.txt parsing.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
 
-class TestRobotsTxt (linkcheck.ftests.StandardTest):
+class TestRobotsTxt (linkcheck.checker.tests.StandardTest):
     """
     Test robots.txt directive parsing in HTML files.
     """

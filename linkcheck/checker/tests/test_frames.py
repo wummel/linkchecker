@@ -20,9 +20,9 @@ Test html <frame> tag parsing.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
-class TestFrames (linkcheck.ftests.StandardTest):
+class TestFrames (linkcheck.checker.tests.StandardTest):
     """
     Test link checking of HTML framesets.
     """

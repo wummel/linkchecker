@@ -29,6 +29,7 @@ import linkcheck.checker.cache
 import linkcheck.checker.consumer
 import linkcheck.configuration
 import linkcheck.logger
+from tests import StandardTest
 
 
 class TestLogger (linkcheck.logger.Logger):
@@ -110,19 +111,10 @@ def get_test_consumer (confargs, logargs):
     return linkcheck.checker.consumer.Consumer(config, cache)
 
 
-class StandardTest (unittest.TestCase):
+class LinkCheckTest (StandardTest):
     """
     Functional test class with ability to test local files.
     """
-
-    def setUp (self):
-        """
-        Check resources, using the provided function check_resources()
-        from test.py.
-        """
-        super(StandardTest, self).setUp()
-        if hasattr(self, "needed_resources"):
-            self.check_resources(self.needed_resources)
 
     def norm (self, url):
         """
@@ -134,7 +126,8 @@ class StandardTest (unittest.TestCase):
         """
         Get file name located within 'data' directory.
         """
-        return unicode(os.path.join("linkcheck", "ftests", "data", filename))
+        return unicode(os.path.join("linkcheck", "checker", "tests",
+                                    "data", filename))
 
     def get_resultlines (self, filename):
         """
@@ -142,7 +135,9 @@ class StandardTest (unittest.TestCase):
         ignoring empty lines and lines starting with a hash sign (#).
         """
         resultfile = self.get_file(filename+".result")
-        d = {'curdir': os.getcwd()}
+        d = {'curdir': os.getcwd(),
+             'datadir': 'linkcheck/checker/tests/data',
+            }
         f = codecs.open(resultfile, "r", "iso-8859-15")
         resultlines = [line.rstrip('\r\n') % d for line in f \
                        if line.strip() and not line.startswith(u'#')]

@@ -23,7 +23,7 @@ import BaseHTTPServer
 import httplib
 import time
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
 
 class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler, object):
@@ -88,7 +88,7 @@ class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
         super(NoQueryHttpRequestHandler, self).do_HEAD()
 
 
-class HttpServerTest (linkcheck.ftests.StandardTest):
+class HttpServerTest (linkcheck.checker.tests.StandardTest):
     """
     Start/stop an HTTP server that can be used for testing.
     """

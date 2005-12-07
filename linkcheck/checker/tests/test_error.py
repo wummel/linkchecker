@@ -20,11 +20,11 @@ Test error checking.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 import linkcheck.url
 
 
-class TestError (linkcheck.ftests.StandardTest):
+class TestError (linkcheck.checker.tests.StandardTest):
     """
     Test unrecognized or syntactically wrong links.
     """

@@ -20,9 +20,9 @@ Test miscellaneous html tag parsing.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
-class TestMisc (linkcheck.ftests.StandardTest):
+class TestMisc (linkcheck.checker.tests.StandardTest):
     """
     Test link checking of HTML tags.
     """

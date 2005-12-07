@@ -20,9 +20,9 @@ Test news checking.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
-class TestHttps (linkcheck.ftests.StandardTest):
+class TestHttps (linkcheck.checker.tests.StandardTest):
     """
     Test https: link checking.
     """

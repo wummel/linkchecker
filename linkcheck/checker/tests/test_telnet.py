@@ -20,10 +20,10 @@ Test telnet checking.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
 
-class TestTelnet (linkcheck.ftests.StandardTest):
+class TestTelnet (linkcheck.checker.tests.StandardTest):
     """
     Test telnet: link checking.
     """

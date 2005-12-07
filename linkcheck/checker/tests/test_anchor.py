@@ -20,10 +20,10 @@ Test html anchor parsing and checking.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
 
-class TestAnchor (linkcheck.ftests.StandardTest):
+class TestAnchor (linkcheck.checker.tests.StandardTest):
     """
     Test anchor checking of HTML pages.
     """

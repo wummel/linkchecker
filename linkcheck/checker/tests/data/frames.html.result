@@ -1,14 +1,14 @@
-url file://%(curdir)s/linkcheck/ftests/data/frames.html
-cache key file://%(curdir)s/linkcheck/ftests/data/frames.html
-real url file://%(curdir)s/linkcheck/ftests/data/frames.html
+url file://%(curdir)s/%(datadir)s/frames.html
+cache key file://%(curdir)s/%(datadir)s/frames.html
+real url file://%(curdir)s/%(datadir)s/frames.html
 valid
 
 url frames.html (cached)
-cache key file://%(curdir)s/linkcheck/ftests/data/frames.html
-real url file://%(curdir)s/linkcheck/ftests/data/frames.html
+cache key file://%(curdir)s/%(datadir)s/frames.html
+real url file://%(curdir)s/%(datadir)s/frames.html
 valid
 
 url frames.html (cached)
-cache key file://%(curdir)s/linkcheck/ftests/data/frames.html
-real url file://%(curdir)s/linkcheck/ftests/data/frames.html
+cache key file://%(curdir)s/%(datadir)s/frames.html
+real url file://%(curdir)s/%(datadir)s/frames.html
 valid

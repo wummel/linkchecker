@@ -21,10 +21,10 @@ Test file parsing.
 import unittest
 import os
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
 
-class TestFile (linkcheck.ftests.StandardTest):
+class TestFile (linkcheck.checker.tests.StandardTest):
     """
     Test file:// link checking (and file content parsing).
     """
@@ -64,7 +64,7 @@ class TestFile (linkcheck.ftests.StandardTest):
         Test some direct file links.
         """
         attrs = {'curdir': os.getcwd(),
-                 'datadir': 'linkcheck/ftests/data',
+                 'datadir': 'linkcheck/checker/tests/data',
                 }
         # good file
         url = u"file://%(curdir)s/%(datadir)s/file.txt" % attrs

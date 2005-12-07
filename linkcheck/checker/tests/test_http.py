@@ -22,10 +22,10 @@ import unittest
 import os
 import re
 
-import linkcheck.ftests.httptest
+import linkcheck.checker.tests.httptest
 
 
-class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
+class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
     """
     Test http:// link checking.
     """
@@ -33,7 +33,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
     def test_html (self):
         try:
             self.start_server(handler=RedirectHttpRequestHandler)
-            url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
+            url = u"http://localhost:%d/linkcheck/checker/tests/data/http.html" % \
                   self.port
             resultlines = self.get_resultlines("http.html")
             self.direct(url, resultlines, recursionlevel=1, cmdline=True)
@@ -78,7 +78,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
             u"error",
         ]
         self.direct(url, resultlines, recursionlevel=0, cmdline=True)
-        url = u"http://localhost:%d/linkcheck/ftests/data/redirect.html" % \
+        url = u"http://localhost:%d/linkcheck/checker/tests/data/redirect.html" % \
               self.port
         nurl = url
         rurl = url.replace("redirect", "newurl")
@@ -107,7 +107,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
         """
         os.environ["http_proxy"] = "http://imadoofus:8877"
         confargs = {"noproxyfor": [re.compile("localhost")]}
-        url = u"http://localhost:%d/linkcheck/ftests/data/http.html" % \
+        url = u"http://localhost:%d/linkcheck/checker/tests/data/http.html" % \
               self.port
         nurl = url
         resultlines = [
@@ -122,7 +122,7 @@ class TestHttp (linkcheck.ftests.httptest.HttpServerTest):
         del os.environ["http_proxy"]
 
 
-class RedirectHttpRequestHandler (linkcheck.ftests.httptest.NoQueryHttpRequestHandler):
+class RedirectHttpRequestHandler (linkcheck.checker.tests.httptest.NoQueryHttpRequestHandler):
     """
     Handler redirecting certain requests.
     """

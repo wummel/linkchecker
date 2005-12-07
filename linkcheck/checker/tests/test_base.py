@@ -20,9 +20,9 @@ Test html <base> tag parsing.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
-class TestBase (linkcheck.ftests.StandardTest):
+class TestBase (linkcheck.checker.tests.StandardTest):
     """
     Test links of base*.html files.
     """

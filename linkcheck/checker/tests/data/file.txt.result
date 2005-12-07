@@ -1,4 +1,4 @@
-url file://%(curdir)s/linkcheck/ftests/data/file.txt
-cache key file://%(curdir)s/linkcheck/ftests/data/file.txt
-real url file://%(curdir)s/linkcheck/ftests/data/file.txt
+url file://%(curdir)s/%(datadir)s/file.txt
+cache key file://%(curdir)s/%(datadir)s/file.txt
+real url file://%(curdir)s/%(datadir)s/file.txt
 valid

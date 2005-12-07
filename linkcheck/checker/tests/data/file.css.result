@@ -1,14 +1,14 @@
-url file://%(curdir)s/linkcheck/ftests/data/file.css
-cache key file://%(curdir)s/linkcheck/ftests/data/file.css
-real url file://%(curdir)s/linkcheck/ftests/data/file.css
+url file://%(curdir)s/%(datadir)s/file.css
+cache key file://%(curdir)s/%(datadir)s/file.css
+real url file://%(curdir)s/%(datadir)s/file.css
 valid
 
 url file.html
-cache key file://%(curdir)s/linkcheck/ftests/data/file.html
-real url file://%(curdir)s/linkcheck/ftests/data/file.html
+cache key file://%(curdir)s/%(datadir)s/file.html
+real url file://%(curdir)s/%(datadir)s/file.html
 valid
 
 url file.html (cached)
-cache key file://%(curdir)s/linkcheck/ftests/data/file.html
-real url file://%(curdir)s/linkcheck/ftests/data/file.html
+cache key file://%(curdir)s/%(datadir)s/file.html
+real url file://%(curdir)s/%(datadir)s/file.html
 valid

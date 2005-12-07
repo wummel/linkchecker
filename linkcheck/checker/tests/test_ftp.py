@@ -20,10 +20,10 @@ Test ftp checking.
 
 import unittest
 
-import linkcheck.ftests
+import linkcheck.checker.tests
 
 
-class TestFtp (linkcheck.ftests.StandardTest):
+class TestFtp (linkcheck.checker.tests.StandardTest):
     """
     Test ftp: link checking.
     """
