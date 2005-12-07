@@ -40,7 +40,7 @@ class TestUrlBuild (unittest.TestCase):
     """
 
     def test_http_build (self):
-        parent_url = "http://localhost:8001/linkcheck/ftests/data/http.html"
+        parent_url = "http://localhost:8001/linkcheck/checker/tests/data/http.html"
         base_url = "http://"
         recursion_level = 0
         consumer = get_test_consumer()
