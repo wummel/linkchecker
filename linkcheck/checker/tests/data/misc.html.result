@@ -1,0 +1,23 @@
+url 
+cache key None
+real url None
+error
+url file://%(curdir)s/linkcheck/ftests/data/misc.html
+cache key file://%(curdir)s/linkcheck/ftests/data/misc.html
+real url file://%(curdir)s/linkcheck/ftests/data/misc.html
+valid
+
+url http://localhost:8001/
+cache key http://localhost:8001/
+real url http://localhost:8001/
+error
+
+url favicon.ico
+cache key file://%(curdir)s/linkcheck/ftests/data/favicon.ico
+real url file://%(curdir)s/linkcheck/ftests/data/favicon.ico
+valid
+
+url favicon.ico (cached)
+cache key file://%(curdir)s/linkcheck/ftests/data/favicon.ico
+real url file://%(curdir)s/linkcheck/ftests/data/favicon.ico
+valid
