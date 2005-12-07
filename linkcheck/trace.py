@@ -79,10 +79,10 @@ def _trace_line (frame, event, arg):
     """
     name = frame.f_globals["__name__"]
     if name in _trace_ignore:
-        return _traceit
+        return _trace_line
     for pat in _trace_filter:
         if not pat.match(name):
-            return _traceit
+            return _trace_line
     lineno = frame.f_lineno
     filename = frame.f_globals["__file__"]
     if filename.endswith(".pyc") or filename.endswith(".pyo"):
