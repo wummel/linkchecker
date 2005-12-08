@@ -1,4 +1,5 @@
 #!/bin/sh
 # network device, change as appropriate
-RESOURCES=`test/resources.sh`
-test/run.sh test.py $RESOURCES --coverage -pvcw "$@"
+P=`dirname $0`
+RESOURCES=`$P/resources.sh`
+$P/run.sh test.py $RESOURCES --coverage -pvcw "$@"
