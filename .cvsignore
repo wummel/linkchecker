@@ -7,11 +7,10 @@ MANIFEST
 VERSION
 VERSION-DEVEL
 _linkchecker_configdata.py
-*.pyc
-*.pyo
 js
 locale
 share
 Packages.gz
 *.prof
 linkchecker-md5sums.txt
+coverage
