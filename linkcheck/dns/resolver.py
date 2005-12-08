@@ -591,7 +591,9 @@ class Resolver(object):
             backoff = 0.10
             while response is None:
                 if len(nameservers) == 0:
-                    raise NoNameservers, "No DNS servers could answer the query"
+                    raise NoNameservers, \
+                      "No DNS servers %s could answer the query %s" % \
+                      (str(self.nameservers), str(qname))
                 for nameserver in nameservers:
                     timeout = self._compute_timeout(start)
                     try:
