@@ -22,7 +22,7 @@ import unittest
 
 import linkcheck.checker.tests
 
-class TestMisc (linkcheck.checker.tests.StandardTest):
+class TestMisc (linkcheck.checker.tests.LinkCheckTest):
     """
     Test link checking of HTML tags.
     """

@@ -88,7 +88,7 @@ class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
         super(NoQueryHttpRequestHandler, self).do_HEAD()
 
 
-class HttpServerTest (linkcheck.checker.tests.StandardTest):
+class HttpServerTest (linkcheck.checker.tests.LinkCheckTest):
     """
     Start/stop an HTTP server that can be used for testing.
     """

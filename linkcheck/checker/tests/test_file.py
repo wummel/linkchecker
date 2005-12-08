@@ -24,7 +24,7 @@ import os
 import linkcheck.checker.tests
 
 
-class TestFile (linkcheck.checker.tests.StandardTest):
+class TestFile (linkcheck.checker.tests.LinkCheckTest):
     """
     Test file:// link checking (and file content parsing).
     """

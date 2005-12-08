@@ -24,7 +24,7 @@ import linkcheck.checker.tests
 import linkcheck.url
 
 
-class TestNews (linkcheck.checker.tests.StandardTest):
+class TestNews (linkcheck.checker.tests.LinkCheckTest):
     """
     Test nntp: and news: link checking.
     """

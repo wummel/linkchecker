@@ -24,7 +24,7 @@ import linkcheck.checker.tests
 import linkcheck.url
 
 
-class TestError (linkcheck.checker.tests.StandardTest):
+class TestError (linkcheck.checker.tests.LinkCheckTest):
     """
     Test unrecognized or syntactically wrong links.
     """

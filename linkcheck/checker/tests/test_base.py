@@ -22,7 +22,7 @@ import unittest
 
 import linkcheck.checker.tests
 
-class TestBase (linkcheck.checker.tests.StandardTest):
+class TestBase (linkcheck.checker.tests.LinkCheckTest):
     """
     Test links of base*.html files.
     """

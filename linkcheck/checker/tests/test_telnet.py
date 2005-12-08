@@ -23,7 +23,7 @@ import unittest
 import linkcheck.checker.tests
 
 
-class TestTelnet (linkcheck.checker.tests.StandardTest):
+class TestTelnet (linkcheck.checker.tests.LinkCheckTest):
     """
     Test telnet: link checking.
     """

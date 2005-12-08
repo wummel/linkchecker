@@ -22,7 +22,7 @@ import unittest
 
 import linkcheck.checker.tests
 
-class TestMail (linkcheck.checker.tests.StandardTest):
+class TestMail (linkcheck.checker.tests.LinkCheckTest):
     """
     Test mailto: link checking.
     """

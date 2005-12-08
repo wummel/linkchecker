@@ -23,7 +23,7 @@ import unittest
 import linkcheck.checker.tests
 
 
-class TestRobotsTxt (linkcheck.checker.tests.StandardTest):
+class TestRobotsTxt (linkcheck.checker.tests.LinkCheckTest):
     """
     Test robots.txt directive parsing in HTML files.
     """

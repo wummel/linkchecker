@@ -22,7 +22,7 @@ import unittest
 
 import linkcheck.checker.tests
 
-class TestHttps (linkcheck.checker.tests.StandardTest):
+class TestHttps (linkcheck.checker.tests.LinkCheckTest):
     """
     Test https: link checking.
     """

@@ -23,7 +23,7 @@ import unittest
 import linkcheck.checker.tests
 
 
-class TestFtp (linkcheck.checker.tests.StandardTest):
+class TestFtp (linkcheck.checker.tests.LinkCheckTest):
     """
     Test ftp: link checking.
     """

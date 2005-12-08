@@ -23,7 +23,7 @@ import unittest
 import linkcheck.checker.tests
 
 
-class TestAnchor (linkcheck.checker.tests.StandardTest):
+class TestAnchor (linkcheck.checker.tests.LinkCheckTest):
     """
     Test anchor checking of HTML pages.
     """

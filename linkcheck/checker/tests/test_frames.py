@@ -22,7 +22,7 @@ import unittest
 
 import linkcheck.checker.tests
 
-class TestFrames (linkcheck.checker.tests.StandardTest):
+class TestFrames (linkcheck.checker.tests.LinkCheckTest):
     """
     Test link checking of HTML framesets.
     """
