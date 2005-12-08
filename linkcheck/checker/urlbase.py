@@ -192,11 +192,11 @@ class UrlBase (object):
         """
         self.warnings.append((tag, s))
 
-    def add_info (self, s):
+    def add_info (self, s, tag=None):
         """
         Add an info string.
         """
-        self.info.append(s)
+        self.info.append((tag, s))
 
     def copy_from_cache (self, cache_data):
         """
@@ -221,6 +221,13 @@ class UrlBase (object):
                 "dltime": self.dltime,
                 "dlsize": self.dlsize,
                }
+
+    def get_alias_cache_data (self):
+        """
+        Return all data values that should be put in the cache.
+        Intended to be overridden by subclasses that handle aliases.
+        """
+        return self.get_cache_data()
 
     def set_cache_keys (self):
         """

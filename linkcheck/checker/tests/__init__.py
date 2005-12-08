@@ -74,7 +74,7 @@ class TestLogger (linkcheck.logger.Logger):
             self.result.append(u"baseurl %s" % url_data.base_ref)
         if self.has_part('info'):
             for info in url_data.info:
-                self.result.append(u"info %s" % info)
+                self.result.append(u"info %s" % info[1])
         if self.has_part('warning'):
             for warning in url_data.warnings:
                 self.result.append(u"warning %s" % warning[1])
@@ -182,6 +182,6 @@ class LinkCheckTest (StandardTest):
         linkcheck.checker.check_urls(consumer)
         if consumer.config('logger').diff:
             sep = unicode(os.linesep)
-            l = [url] + consumer.config('logger').diff
-            l = sep.join(l)
-            self.fail(l.encode("iso8859-1", "ignore"))
+            l = [u"Differences found testing %s" % url]
+            l.extend(x.rstrip() for x in consumer.config('logger').diff[2:])
+            self.fail(sep.join(l).encode("iso8859-1", "ignore"))

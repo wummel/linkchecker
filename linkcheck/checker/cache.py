@@ -30,7 +30,7 @@ import linkcheck.threader
 import linkcheck.checker.pool
 
 
-def _check_morsel (m, host, path):
+def check_morsel (m, host, path):
     """
     Check given cookie morsel against the desired host and path.
     """
@@ -167,6 +167,14 @@ class Cache (object):
         # move entry from self.in_progress to self.checked
         del self.in_progress[key]
         self.checked[key] = data
+        # check for aliases (eg. through HTTP redirections)
+        if hasattr(url_data, "aliases"):
+            data = url_data.get_alias_cache_data()
+            for key in url_data.aliases:
+                if key not in self.checked and key not in self.in_progress:
+                    linkcheck.log.debug(linkcheck.LOG_CACHE,
+                                        "Caching alias %r", key)
+                    self.checked[key] = data
 
     def checked_redirect (self, redirect, url_data):
         """
@@ -236,7 +244,7 @@ class Cache (object):
             return []
         cookievals = []
         for m in self.cookies[host].values():
-            val = _check_morsel(m, host, path)
+            val = check_morsel(m, host, path)
             if val:
                 cookievals.append(val)
         return cookievals

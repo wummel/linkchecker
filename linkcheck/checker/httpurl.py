@@ -304,7 +304,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             newurl = linkcheck.strformat.unicode_safe(newurl)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
                                 newurl)
-            self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
+            self.add_info(_("Redirected to %(url)s.") % {'url': newurl},
+                          tag="http-redirect")
             redirected, is_idn = linkcheck.url.url_norm(newurl)
             linkcheck.log.debug(linkcheck.LOG_CHECK, "Norm redirected to %r",
                                 redirected)
@@ -375,6 +376,18 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             response = self._get_http_response()
             tries += 1
         return tries, response
+
+    def get_alias_cache_data (self):
+        """
+        Return all data values that should be put in the cache,
+        minus redirection warnings.
+        """
+        data = self.get_cache_data()
+        warns = [x for x in self.warnings if x[0] != "http-moved-permanent"]
+        data["warnings"] = warns
+        infos = [x for x in self.info if x[0] != "http-redirect"]
+        data["info"] = infos
+        return data
 
     def check_response (self, response):
         """
