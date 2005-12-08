@@ -22,21 +22,11 @@ SchoolTool test runner.
 
 Syntax: test.py [options] [pathname-regexp [test-regexp]]
 
-There are two kinds of tests:
-  - unit tests (or programmer tests) test the internal workings of various
-    components of the system
-  - functional tests (acceptance tests, customer tests) test only externaly
-    visible system behaviour
-
-You can choose to run unit tests (this is the default mode), functional tests
-(by giving a -f option to test.py) or both (by giving both -u and -f options).
-
 Test cases are located in the directory tree starting at the location of this
-script, in subdirectories named 'tests' for unit tests and 'ftests' for
-functional tests, in Python modules named 'test*.py'.  They are then filtered
-according to pathname and test regexes.  Alternatively, packages may just have
-'tests.py' and 'ftests.py' instead of subpackages 'tests' and 'ftests'
-respectively.
+script, in subdirectories named 'tests' and in Python modules named
+'test*.py'. They are then filtered according to pathname and test regexes.
+Alternatively, packages may just have 'tests.py' instead of a subpackage
+'tests'.
 
 A leading "!" in a regexp is stripped and negates the regexp.  Pathname
 regexp is applied to the whole path (package/package/module.py). Test regexp
@@ -52,8 +42,6 @@ Options:
   -d                    invoke pdb when an exception occurs
   -1                    report only the first failure in doctests
   -p                    show progress bar (can be combined with -v or -vv)
-  -u                    select unit tests (default)
-  -f                    select functional tests
   --level n             select only tests at level n or lower
   --all-levels          select all tests
   --list-files          list all selected test files
@@ -62,7 +50,7 @@ Options:
   --coverage            create code coverage reports
   --search-in dir       limit directory tree walk to dir (optimisation)
   --immediate-errors    show errors as soon as they happen (default)
-  --delayed-errors      show errors after all unit tests were run
+  --delayed-errors      show errors after all tests were run
   --resource name       enable given resource
 """
 #
@@ -124,10 +112,6 @@ class Options:
                                 # followed? (hardcoded, may cause loops)
     # available resources
     resources = []
-
-    # which tests to run
-    unit_tests = False          # unit tests (default if both are false)
-    functional_tests = False    # functional tests
 
     # test filtering
     level = 1                   # run only tests at this or lower level
@@ -210,11 +194,7 @@ def get_test_files(cfg):
     """Return a list of test module filenames."""
     matcher = compile_matcher(cfg.pathname_regex)
     allresults = []
-    test_names = []
-    if cfg.functional_tests:
-        test_names.append('ftests')
-    if cfg.unit_tests:
-        test_names.append('tests')
+    test_names = ['tests']
     baselen = len(cfg.basedir) + 1
     def visit(ignored, dir, files):
         # Ignore files starting with a dot.
@@ -231,7 +211,7 @@ def get_test_files(cfg):
         remove.reverse()
         for idx in remove:
             del files[idx]
-        # Skip non-test directories, but look for tests.py and/or ftests.py
+        # Skip non-test directories, but look for tests.py
         if not has_path_component(dir, test_name):
             if test_name + '.py' in files:
                 path = os.path.join(dir, test_name + '.py')
@@ -376,9 +356,6 @@ def get_test_hooks(test_files, cfg, tracer=None):
     """Return a list of test hooks from a given list of test modules."""
     results = []
     dirs = Set(map(os.path.dirname, test_files))
-    for dir in list(dirs):
-        if os.path.basename(dir) == 'ftests':
-            dirs.add(os.path.join(os.path.dirname(dir), 'tests'))
     dirs = list(dirs)
     dirs.sort()
     for dir in dirs:
@@ -901,7 +878,7 @@ def main(argv):
 
     # Option processing
     try:
-        opts, args = getopt.gnu_getopt(argv[1:], 'hvpcqufwd1s:',
+        opts, args = getopt.gnu_getopt(argv[1:], 'hvpcqwd1s:',
                                ['list-files', 'list-tests', 'list-hooks',
                                 'level=', 'all-levels', 'coverage',
                                 'search-in=', 'immediate-errors',
@@ -928,10 +905,6 @@ def main(argv):
             cfg.verbosity = 0
             cfg.progress = False
             cfg.quiet = True
-        elif k == '-u':
-            cfg.unit_tests = True
-        elif k == '-f':
-            cfg.functional_tests = True
         elif k == '-d':
             cfg.postmortem = True
         elif k == '-w':
@@ -984,8 +957,6 @@ def main(argv):
         print >> sys.stderr, '%s: too many arguments: %s' % (argv[0], args[2])
         print >> sys.stderr, 'run %s -h for help' % argv[0]
         return 1
-    if not cfg.unit_tests and not cfg.functional_tests:
-        cfg.unit_tests = True
 
     if not cfg.search_in:
         cfg.search_in = (cfg.basedir, )
