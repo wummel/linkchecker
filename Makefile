@@ -7,7 +7,7 @@ HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -t0
 PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
-TESTFILES := $(wildcard linkcheck/tests/*.py linkcheck/ftests/*.py)
+TESTFILES := $(wildcard tests/*.py linkcheck/tests/*.py linkcheck/checker/tests/*.py)
 PYCHECKEROPTS := -F config/pycheckrc
 PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint.$(PYTHON)
 PYLINTOPTS := 
@@ -72,7 +72,7 @@ deb_signed: cleandeb
 
 .PHONY: files
 files:	locale localbuild
-	-test/run.sh linkchecker $(LCOPTS) http://$(HOST)/
+	-scripts/run.sh linkchecker $(LCOPTS) http://$(HOST)/
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
@@ -109,7 +109,7 @@ sign_distfiles:
 
 .PHONY: check
 check:	localbuild
-	test/test.sh
+	scripts/test.sh
 
 .PHONY: pycheck
 pycheck:
@@ -121,7 +121,7 @@ pylint:
 
 .PHONY: pyflakes
 pyflakes:
-	$(PYFLAKES) *.py test linkcheck | \
+	$(PYFLAKES) *.py scripts tests linkcheck | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'"
