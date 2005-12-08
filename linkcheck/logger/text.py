@@ -206,15 +206,16 @@ class TextLogger (linkcheck.logger.Logger):
         Write url_data.info.
         """
         self.write(self.part("info") + self.spaces("info"))
-        self.writeln(self.wrap(url_data.info, 65), color=self.colorinfo)
+        text = [x[1] for x in url_data.info]
+        self.writeln(self.wrap(text, 65), color=self.colorinfo)
 
     def write_warning (self, url_data):
         """
         Write url_data.warning.
         """
         self.write(self.part("warning") + self.spaces("warning"))
-        log_warnings = [x[1] for x in url_data.warnings]
-        self.writeln(self.wrap(log_warnings, 65), color=self.colorwarning)
+        text = [x[1] for x in url_data.warnings]
+        self.writeln(self.wrap(text, 65), color=self.colorwarning)
 
     def write_result (self, url_data):
         """

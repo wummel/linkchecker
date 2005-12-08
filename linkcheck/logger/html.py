@@ -242,7 +242,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.info.
         """
-        text = os.linesep.join(url_data.info)
+        text = sep.join([cgi.escape(x[1]) for x in url_data.info])
         self.writeln(u"<tr><td valign=\"top\">"+self.part("info")+
                u"</td><td>"+cgi.escape(text).replace(os.linesep, "<br>")+
                u"</td></tr>")
