@@ -1,13 +1,12 @@
 .\" This file was generated with po4a. Translate the source file.
 .\" 
-.TH LINKCHECKER 1 "10. März 2001"  
-
+.TH linkchecker 1 2001\-03\-10 LinkChecker 
 .SH NAME
 linkchecker \- prüfe HTML Dokumente auf kaputte Verknüpfungen
-
+.
 .SH SYNTAX
-\fBlinkchecker\fP [ \fIOptionen\fP ] [ \fIDatei\-oder\-URL\fP ]...
-
+\fBlinkchecker\fP [\fIoptions\fP] [\fIfile\-or\-url\fP]...
+.
 .SH BESCHREIBUNG
 .LP
 LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen 
@@ -19,34 +18,32 @@ Ausdrücken, Proxy Unterstützung, Benutzer/Passwort Authentifizierung für
 HTTP und FTP, Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, 
 eine Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt 
 einen HTTP Server).
-
+.
 .SH BEISPIELE
 Der häufigste Gebrauchsfall prüft die angegebene Domäne rekursiv,
 inklusive aller einzelnen nach außen zeigenden Verknüpfungen:
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
-
-Beachten Sie dass dies die komplette Domäne überprüft welche aus mehreren 
-hunderttausend URLs bestehen kann. Benutzen Sie die Option \-r, um die 
-Rekursionstiefe zu beschränken.
-
+.br
+Beware that this checks the whole site which can have several hundred 
+thousands URLs. Use the \fB\-r\fP option to restrict the recursion depth.
+.br
 Keine Verbindungen zu \fBmailto:\fP Rechnern, nur die URL Syntax wird geprüft. Alle
 anderen Verknüpfungen werden wie üblich geprüft:
   \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
-
+.br
 Überprüfung einer lokalen HTML Datei unter Unix:
   \fBlinkchecker ../bla.html\fP
-
+.br
 Überprüfung einer lokalen HTML Datei unter Windows:
   \fBlinkchecker c:\etemp\etest.html\fP
-
+.br
 Sie können den \fBhttp://\fP URL Anteil weglassen wenn die Domäne mit \fBwww.\fP beginnt:
   \fBlinkchecker www.myhomepage.de\fP
-
+.br
 Sie können den \fBftp://\fP URL Anteil weglassen wenn die Domäne mit \fBftp.\fP beginnt:
   \fBlinkchecker \-r0 ftp.linux.org\fP
-
+.
 .SH OPTIONEN
-
 .SS "Allgemeine Optionen"
 .TP 
 \fB\-h\fP, \fB\-\-help\fP
@@ -75,7 +72,7 @@ ist.
 .TP 
 \fB\-V\fP, \fB\-\-version\fP
 Gebe die Version aus und beende das Programm.
-
+.
 .SS Ausgabeoptionen
 .TP 
 \fB\-v\fP, \fB\-\-verbose\fP
@@ -145,7 +142,7 @@ aktuellen Arbeitsverzeichnis. Siehe auch \fB\-\-viewprof\fP.
 .TP 
 \fB\-\-viewprof\fP
 Gebe vorher generierte Profiling\-Daten aus. Siehe auch \fB\-\-profile\fP.
-
+.
 .SS "Optionen zum Prüfen"
 .TP 
 \fB\-r\fP\fINUMMER\fP, \fB\-\-recursion\-level=\fP\fINUMMER\fP
@@ -203,7 +200,7 @@ lediglich auf korrekte Syntax des Links geprüft.
 Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt 
 und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals 
 angegeben werden.
-
+.
 .SH AUSGABETYPEN
 Beachten Sie, dass standardmäßig nur Fehler und Warnungen protokolliert 
 werden. Sie sollten die \fB\-\-verbose\fP Option benutzen, um eine komplette URL 
@@ -245,7 +242,7 @@ und die Anzahl der Fehlversuche enthält.
 .TP 
 \fBnone\fP
 Gibt nichts aus. Für Skripte geeignet.
-
+.
 .SH "REGULÄRE AUSDRÜCKE"
 Lediglich Pythons reguläre Ausdrücke werden von LinkChecker 
 akzeptiert. Siehe \fBhttp://www.amk.ca/python/howto/regex/\fP für eine 
@@ -253,13 +250,13 @@ Einführung in reguläre Ausdrücke.
 
 Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird 
 falls er mit einem Ausrufezeichen beginnt.
-
+.
 .SH "PROXY UNTERSTÜTZUNG"
 Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, 
 $ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL (zum 
 Beispiel http://localhost:8080). Auf einem Mac benutzen Sie die Internet 
 Konfiguration.
-
+.
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 
 behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können 
@@ -280,16 +277,16 @@ angeben.
 
 Beim Prüfen von \fBnews:\fP Links muß der angegebene NNTP Rechner nicht 
 unbedingt derselbe wie der des Benutzers sein.
-
+.
 .SH UMGEBUNG
 \fBNNTP_SERVER\fP \- gibt Standard NNTP Server an
-
+.br
 \fBhttp_proxy\fP \- gibt Standard HTTP Proxy an
-
+.br
 \fBftp_proxy\fP \- gibt Standard FTP Proxy an
-
+.br
 \fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP \- gibt Ausgabesprache an
-
+.
 .SH RÜCKGABEWERT
 Der Rückgabewert ist nicht Null falls
 .IP \(bu
@@ -298,24 +295,24 @@ ungültige Verknüpfungen gefunden wurden oder
 Warnungen gefunden wurden und Warnungen aktiviert sind
 .IP \(bu
 ein Programmfehler aufgetreten ist.
-
+.
 .SH DATEIEN
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \- 
 Standardkonfigurationsdateien
-
+.br
 \fB~/.linkchecker/blacklist\fP \- Standard Dateiname der blacklist Logger 
 Ausgabe
-
+.br
 \fBlinkchecker\-out.\fP\fITYP\fP \- Standard Dateiname der Logausgabe
-
+.br
 \fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- gültige Ausgabe 
 Enkodierungen
-
+.br
 \fBhttp://www.amk.ca/python/howto/regex/\fP \- Dokumentation zu regulären 
 Ausdrücken
-
+.
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>
-
+.
 .SH COPYRIGHT
 Copyright \(co 2000\-2005 Bastian Kleineidam

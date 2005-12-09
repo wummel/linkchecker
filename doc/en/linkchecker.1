@@ -1,17 +1,10 @@
-.TH LINKCHECKER 1 "10 March 2001"
-
+.TH linkchecker 1 2001-03-10 "LinkChecker"
 .SH NAME
 linkchecker - check HTML documents for broken links
-
+.
 .SH SYNOPSIS
-.B linkchecker
-[
-.I options
-]
-[
-.I file-or-url
-]...
-
+\fBlinkchecker\fP [\fIoptions\fP] [\fIfile-or-url\fP]...
+.
 .SH DESCRIPTION
 .LP
 LinkChecker features
@@ -28,33 +21,32 @@ robots.txt exclusion protocol support,
 i18n support,
 a command line interface and
 a (Fast)CGI web interface (requires HTTP server)
-
+.
 .SH EXAMPLES
 The most common use checks the given domain recursively, plus any
 URL pointing outside of the domain:
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
-
+.br
 Beware that this checks the whole site which can have several hundred
-thousands URLs. Use the \-r option to restrict the recursion depth.
-
+thousands URLs. Use the \fB\-r\fP option to restrict the recursion depth.
+.br
 Don't connect to \fBmailto:\fP hosts, only check their URL syntax. All other
 links are checked as usual:
   \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
-
+.br
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
-
+.br
 Checking a local HTML file on Windows:
   \fBlinkchecker c:\\temp\\test.html\fP
-
+.br
 You can skip the \fBhttp://\fP url part if the domain starts with \fBwww.\fP:
   \fBlinkchecker www.myhomepage.de\fP
-
+.br
 You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
   \fBlinkchecker \-r0 ftp.linux.org\fP
-
+.
 .SH OPTIONS
-
 .SS General options
 .TP
 \fB\-h\fP, \fB\-\-help\fP
@@ -72,22 +64,22 @@ Ask for URL if none are given on the commandline.
 Generate no more than the given number of threads. Default number
 of threads is 10. To disable threading specify a non-positive number.
 .TP
-\fB--priority\fP
+\fB\-\-priority\fP
 Run with normal thread scheduling priority. Per default LinkChecker runs
 with low thread priority to be suitable as a background job.
 .TP
-\fB--disable-psyco\fP
+\fB\-\-disable\-psyco\fP
 Do not use the psyco optimization module even if it is installed.
 .TP
 \fB\-V\fP, \fB\-\-version\fP
 Print version and exit.
-
+.
 .SS Output options
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
 Log all checked URLs. Default is to log only errors and warnings.
 .TP
-\fB\-\-no-warnings\fP
+\fB\-\-no\-warnings\fP
 Don't log warnings. Default is to log warnings.
 .TP
 \fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fIREGEX\fP
@@ -114,7 +106,7 @@ below.
 The \fIENCODING\fP specifies the output encoding, the default is
 that of your locale.
 Valid encodings are listed at
-\fBhttp://docs.python.org/lib/standard-encodings.html\fP.
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP.
 .TP
 \fB\-F\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP], \fB\-\-file\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP]
 Output to a file \fBlinkchecker\-out.\fP\fITYPE\fP,
@@ -123,7 +115,7 @@ Output to a file \fBlinkchecker\-out.\fP\fITYPE\fP,
 The \fIENCODING\fP specifies the output encoding, the default is
 that of your locale.
 Valid encodings are listed at
-\fBhttp://docs.python.org/lib/standard-encodings.html\fP.
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP.
 The \fIFILENAME\fP and \fIENCODING\fP parts of the \fBnone\fP output type
 will be ignored, else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types
@@ -158,7 +150,7 @@ in the current working directory. See also \fB\-\-viewprof\fP.
 \fB\-\-viewprof\fP
 Print out previously generated profiling data. See also
 \fB\-\-profile\fP.
-
+.
 .SS Checking options
 .TP
 \fB\-r\fP\fINUMBER\fP, \fB\-\-recursion\-level=\fP\fINUMBER\fP
@@ -214,7 +206,7 @@ only the syntax of the link is checked.
 \fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
 Contact hosts that match the given regular expression directly instead of
 going through a proxy. This option can be given multiple times.
-
+.
 .SH OUTPUT TYPES
 Note that by default only errors and warnings are logged.
 You should use the \fB\-\-verbose\fP option to get the complete URL list,
@@ -255,7 +247,7 @@ URLs and the number of times they have failed.
 .TP
 \fBnone\fP
 Logs nothing. Suitable for scripts.
-
+.
 .SH REGULAR EXPRESSIONS
 Only Python regular expressions are accepted by LinkChecker.
 See \fBhttp://www.amk.ca/python/howto/regex/\fP for an introduction in
@@ -263,12 +255,12 @@ regular expressions.
 
 The only addition is that a leading exclamation mark negates the regular
 expression.
-
+.
 .SH PROXY SUPPORT
 To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
 on Unix or Windows to the proxy URL (for example http://localhost:8080).
 On a Mac use the Internet Config.
-
+.
 .SH NOTES
 URLs on the commandline starting with \fBftp.\fP are treated like
 \fBftp://ftp.\fP, URLs starting with \fBwww.\fP are treated like
@@ -289,16 +281,16 @@ You can supply multiple user/password pairs in a configuration file.
 
 When checking \fBnews:\fP links the given NNTP host doesn't need to be the
 same as the host of the user browsing your pages.
-
+.
 .SH ENVIRONMENT
 \fBNNTP_SERVER\fP - specifies default NNTP server
-
+.br
 \fBhttp_proxy\fP - specifies default HTTP proxy server
-
+.br
 \fBftp_proxy\fP - specifies default FTP proxy server
-
+.br
 \fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP - specify output language
-
+.
 .SH RETURN VALUE
 The return value is non-zero when
 .IP \(bu
@@ -307,21 +299,21 @@ invalid links were found or
 link warnings were found and warnings are enabled
 .IP \(bu
 a program error occurred.
-
+.
 .SH FILES
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP - default
 configuration files
-
+.br
 \fB~/.linkchecker/blacklist\fP - default blacklist logger output filename
-
+.br
 \fBlinkchecker\-out.\fP\fITYPE\fP - default logger file output name
-
-\fBhttp://docs.python.org/lib/standard-encodings.html\fP - valid output encodings
-
+.br
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP - valid output encodings
+.br
 \fBhttp://www.amk.ca/python/howto/regex/\fP - regular expression documentation
-
+.
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>
-
+.
 .SH COPYRIGHT
 Copyright \(co 2000-2005 Bastian Kleineidam
