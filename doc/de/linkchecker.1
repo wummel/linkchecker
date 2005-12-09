@@ -1,11 +1,11 @@
 .\" This file was generated with po4a. Translate the source file.
 .\" 
-.TH linkchecker 1 2001\-03\-10 LinkChecker 
+.TH linkchecker 1 10.3.2001 LinkChecker 
 .SH NAME
 linkchecker \- prüfe HTML Dokumente auf kaputte Verknüpfungen
 .
 .SH SYNTAX
-\fBlinkchecker\fP [\fIoptions\fP] [\fIfile\-or\-url\fP]...
+\fBlinkchecker\fP [\fIOptionen\fP] [\fIDatei\-oder\-URL\fP]...
 .
 .SH BESCHREIBUNG
 .LP
@@ -24,8 +24,9 @@ Der häufigste Gebrauchsfall prüft die angegebene Domäne rekursiv,
 inklusive aller einzelnen nach außen zeigenden Verknüpfungen:
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
 .br
-Beware that this checks the whole site which can have several hundred 
-thousands URLs. Use the \fB\-r\fP option to restrict the recursion depth.
+Beachten Sie dass dies die komplette Domäne überprüft, welche aus 
+mehreren hunderttausend URLs bestehen kann. Benutzen Sie die Option \fB\-r\fP, 
+um die Rekursionstiefe zu beschränken.
 .br
 Keine Verbindungen zu \fBmailto:\fP Rechnern, nur die URL Syntax wird geprüft. Alle
 anderen Verknüpfungen werden wie üblich geprüft:
