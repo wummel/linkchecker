@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""
+Test gettext .po files.
+"""
 
 import os
 import glob
@@ -22,6 +25,9 @@ from tests import make_suite, StandardTest
 
 pofiles = None
 def set_pofiles ():
+    """
+    Find all .po files in this source.
+    """
     global pofiles
     if pofiles is None:
         pofiles = []
@@ -30,10 +36,15 @@ def set_pofiles ():
 
 
 class TestPo (StandardTest):
-
+    """
+    Test .po file syntax.
+    """
     needed_resources = ['posix', 'msgfmt']
 
     def test_pos (self):
+        """
+        Test .po files syntax.
+        """
         set_pofiles()
         for f in pofiles:
             ret = os.system("msgfmt -c -o - %s > /dev/null" % f)
@@ -41,8 +52,15 @@ class TestPo (StandardTest):
 
 
 class TestGTranslator (StandardTest):
+    """
+    GTranslator displays a middot · for a space. Unfortunately, it
+    gets copied with copy-and-paste, what a shame.
+    """
 
     def test_gtranslator (self):
+        """
+        Test all pofiles for GTranslator brokenness.
+        """
         set_pofiles()
         for f in pofiles:
             fd = file(f)
@@ -52,6 +70,9 @@ class TestGTranslator (StandardTest):
                 fd.close()
 
     def check_file (self, fd, f):
+        """
+        Test for GTranslator broken syntax.
+        """
         for line in fd:
             if line.strip().startswith("#"):
                 continue
