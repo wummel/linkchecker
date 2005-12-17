@@ -44,21 +44,9 @@ import linkcheck.checker.consumer
 import linkcheck.configuration
 import linkcheck.strformat
 # optional modules
-try:
-    import optcomplete
-    has_optcomplete = True
-except ImportError:
-    has_optcomplete = False
-try:
-    import profile
-    has_profile = True
-except ImportError:
-    has_profile = False
-try:
-    import pstats
-    has_pstats = True
-except ImportError:
-    has_pstats = False
+has_optcomplete = linkcheck.fileutil.has_module("optcomplete")
+has_profile = linkcheck.fileutil.has_module("profile")
+has_pstats = linkcheck.fileutil.has_module("pstats")
 
 # default profiling filename
 _profile = "linkchecker.prof"
@@ -182,10 +170,8 @@ def print_usage (msg):
     """
     Print a program msg text to stderr and exit.
     """
-    sys.stderr.write(encode(_("Error: %s") % msg))
-    sys.stderr.write(os.linesep)
-    sys.stderr.write(encode(_("Execute 'linkchecker -h' for help")))
-    sys.stderr.write(os.linesep)
+    print >>sys.stderr, encode(_("Error: %s") % msg)
+    print >>sys.stderr, encode(_("Execute 'linkchecker -h' for help"))
     sys.exit(1)
 
 
@@ -198,12 +184,11 @@ def viewprof ():
                            _("The `pstats' Python module is not installed,"
                            " therefore the --viewprof option is disabled."))
         sys.exit(1)
-    if not os.path.exists(_profile):
+    if not os.path.isfile(_profile):
         linkcheck.log.warn(linkcheck.LOG_CMDLINE,
                            _("Could not find profiling file %r.") % _profile)
-        sys.stderr.write(
-                  _("Please run linkchecker with --profile to generate it."))
-        sys.stderr.write(os.linesep)
+        print >>sys.stderr, \
+                   _("Please run linkchecker with --profile to generate it.")
         sys.exit(1)
     stats = pstats.Stats(_profile)
     stats.strip_dirs().sort_stats("cumulative").print_stats(100)
@@ -242,10 +227,10 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
         #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
         #   * the user-supplied help string
         #     eg. ("turn on expert mode", "read data from FILENAME")
-        #
+       
         # If possible, we write both of these on the same line:
         #   -x      turn on expert mode
-        #
+       
         # But if the opt string list is too long, we put the help
         # string on a second line, indented to the same column it would
         # start in if it fit on the first line.
@@ -484,6 +469,7 @@ optparser.add_option_group(group)
 
 ################# auto completion #####################
 if has_optcomplete:
+    import optcomplete
     optcomplete.autocomplete(optparser)
 
 # read and parse command line options and arguments
@@ -693,11 +679,11 @@ if do_profile and has_profile:
         try:
             raw_input(question)
         except KeyboardInterrupt:
-            sys.stderr.write(os.linesep)
-            sys.stderr.write(_("Canceled."))
-            sys.stderr.write(os.linesep)
+            print >>sys.stderr
+            print >>sys.stderr, _("Canceled.")
             run = False
     if run:
+        import profile
         profile.run("linkcheck.checker.check_urls(consumer)", _profile)
 elif options.psyco:
     try:
