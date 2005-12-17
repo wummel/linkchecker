@@ -15,14 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-package file
+Test utilities.
 """
 import unittest
 
 
 class StandardTest (unittest.TestCase):
     """
-    Functional test class with ability to test local files.
+    A test case with improved inequality test and resource support.
     """
 
     def setUp (self):
@@ -33,6 +33,18 @@ class StandardTest (unittest.TestCase):
         super(StandardTest, self).setUp()
         if hasattr(self, "needed_resources"):
             self.check_resources(self.needed_resources)
+
+    def failUnlessEqual (self, first, second, msg=None):
+        """
+        Define the first argument as the test value, and the second
+        one as the excpected value. Adjust the default error message
+        accordingly.
+        """
+        if msg is None:
+            msg = "got %r, expected %r" % (first, second)
+        super(StandardTest, self).failUnlessEqual(first, second, msg=msg)
+
+    assertEqual = assertEquals = failUnlessEqual
 
 
 def make_suite (prefix, namespace):

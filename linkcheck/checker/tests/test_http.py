@@ -32,9 +32,9 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
 
     def test_html (self):
         try:
-            self.start_server(handler=RedirectHttpRequestHandler)
-            url = u"http://localhost:%d/linkcheck/checker/tests/data/http.html" % \
-                  self.port
+            self.start_server(handler=CookieRedirectHttpRequestHandler)
+            url = u"http://localhost:%d/linkcheck/checker/tests/data/" \
+                  u"http.html" % self.port
             resultlines = self.get_resultlines("http.html")
             self.direct(url, resultlines, recursionlevel=1, cmdline=True)
             self.redirect_http_test()
@@ -122,10 +122,30 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
         del os.environ["http_proxy"]
 
 
-class RedirectHttpRequestHandler (linkcheck.checker.tests.httptest.NoQueryHttpRequestHandler):
+def get_cookie (maxage=2000):
+    data = (
+        ("Comment", "justatest"),
+        ("Max-Age", "%d" % maxage),
+        ("Path", "/"),
+        ("Version", "1"),
+        ("Foo", "Bar"),
+    )
+    parts = ['%s="%s"' % (key, value) for key, value in data]
+    return "; ".join(parts)
+
+
+class CookieRedirectHttpRequestHandler (linkcheck.checker.tests.httptest.NoQueryHttpRequestHandler):
     """
-    Handler redirecting certain requests.
+    Handler redirecting certain requests, and setting cookies.
     """
+
+    def end_headers (self):
+        """
+        Send cookie before ending headers.
+        """
+        self.send_header("Set-Cookie", get_cookie())
+        self.send_header("Set-Cookie", get_cookie(maxage=0))
+        super(CookieRedirectHttpRequestHandler, self).end_headers()
 
     def redirect (self):
         """
@@ -143,15 +163,15 @@ class RedirectHttpRequestHandler (linkcheck.checker.tests.httptest.NoQueryHttpRe
         if "redirect" in self.path:
             self.redirect()
         else:
-            super(RedirectHttpRequestHandler, self).do_GET()
+            super(CookieRedirectHttpRequestHandler, self).do_GET()
 
     def do_HEAD (self):
         if "redirect" in self.path:
             self.redirect()
         else:
-            super(RedirectHttpRequestHandler, self).do_HEAD()
+            super(CookieRedirectHttpRequestHandler, self).do_HEAD()
 
-class RedirectHttpsRequestHandler (RedirectHttpRequestHandler):
+class RedirectHttpsRequestHandler (CookieRedirectHttpRequestHandler):
 
     def redirect (self):
         """

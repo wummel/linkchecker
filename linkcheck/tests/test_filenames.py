@@ -20,10 +20,11 @@ Test filename routines.
 
 import unittest
 import os
+import tests
 from linkcheck.checker.fileurl import get_nt_filename
 
 
-class TestFilenames (unittest.TestCase):
+class TestFilenames (tests.StandardTest):
     """
     Test filename routines.
     """

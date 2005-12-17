@@ -104,6 +104,7 @@ def get_test_consumer (confargs, logargs):
     config["anchors"] = True
     config["verbose"] = True
     config['threads'] = 0
+    config['cookies'] = True
     config['geoip'] = None
     config.update(confargs)
     cache = linkcheck.checker.cache.Cache()
@@ -185,3 +186,4 @@ class LinkCheckTest (StandardTest):
             l = [u"Differences found testing %s" % url]
             l.extend(x.rstrip() for x in consumer.config('logger').diff[2:])
             self.fail(sep.join(l).encode("iso8859-1", "ignore"))
+

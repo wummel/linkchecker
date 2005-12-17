@@ -19,11 +19,11 @@ Test robots.txt parsing.
 """
 
 import unittest
-
+import tests
 import linkcheck.robotparser2
 
 
-class TestRobotParser (unittest.TestCase):
+class TestRobotParser (tests.StandardTest):
     """
     Test robots.txt parser (needs internet access).
     """

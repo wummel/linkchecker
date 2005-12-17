@@ -15,23 +15,5 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-Unit test utilities.
+Test package.
 """
-
-import unittest
-
-class MsgTestCase (unittest.TestCase):
-    """
-    A test case with improved inequality test.
-    """
-    def failUnlessEqual (self, first, second, msg=None):
-        """
-        Define the first argument as the test value, and the second
-        one as the excpected value. Adjust the default error message
-        accordingly.
-        """
-        if msg is None:
-            msg = "got %r, expected %r" % (first, second)
-        super(MsgTestCase, self).failUnlessEqual(first, second, msg=msg)
-
-    assertEqual = assertEquals = failUnlessEqual

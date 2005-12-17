@@ -21,8 +21,10 @@ Test linkparser routines.
 import unittest
 import linkcheck.linkparse
 import linkcheck.HtmlParser.htmlsax
+import tests
 
-class TestLinkparser (unittest.TestCase):
+
+class TestLinkparser (tests.StandardTest):
     """
     Test link parsing.
     """
