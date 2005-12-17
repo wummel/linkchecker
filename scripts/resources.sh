@@ -1,5 +1,6 @@
 #!/bin/sh
-NETDEV=eth1
+# network device, change as appropriate
+NETDEV=ppp0
 if ifconfig $NETDEV | grep RUNNING > /dev/null; then
     echo "--resource=network"
 fi
