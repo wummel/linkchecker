@@ -302,14 +302,14 @@ class CookieJar (set):
             try:
                 to_add.add(NetscapeCookie(h, scheme, host, path))
             except CookieError:
-                linkcheck.log.debug(linkcheck.LOG_CACHE,
+                assert linkcheck.log.debug(linkcheck.LOG_CACHE,
                "Invalid cookie header for %s:%s%s: %r", scheme, host, path, h)
         for h in headers.getallmatchingheaders("Set-Cookie2"):
             # RFC 2965 cookie type
             try:
                 to_add.add(Rfc2965Cookie(h, scheme, host, path))
             except CookieError:
-                linkcheck.log.debug(linkcheck.LOG_CACHE,
+                assert linkcheck.log.debug(linkcheck.LOG_CACHE,
               "Invalid cookie2 header for %s:%s%s: %r", scheme, host, path, h)
         for x in to_add:
             self.add(x)

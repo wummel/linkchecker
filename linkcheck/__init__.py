@@ -70,7 +70,7 @@ def get_link_pat (arg, strict=False):
     @return: dictionary with keys 'pattern', 'negate' and 'strict'
     @rtype: dict
     """
-    linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
+    assert linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg.startswith('!'):
         pattern = arg[1:]
         negate = True

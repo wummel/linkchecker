@@ -100,21 +100,23 @@ class Cache (object):
         """
         Add a new URL to list of URLs to check.
         """
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "Add url %r ...", url_data)
+        assert linkcheck.log.debug(linkcheck.LOG_CACHE,
+                                   "Add url %r ...", url_data)
         if url_data.has_result:
             # do not check any further
-            linkcheck.log.debug(linkcheck.LOG_CACHE, "... no, has result")
+            assert linkcheck.log.debug(linkcheck.LOG_CACHE,
+                                       "... no, has result")
             return False
         # check the cache
         key = url_data.cache_url_key
         if key in self.checked:
             # url is cached and can be logged
             url_data.copy_from_cache(self.checked[key])
-            linkcheck.log.debug(linkcheck.LOG_CACHE, "... no, cached")
+            assert linkcheck.log.debug(linkcheck.LOG_CACHE, "... no, cached")
             return False
         # url is not cached, so add to incoming queue
         self.incoming.append(url_data)
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "... yes, added.")
+        assert linkcheck.log.debug(linkcheck.LOG_CACHE, "... yes, added.")
         return True
 
     def has_in_progress (self, key):
@@ -143,7 +145,7 @@ class Cache (object):
         """
         data = url_data.get_cache_data()
         key = url_data.cache_url_key
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "Caching %r", key)
+        assert linkcheck.log.debug(linkcheck.LOG_CACHE, "Caching %r", key)
         assert key not in self.checked, \
                key + u", " + unicode(self.checked[key])
         assert key in self.in_progress, key
@@ -155,7 +157,7 @@ class Cache (object):
             data = url_data.get_alias_cache_data()
             for key in url_data.aliases:
                 if key not in self.checked and key not in self.in_progress:
-                    linkcheck.log.debug(linkcheck.LOG_CACHE,
+                    assert linkcheck.log.debug(linkcheck.LOG_CACHE,
                                         "Caching alias %r", key)
                     self.checked[key] = data
 
@@ -216,7 +218,7 @@ class Cache (object):
         """
         Thread-safe cookie cache getter function.
         """
-        linkcheck.log.debug(linkcheck.LOG_CACHE,
+        assert linkcheck.log.debug(linkcheck.LOG_CACHE,
                             "Get cookies for host %r path %r", host, path)
         jar = self.cookies.setdefault(host, linkcheck.cookies.CookieJar())
         jar.remove_expired()

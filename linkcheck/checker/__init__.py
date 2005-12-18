@@ -365,7 +365,7 @@ def get_url_from (base_url, recursion_level, consumer,
         # add intern URL regex to config for every URL that was given
         # on the command line
         pat = url_data.get_intern_pattern()
-        linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Pattern %r", pat)
+        assert linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Pattern %r", pat)
         if pat:
             consumer.config_append('internlinks', linkcheck.get_link_pat(pat))
     return url_data

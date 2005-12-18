@@ -107,7 +107,7 @@ class MetaRobotsFinder (TagFinder):
         super(MetaRobotsFinder, self).__init__(content)
         self.follow = True
         self.index = True
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "meta robots finder")
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "meta robots finder")
 
     def start_element (self, tag, attrs):
         """
@@ -153,15 +153,15 @@ class LinkFinder (TagFinder):
             self.tags = tags
         self.urls = []
         self.base_ref = u''
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "link finder")
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "link finder")
 
     def start_element (self, tag, attrs):
         """
         Search for links and store found URLs in a list.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "LinkFinder tag %s attrs %s",
-                            tag, attrs)
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                   "LinkFinder tag %s attrs %s", tag, attrs)
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "line %d col %d old line %d old col %d",
                             self.parser.lineno(), self.parser.column(),
                          self.parser.last_lineno(), self.parser.last_column())
@@ -187,7 +187,7 @@ class LinkFinder (TagFinder):
             value = unquote(attrs.get(attr))
             # add link to url list
             self.add_link(tag, attr, value, name, codebase)
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "LinkFinder finished tag %s", tag)
 
     def get_link_name (self, tag, attrs, attr):
@@ -239,7 +239,7 @@ class LinkFinder (TagFinder):
             return
         for u in urls:
             assert isinstance(u, unicode) or u is None, repr(u)
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
               u"LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))

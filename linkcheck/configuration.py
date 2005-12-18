@@ -211,7 +211,7 @@ class Configuration (dict):
 
     def write (self, filename="~/.linkchecker/linkcheckerrc"):
         filename = normpath(filename)
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "write configuration into %s", filename)
         fp = open(filename, 'w')
         self.write_output_config(fp)
@@ -248,13 +248,13 @@ class Configuration (dict):
         """
         Read all the configuration parameters from the given files.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "reading configuration from %s", files)
         try:
             cfgparser = ConfigParser.ConfigParser()
             cfgparser.read(files)
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
             return
         self.read_output_config(cfgparser)
         self.read_checking_config(cfgparser)
@@ -272,32 +272,32 @@ class Configuration (dict):
                     try:
                         self[key][opt] = cfgparser.get(key, opt)
                     except ConfigParser.Error, msg:
-                        linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+                        assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
                 try:
                     self[key]['parts'] = [f.strip() for f in \
                          cfgparser.get(key, 'parts').split(',')]
                 except ConfigParser.Error, msg:
-                    linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+                    assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["warnings"] = cfgparser.getboolean(section, "warnings")
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             if cfgparser.getboolean(section, "verbose"):
                 self["verbose"] = True
                 self["warnings"] = True
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             if cfgparser.getboolean(section, "quiet"):
                 self['logger'] = self.logger_new('none')
                 self['quiet'] = True
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["status"] = cfgparser.getboolean(section, "status")
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             logger = cfgparser.get(section, "log")
             if linkcheck.Loggers.has_key(logger):
@@ -305,7 +305,7 @@ class Configuration (dict):
             else:
                 linkcheck.log.warn(_("invalid log option %r"), logger)
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             filelist = cfgparser.get(section, "fileoutput").split(",")
             for arg in filelist:
@@ -316,11 +316,11 @@ class Configuration (dict):
                     self['fileoutput'].append(
                                      self.logger_new(arg, fileoutput=1))
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["interactive"] = cfgparser.getboolean(section, "interactive")
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_checking_config (self, cfgparser):
         """
@@ -331,20 +331,20 @@ class Configuration (dict):
             num = cfgparser.getint(section, "threads")
             self['threads'] = num
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["anchors"] = cfgparser.getboolean(section, "anchors")
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["debug"] = cfgparser.get(section, "debug")
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             num = cfgparser.getint(section, "recursionlevel")
             self["recursionlevel"] = num
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             arg = cfgparser.get(section, "warningregex")
             if arg:
@@ -354,21 +354,21 @@ class Configuration (dict):
                     raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
                        _("syntax error in warningregex %r: %s\n"), arg, msg)
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["warnsizebytes"] = int(cfgparser.get(section,
                                                       "warnsizebytes"))
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["nntpserver"] = cfgparser.get(section, "nntpserver")
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["anchorcaching"] = cfgparser.getboolean(section,
                                     "anchorcaching")
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             i = 1
             while 1:
@@ -381,7 +381,7 @@ class Configuration (dict):
                 self["noproxyfor"].append(arg)
                 i += 1
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_authentication_config (self, cfgparser):
         """
@@ -404,7 +404,7 @@ class Configuration (dict):
                                                   'password': auth[2]})
                 i += 1
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_filtering_config (self, cfgparser):
         """
@@ -419,12 +419,12 @@ class Configuration (dict):
                 self["externlinks"].append(pat)
                 i += 1
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self['ignorewarnings'] = [f.strip() for f in \
                  cfgparser.get(section, 'ignorewarnings').split(',')]
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             i = 1
             while 1:
@@ -434,12 +434,12 @@ class Configuration (dict):
                 self["externlinks"].append(pat)
                 i += 1
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self["internlinks"].append(
                linkcheck.get_link_pat(cfgparser.get(section, "internlinks")))
         except ConfigParser.Error, msg:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def write_boolean_config (self, fp, boolopts):
         """

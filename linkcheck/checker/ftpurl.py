@@ -134,7 +134,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if not self.filename:
             return
         files = self.get_files()
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "FTP files %s", str(files))
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                   "FTP files %s", str(files))
         if self.filename in files:
             # file found
             return
@@ -158,8 +159,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             """
             Parse list line and add the entry it points to to the file list.
             """
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "Directory entry %r",
-                                line)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                       "Directory entry %r", line)
             try:
                 fpo = ftpparse.parse(line)
                 name = fpo.name
@@ -168,7 +169,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if fpo.trycwd or fpo.tryretr:
                     files.append(name)
             except (ValueError, AttributeError), msg:
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "%s (%s)",
+                assert linkcheck.log.debug(linkcheck.LOG_CHECK, "%s (%s)",
                                     str(msg), line)
         self.url_connection.dir(add_entry)
         return files

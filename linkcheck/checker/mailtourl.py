@@ -73,7 +73,7 @@ class MailtoUrl (urlbase.UrlBase):
             username, domain = _split_address(addr)
             if not linkcheck.url.is_safe_domain(domain):
                 raise linkcheck.LinkCheckerError, _("Invalid mail syntax")
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "addresses: %s",
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "addresses: %s",
                             self.addresses)
 
     def cutout_addresses (self):
@@ -147,11 +147,11 @@ class MailtoUrl (urlbase.UrlBase):
         """
         Check a single mail address.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "checking mail address %r", mail)
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "splitting address")
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "splitting address")
         username, domain = _split_address(mail)
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "looking up MX mailhost %r", domain)
         answers = linkcheck.dns.resolver.query(domain, 'MX')
         if len(answers) == 0:
@@ -174,10 +174,10 @@ class MailtoUrl (urlbase.UrlBase):
             # host should be preferred)
             mxdata.sort()
         # debug output
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "found %d MX mailhosts:", len(answers))
         for preference, host in mxdata:
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "MX host %r, preference %d", host, preference)
         # connect
         self.check_smtp_connect(mxdata, username, domain)
@@ -194,17 +194,18 @@ class MailtoUrl (urlbase.UrlBase):
         smtpconnect = 0
         for preference, host in mxdata:
             try:
-                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                         "SMTP check for %r (preference %d)", host, preference)
                 self.url_connection = smtplib.SMTP()
                 if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
                     self.url_connection.set_debuglevel(1)
                 self.url_connection.connect(host)
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "SMTP connected!")
+                assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                           "SMTP connected!")
                 smtpconnect = 1
                 self.url_connection.helo()
                 info = self.url_connection.verify("%s@%s" % (username, domain))
-                linkcheck.log.debug(linkcheck.LOG_CHECK,
+                assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                     "SMTP user info %r", info)
                 d = {'info': str(info[1])}
                 if info[0] == 250:

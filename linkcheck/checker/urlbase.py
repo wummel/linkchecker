@@ -237,8 +237,8 @@ class UrlBase (object):
         # URLs with different anchors to have the same content
         self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
         assert isinstance(self.cache_content_key, unicode), self
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "Content cache key %r",
-                            self.cache_content_key)
+        assert linkcheck.log.debug(linkcheck.LOG_CACHE,
+                              "Content cache key %r", self.cache_content_key)
         # construct cache key
         if self.consumer.config("anchorcaching") and \
            self.consumer.config("anchors"):
@@ -250,7 +250,7 @@ class UrlBase (object):
             # no anchor caching
             self.cache_url_key = self.cache_content_key
         assert isinstance(self.cache_url_key, unicode), self
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "URL cache key %r",
+        assert linkcheck.log.debug(linkcheck.LOG_CACHE, "URL cache key %r",
                             self.cache_url_key)
 
     def check_syntax (self):
@@ -263,7 +263,7 @@ class UrlBase (object):
         @return: True if syntax is correct, else False.
         @rtype: bool
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         if (self.base_url is None) or \
            (not self.base_url and not self.parent_url):
             self.set_result(_("URL is empty"), valid=False)
@@ -376,11 +376,10 @@ class UrlBase (object):
         """
         Local check function can be overridden in subclasses.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
         if self.recursion_level and self.consumer.config('wait'):
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                "sleeping for %d seconds",
-                                self.consumer.config('wait'))
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                      "sleeping for %d seconds", self.consumer.config('wait'))
             time.sleep(self.consumer.config('wait'))
         t = time.time()
         self.set_extern(self.url)
@@ -389,7 +388,7 @@ class UrlBase (object):
             return
 
         # check connection
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking connection")
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "checking connection")
         try:
             self.check_connection()
             self.add_country_info()
@@ -409,7 +408,8 @@ class UrlBase (object):
         # check content
         warningregex = self.consumer.config("warningregex")
         if warningregex and self.valid:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "checking content")
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                       "checking content")
             try:
                 self.check_content(warningregex)
             except tuple(linkcheck.checker.ExcList):
@@ -450,7 +450,7 @@ class UrlBase (object):
         An exception occurred. Log it and set the cache flag.
         """
         etype, value, tb = sys.exc_info()
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "exception %s",
                             traceback.format_tb(tb))
         # note: etype must be the exact class, not a subclass
         if (etype in linkcheck.checker.ExcNoCacheList) or \
@@ -471,31 +471,33 @@ class UrlBase (object):
         """
         Return True iff we can recurse into the url's content.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "checking recursion of %r ...", self.url)
         # Test self.valid before self.is_parseable().
         if not self.valid:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, invalid.")
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                       "... no, invalid.")
             return False
         if not self.is_parseable():
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, not parseable.")
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                       ".. no, not parseable.")
             return False
         if not self.can_get_content():
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "... no, cannot get content.")
             return False
         if self.consumer.config("recursionlevel") >= 0 and \
            self.recursion_level >= self.consumer.config("recursionlevel"):
-            linkcheck.log.debug(linkcheck.LOG_CHECK,
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "... no, maximum recursion level reached.")
             return False
         if self.extern[0]:
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, extern.")
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, extern.")
             return False
         if not self.content_allows_robots():
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, robots.")
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, "... no, robots.")
             return False
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "... yes, recursion.")
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "... yes, recursion.")
         return True
 
     def content_allows_robots (self):
@@ -525,7 +527,7 @@ class UrlBase (object):
                 self.can_get_content()):
             # do not bother
             return
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "checking anchor %r",
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "checking anchor %r",
                             self.anchor)
         h = linkcheck.linkparse.LinkFinder(self.get_content(),
                                    tags={'a': [u'name'], None: [u'id']})
@@ -553,17 +555,19 @@ class UrlBase (object):
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "Extern URL %r", url)
+                assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                           "Extern URL %r", url)
                 self.extern = (1, entry['strict'])
                 return
         for entry in self.consumer.config("internlinks"):
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
-                linkcheck.log.debug(linkcheck.LOG_CHECK, "Intern URL %r", url)
+                assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                           "Intern URL %r", url)
                 self.extern = (0, 0)
                 return
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "Explicit extern URL %r", url)
         self.extern = (1, 0)
         return
@@ -632,7 +636,8 @@ class UrlBase (object):
         Parse into HTML content and search for URLs to check.
         Found URLs are added to the URL queue.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Parsing HTML %s", self)
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                   "Parsing HTML %s", self)
         h = linkcheck.linkparse.LinkFinder(self.get_content())
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
@@ -655,7 +660,7 @@ class UrlBase (object):
         """
         Parse an opera bookmark file.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK,
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "Parsing Opera bookmarks %s", self)
         name = ""
         lineno = 0
@@ -680,7 +685,8 @@ class UrlBase (object):
         Parse a text file with on url per line; comment and blank
         lines are ignored.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Parsing text %s", self)
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                   "Parsing text %s", self)
         lineno = 0
         for line in self.get_content().splitlines():
             lineno += 1
@@ -697,7 +703,8 @@ class UrlBase (object):
         """
         Parse a CSS file for url() patterns.
         """
-        linkcheck.log.debug(linkcheck.LOG_CHECK, "Parsing CSS %s", self)
+        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                   "Parsing CSS %s", self)
         lineno = 0
         for line in self.get_content().splitlines():
             lineno += 1
