@@ -276,17 +276,27 @@ def set_encoding (parsobj, attrs):
     @return: None
     """
     if attrs.get_true('http-equiv', u'').lower() == u"content-type":
-        content = attrs.get_true('content', u'')
-        mo = _encoding_ro.search(content)
-        if mo:
-            encoding = mo.group("encoding").encode("ascii")
+        charset = attrs.get_true('content', u'')
+        charset = get_ctype_charset(charset.encode('ascii', 'ignore'))
+        if charset is not None:
+            parsobj.encoding = charset
+
+
+def get_ctype_charset (text):
+    """
+    Extract charset information from mime content type string, eg.
+    "text/html; charset=iso8859-1".
+    """
+    for param in text.lower().split(';'):
+        param = param.strip()
+        if param.startswith('charset='):
+            charset = param[8:]
             try:
-                encoding = encoding.encode("ascii")
-                codecs.lookup(encoding)
-                parsobj.encoding = encoding
+                codecs.lookup(charset)
+                return charset
             except LookupError:
-                # ignore unknown encodings
                 pass
+    return None
 
 
 def set_doctype (parsobj, doctype):
