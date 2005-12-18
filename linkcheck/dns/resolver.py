@@ -584,9 +584,9 @@ class Resolver(object):
                 request.use_tsig(self.keyring, self.keyname)
             request.use_edns(self.edns, self.ednsflags, self.payload)
             response = None
-            #
+           
             # make a copy of the servers list so we can alter it later.
-            #
+           
             nameservers = self.nameservers[:]
             backoff = 0.10
             while response is None:
@@ -604,24 +604,24 @@ class Resolver(object):
                             response = linkcheck.dns.query.udp(request, nameserver,
                                                      timeout, self.port)
                     except (socket.error, linkcheck.dns.exception.Timeout):
-                        #
+                       
                         # Communication failure or timeout.  Go to the
                         # next server
-                        #
+                       
                         response = None
                         continue
                     except linkcheck.dns.query.UnexpectedSource:
-                        #
+                       
                         # Who knows?  Keep going.
-                        #
+                       
                         response = None
                         continue
                     except linkcheck.dns.exception.FormError:
-                        #
+                       
                         # We don't understand what this server is
                         # saying.  Take it out of the mix and
                         # continue.
-                        #
+                       
                         nameservers.remove(nameserver)
                         response = None
                         continue
@@ -629,22 +629,22 @@ class Resolver(object):
                     if rcode == linkcheck.dns.rcode.NOERROR or \
                            rcode == linkcheck.dns.rcode.NXDOMAIN:
                         break
-                    #
+                   
                     # We got a response, but we're not happy with the
                     # rcode in it.  Remove the server from the mix if
                     # the rcode isn't SERVFAIL.
-                    #
+                   
                     if rcode != linkcheck.dns.rcode.SERVFAIL:
                         nameservers.remove(nameserver)
                     response = None
-                #
+               
                 # All nameservers failed!
-                #
+               
                 if len(nameservers) > 0:
-                    #
+                   
                     # But we still have servers to try.  Sleep a bit
                     # so we don't pound them!
-                    #
+                   
                     timeout = self._compute_timeout(start)
                     sleep_time = min(timeout, backoff)
                     backoff *= 2
@@ -709,7 +709,7 @@ def query(qname, rdtype=linkcheck.dns.rdatatype.A, rdclass=linkcheck.dns.rdatacl
     object to make the query.
     @see: L{linkcheck.dns.resolver.Resolver.query} for more information on the
     parameters."""
-    linkcheck.log.debug(linkcheck.LOG_DNS, "Query %s %s %s", qname, rdtype, rdclass)
+    assert linkcheck.log.debug(linkcheck.LOG_DNS, "Query %s %s %s", qname, rdtype, rdclass)
     if resolver is None:
         resolver = get_default_resolver()
     return resolver.query(qname, rdtype, rdclass, tcp)
