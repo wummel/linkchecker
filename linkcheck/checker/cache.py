@@ -19,6 +19,7 @@ Store cached data during checking.
 """
 
 import Cookie
+import time
 import collections
 
 import linkcheck
@@ -26,26 +27,9 @@ import linkcheck.log
 import linkcheck.lock
 import linkcheck.containers
 import linkcheck.configuration
+import linkcheck.cookies
 import linkcheck.threader
 import linkcheck.checker.pool
-
-
-def check_morsel (m, host, path):
-    """
-    Check given cookie morsel against the desired host and path.
-    """
-    # check domain (if its stored)
-    if m["domain"] and not host.endswith(m["domain"]):
-        return None
-    # check path (if its stored)
-    if m["path"] and not path.startswith(m["path"]):
-        return None
-    # check expiry date (if its stored)
-    if m["expires"]:
-        linkcheck.log.debug(linkcheck.LOG_CACHE, "Cookie expires %s",
-                            m["expires"])
-        # XXX check cookie expiration
-    return m.output(header='').strip()
 
 
 class Cache (object):
@@ -61,17 +45,19 @@ class Cache (object):
         """
         super(Cache, self).__init__()
         # already checked URLs
-        # {cache key (string) -> cache data (dict)}
+        # format: {cache key (string) -> cache data (dict)}
         self.checked = {}
         # URLs that are being checked
-        # {cache key (string) -> urldata (UrlData)}
+        # format: {cache key (string) -> urldata (UrlData)}
         self.in_progress = {}
         # to-be-checked URLs
-        # [urldata (UrlData)]
+        # format: [urldata (UrlData)]
         self.incoming = collections.deque()
         # downloaded robots.txt files
+	# format: {cache key (string) -> robots.txt content (RobotFileParser)}
         self.robots_txt = {}
         # stored cookies
+	# format: {cache key (string) -> cookie jar (linkcheck.cookielib.CookieJar)}
         self.cookies = {}
         # pooled connections
         self.pool = linkcheck.checker.pool.ConnectionPool()
@@ -221,30 +207,21 @@ class Cache (object):
         """
         self.pool.release_connection(key)
 
-    def store_cookies (self, headers, host):
+    def store_cookies (self, headers, scheme, host, path):
         """
         Thread-safe cookie cache setter function. Can raise the
         exception Cookie.CookieError.
         """
-        output = []
-        for h in headers.getallmatchingheaders("Set-Cookie"):
-            output.append(h)
-            linkcheck.log.debug(linkcheck.LOG_CACHE, "Store cookie %s", h)
-            c = self.cookies.setdefault(host, Cookie.SimpleCookie())
-            c.load(h)
-        return output
+        jar = self.cookies.setdefault(host, linkcheck.cookies.CookieJar())
+        return jar.add_cookies(headers, scheme, host, path)
 
-    def get_cookies (self, host, path):
+    def get_cookies (self, scheme, host, port, path):
         """
         Thread-safe cookie cache getter function.
         """
         linkcheck.log.debug(linkcheck.LOG_CACHE,
                             "Get cookies for host %r path %r", host, path)
-        if not self.cookies.has_key(host):
-            return []
-        cookievals = []
-        for m in self.cookies[host].values():
-            val = check_morsel(m, host, path)
-            if val:
-                cookievals.append(val)
-        return cookievals
+        jar = self.cookies.setdefault(host, linkcheck.cookies.CookieJar())
+        jar.remove_expired()
+        return [x for x in jar if x.is_valid_for(scheme, host, port, path)]
+

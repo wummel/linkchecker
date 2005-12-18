@@ -19,6 +19,7 @@ Handle http links.
 """
 
 import urlparse
+import urllib
 import time
 import re
 import zlib
@@ -408,7 +409,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     self.add_info(_("Store cookie: %s.") % c)
                 try:
                     out = self.consumer.store_cookies(self.headers,
-                                                      self.urlparts[1])
+                                                      self.urlparts[0],
+                                                      self.urlparts[1],
+                                                      self.urlparts[2])
                     for h in out:
                         self.add_info(linkcheck.strformat.unicode_safe(h))
                 except Cookie.CookieError, msg:
@@ -466,10 +469,16 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.consumer.config('cookies'):
-            self.cookies = self.consumer.get_cookies(self.urlparts[1],
-                                                     self.urlparts[2])
+            scheme = self.urlparts[0]
+            host = self.urlparts[1]
+            port = linkcheck.url.default_ports.get(scheme, 80)
+            host, port = urllib.splitnport(host, port)
+            path = self.urlparts[2]
+            self.cookies = self.consumer.get_cookies(scheme, host, port, path)
             for c in self.cookies:
-                self.url_connection.putheader("Cookie", c)
+                name = c.client_header_name()
+                value = c.client_header_value()
+                self.url_connection.putheader(name, value)
         self.url_connection.endheaders()
         response = self.url_connection.getresponse()
         self.persistent = headers.http_persistent(response)
