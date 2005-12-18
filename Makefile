@@ -4,7 +4,7 @@ PYTHON := python$(PYVER)
 PACKAGE := linkchecker
 VERSION := $(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
-LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -t0
+LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -t0 -C
 PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
 TESTFILES := $(wildcard tests/*.py linkcheck/tests/*.py linkcheck/checker/tests/*.py)
