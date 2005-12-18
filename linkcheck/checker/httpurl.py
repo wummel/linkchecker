@@ -304,9 +304,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                          self.headers.getheader("Uri", ""))
             # make new url absolute and unicode
             newurl = urlparse.urljoin(redirected, newurl)
-            newurl = assert linkcheck.strformat.unicode_safe(newurl)
-            linkcheck.log.debug(linkcheck.LOG_CHECK, "Redirected to %r",
-                                newurl)
+            newurl = linkcheck.strformat.unicode_safe(newurl)
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+                                       "Redirected to %r", newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl},
                           tag="http-redirect")
             redirected, is_idn = linkcheck.url.url_norm(newurl)
