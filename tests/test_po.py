@@ -24,7 +24,7 @@ from tests import make_suite, StandardTest
 
 
 pofiles = None
-def set_pofiles ():
+def get_pofiles ():
     """
     Find all .po files in this source.
     """
@@ -33,7 +33,7 @@ def set_pofiles ():
         pofiles = []
         pofiles.extend(glob.glob("po/*.po"))
         pofiles.extend(glob.glob("doc/*.po"))
-
+    return pofiles
 
 class TestPo (StandardTest):
     """
@@ -45,8 +45,7 @@ class TestPo (StandardTest):
         """
         Test .po files syntax.
         """
-        set_pofiles()
-        for f in pofiles:
+        for f in get_pofiles():
             ret = os.system("msgfmt -c -o - %s > /dev/null" % f)
             self.assertEquals(ret, 0, msg="PO-file syntax error in %r" % f)
 
@@ -61,8 +60,7 @@ class TestGTranslator (StandardTest):
         """
         Test all pofiles for GTranslator brokenness.
         """
-        set_pofiles()
-        for f in pofiles:
+        for f in get_pofiles():
             fd = file(f)
             try:
                 self.check_file(fd, f)
