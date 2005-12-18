@@ -21,6 +21,7 @@ necessarily optimised for large strings, so use with care.
 
 import re
 import textwrap
+import codecs
 import os
 import time
 import urlparse
@@ -52,10 +53,10 @@ def ascii_safe (s):
 
     @param s: the Unicode string to be encoded
     @type s: unicode or None
-    @return: encoded ASCII version of s, or s itself if s evaluated to False
+    @return: encoded ASCII version of s, or None if s was None
     @rtype: string
     """
-    if s:
+    if isinstance(s, unicode):
         s = s.encode('ascii', 'ignore')
     return s
 
@@ -68,6 +69,16 @@ def is_ascii (s):
         s.encode('ascii', 'strict')
         return True
     except (UnicodeEncodeError, UnicodeDecodeError):
+        return False
+
+
+def is_encoding (text):
+    """
+    Check if string is a valid encoding.
+    """
+    try:
+        return codecs.lookup(text)
+    except LookupError:
         return False
 
 
