@@ -76,6 +76,7 @@ def debug (logname, msg, *args, **kwargs):
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.DEBUG):
         _log(log.debug, msg, args, tb=kwargs.get("tb"))
+    return True
 
 
 def info (logname, msg, *args, **kwargs):
