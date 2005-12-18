@@ -18,10 +18,7 @@
 Store cached data during checking.
 """
 
-import Cookie
-import time
 import collections
-
 import linkcheck
 import linkcheck.log
 import linkcheck.lock

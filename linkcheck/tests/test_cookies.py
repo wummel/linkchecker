@@ -19,7 +19,6 @@ Test cookie routines.
 """
 
 import unittest
-import random
 import tests
 import linkcheck.cookies
 
