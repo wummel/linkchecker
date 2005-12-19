@@ -241,6 +241,24 @@ class HttpCookie (object):
         if not self.check_secure(scheme):
             raise CookieError("no secure scheme %r" % scheme)
 
+    def quote (self, key, value):
+        return quote(value)
+
+    def server_header_value (self):
+        parts = ["%s=%s" % (self.name, quote(self.value))]
+        parts += ["%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
+                  for k, v in self.attributes.items()]
+        return "; ".join(parts)
+
+    def client_header_value (self):
+        parts = []
+        if "version" in self.attributes:
+            parts.append("$Version=%s" % quote(self.attributes["version"]))
+        parts.append("%s=%s" % (self.name, quote(self.value)))
+        parts += ["$%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
+                  for k, v in self.attributes.items() if k != "version"]
+        return "; ".join(parts)
+
 
 class NetscapeCookie (HttpCookie):
     """
@@ -253,21 +271,6 @@ class NetscapeCookie (HttpCookie):
 
     def server_header_name (self):
         return "Set-Cookie"
-
-    def server_header_value (self):
-        parts = ["%s=%s" % (self.name, quote(self.value))]
-        parts += ["%s=%s"% (self.attribute_names[k], quote(v)) \
-                  for k, v in self.attributes.items()]
-        return "; ".join(parts)
-
-    def client_header_value (self):
-        parts = []
-        if "version" in self.attributes:
-            parts.append("$Version=%s" % quote(self.attributes["version"]))
-        parts.append("%s=%s" % (self.name, quote(self.value)))
-        parts += ["$%s=%s"% (self.attribute_names[k], quote(v)) \
-                  for k, v in self.attributes.items() if k != "version"]
-        return "; ".join(parts)
 
 
 class Rfc2965Cookie (HttpCookie):
@@ -282,6 +285,15 @@ class Rfc2965Cookie (HttpCookie):
         cport = self.attributes["port"]
         ports = [int(x) for x in cport.split(",")]
         return port in ports
+
+    def server_header_name (self):
+        return "Set-Cookie2"
+
+    def quote (self, key, value):
+        if key == "port":
+            return quote(value, LegalChars="")
+        return quote(value)
+
 
 # XXX more methods (equality test)
 
