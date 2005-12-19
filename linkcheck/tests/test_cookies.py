@@ -28,7 +28,7 @@ class TestCookies (tests.StandardTest):
     Test list dictionary routines.
     """
 
-    def test_cookie (self):
+    def test_netscape_cookie1 (self):
         data = (
             ("Foo", "Bar"),
             ("Comment", "justatest"),
@@ -46,7 +46,7 @@ class TestCookies (tests.StandardTest):
         self.assert_(cookie.is_valid_for("http", host, 80, "/"))
         self.assert_(cookie.is_valid_for("https", host, 443, "/a"))
 
-    def test_cookie_expired (self):
+    def test_netscape_cookie2 (self):
         data = (
             ("Foo", "Bar"),
             ("Comment", "justatest"),
@@ -62,7 +62,7 @@ class TestCookies (tests.StandardTest):
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
         self.assert_(cookie.is_expired())
 
-    def test_cookie_invalid (self):
+    def test_netscape_cookie3 (self):
         data = (
             ("Foo", "Bar\""),
             ("Port", "hul,la"),
@@ -74,6 +74,77 @@ class TestCookies (tests.StandardTest):
         path = "/"
         self.assertRaises(linkcheck.cookies.CookieError,
                  linkcheck.cookies.NetscapeCookie, value, scheme, host, path)
+
+    def test_netscape_cookie4 (self):
+        data = (
+            ("Foo", "Bar\""),
+            ("Port", "100,555,76"),
+        )
+        parts = ['%s="%s"' % (key, value) for key, value in data]
+        value = "; ".join(parts)
+        scheme = "http"
+        host = "localhost"
+        path = "/"
+        cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
+
+    def test_rfc_cookie1 (self):
+        data = (
+            ("Foo", "Bar"),
+            ("Comment", "justatest"),
+            ("Max-Age", "1000"),
+            ("Path", "/"),
+            ("Version", "1"),
+        )
+        parts = ['%s="%s"' % (key, value) for key, value in data]
+        value = "; ".join(parts)
+        scheme = "http"
+        host = "localhost"
+        path = "/"
+        cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
+        self.assert_(cookie.check_expired())
+        self.assert_(cookie.is_valid_for("http", host, 80, "/"))
+        self.assert_(cookie.is_valid_for("https", host, 443, "/a"))
+
+    def test_rfc_cookie2 (self):
+        data = (
+            ("Foo", "Bar"),
+            ("Comment", "justatest"),
+            ("Max-Age", "0"),
+            ("Path", "/"),
+            ("Version", "1"),
+        )
+        parts = ['%s="%s"' % (key, value) for key, value in data]
+        value = "; ".join(parts)
+        scheme = "http"
+        host = "localhost"
+        path = "/"
+        cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
+        self.assert_(cookie.is_expired())
+
+    def test_rfc_cookie3 (self):
+        data = (
+            ("Foo", "Bar\""),
+            ("Port", "hul,la"),
+        )
+        parts = ['%s="%s"' % (key, value) for key, value in data]
+        value = "; ".join(parts)
+        scheme = "http"
+        host = "localhost"
+        path = "/"
+        self.assertRaises(linkcheck.cookies.CookieError,
+                 linkcheck.cookies.Rfc2965Cookie, value, scheme, host, path)
+
+    def test_rfc_cookie4 (self):
+        data = (
+            ("Foo", "Bar\""),
+            ("Port", "100,555,76"),
+        )
+        parts = ['%s="%s"' % (key, value) for key, value in data]
+        value = "; ".join(parts)
+        scheme = "http"
+        host = "localhost"
+        path = "/"
+        cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
 
 
 def test_suite ():
