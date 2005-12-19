@@ -20,7 +20,6 @@ Check HTML pages for broken links.
 """
 
 import sys
-import locale
 import codecs
 import re
 import os
@@ -191,6 +190,7 @@ def viewprof ():
         print >>sys.stderr, \
                    _("Please run linkchecker with --profile to generate it.")
         sys.exit(1)
+    import pstats
     stats = pstats.Stats(_profile)
     stats.strip_dirs().sort_stats("cumulative").print_stats(100)
     sys.exit(0)
