@@ -24,6 +24,7 @@ import datetime
 
 import linkcheck.strformat
 import linkcheck.i18n
+import linkcheck.decorators
 
 _ = lambda x: x
 Fields = dict(
@@ -110,7 +111,7 @@ class Logger (object):
         @rtype: string
         """
         if not isinstance(s, unicode):
-            raise ValueError, "tried to encode non-unicode string %r" % s
+            raise ValueError("tried to encode non-unicode string %r" % s)
         return s.encode(self.output_encoding, "replace")
 
     def check_date (self):
@@ -144,7 +145,7 @@ class Logger (object):
         Write string to output descriptor.
         """
         if self.fd is None:
-            raise ValueError, "write to non-file"
+            raise ValueError("write to non-file")
         self.fd.write(self.encode(s), **args)
 
     def writeln (self, s=u"", **args):
@@ -203,17 +204,19 @@ class Logger (object):
         if do_print:
             self.log_url(url_data)
 
+    @linkcheck.decorators.notimplemented
     def log_url (self, url_data):
         """
         Log a new url with this logger.
         """
-        raise NotImplementedError, "abstract function"
+        pass
 
+    @linkcheck.decorators.notimplemented
     def end_output (self):
         """
         End of output, used for cleanup (eg output buffer flushing).
         """
-        raise NotImplementedError, "abstract function"
+        pass
 
     def __str__ (self):
         """

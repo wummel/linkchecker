@@ -105,12 +105,12 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.url_connection.login(_user, _password)
         except EOFError, msg:
             msg = str(msg)
-            raise linkcheck.LinkCheckerError, \
-                   _("Remote host has closed connection: %r") % msg
+            raise linkcheck.LinkCheckerError(
+                   _("Remote host has closed connection: %r") % msg)
         if not self.url_connection.getwelcome():
             self.close_connection()
-            raise linkcheck.LinkCheckerError, \
-                   _("Got no answer from FTP server")
+            raise linkcheck.LinkCheckerError(
+                   _("Got no answer from FTP server"))
         # don't set info anymore, this may change every time we log in
         #self.add_info(linkcheck.strformat.unicode_safe(info))
 
@@ -147,7 +147,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                          tag="ftp-missing-slash")
                 self.url += '/'
             return
-        raise ftplib.error_perm, "550 File not found"
+        raise ftplib.error_perm("550 File not found")
 
     def get_files (self):
         """

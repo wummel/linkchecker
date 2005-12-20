@@ -22,7 +22,7 @@ Main function module for link checking.
 import sys
 if not hasattr(sys, 'version_info') or \
    sys.version_info < (2, 4, 0, 'final', 0):
-    raise SystemExit, "This program requires Python 2.4 or later."
+    raise SystemExit("This program requires Python 2.4 or later.")
 import os
 import re
 

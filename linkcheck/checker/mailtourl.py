@@ -47,7 +47,7 @@ def _split_address (address):
         return tuple(split)
     if len(split) == 1:
         return (split[0], "localhost")
-    raise linkcheck.LinkCheckerError, _("Could not split the mail address")
+    raise linkcheck.LinkCheckerError(_("Could not split the mail address"))
 
 
 class MailtoUrl (urlbase.UrlBase):
@@ -72,7 +72,7 @@ class MailtoUrl (urlbase.UrlBase):
         for name, addr in self.addresses:
             username, domain = _split_address(addr)
             if not linkcheck.url.is_safe_domain(domain):
-                raise linkcheck.LinkCheckerError, _("Invalid mail syntax")
+                raise linkcheck.LinkCheckerError(_("Invalid mail syntax"))
         assert linkcheck.log.debug(linkcheck.LOG_CHECK, "addresses: %s",
                             self.addresses)
 

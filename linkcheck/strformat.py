@@ -195,7 +195,7 @@ def strsize (b):
     raises a value error.
     """
     if b < 0:
-        raise ValueError, "Invalid negative byte number"
+        raise ValueError("Invalid negative byte number")
     if b == 1:
         return u"%d Byte" % b
     if b < 1024:
