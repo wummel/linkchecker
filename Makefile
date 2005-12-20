@@ -121,7 +121,7 @@ pylint:
 
 .PHONY: pyflakes
 pyflakes:
-	$(PYFLAKES) *.py scripts tests linkcheck | \
+	$(PYFLAKES) *.py linkchecker scripts tests linkcheck config | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'"
