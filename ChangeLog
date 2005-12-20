@@ -9,6 +9,11 @@
     Type: feature
     Changed: linkcheck/checker/{urlbase,httpurl,cache}.py
 
+  * Fixed the Cookie parsing and sending.
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py
+    Added: linkcheck/cookies.py
+
 3.3 "Four Brothers" (released 14.10.2005)
 
   * Fix parsing of ignore and nofollow in configuration files.
