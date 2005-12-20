@@ -55,7 +55,7 @@ like LinkChecker.
 - `webcheck`_ written in Python
   
   .. _webcheck:
-     http://www.mired.org/webcheck/
+     http://ch.tudelft.nl/~arthur/webcheck/
 
 - `webgrep`_ written in Perl
   
