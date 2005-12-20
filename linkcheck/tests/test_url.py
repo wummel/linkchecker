@@ -398,10 +398,6 @@ class TestUrl (tests.StandardTest):
         self.assert_(linkcheck.url.is_safe_url(u), u)
         u = "http://www.imadoofus.com#anchor55"
         self.assert_(linkcheck.url.is_safe_url(u), u)
-        u = "http://www.imadoofus.com/?hulla=do"
-        self.assert_(linkcheck.url.is_safe_js_url(u), u)
-        u = "http://www.imadoofus.com/foo.bar/woot/bla;a=120x600;b=615660"
-        self.assert_(linkcheck.url.is_safe_js_url(u), u)
 
     def test_needs_quoting (self):
         """

@@ -87,28 +87,6 @@ def splitparams (path):
     return path[:i], path[i+1:]
 
 
-def is_safe_js_url (urlstr):
-    """
-    Test javascript URL strings.
-    """
-    url = list(urlparse.urlsplit(urlstr))
-    if url[0].lower() not in ('http', 'https'):
-        return False
-    if not is_safe_host(url[1]):
-        return False
-    if ";" in urlstr:
-        url[2], parameter = splitparams(url[2])
-        if not is_safe_parameter(parameter):
-            return False
-    if not is_safe_path(url[2]):
-        return False
-    if not is_safe_query(url[3]):
-        return False
-    if not is_safe_fragment(url[4]):
-        return False
-    return True
-
-
 def is_numeric_port (portstr):
     """
     return True iff portstr is a valid port number
