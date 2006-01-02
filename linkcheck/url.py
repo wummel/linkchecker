@@ -89,12 +89,14 @@ def splitparams (path):
 
 def is_numeric_port (portstr):
     """
-    return True iff portstr is a valid port number
+    return: integer port (== True) iff portstr is a valid port number,
+           False otherwise
     """
     if portstr.isdigit():
         port = int(portstr)
         # 65536 == 2**16
-        return 0 < port < 65536
+        if 0 < port < 65536:
+            return port
     return False
 
 
@@ -210,14 +212,15 @@ def url_fix_host (urlparts):
             userpass += "@"
         else:
             userpass = ""
-        newhost, port = urllib.splitnport(host)
+        dport = default_ports.get(urlparts[0], 80)
+        newhost, port = splitport(host, port=dport)
         if port is not None:
             host = newhost
         # remove trailing dot
         if host.endswith("."):
             host = host[:-1]
-        # remove a default (or invalid) port
-        if port in [-1, None, default_ports.get(urlparts[0])]:
+        if port == dport:
+            # a default port
             urlparts[1] = userpass+host
         else:
             urlparts[1] = "%s%s:%d" % (userpass, host, port)
@@ -456,5 +459,23 @@ def url_split (url):
     port = default_ports.get(scheme, 80)
     if host:
         host = host.lower()
-        host, port = urllib.splitnport(host, port)
+        host, port = splitport(host, port=port)
     return scheme, host, port, document
+
+
+def splitport (host, port=80):
+    """
+    Split optional port number from host. If host has no port number,
+    the given default port is returned.
+
+    @param host: host name
+    @ptype host: string
+    @return: tuple of (host, port)
+    @rtype: tuple of (string, int)
+    """
+    if ":" in host:
+        host, sport = host.split(":", 1)
+        iport = is_numeric_port(sport)
+        if iport:
+            port = iport
+    return host, port
