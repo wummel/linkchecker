@@ -41,6 +41,7 @@ import os
 import sys
 import time
 
+
 def update_func_meta (fake_func, real_func):
     """
     Set meta information (eg. __doc__) of fake function to that
@@ -52,6 +53,10 @@ def update_func_meta (fake_func, real_func):
     fake_func.__doc__ = real_func.__doc__
     fake_func.__dict__.update(real_func.__dict__)
     return fake_func
+
+
+# helper method to have decorators with arguments
+decorator_with_args = lambda decorator: lambda *args, **kwargs: lambda func: decorator(func, *args, **kwargs)
 
 
 def deprecated (func):
@@ -94,7 +99,8 @@ def signal_handler (signal_number):
     return newfunc
 
 
-def _synchronized (lock, func):
+@decorator_with_args
+def synchronized (lock, func):
     """
     Call function with aqcuired lock.
     """
@@ -108,13 +114,6 @@ def _synchronized (lock, func):
         finally:
             lock.release()
     return update_func_meta(newfunc, func)
-
-
-def synchronized (lock):
-    """
-    A decorator calling a function with aqcuired lock.
-    """
-    return lambda func: _synchronized(lock, func)
 
 
 def notimplemented (func):
