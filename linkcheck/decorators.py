@@ -55,10 +55,6 @@ def update_func_meta (fake_func, real_func):
     return fake_func
 
 
-# helper method to have decorators with arguments
-decorator_with_args = lambda decorator: lambda *args, **kwargs: lambda func: decorator(func, *args, **kwargs)
-
-
 def deprecated (func):
     """
     A decorator which can be used to mark functions as deprecated.
@@ -99,8 +95,7 @@ def signal_handler (signal_number):
     return newfunc
 
 
-@decorator_with_args
-def synchronized (lock, func):
+def _synchronized (lock, func):
     """
     Call function with aqcuired lock.
     """
@@ -114,6 +109,13 @@ def synchronized (lock, func):
         finally:
             lock.release()
     return update_func_meta(newfunc, func)
+
+
+def synchronized (lock):
+     """
+     A decorator calling a function with aqcuired lock.
+     """
+     return lambda func: _synchronized(lock, func)
 
 
 def notimplemented (func):
