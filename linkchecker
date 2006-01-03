@@ -1,6 +1,6 @@
 #!/usr/bin/python2.4
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2005  Bastian Kleineidam
+# Copyright (C) 2000-2006 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
