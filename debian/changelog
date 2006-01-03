@@ -1,8 +1,10 @@
 linkchecker (3.4-1) unstable; urgency=low
 
   * New upstream release.
+  * Use debhelper v5
+  * Remove now-obsolete linkchecker-ssl conflict
 
- -- Bastian Kleineidam <calvin@debian.org>  Sat, 15 Oct 2005 02:09:46 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Tue,  3 Jan 2006 19:18:22 +0100
 
 linkchecker (3.3-1) unstable; urgency=low
 
