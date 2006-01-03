@@ -1,3 +1,3 @@
 # watch control file for uscan
-version=2
-ftp://ftp2.sf.net/pub/sourceforge/l/li/linkchecker/linkchecker-([\d+\.]+|\d+)(\.tar|\.tgz)(\.gz|\.bz2|) debian uupdate
+version=3
+http://sf.net/linkchecker/linkchecker-(.*).tar.gz debian uupdate
