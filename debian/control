@@ -2,13 +2,12 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends: python2.4-dev, python, debhelper (>= 4.1.51), gettext, cdbs
+Build-Depends: python2.4-dev, python, debhelper (>= 5), gettext, cdbs
 Standards-Version: 3.6.2.1
 
 Package: linkchecker
 Architecture: any
 Depends: python2.4
-Conflicts: linkchecker-ssl
 Suggests: apache | httpd, python2.4-psyco, python2.4-optcomplete, python2.4-profiler
 Description: check websites and HTML documents for broken links
  Provides a command line program and web interface to check links
