@@ -212,18 +212,14 @@ def url_fix_host (urlparts):
             userpass += "@"
         else:
             userpass = ""
-        dport = default_ports.get(urlparts[0], 80)
-        newhost, port = splitport(host, port=dport)
-        if port is not None:
-            host = newhost
-        # remove trailing dot
-        if host.endswith("."):
-            host = host[:-1]
-        if port == dport:
-            # a default port
-            urlparts[1] = userpass+host
-        else:
-            urlparts[1] = "%s%s:%d" % (userpass, host, port)
+        if urlparts[0] in default_ports:
+            dport = default_ports[urlparts[0]]
+            host, port = splitport(host, port=dport)
+            if host.endswith("."):
+                host = host[:-1]
+            if port != dport:
+                host = "%s:%d" % (host, port)
+        urlparts[1] = userpass+host
 
 
 def url_fix_common_typos (url):
