@@ -101,16 +101,6 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:foo@foo-bar.de?subject=test")
-        resultlines = [
-            u"url %s" % url,
-            u"cache key mailto:foo@foo-bar.de",
-            u"real url %s" % url,
-            u"info Unverified address: Cannot VRFY user; "
-            u"try RCPT to attempt delivery. But mail will be sent anyway.",
-            u"valid",
-        ]
-        self.direct(url, resultlines)
 
     def test_warn_mail (self):
         """

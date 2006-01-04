@@ -46,6 +46,11 @@ class TestUrl (tests.StandardTest):
     Test url norming and quoting.
     """
 
+    def urlnormtest (self, url, nurl):
+        self.assertEquals(url_norm(url), nurl)
+        cs = "iso8859-1"
+        self.assertEquals(url_norm(url.decode(cs)), nurl.decode(cs))
+
     def test_pathattack (self):
         """
         Windows winamp path attack prevention.
@@ -64,38 +69,40 @@ class TestUrl (tests.StandardTest):
               "prev=/groups%3Fq%3Dlogitech%2Bwingman%2Bextreme%2Bdigital"\
               "%2B3d%26hl%3Den%26lr%3D%26ie%3DUTF-8%26selm%3D3845B54D.E5"\
               "46F9BD%2540monmouth.com%26rnum%3D2"
-        nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, url)
         url = "http://redirect.alexa.com/redirect?"\
               "http://www.offeroptimizer.com"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://www.lesgensducinema.com/photo/Philippe%20Nahon.jpg"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # Only perform percent-encoding where it is essential.
         url = "http://example.com/%7Ejane"
         nurl = "http://example.com/~jane"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com/%7ejane"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # Always use uppercase A-through-F characters when percent-encoding.
         url = "http://example.com/?q=1%2a2"
         nurl = "http://example.com/?q=1%2A2"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # the no-quote chars
         url = "http://example.com/a*+-();b"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://www.company.com/path/doc.html?url=/path2/doc2.html?foo=bar"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com/#a b"
         nurl = "http://example.com/#a%20b"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b=c "
         nurl ="http://example.com/?u=http://example2.com?b=c%20"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
+        url = "http://localhost:8001/?quoted=ü"
+        nurl = "http://localhost:8001/?quoted=%FC"
+        self.urlnormtest(url, nurl)
 
     def test_norm_case_sensitivity (self):
         """
