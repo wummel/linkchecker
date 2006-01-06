@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """Functions that read and write gzipped files.
 
 The user of the file doesn't have to worry about the compression,

@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """
 HTTP/1.1 client library
 

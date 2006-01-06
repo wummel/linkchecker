@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 # Copyright (C) 2003, 2004 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its

@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: iso-8859-1 -*-
 #
 # SchoolTool - common information systems platform for school administration
 # Copyright (c) 2003 Shuttleworth Foundation
