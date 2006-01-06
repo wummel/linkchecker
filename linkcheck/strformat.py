@@ -78,7 +78,7 @@ def is_encoding (text):
     """
     try:
         return codecs.lookup(text)
-    except LookupError:
+    except (LookupError, ValueError):
         return False
 
 

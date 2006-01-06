@@ -294,7 +294,7 @@ def get_ctype_charset (text):
             try:
                 codecs.lookup(charset)
                 return charset
-            except LookupError:
+            except (LookupError, ValueError):
                 pass
     return None
 
