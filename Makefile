@@ -14,7 +14,7 @@ PYLINTOPTS :=
 PYLINTIGNORE = linkcheck/httplib2.py
 PYLINTFILES = $(filter-out $(PYLINTIGNORE),$(PYFILES))
 PYFLAKES:=pyflakes
-
+PYTHONSVN := /home/calvin/src/python-svn
 .PHONY: all
 all:
 	@echo "Read the file doc/install.txt to see how to build and install this package."
@@ -130,7 +130,15 @@ pyflakes:
 reindent:
 	$(PYTHON) config/reindent.py -r -v linkcheck
 
-# find Python files without coding line
+# Compare custom Python files with the original ones from subversion.
+.PHONY: diff
+diff:
+	@for f in gzip robotparser httplib; do \
+	  echo "Comparing $${f}.py"; \
+	  diff -u linkcheck/$${f}2.py $(PYTHONSVN)/Lib/$${f}.py | less; \
+	done
+
+# Find Python files without coding line.
 .PHONY: nocoding
 nocoding:
 	@for f in `find . -type f -name \*.py`; do \
