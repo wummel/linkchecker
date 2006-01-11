@@ -151,6 +151,9 @@ HTTP_VERSION_NOT_SUPPORTED = 505
 INSUFFICIENT_STORAGE = 507
 NOT_EXTENDED = 510
 
+# maximal amount of data to read at one time in _safe_read
+MAXAMOUNT = 1048576
+
 class HTTPMessage(mimetools.Message):
 
     def addheader(self, key, value):
@@ -493,7 +496,7 @@ class HTTPResponse:
                     line = line[:i] # strip chunk-extensions
                 try:
                     chunk_left = int(line, 16)
-                except ValueError, msg:
+                except ValueError:
                     raise IncompleteRead("Invalid chunk length at %r" % line)
                 if chunk_left == 0:
                     break
@@ -542,14 +545,14 @@ class HTTPResponse:
         reading. If the bytes are truly not available (due to EOF), then the
         IncompleteRead exception can be used to detect the problem.
         """
-        s = ''
+        s = []
         while amt > 0:
-            chunk = self.fp.read(amt)
+            chunk = self.fp.read(min(amt, MAXAMOUNT))
             if not chunk:
                 raise IncompleteRead(s)
-            s += chunk
+            s.append(chunk)
             amt -= len(chunk)
-        return s
+        return ''.join(s)
 
     def getheader(self, name, default=None):
         if self.msg is None:
