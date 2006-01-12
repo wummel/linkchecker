@@ -138,19 +138,3 @@ diff:
 	  diff -u linkcheck/$${f}2.py $(PYTHONSVN)/Lib/$${f}.py | less; \
 	done
 
-# Find Python files without coding line.
-.PHONY: nocoding
-nocoding:
-	@for f in `find . -type f -name \*.py`; do \
-	  if ! grep -q -- "-\*- coding: .* -\*-" $$f; then \
-	    echo "No coding: $$f"; \
-	  fi; \
-	done
-	@for f in `find . -type f`; do \
-	  if head -1 $$f | egrep -q "#!.*python"; then \
- 	    if ! grep -q -- "-\*- coding: .* -\*-" $$f; then \
-	      echo "No coding: $$f"; \
-	    fi; \
-	  fi; \
-	done
-
