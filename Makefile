@@ -109,6 +109,7 @@ sign_distfiles:
 
 .PHONY: check
 check:	localbuild
+	py-find-nocoding .
 	scripts/test.sh
 
 .PHONY: pycheck
