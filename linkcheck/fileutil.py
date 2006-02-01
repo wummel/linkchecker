@@ -66,21 +66,30 @@ def has_module (name):
 
 
 class GlobDirectoryWalker (object):
-    # a forward iterator that traverses a directory tree
+    """
+    A forward iterator that traverses a directory tree.
+    """
 
     def __init__ (self, directory, pattern="*"):
+        """
+        Set start directory and pattern matcher.
+        """
         self.stack = [directory]
         self.pattern = pattern
         self.files = []
         self.index = 0
 
     def __getitem__ (self, index):
+        """
+        Search for next filename.
+        """
         while True:
             try:
                 filename = self.files[self.index]
                 self.index += 1
             except IndexError:
-                # pop next directory from stack
+                # Pop next directory from stack. This effectively
+                # stops the iteration if stack is empty.
                 self.directory = self.stack.pop()
                 self.files = os.listdir(self.directory)
                 self.index = 0
@@ -92,6 +101,46 @@ class GlobDirectoryWalker (object):
                 if fnmatch.fnmatch(filename, self.pattern):
                     return fullname
 
+# alias
+rglob = GlobDirectoryWalker
 
-def rglob (directory, pattern):
-    return GlobDirectoryWalker(directory, pattern=pattern)
+
+class Buffer (object):
+    """
+    Holds buffered data
+    """
+
+    def __init__ (self, empty=''):
+        """
+        Initialize buffer.
+        """
+        self.empty = self.buf = empty
+        self.tmpbuf = []
+        self.pos = 0
+
+    def __len__ (self):
+        """
+        Buffer length.
+        """
+        return self.pos
+
+    def write (self, data):
+        """
+        Write data to buffer.
+        """
+        self.tmpbuf.append(data)
+        self.pos += len(data)
+
+    def flush (self, overlap=0):
+        """
+        Flush buffered data and return it.
+        """
+        self.buf += self.empty.join(self.tmpbuf)
+        self.tmpbuf = []
+        if overlap and overlap < self.pos:
+            data = self.buf[:-overlap]
+            self.buf = self.buf[-overlap:]
+        else:
+            data = self.buf
+            self.buf = self.empty
+        return data
