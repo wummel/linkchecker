@@ -22,6 +22,12 @@
     case characters.
     Type: bugfix
     Changed: linkcheck/checker/__init__.py
+    Closes: SF bug #1413162
+
+  * Fix a possible thread race condition by checking the return
+    value of the lock.acquire() method.
+    Type: bugfix
+    Changed: linkcheck/decorators.py
 
 3.3 "Four Brothers" (released 14.10.2005)
 
