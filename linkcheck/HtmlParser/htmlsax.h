@@ -48,11 +48,11 @@ typedef struct {
     unsigned int pos;
     /* line counter, counting from one */
     unsigned int lineno;
-    /* last value of line counter */
-    unsigned int last_lineno;
     /* column counter, counting from zero */
     unsigned int column;
-    /* last value of column counter */
+    /* value of line counter before the current token */
+    unsigned int last_lineno;
+    /* value of column counter before the current token */
     unsigned int last_column;
     /* input buffer of lexer, must be deleted when the parsing stops */
     void* lexbuf;
