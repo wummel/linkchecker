@@ -459,6 +459,12 @@ def url_split (url):
     return scheme, host, port, document
 
 
+def url_unsplit (parts):
+    if parts[2] == default_ports.get(parts[0]):
+        return "%s://%s%s" % (parts[0], parts[1], parts[3])
+    return "%s://%s:%d%s" % parts
+
+
 def splitport (host, port=80):
     """
     Split optional port number from host. If host has no port number,
