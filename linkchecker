@@ -661,14 +661,15 @@ if options.trace:
     config["trace"] = True
     linkcheck.trace.trace_filter([r"^linkcheck"])
     linkcheck.trace.trace_on()
-# syntactic sugar
+# add urls to queue
 for url in args:
     if url.lower().startswith("www."):
+        # syntactic sugar
         url = "http://%s" % url
     elif url.lower().startswith("ftp."):
+        # syntactic sugar
         url = "ftp://%s" % url
     url_data = linkcheck.checker.get_url_from(url, 0, consumer, cmdline=True)
-    # add to consumer queue
     consumer.append_url(url_data)
 ############################# check the URLs ################################
 if do_profile and not has_profile:
@@ -695,7 +696,7 @@ elif options.psyco:
         import psyco
         # psyco >= 1.4.0 final is needed
         if psyco.__version__ >= 0x10400f0:
-            psyco.profile(memory=10000)
+            psyco.profile(memory=10000, memorymax=100000)
         else:
             # warn about old psyco version
             linkcheck.log.warn(linkcheck.LOG_CMDLINE, 
