@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: iso-8859-1 -*-
 # Copyright (C) 2004-2006 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -14,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-# -*- coding: iso-8859-1 -*-
 
 def _main (args):
     """USAGE: test/run.sh test/parsefile.py test.html"""
