@@ -188,7 +188,7 @@ class LinkFinder (TagFinder):
             # add link to url list
             self.add_link(tag, attr, value, name, codebase)
         assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                            "LinkFinder finished tag %s", tag)
+                                   "LinkFinder finished tag %s", tag)
 
     def get_link_name (self, tag, attrs, attr):
         """
