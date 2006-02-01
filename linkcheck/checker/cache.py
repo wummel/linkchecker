@@ -34,6 +34,9 @@ class Cache (object):
     Store and provide routines for cached data. Currently there are
     caches for cookies, checked URLs, FTP connections and robots.txt
     contents.
+
+    This class is not thread-safe and needs extern locking if multiple
+    threads access it.
     """
 
     def __init__ (self):
@@ -208,7 +211,7 @@ class Cache (object):
 
     def store_cookies (self, headers, scheme, host, path):
         """
-        Thread-safe cookie cache setter function. Can raise the
+        Cookie cache setter function. Can raise the
         exception Cookie.CookieError.
         """
         jar = self.cookies.setdefault(host, linkcheck.cookies.CookieJar())
@@ -216,7 +219,7 @@ class Cache (object):
 
     def get_cookies (self, scheme, host, port, path):
         """
-        Thread-safe cookie cache getter function.
+        Cookie cache getter function.
         """
         assert linkcheck.log.debug(linkcheck.LOG_CACHE,
                             "Get cookies for host %r path %r", host, path)
