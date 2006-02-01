@@ -280,8 +280,7 @@ import linkcheck.checker.errorurl
 def absolute_url (base_url, base_ref, parent_url):
     """
     Search for the absolute url to detect the link type. This does not
-    join any url fragments together! Returns the url in lower case to
-    simplify urltype matching.
+    join any url fragments together!
 
     @param base_url: base url from a link tag
     @type base_url: string or None
@@ -291,11 +290,11 @@ def absolute_url (base_url, base_ref, parent_url):
     @type parent_url: string or None
     """
     if base_url and linkcheck.url.url_is_absolute(base_url):
-        return base_url.lower()
+        return base_url
     elif base_ref and linkcheck.url.url_is_absolute(base_ref):
-        return base_ref.lower()
+        return base_ref
     elif parent_url and linkcheck.url.url_is_absolute(parent_url):
-        return parent_url.lower()
+        return parent_url
     return u""
 
 
@@ -329,7 +328,7 @@ def get_url_from (base_url, recursion_level, consumer,
     if base_ref is not None:
         base_ref = linkcheck.strformat.unicode_safe(base_ref)
     name = linkcheck.strformat.unicode_safe(name)
-    url = absolute_url(base_url, base_ref, parent_url)
+    url = absolute_url(base_url, base_ref, parent_url).lower()
     # test scheme
     if url.startswith("http:"):
         klass = linkcheck.checker.httpurl.HttpUrl
@@ -365,7 +364,8 @@ def get_url_from (base_url, recursion_level, consumer,
         # add intern URL regex to config for every URL that was given
         # on the command line
         pat = url_data.get_intern_pattern()
-        assert linkcheck.log.debug(linkcheck.LOG_CMDLINE, "Pattern %r", pat)
+        assert linkcheck.log.debug(linkcheck.LOG_CMDLINE,
+                            "Add intern pattern %r from command line", pat)
         if pat:
             consumer.config_append('internlinks', linkcheck.get_link_pat(pat))
     return url_data
