@@ -41,7 +41,13 @@ class StandardTest (unittest.TestCase):
         accordingly.
         """
         if msg is None:
-            msg = "got %r, expected %r" % (first, second)
+            r1 = repr(first)
+            r2 = repr(second)
+            if len(r1) > 40 or len(r2) > 40:
+                sep = "\n"
+            else:
+                sep = ", "
+            msg = "got %s%sexpected %s" % (r1, sep, r2)
         super(StandardTest, self).failUnlessEqual(first, second, msg=msg)
 
     assertEqual = assertEquals = failUnlessEqual
