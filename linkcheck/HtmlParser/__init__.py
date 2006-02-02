@@ -209,23 +209,6 @@ def resolve_entities (s):
     return _entity_re.sub(_resolve_entity, s)
 
 
-def strip_quotes (s):
-    """
-    Remove possible double or single quotes. Only matching quotes
-    are removed.
-
-    @param s: a string
-    @type s: string
-    @return: string with removed single or double quotes
-    @rtype: string
-    """
-    if len(s) >= 2 and \
-       ((s.startswith("'") and s.endswith("'")) or \
-        (s.startswith('"') and s.endswith('"'))):
-        return s[1:-1]
-    return s
-
-
 _encoding_ro = re.compile(r"charset=(?P<encoding>[-0-9a-zA-Z]+)")
 
 def set_encoding (parsobj, attrs):
