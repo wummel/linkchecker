@@ -909,7 +909,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_APOSSTRING);
 }
 
-<S_STRING>\" {
+<S_STRING>\\?\" {
     UPDATE_COLUMN;
     PYSTRING_TMP_UNICODE(yyextra->tmp_attrval);
     RESIZE_BUF(yyextra->tmp_buf, 1);
