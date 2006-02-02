@@ -164,90 +164,49 @@ import codecs
 import htmlentitydefs
 
 
-def _resolve_ascii_entity (mo):
+def _resolve_entity (mo):
     """
-    Resolve one &#XYZ; entity if it is an ASCII character. Else leave as is.
-
-    @param mo: matched v{_num_re} object with a "num" match group
-    @type mo: MatchObject instance
-    @return: resolved ASCII entity char, or original entity
-    @rtype: string
-    """
-    # convert to number
-    ent = mo.group()
-    num = mo.group("num")
-    if ent.lower().startswith('&#x'):
-        radix = 16
-    else:
-        radix = 10
-    try:
-        num = int(num, radix)
-    except (ValueError, OverflowError):
-        return ent
-    # check 7-bit ASCII char range
-    if 0 <= num <= 127:
-        return unicode(chr(num))
-    # not in range
-    return ent
-
-
-_num_re = re.compile(ur'(?i)&#x?(?P<num>[0-9a-z]+);')
-
-def resolve_ascii_entities (s):
-    """
-    Resolve entities in 7-bit ASCII range to eliminate obfuscation.
-
-    @param s: string with entities
-    @type s: string
-    @return: string with resolved ASCII entities
-    @rtype: string
-    """
-    return _num_re.sub(_resolve_ascii_entity, s)
-
-
-def _resolve_html_entity (mo):
-    """
-    Resolve html entity.
+    Resolve a HTML entity.
 
     @param mo: matched _entity_re object with a "entity" match group
     @type mo: MatchObject instance
-    @return: resolved entity char, or original entity
-    @rtype: string
+    @return: resolved entity char, or empty string on error
+    @rtype: unicode string
     """
     ent = mo.group("entity")
     s = mo.group()
-    entdef = htmlentitydefs.entitydefs.get(ent)
-    if entdef is None:
-        return s
-    # note: entdef is latin-1 encoded
-    return entdef.decode("iso8859-1")
+    if s.startswith('&#'):
+        if s[2] in 'xX':
+            radix = 16
+        else:
+            radix = 10
+        try:
+            num = int(ent, radix)
+        except (ValueError, OverflowError):
+            return u''
+    else:
+        num = htmlentitydefs.name2codepoint.get(ent)
+    if num is None or num < 0:
+        # unknown entity -> ignore
+        return u''
+    try:
+        return unichr(num)
+    except ValueError:
+        return u''
 
 
-_entity_re = re.compile(ur'(?i)&(?P<entity>[a-z]+);')
-
-def resolve_html_entities (s):
-    """
-    Resolve HTML entities in s and return result.
-
-    @param s: string with HTML entities
-    @type s: string
-    @return: string with resolved HTML entities
-    @rtype: string
-    """
-    return _entity_re.sub(_resolve_html_entity, s)
-
+_entity_re = re.compile(ur'(?i)&(#x?)?(?P<entity>[0-9a-z]+);')
 
 def resolve_entities (s):
     """
-    Resolve both HTML and 7-bit ASCII entities in s.
+    Resolve HTML entities in s.
 
     @param s: string with entities
     @type s: string
     @return: string with resolved entities
     @rtype: string
     """
-    s = resolve_ascii_entities(s)
-    return resolve_html_entities(s)
+    return _entity_re.sub(_resolve_entity, s)
 
 
 def strip_quotes (s):

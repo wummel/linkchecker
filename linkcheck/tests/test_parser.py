@@ -53,7 +53,7 @@ parsetests = [
     ("""< >""", """< >"""),
     ("""<aä>""", """<a>"""),
     ("""<a aä="b">""", """<a a="b">"""),
-    ("""<a a="bä">""", """<a a="bä">"""),
+    ("""<a a="bä">""", """<a a="b&#228;">"""),
     # reduce test
     ("""<a  b="c"><""", """<a b="c"><"""),
     ("""d>""", """d>"""),
@@ -123,7 +123,14 @@ parsetests = [
     ("""<a onClick=location.href('/index.htm') b="c">""",
      """<a onclick="location.href('/index.htm')" b="c">"""),
     # entity resolving
+    ("""<a  href="&#6D;ailto:" >""", """<a href="ailto:">"""),
+    ("""<a  href="&amp;ailto:" >""", """<a href="&amp;ailto:">"""),
+    ("""<a  href="&amp;amp;ailto:" >""", """<a href="&amp;amp;ailto:">"""),
+    ("""<a  href="&hulla;ailto:" >""", """<a href="ailto:">"""),
     ("""<a  href="&#109;ailto:" >""", """<a href="mailto:">"""),
+    ("""<a  href="&#x6D;ailto:" >""", """<a href="mailto:">"""),
+    # note that \u8156 is not valid encoding and therefore gets removed
+    ("""<a  href="&#8156;ailto:" >""", """<a href="ailto:">"""),
     # non-ascii characters
     ("""<Üzgür> fahr </langsamer> ¹²³¼½¬{""",
      """<Üzgür> fahr </langsamer> ¹²³¼½¬{"""),
