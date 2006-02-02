@@ -154,13 +154,13 @@ def indent (text, indent_string="  "):
 
 
 def get_line_number (s, index):
-    """
-    Return the line number of s[index]. Lines are assumed to be separated
-    by the ASCII character '\\n'.
+    r"""
+    Return the line number of s[index] or zero on errors.
+    Lines are assumed to be separated by the ASCII character '\n'.
     """
     i = 0
     if index < 0:
-        index = 0
+        return 0
     line = 1
     while i < index:
         if s[i] == '\n':
@@ -207,7 +207,7 @@ def strsize (b):
     if b < 1024:
         return u"%.2f MB" % b
     b /= 1024.0
-    return u"%.2f GB"
+    return u"%.2f GB" % b
 
 
 def strtime (t):
@@ -223,13 +223,13 @@ def strduration (duration):
     Return translated and formatted time duration.
     """
     name = _("seconds")
-    if duration > 60:
-        duration = duration / 60
+    if duration >= 60:
+        duration /= 60
         name = _("minutes")
-    if duration > 60:
-        duration = duration / 60
+    if duration >= 60:
+        duration /= 60
         name = _("hours")
-    return u" %.3f %s" % (duration, name)
+    return u"%.3f %s" % (duration, name)
 
 
 def strtimezone ():
