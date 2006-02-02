@@ -491,6 +491,23 @@ class TestUrl (tests.StandardTest):
         u = "scid=kb;en-us;Q248840&b=c;hulla=bulla"
         self.assertEqual(linkcheck.url.url_parse_query(u), u)
 
+    def test_port (self):
+        is_numeric_port = linkcheck.url.is_numeric_port
+        self.assert_(is_numeric_port("80"))
+        self.assert_(is_numeric_port("1"))
+        self.assertFalse(is_numeric_port("0"))
+        self.assertFalse(is_numeric_port("66000"))
+        self.assertFalse(is_numeric_port("-1"))
+        self.assertFalse(is_numeric_port("a"))
+
+    def test_split (self):
+        url_split = linkcheck.url.url_split
+        url_unsplit = linkcheck.url.url_unsplit
+        url = "http://imadoofus.org/whoops"
+        self.assertEqual(url_unsplit(url_split(url)), url)
+        url = "http://imadoofus.org:123/whoops"
+        self.assertEqual(url_unsplit(url_split(url)), url)
+
 
 def test_suite ():
     """
