@@ -184,7 +184,7 @@ class LRU (object):
         self.first = None
         self.last = None
         if pairs is not None:
-            for key, value in pairs:
+            for key, value in pairs.items():
                 self[key] = value
 
     def __contains__ (self, obj):
