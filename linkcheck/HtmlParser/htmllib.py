@@ -199,9 +199,19 @@ def quote_attrval (s):
     @return: the quoted HTML attribute
     @rtype: string
     """
-    s = s.replace('&', "&amp;")
-    s = s.replace('"', "&quot;")
-    return s
+    res = []
+    for c in s:
+        if ord(c) <= 127:
+            # ASCII
+            if c == u'&':
+                res.append(u"&amp;")
+            elif c == u'"':
+                res.append(u"&quot;")
+            else:
+                res.append(c)
+        else:
+            res.append(u"&#%d;" % ord(c))
+    return u"".join(res)
 
 
 def quote_val (s):
