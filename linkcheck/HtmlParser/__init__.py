@@ -176,11 +176,14 @@ def _resolve_ascii_entity (mo):
     # convert to number
     ent = mo.group()
     num = mo.group("num")
-    if ent.startswith('&#x'):
+    if ent.lower().startswith('&#x'):
         radix = 16
     else:
         radix = 10
-    num = int(num, radix)
+    try:
+        num = int(num, radix)
+    except (ValueError, OverflowError):
+        return ent
     # check 7-bit ASCII char range
     if 0 <= num <= 127:
         return unicode(chr(num))
@@ -188,7 +191,7 @@ def _resolve_ascii_entity (mo):
     return ent
 
 
-_num_re = re.compile(ur'(?i)&#x?(?P<num>\d+);')
+_num_re = re.compile(ur'(?i)&#x?(?P<num>[0-9a-z]+);')
 
 def resolve_ascii_entities (s):
     """
