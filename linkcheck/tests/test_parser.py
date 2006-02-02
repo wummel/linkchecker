@@ -116,10 +116,10 @@ parsetests = [
     ("""<a  href='"' >""", """<a href="&quot;">"""),
     ("""<a  href="bla" %]" >""", """<a href="bla">"""),
     ("""<a  href=bla" >""", """<a href="bla">"""),
-    ("""<a onmouseover=MM_swapImage('nav1','',"""\
-     """'/images/dwnavpoint_over.gif',1);movein(this); b="c">""",
-     """<a onmouseover="MM_swapImage('nav1','',"""\
-     """'/images/dwnavpoint_over.gif',1);movein(this);" b="c">"""),
+    ("""<a onmouseover=blubb('nav1','',"""\
+     """'/images/nav.gif',1);move(this); b="c">""",
+     """<a onmouseover="blubb('nav1','',"""\
+     """'/images/nav.gif',1);move(this);" b="c">"""),
     ("""<a onClick=location.href('/index.htm') b="c">""",
      """<a onclick="location.href('/index.htm')" b="c">"""),
     # entity resolving
@@ -140,6 +140,19 @@ parsetests = [
     # doctype XHTML
     ("""<!DOCTYPe html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><MeTa a="b"/>""",
      """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><meta a="b"/>"""),
+    # meta tag with charset encoding
+    ("""<meta http-equiv="content-type" content>""",
+     """<meta http-equiv="content-type" content>"""),
+    ("""<meta http-equiv="content-type" content=>""",
+     """<meta http-equiv="content-type" content="">"""),
+    ("""<meta http-equiv="content-type" content="hulla">""",
+     """<meta http-equiv="content-type" content="hulla">"""),
+    ("""<meta http-equiv="content-type" content="text/html; charset=iso8859-1">""",
+     """<meta http-equiv="content-type" content="text/html; charset=iso8859-1">"""),
+    ("""<meta http-equiv="content-type" content="text/html; charset=hulla">""",
+     """<meta http-equiv="content-type" content="text/html; charset=hulla">"""),
+    # CDATA
+    ("""<![CDATA[<a>hallo</a>]]>""", """<![CDATA[<a>hallo</a>]]>"""),
     # missing > in end tag
     ("""</td <td  a="b" >""", """</td><td a="b">"""),
     ("""</td<td  a="b" >""", """</td><td a="b">"""),

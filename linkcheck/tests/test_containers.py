@@ -76,6 +76,38 @@ class TestListDict (tests.StandardTest):
             self.d[x] = x
         for i, k in enumerate(self.d.keys()):
             self.assertEqual(self.d[k], toinsert[i])
+        for i, k in enumerate(self.d.iterkeys()):
+            self.assertEqual(self.d[k], toinsert[i])
+        for x in self.d.values():
+            self.assert_(x in toinsert)
+        for x in self.d.itervalues():
+            self.assert_(x in toinsert)
+        for x, y in self.d.items():
+            self.assert_(x in toinsert)
+            self.assert_(y in toinsert)
+        for x, y in self.d.iteritems():
+            self.assert_(x in toinsert)
+            self.assert_(y in toinsert)
+
+    def test_clear (self):
+        """
+        Test clearing.
+        """
+        self.assert_(not self.d)
+        self.d[2] = 1
+        self.d[1] = 3
+        self.d.clear()
+        self.assert_(not self.d)
+
+    def test_get_true (self):
+        """
+        Test getting a non-False object.
+        """
+        self.assert_(not self.d)
+        self.d["a"] = 0
+        self.d["b"] = 1
+        self.assertEqual(self.d.get_true("a", 2), 2)
+        self.assertEqual(self.d.get_true("b", 2), 1)
 
 
 class TestSetList (tests.StandardTest):
@@ -114,6 +146,17 @@ class TestSetList (tests.StandardTest):
         """
         self.assert_(not self.l)
         self.l.extend([1, 2, 1])
+        self.assertEqual(len(self.l), 2)
+        self.assertEqual(self.l[0], 1)
+        self.assertEqual(self.l[1], 2)
+
+    def test_insert (self):
+        """
+        Test insert and equal elements.
+        """
+        self.assert_(not self.l)
+        self.l.append(2)
+        self.l.insert(0, 1)
         self.assertEqual(len(self.l), 2)
         self.assertEqual(self.l[0], 1)
         self.assertEqual(self.l[1], 2)
@@ -164,6 +207,40 @@ class TestLRU (tests.StandardTest):
         self.lru[""] = ""
         # zero must have been deleted
         self.assert_(not self.lru.has_key('0'))
+
+    def test_init (self):
+        """
+        Test initializing.
+        """
+        lru = linkcheck.containers.LRU(1, {1: 2})
+        self.assert_(1 in lru)
+        self.assertEqual(lru[1], 2)
+
+    def test_iters (self):
+        """
+        Test initializing.
+        """
+        toinsert = random.sample(xrange(6000000), self.count)
+        for x in toinsert:
+            self.lru[x] = x
+        for x in self.lru:
+            self.assert_(x in toinsert)
+        for x in self.lru.keys():
+            self.assert_(x in toinsert)
+        for x in self.lru.iterkeys():
+            self.assert_(x in toinsert)
+        for x in self.lru.itervalues():
+            self.assert_(x in toinsert)
+        for x, y in self.lru.iteritems():
+            self.assert_(x in toinsert)
+            self.assert_(y in toinsert)
+
+    def test_setdefault (self):
+        """
+        Test setting of default values.
+        """
+        self.assertEqual(self.lru.setdefault("hulla", "bla"), "bla")
+        self.assertEqual(self.lru.setdefault("hulla", "bla"), "bla")
 
 
 def test_suite ():
