@@ -158,24 +158,24 @@ class memoized (object):
    not re-evaluated.
    """
 
-   def __init__(self, func):
-      self.func = func
-      self.cache = {}
+    def __init__(self, func):
+        self.func = func
+        self.cache = {}
 
-   def __call__(self, *args):
-      try:
-         return self.cache[args]
-      except KeyError:
-         self.cache[args] = value = self.func(*args)
-         return value
-      except TypeError:
-         # uncachable -- for instance, passing a list as an argument.
-         # Better to not cache than to blow up entirely.
-         return self.func(*args)
+    def __call__(self, *args):
+        try:
+            return self.cache[args]
+        except KeyError:
+            self.cache[args] = value = self.func(*args)
+            return value
+        except TypeError:
+            # uncachable -- for instance, passing a list as an argument.
+            # Better to not cache than to blow up entirely.
+            return self.func(*args)
 
-   def __repr__(self):
-      """Return the function's docstring."""
-      return self.func.__doc__
+    def __repr__(self):
+        """Return the function's docstring."""
+        return self.func.__doc__
 
 
 class curried (object):
@@ -185,14 +185,14 @@ class curried (object):
   evaluated.
   """
 
-  def __init__(self, func, *a):
-    self.func = func
-    self.args = a
+    def __init__(self, func, *a):
+        self.func = func
+        self.args = a
 
-  def __call__(self, *a):
-    args = self.args + a
-    if len(args) < self.func.func_code.co_argcount:
-      return curried(self.func, *args)
-    else:
-      return self.func(*args)
+    def __call__(self, *a):
+        args = self.args + a
+        if len(args) < self.func.func_code.co_argcount:
+            return curried(self.func, *args)
+        else:
+            return self.func(*args)
 
