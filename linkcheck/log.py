@@ -44,7 +44,7 @@ def _stack_format (stack):
         s.write(os.linesep)
         s.write('    %s' % lines[0].lstrip())
         if PRINT_LOCALVARS:
-            for key, value in frame.f_locals.items():
+            for key, value in frame.f_locals.iteritems():
                 s.write("      %s = " % key)
                 # be careful not to cause a new error in the error output
                 try:

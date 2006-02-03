@@ -60,7 +60,7 @@ def make_suite (prefix, namespace):
     @return: test suite
     @rtype: unittest.TestSuite
     """
-    classes = [value for key, value in namespace.items() \
+    classes = [value for key, value in namespace.iteritems() \
                if (key.startswith(prefix) or key.startswith('Test')) \
                   and issubclass(value, unittest.TestCase)]
     loader = unittest.defaultTestLoader
