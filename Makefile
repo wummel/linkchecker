@@ -9,6 +9,7 @@ PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
 TESTFILES := $(wildcard tests/*.py linkcheck/tests/*.py linkcheck/checker/tests/*.py)
 PYCHECKEROPTS := -F config/pycheckrc
+CHECKFILES = *.py linkchecker scripts tests linkcheck config
 PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint.$(PYTHON)
 PYLINTOPTS := 
 PYLINTIGNORE = linkcheck/httplib2.py
@@ -123,7 +124,7 @@ pylint:
 
 .PHONY: pyflakes
 pyflakes:
-	$(PYFLAKES) *.py linkchecker scripts tests linkcheck config | \
+	$(PYFLAKES) $(CHECKFILES) | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'"
@@ -140,3 +141,9 @@ diff:
 	  diff -u linkcheck/$${f}2.py $(PYTHONSVN)/Lib/$${f}.py | less; \
 	done
 
+# various python check scripts
+.PHONY: various
+various:
+	$(PYTHON) $$HOME/src/python-svn/Tools/scripts/checkappend.py $(CHECKFILES)
+	$(PYTHON) $$HOME/src/python-svn/Tools/scripts/cleanfuture.py -r $(CHECKFILES)
+	$(PYTHON) $$HOME/src/python-svn/Tools/scripts/findnocoding.py $(CHECKFILES)
