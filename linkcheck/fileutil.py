@@ -19,6 +19,7 @@ File and path utilities.
 """
 
 import os
+import stat
 import fnmatch
 
 
@@ -144,3 +145,29 @@ class Buffer (object):
             data = self.buf
             self.buf = self.empty
         return data
+
+
+def get_mtime (filename):
+    """
+    Return modification time of filename or zero on errors.
+    """
+    try:
+        return os.stat(filename)[stat.ST_MTIME]
+    except os.error:
+        return 0
+
+
+# cache for modified check {absolute filename -> mtime}
+_mtime_cache = {}
+def has_changed (filename):
+    """
+    Check if filename has changed since the last check. If this
+    is the first check, assume the file is changed.
+    """
+    key = os.path.abspath(filename)
+    mtime = get_mtime(key)
+    if key not in _mtime_cache:
+        _mtime_cache[key] = mtime
+        return True
+    return mtime > _mtime_cache[key]
+
