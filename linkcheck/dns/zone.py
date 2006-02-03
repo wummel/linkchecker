@@ -16,8 +16,6 @@
 
 """DNS Zones."""
 
-from __future__ import generators
-
 import sys
 
 import linkcheck.dns.exception

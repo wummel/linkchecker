@@ -224,10 +224,10 @@ def strduration (duration):
     """
     name = _("seconds")
     if duration >= 60:
-        duration /= 60
+        duration /= 60.0
         name = _("minutes")
     if duration >= 60:
-        duration /= 60
+        duration /= 60.0
         name = _("hours")
     return u"%.3f %s" % (duration, name)
 
