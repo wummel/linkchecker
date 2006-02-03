@@ -8,7 +8,6 @@ LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -t0 -C
 PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
 	linkcheck/checker/*.py)
 TESTFILES := $(wildcard tests/*.py linkcheck/tests/*.py linkcheck/checker/tests/*.py)
-PYCHECKEROPTS := -F config/pycheckrc
 CHECKFILES = *.py linkchecker scripts tests linkcheck config
 PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint.$(PYTHON)
 PYLINTOPTS := 
@@ -111,12 +110,7 @@ sign_distfiles:
 
 .PHONY: check
 check:	localbuild
-	py-find-nocoding .
 	scripts/test.sh
-
-.PHONY: pycheck
-pycheck:
-	-env PYTHONPATH=. PYTHONVER=$(PYVER) pychecker $(PYCHECKEROPTS) $(PYFILES)
 
 .PHONY: pylint
 pylint:
@@ -144,6 +138,6 @@ diff:
 # various python check scripts
 .PHONY: various
 various:
-	$(PYTHON) $$HOME/src/python-svn/Tools/scripts/checkappend.py $(CHECKFILES)
-	$(PYTHON) $$HOME/src/python-svn/Tools/scripts/cleanfuture.py -r $(CHECKFILES)
-	$(PYTHON) $$HOME/src/python-svn/Tools/scripts/findnocoding.py $(CHECKFILES)
+	py-check-append $(CHECKFILES)
+	py-clean-future -r $(CHECKFILES)
+	py-find-nocoding $(CHECKFILES)
