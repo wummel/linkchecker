@@ -20,6 +20,7 @@ Test url routines.
 
 import unittest
 import os
+import re
 import tests
 import linkcheck.url
 
@@ -60,6 +61,42 @@ class TestUrl (tests.StandardTest):
         nurl = "http://server/cskin.zip"
         self.assertEquals(linkcheck.url.url_quote(url_norm(url)), nurl)
 
+    def test_stripsite (self):
+        stripsite = linkcheck.url.stripsite
+        url = "http://imadoofus.org/a/b/c"
+        self.assertEqual(stripsite(url)[0], "imadoofus.org")
+        self.assertEqual(stripsite(url)[1], "/a/b/c")
+
+    def test_safe_patterns (self):
+        is_safe_host = linkcheck.url.is_safe_host
+        safe_host_pattern = linkcheck.url.safe_host_pattern
+        self.assert_(is_safe_host("imadoofus.org"))
+        self.assert_(is_safe_host("imadoofus.org:80"))
+        self.assert_(not is_safe_host("imadoofus.org:21"))
+        pat = safe_host_pattern("imadoofus.org")
+        ro = re.compile(pat)
+        self.assert_(ro.match("http://imadoofus.org:80/"))
+
+    def test_url_quote (self):
+        url_quote = linkcheck.url.url_quote
+        url = "http://a:80/bcd"
+        self.assertEquals(url_quote(url), url)
+        url = "http://a:80/bcd?"
+        url2 = "http://a:80/bcd"
+        self.assertEquals(url_quote(url), url2)
+        url = "http://a:80/bcd?a=b"
+        url2 = "http://a:80/bcd?a=b"
+        self.assertEquals(url_quote(url), url2)
+        url = "a/b"
+        self.assertEquals(url_quote(url), url)
+        url = "bcd?"
+        url2 = "bcd"
+        self.assertEquals(url_quote(url), url2)
+        url = "bcd?a=b"
+        url2 = "bcd?a=b"
+        self.assertEquals(url_quote(url), url2)
+
+
     def test_norm_quote (self):
         """
         Test url norm quoting.
@@ -99,6 +136,9 @@ class TestUrl (tests.StandardTest):
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b=c "
         nurl ="http://example.com/?u=http://example2.com?b=c%20"
+        self.urlnormtest(url, nurl)
+        url = "http://example.com/?u=http://example2.com?b="
+        nurl ="http://example.com/?u=http://example2.com?b="
         self.urlnormtest(url, nurl)
         url = "http://localhost:8001/?quoted=ü"
         nurl = "http://localhost:8001/?quoted=%FC"
@@ -390,6 +430,9 @@ class TestUrl (tests.StandardTest):
         url = u"http//www.imadoofus.org"
         nurl = u"http://www.imadoofus.org"
         self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
+        url = u"https//www.imadoofus.org"
+        nurl = u"https://www.imadoofus.org"
+        self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
 
     def test_valid (self):
         """
@@ -461,9 +504,18 @@ class TestUrl (tests.StandardTest):
         """
         Test host matching.
         """
-        self.assert_(not linkcheck.url.match_host("localhost", [".localhost"]))
-        self.assert_(linkcheck.url.match_host("a.localhost", [".localhost"]))
-        self.assert_(linkcheck.url.match_host("localhost", ["localhost"]))
+	match_host = linkcheck.url.match_host
+	match_url = linkcheck.url.match_url
+	self.assert_(not match_host("", []))
+	self.assert_(not match_host("", [".localhost"]))
+        self.assert_(not match_host("localhost", []))
+        self.assert_(not match_host("localhost", [".localhost"]))
+        self.assert_(match_host("a.localhost", [".localhost"]))
+        self.assert_(match_host("localhost", ["localhost"]))
+        self.assert_(not match_url("", []))
+        self.assert_(not match_url("a", []))
+        self.assert_(match_url("http://imadoofus.org/hulla",
+                               ["imadoofus.org"]))
 
     def test_splitparam (self):
         """
