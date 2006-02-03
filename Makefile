@@ -37,6 +37,7 @@ distclean: clean cleandeb
 # clean aborted dist builds and -out files
 	rm -f $(PACKAGE)-out* $(PACKAGE).prof
 	rm -rf $(PACKAGE)-$(VERSION)
+	rm -rf coverage
 
 .PHONY: cleandeb
 cleandeb:
