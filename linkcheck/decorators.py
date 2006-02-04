@@ -152,12 +152,11 @@ def timeit (func, log=sys.stderr):
 
 
 class memoized (object):
-   """
-   Decorator that caches a function's return value each time it is called.
-   If called later with the same arguments, the cached value is returned, and
-   not re-evaluated.
-   """
-
+    """
+    Decorator that caches a function's return value each time it is called.
+    If called later with the same arguments, the cached value is returned, and
+    not re-evaluated.
+    """
     def __init__(self, func):
         self.func = func
         self.cache = {}
@@ -179,12 +178,11 @@ class memoized (object):
 
 
 class curried (object):
-  """
-  Decorator that returns a function that keeps returning functions
-  until all arguments are supplied; then the original function is
-  evaluated.
-  """
-
+    """
+    Decorator that returns a function that keeps returning functions
+    until all arguments are supplied; then the original function is
+    evaluated.
+    """
     def __init__(self, func, *a):
         self.func = func
         self.args = a
