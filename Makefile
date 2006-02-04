@@ -77,10 +77,18 @@ files:	locale localbuild
 	rm -f linkchecker-out.*.gz
 	for f in linkchecker-out.*; do gzip --best $$f; done
 
+.PHONY: upload
+upload:
+#	relaseforge is broken right now
+#	@echo "Starting releaseforge..."
+#	@releaseforge
+	ncftpput upload.sourceforge.net /incoming dist/*
+	mozilla -remote "openUrl(https://sourceforge.net/projects/linkchecker, new-tab)"
+	@echo "Make SF release and press return..."
+	@read
+
 .PHONY: release
-release: releasecheck distclean dist sign_distfiles homepage
-	@echo "Starting releaseforge..."
-	@releaseforge
+release: releasecheck distclean dist sign_distfiles homepage upload
 	@echo "Uploading new LinkChecker Homepage..."
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 	@echo "Register at Python Package Index..."
