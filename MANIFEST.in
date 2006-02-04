@@ -19,7 +19,8 @@ include debian/compat
 include debian/NEWS.Debian
 include debian/README.Debian
 include debian/watch
-include test.py test/*.py test/*.sh
+include test.py tests/*.py
+include scripts/*.py scripts/*.sh
 include cgi/lconline/*.html cgi/lconline/*.de cgi/lconline/*.en
 include cgi/lconline/check.js
 include linkcheck/HtmlParser/Makefile
