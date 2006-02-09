@@ -50,8 +50,8 @@ Requirements for Windows
    install the MinGW suite from http://mingw.sourceforge.net/
    Be sure to install in the given order:
    
-   a) MingGW
-      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-4.1.1.exe]
+   a) MingGW (this installer downloads additional packages)
+      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-5.0.0.exe]
    b) MSYS
       [http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
 
