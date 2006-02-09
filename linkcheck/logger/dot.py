@@ -47,12 +47,12 @@ class DOTLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         if self.has_part("intro"):
-            self.comment(_("created by %s at %s") % \
+            self.comment(_("created by %s at %s") %
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
-            self.comment(_("Get the newest version at %(url)s") % \
+            self.comment(_("Get the newest version at %(url)s") %
                          {'url': linkcheck.configuration.Url})
-            self.comment(_("Write comments and bugs to %(email)s") % \
+            self.comment(_("Write comments and bugs to %(email)s") %
                          {'email': linkcheck.configuration.Email})
             self.check_date()
             self.writeln()
@@ -95,7 +95,7 @@ class DOTLogger (linkcheck.logger.Logger):
         Write all edges we can find in the graph in a brute-force
         manner. Better would be a mapping of parent URLs.
         """
-        for node in self.nodes.values():
+        for node in self.nodes.itervalues():
             if self.nodes.has_key(node.parent_url):
                 source = self.nodes[node.parent_url].id
                 target = node.id
@@ -117,7 +117,7 @@ class DOTLogger (linkcheck.logger.Logger):
         if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %s (%s)")%\
+            self.comment(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
         self.close_fileoutput()

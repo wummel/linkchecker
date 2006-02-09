@@ -90,7 +90,7 @@ class XMLLogger (linkcheck.logger.Logger):
         """
         self.output_encoding = encoding
         self.starttime = time.time()
-        self.writeln(u'<?xml version="%s" encoding="%s"?>' % \
+        self.writeln(u'<?xml version="%s" encoding="%s"?>' %
                      (xmlquoteattr(version), xmlquoteattr(encoding)))
         if self.has_part("intro"):
             self.comment(_("created by %s at %s") %
@@ -110,7 +110,7 @@ class XMLLogger (linkcheck.logger.Logger):
         if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %s (%s)") % \
+            self.comment(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
 
@@ -121,7 +121,7 @@ class XMLLogger (linkcheck.logger.Logger):
         self.write(self.indent*self.level)
         self.write(u"<%s" % xmlquote(name))
         if attrs:
-            for name, value in attrs.items():
+            for name, value in attrs.iteritems():
                 args = (xmlquote(name), xmlquoteattr(value))
                 self.write(u' %s="%s"' % args)
         self.writeln(u">");
@@ -143,7 +143,7 @@ class XMLLogger (linkcheck.logger.Logger):
         self.write(self.indent*self.level)
         self.write(u"<%s" % xmlquote(name))
         if attrs:
-            for aname, avalue in attrs.items():
+            for aname, avalue in attrs.iteritems():
                 args = (xmlquote(aname), xmlquoteattr(avalue))
                 self.write(u' %s="%s"' % args)
         self.writeln(u">%s</%s>" % (xmlquote(content), xmlquote(name)))

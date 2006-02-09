@@ -46,7 +46,7 @@ lognames = {
     "thread": LOG_THREAD,
     "all": LOG,
     }
-lognamelist = ", ".join(["%r"%name for name in lognames.keys()])
+lognamelist = ", ".join(["%r"%name for name in lognames.iterkeys()])
 
 import linkcheck.log
 
@@ -111,7 +111,7 @@ Loggers = {
     "none": linkcheck.logger.none.NoneLogger,
 }
 # for easy printing: a comma separated logger list
-LoggerKeys = ", ".join(["%r"%name for name in Loggers.keys()])
+LoggerKeys = ", ".join(["%r"%name for name in Loggers.iterkeys()])
 
 
 def init_i18n ():

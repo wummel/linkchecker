@@ -229,7 +229,7 @@ class TextLogger (linkcheck.logger.Logger):
             color = self.colorinvalid
             self.write(_("Error"), color=color)
         if url_data.result:
-            self.write(u": "+url_data.result, color=color)
+            self.write(u": " + url_data.result, color=color)
         self.writeln()
 
     def end_output (self):
@@ -240,7 +240,7 @@ class TextLogger (linkcheck.logger.Logger):
             return
         if self.has_part('outro'):
             self.writeln()
-            self.write(_("That's it.")+" ")
+            self.write(_("That's it.") + " ")
             if self.number >= 0:
                 self.write(_n("%d link checked.", "%d links checked.",
                               self.number) % self.number)
@@ -253,7 +253,7 @@ class TextLogger (linkcheck.logger.Logger):
                             self.errors) % self.errors)
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.writeln(_("Stopped checking at %s (%s)") % \
+            self.writeln(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
         self.close_fileoutput()

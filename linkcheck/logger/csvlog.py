@@ -58,12 +58,12 @@ class CSVLogger (linkcheck.logger.Logger):
         self.starttime = time.time()
         row = []
         if self.has_part("intro"):
-            self.comment(_("created by %s at %s") % \
+            self.comment(_("created by %s at %s") %
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
-            self.comment(_("Get the newest version at %(url)s") % \
+            self.comment(_("Get the newest version at %(url)s") %
                          {'url': linkcheck.configuration.Url})
-            self.comment(_("Write comments and bugs to %(email)s") % \
+            self.comment(_("Write comments and bugs to %(email)s") %
                          {'email': linkcheck.configuration.Email})
             self.check_date()
             self.comment(_("Format of the entries:"))
@@ -125,7 +125,7 @@ class CSVLogger (linkcheck.logger.Logger):
         self.stoptime = time.time()
         if self.has_part("outro"):
             duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %s (%s)") % \
+            self.comment(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
         self.close_fileoutput()

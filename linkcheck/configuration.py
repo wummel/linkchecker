@@ -266,7 +266,7 @@ class Configuration (dict):
         Read configuration options in section "output".
         """
         section = "output"
-        for key in linkcheck.Loggers.keys():
+        for key in linkcheck.Loggers.iterkeys():
             if cfgparser.has_section(key):
                 for opt in cfgparser.options(key):
                     try:

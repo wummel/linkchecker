@@ -78,12 +78,12 @@ class SQLLogger (linkcheck.logger.Logger):
             return
         self.starttime = time.time()
         if self.has_part("intro"):
-            self.comment(_("created by %s at %s") % \
+            self.comment(_("created by %s at %s") %
                          (linkcheck.configuration.AppName,
                           linkcheck.strformat.strtime(self.starttime)))
-            self.comment(_("Get the newest version at %s") % \
+            self.comment(_("Get the newest version at %s") %
                          linkcheck.configuration.Url)
-            self.comment(_("Write comments and bugs to %s") % \
+            self.comment(_("Write comments and bugs to %s") %
                          linkcheck.configuration.Email)
             self.check_date()
             self.writeln()
@@ -116,7 +116,7 @@ class SQLLogger (linkcheck.logger.Logger):
               "%(dltime)d,"
               "%(dlsize)d,"
               "%(cached)d"
-              ")%(separator)s" % \
+              ")%(separator)s" %
               {'table': self.dbname,
                'base_url': sqlify(url_data.base_url or u""),
                'recursion_level': url_data.recursion_level,
@@ -147,7 +147,7 @@ class SQLLogger (linkcheck.logger.Logger):
         if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %s (%s)") % \
+            self.comment(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
         self.close_fileoutput()

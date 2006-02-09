@@ -188,7 +188,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if self.is_directory():
             return True
-        for ro in linkcheck.checker.extensions.values():
+        for ro in linkcheck.checker.extensions.itervalues():
             if ro.search(self.url):
                 return True
         return False
@@ -206,7 +206,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in linkcheck.checker.extensions.items():
+        for key, ro in linkcheck.checker.extensions.iteritems():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
 

@@ -143,8 +143,8 @@ class FileUrl (urlbase.UrlBase):
         path = self.get_os_filename()
         realpath = get_nt_filename(path)
         if path != realpath:
-            self.add_warning(_("The URL path %r is not the same as the " \
-                               "system path %r. You should always use " \
+            self.add_warning(_("The URL path %r is not the same as the "
+                               "system path %r. You should always use "
                                "the system path in URLs.") % (path, realpath),
                                tag="file-system-path")
         pass
@@ -230,12 +230,12 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             return True
         # guess by extension
-        for ro in linkcheck.checker.extensions.values():
+        for ro in linkcheck.checker.extensions.itervalues():
             if ro.search(self.url):
                 return True
         # try to read content (can fail, so catch error)
         try:
-            for ro in contents.values():
+            for ro in contents.itervalues():
                 if ro.search(self.get_content()[:30]):
                     return True
         except IOError:
@@ -249,11 +249,11 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in linkcheck.checker.extensions.items():
+        for key, ro in linkcheck.checker.extensions.iteritems():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
                 return
-        for key, ro in contents.items():
+        for key, ro in contents.iteritems():
             if ro.search(self.get_content()[:30]):
                 getattr(self, "parse_"+key)()
                 return

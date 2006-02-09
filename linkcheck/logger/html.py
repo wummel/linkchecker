@@ -101,7 +101,7 @@ class HtmlLogger (linkcheck.logger.Logger):
             self.write(u"<center><h2>"+linkcheck.configuration.App+
                        "</h2></center><br><blockquote>"+
                        linkcheck.configuration.Freeware+"<br><br>"+
-                       (_("Start checking at %s") % \
+                       (_("Start checking at %s") %
                        linkcheck.strformat.strtime(self.starttime))+
                        os.linesep+"<br>")
             self.check_date()
@@ -143,33 +143,32 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Start html table.
         """
-        self.writeln(u"<br clear=\"all\"><br>")
-        self.writeln(u"<table align=\"left\" border=\"0\" cellspacing=\"0\""+
-                     u" cellpadding=\"1\"")
-        self.writeln(u" bgcolor=\""+self.colorborder+
-                     u"\" summary=\"Border\">")
+        self.writeln(u'<br clear="all"><br>')
+        self.writeln(u'<table align="left" border="0" cellspacing="0"'
+                     u' cellpadding="1"')
+        self.writeln(u' bgcolor="%s" summary="Border">' % self.colorborder)
         self.writeln(u"<tr>")
         self.writeln(u"<td>")
-        self.writeln(u"<table align=\"left\" border=\"0\" cellspacing=\"0\""+
-                     u" cellpadding=\"3\"")
-        self.writeln(u" summary=\"checked link\" bgcolor=\""+
-                     self.colorbackground+u"\">")
+        self.writeln(u'<table align="left" border="0" cellspacing="0"'
+                     u' cellpadding="3"')
+        self.writeln(u' summary="%s" bgcolor="%s">' %
+                     (cgi.escape(_("checked link")), self.colorbackground))
 
     def write_table_end (self):
         """
         End html table.
         """
-        self.write(u"</table></td></tr></table><br clear=\"all\">")
+        self.write(u'</table></td></tr></table><br clear="all">')
 
     def write_url (self, url_data):
         """
         Write url_data.base_url.
         """
         self.writeln(u"<tr>")
-        self.writeln(u"<td bgcolor=\""+self.colorurl+u"\">"+
-                     self.part("url")+u"</td>")
-        self.write(u"<td bgcolor=\""+self.colorurl+u"\">"+
-                   cgi.escape(repr(url_data.base_url or u"")[1:]))
+        self.writeln(u'<td bgcolor="%s">%s</td>' %
+                     (self.colorurl, self.part("url")))
+        self.write(u'<td bgcolor="%s">' % self.colorurl)
+        self.write(cgi.escape(repr(url_data.base_url or u"")[1:]))
         if url_data.cached:
             self.write(_(" (cached)"))
         self.writeln(u"</td></tr>")
@@ -178,8 +177,8 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.name.
         """
-        self.writeln(u"<tr><td>"+self.part("name")+u"</td><td>"+
-                     cgi.escape(repr(url_data.name)[1:])+u"</td></tr>")
+        self.writeln(u"<tr><td>" + self.part("name") + u"</td><td>" +
+                     cgi.escape(repr(url_data.name)[1:]) + u"</td></tr>")
 
     def write_parent (self, url_data):
         """
@@ -244,7 +243,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         sep = u"<br>"+os.linesep
         text = sep.join([cgi.escape(x[1]) for x in url_data.info])
-        self.writeln(u"<tr><td valign=\"top\">"+self.part("info")+
+        self.writeln(u'<tr><td valign="top">' + self.part("info")+
                u"</td><td>"+cgi.escape(text).replace(os.linesep, "<br>")+
                u"</td></tr>")
 
@@ -254,23 +253,25 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         sep = u"<br>"+os.linesep
         text = sep.join([cgi.escape(x[1]) for x in url_data.warnings])
-        self.writeln(u"<tr><td bgcolor=\""+self.colorwarning+u"\" "+
-                     u"valign=\"top\">"+self.part("warning")+
-                     u"</td><td bgcolor=\""+self.colorwarning+u"\">"+
-                     text+u"</td></tr>")
+        self.writeln(u'<tr><td bgcolor="' + self.colorwarning + u'" '+
+                     u'valign="top">' + self.part("warning") +
+                     u'</td><td bgcolor="' + self.colorwarning + u'">' +
+                     text + u"</td></tr>")
 
     def write_result (self, url_data):
         """
         Write url_data.result.
         """
         if url_data.valid:
-            self.write(u"<tr><td bgcolor=\""+self.colorok+u"\">"+
-             self.part("result")+u"</td><td bgcolor=\""+self.colorok+u"\">")
-            self.write(_("Valid"))
+            self.write(u'<tr><td bgcolor="%s">' % self.colorok)
+            self.write(self.part("result"))
+            self.write(u'</td><td bgcolor="%s">' % self.colorok)
+            self.write(cgi.escape(_("Valid")))
         else:
-            self.write(u"<tr><td bgcolor=\""+self.colorerror+u"\">"+
-           self.part("result")+u"</td><td bgcolor=\""+self.colorerror+u"\">")
-            self.write(_("Error"))
+            self.write(u'<tr><td bgcolor="%s">' % self.colorerror)
+            self.write(self.part("result"))
+            self.write(u'</td><td bgcolor="%s">' % self.colorerror)
+            self.write(cgi.escape(_("Error")))
         if url_data.result:
             self.write(u": "+cgi.escape(url_data.result))
         self.writeln(u"</td></tr>")
@@ -296,15 +297,15 @@ class HtmlLogger (linkcheck.logger.Logger):
             self.writeln(u"<br>")
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.writeln(_("Stopped checking at %s (%s)") % \
+            self.writeln(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
                           linkcheck.strformat.strduration(duration)))
-            self.writeln(u"</blockquote><br><hr noshade size=\"1\"><small>"+
+            self.writeln(u'</blockquote><br><hr noshade size="1"><small>'+
                          linkcheck.configuration.HtmlAppInfo+u"<br>")
-            self.writeln(_("Get the newest version at %s") % \
+            self.writeln(_("Get the newest version at %s") %
              (u'<a href="'+linkcheck.configuration.Url+u'" target="_top">'+
               linkcheck.configuration.Url+u"</a>.<br>"))
-            self.writeln(_("Write comments and bugs to %s") % \
+            self.writeln(_("Write comments and bugs to %s") %
              (u'<a href="mailto:'+linkcheck.configuration.Email+u'">'+
              linkcheck.configuration.Email+u"</a>."))
             self.writeln(u"</small></body></html>")

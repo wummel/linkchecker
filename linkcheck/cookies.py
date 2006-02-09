@@ -247,7 +247,7 @@ class HttpCookie (object):
     def server_header_value (self):
         parts = ["%s=%s" % (self.name, quote(self.value))]
         parts += ["%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
-                  for k, v in self.attributes.items()]
+                  for k, v in self.attributes.iteritems()]
         return "; ".join(parts)
 
     def client_header_value (self):
@@ -256,7 +256,7 @@ class HttpCookie (object):
             parts.append("$Version=%s" % quote(self.attributes["version"]))
         parts.append("%s=%s" % (self.name, quote(self.value)))
         parts += ["$%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
-                  for k, v in self.attributes.items() if k != "version"]
+                  for k, v in self.attributes.iteritems() if k != "version"]
         return "; ".join(parts)
 
 

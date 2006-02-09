@@ -88,7 +88,7 @@ class BlacklistLogger (linkcheck.logger.Logger):
         Write the blacklist.
         """
         oldmask = os.umask(0077)
-        for key, value in self.blacklist.items():
+        for key, value in self.blacklist.iteritems():
             self.fd.write("%d %s" % (value, key))
             self.fd.write(os.linesep)
         self.close_fileoutput()

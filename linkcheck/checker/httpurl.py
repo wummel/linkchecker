@@ -178,10 +178,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         else:
             server = _("unknown")
         if self.fallback_get:
-            self.add_info(_("Server %r did not support HEAD request; "\
+            self.add_info(_("Server %r did not support HEAD request; "
                             "a GET request was used instead.") % server)
         if self.no_anchor:
-            self.add_warning(_("Server %r had no anchor support, removed"\
+            self.add_warning(_("Server %r had no anchor support, removed"
                                " anchor from request.") % server,
                              tag="http-no-anchor-support")
         # redirections might have changed the URL
@@ -253,7 +253,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     self.aliases = []
                     self.fallback_get = True
                     continue
-                self.set_result(_("more than %d redirections, aborting") % \
+                self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
                 return response
             # user authentication
@@ -261,7 +261,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if not self.auth:
                     import base64
                     _user, _password = self.get_user_password()
-                    self.auth = "Basic "+\
+                    self.auth = "Basic " + \
                         base64.encodestring("%s:%s" % (_user, _password))
                     assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                     "Authentication %s/%s", _user, _password)
@@ -324,14 +324,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.set_extern(redirected)
             if self.extern[0] and self.extern[0]:
                 self.add_info(
-                          _("The redirected URL is outside of the domain " \
+                          _("The redirected URL is outside of the domain "
                             "filter, checked only syntax."))
                 self.set_result(u"filtered")
                 return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
                 self.add_warning(
-                       _("Access to redirected URL denied by robots.txt, " \
+                       _("Access to redirected URL denied by robots.txt, "
                          "checked only syntax."),
                        tag="http-robots-denied")
                 self.set_result(u"syntax OK")
@@ -345,7 +345,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     return self.max_redirects, response
                 recursion = all_seen + [redirected]
                 self.set_result(
-                          _("recursive redirection encountered:\n %s") % \
+                          _("recursive redirection encountered:\n %s") %
                             "\n  => ".join(recursion), valid=False)
                 return -1, response
             # remember redireced url as alias
@@ -547,7 +547,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                         f = linkcheck.gzip2.GzipFile('', 'rb', 9,
                                           StringIO.StringIO(self.data))
                 except zlib.error, msg:
-                    self.add_warning(_("Decompress error %(err)s") % \
+                    self.add_warning(_("Decompress error %(err)s") %
                                      {"err": str(msg)},
                                      tag="http-decompress-error")
                     f = StringIO.StringIO(self.data)

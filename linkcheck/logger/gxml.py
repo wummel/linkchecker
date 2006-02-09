@@ -79,7 +79,7 @@ class GraphXMLLogger (linkcheck.logger.xmllog.XMLLogger):
         Write all edges we can find in the graph in a brute-force
         manner. Better would be a mapping of parent URLs.
         """
-        for node in self.nodes.values():
+        for node in self.nodes.itervalues():
             if self.nodes.has_key(node.parent_url):
                 attrs = {
                     u"source": u"%d" % self.nodes[node.parent_url].id,

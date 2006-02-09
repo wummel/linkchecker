@@ -296,7 +296,7 @@ class UrlBase (object):
                           tag="url-unicode-domain")
         elif self.base_url != base_url:
             self.add_warning(
-              _("Base URL is not properly normed. Normed URL is %(url)s.") % \
+              _("Base URL is not properly normed. Normed URL is %(url)s.") %
                {'url': base_url}, tag="url-unnormed")
         # make url absolute
         if self.base_ref:
@@ -609,7 +609,7 @@ class UrlBase (object):
         """
         maxbytes = self.consumer.config("warnsizebytes")
         if maxbytes is not None and self.dlsize >= maxbytes:
-            self.add_warning(_("Content size %s is larger than %s.") % \
+            self.add_warning(_("Content size %s is larger than %s.") %
                          (linkcheck.strformat.strsize(self.dlsize),
                           linkcheck.strformat.strsize(maxbytes)),
                           tag="url-content-too-large")

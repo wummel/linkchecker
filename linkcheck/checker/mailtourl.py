@@ -109,9 +109,8 @@ class MailtoUrl (urlbase.UrlBase):
         if i < (len(url) - 1):
             try:
                 headers = cgi.parse_qs(url[(i+1):], strict_parsing=True)
-                for key, val in headers.items():
-                    key = key.lower()
-                    self.headers.setdefault(key, []).extend(val)
+                for key, val in headers.iteritems():
+                    self.headers.setdefault(key.lower(), []).extend(val)
             except ValueError, err:
                 self.add_warning(_("Error parsing CGI values: %s") % str(err))
             addrs = url[:i]
@@ -155,12 +154,12 @@ class MailtoUrl (urlbase.UrlBase):
                             "looking up MX mailhost %r", domain)
         answers = linkcheck.dns.resolver.query(domain, 'MX')
         if len(answers) == 0:
-            self.add_warning(_("No MX mail host for %(domain)s found.") % \
+            self.add_warning(_("No MX mail host for %(domain)s found.") %
                             {'domain': domain},
                              tag="mail-no-mx-host")
             answers = linkcheck.dns.resolver.query(domain, 'A')
             if len(answers) == 0:
-                self.set_result(_("No host for %(domain)s found.") % \
+                self.set_result(_("No host for %(domain)s found.") %
                                  {'domain': domain}, valid=False)
                 return
             # set preference to zero
@@ -213,14 +212,14 @@ class MailtoUrl (urlbase.UrlBase):
                 # check for 25x return code which means that the address
                 # could not be verified, but is sent anyway
                 elif 0 < (info[0] - 250) < 10:
-                    self.add_info(_("Unverified address: %(info)s." \
+                    self.add_info(_("Unverified address: %(info)s."
                                   " But mail will be sent anyway.") % d)
                 else:
                     self.add_warning(_("Unverified address: %(info)s.") % d,
                      tag="mail-unverified-address")
             except smtplib.SMTPException, msg:
                 self.add_warning(
-                      _("MX mail host %(host)s did not accept connections: " \
+                      _("MX mail host %(host)s did not accept connections: "
                         "%(error)s.") % {'host': host, 'error': str(msg)},
                         tag="mail-no-connection")
             if smtpconnect:
