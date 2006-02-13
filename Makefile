@@ -116,8 +116,8 @@ sign_distfiles:
 	  fi; \
 	done
 
-.PHONY: check
-check:	localbuild
+.PHONY: test
+test:	localbuild
 	scripts/test.sh
 
 .PHONY: pylint
