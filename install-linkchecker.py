@@ -85,7 +85,7 @@ def create_shortcuts ():
 
     target = os.path.join(sys.prefix, "RemoveLinkChecker.exe")
     path = os.path.join(dest_dir, "Uninstall LinkChecker.lnk")
-    arguments = "-u " + os.path.join(sys.prefix, "LinkChecker-wininst.log")
+    arguments = '-u "%s"' % os.path.join(sys.prefix, "LinkChecker-wininst.log")
     create_shortcut(target, "Uninstall LinkChecker", path, arguments)
     file_created(path)
     print "See the shortcuts installed in the LinkChecker Programs Group"
@@ -159,7 +159,7 @@ def adjust (f, script, post_interp):
     outfile = script+".bat"
     print "copying and adjusting %s -> %s" % (script, outfile)
     outf = open(outfile, "w")
-    pat = '@%s%s -x "%%~f0" %%* & exit /b\n'
+    pat = '@"%s"%s -x "%%~f0" %%* & exit /b\n'
     outf.write(pat % (get_python_exe(), post_interp))
     outf.writelines(f.readlines())
     outf.close()
