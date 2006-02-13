@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2006-02-04 10:15+0100\n"
+"POT-Creation-Date: 2006-02-13 15:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,50 +136,50 @@ msgstr ""
 msgid "Invalid mail syntax"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:116
+#: ../linkcheck/checker/mailtourl.py:115
 #, python-format
 msgid "Error parsing CGI values: %s"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:139
+#: ../linkcheck/checker/mailtourl.py:138
 msgid "No addresses found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:158
+#: ../linkcheck/checker/mailtourl.py:157
 #, python-format
 msgid "No MX mail host for %(domain)s found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:163
+#: ../linkcheck/checker/mailtourl.py:162
 #, python-format
 msgid "No host for %(domain)s found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:212
+#: ../linkcheck/checker/mailtourl.py:211
 #, python-format
 msgid "Verified address: %(info)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:216
+#: ../linkcheck/checker/mailtourl.py:215
 #, python-format
 msgid "Unverified address: %(info)s. But mail will be sent anyway."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:219
+#: ../linkcheck/checker/mailtourl.py:218
 #, python-format
 msgid "Unverified address: %(info)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:223
+#: ../linkcheck/checker/mailtourl.py:222
 #, python-format
 msgid "MX mail host %(host)s did not accept connections: %(error)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:229
+#: ../linkcheck/checker/mailtourl.py:228
 msgid "Could not connect, but syntax is correct"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:231
+#: ../linkcheck/checker/mailtourl.py:230
 #, python-format
 msgid "Found MX mail host %(host)s"
 msgstr ""
@@ -567,7 +567,7 @@ msgid "Write comments and bugs to %(email)s"
 msgstr ""
 
 #: ../linkcheck/logger/dot.py:120 ../linkcheck/logger/gml.py:124
-#: ../linkcheck/logger/csvlog.py:128 ../linkcheck/logger/html.py:299
+#: ../linkcheck/logger/csvlog.py:128 ../linkcheck/logger/html.py:300
 #: ../linkcheck/logger/sql.py:150 ../linkcheck/logger/text.py:256
 #: ../linkcheck/logger/xmllog.py:113
 #, python-format
@@ -583,21 +583,25 @@ msgstr ""
 msgid "Start checking at %s"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:174 ../linkcheck/logger/text.py:146
+#: ../linkcheck/logger/html.py:155
+msgid "checked link"
+msgstr ""
+
+#: ../linkcheck/logger/html.py:173 ../linkcheck/logger/text.py:146
 msgid " (cached)"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:192 ../linkcheck/logger/text.py:162
+#: ../linkcheck/logger/html.py:191 ../linkcheck/logger/text.py:162
 #, python-format
 msgid ", line %d"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:193 ../linkcheck/logger/text.py:163
+#: ../linkcheck/logger/html.py:192 ../linkcheck/logger/text.py:163
 #, python-format
 msgid ", col %d"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:223 ../linkcheck/logger/html.py:239
+#: ../linkcheck/logger/html.py:222 ../linkcheck/logger/html.py:238
 #: ../linkcheck/logger/text.py:185 ../linkcheck/logger/text.py:201
 #, python-format
 msgid "%.3f seconds"
@@ -607,42 +611,42 @@ msgstr ""
 msgid "Valid"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:273 ../linkcheck/logger/text.py:230
+#: ../linkcheck/logger/html.py:274 ../linkcheck/logger/text.py:230
 msgid "Error"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:286 ../linkcheck/logger/text.py:243
+#: ../linkcheck/logger/html.py:287 ../linkcheck/logger/text.py:243
 msgid "That's it."
 msgstr ""
 
-#: ../linkcheck/logger/html.py:288 ../linkcheck/logger/text.py:245
+#: ../linkcheck/logger/html.py:289 ../linkcheck/logger/text.py:245
 #, python-format
 msgid "%d link checked."
 msgid_plural "%d links checked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/html.py:291 ../linkcheck/logger/text.py:249
+#: ../linkcheck/logger/html.py:292 ../linkcheck/logger/text.py:249
 #, python-format
 msgid "%d warning found."
 msgid_plural "%d warnings found."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/html.py:294 ../linkcheck/logger/text.py:252
+#: ../linkcheck/logger/html.py:295 ../linkcheck/logger/text.py:252
 #, python-format
 msgid "%d error found."
 msgid_plural "%d errors found."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/html.py:304 ../linkcheck/logger/sql.py:84
+#: ../linkcheck/logger/html.py:305 ../linkcheck/logger/sql.py:84
 #: ../linkcheck/logger/text.py:98 ../linkcheck/logger/xmllog.py:99
 #, python-format
 msgid "Get the newest version at %s"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:307 ../linkcheck/logger/sql.py:86
+#: ../linkcheck/logger/html.py:308 ../linkcheck/logger/sql.py:86
 #: ../linkcheck/logger/text.py:100 ../linkcheck/logger/xmllog.py:101
 #, python-format
 msgid "Write comments and bugs to %s"
