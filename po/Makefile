@@ -11,7 +11,7 @@ LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
 LANGUAGES = de fr es
 
-all: template
+all:
 
 mofiles:
 	@for la in $(LANGUAGES); do \
