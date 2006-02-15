@@ -22,6 +22,12 @@ from docutils.parsers.rst.directives.html import MetaBody
 
 import sys
 import os
+import re
+try:
+    import Image                        # check for the Python Imaging Library
+except ImportError:
+    Image = None
+
 
 class NavInfo (object):
     """store nav info"""
@@ -55,51 +61,79 @@ class Writer (html4css1.Writer):
         writers.Writer.__init__(self)
         self.translator_class = HTMLFileNavTranslator
 
-    def visit_image(self, node):
+
+class FixedHTMLTranslator (html4css1.HTMLTranslator):
+
+    def visit_image (self, node):
         """
-        Like html4css1.visit_image(), but with align="middle" enforcement.
+        Like super.visit_image(), but with align="middle" enforcement.
         """
-        atts = node.non_default_attributes()
-        # The XHTML standard only allows align="middle"
-        if atts.get('align') == u"center":
-            atts['align'] = u"middle"
-        if atts.has_key('classes'):
-            del atts['classes']         # prevent duplication with node attrs
-        atts['src'] = atts['uri']
-        del atts['uri']
-        if atts.has_key('scale'):
-            if html4css1.Image and not (atts.has_key('width')
-                              and atts.has_key('height')):
+        atts = {}
+        atts['src'] = node['uri']
+        if node.has_key('width'):
+            atts['width'] = node['width']
+        if node.has_key('height'):
+            atts['height'] = node['height']
+        if node.has_key('scale'):
+            if Image and not (node.has_key('width')
+                              and node.has_key('height')):
                 try:
-                    im = html4css1.Image.open(str(atts['src']))
+                    im = Image.open(str(atts['src']))
                 except (IOError, # Source image can't be found or opened
                         UnicodeError):  # PIL doesn't like Unicode paths.
                     pass
                 else:
                     if not atts.has_key('width'):
-                        atts['width'] = im.size[0]
+                        atts['width'] = str(im.size[0])
                     if not atts.has_key('height'):
-                        atts['height'] = im.size[1]
+                        atts['height'] = str(im.size[1])
                     del im
-            if atts.has_key('width'):
-                atts['width'] = int(round(atts['width']
-                                          * (float(atts['scale']) / 100)))
-            if atts.has_key('height'):
-                atts['height'] = int(round(atts['height']
-                                           * (float(atts['scale']) / 100)))
-            del atts['scale']
-        if not atts.has_key('alt'):
-            atts['alt'] = atts['src']
-        if isinstance(node.parent, nodes.TextElement):
-            self.context.append('')
+            for att_name in 'width', 'height':
+                if atts.has_key(att_name):
+                    match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])
+                    assert match
+                    atts[att_name] = '%s%s' % (
+                        float(match.group(1)) * (float(node['scale']) / 100),
+                        match.group(2))
+        style = []
+        for att_name in 'width', 'height':
+            if atts.has_key(att_name):
+                if re.match(r'^[0-9.]+$', atts[att_name]):
+                    # Interpret unitless values as pixels.
+                    atts[att_name] += 'px'
+                style.append('%s: %s;' % (att_name, atts[att_name]))
+                del atts[att_name]
+        if style:
+            atts['style'] = ' '.join(style)
+        atts['alt'] = node.get('alt', atts['src'])
+        if (isinstance(node.parent, nodes.TextElement) or
+            (isinstance(node.parent, nodes.reference) and
+             not isinstance(node.parent.parent, nodes.TextElement))):
+            # Inline context or surrounded by <a>...</a>.
+            suffix = ''
         else:
-            div_atts = self.image_div_atts(node)
-            self.body.append(self.starttag({}, 'div', '', **div_atts))
-            self.context.append('</div>\n')
-        self.body.append(self.emptytag(node, 'img', '', **atts))
+            suffix = '\n'
+        if node.has_key('align'):
+            if node['align'] == 'center':
+                if suffix:
+                    # "align" attribute is set in surrounding "div" element.
+                    self.body.append('<div align="center" class="align-center">')
+                    self.context.append('</div>\n')
+                    suffix = ''
+                else:
+                    atts['align'] = 'middle'
+                    self.context.append('')
+            else:
+                # "align" attribute is set in "img" element.
+                atts['align'] = node['align']
+                self.context.append('')
+            atts['class'] = 'align-%s' % node['align']
+        else:
+            self.context.append('')
+        self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
 
-class HTMLNavTranslator (html4css1.HTMLTranslator):
+class HTMLNavTranslator (FixedHTMLTranslator):
     """ability to parse navigation meta info"""
 
     def __init__ (self, document):
@@ -153,13 +187,13 @@ class HTMLFileNavTranslator (HTMLNavTranslator):
 
     def get_topframe_bashing (self):
         return """<script type="text/javascript">
-<![CDATA[
+<!--
 window.onload = function() {
   if (top.location != location) {
     top.location.href = document.location.href;
   }
 }
-]]>
+// -->
 </script>
 """
 
