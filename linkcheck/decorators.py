@@ -95,9 +95,9 @@ def signal_handler (signal_number):
     return newfunc
 
 
-def _synchronized (lock, func):
+def synchronize (lock, func):
     """
-    Call function with aqcuired lock.
+    Return synchronized function acquiring the given lock.
     """
     def newfunc (*args, **kwargs):
         """
@@ -121,7 +121,7 @@ def synchronized (lock):
      """
      A decorator calling a function with aqcuired lock.
      """
-     return lambda func: _synchronized(lock, func)
+     return lambda func: synchronize(lock, func)
 
 
 def notimplemented (func):
