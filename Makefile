@@ -46,6 +46,7 @@ cleandeb:
 	rm -f configure-stamp build-stamp
 
 MANIFEST: MANIFEST.in setup.py
+	$(MAKE) -C doc/en all nav
 	$(PYTHON) setup.py sdist --manifest-only
 
 .PHONY: locale
