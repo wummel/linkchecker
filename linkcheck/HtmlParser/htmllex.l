@@ -175,8 +175,10 @@ void yyfree (void* ptr, void* yyscanner) {
 %option 8bit
 /* define output file */
 %option outfile="htmllex.c"
-/* optimize for speed */
+/* optimize for speed.. */
 %option align full
+/* ..but still construct equivalence classes */
+%option ecs
 /* add debugging ability */
 %option debug
 /* don't use unneeded functions */
