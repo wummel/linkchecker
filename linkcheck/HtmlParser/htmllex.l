@@ -231,6 +231,12 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
   /*********************** COMMENT ************************/
+<INITIAL><!> {
+    UPDATE_COLUMN;
+    SETLVAL_UNICODE;
+    RETURN(T_COMMENT);
+}
+
   /* Note: also accept "<! --" and "<!- " */
 <INITIAL><!-- {
     UPDATE_COLUMN;
