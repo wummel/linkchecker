@@ -352,6 +352,7 @@ class Resolver(object):
     def read_local_hosts (self):
         self.add_addrinfo(socket.gethostname())
         # add system specific hosts for all enabled interfaces
+        self.add_addrinfo('localhost', interface=True)
         for addr in self.read_local_ifaddrs():
             self.add_addrinfo(addr, interface=True)
 
