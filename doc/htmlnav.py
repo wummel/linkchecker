@@ -222,4 +222,3 @@ window.onload = function() {
         p = "/".join(p)
         p = utils.relative_path(self.settings._destination, p)
         return '<link rel="shortcut icon" type="image/x-icon" href="%s" />\n' % p
-
