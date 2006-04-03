@@ -33,60 +33,60 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
         """
         Test some good mailto addrs.
         """
-        url = self.norm(u"mailto:Dude <calvin@users.sf.net> , "\
+        url = self.norm(u"mailto:Dude <calvin@users.sourceforge.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
           u"url %s" % url,
-          u"cache key mailto:calvin@users.sf.net,"
+          u"cache key mailto:calvin@users.sourceforge.net,"
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
-          u"info Verified address: <calvin@users.sf.net> is deliverable.",
+          u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
           u"info Verified address: <calvin@users.sourceforge.net> is "\
            "deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:Bastian Kleineidam <calvin@users.sf.net>?"\
+        url = self.norm(u"mailto:Bastian Kleineidam <calvin@users.sourceforge.net>?"\
                 "bcc=calvin%40users.sourceforge.net")
         resultlines = [
           u"url %s" % url,
-          u"cache key mailto:calvin@users.sf.net,"
+          u"cache key mailto:calvin@users.sourceforge.net,"
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
-          u"info Verified address: <calvin@users.sf.net> is deliverable.",
+          u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
           u"info Verified address: <calvin@users.sourceforge.net> is "\
            "deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:Bastian Kleineidam <calvin@users.sf.net>")
+        url = self.norm(u"mailto:Bastian Kleineidam <calvin@users.sourceforge.net>")
         resultlines = [
             u"url %s" % url,
-            u"cache key mailto:calvin@users.sf.net",
+            u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % url,
-            u"info Verified address: <calvin@users.sf.net> is deliverable.",
+            u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:o'hara@users.sf.net")
+        url = self.norm(u"mailto:o'hara@users.sourceforge.net")
         resultlines = [
             u"url %s" % url,
-            u"cache key mailto:o'hara@users.sf.net",
+            u"cache key mailto:o'hara@users.sourceforge.net",
             u"real url %s" % url,
-            u"warning Unverified address: <o'hara@users.sf.net> Unrouteable address.",
+            u"warning Unverified address: <o'hara@users.sourceforge.net> Unrouteable address.",
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:?to=calvin@users.sf.net&subject=blubb&"
-                       u"cc=calvin_cc@users.sf.net&CC=calvin_CC@users.sf.net")
+        url = self.norm(u"mailto:?to=calvin@users.sourceforge.net&subject=blubb&"
+                       u"cc=calvin_cc@users.sourceforge.net&CC=calvin_CC@users.sourceforge.net")
         resultlines = [
             u"url %s" % url,
-            u"cache key mailto:calvin@users.sf.net,"
-             u"calvin_CC@users.sf.net,calvin_cc@users.sf.net",
+            u"cache key mailto:calvin@users.sourceforge.net,"
+             u"calvin_CC@users.sourceforge.net,calvin_cc@users.sourceforge.net",
             u"real url %s" % url,
-           u"info Verified address: <calvin@users.sf.net> is deliverable.",
-            u"warning Unverified address: <calvin_cc@users.sf.net> Unrouteable address.",
-            u"warning Unverified address: <calvin_CC@users.sf.net> Unrouteable address.",
+           u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
+            u"warning Unverified address: <calvin_cc@users.sourceforge.net> Unrouteable address.",
+            u"warning Unverified address: <calvin_CC@users.sourceforge.net> Unrouteable address.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -107,25 +107,25 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
         Test some mailto addrs with warnings.
         """
         # contains non-quoted characters
-        url = u"mailto:calvin@users.sf.net?subject=הצü"
+        url = u"mailto:calvin@users.sourceforge.net?subject=הצü"
         qurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
-            u"cache key mailto:calvin@users.sf.net",
+            u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % qurl,
-            u"info Verified address: <calvin@users.sf.net> is deliverable.",
+            u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
             u"warning Base URL is not properly normed. "
              u"Normed URL is %s." % qurl,
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = u"mailto:calvin@users.sf.net?subject=Halli hallo"
+        url = u"mailto:calvin@users.sourceforge.net?subject=Halli hallo"
         qurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
-            u"cache key mailto:calvin@users.sf.net",
+            u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % qurl,
-            u"info Verified address: <calvin@users.sf.net> is deliverable.",
+            u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
             u"warning Base URL is not properly normed. "
              u"Normed URL is %s." % qurl,
             u"valid",
@@ -147,7 +147,7 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
         """
         # ? extension forbidden in <> construct
         url = self.norm(u"mailto:Bastian Kleineidam "\
-                         "<calvin@users.sf.net?foo=bar>")
+                         "<calvin@users.sourceforge.net?foo=bar>")
         resultlines = [
             u"url %s" % url,
             u"cache key None",
