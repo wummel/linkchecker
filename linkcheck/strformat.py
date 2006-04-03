@@ -196,18 +196,19 @@ def strsize (b):
     """
     if b < 0:
         raise ValueError("Invalid negative byte number")
-    if b == 1:
-        return u"%d Byte" % b
     if b < 1024:
-        return u"%d Bytes" % b
-    b /= 1024.0
-    if b < 1024:
-        return u"%.2f kB" % b
-    b /= 1024.0
-    if b < 1024:
-        return u"%.2f MB" % b
-    b /= 1024.0
-    return u"%.2f GB" % b
+        return u"%dB" % b
+    if b < 1024 * 10:
+        return u"%dKB" % int(b / 1024)
+    if b < 1024 * 1024:
+        return u"%.2fKB" % (float(b) / 1024)
+    if b < 1024 * 1024 * 10:
+        return u"%.2fMB" % (float(b) / (1024*1024))
+    if b < 1024 * 1024 * 1024:
+        return u"%.1fMB" % (float(b) / (1024*1024))
+    if b < 1024 * 1024 * 1024 * 10:
+        return u"%.2fGB" % (float(b) / (1024*1024*1024))
+    return u"%.1fGB" % (float(b) / (1024*1024*1024))
 
 
 def strtime (t):
