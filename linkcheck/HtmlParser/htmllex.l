@@ -477,7 +477,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
   /*********************** SCRIPT ************************/
-<S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*> {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*> {
     UPDATE_LINE;
     SETLVAL_UNICODE;
     BEGIN(INITIAL);
@@ -520,42 +520,42 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
   /* XXX is there a better way to ensure any prefix of </script> is matched,
     but not </script> itself? */
-<S_SCRIPT></[^/] {
+<S_SCRIPT,S_SCRIPT_COMMENT></[^/] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT><\/{RX_WHITE_SPACE}*/[^Ss] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*/[^Ss] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss]/[^Cc] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss]/[^Cc] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc]/[^Rr] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc]/[^Rr] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr]/[^Ii] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr]/[^Ii] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii]/[^Pp] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii]/[^Pp] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp]/[^Tt] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp]/[^Tt] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*/[^>] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*/[^>] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -610,7 +610,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_SCRIPT_STRING);
 }
 
-<S_SCRIPT_COMMENT>[^\-\r\n]+ {
+<S_SCRIPT_COMMENT>[^\-\r\n<]+ {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -1070,7 +1070,11 @@ RX_DATA  [-a-zA-Z0-9_:]+
 
 /* initialize the scanner */
 int htmllexInit (void** scanner, UserData* data) {
-    yylex_init(scanner);
+    int res;
+    res = yylex_init(scanner);
+    if (res) {
+        return res;
+    }
     yyset_extra(data, *scanner);
     return 0;
 }
@@ -1137,6 +1141,5 @@ int htmllexStop (void* scanner, UserData* data) {
 
 /* destroy scanner when not needed any more */
 int htmllexDestroy (void* scanner) {
-    yylex_destroy(scanner);
-    return 0;
+    return yylex_destroy(scanner);
 }
