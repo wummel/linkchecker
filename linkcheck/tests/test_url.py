@@ -135,13 +135,16 @@ class TestUrl (tests.StandardTest):
         nurl = "http://example.com/#a%20b"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b=c "
-        nurl ="http://example.com/?u=http://example2.com?b=c%20"
+        nurl ="http://example.com/?u=http://example2.com?b=c+"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b="
         nurl ="http://example.com/?u=http://example2.com?b="
         self.urlnormtest(url, nurl)
         url = "http://localhost:8001/?quoted=ü"
         nurl = "http://localhost:8001/?quoted=%FC"
+        self.urlnormtest(url, nurl)
+        url = "http://host/?a=b/c+d="
+        nurl = "http://host/?a=b/c+d%3D"
         self.urlnormtest(url, nurl)
 
     def test_norm_case_sensitivity (self):
@@ -504,10 +507,10 @@ class TestUrl (tests.StandardTest):
         """
         Test host matching.
         """
-	match_host = linkcheck.url.match_host
-	match_url = linkcheck.url.match_url
-	self.assert_(not match_host("", []))
-	self.assert_(not match_host("", [".localhost"]))
+        match_host = linkcheck.url.match_host
+        match_url = linkcheck.url.match_url
+        self.assert_(not match_host("", []))
+        self.assert_(not match_host("", [".localhost"]))
         self.assert_(not match_host("localhost", []))
         self.assert_(not match_host("localhost", [".localhost"]))
         self.assert_(match_host("a.localhost", [".localhost"]))
