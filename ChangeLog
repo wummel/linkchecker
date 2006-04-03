@@ -1,6 +1,18 @@
-2.5 "" (released xx.xx.xxxx)
+3.5 "" (released xx.xx.xxxx)
 
-  *
+  * Put a name to the DOT graph output. Thanks to Peter Chiocchetti
+    for noticing this.
+    Type: bugfix
+    Changed: linkcheck/logger/dot.py
+
+  * Parse <!> empty SGML comments in HTML data. And build the HTML
+    parser with equivalence class compression which makes it a lot
+    smaller and only a little tad slower.
+    Also, literal </script> is not allowed anymore in single-line
+    JavaScript comments int HTML data.
+    Type: feature
+    Changed: linkcheck/HtmlParser/htmllex.[lc],
+      linkcheck/tests/test_parser.py
 
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
