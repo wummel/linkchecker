@@ -61,7 +61,7 @@ def has_module (name):
     """
     try:
         exec "import %s" % name
-	return True
+        return True
     except ImportError:
         return False
 
@@ -170,4 +170,3 @@ def has_changed (filename):
         _mtime_cache[key] = mtime
         return True
     return mtime > _mtime_cache[key]
-

@@ -118,10 +118,10 @@ def synchronize (lock, func):
 
 
 def synchronized (lock):
-     """
-     A decorator calling a function with aqcuired lock.
-     """
-     return lambda func: synchronize(lock, func)
+    """
+    A decorator calling a function with aqcuired lock.
+    """
+    return lambda func: synchronize(lock, func)
 
 
 def notimplemented (func):
@@ -193,4 +193,3 @@ class curried (object):
             return curried(self.func, *args)
         else:
             return self.func(*args)
-
