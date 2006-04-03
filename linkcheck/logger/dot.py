@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
 A DOT graph format logger. The specification has been taken from
-http://www.graphviz.org/cvs/doc/info/lang.html.
+http://www.graphviz.org/doc/info/lang.html
 """
 
 import time
@@ -56,7 +56,7 @@ class DOTLogger (linkcheck.logger.Logger):
                          {'email': linkcheck.configuration.Email})
             self.check_date()
             self.writeln()
-        self.writeln(u"digraph {")
+        self.writeln(u"digraph G {")
         self.flush()
 
     def comment (self, s, **args):
