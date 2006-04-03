@@ -82,41 +82,73 @@ import os
 import logging
 import types
 
+# Color constants
+
 # Escape for ANSI colors
 AnsiEsc = "\x1b[%sm"
 
-# type numbers
-AnsiType = {
-    'bold':      '1',
-    'light':     '2',
-    'underline': '4',
-    'blink':     '5',
-    'invert':    '7',
-    'concealed': '8',
+# Control constants
+bold = 'bold'
+light = 'light'
+underline = 'underline'
+blink = 'blink'
+invert = 'invert'
+concealed = 'concealed'
+
+# Control numbers
+AnsiControl = {
+    None:      '',
+    bold:      '1',
+    light:     '2',
+    underline: '4',
+    blink:     '5',
+    invert:    '7',
+    concealed: '8',
 }
 
-# color numbers; capitalized colors are inverse
+# Color constants
+default = 'default'
+black = 'black'
+red = 'red'
+green = 'green'
+yellow = 'yellow'
+blue = 'blue'
+purple = 'purple'
+cyan = 'cyan'
+white = 'white'
+
+# inverse colors
+Black = 'Black'
+Red = 'Red'
+Green = 'Green'
+Yellow = 'Yellow'
+Blue = 'Blue'
+Purple = 'Purple'
+Cyan = 'Cyna'
+White = 'White'
+
+
+# Color numbers; capitalized colors are inverse
 AnsiColor = {
-    'default': '0',
-    'black':   '30',
-    'red':     '31',
-    'green':   '32',
-    'yellow':  '33',
-    'blue':    '34',
-    'purple':  '35',
-    'cyan':    '36',
-    'white':   '37',
-    'Black':   '40',
-    'Red':     '41',
-    'Green':   '42',
-    'Yellow':  '43',
-    'Blue':    '44',
-    'Purple':  '45',
-    'Cyan':    '46',
-    'White':   '47',
-
+    None:    '0',
+    default: '0',
+    black:   '30',
+    red:     '31',
+    green:   '32',
+    yellow:  '33',
+    blue:    '34',
+    purple:  '35',
+    cyan:    '36',
+    white:   '37',
+    Black:   '40',
+    Red:     '41',
+    Green:   '42',
+    Yellow:  '43',
+    Blue:    '44',
+    Purple:  '45',
+    Cyan:    '46',
+    White:   '47',
 }
-
 
 # pc speaker beep escape code
 Beep = "\007"
@@ -124,27 +156,36 @@ Beep = "\007"
 
 def esc_ansicolor (color):
     """convert a named color definition to an escaped ANSI color"""
-    ctype = ''
+    control = ''
     if ";" in color:
-        ctype, color = color.split(";", 1)
-        ctype = AnsiType.get(ctype, '')+";"
+        control, color = color.split(";", 1)
+        control = AnsiControl.get(ctype, '')+";"
     cnum = AnsiColor.get(color, '0')
-    return AnsiEsc % (ctype+cnum)
+    return AnsiEsc % (control+cnum)
 
-AnsiReset = esc_ansicolor("default")
+AnsiReset = esc_ansicolor(default)
 
 
 def has_colors (fp):
     """
     Test if given file is an ANSI color enabled tty.
     """
-    # note: the isatty() function ensures that we do not colorize
+    # The isatty() function ensures that we do not colorize
     # redirected streams, as this is almost never what we want
-    if hasattr(fp, "isatty") and fp.isatty():
-        if os.name == 'nt':
-            # XXX disabled for windows platforms
+    if not (hasattr(fp, "isatty") and fp.isatty()):
+        return False
+    if os.name == 'nt':
+        # On Win9x system, ANSI.SYS would also work. But this
+        # requires manually adding it to config.sys, which is
+        # unlikely someone will do just to run this software on
+        # an old system.
+        try:
+            import WConio
+            return True
+        except ImportError:
+            # no WConio available
             return False
-            #return has_colors_nt()
+    else:
         try:
             import curses
         except ImportError:
@@ -153,7 +194,7 @@ def has_colors (fp):
         try:
             curses.setupterm()
             if curses.tigetnum("colors") >= 8:
-                # more than 8 colors: allright!
+                # We have at least 8 colors - allright!
                 return True
         except curses.error:
             # initialize error, eg. no terminfo database found
@@ -161,37 +202,55 @@ def has_colors (fp):
     return False
 
 
-def has_colors_nt ():
+def _write_color_nt (fp, text, color):
     """
-    Check if running in a Windows environment which supports ANSI colors.
-    Do this by searching for a loaded ANSI driver.
+    Assumes WConio has been imported at module level.
     """
-    _in = None
-    _out = None
+    oldcolor = WConio.gettextinfo()[4]
+    oldtextcolor = oldcolor & 0x000F
+    if ";" in color:
+        control, color = color.split(";", 1)
+    WConio.textcolor(WConioColor.get(color, oldtextcolor))
+    fp.write(text)
+    WConio.textattr(oldcolor)
+
+
+def _write_color_ansi (fp, text, color):
+    """
+    Colorize text with given color.
+    """
+    fp.write('%s%s%s' % (esc_ansicolor(color), text, AnsiReset))
+
+
+if os.name == 'nt':
+    # import WConio on module level
     try:
-        _in, _out = os.popen4("mem /c")
-        line = _out.readline()
-        while line:
-            if "ANSI" in line:
-                return True
-            line = _out.readline()
-        return False
-    finally:
-        if _in is not None:
-            _in.close()
-        if _out is not None:
-            _out.close()
-
-
-def colorize (text, color=None):
-    """
-    Colorize text with given color. If color is None, leave the
-    text as-is.
-    """
-    if color is not None:
-        return '%s%s%s' % (esc_ansicolor(color), text, AnsiReset)
-    else:
-        return text
+        import WConio
+        WConioColor = {
+            None: WConio.LIGHTGREY,
+            default: WConio.LIGHTGREY,
+            black: WConio.BLACK,
+            red: WConio.RED,
+            green: WConio.GREEN,
+            yellow: WConio.YELLOW,
+            blue: WConio.BLUE,
+            purple: WConio.MAGENTA,
+            cyan: WConio.CYAN,
+            white: WConio.WHITE,
+            Black: WConio.BLACK,
+            Red: WConio.RED,
+            Green: WConio.GREEN,
+            Yellow: WConio.YELLOW,
+            Blue: WConio.BLUE,
+            Purple: WConio.MAGENTA,
+            Cyan: WConio.CYAN,
+            White: WConio.WHITE,
+        }
+    except ImportError:
+        pass
+    write_color = _write_color_nt
+else:
+    write_color = _write_color_ansi
 
 
 class Colorizer (object):
@@ -204,24 +263,31 @@ class Colorizer (object):
         Initialize with given stream (file-like object).
         """
         super(Colorizer, self).__init__()
-        self._fp = fp
+        self.fp = fp
+        if has_colors(fp):
+            self.write = self._write_color
+        else:
+            self.write = self._write
 
-    def write (self, s, color=None):
+    def _write (self, text, color=None):
         """
-        Writes message s in color if output stream is
-        a console stream (stderr or stdout).
-        Else writes without color (i.e. black/white).
+        Print text as-is.
         """
-        if has_colors(self._fp):
-            # stdout or stderr can be colorized
-            s = colorize(s, color=color)
-        self._fp.write(s)
+        self.fp.write(text)
+
+    def _write_color (self, text, color=None):
+        """
+        Print text with given color. If color is None, print text as-is.
+        """
+        if color is None:
+            self.fp.write(text)
+        write_color(self.fp, text, color)
 
     def __getattr__ (self, name):
         """
         Delegate attribute access to the stored stream object.
         """
-        return getattr(self._fp, name)
+        return getattr(self.fp, name)
 
 
 class ColoredStreamHandler (logging.StreamHandler, object):
@@ -258,7 +324,8 @@ class ColoredStreamHandler (logging.StreamHandler, object):
         """
         color = self.get_color(record)
         msg = self.format(record)
-        if not hasattr(types, "UnicodeType"): #if no unicode support...
+        if not hasattr(types, "UnicodeType"):
+            # no unicode support
             self.stream.write("%s" % msg, color=color)
         else:
             try:
@@ -268,3 +335,7 @@ class ColoredStreamHandler (logging.StreamHandler, object):
                                   color=color)
         self.stream.write(os.linesep)
         self.flush()
+
+if __name__ == '__main__':
+    import sys
+    write_color(sys.stdout, "Hello green world.\n", green)
