@@ -588,25 +588,7 @@ def format_exception(etype, value, tb, limit=None, basedir=None, color=False):
             tb_supplement = locals.get('__traceback_supplement__')
             if tb_supplement is not None:
                 tb_supplement = tb_supplement[0](*tb_supplement[1:])
-                # TODO these should be hookable
-                from zope.tales.tales import TALESTracebackSupplement
-                from zope.pagetemplate.pagetemplate \
-                        import PageTemplateTracebackSupplement
-                if isinstance(tb_supplement, PageTemplateTracebackSupplement):
-                    template = tb_supplement.manageable_object.pt_source_file()
-                    if template:
-                        w('  Template "%s"\n' % template)
-                elif isinstance(tb_supplement, TALESTracebackSupplement):
-                    w('  Template "%s", line %s, column %s\n'
-                      % (tb_supplement.source_url, tb_supplement.line,
-                         tb_supplement.column))
-                    line = linecache.getline(tb_supplement.source_url,
-                                             tb_supplement.line)
-                    if line:
-                        w('    %s\n' % line.strip())
-                    w('  Expression: %s\n' % tb_supplement.expression)
-                else:
-                    w('  __traceback_supplement__ = %r\n' % (tb_supplement, ))
+                w('  __traceback_supplement__ = %r\n' % (tb_supplement, ))
 
     # Add the representation of the exception itself.
     lines = traceback.format_exception_only(etype, value)
@@ -999,12 +981,6 @@ def main(argv):
         # The doctest module in Python 2.3 does not have this feature
         if hasattr(doctest, 'REPORT_ONLY_FIRST_FAILURE'):
             doctest.set_unittest_reportflags(doctest.REPORT_ONLY_FIRST_FAILURE)
-        # Also apply the flag to zope.testing.doctest, if it exists
-        try:
-            from zope.testing import doctest
-            doctest.set_unittest_reportflags(doctest.REPORT_ONLY_FIRST_FAILURE)
-        except ImportError:
-            pass
 
     # Configure the logging module
     import logging
