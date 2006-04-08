@@ -84,14 +84,14 @@ def init (domain, directory):
     if loc in supported_languages:
         default_language = loc
     # install translation service routines into default namespace
-    translator = get_translator(domain, directory, fallback=True)
+    translator = get_translator(domain, directory,
+                                languages=[default_language], fallback=True)
     do_unicode = True
     translator.install(do_unicode)
 
 
 def get_translator (domain, directory, languages=None,
-                    translatorklass=Translator,
-                    fallback=False,
+                    translatorklass=Translator, fallback=False,
                     fallbackklass=NullTranslator):
     """
     Search the appropriate GNUTranslations class.
@@ -147,7 +147,7 @@ def get_locale ():
     try:
         loc = locale.getdefaultlocale()[0]
     except ValueError:
-        # XXX ignore Python CVS bug
+        # XXX ignore Python bug
         # http://sourceforge.net/tracker/index.php?func=detail&aid=1158909&group_id=5470&atid=105470
         pass
     if loc is None:
