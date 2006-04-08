@@ -103,8 +103,12 @@ homepage:
 dist: locale MANIFEST
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 
+.PHONY: syntaxcheck
+syntaxcheck:
+	py-verify
+
 .PHONY: releasecheck
-releasecheck:
+releasecheck: syntaxcheck
 	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog > /dev/null; then \
 	  echo "Could not release: edit ChangeLog release date"; false; \
 	fi
