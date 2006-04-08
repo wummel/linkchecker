@@ -50,7 +50,6 @@ def add (msgid, transtr, fuzzy):
     """
     Add a non-fuzzy translation to the dictionary.
     """
-    global MESSAGES
     if not fuzzy and transtr and not transtr.startswith('\0'):
         MESSAGES[msgid] = transtr
 
@@ -59,7 +58,6 @@ def generate ():
     """
     Return the generated output.
     """
-    global MESSAGES
     keys = MESSAGES.keys()
     # the keys are sorted in the .mo file
     keys.sort()
@@ -102,8 +100,7 @@ def generate ():
 def make (filename, outfile):
     ID = 1
     STR = 2
-    global MESSAGES
-    MESSAGES = {}
+    MESSAGES.clear()
 
     # Compute .mo name from .po name and arguments
     if filename.endswith('.po'):
