@@ -220,7 +220,7 @@ def url_fix_host (urlparts):
             if port != dport:
                 host = "%s:%d" % (host, port)
         urlparts[1] = userpass+host
-
+    return is_idn
 
 def url_fix_common_typos (url):
     """
