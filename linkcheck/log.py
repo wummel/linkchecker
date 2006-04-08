@@ -50,7 +50,7 @@ def _stack_format (stack):
                 try:
                     s.write(repr(value))
                     s.write(os.linesep)
-                except:
+                except StandardError:
                     s.write("error in repr() call%s" % os.linesep)
     return s.getvalue()
 
