@@ -81,6 +81,18 @@ core distribution as of 5.6.0.
 import os
 import logging
 import types
+try:
+    import WConio
+    has_wconio = True
+except ImportError:
+    # no WConio available
+    has_wconio = False
+try:
+    import curses
+    has_curses = True
+except ImportError:
+    # no curses available
+    has_curses = False
 
 # Color constants
 
@@ -159,7 +171,7 @@ def esc_ansicolor (color):
     control = ''
     if ";" in color:
         control, color = color.split(";", 1)
-        control = AnsiControl.get(ctype, '')+";"
+        control = AnsiControl.get(control, '')+";"
     cnum = AnsiColor.get(color, '0')
     return AnsiEsc % (control+cnum)
 
@@ -179,18 +191,8 @@ def has_colors (fp):
         # requires manually adding it to config.sys, which is
         # unlikely someone will do just to run this software on
         # an old system.
-        try:
-            import WConio
-            return True
-        except ImportError:
-            # no WConio available
-            return False
-    else:
-        try:
-            import curses
-        except ImportError:
-            # no curses available
-            return False
+        return has_wconio
+    elif has_curses:
         try:
             curses.setupterm()
             if curses.tigetnum("colors") >= 8:
@@ -222,32 +224,27 @@ def _write_color_ansi (fp, text, color):
     fp.write('%s%s%s' % (esc_ansicolor(color), text, AnsiReset))
 
 
-if os.name == 'nt':
-    # import WConio on module level
-    try:
-        import WConio
-        WConioColor = {
-            None: WConio.LIGHTGREY,
-            default: WConio.LIGHTGREY,
-            black: WConio.BLACK,
-            red: WConio.RED,
-            green: WConio.GREEN,
-            yellow: WConio.YELLOW,
-            blue: WConio.BLUE,
-            purple: WConio.MAGENTA,
-            cyan: WConio.CYAN,
-            white: WConio.WHITE,
-            Black: WConio.BLACK,
-            Red: WConio.RED,
-            Green: WConio.GREEN,
-            Yellow: WConio.YELLOW,
-            Blue: WConio.BLUE,
-            Purple: WConio.MAGENTA,
-            Cyan: WConio.CYAN,
-            White: WConio.WHITE,
-        }
-    except ImportError:
-        pass
+if os.name == 'nt' and has_wconio:
+    WConioColor = {
+        None: WConio.LIGHTGREY,
+        default: WConio.LIGHTGREY,
+        black: WConio.BLACK,
+        red: WConio.RED,
+        green: WConio.GREEN,
+        yellow: WConio.YELLOW,
+        blue: WConio.BLUE,
+        purple: WConio.MAGENTA,
+        cyan: WConio.CYAN,
+        white: WConio.WHITE,
+        Black: WConio.BLACK,
+        Red: WConio.RED,
+        Green: WConio.GREEN,
+        Yellow: WConio.YELLOW,
+        Blue: WConio.BLUE,
+        Purple: WConio.MAGENTA,
+        Cyan: WConio.CYAN,
+        White: WConio.WHITE,
+    }
     write_color = _write_color_nt
 else:
     write_color = _write_color_ansi
@@ -335,7 +332,3 @@ class ColoredStreamHandler (logging.StreamHandler, object):
                                   color=color)
         self.stream.write(os.linesep)
         self.flush()
-
-if __name__ == '__main__':
-    import sys
-    write_color(sys.stdout, "Hello green world.\n", green)
