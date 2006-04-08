@@ -525,7 +525,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*/[^Ss] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*/[^Ss\n\r\ \t\b\012] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -555,7 +555,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*/[^>] {
+<S_SCRIPT,S_SCRIPT_COMMENT><\/{RX_WHITE_SPACE}*[Ss][Cc][Rr][Ii][Pp][Tt]{RX_WHITE_SPACE}*/[^>\n\r\ \t\b\012] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -666,7 +666,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_STYLE><\/{RX_WHITE_SPACE}*/[^Ss] {
+<S_STYLE><\/{RX_WHITE_SPACE}*/[^Ss\n\r\ \t\b\012] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
@@ -691,7 +691,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt][Yy][Ll][Ee]{RX_WHITE_SPACE}*/[^>] {
+<S_STYLE><\/{RX_WHITE_SPACE}*[Ss][Tt][Yy][Ll][Ee]{RX_WHITE_SPACE}*/[^>\n\r\ \t\b\012] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
