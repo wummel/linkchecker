@@ -278,7 +278,8 @@ class Colorizer (object):
         """
         if color is None:
             self.fp.write(text)
-        write_color(self.fp, text, color)
+        else:
+            write_color(self.fp, text, color)
 
     def __getattr__ (self, name):
         """
