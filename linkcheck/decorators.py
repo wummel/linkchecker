@@ -147,7 +147,7 @@ def timeit (func, log=sys.stderr):
         """
         t = time.time()
         func(*args, **kwargs)
-        print >>log, func.__name__, "took %0.2f seconds" % (time.time() - t)
+        print >> log, func.__name__, "took %0.2f seconds" % (time.time() - t)
     return update_func_meta(newfunc, func)
 
 
