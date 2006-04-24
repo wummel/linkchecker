@@ -83,23 +83,6 @@ RCS_IGNORE = [
     ".git",
 ]
 
-class TestSkipped (Exception):
-    """Test skipped.
-
-    This can be raised to indicate that a test was deliberatly
-    skipped, but not because a feature wasn't available.  For
-    example, if some resource can't be used, such as the network
-    appears to be unavailable, this should be raised instead of
-    TestFailed.
-    """
-
-class ResourceDenied (TestSkipped):
-    """Test skipped because it requested a disallowed resource.
-
-    This is raised when a test calls requires() for a resource that
-    has not be enabled.  It is used to distinguish between expected
-    and unexpected skips.
-    """
 
 class Options:
     """Configurable properties of the test runner."""
@@ -394,6 +377,7 @@ colorcodes = {'gray': 0, 'red': 1, 'green': 2, 'yellow': 3,
               'blue': 4, 'magenta': 5, 'cyan': 6, 'white': 7}
 
 colormap = {'fail': 'red',
+            'warn': 'yellow',
             'pass': 'green',
             'count': 'white',
             'title': 'white',
@@ -424,97 +408,6 @@ def colorize(texttype, text):
     return '\033[%d;%dm' % (light, code)+ text + '\033[0;0m'
 
 
-def colorize_zope_doctest_output(lines):
-    """Colorize output formatted by the doctest engine included with Zope 3.
-
-    Returns a new sequence of colored strings.
-
-    `lines` is a sequence of strings.
-
-    The typical structure of the doctest output looks either like this:
-
-        File "...", line 123, in foo.bar.baz.doctest_quux
-        Failed example:
-            f(2, 3)
-        Expected:
-            6
-        Got:
-            5
-
-    Or, if an exception has occured, like this:
-
-        File "...", line 123, in foo.bar.baz.doctest_quux
-        Failed example:
-            f(2, 3)
-        Exception raised:
-            Traceback (most recent call last):
-              File "...", line 123, in __init__
-                self.do_something(a, b, c)
-              File "...", line ...
-                ...
-            FooError: something bad happened
-
-    If some assumption made by this function is not met, the original sequence
-    is returned without any modifications.
-    """
-    # XXX bug: doctest may report several failures in one test, they are
-    #          separated by a horizontal dash line.  Only the first one of
-    #          them is now colorized properly.
-    header = lines[0]
-    if not header.startswith('File "'):
-        return lines # not a doctest failure report?
-
-    # Dissect the header in a rather nasty way.
-    header = header[len('File "'):]
-    fn_end = header.find('"')
-    if fn_end == -1:
-        return lines
-    filename = header[:fn_end]
-    header = header[fn_end+len('", line '):]
-    parts = header.split(', in ')
-    if len(parts) != 2:
-        return lines
-    lineno, testname = parts
-    filename = colorize('filename', filename)
-    lineno = colorize('lineno', lineno)
-    testname = colorize('testname', testname)
-    result = ['File "%s", line %s, in %s' % (filename, lineno, testname)]
-
-    # Colorize the 'Failed example:' section.
-    if lines[1] != 'Failed example:':
-        return lines
-    result.append(colorize('doctest_title', lines[1]))
-    remaining = lines[2:]
-    terminators = ['Expected:', 'Expected nothing', 'Exception raised:']
-    while remaining and remaining[0] not in terminators:
-        line = remaining.pop(0)
-        result.append(colorize('doctest_code', line))
-    if not remaining:
-        return lines
-
-    if remaining[0] in ('Expected:', 'Expected nothing'):
-        result.append(colorize('doctest_title', remaining.pop(0))) # Expected:
-        while remaining and remaining[0] not in ('Got:', 'Got nothing'):
-            line = remaining.pop(0)
-            result.append(colorize('doctest_expected', line))
-        if not remaining or remaining[0] not in ('Got:', 'Got nothing'):
-            return lines
-        result.append(colorize('doctest_title', remaining.pop(0))) # Got:
-        while remaining:
-            line = remaining.pop(0)
-            result.append(colorize('doctest_got', line))
-    elif remaining[0] == 'Exception raised:':
-        result.append(colorize('doctest_title', remaining.pop(0))) # E. raised:
-        while remaining:
-            line = remaining.pop(0)
-            # TODO: Scrape and colorize the traceback.
-            result.append(colorize('doctest_got', line))
-    else:
-        return lines
-
-    return result
-
-
 def colorize_exception_only(lines):
     """Colorize result of traceback.format_exception_only."""
     if len(lines) > 1:
@@ -524,28 +417,16 @@ def colorize_exception_only(lines):
     # First, colorize the first line, which usually contains the name
     # and the string of the exception.
     result = []
-    doctest = 'Failed doctest test for' in lines[0]
-    # TODO: We only deal with the output from Zope 3's doctest module.
-    #       A colorizer for the Python's doctest module would be nice too.
-    if doctest:
-        # If we have a doctest, we do not care about this header.  All the
-        # interesting things are below, formatted by the doctest runner.
-        for lineno in range(4):
-            result.append(colorize('doctest_ignored', lines[lineno]))
-        beef = colorize_zope_doctest_output(lines[4:])
-        result.extend(beef)
-        return '\n'.join(result)
+    # A simple exception.  Try to colorize the first row, leave others be.
+    excline = lines[0].split(': ', 1)
+    if len(excline) == 2:
+        excname = colorize('excname', excline[0])
+        excstring = colorize('excstring', excline[1])
+        result.append('%s: %s' % (excname, excstring))
     else:
-        # A simple exception.  Try to colorize the first row, leave others be.
-        excline = lines[0].split(': ', 1)
-        if len(excline) == 2:
-            excname = colorize('excname', excline[0])
-            excstring = colorize('excstring', excline[1])
-            result.append('%s: %s' % (excname, excstring))
-        else:
-            result.append(colorize('excstring', lines[0]))
-        result.extend(lines[1:])
-        return '\n'.join(result)
+        result.append(colorize('excstring', lines[0]))
+    result.extend(lines[1:])
+    return '\n'.join(result)
 
 
 def format_exception(etype, value, tb, limit=None, basedir=None, color=False):
@@ -565,18 +446,13 @@ def format_exception(etype, value, tb, limit=None, basedir=None, color=False):
 
         for filename, lineno, name, locals in extract_tb(tb, limit):
             line = linecache.getline(filename, lineno)
-            if color and 'zope/testing/doctest.py' not in filename:
+            if color:
                 filename = colorize('filename', filename)
                 lineno = colorize('lineno', str(lineno))
                 name = colorize('testname', name)
                 w('  File "%s", line %s, in %s\n' % (filename, lineno, name))
                 if line:
                     w('    %s\n' % line.strip())
-            elif color:
-                s = '  File "%s", line %s, in %s\n' % (filename, lineno, name)
-                w(colorize('doctest_ignored', s))
-                if line:
-                    w('    %s\n' % colorize('doctest_ignored', line.strip()))
             else:
                 w('  File "%s", line %s, in %s\n' % (filename, lineno, name))
                 if line:
@@ -648,11 +524,11 @@ class CustomTestResult(unittest._TextTestResult):
                 self.stream.write(": %s" % name)
                 self._lastWidth = width
             self.stream.flush()
-        test.check_resources = self.check_resources
         self.__super_startTest(test)  # increments testsRun by one and prints
         self.testsRun = n # override the testsRun calculation
         for hook in self.hooks:
             hook.startTest(test)
+        self.start_time = time.time()
 
     def stopTest(self, test):
         for hook in self.hooks:
@@ -687,7 +563,20 @@ class CustomTestResult(unittest._TextTestResult):
         self.__super_printErrors()
 
     def printSkipped (self):
-        self.printErrorList("SKIPPED", self.skipped)
+        self.stream.writeln()
+        for test, msg in self.skipped:
+            self.printSkip(test, msg)
+
+    def printSkip (self, test, msg):
+        w = self.stream.writeln
+        if self.cfg.colorize:
+            c = colorize
+        else:
+            c = lambda texttype, text: text
+        kind = c('warn', "SKIPPED")
+        description = c('testname', self.getDescription(test))
+        w("%s: %s:" % (kind, description))
+        w("         %s" % msg)
 
     def formatError(self, err):
         return "".join(format_exception(basedir=self.cfg.basedir,
@@ -708,21 +597,6 @@ class CustomTestResult(unittest._TextTestResult):
         w(self.formatError(err))
         w()
 
-    def printSkip (self, kind, test, err):
-        w = self.stream.writeln
-        if self.cfg.colorize:
-            c = colorize
-        else:
-            c = lambda texttype, text: text
-        w()
-        w(c('separator', self.separator1))
-        kind = c('fail', kind)
-        description = c('longtestname', self.getDescription(test))
-        w("%s: %s" % (kind, description))
-        w(c('separator', self.separator2))
-        w(str(err[1]))
-        w()
-
     def addFailure(self, test, err):
         if self.cfg.immediate_errors:
             self.printTraceback("FAIL", test, err)
@@ -731,19 +605,32 @@ class CustomTestResult(unittest._TextTestResult):
         self.failures.append((test, self.formatError(err)))
 
     def addError(self, test, err):
-        if isinstance(err[1], TestSkipped):
-            self.addSkipped(test, err)
-            return
         if self.cfg.immediate_errors:
             self.printTraceback("ERROR", test, err)
         if self.cfg.postmortem:
             pdb.post_mortem(sys.exc_info()[2])
         self.errors.append((test, self.formatError(err)))
 
-    def addSkipped(self, test, err):
-        if self.cfg.immediate_errors:
-            self.printSkip("SKIP", test, err)
-        self.skipped.append((test, self.formatError(err)))
+    def addSkipped(self, test, msg):
+        if self.showAll:
+            self.stream.writeln("skip")
+        elif self.dots:
+            self.stream.write("S")
+        self.skipped.append((test, msg))
+
+    def addSuccess (self, test):
+        now = time.time()
+        unittest.TestResult.addSuccess(self, test)
+        if self.cfg.colorize:
+            c = colorize
+        else:
+            c = lambda texttype, text: text
+        if self.showAll:
+            time_taken = float(now - self.start_time)
+            time_str = c('count', '%.1f' % time_taken)
+            self.stream.writeln("ok (%ss)" % time_str)
+        elif self.dots:
+            self.stream.write('.')
 
     def printErrorList(self, flavour, errors):
         if self.cfg.immediate_errors:
@@ -753,18 +640,79 @@ class CustomTestResult(unittest._TextTestResult):
         else:
             self.__super_printErrorList(flavour, errors)
 
-    def check_resources (self, needed_resources):
-        for res in needed_resources:
-            self.requires(res)
+class CustomTestCase (unittest.TestCase):
+    """
+    A test case with improved inequality test and resource support.
+    """
 
-    def requires (self, resource, msg=None):
-        if not self.is_resource_enabled(resource):
-            if msg is None:
-                msg = "Use of the `%s' resource not enabled" % resource
-            raise ResourceDenied(msg)
+    def denied_resources (self, cfg_resources):
+        resources = getattr(self, "needed_resources", [])
+        return [x for x in resources if x not in cfg_resources]
 
-    def is_resource_enabled (self, resource):
-        return resource in self.cfg.resources
+    def run (self, result=None):
+        if not isinstance(result, CustomTestResult):
+            raise ValueError("Needed CustomTestResult object: %r" % result)
+        result.startTest(self)
+        # get mangled private variables
+        getpriv = lambda x: getattr(self, "_TestCase__" + x)
+        testMethod = getattr(self, getpriv("testMethodName"))
+        try:
+            denied = self.denied_resources(result.cfg.resources)
+            if denied:
+                res = ",".join(["%r" % x for x in denied])
+                s = len(denied) != 1 and "s" or ""
+                msg = "missing resource%s %s" % (s, res)
+                result.addSkipped(self, msg)
+                return
+            try:
+                self.setUp()
+            except KeyboardInterrupt:
+                raise
+            except:
+                result.addError(self, getpriv("exc_info")())
+                return
+
+            ok = False
+            try:
+                testMethod()
+                ok = True
+            except self.failureException:
+                result.addFailure(self, getpriv("exc_info")())
+            except KeyboardInterrupt:
+                raise
+            except:
+                result.addError(self, getpriv("exc_info")())
+
+            try:
+                self.tearDown()
+            except KeyboardInterrupt:
+                raise
+            except:
+                result.addError(self, getpriv("exc_info")())
+                ok = False
+            if ok: result.addSuccess(self)
+        finally:
+            result.stopTest(self)
+
+    def failUnlessEqual (self, first, second, msg=None):
+        """
+        Define the first argument as the test value, and the second
+        one as the excpected value. Adjust the default error message
+        accordingly.
+        """
+        if msg is None:
+            r1 = repr(first)
+            r2 = repr(second)
+            if len(r1) > 40 or len(r2) > 40:
+                sep = "\n"
+            else:
+                sep = ", "
+            msg = "got %s%sexpected %s" % (r1, sep, r2)
+        super(CustomTestCase, self).failUnlessEqual(first, second, msg=msg)
+
+    assertEqual = assertEquals = failUnlessEqual
+
+unittest.TestCase = CustomTestCase
 
 
 class CustomTestRunner(unittest.TextTestRunner):
@@ -805,12 +753,14 @@ class CustomTestRunner(unittest.TextTestRunner):
         if not self.cfg.quiet:
             self.stream.writeln(c('separator', result.separator2))
             run_str = c('count', str(run))
-            time_str = c('count', '%.3f' % timeTaken)
+            time_str = c('count', '%.1f' % timeTaken)
             self.stream.writeln("Ran %s test%s in %ss" %
                                 (run_str, run != 1 and "s" or "", time_str))
             self.stream.writeln()
         if result.skipped:
-            self.stream.writeln("SKIPPED TESTS (%d)" % len(result.skipped))
+            self.stream.write(c('warn', "SKIPPED TESTS"))
+            count = c('count', str(len(result.skipped)))
+            self.stream.writeln(" (%s)" % count)
         if not result.wasSuccessful():
             self.stream.write(c('fail', "FAILED"))
 
