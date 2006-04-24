@@ -19,9 +19,10 @@
 Test gettext .po files.
 """
 
+import unittest
 import os
 import glob
-from tests import make_suite, StandardTest
+from tests import make_suite
 
 
 pofiles = None
@@ -36,7 +37,7 @@ def get_pofiles ():
         pofiles.extend(glob.glob("doc/*.po"))
     return pofiles
 
-class TestPo (StandardTest):
+class TestPo (unittest.TestCase):
     """
     Test .po file syntax.
     """
@@ -51,7 +52,7 @@ class TestPo (StandardTest):
             self.assertEquals(ret, 0, msg="PO-file syntax error in %r" % f)
 
 
-class TestGTranslator (StandardTest):
+class TestGTranslator (unittest.TestCase):
     """
     GTranslator displays a middot · for a space. Unfortunately, it
     gets copied with copy-and-paste, what a shame.
