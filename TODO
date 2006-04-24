@@ -1,3 +1,8 @@
+http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/483752
+http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/475160
+
+- use format_time from quodlibet for times
+
 - [FEATURE] postmortem debugging with pdb.pm()
 
 - [BUGFIX] The URL in the log output is double normed.
