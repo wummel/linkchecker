@@ -29,7 +29,7 @@ import linkcheck.log
 import linkcheck.lock
 import linkcheck.strformat
 import linkcheck.checker.geoip
-from linkcheck.decorators import synchronized
+import linkcheck.decorators
 from linkcheck.checker import stderr
 
 # global lock for synchronizing all the checker threads
@@ -92,30 +92,30 @@ class Consumer (object):
         self._threader = linkcheck.threader.Threader(num=config['threads'])
         self.start_log_output()
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def config (self, key):
         """
         Get config value.
         """
         return self._config[key]
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def config_append (self, key, val):
         """
         Append config value.
         """
         self._config[key].append(val)
 
-    @synchronized(_lock)
     def __getattr__ (self, name):
         """
         Delegate access to the internal cache if possible.
         """
         if hasattr(self._cache, name):
-            return getattr(self._cache, name)
+            func = getattr(self._cache, name)
+            return linkcheck.decorators.synchronize(_lock, func)
         raise AttributeError(name)
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def append_url (self, url_data):
         """
         Append url to incoming check list.
@@ -135,7 +135,7 @@ class Consumer (object):
         name = linkcheck.strformat.ascii_safe(name)
         self._threader.start_thread(url_data.check, (), name=name)
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def checked (self, url_data):
         """
         Put checked url in cache and log it.
@@ -148,14 +148,14 @@ class Consumer (object):
         else:
             self._cache.in_progress_remove(url_data)
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def interrupted (self, url_data):
         """
         Remove url from active list.
         """
         self._cache.in_progress_remove(url_data, ignore_missing=True)
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def finished (self):
         """
         Return True if checking is finished.
@@ -164,14 +164,14 @@ class Consumer (object):
         return self._threader.finished() and \
                self._cache.incoming_len() == 0
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def finish (self):
         """
         Finish consuming URLs.
         """
         self._threader.finish()
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def no_more_threads (self):
         """
         Return True if no more active threads are running.
@@ -215,7 +215,7 @@ class Consumer (object):
             time.sleep(2)
         self.end_log_output()
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def print_status (self, curtime, start_time):
         """
         Print check status looking at url queues.
@@ -228,7 +228,7 @@ class Consumer (object):
         print_duration(curtime - start_time)
         print >> stderr
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def start_log_output (self):
         """
         Start output of all configured loggers.
@@ -237,7 +237,7 @@ class Consumer (object):
         for logger in self._config['fileoutput']:
             logger.start_output()
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def log_url (self, url_data):
         """
         Log given URL.
@@ -260,7 +260,7 @@ class Consumer (object):
         for log in self._config['fileoutput']:
             log.log_filter_url(url_data, do_print)
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def end_log_output (self):
         """
         End output of all configured loggers.
@@ -269,14 +269,14 @@ class Consumer (object):
         for logger in self._config['fileoutput']:
             logger.end_output()
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def active_threads (self):
         """
         Return number of active threads.
         """
         return self._threader.active_threads()
 
-    @synchronized(_lock)
+    @linkcheck.decorators.synchronized(_lock)
     def get_country_name (self, host):
         """
         Return country code for host if found, else None.
