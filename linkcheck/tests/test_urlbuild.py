@@ -19,7 +19,6 @@ Test url build method from url data objects.
 """
 
 import unittest
-import tests
 import linkcheck.configuration
 import linkcheck.checker.httpurl
 import linkcheck.checker.cache
@@ -35,7 +34,7 @@ def get_test_consumer ():
     return linkcheck.checker.consumer.Consumer(config, cache)
 
 
-class TestUrlBuild (tests.StandardTest):
+class TestUrlBuild (unittest.TestCase):
     """
     Test url building.
     """

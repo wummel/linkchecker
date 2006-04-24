@@ -20,10 +20,9 @@ Test linkname routines.
 
 import unittest
 import linkcheck.linkname
-import tests
 
 
-class TestLinkname (tests.StandardTest):
+class TestLinkname (unittest.TestCase):
     """
     Test href and image name parsing.
     """

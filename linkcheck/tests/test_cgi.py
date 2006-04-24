@@ -19,7 +19,6 @@ Test cgi form routines.
 """
 
 import unittest
-import tests
 import linkcheck.lc_cgi
 
 
@@ -35,7 +34,7 @@ class Store (object):
         self.value = value
 
 
-class TestCgi (tests.StandardTest):
+class TestCgi (unittest.TestCase):
     """
     Test cgi routines.
     """

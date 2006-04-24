@@ -21,7 +21,6 @@ Test html parsing.
 import linkcheck.HtmlParser
 import linkcheck.HtmlParser.htmlsax
 import linkcheck.HtmlParser.htmllib
-import tests
 import cStringIO as StringIO
 import unittest
 
@@ -180,7 +179,7 @@ flushtests = [
 ]
 
 
-class TestParser (tests.StandardTest):
+class TestParser (unittest.TestCase):
     """
     Test html parser.
     """

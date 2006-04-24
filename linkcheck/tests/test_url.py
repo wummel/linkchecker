@@ -21,7 +21,6 @@ Test url routines.
 import unittest
 import os
 import re
-import tests
 import linkcheck.url
 
 # 'ftp://user:pass@ftp.foo.net/foo/bar':
@@ -42,7 +41,7 @@ def url_norm (url):
     return linkcheck.url.url_norm(url)[0]
 
 
-class TestUrl (tests.StandardTest):
+class TestUrl (unittest.TestCase):
     """
     Test url norming and quoting.
     """

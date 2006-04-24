@@ -21,6 +21,7 @@ Define standard test support classes funtional for LinkChecker tests.
 import os
 import codecs
 import difflib
+import unittest
 
 import linkcheck
 import linkcheck.checker
@@ -28,7 +29,6 @@ import linkcheck.checker.cache
 import linkcheck.checker.consumer
 import linkcheck.configuration
 import linkcheck.logger
-from tests import StandardTest
 
 
 class TestLogger (linkcheck.logger.Logger):
@@ -111,7 +111,7 @@ def get_test_consumer (confargs, logargs):
     return linkcheck.checker.consumer.Consumer(config, cache)
 
 
-class LinkCheckTest (StandardTest):
+class LinkCheckTest (unittest.TestCase):
     """
     Functional test class with ability to test local files.
     """

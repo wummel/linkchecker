@@ -20,11 +20,10 @@ Test container routines.
 
 import unittest
 import random
-import tests
 import linkcheck.containers
 
 
-class TestListDict (tests.StandardTest):
+class TestListDict (unittest.TestCase):
     """
     Test list dictionary routines.
     """
@@ -110,7 +109,7 @@ class TestListDict (tests.StandardTest):
         self.assertEqual(self.d.get_true("b", 2), 1)
 
 
-class TestSetList (tests.StandardTest):
+class TestSetList (unittest.TestCase):
     """
     Test set list routines.
     """
@@ -173,7 +172,7 @@ class TestSetList (tests.StandardTest):
         self.assertEqual(self.l[1], 3)
 
 
-class TestLRU (tests.StandardTest):
+class TestLRU (unittest.TestCase):
     """
     Test routines of LRU queue.
     """

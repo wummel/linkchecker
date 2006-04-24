@@ -19,11 +19,10 @@ Test cookie routines.
 """
 
 import unittest
-import tests
 import linkcheck.cookies
 
 
-class TestCookies (tests.StandardTest):
+class TestCookies (unittest.TestCase):
     """
     Test list dictionary routines.
     """

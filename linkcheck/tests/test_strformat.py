@@ -20,11 +20,10 @@ Test string formatting operations.
 
 import unittest
 import os
-import tests
 import linkcheck.strformat
 
 
-class TestStrFormat (tests.StandardTest):
+class TestStrFormat (unittest.TestCase):
     """
     Test string formatting routines.
     """
