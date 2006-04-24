@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-ANSI Color definitions and functions.
+ANSI Color definitions and functions. For Windows systems, WConio is
+required.
 
 From Term::ANSIColor, applies also to this module:
 
@@ -26,11 +27,7 @@ underline, and reverse) are part of the earlier ANSI X3.64 standard for
 control sequences for video terminals and peripherals.
 
 Note that not all displays are ISO 6429-compliant, or even X3.64-compliant
-(or are even attempting to be so). This module will not work as expected on
-displays that do not honor these escape sequences, such as cmd.exe, 4nt.exe,
-and command.com under either Windows NT or Windows 2000. They may just be
-ignored, or they may display as an ESC character followed by some apparent
-garbage.
+(or are even attempting to be so).
 
 Jean Delvare provided the following table of different common terminal
 emulators and their support for the various attributes and others have
@@ -48,21 +45,6 @@ helped me flesh it out::
  Windows       yes      no       no      no       no       yes      no
  Cygwin SSH    yes      yes      no     color    color    color     yes
 
-Windows is Windows telnet, and Cygwin SSH is the OpenSSH implementation under
-Cygwin on Windows NT. Where the entry is other than yes or no, that
-emulator displays the given attribute as something else instead. Note that
-on an aixterm, clear doesn't reset colors; you have to explicitly set the
-colors back to what you want. More entries in this table are welcome.
-
-Note that codes 3 (italic), 6 (rapid blink), and 9 (strikethrough) are
-specified in ANSI X3.64 and ECMA-048 but are not commonly supported by
-most displays and emulators and therefore aren't supported by this module
-at the present time. ECMA-048 also specifies a large number of other
-attributes, including a sequence of attributes for font changes, Fraktur
-characters, double-underlining, framing, circling, and overlining. As none
-of these attributes are widely supported or useful, they also aren't
-currently supported by this module.
-
 SEE ALSO
 
 ECMA-048 is available on-line (at least at the time of this writing) at
@@ -73,9 +55,7 @@ not own a copy of it. Since the source material for ISO 6429 was ECMA-048
 and the latter is available for free, there seems little reason to obtain
 the ISO standard.
 
-The current version of this module is always available from its web site at
-http://www.eyrie.org/~eagle/software/ansicolor/. It is also part of the Perl
-core distribution as of 5.6.0.
+WConio module: http://newcenturycomputers.net/projects/wconio.html
 """
 
 import os
@@ -112,10 +92,13 @@ AnsiControl = {
     None:      '',
     bold:      '1',
     light:     '2',
+    #italic:   '3', # unsupported
     underline: '4',
     blink:     '5',
+    #rapidblink: '6', # unsupported
     invert:    '7',
     concealed: '8',
+    #strikethrough: '9', # unsupported
 }
 
 # Color constants
