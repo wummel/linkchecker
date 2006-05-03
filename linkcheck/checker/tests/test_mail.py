@@ -41,8 +41,6 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
           u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
-          u"info Verified address: <calvin@users.sourceforge.net> is "\
-           "deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
@@ -54,8 +52,6 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
           u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
-          u"info Verified address: <calvin@users.sourceforge.net> is "\
-           "deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
