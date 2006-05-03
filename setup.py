@@ -537,6 +537,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                    'clean': MyClean,
                   },
        packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
+                   'linkcheck.configuration',
                    'linkcheck.dns', 'linkcheck.dns.rdtypes',
                    'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
                    'linkcheck.HtmlParser', 'linkcheck.ftpparse', ],

@@ -1,0 +1,231 @@
+# -*- coding: iso-8859-1 -*-
+# Copyright (C) 2000-2006 Bastian Kleineidam
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""Parse configuration files"""
+
+import ConfigParser
+import os
+import linkcheck
+import linkcheck.log
+
+class LCConfigParser (ConfigParser.ConfigParser, object):
+    """
+    Parse a LinkChecker configuration file.
+    """
+
+    def __init__ (self, config):
+        super(LCConfigParser, self).__init__()
+        self.config = config
+
+    def read (self, files):
+        """
+        Read settings from given config files.
+
+        @raises: LinkCheckerError on syntax errors in the config file(s)
+        """
+        try:
+            super(LCConfigParser, self).read(files)
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            return
+        # Read all the configuration parameters from the given files.
+        self.read_output_config()
+        self.read_checking_config()
+        self.read_authentication_config()
+        self.read_filtering_config()
+        # re-init logger
+        self.config['logger'] = self.config.logger_new('text')
+
+    def read_output_config (self):
+        """
+        Read configuration options in section "output".
+        """
+        section = "output"
+        for key in linkcheck.Loggers.iterkeys():
+            if self.has_section(key):
+                for opt in self.options(key):
+                    try:
+                        self[key][opt] = self.get(key, opt)
+                    except ConfigParser.Error, msg:
+                        assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+                try:
+                    self[key]['parts'] = [f.strip() for f in \
+                         self.get(key, 'parts').split(',')]
+                except ConfigParser.Error, msg:
+                    assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["warnings"] = self.getboolean(section, "warnings")
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            if self.getboolean(section, "verbose"):
+                self.config["verbose"] = True
+                self.config["warnings"] = True
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            if self.getboolean(section, "quiet"):
+                self['logger'] = self.logger_new('none')
+                self['quiet'] = True
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["status"] = self.getboolean(section, "status")
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            logger = self.get(section, "log")
+            if linkcheck.Loggers.has_key(logger):
+                self['logger'] = self.logger_new(logger)
+            else:
+                linkcheck.log.warn(_("invalid log option %r"), logger)
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            filelist = self.get(section, "fileoutput").split(",")
+            for arg in filelist:
+                arg = arg.strip()
+                # no file output for the blacklist and none Logger
+                if linkcheck.Loggers.has_key(arg) and \
+                   arg not in ["blacklist", "none"]:
+                    self['fileoutput'].append(
+                                     self.logger_new(arg, fileoutput=1))
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["interactive"] = self.getboolean(section, "interactive")
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+
+    def read_checking_config (self):
+        """
+        Read configuration options in section "checking".
+        """
+        section = "checking"
+        try:
+            num = self.getint(section, "threads")
+            self['threads'] = num
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["anchors"] = self.getboolean(section, "anchors")
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["debug"] = self.get(section, "debug")
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            num = self.getint(section, "recursionlevel")
+            self.config["recursionlevel"] = num
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            arg = self.get(section, "warningregex")
+            if arg:
+                try:
+                    self.config["warningregex"] = re.compile(arg)
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("syntax error in warningregex %r: %s\n"), arg, msg)
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["warnsizebytes"] = int(self.get(section,
+                                                      "warnsizebytes"))
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["nntpserver"] = self.get(section, "nntpserver")
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["anchorcaching"] = self.getboolean(section,
+                                    "anchorcaching")
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            i = 1
+            while 1:
+                arg = self.get(section, "noproxyfor%d" % i)
+                try:
+                    arg = re.compile(arg)
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("syntax error in noproxyfor%d %r: %s"), i, arg, msg)
+                self.config["noproxyfor"].append(arg)
+                i += 1
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+
+    def read_authentication_config (self):
+        """
+        Read configuration options in section "authentication".
+        """
+        section = "authentication"
+        try:
+            i = 1
+            while 1:
+                auth = self.get(section, "entry%d" % i).split()
+                if len(auth) != 3:
+                    break
+                try:
+                    auth[0] = re.compile(auth[0])
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("syntax error in entry%d %r: %s"), i, auth[0], msg)
+                self.config["authentication"].insert(0, {'pattern': auth[0],
+                                                  'user': auth[1],
+                                                  'password': auth[2]})
+                i += 1
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+
+    def read_filtering_config (self):
+        """
+        Read configuration options in section "filtering".
+        """
+        section = "filtering"
+        try:
+            i = 1
+            while 1:
+                val = self.get(section, "nofollow%d" % i)
+                pat = linkcheck.get_link_pat(val, strict=0)
+                self.config["externlinks"].append(pat)
+                i += 1
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self['ignorewarnings'] = [f.strip() for f in \
+                 self.get(section, 'ignorewarnings').split(',')]
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            i = 1
+            while 1:
+                # XXX backwards compatibility: split and ignore second part
+                val = self.get(section, "ignore%d" % i).split()[0]
+                pat = linkcheck.get_link_pat(val, strict=1)
+                self.config["externlinks"].append(pat)
+                i += 1
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            self.config["internlinks"].append(
+               linkcheck.get_link_pat(self.get(section, "internlinks")))
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+
