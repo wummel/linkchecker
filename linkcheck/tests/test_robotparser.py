@@ -33,8 +33,6 @@ class TestRobotParser (unittest.TestCase):
         """
         Initialize self.rp as a robots.txt parser.
         """
-        if hasattr(self, "needed_resources"):
-            self.check_resources(self.needed_resources)
         self.rp = linkcheck.robotparser2.RobotFileParser()
 
     def check (self, a, b):
