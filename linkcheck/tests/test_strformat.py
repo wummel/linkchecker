@@ -124,17 +124,37 @@ class TestStrFormat (unittest.TestCase):
         self.assertEqual(linkcheck.strformat.limit("1", 1), "1")
         self.assertEqual(linkcheck.strformat.limit("11", 1), "1...")
 
-    def test_time (self):
+    def test_strtime (self):
         zone = linkcheck.strformat.strtimezone()
         t = linkcheck.strformat.strtime(0)
         self.assertEqual(t, "1970-01-01 01:00:00"+zone)
 
     def test_duration (self):
-        strduration = linkcheck.strformat.strduration
-        self.assertEqual(strduration(0), "0.000 seconds")
-        self.assertEqual(strduration(1), "1.000 seconds")
-        self.assertEqual(strduration(120), "2.000 minutes")
-        self.assertEqual(strduration(60*60), "1.000 hours")
+        duration = linkcheck.strformat.strduration
+        self.assertEqual(duration(-0.5), "-00:01")
+        self.assertEqual(duration(0), "00:00")
+        self.assertEqual(duration(0.9), "00:01")
+        self.assertEqual(duration(1), "00:01")
+        self.assertEqual(duration(2), "00:02")
+        self.assertEqual(duration(60), "01:00")
+        self.assertEqual(duration(120), "02:00")
+        self.assertEqual(duration(60*60), "01:00:00")
+        self.assertEqual(duration(60*60*24), "24:00:00")
+
+    def test_duration_long (self):
+        duration = linkcheck.strformat.strduration_long
+        self.assertEqual(duration(-0.5), "-0.50 seconds")
+        self.assertEqual(duration(0), "0.00 seconds")
+        self.assertEqual(duration(0.9), "0.90 seconds")
+        self.assertEqual(duration(1), "1 second")
+        self.assertEqual(duration(2), "2 seconds")
+        self.assertEqual(duration(60), "1 minute")
+        self.assertEqual(duration(120), "2 minutes")
+        self.assertEqual(duration(60*60), "1 hour")
+        self.assertEqual(duration(60*60*24), "1 day")
+        self.assertEqual(duration(60*60*24*365), "1 year")
+        self.assertEqual(duration(60*60*24*365 + 60*60*24 + 2),
+                         "1 year, 1 day")
 
     def test_linenumber (self):
         get_line_number = linkcheck.strformat.get_line_number

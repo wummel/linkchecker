@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+# Some functions have been taken and adjusted from the quodlibet
+# source. Quodlibet is (C) 2004-2005 Joe Wreschnig, Michael Urman
+# and licensed under the GNU General Public License version 2.
 """
 Various string utility functions. Note that these functions are not
 necessarily optimised for large strings, so use with care.
@@ -23,6 +27,7 @@ import re
 import textwrap
 import codecs
 import os
+import math
 import time
 import urlparse
 import pydoc
@@ -219,18 +224,61 @@ def strtime (t):
            strtimezone()
 
 
+# from quodlibet
 def strduration (duration):
-    """
-    Return translated and formatted time duration.
-    """
-    name = _("seconds")
-    if duration >= 60:
-        duration /= 60.0
-        name = _("minutes")
-    if duration >= 60:
-        duration /= 60.0
-        name = _("hours")
-    return u"%.3f %s" % (duration, name)
+    """Turn a time value in seconds into hh:mm:ss or mm:ss."""
+    if duration < 0:
+        duration = abs(duration)
+        prefix = "-"
+    else:
+        prefix = ""
+    duration = math.ceil(duration)
+    if duration >= 3600: # 1 hour
+        # time, in hours:minutes:seconds
+        return "%s%02d:%02d:%02d" % (prefix, duration // 3600,
+                                   (duration % 3600) // 60, duration % 60)
+    else:
+        # time, in minutes:seconds
+        return "%s%02d:%02d" % (prefix, duration // 60, duration % 60)
+
+
+# from quodlibet
+def strduration_long (duration):
+    """Turn a time value in seconds into x hours, x minutes, etc."""
+    if duration < 0:
+        duration = abs(duration)
+        prefix = "-"
+    else:
+        prefix = ""
+    if duration < 1:
+        return _("%s%.02f seconds") % (prefix, duration)
+    # translation dummies
+    _n("%d second", "%d seconds", 1)
+    _n("%d minute", "%d minutes", 1)
+    _n("%d hour", "%d hours", 1)
+    _n("%d day", "%d days", 1)
+    _n("%d year", "%d years", 1)
+    cutoffs = [
+        (60, "%d second", "%d seconds"),
+        (60, "%d minute", "%d minutes"),
+        (24, "%d hour", "%d hours"),
+        (365, "%d day", "%d days"),
+        (None, "%d year", "%d years"),
+    ]
+    time_str = []
+    for divisor, single, plural in cutoffs:
+        if duration < 1:
+            break
+        if divisor is None:
+            duration, unit = 0, duration
+        else:
+            duration, unit = divmod(duration, divisor)
+        if unit:
+            time_str.append(_n(single, plural, unit) % unit)
+    time_str.reverse()
+    if len(time_str) > 2:
+        time_str.pop()
+    return "%s%s" % (prefix, ", ".join(time_str))
 
 
 def strtimezone ():
