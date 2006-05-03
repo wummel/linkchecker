@@ -149,5 +149,5 @@ class SQLLogger (linkcheck.logger.Logger):
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
-                          linkcheck.strformat.strduration(duration)))
+                          linkcheck.strformat.strduration_long(duration)))
         self.close_fileoutput()

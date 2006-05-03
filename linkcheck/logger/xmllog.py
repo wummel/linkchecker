@@ -112,7 +112,7 @@ class XMLLogger (linkcheck.logger.Logger):
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
-                          linkcheck.strformat.strduration(duration)))
+                          linkcheck.strformat.strduration_long(duration)))
 
     def xml_starttag (self, name, attrs=None):
         """

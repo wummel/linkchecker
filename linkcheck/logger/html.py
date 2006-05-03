@@ -299,7 +299,7 @@ class HtmlLogger (linkcheck.logger.Logger):
             duration = self.stoptime - self.starttime
             self.writeln(_("Stopped checking at %s (%s)") %
                          (linkcheck.strformat.strtime(self.stoptime),
-                          linkcheck.strformat.strduration(duration)))
+                          linkcheck.strformat.strduration_long(duration)))
             self.writeln(u'</blockquote><br><hr noshade size="1"><small>'+
                          linkcheck.configuration.HtmlAppInfo+u"<br>")
             self.writeln(_("Get the newest version at %s") %
