@@ -17,7 +17,7 @@
 """Parse configuration files"""
 
 import ConfigParser
-import os
+import re
 import linkcheck
 import linkcheck.log
 

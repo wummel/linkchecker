@@ -22,7 +22,6 @@ import sys
 import os
 import logging
 import logging.config
-import re
 import urllib
 import _linkchecker_configdata
 import linkcheck
