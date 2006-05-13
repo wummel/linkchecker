@@ -21,6 +21,7 @@ _lock = threading.Lock()
 
 
 class Logger (object):
+
     def __init__ (self, config):
         self.logs = [config['logger']]
         self.logs.extend(config['fileoutput'])
@@ -42,6 +43,7 @@ class Logger (object):
         for logger in self.logs:
             logger.end_output()
 
+    @synchronized(_lock)
     def log_url (self, url_data):
         """
         Send new url to all configured loggers.
