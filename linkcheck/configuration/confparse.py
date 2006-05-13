@@ -58,11 +58,11 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
             if self.has_section(key):
                 for opt in self.options(key):
                     try:
-                        self[key][opt] = self.get(key, opt)
+                        self.config[key][opt] = self.get(key, opt)
                     except ConfigParser.Error, msg:
                         assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
                 try:
-                    self[key]['parts'] = [f.strip() for f in \
+                    self.config[key]['parts'] = [f.strip() for f in \
                          self.get(key, 'parts').split(',')]
                 except ConfigParser.Error, msg:
                     assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
@@ -78,8 +78,8 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
             assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             if self.getboolean(section, "quiet"):
-                self['logger'] = self.logger_new('none')
-                self['quiet'] = True
+                self.config['logger'] = self.config.logger_new('none')
+                self.config['quiet'] = True
         except ConfigParser.Error, msg:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -89,7 +89,7 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
         try:
             logger = self.get(section, "log")
             if linkcheck.Loggers.has_key(logger):
-                self['logger'] = self.logger_new(logger)
+                self.config['logger'] = self.config.logger_new(logger)
             else:
                 linkcheck.log.warn(_("invalid log option %r"), logger)
         except ConfigParser.Error, msg:
@@ -101,8 +101,8 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                 # no file output for the blacklist and none Logger
                 if linkcheck.Loggers.has_key(arg) and \
                    arg not in ["blacklist", "none"]:
-                    self['fileoutput'].append(
-                                     self.logger_new(arg, fileoutput=1))
+                    self.config['fileoutput'].append(
+                                  self.config.logger_new(arg, fileoutput=1))
         except ConfigParser.Error, msg:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -117,7 +117,7 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
         section = "checking"
         try:
             num = self.getint(section, "threads")
-            self['threads'] = num
+            self.config['threads'] = num
         except ConfigParser.Error, msg:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -170,6 +170,11 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                 i += 1
         except ConfigParser.Error, msg:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            num = self.getint(section, "maxqueuesize")
+            self.config["maxqueuesize"] = num
+        except ConfigParser.Error, msg:
+            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_authentication_config (self):
         """
@@ -209,7 +214,7 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
         except ConfigParser.Error, msg:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
-            self['ignorewarnings'] = [f.strip() for f in \
+            self.config['ignorewarnings'] = [f.strip() for f in \
                  self.get(section, 'ignorewarnings').split(',')]
         except ConfigParser.Error, msg:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
