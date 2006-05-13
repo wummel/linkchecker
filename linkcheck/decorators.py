@@ -103,13 +103,7 @@ def synchronize (lock, func):
         """
         Execute function synchronized.
         """
-        # acquire lock waiting indefinitely, with a maximum number of tries
-        tries = 1
-        while not lock.acquire():
-            time.sleep(0.5)
-            tries += 1
-            if tries > 5:
-                raise RuntimeError("Could not acquire lock")
+        lock.acquire()
         try:
             return func(*args, **kwargs)
         finally:
