@@ -32,6 +32,7 @@ import traceback
 import linkcheck
 import linkcheck.linkparse
 import linkcheck.checker
+import linkcheck.cache.geoip
 import linkcheck.director
 import linkcheck.strformat
 import linkcheck.containers
