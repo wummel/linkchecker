@@ -98,12 +98,10 @@ def check_urls (aggregate):
 
 def print_status (urlqueue, start_time):
     duration = time.time() - start_time
-    tocheck, tasks, links = urlqueue.status()
+    checked, unfinished, tocheck = urlqueue.status()
     msg = _n("%5d URL queued,", "%5d URLs queued,", tocheck) % tocheck
     print >> stderr, msg,
-    msg = _n("%4d URL checked,", "%4d URLs checked,", links) % links
-    print >> stderr, msg,
-    msg = _n("%2d active task,", "%2d active tasks,", tasks) % tasks
+    msg = _n("%4d URL checked,", "%4d URLs checked,", checked) % checked
     print >> stderr, msg,
     msg = _("runtime %s") % linkcheck.strformat.strduration_long(duration)
     print >> stderr, msg
