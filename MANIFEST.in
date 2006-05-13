@@ -31,7 +31,7 @@ include linkcheck/ftpparse/*.h
 include po/*.po po/*.pot po/Makefile
 include doc/*.py doc/*.example
 include doc/po4a.conf doc/*.po doc/*.pot
-include doc/en/*.txt doc/en/*.nav doc/en/*.html doc/en/*.png doc/en/*.jpg doc/en/*.ico
+include doc/en/*.txt doc/en/*.png doc/en/*.jpg doc/en/*.ico
 include doc/en/*.css doc/en/*.1 doc/en/Makefile
 include doc/de/*.1
 include doc/fr/*.1
