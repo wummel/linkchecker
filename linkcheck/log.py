@@ -76,7 +76,6 @@ def debug (logname, msg, *args, **kwargs):
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.DEBUG):
         _log(log.debug, msg, args, tb=kwargs.get("tb"))
-    return True
 
 
 def info (logname, msg, *args, **kwargs):
@@ -139,3 +138,10 @@ def is_debug (logname):
     See if logger is on debug level.
     """
     return logging.getLogger(logname).isEnabledFor(logging.DEBUG)
+
+
+def shutdown ():
+    """
+    Flush and close all log handlers.
+    """
+    logging.shutdown()
