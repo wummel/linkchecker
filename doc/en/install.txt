@@ -38,7 +38,7 @@ Requirements for Unix/Linux or Mac OS X
 
 4. *Optional (speedup for i386 compatible PCs)*
    Psyco from http://psyco.sourceforge.net/
-   [http://osdn.dl.sourceforge.net/sourceforge/psyco/psyco-1.5-src.tar.gz]
+   [http://switch.dl.sourceforge.net/sourceforge/psyco/psyco-1.5.1-src.tar.gz]
 
 Requirements for Windows
 ------------------------
@@ -51,13 +51,13 @@ Requirements for Windows
    Be sure to install in the given order:
    
    a) MingGW (this installer downloads additional packages)
-      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MinGW-5.0.2.exe]
+      [http://switch.dl.sourceforge.net/sourceforge/mingw/MinGW-5.0.2.exe]
    b) MSYS
-      [http://osdn.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
+      [http://switch.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
 
 3. *Optional (speedup for i386 compatible PCs)*
    Psyco from http://psyco.sourceforge.net/
-   [http://osdn.dl.sourceforge.net/sourceforge/psyco/psyco-1.5.win32-py2.4.exe]
+   [http://switch.dl.sourceforge.net/sourceforge/psyco/psyco-1.5.win32-py2.4.exe]
 
 4. *Optional (color support for console)*
    Wconio from http://newcenturycomputers.net/projects/wconio.html
