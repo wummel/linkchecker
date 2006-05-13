@@ -107,7 +107,7 @@ class TestUrl (unittest.TestCase):
               "46F9BD%2540monmouth.com%26rnum%3D2"
         self.urlnormtest(url, url)
         url = "http://redirect.alexa.com/redirect?"\
-              "http:%2F%2Fwww.offeroptimizer.com"
+              "http://www.offeroptimizer.com"
         nurl = url
         self.urlnormtest(url, nurl)
         url = "http://www.lesgensducinema.com/photo/Philippe%20Nahon.jpg"
