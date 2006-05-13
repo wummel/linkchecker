@@ -1,7 +1,11 @@
-http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/483752
-http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/475160
+- Improved print_status
 
-- use format_time from quodlibet for times
+- Ctrl-C is not really working.
+
+- To limit the used memory, put a maximum size on the URL queue
+  (eg. 20000 URLs). If reached, the worker calling queue.put() will
+  wait for another worker to call queue.get() before continuing.
+  Problem: dead lock when all workers called queue.put().
 
 - [FEATURE] postmortem debugging with pdb.pm()
 

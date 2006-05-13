@@ -31,8 +31,7 @@ import linkcheck.url
 import linkcheck.i18n
 import linkcheck.strformat
 import linkcheck.checker
-import linkcheck.checker.cache
-import linkcheck.checker.consumer
+import linkcheck.director
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
@@ -99,13 +98,16 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
     config["externlinks"].append(
              linkcheck.get_link_pat("^%s$" % linkcheck.url.safe_url_pattern))
     config["externlinks"].append(linkcheck.get_link_pat(".*", strict=True))
+    # start checking
+    aggregate = linkcheck.director.get_aggregate(config)
+
     cache = linkcheck.checker.cache.Cache()
     consumer = linkcheck.checker.consumer.Consumer(config, cache)
-    # start checking
     url = form["url"].value
-    url_data = linkcheck.checker.get_url_from(url, 0, consumer, cmdline=False)
-    consumer.append_url(url_data)
-    linkcheck.checker.check_urls(consumer)
+    url_data = linkcheck.checker.get_url_from(url, 0, aggregate,
+                                              assume_local=False)
+    aggregate.urlqueue.put(url_data)
+    linkcheck.director.check_urls(aggregate)
 
 
 def get_host_name (form):

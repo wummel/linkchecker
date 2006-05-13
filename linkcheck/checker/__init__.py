@@ -18,19 +18,14 @@
 Main functions for link checking.
 """
 
-import time
-import sys
 import os
 import cgi
 import socket
-import codecs
-import traceback
 import select
 import re
 import urllib
 import nntplib
 import ftplib
-
 import linkcheck.httplib2
 import linkcheck.strformat
 import linkcheck.dns.exception
@@ -153,110 +148,6 @@ acap        # application configuration access protocol
 
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
-_encoding = linkcheck.i18n.default_encoding
-stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
-
-def internal_error ():
-    """
-    Print internal error message to stderr.
-    """
-    print >> stderr, os.linesep
-    print >> stderr, _("""********** Oops, I did it again. *************
-
-You have found an internal error in LinkChecker. Please write a bug report
-at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
-or send mail to %s and include the following information:
-- the URL or file you are testing
-- your commandline arguments and/or configuration.
-- the output of a debug run with option "-Dall" of the executed command
-- the system information below.
-
-Disclosing some of the information above due to privacy reasons is ok.
-I will try to help you nonetheless, but you have to give me something
-I can work with ;) .
-""") % linkcheck.configuration.Email
-    etype, value = sys.exc_info()[:2]
-    print >> stderr, etype, value
-    traceback.print_exc()
-    print_app_info()
-    print >> stderr, os.linesep, \
-            _("******** LinkChecker internal error, over and out ********")
-    sys.exit(1)
-
-
-def print_app_info ():
-    """
-    Print system and application info to stderr.
-    """
-    print >> stderr, _("System info:")
-    print >> stderr, linkcheck.configuration.App
-    print >> stderr, _("Python %s on %s") % (sys.version, sys.platform)
-    for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
-        value = os.getenv(key)
-        if value is not None:
-            print >> stderr, key, "=", repr(value)
-
-
-def check_urls (consumer):
-    """
-    Main check function; checks all configured URLs until interrupted
-    with Ctrl-C. If you call this function more than once, you can specify
-    different configurations with the consumer parameter.
-
-    @param consumer: an object where all runtime-dependent options are
-        stored
-    @type consumer: linkcheck.consumer.Consumer
-    @return: None
-    """
-    try:
-        _check_urls(consumer)
-    except (KeyboardInterrupt, SystemExit):
-        consumer.abort()
-    except:
-        consumer.abort()
-        internal_error()
-
-
-def _check_urls (consumer):
-    """
-    Checks all configured URLs. Prints status information, calls logger
-    methods.
-
-    @param consumer: an object where all runtime-dependent options are
-        stored
-    @type consumer: linkcheck.consumer.Consumer
-    @return: None
-    """
-    start_time = time.time()
-    status_time = start_time
-    while not consumer.finished():
-        url_data = consumer.incoming_get_url()
-        if url_data is None:
-            # wait for incoming queue to fill
-            time.sleep(0.1)
-        elif url_data.cached:
-            # was cached -> can be logged
-            consumer.log_url(url_data)
-        else:
-            # go check this url
-            if url_data.parent_url and not \
-               linkcheck.url.url_is_absolute(url_data.base_url):
-                name = url_data.parent_url
-            else:
-                name = u""
-            if url_data.base_url:
-                name += url_data.base_url
-            if not name:
-                name = None
-            consumer.check_url(url_data, name)
-        if consumer.config('status'):
-            curtime = time.time()
-            if (curtime - status_time) > 5:
-                consumer.print_status(curtime, start_time)
-                status_time = curtime
-    consumer.end_log_output()
-
-
 # file extensions we can parse recursively
 extensions = {
     "html": re.compile(r'(?i)\.s?html?$'),
@@ -298,9 +189,9 @@ def absolute_url (base_url, base_ref, parent_url):
     return u""
 
 
-def get_url_from (base_url, recursion_level, consumer,
+def get_url_from (base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=0, column=0,
-                  name=u"", cmdline=False):
+                  name=u"", assume_local=False):
     """
     Get url data from given base data.
 
@@ -308,8 +199,8 @@ def get_url_from (base_url, recursion_level, consumer,
     @type base_url: string or None
     @param recursion_level: current recursion level
     @type recursion_level: number
-    @param consumer: consumer object
-    @type consumer: linkcheck.checker.consumer.Consumer
+    @param aggregate: aggregate object
+    @type aggregate: linkcheck.checker.aggregate.Consumer
     @param parent_url: parent url
     @type parent_url: string or None
     @param base_ref: base url from <base> tag
@@ -329,7 +220,14 @@ def get_url_from (base_url, recursion_level, consumer,
         base_ref = linkcheck.strformat.unicode_safe(base_ref)
     name = linkcheck.strformat.unicode_safe(name)
     url = absolute_url(base_url, base_ref, parent_url).lower()
-    # test scheme
+    klass = get_urlclass_from(url, assume_local)
+    return klass(base_url, recursion_level, aggregate,
+                 parent_url=parent_url, base_ref=base_ref,
+                 line=line, column=column, name=name)
+
+
+def get_urlclass_from (url, assume_local):
+    """Return checker class for given URL."""
     if url.startswith("http:"):
         klass = linkcheck.checker.httpurl.HttpUrl
     elif url.startswith("ftp:"):
@@ -351,24 +249,13 @@ def get_url_from (base_url, recursion_level, consumer,
     elif ignored_schemes_re.search(url):
         # ignored url
         klass = linkcheck.checker.ignoredurl.IgnoredUrl
-    elif cmdline:
-        # assume local file on command line
+    elif assume_local:
+        # assume local file
         klass = linkcheck.checker.fileurl.FileUrl
     else:
         # error url, no further checking, just log this
         klass = linkcheck.checker.errorurl.ErrorUrl
-    url_data = klass(base_url, recursion_level, consumer,
-                     parent_url=parent_url, base_ref=base_ref,
-                     line=line, column=column, name=name)
-    if cmdline:
-        # add intern URL regex to config for every URL that was given
-        # on the command line
-        pat = url_data.get_intern_pattern()
-        assert linkcheck.log.debug(linkcheck.LOG_CMDLINE,
-                            "Add intern pattern %r from command line", pat)
-        if pat:
-            consumer.config_append('internlinks', linkcheck.get_link_pat(pat))
-    return url_data
+    return klass
 
 
 def get_index_html (urls):

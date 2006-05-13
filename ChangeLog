@@ -14,6 +14,12 @@
     Changed: linkcheck/HtmlParser/htmllex.[lc],
       linkcheck/tests/test_parser.py
 
+  * Revamp the threading algorithm by using a URL queue, with a
+    constant number of consumer threads called 'workers'.
+    This fixes the remaining "dequeue mutated during iteration" errors.
+    Type: feature
+    Changed: *.py
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.

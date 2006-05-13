@@ -40,7 +40,7 @@ class NntpUrl (urlbase.UrlBase):
         Connect to NNTP server and try to request the URL article
         resource (if specified).
         """
-        nntpserver = self.host or self.consumer.config("nntpserver")
+        nntpserver = self.host or self.aggregate.config["nntpserver"]
         if not nntpserver:
             self.add_warning(
                     _("No NNTP server was specified, skipping this URL."),

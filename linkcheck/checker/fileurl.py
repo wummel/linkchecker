@@ -23,11 +23,13 @@ import os
 import time
 import urlparse
 import urllib
+import urllib2
 
 import urlbase
 import linkcheck
 import linkcheck.log
 import linkcheck.checker
+import linkcheck.fileutil
 
 # if file extension lookup was unsuccessful, look at the content
 contents = {
@@ -83,7 +85,7 @@ class FileUrl (urlbase.UrlBase):
     """
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              consumer, line, column, name):
+              aggregate, line, column, name):
         """
         Besides the usual initialization the URL is normed according
         to the platform:
@@ -91,7 +93,7 @@ class FileUrl (urlbase.UrlBase):
          - under Windows platform the drive specifier is normed
         """
         super(FileUrl, self).init(base_ref, base_url, parent_url,
-                               recursion_level, consumer, line, column, name)
+                               recursion_level, aggregate, line, column, name)
         if self.base_url is None:
             return
         base_url = self.base_url
@@ -129,7 +131,8 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.set_result(_("directory"))
         else:
-            super(FileUrl, self).check_connection()
+            url = linkcheck.fileutil.pathencode(self.url)
+            self.url_connection = urllib2.urlopen(url)
             self.check_case_sensitivity()
 
     def check_case_sensitivity (self):
@@ -147,7 +150,6 @@ class FileUrl (urlbase.UrlBase):
                                "system path %r. You should always use "
                                "the system path in URLs.") % (path, realpath),
                                tag="file-system-path")
-        pass
 
     def get_content (self):
         """
@@ -208,7 +210,7 @@ class FileUrl (urlbase.UrlBase):
         path = self.urlparts[2]
         if os.name == 'nt':
             path = prepare_urlpath_for_nt(path)
-        return urllib.url2pathname(path)
+        return linkcheck.fileutil.pathencode(urllib.url2pathname(path))
 
     def is_directory (self):
         """

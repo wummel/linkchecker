@@ -36,8 +36,9 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             url = u"http://localhost:%d/linkcheck/checker/tests/data/" \
                   u"http.html" % self.port
             resultlines = self.get_resultlines("http.html")
-            self.direct(url, resultlines, recursionlevel=1, cmdline=True)
-            self.redirect_http_test()
+            self.direct(url, resultlines, recursionlevel=1, assume_local=True)
+            self.redirect1_http_test()
+            self.redirect2_http_test()
             self.noproxyfor_test()
         finally:
             self.stop_server()
@@ -64,9 +65,9 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             u"original URL was u'http://localhost:%d/redirect1'." % self.port,
             u"valid",
         ]
-        self.direct(url, resultlines, recursionlevel=0, cmdline=True)
+        self.direct(url, resultlines, recursionlevel=0, assume_local=True)
 
-    def redirect_http_test (self):
+    def redirect1_http_test (self):
         url = u"http://localhost:%d/redirect1" % self.port
         nurl = url
         rurl = url.replace("redirect", "newurl")
@@ -77,7 +78,9 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             u"info Redirected to %s." % rurl,
             u"error",
         ]
-        self.direct(url, resultlines, recursionlevel=0, cmdline=True)
+        self.direct(url, resultlines, recursionlevel=0, assume_local=True)
+
+    def redirect2_http_test (self):
         url = u"http://localhost:%d/linkcheck/checker/tests/data/redirect.html" % \
               self.port
         nurl = url
@@ -94,7 +97,7 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             u"name Recursive Redirect",
             u"valid",
         ]
-        self.direct(url, resultlines, recursionlevel=99, cmdline=True)
+        self.direct(url, resultlines, recursionlevel=99, assume_local=True)
 
     def noproxyfor_test (self):
         """
@@ -113,7 +116,7 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=0,
-                    confargs=confargs, cmdline=True)
+                    confargs=confargs, assume_local=True)
         del os.environ["http_proxy"]
 
 

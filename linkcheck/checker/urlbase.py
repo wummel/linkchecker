@@ -32,6 +32,7 @@ import traceback
 import linkcheck
 import linkcheck.linkparse
 import linkcheck.checker
+import linkcheck.director
 import linkcheck.strformat
 import linkcheck.containers
 import linkcheck.log
@@ -55,7 +56,7 @@ class UrlBase (object):
     An URL with additional information like validity etc.
     """
 
-    def __init__ (self, base_url, recursion_level, consumer,
+    def __init__ (self, base_url, recursion_level, aggregate,
                   parent_url = None, base_ref = None,
                   line = -1, column = -1, name = u""):
         """
@@ -63,7 +64,7 @@ class UrlBase (object):
 
         @param base_url: unquoted and possibly unnormed url
         @param recursion_level: on what check level lies the base url
-        @param consumer: consumer instance
+        @param aggregate: aggregate instance
         @param parent_url: quoted and normed url of parent or None
         @param base_ref: quoted and normed url of <base href=""> or None
         @param line: line number of url in parent content
@@ -71,13 +72,13 @@ class UrlBase (object):
         @param name: name of url or empty
         """
         self.init(base_ref, base_url, parent_url, recursion_level,
-                  consumer, line, column, name)
+                  aggregate, line, column, name)
         self.reset()
         self.check_syntax()
 
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              consumer, line, column, name):
+              aggregate, line, column, name):
         """
         Initialize internal data.
         """
@@ -86,7 +87,7 @@ class UrlBase (object):
         self.base_url = base_url
         self.parent_url = parent_url
         self.recursion_level = recursion_level
-        self.consumer = consumer
+        self.aggregate = aggregate
         self.line = line
         self.column = column
         self.name = name
@@ -203,6 +204,7 @@ class UrlBase (object):
         Fill attributes from cache data.
         """
         self.result = cache_data["result"]
+        self.has_result = True
         self.warnings.extend(cache_data["warnings"])
         self.info.extend(cache_data["info"])
         self.valid = cache_data["valid"]
@@ -240,8 +242,8 @@ class UrlBase (object):
         assert linkcheck.log.debug(linkcheck.LOG_CACHE,
                               "Content cache key %r", self.cache_content_key)
         # construct cache key
-        if self.consumer.config("anchorcaching") and \
-           self.consumer.config("anchors"):
+        if self.aggregate.config["anchorcaching"] and \
+           self.aggregate.config["anchors"]:
             # do not ignore anchor
             parts = self.urlparts[:]
             parts[4] = self.anchor
@@ -343,32 +345,28 @@ class UrlBase (object):
         """
         Main check function for checking this URL.
         """
-        if self.consumer.config("trace"):
+        if self.aggregate.config["trace"]:
             linkcheck.trace.trace_on()
         try:
             self.local_check()
-            self.consumer.checked(self)
         except (socket.error, select.error):
-            self.consumer.interrupted(self)
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
             etype, value = sys.exc_info()[:2]
-            if etype == 4:
+            if etype == errno.EINTR:
                 raise KeyboardInterrupt(value)
             else:
                 raise
         except KeyboardInterrupt:
-            self.consumer.interrupted(self)
             raise
         except:
-            self.consumer.interrupted(self)
-            linkcheck.checker.internal_error()
+            linkcheck.director.internal_error()
 
     def add_country_info (self):
         """
         Try to ask GeoIP database for country info.
         """
-        country = self.consumer.get_country_name(self.host)
+        country = linkcheck.cache.geoip.get_country(self.host)
         if country is not None:
             self.add_info(_("URL is located in %s.") % _(country))
 
@@ -377,10 +375,11 @@ class UrlBase (object):
         Local check function can be overridden in subclasses.
         """
         assert linkcheck.log.debug(linkcheck.LOG_CHECK, "Checking %s", self)
-        if self.recursion_level and self.consumer.config('wait'):
+        wait = self.aggregate.config['wait']
+        if self.recursion_level and wait:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                      "sleeping for %d seconds", self.consumer.config('wait'))
-            time.sleep(self.consumer.config('wait'))
+                "sleeping for %d seconds", wait)
+            time.sleep(wait)
         t = time.time()
         self.set_extern(self.url)
         if self.extern[0] and self.extern[1]:
@@ -392,7 +391,7 @@ class UrlBase (object):
         try:
             self.check_connection()
             self.add_country_info()
-            if self.consumer.config("anchors"):
+            if self.aggregate.config["anchors"]:
                 self.check_anchors()
         except tuple(linkcheck.checker.ExcList):
             value = self.handle_exception()
@@ -406,7 +405,7 @@ class UrlBase (object):
                             valid=False)
 
         # check content
-        warningregex = self.consumer.config("warningregex")
+        warningregex = self.aggregate.config["warningregex"]
         if warningregex and self.valid:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                        "checking content")
@@ -486,8 +485,8 @@ class UrlBase (object):
             assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "... no, cannot get content.")
             return False
-        if self.consumer.config("recursionlevel") >= 0 and \
-           self.recursion_level >= self.consumer.config("recursionlevel"):
+        rec_level = self.aggregate.config["recursionlevel"]
+        if  rec_level >= 0 and self.recursion_level >= rec_level:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "... no, maximum recursion level reached.")
             return False
@@ -551,7 +550,7 @@ class UrlBase (object):
 
         @return: None
         """
-        for entry in self.consumer.config("externlinks"):
+        for entry in self.aggregate.config["externlinks"]:
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
@@ -559,7 +558,7 @@ class UrlBase (object):
                                            "Extern URL %r", url)
                 self.extern = (1, entry['strict'])
                 return
-        for entry in self.consumer.config("internlinks"):
+        for entry in self.aggregate.config["internlinks"]:
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
                (match and not entry['negate']):
@@ -607,7 +606,7 @@ class UrlBase (object):
         If a maximum size was given, call this function to check it
         against the content size of this url.
         """
-        maxbytes = self.consumer.config("warnsizebytes")
+        maxbytes = self.aggregate.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
             self.add_warning(_("Content size %s is larger than %s.") %
                          (linkcheck.strformat.strsize(self.dlsize),
@@ -626,7 +625,7 @@ class UrlBase (object):
         Get tuple (user, password) from configured authentication.
         Both user and password can be None if not specified.
         """
-        for auth in self.consumer.config("authentication"):
+        for auth in self.aggregate.config["authentication"]:
             if auth['pattern'].match(self.url):
                 return auth['user'], auth['password']
         return None, None
@@ -651,10 +650,10 @@ class UrlBase (object):
             else:
                 base_ref = h.base_ref
             url_data = linkcheck.checker.get_url_from(url,
-                  self.recursion_level+1, self.consumer, parent_url=self.url,
+                  self.recursion_level+1, self.aggregate, parent_url=self.url,
                   base_ref=base_ref, line=line, column=column, name=name,
-                  cmdline=False)
-            self.consumer.append_url(url_data)
+                  assume_local=False)
+            self.aggregate.urlqueue.put(url_data)
 
     def parse_opera (self):
         """
@@ -674,10 +673,10 @@ class UrlBase (object):
                 url = line[4:]
                 if url:
                     url_data = linkcheck.checker.get_url_from(url,
-                              self.recursion_level+1, self.consumer,
+                              self.recursion_level+1, self.aggregate,
                               parent_url=self.url, line=lineno, name=name,
-                              cmdline=False)
-                    self.consumer.append_url(url_data)
+                              assume_local=False)
+                    self.aggregate.urlqueue.put(url_data)
                 name = ""
 
     def parse_text (self):
@@ -694,10 +693,10 @@ class UrlBase (object):
             if not line or line.startswith('#'):
                 continue
             url_data = linkcheck.checker.get_url_from(line,
-                              self.recursion_level+1, self.consumer,
+                              self.recursion_level+1, self.aggregate,
                               parent_url=self.url, line=lineno,
-                              cmdline=False)
-            self.consumer.append_url(url_data)
+                              assume_local=False)
+            self.aggregate.urlqueue.put(url_data)
 
     def parse_css (self):
         """
@@ -712,10 +711,10 @@ class UrlBase (object):
                 column = mo.start("url")
                 url = linkcheck.strformat.unquote(mo.group("url").strip())
                 url_data = linkcheck.checker.get_url_from(url,
-                             self.recursion_level+1, self.consumer,
+                             self.recursion_level+1, self.aggregate,
                              parent_url=self.url, line=lineno, column=column,
-                             cmdline=False)
-                self.consumer.append_url(url_data)
+                             assume_local=False)
+                self.aggregate.urlqueue.put(url_data)
 
     def serialized (self):
         """
@@ -758,7 +757,7 @@ class UrlBase (object):
         @rtype: string
         """
         s = self.serialized()
-        return self.consumer.config('logger').encode(s)
+        return self.aggregate.config['logger'].encode(s)
 
     def __repr__ (self):
         """

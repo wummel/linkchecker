@@ -38,8 +38,7 @@ optparse._ = _
 import linkcheck.log
 import linkcheck.i18n
 import linkcheck.checker
-import linkcheck.checker.cache
-import linkcheck.checker.consumer
+import linkcheck.director
 import linkcheck.configuration
 import linkcheck.fileutil
 import linkcheck.strformat
@@ -654,14 +653,15 @@ if len(args) <= 0:
     else:
         linkcheck.log.warn(linkcheck.LOG_CMDLINE, _("no files or URLs given"))
 
-# initialize the cache and the consumer model
-cache = linkcheck.checker.cache.Cache()
-consumer = linkcheck.checker.consumer.Consumer(config, cache)
+# prepare checking queue
+aggregate = linkcheck.director.get_aggregate(config)
 if options.trace:
     config["trace"] = True
+    import linkcheck.trace
     linkcheck.trace.trace_filter([r"^linkcheck"])
     linkcheck.trace.trace_on()
 # add urls to queue
+get_url_from = linkcheck.checker.get_url_from
 for url in args:
     if url.lower().startswith("www."):
         # syntactic sugar
@@ -669,14 +669,14 @@ for url in args:
     elif url.lower().startswith("ftp."):
         # syntactic sugar
         url = "ftp://%s" % url
-    url_data = linkcheck.checker.get_url_from(url, 0, consumer, cmdline=True)
-    consumer.append_url(url_data)
-############################# check the URLs ################################
+    url_data = get_url_from(url, 0, aggregate, assume_local=True)
+    linkcheck.add_intern_pattern(url_data, config)
+    aggregate.urlqueue.put(url_data)
+# set up profiling/psyco
 if do_profile and not has_profile:
     linkcheck.log.warn(linkcheck.LOG_CMDLINE,
                        _("The `profile' Python module is not installed,"
                          " therefore the --profile option is disabled."))
-
 if do_profile and has_profile:
     run = True
     if os.path.exists(_profile):
@@ -690,7 +690,7 @@ if do_profile and has_profile:
             run = False
     if run:
         import profile
-        profile.run("linkcheck.checker.check_urls(consumer)", _profile)
+        profile.run("manager.check_urls()", _profile)
 elif options.psyco:
     try:
         import psyco
@@ -705,8 +705,8 @@ elif options.psyco:
     except ImportError:
         # no psyco available, just ignore
         pass
-linkcheck.checker.check_urls(consumer)
-#############################################################################
+# start checking
+linkcheck.director.check_urls(aggregate)
 
 # interactive input end
 if config['interactive']:

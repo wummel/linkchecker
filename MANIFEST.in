@@ -37,6 +37,7 @@ include doc/de/*.1
 include doc/fr/*.1
 include doc/Makefile doc/rest2htmlnav
 recursive-include linkcheck/checker/tests/data *.txt *.html *.result *.asc *.css *.ico
+recursive-include linkcheck/configuration/tests/data *.ini
 include linkcheck/tests/*.py
 include linkcheck/checker/tests/*.py
 include linkcheck/dns/tests/*.py

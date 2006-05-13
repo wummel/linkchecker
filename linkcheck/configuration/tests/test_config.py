@@ -23,12 +23,14 @@ import os
 import linkcheck.configuration
 
 
-def get_file (filename):
+def get_file (filename=None):
     """
     Get file name located within 'data' directory.
     """
-    return unicode(os.path.join("linkcheck", "configuration", "tests",
-                                "data", filename))
+    directory = os.path.join("linkcheck", "configuration", "tests", "data")
+    if filename:
+        return unicode(os.path.join(directory, filename))
+    return unicode(directory)
 
 
 class TestConfig (unittest.TestCase):

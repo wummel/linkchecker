@@ -58,6 +58,17 @@ class LinkCheckerError (Exception):
     pass
 
 
+def add_intern_pattern (url_data, config):
+    """
+    Add intern URL regex to config.
+    """
+    pat = url_data.get_intern_pattern()
+    if pat:
+        assert linkcheck.log.debug(LOG_CHECK,
+           "Add intern pattern %r from command line", pat)
+        config['internlinks'].append(get_link_pat(pat))
+
+
 def get_link_pat (arg, strict=False):
     """
     Get a link pattern matcher for intern/extern links.

@@ -25,8 +25,6 @@ import unittest
 
 import linkcheck
 import linkcheck.checker
-import linkcheck.checker.cache
-import linkcheck.checker.consumer
 import linkcheck.configuration
 import linkcheck.logger
 
@@ -93,7 +91,17 @@ class TestLogger (linkcheck.logger.Logger):
             self.diff.append(line)
 
 
-def get_test_consumer (confargs, logargs):
+def get_file (filename=None):
+    """
+    Get file name located within 'data' directory.
+    """
+    directory = os.path.join("linkcheck", "checker", "tests", "data")
+    if filename:
+        return unicode(os.path.join(directory, filename))
+    return unicode(directory)
+
+
+def get_test_aggregate (confargs, logargs):
     """
     Initialize a test configuration object.
     """
@@ -101,14 +109,15 @@ def get_test_consumer (confargs, logargs):
     config.logger_add('test', TestLogger)
     config['recursionlevel'] = 1
     config['logger'] = config.logger_new('test', **logargs)
+    # uncomment for debugging
+    #config.init_logging(debug=["all"])
     config["anchors"] = True
     config["verbose"] = True
     config['threads'] = 0
+    config['status'] = False
     config['cookies'] = True
-    config['geoip'] = None
     config.update(confargs)
-    cache = linkcheck.checker.cache.Cache()
-    return linkcheck.checker.consumer.Consumer(config, cache)
+    return linkcheck.director.get_aggregate(config)
 
 
 class LinkCheckTest (unittest.TestCase):
@@ -122,21 +131,14 @@ class LinkCheckTest (unittest.TestCase):
         """
         return linkcheck.url.url_norm(url)[0]
 
-    def get_file (self, filename):
-        """
-        Get file name located within 'data' directory.
-        """
-        return unicode(os.path.join("linkcheck", "checker", "tests",
-                                    "data", filename))
-
     def get_resultlines (self, filename):
         """
         Return contents of file, as list of lines without line endings,
         ignoring empty lines and lines starting with a hash sign (#).
         """
-        resultfile = self.get_file(filename+".result")
+        resultfile = get_file(filename+".result")
         d = {'curdir': os.getcwd(),
-             'datadir': 'linkcheck/checker/tests/data',
+             'datadir': get_file(),
             }
         f = codecs.open(resultfile, "r", "iso-8859-15")
         resultlines = [line.rstrip('\r\n') % d for line in f \
@@ -144,27 +146,30 @@ class LinkCheckTest (unittest.TestCase):
         f.close()
         return resultlines
 
-    def file_test (self, filename, confargs=None, cmdline=True):
+    def file_test (self, filename, confargs=None, assume_local=True):
         """
         Check <filename> with expected result in <filename>.result.
         """
-        url = self.get_file(filename)
+        url = get_file(filename)
         if confargs is None:
             confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
-        consumer = get_test_consumer(confargs, logargs)
+        aggregate = get_test_aggregate(confargs, logargs)
         url_data = linkcheck.checker.get_url_from(
-                                      url, 0, consumer, cmdline=cmdline)
-        consumer.append_url(url_data)
-        linkcheck.checker.check_urls(consumer)
-        if consumer.config('logger').diff:
+                                url, 0, aggregate, assume_local=assume_local)
+        if assume_local:
+            linkcheck.add_intern_pattern(url_data, aggregate.config)
+        aggregate.urlqueue.put(url_data)
+        linkcheck.director.check_urls(aggregate)
+        diff = aggregate.config['logger'].diff
+        if diff:
             sep = unicode(os.linesep)
-            l = [url] + consumer.config('logger').diff
+            l = [url] + diff
             l = sep.join(l)
             self.fail(l.encode("iso8859-1", "ignore"))
 
     def direct (self, url, resultlines, fields=None, recursionlevel=0,
-                confargs=None, cmdline=False):
+                confargs=None, assume_local=False):
         """
         Check url with expected result.
         """
@@ -176,14 +181,17 @@ class LinkCheckTest (unittest.TestCase):
         logargs = {'expected': resultlines}
         if fields is not None:
             logargs['fields'] = fields
-        consumer = get_test_consumer(confargs, logargs)
+        aggregate = get_test_aggregate(confargs, logargs)
         url_data = linkcheck.checker.get_url_from(
-                                          url, 0, consumer, cmdline=cmdline)
-        consumer.append_url(url_data)
-        linkcheck.checker.check_urls(consumer)
-        if consumer.config('logger').diff:
+                                url, 0, aggregate, assume_local=assume_local)
+        if assume_local:
+            linkcheck.add_intern_pattern(url_data, aggregate.config)
+        aggregate.urlqueue.put(url_data)
+        linkcheck.director.check_urls(aggregate)
+        diff = aggregate.config['logger'].diff
+        if diff:
             sep = unicode(os.linesep)
             l = [u"Differences found testing %s" % url]
-            l.extend(x.rstrip() for x in consumer.config('logger').diff[2:])
+            l.extend(x.rstrip() for x in diff[2:])
             self.fail(sep.join(l).encode("iso8859-1", "ignore"))
 

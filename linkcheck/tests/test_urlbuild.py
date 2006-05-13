@@ -20,18 +20,16 @@ Test url build method from url data objects.
 
 import unittest
 import linkcheck.configuration
+import linkcheck.director
 import linkcheck.checker.httpurl
-import linkcheck.checker.cache
-import linkcheck.checker.consumer
 
-def get_test_consumer ():
+def get_test_aggregate ():
     """
     Initialize a test configuration object.
     """
     config = linkcheck.configuration.Configuration()
     config['logger'] = config.logger_new('none')
-    cache = linkcheck.checker.cache.Cache()
-    return linkcheck.checker.consumer.Consumer(config, cache)
+    return linkcheck.director.get_aggregate(config)
 
 
 class TestUrlBuild (unittest.TestCase):
@@ -43,9 +41,9 @@ class TestUrlBuild (unittest.TestCase):
         parent_url = "http://localhost:8001/linkcheck/checker/tests/data/http.html"
         base_url = "http://"
         recursion_level = 0
-        consumer = get_test_consumer()
+        aggregate = get_test_aggregate()
         o = linkcheck.checker.httpurl.HttpUrl(base_url, recursion_level,
-               consumer, parent_url=parent_url)
+               aggregate, parent_url=parent_url)
         o.build_url()
         self.assertEquals(o.url, 'http://')
 

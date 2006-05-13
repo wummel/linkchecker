@@ -53,12 +53,12 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         order: login, changing directory, list the file.
         """
         # proxy support (we support only http)
-        self.set_proxy(self.consumer.config("proxy").get(self.scheme))
+        self.set_proxy(self.aggregate.config["proxy"].get(self.scheme))
         if self.proxy:
             # using a (HTTP) proxy
             http = httpurl.HttpUrl(self.base_url,
                   self.recursion_level,
-                  self.consumer,
+                  self.aggregate,
                   parent_url=self.parent_url,
                   base_ref=self.base_ref,
                   line=self.line,
@@ -87,7 +87,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # ready to connect
         _user, _password = self.get_user_password()
         key = ("ftp", self.urlparts[1], _user, _password)
-        conn = self.consumer.get_connection(key)
+        conn = self.aggregate.connections.get(key)
         if conn is not None and conn.sock is not None:
             # reuse cached FTP connection
             self.url_connection = conn
@@ -248,6 +248,6 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # add to cached connections
         _user, _password = self.get_user_password()
         key = ("ftp", self.urlparts[1], _user, _password)
-        cache_add = self.consumer.add_connection
+        cache_add = self.aggregate.connections.add
         cache_add(key, self.url_connection, DEFAULT_TIMEOUT_SECS)
         self.url_connection = None

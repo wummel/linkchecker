@@ -15,23 +15,44 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-GeoIP wrapper.
+Store and retrieve country names for IPs.
 """
+import os
+import threading
+from linkcheck.decorators import synchronized
 
-def get_country (gi, host):
+# I don't know if the geoip library is already thread-safe, but
+# we take no risks here.
+_lock = threading.Lock()
+
+# initialize GeoIP database
+geoip = None
+try:
+    import GeoIP
+    geoip_dat = "/usr/share/GeoIP/GeoIP.dat"
+    if os.name == 'posix' and os.path.exists(geoip_dat):
+        geoip = GeoIP.open(geoip_dat, GeoIP.GEOIP_STANDARD)
+    del geoip_dat
+except ImportError:
+    pass
+
+
+@synchronized(_lock)
+def get_country (host):
     """
     Get translated country name.
 
     @return: country string or None
     """
-    c = gi.country_code_by_name(host)
+    if geoip is None:
+        return None
+    c = geoip.country_code_by_name(host)
     if c and c in countries:
         return "%s, %s" % (c, countries[c])
     return None
 
 
 # GeoIP country map with {short name -> translated full name} entries
-
 countries = {
     "AP": "Asia/Pacific Region",
     "EU": "Europe",

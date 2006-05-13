@@ -59,7 +59,7 @@ class TelnetUrl (urlbase.UrlBase):
         label is "login: ", expected password label is "Password: ".
         """
         self.url_connection = telnetlib.Telnet()
-        if self.consumer.config("debug"):
+        if self.aggregate.config["debug"]:
             self.url_connection.set_debuglevel(1)
         self.url_connection.open(self.host, self.port)
         if self.user:

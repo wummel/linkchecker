@@ -129,8 +129,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         roboturl = self.get_robots_txt_url()
         user, password = self.get_user_password()
-        return self.consumer.robots_txt_allows_url(roboturl, url,
-                                                   user, password)
+        return self.aggregate.robots_txt.allows_url(roboturl, url,
+                                                    user, password)
 
     def check_connection (self):
         """
@@ -150,7 +150,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             valid request
         """
         # set the proxy, so a 407 status after this is an error
-        self.set_proxy(self.consumer.config("proxy").get(self.scheme))
+        self.set_proxy(self.aggregate.config["proxy"].get(self.scheme))
         # initialize check data
         self.headers = None
         self.auth = None
@@ -360,19 +360,19 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                            tag="http-moved-permanent")
                     self.has301status = True
             # check cache again on the changed URL
-            if self.consumer.checked_redirect(redirected, self):
+            if self.aggregate.urlqueue.checked_redirect(redirected, self):
                 return -1, response
             # in case of changed scheme make new URL object
             if self.urlparts[0] != self.scheme:
                 newobj = linkcheck.checker.get_url_from(
-                          redirected, self.recursion_level, self.consumer,
+                          redirected, self.recursion_level, self.aggregate,
                           parent_url=self.parent_url, base_ref=self.base_ref,
                           line=self.line, column=self.column, name=self.name,
-                          cmdline=False)
+                          assume_local=False)
                 newobj.warnings = self.warnings
                 newobj.info = self.info
                 # append new object to queue
-                self.consumer.append_url(newobj)
+                self.aggregate.append_url(newobj)
                 # pretend to be finished and logged
                 return -1, response
             # new response data
@@ -406,14 +406,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                             linkcheck.strformat.unicode_safe(response.reason),
                             tag="http-empty-content")
             # store cookies for valid links
-            if self.consumer.config('cookies'):
+            if self.aggregate.config['cookies']:
                 for c in self.cookies:
                     self.add_info(_("Store cookie: %s.") % c)
                 try:
-                    out = self.consumer.store_cookies(self.headers,
-                                                      self.urlparts[0],
-                                                      self.urlparts[1],
-                                                      self.urlparts[2])
+                    out = self.aggregate.cookies.add(self.headers,
+                                                     self.urlparts[0],
+                                                     self.urlparts[1],
+                                                     self.urlparts[2])
                     for h in out:
                         self.add_info(linkcheck.strformat.unicode_safe(h))
                 except Cookie.CookieError, msg:
@@ -471,13 +471,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                       linkcheck.configuration.UserAgent)
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
-        if self.consumer.config('cookies'):
+        if self.aggregate.config['cookies']:
             scheme = self.urlparts[0]
             host = self.urlparts[1]
             port = linkcheck.url.default_ports.get(scheme, 80)
             host, port = urllib.splitnport(host, port)
             path = self.urlparts[2]
-            self.cookies = self.consumer.get_cookies(scheme, host, port, path)
+            self.cookies = self.aggregate.cookies.get(scheme, host, port, path)
             for c in self.cookies:
                 name = c.client_header_name()
                 value = c.client_header_value()
@@ -505,7 +505,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         _user, _password = self.get_user_password()
         key = (scheme, self.urlparts[1], _user, _password)
-        conn = self.consumer.get_connection(key)
+        conn = self.aggregate.connections.get(key)
         if conn is not None:
             assert linkcheck.log.debug(linkcheck.LOG_CHECK,
                                 "reuse cached HTTP(S) connection %s", conn)
@@ -634,7 +634,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # add to cached connections
         _user, _password = self.get_user_password()
         key = ("http", self.urlparts[1], _user, _password)
-        cache_add = self.consumer.add_connection
+        cache_add = self.aggregate.connections.add
         # note: only cache the connection when it is persistent
         # and all pending content has been received
         if not self.persistent or not self.has_content or \

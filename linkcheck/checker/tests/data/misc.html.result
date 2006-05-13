@@ -1,7 +1,3 @@
-url 
-cache key None
-real url None
-error
 url file://%(curdir)s/%(datadir)s/misc.html
 cache key file://%(curdir)s/%(datadir)s/misc.html
 real url file://%(curdir)s/%(datadir)s/misc.html
@@ -21,3 +17,8 @@ url favicon.ico (cached)
 cache key file://%(curdir)s/%(datadir)s/favicon.ico
 real url file://%(curdir)s/%(datadir)s/favicon.ico
 valid
+
+url 
+cache key None
+real url None
+error
