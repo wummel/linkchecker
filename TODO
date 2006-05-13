@@ -1,5 +1,3 @@
-- Improved print_status
-
 - Ctrl-C is not really working.
 
 - To limit the used memory, put a maximum size on the URL queue
