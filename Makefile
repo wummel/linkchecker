@@ -5,14 +5,10 @@ PACKAGE := linkchecker
 VERSION := $(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -t0 -C
-PYFILES := $(wildcard linkcheck/*.py linkcheck/logger/*.py \
-	linkcheck/checker/*.py)
-TESTFILES := $(wildcard tests/*.py linkcheck/tests/*.py linkcheck/checker/tests/*.py)
-CHECKFILES = *.py linkchecker scripts tests linkcheck config
-PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc pylint.$(PYTHON)
-PYLINTOPTS := 
-PYLINTIGNORE = linkcheck/httplib2.py
-PYLINTFILES = $(filter-out $(PYLINTIGNORE),$(PYFILES))
+# all Python files in the source
+PYFILES = $(wildcard *.py) linkchecker linkcheck tests
+PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc /usr/bin/pylint
+PYLINTOPTS := --disable-msg-cat=C,R,W
 PYFLAKES:=pyflakes
 PYTHONSVN := /home/calvin/src/python-svn
 .PHONY: all
@@ -127,11 +123,11 @@ test:	localbuild
 
 .PHONY: pylint
 pylint:
-	$(PYLINT) $(PYLINTOPTS) $(PYLINTFILES) $(TESTFILES)
+	$(PYLINT) $(PYLINTOPTS) $(PYFILES) | uniq
 
 .PHONY: pyflakes
 pyflakes:
-	$(PYFLAKES) $(CHECKFILES) | \
+	$(PYFLAKES) $(PYFILES) | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'"
