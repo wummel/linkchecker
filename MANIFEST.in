@@ -40,6 +40,7 @@ recursive-include linkcheck/checker/tests/data *.txt *.html *.result *.asc *.css
 recursive-include linkcheck/configuration/tests/data *.ini
 include linkcheck/tests/*.py
 include linkcheck/checker/tests/*.py
+include linkcheck/configuration/tests/*.py
 include linkcheck/dns/tests/*.py
 include linkcheck/dns/tests/example*
 include hase.bmp
