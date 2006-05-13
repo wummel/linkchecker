@@ -102,12 +102,12 @@ class TestUrl (unittest.TestCase):
         """
         url = "http://groups.google.com/groups?hl=en&lr&ie=UTF-8&"\
               "threadm=3845B54D.E546F9BD%40monmouth.com&rnum=2&"\
-              "prev=/groups%3Fq%3Dlogitech%2Bwingman%2Bextreme%2Bdigital"\
+              "prev=%2Fgroups%3Fq%3Dlogitech%2Bwingman%2Bextreme%2Bdigital"\
               "%2B3d%26hl%3Den%26lr%3D%26ie%3DUTF-8%26selm%3D3845B54D.E5"\
               "46F9BD%2540monmouth.com%26rnum%3D2"
         self.urlnormtest(url, url)
         url = "http://redirect.alexa.com/redirect?"\
-              "http://www.offeroptimizer.com"
+              "http:%2F%2Fwww.offeroptimizer.com"
         nurl = url
         self.urlnormtest(url, nurl)
         url = "http://www.lesgensducinema.com/photo/Philippe%20Nahon.jpg"
@@ -127,23 +127,23 @@ class TestUrl (unittest.TestCase):
         url = "http://example.com/a*+-();b"
         nurl = url
         self.urlnormtest(url, nurl)
-        url = "http://www.company.com/path/doc.html?url=/path2/doc2.html?foo=bar"
+        url = "http://www.company.com/path/doc.html?url=%2Fpath2%2Fdoc2.html?foo=bar"
         nurl = url
         self.urlnormtest(url, nurl)
         url = "http://example.com/#a b"
         nurl = "http://example.com/#a%20b"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b=c "
-        nurl ="http://example.com/?u=http://example2.com?b=c+"
+        nurl ="http://example.com/?u=http:%2F%2Fexample2.com?b=c+"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b="
-        nurl ="http://example.com/?u=http://example2.com?b="
+        nurl ="http://example.com/?u=http:%2F%2Fexample2.com?b="
         self.urlnormtest(url, nurl)
         url = "http://localhost:8001/?quoted=ü"
         nurl = "http://localhost:8001/?quoted=%FC"
         self.urlnormtest(url, nurl)
         url = "http://host/?a=b/c+d="
-        nurl = "http://host/?a=b/c+d%3D"
+        nurl = "http://host/?a=b%2Fc+d%3D"
         self.urlnormtest(url, nurl)
 
     def test_norm_case_sensitivity (self):
