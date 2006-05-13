@@ -91,10 +91,7 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
-    def test_invalid (self):
-        """
-        Invalid syntax test.
-        """
+    def test_invalid1 (self):
         # invalid scheme chars
         url = u"äöü?:"
         nurl = self.norm(url)
@@ -105,6 +102,8 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
+
+    def test_invalid2 (self):
         # missing scheme alltogether
         url = u"?äöü?"
         nurl = self.norm(url)
@@ -115,6 +114,8 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
+
+    def test_invalid3 (self):
         # really fucked up
         url = u"@³²¼][½ ³@] ¬½"
         nurl = self.norm(url)
