@@ -98,7 +98,7 @@ def get_translator (domain, directory, languages=None,
     """
     translator = gettext.translation(domain, localedir=directory,
             languages=languages, class_=translatorklass, fallback=fallback)
-    if not isinstance(translator, gettext.GNUTranslations):
+    if not isinstance(translator, gettext.GNUTranslations) and fallbackklass:
         translator = fallbackklass()
     return translator
 
