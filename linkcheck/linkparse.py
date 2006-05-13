@@ -107,7 +107,8 @@ class MetaRobotsFinder (TagFinder):
         super(MetaRobotsFinder, self).__init__(content)
         self.follow = True
         self.index = True
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "meta robots finder")
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            "meta robots finder")
 
     def start_element (self, tag, attrs):
         """
@@ -153,18 +154,18 @@ class LinkFinder (TagFinder):
             self.tags = tags
         self.urls = []
         self.base_ref = u''
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "link finder")
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, "link finder")
 
     def start_element (self, tag, attrs):
         """
         Search for links and store found URLs in a list.
         """
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                   "LinkFinder tag %s attrs %s", tag, attrs)
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                            "line %d col %d old line %d old col %d",
-                            self.parser.lineno(), self.parser.column(),
-                         self.parser.last_lineno(), self.parser.last_column())
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            "LinkFinder tag %s attrs %s", tag, attrs)
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            "line %d col %d old line %d old col %d",
+            self.parser.lineno(), self.parser.column(),
+            self.parser.last_lineno(), self.parser.last_column())
         if tag == "base" and not self.base_ref:
             self.base_ref = attrs.get_true("href", u'')
         tagattrs = self.tags.get(tag, [])
@@ -187,8 +188,8 @@ class LinkFinder (TagFinder):
             value = unquote(attrs.get(attr))
             # add link to url list
             self.add_link(tag, attr, value, name, codebase)
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                   "LinkFinder finished tag %s", tag)
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            "LinkFinder finished tag %s", tag)
 
     def get_link_name (self, tag, attrs, attr):
         """
@@ -239,7 +240,7 @@ class LinkFinder (TagFinder):
             return
         for u in urls:
             assert isinstance(u, unicode) or u is None, repr(u)
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
               u"LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))

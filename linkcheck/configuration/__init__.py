@@ -211,6 +211,6 @@ class Configuration (dict):
             cfiles.append(path)
         # weed out invalid files
         cfiles = [f for f in cfiles if os.path.isfile(f)]
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                   "reading configuration from %s", cfiles)
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            "reading configuration from %s", cfiles)
         confparse.LCConfigParser(self).read(cfiles)

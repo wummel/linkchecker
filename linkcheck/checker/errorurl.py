@@ -30,7 +30,7 @@ class ErrorUrl (urlbase.UrlBase):
         """
         Log a warning that the URL syntax is invalid or unknown.
         """
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, "checking syntax")
         self.url, is_idn = linkcheck.url.url_norm(self.base_url)
         self.set_result(_("URL is unrecognized or has invalid syntax"),
                         valid=False)

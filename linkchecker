@@ -490,8 +490,8 @@ if options.trace:
     options.psyco = False
 
 config.init_logging(debug=options.debug)
-assert linkcheck.log.debug(linkcheck.LOG_CMDLINE, _("Python %s on %s"),
-                           sys.version, sys.platform)
+assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
+   _("Python %s on %s"), sys.version, sys.platform)
 # read configuration files
 try:
     files = []
@@ -634,8 +634,8 @@ if constructauth:
                                      'user': _username,
                                      'password': _password})
 
-assert linkcheck.log.debug(linkcheck.LOG_CMDLINE, "configuration: %s",
-                    pprint.pformat(config.items()))
+assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
+    "configuration: %s", pprint.pformat(config.items()))
 # warn about sitemap loggers and verbose output
 klasses = [c.__class__ for c in [config['logger']] + config['fileoutput']]
 if (linkcheck.logger.gml.GMLLogger in klasses or \

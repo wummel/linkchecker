@@ -39,7 +39,8 @@ class AssertLock (lock_klass):
         Acquire lock.
         """
         assert not self.is_locked(), "deadlock"
-        assert linkcheck.log.debug(linkcheck.LOG_THREAD, "Acquire %s", self)
+        assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
+            "Acquire %s", self)
         super(AssertLock, self).acquire(blocking=blocking)
 
     def release (self):
@@ -47,7 +48,8 @@ class AssertLock (lock_klass):
         Release lock.
         """
         assert self.is_locked(), "double release"
-        assert linkcheck.log.debug(linkcheck.LOG_THREAD, "Release %s", self)
+        assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
+            "Release %s", self)
         super(AssertLock, self).release()
 
     def is_locked (self):

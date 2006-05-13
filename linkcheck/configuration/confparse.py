@@ -39,7 +39,7 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
         try:
             super(LCConfigParser, self).read(files)
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
             return
         # Read all the configuration parameters from the given files.
         self.read_output_config()
@@ -60,32 +60,32 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                     try:
                         self.config[key][opt] = self.get(key, opt)
                     except ConfigParser.Error, msg:
-                        assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+                        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
                 try:
                     self.config[key]['parts'] = [f.strip() for f in \
                          self.get(key, 'parts').split(',')]
                 except ConfigParser.Error, msg:
-                    assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+                    assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["warnings"] = self.getboolean(section, "warnings")
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             if self.getboolean(section, "verbose"):
                 self.config["verbose"] = True
                 self.config["warnings"] = True
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             if self.getboolean(section, "quiet"):
                 self.config['logger'] = self.config.logger_new('none')
                 self.config['quiet'] = True
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["status"] = self.getboolean(section, "status")
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             logger = self.get(section, "log")
             if linkcheck.Loggers.has_key(logger):
@@ -93,7 +93,7 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
             else:
                 linkcheck.log.warn(_("invalid log option %r"), logger)
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             filelist = self.get(section, "fileoutput").split(",")
             for arg in filelist:
@@ -104,11 +104,11 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                     self.config['fileoutput'].append(
                                   self.config.logger_new(arg, fileoutput=1))
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["interactive"] = self.getboolean(section, "interactive")
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_checking_config (self):
         """
@@ -119,20 +119,20 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
             num = self.getint(section, "threads")
             self.config['threads'] = num
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["anchors"] = self.getboolean(section, "anchors")
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["debug"] = self.get(section, "debug")
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             num = self.getint(section, "recursionlevel")
             self.config["recursionlevel"] = num
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             arg = self.get(section, "warningregex")
             if arg:
@@ -142,21 +142,21 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                     raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
                        _("syntax error in warningregex %r: %s\n"), arg, msg)
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["warnsizebytes"] = int(self.get(section,
                                                       "warnsizebytes"))
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["nntpserver"] = self.get(section, "nntpserver")
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["anchorcaching"] = self.getboolean(section,
                                     "anchorcaching")
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             i = 1
             while 1:
@@ -169,12 +169,12 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                 self.config["noproxyfor"].append(arg)
                 i += 1
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             num = self.getint(section, "maxqueuesize")
             self.config["maxqueuesize"] = num
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_authentication_config (self):
         """
@@ -197,7 +197,7 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                                                   'password': auth[2]})
                 i += 1
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_filtering_config (self):
         """
@@ -212,12 +212,12 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                 self.config["externlinks"].append(pat)
                 i += 1
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config['ignorewarnings'] = [f.strip() for f in \
                  self.get(section, 'ignorewarnings').split(',')]
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             i = 1
             while 1:
@@ -227,10 +227,10 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
                 self.config["externlinks"].append(pat)
                 i += 1
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
             self.config["internlinks"].append(
                linkcheck.get_link_pat(self.get(section, "internlinks")))
         except ConfigParser.Error, msg:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 

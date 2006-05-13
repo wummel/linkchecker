@@ -123,7 +123,7 @@ class UrlQueue (Queue.Queue):
         """
         Put URL result data into cache.
         """
-        assert linkcheck.log.debug(linkcheck.LOG_CACHE,
+        assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
             "Caching %r", key)
         assert key in self.in_progress, \
             "%r not in %s" % (key, self.in_progress)
@@ -136,8 +136,8 @@ class UrlQueue (Queue.Queue):
             for key in url_data.aliases:
                 if key in self.checked or key in self.in_progress:
                     continue
-                assert linkcheck.log.debug(linkcheck.LOG_CACHE,
-                                    "Caching alias %r", key)
+                assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
+                    "Caching alias %r", key)
                 self.checked[key] = data
 
     def join (self, timeout=None):

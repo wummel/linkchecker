@@ -214,10 +214,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if response.reason:
                 response.reason = \
                         linkcheck.strformat.unicode_safe(response.reason)
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, "Response: %s %s",
-                                response.status, response.reason)
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK, "Headers: %s",
-                                self.headers)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                "Response: %s %s", response.status, response.reason)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                "Headers: %s", self.headers)
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
@@ -243,8 +243,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     continue
                 raise
             if tries == -1:
-                assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                           "already handled")
+                assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                    "already handled")
                 return None
             if tries >= self.max_redirects:
                 if self.method == "HEAD":
@@ -263,8 +263,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     _user, _password = self.get_user_password()
                     self.auth = "Basic " + \
                         base64.encodestring("%s:%s" % (_user, _password))
-                    assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                    "Authentication %s/%s", _user, _password)
+                    assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                        "Authentication %s/%s", _user, _password)
                     continue
             elif response.status >= 400:
                 if self.headers and self.urlparts[4] and not self.no_anchor:
@@ -294,8 +294,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         Follow all redirections of http response.
         """
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                   "follow all redirections")
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            "follow all redirections")
         redirected = self.url
         tries = 0
         while response.status in [301, 302] and self.headers and \
@@ -305,13 +305,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # make new url absolute and unicode
             newurl = urlparse.urljoin(redirected, newurl)
             newurl = linkcheck.strformat.unicode_safe(newurl)
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                       "Redirected to %r", newurl)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                "Redirected to %r", newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl},
                           tag="http-redirect")
             redirected, is_idn = linkcheck.url.url_norm(newurl)
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                       "Norm redirected to %r", redirected)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                "Norm redirected to %r", redirected)
             urlparts = linkcheck.strformat.url_unicode_split(redirected)
             # check if we still have the same scheme type, it could be a
             # different one
@@ -438,8 +438,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         else:
             host = self.urlparts[1]
             scheme = self.urlparts[0]
-        assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                   "Connecting to %r", host)
+        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            "Connecting to %r", host)
         if self.url_connection:
             self.close_connection()
         self.url_connection = self.get_http_object(host, scheme)
@@ -507,8 +507,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         key = (scheme, self.urlparts[1], _user, _password)
         conn = self.aggregate.connections.get(key)
         if conn is not None:
-            assert linkcheck.log.debug(linkcheck.LOG_CHECK,
-                                "reuse cached HTTP(S) connection %s", conn)
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                "reuse cached HTTP(S) connection %s", conn)
             return conn
         if scheme == "http":
             h = linkcheck.httplib2.HTTPConnection(host)

@@ -64,7 +64,7 @@ def add_intern_pattern (url_data, config):
     """
     pat = url_data.get_intern_pattern()
     if pat:
-        assert linkcheck.log.debug(LOG_CHECK,
+        assert None == linkcheck.log.debug(LOG_CHECK,
            "Add intern pattern %r from command line", pat)
         config['internlinks'].append(get_link_pat(pat))
 
@@ -81,7 +81,7 @@ def get_link_pat (arg, strict=False):
     @return: dictionary with keys 'pattern', 'negate' and 'strict'
     @rtype: dict
     """
-    assert linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
+    assert None == linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg.startswith('!'):
         pattern = arg[1:]
         negate = True
