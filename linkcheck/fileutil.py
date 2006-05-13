@@ -19,6 +19,7 @@ File and path utilities.
 """
 
 import os
+import locale
 import stat
 import fnmatch
 
@@ -155,6 +156,22 @@ def get_mtime (filename):
         return os.stat(filename)[stat.ST_MTIME]
     except os.error:
         return 0
+
+
+# http://developer.gnome.org/doc/API/2.0/glib/glib-running.html
+if "G_FILENAME_ENCODING" in os.environ:
+    FSCODING = os.environ["G_FILENAME_ENCODING"].split(",")[0]
+    if FSCODING == "@locale":
+        FSCODING = locale.getpreferredencoding()
+elif "G_BROKEN_FILENAMES" in os.environ:
+    FSCODING = locale.getpreferredencoding()
+else:
+    FSCODING = "utf-8"
+
+def pathencode (path):
+    if isinstance(path, unicode) and not os.path.supports_unicode_filenames:
+        path = path.encode(FSCODING, "replace")
+    return path
 
 
 # cache for modified check {absolute filename -> mtime}
