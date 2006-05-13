@@ -57,7 +57,7 @@ Requirements for Windows
 
 3. *Optional (speedup for i386 compatible PCs)*
    Psyco from http://psyco.sourceforge.net/
-   [http://switch.dl.sourceforge.net/sourceforge/psyco/psyco-1.5.win32-py2.4.exe]
+   [http://linkchecker.sourceforge.net/psyco-1.5.1.win32-py2.4.exe]
 
 4. *Optional (color support for console)*
    Wconio from http://newcenturycomputers.net/projects/wconio.html
