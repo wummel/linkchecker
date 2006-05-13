@@ -44,7 +44,7 @@ look at the ChangeLog_.
 .. _install documentation:
    install.html
 .. _ChangeLog:
-   http://cvs.sourceforge.net/viewcvs.py/linkchecker/linkchecker/ChangeLog?view=markup
+   http://svn.sourceforge.net/viewcvs.cgi/linkchecker/trunk/linkchecker/ChangeLog?view=markup
 
 
 Screenshots
@@ -113,16 +113,16 @@ and requests.
    http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
 
 
-CVS access
-==========
+Subversion access
+=================
 
-The `SourceForge CVS page`_ has all the information on how to
+The `SourceForge Subversion page`_ has all the information on how to
 obtain the development version of LinkChecker. Development of
 LinkChecker requires some more software to be available, which
 is documented on the `installation page`.
 
-.. _SourceForge CVS page:
-   http://sourceforge.net/cvs/?group_id=1913
+.. _SourceForge Subversion page:
+   http://sourceforge.net/svn/?group_id=1913
 .. _installation page:
    install.html
 
