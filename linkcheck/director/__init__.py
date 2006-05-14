@@ -39,8 +39,6 @@ def check_urls (aggregate):
             aggregate.start_threads()
         # blocks until all urls are checked
         aggregate.urlqueue.join()
-        status.disable_status()
-        aggregate.logger.end_log_output()
     except (KeyboardInterrupt, SystemExit):
         linkcheck.log.warn(linkcheck.LOG_CHECK,
             "keyboard interrupt; waiting for active threads to finish")
@@ -48,6 +46,8 @@ def check_urls (aggregate):
     except:
         status.internal_error()
         aggregate.abort()
+    status.disable_status()
+    aggregate.logger.end_log_output()
 
 
 def get_aggregate (config):

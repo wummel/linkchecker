@@ -76,12 +76,13 @@ class Aggregate (object):
 
     def status (self):
         start_time = time.time()
-        while status.status_is_active():
+        while True:
             time.sleep(5)
+            if not status.status_is_active():
+                break
             status.print_status(self.urlqueue, start_time)
 
     def abort (self):
         self.urlqueue.do_shutdown()
         self.urlqueue.join(timeout=10)
-        self.logger.end_log_output()
 
