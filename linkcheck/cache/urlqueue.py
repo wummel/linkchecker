@@ -79,6 +79,8 @@ class UrlQueue (Queue.Queue):
         if self.shutdown:
             # don't accept more URLs
             return
+        assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
+            "queueing %s", url_data)
         key = url_data.cache_url_key
         if key in self.checked:
             # Put at beginning of queue to get consumed quickly.
@@ -105,10 +107,14 @@ class UrlQueue (Queue.Queue):
         """
         self.all_tasks_done.acquire()
         try:
+            assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
+                "task_done %s", url_data)
             if url_data is not None:
                 key = url_data.cache_url_key
                 if key is not None and key not in self.checked:
                     self._cache_url(key, url_data)
+                else:
+                    assert key not in self.in_progress
             self.finished_tasks += 1
             unfinished = self.unfinished_tasks - 1
             if unfinished <= 0:
