@@ -19,11 +19,10 @@ Store and retrieve open connections.
 """
 
 import time
-import threading
+import linkcheck.lock
 from linkcheck.decorators import synchronized
 
-# lock for robots.txt caching
-_lock = threading.Lock()
+_lock = linkcheck.lock.get_lock("connection")
 
 
 class ConnectionPool (object):

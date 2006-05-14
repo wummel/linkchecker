@@ -17,13 +17,12 @@
 """
 Cache for DNS lookups.
 """
-import threading
 import socket
 import sys
+import linkcheck.lock
 from linkcheck.decorators import synchronized
 
-_lock = threading.Lock()
-
+_lock = linkcheck.lock.get_lock("addrinfo")
 addrinfos = {}
 
 @synchronized(_lock)

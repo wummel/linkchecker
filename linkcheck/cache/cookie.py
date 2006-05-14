@@ -17,15 +17,14 @@
 """
 Store and retrieve cookies.
 """
-import threading
 from linkcheck.decorators import synchronized
 import linkcheck
 import linkcheck.log
+import linkcheck.lock
 import linkcheck.cookies
 
-# lock for caching
-_lock = threading.Lock()
 
+_lock = linkcheck.lock.get_lock("cookie")
 
 class CookieJar (object):
     """

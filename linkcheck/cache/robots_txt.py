@@ -17,14 +17,14 @@
 """
 Cache robots.txt contents.
 """
-import threading
 from linkcheck.decorators import synchronized
 import linkcheck.robotparser2
 import linkcheck.configuration
+import linkcheck.lock
 
 
 # lock for caching
-_lock = threading.Lock()
+_lock = linkcheck.lock.get_lock("robots.txt")
 
 
 class RobotsTxt (object):
