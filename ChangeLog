@@ -31,6 +31,11 @@
     Type: feature
     Changed: linkcheck/robotparser2.py
 
+  * DNS lookups for HTTP links are now cached.
+    Type: feature
+    Changed: linkcheck/httplib2.py
+    Added: linkcheck/cache/addrinfo.py
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.
