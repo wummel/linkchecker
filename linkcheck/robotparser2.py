@@ -30,6 +30,7 @@ import socket
 import re
 import zlib
 import gzip
+import sys
 import cStringIO as StringIO
 import linkcheck
 import linkcheck.configuration
@@ -174,7 +175,16 @@ class RobotFileParser (object):
                 self.allow_all = True
                 assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                     "%s allow all", self.url)
-        except (socket.gaierror, socket.error, urllib2.URLError), x:
+        except socket.timeout:
+            raise
+        except urllib2.URLError:
+            x = sys.exc_info()[1]
+            if isinstance(x.reason, socket.timeout):
+                raise
+            self.allow_all = True
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                "%s allow all", self.url)
+        except (socket.gaierror, socket.error):
             # no network
             self.allow_all = True
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,

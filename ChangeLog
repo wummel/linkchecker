@@ -25,6 +25,12 @@
     Type: feature
     Changed: linckheck/checker/internpaturl.py
 
+  * If the robots.txt connection times out, don't bother to check
+    the URL but report an error immediately. Avoids having the
+    timeout twice.
+    Type: feature
+    Changed: linkcheck/robotparser2.py
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.
