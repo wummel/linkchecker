@@ -18,6 +18,7 @@
 import threading
 import time
 import logger
+import status
 import linkcheck
 import linkcheck.log
 import linkcheck.director
@@ -75,11 +76,12 @@ class Aggregate (object):
 
     def status (self):
         start_time = time.time()
-        while True:
+        while status.status_is_active():
             time.sleep(5)
-            linkcheck.director.print_status(self.urlqueue, start_time)
+            status.print_status(self.urlqueue, start_time)
 
     def abort (self):
         self.urlqueue.do_shutdown()
         self.urlqueue.join(timeout=10)
         self.logger.end_log_output()
+
