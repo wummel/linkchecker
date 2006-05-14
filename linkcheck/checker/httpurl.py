@@ -313,13 +313,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                 "Norm redirected to %r", redirected)
             urlparts = linkcheck.strformat.url_unicode_split(redirected)
-            # check if we still have the same scheme type, it could be a
-            # different one
-            if urlparts[0] != self.scheme:
-                self.add_warning(
-                           _("Redirection to different URL type encountered; "
-                             "the original URL was %r.") % self.url,
-                           tag="http-wrong-redirect")
             # check extern filter again
             self.set_extern(redirected)
             if self.extern[0] and self.extern[0]:
@@ -348,8 +341,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                           _("recursive redirection encountered:\n %s") %
                             "\n  => ".join(recursion), valid=False)
                 return -1, response
-            # remember redireced url as alias
-            self.aliases.append(redirected)
+            if urlparts[0] == self.scheme:
+                # remember redireced url as alias
+                self.aliases.append(redirected)
             # note: urlparts has to be a list
             self.urlparts = urlparts
             if response.status == 301:
@@ -364,13 +358,15 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 return -1, response
             # in case of changed scheme make new URL object
             if self.urlparts[0] != self.scheme:
+                self.add_warning(
+                           _("Redirection to different URL type encountered; "
+                             "the original URL was %r.") % self.url,
+                           tag="http-wrong-redirect")
                 newobj = linkcheck.checker.get_url_from(
                           redirected, self.recursion_level, self.aggregate,
                           parent_url=self.parent_url, base_ref=self.base_ref,
                           line=self.line, column=self.column, name=self.name,
                           assume_local=False)
-                newobj.warnings = self.warnings
-                newobj.info = self.info
                 # append new object to queue
                 self.aggregate.urlqueue.put(newobj)
                 # pretend to be finished and logged
