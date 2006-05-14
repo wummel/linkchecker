@@ -60,11 +60,11 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             u"real url %s" % rurl,
             u"info Redirected to %s." % rurl.replace('http:', 'https:'),
             u"warning Redirection to different URL type encountered; the " \
-            u"original URL was u'http://localhost:%d/redirect1'." % self.port,
+            u"original URL was %r." % url,
             u"valid",
-            u"url https://localhost:8001/newurl1",
-            u"cache key https://localhost:8001/newurl1",
-            u"real url https://localhost:8001/newurl1",
+            u"url %s" % rurl,
+            u"cache key %s" % rurl,
+            u"real url %s" % rurl,
             u"error",
         ]
         self.direct(url, resultlines, recursionlevel=0, assume_local=True)
