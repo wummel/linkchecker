@@ -20,6 +20,11 @@
     Type: feature
     Changed: *.py
 
+  * The default intern pattern matches both http: and https: schemes
+    now.
+    Type: feature
+    Changed: linckheck/checker/internpaturl.py
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.
