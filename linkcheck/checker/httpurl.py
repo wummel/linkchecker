@@ -372,7 +372,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 newobj.warnings = self.warnings
                 newobj.info = self.info
                 # append new object to queue
-                self.aggregate.append_url(newobj)
+                self.aggregate.urlqueue.put(newobj)
                 # pretend to be finished and logged
                 return -1, response
             # new response data
