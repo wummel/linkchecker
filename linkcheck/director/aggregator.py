@@ -31,7 +31,7 @@ def check_target (target):
         linkcheck.log.warn(linkcheck.LOG_CHECK,
             "interrupt did not reach the main thread")
     except:
-        linkcheck.director.internal_error()
+        status.internal_error()
 
 
 def start_thread (target):

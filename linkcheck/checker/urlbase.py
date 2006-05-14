@@ -34,6 +34,7 @@ import linkcheck.linkparse
 import linkcheck.checker
 import linkcheck.cache.geoip
 import linkcheck.director
+import linkcheck.director.status
 import linkcheck.strformat
 import linkcheck.containers
 import linkcheck.log
@@ -362,7 +363,7 @@ class UrlBase (object):
         except KeyboardInterrupt:
             raise
         except:
-            linkcheck.director.internal_error()
+            linkcheck.director.status.internal_error()
 
     def add_country_info (self):
         """
