@@ -17,43 +17,38 @@
 """
 Locking utility class.
 """
-
-try:
-    import threading
-except ImportError:
-    import dummy_threading as threading
-
+import threading
 import linkcheck
 import linkcheck.log
 
-lock_klass = threading.RLock().__class__
+def get_lock (name):
+    return DebugLock(threading.Lock(), name)
 
-class AssertLock (lock_klass):
-    """
-    Lock class asserting that only available locks are acquired,
-    and that no lock is released twice.
-    """
 
-    def acquire (self, blocking=True):
+class DebugLock (object):
+    """
+    Debugging lock class.
+    """
+    def __init__ (self, lock, name):
+        self.lock = lock
+        self.name = name
+
+    def acquire (self, blocking=1):
         """
         Acquire lock.
         """
-        assert not self.is_locked(), "deadlock"
+        threadname = threading.currentThread().getName()
         assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
-            "Acquire %s", self)
-        super(AssertLock, self).acquire(blocking=blocking)
+            "Acquire %s for %s", self.name, threadname)
+        self.lock.acquire(blocking)
+        assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
+            "...acquired %s for %s", self.name, threadname)
 
     def release (self):
         """
         Release lock.
         """
-        assert self.is_locked(), "double release"
+        threadname = threading.currentThread().getName()
         assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
-            "Release %s", self)
-        super(AssertLock, self).release()
-
-    def is_locked (self):
-        """
-        See if this lock is owned.
-        """
-        return self._is_owned()
+            "Release %s for %s", self.name, threadname)
+        self.lock.release()
