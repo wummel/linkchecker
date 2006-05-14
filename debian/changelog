@@ -1,8 +1,9 @@
-linkchecker (3.5-1) unstable; urgency=low
+linkchecker (4.0-1) unstable; urgency=low
 
   * New upstream release.
+  * Standards version 3.7.2.0
 
- -- Bastian Kleineidam <calvin@debian.org>  Mon, 13 Feb 2006 14:55:42 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 14 May 2006 10:45:12 +0200
 
 linkchecker (3.4-1) unstable; urgency=low
 
