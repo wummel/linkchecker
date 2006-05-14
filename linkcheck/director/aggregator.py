@@ -59,8 +59,10 @@ class Aggregate (object):
             self.worker()
 
     def worker (self):
+        name = threading.currentThread().getName()
         while True:
             self.check_url()
+            threading.currentThread().setName(name)
             if self.urlqueue.empty():
                 break
 
@@ -68,6 +70,8 @@ class Aggregate (object):
         url_data = self.urlqueue.get()
         if url_data is not None:
             try:
+                url = self.config['logger'].encode(url_data.url)
+                threading.currentThread().setName(url)
                 if not url_data.has_result:
                     url_data.check()
                 self.logger.log_url(url_data)
@@ -76,6 +80,7 @@ class Aggregate (object):
 
     def status (self):
         start_time = time.time()
+        threading.currentThread().setName("Status")
         while True:
             time.sleep(5)
             if not status.status_is_active():
@@ -85,4 +90,3 @@ class Aggregate (object):
     def abort (self):
         self.urlqueue.do_shutdown()
         self.urlqueue.join(timeout=10)
-
