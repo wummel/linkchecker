@@ -58,7 +58,6 @@
 #colorwarning=bold;yellow
 #colordltime=default
 #colorreset=default
-#parts=all
 
 # GML logger
 [gml]
