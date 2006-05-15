@@ -51,7 +51,7 @@ lognamelist = ", ".join(["%r"%name for name in lognames.iterkeys()])
 import linkcheck.log
 
 
-class LinkCheckerError (Exception):
+class LinkCheckerError (StandardError):
     """
     Exception to be raised on linkchecker-specific check errors.
     """

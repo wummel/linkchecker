@@ -24,7 +24,7 @@ import linkcheck
 import linkcheck.log
 
 
-class Timeout (Exception):
+class Timeout (StandardError):
     """Raised by join()"""
     pass
 

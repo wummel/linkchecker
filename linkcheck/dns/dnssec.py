@@ -40,7 +40,7 @@ _algorithm_by_text = {
 
 _algorithm_by_value = dict([(y, x) for x, y in _algorithm_by_text.iteritems()])
 
-class UnknownAlgorithm(Exception):
+class UnknownAlgorithm(StandardError):
     """Raised if an algorithm is unknown."""
     pass
 

@@ -34,7 +34,7 @@ import cookielib
 import linkcheck.strformat
 
 
-class CookieError (Exception):
+class CookieError (StandardError):
     """
     Thrown for invalid cookie syntax or conflicting/impossible values.
     """

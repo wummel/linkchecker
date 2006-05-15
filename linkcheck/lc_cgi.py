@@ -37,7 +37,7 @@ _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
 _is_level = re.compile(r'^[0123]$').match
 
-class FormError (Exception):
+class FormError (StandardError):
     """
     Form related errors.
     """

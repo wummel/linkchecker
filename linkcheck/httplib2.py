@@ -1200,7 +1200,7 @@ if hasattr(socket, 'ssl'):
             self.cert_file = cert_file
 
 
-class HTTPException(Exception):
+class HTTPException(StandardError):
     # Subclasses that define an __init__ must call Exception.__init__
     # or define self.args.  Otherwise, str() will fail.
     pass
