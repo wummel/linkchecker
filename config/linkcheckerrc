@@ -119,6 +119,8 @@
 [checking]
 # number of threads
 #threads=5
+# connection timeout in seconds
+#timeout=60
 # check anchors?
 #anchors=0
 #recursionlevel=1

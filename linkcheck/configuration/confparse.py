@@ -117,6 +117,14 @@ class LCConfigParser (ConfigParser.ConfigParser, object):
         section = "checking"
         try:
             num = self.getint(section, "threads")
+            self.config['threads'] = max(0, num)
+        except ConfigParser.Error, msg:
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            num = self.getint(section, "timeout")
+            if num < 0:
+                raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                    _("invalid negative value for timeout: %d\n"), num)
             self.config['threads'] = num
         except ConfigParser.Error, msg:
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
