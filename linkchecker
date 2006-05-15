@@ -27,10 +27,6 @@ import pprint
 import socket
 import optparse
 
-# set default 60 seconds socket timeout before importing anything else
-default_timeout = 60
-socket.setdefaulttimeout(default_timeout)
-
 import linkcheck
 # override optparse gettext method with the one from linkcheck.init_i18n()
 optparse._ = _
@@ -592,7 +588,7 @@ if options.pause is not None:
         config["wait"] = options.pause
     else:
         print_usage(_("Illegal argument %r for option %s") % \
-                   (options.pause, "'-P, --pause'"))
+                    (options.pause, "'-P, --pause'"))
 if options.profile is not None:
     do_profile = options.profile
 if options.quiet is not None:
@@ -607,10 +603,11 @@ if options.threads is not None:
     config["threads"] = options.threads
 if options.timeout is not None:
     if options.timeout > 0:
-        socket.setdefaulttimeout(options.timeout)
+        config["timeout"] = options.timeout
     else:
         print_usage(_("Illegal argument %r for option %s") % \
-                   (options.timeout, "'--timeout'"))
+                    (options.timeout, "'--timeout'"))
+socket.setdefaulttimeout(config["timeout"])
 if options.username is not None:
     _username = options.username
     constructauth = True
