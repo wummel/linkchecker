@@ -36,6 +36,10 @@
     Changed: linkcheck/httplib2.py
     Added: linkcheck/cache/addrinfo.py
 
+  * Added timeout value option to the configuration file.
+    Type: feature
+    Changed: linkcheck/configuration/confparse.py, config/linkcheckerrc
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.
