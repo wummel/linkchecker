@@ -18,13 +18,7 @@
 Support for managing threads.
 """
 
-import time
 import os
-try:
-    import threading
-except ImportError:
-    import dummy_threading as threading
-
 try:
     import win32process
     _has_win32process = True
