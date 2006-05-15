@@ -27,10 +27,10 @@ import linkcheck.director
 def check_target (target):
     try:
         target()
-    except (KeyboardInterrupt, SystemExit):
+    except KeyboardInterrupt:
         linkcheck.log.warn(linkcheck.LOG_CHECK,
             "interrupt did not reach the main thread")
-    except:
+    except StandardError:
         status.internal_error()
 
 
