@@ -598,14 +598,14 @@ class _MasterReader(object):
                 raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.exception.DNSSyntaxError:
             raise linkcheck.dns.exception.DNSSyntaxError
-        except:
+        except StandardError:
             rdclass = self.zone.rdclass
         if rdclass != self.zone.rdclass:
             raise linkcheck.dns.exception.DNSSyntaxError, "RR class is not zone's class"
         # Type
         try:
             rdtype = linkcheck.dns.rdatatype.from_text(token[1])
-        except:
+        except StandardError:
             raise linkcheck.dns.exception.DNSSyntaxError, \
                   "unknown rdatatype '%s'" % token[1]
         n = self.zone.nodes.get(name)
@@ -619,7 +619,7 @@ class _MasterReader(object):
             # Catch and reraise.
             (ty, va) = sys.exc_info()[:2]
             raise ty, va
-        except:
+        except StandardError:
             # All exceptions that occur in the processing of rdata
             # are treated as syntax errors.  This is not strictly
             # correct, but it is correct almost all of the time.

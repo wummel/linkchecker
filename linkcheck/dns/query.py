@@ -95,7 +95,7 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     if af is None:
         try:
             af = linkcheck.dns.inet.af_for_address(where)
-        except:
+        except StandardError:
             af = linkcheck.dns.inet.AF_INET
     if af == linkcheck.dns.inet.AF_INET:
         destination = (where, port)
@@ -188,7 +188,7 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     if af is None:
         try:
             af = linkcheck.dns.inet.af_for_address(where)
-        except:
+        except StandardError:
             af = linkcheck.dns.inet.AF_INET
     if af == linkcheck.dns.inet.AF_INET:
         destination = (where, port)
@@ -275,7 +275,7 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
     if af is None:
         try:
             af = linkcheck.dns.inet.af_for_address(where)
-        except:
+        except StandardError:
             af = linkcheck.dns.inet.AF_INET
     if af == linkcheck.dns.inet.AF_INET:
         destination = (where, port)

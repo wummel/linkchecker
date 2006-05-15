@@ -749,7 +749,7 @@ class _TextReader(object):
                 raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.exception.DNSSyntaxError:
             raise linkcheck.dns.exception.DNSSyntaxError
-        except:
+        except StandardError:
             rdclass = linkcheck.dns.rdataclass.IN
         # Type
         rdtype = linkcheck.dns.rdatatype.from_text(token[1])
@@ -781,7 +781,7 @@ class _TextReader(object):
                 raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.exception.DNSSyntaxError:
             raise linkcheck.dns.exception.DNSSyntaxError
-        except:
+        except StandardError:
             ttl = 0
         # Class
         try:
@@ -794,7 +794,7 @@ class _TextReader(object):
                 rdclass = self.zone_rdclass
         except linkcheck.dns.exception.DNSSyntaxError:
             raise linkcheck.dns.exception.DNSSyntaxError
-        except:
+        except StandardError:
             rdclass = linkcheck.dns.rdataclass.IN
         # Type
         rdtype = linkcheck.dns.rdatatype.from_text(token[1])

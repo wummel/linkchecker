@@ -76,13 +76,13 @@ class TestName (unittest.TestCase):
         for t in good:
             try:
                 n = linkcheck.dns.name.from_text(t)
-            except:
+            except StandardError:
                 self.fail("good test '%s' raised an exception" % t)
         for t in bad:
             caught = False
             try:
                 n = linkcheck.dns.name.from_text(t)
-            except:
+            except StandardError:
                 caught = True
             if not caught:
                 self.fail("bad test '%s' did not raise an exception" % t)
