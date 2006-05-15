@@ -640,6 +640,16 @@ class CustomTestResult(unittest._TextTestResult):
         else:
             self.__super_printErrorList(flavour, errors)
 
+
+def get_tc_priv (testcase, attr):
+    """
+    get mangled private variables of TestCase instances
+    """
+    if sys.version_info >= (2, 5, 0, 'alpha', 1):
+        return getattr(testcase, "_" + attr)
+    return getattr(testcase, "_TestCase__" + attr)
+
+
 class CustomTestCase (unittest.TestCase):
     """
     A test case with improved inequality test and resource support.
@@ -653,9 +663,7 @@ class CustomTestCase (unittest.TestCase):
         if not isinstance(result, CustomTestResult):
             raise ValueError("Needed CustomTestResult object: %r" % result)
         result.startTest(self)
-        # get mangled private variables
-        getpriv = lambda x: getattr(self, "_TestCase__" + x)
-        testMethod = getattr(self, getpriv("testMethodName"))
+        testMethod = getattr(self, get_tc_priv(self, "testMethodName"))
         try:
             denied = self.denied_resources(result.cfg.resources)
             if denied:
@@ -669,7 +677,7 @@ class CustomTestCase (unittest.TestCase):
             except KeyboardInterrupt:
                 raise
             except:
-                result.addError(self, getpriv("exc_info")())
+                result.addError(self, get_tc_priv(self, "exc_info")())
                 return
 
             ok = False
@@ -677,18 +685,18 @@ class CustomTestCase (unittest.TestCase):
                 testMethod()
                 ok = True
             except self.failureException:
-                result.addFailure(self, getpriv("exc_info")())
+                result.addFailure(self, get_tc_priv(self, "exc_info")())
             except KeyboardInterrupt:
                 raise
             except:
-                result.addError(self, getpriv("exc_info")())
+                result.addError(self, get_tc_priv(self, "exc_info")())
 
             try:
                 self.tearDown()
             except KeyboardInterrupt:
                 raise
             except:
-                result.addError(self, getpriv("exc_info")())
+                result.addError(self, get_tc_priv(self, "exc_info")())
                 ok = False
             if ok: result.addSuccess(self)
         finally:
