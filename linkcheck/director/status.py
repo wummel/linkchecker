@@ -82,8 +82,10 @@ def disable_status ():
 
 def print_status (urlqueue, start_time):
     duration = time.time() - start_time
-    checked, unfinished, tocheck = urlqueue.status()
-    msg = _n("%5d URL queued,", "%5d URLs queued,", tocheck) % tocheck
+    checked, in_progress, queue = urlqueue.status()
+    msg = _n("%2d URL active,", "%2d URLs active,", in_progress) % in_progress
+    print >> stderr, msg,
+    msg = _n("%5d URL queued,", "%5d URLs queued,", queue) % queue
     print >> stderr, msg,
     msg = _n("%4d URL checked,", "%4d URLs checked,", checked) % checked
     print >> stderr, msg,
