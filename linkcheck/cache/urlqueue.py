@@ -24,6 +24,11 @@ import linkcheck
 import linkcheck.log
 
 
+class Timeout (Exception):
+    """Raised by join()"""
+    pass
+
+
 class UrlQueue (Queue.Queue):
     """
     A queue supporting several consumer tasks. The task_done() idea is
@@ -167,7 +172,7 @@ class UrlQueue (Queue.Queue):
                 while self.unfinished_tasks:
                     remaining = endtime - time.time()
                     if remaining <= 0.0:
-                        return
+                        raise Timeout()
                     self.all_tasks_done.wait(remaining)
         finally:
             self.all_tasks_done.release()
@@ -191,11 +196,12 @@ class UrlQueue (Queue.Queue):
 
     def status (self):
         """
-        Get tuple (finished tasks, unfinished tasks, queue size).
+        Get tuple (finished tasks, in progress, queue size).
         """
         self.mutex.acquire()
         try:
-            return (self.finished_tasks, self.unfinished_tasks, len(self.queue))
+            return (self.finished_tasks,
+                    len(self.in_progress), len(self.queue))
         finally:
             self.mutex.release()
 
