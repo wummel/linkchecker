@@ -17,6 +17,7 @@
 """
 Management of checking a queue of links with several threads.
 """
+import time
 import linkcheck
 import linkcheck.log
 import linkcheck.cache.urlqueue
@@ -37,8 +38,14 @@ def check_urls (aggregate):
         aggregate.logger.start_log_output()
         if not aggregate.urlqueue.empty():
             aggregate.start_threads()
-        # blocks until all urls are checked
-        aggregate.urlqueue.join()
+        # Since urlqueue.join() is not interruptable, add a timeout
+        # and a one-second slumber.
+        while True:
+            try:
+                aggregate.urlqueue.join(timeout=1)
+                break
+            except linkcheck.cache.urlqueue.Timeout:
+                time.sleep(1)
     except KeyboardInterrupt:
         linkcheck.log.warn(linkcheck.LOG_CHECK,
             "keyboard interrupt; waiting for active threads to finish")
