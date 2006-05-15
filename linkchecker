@@ -293,6 +293,9 @@ class LCOptionParser (optparse.OptionParser, object):
 # instantiate option parser and configure options
 optparser = LCOptionParser()
 
+# build a config object for this check session
+config = linkcheck.configuration.Configuration()
+
 ################# general options ##################
 group = optparse.OptionGroup(optparser, _("General options"))
 group.add_option("-f", "--config", type="string", dest="configfile",
@@ -444,7 +447,7 @@ group.add_option("--timeout", type="int", dest="timeout",
                  metavar="NUMBER",
                  help=_(
 """Set the timeout for connection attempts in seconds. The default
-timeout is %d seconds.""") % default_timeout)
+timeout is %d seconds.""") % config["timeout"])
 group.add_option("-P", "--pause", type="int", dest="pause",
                  metavar="NUMBER",
                  help=_(
@@ -470,8 +473,6 @@ if has_optcomplete:
 
 # read and parse command line options and arguments
 (options, args) = optparser.parse_args()
-# build a config object for this check session
-config = linkcheck.configuration.Configuration()
 # initialize logging
 if options.debug:
     allowed_debugs = linkcheck.lognames.keys()
