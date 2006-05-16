@@ -100,12 +100,9 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
     config["externlinks"].append(linkcheck.get_link_pat(".*", strict=True))
     # start checking
     aggregate = linkcheck.director.get_aggregate(config)
-
-    cache = linkcheck.checker.cache.Cache()
-    consumer = linkcheck.checker.consumer.Consumer(config, cache)
+    get_url_from = linkcheck.checker.get_url_from
     url = form["url"].value
-    url_data = linkcheck.checker.get_url_from(url, 0, aggregate,
-                                              assume_local=False)
+    url_data = get_url_from(url, 0, aggregate, assume_local=False)
     aggregate.urlqueue.put(url_data)
     linkcheck.director.check_urls(aggregate)
 
