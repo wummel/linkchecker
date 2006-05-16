@@ -192,7 +192,7 @@ no default password. See also \fB\-u\fP.
 .TP
 \fB\-\-timeout=\fP\fINUMBER\fP
 Set the timeout for connection attempts in seconds. The default timeout
-is 30 seconds.
+is 60 seconds.
 .TP
 \fB\-P\fP\fINUMBER\fP, \fB\-\-pause=\fP\fINUMBER\fP
 Pause the given number of seconds between each url check. This option
@@ -246,7 +246,7 @@ Suitable for cron jobs. Logs the check result into a file
 URLs and the number of times they have failed.
 .TP
 \fBnone\fP
-Logs nothing. Suitable for scripts.
+Logs nothing. Suitable for scripts checking the exit code.
 .
 .SH REGULAR EXPRESSIONS
 Only Python regular expressions are accepted by LinkChecker.
