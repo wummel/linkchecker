@@ -1,6 +1,6 @@
-- [FEATURE] Use a prebuilt cookie file to set initial cookies.
+- [FEATURE] Add crawl-delay support in robots.txt. parser
 
-- [FEATURE] postmortem debugging with pdb.pm()
+- [TEST] Add test for cookie file parsing
 
 - [BUGFIX] The URL in the log output is double normed.
 
