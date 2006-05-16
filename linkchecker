@@ -485,8 +485,8 @@ timeout is %d seconds.""") % config["timeout"])
 group.add_option("-P", "--pause", type="int", dest="pause",
                  metavar="NUMBER",
                  help=_(
-"""Pause the given number of seconds between each url check. This option
-disables threading. Default is no pause between requests."""))
+"""Pause the given number of seconds between two subsequent connection
+requests to the same host. Default is no pause between requests."""))
 group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
                  metavar="STRING",
                  help=_(

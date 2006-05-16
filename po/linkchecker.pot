@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2006-05-16 22:40+0200\n"
+"POT-Creation-Date: 2006-05-16 23:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1149,8 +1149,8 @@ msgstr ""
 
 #: ../linkchecker:488
 msgid ""
-"Pause the given number of seconds between each url check. This option\n"
-"disables threading. Default is no pause between requests."
+"Pause the given number of seconds between two subsequent connection\n"
+"requests to the same host. Default is no pause between requests."
 msgstr ""
 
 #: ../linkchecker:493

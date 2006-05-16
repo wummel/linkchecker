@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2006-05-16 22:44+0200\n"
-"PO-Revision-Date: 2006-05-16 22:46+0100\n"
+"POT-Creation-Date: 2006-05-16 23:34+0200\n"
+"PO-Revision-Date: 2006-05-16 23:35+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -484,8 +484,8 @@ msgstr "B<-P>I<NUMMER>, B<--pause=>I<NUMMER>"
 
 # type: Plain text
 #: en/linkchecker.1:201
-msgid "Pause the given number of seconds between each url check. This option disables threading. Default is no pause between requests."
-msgstr "Pausiere die angegebene Anzahl von Sekunden zwischen dem Prüfen jeder URL. Diese Option deaktiviert Threads. Standard ist keine Pause zwischen dem Prüfen."
+msgid "Pause the given number of seconds between two subsequent connection requests to the same host. Default is no pause between requests."
+msgstr "Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander folgenden Verbindungen zum demselben Rechner. Standard ist keine Pause zwischen Verbindungen."
 
 # type: TP
 #: en/linkchecker.1:201

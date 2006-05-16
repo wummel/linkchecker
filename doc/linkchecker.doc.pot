@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2006-05-16 22:44+0200\n"
+"POT-Creation-Date: 2006-05-16 23:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -542,8 +542,8 @@ msgstr ""
 # type: Plain text
 #: en/linkchecker.1:201
 msgid ""
-"Pause the given number of seconds between each url check. This option "
-"disables threading. Default is no pause between requests."
+"Pause the given number of seconds between two subsequent connection requests "
+"to the same host. Default is no pause between requests."
 msgstr ""
 
 # type: TP
