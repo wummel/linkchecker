@@ -37,7 +37,7 @@ class RobotsTxt (object):
         self.cache = {}
 
     @synchronized(_lock)
-    def allows_url (self, roboturl, url, user, password):
+    def allows_url (self, roboturl, url, user, password, callback=None):
         """
         Ask robots.txt allowance.
         """
@@ -46,6 +46,8 @@ class RobotsTxt (object):
                                             user=user, password=password)
             rp.set_url(roboturl)
             rp.read()
+            if callback is not None:
+                callback(rp)
             self.cache[roboturl] = rp
         else:
             rp = self.cache[roboturl]
