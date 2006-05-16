@@ -72,8 +72,11 @@ class Aggregate (object):
         url_data = self.urlqueue.get()
         if url_data is not None:
             try:
-                url = self.config['logger'].encode(url_data.url)
-                threading.currentThread().setName(url)
+                if url_data.url is None:
+                    url = ""
+                else:
+                    url = url_data.url.encode("ascii", "replace")
+                threading.currentThread().setName("Thread-%s" % url)
                 if not url_data.has_result:
                     url_data.check()
                 self.logger.log_url(url_data)
