@@ -19,7 +19,9 @@ Store and retrieve open connections.
 """
 
 import time
+import linkcheck
 import linkcheck.lock
+import linkcheck.log
 from linkcheck.decorators import synchronized
 
 _lock = linkcheck.lock.get_lock("connection")
@@ -30,7 +32,7 @@ class ConnectionPool (object):
     Thread-safe cache, storing a set of connections for URL retrieval.
     """
 
-    def __init__ (self):
+    def __init__ (self, wait=0):
         """
         Initialize an empty connection dictionary which will have entries
         of the form::
@@ -47,6 +49,9 @@ class ConnectionPool (object):
         # open connections
         # {(type, host, user, pass) -> [connection, status, expiration time]}
         self.connections = {}
+        # {host -> due time}
+        self.times = {}
+        self.wait = wait
 
     @synchronized(_lock)
     def add (self, key, conn, timeout):
@@ -61,14 +66,25 @@ class ConnectionPool (object):
         """
         Get open connection if available, for at most 30 seconds.
 
+        @param key - tuple (type, host, user, pass)
         @return: Open connection object or None if no connection is available.
         @rtype None or FTPConnection or HTTP(S)Connection
         """
+        host = key[1]
+        t = time.time()
+        if host in self.times:
+            due_time = self.times[host]
+            if due_time > t:
+                wait = due_time - t
+                assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
+                  "waiting for %.01f seconds on connection to %s", wait, host)
+                time.sleep(wait)
+                t = time.time()
+        self.times[host] = t + self.wait
         if key not in self.connections:
             # not found
             return None
         conn_data = self.connections[key]
-        t = time.time()
         if t > conn_data[2]:
             # timed out
             try:

@@ -381,12 +381,8 @@ class UrlBase (object):
         """
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "Checking %s", self)
-        wait = self.aggregate.config['wait']
-        if self.recursion_level and wait:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                "sleeping for %d seconds", wait)
-            time.sleep(wait)
-        t = time.time()
+        # start time for check
+        check_start = time.time()
         self.set_extern(self.url)
         if self.extern[0] and self.extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
@@ -423,7 +419,7 @@ class UrlBase (object):
                 self.set_result(linkcheck.strformat.unicode_safe(value),
                                 valid=False)
 
-        self.checktime = time.time() - t
+        self.checktime = time.time() - check_start
         # check recursion
         try:
             if self.allows_recursion():

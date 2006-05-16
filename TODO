@@ -1,6 +1,3 @@
-- [BUGFIX] The --pause option really meant to pause between two
-  subsequent requests to the _same_ host.
-
 - [FEATURE] Add robots.txt crawl-delay support in linkchecker
 
 - [TEST] Add test for cookie file parsing

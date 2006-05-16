@@ -59,7 +59,7 @@ def check_urls (aggregate):
 
 def get_aggregate (config):
     urlqueue = linkcheck.cache.urlqueue.UrlQueue()
-    connections = linkcheck.cache.connection.ConnectionPool()
+    connections = linkcheck.cache.connection.ConnectionPool(wait=config["wait"])
     cookies = linkcheck.cache.cookie.CookieJar()
     robots_txt = linkcheck.cache.robots_txt.RobotsTxt()
     return aggregator.Aggregate(config, urlqueue, connections,
