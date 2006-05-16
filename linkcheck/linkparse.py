@@ -223,13 +223,13 @@ class LinkFinder (TagFinder):
         assert isinstance(url, unicode) or url is None, repr(url)
         urls = []
         # look for meta refresh
-        if tag == u'meta':
+        if tag == u'meta' and url:
             mo = refresh_re.match(url)
             if mo:
                 urls.append(mo.group("url"))
             elif attr != 'content':
                 urls.append(url)
-        elif attr == u'style':
+        elif attr == u'style' and url:
             for mo in css_url_re.finditer(url):
                 u = mo.group("url")
                 urls.append(unquote(u, matching=True))
