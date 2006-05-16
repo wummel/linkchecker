@@ -1,7 +1,4 @@
-- To limit the used memory, put a maximum size on the URL queue
-  (eg. 20000 URLs). If reached, the worker calling queue.put() will
-  wait for another worker to call queue.get() before continuing.
-  Problem: dead lock when all workers called queue.put().
+- [FEATURE] Use a prebuilt cookie file to set initial cookies.
 
 - [FEATURE] postmortem debugging with pdb.pm()
 
