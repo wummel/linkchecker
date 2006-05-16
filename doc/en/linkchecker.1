@@ -257,6 +257,38 @@ regular expressions.
 The only addition is that a leading exclamation mark negates the regular
 expression.
 .
+.SH COOKIE FILES
+A cookie file contains standard RFC 805 header data with the following
+possible names:
+.
+.TP
+\fBScheme\fP (optional)
+Sets the scheme the cookies are valid for; default scheme is \fBhttp\fP.
+.TP
+\fBHost\fP (required)
+Sets the domain the cookies are valid for.
+.TP
+\fBPath\fP (optional)
+Gives the path the cookies are value for; default path is \fB/\fP.
+.TP
+\fBSet-cookie\fP (optional)
+Set cookie name/value. Can be given more than once.
+.PP
+Multiple entries are separated by a blank line.
+.
+The example below will send two cookies to all URLs starting with
+\fBhttp://imadoofus.org/hello/\fP and one to all URLs starting
+with \fBhttps://imaweevil.org/\fP:
+
+ Host: imadoofus.org
+ Path: /hello
+ Set-cookie: ID="smee"
+ Set-cookie: spam="egg"
+
+ Scheme: https
+ Host: imaweevil.org
+ Set-cookie: baggage="elitist"; comment="hologram"
+
 .SH PROXY SUPPORT
 To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
 on Unix or Windows to the proxy URL (for example http://localhost:8080).

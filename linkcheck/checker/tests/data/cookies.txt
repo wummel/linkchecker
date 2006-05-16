@@ -1,0 +1,8 @@
+Host: imadoofus.org
+Path: /hello
+Set-cookie: ID="smee"
+Set-cookie: spam="egg"
+
+Scheme: https
+Host: imaweevil.org
+Set-cookie: baggage="elitist"; comment="hologram"

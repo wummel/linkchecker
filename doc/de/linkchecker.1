@@ -256,6 +256,39 @@ Einführung in reguläre Ausdrücke.
 Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird 
 falls er mit einem Ausrufezeichen beginnt.
 .
+.SH COOKIE\-DATEIEN
+Eine Cookie\-Datei enthält Standard RFC 805 Kopfdaten mit den folgenden 
+möglichen Namen:
+.
+.TP 
+\fBScheme\fP (optional)
+Setzt das Schema für das die Cookies gültig sind; Standardschema ist 
+\fBhttp\fP.
+.TP 
+\fBHost\fP (erforderlich)
+Setzt die Domäne für die die Cookies gültig sind.
+.TP 
+\fBPath\fP (optional)
+Gibt den Pfad für den die Cookies gültig sind; Standardpfad ist \fB/\fP.
+.TP 
+\fBSet\-cookie\fP (optional)
+Setzt den Cookie Name/Wert. Kann mehrmals angegeben werden.
+.PP
+Mehrere Einträge sind durch eine Leerzeile zu trennen.
+.
+Das untige Beispiel sendet zwei Cookies zu allen URLs die mit 
+\fBhttp://imadoofus.org/hello/\fP beginnen, und eins zu allen URLs die mit 
+\fBhttps://imaweevil.org\fP beginnen:
+
+ Host: imadoofus.org
+ Path: /hello
+ Set\-cookie: ID="smee"
+ Set\-cookie: spam="egg"
+
+ Scheme: https
+ Host: imaweevil.org
+ Set\-cookie: baggage="elitist"; comment="hologram"
+
 .SH "PROXY UNTERSTÜTZUNG"
 Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, 
 $ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL (zum 

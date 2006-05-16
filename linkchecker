@@ -83,6 +83,34 @@ The only addition is that a leading exclamation mark negates
 the regular expression.
 """)
 
+CookieFormat = _("""COOKIE FILES
+A cookie file contains standard RFC 805 header data with the following
+possible names:
+Scheme (optional)
+ Sets the scheme the cookies are valid for; default scheme is 'http'.
+Host (required)
+ Sets the domain the cookies are valid for.
+Path (optional)
+ Gives the path the cookies are value for; default path is '/'.
+Set-cookie (optional)
+ Set cookie name/value. Can be given more than once.
+
+Multiple entries are separated by a blank line.
+
+The example below will send two cookies to all URLs starting with
+'http://imadoofus.org/hello/' and one to all URLs starting
+with 'https://imaweevil.org/':
+
+Host: imadoofus.org
+Path: /hello
+Set-cookie: ID="smee"
+Set-cookie: spam="egg"
+
+Scheme: https
+Host: imaweevil.org
+Set-cookie: baggage="elitist"; comment="hologram"
+""")
+
 Retval = _(r"""RETURN VALUE
 The return value is non-zero when
  o invalid links were found or
@@ -280,8 +308,8 @@ class LCOptionParser (optparse.OptionParser, object):
         """
         Print translated help text.
         """
-        s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
-                 Examples, LoggerTypes, RegularExpressions,
+        s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
+                 Examples, LoggerTypes, RegularExpressions, CookieFormat,
                  ProxySupport, Notes, Retval, Warnings)
         s = s.encode(linkcheck.i18n.default_encoding, "replace")
         if os.name != 'posix':
@@ -423,6 +451,11 @@ group.add_option("-C", "--cookies", action="store_true", dest="cookies",
 which are sent back to the originating server are accepted.
 Sent and accepted cookies are provided as additional logging
 information."""))
+group.add_option("--cookiefile", type="string", dest="cookiefile",
+                 metavar="FILENAME",
+                 help=_(
+"""Read a file with initial cookie data. The cookie data format is
+explained below."""))
 group.add_option("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
 """Check HTTP anchor references. Default is not to check anchors."""))
@@ -627,7 +660,8 @@ if options.warningregex is not None:
 if options.warningsizebytes is not None:
     config["warnsizebytes"] = options.warningsizebytes
 if options.cookies is not None:
-    config['cookies'] = options.cookies
+    config['storecookies'] = options.cookies
+    config['sendcookies'] = options.cookies
 if constructauth:
     config["authentication"].append({'pattern': try_compile_re(".+"),
                                      'user': _username,
@@ -656,6 +690,16 @@ if len(args) <= 0:
 
 # prepare checking queue
 aggregate = linkcheck.director.get_aggregate(config)
+if options.cookiefile is not None:
+    try:
+        cookies = linkcheck.cookies.from_file(options.cookiefile)
+        for headers, scheme, host, path in cookies:
+            aggregate.cookies.add(headers, scheme, host, path)
+        config["sendcookies"] = True
+    except StandardError:
+        linkcheck.log.error(linkcheck.LOG_CMDLINE,
+      _("Could not parse cookie file: %s"), sys.exc_info()[1])
+        sys.exit(1)
 if options.trace:
     config["trace"] = True
     import linkcheck.trace

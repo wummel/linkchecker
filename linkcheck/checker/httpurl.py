@@ -402,7 +402,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                             linkcheck.strformat.unicode_safe(response.reason),
                             tag="http-empty-content")
             # store cookies for valid links
-            if self.aggregate.config['cookies']:
+            if self.aggregate.config['storecookies']:
                 for c in self.cookies:
                     self.add_info(_("Store cookie: %s.") % c)
                 try:
@@ -467,7 +467,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                       linkcheck.configuration.UserAgent)
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
-        if self.aggregate.config['cookies']:
+        if self.aggregate.config['sendcookies']:
             scheme = self.urlparts[0]
             host = self.urlparts[1]
             port = linkcheck.url.default_ports.get(scheme, 80)

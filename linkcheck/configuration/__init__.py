@@ -84,7 +84,8 @@ class Configuration (dict):
         self["proxy"] = urllib.getproxies()
         self["recursionlevel"] = -1
         self["wait"] = 0
-        self['cookies'] = False
+        self['sendcookies'] = False
+        self['storecookies'] = False
         self["status"] = False
         self["fileoutput"] = []
         # Logger configurations

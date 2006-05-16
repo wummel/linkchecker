@@ -40,6 +40,12 @@
     Type: feature
     Changed: linkcheck/configuration/confparse.py, config/linkcheckerrc
 
+  * New option --cookiefile to set initial cookie values sent to
+    HTTP servers.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration/__init__.py,
+      linkcheck/checker/httpurl.py, linkcheck/cookies.py
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.

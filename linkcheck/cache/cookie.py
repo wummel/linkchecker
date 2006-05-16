@@ -70,3 +70,7 @@ class CookieJar (object):
         jar = self.cache.setdefault(host, set())
         return [x for x in jar if x.check_expired() and \
                 x.is_valid_for(scheme, host, port, path)]
+
+    @synchronized(_lock)
+    def __str__ (self):
+        return "<CookieJar with %s>" % self.cache

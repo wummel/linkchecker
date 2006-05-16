@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2006-05-16 18:29+0200\n"
+"POT-Creation-Date: 2006-05-16 22:44+0200\n"
 "PO-Revision-Date: 2005-05-07 00:42+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: kde-francophone@kde.org\n"
@@ -871,11 +871,100 @@ msgstr ""
 # type: SH
 #: en/linkchecker.1:260
 #, no-wrap
+msgid "COOKIE FILES"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:263
+msgid ""
+"A cookie file contains standard RFC 805 header data with the following "
+"possible names:"
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:264
+#, no-wrap
+msgid "B<Scheme> (optional)"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:267
+msgid "Sets the scheme the cookies are valid for; default scheme is B<http>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:267
+#, no-wrap
+msgid "B<Host> (required)"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:270
+msgid "Sets the domain the cookies are valid for."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:270
+#, no-wrap
+msgid "B<Path> (optional)"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:273
+msgid "Gives the path the cookies are value for; default path is B</>."
+msgstr ""
+
+# type: TP
+#: en/linkchecker.1:273
+#, no-wrap
+msgid "B<Set-cookie> (optional)"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:276
+msgid "Set cookie name/value. Can be given more than once."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:278
+msgid "Multiple entries are separated by a blank line."
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:282
+msgid ""
+"The example below will send two cookies to all URLs starting with B<http://"
+"imadoofus.org/hello/> and one to all URLs starting with B<https://imaweevil."
+"org/>:"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:287
+#, no-wrap
+msgid ""
+" Host: imadoofus.org\n"
+" Path: /hello\n"
+" Set-cookie: ID=\"smee\"\n"
+" Set-cookie: spam=\"egg\"\n"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:291
+#, no-wrap
+msgid ""
+" Scheme: https\n"
+" Host: imaweevil.org\n"
+" Set-cookie: baggage=\"elitist\"; comment=\"hologram\"\n"
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:292
+#, no-wrap
 msgid "PROXY SUPPORT"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:264
+#: en/linkchecker.1:296
 #, fuzzy
 msgid ""
 "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on "
@@ -886,13 +975,13 @@ msgstr ""
 "Windows.Sur un Mac, utilisez la configuration Internet."
 
 # type: SH
-#: en/linkchecker.1:265
+#: en/linkchecker.1:297
 #, no-wrap
 msgid "NOTES"
 msgstr "NOTES"
 
 # type: Plain text
-#: en/linkchecker.1:270
+#: en/linkchecker.1:302
 #, fuzzy
 msgid ""
 "URLs on the commandline starting with B<ftp.> are treated like B<ftp://ftp."
@@ -904,7 +993,7 @@ msgstr ""
 "www.>. Vous pouvez aussi mettre des noms de fichiers locaux comme arguments."
 
 # type: Plain text
-#: en/linkchecker.1:275
+#: en/linkchecker.1:307
 msgid ""
 "If you have your system configured to automatically establish a connection "
 "to the internet (e.g. with diald), it will connect when checking links not "
@@ -917,12 +1006,12 @@ msgstr ""
 "B<-s> et B<-i> pour éviter cela."
 
 # type: Plain text
-#: en/linkchecker.1:277
+#: en/linkchecker.1:309
 msgid "Javascript links are currently ignored."
 msgstr "Les liens javascript sont ignorés actuellement."
 
 # type: Plain text
-#: en/linkchecker.1:280
+#: en/linkchecker.1:312
 #, fuzzy
 msgid ""
 "If your platform does not support threading, LinkChecker disables it "
@@ -932,14 +1021,14 @@ msgstr ""
 "t0>."
 
 # type: Plain text
-#: en/linkchecker.1:282
+#: en/linkchecker.1:314
 msgid "You can supply multiple user/password pairs in a configuration file."
 msgstr ""
 "Vous pouvez fournir plusieurs paires nom d'utilisateur/mot de passe dans un "
 "fichier de configuration."
 
 # type: Plain text
-#: en/linkchecker.1:285
+#: en/linkchecker.1:317
 msgid ""
 "When checking B<news:> links the given NNTP host doesn't need to be the same "
 "as the host of the user browsing your pages."
@@ -948,55 +1037,55 @@ msgstr ""
 "n'ont pas besoin d'être les mêmes que l'hôte de l'utilisateur naviguant."
 
 # type: SH
-#: en/linkchecker.1:286
+#: en/linkchecker.1:318
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr "ENVIRONNEMENT"
 
 # type: Plain text
-#: en/linkchecker.1:288
+#: en/linkchecker.1:320
 msgid "B<NNTP_SERVER> - specifies default NNTP server"
 msgstr "B<NNTP_SERVER> - spécifie le serveur NNTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:290
+#: en/linkchecker.1:322
 msgid "B<http_proxy> - specifies default HTTP proxy server"
 msgstr "B<http_proxy> - spécifie le proxy HTTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:292
+#: en/linkchecker.1:324
 msgid "B<ftp_proxy> - specifies default FTP proxy server"
 msgstr "B<ftp_proxy> - spécifie le proxy FTP par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:294
+#: en/linkchecker.1:326
 msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
 msgstr "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - spécifie la langue en sortie"
 
 # type: SH
-#: en/linkchecker.1:295
+#: en/linkchecker.1:327
 #, no-wrap
 msgid "RETURN VALUE"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:297
+#: en/linkchecker.1:329
 msgid "The return value is non-zero when"
 msgstr "Le code de retour est différent de 0 quand"
 
 # type: IP
-#: en/linkchecker.1:297 en/linkchecker.1:299 en/linkchecker.1:301
+#: en/linkchecker.1:329 en/linkchecker.1:331 en/linkchecker.1:333
 #, no-wrap
 msgid "\\(bu"
 msgstr "\\(bu"
 
 # type: Plain text
-#: en/linkchecker.1:299
+#: en/linkchecker.1:331
 msgid "invalid links were found or"
 msgstr "il y a eu des liens non valides,"
 
 # type: Plain text
-#: en/linkchecker.1:301
+#: en/linkchecker.1:333
 #, fuzzy
 msgid "link warnings were found and warnings are enabled"
 msgstr ""
@@ -1004,18 +1093,18 @@ msgstr ""
 "positionnée,"
 
 # type: Plain text
-#: en/linkchecker.1:303
+#: en/linkchecker.1:335
 msgid "a program error occurred."
 msgstr "il y a eu une erreur dans le programme."
 
 # type: SH
-#: en/linkchecker.1:304
+#: en/linkchecker.1:336
 #, no-wrap
 msgid "FILES"
 msgstr "FICHIERS"
 
 # type: Plain text
-#: en/linkchecker.1:307
+#: en/linkchecker.1:339
 msgid ""
 "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - default "
 "configuration files"
@@ -1024,20 +1113,20 @@ msgstr ""
 "fichiers de configuration par défaut"
 
 # type: Plain text
-#: en/linkchecker.1:309
+#: en/linkchecker.1:341
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr ""
 "B<~/.linkchecker/blacklist> - fichier par défaut des blacklists pour la "
 "journalisation"
 
 # type: Plain text
-#: en/linkchecker.1:311
+#: en/linkchecker.1:343
 #, fuzzy
 msgid "B<linkchecker-out.>I<TYPE> - default logger file output name"
 msgstr "B<linkchecker-out.>I<type> - fichier par défaut pour la journalisation"
 
 # type: Plain text
-#: en/linkchecker.1:313
+#: en/linkchecker.1:345
 msgid ""
 "B<http://docs.python.org/lib/standard-encodings.html> - valid output "
 "encodings"
@@ -1046,19 +1135,19 @@ msgstr ""
 "sortie"
 
 # type: Plain text
-#: en/linkchecker.1:315
+#: en/linkchecker.1:347
 msgid ""
 "B<http://www.amk.ca/python/howto/regex/> - regular expression documentation"
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:316
+#: en/linkchecker.1:348
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTEUR"
 
 # type: Plain text
-#: en/linkchecker.1:318
+#: en/linkchecker.1:350
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>\n"
@@ -1074,13 +1163,13 @@ msgstr ""
 "erreur dans cette page de manuel."
 
 # type: SH
-#: en/linkchecker.1:319
+#: en/linkchecker.1:351
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:320
+#: en/linkchecker.1:352
 msgid "Copyright \\(co 2000-2005 Bastian Kleineidam"
 msgstr ""
 

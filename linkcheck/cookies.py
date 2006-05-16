@@ -31,6 +31,8 @@ import time
 import re
 import Cookie
 import cookielib
+import cStringIO as StringIO
+import rfc822
 import linkcheck.strformat
 
 
@@ -297,3 +299,34 @@ class Rfc2965Cookie (HttpCookie):
 
 # XXX more methods (equality test)
 
+
+def from_file (filename):
+    # list of tuples (headers, scheme, host, path)
+    entries = []
+    fd = open(filename)
+    try:
+        lines = []
+        for line in fd.readlines():
+            line = line.rstrip()
+            if not line:
+                if lines:
+                    entries.append(from_headers("\r\n".join(lines)))
+                lines = []
+            else:
+                lines.append(line)
+        if lines:
+            entries.append(from_headers("\r\n".join(lines)))
+        return entries
+    finally:
+        fd.close()
+
+
+def from_headers (strheader):
+    fp = StringIO.StringIO(strheader)
+    headers = rfc822.Message(fp, seekable=True)
+    if not headers.has_key("Host"):
+        raise ValueError("Required header 'Host:' missing")
+    host = headers["Host"]
+    scheme = headers.get("Scheme", "http")
+    path= headers.get("Path", "/")
+    return (headers, scheme, host, path)
