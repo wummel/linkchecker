@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2006-05-16 23:34+0200\n"
+"POT-Creation-Date: 2006-05-17 00:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,16 +179,20 @@ msgid_plural "%d errors found."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/urlbase.py:274
+#: ../linkcheck/checker/urlbase.py:273
+msgid "URL is missing"
+msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:276
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:281
+#: ../linkcheck/checker/urlbase.py:283
 #, python-format
 msgid "Effective URL %r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:298
+#: ../linkcheck/checker/urlbase.py:300
 #, python-format
 msgid ""
 "URL %r has a unicode domain name which\n"
@@ -196,50 +200,50 @@ msgid ""
 "                          the URL %r instead."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:304
+#: ../linkcheck/checker/urlbase.py:306
 #, python-format
 msgid "Base URL is not properly normed. Normed URL is %(url)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:344
+#: ../linkcheck/checker/urlbase.py:346
 #, python-format
 msgid "URL has invalid port %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:374
+#: ../linkcheck/checker/urlbase.py:376
 #, python-format
 msgid "URL is located in %s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:390 ../linkcheck/checker/ignoredurl.py:34
+#: ../linkcheck/checker/urlbase.py:392 ../linkcheck/checker/ignoredurl.py:34
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:405
+#: ../linkcheck/checker/urlbase.py:407
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:408
+#: ../linkcheck/checker/urlbase.py:410
 #, python-format
 msgid "Bad HTTP response %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:433
+#: ../linkcheck/checker/urlbase.py:435
 #, python-format
 msgid "could not get content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:550
+#: ../linkcheck/checker/urlbase.py:552
 #, python-format
 msgid "Anchor #%s not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:609
+#: ../linkcheck/checker/urlbase.py:611
 #, python-format
 msgid "Found %r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:619
+#: ../linkcheck/checker/urlbase.py:621
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr ""

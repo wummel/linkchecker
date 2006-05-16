@@ -269,8 +269,10 @@ class UrlBase (object):
         """
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "checking syntax")
-        if (self.base_url is None) or \
-           (not self.base_url and not self.parent_url):
+        if self.base_url is None:
+            self.set_result(_("URL is missing"), valid=False)
+            return
+        if not (self.base_url or self.parent_url):
             self.set_result(_("URL is empty"), valid=False)
             return
         try:
