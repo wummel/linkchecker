@@ -5,6 +5,20 @@
 Upgrading
 =========
 
+Migrating from 3.x to 4.0
+-------------------------
+
+The Python API has changed. See the `program documentation`_
+for more info (eg. how to use your own logger class).
+
+.. _program documentation:
+   documentation.html
+
+The default intern pattern matches now both http and https, so when
+checking a site http://imadoofus.org/, all URLs of the form
+https://imadoofus.org/ will also be checked recursively.
+
+
 Migrating from 3.0 to 3.1
 -------------------------
 
