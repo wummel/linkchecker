@@ -46,6 +46,12 @@
     Changed: linkchecker, linkcheck/configuration/__init__.py,
       linkcheck/checker/httpurl.py, linkcheck/cookies.py
 
+  * The --pause option delays requests to the same host, and is not
+    required to disable threading to do that.
+    Type: bugfix
+    Changed: linkcheck/cache/connection.py, linkcheck/checker/urlbase.py,
+      linkcheck/directory/__init__.py
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.
