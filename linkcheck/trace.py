@@ -18,10 +18,8 @@ import re
 import linecache
 import time
 import sys
-try:
-    import thread as _thread
-except ImportError:
-    import dummy_thread as _thread
+import thread
+import threading
 
 # tracing
 _trace_ignore = set()
@@ -88,8 +86,10 @@ def _trace_line (frame, event, arg):
     if filename.endswith(".pyc") or filename.endswith(".pyo"):
         filename = filename[:-1]
     line = linecache.getline(filename, lineno)
-    print "THREAD(%d) %.2f %s # %s:%d" % \
-           (_thread.get_ident(), time.time(), line.rstrip(), name, lineno)
+    tid = thread.get_ident()
+    tname = threading.currentThread().getName()
+    args = (tid, tname, time.time(), line.rstrip(), name, lineno)
+    print "THREAD(%d) %r %.2f %s # %s:%d" % args
 
 
 def trace_on (full=False):
