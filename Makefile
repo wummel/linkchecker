@@ -23,6 +23,7 @@ clean:
 	$(MAKE) -C po clean
 	rm -f linkcheck/HtmlParser/htmlsax.so
 	rm -f linkcheck/HtmlParser/*.output
+	rm -f linkcheck/ftpparse/_ftpparse.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
 .PHONY: distclean
