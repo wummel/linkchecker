@@ -430,7 +430,8 @@ group.add_option("--no-anchor-caching", action="store_false",
                  dest="anchorcaching", help=_(
 """Treat url#anchora and url#anchorb as equal on caching. This
 is the default browser behaviour, but it's not specified in
-the URI specification. Use with care."""))
+the URI specification. Use with care since broken anchors are not
+guaranteed to be detected in this mode."""))
 group.add_option("-u", "--user", type="string", dest="username",
                  metavar="STRING",
                  help=_(

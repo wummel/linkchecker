@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2006-05-16 11:24+0200\n"
-"PO-Revision-Date: 2006-05-16 16:35+0100\n"
+"POT-Creation-Date: 2006-05-16 18:29+0200\n"
+"PO-Revision-Date: 2006-05-16 18:31+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -789,7 +789,7 @@ msgid "System info:"
 msgstr "Systeminformation:"
 
 #: ../linkcheck/director/status.py:63
-#: ../linkchecker:491
+#: ../linkchecker:492
 #, python-format
 msgid "Python %s on %s"
 msgstr "Python %s auf %s"
@@ -977,7 +977,7 @@ msgid ""
 "        Suitable for cron jobs. Logs the check result into a file\n"
 "        ~/.linkchecker/blacklist which only contains entries with invalid\n"
 "        URLs and the number of times they have failed.\n"
-"none    Logs nothing. Suitable for scripts.\n"
+"none    Logs nothing. Suitable for debugging or checking the exit code.\n"
 msgstr ""
 "AUSGABETYPEN\n"
 "Beachten Sie, dass normalerweise nur Fehler und Warnungen ausgegeben werden.\n"
@@ -999,7 +999,7 @@ msgstr ""
 "        Für Cronjobs geeignet. Gibt das Prüfergebnis in eine Datei ~/.linkchecker/blacklist aus,\n"
 "        welche nur Einträge mit fehlerhaften URLs und die Anzahl der Fehlversuche\n"
 "        enthält.\n"
-"none    Gibt nichts aus. Für Skripte geeignet.\n"
+"none    Gibt nichts aus. Für Debugging oder Prüfen des Rückgabewerts geeignet.\n"
 
 #: ../linkchecker:142
 msgid ""
@@ -1255,13 +1255,15 @@ msgstr "Prüfe HTTP Anker Verweise. Standard ist keine Überprüfung."
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
 "is the default browser behaviour, but it's not specified in\n"
-"the URI specification. Use with care."
+"the URI specification. Use with care since broken anchors are not\n"
+"guaranteed to be detected in this mode."
 msgstr ""
 "Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies\n"
 "ist zwar Standard bei Browsern, aber in der URI Spezifikation\n"
-"nicht enthalten. Benutzen Sie diese Option mit Vorsicht."
+"nicht enthalten. Benutzen Sie diese Option mit Vorsicht da mit dieser Option\n"
+"ungültige Anker nicht unbedingt entdeckt werden."
 
-#: ../linkchecker:437
+#: ../linkchecker:438
 msgid ""
 "Try the given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. For HTTP there is\n"
@@ -1270,7 +1272,7 @@ msgstr ""
 "Verwende den angegebenen Benutzernamen für HTTP und FTP\n"
 "Authorisation. Für FTP ist der Standardname 'anonymous'. Für HTTP gibt es kein Standardnamen. Siehe auch -p."
 
-#: ../linkchecker:443
+#: ../linkchecker:444
 msgid ""
 "Try the given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. For HTTP there is\n"
@@ -1279,7 +1281,7 @@ msgstr ""
 "Verwende das angegebene Passwort für HTTP und FTP Authorisation.\n"
 "Für FTP ist das Standardpasswort 'anonymous@'. Für HTTP gibt es kein Standardpasswort. Siehe auch -u."
 
-#: ../linkchecker:449
+#: ../linkchecker:450
 #, python-format
 msgid ""
 "Set the timeout for connection attempts in seconds. The default\n"
@@ -1288,7 +1290,7 @@ msgstr ""
 "Setze den Timeout für Verbindungen in Sekunden. Der Standard\n"
 "Timeout ist %d Sekunden."
 
-#: ../linkchecker:454
+#: ../linkchecker:455
 msgid ""
 "Pause the given number of seconds between each url check. This option\n"
 "disables threading. Default is no pause between requests."
@@ -1296,7 +1298,7 @@ msgstr ""
 "Pausiere die angegebene Anzahl von Sekunden zwischen dem Prüfen jeder URL. Diese Option\n"
 "deaktiviert Threading.Standard ist keine Pause zwischen dem Prüfen."
 
-#: ../linkchecker:459
+#: ../linkchecker:460
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
@@ -1306,7 +1308,7 @@ msgstr ""
 "Umgebungsvariable NNTP_SERVER. Falls kein Rechner angegeben ist,\n"
 "wird lediglich auf korrekte Syntax des Links geprüft."
 
-#: ../linkchecker:465
+#: ../linkchecker:466
 msgid ""
 "Contact hosts that match the given regular expression directly instead\n"
 "of going through a proxy. This option can be given multiple times."
@@ -1314,48 +1316,48 @@ msgstr ""
 "Direkte Verbindung zu Rechner, die zum gegebenen regulären Ausdruck passen, anstatt\n"
 "über einen Proxy zu gehen. Diese Option kann mehrfach angegeben werden."
 
-#: ../linkchecker:481
+#: ../linkchecker:482
 #, python-format
 msgid "Invalid debug level %(level)r"
 msgstr "Ungültiger Debuglevel %(level)r"
 
-#: ../linkchecker:500
+#: ../linkchecker:501
 #, python-format
 msgid "Unreadable config file: %r"
 msgstr "Nicht lesbare Konfigurationsdatei: %r"
 
-#: ../linkchecker:508
+#: ../linkchecker:509
 msgid "Running with python -O disables debugging."
 msgstr "Die Option python -O verhindert das Debuggen."
 
-#: ../linkchecker:536
-#: ../linkchecker:564
+#: ../linkchecker:537
+#: ../linkchecker:565
 #, python-format
 msgid "Unknown logger type %r in %r for option %s"
 msgstr "Unbekannter Logtyp %r in %r für Option %s"
 
-#: ../linkchecker:539
-#: ../linkchecker:568
+#: ../linkchecker:540
+#: ../linkchecker:569
 #, python-format
 msgid "Unknown encoding %r in %r for option %s"
 msgstr "Unbekanntes Encoding %r in %r für Option %s"
 
-#: ../linkchecker:575
+#: ../linkchecker:576
 #, python-format
 msgid "Illegal argument %r for option %s: %s"
 msgstr "Ungültiges Argument %r für Option %s: %s"
 
-#: ../linkchecker:591
-#: ../linkchecker:609
+#: ../linkchecker:592
+#: ../linkchecker:610
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr "Ungültiges Argument %r für Option %s"
 
-#: ../linkchecker:642
+#: ../linkchecker:643
 msgid "Using DOT or GML loggers without verbose output gives an incomplete sitemap graph."
 msgstr "Benutzung von DOT oder GML Ausgaben ohne --verbose ergibt einen unvollständigen Sitemap Graphen."
 
-#: ../linkchecker:649
+#: ../linkchecker:650
 msgid ""
 "enter one or more URLs, separated by white-space\n"
 "--> "
@@ -1363,15 +1365,15 @@ msgstr ""
 "geben Sie eine oder mehrere durch Leerzeichen getrennte URLs ein\n"
 "--> "
 
-#: ../linkchecker:652
+#: ../linkchecker:653
 msgid "no files or URLs given"
 msgstr "keine Dateien oder URLs angegeben"
 
-#: ../linkchecker:676
+#: ../linkchecker:677
 msgid "The `profile' Python module is not installed, therefore the --profile option is disabled."
 msgstr "Das `profile' Python Modul ist nicht installiert, deshalb ist die --profile Option deaktiviert."
 
-#: ../linkchecker:681
+#: ../linkchecker:682
 #, python-format
 msgid ""
 "Overwrite profiling file %r?\n"
@@ -1380,11 +1382,11 @@ msgstr ""
 "Profildatei %r überschreiben?\n"
 "Drücken Sie Strg-C zum Abbrechen, EINGABETASTE zum Fortfahren."
 
-#: ../linkchecker:687
+#: ../linkchecker:688
 msgid "Canceled."
 msgstr "Abgebrochen."
 
-#: ../linkchecker:701
+#: ../linkchecker:702
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
@@ -1392,7 +1394,7 @@ msgstr ""
 "Psyco ist installiert aber nicht genutzt, da die Version zu alt ist.\n"
 "Psyco >= 1.4 wird benötigt."
 
-#: ../linkchecker:711
+#: ../linkchecker:712
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
 

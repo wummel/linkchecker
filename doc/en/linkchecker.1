@@ -178,7 +178,8 @@ Check HTTP anchor references. Default is not to check anchors.
 \fB\-\-no\-anchor\-caching\fP
 Treat url#anchora and url#anchorb as equal on caching. This
 is the default browser behaviour, but it's not specified in
-the URI specification. Use with care.
+the URI specification. Use with care since broken anchors are not
+guaranteed to be detected in this mode.
 .TP
 \fB\-u\fP\fISTRING\fP, \fB\-\-user=\fP\fISTRING\fP
 Try the given username for HTTP and FTP authorization.
