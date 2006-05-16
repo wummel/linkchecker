@@ -1,4 +1,4 @@
-- [FEATURE] Add crawl-delay support in robots.txt. parser
+- [FEATURE] Add crawl-delay support in linkchecker
 
 - [TEST] Add test for cookie file parsing
 
