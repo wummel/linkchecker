@@ -51,7 +51,16 @@ class ConnectionPool (object):
         self.connections = {}
         # {host -> due time}
         self.times = {}
+        # {host -> wait}
+        self.host_waits = {}
         self.wait = wait
+
+    @synchronized(_lock)
+    def host_wait (self, host, wait):
+        """
+        Set a host specific time to wait between requests.
+        """
+        self.host_waits[host] = wait
 
     @synchronized(_lock)
     def add (self, key, conn, timeout):
@@ -80,7 +89,7 @@ class ConnectionPool (object):
                   "waiting for %.01f seconds on connection to %s", wait, host)
                 time.sleep(wait)
                 t = time.time()
-        self.times[host] = t + self.wait
+        self.times[host] = t + self.host_waits.get(host, self.wait)
         if key not in self.connections:
             # not found
             return None
