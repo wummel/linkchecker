@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2005-12-09 21:12+0100\n"
+"POT-Creation-Date: 2006-05-16 11:24+0200\n"
 "PO-Revision-Date: 2005-05-07 00:42+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: kde-francophone@kde.org\n"
@@ -636,9 +636,10 @@ msgstr "B<--timeout=>I<secs>"
 
 # type: Plain text
 #: en/linkchecker.1:196
+#, fuzzy
 msgid ""
 "Set the timeout for connection attempts in seconds. The default timeout is "
-"30 seconds."
+"60 seconds."
 msgstr ""
 "Préciser le délai d'expiration pour les attentes de connexion en secondes. "
 "Le délai par défaut est de 30 secondes."
@@ -842,7 +843,8 @@ msgstr "B<none>"
 
 # type: Plain text
 #: en/linkchecker.1:250
-msgid "Logs nothing. Suitable for scripts."
+#, fuzzy
+msgid "Logs nothing. Suitable for scripts checking the exit code."
 msgstr "Ne rien journaliser du tout. Approprié pour les scripts."
 
 # type: SH
