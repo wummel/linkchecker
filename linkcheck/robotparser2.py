@@ -300,6 +300,20 @@ class RobotFileParser (object):
                           " this line", self.url, linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 1))
+                elif line[0] == "crawl-delay":
+                    if state == 0:
+                        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                          "%s line %d: missing user-agent directive before" \
+                          " this line", self.url, linenumber)
+                    else:
+                        try:
+                            entry.crawldelay = max(0, int(line[1]))
+                            state = 2
+                        except ValueError:
+                            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                             "%s line %d: invalid delay number %r",
+                             self.url, linenumber, line[1])
+                            pass
                 else:
                     assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                              "%s line %d: unknown key %s",
@@ -308,7 +322,7 @@ class RobotFileParser (object):
                 assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                     "%s line %d: malformed line %s",
                     self.url, linenumber, line)
-        if state == 2:
+        if state in (1, 2):
             self.entries.append(entry)
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                             "Parsed rules:\n%s", str(self))
@@ -403,6 +417,7 @@ class Entry (object):
         """
         self.useragents = []
         self.rulelines = []
+        self.crawldelay = 0
 
     def __str__ (self):
         """
@@ -411,7 +426,9 @@ class Entry (object):
         @return: robots.txt format
         @rtype: string
         """
-        lines = ["User-agent: %r" % agent for agent in self.useragents]
+        lines = ["User-agent: %s" % agent for agent in self.useragents]
+        if self.crawldelay:
+            lines.append("Crawl-delay: %d" % self.crawldelay)
         lines.extend([str(line) for line in self.rulelines])
         return "\n".join(lines)
 
