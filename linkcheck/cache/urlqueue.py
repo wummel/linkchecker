@@ -35,11 +35,13 @@ class UrlQueue (Queue.Queue):
     from the Python 2.5 Subversion repository.
     """
 
-    def __init__ (self, maxsize=0):
+    def __init__ (self):
         """
         Initialize the queue state and task counters.
         """
-        Queue.Queue.__init__(self, maxsize=maxsize)
+        # Note: don't put a maximum size on the queue since it would
+        # lead to deadlocks when all worker threads called put().
+        Queue.Queue.__init__(self)
         self.all_tasks_done = threading.Condition(self.mutex)
         self.unfinished_tasks = 0
         self.finished_tasks = 0
