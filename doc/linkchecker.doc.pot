@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2006-05-16 11:24+0200\n"
+"POT-Creation-Date: 2006-05-16 18:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -702,7 +702,7 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:250
-msgid "Logs nothing. Suitable for scripts checking the exit code."
+msgid "Logs nothing. Suitable for debugging or checking the exit code."
 msgstr ""
 
 # type: SH

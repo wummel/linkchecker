@@ -187,8 +187,8 @@ ist das Standardpasswort \fBanonymous@\fP. Für HTTP gibt es kein
 Standardpasswort. Siehe auch \fB\-u\fP.
 .TP 
 \fB\-\-timeout=\fP\fINUMMER\fP
-Set the timeout for connection attempts in seconds. The default timeout is 
-60 seconds.
+Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout 
+ist 60 Sekunden.
 .TP 
 \fB\-P\fP\fINUMMER\fP, \fB\-\-pause=\fP\fINUMMER\fP
 Pausiere die angegebene Anzahl von Sekunden zwischen dem Prüfen jeder 
@@ -245,7 +245,7 @@ Für Cronjobs geeignet. Gibt das Prüfergebnis in eine Datei
 und die Anzahl der Fehlversuche enthält.
 .TP 
 \fBnone\fP
-Logs nothing. Suitable for scripts checking the exit code.
+Gibt nichts aus. Für Debugging oder Prüfen des Rückgabewerts geeignet.
 .
 .SH "REGULÄRE AUSDRÜCKE"
 Lediglich Pythons reguläre Ausdrücke werden von LinkChecker 

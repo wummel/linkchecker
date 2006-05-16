@@ -136,7 +136,7 @@ blacklist
         Suitable for cron jobs. Logs the check result into a file
         ~/.linkchecker/blacklist which only contains entries with invalid
         URLs and the number of times they have failed.
-none    Logs nothing. Suitable for scripts.
+none    Logs nothing. Suitable for debugging or checking the exit code.
 """)
 
 Warnings = _(r"""IGNORE WARNINGS
