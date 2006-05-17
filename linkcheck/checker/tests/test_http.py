@@ -39,6 +39,8 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             self.direct(url, resultlines, recursionlevel=1, assume_local=True)
             self.redirect1_http_test()
             self.redirect2_http_test()
+            self.robots_txt_test()
+            self.robots_txt2_test()
             self.noproxyfor_test()
         finally:
             self.stop_server()
@@ -100,6 +102,27 @@ class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99, assume_local=True)
+
+    def robots_txt_test (self):
+        url = u"http://localhost:%d/robots.txt" % self.port
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=5, assume_local=True)
+
+    def robots_txt2_test (self):
+        url = u"http://localhost:%d/secret" % self.port
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"warning Access denied by robots.txt, checked only syntax.",
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=5, assume_local=True)
 
     def noproxyfor_test (self):
         """

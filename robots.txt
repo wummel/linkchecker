@@ -1,0 +1,12 @@
+# A test robots.txt file. It resides in the root directory to be found
+# by the unittest HTTP server.
+# Note that while unit tests are running, the contents of this file
+# can change.
+
+User-agent: LinkChecker
+Crawl-delay: 1
+Disallow: /secret
+
+# The following rule should not match
+User-agent: *
+Crawl-delay: 100
