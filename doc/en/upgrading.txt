@@ -8,13 +8,17 @@ Upgrading
 Migrating from 3.x to 4.0
 -------------------------
 
-The Python API of the linkcheck module has changed. So if you were
+The Python API of the linkcheck module has changed. If you were
 using the library directly instead of the commandline or CGI
 interfaces, you will have to adjust your code.
 
-The default intern pattern matches now both http and https, so when
+The default intern pattern matches now both http and https. When
 checking a site http://imadoofus.org/, all URLs of the form
-https://imadoofus.org/ will also be checked recursively.
+https://imadoofus.org/ will now also be checked recursively.
+
+LinkChecker now honors a "Crawl-delay" entry in robots.txt files.
+The delay makes LinkChecker pause between requests to the corresponding
+server, so your checking time might increase.
 
 
 Migrating from 3.0 to 3.1
