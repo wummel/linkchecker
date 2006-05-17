@@ -53,6 +53,8 @@ class ConnectionPool (object):
         self.times = {}
         # {host -> wait}
         self.host_waits = {}
+        if wait < 0:
+            raise ValueError("negative wait value %d" % wait)
         self.wait = wait
 
     @synchronized(_lock)
@@ -60,6 +62,8 @@ class ConnectionPool (object):
         """
         Set a host specific time to wait between requests.
         """
+        if wait < 0:
+            raise ValueError("negative wait value %d" % wait)
         self.host_waits[host] = wait
 
     @synchronized(_lock)
