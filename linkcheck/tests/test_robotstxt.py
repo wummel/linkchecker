@@ -50,11 +50,20 @@ class TestRobotsTxt (unittest.TestCase):
 
     def test_crawldelay (self):
         lines = [
-            "User-agent: *",
+            "User-agent: Blubb",
             "Crawl-delay: 10",
+            "",
+            "User-agent: Hulla",
+            "Crawl-delay: 5",
+            "",
+            "User-agent: *",
+            "Crawl-delay: 1",
         ]
         self.rp.parse(lines)
         self.assertEquals(str(self.rp), "\n".join(lines))
+        self.assertEquals(self.rp.get_crawldelay("Blubb"), 10)
+        self.assertEquals(self.rp.get_crawldelay("Hulla"), 5)
+        self.assertEquals(self.rp.get_crawldelay("Bulla"), 1)
 
 
 def test_suite ():
