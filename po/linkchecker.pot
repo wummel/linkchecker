@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2006-05-17 00:14+0200\n"
+"POT-Creation-Date: 2006-05-17 17:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -215,35 +215,35 @@ msgstr ""
 msgid "URL is located in %s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:392 ../linkcheck/checker/ignoredurl.py:34
+#: ../linkcheck/checker/urlbase.py:388 ../linkcheck/checker/ignoredurl.py:34
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:407
+#: ../linkcheck/checker/urlbase.py:403
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:410
+#: ../linkcheck/checker/urlbase.py:406
 #, python-format
 msgid "Bad HTTP response %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:435
+#: ../linkcheck/checker/urlbase.py:431
 #, python-format
 msgid "could not get content: %r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:552
+#: ../linkcheck/checker/urlbase.py:548
 #, python-format
 msgid "Anchor #%s not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:611
+#: ../linkcheck/checker/urlbase.py:607
 #, python-format
 msgid "Found %r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:621
+#: ../linkcheck/checker/urlbase.py:617
 #, python-format
 msgid "Content size %s is larger than %s."
 msgstr ""
@@ -380,98 +380,98 @@ msgstr ""
 msgid "NNTP busy: %s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:162
+#: ../linkcheck/checker/httpurl.py:163
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:168
+#: ../linkcheck/checker/httpurl.py:169
 msgid "Amazon servers block HTTP HEAD requests, using GET instead."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:179
+#: ../linkcheck/checker/httpurl.py:180
 msgid "unknown"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:181
+#: ../linkcheck/checker/httpurl.py:182
 #, python-format
 msgid "Server %r did not support HEAD request; a GET request was used instead."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:184
+#: ../linkcheck/checker/httpurl.py:185
 #, python-format
 msgid "Server %r had no anchor support, removed anchor from request."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:225
+#: ../linkcheck/checker/httpurl.py:226
 #, python-format
 msgid "Enforced proxy %r."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:229
+#: ../linkcheck/checker/httpurl.py:230
 #, python-format
 msgid "Enforced proxy %r ignored, aborting."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:256
+#: ../linkcheck/checker/httpurl.py:257
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:310
+#: ../linkcheck/checker/httpurl.py:311
 #, python-format
 msgid "Redirected to %(url)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:320
+#: ../linkcheck/checker/httpurl.py:321
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:327
+#: ../linkcheck/checker/httpurl.py:328
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:341
+#: ../linkcheck/checker/httpurl.py:342
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
 " %s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:352
+#: ../linkcheck/checker/httpurl.py:353
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:362
+#: ../linkcheck/checker/httpurl.py:363
 #, python-format
 msgid "Redirection to different URL type encountered; the original URL was %r."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:407
+#: ../linkcheck/checker/httpurl.py:408
 #, python-format
 msgid "Store cookie: %s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:416
+#: ../linkcheck/checker/httpurl.py:417
 #, python-format
 msgid "Could not store cookies: %(msg)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:425
+#: ../linkcheck/checker/httpurl.py:426
 #, python-format
 msgid "Last modified %s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:515
+#: ../linkcheck/checker/httpurl.py:516
 #, python-format
 msgid "Unsupported HTTP url scheme %r"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:546
+#: ../linkcheck/checker/httpurl.py:547
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:569 ../linkcheck/checker/httpurl.py:598
+#: ../linkcheck/checker/httpurl.py:570 ../linkcheck/checker/httpurl.py:599
 #, python-format
 msgid "Unsupported content encoding %r."
 msgstr ""
