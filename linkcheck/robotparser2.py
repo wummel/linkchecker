@@ -357,6 +357,18 @@ class RobotFileParser (object):
         # agent not found ==> access granted
         return True
 
+    def get_crawldelay (self, useragent):
+        """
+        Look for a configured crawl delay.
+
+        @return: crawl delay in seconds or zero
+        @rtype: integer >= 0
+        """
+        for entry in self.entries:
+            if entry.applies_to(useragent):
+                return entry.crawldelay
+        return 0
+
     def __str__ (self):
         """
         Constructs string representation, usable as contents of a
