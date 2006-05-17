@@ -280,7 +280,7 @@ class RobotFileParser (object):
                     if state == 2:
                         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                           "%s line %d: missing blank line before user-agent" \
-                          " directive", linenumber)
+                          " directive", self.url, linenumber)
                         self._add_entry(entry)
                         entry = Entry()
                     entry.useragents.append(line[1])
