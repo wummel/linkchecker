@@ -94,4 +94,7 @@ class Aggregate (object):
 
     def abort (self):
         self.urlqueue.do_shutdown()
-        self.urlqueue.join(timeout=10)
+        try:
+            self.urlqueue.join(timeout=10)
+        except linkcheck.cache.urlqueue.Timeout:
+            pass
