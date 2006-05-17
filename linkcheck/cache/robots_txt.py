@@ -21,6 +21,7 @@ from linkcheck.decorators import synchronized
 import linkcheck.robotparser2
 import linkcheck.configuration
 import linkcheck.lock
+import linkcheck.url
 
 
 # lock for caching
@@ -47,7 +48,11 @@ class RobotsTxt (object):
             rp.set_url(roboturl)
             rp.read()
             if callback is not None:
-                callback(rp)
+                parts = linkcheck.url.url_split(rp.url)
+                host = "%s:%d" % (parts[1], parts[2])
+                useragent = linkcheck.configuration.UserAgent
+                wait = rp.get_crawldelay(useragent)
+                callback(host, wait)
             self.cache[roboturl] = rp
         else:
             rp = self.cache[roboturl]
