@@ -18,6 +18,7 @@
 Management of checking a queue of links with several threads.
 """
 import time
+import signal
 import linkcheck
 import linkcheck.log
 import linkcheck.cache.urlqueue
