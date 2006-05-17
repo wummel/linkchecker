@@ -52,6 +52,11 @@
     Changed: linkcheck/cache/connection.py, linkcheck/checker/urlbase.py,
       linkcheck/directory/__init__.py
 
+  * Honor the "Crawl-delay" directive in robots.txt files.
+    Type: feature
+    Changed: linkcheck/robotparser2.py, linkcheck/checker/httpurl.py,
+      linkcheck/cache/robots_txt.py, linkcheck/cache/connection.py,
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.
