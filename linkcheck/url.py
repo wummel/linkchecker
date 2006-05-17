@@ -23,7 +23,7 @@ import os
 import urlparse
 import urllib
 
-urlparse.uses_netloc.append('ldap')
+urlparse.uses_netloc.extend(('ldap', 'irc'))
 
 # constants defining url part indexes
 SCHEME = 0
