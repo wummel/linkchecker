@@ -109,45 +109,6 @@ Warnings = {
     "nntp-busy": _("The NNTP server was busy."),
 }
 
-ignored_schemes = r"""^(
-acap        # application configuration access protocol
-|afs        # Andrew File System global file names
-|cid        # content identifier
-|data       # data
-|dav        # dav
-|fax        # fax
-|imap       # internet message access protocol
-|ldap       # Lightweight Directory Access Protocol
-|mailserver # Access to data available from mail servers
-|mid        # message identifier
-|mms        # multimedia stream
-|modem      # modem
-|nfs        # network file system protocol
-|opaquelocktoken # opaquelocktoken
-|pop        # Post Office Protocol v3
-|prospero   # Prospero Directory Service
-|rsync      # rsync protocol
-|rtsp       # real time streaming protocol
-|rtspu      # real time streaming protocol
-|service    # service location
-|shttp      # secure HTTP
-|sip        # session initiation protocol
-|tel        # telephone
-|tip        # Transaction Internet Protocol
-|tn3270     # Interactive 3270 emulation sessions
-|vemmi      # versatile multimedia interface
-|wais       # Wide Area Information Servers
-|z39\.50r   # Z39.50 Retrieval
-|z39\.50s   # Z39.50 Session
-|chrome     # Mozilla specific
-|find       # Mozilla specific
-|clsid      # Microsoft specific
-|javascript # JavaScript
-|isbn       # ISBN (int. book numbers)
-):"""
-
-ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
-
 # file extensions we can parse recursively
 extensions = {
     "html": re.compile(r'(?i)\.s?html?$'),
@@ -157,7 +118,7 @@ extensions = {
 
 
 import linkcheck.checker.fileurl
-import linkcheck.checker.ignoredurl
+import linkcheck.checker.unknownurl
 import linkcheck.checker.ftpurl
 import linkcheck.checker.gopherurl
 import linkcheck.checker.httpurl
@@ -165,7 +126,6 @@ import linkcheck.checker.httpsurl
 import linkcheck.checker.mailtourl
 import linkcheck.checker.telneturl
 import linkcheck.checker.nntpurl
-import linkcheck.checker.errorurl
 
 
 def absolute_url (base_url, base_ref, parent_url):
@@ -246,15 +206,12 @@ def get_urlclass_from (url, assume_local):
          url.startswith("news:") or \
          url.startswith("snews:"):
         klass = linkcheck.checker.nntpurl.NntpUrl
-    elif ignored_schemes_re.search(url):
-        # ignored url
-        klass = linkcheck.checker.ignoredurl.IgnoredUrl
     elif assume_local:
         # assume local file
         klass = linkcheck.checker.fileurl.FileUrl
     else:
-        # error url, no further checking, just log this
-        klass = linkcheck.checker.errorurl.ErrorUrl
+        # unknown url
+        klass = linkcheck.checker.unknownurl.UnknownUrl
     return klass
 
 

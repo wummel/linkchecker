@@ -18,8 +18,11 @@ https://imadoofus.org/ will now also be checked recursively.
 
 LinkChecker now honors a "Crawl-delay" entry in robots.txt files.
 The delay makes LinkChecker pause between requests to the corresponding
-server, so your checking time might increase.
+server, so your checking time might increase if the server enforces
+such a delay through its robots.txt file.
 
+URLs with invalid syntax are now cached, and they get matched now by
+the --ingore-url option.
 
 Migrating from 3.0 to 3.1
 -------------------------
