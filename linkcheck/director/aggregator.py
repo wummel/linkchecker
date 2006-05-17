@@ -15,6 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Aggregate needed object instances for checker threads."""
+import thread
 import threading
 import time
 import logger
@@ -30,6 +31,7 @@ def check_target (target):
     except KeyboardInterrupt:
         linkcheck.log.warn(linkcheck.LOG_CHECK,
             "interrupt did not reach the main thread")
+        thread.interrupt_main()
     except StandardError:
         status.internal_error()
 
@@ -95,6 +97,6 @@ class Aggregate (object):
     def abort (self):
         self.urlqueue.do_shutdown()
         try:
-            self.urlqueue.join(timeout=10)
+            self.urlqueue.join(timeout=self.config["timeout"])
         except linkcheck.cache.urlqueue.Timeout:
-            pass
+            linkcheck.log.warn(linkcheck.LOG_CHECK, "Abort timed out")
