@@ -68,19 +68,21 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
                 }
         # good file
         url = u"file://%(curdir)s/%(datadir)s/file.txt" % attrs
+        nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
             u"valid",
         ]
         self.direct(url, resultlines)
         # bad file
         url = u"file:/%(curdir)s/%(datadir)s/file.txt" % attrs
+        nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
             u"error",
         ]
         self.direct(url, resultlines)
