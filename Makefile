@@ -4,7 +4,7 @@ PYTHON := python$(PYVER)
 PACKAGE := linkchecker
 VERSION := $(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
-LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -t0 -C
+LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 # all Python files in the source
 PYFILES = $(wildcard *.py) linkchecker linkcheck tests
 PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc $(PYTHON) /usr/bin/pylint
