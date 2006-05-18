@@ -19,6 +19,7 @@ Define standard test support classes funtional for LinkChecker tests.
 """
 
 import os
+import re
 import codecs
 import difflib
 import unittest
@@ -101,6 +102,11 @@ def get_file (filename=None):
     return unicode(directory)
 
 
+def get_file_url ():
+    filename = get_file().replace("\\", "/")
+    filename = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", filename)
+
+
 def get_test_aggregate (confargs, logargs):
     """
     Initialize a test configuration object.
@@ -138,7 +144,7 @@ class LinkCheckTest (unittest.TestCase):
         """
         resultfile = get_file(filename+".result")
         d = {'curdir': os.getcwd(),
-             'datadir': get_file(),
+             'datadir': get_file_url(),
             }
         f = codecs.open(resultfile, "r", "iso-8859-15")
         resultlines = [line.rstrip('\r\n') % d for line in f \
