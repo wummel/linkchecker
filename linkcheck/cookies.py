@@ -301,7 +301,11 @@ class Rfc2965Cookie (HttpCookie):
 
 
 def from_file (filename):
-    # list of tuples (headers, scheme, host, path)
+    """
+    Parse cookie data from a text file in HTTP header format.
+
+    @return: list of tuples (headers, scheme, host, path)
+    """
     entries = []
     fd = open(filename)
     try:
@@ -322,6 +326,12 @@ def from_file (filename):
 
 
 def from_headers (strheader):
+    """
+    Parse cookie data from a string in HTTP header (RFC 822) format.
+
+    @return: tuple (headers, scheme, host, path)
+    @raises: ValueError for incomplete or invalid data
+    """
     fp = StringIO.StringIO(strheader)
     headers = rfc822.Message(fp, seekable=True)
     if not headers.has_key("Host"):
