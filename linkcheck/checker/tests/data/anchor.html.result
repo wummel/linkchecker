@@ -3,6 +3,12 @@ cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
 valid
 
+url anchor.html (cached)
+cache key file:///home/calvin/src/linkchecker/linkcheck/checker/tests/data/anchor.html
+real url file:///home/calvin/src/linkchecker/linkcheck/checker/tests/data/anchor.html
+name Bla6
+valid
+
 url #myid
 cache key file://%(curdir)s/%(datadir)s/anchor.html#myid
 real url file://%(curdir)s/%(datadir)s/anchor.html
@@ -20,12 +26,6 @@ cache key file:///home/calvin/src/linkchecker/linkcheck/checker/tests/data/ancho
 real url file:///home/calvin/src/linkchecker/linkcheck/checker/tests/data/anchor.html
 name Bla3
 warning Anchor #broken not found.
-valid
-
-url anchor.html (cached)
-cache key file:///home/calvin/src/linkchecker/linkcheck/checker/tests/data/anchor.html
-real url file:///home/calvin/src/linkchecker/linkcheck/checker/tests/data/anchor.html
-name Bla6
 valid
 
 url #broken2
