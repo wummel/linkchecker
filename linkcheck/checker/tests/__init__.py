@@ -102,9 +102,8 @@ def get_file (filename=None):
     return unicode(directory)
 
 
-def get_file_url ():
-    filename = get_file().replace("\\", "/")
-    return re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", filename)
+def get_file_url (filename):
+    return re.sub("^([a-zA-Z]):", r"/\1|", filename.replace("\\", "/"))
 
 
 def get_test_aggregate (confargs, logargs):
@@ -143,8 +142,8 @@ class LinkCheckTest (unittest.TestCase):
         ignoring empty lines and lines starting with a hash sign (#).
         """
         resultfile = get_file(filename+".result")
-        d = {'curdir': os.getcwd(),
-             'datadir': get_file_url(),
+        d = {'curdir': get_file_url(os.getcwd()),
+             'datadir': get_file_url(get_file()),
             }
         f = codecs.open(resultfile, "r", "iso-8859-15")
         resultlines = [line.rstrip('\r\n') % d for line in f \
