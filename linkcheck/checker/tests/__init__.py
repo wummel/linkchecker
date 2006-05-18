@@ -104,7 +104,7 @@ def get_file (filename=None):
 
 def get_file_url ():
     filename = get_file().replace("\\", "/")
-    filename = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", filename)
+    return re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", filename)
 
 
 def get_test_aggregate (confargs, logargs):
