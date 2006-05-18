@@ -63,7 +63,7 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
         """
         Test some direct file links.
         """
-        attrs = {'curdir': os.getcwd(),
+        attrs = {'curdir': linkcheck.checker.tests.get_file_url(os.getcwd()),
                  'datadir': 'linkcheck/checker/tests/data',
                 }
         # good file
