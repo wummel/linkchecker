@@ -161,6 +161,6 @@ diff:
 # various python check scripts
 .PHONY: various
 various:
-	py-check-append $(CHECKFILES)
-	py-clean-future -r $(CHECKFILES)
-	py-find-nocoding $(CHECKFILES)
+	py-check-append $(PYFILES)
+	py-clean-future -r $(PYFILES)
+	py-find-nocoding $(PYFILES)
