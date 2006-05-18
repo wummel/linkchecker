@@ -13,8 +13,8 @@ using the library directly instead of the commandline or CGI
 interfaces, you will have to adjust your code.
 
 The default intern pattern matches now both http and https. When
-checking a site http://imadoofus.org/, all URLs of the form
-https://imadoofus.org/ will now also be checked recursively.
+checking a site ``http://imadoofus.org/``, all URLs of the form
+``https://imadoofus.org/`` will now also be checked recursively.
 
 LinkChecker now honors a "Crawl-delay" entry in robots.txt files.
 The delay makes LinkChecker pause between requests to the corresponding
