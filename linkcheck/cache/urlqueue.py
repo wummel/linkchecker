@@ -89,9 +89,12 @@ class UrlQueue (Queue.Queue):
         assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
             "queueing %s", url_data)
         key = url_data.cache_url_key
-        if key in self.checked or key in self.in_progress:
+        if key in self.checked:
             # Put at beginning of queue to get consumed quickly.
             url_data.copy_from_cache(self.checked[key])
+            self.queue.appendleft(url_data)
+        elif key in self.in_progress:
+            # Put at beginning of queue since it will be cached soon.
             self.queue.appendleft(url_data)
         else:
             self.queue.append(url_data)
