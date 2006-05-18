@@ -145,6 +145,40 @@ class TestCookies (unittest.TestCase):
         path = "/"
         cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
 
+    def test_cookie_parse1 (self):
+        lines = [
+            'Host: imadoofus.org',
+            'Path: /hello',
+            'Set-cookie: ID="smee"',
+            'Set-cookie: spam="egg"',
+        ]
+        from_headers = linkcheck.cookies.from_headers
+        headers, scheme, host, path = from_headers("\r\n".join(lines))
+
+    def test_cookie_parse2 (self):
+        lines = [
+            'Scheme: https',
+            'Host: imaweevil.org',
+            'Set-cookie: baggage="elitist"; comment="hologram"',
+        ]
+        from_headers = linkcheck.cookies.from_headers
+        headers, scheme, host, path = from_headers("\r\n".join(lines))
+
+    def test_cookie_parse3 (self):
+        lines = [
+            'Scheme: https',
+        ]
+        from_headers = linkcheck.cookies.from_headers
+        self.assertRaises(ValueError, from_headers, "\r\n".join(lines))
+
+    def test_cookie_parse4 (self):
+        lines = [
+            ' Host: imaweevil.org',
+            'Set-cookie: baggage="elitist"; comment="hologram"',
+        ]
+        from_headers = linkcheck.cookies.from_headers
+        self.assertRaises(ValueError, from_headers, "\r\n".join(lines))
+
 
 def test_suite ():
     """
