@@ -1,7 +1,6 @@
 # This Makefile is only used by developers.
 PYVER := 2.4
 PYTHON := python$(PYVER)
-PACKAGE := linkchecker
 VERSION := $(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
@@ -11,6 +10,11 @@ PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc $(PYTHON) /usr/bin/pylint
 PYLINTOPTS := --disable-msg-cat=C,R,W
 PYFLAKES:=pyflakes
 PYTHONSVN := /home/calvin/src/python-svn
+# build dir for svn-buildpackage
+SVNBUILD:=/home/calvin/src/build-area
+DEB_ORIG_TARGET:=$(SVNBUILD)/linkchecker_$(VERSION).orig.tar.gz
+
+
 .PHONY: all
 all:
 	@echo "Read the file doc/install.txt to see how to build and install this package."
@@ -30,15 +34,15 @@ clean:
 distclean: clean cleandeb
 # just to be sure clean also the build dir
 	rm -rf dist build
-	rm -f _$(PACKAGE)_configdata.py MANIFEST Packages.gz
+	rm -f _linkchecker_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
-	rm -f $(PACKAGE)-out* $(PACKAGE).prof
-	rm -rf $(PACKAGE)-$(VERSION)
-	rm -rf coverage
+	rm -f linkchecker-out* linkchecker.prof
+	rm -rf linkchecker-$(VERSION)
+	rm -rf coverage dist-stamp
 
 .PHONY: cleandeb
 cleandeb:
-	rm -rf debian/$(PACKAGE) debian/tmp
+	rm -rf debian/linkchecker debian/tmp
 	rm -f debian/*.debhelper debian/{files,substvars}
 	rm -f configure-stamp build-stamp
 
@@ -58,16 +62,20 @@ localbuild: MANIFEST
 	cp -f build/lib.linux-i686-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
 	cp -f build/lib.linux-i686-$(PYVER)/linkcheck/ftpparse/_ftpparse.so linkcheck/ftpparse
 
-# produce the .deb Debian package
-.PHONY: deb_local
-deb_local: cleandeb
-# standard for local use
-	fakeroot debian/rules binary
+.PHONY: deb_orig
+deb_orig:
+	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
+	  $(MAKE) dist-stamp && \
+	  cp dist/linkchecker-$(VERSION).tar.gz $(DEB_ORIG_TARGET); \
+	fi
 
+# ready for upload, signed with my GPG key
 .PHONY: deb_signed
 deb_signed: cleandeb
-# ready for upload, signed with my GPG key
-	env CVSROOT=:ext:calvin@cvs.linkchecker.sourceforge.net:/cvsroot/linkchecker cvs-buildpackage -Mlinkchecker -W/home/calvin/projects/cvs-build -sgpg -pgpg -k32EC6F3E -r"fakeroot --" -I.cvsignore
+	(env -u LANG svn-buildpackage --svn-dont-clean --svn-verbose --svn-ignore \
+	  --svn-prebuild="$(MAKE) deb_orig" --svn-lintian --svn-linda \
+	  -sgpg -pgpg -k$(GPGKEY) -r"fakeroot --" 2>&1) | \
+	tee $(SVNBUILD)/linkchecker-$(VERSION).build
 
 .PHONY: files
 files:	locale localbuild
@@ -77,16 +85,15 @@ files:	locale localbuild
 
 .PHONY: upload
 upload:
-#	relaseforge is broken right now
-#	@echo "Starting releaseforge..."
-#	@releaseforge
-	ncftpput upload.sourceforge.net /incoming dist/*
-	mozilla -remote "openUrl(https://sourceforge.net/projects/linkchecker, new-tab)"
-	@echo "Make SF release and press return..."
-	@read
+	@echo "Starting releaseforge..."
+	@releaseforge
+#	ncftpput upload.sourceforge.net /incoming dist/*
+#	mozilla -remote "openUrl(https://sourceforge.net/projects/linkchecker, new-tab)"
+#	@echo "Make SF release and press return..."
+#	@read
 
 .PHONY: release
-release: releasecheck distclean dist sign_distfiles homepage upload
+release: releasecheck distclean dist-stamp sign_distfiles homepage upload
 	@echo "Uploading new LinkChecker Homepage..."
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 	@echo "Register at Python Package Index..."
@@ -99,6 +106,10 @@ homepage:
 .PHONY: dist
 dist: locale MANIFEST
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
+
+dist-stamp:
+	$(MAKE) dist
+	touch $@
 
 .PHONY: syntaxcheck
 syntaxcheck:
