@@ -310,7 +310,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 "Redirected to %r", newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl},
                           tag="http-redirect")
-            redirected, is_idn = linkcheck.url.url_norm(newurl)
+            # norm base url - can raise UnicodeError from url.idna_encode()
+            redirected, is_idn = linkcheck.checker.urlbase.url_norm(newurl)
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                 "Norm redirected to %r", redirected)
             urlparts = linkcheck.strformat.url_unicode_split(redirected)

@@ -53,6 +53,17 @@ def urljoin (parent, url, scheme):
     return urlparse.urljoin(parent, url)
 
 
+def url_norm (url):
+    """
+    Wrapper for url.url_norm() to convert UnicodeError in LinkCheckerError.
+    """
+    try:
+        return linkcheck.url.url_norm(url)
+    except UnicodeError:
+        msg = _("URL has unparsable domain name: %s") % sys.exc_info()[1]
+        raise linkcheck.LinkCheckerError(msg)
+
+
 class UrlBase (object):
     """
     An URL with additional information like validity etc.
@@ -294,8 +305,8 @@ class UrlBase (object):
         Construct self.url and self.urlparts out of the given base
         url information self.base_url, self.parent_url and self.base_ref.
         """
-        # norm base url
-        base_url, is_idn = linkcheck.url.url_norm(self.base_url)
+        # norm base url - can raise UnicodeError from url.idna_encode()
+        base_url, is_idn = url_norm(self.base_url)
         if is_idn:
             self.add_warning(_("""URL %r has a unicode domain name which
                           is not yet widely supported. You should use

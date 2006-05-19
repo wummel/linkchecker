@@ -715,7 +715,12 @@ for url in args:
         # syntactic sugar
         url = "ftp://%s" % url
     url_data = get_url_from(url, 0, aggregate, assume_local=True)
-    linkcheck.add_intern_pattern(url_data, config)
+    try:
+        linkcheck.add_intern_pattern(url_data, config)
+    except UnicodeError:
+        linkcheck.log.error(linkcheck.LOG_CMDLINE,
+            _("URL has unparsable domain name: %s"), sys.exc_info()[1])
+        sys.exit(1)
     aggregate.urlqueue.put(url_data)
 # set up profiling/psyco
 if do_profile and not has_profile:

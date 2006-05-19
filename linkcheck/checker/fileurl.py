@@ -107,7 +107,7 @@ class FileUrl (urlbase.UrlBase):
         base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
         # norm base url again after changing
         if self.base_url != base_url:
-            base_url, is_idn = linkcheck.url.url_norm(base_url)
+            base_url, is_idn = linkcheck.checker.urlbase.url_norm(base_url)
             self.base_url = unicode(base_url)
 
     def build_url (self):

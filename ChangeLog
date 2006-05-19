@@ -65,6 +65,12 @@
     Removed: linkcheck/checker/{ignored,error}url.py
     Added: linkcheck/checker/unknownurl.py
 
+  * Convert the "label too long" domain name parse error into
+    a more friendly error message.
+    Type: bugfix
+    Changed: linkcheck/checker/{__init__,urlbase,httpurl,fileurl}.py,
+      linkchecker
+
 3.4 "The Chumscrubbers" (released 4.2.2006)
 
   * Ignore decoding errors when retrieving the robots.txt URL.

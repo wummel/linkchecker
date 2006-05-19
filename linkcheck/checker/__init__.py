@@ -34,8 +34,6 @@ import linkcheck.dns.exception
 # Catch these exception on syntax checks.
 ExcSyntaxList = [
     linkcheck.LinkCheckerError,
-    # .encode('idna') raises this
-    UnicodeError,
 ]
 
 # Catch these exceptions on content and connect checks. All other
