@@ -1,3 +1,8 @@
+[.. add to linkchecker description:]
+ Users preferring a graphical interface can install the linkchecker-gui
+ package.
+
+
 Package: linkchecker-gui
 Architecture: all
 Depends: linkchecker, python2.4-glade2
