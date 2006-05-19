@@ -5,7 +5,7 @@ include config/logging.conf config/pycheckrc config/pylintrc
 include config/reindent.py install-linkchecker.py install-rpm.sh
 include linkchecker
 include cgi/lc.cgi cgi/lc.fcgi cgi/README
-include Makefile bdist.bat
+include Makefile
 include debian/rules
 include debian/changelog
 include debian/copyright
@@ -20,7 +20,7 @@ include debian/NEWS.Debian
 include debian/README.Debian
 include debian/watch
 include test.py tests/*.py
-include scripts/*.py scripts/*.sh
+include scripts/*.py scripts/*.sh scripts/*.bat
 include cgi/lconline/*.html cgi/lconline/*.de cgi/lconline/*.en
 include cgi/lconline/check.js
 include linkcheck/HtmlParser/Makefile
