@@ -189,7 +189,7 @@ class TestLRU (unittest.TestCase):
         Test LRU length correctness.
         """
         self.assertEqual(len(self.lru), 0)
-        for i in range(self.count):
+        for i in xrange(self.count):
             self.lru[str(i)] = str(i)
             self.assertEqual(len(self.lru), i+1)
         # overflow (inserting (self.count+1)th element
@@ -200,7 +200,7 @@ class TestLRU (unittest.TestCase):
         """
         Test LRU capacity overflow.
         """
-        for i in range(self.count):
+        for i in xrange(self.count):
             self.lru[str(i)] = str(i)
         # overflow (inserting (self.count+1)th element
         self.lru[""] = ""

@@ -57,7 +57,7 @@ class Aggregate (object):
             start_thread(self.status)
         num = self.config["threads"]
         if num >= 1:
-            for i in range(num):
+            for i in xrange(num):
                 start_thread(self.worker)
         else:
             self.worker()
