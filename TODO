@@ -1,5 +1,3 @@
-- [TEST] Add test for cookie file parsing
-
 - [BUGFIX] The URL in the log output is double normed.
 
 - [USAGE] make a nice GUI for linkchecker
