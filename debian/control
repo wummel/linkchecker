@@ -12,8 +12,6 @@ Suggests: apache | httpd, python2.4-psyco, python2.4-optcomplete, python2.4-prof
 Description: check websites and HTML documents for broken links
  Provides a command line program and web interface to check links
  of websites and HTML documents.
- Users preferring a graphical interface can install the linkchecker-gui
- package.
  Features:
   o recursive checking
   o multithreaded
