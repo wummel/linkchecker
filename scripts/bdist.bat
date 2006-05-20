@@ -7,6 +7,7 @@ cd doc\en
 %PYTHON% ..\rest2htmlnav --stylesheet-path=lc.css --time install.txt install.html
 %PYTHON% ..\rest2htmlnav --stylesheet-path=lc.css --time other.txt other.html
 %PYTHON% ..\rest2htmlnav --stylesheet-path=lc.css --time upgrading.txt upgrading.html
+%PYTHON% ..\bfknav.py
 cd ..\..
 %PYTHON% setup.py clean --all
 %PYTHON% setup.py sdist --manifest-only
