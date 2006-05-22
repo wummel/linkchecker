@@ -18,7 +18,6 @@
 Management of checking a queue of links with several threads.
 """
 import time
-import signal
 import linkcheck
 import linkcheck.log
 import linkcheck.cache.urlqueue
@@ -54,7 +53,9 @@ def check_urls (aggregate):
     except StandardError:
         status.internal_error()
         aggregate.abort()
-    status.disable_status()
+    if aggregate.config["status"]:
+        status.disable_status()
+        status.join()
     aggregate.logger.end_log_output()
 
 
