@@ -70,6 +70,7 @@ def print_app_info ():
 # lock for status thread
 _status_lock = threading.Lock()
 status_flag = True
+finished = threading.Condition(_status_lock)
 
 @synchronized(_status_lock)
 def status_is_active ():
@@ -79,6 +80,28 @@ def status_is_active ():
 def disable_status ():
     global status_flag
     status_flag = False
+
+
+@synchronized(finished)
+def join ():
+    finished.wait()
+
+
+@synchronized(finished)
+def finish ():
+    finished.notify()
+
+
+def do_status (urlqueue):
+    start_time = time.time()
+    threading.currentThread().setName("Status")
+    while True:
+        for dummy in xrange(5):
+            time.sleep(1)
+            if not status_is_active():
+                return finish()
+        print_status(urlqueue, start_time)
+
 
 def print_status (urlqueue, start_time):
     duration = time.time() - start_time

@@ -25,9 +25,9 @@ import linkcheck.log
 import linkcheck.director
 
 
-def check_target (target):
+def check_target (target, args):
     try:
-        target()
+        target(*args)
     except KeyboardInterrupt:
         linkcheck.log.warn(linkcheck.LOG_CHECK,
             "interrupt did not reach the main thread")
@@ -36,8 +36,8 @@ def check_target (target):
         status.internal_error()
 
 
-def start_thread (target):
-    t = threading.Thread(target=lambda: check_target(target))
+def start_thread (target, *args):
+    t = threading.Thread(target=lambda: check_target(target, args))
     t.setDaemon(True)
     t.start()
 
@@ -54,7 +54,7 @@ class Aggregate (object):
 
     def start_threads (self):
         if self.config["status"]:
-            start_thread(self.status)
+            start_thread(status.do_status, self.urlqueue)
         num = self.config["threads"]
         if num >= 1:
             for i in xrange(num):
@@ -84,15 +84,6 @@ class Aggregate (object):
                 self.logger.log_url(url_data)
             finally:
                 self.urlqueue.task_done(url_data)
-
-    def status (self):
-        start_time = time.time()
-        threading.currentThread().setName("Status")
-        while True:
-            time.sleep(5)
-            if not status.status_is_active():
-                break
-            status.print_status(self.urlqueue, start_time)
 
     def abort (self):
         self.urlqueue.do_shutdown()
