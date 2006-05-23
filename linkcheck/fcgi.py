@@ -396,7 +396,6 @@ class FCGI (object):
             set_cgi_env(os.environ)
             self.env = os.environ
             self.stdin, self.out, self.err = sys.stdin, sys.stdout, sys.stderr
-            return
 
         if os.environ.has_key('FCGI_WEB_SERVER_ADDRS'):
             addrs = os.environ['FCGI_WEB_SERVER_ADDRS'].split(',')
