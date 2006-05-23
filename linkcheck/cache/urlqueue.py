@@ -67,7 +67,7 @@ class UrlQueue (Queue.Queue):
                 while self._empty():
                     remaining = endtime - time.time()
                     if remaining <= 0.0:
-                        raise Empty
+                        raise Queue.Empty()
                     self.not_empty.wait(remaining)
             url_data = self._get()
             key = url_data.cache_url_key
