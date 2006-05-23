@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""Status message handling"""
 import threading
 import time
 import sys
@@ -23,6 +24,8 @@ import os
 import linkcheck.i18n
 from linkcheck.decorators import synchronized
 
+# All output goes to stderr here, making sure the console gets correct
+# encoded messages.
 _encoding = linkcheck.i18n.default_encoding
 stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
 
@@ -69,19 +72,29 @@ def print_app_info ():
 
 # lock for status thread
 _status_lock = threading.Lock()
+# flag to tell when status thread should stop
 status_flag = True
 
 @synchronized(_status_lock)
 def status_is_active ():
+    """
+    Check status control flag.
+    """
     return status_flag
 
 @synchronized(_status_lock)
 def disable_status ():
+    """
+    Set status control flag in order to stop the status thread.
+    """
     global status_flag
     status_flag = False
 
 
 def do_status (urlqueue):
+    """
+    Print periodic status messages.
+    """
     start_time = time.time()
     threading.currentThread().setName("Status")
     while True:
@@ -93,6 +106,9 @@ def do_status (urlqueue):
 
 
 def print_status (urlqueue, start_time):
+    """
+    Print a status message.
+    """
     duration = time.time() - start_time
     checked, in_progress, queue = urlqueue.status()
     msg = _n("%2d URL active,", "%2d URLs active,", in_progress) % in_progress

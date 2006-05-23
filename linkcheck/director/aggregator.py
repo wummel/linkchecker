@@ -27,6 +27,10 @@ import linkcheck.director
 
 
 def check_target (target, args):
+    """
+    Wrapper function calling target() while catching keyboard
+    interrupt and errors.
+    """
     try:
         target(*args)
     except KeyboardInterrupt:
@@ -38,6 +42,9 @@ def check_target (target, args):
 
 
 def start_thread (target, *args):
+    """
+    Spawn a new subthread executing target().
+    """
     t = threading.Thread(target=lambda: check_target(target, args))
     t.setDaemon(True)
     t.start()
@@ -45,6 +52,9 @@ def start_thread (target, *args):
 
 
 class Aggregate (object):
+    """
+    Store thread-safe data collections for checker threads.
+    """
 
     def __init__ (self, config, urlqueue, connections, cookies, robots_txt):
         self.config = config
@@ -56,6 +66,9 @@ class Aggregate (object):
         self.threads = []
 
     def start_threads (self):
+        """
+        Spawn threads for URL checking and status printing.
+        """
         if self.config["status"]:
             t = start_thread(status.do_status, self.urlqueue)
             self.threads.append(t)
@@ -68,6 +81,9 @@ class Aggregate (object):
             self.worker()
 
     def worker (self):
+        """
+        Check URLs from queue until finished.
+        """
         name = threading.currentThread().getName()
         while True:
             self.check_url()
@@ -76,6 +92,9 @@ class Aggregate (object):
                 break
 
     def check_url (self):
+        """
+        Try to get URL data from queue and check it.
+        """
         try:
             url_data = self.urlqueue.get(timeout=1)
         except Queue.Empty:
@@ -85,6 +104,9 @@ class Aggregate (object):
             self.check_url_data(url_data)
 
     def check_url_data (self, url_data):
+        """
+        Check one URL data instance.
+        """
         try:
             url = url_data.url.encode("ascii", "replace")
             threading.currentThread().setName("Thread-%s" % url)
@@ -95,6 +117,9 @@ class Aggregate (object):
             self.urlqueue.task_done(url_data)
 
     def abort (self):
+        """
+        Empty the URL queue.
+        """
         self.urlqueue.do_shutdown()
         try:
             self.urlqueue.join(timeout=self.config["timeout"])
@@ -102,6 +127,9 @@ class Aggregate (object):
             linkcheck.log.warn(linkcheck.LOG_CHECK, "Abort timed out")
 
     def finish (self):
+        """
+        Wait for checker threads to finish.
+        """
         assert self.urlqueue.empty()
         if self.config["status"]:
             status.disable_status()

@@ -58,6 +58,9 @@ def check_urls (aggregate):
 
 
 def get_aggregate (config):
+    """
+    Get an aggregator instance with given configuration.
+    """
     urlqueue = linkcheck.cache.urlqueue.UrlQueue()
     connections = linkcheck.cache.connection.ConnectionPool(wait=config["wait"])
     cookies = linkcheck.cache.cookie.CookieJar()

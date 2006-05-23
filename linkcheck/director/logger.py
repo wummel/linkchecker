@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""Logger for aggregator instances"""
 import threading
 from linkcheck.decorators import synchronized
 
@@ -21,6 +22,9 @@ _lock = threading.Lock()
 
 
 class Logger (object):
+    """
+    Thread safe multi-logger class used by aggregator instances.
+    """
 
     def __init__ (self, config):
         self.logs = [config['logger']]
