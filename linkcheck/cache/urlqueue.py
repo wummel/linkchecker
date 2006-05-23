@@ -49,7 +49,7 @@ class UrlQueue (Queue.Queue):
         self.checked = {}
         self.shutdown = False
 
-    def get (self):
+    def get (self, timeout=None):
         """
         Get first not-in-progress url from the queue and
         return it. If no such url is available return None. The
@@ -57,8 +57,18 @@ class UrlQueue (Queue.Queue):
         """
         self.not_empty.acquire()
         try:
-            while self._empty():
-                self.not_empty.wait()
+            if timeout is None:
+                while self._empty():
+                    self.not_empty.wait()
+            else:
+                if timeout < 0:
+                    raise ValueError("'timeout' must be a positive number")
+                endtime = time.time() + timeout
+                while self._empty():
+                    remaining = endtime - time.time()
+                    if remaining <= 0.0:
+                        raise Empty
+                    self.not_empty.wait(remaining)
             url_data = self._get()
             key = url_data.cache_url_key
             if url_data.has_result:
