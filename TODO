@@ -1,6 +1,3 @@
-- [BUGFIX] Before interpreter shutdown, make sure all spawned threads
-  are finished to avoid those shutdown exceptions
-
 - [BUGFIX] The URL in the log output is double normed.
 
 - [USAGE] make a nice GUI for linkchecker

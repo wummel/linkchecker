@@ -1,5 +1,9 @@
 4.1 "" (released xx.xx.xxx)
-  *
+
+  * Wait for spawned threads to finish before shutdown. Gets rid
+    of exceptions during shutdown.
+    Type: bugfix
+    Changed: linkcheck/director/*.py
 
 4.0 "Down in the Valley" (released 19.5.2006)
 
