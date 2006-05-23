@@ -53,9 +53,7 @@ def check_urls (aggregate):
     except StandardError:
         status.internal_error()
         aggregate.abort()
-    if aggregate.config["status"]:
-        status.disable_status()
-        status.join()
+    aggregate.finish()
     aggregate.logger.end_log_output()
 
 
