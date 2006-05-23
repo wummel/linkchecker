@@ -502,7 +502,7 @@ elif win_compiling:
              ]))
 
 setup (name = "linkchecker",
-       version = "4.0",
+       version = "4.1",
        description = "check websites and HTML documents for broken links",
        keywords = "link,url,checking,verification",
        author = myname,
