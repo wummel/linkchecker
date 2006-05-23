@@ -40,6 +40,7 @@ def start_thread (target, *args):
     t = threading.Thread(target=lambda: check_target(target, args))
     t.setDaemon(True)
     t.start()
+    return t
 
 
 class Aggregate (object):
@@ -71,7 +72,11 @@ class Aggregate (object):
                 break
 
     def check_url (self):
-        url_data = self.urlqueue.get()
+        try:
+            url_data = self.urlqueue.get(timeout=1)
+        except linkcheck.cache.urlqueue.Timeout:
+            time.sleep(1)
+            return
         if url_data is not None:
             try:
                 if url_data.url is None:
