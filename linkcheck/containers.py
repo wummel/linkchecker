@@ -43,7 +43,7 @@ class SetList (list):
         """Set new value, and eliminate a possible duplicate value."""
         # search index i with self[i] == item
         delidx = -1
-        for i in range(len(self)):
+        for i in xrange(len(self)):
             if self[i] == item and i != index:
                 delidx = i
                 # stop here, there can be only one duplicate
