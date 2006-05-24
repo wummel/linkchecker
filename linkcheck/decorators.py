@@ -131,7 +131,7 @@ def notimplemented (func):
     return update_func_meta(newfunc, func)
 
 
-def timeit (func, log=sys.stderr):
+def timeit (func, log=sys.stderr, limit=2.0):
     """
     Print execution time of the function. For quick'n'dirty profiling.
     """
@@ -140,8 +140,13 @@ def timeit (func, log=sys.stderr):
         Execute function and print execution time.
         """
         t = time.time()
-        func(*args, **kwargs)
-        print >> log, func.__name__, "took %0.2f seconds" % (time.time() - t)
+        res = func(*args, **kwargs)
+        duration = time.time() - t
+        if duration > limit:
+            print >> log, func.__name__, "took %0.2f seconds" % duration
+            print >> log, args
+            print >> log, kwargs
+        return res
     return update_func_meta(newfunc, func)
 
 
