@@ -108,7 +108,10 @@ class Aggregate (object):
         Check one URL data instance.
         """
         try:
-            url = url_data.url.encode("ascii", "replace")
+            if url_data.url is None:
+                url = ""
+            else:
+                url = url_data.url.encode("ascii", "replace")
             threading.currentThread().setName("Thread-%s" % url)
             if not url_data.has_result:
                 url_data.check()
