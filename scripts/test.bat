@@ -1,3 +1,3 @@
 @echo off
 set PYTHON="c:\Python 24\python.exe"
-%PYTHON% test.py -pvcw
+%PYTHON% test.py -pvw
