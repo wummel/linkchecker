@@ -19,6 +19,7 @@ Support for managing threads.
 """
 
 import os
+import threading
 try:
     import win32process
     _has_win32process = True
@@ -65,3 +66,15 @@ def set_thread_priority (prio):
         res = None
     return res
 
+
+class StoppableThread (threading.Thread):
+
+    def __init__ (self):
+        super(StoppableThread, self).__init__()
+        self._stop = threading.Event()
+
+    def stop (self):
+        self._stop.set()
+
+    def stopped (self):
+        return self._stop.isSet()
