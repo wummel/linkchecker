@@ -25,7 +25,7 @@ import linkcheck.cache.robots_txt
 import linkcheck.cache.cookie
 import linkcheck.cache.connection
 import aggregator
-import status
+import console
 
 
 def check_urls (aggregate):
@@ -51,7 +51,7 @@ def check_urls (aggregate):
             "keyboard interrupt; waiting for active threads to finish")
         aggregate.abort()
     except StandardError:
-        status.internal_error()
+        console.internal_error()
         aggregate.abort()
     aggregate.finish()
     aggregate.logger.end_log_output()
