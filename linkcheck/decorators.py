@@ -131,7 +131,7 @@ def notimplemented (func):
     return update_func_meta(newfunc, func)
 
 
-def timeit (func, log=sys.stderr, limit=2.0):
+def timeit (func, log, limit):
     """
     Print execution time of the function. For quick'n'dirty profiling.
     """
@@ -148,6 +148,10 @@ def timeit (func, log=sys.stderr, limit=2.0):
             print >> log, kwargs
         return res
     return update_func_meta(newfunc, func)
+
+
+def timed (log=sys.stderr, limit=2.0):
+    return lambda func: timeit(func, log, limit)
 
 
 class memoized (object):
