@@ -1,3 +1,7 @@
+- [BUGFIX] If worker threads are started with only one URL in the queue,
+  the first worker get the URL, all the others think the queue is empty
+  and exit.
+
 - [BUGFIX] The URL in the log output is double normed.
 
 - [USAGE] make a nice GUI for linkchecker
