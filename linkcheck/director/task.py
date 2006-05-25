@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 import thread
 import linkcheck
+import linkcheck.decorators
 import linkcheck.log
 import linkcheck.threader
 import console
@@ -39,3 +40,9 @@ class CheckedTask (linkcheck.threader.StoppableThread):
         except StandardError:
             console.internal_error()
 
+    @linkcheck.decorators.notimplemented
+    def run_checked (self):
+        """
+        Overload in subclass.
+        """
+        pass
