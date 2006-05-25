@@ -1,3 +1,5 @@
+- [BUGFIX] Ctrl-C is not always working.
+
 - [BUGFIX] The URL in the log output is double normed.
 
 - [USAGE] make a nice GUI for linkchecker
