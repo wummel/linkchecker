@@ -1,9 +1,5 @@
 - [BUGFIX] Ctrl-C is not always working.
 
-- [FEATURE] Every once in a while make a "cached URL sweep" by going through
-  the queued URLs and log the cached ones immediately. Keeps the queue size
-  down for large sites.
-
 - [BUGFIX] The URL in the log output is double normed.
 
 - [USAGE] make a nice GUI for linkchecker

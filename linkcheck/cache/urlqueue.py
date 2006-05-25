@@ -19,6 +19,7 @@ Handle a queue of URLs to check.
 """
 import threading
 import Queue
+import collections
 import time
 import linkcheck
 import linkcheck.log
@@ -48,6 +49,7 @@ class UrlQueue (Queue.Queue):
         self.in_progress = {}
         self.checked = {}
         self.shutdown = False
+        self.unsorted = 0
 
     def get (self, timeout=None):
         """
@@ -108,6 +110,10 @@ class UrlQueue (Queue.Queue):
             self.queue.appendleft(url_data)
         else:
             self.queue.append(url_data)
+            self.unsorted += 1
+        if self.unsorted > 2000:
+            self._sort()
+            self.unsorted = 0
         self.unfinished_tasks += 1
 
     def task_done (self, url_data):
@@ -165,6 +171,26 @@ class UrlQueue (Queue.Queue):
                 assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
                     "Caching alias %r", key)
                 self.checked[key] = data
+
+    def _sort (self):
+        """
+        Sort URL queue by putting all cached URLs at the beginning.
+        """
+        newqueue = collections.deque()
+        while self.queue:
+            url_data = self.queue.popleft()
+            key = url_data.cache_url_key
+            if url_data.has_result:
+                # Already checked and copied from cache.
+                newqueue.appendleft(url_data)
+            elif key in self.checked:
+                # Already checked; copy result. And even ignore
+                # the case where url happens to be in_progress.
+                url_data.copy_from_cache(self.checked[key])
+                newqueue.appendleft(url_data)
+            else:
+                newqueue.append(url_data)
+        self.queue = newqueue
 
     def join (self, timeout=None):
         """Blocks until all items in the Queue have been gotten and processed.
