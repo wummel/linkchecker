@@ -18,6 +18,7 @@
 Management of checking a queue of links with several threads.
 """
 import time
+import signal
 import linkcheck
 import linkcheck.log
 import linkcheck.cache.urlqueue
@@ -46,9 +47,13 @@ def check_urls (aggregate):
                 break
             except linkcheck.cache.urlqueue.Timeout:
                 time.sleep(1)
+                sigint = signal.getsignal(signal.SIGINT)
+                if sigint != signal.default_int_handler:
+                    linkcheck.log.warn(linkcheck.LOG_CHECK,
+                      _("signal interrupt handler changed to %s"), sigint)
     except KeyboardInterrupt:
         linkcheck.log.warn(linkcheck.LOG_CHECK,
-            "keyboard interrupt; waiting for active threads to finish")
+            _("keyboard interrupt; waiting for active threads to finish"))
         aggregate.abort()
     except StandardError:
         console.internal_error()
