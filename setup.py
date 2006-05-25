@@ -168,7 +168,7 @@ class MyDistribution (distutils.dist.Distribution, object):
         """
         Get name for config file.
         """
-        return os.path.join(directory, "_%s_configdata.py"%self.get_name())
+        return os.path.join(directory, "_%s_configdata.py" % self.get_name())
 
     def create_conf_file (self, data, directory=None):
         """
