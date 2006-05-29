@@ -18,6 +18,7 @@ import cStringIO as StringIO
 import filecmp
 import os
 import unittest
+import difflib
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdata
@@ -106,28 +107,54 @@ ns1 1d1s a 10.0.0.1
 ns2 1w1D1h1m1S a 10.0.0.2
 """
 
+def get_file_lines (fn):
+    res = []
+    fd = open(fn)
+    try:
+        for line in fd:
+            res.append(line)
+    finally:
+        fd.close()
+    return res
+
+
+def get_file_diff (fn1, fn2):
+    res = []
+    c1 = get_file_lines(fn1)
+    c2 = get_file_lines(fn2)
+    for line in difflib.unified_diff(c1, c2):
+        if not isinstance(line, unicode):
+            line = unicode(line, "iso8859-1", "ignore")
+        res.append(line)
+    return res
+
+
 class TestZone (unittest.TestCase):
 
     def testFromFile1(self):
         z = linkcheck.dns.zone.from_file(fname('example'), 'example')
-        ok = False
+        diff = True
         try:
             z.to_file(fname('example1.out'), nl='\x0a')
-            ok = filecmp.cmp(fname('example1.out'), fname('example1.good'))
+            fn1 = fname('example1.out')
+            fn2 = fname('example1.good')
+            diff = get_file_diff(fn1, fn2)
         finally:
             os.unlink(fname('example1.out'))
-        self.assert_(ok)
+        self.assertFalse(diff)
 
     def testFromFile2(self):
         z = linkcheck.dns.zone.from_file(fname('example'), 'example',
                                   relativize=False)
-        ok = False
+        diff = True
         try:
             z.to_file(fname('example2.out'), relativize=False, nl='\x0a')
-            ok = filecmp.cmp(fname('example2.out'), fname('example2.good'))
+            fn1 = fname('example2.out')
+            fn2 = fname('example2.good')
+            diff = get_file_diff(fn1, fn2)
         finally:
             os.unlink(fname('example2.out'))
-        self.assert_(ok)
+        self.assertFalse(diff)
 
     def testFromText(self):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
