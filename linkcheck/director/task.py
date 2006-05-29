@@ -24,7 +24,7 @@ import console
 
 class CheckedTask (linkcheck.threader.StoppableThread):
     """
-    Check error conditions while running.
+    Stoppable URL check task, handling error conditions while running.
     """
 
     def run (self):
