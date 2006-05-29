@@ -417,6 +417,16 @@ class TestUrl (unittest.TestCase):
         nurl = url
         self.assertEqual(url_norm(url), nurl)
 
+    def test_norm_file1 (self):
+        url = "file:///a/b.txt"
+        nurl = url
+        self.assertEqual(url_norm(url), nurl)
+
+    def test_norm_file2 (self):
+        url = "file://C|/a/b.txt"
+        nurl = "file://c%7C/a/b.txt"
+        self.assertEqual(url_norm(url), nurl)
+
     def test_norm_invalid (self):
         url = u"הצü?:"
         nurl = u"%E4%F6%FC?:"
