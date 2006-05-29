@@ -26,7 +26,7 @@ import linkcheck.checker.tests
 def get_attrs ():
     return {
         'curdir': linkcheck.checker.tests.get_file_url(os.getcwd()),
-        'datadir': os.path.join("linkcheck", "checker", "tests", "data"),
+        'datadir': "linkcheck/checker/tests/data",
     }
 
 
