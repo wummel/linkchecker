@@ -56,13 +56,17 @@ win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
 
 def normpath (path):
-    """norm a path name to platform specific notation"""
+    """
+    Norm a path name to platform specific notation.
+    """
     return os.path.normpath(path)
 
 
 def cnormpath (path):
-    """norm a path name to platform specific notation, but honoring
-       the win_compiling flag"""
+    """
+    Norm a path name to platform specific notation, but honoring
+    the win_compiling flag.
+    """
     path = normpath(path)
     if win_compiling:
         # replace slashes with backslashes
@@ -300,7 +304,7 @@ def cc_supports_option (cc, option):
     pipe.tochild.close()
     status = pipe.wait()
     if os.WIFEXITED(status):
-        return os.WEXITSTATUS(status)==0
+        return os.WEXITSTATUS(status) == 0
     return False
 
 
