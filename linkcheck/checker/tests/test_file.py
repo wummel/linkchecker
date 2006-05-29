@@ -23,6 +23,12 @@ import os
 
 import linkcheck.checker.tests
 
+def get_attrs ():
+    return {
+        'curdir': linkcheck.checker.tests.get_file_url(os.getcwd()),
+        'datadir': os.path.join("linkcheck", "checker", "tests", "data"),
+    }
+
 
 class TestFile (linkcheck.checker.tests.LinkCheckTest):
     """
@@ -59,14 +65,8 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
         """
         self.file_test("urllist.txt")
 
-    def test_files (self):
-        """
-        Test some direct file links.
-        """
-        attrs = {'curdir': linkcheck.checker.tests.get_file_url(os.getcwd()),
-                 'datadir': 'linkcheck/checker/tests/data',
-                }
-        # good file
+    def test_good_file (self):
+        attrs = get_attrs()
         url = u"file://%(curdir)s/%(datadir)s/file.txt" % attrs
         nurl = self.norm(url)
         resultlines = [
@@ -76,7 +76,9 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        # bad file
+
+    def test_bad_file (self):
+        attrs = get_attrs()
         url = u"file:/%(curdir)s/%(datadir)s/file.txt" % attrs
         nurl = self.norm(url)
         resultlines = [
@@ -86,7 +88,10 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
+
+    def test_good_file_missing_dslash (self):
         # good file (missing double slash)
+        attrs = get_attrs()
         url = u"file:%(curdir)s/%(datadir)s/file.txt" % attrs
         nurl = self.norm(url)
         resultlines = [
@@ -97,7 +102,9 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        # good dir
+
+    def test_good_dir (self):
+        attrs = get_attrs()
         url = u"file://%(curdir)s/%(datadir)s/" % attrs
         resultlines = [
             u"url %s" % url,
