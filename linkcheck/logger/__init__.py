@@ -77,19 +77,23 @@ class Logger (object):
         """
         Initialize self.fd file descriptor from args.
         """
+        self.filename = None
+        self.close_fd = False
+        self.fd = None
         if args.get('fileoutput'):
-            filename = args['filename']
-            path = os.path.dirname(filename)
-            if path and not os.path.isdir(path):
-                os.makedirs(path)
-            self.fd = file(filename, "wb")
-            self.close_fd = True
+            self.filename = args['filename']
         elif args.has_key('fd'):
             self.fd = args['fd']
-            self.close_fd = False
         else:
             self.fd = sys.stdout
-            self.close_fd = False
+
+    def start_fileoutput (self):
+        path = os.path.dirname(self.filename)
+        if path and not os.path.isdir(path):
+            os.makedirs(path)
+        self.fd = file(self.filename, "wb")
+        self.close_fd = True
+        self.filename = None
 
     def close_fileoutput (self):
         """
@@ -144,6 +148,8 @@ class Logger (object):
         """
         Write string to output descriptor.
         """
+        if self.filename is not None:
+            self.start_fileoutput()
         if self.fd is None:
             raise ValueError("write to non-file")
         self.fd.write(self.encode(s), **args)

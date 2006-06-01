@@ -70,7 +70,8 @@ class TextLogger (linkcheck.logger.Logger):
         """
         super(TextLogger, self).__init__(**args)
         self.init_fileoutput(args)
-        self.fd = linkcheck.ansicolor.Colorizer(self.fd)
+        if self.fd is not None:
+            self.fd = linkcheck.ansicolor.Colorizer(self.fd)
         self.colorparent = args['colorparent']
         self.colorurl = args['colorurl']
         self.colorname = args['colorname']
@@ -83,6 +84,10 @@ class TextLogger (linkcheck.logger.Logger):
         self.colordltime = args['colordltime']
         self.colordlsize = args['colordlsize']
         self.colorreset = args['colorreset']
+
+    def start_fileoutput (self):
+        super(TextLogger, self).start_fileoutput()
+        self.fd = linkcheck.ansicolor.Colorizer(self.fd)
 
     def start_output (self):
         """
