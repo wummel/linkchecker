@@ -29,7 +29,7 @@ import linkcheck.configuration
 _encoding = linkcheck.i18n.default_encoding
 stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
 
-def internal_error ():
+def internal_error (exitcode=1):
     """
     Print internal error message to stderr.
     """
@@ -54,7 +54,8 @@ I can work with ;) .
     print_app_info()
     print >> stderr, os.linesep, \
             _("******** LinkChecker internal error, over and out ********")
-    sys.exit(1)
+    if exitcode is not None:
+        sys.exit(exitcode)
 
 
 def print_app_info ():

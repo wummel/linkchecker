@@ -38,7 +38,7 @@ class CheckedTask (linkcheck.threader.StoppableThread):
                 "interrupt did not reach the main thread")
             thread.interrupt_main()
         except StandardError:
-            console.internal_error()
+            console.internal_error(exitcode=None)
 
     @linkcheck.decorators.notimplemented
     def run_checked (self):
