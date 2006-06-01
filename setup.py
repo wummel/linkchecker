@@ -478,10 +478,14 @@ data_files = [
          ('share/linkchecker',
              ['config/linkcheckerrc', 'config/logging.conf', ]),
          ('share/linkchecker/examples',
-             ['cgi/lconline/leer.html.en', 'cgi/lconline/leer.html.de',
-              'cgi/lconline/index.html', 'cgi/lconline/lc_cgi.html.en',
-              'cgi/lconline/lc_cgi.html.de', 'cgi/lconline/check.js',
-              'cgi/lc.cgi', 'cgi/lc.fcgi', ]),
+             ['cgi-bin/lconline/leer.html.en',
+              'cgi-bin/lconline/leer.html.de',
+              'cgi-bin/lconline/index.html',
+              'cgi-bin/lconline/lc_cgi.html.en',
+              'cgi-bin/lconline/lc_cgi.html.de',
+              'cgi-bin/lconline/check.js',
+              'cgi-bin/lc.cgi',
+              'cgi-bin/lc.fcgi', ]),
       ]
 
 if os.name == 'posix':

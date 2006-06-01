@@ -27,12 +27,12 @@ common-install-impl::
 	mv $(SHARE)/linkcheckerrc $(ETC)/$(PACKAGE)/
 	mv $(SHARE)/logging.conf $(ETC)/$(PACKAGE)/
 # install CGI files
-	install -m 644 cgi/lconline/*.html $(HTMLDIR)
-	install -m 644 cgi/lconline/*.de $(HTMLDIR)
-	install -m 644 cgi/lconline/*.en $(HTMLDIR)
-	install -m 644 cgi/lconline/check.js $(HTMLDIR)
-	install -m 755 cgi/lc.cgi $(CGIDIR)
-	install -m 755 cgi/lc.fcgi $(CGIDIR)
+	install -m 644 cgi-bin/lconline/*.html $(HTMLDIR)
+	install -m 644 cgi-bin/lconline/*.de $(HTMLDIR)
+	install -m 644 cgi-bin/lconline/*.en $(HTMLDIR)
+	install -m 644 cgi-bin/lconline/check.js $(HTMLDIR)
+	install -m 755 cgi-bin/lc.cgi $(CGIDIR)
+	install -m 755 cgi-bin/lc.fcgi $(CGIDIR)
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
 
