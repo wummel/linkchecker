@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2006-05-25 16:36+0200\n"
-"PO-Revision-Date: 2006-05-25 16:38+0100\n"
+"POT-Creation-Date: 2006-06-01 11:56+0200\n"
+"PO-Revision-Date: 2006-06-01 11:58+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -200,7 +200,7 @@ msgstr[0] "%d Fehler gefunden."
 msgstr[1] "%d Fehler gefunden."
 
 #: ../linkcheck/checker/urlbase.py:63
-#: ../linkchecker:722
+#: ../linkchecker:736
 #, python-format
 msgid "URL has unparsable domain name: %s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %s"
@@ -834,7 +834,7 @@ msgid "System info:"
 msgstr "Systeminformation:"
 
 #: ../linkcheck/director/console.py:66
-#: ../linkchecker:525
+#: ../linkchecker:536
 #, python-format
 msgid "Python %s on %s"
 msgstr "Python %s auf %s"
@@ -1095,29 +1095,33 @@ msgstr "Fehler: %s"
 msgid "Execute 'linkchecker -h' for help"
 msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten"
 
-#: ../linkchecker:207
+#: ../linkchecker:206
+msgid "Running as root, dropping to nobody."
+msgstr "Laufe als Benutzer root, wechsle auf Benutzer nobody."
+
+#: ../linkchecker:217
 msgid "The `pstats' Python module is not installed, therefore the --viewprof option is disabled."
 msgstr "Das `pstats' Python Modul ist nicht installiert, deshalb ist die --viewprof Option deaktiviert."
 
-#: ../linkchecker:212
+#: ../linkchecker:222
 #, python-format
 msgid "Could not find profiling file %r."
 msgstr "Konnte Profiling-Datei %r nicht finden."
 
-#: ../linkchecker:214
+#: ../linkchecker:224
 msgid "Please run linkchecker with --profile to generate it."
 msgstr "Bitte starten Sie linkchecker mit --profile, um sie zu generieren."
 
-#: ../linkchecker:231
+#: ../linkchecker:241
 #, python-format
 msgid "Syntax error in %r: %s"
 msgstr "Syntaxfehler in %r: %s"
 
-#: ../linkchecker:328
+#: ../linkchecker:338
 msgid "General options"
 msgstr "Allgemeine Optionen"
 
-#: ../linkchecker:332
+#: ../linkchecker:342
 msgid ""
 "Use FILENAME as configuration file. Per default LinkChecker first\n"
 "searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/linkcheckerrc\n"
@@ -1127,17 +1131,17 @@ msgstr ""
 " LinkChecker zuerst /etc/linkchecker/linkcheckerrc und dann ~/.linkchecker/linkcheckerrc\n"
 "(unter Windows <Pfad-zum-Programm>\\linkcheckerrc)."
 
-#: ../linkchecker:337
+#: ../linkchecker:347
 msgid "Ask for URL if none are given on the commandline."
 msgstr "Frage nach URLs falls keine auf der Kommandozeile eingegeben wurden."
 
-#: ../linkchecker:341
+#: ../linkchecker:351
 msgid ""
 "Generate no more than the given number of threads. Default number\n"
 "of threads is 10. To disable threading specify a non-positive number."
 msgstr "Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl von Threads ist 10. Geben Sie eine negative Zahl an, um Threading zu deaktivieren."
 
-#: ../linkchecker:345
+#: ../linkchecker:355
 msgid ""
 "Run with normal thread scheduling priority. Per default LinkChecker\n"
 "runs with low thread priority to be suitable as a background job."
@@ -1145,27 +1149,31 @@ msgstr ""
 "Laufe mit normaler Prozesspriorität. Als Standard läuft LinkChecker\n"
 "mit niedriger Prozesspriorität, um als Hintergrundprogramm geeignet zu sein."
 
-#: ../linkchecker:349
+#: ../linkchecker:359
 msgid "Do not use the psyco optimization module even if it is installed."
 msgstr "Die psyco Laufzeitkompilierung wird nicht verwendet, auch wenn diese installiert ist."
 
-#: ../linkchecker:353
+#: ../linkchecker:361
 msgid "Print version and exit."
 msgstr "Drucke die Version und beende das Programm."
 
-#: ../linkchecker:356
+#: ../linkchecker:364
+msgid "Do not drop privileges when running as root user on Unix systems."
+msgstr "Keine Entziehung der Privilegien falls das Programm unter Unix als Benutzer root läuft."
+
+#: ../linkchecker:368
 msgid "Output options"
 msgstr "Ausgabeoptionen"
 
-#: ../linkchecker:359
+#: ../linkchecker:371
 msgid "Log all checked URLs. Default is to log only errors and warnings."
 msgstr "Logge alle geprüften URLs. Standard ist es, nur fehlerhafte URLs zu loggen."
 
-#: ../linkchecker:361
+#: ../linkchecker:373
 msgid "Don't log warnings. Default is to log warnings."
 msgstr "Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen."
 
-#: ../linkchecker:365
+#: ../linkchecker:377
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -1182,7 +1190,7 @@ msgstr ""
 "Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'."
 
-#: ../linkchecker:375
+#: ../linkchecker:387
 msgid ""
 "Print a warning if content size info is available and exceeds the\n"
 "given number of bytes."
@@ -1190,7 +1198,7 @@ msgstr ""
 "Gebe eine Warnung aus wenn die Inhaltsgröße bekannt ist und die\n"
 "angegebene Anzahl an Bytes übersteigt."
 
-#: ../linkchecker:379
+#: ../linkchecker:391
 msgid ""
 "Quiet operation, an alias for '-o none'.\n"
 "This is only useful with -F."
@@ -1198,7 +1206,7 @@ msgstr ""
 "Keine Ausgabe, ein Alias für '-o none'.\n"
 "Dies ist nur in Verbindung mit -F nützlich."
 
-#: ../linkchecker:384
+#: ../linkchecker:396
 #, python-format
 msgid ""
 "Specify output as %(loggertypes)s. Default output type is text.\n"
@@ -1210,7 +1218,7 @@ msgstr ""
 "Enkodierung der ausgewählten Spracheinstellung.\n"
 "Gültige Enkodierungen sind unter http://docs.python.org/lib/standard-encodings.html aufgeführt."
 
-#: ../linkchecker:392
+#: ../linkchecker:404
 #, python-format
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for\n"
@@ -1238,11 +1246,11 @@ msgstr ""
 "Standard ist keine Dateiausgabe. Beachten Sie dass die Option\n"
 "'-o none' jegliche Ausgaben auf der Konsole verhindert."
 
-#: ../linkchecker:406
+#: ../linkchecker:418
 msgid "Do not print check status messages."
 msgstr "Gebe keine Statusmeldungen aus."
 
-#: ../linkchecker:409
+#: ../linkchecker:421
 #, python-format
 msgid ""
 "Print debugging output for the given logger.\n"
@@ -1264,13 +1272,13 @@ msgstr ""
 "Für exakte Resultate wird Threading and das Optimierungsmodul Psyco während einem\n"
 "Debuglauf deaktiviert."
 
-#: ../linkchecker:419
+#: ../linkchecker:431
 msgid ""
 "Print tracing information. The psyco optimization\n"
 "module will be disabled during traced runs."
 msgstr "Gebe Trace-Informationen aus. Die psyco Laufzeitkompilierung wird während Trace-Durchläufen deaktiviert."
 
-#: ../linkchecker:423
+#: ../linkchecker:435
 #, python-format
 msgid ""
 "Write profiling data into a file named %s in the\n"
@@ -1280,15 +1288,15 @@ msgstr ""
 "aktuellen Arbeitsverzeichnis.\n"
 "Siehe auch --viewprof."
 
-#: ../linkchecker:427
+#: ../linkchecker:439
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr "Gebe vorher generierte Profiling-Daten aus. Siehe auch --profile."
 
-#: ../linkchecker:432
+#: ../linkchecker:444
 msgid "Checking options"
 msgstr "Prüf-Optionen"
 
-#: ../linkchecker:436
+#: ../linkchecker:448
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable infinite recursion. Default depth is infinite."
@@ -1297,19 +1305,19 @@ msgstr ""
 "negative Tiefe erwirkt unendliche Rekursion. Standard Tiefe ist\n"
 "unendlich."
 
-#: ../linkchecker:441
+#: ../linkchecker:453
 msgid ""
 "Check but do not recurse into URLs matching the given regular\n"
 "expression. This option can be given multiple times."
 msgstr "Prüfe URLs die auf den angegebenen regulären Ausdruck zutreffen, aber steige nicht rekursiv in sie hinab. Diese Option kann mehrmals angegeben werden."
 
-#: ../linkchecker:446
+#: ../linkchecker:458
 msgid ""
 "Only check syntax of URLs matching the given regular expression.\n"
 " This option can be given multiple times."
 msgstr "Prüfe lediglich den Syntax der URLs, welche auf den angegebenen regulären Ausdruck zutreffen. Diese Option kann mehrmals angegebenen werden."
 
-#: ../linkchecker:450
+#: ../linkchecker:462
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -1322,7 +1330,7 @@ msgstr ""
 "Gesendete und akzeptierte Cookies werden als zusätzlich geloggte\n"
 "Information aufgeführt."
 
-#: ../linkchecker:457
+#: ../linkchecker:469
 msgid ""
 "Read a file with initial cookie data. The cookie data format is\n"
 "explained below."
@@ -1330,11 +1338,11 @@ msgstr ""
 "Lese eine Datei mit Cookie-Daten. Das Datenformat\n"
 "ist weiter unten erklärt."
 
-#: ../linkchecker:461
+#: ../linkchecker:473
 msgid "Check HTTP anchor references. Default is not to check anchors."
 msgstr "Prüfe HTTP Anker Verweise. Standard ist keine Überprüfung."
 
-#: ../linkchecker:464
+#: ../linkchecker:476
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
 "is the default browser behaviour, but it's not specified in\n"
@@ -1346,7 +1354,7 @@ msgstr ""
 "nicht enthalten. Benutzen Sie diese Option mit Vorsicht da mit dieser Option\n"
 "ungültige Anker nicht unbedingt entdeckt werden."
 
-#: ../linkchecker:471
+#: ../linkchecker:483
 msgid ""
 "Try the given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. For HTTP there is\n"
@@ -1355,7 +1363,7 @@ msgstr ""
 "Verwende den angegebenen Benutzernamen für HTTP und FTP\n"
 "Authorisation. Für FTP ist der Standardname 'anonymous'. Für HTTP gibt es kein Standardnamen. Siehe auch -p."
 
-#: ../linkchecker:477
+#: ../linkchecker:489
 msgid ""
 "Try the given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. For HTTP there is\n"
@@ -1364,7 +1372,7 @@ msgstr ""
 "Verwende das angegebene Passwort für HTTP und FTP Authorisation.\n"
 "Für FTP ist das Standardpasswort 'anonymous@'. Für HTTP gibt es kein Standardpasswort. Siehe auch -u."
 
-#: ../linkchecker:483
+#: ../linkchecker:495
 #, python-format
 msgid ""
 "Set the timeout for connection attempts in seconds. The default\n"
@@ -1373,7 +1381,7 @@ msgstr ""
 "Setze den Timeout für Verbindungen in Sekunden. Der Standard\n"
 "Timeout ist %d Sekunden."
 
-#: ../linkchecker:488
+#: ../linkchecker:500
 msgid ""
 "Pause the given number of seconds between two subsequent connection\n"
 "requests to the same host. Default is no pause between requests."
@@ -1381,7 +1389,7 @@ msgstr ""
 "Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander folgenden\n"
 "Verbindungen zum demselben Rechner. Standard ist keine Pause zwischen Verbindungen."
 
-#: ../linkchecker:493
+#: ../linkchecker:505
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
@@ -1391,7 +1399,7 @@ msgstr ""
 "Umgebungsvariable NNTP_SERVER. Falls kein Rechner angegeben ist,\n"
 "wird lediglich auf korrekte Syntax des Links geprüft."
 
-#: ../linkchecker:499
+#: ../linkchecker:511
 msgid ""
 "Contact hosts that match the given regular expression directly instead\n"
 "of going through a proxy. This option can be given multiple times."
@@ -1399,48 +1407,48 @@ msgstr ""
 "Direkte Verbindung zu Rechner, die zum gegebenen regulären Ausdruck passen, anstatt\n"
 "über einen Proxy zu gehen. Diese Option kann mehrfach angegeben werden."
 
-#: ../linkchecker:515
+#: ../linkchecker:527
 #, python-format
 msgid "Invalid debug level %(level)r"
 msgstr "Ungültiger Debuglevel %(level)r"
 
-#: ../linkchecker:534
+#: ../linkchecker:545
 #, python-format
 msgid "Unreadable config file: %r"
 msgstr "Nicht lesbare Konfigurationsdatei: %r"
 
-#: ../linkchecker:542
+#: ../linkchecker:556
 msgid "Running with python -O disables debugging."
 msgstr "Die Option python -O verhindert das Debuggen."
 
-#: ../linkchecker:570
-#: ../linkchecker:598
+#: ../linkchecker:584
+#: ../linkchecker:612
 #, python-format
 msgid "Unknown logger type %r in %r for option %s"
 msgstr "Unbekannter Logtyp %r in %r für Option %s"
 
-#: ../linkchecker:573
-#: ../linkchecker:602
+#: ../linkchecker:587
+#: ../linkchecker:616
 #, python-format
 msgid "Unknown encoding %r in %r for option %s"
 msgstr "Unbekanntes Encoding %r in %r für Option %s"
 
-#: ../linkchecker:609
+#: ../linkchecker:623
 #, python-format
 msgid "Illegal argument %r for option %s: %s"
 msgstr "Ungültiges Argument %r für Option %s: %s"
 
-#: ../linkchecker:625
-#: ../linkchecker:643
+#: ../linkchecker:639
+#: ../linkchecker:657
 #, python-format
 msgid "Illegal argument %r for option %s"
 msgstr "Ungültiges Argument %r für Option %s"
 
-#: ../linkchecker:679
+#: ../linkchecker:693
 msgid "Using DOT or GML loggers without verbose output gives an incomplete sitemap graph."
 msgstr "Benutzung von DOT oder GML Ausgaben ohne --verbose ergibt einen unvollständigen Sitemap Graphen."
 
-#: ../linkchecker:686
+#: ../linkchecker:700
 msgid ""
 "enter one or more URLs, separated by white-space\n"
 "--> "
@@ -1448,20 +1456,20 @@ msgstr ""
 "geben Sie eine oder mehrere durch Leerzeichen getrennte URLs ein\n"
 "--> "
 
-#: ../linkchecker:689
+#: ../linkchecker:703
 msgid "no files or URLs given"
 msgstr "keine Dateien oder URLs angegeben"
 
-#: ../linkchecker:701
+#: ../linkchecker:715
 #, python-format
 msgid "Could not parse cookie file: %s"
 msgstr "Konnte Cookie-Datei nicht parsen: %s"
 
-#: ../linkchecker:728
+#: ../linkchecker:742
 msgid "The `profile' Python module is not installed, therefore the --profile option is disabled."
 msgstr "Das `profile' Python Modul ist nicht installiert, deshalb ist die --profile Option deaktiviert."
 
-#: ../linkchecker:733
+#: ../linkchecker:747
 #, python-format
 msgid ""
 "Overwrite profiling file %r?\n"
@@ -1470,11 +1478,11 @@ msgstr ""
 "Profildatei %r überschreiben?\n"
 "Drücken Sie Strg-C zum Abbrechen, EINGABETASTE zum Fortfahren."
 
-#: ../linkchecker:739
+#: ../linkchecker:753
 msgid "Canceled."
 msgstr "Abgebrochen."
 
-#: ../linkchecker:753
+#: ../linkchecker:767
 msgid ""
 "Psyco is installed but not used since the version is too old.\n"
 "Psyco >= 1.4 is needed."
@@ -1482,7 +1490,7 @@ msgstr ""
 "Psyco ist installiert aber nicht genutzt, da die Version zu alt ist.\n"
 "Psyco >= 1.4 wird benötigt."
 
-#: ../linkchecker:763
+#: ../linkchecker:777
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
 

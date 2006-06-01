@@ -1,3 +1,10 @@
+4.2 "" (released xx.xx.xxxx)
+
+  * Drop privileges when running as root under Unix systems. Add
+    new option --allow-root to prevent this.
+    Type: feature
+    Changed: linkchecker, doc/{en,de}/linkchecker.1
+
 4.1 "Totsi" (released 29.5.2006)
 
   * Wait for spawned threads to finish before shutdown. Gets rid

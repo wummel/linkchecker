@@ -21,15 +21,18 @@ Module that provides an object oriented abstraction to pygtk and libglade.
 
 import os
 import sys
-import weakref
-try:
-    import gtk
-    import gtk.glade
-except ImportError:
-    print >> sys.stderr, "Error importing pygtk2 and pygtk2-libglade"
-    sys.exit(1)
+import re
 
-def bindtextdomain(app_name, locale_dir=None):
+import tokenize
+import gtk
+import gtk.glade
+import weakref
+import inspect
+
+__version__ = "1.0"
+__author__ = 'Sandino "tigrux" Flores-Moreno'
+
+def bindtextdomain (app_name, locale_dir=None):
     """    
     Bind the domain represented by app_name to the locale directory locale_dir.
     It has the effect of loading translations, enabling applications for different
@@ -53,9 +56,9 @@ def bindtextdomain(app_name, locale_dir=None):
         __builtins__.__dict__["_"] = lambda x : x
 
 
-class SimpleGladeApp (dict):
+class SimpleGladeApp (object):
 
-    def __init__ (self, path, root=None, domain=None, **kwargs):
+    def __init__(self, path, root=None, domain=None, **kwargs):
         """
         Load a glade file specified by glade_filename, using root as
         root widget and domain as the domain for translations.
@@ -86,25 +89,25 @@ class SimpleGladeApp (dict):
         if os.path.isfile(path):
             self.glade_path = path
         else:
-            glade_dir = os.path.split(sys.argv[0])[0]
+            glade_dir = os.path.dirname( sys.argv[0] )
             self.glade_path = os.path.join(glade_dir, path)
-            for key, value in kwargs.items():
-                try:
-                    setattr(self, key, weakref.proxy(value))
-                except TypeError:
-                    setattr(self, key, value)
+        for key, value in kwargs.items():
+            try:
+                setattr(self, key, weakref.proxy(value) )
+            except TypeError:
+                setattr(self, key, value)
         self.glade = None
-        gtk.glade.set_custom_handler(self.custom_handler)
-        self.glade = gtk.glade.XML(self.glade_path, root, domain)
+        self.install_custom_handler(self.custom_handler)
+        self.glade = self.create_glade(self.glade_path, root, domain)
         if root:
-            self.main_widget = self.glade.get_widget(root)
+            self.main_widget = self.get_widget(root)
         else:
             self.main_widget = None
         self.normalize_names()
         self.add_callbacks(self)
         self.new()
 
-    def __repr__(self):
+    def __repr__ (self):
         class_name = self.__class__.__name__
         if self.main_widget:
             root = gtk.Widget.get_name(self.main_widget)
@@ -113,7 +116,7 @@ class SimpleGladeApp (dict):
             repr = '%s(path="%s")' % (class_name, self.glade_path)
         return repr
 
-    def new(self):
+    def new (self):
         """
         Method called when the user interface is loaded and ready to be used.
         At this moment, the widgets are loaded and can be refered as self.widget_name
@@ -336,4 +339,3 @@ class SimpleGladeApp (dict):
 
     def get_widgets(self):
         return self.glade.get_widget_prefix("")
-

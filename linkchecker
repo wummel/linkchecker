@@ -198,6 +198,16 @@ def print_usage (msg):
     sys.exit(1)
 
 
+def check_user ():
+    if os.name != 'posix':
+        return
+    if os.geteuid() == 0:
+        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+          _("Running as root, dropping to nobody."))
+        import pwd
+        os.seteuid(pwd.getpwnam('nobody')[3])
+
+
 def viewprof ():
     """
     Print profiling data and exit.
@@ -347,10 +357,12 @@ runs with low thread priority to be suitable as a background job."""))
 group.add_option("--disable-psyco", action="store_false", dest="psyco",
                  default=True, help=_(
 """Do not use the psyco optimization module even if it is installed."""))
-optparser.add_option_group(group)
 group.add_option("-V", "--version", action="store_true", dest="version",
-                 help=_(
-"""Print version and exit."""))
+                 help=_("""Print version and exit."""))
+group.add_option("--allow-root", action="store_true", dest="allowroot",
+                 default=False, help=_(
+"""Do not drop privileges when running as root user on Unix systems."""))
+optparser.add_option_group(group)
 
 ################# output options ##################
 group = optparse.OptionGroup(optparser, _("Output options"))
@@ -519,7 +531,6 @@ if options.debug:
 if options.trace:
     # disable psyco for tracing
     options.psyco = False
-
 config.init_logging(debug=options.debug)
 assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
    _("Python %s on %s"), sys.version, sys.platform)
@@ -536,6 +547,9 @@ try:
 except linkcheck.LinkCheckerError, msg:
     # config error
     print_usage(str(msg))
+# test if running with root privileges
+if not options.allowroot:
+    check_user()
 # test if running with -O
 if options.debug and not __debug__:
     linkcheck.log.warn(linkcheck.LOG_CMDLINE,
