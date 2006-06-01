@@ -1,4 +1,7 @@
-- [BUGFIX] Ctrl-C is not always working.
+- [BUGFIX] Don't generate empty output files, ie. open file descriptors
+  when they are written to, not earlier.
+
+- [BUGFIX] Ctrl-C is not always working. Why?
 
 - [BUGFIX] The URL in the log output is double normed.
 
@@ -7,6 +10,8 @@
 - [FEATURE] warn if overall size of page (including images/flash/etc.) is
   too big. Right now, the page size is only html content.
 
-- [FEATURE] Option to save downloaded pages. This could also be used to
-  build an internal cache, however there are already a plethora of
-  caching proxies we could use for that.
+- [FEATURE] Option to save/cache downloaded pages.
+
+- [FEATURE] HTML/CSS syntax check
+
+- [FEATURE] Virus check
