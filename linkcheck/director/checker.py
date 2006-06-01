@@ -54,7 +54,7 @@ class Checker (task.CheckedTask):
         while True:
             self.check_url()
             if self.stopped():
-                return
+                break
 
     def check_url (self):
         """
@@ -62,12 +62,11 @@ class Checker (task.CheckedTask):
         """
         try:
             url_data = self.urlqueue.get(timeout=1)
+            if url_data is not None:
+                self.check_url_data(url_data)
+                self.setName(self.origname)
         except Queue.Empty:
             time.sleep(1)
-            return
-        if url_data is not None:
-            self.check_url_data(url_data)
-            self.setName(self.origname)
 
     def check_url_data (self, url_data):
         """
