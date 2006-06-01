@@ -1,5 +1,4 @@
-- [BUGFIX] Don't generate empty output files, ie. open file descriptors
-  when they are written to, not earlier.
+- [BUGFIX] abort the checker on internal errors
 
 - [BUGFIX] Ctrl-C is not always working. Why?
 
