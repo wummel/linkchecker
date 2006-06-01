@@ -18,11 +18,10 @@
 An XML logger.
 """
 
-import linkcheck.logger.xmllog
-import linkcheck.configuration
+import xmllog
 
 
-class CustomXMLLogger (linkcheck.logger.xmllog.XMLLogger):
+class CustomXMLLogger (xmllog.XMLLogger):
     """
     XML custom output for easy post-processing.
     """

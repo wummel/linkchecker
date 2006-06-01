@@ -23,6 +23,7 @@ import os
 
 import linkcheck
 import linkcheck.logger
+import linkcheck.configuration
 
 
 def sqlify (s):

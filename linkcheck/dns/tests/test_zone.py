@@ -15,7 +15,6 @@
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 import cStringIO as StringIO
-import filecmp
 import os
 import unittest
 import difflib

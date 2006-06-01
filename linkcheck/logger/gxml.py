@@ -18,11 +18,10 @@
 A GraphXML logger.
 """
 
-import linkcheck.logger.xmllog
-import linkcheck.configuration
+import xmllog
 
 
-class GraphXMLLogger (linkcheck.logger.xmllog.XMLLogger):
+class GraphXMLLogger (xmllog.XMLLogger):
     """
     XML output mirroring the GML structure. Easy to parse with any XML
     tool.
