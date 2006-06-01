@@ -26,7 +26,7 @@ if not hasattr(sys, 'version_info') or \
 import os
 import re
 
-import linkcheck.i18n
+import i18n
 import _linkchecker_configdata as configdata
 
 # application log areas
@@ -48,7 +48,7 @@ lognames = {
     }
 lognamelist = ", ".join(["%r"%name for name in lognames.iterkeys()])
 
-import linkcheck.log
+import log
 
 
 class LinkCheckerError (StandardError):
@@ -64,7 +64,7 @@ def add_intern_pattern (url_data, config):
     """
     pat = url_data.get_intern_pattern()
     if pat:
-        assert None == linkcheck.log.debug(LOG_CHECK,
+        assert None == log.debug(LOG_CHECK,
            "Add intern pattern %r from command line", pat)
         config['internlinks'].append(get_link_pat(pat))
 
@@ -81,7 +81,7 @@ def get_link_pat (arg, strict=False):
     @return: dictionary with keys 'pattern', 'negate' and 'strict'
     @rtype: dict
     """
-    assert None == linkcheck.log.debug(LOG_CHECK, "Link pattern %r", arg)
+    assert None == log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg.startswith('!'):
         pattern = arg[1:]
         negate = True
@@ -96,30 +96,30 @@ def get_link_pat (arg, strict=False):
 
 
 # note: don't confuse URL loggers with application logs above
-import linkcheck.logger.text
-import linkcheck.logger.html
-import linkcheck.logger.gml
-import linkcheck.logger.dot
-import linkcheck.logger.sql
-import linkcheck.logger.csvlog
-import linkcheck.logger.blacklist
-import linkcheck.logger.gxml
-import linkcheck.logger.customxml
-import linkcheck.logger.none
+import logger.text
+import logger.html
+import logger.gml
+import logger.dot
+import logger.sql
+import logger.csvlog
+import logger.blacklist
+import logger.gxml
+import logger.customxml
+import logger.none
 
 
 # default link logger classes
 Loggers = {
-    "text": linkcheck.logger.text.TextLogger,
-    "html": linkcheck.logger.html.HtmlLogger,
-    "gml": linkcheck.logger.gml.GMLLogger,
-    "dot": linkcheck.logger.dot.DOTLogger,
-    "sql": linkcheck.logger.sql.SQLLogger,
-    "csv": linkcheck.logger.csvlog.CSVLogger,
-    "blacklist": linkcheck.logger.blacklist.BlacklistLogger,
-    "gxml": linkcheck.logger.gxml.GraphXMLLogger,
-    "xml": linkcheck.logger.customxml.CustomXMLLogger,
-    "none": linkcheck.logger.none.NoneLogger,
+    "text": logger.text.TextLogger,
+    "html": logger.html.HtmlLogger,
+    "gml": logger.gml.GMLLogger,
+    "dot": logger.dot.DOTLogger,
+    "sql": logger.sql.SQLLogger,
+    "csv": logger.csvlog.CSVLogger,
+    "blacklist": logger.blacklist.BlacklistLogger,
+    "gxml": logger.gxml.GraphXMLLogger,
+    "xml": logger.customxml.CustomXMLLogger,
+    "none": logger.none.NoneLogger,
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = ", ".join(["%r"%name for name in Loggers.iterkeys()])
@@ -135,7 +135,7 @@ def init_i18n ():
     locdir = os.environ.get('LOCPATH')
     if locdir is None:
         locdir = os.path.join(configdata.install_data, 'share', 'locale')
-    linkcheck.i18n.init(configdata.name, locdir)
+    i18n.init(configdata.name, locdir)
     # install translated log level names
     import logging
     logging.addLevelName(logging.CRITICAL, _('CRITICAL'))

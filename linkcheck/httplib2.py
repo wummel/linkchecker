@@ -73,7 +73,7 @@ import mimetools
 import socket
 from urlparse import urlsplit
 from cStringIO import StringIO
-import linkcheck.cache.addrinfo
+import cache.addrinfo
 
 __all__ = ["HTTP", "HTTPResponse", "HTTPConnection", "HTTPSConnection",
            "HTTPException", "NotConnected", "UnknownProtocol",
@@ -612,7 +612,7 @@ class HTTPConnection:
     def connect(self):
         """Connect to the host and port specified in __init__."""
         msg = "getaddrinfo returns an empty list"
-        for res in linkcheck.cache.addrinfo.getaddrinfo(self.host, self.port):
+        for res in cache.addrinfo.getaddrinfo(self.host, self.port):
             af, socktype, proto, canonname, sa = res
             try:
                 self.sock = socket.socket(af, socktype, proto)

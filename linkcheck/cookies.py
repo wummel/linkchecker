@@ -33,7 +33,7 @@ import Cookie
 import cookielib
 import cStringIO as StringIO
 import rfc822
-import linkcheck.strformat
+import strformat
 
 
 class CookieError (StandardError):
@@ -189,7 +189,7 @@ class HttpCookie (object):
         self.attributes[key] = value
 
     def parse (self, text, patt=Cookie._CookiePattern):
-        text = linkcheck.strformat.ascii_safe(text)
+        text = strformat.ascii_safe(text)
         # reset values
         self.name = None
         self.value = None
@@ -220,9 +220,9 @@ class HttpCookie (object):
         self.calculate_expiration()
 
     def set_default_attributes (self, scheme, host, path):
-        scheme = linkcheck.strformat.ascii_safe(scheme)
-        host = linkcheck.strformat.ascii_safe(host)
-        path = linkcheck.strformat.ascii_safe(path)
+        scheme = strformat.ascii_safe(scheme)
+        host = strformat.ascii_safe(host)
+        path = strformat.ascii_safe(path)
         if "domain" not in self.attributes:
             self.attributes["domain"] = host.lower()
         if "path" not in self.attributes:

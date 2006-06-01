@@ -19,7 +19,7 @@ Locking utility class.
 """
 import threading
 import linkcheck
-import linkcheck.log
+import log
 
 def get_lock (name):
     return DebugLock(threading.Lock(), name)
@@ -38,10 +38,10 @@ class DebugLock (object):
         Acquire lock.
         """
         threadname = threading.currentThread().getName()
-        assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
+        assert None == log.debug(linkcheck.LOG_THREAD,
             "Acquire %s for %s", self.name, threadname)
         self.lock.acquire(blocking)
-        assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
+        assert None == log.debug(linkcheck.LOG_THREAD,
             "...acquired %s for %s", self.name, threadname)
 
     def release (self):
@@ -49,6 +49,6 @@ class DebugLock (object):
         Release lock.
         """
         threadname = threading.currentThread().getName()
-        assert None == linkcheck.log.debug(linkcheck.LOG_THREAD,
+        assert None == log.debug(linkcheck.LOG_THREAD,
             "Release %s for %s", self.name, threadname)
         self.lock.release()
