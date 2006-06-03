@@ -47,6 +47,9 @@ def check_urls (aggregate):
                 break
             except linkcheck.cache.urlqueue.Timeout:
                 time.sleep(1)
+                aggregate.remove_stopped_threads()
+                if not aggregate.threads:
+                    break
                 sigint = signal.getsignal(signal.SIGINT)
                 if sigint != signal.default_int_handler:
                     linkcheck.log.warn(linkcheck.LOG_CHECK,
@@ -55,7 +58,7 @@ def check_urls (aggregate):
         linkcheck.log.warn(linkcheck.LOG_CHECK,
             _("keyboard interrupt; waiting for active threads to finish"))
         aggregate.abort()
-    except StandardError:
+    except:
         console.internal_error()
         aggregate.abort()
     aggregate.finish()

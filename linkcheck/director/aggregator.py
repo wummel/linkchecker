@@ -64,6 +64,9 @@ class Aggregate (object):
         except linkcheck.cache.urlqueue.Timeout:
             linkcheck.log.warn(linkcheck.LOG_CHECK, "Abort timed out")
 
+    def remove_stopped_threads (self):
+        self.threads = [t for t in self.threads if t.isAlive()]
+
     def finish (self):
         """
         Wait for checker threads to finish.

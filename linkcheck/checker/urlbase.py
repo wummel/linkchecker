@@ -373,10 +373,6 @@ class UrlBase (object):
                 raise KeyboardInterrupt(value)
             else:
                 raise
-        except KeyboardInterrupt:
-            raise
-        except:
-            linkcheck.director.console.internal_error()
 
     def add_country_info (self):
         """
