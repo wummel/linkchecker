@@ -8,7 +8,7 @@ LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 PYFILES = $(wildcard *.py) linkchecker linkcheck tests
 PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc $(PYTHON) /usr/bin/pylint
 PYLINTOPTS := --disable-msg-cat=C,R,W
-PYFLAKES:=pyflakes
+PYFLAKES:=python$(PYVER) /usr/bin/pyflakes
 PYTHONSVN := /home/calvin/src/python-svn
 # build dir for svn-buildpackage
 SVNBUILD:=/home/calvin/src/build-area
