@@ -61,12 +61,12 @@ class Checker (task.CheckedTask):
         Try to get URL data from queue and check it.
         """
         try:
-            url_data = self.urlqueue.get(timeout=1)
+            url_data = self.urlqueue.get(timeout=0.1)
             if url_data is not None:
                 self.check_url_data(url_data)
                 self.setName(self.origname)
         except Queue.Empty:
-            time.sleep(1)
+            time.sleep(0.1)
 
     def check_url_data (self, url_data):
         """
