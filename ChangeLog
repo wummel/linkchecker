@@ -10,6 +10,10 @@
     Type: bugfix
     Changed: linkcheck/logger/{__init__,text}.py
 
+  * Only accept ASCII in robots.txt content
+    Type: bugfix
+    Changed: linkcheck/robotsparser2.py
+
 4.1 "Totsi" (released 29.5.2006)
 
   * Wait for spawned threads to finish before shutdown. Gets rid

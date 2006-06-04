@@ -220,7 +220,7 @@ class RobotFileParser (object):
             lines = []
             line = f.readline()
             while line:
-                lines.append(line.strip())
+                lines.append(line.strip().encode("ascii", "ignore"))
                 line = f.readline()
             self.parse(lines)
         else:
@@ -451,9 +451,9 @@ class Entry (object):
         @return: True if this entry applies to the agent, else False.
         @rtype: bool
         """
-        # split the name token and make it lower case
         if not useragent:
             return True
+        # split the name token and make it lower case unicode
         useragent = useragent.split("/")[0].lower()
         for agent in self.useragents:
             if agent == '*':
