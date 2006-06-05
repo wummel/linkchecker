@@ -38,10 +38,9 @@ class BlacklistLogger (linkcheck.logger.Logger):
         super(BlacklistLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.blacklist = {}
-        if args.get('fileoutput'):
-            filename = args['filename']
-            if os.path.exists(filename):
-                self.read_blacklist(filename)
+        if self.filename is not None:
+            if os.path.exists(self.filename):
+                self.read_blacklist(self.filename)
 
     def comment (self, s, **args):
         """
