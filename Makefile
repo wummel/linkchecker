@@ -137,6 +137,7 @@ test:	localbuild
 pylint:
 	$(PYLINT) $(PYLINTOPTS) $(PYFILES) | \
 	  grep -v "Undefined variable '_'" | \
+	  grep -v "Undefined variable '_n'" | \
 	  uniq
 
 .PHONY: pyflakes
