@@ -242,15 +242,77 @@ class TestLRU (unittest.TestCase):
         self.assertEqual(self.lru.setdefault("hulla", "bla"), "bla")
 
 
+class TestCaselessDict (unittest.TestCase):
+    """
+    Test caseless dictionary routines.
+    """
+
+    def setUp (self):
+        """
+        Set up self.d as empty caseless dict.
+        """
+        self.d = linkcheck.containers.CaselessDict()
+
+    def test_insert (self):
+        self.assert_(not self.d)
+        self.d["a"] = 1
+        self.assert_("a" in self.d)
+        self.assert_("A" in self.d)
+        self.d["aBcD"] = 2
+        self.assert_("abcd" in self.d)
+        self.assert_("Abcd" in self.d)
+        self.assert_("ABCD" in self.d)
+
+    def test_delete (self):
+        self.assert_(not self.d)
+        self.d["a"] = 1
+        del self.d["A"]
+        self.assert_("a" not in self.d)
+        self.assert_("A" not in self.d)
+
+    def test_update (self):
+        self.assert_(not self.d)
+        self.d["a"] = 1
+        self.d["A"] = 2
+        self.assertEqual(self.d["a"], 2)
+
+    def test_clear (self):
+        self.assert_(not self.d)
+        self.d["a"] = 5
+        self.d["b"] = 6
+        self.d.clear()
+        self.assert_(not self.d)
+
+
+class TestCaselessSortedDict (unittest.TestCase):
+    """
+    Test caseless sorted dictionary routines.
+    """
+
+    def setUp (self):
+        """
+        Set up self.d as empty caseless sorted dict.
+        """
+        self.d = linkcheck.containers.CaselessSortedDict()
+
+    def test_sorted (self):
+        self.assert_(not self.d)
+        self.d["b"] = 6
+        self.d["a"] = 7
+        prev = None
+        for key in self.d:
+            self.assert_(key > prev)
+            prev = key
+
+
 def test_suite ():
     """
     Build and return a TestSuite.
     """
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestListDict))
-    suite.addTest(unittest.makeSuite(TestSetList))
-    suite.addTest(unittest.makeSuite(TestLRU))
-    return suite
+    from tests import make_suite
+    prefix = __name__.split(".")[-1]
+    return make_suite(prefix, globals())
+
 
 if __name__ == '__main__':
     unittest.main()
