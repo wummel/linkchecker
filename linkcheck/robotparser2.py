@@ -324,6 +324,7 @@ class RobotFileParser (object):
                     self.url, linenumber, line)
         if state in (1, 2):
             self.entries.append(entry)
+        self.modified()
         assert None == log.debug(linkcheck.LOG_CHECK,
                             "Parsed rules:\n%s", str(self))
 
