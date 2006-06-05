@@ -87,6 +87,13 @@ class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
         self.remove_path_query()
         super(NoQueryHttpRequestHandler, self).do_HEAD()
 
+    def end_headers (self):
+        """
+        Send short keep-alive header.
+        """
+        self.send_header("Keep-Alive", "5")
+        super(NoQueryHttpRequestHandler, self).end_headers()
+
 
 class HttpServerTest (linkcheck.checker.tests.LinkCheckTest):
     """
