@@ -106,6 +106,20 @@ def get_file_url (filename):
     return re.sub("^([a-zA-Z]):", r"/\1|", filename.replace("\\", "/"))
 
 
+def add_fileoutput_config (config):
+    if os.name == 'posix':
+        devnull = '/dev/null'
+    elif os.name == 'nt':
+        devnull = 'NUL'
+    else:
+        return
+    for ftype in linkcheck.Loggers.keys():
+        if ftype in ('test', 'blacklist'):
+            continue
+        logger = config.logger_new(ftype, fileoutput=1, filename=devnull)
+        config['fileoutput'].append(logger)
+
+
 def get_test_aggregate (confargs, logargs):
     """
     Initialize a test configuration object.
@@ -114,6 +128,7 @@ def get_test_aggregate (confargs, logargs):
     config.logger_add('test', TestLogger)
     config['recursionlevel'] = 1
     config['logger'] = config.logger_new('test', **logargs)
+    add_fileoutput_config(config)
     # uncomment for debugging
     #config.init_logging(debug=["all"])
     config["anchors"] = True
