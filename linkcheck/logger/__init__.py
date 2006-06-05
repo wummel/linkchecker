@@ -81,7 +81,7 @@ class Logger (object):
         self.close_fd = False
         self.fd = None
         if args.get('fileoutput'):
-            self.filename = args['filename']
+            self.filename = os.path.expanduser(args['filename'])
         elif args.has_key('fd'):
             self.fd = args['fd']
         else:
@@ -99,10 +99,11 @@ class Logger (object):
         """
         Flush and close the file output denoted by self.fd.
         """
-        self.flush()
-        if self.close_fd:
-            self.fd.close()
-        self.fd = None
+        if self.fd is not None:
+            self.flush()
+            if self.close_fd:
+                self.fd.close()
+            self.fd = None
 
     def encode (self, s):
         """
@@ -117,6 +118,20 @@ class Logger (object):
         if not isinstance(s, unicode):
             raise ValueError("tried to encode non-unicode string %r" % s)
         return s.encode(self.output_encoding, "replace")
+
+    def decode (self, s):
+        """
+        Decode string with configured output encoding. Wrong decoded
+        characters are replaced.
+
+        @param s: string to decode
+        @type s: string
+        @return: encoded string
+        @rtype: unicode
+        """
+        if isinstance(s, unicode):
+            return s
+        return s.decode(self.output_encoding, "replace")
 
     def check_date (self):
         """
