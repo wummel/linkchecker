@@ -38,9 +38,8 @@ class BlacklistLogger (linkcheck.logger.Logger):
         super(BlacklistLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.blacklist = {}
-        if self.filename is not None:
-            if os.path.exists(self.filename):
-                self.read_blacklist(self.filename)
+        if self.filename is not None and os.path.exists(self.filename):
+            self.read_blacklist()
 
     def comment (self, s, **args):
         """
@@ -69,18 +68,20 @@ class BlacklistLogger (linkcheck.logger.Logger):
         """
         self.write_blacklist()
 
-    def read_blacklist (self, filename):
+    def read_blacklist (self):
         """
         Read a previously stored blacklist from file fd.
         """
-        fd = file(filename)
-        for line in fd:
-            line = line.rstrip()
-            if line.startswith('#') or not line:
-                continue
-            value, key = line.split(None, 1)
-            self.blacklist[key] = int(value)
-        fd.close()
+        fd = open(self.filename)
+        try:
+            for line in fd:
+                line = self.decode(line.rstrip())
+                if line.startswith('#') or not line:
+                    continue
+                value, key = line.split(None, 1)
+                self.blacklist[key] = int(value)
+        finally:
+            fd.close()
 
     def write_blacklist (self):
         """
@@ -88,8 +89,7 @@ class BlacklistLogger (linkcheck.logger.Logger):
         """
         oldmask = os.umask(0077)
         for key, value in self.blacklist.iteritems():
-            self.fd.write("%d %s" % (value, key))
-            self.fd.write(os.linesep)
+            self.write(u"%d %s%s" % (value, key, os.linesep))
         self.close_fileoutput()
         # restore umask
         os.umask(oldmask)
