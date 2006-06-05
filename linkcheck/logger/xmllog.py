@@ -47,20 +47,6 @@ def xmlquoteattr (s):
     return xml.sax.saxutils.escape(s, xmlattr_entities)
 
 
-def xmlunquote (s):
-    """
-    Unquote characters from XML.
-    """
-    return xml.sax.saxutils.unescape(s)
-
-
-def xmlunquoteattr (s):
-    """
-    Unquote attributes from XML.
-    """
-    return xml.sax.saxutils.unescape(s, xmlattr_entities)
-
-
 class XMLLogger (linkcheck.logger.Logger):
     """
     XML output mirroring the GML structure. Easy to parse with any XML
