@@ -122,7 +122,7 @@ Loggers = {
     "none": logger.none.NoneLogger,
 }
 # for easy printing: a comma separated logger list
-LoggerKeys = ", ".join(["%r"%name for name in Loggers.iterkeys()])
+LoggerKeys = ", ".join(["%r" % name for name in Loggers.iterkeys()])
 
 
 def init_i18n ():
@@ -130,7 +130,7 @@ def init_i18n ():
     Initialize i18n with the configured locale dir. The environment
     variable LOCPATH can also specify a locale dir.
 
-    @return: C{None}
+    @return: None
     """
     locdir = os.environ.get('LOCPATH')
     if locdir is None:
