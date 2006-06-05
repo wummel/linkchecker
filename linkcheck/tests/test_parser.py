@@ -242,6 +242,19 @@ class TestParser (unittest.TestCase):
             self.check_results(self.htmlparser, _in, _out, out)
             self.check_results(self.htmlparser2, _in, _out, out2)
 
+    def test_handler (self):
+        for _in, _out in parsetests:
+            out = StringIO.StringIO()
+            out2 = StringIO.StringIO()
+            handler = linkcheck.HtmlParser.htmllib.HtmlPrinter(out)
+            self.htmlparser.handler = handler
+            handler2 = linkcheck.HtmlParser.htmllib.HtmlPrinter(out2)
+            self.htmlparser2.handler = handler2
+            for c in _in:
+                self.htmlparser.feed(c)
+                self.htmlparser2.feed(c)
+            self.assertEquals(out.getvalue(), out2.getvalue())
+
     def test_flush (self):
         """
         Test parser flushing.
@@ -257,9 +270,10 @@ class TestParser (unittest.TestCase):
         """
         Test entity resolving.
         """
+        resolve = linkcheck.HtmlParser.resolve_entities
         for c in "abcdefghijklmnopqrstuvwxyz":
-            self.assertEqual(
-                   linkcheck.HtmlParser.resolve_entities("&#%d;" % ord(c)), c)
+            self.assertEqual(resolve("&#%d;" % ord(c)), c)
+        self.assertEqual(resolve("&#1114112;"), u"")
 
 
 def test_suite ():

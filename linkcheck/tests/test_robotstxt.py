@@ -48,6 +48,55 @@ class TestRobotsTxt (unittest.TestCase):
         self.rp.parse(lines)
         self.assertEquals(str(self.rp), "\n".join(lines))
 
+    def test_robotstxt3 (self):
+        lines = [
+            "Disallow: /search",
+            "",
+            "Allow: /search",
+            "",
+            "Crawl-Delay: 5",
+            "",
+            "Blabla",
+            "",
+            "Bla: bla",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "")
+
+    def test_robotstxt4 (self):
+        lines = [
+            "User-agent: Bla",
+            "Disallow: /cgi-bin",
+            "User-agent: *",
+            "Disallow: /search",
+        ]
+        self.rp.parse(lines)
+        lines.insert(2, "")
+        self.assertEquals(str(self.rp), "\n".join(lines))
+
+    def test_robotstxt5 (self):
+        lines = [
+            "#one line comment",
+            "User-agent: Bla",
+            "Disallow: /cgi-bin # comment",
+            "Allow: /search",
+        ]
+        lines2 = [
+            "User-agent: Bla",
+            "Disallow: /cgi-bin",
+            "Allow: /search",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "\n".join(lines2))
+
+    def test_robotstxt6 (self):
+        lines = [
+            "User-agent: Bla",
+            "",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "")
+
     def test_crawldelay (self):
         lines = [
             "User-agent: Blubb",
@@ -64,6 +113,15 @@ class TestRobotsTxt (unittest.TestCase):
         self.assertEquals(self.rp.get_crawldelay("Blubb"), 10)
         self.assertEquals(self.rp.get_crawldelay("Hulla"), 5)
         self.assertEquals(self.rp.get_crawldelay("Bulla"), 1)
+
+    def test_crawldelay2 (self):
+        lines = [
+            "User-agent: Blubb",
+            "Crawl-delay: X",
+        ]
+        self.rp.parse(lines)
+        del lines[1]
+        self.assertEquals(str(self.rp), "\n".join(lines))
 
 
 def test_suite ():
