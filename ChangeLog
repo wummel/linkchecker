@@ -1,4 +1,4 @@
-4.2 "" (released xx.xx.xxxx)
+4.2 "V for Vendetta" (released xx.xx.xxxx)
 
   * Drop privileges when running as root under Unix systems. Add
     new option --allow-root to prevent this.
@@ -14,7 +14,7 @@
     Type: bugfix
     Changed: linkcheck/robotsparser2.py
 
-4.1 "Totsi" (released 29.5.2006)
+4.1 "Tsotsi" (released 29.5.2006)
 
   * Wait for spawned threads to finish before shutdown. Gets rid
     of exceptions during shutdown.
