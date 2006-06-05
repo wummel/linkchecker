@@ -615,13 +615,7 @@ if options.fileoutput:
            not has_encoding(ns['encoding']):
             print_usage(_("Unknown encoding %r in %r for option %s") % \
                        ns['encoding'], options.output, "'-F, --file-output'")
-        # generating loggers with fileoutput can throw
-        # an exception when opening the file
-        try:
-            logger = config.logger_new(ftype, **ns)
-        except OSError, msg:
-            print_usage(_("Illegal argument %r for option %s: %s") % \
-                       (arg, "'-F, --file-output'", str(msg)))
+        logger = config.logger_new(ftype, **ns)
         config['fileoutput'].append(logger)
 if options.interactive is not None:
     config['interactive'] = options.interactive
