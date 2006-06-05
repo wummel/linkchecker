@@ -128,6 +128,10 @@ class CaselessDict (dict):
         assert isinstance(key, basestring)
         return dict.__getitem__(self, key.lower())
 
+    def __delitem__ (self, key):
+        assert isinstance(key, basestring)
+        return dict.__delitem__(self, key.lower())
+
     def __setitem__ (self, key, value):
         assert isinstance(key, basestring)
         dict.__setitem__(self, key.lower(), value)
