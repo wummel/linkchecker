@@ -38,6 +38,7 @@ class TestRobotsTxt (unittest.TestCase):
             "User-agent: *",
         ]
         self.rp.parse(lines)
+        self.assert_(self.rp.mtime() > 0)
         self.assertEquals(str(self.rp), "\n".join(lines))
 
     def test_robotstxt2 (self):
