@@ -5,6 +5,14 @@
 Upgrading
 =========
 
+Migrating from 4.1 to 4.2
+-------------------------
+
+If run under Unix system as the 'root' user, LinkChecker drops
+privileges and runs under the 'nobody' user account.
+The new option --allow-root prevents this, ie. enables the old
+pre-4.2 behaviour.
+
 Migrating from 3.x to 4.0
 -------------------------
 
