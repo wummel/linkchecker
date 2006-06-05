@@ -22,10 +22,10 @@ import unittest
 import os
 import re
 
-import linkcheck.checker.tests.httptest
+import httptest
 
 
-class TestHttp (linkcheck.checker.tests.httptest.HttpServerTest):
+class TestHttp (httptest.HttpServerTest):
     """
     Test http:// link checking.
     """
@@ -157,7 +157,7 @@ def get_cookie (maxage=2000):
     return "; ".join(parts)
 
 
-class CookieRedirectHttpRequestHandler (linkcheck.checker.tests.httptest.NoQueryHttpRequestHandler):
+class CookieRedirectHttpRequestHandler (httptest.NoQueryHttpRequestHandler):
     """
     Handler redirecting certain requests, and setting cookies.
     """
