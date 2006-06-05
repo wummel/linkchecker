@@ -43,8 +43,6 @@ class GMLLogger (linkcheck.logger.Logger):
         Write start of checking info as gml comment.
         """
         super(GMLLogger, self).start_output()
-        if self.fd is None:
-            return
         self.starttime = time.time()
         if self.has_part("intro"):
             self.comment(_("created by %s at %s") %
@@ -71,8 +69,6 @@ class GMLLogger (linkcheck.logger.Logger):
         """
         Write one node and all possible edges.
         """
-        if self.fd is None:
-            return
         node = url_data
         if node.url and not self.nodes.has_key(node.url):
             node.id = self.nodeid
@@ -114,8 +110,6 @@ class GMLLogger (linkcheck.logger.Logger):
         """
         Write end of checking info as gml comment.
         """
-        if self.fd is None:
-            return
         self.write_edges()
         self.writeln(u"]")
         if self.has_part("outro"):

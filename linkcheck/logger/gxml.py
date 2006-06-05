@@ -49,8 +49,6 @@ class GraphXMLLogger (xmllog.XMLLogger):
         """
         Write one node and all possible edges.
         """
-        if self.fd is None:
-            return
         node = url_data
         if node.url and not self.nodes.has_key(node.url):
             node.id = self.nodeid
@@ -98,8 +96,6 @@ class GraphXMLLogger (xmllog.XMLLogger):
         """
         Finish graph output, and print end of checking info as xml comment.
         """
-        if self.fd is None:
-            return
         self.xml_endtag(u"graph")
         self.xml_endtag(u"GraphXML")
         self.xml_end_output()

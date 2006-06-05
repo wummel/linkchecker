@@ -75,8 +75,6 @@ class SQLLogger (linkcheck.logger.Logger):
         Write start of checking info as sql comment.
         """
         linkcheck.logger.Logger.start_output(self)
-        if self.fd is None:
-            return
         self.starttime = time.time()
         if self.has_part("intro"):
             self.comment(_("created by %s at %s") %
@@ -94,8 +92,6 @@ class SQLLogger (linkcheck.logger.Logger):
         """
         Store url check info into the database.
         """
-        if self.fd is None:
-            return
         log_warnings = [x[1] for x in url_data.warnings]
         log_infos = [x[1] for x in url_data.info]
         self.writeln(u"insert into %(table)s(urlname,recursionlevel,"
@@ -143,8 +139,6 @@ class SQLLogger (linkcheck.logger.Logger):
         """
         Write end of checking info as sql comment.
         """
-        if self.fd is None:
-            return
         if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime

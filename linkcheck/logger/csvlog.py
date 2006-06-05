@@ -53,8 +53,6 @@ class CSVLogger (linkcheck.logger.Logger):
         Write checking start info as csv comment.
         """
         super(CSVLogger, self).start_output()
-        if self.fd is None:
-            return
         self.starttime = time.time()
         row = []
         if self.has_part("intro"):
@@ -96,8 +94,6 @@ class CSVLogger (linkcheck.logger.Logger):
         """
         Write csv formatted url check info.
         """
-        if self.fd is None:
-            return
         row = []
         for s in [url_data.base_url or u"", url_data.recursion_level,
                url_data.parent_url or u"", url_data.base_ref or u"",
@@ -120,8 +116,6 @@ class CSVLogger (linkcheck.logger.Logger):
         """
         Write end of checking info as csv comment.
         """
-        if self.fd is None:
-            return
         self.stoptime = time.time()
         if self.has_part("outro"):
             duration = self.stoptime - self.starttime

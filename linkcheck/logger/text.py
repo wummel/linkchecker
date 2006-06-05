@@ -94,8 +94,6 @@ class TextLogger (linkcheck.logger.Logger):
         Write generic start checking info.
         """
         super(TextLogger, self).start_output()
-        if self.fd is None:
-            return
         self.starttime = time.time()
         if self.has_part('intro'):
             self.writeln(linkcheck.configuration.AppInfo)
@@ -114,8 +112,6 @@ class TextLogger (linkcheck.logger.Logger):
         """
         Write url checking info.
         """
-        if self.fd is None:
-            return
         if self.has_part('url'):
             self.write_url(url_data)
         if url_data.name and self.has_part('name'):
@@ -241,8 +237,6 @@ class TextLogger (linkcheck.logger.Logger):
         """
         Write end of output info, and flush all output buffers.
         """
-        if self.fd is None:
-            return
         if self.has_part('outro'):
             self.writeln()
             self.write(_("That's it.") + " ")

@@ -31,8 +31,6 @@ class CustomXMLLogger (xmllog.XMLLogger):
         Write start of checking info as xml comment.
         """
         super(CustomXMLLogger, self).start_output()
-        if self.fd is None:
-            return
         self.xml_start_output()
         self.xml_starttag(u'linkchecker')
         self.flush()
@@ -41,8 +39,6 @@ class CustomXMLLogger (xmllog.XMLLogger):
         """
         Log URL data in custom XML format.
         """
-        if self.fd is None:
-            return
         self.xml_starttag(u'urldata')
         if self.has_part('url'):
             self.xml_tag(u"url", unicode(url_data.base_url or u""))
@@ -86,8 +82,6 @@ class CustomXMLLogger (xmllog.XMLLogger):
         """
         Write XML end tag.
         """
-        if self.fd is None:
-            return
         self.xml_endtag(u"linkchecker")
         self.xml_end_output()
         self.close_fileoutput()
