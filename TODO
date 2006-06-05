@@ -14,3 +14,6 @@
 - [FEATURE] HTML/CSS syntax check
 
 - [FEATURE] Virus check
+
+- [FEATURE] When gopherlib is deprecated in Python, also deprecate
+  the gopherurl checker.
