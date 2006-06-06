@@ -172,76 +172,6 @@ class TestSetList (unittest.TestCase):
         self.assertEqual(self.l[1], 3)
 
 
-class TestLRU (unittest.TestCase):
-    """
-    Test routines of LRU queue.
-    """
-
-    def setUp (self):
-        """
-        Set up self.lru as empty LRU queue.
-        """
-        self.count = 4
-        self.lru = linkcheck.containers.LRU(self.count)
-
-    def test_len (self):
-        """
-        Test LRU length correctness.
-        """
-        self.assertEqual(len(self.lru), 0)
-        for i in xrange(self.count):
-            self.lru[str(i)] = str(i)
-            self.assertEqual(len(self.lru), i+1)
-        # overflow (inserting (self.count+1)th element
-        self.lru[""] = ""
-        self.assertEqual(len(self.lru), self.count)
-
-    def test_overflow (self):
-        """
-        Test LRU capacity overflow.
-        """
-        for i in xrange(self.count):
-            self.lru[str(i)] = str(i)
-        # overflow (inserting (self.count+1)th element
-        self.lru[""] = ""
-        # zero must have been deleted
-        self.assert_(not self.lru.has_key('0'))
-
-    def test_init (self):
-        """
-        Test initializing.
-        """
-        lru = linkcheck.containers.LRU(1, {1: 2})
-        self.assert_(1 in lru)
-        self.assertEqual(lru[1], 2)
-
-    def test_iters (self):
-        """
-        Test initializing.
-        """
-        toinsert = random.sample(xrange(6000000), self.count)
-        for x in toinsert:
-            self.lru[x] = x
-        for x in self.lru:
-            self.assert_(x in toinsert)
-        for x in self.lru.keys():
-            self.assert_(x in toinsert)
-        for x in self.lru.iterkeys():
-            self.assert_(x in toinsert)
-        for x in self.lru.itervalues():
-            self.assert_(x in toinsert)
-        for x, y in self.lru.iteritems():
-            self.assert_(x in toinsert)
-            self.assert_(y in toinsert)
-
-    def test_setdefault (self):
-        """
-        Test setting of default values.
-        """
-        self.assertEqual(self.lru.setdefault("hulla", "bla"), "bla")
-        self.assertEqual(self.lru.setdefault("hulla", "bla"), "bla")
-
-
 class TestCaselessDict (unittest.TestCase):
     """
     Test caseless dictionary routines.
@@ -283,6 +213,50 @@ class TestCaselessDict (unittest.TestCase):
         self.d.clear()
         self.assert_(not self.d)
 
+    def test_has_key (self):
+        self.assert_(not self.d)
+        self.d["a"] = 5
+        self.assert_(self.d.has_key("A"))
+
+    def test_setdefault (self):
+        self.assert_(not self.d)
+        self.d["a"] = 5
+        self.assertEquals(self.d.setdefault("A", 6), 5)
+        self.assertEquals(self.d.setdefault("b", 7), 7)
+
+    def test_get (self):
+        self.assert_(not self.d)
+        self.d["a"] = 42
+        self.assertEquals(self.d.get("A"), 42)
+        self.assert_(self.d.get("B") is None)
+
+    def test_update (self):
+        self.assert_(not self.d)
+        self.d["a"] = 42
+        self.d.update({"A": 43})
+        self.assertEquals(self.d["a"], 43)
+
+    def test_fromkeys (self):
+        self.assert_(not self.d)
+        keys = ["a", "A", "b", "C"]
+        d1 = self.d.fromkeys(keys, 42)
+        for key in keys:
+            self.assertEquals(d1[key], 42)
+
+    def test_pop (self):
+        self.assert_(not self.d)
+        self.d["a"] = 42
+        self.assertEquals(self.d.pop("A"), 42)
+        self.assert_(not self.d)
+        self.assertRaises(KeyError, self.d.pop, "A")
+
+    def test_popitem (self):
+        self.assert_(not self.d)
+        self.d["a"] = 42
+        self.assertEquals(self.d.popitem(), ("a", 42))
+        self.assert_(not self.d)
+        self.assertRaises(KeyError, self.d.popitem)
+
 
 class TestCaselessSortedDict (unittest.TestCase):
     """
@@ -299,8 +273,13 @@ class TestCaselessSortedDict (unittest.TestCase):
         self.assert_(not self.d)
         self.d["b"] = 6
         self.d["a"] = 7
+        self.d["C"] = 8
         prev = None
-        for key in self.d:
+        for key in self.d.keys():
+            self.assert_(key > prev)
+            prev = key
+        prev = None
+        for key, value in self.d.items():
             self.assert_(key > prev)
             prev = key
 

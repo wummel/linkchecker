@@ -148,23 +148,24 @@ class CaselessDict (dict):
         assert isinstance(key, basestring)
         return dict.get(self, key.lower(), def_val)
 
-    def setdefault (self, key, def_val=None):
+    def setdefault (self, key, *args):
         assert isinstance(key, basestring)
-        return dict.setdefault(self, key.lower(), def_val)
+        return dict.setdefault(self, key.lower(), *args)
 
     def update (self, other):
         for k, v in other.items():
             dict.__setitem__(self, k.lower(), v)
 
-    def fromkeys (self, iterable, value=None):
-        d = CaselessDict()
+    def fromkeys (cls, iterable, value=None):
+        d = cls()
         for k in iterable:
             dict.__setitem__(d, k.lower(), value)
         return d
+    fromkeys = classmethod(fromkeys)
 
-    def pop (self, key, def_val=None):
+    def pop (self, key, *args):
         assert isinstance(key, basestring)
-        return dict.pop(self, key.lower(), def_val)
+        return dict.pop(self, key.lower(), *args)
 
 
 class CaselessSortedDict (CaselessDict):
@@ -175,135 +176,3 @@ class CaselessSortedDict (CaselessDict):
 
     def items (self):
         return [(x, self[x]) for x in self.keys()]
-
-
-class Node (object):
-    """
-    Internal node with pointers to sisters.
-    Built for and used by PyPE:
-    http://pype.sourceforge.net
-    Copyright 2003 Josiah Carlson. (Licensed under the GPL)
-    """
-
-    def __init__ (self, prev, me):
-        """
-        Initialize pointers and data.
-        """
-        self.prev = prev
-        self.me = me
-        self.next = None
-
-
-class LRU (object):
-    """
-    Implementation of a length-limited O(1) LRU queue.
-    Built for and used by PyPE:
-    http://pype.sourceforge.net
-    Copyright 2003 Josiah Carlson. (Licensed under the GPL)
-    """
-
-    def __len__ (self):
-        """
-        Number of stored objects in the queue.
-        """
-        return len(self.d)
-
-    def __init__ (self, count, pairs=None):
-        """
-        Make new queue with given maximum count, and key/value pairs.
-        """
-        self.count = max(count, 1)
-        self.d = {}
-        self.first = None
-        self.last = None
-        if pairs is not None:
-            for key, value in pairs.items():
-                self[key] = value
-
-    def __contains__ (self, obj):
-        """Look if obj is in the queue."""
-        return obj in self.d
-
-    def has_key (self, obj):
-        """Look if obj is in the queue."""
-        return self.d.has_key(obj)
-
-    def __getitem__ (self, obj):
-        """Get stored object data, and mark it as LRU."""
-        a = self.d[obj].me
-        self[a[0]] = a[1]
-        return a[1]
-
-    def __setitem__ (self, obj, val):
-        """Set given object data, and mark it as LRU."""
-        if obj in self.d:
-            del self[obj]
-        nobj = Node(self.last, (obj, val))
-        if self.first is None:
-            self.first = nobj
-        if self.last:
-            self.last.next = nobj
-        self.last = nobj
-        self.d[obj] = nobj
-        if len(self.d) > self.count:
-            if self.first == self.last:
-                self.first = None
-                self.last = None
-                return
-            a = self.first
-            a.next.prev = None
-            self.first = a.next
-            a.next = None
-            del self.d[a.me[0]]
-            del a
-
-    def __delitem__ (self, obj):
-        """Remove object from queue."""
-        nobj = self.d[obj]
-        if nobj.prev:
-            nobj.prev.next = nobj.next
-        else:
-            self.first = nobj.next
-        if nobj.next:
-            nobj.next.prev = nobj.prev
-        else:
-            self.last = nobj.prev
-        del self.d[obj]
-
-    def __iter__ (self):
-        """Iterate over stored object values."""
-        cur = self.first
-        while cur != None:
-            cur2 = cur.next
-            yield cur.me[1]
-            cur = cur2
-
-    def iteritems (self):
-        """Iterate over stored object items."""
-        cur = self.first
-        while cur != None:
-            cur2 = cur.next
-            yield cur.me
-            cur = cur2
-
-    def iterkeys (self):
-        """Iterate over stored object keys."""
-        return iter(self.d)
-
-    def itervalues (self):
-        """Iterate over stored object values."""
-        for dummy, j in self.iteritems():
-            yield j
-
-    def keys (self):
-        """Iterate over stored object keys."""
-        return self.d.keys()
-
-    def setdefault (self, key, failobj=None):
-        """
-        Get given object data, and mark it as LRU. If it is not already
-        stored, store the given failobj.
-        """
-        if not self.has_key(key):
-            self[key] = failobj
-        return self[key]
