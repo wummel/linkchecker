@@ -1,5 +1,3 @@
-- [BUGFIX] abort the checker on internal errors
-
 - [BUGFIX] Ctrl-C is not always working. Why?
 
 - [BUGFIX] The URL in the log output is double normed.
