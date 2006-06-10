@@ -58,7 +58,7 @@ static void
 ftpparse_dealloc(ftpparseObject* self)
 {
     Py_XDECREF(self->string);
-    PyMem_DEL(self);
+    PyObject_Del(self);
 }
 
 static PyObject*  
