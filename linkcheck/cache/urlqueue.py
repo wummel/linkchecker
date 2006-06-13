@@ -18,9 +18,8 @@
 Handle a queue of URLs to check.
 """
 import threading
-import Queue
 import collections
-import time
+from time import time as _time
 import linkcheck
 import linkcheck.log
 
@@ -29,11 +28,15 @@ class Timeout (StandardError):
     """Raised by join()"""
     pass
 
+class Empty (StandardError):
+    "Exception raised by get()."
+    pass
 
-class UrlQueue (Queue.Queue):
+
+class UrlQueue (object):
     """
     A queue supporting several consumer tasks. The task_done() idea is
-    from the Python 2.5 Subversion repository.
+    from the Python 2.5 implementation of Queue.Queue().
     """
 
     def __init__ (self):
@@ -42,7 +45,15 @@ class UrlQueue (Queue.Queue):
         """
         # Note: don't put a maximum size on the queue since it would
         # lead to deadlocks when all worker threads called put().
-        Queue.Queue.__init__(self)
+        self.queue = collections.deque()
+        # mutex must be held whenever the queue is mutating.  All methods
+        # that acquire mutex must release it before returning.  mutex
+        # is shared between the two conditions, so acquiring and
+        # releasing the conditions also acquires and releases mutex.
+        self.mutex = threading.Lock()
+        # Notify not_empty whenever an item is added to the queue; a
+        # thread waiting to get is notified then.
+        self.not_empty = threading.Condition(self.mutex)
         self.all_tasks_done = threading.Condition(self.mutex)
         self.unfinished_tasks = 0
         self.finished_tasks = 0
@@ -50,6 +61,23 @@ class UrlQueue (Queue.Queue):
         self.checked = {}
         self.shutdown = False
         self.unsorted = 0
+
+    def qsize (self):
+        """Return the approximate size of the queue (not reliable!)."""
+        self.mutex.acquire()
+        n = len(self.queue)
+        self.mutex.release()
+        return n
+
+    def empty (self):
+        """Return True if the queue is empty, False otherwise (not reliable!)."""
+        self.mutex.acquire()
+        n = self._empty()
+        self.mutex.release()
+        return n
+
+    def _empty (self):
+        return not self.queue
 
     def get (self, timeout=None):
         """
@@ -59,37 +87,57 @@ class UrlQueue (Queue.Queue):
         """
         self.not_empty.acquire()
         try:
-            if timeout is None:
-                while self._empty():
-                    self.not_empty.wait()
-            else:
-                if timeout < 0:
-                    raise ValueError("'timeout' must be a positive number")
-                endtime = time.time() + timeout
-                while self._empty():
-                    remaining = endtime - time.time()
-                    if remaining <= 0.0:
-                        raise Queue.Empty()
-                    self.not_empty.wait(remaining)
-            url_data = self._get()
-            key = url_data.cache_url_key
-            if url_data.has_result:
-                # Already checked and copied from cache.
-                pass
-            elif key in self.checked:
-                # Already checked; copy result. And even ignore
-                # the case where url happens to be in_progress.
-                url_data.copy_from_cache(self.checked[key])
-            elif key in self.in_progress:
-                # It's being checked currently; put it back in the queue.
-                Queue.Queue._put(self, url_data)
-                url_data = None
-            else:
-                self.in_progress[key] = url_data
-            self.not_full.notify()
-            return url_data
+            return self._get(timeout)
         finally:
             self.not_empty.release()
+
+    def _get (self, timeout):
+        if timeout is None:
+            while self._empty():
+                self.not_empty.wait()
+        else:
+            if timeout < 0:
+                raise ValueError("'timeout' must be a positive number")
+            endtime = _time() + timeout
+            while self._empty():
+                remaining = endtime - _time()
+                if remaining <= 0.0:
+                    raise Empty()
+                self.not_empty.wait(remaining)
+        url_data = self.queue.popleft()
+        key = url_data.cache_url_key
+        if url_data.has_result:
+            # Already checked and copied from cache.
+            pass
+        elif key in self.checked:
+            # Already checked; copy result. And even ignore
+            # the case where url happens to be in_progress.
+            url_data.copy_from_cache(self.checked[key])
+        elif key in self.in_progress:
+            # It's being checked currently; put it back in the queue.
+            self.queue.append(url_data)
+            url_data = None
+        else:
+            self.in_progress[key] = url_data
+        return url_data
+
+    def put (self, item, block=True, timeout=None):
+        """Put an item into the queue.
+
+        If optional args 'block' is true and 'timeout' is None (the default),
+        block if necessary until a free slot is available. If 'timeout' is
+        a positive number, it blocks at most 'timeout' seconds and raises
+        the Full exception if no free slot was available within that time.
+        Otherwise ('block' is false), put an item on the queue if a free slot
+        is immediately available, else raise the Full exception ('timeout'
+        is ignored in that case).
+        """
+        self.mutex.acquire()
+        try:
+            self._put(item)
+            self.not_empty.notify()
+        finally:
+            self.mutex.release()
 
     def _put (self, url_data):
         """
@@ -209,9 +257,9 @@ class UrlQueue (Queue.Queue):
             else:
                 if timeout < 0:
                     raise ValueError("'timeout' must be a positive number")
-                endtime = time.time() + timeout
+                endtime = _time() + timeout
                 while self.unfinished_tasks:
-                    remaining = endtime - time.time()
+                    remaining = endtime - _time()
                     if remaining <= 0.0:
                         raise Timeout()
                     self.all_tasks_done.wait(remaining)
