@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 import time
-import Queue
 import task
+import linkcheck.cache.urlqueue
 
 
 def check_url (urlqueue, logger):
@@ -65,7 +65,7 @@ class Checker (task.CheckedTask):
             if url_data is not None:
                 self.check_url_data(url_data)
                 self.setName(self.origname)
-        except Queue.Empty:
+        except linkcheck.cache.urlqueue.Empty:
             time.sleep(0.1)
 
     def check_url_data (self, url_data):
