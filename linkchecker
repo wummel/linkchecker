@@ -736,7 +736,6 @@ if do_profile and not has_profile:
                        _("The `profile' Python module is not installed,"
                          " therefore the --profile option is disabled."))
 if do_profile and has_profile:
-    run = True
     if os.path.exists(_profile):
         question = _("Overwrite profiling file %r?\n"
                      "Press Ctrl-C to cancel, RETURN to continue.") % _profile
@@ -745,10 +744,9 @@ if do_profile and has_profile:
         except KeyboardInterrupt:
             print >>sys.stderr
             print >>sys.stderr, _("Canceled.")
-            run = False
-    if run:
-        import profile
-        profile.run("linkcheck.director.check_urls(aggregate)", _profile)
+            sys.exit(1)
+    import profile
+    profile.run("linkcheck.director.check_urls(aggregate)", _profile)
 elif options.psyco:
     try:
         import psyco
