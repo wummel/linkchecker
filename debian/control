@@ -8,7 +8,7 @@ Standards-Version: 3.7.2.0
 Package: linkchecker
 Architecture: any
 Depends: python2.4
-Suggests: apache | httpd, python-psyco (>= 1.5-3) | python2.4-psyco, python-optcomplete (>= 1.2-5) | python2.4-optcomplete, python2.4-profiler, python2.4-geoip
+Suggests: apache | httpd, python-psyco (>= 1.5-3), python-optcomplete (>= 1.2-5), python2.4-profiler, python-geoip (>= 1.2-2)
 Description: check websites and HTML documents for broken links
  Provides a command line program and web interface to check links
  of websites and HTML documents.
