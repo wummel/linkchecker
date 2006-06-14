@@ -731,23 +731,23 @@ for url in args:
         sys.exit(1)
     aggregate.urlqueue.put(url_data)
 # set up profiling/psyco
-if do_profile and not has_profile:
-    linkcheck.log.warn(linkcheck.LOG_CMDLINE,
-                       _("The `profile' Python module is not installed,"
-                         " therefore the --profile option is disabled."))
-if do_profile and has_profile:
-    if os.path.exists(_profile):
-        question = _("Overwrite profiling file %r?\n"
+if do_profile:
+    if has_profile:
+        if os.path.exists(_profile):
+            question = _("Overwrite profiling file %r?\n"
                      "Press Ctrl-C to cancel, RETURN to continue.") % _profile
-        try:
-            raw_input(question)
-        except KeyboardInterrupt:
-            print >>sys.stderr
-            print >>sys.stderr, _("Canceled.")
-            sys.exit(1)
-    import profile
-    profile.run("linkcheck.director.check_urls(aggregate)", _profile)
-elif options.psyco:
+            try:
+                raw_input(question)
+            except KeyboardInterrupt:
+                print >>sys.stderr
+                print >>sys.stderr, _("Canceled.")
+                sys.exit(1)
+    else:
+        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+                           _("The `profile' Python module is not installed,"
+                             " therefore the --profile option is disabled."))
+        do_profile = False
+if options.psyco and not do_profile:
     try:
         import psyco
         # psyco >= 1.4.0 final is needed
@@ -755,14 +755,19 @@ elif options.psyco:
             psyco.profile(memory=10000, memorymax=100000)
         else:
             # warn about old psyco version
-            linkcheck.log.warn(linkcheck.LOG_CMDLINE, 
-         _("Psyco is installed but not used since the version is too old.\n"
-           "Psyco >= 1.4 is needed."))
+            linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+           _("Psyco is installed but not used since the version is too old.\n"
+             "Psyco >= 1.4 is needed."))
     except ImportError:
         # no psyco available, just ignore
         pass
+
 # start checking
-linkcheck.director.check_urls(aggregate)
+if do_profile:
+    import profile
+    profile.run("linkcheck.director.check_urls(aggregate)", _profile)
+else:
+    linkcheck.director.check_urls(aggregate)
 
 # interactive input end
 if config['interactive']:
