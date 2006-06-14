@@ -748,7 +748,7 @@ if do_profile and has_profile:
             run = False
     if run:
         import profile
-        profile.run("manager.check_urls()", _profile)
+        profile.run("linkcheck.director.check_urls(aggregate)", _profile)
 elif options.psyco:
     try:
         import psyco
