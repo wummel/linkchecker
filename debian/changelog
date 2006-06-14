@@ -1,8 +1,9 @@
 linkchecker (4.2-1) unstable; urgency=low
 
   * New upstream release.
+  * Update dependencies for Python transition
 
- -- Bastian Kleineidam <calvin@debian.org>  Mon,  5 Jun 2006 23:40:28 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 14 Jun 2006 18:00:13 +0200
 
 linkchecker (4.1-1) unstable; urgency=low
 
