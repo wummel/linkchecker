@@ -14,6 +14,10 @@
     Type: bugfix
     Changed: linkcheck/robotsparser2.py
 
+  * Fix the --profile option run.
+    Type: bugfix
+    Changed: linkchecker
+
 4.1 "Tsotsi" (released 29.5.2006)
 
   * Wait for spawned threads to finish before shutdown. Gets rid
