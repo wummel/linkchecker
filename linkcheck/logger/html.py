@@ -41,13 +41,12 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 <title>%s</title>
 <style type="text/css">
 <!--
- h2 { font-family: Verdana,sans-serif; font-size: 22pt;
- font-style: bold; font-weight: bold }
+ h2 { font-family: Verdana,sans-serif; font-size: 22pt; font-weight: bold }
  body { font-family: Arial,sans-serif; font-size: 11pt }
  td { font-family: Arial,sans-serif; font-size: 11pt }
  code { font-family: Courier }
  a:hover { color: #34a4ef }
- //-->
+-->
 </style>
 </head>
 <body bgcolor="%s" link="%s" vlink="%s" alink="%s">
