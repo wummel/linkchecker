@@ -1,26 +1,28 @@
 #!/usr/bin/make -f
 
-common-install-impl::
+DEB_PYTHON_SYSTEM=pycentral
+DEB_PYTHON_COMPILE_VERSION=2.4
+
+common-install-arch::
 	$(MAKE) locale
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
 
-DEB_CLEAN_EXCLUDE = gui/glinkchecker.py.orig
-DEB_PYTHON_COMPILE_VERSION = 2.4
-PACKAGE = linkchecker
-ROOT = $(CURDIR)/debian/$(PACKAGE)
-PYTHON = python$(DEB_PYTHON_COMPILE_VERSION)
-DOCDIR = $(ROOT)/usr/share/doc/$(PACKAGE)
-CGIDIR = $(ROOT)/usr/lib/cgi-bin/lconline
-HTMLDIR = $(ROOT)/var/www/lconline
-SHARE = $(ROOT)/usr/share/$(PACKAGE)
-ETC = $(ROOT)/etc
+DEB_CLEAN_EXCLUDE=gui/glinkchecker.py.orig
+PACKAGE=linkchecker
+ROOT=$(CURDIR)/debian/$(PACKAGE)
+PYTHON=python$(DEB_PYTHON_COMPILE_VERSION)
+DOCDIR=$(ROOT)/usr/share/doc/$(PACKAGE)
+CGIDIR=$(ROOT)/usr/lib/cgi-bin/lconline
+HTMLDIR=$(ROOT)/var/www/lconline
+SHARE=$(ROOT)/usr/share/$(PACKAGE)
+ETC=$(ROOT)/etc
 
 common-configure-arch::
 	$(PYTHON) setup.py sdist --manifest-only
 
-common-install-impl::
+common-install-arch::
 # remove example files, we install them with dh_installexamples
 	rm -r $(ROOT)/usr/share/linkchecker/examples
 # install system wide configuration files in etc
