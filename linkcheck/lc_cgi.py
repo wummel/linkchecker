@@ -89,20 +89,21 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
         config["anchors"] = True
     if not form.has_key("errors"):
         config["verbose"] = True
-    if form.has_key("intern"):
-        pat = linkcheck.url.safe_host_pattern(re.escape(get_host_name(form)))
-    else:
-        pat = linkcheck.url.safe_url_pattern
-    config["internlinks"].append(linkcheck.get_link_pat("^%s$" % pat))
     # avoid checking of local files or other nasty stuff
-    config["externlinks"].append(
-             linkcheck.get_link_pat("^%s$" % linkcheck.url.safe_url_pattern))
-    config["externlinks"].append(linkcheck.get_link_pat(".*", strict=True))
+    pat = "!^%s$" % linkcheck.url.safe_url_pattern
+    config["externlinks"].append(linkcheck.get_link_pat(pat, strict=True))
     # start checking
     aggregate = linkcheck.director.get_aggregate(config)
     get_url_from = linkcheck.checker.get_url_from
     url = form["url"].value
     url_data = get_url_from(url, 0, aggregate, assume_local=False)
+    try:
+        linkcheck.add_intern_pattern(url_data, config)
+    except UnicodeError:
+        logit({}, env)
+        print_error(out,
+                    "URL has unparsable domain name: %s" % sys.exc_info()[1])
+        return
     aggregate.urlqueue.put(url_data)
     linkcheck.director.check_urls(aggregate)
 
