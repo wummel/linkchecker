@@ -65,7 +65,7 @@ def add_intern_pattern (url_data, config):
     pat = url_data.get_intern_pattern()
     if pat:
         assert None == log.debug(LOG_CHECK,
-           "Add intern pattern %r from command line", pat)
+          "Add intern pattern %r", pat)
         config['internlinks'].append(get_link_pat(pat))
 
 
