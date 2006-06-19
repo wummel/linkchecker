@@ -54,7 +54,7 @@ target="_top">LinkChecker</a>)
 <td><input type="checkbox" name="anchors" checked></td>
 </tr>
 <tr>
-<td>Log only errors:</td>
+<td>Log only warnings and errors:</td>
 <td><input type="checkbox" name="errors"></td>
 <td>Output language:</td>
 <td><select name="language">

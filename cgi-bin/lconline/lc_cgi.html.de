@@ -61,7 +61,7 @@ target="_top">LinkChecker</a>)
 <td><input type="checkbox" name="anchors" checked></td>
 </tr>
 <tr>
-<td>Nur Fehler ausgeben:</td>
+<td>Nur Warnungen und Fehler ausgeben:</td>
 <td><input type="checkbox" name="errors"></td>
 <td>Ausgabe:</td>
 <td><select name="language">
