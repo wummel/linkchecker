@@ -10,7 +10,7 @@
  td { font-family:Arial,sans-serif; font-size:11pt }
  code { font-family: Courier }
  a:hover { color: #34a4ef }
- //-->
+-->
 </style>
 <script type="text/javascript" src="check.js"></script>
 <script type="text/javascript">
@@ -63,10 +63,6 @@ target="_top">LinkChecker</a>)
 <tr>
 <td>Nur Fehler ausgeben:</td>
 <td><input type="checkbox" name="errors"></td>
-<td>Prüfe nur interne Links:</td>
-<td><input type="checkbox" name="intern" checked></td>
-</tr>
-<tr>
 <td>Ausgabe:</td>
 <td><select name="language">
   <option value="de" selected>Deutsch</option>
@@ -75,8 +71,6 @@ target="_top">LinkChecker</a>)
   <option value="nl">Niederländisch</option>
   </select>
 </td>
-<td>Prüfe nur strikt interne Links:</td>
-<td><input type="checkbox" name="externstrictall"></td>
 </tr>
 </table>
 </form>
