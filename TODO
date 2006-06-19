@@ -1,7 +1,5 @@
-- [BUG REPORT] the web interface only appears to check a single
-  page, it doesn't spider down the entire site.
-  Also it only runs on the server it is installed on; the
-  ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi don't work and
+- [BUG REPORT] the web interface only runs on the server it is installed on.
+  The   ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi don't work and
   are not (well) documented.
 
 - [BUGFIX] Ctrl-C is not always working. Why?
