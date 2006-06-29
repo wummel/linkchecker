@@ -45,6 +45,9 @@ You can skip the \fBhttp://\fP url part if the domain starts with \fBwww.\fP:
 .br
 You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
   \fBlinkchecker \-r0 ftp.linux.org\fP
+.br
+Generate a sitemap graph and convert it with the graphviz dot utility:
+  \fBlinkchecker \-odot \-v www.myhomepage.de | dot \-Tps > sitemap.ps\fP
 .
 .SH OPTIONS
 .SS General options

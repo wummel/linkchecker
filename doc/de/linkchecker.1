@@ -46,6 +46,9 @@ Sie können den \fBhttp://\fP URL Anteil weglassen wenn die Domäne mit \fBwww.\fP
 .br
 Sie können den \fBftp://\fP URL Anteil weglassen wenn die Domäne mit \fBftp.\fP beginnt:
   \fBlinkchecker \-r0 ftp.linux.org\fP
+.br
+Generate a sitemap graph and convert it with the graphviz dot utility:
+  \fBlinkchecker \-odot \-v www.myhomepage.de | dot \-Tps > sitemap.ps\fP
 .
 .SH OPTIONEN
 .SS "Allgemeine Optionen"
