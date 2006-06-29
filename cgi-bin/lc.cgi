@@ -26,7 +26,7 @@ import linkcheck.lc_cgi
 # log errors to stdout
 sys.stderr = sys.stdout
 
-# access
+# access: a list of IP numbers
 ALLOWED_HOSTS = ['127.0.0.1']
 ALLOWED_SERVERS = ['127.0.0.1']
 # uncomment the following lines to test your CGI values

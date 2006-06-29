@@ -20,7 +20,7 @@ import fcgi
 import linkcheck
 import linkcheck.lc_cgi
 
-# access
+# access: a list of IP numbers
 ALLOWED_HOSTS = ['127.0.0.1']
 ALLOWED_SERVERS = ['127.0.0.1']
 # main
