@@ -19,7 +19,6 @@ if [ $# -eq 0 ]; then
     rm coverage/encodings.*.cover
     rm coverage/email.*.cover
     rm coverage/logging.*.cover
-    rm coverage/psyco.*.cover
     rm coverage/xml.*.cover
 fi
 exit $res
