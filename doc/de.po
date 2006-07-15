@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
 "POT-Creation-Date: 2006-06-29 23:34+0200\n"
-"PO-Revision-Date: 2006-06-29 23:37+0100\n"
+"PO-Revision-Date: 2006-07-16 00:32+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -368,7 +368,7 @@ msgstr "B<--trace>"
 # type: Plain text
 #: en/linkchecker.1:151
 msgid "Print tracing information. The psyco optimization module will be disabled during traced runs."
-msgstr "Gebe Trace-Information aus. Die Psyco Laufzeitoptimierung wird währung Trace-Durchläufen deaktiviert."
+msgstr "Gebe Trace-Information aus. Die Psyco Laufzeitoptimierung wird während Trace-Durchläufen deaktiviert."
 
 # type: TP
 #: en/linkchecker.1:151
