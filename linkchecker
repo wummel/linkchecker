@@ -354,9 +354,6 @@ group.add_option("--priority", action="store_true", dest="priority",
                  help=_(
 """Run with normal thread scheduling priority. Per default LinkChecker
 runs with low thread priority to be suitable as a background job."""))
-group.add_option("--disable-psyco", action="store_false", dest="psyco",
-                 default=True, help=_(
-"""Do not use the psyco optimization module even if it is installed."""))
 group.add_option("-V", "--version", action="store_true", dest="version",
                  help=_("""Print version and exit."""))
 group.add_option("--allow-root", action="store_true", dest="allowroot",
@@ -416,6 +413,9 @@ suppress all console output with the option '-o none'.""") % \
 group.add_option("--no-status", action="store_false", dest="status",
                  default=True, help=_(
 """Do not print check status messages."""))
+group.add_option("--disable-psyco", action="store_false", dest="psyco",
+                 default=False, help=_(
+"""(DEPRECATED) Do not use the psyco optimization module even if it is installed."""))
 group.add_option("-D", "--debug", type="string", action="append",
                  metavar="STRING",
                  help=_("""Print debugging output for the given logger.
@@ -424,12 +424,10 @@ Specifying 'all' is an alias for specifying all available loggers.
 The option can be given multiple times to debug with more
 than one logger.
 
-For accurate results, threading and the psyco optimization module will
-be disabled during debug runs.""") % \
+For accurate results, threading will be disabled during debug runs.""") % \
 {"lognamelist": linkcheck.lognamelist})
 group.add_option("--trace", action="store_true", dest="trace",
-                 help=_("""Print tracing information. The psyco optimization
-module will be disabled during traced runs."""))
+                 help=_("""Print tracing information."""))
 group.add_option("--profile", action="store_true", dest="profile",
                  help=_(
 """Write profiling data into a file named %s in the
@@ -525,12 +523,6 @@ if options.debug:
     for _name in options.debug:
         if _name not in allowed_debugs:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
-    # disable psyco if debugging is enabled to prevent that stack lists
-    # have PsycoFrame objects instead of types.FrameType
-    options.psyco = False
-if options.trace:
-    # disable psyco for tracing
-    options.psyco = False
 config.init_logging(debug=options.debug)
 assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
    _("Python %s on %s"), sys.version, sys.platform)
@@ -730,7 +722,7 @@ for url in args:
             _("URL has unparsable domain name: %s"), sys.exc_info()[1])
         sys.exit(1)
     aggregate.urlqueue.put(url_data)
-# set up profiling/psyco
+# set up profiling
 if do_profile:
     if has_profile:
         if os.path.exists(_profile):
@@ -747,20 +739,6 @@ if do_profile:
                            _("The `profile' Python module is not installed,"
                              " therefore the --profile option is disabled."))
         do_profile = False
-if options.psyco and not do_profile:
-    try:
-        import psyco
-        # psyco >= 1.4.0 final is needed
-        if psyco.__version__ >= 0x10400f0:
-            psyco.profile(memory=10000, memorymax=100000)
-        else:
-            # warn about old psyco version
-            linkcheck.log.warn(linkcheck.LOG_CMDLINE,
-           _("Psyco is installed but not used since the version is too old.\n"
-             "Psyco >= 1.4 is needed."))
-    except ImportError:
-        # no psyco available, just ignore
-        pass
 
 # start checking
 if do_profile:
