@@ -1,7 +1,6 @@
 #!/bin/sh
 # network device, change as appropriate
-NETDEV=ppp0
-if ifconfig $NETDEV | grep RUNNING > /dev/null; then
+if ping -c 4 www.debian.org >/dev/null 2>&1; then
     echo "--resource=network"
 fi
 
