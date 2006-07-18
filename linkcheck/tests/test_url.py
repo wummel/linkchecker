@@ -209,9 +209,6 @@ class TestUrl (unittest.TestCase):
         url = "http://imadoofus.org/foo/ #a=1,2,3"
         nurl = "http://imadoofus.org/foo/%20#a%3D1%2C2%2C3"
         self.urlnormtest(url, nurl)
-        url = "http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab #version=7,0,19,0"
-        nurl = "http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab%20#version%3D7%2C0%2C19%2C0"
-        self.urlnormtest(url, nurl)
 
     def test_norm_empty_path (self):
         """
