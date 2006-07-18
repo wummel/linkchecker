@@ -47,9 +47,21 @@ class TestUrl (unittest.TestCase):
     """
 
     def urlnormtest (self, url, nurl):
-        self.assertEquals(url_norm(url), nurl)
-        cs = "iso8859-1"
-        self.assertEquals(url_norm(url.decode(cs)), nurl.decode(cs))
+        self.assertFalse(linkcheck.url.url_needs_quoting(nurl))
+        nurl1 = url_norm(url)
+        self.assertFalse(linkcheck.url.url_needs_quoting(nurl1))
+        self.assertEquals(nurl1, nurl)
+        # Test with non-Unicode URLs
+        try:
+            cs = "iso8859-1"
+            url = url.decode(cs)
+            nurl = nurl.decode(cs)
+            nurl1 = url_norm(url)
+            self.assertFalse(linkcheck.url.url_needs_quoting(nurl1))
+            self.assertEquals(nurl1, nurl)
+        except UnicodeEncodeError:
+            # Ignore non-Latin1 URLs
+            pass
 
     def test_pathattack (self):
         """
@@ -153,14 +165,14 @@ class TestUrl (unittest.TestCase):
         # Always provide the URI scheme in lowercase characters.
         url = "HTTP://example.com/"
         nurl = "http://example.com/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # Always provide the host, if any, in lowercase characters.
         url = "http://EXAMPLE.COM/"
         nurl = "http://example.com/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://EXAMPLE.COM:55/"
         nurl = "http://example.com:55/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_defaultport (self):
         """
@@ -170,10 +182,10 @@ class TestUrl (unittest.TestCase):
         # is desired
         url = "http://example.com:80/"
         nurl = "http://example.com/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com:8080/"
         nurl = "http://example.com:8080/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_host_dot (self):
         """
@@ -181,10 +193,10 @@ class TestUrl (unittest.TestCase):
         """
         url = "http://example.com./"
         nurl = "http://example.com/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com.:81/"
         nurl = "http://example.com:81/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_fragment (self):
         """
@@ -193,7 +205,13 @@ class TestUrl (unittest.TestCase):
         # Empty fragment identifiers must be preserved:
         url = "http://www.w3.org/2000/01/rdf-schema#"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
+        url = "http://imadoofus.org/foo/ #a=1,2,3"
+        nurl = "http://imadoofus.org/foo/%20#a%3D1%2C2%2C3"
+        self.urlnormtest(url, nurl)
+        url = "http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab #version=7,0,19,0"
+        nurl = "http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab%20#version%3D7%2C0%2C19%2C0"
+        self.urlnormtest(url, nurl)
 
     def test_norm_empty_path (self):
         """
@@ -203,13 +221,13 @@ class TestUrl (unittest.TestCase):
         # path of "/", use "/".
         url = "http://example.com"
         nurl = "http://example.com"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com?a=b"
         nurl = "http://example.com/?a=b"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com#foo"
         nurl = "http://example.com/#foo"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_path_backslashes (self):
         """
@@ -218,16 +236,16 @@ class TestUrl (unittest.TestCase):
         # note: this is not RFC conform (see url.py for more info)
         url = r"http://example.com\test.html"
         nurl = "http://example.com/test.html"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = r"http://example.com/a\test.html"
         nurl = "http://example.com/a/test.html"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = r"http://example.com\a\test.html"
         nurl = "http://example.com/a/test.html"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = r"http://example.com\a/test.html"
         nurl = "http://example.com/a/test.html"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_path_slashes (self):
         """
@@ -236,10 +254,10 @@ class TestUrl (unittest.TestCase):
         # reduce duplicate slashes
         url = "http://example.com//a/test.html"
         nurl = "http://example.com/a/test.html"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com//a/b/"
         nurl = "http://example.com/a/b/"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_path_dots (self):
         """
@@ -248,11 +266,11 @@ class TestUrl (unittest.TestCase):
         # Prevent dot-segments appearing in non-relative URI paths.
         url = "http://example.com/a/./b"
         nurl = "http://example.com/a/b"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com/a/../a/b"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://example.com/../a/b"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_path_relative_dots (self):
         """
@@ -261,82 +279,82 @@ class TestUrl (unittest.TestCase):
         # normalize redundant path segments
         url = '/foo/bar/.'
         nurl = '/foo/bar/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/./'
         nurl = '/foo/bar/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/..'
         nurl = '/foo/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/../'
         nurl = '/foo/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/../baz'
         nurl = '/foo/baz'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/../..'
         nurl = '/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/../../'
         nurl = '/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/../../baz'
         nurl = '/baz'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/../../../baz'
         nurl = '/baz'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/bar/../../../../baz'
         nurl = '/baz'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/./foo'
         nurl = '/foo'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/../foo'
         nurl = '/foo'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo.'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/.foo'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo..'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/..foo'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/./../foo'
         nurl = '/foo'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/./foo/.'
         nurl = '/foo/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/./bar'
         nurl = '/foo/bar'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo/../bar'
         nurl = '/bar'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '../../../images/miniXmlButton.gif'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/a..b/../images/miniXmlButton.gif'
         nurl = '/images/miniXmlButton.gif'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/.a.b/../foo/'
         nurl = '/foo/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/..a.b/../foo/'
         nurl = '/foo/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = 'b/../../foo/'
         nurl = '../foo/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = './foo'
         nurl = 'foo'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_path_relative_slashes (self):
         """
@@ -344,10 +362,10 @@ class TestUrl (unittest.TestCase):
         """
         url = '/foo//'
         nurl = '/foo/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = '/foo///bar//'
         nurl = '/foo/bar/'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_mail_url (self):
         """
@@ -356,15 +374,15 @@ class TestUrl (unittest.TestCase):
         # no netloc and no path
         url = 'mailto:'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # standard email
         url = 'mailto:user@www.imadoofus.org'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # email with subject
         url = 'mailto:user@www.imadoofus.org?subject=a_b'
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_other (self):
         """
@@ -374,34 +392,34 @@ class TestUrl (unittest.TestCase):
         # no netloc and no path
         url = 'news:'
         nurl = 'news:'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = 'snews:'
         nurl = 'snews://'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # using netloc and path
         url = 'nntp:'
         nurl = 'nntp://'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "news:§$%&/´`§%"
         nurl = 'news:%A7%24%25%26/%B4%60%A7%25'
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "news:comp.infosystems.www.servers.unix"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # javascript url
         url = "javascript:loadthis()"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         # ldap url
         url = "ldap://[2001:db8::7]/c=GB?objectClass?one"
         nurl = "ldap://%5B2001:db8::7%5D/c=GB%3FobjectClass%3Fone"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "tel:+1-816-555-1212"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "urn:oasis:names:specification:docbook:dtd:xml:4.1.2"
         nurl = "urn:oasis%3Anames%3Aspecification%3Adocbook%3Adtd%3Axml%3A4.1.2"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_with_auth (self):
         """
@@ -409,28 +427,28 @@ class TestUrl (unittest.TestCase):
         """
         url = "telnet://user@www.imadoofus.org"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "telnet://user:pass@www.imadoofus.org"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
         url = "http://user:pass@www.imadoofus.org/"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_file1 (self):
         url = "file:///a/b.txt"
         nurl = url
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_file2 (self):
         url = "file://C|/a/b.txt"
         nurl = "file://c%7C/a/b.txt"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_norm_invalid (self):
         url = u"äöü?:"
         nurl = u"%E4%F6%FC?:"
-        self.assertEqual(url_norm(url), nurl)
+        self.urlnormtest(url, nurl)
 
     def test_fixing (self):
         """
