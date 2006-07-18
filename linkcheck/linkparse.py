@@ -241,6 +241,6 @@ class LinkFinder (TagFinder):
         for u in urls:
             assert isinstance(u, unicode) or u is None, repr(u)
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-              u"LinkParser add link %s %s %s %s %s", tag, attr, u, name, base)
+              u"LinkParser add link %r %r %r %r %r", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))
