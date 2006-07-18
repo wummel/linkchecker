@@ -23,6 +23,10 @@
     Type: bugfix
     Changed: linkchecker
 
+  * Norm the base reference URL.
+    Type: bugfix
+    Changed: linkcheck/checker/urlbase.py
+
 4.1 "Tsotsi" (released 29.5.2006)
 
   * Wait for spawned threads to finish before shutdown. Gets rid

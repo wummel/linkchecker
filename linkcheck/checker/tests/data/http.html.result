@@ -122,6 +122,13 @@ name html entities
 warning Base URL is not properly normed. Normed URL is http://localhost:8001/?quoted=%%FC.
 valid
 
+url clsid:12345
+cache key clsid:12345
+real url clsid:12345
+baseurl http://imadoofus.org/foo/%%20#a%%3D1%%2C2%%2C3
+warning Clsid URL ignored.
+valid
+
 url http://localhost:8001/ (cached)
 cache key http://localhost:8001/
 real url http://localhost:8001/

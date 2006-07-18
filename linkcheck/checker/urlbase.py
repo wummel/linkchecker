@@ -662,6 +662,7 @@ class UrlBase (object):
                 base_ref = codebase
             else:
                 base_ref = h.base_ref
+            base_ref = linkcheck.url.url_norm(base_ref)[0]
             url_data = linkcheck.checker.get_url_from(url,
                   self.recursion_level+1, self.aggregate, parent_url=self.url,
                   base_ref=base_ref, line=line, column=column, name=name,
