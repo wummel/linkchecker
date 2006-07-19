@@ -172,7 +172,7 @@ The following warnings are recognized in the ignorewarnings config
 file entry:
 """)
 for tag, desc in linkcheck.checker.Warnings.items():
-    Warnings += " o %s%s   %s%s" % (tag, os.linesep, desc, os.linesep)
+    Warnings += u" o %s\n   %s\n" % (tag, desc)
 
 def encode (s, codec="iso8859-15"):
     """
