@@ -27,6 +27,11 @@
     Type: bugfix
     Changed: linkcheck/checker/urlbase.py
 
+  * If default encoding cannot be determined, fall back to ASCII.
+    Type: bugfix
+    Changed: linkcheck/i18n.py
+    Closes: SF bug #1524800
+
 4.1 "Tsotsi" (released 29.5.2006)
 
   * Wait for spawned threads to finish before shutdown. Gets rid

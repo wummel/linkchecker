@@ -27,6 +27,10 @@ import gettext
 supported_languages = ['en']
 default_language = 'en'
 default_encoding = locale.getpreferredencoding()
+# It can happen that the preferrec encoding is not determinable, which
+# means the function returned None. Fall back to ASCII in this case.
+if default_encoding is None:
+    default_encoding = "ascii"
 
 def install_builtin (translator, do_unicode):
     """
