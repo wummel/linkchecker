@@ -223,9 +223,10 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
         raise BadResponse
     return r
 
-def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.rdataclass.IN,
-        timeout=None, port=53, keyring=None, keyname=None, relativize=True,
-        af=None, lifetime=None, source=None, source_port=0):
+def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
+         rdclass=linkcheck.dns.rdataclass.IN,
+         timeout=None, port=53, keyring=None, keyname=None, relativize=True,
+         af=None, lifetime=None, source=None, source_port=0, serial=0):
     """Return a generator for the responses to a zone transfer.
 
     @param where: where to send the message
@@ -264,11 +265,19 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
-    @type source_port: int"""
+    @type source_port: int
+    @param serial: The SOA serial number to use as the base for an IXFR diff
+    sequence (only meaningful if rdtype == linkcheck.dns.rdatatype.IXFR).
+    @type serial: int
+    """
 
-    if isinstance(zone, str):
+    if isinstance(zone, basestring):
         zone = linkcheck.dns.name.from_text(zone)
     q = linkcheck.dns.message.make_query(zone, rdtype, rdclass)
+    if rdtype == linkcheck.dns.rdatatype.IXFR:
+        rrset = linkcheck.dns.rrset.from_text(zone, 0, 'IN', 'SOA',
+                                       '. . %u 0 0 0 0' % serial)
+        q.authority.append(rrset)
     if not keyring is None:
         q.use_tsig(keyring, keyname)
     wire = q.to_wire()
@@ -294,7 +303,8 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
     tcpmsg = struct.pack("!H", l) + wire
     _net_write(s, tcpmsg, expiration)
     done = False
-    seen_soa = False
+    soa_rrset = None
+    soa_count = 0
     if relativize:
         origin = zone
         oname = linkcheck.dns.name.empty
@@ -315,24 +325,51 @@ def xfr(where, zone, rdtype=linkcheck.dns.rdatatype.AXFR, rdclass=linkcheck.dns.
                                   multi=True, first=first)
         tsig_ctx = r.tsig_ctx
         first = False
-        if not seen_soa:
+        answer_index = 0
+        delete_mode = False
+        expecting_SOA = False
+        if soa_rrset is None:
             if not r.answer or r.answer[0].name != oname:
-                raise linkcheck.dns.exception.FormError
+                raise linkcheck.dns.exception.FormError, "first RRset is not an SOA"
+            answer_index = 1
             rrset = r.answer[0]
             if rrset.rdtype != linkcheck.dns.rdatatype.SOA:
                 raise linkcheck.dns.exception.FormError
-            seen_soa = True
-            if len(r.answer) > 1 and r.answer[-1].name == oname:
-                rrset = r.answer[-1]
-                if rrset.rdtype == linkcheck.dns.rdatatype.SOA:
-                    if q.keyring and not r.had_tsig:
-                        raise linkcheck.dns.exception.FormError, "missing TSIG"
+            soa_rrset = rrset.copy()
+            if rdtype == linkcheck.dns.rdatatype.IXFR:
+                if soa_rrset[0].serial == serial:
+                    #
+                    # We're already up-to-date.
+                    #
                     done = True
-        elif r.answer and r.answer[-1].name == oname:
-            rrset = r.answer[-1]
-            if rrset.rdtype == linkcheck.dns.rdatatype.SOA:
-                if q.keyring and not r.had_tsig:
-                    raise linkcheck.dns.exception.FormError, "missing TSIG"
-                done = True
+                else:
+                    expecting_SOA = True
+        #
+        # Process SOAs in the answer section (other than the initial
+        # SOA in the first message).
+        #
+        for rrset in r.answer[answer_index:]:
+            if done:
+                raise linkcheck.dns.exception.FormError, "answers after final SOA"
+            if rrset.rdtype == linkcheck.dns.rdatatype.SOA and rrset.name == oname:
+                if expecting_SOA:
+                    if rrset[0].serial != serial:
+                        raise linkcheck.dns.exception.FormError, \
+                              "IXFR base serial mismatch"
+                    expecting_SOA = False
+                elif rdtype == linkcheck.dns.rdatatype.IXFR:
+                    delete_mode = not delete_mode
+                if rrset == soa_rrset and not delete_mode:
+                    done = True
+            elif expecting_SOA:
+                #
+                # We made an IXFR request and are expecting another
+                # SOA RR, but saw something else, so this must be an
+                # AXFR response.
+                #
+                rdtype = linkcheck.dns.rdatatype.AXFR
+                expecting_SOA = False
+        if done and q.keyring and not r.had_tsig:
+            raise linkcheck.dns.exception.FormError, "missing TSIG"
         yield r
     s.close()
