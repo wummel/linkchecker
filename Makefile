@@ -38,7 +38,7 @@ distclean: clean cleandeb
 # clean aborted dist builds and -out files
 	rm -f linkchecker-out* linkchecker.prof
 	rm -rf linkchecker-$(VERSION)
-	rm -rf coverage dist-stamp
+	rm -rf coverage dist-stamp python-build-stamp*
 
 .PHONY: cleandeb
 cleandeb:
