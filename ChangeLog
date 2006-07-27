@@ -1,3 +1,7 @@
+4.3 "Brick" (released xx.xx.xxxx)
+
+  *
+
 4.2 "V for Vendetta" (released 26.7.2006)
 
   * Drop privileges when running as root under Unix systems. Add
