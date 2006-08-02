@@ -5,6 +5,11 @@
 Upgrading
 =========
 
+Migrating from 4.2 to 4.3
+-------------------------
+
+The deprecated --disable-psyco option has been removed.
+
 Migrating from 4.1 to 4.2
 -------------------------
 
