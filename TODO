@@ -2,8 +2,6 @@
   The   ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi don't work and
   are not (well) documented.
 
-- [BUGFIX] Ctrl-C is not always working. Why?
-
 - [BUGFIX] The URL in the log output is double normed.
 
 - [USAGE] make a nice GUI for linkchecker
