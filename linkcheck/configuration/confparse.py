@@ -21,7 +21,7 @@ import re
 import linkcheck
 import linkcheck.log
 
-class LCConfigParser (ConfigParser.ConfigParser, object):
+class LCConfigParser (ConfigParser.RawConfigParser, object):
     """
     Parse a LinkChecker configuration file.
     """
