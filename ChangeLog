@@ -1,6 +1,9 @@
 4.3 "Brick" (released xx.xx.xxxx)
 
-  *
+  * Use RawConfigParser for config parsing, getting rid of the unused
+    interpolation feature of the default ConfigParser.
+    Type: feature
+    Changed: linkcheck/configuration/confparse.py
 
 4.2 "V for Vendetta" (released 26.7.2006)
 
