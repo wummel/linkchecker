@@ -413,9 +413,6 @@ suppress all console output with the option '-o none'.""") % \
 group.add_option("--no-status", action="store_false", dest="status",
                  default=True, help=_(
 """Do not print check status messages."""))
-group.add_option("--disable-psyco", action="store_false", dest="psyco",
-                 default=False, help=_(
-"""(DEPRECATED) Do not use the psyco optimization module even if it is installed."""))
 group.add_option("-D", "--debug", type="string", action="append",
                  metavar="STRING",
                  help=_("""Print debugging output for the given logger.
