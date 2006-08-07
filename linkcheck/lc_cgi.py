@@ -35,7 +35,7 @@ import linkcheck.director
 
 _logfile = None
 _supported_langs = ('de', 'fr', 'nl', 'C')
-_is_level = re.compile(r'^[0123]$').match
+_is_level = re.compile(r'^(0|1|2|3|-1)$').match
 
 class FormError (StandardError):
     """

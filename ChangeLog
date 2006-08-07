@@ -9,6 +9,12 @@
     Type: feature
     Changed: linkchecker
 
+  * Allow infinite recursion in CGI script, and add a warning about
+    performance requirements.
+    Type: feature
+    Changed: cgi-bin/lconline/lc_cgi.html.*, linkcheck/lc_cgi.py,
+      doc/en/install.txt
+
 4.2 "V for Vendetta" (released 26.7.2006)
 
   * Drop privileges when running as root under Unix systems. Add

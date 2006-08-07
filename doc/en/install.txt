@@ -175,6 +175,11 @@ interface.
 You can use and adjust the example HTML files in the lconline directory
 to run the script.
 
+0. Note that running LinkChecker requires CPU and memory resources.
+   Allowing a CGI script to execute such a program for possibly a
+   large number of users might deplete those resources.
+   Be sure to only allow access from trusted sites to this script.
+   
 1. Choose a CGI script. The simplest is lc.cgi and you need a web server
    with CGI support.
    The script lc.fcgi (I tested this a while ago) needs a web server

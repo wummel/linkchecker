@@ -55,6 +55,7 @@ target="_top">LinkChecker</a>)
   <option value="1" selected>1</option>
   <option value="2">2</option>
   <option value="3">3</option>
+  <option value="-1">unendlich</option>
   </select>
 </td>
 <td>Prüfe Anker in HTML:</td>

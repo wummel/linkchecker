@@ -48,6 +48,7 @@ target="_top">LinkChecker</a>)
   <option value="1" selected>1</option>
   <option value="2">2</option>
   <option value="3">3</option>
+  <option value="-1">infinite</option>
   </select>
 </td>
 <td>Check anchors in HTML:</td>
