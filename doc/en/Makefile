@@ -21,5 +21,5 @@ homepage: nav
 	cp *.html *.css *.jpg *.png *.ico $(HTMLDIR)/htdocs
 
 .PHONY: test
-test:
+test:	all
 	xmllint --valid --noout *.html
