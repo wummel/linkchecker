@@ -25,6 +25,8 @@ clean:
 	-$(PYTHON) setup.py clean --all
 	rm -f sign-stamp release-stamp
 	$(MAKE) -C po clean
+	$(MAKE) -C doc clean
+	$(MAKE) -C doc/en clean
 	rm -f linkcheck/HtmlParser/htmlsax.so
 	rm -f linkcheck/HtmlParser/*.output
 	rm -f linkcheck/ftpparse/_ftpparse.so
@@ -93,7 +95,7 @@ upload:
 #	@read
 
 .PHONY: release
-release: releasecheck distclean dist-stamp sign_distfiles homepage upload
+release: distclean releasecheck dist-stamp sign_distfiles homepage upload
 	@echo "Uploading new LinkChecker Homepage..."
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 	@echo "Register at Python Package Index..."
@@ -120,6 +122,7 @@ releasecheck: syntaxcheck
 	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog > /dev/null; then \
 	  echo "Could not release: edit ChangeLog release date"; false; \
 	fi
+	$(MAKE) -C doc/en test
 
 .PHONY: sign_distfiles
 sign_distfiles:
