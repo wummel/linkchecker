@@ -1,4 +1,4 @@
-4.3 "Brick" (released xx.xx.xxxx)
+4.3 "Brick" (released 17.8.2006)
 
   * Use RawConfigParser for config parsing, getting rid of the unused
     interpolation feature of the default ConfigParser.
