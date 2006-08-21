@@ -37,6 +37,11 @@ like LinkChecker.
   .. _jchecklinks:
      http://web.purplefrog.com/~thoth/jchecklinks/
 
+- `KLinkStatus`_ written in C++
+
+  .. _KLinkStatus:
+     http://klinkstatus.kdewebdev.org/
+
 - `link-checker`_ written in C
   
   .. _link-checker:
