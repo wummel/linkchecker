@@ -32,8 +32,7 @@ class TestNews (linkcheck.checker.tests.LinkCheckTest):
     needed_resources = ['network']
 
     def newstest (self, url, resultlines):
-        fields = ['url', 'cachekey', 'realurl', 'warning', 'result', ]
-        self.direct(url, resultlines, fields=fields)
+        self.direct(url, resultlines)
 
     def test_news (self):
         """
