@@ -73,7 +73,8 @@ class TestLogger (linkcheck.logger.Logger):
             self.result.append(u"baseurl %s" % url_data.base_ref)
         if self.has_part('info'):
             for info in url_data.info:
-                self.result.append(u"info %s" % info[1])
+                if "Last modified" not in info[1]:
+                    self.result.append(u"info %s" % info[1])
         if self.has_part('warning'):
             for warning in url_data.warnings:
                 self.result.append(u"warning %s" % warning[1])
@@ -188,7 +189,7 @@ class LinkCheckTest (unittest.TestCase):
             l = sep.join(l)
             self.fail(l.encode("iso8859-1", "ignore"))
 
-    def direct (self, url, resultlines, fields=None, recursionlevel=0,
+    def direct (self, url, resultlines, parts=None, recursionlevel=0,
                 confargs=None, assume_local=False):
         """
         Check url with expected result.
@@ -199,8 +200,8 @@ class LinkCheckTest (unittest.TestCase):
         else:
             confargs['recursionlevel'] = recursionlevel
         logargs = {'expected': resultlines}
-        if fields is not None:
-            logargs['fields'] = fields
+        if parts is not None:
+            logargs['parts'] = parts
         aggregate = get_test_aggregate(confargs, logargs)
         url_data = linkcheck.checker.get_url_from(
                                 url, 0, aggregate, assume_local=assume_local)
