@@ -17,6 +17,6 @@ function isValid (thisForm) {
 
 // check url syntax
 function checkSyntax (url) {
-    var syntax = /^https?:\/\/[-a-zA-Z.\/=%?~]+$/;
+    var syntax = /^https?:\/\/[-_a-zA-Z0-9.\/=%?~]+$/;
     return syntax.test(url);
 }
