@@ -43,8 +43,8 @@ class SetList (list):
         """Set new value, and eliminate a possible duplicate value."""
         # search index i with self[i] == item
         delidx = -1
-        for i in xrange(len(self)):
-            if self[i] == item and i != index:
+        for i, x in enumerate(self):
+            if x == item and i != index:
                 delidx = i
                 # stop here, there can be only one duplicate
                 break
@@ -96,11 +96,11 @@ class ListDict (dict):
 
     def iteritems (self):
         """Return iterator over sorted items."""
-        return iter(self.items())
+        return ((k, self[k]) for k in self._keys)
 
     def iterkeys (self):
         """Return iterator over sorted keys."""
-        return iter(self.keys())
+        return iter(self._keys)
 
     def clear (self):
         """Remove all dict entries."""
@@ -176,3 +176,6 @@ class CaselessSortedDict (CaselessDict):
 
     def items (self):
         return [(x, self[x]) for x in self.keys()]
+
+    def iteritems (self):
+        return ((x, self[x]) for x in self.keys())
