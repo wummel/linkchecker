@@ -1,3 +1,10 @@
+4.4 "" (released xx.xx.xxxx)
+
+  * The JavaScript URL syntax check allows now digits and underscores. 
+    Patch from Olivier Berger.
+    Type: bugfix
+    Changed: cgi-bin/lconline/check.js
+
 4.3 "Brick" (released 17.8.2006)
 
   * Use RawConfigParser for config parsing, getting rid of the unused
