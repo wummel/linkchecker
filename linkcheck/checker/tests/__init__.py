@@ -29,6 +29,8 @@ import linkcheck.checker
 import linkcheck.configuration
 import linkcheck.logger
 
+# helper alias
+get_url_from = linkcheck.checker.get_url_from
 
 class TestLogger (linkcheck.logger.Logger):
     """
@@ -178,8 +180,7 @@ class LinkCheckTest (unittest.TestCase):
             confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
         aggregate = get_test_aggregate(confargs, logargs)
-        url_data = linkcheck.checker.get_url_from(
-                                url, 0, aggregate, assume_local=assume_local)
+        url_data = get_url_from(url, 0, aggregate, assume_local=assume_local)
         if assume_local:
             linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
@@ -205,8 +206,7 @@ class LinkCheckTest (unittest.TestCase):
         if parts is not None:
             logargs['parts'] = parts
         aggregate = get_test_aggregate(confargs, logargs)
-        url_data = linkcheck.checker.get_url_from(
-                                url, 0, aggregate, assume_local=assume_local)
+        url_data = get_url_from(url, 0, aggregate, assume_local=assume_local)
         if assume_local:
             linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
