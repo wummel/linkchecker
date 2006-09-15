@@ -5,6 +5,11 @@
     Type: bugfix
     Changed: cgi-bin/lconline/check.js
 
+  * Add "internlinks" documentation and example to the default config
+    file linkcheckerrc.
+    Type: documentation
+    Changed: config/linkcheckerrc
+
 4.3 "Brick" (released 17.8.2006)
 
   * Use RawConfigParser for config parsing, getting rid of the unused

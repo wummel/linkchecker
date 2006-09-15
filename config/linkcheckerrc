@@ -1,6 +1,5 @@
-# sample resource file
-# see linkchecker -h for help on these options
-# commandline options override these settings!
+# Sample resource file; see linkchecker -h for help on these options.
+# Commandline options override these settings.
 
 [output]
 # interactive operation
@@ -154,6 +153,9 @@
 # that prevent a valid URL from being logged. Note that the warning
 # will be logged in invalid URLs.
 #ignorewarnings=url-unnormed,url-unicode-domain,anchor-not-found
+# Regular expression to add more URLs recognized as internal links.
+# Default is that URLs given on the command line are internal.
+#internlinks=^http://www\.my(other)?domain\.net/
 
 # You can provide different user/password pairs for different link types.
 # Entries are a triple (link regular expression, username, password),
