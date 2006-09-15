@@ -271,7 +271,7 @@ class HTTPResponse:
     # See RFC 2616 sec 19.6 and RFC 1945 sec 6 for details.
 
     def __init__(self, sock, debuglevel=0, strict=0, method=None):
-        self.fp = sock.makefile('rb', 0)
+        self.fp = sock.makefile('rb')
         self.debuglevel = debuglevel
         self.strict = strict
         self._method = method
@@ -1151,7 +1151,7 @@ class HTTP:
 
             ### should we keep this behavior? do people use it?
             # keep the socket open (as a file), and return it
-            self.file = self._conn.sock.makefile('rb', 0)
+            self.file = self._conn.sock.makefile('rb')
 
             # close our socket -- we want to restart after any protocol error
             self.close()
