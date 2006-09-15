@@ -73,8 +73,10 @@ class TestLogger (linkcheck.logger.Logger):
             self.result.append(u"baseurl %s" % url_data.base_ref)
         if self.has_part('info'):
             for info in url_data.info:
-                if "Last modified" not in info[1]:
-                    self.result.append(u"info %s" % info[1])
+                line = info[1]
+                if "Last modified" not in line and \
+                   "is located in" not in line:
+                    self.result.append(u"info %s" % line)
         if self.has_part('warning'):
             for warning in url_data.warnings:
                 self.result.append(u"warning %s" % warning[1])
