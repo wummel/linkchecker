@@ -205,7 +205,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @return: response or None if url is already handled
         @rtype: HttpResponse or None
         """
+        response = None
         while True:
+            if response is not None:
+                response.close()
             try:
                 response = self._get_http_response()
             except linkcheck.httplib2.BadStatusLine:
@@ -250,6 +253,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if tries == -1:
                 assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                     "already handled")
+                response.close()
                 return None
             if tries >= self.max_redirects:
                 if self.method == "HEAD":
@@ -406,7 +410,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if response.status == 204:
                 # no content
                 self.add_warning(unicode_safe(response.reason),
-                            tag="http-empty-content")
+                                 tag="http-empty-content")
             # store cookies for valid links
             if self.aggregate.config['storecookies']:
                 for c in self.cookies:
@@ -484,11 +488,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 name = c.client_header_name()
                 value = c.client_header_value()
                 self.url_connection.putheader(name, value)
-        try:
-            self.url_connection.endheaders()
-        except:
-            print "XXX", self.url_connection
-            raise
+        self.url_connection.endheaders()
         response = self.url_connection.getresponse()
         self.persistent = not response.will_close
         self.timeout = headers.http_timeout(response)
@@ -522,8 +522,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         elif scheme == "https" and supportHttps:
             h = linkcheck.httplib2.HTTPSConnection(host)
         else:
-            raise linkcheck.LinkCheckerError(
-                                 _("Unsupported HTTP url scheme %r") % scheme)
+            msg = _("Unsupported HTTP url scheme %r") % scheme
+            raise linkcheck.LinkCheckerError(msg)
         if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
             h.set_debuglevel(1)
         h.connect()
@@ -560,6 +560,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     f = StringIO.StringIO(self.data)
                 self.data = f.read()
             self.downloadtime = time.time() - t
+            response.close()
         return self.data
 
     def is_html (self):
