@@ -192,6 +192,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # check response
         if response:
             self.check_response(response)
+            response.close()
 
     def check_http_connection (self):
         """
@@ -230,6 +231,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                          _("Enforced proxy %r ignored, aborting.") % newproxy,
                          valid=False)
                     return response
+                response.close()
                 response = self._get_http_response()
                 # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
@@ -374,6 +376,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 # pretend to be finished and logged
                 return -1, response
             # new response data
+            response.close()
             response = self._get_http_response()
             tries += 1
         return tries, response
@@ -486,7 +489,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             print "XXX", self.url_connection
             raise
         response = self.url_connection.getresponse()
-        self.persistent = headers.http_persistent(response)
+        self.persistent = not response.will_close
         self.timeout = headers.http_timeout(response)
         self.headers = response.msg
         # If possible, use official W3C HTTP response name
