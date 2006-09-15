@@ -411,8 +411,8 @@ class UrlBase (object):
             # make nicer error msg for bad status line
             if isinstance(value, linkcheck.httplib2.BadStatusLine):
                 value = _('Bad HTTP response %r') % str(value)
-            self.set_result(linkcheck.strformat.unicode_safe(value),
-                            valid=False)
+            uvalue = linkcheck.strformat.unicode_safe(value)
+            self.set_result(uvalue, valid=False)
 
         # check content
         warningregex = self.aggregate.config["warningregex"]
