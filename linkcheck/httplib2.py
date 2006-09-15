@@ -300,7 +300,7 @@ class HTTPResponse:
         if not line:
             # Presumably, the server closed the connection before
             # sending a valid response.
-            raise BadStatusLine(line)
+            raise BadStatusLine("Bad status line %r" % line)
         try:
             [version, status, reason] = line.split(None, 2)
         except ValueError:
@@ -314,7 +314,7 @@ class HTTPResponse:
         if not version.startswith('HTTP/'):
             if self.strict:
                 self.close()
-                raise BadStatusLine(line)
+                raise BadStatusLine("Bad status line %r" % line)
             else:
                 # assume it's a Simple-Response from an 0.9 server
                 self.fp = LineAndFileWrapper(line, self.fp)
@@ -324,9 +324,9 @@ class HTTPResponse:
         try:
             status = int(status)
             if status < 100 or status > 999:
-                raise BadStatusLine(line)
+                raise BadStatusLine("Bad status line %r" % line)
         except ValueError:
-            raise BadStatusLine(line)
+            raise BadStatusLine("Bad status line %r" % line)
         return version, status, reason
 
     def begin(self):
