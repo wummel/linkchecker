@@ -11,7 +11,7 @@
     Changed: config/linkcheckerrc
 
   * Detect more cases when a HTTP connection cannot be reused, and
-    must be closed. And close response object after usage.
+    must be closed. And close response objects after usage.
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
@@ -20,7 +20,8 @@
     Type: bugfix
     Changed: linkcheck/cache/connection.py
 
-  * Add more infos to various HTTP errors.
+  * Add more infos to various HTTP errors. Don't close connection when
+    the response object is still open.
     Type: feature
     Changed: linkcheck/httplib2.py
 
