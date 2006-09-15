@@ -643,7 +643,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         _user, _password = self.get_user_password()
         key = ("http", self.urlparts[1], _user, _password)
         if self.persistent:
-            #assert self.url_connection.is_idle(), str(self)
+            assert self.url_connection.is_idle(), str(self)
             cache_add = self.aggregate.connections.add
             cache_add(key, self.url_connection, self.timeout)
         else:
