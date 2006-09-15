@@ -557,13 +557,13 @@ class HTTPResponse:
 
     def getheader(self, name, default=None):
         if self.msg is None:
-            raise ResponseNotReady()
+            raise ResponseNotReady("Response msg is None")
         return self.msg.getheader(name, default)
 
     def getheaders(self):
         """Return list of (header, value) tuples."""
         if self.msg is None:
-            raise ResponseNotReady()
+            raise ResponseNotReady("Response msg is None")
         return self.msg.items()
 
 
@@ -646,7 +646,7 @@ class HTTPConnection:
             if self.auto_open:
                 self.connect()
             else:
-                raise NotConnected()
+                raise NotConnected("cannot send when not connected")
 
         # send the data to the server. if we get a broken pipe, then close
         # the socket. we want to reconnect when somebody tries to send again.
@@ -715,7 +715,7 @@ class HTTPConnection:
         if self.__state == _CS_IDLE:
             self.__state = _CS_REQ_STARTED
         else:
-            raise CannotSendRequest()
+            raise CannotSendRequest("cannot send request in state %s" % self.__state)
 
         # Save the method we use, we need it later in the response phase
         self._method = method
@@ -792,7 +792,7 @@ class HTTPConnection:
         For example: h.putheader('Accept', 'text/html')
         """
         if self.__state != _CS_REQ_STARTED:
-            raise CannotSendHeader()
+            raise CannotSendHeader("cannot send request in state %s" % self.__state)
 
         str = '%s: %s' % (header, value)
         self._output(str)
@@ -803,7 +803,7 @@ class HTTPConnection:
         if self.__state == _CS_REQ_STARTED:
             self.__state = _CS_REQ_SENT
         else:
-            raise CannotSendHeader()
+            raise CannotSendHeader("cannot send request in state %s" % self.__state)
 
         self._send_output()
 
@@ -863,7 +863,8 @@ class HTTPConnection:
         #                  isclosed() status to become true.
         #
         if self.__state != _CS_REQ_SENT or self.__response:
-            raise ResponseNotReady()
+            msg = "State %s, Reponse %s" % (self.__state, self.__response)
+            raise ResponseNotReady(msg)
 
         if self.debuglevel > 0:
             response = self.response_class(self.sock, self.debuglevel,
@@ -1049,7 +1050,7 @@ class FakeSocket(SharedSocketClient):
 
     def makefile(self, mode, bufsize=None):
         if mode != 'r' and mode != 'rb':
-            raise UnimplementedFileMode()
+            raise UnimplementedFileMode("invalid file mode %r" % mode)
         return SSLFile(self._shared, self._ssl, bufsize)
 
     def send(self, stuff, flags = 0):
