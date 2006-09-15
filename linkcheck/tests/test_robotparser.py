@@ -55,8 +55,8 @@ class TestRobotParser (unittest.TestCase):
         self.rp.read()
         # test for re.escape
         self.check(self.rp.can_fetch('*', 'http://www.musi-cal.com/'), True)
-        # this should match the first rule, which is a disallow
-        self.check(self.rp.can_fetch('', 'http://www.musi-cal.com/'), False)
+        # this should match the first rule, which is an empty disallow
+        self.check(self.rp.can_fetch('', 'http://www.musi-cal.com/'), True)
         # various cherry pickers
         self.check(self.rp.can_fetch('CherryPickerSE',
                            'http://www.musi-cal.com/cgi-bin/event-search'
