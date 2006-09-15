@@ -288,6 +288,10 @@ class HTTPResponse:
         self.length = _UNKNOWN          # number of bytes left in response
         self.will_close = _UNKNOWN      # conn will close at end of response
 
+    def __str__ (self):
+        return "<HTTPResponse status=%s reason=%s chunked=%s length=%s>" % \
+          (self.status, self.reason, self.chunked, self.length)
+
     def _read_status(self):
         # Initialize with Simple-Response defaults
         line = self.fp.readline()
@@ -589,6 +593,10 @@ class HTTPConnection:
         if strict is not None:
             self.strict = strict
 
+    def __str__ (self):
+        return "<HttpConnection state=%s method=%s sock=%s buffer=%s>" % \
+          (self.__state, self._method, self.sock, self._buffer)
+
     def _set_hostport(self, host, port):
         if port is None:
             i = host.rfind(':')
@@ -622,9 +630,9 @@ class HTTPConnection:
             except socket.error, msg:
                 if self.debuglevel > 0:
                     print 'connect fail:', (self.host, self.port)
-                if self.sock:
+                if self.sock is not None:
                     self.sock.close()
-                self.sock = None
+                    self.sock = None
                 continue
             break
         if not self.sock:
