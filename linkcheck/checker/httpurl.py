@@ -37,6 +37,9 @@ import httpheaders as headers
 import internpaturl
 import proxysupport
 
+# helper alias
+unicode_safe = linkcheck.strformat.unicode_safe
+
 supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
                hasattr(socket, "ssl")
 
@@ -214,8 +217,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     continue
                 raise
             if response.reason:
-                response.reason = \
-                        linkcheck.strformat.unicode_safe(response.reason)
+                response.reason = unicode_safe(response.reason)
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                 "Response: %s %s", response.status, response.reason)
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -307,7 +309,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                          self.headers.getheader("Uri", ""))
             # make new url absolute and unicode
             newurl = urlparse.urljoin(redirected, newurl)
-            newurl = linkcheck.strformat.unicode_safe(newurl)
+            newurl = unicode_safe(newurl)
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                 "Redirected to %r", newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl},
@@ -403,8 +405,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         else:
             if response.status == 204:
                 # no content
-                self.add_warning(
-                            linkcheck.strformat.unicode_safe(response.reason),
+                self.add_warning(unicode_safe(response.reason),
                             tag="http-empty-content")
             # store cookies for valid links
             if self.aggregate.config['storecookies']:
@@ -416,7 +417,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                                      self.urlparts[1],
                                                      self.urlparts[2])
                     for h in out:
-                        self.add_info(linkcheck.strformat.unicode_safe(h))
+                        self.add_info(unicode_safe(h))
                 except Cookie.CookieError, msg:
                     self.add_warning(_("Could not store cookies: %(msg)s.") %
                                      {'msg': str(msg)},
