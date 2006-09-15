@@ -41,6 +41,8 @@ import linkcheck.log
 import linkcheck.httplib2
 import linkcheck.HtmlParser.htmlsax
 
+# helper alias
+unicode_safe = linkcheck.strformat.unicode_safe
 
 def urljoin (parent, url, scheme):
     """
@@ -295,8 +297,7 @@ class UrlBase (object):
                                  tag="url-effective-url")
                 self.url = effectiveurl
         except tuple(linkcheck.checker.ExcSyntaxList), msg:
-            self.set_result(linkcheck.strformat.unicode_safe(msg),
-                            valid=False)
+            self.set_result(unicode_safe(msg), valid=False)
             return
         self.set_cache_keys()
 
@@ -411,8 +412,7 @@ class UrlBase (object):
             # make nicer error msg for bad status line
             if isinstance(value, linkcheck.httplib2.BadStatusLine):
                 value = _('Bad HTTP response %r') % str(value)
-            uvalue = linkcheck.strformat.unicode_safe(value)
-            self.set_result(uvalue, valid=False)
+            self.set_result(unicode_safe(value), valid=False)
 
         # check content
         warningregex = self.aggregate.config["warningregex"]
@@ -423,8 +423,7 @@ class UrlBase (object):
                 self.check_content(warningregex)
             except tuple(linkcheck.checker.ExcList):
                 value = self.handle_exception()
-                self.set_result(linkcheck.strformat.unicode_safe(value),
-                                valid=False)
+                self.set_result(unicode_safe(value), valid=False)
 
         self.checktime = time.time() - check_start
         # check recursion
@@ -734,7 +733,7 @@ class UrlBase (object):
         """
         Return serialized url check data as unicode string.
         """
-        sep = linkcheck.strformat.unicode_safe(os.linesep)
+        sep = unicode_safe(os.linesep)
         if self.base_url is not None:
             assert isinstance(self.base_url, unicode), self
         if self.parent_url is not None:

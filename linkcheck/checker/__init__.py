@@ -30,6 +30,8 @@ import linkcheck.httplib2
 import linkcheck.strformat
 import linkcheck.dns.exception
 
+# helper alias
+unicode_safe = linkcheck.strformat.unicode_safe
 
 # Catch these exception on syntax checks.
 ExcSyntaxList = [
@@ -171,12 +173,12 @@ def get_url_from (base_url, recursion_level, aggregate,
     @type name: string
     """
     if base_url is not None:
-        base_url = linkcheck.strformat.unicode_safe(base_url)
+        base_url = unicode_safe(base_url)
     if parent_url is not None:
-        parent_url = linkcheck.strformat.unicode_safe(parent_url)
+        parent_url = unicode_safe(parent_url)
     if base_ref is not None:
-        base_ref = linkcheck.strformat.unicode_safe(base_ref)
-    name = linkcheck.strformat.unicode_safe(name)
+        base_ref = unicode_safe(base_ref)
+    name = unicode_safe(name)
     url = absolute_url(base_url, base_ref, parent_url).lower()
     klass = get_urlclass_from(url, assume_local)
     return klass(base_url, recursion_level, aggregate,
