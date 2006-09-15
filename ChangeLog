@@ -1,4 +1,4 @@
-4.4 "" (released xx.xx.xxxx)
+4.4 "Garden State" (released xx.xx.xxxx)
 
   * The JavaScript URL syntax check allows now digits and underscores.
     Patch from Olivier Berger.
