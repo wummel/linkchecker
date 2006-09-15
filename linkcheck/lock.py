@@ -22,7 +22,9 @@ import linkcheck
 import log
 
 def get_lock (name):
-    return DebugLock(threading.Lock(), name)
+    return threading.Lock()
+    # for thread debugging, use the DebugLock wrapper
+    #return DebugLock(threading.Lock(), name)
 
 
 class DebugLock (object):
