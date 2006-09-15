@@ -594,8 +594,9 @@ class HTTPConnection:
             self.strict = strict
 
     def __str__ (self):
-        return "<HttpConnection state=%s method=%s sock=%s buffer=%s>" % \
-          (self.__state, self._method, self.sock, self._buffer)
+        return "<HttpConnection state=%s\n method=%s\n" \
+               " sock=%s\n buffer=%s\n response=%s>" % \
+        (self.__state, self._method, self.sock, self._buffer, self.__response)
 
     def _set_hostport(self, host, port):
         if port is None:
@@ -894,6 +895,9 @@ class HTTPConnection:
             self.__response = response
 
         return response
+
+    def is_idle (self):
+        return self.__state == _CS_IDLE
 
 # The next several classes are used to define FakeSocket,a socket-like
 # interface to an SSL connection.
