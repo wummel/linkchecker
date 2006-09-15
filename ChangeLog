@@ -1,6 +1,6 @@
 4.4 "" (released xx.xx.xxxx)
 
-  * The JavaScript URL syntax check allows now digits and underscores. 
+  * The JavaScript URL syntax check allows now digits and underscores.
     Patch from Olivier Berger.
     Type: bugfix
     Changed: cgi-bin/lconline/check.js
@@ -9,6 +9,20 @@
     file linkcheckerrc.
     Type: documentation
     Changed: config/linkcheckerrc
+
+  * Detect more cases when a HTTP connection cannot be reused, and
+    must be closed. And close response object after usage.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Only wait before a new connection to a host, not when reusing
+    a previous connection.
+    Type: bugfix
+    Changed: linkcheck/cache/connection.py
+
+  * Add more infos to various HTTP errors.
+    Type: feature
+    Changed: linkcheck/httplib2.py
 
 4.3 "Brick" (released 17.8.2006)
 
