@@ -480,7 +480,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 name = c.client_header_name()
                 value = c.client_header_value()
                 self.url_connection.putheader(name, value)
-        self.url_connection.endheaders()
+        try:
+            self.url_connection.endheaders()
+        except:
+            print "XXX", self.url_connection
+            raise
         response = self.url_connection.getresponse()
         self.persistent = headers.http_persistent(response)
         self.timeout = headers.http_timeout(response)
@@ -508,6 +512,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                 "reuse cached HTTP(S) connection %s", conn)
             return conn
+        self.aggregate.connections.wait_for_host(host)
         if scheme == "http":
             h = linkcheck.httplib2.HTTPConnection(host)
         elif scheme == "https" and supportHttps:

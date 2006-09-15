@@ -25,7 +25,7 @@ import linkcheck.log
 from linkcheck.decorators import synchronized
 
 _lock = linkcheck.lock.get_lock("connection")
-
+_wait_lock = linkcheck.lock.get_lock("connwait")
 
 class ConnectionPool (object):
     """
@@ -74,16 +74,8 @@ class ConnectionPool (object):
         """
         self.connections[key] = [conn, 'available', time.time() + timeout]
 
-    @synchronized(_lock)
-    def get (self, key):
-        """
-        Get open connection if available, for at most 30 seconds.
-
-        @param key - tuple (type, host, user, pass)
-        @return: Open connection object or None if no connection is available.
-        @rtype None or FTPConnection or HTTP(S)Connection
-        """
-        host = key[1]
+    @synchronized(_wait_lock)
+    def wait_for_host (self, host):
         t = time.time()
         if host in self.times:
             due_time = self.times[host]
@@ -94,10 +86,23 @@ class ConnectionPool (object):
                 time.sleep(wait)
                 t = time.time()
         self.times[host] = t + self.host_waits.get(host, self.wait)
+
+    @synchronized(_lock)
+    def get (self, key):
+        """
+        Get open connection if available.
+
+        @param key - connection key to look for
+        @ptype key - tuple (type, host, user, pass)
+        @return: Open connection object or None if none is available.
+        @rtype None or FTPConnection or HTTP(S)Connection
+        """
+        host = key[1]
         if key not in self.connections:
             # not found
             return None
         conn_data = self.connections[key]
+        t = time.time()
         if t > conn_data[2]:
             # timed out
             try:
@@ -107,15 +112,13 @@ class ConnectionPool (object):
                 pass
             del self.connections[key]
             return None
-        # wait at most 300*0.1=30 seconds for connection to become available
-        for dummy in xrange(300):
-            if conn_data[1] != 'busy':
-                conn_data[1] = 'busy'
-                conn_data[2] = t
-                return conn_data[0]
-            time.sleep(0.1)
-        # connection is in use
-        return None
+        if conn_data[1] == 'busy':
+            # connection is in use
+            return None
+        # mark busy and return
+        conn_data[1] = 'busy'
+        conn_data[2] = t
+        return conn_data[0]
 
     @synchronized(_lock)
     def release (self, key):

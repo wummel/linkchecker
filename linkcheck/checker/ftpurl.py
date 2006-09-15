@@ -86,17 +86,19 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         # ready to connect
         _user, _password = self.get_user_password()
-        key = ("ftp", self.urlparts[1], _user, _password)
+        host = self.urlparts[1]
+        key = ("ftp", host, _user, _password)
         conn = self.aggregate.connections.get(key)
         if conn is not None and conn.sock is not None:
             # reuse cached FTP connection
             self.url_connection = conn
             return
+        self.aggregate.connections.wait_for_host(host)
         try:
             self.url_connection = ftplib.FTP()
             if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
                 self.url_connection.set_debuglevel(1)
-            self.url_connection.connect(self.urlparts[1])
+            self.url_connection.connect(host)
             if _user is None:
                 self.url_connection.login()
             elif _password is None:
