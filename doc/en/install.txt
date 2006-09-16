@@ -36,10 +36,6 @@ Requirements for Unix/Linux or Mac OS X
 3. *Optional, for bash-completion:*
    optcomplete Python module from http://furius.ca/optcomplete/
 
-4. *Optional (speedup for i386 compatible PCs)*
-   Psyco from http://psyco.sourceforge.net/
-   [http://switch.dl.sourceforge.net/sourceforge/psyco/psyco-1.5.1-src.tar.gz]
-
 Requirements for Windows
 ------------------------
 
@@ -55,11 +51,7 @@ Requirements for Windows
    b) MSYS
       [http://switch.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
 
-3. *Optional (speedup for i386 compatible PCs)*
-   Psyco from http://psyco.sourceforge.net/
-   [http://linkchecker.sourceforge.net/psyco-1.5.1.win32-py2.4.exe]
-
-4. *Optional (color support for console)*
+3. *Optional (color support for console)*
    Wconio from http://newcenturycomputers.net/projects/wconio.html
    [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.4.exe]
 
@@ -98,11 +90,6 @@ Setup for Unix/Linux or Mac OS X
       
       .. _Modifying Python's search path:
          http://docs.python.org/inst/search-path.html#SECTION000410000000000000000
-
-   If you downloaded Psyco please read the `psyco installation docs`_.
-   
-   .. _psyco installation docs:
-      http://psyco.sourceforge.net/psycoguide/node2.html
 
 Setup for Windows - the binary .exe installer:
 ----------------------------------------------
@@ -147,11 +134,6 @@ Setup for Windows - compiling from source:
    This generates a binary installer
    ``dist\linkchecker-X.X.X.win32-py2.4.exe`` which you just have to
    execute.
-
-   If you downloaded Psyco please read the `psyco installation docs`_.
-   
-   .. _psyco installation docs:
-      http://psyco.sourceforge.net/psycoguide/node2.html
 
 After installation
 ------------------
