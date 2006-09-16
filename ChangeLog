@@ -29,7 +29,7 @@
     Type: bugfix
     Changed: linkcheck/director/__init__.py
 
-  * Removed old options --disable-psyco from man page and documentation.
+  * Removed old Psyco references from man page and documentation.
     Type: documentation
     Changed: doc/*/linkchecker.1, doc/en/install.txt
 
