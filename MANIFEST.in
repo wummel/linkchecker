@@ -27,6 +27,7 @@ include linkcheck/HtmlParser/Makefile
 include linkcheck/HtmlParser/htmllex.l
 include linkcheck/HtmlParser/htmlparse.y
 include linkcheck/HtmlParser/*.h
+include linkcheck/HtmlParser/fixincludes.awk
 include linkcheck/ftpparse/*.h
 include po/*.po po/*.pot po/Makefile
 include doc/*.py doc/*.example
@@ -43,4 +44,5 @@ include linkcheck/checker/tests/*.py
 include linkcheck/configuration/tests/*.py
 include linkcheck/dns/tests/*.py
 include linkcheck/dns/tests/example*
+include linkcheck/dns/ChangeLog
 include hase.bmp
