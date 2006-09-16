@@ -29,6 +29,10 @@
     Type: bugfix
     Changed: linkcheck/director/__init__.py
 
+  * Removed old options --disable-psyco from man page.
+    Type: documentation
+    Changed: doc/*/linkchecker.1
+
 4.3 "Brick" (released 17.8.2006)
 
   * Use RawConfigParser for config parsing, getting rid of the unused
