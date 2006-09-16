@@ -25,6 +25,10 @@
     Type: feature
     Changed: linkcheck/httplib2.py
 
+  * Ignore keyboard interrupts during shutdown.
+    Type: bugfix
+    Changed: linkcheck/director/__init__.py
+
 4.3 "Brick" (released 17.8.2006)
 
   * Use RawConfigParser for config parsing, getting rid of the unused

@@ -38,27 +38,46 @@ def check_urls (aggregate):
         aggregate.logger.start_log_output()
         if not aggregate.urlqueue.empty():
             aggregate.start_threads()
-        # Since urlqueue.join() is not interruptable, add a timeout
-        # and a one-second slumber.
-        while True:
-            try:
-                aggregate.urlqueue.join(timeout=1)
-                break
-            except linkcheck.cache.urlqueue.Timeout:
-                time.sleep(1)
-                aggregate.remove_stopped_threads()
-                if not aggregate.threads:
-                    break
+        check_url(aggregate)
+        aggregate.finish()
+        aggregate.logger.end_log_output()
     except KeyboardInterrupt:
         linkcheck.log.warn(linkcheck.LOG_CHECK,
-            _("keyboard interrupt; waiting for active threads to finish"))
-        aggregate.abort()
+               _("keyboard interrupt; waiting for active threads to finish"))
+        abort(aggregate)
     except:
         console.internal_error()
-        aggregate.abort()
-    aggregate.finish()
-    aggregate.logger.end_log_output()
+        abort(aggregate)
 
+
+def check_url (aggregate):
+    """
+    Helper function waiting for URL queue.
+    """
+    while True:
+        try:
+            aggregate.urlqueue.join(timeout=1)
+            break
+        except linkcheck.cache.urlqueue.Timeout:
+            # Since urlqueue.join() is not interruptable, add a timeout
+            # and a one-second slumber.
+            time.sleep(1)
+            aggregate.remove_stopped_threads()
+            if not aggregate.threads:
+                break
+
+def abort (aggregate):
+    """
+    Helper function to ensure a clean shutdown.
+    """
+    while True:
+        try:
+            aggregate.abort()
+            aggregate.finish()
+            aggregate.logger.end_log_output()
+            break
+        except KeyboardInterrupt:
+            linkcheck.log.warn(linkcheck.LOG_CHECK, _("shutdown in progress"))
 
 def get_aggregate (config):
     """
