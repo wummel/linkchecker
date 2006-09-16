@@ -309,9 +309,10 @@ class UrlBase (object):
         # norm base url - can raise UnicodeError from url.idna_encode()
         base_url, is_idn = url_norm(self.base_url)
         if is_idn:
-            self.add_warning(_("""URL %r has a unicode domain name which
+            self.add_warning(_("""URL %(url)r has a unicode domain name which
                           is not yet widely supported. You should use
-                          the URL %r instead.""") % (self.base_url, base_url),
+                          the URL %(idna_url)r instead.""") % \
+                          {"url": self.base_url, "idna_url": base_url},
                           tag="url-unicode-domain")
         elif self.base_url != base_url:
             self.add_warning(
@@ -620,9 +621,10 @@ class UrlBase (object):
         """
         maxbytes = self.aggregate.config["warnsizebytes"]
         if maxbytes is not None and self.dlsize >= maxbytes:
-            self.add_warning(_("Content size %s is larger than %s.") %
-                         (linkcheck.strformat.strsize(self.dlsize),
-                          linkcheck.strformat.strsize(maxbytes)),
+            self.add_warning(
+                   _("Content size %(dlsize)s is larger than %(maxbytes)s.") %
+                        {"dlsize": linkcheck.strformat.strsize(self.dlsize),
+                         "maxbytes": linkcheck.strformat.strsize(maxbytes)},
                           tag="url-content-too-large")
 
     def parse_url (self):

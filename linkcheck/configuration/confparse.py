@@ -148,7 +148,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                     self.config["warningregex"] = re.compile(arg)
                 except re.error, msg:
                     raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                       _("syntax error in warningregex %r: %s\n"), arg, msg)
+                   _("syntax error in warningregex %(regex)r: %(msg)s\n") % \
+                   {"regex": arg, "msg": msg})
         except ConfigParser.Error, msg:
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
@@ -173,7 +174,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                     arg = re.compile(arg)
                 except re.error, msg:
                     raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                       _("syntax error in noproxyfor%d %r: %s"), i, arg, msg)
+                   _("syntax error in noproxyfor%(num)d %(arg)r: %(msg)s") % \
+                    ["num": i, "arg": arg, "msg": msg})
                 self.config["noproxyfor"].append(arg)
                 i += 1
         except ConfigParser.Error, msg:
@@ -199,7 +201,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                     auth[0] = re.compile(auth[0])
                 except re.error, msg:
                     raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                       _("syntax error in entry%d %r: %s"), i, auth[0], msg)
+                       _("syntax error in entry%(num)d %(arg)r: %(msg)s") % \
+                       {"num": i, "arg": auth[0], "msg": msg})
                 self.config["authentication"].insert(0, {'pattern': auth[0],
                                                   'user': auth[1],
                                                   'password': auth[2]})

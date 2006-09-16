@@ -251,7 +251,8 @@ def strduration_long (duration):
     else:
         prefix = ""
     if duration < 1:
-        return _("%s%.02f seconds") % (prefix, duration)
+        return _("%(prefix)s%(duration).02f seconds") % \
+               {"prefix": prefix, "duration": duration}
     # translation dummies
     _n("%d second", "%d seconds", 1)
     _n("%d minute", "%d minutes", 1)

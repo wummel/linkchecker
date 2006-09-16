@@ -238,7 +238,7 @@ def try_compile_re (arg):
         return re.compile(arg)
     except re.error, msg:
         linkcheck.log.error(linkcheck.LOG_CMDLINE,
-           _("Syntax error in %r: %s", arg, msg))
+           _("Syntax error in %(arg)r: %(msg)s") % {"arg": arg, "msg": msg})
         sys.exit(1)
 
 
@@ -522,7 +522,8 @@ if options.debug:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
 config.init_logging(debug=options.debug)
 assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
-   _("Python %s on %s"), sys.version, sys.platform)
+   _("Python %(version)s on %(platform)s") % \
+   {"version": sys.version, "platform": sys.platform})
 # read configuration files
 try:
     files = []
@@ -570,11 +571,14 @@ if options.output:
     else:
         logtype, encoding = options.output, linkcheck.i18n.default_encoding
     if not linkcheck.Loggers.has_key(logtype.lower()):
-        print_usage(_("Unknown logger type %r in %r for option %s") % \
-                   (logtype, options.output, "'-o, --output'"))
+        print_usage(
+     _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
+      {"type": logtype, "output": options.output, "option": "'-o, --output'"})
     if logtype != 'none' and not has_encoding(encoding):
-        print_usage(_("Unknown encoding %r in %r for option %s") % \
-                   (encoding, options.output, "'-o, --output'"))
+        print_usage(
+    _("Unknown encoding %(encoding)r in %(output)r for option %(option)s") % \
+     {"encoding": encoding, "output": options.output,
+      "option": "'-o, --output'"})
     config['logger'] = config.logger_new(logtype.lower(), encoding=encoding)
 if options.fileoutput:
     ns = {'fileoutput': 1}
@@ -598,12 +602,16 @@ if options.fileoutput:
                 else:
                     ns['filename'] = suffix
         if not linkcheck.Loggers.has_key(ftype):
-            print_usage(_("Unknown logger type %r in %r for option %s") % \
-                       (ftype, options.output, "'-F, --file-output'"))
+            print_usage(
+     _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
+       {"type": ftype, "output": options.output,
+        "option": "'-F, --file-output'"})
         if ftype != 'none' and 'encoding' in ns and \
            not has_encoding(ns['encoding']):
-            print_usage(_("Unknown encoding %r in %r for option %s") % \
-                       ns['encoding'], options.output, "'-F, --file-output'")
+            print_usage(
+    _("Unknown encoding %(encoding)r in %(output)r for option %(option)s") % \
+     {"encoding": ns['encoding'], "output": options.output,
+      "option": "'-F, --file-output'"})
         logger = config.logger_new(ftype, **ns)
         config['fileoutput'].append(logger)
 if options.interactive is not None:
@@ -619,8 +627,8 @@ if options.pause is not None:
     if options.pause >= 0:
         config["wait"] = options.pause
     else:
-        print_usage(_("Illegal argument %r for option %s") % \
-                    (options.pause, "'-P, --pause'"))
+        print_usage(_("Illegal argument %(arg)r for option %(option)s") % \
+                    {"arg": options.pause, "option": "'-P, --pause'"})
 if options.profile is not None:
     do_profile = options.profile
 if options.quiet is not None:
@@ -637,8 +645,8 @@ if options.timeout is not None:
     if options.timeout > 0:
         config["timeout"] = options.timeout
     else:
-        print_usage(_("Illegal argument %r for option %s") % \
-                    (options.timeout, "'--timeout'"))
+        print_usage(_("Illegal argument %(arg)r for option %(option)s") % \
+                    {"arg": options.timeout, "option": "'--timeout'"})
 socket.setdefaulttimeout(config["timeout"])
 if options.username is not None:
     _username = options.username

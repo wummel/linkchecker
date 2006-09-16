@@ -62,7 +62,8 @@ def print_app_info ():
     """
     print >> stderr, _("System info:")
     print >> stderr, linkcheck.configuration.App
-    print >> stderr, _("Python %s on %s") % (sys.version, sys.platform)
+    print >> stderr, _("Python %(version)s on %(platform)s") % \
+                     {"version": sys.version, "platform": sys.platform}
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
         value = os.getenv(key)
         if value is not None:

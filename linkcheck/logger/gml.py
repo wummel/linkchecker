@@ -45,9 +45,9 @@ class GMLLogger (linkcheck.logger.Logger):
         super(GMLLogger, self).start_output()
         self.starttime = time.time()
         if self.has_part("intro"):
-            self.comment(_("created by %s at %s") %
-                         (linkcheck.configuration.AppName,
-                          linkcheck.strformat.strtime(self.starttime)))
+            self.comment(_("created by %(app)s at %(time)s") %
+                        {"app": linkcheck.configuration.AppName,
+                         "time": linkcheck.strformat.strtime(self.starttime}))
             self.comment(_("Get the newest version at %(url)s") %
                          {'url': linkcheck.configuration.Url})
             self.comment(_("Write comments and bugs to %(email)s") %
@@ -115,7 +115,7 @@ class GMLLogger (linkcheck.logger.Logger):
         if self.has_part("outro"):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %s (%s)") %
-                         (linkcheck.strformat.strtime(self.stoptime),
-                          linkcheck.strformat.strduration_long(duration)))
+            self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
+                 {"time": linkcheck.strformat.strtime(self.stoptime),
+                  "duration": linkcheck.strformat.strduration_long(duration)})
         self.close_fileoutput()

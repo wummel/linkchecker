@@ -146,9 +146,10 @@ class FileUrl (urlbase.UrlBase):
         path = self.get_os_filename()
         realpath = get_nt_filename(path)
         if path != realpath:
-            self.add_warning(_("The URL path %r is not the same as the "
-                               "system path %r. You should always use "
-                               "the system path in URLs.") % (path, realpath),
+            self.add_warning(_("The URL path %(path)r is not the same as the "
+                            "system path %(realpath)r. You should always use "
+                            "the system path in URLs.") % \
+                            {"path": path, "realpath": realpath},
                                tag="file-system-path")
 
     def get_content (self):

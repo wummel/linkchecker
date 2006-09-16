@@ -98,10 +98,10 @@ class TextLogger (linkcheck.logger.Logger):
         if self.has_part('intro'):
             self.writeln(linkcheck.configuration.AppInfo)
             self.writeln(linkcheck.configuration.Freeware)
-            self.writeln(_("Get the newest version at %s") %
-                         linkcheck.configuration.Url)
-            self.writeln(_("Write comments and bugs to %s") %
-                         linkcheck.configuration.Email)
+            self.writeln(_("Get the newest version at %(url)s") %
+                         {'url': linkcheck.configuration.Url})
+            self.writeln(_("Write comments and bugs to %(email)s") %
+                         {'email': linkcheck.configuration.Email})
             self.check_date()
             self.writeln()
             self.writeln(_("Start checking at %s") %
@@ -252,7 +252,7 @@ class TextLogger (linkcheck.logger.Logger):
                             self.errors) % self.errors)
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
-            self.writeln(_("Stopped checking at %s (%s)") %
-                         (linkcheck.strformat.strtime(self.stoptime),
-                          linkcheck.strformat.strduration_long(duration)))
+            self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %
+                 {"time": linkcheck.strformat.strtime(self.stoptime),
+                  "duration": linkcheck.strformat.strduration_long(duration)})
         self.close_fileoutput()
