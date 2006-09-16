@@ -79,7 +79,7 @@ class SQLLogger (linkcheck.logger.Logger):
         if self.has_part("intro"):
             self.comment(_("created by %(app)s at %(time)s") %
                         {"app": linkcheck.configuration.AppName,
-                         "time": linkcheck.strformat.strtime(self.starttime}))
+                         "time": linkcheck.strformat.strtime(self.starttime)})
             self.comment(_("Get the newest version at %s") %
                          linkcheck.configuration.Url)
             self.comment(_("Write comments and bugs to %s") %

@@ -175,7 +175,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 except re.error, msg:
                     raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
                    _("syntax error in noproxyfor%(num)d %(arg)r: %(msg)s") % \
-                    ["num": i, "arg": arg, "msg": msg})
+                    {"num": i, "arg": arg, "msg": msg})
                 self.config["noproxyfor"].append(arg)
                 i += 1
         except ConfigParser.Error, msg:
