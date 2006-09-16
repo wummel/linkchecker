@@ -71,9 +71,6 @@ of threads is 10. To disable threading specify a non-positive number.
 Run with normal thread scheduling priority. Per default LinkChecker runs
 with low thread priority to be suitable as a background job.
 .TP
-\fB\-\-disable\-psyco\fP
-Do not use the psyco optimization module even if it is installed.
-.TP
 \fB\-V\fP, \fB\-\-version\fP
 Print version and exit.
 .TP
@@ -142,12 +139,10 @@ Specifying \fBall\fP is an alias for specifying all available loggers.
 The option can be given multiple times to debug with more
 than one logger.
 .BR
-For accurate results, threading and the psyco optimization module will
-be disabled during debug runs.
+For accurate results, threading will be disabled during debug runs.
 .TP
 \fB\-\-trace\fP
-Print tracing information. The psyco optimization module will be disabled
-during traced runs.
+Print tracing information.
 .TP
 \fB\-\-profile\fP
 Write profiling data into a file named \fBlinkchecker.prof\fP
