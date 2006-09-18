@@ -107,8 +107,6 @@ typedef struct {
     void* scanner;
 } parser_object;
 
-staticforward PyTypeObject parser_type;
-
 /* use Pythons memory management */
 #define YYMALLOC PyMem_Malloc
 #define YYFREE PyMem_Free
@@ -931,7 +929,7 @@ PyMODINIT_FUNC inithtmlsax (void) {
         return;
     }
     Py_INCREF(&parser_type);
-    if (PyModule_AddObject(m, "parser", (PyObject *)&parser_type) == -1) {
+    if (PyModule_AddObject(m, "parser", (PyObject*)&parser_type) == -1) {
         /* init error */
         PyErr_Print();
     }

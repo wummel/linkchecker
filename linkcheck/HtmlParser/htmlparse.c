@@ -208,8 +208,6 @@ typedef struct {
     void* scanner;
 } parser_object;
 
-staticforward PyTypeObject parser_type;
-
 /* use Pythons memory management */
 #define YYMALLOC PyMem_Malloc
 #define YYFREE PyMem_Free
@@ -287,7 +285,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 291 "htmlparse.c"
+#line 289 "htmlparse.c"
 
 #ifdef short
 # undef short
@@ -573,8 +571,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   182,   182,   185,   190,   194,   201,   242,   290,   326,
-     345,   363,   382,   405,   429,   453
+       0,   180,   180,   183,   188,   192,   199,   240,   288,   324,
+     343,   361,   380,   403,   427,   451
 };
 #endif
 
@@ -1483,21 +1481,21 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 182 "htmlparse.y"
+#line 180 "htmlparse.y"
     {
     /* parse a single element */
 ;}
     break;
 
   case 3:
-#line 185 "htmlparse.y"
+#line 183 "htmlparse.y"
     {
     /* parse a list of elements */
 ;}
     break;
 
   case 4:
-#line 190 "htmlparse.y"
+#line 188 "htmlparse.y"
     {
     /* wait for more lexer input */
     YYACCEPT;
@@ -1505,7 +1503,7 @@ yyreduce:
     break;
 
   case 5:
-#line 195 "htmlparse.y"
+#line 193 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1515,7 +1513,7 @@ yyreduce:
     break;
 
   case 6:
-#line 202 "htmlparse.y"
+#line 200 "htmlparse.y"
     {
     /* parsed HTML start tag (eg. <a href="blubb">)
        $1 is a PyTuple (<tag>, <attrs>)
@@ -1559,7 +1557,7 @@ finish_start:
     break;
 
   case 7:
-#line 243 "htmlparse.y"
+#line 241 "htmlparse.y"
     {
     /* parsed HTML start-end tag (eg. <br/>)
        $1 is a PyTuple (<tag>, <attrs>)
@@ -1610,7 +1608,7 @@ finish_start_end:
     break;
 
   case 8:
-#line 291 "htmlparse.y"
+#line 289 "htmlparse.y"
     {
     /* parsed HTML end tag (eg. </b>)
        $1 is a PyUnicode with the tag name */
@@ -1649,7 +1647,7 @@ finish_end:
     break;
 
   case 9:
-#line 327 "htmlparse.y"
+#line 325 "htmlparse.y"
     {
     /* parsed HTML comment (eg. <!-- bla -->)
        $1 is a PyUnicode with the comment content */
@@ -1671,7 +1669,7 @@ finish_comment:
     break;
 
   case 10:
-#line 346 "htmlparse.y"
+#line 344 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1692,7 +1690,7 @@ finish_pi:
     break;
 
   case 11:
-#line 364 "htmlparse.y"
+#line 362 "htmlparse.y"
     {
     /* parsed HTML CDATA (eg. <![CDATA[spam and eggs ...]]>)
        $1 is a PyUnicode with the CDATA content */
@@ -1714,7 +1712,7 @@ finish_cdata:
     break;
 
   case 12:
-#line 383 "htmlparse.y"
+#line 381 "htmlparse.y"
     {
     /* parsed HTML doctype (eg. <!DOCTYPE imadoofus system>)
        $1 is a PyUnicode with the doctype content */
@@ -1740,7 +1738,7 @@ finish_doctype:
     break;
 
   case 13:
-#line 406 "htmlparse.y"
+#line 404 "htmlparse.y"
     {
     /* parsed HTML script content (plus end tag which is omitted)
        $1 is a PyUnicode with the script content */
@@ -1767,7 +1765,7 @@ finish_script:
     break;
 
   case 14:
-#line 430 "htmlparse.y"
+#line 428 "htmlparse.y"
     {
     /* parsed HTML style content (plus end tag which is omitted)
        $1 is a PyUnicode with the style content */
@@ -1794,7 +1792,7 @@ finish_style:
     break;
 
   case 15:
-#line 454 "htmlparse.y"
+#line 452 "htmlparse.y"
     {
     /* parsed HTML text data
        $1 is a PyUnicode with the text */
@@ -1819,7 +1817,7 @@ finish_characters:
 
 
 /* Line 1267 of yacc.c.  */
-#line 1823 "htmlparse.c"
+#line 1821 "htmlparse.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2033,7 +2031,7 @@ yyreturn:
 }
 
 
-#line 476 "htmlparse.y"
+#line 474 "htmlparse.y"
 
 
 /* create parser object */
@@ -2492,7 +2490,7 @@ PyMODINIT_FUNC inithtmlsax (void) {
         return;
     }
     Py_INCREF(&parser_type);
-    if (PyModule_AddObject(m, "parser", (PyObject *)&parser_type) == -1) {
+    if (PyModule_AddObject(m, "parser", (PyObject*)&parser_type) == -1) {
         /* init error */
         PyErr_Print();
     }
