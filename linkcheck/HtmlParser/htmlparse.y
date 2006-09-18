@@ -564,8 +564,7 @@ static int parser_traverse (parser_object* self, visitproc visit, void* arg) {
 /* clear all used subobjects participating in reference cycles */
 static int parser_clear (parser_object* self) {
     self->userData->handler = NULL;
-    Py_XDECREF(self->handler);
-    self->handler = NULL;
+    Py_CLEAR(self->handler);
     return 0;
 }
 
@@ -575,10 +574,8 @@ static void parser_dealloc (parser_object* self) {
     htmllexDestroy(self->scanner);
     parser_clear(self);
     self->userData->parser = NULL;
-    Py_XDECREF(self->encoding);
-    self->encoding = NULL;
-    Py_XDECREF(self->doctype);
-    self->doctype = NULL;
+    Py_CLEAR(self->encoding);
+    Py_CLEAR(self->doctype);
     PyMem_Del(self->userData->buf);
     PyMem_Del(self->userData->tmp_buf);
     PyMem_Del(self->userData);
@@ -627,12 +624,10 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
     }
     /* reset parser variables */
     CLEAR_BUF(self->userData->tmp_buf);
-    Py_XDECREF(self->userData->tmp_tag);
-    Py_XDECREF(self->userData->tmp_attrs);
-    Py_XDECREF(self->userData->tmp_attrval);
-    Py_XDECREF(self->userData->tmp_attrname);
-    self->userData->tmp_tag = self->userData->tmp_attrs =
-	self->userData->tmp_attrval = self->userData->tmp_attrname = NULL;
+    Py_CLEAR(self->userData->tmp_tag);
+    Py_CLEAR(self->userData->tmp_attrs);
+    Py_CLEAR(self->userData->tmp_attrval);
+    Py_CLEAR(self->userData->tmp_attrname);
     self->userData->bufpos = 0;
     if (strlen(self->userData->buf)) {
         /* XXX set line, col */
