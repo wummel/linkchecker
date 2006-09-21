@@ -300,6 +300,7 @@ class RobotFileParser (object):
                           " this line", self.url, linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], 1))
+                        state = 2
                 elif line[0] == "crawl-delay":
                     if state == 0:
                         assert None == log.debug(linkcheck.LOG_CHECK,

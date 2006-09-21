@@ -98,6 +98,18 @@ class TestRobotsTxt (unittest.TestCase):
         self.rp.parse(lines)
         self.assertEquals(str(self.rp), "")
 
+    def test_robotstxt7 (self):
+        lines = [
+            "User-agent: Bla",
+            "Allow: /",
+            "",
+            "User-agent: *",
+            "Disallow: /",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "\n".join(lines))
+        self.assert_(self.rp.can_fetch("Bla", "/"))
+
     def test_crawldelay (self):
         lines = [
             "User-agent: Blubb",
