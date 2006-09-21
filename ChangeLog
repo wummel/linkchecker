@@ -10,6 +10,11 @@
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
+  * Document proxy URL syntax.
+    Closes: SF bug #1562129
+    Type: documentation
+    Changed: linkchecker, {doc,po}/{en,de}.po, doc/{en,de}/linkchecker.1
+
 4.4 "Garden State" (released 16.9.2006)
 
   * The JavaScript URL syntax check allows now digits and underscores.

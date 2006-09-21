@@ -132,14 +132,14 @@ verhindern können.
 Gebe keine Statusmeldungen aus.
 .TP 
 \fB\-D\fP\fINAME\fP, \fB\-\-debug=\fP\fINAME\fP
-Print debugging output for the given logger.  Available loggers are 
-\fBcmdline\fP, \fBchecking\fP, \fBcache\fP, \fBgui\fP, \fBdns\fP and \fBall\fP.  Specifying 
-\fBall\fP is an alias for specifying all available loggers.  The option can be 
-given multiple times to debug with more than one logger.  For accurate 
-results, threading will be disabled during debug runs.
+Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind 
+\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe 
+\fBall\fP ist ein Synonym für alle verfügbaren Logger. Diese Option kann 
+mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um 
+akkurate Ergebnisse zu erzielen, werden Threads deaktiviert.
 .TP 
 \fB\-\-trace\fP
-Print tracing information.
+Trace\-Information ausgeben.
 .TP 
 \fB\-\-profile\fP
 Schreibe Profiling\-Daten in eine Datei namens \fBlinkchecker.prof\fP im 
@@ -291,10 +291,11 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
  Set\-cookie: baggage="elitist"; comment="hologram"
 
 .SH "PROXY UNTERSTÜTZUNG"
-Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, 
-$ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL (zum 
-Beispiel http://localhost:8080). Auf einem Mac benutzen Sie die Internet 
-Konfiguration.
+To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on 
+Unix or Windows to the proxy URL. The URL should be of the form 
+\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP], for example 
+\fBhttp://localhost:8080\fP, or \fBhttp://joe:test@proxy.domain\fP.  On a Mac use 
+the Internet Config to select a proxy.
 .
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 

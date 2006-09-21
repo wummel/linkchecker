@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2006-09-16 11:10+0200\n"
-"PO-Revision-Date: 2006-09-16 11:11+0100\n"
+"POT-Creation-Date: 2006-09-21 14:49+0200\n"
+"PO-Revision-Date: 2006-09-21 14:52+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -754,156 +754,156 @@ msgid "PROXY SUPPORT"
 msgstr "PROXY UNTERSTÜTZUNG"
 
 # type: Plain text
-#: en/linkchecker.1:297
-msgid "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on Unix or Windows to the proxy URL (for example http://localhost:8080).  On a Mac use the Internet Config."
-msgstr "Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL (zum Beispiel http://localhost:8080). Auf einem Mac benutzen Sie die Internet Konfiguration."
+#: en/linkchecker.1:300
+msgid "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on Unix or Windows to the proxy URL. The URL should be of the form B<http://>[I<user>B<:>I<pass>B<@>]I<host>[B<:>I<port>], for example B<http://localhost:8080>, or B<http://joe:test@proxy.domain>.  On a Mac use the Internet Config to select a proxy."
+msgstr "Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL. Die URL sollte die Form B<http://>[I<user>B<:>I<pass>B<@>]I<host>[B<:>I<port>] besitzen, zum Beispiel B<http://localhost:8080>, oder B<http://joe:test@proxy.domain>. Auf einem Mac benutzen Sie die Internet Konfiguration."
 
 # type: SH
-#: en/linkchecker.1:298
+#: en/linkchecker.1:301
 #, no-wrap
 msgid "NOTES"
 msgstr "BEMERKUNGEN"
 
 # type: Plain text
-#: en/linkchecker.1:303
+#: en/linkchecker.1:306
 msgid "URLs on the commandline starting with B<ftp.> are treated like B<ftp://ftp.>, URLs starting with B<www.> are treated like B<http://www.>.  You can also give local files as arguments."
 msgstr "URLs von der Kommandozeile die mit B<ftp.> beginnen werden wie B<ftp://ftp.> behandelt, URLs die mit B<www.> beginnen wie B<http://www.>. Sie können auch lokale Dateien angeben."
 
 # type: Plain text
-#: en/linkchecker.1:308
+#: en/linkchecker.1:311
 msgid "If you have your system configured to automatically establish a connection to the internet (e.g. with diald), it will connect when checking links not pointing to your local host.  Use the B<-s> and B<-i> options to prevent this."
 msgstr "Falls sich Ihr System automatisch mit dem Internet verbindet (z.B. mit diald), wird es dies tun wenn Sie Links prüfen, die nicht auf Ihren lokalen Rechner verweisen Benutzen Sie die Optionen B<-s> und B<-i>, um dies zu verhindern."
 
 # type: Plain text
-#: en/linkchecker.1:310
+#: en/linkchecker.1:313
 msgid "Javascript links are currently ignored."
 msgstr "Javascript Links werden zur Zeit ignoriert."
 
 # type: Plain text
-#: en/linkchecker.1:313
+#: en/linkchecker.1:316
 msgid "If your platform does not support threading, LinkChecker disables it automatically."
 msgstr "Wenn Ihr System keine Threads unterstützt, deaktiviert diese LinkChecker automatisch."
 
 # type: Plain text
-#: en/linkchecker.1:315
+#: en/linkchecker.1:318
 msgid "You can supply multiple user/password pairs in a configuration file."
 msgstr "Sie können mehrere Benutzer/Passwort Paare in einer Konfigurationsdatei angeben."
 
 # type: Plain text
-#: en/linkchecker.1:318
+#: en/linkchecker.1:321
 msgid "When checking B<news:> links the given NNTP host doesn't need to be the same as the host of the user browsing your pages."
 msgstr "Beim Prüfen von B<news:> Links muß der angegebene NNTP Rechner nicht unbedingt derselbe wie der des Benutzers sein."
 
 # type: SH
-#: en/linkchecker.1:319
+#: en/linkchecker.1:322
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr "UMGEBUNG"
 
 # type: Plain text
-#: en/linkchecker.1:321
+#: en/linkchecker.1:324
 msgid "B<NNTP_SERVER> - specifies default NNTP server"
 msgstr "B<NNTP_SERVER> - gibt Standard NNTP Server an"
 
 # type: Plain text
-#: en/linkchecker.1:323
+#: en/linkchecker.1:326
 msgid "B<http_proxy> - specifies default HTTP proxy server"
 msgstr "B<http_proxy> - gibt Standard HTTP Proxy an"
 
 # type: Plain text
-#: en/linkchecker.1:325
+#: en/linkchecker.1:328
 msgid "B<ftp_proxy> - specifies default FTP proxy server"
 msgstr "B<ftp_proxy> - gibt Standard FTP Proxy an"
 
 # type: Plain text
-#: en/linkchecker.1:327
+#: en/linkchecker.1:330
 msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
 msgstr "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - gibt Ausgabesprache an"
 
 # type: SH
-#: en/linkchecker.1:328
+#: en/linkchecker.1:331
 #, no-wrap
 msgid "RETURN VALUE"
 msgstr "RÜCKGABEWERT"
 
 # type: Plain text
-#: en/linkchecker.1:330
+#: en/linkchecker.1:333
 msgid "The return value is non-zero when"
 msgstr "Der Rückgabewert ist nicht Null falls"
 
 # type: IP
-#: en/linkchecker.1:330
-#: en/linkchecker.1:332
-#: en/linkchecker.1:334
+#: en/linkchecker.1:333
+#: en/linkchecker.1:335
+#: en/linkchecker.1:337
 #, no-wrap
 msgid "\\(bu"
 msgstr "\\(bu"
 
 # type: Plain text
-#: en/linkchecker.1:332
+#: en/linkchecker.1:335
 msgid "invalid links were found or"
 msgstr "ungültige Verknüpfungen gefunden wurden oder"
 
 # type: Plain text
-#: en/linkchecker.1:334
+#: en/linkchecker.1:337
 msgid "link warnings were found and warnings are enabled"
 msgstr "Warnungen gefunden wurden und Warnungen aktiviert sind"
 
 # type: Plain text
-#: en/linkchecker.1:336
+#: en/linkchecker.1:339
 msgid "a program error occurred."
 msgstr "ein Programmfehler aufgetreten ist."
 
 # type: SH
-#: en/linkchecker.1:337
+#: en/linkchecker.1:340
 #, no-wrap
 msgid "FILES"
 msgstr "DATEIEN"
 
 # type: Plain text
-#: en/linkchecker.1:340
+#: en/linkchecker.1:343
 msgid "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - default configuration files"
 msgstr "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - Standardkonfigurationsdateien"
 
 # type: Plain text
-#: en/linkchecker.1:342
+#: en/linkchecker.1:345
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr "B<~/.linkchecker/blacklist> - Standard Dateiname der blacklist Logger Ausgabe"
 
 # type: Plain text
-#: en/linkchecker.1:344
+#: en/linkchecker.1:347
 msgid "B<linkchecker-out.>I<TYPE> - default logger file output name"
 msgstr "B<linkchecker-out.>I<TYP> - Standard Dateiname der Logausgabe"
 
 # type: Plain text
-#: en/linkchecker.1:346
+#: en/linkchecker.1:349
 msgid "B<http://docs.python.org/lib/standard-encodings.html> - valid output encodings"
 msgstr "B<http://docs.python.org/lib/standard-encodings.html> - gültige Ausgabe Enkodierungen"
 
 # type: Plain text
-#: en/linkchecker.1:348
+#: en/linkchecker.1:351
 msgid "B<http://www.amk.ca/python/howto/regex/> - regular expression documentation"
 msgstr "B<http://www.amk.ca/python/howto/regex/> - Dokumentation zu regulären Ausdrücken"
 
 # type: SH
-#: en/linkchecker.1:349
+#: en/linkchecker.1:352
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTHOR"
 
 # type: Plain text
-#: en/linkchecker.1:351
+#: en/linkchecker.1:354
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 
 # type: SH
-#: en/linkchecker.1:352
+#: en/linkchecker.1:355
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
 
 # type: Plain text
-#: en/linkchecker.1:353
+#: en/linkchecker.1:356
 msgid "Copyright \\(co 2000-2005 Bastian Kleineidam"
 msgstr "Copyright \\(co 2000-2005 Bastian Kleineidam"
 

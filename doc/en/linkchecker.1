@@ -292,8 +292,11 @@ with \fBhttps://imaweevil.org/\fP:
 
 .SH PROXY SUPPORT
 To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
-on Unix or Windows to the proxy URL (for example http://localhost:8080).
-On a Mac use the Internet Config.
+on Unix or Windows to the proxy URL. The URL should be of the form
+\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP],
+for example \fBhttp://localhost:8080\fP, or
+\fBhttp://joe:test@proxy.domain\fP.
+On a Mac use the Internet Config to select a proxy.
 .
 .SH NOTES
 URLs on the commandline starting with \fBftp.\fP are treated like

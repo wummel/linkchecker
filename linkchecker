@@ -70,8 +70,10 @@ Notes = _("""NOTES
 
 ProxySupport = _("""PROXY SUPPORT
 To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy
-on Unix or Windows to the proxy URL (for example http://localhost:8080).
-On a Mac use the Internet Config.
+on Unix or Windows to the proxy URL. The URL should be of the form
+"http://[<user>:<pass>@]<host>[:port]", for example
+"http://localhost:8080", or "http://joe:test@proxy.domain".
+On a Mac use the Internet Config to select a proxy.
 """)
 
 RegularExpressions = _("""REGULAR EXPRESSIONS
