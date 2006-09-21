@@ -4,6 +4,12 @@
     Type: bugfix
     Changed: linkcheck/robotparser2.py
 
+  * Don't rely on HTTP HEAD requests to generate the same response status
+    as HTTP GET. So we have to follow redirections when using HTTP GET to
+    get page contents.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
 4.4 "Garden State" (released 16.9.2006)
 
   * The JavaScript URL syntax check allows now digits and underscores.

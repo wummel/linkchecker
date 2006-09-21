@@ -543,6 +543,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.close_connection()
             t = time.time()
             response = self._get_http_response()
+            tries, response = self.follow_redirections(response)
             self.headers = response.msg
             self.data = response.read()
             encoding = headers.get_content_encoding(self.headers)
