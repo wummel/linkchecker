@@ -42,9 +42,7 @@ def check_urls (aggregate):
         aggregate.finish()
         aggregate.logger.end_log_output()
     except KeyboardInterrupt:
-        linkcheck.log.warn(linkcheck.LOG_CHECK,
-               _("keyboard interrupt; waiting for active threads to finish"))
-        abort(aggregate)
+        interrupt(aggregate)
     except:
         console.internal_error()
         abort(aggregate)
@@ -66,6 +64,32 @@ def check_url (aggregate):
             if not aggregate.threads:
                 break
 
+
+def interrupt (aggregate):
+    """
+    Interrupt execution and shutdown, ignoring any subsequent interrupts.
+    """
+    while True:
+        try:
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+               _("keyboard interrupt; waiting for active threads to finish"))
+            print_active_threads(aggregate)
+            abort(aggregate)
+            break
+        except KeyboardInterrupt:
+            pass
+
+
+def print_active_threads (aggregate):
+    if not aggregate.threads:
+        return
+    linkcheck.log.info(linkcheck.LOG_CHECK, _("These URLs are still active:"))
+    for t in aggregate.threads:
+        name = t.getName()
+        if name.startswith("Check-"):
+            linkcheck.log.info(linkcheck.LOG_CHECK, name[6:])
+
+
 def abort (aggregate):
     """
     Helper function to ensure a clean shutdown.
@@ -78,6 +102,7 @@ def abort (aggregate):
             break
         except KeyboardInterrupt:
             linkcheck.log.warn(linkcheck.LOG_CHECK, _("shutdown in progress"))
+            print_active_threads(aggregate)
 
 def get_aggregate (config):
     """

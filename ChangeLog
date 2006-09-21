@@ -15,6 +15,11 @@
     Type: documentation
     Changed: linkchecker, {doc,po}/{en,de}.po, doc/{en,de}/linkchecker.1
 
+  * Print active URLs on Ctrl-C interrupt.
+    Closes: SF patch #1562177
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+
 4.4 "Garden State" (released 16.9.2006)
 
   * The JavaScript URL syntax check allows now digits and underscores.
