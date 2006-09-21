@@ -1,6 +1,8 @@
-4.5 "" (released xx.xx.xxxx)
+4.5 "The Good Humor Man" (released xx.xx.xxxx)
 
-  *
+  * Don't ignore robots.txt entries consisting only of Allow: directives.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
 
 4.4 "Garden State" (released 16.9.2006)
 
