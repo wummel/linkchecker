@@ -20,6 +20,12 @@
     Type: feature
     Changed: linkcheck/director/__init__.py
 
+  * Replace all old "entry1, entry2" configuration entries with
+    multiline "entry" config entry.
+    Closes: SF patch #1562195
+    Type: feature
+    Changed: linkcheck/configuration/confparse.py
+
 4.4 "Garden State" (released 16.9.2006)
 
   * The JavaScript URL syntax check allows now digits and underscores.

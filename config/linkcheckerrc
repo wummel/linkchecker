@@ -134,20 +134,23 @@
 #noanchorcaching=1
 
 # filtering options
-# for each extern link we can specify if it is strict or not
 [filtering]
-# ignore everything with 'lconline' in the URL name
-#ignore1=lconline
-# and ignore everything with 'bookmark' in the URL name
-#ignore2=bookmark
-# and ignore all mailto: URLs
-#ignore3=^mailto:
+#ignore=
+  # ignore everything with 'lconline' in the URL name
+  #lconline
+  # and ignore everything with 'bookmark' in the URL name
+  #bookmark
+  # and ignore all mailto: URLs
+  #^mailto:
 # do not recurse into the following URLs
-#nofollow1=http://justahomepage/bla
+#nofollow=
+  # just a homepage
+  #http://justahomepage/bla
 # specify hosts to contact directly without a proxy
 # value is a regular expression
-#noproxy1=*\.intra
-#noproxy2=.*myinternurl.*
+#noproxy=
+  #*\.intra
+  #.*myinternurl.*
 # Ignore specified warnings (see linkchecker -h for the list of
 # recognized warnings). Add a comma-separated list of warnings here
 # that prevent a valid URL from being logged. Note that the warning
@@ -165,5 +168,6 @@
 # and therefore override the entries given here. The first match wins.
 # At the moment, authentication is used/needed for http[s] and ftp links.
 [authentication]
-#entry1=^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
-#entry2=^ftp://void.cs.uni-sb.de calvin hutzli
+#entry=
+  #^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
+  #^ftp://void.cs.uni-sb.de calvin hutzli

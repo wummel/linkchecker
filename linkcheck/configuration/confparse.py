@@ -167,9 +167,27 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         except ConfigParser.Error, msg:
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
+            value = self.get(section, "noproxyfor")
+            for line in value.splitlines():
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                try:
+                    arg = re.compile(arg)
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                   _("syntax error in noproxyfor %(line)r") % {"line": line})
+                self.config["noproxyfor"].append(arg)
+        except ConfigParser.Error, msg:
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            # XXX backward compatibility
             i = 1
             while 1:
                 arg = self.get(section, "noproxyfor%d" % i)
+                linkcheck.log.warn(linkcheck.LOG_CHECK,
+                  _("the noproxyfor%(num)d syntax is deprecated; use" \
+                    "the new multiline configuration syntax") % {"num": i})
                 try:
                     arg = re.compile(arg)
                 except re.error, msg:
@@ -192,9 +210,35 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         """
         section = "authentication"
         try:
+            value = self.get(section, "entry")
+            for line in arg.splitlines():
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                auth = line.split()
+                if len(auth) != 3:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("missing auth part in entry %(line)r") % \
+                       {"line": line})
+                try:
+                    auth[0] = re.compile(auth[0])
+                except re.error, msg:
+                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                       _("syntax error in entry %(line)r: %(msg)s") % \
+                       {"line": line, "msg": msg})
+                self.config["authentication"].insert(0, {'pattern': auth[0],
+                                                  'user': auth[1],
+                                                  'password': auth[2]})
+        except ConfigParser.Error, msg:
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            # XXX backward compatibility
             i = 1
             while 1:
                 auth = self.get(section, "entry%d" % i).split()
+                linkcheck.log.warn(linkcheck.LOG_CHECK,
+                  _("the entry%(num)d syntax is deprecated; use" \
+                    "the new multiline configuration syntax") % {"num": i})
                 if len(auth) != 3:
                     break
                 try:
@@ -216,9 +260,23 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         """
         section = "filtering"
         try:
+            value = self.get(section, "nofollow")
+            for line in arg.splitlines():
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                pat = linkcheck.get_link_pat(line, strict=0)
+                self.config["externlinks"].append(pat)
+        except ConfigParser.Error, msg:
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            # XXX backward compatibility
             i = 1
             while 1:
                 val = self.get(section, "nofollow%d" % i)
+                linkcheck.log.warn(linkcheck.LOG_CHECK,
+                  _("the nofollow%(num)d syntax is deprecated; use" \
+                    "the new multiline configuration syntax") % {"num": i})
                 pat = linkcheck.get_link_pat(val, strict=0)
                 self.config["externlinks"].append(pat)
                 i += 1
@@ -230,10 +288,24 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         except ConfigParser.Error, msg:
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
+            value = self.get(section, "ignore")
+            for line in arg.splitlines():
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                pat = linkcheck.get_link_pat(line, strict=1)
+                self.config["externlinks"].append(pat)
+        except ConfigParser.Error, msg:
+            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        try:
+            # XXX backward compatibility
             i = 1
             while 1:
                 # XXX backwards compatibility: split and ignore second part
                 val = self.get(section, "ignore%d" % i).split()[0]
+                linkcheck.log.warn(linkcheck.LOG_CHECK,
+                  _("the ignore%(num)d syntax is deprecated; use" \
+                    "the new multiline configuration syntax") % {"num": i})
                 pat = linkcheck.get_link_pat(val, strict=1)
                 self.config["externlinks"].append(pat)
                 i += 1
