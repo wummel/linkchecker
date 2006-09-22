@@ -1,4 +1,4 @@
-include README INSTALL LICENSE TODO MANIFEST.in MANIFEST ChangeLog
+include README INSTALL LICENSE TODO ChangeLog
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/linkcheck-cron.sh
 include config/logging.conf config/pycheckrc config/pylintrc

@@ -39,6 +39,7 @@ from distutils.command.install_data import install_data
 from distutils.command.build_ext import build_ext
 from distutils.command.build import build
 from distutils.command.clean import clean
+from distutils.command.sdist import sdist
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
 from distutils.sysconfig import get_python_version
@@ -441,6 +442,16 @@ class MyClean (clean, object):
         clean.run(self)
 
 
+class MySdist (sdist, object):
+    """
+    Custom sdist command.
+    """
+
+    def get_file_list (self):
+        super(MySdist, self).get_file_list()
+        self.filelist.append("MANIFEST")
+
+
 # global include dirs
 include_dirs = []
 # global macros
@@ -543,6 +554,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                    'build_ext': MyBuildExt,
                    'build': MyBuild,
                    'clean': MyClean,
+                   'sdist': MySdist,
                   },
        packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
                    'linkcheck.director', 'linkcheck.configuration',
