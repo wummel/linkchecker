@@ -20,7 +20,6 @@ Store metadata and options.
 
 import sys
 import os
-import logging
 import logging.config
 import urllib
 import _linkchecker_configdata
