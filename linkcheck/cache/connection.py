@@ -19,7 +19,6 @@ Store and retrieve open connections.
 """
 
 import time
-import linkcheck
 import linkcheck.lock
 import linkcheck.log
 from linkcheck.decorators import synchronized

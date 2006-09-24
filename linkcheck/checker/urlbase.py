@@ -29,7 +29,6 @@ import socket
 import select
 import traceback
 
-import linkcheck
 import linkcheck.linkparse
 import linkcheck.checker
 import linkcheck.cache.geoip

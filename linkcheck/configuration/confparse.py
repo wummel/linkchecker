@@ -18,7 +18,6 @@
 
 import ConfigParser
 import re
-import linkcheck
 import linkcheck.log
 
 class LCConfigParser (ConfigParser.RawConfigParser, object):

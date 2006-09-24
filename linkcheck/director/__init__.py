@@ -19,7 +19,6 @@ Management of checking a queue of links with several threads.
 """
 import time
 import thread
-import linkcheck
 import linkcheck.log
 import linkcheck.cache.urlqueue
 import linkcheck.cache.robots_txt

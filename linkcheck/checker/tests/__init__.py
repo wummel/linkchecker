@@ -24,7 +24,6 @@ import codecs
 import difflib
 import unittest
 
-import linkcheck
 import linkcheck.checker
 import linkcheck.configuration
 import linkcheck.logger

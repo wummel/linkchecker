@@ -20,7 +20,6 @@ A blacklist logger.
 
 import os
 
-import linkcheck
 import linkcheck.logger
 
 

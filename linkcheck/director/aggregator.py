@@ -15,7 +15,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Aggregate needed object instances for checker threads."""
-import linkcheck
 import linkcheck.log
 import linkcheck.director
 import logger

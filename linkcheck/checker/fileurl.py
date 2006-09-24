@@ -26,7 +26,6 @@ import urllib
 import urllib2
 
 import urlbase
-import linkcheck
 import linkcheck.log
 import linkcheck.checker
 import linkcheck.fileutil

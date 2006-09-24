@@ -25,7 +25,6 @@ import sys
 import time
 import encodings.idna
 
-import linkcheck
 import linkcheck.log
 import linkcheck.dns.exception
 import linkcheck.dns.message

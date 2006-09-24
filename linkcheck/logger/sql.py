@@ -21,7 +21,6 @@ A SQL logger.
 import time
 import os
 
-import linkcheck
 import linkcheck.logger
 import linkcheck.configuration
 

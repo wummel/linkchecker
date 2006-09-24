@@ -18,7 +18,6 @@
 Test html parsing.
 """
 
-import linkcheck.HtmlParser
 import linkcheck.HtmlParser.htmlsax
 import linkcheck.HtmlParser.htmllib
 import cStringIO as StringIO

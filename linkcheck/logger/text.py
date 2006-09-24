@@ -20,7 +20,6 @@ The default text logger.
 
 import time
 
-import linkcheck
 import linkcheck.ansicolor
 import linkcheck.logger
 import linkcheck.strformat

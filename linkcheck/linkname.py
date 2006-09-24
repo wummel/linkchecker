@@ -19,7 +19,6 @@ Parse name of common link types.
 """
 
 import re
-import linkcheck
 import linkcheck.HtmlParser
 import linkcheck.strformat
 

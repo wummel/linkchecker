@@ -23,7 +23,6 @@ import urllib
 import smtplib
 import email.Utils
 
-import linkcheck
 import urlbase
 import linkcheck.log
 import linkcheck.dns.resolver

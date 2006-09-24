@@ -25,7 +25,6 @@ import time
 import urlparse
 import types
 
-import linkcheck
 import linkcheck.configuration
 import linkcheck.url
 import linkcheck.i18n

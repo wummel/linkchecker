@@ -18,7 +18,6 @@
 Store and retrieve cookies.
 """
 from linkcheck.decorators import synchronized
-import linkcheck
 import linkcheck.log
 import linkcheck.lock
 import linkcheck.cookies

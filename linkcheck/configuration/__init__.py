@@ -23,7 +23,6 @@ import os
 import logging.config
 import urllib
 import _linkchecker_configdata
-import linkcheck
 import linkcheck.log
 import linkcheck.containers
 import confparse

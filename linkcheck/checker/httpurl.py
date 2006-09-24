@@ -27,7 +27,6 @@ import socket
 import cStringIO as StringIO
 import Cookie
 
-import linkcheck
 import linkcheck.url
 import linkcheck.gzip2
 import linkcheck.strformat

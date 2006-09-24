@@ -19,7 +19,6 @@ Find link tags in HTML text.
 """
 
 import re
-import linkcheck
 import linkcheck.strformat
 import linkcheck.linkname
 import linkcheck.log

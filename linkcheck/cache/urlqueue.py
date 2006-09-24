@@ -20,7 +20,6 @@ Handle a queue of URLs to check.
 import threading
 import collections
 from time import time as _time
-import linkcheck
 import linkcheck.log
 
 
