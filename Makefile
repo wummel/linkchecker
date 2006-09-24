@@ -6,8 +6,6 @@ HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 # all Python files in the source
 PYFILES = $(wildcard *.py) linkchecker linkcheck tests
-PYLINT := env PYTHONPATH=. PYLINTRC=config/pylintrc $(PYTHON) /usr/bin/pylint
-PYLINTOPTS := --disable-msg-cat=C,R,W
 PYFLAKES:=python$(PYVER) /usr/bin/pyflakes
 PYTHONSVN := /home/calvin/src/python-svn
 # build dir for svn-buildpackage
@@ -135,13 +133,6 @@ sign_distfiles:
 .PHONY: test
 test:	localbuild
 	scripts/test.sh
-
-.PHONY: pylint
-pylint:
-	$(PYLINT) $(PYLINTOPTS) $(PYFILES) | \
-	  grep -v "Undefined variable '_'" | \
-	  grep -v "Undefined variable '_n'" | \
-	  uniq
 
 .PHONY: pyflakes
 pyflakes:
