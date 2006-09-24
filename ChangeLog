@@ -26,6 +26,11 @@
     Type: feature
     Changed: linkcheck/configuration/confparse.py
 
+  * If LinkChecker was not able to spawn the initial checker and status
+    threads, print an informative error instead of an internal error.
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+
 4.4 "Garden State" (released 16.9.2006)
 
   * The JavaScript URL syntax check allows now digits and underscores.
