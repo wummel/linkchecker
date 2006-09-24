@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2006-09-21 14:44+0200\n"
-"PO-Revision-Date: 2006-09-21 14:47+0100\n"
+"POT-Creation-Date: 2006-09-24 12:22+0200\n"
+"PO-Revision-Date: 2006-09-24 12:24+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: ../linkcheck/logger/csvlog.py:59
 #: ../linkcheck/logger/gml.py:48
-#: ../linkcheck/logger/sql.py:80
+#: ../linkcheck/logger/sql.py:79
 #: ../linkcheck/logger/xmllog.py:82
 #: ../linkcheck/logger/dot.py:48
 #, python-format
@@ -26,7 +26,7 @@ msgstr "erstellt von %(app)s um %(time)s"
 #: ../linkcheck/logger/csvlog.py:62
 #: ../linkcheck/logger/gml.py:51
 #: ../linkcheck/logger/xmllog.py:85
-#: ../linkcheck/logger/text.py:101
+#: ../linkcheck/logger/text.py:100
 #: ../linkcheck/logger/dot.py:51
 #, python-format
 msgid "Get the newest version at %(url)s"
@@ -35,7 +35,7 @@ msgstr "Die neueste Version gibt es unter %(url)s"
 #: ../linkcheck/logger/csvlog.py:64
 #: ../linkcheck/logger/gml.py:53
 #: ../linkcheck/logger/xmllog.py:87
-#: ../linkcheck/logger/text.py:103
+#: ../linkcheck/logger/text.py:102
 #: ../linkcheck/logger/dot.py:53
 #, python-format
 msgid "Write comments and bugs to %(email)s"
@@ -47,10 +47,10 @@ msgstr "Format der Einträge:"
 
 #: ../linkcheck/logger/csvlog.py:122
 #: ../linkcheck/logger/gml.py:118
-#: ../linkcheck/logger/sql.py:145
+#: ../linkcheck/logger/sql.py:144
 #: ../linkcheck/logger/xmllog.py:99
 #: ../linkcheck/logger/html.py:294
-#: ../linkcheck/logger/text.py:255
+#: ../linkcheck/logger/text.py:254
 #: ../linkcheck/logger/dot.py:114
 #, python-format
 msgid "Stopped checking at %(time)s (%(duration)s)"
@@ -113,20 +113,20 @@ msgstr "URL"
 msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr "Herzlichen Glückwunsch zum Geburtstag, LinkChecker, ich bin heute %d Jahre alt geworden!"
 
-#: ../linkcheck/logger/sql.py:83
+#: ../linkcheck/logger/sql.py:82
 #: ../linkcheck/logger/html.py:299
 #, python-format
 msgid "Get the newest version at %s"
 msgstr "Die neueste Version gibt es unter %s"
 
-#: ../linkcheck/logger/sql.py:85
+#: ../linkcheck/logger/sql.py:84
 #: ../linkcheck/logger/html.py:302
 #, python-format
 msgid "Write comments and bugs to %s"
 msgstr "Schreiben Sie Kommentare und Fehler an %s"
 
 #: ../linkcheck/logger/html.py:102
-#: ../linkcheck/logger/text.py:107
+#: ../linkcheck/logger/text.py:106
 #, python-format
 msgid "Start checking at %s"
 msgstr "Beginne Prüfen am %s"
@@ -136,47 +136,47 @@ msgid "checked link"
 msgstr "geprüfte Verknüpfung"
 
 #: ../linkcheck/logger/html.py:169
-#: ../linkcheck/logger/text.py:147
+#: ../linkcheck/logger/text.py:146
 msgid " (cached)"
 msgstr " (aus dem Cache)"
 
 #: ../linkcheck/logger/html.py:187
-#: ../linkcheck/logger/text.py:163
+#: ../linkcheck/logger/text.py:162
 #, python-format
 msgid ", line %d"
 msgstr ", Zeile %d"
 
 #: ../linkcheck/logger/html.py:188
-#: ../linkcheck/logger/text.py:164
+#: ../linkcheck/logger/text.py:163
 #, python-format
 msgid ", col %d"
 msgstr ", Spalte %d"
 
 #: ../linkcheck/logger/html.py:218
 #: ../linkcheck/logger/html.py:234
-#: ../linkcheck/logger/text.py:186
-#: ../linkcheck/logger/text.py:202
+#: ../linkcheck/logger/text.py:185
+#: ../linkcheck/logger/text.py:201
 #, python-format
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
 #: ../linkcheck/logger/html.py:265
-#: ../linkcheck/logger/text.py:228
+#: ../linkcheck/logger/text.py:227
 msgid "Valid"
 msgstr "Gültig"
 
 #: ../linkcheck/logger/html.py:270
-#: ../linkcheck/logger/text.py:231
+#: ../linkcheck/logger/text.py:230
 msgid "Error"
 msgstr "Fehler"
 
 #: ../linkcheck/logger/html.py:281
-#: ../linkcheck/logger/text.py:242
+#: ../linkcheck/logger/text.py:241
 msgid "That's it."
 msgstr "Das war's."
 
 #: ../linkcheck/logger/html.py:283
-#: ../linkcheck/logger/text.py:244
+#: ../linkcheck/logger/text.py:243
 #, python-format
 msgid "%d link checked."
 msgid_plural "%d links checked."
@@ -184,7 +184,7 @@ msgstr[0] "%d Verknüpfung überprüft."
 msgstr[1] "%d Verknüpfungen überprüft."
 
 #: ../linkcheck/logger/html.py:286
-#: ../linkcheck/logger/text.py:248
+#: ../linkcheck/logger/text.py:247
 #, python-format
 msgid "%d warning found."
 msgid_plural "%d warnings found."
@@ -192,33 +192,33 @@ msgstr[0] "%d Warnung gefunden."
 msgstr[1] "%d Warnungen gefunden."
 
 #: ../linkcheck/logger/html.py:289
-#: ../linkcheck/logger/text.py:251
+#: ../linkcheck/logger/text.py:250
 #, python-format
 msgid "%d error found."
 msgid_plural "%d errors found."
 msgstr[0] "%d Fehler gefunden."
 msgstr[1] "%d Fehler gefunden."
 
-#: ../linkcheck/checker/urlbase.py:65
+#: ../linkcheck/checker/urlbase.py:64
 #: ../linkchecker:729
 #, python-format
 msgid "URL has unparsable domain name: %s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %s"
 
-#: ../linkcheck/checker/urlbase.py:286
+#: ../linkcheck/checker/urlbase.py:285
 msgid "URL is missing"
 msgstr "URL fehlt"
 
-#: ../linkcheck/checker/urlbase.py:289
+#: ../linkcheck/checker/urlbase.py:288
 msgid "URL is empty"
 msgstr "URL ist leer"
 
-#: ../linkcheck/checker/urlbase.py:296
+#: ../linkcheck/checker/urlbase.py:295
 #, python-format
 msgid "Effective URL %r."
 msgstr "Effektive URL %r."
 
-#: ../linkcheck/checker/urlbase.py:312
+#: ../linkcheck/checker/urlbase.py:311
 #, python-format
 msgid ""
 "URL %(url)r has a unicode domain name which\n"
@@ -226,51 +226,51 @@ msgid ""
 "                          the URL %(idna_url)r instead."
 msgstr "URL %(url)r besitzt eine Unicode Domäne, welche noch nicht von allen verarbeitet werden kann. Sie sollten stattdessen die URL %(idna_url)r benutzen."
 
-#: ../linkcheck/checker/urlbase.py:319
+#: ../linkcheck/checker/urlbase.py:318
 #, python-format
 msgid "Base URL is not properly normed. Normed URL is %(url)s."
 msgstr "Basis URL ist nicht genormt. Genormte URL ist %(url)s."
 
-#: ../linkcheck/checker/urlbase.py:359
+#: ../linkcheck/checker/urlbase.py:358
 #, python-format
 msgid "URL has invalid port %r"
 msgstr "URL hat eine ungültige Portnummer %r"
 
-#: ../linkcheck/checker/urlbase.py:385
+#: ../linkcheck/checker/urlbase.py:384
 #, python-format
 msgid "URL is located in %s."
 msgstr "URL befindet sich in %s."
 
-#: ../linkcheck/checker/urlbase.py:397
+#: ../linkcheck/checker/urlbase.py:396
 #: ../linkcheck/checker/unknownurl.py:75
 msgid "Outside of domain filter, checked only syntax."
 msgstr "Außerhalb des Domain Filters; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/urlbase.py:412
+#: ../linkcheck/checker/urlbase.py:411
 msgid "Hostname not found"
 msgstr "Rechnername nicht gefunden"
 
-#: ../linkcheck/checker/urlbase.py:415
+#: ../linkcheck/checker/urlbase.py:414
 #, python-format
 msgid "Bad HTTP response %r"
 msgstr "Ungültige HTTP Antwort %r"
 
-#: ../linkcheck/checker/urlbase.py:438
+#: ../linkcheck/checker/urlbase.py:437
 #, python-format
 msgid "could not get content: %r"
 msgstr "konnte Inhalt nicht parsen: %r"
 
-#: ../linkcheck/checker/urlbase.py:555
+#: ../linkcheck/checker/urlbase.py:554
 #, python-format
 msgid "Anchor #%s not found."
 msgstr "Anker #%s nicht gefunden."
 
-#: ../linkcheck/checker/urlbase.py:614
+#: ../linkcheck/checker/urlbase.py:613
 #, python-format
 msgid "Found %r in link contents."
 msgstr "Habe %r in Link Inhalt gefunden."
 
-#: ../linkcheck/checker/urlbase.py:625
+#: ../linkcheck/checker/urlbase.py:624
 #, python-format
 msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
@@ -303,57 +303,57 @@ msgstr "NNTP server zu beschäftigt; habe es mehr als %d mal versucht."
 msgid "NNTP busy: %s."
 msgstr "NNTP beschäftigt: %s."
 
-#: ../linkcheck/checker/httpurl.py:166
+#: ../linkcheck/checker/httpurl.py:165
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr "Zugriff verweigert durch robots.txt; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:172
+#: ../linkcheck/checker/httpurl.py:171
 msgid "Amazon servers block HTTP HEAD requests, using GET instead."
 msgstr "Amazon server blockieren HTTP HEAD Anfragen, verwende stattdessen GET."
 
-#: ../linkcheck/checker/httpurl.py:183
+#: ../linkcheck/checker/httpurl.py:182
 msgid "unknown"
 msgstr "unbekannt"
 
-#: ../linkcheck/checker/httpurl.py:185
+#: ../linkcheck/checker/httpurl.py:184
 #, python-format
 msgid "Server %r did not support HEAD request; a GET request was used instead."
 msgstr "Server %r unterstützte keine HEAD Anfrage; eine GET Anfrage wurde stattdessen verwendet."
 
-#: ../linkcheck/checker/httpurl.py:188
+#: ../linkcheck/checker/httpurl.py:187
 #, python-format
 msgid "Server %r had no anchor support, removed anchor from request."
 msgstr "Server %r besitzt keine Anker Unterstützung, lösche Anker von der Anfrage."
 
-#: ../linkcheck/checker/httpurl.py:232
+#: ../linkcheck/checker/httpurl.py:231
 #, python-format
 msgid "Enforced proxy %r."
 msgstr "Erzwungener Proxy %r."
 
-#: ../linkcheck/checker/httpurl.py:236
+#: ../linkcheck/checker/httpurl.py:235
 #, python-format
 msgid "Enforced proxy %r ignored, aborting."
 msgstr "Erzwungener Proxy %r wurde ignoriert, breche ab."
 
-#: ../linkcheck/checker/httpurl.py:265
+#: ../linkcheck/checker/httpurl.py:264
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr "mehr als %d Weiterleitungen, breche ab"
 
-#: ../linkcheck/checker/httpurl.py:319
+#: ../linkcheck/checker/httpurl.py:318
 #, python-format
 msgid "Redirected to %(url)s."
 msgstr "Zu %(url)s umgeleitet."
 
-#: ../linkcheck/checker/httpurl.py:330
+#: ../linkcheck/checker/httpurl.py:329
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr "Die Weiterleitungs-URL ist außerhalb des Domain Filters; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:337
+#: ../linkcheck/checker/httpurl.py:336
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr "Zugriff zur Weiterleitungs-URL verweigert durch robots.txt; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:351
+#: ../linkcheck/checker/httpurl.py:350
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
@@ -362,111 +362,111 @@ msgstr ""
 "Rekursive Weiterleitung entdeckt:\n"
 " %s"
 
-#: ../linkcheck/checker/httpurl.py:362
+#: ../linkcheck/checker/httpurl.py:361
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr "HTTP 301 (moved permanent) gefunden: sie sollten diesen Link aktualisieren."
 
-#: ../linkcheck/checker/httpurl.py:372
+#: ../linkcheck/checker/httpurl.py:371
 #, python-format
 msgid "Redirection to different URL type encountered; the original URL was %r."
 msgstr "HTTP Weiterleitung zu einer nicht-HTTP URL; die Original-URL war %r."
 
-#: ../linkcheck/checker/httpurl.py:417
+#: ../linkcheck/checker/httpurl.py:416
 #, python-format
 msgid "Store cookie: %s."
 msgstr "Speichere Cookie: %s."
 
-#: ../linkcheck/checker/httpurl.py:426
+#: ../linkcheck/checker/httpurl.py:425
 #, python-format
 msgid "Could not store cookies: %(msg)s."
 msgstr "Konnte Cookie nicht speichern: %(msg)s."
 
-#: ../linkcheck/checker/httpurl.py:435
+#: ../linkcheck/checker/httpurl.py:434
 #, python-format
 msgid "Last modified %s."
 msgstr "Letzte Änderung %s."
 
-#: ../linkcheck/checker/httpurl.py:525
+#: ../linkcheck/checker/httpurl.py:524
 #, python-format
 msgid "Unsupported HTTP url scheme %r"
 msgstr "Nicht unterstütztes HTTP URL Schema %r"
 
-#: ../linkcheck/checker/httpurl.py:558
+#: ../linkcheck/checker/httpurl.py:557
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr "Entkomprimierungsfehler %(err)s"
 
-#: ../linkcheck/checker/httpurl.py:582
-#: ../linkcheck/checker/httpurl.py:611
+#: ../linkcheck/checker/httpurl.py:581
+#: ../linkcheck/checker/httpurl.py:610
 #, python-format
 msgid "Unsupported content encoding %r."
 msgstr "Content-Encoding %r wird nicht unterstützt."
 
-#: ../linkcheck/checker/fileurl.py:121
+#: ../linkcheck/checker/fileurl.py:120
 msgid "Added trailing slash to directory."
 msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt."
 
-#: ../linkcheck/checker/fileurl.py:132
+#: ../linkcheck/checker/fileurl.py:131
 msgid "directory"
 msgstr "Verzeichnis"
 
-#: ../linkcheck/checker/fileurl.py:149
+#: ../linkcheck/checker/fileurl.py:148
 #, python-format
 msgid "The URL path %(path)r is not the same as the system path %(realpath)r. You should always use the system path in URLs."
 msgstr "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. Sie sollten immer den Systempfad in URLs benutzen."
 
-#: ../linkcheck/checker/mailtourl.py:50
+#: ../linkcheck/checker/mailtourl.py:49
 msgid "Could not split the mail address"
 msgstr "konnte die Mail Adresse nicht splitten"
 
-#: ../linkcheck/checker/mailtourl.py:75
+#: ../linkcheck/checker/mailtourl.py:74
 msgid "Invalid mail syntax"
 msgstr "Ungültige Mail Syntax"
 
-#: ../linkcheck/checker/mailtourl.py:115
+#: ../linkcheck/checker/mailtourl.py:114
 #, python-format
 msgid "Error parsing CGI values: %s"
 msgstr "Fehler beim Parsen der CGI-Werte: %s"
 
-#: ../linkcheck/checker/mailtourl.py:138
+#: ../linkcheck/checker/mailtourl.py:137
 msgid "No addresses found."
 msgstr "Keine Adressen wurden gefunden."
 
-#: ../linkcheck/checker/mailtourl.py:158
+#: ../linkcheck/checker/mailtourl.py:157
 #, python-format
 msgid "No MX mail host for %(domain)s found."
 msgstr "Kein MX mail host für %(domain)s gefunden."
 
-#: ../linkcheck/checker/mailtourl.py:163
+#: ../linkcheck/checker/mailtourl.py:162
 #, python-format
 msgid "No host for %(domain)s found."
 msgstr "Kein Rechner für %(domain)s gefunden."
 
-#: ../linkcheck/checker/mailtourl.py:212
+#: ../linkcheck/checker/mailtourl.py:211
 #, python-format
 msgid "Verified address: %(info)s."
 msgstr "Gültige Adresse: %(info)s."
 
-#: ../linkcheck/checker/mailtourl.py:216
+#: ../linkcheck/checker/mailtourl.py:215
 #, python-format
 msgid "Unverified address: %(info)s. But mail will be sent anyway."
 msgstr "Gültige Adresse: %(info)s. Email wird dennoch versandt."
 
-#: ../linkcheck/checker/mailtourl.py:219
+#: ../linkcheck/checker/mailtourl.py:218
 #, python-format
 msgid "Unverified address: %(info)s."
 msgstr "Unverifizierte Adresse: %(info)s."
 
-#: ../linkcheck/checker/mailtourl.py:223
+#: ../linkcheck/checker/mailtourl.py:222
 #, python-format
 msgid "MX mail host %(host)s did not accept connections: %(error)s."
 msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s."
 
-#: ../linkcheck/checker/mailtourl.py:229
+#: ../linkcheck/checker/mailtourl.py:228
 msgid "Could not connect, but syntax is correct"
 msgstr "Konnte nicht konnektieren, aber die Syntax ist korrekt"
 
-#: ../linkcheck/checker/mailtourl.py:231
+#: ../linkcheck/checker/mailtourl.py:230
 #, python-format
 msgid "Found MX mail host %(host)s"
 msgstr "MX Mail host %(host)s gefunden"
@@ -645,32 +645,32 @@ msgstr "DEBUG"
 msgid "NOTSET"
 msgstr "NICHTS"
 
-#: ../linkcheck/lc_cgi.py:131
+#: ../linkcheck/lc_cgi.py:130
 msgid "unsupported language"
 msgstr "nicht unterstützte Sprache"
 
-#: ../linkcheck/lc_cgi.py:136
+#: ../linkcheck/lc_cgi.py:135
 msgid "empty url was given"
 msgstr "leere URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:138
+#: ../linkcheck/lc_cgi.py:137
 msgid "disallowed url was given"
 msgstr "eine ungültige URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:140
+#: ../linkcheck/lc_cgi.py:139
 msgid "no url was given"
 msgstr "keine URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:145
+#: ../linkcheck/lc_cgi.py:144
 msgid "invalid recursion level"
 msgstr "ungültiger Rekursionslevel"
 
-#: ../linkcheck/lc_cgi.py:150
+#: ../linkcheck/lc_cgi.py:149
 #, python-format
 msgid "invalid %s option syntax"
 msgstr "ungültige Option %s"
 
-#: ../linkcheck/lc_cgi.py:175
+#: ../linkcheck/lc_cgi.py:174
 #, python-format
 msgid ""
 "<html><head>\n"
@@ -733,36 +733,79 @@ msgid_plural "%d years"
 msgstr[0] "%d Jahr"
 msgstr[1] "%d Jahre"
 
-#: ../linkcheck/configuration/confparse.py:94
+#: ../linkcheck/configuration/confparse.py:93
 #, python-format
 msgid "invalid log option %r"
 msgstr "ungültige Log Option %r"
 
-#: ../linkcheck/configuration/confparse.py:127
+#: ../linkcheck/configuration/confparse.py:126
 #, python-format
 msgid "invalid negative value for timeout: %d\n"
 msgstr "ungültiger negativer Wert für timeout: %d\n"
 
-#: ../linkcheck/configuration/confparse.py:151
+#: ../linkcheck/configuration/confparse.py:150
 #, python-format
 msgid "syntax error in warningregex %(regex)r: %(msg)s\n"
 msgstr "Syntaxfehler in warningregex %(regex)r: %(msg)s\n"
 
-#: ../linkcheck/configuration/confparse.py:177
+#: ../linkcheck/configuration/confparse.py:178
+#, python-format
+msgid "syntax error in noproxyfor %(line)r: %(msg)s"
+msgstr "Syntaxfehler in noproxyfor %(line)r: %(msg)s"
+
+#: ../linkcheck/configuration/confparse.py:189
+#, python-format
+msgid "the noproxyfor%(num)d syntax is deprecated; use the new multiline configuration syntax"
+msgstr "die noproxyfor%(num)d Syntax ist veraltet; benutzen Sie die neue mehrzeilige Syntax"
+
+#: ../linkcheck/configuration/confparse.py:195
 #, python-format
 msgid "syntax error in noproxyfor%(num)d %(arg)r: %(msg)s"
 msgstr "Syntaxfehler in noproxyfor%(num)d %(arg)r: %(msg)s"
 
-#: ../linkcheck/configuration/confparse.py:204
+#: ../linkcheck/configuration/confparse.py:221
+#, python-format
+msgid "missing auth part in entry %(line)r"
+msgstr "fehlende Authentifizierung in entry %(line)r"
+
+#: ../linkcheck/configuration/confparse.py:227
+#, python-format
+msgid "syntax error in entry %(line)r: %(msg)s"
+msgstr "Syntaxfehler in entry %(line)r: %(msg)s"
+
+#: ../linkcheck/configuration/confparse.py:240
+#, python-format
+msgid "the entry%(num)d syntax is deprecated; use the new multiline configuration syntax"
+msgstr "die entry%(num)d Syntax ist veraltet; benutzen Sie die neue mehrzeilige Syntax"
+
+#: ../linkcheck/configuration/confparse.py:248
 #, python-format
 msgid "syntax error in entry%(num)d %(arg)r: %(msg)s"
 msgstr "Syntaxfehler in entry%(num)d %(arg)r: %(msg)s"
 
-#: ../linkcheck/director/__init__.py:46
+#: ../linkcheck/configuration/confparse.py:278
+#, python-format
+msgid "the nofollow%(num)d syntax is deprecated; use the new multiline configuration syntax"
+msgstr "die nofollow%(num)d Syntax ist veraltet; benutzen Sie die neue mehrzeilige Syntax"
+
+#: ../linkcheck/configuration/confparse.py:307
+#, python-format
+msgid "the ignore%(num)d syntax is deprecated; use the new multiline configuration syntax"
+msgstr "die ignore%(num)d Syntax ist veraltet; benutzen Sie die neue mehrzeilige Syntax"
+
+#: ../linkcheck/director/__init__.py:48
+msgid "Could not start a new thread. Check that the current user is allowed to start new threads."
+msgstr "Konnte keinen neuen Thread starten. Überprüfen sie, ob der aktuelle Benutzer neue Threads starten darf."
+
+#: ../linkcheck/director/__init__.py:80
 msgid "keyboard interrupt; waiting for active threads to finish"
 msgstr "Tastatur Abbruch; warte auf Beendigung von aktiven Verbindungen"
 
-#: ../linkcheck/director/__init__.py:80
+#: ../linkcheck/director/__init__.py:91
+msgid "These URLs are still active:"
+msgstr "Folgende URLs sind noch aktiv:"
+
+#: ../linkcheck/director/__init__.py:109
 msgid "shutdown in progress"
 msgstr "Programm wird beendet"
 
@@ -1554,6 +1597,8 @@ msgstr "Optionen"
 msgid "ambiguous option: %s (%s?)"
 msgstr "Mehrdeutige Option: %s (%s?)"
 
+#~ msgid "syntax error in noproxyfor %(line)r"
+#~ msgstr "Syntaxfehler in noproxyfor %(line)r"
 #~ msgid "signal interrupt handler changed to %s"
 #~ msgstr "Behandlung von Abbruchsignalen wurde geändert auf %s"
 #~ msgid "Do not use the psyco optimization module even if it is installed."
