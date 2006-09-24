@@ -210,7 +210,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         """
         section = "authentication"
         try:
-            value = self.get(section, "entry")
+            arg = self.get(section, "entry")
             for line in arg.splitlines():
                 line = line.strip()
                 if not line or line.startswith('#'):
@@ -260,7 +260,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         """
         section = "filtering"
         try:
-            value = self.get(section, "nofollow")
+            arg = self.get(section, "nofollow")
             for line in arg.splitlines():
                 line = line.strip()
                 if not line or line.startswith('#'):
@@ -288,7 +288,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         except ConfigParser.Error, msg:
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
         try:
-            value = self.get(section, "ignore")
+            arg = self.get(section, "ignore")
             for line in arg.splitlines():
                 line = line.strip()
                 if not line or line.startswith('#'):
