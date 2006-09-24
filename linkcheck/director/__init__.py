@@ -18,6 +18,7 @@
 Management of checking a queue of links with several threads.
 """
 import time
+import thread
 import linkcheck
 import linkcheck.log
 import linkcheck.cache.urlqueue
@@ -43,6 +44,11 @@ def check_urls (aggregate):
         aggregate.logger.end_log_output()
     except KeyboardInterrupt:
         interrupt(aggregate)
+    except thread.error:
+        linkcheck.log.warn(linkcheck.LOG_CHECK,
+             _("Could not start a new thread. Check that the current user" \
+               " is allowed to start new threads."))
+        abort(aggregate)
     except:
         console.internal_error()
         abort(aggregate)
