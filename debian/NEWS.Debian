@@ -1,3 +1,10 @@
+linkchecker (4.5-1) unstable; urgency=low
+
+  * For upgrading your configuration and scripts from older linkchecker
+    versions (<< 4.5), see /usr/share/doc/linkchecker/upgrading.txt.gz.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sat, 16 Sep 2006 12:08:36 +0200
+
 linkchecker (4.2-1) unstable; urgency=low
 
   * For upgrading your configuration and scripts from older linkchecker
