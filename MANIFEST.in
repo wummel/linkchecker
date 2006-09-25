@@ -1,7 +1,7 @@
 include README INSTALL LICENSE TODO ChangeLog
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/linkcheck-cron.sh
-include config/logging.conf config/pycheckrc config/pylintrc
+include config/logging.conf config/pycheckrc
 include config/reindent.py install-linkchecker.py install-rpm.sh
 include linkchecker
 include cgi-bin/lc.cgi cgi-bin/lc.fcgi cgi-bin/README
