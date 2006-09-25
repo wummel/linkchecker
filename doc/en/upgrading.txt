@@ -5,10 +5,35 @@
 Upgrading
 =========
 
+Migrating from 4.4 to 4.5
+-------------------------
+
+Configuration file entries that were enumerated (``ignoreX``,
+``nofollowX``, ``noproxyX`` and ``entryX``) now have a new multiline
+syntax. For example the old configuration:
+
+::
+
+  ignore1=^mailto:
+  ignore2=^nntp:
+
+should be written as:
+
+::
+
+  ignore=
+    ^mailto:
+    # this is a comment
+    ^nntp:
+
+Note the leading spac(es) at the beginning of each line after
+``ignore=``.
+If an indented line starts with a comment sign, it will be ignored.
+
 Migrating from 4.2 to 4.3
 -------------------------
 
-The deprecated --disable-psyco option has been removed.
+The deprecated ``--disable-psyco`` option has been removed.
 
 Migrating from 4.1 to 4.2
 -------------------------
