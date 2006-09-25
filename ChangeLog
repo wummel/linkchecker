@@ -21,7 +21,8 @@
     Changed: linkcheck/director/__init__.py
 
   * Replace all old "entry1, entry2" configuration entries with
-    multiline "entry" config entry.
+    multiline "entry" config entry. The old syntax is still supported,
+    but deprecated.
     Closes: SF patch #1562195
     Type: feature
     Changed: linkcheck/configuration/confparse.py
