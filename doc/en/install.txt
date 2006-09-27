@@ -31,7 +31,7 @@ Requirements for Unix/Linux or Mac OS X
    
    Be sure to also have installed the included distutils module.
    On most distributions, the distutils module is included in
-   an extra "python-dev" package.
+   an extra ``python-dev`` package.
 
 3. *Optional, for bash-completion:*
    optcomplete Python module from http://furius.ca/optcomplete/
@@ -41,8 +41,14 @@ Requirements for Windows
 
 1. Install Python >= 2.4 from http://www.python.org/
    [http://www.python.org/ftp/python/2.4.3/python-2.4.3.msi]
+   or
+   [http://www.python.org/ftp/python/2.5/python-2.5.msi]
 
-2. *Only needed if you compile from source:*
+2. *Optional (color support for console)*
+   Wconio from http://newcenturycomputers.net/projects/wconio.html
+   [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.4.exe]
+
+3. *Only needed if you compile from source:*
    install the MinGW suite from http://mingw.sourceforge.net/
    Be sure to install in the given order:
    
@@ -50,10 +56,6 @@ Requirements for Windows
       [http://switch.dl.sourceforge.net/sourceforge/mingw/MinGW-5.0.2.exe]
    b) MSYS
       [http://switch.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
-
-3. *Optional (color support for console)*
-   Wconio from http://newcenturycomputers.net/projects/wconio.html
-   [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.4.exe]
 
 Setup for Unix/Linux or Mac OS X
 --------------------------------
