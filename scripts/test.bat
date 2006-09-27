@@ -1,3 +1,3 @@
 @echo off
-set PYTHON="c:\Python 24\python.exe"
+set PYTHON="c:\Python 25\python.exe"
 %PYTHON% test.py -pvw %*

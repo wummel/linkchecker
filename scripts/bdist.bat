@@ -1,6 +1,6 @@
 @echo off
 REM batch file for generating the windows .exe installer
-set PYTHON="c:\Python 24\python.exe"
+set PYTHON="c:\Python 25\python.exe"
 cd doc\en
 %PYTHON% ..\rest2htmlnav --stylesheet-path=lc.css --time documentation.txt documentation.html
 %PYTHON% ..\rest2htmlnav --stylesheet-path=lc.css --time index.txt index.html
