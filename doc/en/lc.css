@@ -258,4 +258,9 @@ tt {
   background-color: #eeeeee }
 
 ul.auto-toc {
-  list-style-type: none }
+  list-style-type: none;
+}
+
+.align-right {
+  padding: 2px;
+}
