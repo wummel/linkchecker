@@ -9,7 +9,7 @@ all: $(HTMLFILES)
 clean:
 	rm -f $(HTMLFILES) $(NAVFILES)
 
-%.html:	%.txt ../htmlnav.py ../bfknav.py
+%.html:	%.txt ../htmlnav.py ../bfknav.py lc.css
 	../rest2htmlnav --stylesheet-path=lc.css --time $< $@
 
 .PHONY: nav
