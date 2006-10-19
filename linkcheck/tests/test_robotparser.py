@@ -50,13 +50,14 @@ class TestRobotParser (unittest.TestCase):
         """
         Test parsing and access of an existing robots.txt file.
         """
-        # robots.txt that exists, gotten to by redirection
+        # robots.txt that exists (use web archive to be sure to have the
+        # same robots.txt every time).
         self.rp.set_url('http://web.archive.org/web/20050312093828/http://www.musi-cal.com/robots.txt')
         self.rp.read()
         # test for re.escape
         self.check(self.rp.can_fetch('*', 'http://www.musi-cal.com/'), True)
-        # this should match the first rule, which is an empty disallow
-        self.check(self.rp.can_fetch('', 'http://www.musi-cal.com/'), True)
+        # this should match the first rule, which is a disallow
+        self.check(self.rp.can_fetch('', 'http://www.musi-cal.com/'), False)
         # various cherry pickers
         self.check(self.rp.can_fetch('CherryPickerSE',
                            'http://www.musi-cal.com/cgi-bin/event-search'
