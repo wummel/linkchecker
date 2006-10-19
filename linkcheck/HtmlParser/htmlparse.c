@@ -2113,9 +2113,7 @@ static int parser_init (parser_object* self, PyObject* args, PyObject* kwds) {
 
 /* traverse all used subobjects participating in reference cycles */
 static int parser_traverse (parser_object* self, visitproc visit, void* arg) {
-    if (visit(self->handler, arg) < 0) {
-        return -1;
-    }
+    Py_VISIT(self->handler);
     return 0;
 }
 
