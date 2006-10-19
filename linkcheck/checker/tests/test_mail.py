@@ -93,7 +93,7 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
             u"url %s" % url,
             u"cache key mailto:news-admins@freshmeat.net",
             u"real url %s" % url,
-            u"warning Unverified address: VRFY command is disabled.",
+            u"warning Unverified address: 5.5.1 VRFY command is disabled.",
             u"valid",
         ]
         self.direct(url, resultlines)
