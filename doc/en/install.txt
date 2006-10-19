@@ -100,8 +100,9 @@ Setup for Windows - the binary .exe installer:
    
    Be sure to have installed all required windows software listed above.
 
-2. Execute the ``linkchecker-x.xx.win32-py2.4.exe`` file and follow
-   the instructions.
+2. Execute the ``linkchecker-x.xx.win32-py2.x.exe`` file and follow
+   the instructions. Python 2.4 users use the ``-py2.4.exe`` installer,
+   Python 2.5 users the ``-py2.5.exe`` installer.
 
 Setup for Windows - compiling from source:
 ------------------------------------------
