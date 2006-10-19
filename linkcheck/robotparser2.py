@@ -291,7 +291,7 @@ class RobotFileParser (object):
                           "%s line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
-                        entry.rulelines.append(RuleLine(line[1], 0))
+                        entry.rulelines.append(RuleLine(line[1], False))
                         state = 2
                 elif line[0] == "allow":
                     if state == 0:
@@ -299,7 +299,7 @@ class RobotFileParser (object):
                           "%s line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
-                        entry.rulelines.append(RuleLine(line[1], 1))
+                        entry.rulelines.append(RuleLine(line[1], True))
                         state = 2
                 elif line[0] == "crawl-delay":
                     if state == 0:
