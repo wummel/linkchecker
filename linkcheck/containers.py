@@ -67,6 +67,11 @@ class ListDict (dict):
         # sorted list of keys
         self._keys = []
 
+    def setdefault (self, key, *args):
+        if not self.has_key(key):
+            self._keys.append(key)
+        return super(ListDict, self).setdefault(key, *args)
+
     def __setitem__ (self, key, value):
         """Add key,value to dict, append key to sorted list."""
         if not self.has_key(key):
@@ -77,6 +82,19 @@ class ListDict (dict):
         """Remove key from dict."""
         self._keys.remove(key)
         super(ListDict, self).__delitem__(key)
+
+    def pop (self, key):
+        if key in self._keys:
+            self._keys.remove(key)
+        super(ListDict, self).pop(key)
+
+    def popitem (self):
+        if self._keys:
+            k = self._keys[0]
+            v = self[k]
+            del self[k]
+            return (k, v)
+        raise KeyError("popitem() on empty dictionary")
 
     def values (self):
         """Return sorted list of values."""
@@ -92,11 +110,13 @@ class ListDict (dict):
 
     def itervalues (self):
         """Return iterator over sorted values."""
-        return iter(self.values())
+        for k in self._keys:
+            yield self[k]
 
     def iteritems (self):
         """Return iterator over sorted items."""
-        return ((k, self[k]) for k in self._keys)
+        for k in self._keys:
+            yield (k, self[k])
 
     def iterkeys (self):
         """Return iterator over sorted keys."""
