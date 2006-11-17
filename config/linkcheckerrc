@@ -136,21 +136,24 @@
 # filtering options
 [filtering]
 #ignore=
-  # ignore everything with 'lconline' in the URL name
-  #lconline
-  # and ignore everything with 'bookmark' in the URL name
-  #bookmark
-  # and ignore all mailto: URLs
-  #^mailto:
+# ignore everything with 'lconline' in the URL name
+#  lconline
+# and ignore everything with 'bookmark' in the URL name
+#  bookmark
+# and ignore all mailto: URLs
+#  ^mailto:
 # do not recurse into the following URLs
+
 #nofollow=
-  # just a homepage
-  #http://justahomepage/bla
+# just a homepage
+#  http://justahomepage/bla
+
 # specify hosts to contact directly without a proxy
 # value is a regular expression
 #noproxy=
-  #*\.intra
-  #.*myinternurl.*
+#  *\.intra
+#  .*myinternurl.*
+
 # Ignore specified warnings (see linkchecker -h for the list of
 # recognized warnings). Add a comma-separated list of warnings here
 # that prevent a valid URL from being logged. Note that the warning
@@ -158,6 +161,7 @@
 #ignorewarnings=url-unnormed,url-unicode-domain,anchor-not-found
 # Regular expression to add more URLs recognized as internal links.
 # Default is that URLs given on the command line are internal.
+
 #internlinks=^http://www\.my(other)?domain\.net/
 
 # You can provide different user/password pairs for different link types.
@@ -169,5 +173,5 @@
 # At the moment, authentication is used/needed for http[s] and ftp links.
 [authentication]
 #entry=
-  #^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
-  #^ftp://void.cs.uni-sb.de calvin hutzli
+#  ^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
+#  ^ftp://void.cs.uni-sb.de calvin hutzli
