@@ -298,7 +298,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             break
         return response
 
-    def follow_redirections (self, response):
+    def follow_redirections (self, response, set_result=True):
         """
         Follow all redirections of http response.
         """
@@ -325,18 +325,20 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # check extern filter again
             self.set_extern(redirected)
             if self.extern[0] and self.extern[0]:
-                self.add_info(
+                if set_result:
+                    self.add_info(
                           _("The redirected URL is outside of the domain "
                             "filter, checked only syntax."))
-                self.set_result(u"filtered")
+                    self.set_result(u"filtered")
                 return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
-                self.add_warning(
+                if set_result:
+                    self.add_warning(
                        _("Access to redirected URL denied by robots.txt, "
                          "checked only syntax."),
                        tag="http-robots-denied")
-                self.set_result(u"syntax OK")
+                    self.set_result(u"syntax OK")
                 return -1, response
             # see about recursive redirect
             all_seen = [self.cache_url_key] + self.aliases
@@ -346,7 +348,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     # fall back to the original url and use GET
                     return self.max_redirects, response
                 recursion = all_seen + [redirected]
-                self.set_result(
+                if set_result:
+                    self.set_result(
                           _("recursive redirection encountered:\n %s") %
                             "\n  => ".join(recursion), valid=False)
                 return -1, response
@@ -357,7 +360,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.urlparts = urlparts
             if response.status == 301:
                 if not self.has301status:
-                    self.add_warning(
+                    if set_result:
+                        self.add_warning(
                            _("HTTP 301 (moved permanent) encountered: you"
                              " should update this link."),
                            tag="http-moved-permanent")
@@ -367,7 +371,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 return -1, response
             # in case of changed scheme make new URL object
             if self.urlparts[0] != self.scheme:
-                self.add_warning(
+                if set_result:
+                    self.add_warning(
                            _("Redirection to different URL type encountered; "
                              "the original URL was %r.") % self.url,
                            tag="http-wrong-redirect")
@@ -538,11 +543,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if not self.has_content:
             self.method = "GET"
-            self.has_content = True
             self.close_connection()
             t = time.time()
             response = self._get_http_response()
-            tries, response = self.follow_redirections(response)
+            tries, response = self.follow_redirections(response,
+                                                       set_result=False)
             self.headers = response.msg
             self.data = response.read()
             encoding = headers.get_content_encoding(self.headers)
@@ -561,6 +566,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.data = f.read()
             self.downloadtime = time.time() - t
             response.close()
+            self.has_content = True
         return self.data
 
     def is_html (self):
