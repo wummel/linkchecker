@@ -1,3 +1,9 @@
+4.6 "" (released xx.xx.2006)
+
+  * Fixed default config file syntax by not indenting comment lines
+    Type: bugfix
+    Changed: config/linkcheckerrc
+
 4.5 "The Good Humor Man" (released 25.9.2006)
 
   * Don't ignore robots.txt entries consisting only of Allow: directives.
