@@ -4,6 +4,10 @@
     Type: bugfix
     Changed: config/linkcheckerrc
 
+  * Don't set the URL result on redirections when getting the content.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
 4.5 "The Good Humor Man" (released 25.9.2006)
 
   * Don't ignore robots.txt entries consisting only of Allow: directives.
