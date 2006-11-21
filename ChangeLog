@@ -8,6 +8,13 @@
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
+  * Ignore errors when opening the log file output, and display a warning
+    instead.
+    Type: bugfix
+    Closes: SF bug #1600172
+    Changed: linkcheck/logger/__init__.py
+    Added: linkcheck/dummy.py
+
 4.5 "The Good Humor Man" (released 25.9.2006)
 
   * Don't ignore robots.txt entries consisting only of Allow: directives.

@@ -25,6 +25,8 @@ import datetime
 import linkcheck.strformat
 import linkcheck.i18n
 import linkcheck.decorators
+import linkcheck.dummy
+import linkcheck.log
 
 _ = lambda x: x
 Fields = dict(
@@ -89,10 +91,17 @@ class Logger (object):
 
     def start_fileoutput (self):
         path = os.path.dirname(self.filename)
-        if path and not os.path.isdir(path):
-            os.makedirs(path)
-        self.fd = file(self.filename, "wb")
-        self.close_fd = True
+        try:
+            if path and not os.path.isdir(path):
+                os.makedirs(path)
+            self.fd = file(self.filename, "wb")
+            self.close_fd = True
+        except IOError:
+            msg = sys.exc_info()[1]
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                "Could not open file %r for writing: %s\n"
+                "Disabling log output of %s", self.filename, msg, self)
+            self.fd = linkcheck.dummy.Dummy()
         self.filename = None
 
     def close_fileoutput (self):
