@@ -504,7 +504,10 @@ if os.name == 'posix':
     data_files.append(('share/man/de/man1', ['doc/de/linkchecker.1']))
     data_files.append(('share/man/fr/man1', ['doc/fr/linkchecker.1']))
     data_files.append(('share/linkchecker/examples',
-              ['config/linkchecker-completion', 'config/linkcheck-cron.sh']))
+              ['config/linkchecker-completion',
+               'doc/examples/check_blacklist.sh',
+               'doc/examples/check_for_x_errors.sh',
+               'doc/examples/check_urls.sh',]))
 elif win_compiling:
     data_files.append(('share/linkchecker/doc',
              ['doc/en/documentation.html',
