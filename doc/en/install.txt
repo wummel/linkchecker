@@ -40,7 +40,7 @@ Requirements for Windows
 ------------------------
 
 1. Install Python >= 2.4 from http://www.python.org/
-   [http://www.python.org/ftp/python/2.4.3/python-2.4.3.msi]
+   [http://www.python.org/ftp/python/2.4.4/python-2.4.4.msi]
    or
    [http://www.python.org/ftp/python/2.5/python-2.5.msi]
 
