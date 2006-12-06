@@ -120,7 +120,7 @@ class GzipFile:
                                              zlib.DEF_MEM_LEVEL,
                                              0)
         else:
-            raise IOError, "Mode " + mode + " not supported"
+            raise IOError("Mode %r not supported" % mode)
 
         self.fileobj = fileobj
         self.offset = 0
@@ -162,10 +162,10 @@ class GzipFile:
     def _read_gzip_header(self):
         magic = self.fileobj.read(2)
         if magic != '\037\213':
-            raise IOError, 'Not a gzipped file'
+            raise IOError('Not a gzipped file')
         method = ord( self.fileobj.read(1) )
         if method != 8:
-            raise IOError, 'Unknown compression method'
+            raise IOError('Unknown compression method')
         flag = ord( self.fileobj.read(1) )
         # modtime = self.fileobj.read(4)
         # extraflag = self.fileobj.read(1)
@@ -245,7 +245,7 @@ class GzipFile:
 
     def _read(self, size=1024):
         if self.fileobj is None:
-            raise EOFError, "Reached EOF"
+            raise EOFError("Reached EOF")
 
         if self._new_member:
             # If the _new_member flag is set, we have to
@@ -256,7 +256,7 @@ class GzipFile:
             pos = self.fileobj.tell()   # Save current position
             self.fileobj.seek(0, 2)     # Seek to end of file
             if pos == self.fileobj.tell():
-                raise EOFError, "Reached EOF"
+                raise EOFError("Reached EOF")
             else:
                 self.fileobj.seek( pos ) # Return to original position
 
@@ -275,7 +275,7 @@ class GzipFile:
             uncompress = self.decompress.flush()
             self._read_eof()
             self._add_read_data( uncompress )
-            raise EOFError, 'Reached EOF'
+            raise EOFError('Reached EOF')
 
         uncompress = self.decompress.decompress(buf)
         self._add_read_data( uncompress )
@@ -290,7 +290,7 @@ class GzipFile:
             if rewind > 0:
                 # too few unused data encountered, assume EOF
                 errmsg = "Unexpected EOF: %r" % self.decompress.unused_data
-                raise EOFError, errmsg
+                raise EOFError(errmsg)
             self.fileobj.seek(rewind, 1)
 
             # Check the CRC and file size, and set the flag so we read
