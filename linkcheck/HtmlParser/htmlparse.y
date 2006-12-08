@@ -630,8 +630,8 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
         int error = 0;
         const char* enc = PyString_AsString(self->encoding);
 	PyObject* s = PyUnicode_Decode(self->userData->buf,
-                                       strlen(self->userData->buf),
-                                       enc, "ignore");
+                                     (Py_ssize_t)strlen(self->userData->buf),
+                                     enc, "ignore");
 	PyObject* callback = NULL;
 	PyObject* result = NULL;
 	/* reset buffer */

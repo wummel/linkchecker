@@ -57,7 +57,8 @@
     CHECK_NULL(pencoding = PyObject_GetAttrString(yyextra->parser, "encoding")); \
     encoding = PyString_AsString(pencoding); \
     if (encoding==NULL) { Py_DECREF(pencoding); return T_ERROR; } \
-    (a) = PyUnicode_Decode(yyextra->tmp_buf, strlen(yyextra->tmp_buf),  \
+    (a) = PyUnicode_Decode(yyextra->tmp_buf, \
+                           (Py_ssize_t)strlen(yyextra->tmp_buf),  \
                            encoding, "ignore"); \
     Py_DECREF(pencoding); \
     CHECK_NULL(a); \
@@ -65,7 +66,7 @@
 
 #define PYSTRING_TMP_ASCII(a) \
     CHECK_NULL((a) = PyUnicode_Decode(yyextra->tmp_buf, \
-          strlen(yyextra->tmp_buf), "ascii", "ignore"))
+          (Py_ssize_t)strlen(yyextra->tmp_buf), "ascii", "ignore"))
 
 /* set return value from tmp_buf */
 #define SETLVAL_UNICODE { \
