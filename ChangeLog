@@ -1,4 +1,4 @@
-4.6 "" (released xx.xx.2006)
+4.6 "Cars" (released 16.12.2006)
 
   * Fixed default config file syntax by not indenting comment lines
     Type: bugfix
@@ -17,6 +17,11 @@
 
   * Added some more examples.
     Added: doc/examples/*.sh
+
+  * Pull in changes from Python subversion repository to locally stored
+    gzip and httplib modules.
+    Type: bugfix
+    Changed: linkcheck/{httplib2,gzip2}.py
 
 4.5 "The Good Humor Man" (released 25.9.2006)
 
