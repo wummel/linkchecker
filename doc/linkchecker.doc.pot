@@ -995,5 +995,5 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:356
-msgid "Copyright \\(co 2000-2005 Bastian Kleineidam"
+msgid "Copyright \\(co 2000-2007 Bastian Kleineidam"
 msgstr ""
