@@ -12,24 +12,24 @@ linkchecker \- prüfe HTML Dokumente auf ungültige Verknüpfungen
 .
 .SH BESCHREIBUNG
 .LP
-LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen 
-oder normalen Text, HTML, SQL, CSV oder einen Sitemap\-Graphen in GML oder 
-XML, Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, 
-Gopher, Telnet und lokale Dateiverknüpfungen, Einschränkung der 
-Verknüpfungsüberprüfung mit URL Filtern bestehend aus regulären 
-Ausdrücken, Proxy Unterstützung, Benutzer/Passwort Authentifizierung für 
-HTTP und FTP, Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, 
-eine Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt 
-einen HTTP Server).
+LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen
+oder normalen Text, HTML, SQL, CSV oder einen Sitemap\-Graphen in GML oder
+XML, Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher,
+Telnet und lokale Dateiverknüpfungen, Einschränkung der
+Verknüpfungsüberprüfung mit URL Filtern bestehend aus regulären Ausdrücken,
+Proxy Unterstützung, Benutzer/Passwort Authentifizierung für HTTP und FTP,
+Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, eine
+Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt einen
+HTTP Server).
 .
 .SH BEISPIELE
 Der häufigste Gebrauchsfall prüft die angegebene Domäne rekursiv,
 inklusive aller einzelnen nach außen zeigenden Verknüpfungen:
   \fBlinkchecker http://treasure.calvinsplayground.de/\fP
 .br
-Beachten Sie dass dies die komplette Domäne überprüft, welche aus 
-mehreren hunderttausend URLs bestehen kann. Benutzen Sie die Option \fB\-r\fP, 
-um die Rekursionstiefe zu beschränken.
+Beachten Sie dass dies die komplette Domäne überprüft, welche aus mehreren
+hunderttausend URLs bestehen kann. Benutzen Sie die Option \fB\-r\fP, um die
+Rekursionstiefe zu beschränken.
 .br
 Keine Verbindungen zu \fBmailto:\fP Rechnern, nur die URL Syntax wird geprüft. Alle
 anderen Verknüpfungen werden wie üblich geprüft:
@@ -57,92 +57,92 @@ Erzeuge einen Sitemap Graphen und konvertiere ihn mit dem graphviz dot Programm:
 Hilfe! Gebe Gebrauchsanweisung für dieses Programm aus.
 .TP 
 \fB\-f\fP\fIDATEINAME\fP, \fB\-\-config=\fP\fIDATEINAME\fP
-Benutze \fIDATEINAME\fP als Konfigurationsdatei. Standardmäßig sucht 
-LinkChecker zuerst nach \fB/etc/linkchecker/linkcheckerrc\fP und dann 
+Benutze \fIDATEINAME\fP als Konfigurationsdatei. Standardmäßig sucht
+LinkChecker zuerst nach \fB/etc/linkchecker/linkcheckerrc\fP und dann
 \fB~/.linkchecker/linkcheckerrc\fP.
 .TP 
 \fB\-I\fP, \fB\-\-interactive\fP
 Frage nach URLs, falls keine auf der Kommandozeile eingegeben wurden.
 .TP 
 \fB\-t\fP\fINUMMER\fP, \fB\-\-threads=\fP\fINUMMER\fP
-Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl 
-von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht 
+Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl
+von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht
 positive Nummer an.
 .TP 
 \fB\-\-priority\fP
-Starte mit normaler Threadpriorität. Als Standard läuft LinkChecker mit 
+Starte mit normaler Threadpriorität. Als Standard läuft LinkChecker mit
 niedriger Threadpriorität, um als Hintergrundprozess geeignet zu sein.
 .TP 
 \fB\-V\fP, \fB\-\-version\fP
 Gebe die Version aus und beende das Programm.
 .TP 
 \fB\-\-allow\-root\fP
-Keine Entziehung der Priviligien, falls das Programm unter Unix als Benutzer 
+Keine Entziehung der Priviligien, falls das Programm unter Unix als Benutzer
 root läuft.
 .
 .SS Ausgabeoptionen
 .TP 
 \fB\-v\fP, \fB\-\-verbose\fP
-Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und 
+Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und
 Warnungen auszugeben.
 .TP 
 \fB\-\-no\-warnings\fP
 Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen.
 .TP 
 \fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fP\fIREGEX\fP
-Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er 
-auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige 
+Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
+auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
 Seiten deren Inhalt wir bekommen können.
 
-Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler 
-enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle 
+Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
+enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle
 Applikationsfehler".
 .TP 
 \fB\-\-warning\-size\-bytes=\fP\fINUMMER\fP
-Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die 
-angegebene Anzahl von Bytes übersteigt.
+Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
+Anzahl von Bytes übersteigt.
 .TP 
 \fB\-q\fP, \fB\-\-quiet\fP
-Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit 
+Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit
 \fB\-F\fP nützlich.
 .TP 
 \fB\-o\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP], \fB\-\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP]
-Spezifiziere die Ausgabe als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, 
-\fBdot\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP. Standardausgabe ist \fBtext\fP. Die 
-verschiedenen Ausgabetypen sind weiter unten erklärt. \fIEnkodierung\fP gibt 
-die Ausgabekodierung an, die Standardkodierung erfolgt mit dem eingestellten 
-Zeichensatz des Systems. Gültige Enkodierungen sind unter 
+Spezifiziere die Ausgabe als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP,
+\fBdot\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP. Standardausgabe ist \fBtext\fP. Die
+verschiedenen Ausgabetypen sind weiter unten erklärt. \fIEnkodierung\fP gibt
+die Ausgabekodierung an, die Standardkodierung erfolgt mit dem eingestellten
+Zeichensatz des Systems. Gültige Enkodierungen sind unter
 \fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet.
 .TP 
 \fB\-F\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP], \fB\-\-file\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP]
-Ausgabe in eine Datei namens \fBlinkchecker\-out.\fP\fITYP\fP, 
-\fB$HOME/.linkchecker/blacklist\fP bei \fBblacklist\fP Ausgabe, oder \fIDATEINAME\fP 
-falls angegeben. Der \fIDATEINAME\fP und \fIENKODIERUNG\fP Teil wird beim 
-Ausgabetyp \fBnone\fP ignoriert, ansonsten wird die Datei überschreiben falls 
-sie existiert. Sie können diese Option mehr als einmal verwenden. Gültige 
-Ausgabetypen sind \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, 
-\fBnone\fP oder \fBblacklist\fP. Standard ist keine Dateiausgabe. \fIENKODIERUNG\fP 
-gibt die Ausgabekodierung an,der Standard ist die Enkodierung der 
-ausgewählten Spracheinstellung. Gültige Enkodierungen sind unter 
-\fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet. Beachten 
-Sie, dass Sie mit der Option \fB\-o none\fP jegliche Ausgaben auf der Konsole 
+Ausgabe in eine Datei namens \fBlinkchecker\-out.\fP\fITYP\fP,
+\fB$HOME/.linkchecker/blacklist\fP bei \fBblacklist\fP Ausgabe, oder \fIDATEINAME\fP
+falls angegeben. Der \fIDATEINAME\fP und \fIENKODIERUNG\fP Teil wird beim
+Ausgabetyp \fBnone\fP ignoriert, ansonsten wird die Datei überschreiben falls
+sie existiert. Sie können diese Option mehr als einmal verwenden. Gültige
+Ausgabetypen sind \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
+\fBnone\fP oder \fBblacklist\fP. Standard ist keine Dateiausgabe. \fIENKODIERUNG\fP
+gibt die Ausgabekodierung an,der Standard ist die Enkodierung der
+ausgewählten Spracheinstellung. Gültige Enkodierungen sind unter
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet. Beachten
+Sie, dass Sie mit der Option \fB\-o none\fP jegliche Ausgaben auf der Konsole
 verhindern können.
 .TP 
 \fB\-\-no\-status\fP
 Gebe keine Statusmeldungen aus.
 .TP 
 \fB\-D\fP\fINAME\fP, \fB\-\-debug=\fP\fINAME\fP
-Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind 
-\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe 
-\fBall\fP ist ein Synonym für alle verfügbaren Logger. Diese Option kann 
-mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um 
+Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
+\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe
+\fBall\fP ist ein Synonym für alle verfügbaren Logger. Diese Option kann
+mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um
 akkurate Ergebnisse zu erzielen, werden Threads deaktiviert.
 .TP 
 \fB\-\-trace\fP
 Trace\-Information ausgeben.
 .TP 
 \fB\-\-profile\fP
-Schreibe Profiling\-Daten in eine Datei namens \fBlinkchecker.prof\fP im 
+Schreibe Profiling\-Daten in eine Datei namens \fBlinkchecker.prof\fP im
 aktuellen Arbeitsverzeichnis. Siehe auch \fB\-\-viewprof\fP.
 .TP 
 \fB\-\-viewprof\fP
@@ -151,65 +151,68 @@ Gebe vorher generierte Profiling\-Daten aus. Siehe auch \fB\-\-profile\fP.
 .SS "Optionen zum Prüfen"
 .TP 
 \fB\-r\fP\fINUMMER\fP, \fB\-\-recursion\-level=\fP\fINUMMER\fP
-Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe 
+Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
 bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
 .TP 
 \fB\-\-no\-follow\-url=\fP\fIREGEX\fP
-Prüfe URLs, welche dem angegebenen regulären Ausdruck entsprechen, aber 
-verhindere die rekursive Prüfung. Diese Option kann mehrmals angegeben 
+Prüfe URLs, welche dem angegebenen regulären Ausdruck entsprechen, aber
+verhindere die rekursive Prüfung. Diese Option kann mehrmals angegeben
 werden.
 .TP 
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
-Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären 
+Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären
 Ausdruck entsprechen. Diese Option kann mehrmals angegeben werden.
 .TP 
 \fB\-C\fP, \fB\-\-cookies\fP
-Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich Cookies, die 
-zum ursprünglichen Server zurückgesendet werden, werden akzeptiert.  
-Gesendete und akzeptierte Cookies werden als zusätzlicheLoginformation 
+Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich Cookies, die
+zum ursprünglichen Server zurückgesendet werden, werden akzeptiert. 
+Gesendete und akzeptierte Cookies werden als zusätzlicheLoginformation
 aufgeführt.
 .TP 
 \fB\-a\fP, \fB\-\-anchors\fP
-Prüfe HTTP Anker Verweise. Standard ist keine Überprüfung.
+Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
+Option aktiviert die Ausgabe von Warnungen, da ein kaputter Ankerverweis
+eine Warnung ist. Um bestimmte Warnungen zu unterdrücken, muss die Option
+\fBignorewarnings\fP der Konfigurationsdatei benutzt werden.
 .TP 
 \fB\-\-no\-anchor\-caching\fP
-Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar 
-Standard bei Browsern, aber in der URI Spezifikation nicht 
-enthalten. Benutzen Sie diese Option mit Vorsicht da ungültige Anker mit 
+Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar
+Standard bei Browsern, aber in der URI Spezifikation nicht
+enthalten. Benutzen Sie diese Option mit Vorsicht da ungültige Anker mit
 dieser Option nicht unbedingt erkannt werden.
 .TP 
 \fB\-u\fP\fINAME\fP, \fB\-\-user=\fP\fINAME\fP
-Verwende den angegebenen Benutzernamen für HTTP und FTP Autorisierung. Für 
-FTP ist der Standardname \fBanonymous\fP. Für HTTP gibt es keinen 
+Verwende den angegebenen Benutzernamen für HTTP und FTP Autorisierung. Für
+FTP ist der Standardname \fBanonymous\fP. Für HTTP gibt es keinen
 Standardnamen. Siehe auch \fB\-p\fP.
 .TP 
 \fB\-p\fP\fINAME\fP, \fB\-\-password=\fP\fINAME\fP
-Verwende das angegebene Passwort für HTTP und FTP Autorisierung. Für FTP 
-ist das Standardpasswort \fBanonymous@\fP. Für HTTP gibt es kein 
+Verwende das angegebene Passwort für HTTP und FTP Autorisierung. Für FTP ist
+das Standardpasswort \fBanonymous@\fP. Für HTTP gibt es kein
 Standardpasswort. Siehe auch \fB\-u\fP.
 .TP 
 \fB\-\-timeout=\fP\fINUMMER\fP
-Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout 
-ist 60 Sekunden.
+Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout ist
+60 Sekunden.
 .TP 
 \fB\-P\fP\fINUMMER\fP, \fB\-\-pause=\fP\fINUMMER\fP
-Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander 
-folgenden Verbindungen zum demselben Rechner. Standard ist keine Pause 
+Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander
+folgenden Verbindungen zum demselben Rechner. Standard ist keine Pause
 zwischen Verbindungen.
 .TP 
 \fB\-N\fP\fINAME\fP, \fB\-\-nntp\-server=\fP\fINAME\fP
-Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die 
-Umgebungsvariable \fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird 
-lediglich auf korrekte Syntax des Links geprüft.
+Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die Umgebungsvariable
+\fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird lediglich auf
+korrekte Syntax des Links geprüft.
 .TP 
 \fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
-Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt 
-und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals 
+Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt
+und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals
 angegeben werden.
 .
 .SH AUSGABETYPEN
-Beachten Sie, dass standardmäßig nur Fehler und Warnungen protokolliert 
-werden. Sie sollten die \fB\-\-verbose\fP Option benutzen, um eine komplette URL 
+Beachten Sie, dass standardmäßig nur Fehler und Warnungen protokolliert
+werden. Sie sollten die \fB\-\-verbose\fP Option benutzen, um eine komplette URL
 Liste zu erhalten, besonders bei Ausgabe eines Sitemap\-Graphen.
 
 .TP 
@@ -217,8 +220,8 @@ Liste zu erhalten, besonders bei Ausgabe eines Sitemap\-Graphen.
 Standard Textausgabe in "Schlüssel: Wert"\-Form.
 .TP 
 \fBhtml\fP
-Gebe URLs in "Schlüssel: Wert"\-Form als HTML formatiert aus. Besitzt zudem 
-Verknüpfungen auf die referenzierten Seiten. Ungültige URLs haben 
+Gebe URLs in "Schlüssel: Wert"\-Form als HTML formatiert aus. Besitzt zudem
+Verknüpfungen auf die referenzierten Seiten. Ungültige URLs haben
 Verknüpfungen zur HTML und CSS Syntaxprüfung angehängt.
 .TP 
 \fBcsv\fP
@@ -237,33 +240,33 @@ Gebe Prüfresultat als GraphXML\-Datei aus.
 Gebe Prüfresultat als maschinenlesbare XML\-Datei aus.
 .TP 
 \fBsql\fP
-Gebe Prüfresultat als SQL Skript mit INSERT Befehlen aus. Ein 
-Beispielskript, um die initiale SQL Tabelle zu erstellen ist unter 
+Gebe Prüfresultat als SQL Skript mit INSERT Befehlen aus. Ein
+Beispielskript, um die initiale SQL Tabelle zu erstellen ist unter
 create.sql zu finden.
 .TP 
 \fBblacklist\fP
-Für Cronjobs geeignet. Gibt das Prüfergebnis in eine Datei 
-\fB~/.linkchecker/blacklist\fP aus, welche nur Einträge mit fehlerhaften URLs 
+Für Cronjobs geeignet. Gibt das Prüfergebnis in eine Datei
+\fB~/.linkchecker/blacklist\fP aus, welche nur Einträge mit fehlerhaften URLs
 und die Anzahl der Fehlversuche enthält.
 .TP 
 \fBnone\fP
 Gibt nichts aus. Für Debugging oder Prüfen des Rückgabewerts geeignet.
 .
 .SH "REGULÄRE AUSDRÜCKE"
-Lediglich Pythons reguläre Ausdrücke werden von LinkChecker 
-akzeptiert. Siehe \fBhttp://www.amk.ca/python/howto/regex/\fP für eine 
+Lediglich Pythons reguläre Ausdrücke werden von LinkChecker
+akzeptiert. Siehe \fBhttp://www.amk.ca/python/howto/regex/\fP für eine
 Einführung in reguläre Ausdrücke.
 
-Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird 
-falls er mit einem Ausrufezeichen beginnt.
+Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird falls
+er mit einem Ausrufezeichen beginnt.
 .
 .SH COOKIE\-DATEIEN
-Eine Cookie\-Datei enthält Standard RFC 805 Kopfdaten mit den folgenden 
+Eine Cookie\-Datei enthält Standard RFC 805 Kopfdaten mit den folgenden
 möglichen Namen:
 .
 .TP 
 \fBScheme\fP (optional)
-Setzt das Schema für das die Cookies gültig sind; Standardschema ist 
+Setzt das Schema für das die Cookies gültig sind; Standardschema ist
 \fBhttp\fP.
 .TP 
 \fBHost\fP (erforderlich)
@@ -277,8 +280,8 @@ Setzt den Cookie Name/Wert. Kann mehrmals angegeben werden.
 .PP
 Mehrere Einträge sind durch eine Leerzeile zu trennen.
 .
-Das untige Beispiel sendet zwei Cookies zu allen URLs die mit 
-\fBhttp://imadoofus.org/hello/\fP beginnen, und eins zu allen URLs die mit 
+Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
+\fBhttp://imadoofus.org/hello/\fP beginnen, und eins zu allen URLs die mit
 \fBhttps://imaweevil.org\fP beginnen:
 
  Host: imadoofus.org
@@ -291,31 +294,32 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
  Set\-cookie: baggage="elitist"; comment="hologram"
 
 .SH "PROXY UNTERSTÜTZUNG"
-To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on 
-Unix or Windows to the proxy URL. The URL should be of the form 
-\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP], for example 
-\fBhttp://localhost:8080\fP, or \fBhttp://joe:test@proxy.domain\fP.  On a Mac use 
-the Internet Config to select a proxy.
+Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy,
+$ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL. Die URL
+sollte die Form \fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP]
+besitzen, zum Beispiel \fBhttp://localhost:8080\fP, oder
+\fBhttp://joe:test@proxy.domain\fP. Auf einem Mac benutzen Sie die Internet
+Konfiguration.
 .
 .SH BEMERKUNGEN
-URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP 
-behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können 
-auch lokale Dateien angeben.
+URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP
+behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können auch
+lokale Dateien angeben.
 
-Falls sich Ihr System automatisch mit dem Internet verbindet (z.B. mit 
-diald), wird es dies tun wenn Sie Links prüfen, die nicht auf Ihren lokalen 
-Rechner verweisen Benutzen Sie die Optionen \fB\-s\fP und \fB\-i\fP, um dies zu 
+Falls sich Ihr System automatisch mit dem Internet verbindet (z.B. mit
+diald), wird es dies tun wenn Sie Links prüfen, die nicht auf Ihren lokalen
+Rechner verweisen Benutzen Sie die Optionen \fB\-s\fP und \fB\-i\fP, um dies zu
 verhindern.
 
 Javascript Links werden zur Zeit ignoriert.
 
-Wenn Ihr System keine Threads unterstützt, deaktiviert diese LinkChecker 
+Wenn Ihr System keine Threads unterstützt, deaktiviert diese LinkChecker
 automatisch.
 
-Sie können mehrere Benutzer/Passwort Paare in einer Konfigurationsdatei 
+Sie können mehrere Benutzer/Passwort Paare in einer Konfigurationsdatei
 angeben.
 
-Beim Prüfen von \fBnews:\fP Links muß der angegebene NNTP Rechner nicht 
+Beim Prüfen von \fBnews:\fP Links muß der angegebene NNTP Rechner nicht
 unbedingt derselbe wie der des Benutzers sein.
 .
 .SH UMGEBUNG
@@ -337,22 +341,22 @@ Warnungen gefunden wurden und Warnungen aktiviert sind
 ein Programmfehler aufgetreten ist.
 .
 .SH DATEIEN
-\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \- 
+\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \-
 Standardkonfigurationsdateien
 .br
-\fB~/.linkchecker/blacklist\fP \- Standard Dateiname der blacklist Logger 
+\fB~/.linkchecker/blacklist\fP \- Standard Dateiname der blacklist Logger
 Ausgabe
 .br
 \fBlinkchecker\-out.\fP\fITYP\fP \- Standard Dateiname der Logausgabe
 .br
-\fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- gültige Ausgabe 
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP \- gültige Ausgabe
 Enkodierungen
 .br
-\fBhttp://www.amk.ca/python/howto/regex/\fP \- Dokumentation zu regulären 
+\fBhttp://www.amk.ca/python/howto/regex/\fP \- Dokumentation zu regulären
 Ausdrücken
 .
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>
 .
 .SH COPYRIGHT
-Copyright \(co 2000\-2005 Bastian Kleineidam
+Copyright \(co 2000\-2007 Bastian Kleineidam
