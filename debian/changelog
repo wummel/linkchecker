@@ -1,3 +1,11 @@
+linkchecker (4.7-1) unstable; urgency=low
+
+  * New upstream release.
+    + Documentation mentions that --anchors enables logging of warnings
+      (Closes: #411414)
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 19 Feb 2007 20:22:47 +0100
+
 linkchecker (4.6-1) unstable; urgency=low
 
   * New upstream release.
