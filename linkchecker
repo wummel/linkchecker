@@ -467,7 +467,10 @@ group.add_option("--cookiefile", type="string", dest="cookiefile",
 explained below."""))
 group.add_option("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
-"""Check HTTP anchor references. Default is not to check anchors."""))
+"""Check HTTP anchor references. Default is not to check anchors.
+This option enables logging of warnings, since a broken
+anchor is a warning. To disable certain types of warnings you
+have to use the 'ignorewarnings' option of the configuration file."""))
 group.add_option("--no-anchor-caching", action="store_false",
                  dest="anchorcaching", help=_(
 """Treat url#anchora and url#anchorb as equal on caching. This

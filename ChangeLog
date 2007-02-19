@@ -1,3 +1,10 @@
+4.7 "" (released xx.xx.xxxx)
+
+  * Mention in the documentation that --anchors enables logging of
+    warnings.
+    Type: documentation
+    Changed: linkchecker, linkcheck/doc/*/linkchecker.1
+
 4.6 "Cars" (released 16.12.2006)
 
   * Fixed default config file syntax by not indenting comment lines

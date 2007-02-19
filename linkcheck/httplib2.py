@@ -630,7 +630,7 @@ class HTTPConnection:
                 self.sock.connect(sa)
             except socket.error, msg:
                 if self.debuglevel > 0:
-                    print 'connect fail:', (self.host, self.port)
+                    print 'connect fail:', (self.host, self.port), msg
                 if self.sock is not None:
                     self.sock.close()
                     self.sock = None
