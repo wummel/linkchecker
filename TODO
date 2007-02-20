@@ -1,4 +1,8 @@
-- BUGFIX: Use Py_ssize_t for indizes, according to PEP 353:
+- [FEATURE] --no-warnings should not be an extra flag, but add ignore
+  tags for all available warnings; and --anchors then should just (re)enable
+  the broken anchor warning
+
+- [BUGFIX] Use Py_ssize_t for indizes, according to PEP 353:
   http://www.python.org/dev/peps/pep-0353/#conversion-guidelines
 
 - [BUG REPORT] the web interface only runs on the server it is installed on.
