@@ -219,7 +219,7 @@ class Configuration (dict):
 
     def sanitize (self):
         "Make sure the configuration is consistent."
-        if self.config["anchors"]:
+        if self["anchors"]:
             if not self["warnings"]:
                 self["warnings"] = True
                 self["ignorewarnings"] = linkcheck.checker.Warnings.keys()
