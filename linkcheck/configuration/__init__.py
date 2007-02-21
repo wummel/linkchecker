@@ -215,3 +215,14 @@ class Configuration (dict):
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "reading configuration from %s", cfiles)
         confparse.LCConfigParser(self).read(cfiles)
+        self.sanitize()
+
+    def sanitize (self):
+        "Make sure the configuration is consistent."
+        if self.config["anchors"]:
+            if not self["warnings"]:
+                self["warnings"] = True
+                self["ignorewarnings"] = linkcheck.checker.Warnings.keys()
+            if 'url-anchor-not-found' in self["ignorewarnings"]:
+                self["ignorewarnings"].remove('url-anchor-not-found')
+
