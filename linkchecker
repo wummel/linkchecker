@@ -170,7 +170,7 @@ none    Logs nothing. Suitable for debugging or checking the exit code.
 """)
 
 Warnings = _(r"""IGNORE WARNINGS
-The following warnings are recognized in the ignorewarnings config
+The following warnings are recognized in the 'ignorewarnings' config
 file entry:
 """)
 for tag, desc in linkcheck.checker.Warnings.items():
@@ -369,7 +369,7 @@ group.add_option("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
 """Log all checked URLs. Default is to log only errors and warnings."""))
 group.add_option("--no-warnings", action="store_false", dest="warnings",
-                 help=_("""Don't log warnings. Default is to log warnings."""))
+                help=_("""Don't log warnings. Default is to log warnings."""))
 group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
                  metavar="REGEX",
                  help=_(
@@ -395,7 +395,8 @@ group.add_option("-o", "--output", type="string", dest="output",
 """Specify output as %(loggertypes)s. Default output type is text.
 The ENCODING specifies the output encoding, the default is that of your
 locale.
-Valid encodings are listed at http://docs.python.org/lib/standard-encodings.html.""") % \
+Valid encodings are listed at """ \
+"""http://docs.python.org/lib/standard-encodings.html.""") % \
 {'loggertypes': linkcheck.LoggerKeys})
 group.add_option("-F", "--file-output", type="string", action="append",
                  dest="fileoutput", metavar="TYPE[/ENCODING][/FILENAME]",
