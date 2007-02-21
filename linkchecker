@@ -469,9 +469,7 @@ explained below."""))
 group.add_option("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
 """Check HTTP anchor references. Default is not to check anchors.
-This option enables logging of warnings, since a broken
-anchor is a warning. To disable certain types of warnings you
-have to use the 'ignorewarnings' option of the configuration file."""))
+This option enables logging of the warning 'url-anchor-not-found'."""))
 group.add_option("--no-anchor-caching", action="store_false",
                  dest="anchorcaching", help=_(
 """Treat url#anchora and url#anchorb as equal on caching. This
@@ -560,7 +558,6 @@ if options.warnings is not None:
     config["warnings"] = options.warnings
 if options.anchors is not None:
     config["anchors"] = options.anchors
-    config["warnings"] = True
 if options.extern:
     pats = [linkcheck.get_link_pat(arg) for arg in options.extern]
     config["externlinks"].extend(pats)
