@@ -1,9 +1,13 @@
 4.7 "" (released xx.xx.xxxx)
 
   * Mention in the documentation that --anchors enables logging of
-    warnings.
+    the anchor warning.
     Type: documentation
     Changed: linkchecker, linkcheck/doc/*/linkchecker.1
+
+  * Make sure --anchors and --no-warnings play along in the configuration.
+    Type: bugfix
+    Changed: linkchecker, linkcheck/configuration/__init__.py
 
 4.6 "Cars" (released 16.12.2006)
 
