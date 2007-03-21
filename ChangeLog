@@ -1,4 +1,4 @@
-4.7 "" (released xx.xx.xxxx)
+4.7 "" (released xx.xx.2007)
 
   * Mention in the documentation that --anchors enables logging of
     the anchor warning.
@@ -8,6 +8,10 @@
   * Make sure --anchors and --no-warnings play along in the configuration.
     Type: bugfix
     Changed: linkchecker, linkcheck/configuration/__init__.py
+
+  * Check that charset is not None before lowering it in set_encoding().
+    Type: bugfix
+    Changed: linkcheck/HtmlParser/__init__.py
 
 4.6 "Cars" (released 16.12.2006)
 
