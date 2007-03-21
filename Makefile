@@ -103,8 +103,13 @@ release: distclean releasecheck dist-stamp sign_distfiles homepage upload
 homepage:
 	$(MAKE) -C doc/en homepage
 
+.PHONY: chmod
+chmod:
+	-chmod -R a+rX,u+w,go-w -- *
+	find . -type d -exec chmod 755 {} \;
+
 .PHONY: dist
-dist: locale MANIFEST
+dist: locale MANIFEST chmod
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 
 dist-stamp:
