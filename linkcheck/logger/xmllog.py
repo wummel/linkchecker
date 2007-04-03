@@ -70,7 +70,7 @@ class XMLLogger (linkcheck.logger.Logger):
         self.write(s, **args)
         self.writeln(u" -->")
 
-    def xml_start_output (self, version="1.0", encoding="utf8"):
+    def xml_start_output (self, version="1.0", encoding="utf-8"):
         """
         Write start of checking info as xml comment.
         """
