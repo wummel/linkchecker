@@ -13,6 +13,16 @@
     Type: bugfix
     Changed: linkcheck/HtmlParser/__init__.py
 
+  * Use standard "utf-8" charset name instead of "utf8" for the XML output
+    encoding. Thanks to Dan Reitano for the note.
+    Type: bugfix
+    Changed: linkcheck/logger/xmllog.py
+
+  * Added "created" attribute in XML output root element.
+    Added "result" attribute in XML output valid element.
+    Type: feature
+    Changed: linkcheck/logger/customxml.py
+
 4.6 "Cars" (released 16.12.2006)
 
   * Fixed default config file syntax by not indenting comment lines
