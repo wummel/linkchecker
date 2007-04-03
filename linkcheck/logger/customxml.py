@@ -76,7 +76,10 @@ class CustomXMLLogger (xmllog.XMLLogger):
                 self.xml_tag(u"warning", data, attrs={u"tag": tag})
             self.xml_endtag(u"warnings")
         if self.has_part("result"):
-            self.xml_tag(u"valid", u"%d" % (url_data.valid and 1 or 0))
+            attrs = {}
+            if url_data.result:
+                attrs["result"] = url_data.result
+            self.xml_tag(u"valid", u"%d" % (url_data.valid and 1 or 0), attrs)
         self.xml_endtag(u'urldata')
         self.flush()
 
