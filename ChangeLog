@@ -1,4 +1,4 @@
-4.7 "" (released xx.xx.2007)
+4.7 "300" (released xx.xx.2007)
 
   * Mention in the documentation that --anchors enables logging of
     the anchor warning.
@@ -22,6 +22,10 @@
     Added "result" attribute in XML output valid element.
     Type: feature
     Changed: linkcheck/logger/customxml.py
+
+  * Fix printing of unicode names. Thanks to Frank Bennet for the patch.
+    Type: bugfix
+    Changed: linkcheck/logger/{html,text}.py
 
 4.6 "Cars" (released 16.12.2006)
 
