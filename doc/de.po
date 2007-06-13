@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2007-02-21 23:05+0100\n"
-"PO-Revision-Date: 2007-02-21 23:06+0100\n"
+"POT-Creation-Date: 2007-06-13  2:46+0200\n"
+"PO-Revision-Date: 2007-06-13 02:47+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -61,8 +61,8 @@ msgstr "BESCHREIBUNG"
 
 # type: Plain text
 #: en/linkchecker.1:24
-msgid "LinkChecker features recursive checking, multithreading, output in colored or normal text, HTML, SQL, CSV or a sitemap graph in GML or XML, support for HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local file links, restriction of link checking with regular expression filters for URLs, proxy support, username/password authorization for HTTP and FTP, robots.txt exclusion protocol support, i18n support, a command line interface and a (Fast)CGI web interface (requires HTTP server)"
-msgstr "LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen oder normalen Text, HTML, SQL, CSV oder einen Sitemap-Graphen in GML oder XML, Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet und lokale Dateiverknüpfungen, Einschränkung der Verknüpfungsüberprüfung mit URL Filtern bestehend aus regulären Ausdrücken, Proxy Unterstützung, Benutzer/Passwort Authentifizierung für HTTP und FTP, Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, eine Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt einen HTTP Server)."
+msgid "LinkChecker features recursive checking, multithreading, output in colored or normal text, HTML, SQL, CSV or a sitemap graph in GML or XML, support for HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links, restriction of link checking with regular expression filters for URLs, proxy support, username/password authorization for HTTP and FTP, robots.txt exclusion protocol support, i18n support, a command line interface and a (Fast)CGI web interface (requires HTTP server)"
+msgstr "LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen oder normalen Text, HTML, SQL, CSV oder einen Sitemap-Graphen in GML oder XML, Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet und lokale Dateiverknüpfungen, Einschränkung der Verknüpfungsüberprüfung mit URL Filtern bestehend aus regulären Ausdrücken, Proxy Unterstützung, Benutzer/Passwort Authentifizierung für HTTP und FTP, Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, eine Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt einen HTTP Server)."
 
 # type: SH
 #: en/linkchecker.1:25
@@ -755,8 +755,8 @@ msgstr "PROXY UNTERSTÜTZUNG"
 
 # type: Plain text
 #: en/linkchecker.1:301
-msgid "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy on Unix or Windows to the proxy URL. The URL should be of the form B<http://>[I<user>B<:>I<pass>B<@>]I<host>[B<:>I<port>], for example B<http://localhost:8080>, or B<http://joe:test@proxy.domain>.  On a Mac use the Internet Config to select a proxy."
-msgstr "Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL. Die URL sollte die Form B<http://>[I<user>B<:>I<pass>B<@>]I<host>[B<:>I<port>] besitzen, zum Beispiel B<http://localhost:8080>, oder B<http://joe:test@proxy.domain>. Auf einem Mac benutzen Sie die Internet Konfiguration."
+msgid "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy on Unix or Windows to the proxy URL. The URL should be of the form B<http://>[I<user>B<:>I<pass>B<@>]I<host>[B<:>I<port>], for example B<http://localhost:8080>, or B<http://joe:test@proxy.domain>.  On a Mac use the Internet Config to select a proxy."
+msgstr "Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, $ftp_proxy unter Unix oder Windows auf die Proxy URL. Die URL sollte die Form B<http://>[I<user>B<:>I<pass>B<@>]I<host>[B<:>I<port>] besitzen, zum Beispiel B<http://localhost:8080>, oder B<http://joe:test@proxy.domain>. Auf einem Mac benutzen Sie die Internet Konfiguration."
 
 # type: SH
 #: en/linkchecker.1:302

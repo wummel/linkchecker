@@ -12,15 +12,13 @@ linkchecker \- prüfe HTML Dokumente auf ungültige Verknüpfungen
 .
 .SH BESCHREIBUNG
 .LP
-LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen
-oder normalen Text, HTML, SQL, CSV oder einen Sitemap\-Graphen in GML oder
-XML, Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher,
-Telnet und lokale Dateiverknüpfungen, Einschränkung der
-Verknüpfungsüberprüfung mit URL Filtern bestehend aus regulären Ausdrücken,
-Proxy Unterstützung, Benutzer/Passwort Authentifizierung für HTTP und FTP,
-Unterstützung des robots.txt Protokolls, Mehrsprachigkeit, eine
-Kommandozeilenschnittstelle sowie eine CGI Webschnittstelle (benötigt einen
-HTTP Server).
+LinkChecker features recursive checking, multithreading, output in colored
+or normal text, HTML, SQL, CSV or a sitemap graph in GML or XML, support for
+HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links,
+restriction of link checking with regular expression filters for URLs, proxy
+support, username/password authorization for HTTP and FTP, robots.txt
+exclusion protocol support, i18n support, a command line interface and a
+(Fast)CGI web interface (requires HTTP server)
 .
 .SH BEISPIELE
 Der häufigste Gebrauchsfall prüft die angegebene Domäne rekursiv,
@@ -170,8 +168,8 @@ Gesendete und akzeptierte Cookies werden als zusätzlicheLoginformation
 aufgeführt.
 .TP 
 \fB\-a\fP, \fB\-\-anchors\fP
-Check HTTP anchor references. Default is not to check anchors.  This option
-enables logging of the warning \fBurl\-anchor\-not\-found\fP.
+Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
+Option aktiviert die Ausgabe der Warnung \fBurl\-anchor\-not\-found\fP.
 .TP 
 \fB\-\-no\-anchor\-caching\fP
 Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar
@@ -292,12 +290,11 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
  Set\-cookie: baggage="elitist"; comment="hologram"
 
 .SH "PROXY UNTERSTÜTZUNG"
-Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy,
-$ftp_proxy, $gopher_proxy unter Unix oder Windows auf die Proxy URL. Die URL
-sollte die Form \fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP]
-besitzen, zum Beispiel \fBhttp://localhost:8080\fP, oder
-\fBhttp://joe:test@proxy.domain\fP. Auf einem Mac benutzen Sie die Internet
-Konfiguration.
+To use a proxy set $http_proxy, $https_proxy, $ftp_proxy on Unix or Windows
+to the proxy URL. The URL should be of the form
+\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP], for example
+\fBhttp://localhost:8080\fP, or \fBhttp://joe:test@proxy.domain\fP.  On a Mac use
+the Internet Config to select a proxy.
 .
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP

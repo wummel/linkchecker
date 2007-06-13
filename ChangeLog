@@ -27,6 +27,11 @@
     Type: bugfix
     Changed: linkcheck/logger/{html,text}.py
 
+  * Deprecate gopher: URLs. They do not really exist anymore and the
+    gopherlib module in Python 2.5 is deprecated and will vanish soon.
+    Type: feature
+    Changed: doc/*/{documentation.txt,linkchecker.1}, linkchecker
+
 4.6 "Cars" (released 16.12.2006)
 
   * Fixed default config file syntax by not indenting comment lines

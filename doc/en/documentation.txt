@@ -69,9 +69,10 @@ checking. All connection check types are described below.
   3) try to change to the given directory
   4) list the file with the NLST command
 
-- Gopher links (``gopher:``)
+- Gopher links (``gopher:``) (DEPRECATED)
   
   We try to send the given selector (or query) to the gopher server.
+  Gopher support will be removed in a future version of LinkChecker.
 
 - Telnet links (``telnet:``)
   
