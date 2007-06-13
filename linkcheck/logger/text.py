@@ -141,7 +141,7 @@ class TextLogger (linkcheck.logger.Logger):
         """
         self.writeln()
         self.write(self.part('url') + self.spaces('url'))
-        txt = unicode(repr(url_data.base_url or u"")[1:])
+        txt = u"`%s'" % unicode(url_data.base_url or u"")
         if url_data.cached:
             txt += _(" (cached)")
         self.writeln(txt, color=self.colorurl)
@@ -151,7 +151,8 @@ class TextLogger (linkcheck.logger.Logger):
         Write url_data.name.
         """
         self.write(self.part("name") + self.spaces("name"))
-        self.writeln(unicode(repr(url_data.name)[1:]), color=self.colorname)
+        txt = u"`%s'" % unicode(url_data.name)
+        self.writeln(txt, color=self.colorname)
 
     def write_parent (self, url_data):
         """

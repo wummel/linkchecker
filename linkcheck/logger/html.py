@@ -164,7 +164,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         self.writeln(u'<td bgcolor="%s">%s</td>' %
                      (self.colorurl, self.part("url")))
         self.write(u'<td bgcolor="%s">' % self.colorurl)
-        self.write(u"%s" % cgi.escape(repr(url_data.base_url or u"")[1:]))
+        self.write(u"`%s'" % cgi.escape(url_data.base_url or u""))
         if url_data.cached:
             self.write(_(" (cached)"))
         self.writeln(u"</td></tr>")
@@ -173,8 +173,8 @@ class HtmlLogger (linkcheck.logger.Logger):
         """
         Write url_data.name.
         """
-        self.writeln(u"<tr><td>" + self.part("name") + u"</td><td>" +
-                     cgi.escape(repr(url_data.name)[1:]) + u"</td></tr>")
+        args = (self.part("name"), cgi.escape(url_data.name))
+        self.writeln(u"<tr><td>%s</td><td>`%s'</td></tr>" % args)
 
     def write_parent (self, url_data):
         """
