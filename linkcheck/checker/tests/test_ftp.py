@@ -35,7 +35,7 @@ class TestFtp (linkcheck.checker.tests.LinkCheckTest):
         Test ftp link.
         """
         # ftp two slashes
-        url = u"ftp://ftp.debian.org/"
+        url = u"ftp://ftp.de.debian.org/"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -49,7 +49,7 @@ class TestFtp (linkcheck.checker.tests.LinkCheckTest):
         Test ftp links with missing slashes.
         """
         # ftp one slash
-        url = u"ftp:/ftp.debian.org/"
+        url = u"ftp:/ftp.de.debian.org/"
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -60,7 +60,7 @@ class TestFtp (linkcheck.checker.tests.LinkCheckTest):
         ]
         self.direct(url, resultlines)
         # missing path
-        url = u"ftp://ftp.debian.org"
+        url = u"ftp://ftp.de.debian.org"
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -70,7 +70,7 @@ class TestFtp (linkcheck.checker.tests.LinkCheckTest):
         ]
         self.direct(url, resultlines)
         # missing trailing dir slash
-        url = u"ftp://ftp.debian.org/debian"
+        url = u"ftp://ftp.de.debian.org/debian"
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -86,7 +86,7 @@ class TestFtp (linkcheck.checker.tests.LinkCheckTest):
         Test ftp links with too many slashes.
         """
         # ftp two dir slashes
-        url = u"ftp://ftp.debian.org//debian/"
+        url = u"ftp://ftp.de.debian.org//debian/"
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -97,7 +97,7 @@ class TestFtp (linkcheck.checker.tests.LinkCheckTest):
         ]
         self.direct(url, resultlines)
         # ftp many dir slashes
-        url = u"ftp://ftp.debian.org////////debian/"
+        url = u"ftp://ftp.de.debian.org////////debian/"
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -108,7 +108,7 @@ class TestFtp (linkcheck.checker.tests.LinkCheckTest):
         ]
         self.direct(url, resultlines)
         # ftp three slashes
-        url = u"ftp:///ftp.debian.org/"
+        url = u"ftp:///ftp.de.debian.org/"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
