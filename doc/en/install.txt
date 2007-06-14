@@ -42,7 +42,7 @@ Requirements for Windows
 1. Install Python >= 2.4 from http://www.python.org/
    [http://www.python.org/ftp/python/2.4.4/python-2.4.4.msi]
    or
-   [http://www.python.org/ftp/python/2.5/python-2.5.msi]
+   [http://www.python.org/ftp/python/2.5.1/python-2.5.1.msi]
 
 2. *Optional (color support for console)*
    Wconio from http://newcenturycomputers.net/projects/wconio.html
@@ -53,9 +53,9 @@ Requirements for Windows
    Be sure to install in the given order:
    
    a) MingGW (this installer downloads additional packages)
-      [http://switch.dl.sourceforge.net/sourceforge/mingw/MinGW-5.0.2.exe]
+      [http://downloads.sourceforge.net/mingw/MinGW-5.1.3.exe]
    b) MSYS
-      [http://switch.dl.sourceforge.net/sourceforge/mingw/MSYS-1.0.10.exe]
+      [http://downloads.sourceforge.net/mingw/MSYS-1.0.10.exe]
 
 Setup for Unix/Linux or Mac OS X
 --------------------------------
