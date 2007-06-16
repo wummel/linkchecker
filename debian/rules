@@ -1,7 +1,6 @@
 #!/usr/bin/make -f
 
 DEB_PYTHON_SYSTEM=pycentral
-DEB_PYTHON_COMPILE_VERSION=2.4
 
 common-install-arch::
 	$(MAKE) locale

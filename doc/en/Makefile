@@ -14,7 +14,7 @@ clean:
 
 .PHONY: nav
 nav: all
-	python2.4 ../bfknav.py
+	python ../bfknav.py
 
 .PHONY: homepage
 homepage: nav

@@ -1,4 +1,4 @@
-#! /usr/bin/python2.4
+#! /usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
 # Released to the public domain, by Tim Peters, 03 October 2000.

@@ -1,7 +1,7 @@
 # this parser needs flex >= 2.5.xx from http://lex.sf.net/
 # for reentrant bison parser support!
 FLEX = flex
-PYVER = 2.4
+PYVER = 2.5
 PYTHON = python$(PYVER)
 
 all: htmllex.c htmlparse.c

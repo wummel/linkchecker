@@ -9,5 +9,5 @@ script. If you want to enable access from other hosts you have
 to adjust the ALLOWED_HOSTS and ALLOWED_SERVERS variables in
 the /usr/lib/cgi-bin/lc.cgi script.
 
-The --profile option works only if the python2.4-profiler package
-is installed.
+The --profile option works only if the python2.5 or the
+python-profiler package is installed.
