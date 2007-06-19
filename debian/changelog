@@ -1,3 +1,12 @@
+linkchecker (4.7-2) unstable; urgency=low
+
+  * On some installations old files are lingering around after purging
+    in /usr/lib/python2.4/site-packages/linkcheck/. Postrm will remove
+    them forcefully now.
+    (Closes: #429580)
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 19 Jun 2007 16:57:03 +0200
+
 linkchecker (4.7-1) unstable; urgency=low
 
   * New upstream release.
