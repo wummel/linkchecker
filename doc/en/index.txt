@@ -48,7 +48,7 @@ look at the ChangeLog_.
 .. _install documentation:
    install.html
 .. _ChangeLog:
-   http://svn.sourceforge.net/viewcvs.cgi/linkchecker/trunk/linkchecker/ChangeLog?view=markup
+   http://linkchecker.svn.sourceforge.net/viewvc/linkchecker/trunk/linkchecker/ChangeLog?view=markup
 
 
 Screenshots
