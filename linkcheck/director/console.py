@@ -44,7 +44,7 @@ or send mail to %s and include the following information:
 - the output of a debug run with option "-Dall" of the executed command
 - the system information below.
 
-Disclosing some of the information above due to privacy reasons is ok.
+Not disclosing some of the information above due to privacy reasons is ok.
 I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
 """) % linkcheck.configuration.Email

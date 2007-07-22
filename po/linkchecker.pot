@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2007-02-21 23:05+0100\n"
+"POT-Creation-Date: 2007-07-23 00:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,7 @@ msgstr ""
 
 #: ../linkcheck/logger/csvlog.py:122 ../linkcheck/logger/gml.py:118
 #: ../linkcheck/logger/sql.py:144 ../linkcheck/logger/xmllog.py:99
-#: ../linkcheck/logger/html.py:294 ../linkcheck/logger/text.py:254
+#: ../linkcheck/logger/html.py:294 ../linkcheck/logger/text.py:255
 #: ../linkcheck/logger/dot.py:114
 #, python-format
 msgid "Stopped checking at %(time)s (%(duration)s)"
@@ -130,54 +130,123 @@ msgstr ""
 msgid " (cached)"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:187 ../linkcheck/logger/text.py:162
+#: ../linkcheck/logger/html.py:187 ../linkcheck/logger/text.py:163
 #, python-format
 msgid ", line %d"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:188 ../linkcheck/logger/text.py:163
+#: ../linkcheck/logger/html.py:188 ../linkcheck/logger/text.py:164
 #, python-format
 msgid ", col %d"
 msgstr ""
 
 #: ../linkcheck/logger/html.py:218 ../linkcheck/logger/html.py:234
-#: ../linkcheck/logger/text.py:185 ../linkcheck/logger/text.py:201
+#: ../linkcheck/logger/text.py:186 ../linkcheck/logger/text.py:202
 #, python-format
 msgid "%.3f seconds"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:265 ../linkcheck/logger/text.py:227
+#: ../linkcheck/logger/html.py:265 ../linkcheck/logger/text.py:228
 msgid "Valid"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:270 ../linkcheck/logger/text.py:230
+#: ../linkcheck/logger/html.py:270 ../linkcheck/logger/text.py:231
 msgid "Error"
 msgstr ""
 
-#: ../linkcheck/logger/html.py:281 ../linkcheck/logger/text.py:241
+#: ../linkcheck/logger/html.py:281 ../linkcheck/logger/text.py:242
 msgid "That's it."
 msgstr ""
 
-#: ../linkcheck/logger/html.py:283 ../linkcheck/logger/text.py:243
+#: ../linkcheck/logger/html.py:283 ../linkcheck/logger/text.py:244
 #, python-format
 msgid "%d link checked."
 msgid_plural "%d links checked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/html.py:286 ../linkcheck/logger/text.py:247
+#: ../linkcheck/logger/html.py:286 ../linkcheck/logger/text.py:248
 #, python-format
 msgid "%d warning found."
 msgid_plural "%d warnings found."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/html.py:289 ../linkcheck/logger/text.py:250
+#: ../linkcheck/logger/html.py:289 ../linkcheck/logger/text.py:251
 #, python-format
 msgid "%d error found."
 msgid_plural "%d errors found."
 msgstr[0] ""
 msgstr[1] ""
+
+#: ../linkcheck/checker/mailtourl.py:49
+msgid "Could not split the mail address"
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:74
+msgid "Invalid mail syntax"
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:114
+#, python-format
+msgid "Error parsing CGI values: %s"
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:137
+msgid "No addresses found."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:157
+#, python-format
+msgid "No MX mail host for %(domain)s found."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:162
+#, python-format
+msgid "No host for %(domain)s found."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:211
+#, python-format
+msgid "Verified address: %(info)s."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:215
+#, python-format
+msgid "Unverified address: %(info)s. But mail will be sent anyway."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:218
+#, python-format
+msgid "Unverified address: %(info)s."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:222
+#, python-format
+msgid "MX mail host %(host)s did not accept connections: %(error)s."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:228
+msgid "Could not connect, but syntax is correct"
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:230
+#, python-format
+msgid "Found MX mail host %(host)s"
+msgstr ""
+
+#: ../linkcheck/checker/ftpurl.py:111
+#, python-format
+msgid "Remote host has closed connection: %r"
+msgstr ""
+
+#: ../linkcheck/checker/ftpurl.py:115
+msgid "Got no answer from FTP server"
+msgstr ""
+
+#: ../linkcheck/checker/ftpurl.py:148
+msgid "Missing trailing directory slash in ftp url."
+msgstr ""
 
 #: ../linkcheck/checker/urlbase.py:64 ../linkchecker:730
 #, python-format
@@ -253,214 +322,6 @@ msgstr ""
 msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr ""
 
-#: ../linkcheck/checker/nntpurl.py:46
-msgid "No NNTP server was specified, skipping this URL."
-msgstr ""
-
-#: ../linkcheck/checker/nntpurl.py:56
-#, python-format
-msgid "Articel number %s found."
-msgstr ""
-
-#: ../linkcheck/checker/nntpurl.py:63
-#, python-format
-msgid "News group %s found."
-msgstr ""
-
-#: ../linkcheck/checker/nntpurl.py:66
-msgid "No newsgroup specified in NNTP URL."
-msgstr ""
-
-#: ../linkcheck/checker/nntpurl.py:89
-#, python-format
-msgid "NTTP server too busy; tried more than %d times."
-msgstr ""
-
-#: ../linkcheck/checker/nntpurl.py:91
-#, python-format
-msgid "NNTP busy: %s."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:165
-msgid "Access denied by robots.txt, checked only syntax."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:171
-msgid "Amazon servers block HTTP HEAD requests, using GET instead."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:182
-msgid "unknown"
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:184
-#, python-format
-msgid "Server %r did not support HEAD request; a GET request was used instead."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:187
-#, python-format
-msgid "Server %r had no anchor support, removed anchor from request."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:231
-#, python-format
-msgid "Enforced proxy %r."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:235
-#, python-format
-msgid "Enforced proxy %r ignored, aborting."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:264
-#, python-format
-msgid "more than %d redirections, aborting"
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:318
-#, python-format
-msgid "Redirected to %(url)s."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:330
-msgid "The redirected URL is outside of the domain filter, checked only syntax."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:338
-msgid "Access to redirected URL denied by robots.txt, checked only syntax."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:353
-#, python-format
-msgid ""
-"recursive redirection encountered:\n"
-" %s"
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:365
-msgid "HTTP 301 (moved permanent) encountered: you should update this link."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:376
-#, python-format
-msgid "Redirection to different URL type encountered; the original URL was %r."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:421
-#, python-format
-msgid "Store cookie: %s."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:430
-#, python-format
-msgid "Could not store cookies: %(msg)s."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:439
-#, python-format
-msgid "Last modified %s."
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:529
-#, python-format
-msgid "Unsupported HTTP url scheme %r"
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:562
-#, python-format
-msgid "Decompress error %(err)s"
-msgstr ""
-
-#: ../linkcheck/checker/httpurl.py:587 ../linkcheck/checker/httpurl.py:616
-#, python-format
-msgid "Unsupported content encoding %r."
-msgstr ""
-
-#: ../linkcheck/checker/fileurl.py:120
-msgid "Added trailing slash to directory."
-msgstr ""
-
-#: ../linkcheck/checker/fileurl.py:131
-msgid "directory"
-msgstr ""
-
-#: ../linkcheck/checker/fileurl.py:148
-#, python-format
-msgid ""
-"The URL path %(path)r is not the same as the system path %(realpath)r. You "
-"should always use the system path in URLs."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:49
-msgid "Could not split the mail address"
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:74
-msgid "Invalid mail syntax"
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:114
-#, python-format
-msgid "Error parsing CGI values: %s"
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:137
-msgid "No addresses found."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:157
-#, python-format
-msgid "No MX mail host for %(domain)s found."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:162
-#, python-format
-msgid "No host for %(domain)s found."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:211
-#, python-format
-msgid "Verified address: %(info)s."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:215
-#, python-format
-msgid "Unverified address: %(info)s. But mail will be sent anyway."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:218
-#, python-format
-msgid "Unverified address: %(info)s."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:222
-#, python-format
-msgid "MX mail host %(host)s did not accept connections: %(error)s."
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:228
-msgid "Could not connect, but syntax is correct"
-msgstr ""
-
-#: ../linkcheck/checker/mailtourl.py:230
-#, python-format
-msgid "Found MX mail host %(host)s"
-msgstr ""
-
-#: ../linkcheck/checker/ftpurl.py:111
-#, python-format
-msgid "Remote host has closed connection: %r"
-msgstr ""
-
-#: ../linkcheck/checker/ftpurl.py:115
-msgid "Got no answer from FTP server"
-msgstr ""
-
-#: ../linkcheck/checker/ftpurl.py:148
-msgid "Missing trailing directory slash in ftp url."
-msgstr ""
-
 #: ../linkcheck/checker/proxysupport.py:42
 #, python-format
 msgid "Proxy value %r must start with 'http://'."
@@ -478,15 +339,6 @@ msgstr ""
 
 #: ../linkcheck/checker/telneturl.py:52
 msgid "Host is empty"
-msgstr ""
-
-#: ../linkcheck/checker/httpsurl.py:35 ../linkcheck/checker/unknownurl.py:77
-#, python-format
-msgid "%s URL ignored."
-msgstr ""
-
-#: ../linkcheck/checker/unknownurl.py:80
-msgid "URL is unrecognized or has invalid syntax"
 msgstr ""
 
 #: ../linkcheck/checker/__init__.py:76
@@ -591,6 +443,297 @@ msgstr ""
 
 #: ../linkcheck/checker/__init__.py:109
 msgid "The NNTP server was busy."
+msgstr ""
+
+#: ../linkcheck/checker/fileurl.py:120
+msgid "Added trailing slash to directory."
+msgstr ""
+
+#: ../linkcheck/checker/fileurl.py:131
+msgid "directory"
+msgstr ""
+
+#: ../linkcheck/checker/fileurl.py:148
+#, python-format
+msgid ""
+"The URL path %(path)r is not the same as the system path %(realpath)r. You "
+"should always use the system path in URLs."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:165
+msgid "Access denied by robots.txt, checked only syntax."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:171
+msgid "Amazon servers block HTTP HEAD requests, using GET instead."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:182
+msgid "unknown"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:184
+#, python-format
+msgid "Server %r did not support HEAD request; a GET request was used instead."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:187
+#, python-format
+msgid "Server %r had no anchor support, removed anchor from request."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:231
+#, python-format
+msgid "Enforced proxy %r."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:235
+#, python-format
+msgid "Enforced proxy %r ignored, aborting."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:264
+#, python-format
+msgid "more than %d redirections, aborting"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:318
+#, python-format
+msgid "Redirected to %(url)s."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:330
+msgid "The redirected URL is outside of the domain filter, checked only syntax."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:338
+msgid "Access to redirected URL denied by robots.txt, checked only syntax."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:353
+#, python-format
+msgid ""
+"recursive redirection encountered:\n"
+" %s"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:365
+msgid "HTTP 301 (moved permanent) encountered: you should update this link."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:376
+#, python-format
+msgid "Redirection to different URL type encountered; the original URL was %r."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:421
+#, python-format
+msgid "Store cookie: %s."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:430
+#, python-format
+msgid "Could not store cookies: %(msg)s."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:439
+#, python-format
+msgid "Last modified %s."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:529
+#, python-format
+msgid "Unsupported HTTP url scheme %r"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:562
+#, python-format
+msgid "Decompress error %(err)s"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:587 ../linkcheck/checker/httpurl.py:616
+#, python-format
+msgid "Unsupported content encoding %r."
+msgstr ""
+
+#: ../linkcheck/checker/nntpurl.py:46
+msgid "No NNTP server was specified, skipping this URL."
+msgstr ""
+
+#: ../linkcheck/checker/nntpurl.py:56
+#, python-format
+msgid "Articel number %s found."
+msgstr ""
+
+#: ../linkcheck/checker/nntpurl.py:63
+#, python-format
+msgid "News group %s found."
+msgstr ""
+
+#: ../linkcheck/checker/nntpurl.py:66
+msgid "No newsgroup specified in NNTP URL."
+msgstr ""
+
+#: ../linkcheck/checker/nntpurl.py:89
+#, python-format
+msgid "NTTP server too busy; tried more than %d times."
+msgstr ""
+
+#: ../linkcheck/checker/nntpurl.py:91
+#, python-format
+msgid "NNTP busy: %s."
+msgstr ""
+
+#: ../linkcheck/checker/unknownurl.py:77 ../linkcheck/checker/httpsurl.py:35
+#, python-format
+msgid "%s URL ignored."
+msgstr ""
+
+#: ../linkcheck/checker/unknownurl.py:80
+msgid "URL is unrecognized or has invalid syntax"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:93
+#, python-format
+msgid "invalid log option %r"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:126
+#, python-format
+msgid "invalid negative value for timeout: %d\n"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:150
+#, python-format
+msgid "syntax error in warningregex %(regex)r: %(msg)s\n"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:178
+#, python-format
+msgid "syntax error in noproxyfor %(line)r: %(msg)s"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:189
+#, python-format
+msgid ""
+"the noproxyfor%(num)d syntax is deprecated; use the new multiline "
+"configuration syntax"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:195
+#, python-format
+msgid "syntax error in noproxyfor%(num)d %(arg)r: %(msg)s"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:221
+#, python-format
+msgid "missing auth part in entry %(line)r"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:227
+#, python-format
+msgid "syntax error in entry %(line)r: %(msg)s"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:240
+#, python-format
+msgid ""
+"the entry%(num)d syntax is deprecated; use the new multiline configuration "
+"syntax"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:248
+#, python-format
+msgid "syntax error in entry%(num)d %(arg)r: %(msg)s"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:278
+#, python-format
+msgid ""
+"the nofollow%(num)d syntax is deprecated; use the new multiline configuration "
+"syntax"
+msgstr ""
+
+#: ../linkcheck/configuration/confparse.py:307
+#, python-format
+msgid ""
+"the ignore%(num)d syntax is deprecated; use the new multiline configuration "
+"syntax"
+msgstr ""
+
+#: ../linkcheck/director/__init__.py:48
+msgid ""
+"Could not start a new thread. Check that the current user is allowed to start "
+"new threads."
+msgstr ""
+
+#: ../linkcheck/director/__init__.py:80
+msgid "keyboard interrupt; waiting for active threads to finish"
+msgstr ""
+
+#: ../linkcheck/director/__init__.py:91
+msgid "These URLs are still active:"
+msgstr ""
+
+#: ../linkcheck/director/__init__.py:109
+msgid "shutdown in progress"
+msgstr ""
+
+#: ../linkcheck/director/console.py:37
+#, python-format
+msgid ""
+"********** Oops, I did it again. *************\n"
+"\n"
+"You have found an internal error in LinkChecker. Please write a bug report\n"
+"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
+"or send mail to %s and include the following information:\n"
+"- the URL or file you are testing\n"
+"- your commandline arguments and/or configuration.\n"
+"- the output of a debug run with option \"-Dall\" of the executed command\n"
+"- the system information below.\n"
+"\n"
+"Not disclosing some of the information above due to privacy reasons is ok.\n"
+"I will try to help you nonetheless, but you have to give me something\n"
+"I can work with ;) .\n"
+msgstr ""
+
+#: ../linkcheck/director/console.py:56
+msgid "******** LinkChecker internal error, over and out ********"
+msgstr ""
+
+#: ../linkcheck/director/console.py:63
+msgid "System info:"
+msgstr ""
+
+#: ../linkcheck/director/console.py:65 ../linkchecker:529
+#, python-format
+msgid "Python %(version)s on %(platform)s"
+msgstr ""
+
+#: ../linkcheck/director/status.py:57
+#, python-format
+msgid "%2d URL active,"
+msgid_plural "%2d URLs active,"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../linkcheck/director/status.py:60
+#, python-format
+msgid "%5d URL queued,"
+msgid_plural "%5d URLs queued,"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../linkcheck/director/status.py:62
+#, python-format
+msgid "%4d URL checked,"
+msgid_plural "%4d URLs checked,"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../linkcheck/director/status.py:64
+#, python-format
+msgid "runtime %s"
 msgstr ""
 
 #: ../linkcheck/__init__.py:141
@@ -703,149 +846,6 @@ msgid_plural "%d years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/configuration/confparse.py:93
-#, python-format
-msgid "invalid log option %r"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:126
-#, python-format
-msgid "invalid negative value for timeout: %d\n"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:150
-#, python-format
-msgid "syntax error in warningregex %(regex)r: %(msg)s\n"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:178
-#, python-format
-msgid "syntax error in noproxyfor %(line)r: %(msg)s"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:189
-#, python-format
-msgid ""
-"the noproxyfor%(num)d syntax is deprecated; use the new multiline "
-"configuration syntax"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:195
-#, python-format
-msgid "syntax error in noproxyfor%(num)d %(arg)r: %(msg)s"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:221
-#, python-format
-msgid "missing auth part in entry %(line)r"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:227
-#, python-format
-msgid "syntax error in entry %(line)r: %(msg)s"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:240
-#, python-format
-msgid ""
-"the entry%(num)d syntax is deprecated; use the new multiline configuration "
-"syntax"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:248
-#, python-format
-msgid "syntax error in entry%(num)d %(arg)r: %(msg)s"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:278
-#, python-format
-msgid ""
-"the nofollow%(num)d syntax is deprecated; use the new multiline configuration "
-"syntax"
-msgstr ""
-
-#: ../linkcheck/configuration/confparse.py:307
-#, python-format
-msgid ""
-"the ignore%(num)d syntax is deprecated; use the new multiline configuration "
-"syntax"
-msgstr ""
-
-#: ../linkcheck/director/__init__.py:48
-msgid ""
-"Could not start a new thread. Check that the current user is allowed to start "
-"new threads."
-msgstr ""
-
-#: ../linkcheck/director/__init__.py:80
-msgid "keyboard interrupt; waiting for active threads to finish"
-msgstr ""
-
-#: ../linkcheck/director/__init__.py:91
-msgid "These URLs are still active:"
-msgstr ""
-
-#: ../linkcheck/director/__init__.py:109
-msgid "shutdown in progress"
-msgstr ""
-
-#: ../linkcheck/director/status.py:57
-#, python-format
-msgid "%2d URL active,"
-msgid_plural "%2d URLs active,"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../linkcheck/director/status.py:60
-#, python-format
-msgid "%5d URL queued,"
-msgid_plural "%5d URLs queued,"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../linkcheck/director/status.py:62
-#, python-format
-msgid "%4d URL checked,"
-msgid_plural "%4d URLs checked,"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../linkcheck/director/status.py:64
-#, python-format
-msgid "runtime %s"
-msgstr ""
-
-#: ../linkcheck/director/console.py:37
-#, python-format
-msgid ""
-"********** Oops, I did it again. *************\n"
-"\n"
-"You have found an internal error in LinkChecker. Please write a bug report\n"
-"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
-"or send mail to %s and include the following information:\n"
-"- the URL or file you are testing\n"
-"- your commandline arguments and/or configuration.\n"
-"- the output of a debug run with option \"-Dall\" of the executed command\n"
-"- the system information below.\n"
-"\n"
-"Disclosing some of the information above due to privacy reasons is ok.\n"
-"I will try to help you nonetheless, but you have to give me something\n"
-"I can work with ;) .\n"
-msgstr ""
-
-#: ../linkcheck/director/console.py:56
-msgid "******** LinkChecker internal error, over and out ********"
-msgstr ""
-
-#: ../linkcheck/director/console.py:63
-msgid "System info:"
-msgstr ""
-
-#: ../linkcheck/director/console.py:65 ../linkchecker:529
-#, python-format
-msgid "Python %(version)s on %(platform)s"
-msgstr ""
-
 #: ../linkchecker:52
 msgid "USAGE\tlinkchecker [options] file-or-url...\n"
 msgstr ""
@@ -872,7 +872,7 @@ msgstr ""
 #: ../linkchecker:71
 msgid ""
 "PROXY SUPPORT\n"
-"To use a proxy set $http_proxy, $https_proxy, $ftp_proxy, $gopher_proxy\n"
+"To use a proxy set $http_proxy, $https_proxy, $ftp_proxy,\n"
 "on Unix or Windows to the proxy URL. The URL should be of the form\n"
 "\"http://[<user>:<pass>@]<host>[:port]\", for example\n"
 "\"http://localhost:8080\", or \"http://joe:test@proxy.domain\".\n"
@@ -1312,78 +1312,78 @@ msgstr ""
 msgid "Hit RETURN to finish"
 msgstr ""
 
-#: /usr/lib/python2.4/optparse.py:332
-#, python-format
-msgid "usage: %s\n"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:351
-msgid "Usage"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:357
-msgid "integer"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:358
-msgid "long integer"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:359
-msgid "floating-point"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:360
-msgid "complex"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:368
-#, python-format
-msgid "option %s: invalid %s value: %r"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:376
-#, python-format
-msgid "option %s: invalid choice: %r (choose from %s)"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1141
-msgid "show this help message and exit"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1146
-msgid "show program's version number and exit"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1169
-msgid "%prog [options]"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1379 /usr/lib/python2.4/optparse.py:1418
-#, python-format
-msgid "%s option requires an argument"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1381 /usr/lib/python2.4/optparse.py:1420
-#, python-format
-msgid "%s option requires %d arguments"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1390
-#, python-format
-msgid "%s option does not take a value"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1407 /usr/lib/python2.4/optparse.py:1561
+#: /usr/lib/python2.5/optparse.py:134
 #, python-format
 msgid "no such option: %s"
 msgstr ""
 
-#: /usr/lib/python2.4/optparse.py:1507
-msgid "options"
-msgstr ""
-
-#: /usr/lib/python2.4/optparse.py:1565
+#: /usr/lib/python2.5/optparse.py:145
 #, python-format
 msgid "ambiguous option: %s (%s?)"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:368
+#, python-format
+msgid "Usage: %s\n"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:387
+msgid "Usage"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:412
+msgid "integer"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:413
+msgid "long integer"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:414
+msgid "floating-point"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:415
+msgid "complex"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:423
+#, python-format
+msgid "option %s: invalid %s value: %r"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:431
+#, python-format
+msgid "option %s: invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:1239
+msgid "show this help message and exit"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:1244
+msgid "show program's version number and exit"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:1267
+msgid "%prog [options]"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:1477 /usr/lib/python2.5/optparse.py:1516
+#, python-format
+msgid "%s option requires an argument"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:1479 /usr/lib/python2.5/optparse.py:1518
+#, python-format
+msgid "%s option requires %d arguments"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:1488
+#, python-format
+msgid "%s option does not take a value"
+msgstr ""
+
+#: /usr/lib/python2.5/optparse.py:1605
+msgid "Options"
 msgstr ""
