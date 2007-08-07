@@ -1081,6 +1081,7 @@ class FakeSocket(SharedSocketClient):
     def close(self):
         SharedSocketClient.close(self)
         self._sock = self.__class__._closedsocket()
+        self._ssl = None
 
     def makefile(self, mode, bufsize=None):
         if mode != 'r' and mode != 'rb':
