@@ -1,6 +1,20 @@
-4.8 "" (released xx.xx.xxxx)
+4.8 "Hallam Foe" (released xx.xx.xxxx)
 
-  *
+  * Fix message typo for not disclosing information.
+    Type: documentation
+    Closes: SF bug #1758531
+    Changed: linkcheck/director/console.py, po/de.po, po/linkchecker.pot
+
+  * Always read the request body data on persistent HTTP connections, else
+    subsequent will get data from the previous request.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Zope server workaround: assume missing HEAD support when receiving
+    text/plain on a HEAD request. Switch to GET request in this case.
+    Type: bugfix
+    Closes: SF bug #1770131
+    Changed: linkcheck/checker/httpurl.py
 
 4.7 "300" (released 17.6.2007)
 
