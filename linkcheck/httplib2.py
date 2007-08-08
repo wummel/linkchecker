@@ -894,7 +894,7 @@ class HTTPConnection:
         #                  isclosed() status to become true.
         #
         if self.__state != _CS_REQ_SENT or self.__response:
-            msg = "State %s, Reponse %s" % (self.__state, self.__response)
+            msg = "State %s, Response %s" % (self.__state, self.__response)
             raise ResponseNotReady(msg)
 
         if self.debuglevel > 0:
