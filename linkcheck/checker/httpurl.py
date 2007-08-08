@@ -288,7 +288,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 mime = headers.get_content_type(self.headers)
                 poweredby = self.headers.get('X-Powered-By', '')
                 server = self.headers.get('Server', '')
-                if mime == 'application/octet-stream' and \
+                if mime in ('application/octet-stream', 'text/plain') and \
                   (poweredby.startswith('Zope') or server.startswith('Zope')):
                     # Zope server could not get Content-Type with HEAD
                     self.method = "GET"
