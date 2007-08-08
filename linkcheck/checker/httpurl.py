@@ -494,9 +494,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.url_connection.putheader(name, value)
         self.url_connection.endheaders()
         response = self.url_connection.getresponse()
-        self.persistent = not response.will_close
         self.timeout = headers.http_timeout(response)
         self.headers = response.msg
+        self.persistent = not response.will_close
+        if self.persistent and (self.method == "GET" or
+           self.headers.getheader("Content-Length", "")):
+            # always read content from persistent connections
+            self._read_content(response)
         # If possible, use official W3C HTTP response name
         if response.status in httpresponses:
             response.reason = httpresponses[response.status]
@@ -544,30 +548,33 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if not self.has_content:
             self.method = "GET"
             self.close_connection()
-            t = time.time()
             response = self._get_http_response()
             tries, response = self.follow_redirections(response,
                                                        set_result=False)
             self.headers = response.msg
-            self.data = response.read()
-            encoding = headers.get_content_encoding(self.headers)
-            if encoding in _supported_encodings:
-                try:
-                    if encoding == 'deflate':
-                        f = StringIO.StringIO(zlib.decompress(self.data))
-                    else:
-                        f = linkcheck.gzip2.GzipFile('', 'rb', 9,
-                                          StringIO.StringIO(self.data))
-                except zlib.error, msg:
-                    self.add_warning(_("Decompress error %(err)s") %
-                                     {"err": str(msg)},
-                                     tag="http-decompress-error")
-                    f = StringIO.StringIO(self.data)
-                self.data = f.read()
-            self.downloadtime = time.time() - t
+            self._read_content(response)
             response.close()
-            self.has_content = True
         return self.data
+
+    def _read_content (self, response):
+        t = time.time()
+        self.data = response.read()
+        encoding = headers.get_content_encoding(self.headers)
+        if encoding in _supported_encodings:
+            try:
+                if encoding == 'deflate':
+                    f = StringIO.StringIO(zlib.decompress(self.data))
+                else:
+                    f = linkcheck.gzip2.GzipFile('', 'rb', 9,
+                                      StringIO.StringIO(self.data))
+            except zlib.error, msg:
+                self.add_warning(_("Decompress error %(err)s") %
+                                 {"err": str(msg)},
+                                 tag="http-decompress-error")
+                f = StringIO.StringIO(self.data)
+            self.data = f.read()
+        self.downloadtime = time.time() - t
+        self.has_content = True
 
     def is_html (self):
         """
