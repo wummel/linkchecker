@@ -108,7 +108,7 @@ class TestRobotsTxt (unittest.TestCase):
         ]
         self.rp.parse(lines)
         self.assertEquals(str(self.rp), "\n".join(lines))
-        self.assert_(self.rp.can_fetch("Bla", "/"))
+        self.assertTrue(self.rp.can_fetch("Bla", "/"))
 
     def test_crawldelay (self):
         lines = [
@@ -135,6 +135,138 @@ class TestRobotsTxt (unittest.TestCase):
         self.rp.parse(lines)
         del lines[1]
         self.assertEquals(str(self.rp), "\n".join(lines))
+
+    def check_urls (self, good, bad, agent="test_robotparser"):
+        for url in good:
+            self.check_url(agent, url, True)
+        for url in bad:
+            self.check_url(agent, url, False)
+
+    def check_url (self, agent, url, can_fetch):
+        if isinstance(url, tuple):
+            agent, url = url
+        res = self.rp.can_fetch(agent, url)
+        if can_fetch:
+            self.assertTrue(res, "%s disallowed" % url)
+        else:
+            self.assertFalse(res, "%s allowed" % url)
+
+    def test_access1 (self):
+        lines = [
+            "User-agent: *",
+            "Disallow: /cyberworld/map/ # This is an infinite virtual URL space",
+            "Disallow: /tmp/ # these will soon disappear",
+            "Disallow: /foo.html",
+        ]
+        lines2 = [
+            "User-agent: *",
+            "Disallow: /cyberworld/map/",
+            "Disallow: /tmp/",
+            "Disallow: /foo.html",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "\n".join(lines2))
+        good = ['/','/test.html']
+        bad = ['/cyberworld/map/index.html','/tmp/xxx','/foo.html']
+        self.check_urls(good, bad)
+
+    def test_access2 (self):
+        lines = [
+            "# robots.txt for http://www.example.com/",
+            "",
+            "User-agent: *",
+            "Disallow: /cyberworld/map/ # This is an infinite virtual URL space",
+            "",
+            "# Cybermapper knows where to go.",
+            "User-agent: cybermapper",
+            "Disallow:",
+            "",
+        ]
+        lines2 = [
+            "User-agent: cybermapper",
+            "Allow: /",
+            "",
+            "User-agent: *",
+            "Disallow: /cyberworld/map/",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "\n".join(lines2))
+        good = ['/','/test.html',('cybermapper','/cyberworld/map/index.html')]
+        bad = ['/cyberworld/map/index.html']
+        self.check_urls(good, bad)
+
+    def test_access3 (self):
+        lines = [
+            "# go away",
+            "User-agent: *",
+            "Disallow: /",
+        ]
+        lines2 = [
+            "User-agent: *",
+            "Disallow: /",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "\n".join(lines2))
+        good = []
+        bad = ['/cyberworld/map/index.html','/','/tmp/']
+        self.check_urls(good, bad)
+
+    def test_access4 (self):
+        lines = [
+            "User-agent: figtree",
+            "Disallow: /tmp",
+            "Disallow: /a%3cd.html",
+            "Disallow: /a%2fb.html",
+            "Disallow: /%7ejoe/index.html",
+        ]
+        lines2 = [
+            "User-agent: figtree",
+            "Disallow: /tmp",
+            "Disallow: /a%3Cd.html",
+            "Disallow: /a/b.html",
+            "Disallow: /%7Ejoe/index.html",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "\n".join(lines2))
+        good = []
+        bad = ['/tmp','/tmp.html','/tmp/a.html',
+               '/a%3cd.html','/a%3Cd.html','/a%2fb.html',
+               '/~joe/index.html', '/a/b.html',
+        ]
+        self.check_urls(good, bad, 'figtree')
+        self.check_urls(good, bad, 'FigTree/1.0 Robot libwww-perl/5.04')
+
+    def test_access5 (self):
+        lines = [
+            "User-agent: *",
+            "Disallow: /tmp/",
+            "Disallow: /a%3Cd.html",
+            "Disallow: /a/b.html",
+            "Disallow: /%7ejoe/index.html",
+        ]
+        lines2 = [
+            "User-agent: *",
+            "Disallow: /tmp/",
+            "Disallow: /a%3Cd.html",
+            "Disallow: /a/b.html",
+            "Disallow: /%7Ejoe/index.html",
+        ]
+        self.rp.parse(lines)
+        self.assertEquals(str(self.rp), "\n".join(lines2))
+        good = ['/tmp',] # XFAIL: '/a%2fb.html'
+        bad = ['/tmp/','/tmp/a.html',
+               '/a%3cd.html','/a%3Cd.html',"/a/b.html",
+               '/%7Ejoe/index.html']
+        self.check_urls(good, bad)
+
+    def test_access6 (self):
+        lines = [
+            "User-Agent: *",
+            "Disallow: /.",
+        ]
+        good = ['/foo.html']
+        bad = [] # Bug report says "/" should be denied, but that is not in the RFC
+        self.check_urls(good, bad)
 
 
 def test_suite ():
