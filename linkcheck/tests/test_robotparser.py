@@ -96,6 +96,13 @@ class TestRobotParser (unittest.TestCase):
         self.check(self.rp.can_fetch('Mozilla',
                                      'http://www.lycos.com/search'), True)
 
+    def test_password_robots (self):
+        # whole site is password-protected.
+        self.rp.set_url('http://mueblesmoraleda.com/robots.txt')
+        self.rp.read()
+        self.check(self.rp.can_fetch("*",
+                                     "http://mueblesmoraleda.com/"), False)
+
 
 def test_suite ():
     """
