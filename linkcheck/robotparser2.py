@@ -89,8 +89,6 @@ class RobotFileParser (object):
     def _reset (self):
         """
         Reset internal flags and entry lists.
-
-        @return: None
         """
         self.entries = []
         self.default_entry = None
@@ -112,19 +110,13 @@ class RobotFileParser (object):
 
     def modified (self):
         """
-        Sets the time the robots.txt file was last fetched to the
+        Set the time the robots.txt file was last fetched to the
         current time.
-
-        @return: None
         """
         self.last_checked = time.time()
 
     def set_url (self, url):
-        """
-        Sets the URL referring to a robots.txt file.
-
-        @return: None
-        """
+        "Set the URL referring to a robots.txt file."
         self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
 
@@ -153,11 +145,7 @@ class RobotFileParser (object):
         return urllib2.build_opener(*handlers)
 
     def read (self):
-        """
-        Reads the robots.txt URL and feeds it to the parser.
-
-        @return: None
-        """
+        "Read the robots.txt URL and feeds it to the parser."
         self._reset()
         headers = {
             'User-Agent': configuration.UserAgent,
@@ -398,6 +386,7 @@ class RuleLine (object):
         if path == '' and not allowance:
             # an empty value means allow all
             allowance = True
+            path = '/'
         self.path = urllib.quote(path)
         self.allowance = allowance
 
@@ -466,7 +455,7 @@ class Entry (object):
                 return True
         return False
 
-    def allowance (self, filename):
+    def allowance (self, path):
         """
         Preconditions:
         - our agent applies to this entry
@@ -479,8 +468,8 @@ class Entry (object):
         """
         for line in self.rulelines:
             assert None == log.debug(linkcheck.LOG_CHECK,
-               "%s %s %s", filename, str(line), line.allowance)
-            if line.applies_to(filename):
+               "%s %s %s", path, str(line), line.allowance)
+            if line.applies_to(path):
                 return line.allowance
         return True
 
