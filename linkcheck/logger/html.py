@@ -240,8 +240,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         sep = u"<br>"+os.linesep
         text = sep.join([cgi.escape(x[1]) for x in url_data.info])
         self.writeln(u'<tr><td valign="top">' + self.part("info")+
-               u"</td><td>"+cgi.escape(text).replace(os.linesep, "<br>")+
-               u"</td></tr>")
+               u"</td><td>"+text+u"</td></tr>")
 
     def write_warning (self, url_data):
         """
