@@ -6,6 +6,7 @@ Build-Depends: python-all-dev (>= 2.4), debhelper (>= 5.0.37.2), gettext, cdbs (
 XS-Python-Standards-Version: 0.4
 XS-Python-Version: >= 2.4
 Standards-Version: 3.7.2.1
+Homepage: http://linkchecker.sourceforge.net/
 
 Package: linkchecker
 Architecture: any

@@ -1,3 +1,13 @@
+linkchecker (4.8-1) unstable; urgency=low
+
+  * New upstream release.
+    + Prevent double encoding in HTML info output (Closes: #446918)
+  * Add Homepage: field to control info.
+  * Rename debian/NEWS.Debian to debian/NEWS, which actually installs
+    this file as NEWS.Debian :/
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 16 Oct 2007 20:00:25 +0200
+
 linkchecker (4.7-2) unstable; urgency=low
 
   * On some installations old files are lingering around after purging
