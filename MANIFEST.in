@@ -15,7 +15,7 @@ include debian/linkchecker.examples
 include debian/linkchecker.links
 include debian/linkchecker.postinst
 include debian/compat
-include debian/NEWS.Debian
+include debian/NEWS
 include debian/README.Debian
 include debian/watch
 include test.py tests/*.py
