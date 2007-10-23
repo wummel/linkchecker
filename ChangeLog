@@ -20,6 +20,13 @@
     Type: bugfix
     Changed: linkcheck/logger/html.py
 
+  * Honor urllib.proxy_bypass() when ignoring proxy settings.
+    This only affected Windows systems, since on other platforms
+    the proxy_bypass() function always return False (on Python <= 2.5
+    that is).
+    Type: bugfix
+    Changed: linkcheck/checker/proxysupport.py
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of

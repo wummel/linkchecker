@@ -63,6 +63,8 @@ class ProxySupport (object):
         """
         Check if self.host is in the no-proxy-for ignore list.
         """
+        if urllib.proxy_bypass(self.host):
+            return True
         for ro in self.aggregate.config["noproxyfor"]:
             if ro.search(self.host):
                 return True
