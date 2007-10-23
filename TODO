@@ -1,3 +1,14 @@
+- [BUG REPORT] Running on Windows XP with threads and a local Apache Server
+  yields a lot of (10061 'Connection Refused') errors. Without threads (-t0)
+  gets rid of these errors. What is wrong here?
+  System: WinXP, linkchecker SVN r3579
+
+- [BUGFIX] Honor urllib.proxy_bypass() result.
+
+- [BUG REPORT]
+  Error: (54, 'Connection reset by peer')
+  Happens with http 1.1 keep-alive, disappears when activating debug mode.
+ 
 - [BUG REPORT] There are reports that file descriptors are leaking.
   Rework the code so that it always closes the connections.
   Question: what to do with cached persistent connections? Also close
