@@ -16,6 +16,10 @@
     Closes: SF bug #1770131
     Changed: linkcheck/checker/httpurl.py
 
+  * Prevent double encoding in HTML info output.
+    Type: bugfix
+    Changed: linkcheck/logger/html.py
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of
