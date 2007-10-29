@@ -12,11 +12,6 @@ like LinkChecker.
 .. _`Open Source license`:
    http://www.opensource.org/licenses/
 
-- `checkbot`_ written in Perl
-  
-  .. _checkbot:
-     http://degraaff.org/checkbot/
-
 - `Checklinks`_ written in Perl
   
   .. _Checklinks:
