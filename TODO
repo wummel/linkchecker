@@ -30,3 +30,5 @@
 - [FEATURE] HTML/CSS syntax check
 
 - [FEATURE] Virus check
+
+- [FEATURE] Allow specifying proxy data in the web interface
