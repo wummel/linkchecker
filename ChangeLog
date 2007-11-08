@@ -27,6 +27,10 @@
     Type: bugfix
     Changed: linkcheck/checker/proxysupport.py
 
+  * Document the --configfile option in the man page.
+    Type: documentation
+    Changed: doc/{en,de}/linkchecker.1
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of
