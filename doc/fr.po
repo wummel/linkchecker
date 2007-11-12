@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2007-11-08 23:39+0100\n"
+"POT-Creation-Date: 2007-11-12 11:00+0100\n"
 "PO-Revision-Date: 2005-05-07 00:42+0100\n"
 "Last-Translator: Yann Verley <yann.verley@free.fr>\n"
 "Language-Team: kde-francophone@kde.org\n"
@@ -16,8 +16,8 @@ msgstr ""
 # type: TH
 #: en/linkchecker.1:1
 #, no-wrap
-msgid "linkchecker"
-msgstr ""
+msgid "LINKCHECKER"
+msgstr "LINKCHECKER"
 
 # type: TH
 #: en/linkchecker.1:1
@@ -29,6 +29,12 @@ msgstr ""
 #: en/linkchecker.1:1
 #, no-wrap
 msgid "LinkChecker"
+msgstr ""
+
+# type: TH
+#: en/linkchecker.1:1
+#, no-wrap
+msgid "LinkChecker commandline usage"
 msgstr ""
 
 # type: SH
@@ -1195,10 +1201,6 @@ msgstr ""
 #: en/linkchecker.1:361
 msgid "Copyright \\(co 2000-2007 Bastian Kleineidam"
 msgstr ""
-
-# type: TH
-#~ msgid "LINKCHECKER"
-#~ msgstr "LINKCHECKER"
 
 # type: TH
 #~ msgid "10 March 2001"

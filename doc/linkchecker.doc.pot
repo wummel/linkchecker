@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2007-11-08 23:39+0100\n"
+"POT-Creation-Date: 2007-11-12 11:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 # type: TH
 #: en/linkchecker.1:1
 #, no-wrap
-msgid "linkchecker"
+msgid "LINKCHECKER"
 msgstr ""
 
 # type: TH
@@ -31,6 +31,12 @@ msgstr ""
 #: en/linkchecker.1:1
 #, no-wrap
 msgid "LinkChecker"
+msgstr ""
+
+# type: TH
+#: en/linkchecker.1:1
+#, no-wrap
+msgid "LinkChecker commandline usage"
 msgstr ""
 
 # type: SH
