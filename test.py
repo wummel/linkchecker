@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.4
 # -*- coding: iso-8859-1 -*-
 #
 # SchoolTool - common information systems platform for school administration
