@@ -520,14 +520,17 @@ class UrlBase (object):
             return True
         if not (self.is_http() or self.is_file()):
             return True
-        h = linkcheck.linkparse.MetaRobotsFinder(self.get_content())
-        p = linkcheck.HtmlParser.htmlsax.parser(h)
-        h.parser = p
-        p.feed(self.get_content())
-        p.flush()
-        h.parser = None
-        p.handler = None
-        return h.follow
+        # construct parser object
+        handler = linkcheck.linkparse.MetaRobotsFinder(self.get_content())
+        parser = linkcheck.HtmlParser.htmlsax.parser(handler)
+        handler.parser = parser
+        # parse
+        parser.feed(self.get_content())
+        parser.flush()
+        # break cyclic dependencies
+        handler.parser = None
+        parser.handler = None
+        return handler.follow
 
     def check_anchors (self):
         """
@@ -540,17 +543,18 @@ class UrlBase (object):
             return
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "checking anchor %r", self.anchor)
-        h = linkcheck.linkparse.LinkFinder(self.get_content(),
+        handler = linkcheck.linkparse.LinkFinder(self.get_content(),
                                    tags={'a': [u'name'], None: [u'id']})
-        p = linkcheck.HtmlParser.htmlsax.parser(h)
-        h.parser = p
-        p.feed(self.get_content())
-        p.flush()
-        h.parser = None
-        p.handler = None
-        for cur_anchor, line, column, name, base in h.urls:
-            if cur_anchor == self.anchor:
-                return
+        parser = linkcheck.HtmlParser.htmlsax.parser(handler)
+        handler.parser = parser
+        # parse
+        parser.feed(self.get_content())
+        parser.flush()
+        # break cyclic dependencies
+        handler.parser = None
+        parser.handler = None
+	if [x for x in handler.urls if x[0] == self.anchor]:
+	    return
         self.add_warning(_("Anchor #%s not found.") % self.anchor,
                          tag="url-anchor-not-found")
 
@@ -654,7 +658,7 @@ class UrlBase (object):
         handler = linkcheck.linkparse.LinkFinder(self.get_content())
         parser = linkcheck.HtmlParser.htmlsax.parser(handler)
         handler.parser = parser
-        # parse HTML
+        # parse
         parser.feed(self.get_content())
         parser.flush()
         # break cyclic dependencies
