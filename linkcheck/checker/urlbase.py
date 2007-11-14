@@ -521,7 +521,7 @@ class UrlBase (object):
         if not (self.is_http() or self.is_file()):
             return True
         # construct parser object
-        handler = linkcheck.linkparse.MetaRobotsFinder(self.get_content())
+        handler = linkcheck.linkparse.MetaRobotsFinder()
         parser = linkcheck.HtmlParser.htmlsax.parser(handler)
         handler.parser = parser
         # parse

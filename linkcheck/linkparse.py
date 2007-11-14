@@ -77,12 +77,11 @@ class TagFinder (object):
     TagFinder instances are to be used as HtmlParser handlers.
     """
 
-    def __init__ (self, content):
+    def __init__ (self):
         """
-        Store content in buffer.
+        Initialize local variables.
         """
         super(TagFinder, self).__init__()
-        self.content = content
         # parser object will be initialized when it is used as
         # a handler object
         self.parser = None
@@ -106,11 +105,11 @@ class MetaRobotsFinder (TagFinder):
     Class for finding robots.txt meta values in HTML.
     """
 
-    def __init__ (self, content):
+    def __init__ (self):
         """
-        Store content in buffer and initialize flags.
+        Initialize flags.
         """
-        super(MetaRobotsFinder, self).__init__(content)
+        super(MetaRobotsFinder, self).__init__()
         self.follow = True
         self.index = True
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -153,7 +152,8 @@ class LinkFinder (TagFinder):
         """
         Store content in buffer and initialize URL list.
         """
-        super(LinkFinder, self).__init__(content)
+        super(LinkFinder, self).__init__()
+        self.content = content
         if tags is None:
             self.tags = LinkTags
         else:
