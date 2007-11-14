@@ -112,7 +112,7 @@ chmod:
 dist: locale MANIFEST chmod
 	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
 
-dist-stamp:
+dist-stamp: changelog
 	$(MAKE) dist
 	touch $@
 
