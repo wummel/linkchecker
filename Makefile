@@ -168,3 +168,8 @@ diff:
 various:
 	py-find-nocoding $(PYFILES)
 	py-find-nosvneolstyle $(PYFILES)
+
+
+.PHONY: changelog
+changelog:
+	sftrack_changelog linkchecker calvin@users.sourceforge.net ChangeLog
