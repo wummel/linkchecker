@@ -650,18 +650,21 @@ class UrlBase (object):
         """
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "Parsing HTML %s", self)
-        h = linkcheck.linkparse.LinkFinder(self.get_content())
-        p = linkcheck.HtmlParser.htmlsax.parser(h)
-        h.parser = p
-        p.feed(self.get_content())
-        p.flush()
-        h.parser = None
-        p.handler = None
-        for url, line, column, name, codebase in h.urls:
+        # construct parser object
+        handler = linkcheck.linkparse.LinkFinder(self.get_content())
+        parser = linkcheck.HtmlParser.htmlsax.parser(handler)
+        handler.parser = parser
+        # parse HTML
+        parser.feed(self.get_content())
+        parser.flush()
+        # break cyclic dependencies
+        handler.parser = None
+        parser.handler = None
+        for url, line, column, name, codebase in handler.urls:
             if codebase:
                 base_ref = codebase
             else:
-                base_ref = h.base_ref
+                base_ref = handler.base_ref
             base_ref = linkcheck.url.url_norm(base_ref)[0]
             url_data = linkcheck.checker.get_url_from(url,
                   self.recursion_level+1, self.aggregate, parent_url=self.url,
@@ -677,8 +680,7 @@ class UrlBase (object):
             "Parsing Opera bookmarks %s", self)
         name = ""
         lineno = 0
-        lines = self.get_content().splitlines()
-        for line in lines:
+        for line in self.get_content().splitlines():
             lineno += 1
             line = line.strip()
             if line.startswith("NAME="):
@@ -719,9 +721,10 @@ class UrlBase (object):
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "Parsing CSS %s", self)
         lineno = 0
+        linkfinder = linkcheck.linkparse.css_url_re.finditer
         for line in self.get_content().splitlines():
             lineno += 1
-            for mo in linkcheck.linkparse.css_url_re.finditer(line):
+            for mo in linkfinder(line):
                 column = mo.start("url")
                 url = linkcheck.strformat.unquote(mo.group("url").strip())
                 url_data = linkcheck.checker.get_url_from(url,
