@@ -1,7 +1,5 @@
 - [OPTIMIZATION] Don't store content in TagFinder, only in LinkFinder
 
-- [BUGFIX] Ignore links in commented-out CSS data (SF Bug #1831900)
-
 - [BUG REPORT] Running on Windows XP with threads and a local HTTP Server
   yields a lot of (10061 'Connection Refused') errors. Without threads (-t0)
   gets rid of these errors. Is it the server?

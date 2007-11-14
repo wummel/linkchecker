@@ -63,6 +63,13 @@ LinkTags = {
 refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
 _quoted_pat = ur"('[^']+'|\"[^\"]+\"|[^\)\s]+)"
 css_url_re = re.compile(ur"url\(\s*(?P<url>%s)\s*\)" % _quoted_pat)
+c_comment_re = re.compile(ur"/\*.*?\*/", re.DOTALL)
+
+def strip_c_comments (text):
+    """Remove C/CSS-style comments from text. Note that this method also
+    deliberately removes comments inside of strings."""
+    return c_comment_re.sub('', text)
+
 
 class TagFinder (object):
     """

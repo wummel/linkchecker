@@ -726,7 +726,8 @@ class UrlBase (object):
             "Parsing CSS %s", self)
         lineno = 0
         linkfinder = linkcheck.linkparse.css_url_re.finditer
-        for line in self.get_content().splitlines():
+        strip_comments = linkcheck.linkparse.strip_c_comments
+        for line in strip_comments(self.get_content()).splitlines():
             lineno += 1
             for mo in linkfinder(line):
                 column = mo.start("url")

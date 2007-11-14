@@ -31,6 +31,11 @@
     Type: documentation
     Changed: doc/{en,de}/linkchecker.1
 
+  * Remove comments from CSS content before searching for links.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py, linkcheck/checker/urlbase.py
+    Closes: SF bug #1831900
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of

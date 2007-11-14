@@ -77,6 +77,17 @@ class TestLinkparser (unittest.TestCase):
         content = u"<table style='background: url( \"%s\") no-repeat' >"
         self._test_one_link(content % url, url)
 
+    def test_comment_stripping (self):
+        strip = linkcheck.linkparse.strip_c_comments
+        content = "/* url('http://imadoofus.org')*/"
+        self.assertEqual(strip(content), "")
+        content = "/* * * **/"
+        self.assertEqual(strip(content), "")
+        content = "/* * /* * **//* */"
+        self.assertEqual(strip(content), "")
+        content = "a/* */b/* */c"
+        self.assertEqual(strip(content), "abc")
+
 
 def test_suite ():
     """
