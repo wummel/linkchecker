@@ -116,12 +116,17 @@ dist-stamp:
 	$(MAKE) dist
 	touch $@
 
-.PHONY: syntaxcheck
-syntaxcheck:
-	py-verify
+.PHONY: check
+check:
+	py-verify $(PYFILES)
+	py-find-nocoding $(PYFILES)
+	check-nosvneolstyle
+	python2.4 /usr/lib/python2.4/tabnanny.py $(PYFILES)
+
+
 
 .PHONY: releasecheck
-releasecheck: syntaxcheck
+releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog > /dev/null; then \
 	  echo "Could not release: edit ChangeLog release date"; false; \
 	fi
