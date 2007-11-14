@@ -553,8 +553,8 @@ class UrlBase (object):
         # break cyclic dependencies
         handler.parser = None
         parser.handler = None
-	if [x for x in handler.urls if x[0] == self.anchor]:
-	    return
+        if [x for x in handler.urls if x[0] == self.anchor]:
+            return
         self.add_warning(_("Anchor #%s not found.") % self.anchor,
                          tag="url-anchor-not-found")
 

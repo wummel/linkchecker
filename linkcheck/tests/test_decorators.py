@@ -31,18 +31,18 @@ class TestDecorators (unittest.TestCase):
 
     def test_timeit (self):
         @linkcheck.decorators.timed()
-	def f ():
-	    return 42
-	self.assertEquals(f(), 42)
+        def f ():
+            return 42
+        self.assertEquals(f(), 42)
 
     def test_timeit2 (self):
         log = StringIO.StringIO()
         @linkcheck.decorators.timed(log=log, limit=0)
-	def f ():
-	    time.sleep(1)
-	    return 42
-	self.assertEquals(f(), 42)
-	self.assert_(log.getvalue())
+        def f ():
+            time.sleep(1)
+            return 42
+        self.assertEquals(f(), 42)
+        self.assert_(log.getvalue())
 
 
 def test_suite ():
@@ -54,3 +54,4 @@ def test_suite ():
 
 if __name__ == '__main__':
     unittest.main()
+
