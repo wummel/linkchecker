@@ -525,9 +525,9 @@ class TestUrl (unittest.TestCase):
         self.assert_(is_idn)
         url = u''
         encurl, is_idn = idna_encode(url)
-        self.assert_(not is_idn)
-        self.assert_(not encurl)
-        url = u"http://www.imadoofus.org%0D%3Cfont%20face=%22Verdana,%20Arial,%20Helvetica,%20sans-serif%22%20size=%222%22%3E%3Chttp://www.imadoofus.org%3E%20%0D%20%20%20%20%20%20%20%20%20%20%20%20%20%20"
+        self.assertFalse(is_idn)
+        self.assertFalse(encurl)
+        url = u"ä.."
         self.assertRaises(UnicodeError, idna_encode, url)
 
     def test_match_host (self):

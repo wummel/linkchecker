@@ -172,19 +172,15 @@ def idna_encode (host):
     """
     Encode hostname as internationalized domain name (IDN) according
     to RFC 3490.
-    On errors, host is returned unchanged
+    @raise: UnicodeError if hostname is not properly IDN encoded.
     """
     if host and isinstance(host, unicode):
         try:
             host.encode('ascii')
             return host, False
         except UnicodeError:
-            try:
-                uhost = host.encode('idna').decode('ascii')
-                return uhost, uhost != host
-            except UnicodeError:
-                # give up
-                pass
+            uhost = host.encode('idna').decode('ascii')
+            return uhost, uhost != host
     return host, False
 
 
