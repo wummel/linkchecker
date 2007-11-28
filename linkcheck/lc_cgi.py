@@ -95,7 +95,7 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
     aggregate = linkcheck.director.get_aggregate(config)
     get_url_from = linkcheck.checker.get_url_from
     url = form["url"].value
-    url_data = get_url_from(url, 0, aggregate, assume_local=False)
+    url_data = get_url_from(url, 0, aggregate)
     try:
         linkcheck.add_intern_pattern(url_data, config)
     except UnicodeError:

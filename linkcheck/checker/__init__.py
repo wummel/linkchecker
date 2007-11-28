@@ -151,7 +151,7 @@ def absolute_url (base_url, base_ref, parent_url):
 
 def get_url_from (base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=0, column=0,
-                  name=u"", assume_local=False):
+                  name=u""):
     """
     Get url data from given base data.
 
@@ -180,13 +180,13 @@ def get_url_from (base_url, recursion_level, aggregate,
         base_ref = unicode_safe(base_ref)
     name = unicode_safe(name)
     url = absolute_url(base_url, base_ref, parent_url).lower()
-    klass = get_urlclass_from(url, assume_local)
+    klass = get_urlclass_from(url)
     return klass(base_url, recursion_level, aggregate,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)
 
 
-def get_urlclass_from (url, assume_local):
+def get_urlclass_from (url):
     """Return checker class for given URL."""
     if url.startswith("http:"):
         klass = linkcheck.checker.httpurl.HttpUrl
@@ -206,12 +206,12 @@ def get_urlclass_from (url, assume_local):
          url.startswith("news:") or \
          url.startswith("snews:"):
         klass = linkcheck.checker.nntpurl.NntpUrl
-    elif assume_local:
-        # assume local file
-        klass = linkcheck.checker.fileurl.FileUrl
-    else:
+    elif linkcheck.checker.unknownurl.is_unknown_url(url):
         # unknown url
         klass = linkcheck.checker.unknownurl.UnknownUrl
+    else:
+        # assume local file
+        klass = linkcheck.checker.fileurl.FileUrl
     return klass
 
 

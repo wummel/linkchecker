@@ -60,6 +60,8 @@ acap        # application configuration access protocol
 
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
+is_unknown_url = ignored_schemes_re.search
+
 
 class UnknownUrl (urlbase.UrlBase):
     """

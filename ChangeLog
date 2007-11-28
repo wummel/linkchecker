@@ -36,6 +36,12 @@
     Changed: linkcheck/linkparse.py, linkcheck/checker/urlbase.py
     Closes: SF bug #1831900
 
+  * Try to detect unkonwn URL schemes from the command line, eg. URLs
+    like "rtsp://foo".
+    Type: feature
+    Changed: linkchecker, linkcheck/lc_cgi.py,
+      linkcheck/checker/{__init__,urlbase,httpurl,unknownurl}.py
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of

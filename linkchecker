@@ -722,7 +722,7 @@ for url in args:
     elif url.lower().startswith("ftp."):
         # syntactic sugar
         url = "ftp://%s" % url
-    url_data = get_url_from(url, 0, aggregate, assume_local=True)
+    url_data = get_url_from(url, 0, aggregate)
     try:
         linkcheck.add_intern_pattern(url_data, config)
     except UnicodeError:

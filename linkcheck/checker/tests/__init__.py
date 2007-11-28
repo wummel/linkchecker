@@ -155,6 +155,16 @@ class LinkCheckTest (unittest.TestCase):
         """
         return linkcheck.url.url_norm(url)[0]
 
+    def get_attrs (self, **kwargs):
+        """Return current and data directory as dictionary.
+        You can augment the dict with keyword attributes."""
+        d = {
+            'curdir': linkcheck.checker.tests.get_file_url(os.getcwd()),
+            'datadir': "linkcheck/checker/tests/data",
+        }
+        d.update(kwargs)
+        return d
+
     def get_resultlines (self, filename):
         """
         Return contents of file, as list of lines without line endings,
@@ -170,7 +180,7 @@ class LinkCheckTest (unittest.TestCase):
         f.close()
         return resultlines
 
-    def file_test (self, filename, confargs=None, assume_local=True):
+    def file_test (self, filename, confargs=None):
         """
         Check <filename> with expected result in <filename>.result.
         """
@@ -179,9 +189,9 @@ class LinkCheckTest (unittest.TestCase):
             confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
         aggregate = get_test_aggregate(confargs, logargs)
-        url_data = get_url_from(url, 0, aggregate, assume_local=assume_local)
-        if assume_local:
-            linkcheck.add_intern_pattern(url_data, aggregate.config)
+        url_data = get_url_from(url, 0, aggregate)
+        # XXX if assume_local
+        linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
         linkcheck.director.check_urls(aggregate)
         diff = aggregate.config['logger'].diff
@@ -192,7 +202,7 @@ class LinkCheckTest (unittest.TestCase):
             self.fail(l.encode("iso8859-1", "ignore"))
 
     def direct (self, url, resultlines, parts=None, recursionlevel=0,
-                confargs=None, assume_local=False):
+                confargs=None):
         """
         Check url with expected result.
         """
@@ -205,9 +215,9 @@ class LinkCheckTest (unittest.TestCase):
         if parts is not None:
             logargs['parts'] = parts
         aggregate = get_test_aggregate(confargs, logargs)
-        url_data = get_url_from(url, 0, aggregate, assume_local=assume_local)
-        if assume_local:
-            linkcheck.add_intern_pattern(url_data, aggregate.config)
+        url_data = get_url_from(url, 0, aggregate)
+        # XXX if assume_local:
+        linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
         linkcheck.director.check_urls(aggregate)
         diff = aggregate.config['logger'].diff

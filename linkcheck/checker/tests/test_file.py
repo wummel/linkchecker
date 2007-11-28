@@ -23,13 +23,6 @@ import os
 
 import linkcheck.checker.tests
 
-def get_attrs ():
-    return {
-        'curdir': linkcheck.checker.tests.get_file_url(os.getcwd()),
-        'datadir': "linkcheck/checker/tests/data",
-    }
-
-
 class TestFile (linkcheck.checker.tests.LinkCheckTest):
     """
     Test file:// link checking (and file content parsing).
@@ -66,8 +59,7 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
         self.file_test("urllist.txt")
 
     def test_good_file (self):
-        attrs = get_attrs()
-        url = u"file://%(curdir)s/%(datadir)s/file.txt" % attrs
+        url = u"file://%(curdir)s/%(datadir)s/file.txt" % self.get_attrs()
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -83,8 +75,7 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
             # Cause: url get quoted %7C which gets lowercased to
             # %7c and this fails.
             return
-        attrs = get_attrs()
-        url = u"file:/%(curdir)s/%(datadir)s/file.txt" % attrs
+        url = u"file:/%(curdir)s/%(datadir)s/file.txt" % self.get_attrs()
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -96,7 +87,7 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
 
     def test_good_file_missing_dslash (self):
         # good file (missing double slash)
-        attrs = get_attrs()
+        attrs = self.get_attrs()
         url = u"file:%(curdir)s/%(datadir)s/file.txt" % attrs
         nurl = self.norm(url)
         resultlines = [
@@ -109,8 +100,7 @@ class TestFile (linkcheck.checker.tests.LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_good_dir (self):
-        attrs = get_attrs()
-        url = u"file://%(curdir)s/%(datadir)s/" % attrs
+        url = u"file://%(curdir)s/%(datadir)s/" % self.get_attrs()
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,

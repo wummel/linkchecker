@@ -36,7 +36,7 @@ class TestHttp (httptest.HttpServerTest):
             url = u"http://localhost:%d/linkcheck/checker/tests/data/" \
                   u"http.html" % self.port
             resultlines = self.get_resultlines("http.html")
-            self.direct(url, resultlines, recursionlevel=1, assume_local=True)
+            self.direct(url, resultlines, recursionlevel=1)
             self.redirect1_http_test()
             self.redirect2_http_test()
             self.robots_txt_test()
@@ -69,7 +69,7 @@ class TestHttp (httptest.HttpServerTest):
             u"real url %s" % rurl,
             u"error",
         ]
-        self.direct(url, resultlines, recursionlevel=0, assume_local=True)
+        self.direct(url, resultlines, recursionlevel=0)
 
     def redirect1_http_test (self):
         url = u"http://localhost:%d/redirect1" % self.port
@@ -82,7 +82,7 @@ class TestHttp (httptest.HttpServerTest):
             u"info Redirected to %s." % rurl,
             u"error",
         ]
-        self.direct(url, resultlines, recursionlevel=0, assume_local=True)
+        self.direct(url, resultlines, recursionlevel=0)
 
     def redirect2_http_test (self):
         url = u"http://localhost:%d/linkcheck/checker/tests/data/redirect.html" % \
@@ -101,7 +101,7 @@ class TestHttp (httptest.HttpServerTest):
             u"name Recursive Redirect",
             u"valid",
         ]
-        self.direct(url, resultlines, recursionlevel=99, assume_local=True)
+        self.direct(url, resultlines, recursionlevel=99)
 
     def robots_txt_test (self):
         url = u"http://localhost:%d/robots.txt" % self.port
@@ -111,7 +111,7 @@ class TestHttp (httptest.HttpServerTest):
             u"real url %s" % url,
             u"valid",
         ]
-        self.direct(url, resultlines, recursionlevel=5, assume_local=True)
+        self.direct(url, resultlines, recursionlevel=5)
 
     def robots_txt2_test (self):
         url = u"http://localhost:%d/secret" % self.port
@@ -122,7 +122,7 @@ class TestHttp (httptest.HttpServerTest):
             u"warning Access denied by robots.txt, checked only syntax.",
             u"valid",
         ]
-        self.direct(url, resultlines, recursionlevel=5, assume_local=True)
+        self.direct(url, resultlines, recursionlevel=5)
 
     def noproxyfor_test (self):
         """
@@ -141,7 +141,7 @@ class TestHttp (httptest.HttpServerTest):
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=0,
-                    confargs=confargs, assume_local=True)
+                    confargs=confargs)
         del os.environ["http_proxy"]
 
 

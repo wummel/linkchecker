@@ -672,8 +672,7 @@ class UrlBase (object):
             base_ref = linkcheck.url.url_norm(base_ref)[0]
             url_data = linkcheck.checker.get_url_from(url,
                   self.recursion_level+1, self.aggregate, parent_url=self.url,
-                  base_ref=base_ref, line=line, column=column, name=name,
-                  assume_local=False)
+                  base_ref=base_ref, line=line, column=column, name=name)
             self.aggregate.urlqueue.put(url_data)
 
     def parse_opera (self):
@@ -694,8 +693,7 @@ class UrlBase (object):
                 if url:
                     url_data = linkcheck.checker.get_url_from(url,
                               self.recursion_level+1, self.aggregate,
-                              parent_url=self.url, line=lineno, name=name,
-                              assume_local=False)
+                              parent_url=self.url, line=lineno, name=name)
                     self.aggregate.urlqueue.put(url_data)
                 name = ""
 
@@ -714,8 +712,7 @@ class UrlBase (object):
                 continue
             url_data = linkcheck.checker.get_url_from(line,
                               self.recursion_level+1, self.aggregate,
-                              parent_url=self.url, line=lineno,
-                              assume_local=False)
+                              parent_url=self.url, line=lineno)
             self.aggregate.urlqueue.put(url_data)
 
     def parse_css (self):
@@ -734,8 +731,7 @@ class UrlBase (object):
                 url = linkcheck.strformat.unquote(mo.group("url").strip())
                 url_data = linkcheck.checker.get_url_from(url,
                              self.recursion_level+1, self.aggregate,
-                             parent_url=self.url, line=lineno, column=column,
-                             assume_local=False)
+                             parent_url=self.url, line=lineno, column=column)
                 self.aggregate.urlqueue.put(url_data)
 
     def serialized (self):

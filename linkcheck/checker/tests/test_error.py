@@ -34,11 +34,12 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
         Unrecognized scheme test.
         """
         url = u"hutzli:"
-        nurl = self.norm(url)
+        attrs = self.get_attrs(url=url)
+        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % nurl,
+            u"url %(nurl)s" % attrs,
+            u"cache key %(nurl)s" % attrs,
+            u"real url %(nurl)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -48,22 +49,22 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
         Leading whitespace test.
         """
         url = u" http://www.heise.de/"
-        nurl = self.norm(url)
+        attrs = self.get_attrs(url=url)
+        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+            u"url %(nurl)s" % attrs,
+            u"cache key %(nurl)s" % attrs,
+            u"real url %(nurl)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
         url = u"\nhttp://www.heise.de/"
-        nurl = self.norm(url)
+        attrs = self.get_attrs(url=url)
+        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+            u"url %(nurl)s" % attrs,
+            u"cache key %(nurl)s" % attrs,
+            u"real url %(nurl)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -96,12 +97,12 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
     def test_invalid1 (self):
         # invalid scheme chars
         url = u"äöü?:"
-        nurl = self.norm(url)
+        attrs = self.get_attrs(url=url)
+        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+            u"url %(nurl)s" % attrs,
+            u"cache key %(nurl)s" % attrs,
+            u"real url %(nurl)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -109,12 +110,12 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
     def test_invalid2 (self):
         # missing scheme alltogether
         url = u"?äöü?"
-        nurl = self.norm(url)
+        attrs = self.get_attrs(url=url)
+        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+            u"url %(nurl)s" % attrs,
+            u"cache key %(nurl)s" % attrs,
+            u"real url %(nurl)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -122,12 +123,12 @@ class TestError (linkcheck.checker.tests.LinkCheckTest):
     def test_invalid3 (self):
         # really fucked up
         url = u"@³²¼][½ ³@] ¬½"
-        nurl = self.norm(url)
+        attrs = self.get_attrs(url=url)
+        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+            u"url %(nurl)s" % attrs,
+            u"cache key %(nurl)s" % attrs,
+            u"real url %(nurl)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
