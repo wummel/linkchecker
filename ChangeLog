@@ -42,6 +42,12 @@
     Changed: linkchecker, linkcheck/lc_cgi.py,
       linkcheck/checker/{__init__,urlbase,httpurl,unknownurl}.py
 
+  * Fix typo in warnings and use constants for the warning strings
+    to avoid this in the future.
+    Type: bugfix
+    Closes: SF bug #1838803
+    Changed: linkcheck/checker/__init__.py
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of

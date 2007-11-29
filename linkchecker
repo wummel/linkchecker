@@ -16,7 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """
-Check HTML pages for broken links.
+Check HTML pages for broken links. This is the commandline
+client. Run this file with the -h option to see how it's done.
 """
 
 import sys
@@ -48,7 +49,7 @@ _profile = "linkchecker.prof"
 _username = None
 _password = None
 
-# main usage text
+# usage texts
 Usage = _("""USAGE\tlinkchecker [options] file-or-url...
 """)
 
@@ -173,34 +174,32 @@ Warnings = _(r"""IGNORE WARNINGS
 The following warnings are recognized in the 'ignorewarnings' config
 file entry:
 """)
-for tag, desc in linkcheck.checker.Warnings.items():
+for tag, desc in linkcheck.checker.const.Warnings.items():
     Warnings += u" o %s\n   %s\n" % (tag, desc)
 
+
 def encode (s, codec="iso8859-15"):
-    """
-    Encode string with given codec for screen print.
-    """
+    """Encode string with given codec for screen print."""
+    # XXX the console encoding should be detected automatically
+    # according to locale settings.
     return s.encode(codec, "ignore")
 
 
 def print_version ():
-    """
-    Print the program version and exit.
-    """
+    """Print the program version and exit."""
     print encode(linkcheck.configuration.AppInfo)
     sys.exit(0)
 
 
 def print_usage (msg):
-    """
-    Print a program msg text to stderr and exit.
-    """
+    """Print a program msg text to stderr and exit."""
     print >>sys.stderr, encode(_("Error: %s") % msg)
     print >>sys.stderr, encode(_("Execute 'linkchecker -h' for help"))
     sys.exit(1)
 
 
-def check_user ():
+def ensure_notroot ():
+    """Make sure LinkChecker is not run under root on POSIX systems."""
     if os.name != 'posix':
         return
     if os.geteuid() == 0:
@@ -211,9 +210,7 @@ def check_user ():
 
 
 def viewprof ():
-    """
-    Print profiling data and exit.
-    """
+    """Print profiling data and exit."""
     if not has_pstats:
         linkcheck.log.error(linkcheck.LOG_CMDLINE,
                            _("The `pstats' Python module is not installed,"
@@ -232,10 +229,8 @@ def viewprof ():
 
 
 def try_compile_re (arg):
-    """
-    Try to compile the regular expression. On error print an error message
-    and exit.
-    """
+    """Try to compile the regular expression. On error print an error
+    message and exit."""
     try:
         return re.compile(arg)
     except re.error, msg:
@@ -245,6 +240,7 @@ def try_compile_re (arg):
 
 
 def has_encoding (encoding):
+    """Detect if Python can encode in a certain encoding."""
     try:
         codecs.lookup(encoding)
         return True
@@ -253,9 +249,7 @@ def has_encoding (encoding):
 
 
 class LCHelpFormatter (optparse.IndentedHelpFormatter):
-    """
-    Help formatter indenting paragraph-wise.
-    """
+    """Help formatter indenting paragraph-wise."""
 
     def format_option (self, option):
         # The help for each option consists of two parts:
@@ -294,32 +288,22 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
 
 
 class LCOptionParser (optparse.OptionParser, object):
-    """
-    Option parser with custom help text layout.
-    """
+    """Option parser with custom help text layout."""
 
     def __init__ (self):
-        """
-        Initializing using our own help formatter class.
-        """
+        """Initializing using our own help formatter class."""
         super(LCOptionParser, self).__init__(formatter=LCHelpFormatter())
 
     def error (self, msg):
-        """
-        Print usage info and given message.
-        """
+        """Print usage info and given message."""
         print_usage(msg)
 
     def get_usage (self):
-        """
-        Return translated usage text.
-        """
+        """Return translated usage text."""
         return Usage
 
     def print_help (self, file=None):
-        """
-        Print translated help text.
-        """
+        """Print translated help text."""
         s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
                  Examples, LoggerTypes, RegularExpressions, CookieFormat,
                  ProxySupport, Notes, Retval, Warnings)
@@ -543,12 +527,12 @@ except linkcheck.LinkCheckerError, msg:
     print_usage(str(msg))
 # test if running with root privileges
 if not options.allowroot:
-    check_user()
+    ensure_notroot()
 # test if running with -O
 if options.debug and not __debug__:
     linkcheck.log.warn(linkcheck.LOG_CMDLINE,
                        _("Running with python -O disables debugging."))
-# apply commandline options and arguments
+# apply commandline options and arguments to configuration
 constructauth = False
 do_profile = False
 if not options.priority:
@@ -748,7 +732,7 @@ if do_profile:
                              " therefore the --profile option is disabled."))
         do_profile = False
 
-# start checking
+# finally, start checking
 if do_profile:
     import profile
     profile.run("linkcheck.director.check_urls(aggregate)", _profile)

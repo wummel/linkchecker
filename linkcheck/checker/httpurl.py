@@ -35,6 +35,11 @@ import linkcheck.httplib2
 import httpheaders as headers
 import internpaturl
 import proxysupport
+# import warnings
+from const import WARN_HTTP_ROBOTS_DENIED, WARN_HTTP_NO_ANCHOR_SUPPORT, \
+    WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
+    WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
+    WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING
 
 # helper alias
 unicode_safe = linkcheck.strformat.unicode_safe
@@ -163,7 +168,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # remove all previously stored results
             self.add_warning(
                        _("Access denied by robots.txt, checked only syntax."),
-                       tag="http-robots-denied")
+                       tag=WARN_HTTP_ROBOTS_DENIED)
             self.set_result(u"syntax OK")
             return
         # check for amazon server quirk
@@ -186,7 +191,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.no_anchor:
             self.add_warning(_("Server %r had no anchor support, removed"
                                " anchor from request.") % server,
-                             tag="http-no-anchor-support")
+                             tag=WARN_HTTP_NO_ANCHOR_SUPPORT)
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
@@ -315,8 +320,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             newurl = unicode_safe(newurl)
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                 "Redirected to %r", newurl)
-            self.add_info(_("Redirected to %(url)s.") % {'url': newurl},
-                          tag="http-redirect")
+            self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
             # norm base url - can raise UnicodeError from url.idna_encode()
             redirected, is_idn = linkcheck.checker.urlbase.url_norm(newurl)
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
@@ -337,7 +341,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     self.add_warning(
                        _("Access to redirected URL denied by robots.txt, "
                          "checked only syntax."),
-                       tag="http-robots-denied")
+                       tag=WARN_HTTP_ROBOTS_DENIED)
                     self.set_result(u"syntax OK")
                 return -1, response
             # see about recursive redirect
@@ -364,7 +368,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                         self.add_warning(
                            _("HTTP 301 (moved permanent) encountered: you"
                              " should update this link."),
-                           tag="http-moved-permanent")
+                           tag=WARN_HTTP_MOVED_PERMANENT)
                     self.has301status = True
             # check cache again on the changed URL
             if self.aggregate.urlqueue.checked_redirect(redirected, self):
@@ -375,7 +379,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     self.add_warning(
                            _("Redirection to different URL type encountered; "
                              "the original URL was %r.") % self.url,
-                           tag="http-wrong-redirect")
+                           tag=WARN_HTTP_WRONG_REDIRECT)
                 newobj = linkcheck.checker.get_url_from(
                           redirected, self.recursion_level, self.aggregate,
                           parent_url=self.parent_url, base_ref=self.base_ref,
@@ -413,7 +417,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if response.status == 204:
                 # no content
                 self.add_warning(unicode_safe(response.reason),
-                                 tag="http-empty-content")
+                                 tag=WARN_HTTP_EMPTY_CONTENT)
             # store cookies for valid links
             if self.aggregate.config['storecookies']:
                 for c in self.cookies:
@@ -428,7 +432,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 except Cookie.CookieError, msg:
                     self.add_warning(_("Could not store cookies: %(msg)s.") %
                                      {'msg': str(msg)},
-                                     tag="http-cookie-store-error")
+                                     tag=WARN_HTTP_COOKIE_STORE_ERROR)
             if response.status >= 200:
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
@@ -569,7 +573,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             except zlib.error, msg:
                 self.add_warning(_("Decompress error %(err)s") %
                                  {"err": str(msg)},
-                                 tag="http-decompress-error")
+                                 tag=WARN_HTTP_DECOMPRESS_ERROR)
                 f = StringIO.StringIO(self.data)
             self.data = f.read()
         self.downloadtime = time.time() - t
@@ -591,7 +595,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
             self.add_warning(_('Unsupported content encoding %r.') % encoding,
-                             tag="http-unsupported-encoding")
+                             tag=WARN_HTTP_UNSUPPORTED_ENCODING)
             return False
         return True
 
@@ -620,7 +624,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
             self.add_warning(_('Unsupported content encoding %r.') % encoding,
-                             tag="http-unsupported-encoding")
+                             tag=WARN_HTTP_UNSUPPORTED_ENCODING)
             return False
         return True
 

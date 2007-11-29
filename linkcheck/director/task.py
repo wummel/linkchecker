@@ -22,14 +22,10 @@ import console
 
 
 class CheckedTask (linkcheck.threader.StoppableThread):
-    """
-    Stoppable URL check task, handling error conditions while running.
-    """
+    """Stoppable URL check task, handling error conditions while running."""
 
     def run (self):
-        """
-        Handle keyboard interrupt and other errors.
-        """
+        """Handle keyboard interrupt and other errors."""
         try:
             self.run_checked()
         except KeyboardInterrupt:
@@ -41,7 +37,5 @@ class CheckedTask (linkcheck.threader.StoppableThread):
 
     @linkcheck.decorators.notimplemented
     def run_checked (self):
-        """
-        Overload in subclass.
-        """
+        """Overload in subclass."""
         pass

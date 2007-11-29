@@ -28,20 +28,16 @@ class Timeout (StandardError):
     pass
 
 class Empty (StandardError):
-    "Exception raised by get()."
+    """Exception raised by get()."""
     pass
 
 
 class UrlQueue (object):
-    """
-    A queue supporting several consumer tasks. The task_done() idea is
-    from the Python 2.5 implementation of Queue.Queue().
-    """
+    """A queue supporting several consumer tasks. The task_done() idea is
+    from the Python 2.5 implementation of Queue.Queue()."""
 
     def __init__ (self):
-        """
-        Initialize the queue state and task counters.
-        """
+        """Initialize the queue state and task counters."""
         # Note: don't put a maximum size on the queue since it would
         # lead to deadlocks when all worker threads called put().
         self.queue = collections.deque()
@@ -79,8 +75,7 @@ class UrlQueue (object):
         return not self.queue
 
     def get (self, timeout=None):
-        """
-        Get first not-in-progress url from the queue and
+        """Get first not-in-progress url from the queue and
         return it. If no such url is available return None. The
         url might be already cached.
         """
@@ -139,9 +134,7 @@ class UrlQueue (object):
             self.mutex.release()
 
     def _put (self, url_data):
-        """
-        Put URL in queue, increase number of unfished tasks.
-        """
+        """Put URL in queue, increase number of unfished tasks."""
         if self.shutdown:
             # don't accept more URLs
             return
@@ -199,9 +192,7 @@ class UrlQueue (object):
             self.all_tasks_done.release()
 
     def _cache_url (self, key, url_data):
-        """
-        Put URL result data into cache.
-        """
+        """Put URL result data into cache."""
         assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
             "Caching %r", key)
         assert key in self.in_progress, \
@@ -220,9 +211,7 @@ class UrlQueue (object):
                 self.checked[key] = data
 
     def _sort (self):
-        """
-        Sort URL queue by putting all cached URLs at the beginning.
-        """
+        """Sort URL queue by putting all cached URLs at the beginning."""
         newqueue = collections.deque()
         while self.queue:
             url_data = self.queue.popleft()
@@ -266,9 +255,7 @@ class UrlQueue (object):
             self.all_tasks_done.release()
 
     def do_shutdown (self):
-        """
-        Shutdown the queue by not accepting any more URLs.
-        """
+        """Shutdown the queue by not accepting any more URLs."""
         self.mutex.acquire()
         try:
             unfinished = self.unfinished_tasks - len(self.queue)

@@ -20,6 +20,7 @@ Handle uncheckable URLs.
 
 import re
 import urlbase
+from const import WARN_IGNORE_URL
 
 ignored_schemes = r"""^(
 acap        # application configuration access protocol
@@ -77,7 +78,7 @@ class UnknownUrl (urlbase.UrlBase):
             self.add_info(_("Outside of domain filter, checked only syntax."))
         elif self.ignored():
             self.add_warning(_("%s URL ignored.") % self.scheme.capitalize(),
-                             tag="ignore-url")
+                             tag=WARN_IGNORE_URL)
         else:
             self.set_result(_("URL is unrecognized or has invalid syntax"),
                         valid=False)

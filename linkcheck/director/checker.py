@@ -14,15 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+"""
+URL checking functions.
+"""
 import time
 import task
 import linkcheck.cache.urlqueue
 
 
 def check_url (urlqueue, logger):
-    """
-    Check URLs without threading.
-    """
+    """Check URLs without threading."""
     while not urlqueue.empty():
         url_data = urlqueue.get()
         try:
@@ -34,52 +35,42 @@ def check_url (urlqueue, logger):
 
 
 class Checker (task.CheckedTask):
-    """
-    URL check thread.
-    """
+    """URL check thread."""
 
     def __init__ (self, urlqueue, logger):
-        """
-        Store URL queue and logger.
-        """
+        """Store URL queue and logger."""
         super(Checker, self).__init__()
         self.urlqueue = urlqueue
         self.logger = logger
         self.origname = self.getName()
 
     def run_checked (self):
-        """
-        Check URLs in the queue.
-        """
+        """Check URLs in the queue."""
         while True:
             self.check_url()
             if self.stopped():
                 break
 
     def check_url (self):
-        """
-        Try to get URL data from queue and check it.
-        """
+        """Try to get URL data from queue and check it."""
         try:
             url_data = self.urlqueue.get(timeout=0.1)
             if url_data is not None:
-                self.check_url_data(url_data)
+                try:
+                    self.check_url_data(url_data)
+                finally:
+                    self.urlqueue.task_done(url_data)
                 self.setName(self.origname)
         except linkcheck.cache.urlqueue.Empty:
             time.sleep(0.1)
 
     def check_url_data (self, url_data):
-        """
-        Check one URL data instance.
-        """
-        try:
-            if url_data.url is None:
-                url = ""
-            else:
-                url = url_data.url.encode("ascii", "replace")
-            self.setName("Check-%s" % url)
-            if not url_data.has_result:
-                url_data.check()
-            self.logger.log_url(url_data)
-        finally:
-            self.urlqueue.task_done(url_data)
+        """Check one URL data instance."""
+        if url_data.url is None:
+            url = ""
+        else:
+            url = url_data.url.encode("ascii", "replace")
+        self.setName("Check-%s" % url)
+        if not url_data.has_result:
+            url_data.check()
+        self.logger.log_url(url_data)

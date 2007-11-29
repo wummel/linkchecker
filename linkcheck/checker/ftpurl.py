@@ -28,6 +28,7 @@ import proxysupport
 import httpurl
 import internpaturl
 import linkcheck.ftpparse._ftpparse as ftpparse
+from const import WARN_FTP_MISSING_SLASH
 
 DEFAULT_TIMEOUT_SECS = 300
 
@@ -146,7 +147,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if not self.url.endswith('/'):
                 self.add_warning(
                          _("Missing trailing directory slash in ftp url."),
-                         tag="ftp-missing-slash")
+                         tag=WARN_FTP_MISSING_SLASH)
                 self.url += '/'
             return
         raise ftplib.error_perm("550 File not found")
@@ -180,7 +181,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         See if URL target is a HTML file by looking at the extension.
         """
-        if linkcheck.checker.extensions['html'].search(self.url):
+        if linkcheck.checker.const.extensions['html'].search(self.url):
             return True
         return False
 
@@ -190,7 +191,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if self.is_directory():
             return True
-        for ro in linkcheck.checker.extensions.itervalues():
+        for ro in linkcheck.checker.const.extensions.itervalues():
             if ro.search(self.url):
                 return True
         return False
@@ -208,7 +209,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in linkcheck.checker.extensions.iteritems():
+        for key, ro in linkcheck.checker.const.extensions.iteritems():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
 

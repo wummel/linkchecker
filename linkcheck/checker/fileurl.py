@@ -29,6 +29,7 @@ import urlbase
 import linkcheck.log
 import linkcheck.checker
 import linkcheck.fileutil
+from const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
 # if file extension lookup was unsuccessful, look at the content
 contents = {
@@ -118,7 +119,7 @@ class FileUrl (urlbase.UrlBase):
         self.urlparts[3] = self.urlparts[4] = ''
         if self.is_directory() and not self.urlparts[2].endswith('/'):
             self.add_warning(_("Added trailing slash to directory."),
-                           tag="file-missing-slash")
+                           tag=WARN_FILE_MISSING_SLASH)
             self.urlparts[2] += '/'
         self.url = urlparse.urlunsplit(self.urlparts)
 
@@ -149,7 +150,7 @@ class FileUrl (urlbase.UrlBase):
                             "system path %(realpath)r. You should always use "
                             "the system path in URLs.") % \
                             {"path": path, "realpath": realpath},
-                               tag="file-system-path")
+                               tag=WARN_FILE_SYSTEM_PATH)
 
     def get_content (self):
         """
@@ -185,7 +186,7 @@ class FileUrl (urlbase.UrlBase):
         """
         Check if file is a parseable HTML file.
         """
-        if linkcheck.checker.extensions['html'].search(self.url):
+        if linkcheck.checker.const.extensions['html'].search(self.url):
             return True
         if contents['html'].search(self.get_content()):
             return True
@@ -232,7 +233,7 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             return True
         # guess by extension
-        for ro in linkcheck.checker.extensions.itervalues():
+        for ro in linkcheck.checker.const.extensions.itervalues():
             if ro.search(self.url):
                 return True
         # try to read content (can fail, so catch error)
@@ -251,7 +252,7 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in linkcheck.checker.extensions.iteritems():
+        for key, ro in linkcheck.checker.const.extensions.iteritems():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
                 return

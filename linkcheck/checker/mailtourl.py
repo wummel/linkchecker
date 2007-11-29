@@ -26,6 +26,8 @@ import email.Utils
 import urlbase
 import linkcheck.log
 import linkcheck.dns.resolver
+from const import WARN_MAIL_NO_ADDRESSES, WARN_MAIL_NO_MX_HOST, \
+    WARN_MAIL_UNVERIFIED_ADDRESS, WARN_MAIL_NO_CONNECTION
 
 
 def _split_address (address):
@@ -135,7 +137,7 @@ class MailtoUrl (urlbase.UrlBase):
         """
         if not self.addresses:
             self.add_warning(_("No addresses found."),
-                             tag="mail-no-addresses")
+                             tag=WARN_MAIL_NO_ADDRESSES)
             return
         for name, mail in self.addresses:
             self.check_smtp_domain(name, mail)
@@ -156,7 +158,7 @@ class MailtoUrl (urlbase.UrlBase):
         if len(answers) == 0:
             self.add_warning(_("No MX mail host for %(domain)s found.") %
                             {'domain': domain},
-                             tag="mail-no-mx-host")
+                             tag=WARN_MAIL_NO_MX_HOST)
             answers = linkcheck.dns.resolver.query(domain, 'A')
             if len(answers) == 0:
                 self.set_result(_("No host for %(domain)s found.") %
@@ -216,12 +218,12 @@ class MailtoUrl (urlbase.UrlBase):
                                   " But mail will be sent anyway.") % d)
                 else:
                     self.add_warning(_("Unverified address: %(info)s.") % d,
-                     tag="mail-unverified-address")
+                     tag=WARN_MAIL_UNVERIFIED_ADDRESS)
             except smtplib.SMTPException, msg:
                 self.add_warning(
                       _("MX mail host %(host)s did not accept connections: "
                         "%(error)s.") % {'host': host, 'error': str(msg)},
-                        tag="mail-no-connection")
+                        tag=WARN_MAIL_NO_CONNECTION)
             if smtpconnect:
                 break
         if not smtpconnect:

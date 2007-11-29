@@ -20,103 +20,13 @@ Main functions for link checking.
 
 import os
 import cgi
-import socket
-import select
-import re
 import urllib
-import nntplib
-import ftplib
 import linkcheck.httplib2
-import linkcheck.strformat
 import linkcheck.dns.exception
+from linkcheck.strformat import unicode_safe
+from linkcheck.url import url_is_absolute
 
-# helper alias
-unicode_safe = linkcheck.strformat.unicode_safe
-
-# Catch these exception on syntax checks.
-ExcSyntaxList = [
-    linkcheck.LinkCheckerError,
-]
-
-# Catch these exceptions on content and connect checks. All other
-# exceptions are internal or system errors
-ExcCacheList = [
-    IOError,
-    OSError, # OSError is thrown on Windows when a file is not found
-    linkcheck.LinkCheckerError,
-    linkcheck.dns.exception.DNSException,
-    socket.error,
-    select.error,
-    # nttp errors (including EOFError)
-    nntplib.error_reply,
-    nntplib.error_temp,
-    nntplib.error_perm,
-    nntplib.error_proto,
-    EOFError,
-    # http error
-    linkcheck.httplib2.error,
-    # ftp errors
-    ftplib.error_reply,
-    ftplib.error_temp,
-    ftplib.error_perm,
-    ftplib.error_proto,
-]
-
-# Exceptions that do not put the URL in the cache so that the URL can
-# be checked again.
-ExcNoCacheList = [
-    socket.timeout,
-]
-
-ExcList = ExcCacheList + ExcNoCacheList
-
-# registered warnings
-Warnings = {
-    "url-effective-url":
-        _("The effective URL is different from the original."),
-    "url-error-getting-content":
-        _("Could not get the content of the URL."),
-    "url-unicode-domain": _("URL uses a unicode domain."),
-    "url-unnormed": _("URL is not normed."),
-    "url-anchor-not-found": _("URL anchor was not found."),
-    "url-warnregex-found":
-        _("The warning regular expression was found in the URL contents."),
-    "url-content-too-large": _("The URL content is too large."),
-    "file-missing-slash": _("The file: URL is missing a trailing slash."),
-    "file-system-path":
-        _("The file: path is not the same as the system specific path."),
-    "ftp-missing-slash": _("The ftp: URL is missing a trailing slash."),
-    "http-robots-denied": _("The http: URL checking has been denied."),
-    "http-no-anchor-support": _("The HTTP server had no anchor support."),
-    "http-moved-permanent": _("The URL has moved permanently."),
-    "http-wrong-redirect":
-        _("The URL has been redirected to an URL of a different type."),
-    "http-empty-content": _("The URL had no content."),
-    "http-cookie-store-error": _("An error occurred while storing a cookie."),
-    "http-decompress-error":
-        _("An error occurred while decompressing the URL content."),
-    "http-unsupported-encoding":
-        _("The URL content is encoded with an unknown encoding."),
-    "ignore-url": _("The URL has been ignored."),
-    "mail-no-addresses": _("The mailto: URL contained no addresses."),
-    "mail-no-mx-host": _("The mail MX host could not be found."),
-    "mail-unverified-address":
-        _("The mailto: address could not be verified."),
-    "mail-no-connection":
-        _("No connection to a MX host could be established."),
-    "nntp-no-server": _("No NNTP server was found."),
-    "nntp-no-newsgroup": _("The NNTP newsgroup could not be found."),
-    "nntp-busy": _("The NNTP server was busy."),
-}
-
-# file extensions we can parse recursively
-extensions = {
-    "html": re.compile(r'(?i)\.s?html?$'),
-    "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
-    "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
-}
-
-
+# all the URL classes
 import linkcheck.checker.fileurl
 import linkcheck.checker.unknownurl
 import linkcheck.checker.ftpurl
@@ -140,11 +50,11 @@ def absolute_url (base_url, base_ref, parent_url):
     @param parent_url: url of parent document
     @type parent_url: string or None
     """
-    if base_url and linkcheck.url.url_is_absolute(base_url):
+    if base_url and url_is_absolute(base_url):
         return base_url
-    elif base_ref and linkcheck.url.url_is_absolute(base_ref):
+    elif base_ref and url_is_absolute(base_ref):
         return base_ref
-    elif parent_url and linkcheck.url.url_is_absolute(parent_url):
+    elif parent_url and url_is_absolute(parent_url):
         return parent_url
     return u""
 

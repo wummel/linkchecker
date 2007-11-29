@@ -14,7 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-"""Aggregate needed object instances for checker threads."""
+"""
+Aggregate needed object instances for checker threads.
+"""
 import linkcheck.log
 import linkcheck.director
 import logger
@@ -23,9 +25,7 @@ import checker
 
 
 class Aggregate (object):
-    """
-    Store thread-safe data collections for checker threads.
-    """
+    """Store thread-safe data collections for checker threads."""
 
     def __init__ (self, config, urlqueue, connections, cookies, robots_txt):
         self.config = config
@@ -37,9 +37,7 @@ class Aggregate (object):
         self.threads = []
 
     def start_threads (self):
-        """
-        Spawn threads for URL checking and status printing.
-        """
+        """Spawn threads for URL checking and status printing."""
         if self.config["status"]:
             t = status.Status(self.urlqueue)
             t.start()
@@ -54,9 +52,7 @@ class Aggregate (object):
             checker.check_url(self.urlqueue, self.logger)
 
     def abort (self):
-        """
-        Empty the URL queue.
-        """
+        """Empty the URL queue."""
         self.urlqueue.do_shutdown()
         try:
             self.urlqueue.join(timeout=self.config["timeout"])
@@ -64,12 +60,11 @@ class Aggregate (object):
             linkcheck.log.warn(linkcheck.LOG_CHECK, "Abort timed out")
 
     def remove_stopped_threads (self):
+        "Remove the stopped threads from the internal thread list."""
         self.threads = [t for t in self.threads if t.isAlive()]
 
     def finish (self):
-        """
-        Wait for checker threads to finish.
-        """
+        """Wait for checker threads to finish."""
         assert self.urlqueue.empty()
         for t in self.threads:
             t.stop()

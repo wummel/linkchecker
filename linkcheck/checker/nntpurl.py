@@ -27,6 +27,8 @@ import random
 import linkcheck
 import urlbase
 import linkcheck.log
+from const import WARN_NNTP_NO_SERVER, WARN_NNTP_NO_NEWSGROUP, \
+    WARN_NNTP_BUSY
 
 random.seed()
 
@@ -44,7 +46,7 @@ class NntpUrl (urlbase.UrlBase):
         if not nntpserver:
             self.add_warning(
                     _("No NNTP server was specified, skipping this URL."),
-                    tag="nntp-no-server")
+                    tag=WARN_NNTP_NO_SERVER)
             return
         nntp = self._connect_nntp(nntpserver)
         group = self.urlparts[2]
@@ -64,7 +66,7 @@ class NntpUrl (urlbase.UrlBase):
             else:
                 # group name is the empty string
                 self.add_warning(_("No newsgroup specified in NNTP URL."),
-                            tag="nttp-no-newsgroup")
+                            tag=WARN_NNTP_NO_NEWSGROUP)
 
     def _connect_nntp (self, nntpserver):
         """
@@ -86,10 +88,10 @@ class NntpUrl (urlbase.UrlBase):
                     raise
         if nntp is None:
             raise linkcheck.LinkCheckerError(
-               _("NTTP server too busy; tried more than %d times.") % tries)
+               _("NNTP server too busy; tried more than %d times.") % tries)
         if value is not None:
             self.add_warning(_("NNTP busy: %s.") % str(value),
-                             tag="nttp-busy")
+                             tag=WARN_NNTP_BUSY)
         return nntp
 
     def can_get_content (self):

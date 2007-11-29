@@ -39,6 +39,10 @@ import linkcheck.containers
 import linkcheck.log
 import linkcheck.httplib2
 import linkcheck.HtmlParser.htmlsax
+from const import WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN, \
+    WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT, \
+    WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND, \
+    WARN_URL_CONTENT_TOO_LARGE
 
 # helper alias
 unicode_safe = linkcheck.strformat.unicode_safe
@@ -66,9 +70,7 @@ def url_norm (url):
 
 
 class UrlBase (object):
-    """
-    An URL with additional information like validity etc.
-    """
+    """An URL with additional information like validity etc."""
 
     def __init__ (self, base_url, recursion_level, aggregate,
                   parent_url = None, base_ref = None,
@@ -293,9 +295,9 @@ class UrlBase (object):
             effectiveurl = urlparse.urlunsplit(self.urlparts)
             if self.url != effectiveurl:
                 self.add_warning(_("Effective URL %r.") % effectiveurl,
-                                 tag="url-effective-url")
+                                 tag=WARN_URL_EFFECTIVE_URL)
                 self.url = effectiveurl
-        except tuple(linkcheck.checker.ExcSyntaxList), msg:
+        except tuple(linkcheck.checker.const.ExcSyntaxList), msg:
             self.set_result(unicode_safe(msg), valid=False)
             return
         self.set_cache_keys()
@@ -312,11 +314,11 @@ class UrlBase (object):
                           is not yet widely supported. You should use
                           the URL %(idna_url)r instead.""") % \
                           {"url": self.base_url, "idna_url": base_url},
-                          tag="url-unicode-domain")
+                          tag=WARN_URL_UNICODE_DOMAIN)
         elif self.base_url != base_url:
             self.add_warning(
               _("Base URL is not properly normed. Normed URL is %(url)s.") %
-               {'url': base_url}, tag="url-unnormed")
+               {'url': base_url}, tag=WARN_URL_UNNORMED)
         # make url absolute
         if self.base_ref:
             # use base reference as parent url
@@ -404,7 +406,7 @@ class UrlBase (object):
             self.add_country_info()
             if self.aggregate.config["anchors"]:
                 self.check_anchors()
-        except tuple(linkcheck.checker.ExcList):
+        except tuple(linkcheck.checker.const.ExcList):
             value = self.handle_exception()
             # make nicer error msg for unknown hosts
             if isinstance(value, socket.error) and value[0] == -2:
@@ -421,7 +423,7 @@ class UrlBase (object):
                 "checking content")
             try:
                 self.check_content(warningregex)
-            except tuple(linkcheck.checker.ExcList):
+            except tuple(linkcheck.checker.const.ExcList):
                 value = self.handle_exception()
                 self.set_result(unicode_safe(value), valid=False)
 
@@ -432,10 +434,10 @@ class UrlBase (object):
                 self.parse_url()
             # check content size
             self.check_size()
-        except tuple(linkcheck.checker.ExcList):
+        except tuple(linkcheck.checker.const.ExcList):
             value = self.handle_exception()
             self.add_warning(_("could not get content: %r") % str(value),
-                            tag="url-error-getting-content")
+                            tag=WARN_URL_ERROR_GETTING_CONTENT)
         # close
         self.close_connection()
 
@@ -461,7 +463,7 @@ class UrlBase (object):
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "exception %s", traceback.format_tb(tb))
         # note: etype must be the exact class, not a subclass
-        if (etype in linkcheck.checker.ExcNoCacheList) or \
+        if (etype in linkcheck.checker.const.ExcNoCacheList) or \
            (etype == socket.error and value[0]==errno.EBADF) or \
             not value:
             # EBADF occurs when operating on an already socket
@@ -556,7 +558,7 @@ class UrlBase (object):
         if [x for x in handler.urls if x[0] == self.anchor]:
             return
         self.add_warning(_("Anchor #%s not found.") % self.anchor,
-                         tag="url-anchor-not-found")
+                         tag=WARN_URL_ANCHOR_NOT_FOUND)
 
     def set_extern (self, url):
         """
@@ -615,7 +617,7 @@ class UrlBase (object):
         match = warningregex.search(self.get_content())
         if match:
             self.add_warning(_("Found %r in link contents.") % match.group(),
-                             tag="url-warnregex-found")
+                             tag=WARN_URL_WARNREGEX_FOUND)
 
     def check_size (self):
         """
@@ -628,7 +630,7 @@ class UrlBase (object):
                    _("Content size %(dlsize)s is larger than %(maxbytes)s.") %
                         {"dlsize": linkcheck.strformat.strsize(self.dlsize),
                          "maxbytes": linkcheck.strformat.strsize(maxbytes)},
-                          tag="url-content-too-large")
+                          tag=WARN_URL_CONTENT_TOO_LARGE)
 
     def parse_url (self):
         """

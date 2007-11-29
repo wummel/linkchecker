@@ -29,8 +29,7 @@ import console
 
 
 def check_urls (aggregate):
-    """
-    Main check function; checks all configured URLs until interrupted
+    """Main check function; checks all configured URLs until interrupted
     with Ctrl-C.
     @return: None
     """
@@ -54,9 +53,7 @@ def check_urls (aggregate):
 
 
 def check_url (aggregate):
-    """
-    Helper function waiting for URL queue.
-    """
+    """Helper function waiting for URL queue."""
     while True:
         try:
             aggregate.urlqueue.join(timeout=1)
@@ -71,9 +68,8 @@ def check_url (aggregate):
 
 
 def interrupt (aggregate):
-    """
-    Interrupt execution and shutdown, ignoring any subsequent interrupts.
-    """
+    """Interrupt execution and shutdown, ignoring any subsequent
+    interrupts."""
     while True:
         try:
             linkcheck.log.warn(linkcheck.LOG_CHECK,
@@ -96,9 +92,7 @@ def print_active_threads (aggregate):
 
 
 def abort (aggregate):
-    """
-    Helper function to ensure a clean shutdown.
-    """
+    """Helper function to ensure a clean shutdown."""
     while True:
         try:
             aggregate.abort()
@@ -109,10 +103,9 @@ def abort (aggregate):
             linkcheck.log.warn(linkcheck.LOG_CHECK, _("shutdown in progress"))
             print_active_threads(aggregate)
 
+
 def get_aggregate (config):
-    """
-    Get an aggregator instance with given configuration.
-    """
+    """Get an aggregator instance with given configuration."""
     urlqueue = linkcheck.cache.urlqueue.UrlQueue()
     connections = linkcheck.cache.connection.ConnectionPool(wait=config["wait"])
     cookies = linkcheck.cache.cookie.CookieJar()

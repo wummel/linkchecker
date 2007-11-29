@@ -24,21 +24,15 @@ from console import stderr
 
 
 class Status (task.CheckedTask):
-    """
-    Status thread.
-    """
+    """Status thread."""
 
     def __init__ (self, urlqueue):
-        """
-        Store urlqueue object.
-        """
+        """Store urlqueue object."""
         super(Status, self).__init__()
         self.urlqueue = urlqueue
 
     def run_checked (self):
-        """
-        Print periodic status messages.
-        """
+        """Print periodic status messages."""
         self.start_time = time.time()
         self.setName("Status")
         while True:
@@ -49,9 +43,7 @@ class Status (task.CheckedTask):
             self.print_status()
 
     def print_status (self):
-        """
-        Print a status message.
-        """
+        """Print a status message."""
         duration = time.time() - self.start_time
         checked, in_progress, queue = self.urlqueue.status()
         msg = _n("%2d URL active,", "%2d URLs active,", in_progress) % \
