@@ -97,7 +97,7 @@ Warnings = {
         _("An error occurred while decompressing the URL content."),
     "http-unsupported-encoding":
         _("The URL content is encoded with an unknown encoding."),
-    "ignored-url": _("The URL has been ignored."),
+    "ignore-url": _("The URL has been ignored."),
     "mail-no-addresses": _("The mailto: URL contained no addresses."),
     "mail-no-mx-host": _("The mail MX host could not be found."),
     "mail-unverified-address":
