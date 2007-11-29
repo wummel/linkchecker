@@ -74,7 +74,7 @@ deb_orig:
 deb_signed: cleandeb
 	(env -u LANG svn-buildpackage --svn-dont-clean --svn-verbose --svn-ignore \
 	  --svn-prebuild="$(MAKE) deb_orig" --svn-lintian --svn-linda \
-	  -sgpg -pgpg -k$(GPGKEY) -r"fakeroot --" 2>&1) | \
+	  -sgpg -pgpg -k$(GPGKEY) -rfakeroot 2>&1) | \
 	tee $(SVNBUILD)/linkchecker-$(VERSION).build
 
 .PHONY: files
