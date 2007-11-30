@@ -1,3 +1,7 @@
+- [DOCUMENTATION] Write a man page documenting the configuration file
+  syntax, and make a note in linkchecker(1) man page that some things
+  can only be configured with a config file entry.
+
 - [BUG REPORT]
   Error: (54, 'Connection reset by peer')
   Happens with http 1.1 keep-alive, disappears when activating debug mode.
