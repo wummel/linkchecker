@@ -238,12 +238,13 @@ class MailtoUrl (urlbase.UrlBase):
         if self.url_connection is None:
             # no connection is open
             return
+        connection = self.url_connection
+        self.url_connection = None
         try:
-            self.url_connection.quit()
-        except:
+            connection.quit()
+        except smtplib.SMTPException:
             # ignore close errors
             pass
-        self.url_connection = None
 
     def set_cache_keys (self):
         """

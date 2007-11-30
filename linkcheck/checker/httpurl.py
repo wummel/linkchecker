@@ -453,8 +453,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             scheme = self.urlparts[0]
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "Connecting to %r", host)
-        if self.url_connection:
-            self.close_connection()
+        # close/release a previous connection
+        self.close_connection()
         self.url_connection = self.get_http_object(host, scheme)
         if self.no_anchor:
             anchor = ''
@@ -550,13 +550,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if not self.has_content:
             self.method = "GET"
-            self.close_connection()
             response = self._get_http_response()
             tries, response = self.follow_redirections(response,
                                                        set_result=False)
             self.headers = response.msg
             self._read_content(response)
-            response.close()
         return self.data
 
     def _read_content (self, response):
@@ -659,8 +657,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         _user, _password = self.get_user_password()
         key = ("http", self.urlparts[1], _user, _password)
         if self.persistent and self.url_connection.is_idle():
-            cache_add = self.aggregate.connections.add
-            cache_add(key, self.url_connection, self.timeout)
+            self.aggregate.connections.add(
+                  key, self.url_connection, self.timeout)
         else:
             try:
                 self.url_connection.close()

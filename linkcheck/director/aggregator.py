@@ -22,6 +22,7 @@ import linkcheck.director
 import logger
 import status
 import checker
+import cleanup
 
 
 class Aggregate (object):
@@ -42,6 +43,9 @@ class Aggregate (object):
             t = status.Status(self.urlqueue)
             t.start()
             self.threads.append(t)
+        t = cleanup.Cleanup(self.connections)
+        t.start()
+        self.threads.append(t)
         num = self.config["threads"]
         if num >= 1:
             for i in xrange(num):
@@ -71,3 +75,4 @@ class Aggregate (object):
             t.join(2)
             if t.isAlive():
                 linkcheck.log.warn(linkcheck.LOG_CHECK, "Thread %s still active", t)
+        self.connections.clear()

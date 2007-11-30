@@ -6,11 +6,6 @@
   Error: (54, 'Connection reset by peer')
   Happens with http 1.1 keep-alive, disappears when activating debug mode.
  
-- [BUG REPORT] There are reports that file descriptors are leaking.
-  Rework the code so that it always closes the connections.
-  Question: what to do with cached persistent connections? Also close
-  them in all cases.
-
 - [BUG REPORT] the web interface only runs on the server it is installed on.
   The ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi don't work and
   are not (well) documented.

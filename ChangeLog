@@ -6,7 +6,7 @@
     Changed: linkcheck/director/console.py, po/de.po, po/linkchecker.pot
 
   * Always read the request body data on persistent HTTP connections, else
-    subsequent will get data from the previous request.
+    subsequent calls will get data from the previous request.
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
@@ -54,6 +54,18 @@
     Closes: SF bug #1841305
     Changed: linkcheck/checker/internpaturl.py
     Added: linkcheck/checker/test/test_internpat.py
+
+  * Try to solve the "Too many open files" errors that users have
+    encountered.
+    + Ensure that the connection of a checked URL are closed after checking
+      (except for reused connections in the connection pool).
+    + Regularly close expired connections from the connection pool, and
+      finally close all of them when the program is finished.
+    Closes: SF #1758338, SF #1678055, SF #1631042
+    Type: bugfix
+    Changed: linkcheck/cache/connection.py, linkcheck/director/aggregator.py,
+      linkcheck/checker/{httpurl,mailtourl,urlbase,ftpurl}.py
+    Added: linkcheck/directory/cleanup.py
 
 4.7 "300" (released 17.6.2007)
 

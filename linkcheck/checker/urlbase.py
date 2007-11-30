@@ -361,21 +361,23 @@ class UrlBase (object):
             self.port = int(self.port)
 
     def check (self):
-        """
-        Main check function for checking this URL.
-        """
+        """Main check function for checking this URL."""
         if self.aggregate.config["trace"]:
             linkcheck.trace.trace_on()
         try:
-            self.local_check()
-        except (socket.error, select.error):
-            # on Unix, ctrl-c can raise
-            # error: (4, 'Interrupted system call')
-            etype, value = sys.exc_info()[:2]
-            if etype == errno.EINTR:
-                raise KeyboardInterrupt(value)
-            else:
-                raise
+            try:
+                self.local_check()
+            except (socket.error, select.error):
+                # on Unix, ctrl-c can raise
+                # error: (4, 'Interrupted system call')
+                etype, value = sys.exc_info()[:2]
+                if etype == errno.EINTR:
+                    raise KeyboardInterrupt(value)
+                else:
+                    raise
+        finally:
+            # close/release possible open connection
+            self.close_connection()
 
     def add_country_info (self):
         """
@@ -386,9 +388,7 @@ class UrlBase (object):
             self.add_info(_("URL is located in %s.") % _(country))
 
     def local_check (self):
-        """
-        Local check function can be overridden in subclasses.
-        """
+        """Local check function can be overridden in subclasses."""
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "Checking %s", self)
         # start time for check
@@ -438,8 +438,6 @@ class UrlBase (object):
             value = self.handle_exception()
             self.add_warning(_("could not get content: %r") % str(value),
                             tag=WARN_URL_ERROR_GETTING_CONTENT)
-        # close
-        self.close_connection()
 
     def close_connection (self):
         """

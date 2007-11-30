@@ -27,9 +27,7 @@ _lock = linkcheck.lock.get_lock("connection")
 _wait_lock = linkcheck.lock.get_lock("connwait")
 
 class ConnectionPool (object):
-    """
-    Thread-safe cache, storing a set of connections for URL retrieval.
-    """
+    """Thread-safe cache, storing a set of connections for URL retrieval."""
 
     def __init__ (self, wait=0):
         """
@@ -58,19 +56,15 @@ class ConnectionPool (object):
 
     @synchronized(_lock)
     def host_wait (self, host, wait):
-        """
-        Set a host specific time to wait between requests.
-        """
+        """Set a host specific time to wait between requests."""
         if wait < 0:
             raise ValueError("negative wait value %d" % wait)
         self.host_waits[host] = wait
 
     @synchronized(_lock)
     def add (self, key, conn, timeout):
-        """
-        Add connection to the pool with given identifier key and timeout
-        in seconds.
-        """
+        """Add connection to the pool with given identifier key and timeout
+        in seconds."""
         self.connections[key] = [conn, 'available', time.time() + timeout]
 
     @synchronized(_wait_lock)
@@ -104,12 +98,7 @@ class ConnectionPool (object):
         t = time.time()
         if t > conn_data[2]:
             # timed out
-            try:
-                conn_data[1].close()
-            except:
-                # ignore close errors
-                pass
-            del self.connections[key]
+            self._remove_connection(key)
             return None
         if conn_data[1] == 'busy':
             # connection is in use
@@ -121,21 +110,35 @@ class ConnectionPool (object):
 
     @synchronized(_lock)
     def release (self, key):
-        """
-        Mark an open and reusable connection as available.
-        """
+        """Mark an open and reusable connection as available."""
         if key in self.connections:
             self.connections[key][1] = 'available'
 
     @synchronized(_lock)
-    def expire_connections (self):
-        """
-        Remove expired connections from this pool.
-        """
+    def remove_expired (self):
+        """Remove expired connections from this pool."""
         t = time.time()
         to_delete = []
         for key, conn_data in self.connections.iteritems():
             if conn_data[1] == 'available' and t > conn_data[2]:
                 to_delete.append(key)
         for key in to_delete:
-            del self.connections[key]
+            self._remove_connection(key)
+
+    def _remove_connection (self, key):
+        """Close and remove a connection (not thread-safe, internal use
+        only)."""
+        conn_data = self.connections[key]
+        del self.connections[key]
+        try:
+            conn_data[1].close()
+        except:
+            # ignore close errors
+            pass
+
+    @synchronized(_lock)
+    def clear (self):
+        """Remove all connections from this cache, even if busy."""
+        keys = self.connections.keys()
+        for key in keys:
+            self._remove_connection(key)

@@ -111,7 +111,6 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             raise linkcheck.LinkCheckerError(
                    _("Remote host has closed connection: %r") % msg)
         if not self.url_connection.getwelcome():
-            self.close_connection()
             raise linkcheck.LinkCheckerError(
                    _("Got no answer from FTP server"))
         # don't set info anymore, this may change every time we log in
