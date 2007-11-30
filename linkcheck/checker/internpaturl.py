@@ -46,6 +46,8 @@ class InternPatternUrl (urlbase.UrlBase):
         path, params = linkcheck.url.splitparams(parts[2])
         segments = path.split('/')[:-1]
         path = "/".join(segments)
+        if url.endswith('/'):
+            path += '/'
         args = list(re.escape(x) for x in (scheme, domain, path))
         if args[0] in ('http', 'https'):
             args[0] = 'https?'

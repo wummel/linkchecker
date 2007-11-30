@@ -48,6 +48,13 @@
     Closes: SF bug #1838803
     Changed: linkcheck/checker/__init__.py
 
+  * Make sure LinkChecker does not check paths that are not prefixed
+    with the start URL.
+    Type: bugfix
+    Closes: SF bug #1841305
+    Changed: linkcheck/checker/internpaturl.py
+    Added: linkcheck/checker/test/test_internpat.py
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of
