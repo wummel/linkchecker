@@ -58,9 +58,9 @@ only the syntax of the link is checked.
 .br
 Command line option: \fB\-\-nntp\-server\fP
 .TP
-\fBnoanchorcaching=\fP[\fB0\fP|\fB1\fP]
-Treat url#anchora and url#anchorb as equal on caching. This
-is the default browser behaviour, but it's not specified in
+\fBanchorcaching=\fP[\fB0\fP|\fB1\fP]
+If set to zero, treat url#anchora and url#anchorb as equal on caching.
+This is the default browser behaviour, but it's not specified in
 the URI specification. Use with care since broken anchors are not
 guaranteed to be detected in this mode.
 .br
@@ -78,7 +78,7 @@ expressions.
 .br
 Command line option: \fB\-\-no\-follow\-url\fP
 .TP
-\fBnoproxy=\fP\fIREGEX\fP (MULTILINE)
+\fBnoproxyfor=\fP\fIREGEX\fP (MULTILINE)
 Contact hosts that match the given regular expressions directly instead of
 going through a proxy.
 .br
@@ -116,10 +116,10 @@ Ask for URL if none are given on the commandline.
 .br
 Command line option: \fB\-\-interactive\fP
 .TP
-\fBdebug=\fP\fISTRING\fP
-Print debugging output for the given logger.
+\fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
+Print debugging output for the given loggers.
 Available loggers are \fBcmdline\fP, \fBchecking\fP,
-\fBcache\fP, \fBgui\fP, \fBdns\fP and \fBall\fP.
+\fBcache\fP, \fBgui\fP, \fBdns\fP, \fBthread\fP and \fBall\fP.
 Specifying \fBall\fP is an alias for specifying all available loggers.
 .br
 Command line option: \fB\-\-debug\fP
@@ -359,11 +359,13 @@ See [text] section above.
  \fBoutro\fP     (the blurb at the end, "found x errors ...")
 .SH MULTILINE
 Some option values can span multiple lines. Each line has to be indented
-for that to work:
+for that to work. Lines starting with a hash (\fB#\fP) will be ignored,
+though they must still be indented.
 
  ignore=
-    lconline
-    bookmark
+   lconline
+   bookmark
+   # a comment
    ^mailto:
 .
 .SH EXAMPLE
