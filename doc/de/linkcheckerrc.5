@@ -64,11 +64,11 @@ korrekte Syntax des Links geprüft.
 .br
 Kommandozeilenoption: \fB\-\-nntp\-server\fP
 .TP 
-\fBnoanchorcaching=\fP[\fB0\fP|\fB1\fP]
-Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar
-Standard bei Browsern, aber in der URI Spezifikation nicht
-enthalten. Benutzen Sie diese Option mit Vorsicht da ungültige Anker mit
-dieser Option nicht unbedingt erkannt werden.
+\fBanchorcaching=\fP[\fB0\fP|\fB1\fP]
+Falls auf Null gesetzt, behandle url#anchora und url#anchorb beim Cachen als
+gleich. Dies ist zwar Standard bei Browsern, aber in der URI Spezifikation
+nicht enthalten. Benutzen Sie diese Option mit Vorsicht da ungültige Anker
+mit dieser Option nicht unbedingt erkannt werden.
 .br
 Kommandozeilenoption: \fB\-\-no\-anchor\-caching\fP
 .SS [filtering]
@@ -85,7 +85,7 @@ Rekursion durch.
 .br
 Kommandozeilenoption: \fB\-\-no\-follow\-url\fP
 .TP 
-\fBnoproxy=\fP\fIREGEX\fP (MULTILINE)
+\fBnoproxyfor=\fP\fIREGEX\fP (MULTILINE)
 Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt
 und nicht über einen Proxy angesprochen werden.
 .br
@@ -123,10 +123,10 @@ Frage nach URLs, falls keine auf der Kommandozeile eingegeben wurden.
 .br
 Kommandozeilenoption: \fB\-\-interactive\fP
 .TP 
-\fBdebug=\fP\fISTRING\fP
+\fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
 Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
-\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe
-\fBall\fP ist ein Synonym für alle verfügbaren Logger.
+\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP, \fBthread\fP und \fBall\fP. Die
+Angabe \fBall\fP ist ein Synonym für alle verfügbaren Logger.
 .br
 [output]
 .TP 
@@ -361,12 +361,13 @@ Siehe [text] Sektion weiter oben.
  \fBoutro\fP     (Das Zeug am Ende, "X Fehler gefunden ...")
 .SH MULTILINE
 Einige Optionen können mehrere Zeilen lang sein. Jede Zeile muss dafür
-eingerückt werden:
+eingerückt werden. Zeilen die mit einer Raute (\fB#\fP) beginnen werden
+ignoriert, müssen aber eingerückt sein.
 
  ignore=
-    lconline
-    bookmark
-   ^mailto:
+   lconline
+   bookmark
+   # a comment   ^mailto:
 .
 .SH BEISPIEL
  [output]

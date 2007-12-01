@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2007-12-01 01:18+0100\n"
-"PO-Revision-Date: 2007-12-01 01:55+0100\n"
+"POT-Creation-Date: 2007-12-01 16:51+0100\n"
+"PO-Revision-Date: 2007-12-01 16:55+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -114,7 +114,9 @@ msgstr ""
 msgid ""
 "Checking a local HTML file on Unix:\n"
 "  B<linkchecker ../bla.html>\n"
-msgstr "B<colorwarning=>"
+msgstr ""
+"Überprüfung einer lokalen HTML Datei unter Unix:\n"
+"  B<linkchecker ../bla.html>\n"
 
 # type: Plain text
 #: en/linkchecker.1:42
@@ -489,7 +491,6 @@ msgstr "B<--no-anchor-caching>"
 
 # type: Plain text
 #: en/linkchecker.1:192
-#: en/linkcheckerrc.5:66
 msgid "Treat url#anchora and url#anchorb as equal on caching. This is the default browser behaviour, but it's not specified in the URI specification. Use with care since broken anchors are not guaranteed to be detected in this mode."
 msgstr "Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar Standard bei Browsern, aber in der URI Spezifikation nicht enthalten. Benutzen Sie diese Option mit Vorsicht da ungültige Anker mit dieser Option nicht unbedingt erkannt werden."
 
@@ -940,7 +941,7 @@ msgstr "B<http://www.amk.ca/python/howto/regex/> - Dokumentation zu regulären A
 
 # type: SH
 #: en/linkchecker.1:367
-#: en/linkcheckerrc.5:379
+#: en/linkcheckerrc.5:381
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "SIEHE AUCH"
@@ -952,27 +953,27 @@ msgstr "B<linkcheckerrc>(5)"
 
 # type: SH
 #: en/linkchecker.1:370
-#: en/linkcheckerrc.5:382
+#: en/linkcheckerrc.5:384
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTHOR"
 
 # type: Plain text
 #: en/linkchecker.1:372
-#: en/linkcheckerrc.5:384
+#: en/linkcheckerrc.5:386
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 
 # type: SH
 #: en/linkchecker.1:373
-#: en/linkcheckerrc.5:385
+#: en/linkcheckerrc.5:387
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
 
 # type: Plain text
 #: en/linkchecker.1:374
-#: en/linkcheckerrc.5:386
+#: en/linkcheckerrc.5:388
 msgid "Copyright \\(co 2000-2007 Bastian Kleineidam"
 msgstr "Copyright \\(co 2000-2007 Bastian Kleineidam"
 
@@ -1090,8 +1091,13 @@ msgstr "Kommandozeilenoption: B<--nntp-server>"
 # type: TP
 #: en/linkcheckerrc.5:60
 #, no-wrap
-msgid "B<noanchorcaching=>[B<0>|B<1>]"
-msgstr "B<noanchorcaching=>[B<0>|B<1>]"
+msgid "B<anchorcaching=>[B<0>|B<1>]"
+msgstr "B<anchorcaching=>[B<0>|B<1>]"
+
+# type: Plain text
+#: en/linkcheckerrc.5:66
+msgid "If set to zero, treat url#anchora and url#anchorb as equal on caching.  This is the default browser behaviour, but it's not specified in the URI specification. Use with care since broken anchors are not guaranteed to be detected in this mode."
+msgstr "Falls auf Null gesetzt, behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar Standard bei Browsern, aber in der URI Spezifikation nicht enthalten. Benutzen Sie diese Option mit Vorsicht da ungültige Anker mit dieser Option nicht unbedingt erkannt werden."
 
 # type: TP
 #: en/linkcheckerrc.5:68
@@ -1139,8 +1145,8 @@ msgstr "Kommandozeilenoption: B<--no-follow-url>"
 # type: TP
 #: en/linkcheckerrc.5:80
 #, no-wrap
-msgid "B<noproxy=>I<REGEX> (MULTILINE)"
-msgstr "B<noproxy=>I<REGEX> (MULTILINE)"
+msgid "B<noproxyfor=>I<REGEX> (MULTILINE)"
+msgstr "B<noproxyfor=>I<REGEX> (MULTILINE)"
 
 # type: Plain text
 #: en/linkcheckerrc.5:84
@@ -1229,13 +1235,13 @@ msgstr "Kommandozeilenoption: B<--interactive>"
 # type: TP
 #: en/linkcheckerrc.5:118
 #, no-wrap
-msgid "B<debug=>I<STRING>"
-msgstr "B<debug=>I<STRING>"
+msgid "B<debug=>I<STRING>[B<,>I<STRING>...]"
+msgstr "B<debug=>I<STRING>[B<,>I<STRING>...]"
 
 # type: Plain text
 #: en/linkcheckerrc.5:124
-msgid "Print debugging output for the given logger.  Available loggers are B<cmdline>, B<checking>, B<cache>, B<gui>, B<dns> and B<all>.  Specifying B<all> is an alias for specifying all available loggers."
-msgstr "Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind B<cmdline>, B<checking>,B<cache>, B<gui>, B<dns> und B<all>. Die Angabe B<all> ist ein Synonym für alle verfügbaren Logger."
+msgid "Print debugging output for the given loggers.  Available loggers are B<cmdline>, B<checking>, B<cache>, B<gui>, B<dns>, B<thread> and B<all>.  Specifying B<all> is an alias for specifying all available loggers."
+msgstr "Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind B<cmdline>, B<checking>,B<cache>, B<gui>, B<dns>, B<thread> und B<all>. Die Angabe B<all> ist ein Synonym für alle verfügbaren Logger."
 
 # type: Plain text
 #: en/linkcheckerrc.5:126
@@ -1771,32 +1777,33 @@ msgid "MULTILINE"
 msgstr "MULTILINE"
 
 # type: Plain text
-#: en/linkcheckerrc.5:363
-msgid "Some option values can span multiple lines. Each line has to be indented for that to work:"
-msgstr "Einige Optionen können mehrere Zeilen lang sein. Jede Zeile muss dafür eingerückt werden:"
+#: en/linkcheckerrc.5:364
+msgid "Some option values can span multiple lines. Each line has to be indented for that to work. Lines starting with a hash (B<#>) will be ignored, though they must still be indented."
+msgstr "Einige Optionen können mehrere Zeilen lang sein. Jede Zeile muss dafür eingerückt werden. Zeilen die mit einer Raute (B<#>) beginnen werden ignoriert, müssen aber eingerückt sein."
 
 # type: Plain text
-#: en/linkcheckerrc.5:368
+#: en/linkcheckerrc.5:370
 #, no-wrap
 msgid ""
 " ignore=\n"
-"    lconline\n"
-"    bookmark\n"
+"   lconline\n"
+"   bookmark\n"
+"   # a comment\n"
 "   ^mailto:\n"
 msgstr ""
 " ignore=\n"
-"    lconline\n"
-"    bookmark\n"
-"   ^mailto:\n"
+"   lconline\n"
+"   bookmark\n"
+"   # a comment   ^mailto:\n"
 
 # type: SH
-#: en/linkcheckerrc.5:369
+#: en/linkcheckerrc.5:371
 #, no-wrap
 msgid "EXAMPLE"
 msgstr "BEISPIEL"
 
 # type: Plain text
-#: en/linkcheckerrc.5:372
+#: en/linkcheckerrc.5:374
 #, no-wrap
 msgid ""
 " [output]\n"
@@ -1806,7 +1813,7 @@ msgstr ""
 " log=html\n"
 
 # type: Plain text
-#: en/linkcheckerrc.5:375
+#: en/linkcheckerrc.5:377
 #, no-wrap
 msgid ""
 " [checking]\n"
@@ -1816,7 +1823,7 @@ msgstr ""
 " threads=5\n"
 
 # type: Plain text
-#: en/linkcheckerrc.5:378
+#: en/linkcheckerrc.5:380
 #, no-wrap
 msgid ""
 " [filtering]\n"
@@ -1826,7 +1833,7 @@ msgstr ""
 " ignorewarnings=anchor-not-found\n"
 
 # type: TH
-#: en/linkcheckerrc.5:381
+#: en/linkcheckerrc.5:383
 msgid "linkchecker(1)"
 msgstr "BEISPIEL"
 

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2007-12-01 01:18+0100\n"
+"POT-Creation-Date: 2007-12-01 16:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -519,7 +519,7 @@ msgid "B<--no-anchor-caching>"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:192 en/linkcheckerrc.5:66
+#: en/linkchecker.1:192
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This is the default "
 "browser behaviour, but it's not specified in the URI specification. Use with "
@@ -1020,7 +1020,7 @@ msgid "B<http://www.amk.ca/python/howto/regex/> - regular expression documentati
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:367 en/linkcheckerrc.5:379
+#: en/linkchecker.1:367 en/linkcheckerrc.5:381
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -1031,24 +1031,24 @@ msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:370 en/linkcheckerrc.5:382
+#: en/linkchecker.1:370 en/linkcheckerrc.5:384
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:372 en/linkcheckerrc.5:384
+#: en/linkchecker.1:372 en/linkcheckerrc.5:386
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:373 en/linkcheckerrc.5:385
+#: en/linkchecker.1:373 en/linkcheckerrc.5:387
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:374 en/linkcheckerrc.5:386
+#: en/linkchecker.1:374 en/linkcheckerrc.5:388
 msgid "Copyright \\(co 2000-2007 Bastian Kleineidam"
 msgstr ""
 
@@ -1168,7 +1168,16 @@ msgstr ""
 # type: TP
 #: en/linkcheckerrc.5:60
 #, no-wrap
-msgid "B<noanchorcaching=>[B<0>|B<1>]"
+msgid "B<anchorcaching=>[B<0>|B<1>]"
+msgstr ""
+
+# type: Plain text
+#: en/linkcheckerrc.5:66
+msgid ""
+"If set to zero, treat url#anchora and url#anchorb as equal on caching.  This "
+"is the default browser behaviour, but it's not specified in the URI "
+"specification. Use with care since broken anchors are not guaranteed to be "
+"detected in this mode."
 msgstr ""
 
 # type: Plain text
@@ -1217,7 +1226,7 @@ msgstr ""
 # type: TP
 #: en/linkcheckerrc.5:80
 #, no-wrap
-msgid "B<noproxy=>I<REGEX> (MULTILINE)"
+msgid "B<noproxyfor=>I<REGEX> (MULTILINE)"
 msgstr ""
 
 # type: Plain text
@@ -1317,15 +1326,15 @@ msgstr ""
 # type: TP
 #: en/linkcheckerrc.5:118
 #, no-wrap
-msgid "B<debug=>I<STRING>"
+msgid "B<debug=>I<STRING>[B<,>I<STRING>...]"
 msgstr ""
 
 # type: Plain text
 #: en/linkcheckerrc.5:124
 msgid ""
-"Print debugging output for the given logger.  Available loggers are "
-"B<cmdline>, B<checking>, B<cache>, B<gui>, B<dns> and B<all>.  Specifying "
-"B<all> is an alias for specifying all available loggers."
+"Print debugging output for the given loggers.  Available loggers are "
+"B<cmdline>, B<checking>, B<cache>, B<gui>, B<dns>, B<thread> and B<all>.  "
+"Specifying B<all> is an alias for specifying all available loggers."
 msgstr ""
 
 # type: Plain text
@@ -1821,30 +1830,32 @@ msgid "MULTILINE"
 msgstr ""
 
 # type: Plain text
-#: en/linkcheckerrc.5:363
+#: en/linkcheckerrc.5:364
 msgid ""
 "Some option values can span multiple lines. Each line has to be indented for "
-"that to work:"
+"that to work. Lines starting with a hash (B<#>) will be ignored, though they "
+"must still be indented."
 msgstr ""
 
 # type: Plain text
-#: en/linkcheckerrc.5:368
+#: en/linkcheckerrc.5:370
 #, no-wrap
 msgid ""
 " ignore=\n"
-"    lconline\n"
-"    bookmark\n"
+"   lconline\n"
+"   bookmark\n"
+"   # a comment\n"
 "   ^mailto:\n"
 msgstr ""
 
 # type: SH
-#: en/linkcheckerrc.5:369
+#: en/linkcheckerrc.5:371
 #, no-wrap
 msgid "EXAMPLE"
 msgstr ""
 
 # type: Plain text
-#: en/linkcheckerrc.5:372
+#: en/linkcheckerrc.5:374
 #, no-wrap
 msgid ""
 " [output]\n"
@@ -1852,7 +1863,7 @@ msgid ""
 msgstr ""
 
 # type: Plain text
-#: en/linkcheckerrc.5:375
+#: en/linkcheckerrc.5:377
 #, no-wrap
 msgid ""
 " [checking]\n"
@@ -1860,7 +1871,7 @@ msgid ""
 msgstr ""
 
 # type: Plain text
-#: en/linkcheckerrc.5:378
+#: en/linkcheckerrc.5:380
 #, no-wrap
 msgid ""
 " [filtering]\n"
@@ -1868,6 +1879,6 @@ msgid ""
 msgstr ""
 
 # type: Plain text
-#: en/linkcheckerrc.5:381
+#: en/linkcheckerrc.5:383
 msgid "linkchecker(1)"
 msgstr ""
