@@ -1,7 +1,3 @@
-- [OPTIMIZE] Use has_option in config parser instead of catching
-  a ConfigParserError for every option
-  http://localhost/doc/python2.4/html/lib/RawConfigParser-objects.html
-
 - [BUG REPORT]
   Error: (54, 'Connection reset by peer')
   Happens with http 1.1 keep-alive, disappears when activating debug mode.
