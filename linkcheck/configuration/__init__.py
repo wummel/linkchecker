@@ -64,7 +64,6 @@ class Configuration (dict):
         Initialize the default options.
         """
         super(Configuration, self).__init__()
-        self['debug'] = False
         self['trace'] = False
         self["verbose"] = False
         self["warnings"] = True
@@ -76,7 +75,6 @@ class Configuration (dict):
         self["internlinks"] = []
         self["noproxyfor"] = []
         self["interactive"] = False
-        self["maxqueuesize"] = 0
         # on ftp, password is set by Pythons ftplib
         self["authentication"] = []
         self["proxy"] = urllib.getproxies()
@@ -139,7 +137,8 @@ class Configuration (dict):
             "encoding": "ascii",
         }
         self['none'] = {}
-        self['logger'] = self.logger_new('text')
+        self['output'] = 'text'
+        self['logger'] = None
         self["warningregex"] = None
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
@@ -162,17 +161,22 @@ class Configuration (dict):
         handler = linkcheck.ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
         logging.getLogger(linkcheck.LOG).addHandler(handler)
-        if debug:
-            self['debug'] = True
-            # disable threading if no thread debugging
-            if "thread" not in debug:
-                self['threads'] = 0
-            # set debugging on given logger names
-            if 'all' in debug:
-                debug = linkcheck.lognames.keys()
-            for name in debug:
-                logname = linkcheck.lognames[name]
-                logging.getLogger(logname).setLevel(logging.DEBUG)
+        self.set_debug(debug)
+
+    def set_debug (self, debug):
+        """Set debugging levels for configured loggers. The argument
+        is a list of logger names to enable debug for."""
+        if not debug:
+            return
+        # set debugging on given logger names
+        if 'all' in debug:
+            debug = linkcheck.lognames.keys()
+        # disable threading if no thread debugging
+        if "thread" not in debug:
+            self['threads'] = 0
+        for name in debug:
+            logname = linkcheck.lognames[name]
+            logging.getLogger(logname).setLevel(logging.DEBUG)
 
     def logger_new (self, loggertype, **kwargs):
         """
@@ -225,4 +229,5 @@ class Configuration (dict):
                 self["ignorewarnings"] = linkcheck.checker.Warnings.keys()
             if 'url-anchor-not-found' in self["ignorewarnings"]:
                 self["ignorewarnings"].remove('url-anchor-not-found')
+        self['logger'] = self.logger_new(self['output'])
 

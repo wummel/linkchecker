@@ -24,9 +24,7 @@ import linkcheck.configuration
 
 
 def get_file (filename=None):
-    """
-    Get file name located within 'data' directory.
-    """
+    """Get file name located within 'data' directory."""
     directory = os.path.join("linkcheck", "configuration", "tests", "data")
     if filename:
         return unicode(os.path.join(directory, filename))
@@ -34,23 +32,68 @@ def get_file (filename=None):
 
 
 class TestConfig (unittest.TestCase):
-    """
-    Test cgi routines.
-    """
+    """Test configuration parsing."""
 
     def test_confparse (self):
-        """
-        Check url validity.
-        """
+        """Check url validity."""
+        config = linkcheck.configuration.Configuration()
+        files = [get_file("config0.ini")]
+        config.read(files)
+        # checking section
+        self.assertEqual(config["threads"], 5)
+        self.assertEqual(config["timeout"], 42)
+        self.assertFalse(config["anchors"])
+        self.assertEqual(config["recursionlevel"], 1)
+        self.assertEqual(config["warningregex"].pattern, "Oracle DB Error")
+        self.assertEqual(config["warnsizebytes"], 2000)
+        self.assertEqual(config["nntpserver"], "imadoofus.org")
+        self.assertTrue(config["anchorcaching"])
+        # filtering section
+        patterns = [x["pattern"].pattern for x in config["externlinks"]]
+        for prefix1 in ("ignore_", "nofollow_"):
+            for prefix2 in ("", "old"):
+                for suffix in ("1", "2"):
+                    key  = "%s%simadoofus%s" % (prefix1, prefix2, suffix)
+                    self.assertTrue(key in patterns)
+        patterns = [x.pattern for x in config["noproxyfor"]]
+        for prefix1 in ("noproxyfor_",):
+            for prefix2 in ("", "old"):
+                for suffix in ("1", "2"):
+                    key  = "%s%simadoofus%s" % (prefix1, prefix2, suffix)
+                    self.assertTrue(key in patterns)
+        for key in ("url-unnormed","url-unicode-domain","anchor-not-found"):
+            self.assertTrue(key in config["ignorewarnings"])
+        # authentication section
+        patterns = [x["pattern"].pattern for x in config["authentication"]]
+        for prefix in ("", "old"):
+            for suffix in ("1", "2"):
+                key = "%simadoofus%s" % (prefix, suffix)
+                self.assertTrue(key in patterns)
+        # output section
+        self.assertTrue(config["interactive"])
+        self.assertTrue(linkcheck.log.is_debug(linkcheck.LOG_THREAD))
+        self.assertFalse(config["status"])
+        self.assertTrue(isinstance(config["logger"], linkcheck.Loggers["xml"]))
+        self.assertTrue(config["verbose"])
+        self.assertTrue(config["warnings"])
+        self.assertFalse(config["quiet"])
+        self.assertEqual(len(config["fileoutput"]), 8)
+        # logger config sections
+        # XXX todo
+
+    def test_confparse_error1 (self):
         config = linkcheck.configuration.Configuration()
         files = [get_file("config1.ini")]
-        config.read(files)
+        self.assertRaises(linkcheck.LinkCheckerError, config.read, files)
+
+    def test_confparse_error2 (self):
+        config = linkcheck.configuration.Configuration()
+        files = [get_file("config2.ini")]
+        self.assertRaises(linkcheck.LinkCheckerError, config.read, files)
 
 
 def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
+    """Build and return a TestSuite."""
     return unittest.makeSuite(TestConfig)
 
 

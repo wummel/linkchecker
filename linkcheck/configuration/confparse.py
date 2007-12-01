@@ -20,6 +20,16 @@ import ConfigParser
 import re
 import linkcheck.log
 
+
+def read_multiline (value):
+    """Helper function reading multiline values."""
+    for line in value.splitlines():
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        yield line
+
+
 class LCConfigParser (ConfigParser.RawConfigParser, object):
     """
     Parse a LinkChecker configuration file.
@@ -30,290 +40,186 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         self.config = config
 
     def read (self, files):
-        """
-        Read settings from given config files.
+        """Read settings from given config files.
 
         @raises: LinkCheckerError on syntax errors in the config file(s)
         """
         try:
             super(LCConfigParser, self).read(files)
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-            return
-        # Read all the configuration parameters from the given files.
-        self.read_output_config()
-        self.read_checking_config()
-        self.read_authentication_config()
-        self.read_filtering_config()
-        # re-init logger
-        self.config['logger'] = self.config.logger_new('text')
+            # Read all the configuration parameters from the given files.
+            self.read_output_config()
+            self.read_checking_config()
+            self.read_authentication_config()
+            self.read_filtering_config()
+        except Exception, msg:
+            raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+              "Error parsing configuration: %s", str(msg))
 
     def read_output_config (self):
-        """
-        Read configuration options in section "output".
-        """
+        """Read configuration options in section "output"."""
         section = "output"
         for key in linkcheck.Loggers.iterkeys():
             if self.has_section(key):
                 for opt in self.options(key):
-                    try:
-                        self.config[key][opt] = self.get(key, opt)
-                    except ConfigParser.Error, msg:
-                        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-                try:
-                    self.config[key]['parts'] = [f.strip() for f in \
-                         self.get(key, 'parts').split(',')]
-                except ConfigParser.Error, msg:
-                    assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+                    self.config[key][opt] = self.get(key, opt)
+                if self.has_option(key, 'parts'):
+                    val = self.get(key, 'parts')
+                    parts = [f.strip() for f in val.split(',')]
+                    self.config[key]['parts'] = parts
+        if self.has_option(section, "warnings"):
             self.config["warnings"] = self.getboolean(section, "warnings")
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+        if self.has_option(section, "verbose"):
             if self.getboolean(section, "verbose"):
                 self.config["verbose"] = True
                 self.config["warnings"] = True
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+        if self.has_option(section, "quiet"):
             if self.getboolean(section, "quiet"):
-                self.config['logger'] = self.config.logger_new('none')
+                self.config['output'] = 'none'
                 self.config['quiet'] = True
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+        if self.has_option(section, "debug"):
+            val = self.get(section, "debug")
+            parts = [f.strip() for f in val.split(',')]
+            self.config.set_debug(parts)
+        if self.has_option(section, "status"):
             self.config["status"] = self.getboolean(section, "status")
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            logger = self.get(section, "log")
-            if linkcheck.Loggers.has_key(logger):
-                self.config['logger'] = self.config.logger_new(logger)
-            else:
-                linkcheck.log.warn(_("invalid log option %r"), logger)
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+        if self.has_option(section, "log"):
+            val = self.get(section, "log").strip()
+            self.config['output'] = val
+        if self.has_option(section, "fileoutput"):
             filelist = self.get(section, "fileoutput").split(",")
-            for arg in filelist:
-                arg = arg.strip()
+            for val in filelist:
+                val = val.strip()
                 # no file output for the blacklist and none Logger
-                if linkcheck.Loggers.has_key(arg) and \
-                   arg not in ["blacklist", "none"]:
-                    self.config['fileoutput'].append(
-                                  self.config.logger_new(arg, fileoutput=1))
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+                if linkcheck.Loggers.has_key(val) and \
+                   val not in ["blacklist", "none"]:
+                    output = self.config.logger_new(val, fileoutput=1)
+                    self.config['fileoutput'].append(output)
+        if self.has_option(section, "interactive"):
             self.config["interactive"] = self.getboolean(section, "interactive")
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
 
     def read_checking_config (self):
-        """
-        Read configuration options in section "checking".
-        """
+        """Read configuration options in section "checking"."""
         section = "checking"
-        try:
+        if self.has_option(section, "threads"):
             num = self.getint(section, "threads")
             self.config['threads'] = max(0, num)
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+        if self.has_option(section, "timeout"):
             num = self.getint(section, "timeout")
             if num < 0:
                 raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
                     _("invalid negative value for timeout: %d\n"), num)
-            self.config['threads'] = num
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+            self.config['timeout'] = num
+        if self.has_option(section, "anchors"):
             self.config["anchors"] = self.getboolean(section, "anchors")
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            self.config["debug"] = self.get(section, "debug")
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+        if self.has_option(section, "recursionlevel"):
             num = self.getint(section, "recursionlevel")
             self.config["recursionlevel"] = num
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            arg = self.get(section, "warningregex")
-            if arg:
-                try:
-                    self.config["warningregex"] = re.compile(arg)
-                except re.error, msg:
-                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                   _("syntax error in warningregex %(regex)r: %(msg)s\n") % \
-                   {"regex": arg, "msg": msg})
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            self.config["warnsizebytes"] = int(self.get(section,
-                                                      "warnsizebytes"))
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+        if self.has_option(section, "warningregex"):
+            val = self.get(section, "warningregex")
+            if val:
+                self.config["warningregex"] = re.compile(val)
+        if self.has_option(section, "warnsizebytes"):
+            val = self.get(section,"warnsizebytes")
+            self.config["warnsizebytes"] = int(val)
+        if self.has_option(section, "nntpserver"):
             self.config["nntpserver"] = self.get(section, "nntpserver")
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            self.config["anchorcaching"] = self.getboolean(section,
-                                    "anchorcaching")
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            value = self.get(section, "noproxyfor")
-            for line in value.splitlines():
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
-                try:
-                    arg = re.compile(arg)
-                except re.error, msg:
-                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                   _("syntax error in noproxyfor %(line)r: %(msg)s") % \
-                    {"line": line, "msg": msg})
-                self.config["noproxyfor"].append(arg)
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            # XXX backward compatibility
-            i = 1
-            while 1:
-                arg = self.get(section, "noproxyfor%d" % i)
-                linkcheck.log.warn(linkcheck.LOG_CHECK,
-                  _("the noproxyfor%(num)d syntax is deprecated; use " \
-                    "the new multiline configuration syntax") % {"num": i})
-                try:
-                    arg = re.compile(arg)
-                except re.error, msg:
-                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                   _("syntax error in noproxyfor%(num)d %(arg)r: %(msg)s") % \
-                    {"num": i, "arg": arg, "msg": msg})
-                self.config["noproxyfor"].append(arg)
-                i += 1
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            num = self.getint(section, "maxqueuesize")
-            self.config["maxqueuesize"] = num
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+        if self.has_option(section,"anchorcaching"):
+            val = self.getboolean(section, "anchorcaching")
+            self.config["anchorcaching"] = val
 
     def read_authentication_config (self):
-        """
-        Read configuration options in section "authentication".
-        """
+        """Read configuration options in section "authentication"."""
         section = "authentication"
-        try:
-            arg = self.get(section, "entry")
-            for line in arg.splitlines():
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
-                auth = line.split()
+        if self.has_option(section, "entry"):
+            for val in read_multiline(self.get(section, "entry")):
+                auth = val.split()
                 if len(auth) != 3:
                     raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                       _("missing auth part in entry %(line)r") % \
-                       {"line": line})
-                try:
-                    auth[0] = re.compile(auth[0])
-                except re.error, msg:
-                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                       _("syntax error in entry %(line)r: %(msg)s") % \
-                       {"line": line, "msg": msg})
-                self.config["authentication"].insert(0, {'pattern': auth[0],
-                                                  'user': auth[1],
-                                                  'password': auth[2]})
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            # XXX backward compatibility
-            i = 1
-            while 1:
-                auth = self.get(section, "entry%d" % i).split()
-                linkcheck.log.warn(linkcheck.LOG_CHECK,
-                  _("the entry%(num)d syntax is deprecated; use " \
-                    "the new multiline configuration syntax") % {"num": i})
-                if len(auth) != 3:
-                    break
-                try:
-                    auth[0] = re.compile(auth[0])
-                except re.error, msg:
-                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
-                       _("syntax error in entry%(num)d %(arg)r: %(msg)s") % \
-                       {"num": i, "arg": auth[0], "msg": msg})
-                self.config["authentication"].insert(0, {'pattern': auth[0],
-                                                  'user': auth[1],
-                                                  'password': auth[2]})
-                i += 1
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
+                       _("missing auth part in entry %(val)r") % \
+                       {"val": val})
+                self.config["authentication"].insert(0,
+                    {'pattern': re.compile(auth[0]),
+                     'user': auth[1],
+                     'password': auth[2]})
+        # backward compatibility
+        i = 1
+        while 1:
+            key = "entry%d" % i
+            if not self.has_option(section, key):
+                break
+            val = self.get(section, key)
+            auth = val.split()
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+              _("the entry%(num)d syntax is deprecated; use " \
+                "the new multiline configuration syntax") % {"num": i})
+            if len(auth) != 3:
+                raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                   _("missing auth part in entry %(val)r") % \
+                   {"val": val})
+            self.config["authentication"].insert(0,
+                {'pattern': re.compile(auth[0]),
+                 'user': auth[1],
+                 'password': auth[2]})
+            i += 1
 
     def read_filtering_config (self):
         """
         Read configuration options in section "filtering".
         """
         section = "filtering"
-        try:
-            arg = self.get(section, "nofollow")
-            for line in arg.splitlines():
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
+        if self.has_option(section, "nofollow"):
+            for line in read_multiline(self.get(section, "nofollow")):
                 pat = linkcheck.get_link_pat(line, strict=0)
                 self.config["externlinks"].append(pat)
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            # XXX backward compatibility
-            i = 1
-            while 1:
-                val = self.get(section, "nofollow%d" % i)
-                linkcheck.log.warn(linkcheck.LOG_CHECK,
-                  _("the nofollow%(num)d syntax is deprecated; use " \
+        # backward compatibility
+        i = 1
+        while 1:
+            key = "nofollow%d" % i
+            if not self.has_option(section, key):
+                break
+            val = self.get(section, key)
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+              _("the nofollow%(num)d syntax is deprecated; use " \
+                "the new multiline configuration syntax") % {"num": i})
+            pat = linkcheck.get_link_pat(val, strict=0)
+            self.config["externlinks"].append(pat)
+            i += 1
+        if self.has_option(section, "noproxyfor"):
+            for val in read_multiline(self.get(section, "noproxyfor")):
+                self.config["noproxyfor"].append(re.compile(val))
+        # backward compatibility
+        i = 1
+        while 1:
+            key = "noproxyfor%d" % i
+            if not self.has_option(section, key):
+                break
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                  _("the noproxyfor%(num)d syntax is deprecated; use " \
                     "the new multiline configuration syntax") % {"num": i})
-                pat = linkcheck.get_link_pat(val, strict=0)
-                self.config["externlinks"].append(pat)
-                i += 1
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
+            val = self.get(section, key)
+            self.config["noproxyfor"].append(re.compile(val))
+            i += 1
+        if self.has_option(section, "ignorewarnings"):
             self.config['ignorewarnings'] = [f.strip() for f in \
                  self.get(section, 'ignorewarnings').split(',')]
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            arg = self.get(section, "ignore")
-            for line in arg.splitlines():
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
+        if self.has_option(section, "ignore"):
+            for line in read_multiline(self.get(section, "ignore")):
                 pat = linkcheck.get_link_pat(line, strict=1)
                 self.config["externlinks"].append(pat)
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            # XXX backward compatibility
-            i = 1
-            while 1:
-                # XXX backwards compatibility: split and ignore second part
-                val = self.get(section, "ignore%d" % i).split()[0]
-                linkcheck.log.warn(linkcheck.LOG_CHECK,
-                  _("the ignore%(num)d syntax is deprecated; use " \
-                    "the new multiline configuration syntax") % {"num": i})
-                pat = linkcheck.get_link_pat(val, strict=1)
-                self.config["externlinks"].append(pat)
-                i += 1
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-        try:
-            self.config["internlinks"].append(
-               linkcheck.get_link_pat(self.get(section, "internlinks")))
-        except ConfigParser.Error, msg:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, msg)
-
+        # backward compatibility
+        i = 1
+        while 1:
+            key = "ignore%d" % i
+            if not self.has_option(section, key):
+                break
+            # backwards compatibility: split and ignore second part
+            val = self.get(section, key).split()[0]
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+              _("the ignore%(num)d syntax is deprecated; use " \
+                "the new multiline configuration syntax") % {"num": i})
+            pat = linkcheck.get_link_pat(val, strict=1)
+            self.config["externlinks"].append(pat)
+            i += 1
+        if self.has_option(section, "internlinks"):
+            pat = linkcheck.get_link_pat(self.get(section, "internlinks"))
+            self.config["internlinks"].append(pat)
