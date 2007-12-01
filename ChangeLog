@@ -67,6 +67,11 @@
       linkcheck/checker/{httpurl,mailtourl,urlbase,ftpurl}.py
     Added: linkcheck/directory/cleanup.py
 
+  * Add man page linkcheckerrc(5) for the configuration file format.
+    Type: documentation
+    Added: doc/{en,de}/linkcheckerrc.5
+    Changed: doc/po4a.conf
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of

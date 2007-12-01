@@ -89,7 +89,7 @@ Don't log warnings. Default is to log warnings.
 Define a regular expression which prints a warning if it matches any
 content of the checked link.
 This applies only to valid pages, so we can get their content.
-
+.br
 Use this to check for pages that contain some form of error, for example
 "This page has moved" or "Oracle Application Server error".
 .TP
@@ -106,9 +106,9 @@ Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
 \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
 Default type is \fBtext\fP. The various output types are documented
 below.
+.br
 The \fIENCODING\fP specifies the output encoding, the default is
-that of your locale.
-Valid encodings are listed at
+that of your locale. Valid encodings are listed at
 \fBhttp://docs.python.org/lib/standard\-encodings.html\fP.
 .TP
 \fB\-F\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP], \fB\-\-file\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP]
@@ -161,10 +161,13 @@ Default depth is infinite.
 .TP
 \fB\-\-no\-follow\-url=\fP\fIREGEX\fP
 Check but do not recurse into URLs matching the given regular
-expression. This option can be given multiple times.
+expression.
+.br
+This option can be given multiple times.
 .TP
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
 Only check syntax of URLs matching the given regular expression.
+.br
 This option can be given multiple times.
 .TP
 \fB\-C\fP, \fB\-\-cookies\fP
@@ -212,8 +215,15 @@ only the syntax of the link is checked.
 .TP
 \fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
 Contact hosts that match the given regular expression directly instead of
-going through a proxy. This option can be given multiple times.
-.
+going through a proxy.
+.br
+This option can be given multiple times.
+
+.SH "CONFIGURATION FILES"
+Configuration files can specify all options above. They can also
+specify some options that cannot be set on the command line.
+See \fBlinkcheckerrc\fP(5) for more info.
+
 .SH OUTPUT TYPES
 Note that by default only errors and warnings are logged.
 You should use the \fB\-\-verbose\fP option to get the complete URL list,
@@ -353,6 +363,9 @@ configuration files
 \fBhttp://docs.python.org/lib/standard\-encodings.html\fP - valid output encodings
 .br
 \fBhttp://www.amk.ca/python/howto/regex/\fP - regular expression documentation
+
+.SH "SEE ALSO"
+\fBlinkcheckerrc\fP(5)
 .
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>

@@ -1,0 +1,388 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH linkcheckerrc 5 2007\-11\-30 LinkChecker 
+.SH NAME
+linkcheckerrc \- Konfigurationsdatei für LinkChecker
+.
+.SH BESCHREIBUNG
+\fBlinkcheckerrc\fP ist die Standardkonfigurationsdatei von LinkChecker. Die
+Datei ist in einem INI\-Format geschrieben.
+.
+.SH EIGENSCHAFTEN
+
+.SS [checking]
+.TP 
+\fBthreads=\fP\fINUMBER\fP
+Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl
+von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht
+positive Nummer an.
+.br
+Kommandozeilenoption: \fB\-\-threads\fP
+.TP 
+\fBtimeout=\fP\fINUMMER\fP
+Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout ist
+60 Sekunden.
+.br
+Kommandozeilenoption: \fB\-\-timeout\fP
+.TP 
+\fBanchors=\fP[\fB0\fP|\fB1\fP]
+Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
+Option aktiviert die Ausgabe der Warnung \fBurl\-anchor\-not\-found\fP.
+.br
+Kommandozeilenoption: \fB\-\-anchors\fP
+.TP 
+\fBrecursionlevel=\fP\fINUMBER\fP
+Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
+bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
+.br
+Kommandozeilenoption: \fB\-\-recursion\-level\fP
+.TP 
+\fBwarningregex=\fP=\fIREGEX\fP
+Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
+auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
+Seiten deren Inhalt wir bekommen können.
+.br
+Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
+enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle
+Applikationsfehler".
+.br
+Kommandozeilenoption: \fB\-\-warning\-regex\fP
+.TP 
+\fBwarnsizebytes=\fP\fINUMBER\fP
+Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
+Anzahl von Bytes übersteigt.
+.br
+Kommandozeilenoption: \fB\-\-warning\-size\-bytes\fP
+.TP 
+\fBnntpserver=\fP\fISTRING\fP
+Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die Umgebungsvariable
+\fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird lediglich auf
+korrekte Syntax des Links geprüft.
+.br
+Kommandozeilenoption: \fB\-\-nntp\-server\fP
+.TP 
+\fBnoanchorcaching=\fP[\fB0\fP|\fB1\fP]
+Behandle url#anchora und url#anchorb beim Cachen als gleich. Dies ist zwar
+Standard bei Browsern, aber in der URI Spezifikation nicht
+enthalten. Benutzen Sie diese Option mit Vorsicht da ungültige Anker mit
+dieser Option nicht unbedingt erkannt werden.
+.br
+Kommandozeilenoption: \fB\-\-no\-anchor\-caching\fP
+.SS [filtering]
+.TP 
+\fBignore=\fP\fIREGEX\fP (MULTILINE)
+Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären
+Ausdruck entsprechen.
+.br
+Kommandozeilenoption: \fB\-\-ignore\-url\fP
+.TP 
+\fBnofollow=\fP\fIREGEX\fP (MULTILINE)
+Prüfe URLs die auf den regulären Ausdruck zutreffen, aber führe keine
+Rekursion durch.
+.br
+Kommandozeilenoption: \fB\-\-no\-follow\-url\fP
+.TP 
+\fBnoproxy=\fP\fIREGEX\fP (MULTILINE)
+Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt
+und nicht über einen Proxy angesprochen werden.
+.br
+Kommandozeilenoption: \fB\-\-no\-proxy\-for\fP
+.TP 
+\fBignorewarnings=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
+Ignoriere die kommagetrennte Liste von Warnungen. Siehe \fBlinkchecker \-h\fP
+für die Liste von erkannten Warnungen.
+.br
+Kommandozeilenoption: keine
+.TP 
+\fBinternlinks=\fP\fIREGEX\fP
+Regulärer Ausdruck, um mehr URLs als interne Verknüpfungen
+hinzuzufügen. Standard ist dass URLs der Kommandozeile als intern gelten.
+.br
+Kommandozeilenoption: keine
+.SS [authentication]
+.TP 
+\fBentry=\fP\fIREGEX\fP \fIUSER\fP \fIPASS\fP (MULTILINE)
+Erstelle verschiedene Benutzer/Passwort Parre für verschiedene
+Verknüpfungsarten. Einträge sind ein Tripel (Verknüpfung regulärer Ausdruck,
+Benutzername, Passwort), getrennt durch Leerzeichen.
+.br
+Falls der reguläre Ausdruck zutrifft, wird das angegebene Benutzer/Passwort
+Paar zum Authentifizieren genutzt. Die Kommandozeilenoptionen \fB\-u\fP und
+\fB\-p\fP treffen auf jede Verknüpfung zu und überschreiben daher die Einträge
+hier. Der erste Treffer gewinnt. Im Moment wird Authentifizierung für
+http[s] und ftp Verknüpfungen benutzt.
+.br
+Kommandozeilenoption: \fB\-u\fP, \fB\-p\fP
+.SS [output]
+.TP 
+\fBinteractive=\fP[\fB0\fP|\fB1\fP]
+Frage nach URLs, falls keine auf der Kommandozeile eingegeben wurden.
+.br
+Kommandozeilenoption: \fB\-\-interactive\fP
+.TP 
+\fBdebug=\fP\fISTRING\fP
+Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
+\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe
+\fBall\fP ist ein Synonym für alle verfügbaren Logger.
+.br
+[output]
+.TP 
+\fBstatus=\fP[\fB0\fP|\fB1\fP]
+Kontrolle der Statusmeldungen. Standard ist 1.
+.br
+Kommandozeilenoption: \fB\-\-no\-status\fP
+.TP 
+\fBlog=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
+Gib Ausgabetyp als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
+\fBnone\fP oder \fBblacklist\fP an.  Stadard Typ ist \fBtext\fP. Die verschiedenen
+Ausgabetypen sind unten dokumentiert.
+.br
+Das \fIENCODING\fP gibt die Ausgabekodierung an. Der Standard ist das der
+lokalen Spracheinstellung. Gültige Enkodierungen sind unter
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet.
+.br
+Kommandozeilenoption: \fB\-\-output\fP
+.TP 
+\fBverbose=\fP[\fB0\fP|\fB1\fP]
+Falls gesetzt, gebe alle geprüften URLs aus. Standard ist es, nur
+fehlerhafte URLs und Warnungen auszugeben.
+.br
+Kommandozeilenoption: \fB\-\-verbose\fP
+.TP 
+\fBwarnings=\fP[\fB0\fP|\fB1\fP]
+Falls gesetzt, gebe keine Warnungen aus. Standard ist die Ausgabe von
+Warnungen.
+.br
+Kommandozeilenoption: \fB\-\-no\-warnings\fP
+.TP 
+\fBquiet=\fP[\fB0\fP|\fB1\fP]
+Falls gesetzt, erfolgt keine Ausgabe. Ein Alias für \fBlog=none\fP. Dies ist
+nur in Verbindung mit \fBfileoutput\fP nützlich.
+.br
+Kommandozeilenoption: \fB\-\-verbose\fP
+.TP 
+\fBfileoutput=\fP\fITYPE\fP[\fB,\fP\fITYPE\fP...]
+Ausgabe in Datei \fBlinkchecker\-out.\fP\fITYPE\fP, \fB$HOME/.linkchecker/blacklist\fP
+für \fBblacklist\fP Ausgabe.
+.br
+Gültige Ausgabearten sind \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP,
+\fBxml\fP, \fBnone\fP oder \fBblacklist\fP Standard ist keine Dateiausgabe. Die
+verschiedenen Ausgabearten sind unten dokumentiert. Bemerke, dass man alle
+Konsolenausgaben mit \fBoutput=none\fP unterdrücken kann.
+.br
+Kommandozeilenoption: \fB\-\-file\-output\fP
+.SS [text]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Gebe Dateiname für Textausgabe an. Standard Dateiname ist
+\fBlinkchecker\-out.txt\fP.
+.br
+Kommandozeilenoption: \fB\-\-file\-output=\fP
+.TP 
+\fBparts=\fP\fISTRING\fP
+Kommagetrennte Liste von Teilen, die ausgegeben werden sollen. Siehe
+\fBLOGGER PART\fP weiter unten.
+.br
+Kommandozeilenoption: keine
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Gültige Enkodierungen sind unter \fBhttp://docs.python.org/lib/node127.html\fP
+aufgelistet. Standard Enkodierung ist \fBiso\-8859\-15\fP.
+.TP 
+\fIcolor*\fP
+Farbwerte für die verschiedenen Ausgabeteile. Syntax ist \fIcolor\fP oder
+\fItype\fP\fB;\fP\fIcolor\fP. Der \fItype\fP kann \fBbold\fP, \fBlight\fP, \fBblink\fP oder
+\fBinvert\fP sein.  Die \fIcolor\fP kann \fBdefault\fP, \fBblack\fP, \fBred\fP, \fBgreen\fP,
+\fByellow\fP, \fBblue\fP, \fBpurple\fP, \fBcyan\fP, \fBwhite\fP, \fBBlack\fP, \fBRed\fP,
+\fBGreen\fP, \fBYellow\fP, \fBBlue\fP, \fBPurple\fP, \fBCyan\fP oder \fBWhite\fP sein.
+.br
+Kommandozeilenoption: keine
+.TP 
+\fBcolorparent=\fP\fISTRING\fP
+Setze Farbe des Vaters. Standard ist \fBwhite\fP.
+.TP 
+\fBcolorurl=\fP\fISTRING\fP
+Setze URL Farbe. Standard ist \fBdefault\fP.
+.TP 
+\fBcolorname=\fP\fISTRING\fP
+Kommandozeilenoption: \fB\-\-file\-output=\fP
+.TP 
+\fBcolorreal=\fP\fISTRING\fP
+Setze Farbe für tatsächliche URL. Default ist \fBcyan\fP.
+.TP 
+\fBcolorbase=\fP\fISTRING\fP
+Setzt Basisurl Farbe. Standard ist \fBpurple\fP.
+.TP 
+\fBcolorvalid=\fP\fISTRING\fP
+Setze gültige Farbe. Standard ist \fBbold;green\fP.
+.TP 
+\fBcolorinvalid=\fP\fISTRING\fP
+Setze ungültige Farbe. Standard ist \fBbold;red\fP.
+.TP 
+\fBcolorinfo=\fP\fISTRING\fP
+Setzt Informationsfarbe. Standard ist \fBdefault\fP.
+.TP 
+\fBcolorwarning=\fP\fISTRING\fP
+Setze Warnfarbe. Standard ist \fBbold;yellow\fP.
+.TP 
+\fBcolordltime=\fP\fISTRING\fP
+Setze Downloadzeitfarbe. Standard ist \fBdefault\fP.
+.TP 
+\fBcolorreset=\fP\fISTRING\fP
+Setze Reset Farbe. Standard ist \fBdefault\fP.
+.SS [gml]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBparts=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.SS [dot]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBparts=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.SS [csv]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBparts=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBseparator=\fP\fICHAR\fP
+Das CSV Trennzeichen. Standard ist Komma (\fB,\fP).
+.TP 
+\fBquotechar=\fP\fICHAR\fP
+Setze CSV Quotezeichen. Standard ist das doppelte Anführungszeichen (<">).
+.SS [sql]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBparts=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBdbname=\fP\fISTRING\fP
+Setze Datenbankname zum Speichern. Standard ist \fBlinksdb\fP.
+.TP 
+\fBseparator=\fP\fICHAR\fP
+Setze SQL Kommandotrennzeichen. Standard ist ein Strichpunkt (\fB;\fP).
+.SS [html]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBparts=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBcolorbackground=\fP\fICOLOR\fP
+Setze Reset Farbe. Standard ist \fBdefault\fP.
+.TP 
+\fBcolorurl=\fP
+Setze HTML URL Farbe. Standard ist \fB#dcd5cf\fP.
+.TP 
+\fBcolorborder=\fP
+Setze HTML Rahmenfarbe. Standard ist \fB#000000\fP.
+.TP 
+\fBcolorlink=\fP
+Setze HTML Verknüpfungsfarbe. Standard ist \fB#191c83\fP.
+.TP 
+\fBcolorwarning=\fP
+Setze HTML Warnfarbe. Standard ist \fB#e0954e\fP.
+.TP 
+\fBcolorerror=\fP
+Setze HTML Fehlerfarbe. Standard ist \fB#db4930\fP.
+.TP 
+\fBcolorok=\fP
+Setze HTML Gültigkeitsfarbe. Standard ist \fB#3ba557\fP.
+.SS [blacklist]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.SS [xml]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBparts=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.SS [gxml]
+.TP 
+\fBfilename=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBparts=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.TP 
+\fBencoding=\fP\fISTRING\fP
+Siehe [text] Sektion weiter oben.
+.
+.SH "AUSGABE PARTS"
+ \fBall\fP       (für alle Teile)
+ \fBrealurl\fP   (die volle URL Verknüpfung)
+ \fBresult\fP    (gültig oder ungültig, mit Nachrichten)
+ \fBextern\fP    (1 oder 0, nur in einigen Ausgabetypen protokolliert)
+ \fBbase\fP      (base href=...)
+ \fBname\fP      (<a href=...>name</a> and <img alt="name">)
+ \fBparenturl\fP (falls vorhanden)
+ \fBinfo\fP      (einige zusätzliche Infos, z.B. FTP Willkommensnachrichten)
+ \fBwarning\fP   (Warnungen)
+ \fBdltime\fP    (Downloadzeit)
+ \fBchecktime\fP (Prüfzeit)
+ \fBurl\fP       (Der Original URL Name, kann relativ sein)
+ \fBintro\fP     (Das Zeug am Anfang, "Beginne am ...")
+ \fBoutro\fP     (Das Zeug am Ende, "X Fehler gefunden ...")
+.SH MULTILINE
+Einige Optionen können mehrere Zeilen lang sein. Jede Zeile muss dafür
+eingerückt werden:
+
+ ignore=
+    lconline
+    bookmark
+   ^mailto:
+.
+.SH BEISPIEL
+ [output]
+ log=html
+
+ [checking]
+ threads=5
+
+ [filtering]
+ ignorewarnings=anchor\-not\-found
+.
+.SH "SIEHE AUCH"
+BEISPIEL
+.
+.SH AUTHOR
+Bastian Kleineidam <calvin@users.sourceforge.net>
+.
+.SH COPYRIGHT
+Copyright \(co 2000\-2007 Bastian Kleineidam

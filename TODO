@@ -1,6 +1,6 @@
-- [DOCUMENTATION] Write a man page documenting the configuration file
-  syntax, and make a note in linkchecker(1) man page that some things
-  can only be configured with a config file entry.
+- [OPTIMIZE] Use has_option in config parser instead of catching
+  a ConfigParserError for every option
+  http://localhost/doc/python2.4/html/lib/RawConfigParser-objects.html
 
 - [BUG REPORT]
   Error: (54, 'Connection reset by peer')

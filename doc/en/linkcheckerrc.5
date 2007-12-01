@@ -1,0 +1,386 @@
+.TH linkcheckerrc 5 2007-11-30 "LinkChecker"
+.SH NAME
+linkcheckerrc - configuration file for LinkChecker
+.
+.SH DESCRIPTION
+\fBlinkcheckerrc\fP is the default configuration file LinkChecker.
+The file is written in an INI-style format.
+.
+.SH SETTINGS
+
+.SS \fB[checking]\fP
+.TP
+\fBthreads=\fP\fINUMBER\fP
+Generate no more than the given number of threads. Default number
+of threads is 10. To disable threading specify a non-positive number.
+.br
+Command line option: \fB\-\-threads\fP
+.TP
+\fBtimeout=\fP\fINUMBER\fP
+Set the timeout for connection attempts in seconds. The default timeout
+is 60 seconds.
+.br
+Command line option: \fB\-\-timeout\fP
+.TP
+\fBanchors=\fP[\fB0\fP|\fB1\fP]
+Check HTTP anchor references. Default is not to check anchors.
+This option enables logging of the warning \fBurl\-anchor\-not\-found\fP.
+.br
+Command line option: \fB\-\-anchors\fP
+.TP
+\fBrecursionlevel=\fP\fINUMBER\fP
+Check recursively all links up to given depth.
+A negative depth will enable infinite recursion.
+Default depth is infinite.
+.br
+Command line option: \fB\-\-recursion\-level\fP
+.TP
+\fBwarningregex=\fP=\fIREGEX\fP
+Define a regular expression which prints a warning if it matches any
+content of the checked link.
+This applies only to valid pages, so we can get their content.
+.br
+Use this to check for pages that contain some form of error, for example
+"This page has moved" or "Oracle Application Server error".
+.br
+Command line option: \fB\-\-warning\-regex\fP
+.TP
+\fBwarnsizebytes=\fP\fINUMBER\fP
+Print a warning if content size info is available and exceeds the given
+number of \fIbytes\fP.
+.br
+Command line option: \fB\-\-warning\-size\-bytes\fP
+.TP
+\fBnntpserver=\fP\fISTRING\fP
+Specify an NNTP server for \fBnews:\fP links. Default is the
+environment variable \fBNNTP_SERVER\fP. If no host is given,
+only the syntax of the link is checked.
+.br
+Command line option: \fB\-\-nntp\-server\fP
+.TP
+\fBnoanchorcaching=\fP[\fB0\fP|\fB1\fP]
+Treat url#anchora and url#anchorb as equal on caching. This
+is the default browser behaviour, but it's not specified in
+the URI specification. Use with care since broken anchors are not
+guaranteed to be detected in this mode.
+.br
+Command line option: \fB\-\-no\-anchor\-caching\fP
+.SS \fB[filtering]\fP
+.TP
+\fBignore=\fP\fIREGEX\fP (MULTILINE)
+Only check syntax of URLs matching the given regular expressions.
+.br
+Command line option: \fB\-\-ignore\-url\fP
+.TP
+\fBnofollow=\fP\fIREGEX\fP (MULTILINE)
+Check but do not recurse into URLs matching the given regular
+expressions.
+.br
+Command line option: \fB\-\-no\-follow\-url\fP
+.TP
+\fBnoproxy=\fP\fIREGEX\fP (MULTILINE)
+Contact hosts that match the given regular expressions directly instead of
+going through a proxy.
+.br
+Command line option: \fB\-\-no\-proxy\-for\fP
+.TP
+\fBignorewarnings=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
+Ignore the comma-separated list of warnings. See \fBlinkchecker -h\fP
+for the list of recognized warnings.
+.br
+Command line option: none
+.TP
+\fBinternlinks=\fP\fIREGEX\fP
+Regular expression to add more URLs recognized as internal links.
+Default is that URLs given on the command line are internal.
+.br
+Command line option: none
+.SS \fB[authentication]\fP
+.TP
+\fBentry=\fP\fIREGEX\fP \fIUSER\fP \fIPASS\fP (MULTILINE)
+Provide different user/password pairs for different link types.
+Entries are a triple (link regular expression, username, password),
+separated by whitespace.
+.br
+If the regular expression matches, the given user/password pair is used
+for authentication. The commandline options \fB\-u\fP and \fB\-p\fP
+match every link and therefore override the entries given here. The first
+match wins. At the moment, authentication is used/needed for
+http[s] and ftp links.
+.br
+Command line option: \fB\-u\fP, \fB\-p\fP
+.SS \fB[output]\fP
+.TP
+\fBinteractive=\fP[\fB0\fP|\fB1\fP]
+Ask for URL if none are given on the commandline.
+.br
+Command line option: \fB\-\-interactive\fP
+.TP
+\fBdebug=\fP\fISTRING\fP
+Print debugging output for the given logger.
+Available loggers are \fBcmdline\fP, \fBchecking\fP,
+\fBcache\fP, \fBgui\fP, \fBdns\fP and \fBall\fP.
+Specifying \fBall\fP is an alias for specifying all available loggers.
+.br
+Command line option: \fB\-\-debug\fP
+.TP
+\fBstatus=\fP[\fB0\fP|\fB1\fP]
+Control printing check status messages. Default is 1.
+.br
+Command line option: \fB\-\-no\-status\fP
+.TP
+\fBlog=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
+Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
+Default type is \fBtext\fP. The various output types are documented
+below.
+.br
+The \fIENCODING\fP specifies the output encoding, the default is
+that of your locale. Valid encodings are listed at
+\fBhttp://docs.python.org/lib/standard\-encodings.html\fP.
+.br
+Command line option: \fB\-\-output\fP
+.TP
+\fBverbose=\fP[\fB0\fP|\fB1\fP]
+If set log all checked URLs. Default is to log only errors and warnings.
+.br
+Command line option: \fB\-\-verbose\fP
+.TP
+\fBwarnings=\fP[\fB0\fP|\fB1\fP]
+If set log warnings. Default is to log warnings.
+.br
+Command line option: \fB\-\-no\-warnings\fP
+.TP
+\fBquiet=\fP[\fB0\fP|\fB1\fP]
+If set, operate quiet. An alias for \fBlog=none\fP.
+This is only useful with \fBfileoutput\fP.
+.br
+Command line option: \fB\-\-verbose\fP
+.TP
+\fBfileoutput=\fP\fITYPE\fP[\fB,\fP\fITYPE\fP...]
+Output to a files \fBlinkchecker\-out.\fP\fITYPE\fP,
+\fB$HOME/.linkchecker/blacklist\fP for
+\fBblacklist\fP output.
+.br
+Valid file output types are \fBtext\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP
+Default is no file output. The various output types are documented
+below. Note that you can suppress all console output
+with \fBoutput=none\fP.
+.br
+Command line option: \fB\-\-file\-output\fP
+.SS \fB[text]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+Specify output filename for text logging. Default filename is
+\fBlinkchecker-out.txt\fP.
+.br
+Command line option: \fB\-\-file\-output=\fP
+.TP
+\fBparts=\fP\fISTRING\fP
+Comma-separated list of parts that have to be logged.
+See \fBLOGGER PARTS\fP below.
+.br
+Command line option: none
+.TP
+\fBencoding=\fP\fISTRING\fP
+Valid encodings are listed in
+\fBhttp://docs.python.org/lib/node127.html\fP.
+Default encoding is \fBiso\-8859\-15\fP.
+.TP
+\fIcolor*\fP
+Color settings for the various log parts, syntax is \fIcolor\fP or
+\fItype\fP\fB;\fP\fIcolor\fP. The \fItype\fP can be
+\fBbold\fP, \fBlight\fP, \fBblink\fP, \fBinvert\fP.
+The \fIcolor\fP can be
+\fBdefault\fP, \fBblack\fP, \fBred\fP, \fBgreen\fP, \fByellow\fP, \fBblue\fP,
+\fBpurple\fP, \fBcyan\fP, \fBwhite\fP, \fBBlack\fP, \fBRed\fP, \fBGreen\fP,
+\fBYellow\fP, \fBBlue\fP, \fBPurple\fP, \fBCyan\fP or \fBWhite\fP.
+.br
+Command line option: none
+.TP
+\fBcolorparent=\fP\fISTRING\fP
+Set parent color. Default is \fBwhite\fP.
+.TP
+\fBcolorurl=\fP\fISTRING\fP
+Set URL color. Default is \fBdefault\fP.
+.TP
+\fBcolorname=\fP\fISTRING\fP
+Set name color. Default is \fBdefault\fP.
+.TP
+\fBcolorreal=\fP\fISTRING\fP
+Set real URL color. Default is \fBcyan\fP.
+.TP
+\fBcolorbase=\fP\fISTRING\fP
+Set base URL color. Default is \fBpurple\fP.
+.TP
+\fBcolorvalid=\fP\fISTRING\fP
+Set valid color. Default is \fBbold;green\fP.
+.TP
+\fBcolorinvalid=\fP\fISTRING\fP
+Set invalid color. Default is \fBbold;red\fP.
+.TP
+\fBcolorinfo=\fP\fISTRING\fP
+Set info color. Default is \fBdefault\fP.
+.TP
+\fBcolorwarning=\fP\fISTRING\fP
+Set warning color. Default is \fBbold;yellow\fP.
+.TP
+\fBcolordltime=\fP\fISTRING\fP
+Set download time color. Default is \fBdefault\fP.
+.TP
+\fBcolorreset=\fP\fISTRING\fP
+Set reset color. Default is \fBdeault\fP.
+.SS \fB[gml]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBparts=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.SS \fB[dot]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBparts=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.SS \fB[csv]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBparts=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBseparator=\fP\fICHAR\fP
+Set CSV separator. Default is a comma (\fB,\fP).
+.TP
+\fBquotechar=\fP\fICHAR\fP
+Set CSV quote character. Default is a double quote (\fB"\fP).
+.SS \fB[sql]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBparts=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBdbname=\fP\fISTRING\fP
+Set database name to store into. Default is \fBlinksdb\fP.
+.TP
+\fBseparator=\fP\fICHAR\fP
+Set SQL command separator character. Default is a semicolor (\fB;\fP).
+.SS \fB[html]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBparts=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBcolorbackground=\fP\fICOLOR\fP
+Set HTML background color. Default is \fB#fff7e5\fP.
+.TP
+\fBcolorurl=
+Set HTML URL color. Default is \fB#dcd5cf\fP.
+.TP
+\fBcolorborder=
+Set HTML border color. Default is \fB#000000\fP.
+.TP
+\fBcolorlink=
+Set HTML link color. Default is \fB#191c83\fP.
+.TP
+\fBcolorwarning=
+Set HTML warning color. Default is \fB#e0954e\fP.
+.TP
+\fBcolorerror=
+Set HTML error color. Default is \fB#db4930\fP.
+.TP
+\fBcolorok=
+Set HTML valid color. Default is \fB#3ba557\fP.
+.SS \fB[blacklist]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.SS \fB[xml]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBparts=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.SS \fB[gxml]\fP
+.TP
+\fBfilename=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBparts=\fP\fISTRING\fP
+See [text] section above.
+.TP
+\fBencoding=\fP\fISTRING\fP
+See [text] section above.
+.
+.SH "LOGGER PARTS"
+ \fBall\fP       (for all parts)
+ \fBrealurl\fP   (the full url link)
+ \fBresult\fP    (valid or invalid, with messages)
+ \fBextern\fP    (1 or 0, only in some logger types reported)
+ \fBbase\fP      (base href=...)
+ \fBname\fP      (<a href=...>name</a> and <img alt="name">)
+ \fBparenturl\fP (if any)
+ \fBinfo\fP      (some additional info, e.g. FTP welcome messages)
+ \fBwarning\fP   (warnings)
+ \fBdltime\fP    (download time)
+ \fBchecktime\fP (check time)
+ \fBurl\fP       (the original url name, can be relative)
+ \fBintro\fP     (the blurb at the beginning, "starting at ...")
+ \fBoutro\fP     (the blurb at the end, "found x errors ...")
+.SH MULTILINE
+Some option values can span multiple lines. Each line has to be indented
+for that to work:
+
+ ignore=
+    lconline
+    bookmark
+   ^mailto:
+.
+.SH EXAMPLE
+ [output]
+ log=html
+
+ [checking]
+ threads=5
+
+ [filtering]
+ ignorewarnings=anchor-not-found
+.
+.SH "SEE ALSO"
+linkchecker(1)
+.
+.SH AUTHOR
+Bastian Kleineidam <calvin@users.sourceforge.net>
+.
+.SH COPYRIGHT
+Copyright \(co 2000-2007 Bastian Kleineidam

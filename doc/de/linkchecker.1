@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH LINKCHECKER 1 10.3.2001 LinkChecker "LinkChecker commandline usage"
+.TH LINKCHECKER 1 2001\-03\-10 LinkChecker "LinkChecker auf der Kommandozeile"
 .SH NAME
 linkchecker \- prüfe HTML Dokumente auf ungültige Verknüpfungen
 .
@@ -34,9 +34,7 @@ Keine Verbindungen zu \fBmailto:\fP Rechnern, nur die URL Syntax wird geprüft. A
 anderen Verknüpfungen werden wie üblich geprüft:
   \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
 .br
-Überprüfung einer lokalen HTML Datei unter Unix:
-  \fBlinkchecker ../bla.html\fP
-.br
+\fBcolorwarning=\fP.br
 Überprüfung einer lokalen HTML Datei unter Windows:
   \fBlinkchecker c:\etemp\etest.html\fP
 .br
@@ -92,7 +90,7 @@ Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen.
 Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
 auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
 Seiten deren Inhalt wir bekommen können.
-
+.br
 Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
 enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle
 Applikationsfehler".
@@ -106,11 +104,12 @@ Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit
 \fB\-F\fP nützlich.
 .TP 
 \fB\-o\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP], \fB\-\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP]
-Spezifiziere die Ausgabe als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP,
-\fBdot\fP, \fBxml\fP, \fBnone\fP oder \fBblacklist\fP. Standardausgabe ist \fBtext\fP. Die
-verschiedenen Ausgabetypen sind weiter unten erklärt. \fIEnkodierung\fP gibt
-die Ausgabekodierung an, die Standardkodierung erfolgt mit dem eingestellten
-Zeichensatz des Systems. Gültige Enkodierungen sind unter
+Gib Ausgabetyp als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
+\fBnone\fP oder \fBblacklist\fP an.  Stadard Typ ist \fBtext\fP. Die verschiedenen
+Ausgabetypen sind unten dokumentiert.
+.br
+Das \fIENCODING\fP gibt die Ausgabekodierung an. Der Standard ist das der
+lokalen Spracheinstellung. Gültige Enkodierungen sind unter
 \fBhttp://docs.python.org/lib/standard\-encodings.html\fP aufgelistet.
 .TP 
 \fB\-F\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP], \fB\-\-file\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP]
@@ -155,12 +154,15 @@ bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
 .TP 
 \fB\-\-no\-follow\-url=\fP\fIREGEX\fP
 Prüfe URLs, welche dem angegebenen regulären Ausdruck entsprechen, aber
-verhindere die rekursive Prüfung. Diese Option kann mehrmals angegeben
-werden.
+führe keine Rekursion durch.
+.br
+Diese Option kann mehrmals angegeben werden.
 .TP 
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
 Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären
-Ausdruck entsprechen. Diese Option kann mehrmals angegeben werden.
+Ausdruck entsprechen.
+.br
+Diese Option kann mehrmals angegeben werden.
 .TP 
 \fB\-C\fP, \fB\-\-cookies\fP
 Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich Cookies, die
@@ -208,9 +210,15 @@ korrekte Syntax des Links geprüft.
 .TP 
 \fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
 Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt
-und nicht über einen Proxy angesprochen werden. Diese Option kann mehrmals
-angegeben werden.
-.
+und nicht über einen Proxy angesprochen werden.
+.br
+Diese Option kann mehrmals angegeben werden.
+
+.SH KONFIGURATIONSDATEIEN
+Konfigurationsdateien können alle obigen Optionen enthalten. Sie können
+zudem Optionen enthalten, welche nicht auf der Kommandozeile gesetzt werden
+können. Siehe \fBlinkcheckerrc\fP(5) für mehr Informationen.
+
 .SH AUSGABETYPEN
 Beachten Sie, dass standardmäßig nur Fehler und Warnungen protokolliert
 werden. Sie sollten die \fB\-\-verbose\fP Option benutzen, um eine komplette URL
@@ -354,6 +362,9 @@ Enkodierungen
 .br
 \fBhttp://www.amk.ca/python/howto/regex/\fP \- Dokumentation zu regulären
 Ausdrücken
+
+.SH "SIEHE AUCH"
+\fBlinkcheckerrc\fP(5)
 .
 .SH AUTHOR
 Bastian Kleineidam <calvin@users.sourceforge.net>
