@@ -150,7 +150,7 @@
 
 # specify hosts to contact directly without a proxy
 # value is a regular expression
-#noproxy=
+#noproxyfor=
 #  *\.intra
 #  .*myinternurl.*
 
