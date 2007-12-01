@@ -22,6 +22,7 @@ import telnetlib
 import urllib
 
 import urlbase
+import linkcheck.log
 
 
 class TelnetUrl (urlbase.UrlBase):
