@@ -16,11 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Cleanup task."""
 import time
-import linkcheck.i18n
-import linkcheck.strformat
-import linkcheck.configuration
 import task
-from console import stderr
 
 
 class Cleanup (task.CheckedTask):
