@@ -159,7 +159,7 @@ class FileUrl (urlbase.UrlBase):
         """
         if not self.valid:
             return ""
-        if self.has_content:
+        if self.data is not None:
             return self.data
         elif self.is_directory():
             return self.get_directory_content()
@@ -179,7 +179,6 @@ class FileUrl (urlbase.UrlBase):
         self.data = data.encode("iso8859-1", "ignore")
         self.dltime = time.time() - t
         self.dlsize = len(self.data)
-        self.has_content = True
         return self.data
 
     def is_html (self):

@@ -548,7 +548,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @return: URL content, decompressed and decoded
         @rtype: string
         """
-        if not self.has_content:
+        if self.data is None:
             self.method = "GET"
             response = self._get_http_response()
             tries, response = self.follow_redirections(response,
@@ -575,7 +575,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 f = StringIO.StringIO(self.data)
             self.data = f.read()
         self.dltime = time.time() - t
-        self.has_content = True
 
     def is_html (self):
         """

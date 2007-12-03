@@ -219,7 +219,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if not self.valid:
             return ""
-        if self.has_content:
+        if self.data is not None:
             return self.data
         t = time.time()
         if self.is_directory():
@@ -238,7 +238,6 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             buf.close()
         self.dltime = time.time() - t
         self.dlsize = len(self.data)
-        self.has_content = True
         return self.data
 
     def close_connection (self):

@@ -149,10 +149,8 @@ class UrlBase (object):
         self.checktime = 0
         # connection object
         self.url_connection = None
-        # data of url content
+        # data of url content,  (data == None) means no data is available
         self.data = None
-        # if data is filled
-        self.has_content = False
         # cache keys, are set by build_url() calling set_cache_keys()
         self.cache_url_key = None
         self.cache_content_key = None
@@ -597,12 +595,11 @@ class UrlBase (object):
         """
         Precondition: url_connection is an opened URL.
         """
-        if not self.has_content:
+        if self.data is None:
             t = time.time()
             self.data = self.url_connection.read()
             self.dltime = time.time() - t
             self.dlsize = len(self.data)
-            self.has_content = True
         return self.data
 
     def check_content (self, warningregex):
