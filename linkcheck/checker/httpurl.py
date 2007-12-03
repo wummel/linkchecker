@@ -574,7 +574,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                  tag=WARN_HTTP_DECOMPRESS_ERROR)
                 f = StringIO.StringIO(self.data)
             self.data = f.read()
-        self.downloadtime = time.time() - t
+        self.dltime = time.time() - t
         self.has_content = True
 
     def is_html (self):
