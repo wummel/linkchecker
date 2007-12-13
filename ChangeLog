@@ -72,6 +72,16 @@
     Added: doc/{en,de}/linkcheckerrc.5
     Changed: doc/po4a.conf
 
+  * Drop french translations, they are less than 20% complete for
+    years now.
+    Type: documentation
+    Removed: doc/fr/*
+
+  * Correct misnamed colums in create.sql script: r/*string/\1/g
+    Type: bugfix
+    Changed: config/create.sql
+    Closes: SF #1849733
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of
