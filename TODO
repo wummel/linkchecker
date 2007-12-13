@@ -1,3 +1,7 @@
+- [INTERFACE] Reporting cached results is duplicate info. Better let the
+  first encountered warning or error be reported, and skip the other ones
+  unless --verbose is given.
+
 - [BUG REPORT] the web interface only runs on the server it is installed on.
   The ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi don't work and
   are not (well) documented.
@@ -6,7 +10,7 @@
 
 - [FEATURE] Modernize the CGI HTML pages, use CSS.
 
-- [USAGE] make a nice GUI for linkchecker
+- [INTERFACE] make a nice GUI for linkchecker
 
 - [FEATURE] warn if overall size of page (including images/flash/etc.) is
   too big. Right now, the page size is only html content.
