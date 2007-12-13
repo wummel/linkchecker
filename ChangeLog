@@ -82,6 +82,13 @@
     Changed: config/create.sql
     Closes: SF #1849733
 
+  * Improved cookie parsing:
+    + Allow spaces in attribute values. Example:
+      "Set-Cookie: expires=Wed, 12-Dec-2001 19:27:57 GMT"
+      is now parsed correctly
+    Type: feature
+    Changed: linkcheck/cookies.py
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of

@@ -47,6 +47,24 @@ unquote = Cookie._unquote
 quote = Cookie._quote
 has_embedded_dot = re.compile(r"[a-zA-Z0-9]\.[a-zA-Z]").search
 
+
+# Pattern for finding cookie snatched from Pythons Cookie.py
+# Modification: allow whitespace in values.
+LegalChars  = r"\w\d!#%&'~_`><@,:/\$\*\+\-\.\^\|\)\(\?\}\{\="
+CookiePattern = re.compile(r"""
+    (?P<key>                   # Start of group 'key'
+    [%(legalchars)s]+?         # Any word of at least one letter, nongreedy
+    )                          # End of group 'key'
+    \s*=\s*                    # Equal Sign
+    (?P<val>                   # Start of group 'val'
+    "(?:[^\\"]|\\.)*"          # Any doublequoted string
+    |                          # or
+    [%(legalchars)s\s]*        # Any word or empty string
+    )                          # End of group 'val'
+    \s*;?                      # Probably ending in a semi-colon
+    """ % {"legalchars": LegalChars}, re.VERBOSE)
+
+
 class HttpCookie (object):
     """
     A cookie consists of one name-value pair with attributes.
@@ -188,7 +206,7 @@ class HttpCookie (object):
                     raise CookieError("invalid port number: %r" % port)
         self.attributes[key] = value
 
-    def parse (self, text, patt=Cookie._CookiePattern):
+    def parse (self, text, patt=CookiePattern):
         text = strformat.ascii_safe(text)
         # reset values
         self.name = None

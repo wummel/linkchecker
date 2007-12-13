@@ -86,6 +86,21 @@ class TestCookies (unittest.TestCase):
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
 
+    def test_netscape_cookie5 (self):
+        data = (
+            ("Foo", "Bar"),
+            ("Expires", "Wed, 12-Dec-2001 19:27:57 GMT"),
+            ("Path", "/"),
+        )
+        # note: values are without quotes
+        parts = ['%s=%s' % (key, value) for key, value in data]
+        value = "; ".join(parts)
+        scheme = "http"
+        host = "imadoofus.org"
+        path = "/"
+        cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
+        self.assert_(cookie.is_expired())
+
     def test_rfc_cookie1 (self):
         data = (
             ("Foo", "Bar"),
