@@ -175,8 +175,11 @@ class Logger (object):
         if self.filename is not None:
             self.start_fileoutput()
         if self.fd is None:
-            raise ValueError("write to non-file")
-        self.fd.write(self.encode(s), **args)
+            # Happens when aborting threads times out
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                "writing to unitialized or closed file")
+        else:
+            self.fd.write(self.encode(s), **args)
 
     def writeln (self, s=u"", **args):
         """
