@@ -501,8 +501,9 @@ data_files = [
 
 if os.name == 'posix':
     data_files.append(('share/man/man1', ['doc/en/linkchecker.1']))
+    data_files.append(('share/man/man5', ['doc/en/linkcheckerrc.5']))
     data_files.append(('share/man/de/man1', ['doc/de/linkchecker.1']))
-    data_files.append(('share/man/fr/man1', ['doc/fr/linkchecker.1']))
+    data_files.append(('share/man/de/man5', ['doc/de/linkcheckerrc.5']))
     data_files.append(('share/linkchecker/examples',
               ['config/linkchecker-completion',
                'doc/examples/check_blacklist.sh',
