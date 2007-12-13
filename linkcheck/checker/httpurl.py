@@ -555,26 +555,31 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                                        set_result=False)
             self.headers = response.msg
             self._read_content(response)
+            if self.data is None:
+                self.data = ""
         return self.data
 
     def _read_content (self, response):
         t = time.time()
-        self.data = response.read()
+        data = response.read()
         encoding = headers.get_content_encoding(self.headers)
         if encoding in _supported_encodings:
             try:
                 if encoding == 'deflate':
-                    f = StringIO.StringIO(zlib.decompress(self.data))
+                    f = StringIO.StringIO(zlib.decompress(data))
                 else:
                     f = linkcheck.gzip2.GzipFile('', 'rb', 9,
-                                      StringIO.StringIO(self.data))
+                                      StringIO.StringIO(data))
             except zlib.error, msg:
                 self.add_warning(_("Decompress error %(err)s") %
                                  {"err": str(msg)},
                                  tag=WARN_HTTP_DECOMPRESS_ERROR)
-                f = StringIO.StringIO(self.data)
-            self.data = f.read()
-        self.dltime = time.time() - t
+                f = StringIO.StringIO(data)
+            data = f.read()
+        if self.data is None and self.method == "GET" and \
+           response.status not in [301, 302]:
+            self.data = data
+            self.dltime = time.time() - t
 
     def is_html (self):
         """
