@@ -77,6 +77,7 @@ class TestCookies (unittest.TestCase):
     def test_netscape_cookie4 (self):
         data = (
             ("Foo", "Bar\""),
+            ("Domain", "localhost"),
             ("Port", "100,555,76"),
         )
         parts = ['%s="%s"' % (key, value) for key, value in data]
@@ -89,6 +90,7 @@ class TestCookies (unittest.TestCase):
     def test_netscape_cookie5 (self):
         data = (
             ("Foo", "Bar"),
+            ("Domain", "imadoofus.org"),
             ("Expires", "Wed, 12-Dec-2001 19:27:57 GMT"),
             ("Path", "/"),
         )

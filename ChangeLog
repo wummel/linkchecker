@@ -86,6 +86,8 @@
     + Allow spaces in attribute values. Example:
       "Set-Cookie: expires=Wed, 12-Dec-2001 19:27:57 GMT"
       is now parsed correctly
+    + Add an optional leading dot for domain names, and account for that
+      in the domain checking routine.
     Type: feature
     Changed: linkcheck/cookies.py
 

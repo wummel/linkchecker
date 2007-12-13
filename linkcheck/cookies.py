@@ -152,10 +152,16 @@ class HttpCookie (object):
             return False
         cdomain = self.attributes["domain"]
         if domain == cdomain:
+            # equality matches
+            return True
+        if "." not in domain and domain == cdomain[1:]:
+            # "localhost" and ".localhost" match
             return True
         if not domain.endswith(cdomain):
+            # any suffix matches
             return False
         if "." in domain[:-len(cdomain)]:
+            # prefix must be dot-free
             return False
         return True
 
@@ -185,9 +191,11 @@ class HttpCookie (object):
         if key == "domain":
             value = value.lower()
             if not value.startswith("."):
-                raise CookieError("domain has no leading dot: %r" % value)
-            if not has_embedded_dot(value):
-                raise CookieError("domain has no embedded dot: %r" % value)
+                if not has_embedded_dot(value):
+                    if "." in value:
+                        raise CookieError("invalid dot in domain %r" % value)
+                    # supply a leading dot
+                    value = "."+value
         if key == "max-age":
             try:
                 num = int(value)
