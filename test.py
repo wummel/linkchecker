@@ -1,5 +1,5 @@
 #!/usr/bin/python2.4
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 #
 # SchoolTool - common information systems platform for school administration
 # Copyright (c) 2003 Shuttleworth Foundation
@@ -39,7 +39,6 @@ Options:
   -vv                   very verbose (print test names)
   -q                    quiet (do not print anything on success)
   -c                    colorize output
-  -w                    enable warnings about omitted test cases
   -d                    invoke pdb when an exception occurs
   -1                    report only the first failure in doctests
   -p                    show progress bar (can be combined with -v or -vv)
@@ -47,8 +46,8 @@ Options:
   --all-levels          select all tests
   --list-files          list all selected test files
   --list-tests          list all selected test cases
-  --list-hooks          list all loaded test hooks
   --coverage            create code coverage reports
+  --profile             profile the unit tests
   --search-in dir       limit directory tree walk to dir (optimisation)
   --immediate-errors    show errors as soon as they happen (default)
   --delayed-errors      show errors after all tests were run
@@ -69,7 +68,6 @@ import unittest
 import traceback
 import linecache
 import pdb
-from sets import Set
 
 __metaclass__ = type
 
@@ -88,7 +86,7 @@ class Options:
     """Configurable properties of the test runner."""
 
     # test location
-    basedir = ''                # base directory for tests (defaults to
+    basedir = 'src'                # base directory for tests (defaults to
                                 # basedir of argv[0]), must be absolute
     search_in = ()              # list of subdirs to traverse (defaults to
                                 # basedir)
@@ -106,15 +104,13 @@ class Options:
     # actions to take
     list_files = False          # --list-files
     list_tests = False          # --list-tests
-    list_hooks = False          # --list-hooks
     run_tests = True            # run tests (disabled by --list-foo)
     postmortem = False          # invoke pdb when an exception occurs
+    profile = False
 
     # output verbosity
     verbosity = 0               # verbosity level (-v)
     quiet = 0                   # do not print anything on success (-q)
-    warn_omitted = False        # produce warnings when a test case is
-                                # not included in a test suite (-w)
     first_doctest_failure = False # report first doctest failure (-1)
     print_import_time = True    # print time taken to import test modules
                                 # (currently hardcoded)
@@ -275,20 +271,6 @@ def get_all_test_cases(module):
     return results
 
 
-def get_test_classes_from_testsuite(suite):
-    """Return a set of test case classes used in a test suite."""
-    if not isinstance(suite, unittest.TestSuite):
-        raise TypeError('not a TestSuite', suite)
-    results = Set()
-    for test in suite._tests:
-        if isinstance(test, unittest.TestCase):
-            results.add(test.__class__)
-        else:
-            classes = get_test_classes_from_testsuite(test)
-            results.update(classes)
-    return results
-
-
 def get_test_cases(test_files, cfg, tracer=None):
     """Return a list of test cases from a given list of test modules."""
     matcher = compile_matcher(cfg.test_regex)
@@ -296,31 +278,17 @@ def get_test_cases(test_files, cfg, tracer=None):
     startTime = time.time()
     for file in test_files:
         module = import_module(file, cfg, tracer=tracer)
-        try:
-            func = module.test_suite
-        except AttributeError:
-            print >> sys.stderr
-            print >> sys.stderr, ("%s: WARNING: there is no test_suite"
-                                  " function" % file)
-            print >> sys.stderr
-            continue
+        def get_test_suite ():
+            suite = unittest.TestSuite()
+            for test_case in get_all_test_cases(module):
+                suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(test_case))
+            return suite
         if tracer is not None:
-            test_suite = tracer.runfunc(func)
+            test_suite = tracer.runfunc(get_test_suite)
         else:
-            test_suite = func()
+            test_suite = get_test_suite()
         if test_suite is None:
             continue
-        if cfg.warn_omitted:
-            all_classes = Set(get_all_test_cases(module))
-            classes_in_suite = get_test_classes_from_testsuite(test_suite)
-            difference = all_classes - classes_in_suite
-            for test_class in difference:
-                # surround the warning with blank lines, otherwise it tends
-                # to get lost in the noise
-                print >> sys.stderr
-                print >> sys.stderr, ("%s: WARNING: %s not in test suite"
-                                      % (file, test_class.__name__))
-                print >> sys.stderr
         if (cfg.level is not None and
             getattr(test_suite, 'level', 0) > cfg.level):
             continue
@@ -333,24 +301,6 @@ def get_test_cases(test_files, cfg, tracer=None):
         plural = (nmodules != 1) and 's' or ''
         print "Imported %d module%s in %.3fs" % (nmodules, plural, timeTaken)
         print
-    return results
-
-
-def get_test_hooks(test_files, cfg, tracer=None):
-    """Return a list of test hooks from a given list of test modules."""
-    results = []
-    dirs = Set(map(os.path.dirname, test_files))
-    dirs = list(dirs)
-    dirs.sort()
-    for dir in dirs:
-        filename = os.path.join(dir, 'checks.py')
-        if os.path.exists(filename):
-            module = import_module(filename, cfg, tracer=tracer)
-            if tracer is not None:
-                hooks = tracer.runfunc(module.test_hooks)
-            else:
-                hooks = module.test_hooks()
-            results.extend(hooks)
     return results
 
 
@@ -493,12 +443,11 @@ class CustomTestResult(unittest._TextTestResult):
     __super_printErrors = __super.printErrors
     __super_printErrorList = __super.printErrorList
 
-    def __init__(self, stream, descriptions, verbosity, count, cfg, hooks):
+    def __init__(self, stream, descriptions, verbosity, count, cfg):
         self.__super_init(stream, descriptions, verbosity)
         self.skipped = []
         self.count = count
         self.cfg = cfg
-        self.hooks = hooks
         if cfg.progress:
             self.dots = False
             self._lastWidth = 0
@@ -526,14 +475,7 @@ class CustomTestResult(unittest._TextTestResult):
             self.stream.flush()
         self.__super_startTest(test)  # increments testsRun by one and prints
         self.testsRun = n # override the testsRun calculation
-        for hook in self.hooks:
-            hook.startTest(test)
         self.start_time = time.time()
-
-    def stopTest(self, test):
-        for hook in self.hooks:
-            hook.stopTest(test)
-        self.__super_stopTest(test)
 
     def getDescription(self, test):
         return test.id() # package.module.class.method
@@ -733,13 +675,9 @@ class CustomTestRunner(unittest.TextTestRunner):
     __super_init = __super.__init__
     __super_run = __super.run
 
-    def __init__(self, cfg, hooks=None, stream=sys.stdout, count=None):
+    def __init__(self, cfg, stream=sys.stdout, count=None):
         self.__super_init(verbosity=cfg.verbosity, stream=stream)
         self.cfg = cfg
-        if hooks is not None:
-            self.hooks = hooks
-        else:
-            self.hooks = []
         self.count = count
 
     def run(self, test):
@@ -786,12 +724,35 @@ class CustomTestRunner(unittest.TextTestRunner):
 
     def _makeResult(self):
         return CustomTestResult(self.stream, self.descriptions, self.verbosity,
-                                cfg=self.cfg, count=self.count,
-                                hooks=self.hooks)
+                                cfg=self.cfg, count=self.count)
+
+def run_tests (cfg, test_cases, tracer):
+    from django.test import utils
+    from django.conf import settings
+    runner = CustomTestRunner(cfg, count=len(test_cases))
+    utils.setup_test_environment()
+    suite = unittest.TestSuite()
+    suite.addTests(test_cases)
+    old_name = settings.DATABASE_NAME
+    utils.create_test_db(0, autoclobber=True)
+    if tracer is not None:
+        success = tracer.runfunc(runner.run, suite).wasSuccessful()
+        results = tracer.results()
+        results.write_results(show_missing=True, coverdir=cfg.coverdir)
+    else:
+        if cfg.profile:
+            import hotshot
+            prof = hotshot.Profile("unittesttest.prof")
+            prof.start()
+        success = runner.run(suite).wasSuccessful()
+        if cfg.profile:
+            prof.stop()
+    utils.destroy_test_db(old_name, 0)
+    utils.teardown_test_environment()
+
 
 def main(argv):
     """Main program."""
-
     # Environment
     if sys.version_info < (2, 3):
         print >> sys.stderr, '%s: need Python 2.3 or later' % argv[0]
@@ -800,8 +761,8 @@ def main(argv):
 
     # Defaults
     cfg = Options()
-    cfg.basedir = os.path.dirname(argv[0])
-    cfg.basedir = os.path.abspath(cfg.basedir)
+    if not cfg.basedir:
+        cfg.basedir = os.path.abspath(os.path.dirname(argv[0]))
 
     # Figure out terminal size
     try:
@@ -820,11 +781,11 @@ def main(argv):
     # Option processing
     try:
         opts, args = getopt.gnu_getopt(argv[1:], 'hvpcqwd1s:',
-                               ['list-files', 'list-tests', 'list-hooks',
+                               ['list-files', 'list-tests',
                                 'level=', 'all-levels', 'coverage',
                                 'search-in=', 'immediate-errors',
                                 'delayed-errors', 'help',
-                                'resource=',
+                                'resource=', 'profile',
                                ])
     except getopt.error, e:
         print >> sys.stderr, '%s: %s' % (argv[0], e)
@@ -848,8 +809,6 @@ def main(argv):
             cfg.quiet = True
         elif k == '-d':
             cfg.postmortem = True
-        elif k == '-w':
-            cfg.warn_omitted = True
         elif k == '-1':
             cfg.first_doctest_failure = True
         elif k == '--list-files':
@@ -858,11 +817,10 @@ def main(argv):
         elif k == '--list-tests':
             cfg.list_tests = True
             cfg.run_tests = False
-        elif k == '--list-hooks':
-            cfg.list_hooks = True
-            cfg.run_tests = False
         elif k == '--coverage':
             cfg.coverage = True
+        elif k == '--profile':
+            cfg.profile = True
         elif k == '--resource':
             cfg.resources.append(v)
         elif k == '--level':
@@ -875,13 +833,12 @@ def main(argv):
         elif k == '--all-levels':
             cfg.level = None
         elif k in ('-s', '--search-in'):
-            dir = os.path.abspath(v)
-            if not dir.startswith(cfg.basedir):
+            if not v.startswith(cfg.basedir):
                 print >> sys.stderr, ('%s: argument to --search-in (%s) must'
                                       ' be a subdir of %s'
                                       % (argv[0], v, cfg.basedir))
                 return 1
-            cfg.search_in += (dir, )
+            cfg.search_in += (v, )
         elif k == '--immediate-errors':
             cfg.immediate_errors = True
         elif k == '--delayed-errors':
@@ -904,7 +861,7 @@ def main(argv):
 
     # Do not print "Imported %d modules in %.3fs" if --list-* was specified
     # or if quiet mode is enabled.
-    if cfg.quiet or cfg.list_tests or cfg.list_hooks or cfg.list_files:
+    if cfg.quiet or cfg.list_tests or cfg.list_files:
         cfg.print_import_time = False
 
     # Set up the python path
@@ -930,8 +887,6 @@ def main(argv):
     test_files = get_test_files(cfg)
     if cfg.list_tests or cfg.run_tests:
         test_cases = get_test_cases(test_files, cfg, tracer=tracer)
-    if cfg.list_hooks or cfg.run_tests:
-        test_hooks = get_test_hooks(test_files, cfg, tracer=tracer)
 
     # Configure doctests
     if cfg.first_doctest_failure:
@@ -952,18 +907,8 @@ def main(argv):
         print "\n".join([fn[baselen:] for fn in test_files])
     if cfg.list_tests:
         print "\n".join([test.id() for test in test_cases])
-    if cfg.list_hooks:
-        print "\n".join([str(hook) for hook in test_hooks])
     if cfg.run_tests:
-        runner = CustomTestRunner(cfg, test_hooks, count=len(test_cases))
-        suite = unittest.TestSuite()
-        suite.addTests(test_cases)
-        if tracer is not None:
-            success = tracer.runfunc(runner.run, suite).wasSuccessful()
-            results = tracer.results()
-            results.write_results(show_missing=True, coverdir=cfg.coverdir)
-        else:
-            success = runner.run(suite).wasSuccessful()
+        run_tests(cfg, test_cases, tracer)
 
     # That's all
     if success:
