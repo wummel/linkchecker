@@ -3,6 +3,8 @@ linkchecker (4.8-1) unstable; urgency=low
   * New upstream release.
     + Prevent double encoding in HTML info output (Closes: #446918)
   * Add Homepage: field to control info.
+  * Standards version 3.7.3
+  * Remove empty lintian overrides directory from package
   * Rename debian/NEWS.Debian to debian/NEWS, which actually installs
     this file as NEWS.Debian :/
 
