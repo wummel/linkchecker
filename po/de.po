@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
 "POT-Creation-Date: 2007-07-23 00:49+0200\n"
-"PO-Revision-Date: 2007-07-23 00:51+0100\n"
+"PO-Revision-Date: 2007-12-14 12:05+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: ../linkcheck/logger/dot.py:48
 #, python-format
 msgid "created by %(app)s at %(time)s"
-msgstr "erstellt von %(app)s um %(time)s"
+msgstr "erstellt von %(app)s am %(time)s"
 
 #: ../linkcheck/logger/csvlog.py:62
 #: ../linkcheck/logger/gml.py:51
@@ -919,7 +919,6 @@ msgstr ""
 "  unbedingt derselbe wie der des Benutzers sein.\n"
 
 #: ../linkchecker:71
-#, fuzzy
 msgid ""
 "PROXY SUPPORT\n"
 "To use a proxy set $http_proxy, $https_proxy, $ftp_proxy,\n"
@@ -930,7 +929,7 @@ msgid ""
 msgstr ""
 "PROXY UNTERSTÜTZUNG\n"
 "Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy,\n"
-" $ftp_proxy, $gopher_proxy  unter Unix oder Windows auf die Proxy URL.\n"
+" $ftp_proxy, unter Unix oder Windows auf die Proxy URL.\n"
 "Die URL sollte die Form \"http://[<user>:<pass>@]<host>[:port]\" besitzen,\n"
 "zum Beispiel \"http://localhost:8080\", oder \"http://joe:test@proxy.domain\".\n"
 "Auf einem Mac benutzen Sie die Internet Konfiguration, um einen Proxy auszuwählen.\n"
@@ -1534,7 +1533,7 @@ msgid "ambiguous option: %s (%s?)"
 msgstr "Mehrdeutige Option: %s (%s?)"
 
 #: /usr/lib/python2.5/optparse.py:368
-#, fuzzy, python-format
+#, python-format
 msgid "Usage: %s\n"
 msgstr "Syntax: %s\n"
 
@@ -1598,7 +1597,6 @@ msgid "%s option does not take a value"
 msgstr "%s Option nimmt kein Wert"
 
 #: /usr/lib/python2.5/optparse.py:1605
-#, fuzzy
 msgid "Options"
 msgstr "Optionen"
 
