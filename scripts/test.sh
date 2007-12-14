@@ -4,7 +4,7 @@ RESOURCES=`$P/resources.sh`
 if [ $# -eq 0 ]; then
     coverage="--coverage"
 fi
-$P/run.sh test.py $RESOURCES $coverage -pvcw "$@"
+$P/run.sh test.py $RESOURCES $coverage -pvc "$@"
 res=$?
 if [ $# -eq 0 ]; then
     # remove files with 100% coverage
