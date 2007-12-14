@@ -57,7 +57,7 @@ class Logger (object):
             if tag not in self.ignorewarnings:
                 has_warnings = True
                 break
-        do_print = self.verbose or not url_data.valid or \
-            (has_warnings and self.warnings)
+        do_print = self.verbose or not (url_data.cached or
+            (url_data.valid and not (has_warnings and self.warnings)))
         for log in self.logs:
             log.log_filter_url(url_data, do_print)

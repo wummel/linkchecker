@@ -69,8 +69,12 @@ class Logger (object):
         self.number = 0
         # number of encountered errors
         self.errors = 0
-        # number of encountered warningss
+        # number of errors that were printed
+        self.errors_printed = 0
+        # number of warnings
         self.warnings = 0
+        # number of warnings that were printed
+        self.warnings_printed = 0
         # encoding of output
         default = linkcheck.i18n.default_encoding
         self.output_encoding = args.get("encoding", default)
@@ -233,8 +237,12 @@ class Logger (object):
         self.number += 1
         if not url_data.valid:
             self.errors += 1
-        self.warnings += len(url_data.warnings)
+            if do_print:
+                self.errors_printed += 1
+        num_warnings = len(url_data.warnings)
+        self.warnings += num_warnings
         if do_print:
+            self.warnings_printed += num_warnings
             self.log_url(url_data)
 
     @linkcheck.decorators.notimplemented

@@ -1,7 +1,3 @@
-- [INTERFACE] Reporting cached results is duplicate info. Better let the
-  first encountered warning or error be reported, and skip the other ones
-  unless --verbose is given.
-
 - [BUG REPORT] the web interface only runs on the server it is installed on.
   The ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi don't work and
   are not (well) documented.

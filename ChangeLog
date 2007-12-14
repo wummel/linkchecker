@@ -91,6 +91,12 @@
     Type: feature
     Changed: linkcheck/cookies.py
 
+  * Don't print cached errors or warnings unless verbose output is
+    requested.
+    Type: feature
+    Changed: linkcheck/director/logger.py,
+      linkcheck/logger/{__init__,html,text}.py
+
 4.7 "300" (released 17.6.2007)
 
   * Mention in the documentation that --anchors enables logging of
