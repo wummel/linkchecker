@@ -1,13 +1,13 @@
 # This Makefile is only used by developers.
-PYVER := 2.4
-PYTHON := python$(PYVER)
-VERSION := $(shell $(PYTHON) setup.py --version)
+PYVER=2.4
+PYTHON=python$(PYVER)
+VERSION=$(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
-PYTHONSVN := /home/calvin/src/python-svn
+PYTHONSVN=/home/calvin/src/python-svn
 # build dir for svn-buildpackage
-SVNBUILD:=/home/calvin/src/build-area
-DEB_ORIG_TARGET:=$(SVNBUILD)/linkchecker_$(VERSION).orig.tar.gz
+SVNBUILD=/home/calvin/src/build-area
+DEB_ORIG_TARGET=$(SVNBUILD)/linkchecker_$(VERSION).orig.tar.gz
 
 
 .PHONY: all
