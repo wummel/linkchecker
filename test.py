@@ -86,7 +86,7 @@ class Options:
     """Configurable properties of the test runner."""
 
     # test location
-    basedir = 'src'                # base directory for tests (defaults to
+    basedir = '.'                # base directory for tests (defaults to
                                 # basedir of argv[0]), must be absolute
     search_in = ()              # list of subdirs to traverse (defaults to
                                 # basedir)
@@ -727,14 +727,9 @@ class CustomTestRunner(unittest.TextTestRunner):
                                 cfg=self.cfg, count=self.count)
 
 def run_tests (cfg, test_cases, tracer):
-    from django.test import utils
-    from django.conf import settings
     runner = CustomTestRunner(cfg, count=len(test_cases))
-    utils.setup_test_environment()
     suite = unittest.TestSuite()
     suite.addTests(test_cases)
-    old_name = settings.DATABASE_NAME
-    utils.create_test_db(0, autoclobber=True)
     if tracer is not None:
         success = tracer.runfunc(runner.run, suite).wasSuccessful()
         results = tracer.results()
@@ -747,8 +742,6 @@ def run_tests (cfg, test_cases, tracer):
         success = runner.run(suite).wasSuccessful()
         if cfg.profile:
             prof.stop()
-    utils.destroy_test_db(old_name, 0)
-    utils.teardown_test_environment()
 
 
 def main(argv):
