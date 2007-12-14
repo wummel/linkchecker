@@ -4,9 +4,6 @@ PYTHON := python$(PYVER)
 VERSION := $(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
-# all Python files in the source
-PYFILES = $(wildcard *.py) linkchecker linkcheck tests
-PYFLAKES:=python$(PYVER) /usr/bin/pyflakes
 PYTHONSVN := /home/calvin/src/python-svn
 # build dir for svn-buildpackage
 SVNBUILD:=/home/calvin/src/build-area
@@ -120,13 +117,11 @@ dist-stamp: changelog
 # So for other developers there is no need to execute this target.
 .PHONY: check
 check:
-	py-verify $(PYFILES)
-	py-find-nocoding $(PYFILES)
+	py-verify
+	py-find-nocoding
 	check-nosvneolstyle
 	check-pofiles
-	py24-tabnanny $(PYFILES)
-
-
+	py24-tabnanny
 
 .PHONY: releasecheck
 releasecheck: check
@@ -149,7 +144,7 @@ test:	localbuild
 
 .PHONY: pyflakes
 pyflakes:
-	$(PYFLAKES) $(PYFILES) | \
+	pyflakes | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'"
@@ -165,13 +160,6 @@ diff:
 	  echo "Comparing $${f}.py"; \
 	  diff -u linkcheck/$${f}2.py $(PYTHONSVN)/Lib/$${f}.py | less; \
 	done
-
-# various python check scripts
-.PHONY: various
-various:
-	py-find-nocoding $(PYFILES)
-	py-find-nosvneolstyle $(PYFILES)
-
 
 .PHONY: changelog
 changelog:
