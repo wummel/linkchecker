@@ -116,12 +116,15 @@ dist-stamp: changelog
 	$(MAKE) dist
 	touch $@
 
+# The check programs used here are mostly local scripts on my private system.
+# So for other developers there is no need to execute this target.
 .PHONY: check
 check:
 	py-verify $(PYFILES)
 	py-find-nocoding $(PYFILES)
 	check-nosvneolstyle
-	python2.4 /usr/lib/python2.4/tabnanny.py $(PYFILES)
+	check-pofiles
+	py24-tabnanny $(PYFILES)
 
 
 
