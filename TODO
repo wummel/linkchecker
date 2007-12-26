@@ -18,3 +18,9 @@
 - [FEATURE] Virus check
 
 - [FEATURE] Allow specifying proxy data in the web interface
+
+- [FEATURE] Parse and check URLs from SWF files. Looks like there are no
+  Python SWF parsers that I could use for that (2007-12-26), but there
+  is a Perl module at http://www.thegestalt.org/flash/stuff/.
+  Alternatively just do a strings(1) like search and try to recognize
+  URL patterns. Seems to be much easier.
