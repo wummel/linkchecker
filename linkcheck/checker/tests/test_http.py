@@ -42,6 +42,7 @@ class TestHttp (httptest.HttpServerTest):
             self.robots_txt_test()
             self.robots_txt2_test()
             self.noproxyfor_test()
+            self.swf_test()
         finally:
             self.stop_server()
 
@@ -144,6 +145,21 @@ class TestHttp (httptest.HttpServerTest):
         self.direct(url, resultlines, recursionlevel=0,
                     confargs=confargs)
         del os.environ["http_proxy"]
+
+    def swf_test (self):
+        url = u"http://localhost:%d/linkcheck/checker/tests/data/" \
+              u"test.swf" % self.port
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
+            u"url http://www.imadoofus.org/",
+            u"cache key http://www.imadoofus.org/",
+            u"real url http://www.imadoofus.org/",
+            u"error",
+        ]
+        self.direct(url, resultlines, recursionlevel=1)
 
 
 def get_cookie (maxage=2000):

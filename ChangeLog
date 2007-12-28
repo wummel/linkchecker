@@ -1,3 +1,7 @@
+4.9 "" (released xx.xx.2008)
+
+  * Parse Shockwave Flash (SWF) for URLs to check.
+
 4.8 "Hallam Foe" (released 16.12.2007)
 
   * Fix message typo for not disclosing information.

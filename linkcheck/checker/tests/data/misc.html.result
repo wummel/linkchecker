@@ -28,3 +28,10 @@ url
 cache key None
 real url None
 error
+
+url test.swf
+cache key file:///home/calvin/src/linkchecker-svn/linkcheck/checker/tests/data/test.swf
+real url file:///home/calvin/src/linkchecker-svn/linkcheck/checker/tests/data/test.swf
+name SWF
+valid
+

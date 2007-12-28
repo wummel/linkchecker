@@ -129,8 +129,22 @@ Warnings = {
 }
 
 # file extensions we can parse recursively
-extensions = {
+PARSE_EXTENSIONS = {
     "html": re.compile(r'(?i)\.s?html?$'),
     "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
     "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
+    "swf": re.compile(r'(?i)\.swf$'), # SWF file
+}
+
+PARSE_MIMETYPES = (
+    "text/html",
+    "text/css",
+    "application/x-shockwave-flash",
+)
+
+# if file extension lookup was unsuccessful, look at the content
+PARSE_CONTENTS = {
+    "html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
+    "opera" : re.compile(r'^Opera Hotlist'),
+    "text" : re.compile(r'(?i)^# LinkChecker URL list'),
 }

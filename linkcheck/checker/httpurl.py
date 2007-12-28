@@ -39,7 +39,8 @@ import proxysupport
 from const import WARN_HTTP_ROBOTS_DENIED, WARN_HTTP_NO_ANCHOR_SUPPORT, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
-    WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING
+    WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
+    PARSE_MIMETYPES
 
 # helper alias
 unicode_safe = linkcheck.strformat.unicode_safe
@@ -619,8 +620,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if not (self.valid and self.headers):
             return False
-        if headers.get_content_type(self.headers) not in \
-           ("text/html", "text/css"):
+        if headers.get_content_type(self.headers) not in PARSE_MIMETYPES:
             return False
         encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
@@ -634,11 +634,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         Parse file contents for new links to check.
         """
-        ptype = headers.get_content_type(self.headers)
-        if ptype == "text/html":
+        ctype = headers.get_content_type(self.headers)
+        if ctype == "text/html":
             self.parse_html()
-        elif ptype == "text/css":
+        elif ctype == "text/css":
             self.parse_css()
+        elif ctype == "application/x-shockwave-flash":
+            self.parse_swf()
 
     def get_robots_txt_url (self):
         """

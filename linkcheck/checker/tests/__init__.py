@@ -190,7 +190,6 @@ class LinkCheckTest (unittest.TestCase):
         logargs = {'expected': self.get_resultlines(filename)}
         aggregate = get_test_aggregate(confargs, logargs)
         url_data = get_url_from(url, 0, aggregate)
-        # XXX if assume_local
         linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
         linkcheck.director.check_urls(aggregate)
@@ -216,7 +215,6 @@ class LinkCheckTest (unittest.TestCase):
             logargs['parts'] = parts
         aggregate = get_test_aggregate(confargs, logargs)
         url_data = get_url_from(url, 0, aggregate)
-        # XXX if assume_local:
         linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
         linkcheck.director.check_urls(aggregate)

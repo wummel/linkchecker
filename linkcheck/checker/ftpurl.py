@@ -28,7 +28,7 @@ import proxysupport
 import httpurl
 import internpaturl
 import linkcheck.ftpparse._ftpparse as ftpparse
-from const import WARN_FTP_MISSING_SLASH
+from const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS, PARSE_CONTENTS
 
 DEFAULT_TIMEOUT_SECS = 300
 
@@ -180,7 +180,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         See if URL target is a HTML file by looking at the extension.
         """
-        if linkcheck.checker.const.extensions['html'].search(self.url):
+        if PARSE_EXTENSIONS['html'].search(self.url):
             return True
         return False
 
@@ -190,7 +190,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if self.is_directory():
             return True
-        for ro in linkcheck.checker.const.extensions.itervalues():
+        for ro in PARSE_EXTENSIONS.itervalues():
             if ro.search(self.url):
                 return True
         return False
@@ -208,7 +208,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in linkcheck.checker.const.extensions.iteritems():
+        for key, ro in PARSE_EXTENSIONS.iteritems():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
 

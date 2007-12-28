@@ -29,14 +29,8 @@ import urlbase
 import linkcheck.log
 import linkcheck.checker
 import linkcheck.fileutil
-from const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
-
-# if file extension lookup was unsuccessful, look at the content
-contents = {
-    "html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
-    "opera" : re.compile(r'^Opera Hotlist'),
-    "text" : re.compile(r'(?i)^# LinkChecker URL list'),
-}
+from const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH, \
+    PARSE_EXTENSIONS, PARSE_CONTENTS
 
 
 def get_files (dirname):
@@ -185,9 +179,9 @@ class FileUrl (urlbase.UrlBase):
         """
         Check if file is a parseable HTML file.
         """
-        if linkcheck.checker.const.extensions['html'].search(self.url):
+        if PARSE_EXTENSIONS['html'].search(self.url):
             return True
-        if contents['html'].search(self.get_content()):
+        if PARSE_CONTENTS['html'].search(self.get_content()):
             return True
         return False
 
@@ -232,12 +226,12 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             return True
         # guess by extension
-        for ro in linkcheck.checker.const.extensions.itervalues():
+        for ro in PARSE_EXTENSIONS.itervalues():
             if ro.search(self.url):
                 return True
         # try to read content (can fail, so catch error)
         try:
-            for ro in contents.itervalues():
+            for ro in PARSE_CONTENTS.itervalues():
                 if ro.search(self.get_content()[:30]):
                     return True
         except IOError:
@@ -251,11 +245,11 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in linkcheck.checker.const.extensions.iteritems():
+        for key, ro in PARSE_EXTENSIONS.iteritems():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
                 return
-        for key, ro in contents.iteritems():
+        for key, ro in PARSE_CONTENTS.iteritems():
             if ro.search(self.get_content()[:30]):
                 getattr(self, "parse_"+key)()
                 return

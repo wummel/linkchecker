@@ -731,6 +731,16 @@ class UrlBase (object):
                              parent_url=self.url, line=lineno, column=column)
                 self.aggregate.urlqueue.put(url_data)
 
+    def parse_swf (self):
+        """Parse a SWF file for URLs."""
+        linkfinder = linkcheck.linkparse.swf_url_re.finditer
+        for mo in linkfinder(self.get_content()):
+            url = mo.group()
+            url_data = linkcheck.checker.get_url_from(url,
+                         self.recursion_level+1, self.aggregate,
+                         parent_url=self.url)
+            self.aggregate.urlqueue.put(url_data)
+
     def serialized (self):
         """
         Return serialized url check data as unicode string.

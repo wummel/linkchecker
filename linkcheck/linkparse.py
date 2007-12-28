@@ -22,6 +22,7 @@ import re
 import linkcheck.strformat
 import linkcheck.linkname
 import linkcheck.log
+import linkcheck.url
 
 MAX_NAMELEN = 256
 unquote = linkcheck.strformat.unquote
@@ -63,6 +64,7 @@ LinkTags = {
 refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
 _quoted_pat = ur"('[^']+'|\"[^\"]+\"|[^\)\s]+)"
 css_url_re = re.compile(ur"url\(\s*(?P<url>%s)\s*\)" % _quoted_pat)
+swf_url_re = re.compile("(?i)%s" % linkcheck.url.safe_url_pattern)
 c_comment_re = re.compile(ur"/\*.*?\*/", re.DOTALL)
 
 def strip_c_comments (text):
