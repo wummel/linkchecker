@@ -2730,7 +2730,7 @@ static yyconst flex_int32_t yy_rule_linenum[132] =
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 #line 1 "htmllex.l"
-/* Copyright (C) 2000-2007 Bastian Kleineidam
+/* Copyright (C) 2000-2008 Bastian Kleineidam
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

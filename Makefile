@@ -120,6 +120,7 @@ check:
 	py-verify
 	py-find-nocoding
 	check-nosvneolstyle
+	check-copyright
 	check-pofiles
 	py24-tabnanny
 
