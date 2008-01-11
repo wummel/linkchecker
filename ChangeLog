@@ -1,6 +1,8 @@
 4.9 "" (released xx.xx.2008)
 
-  * Parse Shockwave Flash (SWF) for URLs to check.
+  * Parse Shockwave Flash (SWF) for URLs to check
+  * Don't parse <script for=""> attributes since they specify IDs, not
+    URLs..
 
 4.8 "Hallam Foe" (released 16.12.2007)
 

@@ -51,7 +51,7 @@ LinkTags = {
     'meta':     [u'content', u'href'],
     'object':   [u'classid', u'data', u'archive', u'usemap'],
     'q':        [u'cite'],
-    'script':   [u'src', u'for'],
+    'script':   [u'src'],
     'table':    [u'background'],
     'td':       [u'background'],
     'th':       [u'background'],
