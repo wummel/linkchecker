@@ -17,4 +17,4 @@ _linkcheck() {
     fi
     return 0
 }
-[ "$have" ] && complete -F _linkcheck linkchecker
+[ "$have" ] && complete $filenames -F _linkcheck linkchecker
