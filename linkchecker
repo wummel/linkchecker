@@ -498,7 +498,18 @@ optparser.add_option_group(group)
 ################# auto completion #####################
 if has_optcomplete:
     import optcomplete
-    optcomplete.autocomplete(optparser)
+    def FileCompleter (cwd, line, point, prefix, suffix):
+        """Completes by listing all possible files, here or matching
+        substrings"""
+        startdir = os.path.dirname(prefix)
+        lhs = os.path.basename(prefix)
+        if startdir:
+            listdir = startdir
+        else:
+            listdir = cwd
+        return [os.path.join(startdir, f)
+                for f in os.listdir(listdir) if f.startswith(lhs)]
+    optcomplete.autocomplete(optparser, arg_completer=FileCompleter)
 
 # read and parse command line options and arguments
 (options, args) = optparser.parse_args()

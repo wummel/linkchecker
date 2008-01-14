@@ -13,6 +13,8 @@
       - add missing COMPREPLY variable
       - support whitespace in files using "-o filenames" bash completion
         option
+      - support subdirs by adding a FileCompleter argument matcher to
+        optcomplete.autocomplete()
     Type: bugfix
     Changed: config/linkchecker-completion
 
