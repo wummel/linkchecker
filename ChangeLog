@@ -1,12 +1,20 @@
 4.9 "" (released xx.xx.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
+    Type: feature
+    Changed: linkcheck/checker/urlbase.py
+
   * Don't parse <script for=""> attributes since they specify IDs, not
-    URLs..
+    URLs.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
   * Fix bash filename completion script:
-      - set missing COMPREPLY variable
+      - add missing COMPREPLY variable
       - support whitespace in files using "-o filenames" bash completion
         option
+    Type: bugfix
+    Changed: config/linkchecker-completion
 
 4.8 "Hallam Foe" (released 16.12.2007)
 
