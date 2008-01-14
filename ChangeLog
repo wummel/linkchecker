@@ -3,6 +3,10 @@
   * Parse Shockwave Flash (SWF) for URLs to check
   * Don't parse <script for=""> attributes since they specify IDs, not
     URLs..
+  * Fix bash filename completion script:
+      - set missing COMPREPLY variable
+      - support whitespace in files using "-o filenames" bash completion
+        option
 
 4.8 "Hallam Foe" (released 16.12.2007)
 
