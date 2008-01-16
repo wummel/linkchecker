@@ -117,12 +117,12 @@ dist-stamp: changelog
 # So for other developers there is no need to execute this target.
 .PHONY: check
 check:
-	py-verify
-	py-find-nocoding
-	check-nosvneolstyle
+	py-verify -v
+	py-find-nocoding -v
+	check-nosvneolstyle -v
 	check-copyright
-	check-pofiles
-	py24-tabnanny
+	check-pofiles -v
+	py24-tabnanny -v
 
 .PHONY: releasecheck
 releasecheck: check
