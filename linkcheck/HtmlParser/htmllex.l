@@ -356,7 +356,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_CDATA);
 }
 
-<S_CDATA>\]*\]\]> {
+<S_CDATA>\]\]> {
     UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng-3);
     SETLVAL_UNICODE;
@@ -369,7 +369,12 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_CDATA>\]+[^>\]]+ {
+<S_CDATA>\][^\]] {
+    UPDATE_LINE;
+    APPEND_TO_TMP(yyleng);
+}
+
+<S_CDATA>\]\][^>] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
