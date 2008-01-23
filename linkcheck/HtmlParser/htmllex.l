@@ -616,24 +616,13 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_SCRIPT_STRING);
 }
 
-<S_SCRIPT_COMMENT>[^\-\r\n<]+ {
+<S_SCRIPT_COMMENT>[^\r\n<]+ {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
 }
 
 <S_SCRIPT_COMMENT>[\r\n] {
     UPDATE_LINE;
-    APPEND_TO_TMP(yyleng);
-    BEGIN(S_SCRIPT);
-}
-
-<S_SCRIPT_COMMENT>-([^-\r\n]+|-[^>\r\n]+) {
-    UPDATE_LINE;
-    APPEND_TO_TMP(yyleng);
-}
-
-<S_SCRIPT_COMMENT>--> {
-    UPDATE_COLUMN;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_SCRIPT);
 }
