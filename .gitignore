@@ -1,0 +1,12 @@
+*.pyc
+*.pyo
+*.o
+*.lo
+*.la
+*~
+*.so
+/build
+/coverage
+MANIFEST
+_linkchecker_configdata.py
+Changelog.linkchecker*
