@@ -30,8 +30,8 @@ real url None
 error
 
 url test.swf
-cache key file:///%(curdir)s/%(datadir)s/test.swf
-real url file:///%(curdir)s/%(datadir)s/test.swf
+cache key file://%(curdir)s/%(datadir)s/test.swf
+real url file://%(curdir)s/%(datadir)s/test.swf
 name SWF
 valid
 
