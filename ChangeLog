@@ -1,4 +1,4 @@
-4.9 "" (released xx.xx.2008)
+4.9 "Michael Clayton" (released xx.xx.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
     Type: feature
@@ -17,6 +17,11 @@
         optcomplete.autocomplete()
     Type: bugfix
     Changed: config/linkchecker-completion
+
+  * Prevent unicode errors when an email address contains non-ascii
+    characters.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
 
 4.8 "Hallam Foe" (released 16.12.2007)
 

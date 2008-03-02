@@ -25,6 +25,7 @@ import email.Utils
 
 import urlbase
 import linkcheck.log
+import linkcheck.strformat
 import linkcheck.dns.resolver
 from const import WARN_MAIL_NO_ADDRESSES, WARN_MAIL_NO_MX_HOST, \
     WARN_MAIL_UNVERIFIED_ADDRESS, WARN_MAIL_NO_CONNECTION
@@ -151,6 +152,7 @@ class MailtoUrl (urlbase.UrlBase):
             "checking mail address %r", mail)
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "splitting address")
+        mail = linkcheck.strformat.ascii_safe(mail)
         username, domain = _split_address(mail)
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "looking up MX mailhost %r", domain)

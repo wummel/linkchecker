@@ -152,6 +152,18 @@ class TestMail (linkcheck.checker.tests.LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
+    def test_unicode_mail (self):
+        mailto = u"mailto:ölvin@users.sourceforge.net"
+        url = self.norm(mailto)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % mailto,
+            u"real url %s" % url,
+            u"warning Unverified address: <lvin@users.sourceforge.net> Unrouteable address.",
+            u"valid",
+        ]
+        self.direct(url, resultlines)
+
 
 def test_suite ():
     """
