@@ -23,6 +23,11 @@
     Type: bugfix
     Changed: linkcheck/checker/mailtourl.py
 
+  * Workaround for buggy servers that break protocol synchronization of
+    persistent HTTP connections.
+    Changed: linkcheck/checker/httpurl.py
+    Closes: SF bug #1913992
+
 4.8 "Hallam Foe" (released 16.12.2007)
 
   * Fix message typo for not disclosing information.

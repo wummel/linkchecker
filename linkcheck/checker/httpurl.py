@@ -502,9 +502,16 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.headers = response.msg
         self.persistent = not response.will_close
         if self.persistent and (self.method == "GET" or
-           self.headers.getheader("Content-Length", "")):
+           self.headers.getheader("Content-Length") != "0"):
             # always read content from persistent connections
             self._read_content(response)
+        if self.persistent and self.method == "HEAD":
+            # Some servers send page content after a HEAD request,
+            # but only after making the *next* request. This breaks
+            # protocol synchronisation. Workaround here is to close
+            # the connection after HEAD.
+            # Example: http://www.empleo.gob.mx (Apache/1.3.33 (Unix) mod_jk)
+            self.persistent = False
         # If possible, use official W3C HTTP response name
         if response.status in httpresponses:
             response.reason = httpresponses[response.status]
