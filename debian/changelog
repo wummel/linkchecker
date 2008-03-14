@@ -1,8 +1,9 @@
 linkchecker (4.9-1) unstable; urgency=low
 
   * New upstream release.
+  * Use debhelper v6
 
- -- Bastian Kleineidam <calvin@debian.org>  Fri, 28 Dec 2007 03:11:46 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Fri, 14 Mar 2008 12:23:45 +0100
 
 linkchecker (4.8-1) unstable; urgency=low
 
