@@ -1,13 +1,16 @@
 # this parser needs flex >= 2.5.xx from http://lex.sf.net/
-# for reentrant bison parser support!
+# for reentrant bison parser support
 FLEX = flex
-PYVER = 2.4
-PYTHON = python$(PYVER)
+PYINCLUDE=-I/usr/include/python2.4
+#PYINCLUDE="-I/home/calvin/src/python-gitsvn -I/home/calvin/src/python-gitsvn/Include"
 
 all: htmllex.c htmlparse.c
 
+htmlsax.so: htmllex.o htmlparse.o s_util.o
+	gcc -pthread -shared $^ -o htmlsax.so
+
 %.o:	%.c
-	gcc -g -std=c99 -O3 -Wall -pedantic -Wstrict-prototypes -fPIC -I. -I/usr/include/$(PYTHON) -c $< -o $@
+	gcc -g -std=c99 -O3 -Wall -pedantic -Wstrict-prototypes -fPIC -I. $(PYINCLUDE) -c $< -o $@
 
 htmlparse.h htmlparse.c:	htmlparse.y htmlsax.h
 	bison htmlparse.y
