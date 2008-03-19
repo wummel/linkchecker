@@ -57,7 +57,7 @@ class Logger (object):
         """
         # what log parts should be in output
         self.logparts = None # log all parts
-        if args.has_key('parts'):
+        if 'parts' in args:
             if "all" not in args['parts']:
                 # only log given parts
                 self.logparts = args['parts']
@@ -88,7 +88,7 @@ class Logger (object):
         self.fd = None
         if args.get('fileoutput'):
             self.filename = os.path.expanduser(args['filename'])
-        elif args.has_key('fd'):
+        elif 'fd' in args:
             self.fd = args['fd']
         else:
             self.fd = sys.stdout

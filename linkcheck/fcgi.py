@@ -224,7 +224,7 @@ def HandleManTypes (r, conn):
                 'FCGI_MAX_REQS'  : FCGI_MAX_REQS,
                 'FCGI_MPXS_CONNS': FCGI_MPXS_CONNS}
         for i in r.values.keys():
-            if _vars.has_key(i):
+            if i in _vars:
                 v[i] = _vars[i]
         r.values = _vars
         r.write_record(conn)
@@ -397,7 +397,7 @@ class FCGI (object):
             self.env = os.environ
             self.stdin, self.out, self.err = sys.stdin, sys.stdout, sys.stderr
 
-        if os.environ.has_key('FCGI_WEB_SERVER_ADDRS'):
+        if 'FCGI_WEB_SERVER_ADDRS' in os.environ:
             addrs = os.environ['FCGI_WEB_SERVER_ADDRS'].split(',')
             good_addrs = [ addr.strip() for addr in addrs ]
         else:
@@ -494,7 +494,7 @@ class FCGI (object):
 
     def getFieldStorage (self):
         method = 'GET'
-        if self.env.has_key('REQUEST_METHOD'):
+        if 'REQUEST_METHOD' in self.env:
             method = self.env['REQUEST_METHOD'].upper()
         if method == 'GET':
             return cgi.FieldStorage(environ=self.env, keep_blank_values=1)

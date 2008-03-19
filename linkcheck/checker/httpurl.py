@@ -182,7 +182,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.method = "HEAD"
         # check the http connection
         response = self.check_http_connection()
-        if self.headers and self.headers.has_key("Server"):
+        if self.headers and "Server" in self.headers:
             server = self.headers['Server']
         else:
             server = _("unknown")

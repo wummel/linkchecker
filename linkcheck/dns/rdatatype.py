@@ -192,7 +192,7 @@ def to_text(value):
         raise ValueError, "type must be between >= 0 and <= 65535"
     text = _by_value.get(value)
     if text is None:
-        text = 'TYPE' + `value`
+        text = 'TYPE' + repr(value)
     return text
 
 def is_metatype(rdtype):
@@ -201,9 +201,7 @@ def is_metatype(rdtype):
     @type rdtype: int
     @rtype: bool"""
 
-    if rdtype >= TKEY and rdtype <= ANY or _metatypes.has_key(rdtype):
-        return True
-    return False
+    return rdtype >= TKEY and rdtype <= ANY or rdtype in _metatypes
 
 def is_singleton(rdtype):
     """True if the type is a singleton.
@@ -211,6 +209,4 @@ def is_singleton(rdtype):
     @type rdtype: int
     @rtype: bool"""
 
-    if _singletons.has_key(rdtype):
-        return True
-    return False
+    return rdtype in _singletons

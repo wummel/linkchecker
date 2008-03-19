@@ -20,7 +20,7 @@ class TestFcgi (unittest.TestCase):
         doc = ['<HTML><HEAD><TITLE>FCGI TestApp</TITLE></HEAD>\n'
                '<BODY>\n']
         doc.append('<H2>FCGI TestApp</H2><P>')
-        if req.env.has_key('CONTENT_LENGTH'):
+        if 'CONTENT_LENGTH' in req.env:
             cl = int(req.env['CONTENT_LENGTH'])
             doc.append('<br><b>POST data (%s):</b><br><pre>' % cl)
             keys = fs.keys()

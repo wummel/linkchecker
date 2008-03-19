@@ -152,7 +152,7 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
         nv = name_value.split('=', 1)
         if len(nv) != 2:
             if strict_parsing:
-                raise ValueError("bad query field: %s" % `name_value`)
+                raise ValueError("bad query field: %r" % name_value)
             elif len(nv) == 1:
                 # None value indicates missing equal sign
                 nv = (nv[0], None)

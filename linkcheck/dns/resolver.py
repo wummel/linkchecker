@@ -240,7 +240,7 @@ class Cache(object):
         @type key: (linkcheck.dns.name.Name, int, int) tuple or None
         """
         if not key is None:
-            if self.data.has_key(key):
+            if key in self.data:
                 del self.data[key]
         else:
             self.data = {}

@@ -54,7 +54,7 @@ class NameDict(dict):
             depth = self.max_depth
         for i in xrange(-depth, 0):
             n = linkcheck.dns.name.Name(name[i:])
-            if self.has_key(n):
+            if n in self:
                 return (n, self[n])
         v = self[linkcheck.dns.name.empty]
         return (linkcheck.dns.name.empty, v)

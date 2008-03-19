@@ -84,9 +84,9 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
     config["recursionlevel"] = int(form["level"].value)
     config["logger"] = config.logger_new('html', fd=out)
     config["threads"] = 0
-    if form.has_key("anchors"):
+    if "anchors" in form:
         config["anchors"] = True
-    if not form.has_key("errors"):
+    if "errors" not in form:
         config["verbose"] = True
     # avoid checking of local files or other nasty stuff
     pat = "!^%s$" % linkcheck.url.safe_url_pattern
@@ -121,7 +121,7 @@ def checkform (form):
     only plain strings as exception text.
     """
     # check lang support
-    if form.has_key("language"):
+    if "language" in form:
         lang = form['language'].value
         if lang in _supported_langs:
             os.environ['LC_MESSAGES'] = lang
@@ -129,7 +129,7 @@ def checkform (form):
         else:
             raise FormError(_("unsupported language"))
     # check url syntax
-    if form.has_key("url"):
+    if "url" in form:
         url = form["url"].value
         if not url or url == "http://":
             raise FormError(_("empty url was given"))
@@ -138,13 +138,13 @@ def checkform (form):
     else:
         raise FormError(_("no url was given"))
     # check recursion level
-    if form.has_key("level"):
+    if "level" in form:
         level = form["level"].value
         if not _is_level(level):
             raise FormError(_("invalid recursion level"))
     # check options
     for option in ("anchors", "errors", "intern"):
-        if form.has_key(option):
+        if option in form:
             if not form[option].value == "on":
                 raise FormError(_("invalid %s option syntax") % option)
 
@@ -158,12 +158,12 @@ def logit (form, env):
     elif type(_logfile) == types.StringType:
         _logfile = file(_logfile, "a")
     _logfile.write("\n"+linkcheck.strformat.strtime(time.time())+"\n")
-    for var in ["HTTP_USER_AGENT", "REMOTE_ADDR",
-                "REMOTE_HOST", "REMOTE_PORT"]:
-        if env.has_key(var):
+    for var in ("HTTP_USER_AGENT", "REMOTE_ADDR",
+                "REMOTE_HOST", "REMOTE_PORT"):
+        if var in env:
             _logfile.write(var+"="+env[var]+"\n")
-    for key in ["level", "url", "anchors", "errors", "intern", "language"]:
-        if form.has_key(key):
+    for key in ("level", "url", "anchors", "errors", "intern", "language"):
+        if key in form:
             _logfile.write(str(form[key])+"\n")
 
 

@@ -90,8 +90,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for val in filelist:
                 val = val.strip()
                 # no file output for the blacklist and none Logger
-                if linkcheck.Loggers.has_key(val) and \
-                   val not in ["blacklist", "none"]:
+                if val in linkcheck.Loggers and \
+                   val not in ("blacklist", "none"):
                     output = self.config.logger_new(val, fileoutput=1)
                     self.config['fileoutput'].append(output)
         if self.has_option(section, "interactive"):

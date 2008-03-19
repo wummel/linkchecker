@@ -70,7 +70,7 @@ class GMLLogger (linkcheck.logger.Logger):
         Write one node and all possible edges.
         """
         node = url_data
-        if node.url and not self.nodes.has_key(node.url):
+        if node.url and node.url not in self.nodes:
             node.id = self.nodeid
             self.nodes[node.url] = node
             self.nodeid += 1
@@ -94,7 +94,7 @@ class GMLLogger (linkcheck.logger.Logger):
         manner. Better would be a mapping of parent URLs.
         """
         for node in self.nodes.itervalues():
-            if self.nodes.has_key(node.parent_url):
+            if node.parent_url in self.nodes:
                 self.writeln(u"  edge [")
                 self.writeln(u'    label  "%s"' % (node.base_url or u""))
                 if self.has_part("parenturl") and node.parent_url:

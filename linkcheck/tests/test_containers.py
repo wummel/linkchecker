@@ -213,10 +213,13 @@ class TestCaselessDict (unittest.TestCase):
         self.d.clear()
         self.assert_(not self.d)
 
-    def test_has_key (self):
+    def test_containment (self):
         self.assert_(not self.d)
+        self.assert_("A" not in self.d)
+        self.assert_("a" not in self.d)
         self.d["a"] = 5
-        self.assert_(self.d.has_key("A"))
+        self.assert_("A" in self.d)
+        self.assert_("a" in self.d)
 
     def test_setdefault (self):
         self.assert_(not self.d)

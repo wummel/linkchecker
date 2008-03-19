@@ -69,7 +69,7 @@ class DOTLogger (linkcheck.logger.Logger):
         Write one node and all possible edges.
         """
         node = url_data
-        if node.url and not self.nodes.has_key(node.url):
+        if node.url and node.url not in self.nodes:
             node.id = self.nodeid
             self.nodes[node.url] = node
             self.nodeid += 1
@@ -92,7 +92,7 @@ class DOTLogger (linkcheck.logger.Logger):
         manner. Better would be a mapping of parent URLs.
         """
         for node in self.nodes.itervalues():
-            if self.nodes.has_key(node.parent_url):
+            if node.parent_url in self.nodes:
                 source = self.nodes[node.parent_url].id
                 target = node.id
                 self.writeln(u"  %d -> %d [" % (source, target))

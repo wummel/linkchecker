@@ -151,7 +151,7 @@ class Message(object):
         self.first = True
 
     def __repr__(self):
-        return '<DNS message, ID ' + `self.id` + '>'
+        return '<DNS message, ID %r>' % self.id
 
     def __str__(self):
         return self.to_text()

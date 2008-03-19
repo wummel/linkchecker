@@ -66,7 +66,7 @@ class MailtoUrl (urlbase.UrlBase):
         self.headers = {}
         self.addresses = email.Utils.getaddresses([self.cutout_addresses()])
         for key in ("to", "cc", "bcc"):
-            if self.headers.has_key(key):
+            if key in self.headers:
                 for val in self.headers[key]:
                     a = urllib.unquote(val)
                     self.addresses.extend(email.Utils.getaddresses([a]))

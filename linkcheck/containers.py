@@ -68,13 +68,13 @@ class ListDict (dict):
         self._keys = []
 
     def setdefault (self, key, *args):
-        if not self.has_key(key):
+        if key not in self:
             self._keys.append(key)
         return super(ListDict, self).setdefault(key, *args)
 
     def __setitem__ (self, key, value):
         """Add key,value to dict, append key to sorted list."""
-        if not self.has_key(key):
+        if key not in self:
             self._keys.append(key)
         super(ListDict, self).__setitem__(key, value)
 

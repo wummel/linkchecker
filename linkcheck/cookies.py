@@ -360,7 +360,7 @@ def from_headers (strheader):
     """
     fp = StringIO.StringIO(strheader)
     headers = rfc822.Message(fp, seekable=True)
-    if not headers.has_key("Host"):
+    if "Host" not in headers:
         raise ValueError("Required header 'Host:' missing")
     host = headers["Host"]
     scheme = headers.get("Scheme", "http")

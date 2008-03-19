@@ -120,7 +120,7 @@ def get_headers_lang (headers):
     """
     Return preferred supported language in given HTTP headers.
     """
-    if not headers.has_key('Accept-Language'):
+    if 'Accept-Language' not in headers:
         return default_language
     languages = headers['Accept-Language'].split(",")
     # sort with preference values
