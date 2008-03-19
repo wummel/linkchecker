@@ -22,8 +22,7 @@ clean:
 	$(MAKE) -C po clean
 	$(MAKE) -C doc clean
 	$(MAKE) -C doc/en clean
-	rm -f linkcheck/HtmlParser/htmlsax.so
-	rm -f linkcheck/HtmlParser/*.output
+	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/ftpparse/_ftpparse.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
