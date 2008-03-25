@@ -533,7 +533,8 @@ setup (name = "linkchecker",
        maintainer = myname,
        maintainer_email = myemail,
        url = "http://linkchecker.sourceforge.net/",
-       download_url = "http://sourceforge.net/project/showfiles.php?group_id=1913",
+       download_url = "http://sourceforge.net/project/showfiles.php" \
+                      "?group_id=1913",
        license = "GPL",
        long_description = """Linkchecker features:
 o recursive checking

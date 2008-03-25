@@ -37,7 +37,7 @@ class TestFlags (unittest.TestCase):
         self.assertEqual(linkcheck.dns.rcode.to_flags(linkcheck.dns.rcode.BADVERS),
                          (0, 0x01000000))
 
-    def test_rcode6(self):
+    def test_rcode5(self):
         self.assertEqual(linkcheck.dns.rcode.from_flags(0, 0x01000000),
                          linkcheck.dns.rcode.BADVERS)
 

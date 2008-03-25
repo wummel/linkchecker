@@ -33,7 +33,7 @@ __version__ = "1.0"
 __author__ = 'Sandino "tigrux" Flores-Moreno'
 
 def bindtextdomain (app_name, locale_dir=None):
-    """    
+    """
     Bind the domain represented by app_name to the locale directory locale_dir.
     It has the effect of loading translations, enabling applications for different
     languages.
@@ -44,7 +44,7 @@ def bindtextdomain (app_name, locale_dir=None):
     locale_dir:
         a directory with locales like locale_dir/lang_isocode/LC_MESSAGES/app_name.mo
         If omitted or None, then the current binding for app_name is used.
-    """    
+    """
     try:
         import locale
         import gettext
@@ -85,7 +85,7 @@ class SimpleGladeApp (object):
             It is useful to set attributes of new instances, for example:
                 glade_app = SimpleGladeApp("ui.glade", foo="some value", bar="another value")
             sets two attributes (foo and bar) to glade_app.
-        """        
+        """
         if os.path.isfile(path):
             self.glade_path = path
         else:
@@ -136,7 +136,7 @@ class SimpleGladeApp (object):
         callbacks_proxy:
             an instance with methods as code of callbacks.
             It means it has methods like on_button1_clicked, on_entry1_activate, etc.
-        """        
+        """
         self.glade.signal_autoconnect(callbacks_proxy)
 
     def normalize_names(self):
@@ -176,7 +176,7 @@ class SimpleGladeApp (object):
         prefix_actions_proxy:
             An instance with methods as prefix actions.
             It means it has methods like prefix_foo, prefix_bar, etc.
-        """        
+        """
         prefix_s = "prefix_"
         prefix_pos = len(prefix_s)
 
@@ -258,7 +258,7 @@ class SimpleGladeApp (object):
         The default widget of the window is activated.
         Equivalent to window.activate_default()
         """
-        widget.activate_default()
+        window.activate_default()
 
     def gtk_true(self, *args):
         """
@@ -300,7 +300,7 @@ class SimpleGladeApp (object):
         """
         Quit processing events.
         The default implementation calls gtk.main_quit()
-        
+
         Useful for applications that needs a non gtk main loop.
         For example, applications based on gstreamer needs to override
         this method with gst.main_quit()

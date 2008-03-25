@@ -55,7 +55,7 @@ class TestRdTypeAndClass (unittest.TestCase):
         self.assertEqual(linkcheck.dns.rdataclass.to_text(linkcheck.dns.rdataclass.IN),
                          'IN')
 
-    def test_class_totext1(self):
+    def test_class_totext2(self):
         self.assertEqual(linkcheck.dns.rdataclass.to_text(999), 'CLASS999')
 
     def test_class_totext_bounds1(self):
@@ -109,7 +109,7 @@ class TestRdTypeAndClass (unittest.TestCase):
     def test_type_totext1(self):
         self.assertEqual(linkcheck.dns.rdatatype.to_text(linkcheck.dns.rdatatype.A), 'A')
 
-    def test_type_totext1(self):
+    def test_type_totext2(self):
         self.assertEqual(linkcheck.dns.rdatatype.to_text(999), 'TYPE999')
 
     def test_type_totext_bounds1(self):

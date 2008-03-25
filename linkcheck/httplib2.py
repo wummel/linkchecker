@@ -859,8 +859,8 @@ class HTTPConnection:
                     thelen = str(os.fstat(body.fileno()).st_size)
                 except (AttributeError, OSError):
                     # Don't send a length if this failed
-                    if self.debuglevel > 0: print "Cannot stat!!"
-                    
+                    if self.debuglevel > 0:
+                        print "Cannot stat!!"
             if thelen is not None:
                 self.putheader('Content-Length',thelen)
         for hdr, value in headers.iteritems():

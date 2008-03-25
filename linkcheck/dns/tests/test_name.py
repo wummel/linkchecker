@@ -106,7 +106,7 @@ class TestName (unittest.TestCase):
     def testAbs3(self):
         self.assert_(self.origin.is_absolute())
 
-    def testAbs3(self):
+    def testAbs4(self):
         n = linkcheck.dns.name.from_text('foo', origin=None)
         self.assert_(not n.is_absolute())
 
@@ -295,7 +295,7 @@ class TestName (unittest.TestCase):
         r = n1 + n2
         self.assertEqual(r, e)
 
-    def testConcat2(self):
+    def testConcat2a(self):
         n1 = linkcheck.dns.name.Name([])
         n2 = linkcheck.dns.name.Name(['a', 'b'])
         e = linkcheck.dns.name.Name(['a', 'b'])
@@ -548,7 +548,7 @@ class TestName (unittest.TestCase):
         self.assertEqual(n2, en2)
         self.assertEqual(cused2, ecused2)
 
-    def testFromWire1(self):
+    def testFromWire2(self):
         w = '\x03foo\x00\x01a\xc0\x00\x01b\xc0\x05'
         current = 0
         (n1, cused1) = linkcheck.dns.name.from_wire(w, current)

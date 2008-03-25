@@ -57,22 +57,6 @@ class TestNtoAAtoN (unittest.TestCase):
             a = linkcheck.dns.ipv6.inet_aton('1:2:3:4:5:6:7:8:9')
         self.assertRaises(linkcheck.dns.exception.DNSSyntaxError, bad)
 
-    def test_aton1(self):
-        a = linkcheck.dns.ipv6.inet_aton('::')
-        self.assertEqual(a, '\x00' * 16)
-
-    def test_aton2(self):
-        a = linkcheck.dns.ipv6.inet_aton('::1')
-        self.assertEqual(a, '\x00' * 15 + '\x01')
-
-    def test_aton3(self):
-        a = linkcheck.dns.ipv6.inet_aton('::10.0.0.1')
-        self.assertEqual(a, '\x00' * 12 + '\x0a\x00\x00\x01')
-
-    def test_aton4(self):
-        a = linkcheck.dns.ipv6.inet_aton('abcd::dcba')
-        self.assertEqual(a, '\xab\xcd' + '\x00' * 12 + '\xdc\xba')
-
     def test_ntoa1(self):
         b = '00010002000300040005000600070008'.decode('hex_codec')
         t = linkcheck.dns.ipv6.inet_ntoa(b)

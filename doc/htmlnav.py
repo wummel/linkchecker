@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """docutils HTML writer with navigation placeholder and information"""
 
-from docutils import writers, nodes, languages, utils
+from docutils import writers, nodes, utils
 from docutils.writers import html4css1
 from docutils.parsers.rst.directives.html import MetaBody
 
@@ -24,7 +24,7 @@ import sys
 import os
 import re
 try:
-    import Image                        # check for the Python Imaging Library
+    import Image # check for the Python Imaging Library
 except ImportError:
     Image = None
 

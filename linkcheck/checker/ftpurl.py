@@ -28,7 +28,7 @@ import proxysupport
 import httpurl
 import internpaturl
 import linkcheck.ftpparse._ftpparse as ftpparse
-from const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS, PARSE_CONTENTS
+from const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS
 
 DEFAULT_TIMEOUT_SECS = 300
 

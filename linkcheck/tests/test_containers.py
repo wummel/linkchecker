@@ -233,7 +233,7 @@ class TestCaselessDict (unittest.TestCase):
         self.assertEquals(self.d.get("A"), 42)
         self.assert_(self.d.get("B") is None)
 
-    def test_update (self):
+    def test_update2 (self):
         self.assert_(not self.d)
         self.d["a"] = 42
         self.d.update({"A": 43})

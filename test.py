@@ -281,7 +281,8 @@ def get_test_cases(test_files, cfg, tracer=None):
         def get_test_suite ():
             suite = unittest.TestSuite()
             for test_case in get_all_test_cases(module):
-                suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(test_case))
+                suite.addTest(
+                 unittest.defaultTestLoader.loadTestsFromTestCase(test_case))
             return suite
         if tracer is not None:
             test_suite = tracer.runfunc(get_test_suite)
