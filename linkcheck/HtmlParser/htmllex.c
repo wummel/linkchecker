@@ -18,7 +18,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 34
+#define YY_FLEX_SUBMINOR_VERSION 35
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -79,7 +79,6 @@ typedef int flex_int32_t;
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-#endif /* ! C99 */
 
 /* Limits of integral types. */
 #ifndef INT8_MIN
@@ -109,6 +108,8 @@ typedef unsigned int flex_uint32_t;
 #ifndef UINT32_MAX
 #define UINT32_MAX             (4294967295U)
 #endif
+
+#endif /* ! C99 */
 
 #endif /* ! FLEXINT_H */
 
@@ -242,13 +243,6 @@ typedef struct yy_buffer_state *YY_BUFFER_STATE;
 	while ( 0 )
 
 #define unput(c) yyunput( c, yyg->yytext_ptr , yyscanner )
-
-/* The following is because we cannot portably get our hands on size_t
- * (without autoconf's help, which isn't available because we want
- * flex-generated scanners to compile on their own).
- * Given that the standard has decreed that size_t exists since 1989,
- * I guess we can afford to depend on it. Manoj.
- */
 
 #ifndef YY_TYPEDEF_YY_SIZE_T
 #define YY_TYPEDEF_YY_SIZE_T
@@ -2914,7 +2908,7 @@ void yyfree (void* ptr, void* yyscanner) {
 
 
 /* regular expression definitions used below */
-#line 2917 "htmllex.c"
+#line 2911 "htmllex.c"
 
 #define INITIAL 0
 #define S_PI 1
@@ -3017,6 +3011,8 @@ int yylex_init_extra (YY_EXTRA_TYPE user_defined,yyscan_t* scanner);
 
 /* %endif */
 
+/* %endif End reentrant structures and macros. */
+
 /* Accessor methods to globals.
    These are made visible to non-reentrant scanners for convenience. */
 
@@ -3053,7 +3049,6 @@ YYSTYPE * yyget_lval (yyscan_t yyscanner );
 void yyset_lval (YYSTYPE * yylval_param ,yyscan_t yyscanner );
 
 /* %endif */
-/* %endif End reentrant structures and macros. */
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -3223,7 +3218,7 @@ YY_DECL
 
 
   /*********************** EOF ************************/
-#line 3226 "htmllex.c"
+#line 3221 "htmllex.c"
 
     yylval = yylval_param;
 
@@ -4730,7 +4725,7 @@ YY_RULE_SETUP
 #line 1064 "htmllex.l"
 ECHO;
 	YY_BREAK
-#line 4733 "htmllex.c"
+#line 4728 "htmllex.c"
 
 	case YY_END_OF_BUFFER:
 		{
