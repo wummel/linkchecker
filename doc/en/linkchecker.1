@@ -293,16 +293,16 @@ Set cookie name/value. Can be given more than once.
 Multiple entries are separated by a blank line.
 .
 The example below will send two cookies to all URLs starting with
-\fBhttp://imadoofus.org/hello/\fP and one to all URLs starting
-with \fBhttps://imaweevil.org/\fP:
+\fBhttp://example.com/hello/\fP and one to all URLs starting
+with \fBhttps://example.org/\fP:
 
- Host: imadoofus.org
+ Host: example.com
  Path: /hello
  Set-cookie: ID="smee"
  Set-cookie: spam="egg"
 
  Scheme: https
- Host: imaweevil.org
+ Host: example.org
  Set-cookie: baggage="elitist"; comment="hologram"
 
 .SH PROXY SUPPORT

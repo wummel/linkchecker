@@ -130,7 +130,7 @@ class TestHttp (httptest.HttpServerTest):
         """
         Test setting proxy and --no-proxy-for option.
         """
-        os.environ["http_proxy"] = "http://imadoofus:8877"
+        os.environ["http_proxy"] = "http://example.org:8877"
         confargs = {"noproxyfor": [re.compile("localhost")]}
         url = u"http://localhost:%d/linkcheck/checker/tests/data/http.html" % \
               self.port
@@ -139,7 +139,7 @@ class TestHttp (httptest.HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"info Ignoring proxy setting 'imadoofus:8877'",
+            u"info Ignoring proxy setting 'example.org:8877'",
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=0,
@@ -154,9 +154,9 @@ class TestHttp (httptest.HttpServerTest):
             u"cache key %s" % url,
             u"real url %s" % url,
             u"valid",
-            u"url http://www.imadoofus.org/",
-            u"cache key http://www.imadoofus.org/",
-            u"real url http://www.imadoofus.org/",
+            u"url http://www.example.org/",
+            u"cache key http://www.example.org/",
+            u"real url http://www.example.org/",
             u"error",
         ]
         self.direct(url, resultlines, recursionlevel=1)

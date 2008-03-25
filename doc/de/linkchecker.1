@@ -291,17 +291,17 @@ Setzt den Cookie Name/Wert. Kann mehrmals angegeben werden.
 .PP
 Mehrere Einträge sind durch eine Leerzeile zu trennen.
 .
-Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
-\fBhttp://imadoofus.org/hello/\fP beginnen, und eins zu allen URLs die mit
-\fBhttps://imaweevil.org\fP beginnen:
+The example below will send two cookies to all URLs starting with
+\fBhttp://example.com/hello/\fP and one to all URLs starting with
+\fBhttps://example.org/\fP:
 
- Host: imadoofus.org
+ Host: example.com
  Path: /hello
  Set\-cookie: ID="smee"
  Set\-cookie: spam="egg"
 
  Scheme: https
- Host: imaweevil.org
+ Host: example.org
  Set\-cookie: baggage="elitist"; comment="hologram"
 
 .SH "PROXY UNTERSTÜTZUNG"

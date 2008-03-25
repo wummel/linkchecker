@@ -90,7 +90,7 @@ class TestCookies (unittest.TestCase):
     def test_netscape_cookie5 (self):
         data = (
             ("Foo", "Bar"),
-            ("Domain", "imadoofus.org"),
+            ("Domain", "example.org"),
             ("Expires", "Wed, 12-Dec-2001 19:27:57 GMT"),
             ("Path", "/"),
         )
@@ -98,7 +98,7 @@ class TestCookies (unittest.TestCase):
         parts = ['%s=%s' % (key, value) for key, value in data]
         value = "; ".join(parts)
         scheme = "http"
-        host = "imadoofus.org"
+        host = "example.org"
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
         self.assert_(cookie.is_expired())
@@ -164,7 +164,7 @@ class TestCookies (unittest.TestCase):
 
     def test_cookie_parse1 (self):
         lines = [
-            'Host: imadoofus.org',
+            'Host: example.org',
             'Path: /hello',
             'Set-cookie: ID="smee"',
             'Set-cookie: spam="egg"',

@@ -46,7 +46,7 @@ class TestConfig (unittest.TestCase):
         self.assertEqual(config["recursionlevel"], 1)
         self.assertEqual(config["warningregex"].pattern, "Oracle DB Error")
         self.assertEqual(config["warnsizebytes"], 2000)
-        self.assertEqual(config["nntpserver"], "imadoofus.org")
+        self.assertEqual(config["nntpserver"], "example.org")
         self.assertTrue(config["anchorcaching"])
         # filtering section
         patterns = [x["pattern"].pattern for x in config["externlinks"]]

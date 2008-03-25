@@ -79,7 +79,7 @@ class TestLinkparser (unittest.TestCase):
 
     def test_comment_stripping (self):
         strip = linkcheck.linkparse.strip_c_comments
-        content = "/* url('http://imadoofus.org')*/"
+        content = "/* url('http://example.org')*/"
         self.assertEqual(strip(content), "")
         content = "/* * * **/"
         self.assertEqual(strip(content), "")

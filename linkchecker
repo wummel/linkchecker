@@ -101,16 +101,16 @@ Set-cookie (optional)
 Multiple entries are separated by a blank line.
 
 The example below will send two cookies to all URLs starting with
-'http://imadoofus.org/hello/' and one to all URLs starting
-with 'https://imaweevil.org/':
+'http://example.org/hello/' and one to all URLs starting
+with 'https://example.com/':
 
-Host: imadoofus.org
+Host: example.org
 Path: /hello
 Set-cookie: ID="smee"
 Set-cookie: spam="egg"
 
 Scheme: https
-Host: imaweevil.org
+Host: example.com
 Set-cookie: baggage="elitist"; comment="hologram"
 """)
 

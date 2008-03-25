@@ -125,7 +125,7 @@ valid
 url clsid:12345
 cache key clsid:12345
 real url clsid:12345
-baseurl http://imadoofus.org/foo/%%20#a%%3D1%%2C2%%2C3
+baseurl http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
 warning Clsid URL ignored.
 valid
 

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2007-12-01 16:51+0100\n"
-"PO-Revision-Date: 2007-12-01 16:55+0100\n"
+"POT-Creation-Date: 2008-03-19 20:52+0100\n"
+"PO-Revision-Date: 2008-03-25 20:17+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -772,19 +772,19 @@ msgstr "Mehrere Einträge sind durch eine Leerzeile zu trennen."
 
 # type: Plain text
 #: en/linkchecker.1:298
-msgid "The example below will send two cookies to all URLs starting with B<http://imadoofus.org/hello/> and one to all URLs starting with B<https://imaweevil.org/>:"
-msgstr "Das untige Beispiel sendet zwei Cookies zu allen URLs die mit B<http://imadoofus.org/hello/> beginnen, und eins zu allen URLs die mit B<https://imaweevil.org> beginnen:"
+msgid "The example below will send two cookies to all URLs starting with B<http://example.com/hello/> and one to all URLs starting with B<https://example.org/>:"
+msgstr "Das untige Beispiel sendet zwei Cookies zu allen URLs die mit B<http://example.org/hello/> beginnen, und eins zu allen URLs die mit B<https://example.org> beginnen:"
 
 # type: Plain text
 #: en/linkchecker.1:303
 #, no-wrap
 msgid ""
-" Host: imadoofus.org\n"
+" Host: example.com\n"
 " Path: /hello\n"
 " Set-cookie: ID=\"smee\"\n"
 " Set-cookie: spam=\"egg\"\n"
 msgstr ""
-" Host: imadoofus.org\n"
+" Host: example.com\n"
 " Path: /hello\n"
 " Set-cookie: ID=\"smee\"\n"
 " Set-cookie: spam=\"egg\"\n"
@@ -794,11 +794,11 @@ msgstr ""
 #, no-wrap
 msgid ""
 " Scheme: https\n"
-" Host: imaweevil.org\n"
+" Host: example.org\n"
 " Set-cookie: baggage=\"elitist\"; comment=\"hologram\"\n"
 msgstr ""
 " Scheme: https\n"
-" Host: imaweevil.org\n"
+" Host: example.org\n"
 " Set-cookie: baggage=\"elitist\"; comment=\"hologram\"\n"
 
 # type: SH
@@ -1605,7 +1605,7 @@ msgstr "B<quotechar=>I<CHAR>"
 # type: Plain text
 #: en/linkcheckerrc.5:270
 msgid "Set CSV quote character. Default is a double quote (B<\">)."
-msgstr "Setze CSV Quotezeichen. Standard ist das doppelte Anführungszeichen (<\">)."
+msgstr "Setze CSV Quotezeichen. Standard ist das doppelte Anführungszeichen (B<\">)."
 
 # type: SS
 #: en/linkcheckerrc.5:270

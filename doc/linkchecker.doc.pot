@@ -2,12 +2,12 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2007-12-01 16:51+0100\n"
+"POT-Creation-Date: 2008-03-19 20:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -840,15 +840,15 @@ msgstr ""
 #: en/linkchecker.1:298
 msgid ""
 "The example below will send two cookies to all URLs starting with "
-"B<http://imadoofus.org/hello/> and one to all URLs starting with "
-"B<https://imaweevil.org/>:"
+"B<http://example.com/hello/> and one to all URLs starting with "
+"B<https://example.org/>:"
 msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:303
 #, no-wrap
 msgid ""
-" Host: imadoofus.org\n"
+" Host: example.com\n"
 " Path: /hello\n"
 " Set-cookie: ID=\"smee\"\n"
 " Set-cookie: spam=\"egg\"\n"
@@ -859,7 +859,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 " Scheme: https\n"
-" Host: imaweevil.org\n"
+" Host: example.org\n"
 " Set-cookie: baggage=\"elitist\"; comment=\"hologram\"\n"
 msgstr ""
 

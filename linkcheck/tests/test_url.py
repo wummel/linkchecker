@@ -74,19 +74,19 @@ class TestUrl (unittest.TestCase):
 
     def test_stripsite (self):
         stripsite = linkcheck.url.stripsite
-        url = "http://imadoofus.org/a/b/c"
-        self.assertEqual(stripsite(url)[0], "imadoofus.org")
+        url = "http://example.org/a/b/c"
+        self.assertEqual(stripsite(url)[0], "example.org")
         self.assertEqual(stripsite(url)[1], "/a/b/c")
 
     def test_safe_patterns (self):
         is_safe_host = linkcheck.url.is_safe_host
         safe_host_pattern = linkcheck.url.safe_host_pattern
-        self.assert_(is_safe_host("imadoofus.org"))
-        self.assert_(is_safe_host("imadoofus.org:80"))
-        self.assert_(not is_safe_host("imadoofus.org:21"))
-        pat = safe_host_pattern("imadoofus.org")
+        self.assert_(is_safe_host("example.org"))
+        self.assert_(is_safe_host("example.org:80"))
+        self.assert_(not is_safe_host("example.org:21"))
+        pat = safe_host_pattern("example.org")
         ro = re.compile(pat)
-        self.assert_(ro.match("http://imadoofus.org:80/"))
+        self.assert_(ro.match("http://example.org:80/"))
 
     def test_url_quote (self):
         url_quote = linkcheck.url.url_quote
@@ -206,8 +206,8 @@ class TestUrl (unittest.TestCase):
         url = "http://www.w3.org/2000/01/rdf-schema#"
         nurl = url
         self.urlnormtest(url, nurl)
-        url = "http://imadoofus.org/foo/ #a=1,2,3"
-        nurl = "http://imadoofus.org/foo/%20#a%3D1%2C2%2C3"
+        url = "http://example.org/foo/ #a=1,2,3"
+        nurl = "http://example.org/foo/%20#a%3D1%2C2%2C3"
         self.urlnormtest(url, nurl)
 
     def test_norm_empty_path (self):
@@ -373,11 +373,11 @@ class TestUrl (unittest.TestCase):
         nurl = url
         self.urlnormtest(url, nurl)
         # standard email
-        url = 'mailto:user@www.imadoofus.org'
+        url = 'mailto:user@www.example.org'
         nurl = url
         self.urlnormtest(url, nurl)
         # email with subject
-        url = 'mailto:user@www.imadoofus.org?subject=a_b'
+        url = 'mailto:user@www.example.org?subject=a_b'
         nurl = url
         self.urlnormtest(url, nurl)
 
@@ -422,13 +422,13 @@ class TestUrl (unittest.TestCase):
         """
         Test norming of URLs with authentication tokens.
         """
-        url = "telnet://user@www.imadoofus.org"
+        url = "telnet://user@www.example.org"
         nurl = url
         self.urlnormtest(url, nurl)
-        url = "telnet://user:pass@www.imadoofus.org"
+        url = "telnet://user:pass@www.example.org"
         nurl = url
         self.urlnormtest(url, nurl)
-        url = "http://user:pass@www.imadoofus.org/"
+        url = "http://user:pass@www.example.org/"
         nurl = url
         self.urlnormtest(url, nurl)
 
@@ -451,48 +451,48 @@ class TestUrl (unittest.TestCase):
         """
         Test url fix method.
         """
-        url = "http//www.imadoofus.org"
-        nurl = "http://www.imadoofus.org"
+        url = "http//www.example.org"
+        nurl = "http://www.example.org"
         self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
-        url = u"http//www.imadoofus.org"
-        nurl = u"http://www.imadoofus.org"
+        url = u"http//www.example.org"
+        nurl = u"http://www.example.org"
         self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
-        url = u"https//www.imadoofus.org"
-        nurl = u"https://www.imadoofus.org"
+        url = u"https//www.example.org"
+        nurl = u"https://www.example.org"
         self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
 
     def test_valid (self):
         """
         Test url validity functions.
         """
-        u = "http://www.imadoofus.com"
+        u = "http://www.example.com"
         self.assert_(linkcheck.url.is_safe_url(u), u)
-        u = "http://www.imadoofus.com/"
+        u = "http://www.example.com/"
         self.assert_(linkcheck.url.is_safe_url(u), u)
-        u = "http://www.imadoofus.com/~calvin"
+        u = "http://www.example.com/~calvin"
         self.assert_(linkcheck.url.is_safe_url(u), u)
-        u = "http://www.imadoofus.com/a,b"
+        u = "http://www.example.com/a,b"
         self.assert_(linkcheck.url.is_safe_url(u), u)
-        u = "http://www.imadoofus.com#anchor55"
+        u = "http://www.example.com#anchor55"
         self.assert_(linkcheck.url.is_safe_url(u), u)
 
     def test_needs_quoting (self):
         """
         Test url quoting necessity.
         """
-        url = "mailto:<calvin@debian.org>?subject=Halli Hallo"
+        url = "mailto:<calvin@example.org>?subject=Halli Hallo"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
-        url = " http://www.imadoofus.com/"
+        url = " http://www.example.com/"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
-        url = "http://www.imadoofus.com/ "
+        url = "http://www.example.com/ "
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
-        url = "http://www.imadoofus.com/\n"
+        url = "http://www.example.com/\n"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
-        url = "\nhttp://www.imadoofus.com/"
+        url = "\nhttp://www.example.com/"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
-        url = "http://www.imadoofus.com/#a!"
+        url = "http://www.example.com/#a!"
         self.assert_(not linkcheck.url.url_needs_quoting(url), repr(url))
-        url = "http://www.imadoofus.com/#a b"
+        url = "http://www.example.com/#a b"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
 
     def test_absolute_url (self):
@@ -544,8 +544,7 @@ class TestUrl (unittest.TestCase):
         self.assert_(match_host("localhost", ["localhost"]))
         self.assert_(not match_url("", []))
         self.assert_(not match_url("a", []))
-        self.assert_(match_url("http://imadoofus.org/hulla",
-                               ["imadoofus.org"]))
+        self.assert_(match_url("http://example.org/hulla", ["example.org"]))
 
     def test_splitparam (self):
         """
@@ -585,9 +584,9 @@ class TestUrl (unittest.TestCase):
     def test_split (self):
         url_split = linkcheck.url.url_split
         url_unsplit = linkcheck.url.url_unsplit
-        url = "http://imadoofus.org/whoops"
+        url = "http://example.org/whoops"
         self.assertEqual(url_unsplit(url_split(url)), url)
-        url = "http://imadoofus.org:123/whoops"
+        url = "http://example.org:123/whoops"
         self.assertEqual(url_unsplit(url_split(url)), url)
 
 
