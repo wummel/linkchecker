@@ -28,13 +28,13 @@ import cStringIO as StringIO
 import Cookie
 
 import linkcheck.url
-import linkcheck.gzip2
 import linkcheck.strformat
 import linkcheck.robotparser2
 import linkcheck.httplib2
 import httpheaders as headers
 import internpaturl
 import proxysupport
+from linkcheck import gzip2 as gzip
 # import warnings
 from const import WARN_HTTP_ROBOTS_DENIED, WARN_HTTP_NO_ANCHOR_SUPPORT, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
@@ -576,8 +576,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if encoding == 'deflate':
                     f = StringIO.StringIO(zlib.decompress(data))
                 else:
-                    f = linkcheck.gzip2.GzipFile('', 'rb', 9,
-                                      StringIO.StringIO(data))
+                    f = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(data))
             except zlib.error, msg:
                 self.add_warning(_("Decompress error %(err)s") %
                                  {"err": str(msg)},

@@ -29,12 +29,12 @@ import time
 import socket
 import re
 import zlib
-import gzip
 import sys
 import cStringIO as StringIO
 import linkcheck
 import configuration
 import log
+from linkcheck import gzip2 as gzip
 
 __all__ = ["RobotFileParser"]
 
