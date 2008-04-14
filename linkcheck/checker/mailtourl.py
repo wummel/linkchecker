@@ -156,7 +156,10 @@ class MailtoUrl (urlbase.UrlBase):
         username, domain = _split_address(mail)
         assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
             "looking up MX mailhost %r", domain)
-        answers = linkcheck.dns.resolver.query(domain, 'MX')
+        try:
+            answers = linkcheck.dns.resolver.query(domain, 'MX')
+        except linkcheck.dns.resolver.NoAnswer:
+            answers = []
         if len(answers) == 0:
             self.add_warning(_("No MX mail host for %(domain)s found.") %
                             {'domain': domain},

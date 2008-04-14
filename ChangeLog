@@ -25,8 +25,15 @@
 
   * Workaround for buggy servers that break protocol synchronization of
     persistent HTTP connections.
+    Type: bugfix
     Changed: linkcheck/checker/httpurl.py
     Closes: SF bug #1913992
+
+  * Properly fall back to DNS A requests when no MX host could be found
+    for a mailto: URL.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+    Closes: SF bug #1942463
 
 4.8 "Hallam Foe" (released 16.12.2007)
 
