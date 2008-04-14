@@ -116,12 +116,11 @@ dist-stamp: changelog
 # So for other developers there is no need to execute this target.
 .PHONY: check
 check:
-	py-verify -v
-	py-find-nocoding -v
-	check-nosvneolstyle -v
+	[ ! -d .svn ] || check-nosvneolstyle -v
 	check-copyright
 	check-pofiles -v
-	py24-tabnanny -v
+	py-tabdaddy -v
+	pyflakes -v linkcheck tests scripts *.py linkchecker gui cgi-bin config doc
 
 .PHONY: releasecheck
 releasecheck: check
