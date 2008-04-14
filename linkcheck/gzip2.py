@@ -6,7 +6,7 @@ but random access is not allowed."""
 
 # based on Andrew Kuchling's minigzip.py distributed with the zlib module
 
-import struct, sys, time
+import struct, sys
 import zlib
 import __builtin__
 
@@ -149,7 +149,7 @@ class GzipFile:
         if fname:
             flags = FNAME
         self.fileobj.write(chr(flags))
-        write32u(self.fileobj, long(time.time()))
+        write32u(self.fileobj, long(0))
         self.fileobj.write('\002')
         self.fileobj.write('\377')
         if fname:
