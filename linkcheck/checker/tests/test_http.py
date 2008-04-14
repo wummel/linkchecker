@@ -157,7 +157,8 @@ class TestHttp (httptest.HttpServerTest):
             u"url http://www.example.org/",
             u"cache key http://www.example.org/",
             u"real url http://www.example.org/",
-            u"error",
+            u"warning Access denied by robots.txt, checked only syntax.",
+            u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=1)
 
