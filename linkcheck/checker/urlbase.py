@@ -464,6 +464,9 @@ class UrlBase (object):
             not value:
             # EBADF occurs when operating on an already socket
             self.caching = False
+        if not str(value):
+            # use Exception class name
+            value = etype.__name__
         return value
 
     def check_connection (self):
