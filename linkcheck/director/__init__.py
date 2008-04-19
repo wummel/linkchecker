@@ -74,6 +74,8 @@ def interrupt (aggregate):
         try:
             linkcheck.log.warn(linkcheck.LOG_CHECK,
                _("keyboard interrupt; waiting for active threads to finish"))
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+               _("another keyboard interrupt will exit immediately"))
             print_active_threads(aggregate)
             abort(aggregate)
             break
@@ -100,8 +102,10 @@ def abort (aggregate):
             aggregate.logger.end_log_output()
             break
         except KeyboardInterrupt:
-            linkcheck.log.warn(linkcheck.LOG_CHECK, _("shutdown in progress"))
+            linkcheck.log.warn(linkcheck.LOG_CHECK, _("keyboard interrupt; force shutdown"))
             print_active_threads(aggregate)
+            import sys
+            sys.exit(1)
 
 
 def get_aggregate (config):

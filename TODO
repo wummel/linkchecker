@@ -1,8 +1,3 @@
-- [FEATURE] Hit Ctrl-C once displays active URLs and waits for a timeout.
-  Hitting it *again* after that should shut down immediately, not caring
-  about cleanup. Here is a starting point recipe:
-  http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/496735
-
 - [BUG REPORT] the web interface only runs on the server it is installed on.
   The ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi don't work and
   are not (well) documented.
