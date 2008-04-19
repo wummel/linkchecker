@@ -1,5 +1,5 @@
 # This Makefile is only used by developers.
-PYVER=2.4
+PYVER=2.5
 PYTHON=python$(PYVER)
 VERSION=$(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
