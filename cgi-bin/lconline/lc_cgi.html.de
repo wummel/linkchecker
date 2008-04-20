@@ -68,8 +68,6 @@ target="_top">LinkChecker</a>)
 <td><select name="language">
   <option value="de" selected>Deutsch</option>
   <option value="C">Englisch</option>
-  <option value="fr">Französisch</option>
-  <option value="nl">Niederländisch</option>
   </select>
 </td>
 </tr>
