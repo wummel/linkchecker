@@ -1,0 +1,4 @@
+/files
+/*.debhelper
+/linkchecker
+/*.substvars
