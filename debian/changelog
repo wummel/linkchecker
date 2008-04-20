@@ -2,6 +2,7 @@ linkchecker (4.9-1) unstable; urgency=low
 
   * New upstream release.
   * Use debhelper v6
+  * Double Ctrl-C quits without cleanup (Closes: #476623)
 
  -- Bastian Kleineidam <calvin@debian.org>  Fri, 14 Mar 2008 12:23:45 +0100
 

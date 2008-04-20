@@ -103,9 +103,19 @@ def abort (aggregate):
             break
         except KeyboardInterrupt:
             linkcheck.log.warn(linkcheck.LOG_CHECK, _("keyboard interrupt; force shutdown"))
-            print_active_threads(aggregate)
-            import sys
-            sys.exit(1)
+            force_shutdown()
+
+
+def force_shutdown ():
+    """Force shutdown, not finishing anything."""
+    import os
+    if os.name == "posix":
+        # POSIX systems seem to do fine with sys.exit()
+        import sys
+        sys.exit(1)
+    else:
+        # forced exit without cleanup
+        os._exit(1)
 
 
 def get_aggregate (config):

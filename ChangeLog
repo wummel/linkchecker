@@ -35,6 +35,11 @@
     Changed: linkcheck/checker/mailtourl.py
     Closes: SF bug #1942463
 
+  * Double Ctrl-C aborts checking immediately, without cleanup.
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+    Closes: SF bug #1720104
+
 4.8 "Hallam Foe" (released 16.12.2007)
 
   * Fix message typo for not disclosing information.
