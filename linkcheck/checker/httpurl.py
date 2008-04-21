@@ -196,6 +196,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
+            if self.warn_redirect:
+                linkcheck.log.warn(linkcheck.LOG_CHECK,
+                    _("""URL %s has been redirected.
+Use URL %s instead for checking."""), self.url, newurl)
             self.url = newurl
         # check response
         if response:

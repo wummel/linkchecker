@@ -116,6 +116,8 @@ class UrlBase (object):
         url = linkcheck.checker.absolute_url(base_url, base_ref, parent_url)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
+        # warn if URL is redirected (for commandline client)
+        self.warn_redirect = False
 
     def reset (self):
         """

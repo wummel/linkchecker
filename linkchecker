@@ -718,6 +718,8 @@ for url in args:
         # syntactic sugar
         url = "ftp://%s" % url
     url_data = get_url_from(url, 0, aggregate)
+    # warn if redirected since intern patterns do not match anymore then
+    url_data.warn_redirect = True
     try:
         linkcheck.add_intern_pattern(url_data, config)
     except UnicodeError:
