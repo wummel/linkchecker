@@ -40,6 +40,11 @@
     Changed: linkcheck/director/__init__.py
     Closes: SF bug #1720104
 
+  * Intern patterns now accept URLs with and without "www." prefixes
+    as default. This allows sites to check that use both variants.
+    Type: feature
+    Changed: linkcheck/checker/internpaturl.py
+
 4.8 "Hallam Foe" (released 16.12.2007)
 
   * Fix message typo for not disclosing information.

@@ -51,4 +51,6 @@ class InternPatternUrl (urlbase.UrlBase):
         args = list(re.escape(x) for x in (scheme, domain, path))
         if args[0] in ('http', 'https'):
             args[0] = 'https?'
+        if args[1].startswith('www\\.'):
+            args[1] = r"(www\.|)%s" % args[1][5:]
         return "%s://%s%s" % tuple(args)
