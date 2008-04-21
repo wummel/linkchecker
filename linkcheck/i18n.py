@@ -77,16 +77,17 @@ def init (domain, directory):
     Initialize this gettext i18n module. Searches for supported languages
     and installs the gettext translator class.
     """
-    global default_language
+    global default_language, default_encoding
     if os.path.isdir(directory):
         # get supported languages
         for lang in os.listdir(directory):
             path = os.path.join(directory, lang, 'LC_MESSAGES')
             if os.path.exists(os.path.join(path, '%s.mo' % domain)):
                 supported_languages.add(lang)
-    loc = get_locale()
+    loc, encoding = get_locale()
     if loc in supported_languages:
         default_language = loc
+        default_encoding = encoding
     # install translation service routines into default namespace
     translator = get_translator(domain, directory,
                                 languages=[default_language], fallback=True)
@@ -148,14 +149,15 @@ def get_locale ():
     Return current configured locale.
     """
     loc = None
+    encoding = 'ascii'
     try:
-        loc = locale.getlocale(category=locale.LC_MESSAGES)[0]
+        loc, encoding = locale.getlocale(category=locale.LC_MESSAGES)
     except ValueError:
         # XXX ignore Python bug
         # http://bugs.python.org/issue1158909
         pass
     if loc is None:
-        return 'C'
+        return ('C', 'ascii')
     loc = locale.normalize(loc)
     # split up the locale into its base components
     pos = loc.find('@')
@@ -167,7 +169,7 @@ def get_locale ():
     pos = loc.find('_')
     if pos >= 0:
         loc = loc[:pos]
-    return loc
+    return (loc, encoding)
 
 
 lang_names = {
