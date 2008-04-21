@@ -20,6 +20,7 @@ Common CGI functions used by the CGI scripts.
 
 import sys
 import os
+import locale
 import re
 import time
 import urlparse
@@ -33,7 +34,13 @@ import linkcheck.checker
 import linkcheck.director
 
 _logfile = None
-_supported_langs = ('de', 'fr', 'nl', 'C')
+_supported_langs = ('de', 'C')
+# map language -> locale name
+lang_locale = {
+    'de': 'de_DE',
+    'C': 'C',
+    'en': 'en_EN',
+}
 _is_level = re.compile(r'^(0|1|2|3|-1)$').match
 
 class FormError (StandardError):
@@ -124,7 +131,7 @@ def checkform (form):
     if "language" in form:
         lang = form['language'].value
         if lang in _supported_langs:
-            os.environ['LC_MESSAGES'] = lang
+            locale.setlocale(locale.LC_MESSAGES, lang_locale[lang])
             linkcheck.init_i18n()
         else:
             raise FormError(_("unsupported language"))
