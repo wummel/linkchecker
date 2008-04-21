@@ -149,10 +149,10 @@ def get_locale ():
     """
     loc = None
     try:
-        loc = locale.getdefaultlocale()[0]
+        loc = locale.getlocale(category=locale.LC_MESSAGES)[0]
     except ValueError:
         # XXX ignore Python bug
-        # http://sourceforge.net/tracker/index.php?func=detail&aid=1158909&group_id=5470&atid=105470
+        # http://bugs.python.org/issue1158909
         pass
     if loc is None:
         return 'C'
