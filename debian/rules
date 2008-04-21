@@ -16,6 +16,7 @@ DOCDIR=$(ROOT)/usr/share/doc/$(PACKAGE)
 CGIDIR=$(ROOT)/usr/lib/cgi-bin/lconline
 HTMLDIR=$(ROOT)/var/www/lconline
 SHARE=$(ROOT)/usr/share/$(PACKAGE)
+LOCALE=$(ROOT)/usr/share/locale
 ETC=$(ROOT)/etc
 
 common-configure-arch::
@@ -36,6 +37,8 @@ common-install-arch::
 	install -m 755 cgi-bin/lc.fcgi $(CGIDIR)
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
+# install .mo files
+	install -m 644 build/share/locale/de/LC_MESSAGES/linkchecker.mo $(LOCALE)/de/LC_MESSAGES/
 
 binary-post-install/linkchecker::
 # remove the README file which somehow gets installed
