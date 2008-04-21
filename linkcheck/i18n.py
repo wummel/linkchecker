@@ -24,7 +24,7 @@ import locale
 import gettext
 
 # more supported languages are added in init()
-supported_languages = ['en']
+supported_languages = set(['en'])
 default_language = 'en'
 default_encoding = locale.getpreferredencoding()
 # It can happen that the preferrec encoding is not determinable, which
@@ -83,7 +83,7 @@ def init (domain, directory):
         for lang in os.listdir(directory):
             path = os.path.join(directory, lang, 'LC_MESSAGES')
             if os.path.exists(os.path.join(path, '%s.mo' % domain)):
-                supported_languages.append(lang)
+                supported_languages.add(lang)
     loc = get_locale()
     if loc in supported_languages:
         default_language = loc
