@@ -151,7 +151,7 @@ def get_locale ():
     loc = None
     encoding = 'ascii'
     try:
-        loc, encoding = locale.getlocale(category=locale.LC_MESSAGES)
+        loc, encoding = locale.getlocale(category=locale.LC_ALL)
     except ValueError:
         # XXX ignore Python bug
         # http://bugs.python.org/issue1158909

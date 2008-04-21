@@ -131,7 +131,7 @@ def checkform (form):
     if "language" in form:
         lang = form['language'].value
         if lang in _supported_langs:
-            locale.setlocale(locale.LC_MESSAGES, lang_locale[lang])
+            locale.setlocale(locale.LC_ALL, lang_locale[lang])
             linkcheck.init_i18n()
         else:
             raise FormError(_("unsupported language"))
