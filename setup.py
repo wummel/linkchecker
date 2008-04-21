@@ -413,12 +413,12 @@ class MyBuild (build, object):
         """
         For each po/*.po, build .mo file in target locale directory.
         """
-        for (_src, _dst) in list_message_files(self.distribution.get_name()):
-            _build_dst = os.path.join("build", _dst)
-            self.mkpath(os.path.dirname(_build_dst))
-            self.announce("Compiling %s -> %s" % (_src, _build_dst))
+        for (src, dst) in list_message_files(self.distribution.get_name()):
+            build_dst = os.path.join("build", dst)
+            self.mkpath(os.path.dirname(build_dst))
+            self.announce("Compiling %s -> %s" % (src, build_dst))
             from linkcheck import msgfmt
-            msgfmt.make(_src, _build_dst)
+            msgfmt.make(src, build_dst)
 
     def run (self):
         check_manifest()
