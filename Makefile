@@ -5,6 +5,7 @@ VERSION=$(shell $(PYTHON) setup.py --version)
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 PYTHONSVN=/home/calvin/src/python-svn
+PY_FILES_DIRS=linkcheck tests scripts *.py linkchecker gui cgi-bin config doc
 # build dir for svn-buildpackage
 SVNBUILD=/home/calvin/src/build-area
 DEB_ORIG_TARGET=$(SVNBUILD)/linkchecker_$(VERSION).orig.tar.gz
@@ -120,7 +121,10 @@ check:
 	check-copyright
 	check-pofiles -v
 	py-tabdaddy -v
-	pyflakes -v linkcheck tests scripts *.py linkchecker gui cgi-bin config doc
+	pyflakes -v $(PY_FILES_DIRS) 2>&1 \
+	  grep -v "redefinition of unused 'linkcheck'" | \
+	  grep -v "undefined name '_'" | \
+	  grep -v "undefined name '_n'"
 
 .PHONY: releasecheck
 releasecheck: check
