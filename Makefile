@@ -19,7 +19,7 @@ all:
 clean:
 # ignore errors of this command
 	-$(PYTHON) setup.py clean --all
-	rm -f sign-stamp release-stamp
+	rm -f *-stamp*
 	$(MAKE) -C po clean
 	$(MAKE) -C doc clean
 	$(MAKE) -C doc/en clean
