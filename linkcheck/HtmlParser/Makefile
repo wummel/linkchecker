@@ -1,7 +1,7 @@
 # this parser needs flex >= 2.5.xx from http://lex.sf.net/
 # for reentrant bison parser support
 FLEX = flex
-PYINCLUDE=-I/usr/include/python2.4
+PYINCLUDE=-I/usr/include/python2.5
 #PYINCLUDE="-I/home/calvin/src/python-gitsvn -I/home/calvin/src/python-gitsvn/Include"
 
 all: htmllex.c htmlparse.c
@@ -22,5 +22,8 @@ htmllex.c:	htmllex.l htmlsax.h
 	awk -f fixincludes.awk htmllex.c > htmllex.c.fixed; mv -f htmllex.c.fixed htmllex.c
 
 clean:
-	rm -f htmlparse.c htmlparse.h htmllex.c *.o *.so *.pyc *.pyo *.output
+	rm -f *.o *.so *.pyc *.pyo *.output
+
+distclean: clean
+	rm -f htmlparse.c htmlparse.h htmllex.c
 
