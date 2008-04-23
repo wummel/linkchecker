@@ -369,6 +369,9 @@ group.add_option("--warning-size-bytes", dest="warningsizebytes",
                  help=_(
 """Print a warning if content size info is available and exceeds the
 given number of bytes."""))
+group.add_option("--check-html", action="store_true", dest="checkhtml",
+                 help=_(
+"""Check HTML syntax with HTML tidy if available."""))
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation, an alias for '-o none'.
@@ -669,6 +672,8 @@ if constructauth:
     config["authentication"].append({'pattern': try_compile_re(".+"),
                                      'user': _username,
                                      'password': _password})
+if options.checkhtml is not None:
+    config["checkhtml"] = options.checkhtml
 
 assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
     "configuration: %s", pprint.pformat(config.items()))

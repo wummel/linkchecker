@@ -426,7 +426,9 @@ class UrlBase (object):
             except tuple(linkcheck.checker.const.ExcList):
                 value = self.handle_exception()
                 self.set_result(unicode_safe(value), valid=False)
-
+        # check HTML syntax
+        if self.is_html() and self.aggregate.config["checkhtml"]:
+            self.check_html()
         self.checktime = time.time() - check_start
         # check recursion
         try:
@@ -634,6 +636,16 @@ class UrlBase (object):
                          "maxbytes": linkcheck.strformat.strsize(maxbytes)},
                           tag=WARN_URL_CONTENT_TOO_LARGE)
 
+    def check_html (self):
+        """Check HTML if this page."""
+        import tidy
+        options = dict(output_html=0, show_warnings=1, quiet=True,
+            input_encoding='utf8', output_encoding='utf8', tidy_mark=0)
+        doc = tidy.parseString(self.get_content(), **options)
+        errors = filter_tidy_errors(doc.errors)
+        for err in errors:
+            self.add_warning(_("HTMLTidy: %s") % err)
+
     def parse_url (self):
         """
         Parse url content and search for recursive links.
@@ -800,3 +812,8 @@ class UrlBase (object):
         """
         return u"<%s >" % self.serialized()
 
+
+def filter_tidy_errors (errors):
+    """Filter certain errors from HTML tidy run."""
+    return [x for x in errors if not \
+        (x.severity=='W' and x.message=='<table> lacks "summary" attribute')]

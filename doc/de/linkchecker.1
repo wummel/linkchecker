@@ -101,6 +101,9 @@ Applikationsfehler".
 Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
 Anzahl von Bytes übersteigt.
 .TP 
+\fB\-\-check\-html\fP
+Prüfe HTML Syntax der aktuellen URL.
+.TP 
 \fB\-q\fP, \fB\-\-quiet\fP
 Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit
 \fB\-F\fP nützlich.
@@ -291,9 +294,9 @@ Setzt den Cookie Name/Wert. Kann mehrmals angegeben werden.
 .PP
 Mehrere Einträge sind durch eine Leerzeile zu trennen.
 .
-The example below will send two cookies to all URLs starting with
-\fBhttp://example.com/hello/\fP and one to all URLs starting with
-\fBhttps://example.org/\fP:
+Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
+\fBhttp://example.org/hello/\fP beginnen, und eins zu allen URLs die mit
+\fBhttps://example.org\fP beginnen:
 
  Host: example.com
  Path: /hello

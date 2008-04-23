@@ -145,6 +145,7 @@ class Configuration (dict):
         self["threads"] = 10
         # socket timeout in seconds
         self["timeout"] = 60
+        self["checkhtml"] = False
 
     def init_logging (self, debug=None):
         """

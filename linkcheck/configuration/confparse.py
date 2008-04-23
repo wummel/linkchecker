@@ -126,6 +126,17 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section,"anchorcaching"):
             val = self.getboolean(section, "anchorcaching")
             self.config["anchorcaching"] = val
+        if self.has_option(section,"checkhtml"):
+            val = self.getboolean(section, "checkhtml")
+            if val:
+                try:
+                    import tidy
+                except ImportError:
+                    linkcheck.log.warn(linkcheck.LOG_CHECK,
+                    _("warning: tidy module is not available; " \
+                     "download from http://http://utidylib.berlios.de/"))
+                    val = False
+            self.config["checkhtml"] = val
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""
