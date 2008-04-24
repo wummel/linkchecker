@@ -189,11 +189,7 @@ class FileUrl (urlbase.UrlBase):
         """
         Check if file is a CSS file.
         """
-        if PARSE_EXTENSIONS['css'].search(self.url):
-            return True
-        if PARSE_CONTENTS['css'].search(self.get_content()):
-            return True
-        return False
+        return bool(PARSE_EXTENSIONS['css'].search(self.url))
 
     def is_file (self):
         """
