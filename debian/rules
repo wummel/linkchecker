@@ -32,7 +32,8 @@ common-install-arch::
 	install -m 644 cgi-bin/lconline/*.html $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.de $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.en $(HTMLDIR)
-	install -m 644 cgi-bin/lconline/check.js $(HTMLDIR)
+	install -m 644 cgi-bin/lconline/*.js $(HTMLDIR)
+	install -m 644 cgi-bin/lconline/*.css $(HTMLDIR)
 	install -m 755 cgi-bin/lc.cgi $(CGIDIR)
 	install -m 755 cgi-bin/lc.fcgi $(CGIDIR)
 # install bash_completion script

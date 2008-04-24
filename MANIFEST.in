@@ -21,7 +21,7 @@ include debian/watch
 include test.py tests/*.py
 include scripts/*.py scripts/*.sh scripts/*.bat
 include cgi-bin/lconline/*.html cgi-bin/lconline/*.de cgi-bin/lconline/*.en
-include cgi-bin/lconline/check.js
+include cgi-bin/lconline/*.js cgi-bin/lconline/*.css
 include linkcheck/HtmlParser/Makefile
 include linkcheck/HtmlParser/htmllex.l
 include linkcheck/HtmlParser/htmlparse.y
