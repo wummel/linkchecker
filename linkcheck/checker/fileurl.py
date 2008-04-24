@@ -177,11 +177,21 @@ class FileUrl (urlbase.UrlBase):
 
     def is_html (self):
         """
-        Check if file is a parseable HTML file.
+        Check if file is a HTML file.
         """
         if PARSE_EXTENSIONS['html'].search(self.url):
             return True
         if PARSE_CONTENTS['html'].search(self.get_content()):
+            return True
+        return False
+
+    def is_css (self):
+        """
+        Check if file is a CSS file.
+        """
+        if PARSE_EXTENSIONS['css'].search(self.url):
+            return True
+        if PARSE_CONTENTS['css'].search(self.get_content()):
             return True
         return False
 

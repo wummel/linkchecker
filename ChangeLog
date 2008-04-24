@@ -45,6 +45,12 @@
     Type: feature
     Changed: linkcheck/checker/internpaturl.py
 
+  * Added --check-html and --check-css options to enable HTML and CSS
+    syntax checking. Uses third-party modules "tidy" and "cssutils"
+    for the actual check.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/urlbase.py
+
 4.8 "Hallam Foe" (released 16.12.2007)
 
   * Fix message typo for not disclosing information.

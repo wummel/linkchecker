@@ -132,6 +132,9 @@
 #nntpserver=
 # disable anchor caching
 #noanchorcaching=1
+# check HTML and/or CSS syntax
+#checkhtml=1
+#checkcss=1
 
 # filtering options
 [filtering]

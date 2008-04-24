@@ -180,9 +180,13 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         See if URL target is a HTML file by looking at the extension.
         """
-        if PARSE_EXTENSIONS['html'].search(self.url):
-            return True
-        return False
+        return bool(PARSE_EXTENSIONS['html'].search(self.url))
+
+    def is_css (self):
+        """
+        See if URL target is a CSS file by looking at the extension.
+        """
+        return bool(PARSE_EXTENSIONS['css'].search(self.url))
 
     def is_parseable (self):
         """

@@ -20,6 +20,7 @@ Base URL handler.
 
 import sys
 import os
+import logging
 import urlparse
 import urllib2
 import urllib
@@ -189,6 +190,10 @@ class UrlBase (object):
         """
         Return True iff content of this url is HTML formatted.
         """
+        return False
+
+    def is_css (self):
+        """Return True iff content of this url is CSS stylesheet."""
         return False
 
     def is_http (self):
@@ -426,9 +431,11 @@ class UrlBase (object):
             except tuple(linkcheck.checker.const.ExcList):
                 value = self.handle_exception()
                 self.set_result(unicode_safe(value), valid=False)
-        # check HTML syntax
+        # check HTML/CSS syntax
         if self.is_html() and self.aggregate.config["checkhtml"]:
             self.check_html()
+        if self.is_css() and self.aggregate.config["checkcss"]:
+            self.check_css()
         self.checktime = time.time() - check_start
         # check recursion
         try:
@@ -637,14 +644,55 @@ class UrlBase (object):
                           tag=WARN_URL_CONTENT_TOO_LARGE)
 
     def check_html (self):
-        """Check HTML if this page."""
-        import tidy
+        """Check HTML syntax of this page (which is supposed to be HTML)."""
+        try:
+            import tidy
+        except ImportError:
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                _("warning: tidy module is not available; " \
+                 "download from http://utidylib.berlios.de/"))
+            return
         options = dict(output_html=0, show_warnings=1, quiet=True,
             input_encoding='utf8', output_encoding='utf8', tidy_mark=0)
-        doc = tidy.parseString(self.get_content(), **options)
-        errors = filter_tidy_errors(doc.errors)
-        for err in errors:
-            self.add_warning(_("HTMLTidy: %s") % err)
+        try:
+            doc = tidy.parseString(self.get_content(), **options)
+            errors = filter_tidy_errors(doc.errors)
+            for err in errors:
+                self.add_warning("HTMLTidy: %s" % err)
+        except:
+            # catch _all_ exceptions since we dont want third party module
+            # errors to propagate into this library
+            err = str(sys.exc_info()[1])
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                _("warning: tidy HTML parsing caused error: %s ") % err)
+
+    def check_css (self):
+        """Check CSS syntax of this page (which is supposed to be CSS)."""
+        try:
+            import cssutils
+        except ImportError:
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                _("warning: cssutils module is not available; " \
+                 "download from http://cthedot.de/cssutils/"))
+            return
+        try:
+            log = logging.getLogger('cssutils')
+            log.propagate = 0
+            del log.handlers[:]
+            handler = linkcheck.checker.StoringHandler()
+            log.addHandler(handler)
+            log.setLevel(logging.WARN)
+            cssparser = cssutils.CSSParser(log=log)
+            sheet = cssparser.parseString(self.get_content(), href=self.url)
+            for record in handler.storage:
+                self.add_warning("cssutils: %s" % record.getMessage())
+        except:
+            raise
+            # catch _all_ exceptions since we dont want third party module
+            # errors to propagate into this library
+            err = str(sys.exc_info()[1])
+            linkcheck.log.warn(linkcheck.LOG_CHECK,
+                _("warning: cssutils parsing caused error: %s ") % err)
 
     def parse_url (self):
         """

@@ -592,6 +592,16 @@ Use URL %s instead for checking."""), self.url, newurl)
             self.data = data
             self.dltime = time.time() - t
 
+    def encoding_supported (self):
+        """Check if page encoding is supported."""
+        encoding = headers.get_content_encoding(self.headers)
+        if encoding and encoding not in _supported_encodings and \
+           encoding != 'identity':
+            self.add_warning(_('Unsupported content encoding %r.') % encoding,
+                             tag=WARN_HTTP_UNSUPPORTED_ENCODING)
+            return False
+        return True
+
     def is_html (self):
         """
         See if this URL points to a HTML file by looking at the
@@ -604,13 +614,15 @@ Use URL %s instead for checking."""), self.url, newurl)
             return False
         if headers.get_content_type(self.headers) != "text/html":
             return False
-        encoding = headers.get_content_encoding(self.headers)
-        if encoding and encoding not in _supported_encodings and \
-           encoding != 'identity':
-            self.add_warning(_('Unsupported content encoding %r.') % encoding,
-                             tag=WARN_HTTP_UNSUPPORTED_ENCODING)
+        return self.encoding_supported()
+
+    def is_css (self):
+        """Return True iff content of this url is CSS stylesheet."""
+        if not (self.valid and self.headers):
             return False
-        return True
+        if headers.get_content_type(self.headers) != "text/css":
+            return False
+        return self.encoding_supported()
 
     def is_http (self):
         """

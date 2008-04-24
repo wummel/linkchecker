@@ -126,6 +126,10 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section,"anchorcaching"):
             val = self.getboolean(section, "anchorcaching")
             self.config["anchorcaching"] = val
+        self.read_check_options(section)
+
+    def read_check_options (self, section):
+        """Read check* options."""
         if self.has_option(section,"checkhtml"):
             val = self.getboolean(section, "checkhtml")
             if val:
@@ -134,9 +138,20 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 except ImportError:
                     linkcheck.log.warn(linkcheck.LOG_CHECK,
                     _("warning: tidy module is not available; " \
-                     "download from http://http://utidylib.berlios.de/"))
+                     "download from http://utidylib.berlios.de/"))
                     val = False
             self.config["checkhtml"] = val
+        if self.has_option(section,"checkcss"):
+            val = self.getboolean(section, "checkcss")
+            if val:
+                try:
+                    import cssutils
+                except ImportError:
+                    linkcheck.log.warn(linkcheck.LOG_CHECK,
+                        _("warning: cssutils module is not available; " \
+                         "download from http://cthedot.de/cssutils/"))
+                    val = False
+            self.config["checkcss"] = val
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""

@@ -372,6 +372,9 @@ given number of bytes."""))
 group.add_option("--check-html", action="store_true", dest="checkhtml",
                  help=_(
 """Check HTML syntax with HTML tidy if available."""))
+group.add_option("--check-css", action="store_true", dest="checkcss",
+                 help=_(
+"""Check CSS syntax with cssutils if available."""))
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation, an alias for '-o none'.
@@ -674,6 +677,8 @@ if constructauth:
                                      'password': _password})
 if options.checkhtml is not None:
     config["checkhtml"] = options.checkhtml
+if options.checkcss is not None:
+    config["checkcss"] = options.checkcss
 
 assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
     "configuration: %s", pprint.pformat(config.items()))
