@@ -6,11 +6,6 @@
 
 - [INTERFACE] make a nice GUI for linkchecker
 
-- [FEATURE] warn if overall size of page (including images/flash/etc.) is
-  too big. Right now, the page size is only html content.
-
-- [FEATURE] Option to save/cache downloaded pages.
-
 - [FEATURE] Virus check
 
 - [FEATURE] Allow specifying proxy data in the web interface
