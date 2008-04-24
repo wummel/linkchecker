@@ -4,8 +4,6 @@
 
 - [BUGFIX] The URL in the log output is double normed.
 
-- [FEATURE] Modernize the CGI HTML pages, use CSS.
-
 - [INTERFACE] make a nice GUI for linkchecker
 
 - [FEATURE] warn if overall size of page (including images/flash/etc.) is

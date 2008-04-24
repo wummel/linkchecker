@@ -1,7 +1,12 @@
-On Debian systems, you have a simple CGI script located at
+Web Interface
+==============
+On Debian systems, you have a simple CGI script located at:
+
 http://localhost/lconline/index.html
-For this to work, your web server must have content negotiation enabled.
-Or you have to remove for one language XY the file extensions of the
+
+For this to work, your web server must have content negotiation enabled
+(with "sudo a2enmod negotiation").
+Otherwise you have to for one language XY the file extensions of the
 .html.XY files.
 
 Note that only the local host (ie. 127.0.0.1) can access this
@@ -9,5 +14,7 @@ script. If you want to enable access from other hosts you have
 to adjust the ALLOWED_HOSTS and ALLOWED_SERVERS variables in
 the /usr/lib/cgi-bin/lc.cgi script.
 
-The --profile option works only if the python2.5 or the
+Profiling
+==========
+The --profile option works only if python >=2.5 or the
 python-profiler package is installed.
