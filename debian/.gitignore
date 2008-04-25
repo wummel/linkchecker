@@ -1,4 +1,5 @@
 /files
 /*.debhelper
+/*.debhelper.log
 /linkchecker
 /*.substvars

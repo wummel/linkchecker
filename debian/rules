@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
 DEB_PYTHON_SYSTEM=pycentral
+DEB_DH_INSTALLCHANGELOGS_ARGS=ChangeLog.txt
 
 common-install-arch::
 	$(MAKE) locale
@@ -41,6 +42,3 @@ common-install-arch::
 # install .mo files
 	install -m 644 build/share/locale/de/LC_MESSAGES/linkchecker.mo $(LOCALE)/de/LC_MESSAGES/
 
-binary-post-install/linkchecker::
-# remove the README file which somehow gets installed
-	rm $(DOCDIR)/README
