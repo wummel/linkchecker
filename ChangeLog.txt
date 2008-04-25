@@ -1,4 +1,4 @@
-4.9 "Michael Clayton" (released xx.xx.2008)
+4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
     Type: feature
