@@ -121,10 +121,7 @@ check:
 	check-copyright
 	check-pofiles -v
 	py-tabdaddy -v
-	pyflakes -v $(PY_FILES_DIRS) 2>&1 \
-	  grep -v "redefinition of unused 'linkcheck'" | \
-	  grep -v "undefined name '_'" | \
-	  grep -v "undefined name '_n'"
+	$(MAKE) pyflakes
 
 .PHONY: releasecheck
 releasecheck: check
