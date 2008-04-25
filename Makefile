@@ -128,8 +128,8 @@ check:
 
 .PHONY: releasecheck
 releasecheck: check
-	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog > /dev/null; then \
-	  echo "Could not release: edit ChangeLog release date"; false; \
+	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog.txt > /dev/null; then \
+	  echo "Could not release: edit ChangeLog.txt release date"; false; \
 	fi
 	$(MAKE) -C doc/en test
 
@@ -166,4 +166,4 @@ diff:
 
 .PHONY: changelog
 changelog:
-	sftrack_changelog linkchecker calvin@users.sourceforge.net ChangeLog
+	sftrack_changelog linkchecker calvin@users.sourceforge.net ChangeLog.txt
