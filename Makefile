@@ -150,7 +150,7 @@ pyflakes:
 	pyflakes 2>&1 | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
-	  grep -v "undefined name '_n'"
+	  grep -v "undefined name '_n'" | cat
 
 .PHONY: reindent
 reindent:
