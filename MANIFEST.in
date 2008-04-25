@@ -1,4 +1,4 @@
-include MANIFEST.in README INSTALL COPYING TODO ChangeLog
+include MANIFEST.in README.txt INSTALL.txt COPYING.txt TODO.txt ChangeLog.txt
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/logging.conf config/pycheckrc
 include config/reindent.py install-linkchecker.py install-rpm.sh
