@@ -176,7 +176,7 @@ class TestCookies (unittest.TestCase):
         self.assertEqual(scheme, "http")
         self.assertEqual(host, "example.org")
         self.assertEqual(path, "/hello")
-        self.assertEqual(len(headers), 4)
+        self.assertEqual(len(headers.headers), 4)
 
     def test_cookie_parse2 (self):
         lines = [
@@ -189,7 +189,7 @@ class TestCookies (unittest.TestCase):
         self.assertEqual(scheme, "https")
         self.assertEqual(host, "example.org")
         self.assertEqual(path, "/")
-        self.assertEqual(len(headers), 3)
+        self.assertEqual(len(headers.headers), 3)
 
     def test_cookie_parse3 (self):
         lines = [
