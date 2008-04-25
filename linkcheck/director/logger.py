@@ -53,7 +53,7 @@ class Logger (object):
         Send new url to all configured loggers.
         """
         has_warnings = False
-        for tag, content in url_data.warnings:
+        for tag, dummy in url_data.warnings:
             if tag not in self.ignorewarnings:
                 has_warnings = True
                 break

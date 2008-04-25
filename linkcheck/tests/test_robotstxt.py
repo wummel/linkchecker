@@ -264,6 +264,7 @@ class TestRobotsTxt (unittest.TestCase):
             "User-Agent: *",
             "Disallow: /.",
         ]
+        self.rp.parse(lines)
         good = ['/foo.html']
         bad = [] # Bug report says "/" should be denied, but that is not in the RFC
         self.check_urls(good, bad)

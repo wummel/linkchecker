@@ -26,6 +26,7 @@ import unittest
 
 import linkcheck.checker
 import linkcheck.configuration
+import linkcheck.director
 import linkcheck.logger
 
 # helper alias

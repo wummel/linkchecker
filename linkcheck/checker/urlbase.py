@@ -683,7 +683,7 @@ class UrlBase (object):
             log.addHandler(handler)
             log.setLevel(logging.WARN)
             cssparser = cssutils.CSSParser(log=log)
-            sheet = cssparser.parseString(self.get_content(), href=self.url)
+            cssparser.parseString(self.get_content(), href=self.url)
             for record in handler.storage:
                 self.add_warning("cssutils: %s" % record.getMessage())
         except:

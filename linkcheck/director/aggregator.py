@@ -48,7 +48,7 @@ class Aggregate (object):
         self.threads.append(t)
         num = self.config["threads"]
         if num >= 1:
-            for i in xrange(num):
+            for dummy in xrange(num):
                 t = checker.Checker(self.urlqueue, self.logger)
                 t.start()
                 self.threads.append(t)

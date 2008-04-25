@@ -523,6 +523,7 @@ class TestUrl (unittest.TestCase):
         idna_encode =linkcheck.url.idna_encode
         encurl, is_idn = idna_encode(url)
         self.assert_(is_idn)
+        self.assertTrue(encurl)
         url = u''
         encurl, is_idn = idna_encode(url)
         self.assertFalse(is_idn)

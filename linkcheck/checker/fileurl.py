@@ -102,6 +102,8 @@ class FileUrl (urlbase.UrlBase):
         # norm base url again after changing
         if self.base_url != base_url:
             base_url, is_idn = linkcheck.checker.urlbase.url_norm(base_url)
+            if is_idn:
+                pass # XXX warn about idn use
             self.base_url = unicode(base_url)
 
     def build_url (self):

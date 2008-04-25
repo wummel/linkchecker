@@ -284,6 +284,7 @@ class TestCaselessSortedDict (unittest.TestCase):
         prev = None
         for key, value in self.d.items():
             self.assert_(key > prev)
+            self.assertEqual(value, self.d[key])
             prev = key
 
 

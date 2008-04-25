@@ -86,6 +86,7 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
+        self.assert_(cookie.is_valid_for("http", host, 100, "/"))
 
     def test_netscape_cookie5 (self):
         data = (
@@ -161,6 +162,7 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
+        self.assert_(cookie.is_valid_for("http", host, 100, "/"))
 
     def test_cookie_parse1 (self):
         lines = [
@@ -171,15 +173,23 @@ class TestCookies (unittest.TestCase):
         ]
         from_headers = linkcheck.cookies.from_headers
         headers, scheme, host, path = from_headers("\r\n".join(lines))
+        self.assertEqual(scheme, "http")
+        self.assertEqual(host, "example.org")
+        self.assertEqual(path, "/hello")
+        self.assertEqual(len(headers), 4)
 
     def test_cookie_parse2 (self):
         lines = [
             'Scheme: https',
-            'Host: imaweevil.org',
+            'Host: example.org',
             'Set-cookie: baggage="elitist"; comment="hologram"',
         ]
         from_headers = linkcheck.cookies.from_headers
         headers, scheme, host, path = from_headers("\r\n".join(lines))
+        self.assertEqual(scheme, "https")
+        self.assertEqual(host, "example.org")
+        self.assertEqual(path, "/")
+        self.assertEqual(len(headers), 3)
 
     def test_cookie_parse3 (self):
         lines = [

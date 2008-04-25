@@ -66,7 +66,7 @@ def http_timeout (response):
     if timeout is not None:
         try:
             timeout = int(timeout[8:].strip())
-        except ValueError, msg:
+        except ValueError:
             timeout = DEFAULT_TIMEOUT_SECS
     else:
         timeout = DEFAULT_TIMEOUT_SECS

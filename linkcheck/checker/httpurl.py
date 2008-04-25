@@ -328,6 +328,8 @@ Use URL %s instead for checking."""), self.url, newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
             # norm base url - can raise UnicodeError from url.idna_encode()
             redirected, is_idn = linkcheck.checker.urlbase.url_norm(newurl)
+            if is_idn:
+                pass # XXX warn about idn use
             assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
                 "Norm redirected to %r", redirected)
             urlparts = linkcheck.strformat.url_unicode_split(redirected)
@@ -563,8 +565,7 @@ Use URL %s instead for checking."""), self.url, newurl)
         if self.data is None:
             self.method = "GET"
             response = self._get_http_response()
-            tries, response = self.follow_redirections(response,
-                                                       set_result=False)
+            response = self.follow_redirections(response, set_result=False)[1]
             self.headers = response.msg
             self._read_content(response)
             if self.data is None:
