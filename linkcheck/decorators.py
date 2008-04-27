@@ -35,6 +35,7 @@ def h ():
     pass
 
 """
+from __future__ import with_statement
 import warnings
 import signal
 import os
@@ -43,8 +44,7 @@ import time
 
 
 def update_func_meta (fake_func, real_func):
-    """
-    Set meta information (eg. __doc__) of fake function to that
+    """Set meta information (eg. __doc__) of fake function to that
     of the real function.
     @return fake_func
     """
@@ -56,14 +56,10 @@ def update_func_meta (fake_func, real_func):
 
 
 def deprecated (func):
-    """
-    A decorator which can be used to mark functions as deprecated.
-    It emits a warning when the function is called.
-    """
+    """A decorator which can be used to mark functions as deprecated.
+    It emits a warning when the function is called."""
     def newfunc (*args, **kwargs):
-        """
-        Print deprecated warning and execute original function.
-        """
+        """Print deprecated warning and execute original function."""
         warnings.warn("Call to deprecated function %s." % func.__name__,
                       category=DeprecationWarning)
         return func(*args, **kwargs)
@@ -71,8 +67,7 @@ def deprecated (func):
 
 
 def signal_handler (signal_number):
-    """
-    From http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/410666
+    """From http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/410666
 
     A decorator to set the specified function as handler for a signal.
     This function is the 'outer' decorator, called with only the
@@ -82,9 +77,7 @@ def signal_handler (signal_number):
     """
     # create the 'real' decorator which takes only a function as an argument
     def newfunc (function):
-        """
-        Register function as signal handler.
-        """
+        """Register function as signal handler."""
         # note: actually the kill(2) function uses the signal number of 0
         # for a special case, but for signal(2) only positive integers
         # are allowed
@@ -96,49 +89,32 @@ def signal_handler (signal_number):
 
 
 def synchronize (lock, func):
-    """
-    Return synchronized function acquiring the given lock.
-    """
+    """Return synchronized function acquiring the given lock."""
     def newfunc (*args, **kwargs):
-        """
-        Execute function synchronized.
-        """
-        lock.acquire()
-        try:
+        """Execute function synchronized."""
+        with lock:
             return func(*args, **kwargs)
-        finally:
-            lock.release()
     return update_func_meta(newfunc, func)
 
 
 def synchronized (lock):
-    """
-    A decorator calling a function with aqcuired lock.
-    """
+    """A decorator calling a function with aqcuired lock."""
     return lambda func: synchronize(lock, func)
 
 
 def notimplemented (func):
-    """
-    Raises a NotImplementedError if the function is called.
+    """Raises a NotImplementedError if the function is called."""
     def newfunc (*args, **kwargs):
-    """
-    def newfunc (*args, **kwargs):
-        """
-        Raise NotImplementedError
-        """
+        """Raise NotImplementedError"""
         raise NotImplementedError("%s not implemented" % func.__name__)
     return update_func_meta(newfunc, func)
 
 
 def timeit (func, log, limit):
-    """
-    Print execution time of the function. For quick'n'dirty profiling.
-    """
+    """Print execution time of the function. For quick'n'dirty profiling."""
+
     def newfunc (*args, **kwargs):
-        """
-        Execute function and print execution time.
-        """
+        """Execute function and print execution time."""
         t = time.time()
         res = func(*args, **kwargs)
         duration = time.time() - t
@@ -155,11 +131,10 @@ def timed (log=sys.stderr, limit=2.0):
 
 
 class memoized (object):
-    """
-    Decorator that caches a function's return value each time it is called.
+    """Decorator that caches a function's return value each time it is called.
     If called later with the same arguments, the cached value is returned, and
-    not re-evaluated.
-    """
+    not re-evaluated."""
+
     def __init__(self, func):
         self.func = func
         self.cache = {}
@@ -181,11 +156,9 @@ class memoized (object):
 
 
 class curried (object):
-    """
-    Decorator that returns a function that keeps returning functions
+    """Decorator that returns a function that keeps returning functions
     until all arguments are supplied; then the original function is
-    evaluated.
-    """
+    evaluated."""
     def __init__(self, func, *a):
         self.func = func
         self.args = a

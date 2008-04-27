@@ -32,7 +32,7 @@ import linkcheck
 # override optparse gettext method with the one from linkcheck.init_i18n()
 optparse._ = _
 # now import the rest of the linkchecker gang
-import linkcheck.log
+from linkcheck import log, LOG_CMDLINE
 import linkcheck.i18n
 import linkcheck.checker
 import linkcheck.director
@@ -203,8 +203,7 @@ def ensure_notroot ():
     if os.name != 'posix':
         return
     if os.geteuid() == 0:
-        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
-          _("Running as root, dropping to nobody."))
+        log.warn(LOG_CMDLINE, _("Running as root, dropping to nobody."))
         import pwd
         os.seteuid(pwd.getpwnam('nobody')[3])
 
@@ -212,12 +211,12 @@ def ensure_notroot ():
 def viewprof ():
     """Print profiling data and exit."""
     if not has_pstats:
-        linkcheck.log.error(linkcheck.LOG_CMDLINE,
+        log.error(LOG_CMDLINE,
                            _("The `pstats' Python module is not installed,"
                            " therefore the --viewprof option is disabled."))
         sys.exit(1)
     if not os.path.isfile(_profile):
-        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+        log.warn(LOG_CMDLINE,
                            _("Could not find profiling file %r.") % _profile)
         print >>sys.stderr, \
                    _("Please run linkchecker with --profile to generate it.")
@@ -234,7 +233,7 @@ def try_compile_re (arg):
     try:
         return re.compile(arg)
     except re.error, msg:
-        linkcheck.log.error(linkcheck.LOG_CMDLINE,
+        log.error(LOG_CMDLINE,
            _("Syntax error in %(arg)r: %(msg)s") % {"arg": arg, "msg": msg})
         sys.exit(1)
 
@@ -526,8 +525,7 @@ if options.debug:
         if _name not in allowed_debugs:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
 config.init_logging(debug=options.debug)
-assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
-   _("Python %(version)s on %(platform)s") % \
+log.debug(LOG_CMDLINE, _("Python %(version)s on %(platform)s") % \
    {"version": sys.version, "platform": sys.platform})
 # read configuration files
 try:
@@ -536,7 +534,7 @@ try:
         if os.path.isfile(options.configfile):
             files.append(options.configfile)
         else:
-            linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+            log.warn(LOG_CMDLINE,
                       _("Unreadable config file: %r"), options.configfile)
     config.read(files=files)
 except linkcheck.LinkCheckerError, msg:
@@ -547,8 +545,7 @@ if not options.allowroot:
     ensure_notroot()
 # test if running with -O
 if options.debug and not __debug__:
-    linkcheck.log.warn(linkcheck.LOG_CMDLINE,
-                       _("Running with python -O disables debugging."))
+    log.warn(LOG_CMDLINE, _("Running with python -O disables debugging."))
 # apply commandline options and arguments to configuration
 constructauth = False
 do_profile = False
@@ -680,15 +677,14 @@ if options.checkhtml is not None:
 if options.checkcss is not None:
     config["checkcss"] = options.checkcss
 
-assert None == linkcheck.log.debug(linkcheck.LOG_CMDLINE,
-    "configuration: %s", pprint.pformat(config.items()))
+log.debug(LOG_CMDLINE, "configuration: %s", pprint.pformat(config.items()))
 # warn about sitemap loggers and verbose output
 klasses = [c.__class__ for c in [config['logger']] + config['fileoutput']]
 if (linkcheck.logger.gml.GMLLogger in klasses or \
     linkcheck.logger.dot.DOTLogger in klasses or \
     linkcheck.logger.gxml.GraphXMLLogger in klasses) and \
    not config['verbose']:
-    linkcheck.log.warn(linkcheck.LOG_CMDLINE,
+    log.warn(LOG_CMDLINE,
            _("Using DOT or GML loggers without verbose output"
              " gives an incomplete sitemap graph."))
 
@@ -699,7 +695,7 @@ if len(args) <= 0:
                   _("enter one or more URLs, separated by white-space\n--> "))
         args = urls.split()
     else:
-        linkcheck.log.warn(linkcheck.LOG_CMDLINE, _("no files or URLs given"))
+        log.warn(LOG_CMDLINE, _("no files or URLs given"))
 
 # prepare checking queue
 aggregate = linkcheck.director.get_aggregate(config)
@@ -710,7 +706,7 @@ if options.cookiefile is not None:
             aggregate.cookies.add(headers, scheme, host, path)
         config["sendcookies"] = True
     except StandardError:
-        linkcheck.log.error(linkcheck.LOG_CMDLINE,
+        log.error(LOG_CMDLINE,
       _("Could not parse cookie file: %s"), sys.exc_info()[1])
         sys.exit(1)
 if options.trace:
@@ -733,7 +729,7 @@ for url in args:
     try:
         linkcheck.add_intern_pattern(url_data, config)
     except UnicodeError:
-        linkcheck.log.error(linkcheck.LOG_CMDLINE,
+        log.error(LOG_CMDLINE,
             _("URL has unparsable domain name: %s"), sys.exc_info()[1])
         sys.exit(1)
     aggregate.urlqueue.put(url_data)
@@ -750,9 +746,9 @@ if do_profile:
                 print >>sys.stderr, _("Canceled.")
                 sys.exit(1)
     else:
-        linkcheck.log.warn(linkcheck.LOG_CMDLINE,
-                           _("The `profile' Python module is not installed,"
-                             " therefore the --profile option is disabled."))
+        log.warn(LOG_CMDLINE,
+                   _("The `profile' Python module is not installed,"
+                     " therefore the --profile option is disabled."))
         do_profile = False
 
 # finally, start checking

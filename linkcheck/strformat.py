@@ -34,8 +34,7 @@ import pydoc
 
 
 def unicode_safe (s, encoding="iso-8859-1"):
-    """
-    Get unicode string without raising encoding errors. Unknown
+    """Get unicode string without raising encoding errors. Unknown
     characters of the given encoding will be ignored.
 
     @param s: the string to be decoded
@@ -52,8 +51,7 @@ def unicode_safe (s, encoding="iso-8859-1"):
 
 
 def ascii_safe (s):
-    """
-    Get ASCII string without raising encoding errors. Unknown
+    """Get ASCII string without raising encoding errors. Unknown
     characters of the given encoding will be ignored.
 
     @param s: the Unicode string to be encoded
@@ -67,9 +65,7 @@ def ascii_safe (s):
 
 
 def is_ascii (s):
-    """
-    Test if a string can be encoded in ASCII.
-    """
+    """Test if a string can be encoded in ASCII."""
     try:
         s.encode('ascii', 'strict')
         return True
@@ -78,9 +74,7 @@ def is_ascii (s):
 
 
 def is_encoding (text):
-    """
-    Check if string is a valid encoding.
-    """
+    """Check if string is a valid encoding."""
     try:
         return codecs.lookup(text)
     except (LookupError, ValueError):
@@ -88,15 +82,12 @@ def is_encoding (text):
 
 
 def url_unicode_split (url):
-    """
-    Like urlparse.urlsplit(), but always returning unicode parts.
-    """
+    """Like urlparse.urlsplit(), but always returning unicode parts."""
     return [unicode_safe(s) for s in urlparse.urlsplit(url)]
 
 
 def unquote (s, matching=False):
-    """
-    Remove leading and ending single and double quotes.
+    """Remove leading and ending single and double quotes.
     The quotes need to match if matching is True. Only one quote from each
     end will be stripped.
 
@@ -125,23 +116,19 @@ _para_win = r"(?:%(sep)s)(?:(?:%(sep)s)\s*)+" % {'sep': '\r\n'}
 _para_ro = re.compile("%s|%s|%s" % (_para_mac, _para_posix, _para_win))
 
 def get_paragraphs (text):
-    """
-    A new paragraph is considered to start at a line which follows
+    """A new paragraph is considered to start at a line which follows
     one or more blank lines (lines containing nothing or just spaces).
-    The first line of the text also starts a paragraph.
-    """
+    The first line of the text also starts a paragraph."""
     if not text:
         return []
     return _para_ro.split(text)
 
 
 def wrap (text, width, **kwargs):
-    """
-    Adjust lines of text to be not longer than width. The text will be
+    """Adjust lines of text to be not longer than width. The text will be
     returned unmodified if width <= 0.
     See textwrap.wrap() for a list of supported kwargs.
-    Returns text with lines no longer than given width.
-    """
+    Returns text with lines no longer than given width."""
     if width <= 0 or not text:
         return text
     ret = []
@@ -151,18 +138,14 @@ def wrap (text, width, **kwargs):
 
 
 def indent (text, indent_string="  "):
-    """
-    Indent each line of text with the given indent string.
-    """
+    """Indent each line of text with the given indent string."""
     lines = str(text).splitlines()
-    return os.linesep.join(["%s%s" % (indent_string, x) for x in lines])
+    return os.linesep.join("%s%s" % (indent_string, x) for x in lines)
 
 
 def get_line_number (s, index):
-    r"""
-    Return the line number of s[index] or zero on errors.
-    Lines are assumed to be separated by the ASCII character '\n'.
-    """
+    r"""Return the line number of s[index] or zero on errors.
+    Lines are assumed to be separated by the ASCII character '\n'."""
     i = 0
     if index < 0:
         return 0
@@ -175,18 +158,14 @@ def get_line_number (s, index):
 
 
 def paginate (text):
-    """
-    Print text in pages of lines.
-    """
+    """Print text in pages of lines."""
     pydoc.pager(text)
 
 
 _markup_re = re.compile("<.*?>", re.DOTALL)
 
 def remove_markup (s):
-    """
-    Remove all <*> html markup tags from s.
-    """
+    """Remove all <*> html markup tags from s."""
     mo = _markup_re.search(s)
     while mo:
         s = s[0:mo.start()] + s[mo.end():]
@@ -195,10 +174,8 @@ def remove_markup (s):
 
 
 def strsize (b):
-    """
-    Return human representation of bytes b. A negative number of bytes
-    raises a value error.
-    """
+    """Return human representation of bytes b. A negative number of bytes
+    raises a value error."""
     if b < 0:
         raise ValueError("Invalid negative byte number")
     if b < 1024:
@@ -217,9 +194,7 @@ def strsize (b):
 
 
 def strtime (t):
-    """
-    Return ISO 8601 formatted time.
-    """
+    """Return ISO 8601 formatted time."""
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)) + \
            strtimezone()
 
@@ -283,8 +258,7 @@ def strduration_long (duration):
 
 
 def strtimezone ():
-    """
-    Return timezone info, %z on some platforms, but not supported on all.
+    """Return timezone info, %z on some platforms, but not supported on all.
     """
     if time.daylight:
         zone = time.altzone
@@ -295,17 +269,14 @@ def strtimezone ():
 
 _sub_ws = re.compile(r"\s+").sub
 def stripall (s):
-    """
-    Remove all whitespace from given string.
-    """
+    """Remove all whitespace from given string."""
     if not s:
         return s
     return _sub_ws("", s)
 
 
 def limit (s, length=72):
-    """
-    If the length of the string exceeds the given limit, it will be cut
+    """If the length of the string exceeds the given limit, it will be cut
     off and three dots will be appended.
 
     @param s: the string to limit

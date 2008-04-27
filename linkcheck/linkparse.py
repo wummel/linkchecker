@@ -19,13 +19,12 @@ Find link tags in HTML text.
 """
 
 import re
-import linkcheck.strformat
+from . import strformat, log, LOG_CHECK
 import linkcheck.linkname
-import linkcheck.log
 import linkcheck.url
 
 MAX_NAMELEN = 256
-unquote = linkcheck.strformat.unquote
+unquote = strformat.unquote
 
 # ripped mainly from HTML::Tagset.pm
 LinkTags = {
@@ -74,53 +73,38 @@ def strip_c_comments (text):
 
 
 class TagFinder (object):
-    """
-    Base class storing HTML parse messages in a list.
-    TagFinder instances are to be used as HtmlParser handlers.
-    """
+    """Base class storing HTML parse messages in a list.
+    TagFinder instances are to be used as HtmlParser handlers."""
 
     def __init__ (self):
-        """
-        Initialize local variables.
-        """
+        """Initialize local variables."""
         super(TagFinder, self).__init__()
         # parser object will be initialized when it is used as
         # a handler object
         self.parser = None
 
     def start_element (self, tag, attrs):
-        """
-        Does nothing, override in a subclass.
-        """
+        """Does nothing, override in a subclass."""
         pass
 
     def start_end_element (self, tag, attrs):
-        """
-        Delegate a combined start/end element (eg. <br/>) to
-        the start_element method. Ignore the end element part.
-        """
+        """Delegate a combined start/end element (eg. <br/>) to
+        the start_element method. Ignore the end element part."""
         self.start_element(tag, attrs)
 
 
 class MetaRobotsFinder (TagFinder):
-    """
-    Class for finding robots.txt meta values in HTML.
-    """
+    """Class for finding robots.txt meta values in HTML."""
 
     def __init__ (self):
-        """
-        Initialize flags.
-        """
+        """Initialize flags."""
         super(MetaRobotsFinder, self).__init__()
         self.follow = True
         self.index = True
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "meta robots finder")
+        log.debug(LOG_CHECK, "meta robots finder")
 
     def start_element (self, tag, attrs):
-        """
-        Search for meta robots.txt "nofollow" and "noindex" flags.
-        """
+        """Search for meta robots.txt "nofollow" and "noindex" flags."""
         if tag == 'meta':
             if attrs.get('name') == 'robots':
                 val = attrs.get_true('content', u'').lower().split(u',')
@@ -129,9 +113,7 @@ class MetaRobotsFinder (TagFinder):
 
 
 def is_meta_url (attr, attrs):
-    """
-    Check if the meta attributes contain a URL.
-    """
+    """Check if the meta attributes contain a URL."""
     res = False
     if attr == "content":
         equiv = attrs.get_true('http-equiv', u'').lower()
@@ -144,16 +126,12 @@ def is_meta_url (attr, attrs):
 
 
 class LinkFinder (TagFinder):
-    """
-    Find a list of links. After parsing, self.urls
+    """Find a list of links. After parsing, self.urls
     will be a list of parsed links entries with the format
-    (url, lineno, column, name, codebase).
-    """
+    (url, lineno, column, name, codebase)."""
 
     def __init__ (self, content, tags=None):
-        """
-        Store content in buffer and initialize URL list.
-        """
+        """Store content in buffer and initialize URL list."""
         super(LinkFinder, self).__init__()
         self.content = content
         if tags is None:
@@ -162,16 +140,12 @@ class LinkFinder (TagFinder):
             self.tags = tags
         self.urls = []
         self.base_ref = u''
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK, "link finder")
+        log.debug(LOG_CHECK, "link finder")
 
     def start_element (self, tag, attrs):
-        """
-        Search for links and store found URLs in a list.
-        """
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "LinkFinder tag %s attrs %s", tag, attrs)
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "line %d col %d old line %d old col %d",
+        """Search for links and store found URLs in a list."""
+        log.debug(LOG_CHECK, "LinkFinder tag %s attrs %s", tag, attrs)
+        log.debug(LOG_CHECK, "line %d col %d old line %d old col %d",
             self.parser.lineno(), self.parser.column(),
             self.parser.last_lineno(), self.parser.last_column())
         if tag == "base" and not self.base_ref:
@@ -196,13 +170,10 @@ class LinkFinder (TagFinder):
             value = unquote(attrs.get(attr))
             # add link to url list
             self.add_link(tag, attr, value, name, codebase)
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "LinkFinder finished tag %s", tag)
+        log.debug(LOG_CHECK, "LinkFinder finished tag %s", tag)
 
     def get_link_name (self, tag, attrs, attr):
-        """
-        Parse attrs for link name. Return name of link.
-        """
+        """Parse attrs for link name. Return name of link."""
         if tag == 'a' and attr == 'href':
             name = unquote(attrs.get_true('title', u''))
             if not name:
@@ -221,9 +192,7 @@ class LinkFinder (TagFinder):
         return name
 
     def add_link (self, tag, attr, url, name, base):
-        """
-        Add given url data to url list.
-        """
+        """Add given url data to url list."""
         assert isinstance(tag, unicode), repr(tag)
         assert isinstance(attr, unicode), repr(attr)
         assert isinstance(name, unicode), repr(name)
@@ -248,7 +217,7 @@ class LinkFinder (TagFinder):
             return
         for u in urls:
             assert isinstance(u, unicode) or u is None, repr(u)
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            log.debug(LOG_CHECK,
               u"LinkParser add link %r %r %r %r %r", tag, attr, u, name, base)
             self.urls.append((u, self.parser.last_lineno(),
                               self.parser.last_column(), name, base))

@@ -20,10 +20,9 @@ Setup file for the distuils module.
 """
 
 import sys
-if not hasattr(sys, "version_info"):
-    raise SystemExit, "This program requires Python 2.4 or later."
-if sys.version_info < (2, 4, 0, 'final', 0):
-    raise SystemExit, "This program requires Python 2.4 or later."
+if not (hasattr(sys, 'version_info') or
+        sys.version_info < (2, 5, 0, 'final', 0)):
+    raise SystemExit("This program requires Python 2.5 or later.")
 import os
 import popen2
 import platform
@@ -57,17 +56,13 @@ win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
 
 def normpath (path):
-    """
-    Norm a path name to platform specific notation.
-    """
+    """Norm a path name to platform specific notation."""
     return os.path.normpath(path)
 
 
 def cnormpath (path):
-    """
-    Norm a path name to platform specific notation, but honoring
-    the win_compiling flag.
-    """
+    """Norm a path name to platform specific notation, but honoring
+    the win_compiling flag."""
     path = normpath(path)
     if win_compiling:
         # replace slashes with backslashes
@@ -103,43 +98,18 @@ class MyInstall (install, object):
         self.distribution.create_conf_file(data, directory=self.install_lib)
 
     def get_outputs (self):
-        """
-        Add the generated config file from distribution.create_conf_file()
-        to the list of outputs.
-        """
+        """Add the generated config file from distribution.create_conf_file()
+        to the list of outputs."""
         outs = super(MyInstall, self).get_outputs()
         outs.append(self.distribution.get_conf_filename(self.install_lib))
         return outs
 
-    # compatibility bugfix for Python << 2.5, << 2.4.1, << 2.3.5
-    # XXX remove this method when depending on one of the above versions
-    def dump_dirs (self, msg):
-        if DEBUG:
-            from distutils.fancy_getopt import longopt_xlate
-            print msg + ":"
-            for opt in self.user_options:
-                opt_name = opt[0]
-                if opt_name[-1] == "=":
-                    opt_name = opt_name[0:-1]
-                if opt_name in self.negative_opt:
-                    opt_name = string.translate(self.negative_opt[opt_name],
-                                                longopt_xlate)
-                    val = not getattr(self, opt_name)
-                else:
-                    opt_name = string.translate(opt_name, longopt_xlate)
-                    val = getattr(self, opt_name)
-                print "  %s: %s" % (opt_name, val)
-
 
 class MyInstallData (install_data, object):
-    """
-    My own data installer to handle permissions.
-    """
+    """My own data installer to handle permissions."""
 
     def run (self):
-        """
-        Adjust permissions on POSIX systems.
-        """
+        """Adjust permissions on POSIX systems."""
         super(MyInstallData, self).run()
         if os.name == 'posix' and not self.dry_run:
             # Make the data files we just installed world-readable,
@@ -153,14 +123,10 @@ class MyInstallData (install_data, object):
 
 
 class MyDistribution (distutils.dist.Distribution, object):
-    """
-    Custom distribution class generating config file.
-    """
+    """Custom distribution class generating config file."""
 
     def run_commands (self):
-        """
-        Generate config file and run commands.
-        """
+        """Generate config file and run commands."""
         cwd = os.getcwd()
         data = []
         data.append('config_dir = %r' % os.path.join(cwd, "config"))
@@ -170,16 +136,12 @@ class MyDistribution (distutils.dist.Distribution, object):
         super(MyDistribution, self).run_commands()
 
     def get_conf_filename (self, directory):
-        """
-        Get name for config file.
-        """
+        """Get name for config file."""
         return os.path.join(directory, "_%s_configdata.py" % self.get_name())
 
     def create_conf_file (self, data, directory=None):
-        """
-        Create local config file from given data (list of lines) in
-        the directory (or current directory if not given).
-        """
+        """Create local config file from given data (list of lines) in
+        the directory (or current directory if not given)."""
         data.insert(0, "# this file is automatically created by setup.py")
         data.insert(0, "# -*- coding: iso-8859-1 -*-")
         if directory is None:
@@ -205,9 +167,7 @@ class MyDistribution (distutils.dist.Distribution, object):
 
 
 class MyBdistWininst (bdist_wininst, object):
-    """
-    Custom bdist_wininst command supporting cross compilation.
-    """
+    """Custom bdist_wininst command supporting cross compilation."""
 
     def run (self):
         if (not win_compiling and
@@ -292,8 +252,7 @@ class MyBdistWininst (bdist_wininst, object):
 
 
 def cc_supports_option (cc, option):
-    """
-    Check if the given C compiler supports the given option.
+    """Check if the given C compiler supports the given option.
 
     @return: True if the compiler supports the option, else False
     @rtype: bool
@@ -316,15 +275,11 @@ def cc_remove_option (compiler, option):
 
 
 class MyBuildExt (build_ext, object):
-    """
-    Custom build extension command.
-    """
+    """Custom build extension command."""
 
     def build_extensions (self):
-        """
-        Add -std=gnu99 to build options if supported.
-        And compress extension libraries.
-        """
+        """Add -std=gnu99 to build options if supported.
+        And compress extension libraries."""
         # For gcc >= 3 we can add -std=gnu99 to get rid of warnings.
         extra = []
         if self.compiler.compiler_type == 'unix':
@@ -344,9 +299,7 @@ class MyBuildExt (build_ext, object):
         self.compress_extensions()
 
     def compress_extensions (self):
-        """
-        Run UPX compression over built extension libraries.
-        """
+        """Run UPX compression over built extension libraries."""
         # currently upx supports only .dll files
         if os.name != 'nt':
             return
@@ -359,18 +312,14 @@ class MyBuildExt (build_ext, object):
 
 
 def compress_library (upx, filename):
-    """
-    Compresses a dynamic library file with upx (currently only .dll
-    files are supported).
-    """
+    """Compresses a dynamic library file with upx (currently only .dll
+    files are supported)."""
     log.info("upx-compressing %s", filename)
     os.system('%s -q --best "%s"' % (upx, filename))
 
 
 def list_message_files (package, suffix=".po"):
-    """
-    Return list of all found message files and their installation paths.
-    """
+    """Return list of all found message files and their installation paths."""
     _files = glob.glob("po/*" + suffix)
     _list = []
     for _file in _files:
@@ -382,14 +331,12 @@ def list_message_files (package, suffix=".po"):
 
 
 def check_manifest ():
-    """
-    Snatched from roundup.sf.net.
+    """Snatched from roundup.sf.net.
     Check that the files listed in the MANIFEST are present when the
-    source is unpacked.
-    """
+    source is unpacked."""
     try:
         f = open('MANIFEST')
-    except:
+    except Exception:
         print '\n*** SOURCE WARNING: The MANIFEST file is missing!'
         return
     try:
@@ -405,14 +352,10 @@ def check_manifest ():
 
 
 class MyBuild (build, object):
-    """
-    Custom build command.
-    """
+    """Custom build command."""
 
     def build_message_files (self):
-        """
-        For each po/*.po, build .mo file in target locale directory.
-        """
+        """For each po/*.po, build .mo file in target locale directory."""
         for (src, dst) in list_message_files(self.distribution.get_name()):
             build_dst = os.path.join("build", dst)
             self.mkpath(os.path.dirname(build_dst))
@@ -427,9 +370,7 @@ class MyBuild (build, object):
 
 
 class MyClean (clean, object):
-    """
-    Custom clean command.
-    """
+    """Custom clean command."""
 
     def run (self):
         if self.all:
@@ -443,11 +384,10 @@ class MyClean (clean, object):
 
 
 class MySdist (sdist, object):
-    """
-    Custom sdist command.
-    """
+    """Custom sdist command."""
 
     def get_file_list (self):
+        """Add MANIFEST to the file list."""
         super(MySdist, self).get_file_list()
         self.filelist.append("MANIFEST")
 
@@ -533,8 +473,8 @@ setup (name = "linkchecker",
        maintainer = myname,
        maintainer_email = myemail,
        url = "http://linkchecker.sourceforge.net/",
-       download_url = "http://sourceforge.net/project/showfiles.php" \
-                      "?group_id=1913",
+       download_url = \
+           "http://sourceforge.net/project/showfiles.php?group_id=1913",
        license = "GPL",
        long_description = """Linkchecker features:
 o recursive checking

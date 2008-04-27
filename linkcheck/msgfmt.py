@@ -37,9 +37,7 @@ MESSAGES = {}
 
 
 def usage (ecode, msg=''):
-    """
-    Print usage and msg and exit with given code.
-    """
+    """Print usage and msg and exit with given code."""
     print >> sys.stderr, __doc__
     if msg:
         print >> sys.stderr, msg
@@ -47,17 +45,13 @@ def usage (ecode, msg=''):
 
 
 def add (msgid, transtr, fuzzy):
-    """
-    Add a non-fuzzy translation to the dictionary.
-    """
+    """Add a non-fuzzy translation to the dictionary."""
     if not fuzzy and transtr and not transtr.startswith('\0'):
         MESSAGES[msgid] = transtr
 
 
 def generate ():
-    """
-    Return the generated output.
-    """
+    """Return the generated output."""
     keys = MESSAGES.keys()
     # the keys are sorted in the .mo file
     keys.sort()

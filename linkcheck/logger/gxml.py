@@ -66,7 +66,7 @@ class GraphXMLLogger (xmllog.XMLLogger):
             if node.checktime and self.has_part("checktime"):
                 self.xml_tag(u"checktime", u"%f" % node.checktime)
             if self.has_part("extern"):
-                self.xml_tag(u"extern", u"%d" % (node.extern[0] and 1 or 0))
+                self.xml_tag(u"extern", u"%d" % (1 if node.extern[0] else 0))
             self.xml_endtag(u"data")
             self.xml_endtag(u"node")
         self.write_edges()
@@ -76,7 +76,7 @@ class GraphXMLLogger (xmllog.XMLLogger):
         Write all edges we can find in the graph in a brute-force
         manner. Better would be a mapping of parent URLs.
         """
-        for node in self.nodes.itervalues():
+        for node in self.nodes.values():
             if node.parent_url in self.nodes:
                 attrs = {
                     u"source": u"%d" % self.nodes[node.parent_url].id,
@@ -87,7 +87,7 @@ class GraphXMLLogger (xmllog.XMLLogger):
                     self.xml_tag(u"label", node.base_url or u"")
                 self.xml_starttag(u"data")
                 if self.has_part("result"):
-                    self.xml_tag(u"valid", u"%d" % (node.valid and 1 or 0))
+                    self.xml_tag(u"valid", u"%d" % (1 if node.valid else 0))
                 self.xml_endtag(u"data")
                 self.xml_endtag(u"edge")
         self.flush()

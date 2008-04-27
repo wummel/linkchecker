@@ -15,15 +15,16 @@ import sys
 if not sys.platform.startswith('win'):
     # not for us
     sys.exit()
-if not hasattr(sys, "version_info"):
-    raise SystemExit, "This program requires Python 2.4 or later."
-if sys.version_info < (2, 4, 0, 'final', 0):
-    raise SystemExit, "This program requires Python 2.4 or later."
+if not (hasattr(sys, 'version_info') or
+        sys.version_info < (2, 5, 0, 'final', 0)):
+    raise SystemExit("This program requires Python 2.5 or later.")
+from __future__ import with_statement
 import os
 import re
 import platform
 
 # releases supporting our special .bat files
+# XXX what is platform.release() on Vista?
 win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
 # path retrieving functions
@@ -92,20 +93,17 @@ def create_shortcuts ():
 
 
 def fix_configdata ():
-    """
-    Fix install and config paths in the config file.
-    """
+    """Fix install and config paths in the config file."""
     name = "_linkchecker_configdata.py"
     conffile = os.path.join(sys.prefix, "Lib", "site-packages", name)
     lines = []
     for line in file(conffile):
-        if line.startswith("install_") or line.startswith("config_"):
+        if line.startswith(("install_", "config_")):
             lines.append(fix_install_path(line))
         else:
             lines.append(line)
-    f = file(conffile, "w")
-    f.write("".join(lines))
-    f.close()
+    with file(conffile, "w") as f:
+        f.write("".join(lines))
 
 # Windows install path scheme for python >= 2.3.
 # Snatched from PC/bdist_wininst/install.c.
@@ -122,10 +120,8 @@ win_path_scheme = {
 }
 
 def fix_install_path (line):
-    """
-    Replace placeholders written by bdist_wininst with those specified
-    in windows install path scheme.
-    """
+    """Replace placeholders written by bdist_wininst with those specified
+    in windows install path scheme."""
     key, eq, val = line.split()
     # unescape string (do not use eval())
     val = val[1:-1].replace("\\\\", "\\")

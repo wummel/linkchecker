@@ -34,7 +34,7 @@ try:
                                        form=req.getFieldStorage(),
                                        env=req.env)
         req.Finish()
-except:
+except Exception:
     import traceback
     traceback.print_exc(file = open('traceback', 'a'))
 

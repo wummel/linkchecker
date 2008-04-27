@@ -22,7 +22,7 @@ import telnetlib
 import urllib
 
 import urlbase
-import linkcheck.log
+from .. import log, LOG_CHECK
 
 
 class TelnetUrl (urlbase.UrlBase):
@@ -60,7 +60,7 @@ class TelnetUrl (urlbase.UrlBase):
         label is "login: ", expected password label is "Password: ".
         """
         self.url_connection = telnetlib.Telnet()
-        if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
+        if log.is_debug(LOG_CHECK):
             self.url_connection.set_debuglevel(1)
         self.url_connection.open(self.host, self.port)
         if self.user:

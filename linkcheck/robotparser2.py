@@ -32,37 +32,31 @@ import zlib
 import sys
 import cStringIO as StringIO
 import linkcheck
-import configuration
-import log
-from linkcheck import gzip2 as gzip
+from . import configuration
+from . import log, LOG_CHECK
+from . import gzip2 as gzip
 
 __all__ = ["RobotFileParser"]
 
 
 class PasswordManager (object):
-    """
-    Simple password manager storing username and password. Suitable
-    for use as an AuthHandler instance in urllib2.
-    """
+    """Simple password manager storing username and password. Suitable
+    for use as an AuthHandler instance in urllib2."""
 
     def __init__ (self, user, password):
-        """
-        Store given username and password.
-        """
+        """Store given username and password."""
         self.user = user
         self.password = password
 
     def add_password (self, realm, uri, user, passwd):
-        """
-        Does nothing since username and password are already stored.
+        """Does nothing since username and password are already stored.
 
         @return: None
         """
         pass
 
     def find_user_password (self, realm, authuri):
-        """
-        Get stored username and password.
+        """Get stored username and password.
 
         @return: A tuple (user, password)
         @rtype: tuple
@@ -71,25 +65,19 @@ class PasswordManager (object):
 
 
 class RobotFileParser (object):
-    """
-    This class provides a set of methods to read, parse and answer
-    questions about a single robots.txt file.
-    """
+    """This class provides a set of methods to read, parse and answer
+    questions about a single robots.txt file."""
 
     def __init__ (self, url='', user=None, password=None):
-        """
-        Initialize internal entry lists and store given url and
-        credentials.
-        """
+        """Initialize internal entry lists and store given url and
+        credentials."""
         self.set_url(url)
         self.user = user
         self.password = password
         self._reset()
 
     def _reset (self):
-        """
-        Reset internal flags and entry lists.
-        """
+        """Reset internal flags and entry lists."""
         self.entries = []
         self.default_entry = None
         self.disallow_all = False
@@ -97,8 +85,7 @@ class RobotFileParser (object):
         self.last_checked = 0
 
     def mtime (self):
-        """
-        Returns the time the robots.txt file was last fetched.
+        """Returns the time the robots.txt file was last fetched.
 
         This is useful for long-running web spiders that need to
         check for new robots.txt files periodically.
@@ -109,20 +96,17 @@ class RobotFileParser (object):
         return self.last_checked
 
     def modified (self):
-        """
-        Set the time the robots.txt file was last fetched to the
-        current time.
-        """
+        """Set the time the robots.txt file was last fetched to the
+        current time."""
         self.last_checked = time.time()
 
     def set_url (self, url):
-        "Set the URL referring to a robots.txt file."
+        """Set the URL referring to a robots.txt file."""
         self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
 
     def get_opener (self):
-        """
-        Construct an URL opener object. It considers the given credentials
+        """Construct an URL opener object. It considers the given credentials
         from the __init__() method and supports proxies.
 
         @return: URL opener
@@ -145,7 +129,7 @@ class RobotFileParser (object):
         return urllib2.build_opener(*handlers)
 
     def read (self):
-        "Read the robots.txt URL and feeds it to the parser."
+        """Read the robots.txt URL and feeds it to the parser."""
         self._reset()
         headers = {
             'User-Agent': configuration.UserAgent,
@@ -157,12 +141,10 @@ class RobotFileParser (object):
         except urllib2.HTTPError, x:
             if x.code in (401, 403):
                 self.disallow_all = True
-                assert None == log.debug(linkcheck.LOG_CHECK,
-                    "%s disallow all", self.url)
+                log.debug(LOG_CHECK, "%s disallow all", self.url)
             else:
                 self.allow_all = True
-                assert None == log.debug(linkcheck.LOG_CHECK,
-                    "%s allow all", self.url)
+                log.debug(LOG_CHECK, "%s allow all", self.url)
         except socket.timeout:
             raise
         except urllib2.URLError:
@@ -170,32 +152,24 @@ class RobotFileParser (object):
             if isinstance(x.reason, socket.timeout):
                 raise
             self.allow_all = True
-            assert None == log.debug(linkcheck.LOG_CHECK,
-                "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all", self.url)
         except (socket.gaierror, socket.error):
             # no network
             self.allow_all = True
-            assert None == log.debug(linkcheck.LOG_CHECK,
-                "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all", self.url)
         except IOError, msg:
             self.allow_all = True
-            assert None == log.debug(linkcheck.LOG_CHECK,
-                "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all", self.url)
         except httplib.HTTPException:
             self.allow_all = True
-            assert None == log.debug(linkcheck.LOG_CHECK,
-                "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all", self.url)
         except ValueError:
-            # XXX bug workaround:
-            # urllib2.AbstractDigestAuthHandler raises ValueError on
-            # failed authorisation
+            # urllib2 could raise ValueError on invalid data
             self.disallow_all = True
-            assert None == log.debug(linkcheck.LOG_CHECK,
-                "%s disallow all", self.url)
+            log.debug(LOG_CHECK, "%s disallow all", self.url)
 
     def _read_content (self, req):
-        """
-        Read robots.txt content.
+        """Read robots.txt content.
         @raise: urllib2.HTTPError on HTTP failure codes
         @raise: socket.gaierror, socket.error, urllib2.URLError on network
           errors
@@ -215,8 +189,7 @@ class RobotFileParser (object):
             self.allow_all = True
 
     def _add_entry (self, entry):
-        """
-        Add a parsed entry to entry list.
+        """Add a parsed entry to entry list.
 
         @return: None
         """
@@ -227,15 +200,13 @@ class RobotFileParser (object):
             self.entries.append(entry)
 
     def parse (self, lines):
-        """
-        Parse the input lines from a robot.txt file.
+        """Parse the input lines from a robot.txt file.
         We allow that a user-agent: line is not preceded by
         one or more blank lines.
 
         @return: None
         """
-        assert None == log.debug(linkcheck.LOG_CHECK,
-            "%s parse lines", self.url)
+        log.debug(LOG_CHECK, "%s parse lines", self.url)
         state = 0
         linenumber = 0
         entry = Entry()
@@ -244,7 +215,7 @@ class RobotFileParser (object):
             linenumber += 1
             if not line:
                 if state == 1:
-                    assert None == log.debug(linkcheck.LOG_CHECK,
+                    log.debug(LOG_CHECK,
                          "%s line %d: allow or disallow directives without" \
                          " any user-agent line", self.url, linenumber)
                     entry = Entry()
@@ -266,7 +237,7 @@ class RobotFileParser (object):
                 line[1] = urllib.unquote(line[1].strip())
                 if line[0] == "user-agent":
                     if state == 2:
-                        assert None == log.debug(linkcheck.LOG_CHECK,
+                        log.debug(LOG_CHECK,
                           "%s line %d: missing blank line before user-agent" \
                           " directive", self.url, linenumber)
                         self._add_entry(entry)
@@ -275,7 +246,7 @@ class RobotFileParser (object):
                     state = 1
                 elif line[0] == "disallow":
                     if state == 0:
-                        assert None == log.debug(linkcheck.LOG_CHECK,
+                        log.debug(LOG_CHECK,
                           "%s line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
@@ -283,7 +254,7 @@ class RobotFileParser (object):
                         state = 2
                 elif line[0] == "allow":
                     if state == 0:
-                        assert None == log.debug(linkcheck.LOG_CHECK,
+                        log.debug(LOG_CHECK,
                           "%s line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
@@ -291,7 +262,7 @@ class RobotFileParser (object):
                         state = 2
                 elif line[0] == "crawl-delay":
                     if state == 0:
-                        assert None == log.debug(linkcheck.LOG_CHECK,
+                        log.debug(LOG_CHECK,
                           "%s line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
@@ -299,33 +270,28 @@ class RobotFileParser (object):
                             entry.crawldelay = max(0, int(line[1]))
                             state = 2
                         except ValueError:
-                            assert None == log.debug(linkcheck.LOG_CHECK,
-                             "%s line %d: invalid delay number %r",
-                             self.url, linenumber, line[1])
+                            log.debug(LOG_CHECK,
+                              "%s line %d: invalid delay number %r",
+                              self.url, linenumber, line[1])
                             pass
                 else:
-                    assert None == log.debug(linkcheck.LOG_CHECK,
-                             "%s line %d: unknown key %s",
+                    log.debug(LOG_CHECK, "%s line %d: unknown key %s",
                              self.url, linenumber, line[0])
             else:
-                assert None == log.debug(linkcheck.LOG_CHECK,
-                    "%s line %d: malformed line %s",
+                log.debug(LOG_CHECK, "%s line %d: malformed line %s",
                     self.url, linenumber, line)
         if state in (1, 2):
             self.entries.append(entry)
         self.modified()
-        assert None == log.debug(linkcheck.LOG_CHECK,
-                            "Parsed rules:\n%s", str(self))
+        log.debug(LOG_CHECK, "Parsed rules:\n%s", str(self))
 
     def can_fetch (self, useragent, url):
-        """
-        Using the parsed robots.txt decide if useragent can fetch url.
+        """Using the parsed robots.txt decide if useragent can fetch url.
 
         @return: True if agent can fetch url, else False
         @rtype: bool
         """
-        assert None == log.debug(linkcheck.LOG_CHECK,
-              "%s check allowance for:\n" \
+        log.debug(LOG_CHECK, "%s check allowance for:\n" \
               "  user agent: %r\n  url: %r", self.url, useragent, url)
         if not isinstance(useragent, str):
             useragent = useragent.encode("ascii", "ignore")
@@ -348,8 +314,7 @@ class RobotFileParser (object):
         return True
 
     def get_crawldelay (self, useragent):
-        """
-        Look for a configured crawl delay.
+        """Look for a configured crawl delay.
 
         @return: crawl delay in seconds or zero
         @rtype: integer >= 0
@@ -360,8 +325,7 @@ class RobotFileParser (object):
         return 0
 
     def __str__ (self):
-        """
-        Constructs string representation, usable as contents of a
+        """Constructs string representation, usable as contents of a
         robots.txt file.
 
         @return: robots.txt format
@@ -374,15 +338,12 @@ class RobotFileParser (object):
 
 
 class RuleLine (object):
-    """
-    A rule line is a single "Allow:" (allowance==1) or "Disallow:"
+    """A rule line is a single "Allow:" (allowance==1) or "Disallow:"
     (allowance==0) followed by a path.
     """
 
     def __init__ (self, path, allowance):
-        """
-        Initialize with given path and allowance info.
-        """
+        """Initialize with given path and allowance info."""
         if path == '' and not allowance:
             # an empty value means allow all
             allowance = True
@@ -391,8 +352,7 @@ class RuleLine (object):
         self.allowance = allowance
 
     def applies_to (self, path):
-        """
-        Look if given path applies to this rule.
+        """Look if given path applies to this rule.
 
         @return: True if pathname applies to this rule, else False
         @rtype: bool
@@ -400,31 +360,25 @@ class RuleLine (object):
         return self.path == "*" or path.startswith(self.path)
 
     def __str__ (self):
-        """
-        Construct string representation in robots.txt format.
+        """Construct string representation in robots.txt format.
 
         @return: robots.txt format
         @rtype: string
         """
-        return (self.allowance and "Allow" or "Disallow")+": "+self.path
+        return ("Allow" if self.allowance else "Disallow")+": "+self.path
 
 
 class Entry (object):
-    """
-    An entry has one or more user-agents and zero or more rulelines.
-    """
+    """An entry has one or more user-agents and zero or more rulelines."""
 
     def __init__ (self):
-        """
-        Initialize user agent and rule list.
-        """
+        """Initialize user agent and rule list."""
         self.useragents = []
         self.rulelines = []
         self.crawldelay = 0
 
     def __str__ (self):
-        """
-        string representation in robots.txt format.
+        """string representation in robots.txt format.
 
         @return: robots.txt format
         @rtype: string
@@ -436,8 +390,7 @@ class Entry (object):
         return "\n".join(lines)
 
     def applies_to (self, useragent):
-        """
-        Check if this entry applies to the specified agent.
+        """Check if this entry applies to the specified agent.
 
         @return: True if this entry applies to the agent, else False.
         @rtype: bool
@@ -456,8 +409,7 @@ class Entry (object):
         return False
 
     def allowance (self, path):
-        """
-        Preconditions:
+        """Preconditions:
         - our agent applies to this entry
         - filename is URL decoded
 
@@ -467,8 +419,7 @@ class Entry (object):
         @rtype: bool
         """
         for line in self.rulelines:
-            assert None == log.debug(linkcheck.LOG_CHECK,
-               "%s %s %s", path, str(line), line.allowance)
+            log.debug(LOG_CHECK, "%s %s %s", path, str(line), line.allowance)
             if line.applies_to(path):
                 return line.allowance
         return True
@@ -495,10 +446,8 @@ class Entry (object):
 ##  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 ##  SOFTWARE.
 def decode (page):
-    """
-    Gunzip or deflate a compressed page.
-    """
-    assert None == log.debug(linkcheck.LOG_CHECK,
+    """Gunzip or deflate a compressed page."""
+    log.debug(LOG_CHECK,
       "robots.txt page info %d %s", page.code, str(page.info()))
     encoding = page.info().get("Content-Encoding")
     if encoding in ('gzip', 'x-gzip', 'deflate'):
@@ -510,8 +459,7 @@ def decode (page):
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
         except zlib.error, msg:
-            assert None == log.debug(linkcheck.LOG_CHECK,
-                 "uncompressing had error "
+            log.debug(LOG_CHECK, "uncompressing had error "
                  "%s, assuming non-compressed content", str(msg))
             fp = StringIO.StringIO(content)
         # remove content-encoding header
@@ -532,26 +480,18 @@ def decode (page):
 
 
 class HttpWithGzipHandler (urllib2.HTTPHandler):
-    """
-    Support gzip encoding.
-    """
+    """Support gzip encoding."""
     def http_open (self, req):
-        """
-        Send request and decode answer.
-        """
+        """Send request and decode answer."""
         return decode(urllib2.HTTPHandler.http_open(self, req))
 
 
 if hasattr(httplib, 'HTTPS'):
     class HttpsWithGzipHandler (urllib2.HTTPSHandler):
-        """
-        Support gzip encoding.
-        """
+        """Support gzip encoding."""
 
         def http_open (self, req):
-            """
-            Send request and decode answer.
-            """
+            """Send request and decode answer."""
             return decode(urllib2.HTTPSHandler.http_open(self, req))
 
 # end of urlutils.py routines

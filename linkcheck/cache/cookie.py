@@ -18,7 +18,7 @@
 Store and retrieve cookies.
 """
 from linkcheck.decorators import synchronized
-import linkcheck.log
+from .. import log, LOG_CACHE
 import linkcheck.lock
 import linkcheck.cookies
 
@@ -46,7 +46,7 @@ class CookieJar (object):
                 c = linkcheck.cookies.NetscapeCookie(h, scheme, host, path)
                 jar.add(c)
             except linkcheck.cookies.CookieError:
-                assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
+                log.debug(LOG_CACHE,
                "Invalid cookie header for %s:%s%s: %r", scheme, host, path, h)
         for h in headers.getallmatchingheaders("Set-Cookie2"):
             # RFC 2965 cookie type
@@ -54,7 +54,7 @@ class CookieJar (object):
                 c = linkcheck.cookies.Rfc2965Cookie(h, scheme, host, path)
                 jar.add(c)
             except linkcheck.cookies.CookieError:
-                assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
+                log.debug(LOG_CACHE,
               "Invalid cookie2 header for %s:%s%s: %r", scheme, host, path, h)
         self.cache[host] = jar
         return jar
@@ -64,8 +64,7 @@ class CookieJar (object):
         """
         Cookie cache getter function.
         """
-        assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
-            "Get cookies for host %r path %r", host, path)
+        log.debug(LOG_CACHE, "Get cookies for host %r path %r", host, path)
         jar = self.cache.setdefault(host, set())
         return [x for x in jar if x.check_expired() and \
                 x.is_valid_for(scheme, host, port, path)]

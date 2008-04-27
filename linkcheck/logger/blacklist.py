@@ -18,8 +18,8 @@
 A blacklist logger.
 """
 
+from __future__ import with_statement
 import os
-
 import linkcheck.logger
 
 
@@ -71,23 +71,20 @@ class BlacklistLogger (linkcheck.logger.Logger):
         """
         Read a previously stored blacklist from file fd.
         """
-        fd = open(self.filename)
-        try:
+        with open(self.filename) as fd:
             for line in fd:
                 line = self.decode(line.rstrip())
                 if line.startswith('#') or not line:
                     continue
                 value, key = line.split(None, 1)
                 self.blacklist[key] = int(value)
-        finally:
-            fd.close()
 
     def write_blacklist (self):
         """
         Write the blacklist.
         """
         oldmask = os.umask(0077)
-        for key, value in self.blacklist.iteritems():
+        for key, value in self.blacklist.items():
             self.write(u"%d %s%s" % (value, key, os.linesep))
         self.close_fileoutput()
         # restore umask

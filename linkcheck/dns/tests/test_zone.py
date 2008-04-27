@@ -14,6 +14,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+from __future__ import with_statement
 import cStringIO as StringIO
 import os
 import unittest
@@ -108,12 +109,9 @@ ns2 1w1D1h1m1S a 10.0.0.2
 
 def get_file_lines (fn):
     res = []
-    fd = open(fn)
-    try:
+    with open(fn) as fd:
         for line in fd:
             res.append(line)
-    finally:
-        fd.close()
     return res
 
 

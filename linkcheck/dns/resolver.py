@@ -25,7 +25,7 @@ import sys
 import time
 import encodings.idna
 
-import linkcheck.log
+from .. import log, LOG_DNS
 import linkcheck.dns.exception
 import linkcheck.dns.message
 import linkcheck.dns.name
@@ -727,8 +727,7 @@ def query(qname, rdtype=linkcheck.dns.rdatatype.A, rdclass=linkcheck.dns.rdatacl
     object to make the query.
     @see: L{linkcheck.dns.resolver.Resolver.query} for more information on the
     parameters."""
-    assert None == linkcheck.log.debug(linkcheck.LOG_DNS,
-        "Query %s %s %s", qname, rdtype, rdclass)
+    log.debug(LOG_DNS, "Query %s %s %s", qname, rdtype, rdclass)
     if resolver is None:
         resolver = get_default_resolver()
     return resolver.query(qname, rdtype, rdclass, tcp)

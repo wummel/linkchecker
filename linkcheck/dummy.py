@@ -19,9 +19,7 @@ Dummy objects.
 """
 
 class Dummy (object):
-    """
-    A dummy object ignores all access to it. Useful for testing.
-    """
+    """A dummy object ignores all access to it. Useful for testing."""
 
     def __init__ (self, *args, **kwargs):
         pass
@@ -64,7 +62,5 @@ class Dummy (object):
 
 
 def dummy (*args, **kwargs):
-    """
-    Ignore any positional or keyword arguments, return None.
-    """
+    """Ignore any positional or keyword arguments, return None."""
     pass

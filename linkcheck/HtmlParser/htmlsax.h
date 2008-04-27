@@ -22,20 +22,13 @@
 
 #include "Python.h"
 
-/* require Python >= 2.4 */
+/* require Python >= 2.5 */
 #ifndef PY_VERSION_HEX
-#error please install Python >= 2.4
+#error please install Python >= 2.5
 #endif
 
-#if PY_VERSION_HEX < 0x02040000
-#error please install Python >= 2.4
-#endif
-
-/* See http://www.python.org/dev/peps/pep-0353/#conversion-guidelines */
-#if PY_VERSION_HEX < 0x02050000 && !defined(PY_SSIZE_T_MIN)
-typedef int Py_ssize_t;
-#define PY_SSIZE_T_MAX INT_MAX
-#define PY_SSIZE_T_MIN INT_MIN
+#if PY_VERSION_HEX < 0x02050000
+#error please install Python >= 2.5
 #endif
 
 /* user_data type for SAX calls */

@@ -27,6 +27,7 @@ import socket
 import cStringIO as StringIO
 import Cookie
 
+from .. import log, LOG_CHECK
 import linkcheck.url
 import linkcheck.strformat
 import linkcheck.robotparser2
@@ -197,8 +198,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
             if self.warn_redirect:
-                linkcheck.log.warn(linkcheck.LOG_CHECK,
-                    _("""URL %s has been redirected.
+                log.warn(LOG_CHECK, _("""URL %s has been redirected.
 Use URL %s instead for checking."""), self.url, newurl)
             self.url = newurl
         # check response
@@ -230,10 +230,9 @@ Use URL %s instead for checking."""), self.url, newurl)
                 raise
             if response.reason:
                 response.reason = unicode_safe(response.reason)
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+            log.debug(LOG_CHECK,
                 "Response: %s %s", response.status, response.reason)
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                "Headers: %s", self.headers)
+            log.debug(LOG_CHECK, "Headers: %s", self.headers)
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
@@ -260,8 +259,7 @@ Use URL %s instead for checking."""), self.url, newurl)
                     continue
                 raise
             if tries == -1:
-                assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                    "already handled")
+                log.debug(LOG_CHECK, "already handled")
                 response.close()
                 return None
             if tries >= self.max_redirects:
@@ -281,7 +279,7 @@ Use URL %s instead for checking."""), self.url, newurl)
                     _user, _password = self.get_user_password()
                     self.auth = "Basic " + \
                         base64.encodestring("%s:%s" % (_user, _password))
-                    assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
+                    log.debug(LOG_CHECK,
                         "Authentication %s/%s", _user, _password)
                     continue
             elif response.status >= 400:
@@ -312,8 +310,7 @@ Use URL %s instead for checking."""), self.url, newurl)
         """
         Follow all redirections of http response.
         """
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "follow all redirections")
+        log.debug(LOG_CHECK, "follow all redirections")
         redirected = self.url
         tries = 0
         while response.status in [301, 302] and self.headers and \
@@ -323,15 +320,13 @@ Use URL %s instead for checking."""), self.url, newurl)
             # make new url absolute and unicode
             newurl = urlparse.urljoin(redirected, newurl)
             newurl = unicode_safe(newurl)
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                "Redirected to %r", newurl)
+            log.debug(LOG_CHECK, "Redirected to %r", newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
             # norm base url - can raise UnicodeError from url.idna_encode()
             redirected, is_idn = linkcheck.checker.urlbase.url_norm(newurl)
             if is_idn:
                 pass # XXX warn about idn use
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                "Norm redirected to %r", redirected)
+            log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
             urlparts = linkcheck.strformat.url_unicode_split(redirected)
             # check extern filter again
             self.set_extern(redirected)
@@ -458,8 +453,7 @@ Use URL %s instead for checking."""), self.url, newurl)
         else:
             host = self.urlparts[1]
             scheme = self.urlparts[0]
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "Connecting to %r", host)
+        log.debug(LOG_CHECK, "Connecting to %r", host)
         # close/release a previous connection
         self.close_connection()
         self.url_connection = self.get_http_object(host, scheme)
@@ -538,8 +532,7 @@ Use URL %s instead for checking."""), self.url, newurl)
         key = (scheme, self.urlparts[1], _user, _password)
         conn = self.aggregate.connections.get(key)
         if conn is not None:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                "reuse cached HTTP(S) connection %s", conn)
+            log.debug(LOG_CHECK, "reuse cached HTTP(S) connection %s", conn)
             return conn
         self.aggregate.connections.wait_for_host(host)
         if scheme == "http":
@@ -549,7 +542,7 @@ Use URL %s instead for checking."""), self.url, newurl)
         else:
             msg = _("Unsupported HTTP url scheme %r") % scheme
             raise linkcheck.LinkCheckerError(msg)
-        if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
+        if log.is_debug(LOG_CHECK):
             h.set_debuglevel(1)
         h.connect()
         return h
@@ -691,7 +684,7 @@ Use URL %s instead for checking."""), self.url, newurl)
         else:
             try:
                 self.url_connection.close()
-            except:
+            except Exception:
                 # ignore close errors
                 pass
         self.url_connection = None

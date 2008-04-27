@@ -23,6 +23,7 @@ import time
 import urllib
 import cStringIO as StringIO
 
+from .. import log, LOG_CHECK
 import linkcheck
 import proxysupport
 import httpurl
@@ -97,7 +98,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.aggregate.connections.wait_for_host(host)
         try:
             self.url_connection = ftplib.FTP()
-            if linkcheck.log.is_debug(linkcheck.LOG_CHECK):
+            if log.is_debug(LOG_CHECK):
                 self.url_connection.set_debuglevel(1)
             self.url_connection.connect(host)
             if _user is None:
@@ -136,8 +137,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if not self.filename:
             return
         files = self.get_files()
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "FTP files %s", str(files))
+        log.debug(LOG_CHECK, "FTP files %s", str(files))
         if self.filename in files:
             # file found
             return
@@ -161,8 +161,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             """
             Parse list line and add the entry it points to to the file list.
             """
-            assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                "Directory entry %r", line)
+            log.debug(LOG_CHECK, "Directory entry %r", line)
             try:
                 fpo = ftpparse.parse(line)
                 name = fpo.name
@@ -171,8 +170,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if fpo.trycwd or fpo.tryretr:
                     files.append(name)
             except (ValueError, AttributeError), msg:
-                assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-                    "%s (%s)", str(msg), line)
+                log.debug(LOG_CHECK, "%s (%s)", str(msg), line)
         self.url_connection.dir(add_entry)
         return files
 
@@ -194,7 +192,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if self.is_directory():
             return True
-        for ro in PARSE_EXTENSIONS.itervalues():
+        for ro in PARSE_EXTENSIONS.values():
             if ro.search(self.url):
                 return True
         return False
@@ -212,7 +210,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in PARSE_EXTENSIONS.iteritems():
+        for key, ro in PARSE_EXTENSIONS.items():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
 

@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 import thread
 import linkcheck.decorators
-import linkcheck.log
+from .. import log, LOG_CHECK
 import linkcheck.threader
 import console
 
@@ -29,10 +29,9 @@ class CheckedTask (linkcheck.threader.StoppableThread):
         try:
             self.run_checked()
         except KeyboardInterrupt:
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
-                "interrupt did not reach the main thread")
+            log.warn(LOG_CHECK, "interrupt did not reach the main thread")
             thread.interrupt_main()
-        except:
+        except Exception:
             console.internal_error()
 
     @linkcheck.decorators.notimplemented

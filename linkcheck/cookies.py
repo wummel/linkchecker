@@ -27,19 +27,18 @@ And a cookie storage class is provided.
 [2] http://www.faqs.org/rfcs/rfc2109.html
 """
 
+from __future__ import with_statement
 import time
 import re
 import Cookie
 import cookielib
 import cStringIO as StringIO
 import rfc822
-import strformat
+from . import strformat
 
 
 class CookieError (StandardError):
-    """
-    Thrown for invalid cookie syntax or conflicting/impossible values.
-    """
+    """Thrown for invalid cookie syntax or conflicting/impossible values."""
     pass
 
 
@@ -66,11 +65,9 @@ CookiePattern = re.compile(r"""
 
 
 class HttpCookie (object):
-    """
-    A cookie consists of one name-value pair with attributes.
+    """A cookie consists of one name-value pair with attributes.
     Each attribute consists of a predefined name (see attribute_names)
-    and a value (which is optional for some attributes).
-    """
+    and a value (which is optional for some attributes)."""
 
     # A mapping from the lowercase variant on the left to the
     # appropriate traditional formatting on the right.
@@ -132,10 +129,8 @@ class HttpCookie (object):
          self.name, self.value, attrs)
 
     def is_valid_for (self, scheme, host, port, path):
-        """
-        Check validity of this cookie against the desired scheme,
-        host and path.
-        """
+        """Check validity of this cookie against the desired scheme,
+        host and path."""
         if self.check_expired() and \
            self.check_domain(host) and \
            self.check_port(port) and \
@@ -274,8 +269,8 @@ class HttpCookie (object):
 
     def server_header_value (self):
         parts = ["%s=%s" % (self.name, quote(self.value))]
-        parts += ["%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
-                  for k, v in self.attributes.iteritems()]
+        parts.extend(["%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
+                  for k, v in self.attributes.items()])
         return "; ".join(parts)
 
     def client_header_value (self):
@@ -283,15 +278,13 @@ class HttpCookie (object):
         if "version" in self.attributes:
             parts.append("$Version=%s" % quote(self.attributes["version"]))
         parts.append("%s=%s" % (self.name, quote(self.value)))
-        parts += ["$%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
-                  for k, v in self.attributes.iteritems() if k != "version"]
+        parts.extend(["$%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
+                  for k, v in self.attributes.items() if k != "version"])
         return "; ".join(parts)
 
 
 class NetscapeCookie (HttpCookie):
-    """
-    Parses RFC 2109 (Netscape) cookies.
-    """
+    """Parses RFC 2109 (Netscape) cookies."""
 
     def __init__ (self, text, scheme, host, path):
         self.parse(text)
@@ -327,14 +320,12 @@ class Rfc2965Cookie (HttpCookie):
 
 
 def from_file (filename):
-    """
-    Parse cookie data from a text file in HTTP header format.
+    """Parse cookie data from a text file in HTTP header format.
 
     @return: list of tuples (headers, scheme, host, path)
     """
     entries = []
-    fd = open(filename)
-    try:
+    with open(filename) as fd:
         lines = []
         for line in fd.readlines():
             line = line.rstrip()
@@ -347,13 +338,10 @@ def from_file (filename):
         if lines:
             entries.append(from_headers("\r\n".join(lines)))
         return entries
-    finally:
-        fd.close()
 
 
 def from_headers (strheader):
-    """
-    Parse cookie data from a string in HTTP header (RFC 822) format.
+    """Parse cookie data from a string in HTTP header (RFC 822) format.
 
     @return: tuple (headers, scheme, host, path)
     @raises: ValueError for incomplete or invalid data

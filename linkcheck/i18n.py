@@ -33,9 +33,7 @@ if default_encoding is None:
     default_encoding = "ascii"
 
 def install_builtin (translator, do_unicode):
-    """
-    Install _() and _n() gettext methods into default namespace.
-    """
+    """Install _() and _n() gettext methods into default namespace."""
     import __builtin__
     if do_unicode:
         __builtin__.__dict__['_'] = translator.ugettext
@@ -47,36 +45,26 @@ def install_builtin (translator, do_unicode):
         __builtin__.__dict__['_n'] = translator.ngettext
 
 class Translator (gettext.GNUTranslations):
-    """
-    A translation class always installing its gettext methods into the
-    default namespace.
-    """
+    """A translation class always installing its gettext methods into the
+    default namespace."""
 
     def install (self, do_unicode):
-        """
-        Install gettext methods into the default namespace.
-        """
+        """Install gettext methods into the default namespace."""
         install_builtin(self, do_unicode)
 
 
 class NullTranslator (gettext.NullTranslations):
-    """
-    A dummy translation class always installing its gettext methods into
-    the default namespace.
-    """
+    """A dummy translation class always installing its gettext methods into
+    the default namespace."""
 
     def install (self, do_unicode):
-        """
-        Install gettext methods into the default namespace.
-        """
+        """Install gettext methods into the default namespace."""
         install_builtin(self, do_unicode)
 
 
 def init (domain, directory):
-    """
-    Initialize this gettext i18n module. Searches for supported languages
-    and installs the gettext translator class.
-    """
+    """Initialize this gettext i18n module. Searches for supported languages
+    and installs the gettext translator class."""
     global default_language, default_encoding
     if os.path.isdir(directory):
         # get supported languages
@@ -98,9 +86,7 @@ def init (domain, directory):
 def get_translator (domain, directory, languages=None,
                     translatorklass=Translator, fallback=False,
                     fallbackklass=NullTranslator):
-    """
-    Search the appropriate GNUTranslations class.
-    """
+    """Search the appropriate GNUTranslations class."""
     translator = gettext.translation(domain, localedir=directory,
             languages=languages, class_=translatorklass, fallback=fallback)
     if not isinstance(translator, gettext.GNUTranslations) and fallbackklass:
@@ -109,18 +95,14 @@ def get_translator (domain, directory, languages=None,
 
 
 def get_lang (lang):
-    """
-    Return lang if it is supported, or the default language.
-    """
+    """Return lang if it is supported, or the default language."""
     if lang in supported_languages:
         return lang
     return default_language
 
 
 def get_headers_lang (headers):
-    """
-    Return preferred supported language in given HTTP headers.
-    """
+    """Return preferred supported language in given HTTP headers."""
     if 'Accept-Language' not in headers:
         return default_language
     languages = headers['Accept-Language'].split(",")
@@ -145,17 +127,10 @@ def get_headers_lang (headers):
 
 
 def get_locale ():
-    """
-    Return current configured locale.
-    """
+    """Return current configured locale."""
     loc = None
     encoding = 'ascii'
-    try:
-        loc, encoding = locale.getlocale(category=locale.LC_ALL)
-    except ValueError:
-        # XXX ignore Python bug
-        # http://bugs.python.org/issue1158909
-        pass
+    loc, encoding = locale.getlocale(category=locale.LC_ALL)
     if loc is None:
         return ('C', 'ascii')
     loc = locale.normalize(loc)
@@ -182,14 +157,10 @@ lang_transis = {
 }
 
 def lang_name (lang):
-    """
-    Return full name of given language.
-    """
+    """Return full name of given language."""
     return lang_names[lang]
 
 
 def lang_trans (lang, curlang):
-    """
-    Return translated full name of given language.
-    """
+    """Return translated full name of given language."""
     return lang_transis[lang][curlang]

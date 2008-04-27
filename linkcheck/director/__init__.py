@@ -18,8 +18,9 @@
 Management of checking a queue of links with several threads.
 """
 import time
+import os
 import thread
-import linkcheck.log
+from .. import log, LOG_CHECK
 import linkcheck.cache.urlqueue
 import linkcheck.cache.robots_txt
 import linkcheck.cache.cookie
@@ -43,11 +44,11 @@ def check_urls (aggregate):
     except KeyboardInterrupt:
         interrupt(aggregate)
     except thread.error:
-        linkcheck.log.warn(linkcheck.LOG_CHECK,
+        log.warn(LOG_CHECK,
              _("Could not start a new thread. Check that the current user" \
                " is allowed to start new threads."))
         abort(aggregate)
-    except:
+    except Exception:
         console.internal_error()
         abort(aggregate)
 
@@ -72,9 +73,9 @@ def interrupt (aggregate):
     interrupts."""
     while True:
         try:
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
                _("keyboard interrupt; waiting for active threads to finish"))
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
                _("another keyboard interrupt will exit immediately"))
             print_active_threads(aggregate)
             abort(aggregate)
@@ -86,11 +87,11 @@ def interrupt (aggregate):
 def print_active_threads (aggregate):
     if not aggregate.threads:
         return
-    linkcheck.log.info(linkcheck.LOG_CHECK, _("These URLs are still active:"))
+    log.info(LOG_CHECK, _("These URLs are still active:"))
     for t in aggregate.threads:
         name = t.getName()
         if name.startswith("Check-"):
-            linkcheck.log.info(linkcheck.LOG_CHECK, name[6:])
+            log.info(LOG_CHECK, name[6:])
 
 
 def abort (aggregate):
@@ -102,20 +103,9 @@ def abort (aggregate):
             aggregate.logger.end_log_output()
             break
         except KeyboardInterrupt:
-            linkcheck.log.warn(linkcheck.LOG_CHECK, _("keyboard interrupt; force shutdown"))
-            force_shutdown()
-
-
-def force_shutdown ():
-    """Force shutdown, not finishing anything."""
-    import os
-    if os.name == "posix":
-        # POSIX systems seem to do fine with sys.exit()
-        import sys
-        sys.exit(1)
-    else:
-        # forced exit without cleanup
-        os._exit(1)
+            log.warn(LOG_CHECK, _("keyboard interrupt; force shutdown"))
+            # forced exit without cleanup
+            os._exit(1)
 
 
 def get_aggregate (config):

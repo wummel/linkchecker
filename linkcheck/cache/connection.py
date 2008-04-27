@@ -20,7 +20,7 @@ Store and retrieve open connections.
 
 import time
 import linkcheck.lock
-import linkcheck.log
+from .. import log, LOG_CACHE
 from linkcheck.decorators import synchronized
 
 _lock = linkcheck.lock.get_lock("connection")
@@ -74,7 +74,7 @@ class ConnectionPool (object):
             due_time = self.times[host]
             if due_time > t:
                 wait = due_time - t
-                assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
+                log.debug(LOG_CACHE,
                   "waiting for %.01f seconds on connection to %s", wait, host)
                 time.sleep(wait)
                 t = time.time()
@@ -119,7 +119,7 @@ class ConnectionPool (object):
         """Remove expired connections from this pool."""
         t = time.time()
         to_delete = []
-        for key, conn_data in self.connections.iteritems():
+        for key, conn_data in self.connections.items():
             if conn_data[1] == 'available' and t > conn_data[2]:
                 to_delete.append(key)
         for key in to_delete:
@@ -132,7 +132,7 @@ class ConnectionPool (object):
         del self.connections[key]
         try:
             conn_data[1].close()
-        except:
+        except Exception:
             # ignore close errors
             pass
 

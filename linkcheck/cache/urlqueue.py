@@ -17,10 +17,11 @@
 """
 Handle a queue of URLs to check.
 """
+from __future__ import with_statement
 import threading
 import collections
 from time import time as _time
-import linkcheck.log
+from .. import log, LOG_CACHE
 
 
 class Timeout (StandardError):
@@ -79,11 +80,8 @@ class UrlQueue (object):
         return it. If no such url is available return None. The
         url might be already cached.
         """
-        self.not_empty.acquire()
-        try:
+        with self.not_empty:
             return self._get(timeout)
-        finally:
-            self.not_empty.release()
 
     def _get (self, timeout):
         if timeout is None:
@@ -126,20 +124,16 @@ class UrlQueue (object):
         is immediately available, else raise the Full exception ('timeout'
         is ignored in that case).
         """
-        self.mutex.acquire()
-        try:
+        with self.mutex:
             self._put(item)
             self.not_empty.notify()
-        finally:
-            self.mutex.release()
 
     def _put (self, url_data):
         """Put URL in queue, increase number of unfished tasks."""
         if self.shutdown:
             # don't accept more URLs
             return
-        assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
-            "queueing %s", url_data)
+        log.debug(LOG_CACHE, "queueing %s", url_data)
         key = url_data.cache_url_key
         if key in self.checked:
             # Put at beginning of queue to get consumed quickly.
@@ -171,10 +165,8 @@ class UrlQueue (object):
         Raises a ValueError if called more times than there were items
         placed in the queue.
         """
-        self.all_tasks_done.acquire()
-        try:
-            assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
-                "task_done %s", url_data)
+        with self.all_tasks_done:
+            log.debug(LOG_CACHE, "task_done %s", url_data)
             if url_data is not None:
                 key = url_data.cache_url_key
                 if key is not None and key not in self.checked:
@@ -188,13 +180,10 @@ class UrlQueue (object):
                     raise ValueError('task_done() called too many times')
                 self.all_tasks_done.notifyAll()
             self.unfinished_tasks = unfinished
-        finally:
-            self.all_tasks_done.release()
 
     def _cache_url (self, key, url_data):
         """Put URL result data into cache."""
-        assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
-            "Caching %r", key)
+        log.debug(LOG_CACHE, "Caching %r", key)
         assert key in self.in_progress, \
             "%r not in %s" % (key, self.in_progress)
         del self.in_progress[key]
@@ -206,8 +195,7 @@ class UrlQueue (object):
             for key in url_data.aliases:
                 if key in self.checked or key in self.in_progress:
                     continue
-                assert None == linkcheck.log.debug(linkcheck.LOG_CACHE,
-                    "Caching alias %r", key)
+                log.debug(LOG_CACHE, "Caching alias %r", key)
                 self.checked[key] = data
 
     def _sort (self):
@@ -237,8 +225,7 @@ class UrlQueue (object):
 
         When the count of unfinished tasks drops to zero, join() unblocks.
         """
-        self.all_tasks_done.acquire()
-        try:
+        with self.all_tasks_done:
             if timeout is None:
                 while self.unfinished_tasks:
                     self.all_tasks_done.wait()
@@ -251,13 +238,10 @@ class UrlQueue (object):
                     if remaining <= 0.0:
                         raise Timeout()
                     self.all_tasks_done.wait(remaining)
-        finally:
-            self.all_tasks_done.release()
 
     def do_shutdown (self):
         """Shutdown the queue by not accepting any more URLs."""
-        self.mutex.acquire()
-        try:
+        with self.mutex:
             unfinished = self.unfinished_tasks - len(self.queue)
             self.queue.clear()
             if unfinished <= 0:
@@ -266,19 +250,14 @@ class UrlQueue (object):
                 self.all_tasks_done.notifyAll()
             self.unfinished_tasks = unfinished
             self.shutdown = True
-        finally:
-            self.mutex.release()
 
     def status (self):
         """
         Get tuple (finished tasks, in progress, queue size).
         """
-        self.mutex.acquire()
-        try:
+        with self.mutex:
             return (self.finished_tasks,
                     len(self.in_progress), len(self.queue))
-        finally:
-            self.mutex.release()
 
     def checked_redirect (self, redirect, url_data):
         """
@@ -287,11 +266,8 @@ class UrlQueue (object):
         If the redirect URL is found in the cache, the result data is
         already copied.
         """
-        self.mutex.acquire()
-        try:
+        with self.mutex:
             if redirect in self.checked:
                 url_data.copy_from_cache(self.checked[redirect])
                 return True
             return False
-        finally:
-            self.mutex.release()

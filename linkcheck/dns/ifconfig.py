@@ -7,7 +7,7 @@ import errno
 import array
 import fcntl
 import struct
-import linkcheck.log
+from .. import log, LOG_DNS
 
 
 class IfConfig (object):
@@ -49,7 +49,7 @@ class IfConfig (object):
         try:
             result = self._ioctl(func, ifreq)
         except IOError, msg:
-            linkcheck.log.warn(linkcheck.LOG_DNS,
+            log.warn(LOG_DNS,
                   "error getting addr for interface %r: %s", ifname, msg)
             return None
         return socket.inet_ntoa(result[20:24])
@@ -97,7 +97,7 @@ class IfConfig (object):
         try:
             result = self._ioctl(self.SIOCGIFFLAGS, ifreq)
         except IOError, msg:
-            linkcheck.log.warn(linkcheck.LOG_DNS,
+            log.warn(LOG_DNS,
                  "error getting flags for interface %r: %s", ifname, msg)
             return 0
         # extract the interface's flags from the return value

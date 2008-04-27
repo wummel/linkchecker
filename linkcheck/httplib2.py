@@ -863,7 +863,7 @@ class HTTPConnection:
                         print "Cannot stat!!"
             if thelen is not None:
                 self.putheader('Content-Length',thelen)
-        for hdr, value in headers.iteritems():
+        for hdr, value in headers.items():
             self.putheader(hdr, value)
         self.endheaders()
 

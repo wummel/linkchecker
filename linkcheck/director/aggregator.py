@@ -17,7 +17,7 @@
 """
 Aggregate needed object instances for checker threads.
 """
-import linkcheck.log
+from .. import log, LOG_CHECK
 import linkcheck.director
 import logger
 import status
@@ -61,7 +61,7 @@ class Aggregate (object):
         try:
             self.urlqueue.join(timeout=self.config["timeout"])
         except linkcheck.cache.urlqueue.Timeout:
-            linkcheck.log.warn(linkcheck.LOG_CHECK, "Abort timed out")
+            log.warn(LOG_CHECK, "Abort timed out")
 
     def remove_stopped_threads (self):
         "Remove the stopped threads from the internal thread list."""
@@ -74,5 +74,5 @@ class Aggregate (object):
             t.stop()
             t.join(2)
             if t.isAlive():
-                linkcheck.log.warn(linkcheck.LOG_CHECK, "Thread %s still active", t)
+                log.warn(LOG_CHECK, "Thread %s still active", t)
         self.connections.clear()

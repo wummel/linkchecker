@@ -26,7 +26,7 @@ import urllib
 import urllib2
 
 import urlbase
-import linkcheck.log
+from .. import log, LOG_CHECK
 import linkcheck.checker
 import linkcheck.fileutil
 from const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH, \
@@ -68,8 +68,7 @@ def get_nt_filename (path):
     for fname in os.listdir(head):
         if fname.lower() == tail.lower():
             return os.path.join(get_nt_filename(head), fname)
-    linkcheck.log.error(linkcheck.LOG_CHECK, "could not find %r in %r",
-                        tail, head)
+    log.error(LOG_CHECK, "could not find %r in %r", tail, head)
     return path
 
 
@@ -234,12 +233,12 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             return True
         # guess by extension
-        for ro in PARSE_EXTENSIONS.itervalues():
+        for ro in PARSE_EXTENSIONS.values():
             if ro.search(self.url):
                 return True
         # try to read content (can fail, so catch error)
         try:
-            for ro in PARSE_CONTENTS.itervalues():
+            for ro in PARSE_CONTENTS.values():
                 if ro.search(self.get_content()[:30]):
                     return True
         except IOError:
@@ -253,11 +252,11 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in PARSE_EXTENSIONS.iteritems():
+        for key, ro in PARSE_EXTENSIONS.items():
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
                 return
-        for key, ro in PARSE_CONTENTS.iteritems():
+        for key, ro in PARSE_CONTENTS.items():
             if ro.search(self.get_content()[:30]):
                 getattr(self, "parse_"+key)()
                 return

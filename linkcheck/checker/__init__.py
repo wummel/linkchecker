@@ -113,9 +113,7 @@ def get_urlclass_from (url):
         klass = linkcheck.checker.gopherurl.GopherUrl
     elif url.startswith("https:"):
         klass = linkcheck.checker.httpsurl.HttpsUrl
-    elif url.startswith("nntp:") or \
-         url.startswith("news:") or \
-         url.startswith("snews:"):
+    elif url.startswith(("nntp:", "news:", "snews:")):
         klass = linkcheck.checker.nntpurl.NntpUrl
     elif linkcheck.checker.unknownurl.is_unknown_url(url):
         # unknown url

@@ -26,7 +26,7 @@ import linkcheck.strformat
 import linkcheck.i18n
 import linkcheck.decorators
 import linkcheck.dummy
-import linkcheck.log
+from .. import log, LOG_CHECK
 
 _ = lambda x: x
 Fields = dict(
@@ -102,7 +102,7 @@ class Logger (object):
             self.close_fd = True
         except IOError:
             msg = sys.exc_info()[1]
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
                 "Could not open file %r for writing: %s\n"
                 "Disabling log output of %s", self.filename, msg, self)
             self.fd = linkcheck.dummy.Dummy()
@@ -180,7 +180,7 @@ class Logger (object):
             self.start_fileoutput()
         if self.fd is None:
             # Happens when aborting threads times out
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
                 "writing to unitialized or closed file")
         else:
             self.fd.write(self.encode(s), **args)

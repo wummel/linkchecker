@@ -27,9 +27,7 @@ _trace_filter = set()
 
 
 def trace_ignore (names):
-    """
-    Add given names to trace ignore set, or clear set if names is None.
-    """
+    """Add given names to trace ignore set, or clear set if names is None."""
     if names is None:
         _trace_ignore.clear()
     else:
@@ -37,9 +35,8 @@ def trace_ignore (names):
 
 
 def trace_filter (patterns):
-    """
-    Add given patterns to trace filter set or clear set if patterns is None.
-    """
+    """Add given patterns to trace filter set or clear set if patterns is
+    None."""
     if patterns is None:
         _trace_filter.clear()
     else:
@@ -47,9 +44,7 @@ def trace_filter (patterns):
 
 
 def _trace (frame, event, arg):
-    """
-    Trace function calls.
-    """
+    """Trace function calls."""
     if event in ('call', 'c_call'):
         _trace_line(frame, event, arg)
     elif event in ('return', 'c_return'):
@@ -61,9 +56,7 @@ def _trace (frame, event, arg):
 
 
 def _trace_full (frame, event, arg):
-    """
-    Trace every executed line.
-    """
+    """Trace every executed line."""
     if event == "line":
         _trace_line(frame, event, arg)
     else:
@@ -72,9 +65,7 @@ def _trace_full (frame, event, arg):
 
 
 def _trace_line (frame, event, arg):
-    """
-    Print current executed line.
-    """
+    """Print current executed line."""
     name = frame.f_globals["__name__"]
     if name in _trace_ignore:
         return _trace_line
@@ -83,7 +74,7 @@ def _trace_line (frame, event, arg):
             return _trace_line
     lineno = frame.f_lineno
     filename = frame.f_globals["__file__"]
-    if filename.endswith(".pyc") or filename.endswith(".pyo"):
+    if filename.endswith((".pyc", ".pyo")):
         filename = filename[:-1]
     line = linecache.getline(filename, lineno)
     tid = thread.get_ident()
@@ -93,9 +84,7 @@ def _trace_line (frame, event, arg):
 
 
 def trace_on (full=False):
-    """
-    Start tracing of the current thread (and the current thread only).
-    """
+    """Start tracing of the current thread (and the current thread only)."""
     if full:
         sys.settrace(_trace_full)
     else:
@@ -103,8 +92,6 @@ def trace_on (full=False):
 
 
 def trace_off ():
-    """
-    Stop tracing of the current thread (and the current thread only).
-    """
+    """Stop tracing of the current thread (and the current thread only)."""
     sys.settrace(None)
 

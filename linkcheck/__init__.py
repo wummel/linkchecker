@@ -20,13 +20,13 @@ Main function module for link checking.
 
 # imports and checks
 import sys
-if not hasattr(sys, 'version_info') or \
-   sys.version_info < (2, 4, 0, 'final', 0):
-    raise SystemExit("This program requires Python 2.4 or later.")
+if not (hasattr(sys, 'version_info') or
+        sys.version_info < (2, 5, 0, 'final', 0)):
+    raise SystemExit("This program requires Python 2.5 or later.")
 import os
 import re
 
-import i18n
+from . import i18n
 import _linkchecker_configdata as configdata
 
 # application log areas
@@ -45,33 +45,27 @@ lognames = {
     "dns": LOG_DNS,
     "thread": LOG_THREAD,
     "all": LOG,
-    }
-lognamelist = ", ".join(["%r"%name for name in lognames.iterkeys()])
+}
+lognamelist = ", ".join(repr(name) for name in lognames)
 
-import log
+from . import log
 
 
 class LinkCheckerError (StandardError):
-    """
-    Exception to be raised on linkchecker-specific check errors.
-    """
+    """Exception to be raised on linkchecker-specific check errors."""
     pass
 
 
 def add_intern_pattern (url_data, config):
-    """
-    Add intern URL regex to config.
-    """
+    """Add intern URL regex to config."""
     pat = url_data.get_intern_pattern()
     if pat:
-        assert None == log.debug(LOG_CHECK,
-          "Add intern pattern %r", pat)
+        log.debug(LOG_CHECK, "Add intern pattern %r", pat)
         config['internlinks'].append(get_link_pat(pat))
 
 
 def get_link_pat (arg, strict=False):
-    """
-    Get a link pattern matcher for intern/extern links.
+    """Get a link pattern matcher for intern/extern links.
     Returns a compiled pattern and a negate and strict option.
 
     @param arg: pattern from config
@@ -81,7 +75,7 @@ def get_link_pat (arg, strict=False):
     @return: dictionary with keys 'pattern', 'negate' and 'strict'
     @rtype: dict
     """
-    assert None == log.debug(LOG_CHECK, "Link pattern %r", arg)
+    log.debug(LOG_CHECK, "Link pattern %r", arg)
     if arg.startswith('!'):
         pattern = arg[1:]
         negate = True
@@ -96,38 +90,37 @@ def get_link_pat (arg, strict=False):
 
 
 # note: don't confuse URL loggers with application logs above
-import logger.text
-import logger.html
-import logger.gml
-import logger.dot
-import logger.sql
-import logger.csvlog
-import logger.blacklist
-import logger.gxml
-import logger.customxml
-import logger.none
+from .logger.text import TextLogger
+from .logger.html import HtmlLogger
+from .logger.gml import GMLLogger
+from .logger.dot import DOTLogger
+from .logger.sql import SQLLogger
+from .logger.csvlog import CSVLogger
+from .logger.blacklist import BlacklistLogger
+from .logger.gxml import GraphXMLLogger
+from .logger.customxml import CustomXMLLogger
+from .logger.none import NoneLogger
 
 
 # default link logger classes
 Loggers = {
-    "text": logger.text.TextLogger,
-    "html": logger.html.HtmlLogger,
-    "gml": logger.gml.GMLLogger,
-    "dot": logger.dot.DOTLogger,
-    "sql": logger.sql.SQLLogger,
-    "csv": logger.csvlog.CSVLogger,
-    "blacklist": logger.blacklist.BlacklistLogger,
-    "gxml": logger.gxml.GraphXMLLogger,
-    "xml": logger.customxml.CustomXMLLogger,
-    "none": logger.none.NoneLogger,
+    "text": TextLogger,
+    "html": HtmlLogger,
+    "gml": GMLLogger,
+    "dot": DOTLogger,
+    "sql": SQLLogger,
+    "csv": CSVLogger,
+    "blacklist": BlacklistLogger,
+    "gxml": GraphXMLLogger,
+    "xml": CustomXMLLogger,
+    "none": NoneLogger,
 }
 # for easy printing: a comma separated logger list
-LoggerKeys = ", ".join(["%r" % name for name in Loggers.iterkeys()])
+LoggerKeys = ", ".join(repr(name) for name in Loggers)
 
 
 def init_i18n ():
-    """
-    Initialize i18n with the configured locale dir. The environment
+    """Initialize i18n with the configured locale dir. The environment
     variable LOCPATH can also specify a locale dir.
 
     @return: None

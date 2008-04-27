@@ -30,8 +30,7 @@ import cStringIO as StringIO
 
 PRINT_LOCALVARS = False
 def _stack_format (stack):
-    """
-    Format a stack trace to a message.
+    """Format a stack trace to a message.
 
     @return: formatted stack message
     @rtype: string
@@ -44,7 +43,7 @@ def _stack_format (stack):
         s.write(os.linesep)
         s.write('    %s' % lines[0].lstrip())
         if PRINT_LOCALVARS:
-            for key, value in frame.f_locals.iteritems():
+            for key, value in frame.f_locals.items():
                 s.write("      %s = " % key)
                 # be careful not to cause a new error in the error output
                 try:
@@ -56,8 +55,7 @@ def _stack_format (stack):
 
 
 def _log (fun, msg, args, tb=False):
-    """
-    Log a message with given function and an optional traceback.
+    """Log a message with given function and an optional traceback.
 
     @return: None
     """
@@ -68,8 +66,7 @@ def _log (fun, msg, args, tb=False):
 
 
 def debug (logname, msg, *args, **kwargs):
-    """
-    Log a debug message.
+    """Log a debug message.
 
     return: None
     """
@@ -79,8 +76,7 @@ def debug (logname, msg, *args, **kwargs):
 
 
 def info (logname, msg, *args, **kwargs):
-    """
-    Log an informational message.
+    """Log an informational message.
 
     return: None
     """
@@ -90,8 +86,7 @@ def info (logname, msg, *args, **kwargs):
 
 
 def warn (logname, msg, *args, **kwargs):
-    """
-    Log a warning.
+    """Log a warning.
 
     return: None
     """
@@ -101,8 +96,7 @@ def warn (logname, msg, *args, **kwargs):
 
 
 def error (logname, msg, *args, **kwargs):
-    """
-    Log an error.
+    """Log an error.
 
     return: None
     """
@@ -112,8 +106,7 @@ def error (logname, msg, *args, **kwargs):
 
 
 def critical (logname, msg, *args, **kwargs):
-    """
-    Log a critical error.
+    """Log a critical error.
 
     return: None
     """
@@ -123,8 +116,7 @@ def critical (logname, msg, *args, **kwargs):
 
 
 def exception (logname, msg, *args, **kwargs):
-    """
-    Log an exception.
+    """Log an exception.
 
     return: None
     """
@@ -134,14 +126,10 @@ def exception (logname, msg, *args, **kwargs):
 
 
 def is_debug (logname):
-    """
-    See if logger is on debug level.
-    """
+    """See if logger is on debug level."""
     return logging.getLogger(logname).isEnabledFor(logging.DEBUG)
 
 
 def shutdown ():
-    """
-    Flush and close all log handlers.
-    """
+    """Flush and close all log handlers."""
     logging.shutdown()

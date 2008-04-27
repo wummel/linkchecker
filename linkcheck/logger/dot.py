@@ -83,7 +83,7 @@ class DOTLogger (linkcheck.logger.Logger):
             if node.checktime and self.has_part("checktime"):
                 self.writeln(u"    checktime=%d," % node.checktime)
             if self.has_part("extern"):
-                self.writeln(u"    extern=%d," % (node.extern[0] and 1 or 0))
+                self.writeln(u"    extern=%d," % (1 if node.extern[0] else 0))
             self.writeln(u"  ];")
 
     def write_edges (self):
@@ -91,14 +91,14 @@ class DOTLogger (linkcheck.logger.Logger):
         Write all edges we can find in the graph in a brute-force
         manner. Better would be a mapping of parent URLs.
         """
-        for node in self.nodes.itervalues():
+        for node in self.nodes.values():
             if node.parent_url in self.nodes:
                 source = self.nodes[node.parent_url].id
                 target = node.id
                 self.writeln(u"  %d -> %d [" % (source, target))
                 self.writeln(u'    label="%s",' % dotedge(node.name))
                 if self.has_part("result"):
-                    self.writeln(u"    valid=%d," % (node.valid and 1 or 0))
+                    self.writeln(u"    valid=%d," % (1 if node.valid else 0))
                 self.writeln(u"  ];")
         self.flush()
 

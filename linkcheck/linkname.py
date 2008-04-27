@@ -19,8 +19,8 @@ Parse name of common link types.
 """
 
 import re
-import linkcheck.HtmlParser
-import linkcheck.strformat
+from . import HtmlParser
+from . import strformat
 
 
 imgtag_re = re.compile(r"(?i)\s+alt\s*=\s*"+\
@@ -29,27 +29,20 @@ img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>])+>""")
 endtag_re = re.compile(r"""(?i)</a\s*>""")
 
 def _unquote (txt):
-    """
-    Resolve entities and markup from txt.
-    """
-    return linkcheck.HtmlParser.resolve_entities(
-                  linkcheck.strformat.remove_markup(txt))
+    """Resolve entities and markup from txt."""
+    return HtmlParser.resolve_entities(strformat.remove_markup(txt))
 
 def image_name (txt):
-    """
-    Return the alt part of the first <img alt=""> tag in txt.
-    """
+    """Return the alt part of the first <img alt=""> tag in txt."""
     mo = imgtag_re.search(txt)
     if mo:
-        name = linkcheck.strformat.unquote(mo.group('name').strip())
+        name = strformat.unquote(mo.group('name').strip())
         return  _unquote(name)
     return u''
 
 
 def href_name (txt):
-    """
-    Return the name part of the first <a href="">name</a> link in txt.
-    """
+    """Return the name part of the first <a href="">name</a> link in txt."""
     name = u""
     endtag = endtag_re.search(txt)
     if not endtag:

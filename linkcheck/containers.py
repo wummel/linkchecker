@@ -56,8 +56,7 @@ class SetList (list):
 
 
 class ListDict (dict):
-    """
-    A dictionary whose iterators reflect the order in which elements
+    """A dictionary whose iterators reflect the order in which elements
     were added.
     """
 
@@ -128,8 +127,7 @@ class ListDict (dict):
         super(ListDict, self).clear()
 
     def get_true (self, key, default):
-        """
-        Return default element if key is not in the dict, or if self[key]
+        """Return default element if key is not in the dict, or if self[key]
         evaluates to False. Useful for example if value is None, but
         default value should be an empty string.
         """

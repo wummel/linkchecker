@@ -21,8 +21,7 @@ import unittest
 
 
 def make_suite (prefix, namespace):
-    """
-    Add all TestCase classes starting with given prefix to a test suite.
+    """Add all TestCase classes starting with given prefix to a test suite.
 
     @return: test suite
     @rtype: unittest.TestSuite

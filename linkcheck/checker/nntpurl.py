@@ -26,7 +26,6 @@ import random
 
 import linkcheck
 import urlbase
-import linkcheck.log
 from const import WARN_NNTP_NO_SERVER, WARN_NNTP_NO_NEWSGROUP, \
     WARN_NNTP_BUSY
 

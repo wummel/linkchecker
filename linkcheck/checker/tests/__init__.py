@@ -83,7 +83,7 @@ class TestLogger (linkcheck.logger.Logger):
             for warning in url_data.warnings:
                 self.result.append(u"warning %s" % warning[1])
         if self.has_part('result'):
-            self.result.append(url_data.valid and u"valid" or u"error")
+            self.result.append(u"valid" if url_data.valid else u"error")
         # note: do not append url_data.result since this is
         # platform dependent
 

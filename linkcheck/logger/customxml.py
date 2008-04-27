@@ -58,7 +58,7 @@ class CustomXMLLogger (xmllog.XMLLogger):
         if self.has_part("realurl"):
             self.xml_tag(u"realurl", unicode(url_data.url))
         if self.has_part("extern"):
-            self.xml_tag(u"extern", u"%d" % (url_data.extern[0] and 1 or 0))
+            self.xml_tag(u"extern", u"%d" % (1 if url_data.extern[0] else 0))
         if url_data.dltime >= 0 and self.has_part("dltime"):
             self.xml_tag(u"dltime", u"%f" % url_data.dltime)
         if url_data.dlsize >= 0 and self.has_part("dlsize"):
@@ -79,7 +79,7 @@ class CustomXMLLogger (xmllog.XMLLogger):
             attrs = {}
             if url_data.result:
                 attrs["result"] = url_data.result
-            self.xml_tag(u"valid", u"%d" % (url_data.valid and 1 or 0), attrs)
+            self.xml_tag(u"valid", u"%d" % (1 if url_data.valid else 0), attrs)
         self.xml_endtag(u'urldata')
         self.flush()
 

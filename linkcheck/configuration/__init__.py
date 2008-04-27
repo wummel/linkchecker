@@ -23,7 +23,7 @@ import os
 import logging.config
 import urllib
 import _linkchecker_configdata
-import linkcheck.log
+from .. import log, LOG_CHECK, LOG
 import linkcheck.containers
 import confparse
 
@@ -162,7 +162,7 @@ class Configuration (dict):
         logging.config.fileConfig(filename)
         handler = linkcheck.ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
-        logging.getLogger(linkcheck.LOG).addHandler(handler)
+        logging.getLogger(LOG).addHandler(handler)
         self.set_debug(debug)
 
     def set_debug (self, debug):
@@ -218,8 +218,7 @@ class Configuration (dict):
             cfiles.append(path)
         # weed out invalid files
         cfiles = [f for f in cfiles if os.path.isfile(f)]
-        assert None == linkcheck.log.debug(linkcheck.LOG_CHECK,
-            "reading configuration from %s", cfiles)
+        log.debug(LOG_CHECK, "reading configuration from %s", cfiles)
         confparse.LCConfigParser(self).read(cfiles)
         self.sanitize()
 

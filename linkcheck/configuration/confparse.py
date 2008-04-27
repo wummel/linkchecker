@@ -18,7 +18,8 @@
 
 import ConfigParser
 import re
-import linkcheck.log
+import linkcheck
+from .. import log, LOG_CHECK
 
 
 def read_multiline (value):
@@ -52,7 +53,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.read_authentication_config()
             self.read_filtering_config()
         except Exception, msg:
-            raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+            raise linkcheck.LinkCheckerError(
               "Error parsing configuration: %s", str(msg))
 
     def read_output_config (self):
@@ -106,7 +107,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "timeout"):
             num = self.getint(section, "timeout")
             if num < 0:
-                raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                raise linkcheck.LinkCheckerError(
                     _("invalid negative value for timeout: %d\n"), num)
             self.config['timeout'] = num
         if self.has_option(section, "anchors"):
@@ -136,7 +137,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 try:
                     import tidy
                 except ImportError:
-                    linkcheck.log.warn(linkcheck.LOG_CHECK,
+                    log.warn(LOG_CHECK,
                     _("warning: tidy module is not available; " \
                      "download from http://utidylib.berlios.de/"))
                     val = False
@@ -147,7 +148,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 try:
                     import cssutils
                 except ImportError:
-                    linkcheck.log.warn(linkcheck.LOG_CHECK,
+                    log.warn(LOG_CHECK,
                         _("warning: cssutils module is not available; " \
                          "download from http://cthedot.de/cssutils/"))
                     val = False
@@ -160,7 +161,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for val in read_multiline(self.get(section, "entry")):
                 auth = val.split()
                 if len(auth) != 3:
-                    raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                    raise linkcheck.LinkCheckerError(LOG_CHECK,
                        _("missing auth part in entry %(val)r") % \
                        {"val": val})
                 self.config["authentication"].insert(0,
@@ -175,11 +176,11 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 break
             val = self.get(section, key)
             auth = val.split()
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
               _("the entry%(num)d syntax is deprecated; use " \
                 "the new multiline configuration syntax") % {"num": i})
             if len(auth) != 3:
-                raise linkcheck.LinkCheckerError(linkcheck.LOG_CHECK,
+                raise linkcheck.LinkCheckerError(LOG_CHECK,
                    _("missing auth part in entry %(val)r") % \
                    {"val": val})
             self.config["authentication"].insert(0,
@@ -204,7 +205,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             if not self.has_option(section, key):
                 break
             val = self.get(section, key)
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
               _("the nofollow%(num)d syntax is deprecated; use " \
                 "the new multiline configuration syntax") % {"num": i})
             pat = linkcheck.get_link_pat(val, strict=0)
@@ -219,7 +220,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             key = "noproxyfor%d" % i
             if not self.has_option(section, key):
                 break
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
                   _("the noproxyfor%(num)d syntax is deprecated; use " \
                     "the new multiline configuration syntax") % {"num": i})
             val = self.get(section, key)
@@ -240,7 +241,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 break
             # backwards compatibility: split and ignore second part
             val = self.get(section, key).split()[0]
-            linkcheck.log.warn(linkcheck.LOG_CHECK,
+            log.warn(LOG_CHECK,
               _("the ignore%(num)d syntax is deprecated; use " \
                 "the new multiline configuration syntax") % {"num": i})
             pat = linkcheck.get_link_pat(val, strict=1)

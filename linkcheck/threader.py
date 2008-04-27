@@ -54,9 +54,7 @@ if _has_win32process:
 
 
 def set_thread_priority (prio):
-    """
-    Set priority of this thread (and thus also for all spawned threads).
-    """
+    """Set priority of this thread (and thus also for all spawned threads)."""
     if os.name == 'nt' and _has_win32process:
         res = win32process.SetPriorityClass(
                    win32process.GetCurrentProcess(), _nt_prio_val[prio])
@@ -68,10 +66,8 @@ def set_thread_priority (prio):
 
 
 class StoppableThread (threading.Thread):
-    """
-    Thread class with a stop() method. The thread itself has to check
-    regularly for the stopped() condition.
-    """
+    """Thread class with a stop() method. The thread itself has to check
+    regularly for the stopped() condition."""
 
     def __init__ (self):
         super(StoppableThread, self).__init__()

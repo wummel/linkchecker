@@ -127,22 +127,22 @@ class Zone(object):
         del self.nodes[key]
 
     def __iter__(self):
-        return self.nodes.iterkeys()
+        return self.nodes.keys()
 
     def iterkeys(self):
-        return self.nodes.iterkeys()
+        return self.nodes.keys()
 
     def keys(self):
         return self.nodes.keys()
 
     def itervalues(self):
-        return self.nodes.itervalues()
+        return self.nodes.values()
 
     def values(self):
         return self.nodes.values()
 
     def iteritems(self):
-        return self.nodes.iteritems()
+        return self.nodes.items()
 
     def items(self):
         return self.nodes.items()
@@ -419,7 +419,7 @@ class Zone(object):
             rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
         if isinstance(covers, str):
             covers = linkcheck.dns.rdatatype.from_text(covers)
-        for (name, node) in self.iteritems():
+        for (name, node) in self.items():
             for rds in node:
                 if rdtype == linkcheck.dns.rdatatype.ANY or \
                    (rds.rdtype == rdtype and rds.covers == covers):
@@ -442,7 +442,7 @@ class Zone(object):
             rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
         if isinstance(covers, str):
             covers = linkcheck.dns.rdatatype.from_text(covers)
-        for (name, node) in self.iteritems():
+        for (name, node) in self.items():
             for rds in node:
                 if rdtype == linkcheck.dns.rdatatype.ANY or \
                    (rds.rdtype == rdtype and rds.covers == covers):
@@ -486,7 +486,7 @@ class Zone(object):
                 names = self.keys()
                 names.sort()
             else:
-                names = self.iterkeys()
+                names = self.keys()
             for n in names:
                 l = self[n].to_text(n, origin=self.origin,
                                     relativize=relativize)

@@ -585,18 +585,14 @@ class CustomTestResult(unittest._TextTestResult):
 
 
 def get_tc_priv (testcase, attr):
-    """
-    get mangled private variables of TestCase instances
-    """
+    """get mangled private variables of TestCase instances"""
     if sys.version_info >= (2, 5, 0, 'alpha', 1):
         return getattr(testcase, "_" + attr)
     return getattr(testcase, "_TestCase__" + attr)
 
 
 class CustomTestCase (unittest.TestCase):
-    """
-    A test case with improved inequality test and resource support.
-    """
+    """A test case with improved inequality test and resource support."""
 
     def denied_resources (self, cfg_resources):
         resources = getattr(self, "needed_resources", [])
@@ -617,9 +613,7 @@ class CustomTestCase (unittest.TestCase):
                 return
             try:
                 self.setUp()
-            except KeyboardInterrupt:
-                raise
-            except:
+            except Exception:
                 result.addError(self, get_tc_priv(self, "exc_info")())
                 return
 
@@ -629,16 +623,12 @@ class CustomTestCase (unittest.TestCase):
                 ok = True
             except self.failureException:
                 result.addFailure(self, get_tc_priv(self, "exc_info")())
-            except KeyboardInterrupt:
-                raise
-            except:
+            except Exception:
                 result.addError(self, get_tc_priv(self, "exc_info")())
 
             try:
                 self.tearDown()
-            except KeyboardInterrupt:
-                raise
-            except:
+            except Exception:
                 result.addError(self, get_tc_priv(self, "exc_info")())
                 ok = False
             if ok: result.addSuccess(self)
