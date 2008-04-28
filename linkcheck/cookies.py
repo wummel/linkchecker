@@ -304,8 +304,7 @@ class Rfc2965Cookie (HttpCookie):
         if "port" not in self.attributes:
             return True
         cport = self.attributes["port"]
-        ports = [int(x) for x in cport.split(",")]
-        return port in ports
+        return port in [int(x) for x in cport.split(",")]
 
     def server_header_name (self):
         return "Set-Cookie2"

@@ -35,8 +35,7 @@ class TestCookies (unittest.TestCase):
             ("Path", "/"),
             ("Version", "1"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"
@@ -53,8 +52,7 @@ class TestCookies (unittest.TestCase):
             ("Path", "/"),
             ("Version", "1"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"
@@ -66,8 +64,7 @@ class TestCookies (unittest.TestCase):
             ("Foo", "Bar\""),
             ("Port", "hul,la"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"
@@ -80,8 +77,7 @@ class TestCookies (unittest.TestCase):
             ("Domain", "localhost"),
             ("Port", "100,555,76"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"
@@ -96,8 +92,7 @@ class TestCookies (unittest.TestCase):
             ("Path", "/"),
         )
         # note: values are without quotes
-        parts = ['%s=%s' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s=%s' % (key, value) for key, value in data)
         scheme = "http"
         host = "example.org"
         path = "/"
@@ -112,8 +107,7 @@ class TestCookies (unittest.TestCase):
             ("Path", "/"),
             ("Version", "1"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"
@@ -130,8 +124,7 @@ class TestCookies (unittest.TestCase):
             ("Path", "/"),
             ("Version", "1"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"
@@ -143,8 +136,7 @@ class TestCookies (unittest.TestCase):
             ("Foo", "Bar\""),
             ("Port", "hul,la"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"
@@ -156,8 +148,7 @@ class TestCookies (unittest.TestCase):
             ("Foo", "Bar\""),
             ("Port", "100,555,76"),
         )
-        parts = ['%s="%s"' % (key, value) for key, value in data]
-        value = "; ".join(parts)
+        value = "; ".join('%s="%s"' % (key, value) for key, value in data)
         scheme = "http"
         host = "localhost"
         path = "/"

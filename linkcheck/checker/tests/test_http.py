@@ -171,8 +171,7 @@ def get_cookie (maxage=2000):
         ("Version", "1"),
         ("Foo", "Bar"),
     )
-    parts = ['%s="%s"' % (key, value) for key, value in data]
-    return "; ".join(parts)
+    return "; ".join('%s="%s"' % (key, value) for key, value in data)
 
 
 class CookieRedirectHttpRequestHandler (httptest.NoQueryHttpRequestHandler):

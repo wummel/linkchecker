@@ -118,9 +118,8 @@ def get_headers_lang (headers):
                 pass
         pref_languages.append((pref, lang))
     pref_languages.sort()
-    languages = [x[1] for x in pref_languages]
     # search for lang
-    for lang in languages:
+    for lang in (x[1] for x in pref_languages):
         if lang in supported_languages:
             return lang
     return default_language

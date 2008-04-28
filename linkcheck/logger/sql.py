@@ -91,8 +91,8 @@ class SQLLogger (linkcheck.logger.Logger):
         """
         Store url check info into the database.
         """
-        log_warnings = [x[1] for x in url_data.warnings]
-        log_infos = [x[1] for x in url_data.info]
+        log_warnings = (x[1] for x in url_data.warnings)
+        log_infos = (x[1] for x in url_data.info)
         self.writeln(u"insert into %(table)s(urlname,recursionlevel,"
               "parentname,baseref,valid,result,warning,info,url,line,col,"
               "name,checktime,dltime,dlsize,cached) values ("

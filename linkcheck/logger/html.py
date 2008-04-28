@@ -242,7 +242,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         Write url_data.info.
         """
         sep = u"<br>"+os.linesep
-        text = sep.join([cgi.escape(x[1]) for x in url_data.info])
+        text = sep.join(cgi.escape(x[1]) for x in url_data.info)
         self.writeln(u'<tr><td valign="top">' + self.part("info")+
                u"</td><td>"+text+u"</td></tr>")
 
@@ -251,7 +251,7 @@ class HtmlLogger (linkcheck.logger.Logger):
         Write url_data.warnings.
         """
         sep = u"<br>"+os.linesep
-        text = sep.join([cgi.escape(x[1]) for x in url_data.warnings])
+        text = sep.join(cgi.escape(x[1]) for x in url_data.warnings)
         self.writeln(u'<tr><td bgcolor="' + self.colorwarning + u'" '+
                      u'valign="top">' + self.part("warning") +
                      u'</td><td bgcolor="' + self.colorwarning + u'">' +

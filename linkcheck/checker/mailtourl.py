@@ -247,9 +247,8 @@ class MailtoUrl (urlbase.UrlBase):
         """
         The cache key is a comma separated list of emails.
         """
-        emails = [addr[1] for addr in self.addresses]
-        emails.sort()
-        self.cache_url_key = u"%s:%s" % (self.scheme, u",".join(emails))
+        emails = u",".join(sorted(addr[1] for addr in self.addresses))
+        self.cache_url_key = u"%s:%s" % (self.scheme, emails)
         assert isinstance(self.cache_url_key, unicode), self.cache_url_key
         # cache_content_key remains None, recursion is not allowed
 

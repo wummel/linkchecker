@@ -40,7 +40,7 @@ def trace_filter (patterns):
     if patterns is None:
         _trace_filter.clear()
     else:
-        _trace_filter.update([re.compile(pat) for pat in patterns])
+        _trace_filter.update(re.compile(pat) for pat in patterns)
 
 
 def _trace (frame, event, arg):

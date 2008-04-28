@@ -402,10 +402,9 @@ Use URL %s instead for checking."""), self.url, newurl)
         minus redirection warnings.
         """
         data = self.get_cache_data()
-        warns = [x for x in self.warnings if x[0] != "http-moved-permanent"]
-        data["warnings"] = warns
-        infos = [x for x in self.info if x[0] != "http-redirect"]
-        data["info"] = infos
+        data["warnings"] = [
+            x for x in self.warnings if x[0] != "http-moved-permanent"]
+        data["info"] = [x for x in self.info if x[0] != "http-redirect"]
         return data
 
     def check_response (self, response):

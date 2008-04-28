@@ -222,9 +222,9 @@ class Logger (object):
             parts = Fields.keys()
         else:
             parts = self.logparts
-        values = [self.part(x) for x in parts]
+        values = (self.part(x) for x in parts)
         # maximum indent for localized log part names
-        self.max_indent = max([len(x) for x in values])+1
+        self.max_indent = max(len(x) for x in values)+1
         for key in parts:
             numspaces = (self.max_indent - len(self.part(key)))
             self.logspaces[key] = u" " * numspaces

@@ -135,7 +135,7 @@ def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
     name_value_amp = qs.split('&')
     for name_value in name_value_amp:
         if ';' in name_value:
-            pairs.extend([[x, ';'] for x in name_value.split(';')])
+            pairs.extend([x, ';'] for x in name_value.split(';'))
             pairs[-1][1] = '&'
         else:
             pairs.append([name_value, '&'])

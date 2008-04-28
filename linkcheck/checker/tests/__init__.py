@@ -17,7 +17,7 @@
 """
 Define standard test support classes funtional for LinkChecker tests.
 """
-
+from __future__ import with_statement
 import os
 import re
 import codecs
@@ -175,11 +175,9 @@ class LinkCheckTest (unittest.TestCase):
         d = {'curdir': get_file_url(os.getcwd()),
              'datadir': get_file_url(get_file()),
             }
-        f = codecs.open(resultfile, "r", "iso-8859-15")
-        resultlines = [line.rstrip('\r\n') % d for line in f \
-                       if line.strip() and not line.startswith(u'#')]
-        f.close()
-        return resultlines
+        with codecs.open(resultfile, "r", "iso-8859-15") as f:
+            return [line.rstrip('\r\n') % d for line in f
+                    if line.strip() and not line.startswith(u'#')]
 
     def file_test (self, filename, confargs=None):
         """
