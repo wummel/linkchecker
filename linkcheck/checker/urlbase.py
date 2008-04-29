@@ -636,7 +636,7 @@ class UrlBase (object):
             doc = tidy.parseString(self.get_content(), **options)
             errors = filter_tidy_errors(doc.errors)
             for err in errors:
-                self.add_warning("HTMLTidy: %s" % err)
+                self.add_warning(u"HTMLTidy: %s" % err)
         except Exception:
             # catch _all_ exceptions since we dont want third party module
             # errors to propagate into this library
@@ -654,16 +654,16 @@ class UrlBase (object):
                  "download from http://cthedot.de/cssutils/"))
             return
         try:
-            log = logging.getLogger('cssutils')
-            log.propagate = 0
-            del log.handlers[:]
+            csslog = logging.getLogger('cssutils')
+            csslog.propagate = 0
+            del csslog.handlers[:]
             handler = linkcheck.checker.StoringHandler()
-            log.addHandler(handler)
-            log.setLevel(logging.WARN)
-            cssparser = cssutils.CSSParser(log=log)
+            csslog.addHandler(handler)
+            csslog.setLevel(logging.WARN)
+            cssparser = cssutils.CSSParser(log=csslog)
             cssparser.parseString(self.get_content(), href=self.url)
             for record in handler.storage:
-                self.add_warning("cssutils: %s" % record.getMessage())
+                self.add_warning(u"cssutils: %s" % record.getMessage())
         except Exception:
             # catch _all_ exceptions since we dont want third party module
             # errors to propagate into this library
