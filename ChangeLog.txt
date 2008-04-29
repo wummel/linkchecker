@@ -1,3 +1,13 @@
+5.0unreleased "" (released xx.xx.2008)
+
+  * Require and use Python 2.5.
+    Type: feature
+    Changed: *.py
+
+  * Send HTTP Referer header for both http and https URLs.
+    Type: feature
+    Changed: linkcheck/checker/httpurl.py
+    
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

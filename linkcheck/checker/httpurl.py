@@ -478,7 +478,8 @@ Use URL %s instead for checking."""), self.url, newurl)
         if self.proxyauth:
             self.url_connection.putheader("Proxy-Authorization",
                                          self.proxyauth)
-        if self.parent_url and self.parent_url.startswith('http://'):
+        if (self.parent_url and
+            self.parent_url.startswith(('http://', 'https://'))):
             self.url_connection.putheader("Referer", self.parent_url)
         self.url_connection.putheader("User-Agent",
                                       linkcheck.configuration.UserAgent)
