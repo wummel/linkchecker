@@ -423,10 +423,10 @@ class UrlBase (object):
                 value = self.handle_exception()
                 self.set_result(unicode_safe(value), valid=False)
         # check HTML/CSS syntax
-        if self.valid:
-            if self.is_html() and self.aggregate.config["checkhtml"]:
+        if self.valid and not self.extern[0]:
+            if self.aggregate.config["checkhtml"] and self.is_html():
                 self.check_html()
-            if self.is_css() and self.aggregate.config["checkcss"]:
+            if self.aggregate.config["checkcss"] and self.is_css():
                 self.check_css()
         self.checktime = time.time() - check_start
         # check recursion

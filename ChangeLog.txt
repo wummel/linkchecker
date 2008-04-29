@@ -7,7 +7,13 @@
   * Send HTTP Referer header for both http and https URLs.
     Type: feature
     Changed: linkcheck/checker/httpurl.py
-    
+
+  * The HTML and CSS syntax check now only applies to URLs
+    which match those given on the command line.
+    This makes checking of personal pages easier.
+    Type: feature
+    Changed: linkcheck/checker/urlbase.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
