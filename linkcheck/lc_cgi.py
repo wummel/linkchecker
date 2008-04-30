@@ -65,7 +65,7 @@ def checkaccess (out=sys.stdout, hosts=None, servers=None, env=os.environ):
        os.environ.get('SERVER_ADDR') in servers:
         return True
     logit({}, env)
-    print_error(out, "Access denied")
+    print_error(out, u"Access denied")
     return False
 
 
@@ -100,7 +100,7 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
     except UnicodeError:
         logit({}, env)
         print_error(out,
-                    "URL has unparsable domain name: %s" % sys.exc_info()[1])
+                    u"URL has unparsable domain name: %s" % sys.exc_info()[1])
         return
     aggregate.urlqueue.put(url_data)
     linkcheck.director.check_urls(aggregate)
@@ -162,7 +162,8 @@ def logit (form, env):
 
 def print_error (out, why):
     """Print standard error page."""
-    out.write(_("""<html><head>
+    s = _("""<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
 <blockquote>
@@ -173,4 +174,5 @@ contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>
 Errors are logged.
 </blockquote>
 </body>
-</html>""") % why)
+</html>""") % why
+    out.write(s.encode('iso-8859-1', 'ignore'))
