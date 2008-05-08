@@ -20,21 +20,14 @@ Robots.txt parser.
 The robots.txt Exclusion Protocol is implemented as specified in
 http://www.robotstxt.org/wc/norobots-rfc.html
 """
-
 import urlparse
-import httplib
 import urllib
 import urllib2
 import time
 import socket
-import re
-import zlib
 import sys
-import cStringIO as StringIO
-import linkcheck
-from . import configuration
-from . import log, LOG_CHECK
-from . import gzip2 as gzip
+from . import httplib2 as httplib
+from . import log, LOG_CHECK, configuration, httputil
 
 __all__ = ["RobotFileParser"]
 
@@ -116,7 +109,7 @@ class RobotFileParser (object):
         handlers = [
             urllib2.ProxyHandler(urllib.getproxies()),
             urllib2.UnknownHandler,
-            HttpWithGzipHandler,
+            httputil.HttpWithGzipHandler,
             urllib2.HTTPBasicAuthHandler(pwd_manager),
             urllib2.ProxyBasicAuthHandler(pwd_manager),
             urllib2.HTTPDigestAuthHandler(pwd_manager),
@@ -125,7 +118,7 @@ class RobotFileParser (object):
             urllib2.HTTPRedirectHandler,
         ]
         if hasattr(httplib, 'HTTPS'):
-            handlers.append(HttpsWithGzipHandler)
+            handlers.append(httputil.HttpsWithGzipHandler)
         return urllib2.build_opener(*handlers)
 
     def read (self):
@@ -423,76 +416,3 @@ class Entry (object):
             if line.applies_to(path):
                 return line.allowance
         return True
-
-###########################################################################
-# urlutils.py - Simplified urllib handling
-#
-#   Written by Chris Lawrence <lawrencc@debian.org>
-#   (C) 1999-2002 Chris Lawrence
-#
-# This program is freely distributable per the following license:
-#
-##  Permission to use, copy, modify, and distribute this software and its
-##  documentation for any purpose and without fee is hereby granted,
-##  provided that the above copyright notice appears in all copies and that
-##  both that copyright notice and this permission notice appear in
-##  supporting documentation.
-##
-##  I DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL
-##  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL I
-##  BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY
-##  DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
-##  WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
-##  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
-##  SOFTWARE.
-def decode (page):
-    """Gunzip or deflate a compressed page."""
-    log.debug(LOG_CHECK,
-      "robots.txt page info %d %s", page.code, str(page.info()))
-    encoding = page.info().get("Content-Encoding")
-    if encoding in ('gzip', 'x-gzip', 'deflate'):
-        # cannot seek in socket descriptors, so must get content now
-        content = page.read()
-        try:
-            if encoding == 'deflate':
-                fp = StringIO.StringIO(zlib.decompress(content))
-            else:
-                fp = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(content))
-        except zlib.error, msg:
-            log.debug(LOG_CHECK, "uncompressing had error "
-                 "%s, assuming non-compressed content", str(msg))
-            fp = StringIO.StringIO(content)
-        # remove content-encoding header
-        headers = httplib.HTTPMessage(StringIO.StringIO(""))
-        ceheader = re.compile(r"(?i)content-encoding:")
-        for h in page.info().keys():
-            if not ceheader.match(h):
-                headers[h] = page.info()[h]
-        newpage = urllib.addinfourl(fp, headers, page.geturl())
-        if hasattr(page, "code"):
-            # python 2.4 compatibility
-            newpage.code = page.code
-        if hasattr(page, "msg"):
-            # python 2.4 compatibility
-            newpage.msg = page.msg
-        page = newpage
-    return page
-
-
-class HttpWithGzipHandler (urllib2.HTTPHandler):
-    """Support gzip encoding."""
-    def http_open (self, req):
-        """Send request and decode answer."""
-        return decode(urllib2.HTTPHandler.http_open(self, req))
-
-
-if hasattr(httplib, 'HTTPS'):
-    class HttpsWithGzipHandler (urllib2.HTTPSHandler):
-        """Support gzip encoding."""
-
-        def http_open (self, req):
-            """Send request and decode answer."""
-            return decode(urllib2.HTTPSHandler.http_open(self, req))
-
-# end of urlutils.py routines
-###########################################################################
