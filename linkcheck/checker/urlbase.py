@@ -33,12 +33,10 @@ import traceback
 import linkcheck.linkparse
 import linkcheck.checker
 import linkcheck.cache.geoip
-import linkcheck.director
-import linkcheck.director.status
 import linkcheck.strformat
 import linkcheck.containers
-from .. import log, LOG_CHECK, LOG_CACHE
-import linkcheck.httplib2
+from .. import log, LOG_CHECK, LOG_CACHE, httputil
+from .. import httplib2 as httplib
 import linkcheck.HtmlParser.htmlsax
 from const import WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN, \
     WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT, \
@@ -409,7 +407,7 @@ class UrlBase (object):
             if isinstance(value, socket.error) and value[0] == -2:
                 value = _('Hostname not found')
             # make nicer error msg for bad status line
-            if isinstance(value, linkcheck.httplib2.BadStatusLine):
+            if isinstance(value, httplib.BadStatusLine):
                 value = _('Bad HTTP response %r') % str(value)
             self.set_result(unicode_safe(value), valid=False)
 
@@ -428,6 +426,10 @@ class UrlBase (object):
                 self.check_html()
             if self.aggregate.config["checkcss"] and self.is_css():
                 self.check_css()
+            if self.aggregate.config["checkhtmlw3"] and self.is_html():
+                self.check_html_w3()
+            if self.aggregate.config["checkcssw3"] and self.is_css():
+                self.check_css_w3()
         self.checktime = time.time() - check_start
         # check recursion
         try:
@@ -623,7 +625,8 @@ class UrlBase (object):
                           tag=WARN_URL_CONTENT_TOO_LARGE)
 
     def check_html (self):
-        """Check HTML syntax of this page (which is supposed to be HTML)."""
+        """Check HTML syntax of this page (which is supposed to be HTML)
+        with the local HTML tidy module."""
         try:
             import tidy
         except ImportError:
@@ -635,8 +638,11 @@ class UrlBase (object):
         try:
             doc = tidy.parseString(self.get_content(), **options)
             errors = filter_tidy_errors(doc.errors)
-            for err in errors:
-                self.add_warning(u"HTMLTidy: %s" % err)
+            if errors:
+                for err in errors:
+                    self.add_warning(u"HTMLTidy: %s" % err)
+            else:
+                self.add_info(u"HTMLTidy: %s" % _("valid HTML syntax"))
         except Exception:
             # catch _all_ exceptions since we dont want third party module
             # errors to propagate into this library
@@ -645,7 +651,8 @@ class UrlBase (object):
                 _("warning: tidy HTML parsing caused error: %s ") % err)
 
     def check_css (self):
-        """Check CSS syntax of this page (which is supposed to be CSS)."""
+        """Check CSS syntax of this page (which is supposed to be CSS)
+        with the local cssutils module."""
         try:
             import cssutils
         except ImportError:
@@ -662,14 +669,82 @@ class UrlBase (object):
             csslog.setLevel(logging.WARN)
             cssparser = cssutils.CSSParser(log=csslog)
             cssparser.parseString(self.get_content(), href=self.url)
-            for record in handler.storage:
-                self.add_warning(u"cssutils: %s" % record.getMessage())
+            if handler.storage:
+                for record in handler.storage:
+                    self.add_warning(u"cssutils: %s" % record.getMessage())
+            else:
+                self.add_info(u"cssutils: %s" % _("valid CSS syntax"))
         except Exception:
             # catch _all_ exceptions since we dont want third party module
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
                 _("warning: cssutils parsing caused error: %s ") % err)
+
+    def check_html_w3 (self):
+        """Check HTML syntax of this page (which is supposed to be HTML)
+        with the online W3C HTML validator documented at
+        http://validator.w3.org/docs/api.html
+        """
+        self.aggregate.check_w3_time()
+        try:
+            u = urllib2.urlopen('http://validator.w3.org/check',
+                urllib.urlencode({
+                    'fragment': self.get_content(),
+                    'output': 'xml',
+                }))
+            if u.headers.get('x-w3c-validator-status', 'Invalid') == 'Valid':
+                self.add_info(u"W3C Validator: %s" % _("valid HTML syntax"))
+                return
+            from xml.dom.minidom import parseString
+            dom = parseString(u.read())
+            elements = dom.getElementsByTagName('messages')[0].getElementsByTagName('msg')
+            for msg in [e.firstChild.wholeText for e in elements]:
+                self.add_warning(u"W3C HTML validation: %s" % msg)
+        except Exception:
+            # catch _all_ exceptions since we dont want third party module
+            # errors to propagate into this library
+            err = str(sys.exc_info()[1])
+            log.warn(LOG_CHECK,
+                _("warning: HTML W3C validation caused error: %s ") % err)
+
+    def check_css_w3 (self):
+        """Check CSS syntax of this page (which is supposed to be CSS)
+        with the online W3C CSS validator documented at
+        http://jigsaw.w3.org/css-validator/manual.html#expert
+        """
+        self.aggregate.check_w3_time()
+        try:
+            host = 'jigsaw.w3.org'
+            path = '/css-validator/validator'
+            params = {
+                'text': "div {}",
+                'warning': '2',
+                'output': 'soap12',
+            }
+            fields = params.items()
+            content_type, body = httputil.encode_multipart_formdata(fields)
+            h = httplib.HTTPConnection(host)
+            h.putrequest('POST', path)
+            h.putheader('Content-Type', content_type)
+            h.putheader('Content-Length', str(len(body)))
+            h.endheaders()
+            h.send(body)
+            r = h.getresponse()
+            if r.getheader('X-W3C-Validator-Status', 'Invalid') == 'Valid':
+                self.add_info(u"W3C Validator: %s" % _("valid CSS syntax"))
+                return
+            from xml.dom.minidom import parseString
+            dom = parseString(r.read())
+            elements = dom.getElementsByTagName('m:errors')[0].getElementsByTagName('m:error')
+            for msg in [e.firstChild.wholeText for e in elements]:
+                self.add_warning(u"W3C HTML validation: %s" % msg)
+        except Exception:
+            # catch _all_ exceptions since we dont want third party module
+            # errors to propagate into this library
+            err = str(sys.exc_info()[1])
+            log.warn(LOG_CHECK,
+                _("warning: CSS W3C validation caused error: %s ") % err)
 
     def parse_url (self):
         """

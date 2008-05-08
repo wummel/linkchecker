@@ -98,10 +98,16 @@ Print a warning if content size info is available and exceeds the given
 number of \fIbytes\fP.
 .TP
 \fB\-\-check\-html\fP
-Check syntax of HTML URLs.
+Check syntax of HTML URLs with local library (HTML tidy).
+.TP
+\fB\-\-check\-html\-w3\fP
+Check syntax of HTML URLs with W3C online validator.
 .TP
 \fB\-\-check\-css\fP
-Check syntax of CSS URLs.
+Check syntax of CSS URLs with local library (cssutils).
+.TP
+\fB\-\-check\-css\-w3\fP
+Check syntax of CSS URLs with W3C online validator.
 .TP
 \fB\-q\fP, \fB\-\-quiet\fP
 Quiet operation, an alias for \fB\-o none\fP.

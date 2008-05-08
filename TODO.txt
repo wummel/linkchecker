@@ -1,7 +1,3 @@
-- [BUG] The URL in the log output is double normed.
-
-- [FEATURE] Allow specifying proxy data in the web interface
-
 - [INTERFACE] make a nice GUI for linkchecker
 
 - [FEATURE] Virus check

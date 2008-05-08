@@ -102,10 +102,16 @@ Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
 Anzahl von Bytes übersteigt.
 .TP 
 \fB\-\-check\-html\fP
-Prüfe Syntax von HTML URLs.
+Prüfe Syntax von HTML URLs mit lokaler Bibliothek (HTML tidy).
+.TP 
+\fB\-\-check\-html\-w3\fP
+Prüfe Syntax von HTML URLs mit dem W3C Online Validator.
 .TP 
 \fB\-\-check\-css\fP
-Prüfe Syntax von CSS URLs.
+Prüfe Syntax von CSS URLs mit lokaler Bibliothek (cssutils).
+.TP 
+\fB\-\-check\-css\-w3\fP
+Prüfe Syntax von CSS URLs mit dem W3C Online Validator.
 .TP 
 \fB\-q\fP, \fB\-\-quiet\fP
 Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit

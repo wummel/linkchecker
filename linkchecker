@@ -370,10 +370,16 @@ group.add_option("--warning-size-bytes", dest="warningsizebytes",
 given number of bytes."""))
 group.add_option("--check-html", action="store_true", dest="checkhtml",
                  help=_(
-"""Check HTML syntax with HTML tidy if available."""))
+"""Check syntax of HTML URLs with local library (HTML tidy)."""))
+group.add_option("--check-html-w3", action="store_true", dest="checkhtmlw3",
+                 help=_(
+"""Check syntax of HTML URLs with W3C online validator."""))
 group.add_option("--check-css", action="store_true", dest="checkcss",
                  help=_(
-"""Check CSS syntax with cssutils if available."""))
+"""Check syntax of CSS URLs with local library (cssutils)."""))
+group.add_option("--check-css-w3", action="store_true", dest="checkcssw3",
+                 help=_(
+"""Check syntax of CSS URLs with W3C online validator."""))
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation, an alias for '-o none'.
@@ -672,10 +678,12 @@ if constructauth:
     config["authentication"].append({'pattern': try_compile_re(".+"),
                                      'user': _username,
                                      'password': _password})
-if options.checkhtml is not None:
-    config["checkhtml"] = options.checkhtml
-if options.checkcss is not None:
-    config["checkcss"] = options.checkcss
+# boolean options for syntaxcheck
+for prefix in ("checkhtml", "checkcss"):
+    for suffix in ("", "w3"):
+        option = "%s%s" % (prefix, suffix)
+        if getattr(options, option) is not None:
+            config[option] = getattr(options, option)
 
 log.debug(LOG_CMDLINE, "configuration: %s", pprint.pformat(config.items()))
 # warn about sitemap loggers and verbose output

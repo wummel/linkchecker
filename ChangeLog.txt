@@ -14,6 +14,12 @@
     Type: feature
     Changed: linkcheck/checker/urlbase.py
 
+  * Added online HTML and CSS syntax checks using W3C validators.
+    Implemented as commandline options --check-html-w3 and
+    --check-css-w3.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/urlbase.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

@@ -153,6 +153,12 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                          "download from http://cthedot.de/cssutils/"))
                     val = False
             self.config["checkcss"] = val
+        if self.has_option(section,"checkhtmlw3"):
+            val = self.getboolean(section, "checkhtmlw3")
+            self.config["checkhtmlw3"] = val
+        if self.has_option(section,"checkcssw3"):
+            val = self.getboolean(section, "checkcssw3")
+            self.config["checkcssw3"] = val
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""

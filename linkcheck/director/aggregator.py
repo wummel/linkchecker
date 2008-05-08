@@ -17,13 +17,18 @@
 """
 Aggregate needed object instances for checker threads.
 """
+import time
+import threading
 from .. import log, LOG_CHECK
+from linkcheck.decorators import synchronized
 import linkcheck.director
 import logger
 import status
 import checker
 import cleanup
 
+
+_lock = threading.Lock()
 
 class Aggregate (object):
     """Store thread-safe data collections for checker threads."""
@@ -36,6 +41,7 @@ class Aggregate (object):
         self.robots_txt = robots_txt
         self.logger = logger.Logger(config)
         self.threads = []
+        self.last_w3_call = 0
 
     def start_threads (self):
         """Spawn threads for URL checking and status printing."""
@@ -76,3 +82,10 @@ class Aggregate (object):
             if t.isAlive():
                 log.warn(LOG_CHECK, "Thread %s still active", t)
         self.connections.clear()
+
+    @synchronized(_lock)
+    def check_w3_time (self):
+        """Make sure the W3C validators are at most called once a second."""
+        if time.time() - self.last_w3_call < 1:
+            time.sleep(1)
+        self.last_w3_call = time.time()
