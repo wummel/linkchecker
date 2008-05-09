@@ -21,12 +21,8 @@ import time
 import os
 import thread
 from .. import log, LOG_CHECK
-import linkcheck.cache.urlqueue
-import linkcheck.cache.robots_txt
-import linkcheck.cache.cookie
-import linkcheck.cache.connection
-import aggregator
-import console
+from ..cache import urlqueue, robots_txt, cookie, connection
+from . import aggregator, console
 
 
 def check_urls (aggregate):
@@ -59,7 +55,7 @@ def check_url (aggregate):
         try:
             aggregate.urlqueue.join(timeout=1)
             break
-        except linkcheck.cache.urlqueue.Timeout:
+        except urlqueue.Timeout:
             # Since urlqueue.join() is not interruptable, add a timeout
             # and a one-second slumber.
             time.sleep(1)
@@ -110,9 +106,9 @@ def abort (aggregate):
 
 def get_aggregate (config):
     """Get an aggregator instance with given configuration."""
-    urlqueue = linkcheck.cache.urlqueue.UrlQueue()
-    connections = linkcheck.cache.connection.ConnectionPool(wait=config["wait"])
-    cookies = linkcheck.cache.cookie.CookieJar()
-    robots_txt = linkcheck.cache.robots_txt.RobotsTxt()
-    return aggregator.Aggregate(config, urlqueue, connections,
-                                cookies, robots_txt)
+    _urlqueue = urlqueue.UrlQueue()
+    connections = connection.ConnectionPool(wait=config["wait"])
+    cookies = cookie.CookieJar()
+    _robots_txt = robots_txt.RobotsTxt()
+    return aggregator.Aggregate(config, _urlqueue, connections,
+                                cookies, _robots_txt)

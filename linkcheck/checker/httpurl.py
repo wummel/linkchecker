@@ -24,29 +24,24 @@ import time
 import re
 import zlib
 import socket
-import cStringIO as StringIO
+from cStringIO import StringIO
 import Cookie
 
-from .. import log, LOG_CHECK
-import linkcheck.url
-import linkcheck.strformat
-import linkcheck.robotparser2
-import linkcheck.httplib2
-import httpheaders as headers
-import internpaturl
-import proxysupport
-from linkcheck import gzip2 as gzip
+from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
+    httplib2 as httplib, LinkCheckerError, configuration)
+from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
+    get_url_from)
 # import warnings
-from const import WARN_HTTP_ROBOTS_DENIED, WARN_HTTP_NO_ANCHOR_SUPPORT, \
+from .const import WARN_HTTP_ROBOTS_DENIED, WARN_HTTP_NO_ANCHOR_SUPPORT, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
     WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
     PARSE_MIMETYPES
 
 # helper alias
-unicode_safe = linkcheck.strformat.unicode_safe
+unicode_safe = strformat.unicode_safe
 
-supportHttps = hasattr(linkcheck.httplib2, "HTTPSConnection") and \
+supportHttps = hasattr(httplib, "HTTPSConnection") and \
                hasattr(socket, "ssl")
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
@@ -220,7 +215,7 @@ Use URL %s instead for checking."""), self.url, newurl)
                 response.close()
             try:
                 response = self._get_http_response()
-            except linkcheck.httplib2.BadStatusLine:
+            except httplib.BadStatusLine:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
                     self.method = "GET"
@@ -250,7 +245,7 @@ Use URL %s instead for checking."""), self.url, newurl)
                 self.proxy, self.proxyauth = oldproxy
             try:
                 tries, response = self.follow_redirections(response)
-            except linkcheck.httplib2.BadStatusLine:
+            except httplib.BadStatusLine:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
                     self.method = "GET"
@@ -323,11 +318,11 @@ Use URL %s instead for checking."""), self.url, newurl)
             log.debug(LOG_CHECK, "Redirected to %r", newurl)
             self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
             # norm base url - can raise UnicodeError from url.idna_encode()
-            redirected, is_idn = linkcheck.checker.urlbase.url_norm(newurl)
+            redirected, is_idn = urlbase.url_norm(newurl)
             if is_idn:
                 pass # XXX warn about idn use
             log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
-            urlparts = linkcheck.strformat.url_unicode_split(redirected)
+            urlparts = strformat.url_unicode_split(redirected)
             # check extern filter again
             self.set_extern(redirected)
             if self.extern[0] and self.extern[0]:
@@ -382,7 +377,7 @@ Use URL %s instead for checking."""), self.url, newurl)
                            _("Redirection to different URL type encountered; "
                              "the original URL was %r.") % self.url,
                            tag=WARN_HTTP_WRONG_REDIRECT)
-                newobj = linkcheck.checker.get_url_from(
+                newobj = get_url_from(
                           redirected, self.recursion_level, self.aggregate,
                           parent_url=self.parent_url, base_ref=self.base_ref,
                           line=self.line, column=self.column, name=self.name)
@@ -481,14 +476,13 @@ Use URL %s instead for checking."""), self.url, newurl)
         if (self.parent_url and
             self.parent_url.startswith(('http://', 'https://'))):
             self.url_connection.putheader("Referer", self.parent_url)
-        self.url_connection.putheader("User-Agent",
-                                      linkcheck.configuration.UserAgent)
+        self.url_connection.putheader("User-Agent", configuration.UserAgent)
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.aggregate.config['sendcookies']:
             scheme = self.urlparts[0]
             host = self.urlparts[1]
-            port = linkcheck.url.default_ports.get(scheme, 80)
+            port = urlutil.default_ports.get(scheme, 80)
             host, port = urllib.splitnport(host, port)
             path = self.urlparts[2]
             self.cookies = self.aggregate.cookies.get(scheme, host, port, path)
@@ -536,12 +530,12 @@ Use URL %s instead for checking."""), self.url, newurl)
             return conn
         self.aggregate.connections.wait_for_host(host)
         if scheme == "http":
-            h = linkcheck.httplib2.HTTPConnection(host)
+            h = httplib.HTTPConnection(host)
         elif scheme == "https" and supportHttps:
-            h = linkcheck.httplib2.HTTPSConnection(host)
+            h = httplib.HTTPSConnection(host)
         else:
             msg = _("Unsupported HTTP url scheme %r") % scheme
-            raise linkcheck.LinkCheckerError(msg)
+            raise LinkCheckerError(msg)
         if log.is_debug(LOG_CHECK):
             h.set_debuglevel(1)
         h.connect()
@@ -572,14 +566,14 @@ Use URL %s instead for checking."""), self.url, newurl)
         if encoding in _supported_encodings:
             try:
                 if encoding == 'deflate':
-                    f = StringIO.StringIO(zlib.decompress(data))
+                    f = StringIO(zlib.decompress(data))
                 else:
-                    f = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(data))
+                    f = gzip.GzipFile('', 'rb', 9, StringIO(data))
             except zlib.error, msg:
                 self.add_warning(_("Decompress error %(err)s") %
                                  {"err": str(msg)},
                                  tag=WARN_HTTP_DECOMPRESS_ERROR)
-                f = StringIO.StringIO(data)
+                f = StringIO(data)
             data = f.read()
         if self.data is None and self.method == "GET" and \
            response.status not in [301, 302]:

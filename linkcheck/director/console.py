@@ -21,12 +21,11 @@ import sys
 import os
 import codecs
 import traceback
-import linkcheck.i18n
-import linkcheck.configuration
+from .. import i18n, configuration
 
 # All output goes to stderr here, making sure the console gets correct
 # encoded messages.
-_encoding = linkcheck.i18n.default_encoding
+_encoding = i18n.default_encoding
 stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
 
 def internal_error ():
@@ -47,7 +46,7 @@ or send mail to %s and include the following information:
 Not disclosing some of the information above due to privacy reasons is ok.
 I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
-""") % linkcheck.configuration.Email
+""") % configuration.Email
     etype, value = sys.exc_info()[:2]
     print >> stderr, etype, value
     traceback.print_exc()
@@ -61,7 +60,7 @@ def print_app_info ():
     Print system and application info to stderr.
     """
     print >> stderr, _("System info:")
-    print >> stderr, linkcheck.configuration.App
+    print >> stderr, configuration.App
     print >> stderr, _("Python %(version)s on %(platform)s") % \
                      {"version": sys.version, "platform": sys.platform}
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):

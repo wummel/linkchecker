@@ -16,7 +16,7 @@
 
 """Help for building DNS wire format messages"""
 
-import cStringIO as StringIO
+from cStringIO import StringIO
 import random
 import struct
 import time
@@ -52,7 +52,7 @@ class Renderer(object):
         wire = r.get_wire()
 
     @ivar output: where rendering is written
-    @type output: StringIO.StringIO object
+    @type output: StringIO object
     @ivar id: the message id
     @type id: int
     @ivar flags: the message flags
@@ -87,7 +87,7 @@ class Renderer(object):
         @type origin: linkcheck.dns.name.Namem or None.
         """
 
-        self.output = StringIO.StringIO()
+        self.output = StringIO()
         if id is None:
             self.id = random.randint(0, 65535)
         else:

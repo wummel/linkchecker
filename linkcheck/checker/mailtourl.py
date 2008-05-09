@@ -23,11 +23,10 @@ import urllib
 import smtplib
 import email.Utils
 
-import urlbase
-from .. import log, LOG_CHECK
-import linkcheck.strformat
-import linkcheck.dns.resolver
-from const import WARN_MAIL_NO_ADDRESSES, WARN_MAIL_NO_MX_HOST, \
+from . import urlbase
+from .. import log, LOG_CHECK, strformat, LinkCheckerError, url as urlutil
+from ..dns import resolver
+from .const import WARN_MAIL_NO_ADDRESSES, WARN_MAIL_NO_MX_HOST, \
     WARN_MAIL_UNVERIFIED_ADDRESS, WARN_MAIL_NO_CONNECTION
 
 
@@ -49,7 +48,7 @@ def _split_address (address):
         return tuple(split)
     if len(split) == 1:
         return (split[0], "localhost")
-    raise linkcheck.LinkCheckerError(_("Could not split the mail address"))
+    raise LinkCheckerError(_("Could not split the mail address"))
 
 
 class MailtoUrl (urlbase.UrlBase):
@@ -73,8 +72,8 @@ class MailtoUrl (urlbase.UrlBase):
         # check syntax of emails
         for name, addr in self.addresses:
             username, domain = _split_address(addr)
-            if not linkcheck.url.is_safe_domain(domain):
-                raise linkcheck.LinkCheckerError(_("Invalid mail syntax"))
+            if not urlutil.is_safe_domain(domain):
+                raise LinkCheckerError(_("Invalid mail syntax"))
         log.debug(LOG_CHECK, "addresses: %s", self.addresses)
 
     def cutout_addresses (self):
@@ -148,18 +147,18 @@ class MailtoUrl (urlbase.UrlBase):
         Check a single mail address.
         """
         log.debug(LOG_CHECK, "checking mail address %r", mail)
-        mail = linkcheck.strformat.ascii_safe(mail)
+        mail = strformat.ascii_safe(mail)
         username, domain = _split_address(mail)
         log.debug(LOG_CHECK, "looking up MX mailhost %r", domain)
         try:
-            answers = linkcheck.dns.resolver.query(domain, 'MX')
-        except linkcheck.dns.resolver.NoAnswer:
+            answers = resolver.query(domain, 'MX')
+        except resolver.NoAnswer:
             answers = []
         if len(answers) == 0:
             self.add_warning(_("No MX mail host for %(domain)s found.") %
                             {'domain': domain},
                              tag=WARN_MAIL_NO_MX_HOST)
-            answers = linkcheck.dns.resolver.query(domain, 'A')
+            answers = resolver.query(domain, 'A')
             if len(answers) == 0:
                 self.set_result(_("No host for %(domain)s found.") %
                                  {'domain': domain}, valid=False)

@@ -21,7 +21,7 @@ Logging and debug functions.
 import logging
 import os
 import inspect
-import cStringIO as StringIO
+from cStringIO import StringIO
 
 # memory leak debugging
 #import gc
@@ -35,7 +35,7 @@ def _stack_format (stack):
     @return: formatted stack message
     @rtype: string
     """
-    s = StringIO.StringIO()
+    s = StringIO()
     s.write('Traceback:')
     s.write(os.linesep)
     for frame, fname, lineno, method, lines, dummy in reversed(stack):

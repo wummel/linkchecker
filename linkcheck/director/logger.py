@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Logger for aggregator instances"""
 import threading
-from linkcheck.decorators import synchronized
+from ..decorators import synchronized
 
 _lock = threading.Lock()
 

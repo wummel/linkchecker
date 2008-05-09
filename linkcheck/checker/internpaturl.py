@@ -18,8 +18,8 @@
 Intern URL pattern support.
 """
 import re
-import urlbase
-import linkcheck.checker
+from . import urlbase, absolute_url
+from .. import strformat, url as urlutil
 
 class InternPatternUrl (urlbase.UrlBase):
     """
@@ -33,19 +33,18 @@ class InternPatternUrl (urlbase.UrlBase):
         @return non-empty regex pattern or None
         @rtype String or None
         """
-        absolute = linkcheck.checker.absolute_url
-        url = absolute(self.base_url, self.base_ref, self.parent_url)
+        url = absolute_url(self.base_url, self.base_ref, self.parent_url)
         if not url:
             return None
-        parts = linkcheck.strformat.url_unicode_split(url)
+        parts = strformat.url_unicode_split(url)
         scheme = parts[0]
         domain = parts[1]
-        domain, is_idn = linkcheck.url.idna_encode(domain)
+        domain, is_idn = urlutil.idna_encode(domain)
         if is_idn:
             pass # XXX warn about idn use
         if not (domain and scheme):
             return None
-        path = linkcheck.url.splitparams(parts[2])[0]
+        path = urlutil.splitparams(parts[2])[0]
         segments = path.split('/')[:-1]
         path = "/".join(segments)
         if url.endswith('/'):

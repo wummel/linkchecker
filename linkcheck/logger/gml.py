@@ -17,13 +17,12 @@
 """
 A gml logger.
 """
-
 import time
+from . import Logger
+from .. import configuration, strformat
 
-import linkcheck.configuration
 
-
-class GMLLogger (linkcheck.logger.Logger):
+class GMLLogger (Logger):
     """
     GML means Graph Modeling Language. Use a GML tool to see
     the sitemap graph.
@@ -46,12 +45,12 @@ class GMLLogger (linkcheck.logger.Logger):
         self.starttime = time.time()
         if self.has_part("intro"):
             self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": linkcheck.configuration.AppName,
-                         "time": linkcheck.strformat.strtime(self.starttime)})
+                        {"app": configuration.AppName,
+                         "time": strformat.strtime(self.starttime)})
             self.comment(_("Get the newest version at %(url)s") %
-                         {'url': linkcheck.configuration.Url})
+                         {'url': configuration.Url})
             self.comment(_("Write comments and bugs to %(email)s") %
-                         {'email': linkcheck.configuration.Email})
+                         {'email': configuration.Email})
             self.check_date()
             self.writeln()
         self.writeln(u"graph [")
@@ -116,6 +115,6 @@ class GMLLogger (linkcheck.logger.Logger):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": linkcheck.strformat.strtime(self.stoptime),
-                  "duration": linkcheck.strformat.strduration_long(duration)})
+                 {"time": strformat.strtime(self.stoptime),
+                  "duration": strformat.strduration_long(duration)})
         self.close_fileoutput()

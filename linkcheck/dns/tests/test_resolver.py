@@ -14,7 +14,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import cStringIO as StringIO
+from cStringIO import StringIO
 import sys
 import time
 import unittest
@@ -51,7 +51,7 @@ class TestResolver (unittest.TestCase):
 
     if sys.platform != 'win32':
         def testRead(self):
-            f = StringIO.StringIO(resolv_conf)
+            f = StringIO(resolv_conf)
             r = linkcheck.dns.resolver.Resolver(f)
             self.assertEqual(r.nameservers, ['10.0.0.1', '10.0.0.2'])
             self.assertEqual(r.domain, linkcheck.dns.name.from_text('foo'))

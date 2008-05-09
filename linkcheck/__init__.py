@@ -89,36 +89,6 @@ def get_link_pat (arg, strict=False):
     }
 
 
-# note: don't confuse URL loggers with application logs above
-from .logger.text import TextLogger
-from .logger.html import HtmlLogger
-from .logger.gml import GMLLogger
-from .logger.dot import DOTLogger
-from .logger.sql import SQLLogger
-from .logger.csvlog import CSVLogger
-from .logger.blacklist import BlacklistLogger
-from .logger.gxml import GraphXMLLogger
-from .logger.customxml import CustomXMLLogger
-from .logger.none import NoneLogger
-
-
-# default link logger classes
-Loggers = {
-    "text": TextLogger,
-    "html": HtmlLogger,
-    "gml": GMLLogger,
-    "dot": DOTLogger,
-    "sql": SQLLogger,
-    "csv": CSVLogger,
-    "blacklist": BlacklistLogger,
-    "gxml": GraphXMLLogger,
-    "xml": CustomXMLLogger,
-    "none": NoneLogger,
-}
-# for easy printing: a comma separated logger list
-LoggerKeys = ", ".join(repr(name) for name in Loggers)
-
-
 def init_i18n ():
     """Initialize i18n with the configured locale dir. The environment
     variable LOCPATH can also specify a locale dir.

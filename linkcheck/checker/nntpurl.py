@@ -24,10 +24,9 @@ import sys
 import nntplib
 import random
 
-import linkcheck
-import urlbase
-from const import WARN_NNTP_NO_SERVER, WARN_NNTP_NO_NEWSGROUP, \
-    WARN_NNTP_BUSY
+from . import urlbase
+from .. import LinkCheckerError
+from .const import WARN_NNTP_NO_SERVER, WARN_NNTP_NO_NEWSGROUP, WARN_NNTP_BUSY
 
 random.seed()
 
@@ -86,7 +85,7 @@ class NntpUrl (urlbase.UrlBase):
                 else:
                     raise
         if nntp is None:
-            raise linkcheck.LinkCheckerError(
+            raise LinkCheckerError(
                _("NNTP server too busy; tried more than %d times.") % tries)
         if value is not None:
             self.add_warning(_("NNTP busy: %s.") % str(value),

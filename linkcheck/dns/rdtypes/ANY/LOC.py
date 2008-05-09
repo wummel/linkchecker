@@ -14,7 +14,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import cStringIO
+from cStringIO import StringIO
 import struct
 
 import linkcheck.dns.exception
@@ -312,7 +312,7 @@ class LOC(linkcheck.dns.rdata.Rdata):
     from_wire = classmethod(from_wire)
 
     def _cmp(self, other):
-        f = cStringIO.StringIO()
+        f = StringIO()
         self.to_wire(f)
         wire1 = f.getvalue()
         f.seek(0)

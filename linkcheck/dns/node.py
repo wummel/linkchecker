@@ -16,7 +16,7 @@
 
 """DNS nodes.  A node is a set of rdatasets."""
 
-import StringIO
+from cStringIO import StringIO
 
 import linkcheck.dns.rdataset
 import linkcheck.dns.rdatatype
@@ -48,7 +48,7 @@ class Node(object):
         @rtype: string
         """
 
-        s = StringIO.StringIO()
+        s = StringIO()
         for rds in self.rdatasets:
             print >> s, rds.to_text(name, **kw)
         return s.getvalue()[:-1]

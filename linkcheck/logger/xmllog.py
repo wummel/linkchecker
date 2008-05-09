@@ -20,9 +20,8 @@ Base class for XML loggers.
 
 import time
 import xml.sax.saxutils
-
-import linkcheck.logger
-import linkcheck.configuration
+from . import Logger
+from .. import configuration, strformat
 
 
 xmlattr_entities = {
@@ -47,7 +46,7 @@ def xmlquoteattr (s):
     return xml.sax.saxutils.escape(s, xmlattr_entities)
 
 
-class XMLLogger (linkcheck.logger.Logger):
+class XMLLogger (Logger):
     """
     XML output mirroring the GML structure. Easy to parse with any XML
     tool.
@@ -80,12 +79,12 @@ class XMLLogger (linkcheck.logger.Logger):
                      (xmlquoteattr(version), xmlquoteattr(encoding)))
         if self.has_part("intro"):
             self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": linkcheck.configuration.AppName,
-                         "time": linkcheck.strformat.strtime(self.starttime)})
+                        {"app": configuration.AppName,
+                         "time": strformat.strtime(self.starttime)})
             self.comment(_("Get the newest version at %(url)s") %
-                         {'url': linkcheck.configuration.Url})
+                         {'url': configuration.Url})
             self.comment(_("Write comments and bugs to %(email)s") %
-                         {'email': linkcheck.configuration.Email})
+                         {'email': configuration.Email})
             self.check_date()
             self.writeln()
 
@@ -97,8 +96,8 @@ class XMLLogger (linkcheck.logger.Logger):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": linkcheck.strformat.strtime(self.stoptime),
-                  "duration": linkcheck.strformat.strduration_long(duration)})
+                 {"time": strformat.strtime(self.stoptime),
+                  "duration": strformat.strduration_long(duration)})
 
     def xml_starttag (self, name, attrs=None):
         """

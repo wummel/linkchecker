@@ -16,11 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Status message handling"""
 import time
-import linkcheck.i18n
-import linkcheck.strformat
-import linkcheck.configuration
-import task
-from console import stderr
+from .. import strformat
+from . import task
+from .console import stderr
 
 
 class Status (task.CheckedTask):
@@ -53,5 +51,5 @@ class Status (task.CheckedTask):
         print >> stderr, msg,
         msg = _n("%4d URL checked,", "%4d URLs checked,", checked) % checked
         print >> stderr, msg,
-        msg = _("runtime %s") % linkcheck.strformat.strduration_long(duration)
+        msg = _("runtime %s") % strformat.strduration_long(duration)
         print >> stderr, msg

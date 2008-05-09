@@ -19,12 +19,12 @@ Store and retrieve open connections.
 """
 
 import time
-import linkcheck.lock
 from .. import log, LOG_CACHE
-from linkcheck.decorators import synchronized
+from ..decorators import synchronized
+from ..lock import get_lock
 
-_lock = linkcheck.lock.get_lock("connection")
-_wait_lock = linkcheck.lock.get_lock("connwait")
+_lock = get_lock("connection")
+_wait_lock = get_lock("connwait")
 
 class ConnectionPool (object):
     """Thread-safe cache, storing a set of connections for URL retrieval."""

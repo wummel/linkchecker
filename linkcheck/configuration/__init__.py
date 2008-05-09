@@ -23,9 +23,8 @@ import os
 import logging.config
 import urllib
 import _linkchecker_configdata
-from .. import log, LOG_CHECK, LOG
-import linkcheck.containers
-import confparse
+from .. import log, LOG_CHECK, LOG, ansicolor, lognames
+from . import confparse
 
 Version = _linkchecker_configdata.version
 AppName = u"LinkChecker"
@@ -162,7 +161,7 @@ class Configuration (dict):
         config_dir = _linkchecker_configdata.config_dir
         filename = normpath(os.path.join(config_dir, "logging.conf"))
         logging.config.fileConfig(filename)
-        handler = linkcheck.ansicolor.ColoredStreamHandler(strm=sys.stderr)
+        handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
         logging.getLogger(LOG).addHandler(handler)
         self.set_debug(debug)
@@ -174,12 +173,12 @@ class Configuration (dict):
             return
         # set debugging on given logger names
         if 'all' in debug:
-            debug = linkcheck.lognames.keys()
+            debug = lognames.keys()
         # disable threading if no thread debugging
         if "thread" not in debug:
             self['threads'] = 0
         for name in debug:
-            logname = linkcheck.lognames[name]
+            logname = lognames[name]
             logging.getLogger(logname).setLevel(logging.DEBUG)
 
     def logger_new (self, loggertype, **kwargs):
@@ -189,7 +188,8 @@ class Configuration (dict):
         args = {}
         args.update(self[loggertype])
         args.update(kwargs)
-        return linkcheck.Loggers[loggertype](**args)
+        from ..logger import Loggers
+        return Loggers[loggertype](**args)
 
     def logger_add (self, loggertype, loggerclass, loggerargs=None):
         """
@@ -197,7 +197,8 @@ class Configuration (dict):
         """
         if loggerargs is None:
             loggerargs = {}
-        linkcheck.Loggers[loggertype] = loggerclass
+        from ..logger import Loggers
+        Loggers[loggertype] = loggerclass
         self[loggertype] = loggerargs
 
     def read (self, files=None):
@@ -229,8 +230,8 @@ class Configuration (dict):
         if self["anchors"]:
             if not self["warnings"]:
                 self["warnings"] = True
-                self["ignorewarnings"] = linkcheck.checker.Warnings.keys()
+                from ..checker import Warnings
+                self["ignorewarnings"] = Warnings.keys()
             if 'url-anchor-not-found' in self["ignorewarnings"]:
                 self["ignorewarnings"].remove('url-anchor-not-found')
         self['logger'] = self.logger_new(self['output'])
-

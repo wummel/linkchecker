@@ -17,9 +17,8 @@
 """
 An XML logger.
 """
-
-import xmllog
-import linkcheck.strformat
+from . import xmllog
+from .. import strformat
 
 
 class CustomXMLLogger (xmllog.XMLLogger):
@@ -33,7 +32,7 @@ class CustomXMLLogger (xmllog.XMLLogger):
         """
         super(CustomXMLLogger, self).start_output()
         self.xml_start_output()
-        attrs = {"created": linkcheck.strformat.strtime(self.starttime)}
+        attrs = {"created": strformat.strtime(self.starttime)}
         self.xml_starttag(u'linkchecker', attrs)
         self.flush()
 

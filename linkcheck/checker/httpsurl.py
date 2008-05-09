@@ -18,7 +18,7 @@
 Handle https links.
 """
 
-import httpurl
+from . import httpurl
 
 class HttpsUrl (httpurl.HttpUrl):
     """

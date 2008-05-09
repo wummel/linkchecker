@@ -15,13 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 import thread
-import linkcheck.decorators
-from .. import log, LOG_CHECK
-import linkcheck.threader
-import console
+from ..decorators import notimplemented
+from .. import log, LOG_CHECK, threader
+from . import console
 
 
-class CheckedTask (linkcheck.threader.StoppableThread):
+class CheckedTask (threader.StoppableThread):
     """Stoppable URL check task, handling error conditions while running."""
 
     def run (self):
@@ -34,7 +33,7 @@ class CheckedTask (linkcheck.threader.StoppableThread):
         except Exception:
             console.internal_error()
 
-    @linkcheck.decorators.notimplemented
+    @notimplemented
     def run_checked (self):
         """Overload in subclass."""
         pass

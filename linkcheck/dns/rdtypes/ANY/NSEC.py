@@ -14,7 +14,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import cStringIO
+from cStringIO import StringIO
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdata
@@ -127,12 +127,12 @@ class NSEC(linkcheck.dns.rdata.Rdata):
     def _cmp(self, other):
         v = cmp(self.next, other.next)
         if v == 0:
-            b1 = cStringIO.StringIO()
+            b1 = StringIO()
             for (window, bitmap) in self.windows:
                 b1.write(chr(window))
                 b1.write(chr(len(bitmap)))
                 b1.write(bitmap)
-            b2 = cStringIO.StringIO()
+            b2 = StringIO()
             for (window, bitmap) in other.windows:
                 b2.write(chr(window))
                 b2.write(chr(len(bitmap)))

@@ -19,10 +19,10 @@ Cache for DNS lookups.
 """
 import socket
 import sys
-import linkcheck.lock
-from linkcheck.decorators import synchronized
+from ..lock import get_lock
+from ..decorators import synchronized
 
-_lock = linkcheck.lock.get_lock("addrinfo")
+_lock = get_lock("addrinfo")
 addrinfos = {}
 
 @synchronized(_lock)

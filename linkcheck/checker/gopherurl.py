@@ -18,7 +18,7 @@
 Handle Gopher links.
 """
 
-import urlbase
+from . import urlbase
 
 class GopherUrl (urlbase.UrlBase):
     """

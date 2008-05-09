@@ -19,8 +19,8 @@ Handle uncheckable URLs.
 """
 
 import re
-import urlbase
-from const import WARN_IGNORE_URL
+from . import urlbase
+from .const import WARN_IGNORE_URL
 
 ignored_schemes = r"""^(
 acap        # application configuration access protocol

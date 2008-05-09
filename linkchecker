@@ -32,13 +32,12 @@ import linkcheck
 # override optparse gettext method with the one from linkcheck.init_i18n()
 optparse._ = _
 # now import the rest of the linkchecker gang
-from linkcheck import log, LOG_CMDLINE
-import linkcheck.i18n
+from linkcheck import log, LOG_CMDLINE, i18n, strformat
 import linkcheck.checker
 import linkcheck.director
 import linkcheck.configuration
 import linkcheck.fileutil
-import linkcheck.strformat
+import linkcheck.logger
 # optional modules
 has_optcomplete = linkcheck.fileutil.has_module("optcomplete")
 has_profile = linkcheck.fileutil.has_module("profile")
@@ -276,7 +275,7 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
             indent_first = 0
         result.append(opts)
         if option.help:
-            text = linkcheck.strformat.wrap(option.help, self.help_width)
+            text = strformat.wrap(option.help, self.help_width)
             help_lines = text.splitlines()
             result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
             result.extend(["%*s%s\n" % (self.help_position, "", line)
@@ -306,9 +305,9 @@ class LCOptionParser (optparse.OptionParser, object):
         s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
                  Examples, LoggerTypes, RegularExpressions, CookieFormat,
                  ProxySupport, Notes, Retval, Warnings)
-        s = s.encode(linkcheck.i18n.default_encoding, "replace")
+        s = s.encode(i18n.default_encoding, "replace")
         if os.name != 'posix':
-            linkcheck.strformat.paginate(s)
+            strformat.paginate(s)
         else:
             print s
         sys.exit(0)
@@ -392,7 +391,7 @@ The ENCODING specifies the output encoding, the default is that of your
 locale.
 Valid encodings are listed at """ \
 """http://docs.python.org/lib/standard-encodings.html.""") % \
-{'loggertypes': linkcheck.LoggerKeys})
+{'loggertypes': linkcheck.logger.LoggerKeys})
 group.add_option("-F", "--file-output", type="string", action="append",
                  dest="fileoutput", metavar="TYPE[/ENCODING][/FILENAME]",
                  help=_(
@@ -407,7 +406,7 @@ You can specify this option more than once. Valid file output types
 are %(loggertypes)s. You can specify this option multiple times to output
 to more than one file. Default is no file output. Note that you can
 suppress all console output with the option '-o none'.""") % \
-{'loggertypes': linkcheck.LoggerKeys})
+{'loggertypes': linkcheck.logger.LoggerKeys})
 group.add_option("--no-status", action="store_false", dest="status",
                  default=True, help=_(
 """Do not print check status messages."""))
@@ -576,8 +575,8 @@ if options.output:
     if "/" in options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
-        logtype, encoding = options.output, linkcheck.i18n.default_encoding
-    if not linkcheck.Loggers.has_key(logtype.lower()):
+        logtype, encoding = options.output, i18n.default_encoding
+    if not linkcheck.logger.Loggers.has_key(logtype.lower()):
         print_usage(
      _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
       {"type": logtype, "output": options.output, "option": "'-o, --output'"})
@@ -608,7 +607,7 @@ if options.fileoutput:
                         ns['filename'] = suffix
                 else:
                     ns['filename'] = suffix
-        if not linkcheck.Loggers.has_key(ftype):
+        if not linkcheck.logger.Loggers.has_key(ftype):
             print_usage(
      _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
        {"type": ftype, "output": options.output,

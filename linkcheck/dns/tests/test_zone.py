@@ -15,7 +15,7 @@
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 from __future__ import with_statement
-import cStringIO as StringIO
+from cStringIO import StringIO
 import os
 import unittest
 import difflib
@@ -155,7 +155,7 @@ class TestZone (unittest.TestCase):
 
     def testFromText(self):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
-        f = StringIO.StringIO()
+        f = StringIO()
         names = z.nodes.keys()
         names.sort()
         for n in names:
@@ -168,7 +168,7 @@ class TestZone (unittest.TestCase):
         # for each RR in the zone, convert the rdata into wire format
         # and then back out, and see if we get equal rdatas.
         #
-        f = StringIO.StringIO()
+        f = StringIO()
         o = linkcheck.dns.name.from_text('example.')
         z = linkcheck.dns.zone.from_file(fname('example'), o)
         for (name, node) in z.iteritems():

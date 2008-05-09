@@ -20,9 +20,8 @@ A SQL logger.
 
 import time
 import os
-
-import linkcheck.logger
-import linkcheck.configuration
+from . import Logger
+from .. import configuration, strformat, url as urlutil
 
 
 def sqlify (s):
@@ -48,7 +47,7 @@ def intify (s):
     return 0
 
 
-class SQLLogger (linkcheck.logger.Logger):
+class SQLLogger (Logger):
     """
     SQL output, should work with any SQL database (not tested).
     """
@@ -73,16 +72,16 @@ class SQLLogger (linkcheck.logger.Logger):
         """
         Write start of checking info as sql comment.
         """
-        linkcheck.logger.Logger.start_output(self)
+        Logger.start_output(self)
         self.starttime = time.time()
         if self.has_part("intro"):
             self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": linkcheck.configuration.AppName,
-                         "time": linkcheck.strformat.strtime(self.starttime)})
+                        {"app": configuration.AppName,
+                         "time": strformat.strtime(self.starttime)})
             self.comment(_("Get the newest version at %s") %
-                         linkcheck.configuration.Url)
+                         configuration.Url)
             self.comment(_("Write comments and bugs to %s") %
-                         linkcheck.configuration.Email)
+                         configuration.Email)
             self.check_date()
             self.writeln()
             self.flush()
@@ -122,7 +121,7 @@ class SQLLogger (linkcheck.logger.Logger):
                'result': sqlify(url_data.result),
                'warning': sqlify(os.linesep.join(log_warnings)),
                'info': sqlify(os.linesep.join(log_infos)),
-               'url': sqlify(linkcheck.url.url_quote(url_data.url or u"")),
+               'url': sqlify(urlutil.url_quote(url_data.url or u"")),
                'line': url_data.line,
                'column': url_data.column,
                'name': sqlify(url_data.name),
@@ -142,6 +141,6 @@ class SQLLogger (linkcheck.logger.Logger):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": linkcheck.strformat.strtime(self.stoptime),
-                  "duration": linkcheck.strformat.strduration_long(duration)})
+                 {"time": strformat.strtime(self.stoptime),
+                  "duration": strformat.strduration_long(duration)})
         self.close_fileoutput()

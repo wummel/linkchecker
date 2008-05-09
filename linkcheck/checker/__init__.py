@@ -22,21 +22,7 @@ import os
 import cgi
 import logging
 import urllib
-import linkcheck.httplib2
-import linkcheck.dns.exception
-from linkcheck.strformat import unicode_safe
-from linkcheck.url import url_is_absolute
-
-# all the URL classes
-import linkcheck.checker.fileurl
-import linkcheck.checker.unknownurl
-import linkcheck.checker.ftpurl
-import linkcheck.checker.gopherurl
-import linkcheck.checker.httpurl
-import linkcheck.checker.httpsurl
-import linkcheck.checker.mailtourl
-import linkcheck.checker.telneturl
-import linkcheck.checker.nntpurl
+from .. import strformat, url as urlutil
 
 
 def absolute_url (base_url, base_ref, parent_url):
@@ -51,11 +37,11 @@ def absolute_url (base_url, base_ref, parent_url):
     @param parent_url: url of parent document
     @type parent_url: string or None
     """
-    if base_url and url_is_absolute(base_url):
+    if base_url and urlutil.url_is_absolute(base_url):
         return base_url
-    elif base_ref and url_is_absolute(base_ref):
+    elif base_ref and urlutil.url_is_absolute(base_ref):
         return base_ref
-    elif parent_url and url_is_absolute(parent_url):
+    elif parent_url and urlutil.url_is_absolute(parent_url):
         return parent_url
     return u""
 
@@ -71,7 +57,7 @@ def get_url_from (base_url, recursion_level, aggregate,
     @param recursion_level: current recursion level
     @type recursion_level: number
     @param aggregate: aggregate object
-    @type aggregate: linkcheck.checker.aggregate.Consumer
+    @type aggregate: aggregate.Consumer
     @param parent_url: parent url
     @type parent_url: string or None
     @param base_ref: base url from <base> tag
@@ -84,12 +70,12 @@ def get_url_from (base_url, recursion_level, aggregate,
     @type name: string
     """
     if base_url is not None:
-        base_url = unicode_safe(base_url)
+        base_url = strformat.unicode_safe(base_url)
     if parent_url is not None:
-        parent_url = unicode_safe(parent_url)
+        parent_url = strformat.unicode_safe(parent_url)
     if base_ref is not None:
-        base_ref = unicode_safe(base_ref)
-    name = unicode_safe(name)
+        base_ref = strformat.unicode_safe(base_ref)
+    name = strformat.unicode_safe(name)
     url = absolute_url(base_url, base_ref, parent_url).lower()
     klass = get_urlclass_from(url)
     return klass(base_url, recursion_level, aggregate,
@@ -100,27 +86,27 @@ def get_url_from (base_url, recursion_level, aggregate,
 def get_urlclass_from (url):
     """Return checker class for given URL."""
     if url.startswith("http:"):
-        klass = linkcheck.checker.httpurl.HttpUrl
+        klass = httpurl.HttpUrl
     elif url.startswith("ftp:"):
-        klass = linkcheck.checker.ftpurl.FtpUrl
+        klass = ftpurl.FtpUrl
     elif url.startswith("file:"):
-        klass = linkcheck.checker.fileurl.FileUrl
+        klass = fileurl.FileUrl
     elif url.startswith("telnet:"):
-        klass = linkcheck.checker.telneturl.TelnetUrl
+        klass = telneturl.TelnetUrl
     elif url.startswith("mailto:"):
-        klass = linkcheck.checker.mailtourl.MailtoUrl
+        klass = mailtourl.MailtoUrl
     elif url.startswith("gopher:"):
-        klass = linkcheck.checker.gopherurl.GopherUrl
+        klass = gopherurl.GopherUrl
     elif url.startswith("https:"):
-        klass = linkcheck.checker.httpsurl.HttpsUrl
+        klass = httpsurl.HttpsUrl
     elif url.startswith(("nntp:", "news:", "snews:")):
-        klass = linkcheck.checker.nntpurl.NntpUrl
-    elif linkcheck.checker.unknownurl.is_unknown_url(url):
+        klass = nntpurl.NntpUrl
+    elif unknownurl.is_unknown_url(url):
         # unknown url
-        klass = linkcheck.checker.unknownurl.UnknownUrl
+        klass = unknownurl.UnknownUrl
     else:
         # assume local file
-        klass = linkcheck.checker.fileurl.FileUrl
+        klass = fileurl.FileUrl
     return klass
 
 
@@ -154,3 +140,8 @@ class StoringHandler (logging.Handler):
         if len(self.storage) >= self.maxrecords:
             self.storage.pop()
         self.storage.append(record)
+
+
+# all the URL classes
+from . import (fileurl, unknownurl, ftpurl, gopherurl, httpurl,
+    httpsurl, mailtourl, telneturl, nntpurl)

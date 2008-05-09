@@ -17,7 +17,6 @@
 """
 Base URL handler.
 """
-
 import sys
 import os
 import logging
@@ -30,21 +29,19 @@ import socket
 import select
 import traceback
 
-import linkcheck.linkparse
-import linkcheck.checker
-import linkcheck.cache.geoip
-import linkcheck.strformat
-import linkcheck.containers
-from .. import log, LOG_CHECK, LOG_CACHE, httputil
-from .. import httplib2 as httplib
-import linkcheck.HtmlParser.htmlsax
-from const import WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN, \
-    WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT, \
-    WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND, \
-    WARN_URL_CONTENT_TOO_LARGE
+from . import absolute_url, StoringHandler, get_url_from
+from ..cache import geoip
+from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
+    strformat, linkparse, containers, LinkCheckerError, url as urlutil,
+    trace)
+from ..HtmlParser import htmlsax
+from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
+    WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT,
+    WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
+    WARN_URL_CONTENT_TOO_LARGE, ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
-unicode_safe = linkcheck.strformat.unicode_safe
+unicode_safe = strformat.unicode_safe
 
 def urljoin (parent, url, scheme):
     """
@@ -62,10 +59,10 @@ def url_norm (url):
     Wrapper for url.url_norm() to convert UnicodeError in LinkCheckerError.
     """
     try:
-        return linkcheck.url.url_norm(url)
+        return urlutil.url_norm(url)
     except UnicodeError:
         msg = _("URL has unparsable domain name: %s") % sys.exc_info()[1]
-        raise linkcheck.LinkCheckerError(msg)
+        raise LinkCheckerError(msg)
 
 
 class UrlBase (object):
@@ -107,12 +104,12 @@ class UrlBase (object):
         self.column = column
         self.name = name
         if self.base_ref:
-            assert not linkcheck.url.url_needs_quoting(self.base_ref), \
+            assert not urlutil.url_needs_quoting(self.base_ref), \
                    "unquoted base reference URL %r" % self.base_ref
         if self.parent_url:
-            assert not linkcheck.url.url_needs_quoting(self.parent_url), \
+            assert not urlutil.url_needs_quoting(self.parent_url), \
                    "unquoted parent URL %r" % self.parent_url
-        url = linkcheck.checker.absolute_url(base_url, base_ref, parent_url)
+        url = absolute_url(base_url, base_ref, parent_url)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
         # warn if URL is redirected (for commandline client)
@@ -139,9 +136,9 @@ class UrlBase (object):
         # valid or not
         self.valid = True
         # list of warnings (without duplicates)
-        self.warnings = linkcheck.containers.SetList()
+        self.warnings = containers.SetList()
         # list of infos (without duplicates)
-        self.info = linkcheck.containers.SetList()
+        self.info = containers.SetList()
         # download time
         self.dltime = -1
         # download size
@@ -295,7 +292,7 @@ class UrlBase (object):
                 self.add_warning(_("Effective URL %r.") % effectiveurl,
                                  tag=WARN_URL_EFFECTIVE_URL)
                 self.url = effectiveurl
-        except tuple(linkcheck.checker.const.ExcSyntaxList), msg:
+        except tuple(ExcSyntaxList), msg:
             self.set_result(unicode_safe(msg), valid=False)
             return
         self.set_cache_keys()
@@ -336,10 +333,10 @@ class UrlBase (object):
         # note: urljoin can unnorm the url path, so norm it again
         urlparts = list(urlparse.urlsplit(self.url))
         if urlparts[2]:
-            urlparts[2] = linkcheck.url.collapse_segments(urlparts[2])
+            urlparts[2] = urlutil.collapse_segments(urlparts[2])
         self.url = urlparse.urlunsplit(urlparts)
         # split into (modifiable) list
-        self.urlparts = linkcheck.strformat.url_unicode_split(self.url)
+        self.urlparts = strformat.url_unicode_split(self.url)
         # and unsplit again
         self.url = urlparse.urlunsplit(self.urlparts)
         # check userinfo@host:port syntax
@@ -353,15 +350,15 @@ class UrlBase (object):
         self.anchor = self.urlparts[4]
         self.host, self.port = urllib.splitport(host)
         if self.port is not None:
-            if not linkcheck.url.is_numeric_port(self.port):
-                raise linkcheck.LinkCheckerError(
+            if not urlutil.is_numeric_port(self.port):
+                raise LinkCheckerError(
                          _("URL has invalid port %r") % str(self.port))
             self.port = int(self.port)
 
     def check (self):
         """Main check function for checking this URL."""
         if self.aggregate.config["trace"]:
-            linkcheck.trace.trace_on()
+            trace.trace_on()
         try:
             self.local_check()
         except (socket.error, select.error):
@@ -380,7 +377,7 @@ class UrlBase (object):
         """
         Try to ask GeoIP database for country info.
         """
-        country = linkcheck.cache.geoip.get_country(self.host)
+        country = geoip.get_country(self.host)
         if country is not None:
             self.add_info(_("URL is located in %s.") % _(country))
 
@@ -401,7 +398,7 @@ class UrlBase (object):
             self.add_country_info()
             if self.aggregate.config["anchors"]:
                 self.check_anchors()
-        except tuple(linkcheck.checker.const.ExcList):
+        except tuple(ExcList):
             value = self.handle_exception()
             # make nicer error msg for unknown hosts
             if isinstance(value, socket.error) and value[0] == -2:
@@ -417,7 +414,7 @@ class UrlBase (object):
             log.debug(LOG_CHECK, "checking content")
             try:
                 self.check_content(warningregex)
-            except tuple(linkcheck.checker.const.ExcList):
+            except tuple(ExcList):
                 value = self.handle_exception()
                 self.set_result(unicode_safe(value), valid=False)
         # check HTML/CSS syntax
@@ -437,7 +434,7 @@ class UrlBase (object):
                 self.parse_url()
             # check content size
             self.check_size()
-        except tuple(linkcheck.checker.const.ExcList):
+        except tuple(ExcList):
             value = self.handle_exception()
             self.add_warning(_("could not get content: %r") % str(value),
                             tag=WARN_URL_ERROR_GETTING_CONTENT)
@@ -463,7 +460,7 @@ class UrlBase (object):
         etype, value, tb = sys.exc_info()
         log.debug(LOG_CHECK, "exception %s", traceback.format_tb(tb))
         # note: etype must be the exact class, not a subclass
-        if (etype in linkcheck.checker.const.ExcNoCacheList) or \
+        if (etype in ExcNoCacheList) or \
            (etype == socket.error and value[0]==errno.EBADF) or \
             not value:
             # EBADF occurs when operating on an already socket
@@ -473,7 +470,7 @@ class UrlBase (object):
             # use Exception class name
             errmsg += ": %s" % str(value)
         # limit length to 240
-        return linkcheck.strformat.limit(errmsg, length=240)
+        return strformat.limit(errmsg, length=240)
 
     def check_connection (self):
         """
@@ -520,8 +517,8 @@ class UrlBase (object):
         if not (self.is_http() or self.is_file()):
             return True
         # construct parser object
-        handler = linkcheck.linkparse.MetaRobotsFinder()
-        parser = linkcheck.HtmlParser.htmlsax.parser(handler)
+        handler = linkparse.MetaRobotsFinder()
+        parser = htmlsax.parser(handler)
         handler.parser = parser
         # parse
         parser.feed(self.get_content())
@@ -541,9 +538,9 @@ class UrlBase (object):
             # do not bother
             return
         log.debug(LOG_CHECK, "checking anchor %r", self.anchor)
-        handler = linkcheck.linkparse.LinkFinder(self.get_content(),
+        handler = linkparse.LinkFinder(self.get_content(),
                                    tags={'a': [u'name'], None: [u'id']})
-        parser = linkcheck.HtmlParser.htmlsax.parser(handler)
+        parser = htmlsax.parser(handler)
         handler.parser = parser
         # parse
         parser.feed(self.get_content())
@@ -620,8 +617,8 @@ class UrlBase (object):
         if maxbytes is not None and self.dlsize >= maxbytes:
             self.add_warning(
                    _("Content size %(dlsize)s is larger than %(maxbytes)s.") %
-                        {"dlsize": linkcheck.strformat.strsize(self.dlsize),
-                         "maxbytes": linkcheck.strformat.strsize(maxbytes)},
+                        {"dlsize": strformat.strsize(self.dlsize),
+                         "maxbytes": strformat.strsize(maxbytes)},
                           tag=WARN_URL_CONTENT_TOO_LARGE)
 
     def check_html (self):
@@ -664,7 +661,7 @@ class UrlBase (object):
             csslog = logging.getLogger('cssutils')
             csslog.propagate = 0
             del csslog.handlers[:]
-            handler = linkcheck.checker.StoringHandler()
+            handler = StoringHandler()
             csslog.addHandler(handler)
             csslog.setLevel(logging.WARN)
             cssparser = cssutils.CSSParser(log=csslog)
@@ -770,8 +767,8 @@ class UrlBase (object):
         """
         log.debug(LOG_CHECK, "Parsing HTML %s", self)
         # construct parser object
-        handler = linkcheck.linkparse.LinkFinder(self.get_content())
-        parser = linkcheck.HtmlParser.htmlsax.parser(handler)
+        handler = linkparse.LinkFinder(self.get_content())
+        parser = htmlsax.parser(handler)
         handler.parser = parser
         # parse
         parser.feed(self.get_content())
@@ -784,8 +781,8 @@ class UrlBase (object):
                 base_ref = codebase
             else:
                 base_ref = handler.base_ref
-            base_ref = linkcheck.url.url_norm(base_ref)[0]
-            url_data = linkcheck.checker.get_url_from(url,
+            base_ref = urlutil.url_norm(base_ref)[0]
+            url_data = get_url_from(url,
                   self.recursion_level+1, self.aggregate, parent_url=self.url,
                   base_ref=base_ref, line=line, column=column, name=name)
             self.aggregate.urlqueue.put(url_data)
@@ -805,9 +802,9 @@ class UrlBase (object):
             elif line.startswith("URL="):
                 url = line[4:]
                 if url:
-                    url_data = linkcheck.checker.get_url_from(url,
-                              self.recursion_level+1, self.aggregate,
-                              parent_url=self.url, line=lineno, name=name)
+                    url_data = get_url_from(url, self.recursion_level+1,
+                        self.aggregate, parent_url=self.url,
+                        line=lineno, name=name)
                     self.aggregate.urlqueue.put(url_data)
                 name = ""
 
@@ -823,7 +820,7 @@ class UrlBase (object):
             line = line.strip()
             if not line or line.startswith('#'):
                 continue
-            url_data = linkcheck.checker.get_url_from(line,
+            url_data = get_url_from(line,
                               self.recursion_level+1, self.aggregate,
                               parent_url=self.url, line=lineno)
             self.aggregate.urlqueue.put(url_data)
@@ -834,24 +831,24 @@ class UrlBase (object):
         """
         log.debug(LOG_CHECK, "Parsing CSS %s", self)
         lineno = 0
-        linkfinder = linkcheck.linkparse.css_url_re.finditer
-        strip_comments = linkcheck.linkparse.strip_c_comments
+        linkfinder = linkparse.css_url_re.finditer
+        strip_comments = linkparse.strip_c_comments
         for line in strip_comments(self.get_content()).splitlines():
             lineno += 1
             for mo in linkfinder(line):
                 column = mo.start("url")
-                url = linkcheck.strformat.unquote(mo.group("url").strip())
-                url_data = linkcheck.checker.get_url_from(url,
+                url = strformat.unquote(mo.group("url").strip())
+                url_data = get_url_from(url,
                              self.recursion_level+1, self.aggregate,
                              parent_url=self.url, line=lineno, column=column)
                 self.aggregate.urlqueue.put(url_data)
 
     def parse_swf (self):
         """Parse a SWF file for URLs."""
-        linkfinder = linkcheck.linkparse.swf_url_re.finditer
+        linkfinder = linkparse.swf_url_re.finditer
         for mo in linkfinder(self.get_content()):
             url = mo.group()
-            url_data = linkcheck.checker.get_url_from(url,
+            url_data = get_url_from(url,
                          self.recursion_level+1, self.aggregate,
                          parent_url=self.url)
             self.aggregate.urlqueue.put(url_data)

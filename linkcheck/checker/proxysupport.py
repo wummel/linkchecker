@@ -17,9 +17,9 @@
 """
 Mixin class for URLs that can be fetched over a proxy.
 """
-
 import urllib
-import linkcheck
+from .. import LinkCheckerError
+
 
 class ProxySupport (object):
     """
@@ -40,7 +40,7 @@ class ProxySupport (object):
             # Note that invalid proxies might raise TypeError in urllib2,
             # so make sure to stop checking at this point, not later.
             msg = _("Proxy value %r must start with 'http://'.") % self.proxy
-            raise linkcheck.LinkCheckerError(msg)
+            raise LinkCheckerError(msg)
         self.proxy = urllib.splittype(self.proxy)[1]
         self.proxy = urllib.splithost(self.proxy)[0]
         self.proxyauth, self.proxy = urllib.splituser(self.proxy)

@@ -15,7 +15,7 @@
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 import unittest
-import cStringIO as StringIO
+from cStringIO import StringIO
 
 import linkcheck.dns.name
 
@@ -358,14 +358,14 @@ class TestName (unittest.TestCase):
 
     def testToWire1(self):
         n = linkcheck.dns.name.from_text('FOO.bar')
-        f = StringIO.StringIO()
+        f = StringIO()
         compress = {}
         n.to_wire(f, compress)
         self.assertEqual(f.getvalue(), '\x03FOO\x03bar\x00')
 
     def testToWire2(self):
         n = linkcheck.dns.name.from_text('FOO.bar')
-        f = StringIO.StringIO()
+        f = StringIO()
         compress = {}
         n.to_wire(f, compress)
         n.to_wire(f, compress)
@@ -374,7 +374,7 @@ class TestName (unittest.TestCase):
     def testToWire3(self):
         n1 = linkcheck.dns.name.from_text('FOO.bar')
         n2 = linkcheck.dns.name.from_text('foo.bar')
-        f = StringIO.StringIO()
+        f = StringIO()
         compress = {}
         n1.to_wire(f, compress)
         n2.to_wire(f, compress)
@@ -383,7 +383,7 @@ class TestName (unittest.TestCase):
     def testToWire4(self):
         n1 = linkcheck.dns.name.from_text('FOO.bar')
         n2 = linkcheck.dns.name.from_text('a.foo.bar')
-        f = StringIO.StringIO()
+        f = StringIO()
         compress = {}
         n1.to_wire(f, compress)
         n2.to_wire(f, compress)
@@ -392,7 +392,7 @@ class TestName (unittest.TestCase):
     def testToWire5(self):
         n1 = linkcheck.dns.name.from_text('FOO.bar')
         n2 = linkcheck.dns.name.from_text('a.foo.bar')
-        f = StringIO.StringIO()
+        f = StringIO()
         compress = {}
         n1.to_wire(f, compress)
         n2.to_wire(f, None)
@@ -402,7 +402,7 @@ class TestName (unittest.TestCase):
     def testBadToWire(self):
         def bad():
             n = linkcheck.dns.name.from_text('FOO.bar', None)
-            f = StringIO.StringIO()
+            f = StringIO()
             compress = {}
             n.to_wire(f, compress)
         self.assertRaises(linkcheck.dns.name.NeedAbsoluteNameOrOrigin, bad)

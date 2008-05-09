@@ -34,7 +34,7 @@ import sys
 import socket
 import errno
 import cgi
-import cStringIO as StringIO
+from cStringIO import StringIO
 
 # Set various FastCGI constants
 # Maximum number of requests that can be handled
@@ -429,8 +429,8 @@ class FCGI (object):
                     data += r.content
         # end of while remaining:
 
-        self.stdin = sys.stdin  = StringIO.StringIO(stdin)
-        self.data = StringIO.StringIO(data)
+        self.stdin = sys.stdin  = StringIO(stdin)
+        self.data = StringIO(data)
         r = Record()
         r.rec_type = FCGI_STDERR
         r.req_id = self.request_id

@@ -14,7 +14,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import cStringIO as StringIO
+from cStringIO import StringIO
 import random
 import struct
 import sys
@@ -165,7 +165,7 @@ class Message(object):
         @rtype: string
         """
 
-        s = StringIO.StringIO()
+        s = StringIO()
         print >> s, 'id %d' % self.id
         print >> s, 'opcode %s' % \
               linkcheck.dns.opcode.to_text(linkcheck.dns.opcode.from_flags(self.flags))

@@ -18,8 +18,7 @@
 
 import ConfigParser
 import re
-import linkcheck
-from .. import log, LOG_CHECK
+from .. import log, LOG_CHECK, LinkCheckerError, get_link_pat
 
 
 def read_multiline (value):
@@ -53,13 +52,14 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.read_authentication_config()
             self.read_filtering_config()
         except Exception, msg:
-            raise linkcheck.LinkCheckerError(
+            raise LinkCheckerError(
               "Error parsing configuration: %s", str(msg))
 
     def read_output_config (self):
         """Read configuration options in section "output"."""
         section = "output"
-        for key in linkcheck.Loggers.iterkeys():
+        from ..logger import Loggers
+        for key in Loggers.iterkeys():
             if self.has_section(key):
                 for opt in self.options(key):
                     self.config[key][opt] = self.get(key, opt)
@@ -91,8 +91,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for val in filelist:
                 val = val.strip()
                 # no file output for the blacklist and none Logger
-                if val in linkcheck.Loggers and \
-                   val not in ("blacklist", "none"):
+                if val in Loggers and val not in ("blacklist", "none"):
                     output = self.config.logger_new(val, fileoutput=1)
                     self.config['fileoutput'].append(output)
         if self.has_option(section, "interactive"):
@@ -107,7 +106,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "timeout"):
             num = self.getint(section, "timeout")
             if num < 0:
-                raise linkcheck.LinkCheckerError(
+                raise LinkCheckerError(
                     _("invalid negative value for timeout: %d\n"), num)
             self.config['timeout'] = num
         if self.has_option(section, "anchors"):
@@ -167,7 +166,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for val in read_multiline(self.get(section, "entry")):
                 auth = val.split()
                 if len(auth) != 3:
-                    raise linkcheck.LinkCheckerError(LOG_CHECK,
+                    raise LinkCheckerError(LOG_CHECK,
                        _("missing auth part in entry %(val)r") % \
                        {"val": val})
                 self.config["authentication"].insert(0,
@@ -186,7 +185,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
               _("the entry%(num)d syntax is deprecated; use " \
                 "the new multiline configuration syntax") % {"num": i})
             if len(auth) != 3:
-                raise linkcheck.LinkCheckerError(LOG_CHECK,
+                raise LinkCheckerError(LOG_CHECK,
                    _("missing auth part in entry %(val)r") % \
                    {"val": val})
             self.config["authentication"].insert(0,
@@ -202,7 +201,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         section = "filtering"
         if self.has_option(section, "nofollow"):
             for line in read_multiline(self.get(section, "nofollow")):
-                pat = linkcheck.get_link_pat(line, strict=0)
+                pat = get_link_pat(line, strict=0)
                 self.config["externlinks"].append(pat)
         # backward compatibility
         i = 1
@@ -214,7 +213,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             log.warn(LOG_CHECK,
               _("the nofollow%(num)d syntax is deprecated; use " \
                 "the new multiline configuration syntax") % {"num": i})
-            pat = linkcheck.get_link_pat(val, strict=0)
+            pat = get_link_pat(val, strict=0)
             self.config["externlinks"].append(pat)
             i += 1
         if self.has_option(section, "noproxyfor"):
@@ -237,7 +236,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                  self.get(section, 'ignorewarnings').split(',')]
         if self.has_option(section, "ignore"):
             for line in read_multiline(self.get(section, "ignore")):
-                pat = linkcheck.get_link_pat(line, strict=1)
+                pat = get_link_pat(line, strict=1)
                 self.config["externlinks"].append(pat)
         # backward compatibility
         i = 1
@@ -250,9 +249,9 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             log.warn(LOG_CHECK,
               _("the ignore%(num)d syntax is deprecated; use " \
                 "the new multiline configuration syntax") % {"num": i})
-            pat = linkcheck.get_link_pat(val, strict=1)
+            pat = get_link_pat(val, strict=1)
             self.config["externlinks"].append(pat)
             i += 1
         if self.has_option(section, "internlinks"):
-            pat = linkcheck.get_link_pat(self.get(section, "internlinks"))
+            pat = get_link_pat(self.get(section, "internlinks"))
             self.config["internlinks"].append(pat)

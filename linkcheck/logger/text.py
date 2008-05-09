@@ -17,16 +17,12 @@
 """
 The default text logger.
 """
-
 import time
-
-import linkcheck.ansicolor
-import linkcheck.logger
-import linkcheck.strformat
-import linkcheck.configuration
+from . import Logger
+from .. import ansicolor, strformat, configuration
 
 
-class TextLogger (linkcheck.logger.Logger):
+class TextLogger (Logger):
     """
     A text logger, colorizing the output if possible.
 
@@ -70,7 +66,7 @@ class TextLogger (linkcheck.logger.Logger):
         super(TextLogger, self).__init__(**args)
         self.init_fileoutput(args)
         if self.fd is not None:
-            self.fd = linkcheck.ansicolor.Colorizer(self.fd)
+            self.fd = ansicolor.Colorizer(self.fd)
         self.colorparent = args['colorparent']
         self.colorurl = args['colorurl']
         self.colorname = args['colorname']
@@ -86,7 +82,7 @@ class TextLogger (linkcheck.logger.Logger):
 
     def start_fileoutput (self):
         super(TextLogger, self).start_fileoutput()
-        self.fd = linkcheck.ansicolor.Colorizer(self.fd)
+        self.fd = ansicolor.Colorizer(self.fd)
 
     def start_output (self):
         """
@@ -95,16 +91,16 @@ class TextLogger (linkcheck.logger.Logger):
         super(TextLogger, self).start_output()
         self.starttime = time.time()
         if self.has_part('intro'):
-            self.writeln(linkcheck.configuration.AppInfo)
-            self.writeln(linkcheck.configuration.Freeware)
+            self.writeln(configuration.AppInfo)
+            self.writeln(configuration.Freeware)
             self.writeln(_("Get the newest version at %(url)s") %
-                         {'url': linkcheck.configuration.Url})
+                         {'url': configuration.Url})
             self.writeln(_("Write comments and bugs to %(email)s") %
-                         {'email': linkcheck.configuration.Email})
+                         {'email': configuration.Email})
             self.check_date()
             self.writeln()
             self.writeln(_("Start checking at %s") %
-                         linkcheck.strformat.strtime(self.starttime))
+                         strformat.strtime(self.starttime))
             self.flush()
 
     def log_url (self, url_data):
@@ -191,7 +187,7 @@ class TextLogger (linkcheck.logger.Logger):
         Write url_data.dlsize.
         """
         self.write(self.part("dlsize") + self.spaces("dlsize"))
-        self.writeln(linkcheck.strformat.strsize(url_data.dlsize),
+        self.writeln(strformat.strsize(url_data.dlsize),
                      color=self.colordlsize)
 
     def write_checktime (self, url_data):
@@ -257,6 +253,6 @@ class TextLogger (linkcheck.logger.Logger):
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime
             self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": linkcheck.strformat.strtime(self.stoptime),
-                  "duration": linkcheck.strformat.strduration_long(duration)})
+                 {"time": strformat.strtime(self.stoptime),
+                  "duration": strformat.strduration_long(duration)})
         self.close_fileoutput()

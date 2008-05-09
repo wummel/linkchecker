@@ -26,12 +26,9 @@ import time
 import urlparse
 import types
 
-import linkcheck.configuration
-import linkcheck.url
-import linkcheck.i18n
-import linkcheck.strformat
-import linkcheck.checker
-import linkcheck.director
+from . import configuration, strformat, checker, director
+from . import add_intern_pattern, get_link_pat, init_i18n
+from . import url as urlutil
 
 _logfile = None
 _supported_langs = ('de', 'C')
@@ -79,7 +76,7 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
         logit(form, env)
         print_error(out, why)
         return
-    config = linkcheck.configuration.Configuration()
+    config = configuration.Configuration()
     config["recursionlevel"] = int(form["level"].value)
     config["logger"] = config.logger_new('html', fd=out)
     config["threads"] = 0
@@ -88,22 +85,22 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
     if "errors" not in form:
         config["verbose"] = True
     # avoid checking of local files or other nasty stuff
-    pat = "!^%s$" % linkcheck.url.safe_url_pattern
-    config["externlinks"].append(linkcheck.get_link_pat(pat, strict=True))
+    pat = "!^%s$" % urlutil.safe_url_pattern
+    config["externlinks"].append(get_link_pat(pat, strict=True))
     # start checking
-    aggregate = linkcheck.director.get_aggregate(config)
-    get_url_from = linkcheck.checker.get_url_from
+    aggregate = director.get_aggregate(config)
+    get_url_from = checker.get_url_from
     url = form["url"].value
     url_data = get_url_from(url, 0, aggregate)
     try:
-        linkcheck.add_intern_pattern(url_data, config)
+        add_intern_pattern(url_data, config)
     except UnicodeError:
         logit({}, env)
         print_error(out,
                     u"URL has unparsable domain name: %s" % sys.exc_info()[1])
         return
     aggregate.urlqueue.put(url_data)
-    linkcheck.director.check_urls(aggregate)
+    director.check_urls(aggregate)
 
 
 def get_host_name (form):
@@ -120,7 +117,7 @@ def checkform (form):
         lang = form['language'].value
         if lang in _supported_langs:
             locale.setlocale(locale.LC_ALL, lang_locale[lang])
-            linkcheck.init_i18n()
+            init_i18n()
         else:
             raise FormError(_("unsupported language"))
     # check url syntax
@@ -128,7 +125,7 @@ def checkform (form):
         url = form["url"].value
         if not url or url == "http://":
             raise FormError(_("empty url was given"))
-        if not linkcheck.url.is_safe_url(url):
+        if not urlutil.is_safe_url(url):
             raise FormError(_("disallowed url was given"))
     else:
         raise FormError(_("no url was given"))
@@ -150,7 +147,7 @@ def logit (form, env):
         return
     elif type(_logfile) == types.StringType:
         _logfile = file(_logfile, "a")
-    _logfile.write("\n"+linkcheck.strformat.strtime(time.time())+"\n")
+    _logfile.write("\n" + strformat.strtime(time.time())+"\n")
     for var in ("HTTP_USER_AGENT", "REMOTE_ADDR",
                 "REMOTE_HOST", "REMOTE_PORT"):
         if var in env:

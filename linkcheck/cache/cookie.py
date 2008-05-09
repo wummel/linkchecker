@@ -17,13 +17,12 @@
 """
 Store and retrieve cookies.
 """
-from linkcheck.decorators import synchronized
-from .. import log, LOG_CACHE
-import linkcheck.lock
-import linkcheck.cookies
+from .. import log, LOG_CACHE, cookies
+from ..decorators import synchronized
+from ..lock import get_lock
 
 
-_lock = linkcheck.lock.get_lock("cookie")
+_lock = get_lock("cookie")
 
 class CookieJar (object):
     """
@@ -43,17 +42,17 @@ class CookieJar (object):
         for h in headers.getallmatchingheaders("Set-Cookie"):
             # RFC 2109 (Netscape) cookie type
             try:
-                c = linkcheck.cookies.NetscapeCookie(h, scheme, host, path)
+                c = cookies.NetscapeCookie(h, scheme, host, path)
                 jar.add(c)
-            except linkcheck.cookies.CookieError:
+            except cookies.CookieError:
                 log.debug(LOG_CACHE,
                "Invalid cookie header for %s:%s%s: %r", scheme, host, path, h)
         for h in headers.getallmatchingheaders("Set-Cookie2"):
             # RFC 2965 cookie type
             try:
-                c = linkcheck.cookies.Rfc2965Cookie(h, scheme, host, path)
+                c = cookies.Rfc2965Cookie(h, scheme, host, path)
                 jar.add(c)
-            except linkcheck.cookies.CookieError:
+            except cookies.CookieError:
                 log.debug(LOG_CACHE,
               "Invalid cookie2 header for %s:%s%s: %r", scheme, host, path, h)
         self.cache[host] = jar

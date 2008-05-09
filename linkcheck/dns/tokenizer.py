@@ -16,7 +16,7 @@
 
 """Tokenize DNS master file format"""
 
-import cStringIO
+from cStringIO import StringIO
 import sys
 
 import linkcheck.dns.exception
@@ -89,7 +89,7 @@ class Tokenizer(object):
         """
 
         if isinstance(f, str):
-            f = cStringIO.StringIO(f)
+            f = StringIO(f)
             if filename is None:
                 filename = '<string>'
         else:

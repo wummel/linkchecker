@@ -19,9 +19,7 @@ Find link tags in HTML text.
 """
 
 import re
-from . import strformat, log, LOG_CHECK
-import linkcheck.linkname
-import linkcheck.url
+from . import strformat, log, LOG_CHECK, linkname, url as urlutil
 
 MAX_NAMELEN = 256
 unquote = strformat.unquote
@@ -63,7 +61,7 @@ LinkTags = {
 refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
 _quoted_pat = ur"('[^']+'|\"[^\"]+\"|[^\)\s]+)"
 css_url_re = re.compile(ur"url\(\s*(?P<url>%s)\s*\)" % _quoted_pat)
-swf_url_re = re.compile("(?i)%s" % linkcheck.url.safe_url_pattern)
+swf_url_re = re.compile("(?i)%s" % urlutil.safe_url_pattern)
 c_comment_re = re.compile(ur"/\*.*?\*/", re.DOTALL)
 
 def strip_c_comments (text):
@@ -182,7 +180,7 @@ class LinkFinder (TagFinder):
                 # position, to limit the amount of data to encode.
                 data = self.content[pos:pos+MAX_NAMELEN]
                 data = data.decode(self.parser.encoding, "ignore")
-                name = linkcheck.linkname.href_name(data)
+                name = linkname.href_name(data)
         elif tag == 'img':
             name = unquote(attrs.get_true('alt', u''))
             if not name:

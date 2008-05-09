@@ -118,7 +118,7 @@ def add_fileoutput_config (config):
         devnull = 'NUL'
     else:
         return
-    for ftype in linkcheck.Loggers.keys():
+    for ftype in linkcheck.logger.Loggers.keys():
         if ftype in ('test', 'blacklist'):
             continue
         logger = config.logger_new(ftype, fileoutput=1, filename=devnull)

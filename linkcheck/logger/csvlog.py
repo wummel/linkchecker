@@ -17,16 +17,14 @@
 """
 A CSV logger.
 """
-
 import time
 import csv
 import os
+from . import Logger
+from .. import strformat, configuration
 
-import linkcheck.logger
-import linkcheck.configuration
 
-
-class CSVLogger (linkcheck.logger.Logger):
+class CSVLogger (Logger):
     """
     CSV output, consisting of one line per entry. Entries are
     separated by a semicolon.
@@ -57,12 +55,12 @@ class CSVLogger (linkcheck.logger.Logger):
         row = []
         if self.has_part("intro"):
             self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": linkcheck.configuration.AppName,
-                         "time": linkcheck.strformat.strtime(self.starttime)})
+                        {"app": configuration.AppName,
+                         "time": strformat.strtime(self.starttime)})
             self.comment(_("Get the newest version at %(url)s") %
-                         {'url': linkcheck.configuration.Url})
+                         {'url': configuration.Url})
             self.comment(_("Write comments and bugs to %(email)s") %
-                         {'email': linkcheck.configuration.Email})
+                         {'email': configuration.Email})
             self.check_date()
             self.comment(_("Format of the entries:"))
             for s in (u"urlname",
@@ -120,6 +118,6 @@ class CSVLogger (linkcheck.logger.Logger):
         if self.has_part("outro"):
             duration = self.stoptime - self.starttime
             self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": linkcheck.strformat.strtime(self.stoptime),
-                  "duration": linkcheck.strformat.strduration_long(duration)})
+                 {"time": strformat.strtime(self.stoptime),
+                  "duration": strformat.strduration_long(duration)})
         self.close_fileoutput()

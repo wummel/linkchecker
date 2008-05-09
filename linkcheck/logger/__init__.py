@@ -21,12 +21,8 @@ Output logging support for different formats.
 import sys
 import os
 import datetime
-
-import linkcheck.strformat
-import linkcheck.i18n
-import linkcheck.decorators
-import linkcheck.dummy
-from .. import log, LOG_CHECK
+from ..decorators import notimplemented
+from .. import log, LOG_CHECK, strformat, i18n, dummy
 
 _ = lambda x: x
 Fields = dict(
@@ -76,8 +72,7 @@ class Logger (object):
         # number of warnings that were printed
         self.warnings_printed = 0
         # encoding of output
-        default = linkcheck.i18n.default_encoding
-        self.output_encoding = args.get("encoding", default)
+        self.output_encoding = args.get("encoding", i18n.default_encoding)
 
     def init_fileoutput (self, args):
         """
@@ -105,7 +100,7 @@ class Logger (object):
             log.warn(LOG_CHECK,
                 "Could not open file %r for writing: %s\n"
                 "Disabling log output of %s", self.filename, msg, self)
-            self.fd = linkcheck.dummy.Dummy()
+            self.fd = dummy.Dummy()
         self.filename = None
 
     def close_fileoutput (self):
@@ -168,7 +163,7 @@ class Logger (object):
         """
         sep = os.linesep+os.linesep
         text = sep.join(lines)
-        return linkcheck.strformat.wrap(text, width,
+        return strformat.wrap(text, width,
                             subsequent_indent=" "*self.max_indent,
                             initial_indent=" "*self.max_indent).lstrip()
 
@@ -245,14 +240,14 @@ class Logger (object):
             self.warnings_printed += num_warnings
             self.log_url(url_data)
 
-    @linkcheck.decorators.notimplemented
+    @notimplemented
     def log_url (self, url_data):
         """
         Log a new url with this logger.
         """
         pass
 
-    @linkcheck.decorators.notimplemented
+    @notimplemented
     def end_output (self):
         """
         End of output, used for cleanup (eg output buffer flushing).
@@ -282,3 +277,34 @@ class Logger (object):
                 self.fd.flush()
             except IOError:
                 pass
+
+# note: don't confuse URL loggers with application logs above
+from .text import TextLogger
+from .html import HtmlLogger
+from .gml import GMLLogger
+from .dot import DOTLogger
+from .sql import SQLLogger
+from .csvlog import CSVLogger
+from .blacklist import BlacklistLogger
+from .gxml import GraphXMLLogger
+from .customxml import CustomXMLLogger
+from .none import NoneLogger
+
+
+# default link logger classes
+Loggers = {
+    "text": TextLogger,
+    "html": HtmlLogger,
+    "gml": GMLLogger,
+    "dot": DOTLogger,
+    "sql": SQLLogger,
+    "csv": CSVLogger,
+    "blacklist": BlacklistLogger,
+    "gxml": GraphXMLLogger,
+    "xml": CustomXMLLogger,
+    "none": NoneLogger,
+}
+# for easy printing: a comma separated logger list
+LoggerKeys = ", ".join(repr(name) for name in Loggers)
+
+

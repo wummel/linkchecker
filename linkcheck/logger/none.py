@@ -17,11 +17,10 @@
 """
 A dummy logger.
 """
+from . import Logger
 
-import linkcheck.logger
 
-
-class NoneLogger (linkcheck.logger.Logger):
+class NoneLogger (Logger):
     """
     Dummy logger printing nothing.
     """

@@ -22,11 +22,12 @@ import select
 import nntplib
 import ftplib
 import re
-import linkcheck
+from .. import LinkCheckerError, httplib2 as httplib
+from ..dns.exception import DNSException
 
 # Catch these exception on syntax checks.
 ExcSyntaxList = [
-    linkcheck.LinkCheckerError,
+    LinkCheckerError,
 ]
 
 # Catch these exceptions on content and connect checks. All other
@@ -34,8 +35,8 @@ ExcSyntaxList = [
 ExcCacheList = [
     IOError,
     OSError, # OSError is thrown on Windows when a file is not found
-    linkcheck.LinkCheckerError,
-    linkcheck.dns.exception.DNSException,
+    LinkCheckerError,
+    DNSException,
     socket.error,
     select.error,
     # nttp errors (including EOFError)
@@ -45,7 +46,7 @@ ExcCacheList = [
     nntplib.error_proto,
     EOFError,
     # http error
-    linkcheck.httplib2.error,
+    httplib.error,
     # ftp errors
     ftplib.error_reply,
     ftplib.error_temp,

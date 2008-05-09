@@ -17,15 +17,13 @@
 """
 Cache robots.txt contents.
 """
-from linkcheck.decorators import synchronized
-import linkcheck.robotparser2
-import linkcheck.configuration
-import linkcheck.lock
-import linkcheck.url
+from .. import robotparser2, configuration, url as urlutil
+from ..decorators import synchronized
+from ..lock import get_lock
 
 
 # lock for caching
-_lock = linkcheck.lock.get_lock("robots.txt")
+_lock = get_lock("robots.txt")
 
 
 class RobotsTxt (object):
@@ -43,17 +41,16 @@ class RobotsTxt (object):
         Ask robots.txt allowance.
         """
         if roboturl not in self.cache:
-            rp = linkcheck.robotparser2.RobotFileParser(
-                                            user=user, password=password)
+            rp = robotparser2.RobotFileParser(user=user, password=password)
             rp.set_url(roboturl)
             rp.read()
             if callback is not None:
-                parts = linkcheck.url.url_split(rp.url)
+                parts = urlutil.url_split(rp.url)
                 host = "%s:%d" % (parts[1], parts[2])
-                useragent = linkcheck.configuration.UserAgent
+                useragent = configuration.UserAgent
                 wait = rp.get_crawldelay(useragent)
                 callback(host, wait)
             self.cache[roboturl] = rp
         else:
             rp = self.cache[roboturl]
-        return rp.can_fetch(linkcheck.configuration.UserAgent, url)
+        return rp.can_fetch(configuration.UserAgent, url)

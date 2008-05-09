@@ -18,8 +18,8 @@
 URL checking functions.
 """
 import time
-import task
-import linkcheck.cache.urlqueue
+from . import task
+from ..cache import urlqueue
 
 
 def check_url (urlqueue, logger):
@@ -61,7 +61,7 @@ class Checker (task.CheckedTask):
                 finally:
                     self.urlqueue.task_done(url_data)
                 self.setName(self.origname)
-        except linkcheck.cache.urlqueue.Empty:
+        except urlqueue.Empty:
             time.sleep(0.1)
 
     def check_url_data (self, url_data):

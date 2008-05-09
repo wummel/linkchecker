@@ -20,10 +20,10 @@ A blacklist logger.
 
 from __future__ import with_statement
 import os
-import linkcheck.logger
+from . import Logger
 
 
-class BlacklistLogger (linkcheck.logger.Logger):
+class BlacklistLogger (Logger):
     """
     Updates a blacklist of wrong links. If a link on the blacklist
     is working (again), it is removed from the list. So after n days

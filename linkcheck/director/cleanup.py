@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Cleanup task."""
 import time
-import task
+from . import task
 
 
 class Cleanup (task.CheckedTask):

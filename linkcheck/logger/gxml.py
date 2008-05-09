@@ -18,7 +18,7 @@
 A GraphXML logger.
 """
 
-import xmllog
+from . import xmllog
 
 
 class GraphXMLLogger (xmllog.XMLLogger):

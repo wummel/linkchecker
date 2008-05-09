@@ -25,11 +25,9 @@ import urlparse
 import urllib
 import urllib2
 
-import urlbase
-from .. import log, LOG_CHECK
-import linkcheck.checker
-import linkcheck.fileutil
-from const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH, \
+from . import urlbase, get_index_html, absolute_url
+from .. import log, LOG_CHECK, fileutil, strformat, url as urlutil
+from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH, \
     PARSE_EXTENSIONS, PARSE_CONTENTS
 
 
@@ -100,7 +98,7 @@ class FileUrl (urlbase.UrlBase):
         base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
         # norm base url again after changing
         if self.base_url != base_url:
-            base_url, is_idn = linkcheck.checker.urlbase.url_norm(base_url)
+            base_url, is_idn = urlbase.url_norm(base_url)
             if is_idn:
                 pass # XXX warn about idn use
             self.base_url = unicode(base_url)
@@ -126,7 +124,7 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.set_result(_("directory"))
         else:
-            url = linkcheck.fileutil.pathencode(self.url)
+            url = fileutil.pathencode(self.url)
             self.url_connection = urllib2.urlopen(url)
             self.check_case_sensitivity()
 
@@ -170,7 +168,7 @@ class FileUrl (urlbase.UrlBase):
         """
         t = time.time()
         files = get_files(self.get_os_filename())
-        data = linkcheck.checker.get_index_html(files)
+        data = get_index_html(files)
         self.data = data.encode("iso8859-1", "ignore")
         self.dltime = time.time() - t
         self.dlsize = len(self.data)
@@ -211,7 +209,7 @@ class FileUrl (urlbase.UrlBase):
         path = self.urlparts[2]
         if os.name == 'nt':
             path = prepare_urlpath_for_nt(path)
-        return linkcheck.fileutil.pathencode(urllib.url2pathname(path))
+        return fileutil.pathencode(urllib.url2pathname(path))
 
     def is_directory (self):
         """
@@ -268,12 +266,11 @@ class FileUrl (urlbase.UrlBase):
         @return non-empty regex pattern or None
         @rtype String or None
         """
-        absolute = linkcheck.checker.absolute_url
-        url = absolute(self.base_url, self.base_ref, self.parent_url)
+        url = absolute_url(self.base_url, self.base_ref, self.parent_url)
         if not url:
             return None
-        parts = linkcheck.strformat.url_unicode_split(url)
-        path, params = linkcheck.url.splitparams(parts[2])
+        parts = strformat.url_unicode_split(url)
+        path, params = urlutil.splitparams(parts[2])
         segments = path.split('/')
         if not self.is_directory():
             # cut off filename to have a directory

@@ -20,8 +20,7 @@ Handle telnet: links.
 
 import telnetlib
 import urllib
-
-import urlbase
+from . import urlbase
 from .. import log, LOG_CHECK
 
 

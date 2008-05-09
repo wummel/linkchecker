@@ -73,7 +73,7 @@ class TestConfig (unittest.TestCase):
         self.assertTrue(config["interactive"])
         self.assertTrue(linkcheck.log.is_debug(linkcheck.LOG_THREAD))
         self.assertFalse(config["status"])
-        self.assertTrue(isinstance(config["logger"], linkcheck.Loggers["xml"]))
+        self.assertTrue(isinstance(config["logger"], linkcheck.logger.Loggers["xml"]))
         self.assertTrue(config["verbose"])
         self.assertTrue(config["warnings"])
         self.assertFalse(config["quiet"])

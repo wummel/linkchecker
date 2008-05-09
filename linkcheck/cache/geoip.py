@@ -18,12 +18,12 @@
 Store and retrieve country names for IPs.
 """
 import os
-import linkcheck.lock
-from linkcheck.decorators import synchronized
+from ..lock import get_lock
+from ..decorators import synchronized
 
 # I don't know if the geoip library is already thread-safe, but
 # we take no risks here.
-_lock = linkcheck.lock.get_lock("geoip")
+_lock = get_lock("geoip")
 
 # initialize GeoIP database
 geoip = None

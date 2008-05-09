@@ -21,15 +21,12 @@ Handle FTP links.
 import ftplib
 import time
 import urllib
-import cStringIO as StringIO
+from cStringIO import StringIO
 
-from .. import log, LOG_CHECK
-import linkcheck
-import proxysupport
-import httpurl
-import internpaturl
-import linkcheck.ftpparse._ftpparse as ftpparse
-from const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS
+from .. import log, LOG_CHECK, LinkCheckerError
+from ..ftpparse import _ftpparse as ftpparse
+from . import proxysupport, httpurl, internpaturl, get_index_html
+from .const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS
 
 DEFAULT_TIMEOUT_SECS = 300
 
@@ -109,13 +106,13 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.url_connection.login(_user, _password)
         except EOFError, msg:
             msg = str(msg)
-            raise linkcheck.LinkCheckerError(
+            raise LinkCheckerError(
                    _("Remote host has closed connection: %r") % msg)
         if not self.url_connection.getwelcome():
-            raise linkcheck.LinkCheckerError(
+            raise LinkCheckerError(
                    _("Got no answer from FTP server"))
         # don't set info anymore, this may change every time we log in
-        #self.add_info(linkcheck.strformat.unicode_safe(info))
+        #self.add_info(strformat.unicode_safe(info))
 
     def cwd (self):
         """
@@ -227,11 +224,11 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.is_directory():
             self.url_connection.cwd(self.filename)
             self.files = self.get_files()
-            self.data = linkcheck.checker.get_index_html(self.files)
+            self.data = get_index_html(self.files)
         else:
             # download file in BINARY mode
             ftpcmd = "RETR %s" % self.filename
-            buf = StringIO.StringIO()
+            buf = StringIO()
             def stor_data (s):
                 """Helper method storing given data"""
                 buf.write(s)

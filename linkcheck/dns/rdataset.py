@@ -17,7 +17,7 @@
 """DNS rdatasets (an rdataset is a set of rdatas of a given type and class)"""
 
 import random
-import StringIO
+from cStringIO import StringIO
 import struct
 
 import linkcheck.dns.exception
@@ -188,7 +188,7 @@ class Rdataset(linkcheck.dns.set.Set):
         else:
             ntext = ''
             pad = ''
-        s = StringIO.StringIO()
+        s = StringIO()
         if not override_rdclass is None:
             rdclass = override_rdclass
         else:

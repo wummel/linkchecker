@@ -32,7 +32,7 @@ import time
 import re
 import Cookie
 import cookielib
-import cStringIO as StringIO
+from cStringIO import StringIO
 import rfc822
 from . import strformat
 
@@ -345,7 +345,7 @@ def from_headers (strheader):
     @return: tuple (headers, scheme, host, path)
     @raises: ValueError for incomplete or invalid data
     """
-    fp = StringIO.StringIO(strheader)
+    fp = StringIO(strheader)
     headers = rfc822.Message(fp, seekable=True)
     if "Host" not in headers:
         raise ValueError("Required header 'Host:' missing")
