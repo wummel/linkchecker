@@ -140,11 +140,11 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	scripts/test.sh
+	scripts/test.sh $(TESTS)
 
 .PHONY: pyflakes
 pyflakes:
-	pyflakes 2>&1 | \
+	pyflakes $(PY_FILES_DIRS) 2>&1 | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
