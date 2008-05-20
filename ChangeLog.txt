@@ -1,4 +1,4 @@
-5.0unreleased "" (released xx.xx.2008)
+5.0unreleased "Iron Man" (released xx.xx.2008)
 
   * Require and use Python 2.5.
     Type: feature
@@ -19,6 +19,12 @@
     --check-css-w3.
     Type: feature
     Changed: linkchecker, linkcheck/checker/urlbase.py
+
+  * Added aibility to scan URL content with ClamAV virus scanner.
+    Implemented as commandline option --scan-virus.
+    Type: feature:
+    Changed: linkchecker, linkcheck/checker/urlbase.py
+    Added: linkcheck/clamav.py
 
 4.9 "Michael Clayton" (released 25.4.2008)
 
