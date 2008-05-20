@@ -56,13 +56,8 @@ def decode (page):
             if not ceheader.match(h):
                 headers[h] = page.info()[h]
         newpage = urllib.addinfourl(fp, headers, page.geturl())
-        if hasattr(page, "code"):
-            # python 2.4 compatibility
-            newpage.code = page.code
-        if hasattr(page, "msg"):
-            # python 2.4 compatibility
-            newpage.msg = page.msg
-        page = newpage
+        newpage.code = page.code
+        newpage.msg = page.msg
     return page
 
 

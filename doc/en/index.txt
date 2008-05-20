@@ -23,6 +23,8 @@ Features
 - username/password authorization for HTTP and FTP
 - robots.txt exclusion protocol support
 - i18n support
+- HTML and CSS syntax check
+- Antivirus check
 - a command line interface
 - a (Fast)CGI web interface (requires HTTP server)
 
@@ -81,11 +83,11 @@ URL input is interactive.
 
 Another way is executing on the command line.
 If there is a file ``linkchecker.bat`` in your Python Scripts directory
-you can run eg. ``c:\Python24\Scripts\linkchecker.bat``.
+you can run eg. ``c:\Python25\Scripts\linkchecker.bat``.
 
 If there is only a ``linkchecker`` file in your Python Scripts
 directory, you have to run eg.
-``c:\Python24\python.exe c:\Python24\Scripts\linkchecker``.
+``c:\Python25\python.exe c:\Python25\Scripts\linkchecker``.
 
 
 Running under Mac OS 9.x platforms

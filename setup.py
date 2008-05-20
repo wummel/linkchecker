@@ -489,6 +489,8 @@ o username/password authorization for HTTP, FTP and Telnet
 o robots.txt exclusion protocol support
 o Cookie support
 o i18n support
+o HTML and CSS syntax check
+o Antivirus check
 o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
 """,
