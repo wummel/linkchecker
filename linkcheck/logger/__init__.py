@@ -275,7 +275,7 @@ class Logger (object):
         if hasattr(self, "fd"):
             try:
                 self.fd.flush()
-            except IOError:
+            except (IOError, AttributeError):
                 pass
 
 # note: don't confuse URL loggers with application logs above
