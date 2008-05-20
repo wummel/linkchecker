@@ -131,33 +131,18 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
     def read_check_options (self, section):
         """Read check* options."""
         if self.has_option(section,"checkhtml"):
-            val = self.getboolean(section, "checkhtml")
-            if val:
-                try:
-                    import tidy
-                except ImportError:
-                    log.warn(LOG_CHECK,
-                    _("warning: tidy module is not available; " \
-                     "download from http://utidylib.berlios.de/"))
-                    val = False
-            self.config["checkhtml"] = val
+            self.config["checkhtml"] = self.getboolean(section, "checkhtml")
         if self.has_option(section,"checkcss"):
-            val = self.getboolean(section, "checkcss")
-            if val:
-                try:
-                    import cssutils
-                except ImportError:
-                    log.warn(LOG_CHECK,
-                        _("warning: cssutils module is not available; " \
-                         "download from http://cthedot.de/cssutils/"))
-                    val = False
-            self.config["checkcss"] = val
+            self.config["checkcss"] = self.getboolean(section, "checkcss")
         if self.has_option(section,"checkhtmlw3"):
             val = self.getboolean(section, "checkhtmlw3")
             self.config["checkhtmlw3"] = val
         if self.has_option(section,"checkcssw3"):
-            val = self.getboolean(section, "checkcssw3")
-            self.config["checkcssw3"] = val
+            self.config["checkcssw3"] = self.getboolean(section, "checkcssw3")
+        if self.has_option(section, "scanvirus"):
+            self.config["scanvirus"] = self.getboolean(section, "scanvirus")
+        if self.has_option(section, "clamavconf"):
+            self.config["clamavconf"] = self.getboolean(section, "clamavconf")
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""

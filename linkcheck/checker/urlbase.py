@@ -33,7 +33,7 @@ from . import absolute_url, StoringHandler, get_url_from
 from ..cache import geoip
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
     strformat, linkparse, containers, LinkCheckerError, url as urlutil,
-    trace)
+    trace, clamav)
 from ..HtmlParser import htmlsax
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
     WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT,
@@ -407,26 +407,8 @@ class UrlBase (object):
             if isinstance(value, httplib.BadStatusLine):
                 value = _('Bad HTTP response %r') % str(value)
             self.set_result(unicode_safe(value), valid=False)
-
-        # check content
-        warningregex = self.aggregate.config["warningregex"]
-        if warningregex and self.valid:
-            log.debug(LOG_CHECK, "checking content")
-            try:
-                self.check_content(warningregex)
-            except tuple(ExcList):
-                value = self.handle_exception()
-                self.set_result(unicode_safe(value), valid=False)
-        # check HTML/CSS syntax
-        if self.valid and not self.extern[0]:
-            if self.aggregate.config["checkhtml"] and self.is_html():
-                self.check_html()
-            if self.aggregate.config["checkcss"] and self.is_css():
-                self.check_css()
-            if self.aggregate.config["checkhtmlw3"] and self.is_html():
-                self.check_html_w3()
-            if self.aggregate.config["checkcssw3"] and self.is_css():
-                self.check_css_w3()
+        if self.can_get_content():
+            self.check_content()
         self.checktime = time.time() - check_start
         # check recursion
         try:
@@ -596,17 +578,36 @@ class UrlBase (object):
             self.dlsize = len(self.data)
         return self.data
 
-    def check_content (self, warningregex):
-        """
-        If a warning expression was given, call this function to check it
-        against the content of this url.
-        """
-        if not self.can_get_content():
+    def check_content (self):
+        """Check content data for warnings, syntax errors, viruses etc."""
+        if not (self.can_get_content() and self.valid):
+            # no data to check
             return
-        match = warningregex.search(self.get_content())
-        if match:
-            self.add_warning(_("Found %r in link contents.") % match.group(),
-                             tag=WARN_URL_WARNREGEX_FOUND)
+        warningregex = self.aggregate.config["warningregex"]
+        if warningregex:
+            log.debug(LOG_CHECK, "checking content")
+            try:
+                match = warningregex.search(self.get_content())
+                if match:
+                    self.add_warning(_("Found %r in link contents.") %
+                             match.group(), tag=WARN_URL_WARNREGEX_FOUND)
+            except tuple(ExcList):
+                value = self.handle_exception()
+                self.set_result(unicode_safe(value), valid=False)
+        # is it an intern URL?
+        if not self.extern[0]:
+            # check HTML/CSS syntax
+            if self.aggregate.config["checkhtml"] and self.is_html():
+                self.check_html()
+            if self.aggregate.config["checkcss"] and self.is_css():
+                self.check_css()
+            if self.aggregate.config["checkhtmlw3"] and self.is_html():
+                self.check_html_w3()
+            if self.aggregate.config["checkcssw3"] and self.is_css():
+                self.check_css_w3()
+            # check with clamav
+            if self.aggregate.config["scanvirus"]:
+                self.scan_virus()
 
     def check_size (self):
         """
@@ -742,6 +743,14 @@ class UrlBase (object):
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
                 _("warning: CSS W3C validation caused error: %s ") % err)
+
+    def scan_virus (self):
+        """Scan content for viruses."""
+        infected, errors = clamav.scan(self.get_content())
+        for msg in infected:
+            self.add_warning(u"Virus scan infection: %s" % msg)
+        for msg in errors:
+            self.add_warning(u"Virus scan error: %s" % msg)
 
     def parse_url (self):
         """

@@ -1,7 +1,5 @@
 - [INTERFACE] make a nice GUI for linkchecker
 
-- [FEATURE] Virus check
-
 - [DOC] The ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi
   are not documented.
 

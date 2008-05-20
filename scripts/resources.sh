@@ -12,3 +12,10 @@ os=`python -c "import os; print os.name"`
 if [ "x$os" = "xposix" ]; then
     echo "--resource=posix"
 fi
+
+SOCK=`grep LocalSocket /etc/clamav/clamd.conf  | awk '{print $2;}'`
+if test -n $SOCK; then
+    if waitfor -w 1 unix:"$SOCK"; then
+        echo "--resource=clamav"
+    fi
+fi

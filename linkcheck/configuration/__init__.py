@@ -23,7 +23,7 @@ import os
 import logging.config
 import urllib
 import _linkchecker_configdata
-from .. import log, LOG_CHECK, LOG, ansicolor, lognames
+from .. import log, LOG_CHECK, LOG, ansicolor, lognames, clamav
 from . import confparse
 
 Version = _linkchecker_configdata.version
@@ -148,6 +148,8 @@ class Configuration (dict):
         self["checkcss"] = False
         self["checkhtmlw3"] = False
         self["checkcssw3"] = False
+        self["scanvirus"] = False
+        self["clamavconf"] = clamav.canonical_clamav_conf()
 
     def init_logging (self, debug=None):
         """
@@ -235,3 +237,24 @@ class Configuration (dict):
             if 'url-anchor-not-found' in self["ignorewarnings"]:
                 self["ignorewarnings"].remove('url-anchor-not-found')
         self['logger'] = self.logger_new(self['output'])
+        if self['checkhtml']:
+            try:
+                import tidy
+            except ImportError:
+                log.warn(LOG_CHECK,
+                    _("warning: tidy module is not available; " \
+                     "download from http://utidylib.berlios.de/"))
+                self['checkhtml'] = False
+        if self['checkcss']:
+            try:
+                import cssutils
+            except ImportError:
+                log.warn(LOG_CHECK,
+                    _("warning: cssutils module is not available; " \
+                     "download from http://cthedot.de/cssutils/"))
+                self['checkcss'] = False
+        if self['scanvirus']:
+            try:
+                clamav.init_clamav_conf(self['clamavconf'])
+            except clamav.ClamavError, msg:
+                self['scanvirus'] = False

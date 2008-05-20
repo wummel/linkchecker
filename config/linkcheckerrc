@@ -138,6 +138,10 @@
 # check HTML or CSS syntax online with W3C validators
 #checkhtmlw3=1
 #checkcssw3=1
+# scan URL content for viruses with ClamAV
+#scanvirus=1
+# ClamAV config file
+#clamavconf=/etc/clamav/clamd.conf
 
 # filtering options
 [filtering]

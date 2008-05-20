@@ -379,6 +379,9 @@ group.add_option("--check-css", action="store_true", dest="checkcss",
 group.add_option("--check-css-w3", action="store_true", dest="checkcssw3",
                  help=_(
 """Check syntax of CSS URLs with W3C online validator."""))
+group.add_option("--scan-virus", action="store_true", dest="scanvirus",
+                 help=_(
+"""Scan content of URLs with ClamAV virus scanner."""))
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation, an alias for '-o none'.
@@ -677,6 +680,8 @@ if constructauth:
     config["authentication"].append({'pattern': try_compile_re(".+"),
                                      'user': _username,
                                      'password': _password})
+if options.scanvirus is not None:
+    config["scanvirus"] = options.scanvirus
 # boolean options for syntaxcheck
 for prefix in ("checkhtml", "checkcss"):
     for suffix in ("", "w3"):
