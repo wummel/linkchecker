@@ -13,4 +13,4 @@ cd ..\..
 %PYTHON% setup.py sdist --manifest-only
 %PYTHON% setup.py build -c mingw32 bdist_wininst -b hase.bmp
 REM start resource editor for .exe icon
-"%PROGRAMFILES%\XN Resource Editor\XNResourceEditor.exe"
+REM "%PROGRAMFILES%\XN Resource Editor\XNResourceEditor.exe"
