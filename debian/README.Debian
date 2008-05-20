@@ -9,12 +9,7 @@ For this to work, your web server must have content negotiation enabled
 Otherwise you have to for one language XY the file extensions of the
 .html.XY files.
 
-Note that only the local host (ie. 127.0.0.1) can access this
-script. If you want to enable access from other hosts you have
-to adjust the ALLOWED_HOSTS and ALLOWED_SERVERS variables in
+Note that only the local host (ie. 127.0.0.1) can serve and access this
+script. If you want to enable access from or to other hosts you have
+to adjust the ALLOWED_CLIENTS and ALLOWED_SERVERS variables in
 the /usr/lib/cgi-bin/lc.cgi script.
-
-Profiling
-==========
-The --profile option works only if python >=2.5 or the
-python-profiler package is installed.

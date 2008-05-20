@@ -25,10 +25,10 @@ import re
 import time
 import urlparse
 import types
-
 from . import configuration, strformat, checker, director
 from . import add_intern_pattern, get_link_pat, init_i18n
 from . import url as urlutil
+
 
 _logfile = None
 _supported_langs = ('de', 'C')
@@ -52,14 +52,17 @@ def startoutput (out=sys.stdout):
               "Pragma: no-cache\r\n"
               "\r\n")
 
-def checkaccess (out=sys.stdout, hosts=None, servers=None, env=os.environ):
-    """See if remote addr is allowed to access the CGI interface."""
-    if hosts is None:
-        hosts = []
-    if servers is None:
-        servers = []
-    if os.environ.get('REMOTE_ADDR') in hosts and \
-       os.environ.get('SERVER_ADDR') in servers:
+
+def checkaccess (out=sys.stdout, allowed_clients=None, allowed_servers=None,
+    env=os.environ):
+    """See if remote and server address is allowed to access the CGI
+    interface."""
+    if allowed_clients is None:
+        allowed_clients = []
+    if allowed_servers is None:
+        allowed_servers = []
+    if env.get('REMOTE_ADDR') in allowed_clients and \
+       env.get('SERVER_ADDR') in allowed_servers:
         return True
     logit({}, env)
     print_error(out, u"Access denied")
@@ -139,6 +142,7 @@ def checkform (form):
         if option in form:
             if not form[option].value == "on":
                 raise FormError(_("invalid %s option syntax") % option)
+
 
 def logit (form, env):
     """Log form errors."""

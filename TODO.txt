@@ -1,6 +1,3 @@
 - [INTERFACE] make a nice GUI for linkchecker
 
-- [DOC] The ALLOWED_HOSTS and ALLOWED_SERVERS variables in lc.cgi
-  are not documented.
-
 - [FEATURE] Support Unicode in HTML pages (make them charset utf-8).

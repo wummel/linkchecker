@@ -18,7 +18,6 @@
 
 import sys
 import cgi
-
 import linkcheck
 import linkcheck.lc_cgi
 
@@ -26,13 +25,18 @@ import linkcheck.lc_cgi
 # log errors to stdout
 sys.stderr = sys.stdout
 
-# access: a list of IP numbers
-ALLOWED_HOSTS = ['127.0.0.1']
+# List of IP numbers that are allowed to use the CGI interface.
+# This gets compared with the REMOTE_ADDR environment variable of the CGI
+# request.
+ALLOWED_CLIENTS = ['127.0.0.1']
+# List of IP numbers that are allowed to function as the server.
+# This gets compared with the SERVER_ADDR environment variable of the CGI
+# request.
 ALLOWED_SERVERS = ['127.0.0.1']
 # uncomment the following lines to test your CGI values
 #cgi.test()
 #sys.exit(0)
 linkcheck.lc_cgi.startoutput()
-if linkcheck.lc_cgi.checkaccess(hosts=ALLOWED_HOSTS,
-                                servers=ALLOWED_SERVERS):
+if linkcheck.lc_cgi.checkaccess(allowed_clients=ALLOWED_CLIENTS,
+                                allowed_servers=ALLOWED_SERVERS):
     linkcheck.lc_cgi.checklink(form=cgi.FieldStorage())
