@@ -17,7 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 def _main (args):
-    """USAGE: test/run.sh test/parsefile.py test.html"""
+    """USAGE: scripts/run.sh scripts/parsefile.py test.html"""
     if len(args) < 1:
         print _main.__doc__
         sys.exit(1)
