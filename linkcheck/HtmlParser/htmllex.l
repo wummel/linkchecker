@@ -300,7 +300,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_COMMENT,S_COMMENT1>. {
+<S_COMMENT,S_COMMENT1>.|\n {
     return T_WAIT;
 }
 
@@ -327,7 +327,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_COMMENT2>. {
+<S_COMMENT2>.|\n {
     return T_WAIT;
 }
 
@@ -379,7 +379,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_CDATA>. {
+<S_CDATA>.|\n {
     return T_WAIT;
 }
 
@@ -414,7 +414,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RETURN(T_PI);
 }
 
-<S_PI>. {
+<S_PI>.|\n {
     return T_WAIT;
 }
 
@@ -478,7 +478,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RETURN(T_ELEMENT_START);
 }
 
-<S_TAGSTART>. {
+<S_TAGSTART>.|\n {
     return T_WAIT;
 }
 
@@ -566,7 +566,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_SCRIPT>. {
+<S_SCRIPT>.|\n {
     return T_WAIT;
 }
 
@@ -587,7 +587,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_SCRIPT);
 }
 
-<S_SCRIPT_APOS_ESC>. {
+<S_SCRIPT_APOS_ESC>.|\n {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_SCRIPT_APOS);
@@ -610,7 +610,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_SCRIPT);
 }
 
-<S_SCRIPT_STRING_ESC>. {
+<S_SCRIPT_STRING_ESC>.|\n {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_SCRIPT_STRING);
@@ -627,7 +627,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_SCRIPT);
 }
 
-<S_SCRIPT_COMMENT>. {
+<S_SCRIPT_COMMENT>.|\n {
     return T_WAIT;
 }
 
@@ -691,7 +691,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_STYLE>. {
+<S_STYLE>.|\n {
     return T_WAIT;
 }
 
@@ -906,7 +906,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 
-<S_APOSSTRING_ESC>. {
+<S_APOSSTRING_ESC>.|\n {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_APOSSTRING);
@@ -944,7 +944,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-<S_STRING_ESC>. {
+<S_STRING_ESC>.|\n {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
     BEGIN(S_STRING);
@@ -993,7 +993,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_TAGEND2);
 }
 
-<S_TAGEND>. {
+<S_TAGEND>.|\n {
     return T_WAIT;
 }
 
@@ -1026,7 +1026,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RETURN(T_ELEMENT_END);
 }
 
-<S_TAGEND2>. {
+<S_TAGEND2>.|\n {
     return T_WAIT;
 }
   /*********************** TEXT ************************/
@@ -1057,7 +1057,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RETURN(T_TEXT);
 }
 
-<INITIAL>. {
+<INITIAL>.|\n {
     return T_WAIT;
 }
 
