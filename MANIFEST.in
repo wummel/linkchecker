@@ -19,6 +19,9 @@ include debian/NEWS
 include debian/README.Debian
 include debian/watch
 include test.py tests/*.py
+include tests/checker/*.py
+include tests/configuration/*.py
+include tests/dns/*.py
 include scripts/*.py scripts/*.sh scripts/*.bat
 include cgi-bin/lconline/*.html cgi-bin/lconline/*.de cgi-bin/lconline/*.en
 include cgi-bin/lconline/*.js cgi-bin/lconline/*.css
@@ -36,12 +39,8 @@ include doc/en/*.html doc/en/*.css doc/en/*.1 doc/en/*.5 doc/en/Makefile
 include doc/de/*.1 doc/de/*.5
 include doc/Makefile doc/rest2htmlnav
 include doc/examples/*.sh
-recursive-include linkcheck/checker/tests/data *.txt *.html *.result *.asc *.css *.ico
-recursive-include linkcheck/configuration/tests/data *.ini
-include linkcheck/tests/*.py
-include linkcheck/checker/tests/*.py
-include linkcheck/configuration/tests/*.py
-include linkcheck/dns/tests/*.py
-include linkcheck/dns/tests/example*
+recursive-include tests/checker/data *.txt *.html *.result *.asc *.css *.ico
+recursive-include tests/configuration/data *.ini
+include tests/dns/example*
 include linkcheck/dns/ChangeLog
 include hase.bmp
