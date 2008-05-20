@@ -29,7 +29,7 @@ import platform
 import stat
 import string
 import glob
-from distutils.core import setup, Extension, DEBUG
+from distutils.core import setup, Extension
 from distutils.spawn import find_executable
 import distutils.dist
 from distutils.command.bdist_wininst import bdist_wininst
