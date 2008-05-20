@@ -5,6 +5,7 @@
 *.la
 *~
 *.so
+*.bak
 /build
 /coverage
 MANIFEST
