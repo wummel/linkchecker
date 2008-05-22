@@ -1,5 +1,1 @@
-- [BUILD] The Debian package uses python2.4 when building the .deb - why?
-
 - [INTERFACE] make a nice GUI for linkchecker
-
-- [FEATURE] Support Unicode in HTML pages (make them charset utf-8).
