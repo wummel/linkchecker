@@ -14,7 +14,9 @@ Architecture: any
 Depends: ${python:Depends}, ${shlibs:Depends}
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
-Suggests: apache | httpd, python-optcomplete (>= 1.2-5), python-geoip (>= 1.2.1-2)
+Suggests: apache | httpd, python-optcomplete (>= 1.2-5),
+ python-geoip (>= 1.2.1-2), clamav-daemon, python-utidylib,
+ python-cssutils
 Description: check websites and HTML documents for broken links
  Provides a command line program and web interface to check links
  of websites and HTML documents.
