@@ -70,8 +70,8 @@ class MailtoUrl (urlbase.UrlBase):
                     a = urllib.unquote(val)
                     self.addresses.extend(email.Utils.getaddresses([a]))
         # check syntax of emails
-        for name, addr in self.addresses:
-            username, domain = _split_address(addr)
+        for _name, addr in self.addresses:
+            domain = _split_address(addr)[1]
             if not urlutil.is_safe_domain(domain):
                 raise LinkCheckerError(_("Invalid mail syntax"))
         log.debug(LOG_CHECK, "addresses: %s", self.addresses)

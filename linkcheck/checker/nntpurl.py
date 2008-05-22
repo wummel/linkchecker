@@ -51,15 +51,15 @@ class NntpUrl (urlbase.UrlBase):
         while group[:1] == '/':
             group = group[1:]
         if '@' in group:
-            # request article
-            resp, number, mid = nntp.stat("<"+group+">")
+            # request article info (resp, number mid)
+            number = nntp.stat("<"+group+">")[1]
             self.add_info(_('Articel number %s found.') % number)
         else:
             # split off trailing articel span
             group = group.split('/', 1)[0]
             if group:
-                # request group info
-                resp, count, first, last, name = nntp.group(group)
+                # request group info (resp, count, first, last, name)
+                name = nntp.group(group)[4]
                 self.add_info(_("News group %s found.") % name)
             else:
                 # group name is the empty string

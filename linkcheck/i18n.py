@@ -127,8 +127,6 @@ def get_headers_lang (headers):
 
 def get_locale ():
     """Return current configured locale."""
-    loc = None
-    encoding = 'ascii'
     loc, encoding = locale.getlocale(category=locale.LC_ALL)
     if loc is None:
         return ('C', 'ascii')

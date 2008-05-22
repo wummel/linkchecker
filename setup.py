@@ -154,12 +154,12 @@ class MyDistribution (distutils.dist.Distribution, object):
                      "keywords", "platforms", "fullname", "contact",
                      "contact_email", "fullname")
         for name in metanames:
-              method = "get_" + name
-              val = getattr(self.metadata, method)()
-              if isinstance(val, str):
-                  val = unicode(val)
-              cmd = "%s = %r" % (name, val)
-              data.append(cmd)
+            method = "get_" + name
+            val = getattr(self.metadata, method)()
+            if isinstance(val, str):
+                val = unicode(val)
+            cmd = "%s = %r" % (name, val)
+            data.append(cmd)
         # write the config file
         data.append('appname = "LinkChecker"')
         util.execute(write_file, (filename, data),

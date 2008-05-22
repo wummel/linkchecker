@@ -190,7 +190,7 @@ def _write_color_nt (fp, text, color):
     oldcolor = WConio.gettextinfo()[4]
     oldtextcolor = oldcolor & 0x000F
     if ";" in color:
-        control, color = color.split(";", 1)
+        color = color.split(";", 1)[1]
     WConio.textcolor(WConioColor.get(color, oldtextcolor))
     fp.write(text)
     WConio.textattr(oldcolor)

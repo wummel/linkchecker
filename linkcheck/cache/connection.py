@@ -90,7 +90,6 @@ class ConnectionPool (object):
         @return: Open connection object or None if none is available.
         @rtype None or FTPConnection or HTTP(S)Connection
         """
-        host = key[1]
         if key not in self.connections:
             # not found
             return None

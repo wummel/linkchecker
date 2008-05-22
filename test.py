@@ -161,7 +161,7 @@ def walk_with_symlinks(top, func, arg):
 
 
 def has_path_component (path, name):
-    drive, path = os.path.splitdrive(path)
+    _drive, path = os.path.splitdrive(path)
     head, tail = os.path.split(path)
     while head and tail:
         if tail == name:
@@ -577,7 +577,7 @@ class CustomTestResult(unittest._TextTestResult):
 
     def printErrorList(self, flavour, errors):
         if self.cfg.immediate_errors:
-            for test, err in errors:
+            for test, _err in errors:
                 description = self.getDescription(test)
                 self.stream.writeln("%s: %s" % (flavour, description))
         else:
@@ -733,6 +733,7 @@ def run_tests (cfg, test_cases, tracer):
         success = runner.run(suite).wasSuccessful()
         if cfg.profile:
             prof.stop()
+    return success
 
 
 def main(argv):

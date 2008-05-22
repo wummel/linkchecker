@@ -150,7 +150,7 @@ class RobotFileParser (object):
             # no network
             self.allow_all = True
             log.debug(LOG_CHECK, "%s allow all", self.url)
-        except IOError, msg:
+        except IOError:
             self.allow_all = True
             log.debug(LOG_CHECK, "%s allow all", self.url)
         except httplib.HTTPException:

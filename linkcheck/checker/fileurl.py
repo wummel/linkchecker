@@ -270,7 +270,7 @@ class FileUrl (urlbase.UrlBase):
         if not url:
             return None
         parts = strformat.url_unicode_split(url)
-        path, params = urlutil.splitparams(parts[2])
+        path = urlutil.splitparams(parts[2])[0]
         segments = path.split('/')
         if not self.is_directory():
             # cut off filename to have a directory

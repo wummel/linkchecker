@@ -256,5 +256,5 @@ class Configuration (dict):
         if self['scanvirus']:
             try:
                 clamav.init_clamav_conf(self['clamavconf'])
-            except clamav.ClamavError, msg:
+            except clamav.ClamavError:
                 self['scanvirus'] = False
