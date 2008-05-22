@@ -27,7 +27,7 @@ from .. import log, LOG_CHECK, LOG, ansicolor, lognames, clamav
 from . import confparse
 
 Version = _linkchecker_configdata.version
-AppName = u"LinkChecker"
+AppName = _linkchecker_configdata.appname
 App = AppName+u" "+Version
 Author =  _linkchecker_configdata.author
 HtmlAuthor = Author.replace(u' ', u'&nbsp;')
