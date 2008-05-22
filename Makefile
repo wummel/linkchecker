@@ -69,8 +69,8 @@ deb_orig:
 # ready for upload, signed with my GPG key
 .PHONY: deb_signed
 deb_signed: cleandeb
-	(env -u LANG svn-buildpackage --svn-dont-clean --svn-verbose --svn-ignore \
-	  --svn-prebuild="$(MAKE) deb_orig" --svn-lintian --svn-linda \
+	(env -u LANG svn-buildpackage --svn-dont-clean --svn-verbose \
+	  --svn-ignore --svn-prebuild="$(MAKE) deb_orig" --svn-lintian \
 	  -sgpg -pgpg -k$(GPGKEY) -rfakeroot 2>&1) | \
 	tee $(SVNBUILD)/linkchecker-$(VERSION).build
 
