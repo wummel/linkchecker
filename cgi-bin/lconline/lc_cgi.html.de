@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
  "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>LinkChecker Online</title>
 <link rel="stylesheet" href="lc.css" type="text/css" />
 <script type="text/javascript" src="check.js"></script>
@@ -12,7 +12,7 @@ function gettext (s) {
         return "Leere URL angegeben.";
     }
     if (s=="Invalid URL was given.") {
-        return "Ungültige URL angegeben.";
+        return "UngÃ¼ltige URL angegeben.";
     }
     return s;
 }
@@ -23,7 +23,7 @@ function gettext (s) {
  alink="#191c83">
 
 <center><h2>LinkChecker Online</h2>
-(läuft mit Öl vom <a href="http://linkchecker.sourceforge.net/"
+(lÃ¤uft mit Ã–l vom <a href="http://linkchecker.sourceforge.net/"
 target="_top">LinkChecker</a>)
 </center>
 
@@ -50,7 +50,7 @@ target="_top">LinkChecker</a>)
   <option value="-1">unendlich</option>
   </select>
 </td>
-<td>Prüfe Anker in HTML:</td>
+<td>PrÃ¼fe Anker in HTML:</td>
 <td><input type="checkbox" name="anchors" checked></td>
 </tr>
 <tr>
