@@ -40,7 +40,7 @@ class TestMail (LinkCheckTest):
           u"cache key mailto:calvin@users.sourceforge.net,"
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
-          u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
+          u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
@@ -51,7 +51,7 @@ class TestMail (LinkCheckTest):
           u"cache key mailto:calvin@users.sourceforge.net,"
            u"calvin@users.sourceforge.net",
           u"real url %s" % url,
-          u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
+          u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
           u"valid",
         ]
         self.direct(url, resultlines)
@@ -60,7 +60,7 @@ class TestMail (LinkCheckTest):
             u"url %s" % url,
             u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % url,
-            u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
+            u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -69,7 +69,7 @@ class TestMail (LinkCheckTest):
             u"url %s" % url,
             u"cache key mailto:o'hara@users.sourceforge.net",
             u"real url %s" % url,
-            u"warning Unverified address: <o'hara@users.sourceforge.net> Unrouteable address.",
+            u"warning Unverified address: 550 <o'hara@users.sourceforge.net> Unrouteable address.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -80,9 +80,9 @@ class TestMail (LinkCheckTest):
             u"cache key mailto:calvin@users.sourceforge.net,"
              u"calvin_CC@users.sourceforge.net,calvin_cc@users.sourceforge.net",
             u"real url %s" % url,
-           u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
-            u"warning Unverified address: <calvin_cc@users.sourceforge.net> Unrouteable address.",
-            u"warning Unverified address: <calvin_CC@users.sourceforge.net> Unrouteable address.",
+           u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
+            u"warning Unverified address: 550 <calvin_cc@users.sourceforge.net> Unrouteable address.",
+            u"warning Unverified address: 550 <calvin_CC@users.sourceforge.net> Unrouteable address.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -93,7 +93,7 @@ class TestMail (LinkCheckTest):
             u"url %s" % url,
             u"cache key mailto:news-admins@freshmeat.net",
             u"real url %s" % url,
-            u"warning Unverified address: 5.5.1 VRFY command is disabled.",
+            u"warning Unverified address: 502 5.5.1 VRFY command is disabled.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -109,7 +109,7 @@ class TestMail (LinkCheckTest):
             u"url %s" % url,
             u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % qurl,
-            u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
+            u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
             u"warning Base URL is not properly normed. "
              u"Normed URL is %s." % qurl,
             u"valid",
@@ -121,7 +121,7 @@ class TestMail (LinkCheckTest):
             u"url %s" % url,
             u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % qurl,
-            u"info Verified address: <calvin@users.sourceforge.net> is deliverable.",
+            u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
             u"warning Base URL is not properly normed. "
              u"Normed URL is %s." % qurl,
             u"valid",
@@ -159,7 +159,7 @@ class TestMail (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % mailto,
             u"real url %s" % url,
-            u"warning Unverified address: <lvin@users.sourceforge.net> Unrouteable address.",
+            u"warning Unverified address: 550 <lvin@users.sourceforge.net> Unrouteable address.",
             u"valid",
         ]
         self.direct(url, resultlines)

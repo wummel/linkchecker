@@ -204,16 +204,20 @@ class MailtoUrl (urlbase.UrlBase):
                 log.debug(LOG_CHECK, "SMTP connected!")
                 smtpconnect = 1
                 self.url_connection.helo()
-                info = self.url_connection.verify("%s@%s" % (username, domain))
-                log.debug(LOG_CHECK, "SMTP user info %r", info)
-                d = {'info': str(info[1])}
-                if info[0] == 250:
-                    self.add_info(_("Verified address: %(info)s.") % d)
-                # check for 25x return code which means that the address
+                mailaddress = "%s@%s" % (username, domain)
+                status, info = self.url_connection.verify(mailaddress)
+                log.debug(LOG_CHECK, "SMTP info %d %r", status, info)
+                d = {
+                    'info': "%d %s" % (status, str(info)),
+                    'mail': mailaddress,
+                }
+                if status == 250:
+                    self.add_info(_("Verified address %(mail)s: %(info)s.") % d)
+                # check for 25x status code which means that the address
                 # could not be verified, but is sent anyway
-                elif 0 < (info[0] - 250) < 10:
-                    self.add_info(_("Unverified address: %(info)s."
-                                  " But mail will be sent anyway.") % d)
+                elif 250 < status  < 260:
+                    self.add_info(_("Unverified but presumably valid"
+                                    " address %(mail)s: %(info)s.") % d)
                 else:
                     self.add_warning(_("Unverified address: %(info)s.") % d,
                      tag=WARN_MAIL_UNVERIFIED_ADDRESS)

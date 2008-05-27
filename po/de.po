@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2008-05-20 10:10+0200\n"
-"PO-Revision-Date: 2008-05-20 10:24+0100\n"
+"POT-Creation-Date: 2008-05-27 19:58+0200\n"
+"PO-Revision-Date: 2008-05-27 20:26+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -133,81 +133,6 @@ msgstr "Ignoriere Proxy Einstellung %r"
 msgid "Using proxy %r."
 msgstr "Verwende Proxy %r."
 
-#: ../linkcheck/checker/ftpurl.py:110
-#, python-format
-msgid "Remote host has closed connection: %r"
-msgstr "Entfernter Rechner hat die Verbindung geschlossen: %r"
-
-#: ../linkcheck/checker/ftpurl.py:113
-msgid "Got no answer from FTP server"
-msgstr "Keine Antwort vom FTP Server"
-
-#: ../linkcheck/checker/ftpurl.py:145
-msgid "Missing trailing directory slash in ftp url."
-msgstr "Fehlender / am Ende der FTP url."
-
-#: ../linkcheck/checker/httpsurl.py:35
-#: ../linkcheck/checker/unknownurl.py:80
-#, python-format
-msgid "%s URL ignored."
-msgstr "%s URL ignoriert."
-
-#: ../linkcheck/checker/mailtourl.py:51
-msgid "Could not split the mail address"
-msgstr "konnte die Mail Adresse nicht splitten"
-
-#: ../linkcheck/checker/mailtourl.py:76
-msgid "Invalid mail syntax"
-msgstr "Ungültige Mail Syntax"
-
-#: ../linkcheck/checker/mailtourl.py:115
-#, python-format
-msgid "Error parsing CGI values: %s"
-msgstr "Fehler beim Parsen der CGI-Werte: %s"
-
-#: ../linkcheck/checker/mailtourl.py:138
-msgid "No addresses found."
-msgstr "Keine Adressen wurden gefunden."
-
-#: ../linkcheck/checker/mailtourl.py:158
-#, python-format
-msgid "No MX mail host for %(domain)s found."
-msgstr "Kein MX mail host für %(domain)s gefunden."
-
-#: ../linkcheck/checker/mailtourl.py:163
-#, python-format
-msgid "No host for %(domain)s found."
-msgstr "Kein Rechner für %(domain)s gefunden."
-
-#: ../linkcheck/checker/mailtourl.py:209
-#, python-format
-msgid "Verified address: %(info)s."
-msgstr "Gültige Adresse: %(info)s."
-
-#: ../linkcheck/checker/mailtourl.py:213
-#, python-format
-msgid "Unverified address: %(info)s. But mail will be sent anyway."
-msgstr "Gültige Adresse: %(info)s. Email wird dennoch versandt."
-
-#: ../linkcheck/checker/mailtourl.py:216
-#, python-format
-msgid "Unverified address: %(info)s."
-msgstr "Unverifizierte Adresse: %(info)s."
-
-#: ../linkcheck/checker/mailtourl.py:220
-#, python-format
-msgid "MX mail host %(host)s did not accept connections: %(error)s."
-msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s."
-
-#: ../linkcheck/checker/mailtourl.py:226
-msgid "Could not connect, but syntax is correct"
-msgstr "Konnte nicht konnektieren, aber die Syntax ist korrekt"
-
-#: ../linkcheck/checker/mailtourl.py:228
-#, python-format
-msgid "Found MX mail host %(host)s"
-msgstr "MX Mail host %(host)s gefunden"
-
 #: ../linkcheck/checker/nntpurl.py:46
 msgid "No NNTP server was specified, skipping this URL."
 msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax."
@@ -236,6 +161,25 @@ msgstr "NNTP Server zu beschäftigt; habe es mehr als %d mal versucht."
 msgid "NNTP busy: %s."
 msgstr "NNTP beschäftigt: %s."
 
+#: ../linkcheck/checker/ftpurl.py:110
+#, python-format
+msgid "Remote host has closed connection: %r"
+msgstr "Entfernter Rechner hat die Verbindung geschlossen: %r"
+
+#: ../linkcheck/checker/ftpurl.py:113
+msgid "Got no answer from FTP server"
+msgstr "Keine Antwort vom FTP Server"
+
+#: ../linkcheck/checker/ftpurl.py:145
+msgid "Missing trailing directory slash in ftp url."
+msgstr "Fehlender / am Ende der FTP url."
+
+#: ../linkcheck/checker/httpsurl.py:35
+#: ../linkcheck/checker/unknownurl.py:80
+#, python-format
+msgid "%s URL ignored."
+msgstr "%s URL ignoriert."
+
 #: ../linkcheck/checker/telneturl.py:52
 msgid "Host is empty"
 msgstr "Rechnername ist leer"
@@ -248,19 +192,6 @@ msgstr "Außerhalb des Domain Filters; prüfe lediglich Syntax."
 #: ../linkcheck/checker/unknownurl.py:83
 msgid "URL is unrecognized or has invalid syntax"
 msgstr "URL ist unbekannt oder besitzt ungültige Syntax"
-
-#: ../linkcheck/checker/fileurl.py:114
-msgid "Added trailing slash to directory."
-msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt."
-
-#: ../linkcheck/checker/fileurl.py:125
-msgid "directory"
-msgstr "Verzeichnis"
-
-#: ../linkcheck/checker/fileurl.py:142
-#, python-format
-msgid "The URL path %(path)r is not the same as the system path %(realpath)r. You should always use the system path in URLs."
-msgstr "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. Sie sollten immer den Systempfad in URLs benutzen."
 
 #: ../linkcheck/checker/httpurl.py:167
 msgid "Access denied by robots.txt, checked only syntax."
@@ -369,6 +300,62 @@ msgstr "Entkomprimierungsfehler %(err)s"
 #, python-format
 msgid "Unsupported content encoding %r."
 msgstr "Content-Encoding %r wird nicht unterstützt."
+
+#: ../linkcheck/checker/mailtourl.py:51
+msgid "Could not split the mail address"
+msgstr "konnte die Mail Adresse nicht splitten"
+
+#: ../linkcheck/checker/mailtourl.py:76
+msgid "Invalid mail syntax"
+msgstr "Ungültige Mail Syntax"
+
+#: ../linkcheck/checker/mailtourl.py:115
+#, python-format
+msgid "Error parsing CGI values: %s"
+msgstr "Fehler beim Parsen der CGI-Werte: %s"
+
+#: ../linkcheck/checker/mailtourl.py:138
+msgid "No addresses found."
+msgstr "Keine Adressen wurden gefunden."
+
+#: ../linkcheck/checker/mailtourl.py:159
+#, python-format
+msgid "No MX mail host for %(domain)s found."
+msgstr "Kein MX mail host für %(domain)s gefunden."
+
+#: ../linkcheck/checker/mailtourl.py:164
+#, python-format
+msgid "No host for %(domain)s found."
+msgstr "Kein Rechner für %(domain)s gefunden."
+
+#: ../linkcheck/checker/mailtourl.py:215
+#, python-format
+msgid "Verified address %(mail)s: %(info)s."
+msgstr "Gültige Adresse %(mail)s: %(info)s."
+
+#: ../linkcheck/checker/mailtourl.py:219
+#, python-format
+msgid "Unverified but presumably valid address %(mail)s: %(info)s."
+msgstr "Unverifizierte aber wahrscheinlich gültige Adresse %(mail)s: %(info)s."
+
+#: ../linkcheck/checker/mailtourl.py:222
+#, python-format
+msgid "Unverified address: %(info)s."
+msgstr "Unverifizierte Adresse: %(info)s."
+
+#: ../linkcheck/checker/mailtourl.py:226
+#, python-format
+msgid "MX mail host %(host)s did not accept connections: %(error)s."
+msgstr "Der MX mail host %(host)s akzeptierte keine SMTP Verbindungen: %(error)s."
+
+#: ../linkcheck/checker/mailtourl.py:232
+msgid "Could not connect, but syntax is correct"
+msgstr "Konnte nicht konnektieren, aber die Syntax ist korrekt"
+
+#: ../linkcheck/checker/mailtourl.py:235
+#, python-format
+msgid "Found MX mail host %(host)s"
+msgstr "MX Mail host %(host)s gefunden"
 
 #: ../linkcheck/checker/urlbase.py:64
 #: ../linkchecker:745
@@ -480,6 +467,19 @@ msgstr "Warnung: HTML W3C Validierung verursachte Fehler: %s"
 #, python-format
 msgid "warning: CSS W3C validation caused error: %s "
 msgstr "Warnung: CSS W3C Validierung verursachte Fehler: %s"
+
+#: ../linkcheck/checker/fileurl.py:114
+msgid "Added trailing slash to directory."
+msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt."
+
+#: ../linkcheck/checker/fileurl.py:125
+msgid "directory"
+msgstr "Verzeichnis"
+
+#: ../linkcheck/checker/fileurl.py:142
+#, python-format
+msgid "The URL path %(path)r is not the same as the system path %(realpath)r. You should always use the system path in URLs."
+msgstr "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. Sie sollten immer den Systempfad in URLs benutzen."
 
 #: ../linkcheck/configuration/confparse.py:110
 #, python-format
@@ -881,32 +881,32 @@ msgstr "DEBUG"
 msgid "NOTSET"
 msgstr "NICHTS"
 
-#: ../linkcheck/lc_cgi.py:122
+#: ../linkcheck/lc_cgi.py:125
 msgid "unsupported language"
 msgstr "nicht unterstützte Sprache"
 
-#: ../linkcheck/lc_cgi.py:127
+#: ../linkcheck/lc_cgi.py:130
 msgid "empty url was given"
 msgstr "leere URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:129
+#: ../linkcheck/lc_cgi.py:132
 msgid "disallowed url was given"
 msgstr "eine ungültige URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:131
+#: ../linkcheck/lc_cgi.py:134
 msgid "no url was given"
 msgstr "keine URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:136
+#: ../linkcheck/lc_cgi.py:139
 msgid "invalid recursion level"
 msgstr "ungültiger Rekursionslevel"
 
-#: ../linkcheck/lc_cgi.py:141
+#: ../linkcheck/lc_cgi.py:144
 #, python-format
 msgid "invalid %s option syntax"
 msgstr "ungültige Option %s"
 
-#: ../linkcheck/lc_cgi.py:162
+#: ../linkcheck/lc_cgi.py:166
 #, python-format
 msgid ""
 "<html><head>\n"
@@ -1671,6 +1671,8 @@ msgstr "%s Option nimmt kein Wert"
 msgid "Options"
 msgstr "Optionen"
 
+#~ msgid "Unverified address: %(info)s. But mail will be sent anyway."
+#~ msgstr "Gültige Adresse: %(info)s. Email wird dennoch versandt."
 #~ msgid "invalid log option %r"
 #~ msgstr "ungültige Log Option %r"
 #~ msgid "syntax error in warningregex %(regex)r: %(msg)s\n"
