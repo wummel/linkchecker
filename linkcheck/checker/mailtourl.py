@@ -161,7 +161,8 @@ class MailtoUrl (urlbase.UrlBase):
             answers = resolver.query(domain, 'A')
             if len(answers) == 0:
                 self.set_result(_("No host for %(domain)s found.") %
-                                 {'domain': domain}, valid=False)
+                                 {'domain': domain}, valid=False,
+                                 overwrite=True)
                 return
             # set preference to zero
             mxdata = [(0, rdata.to_text(omit_final_dot=True))
@@ -223,9 +224,11 @@ class MailtoUrl (urlbase.UrlBase):
             if smtpconnect:
                 break
         if not smtpconnect:
-            self.set_result(_("Could not connect, but syntax is correct"))
+            self.set_result(_("Could not connect, but syntax is correct"),
+                overwrite=True)
         else:
-            self.set_result(_("Found MX mail host %(host)s") % {'host': host})
+            self.set_result(_("Found MX mail host %(host)s") % {'host': host},
+                overwrite=True)
 
     def close_connection (self):
         """
