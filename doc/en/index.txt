@@ -12,17 +12,16 @@ http://linkchecker.sourceforge.net/.
 Features
 ========
 
-- recursive checking
-- multithreaded
+- recursive and multithreaded checking
 - output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
   graph in different formats
-- HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
-  file links support
+- HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file
+  links support
 - restriction of link checking with regular expression filters for URLs
 - proxy support
-- username/password authorization for HTTP and FTP
-- robots.txt exclusion protocol support
-- i18n support
+- username/password authorization for HTTP and FTP and Telnet
+- honors robots.txt exclusion protocol
+- Cookie support
 - HTML and CSS syntax check
 - Antivirus check
 - a command line interface
