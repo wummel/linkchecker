@@ -157,11 +157,11 @@ class UrlBase (object):
         # flag if the result should be cached
         self.caching = True
 
-    def set_result (self, msg, valid=True):
+    def set_result (self, msg, valid=True, overwrite=False):
         """
         Set result string and validity.
         """
-        if self.has_result:
+        if self.has_result and not overwrite:
             log.warn(LOG_CHECK,
               "Double result %r (previous %r) for %s", msg, self.result, self)
         else:
