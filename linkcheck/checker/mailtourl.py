@@ -140,7 +140,8 @@ class MailtoUrl (urlbase.UrlBase):
             return
         for name, mail in self.addresses:
             self.check_smtp_domain(name, mail)
-
+            if not self.valid:
+                break
 
     def check_smtp_domain (self, name, mail):
         """
