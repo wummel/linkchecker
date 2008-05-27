@@ -183,18 +183,20 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         else:
             server = _("unknown")
         if self.fallback_get:
-            self.add_info(_("Server %r did not support HEAD request; "
-                            "a GET request was used instead.") % server)
+            self.add_info(_("Server %(name)r did not support HEAD request; "
+                            "a GET request was used instead.") %
+                            {"name": server})
         if self.no_anchor:
-            self.add_warning(_("Server %r had no anchor support, removed"
-                               " anchor from request.") % server,
+            self.add_warning(_("Server %(name)r had no anchor support, removed"
+                               " anchor from request.") % {"name": server},
                              tag=WARN_HTTP_NO_ANCHOR_SUPPORT)
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
             if self.warn_redirect:
-                log.warn(LOG_CHECK, _("""URL %s has been redirected.
-Use URL %s instead for checking."""), self.url, newurl)
+                log.warn(LOG_CHECK, _("""URL %(url)s has been redirected.
+Use URL %(newurl)s instead for checking.""") % {
+                'url': self.url, 'newurl': newurl})
             self.url = newurl
         # check response
         if response:
@@ -232,11 +234,13 @@ Use URL %s instead for checking."""), self.url, newurl)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 newproxy = self.headers.getheader("Location")
-                self.add_info(_("Enforced proxy %r.") % newproxy)
+                self.add_info(_("Enforced proxy %(name)r.") %
+                              {"name": newproxy})
                 self.set_proxy(newproxy)
                 if not self.proxy:
                     self.set_result(
-                         _("Enforced proxy %r ignored, aborting.") % newproxy,
+                         _("Enforced proxy %(name)r ignored, aborting.") %
+                         {"name": newproxy},
                          valid=False)
                     return response
                 response.close()
@@ -351,8 +355,8 @@ Use URL %s instead for checking."""), self.url, newurl)
                 recursion = all_seen + [redirected]
                 if set_result:
                     self.set_result(
-                          _("recursive redirection encountered:\n %s") %
-                            "\n  => ".join(recursion), valid=False)
+                          _("recursive redirection encountered:\n %(urls)s") %
+                            {"urls": "\n  => ".join(recursion)}, valid=False)
                 return -1, response
             if urlparts[0] == self.scheme:
                 # remember redireced url as alias
@@ -375,7 +379,8 @@ Use URL %s instead for checking."""), self.url, newurl)
                 if set_result:
                     self.add_warning(
                            _("Redirection to different URL type encountered; "
-                             "the original URL was %r.") % self.url,
+                             "the original URL was %(url)r.") %
+                             {"url": self.url},
                            tag=WARN_HTTP_WRONG_REDIRECT)
                 newobj = get_url_from(
                           redirected, self.recursion_level, self.aggregate,
@@ -417,7 +422,7 @@ Use URL %s instead for checking."""), self.url, newurl)
             # store cookies for valid links
             if self.aggregate.config['storecookies']:
                 for c in self.cookies:
-                    self.add_info(_("Store cookie: %s.") % c)
+                    self.add_info(_("Store cookie: %(cookie)s.") % c)
                 try:
                     out = self.aggregate.cookies.add(self.headers,
                                                      self.urlparts[0],
@@ -435,7 +440,7 @@ Use URL %s instead for checking."""), self.url, newurl)
                 self.set_result(u"OK")
         modified = self.headers.get('Last-Modified', '')
         if modified:
-            self.add_info(_("Last modified %s.") % modified)
+            self.add_info(_("Last modified %(date)s.") % {"date": modified})
 
     def _get_http_response (self):
         """
@@ -534,7 +539,7 @@ Use URL %s instead for checking."""), self.url, newurl)
         elif scheme == "https" and supportHttps:
             h = httplib.HTTPSConnection(host)
         else:
-            msg = _("Unsupported HTTP url scheme %r") % scheme
+            msg = _("Unsupported HTTP url scheme %(scheme)r") % {"scheme": scheme}
             raise LinkCheckerError(msg)
         if log.is_debug(LOG_CHECK):
             h.set_debuglevel(1)
@@ -585,7 +590,8 @@ Use URL %s instead for checking."""), self.url, newurl)
         encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
-            self.add_warning(_('Unsupported content encoding %r.') % encoding,
+            self.add_warning(_('Unsupported content encoding %(encoding)r.') %
+                             {"encoding": encoding},
                              tag=WARN_HTTP_UNSUPPORTED_ENCODING)
             return False
         return True
@@ -635,7 +641,8 @@ Use URL %s instead for checking."""), self.url, newurl)
         encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
-            self.add_warning(_('Unsupported content encoding %r.') % encoding,
+            self.add_warning(_('Unsupported content encoding %(encoding)r.') %
+                             {"encoding": encoding},
                              tag=WARN_HTTP_UNSUPPORTED_ENCODING)
             return False
         return True

@@ -77,7 +77,8 @@ class UnknownUrl (urlbase.UrlBase):
         if self.extern[0] and self.extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
         elif self.ignored():
-            self.add_warning(_("%s URL ignored.") % self.scheme.capitalize(),
+            self.add_warning(_("%(scheme)s URL ignored.") %
+                             {"scheme": self.scheme.capitalize()},
                              tag=WARN_IGNORE_URL)
         else:
             self.set_result(_("URL is unrecognized or has invalid syntax"),

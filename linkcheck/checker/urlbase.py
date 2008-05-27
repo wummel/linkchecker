@@ -61,7 +61,8 @@ def url_norm (url):
     try:
         return urlutil.url_norm(url)
     except UnicodeError:
-        msg = _("URL has unparsable domain name: %s") % sys.exc_info()[1]
+        msg = _("URL has unparsable domain name: %(name)s") % \
+            {"name": sys.exc_info()[1]}
         raise LinkCheckerError(msg)
 
 
@@ -289,7 +290,8 @@ class UrlBase (object):
             # check url warnings
             effectiveurl = urlparse.urlunsplit(self.urlparts)
             if self.url != effectiveurl:
-                self.add_warning(_("Effective URL %r.") % effectiveurl,
+                self.add_warning(_("Effective URL %(url)r.") %
+                                 {"url": effectiveurl},
                                  tag=WARN_URL_EFFECTIVE_URL)
                 self.url = effectiveurl
         except tuple(ExcSyntaxList), msg:
@@ -351,8 +353,8 @@ class UrlBase (object):
         self.host, self.port = urllib.splitport(host)
         if self.port is not None:
             if not urlutil.is_numeric_port(self.port):
-                raise LinkCheckerError(
-                         _("URL has invalid port %r") % str(self.port))
+                raise LinkCheckerError(_("URL has invalid port %(port)r") %
+                    {"port": str(self.port)})
             self.port = int(self.port)
 
     def check (self):
@@ -379,7 +381,8 @@ class UrlBase (object):
         """
         country = geoip.get_country(self.host)
         if country is not None:
-            self.add_info(_("URL is located in %s.") % _(country))
+            self.add_info(_("URL is located in %(country)s.") %
+                {"country": _(country)})
 
     def local_check (self):
         """Local check function can be overridden in subclasses."""
@@ -405,7 +408,7 @@ class UrlBase (object):
                 value = _('Hostname not found')
             # make nicer error msg for bad status line
             if isinstance(value, httplib.BadStatusLine):
-                value = _('Bad HTTP response %r') % str(value)
+                value = _('Bad HTTP response %(line)r') % {"line": str(value)}
             self.set_result(unicode_safe(value), valid=False)
         if self.can_get_content():
             self.check_content()
@@ -418,8 +421,8 @@ class UrlBase (object):
             self.check_size()
         except tuple(ExcList):
             value = self.handle_exception()
-            self.add_warning(_("could not get content: %r") % str(value),
-                            tag=WARN_URL_ERROR_GETTING_CONTENT)
+            self.add_warning(_("could not get content: %(msg)r") %
+                 {"msg": str(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
 
     def close_connection (self):
         """
@@ -532,8 +535,8 @@ class UrlBase (object):
         parser.handler = None
         if any(x for x in handler.urls if x[0] == self.anchor):
             return
-        self.add_warning(_("Anchor #%s not found.") % self.anchor,
-                         tag=WARN_URL_ANCHOR_NOT_FOUND)
+        self.add_warning(_("Anchor #%(name)s not found.") %
+            {"name": self.anchor}, tag=WARN_URL_ANCHOR_NOT_FOUND)
 
     def set_extern (self, url):
         """
@@ -589,8 +592,8 @@ class UrlBase (object):
             try:
                 match = warningregex.search(self.get_content())
                 if match:
-                    self.add_warning(_("Found %r in link contents.") %
-                             match.group(), tag=WARN_URL_WARNREGEX_FOUND)
+                    self.add_warning(_("Found %(match)r in link contents.") %
+                       {"match": match.group()}, tag=WARN_URL_WARNREGEX_FOUND)
             except tuple(ExcList):
                 value = self.handle_exception()
                 self.set_result(unicode_safe(value), valid=False)
@@ -646,7 +649,8 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: tidy HTML parsing caused error: %s ") % err)
+                _("warning: tidy HTML parsing caused error: %(msg)s ") %
+                {"msg": err})
 
     def check_css (self):
         """Check CSS syntax of this page (which is supposed to be CSS)
@@ -677,7 +681,8 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: cssutils parsing caused error: %s ") % err)
+                _("warning: cssutils parsing caused error: %(msg)s") %
+                {"msg": err})
 
     def check_html_w3 (self):
         """Check HTML syntax of this page (which is supposed to be HTML)
@@ -704,7 +709,8 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: HTML W3C validation caused error: %s ") % err)
+                _("warning: HTML W3C validation caused error: %(msg)s ") %
+                {"msg": err})
 
     def check_css_w3 (self):
         """Check CSS syntax of this page (which is supposed to be CSS)
@@ -742,7 +748,8 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: CSS W3C validation caused error: %s ") % err)
+                _("warning: CSS W3C validation caused error: %(msg)s ") %
+                {"msg": err})
 
     def scan_virus (self):
         """Scan content for viruses."""

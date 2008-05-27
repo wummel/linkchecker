@@ -53,14 +53,14 @@ class NntpUrl (urlbase.UrlBase):
         if '@' in group:
             # request article info (resp, number mid)
             number = nntp.stat("<"+group+">")[1]
-            self.add_info(_('Articel number %s found.') % number)
+            self.add_info(_('Article number %(num)s found.') % {"num": number})
         else:
             # split off trailing articel span
             group = group.split('/', 1)[0]
             if group:
                 # request group info (resp, count, first, last, name)
                 name = nntp.group(group)[4]
-                self.add_info(_("News group %s found.") % name)
+                self.add_info(_("News group %(name)s found.") % {"name": name})
             else:
                 # group name is the empty string
                 self.add_warning(_("No newsgroup specified in NNTP URL."),
@@ -88,7 +88,7 @@ class NntpUrl (urlbase.UrlBase):
             raise LinkCheckerError(
                _("NNTP server too busy; tried more than %d times.") % tries)
         if value is not None:
-            self.add_warning(_("NNTP busy: %s.") % str(value),
+            self.add_warning(_("NNTP busy: %(msg)s.") % {"msg": str(value)},
                              tag=WARN_NNTP_BUSY)
         return nntp
 

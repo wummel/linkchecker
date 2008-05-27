@@ -192,7 +192,7 @@ def print_version ():
 
 def print_usage (msg):
     """Print a program msg text to stderr and exit."""
-    print >>sys.stderr, encode(_("Error: %s") % msg)
+    print >>sys.stderr, encode(_("Error: %(msg)s") % {"msg": msg})
     print >>sys.stderr, encode(_("Execute 'linkchecker -h' for help"))
     sys.exit(1)
 
@@ -216,7 +216,7 @@ def viewprof ():
         sys.exit(1)
     if not os.path.isfile(_profile):
         log.warn(LOG_CMDLINE,
-                           _("Could not find profiling file %r.") % _profile)
+           _("Could not find profiling file %(file)r.") % {"file": _profile})
         print >>sys.stderr, \
                    _("Please run linkchecker with --profile to generate it.")
         sys.exit(1)
@@ -742,15 +742,16 @@ for url in args:
         linkcheck.add_intern_pattern(url_data, config)
     except UnicodeError:
         log.error(LOG_CMDLINE,
-            _("URL has unparsable domain name: %s"), sys.exc_info()[1])
+            _("URL has unparsable domain name: %(domain)s") %
+            {"domain": sys.exc_info()[1]})
         sys.exit(1)
     aggregate.urlqueue.put(url_data)
 # set up profiling
 if do_profile:
     if has_profile:
         if os.path.exists(_profile):
-            question = _("Overwrite profiling file %r?\n"
-                     "Press Ctrl-C to cancel, RETURN to continue.") % _profile
+            question = _("""Overwrite profiling file %(file)r?
+Press Ctrl-C to cancel, RETURN to continue.""") % {"file": _profile}
             try:
                 raw_input(question)
             except KeyboardInterrupt:
