@@ -49,7 +49,7 @@ _username = None
 _password = None
 
 # usage texts
-Usage = _("""USAGE\tlinkchecker [options] file-or-url...
+Usage = _("""USAGE\tlinkchecker [options] [file-or-url]...
 """)
 
 Notes = _("""NOTES
@@ -123,25 +123,25 @@ The return value is non-zero when
 Examples = _(r"""EXAMPLES
 The most common use checks the given domain recursively, plus any
 single URL pointing outside of the domain:
-  linkchecker http://treasure.calvinsplayground.de/
+  linkchecker http://www.example.org/
 Beware that this checks the whole site which can have several hundred
 thousands URLs. Use the -r option to restrict the recursion depth.
 
 Don't connect to mailto: hosts, only check their URL syntax. All other
 links are checked as usual:
-  linkchecker --ignore-url=^mailto: www.mysite.org
+  linkchecker --ignore-url=^mailto: www.example.org
 
-Checking a local HTML file on Unix:
-  linkchecker ../bla.html
+Checking local HTML files on Unix:
+  linkchecker ../bla.html subdir/blubber.html
 
 Checking a local HTML file on Windows:
   linkchecker c:\temp\test.html
 
 You can skip the "http://" url part if the domain starts with "www.":
-  linkchecker www.myhomepage.de
+  linkchecker www.example.de
 
 You can skip the "ftp://" url part if the domain starts with "ftp.":
-  linkchecker -r0 ftp.linux.org
+  linkchecker -r0 ftp.example.org
 """)
 
 LoggerTypes = _(r"""OUTPUT TYPES
