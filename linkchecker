@@ -559,7 +559,7 @@ constructauth = False
 do_profile = False
 if not options.priority:
     import linkcheck.threader
-    linkcheck.threader.set_thread_priority(linkcheck.threader.PRIO_LOW)
+    linkcheck.threader.set_thread_priority(linkcheck.threader.Prio.low)
 if options.warnings is not None:
     config["warnings"] = options.warnings
 if options.anchors is not None:

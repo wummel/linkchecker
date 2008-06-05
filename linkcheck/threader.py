@@ -22,40 +22,40 @@ import os
 import threading
 try:
     import win32process
-    _has_win32process = True
+    has_win32process = True
 except ImportError:
-    _has_win32process = False
+    has_win32process = False
+from .containers import enum
 
 # generic thread priorities with mappings to Windows and Unix
 # priority values
-PRIO_HIGH = 0
-PRIO_NORMAL = 1
-PRIO_LOW = 2
+Prio = enum("high", "normal", "low")
 
 _posix_nice_val = {
-    PRIO_HIGH: -5,
-    PRIO_NORMAL: +0,
-    PRIO_LOW: +10,
+    Prio.high: -5,
+    Prio.normal: +0,
+    Prio.low: +10,
 }
-if _has_win32process:
+if has_win32process:
     if hasattr(win32process, "BELOW_NORMAL_PRIORITY_CLASS"):
-        _low = win32process.BELOW_NORMAL_PRIORITY_CLASS
+        low = win32process.BELOW_NORMAL_PRIORITY_CLASS
     else:
-        _low = win32process.IDLE_PRIORITY_CLASS
+        low = win32process.IDLE_PRIORITY_CLASS
     if hasattr(win32process, "ABOVE_NORMAL_PRIORITY_CLASS"):
-        _high = win32process.ABOVE_NORMAL_PRIORITY_CLASS
+        high = win32process.ABOVE_NORMAL_PRIORITY_CLASS
     else:
-        _high = win32process.HIGH_PRIORITY_CLASS
+        high = win32process.HIGH_PRIORITY_CLASS
     _nt_prio_val = {
-        PRIO_HIGH: _high,
-        PRIO_NORMAL: win32process.NORMAL_PRIORITY_CLASS,
-        PRIO_LOW: _low,
+        Prio.high: high,
+        Prio.normal: win32process.NORMAL_PRIORITY_CLASS,
+        Prio.low: low,
     }
+    del low, high
 
 
 def set_thread_priority (prio):
     """Set priority of this thread (and thus also for all spawned threads)."""
-    if os.name == 'nt' and _has_win32process:
+    if os.name == 'nt' and has_win32process:
         res = win32process.SetPriorityClass(
                    win32process.GetCurrentProcess(), _nt_prio_val[prio])
     elif os.name == 'posix':
