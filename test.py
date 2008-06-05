@@ -850,7 +850,7 @@ def main(argv):
         cfg.print_import_time = False
 
     # Set up the python path
-    sys.path[0] = cfg.basedir
+    sys.path.insert(0, cfg.basedir)
 
     # Set up tracing before we start importing things
     tracer = None

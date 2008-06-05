@@ -220,11 +220,12 @@ class MyBdistWininst (bdist_wininst, object):
 
         # avoid warning of 'install_lib' about installing
         # into a directory not in sys.path
+        oldpath = sys.path
         sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
 
         install.run()
 
-        del sys.path[0]
+        sys.path = oldpath
 
         # And make an archive relative to the root of the
         # pseudo-installation tree.
