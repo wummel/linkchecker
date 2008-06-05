@@ -288,6 +288,16 @@ class TestCaselessSortedDict (unittest.TestCase):
             prev = key
 
 
+class TestEnum (unittest.TestCase):
+
+    def test_enum (self):
+        e = linkcheck.containers.enum("a", "b", "c")
+        self.assertEqual(e.a, 0)
+        self.assertEqual(e.b, 1)
+        self.assertEqual(e.c, 2)
+        self.assertEqual(e, (0, 1, 2))
+
+
 def test_suite ():
     """
     Build and return a TestSuite.
