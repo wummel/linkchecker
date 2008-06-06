@@ -2,6 +2,7 @@
 PYVER=2.5
 PYTHON=python$(PYVER)
 VERSION=$(shell $(PYTHON) setup.py --version)
+MACHINE=$(shell uname -m)
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 PYTHONSVN=/home/calvin/src/python-svn
@@ -56,8 +57,8 @@ locale:
 localbuild: MANIFEST
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
-	cp -f build/lib.linux-i686-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
-	cp -f build/lib.linux-i686-$(PYVER)/linkcheck/ftpparse/_ftpparse.so linkcheck/ftpparse
+	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
+	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/ftpparse/_ftpparse.so linkcheck/ftpparse
 
 .PHONY: deb_orig
 deb_orig:
