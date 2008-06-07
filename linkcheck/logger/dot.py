@@ -65,7 +65,7 @@ class DOTLogger (Logger):
 
     def log_url (self, url_data):
         """
-        Write one node and all possible edges.
+        Write one node.
         """
         node = url_data
         if node.url and node.url not in self.nodes:
@@ -134,3 +134,4 @@ def dotedge (s):
     s = s.replace("\H", "\\H")
     s = s.replace("\E", "\\E")
     return dotquote(s)
+
