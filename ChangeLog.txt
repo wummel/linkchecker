@@ -26,6 +26,10 @@
     Changed: linkchecker, linkcheck/checker/urlbase.py
     Added: linkcheck/clamav.py
 
+  * Improved network interface detection on POSIX systems.
+    Type: bugfix
+    Added: linkcheck/network/*
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

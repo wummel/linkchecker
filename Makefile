@@ -59,6 +59,7 @@ localbuild: MANIFEST
 	$(PYTHON) setup.py build
 	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
 	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/ftpparse/_ftpparse.so linkcheck/ftpparse
+	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/network/_network.so linkcheck/network
 
 .PHONY: deb_orig
 deb_orig:

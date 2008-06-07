@@ -20,7 +20,6 @@ __all__ = [
     'dnssec',
     'exception',
     'flags',
-    'ifconfig',
     'inet',
     'ipv4',
     'ipv6',

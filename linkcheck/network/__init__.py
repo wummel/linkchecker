@@ -1,12 +1,12 @@
 # -*- coding: iso-8859-1 -*-
 """from http://twistedmatrix.com/wiki/python/IfConfig
 """
-
 import socket
 import errno
 import array
 import fcntl
 import struct
+from _network import ifreq_size
 from .. import log, LOG_DNS
 
 
@@ -40,14 +40,20 @@ class IfConfig (object):
     def __init__ (self):
         # create a socket so we have a handle to query
         self.sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # Note that sizeof(struct ifreq) is not always 32
+        # (eg. on *BSD, x86_64 Linux) Thus the function call.
+        self.ifr_size = ifreq_size()
 
     def _ioctl (self, func, args):
         return fcntl.ioctl(self.sockfd.fileno(), func, args)
 
+    def _getifreq (self, ifname):
+        """Return ifreq buffer for given interface name."""
+        return struct.pack("%ds" % self.ifr_size, ifname)
+
     def _getaddr (self, ifname, func):
-        ifreq = struct.pack("32s", ifname)
         try:
-            result = self._ioctl(func, ifreq)
+            result = self._ioctl(func, self._getifreq(ifname))
         except IOError, msg:
             log.warn(LOG_DNS,
                   "error getting addr for interface %r: %s", ifname, msg)
@@ -55,9 +61,7 @@ class IfConfig (object):
         return socket.inet_ntoa(result[20:24])
 
     def getInterfaceList (self):
-        """
-        Get all interface names in a list.
-        """
+        """Get all interface names in a list."""
         # initial 8kB buffer to hold interface data
         bufsize = 8192
         # 80kB buffer should be enough for most boxen
@@ -80,22 +84,18 @@ class IfConfig (object):
         size, ptr = struct.unpack("iP", result)
         i = 0
         while i < size:
-            # XXX on *BSD, struct ifreq is not hardcoded 32, but dynamic.
-            ifreq_size = 32
-            ifconf = data[i:i+ifreq_size]
-            name, dummy = struct.unpack("16s16s", ifconf)
-            name, dummy = name.split('\0', 1)
-            iflist.append(name)
-            i += ifreq_size
+            ifconf = data[i:i+self.ifr_size]
+            name = struct.unpack("16s%ds" % (self.ifr_size-16), ifconf)[0]
+            name = name.split('\0', 1)[0]
+            if name:
+                iflist.append(name)
+            i += self.ifr_size
         return iflist
 
     def getFlags (self, ifname):
-        """
-        Get the flags for an interface
-        """
-        ifreq = struct.pack("32s", ifname)
+        """Get the flags for an interface"""
         try:
-            result = self._ioctl(self.SIOCGIFFLAGS, ifreq)
+            result = self._ioctl(self.SIOCGIFFLAGS, self._getifreq(ifname))
         except IOError, msg:
             log.warn(LOG_DNS,
                  "error getting flags for interface %r: %s", ifname, msg)
@@ -106,40 +106,35 @@ class IfConfig (object):
         return flags
 
     def getAddr (self, ifname):
-        """
-        Get the inet addr for an interface.
+        """Get the inet addr for an interface.
         @param ifname: interface name
         @type ifname: string
         """
         return self._getaddr(ifname, self.SIOCGIFADDR)
 
     def getMask (self, ifname):
-        """
-        Get the netmask for an interface.
+        """Get the netmask for an interface.
         @param ifname: interface name
         @type ifname: string
         """
         return self._getaddr(ifname, self.SIOCGIFNETMASK)
 
     def getBroadcast (self, ifname):
-        """
-        Get the broadcast addr for an interface.
+        """Get the broadcast addr for an interface.
         @param ifname: interface name
         @type ifname: string
         """
         return self._getaddr(ifname, self.SIOCGIFBRDADDR)
 
     def isUp (self, ifname):
-        """
-        Check whether interface is UP.
+        """Check whether interface is UP.
         @param ifname: interface name
         @type ifname: string
         """
         return (self.getFlags(ifname) & self.IFF_UP) != 0
 
     def isLoopback (self, ifname):
-        """
-        Check whether interface is a loopback device.
+        """Check whether interface is a loopback device.
         @param ifname: interface name
         @type ifname: string
         """
