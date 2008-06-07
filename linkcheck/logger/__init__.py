@@ -306,5 +306,3 @@ Loggers = {
 }
 # for easy printing: a comma separated logger list
 LoggerKeys = ", ".join(repr(name) for name in Loggers)
-
-

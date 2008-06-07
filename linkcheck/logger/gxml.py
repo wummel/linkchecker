@@ -18,27 +18,22 @@
 A GraphXML logger.
 """
 
-from . import xmllog
+from .xmllog import XMLLogger
+from .graph import GraphLogger
 
 
-class GraphXMLLogger (xmllog.XMLLogger):
-    """
-    XML output mirroring the GML structure. Easy to parse with any XML
-    tool.
-    """
+class GraphXMLLogger (XMLLogger, GraphLogger):
+    """XML output mirroring the GML structure. Easy to parse with any XML
+    tool."""
 
     def __init__ (self, **args):
-        """
-        Initialize graph node list and internal id counter.
-        """
+        """Initialize graph node list and internal id counter."""
         super(GraphXMLLogger, self).__init__(**args)
         self.nodes = {}
         self.nodeid = 0
 
     def start_output (self):
-        """
-        Write start of checking info as xml comment.
-        """
+        """Write start of checking info as xml comment."""
         super(GraphXMLLogger, self).start_output()
         self.xml_start_output()
         self.xml_starttag(u'GraphXML')
@@ -46,56 +41,42 @@ class GraphXMLLogger (xmllog.XMLLogger):
         self.flush()
 
     def log_url (self, url_data):
-        """
-        Write one node and all possible edges.
-        """
-        node = url_data
-        if node.url and node.url not in self.nodes:
-            node.id = self.nodeid
-            self.nodes[node.url] = node
-            self.nodeid += 1
-            self.xml_starttag(u'node', attrs={u"name": u"%d" % node.id})
-            # XXX further
+        """Write one node and all possible edges."""
+        node = self.get_node(url_data)
+        if node:
+            self.xml_starttag(u'node', attrs={u"name": u"%d" % node["id"]})
+            self.xml_tag(u"label", node["label"])
             if self.has_part("realurl"):
-                self.xml_tag(u"label", node.url)
+                self.xml_tag(u"url", node["url"])
             self.xml_starttag(u"data")
-            if node.dltime >= 0 and self.has_part("dltime"):
-                self.xml_tag(u"dltime", u"%f" % node.dltime)
-            if node.dlsize >= 0 and self.has_part("dlsize"):
-                self.xml_tag(u"dlsize", u"%d" % node.dlsize)
-            if node.checktime and self.has_part("checktime"):
-                self.xml_tag(u"checktime", u"%f" % node.checktime)
+            if node["dltime"] >= 0 and self.has_part("dltime"):
+                self.xml_tag(u"dltime", u"%f" % node["dltime"])
+            if node["dlsize"] >= 0 and self.has_part("dlsize"):
+                self.xml_tag(u"dlsize", u"%d" % node["dlsize"])
+            if node["checktime"] and self.has_part("checktime"):
+                self.xml_tag(u"checktime", u"%f" % node["checktime"])
             if self.has_part("extern"):
-                self.xml_tag(u"extern", u"%d" % (1 if node.extern[0] else 0))
+                self.xml_tag(u"extern", u"%d" % node["extern"])
             self.xml_endtag(u"data")
             self.xml_endtag(u"node")
-        self.write_edges()
 
-    def write_edges (self):
-        """
-        Write all edges we can find in the graph in a brute-force
-        manner. Better would be a mapping of parent URLs.
-        """
-        for node in self.nodes.values():
-            if node.parent_url in self.nodes:
-                attrs = {
-                    u"source": u"%d" % self.nodes[node.parent_url].id,
-                    u"target": u"%d" % node.id,
-                }
-                self.xml_starttag(u"edge", attrs=attrs)
-                if self.has_part("url"):
-                    self.xml_tag(u"label", node.base_url or u"")
-                self.xml_starttag(u"data")
-                if self.has_part("result"):
-                    self.xml_tag(u"valid", u"%d" % (1 if node.valid else 0))
-                self.xml_endtag(u"data")
-                self.xml_endtag(u"edge")
-        self.flush()
+    def write_edge (self, node):
+        """Write one edge."""
+        attrs = {
+            u"source": u"%d" % self.nodes[node["parent_url"]]["id"],
+            u"target": u"%d" % node["id"],
+        }
+        self.xml_starttag(u"edge", attrs=attrs)
+        self.xml_tag(u"label", node["label"])
+        self.xml_starttag(u"data")
+        if self.has_part("result"):
+            self.xml_tag(u"valid", u"%d" % node["valid"])
+        self.xml_endtag(u"data")
+        self.xml_endtag(u"edge")
 
     def end_output (self):
-        """
-        Finish graph output, and print end of checking info as xml comment.
-        """
+        """Finish graph output, and print end of checking info as xml
+        comment."""
         self.xml_endtag(u"graph")
         self.xml_endtag(u"GraphXML")
         self.xml_end_output()

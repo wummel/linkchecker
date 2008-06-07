@@ -18,29 +18,16 @@
 A gml logger.
 """
 import time
-from . import Logger
+from .graph import GraphLogger
 from .. import configuration, strformat
 
 
-class GMLLogger (Logger):
-    """
-    GML means Graph Modeling Language. Use a GML tool to see
-    the sitemap graph.
-    """
-
-    def __init__ (self, **args):
-        """
-        Initialize graph node list and internal id counter.
-        """
-        super(GMLLogger, self).__init__(**args)
-        self.init_fileoutput(args)
-        self.nodes = {}
-        self.nodeid = 0
+class GMLLogger (GraphLogger):
+    """GML means Graph Modeling Language. Use a GML tool to see
+    the sitemap graph."""
 
     def start_output (self):
-        """
-        Write start of checking info as gml comment.
-        """
+        """Write start of checking info as gml comment."""
         super(GMLLogger, self).start_output()
         self.starttime = time.time()
         if self.has_part("intro"):
@@ -58,63 +45,39 @@ class GMLLogger (Logger):
         self.flush()
 
     def comment (self, s, **args):
-        """
-        Write GML comment.
-        """
+        """Write GML comment."""
         self.write(u"# ")
         self.writeln(s=s, **args)
 
     def log_url (self, url_data):
-        """
-        Write one node and all possible edges.
-        """
-        node = url_data
-        if node.url and node.url not in self.nodes:
-            node.id = self.nodeid
-            self.nodes[node.url] = node
-            self.nodeid += 1
+        """Write one node."""
+        node = self.get_node(url_data)
+        if node:
             self.writeln(u"  node [")
-            self.writeln(u"    id     %d" % node.id)
+            self.writeln(u"    id     %d" % node["id"])
+            self.writeln(u'    label  "%s"' % node["label"])
             if self.has_part("realurl"):
-                self.writeln(u'    label  "%s"' % node.url)
-            if node.dltime >= 0 and self.has_part("dltime"):
-                self.writeln(u"    dltime %d" % node.dltime)
-            if node.dlsize >= 0 and self.has_part("dlsize"):
-                self.writeln(u"    dlsize %d" % node.dlsize)
-            if node.checktime and self.has_part("checktime"):
-                self.writeln(u"    checktime %d" % node.checktime)
+                self.writeln(u'    url  "%s"' % node["url"])
+            if node["dltime"] >= 0 and self.has_part("dltime"):
+                self.writeln(u"    dltime %d" % node["dltime"])
+            if node["dlsize"] >= 0 and self.has_part("dlsize"):
+                self.writeln(u"    dlsize %d" % node["dlsize"])
+            if node["checktime"] and self.has_part("checktime"):
+                self.writeln(u"    checktime %d" % node["checktime"])
             if self.has_part("extern"):
-                self.writeln(u"    extern %d" % (1 if node.extern[0] else 0))
+                self.writeln(u"    extern %d" % node["extern"])
             self.writeln(u"  ]")
 
-    def write_edges (self):
-        """
-        Write all edges we can find in the graph in a brute-force
-        manner. Better would be a mapping of parent URLs.
-        """
-        for node in self.nodes.values():
-            if node.parent_url in self.nodes:
-                self.writeln(u"  edge [")
-                self.writeln(u'    label  "%s"' % (node.base_url or u""))
-                if self.has_part("parenturl") and node.parent_url:
-                    self.writeln(u"    source %d" %
-                                 self.nodes[node.parent_url].id)
-                self.writeln(u"    target %d" % node.id)
-                if self.has_part("result"):
-                    self.writeln(u"    valid  %d" % (1 if node.valid else 0))
-                self.writeln(u"  ]")
-        self.flush()
+    def write_edge (self, node):
+        """Write one edge."""
+        self.writeln(u"  edge [")
+        self.writeln(u'    label  "%s"' % node["edge"])
+        self.writeln(u"    source %d" % self.nodes[node["parent_url"]]["id"])
+        self.writeln(u"    target %d" % node["id"])
+        if self.has_part("result"):
+            self.writeln(u"    valid  %d" % node["valid"])
+        self.writeln(u"  ]")
 
-    def end_output (self):
-        """
-        Write end of checking info as gml comment.
-        """
-        self.write_edges()
+    def end_graph (self):
+        """Write end of graph marker."""
         self.writeln(u"]")
-        if self.has_part("outro"):
-            self.stoptime = time.time()
-            duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
-        self.close_fileoutput()

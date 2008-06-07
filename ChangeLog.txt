@@ -20,7 +20,7 @@
     Type: feature
     Changed: linkchecker, linkcheck/checker/urlbase.py
 
-  * Added aibility to scan URL content with ClamAV virus scanner.
+  * Added ability to scan URL content with ClamAV virus scanner.
     Implemented as commandline option --scan-virus.
     Type: feature:
     Changed: linkchecker, linkcheck/checker/urlbase.py
@@ -29,6 +29,12 @@
   * Improved network interface detection on POSIX systems.
     Type: bugfix
     Added: linkcheck/network/*
+
+  * Improved graph output: print labels as node names. Thanks
+    to Jan Weiss for the initial idea.
+    Type: feature
+    Changed: linkcheck/logger/{dot,gml,gxml}.py
+    Added: linkcheck/logger/graph.py
 
 4.9 "Michael Clayton" (released 25.4.2008)
 

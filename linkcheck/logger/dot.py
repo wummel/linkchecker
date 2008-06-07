@@ -19,28 +19,17 @@ A DOT graph format logger. The specification has been taken from
 http://www.graphviz.org/doc/info/lang.html
 """
 import time
-from . import Logger
+from .graph import GraphLogger
 from .. import configuration, strformat
 
 
-class DOTLogger (Logger):
+class DOTLogger (GraphLogger):
     """
     Generates .dot sitemap graphs. Use graphviz to see the sitemap graph.
     """
 
-    def __init__ (self, **args):
-        """
-        Initialize graph node list and internal id counter.
-        """
-        super(DOTLogger, self).__init__(**args)
-        self.init_fileoutput(args)
-        self.nodes = {}
-        self.nodeid = 0
-
     def start_output (self):
-        """
-        Write start of checking info as DOT comment.
-        """
+        """Write start of checking info as DOT comment."""
         super(DOTLogger, self).start_output()
         self.starttime = time.time()
         if self.has_part("intro"):
@@ -54,84 +43,47 @@ class DOTLogger (Logger):
             self.check_date()
             self.writeln()
         self.writeln(u"digraph G {")
+        self.writeln(u"  graph [")
+        self.writeln(u"    charset=\"%s\"," % self.output_encoding)
+        self.writeln(u"  ];")
         self.flush()
 
     def comment (self, s, **args):
-        """
-        Write DOT comment.
-        """
+        """Write DOT comment."""
         self.write(u"// ")
         self.writeln(s=s, **args)
 
     def log_url (self, url_data):
-        """
-        Write one node.
-        """
-        node = url_data
-        if node.url and node.url not in self.nodes:
-            node.id = self.nodeid
-            self.nodes[node.url] = node
-            self.nodeid += 1
-            self.writeln(u"  %d [" % node.id)
+        """Write one node."""
+        node = self.get_node(url_data)
+        if node is not None:
+            self.writeln(u'  "%s" [' % dotquote(node["label"]))
             if self.has_part("realurl"):
-                self.writeln(u'    href="%s",' % dotquote(node.url))
-            if node.dltime >= 0 and self.has_part("dltime"):
-                self.writeln(u"    dltime=%d," % node.dltime)
-            if node.dlsize >= 0 and self.has_part("dlsize"):
-                self.writeln(u"    dlsize=%d," % node.dlsize)
-            if node.checktime and self.has_part("checktime"):
-                self.writeln(u"    checktime=%d," % node.checktime)
+                self.writeln(u'    href="%s",' % dotquote(node["url"]))
+            if node["dltime"] >= 0 and self.has_part("dltime"):
+                self.writeln(u"    dltime=%d," % node["dltime"])
+            if node["dlsize"] >= 0 and self.has_part("dlsize"):
+                self.writeln(u"    dlsize=%d," % node["dlsize"])
+            if node["checktime"] and self.has_part("checktime"):
+                self.writeln(u"    checktime=%d," % node["checktime"])
             if self.has_part("extern"):
-                self.writeln(u"    extern=%d," % (1 if node.extern[0] else 0))
+                self.writeln(u"    extern=%d," % node["extern"])
             self.writeln(u"  ];")
 
-    def write_edges (self):
-        """
-        Write all edges we can find in the graph in a brute-force
-        manner. Better would be a mapping of parent URLs.
-        """
-        for node in self.nodes.values():
-            if node.parent_url in self.nodes:
-                source = self.nodes[node.parent_url].id
-                target = node.id
-                self.writeln(u"  %d -> %d [" % (source, target))
-                self.writeln(u'    label="%s",' % dotedge(node.name))
-                if self.has_part("result"):
-                    self.writeln(u"    valid=%d," % (1 if node.valid else 0))
-                self.writeln(u"  ];")
-        self.flush()
+    def write_edge (self, node):
+        """Write edge from parent to node."""
+        source = dotquote(self.nodes[node["parent_url"]]["label"])
+        target = dotquote(node["label"])
+        self.writeln(u'  "%s" -> "%s" [' % (source, target))
+        self.writeln(u'    label="%s",' % dotquote(node["edge"]))
+        if self.has_part("result"):
+            self.writeln(u"    valid=%d," % node["valid"])
+        self.writeln(u"  ];")
 
-    def end_output (self):
-        """
-        Write end of checking info as DOT comment.
-        """
-        self.write_edges()
+    def end_graph (self):
+        """Write end of graph marker."""
         self.writeln(u"}")
-        if self.has_part("outro"):
-            self.stoptime = time.time()
-            duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
-        self.close_fileoutput()
 
 
 def dotquote (s):
-    """
-    Escape disallowed characters in DOT format strings.
-    """
     return s.replace('"', '\\"')
-
-
-def dotedge (s):
-    """
-    Escape disallowed characters in DOT edge labels.
-    """
-    s = s.replace("\n", "\\n")
-    s = s.replace("\r", "\\r")
-    s = s.replace("\l", "\\l")
-    s = s.replace("\T", "\\T")
-    s = s.replace("\H", "\\H")
-    s = s.replace("\E", "\\E")
-    return dotquote(s)
-

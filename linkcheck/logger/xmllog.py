@@ -47,10 +47,7 @@ def xmlquoteattr (s):
 
 
 class XMLLogger (Logger):
-    """
-    XML output mirroring the GML structure. Easy to parse with any XML
-    tool.
-    """
+    """XML output; easy to parse with any XML tool."""
 
     def __init__ (self, **args):
         """
