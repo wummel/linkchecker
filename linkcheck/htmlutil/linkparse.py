@@ -19,7 +19,8 @@ Find link tags in HTML text.
 """
 
 import re
-from . import strformat, log, LOG_CHECK, linkname, url as urlutil
+from .. import strformat, log, LOG_CHECK, url as urlutil
+from . import linkname
 
 MAX_NAMELEN = 256
 unquote = strformat.unquote
