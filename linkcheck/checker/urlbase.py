@@ -32,9 +32,10 @@ import traceback
 from . import absolute_url, StoringHandler, get_url_from
 from ..cache import geoip
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-    strformat, linkparse, containers, LinkCheckerError, url as urlutil,
+    strformat, containers, LinkCheckerError, url as urlutil,
     trace, clamav)
 from ..HtmlParser import htmlsax
+from ..htmlutil import linkparse, titleparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
     WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
@@ -157,6 +158,8 @@ class UrlBase (object):
         self.extern = (1, 1)
         # flag if the result should be cached
         self.caching = True
+        # title is either the URL or parsed from content
+        self.title = None
 
     def set_result (self, msg, valid=True, overwrite=False):
         """
@@ -175,14 +178,28 @@ class UrlBase (object):
         self.valid = valid
 
     def get_title (self):
-        """Return title of page the URL refers to. This is per default the filename."""
-        if "/" in self.url:
-            title = self.url.rsplit("/", 1)[1]
-            if not title:
-                title = url
-        else:
-            title = url
-        return title
+        """Return title of page the URL refers to.
+        This is per default the filename or the URL."""
+        if self.title is None:
+            url = self.url if self.url else self.base_url
+            self.title = url
+            if "/" in url:
+                title = url.rsplit("/", 1)[1]
+                if title:
+                    self.title = title
+        return self.title
+
+    def set_title_from_content (self):
+        """Set title of page the URL refers to.from page content."""
+        if self.valid and self.is_html():
+            handler = titleparse.TitleFinder(self.get_content())
+            parser = htmlsax.parser(handler)
+            handler.parser = parser
+            # parse
+            parser.feed(self.get_content())
+            parser.flush()
+            if handler.title:
+                self.title = handler.title
 
     def is_parseable (self):
         """
@@ -373,6 +390,7 @@ class UrlBase (object):
             trace.trace_on()
         try:
             self.local_check()
+            self.set_title_from_content()
         except (socket.error, select.error):
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
