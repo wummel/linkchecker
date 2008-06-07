@@ -19,7 +19,7 @@ Test linkparser routines.
 """
 
 import unittest
-import linkcheck.linkparse
+from linkcheck.htmlutil import linkparse
 import linkcheck.HtmlParser.htmlsax
 
 
@@ -29,7 +29,7 @@ class TestLinkparser (unittest.TestCase):
     """
 
     def _test_one_link (self, content, url):
-        h = linkcheck.linkparse.LinkFinder(content)
+        h = linkparse.LinkFinder(content)
         self.assertEqual(len(h.urls), 0)
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
@@ -78,7 +78,7 @@ class TestLinkparser (unittest.TestCase):
         self._test_one_link(content % url, url)
 
     def test_comment_stripping (self):
-        strip = linkcheck.linkparse.strip_c_comments
+        strip = linkparse.strip_c_comments
         content = "/* url('http://example.org')*/"
         self.assertEqual(strip(content), "")
         content = "/* * * **/"

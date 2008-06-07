@@ -19,7 +19,7 @@ Test linkname routines.
 """
 
 import unittest
-import linkcheck.linkname
+from linkcheck.htmlutil import linkname
 
 
 class TestLinkname (unittest.TestCase):
@@ -31,13 +31,13 @@ class TestLinkname (unittest.TestCase):
         """
         Helper function calling linkname.image_name().
         """
-        self.assertEqual(linkcheck.linkname.image_name(txt), expected)
+        self.assertEqual(linkname.image_name(txt), expected)
 
     def href_name_test (self, txt, expected):
         """
         Helper function calling linkname.href_name().
         """
-        self.assertEqual(linkcheck.linkname.href_name(txt), expected)
+        self.assertEqual(linkname.href_name(txt), expected)
 
     def test_image_name (self):
         """
@@ -72,3 +72,4 @@ def test_suite ():
 
 if __name__ == '__main__':
     unittest.main()
+
