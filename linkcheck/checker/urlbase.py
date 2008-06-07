@@ -174,6 +174,16 @@ class UrlBase (object):
         self.result = msg
         self.valid = valid
 
+    def get_title (self):
+        """Return title of page the URL refers to. This is per default the filename."""
+        if "/" in self.url:
+            title = self.url.rsplit("/", 1)[1]
+            if not title:
+                title = url
+        else:
+            title = url
+        return title
+
     def is_parseable (self):
         """
         Return True iff content of this url is parseable.
