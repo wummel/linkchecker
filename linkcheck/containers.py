@@ -226,7 +226,7 @@ except ImportError:
             if name in seen_names:
                 raise ValueError('Encountered duplicate field name: %r' % name)
             seen_names.add(name)
-    
+
         # Create and fill-in the class template
         numfields = len(field_names)
         argtxt = repr(field_names).replace("'", "")[1:-1]   # tuple repr without parens or quotes
