@@ -29,16 +29,31 @@ import platform
 import stat
 import string
 import glob
-from distutils.core import setup, Extension
-from distutils.spawn import find_executable
-import distutils.dist
-from distutils.command.bdist_wininst import bdist_wininst
-from distutils.command.install import install
-from distutils.command.install_data import install_data
-from distutils.command.build_ext import build_ext
-from distutils.command.build import build
+try:
+    # try using setuptools to support eggs
+    from setuptools import setup
+    from setuptools.command.bdist_wininst import bdist_wininst
+    from setuptools.command.install_lib import install_lib
+    from setuptools.command.build_ext import build_ext
+    from setuptools.command.sdist import sdist
+    from distutils.command.sdist import sdist as _sdist
+    sdist.user_options = _sdist.user_options + sdist.user_options
+    from setuptools.extension import Extension
+    from setuptools import dist
+except ImportError:
+    # fall back to plain distutils
+    from distutils.core import setup
+    from distutils.command.bdist_wininst import bdist_wininst
+    from distutils.command.install_lib import install_lib
+    from distutils.command.build_ext import build_ext
+    from distutils.command.sdist import sdist
+    from distutils.core import Extension
+    from distutils import dist
+import distutils.command
 from distutils.command.clean import clean
-from distutils.command.sdist import sdist
+from distutils.command.build import build
+from distutils.command.install_data import install_data
+from distutils.spawn import find_executable
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
 from distutils.sysconfig import get_python_version
@@ -72,35 +87,45 @@ def cnormpath (path):
     return path
 
 
-class MyInstall (install, object):
+class MyInstallLib (install_lib, object):
 
-    def run (self):
-        super(MyInstall, self).run()
+    def install (self):
+        """Install the generated config file."""
+        outs = super(MyInstallLib, self).install()
+        infile = self.create_conf_file()
+        outfile = os.path.join(self.install_dir, os.path.basename(infile))
+        self.copy_file(infile, outfile)
+        outs.append(outfile)
+        return outs
+
+    def create_conf_file (self):
+        cmd_obj = self.distribution.get_command_obj("install")
+        cmd_obj.ensure_finalized()
         # we have to write a configuration file because we need the
         # <install_data> directory (and other stuff like author, url, ...)
         # all paths are made absolute by cnormpath()
         data = []
         for d in ['purelib', 'platlib', 'lib', 'headers', 'scripts', 'data']:
             attr = 'install_%s' % d
-            if self.root:
+            if cmd_obj.root:
                 # cut off root path prefix
-                cutoff = len(self.root)
+                cutoff = len(cmd_obj.root)
                 # don't strip the path separator
-                if self.root.endswith(os.sep):
+                if cmd_obj.root.endswith(os.sep):
                     cutoff -= 1
-                val = getattr(self, attr)[cutoff:]
+                val = getattr(cmd_obj, attr)[cutoff:]
             else:
-                val = getattr(self, attr)
+                val = getattr(cmd_obj, attr)
             if attr == 'install_data':
                 cdir = os.path.join(val, "share", "linkchecker")
                 data.append('config_dir = %r' % cnormpath(cdir))
             data.append("%s = %r" % (attr, cnormpath(val)))
         self.distribution.create_conf_file(data, directory=self.install_lib)
+        return self.distribution.get_conf_filename(self.install_lib)
 
     def get_outputs (self):
-        """Add the generated config file from distribution.create_conf_file()
-        to the list of outputs."""
-        outs = super(MyInstall, self).get_outputs()
+        """Add the generated config file to the list of outputs."""
+        outs = super(MyInstallLib, self).get_outputs()
         outs.append(self.distribution.get_conf_filename(self.install_lib))
         return outs
 
@@ -122,7 +147,7 @@ class MyInstallData (install_data, object):
                 os.chmod(path, mode)
 
 
-class MyDistribution (distutils.dist.Distribution, object):
+class MyDistribution (dist.Distribution, object):
     """Custom distribution class generating config file."""
 
     def run_commands (self):
@@ -494,14 +519,15 @@ o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
 """,
        distclass = MyDistribution,
-       cmdclass = {'install': MyInstall,
-                   'install_data': MyInstallData,
-                   'bdist_wininst': MyBdistWininst,
-                   'build_ext': MyBuildExt,
-                   'build': MyBuild,
-                   'clean': MyClean,
-                   'sdist': MySdist,
-                  },
+       cmdclass = {
+           'install_lib': MyInstallLib,
+           'install_data': MyInstallData,
+           'bdist_wininst': MyBdistWininst,
+           'build_ext': MyBuildExt,
+           'build': MyBuild,
+           'clean': MyClean,
+           'sdist': MySdist,
+       },
        packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
                    'linkcheck.director', 'linkcheck.configuration',
                    'linkcheck.cache', 'linkcheck.htmlutil',
@@ -517,7 +543,7 @@ o a (Fast)CGI web interface (requires HTTP server)
                   extra_compile_args = extra_compile_args,
                   library_dirs = library_dirs,
                   libraries = libraries,
-                  define_macros = define_macros,
+                  define_macros = define_macros + [('YY_NO_INPUT', None)],
                   include_dirs = include_dirs + \
                                   [normpath("linkcheck/HtmlParser")],
                   ),
