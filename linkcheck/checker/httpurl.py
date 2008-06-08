@@ -120,6 +120,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.persistent = False
         # URLs seen through 301/302 redirections
         self.aliases = []
+        # initialize check data
+        self.headers = None
+        self.auth = None
+        self.cookies = []
 
     def allows_robots (self, url):
         """
@@ -156,10 +160,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         # set the proxy, so a 407 status after this is an error
         self.set_proxy(self.aggregate.config["proxy"].get(self.scheme))
-        # initialize check data
-        self.headers = None
-        self.auth = None
-        self.cookies = []
         # check robots.txt
         if not self.allows_robots(self.url):
             # remove all previously stored results
