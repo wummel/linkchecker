@@ -36,6 +36,12 @@
     Changed: linkcheck/logger/{dot,gml,gxml}.py
     Added: linkcheck/logger/graph.py
 
+  * Add support for setuptools and thus Python eggs in the setup.py
+    script. This should fix installation errors for generated .egg
+    files.
+    Type: feature
+    Closes: SF bug #1985509
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
