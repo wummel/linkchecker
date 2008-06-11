@@ -5,7 +5,7 @@ UI_FILES = linkchecker_ui.py
 all: $(UI_FILES)
 
 linkchecker_ui.py: ui/mainwindow.ui
-	pyuic4 -tr _ -o $@ $<
+	pyuic4 -o $@ $<
 
 #linkchecker_rc.py: linkchecker.qrc
 #	pyrcc4 -o $@ $<
