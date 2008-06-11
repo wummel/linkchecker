@@ -1,5 +1,4 @@
-- [INTERFACE] make a nice GUI for linkchecker
-  + QT GUI
-    http://www.diotavelli.net/PyQtWiki/Threading,_Signals_and_Slots
+- [INTERFACE] GUI for linkchecker
   + add debian .menu file
   + test on Windows
+  + more configuration options
