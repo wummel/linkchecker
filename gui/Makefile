@@ -1,8 +1,14 @@
-PYVER := 2.5
-PYTHON := python$(PYVER)
-OPTS := --copyright="Copyright (C) 2005-2008 Bastian Kleineidam" \
-	--license=py_gpl_head.txt  --threads
+# generate Python files from UI description
 
-glade:
-	$(PYTHON) simple-glade-codegen.py $(OPTS) glinkchecker.glade
+UI_FILES = linkchecker_ui.py
 
+all: $(UI_FILES)
+
+linkchecker_ui.py: ui/mainwindow.ui
+	pyuic4 -tr _ -o $@ $<
+
+#linkchecker_rc.py: linkchecker.qrc
+#	pyrcc4 -o $@ $<
+
+run:
+	env PYTHONPATH=.:.. python linkchecker-gui
