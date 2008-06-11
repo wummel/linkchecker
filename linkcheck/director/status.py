@@ -18,23 +18,24 @@
 import time
 from .. import strformat
 from . import task
-from .console import stderr
 
 
 class Status (task.CheckedTask):
     """Status thread."""
 
-    def __init__ (self, urlqueue):
+    def __init__ (self, urlqueue, logger):
         """Store urlqueue object."""
         super(Status, self).__init__()
         self.urlqueue = urlqueue
+        self.logger = logger
 
     def run_checked (self):
         """Print periodic status messages."""
         self.start_time = time.time()
         self.setName("Status")
+        waitfor = range(5)
         while True:
-            for dummy in xrange(5):
+            for dummy in waitfor:
                 time.sleep(1)
                 if self.stopped():
                     return
@@ -44,12 +45,13 @@ class Status (task.CheckedTask):
         """Print a status message."""
         duration = time.time() - self.start_time
         checked, in_progress, queue = self.urlqueue.status()
-        msg = _n("%2d URL active,", "%2d URLs active,", in_progress) % \
+        msg = _n("%2d URL active", "%2d URLs active", in_progress) % \
           in_progress
-        print >> stderr, msg,
-        msg = _n("%5d URL queued,", "%5d URLs queued,", queue) % queue
-        print >> stderr, msg,
-        msg = _n("%4d URL checked,", "%4d URLs checked,", checked) % checked
-        print >> stderr, msg,
+        self.logger.write(u"%s, " % msg)
+        msg = _n("%5d URL queued", "%5d URLs queued", queue) % queue
+        self.logger.write(u"%s, " % msg)
+        msg = _n("%4d URL checked", "%4d URLs checked", checked) % checked
+        self.logger.write(u"%s, " % msg)
         msg = _("runtime %s") % strformat.strduration_long(duration)
-        print >> stderr, msg
+        self.logger.writeln(msg)
+        self.logger.flush()

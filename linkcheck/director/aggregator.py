@@ -43,7 +43,7 @@ class Aggregate (object):
     def start_threads (self):
         """Spawn threads for URL checking and status printing."""
         if self.config["status"]:
-            t = status.Status(self.urlqueue)
+            t = status.Status(self.urlqueue, self.config.status_logger)
             t.start()
             self.threads.append(t)
         t = cleanup.Cleanup(self.connections)
@@ -51,7 +51,7 @@ class Aggregate (object):
         self.threads.append(t)
         num = self.config["threads"]
         if num >= 1:
-            for dummy in xrange(num):
+            for dummy in range(num):
                 t = checker.Checker(self.urlqueue, self.logger)
                 t.start()
                 self.threads.append(t)

@@ -28,6 +28,22 @@ from .. import i18n, configuration
 _encoding = i18n.default_encoding
 stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
 
+
+class StatusLogger (object):
+
+    def __init__ (self, fd=stderr):
+        self.fd = fd
+
+    def write (self, msg):
+        self.fd.write(msg)
+
+    def writeln (self, msg):
+        self.fd.write(u"%s%s" % (msg, unicode(os.linesep)))
+
+    def flush (self):
+        self.fd.flush()
+
+
 def internal_error ():
     """
     Print internal error message to stderr.

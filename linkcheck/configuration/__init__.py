@@ -151,7 +151,7 @@ class Configuration (dict):
         self["scanvirus"] = False
         self["clamavconf"] = clamav.canonical_clamav_conf()
 
-    def init_logging (self, debug=None):
+    def init_logging (self, status_logger, debug=None):
         """
         Load logging.conf file settings to set up the
         application logging (not to be confused with check loggers).
@@ -167,6 +167,7 @@ class Configuration (dict):
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
         logging.getLogger(LOG).addHandler(handler)
         self.set_debug(debug)
+        self.status_logger = status_logger
 
     def set_debug (self, debug):
         """Set debugging levels for configured loggers. The argument

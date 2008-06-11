@@ -255,10 +255,10 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
         #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
         #   * the user-supplied help string
         #     eg. ("turn on expert mode", "read data from FILENAME")
-        #
+
         # If possible, we write both of these on the same line:
         #   -x      turn on expert mode
-        #
+
         # But if the opt string list is too long, we put the help
         # string on a second line, indented to the same column it would
         # start in if it fit on the first line.
@@ -532,7 +532,8 @@ if options.debug:
     for _name in options.debug:
         if _name not in allowed_debugs:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
-config.init_logging(debug=options.debug)
+from linkcheck.director.console import StatusLogger
+config.init_logging(StatusLogger(), debug=options.debug)
 log.debug(LOG_CMDLINE, _("Python %(version)s on %(platform)s") % \
    {"version": sys.version, "platform": sys.platform})
 # read configuration files
