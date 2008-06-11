@@ -67,18 +67,18 @@ class TextLogger (Logger):
         self.init_fileoutput(args)
         if self.fd is not None:
             self.fd = ansicolor.Colorizer(self.fd)
-        self.colorparent = args['colorparent']
-        self.colorurl = args['colorurl']
-        self.colorname = args['colorname']
-        self.colorreal = args['colorreal']
-        self.colorbase = args['colorbase']
-        self.colorvalid = args['colorvalid']
-        self.colorinvalid = args['colorinvalid']
-        self.colorinfo = args['colorinfo']
-        self.colorwarning = args['colorwarning']
-        self.colordltime = args['colordltime']
-        self.colordlsize = args['colordlsize']
-        self.colorreset = args['colorreset']
+        self.colorparent = args.get('colorparent', 'default')
+        self.colorurl = args.get('colorurl', 'default')
+        self.colorname = args.get('colorname', 'default')
+        self.colorreal = args.get('colorreal', 'default')
+        self.colorbase = args.get('colorbase', 'default')
+        self.colorvalid = args.get('colorvalid', 'default')
+        self.colorinvalid = args.get('colorinvalid', 'default')
+        self.colorinfo = args.get('colorinfo', 'default')
+        self.colorwarning = args.get('colorwarning', 'default')
+        self.colordltime = args.get('colordltime', 'default')
+        self.colordlsize = args.get('colordlsize', 'default')
+        self.colorreset = args.get('colorreset', 'default')
 
     def start_fileoutput (self):
         super(TextLogger, self).start_fileoutput()
@@ -241,14 +241,16 @@ class TextLogger (Logger):
                               self.number) % self.number)
                 self.write(u" ")
             self.write(_n("%d warning found", "%d warnings found",
-                            self.warnings) % self.warnings)
+                            self.warnings_printed) % self.warnings_printed)
             if self.warnings != self.warnings_printed:
-                self.write(_(", %d printed") % self.warnings_printed)
+                self.write(_(" (%d duplicates ignored)") %
+                    (self.warnings - self.warnings_printed))
             self.write(u". ")
             self.write(_n("%d error found", "%d errors found",
-                            self.errors) % self.errors)
+                            self.errors_printed) % self.errors_printed)
             if self.errors != self.errors_printed:
-                self.write(_(", %d printed") % self.errors_printed)
+                self.write(_(" (%d duplicates ignored)") %
+                    (self.errors - self.errors_printed))
             self.writeln(u".")
             self.stoptime = time.time()
             duration = self.stoptime - self.starttime

@@ -284,14 +284,16 @@ class HtmlLogger (Logger):
                            self.number) % self.number)
                 self.write(u" ")
             self.write(_n("%d warning found", "%d warnings found",
-                            self.warnings) % self.warnings)
+                            self.warnings_printed) % self.warnings_printed)
             if self.warnings != self.warnings_printed:
-                self.write(_(", %d printed") % self.warnings_printed)
+                self.write(_(" (%d duplicates ignored)") %
+                    (self.warnings - self.warnings_printed))
             self.write(u". ")
             self.write(_n("%d error found", "%d errors found",
-                         self.errors) % self.errors)
+                         self.errors_printed) % self.errors_printed)
             if self.errors != self.errors_printed:
-                self.write(_(", %d printed") % self.errors_printed)
+                self.write(_(" (%d duplicates ignored)") %
+                    (self.errors - self.errors_printed))
             self.writeln(u".")
             self.writeln(u"<br>")
             self.stoptime = time.time()
