@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2008-05-20 10:54+0200\n"
-"PO-Revision-Date: 2008-05-20 10:55+0100\n"
+"POT-Creation-Date: 2008-06-09 12:40+0200\n"
+"PO-Revision-Date: 2008-06-09 12:40+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,8 +47,8 @@ msgstr "NAME"
 
 # type: Plain text
 #: en/linkchecker.1:4
-msgid "linkchecker - check HTML documents for broken links"
-msgstr "linkchecker - prüfe HTML Dokumente auf ungültige Verknüpfungen"
+msgid "linkchecker - check HTML documents and websites for broken links"
+msgstr "linkchecker - prüfe HTML Dokumente und Webseiten auf ungültige Verknüpfungen"
 
 # type: SH
 #: en/linkchecker.1:5

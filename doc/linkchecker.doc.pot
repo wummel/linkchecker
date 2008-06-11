@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-05-20 10:54+0200\n"
+"POT-Creation-Date: 2008-06-09 12:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:4
-msgid "linkchecker - check HTML documents for broken links"
+msgid "linkchecker - check HTML documents and websites for broken links"
 msgstr ""
 
 # type: SH
