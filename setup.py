@@ -27,7 +27,6 @@ import os
 import popen2
 import platform
 import stat
-import string
 import glob
 try:
     # try using setuptools to support eggs
@@ -119,6 +118,14 @@ class MyInstallLib (install_lib, object):
             if attr == 'install_data':
                 cdir = os.path.join(val, "share", "linkchecker")
                 data.append('config_dir = %r' % cnormpath(cdir))
+            elif attr == 'install_lib':
+                if cmd_obj.root:
+                    _drive, tail = os.path.splitdrive(val)
+                    if tail.startswith(os.sep):
+                        tail = tail[1:]
+                    self.install_lib = os.path.join(cmd_obj.root, tail)
+                else:
+                    self.install_lib = val
             data.append("%s = %r" % (attr, cnormpath(val)))
         self.distribution.create_conf_file(data, directory=self.install_lib)
         return self.distribution.get_conf_filename(self.install_lib)
@@ -233,9 +240,9 @@ class MyBdistWininst (bdist_wininst, object):
         # Use a custom scheme for the zip-file, because we have to decide
         # at installation time which scheme to use.
         for key in ('purelib', 'platlib', 'headers', 'scripts', 'data'):
-            value = string.upper(key)
+            value = key.upper()
             if key == 'headers':
-                value = value + '/Include/$dist_name'
+                value += '/Include/$dist_name'
             setattr(install,
                     'install_' + key,
                     value)

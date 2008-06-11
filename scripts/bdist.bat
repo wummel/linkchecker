@@ -11,6 +11,6 @@ cd doc\en
 cd ..\..
 %PYTHON% setup.py clean --all
 %PYTHON% setup.py sdist --manifest-only
-%PYTHON% setup.py build -c mingw32 bdist_wininst -b hase.bmp
+%PYTHON% setup.py build -c mingw32 bdist_wininst -b hase.bmp --install-script install-linkchecker.py
 REM start resource editor for .exe icon
 REM "%PROGRAMFILES%\XN Resource Editor\XNResourceEditor.exe"
