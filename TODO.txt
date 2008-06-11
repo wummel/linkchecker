@@ -1,4 +1,3 @@
-- [OUTPUT] Improve dot output: add title of URLs to nodes and edges
 - [INTERFACE] make a nice GUI for linkchecker
   + QT GUI
   + add debian .menu file
