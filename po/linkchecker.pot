@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Bastian Kleineidam <calvin@users.sourceforge.net>
+# Copyright (C) 2008 Bastian Kleineidam <calvin@users.sourceforge.net>
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
