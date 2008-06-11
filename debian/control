@@ -6,7 +6,7 @@ Build-Depends: python-dev (>= 2.5), debhelper (>= 7), gettext,
  cdbs (>= 0.4.43), python-central (>= 0.6)
 XS-Python-Standards-Version: 0.4
 XS-Python-Version: >= 2.5
-Standards-Version: 3.7.3
+Standards-Version: 3.8.0
 Homepage: http://linkchecker.sourceforge.net/
 
 Package: linkchecker
@@ -25,8 +25,8 @@ Description: check websites and HTML documents for broken links
   o multithreaded
   o output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
     graph in different formats
-  o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
-    file links support
+  o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file
+    links support
   o restrict link checking with regular expression filters for URLs
   o proxy support
   o username/password authorization for HTTP, FTP and Telnet

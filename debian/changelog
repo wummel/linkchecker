@@ -1,6 +1,7 @@
 linkchecker (5.0-1) unstable; urgency=low
 
   * New upstream release.
+  * Standards version 3.8.0
   * Use default python version to build packages, avoiding the
     version-specific hash-bang line in commandline scripts
     (Closes: #480395)

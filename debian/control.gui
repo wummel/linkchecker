@@ -5,20 +5,16 @@
 
 Package: linkchecker-gui
 Architecture: all
-Depends: linkchecker, python-glade2
+Depends: linkchecker, python-qt4
 Description: check websites and HTML documents for broken links (GUI version)
- Provides a graphical interface "glinkchecker" to check links of websites
- and HTML  documents.
+ Provides a graphical interface "linkchecker-gui" to check links of websites
+ and HTML documents.
  Features:
   o recursive checking
   o multithreaded
-  o output in colored or normal text, HTML, SQL, CSV or a sitemap
-    graph in DOT, GML or XML
-  o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Gopher, Telnet and local
-    file links support
-  o restrict link checking with regular expression filters for URLs
+  o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file
+    links support
   o proxy support
   o username/password authorization for HTTP, FTP and Telnet
   o robots.txt exclusion protocol support
-  o Cookie support
   o i18n support
