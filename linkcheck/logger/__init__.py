@@ -184,8 +184,7 @@ class Logger (object):
         """
         Write string to output descriptor plus a newline.
         """
-        self.write(s)
-        self.write(unicode(os.linesep), **args)
+        self.write(u"%s%s" % (s, unicode(os.linesep)), **args)
 
     def has_part (self, name):
         """
