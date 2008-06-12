@@ -192,7 +192,10 @@ class UrlBase (object):
     def set_title_from_content (self):
         """Set title of page the URL refers to.from page content."""
         if self.valid and self.is_html():
-            handler = titleparse.TitleFinder(self.get_content())
+            try:
+                handler = titleparse.TitleFinder(self.get_content())
+            except tuple(ExcList):
+                return
             parser = htmlsax.parser(handler)
             handler.parser = parser
             # parse
@@ -390,7 +393,6 @@ class UrlBase (object):
             trace.trace_on()
         try:
             self.local_check()
-            self.set_title_from_content()
         except (socket.error, select.error):
             # on Unix, ctrl-c can raise
             # error: (4, 'Interrupted system call')
@@ -439,6 +441,7 @@ class UrlBase (object):
                 value = _('Bad HTTP response %(line)r') % {"line": str(value)}
             self.set_result(unicode_safe(value), valid=False)
         if self.can_get_content():
+            self.set_title_from_content()
             self.check_content()
         self.checktime = time.time() - check_start
         # check recursion
