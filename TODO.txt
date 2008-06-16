@@ -1,4 +1,3 @@
 - [INTERFACE] GUI for linkchecker
-  + add debian .menu file
   + test on Windows
   + more configuration options
