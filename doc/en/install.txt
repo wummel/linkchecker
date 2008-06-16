@@ -43,6 +43,10 @@ Requirements for Unix/Linux or Mac OS X
 5. *Optional, for displaying country codes:*
    GeoIP from http://www.maxmind.com/app/python
 
+6. *Optional, used for Virus checking:*
+   ClamAv from
+   http://www.clamav.net/
+
 
 Requirements for Windows
 ------------------------
@@ -54,7 +58,19 @@ Requirements for Windows
    Wconio from http://newcenturycomputers.net/projects/wconio.html
    [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.5.exe]
 
-3. *Only needed if you compile from source:*
+3. *Optional, for HTML/CSS syntax checks:*
+   HTML tidy from http://utidylib.berlios.de/
+   cssutils from http://cthedot.de/cssutils/
+
+4. *Optional, for displaying country codes:*
+   GeoIP from http://www.maxmind.com/app/python
+
+5. *Optional, used for Virus checking:*
+   ClamAv from
+   http://www.sosdg.org/clamav-win32/
+   [http://clamav-sosdg.googlecode.com/files/clamav-0.93.1-2.exe]
+
+6. *Only needed if you compile from source:*
    install the MinGW suite from http://mingw.sourceforge.net/
    Be sure to install in the given order:
    
