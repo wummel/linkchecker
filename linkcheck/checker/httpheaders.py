@@ -85,7 +85,7 @@ def get_content_type (headers):
     if ";" in ptype:
         # split off not needed extension info
         ptype = ptype.split(';')[0]
-    return ptype.strip()
+    return ptype.strip().lower()
 
 
 def get_content_encoding (headers):
