@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2008-06-09 12:40+0200\n"
-"PO-Revision-Date: 2008-06-09 12:40+0100\n"
+"POT-Creation-Date: 2008-06-16 21:56+0200\n"
+"PO-Revision-Date: 2008-06-16 21:57+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,8 +93,8 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:32
-msgid "Beware that this checks the whole site which can have several hundred thousands URLs. Use the B<-r> option to restrict the recursion depth."
-msgstr "Beachten Sie dass dies die komplette Domäne überprüft, welche aus mehreren hunderttausend URLs bestehen kann. Benutzen Sie die Option B<-r>, um die Rekursionstiefe zu beschränken."
+msgid "Beware that this checks the whole site which can have thousands of URLs.  Use the B<-r> option to restrict the recursion depth."
+msgstr "Beachten Sie dass dies die komplette Domäne überprüft, welche aus mehreren tausend URLs bestehen kann. Benutzen Sie die Option B<-r>, um die Rekursionstiefe zu beschränken."
 
 # type: Plain text
 #: en/linkchecker.1:36
