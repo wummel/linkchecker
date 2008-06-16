@@ -42,6 +42,11 @@
     Type: feature
     Closes: SF bug #1985509
 
+  * Support parsing of HTML pages served with application/xhtml+xml
+    content type.
+    Type: bugfix
+    Closes: SF bug #1994104
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

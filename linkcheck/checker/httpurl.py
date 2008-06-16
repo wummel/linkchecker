@@ -652,7 +652,7 @@ Use URL %(newurl)s instead for checking.""") % {
         Parse file contents for new links to check.
         """
         ctype = headers.get_content_type(self.headers)
-        if ctype == "text/html":
+        if ctype in ("text/html", "application/xhtml+xml"):
             self.parse_html()
         elif ctype == "text/css":
             self.parse_css()
