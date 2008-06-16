@@ -37,6 +37,10 @@ class TestHttp (httptest.HttpServerTest):
                   u"http.html" % self.port
             resultlines = self.get_resultlines("http.html")
             self.direct(url, resultlines, recursionlevel=1)
+            url = u"http://localhost:%d/tests/checker/data/" \
+                  u"http.xhtml" % self.port
+            resultlines = self.get_resultlines("http.xhtml")
+            self.direct(url, resultlines, recursionlevel=1)
             self.redirect1_http_test()
             self.redirect2_http_test()
             self.robots_txt_test()

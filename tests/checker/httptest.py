@@ -44,6 +44,11 @@ class StoppableHttpRequestHandler (SimpleHTTPServer.SimpleHTTPRequestHandler, ob
         """
         pass
 
+# serve .xhtml files as application/xhtml+xml
+StoppableHttpRequestHandler.extensions_map.update({
+        '.xhtml': 'application/xhtml+xml',
+})
+
 
 class StoppableHttpServer (BaseHTTPServer.HTTPServer, object):
     """
