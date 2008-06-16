@@ -144,6 +144,11 @@ PARSE_MIMETYPES = (
     "application/x-shockwave-flash",
 )
 
+HTML_MIMETYPES = (
+    "text/html",
+    "application/xhtml+xml",
+)
+
 # if file extension lookup was unsuccessful, look at the content
 PARSE_CONTENTS = {
     "html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),

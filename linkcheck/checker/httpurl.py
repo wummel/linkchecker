@@ -36,7 +36,7 @@ from .const import WARN_HTTP_ROBOTS_DENIED, WARN_HTTP_NO_ANCHOR_SUPPORT, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
     WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
-    PARSE_MIMETYPES
+    PARSE_MIMETYPES, HTML_MIMETYPES
 
 # helper alias
 unicode_safe = strformat.unicode_safe
@@ -606,7 +606,7 @@ Use URL %(newurl)s instead for checking.""") % {
         """
         if not (self.valid and self.headers):
             return False
-        if headers.get_content_type(self.headers) not in ("text/html", "application/xhtml+xml"):
+        if headers.get_content_type(self.headers) not in HTML_MIMETYPES:
             return False
         return self.encoding_supported()
 
@@ -638,23 +638,16 @@ Use URL %(newurl)s instead for checking.""") % {
             return False
         if headers.get_content_type(self.headers) not in PARSE_MIMETYPES:
             return False
-        encoding = headers.get_content_encoding(self.headers)
-        if encoding and encoding not in _supported_encodings and \
-           encoding != 'identity':
-            self.add_warning(_('Unsupported content encoding %(encoding)r.') %
-                             {"encoding": encoding},
-                             tag=WARN_HTTP_UNSUPPORTED_ENCODING)
-            return False
-        return True
+        return self.encoding_supported()
 
     def parse_url (self):
         """
         Parse file contents for new links to check.
         """
         ctype = headers.get_content_type(self.headers)
-        if ctype in ("text/html", "application/xhtml+xml"):
+        if self.is_html():
             self.parse_html()
-        elif ctype == "text/css":
+        elif self.is_css():
             self.parse_css()
         elif ctype == "application/x-shockwave-flash":
             self.parse_swf()
