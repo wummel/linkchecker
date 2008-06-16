@@ -606,7 +606,7 @@ Use URL %(newurl)s instead for checking.""") % {
         """
         if not (self.valid and self.headers):
             return False
-        if headers.get_content_type(self.headers) != "text/html":
+        if headers.get_content_type(self.headers) not in ("text/html", "application/xhtml+xml"):
             return False
         return self.encoding_supported()
 

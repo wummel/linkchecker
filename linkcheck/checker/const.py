@@ -139,6 +139,7 @@ PARSE_EXTENSIONS = {
 
 PARSE_MIMETYPES = (
     "text/html",
+    "application/xhtml+xml",
     "text/css",
     "application/x-shockwave-flash",
 )
