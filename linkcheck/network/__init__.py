@@ -4,7 +4,6 @@
 import socket
 import errno
 import array
-import fcntl
 import struct
 from _network import ifreq_size
 from .. import log, LOG_DNS
@@ -45,6 +44,7 @@ class IfConfig (object):
         self.ifr_size = ifreq_size()
 
     def _ioctl (self, func, args):
+        import fcntl
         return fcntl.ioctl(self.sockfd.fileno(), func, args)
 
     def _getifreq (self, ifname):

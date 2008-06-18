@@ -16,18 +16,26 @@
 */
 
 #include "Python.h"
+#ifndef WIN32
 #include <sys/ioctl.h>
 #include <net/if.h>  
-
+#endif
 
 /* The struct ifreq size varies on different platforms, so we need
  this helper function to determine the size of it.
+ On Windows platforms this function returns zero.
  */
 static PyObject* network_ifreq_size (PyObject* self, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
-    return Py_BuildValue("i", sizeof(struct ifreq));
+    return Py_BuildValue("i", 
+#ifdef WIN32
+0
+#else
+sizeof(struct ifreq)
+#endif
+    );
 }
 
 
