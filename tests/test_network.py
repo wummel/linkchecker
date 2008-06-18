@@ -25,6 +25,8 @@ import linkcheck.network
 class TestNetwork (unittest.TestCase):
     """Test network functions."""
 
+    needed_resources = ['posix']
+
     def test_ifreq_size (self):
         self.assertTrue(linkcheck.network.ifreq_size() > 0)
 
