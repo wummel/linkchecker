@@ -22,8 +22,19 @@ import sys
 from PyQt4.QtGui import QApplication
 from linkchecker_main import LinkCheckerMain
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
+
+def main (argv=None):
+    if argv is None:
+        argv = sys.argv
+    if len(argv) > 1 and argv[1] in ("--version", "-V"):
+        from linkcheck.director import console
+        console.print_version()
+        sys.exit(0)
+    app = QApplication(argv)
     window = LinkCheckerMain()
     window.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main(argv=sys.argv)

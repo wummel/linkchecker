@@ -34,10 +34,10 @@ optparse._ = _
 # now import the rest of the linkchecker gang
 from linkcheck import log, LOG_CMDLINE, i18n, strformat
 import linkcheck.checker
-import linkcheck.director
 import linkcheck.configuration
 import linkcheck.fileutil
 import linkcheck.logger
+from linkcheck.director import console, check_urls, get_aggregate
 # optional modules
 has_optcomplete = linkcheck.fileutil.has_module("optcomplete")
 has_profile = linkcheck.fileutil.has_module("profile")
@@ -177,23 +177,16 @@ for tag, desc in linkcheck.checker.const.Warnings.items():
     Warnings += u" o %s\n   %s\n" % (tag, desc)
 
 
-def encode (s, codec="iso8859-15"):
-    """Encode string with given codec for screen print."""
-    # XXX the console encoding should be detected automatically
-    # according to locale settings.
-    return s.encode(codec, "ignore")
-
-
 def print_version ():
     """Print the program version and exit."""
-    print encode(linkcheck.configuration.AppInfo)
+    console.print_version()
     sys.exit(0)
 
 
 def print_usage (msg):
     """Print a program msg text to stderr and exit."""
-    print >>sys.stderr, encode(_("Error: %(msg)s") % {"msg": msg})
-    print >>sys.stderr, encode(_("Execute 'linkchecker -h' for help"))
+    print >> console.stderr, _("Error: %(msg)s") % {"msg": msg}
+    print >> console.stderr, _("Execute 'linkchecker -h' for help")
     sys.exit(1)
 
 
@@ -532,8 +525,7 @@ if options.debug:
     for _name in options.debug:
         if _name not in allowed_debugs:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
-from linkcheck.director.console import StatusLogger
-config.init_logging(StatusLogger(), debug=options.debug)
+config.init_logging(console.StatusLogger(), debug=options.debug)
 log.debug(LOG_CMDLINE, _("Python %(version)s on %(platform)s") % \
    {"version": sys.version, "platform": sys.platform})
 # read configuration files
@@ -711,7 +703,7 @@ if len(args) <= 0:
         log.warn(LOG_CMDLINE, _("no files or URLs given"))
 
 # prepare checking queue
-aggregate = linkcheck.director.get_aggregate(config)
+aggregate = get_aggregate(config)
 if options.cookiefile is not None:
     try:
         cookies = linkcheck.cookies.from_file(options.cookiefile)
@@ -768,9 +760,9 @@ Press Ctrl-C to cancel, RETURN to continue.""") % {"file": _profile}
 # finally, start checking
 if do_profile:
     import profile
-    profile.run("linkcheck.director.check_urls(aggregate)", _profile)
+    profile.run("check_urls(aggregate)", _profile)
 else:
-    linkcheck.director.check_urls(aggregate)
+    check_urls(aggregate)
 
 # interactive input end
 if config['interactive']:

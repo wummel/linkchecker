@@ -23,13 +23,14 @@ import codecs
 import traceback
 from .. import i18n, configuration
 
-# All output goes to stderr here, making sure the console gets correct
-# encoded messages.
-_encoding = i18n.default_encoding
-stderr = codecs.getwriter(_encoding)(sys.stderr, errors="ignore")
+# Output to stdout and stderr, encoded with the default encoding
+stderr = codecs.getwriter(i18n.default_encoding)(sys.stderr, errors="ignore")
+stdout = codecs.getwriter(i18n.default_encoding)(sys.stdout, errors="ignore")
 
 
 class StatusLogger (object):
+    """Standard status logger object simulating a file object. Default
+    output is stderr."""
 
     def __init__ (self, fd=stderr):
         self.fd = fd
@@ -44,12 +45,10 @@ class StatusLogger (object):
         self.fd.flush()
 
 
-def internal_error ():
-    """
-    Print internal error message to stderr.
-    """
-    print >> stderr, os.linesep
-    print >> stderr, _("""********** Oops, I did it again. *************
+def internal_error (out=stderr):
+    """Print internal error message (output defaults to stderr)."""
+    print >> out, os.linesep
+    print >> out, _("""********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
@@ -64,22 +63,25 @@ I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
 """) % configuration.Email
     etype, value = sys.exc_info()[:2]
-    print >> stderr, etype, value
+    print >> out, etype, value
     traceback.print_exc()
     print_app_info()
-    print >> stderr, os.linesep, \
+    print >> out, os.linesep, \
             _("******** LinkChecker internal error, over and out ********")
 
 
-def print_app_info ():
-    """
-    Print system and application info to stderr.
-    """
-    print >> stderr, _("System info:")
-    print >> stderr, configuration.App
-    print >> stderr, _("Python %(version)s on %(platform)s") % \
-                     {"version": sys.version, "platform": sys.platform}
+def print_app_info (out=stderr):
+    """Print system and application info (output defaults to stderr)."""
+    print >> out, _("System info:")
+    print >> out, configuration.App
+    print >> out, _("Python %(version)s on %(platform)s") % \
+                    {"version": sys.version, "platform": sys.platform}
     for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy"):
         value = os.getenv(key)
         if value is not None:
-            print >> stderr, key, "=", repr(value)
+            print >> out, key, "=", repr(value)
+
+
+def print_version (out=stdout):
+    """Print the program version (output defaults to stdout)."""
+    print >> out, configuration.AppInfo
