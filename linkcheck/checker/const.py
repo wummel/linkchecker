@@ -22,6 +22,7 @@ import select
 import nntplib
 import ftplib
 import re
+import httplib as orighttplib
 from .. import LinkCheckerError, httplib2 as httplib
 from ..dns.exception import DNSException
 
@@ -47,6 +48,7 @@ ExcCacheList = [
     EOFError,
     # http error
     httplib.error,
+    orighttplib.error,
     # ftp errors
     ftplib.error_reply,
     ftplib.error_temp,
