@@ -503,7 +503,7 @@ class HTTPResponse:
         # NOTE: it is possible that we will not ever call self.close(). This
         #       case occurs when will_close is TRUE, length is None, and we
         #       read up to the last byte, but NOT past it.
-       
+
         # IMPLIES: if will_close is FALSE, then self.close() will ALWAYS be
         #          called, meaning self.isclosed() is meaningful.
         return self.fp is None
@@ -721,7 +721,7 @@ class HTTPConnection:
 
         # send the data to the server. if we get a broken pipe, then close
         # the socket. we want to reconnect when somebody tries to send again.
-       
+
         # NOTE: we DO propagate the error, though, because we cannot simply
         #       ignore the error... the caller will know if they can retry.
         if self.debuglevel > 0:
@@ -780,17 +780,17 @@ class HTTPConnection:
         #      to close the connection upon completion.
         #   3) the headers for the previous response have not been read, thus
         #      we cannot determine whether point (2) is true.   (_CS_REQ_SENT)
-       
+
         # if there is no prior response, then we can request at will.
-       
+
         # if point (2) is true, then we will have passed the socket to the
         # response (effectively meaning, "there is no prior response"), and
         # will open a new one when a new request is made.
-       
+
         # Note: if a prior response exists, then we *can* start a new request.
         #       We are not allowed to begin fetching the response to this new
         #       request, however, until that prior response is complete.
-       
+
         if self.__state == _CS_IDLE:
             self.__state = _CS_REQ_STARTED
         else:
@@ -939,22 +939,22 @@ class HTTPConnection:
         if self.__response and self.__response.isclosed():
             self.__response = None
 
-       
+
         # if a prior response exists, then it must be completed (otherwise, we
         # cannot read this response's header to determine the connection-close
         # behavior)
-       
+
         # note: if a prior response existed, but was connection-close, then the
         # socket and response were made independent of this HTTPConnection
         # object since a new request requires that we open a whole new
         # connection
-       
+
         # this means the prior response had one of two states:
         #   1) will_close: this connection was reset and the prior socket and
         #                  response operate independently
         #   2) persistent: the response was retained and we await its
         #                  isclosed() status to become true.
-       
+
         if self.__state != _CS_REQ_SENT or self.__response:
             msg = "State %s, Response %s" % (self.__state, self.__response)
             raise ResponseNotReady(msg)
