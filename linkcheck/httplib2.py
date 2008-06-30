@@ -1,13 +1,12 @@
 # -*- coding: iso-8859-1 -*-
-"""
-HTTP/1.1 client library
+"""HTTP/1.1 client library
 
 <intro stuff goes here>
 <other stuff, too>
 
-HTTPConnection go through a number of "states", which defines when a client
+HTTPConnection goes through a number of "states", which define when a client
 may legally make another request or fetch the response for a particular
-request. This diagram details these state transitions::
+request. This diagram details these state transitions:
 
     (null)
       |
@@ -42,10 +41,10 @@ request. This diagram details these state transitions::
                           Request-sent
 
 This diagram presents the following rules:
-  - a second request may not be started until {response-headers-read}
-  - a response [object] cannot be retrieved until {request-sent}
-  - there is no differentiation between an unread response body and a
-    partially read response body
+  -- a second request may not be started until {response-headers-read}
+  -- a response [object] cannot be retrieved until {request-sent}
+  -- there is no differentiation between an unread response body and a
+     partially read response body
 
 Note: this enforcement is applied by the HTTPConnection class. The
       HTTPResponse class does not enforce this state machine, which
@@ -72,7 +71,11 @@ import errno
 import mimetools
 import socket
 from urlparse import urlsplit
-from cStringIO import StringIO
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 import cache.addrinfo
 
 __all__ = ["HTTP", "HTTPResponse", "HTTPConnection", "HTTPSConnection",
@@ -80,7 +83,7 @@ __all__ = ["HTTP", "HTTPResponse", "HTTPConnection", "HTTPSConnection",
            "UnknownTransferEncoding", "UnimplementedFileMode",
            "IncompleteRead", "InvalidURL", "ImproperConnectionState",
            "CannotSendRequest", "CannotSendHeader", "ResponseNotReady",
-           "BadStatusLine", "error"]
+           "BadStatusLine", "error", "responses"]
 
 HTTP_PORT = 80
 HTTPS_PORT = 443
@@ -151,6 +154,55 @@ GATEWAY_TIMEOUT = 504
 HTTP_VERSION_NOT_SUPPORTED = 505
 INSUFFICIENT_STORAGE = 507
 NOT_EXTENDED = 510
+
+# Mapping status codes to official W3C names
+responses = {
+    100: 'Continue',
+    101: 'Switching Protocols',
+
+    200: 'OK',
+    201: 'Created',
+    202: 'Accepted',
+    203: 'Non-Authoritative Information',
+    204: 'No Content',
+    205: 'Reset Content',
+    206: 'Partial Content',
+
+    300: 'Multiple Choices',
+    301: 'Moved Permanently',
+    302: 'Found',
+    303: 'See Other',
+    304: 'Not Modified',
+    305: 'Use Proxy',
+    306: '(Unused)',
+    307: 'Temporary Redirect',
+
+    400: 'Bad Request',
+    401: 'Unauthorized',
+    402: 'Payment Required',
+    403: 'Forbidden',
+    404: 'Not Found',
+    405: 'Method Not Allowed',
+    406: 'Not Acceptable',
+    407: 'Proxy Authentication Required',
+    408: 'Request Timeout',
+    409: 'Conflict',
+    410: 'Gone',
+    411: 'Length Required',
+    412: 'Precondition Failed',
+    413: 'Request Entity Too Large',
+    414: 'Request-URI Too Long',
+    415: 'Unsupported Media Type',
+    416: 'Requested Range Not Satisfiable',
+    417: 'Expectation Failed',
+
+    500: 'Internal Server Error',
+    501: 'Not Implemented',
+    502: 'Bad Gateway',
+    503: 'Service Unavailable',
+    504: 'Gateway Timeout',
+    505: 'HTTP Version Not Supported',
+}
 
 # maximal amount of data to read at one time in _safe_read
 MAXAMOUNT = 1048576
@@ -392,6 +444,9 @@ class HTTPResponse:
                 self.length = int(length)
             except ValueError:
                 self.length = None
+            else:
+                if self.length < 0:  # ignore nonsensical negative lengths
+                    self.length = None
         else:
             self.length = None
 
@@ -448,7 +503,7 @@ class HTTPResponse:
         # NOTE: it is possible that we will not ever call self.close(). This
         #       case occurs when will_close is TRUE, length is None, and we
         #       read up to the last byte, but NOT past it.
-        #
+       
         # IMPLIES: if will_close is FALSE, then self.close() will ALWAYS be
         #          called, meaning self.isclosed() is meaningful.
         return self.fp is None
@@ -502,6 +557,9 @@ class HTTPResponse:
                 try:
                     chunk_left = int(line, 16)
                 except ValueError:
+                    # close the connection as protocol synchronisation is
+                    # probably lost
+                    self.close()
                     raise IncompleteRead("Invalid chunk length at %r" % line)
                 if chunk_left == 0:
                     break
@@ -528,6 +586,10 @@ class HTTPResponse:
         ### note: we shouldn't have any trailers!
         while True:
             line = self.fp.readline()
+            if not line:
+                # a vanishingly small number of sites EOF without
+                # sending the trailer
+                break
             if line == '\r\n':
                 break
 
@@ -659,7 +721,7 @@ class HTTPConnection:
 
         # send the data to the server. if we get a broken pipe, then close
         # the socket. we want to reconnect when somebody tries to send again.
-        #
+       
         # NOTE: we DO propagate the error, though, because we cannot simply
         #       ignore the error... the caller will know if they can retry.
         if self.debuglevel > 0:
@@ -718,17 +780,17 @@ class HTTPConnection:
         #      to close the connection upon completion.
         #   3) the headers for the previous response have not been read, thus
         #      we cannot determine whether point (2) is true.   (_CS_REQ_SENT)
-        #
+       
         # if there is no prior response, then we can request at will.
-        #
+       
         # if point (2) is true, then we will have passed the socket to the
         # response (effectively meaning, "there is no prior response"), and
         # will open a new one when a new request is made.
-        #
+       
         # Note: if a prior response exists, then we *can* start a new request.
         #       We are not allowed to begin fetching the response to this new
         #       request, however, until that prior response is complete.
-        #
+       
         if self.__state == _CS_IDLE:
             self.__state = _CS_REQ_STARTED
         else:
@@ -877,22 +939,22 @@ class HTTPConnection:
         if self.__response and self.__response.isclosed():
             self.__response = None
 
-        #
+       
         # if a prior response exists, then it must be completed (otherwise, we
         # cannot read this response's header to determine the connection-close
         # behavior)
-        #
+       
         # note: if a prior response existed, but was connection-close, then the
         # socket and response were made independent of this HTTPConnection
         # object since a new request requires that we open a whole new
         # connection
-        #
+       
         # this means the prior response had one of two states:
         #   1) will_close: this connection was reset and the prior socket and
         #                  response operate independently
         #   2) persistent: the response was retained and we await its
         #                  isclosed() status to become true.
-        #
+       
         if self.__state != _CS_REQ_SENT or self.__response:
             msg = "State %s, Response %s" % (self.__state, self.__response)
             raise ResponseNotReady(msg)
@@ -921,7 +983,7 @@ class HTTPConnection:
     def is_idle (self):
         return self.__state == _CS_IDLE
 
-# The next several classes are used to define FakeSocket,a socket-like
+# The next several classes are used to define FakeSocket, a socket-like
 # interface to an SSL connection.
 
 # The primary complexity comes from faking a makefile() method.  The
@@ -1236,7 +1298,7 @@ if hasattr(socket, 'ssl'):
             self.cert_file = cert_file
 
 
-class HTTPException(StandardError):
+class HTTPException(Exception):
     # Subclasses that define an __init__ must call Exception.__init__
     # or define self.args.  Otherwise, str() will fail.
     pass
