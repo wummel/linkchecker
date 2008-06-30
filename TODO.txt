@@ -1,4 +1,3 @@
 - [INTERFACE] GUI for linkchecker
-  + Font setting "Mono" for log output has no effect on Windows.
   + more configuration options
 - Test installation and dist files

@@ -31,7 +31,10 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
-        self.textEdit.setFontFamily("mono")
+        if os.name == 'nt':
+            self.textEdit.setFontFamily("Courier")
+        else:
+            self.textEdit.setFontFamily("mono")
         self.checker = Checker()
 
         settings = QtCore.QSettings('bfk', configuration.AppName)
