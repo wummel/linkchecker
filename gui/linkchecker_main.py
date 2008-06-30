@@ -24,22 +24,46 @@ from linkcheck import configuration, checker, director, add_intern_pattern, \
 
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
+
     def __init__(self, parent=None):
+        """Initialize UI."""
         super(LinkCheckerMain, self).__init__(parent)
         self.setupUi(self)
+        self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
         self.textEdit.setFontFamily("mono")
         self.checker = Checker()
+
+        settings = QtCore.QSettings('bfk', configuration.AppName)
+        settings.beginGroup('mainwindow')
+
+        if settings.contains('size'):
+            self.resize(settings.value('size').toSize())
+            self.move(settings.value('pos').toPoint())
+        settings.endGroup()
+
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.updateUi)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.updateUi)
         self.connect(self.checker, QtCore.SIGNAL("addMessage(QString)"), self.addMessage)
         self.connect(self.checker, QtCore.SIGNAL("setStatus(QString)"), self.setStatus)
         self.connect(self.pushButton, QtCore.SIGNAL("clicked()"), self.check_or_cancel)
-        self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), QtGui.qApp, QtCore.SLOT("quit()"))
+        self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
         self.updateUi()
 
+    def closeEvent (self, e=None):
+        """Save settings on close."""
+        settings = QtCore.QSettings('bfk', configuration.AppName)
+        settings.beginGroup('mainwindow')
+        settings.setValue("size", QtCore.QVariant(self.size()))
+        settings.setValue("pos", QtCore.QVariant(self.pos()))
+        settings.endGroup()
+        settings.sync()
+        if e is not None:
+            e.accept()
+
     def about (self):
+        """Display about dialog."""
         d = {
             "app": configuration.App,
             "appname": configuration.AppName,
@@ -55,12 +79,14 @@ Version 2 or later.</p>
 </qt>""") % d)
 
     def check_or_cancel (self):
+        """Run a new check or cancel active check."""
         if self.aggregate is None:
             self.check()
         else:
             self.cancel()
 
     def check (self):
+        """Check given URL."""
         self.pushButton.setEnabled(False)
         self.textEdit.setText("")
         config = self.get_config()
@@ -91,10 +117,12 @@ Version 2 or later.</p>
         self.checker.check(self.aggregate)
 
     def cancel (self):
+        """Cancel running check."""
         self.setStatus(_("Aborting."))
         director.abort(self.aggregate)
 
     def get_config (self):
+        """Return check configuration."""
         config = configuration.Configuration()
         config["recursionlevel"] = self.spinBox.value()
         config.logger_add("gui", GuiLogger)
@@ -105,14 +133,17 @@ Version 2 or later.</p>
         return config
 
     def addMessage (self, msg):
+        """Add new log message to text edit widget."""
         text = self.textEdit.toPlainText()
         self.textEdit.setText(text+msg)
         self.textEdit.moveCursor(QtGui.QTextCursor.End)
 
     def setStatus (self, msg):
+        """Show status message in status bar."""
         self.statusBar.showMessage(msg)
 
     def updateUi (self):
+        """Reset UI."""
         self.pushButton.setText(_("Check"))
         self.aggregate = None
         self.pushButton.setEnabled(True)
@@ -120,6 +151,7 @@ Version 2 or later.</p>
 
 
 class Checker (QtCore.QThread):
+    """Separate checker thread."""
 
     def __init__ (self, parent=None):
         super(Checker, self).__init__(parent)
@@ -143,6 +175,7 @@ class Checker (QtCore.QThread):
 from linkcheck.logger.text import TextLogger
 
 class GuiLogger (TextLogger):
+    """Custom logger class to delegate log messages to the UI."""
 
     def __init__ (self, **args):
         super(GuiLogger, self).__init__(**args)
@@ -159,6 +192,7 @@ class GuiLogger (TextLogger):
 
 
 class StatusLogger (object):
+    """Custom status logger to delegate status message to the UI."""
 
     def __init__ (self, widget):
         self.widget = widget
