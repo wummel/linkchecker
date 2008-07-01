@@ -91,7 +91,7 @@ class TestNews (LinkCheckTest):
         """
         Nttp scheme with host.
         """
-        url = u"nntp://news.yaako.com/comp.lang.python"
+        url = u"nntp://nntp.aioe.org/comp.lang.python"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -105,7 +105,7 @@ class TestNews (LinkCheckTest):
         """
         Article span.
         """
-        url = u"nntp://news.yaako.com/comp.lang.python/1-5"
+        url = u"nntp://nntp.aioe.org/comp.lang.python/1-5"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -128,7 +128,7 @@ class TestNews (LinkCheckTest):
         """
         Host but no group.
         """
-        url = u"nntp://news.yaako.com/"
+        url = u"nntp://nntp.aioe.org/"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
