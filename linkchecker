@@ -758,14 +758,11 @@ if options.trace:
 # add urls to queue
 if options.stdin:
     args.extend(read_stdin_urls())
-import time
-print "XXX1 args are read.", time.time()
 if args:
     for url in args:
         aggregate_url(aggregate, config, url)
 else:
     log.warn(LOG_CMDLINE, _("no files or URLs given"))
-print "XXX2 urls are queued", time.time()
 # set up profiling
 if do_profile:
     if has_profile:
