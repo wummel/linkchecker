@@ -37,6 +37,9 @@ links are checked as usual:
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
 .br
+Checking from stdin:
+  \fBecho "bla.html" | linkchecker --stdin\fP
+.br
 Checking a local HTML file on Windows:
   \fBlinkchecker c:\\temp\\test.html\fP
 .br
@@ -76,6 +79,9 @@ Print version and exit.
 .TP
 \fB\-\-allow\-root\fP
 Do not drop privileges when running as root user on Unix systems.
+.TP
+\fB\-\-stdin\fP
+Read list of white-space separated URLs to check from stdin.
 .
 .SS Output options
 .TP

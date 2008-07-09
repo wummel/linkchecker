@@ -37,6 +37,9 @@ anderen Verknüpfungen werden wie üblich geprüft:
 Überprüfung einer lokalen HTML Datei unter Unix:
   \fBlinkchecker ../bla.html\fP
 .br
+Prüfe von der Standardeingabe:
+  \fBecho "bla.html" | linkchecker \-\-stdin\fP
+.br
 Überprüfung einer lokalen HTML Datei unter Windows:
   \fBlinkchecker c:\etemp\etest.html\fP
 .br
@@ -78,6 +81,10 @@ Gebe die Version aus und beende das Programm.
 \fB\-\-allow\-root\fP
 Keine Entziehung der Priviligien, falls das Programm unter Unix als Benutzer
 root läuft.
+.TP 
+\fB\-\-stdin\fP
+Lese Liste von URLs zum Prüfen von der Standardeingabe, getrennt durch
+Leerzeichen.
 .
 .SS Ausgabeoptionen
 .TP 

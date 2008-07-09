@@ -336,6 +336,9 @@ group.add_option("-V", "--version", action="store_true", dest="version",
 group.add_option("--allow-root", action="store_true", dest="allowroot",
                  default=False, help=_(
 """Do not drop privileges when running as root user on Unix systems."""))
+group.add_option("--stdin", action="store_true", dest="stdin",
+                 help=_(
+"""Read list of white-space separated URLs to check from stdin."""))
 optparser.add_option_group(group)
 
 ################# output options ##################
@@ -516,6 +519,41 @@ if has_optcomplete:
         return [os.path.join(startdir, f)
                 for f in os.listdir(listdir) if f.startswith(lhs)]
     optcomplete.autocomplete(optparser, arg_completer=FileCompleter)
+
+
+def aggregate_url (aggregate, config, url):
+    """Append given commandline URL to input queue."""
+    get_url_from = linkcheck.checker.get_url_from
+    if url.lower().startswith("www."):
+        # syntactic sugar
+        url = "http://%s" % url
+    elif url.lower().startswith("ftp."):
+        # syntactic sugar
+        url = "ftp://%s" % url
+    url_data = get_url_from(url, 0, aggregate)
+    # warn if redirected since intern patterns do not match anymore then
+    url_data.warn_redirect = True
+    try:
+        linkcheck.add_intern_pattern(url_data, config)
+    except UnicodeError:
+        log.error(LOG_CMDLINE,
+            _("URL has unparsable domain name: %(domain)s") %
+            {"domain": sys.exc_info()[1]})
+        sys.exit(1)
+    aggregate.urlqueue.put(url_data)
+
+
+def read_stdin_urls ():
+    """Read list of URLs, separated by white-space, from stdin."""
+    urls = []
+    while True:
+        lines = sys.stdin.readlines(8*1024)
+        if not lines:
+            break
+        for line in lines:
+            urls.extend(line.split())
+    return urls
+
 
 # read and parse command line options and arguments
 (options, args) = optparser.parse_args()
@@ -699,8 +737,6 @@ if len(args) <= 0:
         urls = raw_input(
                   _("enter one or more URLs, separated by white-space\n--> "))
         args = urls.split()
-    else:
-        log.warn(LOG_CMDLINE, _("no files or URLs given"))
 
 # prepare checking queue
 aggregate = get_aggregate(config)
@@ -720,25 +756,16 @@ if options.trace:
     linkcheck.trace.trace_filter([r"^linkcheck"])
     linkcheck.trace.trace_on()
 # add urls to queue
-get_url_from = linkcheck.checker.get_url_from
-for url in args:
-    if url.lower().startswith("www."):
-        # syntactic sugar
-        url = "http://%s" % url
-    elif url.lower().startswith("ftp."):
-        # syntactic sugar
-        url = "ftp://%s" % url
-    url_data = get_url_from(url, 0, aggregate)
-    # warn if redirected since intern patterns do not match anymore then
-    url_data.warn_redirect = True
-    try:
-        linkcheck.add_intern_pattern(url_data, config)
-    except UnicodeError:
-        log.error(LOG_CMDLINE,
-            _("URL has unparsable domain name: %(domain)s") %
-            {"domain": sys.exc_info()[1]})
-        sys.exit(1)
-    aggregate.urlqueue.put(url_data)
+if options.stdin:
+    args.extend(read_stdin_urls())
+import time
+print "XXX1 args are read.", time.time()
+if args:
+    for url in args:
+        aggregate_url(aggregate, config, url)
+else:
+    log.warn(LOG_CMDLINE, _("no files or URLs given"))
+print "XXX2 urls are queued", time.time()
 # set up profiling
 if do_profile:
     if has_profile:
