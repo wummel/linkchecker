@@ -1,3 +1,4 @@
-- [INTERFACE] GUI for linkchecker
-  + more configuration options
-- Test installation and dist files
+- [GUI] more configuration options
+- [PERF] Queueing a huge number of links (> 100000) is slow and consumes
+  lots of memory.
+- [DIST] Test installation and dist files
