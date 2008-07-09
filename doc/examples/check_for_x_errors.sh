@@ -14,7 +14,7 @@
 #   $2 - notification email
 #   $3 - threshold number of errors
 #
-function die() { echo "$0: $*"; exit 1; }
+die() { echo "$0: $*"; exit 1; }
 
 logfile=/tmp/linkchecker.log
 [ -z "$1" -o -z "$2" -o -z "$3" ] && die "check_web_links requires three arguments"
