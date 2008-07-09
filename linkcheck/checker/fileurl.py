@@ -70,6 +70,15 @@ def get_nt_filename (path):
     return path
 
 
+def is_absolute_path (path):
+    """Check if given path is absolute. On Windows absolute paths start
+    with a drive letter. On all other systems absolute paths start with
+    a slash."""
+    if os.name == 'nt':
+       re.search(r"^[a-zA-Z]:", path)
+    return path.startswith("/")
+
+
 class FileUrl (urlbase.UrlBase):
     """
     Url link with file scheme.
@@ -90,12 +99,13 @@ class FileUrl (urlbase.UrlBase):
         base_url = self.base_url
         if not (parent_url or base_ref or base_url.startswith("file:")):
             base_url = os.path.expanduser(base_url)
-            if not base_url.startswith("/"):
+            if not is_absolute_path(base_url):
                 base_url = os.getcwd()+"/"+base_url
             base_url = "file://"+base_url
-        base_url = base_url.replace("\\", "/")
-        # transform c:/windows into /c|/windows
-        base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
+        if os.name == "nt":
+            base_url = base_url.replace("\\", "/")
+            # transform c:/windows into /c|/windows
+            base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
         # norm base url again after changing
         if self.base_url != base_url:
             base_url, is_idn = urlbase.url_norm(base_url)

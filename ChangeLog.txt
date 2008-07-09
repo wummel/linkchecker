@@ -52,6 +52,10 @@
     Closes: SF bug #2013873, #2013874
     Changed: linkchecker
 
+  * Improved filename recognition on Windows systems.
+    Type: bugfix
+    Changed: linkcheck/checker/fileurl.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
