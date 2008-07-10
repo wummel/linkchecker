@@ -372,6 +372,12 @@ Warnungen gefunden wurden und Warnungen aktiviert sind
 .IP \(bu
 ein Programmfehler aufgetreten ist.
 .
+.SH LIMITIERUNGEN
+LinkChecker benutzt Hauptspeicher für jede zu prüfende URL, die in der
+Warteschlange steht. Mit tausenden solcher URLs kann die Menge des benutzten
+Hauptspeichers sehr groß werden. Dies könnte das Programm oder sogar das
+gesamte System verlangsamen.
+.
 .SH DATEIEN
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \-
 Standardkonfigurationsdateien

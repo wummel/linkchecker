@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-07-09 19:47+0200\n"
+"POT-Creation-Date: 2008-07-10 23:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1061,68 +1061,82 @@ msgstr ""
 # type: SH
 #: en/linkchecker.1:376
 #, no-wrap
+msgid "LIMITATIONS"
+msgstr ""
+
+# type: Plain text
+#: en/linkchecker.1:380
+msgid ""
+"LinkChecker consumes memory for each queued URL to check. With thousands of "
+"queued URLs the amount of consumed memory can become quite large. This might "
+"slow down the program or even the whole system."
+msgstr ""
+
+# type: SH
+#: en/linkchecker.1:381
+#, no-wrap
 msgid "FILES"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:379
+#: en/linkchecker.1:384
 msgid ""
 "B</etc/linkchecker/linkcheckerrc>, B<~/.linkchecker/linkcheckerrc> - default "
 "configuration files"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:381
+#: en/linkchecker.1:386
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:383
+#: en/linkchecker.1:388
 msgid "B<linkchecker-out.>I<TYPE> - default logger file output name"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:385
+#: en/linkchecker.1:390
 msgid ""
 "B<http://docs.python.org/lib/standard-encodings.html> - valid output "
 "encodings"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:387
+#: en/linkchecker.1:392
 msgid "B<http://www.amk.ca/python/howto/regex/> - regular expression documentation"
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:388 en/linkcheckerrc.5:411
+#: en/linkchecker.1:393 en/linkcheckerrc.5:411
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:390
+#: en/linkchecker.1:395
 msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:391 en/linkcheckerrc.5:414
+#: en/linkchecker.1:396 en/linkcheckerrc.5:414
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:393 en/linkcheckerrc.5:416
+#: en/linkchecker.1:398 en/linkcheckerrc.5:416
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 
 # type: SH
-#: en/linkchecker.1:394 en/linkcheckerrc.5:417
+#: en/linkchecker.1:399 en/linkcheckerrc.5:417
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 # type: Plain text
-#: en/linkchecker.1:395 en/linkcheckerrc.5:418
+#: en/linkchecker.1:400 en/linkcheckerrc.5:418
 msgid "Copyright \\(co 2000-2008 Bastian Kleineidam"
 msgstr ""
 

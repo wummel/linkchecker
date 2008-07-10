@@ -373,6 +373,11 @@ link warnings were found and warnings are enabled
 .IP \(bu
 a program error occurred.
 .
+.SH LIMITATIONS
+LinkChecker consumes memory for each queued URL to check. With thousands
+of queued URLs the amount of consumed memory can become quite large. This
+might slow down the program or even the whole system.
+.
 .SH FILES
 \fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP - default
 configuration files
