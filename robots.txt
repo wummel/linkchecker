@@ -6,6 +6,8 @@
 User-agent: LinkChecker
 Crawl-delay: 1
 Disallow: /secret
+# a comment line inside a rule, followed by non-ascii
+Disallow: /umlaut/ö
 
 # The following rule should not match
 User-agent: *
