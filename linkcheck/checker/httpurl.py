@@ -422,7 +422,8 @@ Use URL %(newurl)s instead for checking.""") % {
             # store cookies for valid links
             if self.aggregate.config['storecookies']:
                 for c in self.cookies:
-                    self.add_info(_("Store cookie: %(cookie)s.") % c)
+                    self.add_info(_("Store cookie: %(cookie)s.") %
+                                  {"cookie": c})
                 try:
                     out = self.aggregate.cookies.add(self.headers,
                                                      self.urlparts[0],
