@@ -155,7 +155,7 @@ class HttpCookie (object):
         if not domain.endswith(cdomain):
             # any suffix matches
             return False
-        if "." in domain[:-len(cdomain)]:
+        if "." in domain[:-(len(cdomain)+1)]:
             # prefix must be dot-free
             return False
         return True

@@ -23,9 +23,7 @@ import linkcheck.cookies
 
 
 class TestCookies (unittest.TestCase):
-    """
-    Test list dictionary routines.
-    """
+    """Test cookie routines."""
 
     def test_netscape_cookie1 (self):
         data = (
@@ -98,6 +96,22 @@ class TestCookies (unittest.TestCase):
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
         self.assert_(cookie.is_expired())
+
+    def test_netscape_cookie6 (self):
+        data = (
+            ("Foo", "Bar"),
+            ("Domain", "example.org"),
+            ("Path", "/"),
+        )
+        # note: values are without quotes
+        value = "; ".join('%s=%s' % (key, value) for key, value in data)
+        scheme = "http"
+        host = "example.org"
+        path = "/"
+        cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
+        self.assertTrue(cookie.is_valid_for("http", "example.org", 80, "/"))
+        self.assertTrue(cookie.is_valid_for("http", "www.example.org", 80, "/"))
+        self.assertFalse(cookie.is_valid_for("http", "www.b.example.org", 80, "/"))
 
     def test_rfc_cookie1 (self):
         data = (
@@ -199,9 +213,7 @@ class TestCookies (unittest.TestCase):
 
 
 def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
+    """Build and return a TestSuite."""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestCookies))
     return suite

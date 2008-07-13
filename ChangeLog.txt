@@ -61,6 +61,12 @@
     Type: bugfix
     Changed: linkcheck/robotparser2.py
 
+  * Fix off-by-one error in cookie domain matching code. Prevented
+    some cookie files to work properly.
+    Type: bugfix
+    Changed: linkcheck/cookies.py
+    Closes: SF bug #2016451
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
