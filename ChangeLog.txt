@@ -56,6 +56,11 @@
     Type: bugfix
     Changed: linkcheck/checker/fileurl.py
 
+  * Fix error encoding non-ASCII robots.txt content. Makes some sites
+    like wikipedia.org accessible with LinkChecker.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

@@ -134,10 +134,10 @@ class RobotFileParser (object):
         except urllib2.HTTPError, x:
             if x.code in (401, 403):
                 self.disallow_all = True
-                log.debug(LOG_CHECK, "%s disallow all", self.url)
+                log.debug(LOG_CHECK, "%s disallow all (code %d)", self.url, x.code)
             else:
                 self.allow_all = True
-                log.debug(LOG_CHECK, "%s allow all", self.url)
+                log.debug(LOG_CHECK, "%s allow all (HTTP error)", self.url)
         except socket.timeout:
             raise
         except urllib2.URLError:
@@ -145,21 +145,21 @@ class RobotFileParser (object):
             if isinstance(x.reason, socket.timeout):
                 raise
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all (URL error)", self.url)
         except (socket.gaierror, socket.error):
             # no network
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all (socket error)", self.url)
         except IOError:
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all (I/O error)", self.url)
         except httplib.HTTPException:
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all", self.url)
+            log.debug(LOG_CHECK, "%s allow all (HTTP exception)", self.url)
         except ValueError:
             # urllib2 could raise ValueError on invalid data
             self.disallow_all = True
-            log.debug(LOG_CHECK, "%s disallow all", self.url)
+            log.debug(LOG_CHECK, "%s disallow all (value error)", self.url)
 
     def _read_content (self, req):
         """Read robots.txt content.
@@ -175,7 +175,7 @@ class RobotFileParser (object):
             lines = []
             line = f.readline()
             while line:
-                lines.append(line.strip().encode("ascii", "ignore"))
+                lines.append(line.strip())
                 line = f.readline()
             self.parse(lines)
         else:
