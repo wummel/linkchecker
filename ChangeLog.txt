@@ -67,6 +67,10 @@
     Changed: linkcheck/cookies.py
     Closes: SF bug #2016451
 
+  * Improved double Ctrl-C abort on Unix and Windows platforms.
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

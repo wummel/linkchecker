@@ -100,8 +100,21 @@ def abort (aggregate):
             break
         except KeyboardInterrupt:
             log.warn(LOG_CHECK, _("keyboard interrupt; force shutdown"))
-            # forced exit without cleanup
-            os._exit(1)
+            abort_now()
+
+
+def abort_now ():
+    """Force exit of current process without cleanup."""
+    if os.name == 'posix':
+        # Unix systems can use sigkill
+        import signal
+        os.kill(os.getpid(), signal.SIGKILL)
+    elif os.name == 'nt':
+        # NT as os.abort()
+        os.abort()
+    else:
+        # All other systems have os._exit() as best shot.
+        os._exit(3)
 
 
 def get_aggregate (config):
