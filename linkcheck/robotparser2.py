@@ -172,14 +172,10 @@ class RobotFileParser (object):
         f = self.get_opener().open(req)
         ct = f.info().get("Content-Type")
         if ct and ct.lower().startswith("text/plain"):
-            lines = []
-            line = f.readline()
-            while line:
-                lines.append(line.strip())
-                line = f.readline()
-            self.parse(lines)
+            self.parse([line.strip() for line in f])
         else:
             self.allow_all = True
+        f.close()
 
     def _add_entry (self, entry):
         """Add a parsed entry to entry list.
