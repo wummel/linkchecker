@@ -327,13 +327,16 @@ with \fBhttps://example.org/\fP:
  Set-cookie: baggage="elitist"; comment="hologram"
 
 .SH PROXY SUPPORT
-To use a proxy set $http_proxy, $https_proxy, $ftp_proxy
-on Unix or Windows to the proxy URL. The URL should be of the form
-\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP],
-for example \fBhttp://localhost:8080\fP, or
-\fBhttp://joe:test@proxy.domain\fP.
+To use a proxy on Unix or Windows set $http_proxy, $https_proxy or $ftp_proxy
+to the proxy URL. The URL should be of the form
+\fBhttp://\fP\fIhost\fP[\fB:\fP\fIport\fP],
+for example \fBhttp://proxy.example.com:8080\fP.
 On a Mac use the Internet Config to select a proxy.
 .
+See also the Python documention at
+\fBhttp://docs.python.org/lib/module\-urllib.html\fP how to set a proxy.
+.
+Note that proxies which require authentication are not supported.
 .SH NOTES
 URLs on the commandline starting with \fBftp.\fP are treated like
 \fBftp://ftp.\fP, URLs starting with \fBwww.\fP are treated like

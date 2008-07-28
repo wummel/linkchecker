@@ -1,2 +1,3 @@
+- [CHECKER] Add support for proxy authentication.
 - [GUI] more configuration options
-- [DIST] Test installation and dist files
+- [DIST] bdist_rpm target does not work with anymore with new setup.py

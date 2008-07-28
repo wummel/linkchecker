@@ -190,7 +190,7 @@ Diese Option kann mehrmals angegeben werden.
 .TP 
 \fB\-C\fP, \fB\-\-cookies\fP
 Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich Cookies, die
-zum ursprünglichen Server zurückgesendet werden, werden akzeptiert. 
+zum ursprünglichen Server zurückgesendet werden, werden akzeptiert.
 Gesendete und akzeptierte Cookies werden als zusätzlicheLoginformation
 aufgeführt.
 .TP 
@@ -327,12 +327,18 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
  Set\-cookie: baggage="elitist"; comment="hologram"
 
 .SH "PROXY UNTERSTÜTZUNG"
-Um einen Proxy zu benutzen, setzen Sie $http_proxy, $https_proxy, $ftp_proxy
-unter Unix oder Windows auf die Proxy URL. Die URL sollte die Form
-\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP] besitzen, zum
-Beispiel \fBhttp://localhost:8080\fP, oder \fBhttp://joe:test@proxy.domain\fP. Auf
-einem Mac benutzen Sie die Internet Konfiguration.
+Um einen Proxy unter Unix oder Windows zu benutzen, setzen Sie $http_proxy,
+$https_proxy oder $ftp_proxy auf die Proxy URL. Die URL sollte die Form
+\fBhttp://\fP\fIhost\fP[\fB:\fP\fIport\fP] besitzen, zum Beispiel
+\fBhttp://proxy.example.com:8080\fP. Auf einem Mac benutzen Sie die Internet
+Konfiguration.
 .
+Siehe auch die Python Dokumentation bei
+\fBhttp://docs.python.org/lib/module\-urllib.html\fP, wie man einen Proxy
+angibt.
+.
+Beachten Sie, dass Proxies, die Authorisierung benötigen, nicht unterstützt
+werden.
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP
 behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können auch
