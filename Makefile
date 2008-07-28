@@ -108,7 +108,7 @@ chmod:
 
 .PHONY: dist
 dist: locale MANIFEST chmod
-	$(PYTHON) setup.py sdist --formats=gztar bdist_rpm
+	$(PYTHON) setup.py sdist --formats=gztar
 
 dist-stamp: changelog
 	$(MAKE) dist
