@@ -71,13 +71,22 @@ Notes = _("""NOTES
 ProxySupport = _("""PROXY SUPPORT
 To use a proxy on Unix or Windows set $http_proxy, $https_proxy or $ftp_proxy
 to the proxy URL. The URL should be of the form
-"http://<host>[:<port>]", for example "http://proxy.example.com:8080".
-On a Mac use the Internet Config to select a proxy.
+"http://[<user>:<pass>@]<host>[:<port>]".
+LinkChecker also detects manual proxy settings of Internet Explorer under
+Windows systems. On a Mac use the Internet Config to select a proxy.
 
-See also the Python documention at
-http://docs.python.org/lib/module-urllib.html how to set a proxy.
+Setting a HTTP proxy on Unix for example looks like this:
 
-Note that proxies which require authentication are not supported.
+  export http_proxy="http://proxy.example.com:8080"
+
+Proxy authentication is also supported:
+
+  export http_proxy="http://user1:mypass@proxy.example.org:8081"
+
+Setting a proxy on the Windows command prompt:
+
+  set http_proxy=http://proxy.example.com:8080
+
 """)
 
 RegularExpressions = _("""REGULAR EXPRESSIONS

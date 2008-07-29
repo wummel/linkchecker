@@ -329,16 +329,22 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
 .SH "PROXY UNTERSTÜTZUNG"
 Um einen Proxy unter Unix oder Windows zu benutzen, setzen Sie $http_proxy,
 $https_proxy oder $ftp_proxy auf die Proxy URL. Die URL sollte die Form
-\fBhttp://\fP\fIhost\fP[\fB:\fP\fIport\fP] besitzen, zum Beispiel
-\fBhttp://proxy.example.com:8080\fP. Auf einem Mac benutzen Sie die Internet
-Konfiguration.
+\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP] besitzen. LinkChecker
+erkennt auch die Proxy\-Einstellungen des Internet Explorers auf einem
+Windows\-System. Auf einem Mac benutzen Sie die Internet Konfiguration.
 .
-Siehe auch die Python Dokumentation bei
-\fBhttp://docs.python.org/lib/module\-urllib.html\fP, wie man einen Proxy
-angibt.
-.
-Beachten Sie, dass Proxies, die Authorisierung benötigen, nicht unterstützt
-werden.
+Einen HTTP\-Proxy unter Unix anzugeben sieht beispielsweise so aus:
+
+  export http_proxy="http://proxy.example.com:8080"
+
+Proxy\-Authentifizierung wird ebenfalls unterstützt:
+
+  export http_proxy="http://user1:mypass@proxy.example.org:8081"
+
+Setzen eines Proxies unter der Windows Befehlszeile:
+
+  set http_proxy=http://proxy.example.com:8080
+
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP
 behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können auch
