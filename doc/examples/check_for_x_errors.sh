@@ -5,6 +5,7 @@
 # - added hash-bang first line
 # - documentation
 # - removed second function, run them commands as-is
+# - use $TMPDIR if it exists
 #
 # Check web site links once per day, report only when the check had more
 # than X errors.
@@ -16,7 +17,7 @@
 #
 die() { echo "$0: $*"; exit 1; }
 
-logfile=/tmp/linkchecker.log
+logfile=${TMPDIR-/tmp}/linkchecker.log
 [ -z "$1" -o -z "$2" -o -z "$3" ] && die "check_web_links requires three arguments"
 do_check=false
 if [ ! -f $logfile ]; then
