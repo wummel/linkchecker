@@ -33,37 +33,8 @@ Requirements for Unix/Linux or Mac OS X
    On most distributions, the distutils module is included in
    an extra ``python-dev`` package.
 
-3. *Optional, for the GUI client:*
-   PyQt4 from http://www.riverbankcomputing.co.uk/software/pyqt/download
-
-4. *Optional, for bash-completion:*
+3. *Optional, for bash-completion:*
    optcomplete Python module from http://furius.ca/optcomplete/
-
-5. *Optional, for HTML/CSS syntax checks:*
-   HTML tidy from http://utidylib.berlios.de/
-   cssutils from http://cthedot.de/cssutils/
-
-6. *Optional, for displaying country codes:*
-   GeoIP from http://www.maxmind.com/app/python
-
-7. *Optional, used for Virus checking:*
-   ClamAv from
-   http://www.clamav.net/
-
-
-Requirements for Windows
-------------------------
-
-1. Install Python >= 2.5 from http://www.python.org/
-   [http://www.python.org/ftp/python/2.5.2/python-2.5.2.msi]
-
-2. *Optional, for the GUI client:*
-   PyQt4 from http://www.riverbankcomputing.co.uk/software/pyqt/download
-   [http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-Py2.5-gpl-4.4.2-1.exe]
-
-3. *Optional, for console color support:*
-   Wconio from http://newcenturycomputers.net/projects/wconio.html
-   [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.5.exe]
 
 4. *Optional, for HTML/CSS syntax checks:*
    HTML tidy from http://utidylib.berlios.de/
@@ -74,10 +45,32 @@ Requirements for Windows
 
 6. *Optional, used for Virus checking:*
    ClamAv from
-   http://www.sosdg.org/clamav-win32/
-   [http://clamav-sosdg.googlecode.com/files/clamav-0.93.1-2.exe]
+   http://www.clamav.net/
 
-7. *Only needed if you compile from source:*
+
+Requirements for Windows
+------------------------
+
+1. Install Python >= 2.5 from http://www.python.org/
+   [http://www.python.org/ftp/python/2.6/python-2.6.msi]
+
+2. *Optional, for console color support:*
+   Wconio from http://newcenturycomputers.net/projects/wconio.html
+   [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.5.exe]
+
+3. *Optional, for HTML/CSS syntax checks:*
+   HTML tidy from http://utidylib.berlios.de/
+   cssutils from http://cthedot.de/cssutils/
+
+4. *Optional, for displaying country codes:*
+   GeoIP from http://www.maxmind.com/app/python
+
+5. *Optional, used for Virus checking:*
+   ClamAv from
+   http://www.sosdg.org/clamav-win32/
+   [http://clamav-sosdg.googlecode.com/files/clamav-0.93.3-1a.exe]
+
+6. *Only needed if you compile from source:*
    install the MinGW suite from http://mingw.sourceforge.net/
    Be sure to install in the given order:
    
@@ -130,7 +123,7 @@ Setup for Windows - the binary .exe installer:
    
    Be sure to have installed all required windows software listed above.
 
-2. Execute the ``linkchecker-x.xx.win32-py2.5.exe`` file and follow
+2. Execute the ``linkchecker-x.xx.win32-py2.x.exe`` file and follow
    the instructions.
 
 Setup for Windows - compiling from source:
@@ -139,6 +132,8 @@ Setup for Windows - compiling from source:
 1. Install check
    
    Be sure to have installed all required Unix/Linux software listed above.
+   These instructions are for Python 2.5, but apply to later 2.x versions
+   as well.
 
 2. Preparing Python for the MinGW compiler
    
