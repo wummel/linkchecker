@@ -835,11 +835,9 @@ class UrlBase (object):
             self.aggregate.urlqueue.put(url_data)
 
     def parse_opera (self):
-        """
-        Parse an opera bookmark file.
-        """
+        """Parse an opera bookmark file."""
         log.debug(LOG_CHECK, "Parsing Opera bookmarks %s", self)
-        name = ""
+        name = None
         lineno = 0
         for line in self.get_content().splitlines():
             lineno += 1
@@ -848,12 +846,13 @@ class UrlBase (object):
                 name = line[5:]
             elif line.startswith("URL="):
                 url = line[4:]
-                if url:
+                if url and name is not None:
                     url_data = get_url_from(url, self.recursion_level+1,
                         self.aggregate, parent_url=self.url,
                         line=lineno, name=name)
                     self.aggregate.urlqueue.put(url_data)
-                name = ""
+            else:
+                name = None
 
     def parse_text (self):
         """
