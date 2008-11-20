@@ -1,6 +1,6 @@
 5.0unreleased "Iron Man" (released xx.xx.2008)
 
-  * Require and use Python 2.5.
+  * Require and use Python >= 2.5.
     Type: feature
     Changed: *.py
 
