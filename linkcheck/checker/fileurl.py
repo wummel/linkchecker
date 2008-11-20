@@ -25,11 +25,16 @@ import urlparse
 import urllib
 import urllib2
 
-from . import urlbase, get_index_html, absolute_url
+from . import urlbase, get_index_html, absolute_url, get_url_from
 from .. import log, LOG_CHECK, fileutil, strformat, url as urlutil
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH, \
     PARSE_EXTENSIONS, PARSE_CONTENTS
 
+try:
+    import sqlite3
+    has_sqlite = True
+except ImportError:
+    has_sqlite = False
 
 def get_files (dirname):
     """
@@ -78,6 +83,8 @@ def is_absolute_path (path):
        return re.search(r"^[a-zA-Z]:", path)
     return path.startswith("/")
 
+
+firefox_extension = re.compile(r'/(?i)places.sqlite$')
 
 class FileUrl (urlbase.UrlBase):
     """
@@ -244,6 +251,8 @@ class FileUrl (urlbase.UrlBase):
         for ro in PARSE_EXTENSIONS.values():
             if ro.search(self.url):
                 return True
+        if firefox_extension.search(self.url):
+            return True
         # try to read content (can fail, so catch error)
         try:
             for ro in PARSE_CONTENTS.values():
@@ -264,10 +273,32 @@ class FileUrl (urlbase.UrlBase):
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
                 return
+        if has_sqlite and firefox_extension.search(self.url):
+            self.parse_firefox()
+            return
         for key, ro in PARSE_CONTENTS.items():
             if ro.search(self.get_content()[:30]):
                 getattr(self, "parse_"+key)()
                 return
+
+    def parse_firefox (self):
+        """Parse a Firefox3 bookmark file."""
+        log.debug(LOG_CHECK, "Parsing Firefox bookmarks %s", self)
+        conn = sqlite3.connect(self.get_os_filename(), timeout=0.5)
+        try:
+            c = conn.cursor()
+            try:
+                sql = """SELECT moz_places.url, moz_places.title
+                FROM moz_places WHERE hidden=0"""
+                c.execute(sql)
+                for url, name in c:
+                    url_data = get_url_from(url, self.recursion_level+1,
+                        self.aggregate, parent_url=self.url, name=name)
+                    self.aggregate.urlqueue.put(url_data)
+            finally:
+                c.close()
+        finally:
+            conn.close()
 
     def get_intern_pattern (self):
         """

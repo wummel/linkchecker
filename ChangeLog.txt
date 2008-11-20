@@ -71,6 +71,10 @@
     Type: feature
     Changed: linkcheck/director/__init__.py
 
+  * Support reading Firefox 3 bookmark files in SQLite format.
+    Type: feature
+    Changed: linkcheck/checker/fileurl.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

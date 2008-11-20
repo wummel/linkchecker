@@ -62,6 +62,14 @@ ExcNoCacheList = [
     socket.timeout,
 ]
 
+# firefox bookmark file needs sqlite3 for parsing
+try:
+    import sqlite3
+    ExcCacheList.append(sqlite3.Error)
+except ImportError:
+    pass
+
+
 ExcList = ExcCacheList + ExcNoCacheList
 
 WARN_URL_EFFECTIVE_URL = "url-effective-url"
@@ -134,7 +142,7 @@ Warnings = {
 # file extensions we can parse recursively
 PARSE_EXTENSIONS = {
     "html": re.compile(r'(?i)\.s?html?$'),
-    "opera": re.compile(r'^(?i)opera.adr$'), # opera bookmark file
+    "opera": re.compile(r'/(?i)opera.adr$'), # opera bookmark file
     "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
     "swf": re.compile(r'(?i)\.swf$'), # SWF file
 }
@@ -157,3 +165,4 @@ PARSE_CONTENTS = {
     "opera" : re.compile(r'^Opera Hotlist'),
     "text" : re.compile(r'(?i)^# LinkChecker URL list'),
 }
+
