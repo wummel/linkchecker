@@ -61,10 +61,11 @@ class RobotFileParser (object):
     """This class provides a set of methods to read, parse and answer
     questions about a single robots.txt file."""
 
-    def __init__ (self, url='', user=None, password=None):
+    def __init__ (self, url='', proxy=None, user=None, password=None):
         """Initialize internal entry lists and store given url and
         credentials."""
         self.set_url(url)
+        self.proxy = proxy
         self.user = user
         self.password = password
         self._reset()
@@ -107,16 +108,22 @@ class RobotFileParser (object):
         """
         pwd_manager = PasswordManager(self.user, self.password)
         handlers = [
-            urllib2.ProxyHandler(urllib.getproxies()),
             urllib2.UnknownHandler,
             httputil.HttpWithGzipHandler,
             urllib2.HTTPBasicAuthHandler(pwd_manager),
-            urllib2.ProxyBasicAuthHandler(pwd_manager),
             urllib2.HTTPDigestAuthHandler(pwd_manager),
-            urllib2.ProxyDigestAuthHandler(pwd_manager),
+        ]
+        if self.proxy:
+            handlers.insert(0,
+              urllib2.ProxyHandler({"http": self.proxy, "https": self.proxy}))
+            handlers.extend([
+                urllib2.ProxyBasicAuthHandler(pwd_manager),
+                urllib2.ProxyDigestAuthHandler(pwd_manager),
+            ])
+        handlers.extend([
             urllib2.HTTPDefaultErrorHandler,
             urllib2.HTTPRedirectHandler,
-        ]
+        ])
         if hasattr(httplib, 'HTTPS'):
             handlers.append(httputil.HttpsWithGzipHandler)
         return urllib2.build_opener(*handlers)

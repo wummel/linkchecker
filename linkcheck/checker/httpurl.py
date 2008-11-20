@@ -139,7 +139,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         user, password = self.get_user_password()
         rb = self.aggregate.robots_txt
         callback = self.aggregate.connections.host_wait
-        return rb.allows_url(roboturl, url, user, password, callback=callback)
+        return rb.allows_url(roboturl, url, self.proxy, user, password,
+            callback=callback,)
 
     def check_connection (self):
         """

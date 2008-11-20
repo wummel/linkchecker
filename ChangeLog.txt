@@ -75,6 +75,18 @@
     Type: feature
     Changed: linkcheck/checker/fileurl.py
 
+  * Handle non-Latin1 filenames when checking local directories.
+    Type: bugfix
+    Closes: SF bug #2093225
+    Changed: linkcheck/checker/fileurl.py
+
+  * Use configured proxy when requesting robots.txt, especially
+    honor the noproxy values.
+    Type: bugfix
+    Closes: SF bug #2091297
+    Changed: linkcheck/robotparser2.py, linkcheck/cache/robots_txt.py,
+      linkcheck/checker/httpurl.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check

@@ -36,12 +36,13 @@ class RobotsTxt (object):
         self.cache = {}
 
     @synchronized(_lock)
-    def allows_url (self, roboturl, url, user, password, callback=None):
+    def allows_url (self, roboturl, url, proxy, user, password, callback=None):
         """
         Ask robots.txt allowance.
         """
         if roboturl not in self.cache:
-            rp = robotparser2.RobotFileParser(user=user, password=password)
+            rp = robotparser2.RobotFileParser(proxy=proxy, user=user,
+                password=password)
             rp.set_url(roboturl)
             rp.read()
             if callback is not None:

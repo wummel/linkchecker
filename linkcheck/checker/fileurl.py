@@ -186,7 +186,9 @@ class FileUrl (urlbase.UrlBase):
         t = time.time()
         files = get_files(self.get_os_filename())
         data = get_index_html(files)
-        self.data = data.encode("iso8859-1", "ignore")
+        if isinstance(data, unicode):
+            data = data.encode("iso8859-1", "ignore")
+        self.data = data
         self.dltime = time.time() - t
         self.dlsize = len(self.data)
         return self.data
