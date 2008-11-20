@@ -66,6 +66,10 @@ class TestFile (LinkCheckTest):
         """Test Opera bookmark file parsing."""
         self.file_test("opera6.adr")
 
+    def test_directory_listing (self):
+        """Test directory listing code."""
+        self.file_test("")
+
     def test_good_file (self):
         url = u"file://%(curdir)s/%(datadir)s/file.txt" % self.get_attrs()
         nurl = self.norm(url)
