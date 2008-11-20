@@ -1,2 +1,4 @@
+- [CHECK] test firefox parsing
+- [CHECK] test opera bookmark parsing
 - [GUI] more configuration options
 - [DIST] bdist_rpm target does not work with anymore with new setup.py
