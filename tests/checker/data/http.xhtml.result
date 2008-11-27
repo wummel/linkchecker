@@ -1,0 +1,10 @@
+url http://localhost:8001/%(datadir)s/http.xhtml
+cache key http://localhost:8001/%(datadir)s/http.xhtml
+real url http://localhost:8001/%(datadir)s/http.xhtml
+valid
+
+url http.html
+cache key http://localhost:8001/%(datadir)s/http.html
+real url http://localhost:8001/%(datadir)s/http.html
+name a link
+valid

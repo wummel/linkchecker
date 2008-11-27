@@ -16,3 +16,4 @@ Changelog.linkchecker*
 /dist
 /share
 /linkchecker.egg-info
+/tests/checker/data/dir

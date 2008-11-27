@@ -1,0 +1,8 @@
+Host: example.com
+Path: /hello
+Set-cookie: ID="smee"
+Set-cookie: spam="egg"
+
+Scheme: https
+Host: example.org
+Set-cookie: baggage="elitist"; comment="hologram"

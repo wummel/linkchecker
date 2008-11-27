@@ -20,7 +20,24 @@ Test file parsing.
 
 import unittest
 import os
-from . import LinkCheckTest
+import zipfile
+from . import LinkCheckTest, get_file
+
+
+def unzip (filename, targetdir):
+    """Unzip given zipfile into targetdir."""
+    if isinstance(targetdir, unicode):
+        targetdir = str(targetdir)
+    zf = zipfile.ZipFile(filename)
+    for name in zf.namelist():
+        if name.endswith('/'):
+            os.mkdir(os.path.join(targetdir, name), 0700)
+        else:
+            outfile = open(os.path.join(targetdir, name), 'wb')
+            try:
+                outfile.write(zf.read(name))
+            finally:
+                outfile.close()
 
 
 class TestFile (LinkCheckTest):
@@ -68,7 +85,12 @@ class TestFile (LinkCheckTest):
 
     def test_directory_listing (self):
         """Test directory listing code."""
-        self.file_test("")
+        # unpack non-unicode filename which cannot be stored
+        # in the SF subversion repository
+        dirname = get_file("dir")
+        if not os.path.isdir(dirname):
+            unzip(dirname+".zip", os.path.dirname(dirname))
+        self.file_test("dir")
 
     def test_good_file (self):
         url = u"file://%(curdir)s/%(datadir)s/file.txt" % self.get_attrs()

@@ -1,0 +1,39 @@
+Just some HTTP links
+<a b=c "boo" href="http://www.garantiertnixgutt.bla/">bad url</a>
+<a href="http://localhost:8001/">ok</a>
+<a href="http:/localhost:8001/">one slash</a>
+<a href="http:localhost:8001/">no slash</a>
+<a href="http://">no url</a>
+<a href="http:/">no url, one slash</a>
+<a href="http:">no url, no slash</a>
+<a href="http://localhost:8001/stalter&sohn">unquoted ampersand</a>
+<a href=http://slashdot.org/>unquoted</a>
+<a href="HtTP://LoCAlHOst:8001/">should be cached</a>
+<a href="HTTP://LOCALHOST:8001/">should be cached</a>
+<!-- check cache key with query -->
+<a href="http://localhost:8001/?d=directory&amp;p=page">should not be cached</a>
+<a href="http://localhost:8001/?d=directory&amp;p=page1">should not be cached</a>
+<!-- entities -->
+<a href="http://localhost:8001/?quoted=&uuml;">html entities</a>
+<!--  quoting test...
+<a href=""></a>
+-->
+
+<!-- empty form URL -->
+<form action="" method="GET">
+</form>
+
+<!-- multiple links in one tag -->
+<applet archive="http.html" src="http.html">
+<!-- css urls -->
+<img style="@font-face {src:url(http.html)};background-image:url(http.html)"
+ title="CSS urls">
+
+<!-- object with codebase -->
+<object classid="clsid:12345" codebase="http://example.org/foo/ #a=1,2,3">
+
+<!-- <a href=http://nocheckin> no check because of comment -->
+<a href=http://localhost:8001/">no beginning quote</a>
+<a href="http://localhost:8001/>no ending quote</a>
+<!-- check the parser at end of file -->
+<a href="g

@@ -1,0 +1,36 @@
+url file://%(curdir)s/%(datadir)s/anchor.html
+cache key file://%(curdir)s/%(datadir)s/anchor.html
+real url file://%(curdir)s/%(datadir)s/anchor.html
+valid
+
+url anchor.html (cached)
+cache key file://%(curdir)s/%(datadir)s/anchor.html
+real url file://%(curdir)s/%(datadir)s/anchor.html
+name Bla6
+valid
+
+url #myid
+cache key file://%(curdir)s/%(datadir)s/anchor.html#myid
+real url file://%(curdir)s/%(datadir)s/anchor.html
+name Bla
+valid
+
+url #myid (cached)
+cache key file://%(curdir)s/%(datadir)s/anchor.html#myid
+real url file://%(curdir)s/%(datadir)s/anchor.html
+name Bla2
+valid
+
+url #broken
+cache key file://%(curdir)s/%(datadir)s/anchor.html#broken
+real url file://%(curdir)s/%(datadir)s/anchor.html
+name Bla3
+warning Anchor #broken not found.
+valid
+
+url #broken2
+cache key file://%(curdir)s/%(datadir)s/anchor.html#broken2
+real url file://%(curdir)s/%(datadir)s/anchor.html
+name Bla4
+warning Anchor #broken2 not found.
+valid

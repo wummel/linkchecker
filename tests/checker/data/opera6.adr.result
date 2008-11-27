@@ -1,0 +1,9 @@
+url file://%(curdir)s/%(datadir)s/opera6.adr
+cache key file://%(curdir)s/%(datadir)s/opera6.adr
+real url file://%(curdir)s/%(datadir)s/opera6.adr
+valid
+url file.css
+cache key file://%(curdir)s/%(datadir)s/file.css
+real url file://%(curdir)s/%(datadir)s/file.css
+name Testlink
+valid
