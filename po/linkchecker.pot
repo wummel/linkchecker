@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2008 Bastian Kleineidam <calvin@users.sourceforge.net>
+# Copyright (C) YEAR Bastian Kleineidam <calvin@users.sourceforge.net>
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2008-07-29 19:23+0200\n"
+"POT-Creation-Date: 2008-11-28 20:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,109 +224,110 @@ msgid_plural "%d years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/httpurl.py:167
+#: ../linkcheck/checker/httpurl.py:168
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:173
+#: ../linkcheck/checker/httpurl.py:174
 msgid "Amazon servers block HTTP HEAD requests, using GET instead."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:184
+#: ../linkcheck/checker/httpurl.py:185
 msgid "unknown"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:186
+#: ../linkcheck/checker/httpurl.py:187
 #, python-format
 msgid ""
-"Server %(name)r did not support HEAD request; a GET request was used instead."
+"Server `%(name)s' did not support HEAD request; a GET request was used "
+"instead."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:190
+#: ../linkcheck/checker/httpurl.py:191
 #, python-format
-msgid "Server %(name)r had no anchor support, removed anchor from request."
+msgid "Server `%(name)s' had no anchor support, removed anchor from request."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:197
+#: ../linkcheck/checker/httpurl.py:198
 #, python-format
 msgid ""
-"URL %(url)s has been redirected.\n"
-"Use URL %(newurl)s instead for checking."
+"URL `%(url)s' has been redirected.\n"
+"Use URL `%(newurl)s' instead for checking."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:237
+#: ../linkcheck/checker/httpurl.py:238
 #, python-format
-msgid "Enforced proxy %(name)r."
+msgid "Enforced proxy `%(name)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:242
+#: ../linkcheck/checker/httpurl.py:243
 #, python-format
-msgid "Enforced proxy %(name)r ignored, aborting."
+msgid "Enforced proxy `%(name)s' ignored, aborting."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:271
+#: ../linkcheck/checker/httpurl.py:272
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:323
+#: ../linkcheck/checker/httpurl.py:324
 #, python-format
-msgid "Redirected to %(url)s."
+msgid "Redirected to `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:335
+#: ../linkcheck/checker/httpurl.py:336
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:343
+#: ../linkcheck/checker/httpurl.py:344
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:358
+#: ../linkcheck/checker/httpurl.py:359
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
 " %(urls)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:370
+#: ../linkcheck/checker/httpurl.py:371
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:381
+#: ../linkcheck/checker/httpurl.py:382
 #, python-format
 msgid ""
-"Redirection to different URL type encountered; the original URL was %(url)r."
+"Redirection to different URL type encountered; the original URL was `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:425
+#: ../linkcheck/checker/httpurl.py:426
 #, python-format
 msgid "Store cookie: %(cookie)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:435
+#: ../linkcheck/checker/httpurl.py:436
 #, python-format
 msgid "Could not store cookies: %(msg)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:444
+#: ../linkcheck/checker/httpurl.py:445
 #, python-format
 msgid "Last modified %(date)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:543
+#: ../linkcheck/checker/httpurl.py:544
 #, python-format
-msgid "Unsupported HTTP url scheme %(scheme)r"
+msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:579
+#: ../linkcheck/checker/httpurl.py:580
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:594
+#: ../linkcheck/checker/httpurl.py:595
 #, python-format
-msgid "Unsupported content encoding %(encoding)r."
+msgid "Unsupported content encoding `%(encoding)s'."
 msgstr ""
 
 #: ../linkcheck/checker/httpsurl.py:35
@@ -334,151 +335,151 @@ msgstr ""
 msgid "%s URL ignored."
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:110
+#: ../linkcheck/checker/ftpurl.py:109
 #, python-format
-msgid "Remote host has closed connection: %r"
+msgid "Remote host has closed connection: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:113
+#: ../linkcheck/checker/ftpurl.py:111
 msgid "Got no answer from FTP server"
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:145
+#: ../linkcheck/checker/ftpurl.py:143
 msgid "Missing trailing directory slash in ftp url."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:97
+#: ../linkcheck/checker/const.py:105
 msgid "The effective URL is different from the original."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:99
+#: ../linkcheck/checker/const.py:107
 msgid "Could not get the content of the URL."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:100
+#: ../linkcheck/checker/const.py:108
 msgid "URL uses a unicode domain."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:101
+#: ../linkcheck/checker/const.py:109
 msgid "URL is not normed."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:102
+#: ../linkcheck/checker/const.py:110
 msgid "URL anchor was not found."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:104
+#: ../linkcheck/checker/const.py:112
 msgid "The warning regular expression was found in the URL contents."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:105
+#: ../linkcheck/checker/const.py:113
 msgid "The URL content is too large."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:106
+#: ../linkcheck/checker/const.py:114
 msgid "The file: URL is missing a trailing slash."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:108
+#: ../linkcheck/checker/const.py:116
 msgid "The file: path is not the same as the system specific path."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:109
+#: ../linkcheck/checker/const.py:117
 msgid "The ftp: URL is missing a trailing slash."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:110
+#: ../linkcheck/checker/const.py:118
 msgid "The http: URL checking has been denied."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:111
+#: ../linkcheck/checker/const.py:119
 msgid "The HTTP server had no anchor support."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:112
+#: ../linkcheck/checker/const.py:120
 msgid "The URL has moved permanently."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:114
+#: ../linkcheck/checker/const.py:122
 msgid "The URL has been redirected to an URL of a different type."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:115
+#: ../linkcheck/checker/const.py:123
 msgid "The URL had no content."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:117
+#: ../linkcheck/checker/const.py:125
 msgid "An error occurred while storing a cookie."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:119
+#: ../linkcheck/checker/const.py:127
 msgid "An error occurred while decompressing the URL content."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:121
+#: ../linkcheck/checker/const.py:129
 msgid "The URL content is encoded with an unknown encoding."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:122
+#: ../linkcheck/checker/const.py:130
 msgid "The URL has been ignored."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:123
+#: ../linkcheck/checker/const.py:131
 msgid "The mailto: URL contained no addresses."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:124
+#: ../linkcheck/checker/const.py:132
 msgid "The mail MX host could not be found."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:126
+#: ../linkcheck/checker/const.py:134
 msgid "The mailto: address could not be verified."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:128
+#: ../linkcheck/checker/const.py:136
 msgid "No connection to a MX host could be established."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:129
+#: ../linkcheck/checker/const.py:137
 msgid "No NNTP server was found."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:130
+#: ../linkcheck/checker/const.py:138
 msgid "The NNTP newsgroup could not be found."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:131
+#: ../linkcheck/checker/const.py:139
 msgid "The NNTP server was busy."
 msgstr ""
 
-#: ../linkcheck/checker/proxysupport.py:42
+#: ../linkcheck/checker/proxysupport.py:43
 #, python-format
-msgid "Proxy value %r must start with 'http://'."
+msgid "Proxy value `%(proxy)s' must start with 'http://'."
 msgstr ""
 
-#: ../linkcheck/checker/proxysupport.py:49
+#: ../linkcheck/checker/proxysupport.py:51
 #, python-format
-msgid "Ignoring proxy setting %r"
+msgid "Ignoring proxy setting `%(proxy)s'."
 msgstr ""
 
-#: ../linkcheck/checker/proxysupport.py:53
+#: ../linkcheck/checker/proxysupport.py:55
 #, python-format
-msgid "Using proxy %r."
+msgid "Using proxy `%(proxy)s'."
 msgstr ""
 
 #: ../linkcheck/checker/telneturl.py:52
 msgid "Host is empty"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:124
+#: ../linkcheck/checker/fileurl.py:131
 msgid "Added trailing slash to directory."
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:135
+#: ../linkcheck/checker/fileurl.py:142
 msgid "directory"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:152
+#: ../linkcheck/checker/fileurl.py:159
 #, python-format
 msgid ""
 "The URL path %(path)r is not the same as the system path %(realpath)r. You "

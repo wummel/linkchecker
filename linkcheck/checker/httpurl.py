@@ -184,19 +184,19 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         else:
             server = _("unknown")
         if self.fallback_get:
-            self.add_info(_("Server %(name)r did not support HEAD request; "
+            self.add_info(_("Server `%(name)s' did not support HEAD request; "
                             "a GET request was used instead.") %
                             {"name": server})
         if self.no_anchor:
-            self.add_warning(_("Server %(name)r had no anchor support, removed"
+            self.add_warning(_("Server `%(name)s' had no anchor support, removed"
                                " anchor from request.") % {"name": server},
                              tag=WARN_HTTP_NO_ANCHOR_SUPPORT)
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
             if self.warn_redirect:
-                log.warn(LOG_CHECK, _("""URL %(url)s has been redirected.
-Use URL %(newurl)s instead for checking.""") % {
+                log.warn(LOG_CHECK, _("""URL `%(url)s' has been redirected.
+Use URL `%(newurl)s' instead for checking.""") % {
                 'url': self.url, 'newurl': newurl})
             self.url = newurl
         # check response
@@ -235,12 +235,12 @@ Use URL %(newurl)s instead for checking.""") % {
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 newproxy = self.headers.getheader("Location")
-                self.add_info(_("Enforced proxy %(name)r.") %
+                self.add_info(_("Enforced proxy `%(name)s'.") %
                               {"name": newproxy})
                 self.set_proxy(newproxy)
                 if not self.proxy:
                     self.set_result(
-                         _("Enforced proxy %(name)r ignored, aborting.") %
+                         _("Enforced proxy `%(name)s' ignored, aborting.") %
                          {"name": newproxy},
                          valid=False)
                     return response
@@ -321,7 +321,7 @@ Use URL %(newurl)s instead for checking.""") % {
             newurl = urlparse.urljoin(redirected, newurl)
             newurl = unicode_safe(newurl)
             log.debug(LOG_CHECK, "Redirected to %r", newurl)
-            self.add_info(_("Redirected to %(url)s.") % {'url': newurl})
+            self.add_info(_("Redirected to `%(url)s'.") % {'url': newurl})
             # norm base url - can raise UnicodeError from url.idna_encode()
             redirected, is_idn = urlbase.url_norm(newurl)
             if is_idn:
@@ -380,7 +380,7 @@ Use URL %(newurl)s instead for checking.""") % {
                 if set_result:
                     self.add_warning(
                            _("Redirection to different URL type encountered; "
-                             "the original URL was %(url)r.") %
+                             "the original URL was `%(url)s'.") %
                              {"url": self.url},
                            tag=WARN_HTTP_WRONG_REDIRECT)
                 newobj = get_url_from(
@@ -541,7 +541,7 @@ Use URL %(newurl)s instead for checking.""") % {
         elif scheme == "https" and supportHttps:
             h = httplib.HTTPSConnection(host)
         else:
-            msg = _("Unsupported HTTP url scheme %(scheme)r") % {"scheme": scheme}
+            msg = _("Unsupported HTTP url scheme `%(scheme)s'") % {"scheme": scheme}
             raise LinkCheckerError(msg)
         if log.is_debug(LOG_CHECK):
             h.set_debuglevel(1)
@@ -592,7 +592,7 @@ Use URL %(newurl)s instead for checking.""") % {
         encoding = headers.get_content_encoding(self.headers)
         if encoding and encoding not in _supported_encodings and \
            encoding != 'identity':
-            self.add_warning(_('Unsupported content encoding %(encoding)r.') %
+            self.add_warning(_("Unsupported content encoding `%(encoding)s'.") %
                              {"encoding": encoding},
                              tag=WARN_HTTP_UNSUPPORTED_ENCODING)
             return False

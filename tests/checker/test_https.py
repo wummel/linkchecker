@@ -33,11 +33,12 @@ class TestHttps (LinkCheckTest):
         """
         Test some https links.
         """
-        url = u"https://sourceforge.net/"
+        url = u"https://www.amazon.de/"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
+            u"info Amazon servers block HTTP HEAD requests, using GET instead.",
             u"valid",
         ]
         self.direct(url, resultlines)

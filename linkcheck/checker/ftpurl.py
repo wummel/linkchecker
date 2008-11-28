@@ -105,12 +105,10 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             else:
                 self.url_connection.login(_user, _password)
         except EOFError, msg:
-            msg = str(msg)
             raise LinkCheckerError(
-                   _("Remote host has closed connection: %r") % msg)
+                  _("Remote host has closed connection: %(msg)s") % str(msg))
         if not self.url_connection.getwelcome():
-            raise LinkCheckerError(
-                   _("Got no answer from FTP server"))
+            raise LinkCheckerError(_("Got no answer from FTP server"))
         # don't set info anymore, this may change every time we log in
         #self.add_info(strformat.unicode_safe(info))
 

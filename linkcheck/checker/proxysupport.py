@@ -36,21 +36,23 @@ class ProxySupport (object):
         self.proxyauth = None
         if not self.proxy:
             return
+        proxyargs = {"proxy": self.proxy}
         if self.proxy[:7].lower() != "http://":
             # Note that invalid proxies might raise TypeError in urllib2,
             # so make sure to stop checking at this point, not later.
-            msg = _("Proxy value %r must start with 'http://'.") % self.proxy
+            msg = _("Proxy value `%(proxy)s' must start with 'http://'.") \
+                 % proxyargs
             raise LinkCheckerError(msg)
         self.proxy = urllib.splittype(self.proxy)[1]
         self.proxy = urllib.splithost(self.proxy)[0]
         self.proxyauth, self.proxy = urllib.splituser(self.proxy)
         if self.ignore_proxy_host():
             # log proxy without auth info
-            self.add_info(_("Ignoring proxy setting %r") % self.proxy)
+            self.add_info(_("Ignoring proxy setting `%(proxy)s'.") % proxyargs)
             self.proxy = None
             self.proxyauth = None
             return
-        self.add_info(_("Using proxy %r.") % self.proxy)
+        self.add_info(_("Using proxy `%(proxy)s'.") % proxyargs)
         if self.proxyauth is not None:
             if ":" not in self.proxyauth:
                 self.proxyauth += ":"

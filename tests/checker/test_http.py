@@ -65,9 +65,9 @@ class TestHttp (httptest.HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % rurl,
-            u"info Redirected to %s." % rurl.replace('http:', 'https:'),
+            u"info Redirected to `%s'." % rurl.replace('http:', 'https:'),
             u"warning Redirection to different URL type encountered; the " \
-            u"original URL was %r." % url,
+            u"original URL was `%s'." % url,
             u"valid",
             u"url %s" % rurl,
             u"cache key %s" % rurl,
@@ -84,7 +84,7 @@ class TestHttp (httptest.HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % rurl,
-            u"info Redirected to %s." % rurl,
+            u"info Redirected to `%s'." % rurl,
             u"error",
         ]
         self.direct(url, resultlines, recursionlevel=0)
@@ -98,13 +98,13 @@ class TestHttp (httptest.HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % rurl,
-            u"info Redirected to %s." % rurl,
+            u"info Redirected to `%s'." % rurl,
             u"valid",
             u"url newurl.html (cached)",
             u"cache key %s" % rurl,
             u"real url %s" % rurl,
             u"name Recursive Redirect",
-            u"info Redirected to %s." % rurl,
+            u"info Redirected to `%s'." % rurl,
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99)
@@ -143,7 +143,7 @@ class TestHttp (httptest.HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"info Ignoring proxy setting 'example.org:8877'",
+            u"info Ignoring proxy setting `http://example.org:8877'.",
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=0,
