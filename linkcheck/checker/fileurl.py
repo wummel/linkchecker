@@ -291,7 +291,8 @@ class FileUrl (urlbase.UrlBase):
             c = conn.cursor()
             try:
                 sql = """SELECT moz_places.url, moz_places.title
-                FROM moz_places WHERE hidden=0"""
+                FROM moz_places WHERE hidden=0
+                AND moz_places.url NOT LIKE 'place:%'"""
                 c.execute(sql)
                 for url, name in c:
                     url_data = get_url_from(url, self.recursion_level+1,
