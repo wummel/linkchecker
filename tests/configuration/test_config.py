@@ -75,6 +75,7 @@ class TestConfig (unittest.TestCase):
         self.assertFalse(config["status"])
         self.assertTrue(isinstance(config["logger"], linkcheck.logger.Loggers["xml"]))
         self.assertTrue(config["verbose"])
+        self.assertTrue(config["complete"])
         self.assertTrue(config["warnings"])
         self.assertFalse(config["quiet"])
         self.assertEqual(len(config["fileoutput"]), 8)

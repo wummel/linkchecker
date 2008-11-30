@@ -172,9 +172,15 @@ that of your locale. Valid encodings are listed at
 Command line option: \fB\-\-output\fP
 .TP
 \fBverbose=\fP[\fB0\fP|\fB1\fP]
-If set log all checked URLs. Default is to log only errors and warnings.
+If set log all checked URLs once. Default is to log only errors and warnings.
 .br
 Command line option: \fB\-\-verbose\fP
+.TP
+\fBcomplete=\fP[\fB0\fP|\fB1\fP]
+If set log all checked URLs, even duplicates. Default is to log
+duplicate URLs only once.
+.br
+Command line option: \fB\-\-complete\fP
 .TP
 \fBwarnings=\fP[\fB0\fP|\fB1\fP]
 If set log warnings. Default is to log warnings.

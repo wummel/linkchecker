@@ -73,6 +73,11 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             if self.getboolean(section, "verbose"):
                 self.config["verbose"] = True
                 self.config["warnings"] = True
+        if self.has_option(section, "complete"):
+            if self.getboolean(section, "complete"):
+                self.config["complete"] = True
+                self.config["verbose"] = True
+                self.config["warnings"] = True
         if self.has_option(section, "quiet"):
             if self.getboolean(section, "quiet"):
                 self.config['output'] = 'none'

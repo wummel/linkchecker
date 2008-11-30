@@ -65,6 +65,7 @@ class Configuration (dict):
         super(Configuration, self).__init__()
         self['trace'] = False
         self["verbose"] = False
+        self["complete"] = False
         self["warnings"] = True
         self["ignorewarnings"] = []
         self['quiet'] = False

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 2.8\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2008-11-28 20:29+0100\n"
-"PO-Revision-Date: 2008-11-28 20:44+0100\n"
+"POT-Creation-Date: 2008-11-30 18:23+0100\n"
+"PO-Revision-Date: 2008-11-30 20:05+0100\n"
 "Last-Translator: Servilio Afre Puentes <servilio@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -313,7 +313,7 @@ msgid ""
 " %(urls)s"
 msgstr ""
 "se encontró redirección recursiva:\n"
-" %(url)s"
+" %(urls)s"
 
 #: ../linkcheck/checker/httpurl.py:371
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
@@ -391,9 +391,8 @@ msgid "URL is not normed."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:110
-#, fuzzy
 msgid "URL anchor was not found."
-msgstr "No se encontró el ancla #%s."
+msgstr "No se encontró el ancla."
 
 #: ../linkcheck/checker/const.py:112
 msgid "The warning regular expression was found in the URL contents."
@@ -408,11 +407,8 @@ msgid "The file: URL is missing a trailing slash."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:116
-#, fuzzy
 msgid "The file: path is not the same as the system specific path."
 msgstr ""
-"El camino %r del URL no es el mismo que el camino %r del sistema.\n"
-"Debería usar siempre el camino del sistema en los URLs."
 
 #: ../linkcheck/checker/const.py:117
 msgid "The ftp: URL is missing a trailing slash."
@@ -656,7 +652,7 @@ msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr "El tamaño del contenido %(dlsize)s es más grande que %(maxbytes)s."
 
 #: ../linkcheck/checker/urlbase.py:665
-#: ../linkcheck/configuration/__init__.py:246
+#: ../linkcheck/configuration/__init__.py:247
 msgid "warning: tidy module is not available; download from http://utidylib.berlios.de/"
 msgstr ""
 
@@ -672,7 +668,7 @@ msgid "warning: tidy HTML parsing caused error: %(msg)s "
 msgstr ""
 
 #: ../linkcheck/checker/urlbase.py:693
-#: ../linkcheck/configuration/__init__.py:254
+#: ../linkcheck/configuration/__init__.py:255
 msgid "warning: cssutils module is not available; download from http://cthedot.de/cssutils/"
 msgstr ""
 
@@ -734,33 +730,33 @@ msgstr "URL %(scheme)s ignorado."
 msgid "URL is unrecognized or has invalid syntax"
 msgstr "No se reconoce el URL o tiene sintaxis inválida"
 
-#: ../linkcheck/configuration/confparse.py:110
+#: ../linkcheck/configuration/confparse.py:115
 #, python-format
 msgid "invalid negative value for timeout: %d\n"
 msgstr ""
 
-#: ../linkcheck/configuration/confparse.py:155
-#: ../linkcheck/configuration/confparse.py:174
+#: ../linkcheck/configuration/confparse.py:160
+#: ../linkcheck/configuration/confparse.py:179
 #, python-format
 msgid "missing auth part in entry %(val)r"
 msgstr ""
 
-#: ../linkcheck/configuration/confparse.py:170
+#: ../linkcheck/configuration/confparse.py:175
 #, python-format
 msgid "the entry%(num)d syntax is deprecated; use the new multiline configuration syntax"
 msgstr ""
 
-#: ../linkcheck/configuration/confparse.py:199
+#: ../linkcheck/configuration/confparse.py:204
 #, python-format
 msgid "the nofollow%(num)d syntax is deprecated; use the new multiline configuration syntax"
 msgstr ""
 
-#: ../linkcheck/configuration/confparse.py:214
+#: ../linkcheck/configuration/confparse.py:219
 #, python-format
 msgid "the noproxyfor%(num)d syntax is deprecated; use the new multiline configuration syntax"
 msgstr ""
 
-#: ../linkcheck/configuration/confparse.py:235
+#: ../linkcheck/configuration/confparse.py:240
 #, python-format
 msgid "the ignore%(num)d syntax is deprecated; use the new multiline configuration syntax"
 msgstr ""
@@ -925,7 +921,7 @@ msgid "System info:"
 msgstr "Información del sistema:"
 
 #: ../linkcheck/director/console.py:77
-#: ../linkchecker:580
+#: ../linkchecker:583
 #, python-format
 msgid "Python %(version)s on %(platform)s"
 msgstr "Pitón %(version)s en %(platform)s"
@@ -1140,8 +1136,8 @@ msgstr ""
 msgid ""
 "OUTPUT TYPES\n"
 "Note that by default only errors and warnings are logged.\n"
-"You should use the --verbose option to get the complete URL list,\n"
-"especially when outputting a sitemap graph format.\n"
+"You should use the --verbose option to see valid URLs,\n"
+"and --complete when outputting a sitemap graph format.\n"
 "\n"
 "text    Standard text output, logging URLs in keyword: argument fashion.\n"
 "html    Log URLs in keyword: argument fashion, formatted as HTML.\n"
@@ -1281,16 +1277,22 @@ msgstr "Opciones de salida"
 
 #: ../linkchecker:361
 #, fuzzy
-msgid "Log all checked URLs. Default is to log only errors and warnings."
+msgid "Log all URLs. Default is to log only errors and warnings."
 msgstr ""
 "Registra todos los URLs chequeados (implica -w). Por omisión se\n"
 "registran sólo los URLs inválidos."
 
 #: ../linkchecker:363
+msgid ""
+"Log all URLs, including duplicates.\n"
+"Default is to log duplicate URLs only once."
+msgstr ""
+
+#: ../linkchecker:366
 msgid "Don't log warnings. Default is to log warnings."
 msgstr ""
 
-#: ../linkchecker:367
+#: ../linkchecker:370
 #, fuzzy
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
@@ -1309,7 +1311,7 @@ msgstr ""
 "de error, por ejemplo 'Esta página se ha mudado' o 'Error del Servidor\n"
 "de Aplicación Oracle'. Esta opción implica -w."
 
-#: ../linkchecker:377
+#: ../linkchecker:380
 #, fuzzy
 msgid ""
 "Print a warning if content size info is available and exceeds the\n"
@@ -1318,34 +1320,34 @@ msgstr ""
 "Imprimir una advertencia si el tamaño del contenido está disponible y\n"
 "excede el número dado de bytes. Esta opción implica -w."
 
-#: ../linkchecker:381
+#: ../linkchecker:384
 msgid "Check syntax of HTML URLs with local library (HTML tidy)."
 msgstr ""
 
-#: ../linkchecker:384
+#: ../linkchecker:387
 msgid "Check syntax of HTML URLs with W3C online validator."
 msgstr ""
 
-#: ../linkchecker:387
+#: ../linkchecker:390
 msgid "Check syntax of CSS URLs with local library (cssutils)."
 msgstr ""
 
-#: ../linkchecker:390
+#: ../linkchecker:393
 msgid "Check syntax of CSS URLs with W3C online validator."
 msgstr ""
 
-#: ../linkchecker:393
+#: ../linkchecker:396
 msgid "Scan content of URLs with ClamAV virus scanner."
 msgstr ""
 
-#: ../linkchecker:396
+#: ../linkchecker:399
 #, fuzzy
 msgid ""
 "Quiet operation, an alias for '-o none'.\n"
 "This is only useful with -F."
 msgstr "Operación callada. Esta es sólo útil con -F."
 
-#: ../linkchecker:401
+#: ../linkchecker:404
 #, fuzzy, python-format
 msgid ""
 "Specify output as %(loggertypes)s. Default output type is text.\n"
@@ -1358,7 +1360,7 @@ msgstr ""
 "por omisión es \"iso-8859-1\". Las codificaciones válidas están listadas\n"
 "en http://docs.python.org/lib/node127.html."
 
-#: ../linkchecker:410
+#: ../linkchecker:413
 #, fuzzy, python-format
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for\n"
@@ -1388,11 +1390,11 @@ msgstr ""
 "archivo. Note que puede suprimir toda salida hacia la consola con la\n"
 "opción '-o none'."
 
-#: ../linkchecker:424
+#: ../linkchecker:427
 msgid "Do not print check status messages."
 msgstr "No imprimir mensajes de estado del chequeo."
 
-#: ../linkchecker:427
+#: ../linkchecker:430
 #, fuzzy, python-format
 msgid ""
 "Print debugging output for the given logger.\n"
@@ -1412,11 +1414,11 @@ msgstr ""
 "Para resultados acertados, se desahabilitará el uso de hilos durante\n"
 "las corridas de depuración."
 
-#: ../linkchecker:436
+#: ../linkchecker:439
 msgid "Print tracing information."
 msgstr ""
 
-#: ../linkchecker:439
+#: ../linkchecker:442
 #, python-format
 msgid ""
 "Write profiling data into a file named %s in the\n"
@@ -1425,15 +1427,15 @@ msgstr ""
 "Escribir datos de perfilamiento en un archivo llamado %s en el\n"
 "directorio de trabajo actual. Vea también --viewprof."
 
-#: ../linkchecker:443
+#: ../linkchecker:446
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr "Imprimir datos de perfilamiento generados previamente. Vea también --profile."
 
-#: ../linkchecker:448
+#: ../linkchecker:451
 msgid "Checking options"
 msgstr "Opciones de chequeo"
 
-#: ../linkchecker:452
+#: ../linkchecker:455
 #, fuzzy
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
@@ -1443,19 +1445,19 @@ msgstr ""
 "dada. Una profundidad negativa habilitará la recursión infinita. Por\n"
 "omisión la profundidad es infinita."
 
-#: ../linkchecker:457
+#: ../linkchecker:460
 msgid ""
 "Check but do not recurse into URLs matching the given regular\n"
 "expression. This option can be given multiple times."
 msgstr ""
 
-#: ../linkchecker:462
+#: ../linkchecker:465
 msgid ""
 "Only check syntax of URLs matching the given regular expression.\n"
 " This option can be given multiple times."
 msgstr ""
 
-#: ../linkchecker:466
+#: ../linkchecker:469
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -1467,13 +1469,13 @@ msgstr ""
 "enviadas y aceptadas se proveen como información adicional de\n"
 "registro."
 
-#: ../linkchecker:473
+#: ../linkchecker:476
 msgid ""
 "Read a file with initial cookie data. The cookie data format is\n"
 "explained below."
 msgstr ""
 
-#: ../linkchecker:477
+#: ../linkchecker:480
 #, fuzzy
 msgid ""
 "Check HTTP anchor references. Default is not to check anchors.\n"
@@ -1484,7 +1486,7 @@ msgstr ""
 "Esta opción implica -w porque los errores de las anclas son siempre\n"
 "advertencias."
 
-#: ../linkchecker:481
+#: ../linkchecker:484
 #, fuzzy
 msgid ""
 "Treat url#anchora and url#anchorb as equal on caching. This\n"
@@ -1496,7 +1498,7 @@ msgstr ""
 "comportamiento por omisión del navegador, pero no se especifica en la\n"
 "especificación del URI. Use con cuidado."
 
-#: ../linkchecker:488
+#: ../linkchecker:491
 #, fuzzy
 msgid ""
 "Try the given username for HTTP and FTP authorization.\n"
@@ -1507,7 +1509,7 @@ msgstr ""
 "FTP. Para FTP el nombre de usuario por omisión es 'anonymous'. Vea\n"
 "también -p."
 
-#: ../linkchecker:494
+#: ../linkchecker:497
 #, fuzzy
 msgid ""
 "Try the given password for HTTP and FTP authorization.\n"
@@ -1517,7 +1519,7 @@ msgstr ""
 "Intentar la contraseña dada para la autorización HTTP y FTP. Para FTP\n"
 "la contraseña por omisión es 'anonymous@'. Vea también -u."
 
-#: ../linkchecker:500
+#: ../linkchecker:503
 #, fuzzy, python-format
 msgid ""
 "Set the timeout for connection attempts in seconds. The default\n"
@@ -1526,7 +1528,7 @@ msgstr ""
 "Pone el tiempo de espera para intentos de conexión en segundos. El\n"
 "tiempo de espera por omisión es de %d segundos."
 
-#: ../linkchecker:505
+#: ../linkchecker:508
 #, fuzzy
 msgid ""
 "Pause the given number of seconds between two subsequent connection\n"
@@ -1535,7 +1537,7 @@ msgstr ""
 "Pausa PAUSA segundos entre cada chequeo de URL. Esta opción implica\n"
 "-t0. Por omisión no hay pausa entre pedidos."
 
-#: ../linkchecker:510
+#: ../linkchecker:513
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
@@ -1545,7 +1547,7 @@ msgstr ""
 "la variable del entorno NNTP_SERVER. Si no se da un anfitrión, sólo se\n"
 "chequea la sintaxis del enlace."
 
-#: ../linkchecker:516
+#: ../linkchecker:519
 #, fuzzy
 msgid ""
 "Contact hosts that match the given regular expression directly instead\n"
@@ -1554,48 +1556,49 @@ msgstr ""
 "Contactar directamente los anfitriones que coinciden con la expresión\n"
 "dada en vez de ir a través de un proxy."
 
-#: ../linkchecker:553
+#: ../linkchecker:556
 #, python-format
 msgid "URL has unparsable domain name: %(domain)s"
 msgstr ""
 
-#: ../linkchecker:578
+#: ../linkchecker:581
 #, python-format
 msgid "Invalid debug level %(level)r"
 msgstr "Nivel de depuración inválido %(level)r"
 
-#: ../linkchecker:590
+#: ../linkchecker:593
 #, python-format
 msgid "Unreadable config file: %r"
 msgstr ""
 
-#: ../linkchecker:600
+#: ../linkchecker:603
 msgid "Running with python -O disables debugging."
 msgstr ""
 
-#: ../linkchecker:628
-#: ../linkchecker:659
+#: ../linkchecker:631
+#: ../linkchecker:662
 #, fuzzy, python-format
 msgid "Unknown logger type %(type)r in %(output)r for option %(option)s"
 msgstr "Tipo %r de registrador desconocido en %r para la opción %s"
 
-#: ../linkchecker:632
-#: ../linkchecker:665
+#: ../linkchecker:635
+#: ../linkchecker:668
 #, fuzzy, python-format
 msgid "Unknown encoding %(encoding)r in %(output)r for option %(option)s"
 msgstr "Codificación %r desconocida en %r para la opción %s"
 
-#: ../linkchecker:683
-#: ../linkchecker:701
+#: ../linkchecker:686
+#: ../linkchecker:704
 #, python-format
 msgid "Illegal argument %(arg)r for option %(option)s"
 msgstr "Argumento ilegal %(arg)r para la opción %(option)s"
 
-#: ../linkchecker:744
-msgid "Using DOT or GML loggers without verbose output gives an incomplete sitemap graph."
+#: ../linkchecker:752
+#, fuzzy
+msgid "Using DOT or GML loggers without --complete output gives an incomplete sitemap graph."
 msgstr "Usando los registradores DOT o GML sin salida verbosa da un grafo de incompleto del mapa del sitio."
 
-#: ../linkchecker:751
+#: ../linkchecker:759
 msgid ""
 "enter one or more URLs, separated by white-space\n"
 "--> "
@@ -1603,16 +1606,16 @@ msgstr ""
 "entre uno o más URLs, separados por espaciadores\n"
 "--> "
 
-#: ../linkchecker:764
+#: ../linkchecker:772
 #, python-format
 msgid "Could not parse cookie file: %s"
 msgstr "No se pudieron almacenar las \"cookies\": %s."
 
-#: ../linkchecker:778
+#: ../linkchecker:786
 msgid "no files or URLs given"
 msgstr "no se han dado archivos o URLs"
 
-#: ../linkchecker:783
+#: ../linkchecker:791
 #, python-format
 msgid ""
 "Overwrite profiling file %(file)r?\n"
@@ -1621,15 +1624,15 @@ msgstr ""
 "¿Sobreescribir archivo %(file)r de perfilamiento?\n"
 "Presione Ctrl-C para cancelar, RETORNO para continuar."
 
-#: ../linkchecker:789
+#: ../linkchecker:797
 msgid "Canceled."
 msgstr "Cancelado."
 
-#: ../linkchecker:793
+#: ../linkchecker:801
 msgid "The `profile' Python module is not installed, therefore the --profile option is disabled."
 msgstr "El módulo `profile' de Python no está instalado, por tanto la opción --profile está deshabilitada."
 
-#: ../linkchecker:806
+#: ../linkchecker:814
 msgid "Hit RETURN to finish"
 msgstr "Presione RETORNO para finalizar"
 

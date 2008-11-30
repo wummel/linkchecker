@@ -137,6 +137,7 @@ def get_test_aggregate (confargs, logargs):
     #config.init_logging(debug=["all"])
     config["anchors"] = True
     config["verbose"] = True
+    config["complete"] = True
     config['threads'] = 0
     config['status'] = False
     config['cookies'] = True

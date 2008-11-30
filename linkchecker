@@ -159,8 +159,8 @@ You can skip the "ftp://" url part if the domain starts with "ftp.":
 
 LoggerTypes = _(r"""OUTPUT TYPES
 Note that by default only errors and warnings are logged.
-You should use the --verbose option to get the complete URL list,
-especially when outputting a sitemap graph format.
+You should use the --verbose option to see valid URLs,
+and --complete when outputting a sitemap graph format.
 
 text    Standard text output, logging URLs in keyword: argument fashion.
 html    Log URLs in keyword: argument fashion, formatted as HTML.
@@ -358,7 +358,10 @@ optparser.add_option_group(group)
 group = optparse.OptionGroup(optparser, _("Output options"))
 group.add_option("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
-"""Log all checked URLs. Default is to log only errors and warnings."""))
+"""Log all URLs. Default is to log only errors and warnings."""))
+group.add_option("--complete", action="store_true", dest="complete",
+                 help=_("""Log all URLs, including duplicates.
+Default is to log duplicate URLs only once."""))
 group.add_option("--no-warnings", action="store_false", dest="warnings",
                 help=_("""Don't log warnings. Default is to log warnings."""))
 group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
@@ -710,6 +713,11 @@ if options.verbose is not None:
     if options.verbose:
         config["verbose"] = True
         config["warnings"] = True
+if options.complete is not None:
+    if options.complete:
+        config["complete"] = True
+        config["verbose"] = True
+        config["warnings"] = True
 if options.viewprof:
     viewprof()
 if options.warningregex is not None:
@@ -734,14 +742,14 @@ for prefix in ("checkhtml", "checkcss"):
             config[option] = getattr(options, option)
 
 log.debug(LOG_CMDLINE, "configuration: %s", pprint.pformat(config.items()))
-# warn about sitemap loggers and verbose output
+# warn about sitemap loggers and complete output
 klasses = [c.__class__ for c in [config['logger']] + config['fileoutput']]
 if (linkcheck.logger.gml.GMLLogger in klasses or \
     linkcheck.logger.dot.DOTLogger in klasses or \
     linkcheck.logger.gxml.GraphXMLLogger in klasses) and \
-   not config['verbose']:
+   not config['complete']:
     log.warn(LOG_CMDLINE,
-           _("Using DOT or GML loggers without verbose output"
+           _("Using DOT or GML loggers without --complete output"
              " gives an incomplete sitemap graph."))
 
 # interactive input

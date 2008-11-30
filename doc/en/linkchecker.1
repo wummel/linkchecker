@@ -86,7 +86,10 @@ Read list of white-space separated URLs to check from stdin.
 .SS Output options
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
-Log all checked URLs. Default is to log only errors and warnings.
+Log all checked URLs once. Default is to log only errors and warnings.
+.TP
+\fB\-\-complete\fP
+Log all URLs, including duplicates. Default is to log duplicate URLs only once.
 .TP
 \fB\-\-no\-warnings\fP
 Don't log warnings. Default is to log warnings.

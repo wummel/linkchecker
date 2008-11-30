@@ -31,6 +31,7 @@ class Logger (object):
         self.logs.extend(config['fileoutput'])
         self.ignorewarnings = config["ignorewarnings"]
         self.verbose = config["verbose"]
+        self.complete = config["complete"]
         self.warnings = config["warnings"]
 
     def start_log_output (self):
@@ -47,17 +48,26 @@ class Logger (object):
         for logger in self.logs:
             logger.end_output()
 
-    @synchronized(_lock)
-    def log_url (self, url_data):
-        """
-        Send new url to all configured loggers.
-        """
+    def do_print (self, url_data):
+        """Determine if URL entry should be logged or not."""
+        if self.complete:
+            return True
+        if self.verbose:
+            if url_data.cached and url_data.valid:
+                return False
+            return True
         has_warnings = False
         for tag, dummy in url_data.warnings:
             if tag not in self.ignorewarnings:
                 has_warnings = True
                 break
-        do_print = self.verbose or not (url_data.cached or
-            (url_data.valid and not (has_warnings and self.warnings)))
+        if self.warnings and has_warnings:
+            return True
+        return not url_data.valid
+
+    @synchronized(_lock)
+    def log_url (self, url_data):
+        """Send new url to all configured loggers."""
+        do_print = self.do_print(url_data)
         for log in self.logs:
             log.log_filter_url(url_data, do_print)
