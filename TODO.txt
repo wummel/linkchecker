@@ -1,2 +1,4 @@
 - [GUI] more configuration options
+- [GUI] Store checked links in urldata list; display in a QTreeWidget;
+  columns result (as icon), URL, name; doubleclick opens property popup
 - [DIST] bdist_rpm target does not work with anymore with new setup.py
