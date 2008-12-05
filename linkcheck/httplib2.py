@@ -323,7 +323,12 @@ class HTTPResponse:
     # See RFC 2616 sec 19.6 and RFC 1945 sec 6 for details.
 
     def __init__(self, sock, debuglevel=0, strict=0, method=None):
-        self.fp = sock.makefile('rb')
+        # The buffer size is specified as zero, because the headers of
+        # the response are read with readline().  If the reads were
+        # buffered the readline() calls could consume some of the
+        # response, which make be read via a recv() on the underlying
+        # socket.
+        self.fp = sock.makefile('rb', 0)
         self.debuglevel = debuglevel
         self.strict = strict
         self._method = method
@@ -477,7 +482,7 @@ class HTTPResponse:
         # Some HTTP/1.0 implementations have support for persistent
         # connections, using rules different than HTTP/1.1.
 
-        # For older HTTP, Keep-Alive indiciates persistent connection.
+        # For older HTTP, Keep-Alive indicates persistent connection.
         if self.msg.getheader('keep-alive'):
             return False
 
@@ -538,7 +543,8 @@ class HTTPResponse:
         s = self.fp.read(amt)
         if self.length is not None:
             self.length -= len(s)
-
+            if not self.length:
+                self.close()
         return s
 
     def _read_chunked(self, amt):
@@ -865,7 +871,7 @@ class HTTPConnection:
             # For HTTP/1.0, the server will assume "not chunked"
             pass
 
-    def putheader(self, header, value):
+    def putheader(self, header, *values):
         """Send a request header line to the server.
 
         For example: h.putheader('Accept', 'text/html')
@@ -873,7 +879,7 @@ class HTTPConnection:
         if self.__state != _CS_REQ_STARTED:
             raise CannotSendHeader("cannot send request in state %s" % self.__state)
 
-        str = '%s: %s' % (header, value)
+        str = '%s: %s' % (header, '\r\n\t'.join(values))
         self._output(str)
 
     def endheaders(self):
@@ -1210,6 +1216,7 @@ class HTTP:
         # set up delegation to flesh out interface
         self.send = conn.send
         self.putrequest = conn.putrequest
+        self.putheader = conn.putheader
         self.endheaders = conn.endheaders
         self.set_debuglevel = conn.set_debuglevel
 
@@ -1228,10 +1235,6 @@ class HTTP:
     def getfile(self):
         "Provide a getfile, since the superclass' does not use this concept."
         return self.file
-
-    def putheader(self, header, *values):
-        "The superclass allows only one value argument."
-        self._conn.putheader(header, '\r\n\t'.join(values))
 
     def getreply(self):
         """Compat definition since superclass does not define it.
