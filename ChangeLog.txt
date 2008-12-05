@@ -1,4 +1,4 @@
-5.0unreleased "Iron Man" (released xx.xx.2008)
+4.10 "Iron Man" (released xx.12.2008)
 
   * Require and use Python >= 2.5.
     Type: feature
