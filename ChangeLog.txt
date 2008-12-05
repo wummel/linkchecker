@@ -87,6 +87,11 @@
     Changed: linkcheck/robotparser2.py, linkcheck/cache/robots_txt.py,
       linkcheck/checker/httpurl.py
 
+  * Added new --complete option; making --verbose less chatty.
+    Type: feature
+    Closes: SF #2338973
+    Changed: linkchecker, linkcheck/configuration/__init__.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
