@@ -1,4 +1,5 @@
-- [GUI] more configuration options
+- [GUI] Stopping does not update statusbar immediately, and prints the
+  stop message double at the end.
 - [GUI] Store checked links in urldata list; display in a QTreeWidget;
   columns result (as icon), URL, name; doubleclick opens property popup
 - [DIST] bdist_rpm target does not work with anymore with new setup.py

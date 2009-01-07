@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="icons" >
+    <file>cancel.png</file>
+    <file>options.png</file>
+    <file>preferences.png</file>
+    <file>start.png</file>
+    <file>stop.png</file>
+  </qresource>
+</RCC>

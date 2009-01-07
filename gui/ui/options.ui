@@ -1,0 +1,202 @@
+<ui version="4.0" >
+ <class>Options</class>
+ <widget class="QDialog" name="Options" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>306</width>
+    <height>255</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="resetButton" >
+   <property name="geometry" >
+    <rect>
+     <x>9</x>
+     <y>219</y>
+     <width>91</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="toolTip" >
+    <string>Reset all options to default values.</string>
+   </property>
+   <property name="text" >
+    <string>Reset</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame" >
+   <property name="geometry" >
+    <rect>
+     <x>9</x>
+     <y>9</y>
+     <width>288</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QSpinBox" name="recursionlevel" >
+    <property name="geometry" >
+     <rect>
+      <x>130</x>
+      <y>20</y>
+      <width>46</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Check recursively all links up to given depth. A negative depth will enable infinite recursion.</string>
+    </property>
+    <property name="minimum" >
+     <number>-1</number>
+    </property>
+    <property name="maximum" >
+     <number>100</number>
+    </property>
+    <property name="value" >
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label" >
+    <property name="geometry" >
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Check recursively all links up to given depth. A negative depth will enable infinite recursion.</string>
+    </property>
+    <property name="text" >
+     <string>Recursive depth</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2" >
+    <property name="geometry" >
+     <rect>
+      <x>30</x>
+      <y>60</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Log all checked URLs once. Default is to log only errors and warnings.</string>
+    </property>
+    <property name="text" >
+     <string>Verbose output</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3" >
+    <property name="geometry" >
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>48</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Set the timeout for connection attempts in seconds.</string>
+    </property>
+    <property name="text" >
+     <string>Timeout</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="timeout" >
+    <property name="geometry" >
+     <rect>
+      <x>130</x>
+      <y>100</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Set the timeout for connection attempts in seconds.</string>
+    </property>
+    <property name="suffix" >
+     <string> seconds</string>
+    </property>
+    <property name="minimum" >
+     <number>2</number>
+    </property>
+    <property name="maximum" >
+     <number>300</number>
+    </property>
+    <property name="value" >
+     <number>60</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5" >
+    <property name="geometry" >
+     <rect>
+      <x>30</x>
+      <y>140</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Generate no more than the given number of threads.</string>
+    </property>
+    <property name="text" >
+     <string>Number of threads</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="threads" >
+    <property name="geometry" >
+     <rect>
+      <x>130</x>
+      <y>140</y>
+      <width>46</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Generate no more than the given number of threads.</string>
+    </property>
+    <property name="minimum" >
+     <number>1</number>
+    </property>
+    <property name="maximum" >
+     <number>20</number>
+    </property>
+    <property name="value" >
+     <number>10</number>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="verbose" >
+    <property name="enabled" >
+     <bool>true</bool>
+    </property>
+    <property name="geometry" >
+     <rect>
+      <x>130</x>
+      <y>60</y>
+      <width>31</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="toolTip" >
+     <string>Log all checked URLs once. Default is to log only errors and warnings.</string>
+    </property>
+    <property name="text" >
+     <string/>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

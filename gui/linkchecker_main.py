@@ -17,11 +17,15 @@
 
 import os
 from PyQt4 import QtCore, QtGui
-from linkchecker_ui import Ui_MainWindow
+from linkchecker_ui_main import Ui_MainWindow
+from linkchecker_ui_options import Ui_Options
 import linkcheck
 from linkcheck import configuration, checker, director, add_intern_pattern, \
     strformat
+from linkcheck.containers import enum
 
+
+Status = enum('idle', 'checking', 'stopping')
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
@@ -31,10 +35,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
+        self.options = LinkCheckerOptions(parent=self)
         if os.name == 'nt':
-            self.textEdit.setFontFamily("Courier")
+            self.output.setFontFamily("Courier")
         else:
-            self.textEdit.setFontFamily("mono")
+            self.output.setFontFamily("mono")
         self.checker = Checker()
 
         settings = QtCore.QSettings('bfk', configuration.AppName)
@@ -45,14 +50,50 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.move(settings.value('pos').toPoint())
         settings.endGroup()
 
-        self.connect(self.checker, QtCore.SIGNAL("finished()"), self.updateUi)
-        self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.updateUi)
-        self.connect(self.checker, QtCore.SIGNAL("addMessage(QString)"), self.addMessage)
-        self.connect(self.checker, QtCore.SIGNAL("setStatus(QString)"), self.setStatus)
-        self.connect(self.pushButton, QtCore.SIGNAL("clicked()"), self.check_or_cancel)
+        self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
+        self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
+        self.connect(self.checker, QtCore.SIGNAL("add_message(QString)"), self.add_message)
+        self.connect(self.checker, QtCore.SIGNAL("set_statusbar(QString)"), self.set_statusbar)
+        self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start_stop)
+        self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
-        self.updateUi()
+        self.status = Status.idle
+
+    def get_status (self):
+        return self._status
+
+    def set_status (self, status):
+        self._status = status
+        if status == Status.idle:
+            self.controlButton.setText(_("Start"))
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(":/icons/start.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
+            self.controlButton.setIcon(icon)
+            self.aggregate = None
+            self.controlButton.setEnabled(True)
+            self.optionsButton.setEnabled(True)
+            self.set_statusbar(_("Ready."))
+        elif status == Status.checking:
+            self.controlButton.setText(_("Stop"))
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(":/icons/stop.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
+            self.controlButton.setIcon(icon)
+            self.controlButton.setEnabled(True)
+            self.optionsButton.setEnabled(False)
+        elif status == Status.stopping:
+            self.controlButton.setText(_("Start"))
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(":/icons/start.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
+            self.controlButton.setIcon(icon)
+            self.controlButton.setEnabled(False)
+            self.set_statusbar(_("Stopping."))
+
+    status = property(get_status, set_status)
+
+    def set_status_idle (self):
+        """Set idle status. Helper function for signal connections."""
+        self.status = Status.idle
 
     def closeEvent (self, e=None):
         """Save settings on close."""
@@ -81,76 +122,86 @@ for broken links.</p>
 Version 2 or later.</p>
 </qt>""") % d)
 
-    def check_or_cancel (self):
-        """Run a new check or cancel active check."""
-        if self.aggregate is None:
+    def start_stop (self):
+        """Start a new check or stop an active check."""
+        if self.status == Status.idle:
             self.check()
-        else:
-            self.cancel()
+        elif self.status == Status.checking:
+            self.stop()
 
     def check (self):
         """Check given URL."""
-        self.pushButton.setEnabled(False)
-        self.textEdit.setText("")
+        self.controlButton.setEnabled(False)
+        self.optionsButton.setEnabled(False)
+        self.output.setText("")
         config = self.get_config()
         aggregate = director.get_aggregate(config)
-        url = unicode(self.lineEdit.text()).strip()
+        url = unicode(self.urlinput.text()).strip()
         if not url:
-            self.textEdit.setText(_("Error, empty URL"))
-            self.updateUi()
+            self.output.setText(_("Error, empty URL"))
+            self.status = Status.idle
             return
         if url.startswith(u"www."):
             url = u"http://%s" % url
         elif url.startswith(u"ftp."):
             url = u"ftp://%s" % url
-        self.setStatus(_("Checking '%s'.") % strformat.limit(url, 40))
+        self.set_statusbar(_("Checking '%s'.") % strformat.limit(url, 40))
         url_data = checker.get_url_from(url, 0, aggregate)
         try:
             add_intern_pattern(url_data, config)
         except UnicodeError:
-            self.textEdit.setText(_("Error, invalid URL '%s'.") %
+            self.output.setText(_("Error, invalid URL '%s'.") %
                                   strformat.limit(url, 40))
-            self.updateUi()
+            self.status = Status.idle
             return
         aggregate.urlqueue.put(url_data)
-        self.pushButton.setText(_("Cancel"))
         self.aggregate = aggregate
-        self.pushButton.setEnabled(True)
         # check in background
         self.checker.check(self.aggregate)
+        self.status = Status.checking
 
-    def cancel (self):
-        """Cancel running check."""
-        self.setStatus(_("Aborting."))
+    def stop (self):
         director.abort(self.aggregate)
+        self.status = Status.stopping
 
     def get_config (self):
         """Return check configuration."""
         config = configuration.Configuration()
-        config["recursionlevel"] = self.spinBox.value()
+        config["recursionlevel"] = self.options.recursionlevel.value()
         config.logger_add("gui", GuiLogger)
         config["logger"] = config.logger_new('gui', widget=self.checker)
-        config["verbose"] = self.checkBox.isChecked()
+        config["verbose"] = self.options.verbose.isChecked()
+        config["timeout"] = self.options.timeout.value()
+        config["threads"] = self.options.threads.value()
         config.init_logging(StatusLogger(self.checker))
         config["status"] = True
         return config
 
-    def addMessage (self, msg):
+    def add_message (self, msg):
         """Add new log message to text edit widget."""
-        text = self.textEdit.toPlainText()
-        self.textEdit.setText(text+msg)
-        self.textEdit.moveCursor(QtGui.QTextCursor.End)
+        text = self.output.toPlainText()
+        self.output.setText(text+msg)
+        self.output.moveCursor(QtGui.QTextCursor.End)
 
-    def setStatus (self, msg):
+    def set_statusbar (self, msg):
         """Show status message in status bar."""
         self.statusBar.showMessage(msg)
 
-    def updateUi (self):
-        """Reset UI."""
-        self.pushButton.setText(_("Check"))
-        self.aggregate = None
-        self.pushButton.setEnabled(True)
-        self.setStatus(_("Ready."))
+
+class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
+    """Hold options for current URL to check."""
+
+    def __init__ (self, parent=None):
+        super(LinkCheckerOptions, self).__init__(parent)
+        self.setupUi(self)
+        self.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.reset)
+
+    def reset (self):
+        """Reset options to default values."""
+        self.recursionlevel.setValue(-1)
+        self.verbose.setChecked(False)
+        self.threads.setValue(10)
+        self.timeout.setValue(60)
 
 
 class Checker (QtCore.QThread):
@@ -185,7 +236,7 @@ class GuiLogger (TextLogger):
         self.widget = args["widget"]
 
     def write (self, s, **args):
-        self.widget.emit(QtCore.SIGNAL("addMessage(QString)"), s)
+        self.widget.emit(QtCore.SIGNAL("add_message(QString)"), s)
 
     def start_fileoutput (self):
         pass
@@ -208,5 +259,5 @@ class StatusLogger (object):
         self.buf.extend([msg, unicode(os.linesep)])
 
     def flush (self):
-        self.widget.emit(QtCore.SIGNAL("setStatus(QString)"), u"".join(self.buf))
+        self.widget.emit(QtCore.SIGNAL("set_statusbar(QString)"), u"".join(self.buf))
         self.buf = []
