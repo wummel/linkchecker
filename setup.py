@@ -24,7 +24,7 @@ if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 5, 0, 'final', 0)):
     raise SystemExit("This program requires Python 2.5 or later.")
 import os
-import popen2
+import subprocess
 import platform
 import stat
 import glob
@@ -293,13 +293,11 @@ def cc_supports_option (cc, option):
     @rtype: bool
     """
     prog = "int main(){}\n"
-    cc_cmd = "%s -E %s -" % (cc[0], option)
-    pipe = popen2.Popen4(cc_cmd)
-    pipe.tochild.write(prog)
-    pipe.tochild.close()
-    status = pipe.wait()
-    if os.WIFEXITED(status):
-        return os.WEXITSTATUS(status) == 0
+    pipe = subprocess.Popen([cc[0], "-E", option, "-"],
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+    pipe.communicate(input=prog)
+    if os.WIFEXITED(pipe.returncode):
+        return os.WEXITSTATUS(pipe.returncode) == 0
     return False
 
 
