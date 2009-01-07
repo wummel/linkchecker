@@ -28,26 +28,27 @@ import subprocess
 import platform
 import stat
 import glob
-try:
-    # try using setuptools to support eggs
-    from setuptools import setup
-    from setuptools.command.bdist_wininst import bdist_wininst
-    from setuptools.command.install_lib import install_lib
-    from setuptools.command.build_ext import build_ext
-    from setuptools.command.sdist import sdist
-    from distutils.command.sdist import sdist as _sdist
-    sdist.user_options = _sdist.user_options + sdist.user_options
-    from setuptools.extension import Extension
-    from setuptools import dist
-except ImportError:
-    # fall back to plain distutils
-    from distutils.core import setup
-    from distutils.command.bdist_wininst import bdist_wininst
-    from distutils.command.install_lib import install_lib
-    from distutils.command.build_ext import build_ext
-    from distutils.command.sdist import sdist
-    from distutils.core import Extension
-    from distutils import dist
+
+# Use setuptools to support eggs. Note that this conflicts with py2exe.
+# The setuptools are not officially supported.
+#try:
+#    from setuptools import setup
+#    from setuptools.command.bdist_wininst import bdist_wininst
+#    from setuptools.command.install_lib import install_lib
+#    from setuptools.command.build_ext import build_ext
+#    from setuptools.command.sdist import sdist
+#    from distutils.command.sdist import sdist as _sdist
+#    sdist.user_options = _sdist.user_options + sdist.user_options
+#    from setuptools.extension import Extension
+#    from setuptools.dist import Distribution
+#except ImportError:
+# use distutils
+from distutils.core import setup, Extension, Distribution
+from distutils.command.bdist_wininst import bdist_wininst
+from distutils.command.install_lib import install_lib
+from distutils.command.build_ext import build_ext
+from distutils.command.sdist import sdist
+
 import distutils.command
 from distutils.command.clean import clean
 from distutils.command.build import build
@@ -59,6 +60,10 @@ from distutils.sysconfig import get_python_version
 from distutils.errors import DistutilsPlatformError
 from distutils import util, log
 
+if os.name == 'nt':
+    # Note that py2exe monkey-patches the distutils.core.Distribution class
+    import py2exe
+
 # cross compile config
 cc = os.environ.get("CC")
 # directory with cross compiled (for win32) python
@@ -67,9 +72,6 @@ win_python_dir = "/home/calvin/src/python23-maint-cvs/dist/src/"
 win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
 # releases supporting our special .bat files
 win_bat_releases = ['NT', 'XP', '2000', '2003Server']
-
-if os.name == 'nt':
-    import py2exe
 
 def normpath (path):
     """Norm a path name to platform specific notation."""
@@ -156,7 +158,7 @@ class MyInstallData (install_data, object):
                 os.chmod(path, mode)
 
 
-class MyDistribution (dist.Distribution, object):
+class MyDistribution (distutils.core.Distribution, object):
     """Custom distribution class generating config file."""
 
     def run_commands (self):
