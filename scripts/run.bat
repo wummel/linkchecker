@@ -1,3 +1,3 @@
 @echo off
-set PYTHON="c:\Python 25\python.exe"
+set PYTHON="c:\Python26\python.exe"
 %PYTHON% linkchecker %*
