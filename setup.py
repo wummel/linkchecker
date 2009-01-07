@@ -68,6 +68,8 @@ win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
 # releases supporting our special .bat files
 win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
+if os.name == 'nt':
+    import py2exe
 
 def normpath (path):
     """Norm a path name to platform specific notation."""
@@ -582,4 +584,5 @@ o a (Fast)CGI web interface (requires HTTP server)
         'Programming Language :: Python',
         'Programming Language :: C',
       ],
+    console = [{"script": "linkchecker"}],
 )
