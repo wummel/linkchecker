@@ -20,7 +20,10 @@
 @type default_resolver: linkcheck.dns.resolver.Resolver object"""
 
 import socket
-import sets
+try:
+    set
+except NameError:
+    from sets import Set as set
 import sys
 import os
 import time
@@ -312,7 +315,7 @@ class Resolver(object):
         if len(self.domain) == 0:
             self.domain = linkcheck.dns.name.root
         self.nameservers = []
-        self.localhosts = sets.Set([
+        self.localhosts = set([
           'localhost',
           'loopback',
           '127.0.0.1',
@@ -322,8 +325,8 @@ class Resolver(object):
           'ip6-loopback',
         ])
         # connected and active network interfaces
-        self.interfaces = sets.Set()
-        self.search = sets.Set()
+        self.interfaces = set()
+        self.search = set()
         self.search_patterns = ['www.%s.com', 'www.%s.org', 'www.%s.net', ]
         self.port = 53
         self.timeout = 2.0
