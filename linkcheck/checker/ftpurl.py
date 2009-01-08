@@ -24,7 +24,7 @@ import urllib
 from cStringIO import StringIO
 
 from .. import log, LOG_CHECK, LinkCheckerError
-from ..ftpparse import _ftpparse as ftpparse
+from .. import ftpparse
 from . import proxysupport, httpurl, internpaturl, get_index_html
 from .const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS
 
@@ -158,7 +158,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             """
             log.debug(LOG_CHECK, "Directory entry %r", line)
             try:
-                fpo = ftpparse.parse(line)
+                fpo = ftpparse._ftpparse.parse(line)
                 name = fpo.name
                 if fpo.trycwd:
                     name += "/"
