@@ -87,6 +87,8 @@ class TestFile (LinkCheckTest):
         """Test directory listing code."""
         # unpack non-unicode filename which cannot be stored
         # in the SF subversion repository
+        if os.name != 'posix':
+            return
         dirname = get_file("dir")
         if not os.path.isdir(dirname):
             unzip(dirname+".zip", os.path.dirname(dirname))
