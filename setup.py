@@ -63,7 +63,13 @@ from distutils import util, log
 if os.name == 'nt':
     # Note that py2exe monkey-patches the distutils.core.Distribution class
     import py2exe
-
+py2exe_options = dict(
+    packages=["encodings"],
+    excludes=['doctest', 'unittest', 'optcomplete'],
+    includes=['linkcheck.ftpparse._ftpparse', 'linkcheck.HtmlParser.htmlsax', 'linkcheck.network._network'],
+    compressed=1,
+    optimize=2,
+)
 # cross compile config
 cc = os.environ.get("CC")
 # directory with cross compiled (for win32) python
@@ -160,6 +166,10 @@ class MyInstallData (install_data, object):
 
 class MyDistribution (distutils.core.Distribution, object):
     """Custom distribution class generating config file."""
+
+    def __init__ (self, attrs):
+        super(MyDistribution, self).__init__(attrs)
+        self.console = ['linkchecker']
 
     def run_commands (self):
         """Generate config file and run commands."""
@@ -499,19 +509,19 @@ elif win_compiling:
               'doc/en/shot2_thumb.jpg',
              ]))
 
-setup (name = "linkchecker",
-       version = "4.10",
-       description = "check websites and HTML documents for broken links",
-       keywords = "link,url,checking,verification",
-       author = myname,
-       author_email = myemail,
-       maintainer = myname,
-       maintainer_email = myemail,
-       url = "http://linkchecker.sourceforge.net/",
-       download_url = \
-           "http://sourceforge.net/project/showfiles.php?group_id=1913",
-       license = "GPL",
-       long_description = """Linkchecker features:
+setup (
+    name = "linkchecker",
+    version = "4.10",
+    description = "check websites and HTML documents for broken links",
+    keywords = "link,url,checking,verification",
+    author = myname,
+    author_email = myemail,
+    maintainer = myname,
+    maintainer_email = myemail,
+    url = "http://linkchecker.sourceforge.net/",
+    download_url="http://sourceforge.net/project/showfiles.php?group_id=1913",
+    license = "GPL",
+    long_description = """Linkchecker features:
 o recursive and multithreaded checking
 o output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
   graph in different formats
@@ -527,62 +537,64 @@ o Antivirus check
 o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
 """,
-       distclass = MyDistribution,
-       cmdclass = {
-           'install_lib': MyInstallLib,
-           'install_data': MyInstallData,
-           'bdist_wininst': MyBdistWininst,
-           'build_ext': MyBuildExt,
-           'build': MyBuild,
-           'clean': MyClean,
-           'sdist': MySdist,
-       },
-       packages = ['linkcheck', 'linkcheck.logger', 'linkcheck.checker',
-                   'linkcheck.director', 'linkcheck.configuration',
-                   'linkcheck.cache', 'linkcheck.htmlutil',
-                   'linkcheck.dns', 'linkcheck.dns.rdtypes',
-                   'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
-                   'linkcheck.HtmlParser', 'linkcheck.ftpparse',
-                   'linkcheck.network', ],
-       ext_modules = [Extension('linkcheck.HtmlParser.htmlsax',
-                  sources = ['linkcheck/HtmlParser/htmllex.c',
-                   'linkcheck/HtmlParser/htmlparse.c',
-                   'linkcheck/HtmlParser/s_util.c',
-                  ],
-                  extra_compile_args = extra_compile_args,
-                  library_dirs = library_dirs,
-                  libraries = libraries,
-                  define_macros = define_macros + [('YY_NO_INPUT', None)],
-                  include_dirs = include_dirs + \
-                                  [normpath("linkcheck/HtmlParser")],
-                  ),
-                  Extension("linkcheck.network._network",
-                        ["linkcheck/network/_network.c",],
-                  extra_compile_args = extra_compile_args,
-                  library_dirs = library_dirs,
-                  libraries = libraries,
-                  define_macros = define_macros,
-                  include_dirs = include_dirs,
-                  ),
-                  Extension("linkcheck.ftpparse._ftpparse",
-                        ["linkcheck/ftpparse/_ftpparse.c",
-                         "linkcheck/ftpparse/ftpparse.c"],
-                  extra_compile_args = extra_compile_args,
-                  library_dirs = library_dirs,
-                  libraries = libraries,
-                  define_macros = define_macros,
-                  include_dirs = include_dirs + \
-                                  [normpath("linkcheck/ftpparse")],
-                         ),
-                 ],
-       scripts = scripts,
-       data_files = data_files,
-       classifiers = [
+    distclass = MyDistribution,
+    cmdclass = {
+        'install_lib': MyInstallLib,
+        'install_data': MyInstallData,
+        'bdist_wininst': MyBdistWininst,
+        'build_ext': MyBuildExt,
+        'build': MyBuild,
+        'clean': MyClean,
+        'sdist': MySdist,
+    },
+    packages = [
+        'linkcheck', 'linkcheck.logger', 'linkcheck.checker',
+        'linkcheck.director', 'linkcheck.configuration', 'linkcheck.cache',
+        'linkcheck.htmlutil', 'linkcheck.dns', 'linkcheck.dns.rdtypes',
+        'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
+        'linkcheck.HtmlParser', 'linkcheck.ftpparse', 'linkcheck.network',
+    ],
+    ext_modules = [
+        Extension('linkcheck.HtmlParser.htmlsax',
+            sources = [
+                'linkcheck/HtmlParser/htmllex.c',
+                'linkcheck/HtmlParser/htmlparse.c',
+                'linkcheck/HtmlParser/s_util.c',
+            ],
+            extra_compile_args = extra_compile_args,
+            library_dirs = library_dirs,
+            libraries = libraries,
+            define_macros = define_macros + [('YY_NO_INPUT', None)],
+            include_dirs = include_dirs + [normpath("linkcheck/HtmlParser")],
+        ),
+        Extension("linkcheck.network._network",
+            sources = ["linkcheck/network/_network.c",],
+            extra_compile_args = extra_compile_args,
+            library_dirs = library_dirs,
+            libraries = libraries,
+            define_macros = define_macros,
+            include_dirs = include_dirs,
+        ),
+        Extension("linkcheck.ftpparse._ftpparse",
+            sources = [
+                "linkcheck/ftpparse/_ftpparse.c",
+                "linkcheck/ftpparse/ftpparse.c",
+            ],
+            extra_compile_args = extra_compile_args,
+            library_dirs = library_dirs,
+            libraries = libraries,
+            define_macros = define_macros,
+            include_dirs = include_dirs + [normpath("linkcheck/ftpparse")],
+        ),
+    ],
+    scripts = scripts,
+    data_files = data_files,
+    classifiers = [
         'Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Programming Language :: Python',
         'Programming Language :: C',
-      ],
-    console = [{"script": "linkchecker"}],
+    ],
+    options = {"py2exe": py2exe_options},
 )
