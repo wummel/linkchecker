@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2008 Bastian Kleineidam
+# Copyright (C) 2000-2009 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ import urllib
 from cStringIO import StringIO
 
 from .. import log, LOG_CHECK, LinkCheckerError
-from .. import ftpparse
 from . import proxysupport, httpurl, internpaturl, get_index_html
 from .const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS
 
@@ -147,10 +146,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         raise ftplib.error_perm("550 File not found")
 
     def get_files (self):
-        """
-        Get list of filenames in directory. Subdirectories have an
-        ending slash.
-        """
+        """Get list of filenames in directory. Subdirectories have an
+        ending slash."""
         files = []
         def add_entry (line):
             """
@@ -158,7 +155,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             """
             log.debug(LOG_CHECK, "Directory entry %r", line)
             try:
-                fpo = ftpparse._ftpparse.parse(line)
+                from ..ftpparse import _ftpparse
+                fpo = _ftpparse.parse(line)
                 name = fpo.name
                 if fpo.trycwd:
                     name += "/"
@@ -170,21 +168,15 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return files
 
     def is_html (self):
-        """
-        See if URL target is a HTML file by looking at the extension.
-        """
+        """See if URL target is a HTML file by looking at the extension."""
         return bool(PARSE_EXTENSIONS['html'].search(self.url))
 
     def is_css (self):
-        """
-        See if URL target is a CSS file by looking at the extension.
-        """
+        """See if URL target is a CSS file by looking at the extension."""
         return bool(PARSE_EXTENSIONS['css'].search(self.url))
 
     def is_parseable (self):
-        """
-        See if URL target is parseable for recursion.
-        """
+        """See if URL target is parseable for recursion."""
         if self.is_directory():
             return True
         for ro in PARSE_EXTENSIONS.values():
@@ -193,15 +185,11 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return False
 
     def is_directory (self):
-        """
-        See if URL target is a directory.
-        """
+        """See if URL target is a directory."""
         return self.url.endswith('/')
 
     def parse_url (self):
-        """
-        Parse URL target for links.
-        """
+        """Parse URL target for links."""
         if self.is_directory():
             self.parse_html()
             return

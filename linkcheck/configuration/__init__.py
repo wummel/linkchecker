@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2008 Bastian Kleineidam
+# Copyright (C) 2000-2009 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@ AppName = _linkchecker_configdata.appname
 App = AppName+u" "+Version
 Author =  _linkchecker_configdata.author
 HtmlAuthor = Author.replace(u' ', u'&nbsp;')
-Copyright = u"Copyright (C) 2000-2008 "+Author
-HtmlCopyright = u"Copyright &copy; 2000-2008 "+HtmlAuthor
+Copyright = u"Copyright (C) 2000-2009 "+Author
+HtmlCopyright = u"Copyright &copy; 2000-2009 "+HtmlAuthor
 AppInfo = App+u"              "+Copyright
 HtmlAppInfo = App+u", "+HtmlCopyright
 Url = _linkchecker_configdata.url

@@ -1224,7 +1224,7 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:369
-msgid "Copyright \\(co 2000-2008 Bastian Kleineidam"
+msgid "Copyright \\(co 2000-2009 Bastian Kleineidam"
 msgstr ""
 
 # type: TH
