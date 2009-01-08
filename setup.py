@@ -60,9 +60,13 @@ from distutils.sysconfig import get_python_version
 from distutils.errors import DistutilsPlatformError
 from distutils import util, log
 
-if os.name == 'nt':
+try:
     # Note that py2exe monkey-patches the distutils.core.Distribution class
     import py2exe
+except ImportError:
+    # ignore when py2exe is not installed
+    pass
+
 py2exe_options = dict(
     packages=["encodings"],
     excludes=['doctest', 'unittest', 'optcomplete'],
