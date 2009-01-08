@@ -234,6 +234,7 @@ class GuiLogger (TextLogger):
     def __init__ (self, **args):
         super(GuiLogger, self).__init__(**args)
         self.widget = args["widget"]
+        self.end_output_called = False
 
     def write (self, s, **args):
         self.widget.emit(QtCore.SIGNAL("add_message(QString)"), s)
@@ -243,6 +244,15 @@ class GuiLogger (TextLogger):
 
     def close_fileoutput (self):
         pass
+
+    def end_output (self):
+        # The linkchecker director thread is not the main thread, and
+        # it can call end_output() twice, from director.check_urls() and
+        # from director.abort(). This happends when LinkCheckerMain.stop()
+        # is called. The flag prevents double printing of the output.
+        if not self.end_output_called:
+            self.end_output_called = True
+            super(GuiLogger, self).end_output()
 
 
 class StatusLogger (object):
