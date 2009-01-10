@@ -22,7 +22,8 @@ import unittest
 from . import LinkCheckTest
 
 # Change from time to time, as servers tend to get invalid.
-NNTP_SERVER = "infosun2.rus.uni-stuttgart.de"
+NNTP_SERVER = "freenews.netfront.net"
+
 
 class TestNews (LinkCheckTest):
     """
