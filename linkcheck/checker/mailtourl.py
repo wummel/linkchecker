@@ -147,19 +147,23 @@ class MailtoUrl (urlbase.UrlBase):
         """
         Check a single mail address.
         """
+        from ..dns.exception import DNSException
         log.debug(LOG_CHECK, "checking mail address %r", mail)
         mail = strformat.ascii_safe(mail)
         username, domain = _split_address(mail)
         log.debug(LOG_CHECK, "looking up MX mailhost %r", domain)
         try:
             answers = resolver.query(domain, 'MX')
-        except resolver.NoAnswer:
+        except DNSException:
             answers = []
         if len(answers) == 0:
             self.add_warning(_("No MX mail host for %(domain)s found.") %
                             {'domain': domain},
                              tag=WARN_MAIL_NO_MX_HOST)
-            answers = resolver.query(domain, 'A')
+            try:
+                answers = resolver.query(domain, 'A')
+            except DNSException:
+                answers = []
             if len(answers) == 0:
                 self.set_result(_("No host for %(domain)s found.") %
                                  {'domain': domain}, valid=False,
