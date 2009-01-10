@@ -21,6 +21,8 @@ Test news checking.
 import unittest
 from . import LinkCheckTest
 
+# Change from time to time, as servers tend to get invalid.
+NNTP_SERVER = "infosun2.rus.uni-stuttgart.de"
 
 class TestNews (LinkCheckTest):
     """
@@ -91,7 +93,7 @@ class TestNews (LinkCheckTest):
         """
         Nttp scheme with host.
         """
-        url = u"nntp://nntp.aioe.org/comp.lang.python"
+        url = u"nntp://%s/comp.lang.python" % NNTP_SERVER
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -105,7 +107,7 @@ class TestNews (LinkCheckTest):
         """
         Article span.
         """
-        url = u"nntp://nntp.aioe.org/comp.lang.python/1-5"
+        url = u"nntp://%s/comp.lang.python/1-5" % NNTP_SERVER
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -128,7 +130,7 @@ class TestNews (LinkCheckTest):
         """
         Host but no group.
         """
-        url = u"nntp://nntp.aioe.org/"
+        url = u"nntp://%s/" % NNTP_SERVER
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
