@@ -72,9 +72,12 @@ OPT = 41
 APL = 42
 DS = 43
 SSHFP = 44
+IPSECKEY = 45
 RRSIG = 46
 NSEC = 47
 DNSKEY = 48
+DHCID = 49
+SPF = 99
 UNSPEC = 103
 TKEY = 249
 TSIG = 250
@@ -126,9 +129,12 @@ _by_text = {
     'APL' : APL,
     'DS' : DS,
     'SSHFP' : SSHFP,
+    'IPSECKEY' : IPSECKEY,
     'RRSIG' : RRSIG,
     'NSEC' : NSEC,
     'DNSKEY' : DNSKEY,
+    'DHCID' : DHCID,
+    'SPF' : SPF,
     'UNSPEC' : UNSPEC,
     'TKEY' : TKEY,
     'TSIG' : TSIG,

@@ -18,6 +18,7 @@
 
 __all__ = [
     'dnssec',
+    'e164',
     'exception',
     'flags',
     'inet',
@@ -36,6 +37,7 @@ __all__ = [
     'rdatatype',
     'renderer',
     'resolver',
+    'reversename',
     'rrset',
     'set',
     'tokenizer',

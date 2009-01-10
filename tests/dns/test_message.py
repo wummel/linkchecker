@@ -129,7 +129,13 @@ class TestMessage (unittest.TestCase):
     def test_TooBig(self):
         def bad():
             q = linkcheck.dns.message.from_text(query_text)
-            w = q.to_wire(max_size=15)
+            for i in xrange(0, 25):
+                rrset = linkcheck.dns.rrset.from_text('foo%d.' % i, 3600,
+                                            linkcheck.dns.rdataclass.IN,
+                                            linkcheck.dns.rdatatype.A,
+                                            '10.0.0.%d' % i)
+                q.additional.append(rrset)
+            w = q.to_wire(max_size=512)
         self.assertRaises(linkcheck.dns.exception.TooBig, bad)
 
     def test_answer1(self):

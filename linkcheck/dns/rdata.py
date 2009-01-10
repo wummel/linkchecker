@@ -171,6 +171,14 @@ class Rdata(object):
 
         raise NotImplementedError
 
+    def validate(self):
+        """Check that the current contents of the rdata's fields are
+        valid.  If you change an rdata by assigning to its fields,
+        it is a good idea to call validate() when you are done making
+        changes.
+        """
+        linkcheck.dns.rdata.from_text(self.rdclass, self.rdtype, self.to_text())
+
     def __repr__(self):
         covers = self.covers()
         if covers == linkcheck.dns.rdatatype.NONE:
@@ -401,11 +409,11 @@ def from_text(rdclass, rdtype, tok, origin = None, relativize = True):
         tok.unget(token)
         if token[0] == linkcheck.dns.tokenizer.IDENTIFIER and \
            token[1] == r'\#':
-            #
+
             # Known type using the generic syntax.  Extract the
             # wire form from the generic syntax, and then run
             # from_wire on it.
-            #
+
             rdata = GenericRdata.from_text(rdclass, rdtype, tok, origin,
                                            relativize)
             return from_wire(rdclass, rdtype, rdata.data, 0, len(rdata.data),

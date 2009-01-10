@@ -14,6 +14,8 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+"""DNS Messages"""
+
 from cStringIO import StringIO
 import random
 import struct
@@ -120,6 +122,10 @@ class Message(object):
     message sequence?  This variable is used when validating TSIG signatures
     on messages which are part of a zone transfer.
     @type first: bool
+    @ivar index: An index of rrsets in the message.  The index key is
+    (section, name, rdclass, rdtype, covers, deleting).  Indexing can be
+    disabled by setting the index to None.
+    @type index: dict
     """
 
     def __init__(self, id=None):
@@ -135,6 +141,7 @@ class Message(object):
         self.edns = -1
         self.ednsflags = 0
         self.payload = 0
+        self.request_payload = 0
         self.keyring = None
         self.keyname = None
         self.request_mac = ''
@@ -149,6 +156,7 @@ class Message(object):
         self.had_tsig = False
         self.multi = False
         self.first = True
+        self.index = {}
 
     def __repr__(self):
         return '<DNS message, ID %r>' % self.id
@@ -200,11 +208,11 @@ class Message(object):
         print >> s, ';ADDITIONAL'
         for rrset in self.additional:
             print >> s, rrset.to_text(origin, relativize, **kw)
-        #
+
         # We strip off the final \n so the caller can print the result without
         # doing weird things to get around eccentricities in Python print
         # formatting
-        #
+
         return s.getvalue()[:-1]
 
     def __eq__(self, other):
@@ -246,6 +254,7 @@ class Message(object):
         """Is other a response to self?
         @rtype: bool"""
         if other.flags & linkcheck.dns.flags.QR == 0 or \
+           self.id != other.id or \
            linkcheck.dns.opcode.from_flags(self.flags) != \
            linkcheck.dns.opcode.from_flags(other.flags):
             return False
@@ -261,6 +270,18 @@ class Message(object):
             if n not in self.question:
                 return False
         return True
+
+    def section_number(self, section):
+        if section is self.question:
+            return 0
+        elif section is self.answer:
+            return 1
+        elif section is self.authority:
+            return 2
+        elif section is self.additional:
+            return 3
+        else:
+            raise ValueError, 'unknown section'
 
     def find_rrset(self, section, name, rdclass, rdtype,
                    covers=linkcheck.dns.rdatatype.NONE, deleting=None, create=False,
@@ -289,14 +310,23 @@ class Message(object):
         @raises KeyError: the RRset was not found and create was False
         @rtype: linkcheck.dns.rrset.RRset object"""
 
+        key = (self.section_number(section),
+               name, rdclass, rdtype, covers, deleting)
         if not force_unique:
-            for rrset in section:
-                if rrset.match(name, rdclass, rdtype, covers, deleting):
+            if not self.index is None:
+                rrset = self.index.get(key)
+                if not rrset is None:
                     return rrset
+            else:
+                for rrset in section:
+                    if rrset.match(name, rdclass, rdtype, covers, deleting):
+                        return rrset
         if not create:
             raise KeyError
         rrset = linkcheck.dns.rrset.RRset(name, rdclass, rdtype, covers, deleting)
         section.append(rrset)
+        if not self.index is None:
+            self.index[key] = rrset
         return rrset
 
     def get_rrset(self, section, name, rdclass, rdtype,
@@ -334,7 +364,7 @@ class Message(object):
             rrset = None
         return rrset
 
-    def to_wire(self, origin=None, max_size=65535, **kw):
+    def to_wire(self, origin=None, max_size=0, **kw):
         """Return a string containing the message in DNS compressed wire
         format.
 
@@ -343,12 +373,23 @@ class Message(object):
 
         @param origin: The origin to be appended to any relative names.
         @type origin: linkcheck.dns.name.Name object
-        @param max_size: The maximum size of the wire format output.
+        @param max_size: The maximum size of the wire format output; default
+        is 0, which means 'the message's request payload, if nonzero, or
+        65536'.
         @type max_size: int
         @raises linkcheck.dns.exception.TooBig: max_size was exceeded
         @rtype: string
         """
 
+        if max_size == 0:
+            if self.request_payload != 0:
+                max_size = self.request_payload
+            else:
+                max_size = 65535
+        if max_size < 512:
+            max_size = 512
+        elif max_size > 65535:
+            max_size = 65535
         r = linkcheck.dns.renderer.Renderer(self.id, self.flags, max_size, origin)
         for rrset in self.question:
             r.add_question(rrset.name, rrset.rdtype, rrset.rdclass)
@@ -396,7 +437,7 @@ class Message(object):
         if keyname is None:
             self.keyname = self.keyring.keys()[0]
         else:
-            if isinstance(keyname, str):
+            if isinstance(keyname, basestring):
                 keyname = linkcheck.dns.name.from_text(keyname)
             self.keyname = keyname
         self.fudge = fudge
@@ -407,23 +448,51 @@ class Message(object):
         self.tsig_error = tsig_error
         self.other_data = other_data
 
-    def use_edns(self, edns, ednsflags, payload):
+    def use_edns(self, edns=0, ednsflags=0, payload=1280, request_payload=None):
         """Configure EDNS behavior.
-        @param edns: The EDNS level to use.  Specifying None or -1 means
-        'do not use EDNS'.
-        @type edns: int or None
+        @param edns: The EDNS level to use.  Specifying None, False, or -1
+        means 'do not use EDNS', and in this case the other parameters are
+        ignored.  Specifying True is equivalent to specifying 0, i.e. 'use
+        EDNS0'.
+        @type edns: int or bool or None
         @param ednsflags: EDNS flag values.
         @type ednsflags: int
         @param payload: The EDNS sender's payload field, which is the maximum
         size of UDP datagram the sender can handle.
         @type payload: int
+        @param request_payload: The EDNS payload size to use when sending
+        this message.  If not specified, defaults to the value of payload.
+        @type request_payload: int or None
         @see: RFC 2671
         """
-        if edns is None:
+        if edns is None or edns is False:
             edns = -1
+        if edns is True:
+            edns = 0
+        if request_payload is None:
+            request_payload = payload
+        if edns < 0:
+            ednsflags = 0
+            payload = 0
+            request_payload = 0
         self.edns = edns
         self.ednsflags = ednsflags
         self.payload = payload
+        self.request_payload = request_payload
+
+    def want_dnssec(self, wanted=True):
+        """Enable or disable 'DNSSEC desired' flag in requests.
+        @param wanted: Is DNSSEC desired?  If True, EDNS is enabled if
+        required, and then the DO bit is set.  If False, the DO bit is
+        cleared if EDNS is enabled.
+        @type wanted: bool
+        """
+        if wanted:
+            if self.edns < 0:
+                self.use_edns()
+            self.ednsflags |= linkcheck.dns.flags.DO
+        elif self.edns >= 0:
+            self.ednsflags &= ~linkcheck.dns.flags.DO
 
     def rcode(self):
         """Return the rcode.
@@ -890,7 +959,8 @@ def from_file(f):
     return m
 
 
-def make_query(qname, rdtype, rdclass = linkcheck.dns.rdataclass.IN):
+def make_query(qname, rdtype, rdclass = linkcheck.dns.rdataclass.IN,
+               use_edns=None, want_dnssec=False):
     """Make a query message.
 
     The query name, type, and class may all be specified either
@@ -905,8 +975,16 @@ def make_query(qname, rdtype, rdclass = linkcheck.dns.rdataclass.IN):
     @type rdtype: int
     @param rdclass: The desired rdata class; the default is class IN.
     @type rdclass: int
-    @rtype: linkcheck.dns.message.Message object"""
-    if isinstance(qname, str):
+    @rtype: linkcheck.dns.message.Message object
+    @param use_edns: The EDNS level to use; the default is None (no EDNS).
+    See the description of dns.message.Message.use_edns() for the possible
+    values for use_edns and their meanings.
+    @type use_edns: int or bool or None
+    @param want_dnssec: Should the query indicate that DNSSEC is desired?
+    @type want_dnssec: bool
+    @rtype: dns.message.Message object"""
+
+    if isinstance(qname, basestring):
         qname = linkcheck.dns.name.from_text(qname)
     if isinstance(rdtype, str):
         rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
@@ -916,6 +994,8 @@ def make_query(qname, rdtype, rdclass = linkcheck.dns.rdataclass.IN):
     m.flags |= linkcheck.dns.flags.RD
     m.find_rrset(m.question, qname, rdclass, rdtype, create=True,
                  force_unique=True)
+    m.use_edns(use_edns)
+    m.want_dnssec(want_dnssec)
     return m
 
 

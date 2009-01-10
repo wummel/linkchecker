@@ -279,10 +279,10 @@ class Tokenizer(object):
                 elif c == '\n':
                     raise linkcheck.dns.exception.DNSSyntaxError, 'newline in quoted string'
             elif c == '\\':
-                #
+
                 # Treat \ followed by a delimiter as the
                 # delimiter, otherwise leave it alone.
-                #
+
                 c = self._get_char()
                 if c == '' or not c in self.delimiters:
                     self._unget_char(c)
@@ -419,3 +419,9 @@ class Tokenizer(object):
             raise linkcheck.dns.exception.DNSSyntaxError, \
                   'expected EOL or EOF, got %d "%s"' % (ttype, t)
         return t
+
+    def get_ttl(self):
+        (ttype, t) = self.get()
+        if ttype != IDENTIFIER:
+            raise linkcheck.dns.exception.SyntaxError, 'expecting an identifier'
+        return linkcheck.dns.ttl.from_text(t)

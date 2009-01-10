@@ -39,6 +39,10 @@ class NoNS(BadZone):
     """The zone has no NS RRset at its origin."""
     pass
 
+class UnknownOrigin(BadZone):
+    """The zone's origin is unknown."""
+    pass
+
 class Zone(object):
     """A DNS zone.
 
@@ -101,7 +105,7 @@ class Zone(object):
         return not self.__eq__(other)
 
     def _validate_name(self, name):
-        if isinstance(name, str):
+        if isinstance(name, basestring):
             name = linkcheck.dns.name.from_text(name, None)
         elif not isinstance(name, linkcheck.dns.name.Name):
             raise KeyError, \
@@ -127,22 +131,22 @@ class Zone(object):
         del self.nodes[key]
 
     def __iter__(self):
-        return self.nodes.keys()
+        return self.nodes.iterkeys()
 
     def iterkeys(self):
-        return self.nodes.keys()
+        return self.nodes.iterkeys()
 
     def keys(self):
         return self.nodes.keys()
 
     def itervalues(self):
-        return self.nodes.values()
+        return self.nodes.itervalues()
 
     def values(self):
         return self.nodes.values()
 
     def iteritems(self):
-        return self.nodes.items()
+        return self.nodes.iteritems()
 
     def items(self):
         return self.nodes.items()
@@ -419,7 +423,7 @@ class Zone(object):
             rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
         if isinstance(covers, str):
             covers = linkcheck.dns.rdatatype.from_text(covers)
-        for (name, node) in self.items():
+        for (name, node) in self.iteritems():
             for rds in node:
                 if rdtype == linkcheck.dns.rdatatype.ANY or \
                    (rds.rdtype == rdtype and rds.covers == covers):
@@ -442,7 +446,7 @@ class Zone(object):
             rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
         if isinstance(covers, str):
             covers = linkcheck.dns.rdatatype.from_text(covers)
-        for (name, node) in self.items():
+        for (name, node) in self.iteritems():
             for rds in node:
                 if rdtype == linkcheck.dns.rdatatype.ANY or \
                    (rds.rdtype == rdtype and rds.covers == covers):
@@ -467,16 +471,11 @@ class Zone(object):
         @type nl: string or None
         """
 
-        if sys.hexversion >= 0x02030000:
-            # allow Unicode filenames
-            str_type = basestring
-        else:
-            str_type = str
         if nl is None:
             opts = 'w'
         else:
             opts = 'wb'
-        if isinstance(f, str_type):
+        if isinstance(f, basestring):
             f = file(f, opts)
             want_close = True
         else:
@@ -486,7 +485,7 @@ class Zone(object):
                 names = self.keys()
                 names.sort()
             else:
-                names = self.keys()
+                names = self.iterkeys()
             for n in names:
                 l = self[n].to_text(n, origin=self.origin,
                                     relativize=relativize)
@@ -538,11 +537,14 @@ class _MasterReader(object):
     (None if no $INCLUDE is active).
     @ivar allow_include: is $INCLUDE allowed?
     @type allow_include: bool
+    @ivar check_origin: should sanity checks of the origin node be done?
+    The default is True.
+    @type check_origin: bool
     """
 
     def __init__(self, tok, origin, rdclass, relativize, zone_factory=Zone,
-                 allow_include=False):
-        if isinstance(origin, str):
+                 allow_include=False, check_origin=True):
+        if isinstance(origin, basestring):
             origin = linkcheck.dns.name.from_text(origin)
         self.tok = tok
         self.current_origin = origin
@@ -553,6 +555,7 @@ class _MasterReader(object):
         self.saved_state = []
         self.current_file = None
         self.allow_include = allow_include
+        self.check_origin = check_origin
 
     def _eat_line(self):
         while 1:
@@ -672,6 +675,8 @@ class _MasterReader(object):
                     elif u == '$ORIGIN':
                         self.current_origin = self.tok.get_name()
                         self.tok.get_eol()
+                        if self.zone.origin is None:
+                            self.zone.origin = self.current_origin
                     elif u == '$INCLUDE' and self.allow_include:
                         token = self.tok.get()
                         if token[0] != linkcheck.dns.tokenizer.QUOTED_STRING:
@@ -712,15 +717,19 @@ class _MasterReader(object):
                   "%s:%d: %s" % (filename, line_number, detail)
 
         # Now that we're done reading, do some basic checking of the zone.
-        self.zone.check_origin()
+        if self.check_origin:
+            self.zone.check_origin()
 
-def from_text(text, origin, rdclass = linkcheck.dns.rdataclass.IN, relativize = True,
-              zone_factory=Zone, filename=None, allow_include=False):
+def from_text(text, origin, rdclass = linkcheck.dns.rdataclass.IN,
+              relativize = True, zone_factory=Zone, filename=None,
+              allow_include=False, check_origin=True):
     """Build a zone object from a master file format string.
 
     @param text: the master file format input
     @type text: string.
-    @param origin: The origin of the zone.
+    @param origin: The origin of the zone; if not specified, the first
+    $ORIGIN statement in the master file will determine the origin of the
+    zone.
     @type origin: linkcheck.dns.name.Name object or string
     @param rdclass: The zone's rdata class; the default is class IN.
     @type rdclass: int
@@ -730,9 +739,12 @@ def from_text(text, origin, rdclass = linkcheck.dns.rdataclass.IN, relativize = 
     @type zone_factory: function returning a Zone
     @param filename: The filename to emit when describing where an error
     occurred; the default is '<string>'.
+    @type filename: string
     @param allow_include: is $INCLUDE allowed?
     @type allow_include: bool
-    @type filename: string
+    @param check_origin: should sanity checks of the origin node be done?
+    The default is True.
+    @type check_origin: bool
     @raises linkcheck.dns.zone.NoSOA: No SOA RR was found at the zone origin
     @raises linkcheck.dns.zone.NoNS: No NS RRset was found at the zone origin
     @rtype: linkcheck.dns.zone.Zone object
@@ -746,17 +758,21 @@ def from_text(text, origin, rdclass = linkcheck.dns.rdataclass.IN, relativize = 
         filename = '<string>'
     tok = linkcheck.dns.tokenizer.Tokenizer(text, filename)
     reader = _MasterReader(tok, origin, rdclass, relativize, zone_factory,
-                           allow_include=allow_include)
+                           allow_include=allow_include,
+                           check_origin=check_origin)
     reader.read()
     return reader.zone
 
 def from_file(f, origin, rdclass = linkcheck.dns.rdataclass.IN, relativize = True,
-              zone_factory=Zone, filename=None, allow_include=True):
+              zone_factory=Zone, filename=None,
+              allow_include=True, check_origin=True):
     """Read a master file and build a zone object.
 
     @param f: file or string.  If I{f} is a string, it is treated
     as the name of a file to open.
-    @param origin: The origin of the zone.
+    @param origin: The origin of the zone; if not specified, the first
+    $ORIGIN statement in the master file will determine the origin of the
+    zone.
     @type origin: linkcheck.dns.name.Name object or string
     @param rdclass: The zone's rdata class; the default is class IN.
     @type rdclass: int
@@ -770,22 +786,18 @@ def from_file(f, origin, rdclass = linkcheck.dns.rdataclass.IN, relativize = Tru
     @type filename: string
     @param allow_include: is $INCLUDE allowed?
     @type allow_include: bool
+    @param check_origin: should sanity checks of the origin node be done?
+    The default is True.
+    @type check_origin: bool
     @raises linkcheck.dns.zone.NoSOA: No SOA RR was found at the zone origin
     @raises linkcheck.dns.zone.NoNS: No NS RRset was found at the zone origin
     @rtype: linkcheck.dns.zone.Zone object
     """
 
-    if sys.hexversion >= 0x02030000:
-        # allow Unicode filenames; turn on universal newline support
-        str_type = basestring
-        opts = 'rU'
-    else:
-        str_type = str
-        opts = 'r'
-    if isinstance(f, str_type):
+    if isinstance(f, basestring):
         if filename is None:
             filename = f
-        f = file(f, opts)
+        f = file(f, 'rU')
         want_close = True
     else:
         if filename is None:
@@ -794,7 +806,7 @@ def from_file(f, origin, rdclass = linkcheck.dns.rdataclass.IN, relativize = Tru
 
     try:
         z = from_text(f, origin, rdclass, relativize, zone_factory,
-                      filename, allow_include)
+                      filename, allow_include, check_origin)
     finally:
         if want_close:
             f.close()
@@ -807,7 +819,7 @@ def from_xfr(xfr, zone_factory=Zone, relativize=True):
     @type xfr: generator of linkcheck.dns.message.Message objects
     @param relativize: should names be relativized?  The default is True.
     It is essential that the relativize setting matches the one specified
-    to dns.query.xfr()
+    to dns.query.xfr().
     @type relativize: bool
     @raises linkcheck.dns.zone.NoSOA: No SOA RR was found at the zone origin
     @raises linkcheck.dns.zone.NoNS: No NS RRset was found at the zone origin
@@ -817,7 +829,10 @@ def from_xfr(xfr, zone_factory=Zone, relativize=True):
     z = None
     for r in xfr:
         if z is None:
-            origin = r.answer[0].name
+            if relativize:
+                origin = r.origin
+            else:
+                origin = r.answer[0].name
             rdclass = r.answer[0].rdclass
             z = zone_factory(origin, rdclass, relativize=relativize)
         for rrset in r.answer:

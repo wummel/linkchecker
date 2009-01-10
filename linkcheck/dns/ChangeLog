@@ -23,5 +23,5 @@ sources:
   Changed: resolver.py
   Added: ifconfig.py
 
-* added search patters for domain names
+* added search patterns for domain names
   Changed: resolver.py

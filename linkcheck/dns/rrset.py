@@ -108,6 +108,13 @@ class RRset(linkcheck.dns.rdataset.Rdataset):
         return super(RRset, self).to_wire(self.name, file, compress, origin,
                                           self.deleting, **kw)
 
+    def to_rdataset(self):
+        """Convert an RRset into an Rdataset.
+
+        @rtype: dns.rdataset.Rdataset object
+        """
+        return linkcheck.dns.rdataset.from_rdata_list(self.ttl, list(self))
+
 
 def from_text_list(name, ttl, rdclass, rdtype, text_rdatas):
     """Create an RRset with the specified name, TTL, class, and type, and with
@@ -116,7 +123,7 @@ def from_text_list(name, ttl, rdclass, rdtype, text_rdatas):
     @rtype: linkcheck.dns.rrset.RRset object
     """
 
-    if isinstance(name, str):
+    if isinstance(name, basestring):
         name = linkcheck.dns.name.from_text(name, None)
     if isinstance(rdclass, str):
         rdclass = linkcheck.dns.rdataclass.from_text(rdclass)
@@ -145,7 +152,7 @@ def from_rdata_list(name, ttl, rdatas):
     @rtype: linkcheck.dns.rrset.RRset object
     """
 
-    if isinstance(name, str):
+    if isinstance(name, basestring):
         name = linkcheck.dns.name.from_text(name, None)
 
     if len(rdatas) == 0:

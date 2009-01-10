@@ -22,10 +22,11 @@
 @type empty: linkcheck.dns.name.Name object
 """
 
-import string
+from cStringIO import StringIO
 import struct
 import sys
 
+import encodings.idna
 import linkcheck.dns.exception
 
 NAMERELN_NONE = 0
@@ -321,7 +322,28 @@ class Name(object):
             l = self.labels[:-1]
         else:
             l = self.labels
-        s = string.join(map(_escapify, l), '.')
+        s = '.'.join(map(_escapify, l))
+        return s
+
+    def to_unicode(self, omit_final_dot = False):
+        """Convert name to Unicode text format.
+
+        IDN ACE lables are converted to Unicode.
+
+        @param omit_final_dot: If True, don't emit the final dot (denoting the
+        root label) for absolute names.  The default is False.
+        @rtype: string
+        """
+
+        if len(self.labels) == 0:
+            return u'@'
+        if len(self.labels) == 1 and self.labels[0] == '':
+            return u'.'
+        if omit_final_dot and self.is_absolute():
+            l = self.labels[:-1]
+        else:
+            l = self.labels
+        s = u'.'.join([encodings.idna.ToUnicode(_escapify(x)) for x in l])
         return s
 
     def to_digestable(self, origin=None):
@@ -352,8 +374,9 @@ class Name(object):
         """Convert name to wire format, possibly compressing it.
 
         @param file: the file where the compressed name is emitted (typically
-        a cStringIO file)
-        @type file: file
+        a cStringIO file)  If None, a string containing the wire name
+        will be returned.
+        @type file: file or None
         @param compress: The compression table.  If None (the default) names
         will not be compressed.
         @type compress: dict
@@ -364,6 +387,12 @@ class Name(object):
         absolute.  If self is a relative name, then an origin must be supplied;
         if it is missing, then this exception is raised
         """
+
+        if file is None:
+            file = StringIO()
+            want_return = True
+        else:
+            want_return = False
 
         if not self.is_absolute():
             if origin is None or not origin.is_absolute():
@@ -384,7 +413,7 @@ class Name(object):
                 value = 0xc000 + pos
                 s = struct.pack('!H', value)
                 file.write(s)
-                return
+                break
             else:
                 if not compress is None and len(n) > 1:
                     pos = file.tell()
@@ -394,6 +423,8 @@ class Name(object):
                 file.write(chr(l))
                 if l > 0:
                     file.write(label)
+        if want_return:
+            return file.getvalue()
 
     def __len__(self):
         """The length of the name (in labels).
@@ -498,6 +529,68 @@ class Name(object):
 root = Name([''])
 empty = Name([])
 
+def from_unicode(text, origin = root):
+    """Convert unicode text into a Name object.
+
+    Lables are encoded in IDN ACE form.
+
+    @rtype: dns.name.Name object
+    """
+
+    if not isinstance(text, unicode):
+        raise ValueError, "input to from_unicode() must be a unicode string"
+    if not (origin is None or isinstance(origin, Name)):
+        raise ValueError, "origin must be a Name or None"
+    labels = []
+    label = u''
+    escaping = False
+    edigits = 0
+    total = 0
+    if text == u'@':
+        text = u''
+    if text:
+        if text == u'.':
+            return Name([''])        # no Unicode "u" on this constant!
+        for c in text:
+            if escaping:
+                if edigits == 0:
+                    if c.isdigit():
+                        total = int(c)
+                        edigits += 1
+                    else:
+                        label += c
+                        escaping = False
+                else:
+                    if not c.isdigit():
+                        raise BadEscape
+                    total *= 10
+                    total += int(c)
+                    edigits += 1
+                    if edigits == 3:
+                        escaping = False
+                        label += chr(total)
+            elif c == u'.' or c == u'\u3002' or \
+                 c == u'\uff0e' or c == u'\uff61':
+                if len(label) == 0:
+                    raise EmptyLabel
+                labels.append(encodings.idna.ToASCII(label))
+                label = u''
+            elif c == u'\\':
+                escaping = True
+                edigits = 0
+                total = 0
+            else:
+                label += c
+        if escaping:
+            raise BadEscape
+        if len(label) > 0:
+            labels.append(encodings.idna.ToASCII(label))
+        else:
+            labels.append('')
+    if (len(labels) == 0 or labels[-1] != '') and not origin is None:
+        labels.extend(list(origin.labels))
+    return Name(labels)
+
 def from_text(text, origin = root):
     """Convert text into a Name object.
     @rtype: linkcheck.dns.name.Name object
@@ -505,6 +598,10 @@ def from_text(text, origin = root):
 
     if not isinstance(text, str):
         raise ValueError, "input to from_text() must be a byte string"
+        if isinstance(text, unicode):
+            return from_unicode(text, origin)
+        else:
+            raise ValueError, "input to from_text() must be a string"
     if not (origin is None or isinstance(origin, Name)):
         raise ValueError, "origin must be a Name or None"
     labels = []

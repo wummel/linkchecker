@@ -1,5 +1,4 @@
-# -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2006, 2007 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -14,32 +13,10 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-"""Class ANY (generic) rdata type classes."""
+import linkcheck.dns.rdtypes.txtbase
 
-__all__ = [
-    'AFSDB',
-    'CERT',
-    'CNAME',
-    'DNAME',
-    'DNSKEY',
-    'DS',
-    'GPOS',
-    'HINFO',
-    'ISDN',
-    'KEY',
-    'LOC',
-    'MX',
-    'NS',
-    'NSEC',
-    'NXT',
-    'PTR',
-    'RP',
-    'RRSIG',
-    'RT',
-    'SIG',
-    'SOA',
-    'SPF',
-    'SSHFP',
-    'TXT',
-    'X25',
-]
+class SPF(linkcheck.dns.rdtypes.txtbase.TXTBase):
+    """SPF record
+
+    @see: RFC 4408"""
+    pass

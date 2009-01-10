@@ -20,11 +20,12 @@ __all__ = [
     'A',
     'AAAA',
     'APL',
+    'DHCID',
     'KX',
-    'PX',
     'NAPTR',
     'NSAP',
     'NSAP_PTR',
+    'PX',
     'SRV',
     'WKS',
 ]

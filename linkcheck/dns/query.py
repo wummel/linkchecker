@@ -47,18 +47,25 @@ def _compute_expiration(timeout):
 
 
 def _wait_for(ir, iw, ix, expiration):
-    if expiration is None:
-        timeout = None
-    else:
-        timeout = expiration - time.time()
-        if timeout <= 0.0:
+    done = False
+    while not done:
+        if expiration is None:
+            timeout = None
+        else:
+            timeout = expiration - time.time()
+            if timeout <= 0.0:
+                raise linkcheck.dns.exception.Timeout
+        try:
+            if timeout is None:
+                (r, w, x) = select.select(ir, iw, ix)
+            else:
+                (r, w, x) = select.select(ir, iw, ix, timeout)
+        except select.error, e:
+            if e.args[0] != errno.EINTR:
+                raise e
+        done = True
+        if len(r) == 0 and len(w) == 0 and len(x) == 0:
             raise linkcheck.dns.exception.Timeout
-    if timeout is None:
-        (r, w, x) = select.select(ir, iw, ix)
-    else:
-        (r, w, x) = select.select(ir, iw, ix, timeout)
-    if len(r) == 0 and len(w) == 0 and len(x) == 0:
-        raise linkcheck.dns.exception.Timeout
 
 def _wait_for_readable(s, expiration):
     _wait_for([s], [], [s], expiration)
@@ -68,7 +75,8 @@ def _wait_for_writable(s, expiration):
     _wait_for([], [s], [s], expiration)
 
 
-def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
+def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
+        ignore_unexpected=False):
     """Return the response obtained after sending a query via UDP.
 
     @param q: the query
@@ -90,6 +98,9 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     @param source_port: The port from which to send the message.
     The default is 0.
     @type source_port: int
+    @param ignore_unexpected: If True, ignore responses from unexpected
+    sources.  The default is False.
+    @type ignore_unexpected: bool
     """
     wire = q.to_wire()
     if af is None:
@@ -113,12 +124,19 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
             s.bind(source)
         _wait_for_writable(s, expiration)
         s.sendto(wire, destination)
-        _wait_for_readable(s, expiration)
-        (wire, from_address) = s.recvfrom(65535)
+        while 1:
+            _wait_for_readable(s, expiration)
+            (wire, from_address) = s.recvfrom(65535)
+            if from_address == destination or \
+               (linkcheck.dns.inet.is_multicast(where) and \
+                from_address[1] == destination[1]):
+                break
+            if not ignore_unexpected:
+                raise UnexpectedSource, \
+                      'got a response from %s instead of %s' % (from_address,
+                                                                destination)
     finally:
         s.close()
-    if from_address != destination:
-        raise UnexpectedSource
     r = linkcheck.dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac)
     if not q.is_response(r):
         raise BadResponse
@@ -331,23 +349,23 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
         if soa_rrset is None:
             if not r.answer or r.answer[0].name != oname:
                 raise linkcheck.dns.exception.FormError, "first RRset is not an SOA"
-            answer_index = 1
             rrset = r.answer[0]
             if rrset.rdtype != linkcheck.dns.rdatatype.SOA:
                 raise linkcheck.dns.exception.FormError
+            answer_index = 1
             soa_rrset = rrset.copy()
             if rdtype == linkcheck.dns.rdatatype.IXFR:
                 if soa_rrset[0].serial == serial:
-                    #
+
                     # We're already up-to-date.
-                    #
+
                     done = True
                 else:
                     expecting_SOA = True
-        #
+
         # Process SOAs in the answer section (other than the initial
         # SOA in the first message).
-        #
+
         for rrset in r.answer[answer_index:]:
             if done:
                 raise linkcheck.dns.exception.FormError, "answers after final SOA"
@@ -362,11 +380,11 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
                 if rrset == soa_rrset and not delete_mode:
                     done = True
             elif expecting_SOA:
-                #
+
                 # We made an IXFR request and are expecting another
                 # SOA RR, but saw something else, so this must be an
                 # AXFR response.
-                #
+
                 rdtype = linkcheck.dns.rdatatype.AXFR
                 expecting_SOA = False
         if done and q.keyring and not r.had_tsig:

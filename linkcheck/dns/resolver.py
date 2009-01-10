@@ -343,7 +343,13 @@ class Resolver(object):
         a string, it is used as the name of the file to open; otherwise it
         is treated as the file itself."""
         if isinstance(f, basestring):
-            f = open(f, 'r')
+            try:
+                f = open(f, 'r')
+            except IOError:
+                # /etc/resolv.conf doesn't exist, can't be read, etc.
+                # We'll just use the default resolver configuration.
+                self.nameservers = ['127.0.0.1']
+                return
             want_close = True
         else:
             want_close = False
@@ -405,10 +411,27 @@ class Resolver(object):
         for h in addrinfo[2]:
             self.localhosts.add(h.lower())
 
+    def _determine_split_char(self, entry):
+        #
+        # The windows registry irritatingly changes the list element
+        # delimiter in between ' ' and ',' (and vice-versa) in various
+        # versions of windows.
+        #
+        if entry.find(' ') >= 0:
+            split_char = ' '
+        elif entry.find(',') >= 0:
+            split_char = ','
+        else:
+            # probably a singleton; treat as a space-separated list.
+            split_char = ' '
+        return split_char
+
     def _config_win32_nameservers (self, nameservers, split_char=','):
         """Configure a NameServer registry entry."""
         # we call str() on nameservers to convert it from unicode to ascii
-        ns_list = str(nameservers).split(split_char)
+        nameservers = str(nameservers)
+        split_char = self._determine_split_char(nameservers)
+        ns_list = nameservers.split(split_char)
         for ns in ns_list:
             if not ns in self.nameservers:
                 self.nameservers.append(ns)
@@ -421,7 +444,9 @@ class Resolver(object):
     def _config_win32_search (self, search):
         """Configure a Search registry entry."""
         # we call str() on search to convert it from unicode to ascii
-        search_list = str(search).split(',')
+        search = str(search)
+        split_char = self._determine_split_char(search)
+        search_list = search.split(split_char)
         for s in search_list:
             if not s in self.search:
                 self.search.add(linkcheck.dns.name.from_text(s))
@@ -512,16 +537,10 @@ class Resolver(object):
                             guid = _winreg.EnumKey(interfaces, i)
                             i += 1
                             key = _winreg.OpenKey(interfaces, guid)
+                            if not self._win32_is_nic_enabled(lm, guid, key):
+                                continue
                             try:
-                                # enabled interfaces seem to have a non-empty
-                                # NTEContextList
-                                try:
-                                    (nte, ttype) = _winreg.QueryValueEx(key,
-                                                             'NTEContextList')
-                                except WindowsError:
-                                    nte = None
-                                if nte:
-                                    self._config_win32_fromkey(key)
+                                self._config_win32_fromkey(key)
                             finally:
                                 key.Close()
                         except EnvironmentError:
@@ -531,6 +550,61 @@ class Resolver(object):
         finally:
             lm.Close()
 
+    def _win32_is_nic_enabled(self, lm, guid, interface_key):
+         # Look in the Windows Registry to determine whether the network
+         # interface corresponding to the given guid is enabled.
+         #
+         # (Code contributed by Paul Marks, thanks!)
+         #
+         try:
+             # This hard-coded location seems to be consistent, at least
+             # from Windows 2000 through Vista.
+             connection_key = _winreg.OpenKey(
+                 lm,
+                 r'SYSTEM\CurrentControlSet\Control\Network'
+                 r'\{4D36E972-E325-11CE-BFC1-08002BE10318}'
+                 r'\%s\Connection' % guid)
+
+             try:
+                 # The PnpInstanceID points to a key inside Enum
+                 (pnp_id, ttype) = _winreg.QueryValueEx(
+                     connection_key, 'PnpInstanceID')
+
+                 if ttype != _winreg.REG_SZ:
+                     raise ValueError
+
+                 device_key = _winreg.OpenKey(
+                     lm, r'SYSTEM\CurrentControlSet\Enum\%s' % pnp_id)
+
+                 try:
+                     # Get ConfigFlags for this device
+                     (flags, ttype) = _winreg.QueryValueEx(
+                         device_key, 'ConfigFlags')
+
+                     if ttype != _winreg.REG_DWORD:
+                         raise ValueError
+
+                     # Based on experimentation, bit 0x1 indicates that the
+                     # device is disabled.
+                     return not (flags & 0x1)
+
+                 finally:
+                     device_key.Close()
+             finally:
+                 connection_key.Close()
+         except (EnvironmentError, ValueError):
+             # Pre-vista, enabled interfaces seem to have a non-empty
+             # NTEContextList; this was how dnspython detected enabled
+             # nics before the code above was contributed.  We've retained
+             # the old method since we don't know if the code above works
+             # on Windows 95/98/ME.
+             try:
+                 (nte, ttype) = _winreg.QueryValueEx(interface_key,
+                                                     'NTEContextList')
+                 return nte is not None
+             except WindowsError:
+                 return False
+
     def _compute_timeout(self, start):
         now = time.time()
         if now < start:
@@ -538,7 +612,7 @@ class Resolver(object):
                 # Time going backwards is bad.  Just give up.
                 raise Timeout
             else:
-                # Time went backwards, but only a little. This can
+                # Time went backwards, but only a little.  This can
                 # happen, e.g. under vmware with older linux kernels.
                 # Pretend it didn't happen.
                 now = start
@@ -571,11 +645,7 @@ class Resolver(object):
         @raises NoNameservers: no non-broken nameservers are available to
         answer the question."""
 
-        if isinstance(qname, str):
-            qname = linkcheck.dns.name.from_text(qname, None)
-        elif isinstance(qname, unicode):
-            # Unicode domain names: http://www.faqs.org/rfcs/rfc3490.html
-            qname = encodings.idna.ToASCII(qname)
+        if isinstance(qname, basestring):
             qname = linkcheck.dns.name.from_text(qname, None)
         if isinstance(rdtype, str):
             rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
