@@ -178,9 +178,15 @@ class MailtoUrl (urlbase.UrlBase):
                        rdata.exchange.to_text(omit_final_dot=True))
                        for rdata in answers if isinstance(rdata, MXBase)]
             if not mxdata:
-                self.set_result(_("Got invalid DNS answer %(answer)s for %(domain)s.") %
-                                 {'answer': answers, 'domain': domain}, valid=False,
-                                 overwrite=True)
+                if hasattr(sys, 'frozen'):
+                    # under py2exe the DNS code is not working
+                    self.add_warning(_("Invalid DNS answer due to py2exe" \
+                        " environment ignored."), tag=WARN_MAIL_NO_MX_HOST)
+                    self.set_result(_("Ok"), valid=True, overwrite=False)
+                else:
+                    self.set_result(_("Got invalid DNS answer %(answer)s for %(domain)s.") %
+                        {'answer': answers, 'domain': domain}, valid=False,
+                        overwrite=True)
                 return
             # sort according to preference (lower preference means this
             # host should be preferred)
