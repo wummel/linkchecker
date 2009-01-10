@@ -22,6 +22,7 @@ import cgi
 import urllib
 import smtplib
 import email.Utils
+import sys
 
 from . import urlbase
 from .. import log, LOG_CHECK, strformat, LinkCheckerError, url as urlutil
