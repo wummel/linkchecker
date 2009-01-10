@@ -173,9 +173,15 @@ class MailtoUrl (urlbase.UrlBase):
             mxdata = [(0, rdata.to_text(omit_final_dot=True))
                       for rdata in answers]
         else:
+            from linkcheck.dns.rdtypes.mxbase import MXBase
             mxdata = [(rdata.preference,
                        rdata.exchange.to_text(omit_final_dot=True))
-                       for rdata in answers]
+                       for rdata in answers if isinstance(rdata, MXBase)]
+            if not mxdata:
+                self.set_result(_("Got invalid DNS answer %(answer)s for %(domain)s.") %
+                                 {'answer': answers, 'domain': domain}, valid=False,
+                                 overwrite=True)
+                return
             # sort according to preference (lower preference means this
             # host should be preferred)
             mxdata.sort()
