@@ -62,7 +62,7 @@ def ftpparse (line):
             info['trycwd'] = info['tryretr'] = True
         parts = line.split()
         if len(parts) < 7:
-            return N0ne
+            return None
         del parts[0] # skip permissions
         if parts[0] != 'folder':
             del parts[0] # skip nlink
