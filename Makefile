@@ -25,7 +25,7 @@ clean:
 	$(MAKE) -C doc clean
 	$(MAKE) -C doc/en clean
 	$(MAKE) -C linkcheck/HtmlParser clean
-	rm -f linkcheck/ftpparse/_ftpparse.so
+	rm -f linkcheck/network/_network.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
 .PHONY: distclean
@@ -57,7 +57,6 @@ localbuild: MANIFEST
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
 	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
-	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/ftpparse/_ftpparse.so linkcheck/ftpparse
 	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/network/_network.so linkcheck/network
 
 .PHONY: deb_orig

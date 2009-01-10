@@ -150,20 +150,17 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         ending slash."""
         files = []
         def add_entry (line):
-            """
-            Parse list line and add the entry it points to to the file list.
-            """
+            """Parse list line and add the entry it points to to the file
+            list."""
             log.debug(LOG_CHECK, "Directory entry %r", line)
-            try:
-                from ..ftpparse import _ftpparse
-                fpo = _ftpparse.parse(line)
-                name = fpo.name
-                if fpo.trycwd:
+            from ..ftpparse import ftpparse
+            fpo = ftpparse(line)
+            if fpo is not None and fpo["name"]:
+                name = fpo["name"]
+                if fpo["trycwd"]:
                     name += "/"
-                if fpo.trycwd or fpo.tryretr:
+                if fpo["trycwd"] or fpo["tryretr"]:
                     files.append(name)
-            except (ValueError, AttributeError), msg:
-                log.debug(LOG_CHECK, "%s (%s)", str(msg), line)
         self.url_connection.dir(add_entry)
         return files
 

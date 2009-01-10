@@ -70,7 +70,7 @@ except ImportError:
 py2exe_options = dict(
     packages=["encodings"],
     excludes=['doctest', 'unittest', 'optcomplete'],
-    includes=['linkcheck.ftpparse._ftpparse', 'linkcheck.HtmlParser.htmlsax', 'linkcheck.network._network'],
+    includes=['linkcheck.HtmlParser.htmlsax', 'linkcheck.network._network'],
     compressed=1,
     optimize=2,
 )
@@ -556,7 +556,7 @@ o a (Fast)CGI web interface (requires HTTP server)
         'linkcheck.director', 'linkcheck.configuration', 'linkcheck.cache',
         'linkcheck.htmlutil', 'linkcheck.dns', 'linkcheck.dns.rdtypes',
         'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
-        'linkcheck.HtmlParser', 'linkcheck.ftpparse', 'linkcheck.network',
+        'linkcheck.HtmlParser', 'linkcheck.network',
     ],
     ext_modules = [
         Extension('linkcheck.HtmlParser.htmlsax',
@@ -578,17 +578,6 @@ o a (Fast)CGI web interface (requires HTTP server)
             libraries = libraries,
             define_macros = define_macros,
             include_dirs = include_dirs,
-        ),
-        Extension("linkcheck.ftpparse._ftpparse",
-            sources = [
-                "linkcheck/ftpparse/_ftpparse.c",
-                "linkcheck/ftpparse/ftpparse.c",
-            ],
-            extra_compile_args = extra_compile_args,
-            library_dirs = library_dirs,
-            libraries = libraries,
-            define_macros = define_macros,
-            include_dirs = include_dirs + [normpath("linkcheck/ftpparse")],
         ),
     ],
     scripts = scripts,
