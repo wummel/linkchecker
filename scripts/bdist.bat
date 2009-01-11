@@ -12,7 +12,7 @@ cd ..\..
 rd /S /Q build
 rd /S /Q dist
 %PYTHON% setup.py sdist --manifest-only
-REM %PYTHON% setup.py build -c mingw32 bdist_wininst -b hase.bmp --install-script install-linkchecker.py
+REM %PYTHON% setup.py build -c mingw32 bdist_wininst --install-script install-linkchecker.py
 %PYTHON% setup.py build -c mingw32 py2exe
 : start resource editor for .exe icon
 REM "%PROGRAMFILES%\XN Resource Editor\XNResourceEditor.exe"
