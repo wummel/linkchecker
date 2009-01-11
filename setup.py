@@ -69,7 +69,7 @@ except ImportError:
 
 py2exe_options = dict(
     packages=["encodings"],
-    excludes=['doctest', 'unittest', 'optcomplete'],
+    excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter'],
     includes=['linkcheck.HtmlParser.htmlsax', 'linkcheck.network._network'],
     compressed=1,
     optimize=2,
