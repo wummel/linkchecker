@@ -174,6 +174,7 @@ class MyDistribution (distutils.core.Distribution, object):
     def __init__ (self, attrs):
         super(MyDistribution, self).__init__(attrs)
         self.console = ['linkchecker']
+        self.windows = ['linkchecker-gui']
 
     def run_commands (self):
         """Generate config file and run commands."""
@@ -452,7 +453,7 @@ library_dirs = []
 # libraries
 libraries = []
 # scripts
-scripts = ['linkchecker']
+scripts = ['linkchecker', 'linkchecker-gui']
 if win_compiling:
     scripts.append('install-linkchecker.py')
 
@@ -489,9 +490,9 @@ data_files = [
       ]
 
 if os.name == 'posix':
-    data_files.append(('share/man/man1', ['doc/en/linkchecker.1']))
+    data_files.append(('share/man/man1', ['doc/en/linkchecker.1', 'doc/en/linkchecker-gui.1']))
     data_files.append(('share/man/man5', ['doc/en/linkcheckerrc.5']))
-    data_files.append(('share/man/de/man1', ['doc/de/linkchecker.1']))
+    data_files.append(('share/man/de/man1', ['doc/de/linkchecker.1', 'doc/de/linkchecker-gui.1']))
     data_files.append(('share/man/de/man5', ['doc/de/linkcheckerrc.5']))
     data_files.append(('share/linkchecker/examples',
               ['config/linkchecker-completion',
@@ -515,7 +516,7 @@ elif win_compiling:
 
 setup (
     name = "linkchecker",
-    version = "4.10",
+    version = "5.0",
     description = "check websites and HTML documents for broken links",
     keywords = "link,url,checking,verification",
     author = myname,
@@ -556,7 +557,7 @@ o a (Fast)CGI web interface (requires HTTP server)
         'linkcheck.director', 'linkcheck.configuration', 'linkcheck.cache',
         'linkcheck.htmlutil', 'linkcheck.dns', 'linkcheck.dns.rdtypes',
         'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
-        'linkcheck.HtmlParser', 'linkcheck.network',
+        'linkcheck.HtmlParser', 'linkcheck.network', 'linkcheck.gui',
     ],
     ext_modules = [
         Extension('linkcheck.HtmlParser.htmlsax',

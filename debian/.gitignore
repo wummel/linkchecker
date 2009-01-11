@@ -2,4 +2,6 @@
 /*.debhelper
 /*.debhelper.log
 /linkchecker
+/linkchecker-gui
+/tmp
 /*.substvars

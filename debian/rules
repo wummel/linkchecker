@@ -9,12 +9,11 @@ common-install-arch::
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
 
-PACKAGE=linkchecker
-ROOT=$(CURDIR)/debian/$(PACKAGE)
-DOCDIR=$(ROOT)/usr/share/doc/$(PACKAGE)
-CGIDIR=$(ROOT)/usr/lib/cgi-bin/lconline
-HTMLDIR=$(ROOT)/var/www/lconline
-SHARE=$(ROOT)/usr/share/$(PACKAGE)
+ROOT=$(CURDIR)/debian/linkchecker
+DOCDIR=$(ROOT)/usr/share/doc/linkchecker
+SHARE=$(ROOT)/usr/share/linkchecker
+HTMLDIR=$(SHARE)/lconline
+CGIDIR=$(ROOT)/usr/lib/cgi-bin
 LOCALE=$(ROOT)/usr/share/locale
 ETC=$(ROOT)/etc
 
@@ -22,11 +21,9 @@ common-configure-arch::
 	python setup.py sdist --manifest-only
 
 common-install-arch::
-# remove example files, we install them with dh_installexamples
-	rm -r $(ROOT)/usr/share/linkchecker/examples
 # install system wide configuration files in etc
-	mv $(SHARE)/linkcheckerrc $(ETC)/$(PACKAGE)/
-	mv $(SHARE)/logging.conf $(ETC)/$(PACKAGE)/
+	install -m 644 config/linkcheckerrc $(ETC)/linkchecker/
+	install -m 644 config/logging.conf $(ETC)/linkchecker/
 # install CGI files
 	install -m 644 cgi-bin/lconline/*.html $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.de $(HTMLDIR)
@@ -34,9 +31,9 @@ common-install-arch::
 	install -m 644 cgi-bin/lconline/*.js $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.css $(HTMLDIR)
 	install -m 755 cgi-bin/lc.cgi $(CGIDIR)
-	install -m 755 cgi-bin/lc.fcgi $(CGIDIR)
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
 # install .mo files
 	install -m 644 build/share/locale/de/LC_MESSAGES/linkchecker.mo $(LOCALE)/de/LC_MESSAGES/
-
+# apache configuration
+	install -m 644 debian/linkchecker.apache.conf $(ETC)/apache2/conf.d/linkchecker

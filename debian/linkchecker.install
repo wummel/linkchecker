@@ -1,0 +1,13 @@
+usr/bin/linkchecker
+usr/share/man
+usr/lib/python2.5/site-packages/_linkchecker_configdata.py
+usr/lib/python2.5/site-packages/linkcheck/*.py
+usr/lib/python2.5/site-packages/linkcheck/HtmlParser
+usr/lib/python2.5/site-packages/linkcheck/cache
+usr/lib/python2.5/site-packages/linkcheck/checker
+usr/lib/python2.5/site-packages/linkcheck/configuration
+usr/lib/python2.5/site-packages/linkcheck/director
+usr/lib/python2.5/site-packages/linkcheck/dns
+usr/lib/python2.5/site-packages/linkcheck/htmlutil
+usr/lib/python2.5/site-packages/linkcheck/logger
+usr/lib/python2.5/site-packages/linkcheck/network

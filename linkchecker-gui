@@ -20,7 +20,7 @@ Check HTML pages for broken links. This is the GUI client.
 """
 import sys
 from PyQt4.QtGui import QApplication
-from linkchecker_main import LinkCheckerMain
+from linkcheck.gui import LinkCheckerMain
 
 
 def main (argv=None):

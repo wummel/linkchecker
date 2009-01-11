@@ -11,10 +11,10 @@ Homepage: http://linkchecker.sourceforge.net/
 
 Package: linkchecker
 Architecture: any
-Depends: ${python:Depends}, ${shlibs:Depends}
+Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
-Suggests: apache | httpd, python-optcomplete (>= 1.2-5),
+Suggests: apache2 | httpd, python-optcomplete (>= 1.2-5),
  python-geoip (>= 1.2.1-2), clamav-daemon, python-utidylib,
  python-cssutils, python-pysqlite2
 Description: check websites and HTML documents for broken links
@@ -35,4 +35,22 @@ Description: check websites and HTML documents for broken links
   o i18n support
   o HTML and CSS syntax check
   o Antivirus check
+ Users preferring a graphical interface can install the linkchecker-gui
+ package.
 
+Package: linkchecker-gui
+Architecture: all
+XB-Python-Version: ${python:Versions}
+Depends: linkchecker, python-qt4, ${python:Depends}, ${misc:Depends}
+Description: check websites and HTML documents for broken links (GUI client)
+ Provides a graphical interface "linkchecker-gui" to check links of websites
+ and HTML documents.
+ Features:
+  o recursive checking
+  o multithreaded
+  o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file
+    links support
+  o proxy support
+  o username/password authorization for HTTP, FTP and Telnet
+  o robots.txt exclusion protocol support
+  o i18n support

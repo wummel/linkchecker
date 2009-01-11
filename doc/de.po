@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2008-11-30 20:31+0100\n"
-"PO-Revision-Date: 2008-11-30 20:33+0100\n"
+"POT-Creation-Date: 2009-01-11 01:15+0100\n"
+"PO-Revision-Date: 2009-01-11 01:17+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,6 +41,7 @@ msgstr "LinkChecker auf der Kommandozeile"
 # type: SH
 #: en/linkchecker.1:2
 #: en/linkcheckerrc.5:2
+#: en/linkchecker-gui.1:2
 #, no-wrap
 msgid "NAME"
 msgstr "NAME"
@@ -52,6 +53,7 @@ msgstr "linkchecker - prüfe HTML Dokumente und Webseiten auf ungültige Verknü
 
 # type: SH
 #: en/linkchecker.1:5
+#: en/linkchecker-gui.1:5
 #, no-wrap
 msgid "SYNOPSIS"
 msgstr "SYNTAX"
@@ -64,6 +66,7 @@ msgstr "B<linkchecker> [I<Optionen>] [I<Datei-oder-URL>]..."
 # type: SH
 #: en/linkchecker.1:8
 #: en/linkcheckerrc.5:5
+#: en/linkchecker-gui.1:8
 #, no-wrap
 msgid "DESCRIPTION"
 msgstr "BESCHREIBUNG"
@@ -1078,6 +1081,7 @@ msgstr "B<http://www.amk.ca/python/howto/regex/> - Dokumentation zu regulären A
 # type: SH
 #: en/linkchecker.1:407
 #: en/linkcheckerrc.5:417
+#: en/linkchecker-gui.1:11
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "SIEHE AUCH"
@@ -1090,6 +1094,7 @@ msgstr "B<linkcheckerrc>(5)"
 # type: SH
 #: en/linkchecker.1:410
 #: en/linkcheckerrc.5:420
+#: en/linkchecker-gui.1:14
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTHOR"
@@ -1097,12 +1102,14 @@ msgstr "AUTHOR"
 # type: Plain text
 #: en/linkchecker.1:412
 #: en/linkcheckerrc.5:422
+#: en/linkchecker-gui.1:16
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 
 # type: SH
 #: en/linkchecker.1:413
 #: en/linkcheckerrc.5:423
+#: en/linkchecker-gui.1:17
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
@@ -2055,4 +2062,53 @@ msgstr ""
 #: en/linkcheckerrc.5:419
 msgid "linkchecker(1)"
 msgstr "BEISPIEL"
+
+# type: TH
+#: en/linkchecker-gui.1:1
+#, no-wrap
+msgid "LINKCHECKER-GUI"
+msgstr "LINKCHECKER-GUI"
+
+# type: TH
+#: en/linkchecker-gui.1:1
+#, no-wrap
+msgid "2009-01-10"
+msgstr "2009-01-10"
+
+# type: TH
+#: en/linkchecker-gui.1:1
+#, no-wrap
+msgid "LinkChecker GUI"
+msgstr "LinkChecker GUI"
+
+# type: TH
+#: en/linkchecker-gui.1:1
+#, no-wrap
+msgid "LinkChecker GUI client"
+msgstr "LinkChecker GUI Programm"
+
+# type: Plain text
+#: en/linkchecker-gui.1:4
+msgid "linkchecker-gui - GUI client to check links of websites and HTML documents"
+msgstr "linkchecker-gui - GUI-Programm zum Prüfen von Verknüpfungen von Webseiten und HTML Dokumenten"
+
+# type: TH
+#: en/linkchecker-gui.1:7
+msgid "B<linkchecker-gui>"
+msgstr "B<linkchecker-gui>"
+
+# type: Plain text
+#: en/linkchecker-gui.1:10
+msgid "A graphical interface to check links of websites and HTML documents."
+msgstr "Eine graphische Benutzeroberfläche, um Verknüpfungen von Webseiten und HTML Dokumenten zu prüfen."
+
+# type: TH
+#: en/linkchecker-gui.1:13
+msgid "B<linkchecker>(1)"
+msgstr "B<linkchecker>(1)"
+
+# type: Plain text
+#: en/linkchecker-gui.1:18
+msgid "Copyright \\(co 2009 Bastian Kleineidam"
+msgstr "Copyright \\(co 2009 Bastian Kleineidam"
 

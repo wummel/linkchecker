@@ -13,8 +13,5 @@ linkchecker_ui_%.py: ui/%.ui
 linkchecker_rc.py: rc/linkchecker.qrc
 	pyrcc4 -o $@ $<
 
-run:
-	env PYTHONPATH=.:.. python linkchecker-gui
-
 clean:
 	rm -f *.pyc *.pyo

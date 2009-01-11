@@ -17,12 +17,11 @@
 
 import os
 from PyQt4 import QtCore, QtGui
-from linkchecker_ui_main import Ui_MainWindow
-from linkchecker_ui_options import Ui_Options
-import linkcheck
-from linkcheck import configuration, checker, director, add_intern_pattern, \
+from .linkchecker_ui_main import Ui_MainWindow
+from .linkchecker_ui_options import Ui_Options
+from .. import configuration, checker, director, add_intern_pattern, \
     strformat
-from linkcheck.containers import enum
+from ..containers import enum
 
 
 Status = enum('idle', 'checking', 'stopping')

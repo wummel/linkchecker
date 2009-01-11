@@ -30,7 +30,9 @@ include linkcheck/HtmlParser/htmllex.l
 include linkcheck/HtmlParser/htmlparse.y
 include linkcheck/HtmlParser/*.h
 include linkcheck/HtmlParser/fixincludes.awk
-include linkcheck/ftpparse/*.h
+include linkcheck/gui/Makefile
+recursive-include linkcheck/gui/rc Makefile *.png *.qrc
+recursive-include linkcheck/gui/ui *.ui
 include po/*.po po/*.pot po/Makefile
 include doc/*.py doc/*.example
 include doc/po4a.conf doc/*.po doc/*.pot
