@@ -194,6 +194,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         super(LinkCheckerOptions, self).__init__(parent)
         self.setupUi(self)
         self.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.reset)
+        self.connect(self.closeButton, QtCore.SIGNAL("clicked()"), self.close)
 
     def reset (self):
         """Reset options to default values."""

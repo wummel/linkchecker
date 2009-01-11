@@ -15,8 +15,8 @@
   <widget class="QPushButton" name="resetButton" >
    <property name="geometry" >
     <rect>
-     <x>9</x>
-     <y>219</y>
+     <x>200</x>
+     <y>220</y>
      <width>91</width>
      <height>27</height>
     </rect>
@@ -195,6 +195,19 @@
      <string/>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="closeButton" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>75</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Close</string>
+   </property>
   </widget>
  </widget>
  <resources/>

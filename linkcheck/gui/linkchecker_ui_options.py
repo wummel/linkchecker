@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Wed Jan  7 17:08:52 2009
+# Created: Sun Jan 11 11:30:58 2009
 #      by: PyQt4 UI code generator 4.4.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,7 +14,7 @@ class Ui_Options(object):
         Options.setObjectName("Options")
         Options.resize(306,255)
         self.resetButton = QtGui.QPushButton(Options)
-        self.resetButton.setGeometry(QtCore.QRect(9,219,91,27))
+        self.resetButton.setGeometry(QtCore.QRect(200,220,91,27))
         self.resetButton.setObjectName("resetButton")
         self.frame = QtGui.QFrame(Options)
         self.frame.setGeometry(QtCore.QRect(9,9,288,201))
@@ -55,6 +55,9 @@ class Ui_Options(object):
         self.verbose.setEnabled(True)
         self.verbose.setGeometry(QtCore.QRect(130,60,31,22))
         self.verbose.setObjectName("verbose")
+        self.closeButton = QtGui.QPushButton(Options)
+        self.closeButton.setGeometry(QtCore.QRect(10,220,75,27))
+        self.closeButton.setObjectName("closeButton")
 
         self.retranslateUi(Options)
         QtCore.QMetaObject.connectSlotsByName(Options)
@@ -76,4 +79,5 @@ class Ui_Options(object):
         self.label_5.setText(QtGui.QApplication.translate("Options", "Number of threads", None, QtGui.QApplication.UnicodeUTF8))
         self.threads.setToolTip(QtGui.QApplication.translate("Options", "Generate no more than the given number of threads.", None, QtGui.QApplication.UnicodeUTF8))
         self.verbose.setToolTip(QtGui.QApplication.translate("Options", "Log all checked URLs once. Default is to log only errors and warnings.", None, QtGui.QApplication.UnicodeUTF8))
+        self.closeButton.setText(QtGui.QApplication.translate("Options", "Close", None, QtGui.QApplication.UnicodeUTF8))
 
