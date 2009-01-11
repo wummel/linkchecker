@@ -765,9 +765,14 @@ class HTTPConnection:
         # If msg and message_body are sent in a single send() call,
         # it will avoid performance problems caused by the interaction
         # between delayed ack and the Nagle algorithim.
-        if message_body is not None:
+        if isinstance(message_body, str):
             msg += message_body
+            message_body = None
         self.send(msg)
+        if message_body is not None:
+            #message_body was not a string (i.e. it is a file) and
+            #we must run the risk of Nagle
+            self.send(message_body)
 
     def putrequest(self, method, url, skip_host=0, skip_accept_encoding=0):
         """Send a request to the server.
@@ -949,12 +954,7 @@ class HTTPConnection:
             self._set_content_length(body)
         for hdr, value in headers.iteritems():
             self.putheader(hdr, value)
-        if isinstance(body, str):
-            self.endheaders(body)
-        else:
-            self.endheaders()
-            if body:  # when body is a file rather than a string
-                self.send(body)
+        self.endheaders(body)
 
     def getresponse(self):
         "Get the response from the server."
