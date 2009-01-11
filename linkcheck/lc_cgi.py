@@ -53,22 +53,6 @@ def startoutput (out=sys.stdout):
               "\r\n")
 
 
-def checkaccess (out=sys.stdout, allowed_clients=None, allowed_servers=None,
-    env=os.environ):
-    """See if remote and server address is allowed to access the CGI
-    interface."""
-    if allowed_clients is None:
-        allowed_clients = []
-    if allowed_servers is None:
-        allowed_servers = []
-    if env.get('REMOTE_ADDR') in allowed_clients and \
-       env.get('SERVER_ADDR') in allowed_servers:
-        return True
-    logit({}, env)
-    print_error(out, u"Access denied")
-    return False
-
-
 def checklink (out=sys.stdout, form=None, env=os.environ):
     """Main cgi function, check the given links and print out the result."""
     if form is None:
