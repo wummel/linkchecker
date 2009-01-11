@@ -1,3 +1,11 @@
+linkchecker (5.0-1) unstable; urgency=low
+
+  * The web interface files moved due to FHS regulations.
+    You have to reconfigure the web interface at
+    /etc/apache2/conf.d/linkchecker
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 11 Jan 2009 01:36:33 +0100
+
 linkchecker (4.5-1) unstable; urgency=low
 
   * For upgrading your configuration and scripts from older linkchecker
