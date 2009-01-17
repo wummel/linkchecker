@@ -68,17 +68,11 @@ AppName = "LinkChecker"
 
 py2exe_options = dict(
     packages=["encodings"],
-    excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter'],
+    excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter', 'pydoc'],
     includes=["sip"],
     compressed=1,
     optimize=2,
 )
-# cross compile config
-cc = os.environ.get("CC")
-# directory with cross compiled (for win32) python
-win_python_dir = "/home/calvin/src/python23-maint-cvs/dist/src/"
-# if we are compiling for or under windows
-win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
 
 def normpath (path):
     """Norm a path name to platform specific notation."""
@@ -86,10 +80,9 @@ def normpath (path):
 
 
 def cnormpath (path):
-    """Norm a path name to platform specific notation, but honoring
-    the win_compiling flag."""
+    """Norm a path name to platform specific notation."""
     path = normpath(path)
-    if win_compiling:
+    if os.name == 'nt':
         # replace slashes with backslashes
         path = path.replace("/", "\\")
     if not os.path.isabs(path):
@@ -350,15 +343,6 @@ if os.name == 'nt':
     define_macros.append(('YY_NO_UNISTD_H', None))
 else:
     extra_compile_args.append("-pedantic")
-    if win_compiling:
-        # we are cross compiling with mingw
-        # add directory for pyconfig.h
-        include_dirs.append(win_python_dir)
-        # add directory for Python.h
-        include_dirs.append(os.path.join(win_python_dir, "Include"))
-        # for finding libpythonX.Y.a
-        library_dirs.append(win_python_dir)
-        libraries.append("python%s" % get_python_version())
 
 myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
@@ -387,7 +371,7 @@ if os.name == 'posix':
                'doc/examples/check_blacklist.sh',
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh',]))
-elif win_compiling:
+elif os.name == 'nt':
     data_files.append(('share/linkchecker/doc',
              ['doc/en/documentation.html',
               'doc/en/index.html',
