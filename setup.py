@@ -80,8 +80,6 @@ cc = os.environ.get("CC")
 win_python_dir = "/home/calvin/src/python23-maint-cvs/dist/src/"
 # if we are compiling for or under windows
 win_compiling = (os.name == 'nt') or (cc is not None and "mingw32" in cc)
-# releases supporting our special .bat files
-win_bat_releases = ['NT', 'XP', '2000', '2003Server']
 
 def normpath (path):
     """Norm a path name to platform specific notation."""
@@ -454,8 +452,6 @@ library_dirs = []
 libraries = []
 # scripts
 scripts = ['linkchecker', 'linkchecker-gui']
-if win_compiling:
-    scripts.append('install-linkchecker.py')
 
 if os.name == 'nt':
     # windows does not have unistd.h
