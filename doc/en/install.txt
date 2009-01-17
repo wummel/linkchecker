@@ -51,34 +51,7 @@ Requirements for Unix/Linux or Mac OS X
 Requirements for Windows
 ------------------------
 
-1. Install Python >= 2.5 from http://www.python.org/
-   [http://www.python.org/ftp/python/2.6/python-2.6.msi]
-
-2. *Optional, for console color support:*
-   Wconio from http://newcenturycomputers.net/projects/wconio.html
-   [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.5.exe]
-
-3. *Optional, for HTML/CSS syntax checks:*
-   HTML tidy from http://utidylib.berlios.de/
-   cssutils from http://cthedot.de/cssutils/
-
-4. *Optional, for displaying country codes:*
-   GeoIP from http://www.maxmind.com/app/python
-
-5. *Optional, used for Virus checking:*
-   ClamAv from
-   http://www.sosdg.org/clamav-win32/
-   [http://clamav-sosdg.googlecode.com/files/clamav-0.93.3-1a.exe]
-
-6. *Only needed if you compile from source:*
-   install the MinGW suite from http://mingw.sourceforge.net/
-   Be sure to install in the given order:
-   
-   a) MingGW (this installer downloads additional packages)
-      [http://downloads.sourceforge.net/mingw/MinGW-5.1.4.exe]
-   b) MSYS
-      [http://downloads.sourceforge.net/mingw/MSYS-1.0.10.exe]
-
+None, the installer contains all files.
 
 Setup for Unix/Linux or Mac OS X
 --------------------------------
@@ -119,48 +92,61 @@ Setup for Unix/Linux or Mac OS X
 Setup for Windows - the binary .exe installer:
 ----------------------------------------------
 
-1. Install check
-   
-   Be sure to have installed all required windows software listed above.
-
-2. Execute the ``linkchecker-x.xx.win32-py2.x.exe`` file and follow
+1. Execute the ``LinkChecker-x.y.exe`` file and follow
    the instructions.
 
 Setup for Windows - compiling from source:
 ------------------------------------------
 
-1. Install check
-   
-   Be sure to have installed all required Unix/Linux software listed above.
-   These instructions are for Python 2.5, but apply to later 2.x versions
-   as well.
+1. Install Python >= 2.6 from http://www.python.org/
+   [http://www.python.org/ftp/python/2.6/python-2.6.1.msi]
 
-2. Preparing Python for the MinGW compiler
+2. *Optional, for console color support:*
+   Wconio from http://newcenturycomputers.net/projects/wconio.html
+   [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.win32-py2.5.exe]
+
+3. *Optional, for HTML/CSS syntax checks:*
+   HTML tidy from http://utidylib.berlios.de/
+   cssutils from http://cthedot.de/cssutils/
+
+4. *Optional, used for Virus checking:*
+   ClamAv from
+   http://www.sosdg.org/clamav-win32/
+   [http://clamav-sosdg.googlecode.com/files/clamav-0.93.3-1a.exe]
+
+5. Install the MinGW suite from http://mingw.sourceforge.net/
+   Be sure to install in the given order:
    
-   Search the file python25.dll in your windows folder.
+   a) MingGW (this installer downloads additional packages)
+      [http://downloads.sourceforge.net/mingw/MinGW-5.1.4.exe]
+   b) MSYS
+      [http://downloads.sourceforge.net/mingw/MSYS-1.0.10.exe]
+
+6. Install InnoSetup from http://www.jrsoftware.org/isinfo.php
+   [http://www.jrsoftware.org/download.php/is.exe]
+
+7. Preparing Python for the MinGW compiler
+   
+   Search the file python26.dll in your windows folder.
    After you found it, launch MSYS. Change into the windows folder,
    for example ``cd c:\winnt\system32``. Then execute
-   ``pexports python25.dll > python25.def``.
+   ``pexports python26.dll > python26.def``.
    Then use the dlltool with
-   ``dlltool --dllname python25.dll --def python25.def --output-lib
-   libpython25.a``.
+   ``dlltool --dllname python26.dll --def python26.def --output-lib
+   libpython26.a``.
    The resulting library has to be placed in the same directory as
-   python25.lib. (Should be the libs directory under your Python installation
-   directory, for example ``c:\Python25\Libs\``.)
+   python26.lib. (Should be the libs directory under your Python installation
+   directory, for example ``c:\Python26\Libs\``.)
 
-3. Generate and execute the LinkChecker installer
+8. Generate and execute the LinkChecker installer
    
    Close the MSYS application (by typing ``exit``) and open a DOS command
    prompt.
-   Change to the ``linkchecker-X.X.X`` directory and run
-   ``python setup.py sdist --manifest-only`` to create the MANIFEST
-   file and
-   ``python setup.py build -c mingw32 bdist_wininst`` to build a
-   binary installer.
+   Change to the ``linkchecker-X.Y`` directory and run
+   ``scripts\bdist.bat`` to build a binary installer.
    
    This generates a binary installer
-   ``dist\linkchecker-X.X.X.win32-py2.5.exe`` which you just have to
-   execute.
+   ``dist\LinkChecker-X.Y.exe`` which you just have to execute.
 
 After installation
 ------------------
@@ -195,10 +181,6 @@ to run the script.
    with FastCGI support.
 
 2. Copy the script of your choice in the CGI directory.
-   Note that only the local host (ie. 127.0.0.1) can access this
-   script. If you want to enable access from other hosts you have
-   to adjust the ALLOWED_HOSTS and ALLOWED_SERVERS variables in
-   the lc.cgi (or lc.fcgi) script.
 
 3. Adjust the "action=..." parameter in lconline/lc_cgi.html
    to point to your CGI script.
@@ -214,4 +196,3 @@ to run the script.
       working
    c) try to run the lc.cgi script by hand
    d) try the testit() function in the lc.cgi script
-
