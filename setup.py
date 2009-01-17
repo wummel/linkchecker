@@ -51,11 +51,9 @@ import distutils.command
 from distutils.command.clean import clean
 from distutils.command.build import build
 from distutils.command.install_data import install_data
-from distutils.spawn import find_executable
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
 from distutils.sysconfig import get_python_version
-from distutils.errors import DistutilsPlatformError
 from distutils import util, log
 
 try:
@@ -241,8 +239,7 @@ class MyBuildExt (build_ext, object):
     """Custom build extension command."""
 
     def build_extensions (self):
-        """Add -std=gnu99 to build options if supported.
-        And compress extension libraries."""
+        """Add -std=gnu99 to build options if supported."""
         # For gcc >= 3 we can add -std=gnu99 to get rid of warnings.
         extra = []
         if self.compiler.compiler_type == 'unix':
@@ -259,26 +256,6 @@ class MyBuildExt (build_ext, object):
                 if opt not in ext.extra_compile_args:
                     ext.extra_compile_args.append(opt)
             self.build_extension(ext)
-        self.compress_extensions()
-
-    def compress_extensions (self):
-        """Run UPX compression over built extension libraries."""
-        # currently upx supports only .dll files
-        if os.name != 'nt':
-            return
-        upx = find_executable("upx")
-        if upx is None:
-            # upx not found
-            return
-        for filename in self.get_outputs():
-            compress_library(upx, filename)
-
-
-def compress_library (upx, filename):
-    """Compresses a dynamic library file with upx (currently only .dll
-    files are supported)."""
-    log.info("upx-compressing %s", filename)
-    os.system('%s -q --best "%s"' % (upx, filename))
 
 
 def list_message_files (package, suffix=".po"):
