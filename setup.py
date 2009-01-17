@@ -67,6 +67,9 @@ except ImportError:
     # ignore when py2exe is not installed
     pass
 
+AppVersion = "5.0"
+AppName = "LinkChecker"
+
 py2exe_options = dict(
     packages=["encodings"],
     excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter'],
@@ -510,9 +513,79 @@ elif win_compiling:
               'doc/en/shot2_thumb.jpg',
              ]))
 
+class InnoScript:
+    def __init__(self, lib_dir, dist_dir, windows_exe_files=[], lib_files=[]):
+        self.lib_dir = lib_dir
+        self.dist_dir = dist_dir
+        if not self.dist_dir[-1] in "\\/":
+            self.dist_dir += "\\"
+        self.name = AppName
+        self.version = AppVersion
+        self.windows_exe_files = [self.chop(p) for p in windows_exe_files]
+        self.lib_files = [self.chop(p) for p in lib_files]
+
+    def chop(self, pathname):
+        assert pathname.startswith(self.dist_dir)
+        return pathname[len(self.dist_dir):]
+
+    def create(self, pathname="dist\\omt.iss"):
+        self.pathname = pathname
+        ofi = self.file = open(pathname, "w")
+        print >> ofi, "; WARNING: This script has been created by py2exe. Changes to this script"
+        print >> ofi, "; will be overwritten the next time py2exe is run!"
+        print >> ofi, r"[Setup]"
+        print >> ofi, r"AppName=%s" % self.name
+        print >> ofi, r"AppVerName=%s %s" % (self.name, self.version)
+        print >> ofi, r"DefaultDirName={pf}\%s" % self.name
+        print >> ofi, r"DefaultGroupName=%s" % self.name
+        print >> ofi, r"OutputBaseFilename=%s-%s" % (self.name, self.version)
+        print >> ofi, r"OutputDir=."
+        print >> ofi
+
+        print >> ofi, r"[Files]"
+        for path in self.windows_exe_files + self.lib_files:
+            print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
+        print >> ofi
+
+        print >> ofi, r"[Icons]"
+        for path in self.windows_exe_files:
+            print >> ofi, r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
+                  (self.name, path)
+        print >> ofi, 'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
+
+    def compile(self):
+        import ctypes
+        res = ctypes.windll.shell32.ShellExecuteA(0, "compile",
+            self.pathname, None, None, 0)
+        if res < 32:
+            raise RuntimeError, "ShellExecute failed, error %d" % res
+
+cmdclass = {}
+try:
+    from py2exe.build_exe import py2exe as py2exe_build
+    class MyPy2exe (py2exe_build):
+        """First builds the exe file(s), then creates a Windows installer.
+        You need InnoSetup for it."""
+
+        def run (self):
+            # First, let py2exe do it's work.
+            py2exe_build.run(self)
+            lib_dir = self.lib_dir
+            dist_dir = self.dist_dir
+            # create the Installer, using the files py2exe has created.
+            script = InnoScript(lib_dir, dist_dir,
+                                self.windows_exe_files, self.lib_files)
+            print "*** creating the inno setup script***"
+            script.create()
+            print "*** compiling the inno setup script***"
+            script.compile()
+    cmdclass["py2exe"] = MyPy2exe
+except ImportError:
+    pass
+
 setup (
-    name = "linkchecker",
-    version = "5.0",
+    name = AppName,
+    version = AppVersion,
     description = "check websites and HTML documents for broken links",
     keywords = "link,url,checking,verification",
     author = myname,
@@ -547,6 +620,7 @@ o a (Fast)CGI web interface (requires HTTP server)
         'build': MyBuild,
         'clean': MyClean,
         'sdist': MySdist,
+        'py2exe': MyPy2exe,
     },
     packages = [
         'linkcheck', 'linkcheck.logger', 'linkcheck.checker',
