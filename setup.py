@@ -68,7 +68,7 @@ AppName = "LinkChecker"
 
 py2exe_options = dict(
     packages=["encodings"],
-    excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter', 'pydoc'],
+    excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter'],
     includes=["sip"],
     compressed=1,
     optimize=2,
