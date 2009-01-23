@@ -40,7 +40,7 @@ lang_locale = {
 }
 _is_level = re.compile(r'^(0|1|2|3|-1)$').match
 
-class FormError (StandardError):
+class LCFormError (StandardError):
     """Form related errors."""
     pass
 
@@ -59,7 +59,7 @@ def checklink (out=sys.stdout, form=None, env=os.environ):
         form = {}
     try:
         checkform(form)
-    except FormError, why:
+    except LCFormError, why:
         logit(form, env)
         print_error(out, why)
         return
@@ -106,26 +106,26 @@ def checkform (form):
             locale.setlocale(locale.LC_ALL, lang_locale[lang])
             init_i18n()
         else:
-            raise FormError(_("unsupported language"))
+            raise LCFormError(_("unsupported language"))
     # check url syntax
     if "url" in form:
         url = form["url"].value
         if not url or url == "http://":
-            raise FormError(_("empty url was given"))
+            raise LCFormError(_("empty url was given"))
         if not urlutil.is_safe_url(url):
-            raise FormError(_("disallowed url was given"))
+            raise LCFormError(_("disallowed url was given"))
     else:
-        raise FormError(_("no url was given"))
+        raise LCFormError(_("no url was given"))
     # check recursion level
     if "level" in form:
         level = form["level"].value
         if not _is_level(level):
-            raise FormError(_("invalid recursion level"))
+            raise LCFormError(_("invalid recursion level"))
     # check options
     for option in ("anchors", "errors", "intern"):
         if option in form:
             if not form[option].value == "on":
-                raise FormError(_("invalid %s option syntax") % option)
+                raise LCFormError(_("invalid %s option syntax") % option)
 
 
 def logit (form, env):
