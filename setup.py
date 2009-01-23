@@ -348,18 +348,18 @@ myname = "Bastian Kleineidam"
 myemail = "calvin@users.sourceforge.net"
 
 data_files = [
-         ('share/linkchecker',
-             ['config/linkcheckerrc', 'config/logging.conf', ]),
-         ('share/linkchecker/examples',
-             ['cgi-bin/lconline/leer.html.en',
-              'cgi-bin/lconline/leer.html.de',
-              'cgi-bin/lconline/index.html',
-              'cgi-bin/lconline/lc_cgi.html.en',
-              'cgi-bin/lconline/lc_cgi.html.de',
-              'cgi-bin/lconline/check.js',
-              'cgi-bin/lc.cgi',
-              'cgi-bin/lc.fcgi', ]),
-      ]
+    ('share/linkchecker',
+        ['config/linkcheckerrc', 'config/logging.conf', ]),
+    ('share/linkchecker/examples',
+        ['cgi-bin/lconline/leer.html.en',
+         'cgi-bin/lconline/leer.html.de',
+         'cgi-bin/lconline/index.html',
+         'cgi-bin/lconline/lc_cgi.html.en',
+         'cgi-bin/lconline/lc_cgi.html.de',
+         'cgi-bin/lconline/check.js',
+         'cgi-bin/lc.cgi',
+         'cgi-bin/lc.fcgi', ]),
+]
 
 if os.name == 'posix':
     data_files.append(('share/man/man1', ['doc/en/linkchecker.1', 'doc/en/linkchecker-gui.1']))
@@ -371,20 +371,7 @@ if os.name == 'posix':
                'doc/examples/check_blacklist.sh',
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh',]))
-elif os.name == 'nt':
-    data_files.append(('share/linkchecker/doc',
-             ['doc/en/documentation.html',
-              'doc/en/index.html',
-              'doc/en/install.html',
-              'doc/en/other.html',
-              'doc/en/upgrading.html',
-              'doc/en/lc.css',
-              'doc/en/navigation.css',
-              'doc/en/shot1.png',
-              'doc/en/shot2.png',
-              'doc/en/shot1_thumb.jpg',
-              'doc/en/shot2_thumb.jpg',
-             ]))
+
 
 class InnoScript:
     def __init__(self, lib_dir, dist_dir, windows_exe_files=[], lib_files=[]):
