@@ -152,11 +152,6 @@ See the `main page`_ on how to configure and start LinkChecker.
 
 .. _main page: index.html
 
-Installation for other platforms
---------------------------------
-
-If you happen to install LinkChecker on other platforms (for example
-Mac OS 9.x) then drop me a note.
 
 (Fast)CGI web interface
 -----------------------

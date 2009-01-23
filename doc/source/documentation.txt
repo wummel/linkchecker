@@ -190,9 +190,6 @@ starting LinkChecker. For example
   $ http_proxy="http://www.someproxy.com:3128"
   $ export http_proxy
 
-In a Macintosh environment, LinkChecker will retrieve proxy information
-from Internet Config.
-
 
 **Q: The link "mailto:john@company.com?subject=Hello John" is reported
 as an error.**
