@@ -454,7 +454,8 @@ try:
             script.compile()
     cmdclass["py2exe"] = MyPy2exe
 except ImportError:
-    pass
+    class MyPy2exe: pass
+
 
 setup (
     name = AppName,

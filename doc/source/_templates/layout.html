@@ -1,0 +1,31 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+<style type="text/css">
+img { border: 0; }
+</style>
+{% endblock %}
+
+{% block rootrellink %}
+  <li><a href="{{ pathto('index') }}">Home </a> |&nbsp;</li>
+  <li><a href="{{ pathto('install') }}">Installation </a> |&nbsp;</li>
+  <li><a href="{{ pathto('upgrading') }}">Upgrading </a> |&nbsp;</li>
+  <li><a href="{{ pathto('documentation') }}">Documentation </a>|&nbsp;</li>
+  <li><a href="{{ pathto('other') }}">Other </a> </li>
+{% endblock %}
+
+{% block relbar1 %}
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<table border="0"><tr>
+ <td><a href="{{ pathto('index') }}"><img
+  src="{{ pathto("_static/logo128x128.png", 1) }}" border="0" alt="LinkChecker"/></a></td>
+ <td><h1>LinkChecker - check websites and HTML documents for broken links</h1></td>
+</tr></table>
+</div>
+{{ super() }}
+{% endblock %}
+
+{# put the sidebar before the body #}
+{% block sidebarsearch %}{{ super() }}{% endblock %}
+{% block sidebar1 %}{{ sidebar() }}{% endblock %}
+{% block sidebar2 %}{% endblock %}

@@ -27,7 +27,7 @@ import os
 import re
 
 from . import i18n
-import _linkchecker_configdata as configdata
+import _LinkChecker_configdata as configdata
 
 # application log areas
 LOG = "linkcheck"

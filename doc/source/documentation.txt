@@ -1,11 +1,5 @@
-.. meta::
-  :navigation.order: 3
-  :navigation.name: Documentation
-
 Documentation
 =============
-
-.. contents::
 
 Basic usage
 -----------

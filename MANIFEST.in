@@ -34,15 +34,13 @@ include linkcheck/gui/Makefile
 recursive-include linkcheck/gui/rc Makefile *.png *.qrc
 recursive-include linkcheck/gui/ui *.ui
 include po/*.po po/*.pot po/Makefile
-include doc/*.py doc/*.example
+include doc/*.example
 include doc/po4a.conf doc/*.po doc/*.pot
-include doc/en/*.txt doc/en/*.png doc/en/*.jpg doc/en/*.ico
-include doc/en/*.html doc/en/*.css doc/en/*.1 doc/en/*.5 doc/en/Makefile
+include doc/en/*.1 doc/en/*.5
 include doc/de/*.1 doc/de/*.5
-include doc/Makefile doc/rest2htmlnav
+include doc/Makefile
 include doc/examples/*.sh
 recursive-include tests/checker/data *.txt *.html *.result *.asc *.css *.ico
 recursive-include tests/configuration/data *.ini
 include tests/dns/example*
 include linkcheck/dns/ChangeLog
-include hase.bmp

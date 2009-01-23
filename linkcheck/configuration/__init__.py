@@ -22,21 +22,21 @@ import sys
 import os
 import logging.config
 import urllib
-import _linkchecker_configdata
+import _LinkChecker_configdata as configdata
 from .. import log, LOG_CHECK, LOG, ansicolor, lognames, clamav
 from . import confparse
 
-Version = _linkchecker_configdata.version
-AppName = _linkchecker_configdata.appname
+Version = configdata.version
+AppName = configdata.appname
 App = AppName+u" "+Version
-Author =  _linkchecker_configdata.author
+Author =  configdata.author
 HtmlAuthor = Author.replace(u' ', u'&nbsp;')
 Copyright = u"Copyright (C) 2000-2009 "+Author
 HtmlCopyright = u"Copyright &copy; 2000-2009 "+HtmlAuthor
 AppInfo = App+u"              "+Copyright
 HtmlAppInfo = App+u", "+HtmlCopyright
-Url = _linkchecker_configdata.url
-Email = _linkchecker_configdata.author_email
+Url = configdata.url
+Email = configdata.author_email
 UserAgent = u"%s/%s (+%s)" % (AppName, Version, Url)
 Freeware = AppName+u""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
@@ -161,7 +161,7 @@ class Configuration (dict):
 
         If no thread debugging is enabled, threading will be disabled.
         """
-        config_dir = _linkchecker_configdata.config_dir
+        config_dir = configdata.config_dir
         filename = normpath(os.path.join(config_dir, "logging.conf"))
         logging.config.fileConfig(filename)
         handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
@@ -217,7 +217,7 @@ class Configuration (dict):
             cfiles = files[:]
         if not cfiles:
             # system wide config settings
-            config_dir = _linkchecker_configdata.config_dir
+            config_dir = configdata.config_dir
             path = normpath(os.path.join(config_dir, "linkcheckerrc"))
             cfiles.append(path)
             # per user config settings

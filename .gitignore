@@ -7,9 +7,11 @@
 *.so
 *.bak
 /build
+/doc/build
+/doc/api
 /coverage
 MANIFEST
-_linkchecker_configdata.py
+_LinkChecker_configdata.py
 Changelog.linkchecker*
 /*-stamp
 /*-stamp-*

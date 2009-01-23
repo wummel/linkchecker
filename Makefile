@@ -14,7 +14,7 @@ DEB_ORIG_TARGET=$(SVNBUILD)/linkchecker_$(VERSION).orig.tar.gz
 
 .PHONY: all
 all:
-	@echo "Read the file doc/install.txt to see how to build and install this package."
+	@echo "Read the file doc/source/install.txt to see how to build and install this package."
 
 .PHONY: clean
 clean:
@@ -22,14 +22,13 @@ clean:
 	-$(PYTHON) setup.py clean --all
 	rm -f *-stamp*
 	$(MAKE) -C po clean
-	$(MAKE) -C doc clean
-	$(MAKE) -C doc/en clean
 	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/network/_network.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
 .PHONY: distclean
 distclean: clean cleandeb
+	$(MAKE) -C doc clean
 	rm -rf build linkchecker.egg-info
 	rm -f _linkchecker_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
@@ -44,7 +43,6 @@ cleandeb:
 	rm -f configure-stamp build-stamp
 
 MANIFEST: MANIFEST.in setup.py
-	$(MAKE) -C doc/en all nav
 	$(PYTHON) setup.py sdist --manifest-only
 
 .PHONY: locale
@@ -98,7 +96,7 @@ release: distclean releasecheck dist-stamp sign_distfiles homepage upload
 
 .PHONY: homepage
 homepage:
-	$(MAKE) -C doc/en homepage
+	$(MAKE) -C doc homepage
 
 .PHONY: chmod
 chmod:

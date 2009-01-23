@@ -1,13 +1,11 @@
-.. meta::
-  :navigation.order: 0
-  :navigation.name: LinkChecker
-
-================================================================
-LinkChecker - check websites and HTML documents for broken links
-================================================================
-
 The latest version of this document is available at
 http://linkchecker.sourceforge.net/.
+
+If you like LinkChecker, consider a donation_ to improve it even
+more!
+
+.. _donation:
+   http://sourceforge.net/donate/index.php?group_id=1913
 
 Features
 ========
@@ -55,13 +53,13 @@ look at the ChangeLog_.
 Screenshots
 ===========
 
-   +----------------------------+----------------------------+
-   | .. image:: shot1_thumb.jpg | .. image:: shot2_thumb.jpg |
-   |      :align: center        |      :align: center        |
-   |      :target: shot1.png    |      :target: shot2.png    |
-   +----------------------------+----------------------------+
-   | Commandline interface      | Web interface              |
-   +----------------------------+----------------------------+
+   +------------------------------------+------------------------------------+
+   | .. image:: shot1_thumb.jpg         | .. image:: shot2_thumb.jpg         |
+   |      :align: center                |      :align: center                |
+   |      :target: _static/shot1.png    |      :target: _static/shot2.png    |
+   +------------------------------------+------------------------------------+
+   | Commandline interface              | Web interface                      |
+   +------------------------------------+------------------------------------+
 
 
 Running
@@ -101,7 +99,7 @@ Internationalization
 For german output execute "export LC_MESSAGES=de" in bash or
 "setenv LC_MESSAGES de" in tcsh.
 Under Windows, execute "set LC_MESSAGES=de".
-Other supported languages are 'nl' (Nederlands) and 'fr' (français).
+Other supported languages are 'nl' (Nederlands) and 'fr' (francais).
 
 You can help to translate LinkChecker by copying the included
 ``po/linkchecker.pot`` file to ``po/language.po``, translate it and
@@ -130,18 +128,3 @@ is documented on the `installation page`_.
    http://sourceforge.net/svn/?group_id=1913
 .. _installation page:
    install.html
-
-
-.. image:: http://sourceforge.net/sflogo.php?group_id=1913&type=1
-   :align: right
-   :target: http://sourceforge.net/projects/linkchecker/
-   :alt: SourceForge Logo
-   :width: 88
-   :height: 31
-
-.. image:: http://sourceforge.net/images/project-support.jpg
-   :align: right
-   :target: http://sourceforge.net/donate/index.php?group_id=1913
-   :alt: Support This Project
-   :width: 88
-   :height: 32
