@@ -164,7 +164,11 @@ class MyDistribution (distutils.core.Distribution, object):
     def __init__ (self, attrs):
         super(MyDistribution, self).__init__(attrs)
         self.console = ['linkchecker']
-        self.windows = ['linkchecker-gui']
+        self.windows = [{
+            "script": "linkchecker-gui",
+            "icon_resources": [(1, "doc/source/_static/favicon.ico")],
+        }]
+
 
     def run_commands (self):
         """Generate config file and run commands."""
