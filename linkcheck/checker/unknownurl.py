@@ -56,6 +56,7 @@ acap        # application configuration access protocol
 |find       # Mozilla specific
 |clsid      # Microsoft specific
 |javascript # JavaScript
+|gopher     # Gopher
 |isbn       # ISBN (int. book numbers)
 ):"""
 

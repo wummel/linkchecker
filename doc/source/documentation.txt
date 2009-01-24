@@ -172,9 +172,9 @@ the ``/robots.txt`` file which follows the `robots.txt exclusion standard`_.
 **Q: How can I tell LinkChecker which proxy to use?**
 
 A: LinkChecker works transparently with proxies. In a Unix or Windows
-environment, set the http_proxy, https_proxy, ftp_proxy or gopher_proxy
-environment variables to a URL that identifies the proxy server before
-starting LinkChecker. For example
+environment, set the http_proxy, https_proxy, ftp_proxy environment
+variables to a URL that identifies the proxy server before starting
+LinkChecker. For example
 
 ::
 

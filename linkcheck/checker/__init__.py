@@ -95,8 +95,6 @@ def get_urlclass_from (url):
         klass = telneturl.TelnetUrl
     elif url.startswith("mailto:"):
         klass = mailtourl.MailtoUrl
-    elif url.startswith("gopher:"):
-        klass = gopherurl.GopherUrl
     elif url.startswith("https:"):
         klass = httpsurl.HttpsUrl
     elif url.startswith(("nntp:", "news:", "snews:")):
@@ -143,5 +141,5 @@ class StoringHandler (logging.Handler):
 
 
 # all the URL classes
-from . import (fileurl, unknownurl, ftpurl, gopherurl, httpurl,
+from . import (fileurl, unknownurl, ftpurl, httpurl,
     httpsurl, mailtourl, telneturl, nntpurl)

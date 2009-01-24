@@ -92,6 +92,11 @@
     Closes: SF #2338973
     Changed: linkchecker, linkcheck/configuration/__init__.py
 
+  * Remove gopher: URL checking.
+    Type: feature
+    Changed: linkcheck/checker/unkonwnurl.py
+    Removed: linkcheck/checker/gopherurl.py
+
 4.9 "Michael Clayton" (released 25.4.2008)
 
   * Parse Shockwave Flash (SWF) for URLs to check
