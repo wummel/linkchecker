@@ -1,4 +1,2 @@
-- [GUI] Install icon in .exe resource
-- [GUI] Use graphic icon in gui client
 - [GUI] Store checked links in urldata list; display in a QTreeWidget;
   columns result (as icon), URL, name; doubleclick opens property popup

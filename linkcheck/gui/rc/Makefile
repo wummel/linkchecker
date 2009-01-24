@@ -1,7 +1,8 @@
 # refresh media files
 
 # base directory of oxygen icon set checkout
-OXYGEN = /home/calvin/src/oxygen-gitsvn/16x16
+OXYGEN = $(HOME)/src/oxygen-gitsvn/16x16
+CRYSTAL = $(HOME)/src/crystal_project
 
 ICONS = \
 	cancel.png \
@@ -9,8 +10,12 @@ ICONS = \
 	preferences.png \
 	start.png \
 	stop.png \
+	app.png
 
 all: $(ICONS)
+
+app.png:	$(CRYSTAL)/16x16/apps/agt_web.png
+	cp $< $@
 
 start.png:	$(OXYGEN)/actions/media-playback-start.png
 	cp $< $@

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Wed Jan  7 19:07:20 2009
-#      by: PyQt4 UI code generator 4.4.2
+# Created: Sat Jan 24 19:15:50 2009
+#      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,23 +12,26 @@ from PyQt4 import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(408,511)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred,QtGui.QSizePolicy.Preferred)
+        MainWindow.resize(408, 511)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
         self.label = QtGui.QLabel(self.centralwidget)
         self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label,0,0,1,1)
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.urlinput = QtGui.QLineEdit(self.centralwidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.urlinput.sizePolicy().hasHeightForWidth())
@@ -38,24 +41,24 @@ class Ui_MainWindow(object):
         self.optionsButton = QtGui.QToolButton(self.centralwidget)
         self.optionsButton.setObjectName("optionsButton")
         self.horizontalLayout_3.addWidget(self.optionsButton)
-        spacerItem = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
         self.controlButton = QtGui.QPushButton(self.centralwidget)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/start.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
-        self.controlButton.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.controlButton.setIcon(icon1)
         self.controlButton.setObjectName("controlButton")
         self.horizontalLayout_3.addWidget(self.controlButton)
-        self.gridLayout.addLayout(self.horizontalLayout_3,0,1,1,1)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
         self.output = QtGui.QTextEdit(self.centralwidget)
         self.output.setUndoRedoEnabled(False)
         self.output.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.output.setReadOnly(True)
         self.output.setObjectName("output")
-        self.gridLayout.addWidget(self.output,1,0,1,2)
+        self.gridLayout.addWidget(self.output, 1, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0,0,408,29))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 408, 29))
         self.menubar.setObjectName("menubar")
         self.menuLinkChecka = QtGui.QMenu(self.menubar)
         self.menuLinkChecka.setObjectName("menuLinkChecka")

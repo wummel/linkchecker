@@ -18,6 +18,10 @@
   <property name="windowTitle" >
    <string>LinkChecker</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="../rc/linkchecker.qrc" >
+    <normaloff>:/icons/app.png</normaloff>:/icons/app.png</iconset>
+  </property>
   <property name="statusTip" >
    <string/>
   </property>
