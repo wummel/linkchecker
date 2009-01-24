@@ -53,7 +53,6 @@ from distutils.command.build import build
 from distutils.command.install_data import install_data
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
-from distutils.sysconfig import get_python_version
 from distutils import util, log
 
 try:
