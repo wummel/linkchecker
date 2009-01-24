@@ -106,6 +106,9 @@ chmod:
 .PHONY: dist
 dist: locale MANIFEST chmod
 	$(PYTHON) setup.py sdist --formats=gztar
+# no rpm buildable with bdist_rpm, presumable due to this bug:
+# https://bugzilla.redhat.com/show_bug.cgi?id=236535
+# too uninvolved to fix it
 
 dist-stamp: changelog
 	$(MAKE) dist
