@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2008-11-30 18:23+0100\n"
+"POT-Creation-Date: 2009-01-24 22:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -335,16 +335,16 @@ msgstr ""
 msgid "%s URL ignored."
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:109
+#: ../linkcheck/checker/ftpurl.py:108
 #, python-format
 msgid "Remote host has closed connection: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:111
+#: ../linkcheck/checker/ftpurl.py:110
 msgid "Got no answer from FTP server"
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:143
+#: ../linkcheck/checker/ftpurl.py:142
 msgid "Missing trailing directory slash in ftp url."
 msgstr ""
 
@@ -486,58 +486,71 @@ msgid ""
 "should always use the system path in URLs."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:51
+#: ../linkcheck/checker/mailtourl.py:52
 msgid "Could not split the mail address"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:76
+#: ../linkcheck/checker/mailtourl.py:77
 msgid "Invalid mail syntax"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:115
+#: ../linkcheck/checker/mailtourl.py:116
 #, python-format
 msgid "Error parsing CGI values: %s"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:138
+#: ../linkcheck/checker/mailtourl.py:139
 msgid "No addresses found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:159
+#: ../linkcheck/checker/mailtourl.py:161
 #, python-format
 msgid "No MX mail host for %(domain)s found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:164
+#: ../linkcheck/checker/mailtourl.py:169
 #, python-format
 msgid "No host for %(domain)s found."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:215
+#: ../linkcheck/checker/mailtourl.py:184
+msgid "Invalid DNS answer due to py2exe environment ignored."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:186
+msgid "Ok"
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:188
+#, python-format
+msgid "Got invalid DNS answer %(answer)s for %(domain)s."
+msgstr ""
+
+#: ../linkcheck/checker/mailtourl.py:232
 #, python-format
 msgid "Verified address %(mail)s: %(info)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:219
+#: ../linkcheck/checker/mailtourl.py:236
 #, python-format
 msgid "Unverified but presumably valid address %(mail)s: %(info)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:222
+#: ../linkcheck/checker/mailtourl.py:239
 #, python-format
 msgid "Unverified address: %(info)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:226
+#: ../linkcheck/checker/mailtourl.py:243
 #, python-format
 msgid "MX mail host %(host)s did not accept connections: %(error)s."
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:232
+#: ../linkcheck/checker/mailtourl.py:249
 msgid "Could not connect, but syntax is correct"
 msgstr ""
 
-#: ../linkcheck/checker/mailtourl.py:235
+#: ../linkcheck/checker/mailtourl.py:252
 #, python-format
 msgid "Found MX mail host %(host)s"
 msgstr ""
@@ -583,7 +596,7 @@ msgstr ""
 msgid "URL is located in %(country)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:424 ../linkcheck/checker/unknownurl.py:78
+#: ../linkcheck/checker/urlbase.py:424 ../linkcheck/checker/unknownurl.py:79
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
@@ -686,12 +699,12 @@ msgstr ""
 msgid "NNTP busy: %(msg)s."
 msgstr ""
 
-#: ../linkcheck/checker/unknownurl.py:80
+#: ../linkcheck/checker/unknownurl.py:81
 #, python-format
 msgid "%(scheme)s URL ignored."
 msgstr ""
 
-#: ../linkcheck/checker/unknownurl.py:84
+#: ../linkcheck/checker/unknownurl.py:85
 msgid "URL is unrecognized or has invalid syntax"
 msgstr ""
 
@@ -734,32 +747,79 @@ msgid ""
 "syntax"
 msgstr ""
 
-#: ../linkcheck/lc_cgi.py:125
+#: ../linkcheck/gui/__init__.py:68 ../linkcheck/gui/__init__.py:84
+msgid "Start"
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:75
+msgid "Ready."
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:77
+msgid "Stop"
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:89
+msgid "Stopping."
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:115
+#, python-format
+msgid "About %(appname)s"
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:116
+#, python-format
+msgid ""
+"<qt><p>%(appname)s checks HTML documents and websites\n"
+"for broken links.</p>\n"
+"<p>%(copyright)s</p>\n"
+"<p>%(app)s is licensed under the\n"
+"<a href=\"http://www.gnu.org/licenses/gpl.html\">GPL</a>\n"
+"Version 2 or later.</p>\n"
+"</qt>"
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:140
+msgid "Error, empty URL"
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:147
+#, python-format
+msgid "Checking '%s'."
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:152
+#, python-format
+msgid "Error, invalid URL '%s'."
+msgstr ""
+
+#: ../linkcheck/lc_cgi.py:109
 msgid "unsupported language"
 msgstr ""
 
-#: ../linkcheck/lc_cgi.py:130
+#: ../linkcheck/lc_cgi.py:114
 msgid "empty url was given"
 msgstr ""
 
-#: ../linkcheck/lc_cgi.py:132
+#: ../linkcheck/lc_cgi.py:116
 msgid "disallowed url was given"
 msgstr ""
 
-#: ../linkcheck/lc_cgi.py:134
+#: ../linkcheck/lc_cgi.py:118
 msgid "no url was given"
 msgstr ""
 
-#: ../linkcheck/lc_cgi.py:139
+#: ../linkcheck/lc_cgi.py:123
 msgid "invalid recursion level"
 msgstr ""
 
-#: ../linkcheck/lc_cgi.py:144
+#: ../linkcheck/lc_cgi.py:128
 #, python-format
 msgid "invalid %s option syntax"
 msgstr ""
 
-#: ../linkcheck/lc_cgi.py:166
+#: ../linkcheck/lc_cgi.py:150
 #, python-format
 msgid ""
 "<html><head>\n"
