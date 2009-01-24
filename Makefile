@@ -129,7 +129,7 @@ releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog.txt > /dev/null; then \
 	  echo "Could not release: edit ChangeLog.txt release date"; false; \
 	fi
-	$(MAKE) -C doc/en test
+#	$(MAKE) -C doc test
 
 .PHONY: sign_distfiles
 sign_distfiles:
