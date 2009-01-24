@@ -39,7 +39,13 @@ include doc/po4a.conf doc/*.po doc/*.pot
 include doc/en/*.1 doc/en/*.5
 include doc/de/*.1 doc/de/*.5
 include doc/Makefile
+include doc/mediacompress.py
 include doc/examples/*.sh
+include doc/source/*.txt
+include doc/source/*.jpg
+include doc/source/conf.py
+include doc/source/_static/*
+include doc/source/_templates/*
 recursive-include tests/checker/data *.txt *.html *.result *.asc *.css *.ico
 recursive-include tests/configuration/data *.ini
 include tests/dns/example*
