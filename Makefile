@@ -30,7 +30,7 @@ clean:
 distclean: clean cleandeb
 	$(MAKE) -C doc clean
 	rm -rf build linkchecker.egg-info
-	rm -f _linkchecker_configdata.py MANIFEST Packages.gz
+	rm -f _LinkChecker_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
 	rm -f linkchecker-out* linkchecker.prof
 	rm -rf linkchecker-$(VERSION)
