@@ -40,14 +40,14 @@ Requirements for Unix/Linux or Mac OS X
    GeoIP from http://www.maxmind.com/app/python
 
 6. *Optional, used for Virus checking:*
-   ClamAv from
-   http://www.clamav.net/
+   ClamAv from http://www.clamav.net/
 
 
 Requirements for Windows
 ------------------------
 
 None, the installer contains all files.
+
 
 Setup for Unix/Linux or Mac OS X
 --------------------------------
@@ -94,7 +94,7 @@ Setup for Windows - the binary .exe installer:
 Setup for Windows - compiling from source:
 ------------------------------------------
 
-1. Install Python >= 2.6 from http://www.python.org/
+1. Install Python >= 2.5 from http://www.python.org/
    [http://www.python.org/ftp/python/2.6/python-2.6.1.msi]
 
 2. *Optional, for console color support:*
@@ -148,9 +148,6 @@ After installation
 ------------------
 
 LinkChecker is now installed. Have fun!
-See the `main page`_ on how to configure and start LinkChecker.
-
-.. _main page: index.html
 
 
 (Fast)CGI web interface

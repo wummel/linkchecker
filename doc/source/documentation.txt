@@ -63,11 +63,6 @@ checking. All connection check types are described below.
   3) try to change to the given directory
   4) list the file with the NLST command
 
-- Gopher links (``gopher:``) (DEPRECATED)
-  
-  We try to send the given selector (or query) to the gopher server.
-  Gopher support will be removed in a future version of LinkChecker.
-
 - Telnet links (``telnet:``)
   
   We try to connect and if user/password are given, login to the
@@ -95,6 +90,7 @@ checking. All connection check types are described below.
   - ``dav:``       (dav)
   - ``fax:``       (fax)
   - ``find:``      (Mozilla specific)
+  - ``gopher:``    (Gopher)
   - ``imap:``      (internet message access protocol)
   - ``isbn:``      (ISBN (int. book numbers))
   - ``javascript:`` (JavaScript)
@@ -156,27 +152,22 @@ Frequently asked questions
 --------------------------
 
 **Q: LinkChecker produced an error, but my web page is ok with
-Netscape/IE/Opera/...
+Mozilla/IE/Opera/...
 Is this a bug in LinkChecker?**
 
-A: Please check your web pages first. Are they really ok? Use
-a `syntax highlighting editor`_. Use `HTML Tidy`_.
-Check if you are using a proxy which produces the error.
-
-.. _`syntax highlighting editor`:
-   http://fte.sourceforge.net/
-.. _`HTML Tidy`:
-   http://tidy.sourceforge.net/
-
+A: Please check your web pages first. Are they really ok?
+Use the ``--check-html`` option, or check if you are using a proxy
+which produces the error.
 
 **Q: I still get an error, but the page is definitely ok.**
 
 A: Some servers deny access of automated tools (also called robots)
 like LinkChecker. This is not a bug in LinkChecker but rather a
-policy by the webmaster running the website you are checking.
-It might even be possible for a website to send robots different
-web pages than normal browsers.
+policy by the webmaster running the website you are checking. Look
+the ``/robots.txt`` file which follows the `robots.txt exclusion standard`_.
 
+.. _`robots.txt exclusion standard`:
+   http://www.robotstxt.org/wc/norobots-rfc.html
 
 **Q: How can I tell LinkChecker which proxy to use?**
 
@@ -201,10 +192,11 @@ Unfortunately browsers like IE and Netscape do not enforce this.
 
 **Q: Has LinkChecker JavaScript support?**
 
-A: No, it never will. If your page is not working without JS then your
-web design is broken.
-Use PHP or Zope or ASP for dynamic content, and use JavaScript just as
-an addon for your web pages.
+A: No, it never will. If your page is not working without JS, it is
+better checked with a browser testing tool like Selenium_.
+
+.. _Selenium:
+   http://seleniumhq.org/
 
 
 **Q: Is LinkCheckers cookie feature insecure?**
@@ -244,8 +236,8 @@ After this append a new Logging instance to the fileoutput.
 **Q: Some links with anchors are getting checked twice.**
 
 A: This is not a bug.
-It is common practice to believe that if a URL ``ABC#anchor1`` works then
-``ABC#anchor2`` works too. That is not specified anywhere and I have seen
+It is not necessarily true that if a URL ``ABC#anchor1`` works then
+``ABC#anchor2`` works too. That is not specified anywhere and there are
 server-side scripts that fail on some anchors and not on others.
 This is the reason for always checking URLs with different anchors.
 If you really want to disable this, use the ``--no-anchor-caching``
@@ -267,28 +259,14 @@ See the `Web Robot pages`_ and the `Spidering report`_ for more info.
    http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt
 
 
-**Q: Ctrl-C does not stop LinkChecker immediately. Why is that so?**
-
-A: The Python interpreter has to wait for all threads to finish, and
-this means waiting for all open connections to close. The default timeout
-for connections is 30 seconds, hence the delay.
-You can change the default connection timeout with the --timeout option.
-
-
 **Q: How do I print unreachable/dead documents of my website with
 LinkChecker?**
 
 A: No can do. This would require file system access to your web
 repository and access to your web server configuration.
 
-You can instead store the linkchecker results in a database
-and look for missing files.
 
+**Q: How do I check HTML/XML/CSS syntax with LinkChecker?**
 
-**Q: How do I check HTML/XML syntax with LinkChecker?**
-
-A: No can do. Use the `HTML Tidy`_ program.
-
-.. _`HTML Tidy`:
-   http://tidy.sourceforge.net/
+A: Use the ``--check-html`` and ``--check-css`` options.
 

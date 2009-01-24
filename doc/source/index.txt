@@ -1,11 +1,23 @@
+.. meta::
+   :keywords: link, URL, validation, checking
+
 The latest version of this document is available at
 http://linkchecker.sourceforge.net/.
+
+===============================
+Check websites for broken links
+===============================
+
+LinkChecker is a free, GPL_ licensed URL validator.
+
+.. _GPL:
+   http://www.gnu.org/licenses/gpl-2.0.html
 
 If you like LinkChecker, consider a donation_ to improve it even
 more!
 
 .. _donation:
-   http://sourceforge.net/donate/index.php?group_id=1913
+   http://sourceforge.net/project/project_donations.php?group_id=1913
 
 Features
 ========
@@ -23,20 +35,15 @@ Features
 - HTML and CSS syntax check
 - Antivirus check
 - a command line interface
+- a GUI client interface
 - a (Fast)CGI web interface (requires HTTP server)
 
 
 Download
 ========
 
-LinkChecker is `OpenSource`_ software and licensed under the `GPL`_.
-Downloads are available for Windows and Unix systems from the
-`LinkChecker download section`_.
+Get it from the `LinkChecker download section`_.
 
-.. _OpenSource:
-   http://www.opensource.org/
-.. _GPL:
-   http://www.gnu.org/licenses/licenses.html#TOCGPL
 .. _LinkChecker download section:
    http://sourceforge.net/project/showfiles.php?group_id=1913
 
@@ -47,77 +54,35 @@ look at the ChangeLog_.
 .. _install documentation:
    install.html
 .. _ChangeLog:
-   http://linkchecker.svn.sourceforge.net/viewvc/linkchecker/trunk/linkchecker/ChangeLog?view=markup
+   http://linkchecker.svn.sourceforge.net/viewvc/linkchecker/trunk/linkchecker/ChangeLog.txt?view=markup
 
 
 Screenshots
 ===========
 
-   +------------------------------------+------------------------------------+
-   | .. image:: shot1_thumb.jpg         | .. image:: shot2_thumb.jpg         |
-   |      :align: center                |      :align: center                |
-   |      :target: _static/shot1.png    |      :target: _static/shot2.png    |
-   +------------------------------------+------------------------------------+
-   | Commandline interface              | Web interface                      |
-   +------------------------------------+------------------------------------+
+   +------------------------------------+------------------------------------+------------------------------------+
+   | .. image:: shot1_thumb.jpg         | .. image:: shot2_thumb.jpg         | .. image:: shot3_thumb.jpg         |
+   |      :align: center                |      :align: center                |      :align: center                |
+   |      :target: _static/shot1.png    |      :target: _static/shot2.png    |      :target: _static/shot3.png    |
+   +------------------------------------+------------------------------------+------------------------------------+
+   | Commandline interface              | GUI client                         | Web interface                      |
+   +------------------------------------+------------------------------------+------------------------------------+
 
 
-Running
+Support
 =======
 
-Running under Unix or Mac OS X platforms
-----------------------------------------
-
-The local configuration file is $HOME/.linkcheckerrc
-Type "linkchecker" followed by your URLs you want to check.
-Type "linkchecker -h" for help.
-
-Running under Windows platforms
--------------------------------
-
-Start "Check URL" in your LinkChecker program group.
-URL input is interactive.
-
-Another way is executing on the command line.
-If there is a file ``linkchecker.bat`` in your Python Scripts directory
-you can run eg. ``c:\Python25\Scripts\linkchecker.bat``.
-
-If there is only a ``linkchecker`` file in your Python Scripts
-directory, you have to run eg.
-``c:\Python25\python.exe c:\Python25\Scripts\linkchecker``.
-
-
-Internationalization
---------------------
-For german output execute "export LC_MESSAGES=de" in bash or
-"setenv LC_MESSAGES de" in tcsh.
-Under Windows, execute "set LC_MESSAGES=de".
-Other supported languages are 'nl' (Nederlands) and 'fr' (francais).
-
-You can help to translate LinkChecker by copying the included
-``po/linkchecker.pot`` file to ``po/language.po``, translate it and
-send it to me.
-
-
-Bug reporting
-=============
-
-The `SourceForge Bug interface`_ allows submitting of bugs, patches
+The `SF tracker`_ allows submitting of bugs, patches
 and requests.
 
-.. _SourceForge Bug interface:
+.. _SF tracker:
    http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
 
 
-Subversion access
-=================
+Repository
+==========
 
-The `SourceForge Subversion page`_ has all the information on how to
-obtain the development version of LinkChecker. Development of
-LinkChecker requires some more software to be available, which
-is documented on the `installation page`_.
+The `SF Subversion page`_ hosts the development source code of LinkChecker.
 
-.. _SourceForge Subversion page:
+.. _SF Subversion page:
    http://sourceforge.net/svn/?group_id=1913
-.. _installation page:
-   install.html
