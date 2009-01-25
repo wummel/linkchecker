@@ -42,25 +42,24 @@ import glob
 #    from setuptools.dist import Distribution
 #except ImportError:
 # use distutils
-from distutils.core import setup, Extension, Distribution
+from distutils.core import setup, Extension
 from distutils.command.install_lib import install_lib
 from distutils.command.build_ext import build_ext
 from distutils.command.sdist import sdist
-
-import distutils.command
 from distutils.command.clean import clean
 from distutils.command.build import build
 from distutils.command.install_data import install_data
+from distutils.command.register import register
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
 from distutils import util, log
-
 try:
     # Note that py2exe monkey-patches the distutils.core.Distribution class
     import py2exe
 except ImportError:
     # ignore when py2exe is not installed
     pass
+from distutils.core import Distribution
 
 AppVersion = "5.0"
 AppName = "LinkChecker"
@@ -157,7 +156,7 @@ class MyInstallData (install_data, object):
                 os.chmod(path, mode)
 
 
-class MyDistribution (distutils.core.Distribution, object):
+class MyDistribution (Distribution, object):
     """Custom distribution class generating config file."""
 
     def __init__ (self, attrs):
@@ -449,6 +448,15 @@ except ImportError:
     class MyPy2exe: pass
 
 
+class MyRegister (register, object):
+
+    def build_post_data(self, action):
+        """Force application name to lower case."""
+        data = super(MyRegister, self).build_post_data(action)
+        data['name'] = data['name'].lower()
+        return data
+
+
 setup (
     name = AppName,
     version = AppVersion,
@@ -486,6 +494,7 @@ o a (Fast)CGI web interface (requires HTTP server)
         'clean': MyClean,
         'sdist': MySdist,
         'py2exe': MyPy2exe,
+        'register': MyRegister,
     },
     packages = [
         'linkcheck', 'linkcheck.logger', 'linkcheck.checker',
