@@ -50,11 +50,3 @@ class TestRRset (unittest.TestCase):
         r1 = linkcheck.dns.rrset.from_text('foo', 30, 'in', 'a', '10.0.0.1')
         r2 = linkcheck.dns.rrset.from_text('FOO', 30, 'in', 'a', '10.0.0.2', '10.0.0.1')
         self.assertNotEqual(r1, r2)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestRRset)
-
-
-if __name__ == '__main__':
-    unittest.main()

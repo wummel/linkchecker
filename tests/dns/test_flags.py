@@ -56,11 +56,3 @@ class TestFlags (unittest.TestCase):
     def test_flags2(self):
         flgs = linkcheck.dns.flags.QR|linkcheck.dns.flags.AA|linkcheck.dns.flags.RD|linkcheck.dns.flags.RA
         self.assertEqual(linkcheck.dns.flags.to_text(flgs), "QR AA RD RA")
-
-
-def test_suite ():
-    return unittest.makeSuite(TestFlags)
-
-
-if __name__ == '__main__':
-    unittest.main()

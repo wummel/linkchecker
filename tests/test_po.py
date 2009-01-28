@@ -22,7 +22,8 @@ Test gettext .po files.
 import unittest
 import os
 import glob
-from tests import make_suite
+from tests import has_msgfmt, has_posix
+from nose import SkipTest
 
 
 pofiles = None
@@ -37,10 +38,11 @@ def get_pofiles ():
 
 class TestPo (unittest.TestCase):
     """Test .po file syntax."""
-    needed_resources = ['posix', 'msgfmt']
 
     def test_pos (self):
         """Test .po files syntax."""
+        if not (has_msgfmt() and has_posix()):
+            raise SkipTest()
         for f in get_pofiles():
             ret = os.system("msgfmt -c -o - %s > /dev/null" % f)
             self.assertEquals(ret, 0, msg="PO-file syntax error in %r" % f)
@@ -66,9 +68,3 @@ class TestGTranslator (unittest.TestCase):
                 continue
             self.failIf("\xc2\xb7" in line,
                  "Broken GTranslator copy/paste in %r:\n%r" % (f, line))
-
-
-def test_suite ():
-    """Build and return a TestSuite."""
-    prefix = __name__.split(".")[-1]
-    return make_suite(prefix, globals())

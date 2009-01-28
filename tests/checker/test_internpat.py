@@ -17,8 +17,6 @@
 """
 Test internal pattern construction
 """
-
-import unittest
 import linkcheck.director
 import linkcheck.configuration
 from __init__ import LinkCheckTest, get_url_from
@@ -35,14 +33,3 @@ class TestInternpat (LinkCheckTest):
         url_data = get_url_from(url, 0, aggregate)
         internpat = url_data.get_intern_pattern()
         self.assertTrue(internpat.endswith('/'))
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestInternpat)
-
-
-if __name__ == '__main__':
-    unittest.main()

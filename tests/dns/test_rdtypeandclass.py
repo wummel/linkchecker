@@ -121,11 +121,3 @@ class TestRdTypeAndClass (unittest.TestCase):
         def bad():
             junk = linkcheck.dns.rdatatype.to_text(65536)
         self.assertRaises(ValueError, bad)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestRdTypeAndClass)
-
-
-if __name__ == '__main__':
-    unittest.main()

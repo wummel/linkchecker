@@ -614,11 +614,3 @@ class TestName (unittest.TestCase):
             n = linkcheck.dns.name.empty
             n.parent()
         self.failUnlessRaises(linkcheck.dns.name.NoParent, bad)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestName)
-
-
-if __name__ == '__main__':
-    unittest.main()

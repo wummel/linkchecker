@@ -296,16 +296,3 @@ class TestEnum (unittest.TestCase):
         self.assertEqual(e.b, 1)
         self.assertEqual(e.c, 2)
         self.assertEqual(e, (0, 1, 2))
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    from tests import make_suite
-    prefix = __name__.split(".")[-1]
-    return make_suite(prefix, globals())
-
-
-if __name__ == '__main__':
-    unittest.main()

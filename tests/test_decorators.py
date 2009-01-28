@@ -43,15 +43,3 @@ class TestDecorators (unittest.TestCase):
             return 42
         self.assertEquals(f(), 42)
         self.assert_(log.getvalue())
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestDecorators)
-
-
-if __name__ == '__main__':
-    unittest.main()
-

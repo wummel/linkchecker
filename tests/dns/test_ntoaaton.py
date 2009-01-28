@@ -136,11 +136,3 @@ class TestNtoAAtoN (unittest.TestCase):
         def bad():
             a = linkcheck.dns.ipv6.inet_ntoa('\x00' * 17)
         self.assertRaises(ValueError, bad)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestNtoAAtoN)
-
-
-if __name__ == '__main__':
-    unittest.main()

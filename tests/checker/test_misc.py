@@ -17,8 +17,6 @@
 """
 Test miscellaneous html tag parsing.
 """
-
-import unittest
 from . import LinkCheckTest
 
 
@@ -32,14 +30,3 @@ class TestMisc (LinkCheckTest):
         Test links of misc.html.
         """
         self.file_test("misc.html")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestMisc)
-
-
-if __name__ == '__main__':
-    unittest.main()

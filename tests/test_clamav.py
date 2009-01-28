@@ -18,20 +18,24 @@
 Test virus filter.
 """
 import unittest
+from tests import has_clamav
+from nose import SkipTest
 from linkcheck import clamav
 
 
 class TestClamav (unittest.TestCase):
 
-    needed_resources = ['clamav']
-
     def testClean (self):
+        if not has_clamav():
+            raise SkipTest()
         data = ""
         infected, errors = clamav.scan(data)
         self.assertFalse(infected)
         self.assertFalse(errors)
 
     def testInfected (self):
+        if not has_clamav():
+            raise SkipTest()
         data = '<object data="&#109;s-its:mhtml:file://'+ \
                'C:\\foo.mht!${PATH}/' + \
                'EXPLOIT.CHM::' + \
@@ -40,11 +44,3 @@ class TestClamav (unittest.TestCase):
         msg = 'stream: Exploit.HTML.MHTRedir.2n FOUND\n'
         self.assert_(msg in infected)
         self.assertFalse(errors)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestClamav)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -36,14 +36,3 @@ class TestFilenames (unittest.TestCase):
             path = 'c:\\'
             realpath = get_nt_filename(path)
             self.assertEquals(path, realpath)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestFilenames)
-
-
-if __name__ == '__main__':
-    unittest.main()

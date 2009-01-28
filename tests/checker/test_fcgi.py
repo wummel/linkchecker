@@ -69,14 +69,3 @@ class TestFcgi (unittest.TestCase):
                             % len(doc))
             req.out.write(doc)
             req.finish()
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestFcgi)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -179,14 +179,3 @@ class TestStrFormat (unittest.TestCase):
         self.assertEqual(ascii_safe("a"), "a")
         self.assertEqual(ascii_safe(u"a"), "a")
         self.assertEqual(ascii_safe(u"ä"), "")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestStrFormat)
-
-
-if __name__ == '__main__':
-    unittest.main()

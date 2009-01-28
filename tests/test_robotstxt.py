@@ -268,14 +268,3 @@ class TestRobotsTxt (unittest.TestCase):
         good = ['/foo.html']
         bad = [] # Bug report says "/" should be denied, but that is not in the RFC
         self.check_urls(good, bad)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestRobotsTxt)
-
-
-if __name__ == '__main__':
-    unittest.main()

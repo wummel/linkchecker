@@ -17,8 +17,8 @@
 """
 Test news checking.
 """
-
-import unittest
+from tests import has_network
+from nose import SkipTest
 from . import LinkCheckTest
 
 # Change from time to time, as servers tend to get invalid.
@@ -30,9 +30,9 @@ class TestNews (LinkCheckTest):
     Test nntp: and news: link checking.
     """
 
-    needed_resources = ['network']
-
     def newstest (self, url, resultlines):
+        if not has_network():
+            raise SkipTest()
         self.direct(url, resultlines)
 
     def test_news (self):
@@ -140,14 +140,3 @@ class TestNews (LinkCheckTest):
             u"valid",
         ]
         self.newstest(url, resultlines)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestNews)
-
-
-if __name__ == '__main__':
-    unittest.main()

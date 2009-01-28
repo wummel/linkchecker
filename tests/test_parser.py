@@ -273,14 +273,3 @@ class TestParser (unittest.TestCase):
         for c in "abcdefghijklmnopqrstuvwxyz":
             self.assertEqual(resolve("&#%d;" % ord(c)), c)
         self.assertEqual(resolve("&#1114112;"), u"")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestParser)
-
-
-if __name__ == '__main__':
-    unittest.main()

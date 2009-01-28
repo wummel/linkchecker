@@ -589,14 +589,3 @@ class TestUrl (unittest.TestCase):
         self.assertEqual(url_unsplit(url_split(url)), url)
         url = "http://example.org:123/whoops"
         self.assertEqual(url_unsplit(url_split(url)), url)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestUrl)
-
-
-if __name__ == '__main__':
-    unittest.main()

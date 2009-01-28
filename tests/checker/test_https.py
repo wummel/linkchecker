@@ -17,8 +17,8 @@
 """
 Test news checking.
 """
-
-import unittest
+from tests import has_network
+from nose import SkipTest
 from . import LinkCheckTest
 
 
@@ -27,12 +27,12 @@ class TestHttps (LinkCheckTest):
     Test https: link checking.
     """
 
-    needed_resources = ['network']
-
     def test_https (self):
         """
         Test some https links.
         """
+        if not has_network():
+            raise SkipTest()
         url = u"https://www.amazon.de/"
         resultlines = [
             u"url %s" % url,
@@ -42,14 +42,3 @@ class TestHttps (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestHttps)
-
-
-if __name__ == '__main__':
-    unittest.main()

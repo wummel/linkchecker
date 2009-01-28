@@ -17,8 +17,6 @@
 """
 Test file parsing.
 """
-
-import unittest
 import os
 import zipfile
 from . import LinkCheckTest, get_file
@@ -144,14 +142,3 @@ class TestFile (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestFile)
-
-
-if __name__ == '__main__':
-    unittest.main()

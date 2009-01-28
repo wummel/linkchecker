@@ -223,4 +223,3 @@ class LinkCheckTest (unittest.TestCase):
             l = [u"Differences found testing %s" % url]
             l.extend(x.rstrip() for x in diff[2:])
             self.fail(sep.join(l).encode("iso8859-1", "ignore"))
-

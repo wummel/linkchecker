@@ -17,8 +17,6 @@
 """
 Test telnet checking.
 """
-
-import unittest
 from . import LinkCheckTest
 
 
@@ -62,14 +60,3 @@ class TestTelnet (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestTelnet)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -137,7 +137,7 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	scripts/test.sh $(TESTS)
+	nosetests -m "^test_.*" tests/
 
 .PHONY: pyflakes
 pyflakes:

@@ -101,11 +101,3 @@ class TestResolver (unittest.TestCase):
             name = linkcheck.dns.name.from_text('dnspython.org', None)
             zname = linkcheck.dns.resolver.zone_for_name(name)
         self.failUnlessRaises(linkcheck.dns.resolver.NotAbsolute, bad)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestResolver)
-
-
-if __name__ == '__main__':
-    unittest.main()

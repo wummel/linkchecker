@@ -39,6 +39,3 @@ class BugsTestCase(unittest.TestCase):
         def bad():
             ttl = linkcheck.dns.ttl.from_text("2147483648")
         self.failUnlessRaises(linkcheck.dns.ttl.BadTTL, bad)
-
-if __name__ == '__main__':
-    unittest.main()

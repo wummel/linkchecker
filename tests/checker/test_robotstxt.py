@@ -17,8 +17,6 @@
 """
 Test HTML robots.txt parsing.
 """
-
-import unittest
 from . import LinkCheckTest
 
 
@@ -32,14 +30,3 @@ class TestRobotsTxt (LinkCheckTest):
         Test links of norobot.html.
         """
         self.file_test("norobots.html")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestRobotsTxt)
-
-
-if __name__ == '__main__':
-    unittest.main()

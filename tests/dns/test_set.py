@@ -202,11 +202,3 @@ class TestSet(unittest.TestCase):
         del s1[0:2]
         i1 = s1[0]
         self.failUnless(i1 == 1 or i1 == 2 or i1 == 3)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestSet)
-
-
-if __name__ == '__main__':
-    unittest.main()

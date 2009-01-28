@@ -17,8 +17,6 @@
 """
 Test error checking.
 """
-
-import unittest
 from . import LinkCheckTest
 
 
@@ -130,14 +128,3 @@ class TestError (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestError)
-
-
-if __name__ == '__main__':
-    unittest.main()

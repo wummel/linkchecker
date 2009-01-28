@@ -17,15 +17,13 @@
 """
 Test http checking.
 """
-
-import unittest
 import os
 import re
 
-import httptest
+import httpserver
 
 
-class TestHttp (httptest.HttpServerTest):
+class TestHttp (httpserver.HttpServerTest):
     """
     Test http:// link checking.
     """
@@ -178,7 +176,7 @@ def get_cookie (maxage=2000):
     return "; ".join('%s="%s"' % (key, value) for key, value in data)
 
 
-class CookieRedirectHttpRequestHandler (httptest.NoQueryHttpRequestHandler):
+class CookieRedirectHttpRequestHandler (httpserver.NoQueryHttpRequestHandler):
     """
     Handler redirecting certain requests, and setting cookies.
     """
@@ -227,13 +225,3 @@ class RedirectHttpsRequestHandler (CookieRedirectHttpRequestHandler):
         self.send_response(302)
         self.send_header("Location", url)
         self.end_headers()
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestHttp)
-
-
-if __name__ == '__main__':
-    unittest.main()

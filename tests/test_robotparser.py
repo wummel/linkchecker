@@ -19,6 +19,8 @@ Test robots.txt parsing.
 """
 
 import unittest
+from tests import has_network
+from nose import SkipTest
 import linkcheck.robotparser2
 
 
@@ -26,8 +28,6 @@ class TestRobotParser (unittest.TestCase):
     """
     Test robots.txt parser (needs internet access).
     """
-
-    needed_resources = ['network']
 
     def setUp (self):
         """
@@ -50,6 +50,8 @@ class TestRobotParser (unittest.TestCase):
         """
         Test parsing and access of an existing robots.txt file.
         """
+        if not has_network():
+            raise SkipTest()
         # robots.txt that exists (use web archive to be sure to have the
         # same robots.txt every time).
         self.rp.set_url('http://web.archive.org/web/20050312093828/http://www.musi-cal.com/robots.txt')
@@ -90,6 +92,8 @@ class TestRobotParser (unittest.TestCase):
         """
         Test access of a non-existing robots.txt file.
         """
+        if not has_network():
+            raise SkipTest()
         # robots.txt that does not exist
         self.rp.set_url('http://www.lycos.com/robots.txt')
         self.rp.read()
@@ -98,18 +102,9 @@ class TestRobotParser (unittest.TestCase):
 
     def test_password_robots (self):
         # whole site is password-protected.
+        if not has_network():
+            raise SkipTest()
         self.rp.set_url('http://mueblesmoraleda.com/robots.txt')
         self.rp.read()
         self.check(self.rp.can_fetch("*",
                                      "http://mueblesmoraleda.com/"), False)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestRobotParser)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -17,8 +17,6 @@
 """
 Test html <frame> tag parsing.
 """
-
-import unittest
 from . import LinkCheckTest
 
 
@@ -32,14 +30,3 @@ class TestFrames (LinkCheckTest):
         Test links of frames.html.
         """
         self.file_test("frames.html")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestFrames)
-
-
-if __name__ == '__main__':
-    unittest.main()

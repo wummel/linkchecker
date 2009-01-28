@@ -17,8 +17,6 @@
 """
 Test html anchor parsing and checking.
 """
-
-import unittest
 from . import LinkCheckTest
 
 
@@ -32,14 +30,3 @@ class TestAnchor (LinkCheckTest):
         Test anchors.
         """
         self.file_test("anchor.html")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestAnchor)
-
-
-if __name__ == '__main__':
-    unittest.main()

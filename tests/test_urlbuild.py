@@ -46,14 +46,3 @@ class TestUrlBuild (unittest.TestCase):
                aggregate, parent_url=parent_url)
         o.build_url()
         self.assertEquals(o.url, 'http://')
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestUrlBuild)
-
-
-if __name__ == '__main__':
-    unittest.main()

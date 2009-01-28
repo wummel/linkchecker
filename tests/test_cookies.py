@@ -210,14 +210,3 @@ class TestCookies (unittest.TestCase):
         ]
         from_headers = linkcheck.cookies.from_headers
         self.assertRaises(ValueError, from_headers, "\r\n".join(lines))
-
-
-def test_suite ():
-    """Build and return a TestSuite."""
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestCookies))
-    return suite
-
-
-if __name__ == '__main__':
-    unittest.main()

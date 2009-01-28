@@ -98,11 +98,3 @@ class TestNameDict (unittest.TestCase):
         n = linkcheck.dns.name.from_text('a.b.c', None)
         (k, v) = self.rndict.get_deepest_match(n)
         self.assertEqual(v, 100)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestNameDict)
-
-
-if __name__ == '__main__':
-    unittest.main()

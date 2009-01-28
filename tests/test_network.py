@@ -19,26 +19,21 @@ Test network functions.
 """
 
 import unittest
+from tests import has_posix
+from nose import SkipTest
 import linkcheck.network
 
 
 class TestNetwork (unittest.TestCase):
     """Test network functions."""
 
-    needed_resources = ['posix']
-
     def test_ifreq_size (self):
+        if not has_posix():
+            raise SkipTest()
         self.assertTrue(linkcheck.network.ifreq_size() > 0)
 
     def test_interfaces (self):
+        if not has_posix():
+            raise SkipTest()
         ifc = linkcheck.network.IfConfig()
         ifc.getInterfaceList()
-
-
-def test_suite ():
-    """Build and return a TestSuite."""
-    return unittest.makeSuite(TestNetwork)
-
-
-if __name__ == '__main__':
-    unittest.main()

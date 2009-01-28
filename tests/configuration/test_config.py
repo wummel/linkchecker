@@ -91,12 +91,3 @@ class TestConfig (unittest.TestCase):
         config = linkcheck.configuration.Configuration()
         files = [get_file("config2.ini")]
         self.assertRaises(linkcheck.LinkCheckerError, config.read, files)
-
-
-def test_suite ():
-    """Build and return a TestSuite."""
-    return unittest.makeSuite(TestConfig)
-
-
-if __name__ == '__main__':
-    unittest.main()

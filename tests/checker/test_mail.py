@@ -17,8 +17,8 @@
 """
 Test mail checking.
 """
-
-import unittest
+from tests import has_network
+from nose import SkipTest
 from . import LinkCheckTest
 
 
@@ -27,12 +27,12 @@ class TestMail (LinkCheckTest):
     Test mailto: link checking.
     """
 
-    needed_resources = ['network']
-
     def test_good_mail (self):
         """
         Test some good mailto addrs.
         """
+        if not has_network():
+            raise SkipTest()
         url = self.norm(u"mailto:Dude <calvin@users.sourceforge.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
@@ -102,6 +102,8 @@ class TestMail (LinkCheckTest):
         """
         Test some mailto addrs with warnings.
         """
+        if not has_network():
+            raise SkipTest()
         # contains non-quoted characters
         url = u"mailto:calvin@users.sourceforge.net?subject=äöü"
         qurl = self.norm(url)
@@ -141,6 +143,8 @@ class TestMail (LinkCheckTest):
         """
         Test some mailto addrs with bad syntax.
         """
+        if not has_network():
+            raise SkipTest()
         # ? extension forbidden in <> construct
         url = self.norm(u"mailto:Bastian Kleineidam "\
                          "<calvin@users.sourceforge.net?foo=bar>")
@@ -153,6 +157,8 @@ class TestMail (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_unicode_mail (self):
+        if not has_network():
+            raise SkipTest()
         mailto = u"mailto:ölvin@users.sourceforge.net"
         url = self.norm(mailto)
         resultlines = [
@@ -163,14 +169,3 @@ class TestMail (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestMail)
-
-
-if __name__ == '__main__':
-    unittest.main()

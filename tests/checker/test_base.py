@@ -17,8 +17,6 @@
 """
 Test html <base> tag parsing.
 """
-
-import unittest
 from . import LinkCheckTest
 
 
@@ -50,14 +48,3 @@ class TestBase (LinkCheckTest):
         Test links of base4.html.
         """
         self.file_test("base4.html")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestBase)
-
-
-if __name__ == '__main__':
-    unittest.main()

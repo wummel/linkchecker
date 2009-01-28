@@ -87,14 +87,3 @@ class TestLinkparser (unittest.TestCase):
         self.assertEqual(strip(content), "")
         content = "a/* */b/* */c"
         self.assertEqual(strip(content), "abc")
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestLinkparser)
-
-
-if __name__ == '__main__':
-    unittest.main()

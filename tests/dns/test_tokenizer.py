@@ -172,11 +172,3 @@ class TestTokenizer (unittest.TestCase):
         tok = linkcheck.dns.tokenizer.Tokenizer(r'ch\0ld')
         t = tok.get()
         self.assertEqual(t, (linkcheck.dns.tokenizer.IDENTIFIER, r'ch\0ld'))
-
-
-def test_suite ():
-    return unittest.makeSuite(TestTokenizer)
-
-
-if __name__ == '__main__':
-    unittest.main()

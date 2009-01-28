@@ -61,15 +61,3 @@ class TestLinkname (unittest.TestCase):
         self.href_name_test('"</a>"foo', '"')
         self.href_name_test("<img src='' alt=''></a>", '')
         self.href_name_test("<img src alt=abc></a>", 'abc')
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestLinkname)
-
-
-if __name__ == '__main__':
-    unittest.main()
-

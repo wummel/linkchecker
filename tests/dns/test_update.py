@@ -110,11 +110,3 @@ class TestUpdate (unittest.TestCase):
         w = update.to_wire(origin=linkcheck.dns.name.from_text('example'),
                            want_shuffle=False)
         self.assertEqual(w, goodwire)
-
-
-def test_suite ():
-    return unittest.makeSuite(TestUpdate)
-
-
-if __name__ == '__main__':
-    unittest.main()

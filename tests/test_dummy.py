@@ -62,14 +62,3 @@ class TestDummy (unittest.TestCase):
         s = str(dummy)
         s = repr(dummy)
         s = unicode(dummy)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestDummy)
-
-
-if __name__ == '__main__':
-    unittest.main()

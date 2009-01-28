@@ -17,8 +17,8 @@
 """
 Test ftp checking.
 """
-
-import unittest
+from tests import has_network
+from nose import SkipTest
 from . import LinkCheckTest
 
 
@@ -27,13 +27,13 @@ class TestFtp (LinkCheckTest):
     Test ftp: link checking.
     """
 
-    needed_resources = ['network']
-
     def test_ftp (self):
         """
         Test ftp link.
         """
         # ftp two slashes
+        if not has_network():
+            raise SkipTest()
         url = u"ftp://ftp.de.debian.org/"
         resultlines = [
             u"url %s" % url,
@@ -48,6 +48,8 @@ class TestFtp (LinkCheckTest):
         Test ftp links with missing slashes.
         """
         # ftp one slash
+        if not has_network():
+            raise SkipTest()
         url = u"ftp:/ftp.de.debian.org/"
         nurl = self.norm(url)
         resultlines = [
@@ -85,6 +87,8 @@ class TestFtp (LinkCheckTest):
         Test ftp links with too many slashes.
         """
         # ftp two dir slashes
+        if not has_network():
+            raise SkipTest()
         url = u"ftp://ftp.de.debian.org//debian/"
         nurl = self.norm(url)
         resultlines = [
@@ -115,14 +119,3 @@ class TestFtp (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
-
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestFtp)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -17,7 +17,6 @@
 """
 Test cgi form routines.
 """
-
 import unittest
 import linkcheck.lc_cgi
 
@@ -55,7 +54,7 @@ class TestCgi (unittest.TestCase):
         form = {"url": Store(""),
                 "level": Store("0"),
                }
-        self.assertRaises(linkcheck.lc_cgi.FormError,
+        self.assertRaises(linkcheck.lc_cgi.LCFormError,
                           linkcheck.lc_cgi.checkform, form)
 
     def test_form_default_url (self):
@@ -65,7 +64,7 @@ class TestCgi (unittest.TestCase):
         form = {"url": Store("http://"),
                 "level": Store("0"),
                }
-        self.assertRaises(linkcheck.lc_cgi.FormError,
+        self.assertRaises(linkcheck.lc_cgi.LCFormError,
                           linkcheck.lc_cgi.checkform, form)
 
     def test_form_invalid_url (self):
@@ -75,15 +74,5 @@ class TestCgi (unittest.TestCase):
         form = {"url": Store("http://www.foo bar/"),
                 "level": Store("0"),
                }
-        self.assertRaises(linkcheck.lc_cgi.FormError,
+        self.assertRaises(linkcheck.lc_cgi.LCFormError,
                           linkcheck.lc_cgi.checkform, form)
-
-def test_suite ():
-    """
-    Build and return a TestSuite.
-    """
-    return unittest.makeSuite(TestCgi)
-
-
-if __name__ == '__main__':
-    unittest.main()
