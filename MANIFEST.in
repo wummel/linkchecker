@@ -18,10 +18,6 @@ include debian/compat
 include debian/NEWS
 include debian/README.Debian
 include debian/watch
-include test.py tests/*.py
-include tests/checker/*.py
-include tests/configuration/*.py
-include tests/dns/*.py
 include scripts/*.py scripts/*.sh scripts/*.bat
 include cgi-bin/lconline/*.html cgi-bin/lconline/*.de cgi-bin/lconline/*.en
 include cgi-bin/lconline/*.js cgi-bin/lconline/*.css
@@ -46,7 +42,4 @@ include doc/source/*.jpg
 include doc/source/conf.py
 include doc/source/_static/*
 include doc/source/_templates/*
-recursive-include tests/checker/data *.txt *.html *.result *.asc *.css *.ico
-recursive-include tests/configuration/data *.ini
-include tests/dns/example*
 include linkcheck/dns/ChangeLog

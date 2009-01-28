@@ -1,3 +1,9 @@
+5.0.1 "" (released xx.1.2009)
+
+  * Remove unit tests from distribution to avoid antivirus software
+    alarms with the virus filter tests.
+    Closes: SF buf #2537822
+
 5.0 "Iron Man" (released 24.1.2009)
 
   * Require and use Python >= 2.5.
