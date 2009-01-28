@@ -82,10 +82,6 @@ files:	locale localbuild
 upload:
 	@echo "Starting releaseforge..."
 	@releaseforge
-#	ncftpput upload.sourceforge.net /incoming dist/*
-#	mozilla -remote "openUrl(https://sourceforge.net/projects/linkchecker, new-tab)"
-#	@echo "Make SF release and press return..."
-#	@read
 
 .PHONY: release
 release: distclean releasecheck dist-stamp sign_distfiles homepage upload
