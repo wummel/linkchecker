@@ -95,7 +95,7 @@ Setup for Windows - compiling from source:
 ------------------------------------------
 
 1. Install Python >= 2.5 from http://www.python.org/
-   [http://www.python.org/ftp/python/2.6/python-2.6.1.msi]
+   [http://www.python.org/ftp/python/2.6.1/python-2.6.1.msi]
 
 2. *Optional, for console color support:*
    Wconio from http://newcenturycomputers.net/projects/wconio.html
