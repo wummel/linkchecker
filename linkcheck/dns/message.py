@@ -26,6 +26,7 @@ import linkcheck.dns.exception
 import linkcheck.dns.flags
 import linkcheck.dns.name
 import linkcheck.dns.opcode
+import linkcheck.dns.entropy
 import linkcheck.dns.rcode
 import linkcheck.dns.rdata
 import linkcheck.dns.rdataclass
@@ -130,7 +131,7 @@ class Message(object):
 
     def __init__(self, id=None):
         if id is None:
-            self.id = random.randint(0, 65535)
+            self.id = linkcheck.dns.entropy.random_16()
         else:
             self.id = id
         self.flags = 0
@@ -475,6 +476,10 @@ class Message(object):
             ednsflags = 0
             payload = 0
             request_payload = 0
+        else:
+            # make sure the EDNS version in ednsflags agrees with edns
+            ednsflags &= 0xFF00FFFFL
+            ednsflags |= (edns << 16)
         self.edns = edns
         self.ednsflags = ednsflags
         self.payload = payload
@@ -508,7 +513,7 @@ class Message(object):
         (value, evalue) = linkcheck.dns.rcode.to_flags(rcode)
         self.flags &= 0xFFF0
         self.flags |= value
-        self.ednsflags &= 0xFF000000L
+        self.ednsflags &= 0x00FFFFFFL
         self.ednsflags |= evalue
         if self.ednsflags != 0 and self.edns < 0:
             self.edns = 0
@@ -594,6 +599,7 @@ class _WireReader(object):
         for i in xrange(0, count):
             rr_start = self.current
             (name, used) = linkcheck.dns.name.from_wire(self.wire, self.current)
+            absolute_name = name
             if not self.message.origin is None:
                 name = name.relativize(self.message.origin)
             self.current = self.current + used
@@ -614,12 +620,12 @@ class _WireReader(object):
                     raise BadTSIG
                 if self.message.keyring is None:
                     raise UnknownTSIGKey, 'got signed message without keyring'
-                secret = self.message.keyring.get(name)
+                secret = self.message.keyring.get(absolute_name)
                 if secret is None:
                     raise UnknownTSIGKey, "key '%s' unknown" % name
                 self.message.tsig_ctx = \
                         linkcheck.dns.tsig.validate(self.wire,
-                                          name,
+                                          absolute_name,
                                           secret,
                                           int(time.time()),
                                           self.message.request_mac,

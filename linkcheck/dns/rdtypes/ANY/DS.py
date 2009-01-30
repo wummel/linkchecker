@@ -52,9 +52,16 @@ class DS(linkcheck.dns.rdata.Rdata):
         key_tag = tok.get_uint16()
         algorithm = tok.get_uint8()
         digest_type = tok.get_uint8()
-        digest = tok.get_string()
+        chunks = []
+        while 1:
+            t = tok.get()
+            if t[0] == linkcheck.dns.tokenizer.EOL or t[0] == linkcheck.dns.tokenizer.EOF:
+                break
+            if t[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+                raise linkcheck.dns.exception.DNSSyntaxError
+            chunks.append(t[1])
+        digest = ''.join(chunks)
         digest = digest.decode('hex_codec')
-        tok.get_eol()
         return cls(rdclass, rdtype, key_tag, algorithm, digest_type,
                    digest)
 

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -163,11 +163,11 @@ class TestZone (unittest.TestCase):
         self.assertEqual(f.getvalue(), example_text_output)
 
     def testTorture1(self):
-       
+
         # Read a zone containing all our supported RR types, and
         # for each RR in the zone, convert the rdata into wire format
         # and then back out, and see if we get equal rdatas.
-       
+
         f = StringIO()
         o = linkcheck.dns.name.from_text('example.')
         z = linkcheck.dns.zone.from_file(fname('example'), o)

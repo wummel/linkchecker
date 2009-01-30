@@ -370,7 +370,7 @@ class Name(object):
         dlabels = ["%s%s" % (chr(len(x)), x.lower()) for x in labels]
         return ''.join(dlabels)
 
-    def to_wire(self, file, compress = None, origin = None):
+    def to_wire(self, file = None, compress = None, origin = None):
         """Convert name to wire format, possibly compressing it.
 
         @param file: the file where the compressed name is emitted (typically
@@ -597,7 +597,6 @@ def from_text(text, origin = root):
     """
 
     if not isinstance(text, str):
-        raise ValueError, "input to from_text() must be a byte string"
         if isinstance(text, unicode):
             return from_unicode(text, origin)
         else:

@@ -19,6 +19,9 @@ cname01 3600 IN CNAME cname-target.
 cname02 3600 IN CNAME cname-target
 cname03 3600 IN CNAME .
 d 300 IN A 73.80.65.49
+dhcid01 3600 IN DHCID AAIBY2/AuCccgoJbsaxcQc9TUapptP69 lOjxfNuVAA2kjEA=
+dhcid02 3600 IN DHCID AAEBOSD+XR3Os/0LozeXVqcNc7FwCfQd WL3b/NaiUDlW2No=
+dhcid03 3600 IN DHCID AAABxLmlskllE0MVjd57zHcWmEH3pCQ6 VytcKD//7es/deY=
 dname01 3600 IN DNAME dname-target.
 dname02 3600 IN DNAME dname-target
 dname03 3600 IN DNAME .
@@ -37,6 +40,11 @@ f 300 IN A 73.80.65.52
 gpos01 3600 IN GPOS -22.6882 116.8652 250.0
 hinfo01 3600 IN HINFO "Generic PC clone" "NetBSD-1.4"
 hinfo02 3600 IN HINFO "PC" "NetBSD"
+ipseckey01 3600 IN IPSECKEY 10 1 2 192.0.2.38 AQNRU3mG7TVTO2BkR47usntb102uFJtu gbo6BSGvgqt4AQ==
+ipseckey02 3600 IN IPSECKEY 10 0 2 . AQNRU3mG7TVTO2BkR47usntb102uFJtu gbo6BSGvgqt4AQ==
+ipseckey03 3600 IN IPSECKEY 10 3 2 mygateway.example.com. AQNRU3mG7TVTO2BkR47usntb102uFJtu gbo6BSGvgqt4AQ==
+ipseckey04 3600 IN IPSECKEY 10 2 2 2001:0DB8:0:8002::2000:1 AQNRU3mG7TVTO2BkR47usntb102uFJtu gbo6BSGvgqt4AQ==
+ipseckey05 3600 IN IPSECKEY 10 3 2 mygateway2 AQNRU3mG7TVTO2BkR47usntb102uFJtu gbo6BSGvgqt4AQ==
 isdn01 3600 IN ISDN "isdn-address"
 isdn02 3600 IN ISDN "isdn-address" "subaddress"
 isdn03 3600 IN ISDN "isdn-address"
@@ -78,6 +86,7 @@ rt02 3600 IN RT 65535 .
 s 300 IN NS ns.s
 ns.s 300 IN A 73.80.65.49
 sig01 3600 IN SIG NXT 1 3 3600 20200101000000 20030101000000 2143 foo MxFcby9k/yvedMfQgKzhH5er0Mu/vILz 45IkskceFGgiWCn/GxHhai6VAuHAoNUz 4YoU1tVfSCSqQYn6//11U6Nld80jEeC8 aTrO+KKmCaY=
+spf 3600 IN SPF "v=spf1 mx -all"
 srv01 3600 IN SRV 0 0 0 .
 srv02 3600 IN SRV 65535 65535 65535 old-slow-box.example.com.
 sshfp1 3600 IN SSHFP 1 1 aa549bfe898489c02d1715d97d79c57ba2fa76ab
@@ -94,6 +103,7 @@ txt09 3600 IN TXT "foo\010bar"
 txt10 3600 IN TXT "foo bar"
 txt11 3600 IN TXT "\"foo\""
 txt12 3600 IN TXT "\"foo\""
+txt13 3600 IN TXT "foo"
 u 300 IN TXT "txt-not-in-nxt"
 a.u 300 IN A 73.80.65.49
 b.u 300 IN A 73.80.65.49

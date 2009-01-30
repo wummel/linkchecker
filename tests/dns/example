@@ -67,6 +67,12 @@ cname03			CNAME	.
 $TTL 300	; 5 minutes
 d			A	73.80.65.49
 $TTL 3600	; 1 hour
+dhcid01			DHCID	( AAIBY2/AuCccgoJbsaxcQc9TUapptP69l
+			          OjxfNuVAA2kjEA= )
+dhcid02			DHCID   ( AAEBOSD+XR3Os/0LozeXVqcNc7FwCfQdW
+                        	  L3b/NaiUDlW2No= )
+dhcid03			DHCID	( AAABxLmlskllE0MVjd57zHcWmEH3pCQ6V
+                                  ytcKD//7es/deY= )
 dname01			DNAME	dname-target.
 dname02			DNAME	dname-target
 dname03			DNAME	.
@@ -168,6 +174,7 @@ txt09			TXT	"foo\010bar"
 txt10			TXT	"foo bar"
 txt11			TXT	"\"foo\""
 txt12			TXT	"\"foo\""
+txt13			TXT	foo
 $TTL 300	; 5 minutes
 u			TXT	"txt-not-in-nxt"
 $ORIGIN u.example.
@@ -202,3 +209,9 @@ dnskey02		DNSKEY	HOST|FLAG4 DNSSEC RSAMD5 (
 ;
 unknown3		A	\# 4 7f000002
 sshfp1			SSHFP	1 1 aa549bfe898489c02d1715d97d79c57ba2fa76ab
+spf			SPF	"v=spf1 mx -all"
+ipseckey01		IPSECKEY 10 1 2 192.0.2.38 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
+ipseckey02		IPSECKEY 10 0 2 . AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
+ipseckey03		IPSECKEY 10 3 2 mygateway.example.com. AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
+ipseckey04		IPSECKEY 10 2 2 2001:0DB8:0:8002::2000:1 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
+ipseckey05		IPSECKEY 10 3 2 mygateway2 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==

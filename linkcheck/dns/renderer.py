@@ -216,6 +216,9 @@ class Renderer(object):
         @see: RFC 2671
         """
 
+        # make sure the EDNS version in ednsflags agrees with edns
+        ednsflags &= 0xFF00FFFFL
+        ednsflags |= (edns << 16)
         self._set_section(ADDITIONAL)
         before = self.output.tell()
         self.output.write(struct.pack('!BHHIH', 0, linkcheck.dns.rdatatype.OPT, payload,
