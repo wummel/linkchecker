@@ -1,8 +1,11 @@
-5.0.1 "" (released xx.1.2009)
+5.0.1 "Slumdog Millionaire" (released 31.1.2009)
 
   * Remove unit tests from distribution to avoid antivirus software
     alarms with the virus filter tests.
-    Closes: SF buf #2537822
+    Closes: SF bug #2537822
+
+  * Updated dnspython module from upstream.
+    Changed: linkcheck/dns/*, tests/dns/*
 
 5.0 "Iron Man" (released 24.1.2009)
 
