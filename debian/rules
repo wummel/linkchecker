@@ -34,6 +34,6 @@ common-install-arch::
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
 # install .mo files
-	install -m 644 build/share/locale/de/LC_MESSAGES/linkchecker.mo $(LOCALE)/de/LC_MESSAGES/
+	install -m 644 build/share/locale/de/LC_MESSAGES/LinkChecker.mo $(LOCALE)/de/LC_MESSAGES/
 # apache configuration
 	install -m 644 config/linkchecker.apache.conf $(ETC)/apache2/conf.d/linkchecker

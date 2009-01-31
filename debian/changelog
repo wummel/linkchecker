@@ -1,7 +1,9 @@
-linkchecker (5.0-1) unstable; urgency=low
+linkchecker (5.0.1-1) unstable; urgency=low
 
   * New upstream release.
     + Fixes bashism in example script (Closes: #489629)
+    + Stops immediately after hitting Ctrl-C twice (Closes: #476623)
+    + Handles persistent connections correct (Closes: #512358)
   * Standards version 3.8.0
   * Use default python version to build packages, avoiding the
     version-specific hash-bang line in commandline scripts
