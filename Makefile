@@ -7,9 +7,9 @@ HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 PYTHONSVN=/home/calvin/src/python-svn
 PY_FILES_DIRS=linkcheck tests scripts *.py linkchecker gui cgi-bin config doc
-# build dir for svn-buildpackage
-SVNBUILD=/home/calvin/src/build-area
-DEB_ORIG_TARGET=$(SVNBUILD)/linkchecker_$(VERSION).orig.tar.gz
+# build dir for debian package
+BUILDDIR=/home/calvin/packages/official
+DEB_ORIG_TARGET=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
 
 
 .PHONY: all
@@ -33,7 +33,7 @@ distclean: clean cleandeb
 	rm -f _LinkChecker_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
 	rm -f linkchecker-out* linkchecker.prof
-	rm -rf linkchecker-$(VERSION)
+	rm -rf LinkChecker-$(VERSION)
 	rm -rf coverage dist-stamp python-build-stamp*
 
 .PHONY: cleandeb
@@ -61,16 +61,8 @@ localbuild: MANIFEST
 deb_orig:
 	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
 	  $(MAKE) dist-stamp && \
-	  cp dist/linkchecker-$(VERSION).tar.gz $(DEB_ORIG_TARGET); \
+	  cp dist/LinkChecker-$(VERSION).tar.gz $(DEB_ORIG_TARGET); \
 	fi
-
-# ready for upload, signed with my GPG key
-.PHONY: deb_signed
-deb_signed: cleandeb
-	(env -u LANG svn-buildpackage --svn-dont-clean --svn-verbose \
-	  --svn-ignore --svn-prebuild="$(MAKE) deb_orig" --svn-lintian \
-	  -sgpg -pgpg -k$(GPGKEY) -rfakeroot 2>&1) | \
-	tee $(SVNBUILD)/linkchecker-$(VERSION).build
 
 .PHONY: files
 files:	locale localbuild

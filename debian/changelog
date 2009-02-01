@@ -9,7 +9,7 @@ linkchecker (5.0.1-1) unstable; urgency=low
     version-specific hash-bang line in commandline scripts
     (Closes: #480395)
 
- -- Bastian Kleineidam <calvin@debian.org>  Tue, 29 Apr 2008 22:45:02 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 01 Feb 2009 11:16:41 +0100
 
 linkchecker (4.9-1) unstable; urgency=low
 

@@ -14,7 +14,12 @@ include debian/linkchecker.docs
 include debian/linkchecker.examples
 include debian/linkchecker.links
 include debian/linkchecker.postinst
+include debian/linkchecker.postrm
+include debian/linkchecker.install
+include debian/linkchecker-gui.install
+include debian/linkchecker-gui.menu
 include debian/compat
+include debian/pycompat
 include debian/NEWS
 include debian/README.Debian
 include debian/watch
