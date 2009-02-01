@@ -80,8 +80,7 @@ files:	locale localbuild
 
 .PHONY: upload
 upload:
-	@echo "Starting releaseforge..."
-	@releaseforge
+	rsync -avP -e ssh dist/* calvin@frs.sourceforge.net:uploads/
 
 .PHONY: release
 release: distclean releasecheck dist-stamp sign_distfiles homepage upload
