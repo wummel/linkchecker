@@ -424,7 +424,6 @@ class InnoScript:
         if res < 32:
             raise RuntimeError, "ShellExecute failed, error %d" % res
 
-cmdclass = {}
 try:
     from py2exe.build_exe import py2exe as py2exe_build
     class MyPy2exe (py2exe_build):
@@ -443,7 +442,6 @@ try:
             script.create()
             print "*** compiling the inno setup script***"
             script.compile()
-    cmdclass["py2exe"] = MyPy2exe
 except ImportError:
     class MyPy2exe: pass
 
