@@ -163,7 +163,8 @@ class Configuration (dict):
         """
         config_dir = configdata.config_dir
         filename = normpath(os.path.join(config_dir, "logging.conf"))
-        logging.config.fileConfig(filename)
+        if os.path.isfile(filename):
+            logging.config.fileConfig(filename)
         handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
         logging.getLogger(LOG).addHandler(handler)
