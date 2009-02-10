@@ -23,7 +23,7 @@ import os
 import logging.config
 import urllib
 import _LinkChecker_configdata as configdata
-from .. import log, LOG_CHECK, LOG, ansicolor, lognames, clamav
+from .. import log, LOG_CHECK, LOG, ansicolor, lognames, clamav, get_config_dir
 from . import confparse
 
 Version = configdata.version
@@ -161,8 +161,7 @@ class Configuration (dict):
 
         If no thread debugging is enabled, threading will be disabled.
         """
-        config_dir = configdata.config_dir
-        filename = normpath(os.path.join(config_dir, "logging.conf"))
+        filename = normpath(os.path.join(get_config_dir(), "logging.conf"))
         if os.path.isfile(filename):
             logging.config.fileConfig(filename)
         handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
@@ -218,8 +217,7 @@ class Configuration (dict):
             cfiles = files[:]
         if not cfiles:
             # system wide config settings
-            config_dir = configdata.config_dir
-            path = normpath(os.path.join(config_dir, "linkcheckerrc"))
+            path = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
             cfiles.append(path)
             # per user config settings
             path = normpath("~/.linkchecker/linkcheckerrc")

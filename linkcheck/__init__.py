@@ -29,6 +29,27 @@ import re
 from . import i18n
 import _LinkChecker_configdata as configdata
 
+
+def main_is_frozen ():
+    return hasattr(sys, "frozen")
+
+
+def module_path ():
+    return os.path.dirname(os.path.abspath(sys.executable))
+
+
+def get_install_data ():
+    if main_is_frozen():
+        return module_path()
+    return configdata.install_data
+
+
+def get_config_dir ():
+    if main_is_frozen():
+        return os.path.join(module_path(), "share", "linkchecker")
+    return configdata.config_dir
+
+
 # application log areas
 LOG = "linkcheck"
 LOG_CMDLINE = "linkcheck.cmdline"
@@ -97,7 +118,7 @@ def init_i18n ():
     """
     locdir = os.environ.get('LOCPATH')
     if locdir is None:
-        locdir = os.path.join(configdata.install_data, 'share', 'locale')
+        locdir = os.path.join(get_install_data(), 'share', 'locale')
     i18n.init(configdata.name, locdir)
     # install translated log level names
     import logging
