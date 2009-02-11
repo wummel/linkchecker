@@ -49,7 +49,7 @@ copyright = u'2009, Bastian Kleineidam'
 # built documents.
 #
 # The short X.Y version.
-version = '5.0.1'
+version = '5.0.2'
 # The full version, including alpha/beta/rc tags.
 release = version
 

@@ -61,7 +61,7 @@ except ImportError:
     pass
 from distutils.core import Distribution
 
-AppVersion = "5.0.1"
+AppVersion = "5.0.2"
 AppName = "LinkChecker"
 
 py2exe_options = dict(

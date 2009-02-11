@@ -1,3 +1,11 @@
+5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)
+
+  * Properly detect location of the log configuration file in the Windows
+    binary .exe.
+    Closes: SF bug #2564674
+
+  * Install locale .mo files in the Windows binary .exe
+
 5.0.1 "Slumdog Millionaire" (released 31.1.2009)
 
   * Remove unit tests from distribution to avoid antivirus software
