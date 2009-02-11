@@ -140,11 +140,23 @@ class MyInstallLib (install_lib, object):
 
 
 class MyInstallData (install_data, object):
-    """My own data installer to handle permissions."""
+    """Handle locale files and permissions."""
 
     def run (self):
         """Adjust permissions on POSIX systems."""
+        self.add_message_files()
         super(MyInstallData, self).run()
+        self.fix_permissions()
+
+    def add_message_files (self):
+        """Add locale message files to data_files list."""
+        for (src, dst) in list_message_files(self.distribution.get_name()):
+            dstdir = os.path.dirname(dst)
+            self.data_files.append((dstdir, [os.path.join("build", dst)]))
+
+    def fix_permissions (self):
+        """Set correct read permissions on POSIX systems. Might also
+        be possible by setting umask?"""
         if os.name == 'posix' and not self.dry_run:
             # Make the data files we just installed world-readable,
             # and the directories world-executable as well.
@@ -255,14 +267,11 @@ class MyBuildExt (build_ext, object):
 
 def list_message_files (package, suffix=".po"):
     """Return list of all found message files and their installation paths."""
-    _files = glob.glob("po/*" + suffix)
-    _list = []
-    for _file in _files:
+    for fname in glob.glob("po/*" + suffix):
         # basename (without extension) is a locale name
-        _locale = os.path.splitext(os.path.basename(_file))[0]
-        _list.append((_file, os.path.join(
-            "share", "locale", _locale, "LC_MESSAGES", "%s.mo" % package)))
-    return _list
+        localename = os.path.splitext(os.path.basename(fname))[0]
+        yield (fname, os.path.join(
+            "share", "locale", localename, "LC_MESSAGES", "%s.mo" % package))
 
 
 def check_manifest ():
