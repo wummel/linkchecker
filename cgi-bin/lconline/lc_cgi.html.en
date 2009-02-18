@@ -22,7 +22,7 @@ target="_top">LinkChecker</a>)
 </center>
 
 <blockquote>
-<form method="POST" action="/cgi-bin/lconline/lc.cgi" target="links"
+<form method="POST" action="/cgi-bin/lc.cgi" target="links"
  onsubmit="return(isValid(document.checklinkForm))"
  name="checklinkForm">
 <table border="0" cellpadding="2" cellspacing="0" summary="">
