@@ -19,6 +19,7 @@ import os
 from PyQt4 import QtCore, QtGui, QtHelp
 from .linkchecker_ui_main import Ui_MainWindow
 from .linkchecker_ui_options import Ui_Options
+from .linkchecker_ui_progress import Ui_ProgressDialog
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat
 from ..containers import enum
@@ -26,6 +27,15 @@ from ..containers import enum
 DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/build/htmlhelp/"
 
 Status = enum('idle', 'checking', 'stopping')
+
+
+def set_fixed_font (output):
+    """Set fixed font on output widget."""
+    if os.name == 'nt':
+        output.setFontFamily("Courier")
+    else:
+        output.setFontFamily("mono")
+
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
@@ -36,10 +46,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
         self.options = LinkCheckerOptions(parent=self)
-        if os.name == 'nt':
-            self.output.setFontFamily("Courier")
-        else:
-            self.output.setFontFamily("mono")
+        self.progress = LinkCheckerProgress(parent=self)
+        set_fixed_font(self.output)
         self.checker = Checker()
         settings = QtCore.QSettings('bfk', configuration.AppName)
         settings.beginGroup('mainwindow')
@@ -52,7 +60,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("add_message(QString)"), self.add_message)
-        self.connect(self.checker, QtCore.SIGNAL("set_statusbar(QString)"), self.set_statusbar)
+        self.connect(self.checker, QtCore.SIGNAL("status(QString)"), self.progress.status)
         self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start_stop)
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
@@ -66,6 +74,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def set_status (self, status):
         self._status = status
         if status == Status.idle:
+            self.progress.reset()
+            self.progress.hide()
             self.controlButton.setText(_("Start"))
             icon = QtGui.QIcon()
             icon.addPixmap(QtGui.QPixmap(":/icons/start.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
@@ -162,6 +172,7 @@ Version 2 or later.</p>
         aggregate.urlqueue.put(url_data)
         self.aggregate = aggregate
         # check in background
+        self.progress.show()
         self.checker.check(self.aggregate)
         self.status = Status.checking
 
@@ -267,6 +278,25 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         self.timeout.setValue(60)
 
 
+class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
+    """Show progress bar."""
+
+    def __init__ (self, parent=None):
+        super(LinkCheckerProgress, self).__init__(parent)
+        self.setupUi(self)
+        self.progressBar.setMinimum(0)
+        self.progressBar.setMaximum(0)
+        set_fixed_font(self.textBrowser)
+
+    def status (self, msg):
+        text = self.textBrowser.toPlainText()
+        self.textBrowser.setText(text+msg)
+        self.textBrowser.moveCursor(QtGui.QTextCursor.End)
+
+    def reset (self):
+        self.textBrowser.setText(u"")
+
+
 class Checker (QtCore.QThread):
     """Separate checker thread."""
 
@@ -332,5 +362,5 @@ class StatusLogger (object):
         self.buf.extend([msg, unicode(os.linesep)])
 
     def flush (self):
-        self.widget.emit(QtCore.SIGNAL("set_statusbar(QString)"), u"".join(self.buf))
+        self.widget.emit(QtCore.SIGNAL("status(QString)"), u"".join(self.buf))
         self.buf = []
