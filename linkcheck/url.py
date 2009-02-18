@@ -41,18 +41,17 @@ default_ports = {
 # http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/\
 # filter-html.html#VALIDATING-URIS
 _basic = {
-    "_az09": r"a-z0-9",
     "_path": r"\-\_\.\!\~\*\'\(\),",
     "_hex_safe": r"2-9a-f",
     "_hex_full": r"0-9a-f",
+    "_part": r"([a-z0-9][-a-z0-9]{0,61}[a-z]|[a-z])",
 }
-_safe_char = r"([%(_az09)s%(_path)s\+]|"\
+_safe_char = r"([a-z0-9%(_path)s\+]|"\
              r"(%%[%(_hex_safe)s][%(_hex_full)s]))" % _basic
 _safe_scheme_pattern = r"(https?|ftp)"
-_safe_domain_pattern = r"([%(_az09)s][%(_az09)s\-]*"\
-                       r"(\.[%(_az09)s][%(_az09)s\-]*)*\.?)" % _basic
+_safe_domain_pattern = r"(%(_part)s(\.%(_part)s)*\.?)" % _basic
 _safe_host_pattern = _safe_domain_pattern+r"(:(80|8080|8000|443))?" % _basic
-_safe_path_pattern = r"((/([%(_az09)s%(_path)s]|"\
+_safe_path_pattern = r"((/([a-z0-9%(_path)s]|"\
                      r"(%%[%(_hex_safe)s][%(_hex_full)s]))+)*/?)" % _basic
 _safe_fragment_pattern = r"%s*" % _safe_char
 _safe_cgi = r"%s+(=(%s|/)+)?" % (_safe_char, _safe_char)

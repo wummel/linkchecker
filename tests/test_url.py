@@ -589,3 +589,9 @@ class TestUrl (unittest.TestCase):
         self.assertEqual(url_unsplit(url_split(url)), url)
         url = "http://example.org:123/whoops"
         self.assertEqual(url_unsplit(url_split(url)), url)
+
+    def test_safe_domain (self):
+        is_safe_domain = linkcheck.url.is_safe_domain
+        self.assertFalse(is_safe_domain(u"a..example.com"))
+        self.assertFalse(is_safe_domain(u"a_b.example.com"))
+        self.assertTrue(is_safe_domain(u"a-b.example.com"))
