@@ -23,7 +23,6 @@ include debian/pycompat
 include debian/NEWS
 include debian/README.Debian
 include debian/watch
-include scripts/*.py scripts/*.sh scripts/*.bat
 include cgi-bin/lconline/*.html cgi-bin/lconline/*.de cgi-bin/lconline/*.en
 include cgi-bin/lconline/*.js cgi-bin/lconline/*.css
 include linkcheck/HtmlParser/Makefile
