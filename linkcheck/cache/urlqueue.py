@@ -184,9 +184,8 @@ class UrlQueue (object):
     def _cache_url (self, key, url_data):
         """Put URL result data into cache."""
         log.debug(LOG_CACHE, "Caching %r", key)
-        assert key in self.in_progress, \
-            "%r not in %s" % (key, self.in_progress)
-        del self.in_progress[key]
+        if key in self.in_progress:
+            del self.in_progress[key]
         data = url_data.get_cache_data()
         self.checked[key] = data
         # check for aliases (eg. through HTTP redirections)
