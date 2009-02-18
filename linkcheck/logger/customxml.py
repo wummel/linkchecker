@@ -67,12 +67,18 @@ class CustomXMLLogger (xmllog.XMLLogger):
         if url_data.info and self.has_part('info'):
             self.xml_starttag(u"infos")
             for tag, info in url_data.info:
-                self.xml_tag(u"info", info)
+                attrs = {}
+                if tag is not None:
+                    attrs["tag"] = tag
+                self.xml_tag(u"info", info, attrs=attrs)
             self.xml_endtag(u"infos")
         if url_data.warnings and self.has_part('warning'):
             self.xml_starttag(u"warnings")
             for tag, data in url_data.warnings:
-                self.xml_tag(u"warning", data, attrs={u"tag": tag})
+                attrs = {}
+                if tag is not None:
+                    attrs["tag"] = tag
+                self.xml_tag(u"warning", data, attrs=attrs)
             self.xml_endtag(u"warnings")
         if self.has_part("result"):
             attrs = {}
