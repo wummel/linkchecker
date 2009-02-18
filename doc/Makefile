@@ -11,16 +11,51 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d build/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
-.PHONY: help clean html web pickle htmlhelp latex changes linkcheck homepage test po4a api
+.PHONY: help clean html web pickle htmlhelp latex changes linkcheck
 
-all: clean html compress
+all:
+	@echo "Available targets: build-html build-htmlhelp"
+
+build-html:	clean html
+
+build-htmlhelp:	clean htmlhelp helpfiles
 
 html:
 	mkdir -p build/html build/doctrees
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html
-	rm build/html/_static/Makefile build/html/_static/favicon*.png
+	$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) build/html
+	rm build/html/_static/Makefile
+	rm build/html/_static/default.css
+	rm build/html/_static/*.js
+	rm build/html/_static/contents.png
+	rm build/html/_static/plus.png
+	rm build/html/_static/file.png
+	rm build/html/_static/minus.png
+	rm build/html/_static/navigation.png
+	rm build/html/_static/rightsidebar.css
+	rm build/html/_static/stickysidebar.css
+	rm build/html/_static/sphinxdoc.css
+	rm build/html/_static/traditional.css
 	@echo
 	@echo "Build finished. The HTML pages are in build/html."
+
+htmlhelp:
+	mkdir -p build/htmlhelp build/doctrees
+	$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) build/htmlhelp
+	rm build/htmlhelp/LinkChecker*
+	rm build/htmlhelp/_static/Makefile
+	rm build/htmlhelp/_static/default.css
+	rm build/htmlhelp/_static/*.js
+	rm build/htmlhelp/_static/contents.png
+	rm build/htmlhelp/_static/plus.png
+	rm build/htmlhelp/_static/file.png
+	rm build/htmlhelp/_static/minus.png
+	rm build/htmlhelp/_static/navigation.png
+	rm build/htmlhelp/_static/rightsidebar.css
+	rm build/htmlhelp/_static/stickysidebar.css
+	rm build/htmlhelp/_static/sphinxdoc.css
+	rm build/htmlhelp/_static/traditional.css
+	@echo
+	@echo "Build finished. The HTML pages are in build/htmlhelp."
 
 pickle:
 	mkdir -p build/pickle build/doctrees
@@ -35,13 +70,6 @@ json:
 	$(SPHINXBUILD) -b json $(ALLSPHINXOPTS) build/json
 	@echo
 	@echo "Build finished; now you can process the JSON files."
-
-htmlhelp:
-	mkdir -p build/htmlhelp build/doctrees
-	$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) build/htmlhelp
-	@echo
-	@echo "Build finished; now you can run HTML Help Workshop with the" \
-	      ".hhp project file in build/htmlhelp."
 
 latex:
 	mkdir -p build/latex build/doctrees
@@ -66,19 +94,10 @@ linkcheck:
 
 clean:
 	-rm -rf build/*
-
-homepage:	clean html compress
-	cp -r build/html/* $(HOME)/public_html/linkchecker.sf.net/htdocs
+	-rm -f *.qhc *.qch
 
 test:	html
 	xmllint --valid --noout build/html/*.html
-
-po4a:
-	po4a --localized-charset=UTF-8 po4a.conf
-
-api:
-	epydoc --html -o api --name "LinkChecker source documentation" --url ../index.html ../linkcheck/
-
 
 YUICOMP_VERSION=2.4.2
 YUICOMP=$(HOME)/src/yuicompressor-$(YUICOMP_VERSION)/build
@@ -86,4 +105,22 @@ YUICOMP=$(HOME)/src/yuicompressor-$(YUICOMP_VERSION)/build
 compress:
 	python mediacompress.py --overwrite=png,jpg,gif,js,css \
 	  --js-compressor=$(YUICOMP)/yuicompressor-$(YUICOMP_VERSION).jar \
-	  build/html
+	  build
+
+
+HELPFILES = lccollection.qhc
+
+helpfiles: $(HELPFILES)
+
+%.qhc:	%.qhcp lcdoc.qhp
+	qcollectiongenerator $< -o $@
+
+
+homepage:	build-html compress
+	cp -r build/html/* $(HOME)/public_html/linkchecker.sf.net/htdocs
+
+po4a:
+	po4a --localized-charset=UTF-8 po4a.conf
+
+api:
+	epydoc --html -o api --name "LinkChecker source documentation" --url ../index.html ../linkcheck/

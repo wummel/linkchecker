@@ -16,13 +16,14 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, QtHelp
 from .linkchecker_ui_main import Ui_MainWindow
 from .linkchecker_ui_options import Ui_Options
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat
 from ..containers import enum
 
+DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/build/htmlhelp/"
 
 Status = enum('idle', 'checking', 'stopping')
 
@@ -40,15 +41,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         else:
             self.output.setFontFamily("mono")
         self.checker = Checker()
-
         settings = QtCore.QSettings('bfk', configuration.AppName)
         settings.beginGroup('mainwindow')
-
         if settings.contains('size'):
             self.resize(settings.value('size').toSize())
             self.move(settings.value('pos').toPoint())
         settings.endGroup()
-
+        # Note: we can't use QT assistant here because of the .exe packaging
+        self.assistant = HelpWindow(self, "doc/lccollection.qhc")
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("add_message(QString)"), self.add_message)
@@ -57,6 +57,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
+        self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.showDocumentation)
         self.status = Status.idle
 
     def get_status (self):
@@ -93,6 +94,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def set_status_idle (self):
         """Set idle status. Helper function for signal connections."""
         self.status = Status.idle
+
+    def showDocumentation (self):
+        """Show help page."""
+        url = QtCore.QUrl("%sindex.html" % DocBaseUrl)
+        self.assistant.showDocumentation(url)
 
     def closeEvent (self, e=None):
         """Save settings on close."""
@@ -185,6 +191,63 @@ Version 2 or later.</p>
     def set_statusbar (self, msg):
         """Show status message in status bar."""
         self.statusBar.showMessage(msg)
+
+
+class HelpWindow (QtGui.QDialog):
+    """A custom help display dialog."""
+
+    def __init__ (self, parent, qhcpath):
+        """Initialize dialog and load qhc help project from given path."""
+        super(HelpWindow, self).__init__(parent)
+        self.engine = QtHelp.QHelpEngine(qhcpath, self)
+        self.engine.setupData()
+        self.setWindowTitle(u"%s Help" % configuration.AppName)
+        self.build_ui()
+
+    def build_ui (self):
+        """Build UI for the help window."""
+        splitter = QtGui.QSplitter()
+        splitter.setOrientation(QtCore.Qt.Vertical)
+        self.browser = HelpBrowser(splitter, self.engine)
+        tree = self.engine.contentWidget()
+        tree.setExpandsOnDoubleClick(False)
+        splitter.addWidget(tree)
+        splitter.addWidget(self.browser)
+        splitter.setSizes((70, 530))
+        hlayout = QtGui.QHBoxLayout()
+        hlayout.addWidget(splitter)
+        self.setLayout(hlayout)
+        self.resize(800, 600)
+        self.connect(self.engine.contentWidget(),
+            QtCore.SIGNAL("linkActivated(QUrl)"),
+            self.browser, QtCore.SLOT("setSource(QUrl)"))
+
+    def showDocumentation (self, url):
+        """Show given URL in help browser."""
+        self.browser.setSource(url)
+        self.show()
+
+
+class HelpBrowser (QtGui.QTextBrowser):
+    """A QTextBrowser that can handle qthelp:// URLs."""
+
+    def __init__ (self, parent, engine):
+        """Initialize and store given HelpEngine instance."""
+        super(HelpBrowser, self).__init__(parent)
+        self.engine = engine
+
+    def setSource (self, url):
+        if url.scheme() == "http":
+            import webbrowser
+            webbrowser.open(str(url.toString()))
+        else:
+            QtGui.QTextBrowser.setSource(self, url)
+
+    def loadResource (self, rtype, url):
+        """Handle qthelp:// URLs, load content from help engine."""
+        if url.scheme() == "qthelp":
+            return QtCore.QVariant(self.engine.fileData(url))
+        return QtGui.QTextBrowser.loadResource(self, rtype, url)
 
 
 class LinkCheckerOptions (QtGui.QDialog, Ui_Options):

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<QHelpCollectionProject version="1.0">
+<assistant>
+   <title>LinkChecker</title>
+   <applicationIcon>build/htmlhelp/_static/favicon16x16.png</applicationIcon>
+   <cacheDirectory>bfk/LinkChecker</cacheDirectory>
+   <startPage>qthelp://bfk.app.linkchecker/doc/documentation.html</startPage>
+   <enableDocumentationManager>false</enableDocumentationManager>
+   <enableAddressBar>false</enableAddressBar>
+   <enableFilterFunctionality>false</enableFilterFunctionality>
+</assistant>
+<docFiles>
+  <generate>
+    <file>
+      <input>lcdoc.qhp</input>
+      <output>lcdoc.qch</output>
+    </file>
+  </generate>
+  <register>
+    <file>lcdoc.qch</file>
+  </register>
+</docFiles>
+</QHelpCollectionProject>
