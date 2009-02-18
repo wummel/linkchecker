@@ -1,3 +1,8 @@
+5.1 "" (released xx.xx.2009)
+
+  * Added email syntax checking.
+    Closes: SF bug #2595437
+
 5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)
 
   * Properly detect location of the log configuration file in the Windows

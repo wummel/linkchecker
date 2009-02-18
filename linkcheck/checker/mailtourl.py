@@ -19,38 +19,43 @@ Handle for mailto: links.
 """
 
 import cgi
+import re
 import urllib
 import smtplib
-import email.Utils
+from email._parseaddr import AddressList
 import sys
 
 from . import urlbase
-from .. import log, LOG_CHECK, strformat, LinkCheckerError, url as urlutil
+from .. import log, LOG_CHECK, strformat, url as urlutil
 from ..dns import resolver
-from .const import WARN_MAIL_NO_ADDRESSES, WARN_MAIL_NO_MX_HOST, \
+from ..network import iputil
+from .const import WARN_MAIL_NO_MX_HOST, \
     WARN_MAIL_UNVERIFIED_ADDRESS, WARN_MAIL_NO_CONNECTION
 
 
-def _split_address (address):
-    """
-    Split username and hostname of address. The hostname defaults
-    to 'localhost' if it is not specified.
+def getaddresses (addr):
+    """Return list of email addresses from given field value."""
+    return [mail for name, mail in AddressList(addr).addresslist if mail]
 
-    @param address: an email address
-    @type address: string
-    @return: a tuple (username, hostname)
-    @rtype: tuple
-    @raise: LinkCheckerError if address could not be split
-    """
-    split = address.split("@", 1)
-    if len(split) == 2:
-        if not split[1]:
-            return (split[0], "localhost")
-        return tuple(split)
-    if len(split) == 1:
-        return (split[0], "localhost")
-    raise LinkCheckerError(_("Could not split the mail address"))
 
+def is_quoted (addr):
+    """Return True iff address string is quoted."""
+    return addr.startswith(u'"') and addr.endswith(u'"')
+
+
+def is_literal (domain):
+    """Return True iff domain string is a literal."""
+    return domain.startswith(u'[') and domain.endswith(u']')
+
+
+_remove_quoted = re.compile(ur'\\.').sub
+_quotes = re.compile(ur'["\\]')
+def is_missing_quote (addr):
+    return _quotes.match(_remove_quoted(u"", addr[1:-1]))
+
+
+# list of CGI keys to search for email addresses
+EMAIL_CGI = ("to", "cc", "bcc")
 
 class MailtoUrl (urlbase.UrlBase):
     """
@@ -58,32 +63,25 @@ class MailtoUrl (urlbase.UrlBase):
     """
 
     def build_url (self):
-        """
-        Call super.build_url(), extract list of mail addresses from URL,
+        """Call super.build_url(), extract list of mail addresses from URL,
         and check their syntax.
         """
         super(MailtoUrl, self).build_url()
-        self.headers = {}
-        self.addresses = email.Utils.getaddresses([self.cutout_addresses()])
-        for key in ("to", "cc", "bcc"):
-            if key in self.headers:
-                for val in self.headers[key]:
-                    a = urllib.unquote(val)
-                    self.addresses.extend(email.Utils.getaddresses([a]))
-        # check syntax of emails
-        for _name, addr in self.addresses:
-            domain = _split_address(addr)[1]
-            if not urlutil.is_safe_domain(domain):
-                raise LinkCheckerError(_("Invalid mail syntax"))
-        log.debug(LOG_CHECK, "addresses: %s", self.addresses)
+        self.addresses = set()
+        self.parse_addresses()
+        if self.addresses:
+            for addr in sorted(self.addresses):
+                self.check_email_syntax(addr)
+                if not self.valid:
+                    break
+        else:
+            self.set_result(_("No mail addresses found in `%(url)s'.") % \
+                {"url": self.url}, valid=False, overwrite=False)
 
-    def cutout_addresses (self):
-        """
-        Parse all mail addresses out of the URL target. Additionally
-        store headers.
-
-        @return: comma separated list of email addresses
-        @rtype: string
+    def parse_addresses (self):
+        """Parse all mail addresses out of the URL target. Also parses
+        optional CGI headers like "?to=foo@example.org".
+        Stores parsed paddresses in the self.addresses set.
         """
         # cut off leading mailto: and unquote
         url = urllib.unquote(self.base_url[7:])
@@ -108,17 +106,111 @@ class MailtoUrl (urlbase.UrlBase):
             elif mode == 2:
                 mode = 0
         if i < (len(url) - 1):
+            self.addresses.update(getaddresses(url[:i]))
             try:
                 headers = cgi.parse_qs(url[(i+1):], strict_parsing=True)
-                for key, val in headers.items():
-                    self.headers.setdefault(key.lower(), []).extend(val)
+                for key, vals in headers.items():
+                    if key.lower() in EMAIL_CGI:
+                        # Only the first header value is added
+                        self.addresses.update(getaddresses(urllib.unquote(vals[0])))
             except ValueError, err:
                 self.add_warning(_("Error parsing CGI values: %s") % str(err))
-            addrs = url[:i]
         else:
-            addrs = url
-        # addrs is comma-separated list of mails now
-        return addrs
+            self.addresses.update(getaddresses(url))
+        log.debug(LOG_CHECK, "addresses: %s", self.addresses)
+
+    def check_email_syntax (self, mail):
+        """Check email syntax. The relevant RFCs:
+        - How to check names (memo):
+          http://tools.ietf.org/html/rfc3696
+        - Email address syntax
+          http://tools.ietf.org/html/rfc2822
+        - SMTP protocol
+          http://tools.ietf.org/html/rfc5321#section-4.1.3
+        - IPv6
+          http://tools.ietf.org/html/rfc4291#section-2.2
+        - Host syntax
+          http://tools.ietf.org/html/rfc1123#section-2
+        """
+        # length checks
+
+        # restrict email length to 256 characters
+        # http://www.rfc-editor.org/errata_search.php?eid=1003
+        if len(mail) > 256:
+            self.set_result(_("Mail address `%(addr)s' too long. Allowed 256 chars, was %(length)d chars.") % \
+            {"addr": mail, "length": len(mail)}, valid=False, overwrite=False)
+            return
+        if "@" not in mail:
+            self.set_result(_("Missing `@' in mail address `%(addr)s'.") % \
+            {"addr": mail}, valid=False, overwrite=False)
+            return
+        # note: be sure to use rsplit since "@" can occur in local part
+        local, domain = mail.rsplit("@", 1)
+        if not local:
+            self.set_result(_("Missing local part of mail address `%(addr)s'.") % \
+            {"addr": mail}, valid=False, overwrite=False)
+            return
+        if not domain:
+            self.set_result(_("Missing domain part of mail address `%(addr)s'.") % \
+            {"addr": mail}, valid=False, overwrite=False)
+            return
+        if len(local) > 64:
+            self.set_result(_("Local part of mail address `%(addr)s' too long. Allowed 64 chars, was %(length)d chars.") % \
+            {"addr": mail, "length": len(local)}, valid=False, overwrite=False)
+            return
+        if len(domain) > 255:
+            self.set_result(_("Domain part of mail address `%(addr)s' too long. Allowed 255 chars, was %(length)d chars.") % \
+            {"addr": mail, "length": len(local)}, valid=False, overwrite=False)
+            return
+
+        # local part syntax check
+
+        # Rules taken from http://tools.ietf.org/html/rfc3696#section-3
+        if is_quoted(local):
+            if is_missing_quote(local):
+                self.set_result(_("Unquoted double quote or backslash in mail address `%(addr)s'.") % \
+                {"addr": mail}, valid=False, overwrite=False)
+                return
+        else:
+            if local.startswith(u"."):
+                self.set_result(_("Local part of mail address `%(addr)s' may not start with a dot.") % \
+                {"addr": mail}, valid=False, overwrite=False)
+                return
+            if local.endswith(u"."):
+                self.set_result(_("Local part of mail address `%(addr)s' may not end with a dot.") % \
+                {"addr": mail}, valid=False, overwrite=False)
+                return
+            if u".." in local:
+                self.set_result(_("Local part of mail address `%(addr)s' may not contain two dots.") % \
+                {"addr": mail}, valid=False, overwrite=False)
+                return
+            for char in u'@ \\",[]':
+                if char in local.replace(u"\\%s"%char, u""):
+                    self.set_result(_("Local part of mail address `%(addr)s' contains unquoted character `%(char)s.") % \
+                    {"addr": mail, "char": char}, valid=False, overwrite=False)
+                    return
+
+        # domain part syntax check
+
+        if is_literal(domain):
+            # it's an IP address
+            ip = domain[1:-1]
+            if ip.startswith(u"IPv6:"):
+                ip = ip[5:]
+            if not iputil.is_valid_ip(ip):
+                self.set_result(_("Domain part of mail address `%(addr)s' has invalid IP.") % \
+                {"addr": mail}, valid=False, overwrite=False)
+                return
+        else:
+            # it's a domain name
+            if not urlutil.is_safe_domain(domain):
+                self.set_result(_("Invalid domain part of mail address `%(addr)s'.") % \
+                {"addr": mail}, valid=False, overwrite=False)
+                return
+            if domain.endswith(".") or domain.split(".")[-1].isdigit():
+                self.set_result(_("Invalid top level domain part of mail address `%(addr)s'.") % \
+                {"addr": mail}, valid=False, overwrite=False)
+                return
 
     def check_connection (self):
         """
@@ -135,23 +227,20 @@ class MailtoUrl (urlbase.UrlBase):
              an answer, print the verified address as an info.
              If not, print a warning.
         """
-        if not self.addresses:
-            self.add_warning(_("No addresses found."),
-                             tag=WARN_MAIL_NO_ADDRESSES)
-            return
-        for name, mail in self.addresses:
-            self.check_smtp_domain(name, mail)
+        assert self.addresses
+        for mail in sorted(self.addresses):
+            self.check_smtp_domain(mail)
             if not self.valid:
                 break
 
-    def check_smtp_domain (self, name, mail):
+    def check_smtp_domain (self, mail):
         """
         Check a single mail address.
         """
         from ..dns.exception import DNSException
         log.debug(LOG_CHECK, "checking mail address %r", mail)
         mail = strformat.ascii_safe(mail)
-        username, domain = _split_address(mail)
+        username, domain = mail.rsplit('@', 1)
         log.debug(LOG_CHECK, "looking up MX mailhost %r", domain)
         try:
             answers = resolver.query(domain, 'MX')
@@ -271,7 +360,7 @@ class MailtoUrl (urlbase.UrlBase):
         """
         The cache key is a comma separated list of emails.
         """
-        emails = u",".join(sorted(addr[1] for addr in self.addresses))
+        emails = u",".join(sorted(self.addresses))
         self.cache_url_key = u"%s:%s" % (self.scheme, emails)
         assert isinstance(self.cache_url_key, unicode), self.cache_url_key
         # cache_content_key remains None, recursion is not allowed

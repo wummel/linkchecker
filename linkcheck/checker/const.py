@@ -91,7 +91,6 @@ WARN_HTTP_COOKIE_STORE_ERROR = "http-cookie-store-error"
 WARN_HTTP_DECOMPRESS_ERROR = "http-decompress-error"
 WARN_HTTP_UNSUPPORTED_ENCODING = "http-unsupported-encoding"
 WARN_IGNORE_URL = "ignore-url"
-WARN_MAIL_NO_ADDRESSES = "mail-no-addresses"
 WARN_MAIL_NO_MX_HOST = "mail-no-mx-host"
 WARN_MAIL_UNVERIFIED_ADDRESS = "mail-unverified-address"
 WARN_MAIL_NO_CONNECTION = "mail-no-connection"
@@ -128,7 +127,6 @@ Warnings = {
     WARN_HTTP_UNSUPPORTED_ENCODING:
         _("The URL content is encoded with an unknown encoding."),
     WARN_IGNORE_URL: _("The URL has been ignored."),
-    WARN_MAIL_NO_ADDRESSES: _("The mailto: URL contained no addresses."),
     WARN_MAIL_NO_MX_HOST: _("The mail MX host could not be found."),
     WARN_MAIL_UNVERIFIED_ADDRESS:
         _("The mailto: address could not be verified."),
