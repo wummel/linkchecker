@@ -61,12 +61,17 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("add_message(QString)"), self.add_message)
         self.connect(self.checker, QtCore.SIGNAL("status(QString)"), self.progress.status)
-        self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start_stop)
+        self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start)
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
+        self.connect(self.progress.cancelButton, QtCore.SIGNAL("clicked()"), self.stop)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
         self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.showDocumentation)
         self.status = Status.idle
+        #self.controlButton.setText(_("Start"))
+        #icon = QtGui.QIcon()
+        #icon.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.controlButton.setIcon(icon)
 
     def get_status (self):
         return self._status
@@ -76,27 +81,16 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         if status == Status.idle:
             self.progress.reset()
             self.progress.hide()
-            self.controlButton.setText(_("Start"))
-            icon = QtGui.QIcon()
-            icon.addPixmap(QtGui.QPixmap(":/icons/start.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
-            self.controlButton.setIcon(icon)
             self.aggregate = None
             self.controlButton.setEnabled(True)
             self.optionsButton.setEnabled(True)
             self.set_statusbar(_("Ready."))
         elif status == Status.checking:
-            self.controlButton.setText(_("Stop"))
-            icon = QtGui.QIcon()
-            icon.addPixmap(QtGui.QPixmap(":/icons/stop.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
-            self.controlButton.setIcon(icon)
-            self.controlButton.setEnabled(True)
+            self.controlButton.setEnabled(False)
             self.optionsButton.setEnabled(False)
         elif status == Status.stopping:
-            self.controlButton.setText(_("Start"))
-            icon = QtGui.QIcon()
-            icon.addPixmap(QtGui.QPixmap(":/icons/start.png"),QtGui.QIcon.Normal,QtGui.QIcon.Off)
-            self.controlButton.setIcon(icon)
             self.controlButton.setEnabled(False)
+            self.optionsButton.setEnabled(False)
             self.set_statusbar(_("Stopping."))
 
     status = property(get_status, set_status)
@@ -137,12 +131,16 @@ for broken links.</p>
 Version 2 or later.</p>
 </qt>""") % d)
 
-    def start_stop (self):
-        """Start a new check or stop an active check."""
+    def start (self):
+        """Start a new check."""
         if self.status == Status.idle:
             self.check()
-        elif self.status == Status.checking:
-            self.stop()
+
+    def stop (self):
+        """Stop an active check."""
+        if self.status == Status.checking:
+            director.abort(self.aggregate)
+            self.status = Status.stopping
 
     def check (self):
         """Check given URL."""
@@ -175,10 +173,6 @@ Version 2 or later.</p>
         self.progress.show()
         self.checker.check(self.aggregate)
         self.status = Status.checking
-
-    def stop (self):
-        director.abort(self.aggregate)
-        self.status = Status.stopping
 
     def get_config (self):
         """Return check configuration."""
