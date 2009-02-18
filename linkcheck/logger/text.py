@@ -138,7 +138,7 @@ class TextLogger (Logger):
         """
         self.writeln()
         self.write(self.part('url') + self.spaces('url'))
-        txt = u"`%s'" % unicode(url_data.base_url or u"")
+        txt = strformat.strline(url_data.base_url or u"")
         if url_data.cached:
             txt += _(" (cached)")
         self.writeln(txt, color=self.colorurl)
@@ -148,8 +148,7 @@ class TextLogger (Logger):
         Write url_data.name.
         """
         self.write(self.part("name") + self.spaces("name"))
-        txt = u"`%s'" % unicode(url_data.name)
-        self.writeln(txt, color=self.colorname)
+        self.writeln(strformat.strline(url_data.name), color=self.colorname)
 
     def write_parent (self, url_data):
         """

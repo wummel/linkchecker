@@ -291,3 +291,8 @@ def limit (s, length=72):
     if length == 0:
         return ""
     return "%s..." % s[:length]
+
+
+def strline (s):
+    """Display string representation on one line."""
+    return u"`%s'" % unicode(s).replace(u"\n", u"\\n")
