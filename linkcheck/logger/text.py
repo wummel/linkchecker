@@ -19,7 +19,7 @@ The default text logger.
 """
 import time
 from . import Logger
-from .. import ansicolor, strformat, configuration
+from .. import ansicolor, strformat, configuration, i18n
 
 
 class TextLogger (Logger):
@@ -64,6 +64,7 @@ class TextLogger (Logger):
         Initialize error counter and optional file output.
         """
         super(TextLogger, self).__init__(**args)
+        self.output_encoding = args.get("encoding", i18n.default_encoding)
         self.init_fileoutput(args)
         if self.fd is not None:
             self.fd = ansicolor.Colorizer(self.fd)

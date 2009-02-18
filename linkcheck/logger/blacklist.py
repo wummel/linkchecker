@@ -21,6 +21,7 @@ A blacklist logger.
 from __future__ import with_statement
 import os
 from . import Logger
+from .. import i18n
 
 
 class BlacklistLogger (Logger):
@@ -35,6 +36,7 @@ class BlacklistLogger (Logger):
         Intialize with old blacklist data (if found, else not).
         """
         super(BlacklistLogger, self).__init__(**args)
+        self.output_encoding = args.get("encoding", i18n.default_encoding)
         self.init_fileoutput(args)
         self.blacklist = {}
         if self.filename is not None and os.path.exists(self.filename):

@@ -22,7 +22,7 @@ import sys
 import os
 import datetime
 from ..decorators import notimplemented
-from .. import log, LOG_CHECK, strformat, i18n, dummy
+from .. import log, LOG_CHECK, strformat, dummy
 
 _ = lambda x: x
 Fields = dict(
@@ -71,8 +71,8 @@ class Logger (object):
         self.warnings = 0
         # number of warnings that were printed
         self.warnings_printed = 0
-        # encoding of output
-        self.output_encoding = args.get("encoding", i18n.default_encoding)
+        # encoding of output (default is utf-8)
+        self.output_encoding = args.get("encoding", "utf-8")
 
     def init_fileoutput (self, args):
         """

@@ -66,14 +66,13 @@ class XMLLogger (Logger):
         self.write(s, **args)
         self.writeln(u" -->")
 
-    def xml_start_output (self, version="1.0", encoding="utf-8"):
+    def xml_start_output (self):
         """
         Write start of checking info as xml comment.
         """
-        self.output_encoding = encoding
         self.starttime = time.time()
-        self.writeln(u'<?xml version="%s" encoding="%s"?>' %
-                     (xmlquoteattr(version), xmlquoteattr(encoding)))
+        self.writeln(u'<?xml version="1.0" encoding="%s"?>' %
+             xmlquoteattr(self.output_encoding))
         if self.has_part("intro"):
             self.comment(_("created by %(app)s at %(time)s") %
                         {"app": configuration.AppName,
