@@ -26,12 +26,12 @@ from linkcheck.gui import LinkCheckerMain
 def main (argv=None):
     if argv is None:
         argv = sys.argv
-    if len(argv) > 1 and argv[1] in ("--version", "-V"):
-        from linkcheck.director import console
-        console.print_version()
-        sys.exit(0)
     app = QApplication(argv)
-    window = LinkCheckerMain()
+    if app.argc() > 1:
+        url = app.argv()[1]
+    else:
+        url = u""
+    window = LinkCheckerMain(url=url)
     window.show()
     sys.exit(app.exec_())
 
