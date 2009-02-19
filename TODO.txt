@@ -1,4 +1,5 @@
 - [GUI] Store checked links in urldata list; display in a QTreeWidget;
   columns result (as icon), URL, name; doubleclick opens property popup
-  signal "foo(PyQt_PyObject)"
+  http://doc.trolltech.com/4.4/qtreewidget.html
+  http://doc.trolltech.com/4.4/qtreewidgetitem.html
 - [GUI] Display log messages in text box.

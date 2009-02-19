@@ -47,21 +47,29 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.urlinput.setText(url)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
+        # init subdialogs
         self.options = LinkCheckerOptions(parent=self)
         self.progress = LinkCheckerProgress(parent=self)
-        set_fixed_font(self.output)
         self.checker = Checker()
+        # Note: we can't use QT assistant here because of the .exe packaging
+        self.assistant = HelpWindow(self, "doc/lccollection.qhc")
+        # setup this widget
+        self.init_treewidget()
+        self.read_settings()
+        self.connect_widgets()
+        self.status = Status.idle
+
+    def read_settings (self):
         settings = QtCore.QSettings('bfk', configuration.AppName)
         settings.beginGroup('mainwindow')
         if settings.contains('size'):
             self.resize(settings.value('size').toSize())
             self.move(settings.value('pos').toPoint())
         settings.endGroup()
-        # Note: we can't use QT assistant here because of the .exe packaging
-        self.assistant = HelpWindow(self, "doc/lccollection.qhc")
+
+    def connect_widgets (self):
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
-        self.connect(self.checker, QtCore.SIGNAL("add_message(QString)"), self.add_message)
         self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
         self.connect(self.checker, QtCore.SIGNAL("status(QString)"), self.progress.status)
         self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start)
@@ -69,11 +77,15 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
         self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.showDocumentation)
-        self.status = Status.idle
         #self.controlButton.setText(_("Start"))
         #icon = QtGui.QIcon()
         #icon.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #self.controlButton.setIcon(icon)
+
+    def init_treewidget (self):
+        from ..logger import Fields
+        self.treeWidget.setColumnCount(3)
+        self.treeWidget.setHeaderLabels((Fields["url"], Fields["name"], Fields["result"]))
 
     def get_status (self):
         return self._status
@@ -138,12 +150,12 @@ Version 2 or later.</p>
         """Check given URL."""
         self.controlButton.setEnabled(False)
         self.optionsButton.setEnabled(False)
-        self.output.setText("")
+        self.treeWidget.clear()
         config = self.get_config()
         aggregate = director.get_aggregate(config)
         url = unicode(self.urlinput.text()).strip()
         if not url:
-            self.output.setText(_("Error, empty URL"))
+            self.set_statusbar(_("Error, empty URL"))
             self.status = Status.idle
             return
         if url.startswith(u"www."):
@@ -155,7 +167,7 @@ Version 2 or later.</p>
         try:
             add_intern_pattern(url_data, config)
         except UnicodeError:
-            self.output.setText(_("Error, invalid URL '%s'.") %
+            self.set_statusbar(_("Error, invalid URL '%s'.") %
                                   strformat.limit(url, 40))
             self.status = Status.idle
             return
@@ -179,14 +191,18 @@ Version 2 or later.</p>
         config["status"] = True
         return config
 
-    def add_message (self, msg):
-        """Add new log message to text edit widget."""
-        text = self.output.toPlainText()
-        self.output.setText(text+msg)
-        self.output.moveCursor(QtGui.QTextCursor.End)
-
     def log_url (self, url_data):
-        pass # XXX log url_data
+        """Add URL data to tree widget."""
+        url = url_data.base_url or u""
+        name = url_data.name
+        if url_data.valid:
+            result = u"Valid"
+        else:
+            result = u"Error"
+        if url_data.result:
+            result += u": %s" % url_data.result
+        item = QtGui.QTreeWidgetItem((url, name, result))
+        self.treeWidget.addTopLevelItem(item)
 
     def set_statusbar (self, msg):
         """Show status message in status bar."""
@@ -320,9 +336,9 @@ class Checker (QtCore.QThread):
         director.check_urls(self.aggregate)
 
 
-from linkcheck.logger.text import TextLogger
+from ..logger import Logger
 
-class GuiLogger (TextLogger):
+class GuiLogger (Logger):
     """Custom logger class to delegate log messages to the UI."""
 
     def __init__ (self, **args):
@@ -330,27 +346,20 @@ class GuiLogger (TextLogger):
         self.widget = args["widget"]
         self.end_output_called = False
 
-    def write (self, s, **args):
-        self.widget.emit(QtCore.SIGNAL("add_message(QString)"), s)
-
     def start_fileoutput (self):
         pass
 
     def close_fileoutput (self):
         pass
 
-    def end_output (self):
-        # The linkchecker director thread is not the main thread, and
-        # it can call end_output() twice, from director.check_urls() and
-        # from director.abort(). This happends when LinkCheckerMain.stop()
-        # is called. The flag prevents double printing of the output.
-        if not self.end_output_called:
-            self.end_output_called = True
-            super(GuiLogger, self).end_output()
-
     def log_url (self, url_data):
-        super(GuiLogger, self).log_url(url_data)
         self.widget.emit(QtCore.SIGNAL("log_url(PyQt_PyObject)"), url_data)
+
+    def end_output (self):
+        pass
+
+    def start_output (self):
+        pass
 
 
 class StatusLogger (object):
