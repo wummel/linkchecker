@@ -62,6 +62,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("add_message(QString)"), self.add_message)
+        self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
         self.connect(self.checker, QtCore.SIGNAL("status(QString)"), self.progress.status)
         self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start)
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
@@ -183,6 +184,9 @@ Version 2 or later.</p>
         text = self.output.toPlainText()
         self.output.setText(text+msg)
         self.output.moveCursor(QtGui.QTextCursor.End)
+
+    def log_url (self, url_data):
+        pass # XXX log url_data
 
     def set_statusbar (self, msg):
         """Show status message in status bar."""
@@ -343,6 +347,10 @@ class GuiLogger (TextLogger):
         if not self.end_output_called:
             self.end_output_called = True
             super(GuiLogger, self).end_output()
+
+    def log_url (self, url_data):
+        super(GuiLogger, self).log_url(url_data)
+        self.widget.emit(QtCore.SIGNAL("log_url(PyQt_PyObject)"), url_data)
 
 
 class StatusLogger (object):
