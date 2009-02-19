@@ -26,7 +26,7 @@ from ..containers import enum
 
 DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/build/htmlhelp/"
 
-Status = enum('idle', 'checking', 'stopping')
+Status = enum('idle', 'checking')
 
 
 def set_fixed_font (output):
@@ -39,10 +39,12 @@ def set_fixed_font (output):
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, url=None):
         """Initialize UI."""
         super(LinkCheckerMain, self).__init__(parent)
         self.setupUi(self)
+        if url:
+            self.urlinput.setText(url)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
         self.options = LinkCheckerOptions(parent=self)
@@ -63,7 +65,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("status(QString)"), self.progress.status)
         self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start)
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
-        self.connect(self.progress.cancelButton, QtCore.SIGNAL("clicked()"), self.stop)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
         self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.showDocumentation)
@@ -88,10 +89,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         elif status == Status.checking:
             self.controlButton.setEnabled(False)
             self.optionsButton.setEnabled(False)
-        elif status == Status.stopping:
-            self.controlButton.setEnabled(False)
-            self.optionsButton.setEnabled(False)
-            self.set_statusbar(_("Stopping."))
 
     status = property(get_status, set_status)
 
@@ -136,12 +133,6 @@ Version 2 or later.</p>
         if self.status == Status.idle:
             self.check()
 
-    def stop (self):
-        """Stop an active check."""
-        if self.status == Status.checking:
-            director.abort(self.aggregate)
-            self.status = Status.stopping
-
     def check (self):
         """Check given URL."""
         self.controlButton.setEnabled(False)
@@ -171,7 +162,7 @@ Version 2 or later.</p>
         self.aggregate = aggregate
         # check in background
         self.progress.show()
-        self.checker.check(self.aggregate)
+        self.checker.check(self.aggregate, self.progress)
         self.status = Status.checking
 
     def get_config (self):
@@ -298,15 +289,27 @@ class Checker (QtCore.QThread):
         super(Checker, self).__init__(parent)
         self.exiting = False
         self.aggregate = None
+        self.progress = None
 
     def __del__(self):
         self.exiting = True
         self.wait()
 
-    def check (self, aggregate):
+    def check (self, aggregate, progress):
         self.aggregate = aggregate
+        self.progress = progress
+        self.connect(self.progress.cancelButton, QtCore.SIGNAL("clicked()"), self.cancel)
         # setup the thread and call run()
         self.start()
+
+    def cancel (self):
+        # stop checking
+        if self.progress is not None:
+            self.progress.cancelButton.setEnabled(False)
+            self.progress = None
+        if self.aggregate is not None:
+            self.aggregate.wanted_stop = True
+            self.aggregate = None
 
     def run (self):
         # start checking

@@ -1,4 +1,3 @@
 - [GUI] Store checked links in urldata list; display in a QTreeWidget;
   columns result (as icon), URL, name; doubleclick opens property popup
   signal "foo(PyQt_PyObject)"
-- [GUI] Progressbar cancel button
