@@ -146,3 +146,7 @@ diff:
 .PHONY: changelog
 changelog:
 	sftrack_changelog linkchecker calvin@users.sourceforge.net ChangeLog.txt
+
+.PHONY: gui
+gui:
+	$(MAKE) -C linkcheck/gui
