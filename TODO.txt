@@ -2,4 +2,3 @@
   columns result (as icon), URL, name; doubleclick opens property popup
   http://doc.trolltech.com/4.4/qtreewidget.html
   http://doc.trolltech.com/4.4/qtreewidgetitem.html
-- [GUI] Display log messages in text box.

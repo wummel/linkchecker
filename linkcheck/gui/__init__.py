@@ -57,6 +57,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_treewidget()
         self.read_settings()
         self.connect_widgets()
+        self.init_config()
         self.status = Status.idle
 
     def read_settings (self):
@@ -151,8 +152,8 @@ Version 2 or later.</p>
         self.controlButton.setEnabled(False)
         self.optionsButton.setEnabled(False)
         self.treeWidget.clear()
-        config = self.get_config()
-        aggregate = director.get_aggregate(config)
+        self.set_config()
+        aggregate = director.get_aggregate(self.config)
         url = unicode(self.urlinput.text()).strip()
         if not url:
             self.set_statusbar(_("Error, empty URL"))
@@ -165,7 +166,7 @@ Version 2 or later.</p>
         self.set_statusbar(_("Checking '%s'.") % strformat.limit(url, 40))
         url_data = checker.get_url_from(url, 0, aggregate)
         try:
-            add_intern_pattern(url_data, config)
+            add_intern_pattern(url_data, self.config)
         except UnicodeError:
             self.set_statusbar(_("Error, invalid URL '%s'.") %
                                   strformat.limit(url, 40))
@@ -178,18 +179,20 @@ Version 2 or later.</p>
         self.checker.check(self.aggregate, self.progress)
         self.status = Status.checking
 
-    def get_config (self):
-        """Return check configuration."""
-        config = configuration.Configuration()
-        config["recursionlevel"] = self.options.recursionlevel.value()
-        config.logger_add("gui", GuiLogger)
-        config["logger"] = config.logger_new('gui', widget=self.checker)
-        config["verbose"] = self.options.verbose.isChecked()
-        config["timeout"] = self.options.timeout.value()
-        config["threads"] = self.options.threads.value()
-        config.init_logging(StatusLogger(self.checker))
-        config["status"] = True
-        return config
+    def init_config (self):
+        self.config = configuration.Configuration()
+        self.config.logger_add("gui", GuiLogger)
+        self.config["logger"] = self.config.logger_new('gui', widget=self.checker)
+        self.config["status"] = True
+        handler = GuiLogHandler(self.checker)
+        self.config.init_logging(StatusLogger(self.checker), handler=handler)
+
+    def set_config (self):
+        """Set configuration."""
+        self.config["recursionlevel"] = self.options.recursionlevel.value()
+        self.config["verbose"] = self.options.verbose.isChecked()
+        self.config["timeout"] = self.options.timeout.value()
+        self.config["threads"] = self.options.threads.value()
 
     def log_url (self, url_data):
         """Add URL data to tree widget."""
@@ -207,6 +210,23 @@ Version 2 or later.</p>
     def set_statusbar (self, msg):
         """Show status message in status bar."""
         self.statusBar.showMessage(msg)
+
+
+from logging import Handler
+
+class GuiLogHandler (Handler, object):
+
+    def __init__ (self, widget):
+        """Log to given stream (a file-like object) or to stderr if
+        strm is None.
+        """
+        super(GuiLogHandler, self).__init__()
+        self.widget = widget
+
+    def emit (self, record):
+        """Emit a record."""
+        msg = self.format(record)
+        self.widget.emit(QtCore.SIGNAL("status(QString)"), msg)
 
 
 class HelpWindow (QtGui.QDialog):
@@ -344,7 +364,6 @@ class GuiLogger (Logger):
     def __init__ (self, **args):
         super(GuiLogger, self).__init__(**args)
         self.widget = args["widget"]
-        self.end_output_called = False
 
     def start_fileoutput (self):
         pass

@@ -152,7 +152,7 @@ class Configuration (dict):
         self["scanvirus"] = False
         self["clamavconf"] = clamav.canonical_clamav_conf()
 
-    def init_logging (self, status_logger, debug=None):
+    def init_logging (self, status_logger, debug=None, handler=None):
         """
         Load logging.conf file settings to set up the
         application logging (not to be confused with check loggers).
@@ -164,7 +164,8 @@ class Configuration (dict):
         filename = normpath(os.path.join(get_config_dir(), "logging.conf"))
         if os.path.isfile(filename):
             logging.config.fileConfig(filename)
-        handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
+        if handler is None:
+            handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
         logging.getLogger(LOG).addHandler(handler)
         self.set_debug(debug)
