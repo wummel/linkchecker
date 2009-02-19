@@ -39,6 +39,7 @@ class Aggregate (object):
         self.logger = logger.Logger(config)
         self.threads = []
         self.last_w3_call = 0
+        self.wanted_stop = False
 
     def start_threads (self):
         """Spawn threads for URL checking and status printing."""

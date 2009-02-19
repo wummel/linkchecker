@@ -62,6 +62,9 @@ def check_url (aggregate):
             aggregate.remove_stopped_threads()
             if not aggregate.threads:
                 break
+            if aggregate.wanted_stop:
+                # some other thread wants us to stop
+                raise KeyboardInterrupt
 
 
 def interrupt (aggregate):
