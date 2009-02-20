@@ -36,7 +36,7 @@ Fields = dict(
     info=_("Info"),
     warning=_("Warning"),
     dltime=_("D/L Time"),
-    dlsize=_("D/L Size"),
+    dlsize=_("Size"),
     checktime=_("Check Time"),
     url=_("URL"),
 )
