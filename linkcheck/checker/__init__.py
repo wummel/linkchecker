@@ -77,6 +77,8 @@ def get_url_from (base_url, recursion_level, aggregate,
         base_ref = strformat.unicode_safe(base_ref)
     name = strformat.unicode_safe(name)
     url = absolute_url(base_url, base_ref, parent_url).lower()
+    if not (url or name):
+        name = base_url
     klass = get_urlclass_from(url)
     return klass(base_url, recursion_level, aggregate,
                  parent_url=parent_url, base_ref=base_ref,
