@@ -46,9 +46,12 @@ class memoized (object):
 def _run (cmd):
     null = open(os.name == 'nt' and ':NUL' or "/dev/null", 'w')
     try:
-        return subprocess.call(cmd, stdout=null, stderr=subprocess.STDOUT)
-    finally:
-       null.close()
+        try:
+            return subprocess.call(cmd, stdout=null, stderr=subprocess.STDOUT)
+        finally:
+            null.close()
+    except OSError:
+        return -1
 
 
 @memoized
