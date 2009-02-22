@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
+    <width>383</width>
     <height>232</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   <widget class="QPushButton" name="cancelButton" >
    <property name="geometry" >
     <rect>
-     <x>390</x>
+     <x>260</x>
      <y>190</y>
      <width>75</width>
      <height>27</height>
@@ -33,7 +33,7 @@
     <rect>
      <x>40</x>
      <y>20</y>
-     <width>451</width>
+     <width>301</width>
      <height>161</height>
     </rect>
    </property>
@@ -46,9 +46,9 @@
    <widget class="QProgressBar" name="progressBar" >
     <property name="geometry" >
      <rect>
-      <x>30</x>
+      <x>10</x>
       <y>120</y>
-      <width>391</width>
+      <width>281</width>
       <height>23</height>
      </rect>
     </property>
@@ -56,36 +56,137 @@
      <number>24</number>
     </property>
    </widget>
-   <widget class="QScrollArea" name="scrollArea" >
+   <widget class="QTabWidget" name="tabWidget" >
     <property name="geometry" >
      <rect>
-      <x>30</x>
+      <x>10</x>
       <y>10</y>
-      <width>391</width>
-      <height>94</height>
+      <width>281</width>
+      <height>101</height>
      </rect>
     </property>
-    <property name="widgetResizable" >
-     <bool>true</bool>
+    <property name="currentIndex" >
+     <number>0</number>
     </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents" >
-     <property name="geometry" >
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>387</width>
-       <height>90</height>
-      </rect>
-     </property>
-     <widget class="QTextBrowser" name="textBrowser" >
+    <widget class="QWidget" name="tab" >
+     <attribute name="title" >
+      <string>Status</string>
+     </attribute>
+     <widget class="QLabel" name="label" >
+      <property name="geometry" >
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>48</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text" >
+       <string>Active:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_active" >
+      <property name="geometry" >
+       <rect>
+        <x>80</x>
+        <y>10</y>
+        <width>48</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text" >
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2" >
+      <property name="geometry" >
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>48</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text" >
+       <string>Queued:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_queued" >
+      <property name="geometry" >
+       <rect>
+        <x>80</x>
+        <y>30</y>
+        <width>48</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text" >
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3" >
+      <property name="geometry" >
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>48</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text" >
+       <string>Checked:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_checked" >
+      <property name="geometry" >
+       <rect>
+        <x>80</x>
+        <y>50</y>
+        <width>48</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text" >
+       <string>0</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2" >
+     <attribute name="title" >
+      <string>Debug</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea" >
       <property name="geometry" >
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>391</width>
-        <height>94</height>
+        <width>271</width>
+        <height>71</height>
        </rect>
       </property>
+      <property name="widgetResizable" >
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>267</width>
+         <height>67</height>
+        </rect>
+       </property>
+       <widget class="QTextEdit" name="textEdit" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>271</width>
+          <height>71</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
    </widget>

@@ -85,8 +85,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     def init_treewidget (self):
         from ..logger import Fields
-        self.treeWidget.setColumnCount(3)
-        self.treeWidget.setHeaderLabels((Fields["url"], Fields["name"], Fields["result"]))
+        self.treeWidget.setColumnCount(4)
+        self.treeWidget.setHeaderLabels((Fields["url"], Fields["name"], Fields["result"], Fields["dlsize"]))
 
     def get_status (self):
         return self._status
@@ -94,13 +94,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def set_status (self, status):
         self._status = status
         if status == Status.idle:
-            self.progress.reset()
             self.progress.hide()
             self.aggregate = None
             self.controlButton.setEnabled(True)
             self.optionsButton.setEnabled(True)
             self.set_statusbar(_("Ready."))
         elif status == Status.checking:
+            self.progress.reset()
+            self.progress.show()
             self.controlButton.setEnabled(False)
             self.optionsButton.setEnabled(False)
 
@@ -175,15 +176,14 @@ Version 2 or later.</p>
         aggregate.urlqueue.put(url_data)
         self.aggregate = aggregate
         # check in background
-        self.progress.show()
         self.checker.check(self.aggregate, self.progress)
         self.status = Status.checking
 
     def init_config (self):
+        """Create a configuration object."""
         self.config = configuration.Configuration()
         self.config.logger_add("gui", GuiLogger)
         self.config["logger"] = self.config.logger_new('gui', widget=self.checker)
-        self.config["status"] = True
         handler = GuiLogHandler(self.checker)
         self.config.init_logging(StatusLogger(self.checker), handler=handler)
 
@@ -199,12 +199,28 @@ Version 2 or later.</p>
         url = url_data.base_url or u""
         name = url_data.name
         if url_data.valid:
+            if url_data.warnings:
+                color = QtCore.Qt.darkYellow
+            else:
+                color = QtCore.Qt.darkGreen
             result = u"Valid"
         else:
+            color = QtCore.Qt.darkRed
             result = u"Error"
         if url_data.result:
             result += u": %s" % url_data.result
-        item = QtGui.QTreeWidgetItem((url, name, result))
+        if url_data.dlsize >= 0:
+            size = strformat.strsize(url_data.dlsize)
+        else:
+            size = u""
+        item = QtGui.QTreeWidgetItem((url, name, result, size))
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        item.setForeground(2, QtGui.QBrush(color))
+        item.setToolTip(0, url)
+        item.setToolTip(1, name)
+        if url_data.warnings:
+            text = [x[1] for x in url_data.warnings]
+            item.setToolTip(2, strformat.wrap(text, 60))
         self.treeWidget.addTopLevelItem(item)
 
     def set_statusbar (self, msg):
@@ -224,7 +240,7 @@ class GuiLogHandler (Handler, object):
         self.widget = widget
 
     def emit (self, record):
-        """Emit a record."""
+        """Emit a record. It gets logged in the progress window."""
         msg = self.format(record)
         self.widget.emit(QtCore.SIGNAL("status(QString)"), msg)
 
@@ -379,21 +395,3 @@ class GuiLogger (Logger):
 
     def start_output (self):
         pass
-
-
-class StatusLogger (object):
-    """Custom status logger to delegate status message to the UI."""
-
-    def __init__ (self, widget):
-        self.widget = widget
-        self.buf = []
-
-    def write (self, msg):
-        self.buf.append(msg)
-
-    def writeln (self, msg):
-        self.buf.extend([msg, unicode(os.linesep)])
-
-    def flush (self):
-        self.widget.emit(QtCore.SIGNAL("status(QString)"), u"".join(self.buf))
-        self.buf = []
