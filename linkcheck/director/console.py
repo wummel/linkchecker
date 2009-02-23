@@ -21,7 +21,7 @@ import sys
 import os
 import codecs
 import traceback
-from .. import i18n, configuration
+from .. import i18n, configuration, strformat
 
 # Output to stdout and stderr, encoded with the default encoding
 stderr = codecs.getwriter(i18n.default_encoding)(sys.stderr, errors="ignore")
@@ -29,11 +29,22 @@ stdout = codecs.getwriter(i18n.default_encoding)(sys.stdout, errors="ignore")
 
 
 class StatusLogger (object):
-    """Standard status logger object simulating a file object. Default
-    output is stderr."""
+    """Standard status logger. Default output is stderr."""
 
     def __init__ (self, fd=stderr):
         self.fd = fd
+
+    def print_status (self, checked, in_progress, queue, duration):
+        msg = _n("%2d URL active", "%2d URLs active", in_progress) % \
+          in_progress
+        self.write(u"%s, " % msg)
+        msg = _n("%5d URL queued", "%5d URLs queued", queue) % queue
+        self.write(u"%s, " % msg)
+        msg = _n("%4d URL checked", "%4d URLs checked", checked) % checked
+        self.write(u"%s, " % msg)
+        msg = _("runtime %s") % strformat.strduration_long(duration)
+        self.writeln(msg)
+        self.flush()
 
     def write (self, msg):
         self.fd.write(msg)

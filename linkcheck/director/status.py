@@ -16,7 +16,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Status message handling"""
 import time
-from .. import strformat
 from . import task
 
 
@@ -39,19 +38,10 @@ class Status (task.CheckedTask):
                 time.sleep(1)
                 if self.stopped():
                     return
-            self.print_status()
+            self.log_status()
 
-    def print_status (self):
-        """Print a status message."""
+    def log_status (self):
+        """Log a status message."""
         duration = time.time() - self.start_time
         checked, in_progress, queue = self.urlqueue.status()
-        msg = _n("%2d URL active", "%2d URLs active", in_progress) % \
-          in_progress
-        self.logger.write(u"%s, " % msg)
-        msg = _n("%5d URL queued", "%5d URLs queued", queue) % queue
-        self.logger.write(u"%s, " % msg)
-        msg = _n("%4d URL checked", "%4d URLs checked", checked) % checked
-        self.logger.write(u"%s, " % msg)
-        msg = _("runtime %s") % strformat.strduration_long(duration)
-        self.logger.writeln(msg)
-        self.logger.flush()
+        self.logger.log_status(checked, in_progress, queue, duration)

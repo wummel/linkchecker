@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>383</width>
-    <height>232</height>
+    <width>438</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -66,7 +66,7 @@
      </rect>
     </property>
     <property name="currentIndex" >
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab" >
      <attribute name="title" >
@@ -176,7 +176,7 @@
          <height>67</height>
         </rect>
        </property>
-       <widget class="QTextEdit" name="textEdit" >
+       <widget class="QTextBrowser" name="textBrowser" >
         <property name="geometry" >
          <rect>
           <x>0</x>
