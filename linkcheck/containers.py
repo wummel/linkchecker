@@ -158,10 +158,6 @@ class CaselessDict (dict):
         assert isinstance(key, basestring)
         return dict.__contains__(self, key.lower())
 
-    def has_key (self, key):
-        assert isinstance(key, basestring)
-        return dict.has_key(self, key.lower())
-
     def get (self, key, def_val=None):
         assert isinstance(key, basestring)
         return dict.get(self, key.lower(), def_val)

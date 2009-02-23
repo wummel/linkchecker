@@ -626,7 +626,7 @@ if options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
         logtype, encoding = options.output, i18n.default_encoding
-    if not linkcheck.logger.Loggers.has_key(logtype.lower()):
+    if logtype.lower() ot in linkcheck.logger.Loggers:
         print_usage(
      _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
       {"type": logtype, "output": options.output, "option": "'-o, --output'"})
@@ -657,7 +657,7 @@ if options.fileoutput:
                         ns['filename'] = suffix
                 else:
                     ns['filename'] = suffix
-        if not linkcheck.logger.Loggers.has_key(ftype):
+        if ftype not in linkcheck.logger.Loggers:
             print_usage(
      _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
        {"type": ftype, "output": options.output,
