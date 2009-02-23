@@ -7,6 +7,7 @@ HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 PYTHONSVN=/home/calvin/src/python-svn
 PY_FILES_DIRS=linkcheck tests *.py linkchecker gui cgi-bin config doc
+TESTS ?= tests/
 # build dir for debian package
 BUILDDIR=/home/calvin/packages/official
 DEB_ORIG_TARGET=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
@@ -122,7 +123,7 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	nosetests -m "^test_.*" tests/
+	nosetests -m "^test_.*" $(TESTS)
 
 .PHONY: pyflakes
 pyflakes:
