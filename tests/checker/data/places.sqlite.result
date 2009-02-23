@@ -1,12 +1,15 @@
 url file://%(curdir)s/%(datadir)s/places.sqlite
 cache key file://%(curdir)s/%(datadir)s/places.sqlite
 real url file://%(curdir)s/%(datadir)s/places.sqlite
+name %(datadir)s/places.sqlite
 valid
+
 url file.css
 cache key file://%(curdir)s/%(datadir)s/file.css
 real url file://%(curdir)s/%(datadir)s/file.css
 name Testlink 1
 valid
+
 url file.txt
 cache key file://%(curdir)s/%(datadir)s/file.txt
 real url file://%(curdir)s/%(datadir)s/file.txt

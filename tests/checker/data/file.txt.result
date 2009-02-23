@@ -1,4 +1,5 @@
 url file://%(curdir)s/%(datadir)s/file.txt
 cache key file://%(curdir)s/%(datadir)s/file.txt
 real url file://%(curdir)s/%(datadir)s/file.txt
+name %(datadir)s/file.txt
 valid

@@ -1,4 +1,5 @@
 url file://%(curdir)s/%(datadir)s/norobots.html
 cache key file://%(curdir)s/%(datadir)s/norobots.html
 real url file://%(curdir)s/%(datadir)s/norobots.html
+name %(datadir)s/norobots.html
 valid

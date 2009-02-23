@@ -1,6 +1,7 @@
 url file://%(curdir)s/%(datadir)s/file.html
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
+name %(datadir)s/file.html
 valid
 
 url file.html (cached)

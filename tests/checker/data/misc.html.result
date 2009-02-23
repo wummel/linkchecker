@@ -1,6 +1,7 @@
 url file://%(curdir)s/%(datadir)s/misc.html
 cache key file://%(curdir)s/%(datadir)s/misc.html
 real url file://%(curdir)s/%(datadir)s/misc.html
+name %(datadir)s/misc.html
 valid
 
 url http://localhost:8001/

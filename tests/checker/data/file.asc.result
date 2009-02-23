@@ -1,4 +1,5 @@
 url file://%(curdir)s/%(datadir)s/file.asc
 cache key file://%(curdir)s/%(datadir)s/file.asc
 real url file://%(curdir)s/%(datadir)s/file.asc
+name %(datadir)s/file.asc
 valid

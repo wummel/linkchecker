@@ -51,6 +51,7 @@ class TestError (LinkCheckTest):
             u"url %(nurl)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"name %(url)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -61,6 +62,7 @@ class TestError (LinkCheckTest):
             u"url %(nurl)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"name %(url)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -99,6 +101,7 @@ class TestError (LinkCheckTest):
             u"url %(nurl)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"name %(url)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -112,6 +115,7 @@ class TestError (LinkCheckTest):
             u"url %(nurl)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"name %(url)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -125,6 +129,7 @@ class TestError (LinkCheckTest):
             u"url %(nurl)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"name %(url)s" % attrs,
             u"error",
         ]
         self.direct(url, resultlines)

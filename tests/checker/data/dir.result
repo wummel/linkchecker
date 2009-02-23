@@ -1,8 +1,10 @@
 url file://%(curdir)s/%(datadir)s/dir
 cache key file://%(curdir)s/%(datadir)s/dir/
 real url file://%(curdir)s/%(datadir)s/dir/
+name %(datadir)s/dir
 warning Added trailing slash to directory.
 valid
+
 url %%ED%%BB%%AD%%AF%%BF.dat
 cache key file://%(curdir)s/%(datadir)s/dir/%%ED%%BB%%AD%%AF%%BF.dat
 real url file://%(curdir)s/%(datadir)s/dir/%%ED%%BB%%AD%%AF%%BF.dat
