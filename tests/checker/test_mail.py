@@ -17,7 +17,6 @@
 """
 Test mail checking.
 """
-import urllib
 from tests import has_network
 from nose import SkipTest
 from . import LinkCheckTest
