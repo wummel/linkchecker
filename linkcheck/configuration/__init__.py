@@ -23,7 +23,8 @@ import os
 import logging.config
 import urllib
 import _LinkChecker_configdata as configdata
-from .. import log, LOG_CHECK, LOG, ansicolor, lognames, clamav, get_config_dir
+from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames, clamav,
+    get_config_dir)
 from . import confparse
 
 Version = configdata.version
@@ -167,7 +168,7 @@ class Configuration (dict):
         if handler is None:
             handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
         handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
-        logging.getLogger(LOG).addHandler(handler)
+        logging.getLogger(LOG_ROOT).addHandler(handler)
         self.set_debug(debug)
         self.status_logger = status_logger
 

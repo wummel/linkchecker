@@ -18,7 +18,7 @@
 from __future__ import with_statement
 import socket
 import os
-from . import log, LOG
+from . import log, LOG_ROOT
 from .socketutil import create_socket
 
 class ClamavError (Exception):
@@ -101,7 +101,7 @@ def init_clamav_conf (conf):
         global _clamav_conf
         _clamav_conf = ClamavConfig(conf)
     else:
-        log.warn(LOG, "No ClamAV config file found at %r.", conf)
+        log.warn(LOG_ROOT, "No ClamAV config file found at %r.", conf)
 
 
 def get_clamav_conf ():
