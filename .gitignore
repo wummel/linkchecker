@@ -19,3 +19,4 @@ Changelog.linkchecker*
 /share
 /linkchecker.egg-info
 /tests/checker/data/dir
+/linkchecker-out.*

@@ -19,9 +19,8 @@ all:
 
 .PHONY: clean
 clean:
-# ignore errors of this command
 	-$(PYTHON) setup.py clean --all
-	rm -f *-stamp*
+	rm -f linkchecker-out.* *-stamp*
 	$(MAKE) -C po clean
 	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/network/_network.so
@@ -105,6 +104,9 @@ check:
 	check-pofiles -v
 	py-tabdaddy -v
 	$(MAKE) pyflakes
+
+filescheck:
+	-./linkchecker $(LCOPTS) http://$(HOST)/
 
 .PHONY: releasecheck
 releasecheck: check
