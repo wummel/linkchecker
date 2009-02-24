@@ -30,7 +30,7 @@ if socket.has_ipv6:
         # only catch these one:
         # socket.error: (97, 'Address family not supported by protocol')
         # socket.error: (10047, 'Address family not supported by protocol')
-        if msg[0] not in (97, 10047):
+        if msg.args[0] not in (97, 10047):
             raise
 
 
