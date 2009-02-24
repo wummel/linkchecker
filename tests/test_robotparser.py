@@ -46,48 +46,6 @@ class TestRobotParser (unittest.TestCase):
         if a != b:
             self.fail("%s != %s (%s)" % (a, b, ac))
 
-    def test_existing_robots (self):
-        """
-        Test parsing and access of an existing robots.txt file.
-        """
-        if not has_network():
-            raise SkipTest()
-        # robots.txt that exists (use web archive to be sure to have the
-        # same robots.txt every time).
-        self.rp.set_url('http://web.archive.org/web/20050312093828/http://www.musi-cal.com/robots.txt')
-        self.rp.read()
-        # test for re.escape
-        self.check(self.rp.can_fetch('*', 'http://www.musi-cal.com/'), True)
-        # this should match the first rule, which is a disallow
-        self.check(self.rp.can_fetch('', 'http://www.musi-cal.com/'), False)
-        # various cherry pickers
-        self.check(self.rp.can_fetch('CherryPickerSE',
-                           'http://www.musi-cal.com/cgi-bin/event-search'
-                           '?city=San+Francisco'), False)
-        self.check(self.rp.can_fetch('CherryPickerSE/1.0',
-                           'http://www.musi-cal.com/cgi-bin/event-search'
-                           '?city=San+Francisco'), False)
-        self.check(self.rp.can_fetch('CherryPickerSE/1.5',
-                           'http://www.musi-cal.com/cgi-bin/event-search'
-                           '?city=San+Francisco'), False)
-        # case sensitivity
-        self.check(self.rp.can_fetch('ExtractorPro',
-                                     'http://www.musi-cal.com/blubba'), False)
-        self.check(self.rp.can_fetch('extractorpro',
-                                     'http://www.musi-cal.com/blubba'), False)
-        # substring test
-        self.check(self.rp.can_fetch('toolpak/1.1',
-                                     'http://www.musi-cal.com/blubba'), False)
-        # tests for catch-all * agent
-        self.check(self.rp.can_fetch('spam',
-                                    'http://www.musi-cal.com/vsearch'), False)
-        self.check(self.rp.can_fetch('spam',
-                                 'http://www.musi-cal.com/Musician/me'), True)
-        self.check(self.rp.can_fetch('spam',
-                                     'http://www.musi-cal.com/'), True)
-        self.check(self.rp.can_fetch('spam',
-                                     'http://www.musi-cal.com/'), True)
-
     def test_nonexisting_robots (self):
         """
         Test access of a non-existing robots.txt file.

@@ -268,3 +268,26 @@ class TestRobotsTxt (unittest.TestCase):
         good = ['/foo.html']
         bad = [] # Bug report says "/" should be denied, but that is not in the RFC
         self.check_urls(good, bad)
+
+    def test_access7 (self):
+        lines = [
+            "User-agent: Example*",
+            "Disallow: /example",
+            "",
+            "User-agent: *",
+            "Disallow: /cgi-bin",
+        ]
+        self.rp.parse(lines)
+        # test re.escape
+        self.check_url("*", "/", True)
+        # should match first agent
+        self.check_url("", "/example", False)
+        # test agent matching
+        self.check_url("Example", "/example", False)
+        self.check_url("Example/1.0", "/example", False)
+        self.check_url("example", "/example", False)
+        self.check_url("spam", "/cgi-bin", False)
+        self.check_url("spam", "/cgi-bin/foo/bar", False)
+        self.check_url("spam", "/cgi-bin?a=1", False)
+        self.check_url("spam", "/", True)
+
