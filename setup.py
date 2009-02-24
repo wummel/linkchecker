@@ -221,19 +221,28 @@ class MyDistribution (Distribution, object):
                      "creating %s" % filename, self.verbose>=1, self.dry_run)
 
 
+def cc_run (args):
+    """Run the C compiler with a simple main program.
+
+    @return: successful exit flag
+    @rtype: bool
+    """
+    prog = "int main(){}\n"
+    pipe = subprocess.Popen(args,
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+    pipe.communicate(input=prog)
+    if os.WIFEXITED(pipe.returncode):
+        return os.WEXITSTATUS(pipe.returncode) == 0
+    return False
+
+
 def cc_supports_option (cc, option):
     """Check if the given C compiler supports the given option.
 
     @return: True if the compiler supports the option, else False
     @rtype: bool
     """
-    prog = "int main(){}\n"
-    pipe = subprocess.Popen([cc[0], "-E", option, "-"],
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
-    pipe.communicate(input=prog)
-    if os.WIFEXITED(pipe.returncode):
-        return os.WEXITSTATUS(pipe.returncode) == 0
-    return False
+    return cc_run([cc[0], "-E", option, "-"])
 
 
 def cc_remove_option (compiler, option):
