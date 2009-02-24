@@ -626,7 +626,7 @@ if options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
         logtype, encoding = options.output, i18n.default_encoding
-    if logtype.lower() ot in linkcheck.logger.Loggers:
+    if logtype.lower() not in linkcheck.logger.Loggers:
         print_usage(
      _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
       {"type": logtype, "output": options.output, "option": "'-o, --output'"})
