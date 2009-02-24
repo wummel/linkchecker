@@ -34,7 +34,7 @@ class StatusLogger (object):
     def __init__ (self, fd=stderr):
         self.fd = fd
 
-    def print_status (self, checked, in_progress, queue, duration):
+    def log_status (self, checked, in_progress, queue, duration):
         msg = _n("%2d URL active", "%2d URLs active", in_progress) % \
           in_progress
         self.write(u"%s, " % msg)
