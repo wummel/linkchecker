@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Thu Feb 19 11:02:50 2009
+# Created: Tue Feb 24 23:34:48 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(408, 511)
+        MainWindow.resize(500, 533)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -55,7 +55,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.treeWidget, 1, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 408, 29))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 500, 29))
         self.menubar.setObjectName("menubar")
         self.menuLinkChecka = QtGui.QMenu(self.menubar)
         self.menuLinkChecka.setObjectName("menuLinkChecka")
