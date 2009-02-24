@@ -66,8 +66,6 @@ class TextLogger (Logger):
         super(TextLogger, self).__init__(**args)
         self.output_encoding = args.get("encoding", i18n.default_encoding)
         self.init_fileoutput(args)
-        if self.fd is not None:
-            self.fd = ansicolor.Colorizer(self.fd)
         self.colorparent = args.get('colorparent', 'default')
         self.colorurl = args.get('colorurl', 'default')
         self.colorname = args.get('colorname', 'default')
@@ -81,9 +79,10 @@ class TextLogger (Logger):
         self.colordlsize = args.get('colordlsize', 'default')
         self.colorreset = args.get('colorreset', 'default')
 
-    def start_fileoutput (self):
-        super(TextLogger, self).start_fileoutput()
-        self.fd = ansicolor.Colorizer(self.fd)
+    def init_fileoutput (self, args):
+        super(TextLogger, self).init_fileoutput(args)
+        if self.fd is not None:
+            self.fd = ansicolor.Colorizer(self.fd)
 
     def start_output (self):
         """
