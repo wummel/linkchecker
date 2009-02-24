@@ -27,7 +27,6 @@ except NameError:
 import sys
 import os
 import time
-import encodings.idna
 
 from .. import log, LOG_DNS
 import linkcheck.dns.exception
@@ -412,11 +411,11 @@ class Resolver(object):
             self.localhosts.add(h.lower())
 
     def _determine_split_char(self, entry):
-        #
+
         # The windows registry irritatingly changes the list element
         # delimiter in between ' ' and ',' (and vice-versa) in various
         # versions of windows.
-        #
+
         if entry.find(' ') >= 0:
             split_char = ' '
         elif entry.find(',') >= 0:
@@ -553,9 +552,9 @@ class Resolver(object):
     def _win32_is_nic_enabled(self, lm, guid, interface_key):
          # Look in the Windows Registry to determine whether the network
          # interface corresponding to the given guid is enabled.
-         #
+
          # (Code contributed by Paul Marks, thanks!)
-         #
+
          try:
              # This hard-coded location seems to be consistent, at least
              # from Windows 2000 through Vista.
