@@ -91,6 +91,13 @@ Setup for Windows - the binary .exe installer:
 1. Execute the ``LinkChecker-x.y.exe`` file and follow
    the instructions.
 
+2. If an error like ``This application has failed to start because the
+   application configuation is incorrect", please install the Microsoft
+   `Visual C++ 2008 runtime`_ package.
+   
+   .. _Visual C++ 2008 runtime:
+      http://www.microsoft.com/downloads/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&displaylang=en
+
 Setup for Windows - compiling from source:
 ------------------------------------------
 
