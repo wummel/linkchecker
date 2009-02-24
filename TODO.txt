@@ -1,4 +1,2 @@
-- [GUI] Store checked links in urldata list; display in a QTreeWidget;
-  columns result (as icon), URL, name; doubleclick opens property popup
-  http://doc.trolltech.com/4.4/qtreewidget.html
-  http://doc.trolltech.com/4.4/qtreewidgetitem.html
+- [GUI] Make output columns sortable
+- [GUI] Add right-click action: show properties page.
