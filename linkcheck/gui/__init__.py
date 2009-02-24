@@ -79,8 +79,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     def init_treewidget (self):
         from ..logger import Fields
-        self.treeWidget.setColumnCount(3)
-        self.treeWidget.setHeaderLabels((Fields["url"], Fields["name"], Fields["result"]))
+        self.treeWidget.setHeaderLabels((u"#", Fields["url"], Fields["name"], Fields["result"]))
+        self.treeWidget.setColumnHidden(0, True)
+        self.treeWidget.setColumnWidth(1, 200)
+        self.treeWidget.setColumnWidth(2, 200)
+        self.treeWidget.setUniformRowHeights(True)
+        self.treeWidget.setSortingEnabled(True)
+        self.treeWidget.sortByColumn(0, QtCore.Qt.AscendingOrder)
+        self.num = 0
 
     def get_status (self):
         return self._status
@@ -94,6 +100,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.optionsButton.setEnabled(True)
             self.set_statusbar(_("Ready."))
         elif status == Status.checking:
+            self.num = 0
             self.progress.reset()
             self.progress.show()
             self.controlButton.setEnabled(False)
@@ -192,7 +199,7 @@ Version 2 or later.</p>
 
     def log_url (self, url_data):
         """Add URL data to tree widget."""
-        url = url_data.base_url or u""
+        url = unicode(url_data.url)
         name = url_data.name
         if url_data.valid:
             if url_data.warnings:
@@ -205,15 +212,16 @@ Version 2 or later.</p>
             result = u"Error"
         if url_data.result:
             result += u": %s" % url_data.result
-        item = QtGui.QTreeWidgetItem((url, name, result))
+        item = QtGui.QTreeWidgetItem((u"%09d" % self.num, url, name, result))
         item.setFlags(QtCore.Qt.NoItemFlags)
-        item.setForeground(2, QtGui.QBrush(color))
-        item.setToolTip(0, url)
-        item.setToolTip(1, name)
+        item.setForeground(3, QtGui.QBrush(color))
+        item.setToolTip(1, url)
+        item.setToolTip(2, name)
         if url_data.warnings:
             text = u"\n".join([x[1] for x in url_data.warnings])
-            item.setToolTip(2, strformat.wrap(text, 60))
+            item.setToolTip(3, strformat.wrap(text, 60))
         self.treeWidget.addTopLevelItem(item)
+        self.num += 1
 
     def set_statusbar (self, msg):
         """Show status message in status bar."""

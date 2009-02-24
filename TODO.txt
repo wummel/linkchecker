@@ -1,2 +1,2 @@
-- [GUI] Make output columns sortable
-- [GUI] Add right-click action: show properties page.
+- [GUI] Add double-click action in tree widget: show URL.
+- [GUI] Add right-click action in tree widget: show properties page.
