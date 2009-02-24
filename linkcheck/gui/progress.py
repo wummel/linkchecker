@@ -62,5 +62,5 @@ class StatusLogger (object):
     def __init__ (self, widget):
         self.widget = widget
 
-    def print_status (self, checked, in_progress, queued, duration):
+    def log_status (self, checked, in_progress, queued, duration):
         self.widget.emit(QtCore.SIGNAL("log_url(int,int,int,float)"), checked, in_progress, queued, duration)
