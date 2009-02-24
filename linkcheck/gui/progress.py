@@ -37,6 +37,7 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(0)
         set_fixed_font(self.textBrowser)
+        self.connect(self, QtCore.SIGNAL("log_status(int,int,int,float)"), self.log_status)
 
     def log_status (self, checked, in_progress, queued, duration):
         self.label_checked.setText(u"%d" % checked)
@@ -63,4 +64,4 @@ class StatusLogger (object):
         self.widget = widget
 
     def log_status (self, checked, in_progress, queued, duration):
-        self.widget.emit(QtCore.SIGNAL("log_url(int,int,int,float)"), checked, in_progress, queued, duration)
+        self.widget.emit(QtCore.SIGNAL("log_status(int,int,int,float)"), checked, in_progress, queued, duration)

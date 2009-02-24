@@ -21,10 +21,10 @@ from ..logger import Logger
 
 
 class GuiLogHandler (Handler, object):
+    """Delegate log messages to the UI."""
 
     def __init__ (self, widget):
-        """Log to given stream (a file-like object) or to stderr if
-        strm is None."""
+        """Save widget."""
         super(GuiLogHandler, self).__init__()
         self.widget = widget
 
@@ -35,7 +35,7 @@ class GuiLogHandler (Handler, object):
 
 
 class GuiLogger (Logger):
-    """Custom logger class to delegate log messages to the UI."""
+    """Delegate log messages to the UI."""
 
     def __init__ (self, **args):
         super(GuiLogger, self).__init__(**args)
@@ -48,6 +48,7 @@ class GuiLogger (Logger):
         pass
 
     def log_url (self, url_data):
+        """URL gets logged in the main window."""
         self.widget.emit(QtCore.SIGNAL("log_url(PyQt_PyObject)"), url_data)
 
     def end_output (self):

@@ -72,7 +72,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
         self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.showDocumentation)
-        self.connect(self.progress, QtCore.SIGNAL("log_status(int,int,int,float)"), self.progress.log_status)
         #self.controlButton.setText(_("Start"))
         #icon = QtGui.QIcon()
         #icon.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -80,8 +79,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     def init_treewidget (self):
         from ..logger import Fields
-        self.treeWidget.setColumnCount(4)
-        self.treeWidget.setHeaderLabels((Fields["url"], Fields["name"], Fields["result"], Fields["dlsize"]))
+        self.treeWidget.setColumnCount(3)
+        self.treeWidget.setHeaderLabels((Fields["url"], Fields["name"], Fields["result"]))
 
     def get_status (self):
         return self._status
@@ -181,6 +180,7 @@ Version 2 or later.</p>
         self.config["logger"] = self.config.logger_new('gui', widget=self.checker)
         handler = GuiLogHandler(self.checker)
         self.config["status"] = True
+        self.config["status_wait_seconds"] = 1
         self.config.init_logging(StatusLogger(self.progress), handler=handler)
 
     def set_config (self):
@@ -205,11 +205,7 @@ Version 2 or later.</p>
             result = u"Error"
         if url_data.result:
             result += u": %s" % url_data.result
-        if url_data.dlsize >= 0:
-            size = strformat.strsize(url_data.dlsize)
-        else:
-            size = u""
-        item = QtGui.QTreeWidgetItem((url, name, result, size))
+        item = QtGui.QTreeWidgetItem((url, name, result))
         item.setFlags(QtCore.Qt.NoItemFlags)
         item.setForeground(2, QtGui.QBrush(color))
         item.setToolTip(0, url)

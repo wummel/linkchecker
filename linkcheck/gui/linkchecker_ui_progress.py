@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/progress.ui'
 #
-# Created: Mon Feb 23 22:14:22 2009
+# Created: Tue Feb 24 21:40:49 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,12 +13,12 @@ class Ui_ProgressDialog(object):
     def setupUi(self, ProgressDialog):
         ProgressDialog.setObjectName("ProgressDialog")
         ProgressDialog.setWindowModality(QtCore.Qt.ApplicationModal)
-        ProgressDialog.resize(438, 420)
+        ProgressDialog.resize(322, 217)
         self.cancelButton = QtGui.QPushButton(ProgressDialog)
-        self.cancelButton.setGeometry(QtCore.QRect(260, 190, 75, 27))
+        self.cancelButton.setGeometry(QtCore.QRect(240, 180, 70, 27))
         self.cancelButton.setObjectName("cancelButton")
         self.frame = QtGui.QFrame(ProgressDialog)
-        self.frame.setGeometry(QtCore.QRect(40, 20, 301, 161))
+        self.frame.setGeometry(QtCore.QRect(10, 10, 301, 161))
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName("frame")
