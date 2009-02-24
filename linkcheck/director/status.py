@@ -22,17 +22,18 @@ from . import task
 class Status (task.CheckedTask):
     """Status thread."""
 
-    def __init__ (self, urlqueue, logger):
+    def __init__ (self, urlqueue, logger, wait_seconds):
         """Store urlqueue object."""
         super(Status, self).__init__()
         self.urlqueue = urlqueue
         self.logger = logger
+        self.wait_seconds = wait_seconds
 
     def run_checked (self):
         """Print periodic status messages."""
         self.start_time = time.time()
         self.setName("Status")
-        waitfor = range(5)
+        waitfor = range(self.wait_seconds)
         while True:
             for dummy in waitfor:
                 time.sleep(1)

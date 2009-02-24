@@ -84,6 +84,7 @@ class Configuration (dict):
         self['sendcookies'] = False
         self['storecookies'] = False
         self["status"] = False
+        self["status_wait_seconds"] = 5
         self["fileoutput"] = []
         # Logger configurations
         self["text"] = {
