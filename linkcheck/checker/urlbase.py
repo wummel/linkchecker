@@ -431,7 +431,7 @@ class UrlBase (object):
         except tuple(ExcList):
             value = self.handle_exception()
             # make nicer error msg for unknown hosts
-            if isinstance(value, socket.error) and value[0] == -2:
+            if isinstance(value, socket.error) and value.args[0] == -2:
                 value = _('Hostname not found')
             # make nicer error msg for bad status line
             if isinstance(value, httplib.BadStatusLine):
@@ -474,7 +474,7 @@ class UrlBase (object):
         log.debug(LOG_CHECK, "exception %s", traceback.format_tb(tb))
         # note: etype must be the exact class, not a subclass
         if (etype in ExcNoCacheList) or \
-           (etype == socket.error and value[0]==errno.EBADF) or \
+           (etype == socket.error and value.args[0]==errno.EBADF) or \
             not value:
             # EBADF occurs when operating on an already socket
             self.caching = False

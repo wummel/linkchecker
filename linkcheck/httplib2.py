@@ -743,7 +743,7 @@ class HTTPConnection:
             else:
                 self.sock.sendall(str)
         except socket.error, v:
-            if v[0] == 32:      # Broken pipe
+            if v.args[0] == 32:      # Broken pipe
                 self.close()
             raise
 
@@ -916,7 +916,7 @@ class HTTPConnection:
             self._send_request(method, url, body, headers)
         except socket.error, v:
             # trap 'Broken pipe' if we're allowed to automatically reconnect
-            if v[0] != errno.EPIPE or not self.auto_open:
+            if v.args[0] != errno.EPIPE or not self.auto_open:
                 raise
             # try one more time
             self._send_request(method, url, body, headers)
@@ -926,7 +926,7 @@ class HTTPConnection:
         thelen = None
         try:
             thelen = str(len(body))
-        except TypeError, te:
+        except TypeError:
             # If this is a file-like object, try to
             # fstat its file descriptor
             import os
@@ -1071,17 +1071,17 @@ class SSLFile(SharedSocketClient):
             try:
                 buf = self._ssl.read(self._bufsize)
             except socket.sslerror, err:
-                if (err[0] == socket.SSL_ERROR_WANT_READ
-                    or err[0] == socket.SSL_ERROR_WANT_WRITE):
+                if (err.args[0] == socket.SSL_ERROR_WANT_READ
+                    or err.args[0] == socket.SSL_ERROR_WANT_WRITE):
                     continue
-                if (err[0] == socket.SSL_ERROR_ZERO_RETURN
-                    or err[0] == socket.SSL_ERROR_EOF):
+                if (err.args[0] == socket.SSL_ERROR_ZERO_RETURN
+                    or err.args[0] == socket.SSL_ERROR_EOF):
                     break
                 raise
             except socket.error, err:
-                if err[0] == errno.EINTR:
+                if err.args[0] == errno.EINTR:
                     continue
-                if err[0] == errno.EBADF:
+                if err.args[0] == errno.EBADF:
                     # XXX socket was closed?
                     break
                 raise
