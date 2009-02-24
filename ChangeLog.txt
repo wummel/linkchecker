@@ -7,6 +7,8 @@
     text logger which also honors the system settings.
     Closes: SF bug #2579899
 
+  * Improved progress dialog in GUI client.
+
 5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)
 
   * Properly detect location of the log configuration file in the Windows
