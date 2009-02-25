@@ -83,7 +83,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.treeWidget.setColumnHidden(0, True)
         self.treeWidget.setColumnWidth(1, 200)
         self.treeWidget.setColumnWidth(2, 200)
-        self.treeWidget.setUniformRowHeights(True)
         self.treeWidget.setSortingEnabled(True)
         self.treeWidget.sortByColumn(0, QtCore.Qt.AscendingOrder)
         self.num = 0

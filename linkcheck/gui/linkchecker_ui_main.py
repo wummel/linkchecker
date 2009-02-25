@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Tue Feb 24 23:34:48 2009
+# Created: Wed Feb 25 02:11:29 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.controlButton)
         self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
         self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
+        self.treeWidget.setUniformRowHeights(True)
+        self.treeWidget.setItemsExpandable(False)
+        self.treeWidget.setExpandsOnDoubleClick(False)
         self.treeWidget.setObjectName("treeWidget")
         self.gridLayout.addWidget(self.treeWidget, 1, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
