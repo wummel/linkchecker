@@ -102,7 +102,7 @@ check:
 	[ ! -d .svn ] || check-nosvneolstyle -v
 	check-copyright
 	check-pofiles -v
-	py-tabdaddy -v
+	py-tabdaddy
 	$(MAKE) pyflakes
 
 filescheck:
