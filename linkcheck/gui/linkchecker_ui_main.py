@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Wed Feb 25 02:11:29 2009
+# Created: Wed Feb 25 02:15:51 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.controlButton)
         self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
         self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
+        self.treeWidget.setAlternatingRowColors(True)
         self.treeWidget.setUniformRowHeights(True)
         self.treeWidget.setItemsExpandable(False)
         self.treeWidget.setExpandsOnDoubleClick(False)
@@ -90,7 +91,10 @@ class Ui_MainWindow(object):
         self.optionsButton.setText(QtGui.QApplication.translate("MainWindow", "Options...", None, QtGui.QApplication.UnicodeUTF8))
         self.controlButton.setToolTip(QtGui.QApplication.translate("MainWindow", "Start checking the given URL.", None, QtGui.QApplication.UnicodeUTF8))
         self.controlButton.setText(QtGui.QApplication.translate("MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "1", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "#", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Url", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Name", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Result", None, QtGui.QApplication.UnicodeUTF8))
         self.menuLinkChecka.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))

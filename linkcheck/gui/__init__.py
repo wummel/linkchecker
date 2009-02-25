@@ -78,8 +78,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         #self.controlButton.setIcon(icon)
 
     def init_treewidget (self):
-        from ..logger import Fields
-        self.treeWidget.setHeaderLabels((u"#", Fields["url"], Fields["name"], Fields["result"]))
         self.treeWidget.setColumnHidden(0, True)
         self.treeWidget.setColumnWidth(1, 200)
         self.treeWidget.setColumnWidth(2, 200)
