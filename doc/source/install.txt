@@ -115,7 +115,7 @@ Setup for Windows - compiling from source:
 4. *Optional, used for Virus checking:*
    ClamAv from
    http://www.sosdg.org/clamav-win32/
-   [http://clamav-sosdg.googlecode.com/files/clamav-0.93.3-1a.exe]
+   [http://clamav-sosdg.googlecode.com/files/clamav-0.94.2-1a.exe]
 
 5. Install the MinGW suite from http://mingw.sourceforge.net/
    Be sure to install in the given order:
