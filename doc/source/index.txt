@@ -54,7 +54,7 @@ look at the ChangeLog_.
 .. _install documentation:
    install.html
 .. _ChangeLog:
-   http://linkchecker.svn.sourceforge.net/viewvc/linkchecker/trunk/linkchecker/ChangeLog.txt?view=markup
+   http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker;a=blob;f=ChangeLog.txt;hb=HEAD
 
 
 Screenshots
