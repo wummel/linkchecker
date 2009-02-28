@@ -89,5 +89,15 @@ def has_clamav ():
     return False
 
 
+@memoized
+def has_proxy ():
+    try:
+        cmd = ["waitfor", "-w", "1", "port:localhost:8081"]
+        return subprocess.call(cmd) == 0
+    except OSError:
+        pass
+    return False
+
+
 if __name__ == '__main__':
-    print has_clamav(), has_network(), has_msgfmt(), has_posix()
+    print has_clamav(), has_network(), has_msgfmt(), has_posix(), has_proxy()
