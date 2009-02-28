@@ -2371,7 +2371,7 @@ static int parser_setencoding (parser_object* self, PyObject* value, void* closu
         PyErr_SetString(PyExc_TypeError, "Cannot delete encoding");
         return -1;
     }
-    if (!PyString_Check(value)) {
+    if (!PyString_CheckExact(value)) {
         PyErr_SetString(PyExc_TypeError, "encoding must be string");
         return -1;
     }
@@ -2395,8 +2395,12 @@ static int parser_setdoctype (parser_object* self, PyObject* value, void* closur
         PyErr_SetString(PyExc_TypeError, "Cannot delete doctype");
         return -1;
     }
-    if (!PyString_Check(value)) {
-        PyErr_SetString(PyExc_TypeError, "doctype must be string");
+    if (!PyString_CheckExact(value)) {
+        PyObject* repr = PyObject_Repr(value);
+        char* cp = PyString_AsString(repr);
+        if (NULL == cp)
+            return -1;
+        PyErr_Format(PyExc_TypeError, "doctype %s must be string", cp);
         return -1;
     }
     Py_DECREF(self->doctype);
