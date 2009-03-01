@@ -20,7 +20,6 @@ Handle http links.
 
 import urlparse
 import urllib
-import time
 import re
 import zlib
 import socket
@@ -124,6 +123,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.headers = None
         self.auth = None
         self.cookies = []
+        # temporary data filled when reading redirections
+        self._data = None
 
     def allows_robots (self, url):
         """
@@ -548,26 +549,24 @@ Use URL `%(newurl)s' instead for checking.""") % {
         h.connect()
         return h
 
-    def get_content (self):
-        """
-        Get content of the URL target. The content data is cached after
+    def read_content (self):
+        """Get content of the URL target. The content data is cached after
         the first call to this method.
 
         @return: URL content, decompressed and decoded
         @rtype: string
         """
-        if self.data is None:
-            self.method = "GET"
-            response = self._get_http_response()
-            response = self.follow_redirections(response, set_result=False)[1]
-            self.headers = response.msg
+        self.method = "GET"
+        response = self._get_http_response()
+        response = self.follow_redirections(response, set_result=False)[1]
+        self.headers = response.msg
+        if self._data is None:
             self._read_content(response)
-            if self.data is None:
-                self.data = ""
-        return self.data
+        data = self._data
+        self._data = None
+        return data
 
     def _read_content (self, response):
-        t = time.time()
         data = response.read()
         encoding = headers.get_content_encoding(self.headers)
         if encoding in _supported_encodings:
@@ -582,10 +581,8 @@ Use URL `%(newurl)s' instead for checking.""") % {
                                  tag=WARN_HTTP_DECOMPRESS_ERROR)
                 f = StringIO(data)
             data = f.read()
-        if self.data is None and self.method == "GET" and \
-           response.status not in [301, 302]:
-            self.data = data
-            self.dltime = time.time() - t
+        # store temporary data
+        self._data = data
 
     def encoding_supported (self):
         """Check if page encoding is supported."""

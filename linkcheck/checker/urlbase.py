@@ -599,15 +599,18 @@ class UrlBase (object):
         return True
 
     def get_content (self):
-        """
-        Precondition: url_connection is an opened URL.
-        """
+        """Precondition: url_connection is an opened URL."""
         if self.data is None:
+            log.debug(LOG_CHECK, "Get content of %r", self.url)
             t = time.time()
-            self.data = self.url_connection.read()
+            self.data = self.read_content()
             self.dltime = time.time() - t
             self.dlsize = len(self.data)
         return self.data
+
+    def read_content (self):
+        """Return data for this URL. Can be overridden in subclasses."""
+        return self.url_connection.read()
 
     def check_content (self):
         """Check content data for warnings, syntax errors, viruses etc."""

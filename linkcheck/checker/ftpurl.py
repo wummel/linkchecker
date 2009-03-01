@@ -19,7 +19,6 @@ Handle FTP links.
 """
 
 import ftplib
-import time
 import urllib
 from cStringIO import StringIO
 
@@ -194,20 +193,13 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if ro.search(self.url):
                 getattr(self, "parse_"+key)()
 
-    def get_content (self):
-        """
-        Return URL target content, or in case of directories a dummy HTML
-        file with links to the files.
-        """
-        if not self.valid:
-            return ""
-        if self.data is not None:
-            return self.data
-        t = time.time()
+    def read_content (self):
+        """Return URL target content, or in case of directories a dummy HTML
+        file with links to the files."""
         if self.is_directory():
             self.url_connection.cwd(self.filename)
             self.files = self.get_files()
-            self.data = get_index_html(self.files)
+            data = get_index_html(self.files)
         else:
             # download file in BINARY mode
             ftpcmd = "RETR %s" % self.filename
@@ -216,11 +208,9 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 """Helper method storing given data"""
                 buf.write(s)
             self.url_connection.retrbinary(ftpcmd, stor_data)
-            self.data = buf.getvalue()
+            data = buf.getvalue()
             buf.close()
-        self.dltime = time.time() - t
-        self.dlsize = len(self.data)
-        return self.data
+        return data
 
     def close_connection (self):
         """

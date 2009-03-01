@@ -20,7 +20,6 @@ Handle local file: links.
 
 import re
 import os
-import time
 import urlparse
 import urllib
 import urllib2
@@ -162,36 +161,16 @@ class FileUrl (urlbase.UrlBase):
                             {"path": path, "realpath": realpath},
                                tag=WARN_FILE_SYSTEM_PATH)
 
-    def get_content (self):
-        """
-        Return file content, or in case of directories a dummy HTML file
-        with links to the files.
-        """
-        if not self.valid:
-            return ""
-        if self.data is not None:
-            return self.data
-        elif self.is_directory():
-            return self.get_directory_content()
+    def read_content (self):
+        """Return file content, or in case of directories a dummy HTML file
+        with links to the files."""
+        if self.is_directory():
+            data = get_index_html(get_files(self.get_os_filename()))
+            if isinstance(data, unicode):
+                data = data.encode("iso8859-1", "ignore")
         else:
-            return super(FileUrl, self).get_content()
-
-    def get_directory_content (self):
-        """
-        Get dummy HTML data for the directory content.
-
-        @return: HTML data
-        @rtype: string
-        """
-        t = time.time()
-        files = get_files(self.get_os_filename())
-        data = get_index_html(files)
-        if isinstance(data, unicode):
-            data = data.encode("iso8859-1", "ignore")
-        self.data = data
-        self.dltime = time.time() - t
-        self.dlsize = len(self.data)
-        return self.data
+            data = super(FileUrl, self).read_content()
+        return data
 
     def is_html (self):
         """
