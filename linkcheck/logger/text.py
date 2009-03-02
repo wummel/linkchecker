@@ -37,7 +37,7 @@ class TextLogger (Logger):
     as a default and then switch to another configured output. So we
     must not print anything out at __init__ time.
 
-    C{def log_filter_url (self, url_data, do_filter)}
+    C{def log_filter_url (self, url_data, do_print)}
     Called every time an url finished checking. All data we checked is in
     the UrlData object url_data.
 

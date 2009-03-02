@@ -225,8 +225,8 @@ class Logger (object):
 
     def log_filter_url (self, url_data, do_print):
         """
-        Log a new url with this logger if do_filter is True. Else
-        only update accounting data
+        Log a new url with this logger if do_print is True. Else
+        only update accounting data.
         """
         self.number += 1
         if not url_data.valid:
