@@ -21,7 +21,10 @@ Logging and debug functions.
 import logging
 import os
 import inspect
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 # memory leak debugging
 #import gc
@@ -54,13 +57,15 @@ def _stack_format (stack):
     return s.getvalue()
 
 
-def _log (fun, msg, args, tb=False):
-    """Log a message with given function and an optional traceback.
+def _log (fun, msg, args, **kwargs):
+    """Log a message with given function. Optional the following keyword
+    arguments are supported:
+    traceback(bool) - if True print traceback of current function
 
     @return: None
     """
     fun(msg, *args)
-    if tb:
+    if kwargs.get("traceback"):
         # note: get rid of last parts of the stack
         fun(_stack_format(inspect.stack()[2:]))
 
@@ -72,7 +77,7 @@ def debug (logname, msg, *args, **kwargs):
     """
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.DEBUG):
-        _log(log.debug, msg, args, tb=kwargs.get("tb"))
+        _log(log.debug, msg, args, **kwargs)
 
 
 def info (logname, msg, *args, **kwargs):
@@ -82,7 +87,7 @@ def info (logname, msg, *args, **kwargs):
     """
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.INFO):
-        _log(log.info, msg, args, tb=kwargs.get("tb"))
+        _log(log.info, msg, args, **kwargs)
 
 
 def warn (logname, msg, *args, **kwargs):
@@ -92,7 +97,7 @@ def warn (logname, msg, *args, **kwargs):
     """
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.WARN):
-        _log(log.warn, msg, args, tb=kwargs.get("tb"))
+        _log(log.warn, msg, args, **kwargs)
 
 
 def error (logname, msg, *args, **kwargs):
@@ -102,7 +107,7 @@ def error (logname, msg, *args, **kwargs):
     """
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.ERROR):
-        _log(log.error, msg, args, tb=kwargs.get("tb"))
+        _log(log.error, msg, args, **kwargs)
 
 
 def critical (logname, msg, *args, **kwargs):
@@ -112,7 +117,7 @@ def critical (logname, msg, *args, **kwargs):
     """
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.CRITICAL):
-        _log(log.critical, msg, args, tb=kwargs.get("tb"))
+        _log(log.critical, msg, args, **kwargs)
 
 
 def exception (logname, msg, *args, **kwargs):
@@ -122,7 +127,7 @@ def exception (logname, msg, *args, **kwargs):
     """
     log = logging.getLogger(logname)
     if log.isEnabledFor(logging.ERROR):
-        _log(log.exception, msg, args, tb=kwargs.get("tb"))
+        _log(log.exception, msg, args, **kwargs)
 
 
 def is_debug (logname):
