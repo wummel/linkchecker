@@ -21,6 +21,7 @@ Logging and debug functions.
 import logging
 import os
 import inspect
+import traceback
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -61,6 +62,7 @@ def _log (fun, msg, args, **kwargs):
     """Log a message with given function. Optional the following keyword
     arguments are supported:
     traceback(bool) - if True print traceback of current function
+    exception(bool) - if True print last exception traceback
 
     @return: None
     """
@@ -68,6 +70,8 @@ def _log (fun, msg, args, **kwargs):
     if kwargs.get("traceback"):
         # note: get rid of last parts of the stack
         fun(_stack_format(inspect.stack()[2:]))
+    if kwargs.get("exception"):
+        fun(traceback.format_exc())
 
 
 def debug (logname, msg, *args, **kwargs):
