@@ -168,10 +168,14 @@ class Configuration (dict):
             logging.config.fileConfig(filename)
         if handler is None:
             handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
-        handler.setFormatter(logging.Formatter("%(levelname)s %(message)s"))
         logging.getLogger(LOG_ROOT).addHandler(handler)
         self.set_debug(debug)
         self.status_logger = status_logger
+        if self['threads'] > 0:
+            format = "%(levelname)s %(threadName)s %(message)s"
+        else:
+            format = "%(levelname)s %(message)s"
+        handler.setFormatter(logging.Formatter(format))
 
     def set_debug (self, debug):
         """Set debugging levels for configured loggers. The argument
