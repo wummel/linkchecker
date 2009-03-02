@@ -115,8 +115,8 @@ def get_index_html (urls):
     """
     Construct artificial index.html from given URLs.
 
-    @param urls: list with url strings
-    @type urls: list of string
+    @param urls: URL strings
+    @type urls: iterator of string
     """
     lines = ["<html>", "<body>"]
     for entry in urls:
@@ -125,7 +125,6 @@ def get_index_html (urls):
         lines.append('<a href="%s">%s</a>' % (url, name))
     lines.extend(["</body>", "</html>"])
     return os.linesep.join(lines)
-
 
 
 class StoringHandler (logging.Handler):

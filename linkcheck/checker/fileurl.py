@@ -36,18 +36,16 @@ except ImportError:
     has_sqlite = False
 
 def get_files (dirname):
-    """
-    Get lists of files in directory. Does only allow regular files
-    and directories, no symlinks.
-    """
-    files = []
+    """Get iterator of entries in directory. Only allows regular files
+    and directories, no symlinks."""
     for entry in os.listdir(dirname):
         fullentry = os.path.join(dirname, entry)
-        if os.path.islink(fullentry) or \
-           not (os.path.isfile(fullentry) or os.path.isdir(fullentry)):
+        if os.path.islink(fullentry):
             continue
-        files.append(entry)
-    return files
+        if os.path.isfile(fullentry):
+            yield entry
+        elif os.path.isdir(fullentry):
+            yield entry+"/"
 
 
 def prepare_urlpath_for_nt (path):
@@ -107,6 +105,8 @@ class FileUrl (urlbase.UrlBase):
             base_url = os.path.expanduser(base_url)
             if not is_absolute_path(base_url):
                 base_url = os.getcwd()+"/"+base_url
+                if os.path.isdir(base_url):
+                    base_url += "/"
             base_url = "file://"+base_url
         if os.name == "nt":
             base_url = base_url.replace("\\", "/")
