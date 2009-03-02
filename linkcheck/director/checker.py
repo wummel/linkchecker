@@ -70,7 +70,7 @@ class Checker (task.CheckedTask):
             url = ""
         else:
             url = url_data.url.encode("ascii", "replace")
-        self.setName("Check-%s" % url)
+        self.setName("CheckThread-%s" % url)
         if not url_data.has_result:
             url_data.check()
         self.logger.log_url(url_data)
