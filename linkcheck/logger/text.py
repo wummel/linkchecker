@@ -122,12 +122,12 @@ class TextLogger (Logger):
             self.write_base(url_data)
         if url_data.url and self.has_part('realurl'):
             self.write_real(url_data)
+        if url_data.checktime and self.has_part('checktime'):
+            self.write_checktime(url_data)
         if url_data.dltime >= 0 and self.has_part('dltime'):
             self.write_dltime(url_data)
         if url_data.dlsize >= 0 and self.has_part('dlsize'):
             self.write_dlsize(url_data)
-        if url_data.checktime and self.has_part('checktime'):
-            self.write_checktime(url_data)
         if url_data.info and self.has_part('info'):
             self.write_info(url_data)
         if url_data.warnings and self.has_part('warning'):
