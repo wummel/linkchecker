@@ -52,9 +52,9 @@ class Logger (object):
         """Determine if URL entry should be logged or not."""
         if self.complete:
             return True
+        if url_data.cached and url_data.valid:
+            return False
         if self.verbose:
-            if url_data.cached and url_data.valid:
-                return False
             return True
         has_warnings = False
         for tag, dummy in url_data.warnings:

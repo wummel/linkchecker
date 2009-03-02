@@ -11,6 +11,8 @@
 
   * The content size of downloads is now shown again.
 
+  * Make output more concise by not logging duplicate cached URLs.
+
 5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)
 
   * Properly detect location of the log configuration file in the Windows
