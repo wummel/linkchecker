@@ -81,6 +81,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.treeWidget.setColumnHidden(0, True)
         self.treeWidget.setColumnWidth(1, 200)
         self.treeWidget.setColumnWidth(2, 200)
+        self.treeWidget.setColumnWidth(3, 150)
         self.treeWidget.setSortingEnabled(True)
         self.treeWidget.sortByColumn(0, QtCore.Qt.AscendingOrder)
         self.num = 0
@@ -196,6 +197,13 @@ Version 2 or later.</p>
 
     def log_url (self, url_data):
         """Add URL data to tree widget."""
+        num = u"%09d" % self.num
+        if url_data.parent_url:
+            parent = unicode(url_data.parent_url) + \
+                (_(", line %d") % url_data.line) + \
+                (_(", col %d") % url_data.column)
+        else:
+            parent = u""
         url = unicode(url_data.url)
         name = url_data.name
         if url_data.valid:
@@ -209,14 +217,14 @@ Version 2 or later.</p>
             result = u"Error"
         if url_data.result:
             result += u": %s" % url_data.result
-        item = QtGui.QTreeWidgetItem((u"%09d" % self.num, url, name, result))
+        item = QtGui.QTreeWidgetItem((num, parent, url, name, result))
         item.setFlags(QtCore.Qt.NoItemFlags)
-        item.setForeground(3, QtGui.QBrush(color))
-        item.setToolTip(1, url)
-        item.setToolTip(2, name)
+        item.setForeground(4, QtGui.QBrush(color))
+        item.setToolTip(2, url)
+        item.setToolTip(3, name)
         if url_data.warnings:
             text = u"\n".join([x[1] for x in url_data.warnings])
-            item.setToolTip(3, strformat.wrap(text, 60))
+            item.setToolTip(4, strformat.wrap(text, 60))
         self.treeWidget.addTopLevelItem(item)
         self.num += 1
 

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Wed Feb 25 02:15:51 2009
+# Created: Mon Mar  2 23:21:42 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(500, 533)
+        MainWindow.resize(638, 533)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.treeWidget, 1, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 500, 29))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 638, 29))
         self.menubar.setObjectName("menubar")
         self.menuLinkChecka = QtGui.QMenu(self.menubar)
         self.menuLinkChecka.setObjectName("menuLinkChecka")
@@ -92,9 +92,10 @@ class Ui_MainWindow(object):
         self.controlButton.setToolTip(QtGui.QApplication.translate("MainWindow", "Start checking the given URL.", None, QtGui.QApplication.UnicodeUTF8))
         self.controlButton.setText(QtGui.QApplication.translate("MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
         self.treeWidget.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "#", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Url", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Name", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Result", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Parent", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Url", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Name", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(4, QtGui.QApplication.translate("MainWindow", "Result", None, QtGui.QApplication.UnicodeUTF8))
         self.menuLinkChecka.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
