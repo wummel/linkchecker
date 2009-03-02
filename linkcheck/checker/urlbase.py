@@ -27,7 +27,6 @@ import time
 import errno
 import socket
 import select
-import traceback
 
 from . import absolute_url, StoringHandler, get_url_from
 from ..cache import geoip
@@ -470,8 +469,8 @@ class UrlBase (object):
         """
         An exception occurred. Log it and set the cache flag.
         """
-        etype, value, tb = sys.exc_info()
-        log.debug(LOG_CHECK, "exception %s", traceback.format_tb(tb))
+        etype, value = sys.exc_info()[:2]
+        log.debug(LOG_CHECK, "Error in %s: %s %s", self.url, etype, value, exception=True)
         # note: etype must be the exact class, not a subclass
         if (etype in ExcNoCacheList) or \
            (etype == socket.error and value.args[0]==errno.EBADF) or \
