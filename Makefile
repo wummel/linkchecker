@@ -5,9 +5,10 @@ VERSION=$(shell $(PYTHON) setup.py --version)
 MACHINE=$(shell uname -m)
 HOST=www.debian.org
 LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
-PYTHONSVN=/home/calvin/src/python-svn
+PYTHONSRC=/home/calvin/src/python-gitsvn
 PY_FILES_DIRS=linkcheck tests *.py linkchecker gui cgi-bin config doc
 TESTS ?= tests/
+PAGER ?= less
 # build dir for debian package
 BUILDDIR=/home/calvin/packages/official
 DEB_ORIG_TARGET=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
@@ -143,7 +144,7 @@ reindent:
 diff:
 	@for f in gzip robotparser httplib; do \
 	  echo "Comparing $${f}.py"; \
-	  diff -u linkcheck/$${f}2.py $(PYTHONSVN)/Lib/$${f}.py | less; \
+	  diff -u linkcheck/$${f}2.py $(PYTHONSRC)/Lib/$${f}.py | $(PAGER); \
 	done
 
 .PHONY: changelog
