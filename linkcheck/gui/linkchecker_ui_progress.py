@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/progress.ui'
 #
-# Created: Tue Feb 24 21:40:49 2009
+# Created: Wed Mar  4 21:31:01 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -70,14 +70,14 @@ class Ui_ProgressDialog(object):
         QtCore.QMetaObject.connectSlotsByName(ProgressDialog)
 
     def retranslateUi(self, ProgressDialog):
-        ProgressDialog.setWindowTitle(QtGui.QApplication.translate("ProgressDialog", "LinkChecker progress", None, QtGui.QApplication.UnicodeUTF8))
-        self.cancelButton.setText(QtGui.QApplication.translate("ProgressDialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("ProgressDialog", "Active:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_active.setText(QtGui.QApplication.translate("ProgressDialog", "0", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("ProgressDialog", "Queued:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_queued.setText(QtGui.QApplication.translate("ProgressDialog", "0", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("ProgressDialog", "Checked:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_checked.setText(QtGui.QApplication.translate("ProgressDialog", "0", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("ProgressDialog", "Status", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("ProgressDialog", "Debug", None, QtGui.QApplication.UnicodeUTF8))
+        ProgressDialog.setWindowTitle(_("LinkChecker progress"))
+        self.cancelButton.setText(_("Cancel"))
+        self.label.setText(_("Active:"))
+        self.label_active.setText(_("0"))
+        self.label_2.setText(_("Queued:"))
+        self.label_queued.setText(_("0"))
+        self.label_3.setText(_("Checked:"))
+        self.label_checked.setText(_("0"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _("Status"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _("Debug"))
 

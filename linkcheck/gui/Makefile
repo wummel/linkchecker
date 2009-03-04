@@ -9,6 +9,7 @@ all: $(UI_FILES) $(RC_FILES)
 
 linkchecker_ui_%.py: ui/%.ui
 	pyuic4 -o $@ $<
+	sed -i -r -e 's/QtGui\.QApplication\.translate\("[^"]+", "([^"]+)", None, QtGui\.QApplication\.UnicodeUTF8\)/_("\1")/g' $@
 
 linkchecker_rc.py: rc/linkchecker.qrc
 	pyrcc4 -o $@ $<

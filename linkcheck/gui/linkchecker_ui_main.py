@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Mon Mar  2 23:21:42 2009
+# Created: Wed Mar  4 21:30:14 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -86,21 +86,21 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "LinkChecker", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "URL", None, QtGui.QApplication.UnicodeUTF8))
-        self.optionsButton.setText(QtGui.QApplication.translate("MainWindow", "Options...", None, QtGui.QApplication.UnicodeUTF8))
-        self.controlButton.setToolTip(QtGui.QApplication.translate("MainWindow", "Start checking the given URL.", None, QtGui.QApplication.UnicodeUTF8))
-        self.controlButton.setText(QtGui.QApplication.translate("MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "#", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Parent", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Url", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Name", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.headerItem().setText(4, QtGui.QApplication.translate("MainWindow", "Result", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuLinkChecka.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionQuit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(_("LinkChecker"))
+        self.label.setText(_("URL"))
+        self.optionsButton.setText(_("Options..."))
+        self.controlButton.setToolTip(_("Start checking the given URL."))
+        self.controlButton.setText(_("Start"))
+        self.treeWidget.headerItem().setText(0, _("#"))
+        self.treeWidget.headerItem().setText(1, _("Parent"))
+        self.treeWidget.headerItem().setText(2, _("Url"))
+        self.treeWidget.headerItem().setText(3, _("Name"))
+        self.treeWidget.headerItem().setText(4, _("Result"))
+        self.menuLinkChecka.setTitle(_("File"))
+        self.menuHelp.setTitle(_("Help"))
+        self.actionQuit.setText(_("Quit"))
+        self.actionQuit.setShortcut(_("Ctrl+Q"))
+        self.actionAbout.setText(_("About"))
+        self.actionHelp.setText(_("Help"))
 
 import linkchecker_rc
