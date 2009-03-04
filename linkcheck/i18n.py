@@ -25,12 +25,7 @@ import gettext
 
 # more supported languages are added in init()
 supported_languages = set(['en'])
-default_language = 'en'
-default_encoding = locale.getpreferredencoding()
-# It can happen that the preferrec encoding is not determinable, which
-# means the function returned None. Fall back to ASCII in this case.
-if default_encoding is None:
-    default_encoding = "ascii"
+default_language = default_encoding = None
 
 def install_builtin (translator, do_unicode):
     """Install _() and _n() gettext methods into default namespace."""
@@ -76,6 +71,9 @@ def init (domain, directory):
     if loc in supported_languages:
         default_language = loc
         default_encoding = encoding
+    else:
+        default_language = "en"
+        default_encoding = "ascii"
     # install translation service routines into default namespace
     translator = get_translator(domain, directory,
                                 languages=[default_language], fallback=True)
@@ -126,10 +124,18 @@ def get_headers_lang (headers):
 
 
 def get_locale ():
-    """Return current configured locale."""
-    loc, encoding = locale.getlocale(category=locale.LC_ALL)
+    loc, encoding = locale.getdefaultlocale()
     if loc is None:
-        return ('C', 'ascii')
+        loc = "C"
+    else:
+        loc = norm_locale(loc)
+    if encoding is None:
+        encoding = "ascii"
+    return (loc, encoding)
+
+
+def norm_locale (loc):
+    """Normalize a locale."""
     loc = locale.normalize(loc)
     # split up the locale into its base components
     pos = loc.find('@')
@@ -141,7 +147,7 @@ def get_locale ():
     pos = loc.find('_')
     if pos >= 0:
         loc = loc[:pos]
-    return (loc, encoding)
+    return loc
 
 
 lang_names = {
