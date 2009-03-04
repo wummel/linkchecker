@@ -44,6 +44,6 @@ include doc/examples/*.sh
 include doc/source/*.txt
 include doc/source/*.jpg
 include doc/source/conf.py
-include doc/source/_static/*
-include doc/source/_templates/*
+include doc/source/static/*
+include doc/source/templates/*
 include linkcheck/dns/ChangeLog
