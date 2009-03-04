@@ -116,8 +116,9 @@ def init_i18n ():
 
     @return: None
     """
-    locdir = os.environ.get('LOCPATH')
-    if locdir is None:
+    if 'LOCPATH' in os.environ:
+        locdir = os.environ['LOCPATH']
+    else:
         locdir = os.path.join(get_install_data(), 'share', 'locale')
     i18n.init(configdata.name, locdir)
     # install translated log level names
