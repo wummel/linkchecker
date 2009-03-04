@@ -404,7 +404,7 @@ class Entry (object):
                 return True
         return False
 
-    def allowance (self, path):
+    def allowance (self, filename):
         """Preconditions:
         - our agent applies to this entry
         - filename is URL decoded
@@ -415,7 +415,7 @@ class Entry (object):
         @rtype: bool
         """
         for line in self.rulelines:
-            log.debug(LOG_CHECK, "%s %s %s", path, str(line), line.allowance)
-            if line.applies_to(path):
+            log.debug(LOG_CHECK, "%s %s %s", filename, str(line), line.allowance)
+            if line.applies_to(filename):
                 return line.allowance
         return True
