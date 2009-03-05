@@ -580,7 +580,10 @@ Use URL `%(newurl)s' instead for checking.""") % {
                                  {"err": str(msg)},
                                  tag=WARN_HTTP_DECOMPRESS_ERROR)
                 f = StringIO(data)
-            data = f.read()
+            try:
+                data = f.read()
+            finally:
+                f.close()
         # store temporary data
         self._data = data
 
