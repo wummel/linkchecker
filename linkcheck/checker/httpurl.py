@@ -514,6 +514,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
            self.headers.getheader("Content-Length") != "0"):
             # always read content from persistent connections
             self._read_content(response)
+            assert not response.will_close
         # If possible, use official W3C HTTP response name
         if response.status in httpresponses:
             response.reason = httpresponses[response.status]
