@@ -1,20 +1,23 @@
-5.1 "" (released xx.xx.2009)
+5.1 "Let the right one in" (released xx.03.2009)
 
-  * Added email syntax checking.
-    Closes: SF bug #2595437
+Fixes:
+- logging: The content size of downloads is now shown again.
+- http: Fixed persistent connection handling: retry connecting to HTTP
+  servers which close persistent connections unexpectedly.
 
-  * Switch default encoding of output loggers to UTF-8, except the
-    text logger which also honors the system settings.
-    Closes: SF bug #2579899
+Changes:
+- logging: Switch default output encoding of loggers to UTF-8, except the
+  text logger which also honors the system settings.
+  Closes: SF bug #2579899
+- logging: Make output more concise by not logging duplicate cached URLs.
+- nntp: Only retry 3 instead of 5 times to connect to busy NNTP servers.
 
-  * Improved progress dialog in GUI client: show active and queued URLs.
+Features:
+- email: Added email syntax checking.
+  Closes: SF bug #2595437
+- gui: Improved progress dialog in GUI client: show active and queued URLs.
+- nntp: Output welcome message from NNTP servers as info.
 
-  * The content size of downloads is now shown again.
-
-  * Make output more concise by not logging duplicate cached URLs.
-
-  * Improved persistent connection handling: retry connecting to HTTP
-    servers which close persistent connections unexpectedly.
 
 5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)
 
