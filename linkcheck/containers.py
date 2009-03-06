@@ -18,6 +18,14 @@
 Special container classes.
 """
 
+class AttrDict (dict):
+    """Dictionary allowing attribute access to its elements if they
+    are valid attribute names and not already existing methods."""
+
+    def __getattr__ (self, name):
+        return self[name]
+
+
 class ListDict (dict):
     """A dictionary whose iterators reflect the order in which elements
     were added.

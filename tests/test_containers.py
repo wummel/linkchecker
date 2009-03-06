@@ -23,6 +23,21 @@ import random
 import linkcheck.containers
 
 
+class TestAttrDict (unittest.TestCase):
+
+    def setUp (self):
+        self.d = linkcheck.containers.AttrDict()
+
+    def test_access (self):
+        self.d["test"] = 1
+        self.assertEqual(self.d.test, self.d["test"])
+        self.assertEqual(self.d.test, 1)
+
+    def test_method (self):
+        self.d["get"] = 1
+        self.assertTrue(self.d.get != 1)
+
+
 class TestListDict (unittest.TestCase):
     """
     Test list dictionary routines.
