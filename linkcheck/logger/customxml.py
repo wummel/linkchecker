@@ -66,11 +66,8 @@ class CustomXMLLogger (xmllog.XMLLogger):
             self.xml_tag(u"checktime", u"%f" % url_data.checktime)
         if url_data.info and self.has_part('info'):
             self.xml_starttag(u"infos")
-            for tag, info in url_data.info:
-                attrs = {}
-                if tag is not None:
-                    attrs["tag"] = tag
-                self.xml_tag(u"info", info, attrs=attrs)
+            for info in url_data.info:
+                self.xml_tag(u"info", info)
             self.xml_endtag(u"infos")
         if url_data.warnings and self.has_part('warning'):
             self.xml_starttag(u"warnings")

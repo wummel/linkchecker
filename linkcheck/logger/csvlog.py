@@ -97,7 +97,7 @@ class CSVLogger (Logger):
                url_data.parent_url or u"", url_data.base_ref or u"",
                url_data.result,
                os.linesep.join(x[1] for x in url_data.warnings),
-               os.linesep.join(x[1] for x in url_data.info),
+               os.linesep.join(url_data.info),
                url_data.valid, url_data.url or u"",
                url_data.line, url_data.column,
                url_data.name, url_data.dltime,

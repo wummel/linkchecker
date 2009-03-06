@@ -91,7 +91,6 @@ class SQLLogger (Logger):
         Store url check info into the database.
         """
         log_warnings = (x[1] for x in url_data.warnings)
-        log_infos = (x[1] for x in url_data.info)
         self.writeln(u"insert into %(table)s(urlname,recursionlevel,"
               "parentname,baseref,valid,result,warning,info,url,line,col,"
               "name,checktime,dltime,dlsize,cached) values ("
@@ -120,7 +119,7 @@ class SQLLogger (Logger):
                'valid': intify(url_data.valid),
                'result': sqlify(url_data.result),
                'warning': sqlify(os.linesep.join(log_warnings)),
-               'info': sqlify(os.linesep.join(log_infos)),
+               'info': sqlify(os.linesep.join(url_data.info)),
                'url': sqlify(urlutil.url_quote(url_data.url or u"")),
                'line': url_data.line,
                'column': url_data.column,

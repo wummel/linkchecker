@@ -239,7 +239,7 @@ class HtmlLogger (Logger):
         Write url_data.info.
         """
         sep = u"<br>"+os.linesep
-        text = sep.join(cgi.escape(x[1]) for x in url_data.info)
+        text = sep.join(cgi.escape(x) for x in url_data.info)
         self.writeln(u'<tr><td valign="top">' + self.part("info")+
                u"</td><td>"+text+u"</td></tr>")
 

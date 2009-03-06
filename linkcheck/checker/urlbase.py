@@ -237,11 +237,11 @@ class UrlBase (object):
         """
         self.warnings.append((tag, s))
 
-    def add_info (self, s, tag=None):
+    def add_info (self, s):
         """
         Add an info string.
         """
-        self.info.append((tag, s))
+        self.info.append(s)
 
     def copy_from_cache (self, cache_data):
         """
