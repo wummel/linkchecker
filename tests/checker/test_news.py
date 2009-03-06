@@ -23,6 +23,8 @@ from . import LinkCheckTest
 
 # Change from time to time, as servers tend to get invalid.
 NNTP_SERVER = "freenews.netfront.net"
+# info string returned by news server
+NNTP_INFO = u"200 news.netfront.net InterNetNews NNRP server INN 2.4.6 (20090304 snapshot) ready (posting ok)."
 
 
 class TestNews (LinkCheckTest):
@@ -99,6 +101,7 @@ class TestNews (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
+            u"info %s" % NNTP_INFO,
             u"info News group comp.lang.python found.",
             u"valid",
         ]
@@ -113,6 +116,7 @@ class TestNews (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
+            u"info %s" % NNTP_INFO,
             u"info News group comp.lang.python found.",
             u"valid",
         ]
@@ -136,6 +140,7 @@ class TestNews (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
+            u"info %s" % NNTP_INFO,
             u"warning No newsgroup specified in NNTP URL.",
             u"valid",
         ]

@@ -92,6 +92,7 @@ class NntpUrl (urlbase.UrlBase):
                              tag=WARN_NNTP_BUSY)
         if log.is_debug(LOG_CHECK):
             nntp.set_debuglevel(1)
+        self.add_info(nntp.getwelcome())
         return nntp
 
     def can_get_content (self):
