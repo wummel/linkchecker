@@ -408,7 +408,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
         data = self.get_cache_data()
         data["warnings"] = [
             x for x in self.warnings if x[0] != "http-moved-permanent"]
-        data["info"] = [x for x in self.info if x[0] != "http-redirect"]
+        data["info"] = self.info
         return data
 
     def check_response (self, response):
