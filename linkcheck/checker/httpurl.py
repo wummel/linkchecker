@@ -218,7 +218,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
             if response is not None:
                 response.close()
             try:
-                response = self._get_http_response()
+                response = self._try_http_response()
             except httplib.BadStatusLine:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
@@ -246,7 +246,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
                          valid=False)
                     return response
                 response.close()
-                response = self._get_http_response()
+                response = self._try_http_response()
                 # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
             try:
@@ -394,7 +394,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 return -1, response
             # new response data
             response.close()
-            response = self._get_http_response()
+            response = self._try_http_response()
             tries += 1
         return tries, response
 
@@ -444,6 +444,21 @@ Use URL `%(newurl)s' instead for checking.""") % {
         modified = self.headers.get('Last-Modified', '')
         if modified:
             self.add_info(_("Last modified %(date)s.") % {"date": modified})
+
+    def _try_http_response (self):
+        """Try to get a HTTP response object. For reused persistent
+        connections that the server closed unexpected, a new connection
+        will be opened.
+        """
+        try:
+            return self._get_http_response()
+        except socket.error, msg:
+            if msg.args[0] == 32 and self.reused_connection:
+                # server closed persistent connection - retry
+                self.persistent = False
+                self.close_connection()
+                return self._get_http_response()
+            raise
 
     def _get_http_response (self):
         """
@@ -558,7 +573,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
         @rtype: string
         """
         self.method = "GET"
-        response = self._get_http_response()
+        response = self._try_http_response()
         response = self.follow_redirections(response, set_result=False)[1]
         self.headers = response.msg
         if self._data is None:

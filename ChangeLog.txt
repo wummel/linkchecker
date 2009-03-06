@@ -7,11 +7,14 @@
     text logger which also honors the system settings.
     Closes: SF bug #2579899
 
-  * Improved progress dialog in GUI client.
+  * Improved progress dialog in GUI client: show active and queued URLs.
 
   * The content size of downloads is now shown again.
 
   * Make output more concise by not logging duplicate cached URLs.
+
+  * Improved persistent connection handling: retry connecting to HTTP
+    servers which close persistent connections unexpectedly.
 
 5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)
 
