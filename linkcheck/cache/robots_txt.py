@@ -45,7 +45,7 @@ class RobotsTxt (object):
                 password=password)
             rp.set_url(roboturl)
             rp.read()
-            if callback is not None:
+            if hasattr(callback, '__call__'):
                 parts = urlutil.url_split(rp.url)
                 host = "%s:%d" % (parts[1], parts[2])
                 useragent = configuration.UserAgent
