@@ -950,6 +950,42 @@ class UrlBase (object):
         """
         return u"<%s >" % self.serialized()
 
+    def to_wire (self):
+        """Return a simplified transport object for logging.
+        XXX: at the moment, this returns just self.
+
+        The transport object must contain these attributes:
+        - url_data.valid: bool
+          Indicates if URL is valid
+        - url_data.cached: bool
+          Indicates if URL data has been loaded from cache.
+        - url_data.result: unicode
+          Result string
+        - url_data.warnings: list of unicode
+          List of warnings for this URL.
+        - url_data.name: unicode string or None
+          name of URL (eg. filename or link name)
+        - url_data.parent_url: unicode or None
+          Parent URL
+        - url_data.base_ref: unicode or None
+          HTML base reference URL of parent
+        - url_data.url: unicode or None
+          Fully qualified URL.
+        - url_data.checktime: int
+          Number of seconds needed to check this link, default: zero.
+        - url_data.dltime: int
+          Number of seconds needed to download URL content, default: -1
+        - url_data.dlsize: int
+          Size of downloaded URL content, default: -1
+        - url_data.info: list of unicode
+          Additional information about this URL.
+        - url_data.line: int
+          Line number of this URL at parent document, or -1
+        - url_data.column: int
+          Column number of this URL at parent document, or -1
+        """
+        return self
+
 
 def filter_tidy_errors (errors):
     """Filter certain errors from HTML tidy run."""

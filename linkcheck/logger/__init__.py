@@ -44,7 +44,21 @@ del _
 
 class Logger (object):
     """
-    Basic logger class enabling logging of checked urls.
+    Base class for logging of checked urls. It defines the public API
+    (see below) and offers basic functionality for all loggers.
+
+    Each logger has to offer the following functions:
+
+    * start_output()
+        Initialize and start log output. Most loggers print a comment
+        with copyright information.
+    * end_output()
+        Finish log output, possibly flushing buffers. Most loggers also
+        print some statistics.
+    * log_filter_url(url_data, do_print)
+        Log a checked URL. The url_data object is a transport form of
+        the UrlData class. The do_print flag indicates if this URL
+        should be logged or just used to update internal statistics.
     """
 
     def __init__ (self, **args):

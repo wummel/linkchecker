@@ -69,5 +69,8 @@ class Logger (object):
     def log_url (self, url_data):
         """Send new url to all configured loggers."""
         do_print = self.do_print(url_data)
+        # Only send a transport object to the loggers, not the complete
+        # object instance.
+        transport = url_data.to_wire()
         for log in self.logs:
-            log.log_filter_url(url_data, do_print)
+            log.log_filter_url(transport, do_print)
