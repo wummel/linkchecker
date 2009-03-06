@@ -25,7 +25,7 @@ import nntplib
 import random
 
 from . import urlbase
-from .. import LinkCheckerError
+from .. import log, LinkCheckerError, LOG_CHECK
 from .const import WARN_NNTP_NO_SERVER, WARN_NNTP_NO_NEWSGROUP, WARN_NNTP_BUSY
 
 random.seed()
@@ -74,7 +74,7 @@ class NntpUrl (urlbase.UrlBase):
         """
         tries = 0
         nntp = value = None
-        while tries < 5:
+        while tries < 3:
             tries += 1
             try:
                 nntp = nntplib.NNTP(nntpserver, usenetrc=False)
