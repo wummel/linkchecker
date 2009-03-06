@@ -109,69 +109,6 @@ class TestListDict (unittest.TestCase):
         self.assertEqual(self.d.get_true("b", 2), 1)
 
 
-class TestSetList (unittest.TestCase):
-    """
-    Test set list routines.
-    """
-
-    def setUp (self):
-        """
-        Set up self.l as empty setlist.
-        """
-        self.l = linkcheck.containers.SetList()
-
-    def test_append (self):
-        """
-        Test append and equal elements.
-        """
-        self.assert_(not self.l)
-        self.l.append(1)
-        self.l.append(1)
-        self.assertEqual(len(self.l), 1)
-
-    def test_append2 (self):
-        """
-        Test append and equal elements 2.
-        """
-        self.assert_(not self.l)
-        self.l.append(1)
-        self.l.append(2)
-        self.l.append(1)
-        self.assertEqual(len(self.l), 2)
-
-    def test_extend (self):
-        """
-        Test extend and equal elements.
-        """
-        self.assert_(not self.l)
-        self.l.extend([1, 2, 1])
-        self.assertEqual(len(self.l), 2)
-        self.assertEqual(self.l[0], 1)
-        self.assertEqual(self.l[1], 2)
-
-    def test_insert (self):
-        """
-        Test insert and equal elements.
-        """
-        self.assert_(not self.l)
-        self.l.append(2)
-        self.l.insert(0, 1)
-        self.assertEqual(len(self.l), 2)
-        self.assertEqual(self.l[0], 1)
-        self.assertEqual(self.l[1], 2)
-
-    def test_setitem (self):
-        """
-        Test setting of equal elements.
-        """
-        self.assert_(not self.l)
-        self.l.extend([1, 2, 3])
-        self.l[1] = 3
-        self.assertEqual(len(self.l), 2)
-        self.assertEqual(self.l[0], 1)
-        self.assertEqual(self.l[1], 3)
-
-
 class TestCaselessDict (unittest.TestCase):
     """
     Test caseless dictionary routines.

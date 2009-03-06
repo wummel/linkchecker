@@ -31,8 +31,7 @@ import select
 from . import absolute_url, StoringHandler, get_url_from
 from ..cache import geoip
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-    strformat, containers, LinkCheckerError, url as urlutil,
-    trace, clamav)
+    strformat, LinkCheckerError, url as urlutil, trace, clamav)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse, titleparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
@@ -137,7 +136,7 @@ class UrlBase (object):
         # valid or not
         self.valid = True
         # list of warnings (without duplicates)
-        self.warnings = containers.SetList()
+        self.warnings = []
         # list of infos
         self.info = []
         # download time
@@ -235,7 +234,9 @@ class UrlBase (object):
         """
         Add a warning string.
         """
-        self.warnings.append((tag, s))
+        item = (tag, s)
+        if item not in self.warnings:
+            self.warnings.append(item)
 
     def add_info (self, s):
         """
@@ -962,8 +963,8 @@ class UrlBase (object):
           Indicates if URL data has been loaded from cache.
         - url_data.result: unicode
           Result string
-        - url_data.warnings: list of unicode
-          List of warnings for this URL.
+        - url_data.warnings: list of (unicode, unicode)
+          List of tagged warnings for this URL.
         - url_data.name: unicode string or None
           name of URL (eg. filename or link name)
         - url_data.parent_url: unicode or None

@@ -18,43 +18,6 @@
 Special container classes.
 """
 
-
-class SetList (list):
-    """
-    A list that eliminates all duplicates.
-    """
-
-    def append (self, item):
-        """Append only if not already there."""
-        if item not in self:
-            super(SetList, self).append(item)
-
-    def extend (self, itemlist):
-        """Extend while eliminating duplicates by appending item for item."""
-        for item in itemlist:
-            self.append(item)
-
-    def insert (self, index, item):
-        """Insert item at given index only if it is not already there."""
-        if item not in self:
-            super(SetList, self).insert(index, item)
-
-    def __setitem__ (self, index, item):
-        """Set new value, and eliminate a possible duplicate value."""
-        # search index i with self[i] == item
-        delidx = -1
-        for i, x in enumerate(self):
-            if x == item and i != index:
-                delidx = i
-                # stop here, there can be only one duplicate
-                break
-        # set new value
-        super(SetList, self).__setitem__(index, item)
-        # remove duplicate
-        if delidx != -1:
-            del self[delidx]
-
-
 class ListDict (dict):
     """A dictionary whose iterators reflect the order in which elements
     were added.
