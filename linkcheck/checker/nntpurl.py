@@ -90,6 +90,8 @@ class NntpUrl (urlbase.UrlBase):
         if value is not None:
             self.add_warning(_("NNTP busy: %(msg)s.") % {"msg": str(value)},
                              tag=WARN_NNTP_BUSY)
+        if log.is_debug(LOG_CHECK):
+            nntp.set_debuglevel(1)
         return nntp
 
     def can_get_content (self):
