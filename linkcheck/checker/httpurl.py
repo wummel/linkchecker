@@ -125,6 +125,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.cookies = []
         # temporary data filled when reading redirections
         self._data = None
+        # flag indicating connection reuse
+        self.reused_connection = False
 
     def allows_robots (self, url):
         """
@@ -551,6 +553,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
         conn = self.aggregate.connections.get(key)
         if conn is not None:
             log.debug(LOG_CHECK, "reuse cached HTTP(S) connection %s", conn)
+            self.reused_connection = True
             return conn
         self.aggregate.connections.wait_for_host(host)
         if scheme == "http":
