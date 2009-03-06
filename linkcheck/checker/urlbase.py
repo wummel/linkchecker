@@ -138,8 +138,8 @@ class UrlBase (object):
         self.valid = True
         # list of warnings (without duplicates)
         self.warnings = containers.SetList()
-        # list of infos (without duplicates)
-        self.info = containers.SetList()
+        # list of infos
+        self.info = []
         # download time
         self.dltime = -1
         # download size
@@ -241,7 +241,8 @@ class UrlBase (object):
         """
         Add an info string.
         """
-        self.info.append(s)
+        if s not in self.info:
+            self.info.append(s)
 
     def copy_from_cache (self, cache_data):
         """
