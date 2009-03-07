@@ -190,6 +190,15 @@
     <string>Help</string>
    </property>
   </action>
+  <action name="actionViewOnline" >
+   <property name="icon" >
+    <iconset resource="../rc/linkchecker.qrc" >
+     <normaloff>:/icons/online.png</normaloff>:/icons/online.png</iconset>
+   </property>
+   <property name="text" >
+    <string>View online</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../rc/linkchecker.qrc" />

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Mar  7 13:54:20 2009
+# Created: Sat Mar  7 14:22:26 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -79,6 +79,11 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName("actionAbout")
         self.actionHelp = QtGui.QAction(MainWindow)
         self.actionHelp.setObjectName("actionHelp")
+        self.actionViewOnline = QtGui.QAction(MainWindow)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/icons/online.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionViewOnline.setIcon(icon2)
+        self.actionViewOnline.setObjectName("actionViewOnline")
         self.menuLinkChecka.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
@@ -106,5 +111,6 @@ class Ui_MainWindow(object):
         self.actionQuit.setShortcut(_("Ctrl+Q"))
         self.actionAbout.setText(_("About"))
         self.actionHelp.setText(_("Help"))
+        self.actionViewOnline.setText(_("View online"))
 
 import linkchecker_rc
