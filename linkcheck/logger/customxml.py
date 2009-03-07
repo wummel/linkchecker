@@ -42,22 +42,22 @@ class CustomXMLLogger (xmllog.XMLLogger):
         """
         self.xml_starttag(u'urldata')
         if self.has_part('url'):
-            self.xml_tag(u"url", unicode(url_data.base_url or u""))
+            self.xml_tag(u"url", unicode(url_data.base_url))
         if url_data.name and self.has_part('name'):
-            self.xml_tag(u"name", unicode(url_data.name or u""))
+            self.xml_tag(u"name", unicode(url_data.name))
         if url_data.parent_url and self.has_part('parenturl'):
             attrs = {
                 u'line': u"%d" % url_data.line,
                 u'column': u"%d" % url_data.column,
             }
-            self.xml_tag(u"parent", unicode(url_data.parent_url or u""),
+            self.xml_tag(u"parent", unicode(url_data.parent_url),
                          attrs=attrs)
         if url_data.base_ref and self.has_part('base'):
             self.xml_tag(u"baseref", unicode(url_data.base_ref))
         if self.has_part("realurl"):
             self.xml_tag(u"realurl", unicode(url_data.url))
         if self.has_part("extern"):
-            self.xml_tag(u"extern", u"%d" % (1 if url_data.extern[0] else 0))
+            self.xml_tag(u"extern", u"%d" % (1 if url_data.extern else 0))
         if url_data.dltime >= 0 and self.has_part("dltime"):
             self.xml_tag(u"dltime", u"%f" % url_data.dltime)
         if url_data.dlsize >= 0 and self.has_part("dlsize"):
@@ -71,11 +71,8 @@ class CustomXMLLogger (xmllog.XMLLogger):
             self.xml_endtag(u"infos")
         if url_data.warnings and self.has_part('warning'):
             self.xml_starttag(u"warnings")
-            for tag, data in url_data.warnings:
-                attrs = {}
-                if tag is not None:
-                    attrs["tag"] = tag
-                self.xml_tag(u"warning", data, attrs=attrs)
+            for data in url_data.warnings:
+                self.xml_tag(u"warning", data)
             self.xml_endtag(u"warnings")
         if self.has_part("result"):
             attrs = {}

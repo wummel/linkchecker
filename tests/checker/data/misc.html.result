@@ -21,13 +21,13 @@ valid
 
 url http://imadööfus.org%%0D%%3Cfont%%20face=%%22Verdana,%%20Arial,%%20Helvetica,%%20sans-serif%%22%%20size=%%222%%22%%3E%%3Chttp://www.imadoofus.org%%3E%%20%%0D%%20%%20%%20%%20%%20%%20%%20%%20%%20%%20%%20%%20%%20%%20
 cache key None
-real url None
+real url 
 name blubb
 error
 
 url 
 cache key None
-real url None
+real url 
 error
 
 url test.swf

@@ -90,12 +90,10 @@ class SQLLogger (Logger):
         """
         Store url check info into the database.
         """
-        log_warnings = (x[1] for x in url_data.warnings)
-        self.writeln(u"insert into %(table)s(urlname,recursionlevel,"
+        self.writeln(u"insert into %(table)s(urlname,"
               "parentname,baseref,valid,result,warning,info,url,line,col,"
               "name,checktime,dltime,dlsize,cached) values ("
               "%(base_url)s,"
-              "%(recursion_level)d,"
               "%(url_parent)s,"
               "%(base_ref)s,"
               "%(valid)d,"
@@ -112,15 +110,14 @@ class SQLLogger (Logger):
               "%(cached)d"
               ")%(separator)s" %
               {'table': self.dbname,
-               'base_url': sqlify(url_data.base_url or u""),
-               'recursion_level': url_data.recursion_level,
-               'url_parent': sqlify((url_data.parent_url or u"")),
-               'base_ref': sqlify((url_data.base_ref or u"")),
+               'base_url': sqlify(url_data.base_url),
+               'url_parent': sqlify((url_data.parent_url)),
+               'base_ref': sqlify((url_data.base_ref)),
                'valid': intify(url_data.valid),
                'result': sqlify(url_data.result),
-               'warning': sqlify(os.linesep.join(log_warnings)),
+               'warning': sqlify(os.linesep.join(url_data.warnings)),
                'info': sqlify(os.linesep.join(url_data.info)),
-               'url': sqlify(urlutil.url_quote(url_data.url or u"")),
+               'url': sqlify(urlutil.url_quote(url_data.url)),
                'line': url_data.line,
                'column': url_data.column,
                'name': sqlify(url_data.name),

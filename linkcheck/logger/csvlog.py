@@ -64,7 +64,6 @@ class CSVLogger (Logger):
             self.check_date()
             self.comment(_("Format of the entries:"))
             for s in (u"urlname",
-                      u"recursionlevel",
                       u"parentname",
                       u"baseref",
                       u"result",
@@ -93,12 +92,12 @@ class CSVLogger (Logger):
         Write csv formatted url check info.
         """
         row = []
-        for s in (url_data.base_url or u"", url_data.recursion_level,
-               url_data.parent_url or u"", url_data.base_ref or u"",
+        for s in (url_data.base_url,
+               url_data.parent_url, url_data.base_ref,
                url_data.result,
-               os.linesep.join(x[1] for x in url_data.warnings),
+               os.linesep.join(url_data.warnings),
                os.linesep.join(url_data.info),
-               url_data.valid, url_data.url or u"",
+               url_data.valid, url_data.url,
                url_data.line, url_data.column,
                url_data.name, url_data.dltime,
                url_data.dlsize, url_data.checktime,

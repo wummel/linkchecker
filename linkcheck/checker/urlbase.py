@@ -31,7 +31,7 @@ import select
 from . import absolute_url, StoringHandler, get_url_from
 from ..cache import geoip
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-    strformat, LinkCheckerError, url as urlutil, trace, clamav)
+    strformat, LinkCheckerError, url as urlutil, trace, clamav, containers)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse, titleparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
@@ -179,7 +179,11 @@ class UrlBase (object):
         """Return title of page the URL refers to.
         This is per default the filename or the URL."""
         if self.title is None:
-            url = self.url if self.url else self.base_url
+            url = u""
+            if self.base_url:
+                url = self.base_url
+            elif self.url:
+                url = self.url
             self.title = url
             if "/" in url:
                 title = url.rsplit("/", 1)[1]
@@ -251,8 +255,10 @@ class UrlBase (object):
         """
         self.result = cache_data["result"]
         self.has_result = True
-        self.warnings.extend(cache_data["warnings"])
-        self.info.extend(cache_data["info"])
+        for tag, msg in cache_data["warnings"]:
+            self.add_warning(msg, tag=tag)
+        for info in cache_data["info"]:
+            self.add_info(info)
         self.valid = cache_data["valid"]
         self.dltime = cache_data["dltime"]
         self.dlsize = cache_data["dlsize"]
@@ -954,7 +960,6 @@ class UrlBase (object):
 
     def to_wire (self):
         """Return a simplified transport object for logging.
-        XXX: at the moment, this returns just self.
 
         The transport object must contain these attributes:
         - url_data.valid: bool
@@ -963,7 +968,7 @@ class UrlBase (object):
           Indicates if URL data has been loaded from cache.
         - url_data.result: unicode
           Result string
-        - url_data.warnings: list of (unicode, unicode)
+        - url_data.warnings: list of unicode
           List of tagged warnings for this URL.
         - url_data.name: unicode string or None
           name of URL (eg. filename or link name)
@@ -986,7 +991,25 @@ class UrlBase (object):
         - url_data.column: int
           Column number of this URL at parent document, or -1
         """
-        return self
+        return containers.AttrDict(valid=self.valid,
+          extern=self.extern[0],
+          cached=self.cached,
+          result=self.result,
+          warnings=[x[1] for x in self.warnings],
+          name=self.name or u"",
+          title=self.get_title(),
+          parent_url=self.parent_url or u"",
+          base_ref=self.base_ref or u"",
+          base_url=self.base_url or u"",
+          url=self.url or u"",
+          checktime=self.checktime,
+          dltime=self.dltime,
+          dlsize=self.dlsize,
+          info=self.info,
+          line=self.line,
+          column=self.column,
+          cache_url_key=self.cache_url_key,
+        )
 
 
 def filter_tidy_errors (errors):

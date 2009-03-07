@@ -165,7 +165,7 @@ class HtmlLogger (Logger):
         self.writeln(u'<td bgcolor="%s">%s</td>' %
                      (self.colorurl, self.part("url")))
         self.write(u'<td bgcolor="%s">' % self.colorurl)
-        self.write(u"`%s'" % cgi.escape(url_data.base_url or u""))
+        self.write(u"`%s'" % cgi.escape(url_data.base_url))
         if url_data.cached:
             self.write(_(" (cached)"))
         self.writeln(u"</td></tr>")
@@ -248,7 +248,7 @@ class HtmlLogger (Logger):
         Write url_data.warnings.
         """
         sep = u"<br>"+os.linesep
-        text = sep.join(cgi.escape(x[1]) for x in url_data.warnings)
+        text = sep.join(cgi.escape(x) for x in url_data.warnings)
         self.writeln(u'<tr><td bgcolor="' + self.colorwarning + u'" '+
                      u'valign="top">' + self.part("warning") +
                      u'</td><td bgcolor="' + self.colorwarning + u'">' +

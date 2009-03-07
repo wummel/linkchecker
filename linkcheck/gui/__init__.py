@@ -223,7 +223,7 @@ Version 2 or later.</p>
         item.setToolTip(2, url)
         item.setToolTip(3, name)
         if url_data.warnings:
-            text = u"\n".join([x[1] for x in url_data.warnings])
+            text = u"\n".join(url_data.warnings)
             item.setToolTip(4, strformat.wrap(text, 60))
         self.treeWidget.addTopLevelItem(item)
         self.num += 1

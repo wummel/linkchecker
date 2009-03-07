@@ -60,7 +60,7 @@ class TestLogger (linkcheck.logger.Logger):
         Append logger output to self.result.
         """
         if self.has_part('url'):
-            url = u"url %s" % (url_data.base_url or u"")
+            url = u"url %s" % url_data.base_url
             if url_data.cached:
                 url += u" (cached)"
             self.result.append(url)
@@ -79,7 +79,7 @@ class TestLogger (linkcheck.logger.Logger):
                     self.result.append(u"info %s" % info)
         if self.has_part('warning'):
             for warning in url_data.warnings:
-                self.result.append(u"warning %s" % warning[1])
+                self.result.append(u"warning %s" % warning)
         if self.has_part('result'):
             self.result.append(u"valid" if url_data.valid else u"error")
         # note: do not append url_data.result since this is
