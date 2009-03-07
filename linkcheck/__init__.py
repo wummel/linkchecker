@@ -76,6 +76,9 @@ class LinkCheckerError (StandardError):
     """Exception to be raised on linkchecker-specific check errors."""
     pass
 
+class LinkCheckerInterrupt (StandardError):
+    """Used for testing."""
+    pass
 
 def add_intern_pattern (url_data, config):
     """Add intern URL regex to config."""

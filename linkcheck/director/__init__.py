@@ -20,7 +20,7 @@ Management of checking a queue of links with several threads.
 import time
 import os
 import thread
-from .. import log, LOG_CHECK
+from .. import log, LOG_CHECK, LinkCheckerInterrupt
 from ..cache import urlqueue, robots_txt, cookie, connection
 from . import aggregator, console
 
@@ -37,6 +37,8 @@ def check_urls (aggregate):
         check_url(aggregate)
         aggregate.finish()
         aggregate.logger.end_log_output()
+    except LinkCheckerInterrupt:
+        raise
     except KeyboardInterrupt:
         interrupt(aggregate)
     except thread.error:
