@@ -17,7 +17,7 @@
 """
 Test news checking.
 """
-from tests import has_network
+from tests import has_network, limit_time_skip
 from nose import SkipTest
 from . import LinkCheckTest
 
@@ -25,7 +25,8 @@ from . import LinkCheckTest
 NNTP_SERVER = "freenews.netfront.net"
 # info string returned by news server
 NNTP_INFO = u"200 news.netfront.net InterNetNews NNRP server INN 2.4.6 (20090304 snapshot) ready (posting ok)."
-
+# NNTP servers are dog slow, so don't waist a lot of time running those.
+NNTP_TIMEOUT_SECS = 8
 
 class TestNews (LinkCheckTest):
     """
@@ -37,10 +38,7 @@ class TestNews (LinkCheckTest):
             raise SkipTest()
         self.direct(url, resultlines)
 
-    def test_news (self):
-        """
-        Test news: link.
-        """
+    def test_news_without_host (self):
         # news testing
         url = u"news:comp.os.linux.misc"
         resultlines = [
@@ -62,10 +60,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    def test_snews (self):
-        """
-        Test snews: link.
-        """
+    def test_snews_with_group (self):
         url = u"snews:de.comp.os.unix.linux.misc"
         nurl = self.norm(url)
         resultlines = [
@@ -78,7 +73,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    def test_illegal (self):
+    def test_illegal_syntax (self):
         # illegal syntax
         url = u"news:§$%&/´`(§%"
         qurl = self.norm(url)
@@ -92,10 +87,8 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    def test_nntp (self):
-        """
-        Nttp scheme with host.
-        """
+    @limit_time_skip(NNTP_TIMEOUT_SECS)
+    def test_nntp_with_host (self):
         url = u"nntp://%s/comp.lang.python" % NNTP_SERVER
         resultlines = [
             u"url %s" % url,
@@ -107,10 +100,8 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
+    @limit_time_skip(NNTP_TIMEOUT_SECS)
     def test_article_span (self):
-        """
-        Article span.
-        """
         url = u"nntp://%s/comp.lang.python/1-5" % NNTP_SERVER
         resultlines = [
             u"url %s" % url,
@@ -121,6 +112,8 @@ class TestNews (LinkCheckTest):
             u"valid",
         ]
         self.newstest(url, resultlines)
+
+    def test_article_span_no_host (self):
         url = u"news:comp.lang.python/1-5"
         resultlines = [
             u"url %s" % url,
@@ -131,10 +124,8 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
+    @limit_time_fail(NNTP_TIMEOUT_SECS)
     def test_host_no_group (self):
-        """
-        Host but no group.
-        """
         url = u"nntp://%s/" % NNTP_SERVER
         resultlines = [
             u"url %s" % url,

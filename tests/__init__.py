@@ -14,8 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+from __future__ import with_statement # Required in 2.5
+import signal
 import subprocess
 import os
+from nose import SkipTest
+from contextlib import contextmanager
+from linkcheck import LinkCheckerInterrupt
+from linkcheck.decorators import update_func_meta
 
 
 class memoized (object):
@@ -97,6 +103,48 @@ def has_proxy ():
     except OSError:
         pass
     return False
+
+
+@contextmanager
+def limit_time (seconds):
+    """Raises LinkCheckerInterrupt if given number of seconds have passed."""
+    def signal_handler(signum, frame):
+        raise LinkCheckerInterrupt("timed out")
+    old_handler = signal.getsignal(signal.SIGALRM)
+    signal.signal(signal.SIGALRM, signal_handler)
+    signal.alarm(seconds)
+    yield
+    signal.alarm(0)
+    if old_handler is not None:
+        signal.signal(signal.SIGALRM, old_handler)
+
+
+def limit_time_skip (seconds):
+    """Skip test if the given number of seconds has passed."""
+    def run_limited (func):
+        def new_func (*args, **kwargs):
+            try:
+                with limit_time(seconds):
+                    return func(*args, **kwargs)
+            except LinkCheckerInterrupt:
+                raise SkipTest
+        new_func.func_name = func.func_name
+        return new_func
+    return run_limited
+
+
+def limit_time_fail (seconds):
+    """Fail test if the given number of seconds has passed."""
+    def run_limited (func):
+        def new_func (*args, **kwargs):
+            try:
+                with limit_time(seconds):
+                    return func(*args, **kwargs)
+            except LinkCheckerInterrupt, msg:
+                assert False, msg
+        new_func.func_name = func.func_name
+        return new_func
+    return run_limited
 
 
 if __name__ == '__main__':
