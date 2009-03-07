@@ -65,13 +65,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         settings.endGroup()
 
     def connect_widgets (self):
+        """Connect widget signals. Some signals use the AutoConnect feature.
+        Autoconnected methods have the form on_<objectname>_<signal>.
+        """
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
-        self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start)
+        self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
-        self.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about)
-        self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.showDocumentation)
         #self.controlButton.setText(_("Start"))
         #icon = QtGui.QIcon()
         #icon.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -111,7 +112,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Set idle status. Helper function for signal connections."""
         self.status = Status.idle
 
-    def showDocumentation (self):
+    def on_actionHelp_triggered (self):
         """Show help page."""
         url = QtCore.QUrl("%sindex.html" % DocBaseUrl)
         self.assistant.showDocumentation(url)
@@ -127,7 +128,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         if e is not None:
             e.accept()
 
-    def about (self):
+    def on_actionAbout_triggered (self):
         """Display about dialog."""
         d = {
             "app": configuration.App,
@@ -143,7 +144,7 @@ for broken links.</p>
 Version 2 or later.</p>
 </qt>""") % d)
 
-    def start (self):
+    def on_controlButton_clicked (self):
         """Start a new check."""
         if self.status == Status.idle:
             self.check()
@@ -196,7 +197,7 @@ Version 2 or later.</p>
         self.config["timeout"] = self.options.timeout.value()
         self.config["threads"] = self.options.threads.value()
 
-    def on_checker_log_url (self, url_data):
+    def log_url (self, url_data):
         """Add URL data to tree widget."""
         num = u"%09d" % self.num
         if url_data.parent_url:
