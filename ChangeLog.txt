@@ -16,7 +16,7 @@ Features:
 - email: Added email syntax checking.
   Closes: SF bug #2595437
 - gui: Improved progress dialog in GUI client: show active and queued URLs.
-- gui: Double clicking on URL column opens the clicked URL in a webbrowser.
+- gui: Added right-click context menu for logged URLs.
 - nntp: Output welcome message from NNTP servers as info.
 
 
