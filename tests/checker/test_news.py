@@ -124,7 +124,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @limit_time_fail(NNTP_TIMEOUT_SECS)
+    @limit_time_skip(NNTP_TIMEOUT_SECS)
     def test_host_no_group (self):
         url = u"nntp://%s/" % NNTP_SERVER
         resultlines = [
