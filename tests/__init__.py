@@ -21,7 +21,6 @@ import os
 from nose import SkipTest
 from contextlib import contextmanager
 from linkcheck import LinkCheckerInterrupt
-from linkcheck.decorators import update_func_meta
 
 
 class memoized (object):
