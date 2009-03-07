@@ -64,7 +64,7 @@ def _run (cmd):
 def has_network ():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("www.heise.de", 80))
+        s.connect(("www.python.org", 80))
         s.close()
         return True
     except StandardError:
