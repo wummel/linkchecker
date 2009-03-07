@@ -1,2 +1,1 @@
-- [GUI] Add double-click action in tree widget: show URL.
 - [GUI] Add right-click action in tree widget: show properties page.

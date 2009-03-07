@@ -15,6 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
 from .progress import LinkCheckerProgress, StatusLogger
@@ -67,6 +68,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
+        self.connect(self.treeWidget, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *, int)"), self.item_clicked)
         self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start)
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
@@ -227,6 +229,11 @@ Version 2 or later.</p>
             item.setToolTip(4, strformat.wrap(text, 60))
         self.treeWidget.addTopLevelItem(item)
         self.num += 1
+
+    def item_clicked (self, item, column):
+        if column == 2:
+            # URL column double clicked
+            webbrowser.open(str(item.text(column)))
 
     def set_statusbar (self, msg):
         """Show status message in status bar."""
