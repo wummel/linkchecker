@@ -112,15 +112,17 @@ def has_proxy ():
 @contextmanager
 def _limit_time (seconds):
     """Raises LinkCheckerInterrupt if given number of seconds have passed."""
-    def signal_handler(signum, frame):
-        raise LinkCheckerInterrupt("timed out")
-    old_handler = signal.getsignal(signal.SIGALRM)
-    signal.signal(signal.SIGALRM, signal_handler)
-    signal.alarm(seconds)
+    if os.name == 'posix':
+        def signal_handler(signum, frame):
+            raise LinkCheckerInterrupt("timed out")
+        old_handler = signal.getsignal(signal.SIGALRM)
+        signal.signal(signal.SIGALRM, signal_handler)
+        signal.alarm(seconds)
     yield
-    signal.alarm(0)
-    if old_handler is not None:
-        signal.signal(signal.SIGALRM, old_handler)
+    if os.name == 'posix':
+        signal.alarm(0)
+        if old_handler is not None:
+            signal.signal(signal.SIGALRM, old_handler)
 
 
 def limit_time (seconds, skip=False):
