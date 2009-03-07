@@ -114,6 +114,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Set idle status. Helper function for signal connections."""
         self.status = Status.idle
 
+    @QtCore.pyqtSignature("")
     def on_actionHelp_triggered (self):
         """Show help page."""
         url = QtCore.QUrl("%sindex.html" % DocBaseUrl)
@@ -130,6 +131,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         if e is not None:
             e.accept()
 
+    @QtCore.pyqtSignature("")
     def on_actionAbout_triggered (self):
         """Display about dialog."""
         d = {
