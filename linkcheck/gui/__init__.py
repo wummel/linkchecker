@@ -67,8 +67,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def connect_widgets (self):
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
-        self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
-        self.connect(self.treeWidget, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *, int)"), self.item_clicked)
         self.connect(self.controlButton, QtCore.SIGNAL("clicked()"), self.start)
         self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
         self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
@@ -77,6 +75,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         #self.controlButton.setText(_("Start"))
         #icon = QtGui.QIcon()
         #icon.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #icon = self.style().standardIcon(QtGui.QStyle.SP_DirOpenIcon)
         #self.controlButton.setIcon(icon)
 
     def init_treewidget (self):
@@ -197,7 +196,7 @@ Version 2 or later.</p>
         self.config["timeout"] = self.options.timeout.value()
         self.config["threads"] = self.options.threads.value()
 
-    def log_url (self, url_data):
+    def on_checker_log_url (self, url_data):
         """Add URL data to tree widget."""
         num = u"%09d" % self.num
         if url_data.parent_url:
@@ -230,7 +229,7 @@ Version 2 or later.</p>
         self.treeWidget.addTopLevelItem(item)
         self.num += 1
 
-    def item_clicked (self, item, column):
+    def on_treeWidget_itemDoubleClicked (self, item, column):
         if column == 2:
             # URL column double clicked
             webbrowser.open(str(item.text(column)))
