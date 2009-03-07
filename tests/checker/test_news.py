@@ -17,7 +17,7 @@
 """
 Test news checking.
 """
-from tests import has_network, limit_time_skip
+from tests import has_network, limit_time
 from nose import SkipTest
 from . import LinkCheckTest
 
@@ -87,7 +87,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @limit_time_skip(NNTP_TIMEOUT_SECS)
+    @limit_time(NNTP_TIMEOUT_SECS, skip=True)
     def test_nntp_with_host (self):
         url = u"nntp://%s/comp.lang.python" % NNTP_SERVER
         resultlines = [
@@ -100,7 +100,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @limit_time_skip(NNTP_TIMEOUT_SECS)
+    @limit_time(NNTP_TIMEOUT_SECS, skip=True)
     def test_article_span (self):
         url = u"nntp://%s/comp.lang.python/1-5" % NNTP_SERVER
         resultlines = [
@@ -124,7 +124,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @limit_time_skip(NNTP_TIMEOUT_SECS)
+    @limit_time(NNTP_TIMEOUT_SECS, skip=True)
     def test_host_no_group (self):
         url = u"nntp://%s/" % NNTP_SERVER
         resultlines = [
