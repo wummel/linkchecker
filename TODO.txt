@@ -1,1 +1,2 @@
-- [GUI] Add right-click action in tree widget: show properties page.
+- [GUI] Add more context menu actions:
+  + show detailed URL properties
