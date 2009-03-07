@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons" >
+    <file>online.png</file>
     <file>app.png</file>
     <file>cancel.png</file>
     <file>options.png</file>
