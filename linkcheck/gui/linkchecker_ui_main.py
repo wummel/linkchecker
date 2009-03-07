@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Mar  7 12:14:47 2009
+# Created: Sat Mar  7 13:38:10 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -55,6 +55,7 @@ class Ui_MainWindow(object):
         self.treeWidget.setAlternatingRowColors(True)
         self.treeWidget.setUniformRowHeights(True)
         self.treeWidget.setItemsExpandable(False)
+        self.treeWidget.setAllColumnsShowFocus(True)
         self.treeWidget.setExpandsOnDoubleClick(False)
         self.treeWidget.setObjectName("treeWidget")
         self.gridLayout.addWidget(self.treeWidget, 1, 0, 1, 2)
