@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Mar  7 13:38:10 2009
+# Created: Sat Mar  7 13:54:20 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,6 +24,8 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
+        self.gridLayout.setMargin(4)
+        self.gridLayout.setVerticalSpacing(3)
         self.gridLayout.setObjectName("gridLayout")
         self.label = QtGui.QLabel(self.centralwidget)
         self.label.setObjectName("label")
