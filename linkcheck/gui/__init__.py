@@ -23,6 +23,7 @@ from .logger import GuiLogger, GuiLogHandler
 from .help import HelpWindow
 from .options import LinkCheckerOptions
 from .checker import CheckerThread
+from .contextmenu import ContextMenu
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat
 from ..containers import enum
@@ -47,6 +48,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.options = LinkCheckerOptions(parent=self)
         self.progress = LinkCheckerProgress(parent=self)
         self.checker = CheckerThread()
+        self.contextmenu = ContextMenu(parent=self)
         # Note: we can't use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, "doc/lccollection.qhc")
         # setup this widget
@@ -231,9 +233,21 @@ Version 2 or later.</p>
         self.num += 1
 
     def on_treeWidget_itemDoubleClicked (self, item, column):
-        if column == 2:
-            # URL column double clicked
-            webbrowser.open(str(item.text(column)))
+        """View property page."""
+        pass # XXX todo
+
+    def on_treeWidget_customContextMenuRequested (self, point):
+        """Show item context menu."""
+        item = self.treeWidget.itemAt(point)
+        if item is not None:
+            self.contextmenu.popup(QtGui.QCursor.pos())
+
+    @QtCore.pyqtSignature("")
+    def on_actionViewOnline_triggered (self):
+        """View item URL online."""
+        item = self.treeWidget.currentItem()
+        if item is not None:
+            webbrowser.open(str(item.text(2)))
 
     def set_statusbar (self, msg):
         """Show status message in status bar."""
