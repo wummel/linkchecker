@@ -50,6 +50,7 @@ class memoized (object):
 
 
 def _run (cmd):
+    """Run given command without output."""
     null = open(os.name == 'nt' and ':NUL' or "/dev/null", 'w')
     try:
         try:
@@ -62,6 +63,7 @@ def _run (cmd):
 
 @memoized
 def has_network ():
+    """Test if network is up."""
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(("www.python.org", 80))
@@ -74,16 +76,19 @@ def has_network ():
 
 @memoized
 def has_msgfmt ():
+    """Test if msgfmt is available."""
     return _run(["msgfmt", "-V"]) == 0
 
 
 @memoized
 def has_posix ():
+    """Test if this is a POSIX system."""
     return os.name == "posix"
 
 
 @memoized
 def has_clamav ():
+    """Test if ClamAV daemon is installed and running."""
     try:
         cmd = ["grep", "LocalSocket", "/etc/clamav/clamd.conf"]
         sock = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0].split()[1]
@@ -99,12 +104,24 @@ def has_clamav ():
 
 @memoized
 def has_proxy ():
+    """Test if proxy is running on port 8081."""
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(("localhost", 8081))
         s.close()
         return True
     except StandardError:
+        pass
+    return False
+
+
+@memoized
+def has_pyqt ():
+    """Test if PyQT is installed."""
+    try:
+        import PyQt4
+        return True
+    except ImportError:
         pass
     return False
 
