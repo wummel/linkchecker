@@ -33,7 +33,7 @@ class TestMail (LinkCheckTest):
         Test some good mailto addrs.
         """
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         url = self.norm(u"mailto:Dude <calvin@users.sourceforge.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
@@ -102,7 +102,7 @@ class TestMail (LinkCheckTest):
         Test some mailto addrs with warnings.
         """
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         # contains non-quoted characters
         url = u"mailto:calvin@users.sourceforge.net?subject=äöü"
         qurl = self.norm(url)
@@ -182,7 +182,7 @@ class TestMail (LinkCheckTest):
     def test_valid_mail (self):
         """Test valid mail addresses."""
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         for char in u"!#$&'*+-/=^_`.{|}~":
             addr = u'abc%sdef@sourceforge.net' % char
             self.mail_valid(u"mailto:%s" % addr,
@@ -191,7 +191,7 @@ class TestMail (LinkCheckTest):
 
     def test_unicode_mail (self):
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         mailto = u"mailto:ölvin@users.sourceforge.net"
         url = self.norm(mailto)
         resultlines = [

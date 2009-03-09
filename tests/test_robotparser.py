@@ -51,7 +51,7 @@ class TestRobotParser (unittest.TestCase):
         Test access of a non-existing robots.txt file.
         """
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         # robots.txt that does not exist
         self.rp.set_url('http://www.lycos.com/robots.txt')
         self.rp.read()
@@ -61,7 +61,7 @@ class TestRobotParser (unittest.TestCase):
     def test_password_robots (self):
         # whole site is password-protected.
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         self.rp.set_url('http://mueblesmoraleda.com/robots.txt')
         self.rp.read()
         self.check(self.rp.can_fetch("*",

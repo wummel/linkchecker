@@ -42,7 +42,7 @@ class TestPo (unittest.TestCase):
     def test_pos (self):
         """Test .po files syntax."""
         if not (has_msgfmt() and has_posix()):
-            raise SkipTest()
+            raise SkipTest("no msgfmt and POSIX available")
         for f in get_pofiles():
             ret = os.system("msgfmt -c -o - %s > /dev/null" % f)
             self.assertEquals(ret, 0, msg="PO-file syntax error in %r" % f)

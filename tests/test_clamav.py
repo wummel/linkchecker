@@ -27,7 +27,7 @@ class TestClamav (unittest.TestCase):
 
     def testClean (self):
         if not has_clamav():
-            raise SkipTest()
+            raise SkipTest("no ClamAV available")
         data = ""
         infected, errors = clamav.scan(data)
         self.assertFalse(infected)
@@ -35,7 +35,7 @@ class TestClamav (unittest.TestCase):
 
     def testInfected (self):
         if not has_clamav():
-            raise SkipTest()
+            raise SkipTest("no ClamAV available")
         data = '<object data="&#109;s-its:mhtml:file://'+ \
                'C:\\foo.mht!${PATH}/' + \
                'EXPLOIT.CHM::' + \

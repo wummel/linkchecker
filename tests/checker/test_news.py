@@ -35,7 +35,7 @@ class TestNews (LinkCheckTest):
 
     def newstest (self, url, resultlines):
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         self.direct(url, resultlines)
 
     def test_news_without_host (self):

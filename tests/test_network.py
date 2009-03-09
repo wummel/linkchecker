@@ -29,11 +29,11 @@ class TestNetwork (unittest.TestCase):
 
     def test_ifreq_size (self):
         if not has_posix():
-            raise SkipTest()
+            raise SkipTest("no POSIX system")
         self.assertTrue(linkcheck.network.ifreq_size() > 0)
 
     def test_interfaces (self):
         if not has_posix():
-            raise SkipTest()
+            raise SkipTest("no POSIX system")
         ifc = linkcheck.network.IfConfig()
         ifc.getInterfaceList()

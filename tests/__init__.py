@@ -151,7 +151,8 @@ def limit_time (seconds, skip=False):
                     return func(*args, **kwargs)
             except LinkCheckerInterrupt, msg:
                 if skip:
-                    raise SkipTest
+                    skipmsg = "time limit of %d seconds exceeded" % seconds
+                    raise SkipTest(skipmsg)
                 assert False, msg
         new_func.func_name = func.func_name
         return new_func

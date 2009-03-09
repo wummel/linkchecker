@@ -32,7 +32,7 @@ class TestHttps (LinkCheckTest):
         Test some https links.
         """
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         url = u"https://www.amazon.de/"
         resultlines = [
             u"url %s" % url,

@@ -24,7 +24,7 @@ class TestGui (unittest.TestCase):
 
     def test_gui (self):
         if not has_pyqt():
-            raise SkipTest()
+            raise SkipTest("no PyQt available")
         from PyQt4 import QtCore, QtGui, QtTest
         from linkcheck.gui import LinkCheckerMain
         app = QtGui.QApplication(sys.argv)

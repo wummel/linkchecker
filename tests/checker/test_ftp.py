@@ -33,7 +33,7 @@ class TestFtp (LinkCheckTest):
         """
         # ftp two slashes
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         url = u"ftp://ftp.de.debian.org/"
         resultlines = [
             u"url %s" % url,
@@ -49,7 +49,7 @@ class TestFtp (LinkCheckTest):
         """
         # ftp one slash
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         url = u"ftp:/ftp.de.debian.org/"
         nurl = self.norm(url)
         resultlines = [
@@ -88,7 +88,7 @@ class TestFtp (LinkCheckTest):
         """
         # ftp two dir slashes
         if not has_network():
-            raise SkipTest()
+            raise SkipTest("no network available")
         url = u"ftp://ftp.de.debian.org//debian/"
         nurl = self.norm(url)
         resultlines = [
