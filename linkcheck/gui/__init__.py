@@ -113,7 +113,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSignature("")
     def on_actionHelp_triggered (self):
         """Show help page."""
-        url = QtCore.QUrl("%sindex.html" % DocBaseUrl)
+        url = QtCore.QUrl("%sdocumentation.html" % DocBaseUrl)
         self.assistant.showDocumentation(url)
 
     @QtCore.pyqtSignature("")
