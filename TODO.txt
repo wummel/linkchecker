@@ -1,2 +1,4 @@
 - [GUI] Add more context menu actions:
-  + show detailed URL properties
+  + Show detailed URL properties
+  + View source
+- [GUI] Save options in qsettings.
