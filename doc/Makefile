@@ -101,7 +101,7 @@ compress:
 
 HELPFILES = lccollection.qhc
 
-helpfiles: $(HELPFILES)
+helpfiles: htmlhelp $(HELPFILES)
 
 %.qhc:	%.qhcp lcdoc.qhp
 	qcollectiongenerator $< -o $@
