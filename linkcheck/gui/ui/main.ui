@@ -59,26 +59,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="optionsButton" >
-        <property name="text" >
-         <string>Options...</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_3" >
-        <property name="orientation" >
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0" >
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QPushButton" name="controlButton" >
         <property name="toolTip" >
          <string>Start checking the given URL.</string>
@@ -168,7 +148,14 @@
     <addaction name="actionAbout" />
     <addaction name="actionHelp" />
    </widget>
+   <widget class="QMenu" name="menuEdit" >
+    <property name="title" >
+     <string>Edit</string>
+    </property>
+    <addaction name="actionOptions" />
+   </widget>
    <addaction name="menuLinkChecka" />
+   <addaction name="menuEdit" />
    <addaction name="menuHelp" />
   </widget>
   <widget class="QStatusBar" name="statusBar" />
@@ -197,6 +184,11 @@
    </property>
    <property name="text" >
     <string>View online</string>
+   </property>
+  </action>
+  <action name="actionOptions" >
+   <property name="text" >
+    <string>Options</string>
    </property>
   </action>
  </widget>

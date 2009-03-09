@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Mar  7 14:22:26 2009
+# Created: Mon Mar  9 23:30:05 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,11 +40,6 @@ class Ui_MainWindow(object):
         self.urlinput.setSizePolicy(sizePolicy)
         self.urlinput.setObjectName("urlinput")
         self.horizontalLayout_3.addWidget(self.urlinput)
-        self.optionsButton = QtGui.QToolButton(self.centralwidget)
-        self.optionsButton.setObjectName("optionsButton")
-        self.horizontalLayout_3.addWidget(self.optionsButton)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem)
         self.controlButton = QtGui.QPushButton(self.centralwidget)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -69,6 +64,8 @@ class Ui_MainWindow(object):
         self.menuLinkChecka.setObjectName("menuLinkChecka")
         self.menuHelp = QtGui.QMenu(self.menubar)
         self.menuHelp.setObjectName("menuHelp")
+        self.menuEdit = QtGui.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setObjectName("statusBar")
@@ -84,10 +81,14 @@ class Ui_MainWindow(object):
         icon2.addPixmap(QtGui.QPixmap(":/icons/online.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionViewOnline.setIcon(icon2)
         self.actionViewOnline.setObjectName("actionViewOnline")
+        self.actionOptions = QtGui.QAction(MainWindow)
+        self.actionOptions.setObjectName("actionOptions")
         self.menuLinkChecka.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
+        self.menuEdit.addAction(self.actionOptions)
         self.menubar.addAction(self.menuLinkChecka.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
         self.label.setBuddy(self.urlinput)
 
@@ -97,7 +98,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_("LinkChecker"))
         self.label.setText(_("URL"))
-        self.optionsButton.setText(_("Options..."))
         self.controlButton.setToolTip(_("Start checking the given URL."))
         self.controlButton.setText(_("Start"))
         self.treeWidget.headerItem().setText(0, _("#"))
@@ -107,10 +107,12 @@ class Ui_MainWindow(object):
         self.treeWidget.headerItem().setText(4, _("Result"))
         self.menuLinkChecka.setTitle(_("File"))
         self.menuHelp.setTitle(_("Help"))
+        self.menuEdit.setTitle(_("Edit"))
         self.actionQuit.setText(_("Quit"))
         self.actionQuit.setShortcut(_("Ctrl+Q"))
         self.actionAbout.setText(_("About"))
         self.actionHelp.setText(_("Help"))
         self.actionViewOnline.setText(_("View online"))
+        self.actionOptions.setText(_("Options"))
 
 import linkchecker_rc

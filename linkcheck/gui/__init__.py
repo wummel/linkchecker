@@ -73,8 +73,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
-        self.connect(self.optionsButton, QtCore.SIGNAL("clicked()"), self.options.exec_)
-        self.connect(self.actionQuit, QtCore.SIGNAL("triggered()"), self.close)
         #self.controlButton.setText(_("Start"))
         #icon = QtGui.QIcon()
         #icon.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -99,14 +97,12 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.progress.hide()
             self.aggregate = None
             self.controlButton.setEnabled(True)
-            self.optionsButton.setEnabled(True)
             self.set_statusbar(_("Ready."))
         elif status == Status.checking:
             self.num = 0
             self.progress.reset()
             self.progress.show()
             self.controlButton.setEnabled(False)
-            self.optionsButton.setEnabled(False)
 
     status = property(get_status, set_status)
 
@@ -119,6 +115,16 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Show help page."""
         url = QtCore.QUrl("%sindex.html" % DocBaseUrl)
         self.assistant.showDocumentation(url)
+
+    @QtCore.pyqtSignature("")
+    def on_actionOptions_triggered (self):
+        """Show option dialog."""
+        self.options.exec_()
+
+    @QtCore.pyqtSignature("")
+    def on_actionQuit_triggered (self):
+        """Quit application."""
+        self.close()
 
     def closeEvent (self, e=None):
         """Save settings on close."""
@@ -156,7 +162,6 @@ Version 2 or later.</p>
     def check (self):
         """Check given URL."""
         self.controlButton.setEnabled(False)
-        self.optionsButton.setEnabled(False)
         self.treeWidget.clear()
         self.set_config()
         aggregate = director.get_aggregate(self.config)
