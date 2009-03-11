@@ -82,7 +82,7 @@ and requests.
 Repository
 ==========
 
-The `SF Subversion page`_ hosts the development source code of LinkChecker.
+The `SF code page`_ hosts the development source code of LinkChecker.
 
-.. _SF Subversion page:
-   http://sourceforge.net/svn/?group_id=1913
+.. _SF code page:
+   http://sourceforge.net/scm/?type=git&group_id=1913
