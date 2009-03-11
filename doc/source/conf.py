@@ -49,7 +49,7 @@ copyright = u'2009, Bastian Kleineidam'
 # built documents.
 #
 # The short X.Y version.
-version = '5.1'
+version = '5.0.2'
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -188,3 +188,6 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+
+#def setup(app):
+#    app.add_config_value('foo', 'default', True)

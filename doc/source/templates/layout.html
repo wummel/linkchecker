@@ -8,20 +8,32 @@ img { border: 0; }
 
 {% block rootrellink %}
   <li><a href="{{ pathto('index') }}">Home </a> |&nbsp;</li>
-  <li><a href="{{ pathto('install') }}">Installation </a> |&nbsp;</li>
-  <li><a href="{{ pathto('upgrading') }}">Upgrading </a> |&nbsp;</li>
   <li><a href="{{ pathto('documentation') }}">Documentation </a>|&nbsp;</li>
-  <li><a href="{{ pathto('other') }}">Other </a> </li>
+  <li><a href="{{ pathto('other') }}">Other link checkers </a> </li>
 {% endblock %}
 
 {% block relbar1 %}
 <div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+{% if builder == 'html' %}
 <div style="float:right;"><a
   href="http://sourceforge.net/projects/linkchecker"><img 
   src="http://sflogo.sourceforge.net/sflogo.php?group_id=1913&type=13"
   width="120" height="30" border="0"
   alt="Get LinkChecker at SourceForge.net." /></a>
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https:" : "http:") + "//apps.sourceforge.net/piwik/linkchecker/";
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+piwik_action_name = '';
+piwik_idsite = 1;
+piwik_url = pkBaseURL + "piwik.php";
+piwik_log(piwik_action_name, piwik_idsite, piwik_url);
+</script>
+<object><noscript><p><img src="http://apps.sourceforge.net/piwik/linkchecker/piwik.php?idsite=1" alt="piwik"/></p></noscript></object>
+<!-- End Piwik Tag -->
 </div>
+{% endif %}
 <table border="0"><tr>
  <td><a href="{{ pathto('index') }}"><img
   src="{{ pathto("_static/logo64x64.png", 1) }}" border="0" alt="LinkChecker"/></a></td>
@@ -30,8 +42,22 @@ img { border: 0; }
 </div>
 {{ super() }}
 {% endblock %}
+{% block relbar2 %}{% endblock %}
 
 {# put the sidebar before the body #}
 {% block sidebarsearch %}{{ super() }}{% endblock %}
 {% block sidebar1 %}{{ sidebar() }}{% endblock %}
 {% block sidebar2 %}{% endblock %}
+{% block sidebarlogo %}{% if builder == 'html' %}
+{% if docname == 'index' %}
+<h3>Download</h3>
+<a href="http://prdownloads.sourceforge.net/linkchecker/LinkChecker-{{version}}.exe?download">LinkChecker&nbsp;{{version}}&nbsp;for&nbsp;Windows</a><br/>
+<a href="http://prdownloads.sourceforge.net/linkchecker/LinkChecker-{{version}}.tar.gz?download">LinkChecker&nbsp;{{version}}&nbsp;source</a><br/>
+<a href="http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker;a=blob;f=ChangeLog.txt;hb=HEAD">Changelog</a><br/>
+<h3>Support</h3>
+<a href="http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913">Bug&nbsp;tracker</a><br/>
+<a href="http://sourceforge.net/scm/?type=git&group_id=1913">Development&nbsp;repository</a><br/>
+{% endif %}
+{% endif %}
+{% endblock %}
+{% block sidebartoc %}{% endblock %}

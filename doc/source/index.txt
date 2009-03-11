@@ -1,9 +1,6 @@
 .. meta::
    :keywords: link, URL, validation, checking
 
-The latest version of this document is available at
-http://linkchecker.sourceforge.net/.
-
 ===============================
 Check websites for broken links
 ===============================
@@ -39,24 +36,6 @@ Features
 - a (Fast)CGI web interface (requires HTTP server)
 
 
-Download
-========
-
-Get it from the `LinkChecker download section`_.
-
-.. _LinkChecker download section:
-   http://sourceforge.net/project/showfiles.php?group_id=1913
-
-Requirements and installation instructions are located at the
-`install documentation`_. To see what has changed between releases
-look at the ChangeLog_.
-
-.. _install documentation:
-   install.html
-.. _ChangeLog:
-   http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker;a=blob;f=ChangeLog.txt;hb=HEAD
-
-
 Screenshots
 ===========
 
@@ -68,21 +47,3 @@ Screenshots
    | Commandline interface              | GUI client                         | Web interface                      |
    +------------------------------------+------------------------------------+------------------------------------+
 
-
-Support
-=======
-
-The `SF tracker`_ allows submitting of bugs, patches
-and requests.
-
-.. _SF tracker:
-   http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
-
-
-Repository
-==========
-
-The `SF code page`_ hosts the development source code of LinkChecker.
-
-.. _SF code page:
-   http://sourceforge.net/scm/?type=git&group_id=1913
