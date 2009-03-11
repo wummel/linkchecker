@@ -1,1 +1,1 @@
-See doc/en/index.txt
+See doc/source/index.txt
