@@ -23,11 +23,6 @@ like LinkChecker.
   .. _gURLChecker:
      http://labs.libre-entreprise.org/projects/gurlchecker/
 
-- `jchecklinks`_ written in Java
-  
-  .. _jchecklinks:
-     http://web.purplefrog.com/~thoth/jchecklinks/
-
 - `KLinkStatus`_ written in C++
 
   .. _KLinkStatus:
