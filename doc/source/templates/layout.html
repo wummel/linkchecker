@@ -49,7 +49,7 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 {% block sidebar1 %}{{ sidebar() }}{% endblock %}
 {% block sidebar2 %}{% endblock %}
 {% block sidebarlogo %}{% if builder == 'html' %}
-{% if docname == 'index' %}
+{% if pagename == 'index' %}
 <h3>Download</h3>
 <a href="http://prdownloads.sourceforge.net/linkchecker/LinkChecker-{{version}}.exe?download">LinkChecker&nbsp;{{version}}&nbsp;for&nbsp;Windows</a><br/>
 <a href="http://prdownloads.sourceforge.net/linkchecker/LinkChecker-{{version}}.tar.gz?download">LinkChecker&nbsp;{{version}}&nbsp;source</a><br/>
