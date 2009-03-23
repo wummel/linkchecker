@@ -4,7 +4,7 @@
    <title>LinkChecker</title>
    <applicationIcon>build/htmlhelp/_static/favicon16x16.png</applicationIcon>
    <cacheDirectory>bfk/LinkChecker</cacheDirectory>
-   <startPage>qthelp://bfk.app.linkchecker/doc/documentation.html</startPage>
+   <startPage>qthelp://bfk.app.linkchecker/doc/build/htmlhelp/documentation.html</startPage>
    <enableDocumentationManager>false</enableDocumentationManager>
    <enableAddressBar>false</enableAddressBar>
    <enableFilterFunctionality>false</enableFilterFunctionality>
