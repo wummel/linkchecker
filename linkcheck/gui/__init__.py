@@ -15,6 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import os
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
@@ -50,7 +51,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.checker = CheckerThread()
         self.contextmenu = ContextMenu(parent=self)
         # Note: we can't use QT assistant here because of the .exe packaging
-        self.assistant = HelpWindow(self, "doc/lccollection.qhc")
+        qhcpath = os.path.join(configuration.configdata.install_data, "doc", "lccollection.qhc")
+        self.assistant = HelpWindow(self, qhcpath)
         # setup this widget
         self.init_treewidget()
         self.read_settings()
