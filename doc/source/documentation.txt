@@ -9,10 +9,6 @@ execute ``linkchecker http://www.myhomepage.org/``. This will check the
 complete domain of www.myhomepage.org recursively. All links pointing
 outside of the domain are also checked for validity.
 
-For more options, read the man page ``linkchecker(1)`` or execute
-``linkchecker -h``.
-
-
 Performed checks
 ----------------
 
