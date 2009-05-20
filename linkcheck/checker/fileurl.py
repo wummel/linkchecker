@@ -269,11 +269,14 @@ class FileUrl (urlbase.UrlBase):
         try:
             c = conn.cursor()
             try:
-                sql = """SELECT moz_places.url, moz_places.title
-                FROM moz_places WHERE hidden=0
-                AND moz_places.url NOT LIKE 'place:%'"""
+                sql = """SELECT mp.url, mb.title
+                FROM moz_places mp, moz_bookmarks mb
+                WHERE mp.hidden=0 AND mp.url NOT LIKE 'place:%' AND
+                mp.id=mb.fk"""
                 c.execute(sql)
                 for url, name in c:
+                    if not name:
+                        name = url
                     url_data = get_url_from(url, self.recursion_level+1,
                         self.aggregate, parent_url=self.url, name=name)
                     self.aggregate.urlqueue.put(url_data)

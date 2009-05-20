@@ -4,6 +4,7 @@ Fixes:
 - logging: The content size of downloads is now shown again.
 - http: Fixed persistent connection handling: retry connecting to HTTP
   servers which close persistent connections unexpectedly.
+- bookmarks: correctly read the bookmark title from Mozilla places.sqllite
 
 Changes:
 - logging: Switch default output encoding of loggers to UTF-8, except the
