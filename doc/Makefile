@@ -27,9 +27,6 @@ html:
 	-rm build/html/_static/default.css
 	-rm build/html/_static/plus.png
 	-rm build/html/_static/minus.png
-	-rm build/html/_static/rightsidebar.css
-	-rm build/html/_static/stickysidebar.css
-	-rm build/html/_static/traditional.css
 	@echo
 	@echo "Build finished. The HTML pages are in build/html."
 
