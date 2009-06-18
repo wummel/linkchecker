@@ -65,12 +65,12 @@ class Logger (object):
         """
         Initialize a logger, looking for part restrictions in kwargs.
         """
-        # what log parts should be in output
-        self.logparts = None # log all parts
-        if 'parts' in args:
-            if "all" not in args['parts']:
-                # only log given parts
-                self.logparts = args['parts']
+        if 'parts' in args and "all" not in args['parts']:
+            # only log given parts
+            self.logparts = args['parts']
+        else:
+            # log all parts
+            self.logparts = None
         # number of spaces before log parts for alignment
         self.logspaces = {}
         # maximum indent of spaces for alignment
@@ -90,7 +90,10 @@ class Logger (object):
 
     def init_fileoutput (self, args):
         """
-        Initialize self.fd file descriptor from args.
+        Initialize self.fd file descriptor from args. For file output
+        (used when the fileoutput arg is given), the self.fd
+        initialization is deferred until the first self.write() call.
+        Thios avoids creation of a empty files when no output is written.
         """
         self.filename = None
         self.close_fd = False
