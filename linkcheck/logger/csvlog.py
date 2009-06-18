@@ -62,25 +62,24 @@ class CSVLogger (Logger):
             self.comment(_("Write comments and bugs to %(email)s") %
                          {'email': configuration.Email})
             self.check_date()
-            self.comment(_("Format of the entries:"))
-            for s in (u"urlname",
-                      u"parentname",
-                      u"baseref",
-                      u"result",
-                      u"warningstring",
-                      u"infostring",
-                      u"valid",
-                      u"url",
-                      u"line",
-                      u"column",
-                      u"name",
-                      u"dltime",
-                      u"dlsize",
-                      u"checktime",
-                      u"cached"):
-                self.comment(s)
-                row.append(s)
             self.flush()
+        for s in (u"urlname",
+                  u"parentname",
+                  u"baseref",
+                  u"result",
+                  u"warningstring",
+                  u"infostring",
+                  u"valid",
+                  u"url",
+                  u"line",
+                  u"column",
+                  u"name",
+                  u"dltime",
+                  u"dlsize",
+                  u"checktime",
+                  u"cached"):
+            if self.has_part(s):
+                row.append(s)
         self.writer = csv.writer(self.fd, dialect='excel',
                         delimiter=self.separator, lineterminator=os.linesep,
                         quotechar=self.quotechar)
