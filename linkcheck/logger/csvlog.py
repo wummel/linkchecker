@@ -63,6 +63,12 @@ class CSVLogger (Logger):
                          {'email': configuration.Email})
             self.check_date()
             self.flush()
+        else:
+            # write empty string to initialize file output
+            self.write(u"")
+        self.writer = csv.writer(self.fd, dialect='excel',
+                        delimiter=self.separator, lineterminator=os.linesep,
+                        quotechar=self.quotechar)
         for s in (u"urlname",
                   u"parentname",
                   u"baseref",
@@ -80,9 +86,6 @@ class CSVLogger (Logger):
                   u"cached"):
             if self.has_part(s):
                 row.append(s)
-        self.writer = csv.writer(self.fd, dialect='excel',
-                        delimiter=self.separator, lineterminator=os.linesep,
-                        quotechar=self.quotechar)
         if row:
             self.writer.writerow(row)
 

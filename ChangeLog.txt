@@ -1,7 +1,10 @@
-5.1 "Let the right one in" (released xx.03.2009)
+5.1 "Let the right one in" (released xx.06.2009)
 
 Fixes:
 - logging: The content size of downloads is now shown again.
+- logging: The CSV logger does not crash anymore when only parts
+  of log output was configured
+  Closes: SF bug #2806790
 - http: Fixed persistent connection handling: retry connecting to HTTP
   servers which close persistent connections unexpectedly.
 - bookmarks: correctly read the bookmark title from Mozilla places.sqllite
