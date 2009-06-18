@@ -92,13 +92,15 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             val = self.get(section, "log").strip()
             self.config['output'] = val
         if self.has_option(section, "fileoutput"):
-            filelist = self.get(section, "fileoutput").split(",")
-            for val in filelist:
-                val = val.strip()
-                # no file output for the blacklist and none Logger
-                if val in Loggers and val not in ("blacklist", "none"):
-                    output = self.config.logger_new(val, fileoutput=1)
-                    self.config['fileoutput'].append(output)
+            loggers = self.get(section, "fileoutput").split(",")
+            # strip names from whitespace
+            loggers = (x.strip() for x in loggers)
+            # no file output for the blacklist and none Logger
+            loggers = (x for x in loggers if x in Loggers and
+                       x not in ("blacklist", "none"))
+            for val in loggers:
+                output = self.config.logger_new(val, fileoutput=1)
+                self.config['fileoutput'].append(output)
         if self.has_option(section, "interactive"):
             self.config["interactive"] = self.getboolean(section, "interactive")
 
