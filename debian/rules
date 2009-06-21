@@ -3,6 +3,10 @@
 DEB_PYTHON_SYSTEM=pycentral
 DEB_DH_INSTALLCHANGELOGS_ARGS=ChangeLog.txt
 
+# workaround for Debian bug #486848
+binary-arch binary-indep: install-arch install-indep
+
+
 common-install-arch::
 	$(MAKE) locale
 

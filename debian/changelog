@@ -4,6 +4,15 @@ linkchecker (5.1-1) unstable; urgency=low
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 18 Feb 2009 16:49:38 +0100
 
+linkchecker (5.0.1-2) unstable; urgency=medium
+
+  * Let the binary target depend on install targets in debian/rules.
+    Workaround for bug #486848 of cdbs.
+    Urgency medium for rc bug fix.
+    (Closes: #526572)
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 21 Jun 2009 10:27:47 +0200
+
 linkchecker (5.0.1-1) unstable; urgency=low
 
   * New upstream release.
