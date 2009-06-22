@@ -56,6 +56,12 @@ name no slash
 warning Base URL is not properly normed. Normed URL is http:///localhost%%3A8001/.
 error
 
+url //localhost:8001/ (cached)
+cache key http://localhost:8001/
+real url http://localhost:8001/
+name no scheme
+valid
+
 url http://
 cache key http://
 real url http://
