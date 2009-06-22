@@ -1,5 +1,7 @@
 - [CHECKING] SF #2784996
   Incorrect URL fragment handling
+- [TEST] Test protocol-independent links like
+  <img src="//example.com/logo.png"/>
 - [CMDLINE] SF #2770077
   Titles of bookmarks with umlauts are not printed correctly.
 - [GUI] Add more context menu actions:
