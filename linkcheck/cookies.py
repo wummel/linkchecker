@@ -185,16 +185,14 @@ class HttpCookie (object):
         value = unquote(value)
         if key == "domain":
             value = value.lower()
-            if not value.startswith("."):
-                if not has_embedded_dot(value):
-                    if "." in value:
-                        raise CookieError("invalid dot in domain %r" % value)
-                    # supply a leading dot
-                    value = "."+value
+            if not value.startswith(".") and not has_embedded_dot(value):
+                if "." in value:
+                    raise CookieError("invalid dot in domain %r" % value)
+                # supply a leading dot
+                value = "."+value
         if key == "max-age":
             try:
-                num = int(value)
-                if num < 0:
+                if int(value) < 0:
                     raise ValueError("Negative Max-Age")
             except (OverflowError, ValueError):
                 raise CookieError("invalid Max-Age number: %r" % value)
@@ -202,8 +200,7 @@ class HttpCookie (object):
             ports = value.split(",")
             for port in ports:
                 try:
-                    num = int(port)
-                    if not (0 <= num <= 65535):
+                    if not (0 <= int(port) <= 65535):
                         raise ValueError("Invalid port number")
                 except (OverflowError, ValueError):
                     raise CookieError("invalid port number: %r" % port)
