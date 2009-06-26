@@ -8,6 +8,8 @@ LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
 PYTHONSRC=/home/calvin/src/python-gitsvn
 PY_FILES_DIRS=linkcheck tests *.py linkchecker gui cgi-bin config doc
 TESTS ?= tests/
+# set test options, eg. to "--nologcapture"
+TESTOPTS=
 PAGER ?= less
 # build dir for debian package
 BUILDDIR=/home/calvin/packages/official
@@ -126,7 +128,7 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	nosetests -v -m "^test_.*" $(TESTS)
+	nosetests -v -m "^test_.*" $(TESTOPTS) $(TESTS)
 
 .PHONY: pyflakes
 pyflakes:
