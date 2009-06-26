@@ -28,9 +28,6 @@ class TestFtp (LinkCheckTest):
     """
 
     def test_ftp (self):
-        """
-        Test ftp link.
-        """
         # ftp two slashes
         if not has_network():
             raise SkipTest("no network available")
@@ -44,9 +41,6 @@ class TestFtp (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_ftp_slashes (self):
-        """
-        Test ftp links with missing slashes.
-        """
         # ftp one slash
         if not has_network():
             raise SkipTest("no network available")
@@ -83,9 +77,6 @@ class TestFtp (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_ftp_many_slashes (self):
-        """
-        Test ftp links with too many slashes.
-        """
         # ftp two dir slashes
         if not has_network():
             raise SkipTest("no network available")

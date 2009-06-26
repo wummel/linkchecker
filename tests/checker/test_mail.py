@@ -29,9 +29,7 @@ class TestMail (LinkCheckTest):
     """
 
     def test_good_mail (self):
-        """
-        Test some good mailto addrs.
-        """
+        # some good mailto addrs
         if not has_network():
             raise SkipTest("no network available")
         url = self.norm(u"mailto:Dude <calvin@users.sourceforge.net> , "\
@@ -98,9 +96,7 @@ class TestMail (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_warn_mail (self):
-        """
-        Test some mailto addrs with warnings.
-        """
+        # some mailto addrs with warnings
         if not has_network():
             raise SkipTest("no network available")
         # contains non-quoted characters
@@ -151,7 +147,6 @@ class TestMail (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_error_mail (self):
-        """Test some mailto addrs with bad syntax."""
         # too long or too short
         self.mail_error(u"mailto:")
         self.mail_error(u"mailto:@")
@@ -180,7 +175,7 @@ class TestMail (LinkCheckTest):
             cache_key=u"mailto:calvin@users.sourceforge.net?foo=bar")
 
     def test_valid_mail (self):
-        """Test valid mail addresses."""
+        # valid mail addresses
         if not has_network():
             raise SkipTest("no network available")
         for char in u"!#$&'*+-/=^_`.{|}~":

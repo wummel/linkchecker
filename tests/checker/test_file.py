@@ -44,45 +44,29 @@ class TestFile (LinkCheckTest):
     """
 
     def test_html (self):
-        """
-        Test links of file.html.
-        """
         self.file_test("file.html")
 
     def test_text (self):
-        """
-        Test links of file.txt.
-        """
         self.file_test("file.txt")
 
     def test_asc (self):
-        """
-        Test links of file.asc.
-        """
         self.file_test("file.asc")
 
     def test_css (self):
-        """
-        Test links of file.css.
-        """
         self.file_test("file.css")
 
     def test_urllist (self):
-        """
-        Test url list parsing.
-        """
         self.file_test("urllist.txt")
 
     def test_firefox_bookmarks (self):
-        """Test firefox 3 bookmark file parsing."""
+        # firefox 3 bookmark file parsing
         self.file_test("places.sqlite")
 
     def test_opera_bookmarks (self):
-        """Test Opera bookmark file parsing."""
+        # Opera bookmark file parsing
         self.file_test("opera6.adr")
 
     def test_directory_listing (self):
-        """Test directory listing code."""
         # unpack non-unicode filename which cannot be stored
         # in the SF subversion repository
         if os.name != 'posix':

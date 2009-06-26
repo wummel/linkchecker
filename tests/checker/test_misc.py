@@ -26,7 +26,4 @@ class TestMisc (LinkCheckTest):
     """
 
     def test_misc (self):
-        """
-        Test links of misc.html.
-        """
         self.file_test("misc.html")

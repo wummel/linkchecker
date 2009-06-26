@@ -26,7 +26,4 @@ class TestRobotsTxt (LinkCheckTest):
     """
 
     def test_norobot (self):
-        """
-        Test links of norobot.html.
-        """
         self.file_test("norobots.html")

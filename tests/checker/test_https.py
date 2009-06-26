@@ -28,9 +28,6 @@ class TestHttps (LinkCheckTest):
     """
 
     def test_https (self):
-        """
-        Test some https links.
-        """
         if not has_network():
             raise SkipTest("no network available")
         url = u"https://www.amazon.de/"

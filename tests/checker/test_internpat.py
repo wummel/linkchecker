@@ -26,7 +26,7 @@ class TestInternpat (LinkCheckTest):
     """Test internal pattern."""
 
     def test_trailing_slash (self):
-        """Make sure a trailing slash is not lost."""
+        # Make sure a trailing slash is not lost
         config = linkcheck.configuration.Configuration()
         aggregate = linkcheck.director.get_aggregate(config)
         url = "http://example.org/foo/"

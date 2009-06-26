@@ -26,25 +26,13 @@ class TestBase (LinkCheckTest):
     """
 
     def test_base1 (self):
-        """
-        Test links of base1.html.
-        """
         self.file_test("base1.html")
 
     def test_base2 (self):
-        """
-        Test links of base2.html.
-        """
         self.file_test("base2.html")
 
     def test_base3 (self):
-        """
-        Test links of base3.html.
-        """
         self.file_test("base3.html")
 
     def test_base4 (self):
-        """
-        Test links of base4.html.
-        """
         self.file_test("base4.html")

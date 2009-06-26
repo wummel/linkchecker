@@ -26,9 +26,7 @@ class TestError (LinkCheckTest):
     """
 
     def test_unrecognized (self):
-        """
-        Unrecognized scheme test.
-        """
+        # Unrecognized scheme
         url = u"hutzli:"
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
@@ -41,9 +39,7 @@ class TestError (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_leading_whitespace (self):
-        """
-        Leading whitespace test.
-        """
+        # Leading whitespace
         url = u" http://www.heise.de/"
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
@@ -68,9 +64,7 @@ class TestError (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_trailing_whitespace (self):
-        """
-        Trailing whitespace test.
-        """
+        # Trailing whitespace
         url = u"http://www.heise.de/ "
         nurl = self.norm(url)
         resultlines = [

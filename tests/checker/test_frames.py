@@ -26,7 +26,4 @@ class TestFrames (LinkCheckTest):
     """
 
     def test_frames (self):
-        """
-        Test links of frames.html.
-        """
         self.file_test("frames.html")

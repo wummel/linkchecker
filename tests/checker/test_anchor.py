@@ -26,7 +26,4 @@ class TestAnchor (LinkCheckTest):
     """
 
     def test_anchor (self):
-        """
-        Test anchors.
-        """
         self.file_test("anchor.html")
