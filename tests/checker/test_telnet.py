@@ -21,9 +21,7 @@ from . import LinkCheckTest
 
 
 class TestTelnet (LinkCheckTest):
-    """
-    Test telnet: link checking.
-    """
+    """Test telnet: link checking."""
 
     def test_telnet (self):
         url = u"telnet:"
@@ -36,7 +34,7 @@ class TestTelnet (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
-        url = u"telnet://www.imarealdoofus.com"
+        url = u"telnet://www.example.com"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -44,7 +42,7 @@ class TestTelnet (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
-        url = u"telnet://user@www.imarealdoofus.com"
+        url = u"telnet://user@www.example.com"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
@@ -52,7 +50,7 @@ class TestTelnet (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
-        url = u"telnet://user:pass@www.imarealdoofus.com"
+        url = u"telnet://user:pass@www.example.com"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
