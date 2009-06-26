@@ -181,7 +181,7 @@ def strsize (b):
     if b < 1024:
         return u"%dB" % b
     if b < 1024 * 10:
-        return u"%dKB" % int(b / 1024)
+        return u"%dKB" % (b // 1024)
     if b < 1024 * 1024:
         return u"%.2fKB" % (float(b) / 1024)
     if b < 1024 * 1024 * 10:
