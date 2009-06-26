@@ -130,8 +130,6 @@
 # warn if size info exceeds given maximum of bytes
 #warnsizebytes=2000
 #nntpserver=
-# disable anchor caching
-#noanchorcaching=1
 # check HTML or CSS syntax locally with HTML tidy or cssutils
 #checkhtml=1
 #checkcss=1

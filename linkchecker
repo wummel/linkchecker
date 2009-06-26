@@ -479,12 +479,11 @@ group.add_option("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
 """Check HTTP anchor references. Default is not to check anchors.
 This option enables logging of the warning 'url-anchor-not-found'."""))
+# XXX remove deprecated option
 group.add_option("--no-anchor-caching", action="store_false",
                  dest="anchorcaching", help=_(
-"""Treat url#anchora and url#anchorb as equal on caching. This
-is the default browser behaviour, but it's not specified in
-the URI specification. Use with care since broken anchors are not
-guaranteed to be detected in this mode."""))
+"""This option is deprecated and does nothing. It will be removed
+in a future release."""))
 group.add_option("-u", "--user", type="string", dest="username",
                  metavar="STRING",
                  help=_(
@@ -674,8 +673,6 @@ if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.nntpserver:
     config["nntpserver"] = options.nntpserver
-if options.anchorcaching is not None:
-    config["anchorcaching"] = options.anchorcaching
 if options.password is not None:
     _password = options.password
     constructauth = True

@@ -31,7 +31,7 @@ from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
 from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
     get_url_from)
 # import warnings
-from .const import WARN_HTTP_ROBOTS_DENIED, WARN_HTTP_NO_ANCHOR_SUPPORT, \
+from .const import WARN_HTTP_ROBOTS_DENIED, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
     WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
@@ -110,9 +110,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         super(HttpUrl, self).reset()
         self.max_redirects = 5
         self.has301status = False
-        # some servers do not support anchors in requests
-        # this flag tells us to remove the anchor in request url
-        self.no_anchor = False
         # flag if check had to fallback from HEAD to GET method
         self.fallback_get = False
         # flag if connection is persistent
@@ -190,10 +187,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.add_info(_("Server `%(name)s' did not support HEAD request; "
                             "a GET request was used instead.") %
                             {"name": server})
-        if self.no_anchor:
-            self.add_warning(_("Server `%(name)s' had no anchor support, removed"
-                               " anchor from request.") % {"name": server},
-                             tag=WARN_HTTP_NO_ANCHOR_SUPPORT)
         # redirections might have changed the URL
         newurl = urlparse.urlunsplit(self.urlparts)
         if self.url != newurl:
@@ -286,9 +279,6 @@ Use URL `%(newurl)s' instead for checking.""") % {
                         "Authentication %s/%s", _user, _password)
                     continue
             elif response.status >= 400:
-                if self.headers and self.urlparts[4] and not self.no_anchor:
-                    self.no_anchor = True
-                    continue
                 # retry with GET (but do not set fallback flag)
                 if self.method == "HEAD":
                     self.method = "GET"
@@ -412,9 +402,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
         return data
 
     def check_response (self, response):
-        """
-        Check final result and log it.
-        """
+        """Check final result and log it."""
         if response.status >= 400:
             self.set_result(u"%r %s" % (response.status, response.reason),
                             valid=False)
@@ -476,10 +464,9 @@ Use URL `%(newurl)s' instead for checking.""") % {
         # close/release a previous connection
         self.close_connection()
         self.url_connection = self.get_http_object(host, scheme)
-        if self.no_anchor:
-            anchor = ''
-        else:
-            anchor = self.urlparts[4]
+        # the anchor fragment is not part of a HTTP URL, see
+        # http://tools.ietf.org/html/rfc2616#section-3.2.2
+        anchor = ''
         if self.proxy:
             path = urlparse.urlunsplit((self.urlparts[0], self.urlparts[1],
                                  self.urlparts[2], self.urlparts[3], anchor))

@@ -130,9 +130,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.config["warnsizebytes"] = int(val)
         if self.has_option(section, "nntpserver"):
             self.config["nntpserver"] = self.get(section, "nntpserver")
-        if self.has_option(section,"anchorcaching"):
-            val = self.getboolean(section, "anchorcaching")
-            self.config["anchorcaching"] = val
         self.read_check_options(section)
 
     def read_check_options (self, section):

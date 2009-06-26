@@ -1,5 +1,3 @@
-- [CHECKING] SF #2784996
-  Incorrect URL fragment handling
 - [CMDLINE] SF #2770077
   Titles of bookmarks with umlauts are not printed correctly.
 - [GUI] Add more context menu actions:

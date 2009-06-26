@@ -9,14 +9,14 @@ cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 valid
 
-url file.html#isnix
-cache key file://%(curdir)s/%(datadir)s/file.html#isnix
+url file.html#isnix (cached)
+cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
-warning Anchor #isnix not found.
+warning Anchor `isnix' not found. Available anchors: `iswas'.
 valid
 
-url file.html#iswas
-cache key file://%(curdir)s/%(datadir)s/file.html#iswas
+url file.html#iswas (cached)
+cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 valid
 

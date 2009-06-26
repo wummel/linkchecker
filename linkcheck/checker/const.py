@@ -83,7 +83,6 @@ WARN_FILE_MISSING_SLASH = "file-missing-slash"
 WARN_FILE_SYSTEM_PATH = "file-system-path"
 WARN_FTP_MISSING_SLASH = "ftp-missing-slash"
 WARN_HTTP_ROBOTS_DENIED = "http-robots-denied"
-WARN_HTTP_NO_ANCHOR_SUPPORT = "http-no-anchor-support"
 WARN_HTTP_MOVED_PERMANENT = "http-moved-permanent"
 WARN_HTTP_WRONG_REDIRECT = "http-wrong-redirect"
 WARN_HTTP_EMPTY_CONTENT = "http-empty-content"
@@ -115,7 +114,6 @@ Warnings = {
         _("The file: path is not the same as the system specific path."),
     WARN_FTP_MISSING_SLASH: _("The ftp: URL is missing a trailing slash."),
     WARN_HTTP_ROBOTS_DENIED: _("The http: URL checking has been denied."),
-    WARN_HTTP_NO_ANCHOR_SUPPORT: _("The HTTP server had no anchor support."),
     WARN_HTTP_MOVED_PERMANENT: _("The URL has moved permanently."),
     WARN_HTTP_WRONG_REDIRECT:
         _("The URL has been redirected to an URL of a different type."),

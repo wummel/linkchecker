@@ -128,6 +128,8 @@ class UrlBase (object):
         self.urlparts = None
         # the anchor part of url
         self.anchor = None
+        # list of parsed anchors
+        self.anchors = []
         # the result message string and flag
         self.result = u""
         self.has_result = False
@@ -256,29 +258,34 @@ class UrlBase (object):
         self.result = cache_data["result"]
         self.has_result = True
         for tag, msg in cache_data["warnings"]:
-            self.add_warning(msg, tag=tag)
+            # do not copy anchor warnings, since the current anchor
+            # might have changed
+            if tag != WARN_URL_ANCHOR_NOT_FOUND:
+                self.add_warning(msg, tag=tag)
         for info in cache_data["info"]:
             self.add_info(info)
         self.valid = cache_data["valid"]
         self.dltime = cache_data["dltime"]
         self.dlsize = cache_data["dlsize"]
+        self.anchors = cache_data["anchors"]
         self.cached = True
+        # recheck anchor
+        if self.valid and self.anchor:
+            self.check_anchor()
 
     def get_cache_data (self):
-        """
-        Return all data values that should be put in the cache.
-        """
+        """Return all data values that should be put in the cache."""
         return {"result": self.result,
                 "warnings": self.warnings,
                 "info": self.info,
                 "valid": self.valid,
                 "dltime": self.dltime,
                 "dlsize": self.dlsize,
+                "anchors": self.anchors,
                }
 
     def get_alias_cache_data (self):
-        """
-        Return all data values that should be put in the cache.
+        """Return all data values that should be put in the cache.
         Intended to be overridden by subclasses that handle aliases.
         """
         return self.get_cache_data()
@@ -293,15 +300,7 @@ class UrlBase (object):
         assert isinstance(self.cache_content_key, unicode), self
         log.debug(LOG_CACHE, "Content cache key %r", self.cache_content_key)
         # construct cache key
-        if self.aggregate.config["anchorcaching"] and \
-           self.aggregate.config["anchors"]:
-            # do not ignore anchor
-            parts = self.urlparts[:]
-            parts[4] = self.anchor
-            self.cache_url_key = urlparse.urlunsplit(parts)
-        else:
-            # no anchor caching
-            self.cache_url_key = self.cache_content_key
+        self.cache_url_key = self.cache_content_key
         assert isinstance(self.cache_url_key, unicode), self
         log.debug(LOG_CACHE, "URL cache key %r", self.cache_url_key)
 
@@ -433,8 +432,7 @@ class UrlBase (object):
         try:
             self.check_connection()
             self.add_country_info()
-            if self.aggregate.config["anchors"]:
-                self.check_anchors()
+            self.check_content()
         except tuple(ExcList):
             value = self.handle_exception()
             # make nicer error msg for unknown hosts
@@ -444,9 +442,6 @@ class UrlBase (object):
             if isinstance(value, httplib.BadStatusLine):
                 value = _('Bad HTTP response %(line)r') % {"line": str(value)}
             self.set_result(unicode_safe(value), valid=False)
-        if self.can_get_content():
-            self.set_title_from_content()
-            self.check_content()
         self.checktime = time.time() - check_start
         # check recursion
         try:
@@ -548,16 +543,9 @@ class UrlBase (object):
         parser.handler = None
         return handler.follow
 
-    def check_anchors (self):
-        """
-        If URL was valid and a HTML resource, check the anchors and
-        log a warning when an anchor was not found.
-        """
-        if not (self.valid and self.anchor and self.is_html() and \
-                self.can_get_content()):
-            # do not bother
-            return
-        log.debug(LOG_CHECK, "checking anchor %r", self.anchor)
+    def get_anchors (self):
+        """Store list of anchors for this URL. Precondition: this URL is
+        an HTML resource."""
         handler = linkparse.LinkFinder(self.get_content(),
                                    tags={'a': [u'name'], None: [u'id']})
         parser = htmlsax.parser(handler)
@@ -568,10 +556,22 @@ class UrlBase (object):
         # break cyclic dependencies
         handler.parser = None
         parser.handler = None
-        if any(x for x in handler.urls if x[0] == self.anchor):
+        self.anchors = handler.urls[:]
+
+    def check_anchor (self):
+        """If URL was valid and has an anchor, check it. A warning is
+        logged if the anchor is not found.
+        """
+        if not self.aggregate.config["anchors"]:
             return
-        self.add_warning(_("Anchor #%(name)s not found.") %
-            {"name": self.anchor}, tag=WARN_URL_ANCHOR_NOT_FOUND)
+        log.debug(LOG_CHECK, "checking anchor %r", self.anchor)
+        if any(x for x in self.anchors if x[0] == self.anchor):
+            return
+        anchors = u",".join(u"`%s'" % x[0] for x in self.anchors)
+        args = {"name": self.anchor, "anchors": anchors}
+        msg = u"%s %s" % (_("Anchor `%(name)s' not found.") % args,
+                          _("Available anchors: %(anchors)s.") % args)
+        self.add_warning(msg, tag=WARN_URL_ANCHOR_NOT_FOUND)
 
     def set_extern (self, url):
         """
@@ -600,9 +600,7 @@ class UrlBase (object):
         return
 
     def can_get_content (self):
-        """
-        Indicate wether url get_content() can be called.
-        """
+        """Indicate wether url get_content() can be called."""
         return True
 
     def get_content (self):
@@ -621,9 +619,13 @@ class UrlBase (object):
 
     def check_content (self):
         """Check content data for warnings, syntax errors, viruses etc."""
-        if not (self.can_get_content() and self.valid):
-            # no data to check
+        if not (self.valid and self.can_get_content()):
             return
+        if self.is_html():
+            self.set_title_from_content()
+            self.get_anchors()
+        if self.anchor:
+            self.check_anchor()
         warningregex = self.aggregate.config["warningregex"]
         if warningregex:
             log.debug(LOG_CHECK, "checking content")

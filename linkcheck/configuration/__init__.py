@@ -71,7 +71,6 @@ class Configuration (dict):
         self["ignorewarnings"] = []
         self['quiet'] = False
         self["anchors"] = False
-        self["anchorcaching"] = True
         self["externlinks"] = []
         self["internlinks"] = []
         self["noproxyfor"] = []
