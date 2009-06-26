@@ -35,7 +35,7 @@ class TestAttrDict (unittest.TestCase):
 
     def test_method (self):
         self.d["get"] = 1
-        self.assertTrue(self.d.get != 1)
+        self.assertTrue(isinstance(self.d.get, type({}.get)))
 
 
 class TestListDict (unittest.TestCase):

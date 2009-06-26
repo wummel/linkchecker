@@ -264,7 +264,7 @@ def strtimezone ():
         zone = time.altzone
     else:
         zone = time.timezone
-    return "%+04d" % int(-zone/3600)
+    return "%+04d" % (-zone//3600)
 
 
 _sub_ws = re.compile(r"\s+").sub
