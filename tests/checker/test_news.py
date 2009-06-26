@@ -17,25 +17,37 @@
 """
 Test news checking.
 """
-from tests import has_network, limit_time
+from tests import has_network, limit_time, memoized
 from nose import SkipTest
 from . import LinkCheckTest
 
-# Change from time to time, as servers tend to get invalid.
+# Changes often, as servers tend to get invalid. Thus it is necessary
+# to enable the has_newsserver() resource manually.
 NNTP_SERVER = "freenews.netfront.net"
 # info string returned by news server
 NNTP_INFO = u"200 news.netfront.net InterNetNews NNRP server INN 2.4.6 (20090304 snapshot) ready (posting ok)."
-# NNTP servers are dog slow, so don't waist a lot of time running those.
+# Most free NNTP servers are slow, so don't waist a lot of time running those.
 NNTP_TIMEOUT_SECS = 8
 
+
+@memoized
+def has_newsserver ():
+    try:
+        nntp = nntplib.NNTP(NNTP_SERVER, usenetrc=False)
+        nntp.close()
+        return True
+    except :
+        return False
+
+
 class TestNews (LinkCheckTest):
-    """
-    Test nntp: and news: link checking.
-    """
+    """Test nntp: and news: link checking."""
 
     def newstest (self, url, resultlines):
         if not has_network():
             raise SkipTest("no network available")
+        if not has_newsserver():
+            raise SkipTest("no newswerver available")
         self.direct(url, resultlines)
 
     def test_news_without_host (self):
