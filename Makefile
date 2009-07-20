@@ -1,5 +1,5 @@
 # This Makefile is only used by developers.
-PYVER=2.5
+PYVER=2.6
 PYTHON=python$(PYVER)
 VERSION=$(shell $(PYTHON) setup.py --version)
 MACHINE=$(shell uname -m)

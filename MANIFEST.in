@@ -35,15 +35,13 @@ recursive-include linkcheck/gui/rc Makefile *.png *.qrc
 recursive-include linkcheck/gui/ui *.ui
 include po/*.po po/*.pot po/Makefile
 include doc/*.example
+include doc/*.png
+include doc/*.jpg
+include doc/*.ico
+include doc/*.html
 include doc/po4a.conf doc/*.po doc/*.pot
 include doc/en/*.1 doc/en/*.5
 include doc/de/*.1 doc/de/*.5
 include doc/Makefile
-include doc/mediacompress.py
 include doc/examples/*.sh
-include doc/source/*.txt
-include doc/source/*.jpg
-include doc/source/conf.py
-include doc/source/static/*
-include doc/source/templates/*
 include linkcheck/dns/ChangeLog

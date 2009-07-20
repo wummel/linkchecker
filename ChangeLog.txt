@@ -9,7 +9,7 @@ Fixes:
   servers which close persistent connections unexpectedly.
 - bookmarks: correctly read the bookmark title from Mozilla places.sqllite
 - checking: ignore the fragment part (ie. the anchor) of URIs when
-  getting and caching content; follows the HTTP/1.1 specification which
+  getting and caching HTTP content; follows the HTTP/1.1 specification which
   does not include fragments in the protocol. Thanks to Martin von Gagern
   for pointing this out.
   This also deprecates the --no-anchor-caching option which will be

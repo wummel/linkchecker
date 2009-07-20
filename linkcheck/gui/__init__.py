@@ -30,7 +30,7 @@ from .. import configuration, checker, director, add_intern_pattern, \
 from ..containers import enum
 
 
-DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/build/htmlhelp/"
+DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/"
 
 Status = enum('idle', 'checking')
 
@@ -115,7 +115,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSignature("")
     def on_actionHelp_triggered (self):
         """Show help page."""
-        url = QtCore.QUrl("%sdocumentation.html" % DocBaseUrl)
+        url = QtCore.QUrl("%sindex.html" % DocBaseUrl)
         self.assistant.showDocumentation(url)
 
     @QtCore.pyqtSignature("")
