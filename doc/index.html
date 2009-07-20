@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Check websites for broken links</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="top" title="LinkChecker" href="" />
+<style type="text/css">
+img { border: 0; }
+</style>
+
+  </head>
+  <body>
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+
+<table border="0"><tr>
+ <td><a href=""><img
+  src="_static/logo64x64.png" border="0" alt="LinkChecker"/></a></td>
+ <td><h1>LinkChecker</h1></td>
+</tr></table>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="check-websites-for-broken-links">
+<h1>Check websites for broken links</h1>
+<p>LinkChecker is a free, <a class="reference external" href="http://www.gnu.org/licenses/gpl-2.0.html">GPL</a> licensed URL validator.</p>
+<div class="section" id="basic-usage">
+<h2>Basic usage</h2>
+<p>To check a URL like <tt class="docutils literal"><span class="pre">http://www.myhomepage.org/</span></tt> it is enough to
+execute <tt class="docutils literal"><span class="pre">linkchecker</span> <span class="pre">http://www.myhomepage.org/</span></tt>. This will check the
+complete domain of www.myhomepage.org recursively. All links pointing
+outside of the domain are also checked for validity.</p>
+</div>
+<div class="section" id="performed-checks">
+<h2>Performed checks</h2>
+<p>All URLs have to pass a preliminary syntax test. Minor quoting
+mistakes will issue a warning, all other invalid syntax issues
+are errors.
+After the syntax check passes, the URL is queued for connection
+checking. All connection check types are described below.</p>
+<ul>
+<li><p class="first">HTTP links (<tt class="docutils literal"><span class="pre">http:</span></tt>, <tt class="docutils literal"><span class="pre">https:</span></tt>)</p>
+<p>After connecting to the given HTTP server the given path
+or query is requested. All redirections are followed, and
+if user/password is given it will be used as authorization
+when necessary.
+Permanently moved pages issue a warning.
+All final HTTP status codes other than 2xx are errors.</p>
+</li>
+<li><p class="first">Local files (<tt class="docutils literal"><span class="pre">file:</span></tt>)</p>
+<p>A regular, readable file that can be opened is valid. A readable
+directory is also valid. All other files, for example device files,
+unreadable or non-existing files are errors.</p>
+<p>File contents are checked for recursion.</p>
+</li>
+<li><p class="first">Mail links (<tt class="docutils literal"><span class="pre">mailto:</span></tt>)</p>
+<p>A mailto: link eventually resolves to a list of email addresses.
+If one address fails, the whole list will fail.
+For each mail address we check the following things:</p>
+<ol class="arabic simple">
+<li>Check the adress syntax, both of the part before and after
+the &#64; sign.</li>
+<li>Look up the MX DNS records. If we found no MX record,
+print an error.</li>
+<li>Check if one of the mail hosts accept an SMTP connection.
+Check hosts with higher priority first.
+If no host accepts SMTP, we print a warning.</li>
+<li>Try to verify the address with the VRFY command. If we got
+an answer, print the verified address as an info.</li>
+</ol>
+</li>
+<li><p class="first">FTP links (<tt class="docutils literal"><span class="pre">ftp:</span></tt>)</p>
+<p>For FTP links we do:</p>
+<ol class="arabic simple">
+<li>connect to the specified host</li>
+<li>try to login with the given user and password. The default
+user is <tt class="docutils literal"><span class="pre">anonymous</span></tt>, the default password is <tt class="docutils literal"><span class="pre">anonymous&#64;</span></tt>.</li>
+<li>try to change to the given directory</li>
+<li>list the file with the NLST command</li>
+</ol>
+</li>
+<li><p class="first">Telnet links (<tt class="docutils literal"><span class="pre">telnet:</span></tt>)</p>
+<p>We try to connect and if user/password are given, login to the
+given telnet server.</p>
+</li>
+<li><p class="first">NNTP links (<tt class="docutils literal"><span class="pre">news:</span></tt>, <tt class="docutils literal"><span class="pre">snews:</span></tt>, <tt class="docutils literal"><span class="pre">nntp</span></tt>)</p>
+<p>We try to connect to the given NNTP server. If a news group or
+article is specified, try to request it from the server.</p>
+</li>
+<li><p class="first">Ignored links (<tt class="docutils literal"><span class="pre">javascript:</span></tt>, etc.)</p>
+<p>An ignored link will only print a warning. No further checking
+will be made.</p>
+<p>Here is a complete list of recognized, but ignored links. The most
+prominent of them should be JavaScript links.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">acap:</span></tt>      (application configuration access protocol)</li>
+<li><tt class="docutils literal"><span class="pre">afs:</span></tt>       (Andrew File System global file names)</li>
+<li><tt class="docutils literal"><span class="pre">chrome:</span></tt>    (Mozilla specific)</li>
+<li><tt class="docutils literal"><span class="pre">cid:</span></tt>       (content identifier)</li>
+<li><tt class="docutils literal"><span class="pre">clsid:</span></tt>     (Microsoft specific)</li>
+<li><tt class="docutils literal"><span class="pre">data:</span></tt>      (data)</li>
+<li><tt class="docutils literal"><span class="pre">dav:</span></tt>       (dav)</li>
+<li><tt class="docutils literal"><span class="pre">fax:</span></tt>       (fax)</li>
+<li><tt class="docutils literal"><span class="pre">find:</span></tt>      (Mozilla specific)</li>
+<li><tt class="docutils literal"><span class="pre">gopher:</span></tt>    (Gopher)</li>
+<li><tt class="docutils literal"><span class="pre">imap:</span></tt>      (internet message access protocol)</li>
+<li><tt class="docutils literal"><span class="pre">isbn:</span></tt>      (ISBN (int. book numbers))</li>
+<li><tt class="docutils literal"><span class="pre">javascript:</span></tt> (JavaScript)</li>
+<li><tt class="docutils literal"><span class="pre">ldap:</span></tt>      (Lightweight Directory Access Protocol)</li>
+<li><tt class="docutils literal"><span class="pre">mailserver:</span></tt> (Access to data available from mail servers)</li>
+<li><tt class="docutils literal"><span class="pre">mid:</span></tt>       (message identifier)</li>
+<li><tt class="docutils literal"><span class="pre">mms:</span></tt>       (multimedia stream)</li>
+<li><tt class="docutils literal"><span class="pre">modem:</span></tt>     (modem)</li>
+<li><tt class="docutils literal"><span class="pre">nfs:</span></tt>       (network file system protocol)</li>
+<li><tt class="docutils literal"><span class="pre">opaquelocktoken:</span></tt> (opaquelocktoken)</li>
+<li><tt class="docutils literal"><span class="pre">pop:</span></tt>       (Post Office Protocol v3)</li>
+<li><tt class="docutils literal"><span class="pre">prospero:</span></tt>  (Prospero Directory Service)</li>
+<li><tt class="docutils literal"><span class="pre">rsync:</span></tt>     (rsync protocol)</li>
+<li><tt class="docutils literal"><span class="pre">rtsp:</span></tt>      (real time streaming protocol)</li>
+<li><tt class="docutils literal"><span class="pre">service:</span></tt>   (service location)</li>
+<li><tt class="docutils literal"><span class="pre">shttp:</span></tt>     (secure HTTP)</li>
+<li><tt class="docutils literal"><span class="pre">sip:</span></tt>       (session initiation protocol)</li>
+<li><tt class="docutils literal"><span class="pre">tel:</span></tt>       (telephone)</li>
+<li><tt class="docutils literal"><span class="pre">tip:</span></tt>       (Transaction Internet Protocol)</li>
+<li><tt class="docutils literal"><span class="pre">tn3270:</span></tt>    (Interactive 3270 emulation sessions)</li>
+<li><tt class="docutils literal"><span class="pre">vemmi:</span></tt>     (versatile multimedia interface)</li>
+<li><tt class="docutils literal"><span class="pre">wais:</span></tt>      (Wide Area Information Servers)</li>
+<li><tt class="docutils literal"><span class="pre">z39.50r:</span></tt>   (Z39.50 Retrieval)</li>
+<li><tt class="docutils literal"><span class="pre">z39.50s:</span></tt>   (Z39.50 Session)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="recursion">
+<h2>Recursion</h2>
+<p>Before descending recursively into a URL, it has to fulfill several
+conditions. They are checked in this order:</p>
+<ol class="arabic simple">
+<li>A URL must be valid.</li>
+<li>A URL must be parseable. This currently includes HTML files,
+Opera bookmarks files, and directories. If a file type cannot
+be determined (for example it does not have a common HTML file
+extension, and the content does not look like HTML), it is assumed
+to be non-parseable.</li>
+<li>The URL content must be retrievable. This is usually the case
+except for example mailto: or unknown URL types.</li>
+<li>The maximum recursion level must not be exceeded. It is configured
+with the <tt class="docutils literal"><span class="pre">--recursion-level</span></tt> option and is unlimited per default.</li>
+<li>It must not match the ignored URL list. This is controlled with
+the <tt class="docutils literal"><span class="pre">--ignore-url</span></tt> option.</li>
+<li>The Robots Exclusion Protocol must allow links in the URL to be
+followed recursively. This is checked by searching for a
+&#8220;nofollow&#8221; directive in the HTML header data.</li>
+</ol>
+<p>Note that the directory recursion reads all files in that
+directory, not just a subset like <tt class="docutils literal"><span class="pre">index.htm*</span></tt>.</p>
+</div>
+<div class="section" id="frequently-asked-questions">
+<h2>Frequently asked questions</h2>
+<p><strong>Q: LinkChecker produced an error, but my web page is ok with
+Mozilla/IE/Opera/...
+Is this a bug in LinkChecker?</strong></p>
+<p>A: Please check your web pages first. Are they really ok?
+Use the <tt class="docutils literal"><span class="pre">--check-html</span></tt> option, or check if you are using a proxy
+which produces the error.</p>
+<p><strong>Q: I still get an error, but the page is definitely ok.</strong></p>
+<p>A: Some servers deny access of automated tools (also called robots)
+like LinkChecker. This is not a bug in LinkChecker but rather a
+policy by the webmaster running the website you are checking. Look
+the <tt class="docutils literal"><span class="pre">/robots.txt</span></tt> file which follows the <a class="reference external" href="http://www.robotstxt.org/wc/norobots-rfc.html">robots.txt exclusion standard</a>.</p>
+<p><strong>Q: How can I tell LinkChecker which proxy to use?</strong></p>
+<p>A: LinkChecker works transparently with proxies. In a Unix or Windows
+environment, set the http_proxy, https_proxy, ftp_proxy environment
+variables to a URL that identifies the proxy server before starting
+LinkChecker. For example</p>
+<div class="highlight-python"><pre>$ http_proxy="http://www.someproxy.com:3128"
+$ export http_proxy</pre>
+</div>
+<p><strong>Q: The link &#8220;mailto:john&#64;company.com?subject=Hello John&#8221; is reported
+as an error.</strong></p>
+<p>A: You have to quote special characters (e.g. spaces) in the subject field.
+The correct link should be &#8220;mailto:...?subject=Hello%20John&#8221;
+Unfortunately browsers like IE and Netscape do not enforce this.</p>
+<p><strong>Q: Has LinkChecker JavaScript support?</strong></p>
+<p>A: No, it never will. If your page is not working without JS, it is
+better checked with a browser testing tool like <a class="reference external" href="http://seleniumhq.org/">Selenium</a>.</p>
+<p><strong>Q: Is LinkCheckers cookie feature insecure?</strong></p>
+<p>A: If a cookie file is specified, the information will be sent
+to the specified hosts.
+The following restrictions apply for LinkChecker cookies:</p>
+<ul class="simple">
+<li>Cookies will only be sent to the originating server.</li>
+<li>Cookies are only stored in memory. After LinkChecker finishes, they
+are lost.</li>
+<li>The cookie feature is disabled as default.</li>
+</ul>
+<p><strong>Q: I see LinkChecker gets a /robots.txt file for every site it
+checks. What is that about?</strong></p>
+<p>A: LinkChecker follows the <a class="reference external" href="http://www.robotstxt.org/wc/norobots-rfc.html">robots.txt exclusion standard</a>. To avoid
+misuse of LinkChecker, you cannot turn this feature off.
+See the <a class="reference external" href="http://www.robotstxt.org/wc/robots.html">Web Robot pages</a> and the <a class="reference external" href="http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt">Spidering report</a> for more info.</p>
+<p><strong>Q: How do I print unreachable/dead documents of my website with
+LinkChecker?</strong></p>
+<p>A: No can do. This would require file system access to your web
+repository and access to your web server configuration.</p>
+<p><strong>Q: How do I check HTML/XML/CSS syntax with LinkChecker?</strong></p>
+<p>A: Use the <tt class="docutils literal"><span class="pre">--check-html</span></tt> and <tt class="docutils literal"><span class="pre">--check-css</span></tt> options.</p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Bastian Kleineidam.
+    </div>
+  </body>
+</html>
