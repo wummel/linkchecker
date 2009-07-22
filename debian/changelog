@@ -3,6 +3,8 @@ linkchecker (5.1-1) unstable; urgency=low
   * New upstream release.
     + Uses correct directory in apache configuration
       (Closes: #519646)
+    + Uses ScriptAlias in the Apache config
+      (Closes: #535497)
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 18 Feb 2009 16:49:38 +0100
 

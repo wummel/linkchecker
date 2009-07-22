@@ -40,4 +40,4 @@ common-install-arch::
 # install .mo files
 	install -m 644 build/share/locale/de/LC_MESSAGES/LinkChecker.mo $(LOCALE)/de/LC_MESSAGES/
 # apache configuration
-	install -m 644 config/linkchecker.apache.conf $(ETC)/apache2/conf.d/linkchecker
+	install -m 644 config/linkchecker.apache2.conf $(ETC)/apache2/conf.d/linkchecker

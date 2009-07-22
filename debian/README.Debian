@@ -1,7 +1,6 @@
 Web Interface
 ==============
 The web interface can be configured with
-- adding your host IP in the /etc/apache2/conf.d/linkchecker and
-  uncommenting the deny/allow lines for the CGI script
+- adding your host IP in the /etc/apache2/conf.d/linkchecker
 - executing "sudo a2enmod negotiation"
 - accessing http://localhost/lconline/index.html
