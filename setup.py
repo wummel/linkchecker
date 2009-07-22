@@ -379,7 +379,7 @@ data_files = [
          'cgi-bin/lconline/check.js',
          'cgi-bin/lc.cgi',
          'cgi-bin/lc.fcgi',
-         'config/linkchecker.apache.conf',
+         'config/linkchecker.apache2.conf',
         ]),
 ]
 
