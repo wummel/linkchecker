@@ -42,9 +42,7 @@ def url_norm (url):
 
 
 class TestUrl (unittest.TestCase):
-    """
-    Test url norming and quoting.
-    """
+    """Test url norming and quoting."""
 
     def urlnormtest (self, url, nurl):
         self.assertFalse(linkcheck.url.url_needs_quoting(nurl))
@@ -64,9 +62,7 @@ class TestUrl (unittest.TestCase):
             pass
 
     def test_pathattack (self):
-        """
-        Windows winamp path attack prevention.
-        """
+        # Windows winamp path attack prevention.
         url = "http://server/..%5c..%5c..%5c..%5c..%5c..%5c..%5c.."\
               "%5ccskin.zip"
         nurl = "http://server/cskin.zip"
@@ -109,9 +105,7 @@ class TestUrl (unittest.TestCase):
 
 
     def test_norm_quote (self):
-        """
-        Test url norm quoting.
-        """
+        # Test url norm quoting.
         url = "http://groups.google.com/groups?hl=en&lr&ie=UTF-8&"\
               "threadm=3845B54D.E546F9BD%40monmouth.com&rnum=2&"\
               "prev=%2Fgroups%3Fq%3Dlogitech%2Bwingman%2Bextreme%2Bdigital"\
@@ -146,7 +140,7 @@ class TestUrl (unittest.TestCase):
         nurl = "http://example.com/#a%20b"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b=c "
-        nurl ="http://example.com/?u=http:%2F%2Fexample2.com?b=c+"
+        nurl ="http://example.com/?u=http:%2F%2Fexample2.com?b=c%20"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b="
         nurl ="http://example.com/?u=http:%2F%2Fexample2.com?b="
@@ -155,13 +149,11 @@ class TestUrl (unittest.TestCase):
         nurl = "http://localhost:8001/?quoted=%FC"
         self.urlnormtest(url, nurl)
         url = "http://host/?a=b/c+d="
-        nurl = "http://host/?a=b%2Fc+d%3D"
+        nurl = "http://host/?a=b%2Fc%20d%3D"
         self.urlnormtest(url, nurl)
 
     def test_norm_case_sensitivity (self):
-        """
-        Test url norm case sensitivity.
-        """
+        # Test url norm case sensitivity.
         # Always provide the URI scheme in lowercase characters.
         url = "HTTP://example.com/"
         nurl = "http://example.com/"
@@ -175,9 +167,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_defaultport (self):
-        """
-        Test url norm default port recognition.
-        """
+        # Test url norm default port recognition.
         # For schemes that define a port, use an empty port if the default
         # is desired
         url = "http://example.com:80/"
@@ -188,9 +178,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_host_dot (self):
-        """
-        Test url norm host dot removal.
-        """
+        # Test url norm host dot removal.
         url = "http://example.com./"
         nurl = "http://example.com/"
         self.urlnormtest(url, nurl)
@@ -199,9 +187,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_fragment (self):
-        """
-        Test url norm fragment preserving.
-        """
+        # Test url norm fragment preserving.
         # Empty fragment identifiers must be preserved:
         url = "http://www.w3.org/2000/01/rdf-schema#"
         nurl = url
@@ -211,9 +197,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_empty_path (self):
-        """
-        Test url norm empty path handling.
-        """
+        # Test url norm empty path handling.
         # For schemes that define an empty path to be equivalent to a
         # path of "/", use "/".
         url = "http://example.com"
@@ -227,9 +211,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_path_backslashes (self):
-        """
-        Test url norm backslash path handling.
-        """
+        # Test url norm backslash path handling.
         # note: this is not RFC conform (see url.py for more info)
         url = r"http://example.com\test.html"
         nurl = "http://example.com/test.html"
@@ -245,9 +227,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_path_slashes (self):
-        """
-        Test url norm slashes in path handling.
-        """
+        # Test url norm slashes in path handling.
         # reduce duplicate slashes
         url = "http://example.com//a/test.html"
         nurl = "http://example.com/a/test.html"
@@ -257,9 +237,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_path_dots (self):
-        """
-        Test url norm dots in path handling.
-        """
+        # Test url norm dots in path handling.
         # Prevent dot-segments appearing in non-relative URI paths.
         url = "http://example.com/a/./b"
         nurl = "http://example.com/a/b"
@@ -270,9 +248,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_path_relative_dots (self):
-        """
-        Test url norm relative path handling with dots.
-        """
+        # Test url norm relative path handling with dots.
         # normalize redundant path segments
         url = '/foo/bar/.'
         nurl = '/foo/bar/'
@@ -354,9 +330,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_path_relative_slashes (self):
-        """
-        Test url norm relative path handling with slashes.
-        """
+        # Test url norm relative path handling with slashes.
         url = '/foo//'
         nurl = '/foo/'
         self.urlnormtest(url, nurl)
@@ -365,9 +339,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_mail_url (self):
-        """
-        Test mailto URLs.
-        """
+        # Test mailto URLs.
         # no netloc and no path
         url = 'mailto:'
         nurl = url
@@ -376,24 +348,22 @@ class TestUrl (unittest.TestCase):
         url = 'mailto:user@www.example.org'
         nurl = url
         self.urlnormtest(url, nurl)
-        # email with subject
+        # emails with subject
         url = 'mailto:user@www.example.org?subject=a_b'
+        nurl = url
+        self.urlnormtest(url, nurl)
+        url = 'mailto:business.inquiries@designingpatterns.com?subject=Business%20Inquiry'
         nurl = url
         self.urlnormtest(url, nurl)
 
     def test_norm_other (self):
-        """
-        Test norming of other schemes.
-        """
-        # using netloc
-        # no netloc and no path
+        # Test norming of other schemes.
         url = 'news:'
         nurl = 'news:'
         self.urlnormtest(url, nurl)
         url = 'snews:'
         nurl = 'snews://'
         self.urlnormtest(url, nurl)
-        # using netloc and path
         url = 'nntp:'
         nurl = 'nntp://'
         self.urlnormtest(url, nurl)
@@ -419,9 +389,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_norm_with_auth (self):
-        """
-        Test norming of URLs with authentication tokens.
-        """
+        # Test norming of URLs with authentication tokens.
         url = "telnet://user@www.example.org"
         nurl = url
         self.urlnormtest(url, nurl)
@@ -448,9 +416,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
 
     def test_fixing (self):
-        """
-        Test url fix method.
-        """
+        # Test url fix method.
         url = "http//www.example.org"
         nurl = "http://www.example.org"
         self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
@@ -462,9 +428,7 @@ class TestUrl (unittest.TestCase):
         self.assertEqual(linkcheck.url.url_fix_common_typos(url), nurl)
 
     def test_valid (self):
-        """
-        Test url validity functions.
-        """
+        # Test url validity functions.
         u = "http://www.example.com"
         self.assert_(linkcheck.url.is_safe_url(u), u)
         u = "http://www.example.com/"
@@ -477,9 +441,7 @@ class TestUrl (unittest.TestCase):
         self.assert_(linkcheck.url.is_safe_url(u), u)
 
     def test_needs_quoting (self):
-        """
-        Test url quoting necessity.
-        """
+        # Test url quoting necessity.
         url = "mailto:<calvin@example.org>?subject=Halli Hallo"
         self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
         url = " http://www.example.com/"
@@ -516,9 +478,7 @@ class TestUrl (unittest.TestCase):
         self.assertEqual(url_norm(url), nurl)
 
     def test_idn_encoding (self):
-        """
-        Test idna encoding.
-        """
+        # Test idna encoding.
         url = u'www.öko.de'
         idna_encode =linkcheck.url.idna_encode
         encurl, is_idn = idna_encode(url)
@@ -532,9 +492,7 @@ class TestUrl (unittest.TestCase):
         self.assertRaises(UnicodeError, idna_encode, url)
 
     def test_match_host (self):
-        """
-        Test host matching.
-        """
+        # Test host matching.
         match_host = linkcheck.url.match_host
         match_url = linkcheck.url.match_url
         self.assert_(not match_host("", []))
@@ -548,9 +506,7 @@ class TestUrl (unittest.TestCase):
         self.assert_(match_url("http://example.org/hulla", ["example.org"]))
 
     def test_splitparam (self):
-        """
-        Path parameter split test.
-        """
+        # Path parameter split test.
         p = [
             ("", ("", "")),
             ("/", ("/", "")),
@@ -565,9 +521,7 @@ class TestUrl (unittest.TestCase):
         self.assertEqual(linkcheck.url.splitparams(x[0]), (x[1][0], x[1][1]))
 
     def test_cgi_split (self):
-        """
-        Test cgi parameter splitting.
-        """
+        # Test cgi parameter splitting.
         u = "scid=kb;en-us;Q248840"
         self.assertEqual(linkcheck.url.url_parse_query(u), u)
         u = "scid=kb;en-us;Q248840&b=c;hulla=bulla"

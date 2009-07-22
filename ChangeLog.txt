@@ -15,6 +15,9 @@ Fixes:
   This also deprecates the --no-anchor-caching option which will be
   removed in future releases.
   Closes: SF bug #2784996
+- Prefer to encode spaces with %20 instead of + to be sure mailto:
+  URLs are understood by email clients.
+  Closes: SF bug #2820773
 
 Changes:
 - logging: Switch default output encoding of loggers to UTF-8, except the
