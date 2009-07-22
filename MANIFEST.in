@@ -1,7 +1,8 @@
-include MANIFEST.in README.txt INSTALL.txt COPYING.txt TODO.txt ChangeLog.txt
+include README.txt INSTALL.txt COPYING.txt TODO.txt UPGRADING.txt
+include MANIFEST.in ChangeLog.txt
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/logging.conf config/pycheckrc
-include config/reindent.py config/linkchecker.apache.conf install-rpm.sh
+include config/reindent.py config/linkchecker.apache2.conf install-rpm.sh
 include linkchecker
 include cgi-bin/lc.cgi cgi-bin/lc.fcgi cgi-bin/README
 include Makefile
