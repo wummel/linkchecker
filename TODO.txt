@@ -5,5 +5,6 @@
   + View source
 - [GUI] Save options in qsettings.
 - [PYTHON3]
-  /home/calvin/src/linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
-  linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])                                                         
+  linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
+  linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
+- [PROXY] Deprecate the --no-proxy-for option now that $no_proxy is supported.
