@@ -5,6 +5,7 @@ linkchecker (5.1-1) unstable; urgency=low
       (Closes: #519646)
     + Uses ScriptAlias in the Apache config
       (Closes: #535497)
+  * Use Debian Standards version 3.8.2.0; no packaging changes required.
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 18 Feb 2009 16:49:38 +0100
 
