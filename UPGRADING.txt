@@ -7,6 +7,9 @@ Migrating from 5.0 to 5.1
 The --no-anchor-caching option has been deprecated and will be removed
 in a future release. This option should not be used anymore.
 
+The exit code of the linkchecker script will be zero now if all
+warnings have been ignored.
+
 Migrating from 4.x to 5.0
 -------------------------
 
