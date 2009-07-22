@@ -22,6 +22,10 @@ Changes:
   Closes: SF bug #2579899
 - logging: Make output more concise by not logging duplicate cached URLs.
 - nntp: Only retry 3 instead of 5 times to connect to busy NNTP servers.
+- cmdline: The command line script exits with error only when errors
+  or warnings are printed. Previously it exited with error status even
+  when all warnings were ignored.
+  Closes: SF bug #2820812
 
 Features:
 - email: Added email syntax checking.

@@ -810,7 +810,7 @@ else:
 if config['interactive']:
     raw_input(_("Hit RETURN to finish"))
 
-# if errors or warnings are encountered, exit with non-zero status
-if config['logger'].errors or \
-  (config['logger'].warnings and config['warnings']):
+# if printed errors or warnings are encountered, exit with non-zero status
+if config['logger'].errors_printed or \
+  (config['logger'].warnings_printed and config['warnings']):
     sys.exit(1)
