@@ -159,7 +159,7 @@
 # specify hosts to contact directly without a proxy
 # value is a regular expression
 #noproxyfor=
-#  *\.intra
+#  .*\.intra
 #  .*myinternurl.*
 
 # Ignore specified warnings (see linkchecker -h for the list of
