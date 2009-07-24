@@ -1,1 +1,1 @@
-See doc/source/index.txt
+See doc/index.html
