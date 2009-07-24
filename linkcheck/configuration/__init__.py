@@ -22,6 +22,7 @@ import sys
 import os
 import logging.config
 import urllib
+import shutil
 import _LinkChecker_configdata as configdata
 from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames, clamav,
     get_config_dir)
@@ -223,11 +224,12 @@ class Configuration (dict):
             cfiles = files[:]
         if not cfiles:
             # system wide config settings
-            path = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
-            cfiles.append(path)
+            spath = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
+            cfiles.append(spath)
             # per user config settings
-            path = normpath("~/.linkchecker/linkcheckerrc")
-            cfiles.append(path)
+            upath = normpath("~/.linkchecker/linkcheckerrc")
+            cfiles.append(upath)
+            copy_sys_config(spath, upath)
         # weed out invalid files
         cfiles = [f for f in cfiles if os.path.isfile(f)]
         log.debug(LOG_CHECK, "reading configuration from %s", cfiles)
@@ -265,3 +267,17 @@ class Configuration (dict):
                 clamav.init_clamav_conf(self['clamavconf'])
             except clamav.ClamavError:
                 self['scanvirus'] = False
+
+
+def copy_sys_config (syspath, userpath):
+    """Try to copy the system configuration to the user configuration
+    if not already done."""
+    if os.path.isfile(syspath) and not os.path.exists(userpath):
+        try:
+            userdir = os.path.dirname(userpath)
+            if not os.path.exists(userdir):
+                os.makedirs(userdir)
+            shutil.copy(syspath, userpath)
+        except StandardError, msg:
+            log.warn(LOG_CHECK, "could not copy system config from %r to %r",
+                     syspath, userpath)
