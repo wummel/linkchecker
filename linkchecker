@@ -75,6 +75,10 @@ to the proxy URL. The URL should be of the form
 LinkChecker also detects manual proxy settings of Internet Explorer under
 Windows systems. On a Mac use the Internet Config to select a proxy.
 
+LinkChecker honors the $no_proxy environment variable. It can be a list
+of domain names for which no proxy will be used. This is similar to
+the --no-proxy-for option.
+
 Setting a HTTP proxy on Unix for example looks like this:
 
   export http_proxy="http://proxy.example.com:8080"

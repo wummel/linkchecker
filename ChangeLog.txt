@@ -36,6 +36,7 @@ Features:
 - gui: Improved progress dialog in GUI client: show active and queued URLs.
 - gui: Added right-click context menu for logged URLs.
 - nntp: Output welcome message from NNTP servers as info.
+- http: Honor the no_proxy environment variable.
 
 
 5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)

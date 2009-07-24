@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2009-07-22 22:26+0200\n"
-"PO-Revision-Date: 2009-07-22 22:29+0100\n"
+"POT-Creation-Date: 2009-07-24 07:17+0200\n"
+"PO-Revision-Date: 2009-07-24 07:19+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -467,17 +467,17 @@ msgstr "Die NNTP Nachrichtengruppe konnte nicht gefunden werden."
 msgid "The NNTP server was busy."
 msgstr "Der NNTP Server war beschäftigt."
 
-#: ../linkcheck/checker/proxysupport.py:43
+#: ../linkcheck/checker/proxysupport.py:41
 #, python-format
 msgid "Proxy value `%(proxy)s' must start with 'http://'."
 msgstr "Proxy `%(proxy)s' muss mit 'http://' beginnen."
 
-#: ../linkcheck/checker/proxysupport.py:51
+#: ../linkcheck/checker/proxysupport.py:50
 #, python-format
 msgid "Ignoring proxy setting `%(proxy)s'."
 msgstr "Ignoriere Proxy Einstellung `%(proxy)s'"
 
-#: ../linkcheck/checker/proxysupport.py:55
+#: ../linkcheck/checker/proxysupport.py:53
 #, python-format
 msgid "Using proxy `%(proxy)s'."
 msgstr "Verwende Proxy `%(proxy)s'."
@@ -1158,7 +1158,7 @@ msgid "System info:"
 msgstr "Systeminformation:"
 
 #: ../linkcheck/director/console.py:88
-#: ../linkchecker:582
+#: ../linkchecker:586
 #, python-format
 msgid "Python %(version)s on %(platform)s"
 msgstr "Python %(version)s auf %(platform)s"
@@ -1237,6 +1237,10 @@ msgid ""
 "LinkChecker also detects manual proxy settings of Internet Explorer under\n"
 "Windows systems. On a Mac use the Internet Config to select a proxy.\n"
 "\n"
+"LinkChecker honors the $no_proxy environment variable. It can be a list\n"
+"of domain names for which no proxy will be used. This is similar to\n"
+"the --no-proxy-for option.\n"
+"\n"
 "Setting a HTTP proxy on Unix for example looks like this:\n"
 "\n"
 "  export http_proxy=\"http://proxy.example.com:8080\"\n"
@@ -1257,6 +1261,10 @@ msgstr ""
 "LinkChecker erkennt auch die Proxy-Einstellungen des Internet Explorers auf einem\n"
 "Windows-System. Auf einem Mac benutzen Sie die Internet Konfiguration.\n"
 "\n"
+"LinkChecker beachtet die Umgebungsvariable$no_proxy. Diese kann eine Liste von\n"
+"Domänennamen beinhalten, für die kein Proxy benutzt wird. Dies ist vergleichbar mit der\n"
+"Option --no-proxy-for.\n"
+"\n"
 "Einen HTTP-Proxy unter Unix anzugeben sieht beispielsweise so aus:\n"
 "\n"
 "  export http_proxy=\"http://proxy.example.com:8080\"\n"
@@ -1270,7 +1278,7 @@ msgstr ""
 "  set http_proxy=http://proxy.example.com:8080\n"
 "\n"
 
-#: ../linkchecker:92
+#: ../linkchecker:96
 msgid ""
 "REGULAR EXPRESSIONS\n"
 "Only Python regular expressions are accepted by LinkChecker.\n"
@@ -1288,7 +1296,7 @@ msgstr ""
 "Die einzige Hinzufügung ist, dass ein regulärer Ausdruck negiert wird\n"
 "falls er mit einem Ausrufezeichen beginnt.\n"
 
-#: ../linkchecker:101
+#: ../linkchecker:105
 msgid ""
 "COOKIE FILES\n"
 "A cookie file contains standard RFC 805 header data with the following\n"
@@ -1344,7 +1352,7 @@ msgstr ""
 "Host: example.com\n"
 "Set-cookie: baggage=\"elitist\"; comment=\"hologram\"\n"
 
-#: ../linkchecker:129
+#: ../linkchecker:133
 msgid ""
 "RETURN VALUE\n"
 "The return value is non-zero when\n"
@@ -1358,7 +1366,7 @@ msgstr ""
 " o Warnungen gefunden wurden und Warnungen aktiviert sind\n"
 " o ein Programmfehler aufgetreten ist\n"
 
-#: ../linkchecker:136
+#: ../linkchecker:140
 msgid ""
 "EXAMPLES\n"
 "The most common use checks the given domain recursively, plus any\n"
@@ -1409,7 +1417,7 @@ msgstr ""
 "\"ftp.\" beginnt:\n"
 "  linkchecker -r0 ftp.example.org\n"
 
-#: ../linkchecker:160
+#: ../linkchecker:164
 msgid ""
 "OUTPUT TYPES\n"
 "Note that by default only errors and warnings are logged.\n"
@@ -1457,7 +1465,7 @@ msgstr ""
 "        enthält.\n"
 "none    Gibt nichts aus. Für Debugging oder Prüfen des Rückgabewerts geeignet.\n"
 
-#: ../linkchecker:185
+#: ../linkchecker:189
 msgid ""
 "IGNORE WARNINGS\n"
 "The following warnings are recognized in the 'ignorewarnings' config\n"
@@ -1467,42 +1475,42 @@ msgstr ""
 "Die folgenden Warnungen werden vom 'ignorewarnings' Konfigurationseintrag\n"
 "erkannt:\n"
 
-#: ../linkchecker:201
+#: ../linkchecker:205
 #, python-format
 msgid "Error: %(msg)s"
 msgstr "Fehler: %(msg)s"
 
-#: ../linkchecker:202
+#: ../linkchecker:206
 msgid "Execute 'linkchecker -h' for help"
 msgstr "Führen Sie 'linkchecker -h' aus, um Hilfe zu erhalten"
 
-#: ../linkchecker:211
+#: ../linkchecker:215
 msgid "Running as root, dropping to nobody."
 msgstr "Laufe als Benutzer root, wechsle auf Benutzer nobody."
 
-#: ../linkchecker:220
+#: ../linkchecker:224
 msgid "The `pstats' Python module is not installed, therefore the --viewprof option is disabled."
 msgstr "Das `pstats' Python Modul ist nicht installiert, deshalb ist die --viewprof Option deaktiviert."
 
-#: ../linkchecker:225
+#: ../linkchecker:229
 #, python-format
 msgid "Could not find profiling file %(file)r."
 msgstr "Konnte Profiling-Datei %(file)r nicht finden."
 
-#: ../linkchecker:227
+#: ../linkchecker:231
 msgid "Please run linkchecker with --profile to generate it."
 msgstr "Bitte starten Sie linkchecker mit --profile, um sie zu generieren."
 
-#: ../linkchecker:242
+#: ../linkchecker:246
 #, python-format
 msgid "Syntax error in %(arg)r: %(msg)s"
 msgstr "Syntaxfehler in %(arg)r: %(msg)s"
 
-#: ../linkchecker:328
+#: ../linkchecker:332
 msgid "General options"
 msgstr "Allgemeine Optionen"
 
-#: ../linkchecker:332
+#: ../linkchecker:336
 msgid ""
 "Use FILENAME as configuration file. Per default LinkChecker first\n"
 "searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/linkcheckerrc\n"
@@ -1512,17 +1520,17 @@ msgstr ""
 " LinkChecker zuerst /etc/linkchecker/linkcheckerrc und dann ~/.linkchecker/linkcheckerrc\n"
 "(unter Windows <Pfad-zum-Programm>\\linkcheckerrc)."
 
-#: ../linkchecker:337
+#: ../linkchecker:341
 msgid "Ask for URL if none are given on the commandline."
 msgstr "Frage nach URLs falls keine auf der Kommandozeile eingegeben wurden."
 
-#: ../linkchecker:341
+#: ../linkchecker:345
 msgid ""
 "Generate no more than the given number of threads. Default number\n"
 "of threads is 10. To disable threading specify a non-positive number."
 msgstr "Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl von Threads ist 10. Geben Sie eine negative Zahl an, um Threading zu deaktivieren."
 
-#: ../linkchecker:345
+#: ../linkchecker:349
 msgid ""
 "Run with normal thread scheduling priority. Per default LinkChecker\n"
 "runs with low thread priority to be suitable as a background job."
@@ -1530,27 +1538,27 @@ msgstr ""
 "Laufe mit normaler Prozesspriorität. Als Standard läuft LinkChecker\n"
 "mit niedriger Prozesspriorität, um als Hintergrundprogramm geeignet zu sein."
 
-#: ../linkchecker:348
+#: ../linkchecker:352
 msgid "Print version and exit."
 msgstr "Drucke die Version und beende das Programm."
 
-#: ../linkchecker:351
+#: ../linkchecker:355
 msgid "Do not drop privileges when running as root user on Unix systems."
 msgstr "Keine Entziehung der Privilegien falls das Programm unter Unix als Benutzer root läuft."
 
-#: ../linkchecker:354
+#: ../linkchecker:358
 msgid "Read list of white-space separated URLs to check from stdin."
 msgstr "Lese eine Liste von URLs zum Prüfen von der Standardeingabe, getrennt durch Leerzeichen."
 
-#: ../linkchecker:358
+#: ../linkchecker:362
 msgid "Output options"
 msgstr "Ausgabeoptionen"
 
-#: ../linkchecker:361
+#: ../linkchecker:365
 msgid "Log all URLs. Default is to log only errors and warnings."
 msgstr "Logge alle URLs. Standard ist es, nur fehlerhafte URLs zu loggen."
 
-#: ../linkchecker:363
+#: ../linkchecker:367
 msgid ""
 "Log all URLs, including duplicates.\n"
 "Default is to log duplicate URLs only once."
@@ -1558,11 +1566,11 @@ msgstr ""
 "Logge alle URLs, inklusive Duplikate.\n"
 "Standard ist, doppelte URLs nur einmal zu loggen."
 
-#: ../linkchecker:366
+#: ../linkchecker:370
 msgid "Don't log warnings. Default is to log warnings."
 msgstr "Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen."
 
-#: ../linkchecker:370
+#: ../linkchecker:374
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -1579,7 +1587,7 @@ msgstr ""
 "Sie können dies verwenden, um Seiten mit Fehlermeldungen wie z.B.\n"
 "'Diese Seite ist umgezogen' oder 'Oracle Server Fehler'."
 
-#: ../linkchecker:380
+#: ../linkchecker:384
 msgid ""
 "Print a warning if content size info is available and exceeds the\n"
 "given number of bytes."
@@ -1587,27 +1595,27 @@ msgstr ""
 "Gebe eine Warnung aus wenn die Inhaltsgröße bekannt ist und die\n"
 "angegebene Anzahl an Bytes übersteigt."
 
-#: ../linkchecker:384
+#: ../linkchecker:388
 msgid "Check syntax of HTML URLs with local library (HTML tidy)."
 msgstr "Prüfe Syntax von HTML URLs mit lokaler Bibliothek (HTML tidy)."
 
-#: ../linkchecker:387
+#: ../linkchecker:391
 msgid "Check syntax of HTML URLs with W3C online validator."
 msgstr "Prüfe Syntax von HTML URLs mit W3C Online Validator."
 
-#: ../linkchecker:390
+#: ../linkchecker:394
 msgid "Check syntax of CSS URLs with local library (cssutils)."
 msgstr "Prüfe Syntax von CSS URLs mit lokaler Bibliothek (cssutils)."
 
-#: ../linkchecker:393
+#: ../linkchecker:397
 msgid "Check syntax of CSS URLs with W3C online validator."
 msgstr "Prüfe Syntax von CSS URLs mit W3C Online Validator."
 
-#: ../linkchecker:396
+#: ../linkchecker:400
 msgid "Scan content of URLs with ClamAV virus scanner."
 msgstr "Prüfe Inhalt von URLs mit dem ClamAV Antivirus Programm."
 
-#: ../linkchecker:399
+#: ../linkchecker:403
 msgid ""
 "Quiet operation, an alias for '-o none'.\n"
 "This is only useful with -F."
@@ -1615,7 +1623,7 @@ msgstr ""
 "Keine Ausgabe, ein Alias für '-o none'.\n"
 "Dies ist nur in Verbindung mit -F nützlich."
 
-#: ../linkchecker:404
+#: ../linkchecker:408
 #, python-format
 msgid ""
 "Specify output as %(loggertypes)s. Default output type is text.\n"
@@ -1627,7 +1635,7 @@ msgstr ""
 "Enkodierung der ausgewählten Spracheinstellung.\n"
 "Gültige Enkodierungen sind unter http://docs.python.org/lib/standard-encodings.html aufgeführt."
 
-#: ../linkchecker:413
+#: ../linkchecker:417
 #, python-format
 msgid ""
 "Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for\n"
@@ -1655,11 +1663,11 @@ msgstr ""
 "Standard ist keine Dateiausgabe. Beachten Sie dass die Option\n"
 "'-o none' jegliche Ausgaben auf der Konsole verhindert."
 
-#: ../linkchecker:427
+#: ../linkchecker:431
 msgid "Do not print check status messages."
 msgstr "Gebe keine Statusmeldungen aus."
 
-#: ../linkchecker:430
+#: ../linkchecker:434
 #, python-format
 msgid ""
 "Print debugging output for the given logger.\n"
@@ -1679,11 +1687,11 @@ msgstr ""
 "\n"
 "Für exakte Resultate wird Threading während Debugläufen deaktiviert."
 
-#: ../linkchecker:439
+#: ../linkchecker:443
 msgid "Print tracing information."
 msgstr "Trace-Information ausgeben."
 
-#: ../linkchecker:442
+#: ../linkchecker:446
 #, python-format
 msgid ""
 "Write profiling data into a file named %s in the\n"
@@ -1693,15 +1701,15 @@ msgstr ""
 "aktuellen Arbeitsverzeichnis.\n"
 "Siehe auch --viewprof."
 
-#: ../linkchecker:446
+#: ../linkchecker:450
 msgid "Print out previously generated profiling data. See also --profile."
 msgstr "Gebe vorher generierte Profiling-Daten aus. Siehe auch --profile."
 
-#: ../linkchecker:451
+#: ../linkchecker:455
 msgid "Checking options"
 msgstr "Prüf-Optionen"
 
-#: ../linkchecker:455
+#: ../linkchecker:459
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable infinite recursion. Default depth is infinite."
@@ -1710,19 +1718,19 @@ msgstr ""
 "negative Tiefe erwirkt unendliche Rekursion. Standard Tiefe ist\n"
 "unendlich."
 
-#: ../linkchecker:460
+#: ../linkchecker:464
 msgid ""
 "Check but do not recurse into URLs matching the given regular\n"
 "expression. This option can be given multiple times."
 msgstr "Prüfe URLs die auf den angegebenen regulären Ausdruck zutreffen, aber steige nicht rekursiv in sie hinab. Diese Option kann mehrmals angegeben werden."
 
-#: ../linkchecker:465
+#: ../linkchecker:469
 msgid ""
 "Only check syntax of URLs matching the given regular expression.\n"
 " This option can be given multiple times."
 msgstr "Prüfe lediglich den Syntax der URLs, welche auf den angegebenen regulären Ausdruck zutreffen. Diese Option kann mehrmals angegebenen werden."
 
-#: ../linkchecker:469
+#: ../linkchecker:473
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -1735,7 +1743,7 @@ msgstr ""
 "Gesendete und akzeptierte Cookies werden als zusätzlich geloggte\n"
 "Information aufgeführt."
 
-#: ../linkchecker:476
+#: ../linkchecker:480
 msgid ""
 "Read a file with initial cookie data. The cookie data format is\n"
 "explained below."
@@ -1743,7 +1751,7 @@ msgstr ""
 "Lese eine Datei mit Cookie-Daten. Das Datenformat\n"
 "ist weiter unten erklärt."
 
-#: ../linkchecker:480
+#: ../linkchecker:484
 msgid ""
 "Check HTTP anchor references. Default is not to check anchors.\n"
 "This option enables logging of the warning 'url-anchor-not-found'."
@@ -1751,13 +1759,13 @@ msgstr ""
 "Prüfe HTTP Anker Verweise. Standard ist keine Überprüfung.\n"
 "Diese Option aktiviert die Ausgabe der Warnung 'url-anchor-not-found'."
 
-#: ../linkchecker:485
+#: ../linkchecker:489
 msgid ""
 "This option is deprecated and does nothing. It will be removed\n"
 "in a future release."
 msgstr ""
 
-#: ../linkchecker:490
+#: ../linkchecker:494
 msgid ""
 "Try the given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. For HTTP there is\n"
@@ -1766,7 +1774,7 @@ msgstr ""
 "Verwende den angegebenen Benutzernamen für HTTP und FTP\n"
 "Authorisation. Für FTP ist der Standardname 'anonymous'. Für HTTP gibt es kein Standardnamen. Siehe auch -p."
 
-#: ../linkchecker:496
+#: ../linkchecker:500
 msgid ""
 "Try the given password for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. For HTTP there is\n"
@@ -1775,7 +1783,7 @@ msgstr ""
 "Verwende das angegebene Passwort für HTTP und FTP Authorisation.\n"
 "Für FTP ist das Standardpasswort 'anonymous@'. Für HTTP gibt es kein Standardpasswort. Siehe auch -u."
 
-#: ../linkchecker:502
+#: ../linkchecker:506
 #, python-format
 msgid ""
 "Set the timeout for connection attempts in seconds. The default\n"
@@ -1784,7 +1792,7 @@ msgstr ""
 "Setze den Timeout für Verbindungen in Sekunden. Der Standard\n"
 "Timeout ist %d Sekunden."
 
-#: ../linkchecker:507
+#: ../linkchecker:511
 msgid ""
 "Pause the given number of seconds between two subsequent connection\n"
 "requests to the same host. Default is no pause between requests."
@@ -1792,7 +1800,7 @@ msgstr ""
 "Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander folgenden\n"
 "Verbindungen zum demselben Rechner. Standard ist keine Pause zwischen Verbindungen."
 
-#: ../linkchecker:512
+#: ../linkchecker:516
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
@@ -1802,7 +1810,7 @@ msgstr ""
 "Umgebungsvariable NNTP_SERVER. Falls kein Rechner angegeben ist,\n"
 "wird lediglich auf korrekte Syntax des Links geprüft."
 
-#: ../linkchecker:518
+#: ../linkchecker:522
 msgid ""
 "Contact hosts that match the given regular expression directly instead\n"
 "of going through a proxy. This option can be given multiple times."
@@ -1810,48 +1818,48 @@ msgstr ""
 "Direkte Verbindung zu Rechner, die zum gegebenen regulären Ausdruck passen, anstatt\n"
 "über einen Proxy zu gehen. Diese Option kann mehrfach angegeben werden."
 
-#: ../linkchecker:555
+#: ../linkchecker:559
 #, python-format
 msgid "URL has unparsable domain name: %(domain)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(domain)s"
 
-#: ../linkchecker:580
+#: ../linkchecker:584
 #, python-format
 msgid "Invalid debug level %(level)r"
 msgstr "Ungültiger Debuglevel %(level)r"
 
-#: ../linkchecker:592
+#: ../linkchecker:596
 #, python-format
 msgid "Unreadable config file: %r"
 msgstr "Nicht lesbare Konfigurationsdatei: %r"
 
-#: ../linkchecker:602
+#: ../linkchecker:606
 msgid "Running with python -O disables debugging."
 msgstr "Die Option python -O verhindert das Debuggen."
 
-#: ../linkchecker:630
-#: ../linkchecker:661
+#: ../linkchecker:634
+#: ../linkchecker:665
 #, python-format
 msgid "Unknown logger type %(type)r in %(output)r for option %(option)s"
 msgstr "Unbekannter Logtyp %(type)r in %(output)r für Option %(option)s"
 
-#: ../linkchecker:634
-#: ../linkchecker:667
+#: ../linkchecker:638
+#: ../linkchecker:671
 #, python-format
 msgid "Unknown encoding %(encoding)r in %(output)r for option %(option)s"
 msgstr "Unbekanntes Encoding %(encoding)r in %(output)r für Option %(option)s"
 
-#: ../linkchecker:683
-#: ../linkchecker:701
+#: ../linkchecker:687
+#: ../linkchecker:705
 #, python-format
 msgid "Illegal argument %(arg)r for option %(option)s"
 msgstr "Ungültiges Argument %(arg)r für Option %(option)s"
 
-#: ../linkchecker:749
+#: ../linkchecker:753
 msgid "Using DOT or GML loggers without --complete output gives an incomplete sitemap graph."
 msgstr "Benutzung von DOT oder GML Ausgaben ohne --complete ergibt einen unvollständigen Sitemap Graphen."
 
-#: ../linkchecker:756
+#: ../linkchecker:760
 msgid ""
 "enter one or more URLs, separated by white-space\n"
 "--> "
@@ -1859,16 +1867,16 @@ msgstr ""
 "geben Sie eine oder mehrere durch Leerzeichen getrennte URLs ein\n"
 "--> "
 
-#: ../linkchecker:769
+#: ../linkchecker:773
 #, python-format
 msgid "Could not parse cookie file: %s"
 msgstr "Konnte Cookie-Datei nicht parsen: %s"
 
-#: ../linkchecker:783
+#: ../linkchecker:787
 msgid "no files or URLs given"
 msgstr "keine Dateien oder URLs angegeben"
 
-#: ../linkchecker:788
+#: ../linkchecker:792
 #, python-format
 msgid ""
 "Overwrite profiling file %(file)r?\n"
@@ -1877,15 +1885,15 @@ msgstr ""
 "Profildatei %(file)r überschreiben?\n"
 "Drücken Sie Strg-C zum Abbrechen, EINGABETASTE zum Fortfahren."
 
-#: ../linkchecker:794
+#: ../linkchecker:798
 msgid "Canceled."
 msgstr "Abgebrochen."
 
-#: ../linkchecker:798
+#: ../linkchecker:802
 msgid "The `profile' Python module is not installed, therefore the --profile option is disabled."
 msgstr "Das `profile' Python Modul ist nicht installiert, deshalb ist die --profile Option deaktiviert."
 
-#: ../linkchecker:811
+#: ../linkchecker:815
 msgid "Hit RETURN to finish"
 msgstr "Drücken Sie RETURN zum Beenden"
 

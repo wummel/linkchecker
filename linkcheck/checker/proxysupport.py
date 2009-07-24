@@ -18,17 +18,15 @@
 Mixin class for URLs that can be fetched over a proxy.
 """
 import urllib
-from .. import LinkCheckerError
+import os
+from .. import LinkCheckerError, log, LOG_CHECK, url as urlutil
 
 
 class ProxySupport (object):
-    """
-    Get support for proxying and for URLs with user:pass@host setting.
-    """
+    """Get support for proxying and for URLs with user:pass@host setting."""
 
     def set_proxy (self, proxy):
-        """
-        Parse given proxy information and store parsed values.
+        """Parse given proxy information and store parsed values.
         Note that only http:// proxies are supported, both for ftp://
         and http:// URLs.
         """
@@ -48,9 +46,9 @@ class ProxySupport (object):
         self.proxyauth, self.proxy = urllib.splituser(self.proxy)
         if self.ignore_proxy_host():
             # log proxy without auth info
+            log.debug(LOG_CHECK, "ignoring proxy %r", self.proxy)
             self.add_info(_("Ignoring proxy setting `%(proxy)s'.") % proxyargs)
-            self.proxy = None
-            self.proxyauth = None
+            self.proxy = self.proxyauth = None
             return
         self.add_info(_("Using proxy `%(proxy)s'.") % proxyargs)
         if self.proxyauth is not None:
@@ -59,15 +57,28 @@ class ProxySupport (object):
             import base64
             self.proxyauth = base64.encodestring(self.proxyauth).strip()
             self.proxyauth = "Basic "+self.proxyauth
-
+        log.debug(LOG_CHECK, "using proxy %r", self.proxy)
 
     def ignore_proxy_host (self):
-        """
-        Check if self.host is in the no-proxy-for ignore list.
-        """
+        """Check if self.host is in the no-proxy-for ignore list."""
         if urllib.proxy_bypass(self.host):
             return True
         for ro in self.aggregate.config["noproxyfor"]:
             if ro.search(self.host):
                 return True
+        no_proxy = os.environ.get("no_proxy")
+        if no_proxy:
+            entries = [parse_host_port(x) for x in no_proxy.split(",")]
+            for host, port in entries:
+                if host.lower() == self.host and port == self.port:
+                    return True
         return False
+
+
+def parse_host_port (host_port):
+    """Parse a host:port string into separate components."""
+    host, port = urllib.splitport(host_port.strip())
+    if port is not None:
+        if urlutil.is_numeric_port(port):
+            port = int(port)
+    return host, port
