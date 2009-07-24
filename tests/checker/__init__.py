@@ -124,16 +124,14 @@ def add_fileoutput_config (config):
 
 
 def get_test_aggregate (confargs, logargs):
-    """
-    Initialize a test configuration object.
-    """
+    """Initialize a test configuration object."""
     config = linkcheck.configuration.Configuration()
     config.logger_add('test', TestLogger)
     config['recursionlevel'] = 1
     config['logger'] = config.logger_new('test', **logargs)
     add_fileoutput_config(config)
     # uncomment for debugging
-    #config.init_logging(debug=["all"])
+    #config.init_logging(None, debug=["all"])
     config["anchors"] = True
     config["verbose"] = True
     config["complete"] = True
@@ -179,9 +177,7 @@ class LinkCheckTest (unittest.TestCase):
                     if line.strip() and not line.startswith(u'#')]
 
     def file_test (self, filename, confargs=None):
-        """
-        Check <filename> with expected result in <filename>.result.
-        """
+        """Check <filename> with expected result in <filename>.result."""
         url = get_file(filename)
         if confargs is None:
             confargs = {}
@@ -200,9 +196,7 @@ class LinkCheckTest (unittest.TestCase):
 
     def direct (self, url, resultlines, parts=None, recursionlevel=0,
                 confargs=None):
-        """
-        Check url with expected result.
-        """
+        """Check url with expected result."""
         assert isinstance(url, unicode), repr(url)
         if confargs is None:
             confargs = {'recursionlevel': recursionlevel}
