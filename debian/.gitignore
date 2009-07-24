@@ -5,3 +5,4 @@
 /linkchecker-gui
 /tmp
 /*.substvars
+/python-module-stampdir
