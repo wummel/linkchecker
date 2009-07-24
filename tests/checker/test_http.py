@@ -17,16 +17,11 @@
 """
 Test http checking.
 """
-import os
-import re
-
 import httpserver
 
 
 class TestHttp (httpserver.HttpServerTest):
-    """
-    Test http:// link checking.
-    """
+    """Test http:// link checking."""
 
     def test_html (self):
         try:
@@ -43,7 +38,6 @@ class TestHttp (httpserver.HttpServerTest):
             self.redirect2_http_test()
             self.robots_txt_test()
             self.robots_txt2_test()
-            self.noproxyfor_test()
             self.swf_test()
         finally:
             self.stop_server()
@@ -128,26 +122,6 @@ class TestHttp (httpserver.HttpServerTest):
         ]
         self.direct(url, resultlines, recursionlevel=5)
 
-    def noproxyfor_test (self):
-        """
-        Test setting proxy and --no-proxy-for option.
-        """
-        os.environ["http_proxy"] = "http://example.org:8877"
-        confargs = {"noproxyfor": [re.compile("localhost")]}
-        url = u"http://localhost:%d/tests/checker/data/http.html" % \
-              self.port
-        nurl = url
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"info Ignoring proxy setting `http://example.org:8877'.",
-            u"valid",
-        ]
-        self.direct(url, resultlines, recursionlevel=0,
-                    confargs=confargs)
-        del os.environ["http_proxy"]
-
     def swf_test (self):
         url = u"http://localhost:%d/tests/checker/data/" \
               u"test.swf" % self.port
@@ -177,31 +151,23 @@ def get_cookie (maxage=2000):
 
 
 class CookieRedirectHttpRequestHandler (httpserver.NoQueryHttpRequestHandler):
-    """
-    Handler redirecting certain requests, and setting cookies.
-    """
+    """Handler redirecting certain requests, and setting cookies."""
 
     def end_headers (self):
-        """
-        Send cookie before ending headers.
-        """
+        """Send cookie before ending headers."""
         self.send_header("Set-Cookie", get_cookie())
         self.send_header("Set-Cookie", get_cookie(maxage=0))
         super(CookieRedirectHttpRequestHandler, self).end_headers()
 
     def redirect (self):
-        """
-        Redirect request.
-        """
+        """Redirect request."""
         path = self.path.replace("redirect", "newurl")
         self.send_response(302)
         self.send_header("Location", path)
         self.end_headers()
 
     def do_GET (self):
-        """
-        Removes query part of GET request.
-        """
+        """Removes query part of GET request."""
         if "redirect" in self.path:
             self.redirect()
         else:
@@ -216,9 +182,7 @@ class CookieRedirectHttpRequestHandler (httpserver.NoQueryHttpRequestHandler):
 class RedirectHttpsRequestHandler (CookieRedirectHttpRequestHandler):
 
     def redirect (self):
-        """
-        Redirect request.
-        """
+        """Redirect request."""
         path = self.path.replace("redirect", "newurl")
         port = self.server.server_address[1]
         url = "https://localhost:%d%s" % (port, path)
