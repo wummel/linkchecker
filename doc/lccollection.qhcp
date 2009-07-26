@@ -2,7 +2,7 @@
 <QHelpCollectionProject version="1.0">
 <assistant>
    <title>LinkChecker</title>
-   <applicationIcon>build/htmlhelp/_static/favicon16x16.png</applicationIcon>
+   <applicationIcon>favicon16x16.png</applicationIcon>
    <cacheDirectory>bfk/LinkChecker</cacheDirectory>
    <startPage>qthelp://bfk.app.linkchecker/doc/index.html</startPage>
    <enableDocumentationManager>false</enableDocumentationManager>
