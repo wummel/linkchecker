@@ -44,7 +44,7 @@ _basic = {
     "_path": r"\-\_\.\!\~\*\'\(\),",
     "_hex_safe": r"2-9a-f",
     "_hex_full": r"0-9a-f",
-    "_part": r"([a-z0-9][-a-z0-9]{0,61}[a-z]|[a-z])",
+    "_part": r"([a-z0-9][-a-z0-9]{0,61}|[a-z])",
 }
 _safe_char = r"([a-z0-9%(_path)s\+]|"\
              r"(%%[%(_hex_safe)s][%(_hex_full)s]))" % _basic

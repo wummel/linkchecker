@@ -549,3 +549,4 @@ class TestUrl (unittest.TestCase):
         self.assertFalse(is_safe_domain(u"a..example.com"))
         self.assertFalse(is_safe_domain(u"a_b.example.com"))
         self.assertTrue(is_safe_domain(u"a-b.example.com"))
+        self.assertTrue(is_safe_domain(u"x1.example.com"))
