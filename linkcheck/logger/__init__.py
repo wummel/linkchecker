@@ -26,6 +26,7 @@ from .. import log, LOG_CHECK, strformat, dummy
 
 _ = lambda x: x
 Fields = dict(
+    id=_("ID"),
     realurl=_("Real URL"),
     cachekey=_("Cache key"),
     result=_("Result"),

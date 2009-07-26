@@ -111,6 +111,8 @@ class HtmlLogger (Logger):
         Write url checking info as HTML.
         """
         self.write_table_start()
+        if self.has_part("id"):
+            self.write_id()
         if self.has_part("url"):
             self.write_url(url_data)
         if url_data.name and self.has_part("name"):
@@ -152,15 +154,17 @@ class HtmlLogger (Logger):
                      (cgi.escape(_("checked link")), self.colorbackground))
 
     def write_table_end (self):
-        """
-        End html table.
-        """
+        """End html table."""
         self.write(u'</table></td></tr></table><br clear="all">')
 
+    def write_id (self):
+        """Write ID for current URL."""
+        self.writeln(u"<tr>")
+        self.writeln(u'<td>%s</td>' % self.part("id"))
+        self.write(u"<td>%d</td></tr>" % self.number)
+
     def write_url (self, url_data):
-        """
-        Write url_data.base_url.
-        """
+        """Write url_data.base_url."""
         self.writeln(u"<tr>")
         self.writeln(u'<td bgcolor="%s">%s</td>' %
                      (self.colorurl, self.part("url")))

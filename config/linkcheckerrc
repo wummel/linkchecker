@@ -22,6 +22,7 @@
 ##################### logger configuration ##########################
 # logger output part names:
 # all       (for all parts)
+# id        (a unique ID for each logentry)
 # realurl   (the full url link)
 # result    (valid or invalid, with messages)
 # extern    (1 or 0, only in some logger types reported)

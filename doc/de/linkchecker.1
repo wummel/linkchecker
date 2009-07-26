@@ -343,6 +343,135 @@ Setzen eines Proxies unter der Windows Befehlszeile:
 
   set http_proxy=http://proxy.example.com:8080
 
+.SH "PERFORMED CHECKES"
+All URLs have to pass a preliminary syntax test. Minor quoting mistakes will
+issue a warning, all other invalid syntax issues are errors.  After the
+syntax check passes, the URL is queued for connection checking. All
+connection check types are described below.
+.
+.TP 
+HTTP links (\fBhttp:\fP, \fBhttps:\fP)
+After connecting to the given HTTP server the given path or query is
+requested. All redirections are followed, and if user/password is given it
+will be used as authorization when necessary.  Permanently moved pages issue
+a warning.  All final HTTP status codes other than 2xx are errors.
+.
+HTML page contents are checked for recursion.
+.TP 
+Local files (\fBfile:\fP)
+A regular, readable file that can be opened is valid. A readable directory
+is also valid. All other files, for example device files, unreadable or
+non\-existing files are errors.
+.
+HTML or other parseable file contents are checked for recursion.
+.TP 
+Mail links (\fBmailto:\fP)
+A mailto: link eventually resolves to a list of email addresses.  If one
+address fails, the whole list will fail.  For each mail address we check the
+following things:
+.
+  1) Check the adress syntax, both of the part before and after
+     the @ sign.
+  2) Look up the MX DNS records. If we found no MX record,
+     print an error.
+  3) Check if one of the mail hosts accept an SMTP connection.
+     Check hosts with higher priority first.
+     If no host accepts SMTP, we print a warning.
+  4) Try to verify the address with the VRFY command. If we got
+     an answer, print the verified address as an info.
+.TP 
+FTP links (\fBftp:\fP)
+  
+  For FTP links we do:
+  
+  1) connect to the specified host
+  2) try to login with the given user and password. The default
+     user is \*(lqanonymous\*(lq, the default password is \*(lqanonymous@\*(lq.
+  3) try to change to the given directory
+  4) list the file with the NLST command
+
+\- Telnet links (\*(lqtelnet:\*(lq)
+  
+  We try to connect and if user/password are given, login to the
+  given telnet server.
+
+\- NNTP links (\*(lqnews:\*(lq, \*(lqsnews:\*(lq, \*(lqnntp\*(lq)
+  
+  We try to connect to the given NNTP server. If a news group or
+  article is specified, try to request it from the server.
+
+\- Ignored links (\*(lqjavascript:\*(lq, etc.)
+  
+  An ignored link will only print a warning. No further checking
+  will be made.
+  
+  Here is a complete list of recognized, but ignored links. The most
+  prominent of them should be JavaScript links.
+  
+  \- \*(lqacap:\*(lq      (application configuration access protocol)
+  \- \*(lqafs:\*(lq       (Andrew File System global file names)
+  \- \*(lqchrome:\*(lq    (Mozilla specific)
+  \- \*(lqcid:\*(lq       (content identifier)
+  \- \*(lqclsid:\*(lq     (Microsoft specific)
+  \- \*(lqdata:\*(lq      (data)
+  \- \*(lqdav:\*(lq       (dav)
+  \- \*(lqfax:\*(lq       (fax)
+  \- \*(lqfind:\*(lq      (Mozilla specific)
+  \- \*(lqgopher:\*(lq    (Gopher)
+  \- \*(lqimap:\*(lq      (internet message access protocol)
+  \- \*(lqisbn:\*(lq      (ISBN (int. book numbers))
+  \- \*(lqjavascript:\*(lq (JavaScript)
+  \- \*(lqldap:\*(lq      (Lightweight Directory Access Protocol)
+  \- \*(lqmailserver:\*(lq (Access to data available from mail servers)
+  \- \*(lqmid:\*(lq       (message identifier)
+  \- \*(lqmms:\*(lq       (multimedia stream)
+  \- \*(lqmodem:\*(lq     (modem)
+  \- \*(lqnfs:\*(lq       (network file system protocol)
+  \- \*(lqopaquelocktoken:\*(lq (opaquelocktoken)
+  \- \*(lqpop:\*(lq       (Post Office Protocol v3)
+  \- \*(lqprospero:\*(lq  (Prospero Directory Service)
+  \- \*(lqrsync:\*(lq     (rsync protocol)
+  \- \*(lqrtsp:\*(lq      (real time streaming protocol)
+  \- \*(lqservice:\*(lq   (service location)
+  \- \*(lqshttp:\*(lq     (secure HTTP)
+  \- \*(lqsip:\*(lq       (session initiation protocol)
+  \- \*(lqtel:\*(lq       (telephone)
+  \- \*(lqtip:\*(lq       (Transaction Internet Protocol)
+  \- \*(lqtn3270:\*(lq    (Interactive 3270 emulation sessions)
+  \- \*(lqvemmi:\*(lq     (versatile multimedia interface)
+  \- \*(lqwais:\*(lq      (Wide Area Information Servers)
+  \- \*(lqz39.50r:\*(lq   (Z39.50 Retrieval)
+  \- \*(lqz39.50s:\*(lq   (Z39.50 Session)
+
+
+.SH Rekursion
+Before descending recursively into a URL, it has to fulfill several
+conditions. They are checked in this order:
+
+1. A URL must be valid.
+
+2. A URL must be parseable. This currently includes HTML files,
+   Opera bookmarks files, and directories. If a file type cannot
+   be determined (for example it does not have a common HTML file
+   extension, and the content does not look like HTML), it is assumed
+   to be non\-parseable.
+
+3. The URL content must be retrievable. This is usually the case
+   except for example mailto: or unknown URL types.
+
+4. The maximum recursion level must not be exceeded. It is configured
+   with the \*(lq\-\-recursion\-level\*(lq option and is unlimited per default.
+
+5. It must not match the ignored URL list. This is controlled with
+   the \*(lq\-\-ignore\-url\*(lq option.
+
+6. The Robots Exclusion Protocol must allow links in the URL to be
+   followed recursively. This is checked by searching for a
+   "nofollow" directive in the HTML header data.
+
+Note that the directory recursion reads all files in that directory, not
+just a subset like \*(lqindex.htm*\*(lq.
+
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP
 behandelt, URLs die mit \fBwww.\fP beginnen wie \fBhttp://www.\fP. Sie können auch

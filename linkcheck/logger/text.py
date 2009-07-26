@@ -112,6 +112,8 @@ class TextLogger (Logger):
         """
         Write url checking info.
         """
+        if self.has_part('id'):
+            self.write_id()
         if self.has_part('url'):
             self.write_url(url_data)
         if url_data.name and self.has_part('name'):
@@ -136,11 +138,14 @@ class TextLogger (Logger):
             self.write_result(url_data)
         self.flush()
 
-    def write_url (self, url_data):
-        """
-        Write url_data.base_url.
-        """
+    def write_id (self):
+        """Write unique ID of url_data."""
         self.writeln()
+        self.write(self.part('id') + self.spaces('id'))
+        self.writeln(u"%d" % self.number, color=self.colorinfo)
+
+    def write_url (self, url_data):
+        """Write url_data.base_url."""
         self.write(self.part('url') + self.spaces('url'))
         txt = strformat.strline(url_data.base_url)
         if url_data.cached:
