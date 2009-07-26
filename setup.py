@@ -176,7 +176,7 @@ class MyDistribution (Distribution, object):
         self.console = ['linkchecker']
         self.windows = [{
             "script": "linkchecker-gui",
-            "icon_resources": [(1, "doc/source/static/favicon.ico")],
+            "icon_resources": [(1, "doc/html/favicon.ico")],
         }]
 
 
