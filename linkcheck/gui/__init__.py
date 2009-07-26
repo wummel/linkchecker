@@ -30,7 +30,7 @@ from .. import configuration, checker, director, add_intern_pattern, \
 from ..containers import enum
 
 
-DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/"
+DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/html/"
 
 Status = enum('idle', 'checking')
 
