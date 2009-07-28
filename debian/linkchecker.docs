@@ -1,4 +1,6 @@
 debian/README.Debian
 TODO.txt
 UPGRADING.txt
-doc/index.html
+doc/html/index.html
+doc/html/logo64x64.png
+doc/html/*.css
