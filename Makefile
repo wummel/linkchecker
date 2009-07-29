@@ -18,21 +18,20 @@ DEB_ORIG_TARGET=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
 
 .PHONY: all
 all:
-	@echo "Read the file doc/source/install.txt to see how to build and install this package."
+	@echo "Read the file INSTALL.txt to see how to build and install this package."
 
 .PHONY: clean
 clean:
 	-$(PYTHON) setup.py clean --all
 	rm -f linkchecker-out.* *-stamp*
 	$(MAKE) -C po clean
-	$(MAKE) -C doc clean
+	$(MAKE) -C doc/html clean
 	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/network/_network.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
 .PHONY: distclean
 distclean: clean cleandeb
-	$(MAKE) -C doc clean
 	rm -rf build linkchecker.egg-info
 	rm -f _LinkChecker_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
@@ -56,6 +55,7 @@ locale:
 # to build in the current directory
 .PHONY: localbuild
 localbuild: MANIFEST
+	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
 	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
@@ -78,10 +78,6 @@ release: distclean releasecheck dist-stamp sign_distfiles homepage upload
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
-
-.PHONY: homepage
-homepage:
-	$(MAKE) -C doc homepage
 
 .PHONY: chmod
 chmod:

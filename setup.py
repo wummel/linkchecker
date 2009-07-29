@@ -369,7 +369,8 @@ myemail = "calvin@users.sourceforge.net"
 
 data_files = [
     ('share/linkchecker',
-        ['config/linkcheckerrc', 'config/logging.conf', 'doc/lccollection.qhc', ]),
+        ['config/linkcheckerrc', 'config/logging.conf',
+        'doc/html/lccollection.qhc', 'doc/html/lcdoc.qch']),
     ('share/linkchecker/examples',
         ['cgi-bin/lconline/leer.html.en',
          'cgi-bin/lconline/leer.html.de',

@@ -30,7 +30,7 @@ from .. import configuration, checker, director, add_intern_pattern, \
 from ..containers import enum
 
 
-DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/html/"
+DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/"
 
 Status = enum('idle', 'checking')
 
@@ -51,7 +51,13 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.checker = CheckerThread()
         self.contextmenu = ContextMenu(parent=self)
         # Note: we can't use QT assistant here because of the .exe packaging
-        qhcpath = os.path.join(configuration.configdata.install_data, "doc", "lccollection.qhc")
+        path = configuration.configdata.install_data
+        # here lies the help file when developing
+        qhcpath = os.path.join(path, "doc", "html", "lccollection.qhc")
+        if not os.path.isfile(qhcpath):
+            # here lies the help file after installing as a package
+            path = configuration.configdata.config_dir
+            qhcpath = os.path.join(path, "lccollection.qhc")
         self.assistant = HelpWindow(self, qhcpath)
         # setup this widget
         self.init_treewidget()
