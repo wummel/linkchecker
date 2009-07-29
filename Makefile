@@ -25,6 +25,7 @@ clean:
 	-$(PYTHON) setup.py clean --all
 	rm -f linkchecker-out.* *-stamp*
 	$(MAKE) -C po clean
+	$(MAKE) -C doc clean
 	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/network/_network.so
 	find . -name '*.py[co]' -exec rm -f {} \;
