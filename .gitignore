@@ -21,5 +21,5 @@ Changelog.linkchecker*
 /linkchecker.egg-info
 /tests/checker/data/dir
 /linkchecker-out.*
-/doc/*.qhc
-/doc/*.qch
+/doc/html/*.qhc
+/doc/html/*.qch
