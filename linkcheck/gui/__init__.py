@@ -16,6 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os
+import sys
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
@@ -51,20 +52,28 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.checker = CheckerThread()
         self.contextmenu = ContextMenu(parent=self)
         # Note: we can't use QT assistant here because of the .exe packaging
-        path = configuration.configdata.install_data
-        # here lies the help file when developing
-        qhcpath = os.path.join(path, "doc", "html", "lccollection.qhc")
-        if not os.path.isfile(qhcpath):
-            # here lies the help file after installing as a package
-            path = configuration.configdata.config_dir
-            qhcpath = os.path.join(path, "lccollection.qhc")
-        self.assistant = HelpWindow(self, qhcpath)
+        self.assistant = HelpWindow(self, self.get_qhcpath())
         # setup this widget
         self.init_treewidget()
         self.read_settings()
         self.connect_widgets()
         self.init_config()
         self.status = Status.idle
+
+    def get_qhcpath (self):
+        paths = [
+            # when developing
+            os.path.join(configuration.configdata.install_data, "doc", "html"),
+            # when running under py2exe
+            os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "share", "linkchecker"),
+            # after installing as a package
+            configuration.configdata.config_dir,
+        ]
+        for path in paths:
+            qhcfile = os.path.join(path, "lccollection.qhc")
+            if os.path.isfile(qhcfile):
+                break
+        return qhcfile
 
     def read_settings (self):
         settings = QtCore.QSettings('bfk', configuration.AppName)
