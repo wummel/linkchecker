@@ -1,4 +1,4 @@
-5.1 "Let the right one in" (released xx.06.2009)
+5.1 "Let the right one in" (released 04.08.2009)
 
 Fixes:
 - logging: The content size of downloads is now shown again.
