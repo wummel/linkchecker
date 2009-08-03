@@ -457,6 +457,13 @@ try:
             py2exe_build.run(self)
             lib_dir = self.lib_dir
             dist_dir = self.dist_dir
+            # Copy needed sqlite plugin files to distribution directory.
+            import PyQt4
+            src = os.path.join(os.path.dirname(PyQt4.__file__), "plugins", "sqldrivers")
+            dst = os.path.join(dist_dir, "sqldrivers")
+            copy_tree(src, dst)
+            for path in os.listdir(dst):
+                self.lib_files.append(os.path.join(dst, path))
             # create the Installer, using the files py2exe has created.
             script = InnoScript(lib_dir, dist_dir,
                                 self.windows_exe_files, self.lib_files)
