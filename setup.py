@@ -64,10 +64,13 @@ from distutils.core import Distribution
 AppVersion = "5.1"
 AppName = "LinkChecker"
 
+# py2exe options for windows .exe packaging
 py2exe_options = dict(
     packages=["encodings"],
     excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter'],
-    includes=["sip"],
+    # add sip so that PyQt4 works
+    # add PyQt4.QtSql so that sqlite neede by QHelpCollection works
+    includes=["sip", "PyQt4.QtSql"],
     compressed=1,
     optimize=2,
 )
