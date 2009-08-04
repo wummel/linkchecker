@@ -70,12 +70,13 @@ deb_orig:
 
 .PHONY: upload
 upload:
-	rsync -avP -e ssh dist/* calvin@frs.sourceforge.net:uploads/
+	rsync -avP -e ssh dist/* calvin,linkchecker@frs.sourceforge.net:/home/frs/project/l/li/linkchecker/$(VERSION)/
+
 
 .PHONY: release
 release: distclean releasecheck dist-stamp sign_distfiles upload
-	@echo "Uploading new LinkChecker Homepage..."
-	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
+	@echo "Updating LinkChecker Homepage..."
+	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
 
