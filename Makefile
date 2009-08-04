@@ -73,7 +73,7 @@ upload:
 	rsync -avP -e ssh dist/* calvin@frs.sourceforge.net:uploads/
 
 .PHONY: release
-release: distclean releasecheck dist-stamp sign_distfiles homepage upload
+release: distclean releasecheck dist-stamp sign_distfiles upload
 	@echo "Uploading new LinkChecker Homepage..."
 	$(MAKE) -C ~/public_html/linkchecker.sf.net upload
 	@echo "Register at Python Package Index..."
