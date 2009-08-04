@@ -9,7 +9,7 @@ binary-arch binary-indep: install-arch install-indep
 
 common-install-arch::
 	$(MAKE) locale
-	$(MAKE) -C doc all
+	$(MAKE) -C doc/html all
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
