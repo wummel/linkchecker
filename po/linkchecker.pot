@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2009-07-25 09:04+0200\n"
+"POT-Creation-Date: 2009-08-04 12:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,17 +40,17 @@ msgstr ""
 
 #: ../linkcheck/logger/csvlog.py:121 ../linkcheck/logger/graph.py:85
 #: ../linkcheck/logger/sql.py:139 ../linkcheck/logger/xmllog.py:94
-#: ../linkcheck/logger/text.py:264 ../linkcheck/logger/html.py:310
+#: ../linkcheck/logger/text.py:264 ../linkcheck/logger/html.py:305
 #, python-format
 msgid "Stopped checking at %(time)s (%(duration)s)"
 msgstr ""
 
-#: ../linkcheck/logger/sql.py:81 ../linkcheck/logger/html.py:315
+#: ../linkcheck/logger/sql.py:81 ../linkcheck/logger/html.py:310
 #, python-format
 msgid "Get the newest version at %s"
 msgstr ""
 
-#: ../linkcheck/logger/sql.py:83 ../linkcheck/logger/html.py:318
+#: ../linkcheck/logger/sql.py:83 ../linkcheck/logger/html.py:313
 #, python-format
 msgid "Write comments and bugs to %s"
 msgstr ""
@@ -124,67 +124,67 @@ msgstr ""
 msgid "Start checking at %s"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:152 ../linkcheck/logger/html.py:179
+#: ../linkcheck/logger/text.py:152 ../linkcheck/logger/html.py:174
 msgid " (cached)"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:168 ../linkcheck/logger/html.py:197
-#: ../linkcheck/gui/__init__.py:216
+#: ../linkcheck/logger/text.py:168 ../linkcheck/logger/html.py:192
+#: ../linkcheck/gui/__init__.py:231
 #, python-format
 msgid ", line %d"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:169 ../linkcheck/logger/html.py:198
-#: ../linkcheck/gui/__init__.py:217
+#: ../linkcheck/logger/text.py:169 ../linkcheck/logger/html.py:193
+#: ../linkcheck/gui/__init__.py:232
 #, python-format
 msgid ", col %d"
 msgstr ""
 
 #: ../linkcheck/logger/text.py:191 ../linkcheck/logger/text.py:207
-#: ../linkcheck/logger/html.py:228 ../linkcheck/logger/html.py:244
+#: ../linkcheck/logger/html.py:223 ../linkcheck/logger/html.py:239
 #, python-format
 msgid "%.3f seconds"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:231 ../linkcheck/logger/html.py:274
+#: ../linkcheck/logger/text.py:231 ../linkcheck/logger/html.py:269
 msgid "Valid"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:234 ../linkcheck/logger/html.py:279
+#: ../linkcheck/logger/text.py:234 ../linkcheck/logger/html.py:274
 msgid "Error"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:245 ../linkcheck/logger/html.py:290
+#: ../linkcheck/logger/text.py:245 ../linkcheck/logger/html.py:285
 msgid "That's it."
 msgstr ""
 
-#: ../linkcheck/logger/text.py:247 ../linkcheck/logger/html.py:292
+#: ../linkcheck/logger/text.py:247 ../linkcheck/logger/html.py:287
 #, python-format
 msgid "%d link checked."
 msgid_plural "%d links checked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/text.py:250 ../linkcheck/logger/html.py:295
+#: ../linkcheck/logger/text.py:250 ../linkcheck/logger/html.py:290
 #, python-format
 msgid "%d warning found"
 msgid_plural "%d warnings found"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/text.py:253 ../linkcheck/logger/html.py:298
+#: ../linkcheck/logger/text.py:253 ../linkcheck/logger/html.py:293
 #, python-format
 msgid " (%d ignored or duplicates not printed)"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:256 ../linkcheck/logger/html.py:301
+#: ../linkcheck/logger/text.py:256 ../linkcheck/logger/html.py:296
 #, python-format
 msgid "%d error found"
 msgid_plural "%d errors found"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/logger/text.py:259 ../linkcheck/logger/html.py:304
+#: ../linkcheck/logger/text.py:259 ../linkcheck/logger/html.py:299
 #, python-format
 msgid " (%d duplicates not printed)"
 msgstr ""
@@ -909,16 +909,16 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:102
+#: ../linkcheck/gui/__init__.py:117
 msgid "Ready."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:150
+#: ../linkcheck/gui/__init__.py:165
 #, python-format
 msgid "About %(appname)s"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:151
+#: ../linkcheck/gui/__init__.py:166
 #, python-format
 msgid ""
 "<qt><p>%(appname)s checks HTML documents and websites\n"
@@ -930,16 +930,16 @@ msgid ""
 "</qt>"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:172
+#: ../linkcheck/gui/__init__.py:187
 msgid "Error, empty URL"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:179
+#: ../linkcheck/gui/__init__.py:194
 #, python-format
 msgid "Checking '%s'."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:184
+#: ../linkcheck/gui/__init__.py:199
 #, python-format
 msgid "Error, invalid URL `%s'."
 msgstr ""
