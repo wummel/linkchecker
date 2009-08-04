@@ -1,3 +1,5 @@
+5.2 "" (released xx.xx.2009)
+
 5.1 "Let the right one in" (released 04.08.2009)
 
 Fixes:
