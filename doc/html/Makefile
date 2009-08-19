@@ -6,7 +6,10 @@ all:	$(HELPFILES)
 clean:
 	-rm -f *.qhc *.qch
 
-%.qhc:	%.qhcp lcdoc.qhp
+%.html:	%.txt html.header html.footer
+	(cat html.header; markdown2 $<; cat html.footer) > index.html
+
+%.qhc:	%.qhcp lcdoc.qhp index.html
 	qcollectiongenerator $< -o $@
 
 favicon.ico:	favicon32x32.png favicon16x16.png
