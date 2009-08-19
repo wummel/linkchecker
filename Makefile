@@ -1,19 +1,19 @@
 # This Makefile is only used by developers.
-PYVER=2.6
-PYTHON=python$(PYVER)
-VERSION=$(shell $(PYTHON) setup.py --version)
-MACHINE=$(shell uname -m)
-HOST=www.debian.org
-LCOPTS=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
-PYTHONSRC=/home/calvin/src/python-gitsvn
-PY_FILES_DIRS=linkcheck tests *.py linkchecker gui cgi-bin config doc
+PYVER:=2.6
+PYTHON:=python$(PYVER)
+VERSION:=$(shell $(PYTHON) setup.py --version)
+MACHINE:=$(shell uname -m)
+HOST:=www.debian.org
+LCOPTS:=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot -v -r1 -C
+PYTHONSRC:=/home/calvin/src/python-gitsvn
+PY_FILES_DIRS:=linkcheck tests *.py linkchecker gui cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
 TESTOPTS=
 PAGER ?= less
 # build dir for debian package
-BUILDDIR=/home/calvin/packages/official
-DEB_ORIG_TARGET=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
+BUILDDIR:=/home/calvin/packages/official
+DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
 
 
 .PHONY: all
