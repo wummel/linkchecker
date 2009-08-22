@@ -70,10 +70,11 @@ def init (domain, directory):
     loc, encoding = get_locale()
     if loc in supported_languages:
         default_language = loc
-        default_encoding = encoding
     else:
         default_language = "en"
-        default_encoding = "ascii"
+    # Even if the default language is not supported, the encoding should
+    # be installed. Otherwise the Python installation is borked.
+    default_encoding = encoding
     # install translation service routines into default namespace
     translator = get_translator(domain, directory,
                                 languages=[default_language], fallback=True)
