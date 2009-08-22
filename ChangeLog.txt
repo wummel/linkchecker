@@ -1,5 +1,10 @@
 5.2 "" (released xx.xx.2009)
 
+Fixes:
+- logging: Use default platform encoding instead of hardcoded one
+  of iso-8859-1.
+  Closes: SF bug #2770077
+
 5.1 "Let the right one in" (released 04.08.2009)
 
 Fixes:
