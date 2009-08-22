@@ -212,7 +212,7 @@ def ensure_notroot ():
     if os.name != 'posix':
         return
     if os.geteuid() == 0:
-        log.warn(LOG_CMDLINE, _("Running as root, dropping to nobody."))
+        log.warn(LOG_CMDLINE, _("Running as root user; dropping privileges by changing user to nobody."))
         import pwd
         os.seteuid(pwd.getpwnam('nobody')[3])
 
