@@ -1,5 +1,4 @@
-The following changes were made to the original dnspython 1.3.2
-sources:
+The following changes were made to the original dnspython sources:
 
 * moved everything into the linkcheck package
   Changed: *.py
