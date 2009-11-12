@@ -1,5 +1,3 @@
-- [CMDLINE] SF #2770077
-  Titles of bookmarks with umlauts are not printed correctly.
 - [GUI] Add more context menu actions:
   + Show detailed URL properties
   + View source
@@ -8,4 +6,11 @@
   linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
   linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
 - [PROXY] Deprecate the --no-proxy-for option now that $no_proxy is supported.
-- [DOC] update existing documentation in markup
+- [HTTP] Allow sending POST data for login at beginning of check.
+- [DNS] update dnspython to latest version to fix IndexError (see bug report)
+- [HTTP] Do not fall back to GET when no recursion is requested on
+  single pages. This would allow to check pages even if robots.txt
+  disallows to get the page content.
+- [HTTP] There are still errors "Bad status Line" and "Connect reset by peer"
+  See email.
+- [HTTP] try out httest
