@@ -14,6 +14,8 @@ PAGER ?= less
 # build dir for debian package
 BUILDDIR:=/home/calvin/packages/official
 DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
+# options to run the pep8 utility
+PEP8OPTS:=--repeat --ignore=E211,E501 --exclude=dns
 
 
 .PHONY: all
@@ -134,6 +136,10 @@ pyflakes:
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
+
+.PHONY: pep8
+pep8:
+	pep8 $(PEP8OPTS) $(PY_FILES_DIRS)
 
 .PHONY: reindent
 reindent:
