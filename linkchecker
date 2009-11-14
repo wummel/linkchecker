@@ -212,7 +212,8 @@ def ensure_notroot ():
     if os.name != 'posix':
         return
     if os.geteuid() == 0:
-        log.warn(LOG_CMDLINE, _("Running as root user; dropping privileges by changing user to nobody."))
+        log.warn(LOG_CMDLINE, _("Running as root user; "
+                       "dropping privileges by changing user to nobody."))
         import pwd
         os.seteuid(pwd.getpwnam('nobody')[3])
 
@@ -227,7 +228,7 @@ def viewprof ():
     if not os.path.isfile(_profile):
         log.warn(LOG_CMDLINE,
            _("Could not find profiling file %(file)r.") % {"file": _profile})
-        print >>sys.stderr, \
+        print >> sys.stderr, \
                    _("Please run linkchecker with --profile to generate it.")
         sys.exit(1)
     import pstats
@@ -526,6 +527,7 @@ optparser.add_option_group(group)
 ################# auto completion #####################
 if has_optcomplete:
     import optcomplete
+
     def FileCompleter (cwd, line, point, prefix, suffix):
         """Completes by listing all possible files, here or matching
         substrings"""
@@ -566,7 +568,7 @@ def read_stdin_urls ():
     """Read list of URLs, separated by white-space, from stdin."""
     urls = []
     while True:
-        lines = sys.stdin.readlines(8*1024)
+        lines = sys.stdin.readlines(8 * 1024)
         if not lines:
             break
         for line in lines:
@@ -794,8 +796,8 @@ Press Ctrl-C to cancel, RETURN to continue.""") % {"file": _profile}
             try:
                 raw_input(question)
             except KeyboardInterrupt:
-                print >>sys.stderr
-                print >>sys.stderr, _("Canceled.")
+                print >> sys.stderr
+                print >> sys.stderr, _("Canceled.")
                 sys.exit(1)
     else:
         log.warn(LOG_CMDLINE,
