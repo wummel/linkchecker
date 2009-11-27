@@ -27,6 +27,7 @@ import linkcheck.checker
 import linkcheck.configuration
 import linkcheck.director
 import linkcheck.logger
+import linkcheck.i18n
 
 # helper alias
 get_url_from = linkcheck.checker.get_url_from
@@ -91,7 +92,9 @@ class TestLogger (linkcheck.logger.Logger):
         """
         for line in difflib.unified_diff(self.expected, self.result):
             if not isinstance(line, unicode):
-                line = unicode(line, "iso8859-1", "ignore")
+                # The ---, +++ and @@ lines from diff format are ascii encoded.
+                # Make the unicode.
+                line = unicode(line, "ascii", "replace")
             self.diff.append(line)
 
 
@@ -147,11 +150,11 @@ class LinkCheckTest (unittest.TestCase):
     Functional test class with ability to test local files.
     """
 
-    def norm (self, url):
+    def norm (self, url, encoding=None):
         """
         Helper function to norm a url.
         """
-        return linkcheck.url.url_norm(url)[0]
+        return linkcheck.url.url_norm(url, encoding=encoding)[0]
 
     def get_attrs (self, **kwargs):
         """Return current and data directory as dictionary.
@@ -168,11 +171,12 @@ class LinkCheckTest (unittest.TestCase):
         Return contents of file, as list of lines without line endings,
         ignoring empty lines and lines starting with a hash sign (#).
         """
-        resultfile = get_file(filename+".result")
+        resultfile = get_file(u"%s.result" % filename)
         d = {'curdir': get_file_url(os.getcwd()),
              'datadir': get_file_url(get_file()),
             }
-        with codecs.open(resultfile, "r", "iso-8859-15") as f:
+        # all result files are encoded in utf-8
+        with codecs.open(resultfile, "r", "utf-8") as f:
             return [line.rstrip('\r\n') % d for line in f
                     if line.strip() and not line.startswith(u'#')]
 
@@ -189,10 +193,12 @@ class LinkCheckTest (unittest.TestCase):
         linkcheck.director.check_urls(aggregate)
         diff = aggregate.config['logger'].diff
         if diff:
-            sep = unicode(os.linesep)
-            l = [url] + diff
-            l = sep.join(l)
-            self.fail(l.encode("iso8859-1", "ignore"))
+            msg = unicode(os.linesep).join([url] + diff)
+            self.fail_unicode(msg)
+
+    def fail_unicode (self, msg):
+        """Print encoded fail message."""
+        self.fail(msg.encode(linkcheck.i18n.default_encoding, "ignore"))
 
     def direct (self, url, resultlines, parts=None, recursionlevel=0,
                 confargs=None):
@@ -212,7 +218,6 @@ class LinkCheckTest (unittest.TestCase):
         linkcheck.director.check_urls(aggregate)
         diff = aggregate.config['logger'].diff
         if diff:
-            sep = unicode(os.linesep)
             l = [u"Differences found testing %s" % url]
             l.extend(x.rstrip() for x in diff[2:])
-            self.fail(sep.join(l).encode("iso8859-1", "ignore"))
+            self.fail_unicode(unicode(os.linesep).join(l))
