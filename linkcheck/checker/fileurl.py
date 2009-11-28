@@ -89,7 +89,7 @@ class FileUrl (urlbase.UrlBase):
     """
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              aggregate, line, column, name):
+              aggregate, line, column, name, url_encoding):
         """
         Besides the usual initialization the URL is normed according
         to the platform:
@@ -97,7 +97,7 @@ class FileUrl (urlbase.UrlBase):
          - under Windows platform the drive specifier is normed
         """
         super(FileUrl, self).init(base_ref, base_url, parent_url,
-                               recursion_level, aggregate, line, column, name)
+               recursion_level, aggregate, line, column, name, url_encoding)
         if self.base_url is None:
             return
         base_url = self.base_url
@@ -112,12 +112,7 @@ class FileUrl (urlbase.UrlBase):
             base_url = base_url.replace("\\", "/")
             # transform c:/windows into /c|/windows
             base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
-        # norm base url again after changing
-        if self.base_url != base_url:
-            base_url, is_idn = urlbase.url_norm(base_url)
-            if is_idn:
-                pass # XXX warn about idn use
-            self.base_url = unicode(base_url)
+        self.base_url = unicode(base_url)
 
     def build_url (self):
         """

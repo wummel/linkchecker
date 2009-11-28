@@ -25,6 +25,15 @@ import urllib
 
 urlparse.uses_netloc.extend(('ldap', 'irc'))
 
+# The character set to encode non-ASCII characters in a URL. See also
+# http://tools.ietf.org/html/rfc2396#section-2.1
+# Note that the encoding is not really specified, but most browsers
+# encode in UTF-8 when no encoding is specified by the HTTP headers,
+# else they use the page encoding for followed link. See als
+# http://code.google.com/p/browsersec/wiki/Part1#Unicode_in_URLs
+url_encoding = "utf-8"
+
+
 # constants defining url part indexes
 SCHEME = 0
 HOSTNAME = DOMAIN = 1
@@ -230,10 +239,12 @@ def url_fix_mailto_urlsplit (urlparts):
         urlparts[2], urlparts[3] = urlparts[2].split('?', 1)
 
 
-def url_parse_query (query):
+def url_parse_query (query, encoding=None):
     """Parse and re-join the given CGI query."""
     if isinstance(query, unicode):
-        query = query.encode('iso8859-1', 'ignore')
+        if encoding is None:
+            encoding = url_encoding
+        query = query.encode(encoding, 'ignore')
     # if ? is in the query, split it off, seen at msdn.microsoft.com
     if '?' in query:
         query, append = query.split('?', 1)
@@ -254,13 +265,20 @@ def url_parse_query (query):
     return ''.join(l) + append
 
 
-def url_norm (url):
+def url_norm (url, encoding=None):
     """Normalize the given URL which must be quoted. Supports unicode
     hostnames (IDNA encoding) according to RFC 3490.
 
     @return: (normed url, idna flag)
     @rtype: tuple of length two
     """
+    if isinstance(url, unicode):
+        # try to decode the URL to ascii since urllib.unquote()
+        # handles non-unicode strings differently
+        try:
+            url = url.encode('ascii')
+        except UnicodeEncodeError:
+            pass
     urlparts = list(urlparse.urlsplit(url))
     # scheme
     urlparts[0] = urllib.unquote(urlparts[0]).lower()
@@ -270,7 +288,7 @@ def url_norm (url):
     # host (with path or query side effects)
     is_idn = url_fix_host(urlparts)
     # query
-    urlparts[3] = url_parse_query(urlparts[3])
+    urlparts[3] = url_parse_query(urlparts[3], encoding=encoding)
     is_hierarchical = urlparts[0] not in urlparse.non_hierarchical
     if is_hierarchical:
         # URL has a hierarchical path we should norm
@@ -286,10 +304,10 @@ def url_norm (url):
     # anchor
     urlparts[4] = urllib.unquote(urlparts[4])
     # quote parts again
-    urlparts[0] = url_quote_part(urlparts[0]) # scheme
-    urlparts[1] = url_quote_part(urlparts[1], '@:') # host
-    urlparts[2] = url_quote_part(urlparts[2], _nopathquote_chars) # path
-    urlparts[4] = url_quote_part(urlparts[4]) # anchor
+    urlparts[0] = url_quote_part(urlparts[0], encoding=encoding) # scheme
+    urlparts[1] = url_quote_part(urlparts[1], safechars='@:', encoding=encoding) # host
+    urlparts[2] = url_quote_part(urlparts[2], safechars=_nopathquote_chars, encoding=encoding) # path
+    urlparts[4] = url_quote_part(urlparts[4], encoding=encoding) # anchor
     res = urlparse.urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
@@ -362,12 +380,13 @@ def url_quote (url):
     return urlparse.urlunsplit(urlparts)
 
 
-def url_quote_part (s, safechars='/'):
+def url_quote_part (s, safechars='/', encoding=None):
     """Wrap urllib.quote() to support unicode strings. A unicode string
-    is first converted to ISO-8859-1, invalid characters are ignored.
-    After that urllib.quote() is called."""
+    is first converted to UTF-8. After that urllib.quote() is called."""
     if isinstance(s, unicode):
-        s = s.encode("iso-8859-1", "ignore")
+        if encoding is None:
+            encoding = url_encoding
+        s = s.encode(encoding, 'ignore')
     return urllib.quote(s, safechars)
 
 def document_quote (document):

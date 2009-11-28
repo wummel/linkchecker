@@ -53,12 +53,11 @@ def urljoin (parent, url, scheme):
     return urlparse.urljoin(parent, url)
 
 
-def url_norm (url):
-    """
-    Wrapper for url.url_norm() to convert UnicodeError in LinkCheckerError.
-    """
+def url_norm (url, encoding=None):
+    """Wrapper for url.url_norm() to convert UnicodeError in
+    LinkCheckerError."""
     try:
-        return urlutil.url_norm(url)
+        return urlutil.url_norm(url, encoding=encoding)
     except UnicodeError:
         msg = _("URL has unparsable domain name: %(name)s") % \
             {"name": sys.exc_info()[1]}
@@ -69,8 +68,8 @@ class UrlBase (object):
     """An URL with additional information like validity etc."""
 
     def __init__ (self, base_url, recursion_level, aggregate,
-                  parent_url = None, base_ref = None,
-                  line = -1, column = -1, name = u""):
+                  parent_url=None, base_ref=None, line=-1, column=-1,
+                  name=u"", url_encoding=None):
         """
         Initialize check data, and store given variables.
 
@@ -82,15 +81,16 @@ class UrlBase (object):
         @param line: line number of url in parent content
         @param column: column number of url in parent content
         @param name: name of url or empty
+        @param url_encoding: encoding of URL or None
         """
         self.init(base_ref, base_url, parent_url, recursion_level,
-                  aggregate, line, column, name)
+                  aggregate, line, column, name, url_encoding)
         self.reset()
         self.check_syntax()
 
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              aggregate, line, column, name):
+              aggregate, line, column, name, url_encoding):
         """
         Initialize internal data.
         """
@@ -103,6 +103,7 @@ class UrlBase (object):
         self.line = line
         self.column = column
         self.name = name
+        self.encoding = url_encoding
         if self.base_ref:
             assert not urlutil.url_needs_quoting(self.base_ref), \
                    "unquoted base reference URL %r" % self.base_ref
@@ -338,7 +339,7 @@ class UrlBase (object):
         url information self.base_url, self.parent_url and self.base_ref.
         """
         # norm base url - can raise UnicodeError from url.idna_encode()
-        base_url, is_idn = url_norm(self.base_url)
+        base_url, is_idn = url_norm(self.base_url, self.encoding)
         if is_idn:
             self.add_warning(_("""URL %(url)r has a unicode domain name which
                           is not yet widely supported. You should use

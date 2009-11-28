@@ -37,29 +37,20 @@ import linkcheck.url
 #         (Latin capital letter C + Combining cedilla U+0327)
 
 
-def url_norm (url):
-    return linkcheck.url.url_norm(url)[0]
+def url_norm (url, encoding=None):
+    return linkcheck.url.url_norm(url, encoding=encoding)[0]
 
 
 class TestUrl (unittest.TestCase):
     """Test url norming and quoting."""
 
-    def urlnormtest (self, url, nurl):
-        self.assertFalse(linkcheck.url.url_needs_quoting(nurl))
-        nurl1 = url_norm(url)
-        self.assertFalse(linkcheck.url.url_needs_quoting(nurl1))
+    def urlnormtest (self, url, nurl, encoding=None):
+        self.assertFalse(linkcheck.url.url_needs_quoting(nurl),
+            "Result URL %r must not need quoting" % nurl)
+        nurl1 = url_norm(url, encoding=encoding)
+        self.assertFalse(linkcheck.url.url_needs_quoting(nurl1),
+            "Normed URL %r needs quoting" % nurl)
         self.assertEquals(nurl1, nurl)
-        # Test with non-Unicode URLs
-        try:
-            cs = "iso8859-1"
-            url = url.decode(cs)
-            nurl = nurl.decode(cs)
-            nurl1 = url_norm(url)
-            self.assertFalse(linkcheck.url.url_needs_quoting(nurl1))
-            self.assertEquals(nurl1, nurl)
-        except UnicodeEncodeError:
-            # Ignore non-Latin1 URLs
-            pass
 
     def test_pathattack (self):
         # Windows winamp path attack prevention.
@@ -147,7 +138,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
         url = "http://localhost:8001/?quoted=ü"
         nurl = "http://localhost:8001/?quoted=%FC"
-        self.urlnormtest(url, nurl)
+        self.urlnormtest(url, nurl, encoding="iso-8859-1")
         url = "http://host/?a=b/c+d="
         nurl = "http://host/?a=b%2Fc%20d%3D"
         self.urlnormtest(url, nurl)
@@ -367,8 +358,8 @@ class TestUrl (unittest.TestCase):
         url = 'nntp:'
         nurl = 'nntp://'
         self.urlnormtest(url, nurl)
-        url = "news:§$%&/´`§%"
-        nurl = 'news:%A7%24%25%26/%B4%60%A7%25'
+        url = "news:!$%&/()="
+        nurl = 'news:!%24%25%26/()='
         self.urlnormtest(url, nurl)
         url = "news:comp.infosystems.www.servers.unix"
         nurl = url
@@ -410,10 +401,21 @@ class TestUrl (unittest.TestCase):
         nurl = "file://c%7C/a/b.txt"
         self.urlnormtest(url, nurl)
 
+    def test_norm_file_unicode (self):
+        url = u"file:///a/b.txt"
+        nurl = url
+        self.urlnormtest(url, nurl)
+        url = u"file:///a/ä.txt"
+        nurl = u"file:///a/%E4.txt"
+        self.urlnormtest(url, nurl, encoding="iso-8859-1")
+        #url = u"file:///\u041c\u043e\u0448\u043a\u043e\u0432\u0430.bin"
+        #nurl = u"file:///a.bin" # XXX
+        #self.urlnormtest(url, nurl)
+
     def test_norm_invalid (self):
         url = u"äöü?:"
         nurl = u"%E4%F6%FC?:"
-        self.urlnormtest(url, nurl)
+        self.urlnormtest(url, nurl, encoding="iso-8859-1")
 
     def test_fixing (self):
         # Test url fix method.
