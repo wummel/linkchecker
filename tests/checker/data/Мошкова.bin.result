@@ -1,0 +1,7 @@
+url file://%(curdir)s/%(datadir)s/Мошкова.bin
+cache key file://%(curdir)s/%(datadir)s/%%D0%%9C%%D0%%BE%%D1%%88%%D0%%BA%%D0%%BE%%D0%%B2%%D0%%B0.bin
+real url file://%(curdir)s/%(datadir)s/%%D0%%9C%%D0%%BE%%D1%%88%%D0%%BA%%D0%%BE%%D0%%B2%%D0%%B0.bin
+name %(datadir)s/Мошкова.bin
+warning Base URL is not properly normed. Normed URL is file://%(curdir)s/%(datadir)s/%%D0%%9C%%D0%%BE%%D1%%88%%D0%%BA%%D0%%BE%%D0%%B2%%D0%%B0.bin.
+valid
+ 

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2004-2009 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -75,6 +75,10 @@ class TestFile (LinkCheckTest):
         if not os.path.isdir(dirname):
             unzip(dirname+".zip", os.path.dirname(dirname))
         self.file_test("dir")
+
+    def test_unicode_filename (self):
+        # a unicode filename
+        self.file_test(u"Мошкова.bin")
 
     def test_good_file (self):
         url = u"file://%(curdir)s/%(datadir)s/file.txt" % self.get_attrs()
