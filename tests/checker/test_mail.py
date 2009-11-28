@@ -188,7 +188,7 @@ class TestMail (LinkCheckTest):
         if not has_network():
             raise SkipTest("no network available")
         mailto = u"mailto:ölvin@users.sourceforge.net"
-        url = self.norm(mailto)
+        url = self.norm(mailto, encoding="iso-8859-1")
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % mailto,
