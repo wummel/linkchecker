@@ -4,6 +4,8 @@
 The user of the file doesn't have to worry about the compression,
 but random access is not allowed."""
 
+# Copied from Python source; License: Python License
+# Copyright Guido van Rossum <guido@cwi.nl> and others
 # based on Andrew Kuchling's minigzip.py distributed with the zlib module
 
 import struct, sys, time

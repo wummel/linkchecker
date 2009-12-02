@@ -1,4 +1,6 @@
 # -*- coding: iso-8859-1 -*-
+# Copied from Python source; License: Python License
+# Copyright Guido van Rossum <guido@cwi.nl> and others
 """HTTP/1.1 client library
 
 <intro stuff goes here>

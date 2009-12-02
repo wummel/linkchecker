@@ -1,5 +1,6 @@
 # -*- coding: iso-8859-1 -*-
-# Written by Martin v. Löwis <loewis@informatik.hu-berlin.de>
+# License: Python license
+# Copyright by Martin v. Löwis <loewis@informatik.hu-berlin.de>
 # Plural forms support added by alexander smishlajev <alex@tycobka.lv>
 """
 Generate binary message catalog from textual translation description.

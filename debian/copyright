@@ -95,3 +95,11 @@ included in linkcheck/robotparser2.py
 ##  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 ##  SOFTWARE.
 
+linkcheck/gzip2.py, linkcheck/httplib2.py
+-----------------------------------------
+Copied and patched slightly from the Python source.
+License: Python license
+
+linkcheck/mem.py
+----------------
+License: MIT/X11 (BSD like)
