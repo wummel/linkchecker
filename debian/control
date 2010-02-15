@@ -2,7 +2,7 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends: python-dev (>= 2.5), debhelper (>= 7), gettext,
+Build-Depends: python-all-dev (>= 2.5), debhelper (>= 7), gettext,
  cdbs (>= 0.4.43), python-central (>= 0.6), qt4-dev-tools
 XS-Python-Standards-Version: 0.4
 XS-Python-Version: >= 2.5
@@ -41,7 +41,7 @@ Description: check websites and HTML documents for broken links
 Package: linkchecker-gui
 Architecture: all
 XB-Python-Version: ${python:Versions}
-Depends: linkchecker, python-qt4, ${python:Depends}, ${misc:Depends}
+Depends: linkchecker, python-qt4, ${python:Depends}, ${misc:Depends}, libqt4-sql-sqlite
 Description: check websites and HTML documents for broken links (GUI client)
  Provides a graphical interface "linkchecker-gui" to check links of websites
  and HTML documents.

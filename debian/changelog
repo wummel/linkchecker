@@ -2,7 +2,17 @@ linkchecker (5.2-1) unstable; urgency=low
 
   * New upstream release.
 
- -- Bastian Kleineidam <calvin@debian.org>  Tue, 04 Aug 2009 23:15:15 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 15 Feb 2010 23:52:35 +0100
+
+linkchecker (5.1-2) unstable; urgency=low
+
+  * Added dependency on QT sqlite database package for linkchecker-gui
+    (Closes: #568773)
+  * Added build-dependency on python-all-dev instead of just python-dev.
+    (Closes: #569451)
+  * New Standards version 3.8.3
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 15 Feb 2010 23:38:59 +0100
 
 linkchecker (5.1-1) unstable; urgency=low
 
