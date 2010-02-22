@@ -93,7 +93,7 @@ class TestLogger (linkcheck.logger.Logger):
         for line in difflib.unified_diff(self.expected, self.result):
             if not isinstance(line, unicode):
                 # The ---, +++ and @@ lines from diff format are ascii encoded.
-                # Make the unicode.
+                # Make them unicode.
                 line = unicode(line, "ascii", "replace")
             self.diff.append(line)
 
@@ -177,7 +177,7 @@ class LinkCheckTest (unittest.TestCase):
             }
         # all result files are encoded in utf-8
         with codecs.open(resultfile, "r", "utf-8") as f:
-            return [line.rstrip('\r\n') % d for line in f
+            return [line.rstrip(u'\r\n') % d for line in f
                     if line.strip() and not line.startswith(u'#')]
 
     def file_test (self, filename, confargs=None):
@@ -198,7 +198,8 @@ class LinkCheckTest (unittest.TestCase):
 
     def fail_unicode (self, msg):
         """Print encoded fail message."""
-        self.fail(msg.encode(linkcheck.i18n.default_encoding, "ignore"))
+        # XXX self.fail() only supports ascii
+        self.fail(msg.encode("ascii", "replace"))
 
     def direct (self, url, resultlines, parts=None, recursionlevel=0,
                 confargs=None):
