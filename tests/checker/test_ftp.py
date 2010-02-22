@@ -17,8 +17,7 @@
 """
 Test ftp checking.
 """
-from tests import has_network
-from nose import SkipTest
+from tests import need_network
 from . import LinkCheckTest
 
 
@@ -27,10 +26,9 @@ class TestFtp (LinkCheckTest):
     Test ftp: link checking.
     """
 
+    @need_network
     def test_ftp (self):
         # ftp two slashes
-        if not has_network():
-            raise SkipTest("no network available")
         url = u"ftp://ftp.de.debian.org/"
         resultlines = [
             u"url %s" % url,
@@ -40,10 +38,9 @@ class TestFtp (LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
+    @need_network
     def test_ftp_slashes (self):
         # ftp one slash
-        if not has_network():
-            raise SkipTest("no network available")
         url = u"ftp:/ftp.de.debian.org/"
         nurl = self.norm(url)
         resultlines = [
@@ -76,10 +73,9 @@ class TestFtp (LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
+    @need_network
     def test_ftp_many_slashes (self):
         # ftp two dir slashes
-        if not has_network():
-            raise SkipTest("no network available")
         url = u"ftp://ftp.de.debian.org//debian/"
         nurl = self.norm(url)
         resultlines = [

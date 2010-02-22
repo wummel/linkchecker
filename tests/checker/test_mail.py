@@ -17,8 +17,7 @@
 """
 Test mail checking.
 """
-from tests import has_network
-from nose import SkipTest
+from tests import need_network
 from . import LinkCheckTest
 
 
@@ -28,10 +27,9 @@ class TestMail (LinkCheckTest):
     Test mailto: link checking.
     """
 
+    @need_network
     def test_good_mail (self):
         # some good mailto addrs
-        if not has_network():
-            raise SkipTest("no network available")
         url = self.norm(u"mailto:Dude <calvin@users.sourceforge.net> , "\
                 "Killer <calvin@users.sourceforge.net>?subject=bla")
         resultlines = [
@@ -95,10 +93,9 @@ class TestMail (LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
+    @need_network
     def test_warn_mail (self):
         # some mailto addrs with warnings
-        if not has_network():
-            raise SkipTest("no network available")
         # contains non-quoted characters
         url = u"mailto:calvin@users.sourceforge.net?subject=äöü"
         qurl = self.norm(url)
@@ -174,19 +171,17 @@ class TestMail (LinkCheckTest):
         self.mail_error(u"mailto:Bastian Kleineidam <calvin@users.sourceforge.net?foo=bar>",
             cache_key=u"mailto:calvin@users.sourceforge.net?foo=bar")
 
+    @need_network
     def test_valid_mail (self):
         # valid mail addresses
-        if not has_network():
-            raise SkipTest("no network available")
         for char in u"!#$&'*+-/=^_`.{|}~":
             addr = u'abc%sdef@sourceforge.net' % char
             self.mail_valid(u"mailto:%s" % addr,
                 warning=u"Unverified address: 550 <%s> Unrouteable address." % addr,
                 cache_key=u"mailto:%s" % addr)
 
+    @need_network
     def test_unicode_mail (self):
-        if not has_network():
-            raise SkipTest("no network available")
         mailto = u"mailto:ölvin@users.sourceforge.net"
         url = self.norm(mailto, encoding="iso-8859-1")
         resultlines = [

@@ -22,8 +22,7 @@ Test gettext .po files.
 import unittest
 import os
 import glob
-from tests import has_msgfmt, has_posix
-from nose import SkipTest
+from tests import need_msgfmt, need_posix
 
 
 pofiles = None
@@ -39,10 +38,10 @@ def get_pofiles ():
 class TestPo (unittest.TestCase):
     """Test .po file syntax."""
 
+    @need_posix
+    @need_msgfmt
     def test_pos (self):
         """Test .po files syntax."""
-        if not (has_msgfmt() and has_posix()):
-            raise SkipTest("no msgfmt and POSIX available")
         for f in get_pofiles():
             ret = os.system("msgfmt -c -o - %s > /dev/null" % f)
             self.assertEquals(ret, 0, msg="PO-file syntax error in %r" % f)

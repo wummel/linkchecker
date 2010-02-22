@@ -16,15 +16,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 import unittest
 import sys
-from tests import has_pyqt
-from nose import SkipTest
+from tests import need_pyqt
 
 class TestGui (unittest.TestCase):
     """Test OMT GUI client."""
 
+    @need_pyqt
     def test_gui (self):
-        if not has_pyqt():
-            raise SkipTest("no PyQt available")
         from PyQt4 import QtCore, QtGui, QtTest
         from linkcheck.gui import LinkCheckerMain
         app = QtGui.QApplication(sys.argv)

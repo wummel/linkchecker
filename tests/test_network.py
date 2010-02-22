@@ -19,21 +19,18 @@ Test network functions.
 """
 
 import unittest
-from tests import has_posix
-from nose import SkipTest
+from tests import need_posix
 import linkcheck.network
 
 
 class TestNetwork (unittest.TestCase):
     """Test network functions."""
 
+    @need_posix
     def test_ifreq_size (self):
-        if not has_posix():
-            raise SkipTest("no POSIX system")
         self.assertTrue(linkcheck.network.ifreq_size() > 0)
 
+    @need_posix
     def test_interfaces (self):
-        if not has_posix():
-            raise SkipTest("no POSIX system")
         ifc = linkcheck.network.IfConfig()
         ifc.getInterfaceList()

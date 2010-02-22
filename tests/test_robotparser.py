@@ -19,8 +19,7 @@ Test robots.txt parsing.
 """
 
 import unittest
-from tests import has_network
-from nose import SkipTest
+from tests import need_network
 import linkcheck.robotparser2
 
 
@@ -46,22 +45,20 @@ class TestRobotParser (unittest.TestCase):
         if a != b:
             self.fail("%s != %s (%s)" % (a, b, ac))
 
+    @need_network
     def test_nonexisting_robots (self):
         """
         Test access of a non-existing robots.txt file.
         """
-        if not has_network():
-            raise SkipTest("no network available")
         # robots.txt that does not exist
         self.rp.set_url('http://www.lycos.com/robots.txt')
         self.rp.read()
         self.check(self.rp.can_fetch('Mozilla',
                                      'http://www.lycos.com/search'), True)
 
+    @need_network
     def test_password_robots (self):
         # whole site is password-protected.
-        if not has_network():
-            raise SkipTest("no network available")
         self.rp.set_url('http://mueblesmoraleda.com/robots.txt')
         self.rp.read()
         self.check(self.rp.can_fetch("*",

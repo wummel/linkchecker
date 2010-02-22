@@ -17,8 +17,7 @@
 """
 Test news checking.
 """
-from tests import has_network
-from nose import SkipTest
+from tests import need_network
 from . import LinkCheckTest
 
 
@@ -27,9 +26,8 @@ class TestHttps (LinkCheckTest):
     Test https: link checking.
     """
 
+    @need_network
     def test_https (self):
-        if not has_network():
-            raise SkipTest("no network available")
         url = u"https://www.amazon.de/"
         resultlines = [
             u"url %s" % url,

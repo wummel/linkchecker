@@ -18,24 +18,21 @@
 Test virus filter.
 """
 import unittest
-from tests import has_clamav
-from nose import SkipTest
+from tests import need_clamav
 from linkcheck import clamav
 
 
 class TestClamav (unittest.TestCase):
 
+    @need_clamav
     def testClean (self):
-        if not has_clamav():
-            raise SkipTest("no ClamAV available")
         data = ""
         infected, errors = clamav.scan(data)
         self.assertFalse(infected)
         self.assertFalse(errors)
 
+    @need_clamav
     def testInfected (self):
-        if not has_clamav():
-            raise SkipTest("no ClamAV available")
         data = '<object data="&#109;s-its:mhtml:file://'+ \
                'C:\\foo.mht!${PATH}/' + \
                'EXPLOIT.CHM::' + \

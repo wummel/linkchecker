@@ -61,6 +61,18 @@ def _run (cmd):
         return -1
 
 
+def _need_func (testfunc, name):
+    """Decorator skipping test if given testfunc fails."""
+    def check_func (func):
+        def newfunc (*args, **kwargs):
+            if not testfunc():
+                raise SkipTest("%s is not available" % name)
+            return func(*args, **kwargs)
+        newfunc.func_name = func.func_name
+        return newfunc
+    return check_func
+
+
 @memoized
 def has_network ():
     """Test if network is up."""
@@ -73,17 +85,23 @@ def has_network ():
         pass
     return False
 
+need_network = _need_func(has_network, "network")
+
 
 @memoized
 def has_msgfmt ():
     """Test if msgfmt is available."""
     return _run(["msgfmt", "-V"]) == 0
 
+need_msgfmt = _need_func(has_msgfmt, "msgfmt")
+
 
 @memoized
 def has_posix ():
     """Test if this is a POSIX system."""
     return os.name == "posix"
+
+need_posix = _need_func(has_posix, "POSIX system")
 
 
 @memoized
@@ -101,6 +119,8 @@ def has_clamav ():
         pass
     return False
 
+need_clamav = _need_func(has_clamav, "ClamAV")
+
 
 @memoized
 def has_proxy ():
@@ -114,6 +134,21 @@ def has_proxy ():
         pass
     return False
 
+need_proxy = _need_func(has_proxy, "proxy")
+
+
+@memoized
+def has_newsserver ():
+    try:
+        import nntplib
+        nntp = nntplib.NNTP(NNTP_SERVER, usenetrc=False)
+        nntp.close()
+        return True
+    except:
+        return False
+
+need_newsserver = _need_func(has_newsserver, "newsserver")
+
 
 @memoized
 def has_pyqt ():
@@ -125,6 +160,7 @@ def has_pyqt ():
         pass
     return False
 
+need_pyqt = _need_func(has_pyqt, "PyQT")
 
 @contextmanager
 def _limit_time (seconds):
