@@ -14,3 +14,10 @@
 - [HTTP] There are still errors "Bad status Line" and "Connect reset by peer"
   See email.
 - [HTTP] try out httest
+- [CHECKING] Parse Word files for hyperlinks (needs win32com)
+  app = CreateObject("Word.Application")
+  doc = app.Documents.Open("c:\test.doc")
+  for link in doc.Hyperlinks:
+    url = link.Address
+    name = link.TextToDisplay
+- [FTP] Use local testserver for FTP tests
