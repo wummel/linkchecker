@@ -121,11 +121,11 @@ real url http://localhost:8001/?d=directory&p=page1
 name should not be cached
 valid
 
-url http://localhost:8001/?quoted=ü
-cache key http://localhost:8001/?quoted=%%FC
-real url http://localhost:8001/?quoted=%%FC
+url http://localhost:8001/?quoted=Ã¼
+cache key http://localhost:8001/?quoted=%%C3%%BC
+real url http://localhost:8001/?quoted=%%C3%%BC
 name html entities
-warning Base URL is not properly normed. Normed URL is http://localhost:8001/?quoted=%%FC.
+warning Base URL is not properly normed. Normed URL is http://localhost:8001/?quoted=%%C3%%BC.
 valid
 
 url clsid:12345

@@ -31,9 +31,10 @@ class TestError (LinkCheckTest):
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %(nurl)s" % attrs,
+            u"url file://%(curdir)s/%(url)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -44,10 +45,11 @@ class TestError (LinkCheckTest):
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %(nurl)s" % attrs,
+            u"url file://%(curdir)s/%(url)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
+            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -55,10 +57,11 @@ class TestError (LinkCheckTest):
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %(nurl)s" % attrs,
+            u"url file://%(curdir)s/%(url)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
+            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -92,10 +95,11 @@ class TestError (LinkCheckTest):
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %(nurl)s" % attrs,
+            u"url file://%(curdir)s/%(url)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
+            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -106,10 +110,11 @@ class TestError (LinkCheckTest):
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %(nurl)s" % attrs,
+            u"url file://%(curdir)s/%(url)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
+            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -120,10 +125,11 @@ class TestError (LinkCheckTest):
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
-            u"url %(nurl)s" % attrs,
+            u"url file://%(curdir)s/%(url)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
+            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)

@@ -279,6 +279,9 @@ def url_norm (url, encoding=None):
             url = url.encode('ascii')
         except UnicodeEncodeError:
             pass
+        encode_unicode = True
+    else:
+        encode_unicode = False
     urlparts = list(urlparse.urlsplit(url))
     # scheme
     urlparts[0] = urllib.unquote(urlparts[0]).lower()
@@ -312,7 +315,7 @@ def url_norm (url, encoding=None):
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
         res += '#'
-    if isinstance(url, unicode):
+    if encode_unicode:
         res = unicode(res)
     return (res, is_idn)
 
