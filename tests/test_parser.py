@@ -252,7 +252,7 @@ class TestParser (unittest.TestCase):
             for c in _in:
                 self.htmlparser.feed(c)
                 self.htmlparser2.feed(c)
-            self.assertEquals(out.getvalue(), out2.getvalue())
+            self.assertEqual(out.getvalue(), out2.getvalue())
 
     def test_flush (self):
         """

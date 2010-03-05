@@ -38,8 +38,8 @@ class TestRobotsTxt (unittest.TestCase):
             "User-agent: *",
         ]
         self.rp.parse(lines)
-        self.assert_(self.rp.mtime() > 0)
-        self.assertEquals(str(self.rp), "\n".join(lines))
+        self.assertTrue(self.rp.mtime() > 0)
+        self.assertEqual(str(self.rp), "\n".join(lines))
 
     def test_robotstxt2 (self):
         lines = [
@@ -47,7 +47,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Disallow: /search",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines))
+        self.assertEqual(str(self.rp), "\n".join(lines))
 
     def test_robotstxt3 (self):
         lines = [
@@ -62,7 +62,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Bla: bla",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "")
+        self.assertEqual(str(self.rp), "")
 
     def test_robotstxt4 (self):
         lines = [
@@ -73,7 +73,7 @@ class TestRobotsTxt (unittest.TestCase):
         ]
         self.rp.parse(lines)
         lines.insert(2, "")
-        self.assertEquals(str(self.rp), "\n".join(lines))
+        self.assertEqual(str(self.rp), "\n".join(lines))
 
     def test_robotstxt5 (self):
         lines = [
@@ -88,7 +88,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Allow: /search",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines2))
+        self.assertEqual(str(self.rp), "\n".join(lines2))
 
     def test_robotstxt6 (self):
         lines = [
@@ -96,7 +96,7 @@ class TestRobotsTxt (unittest.TestCase):
             "",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "")
+        self.assertEqual(str(self.rp), "")
 
     def test_robotstxt7 (self):
         lines = [
@@ -107,7 +107,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Disallow: /",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines))
+        self.assertEqual(str(self.rp), "\n".join(lines))
         self.assertTrue(self.rp.can_fetch("Bla", "/"))
 
     def test_crawldelay (self):
@@ -122,10 +122,10 @@ class TestRobotsTxt (unittest.TestCase):
             "Crawl-delay: 1",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines))
-        self.assertEquals(self.rp.get_crawldelay("Blubb"), 10)
-        self.assertEquals(self.rp.get_crawldelay("Hulla"), 5)
-        self.assertEquals(self.rp.get_crawldelay("Bulla"), 1)
+        self.assertEqual(str(self.rp), "\n".join(lines))
+        self.assertEqual(self.rp.get_crawldelay("Blubb"), 10)
+        self.assertEqual(self.rp.get_crawldelay("Hulla"), 5)
+        self.assertEqual(self.rp.get_crawldelay("Bulla"), 1)
 
     def test_crawldelay2 (self):
         lines = [
@@ -134,7 +134,7 @@ class TestRobotsTxt (unittest.TestCase):
         ]
         self.rp.parse(lines)
         del lines[1]
-        self.assertEquals(str(self.rp), "\n".join(lines))
+        self.assertEqual(str(self.rp), "\n".join(lines))
 
     def check_urls (self, good, bad, agent="test_robotparser"):
         for url in good:
@@ -165,7 +165,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Disallow: /foo.html",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines2))
+        self.assertEqual(str(self.rp), "\n".join(lines2))
         good = ['/','/test.html']
         bad = ['/cyberworld/map/index.html','/tmp/xxx','/foo.html']
         self.check_urls(good, bad)
@@ -190,7 +190,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Disallow: /cyberworld/map/",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines2))
+        self.assertEqual(str(self.rp), "\n".join(lines2))
         good = ['/','/test.html',('cybermapper','/cyberworld/map/index.html')]
         bad = ['/cyberworld/map/index.html']
         self.check_urls(good, bad)
@@ -206,7 +206,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Disallow: /",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines2))
+        self.assertEqual(str(self.rp), "\n".join(lines2))
         good = []
         bad = ['/cyberworld/map/index.html','/','/tmp/']
         self.check_urls(good, bad)
@@ -227,7 +227,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Disallow: /%7Ejoe/index.html",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines2))
+        self.assertEqual(str(self.rp), "\n".join(lines2))
         good = []
         bad = ['/tmp','/tmp.html','/tmp/a.html',
                '/a%3cd.html','/a%3Cd.html','/a%2fb.html',
@@ -252,7 +252,7 @@ class TestRobotsTxt (unittest.TestCase):
             "Disallow: /%7Ejoe/index.html",
         ]
         self.rp.parse(lines)
-        self.assertEquals(str(self.rp), "\n".join(lines2))
+        self.assertEqual(str(self.rp), "\n".join(lines2))
         good = ['/tmp',] # XFAIL: '/a%2fb.html'
         bad = ['/tmp/','/tmp/a.html',
                '/a%3cd.html','/a%3Cd.html',"/a/b.html",

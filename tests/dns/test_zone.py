@@ -258,26 +258,26 @@ class TestZone (unittest.TestCase):
         rdataset = linkcheck.dns.rdataset.from_text('in', 'ns', 300, 'ns3', 'ns4')
         z.replace_rdataset('@', rdataset)
         rds = z.get_rdataset('@', 'ns')
-        self.assert_(rds is rdataset)
+        self.assertTrue(rds is rdataset)
 
     def testReplaceRdataset2(self):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
         rdataset = linkcheck.dns.rdataset.from_text('in', 'txt', 300, '"foo"')
         z.replace_rdataset('@', rdataset)
         rds = z.get_rdataset('@', 'txt')
-        self.assert_(rds is rdataset)
+        self.assertTrue(rds is rdataset)
 
     def testDeleteRdataset1(self):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
         z.delete_rdataset('@', 'ns')
         rds = z.get_rdataset('@', 'ns')
-        self.assert_(rds is None)
+        self.assertTrue(rds is None)
 
     def testDeleteRdataset2(self):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
         z.delete_rdataset('ns1', 'a')
         node = z.get_node('ns1')
-        self.assert_(node is None)
+        self.assertTrue(node is None)
 
     def testNodeFindRdataset1(self):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
@@ -331,7 +331,7 @@ class TestZone (unittest.TestCase):
         z = linkcheck.dns.zone.from_text(example_text, 'example.', relativize=True)
         ns = [n for n, r in z.iterate_rdatasets()]
         ns.sort()
-        self.failUnless(ns == [linkcheck.dns.name.from_text('@', None),
+        self.assertTrue(ns == [linkcheck.dns.name.from_text('@', None),
                                linkcheck.dns.name.from_text('@', None),
                                linkcheck.dns.name.from_text('bar.foo', None),
                                linkcheck.dns.name.from_text('ns1', None),

@@ -39,5 +39,5 @@ class TestClamav (unittest.TestCase):
                '/exploit.htm">'
         infected, errors = clamav.scan(data)
         msg = 'stream: Exploit.HTML.MHTRedir.2n FOUND\n'
-        self.assert_(msg in infected)
+        self.assertTrue(msg in infected)
         self.assertFalse(errors)

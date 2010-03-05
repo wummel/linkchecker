@@ -33,25 +33,25 @@ class TestStrFormat (unittest.TestCase):
         Test quote stripping.
         """
         u = linkcheck.strformat.unquote
-        self.assertEquals(u(""), "")
-        self.assertEquals(u(None), None)
-        self.assertEquals(u("'"), "'")
-        self.assertEquals(u("\""), "\"")
-        self.assertEquals(u("\"\""), "")
-        self.assertEquals(u("''"), "")
-        self.assertEquals(u("'a'"), "a")
-        self.assertEquals(u("'a\"'"), "a\"")
-        self.assertEquals(u("'\"a'"), "\"a")
-        self.assertEquals(u('"a\'"'), 'a\'')
-        self.assertEquals(u('"\'a"'), '\'a')
-        self.assertEquals(u("'a'", matching=True), "a")
-        self.assertEquals(u('"a"', matching=True), "a")
+        self.assertEqual(u(""), "")
+        self.assertEqual(u(None), None)
+        self.assertEqual(u("'"), "'")
+        self.assertEqual(u("\""), "\"")
+        self.assertEqual(u("\"\""), "")
+        self.assertEqual(u("''"), "")
+        self.assertEqual(u("'a'"), "a")
+        self.assertEqual(u("'a\"'"), "a\"")
+        self.assertEqual(u("'\"a'"), "\"a")
+        self.assertEqual(u('"a\'"'), 'a\'')
+        self.assertEqual(u('"\'a"'), '\'a')
+        self.assertEqual(u("'a'", matching=True), "a")
+        self.assertEqual(u('"a"', matching=True), "a")
         # even mis-matching quotes should be removed...
-        self.assertEquals(u("'a\""), "a")
-        self.assertEquals(u("\"a'"), "a")
+        self.assertEqual(u("'a\""), "a")
+        self.assertEqual(u("\"a'"), "a")
         # ...but not when matching is True
-        self.assertEquals(u("'a\"", matching=True), "'a\"")
-        self.assertEquals(u("\"a'", matching=True), "\"a'")
+        self.assertEqual(u("'a\"", matching=True), "'a\"")
+        self.assertEqual(u("\"a'", matching=True), "\"a'")
 
     def test_wrap (self):
         """
@@ -60,20 +60,20 @@ class TestStrFormat (unittest.TestCase):
         wrap = linkcheck.strformat.wrap
         s = "11%(sep)s22%(sep)s33%(sep)s44%(sep)s55" % {'sep': os.linesep}
         # testing width <= 0
-        self.assertEquals(wrap(s, -1), s)
-        self.assertEquals(wrap(s, 0), s)
+        self.assertEqual(wrap(s, -1), s)
+        self.assertEqual(wrap(s, 0), s)
         l = len(os.linesep)
         gap = " "*l
         s2 = "11%(gap)s22%(sep)s33%(gap)s44%(sep)s55" % \
              {'sep': os.linesep, 'gap': gap}
         # splitting lines
-        self.assertEquals(wrap(s2, 2), s)
+        self.assertEqual(wrap(s2, 2), s)
         # combining lines
-        self.assertEquals(wrap(s, 4+l), s2)
+        self.assertEqual(wrap(s, 4+l), s2)
         # misc
-        self.assertEquals(wrap(s, -1), s)
-        self.assertEquals(wrap(s, 0), s)
-        self.assertEquals(wrap(None, 10), None)
+        self.assertEqual(wrap(s, -1), s)
+        self.assertEqual(wrap(s, 0), s)
+        self.assertEqual(wrap(None, 10), None)
         self.assertFalse(linkcheck.strformat.get_paragraphs(None))
 
 
@@ -81,33 +81,33 @@ class TestStrFormat (unittest.TestCase):
         """
         Test markup removing.
         """
-        self.assertEquals(linkcheck.strformat.remove_markup("<a>"), "")
-        self.assertEquals(linkcheck.strformat.remove_markup("<>"), "")
-        self.assertEquals(linkcheck.strformat.remove_markup("<<>"), "")
-        self.assertEquals(linkcheck.strformat.remove_markup("a < b"), "a < b")
+        self.assertEqual(linkcheck.strformat.remove_markup("<a>"), "")
+        self.assertEqual(linkcheck.strformat.remove_markup("<>"), "")
+        self.assertEqual(linkcheck.strformat.remove_markup("<<>"), "")
+        self.assertEqual(linkcheck.strformat.remove_markup("a < b"), "a < b")
 
     def test_strsize (self):
         """
         Test byte size strings.
         """
         self.assertRaises(ValueError, linkcheck.strformat.strsize, -1)
-        self.assertEquals(linkcheck.strformat.strsize(0), "0B")
-        self.assertEquals(linkcheck.strformat.strsize(1), "1B")
-        self.assertEquals(linkcheck.strformat.strsize(2), "2B")
-        self.assertEquals(linkcheck.strformat.strsize(1023), "1023B")
-        self.assertEquals(linkcheck.strformat.strsize(1024), "1KB")
-        self.assertEquals(linkcheck.strformat.strsize(1024*25), "25.00KB")
-        self.assertEquals(linkcheck.strformat.strsize(1024*1024), "1.00MB")
-        self.assertEquals(linkcheck.strformat.strsize(1024*1024*11), "11.0MB")
-        self.assertEquals(linkcheck.strformat.strsize(1024*1024*1024),
+        self.assertEqual(linkcheck.strformat.strsize(0), "0B")
+        self.assertEqual(linkcheck.strformat.strsize(1), "1B")
+        self.assertEqual(linkcheck.strformat.strsize(2), "2B")
+        self.assertEqual(linkcheck.strformat.strsize(1023), "1023B")
+        self.assertEqual(linkcheck.strformat.strsize(1024), "1KB")
+        self.assertEqual(linkcheck.strformat.strsize(1024*25), "25.00KB")
+        self.assertEqual(linkcheck.strformat.strsize(1024*1024), "1.00MB")
+        self.assertEqual(linkcheck.strformat.strsize(1024*1024*11), "11.0MB")
+        self.assertEqual(linkcheck.strformat.strsize(1024*1024*1024),
             "1.00GB")
-        self.assertEquals(linkcheck.strformat.strsize(1024*1024*1024*14),
+        self.assertEqual(linkcheck.strformat.strsize(1024*1024*1024*14),
             "14.0GB")
 
     def test_is_ascii (self):
-        self.assert_(linkcheck.strformat.is_ascii("abcd./"))
-        self.assert_(not linkcheck.strformat.is_ascii("ä"))
-        self.assert_(not linkcheck.strformat.is_ascii(u"ä"))
+        self.assertTrue(linkcheck.strformat.is_ascii("abcd./"))
+        self.assertTrue(not linkcheck.strformat.is_ascii("ä"))
+        self.assertTrue(not linkcheck.strformat.is_ascii(u"ä"))
 
     def test_indent (self):
         s = "bla"
@@ -166,7 +166,7 @@ class TestStrFormat (unittest.TestCase):
 
     def test_encoding (self):
         is_encoding = linkcheck.strformat.is_encoding
-        self.assert_(is_encoding('ascii'))
+        self.assertTrue(is_encoding('ascii'))
         self.assertFalse(is_encoding('hulla'))
 
     def test_unicode_safe (self):

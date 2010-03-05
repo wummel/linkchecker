@@ -102,35 +102,35 @@ class TestName (unittest.TestCase):
         self.assertRaises(TypeError, bad)
 
     def testAbs1(self):
-        self.assert_(linkcheck.dns.name.root.is_absolute())
+        self.assertTrue(linkcheck.dns.name.root.is_absolute())
 
     def testAbs2(self):
-        self.assert_(not linkcheck.dns.name.empty.is_absolute())
+        self.assertTrue(not linkcheck.dns.name.empty.is_absolute())
 
     def testAbs3(self):
-        self.assert_(self.origin.is_absolute())
+        self.assertTrue(self.origin.is_absolute())
 
     def testAbs4(self):
         n = linkcheck.dns.name.from_text('foo', origin=None)
-        self.assert_(not n.is_absolute())
+        self.assertTrue(not n.is_absolute())
 
     def testWild1(self):
         n = linkcheck.dns.name.from_text('*.foo', origin=None)
-        self.assert_(n.is_wild())
+        self.assertTrue(n.is_wild())
 
     def testWild2(self):
         n = linkcheck.dns.name.from_text('*a.foo', origin=None)
-        self.assert_(not n.is_wild())
+        self.assertTrue(not n.is_wild())
 
     def testWild3(self):
         n = linkcheck.dns.name.from_text('a.*.foo', origin=None)
-        self.assert_(not n.is_wild())
+        self.assertTrue(not n.is_wild())
 
     def testWild4(self):
-        self.assert_(not linkcheck.dns.name.root.is_wild())
+        self.assertTrue(not linkcheck.dns.name.root.is_wild())
 
     def testWild5(self):
-        self.assert_(not linkcheck.dns.name.empty.is_wild())
+        self.assertTrue(not linkcheck.dns.name.empty.is_wild())
 
     def testHash1(self):
         n1 = linkcheck.dns.name.from_text('fOo.COM')
@@ -140,60 +140,60 @@ class TestName (unittest.TestCase):
     def testCompare1(self):
         n1 = linkcheck.dns.name.from_text('a')
         n2 = linkcheck.dns.name.from_text('b')
-        self.assert_(n1 < n2)
-        self.assert_(n2 > n1)
+        self.assertTrue(n1 < n2)
+        self.assertTrue(n2 > n1)
 
     def testCompare2(self):
         n1 = linkcheck.dns.name.from_text('')
         n2 = linkcheck.dns.name.from_text('b')
-        self.assert_(n1 < n2)
-        self.assert_(n2 > n1)
+        self.assertTrue(n1 < n2)
+        self.assertTrue(n2 > n1)
 
     def testCompare3(self):
-        self.assert_(linkcheck.dns.name.empty < linkcheck.dns.name.root)
-        self.assert_(linkcheck.dns.name.root > linkcheck.dns.name.empty)
+        self.assertTrue(linkcheck.dns.name.empty < linkcheck.dns.name.root)
+        self.assertTrue(linkcheck.dns.name.root > linkcheck.dns.name.empty)
 
     def testCompare4(self):
         self.assertNotEqual(linkcheck.dns.name.root, 1)
 
     def testCompare5(self):
-        self.assert_(linkcheck.dns.name.root < 1 or linkcheck.dns.name.root > 1)
+        self.assertTrue(linkcheck.dns.name.root < 1 or linkcheck.dns.name.root > 1)
 
     def testSubdomain1(self):
-        self.assert_(not linkcheck.dns.name.empty.is_subdomain(linkcheck.dns.name.root))
+        self.assertTrue(not linkcheck.dns.name.empty.is_subdomain(linkcheck.dns.name.root))
 
     def testSubdomain2(self):
-        self.assert_(not linkcheck.dns.name.root.is_subdomain(linkcheck.dns.name.empty))
+        self.assertTrue(not linkcheck.dns.name.root.is_subdomain(linkcheck.dns.name.empty))
 
     def testSubdomain3(self):
         n = linkcheck.dns.name.from_text('foo', origin=self.origin)
-        self.assert_(n.is_subdomain(self.origin))
+        self.assertTrue(n.is_subdomain(self.origin))
 
     def testSubdomain4(self):
         n = linkcheck.dns.name.from_text('foo', origin=self.origin)
-        self.assert_(n.is_subdomain(linkcheck.dns.name.root))
+        self.assertTrue(n.is_subdomain(linkcheck.dns.name.root))
 
     def testSubdomain5(self):
         n = linkcheck.dns.name.from_text('foo', origin=self.origin)
-        self.assert_(n.is_subdomain(n))
+        self.assertTrue(n.is_subdomain(n))
 
     def testSuperdomain1(self):
-        self.assert_(not linkcheck.dns.name.empty.is_superdomain(linkcheck.dns.name.root))
+        self.assertTrue(not linkcheck.dns.name.empty.is_superdomain(linkcheck.dns.name.root))
 
     def testSuperdomain2(self):
-        self.assert_(not linkcheck.dns.name.root.is_superdomain(linkcheck.dns.name.empty))
+        self.assertTrue(not linkcheck.dns.name.root.is_superdomain(linkcheck.dns.name.empty))
 
     def testSuperdomain3(self):
         n = linkcheck.dns.name.from_text('foo', origin=self.origin)
-        self.assert_(self.origin.is_superdomain(n))
+        self.assertTrue(self.origin.is_superdomain(n))
 
     def testSuperdomain4(self):
         n = linkcheck.dns.name.from_text('foo', origin=self.origin)
-        self.assert_(linkcheck.dns.name.root.is_superdomain(n))
+        self.assertTrue(linkcheck.dns.name.root.is_superdomain(n))
 
     def testSuperdomain5(self):
         n = linkcheck.dns.name.from_text('foo', origin=self.origin)
-        self.assert_(n.is_superdomain(n))
+        self.assertTrue(n.is_superdomain(n))
 
     def testCanonicalize1(self):
         n = linkcheck.dns.name.from_text('FOO.bar', origin=self.origin)
@@ -265,11 +265,11 @@ class TestName (unittest.TestCase):
 
     def testEmptyLabel3(self):
         n = linkcheck.dns.name.Name(['b', ''])
-        self.assert_(n)
+        self.assertTrue(n)
 
     def testLongLabel(self):
         n = linkcheck.dns.name.Name(['a' * 63])
-        self.assert_(n)
+        self.assertTrue(n)
 
     def testLabelTooLong(self):
         def bad():
@@ -278,7 +278,7 @@ class TestName (unittest.TestCase):
 
     def testLongName(self):
         n = linkcheck.dns.name.Name(['a' * 63, 'a' * 63, 'a' * 63, 'a' * 62])
-        self.assert_(n)
+        self.assertTrue(n)
 
     def testNameTooLong(self):
         def bad():
@@ -616,13 +616,13 @@ class TestName (unittest.TestCase):
         def bad():
             n = linkcheck.dns.name.root
             n.parent()
-        self.failUnlessRaises(linkcheck.dns.name.NoParent, bad)
+        self.assertRaises(linkcheck.dns.name.NoParent, bad)
 
     def testParent4(self):
         def bad():
             n = linkcheck.dns.name.empty
             n.parent()
-        self.failUnlessRaises(linkcheck.dns.name.NoParent, bad)
+        self.assertRaises(linkcheck.dns.name.NoParent, bad)
 
     def testFromUnicode1(self):
         n = linkcheck.dns.name.from_text(u'foo.bar')
@@ -672,12 +672,12 @@ class TestName (unittest.TestCase):
     def testBadReverseIPv4(self):
         def bad():
             n = linkcheck.dns.reversename.from_address('127.0.foo.1')
-        self.failUnlessRaises(socket.error, bad)
+        self.assertRaises(socket.error, bad)
 
     def testBadReverseIPv6(self):
         def bad():
             n = linkcheck.dns.reversename.from_address('::1::1')
-        self.failUnlessRaises(socket.error, bad)
+        self.assertRaises(socket.error, bad)
 
     def testForwardIPv4(self):
         n = linkcheck.dns.name.from_text('1.0.0.127.in-addr.arpa.')

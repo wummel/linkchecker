@@ -45,4 +45,4 @@ class TestUrlBuild (unittest.TestCase):
         o = linkcheck.checker.httpurl.HttpUrl(base_url, recursion_level,
                aggregate, parent_url=parent_url)
         o.build_url()
-        self.assertEquals(o.url, 'http://')
+        self.assertEqual(o.url, 'http://')

@@ -50,14 +50,14 @@ class TestUrl (unittest.TestCase):
         nurl1 = url_norm(url, encoding=encoding)
         self.assertFalse(linkcheck.url.url_needs_quoting(nurl1),
             "Normed URL %r needs quoting" % nurl)
-        self.assertEquals(nurl1, nurl)
+        self.assertEqual(nurl1, nurl)
 
     def test_pathattack (self):
         # Windows winamp path attack prevention.
         url = "http://server/..%5c..%5c..%5c..%5c..%5c..%5c..%5c.."\
               "%5ccskin.zip"
         nurl = "http://server/cskin.zip"
-        self.assertEquals(linkcheck.url.url_quote(url_norm(url)), nurl)
+        self.assertEqual(linkcheck.url.url_quote(url_norm(url)), nurl)
 
     def test_stripsite (self):
         stripsite = linkcheck.url.stripsite
@@ -68,31 +68,31 @@ class TestUrl (unittest.TestCase):
     def test_safe_patterns (self):
         is_safe_host = linkcheck.url.is_safe_host
         safe_host_pattern = linkcheck.url.safe_host_pattern
-        self.assert_(is_safe_host("example.org"))
-        self.assert_(is_safe_host("example.org:80"))
-        self.assert_(not is_safe_host("example.org:21"))
+        self.assertTrue(is_safe_host("example.org"))
+        self.assertTrue(is_safe_host("example.org:80"))
+        self.assertTrue(not is_safe_host("example.org:21"))
         pat = safe_host_pattern("example.org")
         ro = re.compile(pat)
-        self.assert_(ro.match("http://example.org:80/"))
+        self.assertTrue(ro.match("http://example.org:80/"))
 
     def test_url_quote (self):
         url_quote = linkcheck.url.url_quote
         url = "http://a:80/bcd"
-        self.assertEquals(url_quote(url), url)
+        self.assertEqual(url_quote(url), url)
         url = "http://a:80/bcd?"
         url2 = "http://a:80/bcd"
-        self.assertEquals(url_quote(url), url2)
+        self.assertEqual(url_quote(url), url2)
         url = "http://a:80/bcd?a=b"
         url2 = "http://a:80/bcd?a=b"
-        self.assertEquals(url_quote(url), url2)
+        self.assertEqual(url_quote(url), url2)
         url = "a/b"
-        self.assertEquals(url_quote(url), url)
+        self.assertEqual(url_quote(url), url)
         url = "bcd?"
         url2 = "bcd"
-        self.assertEquals(url_quote(url), url2)
+        self.assertEqual(url_quote(url), url2)
         url = "bcd?a=b"
         url2 = "bcd?a=b"
-        self.assertEquals(url_quote(url), url2)
+        self.assertEqual(url_quote(url), url2)
 
 
     def test_norm_quote (self):
@@ -432,49 +432,49 @@ class TestUrl (unittest.TestCase):
     def test_valid (self):
         # Test url validity functions.
         u = "http://www.example.com"
-        self.assert_(linkcheck.url.is_safe_url(u), u)
+        self.assertTrue(linkcheck.url.is_safe_url(u), u)
         u = "http://www.example.com/"
-        self.assert_(linkcheck.url.is_safe_url(u), u)
+        self.assertTrue(linkcheck.url.is_safe_url(u), u)
         u = "http://www.example.com/~calvin"
-        self.assert_(linkcheck.url.is_safe_url(u), u)
+        self.assertTrue(linkcheck.url.is_safe_url(u), u)
         u = "http://www.example.com/a,b"
-        self.assert_(linkcheck.url.is_safe_url(u), u)
+        self.assertTrue(linkcheck.url.is_safe_url(u), u)
         u = "http://www.example.com#anchor55"
-        self.assert_(linkcheck.url.is_safe_url(u), u)
+        self.assertTrue(linkcheck.url.is_safe_url(u), u)
 
     def test_needs_quoting (self):
         # Test url quoting necessity.
         url = "mailto:<calvin@example.org>?subject=Halli Hallo"
-        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        self.assertTrue(linkcheck.url.url_needs_quoting(url), repr(url))
         url = " http://www.example.com/"
-        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        self.assertTrue(linkcheck.url.url_needs_quoting(url), repr(url))
         url = "http://www.example.com/ "
-        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        self.assertTrue(linkcheck.url.url_needs_quoting(url), repr(url))
         url = "http://www.example.com/\n"
-        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        self.assertTrue(linkcheck.url.url_needs_quoting(url), repr(url))
         url = "\nhttp://www.example.com/"
-        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        self.assertTrue(linkcheck.url.url_needs_quoting(url), repr(url))
         url = "http://www.example.com/#a!"
-        self.assert_(not linkcheck.url.url_needs_quoting(url), repr(url))
+        self.assertTrue(not linkcheck.url.url_needs_quoting(url), repr(url))
         url = "http://www.example.com/#a b"
-        self.assert_(linkcheck.url.url_needs_quoting(url), repr(url))
+        self.assertTrue(linkcheck.url.url_needs_quoting(url), repr(url))
 
     def test_absolute_url (self):
         url = "hutzli:"
-        self.assert_(linkcheck.url.url_is_absolute(url), repr(url))
+        self.assertTrue(linkcheck.url.url_is_absolute(url), repr(url))
         url = "file:/"
-        self.assert_(linkcheck.url.url_is_absolute(url), repr(url))
+        self.assertTrue(linkcheck.url.url_is_absolute(url), repr(url))
         url = ":"
-        self.assert_(not linkcheck.url.url_is_absolute(url), repr(url))
+        self.assertTrue(not linkcheck.url.url_is_absolute(url), repr(url))
         url = "/a/b?http://"
-        self.assert_(not linkcheck.url.url_is_absolute(url), repr(url))
+        self.assertTrue(not linkcheck.url.url_is_absolute(url), repr(url))
 
     def test_nopathquote_chars (self):
         if os.name == 'nt':
             url = "file:///c|/msys/"
             nurl = url
             self.assertEqual(url_norm(url), nurl)
-            self.assert_(not linkcheck.url.url_needs_quoting(url))
+            self.assertTrue(not linkcheck.url.url_needs_quoting(url))
         url = "http://hulla/a/b/!?c=d"
         nurl = url
         self.assertEqual(url_norm(url), nurl)
@@ -484,7 +484,7 @@ class TestUrl (unittest.TestCase):
         url = u'www.öko.de'
         idna_encode =linkcheck.url.idna_encode
         encurl, is_idn = idna_encode(url)
-        self.assert_(is_idn)
+        self.assertTrue(is_idn)
         self.assertTrue(encurl)
         url = u''
         encurl, is_idn = idna_encode(url)
@@ -497,15 +497,15 @@ class TestUrl (unittest.TestCase):
         # Test host matching.
         match_host = linkcheck.url.match_host
         match_url = linkcheck.url.match_url
-        self.assert_(not match_host("", []))
-        self.assert_(not match_host("", [".localhost"]))
-        self.assert_(not match_host("localhost", []))
-        self.assert_(not match_host("localhost", [".localhost"]))
-        self.assert_(match_host("a.localhost", [".localhost"]))
-        self.assert_(match_host("localhost", ["localhost"]))
-        self.assert_(not match_url("", []))
-        self.assert_(not match_url("a", []))
-        self.assert_(match_url("http://example.org/hulla", ["example.org"]))
+        self.assertTrue(not match_host("", []))
+        self.assertTrue(not match_host("", [".localhost"]))
+        self.assertTrue(not match_host("localhost", []))
+        self.assertTrue(not match_host("localhost", [".localhost"]))
+        self.assertTrue(match_host("a.localhost", [".localhost"]))
+        self.assertTrue(match_host("localhost", ["localhost"]))
+        self.assertTrue(not match_url("", []))
+        self.assertTrue(not match_url("a", []))
+        self.assertTrue(match_url("http://example.org/hulla", ["example.org"]))
 
     def test_splitparam (self):
         # Path parameter split test.
@@ -531,8 +531,8 @@ class TestUrl (unittest.TestCase):
 
     def test_port (self):
         is_numeric_port = linkcheck.url.is_numeric_port
-        self.assert_(is_numeric_port("80"))
-        self.assert_(is_numeric_port("1"))
+        self.assertTrue(is_numeric_port("80"))
+        self.assertTrue(is_numeric_port("1"))
         self.assertFalse(is_numeric_port("0"))
         self.assertFalse(is_numeric_port("66000"))
         self.assertFalse(is_numeric_port("-1"))

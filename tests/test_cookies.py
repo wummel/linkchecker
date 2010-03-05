@@ -38,9 +38,9 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
-        self.assert_(cookie.check_expired())
-        self.assert_(cookie.is_valid_for("http", host, 80, "/"))
-        self.assert_(cookie.is_valid_for("https", host, 443, "/a"))
+        self.assertTrue(cookie.check_expired())
+        self.assertTrue(cookie.is_valid_for("http", host, 80, "/"))
+        self.assertTrue(cookie.is_valid_for("https", host, 443, "/a"))
 
     def test_netscape_cookie2 (self):
         data = (
@@ -55,7 +55,7 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
-        self.assert_(cookie.is_expired())
+        self.assertTrue(cookie.is_expired())
 
     def test_netscape_cookie3 (self):
         data = (
@@ -80,7 +80,7 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
-        self.assert_(cookie.is_valid_for("http", host, 100, "/"))
+        self.assertTrue(cookie.is_valid_for("http", host, 100, "/"))
 
     def test_netscape_cookie5 (self):
         data = (
@@ -95,7 +95,7 @@ class TestCookies (unittest.TestCase):
         host = "example.org"
         path = "/"
         cookie = linkcheck.cookies.NetscapeCookie(value, scheme, host, path)
-        self.assert_(cookie.is_expired())
+        self.assertTrue(cookie.is_expired())
 
     def test_netscape_cookie6 (self):
         data = (
@@ -126,9 +126,9 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
-        self.assert_(cookie.check_expired())
-        self.assert_(cookie.is_valid_for("http", host, 80, "/"))
-        self.assert_(cookie.is_valid_for("https", host, 443, "/a"))
+        self.assertTrue(cookie.check_expired())
+        self.assertTrue(cookie.is_valid_for("http", host, 80, "/"))
+        self.assertTrue(cookie.is_valid_for("https", host, 443, "/a"))
 
     def test_rfc_cookie2 (self):
         data = (
@@ -143,7 +143,7 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
-        self.assert_(cookie.is_expired())
+        self.assertTrue(cookie.is_expired())
 
     def test_rfc_cookie3 (self):
         data = (
@@ -167,7 +167,7 @@ class TestCookies (unittest.TestCase):
         host = "localhost"
         path = "/"
         cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
-        self.assert_(cookie.is_valid_for("http", host, 100, "/"))
+        self.assertTrue(cookie.is_valid_for("http", host, 100, "/"))
 
     def test_cookie_parse1 (self):
         lines = [

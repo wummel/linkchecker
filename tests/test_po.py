@@ -44,7 +44,7 @@ class TestPo (unittest.TestCase):
         """Test .po files syntax."""
         for f in get_pofiles():
             ret = os.system("msgfmt -c -o - %s > /dev/null" % f)
-            self.assertEquals(ret, 0, msg="PO-file syntax error in %r" % f)
+            self.assertEqual(ret, 0, msg="PO-file syntax error in %r" % f)
 
 
 class TestGTranslator (unittest.TestCase):
@@ -65,5 +65,5 @@ class TestGTranslator (unittest.TestCase):
         for line in fd:
             if line.strip().startswith("#"):
                 continue
-            self.failIf("\xc2\xb7" in line,
+            self.assertFalse("\xc2\xb7" in line,
                  "Broken GTranslator copy/paste in %r:\n%r" % (f, line))

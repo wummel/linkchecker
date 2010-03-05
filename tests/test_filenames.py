@@ -31,8 +31,8 @@ class TestFilenames (unittest.TestCase):
     def test_nt_filename (self):
         path = os.getcwd()
         realpath = get_nt_filename(path)
-        self.assertEquals(path, realpath)
+        self.assertEqual(path, realpath)
         if os.name == 'nt':
             path = 'c:\\'
             realpath = get_nt_filename(path)
-            self.assertEquals(path, realpath)
+            self.assertEqual(path, realpath)

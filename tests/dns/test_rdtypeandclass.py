@@ -24,10 +24,10 @@ class TestRdTypeAndClass (unittest.TestCase):
     # Classes
 
     def test_class_meta1(self):
-        self.assert_(linkcheck.dns.rdataclass.is_metaclass(linkcheck.dns.rdataclass.ANY))
+        self.assertTrue(linkcheck.dns.rdataclass.is_metaclass(linkcheck.dns.rdataclass.ANY))
 
     def test_class_meta2(self):
-        self.assert_(not linkcheck.dns.rdataclass.is_metaclass(linkcheck.dns.rdataclass.IN))
+        self.assertTrue(not linkcheck.dns.rdataclass.is_metaclass(linkcheck.dns.rdataclass.IN))
 
     def test_class_bytext1(self):
         self.assertEqual(linkcheck.dns.rdataclass.from_text('IN'),
@@ -71,19 +71,19 @@ class TestRdTypeAndClass (unittest.TestCase):
     # Types
 
     def test_type_meta1(self):
-        self.assert_(linkcheck.dns.rdatatype.is_metatype(linkcheck.dns.rdatatype.ANY))
+        self.assertTrue(linkcheck.dns.rdatatype.is_metatype(linkcheck.dns.rdatatype.ANY))
 
     def test_type_meta2(self):
-        self.assert_(linkcheck.dns.rdatatype.is_metatype(linkcheck.dns.rdatatype.OPT))
+        self.assertTrue(linkcheck.dns.rdatatype.is_metatype(linkcheck.dns.rdatatype.OPT))
 
     def test_type_meta3(self):
-        self.assert_(not linkcheck.dns.rdatatype.is_metatype(linkcheck.dns.rdatatype.A))
+        self.assertTrue(not linkcheck.dns.rdatatype.is_metatype(linkcheck.dns.rdatatype.A))
 
     def test_type_singleton1(self):
-        self.assert_(linkcheck.dns.rdatatype.is_singleton(linkcheck.dns.rdatatype.SOA))
+        self.assertTrue(linkcheck.dns.rdatatype.is_singleton(linkcheck.dns.rdatatype.SOA))
 
     def test_type_singleton2(self):
-        self.assert_(not linkcheck.dns.rdatatype.is_singleton(linkcheck.dns.rdatatype.A))
+        self.assertTrue(not linkcheck.dns.rdatatype.is_singleton(linkcheck.dns.rdatatype.A))
 
     def test_type_bytext1(self):
         self.assertEqual(linkcheck.dns.rdatatype.from_text('A'), linkcheck.dns.rdatatype.A)
