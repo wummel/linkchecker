@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2009 Bastian Kleineidam
+# Copyright (C) 2004-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ class TestNews (LinkCheckTest):
     def newstest (self, url, resultlines):
         self.direct(url, resultlines)
 
-    @need_newsserver
+    @need_newsserver(NNTP_SERVER)
     def test_news_without_host (self):
         # news testing
         url = u"news:comp.os.linux.misc"
@@ -58,7 +58,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver
+    @need_newsserver(NNTP_SERVER)
     def test_snews_with_group (self):
         url = u"snews:de.comp.os.unix.linux.misc"
         nurl = self.norm(url)
@@ -72,7 +72,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver
+    @need_newsserver(NNTP_SERVER)
     def test_illegal_syntax (self):
         # illegal syntax
         url = u"news:§$%&/´`(§%"
@@ -87,7 +87,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver
+    @need_newsserver(NNTP_SERVER)
     @limit_time(NNTP_TIMEOUT_SECS, skip=True)
     def test_nntp_with_host (self):
         url = u"nntp://%s/comp.lang.python" % NNTP_SERVER
@@ -101,7 +101,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver
+    @need_newsserver(NNTP_SERVER)
     @limit_time(NNTP_TIMEOUT_SECS, skip=True)
     def test_article_span (self):
         url = u"nntp://%s/comp.lang.python/1-5" % NNTP_SERVER
@@ -115,7 +115,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver
+    @need_newsserver(NNTP_SERVER)
     def test_article_span_no_host (self):
         url = u"news:comp.lang.python/1-5"
         resultlines = [
@@ -127,7 +127,7 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver
+    @need_newsserver(NNTP_SERVER)
     @limit_time(NNTP_TIMEOUT_SECS, skip=True)
     def test_host_no_group (self):
         url = u"nntp://%s/" % NNTP_SERVER

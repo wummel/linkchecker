@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2005-2009 Bastian Kleineidam
+# Copyright (C) 2005-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -138,16 +138,26 @@ need_proxy = _need_func(has_proxy, "proxy")
 
 
 @memoized
-def has_newsserver ():
+def has_newsserver (server):
     try:
         import nntplib
-        nntp = nntplib.NNTP(NNTP_SERVER, usenetrc=False)
+        nntp = nntplib.NNTP(server, usenetrc=False)
         nntp.close()
         return True
-    except:
+    except StandardError:
         return False
 
-need_newsserver = _need_func(has_newsserver, "newsserver")
+
+def need_newsserver (server):
+    """Decorator skipping test if newsserver is not available."""
+    def check_func (func):
+        def newfunc (*args, **kwargs):
+            if not has_newsserver(server):
+                raise SkipTest("Newsserver `%s' is not available" % server)
+            return func(*args, **kwargs)
+        newfunc.func_name = func.func_name
+        return newfunc
+    return check_func
 
 
 @memoized
