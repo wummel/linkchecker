@@ -19,4 +19,4 @@ rd /S /Q build
 call build.bat
 rd /S /Q dist
 %PYDIR%\python.exe setup.py py2exe
-@pause
+pause

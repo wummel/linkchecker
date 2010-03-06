@@ -16,4 +16,4 @@
 @echo off
 set PYDIR=C:\Python26
 %PYDIR%\scripts\nosetests -v -m "^test_.*" tests/
-@pause
+pause
