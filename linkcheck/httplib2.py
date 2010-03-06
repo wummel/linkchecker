@@ -359,7 +359,7 @@ class HTTPResponse:
         if not line:
             # Presumably, the server closed the connection before
             # sending a valid response.
-            raise BadStatusLine("Bad status line %r" % line)
+            raise BadStatusLine("Empty status line")
         try:
             [version, status, reason] = line.split(None, 2)
         except ValueError:
