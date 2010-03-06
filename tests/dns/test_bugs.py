@@ -38,4 +38,4 @@ class BugsTestCase(unittest.TestCase):
     def test_TTL_bounds_check(self):
         def bad():
             ttl = linkcheck.dns.ttl.from_text("2147483648")
-        self.assertTrueRaises(linkcheck.dns.ttl.BadTTL, bad)
+        self.assertRaises(linkcheck.dns.ttl.BadTTL, bad)
