@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 DEB_PYTHON_SYSTEM:=pycentral
-DEB_DH_INSTALLCHANGELOGS_ARGS:=ChangeLog.txt
+DEB_DH_INSTALLCHANGELOGS_ARGS:=doc/changelog.txt
 
 # workaround for Debian bug #486848
 binary-arch binary-indep: install-arch install-indep

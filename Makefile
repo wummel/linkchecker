@@ -114,8 +114,8 @@ filescheck:
 
 .PHONY: releasecheck
 releasecheck: check
-	@if egrep -i "xx\.|xxxx|\.xx" ChangeLog.txt > /dev/null; then \
-	  echo "Could not release: edit ChangeLog.txt release date"; false; \
+	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
+	  echo "Could not release: edit doc/changelog.txt release date"; false; \
 	fi
 #	$(MAKE) -C doc test
 
@@ -156,7 +156,7 @@ diff:
 
 .PHONY: changelog
 changelog:
-	sftrack_changelog linkchecker calvin@users.sourceforge.net ChangeLog.txt
+	sftrack_changelog linkchecker calvin@users.sourceforge.net doc/changelog.txt
 
 .PHONY: gui
 gui:

@@ -1,5 +1,5 @@
-include README.txt INSTALL.txt COPYING.txt TODO.txt UPGRADING.txt
-include MANIFEST.in ChangeLog.txt
+include readme.txt doc/install.txt COPYING doc/todo.txt doc/upgrading.txt
+include MANIFEST.in doc/changelog.txt
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/logging.conf config/pycheckrc
 include config/reindent.py config/linkchecker.apache2.conf install-rpm.sh
