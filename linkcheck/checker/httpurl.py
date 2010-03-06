@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -217,6 +217,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
             except httplib.BadStatusLine:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
+                    log.debug(LOG_CHECK, "Empty status line: falling back to GET")
                     self.method = "GET"
                     self.aliases = []
                     self.fallback_get = True
@@ -249,6 +250,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
             except httplib.BadStatusLine:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
+                    log.debug(LOG_CHECK, "Empty status line: falling back to GET")
                     self.method = "GET"
                     self.aliases = []
                     self.fallback_get = True
@@ -445,8 +447,15 @@ Use URL `%(newurl)s' instead for checking.""") % {
         except socket.error, msg:
             if msg.args[0] == 32 and self.reused_connection:
                 # server closed persistent connection - retry
+                log.debug(LOG_CHECK, "Server closed connection: retry")
                 self.persistent = False
-                self.close_connection()
+                return self._get_http_response()
+            raise
+        except httplib.BadStatusLine, msg:
+            if str(msg) == "Empty status line" and self.reused_connection:
+                # server closed connection - retry
+                log.debug(LOG_CHECK, "Empty status line: retry")
+                self.persistent = False
                 return self._get_http_response()
             raise
 
