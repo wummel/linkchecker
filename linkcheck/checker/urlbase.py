@@ -920,7 +920,7 @@ class UrlBase (object):
         try:
             app = winutil.get_word_app()
             try:
-                doc = winutil.open_word(app, filename)
+                doc = winutil.open_wordfile(app, filename)
                 try:
                     for link in doc.Hyperlinks:
                         url_data = get_url_from(link.Address,

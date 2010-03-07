@@ -65,6 +65,9 @@ def get_word_app ():
     """Return open Word.Application handle, or None on error."""
     if not has_word():
         return None
+    # Since this function is called from different threads, initialize
+    # the COM layer.
+    pythoncom.CoInitialize()
     import win32com.client
     app = win32com.client.gencache.EnsureDispatch("Word.Application")
     app.Visible = False
