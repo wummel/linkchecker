@@ -1,9 +1,3 @@
-- [CHECKING] Parse Word files for hyperlinks (needs win32com)
-  app = CreateObject("Word.Application")
-  doc = app.Documents.Open("c:\test.doc")
-  for link in doc.Hyperlinks:
-    url = link.Address
-    name = link.TextToDisplay
 - [HTTP] Do not fall back to GET when no recursion is requested on
   single pages. This would allow to check pages even if robots.txt
   disallows to get the page content.

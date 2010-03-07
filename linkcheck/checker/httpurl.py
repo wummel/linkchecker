@@ -671,6 +671,8 @@ Use URL `%(newurl)s' instead for checking.""") % {
             self.parse_css()
         elif ctype == "application/x-shockwave-flash":
             self.parse_swf()
+        elif ctype == "application/msword":
+            self.parse_word()
 
     def get_robots_txt_url (self):
         """

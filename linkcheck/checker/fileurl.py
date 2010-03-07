@@ -204,6 +204,10 @@ class FileUrl (urlbase.UrlBase):
             path = prepare_urlpath_for_nt(path)
         return fileutil.pathencode(urllib.url2pathname(path))
 
+    def get_temp_filename (self):
+        """Get filename for content to parse."""
+        return self.get_os_filename()
+
     def is_directory (self):
         """
         Check if file is a directory.

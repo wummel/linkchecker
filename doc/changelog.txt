@@ -24,6 +24,8 @@ Fixes:
 
 Features:
 - dns: Updated dnspython module from upstream version 1.8.1.
+- checking: Check hyperlinks of Word documents. Needs pywin32
+  installed.
 
 5.1 "Let the right one in" (released 04.08.2009)
 

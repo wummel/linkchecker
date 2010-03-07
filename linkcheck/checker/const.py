@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -141,6 +141,7 @@ PARSE_EXTENSIONS = {
     "opera": re.compile(r'/(?i)opera.adr$'), # opera bookmark file
     "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
     "swf": re.compile(r'(?i)\.swf$'), # SWF file
+    "word": re.compile(r'(?i)\.docx?$'), # Word files
 }
 
 PARSE_MIMETYPES = (
@@ -148,6 +149,7 @@ PARSE_MIMETYPES = (
     "application/xhtml+xml",
     "text/css",
     "application/x-shockwave-flash",
+    "application/msword",
 )
 
 HTML_MIMETYPES = (

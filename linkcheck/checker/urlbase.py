@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,11 +27,13 @@ import time
 import errno
 import socket
 import select
+import tempfile
 
 from . import absolute_url, StoringHandler, get_url_from
 from ..cache import geoip
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-    strformat, LinkCheckerError, url as urlutil, trace, clamav, containers)
+    strformat, LinkCheckerError, url as urlutil, trace, clamav, containers,
+    winutil)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse, titleparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
@@ -908,6 +910,37 @@ class UrlBase (object):
                          self.recursion_level+1, self.aggregate,
                          parent_url=self.url)
             self.aggregate.urlqueue.put(url_data)
+
+    def parse_word (self):
+        """Parse a word file for hyperlinks."""
+        if not winutil.has_word():
+            return
+        filename = self.get_temp_filename()
+        # open word file and parse hyperlinks
+        try:
+            app = winutil.get_word_app()
+            try:
+                doc = winutil.open_word(app, filename)
+                try:
+                    for link in doc.Hyperlinks:
+                        url_data = get_url_from(link.Address,
+                                 self.recursion_level+1, self.aggregate,
+                                 parent_url=self.url, name=link.TextToDisplay)
+                        self.aggregate.urlqueue.put(url_data)
+                finally:
+                    winutil.close_wordfile(doc)
+            finally:
+                winutil.close_word_app(app)
+        except winutil.Error, msg:
+            log.warn(LOG_CHECK, "Error parsing word file: %s", msg)
+
+    def get_temp_filename (self):
+        """Get temporary filename for content to parse."""
+        # store content in temporary file
+        fd, filename = tempfile.mkstemp(suffix='.doc', prefix='lc_')
+        fp = os.fdopen(fd)
+        fp.write(self.get_content())
+        fp.close()
 
     def serialized (self):
         """
