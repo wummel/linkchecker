@@ -327,6 +327,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
             self.set_extern(redirected)
             if self.extern[0] and self.extern[0]:
                 if set_result:
+                    self.check301status(response)
                     self.add_info(
                           _("The redirected URL is outside of the domain "
                             "filter, checked only syntax."))
@@ -359,14 +360,8 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 self.aliases.append(redirected)
             # note: urlparts has to be a list
             self.urlparts = urlparts
-            if response.status == 301:
-                if not self.has301status:
-                    if set_result:
-                        self.add_warning(
-                           _("HTTP 301 (moved permanent) encountered: you"
-                             " should update this link."),
-                           tag=WARN_HTTP_MOVED_PERMANENT)
-                    self.has301status = True
+            if set_result:
+                self.check301status(response)
             # check cache again on the changed URL
             if self.aggregate.urlqueue.checked_redirect(redirected, self):
                 return -1, response
@@ -391,6 +386,14 @@ Use URL `%(newurl)s' instead for checking.""") % {
             response = self._try_http_response()
             tries += 1
         return tries, response
+
+    def check301status (self, response):
+        """If response page has been permanently moved add a warning."""
+        if response.status == 301 and not self.has301status:
+            self.add_warning(_("HTTP 301 (moved permanent) encountered: you"
+                               " should update this link."),
+                             tag=WARN_HTTP_MOVED_PERMANENT)
+            self.has301status = True
 
     def get_alias_cache_data (self):
         """

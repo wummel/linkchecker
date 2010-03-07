@@ -7,10 +7,13 @@ Fixes:
 - dns: use /dev/urandom instead of /dev/random to get initial seed
   on Linux machines since the last one can block indefinitely.
   Closes: SF bug #2901667
-- checking: Retry if server closed connection and sent an empty
+- http: Retry if server closed connection and sent an empty
   status line. Fixes the "BadStatusLine" errors.
 - installer: Add commandline executable to Windows installer.
   Closes: SF bug #2903257
+- http: warn about permanent redirections even when redirected URL is
+  outside of the domain filter.
+  Closes: SF bug #2920182
 
 5.1 "Let the right one in" (released 04.08.2009)
 
