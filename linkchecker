@@ -591,8 +591,9 @@ log.debug(LOG_CMDLINE, _("Python %(version)s on %(platform)s") % \
 try:
     files = []
     if options.configfile:
-        if os.path.isfile(options.configfile):
-            files.append(options.configfile)
+        path = linkcheck.configuration.normpath(options.configfile)
+        if os.path.isfile(path):
+            files.append(path)
         else:
             log.warn(LOG_CMDLINE,
                       _("Unreadable config file: %r"), options.configfile)
