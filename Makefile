@@ -112,6 +112,9 @@ check:
 filescheck:
 	-./linkchecker $(LCOPTS) http://$(HOST)/
 
+update-copyright:
+	update-copyright --holder="Bastian Kleineidam"
+
 .PHONY: releasecheck
 releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
