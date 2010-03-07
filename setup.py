@@ -400,7 +400,9 @@ if os.name == 'posix':
 
 
 class InnoScript:
-    def __init__(self, lib_dir, dist_dir, windows_exe_files=[], lib_files=[]):
+    def __init__(self, lib_dir, dist_dir, windows_exe_files=[],
+                 console_exe_files=[], service_exe_files=[],
+                 comserver_files=[], lib_files=[]):
         self.lib_dir = lib_dir
         self.dist_dir = dist_dir
         if not self.dist_dir[-1] in "\\/":
@@ -408,6 +410,9 @@ class InnoScript:
         self.name = AppName
         self.version = AppVersion
         self.windows_exe_files = [self.chop(p) for p in windows_exe_files]
+        self.console_exe_files = [self.chop(p) for p in console_exe_files]
+        self.service_exe_files = [self.chop(p) for p in service_exe_files]
+        self.comserver_files = [self.chop(p) for p in comserver_files]
         self.lib_files = [self.chop(p) for p in lib_files]
 
     def chop(self, pathname):
@@ -428,8 +433,13 @@ class InnoScript:
         print >> ofi, r"OutputDir=."
         print >> ofi
 
+        files = self.windows_exe_files + \
+                self.console_exe_files + \
+                self.service_exe_files + \
+                self.comserver_files + \
+                self.lib_files
         print >> ofi, r"[Files]"
-        for path in self.windows_exe_files + self.lib_files:
+        for path in files:
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
         print >> ofi
 
@@ -465,8 +475,9 @@ try:
             for path in os.listdir(dst):
                 self.lib_files.append(os.path.join(dst, path))
             # create the Installer, using the files py2exe has created.
-            script = InnoScript(lib_dir, dist_dir,
-                                self.windows_exe_files, self.lib_files)
+            script = InnoScript(lib_dir, dist_dir, self.windows_exe_files,
+                self.console_exe_files, self.service_exe_files,
+                self.comserver_files, self.lib_files)
             print "*** creating the inno setup script***"
             script.create()
             print "*** compiling the inno setup script***"
