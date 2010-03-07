@@ -121,6 +121,15 @@ class TestMail (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
+        url = u"mailto:"
+        resultlines = [
+            u"url %s" % url,
+            u"cache key mailto:",
+            u"real url %s" % url,
+            u"warning No mail addresses found in `%s'." % url,
+            u"valid",
+        ]
+        self.direct(url, resultlines)
 
     def mail_valid (self, addr, **kwargs):
         return self.mail_test(addr, u"valid", **kwargs)
@@ -145,7 +154,6 @@ class TestMail (LinkCheckTest):
 
     def test_error_mail (self):
         # too long or too short
-        self.mail_error(u"mailto:")
         self.mail_error(u"mailto:@")
         self.mail_error(u"mailto:@example.org")
         self.mail_error(u"mailto:a@")
@@ -154,8 +162,8 @@ class TestMail (LinkCheckTest):
         self.mail_error(u"mailto:a@%s" % (u"a"*256))
         self.mail_error(u'mailto:a@%s.com' % (u"a"*64))
         # local part quoted
-        self.mail_error(u'mailto:"a""@example.com', cache_key=u"mailto:a")
-        self.mail_error(u'mailto:""a"@example.com', cache_key=u"mailto:")
+        self.mail_error(u'mailto:"a""@example.com', cache_key=u'mailto:a')
+        self.mail_error(u'mailto:""a"@example.com', cache_key=u'mailto:""a"@example.com')
         self.mail_error(u'mailto:"a\\"@example.com', cache_key=u'mailto:a"@example.com')
         # local part unqouted
         self.mail_error(u'mailto:.a@example.com')

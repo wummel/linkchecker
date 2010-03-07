@@ -1,19 +1,23 @@
-5.2 "" (released xx.xx.2009)
+5.2 "" (released 7.3.2010)
 
 Fixes:
 - logging: Use default platform encoding instead of hardcoded one
   of iso-8859-1.
   Closes: SF bug #2770077
-- dns: use /dev/urandom instead of /dev/random to get initial seed
+- dns: Use /dev/urandom instead of /dev/random to get initial seed
   on Linux machines since the last one can block indefinitely.
   Closes: SF bug #2901667
 - http: Retry if server closed connection and sent an empty
   status line. Fixes the "BadStatusLine" errors.
 - installer: Add commandline executable to Windows installer.
   Closes: SF bug #2903257
-- http: warn about permanent redirections even when redirected URL is
+- http: Warn about permanent redirections even when redirected URL is
   outside of the domain filter.
   Closes: SF bug #2920182
+- mailto: An empty email-address is syntactically allowed according
+  to RFC2368. So the syntax error about missing email-addresses gets
+  demoted to a warning.
+  Closes: SF bug #2910588
 
 5.1 "Let the right one in" (released 04.08.2009)
 

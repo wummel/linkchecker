@@ -35,7 +35,15 @@ from .const import WARN_MAIL_NO_MX_HOST, \
 
 def getaddresses (addr):
     """Return list of email addresses from given field value."""
-    return [mail for name, mail in AddressList(addr).addresslist if mail]
+    parsed = [mail for name, mail in AddressList(addr).addresslist if mail]
+    if parsed:
+        addresses = parsed
+    elif addr:
+        # we could not parse any mail addresses, so try with the raw string
+        addresses = [addr]
+    else:
+        addresses = []
+    return addresses
 
 
 def is_quoted (addr):
@@ -75,13 +83,13 @@ class MailtoUrl (urlbase.UrlBase):
                 if not self.valid:
                     break
         else:
-            self.set_result(_("No mail addresses found in `%(url)s'.") % \
-                {"url": self.url}, valid=False, overwrite=False)
+            self.add_warning(_("No mail addresses found in `%(url)s'.") % \
+                {"url": self.url})
 
     def parse_addresses (self):
         """Parse all mail addresses out of the URL target. Also parses
         optional CGI headers like "?to=foo@example.org".
-        Stores parsed paddresses in the self.addresses set.
+        Stores parsed addresses in the self.addresses set.
         """
         # cut off leading mailto: and unquote
         url = urllib.unquote(self.base_url[7:])
@@ -227,7 +235,6 @@ class MailtoUrl (urlbase.UrlBase):
              an answer, print the verified address as an info.
              If not, print a warning.
         """
-        assert self.addresses
         for mail in sorted(self.addresses):
             self.check_smtp_domain(mail)
             if not self.valid:
