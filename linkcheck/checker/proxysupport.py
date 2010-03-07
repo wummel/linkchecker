@@ -31,17 +31,18 @@ class ProxySupport (object):
         and http:// URLs.
         """
         self.proxy = proxy
+        self.proxytype = "http"
         self.proxyauth = None
         if not self.proxy:
             return
         proxyargs = {"proxy": self.proxy}
-        if self.proxy[:7].lower() != "http://":
+        if self.proxytype not in ('http', 'https'):
             # Note that invalid proxies might raise TypeError in urllib2,
             # so make sure to stop checking at this point, not later.
-            msg = _("Proxy value `%(proxy)s' must start with 'http://'.") \
+            msg = _("Proxy value `%(proxy)s' must start with 'http:' or 'https:'.") \
                  % proxyargs
             raise LinkCheckerError(msg)
-        self.proxy = urllib.splittype(self.proxy)[1]
+        self.proxytype, self.proxy = urllib.splittype(self.proxy)
         self.proxy = urllib.splithost(self.proxy)[0]
         self.proxyauth, self.proxy = urllib.splituser(self.proxy)
         if self.ignore_proxy_host():

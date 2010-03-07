@@ -468,7 +468,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
         """
         if self.proxy:
             host = self.proxy
-            scheme = "http"
+            scheme = self.proxytype
         else:
             host = self.urlparts[1]
             scheme = self.urlparts[0]
