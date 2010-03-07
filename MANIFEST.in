@@ -32,11 +32,18 @@ include linkcheck/HtmlParser/htmlparse.y
 include linkcheck/HtmlParser/*.h
 include linkcheck/HtmlParser/fixincludes.awk
 include linkcheck/gui/Makefile
-recursive-include linkcheck/gui/rc Makefile *.png *.qrc
-recursive-include linkcheck/gui/ui *.ui
+include linkcheck/gui/rc/Makefile
+include linkcheck/gui/rc/*.png
+include linkcheck/gui/rc/*.qrc
+include linkcheck/gui/ui/*.ui
 include po/*.po po/*.pot po/Makefile
 include doc/*.example
-recursive-include doc/html *.ico *.html *.png *.qhp *.qhcp Makefile
+include doc/html/*.ico
+include doc/html/*.html
+include doc/html/*.png
+include doc/html/*.qhp
+include doc/html/*.qhcp
+include doc/html/Makefile
 include doc/po4a.conf doc/*.po doc/*.pot
 include doc/en/*.1 doc/en/*.5
 include doc/de/*.1 doc/de/*.5
