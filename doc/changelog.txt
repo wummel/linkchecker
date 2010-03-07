@@ -9,6 +9,8 @@ Fixes:
   Closes: SF bug #2901667
 - checking: Retry if server closed connection and sent an empty
   status line. Fixes the "BadStatusLine" errors.
+- installer: Add commandline executable to Windows installer.
+  Closes: SF bug #2903257
 
 5.1 "Let the right one in" (released 04.08.2009)
 
