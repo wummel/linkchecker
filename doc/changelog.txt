@@ -9,6 +9,8 @@ Fixes:
   Closes: SF bug #2901667
 - http: Retry if server closed connection and sent an empty
   status line. Fixes the "BadStatusLine" errors.
+- http: Prevent UnicodeDecodeError on redirection by ensuring that
+  the redirected URL will be Unicode encoded.
 - installer: Add commandline executable to Windows installer.
   Closes: SF bug #2903257
 - http: Warn about permanent redirections even when redirected URL is

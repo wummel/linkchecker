@@ -313,8 +313,8 @@ Use URL `%(newurl)s' instead for checking.""") % {
             newurl = self.headers.getheader("Location",
                          self.headers.getheader("Uri", ""))
             # make new url absolute and unicode
-            newurl = urlparse.urljoin(redirected, newurl)
             newurl = unicode_safe(newurl)
+            newurl = urlparse.urljoin(redirected, newurl)
             log.debug(LOG_CHECK, "Redirected to %r", newurl)
             self.add_info(_("Redirected to `%(url)s'.") % {'url': newurl})
             # norm base url - can raise UnicodeError from url.idna_encode()
