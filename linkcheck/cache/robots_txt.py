@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2009 Bastian Kleineidam
+# Copyright (C) 2006-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@ class RobotsTxt (object):
         """
         Ask robots.txt allowance.
         """
+        useragent = str(configuration.UserAgent)
         if roboturl not in self.cache:
             rp = robotparser2.RobotFileParser(proxy=proxy, user=user,
                 password=password)
@@ -48,10 +49,9 @@ class RobotsTxt (object):
             if hasattr(callback, '__call__'):
                 parts = urlutil.url_split(rp.url)
                 host = "%s:%d" % (parts[1], parts[2])
-                useragent = configuration.UserAgent
                 wait = rp.get_crawldelay(useragent)
                 callback(host, wait)
             self.cache[roboturl] = rp
         else:
             rp = self.cache[roboturl]
-        return rp.can_fetch(configuration.UserAgent, url)
+        return rp.can_fetch(useragent, url)
