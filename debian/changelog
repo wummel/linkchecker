@@ -1,6 +1,10 @@
 linkchecker (5.2-1) unstable; urgency=low
 
   * New upstream release.
+  * Does not install msgfmt.py anymore, since it has been moved out
+    of the linkcheck package.
+    (Closes: #555414)
+  * Standards version 3.8.4.
 
  -- Bastian Kleineidam <calvin@debian.org>  Mon, 15 Feb 2010 23:52:35 +0100
 

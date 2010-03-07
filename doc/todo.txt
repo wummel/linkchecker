@@ -1,8 +1,7 @@
 - [GUI] Add more context menu actions:
   + Show detailed URL properties
   + View source
-- [GUI] Read (initial) configuration from linkcheckerrc file.
-- [GUI] Save options in qsettings
+- [GUI] Save options in qsettings, and read linkcheckerrc file.
 - [PYTHON3]
   linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
   linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
@@ -12,8 +11,6 @@
 - [HTTP] Do not fall back to GET when no recursion is requested on
   single pages. This would allow to check pages even if robots.txt
   disallows to get the page content.
-- [HTTP] There are still errors "Bad status Line" and "Connect reset by peer"
-  See email.
 - [HTTP] try out httest
 - [CHECKING] Parse Word files for hyperlinks (needs win32com)
   app = CreateObject("Word.Application")

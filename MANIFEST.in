@@ -36,7 +36,7 @@ include linkcheck/gui/rc/Makefile
 include linkcheck/gui/rc/*.png
 include linkcheck/gui/rc/*.qrc
 include linkcheck/gui/ui/*.ui
-include po/*.po po/*.pot po/Makefile
+include po/*.po po/*.pot po/Makefile po/msgfmt.py
 include doc/*.example
 include doc/html/*.ico
 include doc/html/*.html

@@ -312,11 +312,13 @@ class MyBuild (build, object):
 
     def build_message_files (self):
         """For each po/*.po, build .mo file in target locale directory."""
+        # msgfmt.py is in the po/ subdirectory
+        sys.path.append('po')
+        import msgfmt
         for (src, dst) in list_message_files(self.distribution.get_name()):
             build_dst = os.path.join("build", dst)
             self.mkpath(os.path.dirname(build_dst))
             self.announce("Compiling %s -> %s" % (src, build_dst))
-            from linkcheck import msgfmt
             msgfmt.make(src, build_dst)
 
     def run (self):
