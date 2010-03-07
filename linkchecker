@@ -76,8 +76,7 @@ LinkChecker also detects manual proxy settings of Internet Explorer under
 Windows systems. On a Mac use the Internet Config to select a proxy.
 
 LinkChecker honors the $no_proxy environment variable. It can be a list
-of domain names for which no proxy will be used. This is similar to
-the --no-proxy-for option.
+of domain names for which no proxy will be used.
 
 Setting a HTTP proxy on Unix for example looks like this:
 
@@ -517,11 +516,12 @@ group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
+# XXX remove deprecated option
 group.add_option("--no-proxy-for", type="string", action="append",
                  metavar="REGEX",
                  dest="noproxyfor", help=_(
-"""Contact hosts that match the given regular expression directly instead
-of going through a proxy. This option can be given multiple times."""))
+"""This option is deprecated and does nothing. It will be removed
+in a future release."""))
 optparser.add_option_group(group)
 
 ################# auto completion #####################
@@ -624,9 +624,6 @@ if options.externstrict:
     pats = [linkcheck.get_link_pat(arg, strict=True) \
             for arg in options.externstrict]
     config["externlinks"].extend(pats)
-if options.noproxyfor:
-    ros = [try_compile_re(arg) for arg in options.noproxyfor]
-    config["noproxyfor"].extend(ros)
 if options.output:
     if "/" in options.output:
         logtype, encoding = options.output.split("/", 1)

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -204,21 +204,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 "the new multiline configuration syntax") % {"num": i})
             pat = get_link_pat(val, strict=0)
             self.config["externlinks"].append(pat)
-            i += 1
-        if self.has_option(section, "noproxyfor"):
-            for val in read_multiline(self.get(section, "noproxyfor")):
-                self.config["noproxyfor"].append(re.compile(val))
-        # backward compatibility
-        i = 1
-        while 1:
-            key = "noproxyfor%d" % i
-            if not self.has_option(section, key):
-                break
-            log.warn(LOG_CHECK,
-                  _("the noproxyfor%(num)d syntax is deprecated; use " \
-                    "the new multiline configuration syntax") % {"num": i})
-            val = self.get(section, key)
-            self.config["noproxyfor"].append(re.compile(val))
             i += 1
         if self.has_option(section, "ignorewarnings"):
             self.config['ignorewarnings'] = [f.strip() for f in \

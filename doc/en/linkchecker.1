@@ -230,12 +230,6 @@ requests to the same host. Default is no pause between requests.
 Specify an NNTP server for \fBnews:\fP links. Default is the
 environment variable \fBNNTP_SERVER\fP. If no host is given,
 only the syntax of the link is checked.
-.TP
-\fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
-Contact hosts that match the given regular expression directly instead of
-going through a proxy.
-.br
-This option can be given multiple times.
 
 .SH "CONFIGURATION FILES"
 Configuration files can specify all options above. They can also
@@ -324,11 +318,14 @@ with \fBhttps://example.org/\fP:
  Set-cookie: baggage="elitist"; comment="hologram"
 
 .SH PROXY SUPPORT
-To use a proxy on Unix or Windows set $http_proxy, $https_proxy or $ftp_proxy
-to the proxy URL. The URL should be of the form
+To use a proxy on Unix or Windows set the $http_proxy, $https_proxy or $ftp_proxy
+environment variables to the proxy URL. The URL should be of the form
 \fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP].
 LinkChecker also detects manual proxy settings of Internet Explorer under
 Windows systems. On a Mac use the Internet Config to select a proxy.
+.
+You can also set a comma-separated domain list in the $no_proxy environment
+variables to ignore any proxy settings for these domains.
 .
 Setting a HTTP proxy on Unix for example looks like this:
 
@@ -342,7 +339,7 @@ Setting a proxy on the Windows command prompt:
 
   set http_proxy=http://proxy.example.com:8080
 
-.SH PERFORMED CHECKES
+.SH PERFORMED CHECKS
 All URLs have to pass a preliminary syntax test. Minor quoting
 mistakes will issue a warning, all other invalid syntax issues
 are errors.
@@ -502,6 +499,8 @@ same as the host of the user browsing your pages.
 .br
 \fBftp_proxy\fP - specifies default FTP proxy server
 .br
+\fBno_proxy\fP - comma-separated list of domains to not contact over a proxy server
+.br
 \fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP - specify output language
 .
 .SH RETURN VALUE
@@ -537,4 +536,4 @@ configuration files
 Bastian Kleineidam <calvin@users.sourceforge.net>
 .
 .SH COPYRIGHT
-Copyright \(co 2000-2009 Bastian Kleineidam
+Copyright \(co 2000-2010 Bastian Kleineidam

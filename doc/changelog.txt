@@ -19,6 +19,8 @@ Fixes:
   demoted to a warning.
   Closes: SF bug #2910588
 - cmdline: Expand tilde (~) in filenames given with the --config option.
+- cmdline: disabled and deprecated the --no-proxy-for option. Use the
+  $no_proxy environment variable instead.
 
 Features:
 - dns: Updated dnspython module from upstream version 1.8.1.

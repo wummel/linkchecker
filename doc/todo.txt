@@ -1,4 +1,3 @@
-- [PROXY] Deprecate the --no-proxy-for option now that $no_proxy is supported.
 - [CHECKING] Parse Word files for hyperlinks (needs win32com)
   app = CreateObject("Word.Application")
   doc = app.Documents.Open("c:\test.doc")

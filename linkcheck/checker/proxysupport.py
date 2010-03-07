@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -60,12 +60,9 @@ class ProxySupport (object):
         log.debug(LOG_CHECK, "using proxy %r", self.proxy)
 
     def ignore_proxy_host (self):
-        """Check if self.host is in the no-proxy-for ignore list."""
+        """Check if self.host is in the $no_proxy ignore list."""
         if urllib.proxy_bypass(self.host):
             return True
-        for ro in self.aggregate.config["noproxyfor"]:
-            if ro.search(self.host):
-                return True
         no_proxy = os.environ.get("no_proxy")
         if no_proxy:
             entries = [parse_host_port(x) for x in no_proxy.split(",")]

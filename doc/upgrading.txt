@@ -1,6 +1,16 @@
 Upgrading
 =========
 
+Migrating from 5.1 to 5.2
+-------------------------
+
+The --no-proxy-for option has been deprecated and will be removed
+in a future release. Also, the "noproxyfor" entries in configuration
+files will not be evaluated anymore.
+You should use the $no_proxy environment variable instead, which
+specifies a comma-separated list of domains that are not contacted
+over proxies.
+
 Migrating from 5.0 to 5.1
 -------------------------
 

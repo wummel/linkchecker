@@ -229,12 +229,6 @@ zwischen Verbindungen.
 Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die Umgebungsvariable
 \fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird lediglich auf
 korrekte Syntax des Links geprüft.
-.TP 
-\fB\-\-no\-proxy\-for=\fP\fIREGEX\fP
-Rechner welche dem angegebenen regulären Ausdruck entsprechen sollen direkt
-und nicht über einen Proxy angesprochen werden.
-.br
-Diese Option kann mehrmals angegeben werden.
 
 .SH KONFIGURATIONSDATEIEN
 Konfigurationsdateien können alle obigen Optionen enthalten. Sie können
@@ -325,11 +319,16 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
  Set\-cookie: baggage="elitist"; comment="hologram"
 
 .SH "PROXY UNTERSTÜTZUNG"
-Um einen Proxy unter Unix oder Windows zu benutzen, setzen Sie $http_proxy,
-$https_proxy oder $ftp_proxy auf die Proxy URL. Die URL sollte die Form
+Um einen Proxy unter Unix oder Windows zu benutzen, setzen Sie die
+$http_proxy, $https_proxy oder $ftp_proxy Umgebungsvariablen auf die Proxy
+URL. Die URL sollte die Form
 \fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP] besitzen. LinkChecker
 erkennt auch die Proxy\-Einstellungen des Internet Explorers auf einem
 Windows\-System. Auf einem Mac benutzen Sie die Internet Konfiguration.
+.
+Sie können eine komma\-separierte Liste von Domainnamen in der $no_proxy
+Umgebungsvariable setzen, um alle Proxies für diese Domainnamen zu
+ignorieren.
 .
 Einen HTTP\-Proxy unter Unix anzugeben sieht beispielsweise so aus:
 
@@ -343,70 +342,66 @@ Setzen eines Proxies unter der Windows Befehlszeile:
 
   set http_proxy=http://proxy.example.com:8080
 
-.SH "PERFORMED CHECKES"
-All URLs have to pass a preliminary syntax test. Minor quoting mistakes will
-issue a warning, all other invalid syntax issues are errors.  After the
-syntax check passes, the URL is queued for connection checking. All
-connection check types are described below.
+.SH "Durchgeführte Prüfungen"
+Alle URLs müssen einen ersten Syntaxtest bestehen. Kleine Kodierungsfehler
+ergeben eine Warnung, jede andere ungültige Syntaxfehler sind Fehler. Nach
+dem Bestehen des Syntaxtests wird die URL in die Schlange zum
+Verbindungstest gestellt. Alle Verbindungstests sind weiter unten
+beschrieben.
 .
 .TP 
-HTTP links (\fBhttp:\fP, \fBhttps:\fP)
-After connecting to the given HTTP server the given path or query is
-requested. All redirections are followed, and if user/password is given it
-will be used as authorization when necessary.  Permanently moved pages issue
-a warning.  All final HTTP status codes other than 2xx are errors.
+HTTP Verknüpfungen (\fBhttp:\fP, \fBhttps:\fP)
+Nach Verbinden zu dem gegebenen HTTP\-Server wird der eingegebene Pfad oder
+Query angefordert. Alle Umleitungen werden verfolgt, und falls ein
+Benutzer/Passwort angegeben wurde werden diese falls notwendig als
+Authorisierung benutzt. Permanent umgezogene Webseiten werden als Warnung
+ausgegeben. Alle finalen HTTP Statuscodes, die nicht dem Muster 2xx
+entsprechen, werden als Fehler ausgegeben.
 .
-HTML page contents are checked for recursion.
+Der Inhalt von HTML\-Seiten wird rekursiv geprüft.
 .TP 
-Local files (\fBfile:\fP)
-A regular, readable file that can be opened is valid. A readable directory
-is also valid. All other files, for example device files, unreadable or
-non\-existing files are errors.
+Lokale Dateien (\fBfile:\fP)
+Eine reguläre, lesbare Datei die geöffnet werden kann ist gültig. Ein
+lesbares Verzeichnis ist ebenfalls gültig. Alle anderen Dateien, zum
+Beispiel Gerätedateien, unlesbare oder nicht existente Dateien ergeben einen
+Fehler.
 .
-HTML or other parseable file contents are checked for recursion.
+HTML\- oder andere untersuchbare Dateiinhalte werden rekursiv geprüft.
 .TP 
-Mail links (\fBmailto:\fP)
-A mailto: link eventually resolves to a list of email addresses.  If one
-address fails, the whole list will fail.  For each mail address we check the
-following things:
+Mail\-Links (\fBmailto:\fP)
+Ein mailto:\-Link ergibt eine Liste von E\-Mail\-Adressen. Falls eine Adresse
+fehlerhaft ist, wird die ganze Liste als fehlerhaft angesehen. Für jede
+E\-Mail\-Adresse werden die folgenden Dinge geprüft:
 .
-  1) Check the adress syntax, both of the part before and after
-     the @ sign.
-  2) Look up the MX DNS records. If we found no MX record,
-     print an error.
-  3) Check if one of the mail hosts accept an SMTP connection.
-     Check hosts with higher priority first.
-     If no host accepts SMTP, we print a warning.
-  4) Try to verify the address with the VRFY command. If we got
-     an answer, print the verified address as an info.
+  1) Prüfe die Syntax der Adresse, sowohl den Teil vor als auch nach dem @\-Zeichen.
+  2) Schlage den MX DNS\-Datensatz nach. Falls kein MX Datensatz gefunden wurde, wird ein Fehler ausgegeben.
+  3) Prüfe, ob einer der Mail\-Rechner eine SMTP\-Verbindung akzeptiert.
+     Rechner mit höherer Priorität werden zuerst geprüft.
+     Fall kein Rechner SMTP\-Verbindungen akzeptiert, wird eine Warnung ausgegeben.
+  4) Versuche, die Adresse mit dem VRFY\-Befehl zu verifizieren. Falls eine Antwort kommt, wird die verifizierte Adresse als Information ausgegeben.
 .TP 
-FTP links (\fBftp:\fP)
+FTP\-Links (\fBftp:\fP)
   
-  For FTP links we do:
+Für FTP\-Links wird Folgendes geprüft:
   
-  1) connect to the specified host
-  2) try to login with the given user and password. The default
-     user is \*(lqanonymous\*(lq, the default password is \*(lqanonymous@\*(lq.
-  3) try to change to the given directory
-  4) list the file with the NLST command
+  1) Eine Verbindung zum angegeben Rechner wird aufgebaut
+  2) Versuche, sich mit dem gegebenen Nutzer und Passwort anzumelden. Der Standardbenutzer ist \*(lqanonymous\*(lq, das Standardpasswort ist \*(lqanonymous@\*(lq.
+  3) Versuche, in das angegebene Verzeichnis zu wechseln
+  4) Liste die Dateien im Verzeichnis auf mit dem NLST\-Befehl
 
-\- Telnet links (\*(lqtelnet:\*(lq)
+\- Telnet\-Links (\*(lqtelnet:\*(lq)
   
-  We try to connect and if user/password are given, login to the
-  given telnet server.
+  Versuche, zu dem angegeben Telnetrechner zu verginden und falls Benutzer/Passwort angegeben sind, wird versucht, sich anzumelden.
 
-\- NNTP links (\*(lqnews:\*(lq, \*(lqsnews:\*(lq, \*(lqnntp\*(lq)
+\- NNTP\-Links (\*(lqnews:\*(lq, \*(lqsnews:\*(lq, \*(lqnntp\*(lq)
   
-  We try to connect to the given NNTP server. If a news group or
-  article is specified, try to request it from the server.
+  Versuche, zu dem angegebenen NNTP\-Rechner eine Verbindung aufzubaucne. Falls eine Nachrichtengruppe oder ein bestimmter Artikel angegeben ist, wird versucht, diese Gruppe oder diesen Artikel vom Rechner anzufragen.
 
-\- Ignored links (\*(lqjavascript:\*(lq, etc.)
+\- Ignorierte Links (\*(lqjavascript:\*(lq, etc.)
   
-  An ignored link will only print a warning. No further checking
-  will be made.
+  Ein ignorierte Link wird nur eine Warnung ausgeben. Weitere Prüfungen werden nicht gemacht.
   
-  Here is a complete list of recognized, but ignored links. The most
-  prominent of them should be JavaScript links.
+  Dies ist eine komplette Liste von erkannten, aber ingorierten Links. Die bekanntesten von ihnen dürften JavaScript\-Links sein.
   
   \- \*(lqacap:\*(lq      (application configuration access protocol)
   \- \*(lqafs:\*(lq       (Andrew File System global file names)
@@ -445,32 +440,23 @@ FTP links (\fBftp:\fP)
 
 
 .SH Rekursion
-Before descending recursively into a URL, it has to fulfill several
-conditions. They are checked in this order:
+Bevor eine URL rekursiv geprüft wird, hat diese mehrere Bedingungen zu
+erfüllen. Diese werden in folgender Reihenfolge geprüft:
 
-1. A URL must be valid.
+1. Eine URL muss gültig sein.
 
-2. A URL must be parseable. This currently includes HTML files,
-   Opera bookmarks files, and directories. If a file type cannot
-   be determined (for example it does not have a common HTML file
-   extension, and the content does not look like HTML), it is assumed
-   to be non\-parseable.
+2. Der URL\-Inhalt muss analysierbar sein. Dies beinhaltet zur Zeit HTML\-Dateien, Opera Lesezeichen, und Verzeichnisse. Falls ein Dateityp nicht erkannt wird, (zum Beispiel weil er keine bekannte HTML\-Dateierweiterung besitzt, und der Inhalt nicht nach HTML aussieht), wird der Inhalt als nicht analysierbar angesehen.
 
-3. The URL content must be retrievable. This is usually the case
-   except for example mailto: or unknown URL types.
+3. Der URL\-Inhalt muss ladbar sein. Dies ist normalerweise der Fall, mit Ausnahme von mailto: oder unbekannten URL\-Typen.
 
-4. The maximum recursion level must not be exceeded. It is configured
-   with the \*(lq\-\-recursion\-level\*(lq option and is unlimited per default.
+4. Die maximale Rekursionstiefe darf nicht überschritten werden. Diese wird mit der Option \*(lq\-\-recursion\-level\*(lq konfiguriert und ist standardmäßig nicht limitiert.
 
-5. It must not match the ignored URL list. This is controlled with
-   the \*(lq\-\-ignore\-url\*(lq option.
+5. Die URL darf nicht in der Liste von ignorierten URLs sein. Die ignorierten URLs werden mit der Option \*(lq\-\-ignore\-url\*(lq konfiguriert.
 
-6. The Robots Exclusion Protocol must allow links in the URL to be
-   followed recursively. This is checked by searching for a
-   "nofollow" directive in the HTML header data.
+6. Das Robots Exclusion Protocol muss es erlauben, dass Verknüpfungen in der URL rekursiv verfolgt werden können. Dies wird geprüft, indem in den HTML Kopfdaten nach der "nofollow"\-Direktive gesucht wird.
 
-Note that the directory recursion reads all files in that directory, not
-just a subset like \*(lqindex.htm*\*(lq.
+Beachten Sie, dass die Verzeichnisrekursion alle Dateien in diesem
+Verzeichnis liest, nicht nur eine Untermenge wie bspw. \*(lqindex.html*\*(lq.
 
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP
@@ -499,6 +485,9 @@ unbedingt derselbe wie der des Benutzers sein.
 \fBhttp_proxy\fP \- gibt Standard HTTP Proxy an
 .br
 \fBftp_proxy\fP \- gibt Standard FTP Proxy an
+.br
+\fBno_proxy\fP \- kommaseparierte Liste von Domains, die nicht über einen
+Proxy\-Server kontaktiert werden
 .br
 \fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP \- gibt Ausgabesprache an
 .
@@ -539,4 +528,4 @@ Ausdrücken
 Bastian Kleineidam <calvin@users.sourceforge.net>
 .
 .SH COPYRIGHT
-Copyright \(co 2000\-2009 Bastian Kleineidam
+Copyright \(co 2000\-2010 Bastian Kleineidam

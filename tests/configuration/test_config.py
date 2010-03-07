@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2009 Bastian Kleineidam
+# Copyright (C) 2006-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -50,12 +50,6 @@ class TestConfig (unittest.TestCase):
         # filtering section
         patterns = [x["pattern"].pattern for x in config["externlinks"]]
         for prefix1 in ("ignore_", "nofollow_"):
-            for prefix2 in ("", "old"):
-                for suffix in ("1", "2"):
-                    key  = "%s%simadoofus%s" % (prefix1, prefix2, suffix)
-                    self.assertTrue(key in patterns)
-        patterns = [x.pattern for x in config["noproxyfor"]]
-        for prefix1 in ("noproxyfor_",):
             for prefix2 in ("", "old"):
                 for suffix in ("1", "2"):
                     key  = "%s%simadoofus%s" % (prefix1, prefix2, suffix)
