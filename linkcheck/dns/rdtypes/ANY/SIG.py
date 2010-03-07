@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -14,8 +14,15 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+import struct
 import linkcheck.dns.rdtypes.sigbase
 
 class SIG(linkcheck.dns.rdtypes.sigbase.SIGBase):
     """SIG record"""
-    pass
+    def to_digestable(self, origin = None):
+        return struct.pack('!HBBIIIH', self.type_covered,
+                           self.algorithm, self.labels,
+                           self.original_ttl, self.expiration,
+                           self.inception, self.key_tag) + \
+                           self.signer.to_digestable(origin) + \
+                           self.signature

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006, 2007 Nominum, Inc.
+# Copyright (C) 2006, 2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -36,12 +36,12 @@ class DHCID(linkcheck.dns.rdata.Rdata):
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
         chunks = []
         while 1:
-            t = tok.get()
-            if t[0] == linkcheck.dns.tokenizer.EOL or t[0] == linkcheck.dns.tokenizer.EOF:
+            t = tok.get().unescape()
+            if t.is_eol_or_eof():
                 break
-            if t[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+            if not t.is_identifier():
                 raise linkcheck.dns.exception.SyntaxError
-            chunks.append(t[1])
+            chunks.append(t.value)
         b64 = ''.join(chunks)
         data = b64.decode('base64_codec')
         return cls(rdclass, rdtype, data)

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2004 Nominum, Inc.
+# Copyright (C) 2001-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -17,8 +17,8 @@
 """Help for building DNS wire format messages"""
 
 from cStringIO import StringIO
-import random
 import struct
+import random
 import time
 
 import linkcheck.dns.exception
@@ -203,7 +203,7 @@ class Renderer(object):
             raise linkcheck.dns.exception.TooBig
         self.counts[section] += n
 
-    def add_edns(self, edns, ednsflags, payload):
+    def add_edns(self, edns, ednsflags, payload, options=None):
         """Add an EDNS OPT record to the message.
 
         @param edns: The EDNS level to use.
@@ -213,6 +213,8 @@ class Renderer(object):
         @param payload: The EDNS sender's payload field, which is the maximum
         size of UDP datagram the sender can handle.
         @type payload: int
+        @param options: The EDNS options list
+        @type options: list of linkcheck.dns.edns.Option instances
         @see: RFC 2671
         """
 
@@ -223,6 +225,25 @@ class Renderer(object):
         before = self.output.tell()
         self.output.write(struct.pack('!BHHIH', 0, linkcheck.dns.rdatatype.OPT, payload,
                                       ednsflags, 0))
+        if not options is None:
+            lstart = self.output.tell()
+            for opt in options:
+                stuff = struct.pack("!HH", opt.otype, 0)
+                self.output.write(stuff)
+                start = self.output.tell()
+                opt.to_wire(self.output)
+                end = self.output.tell()
+                assert end - start < 65536
+                self.output.seek(start - 2)
+                stuff = struct.pack("!H", end - start)
+                self.output.write(stuff)
+                self.output.seek(0, 2)
+            lend = self.output.tell()
+            assert lend - lstart < 65536
+            self.output.seek(lstart - 2)
+            stuff = struct.pack("!H", lend - lstart)
+            self.output.write(stuff)
+            self.output.seek(0, 2)
         after = self.output.tell()
         if after >= self.max_size:
             self._rollback(before)
@@ -230,7 +251,7 @@ class Renderer(object):
         self.counts[ADDITIONAL] += 1
 
     def add_tsig(self, keyname, secret, fudge, id, tsig_error, other_data,
-                 request_mac):
+                 request_mac, algorithm=linkcheck.dns.tsig.default_algorithm):
         """Add a TSIG signature to the message.
 
         @param keyname: the TSIG key name
@@ -248,20 +269,22 @@ class Renderer(object):
         @param request_mac: This message is a response to the request which
         had the specified MAC.
         @type request_mac: string
+        @param algorithm: the TSIG algorithm to use
         """
 
         self._set_section(ADDITIONAL)
         before = self.output.tell()
         s = self.output.getvalue()
-        (tsig_rdata, self.mac, ctx) = linkcheck.dns.tsig.hmac_md5(s,
-                                                        keyname,
-                                                        secret,
-                                                        int(time.time()),
-                                                        fudge,
-                                                        id,
-                                                        tsig_error,
-                                                        other_data,
-                                                        request_mac)
+        (tsig_rdata, self.mac, ctx) = linkcheck.dns.tsig.sign(s,
+                                                    keyname,
+                                                    secret,
+                                                    int(time.time()),
+                                                    fudge,
+                                                    id,
+                                                    tsig_error,
+                                                    other_data,
+                                                    request_mac,
+                                                    algorithm=algorithm)
         keyname.to_wire(self.output, self.compress, self.origin)
         self.output.write(struct.pack('!HHIH', linkcheck.dns.rdatatype.TSIG,
                                       linkcheck.dns.rdataclass.ANY, 0, 0))

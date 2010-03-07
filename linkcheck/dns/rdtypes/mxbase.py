@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -17,6 +17,7 @@
 """MX-like base classes."""
 
 import struct
+from cStringIO import StringIO
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdata
@@ -55,6 +56,10 @@ class MXBase(linkcheck.dns.rdata.Rdata):
         file.write(pref)
         self.exchange.to_wire(file, compress, origin)
 
+    def to_digestable(self, origin = None):
+        return struct.pack("!H", self.preference) + \
+            self.exchange.to_digestable(origin)
+
     def from_wire(cls, rdclass, rdtype, wire, current, rdlen, origin = None):
         (preference, ) = struct.unpack('!H', wire[current : current + 2])
         current += 2
@@ -82,7 +87,20 @@ class MXBase(linkcheck.dns.rdata.Rdata):
 
 class UncompressedMX(MXBase):
     """Base class for rdata that is like an MX record, but whose name
-    is not compressed when convert to DNS wire format."""
+    is not compressed when convert to DNS wire format, and whose
+    digestable form is not downcased."""
 
     def to_wire(self, file, compress = None, origin = None):
         super(UncompressedMX, self).to_wire(file, None, origin)
+
+    def to_digestable(self, origin = None):
+        f = StringIO()
+        self.to_wire(f, None, origin)
+        return f.getvalue()
+
+class UncompressedDowncasingMX(MXBase):
+    """Base class for rdata that is like an MX record, but whose name
+    is not compressed when convert to DNS wire format."""
+
+    def to_wire(self, file, compress = None, origin = None):
+        super(UncompressedDowncasingMX, self).to_wire(file, None, origin)

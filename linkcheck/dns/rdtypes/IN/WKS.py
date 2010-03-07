@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -61,19 +61,19 @@ class WKS(linkcheck.dns.rdata.Rdata):
             protocol = socket.getprotobyname(protocol)
         bitmap = []
         while 1:
-            (ttype, value) = tok.get()
-            if ttype == linkcheck.dns.tokenizer.EOL or ttype == linkcheck.dns.tokenizer.EOF:
+            token = tok.get().unescape()
+            if token.is_eol_or_eof():
                 break
-            if value.isdigit():
-                serv = int(value)
+            if token.value.isdigit():
+                serv = int(token.value)
             else:
                 if protocol != _proto_udp and protocol != _proto_tcp:
-                    raise NotImplementedError, "protocol must be TCP or UDP"
+                    raise NotImplementedError("protocol must be TCP or UDP")
                 if protocol == _proto_udp:
                     protocol_text = "udp"
                 else:
                     protocol_text = "tcp"
-                serv = socket.getservbyname(value, protocol_text)
+                serv = socket.getservbyname(token.value, protocol_text)
             i = serv // 8
             l = len(bitmap)
             if l < i + 1:

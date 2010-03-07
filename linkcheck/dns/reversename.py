@@ -1,4 +1,5 @@
-# Copyright (C) 2006, 2007 Nominum, Inc.
+# -*- coding: iso-8859-1 -*-
+# Copyright (C) 2006, 2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -16,9 +17,9 @@
 """DNS Reverse Map Names.
 
 @var ipv4_reverse_domain: The DNS IPv4 reverse-map domain, in-addr.arpa.
-@type ipv4_reverse_domain: dns.name.Name object
+@type ipv4_reverse_domain: linkcheck.dns.name.Name object
 @var ipv6_reverse_domain: The DNS IPv6 reverse-map domain, ip6.arpa.
-@type ipv6_reverse_domain: dns.name.Name object
+@type ipv6_reverse_domain: linkcheck.dns.name.Name object
 """
 
 import linkcheck.dns.name
@@ -72,4 +73,4 @@ def to_address(name):
         # run through inet_aton() to check syntax and make pretty.
         return linkcheck.dns.ipv6.inet_ntoa(linkcheck.dns.ipv6.inet_aton(text))
     else:
-        raise linkcheck.dns.exception.SyntaxError, 'unknown reverse-map address family'
+        raise linkcheck.dns.exception.SyntaxError('unknown reverse-map address family')

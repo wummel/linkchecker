@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -16,7 +16,7 @@
 
 import linkcheck.dns.rdtypes.mxbase
 
-class AFSDB(linkcheck.dns.rdtypes.mxbase.UncompressedMX):
+class AFSDB(linkcheck.dns.rdtypes.mxbase.UncompressedDowncasingMX):
     """AFSDB record
 
     @ivar subtype: the subtype value

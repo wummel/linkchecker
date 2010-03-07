@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -20,17 +20,21 @@ __all__ = [
     'AFSDB',
     'CERT',
     'CNAME',
+    'DLV',
     'DNAME',
     'DNSKEY',
     'DS',
     'GPOS',
     'HINFO',
+    'HIP',
     'ISDN',
     'KEY',
     'LOC',
     'MX',
     'NS',
     'NSEC',
+    'NSEC3',
+    'NSEC3PARAM',
     'NXT',
     'PTR',
     'RP',

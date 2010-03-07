@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2004 Nominum, Inc.
+# Copyright (C) 2001-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -86,7 +86,7 @@ def from_text(text):
             raise UnknownRdataclass
         value = int(match.group(1))
         if value < 0 or value > 65535:
-            raise ValueError, "class must be between >= 0 and <= 65535"
+            raise ValueError("class must be between >= 0 and <= 65535")
     return value
 
 def to_text(value):
@@ -98,7 +98,7 @@ def to_text(value):
     """
 
     if value < 0 or value > 65535:
-        raise ValueError, "class must be between >= 0 and <= 65535"
+        raise ValueError("class must be between >= 0 and <= 65535")
     text = _by_value.get(value)
     if text is None:
         text = 'CLASS' + repr(value)

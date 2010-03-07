@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -125,10 +125,10 @@ class Answer(object):
                             break
                         continue
                     except KeyError:
-                        raise NoAnswer, "DNS response had no answer"
-                raise NoAnswer, "DNS response had no answer"
+                        raise NoAnswer("DNS response had no answer")
+                raise NoAnswer("DNS response had no answer")
         if rrset is None:
-            raise NoAnswer, "DNS response had no answer"
+            raise NoAnswer("DNS response had no answer")
         self.rrset = rrset
         self.expiration = time.time() + min_ttl
 
@@ -147,7 +147,7 @@ class Answer(object):
         elif attr == 'rdtype':
             return self.rrset.rdtype
         else:
-            raise AttributeError, attr
+            raise AttributeError(attr)
 
     def __len__(self):
         return len(self.rrset)
@@ -230,6 +230,7 @@ class Cache(object):
         @param value: The answer being cached
         @type value: linkcheck.dns.resolver.Answer object
         """
+
         self.maybe_clean()
         self.data[key] = value
 
@@ -242,6 +243,7 @@ class Cache(object):
         @param key: the key to flush
         @type key: (linkcheck.dns.name.Name, int, int) tuple or None
         """
+
         if not key is None:
             if key in self.data:
                 del self.data[key]
@@ -275,6 +277,9 @@ class Resolver(object):
     @type keyring: dict
     @ivar keyname: The TSIG keyname to use.  The default is None.
     @type keyname: linkcheck.dns.name.Name object
+    @ivar keyalgorithm: The TSIG key algorithm to use.  The default is
+    linkcheck.dns.tsig.default_algorithm.
+    @type keyalgorithm: string
     @ivar edns: The EDNS level to use.  The default is -1, no Elinkcheck.dns.
     @type edns: int
     @ivar ednsflags: The EDNS flags
@@ -332,6 +337,7 @@ class Resolver(object):
         self.lifetime = 30.0
         self.keyring = None
         self.keyname = None
+        self.keyalgorithm = linkcheck.dns.tsig.default_algorithm
         self.edns = -1
         self.ednsflags = 0
         self.payload = 0
@@ -621,7 +627,7 @@ class Resolver(object):
         return min(self.lifetime - duration, self.timeout)
 
     def query(self, qname, rdtype=linkcheck.dns.rdatatype.A,
-              rdclass=linkcheck.dns.rdataclass.IN, tcp=False):
+              rdclass=linkcheck.dns.rdataclass.IN, tcp=False, source=None):
         """Query nameservers to find the answer to the question.
 
         The I{qname}, I{rdtype}, and I{rdclass} parameters may be objects
@@ -637,6 +643,8 @@ class Resolver(object):
         @type rdclass: int or string
         @param tcp: use TCP to make the query (default is False).
         @type tcp: bool
+        @param source: bind to this IP address (defaults to machine default IP).
+        @type source: IP address in dotted quad notation
         @rtype: linkcheck.dns.resolver.Answer instance
         @raises Timeout: no answers could be found in the specified lifetime
         @raises NXDOMAIN: the query name does not exist
@@ -670,7 +678,7 @@ class Resolver(object):
                     return answer
             request = linkcheck.dns.message.make_query(qname, rdtype, rdclass)
             if not self.keyname is None:
-                request.use_tsig(self.keyring, self.keyname)
+                request.use_tsig(self.keyring, self.keyname, self.keyalgorithm)
             request.use_edns(self.edns, self.ednsflags, self.payload)
             response = None
 
@@ -680,18 +688,19 @@ class Resolver(object):
             backoff = 0.10
             while response is None:
                 if len(nameservers) == 0:
-                    raise NoNameservers, \
-                      "No DNS servers %s could answer the query %s" % \
-                      (str(self.nameservers), str(qname))
+                    raise NoNameservers("No DNS servers %s could answer the query %s" % \
+                      (str(self.nameservers), str(qname)))
                 for nameserver in nameservers[:]:
                     timeout = self._compute_timeout(start)
                     try:
                         if tcp:
                             response = linkcheck.dns.query.tcp(request, nameserver,
-                                                     timeout, self.port)
+                                                     timeout, self.port,
+                                                     source=source)
                         else:
                             response = linkcheck.dns.query.udp(request, nameserver,
-                                                     timeout, self.port)
+                                                     timeout, self.port,
+                                                     source=source)
                     except (socket.error, linkcheck.dns.exception.Timeout):
 
                         # Communication failure or timeout.  Go to the
@@ -745,13 +754,14 @@ class Resolver(object):
             all_nxdomain = False
             break
         if all_nxdomain:
-            raise NXDOMAIN, "Domain does not exist"
+            raise NXDOMAIN("Domain does not exist")
         answer = Answer(qname, rdtype, rdclass, response)
         if self.cache:
             self.cache.put((qname, rdtype, rdclass), answer)
         return answer
 
-    def use_tsig(self, keyring, keyname=None):
+    def use_tsig(self, keyring, keyname=None,
+                 algorithm=linkcheck.dns.tsig.default_algorithm):
         """Add a TSIG signature to the query.
 
         @param keyring: The TSIG keyring to use; defaults to None.
@@ -761,12 +771,16 @@ class Resolver(object):
         but a keyname is not, then the key used will be the first key in the
         keyring.  Note that the order of keys in a dictionary is not defined,
         so applications should supply a keyname when a keyring is used, unless
-        they know the keyring contains only one key."""
+        they know the keyring contains only one key.
+        @param algorithm: The TSIG key algorithm to use.  The default
+        is linkcheck.dns.tsig.default_algorithm.
+        @type algorithm: string"""
         self.keyring = keyring
         if keyname is None:
             self.keyname = self.keyring.keys()[0]
         else:
             self.keyname = keyname
+        self.keyalgorithm = algorithm
 
     def use_edns(self, edns, ednsflags, payload):
         """Configure Elinkcheck.dns.
@@ -786,14 +800,15 @@ class Resolver(object):
 
 default_resolver = None
 
-def get_default_resolver ():
+def get_default_resolver():
+    """Get the default resolver, initializing it if necessary."""
     global default_resolver
     if default_resolver is None:
         default_resolver = Resolver()
     return default_resolver
 
 def query(qname, rdtype=linkcheck.dns.rdatatype.A, rdclass=linkcheck.dns.rdataclass.IN,
-          tcp=False, resolver=None):
+          tcp=False, source=None, resolver=None):
     """Query nameservers to find the answer to the question.
 
     This is a convenience function that uses the default resolver
@@ -803,7 +818,7 @@ def query(qname, rdtype=linkcheck.dns.rdatatype.A, rdclass=linkcheck.dns.rdatacl
     log.debug(LOG_DNS, "Query %s %s %s", qname, rdtype, rdclass)
     if resolver is None:
         resolver = get_default_resolver()
-    return resolver.query(qname, rdtype, rdclass, tcp)
+    return resolver.query(qname, rdtype, rdclass, tcp, source)
 
 def zone_for_name(name, rdclass=linkcheck.dns.rdataclass.IN,
                   tcp=False, resolver=None):
@@ -817,14 +832,14 @@ def zone_for_name(name, rdclass=linkcheck.dns.rdataclass.IN,
     @type tcp: bool
     @param resolver: the resolver to use
     @type resolver: linkcheck.dns.resolver.Resolver object or None
-    @rtype: dns.name.Name"""
+    @rtype: linkcheck.dns.name.Name"""
 
     if isinstance(name, str):
         name = linkcheck.dns.name.from_text(name, linkcheck.dns.name.root)
     if resolver is None:
         resolver = get_default_resolver()
     if not name.is_absolute():
-        raise NotAbsolute, name
+        raise NotAbsolute(name)
     while 1:
         try:
             answer = resolver.query(name, linkcheck.dns.rdatatype.SOA, rdclass, tcp)

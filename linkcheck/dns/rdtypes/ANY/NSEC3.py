@@ -1,4 +1,3 @@
-# -*- coding: iso-8859-1 -*-
 # Copyright (C) 2004-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
@@ -14,30 +13,60 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from cStringIO import StringIO
+import base64
+import cStringIO
+import string
+import struct
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdata
 import linkcheck.dns.rdatatype
-import linkcheck.dns.name
 
-class NSEC(linkcheck.dns.rdata.Rdata):
-    """NSEC record
+b32_hex_to_normal = string.maketrans('0123456789ABCDEFGHIJKLMNOPQRSTUV',
+                                     'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567')
+b32_normal_to_hex = string.maketrans('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
+                                     '0123456789ABCDEFGHIJKLMNOPQRSTUV')
 
-    @ivar next: the next name
-    @type next: linkcheck.dns.name.Name object
+# hash algorithm constants
+SHA1 = 1
+
+# flag constants
+OPTOUT = 1
+
+class NSEC3(linkcheck.dns.rdata.Rdata):
+    """NSEC3 record
+
+    @ivar algorithm: the hash algorithm number
+    @type algorithm: int
+    @ivar flags: the flags
+    @type flags: int
+    @ivar iterations: the number of iterations
+    @type iterations: int
+    @ivar salt: the salt
+    @type salt: string
+    @ivar next: the next name hash
+    @type next: string
     @ivar windows: the windowed bitmap list
     @type windows: list of (window number, string) tuples"""
 
-    __slots__ = ['next', 'windows']
+    __slots__ = ['algorithm', 'flags', 'iterations', 'salt', 'next', 'windows']
 
-    def __init__(self, rdclass, rdtype, next, windows):
-        super(NSEC, self).__init__(rdclass, rdtype)
+    def __init__(self, rdclass, rdtype, algorithm, flags, iterations, salt,
+                 next, windows):
+        super(NSEC3, self).__init__(rdclass, rdtype)
+        self.algorithm = algorithm
+        self.flags = flags
+        self.iterations = iterations
+        self.salt = salt
         self.next = next
         self.windows = windows
 
     def to_text(self, origin=None, relativize=True, **kw):
-        next = self.next.choose_relativity(origin, relativize)
+        next = base64.b32encode(self.next).translate(b32_normal_to_hex).lower()
+        if self.salt == '':
+            salt = '-'
+        else:
+            salt = self.salt.encode('hex-codec')
         text = ''
         for (window, bitmap) in self.windows:
             bits = []
@@ -48,11 +77,20 @@ class NSEC(linkcheck.dns.rdata.Rdata):
                         bits.append(linkcheck.dns.rdatatype.to_text(window * 256 + \
                                                           i * 8 + j))
             text += (' ' + ' '.join(bits))
-        return '%s%s' % (next, text)
+        return '%u %u %u %s %s%s' % (self.algorithm, self.flags, self.iterations,
+                                     salt, next, text)
 
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
-        next = tok.get_name()
-        next = next.choose_relativity(origin, relativize)
+        algorithm = tok.get_uint8()
+        flags = tok.get_uint8()
+        iterations = tok.get_uint16()
+        salt = tok.get_string()
+        if salt == '-':
+            salt = ''
+        else:
+            salt = salt.decode('hex-codec')
+        next = tok.get_string().upper().translate(b32_hex_to_normal)
+        next = base64.b32decode(next)
         rdtypes = []
         while 1:
             token = tok.get().unescape()
@@ -60,9 +98,9 @@ class NSEC(linkcheck.dns.rdata.Rdata):
                 break
             nrdtype = linkcheck.dns.rdatatype.from_text(token.value)
             if nrdtype == 0:
-                raise linkcheck.dns.exception.DNSSyntaxError, "NSEC with bit 0"
+                raise linkcheck.dns.exception.SyntaxError("NSEC3 with bit 0")
             if nrdtype > 65535:
-                raise linkcheck.dns.exception.DNSSyntaxError, "NSEC with bit > 65535"
+                raise linkcheck.dns.exception.SyntaxError("NSEC3 with bit > 65535")
             rdtypes.append(nrdtype)
         rdtypes.sort()
         window = 0
@@ -85,58 +123,60 @@ class NSEC(linkcheck.dns.rdata.Rdata):
             octets = byte + 1
             bitmap[byte] = chr(ord(bitmap[byte]) | (0x80 >> bit))
         windows.append((window, ''.join(bitmap[0:octets])))
-        return cls(rdclass, rdtype, next, windows)
+        return cls(rdclass, rdtype, algorithm, flags, iterations, salt, next, windows)
 
     from_text = classmethod(from_text)
 
     def to_wire(self, file, compress = None, origin = None):
-        self.next.to_wire(file, None, origin)
+        l = len(self.salt)
+        file.write(struct.pack("!BBHB", self.algorithm, self.flags,
+                               self.iterations, l))
+        file.write(self.salt)
+        l = len(self.next)
+        file.write(struct.pack("!B", l))
+        file.write(self.next)
         for (window, bitmap) in self.windows:
             file.write(chr(window))
             file.write(chr(len(bitmap)))
             file.write(bitmap)
 
     def from_wire(cls, rdclass, rdtype, wire, current, rdlen, origin = None):
-        (next, cused) = linkcheck.dns.name.from_wire(wire[: current + rdlen], current)
-        current += cused
-        rdlen -= cused
+        (algorithm, flags, iterations, slen) = struct.unpack('!BBHB',
+                                                             wire[current : current + 5])
+        current += 5
+        rdlen -= 5
+        salt = wire[current : current + slen]
+        current += slen
+        rdlen -= slen
+        (nlen, ) = struct.unpack('!B', wire[current])
+        current += 1
+        rdlen -= 1
+        next = wire[current : current + nlen]
+        current += nlen
+        rdlen -= nlen
         windows = []
         while rdlen > 0:
             if rdlen < 3:
-                raise linkcheck.dns.exception.FormError, "NSEC too short"
+                raise linkcheck.dns.exception.FormError("NSEC3 too short")
             window = ord(wire[current])
             octets = ord(wire[current + 1])
             if octets == 0 or octets > 32:
-                raise linkcheck.dns.exception.FormError, "bad NSEC octets"
+                raise linkcheck.dns.exception.FormError("bad NSEC3 octets")
             current += 2
             rdlen -= 2
             if rdlen < octets:
-                raise linkcheck.dns.exception.FormError, "bad NSEC bitmap length"
+                raise linkcheck.dns.exception.FormError("bad NSEC3 bitmap length")
             bitmap = wire[current : current + octets]
             current += octets
             rdlen -= octets
             windows.append((window, bitmap))
-        if not origin is None:
-            next = next.relativize(origin)
-        return cls(rdclass, rdtype, next, windows)
+        return cls(rdclass, rdtype, algorithm, flags, iterations, salt, next, windows)
 
     from_wire = classmethod(from_wire)
 
-    def choose_relativity(self, origin = None, relativize = True):
-        self.next = self.next.choose_relativity(origin, relativize)
-
     def _cmp(self, other):
-        v = cmp(self.next, other.next)
-        if v == 0:
-            b1 = StringIO()
-            for (window, bitmap) in self.windows:
-                b1.write(chr(window))
-                b1.write(chr(len(bitmap)))
-                b1.write(bitmap)
-            b2 = StringIO()
-            for (window, bitmap) in other.windows:
-                b2.write(chr(window))
-                b2.write(chr(len(bitmap)))
-                b2.write(bitmap)
-            v = cmp(b1.getvalue(), b2.getvalue())
-        return v
+        b1 = cStringIO.StringIO()
+        self.to_wire(b1)
+        b2 = cStringIO.StringIO()
+        other.to_wire(b2)
+        return cmp(b1.getvalue(), b2.getvalue())

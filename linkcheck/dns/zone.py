@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -108,12 +108,10 @@ class Zone(object):
         if isinstance(name, basestring):
             name = linkcheck.dns.name.from_text(name, None)
         elif not isinstance(name, linkcheck.dns.name.Name):
-            raise KeyError, \
-                  "name parameter must be convertable to a DNS name"
+            raise KeyError("name parameter must be convertable to a DNS name")
         if name.is_absolute():
             if not name.is_subdomain(self.origin):
-                raise KeyError, \
-                      "name parameter must be a subdomain of the zone origin"
+                raise KeyError("name parameter must be a subdomain of the zone origin")
             if self.relativize:
                 name = name.relativize(self.origin)
         return name
@@ -559,20 +557,21 @@ class _MasterReader(object):
 
     def _eat_line(self):
         while 1:
-            (ttype, t) = self.tok.get()
-            if ttype == linkcheck.dns.tokenizer.EOL or ttype == linkcheck.dns.tokenizer.EOF:
+            token = self.tok.get()
+            if token.is_eol_or_eof():
                 break
 
     def _rr_line(self):
         """Process one line from a DNS master file."""
         # Name
+        if self.current_origin is None:
+            raise UnknownOrigin
         token = self.tok.get(want_leading = True)
-        if token[0] != linkcheck.dns.tokenizer.WHITESPACE:
-            self.last_name = linkcheck.dns.name.from_text(token[1], self.current_origin)
+        if not token.is_whitespace():
+            self.last_name = linkcheck.dns.name.from_text(token.value, self.current_origin)
         else:
             token = self.tok.get()
-            if token[0] == linkcheck.dns.tokenizer.EOL or \
-               token[0] == linkcheck.dns.tokenizer.EOF:
+            if token.is_eol_or_eof():
                 # treat leading WS followed by EOL/EOF as if they were EOL/EOF.
                 return
             self.tok.unget(token)
@@ -583,34 +582,33 @@ class _MasterReader(object):
         if self.relativize:
             name = name.relativize(self.zone.origin)
         token = self.tok.get()
-        if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+        if not token.is_identifier():
             raise linkcheck.dns.exception.DNSSyntaxError
         # TTL
         try:
-            ttl = linkcheck.dns.ttl.from_text(token[1])
+            ttl = linkcheck.dns.ttl.from_text(token.value)
             token = self.tok.get()
-            if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+            if not token.is_identifier():
                 raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.ttl.BadTTL:
             ttl = self.ttl
         # Class
         try:
-            rdclass = linkcheck.dns.rdataclass.from_text(token[1])
+            rdclass = linkcheck.dns.rdataclass.from_text(token.value)
             token = self.tok.get()
-            if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+            if not token.is_identifier():
                 raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.exception.DNSSyntaxError:
-            raise linkcheck.dns.exception.DNSSyntaxError
+            raise
         except StandardError:
             rdclass = self.zone.rdclass
         if rdclass != self.zone.rdclass:
-            raise linkcheck.dns.exception.DNSSyntaxError, "RR class is not zone's class"
+            raise linkcheck.dns.exception.DNSSyntaxError("RR class is not zone's class")
         # Type
         try:
-            rdtype = linkcheck.dns.rdatatype.from_text(token[1])
+            rdtype = linkcheck.dns.rdatatype.from_text(token.value)
         except StandardError:
-            raise linkcheck.dns.exception.DNSSyntaxError, \
-                  "unknown rdatatype '%s'" % token[1]
+            raise linkcheck.dns.exception.DNSSyntaxError("unknown rdatatype '%s'" % token.value)
         n = self.zone.nodes.get(name)
         if n is None:
             n = self.zone.node_factory()
@@ -621,7 +619,7 @@ class _MasterReader(object):
         except linkcheck.dns.exception.DNSSyntaxError:
             # Catch and reraise.
             (ty, va) = sys.exc_info()[:2]
-            raise ty, va
+            raise va
         except StandardError:
             # All exceptions that occur in the processing of rdata
             # are treated as syntax errors.  This is not strictly
@@ -630,8 +628,7 @@ class _MasterReader(object):
             # helpful filename:line info.
 
             (ty, va) = sys.exc_info()[:2]
-            raise linkcheck.dns.exception.DNSSyntaxError, \
-                  "caught exception %s: %s" % (str(ty), str(va))
+            raise linkcheck.dns.exception.DNSSyntaxError("caught exception %s: %s" % (str(ty), str(va)))
 
         rd.choose_relativity(self.zone.origin, self.relativize)
         covers = rd.covers()
@@ -647,8 +644,8 @@ class _MasterReader(object):
 
         try:
             while 1:
-                token = self.tok.get(True, True)
-                if token[0] == linkcheck.dns.tokenizer.EOF:
+                token = self.tok.get(True, True).unescape()
+                if token.is_eof():
                     if not self.current_file is None:
                         self.current_file.close()
                     if len(self.saved_state) > 0:
@@ -659,18 +656,18 @@ class _MasterReader(object):
                          self.ttl) = self.saved_state.pop(-1)
                         continue
                     break
-                elif token[0] == linkcheck.dns.tokenizer.EOL:
+                elif token.is_eol():
                     continue
-                elif token[0] == linkcheck.dns.tokenizer.COMMENT:
+                elif token.is_comment():
                     self.tok.get_eol()
                     continue
-                elif token[1][0] == '$':
-                    u = token[1].upper()
+                elif token.value[0] == '$':
+                    u = token.value.upper()
                     if u == '$TTL':
                         token = self.tok.get()
-                        if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
-                            raise linkcheck.dns.exception.DNSSyntaxError, "bad $TTL"
-                        self.ttl = linkcheck.dns.ttl.from_text(token[1])
+                        if not token.is_identifier():
+                            raise linkcheck.dns.exception.DNSSyntaxError("bad $TTL")
+                        self.ttl = linkcheck.dns.ttl.from_text(token.value)
                         self.tok.get_eol()
                     elif u == '$ORIGIN':
                         self.current_origin = self.tok.get_name()
@@ -679,19 +676,16 @@ class _MasterReader(object):
                             self.zone.origin = self.current_origin
                     elif u == '$INCLUDE' and self.allow_include:
                         token = self.tok.get()
-                        if token[0] != linkcheck.dns.tokenizer.QUOTED_STRING:
-                            raise linkcheck.dns.exception.DNSSyntaxError, \
-                                  "bad filename in $INCLUDE"
-                        filename = token[1]
+                        if not token.is_quoted_string():
+                            raise linkcheck.dns.exception.DNSSyntaxError("bad filename in $INCLUDE")
+                        filename = token.value
                         token = self.tok.get()
-                        if token[0] == linkcheck.dns.tokenizer.IDENTIFIER:
-                            new_origin = linkcheck.dns.name.from_text(token[1], \
+                        if token.is_identifier():
+                            new_origin = linkcheck.dns.name.from_text(token.value, \
                                                         self.current_origin)
                             self.tok.get_eol()
-                        elif token[0] != linkcheck.dns.tokenizer.EOL and \
-                             token[0] != linkcheck.dns.tokenizer.EOF:
-                            raise linkcheck.dns.exception.DNSSyntaxError, \
-                                  "bad origin in $INCLUDE"
+                        elif not token.is_eol_or_eof():
+                            raise linkcheck.dns.exception.DNSSyntaxError("bad origin in $INCLUDE")
                         else:
                             new_origin = self.current_origin
                         self.saved_state.append((self.tok,
@@ -704,8 +698,7 @@ class _MasterReader(object):
                                                            filename)
                         self.current_origin = new_origin
                     else:
-                        raise linkcheck.dns.exception.DNSSyntaxError, \
-                              "Unknown master file directive '" + u + "'"
+                        raise linkcheck.dns.exception.DNSSyntaxError("Unknown master file directive '" + u + "'")
                     continue
                 self.tok.unget(token)
                 self._rr_line()
@@ -819,7 +812,7 @@ def from_xfr(xfr, zone_factory=Zone, relativize=True):
     @type xfr: generator of linkcheck.dns.message.Message objects
     @param relativize: should names be relativized?  The default is True.
     It is essential that the relativize setting matches the one specified
-    to dns.query.xfr().
+    to linkcheck.dns.query.xfr().
     @type relativize: bool
     @raises linkcheck.dns.zone.NoSOA: No SOA RR was found at the zone origin
     @raises linkcheck.dns.zone.NoNS: No NS RRset was found at the zone origin

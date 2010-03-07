@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -44,7 +44,7 @@ class ISDN(linkcheck.dns.rdata.Rdata):
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
         address = tok.get_string()
         t = tok.get()
-        if t[0] != linkcheck.dns.tokenizer.EOL and t[0] != linkcheck.dns.tokenizer.EOF:
+        if not t.is_eol_or_eof():
             tok.unget(t)
             subaddress = tok.get_string()
         else:

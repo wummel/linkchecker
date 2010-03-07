@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -37,10 +37,8 @@ class AAAA(linkcheck.dns.rdata.Rdata):
         return self.address
 
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
-        (ttype, address) = tok.get()
-        if ttype != linkcheck.dns.tokenizer.IDENTIFIER:
-            raise linkcheck.dns.exception.DNSSyntaxError
-        t = tok.get_eol()
+        address = tok.get_identifier()
+        tok.get_eol()
         return cls(rdclass, rdtype, address)
 
     from_text = classmethod(from_text)

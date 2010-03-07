@@ -1,4 +1,5 @@
-# Copyright (C) 2006, 2007 Nominum, Inc.
+# -*- coding: iso-8859-1 -*-
+# Copyright (C) 2006, 2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -45,15 +46,14 @@ class TXTBase(linkcheck.dns.rdata.Rdata):
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
         strings = []
         while 1:
-            (ttype, s) = tok.get()
-            if ttype == linkcheck.dns.tokenizer.EOL or ttype == linkcheck.dns.tokenizer.EOF:
+            token = tok.get().unescape()
+            if token.is_eol_or_eof():
                 break
-            if ttype != linkcheck.dns.tokenizer.QUOTED_STRING and \
-               ttype != linkcheck.dns.tokenizer.IDENTIFIER:
-                raise linkcheck.dns.exception.SyntaxError, "expected a string"
-            if len(s) > 255:
-                raise linkcheck.dns.exception.SyntaxError, "string too long"
-            strings.append(s)
+            if not (token.is_quoted_string() or token.is_identifier()):
+                raise linkcheck.dns.exception.DNSSyntaxError("expected a string")
+            if len(token.value) > 255:
+                raise linkcheck.dns.exception.DNSSyntaxError("string too long")
+            strings.append(token.value)
         if len(strings) == 0:
             raise linkcheck.dns.exception.UnexpectedEnd
         return cls(rdclass, rdtype, strings)

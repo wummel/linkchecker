@@ -1,3 +1,13 @@
+- [PROXY] Deprecate the --no-proxy-for option now that $no_proxy is supported.
+- [CHECKING] Parse Word files for hyperlinks (needs win32com)
+  app = CreateObject("Word.Application")
+  doc = app.Documents.Open("c:\test.doc")
+  for link in doc.Hyperlinks:
+    url = link.Address
+    name = link.TextToDisplay
+- [HTTP] Do not fall back to GET when no recursion is requested on
+  single pages. This would allow to check pages even if robots.txt
+  disallows to get the page content.
 - [GUI] Add more context menu actions:
   + Show detailed URL properties
   + View source
@@ -5,17 +15,6 @@
 - [PYTHON3]
   linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
   linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
-- [PROXY] Deprecate the --no-proxy-for option now that $no_proxy is supported.
 - [HTTP] Allow sending POST data for login at beginning of check.
-- [DNS] update dnspython to latest version to fix IndexError (see bug report)
-- [HTTP] Do not fall back to GET when no recursion is requested on
-  single pages. This would allow to check pages even if robots.txt
-  disallows to get the page content.
 - [HTTP] try out httest
-- [CHECKING] Parse Word files for hyperlinks (needs win32com)
-  app = CreateObject("Word.Application")
-  doc = app.Documents.Open("c:\test.doc")
-  for link in doc.Hyperlinks:
-    url = link.Address
-    name = link.TextToDisplay
 - [FTP] Use local testserver for FTP tests

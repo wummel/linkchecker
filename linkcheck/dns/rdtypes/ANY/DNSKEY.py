@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004 Nominum, Inc.
+# Copyright (C) 2004-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -15,6 +15,11 @@
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 import linkcheck.dns.rdtypes.keybase
+
+# flag constants
+SEP = 0x0001
+REVOKE = 0x0080
+ZONE = 0x0100
 
 class DNSKEY(linkcheck.dns.rdtypes.keybase.KEYBase):
     """DNSKEY record"""

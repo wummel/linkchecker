@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -33,7 +33,7 @@ def inet_ntoa(address):
     """
 
     if len(address) != 16:
-        raise ValueError, "IPv6 addresses are 16 bytes long"
+        raise ValueError("IPv6 addresses are 16 bytes long")
     hexip = address.encode('hex_codec')
     chunks = []
     i = 0

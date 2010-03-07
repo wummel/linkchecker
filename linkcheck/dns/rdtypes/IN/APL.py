@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -92,9 +92,10 @@ class APL(linkcheck.dns.rdata.Rdata):
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
         items = []
         while 1:
-            (ttype, item) = tok.get()
-            if ttype == linkcheck.dns.tokenizer.EOL or ttype == linkcheck.dns.tokenizer.EOF:
+            token = tok.get().unescape()
+            if token.is_eol_or_eof():
                 break
+            item = token.value
             if item[0] == '!':
                 negation = True
                 item = item[1:]

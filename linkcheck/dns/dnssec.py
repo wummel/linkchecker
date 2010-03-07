@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -20,6 +20,11 @@ RSAMD5 = 1
 DH = 2
 DSA = 3
 ECC = 4
+RSASHA1 = 5
+DSANSEC3SHA1 = 6
+RSASHA1NSEC3SHA1 = 7
+RSASHA256 = 8
+RSASHA512 = 10
 INDIRECT = 252
 PRIVATEDNS = 253
 PRIVATEOID = 254
@@ -29,6 +34,11 @@ _algorithm_by_text = {
     'DH' : DH,
     'DSA' : DSA,
     'ECC' : ECC,
+    'RSASHA1' : RSASHA1,
+    'DSANSEC3SHA1' : DSANSEC3SHA1,
+    'RSASHA1NSEC3SHA1' : RSASHA1NSEC3SHA1,
+    'RSASHA256' : RSASHA256,
+    'RSASHA512' : RSASHA512,
     'INDIRECT' : INDIRECT,
     'PRIVATEDNS' : PRIVATEDNS,
     'PRIVATEOID' : PRIVATEOID,

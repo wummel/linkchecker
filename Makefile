@@ -12,8 +12,10 @@ TESTS ?= tests/
 TESTOPTS=
 PAGER ?= less
 # build dir for debian package
-BUILDDIR:=/home/calvin/packages/official
+BUILDDIR:=$(HOME)/packages/official
 DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
+# original dnspython repository module
+DNSPYTHON:=$(HOME)/src/dnspython-git/dns
 # options to run the pep8 utility
 PEP8OPTS:=--repeat --ignore=E211,E501 --exclude=dns
 
@@ -156,6 +158,10 @@ diff:
 	  echo "Comparing $${f}.py"; \
 	  diff -u linkcheck/$${f}2.py $(PYTHONSRC)/Lib/$${f}.py | $(PAGER); \
 	done
+
+.PHONY: dnsdiff
+dnsdiff:
+	diff -BurN --exclude=changelog.txt linkcheck/dns $(DNSPYTHON) | $(PAGER)
 
 .PHONY: changelog
 changelog:

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -54,24 +54,6 @@ def inet_pton(family, text):
     else:
         raise NotImplementedError
 
-def af_for_address(text):
-    """Determine the address family of a textual-form network address.
-
-    @param text: the textual address
-    @type text: string
-    @raises ValueError: the address family cannot be determined from the input.
-    @rtype int
-    """
-    try:
-        junk = linkcheck.dns.ipv4.inet_aton(text)
-        return AF_INET
-    except StandardError:
-        try:
-            junk = linkcheck.dns.ipv6.inet_aton(text)
-            return AF_INET6
-        except StandardError:
-            raise ValueError
-
 def inet_ntop(family, address):
     """Convert the binary form of a network address into its textual form.
 
@@ -89,6 +71,24 @@ def inet_ntop(family, address):
         return linkcheck.dns.ipv6.inet_ntoa(address)
     else:
         raise NotImplementedError
+
+def af_for_address(text):
+    """Determine the address family of a textual-form network address.
+
+    @param text: the textual address
+    @type text: string
+    @raises ValueError: the address family cannot be determined from the input.
+    @rtype int
+    """
+    try:
+        junk = linkcheck.dns.ipv4.inet_aton(text)
+        return AF_INET
+    except StandardError:
+        try:
+            junk = linkcheck.dns.ipv6.inet_aton(text)
+            return AF_INET6
+        except StandardError:
+            raise ValueError
 
 def is_multicast(text):
     """Is the textual-form network address a multicast address?

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2004 Nominum, Inc.
+# Copyright (C) 2001-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -25,6 +25,8 @@ default is 'linkcheck.dns.rdtypes'.  Changing this value will break the library.
 @var _hex_chunk: At most this many octets that will be represented in each
 chunk of hexstring that _hexify() produces before whitespace occurs.
 @type _hex_chunk: int"""
+
+from cStringIO import StringIO
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdataclass
@@ -171,6 +173,13 @@ class Rdata(object):
 
         raise NotImplementedError
 
+    def to_digestable(self, origin = None):
+        """Convert rdata to a format suitable for digesting in hashes.  This
+        is also the DNSSEC canonical form."""
+        f = StringIO()
+        self.to_wire(f, None, origin)
+        return f.getvalue()
+
     def validate(self):
         """Check that the current contents of the rdata's fields are
         valid.  If you change an rdata by assigning to its fields,
@@ -311,21 +320,20 @@ class GenericRdata(Rdata):
         return r'\# %d ' % len(self.data) + _hexify(self.data)
 
     def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
-        if tok.get_string() != r'\#':
-            raise linkcheck.dns.exception.DNSSyntaxError, \
-                  r'generic rdata does not start with \#'
+        token = tok.get()
+        if not token.is_identifier() or token.value != '\#':
+            raise linkcheck.dns.exception.DNSSyntaxError(r'generic rdata does not start with \#')
         length = tok.get_int()
         chunks = []
         while 1:
-            (ttype, value) = tok.get()
-            if ttype == linkcheck.dns.tokenizer.EOL or ttype == linkcheck.dns.tokenizer.EOF:
+            token = tok.get()
+            if token.is_eol_or_eof():
                 break
-            chunks.append(value)
+            chunks.append(token.value)
         hex = ''.join(chunks)
         data = hex.decode('hex_codec')
         if len(data) != length:
-            raise linkcheck.dns.exception.DNSSyntaxError, \
-                  'generic rdata hex data has wrong length'
+            raise linkcheck.dns.exception.DNSSyntaxError('generic rdata hex data has wrong length')
         return cls(rdclass, rdtype, data)
 
     from_text = classmethod(from_text)
@@ -407,8 +415,8 @@ def from_text(rdclass, rdtype, tok, origin = None, relativize = True):
         # peek at first token
         token = tok.get()
         tok.unget(token)
-        if token[0] == linkcheck.dns.tokenizer.IDENTIFIER and \
-           token[1] == r'\#':
+        if token.is_identifier() and \
+           token.value == r'\#':
 
             # Known type using the generic syntax.  Extract the
             # wire form from the generic syntax, and then run

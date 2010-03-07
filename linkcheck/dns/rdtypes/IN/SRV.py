@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -83,7 +83,7 @@ class SRV(linkcheck.dns.rdata.Rdata):
 
     def _cmp(self, other):
         sp = struct.pack("!HHH", self.priority, self.weight, self.port)
-        op = struct.pack("!HHH", other.priority, self.weight, self.port)
+        op = struct.pack("!HHH", other.priority, other.weight, other.port)
         v = cmp(sp, op)
         if v == 0:
             v = cmp(self.target, other.target)

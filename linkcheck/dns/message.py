@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2004 Nominum, Inc.
+# Copyright (C) 2001-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -17,6 +17,7 @@
 """DNS Messages"""
 
 from cStringIO import StringIO
+import random
 import struct
 import sys
 import time
@@ -84,6 +85,10 @@ class Message(object):
     @type ednsflags: long
     @ivar payload: The EDNS payload size.  The default is 0.
     @type payload: int
+    @ivar options: The EDNS options
+    @type options: list of linkcheck.dns.edns.Option objects
+    @ivar request_payload: The associated request's EDNS payload size.
+    @type request_payload: int
     @ivar keyring: The TSIG keyring to use.  The default is None.
     @type keyring: dict
     @ivar keyname: The TSIG keyname to use.  The default is None.
@@ -91,6 +96,9 @@ class Message(object):
     @ivar request_mac: The TSIG MAC of the request message associated with
     this message; used when validating TSIG signatures.   @see: RFC 2845 for
     more information on TSIG fields.
+    @ivar keyalgorithm: The TSIG key algorithm to use.  The default is
+    linkcheck.dns.tsig.default_algorithm.
+    @type keyalgorithm: string
     @type request_mac: string
     @ivar fudge: TSIG time fudge; default is 300 seconds.
     @type fudge: int
@@ -141,9 +149,11 @@ class Message(object):
         self.edns = -1
         self.ednsflags = 0
         self.payload = 0
+        self.options = []
         self.request_payload = 0
         self.keyring = None
         self.keyname = None
+        self.keyalgorithm = linkcheck.dns.tsig.default_algorithm
         self.request_mac = ''
         self.other_data = ''
         self.tsig_error = 0
@@ -281,7 +291,7 @@ class Message(object):
         elif section is self.additional:
             return 3
         else:
-            raise ValueError, 'unknown section'
+            raise ValueError('unknown section')
 
     def find_rrset(self, section, name, rdclass, rdtype,
                    covers=linkcheck.dns.rdatatype.NONE, deleting=None, create=False,
@@ -405,12 +415,14 @@ class Message(object):
         if not self.keyname is None:
             r.add_tsig(self.keyname, self.keyring[self.keyname],
                        self.fudge, self.original_id, self.tsig_error,
-                       self.other_data, self.request_mac)
+                       self.other_data, self.request_mac,
+                       self.keyalgorithm)
             self.mac = r.mac
         return r.get_wire()
 
     def use_tsig(self, keyring, keyname=None, fudge=300, original_id=None,
-                 tsig_error=0, other_data=''):
+                 tsig_error=0, other_data='',
+                 algorithm=linkcheck.dns.tsig.default_algorithm):
         """When sending, a TSIG signature using the specified keyring
         and keyname should be added.
 
@@ -431,6 +443,8 @@ class Message(object):
         @type tsig_error: int
         @param other_data: TSIG other data.
         @type other_data: string
+        @param algorithm: The TSIG algorithm to use; defaults to
+        linkcheck.dns.tsig.default_algorithm
         """
 
         self.keyring = keyring
@@ -440,6 +454,7 @@ class Message(object):
             if isinstance(keyname, basestring):
                 keyname = linkcheck.dns.name.from_text(keyname)
             self.keyname = keyname
+        self.keyalgorithm = algorithm
         self.fudge = fudge
         if original_id is None:
             self.original_id = self.id
@@ -448,7 +463,7 @@ class Message(object):
         self.tsig_error = tsig_error
         self.other_data = other_data
 
-    def use_edns(self, edns=0, ednsflags=0, payload=1280, request_payload=None):
+    def use_edns(self, edns=0, ednsflags=0, payload=1280, request_payload=None, options=None):
         """Configure EDNS behavior.
         @param edns: The EDNS level to use.  Specifying None, False, or -1
         means 'do not use EDNS', and in this case the other parameters are
@@ -464,6 +479,8 @@ class Message(object):
         this message.  If not specified, defaults to the value of payload.
         @type request_payload: int or None
         @see: RFC 2671
+        @param options: The EDNS options
+        @type options: None or list of linkcheck.dns.edns.Option objects
         """
         if edns is None or edns is False:
             edns = -1
@@ -475,13 +492,17 @@ class Message(object):
             ednsflags = 0
             payload = 0
             request_payload = 0
+            options = []
         else:
             # make sure the EDNS version in ednsflags agrees with edns
             ednsflags &= 0xFF00FFFFL
             ednsflags |= (edns << 16)
+            if options is None:
+                options = []
         self.edns = edns
         self.ednsflags = ednsflags
         self.payload = payload
+        self.options = options
         self.request_payload = request_payload
 
     def want_dnssec(self, wanted=True):
@@ -545,18 +566,22 @@ class _WireReader(object):
     @type current: int
     @ivar updating: Is the message a dynamic update?
     @type updating: bool
+    @ivar one_rr_per_rrset: Put each RR into its own RRset?
+    @type one_rr_per_rrset: bool
     @ivar zone_rdclass: The class of the zone in messages which are
     DNS dynamic updates.
     @type zone_rdclass: int
     """
 
-    def __init__(self, wire, message, question_only=False):
+    def __init__(self, wire, message, question_only=False,
+                 one_rr_per_rrset=False):
         self.wire = wire
         self.message = message
         self.current = 0
         self.updating = False
         self.zone_rdclass = linkcheck.dns.rdataclass.IN
         self.question_only = question_only
+        self.one_rr_per_rrset = one_rr_per_rrset
 
     def _get_question(self, qcount):
         """Read the next I{qcount} records from the wire data and add them to
@@ -590,7 +615,7 @@ class _WireReader(object):
         @param count: the number of records to read
         @type count: int"""
 
-        if self.updating:
+        if self.updating or self.one_rr_per_rrset:
             force_unique = True
         else:
             force_unique = False
@@ -612,16 +637,28 @@ class _WireReader(object):
                 self.message.payload = rdclass
                 self.message.ednsflags = ttl
                 self.message.edns = (ttl & 0xff0000) >> 16
+                self.message.options = []
+                current = self.current
+                optslen = rdlen
+                while optslen > 0:
+                    (otype, olen) = \
+                            struct.unpack('!HH',
+                                          self.wire[current:current + 4])
+                    current = current + 4
+                    opt = linkcheck.dns.edns.option_from_wire(otype, self.wire, current, olen)
+                    self.message.options.append(opt)
+                    current = current + olen
+                    optslen = optslen - 4 - olen
                 seen_opt = True
             elif rdtype == linkcheck.dns.rdatatype.TSIG:
                 if not (section is self.message.additional and
                         i == (count - 1)):
                     raise BadTSIG
                 if self.message.keyring is None:
-                    raise UnknownTSIGKey, 'got signed message without keyring'
+                    raise UnknownTSIGKey('got signed message without keyring')
                 secret = self.message.keyring.get(absolute_name)
                 if secret is None:
-                    raise UnknownTSIGKey, "key '%s' unknown" % name
+                    raise UnknownTSIGKey("key '%s' unknown" % name)
                 self.message.tsig_ctx = \
                         linkcheck.dns.tsig.validate(self.wire,
                                           absolute_name,
@@ -645,7 +682,9 @@ class _WireReader(object):
                     rdclass = self.zone_rdclass
                 else:
                     deleting = None
-                if deleting == linkcheck.dns.rdataclass.ANY:
+                if deleting == linkcheck.dns.rdataclass.ANY or \
+                   (deleting == linkcheck.dns.rdataclass.NONE and \
+                    section == self.message.answer):
                     covers = linkcheck.dns.rdatatype.NONE
                     rd = None
                 else:
@@ -689,7 +728,7 @@ class _WireReader(object):
 
 def from_wire(wire, keyring=None, request_mac='', xfr=False, origin=None,
               tsig_ctx = None, multi = False, first = True,
-              question_only = False):
+              question_only = False, one_rr_per_rrset = False):
     """Convert a DNS wire format message into a message
     object.
 
@@ -713,6 +752,8 @@ def from_wire(wire, keyring=None, request_mac='', xfr=False, origin=None,
     @type first: bool
     @param question_only: Read only up to the end of the question section?
     @type question_only: bool
+    @param one_rr_per_rrset: Put each RR into its own RRset
+    @type one_rr_per_rrset: bool
     @raises ShortHeader: The message is less than 12 octets long.
     @raises TrailingJunk: There were octets in the message past the end
     of the proper DNS message.
@@ -731,7 +772,7 @@ def from_wire(wire, keyring=None, request_mac='', xfr=False, origin=None,
     m.multi = multi
     m.first = first
 
-    reader = _WireReader(wire, m, question_only)
+    reader = _WireReader(wire, m, question_only, one_rr_per_rrset)
     reader.read()
 
     return m
@@ -764,13 +805,14 @@ class _TextReader(object):
     def _header_line(self, section):
         """Process one line from the text format header section."""
 
-        (ttype, what) = self.tok.get()
+        token = self.tok.get()
+        what = token.value
         if what == 'id':
             self.message.id = self.tok.get_int()
         elif what == 'flags':
             while True:
                 token = self.tok.get()
-                if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+                if not token.is_identifier():
                     self.tok.unget(token)
                     break
                 self.message.flags = self.message.flags | \
@@ -808,25 +850,26 @@ class _TextReader(object):
 
     def _question_line(self, section):
         """Process one line from the text format question section."""
+
         token = self.tok.get(want_leading = True)
-        if token[0] != linkcheck.dns.tokenizer.WHITESPACE:
-            self.last_name = linkcheck.dns.name.from_text(token[1], None)
+        if not token.is_whitespace():
+            self.last_name = linkcheck.dns.name.from_text(token.value, None)
         name = self.last_name
         token = self.tok.get()
-        if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+        if not token.is_identifier():
             raise linkcheck.dns.exception.DNSSyntaxError
         # Class
         try:
-            rdclass = linkcheck.dns.rdataclass.from_text(token[1])
+            rdclass = linkcheck.dns.rdataclass.from_text(token.value)
             token = self.tok.get()
-            if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+            if not token.is_identifier():
                 raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.exception.DNSSyntaxError:
             raise linkcheck.dns.exception.DNSSyntaxError
         except StandardError:
             rdclass = linkcheck.dns.rdataclass.IN
         # Type
-        rdtype = linkcheck.dns.rdatatype.from_text(token[1])
+        rdtype = linkcheck.dns.rdatatype.from_text(token.value)
         self.message.find_rrset(self.message.question, name,
                                 rdclass, rdtype, create=True,
                                 force_unique=True)
@@ -841,17 +884,17 @@ class _TextReader(object):
         deleting = None
         # Name
         token = self.tok.get(want_leading = True)
-        if token[0] != linkcheck.dns.tokenizer.WHITESPACE:
-            self.last_name = linkcheck.dns.name.from_text(token[1], None)
+        if not token.is_whitespace():
+            self.last_name = linkcheck.dns.name.from_text(token.value, None)
         name = self.last_name
         token = self.tok.get()
-        if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+        if not token.is_identifier():
             raise linkcheck.dns.exception.DNSSyntaxError
         # TTL
         try:
-            ttl = int(token[1], 0)
+            ttl = int(token.value, 0)
             token = self.tok.get()
-            if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+            if not token.is_identifier():
                 raise linkcheck.dns.exception.DNSSyntaxError
         except linkcheck.dns.exception.DNSSyntaxError:
             raise linkcheck.dns.exception.DNSSyntaxError
@@ -859,9 +902,9 @@ class _TextReader(object):
             ttl = 0
         # Class
         try:
-            rdclass = linkcheck.dns.rdataclass.from_text(token[1])
+            rdclass = linkcheck.dns.rdataclass.from_text(token.value)
             token = self.tok.get()
-            if token[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+            if not token.is_identifier():
                 raise linkcheck.dns.exception.DNSSyntaxError
             if rdclass == linkcheck.dns.rdataclass.ANY or rdclass == linkcheck.dns.rdataclass.NONE:
                 deleting = rdclass
@@ -871,9 +914,9 @@ class _TextReader(object):
         except StandardError:
             rdclass = linkcheck.dns.rdataclass.IN
         # Type
-        rdtype = linkcheck.dns.rdatatype.from_text(token[1])
+        rdtype = linkcheck.dns.rdatatype.from_text(token.value)
         token = self.tok.get()
-        if token[0] != linkcheck.dns.tokenizer.EOL and token[0] != linkcheck.dns.tokenizer.EOF:
+        if not token.is_eol_or_eof():
             self.tok.unget(token)
             rd = linkcheck.dns.rdata.from_text(rdclass, rdtype, self.tok, None)
             covers = rd.covers()
@@ -893,10 +936,10 @@ class _TextReader(object):
         section = None
         while 1:
             token = self.tok.get(True, True)
-            if token[0] == linkcheck.dns.tokenizer.EOL or token[0] == linkcheck.dns.tokenizer.EOF:
+            if token.is_eol_or_eof():
                 break
-            if token[0] == linkcheck.dns.tokenizer.COMMENT:
-                u = token[1].upper()
+            if token.is_comment():
+                u = token.value.upper()
                 if u == 'HEADER':
                     line_method = self._header_line
                 elif u == 'QUESTION' or u == 'ZONE':
@@ -929,9 +972,12 @@ def from_text(text):
     # 'text' can also be a file, but we don't publish that fact
     # since it's an implementation detail.  The official file
     # interface is from_file().
+
     m = Message()
+
     reader = _TextReader(text, m)
     reader.read()
+
     return m
 
 
@@ -943,6 +989,7 @@ def from_file(f):
     @raises UnknownHeaderField:
     @raises linkcheck.dns.exception.DNSSyntaxError:
     @rtype: linkcheck.dns.message.Message object"""
+
     if sys.hexversion >= 0x02030000:
         # allow Unicode filenames; turn on universal newline support
         str_type = basestring
@@ -980,14 +1027,13 @@ def make_query(qname, rdtype, rdclass = linkcheck.dns.rdataclass.IN,
     @type rdtype: int
     @param rdclass: The desired rdata class; the default is class IN.
     @type rdclass: int
-    @rtype: linkcheck.dns.message.Message object
     @param use_edns: The EDNS level to use; the default is None (no EDNS).
-    See the description of dns.message.Message.use_edns() for the possible
+    See the description of linkcheck.dns.message.Message.use_edns() for the possible
     values for use_edns and their meanings.
     @type use_edns: int or bool or None
     @param want_dnssec: Should the query indicate that DNSSEC is desired?
     @type want_dnssec: bool
-    @rtype: dns.message.Message object"""
+    @rtype: linkcheck.dns.message.Message object"""
 
     if isinstance(qname, basestring):
         qname = linkcheck.dns.name.from_text(qname)
@@ -1024,7 +1070,7 @@ def make_response(query, recursion_available=False, our_payload=8192):
     @rtype: linkcheck.dns.message.Message object"""
 
     if query.flags & linkcheck.dns.flags.QR:
-        raise linkcheck.dns.exception.FormError, 'specified query message is not a query'
+        raise linkcheck.dns.exception.FormError('specified query message is not a query')
     response = linkcheck.dns.message.Message(query.id)
     response.flags = linkcheck.dns.flags.QR | (query.flags & linkcheck.dns.flags.RD)
     if recursion_available:

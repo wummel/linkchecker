@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -111,7 +111,7 @@ class RRset(linkcheck.dns.rdataset.Rdataset):
     def to_rdataset(self):
         """Convert an RRset into an Rdataset.
 
-        @rtype: dns.rdataset.Rdataset object
+        @rtype: linkcheck.dns.rdataset.Rdataset object
         """
         return linkcheck.dns.rdataset.from_rdata_list(self.ttl, list(self))
 
@@ -156,7 +156,7 @@ def from_rdata_list(name, ttl, rdatas):
         name = linkcheck.dns.name.from_text(name, None)
 
     if len(rdatas) == 0:
-        raise ValueError, "rdata list must not be empty"
+        raise ValueError("rdata list must not be empty")
     r = None
     for rd in rdatas:
         if r is None:

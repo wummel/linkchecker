@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006, 2007 Nominum, Inc.
+# Copyright (C) 2006, 2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -43,7 +43,7 @@ class IPSECKEY(linkcheck.dns.rdata.Rdata):
         super(IPSECKEY, self).__init__(rdclass, rdtype)
         if gateway_type == 0:
             if gateway != '.' and not gateway is None:
-                raise SyntaxError, 'invalid gateway for gateway type 0'
+                raise SyntaxError('invalid gateway for gateway type 0')
             gateway = None
         elif gateway_type == 1:
             # check that it's OK
@@ -54,8 +54,7 @@ class IPSECKEY(linkcheck.dns.rdata.Rdata):
         elif gateway_type == 3:
             pass
         else:
-            raise SyntaxError, \
-                  'invalid IPSECKEY gateway type: %d' % gateway_type
+            raise SyntaxError('invalid IPSECKEY gateway type: %d' % gateway_type)
         self.precedence = precedence
         self.gateway_type = gateway_type
         self.algorithm = algorithm
@@ -72,7 +71,7 @@ class IPSECKEY(linkcheck.dns.rdata.Rdata):
         elif self.gateway_type == 3:
             gateway = str(self.gateway.choose_relativity(origin, relativize))
         else:
-            raise ValueError, 'invalid gateway type'
+            raise ValueError('invalid gateway type')
         return '%d %d %d %s %s' % (self.precedence, self.gateway_type,
                                    self.algorithm, gateway,
                                    linkcheck.dns.rdata._base64ify(self.key))
@@ -87,12 +86,12 @@ class IPSECKEY(linkcheck.dns.rdata.Rdata):
             gateway = tok.get_string()
         chunks = []
         while 1:
-            t = tok.get()
-            if t[0] == linkcheck.dns.tokenizer.EOL or t[0] == linkcheck.dns.tokenizer.EOF:
+            t = tok.get().unescape()
+            if t.is_eol_or_eof():
                 break
-            if t[0] != linkcheck.dns.tokenizer.IDENTIFIER:
+            if not t.is_identifier():
                 raise linkcheck.dns.exception.SyntaxError
-            chunks.append(t[1])
+            chunks.append(t.value)
         b64 = ''.join(chunks)
         key = b64.decode('base64_codec')
         return cls(rdclass, rdtype, precedence, gateway_type, algorithm,
@@ -113,7 +112,7 @@ class IPSECKEY(linkcheck.dns.rdata.Rdata):
         elif self.gateway_type == 3:
             self.gateway.to_wire(file, None, origin)
         else:
-            raise ValueError, 'invalid gateway type'
+            raise ValueError('invalid gateway type')
         file.write(self.key)
 
     def from_wire(cls, rdclass, rdtype, wire, current, rdlen, origin = None):
@@ -141,7 +140,7 @@ class IPSECKEY(linkcheck.dns.rdata.Rdata):
             current += cused
             rdlen -= cused
         else:
-            raise linkcheck.dns.exception.FormError, 'invalid IPSECKEY gateway type'
+            raise linkcheck.dns.exception.FormError('invalid IPSECKEY gateway type')
         key = wire[current : current + rdlen]
         return cls(rdclass, rdtype, header[0], gateway_type, header[2],
                    gateway, key)

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -74,9 +74,16 @@ def _wait_for_readable(s, expiration):
 def _wait_for_writable(s, expiration):
     _wait_for([], [s], [s], expiration)
 
+def _addresses_equal(af, a1, a2):
+    # Convert the first value of the tuple, which is a textual format
+    # address into binary form, so that we are not confused by different
+    # textual representations of the same address
+    n1 = linkcheck.dns.inet.inet_pton(af, a1[0])
+    n2 = linkcheck.dns.inet.inet_pton(af, a2[0])
+    return n1 == n2 and a1[1:] == a2[1:]
 
 def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
-        ignore_unexpected=False):
+        ignore_unexpected=False, one_rr_per_rrset=False):
     """Return the response obtained after sending a query via UDP.
 
     @param q: the query
@@ -101,7 +108,10 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
     @param ignore_unexpected: If True, ignore responses from unexpected
     sources.  The default is False.
     @type ignore_unexpected: bool
+    @param one_rr_per_rrset: Put each RR into its own RRset
+    @type one_rr_per_rrset: bool
     """
+
     wire = q.to_wire()
     if af is None:
         try:
@@ -127,17 +137,18 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
         while 1:
             _wait_for_readable(s, expiration)
             (wire, from_address) = s.recvfrom(65535)
-            if from_address == destination or \
+            if _addresses_equal(af, from_address, destination) or \
                (linkcheck.dns.inet.is_multicast(where) and \
-                from_address[1] == destination[1]):
+                from_address[1:] == destination[1:]):
                 break
             if not ignore_unexpected:
-                raise UnexpectedSource, \
-                      'got a response from %s instead of %s' % (from_address,
-                                                                destination)
+                raise UnexpectedSource('got a response from '
+                                       '%s instead of %s' % (from_address,
+                                                             destination))
     finally:
         s.close()
-    r = linkcheck.dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac)
+    r = linkcheck.dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac,
+                              one_rr_per_rrset=one_rr_per_rrset)
     if not q.is_response(r):
         raise BadResponse
     return r
@@ -175,11 +186,12 @@ def _connect(s, address):
     except socket.error:
         (ty, v) = sys.exc_info()[:2]
         if v[0] != errno.EINPROGRESS and \
-           v[0] != errno.EWOULDBLOCK and \
-           v[0] != errno.EALREADY:
-            raise ty, v
+               v[0] != errno.EWOULDBLOCK and \
+               v[0] != errno.EALREADY:
+            raise v
 
-def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
+def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
+        one_rr_per_rrset=False):
     """Return the response obtained after sending a query via TCP.
 
     @param q: the query
@@ -200,7 +212,10 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
-    @type source_port: int"""
+    @type source_port: int
+    @param one_rr_per_rrset: Put each RR into its own RRset
+    @type one_rr_per_rrset: bool
+    """
 
     wire = q.to_wire()
     if af is None:
@@ -236,7 +251,8 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
         wire = _net_read(s, l, expiration)
     finally:
         s.close()
-    r = linkcheck.dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac)
+    r = linkcheck.dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac,
+                              one_rr_per_rrset=one_rr_per_rrset)
     if not q.is_response(r):
         raise BadResponse
     return r
@@ -244,7 +260,8 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0):
 def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
          rdclass=linkcheck.dns.rdataclass.IN,
          timeout=None, port=53, keyring=None, keyname=None, relativize=True,
-         af=None, lifetime=None, source=None, source_port=0, serial=0):
+         af=None, lifetime=None, source=None, source_port=0, serial=0,
+        use_udp=False, keyalgorithm=linkcheck.dns.tsig.default_algorithm):
     """Return a generator for the responses to a zone transfer.
 
     @param where: where to send the message
@@ -268,7 +285,7 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
     @type keyname: linkcheck.dns.name.Name object or string
     @param relativize: If True, all names in the zone will be relativized to
     the zone origin. It is essential that the relativize setting matches
-    the one specified to dns.zone.from_xfr().
+    the one specified to linkcheck.dns.zone.from_xfr().
     @type relativize: bool
     @param af: the address family to use.  The default is None, which
     causes the address family to use to be inferred from the form of of where.
@@ -287,17 +304,24 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
     @param serial: The SOA serial number to use as the base for an IXFR diff
     sequence (only meaningful if rdtype == linkcheck.dns.rdatatype.IXFR).
     @type serial: int
+    @param use_udp: Use UDP (only meaningful for IXFR)
+    @type use_udp: bool
+    @param keyalgorithm: The TSIG algorithm to use; defaults to
+    linkcheck.dns.tsig.default_algorithm
+    @type keyalgorithm: string
     """
 
     if isinstance(zone, basestring):
         zone = linkcheck.dns.name.from_text(zone)
+    if isinstance(rdtype, str):
+        rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
     q = linkcheck.dns.message.make_query(zone, rdtype, rdclass)
     if rdtype == linkcheck.dns.rdatatype.IXFR:
         rrset = linkcheck.dns.rrset.from_text(zone, 0, 'IN', 'SOA',
                                        '. . %u 0 0 0 0' % serial)
         q.authority.append(rrset)
     if not keyring is None:
-        q.use_tsig(keyring, keyname)
+        q.use_tsig(keyring, keyname, algorithm=keyalgorithm)
     wire = q.to_wire()
     if af is None:
         try:
@@ -312,14 +336,24 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
         destination = (where, port, 0, 0)
         if source is not None:
             source = (source, source_port, 0, 0)
-    s = socket.socket(af, socket.SOCK_STREAM, 0)
+    if use_udp:
+        if rdtype != linkcheck.dns.rdatatype.IXFR:
+            raise ValueError('cannot do a UDP AXFR')
+        s = socket.socket(af, socket.SOCK_DGRAM, 0)
+    else:
+        s = socket.socket(af, socket.SOCK_STREAM, 0)
+    s.setblocking(0)
     if source is not None:
         s.bind(source)
     expiration = _compute_expiration(lifetime)
     _connect(s, destination)
     l = len(wire)
-    tcpmsg = struct.pack("!H", l) + wire
-    _net_write(s, tcpmsg, expiration)
+    if use_udp:
+        _wait_for_writable(s, expiration)
+        s.send(wire)
+    else:
+        tcpmsg = struct.pack("!H", l) + wire
+        _net_write(s, tcpmsg, expiration)
     done = False
     soa_rrset = None
     soa_count = 0
@@ -335,12 +369,17 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
         mexpiration = _compute_expiration(timeout)
         if mexpiration is None or mexpiration > expiration:
             mexpiration = expiration
-        ldata = _net_read(s, 2, mexpiration)
-        (l,) = struct.unpack("!H", ldata)
-        wire = _net_read(s, l, mexpiration)
+        if use_udp:
+            _wait_for_readable(s, expiration)
+            (wire, from_address) = s.recvfrom(65535)
+        else:
+            ldata = _net_read(s, 2, mexpiration)
+            (l,) = struct.unpack("!H", ldata)
+            wire = _net_read(s, l, mexpiration)
         r = linkcheck.dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac,
                                   xfr=True, origin=origin, tsig_ctx=tsig_ctx,
-                                  multi=True, first=first)
+                                  multi=True, first=first,
+                                  one_rr_per_rrset=(rdtype==linkcheck.dns.rdatatype.IXFR))
         tsig_ctx = r.tsig_ctx
         first = False
         answer_index = 0
@@ -348,10 +387,10 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
         expecting_SOA = False
         if soa_rrset is None:
             if not r.answer or r.answer[0].name != oname:
-                raise linkcheck.dns.exception.FormError, "first RRset is not an SOA"
+                raise linkcheck.dns.exception.FormError
             rrset = r.answer[0]
             if rrset.rdtype != linkcheck.dns.rdatatype.SOA:
-                raise linkcheck.dns.exception.FormError
+                raise linkcheck.dns.exception.FormError("first RRset is not an SOA")
             answer_index = 1
             soa_rrset = rrset.copy()
             if rdtype == linkcheck.dns.rdatatype.IXFR:
@@ -368,12 +407,11 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
 
         for rrset in r.answer[answer_index:]:
             if done:
-                raise linkcheck.dns.exception.FormError, "answers after final SOA"
+                raise linkcheck.dns.exception.FormError("answers after final SOA")
             if rrset.rdtype == linkcheck.dns.rdatatype.SOA and rrset.name == oname:
                 if expecting_SOA:
                     if rrset[0].serial != serial:
-                        raise linkcheck.dns.exception.FormError, \
-                              "IXFR base serial mismatch"
+                        raise linkcheck.dns.exception.FormError("IXFR base serial mismatch")
                     expecting_SOA = False
                 elif rdtype == linkcheck.dns.rdatatype.IXFR:
                     delete_mode = not delete_mode
@@ -388,6 +426,6 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
                 rdtype = linkcheck.dns.rdatatype.AXFR
                 expecting_SOA = False
         if done and q.keyring and not r.had_tsig:
-            raise linkcheck.dns.exception.FormError, "missing TSIG"
+            raise linkcheck.dns.exception.FormError("missing TSIG")
         yield r
     s.close()

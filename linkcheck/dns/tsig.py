@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2004 Nominum, Inc.
+# Copyright (C) 2001-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -47,23 +47,31 @@ class PeerBadTime(PeerError):
     """Raised if the peer didn't like the time we sent"""
     pass
 
-_alg_name = linkcheck.dns.name.from_text('HMAC-MD5.SIG-ALG.REG.INT.').to_digestable()
+class PeerBadTruncation(PeerError):
+    """Raised if the peer didn't like amount of truncation in the TSIG we sent"""
+    pass
+
+default_algorithm = "HMAC-MD5.SIG-ALG.REG.INT"
 
 BADSIG = 16
 BADKEY = 17
 BADTIME = 18
+BADTRUNC = 22
 
-def hmac_md5(wire, keyname, secret, time, fudge, original_id, error,
-             other_data, request_mac, ctx=None, multi=False, first=True):
-    """Return a (tsig_rdata, mac, ctx) tuple containing the HMAC-MD5 TSIG rdata
-    for the input parameters, the HMAC-MD5 MAC calculated by applying the
+def sign(wire, keyname, secret, time, fudge, original_id, error,
+         other_data, request_mac, ctx=None, multi=False, first=True,
+         algorithm=default_algorithm):
+    """Return a (tsig_rdata, mac, ctx) tuple containing the HMAC TSIG rdata
+    for the input parameters, the HMAC MAC calculated by applying the
     TSIG signature algorithm, and the TSIG digest context.
     @rtype: (string, string, hmac.HMAC object)
     @raises ValueError: I{other_data} is too long
+    @raises NotImplementedError: I{algorithm} is not supported
     """
 
+    (algorithm_name, digestmod) = get_algorithm(algorithm)
     if first:
-        ctx = hmac.new(secret)
+        ctx = hmac.new(secret, digestmod=digestmod)
         ml = len(request_mac)
         if ml > 0:
             ctx.update(struct.pack('!H', ml))
@@ -79,10 +87,10 @@ def hmac_md5(wire, keyname, secret, time, fudge, original_id, error,
     upper_time = (long_time >> 32) & 0xffffL
     lower_time = long_time & 0xffffffffL
     time_mac = struct.pack('!HIH', upper_time, lower_time, fudge)
-    pre_mac = _alg_name + time_mac
+    pre_mac = algorithm_name + time_mac
     ol = len(other_data)
     if ol > 65535:
-        raise ValueError, 'TSIG Other Data is > 65535 bytes'
+        raise ValueError('TSIG Other Data is > 65535 bytes')
     post_mac = struct.pack('!HH', error, ol) + other_data
     if first:
         ctx.update(pre_mac)
@@ -100,6 +108,12 @@ def hmac_md5(wire, keyname, secret, time, fudge, original_id, error,
     else:
         ctx = None
     return (tsig_rdata, mac, ctx)
+
+def hmac_md5(wire, keyname, secret, time, fudge, original_id, error,
+             other_data, request_mac, ctx=None, multi=False, first=True,
+             algorithm=default_algorithm):
+    return sign(wire, keyname, secret, time, fudge, original_id, error,
+                other_data, request_mac, ctx, multi, first, algorithm)
 
 def validate(wire, keyname, secret, now, request_mac, tsig_start, tsig_rdata,
              tsig_rdlen, ctx=None, multi=False, first=True):
@@ -139,15 +153,65 @@ def validate(wire, keyname, secret, now, request_mac, tsig_start, tsig_rdata,
             raise PeerBadKey
         elif error == BADTIME:
             raise PeerBadTime
+        elif error == BADTRUNC:
+            raise PeerBadTruncation
         else:
-            raise PeerError, 'unknown TSIG error code %d' % error
+            raise PeerError('unknown TSIG error code %d' % error)
     time_low = time - fudge
     time_high = time + fudge
     if now < time_low or now > time_high:
         raise BadTime
-    (junk, our_mac, ctx) = hmac_md5(new_wire, keyname, secret, time, fudge,
-                                    original_id, error, other_data,
-                                    request_mac, ctx, multi, first)
+    (junk, our_mac, ctx) = sign(new_wire, keyname, secret, time, fudge,
+                                original_id, error, other_data,
+                                request_mac, ctx, multi, first, aname)
     if (our_mac != mac):
         raise BadSignature
     return ctx
+
+def get_algorithm(algorithm):
+    """Returns the wire format string and the hash module to use for the
+    specified TSIG algorithm
+
+    @rtype: (string, hash constructor)
+    @raises NotImplementedError: I{algorithm} is not supported
+    """
+
+    hashes = {}
+    try:
+        import hashlib
+        hashes[linkcheck.dns.name.from_text('hmac-sha224')] = hashlib.sha224
+        hashes[linkcheck.dns.name.from_text('hmac-sha256')] = hashlib.sha256
+        hashes[linkcheck.dns.name.from_text('hmac-sha384')] = hashlib.sha384
+        hashes[linkcheck.dns.name.from_text('hmac-sha512')] = hashlib.sha512
+        hashes[linkcheck.dns.name.from_text('hmac-sha1')] = hashlib.sha1
+        hashes[linkcheck.dns.name.from_text('HMAC-MD5.SIG-ALG.REG.INT')] = hashlib.md5
+
+        import sys
+        if sys.hexversion < 0x02050000:
+            # hashlib doesn't conform to PEP 247: API for
+            # Cryptographic Hash Functions, which hmac before python
+            # 2.5 requires, so add the necessary items.
+            class HashlibWrapper:
+                def __init__(self, basehash):
+                    self.basehash = basehash
+                    self.digest_size = self.basehash().digest_size
+
+                def new(self, *args, **kwargs):
+                    return self.basehash(*args, **kwargs)
+
+            for name in hashes:
+                hashes[name] = HashlibWrapper(hashes[name])
+
+    except ImportError:
+        import md5, sha
+        hashes[linkcheck.dns.name.from_text('HMAC-MD5.SIG-ALG.REG.INT')] =  md5.md5
+        hashes[linkcheck.dns.name.from_text('hmac-sha1')] = sha.sha
+
+    if isinstance(algorithm, (str, unicode)):
+        algorithm = linkcheck.dns.name.from_text(algorithm)
+
+    if algorithm in hashes:
+        return (algorithm.to_digestable(), hashes[algorithm])
+
+    raise NotImplementedError("TSIG algorithm " + str(algorithm) +
+                              " is not supported")

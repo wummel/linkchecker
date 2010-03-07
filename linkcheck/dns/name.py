@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2004 Nominum, Inc.
+# Copyright (C) 2001-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -145,7 +145,7 @@ class Name(object):
         _validate_labels(self.labels)
 
     def __setattr__(self, name, value):
-        raise TypeError, "object doesn't support attribute assignment"
+        raise TypeError("object doesn't support attribute assignment")
 
     def is_absolute(self):
         """Is the most significant label of this name the root label?
@@ -462,8 +462,7 @@ class Name(object):
         elif depth == l:
             return (linkcheck.dns.name.empty, self)
         elif depth < 0 or depth > l:
-            raise ValueError, \
-                  'depth must be >= 0 and <= the length of the name'
+            raise ValueError('depth must be >= 0 and <= the length of the name')
         return (Name(self[: -depth]), Name(self[-depth :]))
 
     def concatenate(self, other):
@@ -534,13 +533,13 @@ def from_unicode(text, origin = root):
 
     Lables are encoded in IDN ACE form.
 
-    @rtype: dns.name.Name object
+    @rtype: linkcheck.dns.name.Name object
     """
 
     if not isinstance(text, unicode):
-        raise ValueError, "input to from_unicode() must be a unicode string"
+        raise ValueError("input to from_unicode() must be a unicode string")
     if not (origin is None or isinstance(origin, Name)):
-        raise ValueError, "origin must be a Name or None"
+        raise ValueError("origin must be a Name or None")
     labels = []
     label = u''
     escaping = False
@@ -550,7 +549,7 @@ def from_unicode(text, origin = root):
         text = u''
     if text:
         if text == u'.':
-            return Name([''])        # no Unicode "u" on this constant!
+            return Name([''])  # no Unicode "u" on this constant!
         for c in text:
             if escaping:
                 if edigits == 0:
@@ -600,9 +599,9 @@ def from_text(text, origin = root):
         if isinstance(text, unicode):
             return from_unicode(text, origin)
         else:
-            raise ValueError, "input to from_text() must be a string"
+            raise ValueError("input to from_text() must be a string")
     if not (origin is None or isinstance(origin, Name)):
-        raise ValueError, "origin must be a Name or None"
+        raise ValueError("origin must be a Name or None")
     labels = []
     label = ''
     escaping = False
@@ -668,7 +667,7 @@ def from_wire(message, current):
     """
 
     if not isinstance(message, str):
-        raise ValueError, "input to from_wire() must be a byte string"
+        raise ValueError("input to from_wire() must be a byte string")
     labels = []
     biggest_pointer = current
     hops = 0

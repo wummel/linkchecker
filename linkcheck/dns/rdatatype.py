@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2004 Nominum, Inc.
+# Copyright (C) 2001-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -77,6 +77,9 @@ RRSIG = 46
 NSEC = 47
 DNSKEY = 48
 DHCID = 49
+NSEC3 = 50
+NSEC3PARAM = 51
+HIP = 55
 SPF = 99
 UNSPEC = 103
 TKEY = 249
@@ -86,6 +89,8 @@ AXFR = 252
 MAILB = 253
 MAILA = 254
 ANY = 255
+TA = 32768
+DLV = 32769
 
 _by_text = {
     'NONE' : NONE,
@@ -134,6 +139,9 @@ _by_text = {
     'NSEC' : NSEC,
     'DNSKEY' : DNSKEY,
     'DHCID' : DHCID,
+    'NSEC3' : NSEC3,
+    'NSEC3PARAM' : NSEC3PARAM,
+    'HIP' : HIP,
     'SPF' : SPF,
     'UNSPEC' : UNSPEC,
     'TKEY' : TKEY,
@@ -142,7 +150,9 @@ _by_text = {
     'AXFR' : AXFR,
     'MAILB' : MAILB,
     'MAILA' : MAILA,
-    'ANY' : ANY
+    'ANY' : ANY,
+    'TA' : TA,
+    'DLV' : DLV,
     }
 
 # We construct the inverse mapping programmatically to ensure that we
@@ -160,6 +170,7 @@ _singletons = {
     SOA : True,
     NXT : True,
     DNAME : True,
+    NSEC : True,
     # CNAME is technically a singleton, but we allow multiple CNAMEs.
     }
 
@@ -184,7 +195,7 @@ def from_text(text):
             raise UnknownRdatatype
         value = int(match.group(1))
         if value < 0 or value > 65535:
-            raise ValueError, "type must be between >= 0 and <= 65535"
+            raise ValueError("type must be between >= 0 and <= 65535")
     return value
 
 def to_text(value):
@@ -195,7 +206,7 @@ def to_text(value):
     @rtype: string"""
 
     if value < 0 or value > 65535:
-        raise ValueError, "type must be between >= 0 and <= 65535"
+        raise ValueError("type must be between >= 0 and <= 65535")
     text = _by_value.get(value)
     if text is None:
         text = 'TYPE' + repr(value)

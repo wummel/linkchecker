@@ -1,4 +1,4 @@
-# Copyright (C) 2006, 2007 Nominum, Inc.
+# Copyright (C) 2006, 2007, 2009 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -54,7 +54,7 @@ def to_e164(name, origin=public_enum_domain, want_plus_prefix=True):
         name = name.relativize(origin)
     dlabels = [d for d in name.labels if (d.isdigit() and len(d) == 1)]
     if len(dlabels) != len(name.labels):
-        raise linkcheck.dns.exception.SyntaxError, 'non-digit labels in ENUM domain name'
+        raise linkcheck.dns.exception.SyntaxError('non-digit labels in ENUM domain name')
     dlabels.reverse()
     text = ''.join(dlabels)
     if want_plus_prefix:

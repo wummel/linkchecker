@@ -1,5 +1,4 @@
-# -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
+# Copyright (C) 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -14,22 +13,8 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-"""dnspython release version information."""
+import linkcheck.dns.rdtypes.dsbase
 
-MAJOR = 1
-MINOR = 8
-MICRO = 1
-RELEASELEVEL = 0x0f
-SERIAL = 0
-
-if RELEASELEVEL == 0x0f:
-    version = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
-elif RELEASELEVEL == 0x00:
-    version = '%d.%d.%dx%d' % \
-              (MAJOR, MINOR, MICRO, SERIAL)
-else:
-    version = '%d.%d.%d%x%d' % \
-              (MAJOR, MINOR, MICRO, RELEASELEVEL, SERIAL)
-
-hexversion = MAJOR << 24 | MINOR << 16 | MICRO << 8 | RELEASELEVEL << 4 | \
-             SERIAL
+class DLV(linkcheck.dns.rdtypes.dsbase.DSBase):
+    """DLV record"""
+    pass

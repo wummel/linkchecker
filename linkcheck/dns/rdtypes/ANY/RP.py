@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -53,6 +53,10 @@ class RP(linkcheck.dns.rdata.Rdata):
     def to_wire(self, file, compress = None, origin = None):
         self.mbox.to_wire(file, None, origin)
         self.txt.to_wire(file, None, origin)
+
+    def to_digestable(self, origin = None):
+        return self.mbox.to_digestable(origin) + \
+            self.txt.to_digestable(origin)
 
     def from_wire(cls, rdclass, rdtype, wire, current, rdlen, origin = None):
         (mbox, cused) = linkcheck.dns.name.from_wire(wire[: current + rdlen],

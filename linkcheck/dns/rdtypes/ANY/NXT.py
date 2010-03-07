@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -54,17 +54,17 @@ class NXT(linkcheck.dns.rdata.Rdata):
                   '\x00', '\x00', '\x00', '\x00',
                   '\x00', '\x00', '\x00', '\x00' ]
         while 1:
-            (ttype, value) = tok.get()
-            if ttype == linkcheck.dns.tokenizer.EOL or ttype == linkcheck.dns.tokenizer.EOF:
+            token = tok.get().unescape()
+            if token.is_eol_or_eof():
                 break
-            if value.isdigit():
-                nrdtype = int(value)
+            if token.value.isdigit():
+                nrdtype = int(token.value)
             else:
-                nrdtype = linkcheck.dns.rdatatype.from_text(value)
+                nrdtype = linkcheck.dns.rdatatype.from_text(token.value)
             if nrdtype == 0:
-                raise linkcheck.dns.exception.DNSSyntaxError, "NXT with bit 0"
+                raise linkcheck.dns.exception.DNSSyntaxError("NXT with bit 0")
             if nrdtype > 127:
-                raise linkcheck.dns.exception.DNSSyntaxError, "NXT with bit > 127"
+                raise linkcheck.dns.exception.DNSSyntaxError("NXT with bit > 127")
             i = nrdtype // 8
             bitmap[i] = chr(ord(bitmap[i]) | (0x80 >> (nrdtype % 8)))
         bitmap = linkcheck.dns.rdata._truncate_bitmap(bitmap)
@@ -75,6 +75,9 @@ class NXT(linkcheck.dns.rdata.Rdata):
     def to_wire(self, file, compress = None, origin = None):
         self.next.to_wire(file, None, origin)
         file.write(self.bitmap)
+
+    def to_digestable(self, origin = None):
+        return self.next.to_digestable(origin) + self.bitmap
 
     def from_wire(cls, rdclass, rdtype, wire, current, rdlen, origin = None):
         (next, cused) = linkcheck.dns.name.from_wire(wire[: current + rdlen], current)

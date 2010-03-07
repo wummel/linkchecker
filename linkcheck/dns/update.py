@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003, 2004 Nominum, Inc.
+# Copyright (C) 2003-2007, 2009, 2010 Nominum, Inc.
 #
 # Permission to use, copy, modify, and distribute this software and its
 # documentation for any purpose with or without fee is hereby granted,
@@ -25,7 +25,7 @@ import linkcheck.dns.rdataset
 
 class Update(linkcheck.dns.message.Message):
     def __init__(self, zone, rdclass=linkcheck.dns.rdataclass.IN, keyring=None,
-                 keyname=None):
+                 keyname=None, keyalgorithm=linkcheck.dns.tsig.default_algorithm):
         """Initialize a new DNS Update object.
 
         @param zone: The zone which is being updated.
@@ -42,19 +42,22 @@ class Update(linkcheck.dns.message.Message):
         so applications should supply a keyname when a keyring is used, unless
         they know the keyring contains only one key.
         @type keyname: linkcheck.dns.name.Name or string
+        @param keyalgorithm: The TSIG algorithm to use; defaults to
+        linkcheck.dns.tsig.default_algorithm
+        @type keyalgorithm: string
         """
         super(Update, self).__init__()
         self.flags |= linkcheck.dns.opcode.to_flags(linkcheck.dns.opcode.UPDATE)
-        if isinstance(zone, str):
+        if isinstance(zone, basestring):
             zone = linkcheck.dns.name.from_text(zone)
         self.origin = zone
-        if isinstance(rdclass, basestring):
+        if isinstance(rdclass, str):
             rdclass = linkcheck.dns.rdataclass.from_text(rdclass)
         self.zone_rdclass = rdclass
         self.find_rrset(self.question, self.origin, rdclass, linkcheck.dns.rdatatype.SOA,
                         create=True, force_unique=True)
         if not keyring is None:
-            self.use_tsig(keyring, keyname)
+            self.use_tsig(keyring, keyname, keyalgorithm)
 
     def _add_rr(self, name, ttl, rd, deleting=None, section=None):
         """Add a single RR to the update section."""
