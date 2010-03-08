@@ -1,6 +1,9 @@
 - [HTTP] Do not fall back to GET when no recursion is requested on
   single pages. This would allow to check pages even if robots.txt
   disallows to get the page content.
+- [HTTP] Allow sending POST data for login at beginning of check.
+- [HTTP] try out httest
+- [FTP] Use local testserver for FTP tests
 - [GUI] Add more context menu actions:
   + Show detailed URL properties
   + View source
@@ -8,6 +11,3 @@
 - [PYTHON3]
   linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
   linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
-- [HTTP] Allow sending POST data for login at beginning of check.
-- [HTTP] try out httest
-- [FTP] Use local testserver for FTP tests
