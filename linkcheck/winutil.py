@@ -14,18 +14,19 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+import sys
 try:
     import win32com
     import pythoncom
     has_win32com = True
-    class Error (pythoncom.com_error):
-        """Raised on errors."""
-        pass
+    Error = pythoncom.com_error
 except ImportError:
     has_win32com = False
-    class Error (StandardError):
-        """Raised on errors."""
-        pass
+    Error = StandardError
+
+
+def main_is_frozen ():
+    return hasattr(sys, "frozen")
 
 
 def init_win32com ():
@@ -36,6 +37,10 @@ def init_win32com ():
         win32com.client.gencache.is_readonly = False
         # under py2exe the call in gencache to __init__() does not happen
         # so we use Rebuild() to force the creation of the gen_py folder
+        if main_is_frozen():
+            # The python...\win32com.client.gen_py dir must not exist
+            # to allow creation of the cache in %temp% for py2exe.
+            pass # XXX
         win32com.client.gencache.Rebuild()
 
 
@@ -62,7 +67,8 @@ def has_word ():
 
 
 def get_word_app ():
-    """Return open Word.Application handle, or None on error."""
+    """Return open Word.Application handle, or None if Word is not available
+    on this system."""
     if not has_word():
         return None
     # Since this function is called from different threads, initialize
