@@ -49,5 +49,5 @@ include doc/en/*.1 doc/en/*.5
 include doc/de/*.1 doc/de/*.5
 include doc/Makefile
 include doc/examples/*.sh
-include linkcheck/dns/ChangeLog
+include linkcheck/dns/changelog.txt
 recursive-include tests *.py *.result *.html *.ico *.txt *.zip *.asc *.css *.xhtml *.sqlite *.adr *.swf
