@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-import sys
 try:
     import win32com
     import pythoncom
@@ -25,10 +24,6 @@ except ImportError:
     Error = StandardError
 
 
-def main_is_frozen ():
-    return hasattr(sys, "frozen")
-
-
 def init_win32com ():
     """Initialize the win32com.client cache."""
     import win32com.client
@@ -37,10 +32,9 @@ def init_win32com ():
         win32com.client.gencache.is_readonly = False
         # under py2exe the call in gencache to __init__() does not happen
         # so we use Rebuild() to force the creation of the gen_py folder
-        if main_is_frozen():
-            # The python...\win32com.client.gen_py dir must not exist
-            # to allow creation of the cache in %temp% for py2exe.
-            pass # XXX
+        # Note that the python...\win32com.client.gen_py dir must not exist
+        # to allow creation of the cache in %temp% for py2exe.
+        # This is ensured by excluding win32com.gen_py in setup.py
         win32com.client.gencache.Rebuild()
 
 
