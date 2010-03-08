@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2001-2009 Bastian Kleineidam
+# Copyright (C) 2001-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@ from .. import strformat, log, LOG_CHECK, url as urlutil
 from . import linkname
 
 MAX_NAMELEN = 256
+MAX_TITLELEN = 256
+
 unquote = strformat.unquote
 
 # ripped mainly from HTML::Tagset.pm
@@ -71,9 +73,37 @@ def strip_c_comments (text):
     return c_comment_re.sub('', text)
 
 
+class StopParse (StandardError):
+    """Raised when parsing should stop."""
+    pass
+
+
+class TitleFinder (object):
+    """Find title tags in HTML text."""
+
+    def __init__ (self, content):
+        """Initialize flags."""
+        super(TitleFinder, self).__init__()
+        log.debug(LOG_CHECK, "HTML title parser")
+        # XXX try to use parser content instead this one
+        self.content = content
+        self.title = None
+
+    def start_element (self, tag, attrs):
+        """Search for <title> tag."""
+        if tag == 'title':
+            pos = self.parser.pos()
+            data = self.content[pos:pos+MAX_TITLELEN]
+            data = data.decode(self.parser.encoding, "ignore")
+            self.title = linkname.title_name(data)
+            raise StopParse("Title found")
+        elif tag == 'body':
+            raise StopParse("Found body tag")
+
+
 class TagFinder (object):
-    """Base class storing HTML parse messages in a list.
-    TagFinder instances are to be used as HtmlParser handlers."""
+    """Base class handling HTML start elements.
+    TagFinder instances are used as HtmlParser handlers."""
 
     def __init__ (self):
         """Initialize local variables."""
@@ -98,17 +128,18 @@ class MetaRobotsFinder (TagFinder):
     def __init__ (self):
         """Initialize flags."""
         super(MetaRobotsFinder, self).__init__()
-        self.follow = True
-        self.index = True
         log.debug(LOG_CHECK, "meta robots finder")
+        self.follow = self.index = True
 
     def start_element (self, tag, attrs):
         """Search for meta robots.txt "nofollow" and "noindex" flags."""
-        if tag == 'meta':
-            if attrs.get('name') == 'robots':
-                val = attrs.get_true('content', u'').lower().split(u',')
-                self.follow = u'nofollow' not in val
-                self.index = u'noindex' not in val
+        if tag == 'meta' and attrs.get('name') == 'robots':
+            val = attrs.get_true('content', u'').lower().split(u',')
+            self.follow = u'nofollow' not in val
+            self.index = u'noindex' not in val
+            raise StopParse("Found meta robots tag")
+        elif tag == 'body':
+            raise StopParse("Found body tag")
 
 
 def is_meta_url (attr, attrs):
@@ -125,19 +156,19 @@ def is_meta_url (attr, attrs):
 
 
 class LinkFinder (TagFinder):
-    """Find a list of links. After parsing, self.urls
-    will be a list of parsed links entries with the format
-    (url, lineno, column, name, codebase)."""
+    """Find HTML links, and apply them to the callback function with the
+    format (url, lineno, column, name, codebase)."""
 
-    def __init__ (self, content, tags=None):
+    def __init__ (self, content, callback, tags=None):
         """Store content in buffer and initialize URL list."""
         super(LinkFinder, self).__init__()
+        # XXX try to use content from parser
         self.content = content
+        self.callback = callback
         if tags is None:
             self.tags = LinkTags
         else:
             self.tags = tags
-        self.urls = []
         self.base_ref = u''
         log.debug(LOG_CHECK, "link finder")
 
@@ -148,11 +179,12 @@ class LinkFinder (TagFinder):
             self.parser.lineno(), self.parser.column(),
             self.parser.last_lineno(), self.parser.last_column())
         if tag == "base" and not self.base_ref:
-            self.base_ref = attrs.get_true("href", u'')
+            self.base_ref = unquote(attrs.get_true("href", u''))
         tagattrs = self.tags.get(tag, [])
         tagattrs.extend(self.tags.get(None, []))
         # eliminate duplicate tag attrs
         tagattrs = set(tagattrs)
+        # parse URLs in tag (possibly multiple URLs in CSS styles)
         for attr in tagattrs:
             if attr not in attrs:
                 continue
@@ -161,14 +193,15 @@ class LinkFinder (TagFinder):
             # name of this link
             name = self.get_link_name(tag, attrs, attr)
             # possible codebase
+            base = u''
             if tag in ('applet', 'object'):
-                codebase = unquote(attrs.get_true('codebase', u''))
-            else:
-                codebase = u''
+                base = unquote(attrs.get_true('codebase', u''))
+            if not base:
+                base = self.base_ref
             # note: value can be None
             value = unquote(attrs.get(attr))
-            # add link to url list
-            self.add_link(tag, attr, value, name, codebase)
+            # parse tag for URLs
+            self.parse_tag(tag, attr, value, name, base)
         log.debug(LOG_CHECK, "LinkFinder finished tag %s", tag)
 
     def get_link_name (self, tag, attrs, attr):
@@ -190,7 +223,7 @@ class LinkFinder (TagFinder):
             name = u""
         return name
 
-    def add_link (self, tag, attr, url, name, base):
+    def parse_tag (self, tag, attr, url, name, base):
         """Add given url data to url list."""
         assert isinstance(tag, unicode), repr(tag)
         assert isinstance(attr, unicode), repr(attr)
@@ -217,6 +250,6 @@ class LinkFinder (TagFinder):
         for u in urls:
             assert isinstance(u, unicode) or u is None, repr(u)
             log.debug(LOG_CHECK,
-              u"LinkParser add link %r %r %r %r %r", tag, attr, u, name, base)
-            self.urls.append((u, self.parser.last_lineno(),
-                              self.parser.last_column(), name, base))
+              u"LinkParser found link %r %r %r %r %r", tag, attr, u, name, base)
+            self.callback(u, self.parser.last_lineno(),
+                          self.parser.last_column(), name, base)

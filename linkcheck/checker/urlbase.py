@@ -35,7 +35,7 @@ from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
     strformat, LinkCheckerError, url as urlutil, trace, clamav, containers,
     winutil)
 from ..HtmlParser import htmlsax
-from ..htmlutil import linkparse, titleparse
+from ..htmlutil import linkparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
     WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
@@ -200,14 +200,20 @@ class UrlBase (object):
         """Set title of page the URL refers to.from page content."""
         if self.valid and self.is_html():
             try:
-                handler = titleparse.TitleFinder(self.get_content())
+                handler = linkparse.TitleFinder(self.get_content())
             except tuple(ExcList):
                 return
             parser = htmlsax.parser(handler)
             handler.parser = parser
             # parse
-            parser.feed(self.get_content())
-            parser.flush()
+            try:
+                parser.feed(self.get_content())
+                parser.flush()
+            except linkparse.StopParse, msg:
+                log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
+            # break cyclic dependencies
+            handler.parser = None
+            parser.handler = None
             if handler.title:
                 self.title = handler.title
 
@@ -539,8 +545,11 @@ class UrlBase (object):
         parser = htmlsax.parser(handler)
         handler.parser = parser
         # parse
-        parser.feed(self.get_content())
-        parser.flush()
+        try:
+            parser.feed(self.get_content())
+            parser.flush()
+        except linkparse.StopParse, msg:
+            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
         # break cyclic dependencies
         handler.parser = None
         parser.handler = None
@@ -549,17 +558,24 @@ class UrlBase (object):
     def get_anchors (self):
         """Store list of anchors for this URL. Precondition: this URL is
         an HTML resource."""
-        handler = linkparse.LinkFinder(self.get_content(),
+        log.debug(LOG_CHECK, "Getting HTML anchors %s", self)
+        handler = linkparse.LinkFinder(self.get_content(), self.add_anchor,
                                    tags={'a': [u'name'], None: [u'id']})
         parser = htmlsax.parser(handler)
         handler.parser = parser
         # parse
-        parser.feed(self.get_content())
-        parser.flush()
+        try:
+            parser.feed(self.get_content())
+            parser.flush()
+        except linkparse.StopParse, msg:
+            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
         # break cyclic dependencies
         handler.parser = None
         parser.handler = None
-        self.anchors = handler.urls[:]
+
+    def add_anchor (self, url, line, column, name, base):
+        """Add anchor URL."""
+        self.anchors.append((url, line, column, name, base))
 
     def check_anchor (self):
         """If URL was valid and has an anchor, check it. A warning is
@@ -626,7 +642,8 @@ class UrlBase (object):
             return
         if self.is_html():
             self.set_title_from_content()
-            self.get_anchors()
+            if self.aggregate.config["anchors"]:
+                self.get_anchors()
         if self.anchor:
             self.check_anchor()
         warningregex = self.aggregate.config["warningregex"]
@@ -820,31 +837,31 @@ class UrlBase (object):
         return None, None
 
     def parse_html (self):
-        """
-        Parse into HTML content and search for URLs to check.
+        """Parse into HTML content and search for URLs to check.
         Found URLs are added to the URL queue.
         """
         log.debug(LOG_CHECK, "Parsing HTML %s", self)
         # construct parser object
-        handler = linkparse.LinkFinder(self.get_content())
+        handler = linkparse.LinkFinder(self.get_content(), self.add_url)
         parser = htmlsax.parser(handler)
         handler.parser = parser
         # parse
-        parser.feed(self.get_content())
-        parser.flush()
+        try:
+            parser.feed(self.get_content())
+            parser.flush()
+        except linkparse.StopParse, msg:
+            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
         # break cyclic dependencies
         handler.parser = None
         parser.handler = None
-        for url, line, column, name, codebase in handler.urls:
-            if codebase:
-                base_ref = codebase
-            else:
-                base_ref = handler.base_ref
-            base_ref = urlutil.url_norm(base_ref)[0]
-            url_data = get_url_from(url,
-                  self.recursion_level+1, self.aggregate, parent_url=self.url,
-                  base_ref=base_ref, line=line, column=column, name=name)
-            self.aggregate.urlqueue.put(url_data)
+
+    def add_url (self, url, line, column, name, base):
+        """Queue URL data for checking."""
+        base_ref = urlutil.url_norm(base)[0]
+        url_data = get_url_from(url, self.recursion_level+1, self.aggregate,
+            parent_url=self.url, base_ref=base_ref, line=line, column=column,
+            name=name)
+        self.aggregate.urlqueue.put(url_data)
 
     def parse_opera (self):
         """Parse an opera bookmark file."""

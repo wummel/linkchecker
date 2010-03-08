@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2005-2009 Bastian Kleineidam
+# Copyright (C) 2005-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,22 +29,28 @@ class TestLinkparser (unittest.TestCase):
     """
 
     def _test_one_link (self, content, url):
-        h = linkparse.LinkFinder(content)
-        self.assertEqual(len(h.urls), 0)
+        self.count_url = 0
+        h = linkparse.LinkFinder(content, self._test_one_url(url))
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
-        p.feed(content)
-        p.flush()
+        try:
+            p.feed(content)
+            p.flush()
+        except linkparse.StopParse:
+            pass
         h.parser = None
         p.handler = None
-        self.assertEqual(len(h.urls), 1)
-        purl = h.urls[0][0]
-        self.assertEqual(purl, url)
+
+    def _test_one_url (self, origurl):
+        """Return parser callback function."""
+        def callback (url, line, column, name, base):
+            self.count_url += 1
+            self.assertEqual(self.count_url, 1)
+            self.assertEqual(origurl, url)
+        return callback
 
     def test_href_parsing (self):
-        """
-        Test <a href> parsing.
-        """
+        # Test <a href> parsing.
         content = u'<a href="%s">'
         url = u"alink"
         self._test_one_link(content % url, url)
@@ -56,9 +62,7 @@ class TestLinkparser (unittest.TestCase):
         self._test_one_link(content % url, url)
 
     def test_css_parsing (self):
-        """
-        Test css style attribute parsing.
-        """
+        # Test css style attribute parsing.
         content = u'<table style="background: url(%s) no-repeat" >'
         url = u"alink"
         self._test_one_link(content % url, url)

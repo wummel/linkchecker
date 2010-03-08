@@ -28,6 +28,13 @@ Changes:
 - cmdline: disabled and deprecated the --no-proxy-for option. Use the
   $no_proxy environment variable instead.
 - dns: Updated dnspython module from upstream version 1.8.1.
+- checking: Improved HTML parsing speed:
+  a) The parsers for HTML title and robots.txt meta tags stop after seeing
+     a <body> tag.
+  b) Anchor references are not always parsed, but onl when the--anchor
+     option was given.
+  c) Found HTML links are not queued after parsing the whole file, but
+     directly when found. This also saves some memory.
 
 Features:
 - checking: Check hyperlinks of Word documents. Needs pywin32
