@@ -5,8 +5,9 @@ linkchecker (5.2-1) unstable; urgency=low
     of the linkcheck package.
     (Closes: #555414)
   * Standards version 3.8.4.
+  * Use new 3.0 (quilt) source package format.
 
- -- Bastian Kleineidam <calvin@debian.org>  Mon, 15 Feb 2010 23:52:35 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 08 Mar 2010 09:26:02 +0100
 
 linkchecker (5.1-2) unstable; urgency=low
 
