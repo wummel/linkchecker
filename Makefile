@@ -126,10 +126,8 @@ releasecheck: check
 
 .PHONY: sign_distfiles
 sign_distfiles:
-	for f in dist/*; do \
-	  if [ ! -f $${f}.asc ]; then \
-	    gpg --detach-sign --armor $$f; \
-	  fi; \
+	for f in dist/*.{gz,exe}; do \
+	  [ ! -f $${f}.asc ] && gpg --detach-sign --armor $$f; \
 	done
 
 .PHONY: test
