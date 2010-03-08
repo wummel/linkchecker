@@ -1,4 +1,4 @@
-5.2 "" (released 7.3.2010)
+5.2 "11:14" (released 7.3.2010)
 
 Fixes:
 - logging: Use default platform encoding instead of hardcoded one
