@@ -19,6 +19,7 @@ Store and retrieve country names for IPs.
 """
 import os
 from ..lock import get_lock
+from ..containers import LFUCache
 from ..decorators import synchronized
 
 # I don't know if the geoip library is already thread-safe, but
@@ -37,19 +38,27 @@ except ImportError:
     pass
 
 
+country_cache = LFUCache(size=1000)
+
 @synchronized(_lock)
 def get_country (host):
-    """
-    Get translated country name.
+    """Get translated country name.
 
     @return: country string or None
     """
     if geoip is None:
+        # no geoip available
         return None
-    c = geoip.country_code_by_name(host)
-    if c and c in countries:
-        return "%s, %s" % (c, countries[c])
-    return None
+    if host in country_cache:
+        value = country_cache[host]
+    else:
+        c = geoip.country_code_by_name(host)
+        if c and c in countries:
+            value = "%s, %s" % (c, countries[c])
+        else:
+            value = None
+        country_cache[host] = value
+    return value
 
 
 # GeoIP country map with {short name -> translated full name} entries

@@ -20,21 +20,23 @@ Cache for DNS lookups.
 import socket
 import sys
 from ..lock import get_lock
+from ..containers import LFUCache
 from ..decorators import synchronized
 
 _lock = get_lock("addrinfo")
-addrinfos = {}
+addrinfos = LFUCache(size=10000)
 
 @synchronized(_lock)
 def getaddrinfo (host, port):
-    key = str(host) + u":" + str(port)
-    if key not in addrinfos:
+    key = u"%s:%s" % (unicode(host), unicode(port))
+    if key in addrinfos:
+        value = addrinfos[key]
+    else:
         try:
-            addrinfos[key] = \
-                socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM)
+            value = socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM)
         except socket.error:
-            addrinfos[key] = sys.exc_info()[1]
-    value = addrinfos[key]
+            value = sys.exc_info()[1]
+        addrinfos[key] = value
     if isinstance(value, Exception):
         raise value
     return value

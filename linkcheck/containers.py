@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2009 Bastian Kleineidam
+# Copyright (C) 2004-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -110,9 +110,6 @@ class ListDict (dict):
 class CaselessDict (dict):
     """A dictionary ignoring the case of keys (which must be strings)."""
 
-    def __init__ (self):
-        dict.__init__(self)
-
     def __getitem__ (self, key):
         assert isinstance(key, basestring)
         return dict.__getitem__(self, key.lower())
@@ -164,6 +161,80 @@ class CaselessSortedDict (CaselessDict):
 
     def iteritems (self):
         return ((x, self[x]) for x in self.keys())
+
+
+class LFUCache (dict):
+    """Limited cache which purges least frequently used items."""
+
+    def __init__ (self, size=1000):
+        super(LFUCache, self).__init__()
+        if size < 1:
+            raise ValueError("invalid cache size %d" % size)
+        self.size = size
+
+    def __setitem__ (self, key, val):
+        """Store given key/value."""
+        if key in self:
+            # store value with existing number of uses
+            num_used = self[key][0]
+            super(LFUCache, self).__setitem__(key, [num_used, val])
+        else:
+            super(LFUCache, self).__setitem__(key, [0, val])
+            # check for size limit
+            if len(self) > self.size:
+                self.shrink()
+
+    def shrink (self):
+        """Shrink ca. 5% of entries."""
+        trim = int(0.95*len(self))
+        if trim:
+            items = super(LFUCache, self).items()
+            values = sorted([(value, key) for key, value in items])
+            for value, key in values[0:trim]:
+                del self[key]
+
+    def __getitem__ (self, key):
+        value = super(LFUCache, self).__getitem__(key)
+        value[0] += 1
+        return value[1]
+
+    def uses (self, key):
+        """Get number of uses for given key (without increasing the number of
+        uses)"""
+        return super(LFUCache, self).__getitem__(key)[0]
+
+    def get (self, key, def_val=None):
+        if key in self:
+            return self[key]
+        return def_val
+
+    def setdefault (self, key, def_val=None):
+        if key in self:
+            return self[key]
+        self[key] = def_val
+        return def_val
+
+    def items (self):
+        return [(key, value[1]) for key, value in super(LFUCache, self).items()]
+
+    def iteritems (self):
+        for key, value in super(LFUCache, self).iteritems():
+            yield (key, value[1])
+
+    def values (self):
+        return [value[1] for value in super(LFUCache, self).values()]
+
+    def itervalues (self):
+        for value in super(LFUCache, self).itervalues():
+            yield value[1]
+
+    def popitem (self):
+        key, value = super(LFUCache, self).popitem()
+        return (key, value[1])
+
+    def pop (self):
+        value = super(LFUCache, self).pop()
+        return value[1]
 
 
 try:

@@ -18,6 +18,7 @@
 Cache robots.txt contents.
 """
 from .. import robotparser2, configuration, url as urlutil
+from ..containers import LFUCache
 from ..decorators import synchronized
 from ..lock import get_lock
 
@@ -33,7 +34,7 @@ class RobotsTxt (object):
     """
 
     def __init__ (self):
-        self.cache = {}
+        self.cache = LFUCache(size=100)
 
     @synchronized(_lock)
     def allows_url (self, roboturl, url, proxy, user, password, callback=None):

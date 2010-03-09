@@ -22,6 +22,7 @@ import threading
 import collections
 from time import time as _time
 from .. import log, LOG_CACHE
+from ..containers import LFUCache
 
 
 class Timeout (StandardError):
@@ -54,23 +55,19 @@ class UrlQueue (object):
         self.unfinished_tasks = 0
         self.finished_tasks = 0
         self.in_progress = {}
-        self.checked = {}
+        self.checked = LFUCache(size=10000)
         self.shutdown = False
         self.unsorted = 0
 
     def qsize (self):
         """Return the approximate size of the queue (not reliable!)."""
-        self.mutex.acquire()
-        n = len(self.queue)
-        self.mutex.release()
-        return n
+        with self.mutex:
+            return len(self.queue)
 
     def empty (self):
         """Return True if the queue is empty, False otherwise (not reliable!)."""
-        self.mutex.acquire()
-        n = self._empty()
-        self.mutex.release()
-        return n
+        with self.mutex:
+            return self._empty()
 
     def _empty (self):
         return not self.queue
