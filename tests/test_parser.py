@@ -191,9 +191,7 @@ class TestParser (unittest.TestCase):
         self.htmlparser2 = linkcheck.HtmlParser.htmlsax.parser()
 
     def test_parse (self):
-        """
-        Parse all test patterns in one go.
-        """
+        # Parse all test patterns in one go.
         for _in, _out in parsetests:
             out = StringIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
@@ -213,9 +211,7 @@ class TestParser (unittest.TestCase):
         htmlparser.reset()
 
     def test_feed (self):
-        """
-        Parse all test patterns sequentially.
-        """
+        # Parse all test patterns sequentially.
         for _in, _out in parsetests:
             out = StringIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
@@ -225,9 +221,7 @@ class TestParser (unittest.TestCase):
             self.check_results(self.htmlparser, _in, _out, out)
 
     def test_interwoven (self):
-        """
-        Parse all test patterns on two parsers interwoven.
-        """
+        # Parse all test patterns on two parsers interwoven.
         for _in, _out in parsetests:
             out = StringIO()
             out2 = StringIO()
@@ -255,9 +249,7 @@ class TestParser (unittest.TestCase):
             self.assertEqual(out.getvalue(), out2.getvalue())
 
     def test_flush (self):
-        """
-        Test parser flushing.
-        """
+        # Test parser flushing.
         for _in, _out in flushtests:
             out = StringIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
@@ -266,9 +258,7 @@ class TestParser (unittest.TestCase):
             self.check_results(self.htmlparser, _in, _out, out)
 
     def test_entities (self):
-        """
-        Test entity resolving.
-        """
+        # Test entity resolving.
         resolve = linkcheck.HtmlParser.resolve_entities
         for c in "abcdefghijklmnopqrstuvwxyz":
             self.assertEqual(resolve("&#%d;" % ord(c)), c)

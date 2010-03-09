@@ -35,7 +35,6 @@ class TestConfig (unittest.TestCase):
     """Test configuration parsing."""
 
     def test_confparse (self):
-        """Check url validity."""
         config = linkcheck.configuration.Configuration()
         files = [get_file("config0.ini")]
         config.read(files)
