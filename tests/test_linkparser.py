@@ -30,7 +30,7 @@ class TestLinkparser (unittest.TestCase):
 
     def _test_one_link (self, content, url):
         self.count_url = 0
-        h = linkparse.LinkFinder(content, self._test_one_url(url))
+        h = linkparse.LinkFinder(self._test_one_url(url))
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
         try:

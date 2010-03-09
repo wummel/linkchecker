@@ -200,7 +200,7 @@ class UrlBase (object):
         """Set title of page the URL refers to.from page content."""
         if self.valid and self.is_html():
             try:
-                handler = linkparse.TitleFinder(self.get_content())
+                handler = linkparse.TitleFinder()
             except tuple(ExcList):
                 return
             parser = htmlsax.parser(handler)
@@ -559,7 +559,7 @@ class UrlBase (object):
         """Store list of anchors for this URL. Precondition: this URL is
         an HTML resource."""
         log.debug(LOG_CHECK, "Getting HTML anchors %s", self)
-        handler = linkparse.LinkFinder(self.get_content(), self.add_anchor,
+        handler = linkparse.LinkFinder(self.add_anchor,
                                    tags={'a': [u'name'], None: [u'id']})
         parser = htmlsax.parser(handler)
         handler.parser = parser
@@ -842,7 +842,7 @@ class UrlBase (object):
         """
         log.debug(LOG_CHECK, "Parsing HTML %s", self)
         # construct parser object
-        handler = linkparse.LinkFinder(self.get_content(), self.add_url)
+        handler = linkparse.LinkFinder(self.add_url)
         parser = htmlsax.parser(handler)
         handler.parser = parser
         # parse

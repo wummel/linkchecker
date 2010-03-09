@@ -263,3 +263,15 @@ class TestParser (unittest.TestCase):
         for c in "abcdefghijklmnopqrstuvwxyz":
             self.assertEqual(resolve("&#%d;" % ord(c)), c)
         self.assertEqual(resolve("&#1114112;"), u"")
+
+    def test_peek (self):
+        # Test peek() parser function
+        data = '<a href="test.html">name</a>'
+        class NamePeeker (object):
+            def start_element (self_handler, tag, attrs):
+                # use self reference of TestParser instance
+                self.assertRaises(TypeError, self.htmlparser.peek, -1)
+                self.assertEqual(self.htmlparser.peek(0), "")
+                self.assertEqual(self.htmlparser.peek(4), "name")
+        self.htmlparser.handler = NamePeeker()
+        self.htmlparser.feed(data)

@@ -81,19 +81,16 @@ class StopParse (StandardError):
 class TitleFinder (object):
     """Find title tags in HTML text."""
 
-    def __init__ (self, content):
-        """Initialize flags."""
+    def __init__ (self):
+        """Initialize title."""
         super(TitleFinder, self).__init__()
         log.debug(LOG_CHECK, "HTML title parser")
-        # XXX try to use parser content instead this one
-        self.content = content
         self.title = None
 
     def start_element (self, tag, attrs):
         """Search for <title> tag."""
         if tag == 'title':
-            pos = self.parser.pos()
-            data = self.content[pos:pos+MAX_TITLELEN]
+            data = self.parser.peek(MAX_TITLELEN)
             data = data.decode(self.parser.encoding, "ignore")
             self.title = linkname.title_name(data)
             raise StopParse("Title found")
@@ -126,7 +123,7 @@ class MetaRobotsFinder (TagFinder):
     """Class for finding robots.txt meta values in HTML."""
 
     def __init__ (self):
-        """Initialize flags."""
+        """Initialize follow and index flags."""
         super(MetaRobotsFinder, self).__init__()
         log.debug(LOG_CHECK, "meta robots finder")
         self.follow = self.index = True
@@ -159,11 +156,9 @@ class LinkFinder (TagFinder):
     """Find HTML links, and apply them to the callback function with the
     format (url, lineno, column, name, codebase)."""
 
-    def __init__ (self, content, callback, tags=None):
+    def __init__ (self, callback, tags=None):
         """Store content in buffer and initialize URL list."""
         super(LinkFinder, self).__init__()
-        # XXX try to use content from parser
-        self.content = content
         self.callback = callback
         if tags is None:
             self.tags = LinkTags
@@ -209,10 +204,8 @@ class LinkFinder (TagFinder):
         if tag == 'a' and attr == 'href':
             name = unquote(attrs.get_true('title', u''))
             if not name:
-                pos = self.parser.pos()
-                # Look for name only up to MAX_NAMELEN characters from current
-                # position, to limit the amount of data to encode.
-                data = self.content[pos:pos+MAX_NAMELEN]
+                # Look for name only up to MAX_NAMELEN characters
+                data = self.parser.peek(MAX_NAMELEN)
                 data = data.decode(self.parser.encoding, "ignore")
                 name = linkname.href_name(data)
         elif tag == 'img':

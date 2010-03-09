@@ -2294,6 +2294,27 @@ static PyObject* parser_pos (parser_object* self, PyObject* args) {
 }
 
 
+/* return buffered parser data up to given length */
+static PyObject* parser_peek (parser_object* self, PyObject* args) {
+    Py_ssize_t len, buflen;
+    if (!PyArg_ParseTuple(args, "n", &len)) {
+        return NULL;
+    }
+    if (len < 0) {
+	PyErr_SetString(PyExc_TypeError, "peek length must not be negative");
+        return NULL;
+    }
+    buflen = strlen(self->userData->buf);
+    if (!buflen || self->userData->bufpos >= buflen) {
+        return PyString_FromString("");
+    }
+    if (self->userData->bufpos + len >= buflen) {
+        len = buflen - self->userData->bufpos - 1;
+    }
+    return PyString_FromStringAndSize(self->userData->buf + self->userData->bufpos, len);
+}
+
+
 /* reset the parser. This will erase all buffered data! */
 static PyObject* parser_reset (parser_object* self, PyObject* args) {
     if (!PyArg_ParseTuple(args, "")) {
@@ -2436,6 +2457,7 @@ static PyMethodDef parser_methods[] = {
     {"column", (PyCFunction)parser_column, METH_VARARGS, "get the current column"},
     {"last_column", (PyCFunction)parser_last_column, METH_VARARGS, "get the last column"},
     {"pos", (PyCFunction)parser_pos, METH_VARARGS, "get the current scanner position"},
+    {"peek", (PyCFunction)parser_peek, METH_VARARGS, "get up to given length of buffered data from current parse position"},
     {NULL} /* Sentinel */
 };
 
