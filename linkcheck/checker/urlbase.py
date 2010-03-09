@@ -132,7 +132,7 @@ class UrlBase (object):
         # the anchor part of url
         self.anchor = None
         # list of parsed anchors
-        self.anchors = []
+        self.anchors = None
         # the result message string and flag
         self.result = u""
         self.has_result = False
@@ -583,6 +583,9 @@ class UrlBase (object):
         """
         if not self.aggregate.config["anchors"]:
             return
+        if self.anchors is None:
+            self.anchors = []
+            self.get_anchors()
         log.debug(LOG_CHECK, "checking anchor %r", self.anchor)
         if any(x for x in self.anchors if x[0] == self.anchor):
             return
@@ -642,8 +645,6 @@ class UrlBase (object):
             return
         if self.is_html():
             self.set_title_from_content()
-            if self.aggregate.config["anchors"]:
-                self.get_anchors()
         if self.anchor:
             self.check_anchor()
         warningregex = self.aggregate.config["warningregex"]
