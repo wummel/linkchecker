@@ -2,8 +2,6 @@
   single pages. This would allow to check pages even if robots.txt
   disallows to get the page content.
 - [HTTP] Allow sending POST data for login at beginning of check.
-- [HTTP] try out httest
-- [FTP] Use local testserver for FTP tests
 - [GUI] Add more context menu actions:
   + Show detailed URL properties
   + View source

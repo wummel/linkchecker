@@ -15,94 +15,88 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-Test ftp checking.
+FTP checking.
 """
-from tests import need_network
-from . import LinkCheckTest
+from .ftpserver import FtpServerTest
 
 
-class TestFtp (LinkCheckTest):
-    """
-    Test ftp: link checking.
-    """
+class TestFtp (FtpServerTest):
+    """Test ftp: link checking."""
 
-    @need_network
     def test_ftp (self):
-        # ftp two slashes
-        url = u"ftp://ftp.de.debian.org/"
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % url,
-            u"valid",
-        ]
-        self.direct(url, resultlines)
-
-    @need_network
-    def test_ftp_slashes (self):
-        # ftp one slash
-        url = u"ftp:/ftp.de.debian.org/"
-        nurl = self.norm(url)
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
-            u"error",
-        ]
-        self.direct(url, resultlines)
-        # missing path
-        url = u"ftp://ftp.de.debian.org"
-        nurl = self.norm(url)
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"valid",
-        ]
-        self.direct(url, resultlines)
-        # missing trailing dir slash
-        url = u"ftp://ftp.de.debian.org/debian"
-        nurl = self.norm(url)
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s/" % nurl,
-            u"warning Missing trailing directory slash in ftp url.",
-            u"valid",
-        ]
-        self.direct(url, resultlines)
-
-    @need_network
-    def test_ftp_many_slashes (self):
-        # ftp two dir slashes
-        url = u"ftp://ftp.de.debian.org//debian/"
-        nurl = self.norm(url)
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
-            u"valid",
-        ]
-        self.direct(url, resultlines)
-        # ftp many dir slashes
-        url = u"ftp://ftp.de.debian.org////////debian/"
-        nurl = self.norm(url)
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
-            u"valid",
-        ]
-        self.direct(url, resultlines)
-        # ftp three slashes
-        url = u"ftp:///ftp.de.debian.org/"
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % url,
-            u"error",
-        ]
-        self.direct(url, resultlines)
+        try:
+            # ftp two slashes
+            self.start_server()
+            url = u"ftp://%s:%d/" % (self.host, self.port)
+            resultlines = [
+              u"url %s" % url,
+              u"cache key %s" % url,
+              u"real url %s" % url,
+              u"valid",
+            ]
+            self.direct(url, resultlines)
+            # ftp one slash
+            url = u"ftp:/%s:%d/" % (self.host, self.port)
+            nurl = self.norm(url)
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % nurl,
+                u"real url %s" % nurl,
+                u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+                u"error",
+            ]
+            self.direct(url, resultlines)
+            # missing path
+            url = u"ftp://%s:%d" % (self.host, self.port)
+            nurl = self.norm(url)
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % nurl,
+                u"real url %s" % nurl,
+                u"valid",
+            ]
+            self.direct(url, resultlines)
+            # missing trailing dir slash
+            url = u"ftp://%s:%d/base" % (self.host, self.port)
+            nurl = self.norm(url)
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % nurl,
+                u"real url %s/" % nurl,
+                u"warning Missing trailing directory slash in ftp url.",
+                u"valid",
+            ]
+            self.direct(url, resultlines)
+            # ftp two dir slashes
+            url = u"ftp://%s:%d//base/" % (self.host, self.port)
+            nurl = self.norm(url)
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % nurl,
+                u"real url %s" % nurl,
+                u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+                u"valid",
+            ]
+            self.direct(url, resultlines)
+            # ftp many dir slashes
+            url = u"ftp://%s:%d////////base/" % (self.host, self.port)
+            nurl = self.norm(url)
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % nurl,
+                u"real url %s" % nurl,
+                u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
+                u"valid",
+            ]
+            self.direct(url, resultlines)
+            # ftp three slashes
+            url = u"ftp:///%s:%d/" % (self.host, self.port)
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % url,
+                u"real url %s" % url,
+                u"error",
+            ]
+            self.direct(url, resultlines)
+        finally:
+            self.stop_server()
