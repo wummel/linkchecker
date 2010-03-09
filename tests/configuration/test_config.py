@@ -71,8 +71,63 @@ class TestConfig (unittest.TestCase):
         self.assertTrue(config["warnings"])
         self.assertFalse(config["quiet"])
         self.assertEqual(len(config["fileoutput"]), 8)
-        # logger config sections
-        # XXX todo
+        # text logger section
+        self.assertEqual(config["text"]["filename"], "imadoofus.txt")
+        self.assertEqual(config["text"]["parts"], ["realurl"])
+        self.assertEqual(config["text"]["encoding"], "utf-8")
+        self.assertEqual(config["text"]["colorparent"], "blink;red")
+        self.assertEqual(config["text"]["colorurl"], "blink;red")
+        self.assertEqual(config["text"]["colorname"], "blink;red")
+        self.assertEqual(config["text"]["colorreal"], "blink;red")
+        self.assertEqual(config["text"]["colorbase"], "blink;red")
+        self.assertEqual(config["text"]["colorvalid"], "blink;red")
+        self.assertEqual(config["text"]["colorinvalid"], "blink;red")
+        self.assertEqual(config["text"]["colorinfo"], "blink;red")
+        self.assertEqual(config["text"]["colorwarning"], "blink;red")
+        self.assertEqual(config["text"]["colordltime"], "blink;red")
+        self.assertEqual(config["text"]["colorreset"], "blink;red")
+        # gml logger section
+        self.assertEqual(config["gml"]["filename"], "imadoofus.gml")
+        self.assertEqual(config["gml"]["parts"], ["realurl"])
+        self.assertEqual(config["gml"]["encoding"], "utf-8")
+        # dot logger section
+        self.assertEqual(config["dot"]["filename"], "imadoofus.dot")
+        self.assertEqual(config["dot"]["parts"], ["realurl"])
+        self.assertEqual(config["dot"]["encoding"], "utf-8")
+        # csv logger section
+        self.assertEqual(config["csv"]["filename"], "imadoofus.csv")
+        self.assertEqual(config["csv"]["parts"], ["realurl"])
+        self.assertEqual(config["csv"]["encoding"], "utf-8")
+        self.assertEqual(config["csv"]["separator"], ";")
+        self.assertEqual(config["csv"]["quotechar"], "'")
+        # sql logger section
+        self.assertEqual(config["sql"]["filename"], "imadoofus.sql")
+        self.assertEqual(config["sql"]["parts"], ["realurl"])
+        self.assertEqual(config["sql"]["encoding"], "utf-8")
+        self.assertEqual(config["sql"]["separator"], ";")
+        self.assertEqual(config["sql"]["dbname"], "linksdb")
+        # html logger section
+        self.assertEqual(config["html"]["filename"], "imadoofus.html")
+        self.assertEqual(config["html"]["parts"], ["realurl"])
+        self.assertEqual(config["html"]["encoding"], "utf-8")
+        self.assertEqual(config["html"]["colorbackground"], "#ff0000")
+        self.assertEqual(config["html"]["colorurl"], "#ff0000")
+        self.assertEqual(config["html"]["colorborder"], "#ff0000")
+        self.assertEqual(config["html"]["colorlink"], "#ff0000")
+        self.assertEqual(config["html"]["colorwarning"], "#ff0000")
+        self.assertEqual(config["html"]["colorerror"], "#ff0000")
+        self.assertEqual(config["html"]["colorok"], "#ff0000")
+        # blacklist logger section
+        self.assertEqual(config["blacklist"]["filename"], "blacklist")
+        self.assertEqual(config["blacklist"]["encoding"], "utf-8")
+        # xml logger section
+        self.assertEqual(config["xml"]["filename"], "imadoofus.xml")
+        self.assertEqual(config["xml"]["parts"], ["realurl"])
+        self.assertEqual(config["xml"]["encoding"], "utf-8")
+        # gxml logger section
+        self.assertEqual(config["gxml"]["filename"], "imadoofus.gxml")
+        self.assertEqual(config["gxml"]["parts"], ["realurl"])
+        self.assertEqual(config["gxml"]["encoding"], "utf-8")
 
     def test_confparse_error1 (self):
         config = linkcheck.configuration.Configuration()
