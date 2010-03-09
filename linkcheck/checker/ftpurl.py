@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.files = []
         # last part of URL filename
         self.filename = None
+        self.filename_encoding = 'iso-8859-1'
 
     def check_connection (self):
         """
@@ -64,6 +65,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             http.build_url()
             return http.check()
         self.login()
+        self.negotiate_encoding()
         self.filename = self.cwd()
         self.listfile()
         self.files = []
@@ -106,17 +108,29 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         except EOFError, msg:
             raise LinkCheckerError(
                   _("Remote host has closed connection: %(msg)s") % str(msg))
-        if not self.url_connection.getwelcome():
+        info = self.url_connection.getwelcome()
+        if info:
+            # note that the info may change every time a user logs in,
+            # so don't add it to the url_data info.
+            log.debug(LOG_CHECK, "FTP info %s", info)
+        else:
             raise LinkCheckerError(_("Got no answer from FTP server"))
-        # don't set info anymore, this may change every time we log in
-        #self.add_info(strformat.unicode_safe(info))
+
+    def negotiate_encoding (self):
+        """Check if server can handle UTF-8 encoded filenames.
+        See also RFC 2640."""
+        features = self.url_connection.sendcmd("FEAT")
+        log.debug(LOG_CHECK, "FTP features %s", features)
+        if " UTF-8" in features.splitlines():
+            self.filename_encoding = "utf-8"
 
     def cwd (self):
         """
         Change to URL parent directory. Return filename of last path
         component.
         """
-        dirname = self.urlparts[2].strip('/')
+        path = self.urlparts[2].encode(self.filename_encoding, 'replace')
+        dirname = path.strip('/')
         dirs = dirname.split('/')
         filename = dirs.pop()
         self.url_connection.cwd('/')

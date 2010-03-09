@@ -3,6 +3,10 @@
 Fixes:
 - ftp: fix support for FTP ports other than the default.
 
+Features:
+- ftp: detect and support UTF-8 filename encoding capability of FTP
+  servers.
+
 
 5.2 "11:14" (released 7.3.2010)
 
