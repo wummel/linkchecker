@@ -131,10 +131,21 @@ def has_proxy ():
         s.close()
         return True
     except StandardError:
-        pass
-    return False
+        return False
 
 need_proxy = _need_func(has_proxy, "proxy")
+
+
+@memoized
+def has_pyftpdlib ():
+    """Test if pyftpdlib is available."""
+    try:
+        import pyftpdlib
+        return True
+    except ImportError:
+        return False
+
+need_pyftpdlib = _need_func(has_pyftpdlib, "pyftpdlib")
 
 
 @memoized

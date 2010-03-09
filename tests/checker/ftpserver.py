@@ -20,7 +20,6 @@ Define http test support classes for LinkChecker tests.
 import sys
 import os
 import time
-from pyftpdlib import ftpserver
 from . import LinkCheckTest
 
 
@@ -62,6 +61,7 @@ def start_server (host, port):
         if "kill" in msg:
             sys.exit(0)
 
+    from pyftpdlib import ftpserver
     authorizer = ftpserver.DummyAuthorizer()
     datadir = os.path.join(os.path.dirname(__file__), 'data')
     authorizer.add_anonymous(datadir)

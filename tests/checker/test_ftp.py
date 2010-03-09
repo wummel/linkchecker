@@ -17,12 +17,14 @@
 """
 FTP checking.
 """
+from .. import need_pyftpdlib
 from .ftpserver import FtpServerTest
 
 
 class TestFtp (FtpServerTest):
     """Test ftp: link checking."""
 
+    @need_pyftpdlib
     def test_ftp (self):
         try:
             # ftp two slashes
