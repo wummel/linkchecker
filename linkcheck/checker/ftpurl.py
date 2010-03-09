@@ -95,7 +95,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.url_connection = ftplib.FTP()
             if log.is_debug(LOG_CHECK):
                 self.url_connection.set_debuglevel(1)
-            self.url_connection.connect(host)
+            host, port = proxysupport.parse_host_port(host)
+            self.url_connection.connect(host, port)
             if _user is None:
                 self.url_connection.login()
             elif _password is None:
