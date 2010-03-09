@@ -17,10 +17,10 @@
 """
 Test http checking.
 """
-import httpserver
+from .httpserver import HttpServerTest, NoQueryHttpRequestHandler
 
 
-class TestHttp (httpserver.HttpServerTest):
+class TestHttp (HttpServerTest):
     """Test http:// link checking."""
 
     def test_html (self):
@@ -149,7 +149,7 @@ def get_cookie (maxage=2000):
     return "; ".join('%s="%s"' % (key, value) for key, value in data)
 
 
-class CookieRedirectHttpRequestHandler (httpserver.NoQueryHttpRequestHandler):
+class CookieRedirectHttpRequestHandler (NoQueryHttpRequestHandler):
     """Handler redirecting certain requests, and setting cookies."""
 
     def end_headers (self):
