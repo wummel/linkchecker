@@ -17,7 +17,6 @@
 """DNS Messages"""
 
 from cStringIO import StringIO
-import random
 import struct
 import sys
 import time
