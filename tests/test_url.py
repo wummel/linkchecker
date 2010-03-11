@@ -99,17 +99,15 @@ class TestUrl (unittest.TestCase):
         # Test url norm quoting.
         url = "http://groups.google.com/groups?hl=en&lr&ie=UTF-8&"\
               "threadm=3845B54D.E546F9BD%40monmouth.com&rnum=2&"\
-              "prev=%2Fgroups%3Fq%3Dlogitech%2Bwingman%2Bextreme%2Bdigital"\
+              "prev=/groups%3Fq%3Dlogitech%2Bwingman%2Bextreme%2Bdigital"\
               "%2B3d%26hl%3Den%26lr%3D%26ie%3DUTF-8%26selm%3D3845B54D.E5"\
               "46F9BD%2540monmouth.com%26rnum%3D2"
         self.urlnormtest(url, url)
         url = "http://redirect.alexa.com/redirect?"\
               "http://www.offeroptimizer.com"
-        nurl = url
-        self.urlnormtest(url, nurl)
+        self.urlnormtest(url, url)
         url = "http://www.lesgensducinema.com/photo/Philippe%20Nahon.jpg"
-        nurl = url
-        self.urlnormtest(url, nurl)
+        self.urlnormtest(url, url)
         # Only perform percent-encoding where it is essential.
         url = "http://example.com/%7Ejane"
         nurl = "http://example.com/~jane"
@@ -122,25 +120,25 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
         # the no-quote chars
         url = "http://example.com/a*+-();b"
-        nurl = url
-        self.urlnormtest(url, nurl)
-        url = "http://www.company.com/path/doc.html?url=%2Fpath2%2Fdoc2.html?foo=bar"
-        nurl = url
-        self.urlnormtest(url, nurl)
+        self.urlnormtest(url, url)
+        url = "http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD"
+        self.urlnormtest(url, url)
+        url = "http://www.company.com/path/doc.html?url=/path2/doc2.html?foo=bar"
+        self.urlnormtest(url, url)
         url = "http://example.com/#a b"
         nurl = "http://example.com/#a%20b"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b=c "
-        nurl ="http://example.com/?u=http:%2F%2Fexample2.com?b=c%20"
+        nurl ="http://example.com/?u=http://example2.com?b=c%20"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b="
-        nurl ="http://example.com/?u=http:%2F%2Fexample2.com?b="
+        nurl ="http://example.com/?u=http://example2.com?b="
         self.urlnormtest(url, nurl)
         url = "http://localhost:8001/?quoted=ü"
         nurl = "http://localhost:8001/?quoted=%FC"
         self.urlnormtest(url, nurl, encoding="iso-8859-1")
         url = "http://host/?a=b/c+d="
-        nurl = "http://host/?a=b%2Fc%20d%3D"
+        nurl = "http://host/?a=b/c%20d%3D"
         self.urlnormtest(url, nurl)
 
     def test_norm_case_sensitivity (self):
