@@ -181,9 +181,12 @@ class Logger (object):
         """
         sep = os.linesep+os.linesep
         text = sep.join(lines)
-        return strformat.wrap(text, width,
-                            subsequent_indent=" "*self.max_indent,
-                            initial_indent=" "*self.max_indent).lstrip()
+        kwargs = dict(subsequent_indent=" "*self.max_indent,
+                      initial_indent=" "*self.max_indent,
+                      break_long_words=False)
+        if sys.version_info >= (2, 6, 0, 'final', 0):
+            kwargs["break_on_hyphens"] = False
+        return strformat.wrap(text, width, **kwargs).lstrip()
 
     def write (self, s, **args):
         """
