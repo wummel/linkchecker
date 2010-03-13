@@ -324,13 +324,18 @@ class HTTPResponse:
 
     # See RFC 2616 sec 19.6 and RFC 1945 sec 6 for details.
 
-    def __init__(self, sock, debuglevel=0, strict=0, method=None):
-        # The buffer size is specified as zero, because the headers of
-        # the response are read with readline().  If the reads were
-        # buffered the readline() calls could consume some of the
-        # response, which make be read via a recv() on the underlying
-        # socket.
-        self.fp = sock.makefile('rb', 0)
+    def __init__(self, sock, debuglevel=0, strict=0, method=None, buffering=False):
+        if buffering:
+            # The caller won't be using any sock.recv() calls, so buffering
+            # is fine and recommended for performance.
+            self.fp = sock.makefile('rb')
+        else:
+            # The buffer size is specified as zero, because the headers of
+            # the response are read with readline().  If the reads were
+            # buffered the readline() calls could consume some of the
+            # response, which make be read via a recv() on the underlying
+            # socket.
+            self.fp = sock.makefile('rb', 0)
         self.debuglevel = debuglevel
         self.strict = strict
         self._method = method
@@ -359,7 +364,7 @@ class HTTPResponse:
         if not line:
             # Presumably, the server closed the connection before
             # sending a valid response.
-            raise BadStatusLine("Empty status line")
+            raise BadStatusLine(line)
         try:
             [version, status, reason] = line.split(None, 2)
         except ValueError:
@@ -373,7 +378,7 @@ class HTTPResponse:
         if not version.startswith('HTTP/'):
             if self.strict:
                 self.close()
-                raise BadStatusLine("Bad status line %r" % line)
+                raise BadStatusLine(line)
             else:
                 # assume it's a Simple-Response from an 0.9 server
                 self.fp = LineAndFileWrapper(line, self.fp)
@@ -383,9 +388,9 @@ class HTTPResponse:
         try:
             status = int(status)
             if status < 100 or status > 999:
-                raise BadStatusLine("Bad status line %r" % line)
+                raise BadStatusLine(line)
         except ValueError:
-            raise BadStatusLine("Bad status line %r" % line)
+            raise BadStatusLine(line)
         return version, status, reason
 
     def begin(self):
@@ -552,10 +557,8 @@ class HTTPResponse:
     def _read_chunked(self, amt):
         assert self.chunked != _UNKNOWN
         chunk_left = self.chunk_left
-        value = ''
+        value = []
 
-        # XXX This accumulates chunks by repeated string concatenation,
-        # which is not efficient as the number or size of chunks gets big.
         while True:
             if chunk_left is None:
                 line = self.fp.readline()
@@ -572,18 +575,18 @@ class HTTPResponse:
                 if chunk_left == 0:
                     break
             if amt is None:
-                value += self._safe_read(chunk_left)
+                value.append(self._safe_read(chunk_left))
             elif amt < chunk_left:
-                value += self._safe_read(amt)
+                value.append(self._safe_read(amt))
                 self.chunk_left = chunk_left - amt
-                return value
+                return ''.join(value)
             elif amt == chunk_left:
-                value += self._safe_read(amt)
+                value.append(self._safe_read(amt))
                 self._safe_read(2)  # toss the CRLF at the end of the chunk
                 self.chunk_left = None
-                return value
+                return ''.join(value)
             else:
-                value += self._safe_read(chunk_left)
+                value.append(self._safe_read(chunk_left))
                 amt -= chunk_left
 
             # we read the whole chunk, get another
@@ -604,7 +607,7 @@ class HTTPResponse:
         # we read everything; close the "file"
         self.close()
 
-        return value
+        return ''.join(value)
 
     def _safe_read(self, amt):
         """Read the number of bytes requested, compensating for partial reads.
@@ -620,6 +623,11 @@ class HTTPResponse:
         reading. If the bytes are truly not available (due to EOF), then the
         IncompleteRead exception can be used to detect the problem.
         """
+        # NOTE(gps): As of svn r74426 socket._fileobject.read(x) will never
+        # return less than x bytes unless EOF is encountered.  It now handles
+        # signal interruptions (socket.error EINTR) internally.  This code
+        # never caught that exception anyways.  It seems largely pointless.
+        # self.fp.read(amt) will work fine.
         s = []
         while amt > 0:
             chunk = self.fp.read(min(amt, MAXAMOUNT))
@@ -760,6 +768,7 @@ class HTTPConnection:
         """Send the currently buffered request and clear the buffer.
 
         Appends an extra \\r\\n to the buffer.
+        A message_body may be specified, to be appended to the request.
         """
         self._buffer.extend(("", ""))
         msg = "\r\n".join(self._buffer)
@@ -958,7 +967,7 @@ class HTTPConnection:
             self.putheader(hdr, value)
         self.endheaders(body)
 
-    def getresponse(self):
+    def getresponse(self, buffering=False):
         "Get the response from the server."
 
         # if a prior response has been completed, then forget about it.
@@ -985,13 +994,15 @@ class HTTPConnection:
             msg = "State %s, Response %s" % (self.__state, self.__response)
             raise ResponseNotReady(msg)
 
+        args = (self.sock,)
+        kwds = {"strict":self.strict, "method":self._method}
         if self.debuglevel > 0:
-            response = self.response_class(self.sock, self.debuglevel,
-                                           strict=self.strict,
-                                           method=self._method)
-        else:
-            response = self.response_class(self.sock, strict=self.strict,
-                                           method=self._method)
+            args += (self.debuglevel,)
+        if buffering:
+            #only add this keyword if non-default, for compatibility with
+            #other response_classes.
+            kwds["buffering"] = True;
+        response = self.response_class(*args, **kwds)
 
         response.begin()
         assert response.will_close != _UNKNOWN
@@ -1256,7 +1267,7 @@ class HTTP:
         "Provide a getfile, since the superclass' does not use this concept."
         return self.file
 
-    def getreply(self):
+    def getreply(self, buffering=False):
         """Compat definition since superclass does not define it.
 
         Returns a tuple consisting of:
@@ -1265,7 +1276,12 @@ class HTTP:
         - any RFC822 headers in the response from the server
         """
         try:
-            response = self._conn.getresponse()
+            if not buffering:
+                response = self._conn.getresponse()
+            else:
+                #only add this keyword if non-default for compatibility
+                #with other connection classes
+                response = self._conn.getresponse(buffering)
         except BadStatusLine, e:
             ### hmm. if getresponse() ever closes the socket on a bad request,
             ### then we are going to have problems with self.sock
