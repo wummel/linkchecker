@@ -113,4 +113,3 @@ def encode_multipart_formdata(fields, files=None):
 
 def get_content_type(filename):
     return mimetypes.guess_type(filename)[0] or 'application/octet-stream'
-

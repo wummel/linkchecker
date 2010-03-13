@@ -75,6 +75,7 @@ py2exe_options = dict(
     optimize=2,
 )
 
+
 def normpath (path):
     """Norm a path name to platform specific notation."""
     return os.path.normpath(path)
@@ -87,7 +88,7 @@ def cnormpath (path):
         # replace slashes with backslashes
         path = path.replace("/", "\\")
     if not os.path.isabs(path):
-        path= normpath(os.path.join(sys.prefix, path))
+        path = normpath(os.path.join(sys.prefix, path))
     return path
 
 
@@ -182,7 +183,6 @@ class MyDistribution (Distribution, object):
             "icon_resources": [(1, "doc/html/favicon.ico")],
         }]
 
-
     def run_commands (self):
         """Generate config file and run commands."""
         cwd = os.getcwd()
@@ -221,7 +221,7 @@ class MyDistribution (Distribution, object):
         # write the config file
         data.append('appname = "LinkChecker"')
         util.execute(write_file, (filename, data),
-                     "creating %s" % filename, self.verbose>=1, self.dry_run)
+                     "creating %s" % filename, self.verbose >= 1, self.dry_run)
 
 
 def cc_run (args):
@@ -303,7 +303,7 @@ def check_manifest ():
     if err:
         n = len(manifest)
         print '\n*** SOURCE WARNING: There are files missing (%d/%d found)!'%(
-            n-len(err), n)
+            n - len(err), n)
         print 'Missing:', '\nMissing: '.join(err)
 
 
@@ -398,10 +398,11 @@ if os.name == 'posix':
               ['config/linkchecker-completion',
                'doc/examples/check_blacklist.sh',
                'doc/examples/check_for_x_errors.sh',
-               'doc/examples/check_urls.sh',]))
+               'doc/examples/check_urls.sh']))
 
 
 class InnoScript:
+
     def __init__(self, lib_dir, dist_dir, windows_exe_files=[],
                  console_exe_files=[], service_exe_files=[],
                  comserver_files=[], lib_files=[]):
@@ -456,10 +457,11 @@ class InnoScript:
         res = ctypes.windll.shell32.ShellExecuteA(0, "compile",
             self.pathname, None, None, 0)
         if res < 32:
-            raise RuntimeError, "ShellExecute failed, error %d" % res
+            raise RuntimeError("ShellExecute failed, error %d" % res)
 
 try:
     from py2exe.build_exe import py2exe as py2exe_build
+
     class MyPy2exe (py2exe_build):
         """First builds the exe file(s), then creates a Windows installer.
         You need InnoSetup for it."""
@@ -485,7 +487,8 @@ try:
             print "*** compiling the inno setup script***"
             script.compile()
 except ImportError:
-    class MyPy2exe: pass
+    class MyPy2exe:
+        pass
 
 
 class MyRegister (register, object):
@@ -557,7 +560,7 @@ o a (Fast)CGI web interface (requires HTTP server)
             include_dirs = include_dirs + [normpath("linkcheck/HtmlParser")],
         ),
         Extension("linkcheck.network._network",
-            sources = ["linkcheck/network/_network.c",],
+            sources = ["linkcheck/network/_network.c"],
             extra_compile_args = extra_compile_args,
             library_dirs = library_dirs,
             libraries = libraries,

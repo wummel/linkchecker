@@ -94,4 +94,3 @@ def trace_on (full=False):
 def trace_off ():
     """Stop tracing of the current thread (and the current thread only)."""
     sys.settrace(None)
-

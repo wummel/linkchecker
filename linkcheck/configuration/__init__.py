@@ -31,7 +31,7 @@ from . import confparse
 Version = configdata.version
 AppName = configdata.appname
 App = AppName+u" "+Version
-Author =  configdata.author
+Author = configdata.author
 HtmlAuthor = Author.replace(u' ', u'&nbsp;')
 Copyright = u"Copyright (C) 2000-2010 "+Author
 HtmlCopyright = u"Copyright &copy; 2000-2010 "+HtmlAuthor

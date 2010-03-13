@@ -32,6 +32,7 @@ import linkcheck.i18n
 # helper alias
 get_url_from = linkcheck.checker.get_url_from
 
+
 class TestLogger (linkcheck.logger.Logger):
     """
     Output logger for automatic regression tests.

@@ -18,6 +18,7 @@ import unittest
 import sys
 from tests import need_pyqt
 
+
 class TestGui (unittest.TestCase):
     """Test OMT GUI client."""
 

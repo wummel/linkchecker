@@ -78,6 +78,7 @@ patterns = (
     ("", None),
 )
 
+
 class TestFtpparse (unittest.TestCase):
     """
     Test FTP LIST line parsing.

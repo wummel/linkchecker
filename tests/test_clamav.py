@@ -33,7 +33,7 @@ class TestClamav (unittest.TestCase):
 
     @need_clamav
     def testInfected (self):
-        data = '<object data="&#109;s-its:mhtml:file://'+ \
+        data = '<object data="&#109;s-its:mhtml:file://' + \
                'C:\\foo.mht!${PATH}/' + \
                'EXPLOIT.CHM::' + \
                '/exploit.htm">'

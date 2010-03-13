@@ -160,7 +160,6 @@ HTML_MIMETYPES = (
 # if file extension lookup was unsuccessful, look at the content
 PARSE_CONTENTS = {
     "html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
-    "opera" : re.compile(r'^Opera Hotlist'),
-    "text" : re.compile(r'(?i)^# LinkChecker URL list'),
+    "opera": re.compile(r'^Opera Hotlist'),
+    "text": re.compile(r'(?i)^# LinkChecker URL list'),
 }
-

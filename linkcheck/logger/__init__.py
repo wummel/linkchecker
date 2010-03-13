@@ -43,6 +43,7 @@ Fields = dict(
 )
 del _
 
+
 class Logger (object):
     """
     Base class for logging of checked urls. It defines the public API

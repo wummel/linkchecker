@@ -72,7 +72,6 @@ class TestStrFormat (unittest.TestCase):
         self.assertEqual(wrap(None, 10), None)
         self.assertFalse(linkcheck.strformat.get_paragraphs(None))
 
-
     def test_remove_markup (self):
         # Test markup removing.
         self.assertEqual(linkcheck.strformat.remove_markup("<a>"), "")

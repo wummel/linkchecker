@@ -49,6 +49,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 <body bgcolor="%(body)s" link="%(link)s" vlink="%(vlink)s" alink="%(alink)s">
 """
 
+
 class HtmlLogger (Logger):
     """
     Logger with HTML output.

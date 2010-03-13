@@ -87,7 +87,7 @@ def print_app_info (out=stderr):
     print >> out, configuration.App
     print >> out, _("Python %(version)s on %(platform)s") % \
                     {"version": sys.version, "platform": sys.platform}
-    for key in ("LC_ALL", "LC_MESSAGES",  "http_proxy", "ftp_proxy", "no_proxy"):
+    for key in ("LC_ALL", "LC_MESSAGES", "http_proxy", "ftp_proxy", "no_proxy"):
         value = os.getenv(key)
         if value is not None:
             print >> out, key, "=", repr(value)

@@ -26,6 +26,7 @@ from tests import need_msgfmt, need_posix
 
 
 pofiles = None
+
 def get_pofiles ():
     """Find all .po files in this source."""
     global pofiles
@@ -34,6 +35,7 @@ def get_pofiles ():
         pofiles.extend(glob.glob("po/*.po"))
         pofiles.extend(glob.glob("doc/*.po"))
     return pofiles
+
 
 class TestPo (unittest.TestCase):
     """Test .po file syntax."""

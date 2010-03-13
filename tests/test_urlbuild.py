@@ -23,6 +23,7 @@ import linkcheck.configuration
 import linkcheck.director
 import linkcheck.checker.httpurl
 
+
 def get_test_aggregate ():
     """
     Initialize a test configuration object.

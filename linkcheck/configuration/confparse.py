@@ -126,7 +126,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             if val:
                 self.config["warningregex"] = re.compile(val)
         if self.has_option(section, "warnsizebytes"):
-            val = self.get(section,"warnsizebytes")
+            val = self.get(section, "warnsizebytes")
             self.config["warnsizebytes"] = int(val)
         if self.has_option(section, "nntpserver"):
             self.config["nntpserver"] = self.get(section, "nntpserver")
@@ -134,14 +134,14 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
 
     def read_check_options (self, section):
         """Read check* options."""
-        if self.has_option(section,"checkhtml"):
+        if self.has_option(section, "checkhtml"):
             self.config["checkhtml"] = self.getboolean(section, "checkhtml")
-        if self.has_option(section,"checkcss"):
+        if self.has_option(section, "checkcss"):
             self.config["checkcss"] = self.getboolean(section, "checkcss")
-        if self.has_option(section,"checkhtmlw3"):
+        if self.has_option(section, "checkhtmlw3"):
             val = self.getboolean(section, "checkhtmlw3")
             self.config["checkhtmlw3"] = val
-        if self.has_option(section,"checkcssw3"):
+        if self.has_option(section, "checkcssw3"):
             self.config["checkcssw3"] = self.getboolean(section, "checkcssw3")
         if self.has_option(section, "scanvirus"):
             self.config["scanvirus"] = self.getboolean(section, "scanvirus")

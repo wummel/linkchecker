@@ -166,8 +166,8 @@ class TestRobotsTxt (unittest.TestCase):
         ]
         self.rp.parse(lines)
         self.assertEqual(str(self.rp), "\n".join(lines2))
-        good = ['/','/test.html']
-        bad = ['/cyberworld/map/index.html','/tmp/xxx','/foo.html']
+        good = ['/', '/test.html']
+        bad = ['/cyberworld/map/index.html', '/tmp/xxx', '/foo.html']
         self.check_urls(good, bad)
 
     def test_access2 (self):
@@ -191,7 +191,7 @@ class TestRobotsTxt (unittest.TestCase):
         ]
         self.rp.parse(lines)
         self.assertEqual(str(self.rp), "\n".join(lines2))
-        good = ['/','/test.html',('cybermapper','/cyberworld/map/index.html')]
+        good = ['/', '/test.html', ('cybermapper', '/cyberworld/map/index.html')]
         bad = ['/cyberworld/map/index.html']
         self.check_urls(good, bad)
 
@@ -208,7 +208,7 @@ class TestRobotsTxt (unittest.TestCase):
         self.rp.parse(lines)
         self.assertEqual(str(self.rp), "\n".join(lines2))
         good = []
-        bad = ['/cyberworld/map/index.html','/','/tmp/']
+        bad = ['/cyberworld/map/index.html', '/', '/tmp/']
         self.check_urls(good, bad)
 
     def test_access4 (self):
@@ -229,8 +229,8 @@ class TestRobotsTxt (unittest.TestCase):
         self.rp.parse(lines)
         self.assertEqual(str(self.rp), "\n".join(lines2))
         good = []
-        bad = ['/tmp','/tmp.html','/tmp/a.html',
-               '/a%3cd.html','/a%3Cd.html','/a%2fb.html',
+        bad = ['/tmp', '/tmp.html', '/tmp/a.html',
+               '/a%3cd.html', '/a%3Cd.html', '/a%2fb.html',
                '/~joe/index.html', '/a/b.html',
         ]
         self.check_urls(good, bad, 'figtree')
@@ -253,9 +253,9 @@ class TestRobotsTxt (unittest.TestCase):
         ]
         self.rp.parse(lines)
         self.assertEqual(str(self.rp), "\n".join(lines2))
-        good = ['/tmp',] # XFAIL: '/a%2fb.html'
-        bad = ['/tmp/','/tmp/a.html',
-               '/a%3cd.html','/a%3Cd.html',"/a/b.html",
+        good = ['/tmp'] # XFAIL: '/a%2fb.html'
+        bad = ['/tmp/', '/tmp/a.html',
+               '/a%3cd.html', '/a%3Cd.html', "/a/b.html",
                '/%7Ejoe/index.html']
         self.check_urls(good, bad)
 
@@ -290,4 +290,3 @@ class TestRobotsTxt (unittest.TestCase):
         self.check_url("spam", "/cgi-bin/foo/bar", False)
         self.check_url("spam", "/cgi-bin?a=1", False)
         self.check_url("spam", "/", True)
-

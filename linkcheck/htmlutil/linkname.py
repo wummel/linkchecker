@@ -26,12 +26,14 @@ imgtag_re = re.compile(r"(?i)\s+alt\s*=\s*"+\
                        r"""(?P<name>("[^"\n]*"|'[^'\n]*'|[^\s>]+))""")
 img_re = re.compile(r"""(?i)<\s*img\s+("[^"\n]*"|'[^'\n]*'|[^>])+>""")
 
+
 def endtag_re (tag):
     """Return matcher for given end tag"""
     return re.compile(r"(?i)</%s\s*>" % tag)
 
 a_end_search = endtag_re("a").search
 title_end_search = endtag_re("title").search
+
 
 def _unquote (txt):
     """Resolve entities and remove markup from txt."""
@@ -67,4 +69,3 @@ def title_name (txt):
         return name
     name = txt[:endtag.start()]
     return _unquote(name)
-

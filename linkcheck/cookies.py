@@ -49,7 +49,7 @@ has_embedded_dot = re.compile(r"[a-zA-Z0-9]\.[a-zA-Z]").search
 
 # Pattern for finding cookie snatched from Pythons Cookie.py
 # Modification: allow whitespace in values.
-LegalChars  = r"\w\d!#%&'~_`><@,:/\$\*\+\-\.\^\|\)\(\?\}\{\="
+LegalChars = r"\w\d!#%&'~_`><@,:/\$\*\+\-\.\^\|\)\(\?\}\{\="
 CookiePattern = re.compile(r"""
     (?P<key>                   # Start of group 'key'
     [%(legalchars)s]+?         # Any word of at least one letter, nongreedy

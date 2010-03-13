@@ -81,7 +81,8 @@ FCGI_OVERLOADED = 2               # New request rejected; too busy
 FCGI_UNKNOWN_ROLE = 3               # Role value not known
 
 
-error = 'fcgi.error'
+class error(StandardError):
+    pass
 
 
 # The following function is used during debugging; it isn't called
@@ -160,14 +161,14 @@ class Record (object):
         e_len = (c_len + 7) & (0xFFFF - 7)    # align to an 8-byte boundary
         pad_len = e_len - c_len
 
-        hdr = [ self.version,
-                self.rec_type,
-                self.req_id >> 8,
-                self.req_id & 255,
-                c_len >> 8,
-                c_len & 255,
-                pad_len,
-                0]
+        hdr = [self.version,
+               self.rec_type,
+               self.req_id >> 8,
+               self.req_id & 255,
+               c_len >> 8,
+               c_len & 255,
+               pad_len,
+               0]
         hdr = ''.join(chr(x) for x in hdr)
 
         sock.send(hdr + content + pad_len*'\000')
@@ -186,8 +187,8 @@ def read_pair (s, pos):
         b = [ord(x) for x in s[pos:pos+3]]
         pos += 3
         value_len = ((value_len&127)<<24) + (b[0]<<16) + (b[1]<<8) + b[2]
-    return ( s[pos:pos+name_len], s[pos+name_len:pos+name_len+value_len],
-             pos+name_len+value_len )
+    return (s[pos:pos+name_len], s[pos+name_len:pos+name_len+value_len],
+            pos+name_len+value_len)
 
 
 def write_pair (name, value):
@@ -210,8 +211,8 @@ def HandleManTypes (r, conn):
     if r.rec_type == FCGI_GET_VALUES:
         r.rec_type = FCGI_GET_VALUES_RESULT
         v = {}
-        _vars = {'FCGI_MAX_CONNS' : FCGI_MAX_CONNS,
-                'FCGI_MAX_REQS'  : FCGI_MAX_REQS,
+        _vars = {'FCGI_MAX_CONNS': FCGI_MAX_CONNS,
+                'FCGI_MAX_REQS': FCGI_MAX_REQS,
                 'FCGI_MPXS_CONNS': FCGI_MPXS_CONNS}
         for i in r.values.keys():
             if i in _vars:
@@ -240,42 +241,42 @@ class FastCGIWriter (object):
     def isatty (self):
         """Returns False."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
         return False
 
     def seek (self, pos, mode=0):
         """Does nothing."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
 
     def tell (self):
         """Return zero."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
         return 0
 
     def read (self, n=-1):
         """Return empty string."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
         return ""
 
     def readline (self, length=None):
         """Return empty string."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
         return ""
 
     def readlines (self):
         """Return empty list."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
         return []
 
     def write (self, s):
         """Write data in record for record to connection."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
         while s:
             chunk, s = self.get_next_chunk(s)
             self.record.content = chunk
@@ -294,7 +295,7 @@ class FastCGIWriter (object):
     def flush (self):
         """Raises ValueError if called with closed file."""
         if self.closed:
-            raise ValueError, "I/O operation on closed file"
+            raise ValueError("I/O operation on closed file")
 
 _isFCGI = 1         # assume it is until we find out for sure
 
@@ -363,14 +364,14 @@ class FCGI (object):
 
         if 'FCGI_WEB_SERVER_ADDRS' in os.environ:
             addrs = os.environ['FCGI_WEB_SERVER_ADDRS'].split(',')
-            good_addrs = [ addr.strip() for addr in addrs ]
+            good_addrs = [addr.strip() for addr in addrs]
         else:
             good_addrs = None
 
         self.conn, addr = _sock.accept()
         # Check if the connection is from a legal address
         if good_addrs is not None and addr not in good_addrs:
-            raise error, 'Connection from invalid server!'
+            raise error('Connection from invalid server!')
 
         stdin = data = ""
         self.env = {}
@@ -429,7 +430,7 @@ class FCGI (object):
                     data += r.content
         # end of while remaining:
 
-        self.stdin = sys.stdin  = StringIO(stdin)
+        self.stdin = sys.stdin = StringIO(stdin)
         self.data = StringIO(data)
         r = Record()
         r.rec_type = FCGI_STDERR

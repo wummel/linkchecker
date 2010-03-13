@@ -44,7 +44,6 @@ def _init ():
 _init()
 
 
-
 _has_app_cache = {}
 def has_word ():
     """Determine if Word is available on the current system."""

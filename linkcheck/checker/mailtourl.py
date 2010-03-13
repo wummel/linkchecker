@@ -328,7 +328,7 @@ class MailtoUrl (urlbase.UrlBase):
                     self.add_info(_("Verified address %(mail)s: %(info)s.") % d)
                 # check for 25x status code which means that the address
                 # could not be verified, but is sent anyway
-                elif 250 < status  < 260:
+                elif 250 < status < 260:
                     self.add_info(_("Unverified but presumably valid"
                                     " address %(mail)s: %(info)s.") % d)
                 else:

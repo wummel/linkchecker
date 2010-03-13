@@ -17,7 +17,8 @@ DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
 # original dnspython repository module
 DNSPYTHON:=$(HOME)/src/dnspython-git/dns
 # options to run the pep8 utility
-PEP8OPTS:=--repeat --ignore=E211,E501 --exclude=dns
+PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
+   --exclude="dns,gzip2.py,httplib2.py,robotparser2.py,reindent.py"
 
 
 .PHONY: all
@@ -83,6 +84,7 @@ release: distclean releasecheck dist-stamp sign_distfiles upload
 	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
+	wget http://pypants.org/projects/linkchecker/update/
 
 .PHONY: chmod
 chmod:

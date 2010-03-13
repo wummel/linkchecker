@@ -183,6 +183,7 @@ def has_pyqt ():
 
 need_pyqt = _need_func(has_pyqt, "PyQT")
 
+
 @contextmanager
 def _limit_time (seconds):
     """Raises LinkCheckerInterrupt if given number of seconds have passed."""

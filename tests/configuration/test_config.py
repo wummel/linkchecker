@@ -51,9 +51,9 @@ class TestConfig (unittest.TestCase):
         for prefix1 in ("ignore_", "nofollow_"):
             for prefix2 in ("", "old"):
                 for suffix in ("1", "2"):
-                    key  = "%s%simadoofus%s" % (prefix1, prefix2, suffix)
+                    key = "%s%simadoofus%s" % (prefix1, prefix2, suffix)
                     self.assertTrue(key in patterns)
-        for key in ("url-unnormed","url-unicode-domain","anchor-not-found"):
+        for key in ("url-unnormed", "url-unicode-domain", "anchor-not-found"):
             self.assertTrue(key in config["ignorewarnings"])
         # authentication section
         patterns = [x["pattern"].pattern for x in config["authentication"]]

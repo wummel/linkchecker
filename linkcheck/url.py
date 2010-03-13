@@ -41,9 +41,9 @@ PORT = 2
 DOCUMENT = 3
 
 default_ports = {
-    'http' : 80,
-    'https' : 443,
-    'nntps' : 563,
+    'http': 80,
+    'https': 443,
+    'nntps': 563,
 }
 
 # adapted from David Wheelers "Secure Programming for Linux and Unix HOWTO"

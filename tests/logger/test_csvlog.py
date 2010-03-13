@@ -24,11 +24,11 @@ class TestCsvLogger (unittest.TestCase):
 
     def test_parts (self):
         args = dict(
-            filename = os.path.join(os.path.dirname(__file__), "testlog.csv"),
-            parts = ["realurl"],
-            fileoutput = 1,
-            separator = ";",
-            quotechar = '"',
+            filename=os.path.join(os.path.dirname(__file__), "testlog.csv"),
+            parts=["realurl"],
+            fileoutput=1,
+            separator=";",
+            quotechar='"',
         )
         logger = CSVLogger(**args)
         try:

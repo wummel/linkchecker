@@ -105,7 +105,7 @@ class XMLLogger (Logger):
             for name, value in attrs.items():
                 args = (xmlquote(name), xmlquoteattr(value))
                 self.write(u' %s="%s"' % args)
-        self.writeln(u">");
+        self.writeln(u">")
         self.level += 1
 
     def xml_endtag (self, name):

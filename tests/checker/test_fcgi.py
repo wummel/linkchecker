@@ -5,8 +5,8 @@ Test container routines.
 
 import unittest
 import os
-
 import linkcheck.fcgi
+
 
 class TestFcgi (unittest.TestCase):
     """

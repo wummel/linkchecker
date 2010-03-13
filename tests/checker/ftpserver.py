@@ -57,6 +57,7 @@ class FtpServerTest (LinkCheckTest):
 
 
 def start_server (host, port):
+
     def line_logger(msg):
         if "kill" in msg:
             sys.exit(0)

@@ -26,17 +26,17 @@ from .. import log, LOG_DNS
 
 # IP Adress regular expressions
 _ipv4_num = r"\d{1,3}"
-_ipv4_num_4 = r"%s\.%s\.%s\.%s" % ((_ipv4_num,)*4)
+_ipv4_num_4 = r"%s\.%s\.%s\.%s" % ((_ipv4_num,) * 4)
 _ipv4_re = re.compile(r"^%s$" % _ipv4_num_4)
 # see rfc2373
 _ipv6_num = r"[\da-f]{1,4}"
-_ipv6_re = re.compile(r"^%s:%s:%s:%s:%s:%s:%s:%s$" % ((_ipv6_num,)*8))
-_ipv6_ipv4_re = re.compile(r"^%s:%s:%s:%s:%s:%s:" % ((_ipv6_num,)*6) + \
+_ipv6_re = re.compile(r"^%s:%s:%s:%s:%s:%s:%s:%s$" % ((_ipv6_num,) * 8))
+_ipv6_ipv4_re = re.compile(r"^%s:%s:%s:%s:%s:%s:" % ((_ipv6_num,) * 6) + \
                            r"%s$" % _ipv4_num_4)
 _ipv6_abbr_re = re.compile(r"^((%s:){0,6}%s)?::((%s:){0,6}%s)?$" % \
-                            ((_ipv6_num,)*4))
+                            ((_ipv6_num,) * 4))
 _ipv6_ipv4_abbr_re = re.compile(r"^((%s:){0,4}%s)?::((%s:){0,5})?" % \
-                           ((_ipv6_num,)*3) + \
+                           ((_ipv6_num,) * 3) + \
                            "%s$" % _ipv4_num_4)
 # netmask regex
 _host_netmask_re = re.compile(r"^%s/%s$" % (_ipv4_num_4, _ipv4_num_4))
@@ -51,18 +51,18 @@ def expand_ipv6 (ip, num):
     """
     i = ip.find("::")
     prefix = ip[:i]
-    suffix = ip[i+2:]
+    suffix = ip[i + 2:]
     count = prefix.count(":") + suffix.count(":")
     if prefix:
         count += 1
-        prefix = prefix+":"
+        prefix = prefix + ":"
     if suffix:
         count += 1
-        suffix = ":"+suffix
+        suffix = ":" + suffix
     if count >= num:
         raise ValueError("invalid ipv6 number: %s" % ip)
-    fill = (num-count-1)*"0:" + "0"
-    return prefix+fill+suffix
+    fill = (num - count - 1) * "0:" + "0"
+    return prefix + fill + suffix
 
 
 def expand_ip (ip):
@@ -137,7 +137,7 @@ def cidr2mask (n):
     """
     Return a mask where the n left-most of 32 bits are set.
     """
-    return ((1L << n) - 1) << (32-n)
+    return ((1L << n) - 1) << (32 - n)
 
 
 def netmask2mask (ip):
@@ -146,11 +146,13 @@ def netmask2mask (ip):
     """
     return dq2num(ip)
 
+
 def mask2netmask (mask):
     """
     Return dotted quad string as netmask.
     """
     return num2dq(mask)
+
 
 def dq2net (ip, mask):
     """

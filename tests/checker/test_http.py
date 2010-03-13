@@ -178,6 +178,7 @@ class CookieRedirectHttpRequestHandler (NoQueryHttpRequestHandler):
         else:
             super(CookieRedirectHttpRequestHandler, self).do_HEAD()
 
+
 class RedirectHttpsRequestHandler (CookieRedirectHttpRequestHandler):
 
     def redirect (self):

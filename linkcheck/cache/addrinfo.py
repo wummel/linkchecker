@@ -40,4 +40,3 @@ def getaddrinfo (host, port):
     if isinstance(value, Exception):
         raise value
     return value
-

@@ -67,6 +67,7 @@ css_url_re = re.compile(ur"url\(\s*(?P<url>%s)\s*\)" % _quoted_pat)
 swf_url_re = re.compile("(?i)%s" % urlutil.safe_url_pattern)
 c_comment_re = re.compile(ur"/\*.*?\*/", re.DOTALL)
 
+
 def strip_c_comments (text):
     """Remove C/CSS-style comments from text. Note that this method also
     deliberately removes comments inside of strings."""

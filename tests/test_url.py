@@ -94,7 +94,6 @@ class TestUrl (unittest.TestCase):
         url2 = "bcd?a=b"
         self.assertEqual(url_quote(url), url2)
 
-
     def test_norm_quote (self):
         # Test url norm quoting.
         url = "http://groups.google.com/groups?hl=en&lr&ie=UTF-8&"\
@@ -129,10 +128,10 @@ class TestUrl (unittest.TestCase):
         nurl = "http://example.com/#a%20b"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b=c "
-        nurl ="http://example.com/?u=http://example2.com?b=c%20"
+        nurl = "http://example.com/?u=http://example2.com?b=c%20"
         self.urlnormtest(url, nurl)
         url = "http://example.com/?u=http://example2.com?b="
-        nurl ="http://example.com/?u=http://example2.com?b="
+        nurl = "http://example.com/?u=http://example2.com?b="
         self.urlnormtest(url, nurl)
         url = "http://localhost:8001/?quoted=ü"
         nurl = "http://localhost:8001/?quoted=%FC"
@@ -480,7 +479,7 @@ class TestUrl (unittest.TestCase):
     def test_idn_encoding (self):
         # Test idna encoding.
         url = u'www.öko.de'
-        idna_encode =linkcheck.url.idna_encode
+        idna_encode = linkcheck.url.idna_encode
         encurl, is_idn = idna_encode(url)
         self.assertTrue(is_idn)
         self.assertTrue(encurl)

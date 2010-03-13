@@ -21,7 +21,6 @@ from tests import need_network
 from . import LinkCheckTest
 
 
-
 class TestMail (LinkCheckTest):
     """
     Test mailto: link checking.

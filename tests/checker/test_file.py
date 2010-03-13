@@ -73,7 +73,7 @@ class TestFile (LinkCheckTest):
             return
         dirname = get_file("dir")
         if not os.path.isdir(dirname):
-            unzip(dirname+".zip", os.path.dirname(dirname))
+            unzip(dirname + ".zip", os.path.dirname(dirname))
         self.file_test("dir")
 
     def test_unicode_filename (self):

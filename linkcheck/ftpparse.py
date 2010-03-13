@@ -20,7 +20,8 @@ Python implementation of a part of Dan Bernstein's ftpparse library.
 See also http://cr.yp.to/ftpparse.html
 """
 
-months = ("jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec")
+months = ("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep",
+          "oct", "nov", "dec")
 def ismonth (txt):
     """Check if given text is a month name."""
     return txt.lower() in months
