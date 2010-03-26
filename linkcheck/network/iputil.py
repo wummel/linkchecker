@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003-2009 Bastian Kleineidam
+# Copyright (C) 2003-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,10 +25,20 @@ from .. import log, LOG_DNS
 
 
 # IP Adress regular expressions
+# Note that each IPv4 octet can be encoded in dezimal, hexadezimal and octal.
 _ipv4_num = r"\d{1,3}"
+_ipv4_hex = r"0*[\da-f]{1,2}"
+_ipv4_oct = r"0+[0-7]{0, 3}"
+# XXX
 _ipv4_num_4 = r"%s\.%s\.%s\.%s" % ((_ipv4_num,) * 4)
 _ipv4_re = re.compile(r"^%s$" % _ipv4_num_4)
-# see rfc2373
+_ipv4_hex_4 = r"%s\.%s\.%s\.%s" % ((_ipv4_hex,) * 4)
+# IPv4 encoded in octal, eg. 0x42.0x66.0x0d.0x63
+_ipv4_oct = r"0*[0-7]{1,3}"
+_ipv4_hex_4 = r"%s\.%s\.%s\.%s" % ((_ipv4_hex,) * 4)
+
+
+# IPv6; See also rfc2373
 _ipv6_num = r"[\da-f]{1,4}"
 _ipv6_re = re.compile(r"^%s:%s:%s:%s:%s:%s:%s:%s$" % ((_ipv6_num,) * 8))
 _ipv6_ipv4_re = re.compile(r"^%s:%s:%s:%s:%s:%s:" % ((_ipv6_num,) * 6) + \
