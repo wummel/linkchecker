@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2010 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -223,6 +223,7 @@ def url_fix_host (urlparts):
                 host = "%s:%d" % (host, port)
         urlparts[1] = userpass+host
     return is_idn
+
 
 def url_fix_common_typos (url):
     """Fix common typos in given URL like forgotten colon."""
