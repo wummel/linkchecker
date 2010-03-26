@@ -90,7 +90,6 @@ class UrlBase (object):
         self.reset()
         self.check_syntax()
 
-
     def init (self, base_ref, base_url, parent_url, recursion_level,
               aggregate, line, column, name, url_encoding):
         """
@@ -794,7 +793,7 @@ class UrlBase (object):
             h.putheader('Content-Length', str(len(body)))
             h.endheaders()
             h.send(body)
-            r = h.getresponse()
+            r = h.getresponse(True)
             if r.getheader('X-W3C-Validator-Status', 'Invalid') == 'Valid':
                 self.add_info(u"W3C Validator: %s" % _("valid CSS syntax"))
                 return

@@ -214,10 +214,10 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 response.close()
             try:
                 response = self._try_http_response()
-            except httplib.BadStatusLine:
+            except httplib.BadStatusLine, msg:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
-                    log.debug(LOG_CHECK, "Empty status line: falling back to GET")
+                    log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
                     self.method = "GET"
                     self.aliases = []
                     self.fallback_get = True
@@ -247,10 +247,10 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 self.proxy, self.proxyauth = oldproxy
             try:
                 tries, response = self.follow_redirections(response)
-            except httplib.BadStatusLine:
+            except httplib.BadStatusLine, msg:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD":
-                    log.debug(LOG_CHECK, "Empty status line: falling back to GET")
+                    log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
                     self.method = "GET"
                     self.aliases = []
                     self.fallback_get = True
@@ -455,7 +455,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 return self._get_http_response()
             raise
         except httplib.BadStatusLine, msg:
-            if str(msg) == "Empty status line" and self.reused_connection:
+            if not msg and self.reused_connection:
                 # server closed connection - retry
                 log.debug(LOG_CHECK, "Empty status line: retry")
                 self.persistent = False
@@ -515,7 +515,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 value = c.client_header_value()
                 self.url_connection.putheader(name, value)
         self.url_connection.endheaders()
-        response = self.url_connection.getresponse()
+        response = self.url_connection.getresponse(True)
         self.timeout = headers.http_timeout(response)
         self.headers = response.msg
         self.persistent = not response.will_close
