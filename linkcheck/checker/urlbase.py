@@ -32,8 +32,7 @@ import tempfile
 from . import absolute_url, StoringHandler, get_url_from
 from ..cache import geoip
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-    strformat, LinkCheckerError, url as urlutil, trace, clamav, containers,
-    winutil)
+    strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
@@ -1010,7 +1009,7 @@ class UrlBase (object):
         """
         return u"<%s >" % self.serialized()
 
-    def to_wire (self):
+    def to_wire_dict (self):
         """Return a simplified transport object for logging.
 
         The transport object must contain these attributes:
@@ -1043,7 +1042,7 @@ class UrlBase (object):
         - url_data.column: int
           Column number of this URL at parent document, or -1
         """
-        return containers.AttrDict(valid=self.valid,
+        return dict(valid=self.valid,
           extern=self.extern[0],
           cached=self.cached,
           result=self.result,
@@ -1063,8 +1062,41 @@ class UrlBase (object):
           cache_url_key=self.cache_url_key,
         )
 
+    def to_wire (self):
+        return CompactUrlData(self.to_wire_dict())
+
 
 def filter_tidy_errors (errors):
     """Filter certain errors from HTML tidy run."""
     return [x for x in errors if not \
         (x.severity=='W' and x.message=='<table> lacks "summary" attribute')]
+
+
+urlDataAttr = [
+    'valid',
+    'extern',
+    'cached',
+    'result',
+    'warnings',
+    'name',
+    'title',
+    'parent_url',
+    'base_ref',
+    'base_url',
+    'url',
+    'checktime',
+    'dltime',
+    'dlsize',
+    'info',
+    'line',
+    'column',
+    'cache_url_key',
+]
+
+class CompactUrlData (object):
+    __slots__ = urlDataAttr
+
+    def __init__(self, wired_url_data):
+        '''Set all attributes according to the dictionnary wired_url_data'''
+        for attr in urlDataAttr:
+            setattr(self, attr, wired_url_data[attr])
