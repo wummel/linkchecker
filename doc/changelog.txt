@@ -6,6 +6,9 @@ Fixes:
 Changes:
 - checking: Caches are now size-restricted to limit the memory
   usage.
+- logging: Use more memory-efficient wire-format for UrlBase,
+  using __slots__.
+  Closes: SF bug #2976995
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
