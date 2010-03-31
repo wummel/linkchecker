@@ -2,6 +2,7 @@
 
 Fixes:
 - ftp: Fix support for FTP ports other than the default.
+- build: Use _WIN32 instead of WIN32 define to detect Windows systems.
 
 Changes:
 - checking: Caches are now size-restricted to limit the memory

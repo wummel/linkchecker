@@ -16,7 +16,7 @@
 */
 
 #include "Python.h"
-#ifndef WIN32
+#ifndef _WIN32
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <net/route.h>
@@ -32,7 +32,7 @@ static PyObject* network_ifreq_size (PyObject* self, PyObject* args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     return Py_BuildValue("i", 
-#ifdef WIN32
+#ifdef _WIN32
 0
 #else
 sizeof(struct ifreq)
