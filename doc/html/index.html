@@ -59,20 +59,20 @@ unreadable or non-existing files are errors.</p>
 
 <p>A mailto: link eventually resolves to a list of email addresses.
 If one address fails, the whole list will fail.
-For each mail address we check the following things:</p>
+For each mail address the following things are checked:</p>
 
 <p>1) Check the adress syntax, both of the part before and after
  the @ sign.
-2) Look up the MX DNS records. If we found no MX record,
+2) Look up the MX DNS records. If no MX record is found,
  print an error.
 3) Check if one of the mail hosts accept an SMTP connection.
  Check hosts with higher priority first.
- If no host accepts SMTP, we print a warning.
-4) Try to verify the address with the VRFY command. If we got
- an answer, print the verified address as an info.</p></li>
+ If no host accepts SMTP, a warning is printed.
+4) Try to verify the address with the VRFY command. If there is
+ an answer, the verified address is printed as an info.</p></li>
 <li><p>FTP links (<code>ftp:</code>)</p>
 
-<p>For FTP links we do:</p>
+<p>For FTP links the following is checked:</p>
 
 <p>1) connect to the specified host
 2) try to login with the given user and password. The default
@@ -81,12 +81,12 @@ For each mail address we check the following things:</p>
 4) list the file with the NLST command</p></li>
 <li><p>Telnet links (<code>telnet:</code>)</p>
 
-<p>We try to connect and if user/password are given, login to the
-given telnet server.</p></li>
+<p>A connect and if user/password are given, login to the
+given telnet server is tried.</p></li>
 <li><p>NNTP links (<code>news:</code>, <code>snews:</code>, <code>nntp</code>)</p>
 
-<p>We try to connect to the given NNTP server. If a news group or
-article is specified, try to request it from the server.</p></li>
+<p>A connect is tried to connect to the given NNTP server. If a news group or
+article is specified, it will be requested from the server.</p></li>
 <li><p>Ignored links (<code>javascript:</code>, etc.)</p>
 
 <p>An ignored link will only print a warning. No further checking

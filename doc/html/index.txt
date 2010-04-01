@@ -39,21 +39,21 @@ checking. All connection check types are described below.
   
   A mailto: link eventually resolves to a list of email addresses.
   If one address fails, the whole list will fail.
-  For each mail address we check the following things:
+  For each mail address the following things are checked:
   
   1) Check the adress syntax, both of the part before and after
      the @ sign.
-  2) Look up the MX DNS records. If we found no MX record,
+  2) Look up the MX DNS records. If no MX record is found,
      print an error.
   3) Check if one of the mail hosts accept an SMTP connection.
      Check hosts with higher priority first.
-     If no host accepts SMTP, we print a warning.
-  4) Try to verify the address with the VRFY command. If we got
-     an answer, print the verified address as an info.
+     If no host accepts SMTP, a warning is printed.
+  4) Try to verify the address with the VRFY command. If there is
+     an answer, the verified address is printed as an info.
 
 - FTP links (``ftp:``)
   
-  For FTP links we do:
+  For FTP links the following is checked:
   
   1) connect to the specified host
   2) try to login with the given user and password. The default
@@ -63,13 +63,13 @@ checking. All connection check types are described below.
 
 - Telnet links (``telnet:``)
   
-  We try to connect and if user/password are given, login to the
-  given telnet server.
+  A connect and if user/password are given, login to the
+  given telnet server is tried.
 
 - NNTP links (``news:``, ``snews:``, ``nntp``)
   
-  We try to connect to the given NNTP server. If a news group or
-  article is specified, try to request it from the server.
+  A connect is tried to connect to the given NNTP server. If a news group or
+  article is specified, it will be requested from the server.
 
 - Ignored links (``javascript:``, etc.)
   

@@ -1,6 +1,6 @@
 HELPFILES = lccollection.qhc
 
-all:	$(HELPFILES)
+all:	$(HELPFILES) index.html
 
 .PHONY: clean
 clean:

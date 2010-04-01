@@ -124,7 +124,6 @@ div.footer {
 
 div.footer a {
     color: #86989B;
-    text-decoration: underline;
 }
 
 /* -- body styles ----------------------------------------------------------- */
@@ -135,15 +134,10 @@ p {
 
 a {
     color: #CA7900;
-    text-decoration: none;
 }
 
 a:hover {
     color: #2491CF;
-}
-
-div.body a {
-    text-decoration: underline;
 }
 
 h1 {
@@ -184,19 +178,6 @@ h1 a.anchor:hover, h2 a.anchor:hover, h3 a.anchor:hover, h4 a.anchor:hover,
 h5 a.anchor:hover, h6 a.anchor:hover {
     color: #777;
     background-color: #eee;
-}
-
-a.headerlink {
-    color: #c60f0f!important;
-    font-size: 1em;
-    margin-left: 6px;
-    padding: 0 4px 0 4px;
-    text-decoration: none!important;
-}
-
-a.headerlink:hover {
-    background-color: #ccc;
-    color: white!important;
 }
 
 cite, code, tt {
@@ -243,7 +224,6 @@ pre {
 
 pre a {
     color: inherit;
-    text-decoration: underline;
 }
 
 td.linenos pre {
