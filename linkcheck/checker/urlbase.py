@@ -38,7 +38,8 @@ from ..htmlutil import linkparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
     WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
-    WARN_URL_CONTENT_TOO_LARGE, ExcList, ExcSyntaxList, ExcNoCacheList)
+    WARN_URL_CONTENT_TOO_LARGE, WARN_URL_CONTENT_ZERO_SIZE,
+    ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
 unicode_safe = strformat.unicode_safe
@@ -671,13 +672,16 @@ class UrlBase (object):
                 self.scan_virus()
 
     def check_size (self):
+        """Check content size if it is zero or larger than a given
+        maximum size.
         """
-        If a maximum size was given, call this function to check it
-        against the content size of this url.
-        """
-        maxbytes = self.aggregate.config["warnsizebytes"]
-        if maxbytes is not None and self.dlsize >= maxbytes:
-            self.add_warning(
+        if self.dlsize == 0:
+            self.add_warning(_("Content size is zero."),
+                             tag=WARN_URL_CONTENT_ZERO_SIZE)
+        else:
+            maxbytes = self.aggregate.config["warnsizebytes"]
+            if maxbytes is not None and self.dlsize >= maxbytes:
+                self.add_warning(
                    _("Content size %(dlsize)s is larger than %(maxbytes)s.") %
                         {"dlsize": strformat.strsize(self.dlsize),
                          "maxbytes": strformat.strsize(maxbytes)},

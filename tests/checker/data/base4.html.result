@@ -9,4 +9,5 @@ cache key file://%(curdir)s/%(datadir)s/base/test.txt
 real url file://%(curdir)s/%(datadir)s/base/test.txt
 name Blubb
 baseurl file://%(curdir)s/%(datadir)s/base/
+warning Content size is zero.
 valid
