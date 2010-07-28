@@ -1,3 +1,13 @@
+linkchecker (5.2-2) unstable; urgency=low
+
+  * Updated debian/*.install files for new default Python version
+    (Closes: #587219)
+  * Remove generated files in debian/rules clean target
+  * Use new 3.0 Debian source format
+  * Use new standards version 3.9.0 in debian/control
+
+ -- Bastian Kleineidam <calvin@debian.org>  Thu, 22 Jul 2010 19:35:06 +0200
+
 linkchecker (5.2-1) unstable; urgency=low
 
   * New upstream release.

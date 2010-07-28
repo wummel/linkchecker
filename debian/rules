@@ -6,7 +6,6 @@ DEB_DH_INSTALLCHANGELOGS_ARGS:=doc/changelog.txt
 # workaround for Debian bug #486848
 binary-arch binary-indep: install-arch install-indep
 
-
 common-install-arch::
 	$(MAKE) locale
 	$(MAKE) -C doc/html all
@@ -14,21 +13,21 @@ common-install-arch::
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
 
-ROOT=$(CURDIR)/debian/linkchecker
-DOCDIR=$(ROOT)/usr/share/doc/linkchecker
-SHARE=$(ROOT)/usr/share/linkchecker
-HTMLDIR=$(SHARE)/lconline
-CGIDIR=$(ROOT)/usr/lib/cgi-bin
-LOCALE=$(ROOT)/usr/share/locale
-ETC=$(ROOT)/etc
+ROOTDIR=$(CURDIR)/debian/linkchecker
+DOCDIR=$(ROOTDIR)/usr/share/doc/linkchecker
+SHAREDIR=$(ROOTDIR)/usr/share/linkchecker
+HTMLDIR=$(SHAREDIR)/lconline
+CGIDIR=$(ROOTDIR)/usr/lib/cgi-bin
+LOCALEDIR=$(ROOTDIR)/usr/share/locale
+ETCDIR=$(ROOTDIR)/etc
 
 common-configure-arch::
 	python setup.py sdist --manifest-only
 
 common-install-arch::
 # install system wide configuration files in etc
-	install -m 644 config/linkcheckerrc $(ETC)/linkchecker/
-	install -m 644 config/logging.conf $(ETC)/linkchecker/
+	install -m 644 config/linkcheckerrc $(ETCDIR)/linkchecker/
+	install -m 644 config/logging.conf $(ETCDIR)/linkchecker/
 # install CGI files
 	install -m 644 cgi-bin/lconline/*.html $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.de $(HTMLDIR)
@@ -37,8 +36,19 @@ common-install-arch::
 	install -m 644 cgi-bin/lconline/*.css $(HTMLDIR)
 	install -m 755 cgi-bin/lc.cgi $(CGIDIR)
 # install bash_completion script
-	install -m 644 config/linkchecker-completion $(ETC)/bash_completion.d
+	install -m 644 config/linkchecker-completion $(ETCDIR)/bash_completion.d
 # install .mo files
-	install -m 644 build/share/locale/de/LC_MESSAGES/LinkChecker.mo $(LOCALE)/de/LC_MESSAGES/
+	install -m 644 build/share/locale/de/LC_MESSAGES/LinkChecker.mo $(LOCALEDIR)/de/LC_MESSAGES/
 # apache configuration
-	install -m 644 config/linkchecker.apache2.conf $(ETC)/apache2/conf.d/linkchecker
+	install -m 644 config/linkchecker.apache2.conf $(ETCDIR)/apache2/conf.d/linkchecker
+
+install/linkchecker::
+	sed -i '1s,#!/usr/bin/python2\..,#!/usr/bin/python,' $(CURDIR)/debian/tmp/usr/bin/linkchecker
+
+install/linkchecker-gui::
+	sed -i '1s,#!/usr/bin/python2\..,#!/usr/bin/python,' $(CURDIR)/debian/tmp/usr/bin/linkchecker-gui
+
+# clean generated files
+clean::
+	rm -f doc/html/*.qch doc/html/*.qhc
+	rm -f _LinkChecker_configdata.py
