@@ -189,7 +189,7 @@ Warnings = _(r"""IGNORE WARNINGS
 The following warnings are recognized in the 'ignorewarnings' config
 file entry:
 """)
-for tag, desc in linkcheck.checker.const.Warnings.items():
+for tag, desc in sorted(linkcheck.checker.const.Warnings.items()):
     Warnings += u" o %s\n   %s\n" % (tag, desc)
 
 
