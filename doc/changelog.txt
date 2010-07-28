@@ -15,7 +15,7 @@ Changes:
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
   servers.
-- checking: warn if content size is zero
+- checking: added new warning to check if content size is zero
 
 5.2 "11:14" (released 7.3.2010)
 
