@@ -1,4 +1,4 @@
-.TH LINKCHECKER 1 2001-03-10 "LinkChecker" "LinkChecker commandline usage"
+.TH LINKCHECKER 1 2010-07-01 "LinkChecker" "LinkChecker commandline usage"
 .SH NAME
 linkchecker - check HTML documents and websites for broken links
 .
@@ -25,32 +25,29 @@ a (Fast)CGI web interface (requires HTTP server)
 .SH EXAMPLES
 The most common use checks the given domain recursively, plus any
 URL pointing outside of the domain:
-  \fBlinkchecker http://treasure.calvinsplayground.de/\fP
+  \fBlinkchecker http://www.example.net/\fP
 .br
 Beware that this checks the whole site which can have thousands of URLs.
 Use the \fB\-r\fP option to restrict the recursion depth.
 .br
 Don't connect to \fBmailto:\fP hosts, only check their URL syntax. All other
 links are checked as usual:
-  \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
+  \fBlinkchecker \-\-ignore\-url=^mailto: mysite.example.org\fP
 .br
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
-.br
-Checking from stdin:
-  \fBecho "bla.html" | linkchecker --stdin\fP
 .br
 Checking a local HTML file on Windows:
   \fBlinkchecker c:\\temp\\test.html\fP
 .br
 You can skip the \fBhttp://\fP url part if the domain starts with \fBwww.\fP:
-  \fBlinkchecker www.myhomepage.de\fP
+  \fBlinkchecker www.example.com\fP
 .br
 You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
-  \fBlinkchecker \-r0 ftp.linux.org\fP
+  \fBlinkchecker \-r0 ftp.example.org\fP
 .br
 Generate a sitemap graph and convert it with the graphviz dot utility:
-  \fBlinkchecker \-odot \-v www.myhomepage.de | dot \-Tps > sitemap.ps\fP
+  \fBlinkchecker \-odot \-v www.example.com | dot \-Tps > sitemap.ps\fP
 .
 .SH OPTIONS
 .SS General options

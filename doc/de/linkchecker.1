@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH LINKCHECKER 1 2001\-03\-10 LinkChecker "LinkChecker auf der Kommandozeile"
+.TH LINKCHECKER 1 2010\-07\-01 LinkChecker "LinkChecker auf der Kommandozeile"
 .SH NAME
 linkchecker \- prüfe HTML Dokumente und Webseiten auf ungültige Verknüpfungen
 .
@@ -22,35 +22,32 @@ robots.txt Protokolls, Mehrsprachigkeit, eine Kommandozeilenschnittstelle
 sowie eine CGI Webschnittstelle (benötigt einen HTTP Server).
 .
 .SH BEISPIELE
-Der häufigste Gebrauchsfall prüft die angegebene Domäne rekursiv,
-inklusive aller einzelnen nach außen zeigenden Verknüpfungen:
-  \fBlinkchecker http://treasure.calvinsplayground.de/\fP
+The most common use checks the given domain recursively, plus any
+URL pointing outside of the domain:
+  \fBlinkchecker http://www.example.net/\fP
 .br
 Beachten Sie dass dies die komplette Domäne überprüft, welche aus mehreren
 tausend URLs bestehen kann. Benutzen Sie die Option \fB\-r\fP, um die
 Rekursionstiefe zu beschränken.
 .br
-Keine Verbindungen zu \fBmailto:\fP Rechnern, nur die URL Syntax wird geprüft. Alle
-anderen Verknüpfungen werden wie üblich geprüft:
-  \fBlinkchecker \-\-ignore\-url=^mailto: www.mysite.org\fP
+Don't connect to \fBmailto:\fP hosts, only check their URL syntax. All other
+links are checked as usual:
+  \fBlinkchecker \-\-ignore\-url=^mailto: mysite.example.org\fP
 .br
 Überprüfung einer lokalen HTML Datei unter Unix:
   \fBlinkchecker ../bla.html\fP
 .br
-Prüfe von der Standardeingabe:
-  \fBecho "bla.html" | linkchecker \-\-stdin\fP
-.br
 Überprüfung einer lokalen HTML Datei unter Windows:
   \fBlinkchecker c:\etemp\etest.html\fP
 .br
-Sie können den \fBhttp://\fP URL Anteil weglassen wenn die Domäne mit \fBwww.\fP beginnt:
-  \fBlinkchecker www.myhomepage.de\fP
+You can skip the \fBhttp://\fP url part if the domain starts with \fBwww.\fP:
+  \fBlinkchecker www.example.com\fP
 .br
-Sie können den \fBftp://\fP URL Anteil weglassen wenn die Domäne mit \fBftp.\fP beginnt:
-  \fBlinkchecker \-r0 ftp.linux.org\fP
+You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
+  \fBlinkchecker \-r0 ftp.example.org\fP
 .br
-Erzeuge einen Sitemap Graphen und konvertiere ihn mit dem graphviz dot Programm:
-  \fBlinkchecker \-odot \-v www.myhomepage.de | dot \-Tps > sitemap.ps\fP
+Generate a sitemap graph and convert it with the graphviz dot utility:
+  \fBlinkchecker \-odot \-v www.example.com | dot \-Tps > sitemap.ps\fP
 .
 .SH OPTIONEN
 .SS "Allgemeine Optionen"
