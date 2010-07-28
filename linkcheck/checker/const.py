@@ -110,6 +110,7 @@ Warnings = {
     WARN_URL_WARNREGEX_FOUND:
         _("The warning regular expression was found in the URL contents."),
     WARN_URL_CONTENT_TOO_LARGE: _("The URL content is too large."),
+    WARN_URL_CONTENT_ZERO_SIZE: _("The URL content size is zero."),
     WARN_FILE_MISSING_SLASH: _("The file: URL is missing a trailing slash."),
     WARN_FILE_SYSTEM_PATH:
         _("The file: path is not the same as the system specific path."),
