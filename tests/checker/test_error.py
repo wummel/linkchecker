@@ -34,7 +34,6 @@ class TestError (LinkCheckTest):
             u"url file://%(curdir)s/%(url)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
-            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -49,7 +48,6 @@ class TestError (LinkCheckTest):
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
-            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -61,7 +59,6 @@ class TestError (LinkCheckTest):
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
-            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -74,7 +71,6 @@ class TestError (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -84,7 +80,6 @@ class TestError (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Base URL is not properly normed. Normed URL is %s." % nurl,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -99,7 +94,6 @@ class TestError (LinkCheckTest):
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
-            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -114,7 +108,6 @@ class TestError (LinkCheckTest):
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
-            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)
@@ -129,7 +122,6 @@ class TestError (LinkCheckTest):
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
             u"name %(url)s" % attrs,
-            u"warning Base URL is not properly normed. Normed URL is %(nurl)s." % attrs,
             u"error",
         ]
         self.direct(url, resultlines)

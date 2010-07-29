@@ -75,7 +75,6 @@ ExcList = ExcCacheList + ExcNoCacheList
 WARN_URL_EFFECTIVE_URL = "url-effective-url"
 WARN_URL_ERROR_GETTING_CONTENT = "url-error-getting-content"
 WARN_URL_UNICODE_DOMAIN = "url-unicode-domain"
-WARN_URL_UNNORMED = "url-unnormed"
 WARN_URL_ANCHOR_NOT_FOUND = "url-anchor-not-found"
 WARN_URL_WARNREGEX_FOUND = "url-warnregex-found"
 WARN_URL_CONTENT_SIZE_TOO_LARGE = "url-content-too-large"
@@ -106,7 +105,6 @@ Warnings = {
     WARN_URL_ERROR_GETTING_CONTENT:
         _("Could not get the content of the URL."),
     WARN_URL_UNICODE_DOMAIN: _("URL uses a unicode domain."),
-    WARN_URL_UNNORMED: _("URL is not normed."),
     WARN_URL_ANCHOR_NOT_FOUND: _("URL anchor was not found."),
     WARN_URL_WARNREGEX_FOUND:
         _("The warning regular expression was found in the URL contents."),

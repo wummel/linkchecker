@@ -103,8 +103,6 @@ class TestMail (LinkCheckTest):
             u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % qurl,
             u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
-            u"warning Base URL is not properly normed. "
-             u"Normed URL is %s." % qurl,
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -115,8 +113,6 @@ class TestMail (LinkCheckTest):
             u"cache key mailto:calvin@users.sourceforge.net",
             u"real url %s" % qurl,
             u"info Verified address calvin@users.sourceforge.net: 250 <calvin@users.sourceforge.net> is deliverable.",
-            u"warning Base URL is not properly normed. "
-             u"Normed URL is %s." % qurl,
             u"valid",
         ]
         self.direct(url, resultlines)

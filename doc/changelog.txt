@@ -17,11 +17,15 @@ Changes:
 - checking: Get size from Content-Length HTTP header, from stat(2)
   for local files so size information is available without downloading
   the content data.
+- checking: Remove the unnormed URL warning. URLs can be written
+  in more than one way and there is no norm.
+  Closes: SF bug #1575800
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
   servers.
 - checking: added new warning to check if content size is zero
+
 
 5.2 "11:14" (released 7.3.2010)
 

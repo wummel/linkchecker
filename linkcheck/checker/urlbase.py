@@ -36,7 +36,7 @@ from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
-    WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT,
+    WARN_URL_ERROR_GETTING_CONTENT,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
     WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
     WARN_URL_CONTENT_SIZE_UNEQUAL, ExcList, ExcSyntaxList, ExcNoCacheList)
@@ -355,10 +355,6 @@ class UrlBase (object):
                           the URL %(idna_url)r instead.""") % \
                           {"url": self.base_url, "idna_url": base_url},
                           tag=WARN_URL_UNICODE_DOMAIN)
-        elif self.base_url != base_url:
-            self.add_warning(
-              _("Base URL is not properly normed. Normed URL is %(url)s.") %
-               {'url': base_url}, tag=WARN_URL_UNNORMED)
         # make url absolute
         if self.base_ref:
             # use base reference as parent url
