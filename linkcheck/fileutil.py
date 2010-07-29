@@ -138,6 +138,14 @@ def get_mtime (filename):
         return 0
 
 
+def get_size (filename):
+    """Return file size in Bytes, or -1 on error."""
+    try:
+        return os.stat(filename)[stat.ST_SIZE]
+    except os.error:
+        return -1
+
+
 # http://developer.gnome.org/doc/API/2.0/glib/glib-running.html
 if "G_FILENAME_ENCODING" in os.environ:
     FSCODING = os.environ["G_FILENAME_ENCODING"].split(",")[0]

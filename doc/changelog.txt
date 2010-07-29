@@ -14,6 +14,9 @@ Changes:
 - logging: Use more memory-efficient wire-format for UrlBase,
   using __slots__.
   Closes: SF bug #2976995
+- checking: Get size from Content-Length HTTP header, from stat(2)
+  for local files so size information is available without downloading
+  the content data.
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
