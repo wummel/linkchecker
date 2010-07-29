@@ -487,7 +487,8 @@ Use URL `%(newurl)s' instead for checking.""") % {
                                         self.urlparts[3], anchor))
         self.url_connection.putrequest(self.method, path, skip_host=True,
                                        skip_accept_encoding=True)
-        self.url_connection.putheader("Host", host)
+        # be sure to use the original host as header even for proxies
+        self.url_connection.putheader("Host", self.urlparts[1])
         # userinfo is from http://user@pass:host/
         if self.userinfo:
             self.url_connection.putheader("Authorization", self.userinfo)
