@@ -38,8 +38,8 @@ from ..htmlutil import linkparse
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
     WARN_URL_UNNORMED, WARN_URL_ERROR_GETTING_CONTENT,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
-    WARN_URL_CONTENT_TOO_LARGE, WARN_URL_CONTENT_ZERO_SIZE,
-    ExcList, ExcSyntaxList, ExcNoCacheList)
+    WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
+    WARN_URL_CONTENT_SIZE_UNEQUAL, ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
 unicode_safe = strformat.unicode_safe
@@ -143,6 +143,8 @@ class UrlBase (object):
         self.warnings = []
         # list of infos
         self.info = []
+        # content size
+        self.size = -1
         # download time
         self.dltime = -1
         # download size
@@ -417,13 +419,16 @@ class UrlBase (object):
             self.close_connection()
 
     def add_country_info (self):
-        """
-        Try to ask GeoIP database for country info.
-        """
+        """Try to ask GeoIP database for country info."""
         country = geoip.get_country(self.host)
         if country is not None:
             self.add_info(_("URL is located in %(country)s.") %
                 {"country": _(country)})
+
+    def add_size_info (self):
+        """Store size of URL content from meta info into self.size.
+        Must be implemented in subclasses."""
+        pass
 
     def local_check (self):
         """Local check function can be overridden in subclasses."""
@@ -439,6 +444,7 @@ class UrlBase (object):
         log.debug(LOG_CHECK, "checking connection")
         try:
             self.check_connection()
+            self.add_size_info()
             self.add_country_info()
             self.check_content()
         except tuple(ExcList):
@@ -518,7 +524,7 @@ class UrlBase (object):
             log.debug(LOG_CHECK, "... no, cannot get content.")
             return False
         rec_level = self.aggregate.config["recursionlevel"]
-        if  rec_level >= 0 and self.recursion_level >= rec_level:
+        if rec_level >= 0 and self.recursion_level >= rec_level:
             log.debug(LOG_CHECK, "... no, maximum recursion level reached.")
             return False
         if self.extern[0]:
@@ -677,7 +683,7 @@ class UrlBase (object):
         """
         if self.dlsize == 0:
             self.add_warning(_("Content size is zero."),
-                             tag=WARN_URL_CONTENT_ZERO_SIZE)
+                             tag=WARN_URL_CONTENT_SIZE_ZERO)
         else:
             maxbytes = self.aggregate.config["warnsizebytes"]
             if maxbytes is not None and self.dlsize >= maxbytes:
@@ -685,7 +691,13 @@ class UrlBase (object):
                    _("Content size %(dlsize)s is larger than %(maxbytes)s.") %
                         {"dlsize": strformat.strsize(self.dlsize),
                          "maxbytes": strformat.strsize(maxbytes)},
-                          tag=WARN_URL_CONTENT_TOO_LARGE)
+                          tag=WARN_URL_CONTENT_SIZE_TOO_LARGE)
+        if self.size != -1 and self.dlsize != -1 and self.dlsize != self.size:
+                self.add_warning(_("Download size (%(dlsize)d Byte) "
+                        "does not equal content size (%(size)d Byte).") %
+                        {"dlsize": self.dlsize,
+                         "size": self.size},
+                          tag=WARN_URL_CONTENT_SIZE_UNEQUAL)
 
     def check_html (self):
         """Check HTML syntax of this page (which is supposed to be HTML)

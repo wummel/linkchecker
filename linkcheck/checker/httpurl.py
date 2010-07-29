@@ -142,6 +142,19 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return rb.allows_url(roboturl, url, self.proxy, user, password,
             callback=callback)
 
+    def add_size_info (self):
+        """Get size of URL content from HTTP header."""
+        if self.headers and "Content-Length" in self.headers and \
+           "Content-Encoding" not in self.headers:
+            # Note that content-encoding causes size differences since
+            # the content data is always decoded.
+            try:
+                self.size = int(self.headers["Content-Length"])
+                if self.dlsize == -1:
+                    self.dlsize = self.size
+            except (ValueError, OverflowError):
+                pass
+
     def check_connection (self):
         """
         Check a URL with HTTP protocol.

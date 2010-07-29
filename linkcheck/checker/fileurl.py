@@ -127,6 +127,16 @@ class FileUrl (urlbase.UrlBase):
             self.urlparts[2] += '/'
         self.url = urlparse.urlunsplit(self.urlparts)
 
+    def add_size_info (self):
+        """Get size of file content from filename path."""
+        if self.is_directory():
+            # Directory size always differs from the customer index.html
+            # that is generated. So return without calculating any size.
+            return
+        self.size = fileutil.get_size(self.get_os_filename())
+        if self.dlsize == -1:
+            self.dlsize = self.size
+
     def check_connection (self):
         """
         Try to open the local file. Under NT systems the case sensitivity
