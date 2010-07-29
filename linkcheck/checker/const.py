@@ -78,8 +78,9 @@ WARN_URL_UNICODE_DOMAIN = "url-unicode-domain"
 WARN_URL_UNNORMED = "url-unnormed"
 WARN_URL_ANCHOR_NOT_FOUND = "url-anchor-not-found"
 WARN_URL_WARNREGEX_FOUND = "url-warnregex-found"
-WARN_URL_CONTENT_TOO_LARGE = "url-content-too-large"
-WARN_URL_CONTENT_ZERO_SIZE = "url-content-zero-size"
+WARN_URL_CONTENT_SIZE_TOO_LARGE = "url-content-too-large"
+WARN_URL_CONTENT_SIZE_ZERO = "url-content-size-zero"
+WARN_URL_CONTENT_SIZE_UNEQUAL = "url-content-size-unequal"
 WARN_FILE_MISSING_SLASH = "file-missing-slash"
 WARN_FILE_SYSTEM_PATH = "file-system-path"
 WARN_FTP_MISSING_SLASH = "ftp-missing-slash"
@@ -109,8 +110,9 @@ Warnings = {
     WARN_URL_ANCHOR_NOT_FOUND: _("URL anchor was not found."),
     WARN_URL_WARNREGEX_FOUND:
         _("The warning regular expression was found in the URL contents."),
-    WARN_URL_CONTENT_TOO_LARGE: _("The URL content is too large."),
-    WARN_URL_CONTENT_ZERO_SIZE: _("The URL content size is zero."),
+    WARN_URL_CONTENT_SIZE_TOO_LARGE: _("The URL content size is too large."),
+    WARN_URL_CONTENT_SIZE_ZERO: _("The URL content size is zero."),
+    WARN_URL_CONTENT_SIZE_UNEQUAL: _("The URL content size and download size are unequal."),
     WARN_FILE_MISSING_SLASH: _("The file: URL is missing a trailing slash."),
     WARN_FILE_SYSTEM_PATH:
         _("The file: path is not the same as the system specific path."),
