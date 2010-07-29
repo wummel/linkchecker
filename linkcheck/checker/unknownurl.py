@@ -58,6 +58,7 @@ acap        # application configuration access protocol
 |javascript # JavaScript
 |gopher     # Gopher
 |isbn       # ISBN (int. book numbers)
+|skype      # Skype
 ):"""
 
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)

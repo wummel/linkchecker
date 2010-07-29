@@ -20,6 +20,8 @@ Changes:
 - checking: Remove the unnormed URL warning. URLs can be written
   in more than one way and there is no norm.
   Closes: SF bug #1575800
+- checking: Add "skype:" to list of ignored URL schemes.
+  Closes: SF bug #2989086
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
