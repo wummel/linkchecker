@@ -112,6 +112,8 @@ class FileUrl (urlbase.UrlBase):
             base_url = base_url.replace("\\", "/")
             # transform c:/windows into /c|/windows
             base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
+            # transform file://path into file:///path
+            base_url = re.sub("^file://([^/])", r"file:///\1", base_url)
         self.base_url = unicode(base_url)
 
     def build_url (self):

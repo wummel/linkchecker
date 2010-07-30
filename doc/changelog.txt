@@ -7,6 +7,8 @@ Fixes:
 - http: Send correct host header when using proxies. Thanks Jason Martin
   for the patch.
   Closes: SF bug #3035754
+- file: Prevent truncation of UNC paths on Windows systems.
+  Closes: SF bug #3017391
 
 Changes:
 - checking: Caches are now size-restricted to limit the memory
