@@ -14,7 +14,7 @@
 :: with this program; if not, write to the Free Software Foundation, Inc.,
 :: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @echo off
-set PYDIR=C:\Python26
+set PYDIR=E:\Python26
 %PYDIR%\python.exe setup.py clean --all
 del linkcheck\HtmlParser\htmlsax.pyd
 del linkcheck\network\_network.pyd
