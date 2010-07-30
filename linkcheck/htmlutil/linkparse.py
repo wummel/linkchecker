@@ -203,12 +203,12 @@ class LinkFinder (TagFinder):
     def get_link_name (self, tag, attrs, attr):
         """Parse attrs for link name. Return name of link."""
         if tag == 'a' and attr == 'href':
-            name = unquote(attrs.get_true('title', u''))
+            # Look for name only up to MAX_NAMELEN characters
+            data = self.parser.peek(MAX_NAMELEN)
+            data = data.decode(self.parser.encoding, "ignore")
+            name = linkname.href_name(data)
             if not name:
-                # Look for name only up to MAX_NAMELEN characters
-                data = self.parser.peek(MAX_NAMELEN)
-                data = data.decode(self.parser.encoding, "ignore")
-                name = linkname.href_name(data)
+                name = unquote(attrs.get_true('title', u''))
         elif tag == 'img':
             name = unquote(attrs.get_true('alt', u''))
             if not name:

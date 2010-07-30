@@ -24,6 +24,9 @@ Changes:
   Closes: SF bug #1575800
 - checking: Add "skype:" to list of ignored URL schemes.
   Closes: SF bug #2989086
+- logging: Prefer the <a> element content as name instead of the title
+  attribute.
+  Closes: SF bug #3023483
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
