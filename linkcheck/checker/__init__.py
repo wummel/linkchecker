@@ -121,7 +121,11 @@ def get_index_html (urls):
     lines = ["<html>", "<body>"]
     for entry in urls:
         name = cgi.escape(entry)
-        url = cgi.escape(urllib.quote(entry))
+        try:
+            url = cgi.escape(urllib.quote(entry))
+        except KeyError:
+            # Some unicode entries raise KeyError.
+            url = name
         lines.append('<a href="%s">%s</a>' % (url, name))
     lines.extend(["</body>", "</html>"])
     return os.linesep.join(lines)
