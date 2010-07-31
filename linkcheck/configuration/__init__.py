@@ -121,7 +121,7 @@ class Configuration (dict):
         }
         self['csv'] = {
             "filename": "linkchecker-out.csv",
-            'separator': ',',
+            'separator': ';',
             "quotechar": '"',
         }
         self['blacklist'] = {

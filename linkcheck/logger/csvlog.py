@@ -27,7 +27,7 @@ from .. import strformat, configuration
 class CSVLogger (Logger):
     """
     CSV output, consisting of one line per entry. Entries are
-    separated by a semicolon.
+    separated by a separator (a semicolon per default).
     """
 
     def __init__ (self, **args):

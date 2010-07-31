@@ -27,6 +27,8 @@ Changes:
 - logging: Prefer the <a> element content as name instead of the title
   attribute.
   Closes: SF bug #3023483
+- logging: Use semicolon as default separator for CSV files so it opens
+  in Excel initially.
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
