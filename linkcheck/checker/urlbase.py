@@ -628,14 +628,15 @@ class UrlBase (object):
         if self.data is None:
             log.debug(LOG_CHECK, "Get content of %r", self.url)
             t = time.time()
-            self.data = self.read_content()
+            self.data, self.dlsize = self.read_content()
             self.dltime = time.time() - t
-            self.dlsize = len(self.data)
         return self.data
 
     def read_content (self):
-        """Return data for this URL. Can be overridden in subclasses."""
-        return self.url_connection.read()
+        """Return data and data size for this URL.
+        Can be overridden in subclasses."""
+        data = self.url_connection.read()
+        return data, len(data)
 
     def check_content (self):
         """Check content data for warnings, syntax errors, viruses etc."""

@@ -145,7 +145,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     def add_size_info (self):
         """Get size of URL content from HTTP header."""
         if self.headers and "Content-Length" in self.headers and \
-           "Content-Encoding" not in self.headers:
+           "Transfer-Encoding" not in self.headers:
             # Note that content-encoding causes size differences since
             # the content data is always decoded.
             try:
@@ -154,6 +154,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     self.dlsize = self.size
             except (ValueError, OverflowError):
                 pass
+        else:
+            self.size = -1
 
     def check_connection (self):
         """
@@ -592,14 +594,21 @@ Use URL `%(newurl)s' instead for checking.""") % {
         response = self._try_http_response()
         response = self.follow_redirections(response, set_result=False)[1]
         self.headers = response.msg
+        # Re-read size info, since the GET request result could be different
+        # than a former HEAD request.
+        self.add_size_info()
         if self._data is None:
             self._read_content(response)
-        data = self._data
-        self._data = None
-        return data
+        data, size = self._data, self._size
+        self._data = self._size = None
+        return data, size
 
     def _read_content (self, response):
+        """Read URL contents and store then in self._data.
+        This way, the method can be called by other functions than
+        read_content()"""
         data = response.read()
+        self._size = len(data)
         encoding = headers.get_content_encoding(self.headers)
         if encoding in _supported_encodings:
             try:

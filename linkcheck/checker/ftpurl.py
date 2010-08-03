@@ -218,6 +218,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         else:
             # download file in BINARY mode
             ftpcmd = "RETR %s" % self.filename
+            # XXX limit the download size to some sane value
             buf = StringIO()
             def stor_data (s):
                 """Helper method storing given data"""
@@ -225,7 +226,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.url_connection.retrbinary(ftpcmd, stor_data)
             data = buf.getvalue()
             buf.close()
-        return data
+        return data, len(data)
 
     def close_connection (self):
         """

@@ -175,9 +175,10 @@ class FileUrl (urlbase.UrlBase):
             data = get_index_html(get_files(self.get_os_filename()))
             if isinstance(data, unicode):
                 data = data.encode("iso8859-1", "ignore")
+            size = len(data)
         else:
-            data = super(FileUrl, self).read_content()
-        return data
+            data, size = super(FileUrl, self).read_content()
+        return data, size
 
     def is_html (self):
         """
