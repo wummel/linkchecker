@@ -338,15 +338,16 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 pass # XXX warn about idn use
             log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
             urlparts = strformat.url_unicode_split(redirected)
-            # check extern filter again
-            self.set_extern(redirected)
-            if self.extern[0] and self.extern[0]:
-                if set_result:
-                    self.check301status(response)
-                    self.add_info(
-                          _("The redirected URL is outside of the domain "
-                            "filter, checked only syntax."))
-                    self.set_result(u"filtered")
+            if urlparts[1] != self.urlparts[1]:
+                # check extern filter again
+                self.set_extern(redirected)
+                if self.extern[0] and self.extern[0]:
+                    if set_result:
+                        self.check301status(response)
+                        self.add_info(
+                             _("The redirected URL is outside of the domain "
+                               "filter, checked only syntax."))
+                        self.set_result(u"filtered")
                 return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):

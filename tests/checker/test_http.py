@@ -36,6 +36,7 @@ class TestHttp (HttpServerTest):
             self.direct(url, resultlines, recursionlevel=1)
             self.redirect1_http_test()
             self.redirect2_http_test()
+            self.redirect3_http_test()
             self.robots_txt_test()
             self.robots_txt2_test()
             self.swf_test()
@@ -101,6 +102,11 @@ class TestHttp (HttpServerTest):
         ]
         self.direct(url, resultlines, recursionlevel=99)
 
+    def redirect3_http_test (self):
+        url = u"http://localhost:%d/tests/checker/data/redir.html" % self.port
+        resultlines = self.get_resultlines("redir.html")
+        self.direct(url, resultlines, recursionlevel=1)
+
     def robots_txt_test (self):
         url = u"http://localhost:%d/robots.txt" % self.port
         resultlines = [
@@ -165,15 +171,26 @@ class CookieRedirectHttpRequestHandler (NoQueryHttpRequestHandler):
         self.send_header("Location", path)
         self.end_headers()
 
+    def redirect_newhost (self):
+        """Redirect request to a new host."""
+        path = "http://www.example.com/"
+        self.send_response(302)
+        self.send_header("Location", path)
+        self.end_headers()
+
     def do_GET (self):
         """Removes query part of GET request."""
-        if "redirect" in self.path:
+        if "redirect_newhost" in self.path:
+            self.redirect_newhost()
+        elif "redirect" in self.path:
             self.redirect()
         else:
             super(CookieRedirectHttpRequestHandler, self).do_GET()
 
     def do_HEAD (self):
-        if "redirect" in self.path:
+        if "redirect_newhost" in self.path:
+            self.redirect_newhost()
+        elif "redirect" in self.path:
             self.redirect()
         else:
             super(CookieRedirectHttpRequestHandler, self).do_HEAD()

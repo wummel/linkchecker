@@ -16,9 +16,9 @@ Changes:
 - logging: Use more memory-efficient wire-format for UrlBase,
   using __slots__.
   Closes: SF bug #2976995
-- checking: Get size from Content-Length HTTP header, from stat(2)
-  for local files so size information is available without downloading
-  the content data.
+- checking: Get size from Content-Length HTTP header and for local
+  files from stat(2) so size information is available without
+  downloading the content data.
 - checking: Remove the unnormed URL warning. URLs can be written
   in more than one way and there is no norm.
   Closes: SF bug #1575800
@@ -29,6 +29,9 @@ Changes:
   Closes: SF bug #3023483
 - logging: Use semicolon as default separator for CSV files so it opens
   in Excel initially.
+- checking: Allow redirections of external URLs if domain stays the
+  same.
+  Closes: SF bug #3024394
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
