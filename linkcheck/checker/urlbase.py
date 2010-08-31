@@ -442,7 +442,6 @@ class UrlBase (object):
             self.check_connection()
             self.add_size_info()
             self.add_country_info()
-            self.check_content()
         except tuple(ExcList):
             value = self.handle_exception()
             # make nicer error msg for unknown hosts
@@ -453,8 +452,9 @@ class UrlBase (object):
                 value = _('Bad HTTP response %(line)r') % {"line": str(value)}
             self.set_result(unicode_safe(value), valid=False)
         self.checktime = time.time() - check_start
-        # check recursion
+        # check content and recursion
         try:
+            self.check_content()
             if self.allows_recursion():
                 self.parse_url()
             # check content size
