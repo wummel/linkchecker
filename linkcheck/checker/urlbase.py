@@ -52,6 +52,10 @@ def urljoin (parent, url, scheme):
     """
     if url.startswith(scheme+":"):
         return url
+    # work around a Python 2.6/3.1 bug cutting off characters when the URL
+    # begins with semicolon
+    if url.startswith(';'):
+        url = "./%s" % url
     return urlparse.urljoin(parent, url)
 
 

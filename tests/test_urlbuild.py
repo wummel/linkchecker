@@ -22,6 +22,7 @@ import unittest
 import linkcheck.configuration
 import linkcheck.director
 import linkcheck.checker.httpurl
+import linkcheck.checker.urlbase
 
 
 def get_test_aggregate ():
@@ -47,3 +48,10 @@ class TestUrlBuild (unittest.TestCase):
                aggregate, parent_url=parent_url)
         o.build_url()
         self.assertEqual(o.url, 'http://')
+
+    def test_urljoin (self):
+        parent_url = "http://localhost:8001/test"
+        base_url = ";param=value"
+        scheme = 'http'
+        res = linkcheck.checker.urlbase.urljoin(parent_url, base_url, scheme)
+        self.assertEqual(res, 'http://localhost:8001/;param=value')
