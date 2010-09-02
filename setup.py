@@ -445,12 +445,15 @@ class InnoScript:
         for path in files:
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
         print >> ofi
-
+        # Set icon filename
         print >> ofi, r"[Icons]"
         for path in self.windows_exe_files:
             print >> ofi, r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
                   (self.name, path)
+        # Uninstall registry keys
         print >> ofi, 'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
+        print >> ofi, r"[Registry]"
+        print >> ofi, r'Root: HKCU; Subkey: "Software\bfk\LinkChecker"; Flags: uninsdeletekey'
 
     def compile(self):
         import ctypes
