@@ -494,10 +494,11 @@ group.add_option("-u", "--user", type="string", dest="username",
 """Try the given username for HTTP and FTP authorization.
 For FTP the default username is 'anonymous'. For HTTP there is
 no default username. See also -p."""))
-group.add_option("-p", "--password", type="string", dest="password",
-                 metavar="STRING",
+group.add_option("-p", "--password", action="store_false", dest="password",
+                 default=False
                  help=_(
-"""Try the given password for HTTP and FTP authorization.
+"""Read a password from console and try the given password for HTTP and
+FTP authorization.
 For FTP the default password is 'anonymous@'. For HTTP there is
 no default password. See also -u."""))
 group.add_option("--timeout", type="int", dest="timeout",
@@ -677,8 +678,9 @@ if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.nntpserver:
     config["nntpserver"] = options.nntpserver
-if options.password is not None:
-    _password = options.password
+if options.password:
+    import getpass
+    _password = getpass.getpass()
     constructauth = True
 if options.pause is not None:
     if options.pause >= 0:

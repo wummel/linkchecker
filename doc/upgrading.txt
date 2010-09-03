@@ -11,6 +11,10 @@ You should use the $no_proxy environment variable instead, which
 specifies a comma-separated list of domains that are not contacted
 over proxies.
 
+The --password option now reads a password from stdin instead
+taking it from the commandline. This prevents reading the password
+from the commandline string with tools like ``ps``.
+
 Migrating from 5.0 to 5.1
 -------------------------
 

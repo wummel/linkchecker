@@ -35,6 +35,9 @@ Changes:
 - checking: Allow redirections of external URLs if domain stays the
   same.
   Closes: SF bug #3024394
+- cmdline: The --password option now reads a password from stdin
+  instead taking it from the commandline.
+
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
