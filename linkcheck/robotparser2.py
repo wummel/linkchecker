@@ -141,10 +141,11 @@ class RobotFileParser (object):
         except urllib2.HTTPError, x:
             if x.code in (401, 403):
                 self.disallow_all = True
-                log.debug(LOG_CHECK, "%s disallow all (code %d)", self.url, x.code)
+                log.debug(LOG_CHECK, "%r disallow all (code %d)",
+                          self.url, x.code)
             else:
                 self.allow_all = True
-                log.debug(LOG_CHECK, "%s allow all (HTTP error)", self.url)
+                log.debug(LOG_CHECK, "%r allow all (HTTP error)", self.url)
         except socket.timeout:
             raise
         except urllib2.URLError:
@@ -152,21 +153,21 @@ class RobotFileParser (object):
             if isinstance(x.reason, socket.timeout):
                 raise
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all (URL error)", self.url)
+            log.debug(LOG_CHECK, "%r allow all (URL error)", self.url)
         except (socket.gaierror, socket.error):
             # no network
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all (socket error)", self.url)
+            log.debug(LOG_CHECK, "%r allow all (socket error)", self.url)
         except IOError:
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all (I/O error)", self.url)
+            log.debug(LOG_CHECK, "%r allow all (I/O error)", self.url)
         except httplib.HTTPException:
             self.allow_all = True
-            log.debug(LOG_CHECK, "%s allow all (HTTP exception)", self.url)
+            log.debug(LOG_CHECK, "%r allow all (HTTP exception)", self.url)
         except ValueError:
             # urllib2 could raise ValueError on invalid data
             self.disallow_all = True
-            log.debug(LOG_CHECK, "%s disallow all (value error)", self.url)
+            log.debug(LOG_CHECK, "%r disallow all (value error)", self.url)
 
     def _read_content (self, req):
         """Read robots.txt content.
@@ -202,7 +203,7 @@ class RobotFileParser (object):
 
         @return: None
         """
-        log.debug(LOG_CHECK, "%s parse lines", self.url)
+        log.debug(LOG_CHECK, "%r parse lines", self.url)
         state = 0
         linenumber = 0
         entry = Entry()
@@ -212,7 +213,7 @@ class RobotFileParser (object):
             if not line:
                 if state == 1:
                     log.debug(LOG_CHECK,
-                         "%s line %d: allow or disallow directives without" \
+                         "%r line %d: allow or disallow directives without" \
                          " any user-agent line", self.url, linenumber)
                     entry = Entry()
                     state = 0
@@ -234,7 +235,7 @@ class RobotFileParser (object):
                 if line[0] == "user-agent":
                     if state == 2:
                         log.debug(LOG_CHECK,
-                          "%s line %d: missing blank line before user-agent" \
+                          "%r line %d: missing blank line before user-agent" \
                           " directive", self.url, linenumber)
                         self._add_entry(entry)
                         entry = Entry()
@@ -243,7 +244,7 @@ class RobotFileParser (object):
                 elif line[0] == "disallow":
                     if state == 0:
                         log.debug(LOG_CHECK,
-                          "%s line %d: missing user-agent directive before" \
+                          "%r line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], False))
@@ -251,7 +252,7 @@ class RobotFileParser (object):
                 elif line[0] == "allow":
                     if state == 0:
                         log.debug(LOG_CHECK,
-                          "%s line %d: missing user-agent directive before" \
+                          "%r line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
                         entry.rulelines.append(RuleLine(line[1], True))
@@ -259,7 +260,7 @@ class RobotFileParser (object):
                 elif line[0] == "crawl-delay":
                     if state == 0:
                         log.debug(LOG_CHECK,
-                          "%s line %d: missing user-agent directive before" \
+                          "%r line %d: missing user-agent directive before" \
                           " this line", self.url, linenumber)
                     else:
                         try:
@@ -267,14 +268,14 @@ class RobotFileParser (object):
                             state = 2
                         except ValueError:
                             log.debug(LOG_CHECK,
-                              "%s line %d: invalid delay number %r",
+                              "%r line %d: invalid delay number %r",
                               self.url, linenumber, line[1])
                             pass
                 else:
-                    log.debug(LOG_CHECK, "%s line %d: unknown key %s",
+                    log.debug(LOG_CHECK, "%r line %d: unknown key %r",
                              self.url, linenumber, line[0])
             else:
-                log.debug(LOG_CHECK, "%s line %d: malformed line %s",
+                log.debug(LOG_CHECK, "%r line %d: malformed line %r",
                     self.url, linenumber, line)
         if state in (1, 2):
             self.entries.append(entry)
@@ -287,7 +288,7 @@ class RobotFileParser (object):
         @return: True if agent can fetch url, else False
         @rtype: bool
         """
-        log.debug(LOG_CHECK, "%s check allowance for:\n" \
+        log.debug(LOG_CHECK, "%r check allowance for:\n" \
               "  user agent: %r\n  url: %r", self.url, useragent, url)
         if not isinstance(useragent, str):
             useragent = useragent.encode("ascii", "ignore")
