@@ -495,7 +495,7 @@ group.add_option("-u", "--user", type="string", dest="username",
 For FTP the default username is 'anonymous'. For HTTP there is
 no default username. See also -p."""))
 group.add_option("-p", "--password", action="store_false", dest="password",
-                 default=False
+                 default=False,
                  help=_(
 """Read a password from console and try the given password for HTTP and
 FTP authorization.
