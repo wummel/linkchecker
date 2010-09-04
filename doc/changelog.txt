@@ -38,12 +38,14 @@ Changes:
 - cmdline: The --password option now reads a password from stdin
   instead taking it from the commandline.
 
-
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP
   servers.
-- checking: added new warning to check if content size is zero
-- install: remove Windows registry keys on uninstall
+- checking: Added new warning to check if content size is zero.
+- install: Remove Windows registry keys on uninstall.
+- checking: Do not fall back to GET when no recursion is requested on
+  single pages. This allows to check pages with a HEAD request even if
+  robots.txt disallows to get the page content.
 
 
 5.2 "11:14" (released 7.3.2010)

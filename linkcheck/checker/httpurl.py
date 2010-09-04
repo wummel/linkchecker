@@ -124,11 +124,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self._data = None
         # flag indicating connection reuse
         self.reused_connection = False
+        # flag telling if GET method is allowed; determined by robots.txt
+        self.method_get_allowed = True
 
     def allows_robots (self, url):
         """
         Fetch and parse the robots.txt of given url. Checks if LinkChecker
-        can access the requested resource.
+        can get the requested resource content. HEAD requests however are
+        still allowed.
 
         @param url: the url to be requested
         @type url: string
@@ -180,18 +183,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if not self.allows_robots(self.url):
             # remove all previously stored results
             self.add_warning(
-                       _("Access denied by robots.txt, checked only syntax."),
+                       _("Access denied by robots.txt, skipping content checks."),
                        tag=WARN_HTTP_ROBOTS_DENIED)
-            self.set_result(u"syntax OK")
-            return
+            self.method_get_allowed = False
+        # first try with HEAD
+        self.method = "HEAD"
         # check for amazon server quirk
         if _is_amazon(self.urlparts[1]):
-            self.add_info(_("Amazon servers block HTTP HEAD requests, "
-                            "using GET instead."))
-            self.method = "GET"
-        else:
-            # first try with HEAD
-            self.method = "HEAD"
+            self.add_info(_("Amazon servers block HTTP HEAD requests."))
+            if self.method_get_allowed:
+                self.add_info(_("Using GET method for Amazon server."))
+                self.method = "GET"
         # check the http connection
         response = self.check_http_connection()
         if self.headers and "Server" in self.headers:
@@ -231,7 +233,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 response = self._try_http_response()
             except httplib.BadStatusLine, msg:
                 # some servers send empty HEAD replies
-                if self.method == "HEAD":
+                if self.method == "HEAD" and self.method_get_allowed:
                     log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
                     self.method = "GET"
                     self.aliases = []
@@ -264,7 +266,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 tries, response = self.follow_redirections(response)
             except httplib.BadStatusLine, msg:
                 # some servers send empty HEAD replies
-                if self.method == "HEAD":
+                if self.method == "HEAD" and self.method_get_allowed:
                     log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
                     self.method = "GET"
                     self.aliases = []
@@ -276,7 +278,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 response.close()
                 return None
             if tries >= self.max_redirects:
-                if self.method == "HEAD":
+                if self.method == "HEAD" and self.method_get_allowed:
                     # Microsoft servers tend to recurse HEAD requests
                     self.method = "GET"
                     self.aliases = []
@@ -297,11 +299,11 @@ Use URL `%(newurl)s' instead for checking.""") % {
                     continue
             elif response.status >= 400:
                 # retry with GET (but do not set fallback flag)
-                if self.method == "HEAD":
+                if self.method == "HEAD" and self.method_get_allowed:
                     self.method = "GET"
                     self.aliases = []
                     continue
-            elif self.headers and self.method == "HEAD":
+            elif self.headers and self.method == "HEAD" and self.method_get_allowed:
                 # test for HEAD support
                 mime = headers.get_content_type(self.headers)
                 poweredby = self.headers.get('X-Powered-By', '')
@@ -361,7 +363,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
             # see about recursive redirect
             all_seen = [self.cache_url_key] + self.aliases
             if redirected in all_seen:
-                if self.method == "HEAD":
+                if self.method == "HEAD" and self.method_get_allowed:
                     # Microsoft servers tend to recurse HEAD requests
                     # fall back to the original url and use GET
                     return self.max_redirects, response
@@ -591,6 +593,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
         @return: URL content, decompressed and decoded
         @rtype: string
         """
+        assert self.method_get_allowed, 'unallowed content read'
         self.method = "GET"
         response = self._try_http_response()
         response = self.follow_redirections(response, set_result=False)[1]

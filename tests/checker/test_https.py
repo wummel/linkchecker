@@ -33,7 +33,8 @@ class TestHttps (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"info Amazon servers block HTTP HEAD requests, using GET instead.",
+            u"info Amazon servers block HTTP HEAD requests.",
+            u"info Using GET method for Amazon server.",
             u"valid",
         ]
         self.direct(url, resultlines)

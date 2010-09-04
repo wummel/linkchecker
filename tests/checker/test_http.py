@@ -123,8 +123,8 @@ class TestHttp (HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"warning Access denied by robots.txt, checked only syntax.",
-            u"valid",
+            u"warning Access denied by robots.txt, skipping content checks.",
+            u"error",
         ]
         self.direct(url, resultlines, recursionlevel=5)
 

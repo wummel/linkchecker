@@ -1,6 +1,3 @@
-- [HTTP] Do not fall back to GET when no recursion is requested on
-  single pages. This would allow to check pages even if robots.txt
-  disallows to get the page content.
 - [HTTP] Allow sending POST data for login at beginning of check.
 - [GUI] Add more context menu actions:
   + Show detailed URL properties
