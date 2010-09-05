@@ -80,6 +80,7 @@ WARN_URL_WARNREGEX_FOUND = "url-warnregex-found"
 WARN_URL_CONTENT_SIZE_TOO_LARGE = "url-content-too-large"
 WARN_URL_CONTENT_SIZE_ZERO = "url-content-size-zero"
 WARN_URL_CONTENT_SIZE_UNEQUAL = "url-content-size-unequal"
+WARN_URL_OBFUSCATED_IP = "url-obfuscated-ip"
 WARN_FILE_MISSING_SLASH = "file-missing-slash"
 WARN_FILE_SYSTEM_PATH = "file-system-path"
 WARN_FTP_MISSING_SLASH = "ftp-missing-slash"
@@ -135,6 +136,7 @@ Warnings = {
     WARN_NNTP_NO_SERVER: _("No NNTP server was found."),
     WARN_NNTP_NO_NEWSGROUP: _("The NNTP newsgroup could not be found."),
     WARN_NNTP_BUSY: _("The NNTP server was busy."),
+    WARN_URL_OBFUSCATED_IP: _("The IP is obfuscated."),
 }
 
 # file extensions we can parse recursively

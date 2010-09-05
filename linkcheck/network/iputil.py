@@ -263,6 +263,7 @@ def lookup_ips (ips):
 
 def resolve_host (host):
     """
+    @host: hostname or IP address
     Return set of ip numbers for given host.
     """
     ips = set()
@@ -275,3 +276,17 @@ def resolve_host (host):
     except socket.error:
         log.info(LOG_DNS, "Ignored invalid host %r", host)
     return ips
+
+
+def obfuscate_ip (ip):
+    """Obfuscate given host in IP form.
+    @ip: IPv4 address string
+    @return: hexadecimal IP string ('0x1ab...')
+    @raise: ValueError on invalid IP addresses
+    """
+    if not is_valid_ipv4(ip):
+        raise ValueError('Invalid IPv4 value %r' % ip)
+    return "0x%s" % "".join(hex(int(x))[2:] for x in ip.split("."))
+
+
+is_obfuscated_ip = re.compile(r"^(0x[a-f0-9]+|[0-9]+)$").match

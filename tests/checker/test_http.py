@@ -18,7 +18,7 @@
 Test http checking.
 """
 from .httpserver import HttpServerTest, NoQueryHttpRequestHandler
-
+from linkcheck.network import iputil
 
 class TestHttp (HttpServerTest):
     """Test http:// link checking."""
@@ -40,6 +40,7 @@ class TestHttp (HttpServerTest):
             self.robots_txt_test()
             self.robots_txt2_test()
             self.swf_test()
+            self.obfuscate_test()
         finally:
             self.stop_server()
 
@@ -143,6 +144,18 @@ class TestHttp (HttpServerTest):
         ]
         self.direct(url, resultlines, recursionlevel=1)
 
+    def obfuscate_test (self):
+        host = "www.golem.de"
+        ip = iputil.resolve_host(host).pop()
+        url = u"http://%s/" % iputil.obfuscate_ip(ip)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"warning URL %s has obfuscated IP address %s" % (url, ip),
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=0)
 
 def get_cookie (maxage=2000):
     data = (

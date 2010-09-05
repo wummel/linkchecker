@@ -35,8 +35,9 @@ from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
     strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
+from ..network import iputil
 from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
-    WARN_URL_ERROR_GETTING_CONTENT,
+    WARN_URL_ERROR_GETTING_CONTENT, WARN_URL_OBFUSCATED_IP,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
     WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
     WARN_URL_CONTENT_SIZE_UNEQUAL, ExcList, ExcSyntaxList, ExcNoCacheList)
@@ -399,6 +400,21 @@ class UrlBase (object):
                 raise LinkCheckerError(_("URL has invalid port %(port)r") %
                     {"port": str(self.port)})
             self.port = int(self.port)
+        self.check_obfuscated_ip()
+
+    def check_obfuscated_ip (self):
+        """Warn if host of this URL is obfuscated IP address."""
+        # check if self.host can be an IP address
+        if self.scheme not in ("ftp", "http", "mailto", "news", "nntp", "telnet"):
+            return
+        # check for obfuscated IP address
+        if iputil.is_obfuscated_ip(self.host):
+             ips = iputil.resolve_host(self.host)
+             if ips:
+                self.add_warning(
+                   _("URL %(url)s has obfuscated IP address %(ip)s") % \
+                   {"url": self.base_url, "ip": ips.pop()},
+                          tag=WARN_URL_OBFUSCATED_IP)
 
     def check (self):
         """Main check function for checking this URL."""
