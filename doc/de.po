@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2010-09-06 21:55+0300\n"
-"PO-Revision-Date: 2010-09-06 21:55+0100\n"
+"POT-Creation-Date: 2010-09-06 23:10+0300\n"
+"PO-Revision-Date: 2010-09-06 23:10+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -1062,11 +1062,11 @@ msgstr "REGULÄRE AUSDRÜCKE"
 #: en/linkchecker.1:282
 msgid ""
 "Only Python regular expressions are accepted by LinkChecker.  See B<http://"
-"docs.python.org/howto/regex/> for an introduction in regular expressions."
+"docs.python.org/howto/regex.html> for an introduction in regular expressions."
 msgstr ""
 "Lediglich Pythons reguläre Ausdrücke werden von LinkChecker akzeptiert. "
-"Siehe B<http://docs.python.org/howto/regex/> für eine Einführung in reguläre "
-"Ausdrücke."
+"Siehe B<http://docs.python.org/howto/regex.html> für eine Einführung in "
+"reguläre Ausdrücke."
 
 # type: Plain text
 #. type: Plain text
@@ -1805,9 +1805,9 @@ msgstr ""
 #. type: Plain text
 #: en/linkchecker.1:529
 msgid ""
-"B<http://docs.python.org/howto/regex/> - regular expression documentation"
+"B<http://docs.python.org/howto/regex.html> - regular expression documentation"
 msgstr ""
-"B<http://docs.python.org/howto/regex/> - Dokumentation zu regulären "
+"B<http://docs.python.org/howto/regex.html> - Dokumentation zu regulären "
 "Ausdrücken"
 
 # type: SH

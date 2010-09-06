@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-09-06 21:55+0300\n"
+"POT-Creation-Date: 2010-09-06 23:10+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -816,7 +816,7 @@ msgstr ""
 #: en/linkchecker.1:282
 msgid ""
 "Only Python regular expressions are accepted by LinkChecker.  See "
-"B<http://docs.python.org/howto/regex/> for an introduction in regular "
+"B<http://docs.python.org/howto/regex.html> for an introduction in regular "
 "expressions."
 msgstr ""
 
@@ -1392,7 +1392,9 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:529
-msgid "B<http://docs.python.org/howto/regex/> - regular expression documentation"
+msgid ""
+"B<http://docs.python.org/howto/regex.html> - regular expression "
+"documentation"
 msgstr ""
 
 #. type: SH
