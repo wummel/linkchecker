@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2010-09-06 21:08+0300\n"
-"PO-Revision-Date: 2010-09-06 21:08+0100\n"
+"POT-Creation-Date: 2010-09-06 21:55+0300\n"
+"PO-Revision-Date: 2010-09-06 21:55+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -1805,9 +1805,9 @@ msgstr ""
 #. type: Plain text
 #: en/linkchecker.1:529
 msgid ""
-"B<http://www.amk.ca/python/howto/regex/> - regular expression documentation"
+"B<http://docs.python.org/howto/regex/> - regular expression documentation"
 msgstr ""
-"B<http://www.amk.ca/python/howto/regex/> - Dokumentation zu regulären "
+"B<http://docs.python.org/howto/regex/> - Dokumentation zu regulären "
 "Ausdrücken"
 
 # type: SH
@@ -2461,12 +2461,11 @@ msgstr "B<encoding=>I<STRING>"
 #. type: Plain text
 #: en/linkcheckerrc.5:212
 msgid ""
-"Valid encodings are listed in B<http://docs.python.org/library/codecs."
-"html#standard-encodings>.  Default encoding is B<iso-8859-15>."
+"Valid encodings are listed in B<http://docs.python.org/lib/standard-"
+"encodings.html>.  Default encoding is B<iso-8859-15>."
 msgstr ""
-"Gültige Enkodierungen sind unter B<http://docs.python.org/library/codecs."
-"html#standard-encodings> aufgelistet. Standard Enkodierung ist "
-"B<iso-8859-15>."
+"Gültige Enkodierungen sind unter B<http://docs.python.org/lib/standard-"
+"encodings.html> aufgelistet. Standard Enkodierung ist B<iso-8859-15>."
 
 # type: TP
 #. type: TP

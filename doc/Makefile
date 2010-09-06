@@ -1,4 +1,4 @@
-HTMLDIR:=$(HOME)/public_html/linkchecker.sf.net/source/static
+HTMLDIR:=$(HOME)/public_html/linkchecker.sf.net/source
 
 all:
 
