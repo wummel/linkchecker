@@ -32,7 +32,7 @@ from ..containers import enum
 
 
 DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/"
-
+RegistryBase = "Bastian"
 Status = enum('idle', 'checking')
 
 
@@ -76,7 +76,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         return qhcfile
 
     def read_settings (self):
-        settings = QtCore.QSettings('bfk', configuration.AppName)
+        settings = QtCore.QSettings(RegistryBase, configuration.AppName)
         settings.beginGroup('mainwindow')
         if settings.contains('size'):
             self.resize(settings.value('size').toSize())
@@ -145,7 +145,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     def closeEvent (self, e=None):
         """Save settings on close."""
-        settings = QtCore.QSettings('bfk', configuration.AppName)
+        settings = QtCore.QSettings(RegistryBase, configuration.AppName)
         settings.beginGroup('mainwindow')
         settings.setValue("size", QtCore.QVariant(self.size()))
         settings.setValue("pos", QtCore.QVariant(self.pos()))

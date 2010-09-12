@@ -37,6 +37,9 @@ Changes:
   Closes: SF bug #3024394
 - cmdline: The --password option now reads a password from stdin
   instead taking it from the commandline.
+- gui: Change registry base key to avoid spydoctor alert. Old keys
+  have to be deleted by hand though.
+  Closes: SF bug #3062161
 
 Features:
 - ftp: Detect and support UTF-8 filename encoding capability of FTP

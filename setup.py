@@ -453,7 +453,7 @@ class InnoScript:
         # Uninstall registry keys
         print >> ofi, 'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
         print >> ofi, r"[Registry]"
-        print >> ofi, r'Root: HKCU; Subkey: "Software\bfk\LinkChecker"; Flags: uninsdeletekey'
+        print >> ofi, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
 
     def compile(self):
         import ctypes
