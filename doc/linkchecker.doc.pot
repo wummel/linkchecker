@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-09-06 23:10+0300\n"
+"POT-Creation-Date: 2010-09-22 23:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -417,7 +417,7 @@ msgstr ""
 msgid ""
 "The I<ENCODING> specifies the output encoding, the default is that of your "
 "locale. Valid encodings are listed at "
-"B<http://docs.python.org/lib/standard-encodings.html>."
+"B<http://docs.python.org/library/codecs.html#standard-encodings>."
 msgstr ""
 
 #. type: TP
@@ -435,13 +435,14 @@ msgid ""
 "for B<blacklist> output, or I<FILENAME> if specified.  The I<ENCODING> "
 "specifies the output encoding, the default is that of your locale.  Valid "
 "encodings are listed at "
-"B<http://docs.python.org/lib/standard-encodings.html>.  The I<FILENAME> and "
-"I<ENCODING> parts of the B<none> output type will be ignored, else if the "
-"file already exists, it will be overwritten.  You can specify this option "
-"more than once. Valid file output types are B<text>, B<html>, B<sql>, "
-"B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist> Default is no file "
-"output. The various output types are documented below. Note that you can "
-"suppress all console output with the option B<-o none>."
+"B<http://docs.python.org/library/codecs.html#standard-encodings>.  The "
+"I<FILENAME> and I<ENCODING> parts of the B<none> output type will be "
+"ignored, else if the file already exists, it will be overwritten.  You can "
+"specify this option more than once. Valid file output types are B<text>, "
+"B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<none> or B<blacklist> "
+"Default is no file output. The various output types are documented "
+"below. Note that you can suppress all console output with the option B<-o "
+"none>."
 msgstr ""
 
 #. type: TP
@@ -1386,8 +1387,8 @@ msgstr ""
 #. type: Plain text
 #: en/linkchecker.1:527
 msgid ""
-"B<http://docs.python.org/lib/standard-encodings.html> - valid output "
-"encodings"
+"B<http://docs.python.org/library/codecs.html#standard-encodings> - valid "
+"output encodings"
 msgstr ""
 
 #. type: Plain text
@@ -1914,8 +1915,8 @@ msgstr ""
 #: en/linkcheckerrc.5:212
 msgid ""
 "Valid encodings are listed in "
-"B<http://docs.python.org/lib/standard-encodings.html>.  Default encoding is "
-"B<iso-8859-15>."
+"B<http://docs.python.org/library/codecs.html#standard-encodings>.  Default "
+"encoding is B<iso-8859-15>."
 msgstr ""
 
 #. type: TP
