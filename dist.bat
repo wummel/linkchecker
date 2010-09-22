@@ -14,7 +14,7 @@
 :: with this program; if not, write to the Free Software Foundation, Inc.,
 :: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @echo off
-set PYDIR=E:\Python26
+set PYDIR=C:\Python27
 rd /S /Q build
 call build.bat
 rd /S /Q dist
