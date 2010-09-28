@@ -22,3 +22,4 @@ class ContextMenu (QtGui.QMenu):
     def __init__ (self, parent=None):
         super(ContextMenu, self).__init__(parent)
         self.addAction(parent.actionViewOnline)
+        self.addAction(parent.actionCopyToClipboard)

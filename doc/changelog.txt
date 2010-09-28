@@ -53,7 +53,8 @@ Features:
   single pages. This allows to check pages with a HEAD request even if
   robots.txt disallows to get the page content.
 - checking: detect and warn when obfuscated IP addresses are found.
-
+- gui: Add "Copy to clipboard" context menu item to copy an URL to
+  the system clipboard.
 
 5.2 "11:14" (released 7.3.2010)
 

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Mon Mar  9 23:30:05 2009
-#      by: PyQt4 UI code generator 4.4.4
+# Created: Mon Sep 13 23:06:50 2010
+#      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -21,6 +21,7 @@ class Ui_MainWindow(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
+        MainWindow.setStatusTip("")
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
@@ -41,6 +42,7 @@ class Ui_MainWindow(object):
         self.urlinput.setObjectName("urlinput")
         self.horizontalLayout_3.addWidget(self.urlinput)
         self.controlButton = QtGui.QPushButton(self.centralwidget)
+        self.controlButton.setStatusTip("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.controlButton.setIcon(icon1)
@@ -58,7 +60,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.treeWidget, 1, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 638, 29))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 638, 21))
         self.menubar.setObjectName("menubar")
         self.menuLinkChecka = QtGui.QMenu(self.menubar)
         self.menuLinkChecka.setObjectName("menuLinkChecka")
@@ -83,6 +85,8 @@ class Ui_MainWindow(object):
         self.actionViewOnline.setObjectName("actionViewOnline")
         self.actionOptions = QtGui.QAction(MainWindow)
         self.actionOptions.setObjectName("actionOptions")
+        self.actionCopyToClipboard = QtGui.QAction(MainWindow)
+        self.actionCopyToClipboard.setObjectName("actionCopyToClipboard")
         self.menuLinkChecka.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
@@ -114,5 +118,8 @@ class Ui_MainWindow(object):
         self.actionHelp.setText(_("Help"))
         self.actionViewOnline.setText(_("View online"))
         self.actionOptions.setText(_("Options"))
+        self.actionCopyToClipboard.setText(_("Copy to clipboard"))
+        self.actionCopyToClipboard.setToolTip(_("Copy URL to clipboard"))
+        self.actionCopyToClipboard.setShortcut(_("Ctrl+C"))
 
 import linkchecker_rc

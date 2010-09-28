@@ -274,6 +274,17 @@ Version 2 or later.</p>
             url = str(item.text(2))
             webbrowser.open(url)
 
+    @QtCore.pyqtSignature("")
+    def on_actionCopyToClipboard_triggered (self):
+        """Copy URL to clipboard."""
+        item = self.treeWidget.currentItem()
+        if item is not None:
+            url = str(item.text(2))
+            clipboard = QtGui.QApplication.clipboard()
+            clipboard.setText(url)
+            event = QtCore.QEvent(QtCore.QEvent.Clipboard)
+            QtGui.QApplication.sendEvent(clipboard, event)
+
     def set_statusbar (self, msg):
         """Show status message in status bar."""
         self.statusBar.showMessage(msg)
