@@ -35,7 +35,7 @@ class GuiLogHandler (Handler, object):
 
 
 class GuiLogger (Logger):
-    """Delegate log messages to the UI."""
+    """Delegate log URLs to the UI tree widget."""
 
     def __init__ (self, **args):
         super(GuiLogger, self).__init__(**args)
