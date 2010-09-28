@@ -12,6 +12,9 @@ Fixes:
 - url: Work around a Python bug cutting off characters when joining an
   URL that starts with semicolon.
   Closes: SF bug #3056136
+- gui: Enable tree widget items to make them selectable. This makes
+  the right-click context menu work again.
+  Closes: SF bug #3040377
 
 Changes:
 - checking: Caches are now size-restricted to limit the memory
