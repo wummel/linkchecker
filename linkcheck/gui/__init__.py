@@ -271,7 +271,8 @@ Version 2 or later.</p>
         """View item URL online."""
         item = self.treeWidget.currentItem()
         if item is not None:
-            webbrowser.open(str(item.text(2)))
+            url = str(item.text(2))
+            webbrowser.open(url)
 
     def set_statusbar (self, msg):
         """Show status message in status bar."""
