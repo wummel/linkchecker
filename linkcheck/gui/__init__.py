@@ -246,7 +246,7 @@ Version 2 or later.</p>
         if url_data.result:
             result += u": %s" % url_data.result
         item = QtGui.QTreeWidgetItem((num, parent, url, name, result))
-        item.setFlags(QtCore.Qt.NoItemFlags)
+        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
         item.setForeground(4, QtGui.QBrush(color))
         item.setToolTip(2, url)
         item.setToolTip(3, name)
