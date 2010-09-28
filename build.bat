@@ -17,7 +17,7 @@
 set PYDIR=C:\Python27
 %PYDIR%\python.exe setup.py sdist --manifest-only
 %PYDIR%\python.exe setup.py build -c mingw32
-copy build\lib.win32-2.6\linkcheck\HtmlParser\htmlsax.pyd linkcheck\HtmlParser
-copy build\lib.win32-2.6\linkcheck\network\_network.pyd linkcheck\network
-e:\qt\qt\bin\qcollectiongenerator doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
+copy build\lib.win32-2.7\linkcheck\HtmlParser\htmlsax.pyd linkcheck\HtmlParser
+copy build\lib.win32-2.7\linkcheck\network\_network.pyd linkcheck\network
+c:\qt\2010.05\qt\bin\qcollectiongenerator doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
 pause
