@@ -20,7 +20,6 @@ Store and retrieve country names for IPs.
 import os
 import sys
 from ..lock import get_lock
-from ..containers import LFUCache
 from ..decorators import synchronized
 from ..strformat import unicode_safe
 
