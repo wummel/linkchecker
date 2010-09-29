@@ -58,6 +58,7 @@ Features:
 - checking: Support the pygeoip package to display country information
   on windows systems.
 
+
 5.2 "11:14" (released 7.3.2010)
 
 Fixes:
