@@ -262,7 +262,7 @@ class ColoredStreamHandler (logging.StreamHandler, object):
         """Log to given stream (a file-like object) or to stderr if
         strm is None.
         """
-        super(ColoredStreamHandler, self).__init__(strm=strm)
+        super(ColoredStreamHandler, self).__init__(strm)
         self.stream = Colorizer(self.stream)
         # standard log level colors (used by get_color)
         self.colors = {
