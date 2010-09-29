@@ -1,4 +1,4 @@
-5.3 "" (released xx.xx.2010)
+5.3 "Inception" (released 29.9.2010)
 
 Fixes:
 - ftp: Fix support for FTP ports other than the default.
@@ -55,6 +55,8 @@ Features:
 - checking: detect and warn when obfuscated IP addresses are found.
 - gui: Add "Copy to clipboard" context menu item to copy an URL to
   the system clipboard.
+- checking: Support the pygeoip package to display country information
+  on windows systems.
 
 5.2 "11:14" (released 7.3.2010)
 

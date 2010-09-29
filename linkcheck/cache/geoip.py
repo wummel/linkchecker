@@ -27,15 +27,25 @@ from ..decorators import synchronized
 _lock = get_lock("geoip")
 
 # initialize GeoIP database
+if os.name = 'nt':
+    import sys
+    geoip_dat = os.path.join(sys.exec_prefix, "GeoIP.dat")
+else:
+    geoip_dat = "/usr/share/GeoIP/GeoIP.dat"
+# try importing both the C-library GeoIP and the pure-python pygeoip
 geoip = None
 try:
     import GeoIP
-    geoip_dat = "/usr/share/GeoIP/GeoIP.dat"
     if os.name == 'posix' and os.path.exists(geoip_dat):
         geoip = GeoIP.open(geoip_dat, GeoIP.GEOIP_STANDARD)
-    del geoip_dat
 except ImportError:
-    pass
+    try:
+        import pygeoip
+        if os.path.exists(geoip_dat):
+            geoip = pygeoip.GeoIP(geoip_dat)
+    except ImportError:
+        pass
+del geoip_dat
 
 
 country_cache = LFUCache(size=1000)
