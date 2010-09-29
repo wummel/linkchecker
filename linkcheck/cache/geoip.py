@@ -22,6 +22,7 @@ import sys
 from ..lock import get_lock
 from ..containers import LFUCache
 from ..decorators import synchronized
+from ..strformat import unicode_safe
 
 # It is unknown if the geoip library is already thread-safe, so
 # no risks should be taken here by using a lock.
@@ -47,10 +48,12 @@ if geoip_dat:
     try:
         import GeoIP
         geoip = GeoIP.open(geoip_dat, GeoIP.GEOIP_STANDARD)
+        geoip_error = GeoIP.error
     except ImportError:
         try:
             import pygeoip
             geoip = pygeoip.GeoIP(geoip_dat)
+            geoip_error = pygeoip.GeoIPError
         except ImportError:
             pass
 
@@ -59,17 +62,21 @@ if geoip_dat:
 def get_country (host):
     """Get translated country name.
 
-    @return: country with optional city or an empty string if not found
+    @return: country with optional city or an boolean False if not found
     """
     if geoip is None:
         # no geoip available
         return None
-    record = geoip.record_by_name(host)
-    value = ""
-    if record and "city" in record:
-        value = record["city"]
-    if record and "country_name" in record:
+    try:
+        record = geoip.record_by_name(host)
+    except geoip_error:
+        # ignore lookup errors
+        return None
+    value = u""
+    if record and record.get("city"):
+        value += unicode_safe(record["city"])
+    if record and record.get("country_name"):
         if value:
-            value += ", "
-        value += record["country_name"]
+            value += u", "
+        value += unicode_safe(record["country_name"])
     return value
