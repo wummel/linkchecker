@@ -643,6 +643,10 @@ Use URL `%(newurl)s' instead for checking.""") % {
             return False
         return True
 
+    def set_title_from_content (self):
+        if self.method_get_allowed:
+            super(HttpUrl, self).set_title_from_content()
+
     def is_html (self):
         """
         See if this URL points to a HTML file by looking at the
