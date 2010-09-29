@@ -66,9 +66,9 @@ def get_country (host):
         return None
     record = geoip.record_by_name(host)
     value = ""
-    if "city" in record:
+    if record and "city" in record:
         value = record["city"]
-    if "country_name" in record:
+    if record and "country_name" in record:
         if value:
             value += ", "
         value += record["country_name"]
