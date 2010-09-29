@@ -133,7 +133,7 @@ releasecheck: check
 
 .PHONY: sign_distfiles
 sign_distfiles:
-	for f in dist/*.{gz,exe}; do \
+	for f in $(shell find dist -name *.gz -o -name *.exe); do \
 	  [ ! -f $${f}.asc ] && gpg --detach-sign --armor $$f; \
 	done
 
