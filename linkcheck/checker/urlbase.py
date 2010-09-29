@@ -435,9 +435,10 @@ class UrlBase (object):
 
     def add_country_info (self):
         """Try to ask GeoIP database for country info."""
-        country = geoip.get_country(self.host)
-        if country is not None:
-            self.add_info(_("URL is located in %(country)s.") %
+        if self.host:
+            country = geoip.get_country(self.host)
+            if country is not None:
+                self.add_info(_("URL is located in %(country)s.") %
                 {"country": _(country)})
 
     def add_size_info (self):
