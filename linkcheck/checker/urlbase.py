@@ -203,7 +203,7 @@ class UrlBase (object):
 
     def set_title_from_content (self):
         """Set title of page the URL refers to.from page content."""
-        if self.valid and self.is_html():
+        if self.valid:
             try:
                 handler = linkparse.TitleFinder()
             except tuple(ExcList):
