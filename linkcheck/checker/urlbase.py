@@ -30,9 +30,8 @@ import select
 import tempfile
 
 from . import absolute_url, StoringHandler, get_url_from
-from ..cache import geoip
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-    strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil)
+  strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil, geoip)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from ..network import iputil

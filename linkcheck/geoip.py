@@ -19,9 +19,9 @@ Store and retrieve country names for IPs.
 """
 import os
 import sys
-from ..lock import get_lock
-from ..decorators import synchronized
-from ..strformat import unicode_safe
+from .lock import get_lock
+from .decorators import synchronized
+from .strformat import unicode_safe
 
 # It is unknown if the geoip library is already thread-safe, so
 # no risks should be taken here by using a lock.
