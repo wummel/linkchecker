@@ -1,3 +1,9 @@
+linkchecker (5.3-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 29 Sep 2010 21:10:23 +0200
+
 linkchecker (5.2-2) unstable; urgency=low
 
   * Updated debian/*.install files for new default Python version
