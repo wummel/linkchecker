@@ -50,6 +50,7 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.textBrowser.moveCursor(QtGui.QTextCursor.End)
 
     def reset (self):
+        self.cancelButton.setEnabled(True)
         self.tabWidget.setCurrentIndex(0)
         self.textBrowser.setText(u"")
         self.label_active.setText(u"0")
