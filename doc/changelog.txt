@@ -8,6 +8,8 @@ Fixes:
 Features:
 - gui: Added "View URL source" and "View parent URL online" context
   menu actions.
+- gui: Read default options from configuration file.
+  Closes: SF bug #2931320
 
 
 5.3 "Inception" (released 29.9.2010)

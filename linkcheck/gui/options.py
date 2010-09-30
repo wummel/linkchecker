@@ -17,6 +17,7 @@
 
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_options import Ui_Options
+from .. import configuration
 
 class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
     """Hold options for current URL to check."""
@@ -26,10 +27,14 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         self.setupUi(self)
         self.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.reset)
         self.connect(self.closeButton, QtCore.SIGNAL("clicked()"), self.close)
+        self.reset()
 
     def reset (self):
-        """Reset options to default values."""
-        self.recursionlevel.setValue(-1)
-        self.verbose.setChecked(False)
-        self.threads.setValue(10)
-        self.timeout.setValue(60)
+        """Reset options to default values from config file."""
+        config = configuration.Configuration()
+        config.read()
+        self.recursionlevel.setValue(config["recursionlevel"])
+        self.verbose.setChecked(config["verbose"])
+        self.threads.setValue(config["threads"])
+        self.timeout.setValue(config["timeout"])
+        del config
