@@ -37,7 +37,7 @@ def get_geoip_dat ():
     for path in paths:
         for datafile in datafiles:
             filename = os.path.join(path, datafile)
-            if os.path.exists(filename):
+            if os.path.isfile(filename):
                 return filename
 
 # try importing both the C-library GeoIP and the pure-python pygeoip
