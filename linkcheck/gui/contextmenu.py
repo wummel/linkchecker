@@ -22,4 +22,15 @@ class ContextMenu (QtGui.QMenu):
     def __init__ (self, parent=None):
         super(ContextMenu, self).__init__(parent)
         self.addAction(parent.actionViewOnline)
+        self.addAction(parent.actionViewSource)
         self.addAction(parent.actionCopyToClipboard)
+        self.addAction(parent.actionViewParentOnline)
+
+    def enableFromItem (self, item):
+        """Enable context menu items dependet on the item content."""
+        parent = self.parentWidget()
+        has_parenturl = bool(str(item.text(1)))
+        parent.actionViewParentOnline.setEnabled(has_parenturl)
+        has_url = bool(str(item.text(2)))
+        parent.actionViewOnline.setEnabled(has_url)
+        parent.actionViewSource.setEnabled(has_url)

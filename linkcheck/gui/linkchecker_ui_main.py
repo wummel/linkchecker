@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Mon Sep 13 23:06:50 2010
+# Created: Thu Sep 30 07:23:50 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
         self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
         self.treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.treeWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.treeWidget.setAlternatingRowColors(True)
         self.treeWidget.setUniformRowHeights(True)
         self.treeWidget.setItemsExpandable(False)
@@ -87,6 +88,12 @@ class Ui_MainWindow(object):
         self.actionOptions.setObjectName("actionOptions")
         self.actionCopyToClipboard = QtGui.QAction(MainWindow)
         self.actionCopyToClipboard.setObjectName("actionCopyToClipboard")
+        self.actionViewParentOnline = QtGui.QAction(MainWindow)
+        self.actionViewParentOnline.setIcon(icon2)
+        self.actionViewParentOnline.setObjectName("actionViewParentOnline")
+        self.actionViewSource = QtGui.QAction(MainWindow)
+        self.actionViewSource.setIcon(icon2)
+        self.actionViewSource.setObjectName("actionViewSource")
         self.menuLinkChecka.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
@@ -104,6 +111,7 @@ class Ui_MainWindow(object):
         self.label.setText(_("URL"))
         self.controlButton.setToolTip(_("Start checking the given URL."))
         self.controlButton.setText(_("Start"))
+        self.treeWidget.setSortingEnabled(True)
         self.treeWidget.headerItem().setText(0, _("#"))
         self.treeWidget.headerItem().setText(1, _("Parent"))
         self.treeWidget.headerItem().setText(2, _("Url"))
@@ -117,9 +125,14 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_("About"))
         self.actionHelp.setText(_("Help"))
         self.actionViewOnline.setText(_("View online"))
+        self.actionViewOnline.setToolTip(_("View URL online"))
         self.actionOptions.setText(_("Options"))
         self.actionCopyToClipboard.setText(_("Copy to clipboard"))
         self.actionCopyToClipboard.setToolTip(_("Copy URL to clipboard"))
         self.actionCopyToClipboard.setShortcut(_("Ctrl+C"))
+        self.actionViewParentOnline.setText(_("View parent online"))
+        self.actionViewParentOnline.setToolTip(_("View parent URL online"))
+        self.actionViewSource.setText(_("View source"))
+        self.actionViewSource.setToolTip(_("View URL source"))
 
 import linkchecker_rc

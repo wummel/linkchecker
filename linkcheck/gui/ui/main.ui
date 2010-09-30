@@ -192,6 +192,9 @@
    <property name="text">
     <string>View online</string>
    </property>
+   <property name="toolTip">
+    <string>View URL online</string>
+   </property>
   </action>
   <action name="actionOptions">
    <property name="text">
@@ -207,6 +210,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionViewParentOnline">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/online.png</normaloff>:/icons/online.png</iconset>
+   </property>
+   <property name="text">
+    <string>View parent online</string>
+   </property>
+   <property name="toolTip">
+    <string>View parent URL online</string>
+   </property>
+  </action>
+  <action name="actionViewSource">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/online.png</normaloff>:/icons/online.png</iconset>
+   </property>
+   <property name="text">
+    <string>View source</string>
+   </property>
+   <property name="toolTip">
+    <string>View URL source</string>
    </property>
   </action>
  </widget>

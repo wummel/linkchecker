@@ -1,7 +1,6 @@
 - [HTTP] Allow sending POST data for login at beginning of check.
 - [GUI] Add more context menu actions:
   + Show detailed URL properties
-  + View source
 - [GUI] Save options in qsettings, and read linkcheckerrc file.
 - [PYTHON3]
   linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__

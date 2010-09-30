@@ -264,6 +264,7 @@ Version 2 or later.</p>
         """Show item context menu."""
         item = self.treeWidget.itemAt(point)
         if item is not None:
+            self.contextmenu.enableFromItem(item)
             self.contextmenu.popup(QtGui.QCursor.pos())
 
     @QtCore.pyqtSignature("")
@@ -275,8 +276,25 @@ Version 2 or later.</p>
             webbrowser.open(url)
 
     @QtCore.pyqtSignature("")
+    def on_actionViewSource_triggered (self):
+        """View item URL source. Only works if the "view-source:" scheme
+        is supported by the browser."""
+        item = self.treeWidget.currentItem()
+        if item is not None:
+            url = str(item.text(2))
+            webbrowser.open(u"view-source:"+url)
+
+    @QtCore.pyqtSignature("")
+    def on_actionViewParentOnline_triggered (self):
+        """View item parent URL online."""
+        item = self.treeWidget.currentItem()
+        if item is not None:
+            parenturl = str(item.text(1))
+            webbrowser.open(parenturl)
+
+    @QtCore.pyqtSignature("")
     def on_actionCopyToClipboard_triggered (self):
-        """Copy URL to clipboard."""
+        """Copy item URL to clipboard."""
         item = self.treeWidget.currentItem()
         if item is not None:
             url = str(item.text(2))
