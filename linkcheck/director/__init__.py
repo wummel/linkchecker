@@ -78,21 +78,10 @@ def interrupt (aggregate):
                _("keyboard interrupt; waiting for active threads to finish"))
             log.warn(LOG_CHECK,
                _("another keyboard interrupt will exit immediately"))
-            print_active_threads(aggregate)
             abort(aggregate)
             break
         except KeyboardInterrupt:
             pass
-
-
-def print_active_threads (aggregate):
-    if not aggregate.threads:
-        return
-    log.info(LOG_CHECK, _("These URLs are still active:"))
-    for t in aggregate.threads:
-        name = t.getName()
-        if name.startswith("Check-"):
-            log.info(LOG_CHECK, name[6:])
 
 
 def abort (aggregate):
@@ -115,7 +104,7 @@ def abort_now ():
         import signal
         os.kill(os.getpid(), signal.SIGKILL)
     elif os.name == 'nt':
-        # NT as os.abort()
+        # NT has os.abort()
         os.abort()
     else:
         # All other systems have os._exit() as best shot.

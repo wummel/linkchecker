@@ -60,8 +60,19 @@ class Aggregate (object):
         else:
             checker.check_url(self.urlqueue, self.logger)
 
+    def print_active_threads (self):
+        first = True
+        for t in self.threads:
+            name = t.getName()
+            if name.startswith("CheckThread-"):
+                if first:
+                    log.info(LOG_CHECK, _("These URLs are still active:"))
+                    first = False
+                log.info(LOG_CHECK, name[12:])
+
     def abort (self):
         """Empty the URL queue."""
+        self.print_active_threads()
         self.urlqueue.do_shutdown()
         try:
             self.urlqueue.join(timeout=self.config["timeout"])
