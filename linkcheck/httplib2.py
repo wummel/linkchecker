@@ -71,6 +71,7 @@ Req-sent-unread-response       _CS_REQ_SENT       <response_class>
 
 import errno
 import mimetools
+from array import array
 import socket
 from urlparse import urlsplit
 
@@ -526,6 +527,10 @@ class HTTPResponse:
         if self.fp is None:
             return ''
 
+        if self._method == 'HEAD':
+            self.close()
+            return ''
+
         if self.chunked:
             return self._read_chunked(amt)
 
@@ -744,7 +749,7 @@ class HTTPConnection:
             print "send:", repr(str)
         try:
             blocksize=8192
-            if hasattr(str,'read') :
+            if hasattr(str,'read') and not isinstance(str, array):
                 if self.debuglevel > 0: print "sendIng a read()able"
                 data=str.read(blocksize)
                 while data:
@@ -1247,7 +1252,6 @@ class HTTP:
         # set up delegation to flesh out interface
         self.send = conn.send
         self.putrequest = conn.putrequest
-        self.putheader = conn.putheader
         self.endheaders = conn.endheaders
         self.set_debuglevel = conn.set_debuglevel
 
@@ -1266,6 +1270,10 @@ class HTTP:
     def getfile(self):
         "Provide a getfile, since the superclass' does not use this concept."
         return self.file
+
+    def putheader(self, header, *values):
+        "The superclass allows only one value argument."
+        self._conn.putheader(header, '\r\n\t'.join(values))
 
     def getreply(self, buffering=False):
         """Compat definition since superclass does not define it.
