@@ -19,7 +19,7 @@
 Check HTML pages for broken links. This is the GUI client.
 """
 import sys
-from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QApplication, QStyleFactory
 from linkcheck.gui import LinkCheckerMain
 
 
@@ -27,6 +27,9 @@ def main (argv=None):
     if argv is None:
         argv = sys.argv
     app = QApplication(argv)
+    ## Look and feel changed to CleanLooks
+    QApplication.setStyle(QStyleFactory.create("Cleanlooks"))
+    QApplication.setPalette(QApplication.style().standardPalette())
     if app.argc() > 1:
         url = app.argv()[1]
     else:
