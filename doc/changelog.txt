@@ -5,9 +5,11 @@ Fixes:
   disabled.
 - checking: Fix printing of active URLs on Ctrl-C.
 
+Changes:
+- gui: Display cancel message in progress window.
+
 Features:
-- gui: Added "View URL source" and "View parent URL online" context
-  menu actions.
+- gui: Added "View parent URL online" context menu action.
 - gui: Read default options from configuration file.
   Closes: SF bug #2931320
 
