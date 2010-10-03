@@ -22,15 +22,31 @@ class ContextMenu (QtGui.QMenu):
     def __init__ (self, parent=None):
         super(ContextMenu, self).__init__(parent)
         self.addAction(parent.actionViewOnline)
-        self.addAction(parent.actionViewSource)
         self.addAction(parent.actionCopyToClipboard)
         self.addAction(parent.actionViewParentOnline)
+        self.addAction(parent.actionViewParentSource)
 
     def enableFromItem (self, item):
-        """Enable context menu items dependet on the item content."""
+        """Enable context menu actions depending on the item content."""
         parent = self.parentWidget()
-        has_parenturl = bool(str(item.text(1)))
-        parent.actionViewParentOnline.setEnabled(has_parenturl)
-        has_url = bool(str(item.text(2)))
-        parent.actionViewOnline.setEnabled(has_url)
-        parent.actionViewSource.setEnabled(has_url)
+        parenturl = str(item.text(1))
+        url = str(item.text(2))
+        result = str(item.text(4))
+        # enable view online actions
+        parent.actionViewOnline.setEnabled(bool(url))
+        parent.actionViewParentOnline.setEnabled(bool(parenturl))
+        # enable view source actions
+        enable_parent_url_source = self.can_view_source(parenturl)
+        parent.actionViewParentSource.setEnabled(enable_parent_url_source)
+
+    def can_view_source (self, url, result=None):
+        """Determine if URL source could be retrieved."""
+        if not url:
+            return False
+        if result and result.startswith(u"Error"):
+            return False
+        return (url.startswith(u"http:") or
+                url.startswith(u"https:") or
+                url.startswith(u"ftp:") or
+                url.startswith(u"ftps:") or
+                url.startswith(u"file:"))

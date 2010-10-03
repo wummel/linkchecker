@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Thu Sep 30 07:23:50 2010
+# Created: Sun Oct  3 10:25:40 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,6 +46,7 @@ class Ui_MainWindow(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.controlButton.setIcon(icon1)
+        self.controlButton.setDefault(True)
         self.controlButton.setObjectName("controlButton")
         self.horizontalLayout_3.addWidget(self.controlButton)
         self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
@@ -91,9 +92,9 @@ class Ui_MainWindow(object):
         self.actionViewParentOnline = QtGui.QAction(MainWindow)
         self.actionViewParentOnline.setIcon(icon2)
         self.actionViewParentOnline.setObjectName("actionViewParentOnline")
-        self.actionViewSource = QtGui.QAction(MainWindow)
-        self.actionViewSource.setIcon(icon2)
-        self.actionViewSource.setObjectName("actionViewSource")
+        self.actionViewParentSource = QtGui.QAction(MainWindow)
+        self.actionViewParentSource.setIcon(icon2)
+        self.actionViewParentSource.setObjectName("actionViewParentSource")
         self.menuLinkChecka.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
@@ -132,7 +133,7 @@ class Ui_MainWindow(object):
         self.actionCopyToClipboard.setShortcut(_("Ctrl+C"))
         self.actionViewParentOnline.setText(_("View parent online"))
         self.actionViewParentOnline.setToolTip(_("View parent URL online"))
-        self.actionViewSource.setText(_("View source"))
-        self.actionViewSource.setToolTip(_("View URL source"))
+        self.actionViewParentSource.setText(_("View parent source"))
+        self.actionViewParentSource.setToolTip(_("View parent URL source"))
 
 import linkchecker_rc

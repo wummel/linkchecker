@@ -26,14 +26,26 @@ from .help import HelpWindow
 from .options import LinkCheckerOptions
 from .checker import CheckerThread
 from .contextmenu import ContextMenu
+from .editor import EditorWindow
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat
 from ..containers import enum
+from .. import url as urlutil
+from ..checker import httpheaders
 
 
 DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/"
 RegistryBase = "Bastian"
 Status = enum('idle', 'checking')
+
+
+def get_parent_url (itemtext):
+    """Split off line and column information from URL."""
+    url, col = itemtext.rsplit(",", 1)
+    col = int(col.split()[1])
+    url, line = url.rsplit(",", 1)
+    line = int(line.split()[1])
+    return url, line, col
 
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
@@ -51,6 +63,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.progress = LinkCheckerProgress(parent=self)
         self.checker = CheckerThread()
         self.contextmenu = ContextMenu(parent=self)
+        self.editor = EditorWindow(parent=self)
         # Note: we can't use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
         # setup this widget
@@ -276,21 +289,36 @@ Version 2 or later.</p>
             webbrowser.open(url)
 
     @QtCore.pyqtSignature("")
-    def on_actionViewSource_triggered (self):
-        """View item URL source. Only works if the "view-source:" scheme
-        is supported by the browser."""
-        item = self.treeWidget.currentItem()
-        if item is not None:
-            url = str(item.text(2))
-            webbrowser.open(u"view-source:"+url)
-
-    @QtCore.pyqtSignature("")
     def on_actionViewParentOnline_triggered (self):
         """View item parent URL online."""
         item = self.treeWidget.currentItem()
         if item is not None:
-            parenturl = str(item.text(1))
+            parenturl, line, col = get_parent_url(str(item.text(1)))
             webbrowser.open(parenturl)
+
+    @QtCore.pyqtSignature("")
+    def on_actionViewParentSource_triggered (self):
+        """View item parent URL source in local text editor (read-only)."""
+        item = self.treeWidget.currentItem()
+        if item is not None:
+            # XXX simplify this once a proper model is stored
+            parenturl, line, col = get_parent_url(str(item.text(1)))
+            self.view_source(parenturl, line, col)
+
+    def view_source (self, url, line, col):
+        self.editor.setWindowTitle(u"View %s" % url)
+        info, data = urlutil.get_content(url, proxy=self.config["proxy"])
+        if (info, data) == (None, None):
+            self.editor.setText(u"An error occurred retreiving URL `%s'." % url)
+        else:
+            content_type = httpheaders.get_content_type(info)
+            if not content_type:
+                # read function for content type guessing
+                read = lambda: data
+                content_type = fileutils.guess_mime_type(url, read=read)
+            self.editor.setContentType(content_type)
+            self.editor.setText(data, line=line, col=col)
+        self.editor.show()
 
     @QtCore.pyqtSignature("")
     def on_actionCopyToClipboard_triggered (self):
