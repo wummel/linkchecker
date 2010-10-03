@@ -74,6 +74,9 @@
          <iconset resource="../rc/linkchecker.qrc">
           <normaloff>:/icons/start.png</normaloff>:/icons/start.png</iconset>
         </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -224,16 +227,16 @@
     <string>View parent URL online</string>
    </property>
   </action>
-  <action name="actionViewSource">
+  <action name="actionViewParentSource">
    <property name="icon">
     <iconset resource="../rc/linkchecker.qrc">
      <normaloff>:/icons/online.png</normaloff>:/icons/online.png</iconset>
    </property>
    <property name="text">
-    <string>View source</string>
+    <string>View parent source</string>
    </property>
    <property name="toolTip">
-    <string>View URL source</string>
+    <string>View parent URL source</string>
    </property>
   </action>
  </widget>
