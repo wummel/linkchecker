@@ -125,15 +125,17 @@ class RobotFileParser (object):
         @raise: ValueError on bad digest auth (a bug)
         """
         f = urlutil.get_opener(self.user, self.password, self.proxy)
+        res = None
         try:
-            f.open(req)
-            ct = f.info().get("Content-Type")
+            res = f.open(req)
+            ct = res.info().get("Content-Type")
             if ct and ct.lower().startswith("text/plain"):
-                self.parse([line.strip() for line in f])
+                self.parse([line.strip() for line in res])
             else:
                 self.allow_all = True
         finally:
-            f.close()
+            if res is not None:
+                res.close()
 
     def _add_entry (self, entry):
         """Add a parsed entry to entry list.
