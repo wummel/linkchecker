@@ -20,14 +20,6 @@ from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_progress import Ui_ProgressDialog
 
 
-def set_fixed_font (output):
-    """Set fixed font on output widget."""
-    if os.name == 'nt':
-        output.setFontFamily("Courier")
-    else:
-        output.setFontFamily("mono")
-
-
 class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
     """Show progress bar."""
 
@@ -36,7 +28,7 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.setupUi(self)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(0)
-        set_fixed_font(self.textBrowser)
+        self.textBrowser.setFontFamily("Consolas")
         self.connect(self, QtCore.SIGNAL("log_status(int,int,int,float)"), self.log_status)
         self.connect(self.cancelButton, QtCore.SIGNAL("clicked()"), self.cancel)
 
