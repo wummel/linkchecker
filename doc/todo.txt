@@ -1,7 +1,8 @@
 - [HTTP] Allow sending POST data for login at beginning of check.
-- [GUI] Add more context menu actions:
-  + Show detailed URL properties
-- [GUI] Save options in qsettings, and read linkcheckerrc file.
+- [GUI] Move the debug tab someplace else. Perhaps make a separate
+  debug window out of it that gets displayed only on demand.
+- [GUI] Show detailed URL properties
+- [GUI] Save options in qsettings or in external file (for each URL?).
 - [PYTHON3]
   linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
   linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
