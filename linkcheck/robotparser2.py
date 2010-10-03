@@ -27,34 +27,10 @@ import time
 import socket
 import sys
 from . import httplib2 as httplib
-from . import log, LOG_CHECK, configuration, httputil
+from . import url as urlutil
+from . import log, LOG_CHECK, configuration
 
 __all__ = ["RobotFileParser"]
-
-
-class PasswordManager (object):
-    """Simple password manager storing username and password. Suitable
-    for use as an AuthHandler instance in urllib2."""
-
-    def __init__ (self, user, password):
-        """Store given username and password."""
-        self.user = user
-        self.password = password
-
-    def add_password (self, realm, uri, user, passwd):
-        """Does nothing since username and password are already stored.
-
-        @return: None
-        """
-        pass
-
-    def find_user_password (self, realm, authuri):
-        """Get stored username and password.
-
-        @return: A tuple (user, password)
-        @rtype: tuple
-        """
-        return self.user, self.password
 
 
 class RobotFileParser (object):
@@ -98,35 +74,6 @@ class RobotFileParser (object):
         """Set the URL referring to a robots.txt file."""
         self.url = url
         self.host, self.path = urlparse.urlparse(url)[1:3]
-
-    def get_opener (self):
-        """Construct an URL opener object. It considers the given credentials
-        from the __init__() method and supports proxies.
-
-        @return: URL opener
-        @rtype: urllib2.OpenerDirector
-        """
-        pwd_manager = PasswordManager(self.user, self.password)
-        handlers = [
-            urllib2.UnknownHandler,
-            httputil.HttpWithGzipHandler,
-            urllib2.HTTPBasicAuthHandler(pwd_manager),
-            urllib2.HTTPDigestAuthHandler(pwd_manager),
-        ]
-        if self.proxy:
-            handlers.insert(0,
-              urllib2.ProxyHandler({"http": self.proxy, "https": self.proxy}))
-            handlers.extend([
-                urllib2.ProxyBasicAuthHandler(pwd_manager),
-                urllib2.ProxyDigestAuthHandler(pwd_manager),
-            ])
-        handlers.extend([
-            urllib2.HTTPDefaultErrorHandler,
-            urllib2.HTTPRedirectHandler,
-        ])
-        if hasattr(httplib, 'HTTPS'):
-            handlers.append(httputil.HttpsWithGzipHandler)
-        return urllib2.build_opener(*handlers)
 
     def read (self):
         """Read the robots.txt URL and feeds it to the parser."""
@@ -177,13 +124,16 @@ class RobotFileParser (object):
         @raise: httplib.HTTPException, IOError on HTTP errors
         @raise: ValueError on bad digest auth (a bug)
         """
-        f = self.get_opener().open(req)
-        ct = f.info().get("Content-Type")
-        if ct and ct.lower().startswith("text/plain"):
-            self.parse([line.strip() for line in f])
-        else:
-            self.allow_all = True
-        f.close()
+        f = urlutil.get_opener(self.user, self.password, self.proxy)
+        try:
+            f.open(req)
+            ct = f.info().get("Content-Type")
+            if ct and ct.lower().startswith("text/plain"):
+                self.parse([line.strip() for line in f])
+            else:
+                self.allow_all = True
+        finally:
+            f.close()
 
     def _add_entry (self, entry):
         """Add a parsed entry to entry list.

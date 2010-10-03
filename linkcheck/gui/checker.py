@@ -41,7 +41,6 @@ class CheckerThread (QtCore.QThread):
     def cancel (self):
         # stop checking
         if self.progress is not None:
-            self.progress.cancelButton.setEnabled(False)
             self.progress = None
         if self.aggregate is not None:
             self.aggregate.wanted_stop = True

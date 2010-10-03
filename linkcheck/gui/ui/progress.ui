@@ -1,196 +1,171 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ProgressDialog</class>
- <widget class="QDialog" name="ProgressDialog" >
-  <property name="windowModality" >
+ <widget class="QDialog" name="ProgressDialog">
+  <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>
-  <property name="geometry" >
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>217</height>
+    <width>289</width>
+    <height>185</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>LinkChecker progress</string>
   </property>
-  <widget class="QPushButton" name="cancelButton" >
-   <property name="geometry" >
-    <rect>
-     <x>240</x>
-     <y>180</y>
-     <width>70</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Cancel</string>
-   </property>
-  </widget>
-  <widget class="QFrame" name="frame" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>301</width>
-     <height>161</height>
-    </rect>
-   </property>
-   <property name="frameShape" >
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow" >
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QProgressBar" name="progressBar" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>281</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="value" >
-     <number>24</number>
-    </property>
-   </widget>
-   <widget class="QTabWidget" name="tabWidget" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>281</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="currentIndex" >
-     <number>1</number>
-    </property>
-    <widget class="QWidget" name="tab" >
-     <attribute name="title" >
-      <string>Status</string>
-     </attribute>
-     <widget class="QLabel" name="label" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>48</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Active:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_active" >
-      <property name="geometry" >
-       <rect>
-        <x>80</x>
-        <y>10</y>
-        <width>48</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>0</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>48</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Queued:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_queued" >
-      <property name="geometry" >
-       <rect>
-        <x>80</x>
-        <y>30</y>
-        <width>48</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>0</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>48</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Checked:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_checked" >
-      <property name="geometry" >
-       <rect>
-        <x>80</x>
-        <y>50</y>
-        <width>48</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>0</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2" >
-     <attribute name="title" >
-      <string>Debug</string>
-     </attribute>
-     <widget class="QScrollArea" name="scrollArea" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>271</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="widgetResizable" >
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>267</width>
-         <height>67</height>
-        </rect>
-       </property>
-       <widget class="QTextBrowser" name="textBrowser" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>271</width>
-          <height>71</height>
-         </rect>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Status</string>
+         </attribute>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_active">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Queued:</string>
+            </property>
+            <property name="buddy">
+             <cstring></cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="label_queued">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Checked:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="label_checked">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Active:</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Debug</string>
+         </attribute>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>271</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>265</width>
+             <height>65</height>
+            </rect>
+           </property>
+           <widget class="QTextBrowser" name="textBrowser">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>271</width>
+              <height>71</height>
+             </rect>
+            </property>
+           </widget>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value">
+         <number>24</number>
         </property>
        </widget>
-      </widget>
-     </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="cancelLabel">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="buddy">
+            <cstring>cancelButton</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cancelButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Cancel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </widget>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

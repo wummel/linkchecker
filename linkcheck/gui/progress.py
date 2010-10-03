@@ -38,6 +38,7 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.progressBar.setMaximum(0)
         set_fixed_font(self.textBrowser)
         self.connect(self, QtCore.SIGNAL("log_status(int,int,int,float)"), self.log_status)
+        self.connect(self.cancelButton, QtCore.SIGNAL("clicked()"), self.cancel)
 
     def log_status (self, checked, in_progress, queued, duration):
         self.label_checked.setText(u"%d" % checked)
@@ -56,6 +57,11 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.label_active.setText(u"0")
         self.label_queued.setText(u"0")
         self.label_checked.setText(u"0")
+        self.cancelLabel.setText(u"")
+
+    def cancel (self):
+        self.cancelButton.setEnabled(False)
+        self.cancelLabel.setText(_(u"Closing pending connections..."))
 
 
 class StatusLogger (object):
