@@ -9,7 +9,9 @@ Changes:
 - gui: Display cancel message in progress window.
 
 Features:
-- gui: Added "View parent URL online" context menu action.
+- gui: Added "View parent URL online" context menu action to display
+  source in text editor window.
+  Closes: SF bug #3040378
 - gui: Read default options from configuration file.
   Closes: SF bug #2931320
 
