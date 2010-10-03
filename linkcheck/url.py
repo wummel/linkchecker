@@ -546,16 +546,19 @@ def get_content (url, user=None, password=None, proxy=None):
     from . import configuration
     headers = {
         'User-Agent': configuration.UserAgent,
-        'Accept-Encoding' : 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
+        # makes problems with some sites
+        #'Accept-Encoding': 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
     }
     req = urllib2.Request(url, None, headers)
     try:
         f = get_opener(user=user, password=password, proxy=proxy)
+        res = None
         try:
-            f.open(req)
-            return (f.info(), f.read())
+            res = f.open(req)
+            return (res.info(), res.read())
         finally:
-            f.close()
+            if res is not None:
+                res.close()
     except (urllib2.HTTPError, socket.timeout, urllib2.URLError,
             socket.gaierror, socket.error, IOError, httplib.HTTPException,
             ValueError):
