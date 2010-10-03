@@ -190,7 +190,8 @@ def guess_mimetype (filename, read=None):
     """Return MIME type of file, or 'application/octet-stream' if it could
     not be determined."""
     mime, encoding = mimedb.guess_type(filename, strict=False)
-    if not mime and read is not None:
+    # Mime type text/plain can be differentiated further with content reading.
+    if (mime == "text/plain" or not mime) and read is not None:
         # try to read some content and do a poor man's file(1)
         # XXX replace with file(1) on Unix systems
         try:
