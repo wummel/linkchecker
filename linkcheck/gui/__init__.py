@@ -28,7 +28,7 @@ from .checker import CheckerThread
 from .contextmenu import ContextMenu
 from .editor import EditorWindow
 from .. import configuration, checker, director, add_intern_pattern, \
-    strformat
+    strformat, fileutil
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
@@ -315,7 +315,7 @@ Version 2 or later.</p>
             if not content_type:
                 # read function for content type guessing
                 read = lambda: data
-                content_type = fileutils.guess_mime_type(url, read=read)
+                content_type = fileutil.guess_mimetype(url, read=read)
             self.editor.setContentType(content_type)
             self.editor.setText(data, line=line, col=col)
         self.editor.show()

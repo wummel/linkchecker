@@ -3,7 +3,7 @@
 from cStringIO import StringIO
 from . import gzip2 as gzip
 from . import httplib2 as httplib
-from . import log, LOG_CHECK
+from . import log, LOG_CHECK, fileutil
 import re
 import mimetypes
 import zlib
@@ -99,9 +99,10 @@ def encode_multipart_formdata(fields, files=None):
         L.append(value)
     if files is not None:
         for (key, filename, value) in files:
+            content_type = fileutil.guess_mimetype(filename)
             L.append('--' + BOUNDARY)
             L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename))
-            L.append('Content-Type: %s' % get_content_type(filename))
+            L.append('Content-Type: %s' % content_type)
             L.append('')
             L.append(value)
     L.append('--' + BOUNDARY + '--')
@@ -109,7 +110,3 @@ def encode_multipart_formdata(fields, files=None):
     body = CRLF.join(L)
     content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
     return content_type, body
-
-
-def get_content_type(filename):
-    return mimetypes.guess_type(filename)[0] or 'application/octet-stream'
