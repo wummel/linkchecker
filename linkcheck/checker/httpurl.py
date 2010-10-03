@@ -34,8 +34,7 @@ from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
 from .const import WARN_HTTP_ROBOTS_DENIED, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
-    WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
-    PARSE_MIMETYPES, HTML_MIMETYPES
+    WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING
 
 # helper alias
 unicode_safe = strformat.unicode_safe
@@ -657,7 +656,8 @@ Use URL `%(newurl)s' instead for checking.""") % {
         """
         if not (self.valid and self.headers):
             return False
-        if headers.get_content_type(self.headers) not in HTML_MIMETYPES:
+        mime = headers.get_content_type(self.headers)
+        if self.ContentMimetypes.get(mime) != "html":
             return False
         return self.encoding_supported()
 
@@ -665,7 +665,8 @@ Use URL `%(newurl)s' instead for checking.""") % {
         """Return True iff content of this url is CSS stylesheet."""
         if not (self.valid and self.headers):
             return False
-        if headers.get_content_type(self.headers) != "text/css":
+        mime = headers.get_content_type(self.headers)
+        if self.ContentMimetypes.get(mime) != "css":
             return False
         return self.encoding_supported()
 
@@ -687,7 +688,7 @@ Use URL `%(newurl)s' instead for checking.""") % {
         """
         if not (self.valid and self.headers):
             return False
-        if headers.get_content_type(self.headers) not in PARSE_MIMETYPES:
+        if headers.get_content_type(self.headers) not in self.ContentMimetypes:
             return False
         return self.encoding_supported()
 

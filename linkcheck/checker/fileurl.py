@@ -26,14 +26,17 @@ import urllib2
 
 from . import urlbase, get_index_html, absolute_url, get_url_from
 from .. import log, LOG_CHECK, fileutil, strformat, url as urlutil
-from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH, \
-    PARSE_EXTENSIONS, PARSE_CONTENTS
+from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
 try:
     import sqlite3
     has_sqlite = True
 except ImportError:
     has_sqlite = False
+
+
+firefox_extension = re.compile(r'/(?i)places.sqlite$')
+
 
 def get_files (dirname):
     """Get iterator of entries in directory. Only allows regular files
@@ -80,8 +83,6 @@ def is_absolute_path (path):
         return re.search(r"^[a-zA-Z]:", path)
     return path.startswith("/")
 
-
-firefox_extension = re.compile(r'/(?i)places.sqlite$')
 
 class FileUrl (urlbase.UrlBase):
     """
@@ -181,20 +182,16 @@ class FileUrl (urlbase.UrlBase):
         return data, size
 
     def is_html (self):
-        """
-        Check if file is a HTML file.
-        """
-        if PARSE_EXTENSIONS['html'].search(self.url):
-            return True
-        if PARSE_CONTENTS['html'].search(self.get_content()):
-            return True
-        return False
+        """Check if file is a HTML file."""
+        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
+        return self.ContentMimetypes.get(mime) == "html"
 
     def is_css (self):
         """
         Check if file is a CSS file.
         """
-        return bool(PARSE_EXTENSIONS['css'].search(self.url))
+        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
+        return self.ContentMimetypes.get(mime) == "css"
 
     def is_file (self):
         """
@@ -240,20 +237,11 @@ class FileUrl (urlbase.UrlBase):
         """
         if self.is_directory():
             return True
-        # guess by extension
-        for ro in PARSE_EXTENSIONS.values():
-            if ro.search(self.url):
-                return True
-        if firefox_extension.search(self.url):
+        elif has_sqlite and firefox_extension.search(self.url):
             return True
-        # try to read content (can fail, so catch error)
-        try:
-            for ro in PARSE_CONTENTS.values():
-                if ro.search(self.get_content()[:30]):
-                    return True
-        except IOError:
-            pass
-        return False
+        else:
+            mime = fileutil.guess_mimetype(self.url, read=self.get_content)
+            return mime in self.ContentMimetypes
 
     def parse_url (self):
         """
@@ -261,18 +249,12 @@ class FileUrl (urlbase.UrlBase):
         """
         if self.is_directory():
             self.parse_html()
-            return
-        for key, ro in PARSE_EXTENSIONS.items():
-            if ro.search(self.url):
-                getattr(self, "parse_"+key)()
-                return
-        if has_sqlite and firefox_extension.search(self.url):
+        elif has_sqlite and firefox_extension.search(self.url):
             self.parse_firefox()
-            return
-        for key, ro in PARSE_CONTENTS.items():
-            if ro.search(self.get_content()[:30]):
-                getattr(self, "parse_"+key)()
-                return
+        else:
+            mime = fileutil.guess_mimetype(self.url, read=self.get_content)
+            key = self.ContentMimetypes[mime]
+            getattr(self, "parse_"+key)()
 
     def parse_firefox (self):
         """Parse a Firefox3 bookmark file."""

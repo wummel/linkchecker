@@ -21,7 +21,6 @@ import socket
 import select
 import nntplib
 import ftplib
-import re
 import httplib as orighttplib
 from .. import LinkCheckerError, httplib2 as httplib
 from ..dns.exception import DNSException
@@ -137,33 +136,4 @@ Warnings = {
     WARN_NNTP_NO_NEWSGROUP: _("The NNTP newsgroup could not be found."),
     WARN_NNTP_BUSY: _("The NNTP server was busy."),
     WARN_URL_OBFUSCATED_IP: _("The IP is obfuscated."),
-}
-
-# file extensions we can parse recursively
-PARSE_EXTENSIONS = {
-    "html": re.compile(r'(?i)\.s?html?$'),
-    "opera": re.compile(r'/(?i)opera.adr$'), # opera bookmark file
-    "css": re.compile(r'(?i)\.css$'), # CSS stylesheet
-    "swf": re.compile(r'(?i)\.swf$'), # SWF file
-    "word": re.compile(r'(?i)\.docx?$'), # Word files
-}
-
-PARSE_MIMETYPES = (
-    "text/html",
-    "application/xhtml+xml",
-    "text/css",
-    "application/x-shockwave-flash",
-    "application/msword",
-)
-
-HTML_MIMETYPES = (
-    "text/html",
-    "application/xhtml+xml",
-)
-
-# if file extension lookup was unsuccessful, look at the content
-PARSE_CONTENTS = {
-    "html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
-    "opera": re.compile(r'^Opera Hotlist'),
-    "text": re.compile(r'(?i)^# LinkChecker URL list'),
 }

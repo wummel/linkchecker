@@ -22,9 +22,9 @@ import ftplib
 import urllib
 from cStringIO import StringIO
 
-from .. import log, LOG_CHECK, LinkCheckerError
+from .. import log, LOG_CHECK, LinkCheckerError, fileutil
 from . import proxysupport, httpurl, internpaturl, get_index_html
-from .const import WARN_FTP_MISSING_SLASH, PARSE_EXTENSIONS
+from .const import WARN_FTP_MISSING_SLASH
 
 DEFAULT_TIMEOUT_SECS = 300
 
@@ -180,20 +180,20 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def is_html (self):
         """See if URL target is a HTML file by looking at the extension."""
-        return bool(PARSE_EXTENSIONS['html'].search(self.url))
+        mime = fileutil.guess_mimetype(self.url)
+        return self.ContentMimetypes.get(mime) == "html"
 
     def is_css (self):
         """See if URL target is a CSS file by looking at the extension."""
-        return bool(PARSE_EXTENSIONS['css'].search(self.url))
+        mime = fileutil.guess_mimetype(self.url)
+        return self.ContentMimetypes.get(mime) == "css"
 
     def is_parseable (self):
         """See if URL target is parseable for recursion."""
         if self.is_directory():
             return True
-        for ro in PARSE_EXTENSIONS.values():
-            if ro.search(self.url):
-                return True
-        return False
+        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
+        return mime in self.ContentMimetypes
 
     def is_directory (self):
         """See if URL target is a directory."""
@@ -204,9 +204,9 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.is_directory():
             self.parse_html()
             return
-        for key, ro in PARSE_EXTENSIONS.items():
-            if ro.search(self.url):
-                getattr(self, "parse_"+key)()
+        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
+        key = self.ContentMimetypes[mime]
+        getattr(self, "parse_"+key)()
 
     def read_content (self):
         """Return URL target content, or in case of directories a dummy HTML

@@ -73,6 +73,17 @@ def url_norm (url, encoding=None):
 class UrlBase (object):
     """An URL with additional information like validity etc."""
 
+    # file types that can be parsed recursively
+    ContentMimetypes = {
+        "text/html": "html",
+        "application/xhtml+xml": "html",
+        "text/css": "css",
+        "application/x-shockwave-flash": "swf",
+        "application/msword": "word",
+        "text/plain+linkchecker": "text",
+        "text/plain+opera": "opera",
+    }
+
     def __init__ (self, base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=-1, column=-1,
                   name=u"", url_encoding=None):

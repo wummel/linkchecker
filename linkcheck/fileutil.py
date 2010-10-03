@@ -19,9 +19,11 @@ File and path utilities.
 """
 
 import os
+import re
 import locale
 import stat
 import fnmatch
+import mimetypes
 
 
 def write_file (filename, content, backup=False, callback=None):
@@ -173,3 +175,34 @@ def has_changed (filename):
         _mtime_cache[key] = mtime
         return True
     return mtime > _mtime_cache[key]
+
+
+mimedb = mimetypes.MimeTypes(strict=False)
+
+# if file extension lookup was unsuccessful, look at the content
+PARSE_CONTENTS = {
+    "text/html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
+    "text/plain+opera": re.compile(r'^Opera Hotlist'),
+    "text/plain+linkchecker": re.compile(r'(?i)^# LinkChecker URL list'),
+}
+
+def guess_mime_type (filename, read=None):
+    """Return MIME type of file, or 'application/octet-stream' if it could
+    not be determined."""
+    mime, encoding = mimedb.guess_type(filename, strict=False)
+    if not mime and read is not None:
+        # try to read some content and do a poor man's file(1)
+        # XXX replace with file(1) on Unix systems
+        try:
+            data = read()[:30]
+            for mime, ro in PARSE_CONTENTS.items():
+                if ro.search(data):
+                    break
+        except Exception:
+            pass
+    if not mime:
+        mime = "application/octet-stream"
+    if ";" in mime:
+        # split off not needed extension info
+        mime = mime.split(';')[0]
+    return mime.strip().lower()
