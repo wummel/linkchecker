@@ -188,9 +188,9 @@ none    Logs nothing. Suitable for debugging or checking the exit code.
 Warnings = _(r"""IGNORE WARNINGS
 The following warnings are recognized in the 'ignorewarnings' config
 file entry:
-""")
-for tag, desc in sorted(linkcheck.checker.const.Warnings.items()):
-    Warnings += u" o %s\n   %s\n" % (tag, desc)
+""") + \
+"\n".join([u" o %s\n   %s" % (tag, desc) \
+           for tag, desc in sorted(linkcheck.checker.const.Warnings.items())])
 
 
 def print_version ():
@@ -743,6 +743,8 @@ for prefix in ("checkhtml", "checkcss"):
         option = "%s%s" % (prefix, suffix)
         if getattr(options, option) is not None:
             config[option] = getattr(options, option)
+# now sanitize the configuration
+config.sanitize()
 
 log.debug(LOG_CMDLINE, "configuration: %s", pprint.pformat(config.items()))
 # warn about sitemap loggers and complete output
