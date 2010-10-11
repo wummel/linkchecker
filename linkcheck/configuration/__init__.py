@@ -258,6 +258,8 @@ class Configuration (dict):
             self.sanitize_checkcss()
         if self['scanvirus']:
             self.sanitize_scanvirus()
+        if self['storecookies']:
+            self.sanitize_cookies()
 
     def sanitize_anchors (self):
         if not self["warnings"]:
@@ -269,6 +271,7 @@ class Configuration (dict):
 
     def sanitize_logger (self):
         if not self['output']:
+            log.warn(LOG_CHECK, _("warning: activating text logger output."))
             self['output'] = 'text'
         self['logger'] = self.logger_new(self['output'])
 
@@ -297,6 +300,12 @@ class Configuration (dict):
             log.warn(LOG_CHECK,
                 _("warning: Clamav could not be initialized"))
             self['scanvirus'] = False
+
+    def sanitize_cookies (self):
+        if not self['sendcookies']:
+            log.warn(LOG_CHECK,
+             _("warning: activating sendcookies because storecookies is active."))
+            self['sendcookies'] = True
 
 
 def copy_sys_config (syspath, userpath):
