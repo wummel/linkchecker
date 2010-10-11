@@ -249,34 +249,54 @@ class Configuration (dict):
     def sanitize (self):
         "Make sure the configuration is consistent."
         if self["anchors"]:
-            if not self["warnings"]:
-                self["warnings"] = True
-                from ..checker import Warnings
-                self["ignorewarnings"] = Warnings.keys()
-            if 'url-anchor-not-found' in self["ignorewarnings"]:
-                self["ignorewarnings"].remove('url-anchor-not-found')
-        self['logger'] = self.logger_new(self['output'])
+            self.sanitize_anchors()
+        if self['logger'] is None:
+            self.sanitize_logger()
         if self['checkhtml']:
-            try:
-                import tidy
-            except ImportError:
-                log.warn(LOG_CHECK,
-                    _("warning: tidy module is not available; " \
-                     "download from http://utidylib.berlios.de/"))
-                self['checkhtml'] = False
+            self.sanitize_checkhtml()
         if self['checkcss']:
-            try:
-                import cssutils
-            except ImportError:
-                log.warn(LOG_CHECK,
-                    _("warning: cssutils module is not available; " \
-                     "download from http://cthedot.de/cssutils/"))
-                self['checkcss'] = False
+            self.sanitize_checkcss()
         if self['scanvirus']:
-            try:
-                clamav.init_clamav_conf(self['clamavconf'])
-            except clamav.ClamavError:
-                self['scanvirus'] = False
+            self.sanitize_scanvirus()
+
+    def sanitize_anchors (self):
+        if not self["warnings"]:
+            self["warnings"] = True
+            from ..checker import Warnings
+            self["ignorewarnings"] = Warnings.keys()
+        if 'url-anchor-not-found' in self["ignorewarnings"]:
+            self["ignorewarnings"].remove('url-anchor-not-found')
+
+    def sanitize_logger (self):
+        if not self['output']:
+            self['output'] = 'text'
+        self['logger'] = self.logger_new(self['output'])
+
+    def sanitize_checkhtml (self):
+        try:
+            import tidy
+        except ImportError:
+            log.warn(LOG_CHECK,
+                _("warning: tidy module is not available; " \
+                 "download from http://utidylib.berlios.de/"))
+            self['checkhtml'] = False
+
+    def sanitize_checkcss (self):
+        try:
+            import cssutils
+        except ImportError:
+            log.warn(LOG_CHECK,
+                _("warning: cssutils module is not available; " \
+                 "download from http://cthedot.de/cssutils/"))
+            self['checkcss'] = False
+
+    def sanitize_scanvirus (self):
+        try:
+            clamav.init_clamav_conf(self['clamavconf'])
+        except clamav.ClamavError:
+            log.warn(LOG_CHECK,
+                _("warning: Clamav could not be initialized"))
+            self['scanvirus'] = False
 
 
 def copy_sys_config (syspath, userpath):
