@@ -51,7 +51,7 @@ from distutils.command.build import build
 from distutils.command.install_data import install_data
 from distutils.command.register import register
 from distutils.dir_util import remove_tree, copy_tree
-from distutils.file_util import write_file
+from distutils.file_util import write_file, copy_file
 from distutils import util, log
 try:
     # Note that py2exe monkey-patches the distutils.core.Distribution class
@@ -444,16 +444,24 @@ class InnoScript:
         print >> ofi, r"[Files]"
         for path in files:
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
+        # Install Microsoft Visual C runtime DLL installer
+        vcredist = os.path.join(self.dist_dir, 'vcredist_x86.exe')
+        print >> ofi, r'Source: "%s\vcredist_x86.exe"; DestDir: "{app}"; Flags: ignoreversion' % vcredist
         print >> ofi
         # Set icon filename
         print >> ofi, r"[Icons]"
         for path in self.windows_exe_files:
             print >> ofi, r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
                   (self.name, path)
-        # Uninstall registry keys
         print >> ofi, 'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
+        print >> ofi
+        # Uninstall registry keys
         print >> ofi, r"[Registry]"
         print >> ofi, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
+        print >> ofi
+        # Run Microsoft Visual C runtime DLL installer
+        print >> ofi, r'[Run]'
+        print >> ofi, r'Filename: "{app}\vcredist_x86.exe"; StatusMsg: "Installing Microsoft dependencies"; Parameters: "-q"; Flags: waituntilterminated shellexec'
 
     def compile(self):
         import ctypes
@@ -481,6 +489,8 @@ try:
             copy_tree(src, dst)
             for path in os.listdir(dst):
                 self.lib_files.append(os.path.join(dst, path))
+            # Copy Microsoft Visual C runtime DLL installer
+            copy_file(r'c:\software\vcredist_x86.exe', dist_dir)
             # create the Installer, using the files py2exe has created.
             script = InnoScript(lib_dir, dist_dir, self.windows_exe_files,
                 self.console_exe_files, self.service_exe_files,
