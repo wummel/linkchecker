@@ -565,7 +565,7 @@ class UrlBase (object):
 
     def content_allows_robots (self):
         """
-        Return True if the content of this URL forbids robots to
+        Return False if the content of this URL forbids robots to
         search for recursive links.
         """
         if not self.is_html():

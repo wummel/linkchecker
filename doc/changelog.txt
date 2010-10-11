@@ -4,6 +4,8 @@ Fixes:
 - gui: Enable the cancel button again after it has been clicked and
   disabled.
 - checking: Fix printing of active URLs on Ctrl-C.
+- checking: Check for allowed content read before trying to
+  parse robots.txt allowance.
 
 Changes:
 - gui: Display cancel message in progress window.
@@ -14,7 +16,8 @@ Features:
   Closes: SF bug #3040378
 - gui: Read default options from configuration file.
   Closes: SF bug #2931320
-
+- config: Added configuration file option for the --cookies command line
+  option.
 
 5.3 "Inception" (released 29.9.2010)
 

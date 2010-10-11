@@ -646,6 +646,11 @@ Use URL `%(newurl)s' instead for checking.""") % {
         if self.method_get_allowed:
             super(HttpUrl, self).set_title_from_content()
 
+    def content_allows_robots (self):
+        if not self.method_get_allowed:
+            return False
+        return super(HttpUrl, self).content_allows_robots()
+
     def is_html (self):
         """
         See if this URL points to a HTML file by looking at the
