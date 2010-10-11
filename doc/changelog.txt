@@ -9,6 +9,9 @@ Fixes:
 
 Changes:
 - gui: Display cancel message in progress window.
+- install: Copy and execute the Microsoft Visual C runtime DLL
+  installer. This solves startup error on WinXP systems that don't
+  have this DLL installed.
 
 Features:
 - gui: Added "View parent URL online" context menu action to display

@@ -446,7 +446,7 @@ class InnoScript:
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
         # Install Microsoft Visual C runtime DLL installer
         vcredist = os.path.join(self.dist_dir, 'vcredist_x86.exe')
-        print >> ofi, r'Source: "%s\vcredist_x86.exe"; DestDir: "{app}"; Flags: ignoreversion' % vcredist
+        print >> ofi, r'Source: "%s"; DestDir: "{app}"; Flags: ignoreversion' % vcredist
         print >> ofi
         # Set icon filename
         print >> ofi, r"[Icons]"
@@ -461,7 +461,7 @@ class InnoScript:
         print >> ofi
         # Run Microsoft Visual C runtime DLL installer
         print >> ofi, r'[Run]'
-        print >> ofi, r'Filename: "{app}\vcredist_x86.exe"; StatusMsg: "Installing Microsoft dependencies"; Parameters: "-q"; Flags: waituntilterminated shellexec'
+        print >> ofi, r'Filename: "{app}\vcredist_x86.exe"; StatusMsg: "Installing Microsoft dependencies"; Parameters: "/q:a"; Flags: waituntilterminated shellexec'
 
     def compile(self):
         import ctypes
