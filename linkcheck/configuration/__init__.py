@@ -235,6 +235,17 @@ class Configuration (dict):
         confparse.LCConfigParser(self).read(cfiles)
         self.sanitize()
 
+    def get_user_password (self, url):
+        """Get tuple (user, password) from configured authentication
+        that matches the given URL.
+        Both user and password can be None if not specified, or no
+        authentication matches the given URL.
+        """
+        for auth in self["authentication"]:
+            if auth['pattern'].match(url):
+                return (auth['user'], auth['password'])
+        return (None, None)
+
     def sanitize (self):
         "Make sure the configuration is consistent."
         if self["anchors"]:

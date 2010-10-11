@@ -869,14 +869,10 @@ class UrlBase (object):
         self.parse_html()
 
     def get_user_password (self):
+        """Get tuple (user, password) from configured authentication.
+        Both user and password can be None.
         """
-        Get tuple (user, password) from configured authentication.
-        Both user and password can be None if not specified.
-        """
-        for auth in self.aggregate.config["authentication"]:
-            if auth['pattern'].match(self.url):
-                return auth['user'], auth['password']
-        return None, None
+        return self.aggregate.config.get_user_password(self.url)
 
     def parse_html (self):
         """Parse into HTML content and search for URLs to check.
