@@ -139,14 +139,17 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "checkcss"):
             self.config["checkcss"] = self.getboolean(section, "checkcss")
         if self.has_option(section, "checkhtmlw3"):
-            val = self.getboolean(section, "checkhtmlw3")
-            self.config["checkhtmlw3"] = val
+            self.config["checkhtmlw3"] = \
+               self.getboolean(section, "checkhtmlw3")
         if self.has_option(section, "checkcssw3"):
             self.config["checkcssw3"] = self.getboolean(section, "checkcssw3")
         if self.has_option(section, "scanvirus"):
             self.config["scanvirus"] = self.getboolean(section, "scanvirus")
         if self.has_option(section, "clamavconf"):
             self.config["clamavconf"] = self.getboolean(section, "clamavconf")
+        if self.has_option(section, "cookies"):
+            self.config["sendcookies"] = self.config["storecookies"] = \
+                self.getboolean(section, "cookies")
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""

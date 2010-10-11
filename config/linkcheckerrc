@@ -141,6 +141,8 @@
 #scanvirus=1
 # ClamAV config file
 #clamavconf=/etc/clamav/clamd.conf
+# Send and store cookies
+#cookies=1
 
 # filtering options
 [filtering]

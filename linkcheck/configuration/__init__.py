@@ -303,8 +303,8 @@ class Configuration (dict):
 
     def sanitize_cookies (self):
         if not self['sendcookies']:
-            log.warn(LOG_CHECK,
-             _("warning: activating sendcookies because storecookies is active."))
+            log.warn(LOG_CHECK, _("warning: activating sendcookies " \
+                                  "because storecookies is active."))
             self['sendcookies'] = True
 
 
