@@ -746,7 +746,7 @@ for prefix in ("checkhtml", "checkcss"):
 # now sanitize the configuration
 config.sanitize()
 
-log.debug(LOG_CMDLINE, "configuration: %s", pprint.pformat(config.items()))
+log.debug(LOG_CMDLINE, "configuration: %s", pprint.pformat(sorted(config.items())))
 # warn about sitemap loggers and complete output
 klasses = [c.__class__ for c in [config['logger']] + config['fileoutput']]
 if (linkcheck.logger.gml.GMLLogger in klasses or \
