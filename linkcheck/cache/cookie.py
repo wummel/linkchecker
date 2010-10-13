@@ -35,23 +35,19 @@ class CookieJar (object):
 
     @synchronized(_lock)
     def add (self, headers, scheme, host, path):
-        """
-        Parse cookie values, add to cache.
-        """
+        """Parse cookie values, add to cache."""
         jar = set()
         for h in headers.getallmatchingheaders("Set-Cookie"):
             # RFC 2109 (Netscape) cookie type
             try:
-                c = cookies.NetscapeCookie(h, scheme, host, path)
-                jar.add(c)
+                jar.add(cookies.NetscapeCookie(h, scheme, host, path))
             except cookies.CookieError:
                 log.debug(LOG_CACHE,
                "Invalid cookie header for %s:%s%s: %r", scheme, host, path, h)
         for h in headers.getallmatchingheaders("Set-Cookie2"):
             # RFC 2965 cookie type
             try:
-                c = cookies.Rfc2965Cookie(h, scheme, host, path)
-                jar.add(c)
+                jar.add(cookies.Rfc2965Cookie(h, scheme, host, path))
             except cookies.CookieError:
                 log.debug(LOG_CACHE,
               "Invalid cookie2 header for %s:%s%s: %r", scheme, host, path, h)
@@ -60,13 +56,12 @@ class CookieJar (object):
 
     @synchronized(_lock)
     def get (self, scheme, host, port, path):
-        """
-        Cookie cache getter function.
-        """
-        log.debug(LOG_CACHE, "Get cookies for host %r path %r", host, path)
-        jar = self.cache.setdefault(host, set())
-        return [x for x in jar if x.check_expired() and \
-                x.is_valid_for(scheme, host, port, path)]
+        """Cookie cache getter function."""
+        cookies = [x for x in jar if x.check_expired() and \
+                   x.is_valid_for(scheme, host, port, path)]
+        log.debug(LOG_CACHE, "Found %d cookies for host %r path %r",
+                  len(cookies), host, path)
+        return cookies
 
     @synchronized(_lock)
     def __str__ (self):
