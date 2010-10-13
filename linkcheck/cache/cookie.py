@@ -36,7 +36,7 @@ class CookieJar (object):
     @synchronized(_lock)
     def add (self, headers, scheme, host, path):
         """Parse cookie values, add to cache."""
-        jar = set()
+        jar = self.cache.setdefault(host, set())
         for h in headers.getallmatchingheaders("Set-Cookie"):
             # RFC 2109 (Netscape) cookie type
             try:

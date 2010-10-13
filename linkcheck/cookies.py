@@ -279,6 +279,10 @@ class HttpCookie (object):
                   for k, v in self.attributes.items() if k != "version"])
         return "; ".join(parts)
 
+    def __eq__ (self, other):
+        return isinstance(other, HttpCookie) and \
+               self.server_header_value() == other.server_header_value()
+
 
 class NetscapeCookie (HttpCookie):
     """Parses RFC 2109 (Netscape) cookies."""
@@ -310,9 +314,6 @@ class Rfc2965Cookie (HttpCookie):
         if key == "port":
             return quote(value, LegalChars="")
         return quote(value)
-
-
-# XXX more methods (equality test)
 
 
 def from_file (filename):
