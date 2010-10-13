@@ -679,17 +679,7 @@ class UrlBase (object):
                 self.get_anchors()
         if self.anchor:
             self.check_anchor()
-        warningregex = self.aggregate.config["warningregex"]
-        if warningregex:
-            log.debug(LOG_CHECK, "checking content")
-            try:
-                match = warningregex.search(self.get_content())
-                if match:
-                    self.add_warning(_("Found %(match)r in link contents.") %
-                       {"match": match.group()}, tag=WARN_URL_WARNREGEX_FOUND)
-            except tuple(ExcList):
-                value = self.handle_exception()
-                self.set_result(unicode_safe(value), valid=False)
+        self.check_warningregex()
         # is it an intern URL?
         if not self.extern[0]:
             # check HTML/CSS syntax
@@ -704,6 +694,19 @@ class UrlBase (object):
             # check with clamav
             if self.aggregate.config["scanvirus"]:
                 self.scan_virus()
+
+    def check_warningregex (self):
+        warningregex = self.aggregate.config["warningregex"]
+        if warningregex:
+            log.debug(LOG_CHECK, "checking content")
+            try:
+                match = warningregex.search(self.get_content())
+                if match:
+                    self.add_warning(_("Found %(match)r in link contents.") %
+                       {"match": match.group()}, tag=WARN_URL_WARNREGEX_FOUND)
+            except tuple(ExcList):
+                value = self.handle_exception()
+                self.set_result(unicode_safe(value), valid=False)
 
     def check_size (self):
         """Check content size if it is zero or larger than a given
