@@ -5,7 +5,6 @@ from . import gzip2 as gzip
 from . import httplib2 as httplib
 from . import log, LOG_CHECK, fileutil
 import re
-import mimetypes
 import zlib
 import urllib
 import urllib2
