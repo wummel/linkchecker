@@ -47,8 +47,13 @@ def check_urls (aggregate):
                " is allowed to start new threads."))
         abort(aggregate)
     except Exception:
+        # Catching "Exception" is intentionally done. This saves the program
+        # from badly-programmed libraries that raise all kinds of strange
+        # exceptions.
         console.internal_error()
         abort(aggregate)
+    # Not catched exceptions at this point are SystemExit and GeneratorExit,
+    # and both should be handled by the calling layer.
 
 
 def check_url (aggregate):
