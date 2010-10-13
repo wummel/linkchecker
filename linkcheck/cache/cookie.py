@@ -57,6 +57,7 @@ class CookieJar (object):
     @synchronized(_lock)
     def get (self, scheme, host, port, path):
         """Cookie cache getter function."""
+        jar = self.cache.setdefault(host, set())
         cookies = [x for x in jar if x.check_expired() and \
                    x.is_valid_for(scheme, host, port, path)]
         log.debug(LOG_CACHE, "Found %d cookies for host %r path %r",
