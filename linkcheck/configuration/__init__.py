@@ -184,17 +184,23 @@ class Configuration (dict):
     def set_debug (self, debug):
         """Set debugging levels for configured loggers. The argument
         is a list of logger names to enable debug for."""
-        if not debug:
+        self.set_loglevel(debug, logging.DEBUG)
+
+    def reset_loglevel (self):
+        """Reset log level to display only warnings and errors."""
+        self.set_loglevel(['all'], logging.WARN)
+
+    def set_loglevel (self, loggers, level):
+        """Set logging levels for given loggers."""
+        if not loggers:
             return
-        # set debugging on given logger names
-        if 'all' in debug:
-            debug = lognames.keys()
+        if 'all' in loggers:
+            loggers = lognames.keys()
         # disable threading if no thread debugging
-        if "thread" not in debug:
+        if "thread" not in loggers and level == logging.DEBUG:
             self['threads'] = 0
-        for name in debug:
-            logname = lognames[name]
-            logging.getLogger(logname).setLevel(logging.DEBUG)
+        for key in loggers:
+            logging.getLogger(lognames[key]).setLevel(level)
 
     def logger_new (self, loggertype, **kwargs):
         """
