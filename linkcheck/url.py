@@ -25,6 +25,7 @@ import urllib
 import urllib2
 import socket
 from . import httplib2 as httplib
+from . import log, LOG_CHECK
 
 urlparse.uses_netloc.extend(('ldap', 'irc'))
 
@@ -506,7 +507,7 @@ class PasswordManager (object):
         return self.user, self.password
 
 
-def get_opener (user=None, password=None, proxy=None):
+def get_opener (user=None, password=None, proxy=None, debuglevel=0):
     """Construct an URL opener object. It considers the given credentials
     and proxy.
 
@@ -517,23 +518,20 @@ def get_opener (user=None, password=None, proxy=None):
     pwd_manager = PasswordManager(user, password)
     handlers = [
         urllib2.UnknownHandler,
-        httputil.HttpWithGzipHandler,
+        httputil.HttpWithGzipHandler(debuglevel=debuglevel),
         urllib2.HTTPBasicAuthHandler(pwd_manager),
         urllib2.HTTPDigestAuthHandler(pwd_manager),
     ]
     if proxy:
         handlers.insert(0,
-          urllib2.ProxyHandler({"http": proxy, "https": proxy}))
+          urllib2.ProxyHandler({"http": proxy, "https": proxy},
+                               debuglevel=debuglevel))
         handlers.extend([
             urllib2.ProxyBasicAuthHandler(pwd_manager),
             urllib2.ProxyDigestAuthHandler(pwd_manager),
         ])
-    handlers.extend([
-        urllib2.HTTPDefaultErrorHandler,
-        urllib2.HTTPRedirectHandler,
-    ])
     if hasattr(httplib, 'HTTPS'):
-        handlers.append(httputil.HttpsWithGzipHandler)
+        handlers.append(httputil.HttpsWithGzipHandler(debuglevel=debuglevel))
     return urllib2.build_opener(*handlers)
 
 
@@ -544,6 +542,10 @@ def get_content (url, user=None, password=None, proxy=None, data=None):
     @rtype: tuple (string, string)
     """
     from . import configuration
+    if log.is_debug(LOG_CHECK):
+        debuglevel = 1
+    else:
+        debuglevel = 0
     headers = {
         'User-Agent': configuration.UserAgent,
         # makes problems with some sites
@@ -551,7 +553,8 @@ def get_content (url, user=None, password=None, proxy=None, data=None):
     }
     req = urllib2.Request(url, data, headers)
     try:
-        f = get_opener(user=user, password=password, proxy=proxy)
+        f = get_opener(user=user, password=password, proxy=proxy,
+                       debuglevel=debuglevel)
         res = None
         try:
             res = f.open(req)
@@ -561,6 +564,7 @@ def get_content (url, user=None, password=None, proxy=None, data=None):
                 res.close()
     except (urllib2.HTTPError, socket.timeout, urllib2.URLError,
             socket.gaierror, socket.error, IOError, httplib.HTTPException,
-            ValueError):
-        pass
+            ValueError), msg:
+        log.warn(LOG_CHECK, ("Could not get content of URL %(url)s: %(msg)s.") \
+          % {"url": url, "msg": str(msg)})
     return (None, None)
