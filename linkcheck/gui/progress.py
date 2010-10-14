@@ -27,7 +27,6 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.setupUi(self)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(0)
-        self.textBrowser.setFontFamily("Consolas")
         self.connect(self, QtCore.SIGNAL("log_status(int,int,int,float)"), self.log_status)
         self.connect(self.cancelButton, QtCore.SIGNAL("clicked()"), self.cancel)
 
@@ -36,15 +35,8 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.label_active.setText(u"%d" % in_progress)
         self.label_queued.setText(u"%d" % queued)
 
-    def log_msg (self, msg):
-        text = self.textBrowser.toPlainText()
-        self.textBrowser.setText(text+msg)
-        self.textBrowser.moveCursor(QtGui.QTextCursor.End)
-
     def reset (self):
         self.cancelButton.setEnabled(True)
-        self.tabWidget.setCurrentIndex(0)
-        self.textBrowser.setText(u"")
         self.label_active.setText(u"0")
         self.label_queued.setText(u"0")
         self.label_checked.setText(u"0")

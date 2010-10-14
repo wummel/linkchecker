@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sun Oct  3 10:25:40 2010
+# Created: Thu Oct 14 21:04:29 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,10 +66,10 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuLinkChecka = QtGui.QMenu(self.menubar)
         self.menuLinkChecka.setObjectName("menuLinkChecka")
-        self.menuHelp = QtGui.QMenu(self.menubar)
-        self.menuHelp.setObjectName("menuHelp")
         self.menuEdit = QtGui.QMenu(self.menubar)
         self.menuEdit.setObjectName("menuEdit")
+        self.menuHelp = QtGui.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setObjectName("statusBar")
@@ -95,10 +95,13 @@ class Ui_MainWindow(object):
         self.actionViewParentSource = QtGui.QAction(MainWindow)
         self.actionViewParentSource.setIcon(icon2)
         self.actionViewParentSource.setObjectName("actionViewParentSource")
+        self.actionDebug = QtGui.QAction(MainWindow)
+        self.actionDebug.setObjectName("actionDebug")
         self.menuLinkChecka.addAction(self.actionQuit)
+        self.menuEdit.addAction(self.actionOptions)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
-        self.menuEdit.addAction(self.actionOptions)
+        self.menuHelp.addAction(self.actionDebug)
         self.menubar.addAction(self.menuLinkChecka.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
@@ -119,8 +122,8 @@ class Ui_MainWindow(object):
         self.treeWidget.headerItem().setText(3, _("Name"))
         self.treeWidget.headerItem().setText(4, _("Result"))
         self.menuLinkChecka.setTitle(_("File"))
-        self.menuHelp.setTitle(_("Help"))
         self.menuEdit.setTitle(_("Edit"))
+        self.menuHelp.setTitle(_("Help"))
         self.actionQuit.setText(_("Quit"))
         self.actionQuit.setShortcut(_("Ctrl+Q"))
         self.actionAbout.setText(_("About"))
@@ -135,5 +138,6 @@ class Ui_MainWindow(object):
         self.actionViewParentOnline.setToolTip(_("View parent URL online"))
         self.actionViewParentSource.setText(_("View parent source"))
         self.actionViewParentSource.setToolTip(_("View parent URL source"))
+        self.actionDebug.setText(_("Debug"))
 
 import linkchecker_rc

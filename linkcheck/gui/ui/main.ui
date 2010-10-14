@@ -151,18 +151,19 @@
     </property>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionOptions"/>
+   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionHelp"/>
-   </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>Edit</string>
-    </property>
-    <addaction name="actionOptions"/>
+    <addaction name="actionDebug"/>
    </widget>
    <addaction name="menuLinkChecka"/>
    <addaction name="menuEdit"/>
@@ -237,6 +238,11 @@
    </property>
    <property name="toolTip">
     <string>View parent URL source</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>Debug</string>
    </property>
   </action>
  </widget>

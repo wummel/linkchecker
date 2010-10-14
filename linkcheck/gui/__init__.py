@@ -21,6 +21,7 @@ import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
 from .progress import LinkCheckerProgress, StatusLogger
+from .debug import LinkCheckerDebug
 from .logger import GuiLogger, GuiLogHandler
 from .help import HelpWindow
 from .options import LinkCheckerOptions
@@ -61,6 +62,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         # init subdialogs
         self.options = LinkCheckerOptions(parent=self)
         self.progress = LinkCheckerProgress(parent=self)
+        self.debug = LinkCheckerDebug(parent=self)
         self.checker = CheckerThread()
         self.contextmenu = ContextMenu(parent=self)
         self.editor = EditorWindow(parent=self)
@@ -130,6 +132,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.set_statusbar(_("Ready."))
         elif status == Status.checking:
             self.num = 0
+            self.debug.reset()
             self.progress.reset()
             self.progress.show()
             self.controlButton.setEnabled(False)
@@ -184,6 +187,11 @@ for broken links.</p>
 Version 2 or later.</p>
 </qt>""") % d)
 
+    @QtCore.pyqtSignature("")
+    def on_actionDebug_triggered (self):
+        """Display debug dialog."""
+        self.debug.show()
+
     def on_controlButton_clicked (self):
         """Start a new check."""
         if self.status == Status.idle:
@@ -224,7 +232,7 @@ Version 2 or later.</p>
         self.config = configuration.Configuration()
         self.config.logger_add("gui", GuiLogger)
         self.config["logger"] = self.config.logger_new('gui', widget=self.checker)
-        handler = GuiLogHandler(self.checker)
+        handler = GuiLogHandler(self.debug)
         self.config["status"] = True
         self.config["status_wait_seconds"] = 1
         self.config.init_logging(StatusLogger(self.progress), handler=handler)

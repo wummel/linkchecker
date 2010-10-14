@@ -29,7 +29,7 @@ class GuiLogHandler (Handler, object):
         self.widget = widget
 
     def emit (self, record):
-        """Emit a record. It gets logged in the progress window."""
+        """Emit a record. It gets logged in the debug widget."""
         msg = self.format(record)
         self.widget.emit(QtCore.SIGNAL("log_msg(QString)"), msg)
 
