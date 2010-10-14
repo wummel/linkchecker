@@ -63,6 +63,12 @@ class TestConfig (unittest.TestCase):
             for suffix in ("1", "2"):
                 key = "%simadoofus%s" % (prefix, suffix)
                 self.assertTrue(key in patterns)
+        self.assertEqual(config["loginurl"], "http://www.example.com/")
+        self.assertEqual(config["loginuserfield"], "mylogin")
+        self.assertEqual(config["loginpasswordfield"], "mypassword")
+        self.assertEqual(config["loginextrafields"]["name1"], "value1")
+        self.assertEqual(config["loginextrafields"]["name 2"], "value 2")
+        self.assertEqual(len(config["loginextrafields"]), 2)
         # output section
         self.assertTrue(config["interactive"])
         self.assertTrue(linkcheck.log.is_debug(linkcheck.LOG_THREAD))

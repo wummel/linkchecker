@@ -185,6 +185,24 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                  'user': auth[1],
                  'password': auth[2]})
             i += 1
+        # read login URL and field names
+        if self.has_option(section, "loginurl"):
+            val = self.get(section, "loginurl").strip()
+            if not (val.lower().startswith("http:") or
+                    val.lower().startswith("https:")):
+                raise LinkCheckerError(LOG_CHECK,
+                _("Invalid login URL `%s'. Only " \
+                  "HTTP and HTTPS URLs are supported.") % val)
+            self.config["loginurl"] = val
+            self.config["storecookies"] = self.config["sendcookies"] = True
+        for key in ("loginuserfield", "loginpasswordfield"):
+            if self.has_option(section, key):
+                self.config[key] = self.get(section, key)
+        # read login extra fields
+        if self.has_option(section, "loginextrafields"):
+            for val in read_multiline(self.get(section, "loginextrafields")):
+                name, value = val.split(":", 1)
+                self.config["loginextrafields"][name] = value
 
     def read_filtering_config (self):
         """

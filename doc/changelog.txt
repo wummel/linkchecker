@@ -1,4 +1,4 @@
-5.4 "" (released xx.xx.2010)
+5.4 "" (released xx.10.2010)
 
 Fixes:
 - gui: Enable the cancel button again after it has been clicked and
@@ -21,6 +21,9 @@ Features:
   Closes: SF bug #2931320
 - config: Added configuration file option for the --cookies command line
   option.
+- http: Allow specifying a login URL in the configuration file which
+  gets visited before checking submits login data.
+  Closes: SF bug #3041527
 
 5.3 "Inception" (released 29.9.2010)
 

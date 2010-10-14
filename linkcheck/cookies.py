@@ -351,3 +351,80 @@ def from_headers (strheader):
     scheme = headers.get("Scheme", "http")
     path= headers.get("Path", "/")
     return (headers, scheme, host, path)
+
+
+## Taken and adpated from the _mechanize package included in Twill.
+
+def cookie_str(cookie):
+    """Return string representation of Cookie."""
+    h = [(cookie.name, unquote(cookie.value)),
+         ("path", cookie.path),
+         ("domain", cookie.domain)]
+    if cookie.port is not None: h.append(("port", cookie.port))
+    #if cookie.path_specified: h.append(("path_spec", None))
+    #if cookie.port_specified: h.append(("port_spec", None))
+    #if cookie.domain_initial_dot: h.append(("domain_dot", None))
+    if cookie.secure: h.append(("secure", None))
+    if cookie.expires: h.append(("expires",
+                               time2isoz(float(cookie.expires))))
+    if cookie.discard: h.append(("discard", None))
+    if cookie.comment: h.append(("comment", cookie.comment))
+    if cookie.comment_url: h.append(("commenturl", cookie.comment_url))
+    #if cookie.rfc2109: h.append(("rfc2109", None))
+
+    keys = cookie.nonstandard_attr_keys()
+    keys.sort()
+    for k in keys:
+        h.append((k, str(cookie.get_nonstandard_attr(k))))
+
+    h.append(("version", str(cookie.version)))
+
+    return join_header_words([h])
+
+
+def time2isoz(t=None):
+    """Return a string representing time in seconds since epoch, t.
+
+    If the function is called without an argument, it will use the current
+    time.
+
+    The format of the returned string is like "YYYY-MM-DD hh:mm:ssZ",
+    representing Universal Time (UTC, aka GMT).  An example of this format is:
+
+    1994-11-24 08:49:37Z
+
+    """
+    if t is None: t = time.time()
+    year, mon, mday, hour, min, sec = time.gmtime(t)[:6]
+    return "%04d-%02d-%02d %02d:%02d:%02dZ" % (
+        year, mon, mday, hour, min, sec)
+
+
+join_escape_re = re.compile(r"([\"\\])")
+def join_header_words(lists):
+    """Do the inverse of the conversion done by split_header_words.
+
+    Takes a list of lists of (key, value) pairs and produces a single header
+    value.  Attribute values are quoted if needed.
+
+    >>> join_header_words([[("text/plain", None), ("charset", "iso-8859/1")]])
+    'text/plain; charset="iso-8859/1"'
+    >>> join_header_words([[("text/plain", None)], [("charset", "iso-8859/1")]])
+    'text/plain, charset="iso-8859/1"'
+
+    """
+    headers = []
+    for pairs in lists:
+        attr = []
+        for k, v in pairs:
+            if v is not None:
+                if not re.search(r"^\w+$", v):
+                    v = join_escape_re.sub(r"\\\1", v)  # escape " and \
+                    v = '"%s"' % v
+                if k is None:  # Netscape cookies may have no name
+                    k = v
+                else:
+                    k = "%s=%s" % (k, v)
+            attr.append(k)
+        if attr: headers.append("; ".join(attr))
+    return ", ".join(headers)

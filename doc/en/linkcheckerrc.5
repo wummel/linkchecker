@@ -130,6 +130,21 @@ match wins. At the moment, authentication is used/needed for
 http[s] and ftp links.
 .br
 Command line option: \fB\-u\fP, \fB\-p\fP
+.TP
+\fBloginurl=\fP\fIURL\fP
+A login URL to be visited before checking. Also needs authentication
+data set for it, and implies using cookies because most logins use
+cookies nowadays.
+.TP
+\fBloginuserfield=\fP\fISTRING\fP
+The name of the user CGI field. Default name is \fBlogin\fP.
+.TP
+\fBloginpasswordfield=\fP\fISTRING\fP
+The name of the password CGI field. Default name is \fBpassword\fP.
+.TP
+\fBloginextrafields=\fP\fINAME\fP\fB:\fP\fIVALUE\fP (MULTILINE)
+Optionally any additional CGI name/value pairs. Note that the default
+values are submitted automatically.
 .SS \fB[output]\fP
 .TP
 \fBinteractive=\fP[\fB0\fP|\fB1\fP]

@@ -125,7 +125,7 @@ hinzuzufügen. Standard ist dass URLs der Kommandozeile als intern gelten.
 Kommandozeilenoption: keine
 .SS [authentication]
 .TP 
-\fBentry=\fP\fIREGEX\fP \fIUSER\fP \fIPASS\fP (MULTILINE)
+\fBentry=\fP\fIREGEX\fP \fIBENUTZER\fP \fIPASSWORT\fP (MULTILINE)
 Erstelle verschiedene Benutzer/Passwort Parre für verschiedene
 Verknüpfungsarten. Einträge sind ein Tripel (Verknüpfung regulärer Ausdruck,
 Benutzername, Passwort), getrennt durch Leerzeichen.
@@ -137,6 +137,21 @@ hier. Der erste Treffer gewinnt. Im Moment wird Authentifizierung für
 http[s] und ftp Verknüpfungen benutzt.
 .br
 Kommandozeilenoption: \fB\-u\fP, \fB\-p\fP
+.TP 
+\fBloginurl=\fP\fIURL\fP
+Eine Anmelde\-URL, die vor der Prüfung besucht wird. Benötigt einen Eintrag
+zur Authentifizierung und impliziert die Benutzung von Cookies, weil die
+meisten Anmeldungen heutzutage Cookies benutzen.
+.TP 
+\fBloginuserfield=\fP\fINAME\fP
+Der Name für das Benutzer CGI\-Feld. Der Standardname ist \fBlogin\fP.
+.TP 
+\fBloginpasswordfield=\fP\fINAME\fP
+Der Name für das Passwort CGI\-Feld. Der Standardname ist \fBpassword\fP.
+.TP 
+\fBloginextrafields=\fP\fINAME\fP\fB:\fP\fIWERT\fP (MULTILINE)
+Optional zusätzliche CGI Namen/Werte\-Paare. Die Default\-Werte werden
+automatisch übermittelt.
 .SS [output]
 .TP 
 \fBinteractive=\fP[\fB0\fP|\fB1\fP]

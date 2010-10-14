@@ -39,6 +39,9 @@ Requirements for Unix/Linux or Mac OS X
 6. *Optional, used for Virus checking:*
    ClamAv from http://www.clamav.net/
 
+7. *Optional, used for login form submission:*
+   Twill from http://twill.idyll.org/
+
 
 Requirements for Windows
 ------------------------
@@ -113,22 +116,23 @@ Setup for Windows - compiling from source:
    ClamAv from http://www.sosdg.org/clamav-win32/
    [http://clamav-sosdg.googlecode.com/files/clamav-0.95-1a.exe]
 
-5. *Optional, for country code display:*
+5. *Optional, for displaying country codes:*
    Pygeoip from http://code.google.com/p/pygeoip/
    [http://pygeoip.googlecode.com/files/pygeoip-0.1.3-py2.6.egg]
 
-6. The MinGW suite from http://mingw.sourceforge.net/
+6. *Optional, used for login form submission:*
+   Twill from http://twill.idyll.org/
+
+7. The MinGW suite from http://mingw.sourceforge.net/
    [http://sourceforge.net/projects/mingw/files/Automated%20MinGW%20Installer/mingw-get-inst/mingw-get-inst-20100909/mingw-get-inst-20100909.exe/download]
 
-7. Install InnoSetup from http://www.jrsoftware.org/isinfo.php
+8. Install InnoSetup from http://www.jrsoftware.org/isinfo.php
    [http://www.jrsoftware.org/download.php/is.exe]
 
-8. Generate and execute the LinkChecker installer
+9. Generate and execute the LinkChecker installer
    
-   Close the MSYS application (by typing ``exit``) and open a DOS command
-   prompt.
    Change to the ``linkchecker-X.Y`` directory and run
-   ``scripts\bdist.bat`` to build a binary installer.
+   ``dist.bat`` to build a binary installer.
    
    This generates a binary installer
    ``dist\LinkChecker-X.Y.exe`` which you just have to execute.

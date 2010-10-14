@@ -22,6 +22,7 @@ import sys
 import os
 import logging.config
 import urllib
+import urlparse
 import shutil
 import _LinkChecker_configdata as configdata
 from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames, clamav,
@@ -77,6 +78,10 @@ class Configuration (dict):
         self["interactive"] = False
         # on ftp, password is set by Pythons ftplib
         self["authentication"] = []
+        self["loginurl"] = None
+        self["loginuserfield"] = "login"
+        self["loginpasswordfield"] = "password"
+        self["loginextrafields"] = {}
         self["proxy"] = urllib.getproxies()
         self["recursionlevel"] = -1
         self["wait"] = 0
@@ -260,6 +265,8 @@ class Configuration (dict):
             self.sanitize_scanvirus()
         if self['storecookies']:
             self.sanitize_cookies()
+        if self['loginurl']:
+            self.sanitize_loginurl()
 
     def sanitize_anchors (self):
         if not self["warnings"]:
@@ -306,6 +313,36 @@ class Configuration (dict):
             log.warn(LOG_CHECK, _("warning: activating sendcookies " \
                                   "because storecookies is active."))
             self['sendcookies'] = True
+
+    def sanitize_loginurl (self):
+        url = self["loginurl"]
+        disable = False
+        if not self["loginpasswordfield"]:
+            log.warn(LOG_CHECK,
+            _("warning: no CGI password fieldname given for login URL."))
+            disable = True
+        if not self["loginuserfield"]:
+            log.warn(LOG_CHECK,
+            _("warning: no CGI user fieldname given for login URL."))
+            disable = True
+        if self.get_user_password(url) == (None, None):
+            log.warn(LOG_CHECK,
+            _("warning: no user/password authentication data found for login URL."))
+            disable = True
+        if not url.lower().startswith(("http:", "https:")):
+            log.warn(LOG_CHECK, _("warning: login URL is not a HTTP URL."))
+            disable = True
+        urlparts = urlparse.urlsplit(url)
+        if not urlparts[0] or not urlparts[1] or not urlparts[2]:
+            log.warn(LOG_CHECK, _("warning: login URL is incomplete."))
+            disable = True
+        if disable:
+            log.warn(LOG_CHECK,
+              _("warning: disabling login URL %(url)s.") % {"url": url})
+            self["loginurl"] = None
+        elif not self['storecookies']:
+            # login URL implies storing and sending cookies
+            self['storecookies'] = self['sendcookies'] = True
 
 
 def copy_sys_config (syspath, userpath):

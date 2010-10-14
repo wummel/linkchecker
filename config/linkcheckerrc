@@ -169,6 +169,7 @@
 
 #internlinks=^http://www\.my(other)?domain\.net/
 
+[authentication]
 # You can provide different user/password pairs for different link types.
 # Entries are a triple (link regular expression, username, password),
 # separated by whitespace.
@@ -176,7 +177,19 @@
 # for authentication. The commandline options -u,-p match every link
 # and therefore override the entries given here. The first match wins.
 # At the moment, authentication is used/needed for http[s] and ftp links.
-[authentication]
 #entry=
 #  ^http://treasure\.calvinsplayground\.de/~calvin/isnichmehr/ lebowski lebowski
 #  ^ftp://void.cs.uni-sb.de calvin hutzli
+
+# if the website requires a login the URL and optionally the user and
+# password CGI fieldnames can be provided.
+#loginurl=http://www.example.com/
+
+# The name of the user and password CGI field
+#loginuserfield=login
+#loginpasswordfield=password
+# Optionally any additional CGI name/value pairs. Note that the default
+# values are submitted automatically.
+#loginextrafields=
+#  name1:value1
+#  name 2:value 2

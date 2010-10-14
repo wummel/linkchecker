@@ -20,9 +20,87 @@ Management of checking a queue of links with several threads.
 import time
 import os
 import thread
-from .. import log, LOG_CHECK, LinkCheckerInterrupt
+import urlparse
+from cStringIO import StringIO
+from .. import log, LOG_CHECK, LinkCheckerInterrupt, cookies, dummy
 from ..cache import urlqueue, robots_txt, cookie, connection
 from . import aggregator, console
+from ..httplib2 import HTTPMessage
+
+
+def visit_loginurl (aggregate):
+    """Check for a login URL and visit it."""
+    config = aggregate.config
+    url = config["loginurl"]
+    if not url:
+        return
+    try:
+        from twill import commands as tc
+    except ImportError:
+        log.warn(LOG_CHECK, _("Could not import twill for login URL visit"))
+        return
+    log.debug(LOG_CHECK, u"Visiting login URL %s", url)
+    configure_twill(tc)
+    tc.go(url)
+    if tc.get_browser().get_code() != 200:
+        log.warn(LOG_CHECK, _("Error visiting login URL %(url)s.") % \
+          {"url": url})
+        return
+    submit_login_form(config, url, tc)
+    if tc.get_browser().get_code() != 200:
+        log.warn(LOG_CHECK, _("Error posting form at login URL %(url)s.") % \
+          {"url": url})
+        return
+    store_cookies(tc.get_browser().cj, aggregate.cookies, url)
+    resulturl = tc.get_browser().get_url()
+    log.debug(LOG_CHECK, u"URL after POST is %s" % resulturl)
+    # add URL to check list
+    if config["checkloginresult"]:
+        from ..checker import get_url_from
+        aggregate.urlqueue.put(get_url_from(resulturl, 0, aggregate))
+
+
+def configure_twill (tc):
+    """Configure twill to be used by LinkChecker.
+    Note that there is no need to set a proxy since twill uses the same
+    ones (provided from urllib) as LinkChecker does.
+    """
+    # make sure readonly controls are writeable (might be needed)
+    tc.config("readonly_controls_writeable", True)
+    # fake IE 6.0 to talk sense into some sites (eg. SourceForge)
+    tc.agent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)")
+    # tell twill to shut up
+    tc.OUT = dummy.Dummy()
+    from twill import browser
+    browser.OUT = dummy.Dummy()
+    # set debug level
+    if log.is_debug(LOG_CHECK):
+        tc.debug("http", 1)
+
+
+def submit_login_form (config, url, tc):
+    """Fill and submit login form."""
+    user, password = config.get_user_password(url)
+    cgiuser = config["loginuserfield"]
+    cgipassword = config["loginpasswordfield"]
+    formname = ""
+    tc.formvalue(formname, cgiuser, user)
+    tc.formvalue(formname, cgipassword, password)
+    for key, value in config["loginextrafields"].items():
+        tc.formvalue(formname, key, value)
+    tc.submit()
+
+
+def store_cookies (cookiejar, cookiecache, url):
+    """Store cookies in cookiejar into the cookiecache."""
+    cookielst = []
+    for c in cookiejar:
+        cookielst.append("Set-Cookie2: %s" % cookies.cookie_str(c))
+    log.debug(LOG_CHECK, "Store cookies %s", cookielst)
+    headers = HTTPMessage(StringIO("\r\n".join(cookielst)))
+    urlparts = urlparse.urlsplit(url)
+    scheme, host, path = urlparts[0:3]
+    cookiecache.add(headers, scheme, host, path)
 
 
 def check_urls (aggregate):
@@ -30,6 +108,12 @@ def check_urls (aggregate):
     with Ctrl-C.
     @return: None
     """
+    try:
+        visit_loginurl(aggregate)
+    except Exception, msg:
+        log.warn(LOG_CHECK, _("Error using login URL: %(msg)s.") % \
+                 {'msg': str(msg)})
+        raise
     try:
         aggregate.logger.start_log_output()
         if not aggregate.urlqueue.empty():
