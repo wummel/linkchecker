@@ -243,6 +243,12 @@ Version 2 or later.</p>
         self.config["verbose"] = self.options.verbose.isChecked()
         self.config["timeout"] = self.options.timeout.value()
         self.config["threads"] = self.options.threads.value()
+        if self.options.debug:
+            self.config.set_debug(["all"])
+            # make sure at least one thread is used
+            self.config["threads"] = 1
+        else:
+            self.config.reset_loglevel()
 
     def log_url (self, url_data):
         """Add URL data to tree widget."""

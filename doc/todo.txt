@@ -1,6 +1,4 @@
 - [GUI] Allow login URL to be configured.
-- [GUI] Move the debug tab someplace else. Perhaps make a separate
-  debug window out of it that gets displayed only on demand.
 - [GUI] Show detailed URL properties
 - [GUI] Save options in qsettings or in external file (for each URL?).
 - [PYTHON3]

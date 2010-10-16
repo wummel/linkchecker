@@ -27,7 +27,17 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QTextBrowser" name="textBrowser"/>
+       <widget class="QPlainTextEdit" name="textEdit">
+        <property name="undoRedoEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="plainText">
+         <string notr="true"/>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

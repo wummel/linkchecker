@@ -25,13 +25,10 @@ class LinkCheckerDebug (QtGui.QDialog, Ui_DebugDialog):
     def __init__ (self, parent=None):
         super(LinkCheckerDebug, self).__init__(parent)
         self.setupUi(self)
-        self.textBrowser.setFontFamily("Consolas")
+        self.connect(self, QtCore.SIGNAL("log_msg(QString)"), self.log_msg)
 
     def log_msg (self, msg):
-        text = self.textBrowser.toPlainText()
-        self.textBrowser.setText(text+msg)
-        self.textBrowser.moveCursor(QtGui.QTextCursor.End)
+        self.textEdit.appendPlainText(msg)
 
     def reset (self):
-        self.textBrowser.setText(u"")
-
+        self.textEdit.clear()

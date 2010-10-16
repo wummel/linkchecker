@@ -48,4 +48,5 @@ class CheckerThread (QtCore.QThread):
 
     def run (self):
         # start checking
+        assert self.aggregate.config["threads"] > 0
         director.check_urls(self.aggregate)
