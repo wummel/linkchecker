@@ -164,6 +164,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         settings.sync()
         if e is not None:
             e.accept()
+        # remove registered logging handler
+        self.config.remove_loghandler(self.handler)
 
     @QtCore.pyqtSignature("")
     def on_actionAbout_triggered (self):
@@ -227,10 +229,10 @@ Version 2 or later.</p>
         self.config = configuration.Configuration()
         self.config.logger_add("gui", GuiLogger)
         self.config["logger"] = self.config.logger_new('gui', widget=self.checker)
-        handler = GuiLogHandler(self.debug)
+        self.handler = GuiLogHandler(self.debug)
         self.config["status"] = True
         self.config["status_wait_seconds"] = 1
-        self.config.init_logging(StatusLogger(self.progress), handler=handler)
+        self.config.init_logging(StatusLogger(self.progress), handler=self.handler)
 
     def set_config (self):
         """Set configuration."""
