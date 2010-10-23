@@ -144,7 +144,7 @@ def check_url (aggregate):
     """Helper function waiting for URL queue."""
     while True:
         try:
-            aggregate.urlqueue.join(timeout=1)
+            aggregate.urlqueue.join(timeout=0.5)
             break
         except urlqueue.Timeout:
             # Since urlqueue.join() is not interruptable, add a timeout

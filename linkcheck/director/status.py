@@ -33,10 +33,10 @@ class Status (task.CheckedTask):
         """Print periodic status messages."""
         self.start_time = time.time()
         self.setName("Status")
-        waitfor = range(self.wait_seconds)
+        waitfor = range(self.wait_seconds*10)
         while True:
             for dummy in waitfor:
-                time.sleep(1)
+                time.sleep(0.1)
                 if self.stopped():
                     return
             self.log_status()

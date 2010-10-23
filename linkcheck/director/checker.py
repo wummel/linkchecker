@@ -17,7 +17,6 @@
 """
 URL checking functions.
 """
-import time
 from . import task
 from ..cache import urlqueue
 
@@ -62,7 +61,7 @@ class Checker (task.CheckedTask):
                     self.urlqueue.task_done(url_data)
                 self.setName(self.origname)
         except urlqueue.Empty:
-            time.sleep(0.1)
+            pass
 
     def check_url_data (self, url_data):
         """Check one URL data instance."""

@@ -31,11 +31,12 @@ class Cleanup (task.CheckedTask):
         """Print periodic status messages."""
         self.start_time = time.time()
         self.setName("Cleanup")
+        # clean every 15 seconds
+        wait_seconds = 15
+        waitfor = range(wait_seconds*10)
         while True:
-            # clean every 30 seconds
-            for dummy in range(30):
-                time.sleep(1)
-                # check every second if we have stopped
+            for dummy in waitfor:
+                time.sleep(0.1)
                 if self.stopped():
                     return
             self.connections.remove_expired()
