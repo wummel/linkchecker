@@ -88,7 +88,7 @@ class Aggregate (object):
         assert self.urlqueue.empty()
         for t in self.threads:
             t.stop()
-            t.join(2)
+            t.join(0.5)
             if t.isAlive():
                 log.warn(LOG_CHECK, "Thread %s still active", t)
         self.connections.clear()
