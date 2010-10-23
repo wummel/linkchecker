@@ -313,7 +313,7 @@ def xfr (where, zone, rdtype=linkcheck.dns.rdatatype.AXFR,
 
     if isinstance(zone, basestring):
         zone = linkcheck.dns.name.from_text(zone)
-    if isinstance(rdtype, str):
+    if isinstance(rdtype, basestring):
         rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
     q = linkcheck.dns.message.make_query(zone, rdtype, rdclass)
     if rdtype == linkcheck.dns.rdatatype.IXFR:

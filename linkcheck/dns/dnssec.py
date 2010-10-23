@@ -16,6 +16,11 @@
 
 """Common DNSSEC-related functions and constants."""
 
+import linkcheck.dns.name
+import linkcheck.dns.rdata
+import linkcheck.dns.rdatatype
+import linkcheck.dns.rdataclass
+
 RSAMD5 = 1
 DH = 2
 DSA = 3
@@ -71,3 +76,44 @@ def algorithm_to_text(value):
     if text is None:
         text = str(value)
     return text
+
+def _to_rdata(record):
+    from cStringIO import StringIO
+    s = StringIO()
+    record.to_wire(s)
+    return s.getvalue()
+
+def key_id(key):
+    rdata = _to_rdata(key)
+    if key.algorithm == RSAMD5:
+        return (ord(rdata[-3]) << 8) + ord(rdata[-2])
+    else:
+        total = 0
+        for i in range(len(rdata) / 2):
+            total += (ord(rdata[2 * i]) << 8) + ord(rdata[2 * i + 1])
+        if len(rdata) % 2 != 0:
+            total += ord(rdata[len(rdata) - 1]) << 8
+        total += ((total >> 16) & 0xffff);
+        return total & 0xffff
+
+def make_ds(name, key, algorithm):
+    import hashlib
+    import struct
+    if algorithm.upper() == 'SHA1':
+        dsalg = 1
+        hash = hashlib.sha1()
+    elif algorithm.upper() == 'SHA256':
+        dsalg = 2
+        hash = hashlib.sha256()
+    else:
+        raise ValueError, 'unsupported algorithm "%s"' % algorithm
+
+    if isinstance(name, basestring):
+        name = linkcheck.dns.name.from_text(name)
+    hash.update(name.canonicalize().to_wire())
+    hash.update(_to_rdata(key))
+    digest = hash.digest()
+
+    dsrdata = struct.pack("!HBB", key_id(key), key.algorithm, dsalg) + digest
+    return linkcheck.dns.rdata.from_wire(linkcheck.dns.rdataclass.IN,
+                        linkcheck.dns.rdatatype.DS, dsrdata, 0, len(dsrdata))

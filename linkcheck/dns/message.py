@@ -21,6 +21,7 @@ import struct
 import sys
 import time
 
+import linkcheck.dns.edns
 import linkcheck.dns.exception
 import linkcheck.dns.flags
 import linkcheck.dns.name
@@ -95,8 +96,11 @@ class Message(object):
     @ivar request_mac: The TSIG MAC of the request message associated with
     this message; used when validating TSIG signatures.   @see: RFC 2845 for
     more information on TSIG fields.
-    @ivar keyalgorithm: The TSIG key algorithm to use.  The default is
-    linkcheck.dns.tsig.default_algorithm.
+    @ivar keyalgorithm: The TSIG algorithm to use; defaults to
+    linkcheck.dns.tsig.default_algorithm.  Constants for TSIG algorithms are defined
+    in linkcheck.dns.tsig, and the currently implemented algorithms are
+    HMAC_MD5, HMAC_SHA1, HMAC_SHA224, HMAC_SHA256, HMAC_SHA384, and
+    HMAC_SHA512.
     @type keyalgorithm: string
     @type request_mac: string
     @ivar fudge: TSIG time fudge; default is 300 seconds.
@@ -1036,9 +1040,9 @@ def make_query(qname, rdtype, rdclass = linkcheck.dns.rdataclass.IN,
 
     if isinstance(qname, basestring):
         qname = linkcheck.dns.name.from_text(qname)
-    if isinstance(rdtype, str):
+    if isinstance(rdtype, basestring):
         rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
-    if isinstance(rdclass, str):
+    if isinstance(rdclass, basestring):
         rdclass = linkcheck.dns.rdataclass.from_text(rdclass)
     m = Message()
     m.flags |= linkcheck.dns.flags.RD

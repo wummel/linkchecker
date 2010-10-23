@@ -278,9 +278,9 @@ def from_text_list(rdclass, rdtype, ttl, text_rdatas):
     @rtype: linkcheck.dns.rdataset.Rdataset object
     """
 
-    if isinstance(rdclass, str):
+    if isinstance(rdclass, basestring):
         rdclass = linkcheck.dns.rdataclass.from_text(rdclass)
-    if isinstance(rdtype, str):
+    if isinstance(rdtype, basestring):
         rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
     r = Rdataset(rdclass, rdtype)
     r.update_ttl(ttl)

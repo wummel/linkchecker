@@ -22,6 +22,7 @@ import linkcheck.dns.opcode
 import linkcheck.dns.rdata
 import linkcheck.dns.rdataclass
 import linkcheck.dns.rdataset
+import linkcheck.dns.tsig
 
 class Update(linkcheck.dns.message.Message):
     def __init__(self, zone, rdclass=linkcheck.dns.rdataclass.IN, keyring=None,
@@ -43,7 +44,10 @@ class Update(linkcheck.dns.message.Message):
         they know the keyring contains only one key.
         @type keyname: linkcheck.dns.name.Name or string
         @param keyalgorithm: The TSIG algorithm to use; defaults to
-        linkcheck.dns.tsig.default_algorithm
+        linkcheck.dns.tsig.default_algorithm.  Constants for TSIG algorithms are defined
+        in linkcheck.dns.tsig, and the currently implemented algorithms are
+        HMAC_MD5, HMAC_SHA1, HMAC_SHA224, HMAC_SHA256, HMAC_SHA384, and
+        HMAC_SHA512.
         @type keyalgorithm: string
         """
         super(Update, self).__init__()
@@ -57,7 +61,7 @@ class Update(linkcheck.dns.message.Message):
         self.find_rrset(self.question, self.origin, rdclass, linkcheck.dns.rdatatype.SOA,
                         create=True, force_unique=True)
         if not keyring is None:
-            self.use_tsig(keyring, keyname, keyalgorithm)
+            self.use_tsig(keyring, keyname, algorithm=keyalgorithm)
 
     def _add_rr(self, name, ttl, rd, deleting=None, section=None):
         """Add a single RR to the update section."""
@@ -100,7 +104,7 @@ class Update(linkcheck.dns.message.Message):
                     self._add_rr(name, ttl, rd, section=section)
             else:
                 rdtype = args.pop(0)
-                if isinstance(rdtype, str):
+                if isinstance(rdtype, basestring):
                     rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
                 if replace:
                     self.delete(name, rdtype)
@@ -149,7 +153,7 @@ class Update(linkcheck.dns.message.Message):
                     self._add_rr(name, 0, rd, linkcheck.dns.rdataclass.NONE)
             else:
                 rdtype = args.pop(0)
-                if isinstance(rdtype, str):
+                if isinstance(rdtype, basestring):
                     rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
                 if len(args) == 0:
                     rrset = self.find_rrset(self.authority, name,
@@ -207,7 +211,7 @@ class Update(linkcheck.dns.message.Message):
             self._add(False, self.answer, name, *args)
         else:
             rdtype = args[0]
-            if isinstance(rdtype, str):
+            if isinstance(rdtype, basestring):
                 rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
             rrset = self.find_rrset(self.answer, name,
                                     linkcheck.dns.rdataclass.ANY, rdtype,

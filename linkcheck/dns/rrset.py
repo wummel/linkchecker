@@ -37,7 +37,7 @@ class RRset(linkcheck.dns.rdataset.Rdataset):
                  deleting=None):
         """Create a new RRset."""
 
-        super(RRset, self).__init__(rdclass, rdtype)
+        super(RRset, self).__init__(rdclass, rdtype, covers)
         self.name = name
         self.deleting = deleting
 
@@ -125,9 +125,9 @@ def from_text_list(name, ttl, rdclass, rdtype, text_rdatas):
 
     if isinstance(name, basestring):
         name = linkcheck.dns.name.from_text(name, None)
-    if isinstance(rdclass, str):
+    if isinstance(rdclass, basestring):
         rdclass = linkcheck.dns.rdataclass.from_text(rdclass)
-    if isinstance(rdtype, str):
+    if isinstance(rdtype, basestring):
         rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
     r = RRset(name, rdclass, rdtype)
     r.update_ttl(ttl)

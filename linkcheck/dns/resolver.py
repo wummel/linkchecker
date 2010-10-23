@@ -654,9 +654,9 @@ class Resolver(object):
 
         if isinstance(qname, basestring):
             qname = linkcheck.dns.name.from_text(qname, None)
-        if isinstance(rdtype, str):
+        if isinstance(rdtype, basestring):
             rdtype = linkcheck.dns.rdatatype.from_text(rdtype)
-        if isinstance(rdclass, str):
+        if isinstance(rdclass, basestring):
             rdclass = linkcheck.dns.rdataclass.from_text(rdclass)
         qnames_to_try = []
         if qname.is_absolute():
@@ -678,7 +678,8 @@ class Resolver(object):
                     return answer
             request = linkcheck.dns.message.make_query(qname, rdtype, rdclass)
             if not self.keyname is None:
-                request.use_tsig(self.keyring, self.keyname, self.keyalgorithm)
+                request.use_tsig(self.keyring, self.keyname,
+                                 algorithm=self.keyalgorithm)
             request.use_edns(self.edns, self.ednsflags, self.payload)
             response = None
 
