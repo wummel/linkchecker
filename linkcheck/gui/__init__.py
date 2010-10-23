@@ -105,11 +105,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
-        #self.controlButton.setText(_("Start"))
-        #icon = QtGui.QIcon()
-        #icon.addPixmap(QtGui.QPixmap(":/icons/start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #icon = self.style().standardIcon(QtGui.QStyle.SP_DirOpenIcon)
-        #self.controlButton.setIcon(icon)
 
     def init_treewidget (self):
         self.treeWidget.setColumnHidden(0, True)
