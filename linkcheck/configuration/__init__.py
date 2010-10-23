@@ -172,19 +172,27 @@ class Configuration (dict):
             logging.config.fileConfig(filename)
         if handler is None:
             handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
-        logging.getLogger(LOG_ROOT).addHandler(handler)
+        self.add_loghandler(handler)
         self.set_debug(debug)
         self.status_logger = status_logger
+
+    def set_debug (self, debug):
+        """Set debugging levels for configured loggers. The argument
+        is a list of logger names to enable debug for."""
+        self.set_loglevel(debug, logging.DEBUG)
+
+    def add_loghandler (self, handler):
+        """Add log handler to root logger LOG_ROOT and set formatting."""
+        logging.getLogger(LOG_ROOT).addHandler(handler)
         if self['threads'] > 0:
             format = "%(levelname)s %(threadName)s %(message)s"
         else:
             format = "%(levelname)s %(message)s"
         handler.setFormatter(logging.Formatter(format))
 
-    def set_debug (self, debug):
-        """Set debugging levels for configured loggers. The argument
-        is a list of logger names to enable debug for."""
-        self.set_loglevel(debug, logging.DEBUG)
+    def remove_loghandler (self, handler):
+        """Remove log handler from root logger LOG_ROOT."""
+        logging.getLogger(LOG_ROOT).removeHandler(handler)
 
     def reset_loglevel (self):
         """Reset log level to display only warnings and errors."""
