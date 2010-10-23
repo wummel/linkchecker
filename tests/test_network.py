@@ -37,6 +37,7 @@ class TestNetwork (unittest.TestCase):
         ifc.getInterfaceList()
 
     @need_network
+    @need_posix
     def test_iputils (self):
         host = "www.golem.de"
         ips = iputil.resolve_host(host)

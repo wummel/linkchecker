@@ -145,6 +145,9 @@ class TestHttp (HttpServerTest):
         self.direct(url, resultlines, recursionlevel=1)
 
     def obfuscate_test (self):
+        import os
+        if os.name != "posix":
+            return
         host = "www.golem.de"
         ip = iputil.resolve_host(host).pop()
         url = u"http://%s/" % iputil.obfuscate_ip(ip)
