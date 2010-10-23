@@ -30,3 +30,6 @@ class TestGui (unittest.TestCase):
         window = LinkCheckerMain()
         window.show()
         QtTest.QTest.mouseClick(window.controlButton, QtCore.Qt.LeftButton)
+        window.close()
+        del window
+        del app
