@@ -68,6 +68,7 @@ AppName = "LinkChecker"
 py2exe_options = dict(
     packages=["encodings"],
     excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter', 'win32com.gen_py'],
+    dll_excludes=['MSVCP90.dll'],
     # add sip so that PyQt4 works
     # add PyQt4.QtSql so that sqlite neede by QHelpCollection works
     includes=["sip", "PyQt4.QtSql"],
