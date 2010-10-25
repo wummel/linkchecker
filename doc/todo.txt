@@ -1,6 +1,10 @@
 - [GUI] Allow login URL to be configured.
 - [GUI] Show detailed URL properties
 - [GUI] Save options in qsettings or in external file (for each URL?).
+- [PYTHON26]
+  linkcheck/httplib2.py:1218: DeprecationWarning: socket.ssl() is deprecated.
+  Use ssl.wrap_socket() instead.
+  ssl = socket.ssl(sock, self.key_file, self.cert_file)
 - [PYTHON3]
   linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
   linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
