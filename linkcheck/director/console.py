@@ -28,6 +28,13 @@ stderr = codecs.getwriter(i18n.default_encoding)(sys.stderr, errors="ignore")
 stdout = codecs.getwriter(i18n.default_encoding)(sys.stdout, errors="ignore")
 
 
+def encode (text):
+    """Encode text with default encoding if its Unicode."""
+    if isinstance(text, unicode):
+        return text.encode(i18n.default_encoding, 'ignore')
+    return text
+
+
 class StatusLogger (object):
     """Standard status logger. Default output is stderr."""
 
