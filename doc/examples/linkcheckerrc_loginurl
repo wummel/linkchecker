@@ -1,0 +1,8 @@
+[authentication]
+entry=
+# Note that the password has been left out.
+# It will be entered at the commandline.
+  ^https?://sourceforge\.net/account/login\.php calvin
+loginurl=https://sourceforge.net/account/login.php
+loginuserfield=form_loginname
+loginpasswordfield=form_pw
