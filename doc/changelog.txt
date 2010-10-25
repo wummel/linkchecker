@@ -1,4 +1,4 @@
-5.4 "" (released xx.10.2010)
+5.4 "How to train your dragon" (released xx.10.2010)
 
 Fixes:
 - gui: Enable the cancel button again after it has been clicked and
@@ -15,6 +15,8 @@ Changes:
   have this DLL installed.
 - checking: Tune timeout values to close threads faster on exit.
   Closes: SF bug #3087944
+- config: Authentication password entries are optional and if missing
+  have to be entered at the commandline.
 
 Features:
 - gui: Added "View parent URL online" context menu action to display
@@ -27,6 +29,7 @@ Features:
 - http: Allow specifying a login URL in the configuration file which
   gets visited before checking submits login data.
   Closes: SF bug #3041527
+
 
 5.3 "Inception" (released 29.9.2010)
 

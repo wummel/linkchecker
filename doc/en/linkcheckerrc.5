@@ -118,16 +118,20 @@ Default is that URLs given on the command line are internal.
 Command line option: none
 .SS \fB[authentication]\fP
 .TP
-\fBentry=\fP\fIREGEX\fP \fIUSER\fP \fIPASS\fP (MULTILINE)
+\fBentry=\fP\fIREGEX\fP \fIUSER\fP [\fIPASS\fP] (MULTILINE)
 Provide different user/password pairs for different link types.
-Entries are a triple (link regular expression, username, password),
+Entries are a triple (URL regex, username, password)
+or a tuple (URL regex, username), where the entries are
 separated by whitespace.
 .br
-If the regular expression matches, the given user/password pair is used
-for authentication. The commandline options \fB\-u\fP and \fB\-p\fP
-match every link and therefore override the entries given here. The first
-match wins. At the moment, authentication is used/needed for
-http[s] and ftp links.
+The password is optional and if missing it has to be entered at the
+commandline.
+.br
+If the regular expression matches the checked URL, the given user/password
+pair is used for authentication. The commandline options
+\fB\-u\fP and \fB\-p\fP match every link and therefore override the entries
+given here. The first match wins. At the moment, authentication is
+used/needed for http[s] and ftp links.
 .br
 Command line option: \fB\-u\fP, \fB\-p\fP
 .TP

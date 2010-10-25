@@ -63,6 +63,8 @@ class TestConfig (unittest.TestCase):
             for suffix in ("1", "2"):
                 key = "%simadoofus%s" % (prefix, suffix)
                 self.assertTrue(key in patterns)
+        self.assertTrue("http://www.example.com/" in patterns)
+        self.assertTrue("http://www.example.com/nopass" in patterns)
         self.assertEqual(config["loginurl"], "http://www.example.com/")
         self.assertEqual(config["loginuserfield"], "mylogin")
         self.assertEqual(config["loginpasswordfield"], "mypassword")

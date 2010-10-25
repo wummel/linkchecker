@@ -125,16 +125,20 @@ hinzuzufügen. Standard ist dass URLs der Kommandozeile als intern gelten.
 Kommandozeilenoption: keine
 .SS [authentication]
 .TP 
-\fBentry=\fP\fIREGEX\fP \fIBENUTZER\fP \fIPASSWORT\fP (MULTILINE)
-Erstelle verschiedene Benutzer/Passwort Parre für verschiedene
-Verknüpfungsarten. Einträge sind ein Tripel (Verknüpfung regulärer Ausdruck,
-Benutzername, Passwort), getrennt durch Leerzeichen.
+\fBentry=\fP\fIREGEX\fP \fIBENUTZER\fP [\fIPASSWORT\fP] (MULTILINE)
+Erstelle verschiedene Benutzer/Passwort\-Paare für verschiedene
+Verknüpfungsarten. Einträge sind ein Tripel (URL regulärer Ausdruck,
+Benutzername, Passwort) oder ein Tupel (URL regulärer Ausdruck,
+Benutzername), wobei die Einträge durch Leerzeichen getrennt sind.
 .br
-Falls der reguläre Ausdruck zutrifft, wird das angegebene Benutzer/Passwort
-Paar zum Authentifizieren genutzt. Die Kommandozeilenoptionen \fB\-u\fP und
-\fB\-p\fP treffen auf jede Verknüpfung zu und überschreiben daher die Einträge
-hier. Der erste Treffer gewinnt. Im Moment wird Authentifizierung für
-http[s] und ftp Verknüpfungen benutzt.
+Das Passwort ist optional und muss falls es fehlt auf der Kommandozeile
+eingegeben werden.
+.br
+Falls der reguläre Ausdruck auf die zu prüfende URL zutrifft, wird das
+angegebene Benutzer/Passwort\-Paar zum Authentifizieren genutzt. Die
+Kommandozeilenoptionen \fB\-u\fP und \fB\-p\fP treffen auf jede Verknüpfung zu und
+überschreiben daher die Einträge hier. Der erste Treffer gewinnt. Im Moment
+wird Authentifizierung für http[s] und ftp Verknüpfungen benutzt.
 .br
 Kommandozeilenoption: \fB\-u\fP, \fB\-p\fP
 .TP 
