@@ -315,7 +315,7 @@ class LCOptionParser (optparse.OptionParser, object):
         s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
                  Examples, LoggerTypes, RegularExpressions, CookieFormat,
                  ProxySupport, Notes, Retval, Warnings)
-        s = s.encode(i18n.default_encoding, "replace")
+        s = console.encode(s)
         if os.name != 'posix':
             strformat.paginate(s)
         else:
@@ -678,9 +678,17 @@ if options.interactive is not None:
     config['interactive'] = options.interactive
 if options.nntpserver:
     config["nntpserver"] = options.nntpserver
+if options.username is not None:
+    _username = options.username
+    constructauth = True
 if options.password:
+    if _username:
+        msg = _("Enter LinkChecker HTTP/FTP password for user %(user)s:") % \
+              {"user": _username}
+    else:
+        msg = _("Enter LinkChecker HTTP/FTP password:")
     import getpass
-    _password = getpass.getpass()
+    _password = getpass.getpass(console.encode(msg))
     constructauth = True
 if options.pause is not None:
     if options.pause >= 0:
@@ -707,9 +715,6 @@ if options.timeout is not None:
         print_usage(_("Illegal argument %(arg)r for option %(option)s") % \
                     {"arg": options.timeout, "option": "'--timeout'"})
 socket.setdefaulttimeout(config["timeout"])
-if options.username is not None:
-    _username = options.username
-    constructauth = True
 if options.version is not None:
     print_version()
 if options.verbose is not None:
@@ -743,10 +748,20 @@ for prefix in ("checkhtml", "checkcss"):
         option = "%s%s" % (prefix, suffix)
         if getattr(options, option) is not None:
             config[option] = getattr(options, option)
+# read missing passwords
+for entry in config["authentication"]:
+    if entry["password"] is None:
+        attrs = entry.copy()
+        attrs["strpattern"] = attrs["pattern"].pattern
+        msg = _("Enter LinkChecker password for user %(user)s" \
+                " at %(strpattern)s:") % attrs
+        import getpass
+        entry["password"] = getpass.getpass(console.encode(msg))
 # now sanitize the configuration
 config.sanitize()
 
-log.debug(LOG_CMDLINE, "configuration: %s", pprint.pformat(sorted(config.items())))
+log.debug(LOG_CMDLINE, "configuration: %s",
+          pprint.pformat(sorted(config.items())))
 # warn about sitemap loggers and complete output
 klasses = [c.__class__ for c in [config['logger']] + config['fileoutput']]
 if (linkcheck.logger.gml.GMLLogger in klasses or \
