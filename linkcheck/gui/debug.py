@@ -26,6 +26,7 @@ class LinkCheckerDebug (QtGui.QDialog, Ui_DebugDialog):
         super(LinkCheckerDebug, self).__init__(parent)
         self.setupUi(self)
         self.connect(self, QtCore.SIGNAL("log_msg(QString)"), self.log_msg)
+        self.reset()
 
     def log_msg (self, msg):
         self.textEdit.appendPlainText(msg)
