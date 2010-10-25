@@ -169,7 +169,7 @@
 #internlinks=^http://www\.example\.net/
 
 [authentication]
-# You can provide different user/password pairs for different URLs.
+# Different user/password pairs for different URLs can be provided.
 # Entries are a triple (URL regular expression, username, password),
 # separated by whitespace.
 # If the regular expression matches, the given user/password pair is used
@@ -177,9 +177,9 @@
 # and therefore override the entries given here. The first match wins.
 # At the moment, authentication is used for http[s] and ftp links.
 #entry=
-# Note that passwords are optional. If you type any passwords here, please
-# make this file not readable by other users.
-#  ^https?://www\.example\.com/~calvin/ lebowski lebowski
+# Note that passwords are optional. If any passwords are stored here,
+# this file should not readable by other users.
+#  ^https?://www\.example\.com/~calvin/ calvin mypass
 #  ^ftp://www\.example\.com/secret/ calvin
 
 # if the website requires a login the URL and optionally the user and
