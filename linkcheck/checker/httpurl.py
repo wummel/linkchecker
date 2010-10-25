@@ -34,7 +34,8 @@ from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
 from .const import WARN_HTTP_ROBOTS_DENIED, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
-    WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING
+    WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
+    WARN_HTTP_AUTH_UNKNOWN
 
 # helper alias
 unicode_safe = strformat.unicode_safe
@@ -182,8 +183,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if not self.allows_robots(self.url):
             # remove all previously stored results
             self.add_warning(
-                       _("Access denied by robots.txt, skipping content checks."),
-                       tag=WARN_HTTP_ROBOTS_DENIED)
+                 _("Access denied by robots.txt, skipping content checks."),
+                 tag=WARN_HTTP_ROBOTS_DENIED)
             self.method_get_allowed = False
         # first try with HEAD
         self.method = "HEAD"
@@ -288,6 +289,15 @@ Use URL `%(newurl)s' instead for checking.""") % {
                 return response
             # user authentication
             if response.status == 401:
+                authenticate = self.headers.get('WWW-Authenticate')
+                if not authenticate or not authenticate.startswith("Basic"):
+                    # LinkChecker only supports Basic authorization
+                    args = {"auth": authenticate},
+                    self.add_warning(
+                       _("Unsupported HTTP authentication `%(auth)s', " \
+                         "only `Basic' authentication is supported.") % args,
+                       tag=WARN_HTTP_AUTH_UNKNOWN)
+                    return
                 if not self.auth:
                     import base64
                     _user, _password = self.get_user_password()

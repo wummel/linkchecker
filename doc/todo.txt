@@ -1,5 +1,3 @@
-- [HTTP] Allow multi-realm auth configuration
-  SF bug #3028302
 - [GUI] Allow login URL to be configured.
 - [GUI] Show detailed URL properties
 - [GUI] Save options in qsettings or in external file (for each URL?).

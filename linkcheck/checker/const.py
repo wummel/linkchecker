@@ -90,6 +90,7 @@ WARN_HTTP_EMPTY_CONTENT = "http-empty-content"
 WARN_HTTP_COOKIE_STORE_ERROR = "http-cookie-store-error"
 WARN_HTTP_DECOMPRESS_ERROR = "http-decompress-error"
 WARN_HTTP_UNSUPPORTED_ENCODING = "http-unsupported-encoding"
+WARN_HTTP_AUTH_UNKNOWN = "http-auth-unknonwn"
 WARN_IGNORE_URL = "ignore-url"
 WARN_MAIL_NO_MX_HOST = "mail-no-mx-host"
 WARN_MAIL_UNVERIFIED_ADDRESS = "mail-unverified-address"
@@ -126,6 +127,8 @@ Warnings = {
         _("An error occurred while decompressing the URL content."),
     WARN_HTTP_UNSUPPORTED_ENCODING:
         _("The URL content is encoded with an unknown encoding."),
+    WARN_HTTP_AUTH_UNKNOWN:
+        _("Unsupported HTTP authentication method."),
     WARN_IGNORE_URL: _("The URL has been ignored."),
     WARN_MAIL_NO_MX_HOST: _("The mail MX host could not be found."),
     WARN_MAIL_UNVERIFIED_ADDRESS:

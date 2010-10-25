@@ -255,7 +255,7 @@ class Configuration (dict):
         confparse.LCConfigParser(self).read(cfiles)
         self.sanitize()
 
-    def add_auth (self, user=None, password=None, pattern=None, realm=None):
+    def add_auth (self, user=None, password=None, pattern=None):
         if not user or not pattern:
             log.warn(LOG_CHECK,
             _("warning: missing user or URL pattern in authentication data."))
@@ -264,11 +264,10 @@ class Configuration (dict):
             user=user,
             password=password,
             pattern=re.compile(pattern),
-            realm=realm
         )
         self["authentication"].append(entry)
 
-    def get_user_password (self, url, realm=None):
+    def get_user_password (self, url):
         """Get tuple (user, password) from configured authentication
         that matches the given URL.
         Both user and password can be None if not specified, or no
@@ -276,9 +275,6 @@ class Configuration (dict):
         """
         for auth in self["authentication"]:
             if auth['pattern'].match(url):
-                if realm is not None and auth['realm'] is not None \
-                   and realm != auth['realm']:
-                    continue
                 return (auth['user'], auth['password'])
         return (None, None)
 
