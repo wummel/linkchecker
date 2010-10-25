@@ -1,4 +1,4 @@
-5.4 "How to train your dragon" (released xx.10.2010)
+5.4 "How to train your dragon" (released 26.10.2010)
 
 Fixes:
 - gui: Enable the cancel button again after it has been clicked and
