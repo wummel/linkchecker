@@ -54,10 +54,9 @@ def visit_loginurl (aggregate):
     store_cookies(tc.get_browser().cj, aggregate.cookies, url)
     resulturl = tc.get_browser().get_url()
     log.debug(LOG_CHECK, u"URL after POST is %s" % resulturl)
-    # add URL to check list
-    if config["checkloginresult"]:
-        from ..checker import get_url_from
-        aggregate.urlqueue.put(get_url_from(resulturl, 0, aggregate))
+    # add result URL to check list
+    from ..checker import get_url_from
+    aggregate.urlqueue.put(get_url_from(resulturl, 0, aggregate))
 
 
 def configure_twill (tc):
