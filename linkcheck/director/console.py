@@ -70,7 +70,8 @@ def internal_error (out=stderr):
 
 You have found an internal error in LinkChecker. Please write a bug report
 at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913
-or send mail to %s and include the following information:
+or send mail to linkchecker-user@lists.sourceforge.net and include the
+following information:
 - the URL or file you are testing
 - your commandline arguments and/or configuration.
 - the output of a debug run with option "-Dall" of the executed command
@@ -79,7 +80,7 @@ or send mail to %s and include the following information:
 Not disclosing some of the information above due to privacy reasons is ok.
 I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
-""") % configuration.Email
+""")
     etype, value = sys.exc_info()[:2]
     print >> out, etype, value
     traceback.print_exc()

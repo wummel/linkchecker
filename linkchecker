@@ -737,9 +737,7 @@ if options.cookies is not None:
     config['storecookies'] = options.cookies
     config['sendcookies'] = options.cookies
 if constructauth:
-    config["authentication"].append({'pattern': try_compile_re(".+"),
-                                     'user': _username,
-                                     'password': _password})
+    config.add_auth(pattern=".+", user=_username, password=_password)
 if options.scanvirus is not None:
     config["scanvirus"] = options.scanvirus
 # boolean options for syntaxcheck

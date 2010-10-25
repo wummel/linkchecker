@@ -158,15 +158,10 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for val in read_multiline(self.get(section, "entry")):
                 auth = val.split()
                 if len(auth) == 3:
-                    self.config["authentication"].insert(0,
-                        {'pattern': re.compile(auth[0]),
-                         'user': auth[1],
-                         'password': auth[2]})
+                    self.config.add_auth(pattern=auth[0], user=auth[1],
+                                         password=auth[2])
                 elif len(auth) == 2:
-                    self.config["authentication"].insert(0,
-                        {'pattern': re.compile(auth[0]),
-                         'user': auth[1],
-                         'password': None})
+                    self.config.add_auth(pattern=auth[0], user=auth[1])
                 else:
                     raise LinkCheckerError(LOG_CHECK,
                        _("missing auth part in entry %(val)r") % \
@@ -186,10 +181,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 raise LinkCheckerError(LOG_CHECK,
                    _("missing auth part in entry %(val)r") % \
                    {"val": val})
-            self.config["authentication"].insert(0,
-                {'pattern': re.compile(auth[0]),
-                 'user': auth[1],
-                 'password': auth[2]})
+            self.config.add_auth(pattern=auth[0], user=auth[1],
+                                 password=auth[2])
             i += 1
         # read login URL and field names
         if self.has_option(section, "loginurl"):

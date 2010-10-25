@@ -871,11 +871,11 @@ class UrlBase (object):
         """
         self.parse_html()
 
-    def get_user_password (self):
+    def get_user_password (self, realm=None):
         """Get tuple (user, password) from configured authentication.
         Both user and password can be None.
         """
-        return self.aggregate.config.get_user_password(self.url)
+        return self.aggregate.config.get_user_password(self.url, realm=realm)
 
     def parse_html (self):
         """Parse into HTML content and search for URLs to check.
