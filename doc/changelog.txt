@@ -6,6 +6,8 @@ Fixes:
 - checking: Fix printing of active URLs on Ctrl-C.
 - checking: Check for allowed content read before trying to
   parse robots.txt allowance.
+- gui: Prevent off-screen window position.
+  Closes: SF bug #3025284
 
 Changes:
 - gui: Display cancel message in progress window.

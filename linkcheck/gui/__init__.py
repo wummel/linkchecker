@@ -40,6 +40,20 @@ RegistryBase = "Bastian"
 Status = enum('idle', 'checking')
 
 
+def save_point (qpoint):
+    """Ensure positive X and Y values of point."""
+    qpoint.setX(max(0, qpoint.x()))
+    qpoint.setY(max(0, qpoint.y()))
+    return qpoint
+
+
+def save_size (qsize):
+    """Ensure minimum width and height values of the given size."""
+    qsize.setWidth(max(400, qsize.width()))
+    qsize.setHeight(max(400, qsize.height()))
+    return qsize
+
+
 def get_parent_url (itemtext):
     """Split off line and column information from URL."""
     url, col = itemtext.rsplit(",", 1)
@@ -94,8 +108,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         settings = QtCore.QSettings(RegistryBase, configuration.AppName)
         settings.beginGroup('mainwindow')
         if settings.contains('size'):
-            self.resize(settings.value('size').toSize())
-            self.move(settings.value('pos').toPoint())
+            self.resize(save_size(settings.value('size').toSize()))
+            self.move(save_point(settings.value('pos').toPoint()))
         settings.endGroup()
 
     def connect_widgets (self):
@@ -158,8 +172,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Save settings on close."""
         settings = QtCore.QSettings(RegistryBase, configuration.AppName)
         settings.beginGroup('mainwindow')
-        settings.setValue("size", QtCore.QVariant(self.size()))
-        settings.setValue("pos", QtCore.QVariant(self.pos()))
+        settings.setValue("size", QtCore.QVariant(save_size(self.size())))
+        settings.setValue("pos", QtCore.QVariant(save_point(self.pos())))
         settings.endGroup()
         settings.sync()
         if e is not None:
