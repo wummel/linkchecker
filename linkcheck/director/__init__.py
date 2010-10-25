@@ -82,12 +82,27 @@ def submit_login_form (config, url, tc):
     user, password = config.get_user_password(url)
     cgiuser = config["loginuserfield"]
     cgipassword = config["loginpasswordfield"]
-    formname = ""
+    formname = search_formname((cgiuser, cgipassword), tc)
     tc.formvalue(formname, cgiuser, user)
     tc.formvalue(formname, cgipassword, password)
     for key, value in config["loginextrafields"].items():
         tc.formvalue(formname, key, value)
     tc.submit()
+
+
+def search_formname (fieldnames, tc):
+    """Search form that has all given CGI fieldnames."""
+    browser = tc.get_browser()
+    for form in browser.get_all_forms():
+        for name in fieldnames:
+            try:
+                browser.get_form_field(form, name)
+            except tc.TwillException:
+                break
+        else:
+            return form.name or form.attrs.get('id')
+    # none found
+    return None
 
 
 def store_cookies (cookiejar, cookiecache, url):
