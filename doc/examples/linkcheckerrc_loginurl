@@ -1,3 +1,4 @@
+# example configuration file demonstrating the login URL feature
 [authentication]
 entry=
 # Note that the password has been left out.
