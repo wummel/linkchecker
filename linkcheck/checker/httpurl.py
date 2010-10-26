@@ -205,13 +205,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                             "a GET request was used instead.") %
                             {"name": server})
         # redirections might have changed the URL
-        newurl = urlparse.urlunsplit(self.urlparts)
-        if self.url != newurl:
-            if self.warn_redirect:
-                log.warn(LOG_CHECK, _("""URL `%(url)s' has been redirected.
-Use URL `%(newurl)s' instead for checking.""") % {
-                'url': self.url, 'newurl': newurl})
-            self.url = newurl
+        self.url = urlparse.urlunsplit(self.urlparts)
         # check response
         if response:
             self.check_response(response)
