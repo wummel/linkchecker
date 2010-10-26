@@ -91,7 +91,7 @@ release: distclean releasecheck dist-stamp sign_distfiles upload
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
 	wget -O - http://pypants.org/projects/linkchecker/update/ > /dev/null
-	freshmeat-submit < linkchecker.freshmeat
+#	freshmeat-submit < linkchecker.freshmeat
 
 .PHONY: chmod
 chmod:
