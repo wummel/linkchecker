@@ -3,7 +3,7 @@ include MANIFEST.in doc/changelog.txt
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/logging.conf config/pycheckrc
 include config/reindent.py config/linkchecker.apache2.conf install-rpm.sh
-include linkchecker
+include linkchecker.freshmeat
 include cgi-bin/lc.cgi cgi-bin/lc.fcgi cgi-bin/README
 include Makefile
 include debian/rules
