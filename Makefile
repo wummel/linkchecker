@@ -131,6 +131,9 @@ releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
 	  echo "Could not release: edit doc/changelog.txt release date"; false; \
 	fi
+	@if ! grep "Version: $(VERSION)" linkchecker.freshmeat > /dev/null; then \
+	  echo "Could not release: edit linkchecker.freshmeat version"; false; \
+	fi
 #	$(MAKE) -C doc test
 
 .PHONY: sign_distfiles
