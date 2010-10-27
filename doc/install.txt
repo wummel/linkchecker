@@ -55,6 +55,7 @@ Setup for Unix/Linux or Mac OS X
 1. Install check
    
    Be sure to have installed all required Unix/Linux software listed above.
+   Then, run ``make -C doc/html`` to generate the Qt help file.
 
 2. Compile Python modules
    
