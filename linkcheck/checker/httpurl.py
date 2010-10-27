@@ -377,7 +377,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                             {"urls": "\n  => ".join(recursion)}, valid=False)
                 return -1, response
             if urlparts[0] == self.scheme or urlparts[0] in ('http', 'https'):
-                # remember redireced url as alias
+                # remember redirected url as alias
                 self.aliases.append(redirected)
             else:
                 # in case of changed scheme make new URL object
