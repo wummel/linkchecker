@@ -177,6 +177,8 @@ class UrlBase (object):
         self.caching = True
         # title is either the URL or parsed from content
         self.title = None
+        # flag if content should be checked or not
+        self.do_check_content = True
 
     def set_result (self, msg, valid=True, overwrite=False):
         """
@@ -481,17 +483,18 @@ class UrlBase (object):
                 value = _('Bad HTTP response %(line)r') % {"line": str(value)}
             self.set_result(unicode_safe(value), valid=False)
         self.checktime = time.time() - check_start
-        # check content and recursion
-        try:
-            self.check_content()
-            if self.allows_recursion():
-                self.parse_url()
-            # check content size
-            self.check_size()
-        except tuple(ExcList):
-            value = self.handle_exception()
-            self.add_warning(_("could not get content: %(msg)r") %
-                 {"msg": str(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
+        if self.do_check_content:
+            # check content and recursion
+            try:
+                self.check_content()
+                if self.allows_recursion():
+                    self.parse_url()
+                # check content size
+                self.check_size()
+            except tuple(ExcList):
+                value = self.handle_exception()
+                self.add_warning(_("could not get content: %(msg)r") %
+                     {"msg": str(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
 
     def close_connection (self):
         """

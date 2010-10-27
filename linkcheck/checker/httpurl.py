@@ -270,6 +270,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if tries == -1:
                 log.debug(LOG_CHECK, "already handled")
                 response.close()
+                self.do_check_content = False
                 return None
             if tries >= self.max_redirects:
                 if self.method == "HEAD" and self.method_get_allowed:

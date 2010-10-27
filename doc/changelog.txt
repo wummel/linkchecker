@@ -1,6 +1,8 @@
 5.5 "" (released xx.xx.2010)
 
 Fixes:
+- checking: Do not check content of already cached URLs.
+  Closes: SF bug #1720083
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.
