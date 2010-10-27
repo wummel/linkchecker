@@ -58,14 +58,8 @@ class TestHttp (HttpServerTest):
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % nurl,
-            u"real url %s" % rurl,
+            u"real url %s" % url,
             u"info Redirected to `%s'." % rurl.replace('http:', 'https:'),
-            u"warning Redirection to different URL type encountered; the " \
-            u"original URL was `%s'." % url,
-            u"valid",
-            u"url %s" % rurl,
-            u"cache key %s" % rurl,
-            u"real url %s" % rurl,
             u"error",
         ]
         self.direct(url, resultlines, recursionlevel=0)

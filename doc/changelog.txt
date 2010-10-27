@@ -5,6 +5,8 @@ Fixes:
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.
   Closes: SF bug #3078820
+- checking: Do not print warnings for HTTP -> HTTPS and HTTPS -> HTTP
+  redirects any more.
 
 Features:
 

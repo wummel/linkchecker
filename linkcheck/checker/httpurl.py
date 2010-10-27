@@ -376,18 +376,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                           _("recursive redirection encountered:\n %(urls)s") %
                             {"urls": "\n  => ".join(recursion)}, valid=False)
                 return -1, response
-            if urlparts[0] == self.scheme:
+            if urlparts[0] == self.scheme or urlparts[0] in ('http', 'https'):
                 # remember redireced url as alias
                 self.aliases.append(redirected)
-            # note: urlparts has to be a list
-            self.urlparts = urlparts
-            if set_result:
-                self.check301status(response)
-            # check cache again on the changed URL
-            if self.aggregate.urlqueue.checked_redirect(redirected, self):
-                return -1, response
-            # in case of changed scheme make new URL object
-            if self.urlparts[0] != self.scheme:
+            else:
+                # in case of changed scheme make new URL object
                 newobj = get_url_from(
                           redirected, self.recursion_level, self.aggregate,
                           parent_url=self.parent_url, base_ref=self.base_ref,
@@ -398,9 +391,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                        " found; the original URL was `%(url)s'.") %
                      {"url": self.url, "newurl": newobj.url},
                      tag=WARN_HTTP_WRONG_REDIRECT)
+                    self.set_result(u"syntax OK")
                 # append new object to queue
                 self.aggregate.urlqueue.put(newobj)
                 # pretend to be finished and logged
+                return -1, response
+            # note: urlparts has to be a list
+            self.urlparts = urlparts
+            if set_result:
+                self.check301status(response)
+            # check cache again on the changed URL
+            if self.aggregate.urlqueue.checked_redirect(redirected, self):
                 return -1, response
             # new response data
             response.close()

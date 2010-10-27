@@ -1,3 +1,6 @@
+- [CHECKING] Check for duplicate URLs that are downloaded, which
+  should not happen: use a thread-safe cache with already-downloaded
+  URLs
 - [GUI] Allow login URL to be configured.
 - [GUI] Show detailed URL properties
 - [GUI] Save options in qsettings or in external file (for each URL?).
