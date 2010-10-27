@@ -251,11 +251,10 @@ def url_parse_query (query, encoding=None):
             encoding = url_encoding
         query = query.encode(encoding, 'ignore')
     # if ? is in the query, split it off, seen at msdn.microsoft.com
-    if '?' in query:
-        query, append = query.split('?', 1)
-        append = '?'+url_parse_query(append)
-    else:
-        append = ""
+    append = ""
+    while '?' in query:
+        query, rest = query.rsplit('?', 1)
+        append = '?'+url_parse_query(rest)+append
     l = []
     for k, v, sep in parse_qsl(query, True):
         k = url_quote_part(k, '/-:,;')

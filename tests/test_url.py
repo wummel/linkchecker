@@ -526,6 +526,10 @@ class TestUrl (unittest.TestCase):
         u = "scid=kb;en-us;Q248840&b=c;hulla=bulla"
         self.assertEqual(linkcheck.url.url_parse_query(u), u)
 
+    def test_long_cgi (self):
+        u = "/test%s;" % ("?a="*1000)
+        self.assertEqual(linkcheck.url.url_parse_query(u), u)
+
     def test_port (self):
         is_numeric_port = linkcheck.url.is_numeric_port
         self.assertTrue(is_numeric_port("80"))

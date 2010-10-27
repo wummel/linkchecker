@@ -3,6 +3,9 @@
 Fixes:
 - checking: Do not check content of already cached URLs.
   Closes: SF bug #1720083
+- checking: Do not parse URL CGI part recursively, avoiding maximum
+  recursion limit errors.
+  Closes: SF bug #3096115
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.
