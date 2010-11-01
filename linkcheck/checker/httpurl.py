@@ -287,7 +287,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 authenticate = self.headers.get('WWW-Authenticate')
                 if not authenticate or not authenticate.startswith("Basic"):
                     # LinkChecker only supports Basic authorization
-                    args = {"auth": authenticate},
+                    args = {"auth": authenticate}
                     self.add_warning(
                        _("Unsupported HTTP authentication `%(auth)s', " \
                          "only `Basic' authentication is supported.") % args,
