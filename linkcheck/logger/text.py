@@ -94,7 +94,6 @@ class TextLogger (Logger):
         Write generic start checking info.
         """
         super(TextLogger, self).start_output()
-        self.starttime = time.time()
         if self.has_part('intro'):
             self.writeln(configuration.AppInfo)
             self.writeln(configuration.Freeware)

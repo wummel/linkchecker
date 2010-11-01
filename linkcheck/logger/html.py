@@ -86,7 +86,6 @@ class HtmlLogger (Logger):
     def start_output (self):
         """Write start of checking info."""
         super(HtmlLogger, self).start_output()
-        self.starttime = time.time()
         header = {
             "encoding": self.output_encoding,
             "title": configuration.App,

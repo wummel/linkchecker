@@ -18,10 +18,9 @@
 A SQL logger.
 """
 
-import time
 import os
 from . import Logger
-from .. import configuration, strformat, url as urlutil
+from .. import url as urlutil
 
 
 def sqlify (s):
@@ -72,17 +71,9 @@ class SQLLogger (Logger):
         """
         Write start of checking info as sql comment.
         """
-        Logger.start_output(self)
-        self.starttime = time.time()
+        super(SQLLogger, self).start_output()
         if self.has_part("intro"):
-            self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": configuration.AppName,
-                         "time": strformat.strtime(self.starttime)})
-            self.comment(_("Get the newest version at %s") %
-                         configuration.Url)
-            self.comment(_("Write comments and bugs to %s") %
-                         configuration.Email)
-            self.check_date()
+            self.write_intro()
             self.writeln()
             self.flush()
 
@@ -134,9 +125,5 @@ class SQLLogger (Logger):
         Write end of checking info as sql comment.
         """
         if self.has_part("outro"):
-            self.stoptime = time.time()
-            duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
+            self.write_outro()
         self.close_fileoutput()

@@ -21,8 +21,9 @@ Output logging support for different formats.
 import sys
 import os
 import datetime
+import time
 from ..decorators import notimplemented
-from .. import log, LOG_CHECK, strformat, dummy
+from .. import log, LOG_CHECK, strformat, dummy, configuration
 
 _ = lambda x: x
 Fields = dict(
@@ -244,6 +245,7 @@ class Logger (object):
         for key in parts:
             numspaces = (self.max_indent - len(self.part(key)))
             self.logspaces[key] = u" " * numspaces
+        self.starttime = time.time()
 
     def log_filter_url (self, url_data, do_print):
         """
@@ -260,6 +262,25 @@ class Logger (object):
         if do_print:
             self.warnings_printed += num_warnings
             self.log_url(url_data)
+
+    def write_intro (self):
+        """Write intro comments."""
+        self.comment(_("created by %(app)s at %(time)s") %
+                    {"app": configuration.AppName,
+                     "time": strformat.strtime(self.starttime)})
+        self.comment(_("Get the newest version at %(url)s") %
+                     {'url': configuration.Url})
+        self.comment(_("Write comments and bugs to %(email)s") %
+                     {'email': configuration.Email})
+        self.check_date()
+
+    def write_outro (self):
+        """Write outro comments."""
+        self.stoptime = time.time()
+        duration = self.stoptime - self.starttime
+        self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
+             {"time": strformat.strtime(self.stoptime),
+              "duration": strformat.strduration_long(duration)})
 
     @notimplemented
     def log_url (self, url_data):

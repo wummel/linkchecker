@@ -17,11 +17,9 @@
 """
 A CSV logger.
 """
-import time
 import csv
 import os
 from . import Logger
-from .. import strformat, configuration
 
 
 class CSVLogger (Logger):
@@ -51,17 +49,9 @@ class CSVLogger (Logger):
         Write checking start info as csv comment.
         """
         super(CSVLogger, self).start_output()
-        self.starttime = time.time()
         row = []
         if self.has_part("intro"):
-            self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": configuration.AppName,
-                         "time": strformat.strtime(self.starttime)})
-            self.comment(_("Get the newest version at %(url)s") %
-                         {'url': configuration.Url})
-            self.comment(_("Write comments and bugs to %(email)s") %
-                         {'email': configuration.Email})
-            self.check_date()
+            self.write_intro()
             self.flush()
         else:
             # write empty string to initialize file output
@@ -115,10 +105,6 @@ class CSVLogger (Logger):
         """
         Write end of checking info as csv comment.
         """
-        self.stoptime = time.time()
         if self.has_part("outro"):
-            duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
+            self.write_outro()
         self.close_fileoutput()

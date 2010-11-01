@@ -18,10 +18,8 @@
 Base class for XML loggers.
 """
 
-import time
 import xml.sax.saxutils
 from . import Logger
-from .. import configuration, strformat
 
 
 xmlattr_entities = {
@@ -70,18 +68,10 @@ class XMLLogger (Logger):
         """
         Write start of checking info as xml comment.
         """
-        self.starttime = time.time()
         self.writeln(u'<?xml version="1.0" encoding="%s"?>' %
              xmlquoteattr(self.output_encoding))
         if self.has_part("intro"):
-            self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": configuration.AppName,
-                         "time": strformat.strtime(self.starttime)})
-            self.comment(_("Get the newest version at %(url)s") %
-                         {'url': configuration.Url})
-            self.comment(_("Write comments and bugs to %(email)s") %
-                         {'email': configuration.Email})
-            self.check_date()
+            self.write_intro()
             self.writeln()
 
     def xml_end_output (self):
@@ -89,11 +79,7 @@ class XMLLogger (Logger):
         Write end of checking info as xml comment.
         """
         if self.has_part("outro"):
-            self.stoptime = time.time()
-            duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
+            self.write_outro()
 
     def xml_starttag (self, name, attrs=None):
         """

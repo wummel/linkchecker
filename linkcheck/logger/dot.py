@@ -18,9 +18,7 @@
 A DOT graph format logger. The specification has been taken from
 http://www.graphviz.org/doc/info/lang.html
 """
-import time
 from .graph import GraphLogger
-from .. import configuration, strformat
 
 
 class DOTLogger (GraphLogger):
@@ -31,16 +29,8 @@ class DOTLogger (GraphLogger):
     def start_output (self):
         """Write start of checking info as DOT comment."""
         super(DOTLogger, self).start_output()
-        self.starttime = time.time()
         if self.has_part("intro"):
-            self.comment(_("created by %(app)s at %(time)s") %
-                        {"app": configuration.AppName,
-                         "time": strformat.strtime(self.starttime)})
-            self.comment(_("Get the newest version at %(url)s") %
-                         {'url': configuration.Url})
-            self.comment(_("Write comments and bugs to %(email)s") %
-                         {'email': configuration.Email})
-            self.check_date()
+            self.write_intro()
             self.writeln()
         self.writeln(u"digraph G {")
         self.writeln(u"  graph [")

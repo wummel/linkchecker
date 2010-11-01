@@ -18,9 +18,7 @@
 Base class for graph loggers.
 """
 from . import Logger
-from .. import strformat
 from ..decorators import notimplemented
-import time
 import re
 
 
@@ -80,11 +78,7 @@ class GraphLogger (Logger):
         self.write_edges()
         self.end_graph()
         if self.has_part("outro"):
-            self.stoptime = time.time()
-            duration = self.stoptime - self.starttime
-            self.comment(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
+            self.write_outro()
         self.close_fileoutput()
 
 
