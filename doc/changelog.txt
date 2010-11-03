@@ -6,6 +6,8 @@ Fixes:
 - checking: Do not parse URL CGI part recursively, avoiding maximum
   recursion limit errors.
   Closes: SF bug #3096115
+- logging: Avoid error when logger fields "intro" or "outro" are
+  configured.
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.

@@ -222,7 +222,7 @@ class Logger (object):
         """
         Return translated part name.
         """
-        return _(Fields[name])
+        return _(Fields.get(name, u""))
 
     def spaces (self, name):
         """
