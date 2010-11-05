@@ -242,13 +242,7 @@ class Configuration (dict):
         else:
             cfiles = files[:]
         if not cfiles:
-            # system wide config settings
-            spath = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
-            cfiles.append(spath)
-            # per user config settings
-            upath = normpath("~/.linkchecker/linkcheckerrc")
-            cfiles.append(upath)
-            copy_sys_config(spath, upath)
+            cfiles.extend(get_standard_config_files())
         # weed out invalid files
         cfiles = [f for f in cfiles if os.path.isfile(f)]
         log.debug(LOG_CHECK, "reading configuration from %s", cfiles)
@@ -372,10 +366,16 @@ class Configuration (dict):
             self['storecookies'] = self['sendcookies'] = True
 
 
-def copy_sys_config (syspath, userpath):
-    """Try to copy the system configuration to the user configuration
-    if not already done."""
+def get_standard_config_files ():
+    """Try to generate user configuration file from the system wide
+    configuration.
+    Returns tuple (system config file, user config file)."""
+    # system wide config settings
+    syspath = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
+    # per user config settings
+    userpath = normpath("~/.linkchecker/linkcheckerrc")
     if os.path.isfile(syspath) and not os.path.exists(userpath):
+        # copy the system configuration to the user configuration
         try:
             userdir = os.path.dirname(userpath)
             if not os.path.exists(userdir):
@@ -384,3 +384,4 @@ def copy_sys_config (syspath, userpath):
         except StandardError, msg:
             log.warn(LOG_CHECK, "could not copy system config from %r to %r",
                      syspath, userpath)
+    return (syspath, userpath)
