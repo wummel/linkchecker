@@ -15,7 +15,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from PyQt4 import Qsci, QtGui
+from PyQt4 import Qsci, QtGui, QtCore
 from .linkchecker_ui_editor import Ui_EditorDialog
 
 
@@ -23,7 +23,7 @@ ContentTypeLexers = {
     "application/x-shellscript": Qsci.QsciLexerBash,
     "application/x-sh": Qsci.QsciLexerBash,
     "application/x-msdos-program": Qsci.QsciLexerBatch,
-    "": Qsci.QsciLexerCMake,
+    #"": Qsci.QsciLexerCMake,
     "text/x-c++src": Qsci.QsciLexerCPP,
     "text/css": Qsci.QsciLexerCSS,
     #"": Qsci.QsciLexerCSharp,
@@ -41,8 +41,8 @@ ContentTypeLexers = {
     #"": Qsci.QsciLexerPOV,
     "text/x-pascal": Qsci.QsciLexerPascal,
     "text/x-perl": Qsci.QsciLexerPerl,
-    "": Qsci.QsciLexerPostScript,
-    "": Qsci.QsciLexerProperties,
+    "application/postscript": Qsci.QsciLexerPostScript,
+    "text/plain+ini": Qsci.QsciLexerProperties,
     "text/x-python": Qsci.QsciLexerPython,
     "application/x-ruby": Qsci.QsciLexerRuby,
     #"": Qsci.QsciLexerSQL,
@@ -94,18 +94,19 @@ class Editor (Qsci.QsciScintilla):
         # folding margin colors (foreground,background)
         self.setFoldMarginColors(QtGui.QColor("#f5f5dc"),QtGui.QColor("#aaaaaa"))
 
-        # No editing (yet) in this window, since the source is taken
-        # from an online URL.
-        # XXX allow editing and saving to a local file.
-        self.setReadOnly(True)
 
 class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
 
     def __init__ (self, parent=None):
         super(EditorWindow, self).__init__(parent)
         self.setupUi(self)
-        self.editor = Editor(parent=self)
-        self.verticalLayout.addWidget(self.editor)
+        # filename used for saving
+        self.filename = None
+        # the Scintilla editor widget
+        self.editor = Editor(parent=self.frame)
+        layout = QtGui.QVBoxLayout(self.frame)
+        layout.setMargin(0)
+        layout.addWidget(self.editor)
         # for debugging
         #self.setText(("1234567890"*8) + "\n<html><head>\n<title>x</title>\n</head>\n")
         #lexer = Qsci.QsciLexerHTML()
@@ -128,3 +129,55 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
     def setText (self, text, line=1, col=1):
         self.editor.setText(text)
         self.editor.setCursorPosition(line-1, col-1)
+        self.editor.setModified(False)
+
+    @QtCore.pyqtSignature("")
+    def on_actionSave_triggered (self):
+        """Save editor contents."""
+        if self.editor.isModified() or not self.filename:
+            self.save()
+
+    def save (self):
+        if not self.filename:
+            res = QtGui.QFileDialog.getSaveFileName(self, "Save File As")
+            if not res:
+                return
+            self.filename = res
+            self.setWindowTitle(self.filename)
+        fh = None
+        try:
+            try:
+                fh = QtCore.QFile(self.filename)
+                if not fh.open(QtCore.QIODevice.WriteOnly):
+                    raise IOError(fh.errorString())
+                stream = QtCore.QTextStream(fh)
+                stream.setCodec("UTF-8")
+                stream << self.editor.text()
+                self.editor.setModified(False)
+            except (IOError, OSError), e:
+                err = QtGui.QMessageBox(self)
+                err.setText(str(e))
+                err.exec_()
+        finally:
+            if fh is not None:
+                fh.close()
+
+    def load (self, filename):
+        self.filename = filename
+        self.setWindowTitle(self.filename)
+        fh = None
+        try:
+            try:
+                fh = QtCore.QFile(self.filename)
+                if not fh.open(QtCore.QIODevice.ReadOnly):
+                    raise IOError(fh.errorString())
+                stream = QtCore.QTextStream(fh)
+                stream.setCodec("UTF-8")
+                self.setText(stream.readAll())
+            except (IOError, OSError), e:
+                err = QtGui.QMessageBox(self)
+                err.setText(str(e))
+                err.exec_()
+        finally:
+            if fh is not None:
+                fh.close()
