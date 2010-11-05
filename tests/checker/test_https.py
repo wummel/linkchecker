@@ -29,12 +29,15 @@ class TestHttps (LinkCheckTest):
     @need_network
     def test_https (self):
         url = u"https://www.amazon.de/"
+        rurl = u"http://www.amazon.de/b"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
-            u"real url %s" % url,
+            u"real url %s" % rurl,
             u"info Amazon servers block HTTP HEAD requests.",
             u"info Using GET method for Amazon server.",
-            u"valid",
+            u"info Redirected to `%s'." % rurl,
+            u"warning HTTP 301 (moved permanent) encountered: you should update this link.",
+            u"error",
         ]
         self.direct(url, resultlines)
