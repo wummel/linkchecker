@@ -15,9 +15,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import os
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_options import Ui_Options
+from .editor import EditorWindow
 from .. import configuration
+
 
 class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
     """Hold options for current URL to check."""
@@ -25,17 +28,67 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
     def __init__ (self, parent=None):
         super(LinkCheckerOptions, self).__init__(parent)
         self.setupUi(self)
+        self.editor = EditorWindow(self)
         self.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.reset)
         self.connect(self.closeButton, QtCore.SIGNAL("clicked()"), self.close)
+        self.connect(self.sys_config_button, QtCore.SIGNAL("clicked()"), self.edit_sys_config)
+        self.connect(self.user_config_button, QtCore.SIGNAL("clicked()"), self.edit_user_config)
         self.reset()
 
     def reset (self):
-        """Reset options to default values from config file."""
+        """Reset GUI and config options."""
         config = configuration.Configuration()
-        config.read()
+        files = configuration.get_standard_config_files()
+        self.sys_config, self.user_config = files
+        config.read(files)
+        self.reset_gui_options(config)
+        self.reset_config_options()
+
+    def reset_gui_options (self, config):
+        """Reset GUI options to default values from config."""
         self.recursionlevel.setValue(config["recursionlevel"])
         self.verbose.setChecked(config["verbose"])
         self.threads.setValue(config["threads"])
         self.timeout.setValue(config["timeout"])
         self.debug.setChecked(False)
         del config
+
+    def reset_config_options (self):
+        """Reset configuration file edit buttons."""
+        self.sys_config_writable = os.access(self.sys_config, os.W_OK)
+        self.user_config_writable = os.access(self.user_config, os.W_OK)
+        set_edit_button(self.sys_config, self.sys_config_button,
+                        self.sys_config_writable)
+        set_edit_button(self.user_config, self.user_config_button,
+                        self.user_config_writable)
+
+    def edit_sys_config (self):
+        return start_editor(self.sys_config, self.sys_config_writable,
+                            self.editor)
+
+    def edit_user_config (self):
+        return start_editor(self.user_config, self.user_config_writable,
+                            self.editor)
+
+
+def start_editor (filename, writable, editor):
+    if not os.path.isfile(filename):
+        # file vanished
+        return
+    editor.load(filename)
+    editor.setContentType("text/plain+ini")
+    editor.editor.setReadOnly(not writable)
+    editor.show()
+
+
+def set_edit_button (filename, button, writable):
+    button.setToolTip(filename)
+    if os.path.isfile(filename):
+        button.setEnabled(True)
+        if writable:
+            button.setText(_(u"Edit"))
+        else:
+            button.setText(_(u"Read"))
+    else:
+        button.setEnabled(False)
+        button.setText(_(u"File not found"))

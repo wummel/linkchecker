@@ -17,6 +17,9 @@ Changes:
 
 Features:
 - gui: Add command to save the parent URL source in a local file.
+- gui: Show configuration files in option dialog and allow them to
+  be edited.
+  Closes: SF bug #3102201
 
 5.4 "How to train your dragon" (released 26.10.2010)
 

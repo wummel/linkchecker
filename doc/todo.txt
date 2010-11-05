@@ -1,6 +1,5 @@
-- [GUI] Allow login URL to be configured.
 - [GUI] Show detailed URL properties
-- [GUI] Save options in qsettings or in external file (for each URL?).
+- [LOGGING] check dot/gml graph format with gephi
 - [PYTHON26]
   linkcheck/httplib2.py:1218: DeprecationWarning: socket.ssl() is deprecated.
   Use ssl.wrap_socket() instead.

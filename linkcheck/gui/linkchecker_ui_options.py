@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Thu Oct 14 21:28:53 2010
+# Created: Fri Nov  5 00:08:22 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,10 +12,18 @@ from PyQt4 import QtCore, QtGui
 class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName("Options")
-        Options.resize(299, 179)
+        Options.setWindowModality(QtCore.Qt.ApplicationModal)
+        Options.resize(271, 240)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.frame = QtGui.QFrame(Options)
+        self.tabWidget = QtGui.QTabWidget(Options)
+        self.tabWidget.setObjectName("tabWidget")
+        self.gui_options = QtGui.QWidget()
+        self.gui_options.setToolTip("")
+        self.gui_options.setObjectName("gui_options")
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.gui_options)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.frame = QtGui.QFrame(self.gui_options)
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -63,8 +71,10 @@ class Ui_Options(object):
         self.debug.setText("")
         self.debug.setObjectName("debug")
         self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.debug)
-        self.verticalLayout.addWidget(self.frame)
-        self.widget = QtGui.QWidget(Options)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.formLayout.setItem(5, QtGui.QFormLayout.LabelRole, spacerItem)
+        self.verticalLayout_3.addWidget(self.frame)
+        self.widget = QtGui.QWidget(self.gui_options)
         self.widget.setObjectName("widget")
         self.horizontalLayout = QtGui.QHBoxLayout(self.widget)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -74,13 +84,55 @@ class Ui_Options(object):
         self.closeButton = QtGui.QPushButton(self.widget)
         self.closeButton.setObjectName("closeButton")
         self.horizontalLayout.addWidget(self.closeButton)
-        self.verticalLayout.addWidget(self.widget)
+        self.verticalLayout_3.addWidget(self.widget)
+        self.tabWidget.addTab(self.gui_options, "")
+        self.config_options = QtGui.QWidget()
+        self.config_options.setObjectName("config_options")
+        self.verticalLayout_5 = QtGui.QVBoxLayout(self.config_options)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.frame_2 = QtGui.QFrame(self.config_options)
+        self.frame_2.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.verticalLayout_4 = QtGui.QVBoxLayout(self.frame_2)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.label_6 = QtGui.QLabel(self.frame_2)
+        self.label_6.setToolTip("")
+        self.label_6.setObjectName("label_6")
+        self.verticalLayout_4.addWidget(self.label_6)
+        self.sys_config_button = QtGui.QPushButton(self.frame_2)
+        self.sys_config_button.setEnabled(False)
+        self.sys_config_button.setToolTip("")
+        self.sys_config_button.setObjectName("sys_config_button")
+        self.verticalLayout_4.addWidget(self.sys_config_button)
+        spacerItem1 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.verticalLayout_4.addItem(spacerItem1)
+        self.label_7 = QtGui.QLabel(self.frame_2)
+        self.label_7.setObjectName("label_7")
+        self.verticalLayout_4.addWidget(self.label_7)
+        self.user_config_button = QtGui.QPushButton(self.frame_2)
+        self.user_config_button.setEnabled(False)
+        self.user_config_button.setToolTip("")
+        self.user_config_button.setObjectName("user_config_button")
+        self.verticalLayout_4.addWidget(self.user_config_button)
+        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_4.addItem(spacerItem2)
+        self.verticalLayout_5.addWidget(self.frame_2)
+        self.tabWidget.addTab(self.config_options, "")
+        self.verticalLayout.addWidget(self.tabWidget)
 
         self.retranslateUi(Options)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Options)
 
     def retranslateUi(self, Options):
         Options.setWindowTitle(_("Dialog"))
+        self.tabWidget.setToolTip(QtGui.QApplication.translate("Options", "The most common GUI options are configurable\n"
+"directly in a dialog. They override any configuration\n"
+"file settings.\n"
+"\n"
+"The configuration files can be edited with an\n"
+"integrated text editor.", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setToolTip(_("Check recursively all links up to given depth. A negative depth will enable infinite recursion."))
         self.label.setText(_("Recursive depth"))
         self.recursionlevel.setToolTip(_("Check recursively all links up to given depth. A negative depth will enable infinite recursion."))
@@ -98,4 +150,12 @@ class Ui_Options(object):
         self.resetButton.setToolTip(_("Reset all options to default values."))
         self.resetButton.setText(_("Reset"))
         self.closeButton.setText(_("Close"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.gui_options), _("GUI options"))
+        self.config_options.setToolTip(_("Test"))
+        self.label_6.setText(_("System wide configuration file"))
+        self.sys_config_button.setText(_("Edit"))
+        self.label_7.setToolTip(_("Overrides system wide configuration file settings."))
+        self.label_7.setText(_("User specific configuration file"))
+        self.user_config_button.setText(_("Edit"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.config_options), _("Config files"))
 
