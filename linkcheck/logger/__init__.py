@@ -37,9 +37,9 @@ Fields = dict(
     extern=_("Extern"),
     info=_("Info"),
     warning=_("Warning"),
-    dltime=_("D/L Time"),
+    dltime=_("D/L time"),
     dlsize=_("Size"),
-    checktime=_("Check Time"),
+    checktime=_("Check time"),
     url=_("URL"),
 )
 del _
