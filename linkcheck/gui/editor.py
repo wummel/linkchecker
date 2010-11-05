@@ -15,6 +15,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import os
 from PyQt4 import Qsci, QtGui, QtCore
 from .linkchecker_ui_editor import Ui_EditorDialog
 
@@ -144,6 +145,10 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 return
             self.filename = res
             self.setWindowTitle(self.filename)
+        if not os.path.isfile(self.filename):
+            return
+        if not os.access(self.filename, os.W_OK):
+            return
         fh = None
         try:
             try:
@@ -163,6 +168,10 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 fh.close()
 
     def load (self, filename):
+        if not os.path.isfile(filename):
+            return
+        if not os.access(filename, os.R_OK):
+            return
         self.filename = filename
         self.setWindowTitle(self.filename)
         fh = None
