@@ -220,6 +220,14 @@
     <string>Debug</string>
    </property>
   </action>
+  <action name="actionViewProperties">
+   <property name="text">
+    <string>View properties</string>
+   </property>
+   <property name="toolTip">
+    <string>View URL properties</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../rc/linkchecker.qrc"/>

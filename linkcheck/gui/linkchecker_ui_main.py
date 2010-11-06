@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Nov  6 08:16:24 2010
+# Created: Sat Nov  6 11:08:36 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -98,6 +98,8 @@ class Ui_MainWindow(object):
         self.actionViewParentSource.setObjectName("actionViewParentSource")
         self.actionDebug = QtGui.QAction(MainWindow)
         self.actionDebug.setObjectName("actionDebug")
+        self.actionViewProperties = QtGui.QAction(MainWindow)
+        self.actionViewProperties.setObjectName("actionViewProperties")
         self.menuLinkChecka.addAction(self.actionQuit)
         self.menuEdit.addAction(self.actionOptions)
         self.menuHelp.addAction(self.actionAbout)
@@ -134,5 +136,7 @@ class Ui_MainWindow(object):
         self.actionViewParentSource.setText(_("View parent source"))
         self.actionViewParentSource.setToolTip(_("View parent URL source"))
         self.actionDebug.setText(_("Debug"))
+        self.actionViewProperties.setText(_("View properties"))
+        self.actionViewProperties.setToolTip(_("View URL properties"))
 
 import linkchecker_rc
