@@ -22,11 +22,13 @@ from . import LinkCheckTest
 
 # Changes often, as servers tend to get invalid. Thus it is necessary
 # to enable the has_newsserver() resource manually.
-NNTP_SERVER = "freenews.netfront.net"
+#NNTP_SERVER = "infosun2.rus.uni-stuttgart.de"
+NNTP_SERVER = "news.uni-stuttgart.de"
 # info string returned by news server
-NNTP_INFO = u"200 news.netfront.net InterNetNews NNRP server INN 2.4.6 (20090304 snapshot) ready (posting ok)."
+NNTP_INFO = u"201 news.uni-stuttgart.de InterNetNews NNRP server " \
+            u"INN 2.4.4 (20060818 snapshot) ready (no posting)."
 # Most free NNTP servers are slow, so don't waist a lot of time running those.
-NNTP_TIMEOUT_SECS = 8
+NNTP_TIMEOUT_SECS = 30
 
 
 class TestNews (LinkCheckTest):
@@ -35,7 +37,6 @@ class TestNews (LinkCheckTest):
     def newstest (self, url, resultlines):
         self.direct(url, resultlines)
 
-    @need_newsserver(NNTP_SERVER)
     def test_news_without_host (self):
         # news testing
         url = u"news:comp.os.linux.misc"
@@ -58,7 +59,6 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver(NNTP_SERVER)
     def test_snews_with_group (self):
         url = u"snews:de.comp.os.unix.linux.misc"
         nurl = self.norm(url)
@@ -71,7 +71,6 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver(NNTP_SERVER)
     def test_illegal_syntax (self):
         # illegal syntax
         url = u"news:§$%&/´`(§%"
@@ -113,7 +112,6 @@ class TestNews (LinkCheckTest):
         ]
         self.newstest(url, resultlines)
 
-    @need_newsserver(NNTP_SERVER)
     def test_article_span_no_host (self):
         url = u"news:comp.lang.python/1-5"
         resultlines = [
