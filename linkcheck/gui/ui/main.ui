@@ -146,6 +146,10 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -154,11 +158,19 @@
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/about.png</normaloff>:/icons/about.png</iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
   </action>
   <action name="actionHelp">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/help.png</normaloff>:/icons/help.png</iconset>
+   </property>
    <property name="text">
     <string>Help</string>
    </property>
@@ -176,11 +188,19 @@
    </property>
   </action>
   <action name="actionOptions">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/preferences.png</normaloff>:/icons/preferences.png</iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionCopyToClipboard">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+   </property>
    <property name="text">
     <string>Copy to clipboard</string>
    </property>

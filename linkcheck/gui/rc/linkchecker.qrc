@@ -1,5 +1,9 @@
 <RCC>
-  <qresource prefix="icons" >
+  <qresource prefix="icons">
+    <file>copy.png</file>
+    <file>about.png</file>
+    <file>help.png</file>
+    <file>exit.png</file>
     <file>online.png</file>
     <file>app.png</file>
     <file>cancel.png</file>

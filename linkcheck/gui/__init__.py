@@ -120,7 +120,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.treeView.setColumnWidth(1, 200)
         self.treeView.setColumnWidth(2, 200)
         self.treeView.setColumnWidth(3, 150)
-        #self.setForeground(4, QtGui.QBrush(url_item.color))
         self.treeView.setSortingEnabled(True)
         self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
         self.num = 0
