@@ -270,8 +270,8 @@ class Logger (object):
                      "time": strformat.strtime(self.starttime)})
         self.comment(_("Get the newest version at %(url)s") %
                      {'url': configuration.Url})
-        self.comment(_("Write comments and bugs to %(email)s") %
-                     {'email': configuration.Email})
+        self.comment(_("Write comments and bugs to %(url)s") %
+                     {'url': configuration.SupportUrl})
         self.check_date()
 
     def write_outro (self):

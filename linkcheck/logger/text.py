@@ -99,8 +99,8 @@ class TextLogger (Logger):
             self.writeln(configuration.Freeware)
             self.writeln(_("Get the newest version at %(url)s") %
                          {'url': configuration.Url})
-            self.writeln(_("Write comments and bugs to %(email)s") %
-                         {'email': configuration.Email})
+            self.writeln(_("Write comments and bugs to %(url)s") %
+                         {'url': configuration.SupportUrl})
             self.check_date()
             self.writeln()
             self.writeln(_("Start checking at %s") %

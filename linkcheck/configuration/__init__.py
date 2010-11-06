@@ -40,6 +40,7 @@ HtmlCopyright = u"Copyright &copy; 2000-2010 "+HtmlAuthor
 AppInfo = App+u"              "+Copyright
 HtmlAppInfo = App+u", "+HtmlCopyright
 Url = configdata.url
+SupportUrl = u"http://sourceforge.net/projects/linkchecker/support"
 Email = configdata.author_email
 UserAgent = u"%s/%s (+%s)" % (AppName, Version, Url)
 Freeware = AppName+u""" comes with ABSOLUTELY NO WARRANTY!

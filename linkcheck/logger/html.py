@@ -311,7 +311,7 @@ class HtmlLogger (Logger):
                (u'<a href="'+configuration.Url+u'" target="_top">'+
                 configuration.Url+u"</a>.<br>"))
             self.writeln(_("Write comments and bugs to %s") %
-               (u'<a href="mailto:'+configuration.Email+u'">'+
-                configuration.Email+u"</a>."))
+               (u'<a href="'+configuration.SupportUrl+u'">'+
+                configuration.SupportUrl+u"</a>."))
             self.writeln(u"</small></body></html>")
         self.close_fileoutput()
