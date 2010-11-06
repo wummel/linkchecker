@@ -81,6 +81,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect_widgets()
         self.init_config()
         self.status = Status.idle
+        self.set_statusbar(_("Ready."))
 
     def get_qhcpath (self):
         paths = [
@@ -133,7 +134,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.progress.hide()
             self.aggregate = None
             self.controlButton.setEnabled(True)
-            self.set_statusbar(_("Ready."))
         elif status == Status.checking:
             self.num = 0
             self.debug.reset()
