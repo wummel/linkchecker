@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Thu Oct 14 21:04:29 2010
+# Created: Sat Nov  6 07:03:42 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,16 +50,16 @@ class Ui_MainWindow(object):
         self.controlButton.setObjectName("controlButton")
         self.horizontalLayout_3.addWidget(self.controlButton)
         self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
-        self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
-        self.treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.treeWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.treeWidget.setAlternatingRowColors(True)
-        self.treeWidget.setUniformRowHeights(True)
-        self.treeWidget.setItemsExpandable(False)
-        self.treeWidget.setAllColumnsShowFocus(True)
-        self.treeWidget.setExpandsOnDoubleClick(False)
-        self.treeWidget.setObjectName("treeWidget")
-        self.gridLayout.addWidget(self.treeWidget, 1, 0, 1, 2)
+        self.treeView = QtGui.QTreeView(self.centralwidget)
+        self.treeView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.treeView.setAlternatingRowColors(True)
+        self.treeView.setUniformRowHeights(True)
+        self.treeView.setItemsExpandable(False)
+        self.treeView.setSortingEnabled(True)
+        self.treeView.setAllColumnsShowFocus(True)
+        self.treeView.setExpandsOnDoubleClick(False)
+        self.treeView.setObjectName("treeView")
+        self.gridLayout.addWidget(self.treeView, 1, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 638, 21))
@@ -115,12 +115,6 @@ class Ui_MainWindow(object):
         self.label.setText(_("URL"))
         self.controlButton.setToolTip(_("Start checking the given URL."))
         self.controlButton.setText(_("Start"))
-        self.treeWidget.setSortingEnabled(True)
-        self.treeWidget.headerItem().setText(0, _("#"))
-        self.treeWidget.headerItem().setText(1, _("Parent"))
-        self.treeWidget.headerItem().setText(2, _("Url"))
-        self.treeWidget.headerItem().setText(3, _("Name"))
-        self.treeWidget.headerItem().setText(4, _("Result"))
         self.menuLinkChecka.setTitle(_("File"))
         self.menuEdit.setTitle(_("Edit"))
         self.menuHelp.setTitle(_("Help"))

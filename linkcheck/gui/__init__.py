@@ -28,6 +28,7 @@ from .options import LinkCheckerOptions
 from .checker import CheckerThread
 from .contextmenu import ContextMenu
 from .editor import EditorWindow
+from .urlmodel import UrlItem, UrlItemModel
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat, fileutil
 from ..containers import enum
@@ -82,8 +83,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.editor = EditorWindow(parent=self)
         # Note: we can't use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
-        # setup this widget
-        self.init_treewidget()
+        self.init_treeview()
         self.read_settings()
         self.connect_widgets()
         self.init_config()
@@ -120,13 +120,16 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
         self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
 
-    def init_treewidget (self):
-        self.treeWidget.setColumnHidden(0, True)
-        self.treeWidget.setColumnWidth(1, 200)
-        self.treeWidget.setColumnWidth(2, 200)
-        self.treeWidget.setColumnWidth(3, 150)
-        self.treeWidget.setSortingEnabled(True)
-        self.treeWidget.sortByColumn(0, QtCore.Qt.AscendingOrder)
+    def init_treeview (self):
+        self.model = UrlItemModel()
+        self.treeView.setModel(self.model)
+        self.treeView.setColumnHidden(0, True)
+        self.treeView.setColumnWidth(1, 200)
+        self.treeView.setColumnWidth(2, 200)
+        self.treeView.setColumnWidth(3, 150)
+        #self.setForeground(4, QtGui.QBrush(url_item.color))
+        self.treeView.setSortingEnabled(True)
+        self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
         self.num = 0
 
     def get_status (self):
@@ -211,7 +214,7 @@ Version 2 or later.</p>
     def check (self):
         """Check given URL."""
         self.controlButton.setEnabled(False)
-        self.treeWidget.clear()
+        self.model.clear()
         self.set_config()
         aggregate = director.get_aggregate(self.config)
         url = unicode(self.urlinput.text()).strip()
@@ -263,44 +266,16 @@ Version 2 or later.</p>
 
     def log_url (self, url_data):
         """Add URL data to tree widget."""
-        num = u"%09d" % self.num
-        if url_data.parent_url:
-            parent = unicode(url_data.parent_url) + \
-                (_(", line %d") % url_data.line) + \
-                (_(", col %d") % url_data.column)
-        else:
-            parent = u""
-        url = unicode(url_data.url)
-        name = url_data.name
-        if url_data.valid:
-            if url_data.warnings:
-                color = QtCore.Qt.darkYellow
-            else:
-                color = QtCore.Qt.darkGreen
-            result = u"Valid"
-        else:
-            color = QtCore.Qt.darkRed
-            result = u"Error"
-        if url_data.result:
-            result += u": %s" % url_data.result
-        item = QtGui.QTreeWidgetItem((num, parent, url, name, result))
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-        item.setForeground(4, QtGui.QBrush(color))
-        item.setToolTip(2, url)
-        item.setToolTip(3, name)
-        if url_data.warnings:
-            text = u"\n".join(url_data.warnings)
-            item.setToolTip(4, strformat.wrap(text, 60))
-        self.treeWidget.addTopLevelItem(item)
+        self.model.addUrlItem(UrlItem(url_data, self.num))
         self.num += 1
 
-    def on_treeWidget_itemDoubleClicked (self, item, column):
+    def on_treeView_itemDoubleClicked (self, item, column):
         """View property page."""
         pass # XXX todo
 
-    def on_treeWidget_customContextMenuRequested (self, point):
+    def on_treeView_customContextMenuRequested (self, point):
         """Show item context menu."""
-        item = self.treeWidget.itemAt(point)
+        item = self.treeView.itemAt(point)
         if item is not None:
             self.contextmenu.enableFromItem(item)
             self.contextmenu.popup(QtGui.QCursor.pos())
@@ -308,7 +283,7 @@ Version 2 or later.</p>
     @QtCore.pyqtSignature("")
     def on_actionViewOnline_triggered (self):
         """View item URL online."""
-        item = self.treeWidget.currentItem()
+        item = self.treeView.currentItem()
         if item is not None:
             url = str(item.text(2))
             webbrowser.open(url)
@@ -316,7 +291,7 @@ Version 2 or later.</p>
     @QtCore.pyqtSignature("")
     def on_actionViewParentOnline_triggered (self):
         """View item parent URL online."""
-        item = self.treeWidget.currentItem()
+        item = self.treeView.currentItem()
         if item is not None:
             parenturl, line, col = get_parent_url(str(item.text(1)))
             webbrowser.open(parenturl)
@@ -324,7 +299,7 @@ Version 2 or later.</p>
     @QtCore.pyqtSignature("")
     def on_actionViewParentSource_triggered (self):
         """View item parent URL source in local text editor (read-only)."""
-        item = self.treeWidget.currentItem()
+        item = self.treeView.currentItem()
         if item is not None:
             # XXX simplify this once a proper model is stored
             parenturl, line, col = get_parent_url(str(item.text(1)))
@@ -348,7 +323,7 @@ Version 2 or later.</p>
     @QtCore.pyqtSignature("")
     def on_actionCopyToClipboard_triggered (self):
         """Copy item URL to clipboard."""
-        item = self.treeWidget.currentItem()
+        item = self.treeView.currentItem()
         if item is not None:
             url = str(item.text(2))
             clipboard = QtGui.QApplication.clipboard()
