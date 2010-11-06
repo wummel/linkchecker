@@ -9,6 +9,7 @@ Fixes:
 - logging: Avoid error when logger fields "intro" or "outro" are
   configured.
 - logging: Correctly quote edge labels and remove whitespace.
+- checking: Fix checking for external domain after HTTP redirection.
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.
@@ -25,6 +26,7 @@ Features:
   be edited.
   Closes: SF bug #3102201
 - gui: Show detailed URL properties on double click.
+
 
 5.4 "How to train your dragon" (released 26.10.2010)
 

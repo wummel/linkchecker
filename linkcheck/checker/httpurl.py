@@ -298,14 +298,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if urlparts[1] != self.urlparts[1]:
                 # check extern filter again
                 self.set_extern(redirected)
-                if self.extern[0] and self.extern[0]:
+                if self.extern[0] and self.extern[1]:
                     if set_result:
                         self.check301status(response)
                         self.add_info(
                              _("The redirected URL is outside of the domain "
                                "filter, checked only syntax."))
                         self.set_result(u"filtered")
-                return -1, response
+                    return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
                 if set_result:
