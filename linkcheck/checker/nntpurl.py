@@ -74,26 +74,28 @@ class NntpUrl (urlbase.UrlBase):
         """
         tries = 0
         nntp = value = None
-        while tries < 3:
+        while tries < 2:
             tries += 1
             try:
                 nntp = nntplib.NNTP(nntpserver, usenetrc=False)
-            except nntplib.error_perm:
-                value = sys.exc_info()[1]
-                if re.compile("^50[45]").search(str(value)):
-                    time.sleep(random.randrange(10, 30))
+            except nntplib.NNTPTemporaryError:
+                self.wait()
+            except nntplib.NNTPPermanentError, msg:
+                if re.compile("^50[45]").search(str(msg)):
+                    self.wait()
                 else:
                     raise
         if nntp is None:
             raise LinkCheckerError(
                _("NNTP server too busy; tried more than %d times.") % tries)
-        if value is not None:
-            self.add_warning(_("NNTP busy: %(msg)s.") % {"msg": str(value)},
-                             tag=WARN_NNTP_BUSY)
         if log.is_debug(LOG_CHECK):
             nntp.set_debuglevel(1)
         self.add_info(nntp.getwelcome())
         return nntp
+
+    def wait (self):
+        """Wait some time before trying to connect again."""
+        time.sleep(random.randrange(10, 30))
 
     def can_get_content (self):
         """
