@@ -257,7 +257,7 @@ Version 2 or later.</p>
         self.config["verbose"] = self.options.verbose.isChecked()
         self.config["timeout"] = self.options.timeout.value()
         self.config["threads"] = self.options.threads.value()
-        if self.options.debug:
+        if self.options.debug.isChecked():
             self.config.set_debug(["all"])
             # make sure at least one thread is used
             self.config["threads"] = 1
