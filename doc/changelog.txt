@@ -20,6 +20,7 @@ Features:
 - gui: Show configuration files in option dialog and allow them to
   be edited.
   Closes: SF bug #3102201
+- gui: Show detailed URL properties on double click.
 
 5.4 "How to train your dragon" (released 26.10.2010)
 
