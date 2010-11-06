@@ -148,19 +148,19 @@
         <widget class="QWidget" name="widget" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
+           <widget class="QPushButton" name="closeButton">
+            <property name="text">
+             <string>Ok</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="resetButton">
             <property name="toolTip">
              <string>Reset all options to default values.</string>
             </property>
             <property name="text">
              <string>Reset</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="closeButton">
-            <property name="text">
-             <string>Close</string>
             </property>
            </widget>
           </item>
@@ -212,7 +212,7 @@
              <string extracomment="Test"/>
             </property>
             <property name="text">
-             <string>System wide configuration file</string>
+             <string>System configuration file</string>
             </property>
            </widget>
           </item>
@@ -248,7 +248,11 @@
              <string>Overrides system wide configuration file settings.</string>
             </property>
             <property name="text">
-             <string>User specific configuration file</string>
+             <string>User configuration file
+(overrides system configuration)</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Nov  6 14:00:53 2010
+# Created: Sat Nov  6 19:57:39 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,11 +28,13 @@ class Ui_MainWindow(object):
         self.gridLayout.setMargin(4)
         self.gridLayout.setVerticalSpacing(3)
         self.gridLayout.setObjectName("gridLayout")
-        self.label = QtGui.QLabel(self.centralwidget)
-        self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.label = QtGui.QLabel(self.centralwidget)
+        self.label.setObjectName("label")
+        self.horizontalLayout_3.addWidget(self.label)
+        spacerItem = QtGui.QSpacerItem(4, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem)
         self.urlinput = QtGui.QLineEdit(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
@@ -41,8 +43,8 @@ class Ui_MainWindow(object):
         self.urlinput.setSizePolicy(sizePolicy)
         self.urlinput.setObjectName("urlinput")
         self.horizontalLayout_3.addWidget(self.urlinput)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem1)
         self.controlButton = QtGui.QPushButton(self.centralwidget)
         self.controlButton.setStatusTip("")
         icon1 = QtGui.QIcon()

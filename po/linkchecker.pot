@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2010-11-06 18:01+0100\n"
+"POT-Creation-Date: 2010-11-06 20:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: ../linkcheck/logger/__init__.py:43
 #: ../linkcheck/gui/linkchecker_ui_properties.py:210
-#: ../linkcheck/gui/urlmodel.py:22 ../linkcheck/gui/linkchecker_ui_main.py:135
+#: ../linkcheck/gui/urlmodel.py:22 ../linkcheck/gui/linkchecker_ui_main.py:137
 msgid "URL"
 msgstr ""
 
@@ -603,6 +603,7 @@ msgstr ""
 
 #: ../linkcheck/checker/mailtourl.py:282
 #: ../linkcheck/gui/linkchecker_ui_properties.py:220
+#: ../linkcheck/gui/linkchecker_ui_options.py:144
 msgid "Ok"
 msgstr ""
 
@@ -886,7 +887,7 @@ msgid "LinkChecker source view"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_editor.py:51
-#: ../linkcheck/gui/linkchecker_ui_main.py:138
+#: ../linkcheck/gui/linkchecker_ui_main.py:140
 msgid "File"
 msgstr ""
 
@@ -899,9 +900,9 @@ msgid "LinkChecker URL properties"
 msgstr ""
 
 #: ../linkcheck/gui/options.py:87
-#: ../linkcheck/gui/linkchecker_ui_options.py:149
-#: ../linkcheck/gui/linkchecker_ui_options.py:152
-#: ../linkcheck/gui/linkchecker_ui_main.py:139
+#: ../linkcheck/gui/linkchecker_ui_options.py:150
+#: ../linkcheck/gui/linkchecker_ui_options.py:154
+#: ../linkcheck/gui/linkchecker_ui_main.py:141
 msgid "Edit"
 msgstr ""
 
@@ -943,74 +944,66 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:134
+#: ../linkcheck/gui/linkchecker_ui_options.py:135
 msgid "Dialog"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:135
+#: ../linkcheck/gui/linkchecker_ui_options.py:136
 msgid ""
 "The most common check options are configurable. They override any "
 "configuration file settings."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:136
-#: ../linkcheck/gui/linkchecker_ui_options.py:138
+#: ../linkcheck/gui/linkchecker_ui_options.py:137
+#: ../linkcheck/gui/linkchecker_ui_options.py:139
 msgid ""
 "Check recursively all links up to given depth. A negative depth will enable "
 "infinite recursion."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:137
+#: ../linkcheck/gui/linkchecker_ui_options.py:138
 msgid "Recursive depth"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:139
-#: ../linkcheck/gui/linkchecker_ui_options.py:141
+#: ../linkcheck/gui/linkchecker_ui_options.py:140
+#: ../linkcheck/gui/linkchecker_ui_options.py:142
 msgid "Log all checked URLs once. Default is to log only errors and warnings."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:140
+#: ../linkcheck/gui/linkchecker_ui_options.py:141
 msgid "Verbose output"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:142
-#: ../linkcheck/gui/linkchecker_ui_main.py:155
+#: ../linkcheck/gui/linkchecker_ui_options.py:143
+#: ../linkcheck/gui/linkchecker_ui_main.py:157
 msgid "Debug"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:143
+#: ../linkcheck/gui/linkchecker_ui_options.py:145
 msgid "Reset all options to default values."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:144
+#: ../linkcheck/gui/linkchecker_ui_options.py:146
 msgid "Reset"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:145
-msgid "Close"
-msgstr ""
-
-#: ../linkcheck/gui/linkchecker_ui_options.py:146
+#: ../linkcheck/gui/linkchecker_ui_options.py:147
 msgid "GUI options"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:147
+#: ../linkcheck/gui/linkchecker_ui_options.py:148
 msgid "The configuration files can be edited with an integrated text editor."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:148
-msgid "System wide configuration file"
-msgstr ""
-
-#: ../linkcheck/gui/linkchecker_ui_options.py:150
-msgid "Overrides system wide configuration file settings."
+#: ../linkcheck/gui/linkchecker_ui_options.py:149
+msgid "System configuration file"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_options.py:151
-msgid "User specific configuration file"
+msgid "Overrides system wide configuration file settings."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:153
+#: ../linkcheck/gui/linkchecker_ui_options.py:155
 msgid "Configuration files"
 msgstr ""
 
@@ -1026,7 +1019,7 @@ msgstr ""
 msgid "Parent"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:136
+#: ../linkcheck/gui/__init__.py:84
 msgid "Ready."
 msgstr ""
 
@@ -1065,81 +1058,81 @@ msgstr ""
 msgid "Closing pending connections..."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:134
+#: ../linkcheck/gui/linkchecker_ui_main.py:136
 msgid "LinkChecker"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:136
+#: ../linkcheck/gui/linkchecker_ui_main.py:138
 msgid "Start checking the given URL."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:137
+#: ../linkcheck/gui/linkchecker_ui_main.py:139
 msgid "Start"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:140
-#: ../linkcheck/gui/linkchecker_ui_main.py:144
+#: ../linkcheck/gui/linkchecker_ui_main.py:142
+#: ../linkcheck/gui/linkchecker_ui_main.py:146
 msgid "Help"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:141
+#: ../linkcheck/gui/linkchecker_ui_main.py:143
 msgid "Quit"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:142
+#: ../linkcheck/gui/linkchecker_ui_main.py:144
 msgid "Ctrl+Q"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:143
+#: ../linkcheck/gui/linkchecker_ui_main.py:145
 msgid "About"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:145
+#: ../linkcheck/gui/linkchecker_ui_main.py:147
 msgid "View online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:146
+#: ../linkcheck/gui/linkchecker_ui_main.py:148
 msgid "View URL online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:147
+#: ../linkcheck/gui/linkchecker_ui_main.py:149
 #: /usr/lib/python2.6/optparse.py:1621
 msgid "Options"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:148
+#: ../linkcheck/gui/linkchecker_ui_main.py:150
 msgid "Copy to clipboard"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:149
+#: ../linkcheck/gui/linkchecker_ui_main.py:151
 msgid "Copy URL to clipboard"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:150
+#: ../linkcheck/gui/linkchecker_ui_main.py:152
 msgid "Ctrl+C"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:151
+#: ../linkcheck/gui/linkchecker_ui_main.py:153
 msgid "View parent online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:152
+#: ../linkcheck/gui/linkchecker_ui_main.py:154
 msgid "View parent URL online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:153
+#: ../linkcheck/gui/linkchecker_ui_main.py:155
 msgid "View parent source"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:154
+#: ../linkcheck/gui/linkchecker_ui_main.py:156
 msgid "View parent URL source"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:156
+#: ../linkcheck/gui/linkchecker_ui_main.py:158
 msgid "View properties"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:157
+#: ../linkcheck/gui/linkchecker_ui_main.py:159
 msgid "View URL properties"
 msgstr ""
 

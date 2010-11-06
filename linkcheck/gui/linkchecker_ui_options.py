@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Sat Nov  6 16:37:30 2010
+# Created: Sat Nov  6 20:05:23 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -72,12 +72,12 @@ class Ui_Options(object):
         self.widget.setObjectName("widget")
         self.horizontalLayout = QtGui.QHBoxLayout(self.widget)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.resetButton = QtGui.QPushButton(self.widget)
-        self.resetButton.setObjectName("resetButton")
-        self.horizontalLayout.addWidget(self.resetButton)
         self.closeButton = QtGui.QPushButton(self.widget)
         self.closeButton.setObjectName("closeButton")
         self.horizontalLayout.addWidget(self.closeButton)
+        self.resetButton = QtGui.QPushButton(self.widget)
+        self.resetButton.setObjectName("resetButton")
+        self.horizontalLayout.addWidget(self.resetButton)
         self.verticalLayout_3.addWidget(self.widget)
         self.tabWidget.addTab(self.gui_options, "")
         self.config_options = QtGui.QWidget()
@@ -113,6 +113,7 @@ class Ui_Options(object):
         spacerItem1 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.verticalLayout_4.addItem(spacerItem1)
         self.label_7 = QtGui.QLabel(self.frame_2)
+        self.label_7.setWordWrap(True)
         self.label_7.setObjectName("label_7")
         self.verticalLayout_4.addWidget(self.label_7)
         self.user_config_button = QtGui.QPushButton(self.frame_2)
@@ -140,15 +141,16 @@ class Ui_Options(object):
         self.label_2.setText(_("Verbose output"))
         self.verbose.setToolTip(_("Log all checked URLs once. Default is to log only errors and warnings."))
         self.label_4.setText(_("Debug"))
+        self.closeButton.setText(_("Ok"))
         self.resetButton.setToolTip(_("Reset all options to default values."))
         self.resetButton.setText(_("Reset"))
-        self.closeButton.setText(_("Close"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.gui_options), _("GUI options"))
         self.label_9.setText(_("The configuration files can be edited with an integrated text editor."))
-        self.label_6.setText(_("System wide configuration file"))
+        self.label_6.setText(_("System configuration file"))
         self.sys_config_button.setText(_("Edit"))
         self.label_7.setToolTip(_("Overrides system wide configuration file settings."))
-        self.label_7.setText(_("User specific configuration file"))
+        self.label_7.setText(QtGui.QApplication.translate("Options", "User configuration file\n"
+"(overrides system configuration)", None, QtGui.QApplication.UnicodeUTF8))
         self.user_config_button.setText(_("Edit"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.config_options), _("Configuration files"))
 
