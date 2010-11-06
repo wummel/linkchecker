@@ -17,6 +17,7 @@ Changes:
   redirects any more.
 - logging: Changed comment format in GML output to be able to load the
   graph in gephi.
+- gui: Remove timeout and thread options.
 
 Features:
 - gui: Add command to save the parent URL source in a local file.

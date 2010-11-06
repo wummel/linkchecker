@@ -48,8 +48,6 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         """Reset GUI options to default values from config."""
         self.recursionlevel.setValue(config["recursionlevel"])
         self.verbose.setChecked(config["verbose"])
-        self.threads.setValue(config["threads"])
-        self.timeout.setValue(config["timeout"])
         self.debug.setChecked(False)
         del config
 

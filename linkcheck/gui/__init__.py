@@ -238,17 +238,16 @@ Version 2 or later.</p>
         self.config = configuration.Configuration()
         self.config.logger_add("gui", GuiLogger)
         self.config["logger"] = self.config.logger_new('gui', widget=self.checker)
-        self.handler = GuiLogHandler(self.debug)
         self.config["status"] = True
-        self.config["status_wait_seconds"] = 1
-        self.config.init_logging(StatusLogger(self.progress), handler=self.handler)
+        self.config["status_wait_seconds"] = 2
+        self.handler = GuiLogHandler(self.debug)
+        status = StatusLogger(self.progress)
+        self.config.init_logging(status, handler=self.handler)
 
     def set_config (self):
         """Set configuration."""
         self.config["recursionlevel"] = self.options.recursionlevel.value()
         self.config["verbose"] = self.options.verbose.isChecked()
-        self.config["timeout"] = self.options.timeout.value()
-        self.config["threads"] = self.options.threads.value()
         if self.options.debug.isChecked():
             self.config.set_debug(["all"])
             # make sure at least one thread is used
