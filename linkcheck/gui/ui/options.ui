@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>271</width>
-    <height>240</height>
+    <height>297</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,12 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="toolTip">
-      <string>The most common GUI options are configurable
-directly in a dialog. They override any configuration
-file settings.
-
-The configuration files can be edited with an
-integrated text editor.</string>
+      <string/>
      </property>
      <property name="currentIndex">
       <number>0</number>
@@ -38,6 +33,26 @@ integrated text editor.</string>
        <string>GUI options</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>The most common check options are configurable. They override any configuration file settings.</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QFrame" name="frame">
          <property name="frameShape">
@@ -208,12 +223,32 @@ integrated text editor.</string>
      </widget>
      <widget class="QWidget" name="config_options">
       <property name="toolTip">
-       <string>Test</string>
+       <string/>
       </property>
       <attribute name="title">
-       <string>Config files</string>
+       <string>Configuration files</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>The configuration files can be edited with an integrated text editor.</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QFrame" name="frame_2">
          <property name="frameShape">

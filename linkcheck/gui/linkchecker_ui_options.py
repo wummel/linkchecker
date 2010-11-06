@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Fri Nov  5 00:08:22 2010
+# Created: Sat Nov  6 14:00:54 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,16 +13,27 @@ class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName("Options")
         Options.setWindowModality(QtCore.Qt.ApplicationModal)
-        Options.resize(271, 240)
+        Options.resize(271, 297)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tabWidget = QtGui.QTabWidget(Options)
+        self.tabWidget.setToolTip("")
         self.tabWidget.setObjectName("tabWidget")
         self.gui_options = QtGui.QWidget()
         self.gui_options.setToolTip("")
         self.gui_options.setObjectName("gui_options")
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.gui_options)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.label_8 = QtGui.QLabel(self.gui_options)
+        self.label_8.setTextFormat(QtCore.Qt.AutoText)
+        self.label_8.setWordWrap(True)
+        self.label_8.setObjectName("label_8")
+        self.verticalLayout_3.addWidget(self.label_8)
+        self.line = QtGui.QFrame(self.gui_options)
+        self.line.setFrameShape(QtGui.QFrame.HLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout_3.addWidget(self.line)
         self.frame = QtGui.QFrame(self.gui_options)
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
@@ -87,9 +98,20 @@ class Ui_Options(object):
         self.verticalLayout_3.addWidget(self.widget)
         self.tabWidget.addTab(self.gui_options, "")
         self.config_options = QtGui.QWidget()
+        self.config_options.setToolTip("")
         self.config_options.setObjectName("config_options")
         self.verticalLayout_5 = QtGui.QVBoxLayout(self.config_options)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.label_9 = QtGui.QLabel(self.config_options)
+        self.label_9.setTextFormat(QtCore.Qt.AutoText)
+        self.label_9.setWordWrap(True)
+        self.label_9.setObjectName("label_9")
+        self.verticalLayout_5.addWidget(self.label_9)
+        self.line_2 = QtGui.QFrame(self.config_options)
+        self.line_2.setFrameShape(QtGui.QFrame.HLine)
+        self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_2.setObjectName("line_2")
+        self.verticalLayout_5.addWidget(self.line_2)
         self.frame_2 = QtGui.QFrame(self.config_options)
         self.frame_2.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
@@ -127,12 +149,7 @@ class Ui_Options(object):
 
     def retranslateUi(self, Options):
         Options.setWindowTitle(_("Dialog"))
-        self.tabWidget.setToolTip(QtGui.QApplication.translate("Options", "The most common GUI options are configurable\n"
-"directly in a dialog. They override any configuration\n"
-"file settings.\n"
-"\n"
-"The configuration files can be edited with an\n"
-"integrated text editor.", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_8.setText(_("The most common check options are configurable. They override any configuration file settings."))
         self.label.setToolTip(_("Check recursively all links up to given depth. A negative depth will enable infinite recursion."))
         self.label.setText(_("Recursive depth"))
         self.recursionlevel.setToolTip(_("Check recursively all links up to given depth. A negative depth will enable infinite recursion."))
@@ -151,11 +168,11 @@ class Ui_Options(object):
         self.resetButton.setText(_("Reset"))
         self.closeButton.setText(_("Close"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.gui_options), _("GUI options"))
-        self.config_options.setToolTip(_("Test"))
+        self.label_9.setText(_("The configuration files can be edited with an integrated text editor."))
         self.label_6.setText(_("System wide configuration file"))
         self.sys_config_button.setText(_("Edit"))
         self.label_7.setToolTip(_("Overrides system wide configuration file settings."))
         self.label_7.setText(_("User specific configuration file"))
         self.user_config_button.setText(_("Edit"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.config_options), _("Config files"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.config_options), _("Configuration files"))
 
