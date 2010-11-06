@@ -20,6 +20,7 @@ import sys
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
+from .properties PropertiesDialog
 from .progress import LinkCheckerProgress, StatusLogger
 from .debug import LinkCheckerDebug
 from .logger import GuiLogger, GuiLogHandler
@@ -72,6 +73,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.checker = CheckerThread()
         self.contextmenu = ContextMenu(parent=self)
         self.editor = EditorWindow(parent=self)
+        self.properties = PropertiesDialog(parent=self)
         # Note: we can't use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
         self.init_treeview()
@@ -260,9 +262,14 @@ Version 2 or later.</p>
         self.model.addUrlItem(UrlItem(url_data, self.num))
         self.num += 1
 
+    def view_item_properties (self, item):
+        self.properties.set_item(item)
+        self.properties.show()
+
     def on_treeView_itemDoubleClicked (self, item, column):
         """View property page."""
-        pass # XXX todo
+        if item is not None:
+            self.view_item_properties(item)
 
     def on_treeView_customContextMenuRequested (self, point):
         """Show item context menu."""
@@ -270,6 +277,13 @@ Version 2 or later.</p>
         if urlitem is not None:
             self.contextmenu.enableFromItem(urlitem)
             self.contextmenu.popup(QtGui.QCursor.pos())
+
+    @QtCore.pyqtSignature("")
+    def on_actionViewProperties_triggered (self):
+        """View URL data properties in a separate window."""
+        item = self.treeWidget.currentItem()
+        if item is not None:
+            self.view_item_properties(item)
 
     @QtCore.pyqtSignature("")
     def on_actionViewOnline_triggered (self):
