@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2010-11-06 15:45+0100\n"
-"PO-Revision-Date: 2010-11-06 15:46+0100\n"
+"POT-Creation-Date: 2010-11-06 16:44+0100\n"
+"PO-Revision-Date: 2010-11-06 16:46+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -903,18 +903,18 @@ msgstr "Speichern"
 msgid "LinkChecker URL properties"
 msgstr "LinkChecker URL Eigenschaften"
 
-#: ../linkcheck/gui/options.py:89
-#: ../linkcheck/gui/linkchecker_ui_options.py:173
-#: ../linkcheck/gui/linkchecker_ui_options.py:176
+#: ../linkcheck/gui/options.py:87
+#: ../linkcheck/gui/linkchecker_ui_options.py:149
+#: ../linkcheck/gui/linkchecker_ui_options.py:152
 #: ../linkcheck/gui/linkchecker_ui_main.py:139
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: ../linkcheck/gui/options.py:91
+#: ../linkcheck/gui/options.py:89
 msgid "Read"
 msgstr "Lesen"
 
-#: ../linkcheck/gui/options.py:94
+#: ../linkcheck/gui/options.py:92
 msgid "File not found"
 msgstr "Datei nicht gefunden"
 
@@ -948,94 +948,72 @@ msgstr "Geprüft:"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:151
+#: ../linkcheck/gui/linkchecker_ui_options.py:134
 msgid "Dialog"
 msgstr "Dialog"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:152
+#: ../linkcheck/gui/linkchecker_ui_options.py:135
 msgid "The most common check options are configurable. They override any configuration file settings."
 msgstr "Die gebräuchlichsten Prüfoptionen sind konfigurierbar. Sie überschreiben alle Einträge der Konfigurationsdateien."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:153
-#: ../linkcheck/gui/linkchecker_ui_options.py:155
+#: ../linkcheck/gui/linkchecker_ui_options.py:136
+#: ../linkcheck/gui/linkchecker_ui_options.py:138
 msgid "Check recursively all links up to given depth. A negative depth will enable infinite recursion."
 msgstr ""
 "Prüfe rekursiv alle Verknüpfungen bis zu der angegebenen Tiefe. Eine\n"
 "negative Tiefe erwirkt unendliche Rekursion."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:154
+#: ../linkcheck/gui/linkchecker_ui_options.py:137
 msgid "Recursive depth"
 msgstr "Rekursionstiefe"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:156
-#: ../linkcheck/gui/linkchecker_ui_options.py:158
+#: ../linkcheck/gui/linkchecker_ui_options.py:139
+#: ../linkcheck/gui/linkchecker_ui_options.py:141
 msgid "Log all checked URLs once. Default is to log only errors and warnings."
 msgstr "Gebe alle URLs aus. Standard ist es, nur fehlerhafte URLs und Warnungen auszugeben."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:157
+#: ../linkcheck/gui/linkchecker_ui_options.py:140
 msgid "Verbose output"
 msgstr "Ausführliche Ausgabe"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:159
-#: ../linkcheck/gui/linkchecker_ui_options.py:161
-msgid "Set the timeout for connection attempts in seconds."
-msgstr "Setze den Timeout für Verbindungen in Sekunden."
-
-#: ../linkcheck/gui/linkchecker_ui_options.py:160
-msgid "Timeout"
-msgstr "Zeitüberschreitung"
-
-#: ../linkcheck/gui/linkchecker_ui_options.py:162
-msgid " seconds"
-msgstr " Sekunden"
-
-#: ../linkcheck/gui/linkchecker_ui_options.py:163
-#: ../linkcheck/gui/linkchecker_ui_options.py:165
-msgid "Generate no more than the given number of threads."
-msgstr "Nicht mehr als die angegebene Zahl von Threads erzeugen."
-
-#: ../linkcheck/gui/linkchecker_ui_options.py:164
-msgid "Number of threads"
-msgstr "Anzahl von Threads"
-
-#: ../linkcheck/gui/linkchecker_ui_options.py:166
+#: ../linkcheck/gui/linkchecker_ui_options.py:142
 #: ../linkcheck/gui/linkchecker_ui_main.py:155
 msgid "Debug"
 msgstr "Debug"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:167
+#: ../linkcheck/gui/linkchecker_ui_options.py:143
 msgid "Reset all options to default values."
 msgstr "Alle Optionen auf Standardwerte zurücksetzen."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:168
+#: ../linkcheck/gui/linkchecker_ui_options.py:144
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:169
+#: ../linkcheck/gui/linkchecker_ui_options.py:145
 msgid "Close"
 msgstr "Schließen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:170
+#: ../linkcheck/gui/linkchecker_ui_options.py:146
 msgid "GUI options"
 msgstr "GUI Optionen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:171
+#: ../linkcheck/gui/linkchecker_ui_options.py:147
 msgid "The configuration files can be edited with an integrated text editor."
 msgstr "Die Konfigurationsdateien können mit einem integrierten Texteditor bearbeitet werden."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:172
+#: ../linkcheck/gui/linkchecker_ui_options.py:148
 msgid "System wide configuration file"
 msgstr "Systemweite Konfigurationsdatei"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:174
+#: ../linkcheck/gui/linkchecker_ui_options.py:150
 msgid "Overrides system wide configuration file settings."
 msgstr "Überschreibt systemweite Konfiguration."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:175
+#: ../linkcheck/gui/linkchecker_ui_options.py:151
 msgid "User specific configuration file"
 msgstr "Benutzerspezifische Konfigurationsdatei"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:177
+#: ../linkcheck/gui/linkchecker_ui_options.py:153
 msgid "Configuration files"
 msgstr "Konfigurationsdateien"
 
@@ -1269,16 +1247,16 @@ msgid "Could not start a new thread. Check that the current user is allowed to s
 msgstr "Konnte keinen neuen Thread starten. Überprüfen sie, ob der aktuelle Benutzer neue Threads starten darf."
 
 #: ../linkcheck/director/__init__.py:181
-msgid "keyboard interrupt; waiting for active threads to finish"
-msgstr "Tastatur Abbruch; warte auf Beendigung von aktiven Verbindungen"
+msgid "user interrupt; waiting for active threads to finish"
+msgstr "Benutzerabbruch; warte auf Beendigung von aktiven Verbindungen"
 
 #: ../linkcheck/director/__init__.py:183
-msgid "another keyboard interrupt will exit immediately"
-msgstr "ein weiter Tastaturabbruch beendet dieses Programm sofort"
+msgid "another interrupt will exit immediately"
+msgstr "ein weiter Abbruch beendet dieses Programm sofort"
 
 #: ../linkcheck/director/__init__.py:199
-msgid "keyboard interrupt; force shutdown"
-msgstr "Tastaturabbruch; erzwinge Programmende"
+msgid "user abort; force shutdown"
+msgstr "Benutzerabbruch; erzwinge Programmende"
 
 #: ../linkcheck/director/console.py:45
 #, python-format
@@ -2166,6 +2144,16 @@ msgstr "%s Option erfordert %d Argumente"
 msgid "%s option does not take a value"
 msgstr "%s Option nimmt kein Wert"
 
+#~ msgid "Set the timeout for connection attempts in seconds."
+#~ msgstr "Setze den Timeout für Verbindungen in Sekunden."
+#~ msgid "Timeout"
+#~ msgstr "Zeitüberschreitung"
+#~ msgid " seconds"
+#~ msgstr " Sekunden"
+#~ msgid "Generate no more than the given number of threads."
+#~ msgstr "Nicht mehr als die angegebene Zahl von Threads erzeugen."
+#~ msgid "Number of threads"
+#~ msgstr "Anzahl von Threads"
 #~ msgid "#"
 #~ msgstr "#"
 #~ msgid "Url"
