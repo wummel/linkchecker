@@ -97,7 +97,6 @@ WARN_MAIL_UNVERIFIED_ADDRESS = "mail-unverified-address"
 WARN_MAIL_NO_CONNECTION = "mail-no-connection"
 WARN_NNTP_NO_SERVER = "nntp-no-server"
 WARN_NNTP_NO_NEWSGROUP = "nntp-no-newsgroup"
-WARN_NNTP_BUSY = "nntp-busy"
 
 # registered warnings
 Warnings = {
@@ -137,6 +136,5 @@ Warnings = {
         _("No connection to a MX host could be established."),
     WARN_NNTP_NO_SERVER: _("No NNTP server was found."),
     WARN_NNTP_NO_NEWSGROUP: _("The NNTP newsgroup could not be found."),
-    WARN_NNTP_BUSY: _("The NNTP server was busy."),
     WARN_URL_OBFUSCATED_IP: _("The IP is obfuscated."),
 }

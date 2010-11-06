@@ -20,13 +20,12 @@ Handle nntp: and news: links.
 
 import re
 import time
-import sys
 import nntplib
 import random
 
 from . import urlbase
 from .. import log, LinkCheckerError, LOG_CHECK
-from .const import WARN_NNTP_NO_SERVER, WARN_NNTP_NO_NEWSGROUP, WARN_NNTP_BUSY
+from .const import WARN_NNTP_NO_SERVER, WARN_NNTP_NO_NEWSGROUP
 
 random.seed()
 
