@@ -47,7 +47,7 @@ class GraphLogger (Logger):
             "checktime": url_data.checktime,
             "dlsize": url_data.dlsize,
             "dltime": url_data.dltime,
-            "edge": url_data.name,
+            "edge": quote(url_data.name),
             "valid": 1 if url_data.valid else 0,
         }
         self.nodes[node["url"]] = node
@@ -85,5 +85,6 @@ class GraphLogger (Logger):
 _disallowed = re.compile(r"[^a-zA-Z0-9 '#(){}\-\[\]\.,;:\!\?]+")
 
 def quote (s):
-    """Replace disallowed characters in node labels."""
-    return _disallowed.sub(" ", s)
+    """Replace disallowed characters in node or edge labels.
+    Also remove whitespace from beginning or end of label."""
+    return _disallowed.sub(" ", s).strip()
