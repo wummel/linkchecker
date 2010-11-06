@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2010-11-06 16:44+0100\n"
-"PO-Revision-Date: 2010-11-06 16:46+0100\n"
+"POT-Creation-Date: 2010-11-06 18:01+0100\n"
+"PO-Revision-Date: 2010-11-06 18:02+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -105,8 +105,8 @@ msgstr "Die neueste Version gibt es unter %(url)s"
 #: ../linkcheck/logger/__init__.py:273
 #: ../linkcheck/logger/text.py:102
 #, python-format
-msgid "Write comments and bugs to %(email)s"
-msgstr "Schreiben Sie Kommentare und Fehler an %(email)s"
+msgid "Write comments and bugs to %(url)s"
+msgstr "Schreiben Sie Kommentare und Fehler an %(url)s"
 
 #: ../linkcheck/logger/__init__.py:281
 #: ../linkcheck/logger/text.py:263
@@ -375,111 +375,107 @@ msgstr "Keine Antwort vom FTP Server"
 msgid "Missing trailing directory slash in ftp url."
 msgstr "Fehlender / am Ende der FTP url."
 
-#: ../linkcheck/checker/const.py:105
+#: ../linkcheck/checker/const.py:104
 msgid "The effective URL is different from the original."
 msgstr "Die effektive URL unterscheidet sich vom Original."
 
-#: ../linkcheck/checker/const.py:107
+#: ../linkcheck/checker/const.py:106
 msgid "Could not get the content of the URL."
 msgstr "Konnte den Inhalt der URL nicht bekommen."
 
-#: ../linkcheck/checker/const.py:108
+#: ../linkcheck/checker/const.py:107
 msgid "URL uses a unicode domain."
 msgstr "Die URL benutzt eine Unicode Domäne."
 
-#: ../linkcheck/checker/const.py:109
+#: ../linkcheck/checker/const.py:108
 msgid "URL anchor was not found."
 msgstr "URL Anker wurde nicht gefunden."
 
-#: ../linkcheck/checker/const.py:111
+#: ../linkcheck/checker/const.py:110
 msgid "The warning regular expression was found in the URL contents."
 msgstr "Der reguläre Ausdruck für Warnungen wurde in den URL Inhalten gefunden."
 
-#: ../linkcheck/checker/const.py:112
+#: ../linkcheck/checker/const.py:111
 msgid "The URL content size is too large."
 msgstr "Der URL Inhalt ist zu groß."
 
-#: ../linkcheck/checker/const.py:113
+#: ../linkcheck/checker/const.py:112
 msgid "The URL content size is zero."
 msgstr "Der URL Inhalt besitzt Größe Null."
 
-#: ../linkcheck/checker/const.py:114
+#: ../linkcheck/checker/const.py:113
 msgid "The URL content size and download size are unequal."
 msgstr "Der URL Größenangabe und die Größe der heruntergeladenen Daten ist zu groß."
 
-#: ../linkcheck/checker/const.py:115
+#: ../linkcheck/checker/const.py:114
 msgid "The file: URL is missing a trailing slash."
 msgstr "Der file: URL fehlt ein abschließender Schrägstrich."
 
-#: ../linkcheck/checker/const.py:117
+#: ../linkcheck/checker/const.py:116
 msgid "The file: path is not the same as the system specific path."
 msgstr "Der file: Pfad ist nicht derselbe wie der Systempfad."
 
-#: ../linkcheck/checker/const.py:118
+#: ../linkcheck/checker/const.py:117
 msgid "The ftp: URL is missing a trailing slash."
 msgstr "Der ftp: URL fehlt ein abschließender Schrägstrich."
 
-#: ../linkcheck/checker/const.py:119
+#: ../linkcheck/checker/const.py:118
 msgid "The http: URL checking has been denied."
 msgstr "Die http: URL Überprüfung wurde verweigert."
 
-#: ../linkcheck/checker/const.py:120
+#: ../linkcheck/checker/const.py:119
 msgid "The URL has moved permanently."
 msgstr "Die URL wurde dauerhaft verschoben."
 
-#: ../linkcheck/checker/const.py:122
+#: ../linkcheck/checker/const.py:121
 msgid "The URL has been redirected to an URL of a different type."
 msgstr "Die URL wurde zu einem anderen URL Typ umgeleitet."
 
-#: ../linkcheck/checker/const.py:123
+#: ../linkcheck/checker/const.py:122
 msgid "The URL had no content."
 msgstr "Die URL besitzt keinen Inhalt."
 
-#: ../linkcheck/checker/const.py:125
+#: ../linkcheck/checker/const.py:124
 msgid "An error occurred while storing a cookie."
 msgstr "Ein Fehler trat auf während des Speicherns eines Cookies."
 
-#: ../linkcheck/checker/const.py:127
+#: ../linkcheck/checker/const.py:126
 msgid "An error occurred while decompressing the URL content."
 msgstr "Ein Fehler trat beim Dekomprimieren des URL Inhalts auf."
 
-#: ../linkcheck/checker/const.py:129
+#: ../linkcheck/checker/const.py:128
 msgid "The URL content is encoded with an unknown encoding."
 msgstr "Der URL Inhalt ist in einer Unbekannten Kodierung verfasst."
 
-#: ../linkcheck/checker/const.py:131
+#: ../linkcheck/checker/const.py:130
 msgid "Unsupported HTTP authentication method."
 msgstr "Nicht unterstützte HTTP Authentifizierungsmethode."
 
-#: ../linkcheck/checker/const.py:132
+#: ../linkcheck/checker/const.py:131
 msgid "The URL has been ignored."
 msgstr "Die URL wurde ignoriert."
 
-#: ../linkcheck/checker/const.py:133
+#: ../linkcheck/checker/const.py:132
 msgid "The mail MX host could not be found."
 msgstr "Der Mail MX Rechner konnte nicht gefunden werden."
 
-#: ../linkcheck/checker/const.py:135
+#: ../linkcheck/checker/const.py:134
 msgid "The mailto: address could not be verified."
 msgstr "Die mailto: Addresse konnte nicht überprüft werden."
 
-#: ../linkcheck/checker/const.py:137
+#: ../linkcheck/checker/const.py:136
 msgid "No connection to a MX host could be established."
 msgstr "Keine Verbindung zu einem MX Rechner konnte hergestellt werden."
 
-#: ../linkcheck/checker/const.py:138
+#: ../linkcheck/checker/const.py:137
 msgid "No NNTP server was found."
 msgstr "Kein NNTP Server wurde gefunden."
 
-#: ../linkcheck/checker/const.py:139
+#: ../linkcheck/checker/const.py:138
 msgid "The NNTP newsgroup could not be found."
 msgstr "Die NNTP Nachrichtengruppe konnte nicht gefunden werden."
 
-#: ../linkcheck/checker/const.py:140
-msgid "The NNTP server was busy."
-msgstr "Der NNTP Server war beschäftigt."
-
-#: ../linkcheck/checker/const.py:141
+#: ../linkcheck/checker/const.py:139
 msgid "The IP is obfuscated."
 msgstr "Die IP-Adresse ist verschleiert."
 
@@ -738,7 +734,7 @@ msgid "Download size (%(dlsize)d Byte) does not equal content size (%(size)d Byt
 msgstr "Download Grüße (%(dlsize)d Byte) ist ungleich der Inhaltsgröße (%(size)d Byte)."
 
 #: ../linkcheck/checker/urlbase.py:740
-#: ../linkcheck/configuration/__init__.py:311
+#: ../linkcheck/configuration/__init__.py:312
 msgid "warning: tidy module is not available; download from http://utidylib.berlios.de/"
 msgstr "Warnung: tidy Modul ist nicht verfügbar; Download von http://utidylib.berlios.de/"
 
@@ -753,7 +749,7 @@ msgid "warning: tidy HTML parsing caused error: %(msg)s "
 msgstr "Warnung: tidy HTML Parser verursachte Fehler: %(msg)s"
 
 #: ../linkcheck/checker/urlbase.py:768
-#: ../linkcheck/configuration/__init__.py:320
+#: ../linkcheck/configuration/__init__.py:321
 msgid "warning: cssutils module is not available; download from http://cthedot.de/cssutils/"
 msgstr "Warnung: cssutils Modul ist nicht verfügbar; Download von http://cthedot.de/cssutils/"
 
@@ -777,21 +773,21 @@ msgstr "Warnung: HTML W3C Validierung verursachte Fehler: %(msg)s"
 msgid "warning: CSS W3C validation caused error: %(msg)s "
 msgstr "Warnung: CSS W3C Validierung verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/nntpurl.py:46
+#: ../linkcheck/checker/nntpurl.py:45
 msgid "No NNTP server was specified, skipping this URL."
 msgstr "Kein NNTP Server angegeben; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/nntpurl.py:56
+#: ../linkcheck/checker/nntpurl.py:55
 #, python-format
 msgid "Article number %(num)s found."
 msgstr "Artikel Nummer %(num)s wurde gefunden."
 
-#: ../linkcheck/checker/nntpurl.py:63
+#: ../linkcheck/checker/nntpurl.py:62
 #, python-format
 msgid "News group %(name)s found."
 msgstr "Nachrichtengruppe %(name)s gefunden."
 
-#: ../linkcheck/checker/nntpurl.py:66
+#: ../linkcheck/checker/nntpurl.py:65
 msgid "No newsgroup specified in NNTP URL."
 msgstr "Keine Newsgroup in der NNTP URL spezifiziert."
 
@@ -799,11 +795,6 @@ msgstr "Keine Newsgroup in der NNTP URL spezifiziert."
 #, python-format
 msgid "NNTP server too busy; tried more than %d times."
 msgstr "NNTP Server zu beschäftigt; habe es mehr als %d mal versucht."
-
-#: ../linkcheck/checker/nntpurl.py:91
-#, python-format
-msgid "NNTP busy: %(msg)s."
-msgstr "NNTP beschäftigt: %(msg)s."
 
 #: ../linkcheck/checker/unknownurl.py:82
 #, python-format
@@ -845,43 +836,43 @@ msgstr "die nofollow%(num)d Syntax ist veraltet; benutzen Sie die neue mehrzeili
 msgid "the ignore%(num)d syntax is deprecated; use the new multiline configuration syntax"
 msgstr "die ignore%(num)d Syntax ist veraltet; benutzen Sie die neue mehrzeilige Syntax"
 
-#: ../linkcheck/configuration/__init__.py:255
+#: ../linkcheck/configuration/__init__.py:256
 msgid "warning: missing user or URL pattern in authentication data."
 msgstr "Warnung: Fehlende Benutzer oder regulärer URL Ausdruck in Authentifizierungsdaten."
 
-#: ../linkcheck/configuration/__init__.py:302
+#: ../linkcheck/configuration/__init__.py:303
 msgid "warning: activating text logger output."
 msgstr "Warnung: aktiviere text Loggerausgabe."
 
-#: ../linkcheck/configuration/__init__.py:329
+#: ../linkcheck/configuration/__init__.py:330
 msgid "warning: Clamav could not be initialized"
 msgstr "Warnung: Clamav konnte nicht initialisiert werden"
 
-#: ../linkcheck/configuration/__init__.py:334
+#: ../linkcheck/configuration/__init__.py:335
 msgid "warning: activating sendcookies because storecookies is active."
 msgstr "Warnung: aktiviere Option sendcookies weil Option storecookes aktiviert ist."
 
-#: ../linkcheck/configuration/__init__.py:343
+#: ../linkcheck/configuration/__init__.py:344
 msgid "warning: no CGI password fieldname given for login URL."
 msgstr "Warnung: kein CGI Passwort Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:347
+#: ../linkcheck/configuration/__init__.py:348
 msgid "warning: no CGI user fieldname given for login URL."
 msgstr "Warnung: kein CGI Benutzer Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:351
+#: ../linkcheck/configuration/__init__.py:352
 msgid "warning: no user/password authentication data found for login URL."
 msgstr "Warnung: keine Benutzer/Passwort-Authentifizierung für Login URL gefunden."
 
-#: ../linkcheck/configuration/__init__.py:354
+#: ../linkcheck/configuration/__init__.py:355
 msgid "warning: login URL is not a HTTP URL."
 msgstr "Warnung: Login URL ist keine HTTP URL."
 
-#: ../linkcheck/configuration/__init__.py:358
+#: ../linkcheck/configuration/__init__.py:359
 msgid "warning: login URL is incomplete."
 msgstr "Warnung: Login URL ist unvollständig."
 
-#: ../linkcheck/configuration/__init__.py:362
+#: ../linkcheck/configuration/__init__.py:363
 #, python-format
 msgid "warning: disabling login URL %(url)s."
 msgstr "Warnung: deaktiviere Login URL %(url)s."
@@ -1285,13 +1276,13 @@ msgid "runtime %s"
 msgstr "Laufzeit %s"
 
 #: ../linkcheck/director/console.py:69
+#, python-format
 msgid ""
 "********** Oops, I did it again. *************\n"
 "\n"
 "You have found an internal error in LinkChecker. Please write a bug report\n"
-"at http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
-"or send mail to linkchecker-user@lists.sourceforge.net and include the\n"
-"following information:\n"
+"at %s\n"
+"and include the following information:\n"
 "- the URL or file you are testing\n"
 "- your commandline arguments and/or configuration.\n"
 "- the output of a debug run with option \"-Dall\" of the executed command\n"
@@ -1303,10 +1294,9 @@ msgid ""
 msgstr ""
 "********** Hoppla. *************\n"
 "\n"
-"Sie haben einen internen Fehler in LinkChecker entdeckt. Bitte schreiben\n"
-"Sie einen Fehlerbericht an\n"
-"http://sourceforge.net/tracker/?func=add&group_id=1913&atid=101913\n"
-"oder senden Sie eine Mail an linkchecker-user@lists.sourceforge.net mit den folgenden Informationen:\n"
+"Sie haben einen internen Fehler in LinkChecker entdeckt. Bitte schreiben Sie\n"
+"einen Fehlerbericht an %s\n"
+"mit den folgenden Informationen:\n"
 "- die URL oder Datei, welche Sie gerade prüfen\n"
 "- ihre Kommandozeilenargumente und/oder Ihre Konfiguration.\n"
 "- die Ausgabe eines Debuglaufs Option \"-Dall\" und dem ausgeführten Befehl\n"
@@ -1316,15 +1306,15 @@ msgstr ""
 "Ich werde trotzdem versuchen, Ihnen zu helfen. Sie müssen mir allerdings\n"
 "irgendwas geben, womit ich arbeiten kann ;).\n"
 
-#: ../linkcheck/director/console.py:89
+#: ../linkcheck/director/console.py:88
 msgid "******** LinkChecker internal error, over and out ********"
 msgstr "******** LinkChecker interner Fehler, und tschüß ********"
 
-#: ../linkcheck/director/console.py:94
+#: ../linkcheck/director/console.py:93
 msgid "System info:"
 msgstr "Systeminformation:"
 
-#: ../linkcheck/director/console.py:96
+#: ../linkcheck/director/console.py:95
 #: ../linkchecker:587
 #, python-format
 msgid "Python %(version)s on %(platform)s"
@@ -2144,6 +2134,12 @@ msgstr "%s Option erfordert %d Argumente"
 msgid "%s option does not take a value"
 msgstr "%s Option nimmt kein Wert"
 
+#~ msgid "Write comments and bugs to %(email)s"
+#~ msgstr "Schreiben Sie Kommentare und Fehler an %(email)s"
+#~ msgid "The NNTP server was busy."
+#~ msgstr "Der NNTP Server war beschäftigt."
+#~ msgid "NNTP busy: %(msg)s."
+#~ msgstr "NNTP beschäftigt: %(msg)s."
 #~ msgid "Set the timeout for connection attempts in seconds."
 #~ msgstr "Setze den Timeout für Verbindungen in Sekunden."
 #~ msgid "Timeout"
