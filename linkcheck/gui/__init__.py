@@ -324,8 +324,7 @@ Version 2 or later.</p>
     @QtCore.pyqtSignature("")
     def on_actionCopyToClipboard_triggered (self):
         """Copy item URL to clipboard."""
-        index = self.treeView.currentIndex()
-        urlitem = self.model.data(index)
+        urlitem = self.model.getUrlItem(self.treeView.currentIndex())
         if urlitem:
             clipboard = QtGui.QApplication.clipboard()
             clipboard.setText(urlitem.url_data.url)
