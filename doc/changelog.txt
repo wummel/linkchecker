@@ -8,7 +8,8 @@ Fixes:
   Closes: SF bug #3096115
 - logging: Avoid error when logger fields "intro" or "outro" are
   configured.
-- logging: Correctly quote edge labels and remove whitespace.
+- logging: Correctly quote edge labels of graph output formats and
+  remove whitespace.
 - checking: Fix checking for external domain after HTTP redirection.
 
 Changes:
