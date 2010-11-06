@@ -8,8 +8,7 @@ Fixes:
   Closes: SF bug #3096115
 - logging: Avoid error when logger fields "intro" or "outro" are
   configured.
-- logging: Correctly quote graph edge labels and remove leading and
-  trailing whitespace from edge and node labels.
+- logging: Correctly quote edge labels and remove whitespace.
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.
