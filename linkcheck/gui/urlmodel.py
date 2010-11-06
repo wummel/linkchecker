@@ -15,7 +15,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 from .. import strformat
 
 
@@ -24,7 +24,7 @@ EmptyHeader = QtCore.QVariant()
 
 
 class UrlItem (object):
-    """URL item model storing info to be displayed."""
+    """URL item storing info to be displayed."""
 
     def __init__ (self, url_data, number):
         self.number = number
@@ -88,6 +88,7 @@ class UrlItem (object):
 
 
 class UrlItemModel(QtCore.QAbstractItemModel):
+    """Model class for list of URL items."""
 
     def __init__ (self, parent=None):
         super(UrlItemModel, self).__init__(parent)
@@ -108,7 +109,7 @@ class UrlItemModel(QtCore.QAbstractItemModel):
 
     def data (self, index, role=QtCore.Qt.DisplayRole):
         V = QtCore.QVariant
-        if not index.isValid or \
+        if not index.isValid() or \
            not (0 <= index.row() < len(self.urls)):
             return V()
         urlitem = self.urls[index.row()]
@@ -118,7 +119,7 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         elif role == QtCore.Qt.ToolTipRole:
             return V(urlitem.tooltips[column])
         elif role == QtCore.Qt.TextColorRole and column == 4:
-            return V(urlitem.result_color)
+            return QtGui.QColor(urlitem.result_color)
         else:
             return V()
 
@@ -146,7 +147,7 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         return True
 
     def getUrlItem (self, index):
-        if not index.isValid or \
+        if not index.isValid() or \
            not (0 <= index.row() < len(self.urls)):
             return None
         return self.urls[index.row()]
