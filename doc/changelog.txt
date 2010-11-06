@@ -9,6 +9,8 @@ Fixes:
 - logging: Avoid error when logger fields "intro" or "outro" are
   configured.
 - logging: Correctly quote edge labels and remove whitespace.
+- logging: Changed comment format in GML output to be able to load the
+  graph in gephi.
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.

@@ -36,8 +36,7 @@ class GMLLogger (GraphLogger):
 
     def comment (self, s, **args):
         """Write GML comment."""
-        self.write(u"# ")
-        self.writeln(s=s, **args)
+        self.writeln(s=u'comment "%s"' % s, **args)
 
     def log_url (self, url_data):
         """Write one node."""
