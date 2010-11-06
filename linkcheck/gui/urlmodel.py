@@ -22,68 +22,55 @@ from .. import strformat
 Headers = [u"#", _(u"Parent"), _(u"URL"), _(u"Name"), _(u"Result")]
 EmptyHeader = QtCore.QVariant()
 
+
 class UrlItem (object):
     """URL item model storing info to be displayed."""
 
     def __init__ (self, url_data, number):
-        # store plain data
-        self.id = number
-        self.url = url_data.url
-        self.base_url = url_data.base_url
-        self.name = url_data.name
-        self.parent_url = url_data.parent_url
-        self.base_ref = url_data.base_ref
-        self.dltime = url_data.dltime
-        self.dlsize = url_data.dlsize
-        self.checktime = url_data.checktime
-        self.info = url_data.info[:]
-        self.warnings = url_data.warnings[:]
-        self.valid = url_data.value
-        self.result = url_data.result
-        self.line = url_data.line
-        self.column = url_data.column
+        self.number = number
+        # url_data is of type CompactUrlData
+        self.url_data = url_data
         # format display and tooltips
         self.init_display()
         self.init_tooltips()
 
     def init_display (self):
         # Parent URL
-        if self.parent_url:
-            parent = unicode(self.parent_url) + \
-                (_(", line %d") % self.line) + \
-                (_(", col %d") % self.column)
+        if self.url_data.parent_url:
+            parent = unicode(self.url_data.parent_url) + \
+                (_(", line %d") % self.url_data.line) + \
+                (_(", col %d") % self.url_data.column)
         else:
             parent = u""
         # Result
-        if self.valid:
-            if self.warnings:
-                self.color = QtCore.Qt.darkYellow
+        if self.url_data.valid:
+            if self.url_data.warnings:
+                self.result_color = QtCore.Qt.darkYellow
             else:
-                self.color = QtCore.Qt.darkGreen
+                self.result_color = QtCore.Qt.darkGreen
             result = u"Valid"
         else:
-            self.color = QtCore.Qt.darkRed
+            self.result_color = QtCore.Qt.darkRed
             result = u"Error"
-        if self.result:
-            result += u": %s" % self.result
-        self.display.append(result)
+        if self.url_data.result:
+            result += u": %s" % self.url_data.result
         self.display = [
             # ID
             u"%09d" % self.number,
             # Parent URL
             parent,
             # URL
-            unicode(self.url),
+            unicode(self.url_data.url),
             # Name
-            self.name,
+            self.url_data.name,
             # Result
             result,
         ]
 
     def init_tooltips (self):
-        # Result
-        if self.warnings:
-            result = strformat.wrap(u"\n".join(self.warnings), 60)
+        # Display warnings in result tooltip
+        if self.url_data.warnings:
+            result = strformat.wrap(u"\n".join(self.url_data.warnings), 60)
         else:
             result = u""
         self.tooltips = [
@@ -92,9 +79,9 @@ class UrlItem (object):
             # Parent URL
             u"",
             # URL
-            unicode(self.url),
+            unicode(self.url_data.url),
             # Name
-            self.name,
+            self.url_data.name,
             # Result
             result,
         ]
@@ -124,14 +111,14 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         if not index.isValid or \
            not (0 <= index.row() < len(self.urls)):
             return V()
-        urlitem = self.data[index.row()]
+        urlitem = self.urls[index.row()]
         column = index.column()
         if role == QtCore.Qt.DisplayRole:
             return V(urlitem.display[column])
         elif role == QtCore.Qt.ToolTipRole:
             return V(urlitem.tooltips[column])
         elif role == QtCore.Qt.TextColorRole and column == 4:
-            return V(urlitem.color)
+            return V(urlitem.result_color)
         else:
             return V()
 
@@ -152,5 +139,14 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         self.endResetModel()
 
     def addUrlItem (self, urlitem):
+        row = self.rowCount()
+        self.beginInsertRows(QtCore.QModelIndex(), row, row)
         self.urls.append(urlitem)
-        return self.insertRows(self.rowCount())
+        self.endInsertRows()
+        return True
+
+    def getUrlItem (self, index):
+        if not index.isValid or \
+           not (0 <= index.row() < len(self.urls)):
+            return None
+        return self.urls[index.row()]

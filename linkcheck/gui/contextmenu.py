@@ -29,9 +29,9 @@ class ContextMenu (QtGui.QMenu):
     def enableFromItem (self, item):
         """Enable context menu actions depending on the item content."""
         parent = self.parentWidget()
-        parenturl = str(item.text(1))
-        url = str(item.text(2))
-        result = str(item.text(4))
+        print "XXX", repr(item)
+        parenturl = item.url_data.parent_url
+        url = item.url_data.url
         # enable view online actions
         parent.actionViewOnline.setEnabled(bool(url))
         parent.actionViewParentOnline.setEnabled(bool(parenturl))

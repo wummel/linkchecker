@@ -55,15 +55,6 @@ def save_size (qsize):
     return qsize
 
 
-def get_parent_url (itemtext):
-    """Split off line and column information from URL."""
-    url, col = itemtext.rsplit(",", 1)
-    col = int(col.split()[1])
-    url, line = url.rsplit(",", 1)
-    line = int(line.split()[1])
-    return url, line, col
-
-
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     def __init__(self, parent=None, url=None):
@@ -275,35 +266,32 @@ Version 2 or later.</p>
 
     def on_treeView_customContextMenuRequested (self, point):
         """Show item context menu."""
-        item = self.treeView.itemAt(point)
-        if item is not None:
-            self.contextmenu.enableFromItem(item)
+        urlitem = self.model.getUrlItem(self.treeView.currentIndex())
+        if urlitem is not None:
+            self.contextmenu.enableFromItem(urlitem)
             self.contextmenu.popup(QtGui.QCursor.pos())
 
     @QtCore.pyqtSignature("")
     def on_actionViewOnline_triggered (self):
         """View item URL online."""
-        item = self.treeView.currentItem()
-        if item is not None:
-            url = str(item.text(2))
-            webbrowser.open(url)
+        urlitem = self.model.getUrlItem(self.treeView.currentIndex())
+        if urlitem is not None:
+            webbrowser.open(urlitem.url_data.url)
 
     @QtCore.pyqtSignature("")
     def on_actionViewParentOnline_triggered (self):
         """View item parent URL online."""
-        item = self.treeView.currentItem()
-        if item is not None:
-            parenturl, line, col = get_parent_url(str(item.text(1)))
-            webbrowser.open(parenturl)
+        urlitem = self.model.getUrlItem(self.treeView.currentIndex())
+        if urlitem is not None:
+            webbrowser.open(urlitem.url_data.parent_url)
 
     @QtCore.pyqtSignature("")
     def on_actionViewParentSource_triggered (self):
         """View item parent URL source in local text editor (read-only)."""
-        item = self.treeView.currentItem()
-        if item is not None:
-            # XXX simplify this once a proper model is stored
-            parenturl, line, col = get_parent_url(str(item.text(1)))
-            self.view_source(parenturl, line, col)
+        urlitem = self.model.getUrlItem(self.treeView.currentIndex())
+        if urlitem is not None:
+            self.view_source(urlitem.url_data.parent_url,
+                             urlitem.url_data.line, urlitem.url_data.column)
 
     def view_source (self, url, line, col):
         self.editor.setWindowTitle(u"View %s" % url)
@@ -323,11 +311,11 @@ Version 2 or later.</p>
     @QtCore.pyqtSignature("")
     def on_actionCopyToClipboard_triggered (self):
         """Copy item URL to clipboard."""
-        item = self.treeView.currentItem()
-        if item is not None:
-            url = str(item.text(2))
+        index = self.treeView.currentIndex()
+        urlitem = self.model.data(index)
+        if urlitem:
             clipboard = QtGui.QApplication.clipboard()
-            clipboard.setText(url)
+            clipboard.setText(urlitem.url_data.url)
             event = QtCore.QEvent(QtCore.QEvent.Clipboard)
             QtGui.QApplication.sendEvent(clipboard, event)
 
