@@ -1,4 +1,3 @@
-- [LOGGING] check dot/gml graph format with gephi
 - [PYTHON26]
   linkcheck/httplib2.py:1218: DeprecationWarning: socket.ssl() is deprecated.
   Use ssl.wrap_socket() instead.
