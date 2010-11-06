@@ -150,12 +150,12 @@ need_pyftpdlib = _need_func(has_pyftpdlib, "pyftpdlib")
 
 @memoized
 def has_newsserver (server):
+    import nntplib
     try:
-        import nntplib
         nntp = nntplib.NNTP(server, usenetrc=False)
-        nntp.close()
+        nntp.quit()
         return True
-    except StandardError:
+    except nntplib.NNTPError:
         return False
 
 
