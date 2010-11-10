@@ -30,6 +30,7 @@ acap        # application configuration access protocol
 |dav        # dav
 |fax        # fax
 |imap       # internet message access protocol
+|ircs?      # internet relay chat
 |ldap       # Lightweight Directory Access Protocol
 |mailserver # Access to data available from mail servers
 |mid        # message identifier

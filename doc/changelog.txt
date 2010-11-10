@@ -1,4 +1,4 @@
-5.5 "" (released xx.xx.2010)
+5.5 "Red" (released xx.xx.2010)
 
 Fixes:
 - checking: Do not check content of already cached URLs.
@@ -10,7 +10,8 @@ Fixes:
   configured.
 - logging: Correctly quote edge labels of graph output formats and
   remove whitespace.
-- checking: Fix checking for external domain after HTTP redirection.
+- checking: Make sure the check for external domain is done after all
+  HTTP redirections.
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.
@@ -20,13 +21,16 @@ Changes:
 - logging: Changed comment format in GML output to be able to load the
   graph in gephi.
 - gui: Remove timeout and thread options.
+- checking: Do not report irc:// hyperlinks as errors, ignore them
+  instead.
+  Closes: SF bug #3106302
 
 Features:
 - gui: Add command to save the parent URL source in a local file.
 - gui: Show configuration files in option dialog and allow them to
   be edited.
   Closes: SF bug #3102201
-- gui: Show detailed URL properties on double click.
+- gui: Added dialog to show detailed URL properties on double click.
 
 
 5.4 "How to train your dragon" (released 26.10.2010)

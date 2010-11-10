@@ -90,6 +90,7 @@ checking. All connection check types are described below.
   - ``find:``      (Mozilla specific)
   - ``gopher:``    (Gopher)
   - ``imap:``      (internet message access protocol)
+  - ``irc:``       (internet relay chat)
   - ``isbn:``      (ISBN (int. book numbers))
   - ``javascript:`` (JavaScript)
   - ``ldap:``      (Lightweight Directory Access Protocol)

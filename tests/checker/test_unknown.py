@@ -34,3 +34,25 @@ class TestUnknown (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
+
+    def test_irc (self):
+        url = u"irc://example.org"
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Irc URL ignored.",
+            u"valid",
+        ]
+        self.direct(url, resultlines)
+        url = u"ircs://example.org"
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Ircs URL ignored.",
+            u"valid",
+        ]
+        self.direct(url, resultlines)
