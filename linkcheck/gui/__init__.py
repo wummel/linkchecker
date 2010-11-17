@@ -30,6 +30,7 @@ from .checker import CheckerThread
 from .contextmenu import ContextMenu
 from .editor import EditorWindow
 from .urlmodel import UrlItem, UrlItemModel
+from .settings import Settings
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat, fileutil
 from ..containers import enum
@@ -42,20 +43,6 @@ RegistryBase = "Bastian"
 Status = enum('idle', 'checking')
 
 
-def save_point (qpoint):
-    """Ensure positive X and Y values of point."""
-    qpoint.setX(max(0, qpoint.x()))
-    qpoint.setY(max(0, qpoint.y()))
-    return qpoint
-
-
-def save_size (qsize):
-    """Ensure minimum width and height values of the given size."""
-    qsize.setWidth(max(400, qsize.width()))
-    qsize.setHeight(max(400, qsize.height()))
-    return qsize
-
-
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     def __init__(self, parent=None, url=None):
@@ -66,6 +53,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.urlinput.setText(url)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
+        # app settings
+        self.settings = Settings(RegistryBase, configuration.AppName)
         # init subdialogs
         self.options = LinkCheckerOptions(parent=self)
         self.progress = LinkCheckerProgress(parent=self)
@@ -74,16 +63,26 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.contextmenu = ContextMenu(parent=self)
         self.editor = EditorWindow(parent=self)
         self.properties = PropertiesDialog(parent=self)
-        # Note: we can't use QT assistant here because of the .exe packaging
+        # Note: do not use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
         self.init_treeview()
-        self.read_settings()
         self.connect_widgets()
         self.init_config()
+        # init application
+        self.init_app()
+
+    def init_app (self):
+        size, pos = self.settings.read_geometry()
+        if size is not None:
+            self.resize(size)
+        if pos is not None:
+            self.move(pos)
         self.status = Status.idle
         self.set_statusbar(_("Ready."))
 
     def get_qhcpath (self):
+        """Helper function to search for the QHC help file in different
+        locations."""
         paths = [
             # when developing
             os.path.join(configuration.configdata.install_data, "doc", "html"),
@@ -97,14 +96,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             if os.path.isfile(qhcfile):
                 break
         return qhcfile
-
-    def read_settings (self):
-        settings = QtCore.QSettings(RegistryBase, configuration.AppName)
-        settings.beginGroup('mainwindow')
-        if settings.contains('size'):
-            self.resize(save_size(settings.value('size').toSize()))
-            self.move(save_point(settings.value('pos').toPoint()))
-        settings.endGroup()
 
     def connect_widgets (self):
         """Connect widget signals. Some signals use the AutoConnect feature.
@@ -164,17 +155,12 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.close()
 
     def closeEvent (self, e=None):
-        """Save settings on close."""
-        settings = QtCore.QSettings(RegistryBase, configuration.AppName)
-        settings.beginGroup('mainwindow')
-        settings.setValue("size", QtCore.QVariant(save_size(self.size())))
-        settings.setValue("pos", QtCore.QVariant(save_point(self.pos())))
-        settings.endGroup()
-        settings.sync()
+        """Save settings and remove registered logging handler"""
+        self.settings.save_geometry(self.size(), self.pos())
+        self.settings.sync()
+        self.config.remove_loghandler(self.handler)
         if e is not None:
             e.accept()
-        # remove registered logging handler
-        self.config.remove_loghandler(self.handler)
 
     @QtCore.pyqtSignature("")
     def on_actionAbout_triggered (self):
