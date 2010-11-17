@@ -34,7 +34,7 @@ Features:
   be edited.
   Closes: SF bug #3102201
 - gui: Added dialog to show detailed URL properties on double click.
-
+- gui: Store GUI options in registry settings.
 
 5.4 "How to train your dragon" (released 26.10.2010)
 

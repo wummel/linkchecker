@@ -72,11 +72,12 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_app()
 
     def init_app (self):
-        size, pos = self.settings.read_geometry()
-        if size is not None:
-            self.resize(size)
-        if pos is not None:
-            self.move(pos)
+        data = self.settings.read_geometry()
+        if data["size"] is not None:
+            self.resize(data["size"])
+        if data["pos"] is not None:
+            self.move(data["pos"])
+        self.options.set_options(self.settings.read_options())
         self.status = Status.idle
         self.set_statusbar(_("Ready."))
 
@@ -156,7 +157,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     def closeEvent (self, e=None):
         """Save settings and remove registered logging handler"""
-        self.settings.save_geometry(self.size(), self.pos())
+        self.settings.save_geometry(dict(size=self.size(), pos=self.pos()))
+        self.settings.save_options(self.options.get_options())
         self.settings.sync()
         self.config.remove_loghandler(self.handler)
         if e is not None:
@@ -232,9 +234,10 @@ Version 2 or later.</p>
 
     def set_config (self):
         """Set configuration."""
-        self.config["recursionlevel"] = self.options.recursionlevel.value()
-        self.config["verbose"] = self.options.verbose.isChecked()
-        if self.options.debug.isChecked():
+        data = self.options.get_options()
+        self.config["recursionlevel"] = data["recursionlevel"]
+        self.config["verbose"] = data["verbose"]
+        if data["debug"]:
             self.config.set_debug(["all"])
             # make sure at least one thread is used
             self.config["threads"] = 1

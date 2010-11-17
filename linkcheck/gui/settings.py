@@ -39,20 +39,55 @@ class Settings (object):
         self.settings = QtCore.QSettings(base, appname)
 
     def read_geometry (self):
+        data = dict(size=None, pos=None)
         self.settings.beginGroup('mainwindow')
-        size = pos = None
         if self.settings.contains('size'):
-            size = save_size(self.settings.value('size').toSize())
+            data["size"] = save_size(self.settings.value('size').toSize())
         if self.settings.contains('pos'):
-            pos = save_point(self.settings.value('pos').toPoint())
+            data["pos"] = save_point(self.settings.value('pos').toPoint())
         self.settings.endGroup()
-        return size, pos
+        return data
 
-
-    def save_geometry (self, size, pos):
+    def save_geometry (self, data):
+        size = save_size(data["size"])
+        pos = save_point(data["pos"])
         self.settings.beginGroup('mainwindow')
-        self.settings.setValue("size", QtCore.QVariant(save_size(size)))
-        self.settings.setValue("pos", QtCore.QVariant(save_point(pos)))
+        self.settings.setValue("size", QtCore.QVariant(size))
+        self.settings.setValue("pos", QtCore.QVariant(pos))
+        self.settings.endGroup()
+
+    def read_options (self):
+        data = dict(debug=None, verbose=None, recursionlevel=None)
+        self.settings.beginGroup('output')
+        debug = verbose = None
+        for key in ("debug", "verbose"):
+            if self.settings.contains(key):
+                data[key] = self.settings.value(key).toBool()
+        self.settings.endGroup()
+        self.settings.beginGroup('checking')
+        recursionlevel = None
+        if self.settings.contains('recursionlevel'):
+            value, ok = self.settings.value('recursionlevel').toInt()
+            if ok:
+                if value < -1:
+                    value = -1
+                elif value > 100:
+                    # 100 is the maximum GUI option value
+                    value = 100
+            else:
+                value = -1
+            data['recursionlevel'] = value
+        self.settings.endGroup()
+        return data
+
+    def save_options (self, data):
+        self.settings.beginGroup('output')
+        for key in ("debug", "verbose"):
+            self.settings.setValue(key, QtCore.QVariant(data[key]))
+        self.settings.endGroup()
+        self.settings.beginGroup('checking')
+        key = "recursionlevel"
+        self.settings.setValue(key, QtCore.QVariant(data[key]))
         self.settings.endGroup()
 
     def sync (self):

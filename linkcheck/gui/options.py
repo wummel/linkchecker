@@ -68,6 +68,22 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         return start_editor(self.user_config, self.user_config_writable,
                             self.editor)
 
+    def get_options (self):
+        """Return option data as dictionary."""
+        return dict(
+            debug=self.debug.isChecked(),
+            verbose=self.verbose.isChecked(),
+            recursionlevel=self.recursionlevel.value(),
+        )
+
+    def set_options (self, data):
+        if data["debug"] is not None:
+            self.debug.setChecked(data["debug"])
+        if data["verbose"] is not None:
+            self.verbose.setChecked(data["verbose"])
+        if data["recursionlevel"] is not None:
+            self.recursionlevel.setValue(data["recursionlevel"])
+
 
 def start_editor (filename, writable, editor):
     if not os.path.isfile(filename):
