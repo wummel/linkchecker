@@ -12,6 +12,9 @@ Fixes:
   remove whitespace.
 - checking: Make sure the check for external domain is done after all
   HTTP redirections.
+- checking: Check for allowed content read before trying to
+  parse anchors in HTML file.
+  Closes: SF bug #3110569
 
 Changes:
 - cmdline: Don't log a warning if URL has been redirected.

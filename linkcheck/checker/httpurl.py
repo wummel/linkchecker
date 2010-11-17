@@ -598,15 +598,23 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return True
 
     def set_title_from_content (self):
+        """Check if it's allowed to read content before execution."""
         if self.method_get_allowed:
             super(HttpUrl, self).set_title_from_content()
 
+    def get_anchors (self):
+        """Check if it's allowed to read content before execution."""
+        if self.method_get_allowed:
+            super(HttpUrl, self).get_anchors()
+
     def content_allows_robots (self):
+        """Check if it's allowed to read content before execution."""
         if not self.method_get_allowed:
             return False
         return super(HttpUrl, self).content_allows_robots()
 
     def check_warningregex (self):
+        """Check if it's allowed to read content before execution."""
         if self.method_get_allowed:
             super(HttpUrl, self).check_warningregex()
 
