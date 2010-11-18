@@ -15,7 +15,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from PyQt4 import QtCore
 from logging import Handler
 from ..logger import Logger
 
@@ -23,15 +22,14 @@ from ..logger import Logger
 class GuiLogHandler (Handler, object):
     """Delegate log messages to the UI."""
 
-    def __init__ (self, widget):
+    def __init__ (self, signal):
         """Save widget."""
         super(GuiLogHandler, self).__init__()
-        self.widget = widget
+        self.signal = signal
 
     def emit (self, record):
         """Emit a record. It gets logged in the debug widget."""
-        msg = self.format(record)
-        self.widget.emit(QtCore.SIGNAL("log_msg(QString)"), msg)
+        self.signal.emit(self.format(record))
 
 
 class GuiLogger (Logger):
@@ -39,7 +37,7 @@ class GuiLogger (Logger):
 
     def __init__ (self, **args):
         super(GuiLogger, self).__init__(**args)
-        self.widget = args["widget"]
+        self.log_url_signal = args["signal"]
 
     def start_fileoutput (self):
         pass
@@ -49,7 +47,7 @@ class GuiLogger (Logger):
 
     def log_url (self, url_data):
         """URL gets logged in the main window."""
-        self.widget.emit(QtCore.SIGNAL("log_url(PyQt_PyObject)"), url_data)
+        self.log_url_signal.emit(url_data)
 
     def end_output (self):
         pass

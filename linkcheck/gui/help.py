@@ -37,6 +37,7 @@ class HelpWindow (QtGui.QDialog):
         self.browser = HelpBrowser(splitter, self.engine)
         tree = self.engine.contentWidget()
         tree.setExpandsOnDoubleClick(False)
+        tree.linkActivated.connect(self.browser.setSource)
         splitter.addWidget(tree)
         splitter.addWidget(self.browser)
         splitter.setSizes((70, 530))
@@ -44,9 +45,6 @@ class HelpWindow (QtGui.QDialog):
         hlayout.addWidget(splitter)
         self.setLayout(hlayout)
         self.resize(800, 600)
-        self.connect(self.engine.contentWidget(),
-            QtCore.SIGNAL("linkActivated(QUrl)"),
-            self.browser, QtCore.SLOT("setSource(QUrl)"))
 
     def showDocumentation (self, url):
         """Show given URL in help browser."""

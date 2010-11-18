@@ -45,6 +45,8 @@ Status = enum('idle', 'checking')
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
+    log_url_signal = QtCore.pyqtSignal(object)
+
     def __init__(self, parent=None, url=None):
         """Initialize UI."""
         super(LinkCheckerMain, self).__init__(parent)
@@ -102,9 +104,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Connect widget signals. Some signals use the AutoConnect feature.
         Autoconnected methods have the form on_<objectname>_<signal>.
         """
-        self.connect(self.checker, QtCore.SIGNAL("finished()"), self.set_status_idle)
-        self.connect(self.checker, QtCore.SIGNAL("terminated()"), self.set_status_idle)
-        self.connect(self.checker, QtCore.SIGNAL("log_url(PyQt_PyObject)"), self.log_url)
+        def set_idle ():
+            self.status = Status.idle
+        self.checker.finished.connect(set_idle)
+        self.checker.terminated.connect(set_idle)
+        self.log_url_signal.connect(self.log_url)
 
     def init_treeview (self):
         self.model = UrlItemModel()
@@ -134,22 +138,18 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     status = property(get_status, set_status)
 
-    def set_status_idle (self):
-        """Set idle status. Helper function for signal connections."""
-        self.status = Status.idle
-
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionHelp_triggered (self):
         """Show help page."""
         url = QtCore.QUrl("%sindex.html" % DocBaseUrl)
         self.assistant.showDocumentation(url)
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionOptions_triggered (self):
         """Show option dialog."""
         self.options.exec_()
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionQuit_triggered (self):
         """Quit application."""
         self.close()
@@ -163,7 +163,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         if e is not None:
             e.accept()
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionAbout_triggered (self):
         """Display about dialog."""
         d = {
@@ -180,7 +180,7 @@ for broken links.</p>
 Version 2 or later.</p>
 </qt>""") % d)
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionDebug_triggered (self):
         """Display debug dialog."""
         self.debug.show()
@@ -224,11 +224,12 @@ Version 2 or later.</p>
         """Create a configuration object."""
         self.config = configuration.Configuration()
         self.config.logger_add("gui", GuiLogger)
-        self.config["logger"] = self.config.logger_new('gui', widget=self.checker)
+        self.config["logger"] = self.config.logger_new('gui',
+            signal=self.log_url_signal)
         self.config["status"] = True
         self.config["status_wait_seconds"] = 2
-        self.handler = GuiLogHandler(self.debug)
-        status = StatusLogger(self.progress)
+        self.handler = GuiLogHandler(self.debug.log_msg_signal)
+        status = StatusLogger(self.progress.log_status_signal)
         self.config.init_logging(status, handler=self.handler)
 
     def set_config (self):
@@ -265,28 +266,28 @@ Version 2 or later.</p>
             self.contextmenu.enableFromItem(urlitem)
             self.contextmenu.popup(QtGui.QCursor.pos())
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionViewProperties_triggered (self):
         """View URL data properties in a separate window."""
         urlitem = self.model.getUrlItem(self.treeView.currentIndex())
         if urlitem is not None:
             self.view_item_properties(urlitem)
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionViewOnline_triggered (self):
         """View item URL online."""
         urlitem = self.model.getUrlItem(self.treeView.currentIndex())
         if urlitem is not None:
             webbrowser.open(urlitem.url_data.url)
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionViewParentOnline_triggered (self):
         """View item parent URL online."""
         urlitem = self.model.getUrlItem(self.treeView.currentIndex())
         if urlitem is not None:
             webbrowser.open(urlitem.url_data.parent_url)
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionViewParentSource_triggered (self):
         """View item parent URL source in local text editor (read-only)."""
         urlitem = self.model.getUrlItem(self.treeView.currentIndex())
@@ -309,7 +310,7 @@ Version 2 or later.</p>
             self.editor.setText(data, line=line, col=col)
         self.editor.show()
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionCopyToClipboard_triggered (self):
         """Copy item URL to clipboard."""
         urlitem = self.model.getUrlItem(self.treeView.currentIndex())

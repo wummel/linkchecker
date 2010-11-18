@@ -22,14 +22,13 @@ from .linkchecker_ui_debug import Ui_DebugDialog
 class LinkCheckerDebug (QtGui.QDialog, Ui_DebugDialog):
     """Show debug text."""
 
+    log_msg_signal = QtCore.pyqtSignal(str)
+
     def __init__ (self, parent=None):
         super(LinkCheckerDebug, self).__init__(parent)
         self.setupUi(self)
-        self.connect(self, QtCore.SIGNAL("log_msg(QString)"), self.log_msg)
+        self.log_msg_signal.connect(self.textEdit.appendPlainText)
         self.reset()
-
-    def log_msg (self, msg):
-        self.textEdit.appendPlainText(msg)
 
     def reset (self):
         self.textEdit.clear()

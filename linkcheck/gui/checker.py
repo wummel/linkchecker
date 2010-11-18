@@ -34,7 +34,7 @@ class CheckerThread (QtCore.QThread):
     def check (self, aggregate, progress):
         self.aggregate = aggregate
         self.progress = progress
-        self.connect(self.progress.cancelButton, QtCore.SIGNAL("clicked()"), self.cancel)
+        self.progress.cancelButton.clicked.connect(self.cancel)
         # setup the thread and call run()
         self.start()
 

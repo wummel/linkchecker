@@ -16,7 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 from .linkchecker_ui_options import Ui_Options
 from .editor import EditorWindow
 from .. import configuration
@@ -29,10 +29,10 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         super(LinkCheckerOptions, self).__init__(parent)
         self.setupUi(self)
         self.editor = EditorWindow(self)
-        self.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.reset)
-        self.connect(self.closeButton, QtCore.SIGNAL("clicked()"), self.close)
-        self.connect(self.sys_config_button, QtCore.SIGNAL("clicked()"), self.edit_sys_config)
-        self.connect(self.user_config_button, QtCore.SIGNAL("clicked()"), self.edit_user_config)
+        self.closeButton.clicked.connect(self.close)
+        self.resetButton.clicked.connect(self.reset)
+        self.sys_config_button.clicked.connect(self.edit_sys_config)
+        self.user_config_button.clicked.connect(self.edit_user_config)
         self.reset()
 
     def reset (self):

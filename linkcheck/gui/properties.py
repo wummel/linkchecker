@@ -17,7 +17,7 @@
 
 import os
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 from .linkchecker_ui_properties import Ui_PropertiesDialog
 from .. import strformat
 
@@ -28,7 +28,7 @@ class PropertiesDialog (QtGui.QDialog, Ui_PropertiesDialog):
     def __init__ (self, parent=None):
         super(PropertiesDialog, self).__init__(parent)
         self.setupUi(self)
-        self.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.close)
+        self.okButton.clicked.connect(self.close)
 
     def set_item (self, urlitem):
         """Write URL item values into text fields."""

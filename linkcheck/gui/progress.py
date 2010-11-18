@@ -22,13 +22,15 @@ from .linkchecker_ui_progress import Ui_ProgressDialog
 class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
     """Show progress bar."""
 
+    log_status_signal = QtCore.pyqtSignal(int, int, int, float)
+
     def __init__ (self, parent=None):
         super(LinkCheckerProgress, self).__init__(parent)
         self.setupUi(self)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(0)
-        self.connect(self, QtCore.SIGNAL("log_status(int,int,int,float)"), self.log_status)
-        self.connect(self.cancelButton, QtCore.SIGNAL("clicked()"), self.cancel)
+        self.log_status_signal.connect(self.log_status)
+        self.cancelButton.clicked.connect(self.cancel)
 
     def log_status (self, checked, in_progress, queued, duration):
         self.label_checked.setText(u"%d" % checked)
@@ -50,8 +52,8 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
 class StatusLogger (object):
     """GUI status logger, printing to progress dialog."""
 
-    def __init__ (self, widget):
-        self.widget = widget
+    def __init__ (self, signal):
+        self.signal = signal
 
     def log_status (self, checked, in_progress, queued, duration):
-        self.widget.emit(QtCore.SIGNAL("log_status(int,int,int,float)"), checked, in_progress, queued, duration)
+        self.signal.emit(checked, in_progress, queued, duration)
