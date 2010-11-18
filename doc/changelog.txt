@@ -1,4 +1,4 @@
-5.5 "Red" (released xx.xx.2010)
+5.5 "Red" (released xx.11.2010)
 
 Fixes:
 - checking: Do not check content of already cached URLs.
@@ -35,6 +35,7 @@ Features:
   Closes: SF bug #3102201
 - gui: Added dialog to show detailed URL properties on double click.
 - gui: Store GUI options in registry settings.
+
 
 5.4 "How to train your dragon" (released 26.10.2010)
 
