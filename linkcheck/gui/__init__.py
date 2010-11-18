@@ -115,7 +115,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.treeView.setColumnWidth(3, 150)
         self.treeView.setSortingEnabled(True)
         self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
-        self.num = 0
 
     def get_status (self):
         return self._status
