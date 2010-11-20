@@ -67,10 +67,10 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.properties = PropertiesDialog(parent=self)
         # Note: do not use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
+        # init the rest
         self.init_treeview()
         self.connect_widgets()
         self.init_config()
-        # init application
         self.init_app()
 
     def init_app (self):
@@ -114,11 +114,43 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.model = UrlItemModel()
         self.treeView.setModel(self.model)
         self.treeView.setColumnHidden(0, True)
-        self.treeView.setColumnWidth(1, 200)
-        self.treeView.setColumnWidth(2, 200)
-        self.treeView.setColumnWidth(3, 150)
+        data = self.settings.read_treeviewcols()
+        self.treeView.setColumnWidth(1, data["col1"])
+        self.treeView.setColumnWidth(2, data["col2"])
+        self.treeView.setColumnWidth(3, data["col3"])
         self.treeView.setSortingEnabled(True)
         self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
+
+    def get_treeviewcols (self):
+        return dict(
+            col1=self.treeView.columnWidth(1),
+            col2=self.treeView.columnWidth(2),
+            col3=self.treeView.columnWidth(3),
+        )
+
+    def init_config (self):
+        """Create a configuration object."""
+        self.config = configuration.Configuration()
+        self.config.logger_add("gui", GuiLogger)
+        self.config["logger"] = self.config.logger_new('gui',
+            signal=self.log_url_signal)
+        self.config["status"] = True
+        self.config["status_wait_seconds"] = 2
+        self.handler = GuiLogHandler(self.debug.log_msg_signal)
+        status = StatusLogger(self.progress.log_status_signal)
+        self.config.init_logging(status, handler=self.handler)
+
+    def set_config (self):
+        """Set configuration."""
+        data = self.options.get_options()
+        self.config["recursionlevel"] = data["recursionlevel"]
+        self.config["verbose"] = data["verbose"]
+        if data["debug"]:
+            self.config.set_debug(["all"])
+            # make sure at least one thread is used
+            self.config["threads"] = 1
+        else:
+            self.config.reset_loglevel()
 
     def get_status (self):
         return self._status
@@ -157,6 +189,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def closeEvent (self, e=None):
         """Save settings and remove registered logging handler"""
         self.settings.save_geometry(dict(size=self.size(), pos=self.pos()))
+        self.settings.save_treeviewcols(self.get_treeviewcols())
         self.settings.save_options(self.options.get_options())
         self.settings.sync()
         self.config.remove_loghandler(self.handler)
@@ -221,30 +254,6 @@ Version 2 or later.</p>
         # check in background
         self.checker.check(self.aggregate, self.progress)
         self.status = Status.checking
-
-    def init_config (self):
-        """Create a configuration object."""
-        self.config = configuration.Configuration()
-        self.config.logger_add("gui", GuiLogger)
-        self.config["logger"] = self.config.logger_new('gui',
-            signal=self.log_url_signal)
-        self.config["status"] = True
-        self.config["status_wait_seconds"] = 2
-        self.handler = GuiLogHandler(self.debug.log_msg_signal)
-        status = StatusLogger(self.progress.log_status_signal)
-        self.config.init_logging(status, handler=self.handler)
-
-    def set_config (self):
-        """Set configuration."""
-        data = self.options.get_options()
-        self.config["recursionlevel"] = data["recursionlevel"]
-        self.config["verbose"] = data["verbose"]
-        if data["debug"]:
-            self.config.set_debug(["all"])
-            # make sure at least one thread is used
-            self.config["threads"] = 1
-        else:
-            self.config.reset_loglevel()
 
     def log_url (self, url_data):
         """Add URL data to tree widget."""

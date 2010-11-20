@@ -56,6 +56,27 @@ class Settings (object):
         self.settings.setValue("pos", QtCore.QVariant(pos))
         self.settings.endGroup()
 
+    def read_treeviewcols (self):
+        data = dict(col1=200, col2=200, col3=150)
+        self.settings.beginGroup('treeview')
+        for key in ("col1", "col2", "col3"):
+            if self.settings.contains(key):
+                value, ok = self.settings.value(key).toInt()
+                if ok:
+                    if value < 50:
+                        value = 50
+                    elif value > 500:
+                        value = 500
+                    data[key] = value
+        self.settings.endGroup()
+        return data
+
+    def save_treeviewcols (self, data):
+        self.settings.beginGroup('treeview')
+        for key in ("col1", "col2", "col3"):
+            self.settings.setValue(key, QtCore.QVariant(data[key]))
+        self.settings.endGroup()
+
     def read_options (self):
         data = dict(debug=None, verbose=None, recursionlevel=None)
         self.settings.beginGroup('output')
