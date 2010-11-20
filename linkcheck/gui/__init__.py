@@ -185,10 +185,12 @@ Version 2 or later.</p>
         """Display debug dialog."""
         self.debug.show()
 
-    def on_controlButton_clicked (self):
+    def start (self):
         """Start a new check."""
         if self.status == Status.idle:
             self.check()
+
+    on_controlButton_clicked = on_urlinput_returnPressed = start
 
     def check (self):
         """Check given URL."""
