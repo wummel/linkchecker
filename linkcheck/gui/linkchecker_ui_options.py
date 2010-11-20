@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Sat Nov  6 20:05:23 2010
+# Created: Sat Nov 20 19:52:49 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -132,7 +132,7 @@ class Ui_Options(object):
         QtCore.QMetaObject.connectSlotsByName(Options)
 
     def retranslateUi(self, Options):
-        Options.setWindowTitle(_("Dialog"))
+        Options.setWindowTitle(_("Linkchecker options"))
         self.label_8.setText(_("The most common check options are configurable. They override any configuration file settings."))
         self.label.setToolTip(_("Check recursively all links up to given depth. A negative depth will enable infinite recursion."))
         self.label.setText(_("Recursive depth"))
