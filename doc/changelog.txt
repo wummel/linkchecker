@@ -1,4 +1,4 @@
-5.5 "Red" (released xx.11.2010)
+5.5 "Red" (released 20.11.2010)
 
 Fixes:
 - checking: Do not check content of already cached URLs.

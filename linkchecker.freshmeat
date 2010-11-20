@@ -1,15 +1,16 @@
 Project: LinkChecker
-Version: 5.4
+Version: 5.5
 Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
-Tar/GZ-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-5.4.tar.gz
+Tar/GZ-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-5.5.tar.gz
 Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
-Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-5.3.exe
+Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-5.5.exe
 
-The GUI now reads its default options from the configuration file,
-and can display URL source code in a text window.
-A login URL including authentication information can be configured
-to log into sites requiring authentication.
+The GUI interface now stores its option settings and the configuration
+file can be edited. When viewed in the GUI the parent URL source can
+be saved to a local file.
+
+Several checking bugs have also been fixed.
