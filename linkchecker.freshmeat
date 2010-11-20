@@ -4,10 +4,10 @@ Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
-Tar/GZ-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-5.5.tar.gz
+Tar/GZ-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.tar.gz
 Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
-Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-5.5.exe
+Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
 The GUI interface now stores its option settings and the configuration
 file can be edited. When viewed in the GUI the parent URL source can
