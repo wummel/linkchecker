@@ -87,7 +87,7 @@ class HtmlLogger (Logger):
         """Write start of checking info."""
         super(HtmlLogger, self).start_output()
         header = {
-            "encoding": self.output_encoding,
+            "encoding": self.get_charset_encoding(),
             "title": configuration.App,
             "body": self.colorbackground,
             "link": self.colorlink,

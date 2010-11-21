@@ -19,8 +19,8 @@ A blacklist logger.
 """
 
 import os
+import codecs
 from . import Logger
-from .. import i18n
 
 
 class BlacklistLogger (Logger):
@@ -35,7 +35,6 @@ class BlacklistLogger (Logger):
         Intialize with old blacklist data (if found, else not).
         """
         super(BlacklistLogger, self).__init__(**args)
-        self.output_encoding = args.get("encoding", i18n.default_encoding)
         self.init_fileoutput(args)
         self.blacklist = {}
         if self.filename is not None and os.path.exists(self.filename):
@@ -72,9 +71,10 @@ class BlacklistLogger (Logger):
         """
         Read a previously stored blacklist from file fd.
         """
-        with open(self.filename) as fd:
+        with codecs.open(self.filename, 'r', self.output_encoding,
+                         self.codec_errors) as fd:
             for line in fd:
-                line = self.decode(line.rstrip())
+                line = line.rstrip()
                 if line.startswith('#') or not line:
                     continue
                 value, key = line.split(None, 1)

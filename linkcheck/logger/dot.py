@@ -34,7 +34,7 @@ class DOTLogger (GraphLogger):
             self.writeln()
         self.writeln(u"digraph G {")
         self.writeln(u"  graph [")
-        self.writeln(u"    charset=\"%s\"," % self.output_encoding)
+        self.writeln(u"    charset=\"%s\"," % self.get_charset_encoding())
         self.writeln(u"  ];")
         self.flush()
 

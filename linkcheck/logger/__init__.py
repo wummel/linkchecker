@@ -22,8 +22,9 @@ import sys
 import os
 import datetime
 import time
+import codecs
 from ..decorators import notimplemented
-from .. import log, LOG_CHECK, strformat, dummy, configuration
+from .. import log, LOG_CHECK, strformat, dummy, configuration, i18n
 
 _ = lambda x: x
 Fields = dict(
@@ -88,8 +89,21 @@ class Logger (object):
         self.warnings = 0
         # number of warnings that were printed
         self.warnings_printed = 0
-        # encoding of output (default is utf-8)
-        self.output_encoding = args.get("encoding", "utf-8")
+        # encoding of output
+        encoding = args.get("encoding", i18n.default_encoding)
+        try:
+            encoding = codecs.lookup(encoding).name
+        except LookupError:
+            encoding = i18n.default_encoding
+        self.output_encoding = encoding
+        # how to handle codec errors
+        self.codec_errors = "replace"
+
+    def get_charset_encoding (self):
+        """Translate the output encoding to a charset encoding name."""
+        if self.output_encoding == "utf-8-sig":
+            return "utf-8"
+        return self.output_encoding
 
     def init_fileoutput (self, args):
         """
@@ -113,7 +127,8 @@ class Logger (object):
         try:
             if path and not os.path.isdir(path):
                 os.makedirs(path)
-            self.fd = file(self.filename, "wb")
+            self.fd = codecs.open(self.filename, "wb", self.output_encoding,
+                                  self.codec_errors)
             self.close_fd = True
         except IOError:
             msg = sys.exc_info()[1]
@@ -132,34 +147,6 @@ class Logger (object):
             if self.close_fd:
                 self.fd.close()
             self.fd = None
-
-    def encode (self, s):
-        """
-        Encode string with configured output encoding. Wrong encoded
-        characters are replaced.
-
-        @param s: string to encode
-        @type s: unicode
-        @return: encoded string
-        @rtype: string
-        """
-        if not isinstance(s, unicode):
-            raise ValueError("tried to encode non-unicode string %r" % s)
-        return s.encode(self.output_encoding, "replace")
-
-    def decode (self, s):
-        """
-        Decode string with configured output encoding. Wrong decoded
-        characters are replaced.
-
-        @param s: string to decode
-        @type s: string
-        @return: encoded string
-        @rtype: unicode
-        """
-        if isinstance(s, unicode):
-            return s
-        return s.decode(self.output_encoding, "replace")
 
     def check_date (self):
         """
@@ -200,7 +187,7 @@ class Logger (object):
             log.warn(LOG_CHECK,
                 "writing to unitialized or closed file")
         else:
-            self.fd.write(self.encode(s), **args)
+            self.fd.write(s, **args)
 
     def writeln (self, s=u"", **args):
         """

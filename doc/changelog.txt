@@ -11,6 +11,8 @@ Changes:
   --no-proxy-for.
 - config: Remove backwards compatilibity parsing and require the
   new multiline configuration syntax.
+- logging: Use codecs module for proper output encoding.
+  Closes: SF bug #3114624
 
 Features:
 - gui: Store column widths in registry settings.
