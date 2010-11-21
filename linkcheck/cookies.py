@@ -27,7 +27,6 @@ And a cookie storage class is provided.
 [2] http://www.faqs.org/rfcs/rfc2109.html
 """
 
-from __future__ import with_statement
 import time
 import re
 import Cookie

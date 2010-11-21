@@ -35,7 +35,6 @@ def h ():
     pass
 
 """
-from __future__ import with_statement
 import warnings
 import signal
 import os

@@ -18,7 +18,6 @@
 A blacklist logger.
 """
 
-from __future__ import with_statement
 import os
 from . import Logger
 from .. import i18n
