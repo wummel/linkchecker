@@ -1,5 +1,10 @@
 5.6 "" (released xx.xx.2010)
 
+Fixes:
+
+Changes:
+- dependencies: Require and use Python 2.6.
+
 Features:
 - gui: Store column widths in registry settings.
 
