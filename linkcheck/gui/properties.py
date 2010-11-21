@@ -16,7 +16,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os
-import sys
 from PyQt4 import QtGui
 from .linkchecker_ui_properties import Ui_PropertiesDialog
 from .. import strformat

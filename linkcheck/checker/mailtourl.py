@@ -18,7 +18,6 @@
 Handle for mailto: links.
 """
 
-import cgi
 import re
 import urllib
 import urlparse

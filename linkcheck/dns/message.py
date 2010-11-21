@@ -18,7 +18,6 @@
 
 from cStringIO import StringIO
 import struct
-import sys
 import time
 
 import linkcheck.dns.edns

@@ -18,7 +18,6 @@
 
 import hmac
 import struct
-import sys
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdataclass
