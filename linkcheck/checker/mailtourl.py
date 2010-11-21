@@ -21,6 +21,7 @@ Handle for mailto: links.
 import cgi
 import re
 import urllib
+import urlparse
 import smtplib
 from email._parseaddr import AddressList
 import sys
@@ -116,7 +117,7 @@ class MailtoUrl (urlbase.UrlBase):
         if i < (len(url) - 1):
             self.addresses.update(getaddresses(url[:i]))
             try:
-                headers = cgi.parse_qs(url[(i+1):], strict_parsing=True)
+                headers = urlparse.parse_qs(url[(i+1):], strict_parsing=True)
                 for key, vals in headers.items():
                     if key.lower() in EMAIL_CGI:
                         # Only the first header value is added
