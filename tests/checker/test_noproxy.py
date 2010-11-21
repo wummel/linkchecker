@@ -17,24 +17,22 @@
 """
 Test proxy handling.
 """
-import os
 import httpserver
-
+from test.test_support import EnvironmentVarGuard
 
 class TestProxy (httpserver.HttpServerTest):
     """Test no_proxy env var handling."""
 
     def test_no_proxy (self):
         # Test setting proxy and no_proxy env variable.
-        os.environ["http_proxy"] = "http://example.org:8877"
-        os.environ["no_proxy"] = "localhost:%d" % self.port
-        try:
-            self.start_server()
-            self.no_proxy()
-        finally:
-            self.stop_server()
-        del os.environ["http_proxy"]
-        del os.environ["no_proxy"]
+        with EnvironmentVarGuard() as env:
+            env["http_proxy"] = "http://example.org:8877"
+            env["no_proxy"] = "localhost:%d" % self.port
+            try:
+                self.start_server()
+                self.no_proxy()
+            finally:
+                self.stop_server()
 
     def no_proxy (self):
         url = u"http://localhost:%d/tests/checker/data/favicon.ico" % \
