@@ -69,7 +69,5 @@ class PropertiesDialog (QtGui.QDialog, Ui_PropertiesDialog):
 def wrap (lines, width):
     sep = os.linesep+os.linesep
     text = sep.join(lines)
-    kwargs = dict(break_long_words=False)
-    if sys.version_info >= (2, 6, 0, 'final', 0):
-        kwargs["break_on_hyphens"] = False
+    kwargs = dict(break_long_words=False, break_on_hyphens=False)
     return strformat.wrap(text, width, **kwargs)
