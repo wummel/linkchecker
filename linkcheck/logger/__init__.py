@@ -127,8 +127,7 @@ class Logger (object):
         try:
             if path and not os.path.isdir(path):
                 os.makedirs(path)
-            self.fd = codecs.open(self.filename, "wb", self.output_encoding,
-                                  self.codec_errors)
+            self.fd = self.create_fd()
             self.close_fd = True
         except IOError:
             msg = sys.exc_info()[1]
@@ -137,6 +136,11 @@ class Logger (object):
                 "Disabling log output of %s", self.filename, msg, self)
             self.fd = dummy.Dummy()
         self.filename = None
+
+    def create_fd (self):
+        """Create open file descriptor."""
+        return codecs.open(self.filename, "wb", self.output_encoding,
+                           self.codec_errors)
 
     def close_fileoutput (self):
         """

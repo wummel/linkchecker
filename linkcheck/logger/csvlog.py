@@ -20,6 +20,7 @@ A CSV logger.
 import csv
 import os
 from . import Logger
+from .. import strformat
 
 
 class CSVLogger (Logger):
@@ -33,9 +34,17 @@ class CSVLogger (Logger):
         Store default separator and (os dependent) line terminator.
         """
         super(CSVLogger, self).__init__(**args)
+        # due to a limitation of the csv module, all output has to be
+        # utf-8 encoded
+        self.output_encoding = "utf-8"
         self.init_fileoutput(args)
         self.separator = args['separator']
         self.quotechar = args['quotechar']
+        self.linesep = os.linesep
+
+    def create_fd (self):
+        """Create open file descriptor."""
+        return open(self.filename, "wb")
 
     def comment (self, s, **args):
         """
@@ -57,8 +66,8 @@ class CSVLogger (Logger):
             # write empty string to initialize file output
             self.write(u"")
         self.writer = csv.writer(self.fd, dialect='excel',
-                        delimiter=self.separator, lineterminator=os.linesep,
-                        quotechar=self.quotechar)
+               delimiter=self.separator, lineterminator=self.linesep,
+               quotechar=self.quotechar)
         for s in (u"urlname",
                   u"parentname",
                   u"baseref",
@@ -77,7 +86,7 @@ class CSVLogger (Logger):
             if self.has_part(s):
                 row.append(s)
         if row:
-            self.writer.writerow(row)
+            self.writerow(row)
 
     def log_url (self, url_data):
         """
@@ -87,19 +96,22 @@ class CSVLogger (Logger):
         for s in (url_data.base_url,
                url_data.parent_url, url_data.base_ref,
                url_data.result,
-               os.linesep.join(url_data.warnings),
-               os.linesep.join(url_data.info),
+               self.linesep.join(url_data.warnings),
+               self.linesep.join(url_data.info),
                url_data.valid, url_data.url,
                url_data.line, url_data.column,
                url_data.name, url_data.dltime,
                url_data.dlsize, url_data.checktime,
                url_data.cached):
-            if isinstance(s, unicode):
-                row.append(s.encode(self.output_encoding, "ignore"))
-            else:
-                row.append(s)
-        self.writer.writerow(row)
+            row.append(strformat.unicode_safe(s))
+        self.writerow(row)
         self.flush()
+
+    def writerow (self, row):
+        self.writer.writerow([self.encode(s) for s in row])
+
+    def encode (self, s):
+        return s.encode(self.output_encoding, self.codec_errors)
 
     def end_output (self):
         """
