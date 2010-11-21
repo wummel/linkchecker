@@ -44,12 +44,6 @@ class NXDOMAIN(linkcheck.dns.exception.DNSException):
     """The query name does not exist."""
     pass
 
-# The definition of the Timeout exception has moved from here to the
-# linkcheck.dns.exception module.  We keep linkcheck.dns.resolver.Timeout defined for
-# backwards compatibility.
-
-Timeout = linkcheck.dns.exception.Timeout
-
 class NoAnswer(linkcheck.dns.exception.DNSException):
     """The response did not contain an answer to the question."""
     pass

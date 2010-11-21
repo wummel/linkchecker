@@ -166,24 +166,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                     raise LinkCheckerError(LOG_CHECK,
                        _("missing auth part in entry %(val)r") % \
                        {"val": val})
-        # backward compatibility
-        i = 1
-        while 1:
-            key = "entry%d" % i
-            if not self.has_option(section, key):
-                break
-            val = self.get(section, key)
-            auth = val.split()
-            log.warn(LOG_CHECK,
-              _("the entry%(num)d syntax is deprecated; use " \
-                "the new multiline configuration syntax") % {"num": i})
-            if len(auth) != 3:
-                raise LinkCheckerError(LOG_CHECK,
-                   _("missing auth part in entry %(val)r") % \
-                   {"val": val})
-            self.config.add_auth(pattern=auth[0], user=auth[1],
-                                 password=auth[2])
-            i += 1
         # read login URL and field names
         if self.has_option(section, "loginurl"):
             val = self.get(section, "loginurl").strip()
@@ -212,19 +194,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for line in read_multiline(self.get(section, "nofollow")):
                 pat = get_link_pat(line, strict=0)
                 self.config["externlinks"].append(pat)
-        # backward compatibility
-        i = 1
-        while 1:
-            key = "nofollow%d" % i
-            if not self.has_option(section, key):
-                break
-            val = self.get(section, key)
-            log.warn(LOG_CHECK,
-              _("the nofollow%(num)d syntax is deprecated; use " \
-                "the new multiline configuration syntax") % {"num": i})
-            pat = get_link_pat(val, strict=0)
-            self.config["externlinks"].append(pat)
-            i += 1
         if self.has_option(section, "ignorewarnings"):
             self.config['ignorewarnings'] = [f.strip() for f in \
                  self.get(section, 'ignorewarnings').split(',')]
@@ -232,20 +201,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for line in read_multiline(self.get(section, "ignore")):
                 pat = get_link_pat(line, strict=1)
                 self.config["externlinks"].append(pat)
-        # backward compatibility
-        i = 1
-        while 1:
-            key = "ignore%d" % i
-            if not self.has_option(section, key):
-                break
-            # backwards compatibility: split and ignore second part
-            val = self.get(section, key).split()[0]
-            log.warn(LOG_CHECK,
-              _("the ignore%(num)d syntax is deprecated; use " \
-                "the new multiline configuration syntax") % {"num": i})
-            pat = get_link_pat(val, strict=1)
-            self.config["externlinks"].append(pat)
-            i += 1
         if self.has_option(section, "internlinks"):
             pat = get_link_pat(self.get(section, "internlinks"))
             self.config["internlinks"].append(pat)

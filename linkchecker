@@ -483,11 +483,6 @@ group.add_option("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
 """Check HTTP anchor references. Default is not to check anchors.
 This option enables logging of the warning 'url-anchor-not-found'."""))
-# XXX remove deprecated option
-group.add_option("--no-anchor-caching", action="store_false",
-                 dest="anchorcaching", help=_(
-"""This option is deprecated and does nothing. It will be removed
-in a future release."""))
 group.add_option("-u", "--user", type="string", dest="username",
                  metavar="STRING",
                  help=_(
@@ -517,12 +512,6 @@ group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
-# XXX remove deprecated option
-group.add_option("--no-proxy-for", type="string", action="append",
-                 metavar="REGEX",
-                 dest="noproxyfor", help=_(
-"""This option is deprecated and does nothing. It will be removed
-in a future release."""))
 optparser.add_option_group(group)
 
 ################# auto completion #####################

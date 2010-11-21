@@ -25,9 +25,6 @@ import linkcheck.dns.rdatatype
 import linkcheck.dns.rdataclass
 import linkcheck.dns.rdata
 
-# define SimpleSet here for backwards compatibility
-SimpleSet = set
-
 class DifferingCovers(linkcheck.dns.exception.DNSException):
     """Raised if an attempt is made to add a SIG/RRSIG whose covered type
     is not the same as that of the other rdatas in the rdataset."""
