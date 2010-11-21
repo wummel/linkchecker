@@ -993,13 +993,9 @@ def from_file(f):
     @raises linkcheck.dns.exception.DNSSyntaxError:
     @rtype: linkcheck.dns.message.Message object"""
 
-    if sys.hexversion >= 0x02030000:
-        # allow Unicode filenames; turn on universal newline support
-        str_type = basestring
-        opts = 'rU'
-    else:
-        str_type = str
-        opts = 'r'
+    # allow Unicode filenames; turn on universal newline support
+    str_type = basestring
+    opts = 'rU'
     if isinstance(f, str_type):
         f = file(f, opts)
         want_close = True
