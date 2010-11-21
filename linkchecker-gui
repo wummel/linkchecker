@@ -21,12 +21,16 @@ Check HTML pages for broken links. This is the GUI client.
 import sys
 from PyQt4.QtGui import QApplication, QStyleFactory
 from linkcheck.gui import LinkCheckerMain
+from linkcheck import configuration
 
 
 def main (argv=None):
     if argv is None:
         argv = sys.argv
     app = QApplication(argv)
+    app.setApplicationName(configuration.AppName)
+    app.setApplicationVersion(configuration.Version)
+    app.setOrganizationName(configuration.Author)
     ## Look and feel changed to CleanLooks
     QApplication.setStyle(QStyleFactory.create("Cleanlooks"))
     QApplication.setPalette(QApplication.style().standardPalette())
