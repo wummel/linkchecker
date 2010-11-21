@@ -1,6 +1,16 @@
 Upgrading
 =========
 
+Migrating from 5.5 to 6.0
+-------------------------
+
+Python 2.6 or newer is required (Python 3.x is not supported though).
+
+The --no-proxy-for and --no-anchor-caching options have been removed.
+
+The configuration file now requires multiline syntax for the options
+"nofollow", "ignore" and "entry".
+
 Migrating from 5.2 to 5.3
 -------------------------
 

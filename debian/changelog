@@ -1,3 +1,14 @@
+linkchecker (6.0-1) unstable; urgency=low
+
+  * New upstream release.
+    + Requires Python >= 2.6
+    + Removes deprecated options --no-anchor-caching and
+      --no-proxy-for.
+    + Removes backwards compatilibity parsing and require the new
+      multiline configuration syntax.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 21 Nov 2010 11:37:56 +0100
+
 linkchecker (5.5-1) unstable; urgency=low
 
   * New upstream release.
