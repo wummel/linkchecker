@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Nov  6 20:28:54 2010
+# Created: Sun Nov 21 14:22:48 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.urlinput.setMaxLength(2048)
         self.urlinput.setObjectName("urlinput")
         self.horizontalLayout_3.addWidget(self.urlinput)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem1 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
         self.controlButton = QtGui.QPushButton(self.centralwidget)
         self.controlButton.setStatusTip("")
