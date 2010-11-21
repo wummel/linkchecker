@@ -1,6 +1,9 @@
 6.0 "" (released xx.xx.2010)
 
 Fixes:
+- checking: Fall back to HTTP GET requests when the connection has
+  been resets since some servers tend to do this for HEAD requests.
+  Closes: SF bug #3114622
 
 Changes:
 - dependencies: Require and use Python 2.6.

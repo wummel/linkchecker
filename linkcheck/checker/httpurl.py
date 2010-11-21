@@ -21,6 +21,7 @@ Handle http links.
 import urlparse
 import urllib
 import re
+import errno
 import zlib
 import socket
 from cStringIO import StringIO
@@ -40,8 +41,7 @@ from .const import WARN_HTTP_ROBOTS_DENIED, \
 # helper alias
 unicode_safe = strformat.unicode_safe
 
-supportHttps = hasattr(httplib, "HTTPSConnection") and \
-               hasattr(socket, "ssl")
+supportHttps = hasattr(httplib, "HTTPSConnection")
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
@@ -180,6 +180,15 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 # some servers send empty HEAD replies
                 if self.method == "HEAD" and self.method_get_allowed:
                     log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
+                    self.method = "GET"
+                    self.aliases = []
+                    self.fallback_get = True
+                    continue
+                raise
+            except socket.error, msg:
+                # some servers reset the connection on HEAD requests
+                if self.method == "HEAD" and self.method_get_allowed and \
+                   msg[0] == errno.ECONNRESET:
                     self.method = "GET"
                     self.aliases = []
                     self.fallback_get = True
