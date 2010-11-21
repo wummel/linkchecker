@@ -18,7 +18,6 @@
 
 import hmac
 import struct
-import sys
 
 import linkcheck.dns.exception
 import linkcheck.dns.rdataclass
@@ -192,21 +191,6 @@ def _setup_hashes():
         _hashes[HMAC_SHA1] = hashlib.sha1
         _hashes[HMAC_MD5] = hashlib.md5
 
-        if sys.hexversion < 0x02050000:
-            # hashlib doesn't conform to PEP 247: API for
-            # Cryptographic Hash Functions, which hmac before python
-            # 2.5 requires, so add the necessary items.
-            class HashlibWrapper:
-                def __init__(self, basehash):
-                    self.basehash = basehash
-                    self.digest_size = self.basehash().digest_size
-
-                def new(self, *args, **kwargs):
-                    return self.basehash(*args, **kwargs)
-
-            for name in _hashes:
-                _hashes[name] = HashlibWrapper(_hashes[name])
-
     except ImportError:
         import md5, sha
         _hashes[HMAC_MD5] =  md5
@@ -226,11 +210,6 @@ def get_algorithm(algorithm):
 
     if isinstance(algorithm, basestring):
         algorithm = linkcheck.dns.name.from_text(algorithm)
-
-    if sys.hexversion < 0x02050200 and \
-       (algorithm == HMAC_SHA384 or algorithm == HMAC_SHA512):
-        raise NotImplementedError("TSIG algorithm " + str(algorithm) +
-                                  " requires Python 2.5.2 or later")
 
     try:
         return (algorithm.to_digestable(), _hashes[algorithm])

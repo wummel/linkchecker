@@ -20,10 +20,6 @@
 @type default_resolver: linkcheck.dns.resolver.Resolver object"""
 
 import socket
-try:
-    set
-except NameError:
-    from sets import Set as set
 import sys
 import os
 import time

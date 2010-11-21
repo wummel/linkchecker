@@ -5,7 +5,8 @@ VERSION:=$(shell $(PYTHON) setup.py --version)
 MACHINE:=$(shell uname -m)
 HOST:=www.debian.org
 LCOPTS:=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot --complete -r1 -C
-PYTHONSRC:=/home/calvin/src/python-gitsvn
+#PYTHONSRC:=/home/calvin/src/python-gitsvn/Lib
+PYTHONSRC:=/usr/lib/python2.6
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
@@ -166,7 +167,7 @@ reindent:
 diff:
 	@for f in gzip robotparser httplib; do \
 	  echo "Comparing $${f}.py"; \
-	  diff -u linkcheck/$${f}2.py $(PYTHONSRC)/Lib/$${f}.py | $(PAGER); \
+	  diff -u linkcheck/$${f}2.py $(PYTHONSRC)/$${f}.py | $(PAGER); \
 	done
 
 .PHONY: dnsdiff

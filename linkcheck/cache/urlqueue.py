@@ -17,7 +17,6 @@
 """
 Handle a queue of URLs to check.
 """
-from __future__ import with_statement
 import threading
 import collections
 from time import time as _time

@@ -17,7 +17,6 @@
 """
 Define standard test support classes funtional for LinkChecker tests.
 """
-from __future__ import with_statement
 import os
 import re
 import codecs

@@ -16,7 +16,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os
-import sys
 from PyQt4 import QtGui
 from .linkchecker_ui_properties import Ui_PropertiesDialog
 from .. import strformat
@@ -69,7 +68,5 @@ class PropertiesDialog (QtGui.QDialog, Ui_PropertiesDialog):
 def wrap (lines, width):
     sep = os.linesep+os.linesep
     text = sep.join(lines)
-    kwargs = dict(break_long_words=False)
-    if sys.version_info >= (2, 6, 0, 'final', 0):
-        kwargs["break_on_hyphens"] = False
+    kwargs = dict(break_long_words=False, break_on_hyphens=False)
     return strformat.wrap(text, width, **kwargs)

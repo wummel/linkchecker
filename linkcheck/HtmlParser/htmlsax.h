@@ -1,4 +1,4 @@
-/* Copyright (C) 2000-2009 Bastian Kleineidam
+/* Copyright (C) 2000-2010 Bastian Kleineidam
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -22,13 +22,13 @@
 
 #include "Python.h"
 
-/* require Python >= 2.5 */
+/* require Python >= 2.6 */
 #ifndef PY_VERSION_HEX
-#error please install Python >= 2.5
+#error please install Python >= 2.6
 #endif
 
-#if PY_VERSION_HEX < 0x02050000
-#error please install Python >= 2.5
+#if PY_VERSION_HEX < 0x02060000
+#error please install Python >= 2.6
 #endif
 
 /* user_data type for SAX calls */

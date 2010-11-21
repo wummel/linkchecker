@@ -1,6 +1,9 @@
 5.6 "" (released xx.xx.2010)
 
+Fixes:
+
 Changes:
+- dependencies: Require and use Python 2.6.
 - cmdline: Removed deprecated options --no-anchor-caching and
   --no-proxy-for.
 - config: Remove backwards compatilibity parsing and require the
