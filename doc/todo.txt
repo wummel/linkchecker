@@ -1,7 +1,1 @@
-- [PYTHON26]
-  linkcheck/httplib2.py:1218: DeprecationWarning: socket.ssl() is deprecated.
-  Use ssl.wrap_socket() instead.
-  ssl = socket.ssl(sock, self.key_file, self.cert_file)
-- [PYTHON3]
-  linkchecker-git/linkcheck/dns/resolver.py:313: DeprecationWarning: in 3.x, __getslice__ has been removed; use __getitem__
-  linkcheck.dns.name.Name(linkcheck.dns.name.from_text(socket.gethostname())[1:])
+- Port to Python 3.x (will not happen anytime soon though)
