@@ -249,12 +249,6 @@ def cc_supports_option (cc, option):
     return cc_run([cc[0], "-E", option, "-"])
 
 
-def cc_remove_option (compiler, option):
-    for optlist in (compiler.compiler, compiler.compiler_so):
-        if option in optlist:
-            optlist.remove(option)
-
-
 class MyBuildExt (build_ext, object):
     """Custom build extension command."""
 
@@ -266,9 +260,6 @@ class MyBuildExt (build_ext, object):
             option = "-std=gnu99"
             if cc_supports_option(self.compiler.compiler, option):
                 extra.append(option)
-                if platform.machine() == 'm68k':
-                    # work around ICE on m68k machines in gcc 4.0.1
-                    cc_remove_option(self.compiler, "-O3")
         # First, sanity-check the 'extensions' list
         self.check_extensions_list(self.extensions)
         for ext in self.extensions:
