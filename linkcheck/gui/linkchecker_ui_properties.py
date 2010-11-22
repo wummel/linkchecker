@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/properties.ui'
 #
-# Created: Sat Nov  6 11:31:30 2010
+# Created: Tue Nov 23 00:24:17 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,7 @@ class Ui_PropertiesDialog(object):
         self.prop_url.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_url.setText("")
         self.prop_url.setTextFormat(QtCore.Qt.RichText)
+        self.prop_url.setOpenExternalLinks(True)
         self.prop_url.setObjectName("prop_url")
         self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.prop_url)
         self.label_3 = QtGui.QLabel(self.frame)
@@ -81,6 +82,7 @@ class Ui_PropertiesDialog(object):
         self.prop_parenturl.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_parenturl.setText("")
         self.prop_parenturl.setTextFormat(QtCore.Qt.RichText)
+        self.prop_parenturl.setOpenExternalLinks(True)
         self.prop_parenturl.setObjectName("prop_parenturl")
         self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.prop_parenturl)
         self.label_5 = QtGui.QLabel(self.frame)
@@ -96,6 +98,7 @@ class Ui_PropertiesDialog(object):
         self.prop_base.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_base.setText("")
         self.prop_base.setTextFormat(QtCore.Qt.RichText)
+        self.prop_base.setOpenExternalLinks(False)
         self.prop_base.setObjectName("prop_base")
         self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.prop_base)
         self.label_7 = QtGui.QLabel(self.frame)

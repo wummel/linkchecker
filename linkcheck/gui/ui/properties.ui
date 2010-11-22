@@ -85,6 +85,9 @@
         <property name="textFormat">
          <enum>Qt::RichText</enum>
         </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="2" column="0">
@@ -143,6 +146,9 @@
         <property name="textFormat">
          <enum>Qt::RichText</enum>
         </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="4" column="0">
@@ -171,6 +177,9 @@
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>
+        </property>
+        <property name="openExternalLinks">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
