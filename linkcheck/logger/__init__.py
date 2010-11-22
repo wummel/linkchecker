@@ -105,6 +105,11 @@ class Logger (object):
             return "utf-8"
         return self.output_encoding
 
+    def encode (self, s):
+        """Encode string with output encoding."""
+        assert isinstance(s, unicode)
+        return s.encode(self.output_encoding, self.codec_errors)
+
     def init_fileoutput (self, args):
         """
         Initialize self.fd file descriptor from args. For file output

@@ -110,9 +110,6 @@ class CSVLogger (Logger):
     def writerow (self, row):
         self.writer.writerow([self.encode(s) for s in row])
 
-    def encode (self, s):
-        return s.encode(self.output_encoding, self.codec_errors)
-
     def end_output (self):
         """
         Write end of checking info as csv comment.
