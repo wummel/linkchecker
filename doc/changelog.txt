@@ -2,7 +2,7 @@
 
 Fixes:
 - checking: Fall back to HTTP GET requests when the connection has
-  been resets since some servers tend to do this for HEAD requests.
+  been reset since some servers tend to do this for HEAD requests.
   Closes: SF bug #3114622
 
 Changes:
