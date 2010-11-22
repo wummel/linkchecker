@@ -23,7 +23,7 @@ from . import LinkCheckTest
 class TestTelnet (LinkCheckTest):
     """Test telnet: link checking."""
 
-    def test_telnet (self):
+    def test_telnet_1 (self):
         url = u"telnet:"
         nurl = self.norm(url)
         resultlines = [
@@ -33,6 +33,8 @@ class TestTelnet (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
+
+    def test_telnet_2 (self):
         url = u"telnet://www.example.com"
         resultlines = [
             u"url %s" % url,
@@ -41,6 +43,8 @@ class TestTelnet (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
+
+    def test_telnet_3 (self):
         url = u"telnet://user@www.example.com"
         resultlines = [
             u"url %s" % url,
@@ -49,6 +53,8 @@ class TestTelnet (LinkCheckTest):
             u"error",
         ]
         self.direct(url, resultlines)
+
+    def test_telnet_4 (self):
         url = u"telnet://user:pass@www.example.com"
         resultlines = [
             u"url %s" % url,
