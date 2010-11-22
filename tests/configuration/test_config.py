@@ -50,19 +50,17 @@ class TestConfig (unittest.TestCase):
         self.assertTrue(config["storecookies"])
         # filtering section
         patterns = [x["pattern"].pattern for x in config["externlinks"]]
-        for prefix1 in ("ignore_", "nofollow_"):
-            for prefix2 in ("", "old"):
-                for suffix in ("1", "2"):
-                    key = "%s%simadoofus%s" % (prefix1, prefix2, suffix)
-                    self.assertTrue(key in patterns)
+        for prefix in ("ignore_", "nofollow_"):
+            for suffix in ("1", "2"):
+                key = "%simadoofus%s" % (prefix, suffix)
+                self.assertTrue(key in patterns)
         for key in ("url-unicode-domain", "anchor-not-found"):
             self.assertTrue(key in config["ignorewarnings"])
         # authentication section
         patterns = [x["pattern"].pattern for x in config["authentication"]]
-        for prefix in ("", "old"):
-            for suffix in ("1", "2"):
-                key = "%simadoofus%s" % (prefix, suffix)
-                self.assertTrue(key in patterns)
+        for suffix in ("1", "2"):
+            key = "imadoofus%s" % suffix
+            self.assertTrue(key in patterns)
         self.assertTrue("http://www.example.com/" in patterns)
         self.assertTrue("http://www.example.com/nopass" in patterns)
         self.assertEqual(config["loginurl"], "http://www.example.com/")
