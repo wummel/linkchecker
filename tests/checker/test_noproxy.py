@@ -26,8 +26,8 @@ class TestProxy (httpserver.HttpServerTest):
     def test_no_proxy (self):
         # Test setting proxy and no_proxy env variable.
         with EnvironmentVarGuard() as env:
-            env["http_proxy"] = "http://example.org:8877"
-            env["no_proxy"] = "localhost:%d" % self.port
+            env.set("http_proxy", "http://example.org:8877")
+            env.set("no_proxy", "localhost:%d" % self.port)
             try:
                 self.start_server()
                 self.no_proxy()
