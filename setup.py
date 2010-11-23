@@ -25,7 +25,6 @@ if not (hasattr(sys, 'version_info') or
     raise SystemExit("This program requires Python 2.6 or later.")
 import os
 import subprocess
-import platform
 import stat
 import glob
 
