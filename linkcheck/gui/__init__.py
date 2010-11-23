@@ -118,8 +118,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.treeView.setColumnWidth(1, data["col1"])
         self.treeView.setColumnWidth(2, data["col2"])
         self.treeView.setColumnWidth(3, data["col3"])
-        self.treeView.setSortingEnabled(True)
-        self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
 
     def get_treeviewcols (self):
         return dict(
@@ -161,8 +159,10 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.progress.hide()
             self.aggregate = None
             self.controlButton.setEnabled(True)
+            self.treeView.setSortingEnabled(True)
         elif status == Status.checking:
             self.num = 0
+            self.treeView.setSortingEnabled(False)
             self.debug.reset()
             self.progress.reset()
             self.progress.show()
@@ -227,14 +227,12 @@ Version 2 or later.</p>
 
     def check (self):
         """Check given URL."""
-        self.controlButton.setEnabled(False)
         self.model.clear()
         self.set_config()
         aggregate = director.get_aggregate(self.config)
         url = unicode(self.urlinput.text()).strip()
         if not url:
             self.set_statusbar(_("Error, empty URL"))
-            self.status = Status.idle
             return
         if url.startswith(u"www."):
             url = u"http://%s" % url
@@ -247,7 +245,6 @@ Version 2 or later.</p>
         except UnicodeError:
             self.set_statusbar(_("Error, invalid URL `%s'.") %
                                   strformat.limit(url, 40))
-            self.status = Status.idle
             return
         aggregate.urlqueue.put(url_data)
         self.aggregate = aggregate

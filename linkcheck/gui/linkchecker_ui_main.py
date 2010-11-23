@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sun Nov 21 14:22:48 2010
+# Created: Tue Nov 23 23:03:33 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
         self.treeView.setAlternatingRowColors(True)
         self.treeView.setUniformRowHeights(True)
         self.treeView.setItemsExpandable(False)
-        self.treeView.setSortingEnabled(True)
+        self.treeView.setSortingEnabled(False)
         self.treeView.setAllColumnsShowFocus(True)
         self.treeView.setExpandsOnDoubleClick(False)
         self.treeView.setObjectName("treeView")
