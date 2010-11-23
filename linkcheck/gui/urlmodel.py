@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
+import operator
 from PyQt4 import QtCore, QtGui
 from .. import strformat
 
@@ -34,26 +34,58 @@ class UrlItem (object):
         self.init_display()
         self.init_tooltips()
 
-    def init_display (self):
-        # Parent URL
-        if self.url_data.parent_url:
-            parent = unicode(self.url_data.parent_url) + \
-                (_(", line %d") % self.url_data.line) + \
-                (_(", col %d") % self.url_data.column)
+    def __getitem__ (self, key):
+        """Define easy index access (used for sorting):
+           0: ID
+           1: Parent URL
+           2: URL
+           3: URL name
+           4: Result
+        """
+        if not isinstance(key, int):
+            raise TypeError("invalid index %r" % key)
+        if key == 0:
+            return self.number
+        elif key == 1:
+            return self.get_parent_url()
+        elif key == 2:
+            return self.url_data.url
+        elif key == 3:
+            return self.url_data.name
+        elif key == 4:
+            return self.get_result()
+        raise IndexError("invalid index %d" % key)
+
+    def get_parent_url (self):
+        return (self.url_data.parent_url, self.url_data.line,
+                self.url_data.column)
+
+    def get_result (self):
+        if self.url_data.valid:
+            result = u"Valid"
         else:
-            parent = u""
-        # Result
+            result = u"Error"
+        if self.url_data.result:
+            result += u": %s" % self.url_data.result
+        return result
+
+    def init_display (self):
+        # result color
         if self.url_data.valid:
             if self.url_data.warnings:
                 self.result_color = QtCore.Qt.darkYellow
             else:
                 self.result_color = QtCore.Qt.darkGreen
-            result = u"Valid"
         else:
             self.result_color = QtCore.Qt.darkRed
-            result = u"Error"
-        if self.url_data.result:
-            result += u": %s" % self.url_data.result
+        # Parent URL
+        if self.url_data.parent_url:
+            parent = u"%s%s%s" % (self.url_data.parent_url,
+                (_(", line %d") % self.url_data.line),
+                (_(", col %d") % self.url_data.column))
+        else:
+            parent = u""
+        # display values
         self.display = [
             # ID
             u"%09d" % self.number,
@@ -64,7 +96,7 @@ class UrlItem (object):
             # Name
             self.url_data.name,
             # Result
-            result,
+            self.get_result(),
         ]
 
     def init_tooltips (self):
@@ -151,3 +183,10 @@ class UrlItemModel(QtCore.QAbstractItemModel):
            not (0 <= index.row() < len(self.urls)):
             return None
         return self.urls[index.row()]
+
+    def sort (self, column, order=QtCore.Qt.AscendingOrder):
+        """Sort URLs by given column and order."""
+        self.layoutAboutToBeChanged.emit()
+        reverse = (order == QtCore.Qt.DescendingOrder)
+        self.urls.sort(key=operator.itemgetter(column), reverse=reverse)
+        self.layoutChanged.emit()

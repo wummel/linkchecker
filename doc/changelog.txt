@@ -5,6 +5,7 @@ Fixes:
   been reset since some servers tend to do this for HEAD requests.
   Closes: SF bug #3114622
 - gui: Activate links in property dialog.
+- gui: Fix sorting of columns in URL result list.
 
 Changes:
 - dependencies: Require and use Python 2.6.
