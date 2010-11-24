@@ -47,37 +47,29 @@ class UrlItem (object):
         if key == 0:
             return self.number
         elif key == 1:
-            return self.get_parent_url()
+            return (self.url_data.parent_url, self.url_data.line,
+                    self.url_data.column)
         elif key == 2:
             return self.url_data.url
         elif key == 3:
             return self.url_data.name
         elif key == 4:
-            return self.get_result()
+            return (self.url_data.valid, self.url_data.result)
         raise IndexError("invalid index %d" % key)
 
-    def get_parent_url (self):
-        return (self.url_data.parent_url, self.url_data.line,
-                self.url_data.column)
-
-    def get_result (self):
-        if self.url_data.valid:
-            result = u"Valid"
-        else:
-            result = u"Error"
-        if self.url_data.result:
-            result += u": %s" % self.url_data.result
-        return result
-
     def init_display (self):
-        # result color
+        # result
         if self.url_data.valid:
             if self.url_data.warnings:
                 self.result_color = QtCore.Qt.darkYellow
             else:
                 self.result_color = QtCore.Qt.darkGreen
+            result = u"Valid"
         else:
             self.result_color = QtCore.Qt.darkRed
+            result = u"Error"
+        if self.url_data.result:
+            result += u": %s" % self.url_data.result
         # Parent URL
         if self.url_data.parent_url:
             parent = u"%s%s%s" % (self.url_data.parent_url,
@@ -96,7 +88,7 @@ class UrlItem (object):
             # Name
             self.url_data.name,
             # Result
-            self.get_result(),
+            result,
         ]
 
     def init_tooltips (self):
