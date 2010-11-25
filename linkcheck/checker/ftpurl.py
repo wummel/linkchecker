@@ -27,7 +27,7 @@ from . import proxysupport, httpurl, internpaturl, get_index_html
 from .const import WARN_FTP_MISSING_SLASH
 
 DEFAULT_TIMEOUT_SECS = 300
-MAX_FTP_FILE_SIZE = 1024*1024*10 # 10MB
+MAX_FTP_FILESIZE = 1024*1024*10 # 10MB
 
 
 class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
