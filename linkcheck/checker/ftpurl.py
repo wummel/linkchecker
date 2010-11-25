@@ -27,6 +27,7 @@ from . import proxysupport, httpurl, internpaturl, get_index_html
 from .const import WARN_FTP_MISSING_SLASH
 
 DEFAULT_TIMEOUT_SECS = 300
+MAX_FTP_FILE_SIZE = 1024*1024*10 # 10MB
 
 
 class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
@@ -218,10 +219,12 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         else:
             # download file in BINARY mode
             ftpcmd = "RETR %s" % self.filename
-            # XXX limit the download size to some sane value
             buf = StringIO()
             def stor_data (s):
                 """Helper method storing given data"""
+                # limit the download size
+                if (buf.tell() + len(s)) > MAX_FTP_FILESIZE:
+                    raise LinkCheckerError(_("FTP file size too large"))
                 buf.write(s)
             self.url_connection.retrbinary(ftpcmd, stor_data)
             data = buf.getvalue()
