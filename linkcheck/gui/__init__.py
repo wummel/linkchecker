@@ -29,7 +29,7 @@ from .options import LinkCheckerOptions
 from .checker import CheckerThread
 from .contextmenu import ContextMenu
 from .editor import EditorWindow
-from .urlmodel import UrlItem, UrlItemModel
+from .urlmodel import UrlItemModel
 from .settings import Settings
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat, fileutil
@@ -108,7 +108,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.status = Status.idle
         self.checker.finished.connect(set_idle)
         self.checker.terminated.connect(set_idle)
-        self.log_url_signal.connect(self.log_url)
+        self.log_url_signal.connect(self.model.log_url)
 
     def init_treeview (self):
         self.model = UrlItemModel()
@@ -161,7 +161,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.controlButton.setEnabled(True)
             self.treeView.setSortingEnabled(True)
         elif status == Status.checking:
-            self.num = 0
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
             self.progress.reset()
@@ -251,11 +250,6 @@ Version 2 or later.</p>
         # check in background
         self.checker.check(self.aggregate, self.progress)
         self.status = Status.checking
-
-    def log_url (self, url_data):
-        """Add URL data to tree widget."""
-        self.model.addUrlItem(UrlItem(url_data, self.num))
-        self.num += 1
 
     def view_item_properties (self, item):
         self.properties.set_item(item)

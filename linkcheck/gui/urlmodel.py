@@ -163,10 +163,12 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         self.urls = []
         self.endResetModel()
 
-    def addUrlItem (self, urlitem):
+    def log_url (self, url_data):
+        """Add URL data to tree model."""
         row = self.rowCount()
         self.beginInsertRows(QtCore.QModelIndex(), row, row)
-        self.urls.append(urlitem)
+        num = len(self.urls)
+        self.urls.append(UrlItem(url_data, num))
         self.endInsertRows()
         return True
 
