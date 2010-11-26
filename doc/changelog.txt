@@ -24,6 +24,7 @@ Changes:
 
 Features:
 - gui: Store column widths in registry settings.
+- gui: Add ability to save results to local files with File->Save.
 
 
 5.5 "Red" (released 20.11.2010)
