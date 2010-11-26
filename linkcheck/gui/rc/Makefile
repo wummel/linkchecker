@@ -9,6 +9,7 @@ ICONS = \
 	online.png \
 	options.png \
 	preferences.png \
+	save.png \
 	start.png \
 	stop.png \
 	about.png \
@@ -20,6 +21,9 @@ all: $(ICONS)
 
 #app.png:	$(CRYSTAL)/16x16/apps/agt_web.png
 #	cp $< $@
+
+save.png:	$(OXYGEN)/actions/document-save-as.png
+	cp $< $@
 
 start.png:	$(OXYGEN)/actions/media-playback-start.png
 	cp $< $@
@@ -50,6 +54,7 @@ options.png:	$(OXYGEN)/categories/preferences-system-network.png
 
 preferences.png:	$(OXYGEN)/categories/preferences-other.png
 	cp $< $@
+
 
 clean:
 	rm -f *.png
