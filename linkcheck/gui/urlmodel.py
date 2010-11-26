@@ -20,7 +20,7 @@ from .. import strformat
 
 
 Headers = [u"#", _(u"Parent"), _(u"URL"), _(u"Name"), _(u"Result")]
-EmptyHeader = QtCore.QVariant()
+EmptyQVariant = QtCore.QVariant()
 
 
 class UrlItem (object):
@@ -135,7 +135,7 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         V = QtCore.QVariant
         if not index.isValid() or \
            not (0 <= index.row() < len(self.urls)):
-            return V()
+            return EmptyQVariant
         urlitem = self.urls[index.row()]
         column = index.column()
         if role == QtCore.Qt.DisplayRole:
@@ -145,13 +145,13 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         elif role == QtCore.Qt.TextColorRole and column == 4:
             return QtGui.QColor(urlitem.result_color)
         else:
-            return V()
+            return EmptyQVariant
 
     def headerData (self, section, orientation, role):
         if orientation == QtCore.Qt.Horizontal and \
            role == QtCore.Qt.DisplayRole:
             return Headers[section]
-        return EmptyHeader
+        return EmptyQVariant
 
     def flags (self, index):
         if not index.isValid():
