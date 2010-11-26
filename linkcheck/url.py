@@ -523,8 +523,7 @@ def get_opener (user=None, password=None, proxy=None, debuglevel=0):
     ]
     if proxy:
         handlers.insert(0,
-          urllib2.ProxyHandler({"http": proxy, "https": proxy},
-                               debuglevel=debuglevel))
+          urllib2.ProxyHandler({"http": proxy, "https": proxy}))
         handlers.extend([
             urllib2.ProxyBasicAuthHandler(pwd_manager),
             urllib2.ProxyDigestAuthHandler(pwd_manager),
