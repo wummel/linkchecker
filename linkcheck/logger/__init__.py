@@ -115,7 +115,7 @@ class Logger (object):
         Initialize self.fd file descriptor from args. For file output
         (used when the fileoutput arg is given), the self.fd
         initialization is deferred until the first self.write() call.
-        Thios avoids creation of a empty files when no output is written.
+        This avoids creation of an empty file when no output is written.
         """
         self.filename = None
         self.close_fd = False
