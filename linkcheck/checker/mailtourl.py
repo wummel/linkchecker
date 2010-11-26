@@ -22,6 +22,7 @@ import re
 import urllib
 import urlparse
 import smtplib
+import socket
 from email._parseaddr import AddressList
 import sys
 
@@ -357,10 +358,12 @@ class MailtoUrl (urlbase.UrlBase):
             return
         connection = self.url_connection
         self.url_connection = None
+        raise
         try:
             connection.quit()
-        except smtplib.SMTPException:
+        except (smtplib.SMTPException, socket.error):
             # ignore close errors
+            # socket.error is raised for example on timeouts
             pass
 
     def set_cache_keys (self):
