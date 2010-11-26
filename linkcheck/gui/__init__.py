@@ -30,6 +30,7 @@ from .checker import CheckerThread
 from .contextmenu import ContextMenu
 from .editor import EditorWindow
 from .urlmodel import UrlItemModel
+from .urlsave import urlsave
 from .settings import Settings
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat, fileutil
@@ -216,6 +217,11 @@ Version 2 or later.</p>
     def on_actionDebug_triggered (self):
         """Display debug dialog."""
         self.debug.show()
+
+    @QtCore.pyqtSlot()
+    def on_actionSave_triggered (self):
+        """Quit application."""
+        urlsave(self, self.config, self.model.urls)
 
     def start (self):
         """Start a new check."""
