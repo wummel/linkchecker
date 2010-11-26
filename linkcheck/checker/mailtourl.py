@@ -358,7 +358,6 @@ class MailtoUrl (urlbase.UrlBase):
             return
         connection = self.url_connection
         self.url_connection = None
-        raise
         try:
             connection.quit()
         except (smtplib.SMTPException, socket.error):
