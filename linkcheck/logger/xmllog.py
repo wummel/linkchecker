@@ -69,7 +69,7 @@ class XMLLogger (Logger):
         Write start of checking info as xml comment.
         """
         self.writeln(u'<?xml version="1.0" encoding="%s"?>' %
-             xmlquoteattr(self.output_encoding))
+             xmlquoteattr(self.get_charset_encoding()))
         if self.has_part("intro"):
             self.write_intro()
             self.writeln()
