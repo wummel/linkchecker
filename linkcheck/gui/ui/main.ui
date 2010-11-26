@@ -149,12 +149,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuLinkChecka">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionQuit"/>
-   </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>Edit</string>
@@ -169,23 +163,18 @@
     <addaction name="actionHelp"/>
     <addaction name="actionDebug"/>
    </widget>
+   <widget class="QMenu" name="menuLinkChecka">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionQuit"/>
+   </widget>
    <addaction name="menuLinkChecka"/>
    <addaction name="menuEdit"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionQuit">
-   <property name="icon">
-    <iconset resource="../rc/linkchecker.qrc">
-     <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
-   </property>
-   <property name="text">
-    <string>Quit</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Q</string>
-   </property>
-  </action>
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="../rc/linkchecker.qrc">
@@ -275,6 +264,30 @@
    </property>
    <property name="toolTip">
     <string>View URL properties</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../rc/linkchecker.qrc">
+     <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
  </widget>
