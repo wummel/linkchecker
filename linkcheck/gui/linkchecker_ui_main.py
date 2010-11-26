@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Fri Nov 26 18:06:58 2010
+# Created: Fri Nov 26 21:37:11 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -59,6 +59,7 @@ class Ui_MainWindow(object):
         self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.treeView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.treeView.setAlternatingRowColors(True)
+        self.treeView.setRootIsDecorated(False)
         self.treeView.setUniformRowHeights(True)
         self.treeView.setItemsExpandable(False)
         self.treeView.setSortingEnabled(False)

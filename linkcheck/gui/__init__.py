@@ -114,17 +114,16 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def init_treeview (self):
         self.model = UrlItemModel()
         self.treeView.setModel(self.model)
-        self.treeView.setColumnHidden(0, True)
         data = self.settings.read_treeviewcols()
-        self.treeView.setColumnWidth(1, data["col1"])
-        self.treeView.setColumnWidth(2, data["col2"])
-        self.treeView.setColumnWidth(3, data["col3"])
+        self.treeView.setColumnWidth(0, data["col1"])
+        self.treeView.setColumnWidth(1, data["col2"])
+        self.treeView.setColumnWidth(2, data["col3"])
 
     def get_treeviewcols (self):
         return dict(
-            col1=self.treeView.columnWidth(1),
-            col2=self.treeView.columnWidth(2),
-            col3=self.treeView.columnWidth(3),
+            col1=self.treeView.columnWidth(0),
+            col2=self.treeView.columnWidth(1),
+            col3=self.treeView.columnWidth(2),
         )
 
     def init_config (self):
@@ -160,6 +159,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.progress.hide()
             self.aggregate = None
             self.controlButton.setEnabled(True)
+            self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
             self.treeView.setSortingEnabled(True)
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)

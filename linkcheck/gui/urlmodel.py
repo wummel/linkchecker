@@ -19,15 +19,14 @@ from PyQt4 import QtCore, QtGui
 from .. import strformat
 
 
-Headers = [u"#", _(u"Parent"), _(u"URL"), _(u"Name"), _(u"Result")]
+Headers = [_(u"Parent"), _(u"URL"), _(u"Name"), _(u"Result")]
 EmptyQVariant = QtCore.QVariant()
 
 
 class UrlItem (object):
     """URL item storing info to be displayed."""
 
-    def __init__ (self, url_data, number):
-        self.number = number
+    def __init__ (self, url_data):
         # url_data is of type CompactUrlData
         self.url_data = url_data
         # format display and tooltips
@@ -36,24 +35,21 @@ class UrlItem (object):
 
     def __getitem__ (self, key):
         """Define easy index access (used for sorting):
-           0: ID
-           1: Parent URL
-           2: URL
-           3: URL name
-           4: Result
+           0: Parent URL
+           1: URL
+           2: URL name
+           3: Result
         """
         if not isinstance(key, int):
             raise TypeError("invalid index %r" % key)
         if key == 0:
-            return self.number
-        elif key == 1:
             return (self.url_data.parent_url, self.url_data.line,
                     self.url_data.column)
-        elif key == 2:
+        elif key == 1:
             return self.url_data.url
-        elif key == 3:
+        elif key == 2:
             return self.url_data.name
-        elif key == 4:
+        elif key == 3:
             return (self.url_data.valid, self.url_data.result)
         raise IndexError("invalid index %d" % key)
 
@@ -79,8 +75,6 @@ class UrlItem (object):
             parent = u""
         # display values
         self.display = [
-            # ID
-            u"%09d" % self.number,
             # Parent URL
             parent,
             # URL
@@ -98,8 +92,6 @@ class UrlItem (object):
         else:
             result = u""
         self.tooltips = [
-            # ID
-            u"",
             # Parent URL
             u"",
             # URL
@@ -142,7 +134,7 @@ class UrlItemModel(QtCore.QAbstractItemModel):
             return V(urlitem.display[column])
         elif role == QtCore.Qt.ToolTipRole:
             return V(urlitem.tooltips[column])
-        elif role == QtCore.Qt.TextColorRole and column == 4:
+        elif role == QtCore.Qt.TextColorRole and column == 3:
             return QtGui.QColor(urlitem.result_color)
         else:
             return EmptyQVariant
@@ -167,8 +159,7 @@ class UrlItemModel(QtCore.QAbstractItemModel):
         """Add URL data to tree model."""
         row = self.rowCount()
         self.beginInsertRows(QtCore.QModelIndex(), row, row)
-        num = len(self.urls)
-        self.urls.append(UrlItem(url_data, num))
+        self.urls.append(UrlItem(url_data))
         self.endInsertRows()
         return True
 
