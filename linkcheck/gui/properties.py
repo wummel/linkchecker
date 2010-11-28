@@ -32,7 +32,6 @@ class PropertiesDialog (QtGui.QDialog, Ui_PropertiesDialog):
     def set_item (self, urlitem):
         """Write URL item values into text fields."""
         data = urlitem.url_data
-        self.prop_id.setText(u"%d" % urlitem.number)
         if data.url:
             self.prop_url.setText(u'<a href="%(url)s">%(url)s</a>' % \
                                   dict(url=data.url))
