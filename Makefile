@@ -19,7 +19,7 @@ endif
 PAGER ?= less
 # build dir for debian package
 BUILDDIR:=$(HOME)/packages/official
-DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.gz
+DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.bz2
 # original dnspython repository module
 DNSPYTHON:=$(HOME)/src/dnspython-git/dns
 # options to run the pep8 utility
@@ -76,7 +76,7 @@ localbuild: MANIFEST
 deb_orig:
 	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
 	  $(MAKE) dist-stamp && \
-	  cp dist/LinkChecker-$(VERSION).tar.gz $(DEB_ORIG_TARGET); \
+	  cp dist/LinkChecker-$(VERSION).tar.bz2 $(DEB_ORIG_TARGET); \
 	fi
 
 .PHONY: upload
@@ -101,7 +101,7 @@ chmod:
 
 .PHONY: dist
 dist: locale MANIFEST chmod
-	$(PYTHON) setup.py sdist --formats=gztar
+	$(PYTHON) setup.py sdist --formats=bztar
 # no rpm buildable with bdist_rpm, presumable due to this bug:
 # https://bugzilla.redhat.com/show_bug.cgi?id=236535
 # too uninvolved to fix it
