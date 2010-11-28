@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/properties.ui'
 #
-# Created: Sun Nov 28 10:31:24 2010
+# Created: Sun Nov 28 10:35:50 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ class Ui_PropertiesDialog(object):
     def setupUi(self, PropertiesDialog):
         PropertiesDialog.setObjectName("PropertiesDialog")
         PropertiesDialog.setWindowModality(QtCore.Qt.ApplicationModal)
-        PropertiesDialog.resize(466, 289)
+        PropertiesDialog.resize(466, 286)
         self.verticalLayout = QtGui.QVBoxLayout(PropertiesDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.frame = QtGui.QFrame(PropertiesDialog)
@@ -32,6 +32,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_url.sizePolicy().hasHeightForWidth())
         self.prop_url.setSizePolicy(sizePolicy)
+        self.prop_url.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_url.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_url.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_url.setText("")
@@ -48,6 +49,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_name.sizePolicy().hasHeightForWidth())
         self.prop_name.setSizePolicy(sizePolicy)
+        self.prop_name.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_name.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_name.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_name.setText("")
@@ -63,6 +65,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_parenturl.sizePolicy().hasHeightForWidth())
         self.prop_parenturl.setSizePolicy(sizePolicy)
+        self.prop_parenturl.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_parenturl.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_parenturl.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_parenturl.setText("")
@@ -79,6 +82,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_base.sizePolicy().hasHeightForWidth())
         self.prop_base.setSizePolicy(sizePolicy)
+        self.prop_base.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_base.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_base.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_base.setText("")
@@ -95,6 +99,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_checktime.sizePolicy().hasHeightForWidth())
         self.prop_checktime.setSizePolicy(sizePolicy)
+        self.prop_checktime.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_checktime.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_checktime.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_checktime.setText("")
@@ -110,6 +115,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_dltime.sizePolicy().hasHeightForWidth())
         self.prop_dltime.setSizePolicy(sizePolicy)
+        self.prop_dltime.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_dltime.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_dltime.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_dltime.setText("")
@@ -125,6 +131,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_size.sizePolicy().hasHeightForWidth())
         self.prop_size.setSizePolicy(sizePolicy)
+        self.prop_size.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_size.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_size.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_size.setText("")
@@ -140,6 +147,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_info.sizePolicy().hasHeightForWidth())
         self.prop_info.setSizePolicy(sizePolicy)
+        self.prop_info.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_info.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_info.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_info.setText("")
@@ -156,6 +164,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_warning.sizePolicy().hasHeightForWidth())
         self.prop_warning.setSizePolicy(sizePolicy)
+        self.prop_warning.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_warning.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_warning.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_warning.setText("")
@@ -173,6 +182,7 @@ class Ui_PropertiesDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.prop_result.sizePolicy().hasHeightForWidth())
         self.prop_result.setSizePolicy(sizePolicy)
+        self.prop_result.setMinimumSize(QtCore.QSize(300, 0))
         self.prop_result.setFrameShape(QtGui.QFrame.StyledPanel)
         self.prop_result.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_result.setText("")
