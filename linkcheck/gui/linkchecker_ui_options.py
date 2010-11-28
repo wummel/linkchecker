@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Sat Nov 20 19:52:49 2010
+# Created: Sun Nov 28 11:04:36 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,8 +13,10 @@ class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName("Options")
         Options.setWindowModality(QtCore.Qt.ApplicationModal)
-        Options.resize(271, 258)
+        Options.resize(271, 239)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
+        self.verticalLayout.setSpacing(2)
+        self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tabWidget = QtGui.QTabWidget(Options)
         self.tabWidget.setToolTip("")
@@ -25,6 +27,7 @@ class Ui_Options(object):
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.gui_options)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.label_8 = QtGui.QLabel(self.gui_options)
+        self.label_8.setMinimumSize(QtCore.QSize(240, 0))
         self.label_8.setTextFormat(QtCore.Qt.AutoText)
         self.label_8.setWordWrap(True)
         self.label_8.setObjectName("label_8")
@@ -39,12 +42,20 @@ class Ui_Options(object):
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.formLayout = QtGui.QFormLayout(self.frame)
+        self.formLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
+        self.formLayout.setVerticalSpacing(2)
         self.formLayout.setObjectName("formLayout")
         self.label = QtGui.QLabel(self.frame)
         self.label.setObjectName("label")
         self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label)
         self.recursionlevel = QtGui.QSpinBox(self.frame)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.recursionlevel.sizePolicy().hasHeightForWidth())
+        self.recursionlevel.setSizePolicy(sizePolicy)
+        self.recursionlevel.setMinimumSize(QtCore.QSize(0, 25))
         self.recursionlevel.setMinimum(-1)
         self.recursionlevel.setMaximum(100)
         self.recursionlevel.setProperty("value", -1)
@@ -71,6 +82,7 @@ class Ui_Options(object):
         self.widget = QtGui.QWidget(self.gui_options)
         self.widget.setObjectName("widget")
         self.horizontalLayout = QtGui.QHBoxLayout(self.widget)
+        self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.closeButton = QtGui.QPushButton(self.widget)
         self.closeButton.setObjectName("closeButton")

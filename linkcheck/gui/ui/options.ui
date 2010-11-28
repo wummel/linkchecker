@@ -10,13 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>271</width>
-    <height>258</height>
+    <height>239</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Linkchecker options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinimumSize</enum>
+   </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="toolTip">
@@ -35,6 +41,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QLabel" name="label_8">
+         <property name="minimumSize">
+          <size>
+           <width>240</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>The most common check options are configurable. They override any configuration file settings.</string>
          </property>
@@ -62,8 +74,14 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QFormLayout" name="formLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
           <property name="fieldGrowthPolicy">
            <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <property name="verticalSpacing">
+           <number>2</number>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
@@ -77,6 +95,18 @@
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="recursionlevel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
             <property name="toolTip">
              <string>Check recursively all links up to given depth. A negative depth will enable infinite recursion.</string>
             </property>
@@ -147,6 +177,9 @@
        <item>
         <widget class="QWidget" name="widget" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
           <item>
            <widget class="QPushButton" name="closeButton">
             <property name="text">
