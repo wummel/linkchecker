@@ -8,7 +8,7 @@ but random access is not allowed."""
 # Copyright Guido van Rossum <guido@cwi.nl> and others
 # based on Andrew Kuchling's minigzip.py distributed with the zlib module
 
-import struct, sys, time
+import struct, sys, time, os
 import zlib
 import __builtin__
 
@@ -45,7 +45,7 @@ class GzipFile:
     max_read_chunk = 10 * 1024 * 1024   # 10Mb
 
     def __init__(self, filename=None, mode=None,
-                 compresslevel=9, fileobj=None, mtime=0):
+                 compresslevel=9, fileobj=None, mtime=None):
         """Constructor for the GzipFile class.
 
         At least one of fileobj and filename must be given a
@@ -136,6 +136,13 @@ class GzipFile:
         s = repr(self.fileobj)
         return '<gzip ' + s[1:-1] + ' ' + hex(id(self)) + '>'
 
+    def _check_closed(self):
+        """Raises a ValueError if the underlying file object has been closed.
+
+        """
+        if self.closed:
+            raise ValueError('I/O operation on closed file.')
+
     def _init_write(self, filename):
         self.name = filename
         self.crc = zlib.crc32("") & 0xffffffffL
@@ -146,7 +153,7 @@ class GzipFile:
     def _write_gzip_header(self):
         self.fileobj.write('\037\213')             # magic header
         self.fileobj.write('\010')                 # compression method
-        fname = self.name
+        fname = os.path.basename(self.name)
         if fname.endswith(".gz"):
             fname = fname[:-3]
         flags = 0
@@ -201,6 +208,7 @@ class GzipFile:
 
 
     def write(self,data):
+        self._check_closed()
         if self.mode != WRITE:
             import errno
             raise IOError(errno.EBADF, "write() on read-only GzipFile object")
@@ -212,8 +220,10 @@ class GzipFile:
             self.crc = zlib.crc32(data, self.crc) & 0xffffffffL
             self.fileobj.write( self.compress.compress(data) )
             self.offset += len(data)
+        return len(data)
 
     def read(self, size=-1):
+        self._check_closed()
         if self.mode != READ:
             import errno
             raise IOError(errno.EBADF, "read() on write-only GzipFile object")
@@ -326,6 +336,19 @@ class GzipFile:
         elif isize != (self.size & 0xffffffffL):
             raise IOError, "Incorrect length of data produced"
 
+        # Gzip files can be padded with zeroes and still have archives.
+        # Consume all zero bytes and set the file position to the first
+        # non-zero byte. See http://www.gzip.org/#faq8
+        c = "\x00"
+        while c == "\x00":
+            c = self.fileobj.read(1)
+        if c:
+            self.fileobj.seek(-1, 1)
+
+    @property
+    def closed(self):
+        return self.fileobj is None
+
     def close(self):
         if self.fileobj is None:
             return
@@ -351,10 +374,11 @@ class GzipFile:
         self.close()
 
     def flush(self,zlib_mode=zlib.Z_SYNC_FLUSH):
+        self._check_closed()
         if self.mode == WRITE:
             # Ensure the compressor's buffer is flushed
             self.fileobj.write(self.compress.flush(zlib_mode))
-        self.fileobj.flush()
+            self.fileobj.flush()
 
     def fileno(self):
         """Invoke the underlying file object's fileno() method.
@@ -381,6 +405,15 @@ class GzipFile:
         self.extrasize = 0
         self.offset = 0
 
+    def readable(self):
+        return self.mode == READ
+
+    def writable(self):
+        return self.mode == WRITE
+
+    def seekable(self):
+        return True
+
     def seek(self, offset, whence=0):
         if whence:
             if whence == 1:
@@ -391,7 +424,7 @@ class GzipFile:
             if offset < self.offset:
                 raise IOError('Negative seek in write mode')
             count = offset - self.offset
-            for dummy in range(count // 1024):
+            for i in range(count // 1024):
                 self.write(1024 * '\0')
             self.write((count % 1024) * '\0')
         elif self.mode == READ:
@@ -399,9 +432,11 @@ class GzipFile:
                 # for negative seek, rewind and do positive seek
                 self.rewind()
             count = offset - self.offset
-            for dummy in range(count // 1024):
+            for i in range(count // 1024):
                 self.read(1024)
             self.read(count % 1024)
+
+        return self.offset
 
     def readline(self, size=-1):
         if size < 0:

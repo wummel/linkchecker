@@ -72,6 +72,7 @@ Req-sent-unread-response       _CS_REQ_SENT       <response_class>
 import errno
 import mimetools
 from array import array
+import os
 import socket
 from urlparse import urlsplit
 import warnings
@@ -82,7 +83,7 @@ except ImportError:
     from StringIO import StringIO
 import cache.addrinfo
 
-__all__ = ["HTTP", "HTTPResponse", "HTTPConnection", "HTTPSConnection",
+__all__ = ["HTTP", "HTTPResponse", "HTTPConnection",
            "HTTPException", "NotConnected", "UnknownProtocol",
            "UnknownTransferEncoding", "UnimplementedFileMode",
            "IncompleteRead", "InvalidURL", "ImproperConnectionState",
@@ -643,6 +644,9 @@ class HTTPResponse:
             amt -= len(chunk)
         return ''.join(s)
 
+    def fileno(self):
+        return self.fp.fileno()
+
     def getheader(self, name, default=None):
         if self.msg is None:
             raise ResponseNotReady("Response msg is None")
@@ -687,7 +691,7 @@ class HTTPConnection:
                " sock=%s\n buffer=%s\n response=%s>" % \
         (self.__state, self._method, self.sock, self._buffer, self.__response)
 
-    def _set_tunnel(self, host, port=None, headers=None):
+    def set_tunnel(self, host, port=None, headers=None):
         """ Sets up the host and the port for the HTTP CONNECT Tunnelling.
 
         The headers argument should be a mapping of extra HTTP headers
@@ -771,8 +775,8 @@ class HTTPConnection:
             self.__response = None
         self.__state = _CS_IDLE
 
-    def send(self, str):
-        """Send `str' to the server."""
+    def send(self, data):
+        """Send `data' to the server."""
         if self.sock is None:
             if self.auto_open:
                 self.connect()
@@ -785,17 +789,17 @@ class HTTPConnection:
         # NOTE: we DO propagate the error, though, because we cannot simply
         #       ignore the error... the caller will know if they can retry.
         if self.debuglevel > 0:
-            print "send:", repr(str)
+            print "send:", repr(data)
         try:
             blocksize=8192
-            if hasattr(str,'read') and not isinstance(str, array):
+            if hasattr(data,'read') and not isinstance(data, array):
                 if self.debuglevel > 0: print "sendIng a read()able"
-                data=str.read(blocksize)
-                while data:
-                    self.sock.sendall(data)
-                    data=str.read(blocksize)
+                datablock=data.read(blocksize)
+                while datablock:
+                    self.sock.sendall(datablock)
+                    datablock=data.read(blocksize)
             else:
-                self.sock.sendall(str)
+                self.sock.sendall(data)
         except socket.error, v:
             if v.args[0] == 32:      # Broken pipe
                 self.close()
@@ -871,9 +875,9 @@ class HTTPConnection:
         self._method = method
         if not url:
             url = '/'
-        str = '%s %s %s' % (method, url, self._http_vsn_str)
+        hdr = '%s %s %s' % (method, url, self._http_vsn_str)
 
-        self._output(str)
+        self._output(hdr)
 
         if self._http_vsn == 11:
             # Issue some standard headers for better HTTP/1.1 compliance
@@ -908,6 +912,9 @@ class HTTPConnection:
                         host_enc = self.host.encode("ascii")
                     except UnicodeEncodeError:
                         host_enc = self.host.encode("idna")
+                    # Wrap the IPv6 Host Header with [] (RFC 2732)
+                    if host_enc.find(':') >= 0:
+                        host_enc = "[" + host_enc + "]"
                     if self.port == self.default_port:
                         self.putheader('Host', host_enc)
                     else:
@@ -944,8 +951,8 @@ class HTTPConnection:
         if self.__state != _CS_REQ_STARTED:
             raise CannotSendHeader("cannot send request in state %s" % self.__state)
 
-        str = '%s: %s' % (header, '\r\n\t'.join(values))
-        self._output(str)
+        hdr = '%s: %s' % (header, '\r\n\t'.join([str(v) for v in values]))
+        self._output(hdr)
 
     def endheaders(self, message_body=None):
         """Indicate that the last header line has been sent to the server.
@@ -984,7 +991,6 @@ class HTTPConnection:
         except TypeError:
             # If this is a file-like object, try to
             # fstat its file descriptor
-            import os
             try:
                 thelen = str(os.fstat(body.fileno()).st_size)
             except (AttributeError, OSError):
@@ -995,7 +1001,7 @@ class HTTPConnection:
             self.putheader('Content-Length', thelen)
 
     def _send_request(self, method, url, body, headers):
-        # honour explicitly requested Host: and Accept-Encoding headers
+        # Honor explicitly requested Host: and Accept-Encoding: headers.
         header_names = dict.fromkeys([k.lower() for k in headers])
         skips = {}
         if 'host' in header_names:
@@ -1093,6 +1099,7 @@ class HTTP:
         # set up delegation to flesh out interface
         self.send = conn.send
         self.putrequest = conn.putrequest
+        self.putheader = conn.putheader
         self.endheaders = conn.endheaders
         self.set_debuglevel = conn.set_debuglevel
 
@@ -1111,10 +1118,6 @@ class HTTP:
     def getfile(self):
         "Provide a getfile, since the superclass' does not use this concept."
         return self.file
-
-    def putheader(self, header, *values):
-        "The superclass allows only one value argument."
-        self._conn.putheader(header, '\r\n\t'.join(values))
 
     def getreply(self, buffering=False):
         """Compat definition since superclass does not define it.
@@ -1212,6 +1215,7 @@ else:
             self.key_file = key_file
             self.cert_file = cert_file
 
+
     def FakeSocket (sock, sslobj):
         warnings.warn("FakeSocket is deprecated, and won't be in 3.x.  " +
                       "Use the result of ssl.wrap_socket() directly instead.",
@@ -1269,6 +1273,8 @@ class ResponseNotReady(ImproperConnectionState):
 
 class BadStatusLine(HTTPException):
     def __init__(self, line):
+        if not line:
+            line = repr(line)
         self.args = line,
         self.line = line
 
