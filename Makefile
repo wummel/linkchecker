@@ -5,8 +5,8 @@ VERSION:=$(shell $(PYTHON) setup.py --version)
 MACHINE:=$(shell uname -m)
 HOST:=www.debian.org
 LCOPTS:=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot --complete -r1 -C
-#PYTHONSRC:=/home/calvin/src/python-gitsvn/Lib
-PYTHONSRC:=/usr/lib/python2.6
+PYTHONSRC:=/home/calvin/src/python27-gitsvn/Lib
+#PYTHONSRC:=/usr/lib/python2.6
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
