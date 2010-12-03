@@ -230,19 +230,28 @@ Version 2 or later.</p>
 
     on_controlButton_clicked = on_urlinput_returnPressed = start
 
+    def get_url (self):
+        """Return URL to check from the urlinput widget."""
+        url = unicode(self.urlinput.text()).strip()
+        if url.startswith(u"www."):
+            url = u"http://%s" % url
+        elif url.startswith(u"ftp."):
+            url = u"ftp://%s" % url
+        elif u":" not in url:
+            # Look for local filename, else assume it's an HTTP URL.
+            if not os.path.isfile(url):
+                url = u"http://%s" % url
+        return url
+
     def check (self):
         """Check given URL."""
         self.model.clear()
         self.set_config()
         aggregate = director.get_aggregate(self.config)
-        url = unicode(self.urlinput.text()).strip()
+        url = self.get_url()
         if not url:
             self.set_statusbar(_("Error, empty URL"))
             return
-        if url.startswith(u"www."):
-            url = u"http://%s" % url
-        elif url.startswith(u"ftp."):
-            url = u"ftp://%s" % url
         self.set_statusbar(_("Checking '%s'.") % strformat.limit(url, 40))
         url_data = checker.get_url_from(url, 0, aggregate)
         try:
