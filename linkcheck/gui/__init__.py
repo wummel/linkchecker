@@ -209,11 +209,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         }
         QtGui.QMessageBox.about(self, _(u"About %(appname)s") % d,
             _(u"""<qt><p>%(appname)s checks HTML documents and websites
-for broken links.</p>
-<p>%(copyright)s</p>
-<p>%(app)s is licensed under the
+for broken links.
+<p>%(copyright)s
+<br>%(app)s is licensed under the
 <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>
-Version 2 or later.</p>
+Version 2 or later.
+<p>Please consider a
+<a href="https://sourceforge.net/donate/index.php?group_id=1913">donation</a>
+to improve %(appname)s even more!
 </qt>""") % d)
 
     @QtCore.pyqtSlot()
