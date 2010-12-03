@@ -161,6 +161,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.aggregate = None
             self.controlButton.setEnabled(True)
             self.actionSave.setEnabled(True)
+            self.actionDebug.setEnabled(self.options.get_options()["debug"])
             self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
             self.treeView.setSortingEnabled(True)
         elif status == Status.checking:

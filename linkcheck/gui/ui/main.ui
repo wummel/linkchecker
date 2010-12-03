@@ -158,6 +158,13 @@
     </property>
     <addaction name="actionOptions"/>
    </widget>
+   <widget class="QMenu" name="menuLinkChecka">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionQuit"/>
+   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -165,13 +172,6 @@
     <addaction name="actionAbout"/>
     <addaction name="actionHelp"/>
     <addaction name="actionDebug"/>
-   </widget>
-   <widget class="QMenu" name="menuLinkChecka">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionSave"/>
-    <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuLinkChecka"/>
    <addaction name="menuEdit"/>
@@ -258,7 +258,7 @@
   </action>
   <action name="actionDebug">
    <property name="text">
-    <string>Debug</string>
+    <string>Show debug</string>
    </property>
   </action>
   <action name="actionViewProperties">

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Fri Dec  3 20:38:45 2010
+# Created: Fri Dec  3 20:48:10 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -73,10 +73,10 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuEdit = QtGui.QMenu(self.menubar)
         self.menuEdit.setObjectName("menuEdit")
-        self.menuHelp = QtGui.QMenu(self.menubar)
-        self.menuHelp.setObjectName("menuHelp")
         self.menuLinkChecka = QtGui.QMenu(self.menubar)
         self.menuLinkChecka.setObjectName("menuLinkChecka")
+        self.menuHelp = QtGui.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setObjectName("statusBar")
@@ -127,11 +127,11 @@ class Ui_MainWindow(object):
         self.actionQuit.setIcon(icon8)
         self.actionQuit.setObjectName("actionQuit")
         self.menuEdit.addAction(self.actionOptions)
+        self.menuLinkChecka.addAction(self.actionSave)
+        self.menuLinkChecka.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionDebug)
-        self.menuLinkChecka.addAction(self.actionSave)
-        self.menuLinkChecka.addAction(self.actionQuit)
         self.menubar.addAction(self.menuLinkChecka.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
@@ -146,8 +146,8 @@ class Ui_MainWindow(object):
         self.controlButton.setToolTip(_("Start checking the given URL."))
         self.controlButton.setText(_("Start"))
         self.menuEdit.setTitle(_("Edit"))
-        self.menuHelp.setTitle(_("Help"))
         self.menuLinkChecka.setTitle(_("File"))
+        self.menuHelp.setTitle(_("Help"))
         self.actionAbout.setText(_("About"))
         self.actionHelp.setText(_("Help"))
         self.actionViewOnline.setText(_("View online"))
@@ -160,7 +160,7 @@ class Ui_MainWindow(object):
         self.actionViewParentOnline.setToolTip(_("View parent URL online"))
         self.actionViewParentSource.setText(_("View parent source"))
         self.actionViewParentSource.setToolTip(_("View parent URL source"))
-        self.actionDebug.setText(_("Debug"))
+        self.actionDebug.setText(_("Show debug"))
         self.actionViewProperties.setText(_("View properties"))
         self.actionViewProperties.setToolTip(_("View URL properties"))
         self.actionSave.setText(_("Save results..."))
