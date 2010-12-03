@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Fri Nov 26 21:37:11 2010
+# Created: Fri Dec  3 20:38:45 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -163,7 +163,7 @@ class Ui_MainWindow(object):
         self.actionDebug.setText(_("Debug"))
         self.actionViewProperties.setText(_("View properties"))
         self.actionViewProperties.setToolTip(_("View URL properties"))
-        self.actionSave.setText(_("Save..."))
+        self.actionSave.setText(_("Save results..."))
         self.actionSave.setShortcut(_("Ctrl+S"))
         self.actionQuit.setText(_("Quit"))
         self.actionQuit.setShortcut(_("Ctrl+Q"))

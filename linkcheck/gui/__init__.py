@@ -82,6 +82,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.move(data["pos"])
         self.options.set_options(self.settings.read_options())
         self.status = Status.idle
+        self.actionSave.setEnabled(False)
         self.set_statusbar(_("Ready."))
 
     def get_qhcpath (self):
@@ -159,6 +160,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.progress.hide()
             self.aggregate = None
             self.controlButton.setEnabled(True)
+            self.actionSave.setEnabled(True)
             self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
             self.treeView.setSortingEnabled(True)
         elif status == Status.checking:

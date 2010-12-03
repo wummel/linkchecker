@@ -275,7 +275,7 @@
      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
    </property>
    <property name="text">
-    <string>Save...</string>
+    <string>Save results...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
