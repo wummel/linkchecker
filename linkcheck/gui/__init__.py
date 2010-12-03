@@ -239,7 +239,7 @@ Version 2 or later.</p>
             url = u"http://%s" % url
         elif url.startswith(u"ftp."):
             url = u"ftp://%s" % url
-        elif u":" not in url:
+        elif url and u":" not in url:
             # Look for local filename, else assume it's an HTTP URL.
             if not os.path.isfile(url):
                 url = u"http://%s" % url
