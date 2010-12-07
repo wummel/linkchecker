@@ -40,6 +40,7 @@ include po/*.po po/*.pot po/Makefile po/msgfmt.py
 include doc/*.example
 include doc/html/*.ico
 include doc/html/*.html
+include doc/html/*.txt
 include doc/html/*.png
 include doc/html/*.qhp
 include doc/html/*.qhcp
