@@ -4,10 +4,11 @@ Documentation
 Basic usage
 -----------
 
-To check a URL like ``http://www.myhomepage.org/`` it is enough to
-execute ``linkchecker http://www.myhomepage.org/``. This will check the
-complete domain of www.myhomepage.org recursively. All links pointing
-outside of the domain are also checked for validity.
+To check a URL like ``http://www.example.org/`` it is enough to
+type ``linkchecker www.example.org/`` on the command line or
+type ``www.example.org`` in the GUI application. This will check the
+complete domain of ``http://www.example.org`` recursively. All links
+pointing outside of the domain are also checked for validity.
 
 Performed checks
 ----------------
@@ -134,10 +135,11 @@ conditions. They are checked in this order:
    except for example mailto: or unknown URL types.
 
 4. The maximum recursion level must not be exceeded. It is configured
-   with the ``--recursion-level`` option and is unlimited per default.
+   with the ``--recursion-level`` command line option or the recursion
+   level GUI option, and is unlimited by default.
 
 5. It must not match the ignored URL list. This is controlled with
-   the ``--ignore-url`` option.
+   the ``--ignore-url`` command line option.
 
 6. The Robots Exclusion Protocol must allow links in the URL to be
    followed recursively. This is checked by searching for a

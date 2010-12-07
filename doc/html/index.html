@@ -26,10 +26,11 @@ img { border: 0; }
 
 <h2>Basic usage</h2>
 
-<p>To check a URL like <code>http://www.myhomepage.org/</code> it is enough to
-execute <code>linkchecker http://www.myhomepage.org/</code>. This will check the
-complete domain of www.myhomepage.org recursively. All links pointing
-outside of the domain are also checked for validity.</p>
+<p>To check a URL like <code>http://www.example.org/</code> it is enough to
+type <code>linkchecker www.example.org/</code> on the command line or
+type <code>www.example.org</code> in the GUI application. This will check the
+complete domain of <code>http://www.example.org</code> recursively. All links
+pointing outside of the domain are also checked for validity.</p>
 
 <h2>Performed checks</h2>
 
@@ -149,9 +150,10 @@ to be non-parseable.</p></li>
 <li><p>The URL content must be retrievable. This is usually the case
 except for example mailto: or unknown URL types.</p></li>
 <li><p>The maximum recursion level must not be exceeded. It is configured
-with the <code>--recursion-level</code> option and is unlimited per default.</p></li>
+with the <code>--recursion-level</code> command line option or the recursion
+level GUI option, and is unlimited by default.</p></li>
 <li><p>It must not match the ignored URL list. This is controlled with
-the <code>--ignore-url</code> option.</p></li>
+the <code>--ignore-url</code> command line option.</p></li>
 <li><p>The Robots Exclusion Protocol must allow links in the URL to be
 followed recursively. This is checked by searching for a
 "nofollow" directive in the HTML header data.</p></li>
