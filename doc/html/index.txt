@@ -1,8 +1,6 @@
-Documentation
-=============
+# Documentation
 
-Basic usage
------------
+## Basic usage
 
 To check a URL like ``http://www.example.org/`` it is enough to
 type ``linkchecker www.example.org/`` on the command line or
@@ -10,8 +8,7 @@ type ``www.example.org`` in the GUI application. This will check the
 complete domain of ``http://www.example.org`` recursively. All links
 pointing outside of the domain are also checked for validity.
 
-Performed checks
-----------------
+## Performed checks
 
 All URLs have to pass a preliminary syntax test. Minor quoting
 mistakes will issue a warning, all other invalid syntax issues
@@ -117,8 +114,7 @@ checking. All connection check types are described below.
   - ``z39.50s:``   (Z39.50 Session)
 
 
-Recursion
----------
+## Recursion
 
 Before descending recursively into a URL, it has to fulfill several
 conditions. They are checked in this order:

@@ -1,0 +1,20 @@
+# Options
+
+## GUI options
+The most common check options are configurable.
+They override any configuration file settings.
+
+### Recursive depth
+Check recursively all links up to given depth.
+A negative depth will enable infinite recursion.
+
+### Verbose output
+Log all checked URLs once. Default is to log only errors and warnings.
+
+### Debug
+Log debugging output for each check.
+It can be displayed with Help->Show Debug
+
+## Configuration files
+The configuration files can be edited with an integrated text editor.
+
