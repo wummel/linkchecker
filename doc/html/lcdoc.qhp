@@ -4,7 +4,7 @@
   <virtualFolder>doc</virtualFolder>
   <filterSection>
     <toc>
-      <section title="LinkChecker application manual" ref="index.html">
+      <section title="LinkChecker documentation" ref="index.html">
         <section title="LinkChecker options" ref="options.html" />
       </section>
     </toc>
