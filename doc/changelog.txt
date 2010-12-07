@@ -6,6 +6,7 @@ Fixes:
   Closes: SF bug #3114622
 - gui: Activate links in property dialog.
 - gui: Fix sorting of columns in URL result list.
+  Closes: SF bug #3131401
 - checking: Fix wrong __init__ call to URL proxy handler.
   Closes: SF bug #3118254
 - checking: Catch socket errors (for example socket.timeout)
