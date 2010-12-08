@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2010-12-03 20:54+0100\n"
-"PO-Revision-Date: 2010-12-03 20:56+0100\n"
+"POT-Creation-Date: 2010-12-08 15:39+0100\n"
+"PO-Revision-Date: 2010-12-08 15:41+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -1012,30 +1012,36 @@ msgstr "Über %(appname)s"
 #, python-format
 msgid ""
 "<qt><p>%(appname)s checks HTML documents and websites\n"
-"for broken links.</p>\n"
-"<p>%(copyright)s</p>\n"
-"<p>%(app)s is licensed under the\n"
+"for broken links.\n"
+"<p>%(copyright)s\n"
+"<br>%(app)s is licensed under the\n"
 "<a href=\"http://www.gnu.org/licenses/gpl.html\">GPL</a>\n"
-"Version 2 or later.</p>\n"
+"Version 2 or later.\n"
+"<p>Please consider a\n"
+"<a href=\"https://sourceforge.net/donate/index.php?group_id=1913\">donation</a>\n"
+"to improve %(appname)s even more!\n"
 "</qt>"
 msgstr ""
-"<qt><p>%(appname)s prüft HTML Dokumente und Webseiten auf kaputte Verknüpfungen.</p>\n"
-"<p>%(copyright)s</p>\n"
+"<qt><p>%(appname)s prüft HTML Dokumente und Webseiten auf kaputte Verknüpfungen.\n"
+"<p>%(copyright)s\n"
 "<p>%(app)s ist lizensiert unter der\n"
 "<a href=\"http://www.gnu.org/licenses/gpl.html\">GPL</a>\n"
-"Version 2 oder später.</p>\n"
+"Version 2 oder später.\n"
+"<p>Bitte ziehen Sie eine\n"
+"<a href=\"https://sourceforge.net/donate/index.php?group_id=1913\">Spende</a> in Betracht,\n"
+"um %(appname)s noch mehr zu verbessern!\n"
 "</qt>"
 
-#: ../linkcheck/gui/__init__.py:256
+#: ../linkcheck/gui/__init__.py:259
 msgid "Error, empty URL"
 msgstr "Fehler, leere URL"
 
-#: ../linkcheck/gui/__init__.py:258
+#: ../linkcheck/gui/__init__.py:261
 #, python-format
 msgid "Checking '%s'."
 msgstr "Prüfe '%s'"
 
-#: ../linkcheck/gui/__init__.py:263
+#: ../linkcheck/gui/__init__.py:266
 #, python-format
 msgid "Error, invalid URL `%s'."
 msgstr "Fehler, ungültige URL `%s'."
