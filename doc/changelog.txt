@@ -22,6 +22,8 @@ Changes:
   Closes: SF bug #3114624
 - checking: The maximum file size of FTP files is now limited
   to 10MB.
+- checking: Remove warning about using Unicode domains which are more
+  widely supported now.
 
 Features:
 - gui: Store column widths in registry settings.
