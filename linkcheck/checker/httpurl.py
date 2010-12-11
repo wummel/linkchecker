@@ -300,8 +300,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.add_info(_("Redirected to `%(url)s'.") % {'url': newurl})
             # norm base url - can raise UnicodeError from url.idna_encode()
             redirected, is_idn = urlbase.url_norm(newurl)
-            if is_idn:
-                pass # XXX warn about idn use
             log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
             urlparts = strformat.url_unicode_split(redirected)
             if urlparts[1] != self.urlparts[1]:

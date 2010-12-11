@@ -40,8 +40,6 @@ class InternPatternUrl (urlbase.UrlBase):
         scheme = parts[0]
         domain = parts[1]
         domain, is_idn = urlutil.idna_encode(domain)
-        if is_idn:
-            pass # XXX warn about idn use
         if not (domain and scheme):
             return None
         path = urlutil.splitparams(parts[2])[0]

@@ -35,7 +35,7 @@ from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from ..network import iputil
-from .const import (WARN_URL_EFFECTIVE_URL, WARN_URL_UNICODE_DOMAIN,
+from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_ERROR_GETTING_CONTENT, WARN_URL_OBFUSCATED_IP,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
     WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
@@ -364,12 +364,6 @@ class UrlBase (object):
         """
         # norm base url - can raise UnicodeError from url.idna_encode()
         base_url, is_idn = url_norm(self.base_url, self.encoding)
-        if is_idn:
-            self.add_warning(_("""URL %(url)r has a unicode domain name which
-                          is not yet widely supported. You should use
-                          the URL %(idna_url)r instead.""") % \
-                          {"url": self.base_url, "idna_url": base_url},
-                          tag=WARN_URL_UNICODE_DOMAIN)
         # make url absolute
         if self.base_ref:
             # use base reference as parent url
