@@ -524,8 +524,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
     APPEND_TO_TMP(yyleng);
 }
 
-  /* XXX is there a better way to ensure any prefix of </script> is matched,
-    but not </script> itself? */
+  /* ensure any prefix of </script> is matched, but not </script> itself */
 <S_SCRIPT,S_SCRIPT_COMMENT></[^/] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);

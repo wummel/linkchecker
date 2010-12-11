@@ -2206,8 +2206,16 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
     Py_CLEAR(self->userData->tmp_attrname);
     self->userData->bufpos = 0;
     if (strlen(self->userData->buf)) {
-        /* XXX set line, col */
+        /* set line, col */
         int error = 0;
+        int i;
+        for (i=0; i<strlen(self->userData->buf); ++i) {
+            if (self->userData->buf[i] == '\n') {
+                ++(self->userData->lineno);
+                self->userData->column = 1;
+            }
+            else ++(self->userData->column);
+        }
         const char* enc = PyString_AsString(self->encoding);
 	PyObject* s = PyUnicode_Decode(self->userData->buf,
                                      (Py_ssize_t)strlen(self->userData->buf),
