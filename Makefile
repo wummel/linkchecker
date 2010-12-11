@@ -11,11 +11,6 @@ PY_FILES_DIRS:=linkcheck tests *.py linkchecker cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
 TESTOPTS=
-# test for nose achievements plugin and use it if available
-NOSE_ACHIEVEMENTS:=$(shell nosetests --plugins | grep achievements)
-ifeq ($(strip $(NOSE_ACHIEVEMENTS)),Plugin achievements)
-TESTOPTS += --with-achievements
-endif
 PAGER ?= less
 # build dir for debian package
 BUILDDIR:=$(HOME)/packages/official
