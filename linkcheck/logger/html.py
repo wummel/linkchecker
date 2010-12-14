@@ -161,7 +161,7 @@ class HtmlLogger (Logger):
         """Write ID for current URL."""
         self.writeln(u"<tr>")
         self.writeln(u'<td>%s</td>' % self.part("id"))
-        self.write(u"<td>%d</td></tr>" % self.number)
+        self.write(u"<td>%d</td></tr>" % self.stats.number)
 
     def write_url (self, url_data):
         """Write url_data.base_url."""
@@ -283,21 +283,21 @@ class HtmlLogger (Logger):
         if self.has_part("outro"):
             self.writeln()
             self.write(_("That's it.")+" ")
-            if self.number >= 0:
+            if self.stats.number >= 0:
                 self.write(_n("%d link checked.", "%d links checked.",
-                           self.number) % self.number)
+                           self.stats.number) % self.stats.number)
                 self.write(u" ")
             self.write(_n("%d warning found", "%d warnings found",
-                            self.warnings_printed) % self.warnings_printed)
-            if self.warnings != self.warnings_printed:
+                 self.stats.warnings_printed) % self.stats.warnings_printed)
+            if self.stats.warnings != self.stats.warnings_printed:
                 self.write(_(" (%d ignored or duplicates not printed)") %
-                    (self.warnings - self.warnings_printed))
+                    (self.stats.warnings - self.stats.warnings_printed))
             self.write(u". ")
             self.write(_n("%d error found", "%d errors found",
-                         self.errors_printed) % self.errors_printed)
-            if self.errors != self.errors_printed:
+                 self.stats.errors_printed) % self.stats.errors_printed)
+            if self.stats.errors != self.stats.errors_printed:
                 self.write(_(" (%d duplicates not printed)") %
-                    (self.errors - self.errors_printed))
+                    (self.stats.errors - self.stats.errors_printed))
             self.writeln(u".")
             self.writeln(u"<br>")
             self.stoptime = time.time()

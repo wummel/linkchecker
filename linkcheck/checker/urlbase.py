@@ -645,6 +645,11 @@ class UrlBase (object):
         self.extern = (1, 0)
         return
 
+    def get_content_type (self):
+        """Return content MIME type or empty string.
+        Should be overridden in subclasses."""
+        return u""
+
     def can_get_content (self):
         """Indicate wether url get_content() can be called."""
         return True
@@ -989,6 +994,7 @@ class UrlBase (object):
 
     def get_temp_filename (self):
         """Get temporary filename for content to parse."""
+        # XXX move to utility package
         # store content in temporary file
         fd, filename = tempfile.mkstemp(suffix='.doc', prefix='lc_')
         fp = os.fdopen(fd)
@@ -1063,10 +1069,12 @@ class UrlBase (object):
           name of URL (eg. filename or link name)
         - url_data.parent_url: unicode or None
           Parent URL
-        - url_data.base_ref: unicode or None
+        - url_data.base_ref: unicode
           HTML base reference URL of parent
-        - url_data.url: unicode or None
+        - url_data.url: unicode
           Fully qualified URL.
+        - url_data.domain: unicode
+          URL domain part.
         - url_data.checktime: int
           Number of seconds needed to check this link, default: zero.
         - url_data.dltime: int
@@ -1079,6 +1087,10 @@ class UrlBase (object):
           Line number of this URL at parent document, or -1
         - url_data.column: int
           Column number of this URL at parent document, or -1
+        - url_data.cache_url_key: unicode
+          Cache key for this URL.
+        - url_data.content_type: unicode
+          MIME content type for URL content.
         """
         return dict(valid=self.valid,
           extern=self.extern[0],
@@ -1091,6 +1103,7 @@ class UrlBase (object):
           base_ref=self.base_ref or u"",
           base_url=self.base_url or u"",
           url=self.url or u"",
+          domain=self.urlparts[1],
           checktime=self.checktime,
           dltime=self.dltime,
           dlsize=self.dlsize,
@@ -1098,6 +1111,7 @@ class UrlBase (object):
           line=self.line,
           column=self.column,
           cache_url_key=self.cache_url_key,
+          content_type=self.get_content_type(),
         )
 
     def to_wire (self):
@@ -1122,6 +1136,7 @@ urlDataAttr = [
     'base_ref',
     'base_url',
     'url',
+    'domain',
     'checktime',
     'dltime',
     'dlsize',
@@ -1129,6 +1144,7 @@ urlDataAttr = [
     'line',
     'column',
     'cache_url_key',
+    'content_type',
 ]
 
 class CompactUrlData (object):

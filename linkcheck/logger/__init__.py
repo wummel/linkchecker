@@ -46,6 +46,55 @@ Fields = dict(
 del _
 
 
+class LogStatistics (object):
+    """Gather log statistics:
+    - number of errors, warnings and valid links
+    - type of links (image, video, audio, text)
+    - number of different domains
+    """
+
+    def __init__ (self):
+        # number of logged urls
+        self.number = 0
+        # number of encountered errors
+        self.errors = 0
+        # number of errors that were printed
+        self.errors_printed = 0
+        # number of warnings
+        self.warnings = 0
+        # number of warnings that were printed
+        self.warnings_printed = 0
+        self.domains = set()
+        self.link_types = dict(
+            image=0,
+            text=0,
+            video=0,
+            audio=0,
+            application=0,
+            other=0,
+            unknown=0,
+        )
+
+    def log_url (self, url_data, do_print):
+        self.number += 1
+        if not url_data.valid:
+            self.errors += 1
+            if do_print:
+                self.errors_printed += 1
+        num_warnings = len(url_data.warnings)
+        self.warnings += num_warnings
+        if do_print:
+            self.warnings_printed += num_warnings
+        self.domains.add(url_data.domain)
+        if url_data.content_type:
+            key = url_data.content_type.split('/', 1)[0].lower()
+            if key not in self.link_types:
+                key = "other"
+        else:
+            key = "unknown"
+        self.link_types[key] += 1
+
+
 class Logger (object):
     """
     Base class for logging of checked urls. It defines the public API
@@ -79,16 +128,8 @@ class Logger (object):
         self.logspaces = {}
         # maximum indent of spaces for alignment
         self.max_indent = 0
-        # number of logged urls
-        self.number = 0
-        # number of encountered errors
-        self.errors = 0
-        # number of errors that were printed
-        self.errors_printed = 0
-        # number of warnings
-        self.warnings = 0
-        # number of warnings that were printed
-        self.warnings_printed = 0
+        # log statistics
+        self.stats = LogStatistics()
         # encoding of output
         encoding = args.get("encoding", i18n.default_encoding)
         try:
@@ -247,15 +288,8 @@ class Logger (object):
         Log a new url with this logger if do_print is True. Else
         only update accounting data.
         """
-        self.number += 1
-        if not url_data.valid:
-            self.errors += 1
-            if do_print:
-                self.errors_printed += 1
-        num_warnings = len(url_data.warnings)
-        self.warnings += num_warnings
+        self.stats.log_url(url_data, do_print)
         if do_print:
-            self.warnings_printed += num_warnings
             self.log_url(url_data)
 
     def write_intro (self):
