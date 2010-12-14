@@ -95,17 +95,20 @@ class TextLogger (Logger):
         """
         super(TextLogger, self).start_output()
         if self.has_part('intro'):
-            self.writeln(configuration.AppInfo)
-            self.writeln(configuration.Freeware)
-            self.writeln(_("Get the newest version at %(url)s") %
-                         {'url': configuration.Url})
-            self.writeln(_("Write comments and bugs to %(url)s") %
-                         {'url': configuration.SupportUrl})
-            self.check_date()
-            self.writeln()
-            self.writeln(_("Start checking at %s") %
-                         strformat.strtime(self.starttime))
-            self.flush()
+            self.write_intro()
+        self.flush()
+
+    def write_intro (self):
+        self.writeln(configuration.AppInfo)
+        self.writeln(configuration.Freeware)
+        self.writeln(_("Get the newest version at %(url)s") %
+                     {'url': configuration.Url})
+        self.writeln(_("Write comments and bugs to %(url)s") %
+                     {'url': configuration.SupportUrl})
+        self.check_date()
+        self.writeln()
+        self.writeln(_("Start checking at %s") %
+                     strformat.strtime(self.starttime))
 
     def log_url (self, url_data):
         """
@@ -235,32 +238,44 @@ class TextLogger (Logger):
             self.write(u": " + url_data.result, color=color)
         self.writeln()
 
+    def write_outro (self):
+        self.writeln()
+        self.write(_("That's it.") + " ")
+        self.write(_n("%d link checked.", "%d links checked.",
+                      self.stats.number) % self.stats.number)
+        self.write(u" ")
+        self.write(_n("%d warning found", "%d warnings found",
+             self.stats.warnings_printed) % self.stats.warnings_printed)
+        if self.stats.warnings != self.stats.warnings_printed:
+            self.write(_(" (%d ignored or duplicates not printed)") %
+                (self.stats.warnings - self.stats.warnings_printed))
+        self.write(u". ")
+        self.write(_n("%d error found", "%d errors found",
+             self.stats.errors_printed) % self.stats.errors_printed)
+        if self.stats.errors != self.stats.errors_printed:
+            self.write(_(" (%d duplicates not printed)") %
+                (self.stats.errors - self.stats.errors_printed))
+        self.writeln(u".")
+        self.stoptime = time.time()
+        duration = self.stoptime - self.starttime
+        self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %
+             {"time": strformat.strtime(self.stoptime),
+              "duration": strformat.strduration_long(duration)})
+
+    def write_stats (self):
+        domains = len(self.stats.domains)
+        if domains > 1:
+            self.writeln(_("Found %d different domains.") % domains)
+        self.writeln(_("Found %(image)d image, %(text)d text, %(video)d video, "
+            "%(audio)d audio, %(application)d application, %(other)d other"
+            " and %(unknown)d unknown URLs.") % self.stats.link_types)
+
     def end_output (self):
         """
         Write end of output info, and flush all output buffers.
         """
+        if self.has_part('stats'):
+            self.write_stats()
         if self.has_part('outro'):
-            self.writeln()
-            self.write(_("That's it.") + " ")
-            if self.stats.number >= 0:
-                self.write(_n("%d link checked.", "%d links checked.",
-                              self.stats.number) % self.stats.number)
-                self.write(u" ")
-            self.write(_n("%d warning found", "%d warnings found",
-                 self.stats.warnings_printed) % self.stats.warnings_printed)
-            if self.stats.warnings != self.stats.warnings_printed:
-                self.write(_(" (%d ignored or duplicates not printed)") %
-                    (self.stats.warnings - self.stats.warnings_printed))
-            self.write(u". ")
-            self.write(_n("%d error found", "%d errors found",
-                 self.stats.errors_printed) % self.stats.errors_printed)
-            if self.stats.errors != self.stats.errors_printed:
-                self.write(_(" (%d duplicates not printed)") %
-                    (self.stats.errors - self.stats.errors_printed))
-            self.writeln(u".")
-            self.stoptime = time.time()
-            duration = self.stoptime - self.starttime
-            self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
+            self.write_outro()
         self.close_fileoutput()
