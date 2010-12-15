@@ -183,15 +183,13 @@ class FileUrl (urlbase.UrlBase):
 
     def is_html (self):
         """Check if file is a HTML file."""
-        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
-        return self.ContentMimetypes.get(mime) == "html"
+        return self.ContentMimetypes.get(self.get_content_type()) == "html"
 
     def is_css (self):
         """
         Check if file is a CSS file.
         """
-        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
-        return self.ContentMimetypes.get(mime) == "css"
+        return self.ContentMimetypes.get(self.get_content_type()) == "css"
 
     def is_file (self):
         """
@@ -240,8 +238,7 @@ class FileUrl (urlbase.UrlBase):
         elif has_sqlite and firefox_extension.search(self.url):
             return True
         else:
-            mime = fileutil.guess_mimetype(self.url, read=self.get_content)
-            return mime in self.ContentMimetypes
+            return self.get_content_type() in self.ContentMimetypes
 
     def parse_url (self):
         """
@@ -252,7 +249,7 @@ class FileUrl (urlbase.UrlBase):
         elif has_sqlite and firefox_extension.search(self.url):
             self.parse_firefox()
         else:
-            mime = fileutil.guess_mimetype(self.url, read=self.get_content)
+            mime = self.get_content_type()
             key = self.ContentMimetypes[mime]
             getattr(self, "parse_"+key)()
 
@@ -278,6 +275,9 @@ class FileUrl (urlbase.UrlBase):
                 c.close()
         finally:
             conn.close()
+
+    def get_content_type (self):
+        return fileutil.guess_mimetype(self.url, read=self.get_content)
 
     def get_intern_pattern (self):
         """

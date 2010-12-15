@@ -269,7 +269,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     continue
             elif self.headers and self.method == "HEAD" and self.method_get_allowed:
                 # test for HEAD support
-                mime = headers.get_content_type(self.headers)
+                mime = self.get_content_type()
                 poweredby = self.headers.get('X-Powered-By', '')
                 server = self.headers.get('Server', '')
                 if mime in ('application/octet-stream', 'text/plain') and \
@@ -281,6 +281,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     continue
             break
         return response
+
+    def get_content_type (self):
+        """Return content MIME type or empty string."""
+        if self.headers:
+            return headers.get_content_type(self.headers)
+        return u""
 
     def follow_redirections (self, response, set_result=True):
         """
@@ -635,7 +641,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if not (self.valid and self.headers):
             return False
-        mime = headers.get_content_type(self.headers)
+        mime = self.get_content_type()
         if self.ContentMimetypes.get(mime) != "html":
             return False
         return self.encoding_supported()
@@ -644,7 +650,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """Return True iff content of this url is CSS stylesheet."""
         if not (self.valid and self.headers):
             return False
-        mime = headers.get_content_type(self.headers)
+        mime = self.get_content_type()
         if self.ContentMimetypes.get(mime) != "css":
             return False
         return self.encoding_supported()
@@ -667,7 +673,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if not (self.valid and self.headers):
             return False
-        if headers.get_content_type(self.headers) not in self.ContentMimetypes:
+        if self.get_content_type() not in self.ContentMimetypes:
             return False
         return self.encoding_supported()
 
@@ -675,7 +681,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         Parse file contents for new links to check.
         """
-        ctype = headers.get_content_type(self.headers)
+        ctype = self.get_content_type()
         if self.is_html():
             self.parse_html()
         elif self.is_css():

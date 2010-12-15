@@ -181,20 +181,17 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def is_html (self):
         """See if URL target is a HTML file by looking at the extension."""
-        mime = fileutil.guess_mimetype(self.url)
-        return self.ContentMimetypes.get(mime) == "html"
+        return self.ContentMimetypes.get(self.get_content_type()) == "html"
 
     def is_css (self):
         """See if URL target is a CSS file by looking at the extension."""
-        mime = fileutil.guess_mimetype(self.url)
-        return self.ContentMimetypes.get(mime) == "css"
+        return self.ContentMimetypes.get(self.get_content_type()) == "css"
 
     def is_parseable (self):
         """See if URL target is parseable for recursion."""
         if self.is_directory():
             return True
-        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
-        return mime in self.ContentMimetypes
+        return self.get_content_type(self.get_content) in self.ContentMimetypes
 
     def is_directory (self):
         """See if URL target is a directory."""
@@ -205,9 +202,11 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.is_directory():
             self.parse_html()
             return
-        mime = fileutil.guess_mimetype(self.url, read=self.get_content)
-        key = self.ContentMimetypes[mime]
+        key = self.ContentMimetypes[self.get_content_type(self.get_content)]
         getattr(self, "parse_"+key)()
+
+    def get_content_type (self, read=None):
+        return fileutil.guess_mimetype(self.url, read=read)
 
     def read_content (self):
         """Return URL target content, or in case of directories a dummy HTML
