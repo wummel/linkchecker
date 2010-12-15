@@ -263,12 +263,23 @@ class TextLogger (Logger):
               "duration": strformat.strduration_long(duration)})
 
     def write_stats (self):
+        self.writeln()
         domains = len(self.stats.domains)
         if domains > 1:
             self.writeln(_("Found %d different domains.") % domains)
-        self.writeln(_("Found %(image)d image, %(text)d text, %(video)d video, "
-            "%(audio)d audio, %(application)d application, %(other)d other"
-            " and %(unknown)d unknown URLs.") % self.stats.link_types)
+        if self.stats.number > 0:
+            self.writeln(_(
+              "Detected %(image)d image, %(text)d text, %(video)d video, "
+              "%(audio)d audio, %(application)d application, %(mail)d mail"
+              " and %(other)d other contents.") % self.stats.link_types)
+            self.writeln(_("Minimum URL length is %d.") %
+                         self.stats.min_url_length)
+            self.writeln(_("Maximum URL length is %d.") %
+                         self.stats.max_url_length)
+            self.writeln(_("Average URL length is %d.") %
+                         self.stats.avg_url_length)
+        else:
+            self.writeln(_("No statistics available since zero URLs were checked."))
 
     def end_output (self):
         """

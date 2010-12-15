@@ -49,8 +49,9 @@ del _
 class LogStatistics (object):
     """Gather log statistics:
     - number of errors, warnings and valid links
-    - type of links (image, video, audio, text)
+    - type of contents (image, video, audio, text, ...)
     - number of different domains
+    - URL lengths
     """
 
     def __init__ (self):
@@ -71,9 +72,13 @@ class LogStatistics (object):
             video=0,
             audio=0,
             application=0,
+            mail=0,
             other=0,
-            unknown=0,
         )
+        self.max_url_length = 0
+        self.min_url_length = 0
+        self.avg_url_length = 0.0
+        self.avg_number = 0
 
     def log_url (self, url_data, do_print):
         self.number += 1
@@ -90,9 +95,22 @@ class LogStatistics (object):
             key = url_data.content_type.split('/', 1)[0].lower()
             if key not in self.link_types:
                 key = "other"
+        elif url_data.url.startswith(u"mailto:"):
+            key = "mail"
         else:
-            key = "unknown"
+            key = "other"
         self.link_types[key] += 1
+        if url_data.url:
+            l = len(url_data.url)
+            self.max_url_length = max(l, self.max_url_length)
+            if self.min_url_length == 0:
+                self.min_url_length = l
+            else:
+                self.min_url_length = min(l, self.min_url_length)
+            # track average number separately since empty URLs do not count
+            self.avg_number += 1
+            # calculate running average
+            self.avg_url_length += (l - self.avg_url_length) / self.avg_number
 
 
 class Logger (object):
