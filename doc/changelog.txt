@@ -24,12 +24,16 @@ Changes:
   to 10MB.
 - checking: Remove warning about using Unicode domains which are more
   widely supported now.
+- logging: The unique ID of an URL is not printed out anymore.
+  Instead the cache URL key should be used to uniquely identify URLs.
 
 Features:
 - gui: Store column widths in registry settings.
 - gui: Add ability to save results to local files with File->Save.
 - gui: Assume the entered URL starts with http:// if it has no
   scheme specified and is not a valid local file.
+- logging: More statistic information about content types and URL
+  lengths is printed out.
 
 
 5.5 "Red" (released 20.11.2010)

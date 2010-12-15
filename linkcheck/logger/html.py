@@ -274,42 +274,66 @@ class HtmlLogger (Logger):
             self.write(u": "+cgi.escape(url_data.result))
         self.writeln(u"</td></tr>")
 
+    def write_stats (self):
+        domains = len(self.stats.domains)
+        if domains > 1:
+            self.writeln(_("Found %d different domains.") % domains)
+        if self.stats.number > 0:
+            self.writeln(_(
+              "Detected %(image)d image, %(text)d text, %(video)d video, "
+              "%(audio)d audio, %(application)d application, %(mail)d mail"
+              " and %(other)d other contents.") % self.stats.link_types)
+            self.writeln(_("Minimum URL length is %d.") %
+                         self.stats.min_url_length)
+            self.writeln(_("Maximum URL length is %d.") %
+                         self.stats.max_url_length)
+            self.writeln(_("Average URL length is %d.") %
+                         self.stats.avg_url_length)
+        else:
+            self.writeln(_("No statistics available since zero URLs were checked."))
+        self.writeln(u"<br>")
+
+    def write_outro (self):
+        self.writeln()
+        self.write(_("That's it.")+" ")
+        if self.stats.number >= 0:
+            self.write(_n("%d link checked.", "%d links checked.",
+                       self.stats.number) % self.stats.number)
+            self.write(u" ")
+        self.write(_n("%d warning found", "%d warnings found",
+             self.stats.warnings_printed) % self.stats.warnings_printed)
+        if self.stats.warnings != self.stats.warnings_printed:
+            self.write(_(" (%d ignored or duplicates not printed)") %
+                (self.stats.warnings - self.stats.warnings_printed))
+        self.write(u". ")
+        self.write(_n("%d error found", "%d errors found",
+             self.stats.errors_printed) % self.stats.errors_printed)
+        if self.stats.errors != self.stats.errors_printed:
+            self.write(_(" (%d duplicates not printed)") %
+                (self.stats.errors - self.stats.errors_printed))
+        self.writeln(u".")
+        self.writeln(u"<br>")
+        self.stoptime = time.time()
+        duration = self.stoptime - self.starttime
+        self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %
+             {"time": strformat.strtime(self.stoptime),
+              "duration": strformat.strduration_long(duration)})
+        self.writeln(u'</blockquote><br><hr noshade size="1"><small>'+
+                     configuration.HtmlAppInfo+u"<br>")
+        self.writeln(_("Get the newest version at %s") %
+           (u'<a href="'+configuration.Url+u'" target="_top">'+
+            configuration.Url+u"</a>.<br>"))
+        self.writeln(_("Write comments and bugs to %s") %
+           (u'<a href="'+configuration.SupportUrl+u'">'+
+            configuration.SupportUrl+u"</a>."))
+        self.writeln(u"</small></body></html>")
+
     def end_output (self):
         """
         Write end of checking info as HTML.
         """
+        if self.has_part("stats"):
+            self.write_stats()
         if self.has_part("outro"):
-            self.writeln()
-            self.write(_("That's it.")+" ")
-            if self.stats.number >= 0:
-                self.write(_n("%d link checked.", "%d links checked.",
-                           self.stats.number) % self.stats.number)
-                self.write(u" ")
-            self.write(_n("%d warning found", "%d warnings found",
-                 self.stats.warnings_printed) % self.stats.warnings_printed)
-            if self.stats.warnings != self.stats.warnings_printed:
-                self.write(_(" (%d ignored or duplicates not printed)") %
-                    (self.stats.warnings - self.stats.warnings_printed))
-            self.write(u". ")
-            self.write(_n("%d error found", "%d errors found",
-                 self.stats.errors_printed) % self.stats.errors_printed)
-            if self.stats.errors != self.stats.errors_printed:
-                self.write(_(" (%d duplicates not printed)") %
-                    (self.stats.errors - self.stats.errors_printed))
-            self.writeln(u".")
-            self.writeln(u"<br>")
-            self.stoptime = time.time()
-            duration = self.stoptime - self.starttime
-            self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %
-                 {"time": strformat.strtime(self.stoptime),
-                  "duration": strformat.strduration_long(duration)})
-            self.writeln(u'</blockquote><br><hr noshade size="1"><small>'+
-                         configuration.HtmlAppInfo+u"<br>")
-            self.writeln(_("Get the newest version at %s") %
-               (u'<a href="'+configuration.Url+u'" target="_top">'+
-                configuration.Url+u"</a>.<br>"))
-            self.writeln(_("Write comments and bugs to %s") %
-               (u'<a href="'+configuration.SupportUrl+u'">'+
-                configuration.SupportUrl+u"</a>."))
-            self.writeln(u"</small></body></html>")
+            self.write_outro()
         self.close_fileoutput()
