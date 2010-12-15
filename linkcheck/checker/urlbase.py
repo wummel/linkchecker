@@ -1103,7 +1103,7 @@ class UrlBase (object):
           base_ref=self.base_ref or u"",
           base_url=self.base_url or u"",
           url=self.url or u"",
-          domain=self.urlparts[1],
+          domain=(self.urlparts[1] if self.urlparts else u""),
           checktime=self.checktime,
           dltime=self.dltime,
           dlsize=self.dlsize,
