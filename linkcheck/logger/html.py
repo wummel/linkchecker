@@ -111,8 +111,6 @@ class HtmlLogger (Logger):
         Write url checking info as HTML.
         """
         self.write_table_start()
-        if self.has_part("id"):
-            self.write_id()
         if self.has_part("url"):
             self.write_url(url_data)
         if url_data.name and self.has_part("name"):

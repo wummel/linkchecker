@@ -28,7 +28,6 @@ from .. import log, LOG_CHECK, strformat, dummy, configuration, i18n
 
 _ = lambda x: x
 Fields = dict(
-    id=_("ID"),
     realurl=_("Real URL"),
     cachekey=_("Cache key"),
     result=_("Result"),

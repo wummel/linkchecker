@@ -114,8 +114,6 @@ class TextLogger (Logger):
         """
         Write url checking info.
         """
-        if self.has_part('id'):
-            self.write_id()
         if self.has_part('url'):
             self.write_url(url_data)
         if url_data.name and self.has_part('name'):
