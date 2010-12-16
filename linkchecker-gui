@@ -23,6 +23,11 @@ from PyQt4.QtGui import QApplication, QStyleFactory
 from linkcheck.gui import LinkCheckerMain
 from linkcheck import configuration
 
+## Look and feel with stylesheets
+# In Cleanlooks the progress bar text is outside the bar.
+# Use Plastique instead.
+#Style = "Cleanlooks"
+Style = "Plastique"
 
 def main (argv=None):
     if argv is None:
@@ -31,8 +36,7 @@ def main (argv=None):
     app.setApplicationName(configuration.AppName)
     app.setApplicationVersion(configuration.Version)
     app.setOrganizationName(configuration.Author)
-    ## Look and feel changed to CleanLooks
-    QApplication.setStyle(QStyleFactory.create("Cleanlooks"))
+    QApplication.setStyle(QStyleFactory.create(Style))
     QApplication.setPalette(QApplication.style().standardPalette())
     if app.argc() > 1:
         url = app.argv()[1]
