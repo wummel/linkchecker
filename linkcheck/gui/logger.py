@@ -38,6 +38,7 @@ class GuiLogger (Logger):
     def __init__ (self, **args):
         super(GuiLogger, self).__init__(**args)
         self.log_url_signal = args["signal"]
+        self.log_stats_signal = args["stats"]
 
     def start_fileoutput (self):
         pass
@@ -50,7 +51,7 @@ class GuiLogger (Logger):
         self.log_url_signal.emit(url_data)
 
     def end_output (self):
-        pass
+        self.log_stats_signal.emit(self.stats)
 
     def start_output (self):
         pass

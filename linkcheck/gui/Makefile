@@ -5,8 +5,7 @@ UI_FILES = linkchecker_ui_main.py \
 	linkchecker_ui_options.py \
 	linkchecker_ui_progress.py \
 	linkchecker_ui_debug.py \
-	linkchecker_ui_editor.py \
-	linkchecker_ui_properties.py
+	linkchecker_ui_editor.py
 RC_FILES = linkchecker_rc.py
 
 

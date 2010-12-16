@@ -20,7 +20,7 @@ import sys
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
-from .properties import PropertiesDialog
+from .properties import set_properties, set_statistics
 from .progress import LinkCheckerProgress, StatusLogger
 from .debug import LinkCheckerDebug
 from .logger import GuiLogger, GuiLogHandler
@@ -47,6 +47,7 @@ Status = enum('idle', 'checking')
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     log_url_signal = QtCore.pyqtSignal(object)
+    log_stats_signal = QtCore.pyqtSignal(object)
 
     def __init__(self, parent=None, url=None):
         """Initialize UI."""
@@ -65,7 +66,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.checker = CheckerThread()
         self.contextmenu = ContextMenu(parent=self)
         self.editor = EditorWindow(parent=self)
-        self.properties = PropertiesDialog(parent=self)
         # Note: do not use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
         # init the rest
@@ -111,6 +111,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.checker.finished.connect(set_idle)
         self.checker.terminated.connect(set_idle)
         self.log_url_signal.connect(self.model.log_url)
+        self.log_stats_signal.connect(self.log_stats)
 
     def init_treeview (self):
         self.model = UrlItemModel()
@@ -119,6 +120,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.treeView.setColumnWidth(0, data["col1"])
         self.treeView.setColumnWidth(1, data["col2"])
         self.treeView.setColumnWidth(2, data["col3"])
+        selectionModel = self.treeView.selectionModel()
+        selectionModel.selectionChanged.connect(self.set_properties)
 
     def get_treeviewcols (self):
         return dict(
@@ -132,7 +135,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.config = configuration.Configuration()
         self.config.logger_add("gui", GuiLogger)
         self.config["logger"] = self.config.logger_new('gui',
-            signal=self.log_url_signal)
+            signal=self.log_url_signal, stats=self.log_stats_signal)
         self.config["status"] = True
         self.config["status_wait_seconds"] = 2
         self.handler = GuiLogHandler(self.debug.log_msg_signal)
@@ -272,15 +275,12 @@ to improve %(appname)s even more!
         self.checker.check(self.aggregate, self.progress)
         self.status = Status.checking
 
-    def view_item_properties (self, item):
-        self.properties.set_item(item)
-        self.properties.show()
-
-    def on_treeView_doubleClicked (self, index):
-        """View property page."""
+    def set_properties (self, selected, deselected):
+        """Set URL properties for selected item."""
+        index = selected.indexes()[0]
         urlitem = self.model.getUrlItem(index)
         if urlitem is not None:
-            self.view_item_properties(urlitem)
+            set_properties(self, urlitem.url_data)
 
     def on_treeView_customContextMenuRequested (self, point):
         """Show item context menu."""
@@ -346,3 +346,6 @@ to improve %(appname)s even more!
     def set_statusbar (self, msg):
         """Show status message in status bar."""
         self.statusBar.showMessage(msg)
+
+    def log_stats (self, statistics):
+        set_statistics(self, statistics)

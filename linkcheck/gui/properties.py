@@ -16,52 +16,53 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os
-from PyQt4 import QtGui
-from .linkchecker_ui_properties import Ui_PropertiesDialog
 from .. import strformat
 
 
-class PropertiesDialog (QtGui.QDialog, Ui_PropertiesDialog):
-    """Show URL properties dialog."""
+def set_properties (widget, data):
+    """Write URL data values into text fields."""
+    if data.url:
+        widget.prop_url.setText(u'<a href="%(url)s">%(url)s</a>' % \
+                              dict(url=data.url))
+    else:
+        widget.prop_url.setText(u"")
+    widget.prop_name.setText(data.name)
+    if data.parent_url:
+        widget.prop_parenturl.setText(u'<a href="%(url)s">%(url)s</a>' % \
+                              dict(url=data.parent_url))
+    else:
+        widget.prop_parenturl.setText(u"")
+    widget.prop_base.setText(data.base_ref)
+    widget.prop_checktime.setText(_("%.3f seconds") % data.checktime)
+    if data.dltime >= 0:
+        widget.prop_dltime.setText(_("%.3f seconds") % data.dltime)
+    else:
+        widget.prop_dltime.setText(u"")
+    if data.dlsize >= 0:
+        widget.prop_size.setText(strformat.strsize(data.dlsize))
+    else:
+        widget.prop_size.setText(u"")
+    widget.prop_info.setText(wrap(data.info, 65))
+    widget.prop_warning.setText(wrap(data.warnings, 65))
+    if data.valid:
+        result = u"Valid"
+    else:
+        result = u"Error"
+    if data.result:
+        result += u": %s" % data.result
+    widget.prop_result.setText(result)
 
-    def __init__ (self, parent=None):
-        super(PropertiesDialog, self).__init__(parent)
-        self.setupUi(self)
-        self.okButton.clicked.connect(self.close)
 
-    def set_item (self, urlitem):
-        """Write URL item values into text fields."""
-        data = urlitem.url_data
-        if data.url:
-            self.prop_url.setText(u'<a href="%(url)s">%(url)s</a>' % \
-                                  dict(url=data.url))
-        else:
-            self.prop_url.setText(u"")
-        self.prop_name.setText(data.name)
-        if data.parent_url:
-            self.prop_parenturl.setText(u'<a href="%(url)s">%(url)s</a>' % \
-                                  dict(url=data.parent_url))
-        else:
-            self.prop_parenturl.setText(u"")
-        self.prop_base.setText(data.base_ref)
-        self.prop_checktime.setText(_("%.3f seconds") % data.checktime)
-        if data.dltime >= 0:
-            self.prop_dltime.setText(_("%.3f seconds") % data.dltime)
-        else:
-            self.prop_dltime.setText(u"")
-        if data.dlsize >= 0:
-            self.prop_size.setText(strformat.strsize(data.dlsize))
-        else:
-            self.prop_size.setText(u"")
-        self.prop_info.setText(wrap(data.info, 65))
-        self.prop_warning.setText(wrap(data.warnings, 65))
-        if data.valid:
-            result = u"Valid"
-        else:
-            result = u"Error"
-        if data.result:
-            result += u": %s" % data.result
-        self.prop_result.setText(result)
+def set_statistics (widget, statistics):
+    widget.stats_domains.setText(u"%d" % len(statistics.domains))
+    widget.stats_url_minlen.setText(u"%d" % statistics.min_url_length)
+    widget.stats_url_maxlen.setText(u"%d" % statistics.max_url_length)
+    widget.stats_url_avglen.setText(u"%d" % statistics.avg_url_length)
+    widget.stats_valid_urls.setText(u"%d" % (statistics.number - statistics.errors))
+    widget.stats_invalid_urls.setText(u"%d" % statistics.errors)
+    widget.stats_warnings.setText(u"%d" % statistics.warnings)
+    for key, value in statistics.link_types.items():
+        getattr(widget, "stats_content_%s"%key).setText(u"%d" % value)
 
 
 def wrap (lines, width):
