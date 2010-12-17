@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Thu Dec 16 21:50:10 2010
+# Created: Thu Dec 16 22:08:29 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.label)
         spacerItem = QtGui.QSpacerItem(4, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
-        self.urlinput = QtGui.QLineEdit(self.centralwidget)
+        self.urlinput = LineEdit(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
@@ -623,4 +623,5 @@ class Ui_MainWindow(object):
         self.actionQuit.setText(_("Quit"))
         self.actionQuit.setShortcut(_("Ctrl+Q"))
 
+from lineedit import LineEdit
 import linkchecker_rc

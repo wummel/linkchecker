@@ -30,13 +30,15 @@ Changes:
   dialog.
 
 Features:
+- logging: More statistic information about content types and URL
+  lengths is printed out.
 - gui: Store column widths in registry settings.
 - gui: Add ability to save results to local files with File->Save.
 - gui: Assume the entered URL starts with http:// if it has no
   scheme specified and is not a valid local file.
 - gui: Display check statistics in main window.
-- logging: More statistic information about content types and URL
-  lengths is printed out.
+- gui: There is now a clear button in the URL input field if any text
+  has been written to it.
 
 
 5.5 "Red" (released 20.11.2010)

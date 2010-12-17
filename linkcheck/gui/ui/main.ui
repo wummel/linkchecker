@@ -57,7 +57,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLineEdit" name="urlinput">
+       <widget class="LineEdit" name="urlinput">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>1</horstretch>
@@ -1354,6 +1354,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../rc/linkchecker.qrc"/>
  </resources>

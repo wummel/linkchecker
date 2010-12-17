@@ -15,7 +15,8 @@ ICONS = \
 	about.png \
 	help.png \
 	exit.png \
-	copy.png
+	copy.png \
+	clear.png
 
 all: $(ICONS)
 
@@ -55,6 +56,8 @@ options.png:	$(OXYGEN)/categories/preferences-system-network.png
 preferences.png:	$(OXYGEN)/categories/preferences-other.png
 	cp $< $@
 
+clear.png:	$(OXYGEN)/actions/edit-clear-locationbar-rtl.png
+	cp $< $@
 
 clean:
 	rm -f *.png
