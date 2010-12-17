@@ -44,6 +44,15 @@ Fields = dict(
 )
 del _
 
+ContentTypes = dict(
+    image=0,
+    text=0,
+    video=0,
+    audio=0,
+    application=0,
+    mail=0,
+    other=0,
+)
 
 class LogStatistics (object):
     """Gather log statistics:
@@ -65,15 +74,7 @@ class LogStatistics (object):
         # number of warnings that were printed
         self.warnings_printed = 0
         self.domains = set()
-        self.link_types = dict(
-            image=0,
-            text=0,
-            video=0,
-            audio=0,
-            application=0,
-            mail=0,
-            other=0,
-        )
+        self.link_types = ContentTypes.copy()
         self.max_url_length = 0
         self.min_url_length = 0
         self.avg_url_length = 0.0

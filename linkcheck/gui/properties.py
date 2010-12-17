@@ -53,16 +53,16 @@ def set_properties (widget, data):
     widget.prop_result.setText(result)
 
 
-def set_statistics (widget, statistics):
-    widget.stats_domains.setText(u"%d" % len(statistics.domains))
-    widget.stats_url_minlen.setText(u"%d" % statistics.min_url_length)
-    widget.stats_url_maxlen.setText(u"%d" % statistics.max_url_length)
-    widget.stats_url_avglen.setText(u"%d" % statistics.avg_url_length)
-    widget.stats_valid_urls.setText(u"%d" % (statistics.number - statistics.errors))
-    widget.stats_invalid_urls.setText(u"%d" % statistics.errors)
-    widget.stats_warnings.setText(u"%d" % statistics.warnings)
-    for key, value in statistics.link_types.items():
-        getattr(widget, "stats_content_%s"%key).setText(u"%d" % value)
+def clear_properties (widget):
+    widget.prop_url.setText(u"")
+    widget.prop_parenturl.setText(u"")
+    widget.prop_base.setText(u"")
+    widget.prop_checktime.setText(u"")
+    widget.prop_dltime.setText(u"")
+    widget.prop_size.setText(u"")
+    widget.prop_info.setText(u"")
+    widget.prop_warning.setText(u"")
+    widget.prop_result.setText(u"")
 
 
 def wrap (lines, width):

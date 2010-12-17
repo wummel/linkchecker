@@ -20,7 +20,8 @@ import sys
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
-from .properties import set_properties, set_statistics
+from .properties import set_properties, clear_properties
+from .statistics import set_statistics, clear_statistics
 from .progress import LinkCheckerProgress, StatusLogger
 from .debug import LinkCheckerDebug
 from .logger import GuiLogger, GuiLogHandler
@@ -255,6 +256,8 @@ to improve %(appname)s even more!
     def check (self):
         """Check given URL."""
         self.model.clear()
+        clear_properties(self)
+        clear_statistics(self)
         self.set_config()
         aggregate = director.get_aggregate(self.config)
         url = self.get_url()
