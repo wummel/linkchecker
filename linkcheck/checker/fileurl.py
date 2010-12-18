@@ -277,7 +277,9 @@ class FileUrl (urlbase.UrlBase):
             conn.close()
 
     def get_content_type (self):
-        return fileutil.guess_mimetype(self.url, read=self.get_content)
+        if self.url:
+            return fileutil.guess_mimetype(self.url, read=self.get_content)
+        return u""
 
     def get_intern_pattern (self):
         """
