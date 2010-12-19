@@ -22,7 +22,6 @@ from . import LinkCheckTest
 
 # Changes often, as servers tend to get invalid. Thus it is necessary
 # to enable the has_newsserver() resource manually.
-#NNTP_SERVER = "infosun2.rus.uni-stuttgart.de"
 NNTP_SERVER = "news.uni-stuttgart.de"
 # info string returned by news server
 NNTP_INFO = u"201 news.uni-stuttgart.de InterNetNews NNRP server " \
@@ -30,8 +29,8 @@ NNTP_INFO = u"201 news.uni-stuttgart.de InterNetNews NNRP server " \
 # Most free NNTP servers are slow, so don't waist a lot of time running those.
 NNTP_TIMEOUT_SECS = 30
 
-
-class TestNews (LinkCheckTest):
+# disabled for now until some stable news server comes up
+class _TestNews (LinkCheckTest):
     """Test nntp: and news: link checking."""
 
     def newstest (self, url, resultlines):
