@@ -1,4 +1,4 @@
-6.0 "Kung Fu Panda Holiday Special" (released xx.12.2010)
+6.0 "Kung Fu Panda Holiday Special" (released 19.12.2010)
 
 Fixes:
 - checking: Fall back to HTTP GET requests when the connection has
