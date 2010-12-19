@@ -55,6 +55,7 @@ def set_properties (widget, data):
 
 def clear_properties (widget):
     widget.prop_url.setText(u"")
+    widget.prop_name.setText(u"")
     widget.prop_parenturl.setText(u"")
     widget.prop_base.setText(u"")
     widget.prop_checktime.setText(u"")
