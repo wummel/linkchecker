@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 5.5
+Version: 6.0
 Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
@@ -9,8 +9,10 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-The GUI interface now stores its option settings and the configuration
-file can be edited. When viewed in the GUI the parent URL source can
-be saved to a local file.
+Python 2.6 or later is now required to run LinkChecker and all previously
+deprecated commandline options have been removed.
+
+The GUI interface displays URL properties in the main window and checking
+statistics are displayed.
 
 Several checking bugs have also been fixed.
