@@ -63,6 +63,9 @@ class LogStatistics (object):
     """
 
     def __init__ (self):
+        self.reset()
+
+    def reset (self):
         # number of logged urls
         self.number = 0
         # number of encountered errors
@@ -299,6 +302,7 @@ class Logger (object):
         for key in parts:
             numspaces = (self.max_indent - len(self.part(key)))
             self.logspaces[key] = u" " * numspaces
+        self.stats.reset()
         self.starttime = time.time()
 
     def log_filter_url (self, url_data, do_print):
