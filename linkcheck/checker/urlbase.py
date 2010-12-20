@@ -282,11 +282,13 @@ class UrlBase (object):
         """
         self.result = cache_data["result"]
         self.has_result = True
+        anchor_changed = (self.anchor != cache_data["anchor"])
         for tag, msg in cache_data["warnings"]:
             # do not copy anchor warnings, since the current anchor
             # might have changed
-            if tag != WARN_URL_ANCHOR_NOT_FOUND:
-                self.add_warning(msg, tag=tag)
+            if anchor_changed and tag == WARN_URL_ANCHOR_NOT_FOUND:
+                pass
+            self.add_warning(msg, tag=tag)
         for info in cache_data["info"]:
             self.add_info(info)
         self.valid = cache_data["valid"]
@@ -294,9 +296,11 @@ class UrlBase (object):
         self.dlsize = cache_data["dlsize"]
         self.anchors = cache_data["anchors"]
         self.cached = True
-        # recheck anchor
-        if self.valid and self.anchor:
-            self.check_anchor()
+        if anchor_changed and self.valid and self.anchor:
+            # recheck anchor
+            if self.check_anchor():
+                # a new warning has been added - remove cached flag
+                self.cached = False
 
     def get_cache_data (self):
         """Return all data values that should be put in the cache."""
@@ -307,6 +311,7 @@ class UrlBase (object):
                 "dltime": self.dltime,
                 "dlsize": self.dlsize,
                 "anchors": self.anchors,
+                "anchor": self.anchor,
                }
 
     def get_alias_cache_data (self):
@@ -606,11 +611,11 @@ class UrlBase (object):
 
     def check_anchor (self):
         """If URL was valid and has an anchor, check it. A warning is
-        logged if the anchor is not found.
+        logged and True is returned if the anchor is not found.
         """
         if not self.aggregate.config["anchors"]:
             return
-        log.debug(LOG_CHECK, "checking anchor %r", self.anchor)
+        log.debug(LOG_CHECK, "checking anchor %r in %s", self.anchor, self.anchors)
         if any(x for x in self.anchors if x[0] == self.anchor):
             return
         anchors = u",".join(u"`%s'" % x[0] for x in self.anchors)
@@ -618,6 +623,7 @@ class UrlBase (object):
         msg = u"%s %s" % (_("Anchor `%(name)s' not found.") % args,
                           _("Available anchors: %(anchors)s.") % args)
         self.add_warning(msg, tag=WARN_URL_ANCHOR_NOT_FOUND)
+        return True
 
     def set_extern (self, url):
         """

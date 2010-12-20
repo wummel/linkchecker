@@ -1,6 +1,8 @@
 6.1 "" (released xx.xx.2010)
 
 Fixes:
+- checking: Fix broken anchor checking.
+  Closes: SF bug #3140765
 
 Changes:
 
