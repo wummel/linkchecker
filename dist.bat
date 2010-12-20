@@ -15,8 +15,24 @@
 :: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @echo off
 set PYDIR=C:\Python27
-rd /S /Q build
+set PORTDIR=LinkChecker-portable
+set SZ_EXE="C:\Programme\7-Zip\7z.exe"
+set UPX_EXE="C:\Software\upx307w\upx.exe"
+for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
+rd /s /q build > nul
 call build.bat
-rd /S /Q dist
+rd /s /q dist > nul
 %PYDIR%\python.exe setup.py py2exe
+%UPX_EXE% --best dist\LinkChecker-%VERSION%.exe
+
+echo Building portable
+rd /s /q %PORTDIR%
+xcopy /e /i dist %PORTDIR%
+del %PORTDIR%\LinkChecker-%VERSION%.exe > nul
+:: not possible to install this in a portable version
+del %PORTDIR%\vcredist_x86.exe > nul
+echo Compressing executables
+for /r %PORTDIR% %%e in (*.pyd,*.dll,*.exe) do %UPX_EXE% "%%e" --best
+%SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
+rd /s /q %PORTDIR%
 pause
