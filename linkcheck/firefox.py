@@ -17,6 +17,9 @@
 import os
 import glob
 
+# Windows filename encoding
+nt_filename_encoding="mbcs"
+
 def get_profile_dir ():
     """Return path where all profiles of current user are stored."""
     if os.name == 'nt':
