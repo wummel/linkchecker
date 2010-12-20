@@ -184,7 +184,7 @@ class Logger (object):
         elif 'fd' in args:
             self.fd = args['fd']
         else:
-            self.fd = sys.stdout
+            self.fd = codecs.getwriter(self.output_encoding)(sys.stdout)
 
     def start_fileoutput (self):
         path = os.path.dirname(self.filename)

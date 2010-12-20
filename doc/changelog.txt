@@ -3,6 +3,8 @@
 Fixes:
 - checking: Fix broken anchor checking.
   Closes: SF bug #3140765
+- logging: Allow Unicode strings to be written to stdout without
+  encoding errors.
 
 Changes:
 
