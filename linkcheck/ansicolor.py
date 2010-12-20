@@ -198,7 +198,9 @@ def _write_color_nt (fp, text, color):
 
 def _write_color_ansi (fp, text, color):
     """Colorize text with given color."""
-    fp.write('%s%s%s' % (esc_ansicolor(color), text, AnsiReset))
+    fp.write(esc_ansicolor(color))
+    fp.write(text)
+    fp.write(AnsiReset)
 
 
 if os.name == 'nt' and has_wconio:
