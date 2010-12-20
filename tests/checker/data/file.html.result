@@ -10,7 +10,7 @@ real url file://%(curdir)s/%(datadir)s/file.html
 name good anchor
 valid
 
-url #isnix (cached)
+url #isnix
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 name bad anchor
@@ -23,7 +23,7 @@ real url file://%(curdir)s/%(datadir)s/file.html
 name good anchor
 valid
 
-url file.html#isnix (cached)
+url file.html#isnix
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 name bad anchor

@@ -4,7 +4,7 @@ real url file://%(curdir)s/%(datadir)s/anchor.html
 name %(datadir)s/anchor.html
 valid
 
-url #broken2 (cached)
+url #broken2
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
 name Bla4
@@ -17,7 +17,7 @@ real url file://%(curdir)s/%(datadir)s/anchor.html
 name Bla6
 valid
 
-url #broken (cached)
+url #broken
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
 name Bla3
