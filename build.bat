@@ -20,4 +20,3 @@ set PYDIR=C:\Python27
 copy build\lib.win32-2.7\linkcheck\HtmlParser\htmlsax.pyd linkcheck\HtmlParser
 copy build\lib.win32-2.7\linkcheck\network\_network.pyd linkcheck\network
 c:\qt\2010.05\qt\bin\qcollectiongenerator doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
-pause
