@@ -25,17 +25,8 @@ import urllib
 import urllib2
 
 from . import urlbase, get_index_html, absolute_url, get_url_from
-from .. import log, LOG_CHECK, fileutil, strformat, url as urlutil
+from .. import log, LOG_CHECK, fileutil, strformat, url as urlutil, firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
-
-try:
-    import sqlite3
-    has_sqlite = True
-except ImportError:
-    has_sqlite = False
-
-
-firefox_extension = re.compile(r'/(?i)places.sqlite$')
 
 
 def get_files (dirname):
@@ -235,7 +226,7 @@ class FileUrl (urlbase.UrlBase):
         """
         if self.is_directory():
             return True
-        elif has_sqlite and firefox_extension.search(self.url):
+        elif firefox.has_sqlite and firefox.extension.search(self.url):
             return True
         else:
             return self.get_content_type() in self.ContentMimetypes
@@ -246,7 +237,7 @@ class FileUrl (urlbase.UrlBase):
         """
         if self.is_directory():
             self.parse_html()
-        elif has_sqlite and firefox_extension.search(self.url):
+        elif firefox.has_sqlite and firefox.extension.search(self.url):
             self.parse_firefox()
         else:
             mime = self.get_content_type()
@@ -256,25 +247,11 @@ class FileUrl (urlbase.UrlBase):
     def parse_firefox (self):
         """Parse a Firefox3 bookmark file."""
         log.debug(LOG_CHECK, "Parsing Firefox bookmarks %s", self)
-        conn = sqlite3.connect(self.get_os_filename(), timeout=0.5)
-        try:
-            c = conn.cursor()
-            try:
-                sql = """SELECT mp.url, mb.title
-                FROM moz_places mp, moz_bookmarks mb
-                WHERE mp.hidden=0 AND mp.url NOT LIKE 'place:%' AND
-                mp.id=mb.fk"""
-                c.execute(sql)
-                for url, name in c:
-                    if not name:
-                        name = url
-                    url_data = get_url_from(url, self.recursion_level+1,
-                        self.aggregate, parent_url=self.url, name=name)
-                    self.aggregate.urlqueue.put(url_data)
-            finally:
-                c.close()
-        finally:
-            conn.close()
+        filename = self.get_os_filename()
+        for url, name in firefox.parse_bookmark_file(filename):
+            url_data = get_url_from(url, self.recursion_level+1,
+                self.aggregate, parent_url=self.url, name=name)
+            self.aggregate.urlqueue.put(url_data)
 
     def get_content_type (self):
         if self.url:

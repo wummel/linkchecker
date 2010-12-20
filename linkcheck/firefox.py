@@ -16,6 +16,16 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 import os
 import glob
+import re
+try:
+    import sqlite3
+    has_sqlite = True
+except ImportError:
+    has_sqlite = False
+
+
+extension = re.compile(r'/(?i)places.sqlite$')
+
 
 # Windows filename encoding
 nt_filename_encoding="mbcs"
@@ -41,3 +51,25 @@ def find_bookmark_file ():
             if os.path.isfile(fname):
                 return fname
     return u""
+
+
+def parse_bookmark_file (filename):
+    if not has_sqlite:
+        return
+    conn = sqlite3.connect(filename, timeout=0.5)
+    try:
+        c = conn.cursor()
+        try:
+            sql = """SELECT mp.url, mb.title
+            FROM moz_places mp, moz_bookmarks mb
+            WHERE mp.hidden=0 AND mp.url NOT LIKE 'place:%' AND
+            mp.id=mb.fk"""
+            c.execute(sql)
+            for url, name in c:
+                if not name:
+                    name = url
+                yield (url, name)
+        finally:
+            c.close()
+    finally:
+        conn.close()
