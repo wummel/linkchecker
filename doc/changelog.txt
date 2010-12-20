@@ -9,6 +9,7 @@ Fixes:
 Changes:
 
 Features:
+- gui: Find Firefox bookmark file via the URL input context menu.
 
 
 6.0 "Kung Fu Panda Holiday Special" (released 19.12.2010)
