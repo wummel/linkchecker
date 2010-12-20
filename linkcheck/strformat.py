@@ -34,7 +34,7 @@ import pydoc
 from . import i18n
 
 
-def unicode_safe (s):
+def unicode_safe (s, encoding=i18n.default_encoding):
     """Get unicode string without raising encoding errors. Unknown
     characters of the given encoding will be ignored.
 
@@ -48,7 +48,7 @@ def unicode_safe (s):
     if isinstance(s, unicode):
         # s is already unicode, nothing to do
         return s
-    return unicode(str(s), i18n.default_encoding, "ignore")
+    return unicode(str(s), encoding, "ignore")
 
 
 def ascii_safe (s):
