@@ -129,3 +129,19 @@ class TestFile (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
+
+    def test_good_dir_space (self):
+        url = u"file://%(curdir)s/%(datadir)s/a b/" % self.get_attrs()
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"valid",
+            u"url t.txt",
+            u"cache key %st.txt" % nurl,
+            u"real url %st.txt" % nurl,
+            u"name t.txt",
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=1)

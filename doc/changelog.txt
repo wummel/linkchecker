@@ -3,6 +3,8 @@
 Fixes:
 - checking: Fix broken anchor checking.
   Closes: SF bug #3140765
+- checking: Properly detect filenames with spaces as
+  internal links when given as start URL.
 - logging: Allow Unicode strings to be written to stdout without
   encoding errors.
 - gui: Reset statistics before each run.

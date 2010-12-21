@@ -266,14 +266,6 @@ class FileUrl (urlbase.UrlBase):
         @return non-empty regex pattern or None
         @rtype String or None
         """
-        url = absolute_url(self.base_url, self.base_ref, self.parent_url)
-        if not url:
+        if not self.url:
             return None
-        parts = strformat.url_unicode_split(url)
-        path = urlutil.splitparams(parts[2])[0]
-        segments = path.split('/')
-        if not self.is_directory():
-            # cut off filename to have a directory
-            segments = segments[:-1]
-        path = "/".join(segments)
-        return "file://%s" % re.escape(path)
+        return re.escape(self.url)
