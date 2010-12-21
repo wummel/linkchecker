@@ -40,6 +40,9 @@ class InternPatternUrl (urlbase.UrlBase):
         scheme = parts[0]
         domain = parts[1]
         domain, is_idn = urlutil.idna_encode(domain)
+        # allow redirection www.example.com -> example.com and vice versa
+        if domain.startswith('www.'):
+            domain = domain[5:]
         if not (domain and scheme):
             return None
         path = urlutil.splitparams(parts[2])[0]
@@ -50,8 +53,5 @@ class InternPatternUrl (urlbase.UrlBase):
         args = list(re.escape(x) for x in (scheme, domain, path))
         if args[0] in ('http', 'https'):
             args[0] = 'https?'
-        # allow redirection www.example.com -> example.com and vice versa
-        if args[1].startswith('www\\.'):
-            args[1] = args[1][5:]
         args[1] = r"(www\.|)%s" % args[1]
         return "%s://%s%s" % tuple(args)
