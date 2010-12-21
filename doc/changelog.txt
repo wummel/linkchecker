@@ -6,11 +6,11 @@ Fixes:
 - checking: Properly detect filenames with spaces as
   internal links when given as start URL.
 - logging: Allow Unicode strings to be written to stdout without
-  encoding errors.
+  encoding errors on Unix systems.
 - gui: Reset statistics before each run.
 
 Changes:
-- install: Compress Windows installer with upx, saving som Bytes.
+- install: Compress Windows installer with upx, saving some Bytes.
 
 Features:
 - gui: Find Firefox bookmark file via the URL input context menu.
