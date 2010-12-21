@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2010-12-18 20:55+0100\n"
+"POT-Creation-Date: 2010-12-21 21:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,27 +81,27 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:225
+#: ../linkcheck/logger/__init__.py:228
 #, python-format
 msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:315
+#: ../linkcheck/logger/__init__.py:319
 #, python-format
 msgid "created by %(app)s at %(time)s"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:318 ../linkcheck/logger/text.py:104
+#: ../linkcheck/logger/__init__.py:322 ../linkcheck/logger/text.py:104
 #, python-format
 msgid "Get the newest version at %(url)s"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:320 ../linkcheck/logger/text.py:106
+#: ../linkcheck/logger/__init__.py:324 ../linkcheck/logger/text.py:106
 #, python-format
 msgid "Write comments and bugs to %(url)s"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:328 ../linkcheck/logger/text.py:259
+#: ../linkcheck/logger/__init__.py:332 ../linkcheck/logger/text.py:259
 #: ../linkcheck/logger/html.py:318
 #, python-format
 msgid "Stopped checking at %(time)s (%(duration)s)"
@@ -510,15 +510,15 @@ msgstr ""
 msgid "Host is empty"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:128
+#: ../linkcheck/checker/fileurl.py:120
 msgid "Added trailing slash to directory."
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:149
+#: ../linkcheck/checker/fileurl.py:141
 msgid "directory"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:166
+#: ../linkcheck/checker/fileurl.py:158
 #, python-format
 msgid ""
 "The URL path %(path)r is not the same as the system path %(realpath)r. You "
@@ -669,120 +669,120 @@ msgstr ""
 msgid "URL has unparsable domain name: %(name)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:341
+#: ../linkcheck/checker/urlbase.py:346
 msgid "URL is missing"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:344
+#: ../linkcheck/checker/urlbase.py:349
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:351
+#: ../linkcheck/checker/urlbase.py:356
 #, python-format
 msgid "Effective URL %(url)r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:404
+#: ../linkcheck/checker/urlbase.py:409
 #, python-format
 msgid "URL has invalid port %(port)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:419
+#: ../linkcheck/checker/urlbase.py:424
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:446
+#: ../linkcheck/checker/urlbase.py:451
 #, python-format
 msgid "URL is located in %(country)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:461 ../linkcheck/checker/unknownurl.py:81
+#: ../linkcheck/checker/urlbase.py:466 ../linkcheck/checker/unknownurl.py:81
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:474
+#: ../linkcheck/checker/urlbase.py:479
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:477
+#: ../linkcheck/checker/urlbase.py:482
 #, python-format
 msgid "Bad HTTP response %(line)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:490
+#: ../linkcheck/checker/urlbase.py:495
 #, python-format
 msgid "could not get content: %(msg)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:618
+#: ../linkcheck/checker/urlbase.py:623
 #, python-format
 msgid "Anchor `%(name)s' not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:619
+#: ../linkcheck/checker/urlbase.py:624
 #, python-format
 msgid "Available anchors: %(anchors)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:705
+#: ../linkcheck/checker/urlbase.py:711
 #, python-format
 msgid "Found %(match)r in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:716
+#: ../linkcheck/checker/urlbase.py:722
 msgid "Content size is zero."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:722
+#: ../linkcheck/checker/urlbase.py:728
 #, python-format
 msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:727
+#: ../linkcheck/checker/urlbase.py:733
 #, python-format
 msgid ""
 "Download size (%(dlsize)d Byte) does not equal content size (%(size)d Byte)."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:739
+#: ../linkcheck/checker/urlbase.py:745
 #: ../linkcheck/configuration/__init__.py:312
 msgid ""
 "warning: tidy module is not available; download from http://utidylib.berlios."
 "de/"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:751 ../linkcheck/checker/urlbase.py:805
+#: ../linkcheck/checker/urlbase.py:757 ../linkcheck/checker/urlbase.py:811
 msgid "valid HTML syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:757
+#: ../linkcheck/checker/urlbase.py:763
 #, python-format
 msgid "warning: tidy HTML parsing caused error: %(msg)s "
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:767
+#: ../linkcheck/checker/urlbase.py:773
 #: ../linkcheck/configuration/__init__.py:321
 msgid ""
 "warning: cssutils module is not available; download from http://cthedot.de/"
 "cssutils/"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:783 ../linkcheck/checker/urlbase.py:844
+#: ../linkcheck/checker/urlbase.py:789 ../linkcheck/checker/urlbase.py:850
 msgid "valid CSS syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:789
+#: ../linkcheck/checker/urlbase.py:795
 #, python-format
 msgid "warning: cssutils parsing caused error: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:817
+#: ../linkcheck/checker/urlbase.py:823
 #, python-format
 msgid "warning: HTML W3C validation caused error: %(msg)s "
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:856
+#: ../linkcheck/checker/urlbase.py:862
 #, python-format
 msgid "warning: CSS W3C validation caused error: %(msg)s "
 msgstr ""
@@ -886,6 +886,10 @@ msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_editor.py:52
 msgid "Save"
+msgstr ""
+
+#: ../linkcheck/gui/lineedit.py:60
+msgid "Firefox bookmark file"
 msgstr ""
 
 #: ../linkcheck/gui/options.py:103

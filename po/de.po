@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2010-12-18 20:55+0100\n"
-"PO-Revision-Date: 2010-12-18 20:59+0100\n"
+"POT-Creation-Date: 2010-12-21 21:12+0100\n"
+"PO-Revision-Date: 2010-12-21 21:12+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -81,29 +81,29 @@ msgstr "Prüfzeit"
 msgid "URL"
 msgstr "URL"
 
-#: ../linkcheck/logger/__init__.py:225
+#: ../linkcheck/logger/__init__.py:228
 #, python-format
 msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr "Herzlichen Glückwunsch zum Geburtstag, LinkChecker, ich bin heute %d Jahre alt geworden!"
 
-#: ../linkcheck/logger/__init__.py:315
+#: ../linkcheck/logger/__init__.py:319
 #, python-format
 msgid "created by %(app)s at %(time)s"
 msgstr "erstellt von %(app)s am %(time)s"
 
-#: ../linkcheck/logger/__init__.py:318
+#: ../linkcheck/logger/__init__.py:322
 #: ../linkcheck/logger/text.py:104
 #, python-format
 msgid "Get the newest version at %(url)s"
 msgstr "Die neueste Version gibt es unter %(url)s"
 
-#: ../linkcheck/logger/__init__.py:320
+#: ../linkcheck/logger/__init__.py:324
 #: ../linkcheck/logger/text.py:106
 #, python-format
 msgid "Write comments and bugs to %(url)s"
 msgstr "Schreiben Sie Kommentare und Fehler an %(url)s"
 
-#: ../linkcheck/logger/__init__.py:328
+#: ../linkcheck/logger/__init__.py:332
 #: ../linkcheck/logger/text.py:259
 #: ../linkcheck/logger/html.py:318
 #, python-format
@@ -528,15 +528,15 @@ msgstr "Verwende Proxy `%(proxy)s'."
 msgid "Host is empty"
 msgstr "Rechnername ist leer"
 
-#: ../linkcheck/checker/fileurl.py:128
+#: ../linkcheck/checker/fileurl.py:120
 msgid "Added trailing slash to directory."
 msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt."
 
-#: ../linkcheck/checker/fileurl.py:149
+#: ../linkcheck/checker/fileurl.py:141
 msgid "directory"
 msgstr "Verzeichnis"
 
-#: ../linkcheck/checker/fileurl.py:166
+#: ../linkcheck/checker/fileurl.py:158
 #, python-format
 msgid "The URL path %(path)r is not the same as the system path %(realpath)r. You should always use the system path in URLs."
 msgstr "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. Sie sollten immer den Systempfad in URLs benutzen."
@@ -679,118 +679,118 @@ msgstr "MX Mail host %(host)s gefunden"
 msgid "URL has unparsable domain name: %(name)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(name)s"
 
-#: ../linkcheck/checker/urlbase.py:341
+#: ../linkcheck/checker/urlbase.py:346
 msgid "URL is missing"
 msgstr "URL fehlt"
 
-#: ../linkcheck/checker/urlbase.py:344
+#: ../linkcheck/checker/urlbase.py:349
 msgid "URL is empty"
 msgstr "URL ist leer"
 
-#: ../linkcheck/checker/urlbase.py:351
+#: ../linkcheck/checker/urlbase.py:356
 #, python-format
 msgid "Effective URL %(url)r."
 msgstr "Effektive URL %(url)r."
 
-#: ../linkcheck/checker/urlbase.py:404
+#: ../linkcheck/checker/urlbase.py:409
 #, python-format
 msgid "URL has invalid port %(port)r"
 msgstr "URL hat eine ungültige Portnummer %(port)r"
 
-#: ../linkcheck/checker/urlbase.py:419
+#: ../linkcheck/checker/urlbase.py:424
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr "URL %(url)s besitzt die verschleierte IP-Adresse %(ip)s"
 
-#: ../linkcheck/checker/urlbase.py:446
+#: ../linkcheck/checker/urlbase.py:451
 #, python-format
 msgid "URL is located in %(country)s."
 msgstr "URL befindet sich in %(country)s."
 
-#: ../linkcheck/checker/urlbase.py:461
+#: ../linkcheck/checker/urlbase.py:466
 #: ../linkcheck/checker/unknownurl.py:81
 msgid "Outside of domain filter, checked only syntax."
 msgstr "Außerhalb des Domain Filters; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/urlbase.py:474
+#: ../linkcheck/checker/urlbase.py:479
 msgid "Hostname not found"
 msgstr "Rechnername nicht gefunden"
 
-#: ../linkcheck/checker/urlbase.py:477
+#: ../linkcheck/checker/urlbase.py:482
 #, python-format
 msgid "Bad HTTP response %(line)r"
 msgstr "Ungültige HTTP Antwort %(line)r"
 
-#: ../linkcheck/checker/urlbase.py:490
+#: ../linkcheck/checker/urlbase.py:495
 #, python-format
 msgid "could not get content: %(msg)r"
 msgstr "konnte Inhalt nicht parsen: %(msg)r"
 
-#: ../linkcheck/checker/urlbase.py:618
+#: ../linkcheck/checker/urlbase.py:623
 #, python-format
 msgid "Anchor `%(name)s' not found."
 msgstr "Anker `%(name)s' nicht gefunden."
 
-#: ../linkcheck/checker/urlbase.py:619
+#: ../linkcheck/checker/urlbase.py:624
 #, python-format
 msgid "Available anchors: %(anchors)s."
 msgstr "Verfügbare Anker: %(anchors)s."
 
-#: ../linkcheck/checker/urlbase.py:705
+#: ../linkcheck/checker/urlbase.py:711
 #, python-format
 msgid "Found %(match)r in link contents."
 msgstr "Habe %(match)r in Verknüpfungsinhalt gefunden."
 
-#: ../linkcheck/checker/urlbase.py:716
+#: ../linkcheck/checker/urlbase.py:722
 msgid "Content size is zero."
 msgstr "Größe des Inhalts ist Null."
 
-#: ../linkcheck/checker/urlbase.py:722
+#: ../linkcheck/checker/urlbase.py:728
 #, python-format
 msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
 
-#: ../linkcheck/checker/urlbase.py:727
+#: ../linkcheck/checker/urlbase.py:733
 #, python-format
 msgid "Download size (%(dlsize)d Byte) does not equal content size (%(size)d Byte)."
 msgstr "Download Grüße (%(dlsize)d Byte) ist ungleich der Inhaltsgröße (%(size)d Byte)."
 
-#: ../linkcheck/checker/urlbase.py:739
+#: ../linkcheck/checker/urlbase.py:745
 #: ../linkcheck/configuration/__init__.py:312
 msgid "warning: tidy module is not available; download from http://utidylib.berlios.de/"
 msgstr "Warnung: tidy Modul ist nicht verfügbar; Download von http://utidylib.berlios.de/"
 
-#: ../linkcheck/checker/urlbase.py:751
-#: ../linkcheck/checker/urlbase.py:805
+#: ../linkcheck/checker/urlbase.py:757
+#: ../linkcheck/checker/urlbase.py:811
 msgid "valid HTML syntax"
 msgstr "gültige HTML Syntax"
 
-#: ../linkcheck/checker/urlbase.py:757
+#: ../linkcheck/checker/urlbase.py:763
 #, python-format
 msgid "warning: tidy HTML parsing caused error: %(msg)s "
 msgstr "Warnung: tidy HTML Parser verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:767
+#: ../linkcheck/checker/urlbase.py:773
 #: ../linkcheck/configuration/__init__.py:321
 msgid "warning: cssutils module is not available; download from http://cthedot.de/cssutils/"
 msgstr "Warnung: cssutils Modul ist nicht verfügbar; Download von http://cthedot.de/cssutils/"
 
-#: ../linkcheck/checker/urlbase.py:783
-#: ../linkcheck/checker/urlbase.py:844
+#: ../linkcheck/checker/urlbase.py:789
+#: ../linkcheck/checker/urlbase.py:850
 msgid "valid CSS syntax"
 msgstr "gültige CSS Syntax"
 
-#: ../linkcheck/checker/urlbase.py:789
+#: ../linkcheck/checker/urlbase.py:795
 #, python-format
 msgid "warning: cssutils parsing caused error: %(msg)s"
 msgstr "Warnung: cssutils Parser verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:817
+#: ../linkcheck/checker/urlbase.py:823
 #, python-format
 msgid "warning: HTML W3C validation caused error: %(msg)s "
 msgstr "Warnung: HTML W3C Validierung verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:856
+#: ../linkcheck/checker/urlbase.py:862
 #, python-format
 msgid "warning: CSS W3C validation caused error: %(msg)s "
 msgstr "Warnung: CSS W3C Validierung verursachte Fehler: %(msg)s"
@@ -895,6 +895,10 @@ msgstr "Datei"
 #: ../linkcheck/gui/linkchecker_ui_editor.py:52
 msgid "Save"
 msgstr "Speichern"
+
+#: ../linkcheck/gui/lineedit.py:60
+msgid "Firefox bookmark file"
+msgstr "Firefox Favoritendatei"
 
 #: ../linkcheck/gui/options.py:103
 #: ../linkcheck/gui/linkchecker_ui_options.py:162
