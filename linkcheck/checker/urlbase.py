@@ -1029,6 +1029,7 @@ class UrlBase (object):
             u"line=%d" % self.line,
             u"column=%d" % self.column,
             u"name=%r" % self.name,
+            u"anchor=%r" % self.anchor,
            ])
 
     def get_intern_pattern (self):
