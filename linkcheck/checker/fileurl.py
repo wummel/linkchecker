@@ -90,6 +90,7 @@ class FileUrl (urlbase.UrlBase):
         """
         super(FileUrl, self).init(base_ref, base_url, parent_url,
                recursion_level, aggregate, line, column, name, url_encoding)
+        self.scheme = u'file'
         if self.base_url is None:
             return
         base_url = self.base_url
