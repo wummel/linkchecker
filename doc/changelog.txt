@@ -13,7 +13,7 @@ Changes:
 - install: Compress Windows installer with upx, saving some Bytes.
 
 Features:
-- gui: Find Firefox bookmark file via the URL input context menu.
+- gui: Add URL input context menu action to paste Firefox bookmark file.
 - install: Added a portable package for Windows.
 
 
