@@ -266,6 +266,12 @@ class FileUrl (urlbase.UrlBase):
         @return non-empty regex pattern or None
         @rtype String or None
         """
-        if not self.url:
+        url = self.url
+        if not url:
             return None
-        return re.escape(self.url)
+        if url.startswith('file://'):
+            i = url.rindex('/')
+            if i > 6:
+                # remove last filename to make directory internal
+                url = url[:i+1]
+        return re.escape(url)
