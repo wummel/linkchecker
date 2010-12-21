@@ -10,9 +10,11 @@ Fixes:
 - gui: Reset statistics before each run.
 
 Changes:
+- install: Compress Windows installer with upx, saving som Bytes.
 
 Features:
 - gui: Find Firefox bookmark file via the URL input context menu.
+- install: Added a portable package for Windows.
 
 
 6.0 "Kung Fu Panda Holiday Special" (released 19.12.2010)
