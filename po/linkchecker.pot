@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2010-12-21 21:12+0100\n"
+"POT-Creation-Date: 2010-12-22 13:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -178,39 +178,37 @@ msgstr[1] ""
 msgid " (%d duplicates not printed)"
 msgstr ""
 
+#: ../linkcheck/logger/text.py:265
+msgid "Statistics:"
+msgstr ""
+
 #: ../linkcheck/logger/text.py:267 ../linkcheck/logger/html.py:280
 #, python-format
-msgid "Found %d different domains."
+msgid "Number of domains: %d"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:270 ../linkcheck/logger/html.py:283
+#: ../linkcheck/logger/text.py:270 ../linkcheck/logger/html.py:284
 #, python-format
 msgid ""
-"Detected %(image)d image, %(text)d text, %(video)d video, %(audio)d audio, "
-"%(application)d application, %(mail)d mail and %(other)d other contents."
+"Content types: %(image)d image, %(text)d text, %(video)d video, %(audio)d "
+"audio, %(application)d application, %(mail)d mail and %(other)d other."
 msgstr ""
 
-#: ../linkcheck/logger/text.py:273 ../linkcheck/logger/html.py:286
+#: ../linkcheck/logger/text.py:273 ../linkcheck/logger/html.py:288
 #, python-format
-msgid "Minimum URL length is %d."
+msgid "URL lengths: min=%d, max=%d, avg=%d."
 msgstr ""
 
-#: ../linkcheck/logger/text.py:275 ../linkcheck/logger/html.py:288
-#, python-format
-msgid "Maximum URL length is %d."
-msgstr ""
-
-#: ../linkcheck/logger/text.py:277 ../linkcheck/logger/html.py:290
-#, python-format
-msgid "Average URL length is %d."
-msgstr ""
-
-#: ../linkcheck/logger/text.py:280 ../linkcheck/logger/html.py:293
+#: ../linkcheck/logger/text.py:278 ../linkcheck/logger/html.py:293
 msgid "No statistics available since zero URLs were checked."
 msgstr ""
 
 #: ../linkcheck/logger/html.py:152
 msgid "checked link"
+msgstr ""
+
+#: ../linkcheck/logger/html.py:278
+msgid "Statistics"
 msgstr ""
 
 #: ../linkcheck/logger/html.py:323
