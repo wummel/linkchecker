@@ -42,7 +42,7 @@ class InternPatternUrl (urlbase.UrlBase):
         domain, is_idn = urlutil.idna_encode(domain)
         # allow redirection www.example.com -> example.com and vice versa
         if domain.startswith('www.'):
-            domain = domain[5:]
+            domain = domain[4:]
         if not (domain and scheme):
             return None
         path = urlutil.splitparams(parts[2])[0]
