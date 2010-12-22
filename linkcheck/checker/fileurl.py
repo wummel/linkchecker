@@ -24,8 +24,8 @@ import urlparse
 import urllib
 import urllib2
 
-from . import urlbase, get_index_html, absolute_url, get_url_from
-from .. import log, LOG_CHECK, fileutil, strformat, url as urlutil, firefox
+from . import urlbase, get_index_html, get_url_from
+from .. import log, LOG_CHECK, fileutil, firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
 
