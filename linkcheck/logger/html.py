@@ -275,26 +275,26 @@ class HtmlLogger (Logger):
         self.writeln(u"</td></tr>")
 
     def write_stats (self):
-        domains = len(self.stats.domains)
-        if domains > 1:
-            self.writeln(_("Found %d different domains.") % domains)
+        self.writeln(u'<br><i>%s</i><br>' % _("Statistics"))
+        if len(self.stats.domains) > 1:
+            self.writeln(_("Number of domains: %d") % len(self.stats.domains))
+            self.writeln(u"<br>")
         if self.stats.number > 0:
             self.writeln(_(
-              "Detected %(image)d image, %(text)d text, %(video)d video, "
+              "Content types: %(image)d image, %(text)d text, %(video)d video, "
               "%(audio)d audio, %(application)d application, %(mail)d mail"
-              " and %(other)d other contents.") % self.stats.link_types)
-            self.writeln(_("Minimum URL length is %d.") %
-                         self.stats.min_url_length)
-            self.writeln(_("Maximum URL length is %d.") %
-                         self.stats.max_url_length)
-            self.writeln(_("Average URL length is %d.") %
-                         self.stats.avg_url_length)
+              " and %(other)d other.") % self.stats.link_types)
+            self.writeln(u"<br>")
+            self.writeln(_("URL lengths: min=%d, max=%d, avg=%d.") %
+                         (self.stats.min_url_length,
+                         self.stats.max_url_length,
+                         self.stats.avg_url_length))
         else:
             self.writeln(_("No statistics available since zero URLs were checked."))
         self.writeln(u"<br>")
 
     def write_outro (self):
-        self.writeln()
+        self.writeln(u"<br>")
         self.write(_("That's it.")+" ")
         if self.stats.number >= 0:
             self.write(_n("%d link checked.", "%d links checked.",
