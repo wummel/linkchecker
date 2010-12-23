@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Sun Nov 28 11:04:36 2010
+# Created: Thu Dec 23 19:47:37 2010
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -153,7 +153,7 @@ class Ui_Options(object):
         self.label_2.setText(_("Verbose output"))
         self.verbose.setToolTip(_("Log all checked URLs once. Default is to log only errors and warnings."))
         self.label_4.setText(_("Debug"))
-        self.closeButton.setText(_("Ok"))
+        self.closeButton.setText(_("Close"))
         self.resetButton.setToolTip(_("Reset all options to default values."))
         self.resetButton.setText(_("Reset"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.gui_options), _("GUI options"))
