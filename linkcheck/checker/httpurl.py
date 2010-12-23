@@ -284,9 +284,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def get_content_type (self):
         """Return content MIME type or empty string."""
-        if self.headers:
-            return headers.get_content_type(self.headers)
-        return u""
+        if self.content_type is None:
+            if self.headers:
+               self.content_type = headers.get_content_type(self.headers)
+            else:
+                self.content_type = u""
+        return self.content_type
 
     def follow_redirections (self, response, set_result=True):
         """

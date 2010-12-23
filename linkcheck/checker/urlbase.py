@@ -179,6 +179,8 @@ class UrlBase (object):
         self.title = None
         # flag if content should be checked or not
         self.do_check_content = True
+        # MIME content type
+        self.content_type = None
 
     def set_result (self, msg, valid=True, overwrite=False):
         """
@@ -295,6 +297,7 @@ class UrlBase (object):
         self.dltime = cache_data["dltime"]
         self.dlsize = cache_data["dlsize"]
         self.anchors = cache_data["anchors"]
+        self.content_type = cache_data["content_type"]
         self.cached = True
         if anchor_changed and self.valid and self.anchor:
             # recheck anchor
@@ -312,6 +315,7 @@ class UrlBase (object):
                 "dlsize": self.dlsize,
                 "anchors": self.anchors,
                 "anchor": self.anchor,
+                "content_type": self.get_content_type(),
                }
 
     def get_alias_cache_data (self):
@@ -654,7 +658,9 @@ class UrlBase (object):
     def get_content_type (self):
         """Return content MIME type or empty string.
         Should be overridden in subclasses."""
-        return u""
+        if self.content_type is None:
+            self.content_type = u""
+        return self.content_type
 
     def can_get_content (self):
         """Indicate wether url get_content() can be called."""

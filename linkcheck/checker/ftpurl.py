@@ -206,7 +206,9 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         getattr(self, "parse_"+key)()
 
     def get_content_type (self, read=None):
-        return fileutil.guess_mimetype(self.url, read=read)
+        if self.content_type is None:
+            self.content_type = fileutil.guess_mimetype(self.url, read=read)
+        return self.content_type
 
     def read_content (self):
         """Return URL target content, or in case of directories a dummy HTML

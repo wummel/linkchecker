@@ -255,9 +255,12 @@ class FileUrl (urlbase.UrlBase):
             self.aggregate.urlqueue.put(url_data)
 
     def get_content_type (self):
-        if self.url:
-            return fileutil.guess_mimetype(self.url, read=self.get_content)
-        return u""
+        if self.content_type is None:
+            if self.url:
+                self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
+            else:
+                self.content_type = u""
+        return self.content_type
 
     def get_intern_pattern (self):
         """

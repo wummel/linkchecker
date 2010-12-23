@@ -7,6 +7,7 @@ Fixes:
   internal links when given as start URL.
 - logging: Allow Unicode strings to be written to stdout without
   encoding errors on Unix systems.
+- logging: Fix missing content type for cached URLs.
 - gui: Reset statistics before each run.
 
 Changes:
