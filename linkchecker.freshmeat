@@ -1,18 +1,13 @@
 Project: LinkChecker
-Version: 6.0
+Version: 6.1
 Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
-Tar/GZ-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.tar.gz
+Source-Package-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.tar.bz2
 Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-Python 2.6 or later is now required to run LinkChecker and all previously
-deprecated commandline options have been removed.
-
-The GUI interface displays URL properties in the main window and checking
-statistics are displayed.
-
+The GUI interface can automatically find the users Firefox bookmark file.
 Several checking bugs have also been fixed.

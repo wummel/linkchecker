@@ -1,4 +1,4 @@
-6.1 "" (released xx.xx.2010)
+6.1 "Christmas Vacation" (released 23.12.2010)
 
 Fixes:
 - checking: Fix broken anchor checking.
