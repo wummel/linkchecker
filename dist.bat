@@ -23,10 +23,12 @@ rd /s /q build > nul
 call build.bat
 rd /s /q dist > nul
 %PYDIR%\python.exe setup.py py2exe
+:: wait for InnoScript installer to complete (which runs in background)
+pause
 %UPX_EXE% --best dist\LinkChecker-%VERSION%.exe
 
 echo Building portable
-rd /s /q %PORTDIR%
+rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
 del %PORTDIR%\LinkChecker-%VERSION%.exe > nul
 :: not possible to install this in a portable version
