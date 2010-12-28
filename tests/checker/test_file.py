@@ -55,6 +55,9 @@ class TestFile (LinkCheckTest):
     def test_css (self):
         self.file_test("file.css")
 
+    def test_php (self):
+        self.file_test("file.php")
+
     def test_urllist (self):
         self.file_test("urllist.txt")
 

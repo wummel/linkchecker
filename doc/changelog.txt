@@ -1,3 +1,9 @@
+6.2 "" (released xx.xx.2011)
+
+Changes:
+- checking: Parse PHP files recursively.
+
+
 6.1 "Christmas Vacation" (released 23.12.2010)
 
 Fixes:

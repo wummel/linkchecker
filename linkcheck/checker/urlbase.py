@@ -77,6 +77,10 @@ class UrlBase (object):
     ContentMimetypes = {
         "text/html": "html",
         "application/xhtml+xml": "html",
+        # Include PHP file which helps when checking local .php files.
+        # It does not harm other URL schemes like HTTP since HTTP servers
+        # should not send this content type. They send text/html instead.
+        "application/x-httpd-php": "html",
         "text/css": "css",
         "application/x-shockwave-flash": "swf",
         "application/msword": "word",
