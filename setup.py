@@ -60,7 +60,7 @@ except ImportError:
     pass
 from distutils.core import Distribution
 
-AppVersion = "6.1"
+AppVersion = "6.2"
 AppName = "LinkChecker"
 
 # py2exe options for windows .exe packaging
