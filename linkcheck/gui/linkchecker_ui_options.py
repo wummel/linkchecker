@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Thu Dec 23 19:47:37 2010
+# Created: Sat Jan  1 10:37:22 2011
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -87,9 +87,6 @@ class Ui_Options(object):
         self.closeButton = QtGui.QPushButton(self.widget)
         self.closeButton.setObjectName("closeButton")
         self.horizontalLayout.addWidget(self.closeButton)
-        self.resetButton = QtGui.QPushButton(self.widget)
-        self.resetButton.setObjectName("resetButton")
-        self.horizontalLayout.addWidget(self.resetButton)
         self.verticalLayout_3.addWidget(self.widget)
         self.tabWidget.addTab(self.gui_options, "")
         self.config_options = QtGui.QWidget()
@@ -154,8 +151,6 @@ class Ui_Options(object):
         self.verbose.setToolTip(_("Log all checked URLs once. Default is to log only errors and warnings."))
         self.label_4.setText(_("Debug"))
         self.closeButton.setText(_("Close"))
-        self.resetButton.setToolTip(_("Reset all options to default values."))
-        self.resetButton.setText(_("Reset"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.gui_options), _("GUI options"))
         self.label_9.setText(_("The configuration files can be edited with an integrated text editor."))
         self.label_6.setText(_("System configuration file"))

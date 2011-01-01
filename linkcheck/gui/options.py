@@ -30,7 +30,6 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         self.setupUi(self)
         self.editor = EditorWindow(self)
         self.closeButton.clicked.connect(self.close)
-        self.resetButton.clicked.connect(self.reset)
         self.sys_config_button.clicked.connect(self.edit_sys_config)
         self.user_config_button.clicked.connect(self.edit_user_config)
         self.reset()

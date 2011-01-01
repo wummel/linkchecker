@@ -2,6 +2,7 @@
 
 Changes:
 - checking: Parse PHP files recursively.
+- gui: Remove reset button from option dialog.
 
 
 6.1 "Christmas Vacation" (released 23.12.2010)
