@@ -285,10 +285,10 @@ class HtmlLogger (Logger):
               "%(audio)d audio, %(application)d application, %(mail)d mail"
               " and %(other)d other.") % self.stats.link_types)
             self.writeln(u"<br>")
-            self.writeln(_("URL lengths: min=%d, max=%d, avg=%d.") %
-                         (self.stats.min_url_length,
-                         self.stats.max_url_length,
-                         self.stats.avg_url_length))
+            self.writeln(_("URL lengths: min=%(min)d, max=%(max)d, avg=%(avg)d.") %
+                         dict(min=self.stats.min_url_length,
+                         max=self.stats.max_url_length,
+                         avg=self.stats.avg_url_length))
         else:
             self.writeln(_("No statistics available since zero URLs were checked."))
         self.writeln(u"<br>")
