@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat Dec 18 08:03:50 2010
+# Created: Tue Jan  4 19:19:45 2011
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -677,12 +677,15 @@ class Ui_MainWindow(object):
         icon8.addPixmap(QtGui.QPixmap(":/icons/exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionQuit.setIcon(icon8)
         self.actionQuit.setObjectName("actionQuit")
+        self.actionCheckUpdates = QtGui.QAction(MainWindow)
+        self.actionCheckUpdates.setObjectName("actionCheckUpdates")
         self.menuEdit.addAction(self.actionOptions)
         self.menuLinkChecka.addAction(self.actionSave)
         self.menuLinkChecka.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionDebug)
+        self.menuHelp.addAction(self.actionCheckUpdates)
         self.menubar.addAction(self.menuLinkChecka.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
@@ -746,6 +749,7 @@ class Ui_MainWindow(object):
         self.actionSave.setShortcut(_("Ctrl+S"))
         self.actionQuit.setText(_("Quit"))
         self.actionQuit.setShortcut(_("Ctrl+Q"))
+        self.actionCheckUpdates.setText(_("Check for updates"))
 
 from lineedit import LineEdit
 import linkchecker_rc

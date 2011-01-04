@@ -1292,6 +1292,7 @@
     <addaction name="actionAbout"/>
     <addaction name="actionHelp"/>
     <addaction name="actionDebug"/>
+    <addaction name="actionCheckUpdates"/>
    </widget>
    <addaction name="menuLinkChecka"/>
    <addaction name="menuEdit"/>
@@ -1411,6 +1412,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionCheckUpdates">
+   <property name="text">
+    <string>Check for updates</string>
    </property>
   </action>
  </widget>

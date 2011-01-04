@@ -34,14 +34,15 @@ else:
 
 
 def check_update ():
-    """Return URL of new version, None if there is no update, or
+    """Return new version and URL, None if there is no update, or
     an error message if there was an error."""
-    version, url = get_current_version()
-    print "XXX", version, url
+    version, value = get_current_version()
     if version is None:
-        return False, url
+        # value is an error message
+        return False, value
     if is_newer_version(version):
-        return True, url
+        # value is an URL linking to the update package
+        return True, (version, value)
     return True, None
 
 
@@ -49,7 +50,7 @@ def get_current_version ():
     """Download update info and parse it."""
     info, content = get_content(UPDATE_URL)
     if info is None:
-        None, _('Could not check for updates.')
+        None, _('could not download update information')
     version, url = None, None
     for line in content.splitlines():
         if line.startswith(VERSION_TAG):
