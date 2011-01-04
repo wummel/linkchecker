@@ -55,7 +55,7 @@ class UpdateDialog (QtGui.QMessageBox):
                 attrs = dict(app=configuration.App)
             else:
                 # display update link
-                version, url = 'hulla', 'bulla'
+                version, url = value
                 text = _('A new version %(version)s of %(app)s is '
                          'available for <a href="%(url)s">download</a>.')
                 attrs = dict(version=version, app=configuration.AppName,

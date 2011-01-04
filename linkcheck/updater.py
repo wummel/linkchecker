@@ -57,6 +57,7 @@ def get_current_version ():
             version = line.split(':', 1)[1].strip()
         elif line.startswith(URL_TAG):
             url = line.split(':', 1)[1].strip()
+            url = url.replace('${version}', version)
     return version, url
 
 
