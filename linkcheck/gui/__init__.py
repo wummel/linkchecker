@@ -30,6 +30,7 @@ from .options import LinkCheckerOptions
 from .checker import CheckerThread
 from .contextmenu import ContextMenu
 from .editor import EditorWindow
+from .updater import UpdateDialog
 from .urlmodel import UrlItemModel
 from .urlsave import urlsave
 from .settings import Settings
@@ -236,30 +237,9 @@ to improve %(appname)s even more!
     @QtCore.pyqtSlot()
     def on_actionCheckUpdates_triggered (self):
         """Display update check result."""
-        title = _('%(app)s update information') % dict(app=configuration.App)
-        # XXX check for update in background thread
-        result, value = updater.check_update()
-        if result:
-            dialog = QtGui.QMessageBox.information
-            if value is None:
-                # no update available: display info
-                text = _('Congratulations: you have the latest version '
-                         '%(app)s installed.')
-                attrs = dict(app=configuration.App)
-            else:
-                # display update link
-                version, url = 'hulla', 'bulla'
-                text = _('A new version %(version)s of %(app)s is '
-                         'available for <a href="%(url)s">download</a>.')
-                attrs = dict(version=version, app=configuration.AppName,
-                             url=url)
-        else:
-            # value is an error message
-            dialog = QtGui.QMessageBox.warning
-            text = _('An error occured while checking for an '
-                     'update of %(app)s: %(error)s.')
-            attrs = dict(error=value, app=configuration.AppName)
-        dialog(self, title, text % attrs)
+        dialog = UpdateDialog(self)
+        dialog.reset()
+        dialog.show()
 
     def start (self):
         """Start a new check."""
