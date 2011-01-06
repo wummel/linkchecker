@@ -1,4 +1,4 @@
-6.2 "" (released xx.xx.2011)
+6.2 "Despicable Me" (released 6.1.2011)
 
 Changes:
 - checking: Parse PHP files recursively.
