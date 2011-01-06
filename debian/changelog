@@ -1,6 +1,8 @@
 linkchecker (6.2-1) unstable; urgency=low
 
   * New upstream release.
+  * Add python-qscintilla2 to dependencies.
+    (Closes: #609061)
 
  -- Bastian Kleineidam <calvin@debian.org>  Tue, 28 Dec 2010 17:18:50 +0100
 

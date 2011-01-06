@@ -42,7 +42,7 @@ Package: linkchecker-gui
 Architecture: all
 XB-Python-Version: ${python:Versions}
 Depends: linkchecker, python-qt4 (>= 4.5), libqt4-sql-sqlite,
- ${python:Depends}, ${misc:Depends}
+ ${python:Depends}, ${misc:Depends}, python-qscintilla2
 Description: check websites and HTML documents for broken links (GUI client)
  Provides a graphical interface "linkchecker-gui" to check links of websites
  and HTML documents.
