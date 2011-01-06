@@ -35,7 +35,7 @@ from .urlmodel import UrlItemModel
 from .urlsave import urlsave
 from .settings import Settings
 from .. import configuration, checker, director, add_intern_pattern, \
-    strformat, fileutil, updater
+    strformat, fileutil
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
