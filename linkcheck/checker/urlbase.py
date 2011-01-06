@@ -27,11 +27,11 @@ import time
 import errno
 import socket
 import select
-import tempfile
 
 from . import absolute_url, StoringHandler, get_url_from
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-  strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil, geoip)
+  strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil, geoip,
+  fileutil)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from ..network import iputil
@@ -1010,12 +1010,12 @@ class UrlBase (object):
 
     def get_temp_filename (self):
         """Get temporary filename for content to parse."""
-        # XXX move to utility package
         # store content in temporary file
-        fd, filename = tempfile.mkstemp(suffix='.doc', prefix='lc_')
-        fp = os.fdopen(fd)
-        fp.write(self.get_content())
-        fp.close()
+        fd, filename = fileutil.get_tempfile(suffix='.doc', prefix='lc_')
+        try:
+            fd.write(self.get_content())
+        finally:
+            fd.close()
 
     def serialized (self):
         """

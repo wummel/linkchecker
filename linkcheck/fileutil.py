@@ -24,6 +24,7 @@ import locale
 import stat
 import fnmatch
 import mimetypes
+import tempfile
 
 
 def write_file (filename, content, backup=False, callback=None):
@@ -207,3 +208,10 @@ def guess_mimetype (filename, read=None):
         # split off not needed extension info
         mime = mime.split(';')[0]
     return mime.strip().lower()
+
+
+def get_temp_file (**kwargs):
+    """Return tuple (open file object, filename) pointing to a temporary
+    file."""
+    fd, filename = tempfile.mkstemp(**kwargs)
+    return os.fdopen(fd), filename
