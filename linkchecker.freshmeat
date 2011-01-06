@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 6.1
+Version: 6.2
 Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
@@ -9,5 +9,5 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-The GUI interface can automatically find the users Firefox bookmark file.
-Several checking bugs have also been fixed.
+An update check to see if newer versions of LinkChecker exist has been
+added to the GUI.
