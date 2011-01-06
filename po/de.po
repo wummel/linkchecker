@@ -926,7 +926,7 @@ msgstr "Suche nach Updates..."
 #: ../linkcheck/gui/updater.py:53
 #, python-format
 msgid "Congratulations: the latest version %(app)s is installed."
-msgstr "Gratulation: die aktuellste Version %(apps) ist installiert."
+msgstr "Gratulation: die aktuellste Version %(app)s ist installiert."
 
 #: ../linkcheck/gui/updater.py:59
 #, python-format
