@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
 "POT-Creation-Date: 2011-01-04 20:40+0100\n"
-"PO-Revision-Date: 2011-01-04 20:43+0100\n"
+"PO-Revision-Date: 2011-01-06 09:51+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -287,7 +287,7 @@ msgstr "Zugriff verweigert durch robots.txt; lasse das Prüfen des URL Inhalts a
 
 #: ../linkcheck/checker/httpurl.py:144
 msgid "Amazon servers block HTTP HEAD requests."
-msgstr "Amazon server blockieren HTTP HEAD Anfragen."
+msgstr "Amazon Server blockieren HTTP HEAD Anfragen."
 
 #: ../linkcheck/checker/httpurl.py:146
 msgid "Using GET method for Amazon server."
