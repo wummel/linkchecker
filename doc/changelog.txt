@@ -1,3 +1,10 @@
+6.3 "" (released xx.xx.2011)
+
+Fixes:
+- install: Fixed the install instructions.
+  Closes: SF bug #3153484
+
+
 6.2 "Despicable Me" (released 6.1.2011)
 
 Changes:
@@ -7,10 +14,6 @@ Changes:
 Features:
 - gui: Add update check for newer versions of LinkChecker.
 
-Fixes:
-- install: Fixed the install instructions to include the Qt dev tools.
-  Also fixed the reference to the install.txt in Makefile.
-  Closes: SF bug #3153484
 
 6.1 "Christmas Vacation" (released 23.12.2010)
 
