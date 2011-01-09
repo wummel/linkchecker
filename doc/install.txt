@@ -26,20 +26,26 @@ Requirements for Unix/Linux or Mac OS X
    On most distributions, the distutils module is included in
    an extra ``python-dev`` package.
 
-3. *Optional, for bash-completion:*
+3. Qt development tools
+   
+   The binary "qcollectiongenerator" is used to generate the
+   documentation files.
+   On Debian or Ubuntu systems, install the package qt4-dev-tools.
+
+4. *Optional, for bash-completion:*
    optcomplete Python module from http://furius.ca/optcomplete/
 
-4. *Optional, for HTML/CSS syntax checks:*
+5. *Optional, for HTML/CSS syntax checks:*
    HTML tidy from http://utidylib.berlios.de/
    cssutils from http://cthedot.de/cssutils/
 
-5. *Optional, for displaying country codes:*
+6. *Optional, for displaying country codes:*
    GeoIP from http://www.maxmind.com/app/python
 
-6. *Optional, used for Virus checking:*
+7. *Optional, used for Virus checking:*
    ClamAv from http://www.clamav.net/
 
-7. *Optional, used for login form submission:*
+8. *Optional, used for login form submission:*
    Twill from http://twill.idyll.org/
 
 
@@ -130,7 +136,12 @@ Setup for Windows - compiling from source:
 8. Install InnoSetup from http://www.jrsoftware.org/isinfo.php
    [http://www.jrsoftware.org/download.php/is.exe]
 
-9. Generate and execute the LinkChecker installer
+9. Qt4 SDK development tools from http://qt.nokia.com/downloads
+   [http://get.qt.nokia.com/qtsdk/qt-sdk-win-opensource-2010.05.exe]
+   The binary "qcollectiongenerator.exe" is used to generate the
+   documentation files.
+
+10. Generate and execute the LinkChecker installer
    
    Change to the ``linkchecker-X.Y`` directory and run
    ``dist.bat`` to build a binary installer.

@@ -7,6 +7,10 @@ Changes:
 Features:
 - gui: Add update check for newer versions of LinkChecker.
 
+Fixes:
+- install: Fixed the install instructions to include the Qt dev tools.
+  Also fixed the reference to the install.txt in Makefile.
+  Closes: SF bug #3153484
 
 6.1 "Christmas Vacation" (released 23.12.2010)
 

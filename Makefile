@@ -24,7 +24,7 @@ PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
 
 .PHONY: all
 all:
-	@echo "Read the file INSTALL.txt to see how to build and install this package."
+	@echo "Read the file doc/install.txt to see how to build and install this package."
 
 .PHONY: clean
 clean:
