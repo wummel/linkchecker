@@ -18,7 +18,7 @@
 
 import ConfigParser
 import re
-from .. import log, LOG_CHECK, LinkCheckerError, get_link_pat
+from .. import LOG_CHECK, LinkCheckerError, get_link_pat
 
 
 def read_multiline (value):
