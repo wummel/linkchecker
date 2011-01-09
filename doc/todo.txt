@@ -1,2 +1,1 @@
-- Only run GUI tests when X server is available (ie. DISPLAY is set)
 - Port to Python 3.x (will not happen anytime soon though)

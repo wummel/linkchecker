@@ -183,6 +183,14 @@ def has_pyqt ():
 need_pyqt = _need_func(has_pyqt, "PyQT")
 
 
+@memoized
+def has_x11 ():
+    """Test if DISPLAY variable is set."""
+    return os.getenv('DISPLAY') is not None
+
+need_x11 = _need_func(has_x11, 'X11')
+
+
 @contextmanager
 def _limit_time (seconds):
     """Raises LinkCheckerInterrupt if given number of seconds have passed."""

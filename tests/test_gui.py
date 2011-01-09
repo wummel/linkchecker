@@ -16,13 +16,14 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 import unittest
 import sys
-from tests import need_pyqt
+from tests import need_pyqt, need_x11
 
 
 class TestGui (unittest.TestCase):
     """Test OMT GUI client."""
 
     @need_pyqt
+    @need_x11
     def test_gui (self):
         from PyQt4 import QtCore, QtGui, QtTest
         from linkcheck.gui import LinkCheckerMain
