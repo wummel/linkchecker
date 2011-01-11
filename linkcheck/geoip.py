@@ -55,6 +55,10 @@ if geoip_dat:
             geoip_error = pygeoip.GeoIPError
         except ImportError:
             pass
+    if geoip_dat.endswith('GeoIPCity.dat'):
+        get_geoip_record = lambda host: geoip.record_by_name(host)
+    else:
+        get_geoip_record = lambda host: {'country_name': geoip.country_name_by_name(host)}
 
 
 @synchronized(_lock)
@@ -67,7 +71,7 @@ def get_country (host):
         # no geoip available
         return None
     try:
-        record = geoip.record_by_name(host)
+        record = get_geoip_record(host)
     except geoip_error:
         # ignore lookup errors
         return None

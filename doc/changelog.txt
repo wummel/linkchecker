@@ -4,6 +4,8 @@ Fixes:
 - install: Fixed the install instructions.
   Closes: SF bug #3153484
 - logging: Enforce encoding error policy when writing to stdout.
+- checking: Prevent error message from Geoip by using the correct
+  API function when no city database is installed.
 
 
 6.2 "Despicable Me" (released 6.1.2011)
