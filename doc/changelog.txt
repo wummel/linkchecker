@@ -6,6 +6,8 @@ Fixes:
 - logging: Enforce encoding error policy when writing to stdout.
 - checking: Prevent error message from Geoip by using the correct
   API function when no city database is installed.
+- checking: Properly detect case where IPv6 is not supported.
+  Closes: SF bug #3167249
 
 
 6.2 "Despicable Me" (released 6.1.2011)
