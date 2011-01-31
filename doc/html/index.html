@@ -35,8 +35,6 @@ pointing outside of the domain are also checked for validity.</p>
 <h2>Performed checks</h2>
 
 <p>All URLs have to pass a preliminary syntax test. Minor quoting
-mistakes will issue a warning, all other invalid syntax issues
-are errors.
 After the syntax check passes, the URL is queued for connection
 checking. All connection check types are described below.</p>
 
@@ -90,11 +88,11 @@ given telnet server is tried.</p></li>
 article is specified, it will be requested from the server.</p></li>
 <li><p>Ignored links (<code>javascript:</code>, etc.)</p>
 
-<p>An ignored link will only print a warning. No further checking
+<p>An ignored link will print a warning, but no error. No further checking
 will be made.</p>
 
-<p>Here is a complete list of recognized, but ignored links. The most
-prominent of them should be JavaScript links.</p>
+<p>Here is the complete list of recognized, but ignored links. The most
+prominent of them are JavaScript links.</p>
 
 <ul>
 <li><code>acap:</code>      (application configuration access protocol)</li>
@@ -138,11 +136,11 @@ prominent of them should be JavaScript links.</p>
 <h2>Recursion</h2>
 
 <p>Before descending recursively into a URL, it has to fulfill several
-conditions. They are checked in this order:</p>
+conditions. The conditions are checked in this order:</p>
 
 <ol>
-<li><p>A URL must be valid.</p></li>
-<li><p>A URL must be parseable. This currently includes HTML files,
+<li><p>The URL must be valid.</p></li>
+<li><p>The URL must be parseable. This currently includes HTML files,
 Opera bookmarks files, and directories. If a file type cannot
 be determined (for example it does not have a common HTML file
 extension, and the content does not look like HTML), it is assumed
@@ -150,10 +148,12 @@ to be non-parseable.</p></li>
 <li><p>The URL content must be retrievable. This is usually the case
 except for example mailto: or unknown URL types.</p></li>
 <li><p>The maximum recursion level must not be exceeded. It is configured
-with the <code>--recursion-level</code> command line option or the recursion
-level GUI option, and is unlimited by default.</p></li>
+with the <code>--recursion-level</code> command line option, the recursion
+level GUI option, or through the configuration file.
+The recursion level is unlimited by default.</p></li>
 <li><p>It must not match the ignored URL list. This is controlled with
-the <code>--ignore-url</code> command line option.</p></li>
+the <code>--ignore-url</code> command line option or through the
+configuration file.</p></li>
 <li><p>The Robots Exclusion Protocol must allow links in the URL to be
 followed recursively. This is checked by searching for a
 "nofollow" directive in the HTML header data.</p></li>

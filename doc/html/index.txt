@@ -11,8 +11,6 @@ pointing outside of the domain are also checked for validity.
 ## Performed checks
 
 All URLs have to pass a preliminary syntax test. Minor quoting
-mistakes will issue a warning, all other invalid syntax issues
-are errors.
 After the syntax check passes, the URL is queued for connection
 checking. All connection check types are described below.
 
@@ -71,11 +69,11 @@ checking. All connection check types are described below.
 
 - Ignored links (``javascript:``, etc.)
   
-  An ignored link will only print a warning. No further checking
+  An ignored link will print a warning, but no error. No further checking
   will be made.
   
-  Here is a complete list of recognized, but ignored links. The most
-  prominent of them should be JavaScript links.
+  Here is the complete list of recognized, but ignored links. The most
+  prominent of them are JavaScript links.
   
   - ``acap:``      (application configuration access protocol)
   - ``afs:``       (Andrew File System global file names)
@@ -117,11 +115,11 @@ checking. All connection check types are described below.
 ## Recursion
 
 Before descending recursively into a URL, it has to fulfill several
-conditions. They are checked in this order:
+conditions. The conditions are checked in this order:
 
-1. A URL must be valid.
+1. The URL must be valid.
 
-2. A URL must be parseable. This currently includes HTML files,
+2. The URL must be parseable. This currently includes HTML files,
    Opera bookmarks files, and directories. If a file type cannot
    be determined (for example it does not have a common HTML file
    extension, and the content does not look like HTML), it is assumed
@@ -131,11 +129,13 @@ conditions. They are checked in this order:
    except for example mailto: or unknown URL types.
 
 4. The maximum recursion level must not be exceeded. It is configured
-   with the ``--recursion-level`` command line option or the recursion
-   level GUI option, and is unlimited by default.
+   with the ``--recursion-level`` command line option, the recursion
+   level GUI option, or through the configuration file.
+   The recursion level is unlimited by default.
 
 5. It must not match the ignored URL list. This is controlled with
-   the ``--ignore-url`` command line option.
+   the ``--ignore-url`` command line option or through the
+   configuration file.
 
 6. The Robots Exclusion Protocol must allow links in the URL to be
    followed recursively. This is checked by searching for a
