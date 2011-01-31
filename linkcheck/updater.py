@@ -19,7 +19,7 @@ Function to check for updates.
 """
 
 import os
-from .configuration import Version
+from .configuration import Version as CurrentVersion
 from .url import get_content
 from distutils.version import StrictVersion
 
@@ -34,19 +34,27 @@ else:
 
 
 def check_update ():
-    """Return new version and URL, None if there is no update, or
-    an error message if there was an error."""
-    version, value = get_current_version()
+    """Return the following values:
+       (False, errmsg) - online version could not be determined
+       (True, None) - user has newest version
+       (True, (version, url string)) - update available
+       (True, (version, None)) - current version is newer than online version
+    """
+    version, value = get_online_version()
     if version is None:
         # value is an error message
         return False, value
+    if version == CurrentVersion:
+        # user has newest version
+        return True, None
     if is_newer_version(version):
         # value is an URL linking to the update package
         return True, (version, value)
-    return True, None
+    # user is running a local or development version
+    return True, (version, None)
 
 
-def get_current_version ():
+def get_online_version ():
     """Download update info and parse it."""
     info, content = get_content(UPDATE_URL)
     if info is None:
@@ -63,4 +71,4 @@ def get_current_version ():
 
 def is_newer_version (version):
     """Check if given version is newer than current version."""
-    return StrictVersion(version) > StrictVersion(Version)
+    return StrictVersion(version) > StrictVersion(CurrentVersion)

@@ -9,6 +9,9 @@ Fixes:
 - checking: Properly detect case where IPv6 is not supported.
   Closes: SF bug #3167249
 
+Changes:
+- gui: Detect local or development versions in update check.
+
 
 6.2 "Despicable Me" (released 6.1.2011)
 

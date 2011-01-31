@@ -28,9 +28,14 @@ class TestUpdater (unittest.TestCase):
 
     @need_network
     def test_updater (self):
-        res, url = linkcheck.updater.check_update()
+        res, value = linkcheck.updater.check_update()
         self.assertTrue(type(res) == bool)
         if res:
-            self.assertTrue(url is None or isinstance(url, basestring))
+            self.assertTrue(value is None or isinstance(value, tuple))
+            if isinstance(value, tuple):
+                self.assertEqual(len(value), 2)
+                version, url = value
+                self.assertTrue(isinstance(version, basestring))
+                self.assertTrue(url is None or isinstance(url, basestring))
         else:
-            self.assertTrue(isinstance(url, unicode))
+            self.assertTrue(isinstance(value, unicode))

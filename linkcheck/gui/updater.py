@@ -54,12 +54,17 @@ class UpdateDialog (QtGui.QMessageBox):
                          '%(app)s is installed.')
                 attrs = dict(app=configuration.App)
             else:
-                # display update link
                 version, url = value
-                text = _('A new version %(version)s of %(app)s is '
-                         'available for <a href="%(url)s">download</a>.')
+                if url is None:
+                    # current version is newer than online version
+                    text = _('Detected local or development version %(currentversion)s. '
+                             'Available version of %(app)s is %(version)s.')
+                else:
+                    # display update link
+                    text = _('A new version %(version)s of %(app)s is '
+                             'available for <a href="%(url)s">download</a>.')
                 attrs = dict(version=version, app=configuration.AppName,
-                             url=url)
+                             url=url, currentversion=configuration.Version)
         else:
             # value is an error message or None if UpdateThread has been
             # terminated
