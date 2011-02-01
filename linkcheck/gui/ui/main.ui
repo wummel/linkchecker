@@ -1074,7 +1074,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Min</string>
+               <string>Min. length</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1121,7 +1121,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Average</string>
+               <string>Avg. length</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1168,7 +1168,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Max</string>
+               <string>Max. length</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

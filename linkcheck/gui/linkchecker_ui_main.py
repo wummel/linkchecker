@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Tue Jan  4 19:19:45 2011
+# Created: Tue Feb  1 07:31:54 2011
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -723,9 +723,9 @@ class Ui_MainWindow(object):
         self.label_23.setText(_("Other"))
         self.label_22.setText(_("Mail"))
         self.groupBox_2.setTitle(_("URL statistics"))
-        self.label_18.setText(_("Min"))
-        self.label_20.setText(_("Average"))
-        self.label_19.setText(_("Max"))
+        self.label_18.setText(_("Min. length"))
+        self.label_20.setText(_("Avg. length"))
+        self.label_19.setText(_("Max. length"))
         self.label_14.setText(_("Domains"))
         self.menuEdit.setTitle(_("Edit"))
         self.menuLinkChecka.setTitle(_("File"))
