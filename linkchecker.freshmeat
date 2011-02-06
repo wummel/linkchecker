@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 6.2
-Release-Focus: Minor feature enhancements
+Version: 6.3
+Release-Focus: Minor bugfixes
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
@@ -9,5 +9,7 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-An update check to see if newer versions of LinkChecker exist has been
-added to the GUI.
+The installation instructions have been fixed.
+A default encoding error policy is now always used when writing to stdout.
+Error message from Geoip are prevented by using the correct
+API function when no city database is installed.
