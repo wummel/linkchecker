@@ -1,3 +1,9 @@
+6.4 "" (released xx.xx.2011)
+
+Fixes:
+- checking: Do not remove CGI parameters when joining URLs.
+
+
 6.3 "Due Date" (released 6.2.2011)
 
 Fixes:

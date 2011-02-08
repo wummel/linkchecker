@@ -388,7 +388,7 @@ class UrlBase (object):
         elif self.parent_url:
             # strip the parent url query and anchor
             urlparts = list(urlparse.urlsplit(self.parent_url))
-            urlparts[3] = urlparts[4] = ""
+            urlparts[4] = ""
             parent_url = urlparse.urlunsplit(urlparts)
             self.url = urljoin(parent_url, base_url, self.scheme)
         else:
