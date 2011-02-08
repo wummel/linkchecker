@@ -5,7 +5,8 @@ valid
 
 url redirect_newhost.html
 cache key http://localhost:8001/%(datadir)s/redirect_newhost.html
-real url http://www.example.com/
+real url http://www.iana.org/domains/example/
 name redirect to new host
 info Redirected to `http://www.example.com/'.
+info Redirected to `http://www.iana.org/domains/example/'.
 valid

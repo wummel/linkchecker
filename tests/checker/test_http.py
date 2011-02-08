@@ -133,7 +133,8 @@ class TestHttp (HttpServerTest):
             u"valid",
             u"url http://www.example.org/",
             u"cache key http://www.example.org/",
-            u"real url http://www.example.org/",
+            u"real url http://www.iana.org/domains/example/",
+            u"info Redirected to `http://www.iana.org/domains/example/'.",
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=1)
