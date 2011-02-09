@@ -16,10 +16,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os
+import urlparse
 from PyQt4 import Qsci, QtGui, QtCore
 from .linkchecker_ui_editor import Ui_EditorDialog
+from ..checker.fileurl import get_os_filename
 
-
+# Map MIME type to Scintilla lexer class
 ContentTypeLexers = {
     "application/x-shellscript": Qsci.QsciLexerBash,
     "application/x-sh": Qsci.QsciLexerBash,
@@ -132,6 +134,16 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
         self.editor.setCursorPosition(line-1, col-1)
         self.editor.setModified(False)
 
+    def setUrl (self, url):
+        """If URL is a file:// URL, store the filename of it as base
+        directory for the "save as" dialog."""
+        self.basedir = ""
+        if url and url.startswith("file://"):
+            urlparts = urlparse.urlsplit(url)
+            path = get_os_filename(urlparts[2])
+            if os.path.exists(path):
+                self.basedir = path
+
     @QtCore.pyqtSignature("")
     def on_actionSave_triggered (self):
         """Save editor contents."""
@@ -140,8 +152,10 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
 
     def save (self):
         if not self.filename:
-            res = QtGui.QFileDialog.getSaveFileName(self, "Save File As")
+            title = _("Save File As")
+            res = QtGui.QFileDialog.getSaveFileName(self, title, self.basedir)
             if not res:
+                # user canceled
                 return
             self.filename = res
             self.setWindowTitle(self.filename)

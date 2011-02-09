@@ -6,6 +6,10 @@ Fixes:
 Changes:
 - gui: Use Alt-key shortcuts for menu entries.
 
+Features:
+- gui: Preselect filename on save dialog when editing file:// URLs.
+  Closes: SF bug #3176022
+
 
 6.3 "Due Date" (released 6.2.2011)
 

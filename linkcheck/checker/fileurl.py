@@ -53,9 +53,7 @@ def prepare_urlpath_for_nt (path):
 
 
 def get_nt_filename (path):
-    """
-    Return case sensitive filename for NT path.
-    """
+    """Return case sensitive filename for NT path."""
     head, tail = os.path.split(path)
     if not tail:
         return path
@@ -64,6 +62,13 @@ def get_nt_filename (path):
             return os.path.join(get_nt_filename(head), fname)
     log.error(LOG_CHECK, "could not find %r in %r", tail, head)
     return path
+
+
+def get_os_filename (path):
+    """Return filesystem path for given URL path."""
+    if os.name == 'nt':
+        path = prepare_urlpath_for_nt(path)
+    return fileutil.pathencode(urllib.url2pathname(path))
 
 
 def is_absolute_path (path):
@@ -199,10 +204,7 @@ class FileUrl (urlbase.UrlBase):
         @return: file name
         @rtype: string
         """
-        path = self.urlparts[2]
-        if os.name == 'nt':
-            path = prepare_urlpath_for_nt(path)
-        return fileutil.pathencode(urllib.url2pathname(path))
+        return get_os_filename(self.urlparts[2])
 
     def get_temp_filename (self):
         """Get filename for content to parse."""

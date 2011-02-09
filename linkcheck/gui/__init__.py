@@ -331,6 +331,7 @@ to improve %(appname)s even more!
 
     def view_source (self, url, line, col):
         self.editor.setWindowTitle(u"View %s" % url)
+        self.editor.setUrl(url)
         info, data = urlutil.get_content(url, proxy=self.config["proxy"])
         if (info, data) == (None, None):
             self.editor.setText(u"An error occurred retreiving URL `%s'." % url)
