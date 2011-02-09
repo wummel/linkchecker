@@ -57,8 +57,8 @@ class TestUrlBuild (unittest.TestCase):
         self.assertEqual(res, 'http://localhost:8001/;param=value')
 
     def test_http_build2 (self):
-        parent_url = u'http://www.ngdc.noaa.gov/nndc/struts/results?nd=suppress&eq_0=8&t=101365&s=4&d=3&d=5&d=6'
-        base_url = u'#nesdis'
+        parent_url = u'http://example.org/test?a=b&c=d'
+        base_url = u'#usemap'
         recursion_level = 0
         aggregate = get_test_aggregate()
         o = linkcheck.checker.httpurl.HttpUrl(base_url, recursion_level,
