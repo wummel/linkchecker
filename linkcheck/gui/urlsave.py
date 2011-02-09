@@ -31,9 +31,9 @@ FileExt2LogType = {
 
 def urlsave (parent, config, urls):
     """Save URL results in file."""
-    res = QtGui.QFileDialog.getSaveFileName(parent, _("Save check results"),
-      "linkchecker-out.html", LoggerFilters)
+    res = get_save_filename(parent)
     if not res:
+        # user canceled
         return
     filename = unicode(res)
     logtype = FileExt2LogType.get(os.path.splitext(filename)[1])
@@ -45,3 +45,10 @@ def urlsave (parent, config, urls):
     for urlitem in urls:
         logger.log_url(urlitem.url_data)
     logger.end_output()
+
+
+def get_save_filename (parent, basedir):
+    filename = "linkchecker-out.html"
+    title = _("Save check results")
+    func = QtGui.QFileDialog.getSaveFileName
+    return func(parent, title, filename, LoggerFilters)
