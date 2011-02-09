@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/editor.ui'
 #
-# Created: Fri Nov  5 00:55:45 2010
+# Created: Wed Feb  9 07:42:24 2011
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,6 +48,7 @@ class Ui_EditorDialog(object):
 
     def retranslateUi(self, EditorDialog):
         EditorDialog.setWindowTitle(_("LinkChecker source view"))
-        self.menuFile.setTitle(_("File"))
-        self.actionSave.setText(_("Save"))
+        self.menuFile.setTitle(_("&File"))
+        self.actionSave.setText(_("&Save"))
+        self.actionSave.setShortcut(_("Ctrl+S"))
 
