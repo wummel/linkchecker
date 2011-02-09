@@ -50,7 +50,7 @@ include doc/po4a.conf doc/*.po doc/*.pot
 include doc/en/*.1 doc/en/*.5
 include doc/de/*.1 doc/de/*.5
 include doc/Makefile
-include doc/examples/*.sh doc/examples/*.bat
+include doc/examples/*.sh doc/examples/*.bat doc/examples/*.py
 include doc/examples/linkcheckerrc_loginurl
 include linkcheck/dns/changelog.txt
 recursive-include tests *.py *.result *.html *.ico *.txt *.zip *.asc *.css *.xhtml *.sqlite *.adr *.swf
