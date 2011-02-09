@@ -256,8 +256,8 @@ to improve %(appname)s even more!
         elif url.startswith(u"ftp."):
             url = u"ftp://%s" % url
         elif url and u":" not in url:
-            # Look for local filename, else assume it's an HTTP URL.
-            if not os.path.isfile(url):
+            # Look for local file, else assume it's an HTTP URL.
+            if not os.path.exists(url):
                 url = u"http://%s" % url
         return url
 
