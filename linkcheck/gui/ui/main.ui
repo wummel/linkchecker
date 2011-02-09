@@ -1274,27 +1274,27 @@
    </property>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string>&amp;Edit</string>
     </property>
     <addaction name="actionOptions"/>
    </widget>
-   <widget class="QMenu" name="menuLinkChecka">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionSave"/>
-    <addaction name="actionQuit"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionHelp"/>
     <addaction name="actionDebug"/>
     <addaction name="actionCheckUpdates"/>
    </widget>
-   <addaction name="menuLinkChecka"/>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -1305,6 +1305,9 @@
      <normaloff>:/icons/about.png</normaloff>:/icons/about.png</iconset>
    </property>
    <property name="text">
+    <string>A&amp;bout</string>
+   </property>
+   <property name="iconText">
     <string>About</string>
    </property>
   </action>
@@ -1314,6 +1317,9 @@
      <normaloff>:/icons/help.png</normaloff>:/icons/help.png</iconset>
    </property>
    <property name="text">
+    <string>&amp;Help</string>
+   </property>
+   <property name="iconText">
     <string>Help</string>
    </property>
   </action>
@@ -1335,6 +1341,9 @@
      <normaloff>:/icons/preferences.png</normaloff>:/icons/preferences.png</iconset>
    </property>
    <property name="text">
+    <string>&amp;Options</string>
+   </property>
+   <property name="iconText">
     <string>Options</string>
    </property>
   </action>
@@ -1396,7 +1405,7 @@
      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
    </property>
    <property name="text">
-    <string>Save results...</string>
+    <string>&amp;Save results...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -1408,7 +1417,7 @@
      <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
    </property>
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>

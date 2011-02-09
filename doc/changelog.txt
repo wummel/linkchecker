@@ -3,6 +3,9 @@
 Fixes:
 - checking: Do not remove CGI parameters when joining URLs.
 
+Changes:
+- gui: Use Alt-key shortcuts for menu entries.
+
 
 6.3 "Due Date" (released 6.2.2011)
 
