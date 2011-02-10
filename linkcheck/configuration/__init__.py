@@ -41,6 +41,7 @@ AppInfo = App+u"              "+Copyright
 HtmlAppInfo = App+u", "+HtmlCopyright
 Url = configdata.url
 SupportUrl = u"http://sourceforge.net/projects/linkchecker/support"
+DonateUrl = u"http://linkchecker.sourceforge.net/donations.html"
 Email = configdata.author_email
 UserAgent = u"%s/%s (+%s)" % (AppName, Version, Url)
 Freeware = AppName+u""" comes with ABSOLUTELY NO WARRANTY!

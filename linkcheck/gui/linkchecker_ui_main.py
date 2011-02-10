@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Wed Feb  9 07:31:00 2011
+# Created: Thu Feb 10 12:39:40 2011
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -624,10 +624,10 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuEdit = QtGui.QMenu(self.menubar)
         self.menuEdit.setObjectName("menuEdit")
-        self.menuHelp = QtGui.QMenu(self.menubar)
-        self.menuHelp.setObjectName("menuHelp")
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
+        self.menuHelp = QtGui.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setObjectName("statusBar")
@@ -679,13 +679,16 @@ class Ui_MainWindow(object):
         self.actionQuit.setObjectName("actionQuit")
         self.actionCheckUpdates = QtGui.QAction(MainWindow)
         self.actionCheckUpdates.setObjectName("actionCheckUpdates")
+        self.actionDonate = QtGui.QAction(MainWindow)
+        self.actionDonate.setObjectName("actionDonate")
         self.menuEdit.addAction(self.actionOptions)
+        self.menuFile.addAction(self.actionSave)
+        self.menuFile.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionDebug)
         self.menuHelp.addAction(self.actionCheckUpdates)
-        self.menuFile.addAction(self.actionSave)
-        self.menuFile.addAction(self.actionQuit)
+        self.menuHelp.addAction(self.actionDonate)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
@@ -728,8 +731,8 @@ class Ui_MainWindow(object):
         self.label_19.setText(_("Max. length"))
         self.label_14.setText(_("Domains"))
         self.menuEdit.setTitle(_("&Edit"))
-        self.menuHelp.setTitle(_("&Help"))
         self.menuFile.setTitle(_("&File"))
+        self.menuHelp.setTitle(_("&Help"))
         self.actionAbout.setText(_("A&bout"))
         self.actionAbout.setIconText(_("About"))
         self.actionHelp.setText(_("&Help"))
@@ -753,6 +756,7 @@ class Ui_MainWindow(object):
         self.actionQuit.setText(_("&Quit"))
         self.actionQuit.setShortcut(_("Ctrl+Q"))
         self.actionCheckUpdates.setText(_("Check for updates"))
+        self.actionDonate.setText(_("Donate"))
 
 from lineedit import LineEdit
 import linkchecker_rc

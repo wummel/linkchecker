@@ -211,6 +211,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             "app": configuration.App,
             "appname": configuration.AppName,
             "copyright": configuration.HtmlCopyright,
+            "donateurl": configuration.DonateUrl,
         }
         QtGui.QMessageBox.about(self, _(u"About %(appname)s") % d,
             _(u"""<qt><p>%(appname)s checks HTML documents and websites
@@ -219,10 +220,14 @@ for broken links.
 <br>%(app)s is licensed under the
 <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>
 Version 2 or later.
-<p>Please consider a
-<a href="https://sourceforge.net/donate/index.php?group_id=1913">donation</a>
-to improve %(appname)s even more!
+<p>If you like %(appname)s, consider one of several ways to
+<a href="%(donateurl)s">donate</a>. Thanks!
 </qt>""") % d)
+
+    @QtCore.pyqtSlot()
+    def on_actionDonate_triggered (self):
+        """Open donation URL."""
+        webbrowser.open(configuration.DonateUrl)
 
     @QtCore.pyqtSlot()
     def on_actionDebug_triggered (self):
