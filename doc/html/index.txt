@@ -37,25 +37,25 @@ checking. All connection check types are described below.
   If one address fails, the whole list will fail.
   For each mail address the following things are checked:
   
-  1) Check the adress syntax, both of the part before and after
+  1. Check the adress syntax, both of the part before and after
      the @ sign.
-  2) Look up the MX DNS records. If no MX record is found,
+  2. Look up the MX DNS records. If no MX record is found,
      print an error.
-  3) Check if one of the mail hosts accept an SMTP connection.
+  3. Check if one of the mail hosts accept an SMTP connection.
      Check hosts with higher priority first.
      If no host accepts SMTP, a warning is printed.
-  4) Try to verify the address with the VRFY command. If there is
+  4. Try to verify the address with the VRFY command. If there is
      an answer, the verified address is printed as an info.
 
 - FTP links (``ftp:``)
   
   For FTP links the following is checked:
   
-  1) connect to the specified host
-  2) try to login with the given user and password. The default
+  1. Connect to the specified host.
+  2. Try to login with the given user and password. The default
      user is ``anonymous``, the default password is ``anonymous@``.
-  3) try to change to the given directory
-  4) list the file with the NLST command
+  3. Try to change to the given directory.
+  4. List the file with the NLST command.
 
 - Telnet links (``telnet:``)
   
@@ -118,25 +118,20 @@ Before descending recursively into a URL, it has to fulfill several
 conditions. The conditions are checked in this order:
 
 1. The URL must be valid.
-
 2. The URL must be parseable. This currently includes HTML files,
    Opera bookmarks files, and directories. If a file type cannot
    be determined (for example it does not have a common HTML file
    extension, and the content does not look like HTML), it is assumed
    to be non-parseable.
-
 3. The URL content must be retrievable. This is usually the case
    except for example mailto: or unknown URL types.
-
 4. The maximum recursion level must not be exceeded. It is configured
    with the ``--recursion-level`` command line option, the recursion
    level GUI option, or through the configuration file.
    The recursion level is unlimited by default.
-
 5. It must not match the ignored URL list. This is controlled with
    the ``--ignore-url`` command line option or through the
    configuration file.
-
 6. The Robots Exclusion Protocol must allow links in the URL to be
    followed recursively. This is checked by searching for a
    "nofollow" directive in the HTML header data.
