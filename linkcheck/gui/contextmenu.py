@@ -25,7 +25,6 @@ class ContextMenu (QtGui.QMenu):
         self.addAction(parent.actionCopyToClipboard)
         self.addAction(parent.actionViewParentOnline)
         self.addAction(parent.actionViewParentSource)
-        self.addAction(parent.actionViewProperties)
 
     def enableFromItem (self, item):
         """Enable context menu actions depending on the item content."""

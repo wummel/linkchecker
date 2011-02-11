@@ -2,6 +2,7 @@
 
 Fixes:
 - checking: Do not remove CGI parameters when joining URLs.
+- gui: Remove old context menu action to view URL properties.
 
 Changes:
 - gui: Use Alt-key shortcuts for menu entries.

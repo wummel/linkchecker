@@ -306,13 +306,6 @@ Version 2 or later.
             self.contextmenu.popup(QtGui.QCursor.pos())
 
     @QtCore.pyqtSlot()
-    def on_actionViewProperties_triggered (self):
-        """View URL data properties in a separate window."""
-        urlitem = self.model.getUrlItem(self.treeView.currentIndex())
-        if urlitem is not None:
-            self.view_item_properties(urlitem)
-
-    @QtCore.pyqtSlot()
     def on_actionViewOnline_triggered (self):
         """View item URL online."""
         urlitem = self.model.getUrlItem(self.treeView.currentIndex())
