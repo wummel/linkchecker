@@ -195,7 +195,9 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def is_directory (self):
         """See if URL target is a directory."""
-        return self.url.endswith('/')
+        # either the path is empty, or ends with a slash
+        path = self.urlparts[2]
+        return (not path) or path.endswith('/')
 
     def parse_url (self):
         """Parse URL target for links."""
