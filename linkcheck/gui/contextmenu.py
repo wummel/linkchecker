@@ -15,6 +15,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 from PyQt4 import QtGui
+import os
+import urlparse
+from linkcheck.checker.fileurl import get_os_filename
 
 class ContextMenu (QtGui.QMenu):
     """Show context menu."""
@@ -29,22 +32,26 @@ class ContextMenu (QtGui.QMenu):
     def enableFromItem (self, item):
         """Enable context menu actions depending on the item content."""
         parent = self.parentWidget()
+        # data is an instance of CompactUrlData
         data = item.url_data
         # enable view online actions
         parent.actionViewOnline.setEnabled(bool(data.url))
         parent.actionViewParentOnline.setEnabled(bool(data.parent_url))
         # enable view source actions
-        enable_parent_url_source = self.can_view_source(data.parent_url)
+        enable_parent_url_source = self.can_view_parent_source(data)
         parent.actionViewParentSource.setEnabled(enable_parent_url_source)
 
-    def can_view_source (self, url, result=None):
-        """Determine if URL source could be retrieved."""
-        if not url:
+    def can_view_parent_source (self, url_data):
+        """Determine if parent URL source can be retrieved."""
+        if not url_data.valid:
             return False
-        if result and result.startswith(u"Error"):
+        parent = url_data.parent_url
+        if not parent:
             return False
-        return (url.startswith(u"http:") or
-                url.startswith(u"https:") or
-                url.startswith(u"ftp:") or
-                url.startswith(u"ftps:") or
-                url.startswith(u"file:"))
+        if parent.startswith(u"file:"):
+            urlparts = urlparse.urlsplit(parent)
+            return not os.path.isdir(get_os_filename(urlparts[2]))
+        return (parent.startswith(u"http:") or
+                parent.startswith(u"https:") or
+                parent.startswith(u"ftp:") or
+                parent.startswith(u"ftps:"))

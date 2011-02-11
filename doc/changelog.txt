@@ -3,6 +3,7 @@
 Fixes:
 - checking: Do not remove CGI parameters when joining URLs.
 - gui: Remove old context menu action to view URL properties.
+- gui: Disable viewing of parent URL source if its a local directory.
 
 Changes:
 - gui: Use Alt-key shortcuts for menu entries.
