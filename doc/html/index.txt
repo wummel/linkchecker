@@ -136,5 +136,5 @@ conditions. The conditions are checked in this order:
    followed recursively. This is checked by searching for a
    "nofollow" directive in the HTML header data.
 
-Note that the directory recursion reads all files in that
+Note that the local and FTP directory recursion reads all files in that
 directory, not just a subset like ``index.htm*``.

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-10-25 17:30+0300\n"
+"POT-Creation-Date: 2011-02-11 18:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1428,7 +1428,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:537 en/linkcheckerrc.5:435
-msgid "Copyright \\(co 2000-2010 Bastian Kleineidam"
+msgid "Copyright \\(co 2000-2011 Bastian Kleineidam"
 msgstr ""
 
 #. type: TH
@@ -2416,7 +2416,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker-gui.1:7
-msgid "B<linkchecker-gui>"
+msgid "B<linkchecker-gui> [I<file-or-url>]"
 msgstr ""
 
 #. type: Plain text
@@ -2431,5 +2431,5 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker-gui.1:18
-msgid "Copyright \\(co 2009-2010 Bastian Kleineidam"
+msgid "Copyright \\(co 2009-2011 Bastian Kleineidam"
 msgstr ""
