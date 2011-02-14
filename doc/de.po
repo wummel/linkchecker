@@ -1564,7 +1564,7 @@ msgstr "COPYRIGHT"
 #. type: Plain text
 #: en/linkchecker.1:537
 #: en/linkcheckerrc.5:435
-#| msgid "Copyright \\(co 2000-2010 Bastian Kleineidam"
+#| msgid "Copyright \\(co 2000-2011 Bastian Kleineidam"
 msgid "Copyright \\(co 2000-2011 Bastian Kleineidam"
 msgstr "Copyright \\(co 2000-2011 Bastian Kleineidam"
 
@@ -2755,7 +2755,7 @@ msgstr "B<linkchecker>(1)"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker-gui.1:18
-#| msgid "Copyright \\(co 2009-2010 Bastian Kleineidam"
+#| msgid "Copyright \\(co 2009-2011 Bastian Kleineidam"
 msgid "Copyright \\(co 2009-2011 Bastian Kleineidam"
 msgstr "Copyright \\(co 2009-2011 Bastian Kleineidam"
 
