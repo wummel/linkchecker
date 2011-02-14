@@ -65,10 +65,12 @@ class ConnectionPool (object):
     def add (self, key, conn, timeout):
         """Add connection to the pool with given identifier key and timeout
         in seconds."""
+        assert timeout >= 1.0, 'invalid timeout value %r' % timeout
         self.connections[key] = [conn, 'available', time.time() + timeout]
 
     @synchronized(_wait_lock)
     def wait_for_host (self, host):
+        """Honor wait time for given host."""
         t = time.time()
         if host in self.times:
             due_time = self.times[host]
@@ -95,16 +97,18 @@ class ConnectionPool (object):
             return None
         conn_data = self.connections[key]
         t = time.time()
-        if t > conn_data[2]:
-            # timed out
+        if (t+5.0) >= conn_data[2]:
+            # already or soon to be timed out
             self._remove_connection(key)
             return None
         if conn_data[1] == 'busy':
             # connection is in use
             return None
-        # mark busy and return
+        log.debug(LOG_CACHE,
+          "reusing connection %s timing out in %.01f seconds",
+           key, (conn_data[2] - t))
+        # mark busy and return connection object
         conn_data[1] = 'busy'
-        conn_data[2] = t
         return conn_data[0]
 
     @synchronized(_lock)
@@ -115,11 +119,11 @@ class ConnectionPool (object):
 
     @synchronized(_lock)
     def remove_expired (self):
-        """Remove expired connections from this pool."""
+        """Remove expired or soon to be expired connections from this pool."""
         t = time.time()
         to_delete = []
         for key, conn_data in self.connections.items():
-            if conn_data[1] == 'available' and t > conn_data[2]:
+            if conn_data[1] == 'available' and (t+5.0) >= conn_data[2]:
                 to_delete.append(key)
         for key in to_delete:
             self._remove_connection(key)

@@ -3,6 +3,8 @@
 Fixes:
 - checking: Do not remove CGI parameters when joining URLs.
 - checking: Correctly detect empty FTP paths as directories.
+- checking: Reuse connections more than once and ensure they are
+  closed before expiring.
 - gui: Remove old context menu action to view URL properties.
 - gui: Disable viewing of parent URL source if it's a directory.
 
