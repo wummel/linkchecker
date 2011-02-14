@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+"""Parser for FireFox bookmark file."""
 import os
 import glob
 import re
@@ -44,6 +45,8 @@ def get_profile_dir ():
 def find_bookmark_file ():
     """Return the first found places.sqlite file of the profile directories
     ending with '.default'.
+    Returns absolute filename if found, or empty string if no bookmark file
+    could be found.
     """
     for dirname in glob.glob(u"%s/*.default" % get_profile_dir()):
         if os.path.isdir(dirname):
@@ -54,6 +57,10 @@ def find_bookmark_file ():
 
 
 def parse_bookmark_file (filename):
+    """Return iterator for bookmarks of the form (url, name).
+    Bookmarks are not sorted.
+    Returns None if sqlite3 module is not installed.
+    """
     if not has_sqlite:
         return
     conn = sqlite3.connect(filename, timeout=0.5)

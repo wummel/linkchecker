@@ -208,6 +208,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         getattr(self, "parse_"+key)()
 
     def get_content_type (self, read=None):
+        """Return URL content type, or an empty string if content
+        type could not be found."""
         if self.content_type is None:
             self.content_type = fileutil.guess_mimetype(self.url, read=read)
         return self.content_type

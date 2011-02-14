@@ -63,9 +63,11 @@ class LogStatistics (object):
     """
 
     def __init__ (self):
+        """Initialize log statistics."""
         self.reset()
 
     def reset (self):
+        """Reset all log statistics to default values."""
         # number of logged urls
         self.number = 0
         # number of encountered errors
@@ -84,6 +86,7 @@ class LogStatistics (object):
         self.avg_number = 0
 
     def log_url (self, url_data, do_print):
+        """Log URL statistics."""
         self.number += 1
         if not url_data.valid:
             self.errors += 1
@@ -191,6 +194,7 @@ class Logger (object):
             self.fd = Writer(sys.stdout, self.codec_errors)
 
     def start_fileoutput (self):
+        """Start output to configured file."""
         path = os.path.dirname(self.filename)
         try:
             if path and not os.path.isdir(path):

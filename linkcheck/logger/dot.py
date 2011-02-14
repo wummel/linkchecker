@@ -76,4 +76,5 @@ class DOTLogger (GraphLogger):
 
 
 def dotquote (s):
+    """Quote string for usage in DOT output format."""
     return s.replace('"', '\\"')

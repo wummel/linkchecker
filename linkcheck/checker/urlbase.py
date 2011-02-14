@@ -712,6 +712,7 @@ class UrlBase (object):
                 self.scan_virus()
 
     def check_warningregex (self):
+        """Check if content matches a given regular expression."""
         warningregex = self.aggregate.config["warningregex"]
         if warningregex:
             log.debug(LOG_CHECK, "checking content")
@@ -1132,6 +1133,8 @@ class UrlBase (object):
         )
 
     def to_wire (self):
+        """Return compact UrlData object with information from to_wire_dict().
+        """
         return CompactUrlData(self.to_wire_dict())
 
 
@@ -1165,6 +1168,7 @@ urlDataAttr = [
 ]
 
 class CompactUrlData (object):
+    """Store selected UrlData attributes in slots to minimize memory usage."""
     __slots__ = urlDataAttr
 
     def __init__(self, wired_url_data):

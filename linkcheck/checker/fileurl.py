@@ -235,9 +235,7 @@ class FileUrl (urlbase.UrlBase):
             return self.get_content_type() in self.ContentMimetypes
 
     def parse_url (self):
-        """
-        Parse file contents for new links to check.
-        """
+        """Parse file contents for new links to check."""
         if self.is_directory():
             self.parse_html()
         elif firefox.has_sqlite and firefox.extension.search(self.url):
@@ -257,6 +255,8 @@ class FileUrl (urlbase.UrlBase):
             self.aggregate.urlqueue.put(url_data)
 
     def get_content_type (self):
+        """Return URL content type, or an empty string if content
+        type could not be found."""
         if self.content_type is None:
             if self.url:
                 self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
@@ -265,8 +265,7 @@ class FileUrl (urlbase.UrlBase):
         return self.content_type
 
     def get_intern_pattern (self):
-        """
-        Get pattern for intern URL matching.
+        """Get pattern for intern URL matching.
 
         @return non-empty regex pattern or None
         @rtype String or None

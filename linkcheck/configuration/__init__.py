@@ -252,6 +252,7 @@ class Configuration (dict):
         self.sanitize()
 
     def add_auth (self, user=None, password=None, pattern=None):
+        """Add given authentication data."""
         if not user or not pattern:
             log.warn(LOG_CHECK,
             _("warning: missing user or URL pattern in authentication data."))
@@ -292,6 +293,7 @@ class Configuration (dict):
             self.sanitize_loginurl()
 
     def sanitize_anchors (self):
+        """Make anchor configuration consistent."""
         if not self["warnings"]:
             self["warnings"] = True
             from ..checker import Warnings
@@ -300,12 +302,14 @@ class Configuration (dict):
             self["ignorewarnings"].remove('url-anchor-not-found')
 
     def sanitize_logger (self):
+        """Make logger configuration consistent."""
         if not self['output']:
             log.warn(LOG_CHECK, _("warning: activating text logger output."))
             self['output'] = 'text'
         self['logger'] = self.logger_new(self['output'])
 
     def sanitize_checkhtml (self):
+        """Ensure HTML tidy is installed for checking HTML."""
         try:
             import tidy
         except ImportError:
@@ -315,6 +319,7 @@ class Configuration (dict):
             self['checkhtml'] = False
 
     def sanitize_checkcss (self):
+        """Ensure cssutils is installed for checking CSS."""
         try:
             import cssutils
         except ImportError:
@@ -324,6 +329,7 @@ class Configuration (dict):
             self['checkcss'] = False
 
     def sanitize_scanvirus (self):
+        """Ensure clamav is installed for virus checking."""
         try:
             clamav.init_clamav_conf(self['clamavconf'])
         except clamav.ClamavError:
@@ -332,12 +338,14 @@ class Configuration (dict):
             self['scanvirus'] = False
 
     def sanitize_cookies (self):
+        """Make cookie configuration consistent."""
         if not self['sendcookies']:
             log.warn(LOG_CHECK, _("warning: activating sendcookies " \
                                   "because storecookies is active."))
             self['sendcookies'] = True
 
     def sanitize_loginurl (self):
+        """Make login configuration consistent."""
         url = self["loginurl"]
         disable = False
         if not self["loginpasswordfield"]:

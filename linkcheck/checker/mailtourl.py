@@ -48,7 +48,7 @@ def getaddresses (addr):
 
 
 def is_quoted (addr):
-    """Return True iff address string is quoted."""
+    """Return True iff mail address string is quoted."""
     return addr.startswith(u'"') and addr.endswith(u'"')
 
 
@@ -60,6 +60,7 @@ def is_literal (domain):
 _remove_quoted = re.compile(ur'\\.').sub
 _quotes = re.compile(ur'["\\]')
 def is_missing_quote (addr):
+    """Return True iff mail address is not correctly quoted."""
     return _quotes.match(_remove_quoted(u"", addr[1:-1]))
 
 

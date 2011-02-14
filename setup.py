@@ -93,6 +93,7 @@ def cnormpath (path):
 
 
 class MyInstallLib (install_lib, object):
+    """Custom library installation."""
 
     def install (self):
         """Install the generated config file."""
@@ -104,6 +105,7 @@ class MyInstallLib (install_lib, object):
         return outs
 
     def create_conf_file (self):
+        """Create configuration file."""
         cmd_obj = self.distribution.get_command_obj("install")
         cmd_obj.ensure_finalized()
         # we have to write a configuration file because we need the
@@ -176,6 +178,7 @@ class MyDistribution (Distribution, object):
     """Custom distribution class generating config file."""
 
     def __init__ (self, attrs):
+        """Set console and windows scripts."""
         super(MyDistribution, self).__init__(attrs)
         self.console = ['linkchecker']
         self.windows = [{
@@ -313,6 +316,7 @@ class MyBuild (build, object):
             msgfmt.make(src, build_dst)
 
     def run (self):
+        """Check MANIFEST and build message files before building."""
         check_manifest()
         self.build_message_files()
         build.run(self)
@@ -322,6 +326,7 @@ class MyClean (clean, object):
     """Custom clean command."""
 
     def run (self):
+        """Remove share directory on clean."""
         if self.all:
             # remove share directory
             directory = os.path.join("build", "share")
@@ -393,10 +398,12 @@ if os.name == 'posix':
 
 
 class InnoScript:
+    """Class to generate INNO script."""
 
     def __init__(self, lib_dir, dist_dir, windows_exe_files=[],
                  console_exe_files=[], service_exe_files=[],
                  comserver_files=[], lib_files=[]):
+        """Store INNO script infos."""
         self.lib_dir = lib_dir
         self.dist_dir = dist_dir
         if not self.dist_dir[-1] in "\\/":
@@ -410,10 +417,12 @@ class InnoScript:
         self.lib_files = [self.chop(p) for p in lib_files]
 
     def chop(self, pathname):
+        """Remove distribution directory from path name."""
         assert pathname.startswith(self.dist_dir)
         return pathname[len(self.dist_dir):]
 
     def create(self, pathname="dist\\omt.iss"):
+        """Create Inno script."""
         self.pathname = pathname
         ofi = self.file = open(pathname, "w")
         print >> ofi, "; WARNING: This script has been created by py2exe. Changes to this script"
@@ -455,6 +464,7 @@ class InnoScript:
         print >> ofi, r'Filename: "{app}\vcredist_x86.exe"; StatusMsg: "Installing Microsoft dependencies"; Parameters: "/q:a"; Flags: waituntilterminated shellexec'
 
     def compile(self):
+        """Compile Inno script."""
         import ctypes
         res = ctypes.windll.shell32.ShellExecuteA(0, "compile",
             self.pathname, None, None, 0)
@@ -469,6 +479,7 @@ try:
         You need InnoSetup for it."""
 
         def run (self):
+            """Generate py2exe installer."""
             # First, let py2exe do it's work.
             py2exe_build.run(self)
             lib_dir = self.lib_dir
@@ -492,10 +503,12 @@ try:
             script.compile()
 except ImportError:
     class MyPy2exe:
+        """Dummy py2exe class."""
         pass
 
 
 class MyRegister (register, object):
+    """Custom register command."""
 
     def build_post_data(self, action):
         """Force application name to lower case."""

@@ -31,6 +31,9 @@ class CookieJar (object):
     """
 
     def __init__ (self):
+        """Initialize empty per-host cookie cache."""
+        # mapping { hostname -> Jar implementation }
+        # with Jar implemenations coming from the cookies module
         self.cache = {}
 
     @synchronized(_lock)
@@ -66,4 +69,5 @@ class CookieJar (object):
 
     @synchronized(_lock)
     def __str__ (self):
+        """Return stored cookies as string."""
         return "<CookieJar with %s>" % self.cache

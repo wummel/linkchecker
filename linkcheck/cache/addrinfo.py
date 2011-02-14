@@ -28,6 +28,9 @@ addrinfos = LFUCache(size=10000)
 
 @synchronized(_lock)
 def getaddrinfo (host, port):
+    """Determine address information for given host and port for
+    streaming sockets (SOCK_STREAM).
+    Already cached information is used."""
     key = u"%s:%s" % (unicode(host), unicode(port))
     if key in addrinfos:
         value = addrinfos[key]

@@ -515,6 +515,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # the connection after HEAD.
             # Example: http://www.empleo.gob.mx (Apache/1.3.33 (Unix) mod_jk)
             self.persistent = False
+        # Note that for POST method the connection should also be closed,
+        # but this method is never used.
         if self.persistent and (self.method == "GET" or
            self.headers.getheader("Content-Length") != "0"):
             # always read content from persistent connections

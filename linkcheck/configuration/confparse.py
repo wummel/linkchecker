@@ -36,6 +36,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
     """
 
     def __init__ (self, config):
+        """Initialize configuration."""
         super(LCConfigParser, self).__init__()
         self.config = config
 

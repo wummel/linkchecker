@@ -39,9 +39,11 @@ class StatusLogger (object):
     """Standard status logger. Default output is stderr."""
 
     def __init__ (self, fd=stderr):
+        """Save file descriptor for logging."""
         self.fd = fd
 
     def log_status (self, checked, in_progress, queue, duration):
+        """Write status message to file descriptor."""
         msg = _n("%2d URL active", "%2d URLs active", in_progress) % \
           in_progress
         self.write(u"%s, " % msg)
@@ -54,12 +56,15 @@ class StatusLogger (object):
         self.flush()
 
     def write (self, msg):
+        """Write message to file descriptor."""
         self.fd.write(msg)
 
     def writeln (self, msg):
+        """Write status message and line break to file descriptor."""
         self.fd.write(u"%s%s" % (msg, unicode(os.linesep)))
 
     def flush (self):
+        """Flush file descriptor."""
         self.fd.flush()
 
 

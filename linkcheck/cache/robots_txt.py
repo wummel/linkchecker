@@ -34,13 +34,13 @@ class RobotsTxt (object):
     """
 
     def __init__ (self):
+        """Initialize per-URL robots.txt cache."""
+        # mapping {URL -> parsed robots.txt}
         self.cache = LFUCache(size=100)
 
     @synchronized(_lock)
     def allows_url (self, roboturl, url, proxy, user, password, callback=None):
-        """
-        Ask robots.txt allowance.
-        """
+        """Ask robots.txt allowance."""
         useragent = str(configuration.UserAgent)
         if roboturl not in self.cache:
             rp = robotparser2.RobotFileParser(proxy=proxy, user=user,

@@ -22,11 +22,10 @@ _lock = threading.Lock()
 
 
 class Logger (object):
-    """
-    Thread safe multi-logger class used by aggregator instances.
-    """
+    """Thread safe multi-logger class used by aggregator instances."""
 
     def __init__ (self, config):
+        """Initialize basic logging variables."""
         self.logs = [config['logger']]
         self.logs.extend(config['fileoutput'])
         self.ignorewarnings = config["ignorewarnings"]

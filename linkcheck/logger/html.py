@@ -51,14 +51,10 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 
 
 class HtmlLogger (Logger):
-    """
-    Logger with HTML output.
-    """
+    """Logger with HTML output."""
 
     def __init__ (self, **args):
-        """
-        Initialize default HTML color values.
-        """
+        """Initialize default HTML color values."""
         super(HtmlLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.colorbackground = args['colorbackground']
@@ -70,15 +66,11 @@ class HtmlLogger (Logger):
         self.colorok = args['colorok']
 
     def part (self, name):
-        """
-        Return non-space-breakable part name.
-        """
+        """Return non-space-breakable part name."""
         return super(HtmlLogger, self).part(name).replace(" ", "&nbsp;")
 
     def comment (self, s, **args):
-        """
-        Write HTML comment.
-        """
+        """Write HTML comment."""
         self.write(u"<!-- ")
         self.write(s, **args)
         self.write(u" -->")
@@ -107,9 +99,7 @@ class HtmlLogger (Logger):
         self.flush()
 
     def log_url (self, url_data):
-        """
-        Write url checking info as HTML.
-        """
+        """Write url checking info as HTML."""
         self.write_table_start()
         if self.has_part("url"):
             self.write_url(url_data)
@@ -137,9 +127,7 @@ class HtmlLogger (Logger):
         self.flush()
 
     def write_table_start (self):
-        """
-        Start html table.
-        """
+        """Start html table."""
         self.writeln(u'<br clear="all"><br>')
         self.writeln(u'<table align="left" border="0" cellspacing="0"'
                      u' cellpadding="1"')
@@ -173,16 +161,12 @@ class HtmlLogger (Logger):
         self.writeln(u"</td></tr>")
 
     def write_name (self, url_data):
-        """
-        Write url_data.name.
-        """
+        """Write url_data.name."""
         args = (self.part("name"), cgi.escape(url_data.name))
         self.writeln(u"<tr><td>%s</td><td>`%s'</td></tr>" % args)
 
     def write_parent (self, url_data):
-        """
-        Write url_data.parent_url.
-        """
+        """Write url_data.parent_url."""
         self.write(u"<tr><td>"+self.part("parenturl")+
                    u'</td><td><a target="top" href="'+
                    url_data.parent_url+u'">'+
@@ -199,56 +183,42 @@ class HtmlLogger (Logger):
         self.writeln(u"</td></tr>")
 
     def write_base (self, url_data):
-        """
-        Write url_data.base_ref.
-        """
+        """Write url_data.base_ref."""
         self.writeln(u"<tr><td>"+self.part("base")+u"</td><td>"+
                      cgi.escape(url_data.base_ref)+u"</td></tr>")
 
     def write_real (self, url_data):
-        """
-        Write url_data.url.
-        """
+        """Write url_data.url."""
         self.writeln("<tr><td>"+self.part("realurl")+u"</td><td>"+
                      u'<a target="top" href="'+url_data.url+
                      u'">'+cgi.escape(url_data.url)+u"</a></td></tr>")
 
     def write_dltime (self, url_data):
-        """
-        Write url_data.dltime.
-        """
+        """Write url_data.dltime."""
         self.writeln(u"<tr><td>"+self.part("dltime")+u"</td><td>"+
                      (_("%.3f seconds") % url_data.dltime)+
                      u"</td></tr>")
 
     def write_dlsize (self, url_data):
-        """
-        Write url_data.dlsize.
-        """
+        """Write url_data.dlsize."""
         self.writeln(u"<tr><td>"+self.part("dlsize")+u"</td><td>"+
                      strformat.strsize(url_data.dlsize)+
                      u"</td></tr>")
 
     def write_checktime (self, url_data):
-        """
-        Write url_data.checktime.
-        """
+        """Write url_data.checktime."""
         self.writeln(u"<tr><td>"+self.part("checktime")+u"</td><td>"+
                      (_("%.3f seconds") % url_data.checktime)+u"</td></tr>")
 
     def write_info (self, url_data):
-        """
-        Write url_data.info.
-        """
+        """Write url_data.info."""
         sep = u"<br>"+os.linesep
         text = sep.join(cgi.escape(x) for x in url_data.info)
         self.writeln(u'<tr><td valign="top">' + self.part("info")+
                u"</td><td>"+text+u"</td></tr>")
 
     def write_warning (self, url_data):
-        """
-        Write url_data.warnings.
-        """
+        """Write url_data.warnings."""
         sep = u"<br>"+os.linesep
         text = sep.join(cgi.escape(x) for x in url_data.warnings)
         self.writeln(u'<tr><td bgcolor="' + self.colorwarning + u'" '+
@@ -257,9 +227,7 @@ class HtmlLogger (Logger):
                      text + u"</td></tr>")
 
     def write_result (self, url_data):
-        """
-        Write url_data.result.
-        """
+        """Write url_data.result."""
         if url_data.valid:
             self.write(u'<tr><td bgcolor="%s">' % self.colorok)
             self.write(self.part("result"))
@@ -275,6 +243,7 @@ class HtmlLogger (Logger):
         self.writeln(u"</td></tr>")
 
     def write_stats (self):
+        """Write check statistic infos."""
         self.writeln(u'<br><i>%s</i><br>' % _("Statistics"))
         if len(self.stats.domains) > 1:
             self.writeln(_("Number of domains: %d") % len(self.stats.domains))
@@ -294,6 +263,7 @@ class HtmlLogger (Logger):
         self.writeln(u"<br>")
 
     def write_outro (self):
+        """Write end of check message."""
         self.writeln(u"<br>")
         self.write(_("That's it.")+" ")
         if self.stats.number >= 0:
@@ -329,9 +299,7 @@ class HtmlLogger (Logger):
         self.writeln(u"</small></body></html>")
 
     def end_output (self):
-        """
-        Write end of checking info as HTML.
-        """
+        """Write end of checking info as HTML."""
         if self.has_part("stats"):
             self.write_stats()
         if self.has_part("outro"):

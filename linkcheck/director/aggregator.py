@@ -31,6 +31,7 @@ class Aggregate (object):
     """Store thread-safe data collections for checker threads."""
 
     def __init__ (self, config, urlqueue, connections, cookies, robots_txt):
+        """Store given link checking objects."""
         self.config = config
         self.urlqueue = urlqueue
         self.connections = connections
@@ -61,6 +62,7 @@ class Aggregate (object):
             checker.check_url(self.urlqueue, self.logger)
 
     def print_active_threads (self):
+        """Log all currently active threads."""
         first = True
         for t in self.threads:
             name = t.getName()

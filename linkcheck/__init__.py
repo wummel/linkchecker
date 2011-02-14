@@ -31,20 +31,24 @@ import _LinkChecker_configdata as configdata
 
 
 def main_is_frozen ():
+    """Return True iff running inside a py2exe-generated executable."""
     return hasattr(sys, "frozen")
 
 
 def module_path ():
+    """Return absolute directory of system executable."""
     return os.path.dirname(os.path.abspath(sys.executable))
 
 
 def get_install_data ():
+    """Return absolute path of LinkChecker data installation directory."""
     if main_is_frozen():
         return module_path()
     return configdata.install_data
 
 
 def get_config_dir ():
+    """Return absolute path of LinkChecker configuration directory."""
     if main_is_frozen():
         return os.path.join(module_path(), "share", "linkchecker")
     return configdata.config_dir

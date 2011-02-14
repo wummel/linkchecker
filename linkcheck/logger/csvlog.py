@@ -30,9 +30,7 @@ class CSVLogger (Logger):
     """
 
     def __init__ (self, **args):
-        """
-        Store default separator and (os dependent) line terminator.
-        """
+        """Store default separator and (os dependent) line terminator."""
         super(CSVLogger, self).__init__(**args)
         # due to a limitation of the csv module, all output has to be
         # utf-8 encoded
@@ -47,16 +45,12 @@ class CSVLogger (Logger):
         return open(self.filename, "wb")
 
     def comment (self, s, **args):
-        """
-        Write CSV comment.
-        """
+        """Write CSV comment."""
         self.write(u"# ")
         self.writeln(s=s, **args)
 
     def start_output (self):
-        """
-        Write checking start info as csv comment.
-        """
+        """Write checking start info as csv comment."""
         super(CSVLogger, self).start_output()
         row = []
         if self.has_part("intro"):
@@ -89,9 +83,7 @@ class CSVLogger (Logger):
             self.writerow(row)
 
     def log_url (self, url_data):
-        """
-        Write csv formatted url check info.
-        """
+        """Write csv formatted url check info."""
         row = []
         for s in (url_data.base_url,
                url_data.parent_url, url_data.base_ref,
@@ -108,12 +100,11 @@ class CSVLogger (Logger):
         self.flush()
 
     def writerow (self, row):
+        """Write one row in CSV format."""
         self.writer.writerow([self.encode(s) for s in row])
 
     def end_output (self):
-        """
-        Write end of checking info as csv comment.
-        """
+        """Write end of checking info as csv comment."""
         if self.has_part("outro"):
             self.write_outro()
         self.close_fileoutput()

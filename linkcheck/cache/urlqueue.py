@@ -64,11 +64,15 @@ class UrlQueue (object):
             return len(self.queue)
 
     def empty (self):
-        """Return True if the queue is empty, False otherwise (not reliable!)."""
+        """Return True if the queue is empty, False otherwise.
+        Result is thread-safe, but not reliable since the queue could have
+        been changed before the result is returned!"""
         with self.mutex:
             return self._empty()
 
     def _empty (self):
+        """Return True if the queue is empty, False otherwise.
+        Not thread-safe!"""
         return not self.queue
 
     def get (self, timeout=None):
@@ -80,6 +84,8 @@ class UrlQueue (object):
             return self._get(timeout)
 
     def _get (self, timeout):
+        """Non thread-safe utility function of self.get() doing the real
+        work."""
         if timeout is None:
             while self._empty():
                 self.not_empty.wait()
@@ -247,9 +253,7 @@ class UrlQueue (object):
             self.shutdown = True
 
     def status (self):
-        """
-        Get tuple (finished tasks, in progress, queue size).
-        """
+        """Get tuple (finished tasks, in progress, queue size)."""
         with self.mutex:
             return (self.finished_tasks,
                     len(self.in_progress), len(self.queue))

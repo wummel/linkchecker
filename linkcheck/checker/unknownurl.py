@@ -68,14 +68,10 @@ is_unknown_url = ignored_schemes_re.search
 
 
 class UnknownUrl (urlbase.UrlBase):
-    """
-    Handle unknown or just plain broken URLs.
-    """
+    """Handle unknown or just plain broken URLs."""
 
     def local_check (self):
-        """
-        Only logs that this URL is unknown.
-        """
+        """Only logs that this URL is unknown."""
         self.set_extern(self.url)
         if self.extern[0] and self.extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
@@ -88,11 +84,11 @@ class UnknownUrl (urlbase.UrlBase):
                         valid=False)
 
     def ignored (self):
+        """Return True if this URL scheme is ignored."""
         return ignored_schemes_re.search(self.url)
 
     def can_get_content (self):
-        """
-        Unknown URLs have no content.
+        """Unknown URLs have no content.
 
         @return: False
         @rtype: bool

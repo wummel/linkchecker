@@ -37,6 +37,7 @@ class IfConfig (object):
     IFF_AUTOMEDIA = 0x4000      # Auto media select active.
 
     def __init__ (self):
+        """Initialize a socket and determine ifreq structure size."""
         # create a socket so we have a handle to query
         self.sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # Note that sizeof(struct ifreq) is not always 32
@@ -44,6 +45,7 @@ class IfConfig (object):
         self.ifr_size = ifreq_size()
 
     def _ioctl (self, func, args):
+        """Call ioctl() with given parameters."""
         import fcntl
         return fcntl.ioctl(self.sockfd.fileno(), func, args)
 
@@ -52,6 +54,7 @@ class IfConfig (object):
         return struct.pack("%ds" % self.ifr_size, ifname)
 
     def _getaddr (self, ifname, func):
+        """Get interface address."""
         try:
             result = self._ioctl(func, self._getifreq(ifname))
         except IOError, msg:
