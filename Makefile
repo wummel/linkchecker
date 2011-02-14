@@ -114,7 +114,13 @@ check:
 	check-pofiles -v
 	py-tabdaddy
 	py-unittest2-compat tests/
+	$(MAKE) doccheck
 	$(MAKE) pyflakes
+
+doccheck:
+	py-check-docstrings --force linkcheck/HtmlParser linkcheck/checker \
+	  linkcheck/cache linkcheck/configuration linkcheck/director \
+	  linkcheck/htmlutil linkcheck/logger linkcheck/network *.py
 
 filescheck:
 	-./linkchecker $(LCOPTS) http://$(HOST)/
@@ -144,7 +150,7 @@ test:	localbuild
 
 .PHONY: pyflakes
 pyflakes:
-	pyflakes $(PY_FILES_DIRS) 2>&1 | \
+	pyflakes --force $(PY_FILES_DIRS) 2>&1 | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
