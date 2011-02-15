@@ -83,3 +83,17 @@ def open_wordfile (app, filename):
 
 def close_wordfile (doc):
     doc.Close()
+
+
+def get_shell_folder (name):
+    """Get Windows Shell Folder locations from the registry."""
+    import _winreg
+    lm = _winreg.ConnectRegistry(None, _winreg.HKEY_CURRENT_USER)
+    try:
+        key = _winreg.OpenKey(lm, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+        try:
+            return _winreg.QueryValueEx(key, name)[0]
+        finally:
+            key.Close()
+    finally:
+        lm.Close()
