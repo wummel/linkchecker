@@ -59,11 +59,20 @@ class LineEdit (QtGui.QLineEdit):
         menu = self.createStandardContextMenu()
         action = menu.addAction(_("Firefox bookmark file"))
         action.triggered.connect(self.add_firefox)
+        action = menu.addAction(_("Google Chrome bookmark file"))
+        action.triggered.connect(self.add_chromium)
         menu.exec_(event.globalPos())
 
     def add_firefox (self):
         """Copy Firefox bookmark file URL."""
         from ..bookmarks.firefox import find_bookmark_file
+        fname = find_bookmark_file()
+        if fname:
+            self.setText(fname)
+
+    def add_chromium (self):
+        """Copy Google Chrome bookmark file URL."""
+        from ..bookmarks.chromium import find_bookmark_file
         fname = find_bookmark_file()
         if fname:
             self.setText(fname)
