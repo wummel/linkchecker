@@ -15,8 +15,8 @@ Features:
 - checking: Added support for Google Chrome bookmark files.
 - gui: Preselect filename on save dialog when editing file:// URLs.
   Closes: SF bug #3176022
-- gui: Add context menu entries for finding Google Chrome bookmark
-  file.
+- gui: Add context menu entries for finding Google Chrome and Opera
+  bookmark files.
 
 
 6.3 "Due Date" (released 6.2.2011)
