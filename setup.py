@@ -562,6 +562,7 @@ o a (Fast)CGI web interface (requires HTTP server)
         'linkcheck.htmlutil', 'linkcheck.dns', 'linkcheck.dns.rdtypes',
         'linkcheck.dns.rdtypes.ANY', 'linkcheck.dns.rdtypes.IN',
         'linkcheck.HtmlParser', 'linkcheck.network', 'linkcheck.gui',
+        'linkcheck.bookmarks',
     ],
     ext_modules = [
         Extension('linkcheck.HtmlParser.htmlsax',

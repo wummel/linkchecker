@@ -63,8 +63,7 @@ class LineEdit (QtGui.QLineEdit):
 
     def add_firefox (self):
         """Copy Firefox bookmark file URL."""
-        from ..firefox import find_bookmark_file
+        from ..bookmarks.firefox import find_bookmark_file
         fname = find_bookmark_file()
         if fname:
             self.setText(fname)
-

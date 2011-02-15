@@ -120,7 +120,8 @@ check:
 doccheck:
 	py-check-docstrings --force linkcheck/HtmlParser linkcheck/checker \
 	  linkcheck/cache linkcheck/configuration linkcheck/director \
-	  linkcheck/htmlutil linkcheck/logger linkcheck/network *.py
+	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
+	  linkcheck/bookmarks *.py
 
 filescheck:
 	-./linkchecker $(LCOPTS) http://$(HOST)/
