@@ -14,6 +14,7 @@ Changes:
 Features:
 - gui: Preselect filename on save dialog when editing file:// URLs.
   Closes: SF bug #3176022
+- checking: Added support for Google Chrome bookmark files.
 
 
 6.3 "Due Date" (released 6.2.2011)

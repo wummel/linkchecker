@@ -1,0 +1,28 @@
+{
+   "checksum": "b1135bffd7fb303459b60851e3f800eb",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "12942261620096544",
+            "id": "3",
+            "name": "Testlink",
+            "type": "url",
+            "url": "http://example.com/"
+         } ],
+         "date_added": "0",
+         "date_modified": "12942261620096544",
+         "id": "1",
+         "name": "Bookmarks Bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "0",
+         "date_modified": "0",
+         "id": "2",
+         "name": "Other Bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}

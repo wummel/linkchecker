@@ -69,6 +69,10 @@ class TestFile (LinkCheckTest):
         # Opera bookmark file parsing
         self.file_test("opera6.adr")
 
+    def test_chromium_bookmarks (self):
+        # Google Chrome bookmark file parsing
+        self.file_test("Bookmarks")
+
     def test_directory_listing (self):
         # unpack non-unicode filename which cannot be stored
         # in the SF subversion repository

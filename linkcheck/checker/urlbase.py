@@ -86,6 +86,7 @@ class UrlBase (object):
         "application/msword": "word",
         "text/plain+linkchecker": "text",
         "text/plain+opera": "opera",
+        "text/plain+chromium": "chromium",
     }
 
     def __init__ (self, base_url, recursion_level, aggregate,
@@ -928,6 +929,15 @@ class UrlBase (object):
         for url, name, lineno in parse_bookmarks(self.get_content()):
             url_data = get_url_from(url, self.recursion_level+1,
                self.aggregate, parent_url=self.url, line=lineno, name=name)
+            self.aggregate.urlqueue.put(url_data)
+
+    def parse_chromium (self):
+        """Parse a Google Chrome bookmark file."""
+        log.debug(LOG_CHECK, "Parsing Chromium bookmarks %s", self)
+        from ..bookmarks.chromium import parse_bookmarks_data
+        for url, name in parse_bookmarks_data(self.get_content()):
+            url_data = get_url_from(url, self.recursion_level+1,
+               self.aggregate, parent_url=self.url, name=name)
             self.aggregate.urlqueue.put(url_data)
 
     def parse_text (self):

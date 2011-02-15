@@ -184,6 +184,7 @@ mimedb = mimetypes.MimeTypes(strict=False)
 PARSE_CONTENTS = {
     "text/html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
     "text/plain+opera": re.compile(r'^Opera Hotlist'),
+    "text/plain+chromium": re.compile(r'^{\s*"checksum":'),
     "text/plain+linkchecker": re.compile(r'(?i)^# LinkChecker URL list'),
 }
 
