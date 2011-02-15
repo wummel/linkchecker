@@ -25,7 +25,15 @@ nt_filename_encoding="mbcs"
 def get_profile_dir ():
     """Return path where all profiles of current user are stored."""
     if os.name == 'nt':
-        basedir = unicode(os.environ["APPDATA"], nt_filename_encoding)
+        if "LOCALAPPDATA" in os.environ:
+            basedir = unicode(os.environ["LOCALAPPDATA"], nt_filename_encoding)
+        else:
+            # read local appdata directory from registry
+            from ..winutils import get_shell_folder
+            try:
+                basedir = get_shell_folder("Local AppData")
+            except EnvironmentError:
+                basedir = os.path.join(os.environ["USERPROFILE"], "Local Settings", "Application Data")
         dirpath = os.path.join(basedir, u"Google", u"Chrome", u"User Data")
     elif os.name == 'posix':
         basedir = unicode(os.environ["HOME"])
