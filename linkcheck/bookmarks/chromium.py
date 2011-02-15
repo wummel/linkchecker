@@ -29,7 +29,7 @@ def get_profile_dir ():
             basedir = unicode(os.environ["LOCALAPPDATA"], nt_filename_encoding)
         else:
             # read local appdata directory from registry
-            from ..winutils import get_shell_folder
+            from ..winutil import get_shell_folder
             try:
                 basedir = get_shell_folder("Local AppData")
             except EnvironmentError:
