@@ -30,7 +30,7 @@ def get_profile_dir ():
     """Return path where all profiles of current user are stored."""
     if os.name == 'nt':
         basedir = unicode(os.environ["APPDATA"], nt_filename_encoding)
-        dirpath = os.path.join(basedir, u"Opera")
+        dirpath = os.path.join(basedir, u"Opera", u"Opera")
     elif os.name == 'posix':
         basedir = unicode(os.environ["HOME"])
         dirpath = os.path.join(basedir, u".opera")
@@ -42,7 +42,7 @@ def find_bookmark_file ():
     Returns absolute filename if found, or empty string if no bookmark file
     could be found.
     """
-    dirname = os.path.join(get_profile_dir(), "profile")
+    dirname = get_profile_dir()
     if os.path.isdir(dirname):
         for name in OperaBookmarkFiles:
             fname = os.path.join(dirname, name)
