@@ -57,31 +57,28 @@ class LineEdit (QtGui.QLineEdit):
     def contextMenuEvent (self, event):
         """Add Firefox bookmark action to context menu."""
         menu = self.createStandardContextMenu()
-        action = menu.addAction(_("Firefox bookmark file"))
-        action.triggered.connect(self.add_firefox)
-        action = menu.addAction(_("Google Chrome bookmark file"))
-        action.triggered.connect(self.add_chromium)
-        action = menu.addAction(_("Opera bookmark file"))
-        action.triggered.connect(self.add_opera)
+        if find_firefox():
+            action = menu.addAction(_("Firefox bookmark file"))
+            action.triggered.connect(lambda: self.setText(find_firefox()))
+        if find_chromium():
+            action = menu.addAction(_("Google Chrome bookmark file"))
+            action.triggered.connect(lambda: self.setText(find_chromium()))
+        if find_opera():
+            action = menu.addAction(_("Opera bookmark file"))
+            action.triggered.connect(lambda: self.setText(find_opera()))
         menu.exec_(event.globalPos())
 
-    def add_firefox (self):
-        """Copy Firefox bookmark file URL."""
-        from ..bookmarks.firefox import find_bookmark_file
-        fname = find_bookmark_file()
-        if fname:
-            self.setText(fname)
 
-    def add_chromium (self):
-        """Copy Google Chrome bookmark file URL."""
-        from ..bookmarks.chromium import find_bookmark_file
-        fname = find_bookmark_file()
-        if fname:
-            self.setText(fname)
+def find_firefox ():
+    from ..bookmarks.firefox import find_bookmark_file
+    return find_bookmark_file()
 
-    def add_opera (self):
-        """Copy Opery bookmark file URL."""
-        from ..bookmarks.opera import find_bookmark_file
-        fname = find_bookmark_file()
-        if fname:
-            self.setText(fname)
+
+def find_chromium ():
+    from ..bookmarks.chromium import find_bookmark_file
+    return find_bookmark_file()
+
+
+def find_opera ():
+    from ..bookmarks.opera import find_bookmark_file
+    return find_bookmark_file()
