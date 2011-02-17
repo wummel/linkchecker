@@ -70,11 +70,14 @@ class StoppableThread (threading.Thread):
     regularly for the stopped() condition."""
 
     def __init__ (self):
+        """Store stop event."""
         super(StoppableThread, self).__init__()
         self._stop = threading.Event()
 
     def stop (self):
+        """Set stop event."""
         self._stop.set()
 
     def stopped (self):
+        """Return True if stop event is set."""
         return self._stop.isSet()

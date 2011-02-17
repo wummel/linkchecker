@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010 Bastian Kleineidam
+# Copyright (C) 2010-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ def init_win32com ():
 
 
 def _init ():
+    """Initialize the win32com package."""
     if has_win32com:
         init_win32com()
 _init()
@@ -74,14 +75,17 @@ def get_word_app ():
 
 
 def close_word_app (app):
+    """Close Word application object."""
     app.Quit()
 
 
 def open_wordfile (app, filename):
+    """Open given Word file with application object."""
     return app.Documents.Open(filename)
 
 
 def close_wordfile (doc):
+    """Close word file."""
     doc.Close()
 
 

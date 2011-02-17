@@ -121,7 +121,32 @@ doccheck:
 	py-check-docstrings --force linkcheck/HtmlParser linkcheck/checker \
 	  linkcheck/cache linkcheck/configuration linkcheck/director \
 	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
-	  linkcheck/bookmarks *.py
+	  linkcheck/bookmarks \
+	  linkcheck/__init__.py \
+	  linkcheck/ansicolor.py \
+	  linkcheck/clamav.py \
+	  linkcheck/containers.py \
+	  linkcheck/cookies.py \
+	  linkcheck/decorators.py \
+	  linkcheck/dummy.py \
+	  linkcheck/fileutil.py \
+	  linkcheck/ftpparse.py \
+	  linkcheck/geoip.py \
+	  linkcheck/httputil.py \
+	  linkcheck/i18n.py \
+	  linkcheck/lc_cgi.py \
+	  linkcheck/lock.py \
+	  linkcheck/log.py \
+	  linkcheck/mem.py \
+	  linkcheck/robotparser2.py \
+	  linkcheck/socketutil.py \
+	  linkcheck/strformat.py \
+	  linkcheck/threader.py \
+	  linkcheck/trace.py \
+	  linkcheck/updater.py \
+	  linkcheck/url.py \
+	  linkcheck/winutil.py \
+	  *.py
 
 filescheck:
 	-./linkchecker $(LCOPTS) http://$(HOST)/

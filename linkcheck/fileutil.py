@@ -160,6 +160,7 @@ else:
     FSCODING = "utf-8"
 
 def pathencode (path):
+    """Encode a path string with the platform file system encoding."""
     if isinstance(path, unicode) and not os.path.supports_unicode_filenames:
         path = path.encode(FSCODING, "replace")
     return path

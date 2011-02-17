@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010 Bastian Kleineidam
+# Copyright (C) 2010-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,13 +58,13 @@ class LineEdit (QtGui.QLineEdit):
         """Add Firefox bookmark action to context menu."""
         menu = self.createStandardContextMenu()
         if find_firefox():
-            action = menu.addAction(_("Firefox bookmark file"))
+            action = menu.addAction(_("Insert Firefox bookmark file"))
             action.triggered.connect(lambda: self.setText(find_firefox()))
         if find_chromium():
-            action = menu.addAction(_("Google Chrome bookmark file"))
+            action = menu.addAction(_("Insert Google Chrome bookmark file"))
             action.triggered.connect(lambda: self.setText(find_chromium()))
         if find_opera():
-            action = menu.addAction(_("Opera bookmark file"))
+            action = menu.addAction(_("Insert Opera bookmark file"))
             action.triggered.connect(lambda: self.setText(find_opera()))
         menu.exec_(event.globalPos())
 

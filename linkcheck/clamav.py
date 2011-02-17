@@ -21,6 +21,7 @@ from . import log, LOG_ROOT
 from .socketutil import create_socket
 
 class ClamavError (Exception):
+    """Raised on clamav errors."""
     pass
 
 

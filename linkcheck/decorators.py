@@ -126,6 +126,7 @@ def timeit (func, log, limit):
 
 
 def timed (log=sys.stderr, limit=2.0):
+    """Decorator to run a function with timing info."""
     return lambda func: timeit(func, log, limit)
 
 
@@ -135,10 +136,13 @@ class memoized (object):
     not re-evaluated."""
 
     def __init__(self, func):
+        """Store function and initialize the cache."""
         self.func = func
         self.cache = {}
 
     def __call__(self, *args):
+        """Lookup and return cached result if found. Else call stored
+        function with given arguments."""
         try:
             return self.cache[args]
         except KeyError:
@@ -158,11 +162,15 @@ class curried (object):
     """Decorator that returns a function that keeps returning functions
     until all arguments are supplied; then the original function is
     evaluated."""
+
     def __init__(self, func, *a):
+        """Store function and arguments."""
         self.func = func
         self.args = a
 
     def __call__(self, *a):
+    """If all arguments function arguments are supplied, call it.
+    Else return another curried object."""
         args = self.args + a
         if len(args) < self.func.func_code.co_argcount:
             return curried(self.func, *args)

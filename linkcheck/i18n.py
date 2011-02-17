@@ -125,6 +125,9 @@ def get_headers_lang (headers):
 
 
 def get_locale ():
+    """Search the default platform locale and norm it.
+    @returns (locale, encoding)
+    @rtype (string, string)"""
     loc, encoding = locale.getdefaultlocale()
     if loc is None:
         loc = "C"

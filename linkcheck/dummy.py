@@ -22,42 +22,55 @@ class Dummy (object):
     """A dummy object ignores all access to it. Useful for testing."""
 
     def __init__ (self, *args, **kwargs):
+        """Return None"""
         pass
 
     def __call__ (self, *args, **kwargs):
+        """Return self."""
         return self
 
     def __getattr__ (self, name):
+        """Return self."""
         return self
 
     def __setattr__ (self, name, value):
+        """Return None"""
         pass
 
     def __delattr__ (self, name):
+        """Return None"""
         pass
 
     def __str__ (self):
+        """Return 'dummy'"""
         return "dummy"
 
     def __repr__ (self):
+        """Return '<dummy>'"""
         return "<dummy>"
 
     def __unicode__ (self):
+        """Return u'dummy'"""
         return u"dummy"
 
     def __len__ (self):
+        """Return zero"""
         return 0
 
     def __getitem__ (self, key):
+        """Return self"""
         return self
 
     def __setitem__ (self, key, value):
+        """Return None"""
         pass
 
     def __delitem__ (self, key):
+        """Return None"""
         pass
 
     def __contains__ (self, key):
+        """Return False"""
         return False
 
 

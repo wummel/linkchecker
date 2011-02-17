@@ -21,6 +21,7 @@ import threading
 from . import log, LOG_THREAD
 
 def get_lock (name):
+    """Return a new thread lock object."""
     return threading.Lock()
     # for thread debugging, use the DebugLock wrapper
     #return DebugLock(threading.Lock(), name)
@@ -28,7 +29,9 @@ def get_lock (name):
 
 class DebugLock (object):
     """Debugging lock class."""
+
     def __init__ (self, lock, name):
+        """Store lock and name parameters."""
         self.lock = lock
         self.name = name
 

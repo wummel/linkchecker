@@ -25,6 +25,7 @@ class AttrDict (dict):
     are valid attribute names and not already existing methods."""
 
     def __getattr__ (self, name):
+        """Return attribute name from dict."""
         return self[name]
 
 
@@ -40,6 +41,7 @@ class ListDict (dict):
         self._keys = []
 
     def setdefault (self, key, *args):
+        """Remember key order if key not found."""
         if key not in self:
             self._keys.append(key)
         return super(ListDict, self).setdefault(key, *args)
