@@ -24,3 +24,4 @@ Changelog.linkchecker*
 /doc/html/*.qhc
 /doc/html/*.qch
 /.achievements
+/po/*.mo
