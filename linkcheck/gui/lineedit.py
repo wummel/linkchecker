@@ -70,15 +70,18 @@ class LineEdit (QtGui.QLineEdit):
 
 
 def find_firefox ():
+    """Return Firefox bookmark filename or empty string if not found."""
     from ..bookmarks.firefox import find_bookmark_file
     return find_bookmark_file()
 
 
 def find_chromium ():
+    """Return Google Chrome bookmark filename or empty string if not found."""
     from ..bookmarks.chromium import find_bookmark_file
     return find_bookmark_file()
 
 
 def find_opera ():
+    """Return Opera bookmark filename or empty string if not found."""
     from ..bookmarks.opera import find_bookmark_file
     return find_bookmark_file()

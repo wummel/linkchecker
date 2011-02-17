@@ -59,8 +59,10 @@ ContentTypeLexers = {
 }
 
 class Editor (Qsci.QsciScintilla):
+    """Configured QsciScintilla widget."""
 
     def __init__ (self, parent=None):
+        """Set Scintilla options for font, colors, etc."""
         super(Editor, self).__init__(parent)
         # Use Courier font with fixed width
         font = QtGui.QFont("Consolas", 11)
@@ -99,8 +101,10 @@ class Editor (Qsci.QsciScintilla):
 
 
 class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
+    """Scintilla editor window."""
 
     def __init__ (self, parent=None):
+        """Initialize the Scintilla editor widget."""
         super(EditorWindow, self).__init__(parent)
         self.setupUi(self)
         # filename used for saving
@@ -130,6 +134,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
             self.editor.setLexer()
 
     def setText (self, text, line=1, col=1):
+        """Set editor text and jump to given line and column."""
         self.editor.setText(text)
         self.editor.setCursorPosition(line-1, col-1)
         self.editor.setModified(False)
@@ -146,11 +151,12 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
 
     @QtCore.pyqtSignature("")
     def on_actionSave_triggered (self):
-        """Save editor contents."""
+        """Save changed editor contents."""
         if self.editor.isModified() or not self.filename:
             self.save()
 
     def save (self):
+        """Save editor contents to file."""
         if not self.filename:
             title = _("Save File As")
             res = QtGui.QFileDialog.getSaveFileName(self, title, self.basedir)
@@ -182,6 +188,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 fh.close()
 
     def load (self, filename):
+        """Load editor contents from file."""
         if not os.path.isfile(filename):
             return
         if not os.access(filename, os.R_OK):

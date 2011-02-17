@@ -1,4 +1,5 @@
-# Sample resource file; see linkchecker -h for help on these options.
+# Sample resource file; see the linkcheckerrc(5) man page or
+# execute linkchecker -h for help on these options.
 # Commandline options override these settings.
 
 [output]

@@ -23,6 +23,7 @@ class ContextMenu (QtGui.QMenu):
     """Show context menu."""
 
     def __init__ (self, parent=None):
+        """Add actions to context menu."""
         super(ContextMenu, self).__init__(parent)
         self.addAction(parent.actionViewOnline)
         self.addAction(parent.actionCopyToClipboard)

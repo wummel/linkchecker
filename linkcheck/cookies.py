@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2005-2010 Bastian Kleineidam
+# Copyright (C) 2005-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -87,6 +87,8 @@ class HttpCookie (object):
     }
 
     def __init__ (self, name, value, attributes=None):
+        """Store name, value and attributes. Also calculates expiration
+        if given in attributes."""
         self.name = name
         self.value = value
         if attributes is None:
@@ -96,10 +98,15 @@ class HttpCookie (object):
         self.calculate_expiration()
 
     def calculate_expiration (self):
-        now = time.time()
-        # default: does not expire
+        """If "max-age" or "expires" attributes are given, calculate
+        the time when this cookie expires.
+        Stores the time value in self.expires, or None if this cookie
+        does not expire.
+        """
+        # default: do not expire
         self.expire = None
         if "max-age" in self.attributes:
+            now = time.time()
             try:
                 maxage = int(self.attributes["max-age"])
                 if maxage == 0:
@@ -115,6 +122,7 @@ class HttpCookie (object):
             self.expire = cookielib.http2time(self.attributes["expires"])
 
     def is_expired (self, now=None):
+        """Return True if this cookie is expired, else False."""
         if self.expire is None:
             # Does not expire.
             return False
@@ -123,6 +131,7 @@ class HttpCookie (object):
         return now > self.expire
 
     def __repr__ (self):
+        """Return cookie name, value and attributes as string."""
         attrs = "; ".join("%s=%r"%(k, v) for k, v in self.attributes.items())
         return "<%s %s=%r; %s>" % (self.__class__.__name__,
          self.name, self.value, attrs)
@@ -139,9 +148,11 @@ class HttpCookie (object):
         return False
 
     def check_expired (self):
+        """Return False if cookie is expired, else True."""
         return not self.is_expired()
 
     def check_domain (self, domain):
+        """Return True if given domain matches this cookie, else False."""
         if "domain" not in self.attributes:
             return False
         cdomain = self.attributes["domain"]
@@ -160,22 +171,32 @@ class HttpCookie (object):
         return True
 
     def check_port (self, port):
+        """Return True if given port matches this cookie, else False.
+        For now, this returns always True."""
         return True
 
     def check_path (self, path):
+        """Return True if given path matches this cookie, else False."""
         if "path" not in self.attributes:
             return False
         return path.startswith(self.attributes["path"])
 
     def check_secure (self, scheme):
+        """Return True if given Scheme is allowed for this cookie, else
+        False."""
         if "secure" in self.attributes:
             return scheme == "https"
         return True
 
     def client_header_name (self):
+        """Return "Cookie" as client header name."""
         return "Cookie"
 
     def set_attribute (self, key, value):
+        """Helper method to set attribute values. Called when parsing
+        cookie data.
+        The attribute key and value are checked, and CookieError is
+        raised in these cases."""
         if self.attributes is None:
             raise CookieError("no NAME=VALUE before attributes found")
         key = key.lower()
@@ -206,6 +227,7 @@ class HttpCookie (object):
         self.attributes[key] = value
 
     def parse (self, text, patt=CookiePattern):
+        """Parse cookie data."""
         text = strformat.ascii_safe(text)
         # reset values
         self.name = None
@@ -237,6 +259,8 @@ class HttpCookie (object):
         self.calculate_expiration()
 
     def set_default_attributes (self, scheme, host, path):
+        """Set domain and path attributes for given scheme, host and
+        path."""
         scheme = strformat.ascii_safe(scheme)
         host = strformat.ascii_safe(host)
         path = strformat.ascii_safe(path)
@@ -261,15 +285,18 @@ class HttpCookie (object):
             raise CookieError("no secure scheme %r" % scheme)
 
     def quote (self, key, value):
+        """Quote value for given key."""
         return quote(value)
 
     def server_header_value (self):
+        """Return HTTP header value to send to server."""
         parts = ["%s=%s" % (self.name, quote(self.value))]
         parts.extend(["%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
                   for k, v in self.attributes.items()])
         return "; ".join(parts)
 
     def client_header_value (self):
+        """Return HTTP header value to send to client."""
         parts = []
         if "version" in self.attributes:
             parts.append("$Version=%s" % quote(self.attributes["version"]))
@@ -279,6 +306,7 @@ class HttpCookie (object):
         return "; ".join(parts)
 
     def __eq__ (self, other):
+        """Compare equality of cookie."""
         return isinstance(other, HttpCookie) and \
                self.server_header_value() == other.server_header_value()
 
@@ -287,29 +315,36 @@ class NetscapeCookie (HttpCookie):
     """Parses RFC 2109 (Netscape) cookies."""
 
     def __init__ (self, text, scheme, host, path):
+        """Parse given cookie data."""
         self.parse(text)
         self.set_default_attributes(scheme, host, path)
 
     def server_header_name (self):
+        """Return "Set-Cookie" as server header name."""
         return "Set-Cookie"
 
 
 class Rfc2965Cookie (HttpCookie):
+    """Parses RFC 2965 cookies."""
 
     def __init__ (self, text, scheme, host, path):
+        """Parse given cookie data."""
         self.parse(text)
         self.set_default_attributes(scheme, host, path)
 
     def check_port (self, port):
+        """Return True if given port matches this cookie, else False."""
         if "port" not in self.attributes:
             return True
         cport = self.attributes["port"]
         return port in [int(x) for x in cport.split(",")]
 
     def server_header_name (self):
+        """Return "Set-Cookie2" as server header name."""
         return "Set-Cookie2"
 
     def quote (self, key, value):
+        """Quote value for given key."""
         if key == "port":
             return quote(value, LegalChars="")
         return quote(value)

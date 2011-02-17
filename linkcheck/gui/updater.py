@@ -20,6 +20,7 @@ from .. import updater, configuration
 
 
 class UpdateThread (QtCore.QThread):
+    """Thread to check for updated versions."""
 
     def reset (self):
         """Reset version information."""
@@ -31,8 +32,10 @@ class UpdateThread (QtCore.QThread):
 
 
 class UpdateDialog (QtGui.QMessageBox):
+    """Dialog displaying results of an update check."""
 
     def __init__ (self, parent=None):
+        """Initialize dialog and start background update thread."""
         super(UpdateDialog, self).__init__(parent)
         title = _('%(app)s update information') % dict(app=configuration.App)
         self.setWindowTitle(title)
@@ -40,12 +43,14 @@ class UpdateDialog (QtGui.QMessageBox):
         self.thread.finished.connect(self.update)
 
     def reset (self):
+        """Reset dialog and restart update check."""
         self.thread.reset()
         self.thread.start()
         self.setIcon(QtGui.QMessageBox.Information)
         self.setText(_('Checking for updates...'))
 
     def update (self):
+        """Display update thread result (which must be available)."""
         result, value = self.thread.result, self.thread.value
         if result:
             if value is None:

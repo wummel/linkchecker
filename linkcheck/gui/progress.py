@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2009-2010 Bastian Kleineidam
+# Copyright (C) 2009-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,11 +20,12 @@ from .linkchecker_ui_progress import Ui_ProgressDialog
 
 
 class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
-    """Show progress bar."""
+    """Show progress dialog with progress bar and some text info."""
 
     log_status_signal = QtCore.pyqtSignal(int, int, int, float)
 
     def __init__ (self, parent=None):
+        """Initialize progress dialog."""
         super(LinkCheckerProgress, self).__init__(parent)
         self.setupUi(self)
         self.progressBar.setMinimum(0)
@@ -33,11 +34,13 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.cancelButton.clicked.connect(self.cancel)
 
     def log_status (self, checked, in_progress, queued, duration):
+        """Update number of checked, active and queued URLs."""
         self.label_checked.setText(u"%d" % checked)
         self.label_active.setText(u"%d" % in_progress)
         self.label_queued.setText(u"%d" % queued)
 
     def reset (self):
+        """Reset progress information."""
         self.cancelButton.setEnabled(True)
         self.label_active.setText(u"0")
         self.label_queued.setText(u"0")
@@ -45,15 +48,18 @@ class LinkCheckerProgress (QtGui.QDialog, Ui_ProgressDialog):
         self.cancelLabel.setText(u"")
 
     def cancel (self):
+        """Note that checking is canceled."""
         self.cancelButton.setEnabled(False)
         self.cancelLabel.setText(_(u"Closing pending connections..."))
 
 
 class StatusLogger (object):
-    """GUI status logger, printing to progress dialog."""
+    """GUI status logger, signaling to progress dialog."""
 
     def __init__ (self, signal):
+        """Store given signal object."""
         self.signal = signal
 
     def log_status (self, checked, in_progress, queued, duration):
+        """Emit signal with given status information."""
         self.signal.emit(checked, in_progress, queued, duration)

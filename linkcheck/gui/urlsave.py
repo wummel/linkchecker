@@ -48,6 +48,8 @@ def urlsave (parent, config, urls):
 
 
 def get_save_filename (parent, basedir):
+    """Open file save dialog for given parent window and base directory.
+    Return dialog result."""
     filename = "linkchecker-out.html"
     title = _("Save check results")
     func = QtGui.QFileDialog.getSaveFileName

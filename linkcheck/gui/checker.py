@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2008-2010 Bastian Kleineidam
+# Copyright (C) 2008-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,16 +22,19 @@ class CheckerThread (QtCore.QThread):
     """Separate checker thread."""
 
     def __init__ (self, parent=None):
+        """Reset check variables."""
         super(CheckerThread, self).__init__(parent)
         self.exiting = False
         self.aggregate = None
         self.progress = None
 
     def __del__(self):
+        """Stop thread."""
         self.exiting = True
         self.wait()
 
     def check (self, aggregate, progress):
+        """Set check variables and start the thread."""
         self.aggregate = aggregate
         self.progress = progress
         self.progress.cancelButton.clicked.connect(self.cancel)
@@ -39,7 +42,7 @@ class CheckerThread (QtCore.QThread):
         self.start()
 
     def cancel (self):
-        # stop checking
+        """Reset check variables and set stop flag."""
         if self.progress is not None:
             self.progress = None
         if self.aggregate is not None:
@@ -47,6 +50,6 @@ class CheckerThread (QtCore.QThread):
             self.aggregate = None
 
     def run (self):
-        # start checking
+        """Start checking."""
         assert self.aggregate.config["threads"] > 0
         director.check_urls(self.aggregate)

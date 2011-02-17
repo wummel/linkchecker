@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2005-2010 Bastian Kleineidam
+# Copyright (C) 2005-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -169,8 +169,8 @@ class curried (object):
         self.args = a
 
     def __call__(self, *a):
-    """If all arguments function arguments are supplied, call it.
-    Else return another curried object."""
+        """If all arguments function arguments are supplied, call it.
+        Else return another curried object."""
         args = self.args + a
         if len(args) < self.func.func_code.co_argcount:
             return curried(self.func, *args)

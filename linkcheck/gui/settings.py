@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010 Bastian Kleineidam
+# Copyright (C) 2010-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,11 +34,14 @@ def save_size (qsize):
 
 
 class Settings (object):
+    """Save and read GUI settings."""
 
     def __init__ (self, base, appname):
+        """Initialize a QSettings object."""
         self.settings = QtCore.QSettings(base, appname)
 
     def read_geometry (self):
+        """Return stored size and position of main window."""
         data = dict(size=None, pos=None)
         self.settings.beginGroup('mainwindow')
         if self.settings.contains('size'):
@@ -49,6 +52,7 @@ class Settings (object):
         return data
 
     def save_geometry (self, data):
+        """Save size and position of main window."""
         size = save_size(data["size"])
         pos = save_point(data["pos"])
         self.settings.beginGroup('mainwindow')
@@ -57,6 +61,7 @@ class Settings (object):
         self.settings.endGroup()
 
     def read_treeviewcols (self):
+        """Return widths of URL treeview columns."""
         data = dict(col1=200, col2=200, col3=150)
         self.settings.beginGroup('treeview')
         for key in ("col1", "col2", "col3"):
@@ -72,12 +77,14 @@ class Settings (object):
         return data
 
     def save_treeviewcols (self, data):
+        """Save widths of URL treeview columns."""
         self.settings.beginGroup('treeview')
         for key in ("col1", "col2", "col3"):
             self.settings.setValue(key, QtCore.QVariant(data[key]))
         self.settings.endGroup()
 
     def read_options (self):
+        """Return stored GUI options."""
         data = dict(debug=None, verbose=None, recursionlevel=None)
         self.settings.beginGroup('output')
         debug = verbose = None
@@ -102,6 +109,7 @@ class Settings (object):
         return data
 
     def save_options (self, data):
+        """Save GUI options."""
         self.settings.beginGroup('output')
         for key in ("debug", "verbose"):
             self.settings.setValue(key, QtCore.QVariant(data[key]))
@@ -112,4 +120,5 @@ class Settings (object):
         self.settings.endGroup()
 
     def sync (self):
+        """Synchronize QSettings object to disk."""
         self.settings.sync()

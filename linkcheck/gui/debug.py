@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2009-2010 Bastian Kleineidam
+# Copyright (C) 2009-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,10 +25,12 @@ class LinkCheckerDebug (QtGui.QDialog, Ui_DebugDialog):
     log_msg_signal = QtCore.pyqtSignal(str)
 
     def __init__ (self, parent=None):
+        """Setup the debug message dialog."""
         super(LinkCheckerDebug, self).__init__(parent)
         self.setupUi(self)
         self.log_msg_signal.connect(self.textEdit.appendPlainText)
         self.reset()
 
     def reset (self):
+        """Clear all debug info."""
         self.textEdit.clear()

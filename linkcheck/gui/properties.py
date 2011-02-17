@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010 Bastian Kleineidam
+# Copyright (C) 2010-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ from .. import strformat
 
 
 def set_properties (widget, data):
-    """Write URL data values into text fields."""
+    """Write URL data values into widget text fields."""
     if data.url:
         widget.prop_url.setText(u'<a href="%(url)s">%(url)s</a>' % \
                               dict(url=data.url))
@@ -54,6 +54,7 @@ def set_properties (widget, data):
 
 
 def clear_properties (widget):
+    """Reset URL data values in widget text fields."""
     widget.prop_url.setText(u"")
     widget.prop_name.setText(u"")
     widget.prop_parenturl.setText(u"")
@@ -67,6 +68,7 @@ def clear_properties (widget):
 
 
 def wrap (lines, width):
+    """Format lines with given line-width."""
     sep = os.linesep+os.linesep
     text = sep.join(lines)
     kwargs = dict(break_long_words=False, break_on_hyphens=False)

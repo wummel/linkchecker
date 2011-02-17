@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2010 Bastian Kleineidam
+# Copyright (C) 2004-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,11 +58,13 @@ class ListDict (dict):
         super(ListDict, self).__delitem__(key)
 
     def pop (self, key):
+        """Remove key from dict and return value."""
         if key in self._keys:
             self._keys.remove(key)
         super(ListDict, self).pop(key)
 
     def popitem (self):
+        """Remove oldest key from dict and return item."""
         if self._keys:
             k = self._keys[0]
             v = self[k]
@@ -115,34 +117,42 @@ class CaselessDict (dict):
     """A dictionary ignoring the case of keys (which must be strings)."""
 
     def __getitem__ (self, key):
+        """Return lowercase key item."""
         assert isinstance(key, basestring)
         return dict.__getitem__(self, key.lower())
 
     def __delitem__ (self, key):
+        """Remove lowercase key item."""
         assert isinstance(key, basestring)
         return dict.__delitem__(self, key.lower())
 
     def __setitem__ (self, key, value):
+        """Set lowercase key item."""
         assert isinstance(key, basestring)
         dict.__setitem__(self, key.lower(), value)
 
     def __contains__ (self, key):
+        """Check lowercase key item."""
         assert isinstance(key, basestring)
         return dict.__contains__(self, key.lower())
 
     def get (self, key, def_val=None):
+        """Return lowercase key value."""
         assert isinstance(key, basestring)
         return dict.get(self, key.lower(), def_val)
 
     def setdefault (self, key, *args):
+        """Set lowercase key value and return."""
         assert isinstance(key, basestring)
         return dict.setdefault(self, key.lower(), *args)
 
     def update (self, other):
+        """Update this dict with lowercase key from other dict"""
         for k, v in other.items():
             dict.__setitem__(self, k.lower(), v)
 
     def fromkeys (cls, iterable, value=None):
+        """Construct new caseless dict from given data."""
         d = cls()
         for k in iterable:
             dict.__setitem__(d, k.lower(), value)
@@ -150,6 +160,7 @@ class CaselessDict (dict):
     fromkeys = classmethod(fromkeys)
 
     def pop (self, key, *args):
+        """Remove lowercase key from dict and return value."""
         assert isinstance(key, basestring)
         return dict.pop(self, key.lower(), *args)
 
@@ -158,12 +169,15 @@ class CaselessSortedDict (CaselessDict):
     """Caseless dictionary with sorted keys."""
 
     def keys (self):
+        """Return sorted key list."""
         return sorted(super(CaselessSortedDict, self).keys())
 
     def items (self):
+        """Return sorted item list."""
         return [(x, self[x]) for x in self.keys()]
 
     def iteritems (self):
+        """Return sorted item iterator."""
         return ((x, self[x]) for x in self.keys())
 
 
@@ -171,6 +185,7 @@ class LFUCache (dict):
     """Limited cache which purges least frequently used items."""
 
     def __init__ (self, size=1000):
+        """Initialize internal LFU cache."""
         super(LFUCache, self).__init__()
         if size < 1:
             raise ValueError("invalid cache size %d" % size)
@@ -198,6 +213,7 @@ class LFUCache (dict):
                 del self[key]
 
     def __getitem__ (self, key):
+        """Update key usage and return value."""
         value = super(LFUCache, self).__getitem__(key)
         value[0] += 1
         return value[1]
@@ -208,35 +224,44 @@ class LFUCache (dict):
         return super(LFUCache, self).__getitem__(key)[0]
 
     def get (self, key, def_val=None):
+        """Update key usage if found and return value, else return default."""
         if key in self:
             return self[key]
         return def_val
 
     def setdefault (self, key, def_val=None):
+        """Update key usage if found and return value, else set and return
+        default."""
         if key in self:
             return self[key]
         self[key] = def_val
         return def_val
 
     def items (self):
+        """Return list of items, not updating usage count."""
         return [(key, value[1]) for key, value in super(LFUCache, self).items()]
 
     def iteritems (self):
+        """Return iterator of items, not updating usage count."""
         for key, value in super(LFUCache, self).iteritems():
             yield (key, value[1])
 
     def values (self):
+        """Return list of values, not updating usage count."""
         return [value[1] for value in super(LFUCache, self).values()]
 
     def itervalues (self):
+        """Return iterator of values, not updating usage count."""
         for value in super(LFUCache, self).itervalues():
             yield value[1]
 
     def popitem (self):
+        """Remove and return an item."""
         key, value = super(LFUCache, self).popitem()
         return (key, value[1])
 
     def pop (self):
+        """Remove and return a value."""
         value = super(LFUCache, self).pop()
         return value[1]
 

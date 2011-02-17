@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2009-2010 Bastian Kleineidam
+# Copyright (C) 2009-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -62,6 +62,8 @@ class HelpBrowser (QtGui.QTextBrowser):
         self.engine = engine
 
     def setSource (self, url):
+        """Open HTTP URLs in external browser, else call base class
+        implementation."""
         if url.scheme() == "http":
             import webbrowser
             webbrowser.open(str(url.toString()))

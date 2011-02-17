@@ -26,6 +26,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
     """Hold options for current URL to check."""
 
     def __init__ (self, parent=None):
+        """Reset all options and initialize the editor window."""
         super(LinkCheckerOptions, self).__init__(parent)
         self.setupUi(self)
         self.editor = EditorWindow(self)
@@ -60,10 +61,12 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
                         self.user_config_writable)
 
     def edit_sys_config (self):
+        """Show editor for system wide configuration file."""
         return start_editor(self.sys_config, self.sys_config_writable,
                             self.editor)
 
     def edit_user_config (self):
+        """Show editor for user specific configuration file."""
         return start_editor(self.user_config, self.user_config_writable,
                             self.editor)
 
@@ -76,6 +79,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         )
 
     def set_options (self, data):
+        """Set GUI options from given data."""
         if data["debug"] is not None:
             self.debug.setChecked(data["debug"])
         if data["verbose"] is not None:
@@ -85,16 +89,19 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
 
 
 def start_editor (filename, writable, editor):
+    """Start editor for given filename."""
     if not os.path.isfile(filename):
         # file vanished
         return
     editor.load(filename)
+    # all config files are in INI format
     editor.setContentType("text/plain+ini")
     editor.editor.setReadOnly(not writable)
     editor.show()
 
 
 def set_edit_button (filename, button, writable):
+    """Update edit button depending on writable flag of file."""
     button.setToolTip(filename)
     if os.path.isfile(filename):
         button.setEnabled(True)

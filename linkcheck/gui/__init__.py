@@ -47,6 +47,7 @@ Status = enum('idle', 'checking')
 
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
+    """The main window displaying checked URLs."""
 
     log_url_signal = QtCore.pyqtSignal(object)
     log_stats_signal = QtCore.pyqtSignal(object)
@@ -77,6 +78,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_app()
 
     def init_app (self):
+        """Set window size and position, GUI options and reset status."""
         data = self.settings.read_geometry()
         if data["size"] is not None:
             self.resize(data["size"])
@@ -109,6 +111,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         Autoconnected methods have the form on_<objectname>_<signal>.
         """
         def set_idle ():
+            """Set application status to idle."""
             self.status = Status.idle
         self.checker.finished.connect(set_idle)
         self.checker.terminated.connect(set_idle)
@@ -116,6 +119,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.log_stats_signal.connect(self.log_stats)
 
     def init_treeview (self):
+        """Set treeview model and layout."""
         self.model = UrlItemModel()
         self.treeView.setModel(self.model)
         data = self.settings.read_treeviewcols()
@@ -126,6 +130,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         selectionModel.selectionChanged.connect(self.set_properties)
 
     def get_treeviewcols (self):
+        """Return URL treeview column widths."""
         return dict(
             col1=self.treeView.columnWidth(0),
             col2=self.treeView.columnWidth(1),
@@ -157,9 +162,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.config.reset_loglevel()
 
     def get_status (self):
+        """Return current application status."""
         return self._status
 
     def set_status (self, status):
+        """Set application status."""
         self._status = status
         if status == Status.idle:
             self.progress.hide()
@@ -328,6 +335,7 @@ Version 2 or later.
                              urlitem.url_data.line, urlitem.url_data.column)
 
     def view_source (self, url, line, col):
+        """View URL source in editor window."""
         self.editor.setWindowTitle(u"View %s" % url)
         self.editor.setUrl(url)
         info, data = urlutil.get_content(url, proxy=self.config["proxy"])
@@ -358,4 +366,5 @@ Version 2 or later.
         self.statusBar.showMessage(msg)
 
     def log_stats (self, statistics):
+        """Set statistic information for selected URL."""
         set_statistics(self, statistics)

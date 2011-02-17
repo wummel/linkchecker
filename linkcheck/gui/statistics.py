@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010 Bastian Kleineidam
+# Copyright (C) 2010-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 from ..logger import ContentTypes
 
 def set_statistics (widget, statistics):
+    """Set statistic information in given widget."""
     widget.stats_domains.setText(u"%d" % len(statistics.domains))
     widget.stats_url_minlen.setText(u"%d" % statistics.min_url_length)
     widget.stats_url_maxlen.setText(u"%d" % statistics.max_url_length)
@@ -30,6 +31,7 @@ def set_statistics (widget, statistics):
 
 
 def clear_statistics (widget):
+    """Reset statistic information in given widget."""
     widget.stats_domains.setText(u"")
     widget.stats_url_minlen.setText(u"")
     widget.stats_url_maxlen.setText(u"")

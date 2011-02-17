@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2009-2010 Bastian Kleineidam
+# Copyright (C) 2009-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,22 +36,27 @@ class GuiLogger (Logger):
     """Delegate log URLs to the UI tree widget."""
 
     def __init__ (self, **args):
+        """Store signals for URL and statistic data."""
         super(GuiLogger, self).__init__(**args)
         self.log_url_signal = args["signal"]
         self.log_stats_signal = args["stats"]
 
     def start_fileoutput (self):
+        """Override fileoutput handling of base class."""
         pass
 
     def close_fileoutput (self):
+        """Override fileoutput handling of base class."""
         pass
 
     def log_url (self, url_data):
-        """URL gets logged in the main window."""
+        """Emit URL data which gets logged in the main window."""
         self.log_url_signal.emit(url_data)
 
     def end_output (self):
+        """Emit statistic data which gets logged in the main window."""
         self.log_stats_signal.emit(self.stats)
 
     def start_output (self):
+        """Override output handling of base class."""
         pass

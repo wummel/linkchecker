@@ -122,6 +122,22 @@ doccheck:
 	  linkcheck/cache linkcheck/configuration linkcheck/director \
 	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
 	  linkcheck/bookmarks \
+	  linkcheck/gui/__init__.py \
+	  linkcheck/gui/checker.py \
+	  linkcheck/gui/contextmenu.py \
+	  linkcheck/gui/debug.py \
+	  linkcheck/gui/editor.py \
+	  linkcheck/gui/lineedit.py \
+	  linkcheck/gui/help.py \
+	  linkcheck/gui/logger.py \
+	  linkcheck/gui/options.py \
+	  linkcheck/gui/progress.py \
+	  linkcheck/gui/properties.py \
+	  linkcheck/gui/settings.py \
+	  linkcheck/gui/statistics.py \
+	  linkcheck/gui/updater.py \
+	  linkcheck/gui/urlmodel.py \
+	  linkcheck/gui/urlsave.py \
 	  linkcheck/__init__.py \
 	  linkcheck/ansicolor.py \
 	  linkcheck/clamav.py \
