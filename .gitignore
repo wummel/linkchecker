@@ -25,3 +25,4 @@ Changelog.linkchecker*
 /doc/html/*.qch
 /.achievements
 /doc/*.mo
+/po/*.mo
