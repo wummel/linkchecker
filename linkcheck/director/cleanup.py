@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2007-2010 Bastian Kleineidam
+# Copyright (C) 2007-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,11 +32,5 @@ class Cleanup (task.CheckedTask):
         self.start_time = time.time()
         self.setName("Cleanup")
         # clean every 15 seconds
-        wait_seconds = 15
-        waitfor = range(wait_seconds*10)
-        while True:
-            for dummy in waitfor:
-                time.sleep(0.1)
-                if self.stopped():
-                    return
+        while not self.stopped(15):
             self.connections.remove_expired()

@@ -13,6 +13,7 @@ Fixes:
 
 Changes:
 - gui: Use Alt-key shortcuts for menu entries.
+- checking: Improved thread locking and reduce calls to time.sleep().
 
 Features:
 - checking: Added support for Google Chrome bookmark files.

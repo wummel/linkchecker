@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2010 Bastian Kleineidam
+# Copyright (C) 2006-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,10 +45,8 @@ class Checker (task.CheckedTask):
 
     def run_checked (self):
         """Check URLs in the queue."""
-        while True:
+        while not self.stopped(0):
             self.check_url()
-            if self.stopped():
-                break
 
     def check_url (self):
         """Try to get URL data from queue and check it."""

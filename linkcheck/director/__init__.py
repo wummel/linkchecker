@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2010 Bastian Kleineidam
+# Copyright (C) 2006-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 """
 Management of checking a queue of links with several threads.
 """
-import time
 import os
 import thread
 import urlparse
@@ -158,18 +157,13 @@ def check_url (aggregate):
     """Helper function waiting for URL queue."""
     while True:
         try:
-            aggregate.urlqueue.join(timeout=0.5)
+            aggregate.urlqueue.join(timeout=30)
             break
         except urlqueue.Timeout:
-            # Since urlqueue.join() is not interruptable, add a timeout
-            # and a one-second slumber.
-            time.sleep(1)
+            # Cleanup threads every 30 seconds
             aggregate.remove_stopped_threads()
             if not aggregate.threads:
                 break
-            if aggregate.wanted_stop:
-                # some other thread wants us to stop
-                raise KeyboardInterrupt
 
 
 def interrupt (aggregate):
