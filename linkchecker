@@ -605,12 +605,12 @@ if options.warnings is not None:
     config["warnings"] = options.warnings
 if options.anchors is not None:
     config["anchors"] = options.anchors
-if options.extern:
-    pats = [linkcheck.get_link_pat(arg) for arg in options.extern]
-    config["externlinks"].extend(pats)
 if options.externstrict:
     pats = [linkcheck.get_link_pat(arg, strict=True) \
             for arg in options.externstrict]
+    config["externlinks"].extend(pats)
+if options.extern:
+    pats = [linkcheck.get_link_pat(arg) for arg in options.extern]
     config["externlinks"].extend(pats)
 if options.output:
     if "/" in options.output:

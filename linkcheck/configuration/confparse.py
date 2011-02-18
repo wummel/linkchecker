@@ -191,16 +191,16 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         Read configuration options in section "filtering".
         """
         section = "filtering"
-        if self.has_option(section, "nofollow"):
-            for line in read_multiline(self.get(section, "nofollow")):
-                pat = get_link_pat(line, strict=0)
-                self.config["externlinks"].append(pat)
         if self.has_option(section, "ignorewarnings"):
             self.config['ignorewarnings'] = [f.strip() for f in \
                  self.get(section, 'ignorewarnings').split(',')]
         if self.has_option(section, "ignore"):
             for line in read_multiline(self.get(section, "ignore")):
                 pat = get_link_pat(line, strict=1)
+                self.config["externlinks"].append(pat)
+        if self.has_option(section, "nofollow"):
+            for line in read_multiline(self.get(section, "nofollow")):
+                pat = get_link_pat(line, strict=0)
                 self.config["externlinks"].append(pat)
         if self.has_option(section, "internlinks"):
             pat = get_link_pat(self.get(section, "internlinks"))
