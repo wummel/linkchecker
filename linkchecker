@@ -345,9 +345,7 @@ group.add_option("-t", "--threads", type="int", dest="threads",
 """Generate no more than the given number of threads. Default number
 of threads is 10. To disable threading specify a non-positive number."""))
 group.add_option("--priority", action="store_true", dest="priority",
-                 help=_(
-"""Run with normal thread scheduling priority. Per default LinkChecker
-runs with low thread priority to be suitable as a background job."""))
+                 help=_("""This option is deprecated and does nothing."""))
 group.add_option("-V", "--version", action="store_true", dest="version",
                  help=_("""Print version and exit."""))
 group.add_option("--allow-root", action="store_true", dest="allowroot",
@@ -598,9 +596,6 @@ if options.debug and not __debug__:
 # apply commandline options and arguments to configuration
 constructauth = False
 do_profile = False
-if not options.priority:
-    import linkcheck.threader
-    linkcheck.threader.set_thread_priority(linkcheck.threader.Prio.low)
 if options.warnings is not None:
     config["warnings"] = options.warnings
 if options.anchors is not None:

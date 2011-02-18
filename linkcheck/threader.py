@@ -17,52 +17,7 @@
 """
 Support for managing threads.
 """
-
-import os
 import threading
-try:
-    import win32process
-    has_win32process = True
-except ImportError:
-    has_win32process = False
-from .containers import enum
-
-# generic thread priorities with mappings to Windows and Unix
-# priority values
-Prio = enum("high", "normal", "low")
-
-_posix_nice_val = {
-    Prio.high: -5,
-    Prio.normal: +0,
-    Prio.low: +10,
-}
-if has_win32process:
-    if hasattr(win32process, "BELOW_NORMAL_PRIORITY_CLASS"):
-        low = win32process.BELOW_NORMAL_PRIORITY_CLASS
-    else:
-        low = win32process.IDLE_PRIORITY_CLASS
-    if hasattr(win32process, "ABOVE_NORMAL_PRIORITY_CLASS"):
-        high = win32process.ABOVE_NORMAL_PRIORITY_CLASS
-    else:
-        high = win32process.HIGH_PRIORITY_CLASS
-    _nt_prio_val = {
-        Prio.high: high,
-        Prio.normal: win32process.NORMAL_PRIORITY_CLASS,
-        Prio.low: low,
-    }
-    del low, high
-
-
-def set_thread_priority (prio):
-    """Set priority of this thread (and thus also for all spawned threads)."""
-    if os.name == 'nt' and has_win32process:
-        res = win32process.SetPriorityClass(
-                   win32process.GetCurrentProcess(), _nt_prio_val[prio])
-    elif os.name == 'posix':
-        res = os.nice(_posix_nice_val[prio])
-    else:
-        res = None
-    return res
 
 
 class StoppableThread (threading.Thread):
