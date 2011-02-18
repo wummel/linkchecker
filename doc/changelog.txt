@@ -8,6 +8,8 @@ Fixes:
 - checking: Make sure "ignore" URL patterns are checked before
   "nofollow" URL patterns.
   Closes: SF bug #3184973
+- install: Properly include all linkcheck.dns submodules in the
+  .exe installer.
 - gui: Remove old context menu action to view URL properties.
 - gui: Disable viewing of parent URL source if it's a directory.
 
