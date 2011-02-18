@@ -140,3 +140,14 @@ def init_i18n ():
 
 # initialize i18n, puts _() function into global namespace
 init_i18n()
+
+
+def drop_privileges ():
+    """Make sure to drop root privileges on POSIX systems."""
+    if os.name != 'posix':
+        return
+    if os.geteuid() == 0:
+        log.warn(LOG_CHECK, _("Running as root user; "
+                       "dropping privileges by changing user to nobody."))
+        import pwd
+        os.seteuid(pwd.getpwnam('nobody')[3])

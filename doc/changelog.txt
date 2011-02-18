@@ -15,6 +15,7 @@ Changes:
 - gui: Use Alt-key shortcuts for menu entries.
 - checking: Improved thread locking and reduce calls to time.sleep().
 - cmdline: Deprecated the --priority commandline option.
+- cmdline: Deprecated the --allow-root commandline option.
 
 Features:
 - checking: Added support for Google Chrome bookmark files.

@@ -21,7 +21,7 @@ Check HTML pages for broken links. This is the GUI client.
 import sys
 from PyQt4.QtGui import QApplication, QStyleFactory
 from linkcheck.gui import LinkCheckerMain
-from linkcheck import configuration
+from linkcheck import configuration, drop_privileges
 
 ## Look and feel with stylesheets
 # In Cleanlooks the progress bar text is outside the bar.
@@ -44,6 +44,7 @@ def main (argv=None):
         url = u""
     window = LinkCheckerMain(url=url)
     window.show()
+    drop_privileges()
     sys.exit(app.exec_())
 
 
