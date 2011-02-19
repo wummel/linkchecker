@@ -24,13 +24,12 @@ import urlparse
 import smtplib
 import socket
 from email._parseaddr import AddressList
-import sys
 
 from . import urlbase
 from .. import log, LOG_CHECK, strformat, url as urlutil
 from ..dns import resolver
 if False:
-    # needed so that py2exe properly includes all dns submodules
+    # needed for py2exe to properly include all dns submodules
     from ..dns.rdtypes.ANY import *
     from ..dns.rdtypes.IN import *
 from ..network import iputil
