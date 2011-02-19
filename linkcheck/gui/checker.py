@@ -46,7 +46,7 @@ class CheckerThread (QtCore.QThread):
         if self.progress is not None:
             self.progress = None
         if self.aggregate is not None:
-            self.aggregate.wanted_stop = True
+            self.aggregate.cancel()
             self.aggregate = None
 
     def run (self):

@@ -72,10 +72,13 @@ class Aggregate (object):
                     first = False
                 log.info(LOG_CHECK, name[12:])
 
+    def cancel (self):
+        self.urlqueue.do_shutdown()
+
     def abort (self):
         """Empty the URL queue."""
         self.print_active_threads()
-        self.urlqueue.do_shutdown()
+        self.cancel()
         try:
             self.urlqueue.join(timeout=self.config["timeout"])
         except urlqueue.Timeout:
@@ -83,16 +86,13 @@ class Aggregate (object):
 
     def remove_stopped_threads (self):
         "Remove the stopped threads from the internal thread list."""
-        self.threads = [t for t in self.threads if t.isAlive()]
+        self.threads = [t for t in self.threads if t.is_alive()]
 
     def finish (self):
         """Wait for checker threads to finish."""
         assert self.urlqueue.empty()
         for t in self.threads:
             t.stop()
-            t.join(0.5)
-            if t.isAlive():
-                log.warn(LOG_CHECK, "Thread %s still active", t)
         self.connections.clear()
 
     @synchronized(_lock)
