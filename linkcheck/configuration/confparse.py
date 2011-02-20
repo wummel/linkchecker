@@ -102,8 +102,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             for val in loggers:
                 output = self.config.logger_new(val, fileoutput=1)
                 self.config['fileoutput'].append(output)
-        if self.has_option(section, "interactive"):
-            self.config["interactive"] = self.getboolean(section, "interactive")
 
     def read_checking_config (self):
         """Read configuration options in section "checking"."""

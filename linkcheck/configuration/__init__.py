@@ -78,7 +78,6 @@ class Configuration (dict):
         self["anchors"] = False
         self["externlinks"] = []
         self["internlinks"] = []
-        self["interactive"] = False
         # on ftp, password is set by Pythons ftplib
         self["authentication"] = []
         self["loginurl"] = None

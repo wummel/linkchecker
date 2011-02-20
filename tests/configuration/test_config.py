@@ -70,7 +70,6 @@ class TestConfig (unittest.TestCase):
         self.assertEqual(config["loginextrafields"]["name 2"], "value 2")
         self.assertEqual(len(config["loginextrafields"]), 2)
         # output section
-        self.assertTrue(config["interactive"])
         self.assertTrue(linkcheck.log.is_debug(linkcheck.LOG_THREAD))
         self.assertFalse(config["status"])
         self.assertTrue(isinstance(config["logger"], linkcheck.logger.Loggers["xml"]))

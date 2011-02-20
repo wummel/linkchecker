@@ -3,8 +3,6 @@
 # Commandline options override these settings.
 
 [output]
-# interactive operation
-#interactive=0
 # enable debug messages; see 'linkchecker -h' for valid debug names
 #debug=all
 # print status output

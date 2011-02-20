@@ -1,4 +1,4 @@
-6.4 "" (released xx.xx.2011)
+6.4 "The Sunset Limited" (released 20.2.2011)
 
 Fixes:
 - checking: Do not remove CGI parameters when joining URLs.
@@ -16,8 +16,9 @@ Fixes:
 Changes:
 - gui: Use Alt-key shortcuts for menu entries.
 - checking: Improved thread locking and reduce calls to time.sleep().
-- cmdline: Deprecated the --priority commandline option.
-- cmdline: Deprecated the --allow-root commandline option.
+- cmdline: Deprecate the --priority commandline option.
+- cmdline: Deprecate the --allow-root commandline option.
+- cmdline: Deprecate the --interactive commandline option.
 
 Features:
 - checking: Added support for Google Chrome bookmark files.
