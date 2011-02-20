@@ -72,10 +72,11 @@ class Aggregate (object):
                 log.info(LOG_CHECK, name[12:])
 
     def cancel (self):
+        """Empty the URL queue."""
         self.urlqueue.do_shutdown()
 
     def abort (self):
-        """Empty the URL queue."""
+        """Print still-active URLs and empty the URL queue."""
         self.print_active_threads()
         self.cancel()
         try:
