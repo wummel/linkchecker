@@ -482,8 +482,7 @@ no default username. See also -p."""))
 group.add_option("-p", "--password", action="store_false", dest="password",
                  default=False,
                  help=_(
-"""Read a password from console and try the given password for HTTP and
-FTP authorization.
+"""Read a password from console and use it for HTTP and FTP authorization.
 For FTP the default password is 'anonymous@'. For HTTP there is
 no default password. See also -u."""))
 group.add_option("--timeout", type="int", dest="timeout",

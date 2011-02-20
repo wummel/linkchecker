@@ -16,9 +16,12 @@ Fixes:
 Changes:
 - gui: Use Alt-key shortcuts for menu entries.
 - checking: Improved thread locking and reduce calls to time.sleep().
-- cmdline: Deprecate the --priority commandline option.
-- cmdline: Deprecate the --allow-root commandline option.
-- cmdline: Deprecate the --interactive commandline option.
+- cmdline: Deprecate the --priority commandline option. Now the check
+  process runs with normal priority.
+- cmdline: Deprecate the --allow-root commandline option. Root
+  privileges are now always dropped.
+- cmdline: Deprecate the --interactive commandline option. It has
+  no effect anymore.
 
 Features:
 - checking: Added support for Google Chrome bookmark files.
