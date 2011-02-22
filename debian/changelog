@@ -1,3 +1,10 @@
+linkchecker (6.5-1) unstable; urgency=low
+
+  * New upstream release.
+  * Fix debian/watch regex.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 22 Feb 2011 19:33:49 +0100
+
 linkchecker (6.4-1) unstable; urgency=low
 
   * New upstream release.
