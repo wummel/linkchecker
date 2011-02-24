@@ -1,5 +1,10 @@
 6.5 "" (released xx.xx.2011)
 
+Changes:
+- checking: Use HTTP GET requests to work around buggy IIS servers
+  sending false positive status codes for HEAD requests.
+
+
 6.4 "The Sunset Limited" (released 20.2.2011)
 
 Fixes:

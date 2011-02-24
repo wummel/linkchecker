@@ -272,9 +272,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 mime = self.get_content_type()
                 poweredby = self.headers.get('X-Powered-By', '')
                 server = self.headers.get('Server', '')
-                if mime in ('application/octet-stream', 'text/plain') and \
-                  (poweredby.startswith('Zope') or server.startswith('Zope')):
-                    # Zope server could not get Content-Type with HEAD
+                if ((mime in ('application/octet-stream', 'text/plain') and
+                  (poweredby.startswith('Zope') or server.startswith('Zope')))
+                 or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
+                    # Zope or IIS server could not get Content-Type with HEAD
+                    # see http://intermapper.com.dev4.silvertech.net/bogus.aspx
                     self.method = "GET"
                     self.aliases = []
                     self.fallback_get = True
