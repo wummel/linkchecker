@@ -2,8 +2,10 @@ linkchecker (6.5-1) unstable; urgency=low
 
   * New upstream release.
   * Fix debian/watch regex.
+  * Replaced cdbs with dh.
+  * Use dh_python2 instead of dh_pycentral. (Closes: #616875)
 
- -- Bastian Kleineidam <calvin@debian.org>  Tue, 22 Feb 2011 19:33:49 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 07 Mar 2011 18:38:45 +0100
 
 linkchecker (6.4-1) unstable; urgency=low
 

@@ -1,17 +1,22 @@
 #!/usr/bin/make -f
 
-DEB_PYTHON_SYSTEM:=pycentral
-DEB_DH_INSTALLCHANGELOGS_ARGS:=doc/changelog.txt
+%:
+	dh $@ --with python2
 
-# workaround for Debian bug #486848
-binary-arch binary-indep: install-arch install-indep
-
-common-install-arch::
+override_dh_auto_configure:
+# make sure docs are generated and the manifest is built
 	$(MAKE) locale
 	$(MAKE) -C doc/html all
+	python setup.py sdist --manifest-only
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/python-distutils.mk
+override_dh_auto_build:
+# force usage of setup.py over Makefile
+	dh_auto_build --buildsystem python_distutils
+
+override_dh_installchangelogs:
+# install custom changelog
+	dh_installchangelogs doc/changelog.txt
+
 
 ROOTDIR=$(CURDIR)/debian/linkchecker
 DOCDIR=$(ROOTDIR)/usr/share/doc/linkchecker
@@ -21,10 +26,8 @@ CGIDIR=$(ROOTDIR)/usr/lib/cgi-bin
 LOCALEDIR=$(ROOTDIR)/usr/share/locale
 ETCDIR=$(ROOTDIR)/etc
 
-common-configure-arch::
-	python setup.py sdist --manifest-only
-
-common-install-arch::
+override_dh_auto_install:
+	dh_auto_install --buildsystem python_distutils
 # install system wide configuration files in etc
 	install -m 644 config/linkcheckerrc $(ETCDIR)/linkchecker/
 	install -m 644 config/logging.conf $(ETCDIR)/linkchecker/
@@ -42,13 +45,10 @@ common-install-arch::
 # apache configuration
 	install -m 644 config/linkchecker.apache2.conf $(ETCDIR)/apache2/conf.d/linkchecker
 
-install/linkchecker::
-	sed -i '1s,#!/usr/bin/python2\..,#!/usr/bin/python,' $(CURDIR)/debian/tmp/usr/bin/linkchecker
-
-install/linkchecker-gui::
-	sed -i '1s,#!/usr/bin/python2\..,#!/usr/bin/python,' $(CURDIR)/debian/tmp/usr/bin/linkchecker-gui
-
 # clean generated files
-clean::
-	rm -f doc/html/*.qch doc/html/*.qhc
-	rm -f _LinkChecker_configdata.py
+override_dh_clean:
+	dh_clean doc/html/*.qch doc/html/*.qhc _LinkChecker_configdata.py
+
+# do not run test suite when building
+override_dh_auto_test:
+

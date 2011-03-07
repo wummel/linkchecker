@@ -2,17 +2,15 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends: python-all-dev (>= 2.6), debhelper (>= 7), gettext,
- cdbs (>= 0.4.43), python-central (>= 0.6), qt4-dev-tools
-XS-Python-Standards-Version: 0.4
-XS-Python-Version: >= 2.6
+Build-Depends: python-all-dev (>= 2.6.6-3), debhelper (>= 7.0.50), gettext,
+ qt4-dev-tools
+X-Python-Version: >= 2.6
 Standards-Version: 3.9.1
 Homepage: http://linkchecker.sourceforge.net/
 
 Package: linkchecker
 Architecture: any
 Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
-XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
 Suggests: apache2 | httpd, python-optcomplete (>= 1.2-5),
  python-geoip (>= 1.2.1-2), clamav-daemon, python-utidylib,
@@ -41,7 +39,6 @@ Description: check websites and HTML documents for broken links
 Package: linkchecker-gui
 Priority: extra
 Architecture: all
-XB-Python-Version: ${python:Versions}
 Depends: linkchecker, python-qt4 (>= 4.5), libqt4-sql-sqlite,
  ${python:Depends}, ${misc:Depends}, python-qscintilla2
 Description: check websites and HTML documents for broken links (GUI client)
