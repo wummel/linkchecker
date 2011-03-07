@@ -213,7 +213,9 @@ class LinkCheckTest (unittest.TestCase):
         if parts is not None:
             logargs['parts'] = parts
         aggregate = get_test_aggregate(confargs, logargs)
-        url_data = get_url_from(url, 0, aggregate)
+        # initial URL has recursion level zero
+        url_reclevel = 0
+        url_data = get_url_from(url, url_reclevel, aggregate)
         linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
         linkcheck.director.check_urls(aggregate)
