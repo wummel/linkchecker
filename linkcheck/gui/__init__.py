@@ -262,7 +262,7 @@ Version 2 or later.
 
     def get_url (self):
         """Return URL to check from the urlinput widget."""
-        url = unicode(self.urlinput.text()).strip()
+        url = strformat.stripall(unicode(self.urlinput.text()))
         if url.startswith(u"www."):
             url = u"http://%s" % url
         elif url.startswith(u"ftp."):
