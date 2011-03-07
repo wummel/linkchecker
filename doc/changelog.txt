@@ -1,5 +1,9 @@
 6.5 "" (released xx.xx.2011)
 
+Fixes:
+- checking: Fix typo calling get_temp_file() function.
+  Closes: SF bug #3196917
+
 Changes:
 - checking: Use HTTP GET requests to work around buggy IIS servers
   sending false positive status codes for HEAD requests.
