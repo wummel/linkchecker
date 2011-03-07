@@ -7,6 +7,9 @@ Fixes:
 Changes:
 - checking: Use HTTP GET requests to work around buggy IIS servers
   sending false positive status codes for HEAD requests.
+- checking: Strip leading and trailing whitespace from URLs and print
+  a warning instead of having errors.
+  Closes: SF bug #3196918
 
 
 6.4 "The Sunset Limited" (released 20.2.2011)

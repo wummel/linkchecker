@@ -38,52 +38,6 @@ class TestError (LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
-    def test_leading_whitespace (self):
-        # Leading whitespace
-        url = u" http://www.heise.de/"
-        attrs = self.get_attrs(url=url)
-        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
-        resultlines = [
-            u"url file://%(curdir)s/%(url)s" % attrs,
-            u"cache key %(nurl)s" % attrs,
-            u"real url %(nurl)s" % attrs,
-            u"name %(url)s" % attrs,
-            u"error",
-        ]
-        self.direct(url, resultlines)
-        url = u"\nhttp://www.heise.de/"
-        attrs = self.get_attrs(url=url)
-        attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
-        resultlines = [
-            u"url file://%(curdir)s/%(url)s" % attrs,
-            u"cache key %(nurl)s" % attrs,
-            u"real url %(nurl)s" % attrs,
-            u"name %(url)s" % attrs,
-            u"error",
-        ]
-        self.direct(url, resultlines)
-
-    def test_trailing_whitespace (self):
-        # Trailing whitespace
-        url = u"http://www.heise.de/ "
-        nurl = self.norm(url)
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"error",
-        ]
-        self.direct(url, resultlines)
-        url = u"http://www.heise.de/\n"
-        nurl = self.norm(url)
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"error",
-        ]
-        self.direct(url, resultlines)
-
     def test_invalid1 (self):
         # invalid scheme chars
         url = u"הצü?:"

@@ -39,7 +39,8 @@ from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_ERROR_GETTING_CONTENT, WARN_URL_OBFUSCATED_IP,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
     WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
-    WARN_URL_CONTENT_SIZE_UNEQUAL, ExcList, ExcSyntaxList, ExcNoCacheList)
+    WARN_URL_CONTENT_SIZE_UNEQUAL, WARN_URL_WHITESPACE,
+    ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
 unicode_safe = strformat.unicode_safe
@@ -105,9 +106,9 @@ class UrlBase (object):
         @param name: name of url or empty
         @param url_encoding: encoding of URL or None
         """
+        self.reset()
         self.init(base_ref, base_url, parent_url, recursion_level,
                   aggregate, line, column, name, url_encoding)
-        self.reset()
         self.check_syntax()
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
@@ -116,8 +117,10 @@ class UrlBase (object):
         Initialize internal data.
         """
         self.base_ref = base_ref
-        # note that self.base_url must not be modified
-        self.base_url = base_url
+        self.base_url = base_url.strip() if base_url else base_url
+        if self.base_url != base_url:
+            self.add_warning(_("Leading or trailing whitespace in URL `%(url)s'.") %
+                               {"url": base_url}, tag=WARN_URL_WHITESPACE)
         self.parent_url = parent_url
         self.recursion_level = recursion_level
         self.aggregate = aggregate

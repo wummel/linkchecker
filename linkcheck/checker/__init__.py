@@ -71,12 +71,16 @@ def get_url_from (base_url, recursion_level, aggregate,
     """
     if base_url is not None:
         base_url = strformat.unicode_safe(base_url)
+        # left strip for detection of URL scheme
+        base_url_stripped = base_url.lstrip()
+    else:
+        base_url_stripped = base_url
     if parent_url is not None:
         parent_url = strformat.unicode_safe(parent_url)
     if base_ref is not None:
         base_ref = strformat.unicode_safe(base_ref)
     name = strformat.unicode_safe(name)
-    url = absolute_url(base_url, base_ref, parent_url).lower()
+    url = absolute_url(base_url_stripped, base_ref, parent_url).lower()
     if not (url or name):
         # use filename as base url, with slash as path seperator
         name = base_url.replace("\\", "/")
