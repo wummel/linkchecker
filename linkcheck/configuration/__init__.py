@@ -27,8 +27,9 @@ import urlparse
 import shutil
 import _LinkChecker_configdata as configdata
 from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames, clamav,
-    get_config_dir)
+    get_config_dir, fileutil)
 from . import confparse
+from ..decorators import memoized
 
 Version = configdata.version
 AppName = configdata.appname
@@ -290,6 +291,7 @@ class Configuration (dict):
             self.sanitize_cookies()
         if self['loginurl']:
             self.sanitize_loginurl()
+        self.sanitize_proxies()
 
     def sanitize_anchors (self):
         """Make anchor configuration consistent."""
@@ -374,6 +376,20 @@ class Configuration (dict):
             # login URL implies storing and sending cookies
             self['storecookies'] = self['sendcookies'] = True
 
+    def sanitize_proxies (self):
+        """Try to read additional proxy settings which urllib does not
+        support."""
+        if os.name != 'posix':
+            return
+        if "http" not in self["proxy"]:
+            http_proxy = get_gconf_http_proxy() or get_kde_http_proxy()
+            if http_proxy:
+                self["proxy"]["http"] = http_proxy
+        if "ftp" not in self["proxy"]:
+            ftp_proxy = get_gconf_ftp_proxy() or get_kde_ftp_proxy()
+            if ftp_proxy:
+                self["proxy"]["ftp"] = ftp_proxy
+
 
 def get_standard_config_files ():
     """Try to generate user configuration file from the system wide
@@ -394,3 +410,211 @@ def get_standard_config_files ():
             log.warn(LOG_CHECK, "could not copy system config from %r to %r",
                      syspath, userpath)
     return (syspath, userpath)
+
+
+def get_gconf_http_proxy ():
+    """Return host:port for GConf HTTP proxy if found, else None."""
+    try:
+        import gconf
+    except ImportError:
+        return None
+    client = gconf.client_get_default()
+    if client.get_bool("/system/http_proxy/use_http_proxy"):
+        host = client.get_string("/system/http_proxy/host")
+        port = client.get_int("/system/http_proxy/port")
+        if host:
+            if not port:
+                port = 8080
+            return "%s:%d" % (host, port)
+    return None
+
+
+def get_gconf_ftp_proxy ():
+    """Return host:port for GConf FTP proxy if found, else None."""
+    try:
+        import gconf
+    except ImportError:
+        return None
+    client = gconf.client_get_default()
+    host = client.get_string("/system/proxy/ftp_host")
+    port = client.get_int("/system/proxy/ftp_port")
+    if host:
+        if not port:
+            port = 8080
+        return "%s:%d" % (host, port)
+    return None
+
+
+def get_kde_http_proxy ():
+    """Return host:port for KDE HTTP proxy if found, else None."""
+    config_dir = get_kde_config_dir()
+    if not config_dir:
+        # could not find any KDE configuration directory
+        return
+    try:
+        data = read_kioslaverc(config_dir)
+        return data.get("http_proxy")
+    except:
+        pass
+
+
+def get_kde_ftp_proxy ():
+    """Return host:port for KDE HTTP proxy if found, else None."""
+    config_dir = get_kde_config_dir()
+    if not config_dir:
+        # could not find any KDE configuration directory
+        return
+    try:
+        data = read_kioslaverc(config_dir)
+        return data.get("ftp_proxy")
+    except:
+        pass
+
+
+def get_kde_config_dir ():
+    """Return KDE configuration directory or None if not found."""
+    kde_home = get_kde_home_dir()
+    if not kde_home:
+        # could not determine the KDE home directory
+        return
+    return kde_home_to_config(kde_home)
+
+
+def kde_home_to_config (kde_home):
+    """Add subdirectories for config path to KDE home directory."""
+    return os.path.join(kde_home, "share", "config")
+
+
+def get_kde_home_dir ():
+    """Return KDE home directory or None if not found."""
+    if os.environ.get("KDEHOME"):
+        kde_home = os.path.abspath(os.environ["KDEHOME"])
+    else:
+        home = os.environ.get("HOME")
+        if not home:
+            # $HOME is not set
+            return
+        kde3_home = os.path.join(home, ".kde")
+        kde4_home = os.path.join(home, ".kde4")
+        if fileutil.find_executable("kde4-config"):
+            # kde4
+            kde3_file = kde_home_to_config(kde3_home)
+            kde4_file = kde_home_to_config(kde4_home)
+            if os.path.exists(kde4_file) and os.path.exists(kde3_file):
+                if fileutil.get_mtime(kde4_file) >= fileutil.get_mtime(kde3_file):
+                    kde_home = kde4_home
+                else:
+                    kde_home = kde3_home
+            else:
+                kde_home = kde4_home
+        else:
+            # kde3
+            kde_home = kde3_home
+    return kde_home if os.path.exists(kde_home) else None
+
+
+loc_ro = re.compile(r"\[.*\]$")
+
+@memoized
+def read_kioslaverc (kde_config_dir):
+    """Read kioslaverc into data dictionary."""
+    data = {}
+    filename = os.path.join(kde_config_dir, "kioslaverc")
+    with open(filename) as fd:
+        # First read all lines into dictionary since they can occur
+        # in any order.
+        for line in  fd:
+            line = line.rstrip()
+            if line.startswith('['):
+                in_proxy_settings = line.startswith("[Proxy Settings]")
+            elif in_proxy_settings:
+                if '=' not in line:
+                    continue
+                key, value = line.split('=', 1)
+                key = key.strip()
+                value = value.strip()
+                if not key:
+                    continue
+                # trim optional localization
+                key = loc_ro.sub("", key).strip()
+                if not key:
+                    continue
+                add_kde_setting(key, value, data)
+    resolve_kde_settings(data)
+    return data
+
+
+def add_kde_proxy (key, value, data):
+    """Add a proxy value to data dictionary after sanity checks."""
+    if not value or value[:3] == "//:":
+        return
+    data[key] = value
+
+
+def add_kde_setting (key, value, data):
+    """Add a KDE proxy setting value to data dictionary."""
+    if key == "ProxyType":
+        mode = None
+        int_value = int(value)
+        if int_value == 1:
+            mode = "manual"
+        elif int_value == 2:
+            # PAC URL
+            mode = "pac"
+        elif int_value == 3:
+            # WPAD.
+            mode = "wpad"
+        elif int_value == 4:
+            # Indirect manual via environment variables.
+            mode = "indirect"
+        data["mode"] = mode
+    elif key == "Proxy Config Script":
+        data["autoconfig_url"] = value
+    elif key == "httpProxy":
+       add_kde_proxy("http_proxy", value, data)
+    elif key == "httpsProxy":
+        add_kde_proxy("https_proxy", value, data)
+    elif key == "ftpProxy":
+        add_kde_proxy("ftp_proxy", value, data)
+    elif key == "ReversedException":
+        data["reversed_bypass"] = bool(value == "true" or int(value))
+    elif key == "NoProxyFor":
+        data["ignore_hosts"] = split_hosts(value)
+    elif key == "AuthMode":
+        mode = int(value)
+        # XXX todo
+
+
+def split_hosts (value):
+    """Split comma-separated host list."""
+    return [host for host in value.split(", ") if host]
+
+
+def resolve_indirect (data, key, splithosts=False):
+    """Replace name of environment variable with its value."""
+    value = data[key]
+    env_value = os.environ.get(value)
+    if env_value:
+        if splithosts:
+            data[key] = split_hosts(env_value)
+        else:
+            data[key] = env_value
+    else:
+        del data[key]
+
+
+def resolve_kde_settings (data):
+    """Write final proxy configuration values in data dictionary."""
+    if "mode" not in data:
+        return
+    if data["mode"] == "indirect":
+        for key in ("http_proxy", "https_proxy", "ftp_proxy"):
+            if key in data:
+                resolve_indirect(data, key)
+        if "ignore_hosts" in data:
+            resolve_indirect(data, "ignore_hosts", splithosts=True)
+    elif data["mode"] != "manual":
+        # unsupported config
+        for key in ("http_proxy", "https_proxy", "ftp_proxy"):
+            if key in data:
+                del data[key]

@@ -14,7 +14,7 @@ Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 Suggests: apache2 | httpd, python-optcomplete (>= 1.2-5),
  python-geoip (>= 1.2.1-2), clamav-daemon, python-utidylib,
- python-cssutils, python-pysqlite2, python-twill
+ python-cssutils, python-pysqlite2, python-twill, python-gconf
 Description: check websites and HTML documents for broken links
  Provides a command line program and web interface to check links
  of websites and HTML documents.

@@ -13,6 +13,9 @@ Changes:
   commandline or the GUI.
   Closes: SF bug #3196918
 
+Features:
+- configuration: Support reading GNOME and KDE proxy settings.
+
 
 6.4 "The Sunset Limited" (released 20.2.2011)
 
