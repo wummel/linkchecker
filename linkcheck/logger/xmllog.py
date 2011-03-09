@@ -45,7 +45,7 @@ def xmlquoteattr (s):
 
 
 class XMLLogger (Logger):
-    """XML output; easy to parse with any XML tool."""
+    """Base class for XML output; easy to parse with any XML tool."""
 
     def __init__ (self, **args):
         """

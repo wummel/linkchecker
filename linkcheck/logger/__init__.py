@@ -124,7 +124,7 @@ class Logger (object):
     Base class for logging of checked urls. It defines the public API
     (see below) and offers basic functionality for all loggers.
 
-    Each logger has to offer the following functions:
+    Each logger offers the following functions:
 
     * start_output()
         Initialize and start log output. Most loggers print a comment
@@ -136,6 +136,15 @@ class Logger (object):
         Log a checked URL. The url_data object is a transport form of
         the UrlData class. The do_print flag indicates if this URL
         should be logged or just used to update internal statistics.
+
+    Each subclassed logger must implement the following functions:
+
+    * start_output()
+        Also call the base class implementation of this.
+    * end_output()
+        See above.
+    * log_url(url_data)
+        Log a checked URL. Called by log_filter_url if do_print is True.
     """
 
     def __init__ (self, **args):
