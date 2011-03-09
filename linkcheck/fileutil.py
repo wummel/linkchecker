@@ -25,6 +25,7 @@ import stat
 import fnmatch
 import mimetypes
 import tempfile
+from distutils.spawn import find_executable
 
 
 def write_file (filename, content, backup=False, callback=None):
