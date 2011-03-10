@@ -517,7 +517,8 @@ if has_optcomplete:
         else:
             listdir = cwd
         return [os.path.join(startdir, f)
-                for f in os.listdir(listdir) if f.startswith(lhs)]
+                for f in os.listdir(os.path.expanduser(listdir))
+                if f.startswith(lhs)]
     optcomplete.autocomplete(optparser, arg_completer=FileCompleter)
 
 

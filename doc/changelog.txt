@@ -3,6 +3,7 @@
 Fixes:
 - checking: Fix typo calling get_temp_file() function.
   Closes: SF bug #3196917
+- cmdline: Fix filename completion if path starts with ~
 
 Changes:
 - checking: Use HTTP GET requests to work around buggy IIS servers
