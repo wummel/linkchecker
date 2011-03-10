@@ -181,6 +181,8 @@ def has_changed (filename):
 
 
 mimedb = mimetypes.MimeTypes(strict=False)
+# For Opera bookmark files (opera6.adr)
+mimedb.add_type('text/plain', '.adr', strict=False)
 
 # if file extension lookup was unsuccessful, look at the content
 PARSE_CONTENTS = {
@@ -194,8 +196,11 @@ def guess_mimetype (filename, read=None):
     """Return MIME type of file, or 'application/octet-stream' if it could
     not be determined."""
     mime, encoding = mimedb.guess_type(filename, strict=False)
+    # Special case for Google Chrome Bookmark files.
+    if not mime and os.path.basename(filename) == 'Bookmarks':
+        mime = 'text/plain'
     # Mime type text/plain can be differentiated further with content reading.
-    if (mime == "text/plain" or not mime) and read is not None:
+    if mime == "text/plain" and read is not None:
         # try to read some content and do a poor man's file(1)
         # XXX replace with file(1) on Unix systems
         try:

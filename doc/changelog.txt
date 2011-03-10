@@ -3,6 +3,8 @@
 Fixes:
 - checking: Fix typo calling get_temp_file() function.
   Closes: SF bug #3196917
+- checking: Prevent false positives when detecting the MIME type
+  of certain archive files.
 - cmdline: Fix filename completion if path starts with ~
 
 Changes:
