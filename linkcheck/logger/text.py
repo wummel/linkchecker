@@ -87,6 +87,7 @@ class TextLogger (Logger):
 
     def log_url (self, url_data):
         """Write url checking info."""
+        self.writeln()
         if self.has_part('url'):
             self.write_url(url_data)
         if url_data.name and self.has_part('name'):
