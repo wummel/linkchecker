@@ -69,7 +69,7 @@ def get_os_filename (path):
     """Return filesystem path for given URL path."""
     if os.name == 'nt':
         path = prepare_urlpath_for_nt(path)
-    return fileutil.pathencode(urllib.url2pathname(path))
+    return urllib.url2pathname(fileutil.pathencode(path))
 
 
 def is_absolute_path (path):
@@ -146,7 +146,7 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.set_result(_("directory"))
         else:
-            url = fileutil.pathencode(self.url)
+            url = urllib.url2pathname(fileutil.pathencode(self.url))
             self.url_connection = urllib2.urlopen(url)
             self.check_case_sensitivity()
 

@@ -4,8 +4,8 @@ real url file://%(curdir)s/%(datadir)s/dir/
 name %(datadir)s/dir
 valid
 
-url %%ED%%BB%%AD%%AF%%BF.dat
-cache key file://%(curdir)s/%(datadir)s/dir/%%ED%%BB%%AD%%AF%%BF.dat
-real url file://%(curdir)s/%(datadir)s/dir/%%ED%%BB%%AD%%AF%%BF.dat
-name í»­¯¿.dat
+url %%C3%%AD%%C2%%BB%%C2%%AD%%C2%%AF%%C2%%BF.dat
+cache key file://%(curdir)s/%(datadir)s/dir/%%C3%%AD%%C2%%BB%%C2%%AD%%C2%%AF%%C2%%BF.dat
+real url file://%(curdir)s/%(datadir)s/dir/%%C3%%AD%%C2%%BB%%C2%%AD%%C2%%AF%%C2%%BF.dat
+name Ã­Â»Â­Â¯Â¿.dat
 valid

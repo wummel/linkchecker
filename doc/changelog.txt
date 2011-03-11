@@ -5,6 +5,9 @@ Fixes:
   Closes: SF bug #3196917
 - checking: Prevent false positives when detecting the MIME type
   of certain archive files.
+- checking: Correct conversion between file URLs and encoded
+  filenames. Fixes false errors when handling files with Unicode
+  encodings.
 - cmdline: Fix filename completion if path starts with ~
 
 Changes:
