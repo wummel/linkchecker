@@ -134,7 +134,7 @@ class UrlBase (object):
         if self.parent_url:
             assert not urlutil.url_needs_quoting(self.parent_url), \
                    "unquoted parent URL %r" % self.parent_url
-        url = absolute_url(base_url, base_ref, parent_url)
+        url = absolute_url(self.base_url, base_ref, parent_url)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
 
