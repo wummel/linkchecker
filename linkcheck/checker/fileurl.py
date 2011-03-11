@@ -146,7 +146,7 @@ class FileUrl (urlbase.UrlBase):
         if self.is_directory():
             self.set_result(_("directory"))
         else:
-            url = urllib.url2pathname(fileutil.pathencode(self.url))
+            url = fileutil.pathencode(self.url)
             self.url_connection = urllib2.urlopen(url)
             self.check_case_sensitivity()
 
