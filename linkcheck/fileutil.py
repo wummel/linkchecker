@@ -183,6 +183,9 @@ def has_changed (filename):
 mimedb = mimetypes.MimeTypes(strict=False)
 # For Opera bookmark files (opera6.adr)
 mimedb.add_type('text/plain', '.adr', strict=False)
+# To recognize PHP files as HTML with content check.
+mimedb.add_type('text/plain', '.php', strict=False)
+
 
 # if file extension lookup was unsuccessful, look at the content
 PARSE_CONTENTS = {
