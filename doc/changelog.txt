@@ -1,4 +1,4 @@
-6.5 "" (released xx.xx.2011)
+6.5 "" (released xx.03.2011)
 
 Fixes:
 - checking: Fix typo calling get_temp_file() function.
@@ -8,6 +8,8 @@ Fixes:
 - checking: Correct conversion between file URLs and encoded
   filenames. Fixes false errors when handling files with Unicode
   encodings.
+- checking: Work around a Python 2.7 regression in parsing certain
+  URLs with paths starting with a digit.
 - cmdline: Fix filename completion if path starts with ~
 
 Changes:
