@@ -26,3 +26,4 @@ Changelog.linkchecker*
 /.achievements
 /doc/*.mo
 /po/*.mo
+/LinkChecker-*-portable.zip
