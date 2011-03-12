@@ -19,4 +19,9 @@ fi
 
 #DEBHELPER#
 
+# reload apache configuration
+if [ "$1" = "configure" -a -x /etc/init.d/apache2 ]; then
+    /etc/init.d/apache2 reload
+fi
+
 exit 0
