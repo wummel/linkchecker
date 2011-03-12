@@ -69,7 +69,11 @@ def get_os_filename (path):
     """Return filesystem path for given URL path."""
     if os.name == 'nt':
         path = prepare_urlpath_for_nt(path)
-    return urllib.url2pathname(fileutil.pathencode(path))
+    res = urllib.url2pathname(fileutil.pathencode(path))
+    if os.name == 'nt' and res.endswith(':') and len(res) == 2:
+        # Work around http://bugs.python.org/issue11474
+        res += os.sep
+    return res
 
 
 def is_absolute_path (path):
