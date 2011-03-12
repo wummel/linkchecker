@@ -1,6 +1,9 @@
 Web Interface
 ==============
 The web interface can be configured with
-- adding your host IP in the /etc/apache2/conf.d/linkchecker
 - executing "sudo a2enmod negotiation"
-- accessing http://localhost/lconline/index.html
+- accessing http://localhost/lconline/
+
+If you want to access to web interface from other
+computers, add their IP addresses in the file
+/etc/apache2/conf.d/linkchecker
