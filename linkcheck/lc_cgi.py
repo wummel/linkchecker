@@ -25,7 +25,7 @@ import re
 import time
 import urlparse
 import types
-from . import configuration, strformat, checker, director
+from . import configuration, strformat, checker, director, logger
 from . import add_intern_pattern, get_link_pat, init_i18n
 from . import url as urlutil
 
@@ -45,16 +45,20 @@ class LCFormError (StandardError):
     pass
 
 
-def startoutput (out=sys.stdout):
+def startoutput (out=None):
     """Print leading HTML headers to given output stream."""
+    if out is None:
+        out = logger.get_stdout_writer()
     out.write("Content-type: text/html\r\n"
               "Cache-Control: no-cache\r\n"
               "Pragma: no-cache\r\n"
               "\r\n")
 
 
-def checklink (out=sys.stdout, form=None, env=os.environ):
+def checklink (out=None, form=None, env=os.environ):
     """Main cgi function, check the given links and print out the result."""
+    if out is None:
+        out = logger.get_stdout_writer()
     if form is None:
         form = {}
     try:

@@ -39,18 +39,14 @@ class TestCgi (unittest.TestCase):
     """
 
     def test_form_valid_url (self):
-        """
-        Check url validity.
-        """
+        # Check url validity.
         form = {"url": Store("http://www.heise.de/"),
-                "level": Store("0"),
+                "level": Store("1"),
                }
         linkcheck.lc_cgi.checkform(form)
 
     def test_form_empty_url (self):
-        """
-        Check with empty url.
-        """
+        # Check with empty url.
         form = {"url": Store(""),
                 "level": Store("0"),
                }
@@ -58,9 +54,7 @@ class TestCgi (unittest.TestCase):
                           linkcheck.lc_cgi.checkform, form)
 
     def test_form_default_url (self):
-        """
-        Check with default url.
-        """
+        # Check with default url.
         form = {"url": Store("http://"),
                 "level": Store("0"),
                }
@@ -68,11 +62,15 @@ class TestCgi (unittest.TestCase):
                           linkcheck.lc_cgi.checkform, form)
 
     def test_form_invalid_url (self):
-        """
-        Check url (in)validity.
-        """
+        # Check url (in)validity.
         form = {"url": Store("http://www.foo bar/"),
                 "level": Store("0"),
                }
         self.assertRaises(linkcheck.lc_cgi.LCFormError,
                           linkcheck.lc_cgi.checkform, form)
+
+    def test_checklink (self):
+        form = {"url": Store("http://www.heise.de/"),
+                "level": Store("0"),
+               }
+        linkcheck.lc_cgi.checklink(form=form)

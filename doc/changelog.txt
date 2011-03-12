@@ -11,6 +11,8 @@ Fixes:
 - checking: Work around a Python 2.7 regression in parsing certain
   URLs with paths starting with a digit.
 - cmdline: Fix filename completion if path starts with ~
+- cgi: Prevent encoding errors printing to sys.stdout using an
+  encoding wrapper.
 
 Changes:
 - checking: Use HTTP GET requests to work around buggy IIS servers
