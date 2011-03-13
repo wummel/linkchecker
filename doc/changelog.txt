@@ -1,4 +1,4 @@
-6.5 "" (released xx.03.2011)
+6.5 "The Abyss" (released 13.3.2011)
 
 Fixes:
 - checking: Fix typo calling get_temp_file() function.
