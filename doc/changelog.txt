@@ -1,3 +1,6 @@
+6.6 "" (released xx.xx.2011)
+
+
 6.5 "The Abyss" (released 13.3.2011)
 
 Fixes:
