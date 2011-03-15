@@ -7,6 +7,8 @@ Build-Depends: python-all-dev (>= 2.6.6-3), debhelper (>= 7.0.50), gettext,
 X-Python-Version: >= 2.6
 Standards-Version: 3.9.1
 Homepage: http://linkchecker.sourceforge.net/
+Vcs-Git: git://linkchecker.git.sourceforge.net/gitroot/linkchecker/linkchecker
+Vcs-Browser: http://linkchecker.git.sourceforge.net/
 
 Package: linkchecker
 Architecture: any

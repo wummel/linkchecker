@@ -1,6 +1,7 @@
 linkchecker (6.6-1) unstable; urgency=low
 
   * New upstream release.
+  * Added Vcs-Git and Vcs-Browser entries in debian/control.
 
  -- Bastian Kleineidam <calvin@debian.org>  Mon, 14 Mar 2011 15:04:35 +0100
 
