@@ -220,7 +220,7 @@ class HtmlLogger (Logger):
     def write_warning (self, url_data):
         """Write url_data.warnings."""
         sep = u"<br>"+os.linesep
-        text = sep.join(cgi.escape(x) for x in url_data.warnings)
+        text = sep.join(cgi.escape(x[1]) for x in url_data.warnings)
         self.writeln(u'<tr><td bgcolor="' + self.colorwarning + u'" '+
                      u'valign="top">' + self.part("warning") +
                      u'</td><td bgcolor="' + self.colorwarning + u'">' +

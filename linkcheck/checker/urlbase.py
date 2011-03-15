@@ -1083,7 +1083,7 @@ class UrlBase (object):
           Indicates if URL data has been loaded from cache.
         - url_data.result: unicode
           Result string
-        - url_data.warnings: list of unicode
+        - url_data.warnings: list of tuples (tag, warning message)
           List of tagged warnings for this URL.
         - url_data.name: unicode string or None
           name of URL (eg. filename or link name)
@@ -1116,7 +1116,7 @@ class UrlBase (object):
           extern=self.extern[0],
           cached=self.cached,
           result=self.result,
-          warnings=[x[1] for x in self.warnings],
+          warnings=self.warnings[:],
           name=self.name or u"",
           title=self.get_title(),
           parent_url=self.parent_url or u"",

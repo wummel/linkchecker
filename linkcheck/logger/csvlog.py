@@ -88,7 +88,7 @@ class CSVLogger (Logger):
         for s in (url_data.base_url,
                url_data.parent_url, url_data.base_ref,
                url_data.result,
-               self.linesep.join(url_data.warnings),
+               self.linesep.join(x[1] for x in url_data.warnings),
                self.linesep.join(url_data.info),
                url_data.valid, url_data.url,
                url_data.line, url_data.column,

@@ -79,7 +79,7 @@ class TestLogger (linkcheck.logger.Logger):
                    "is located in" not in info:
                     self.result.append(u"info %s" % info)
         if self.has_part('warning'):
-            for warning in url_data.warnings:
+            for tag, warning in url_data.warnings:
                 self.result.append(u"warning %s" % warning)
         if self.has_part('result'):
             self.result.append(u"valid" if url_data.valid else u"error")
