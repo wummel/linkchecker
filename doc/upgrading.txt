@@ -1,9 +1,14 @@
 Upgrading
 =========
 
+Migrating from 6.4 to 6.5
+-------------------------
+Only applies if a custom output loggers has been programmed:
+The URL data model for output loggers has changed. The list of
+warning messages is now a list of tuples (tagname, warningmessage).
+
 Migrating from 5.5 to 6.0
 -------------------------
-
 Python 2.6 or newer is required (Python 3.x is not supported though).
 
 The deprecated --no-proxy-for and --no-anchor-caching options have been
@@ -14,14 +19,12 @@ The configuration file now requires multiline syntax for the options
 
 Migrating from 5.2 to 5.3
 -------------------------
-
 The --password option now reads a password from stdin instead
 taking it from the commandline. This prevents reading the password
 from the commandline string with tools like ``ps``.
 
 Migrating from 5.1 to 5.2
 -------------------------
-
 The --no-proxy-for option has been deprecated and will be removed
 in a future release. Also, the "noproxyfor" entries in configuration
 files will not be evaluated anymore.
@@ -31,7 +34,6 @@ over proxies.
 
 Migrating from 5.0 to 5.1
 -------------------------
-
 The --no-anchor-caching option has been deprecated and will be removed
 in a future release. This option should not be used anymore.
 
@@ -40,7 +42,6 @@ warnings have been ignored.
 
 Migrating from 4.x to 5.0
 -------------------------
-
 Python >= 2.5 is now required.
 
 The CGI script access control has been removed. Please use the access
@@ -50,7 +51,6 @@ in the distribution.
 
 Migrating from 4.4 to 4.5
 -------------------------
-
 Configuration file entries that were enumerated (``ignoreX``,
 ``nofollowX``, ``noproxyX`` and ``entryX``) now have a new multiline
 syntax. For example the old configuration:
@@ -75,12 +75,10 @@ If an indented line starts with a comment sign, it will be ignored.
 
 Migrating from 4.2 to 4.3
 -------------------------
-
 The deprecated ``--disable-psyco`` option has been removed.
 
 Migrating from 4.1 to 4.2
 -------------------------
-
 If run under Unix system as the 'root' user, LinkChecker drops
 privileges and runs under the 'nobody' user account.
 The new option --allow-root prevents this, ie. enables the old
@@ -88,7 +86,6 @@ pre-4.2 behaviour.
 
 Migrating from 3.x to 4.0
 -------------------------
-
 The Python API of the linkcheck module has changed. If you were
 using the library directly instead of the commandline or CGI
 interfaces, you will have to adjust your code.
@@ -113,7 +110,6 @@ The ``xml`` output logger has been renamed to ``gxml``.
 
 Migrating from 2.x to 3.0
 -------------------------
-
 The --warnings option is deprecated since warnings are now printed
 per default. A new --no-warnings has been added if one wants to
 have the old behaviour. Additionally, some old warnings about have
@@ -130,7 +126,6 @@ linkcheckerrc default config for the new syntax.
 
 Migrating from 2.2 to 2.3
 -------------------------
-
 The per-user config file is now ``~/.linkchecker/linkcheckerrc``
 (previous location was ``~/.linkcheckerrc`` ).
 
@@ -142,7 +137,6 @@ Python >= 2.4 is now required.
 
 Migrating from 1.x to 2.0
 -------------------------
-
 The --output and --file-output parameters can specify the encoding
 now. You should check your scripts if they support the new option
 syntax.
@@ -158,7 +152,6 @@ use the output encoding option.
 
 Migrating from 1.12.x to 1.13.0
 -------------------------------
-
 Since lots of filenames have changed you should check that any
 manually installed versions prior to 1.13.0 are removed. Otherwise
 you will have startup problems.
