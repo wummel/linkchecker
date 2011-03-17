@@ -91,7 +91,8 @@ class UrlItem (object):
         """Store formatted tooltip texts from URL data."""
         # Display warnings in result tooltip
         if self.url_data.warnings:
-            result = strformat.wrap(u"\n".join(self.url_data.warnings), 60)
+            text = u"\n".join(x[1] for x in self.url_data.warnings)
+            result = strformat.wrap(text, 60)
         else:
             result = u""
         self.tooltips = [
