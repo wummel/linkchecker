@@ -35,7 +35,7 @@ from .urlmodel import UrlItemModel
 from .urlsave import urlsave
 from .settings import Settings
 from .. import configuration, checker, director, add_intern_pattern, \
-    strformat, fileutil
+    strformat, fileutil, LinkCheckerError
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
@@ -71,6 +71,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.editor = EditorWindow(parent=self)
         # Note: do not use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
+        self.config_error = None
         # init the rest
         self.init_treeview()
         self.connect_widgets()
@@ -87,7 +88,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.options.set_options(self.settings.read_options())
         self.status = Status.idle
         self.actionSave.setEnabled(False)
-        self.set_statusbar(_("Ready."))
+        msg = self.config_error or _("Ready.")
+        self.set_statusbar(msg)
 
     def get_qhcpath (self):
         """Helper function to search for the QHC help file in different
@@ -140,6 +142,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def init_config (self):
         """Create a configuration object."""
         self.config = configuration.Configuration()
+        # set standard GUI configuration values
         self.config.logger_add("gui", GuiLogger)
         self.config["logger"] = self.config.logger_new('gui',
             signal=self.log_url_signal, stats=self.log_stats_signal)
@@ -148,6 +151,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.handler = GuiLogHandler(self.debug.log_msg_signal)
         status = StatusLogger(self.progress.log_status_signal)
         self.config.init_logging(status, handler=self.handler)
+        # read user and system configuration file
+        try:
+            self.config.read()
+        except LinkCheckerError, msg:
+            self.config_error = msg
 
     def set_config (self):
         """Set configuration."""

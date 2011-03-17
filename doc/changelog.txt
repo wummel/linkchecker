@@ -1,5 +1,8 @@
 6.6 "" (released xx.xx.2011)
 
+Fixes:
+- gui: Really read system and user configuration file.
+
 Changes:
 - logging: Add warning tag attribute in XML loggers.
 
