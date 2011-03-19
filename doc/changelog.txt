@@ -3,6 +3,7 @@
 Fixes:
 - gui: Really read system and user configuration file.
 - gui: Fix "File->Save results" command.
+  Closes: SF bug #3223290
 
 Changes:
 - logging: Add warning tag attribute in XML loggers.
