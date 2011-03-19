@@ -47,7 +47,7 @@ def urlsave (parent, config, urls):
     logger.end_output()
 
 
-def get_save_filename (parent, basedir):
+def get_save_filename (parent):
     """Open file save dialog for given parent window and base directory.
     Return dialog result."""
     filename = "linkchecker-out.html"
