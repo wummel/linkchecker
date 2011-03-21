@@ -9,8 +9,8 @@ Changes:
 - logging: Add warning tag attribute in XML loggers.
 
 Features:
-- gui: Added a crash handler which displayes exceptions
-  in a dialog window, much like the commandline client.
+- gui: Added a crash handler which displays exceptions
+  in a dialog window.
 
 
 6.5 "The Abyss" (released 13.3.2011)
