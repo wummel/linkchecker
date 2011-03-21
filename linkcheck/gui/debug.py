@@ -36,4 +36,5 @@ class LinkCheckerDebug (QtGui.QDialog, Ui_DebugDialog):
         self.textEdit.clear()
 
     def getText (self):
+        """Get debug info as string."""
         return self.textEdit.toPlainText()
