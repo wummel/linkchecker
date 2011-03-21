@@ -34,3 +34,6 @@ class LinkCheckerDebug (QtGui.QDialog, Ui_DebugDialog):
     def reset (self):
         """Clear all debug info."""
         self.textEdit.clear()
+
+    def getText (self):
+        return self.textEdit.toPlainText()
