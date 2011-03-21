@@ -72,7 +72,9 @@ class CustomXMLLogger (xmllog.XMLLogger):
         if url_data.warnings and self.has_part('warning'):
             self.xml_starttag(u"warnings")
             for tag, data in url_data.warnings:
-                attrs = {"tag": tag}
+                attrs = {}
+                if tag:
+                    attrs["tag"] = tag
                 self.xml_tag(u"warning", data, attrs)
             self.xml_endtag(u"warnings")
         if self.has_part("result"):
