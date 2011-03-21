@@ -22,6 +22,8 @@ Application internationalization support.
 import os
 import locale
 import gettext
+import sys
+import codecs
 
 # more supported languages are added in init()
 supported_languages = set(['en'])
@@ -171,3 +173,10 @@ def lang_name (lang):
 def lang_trans (lang, curlang):
     """Return translated full name of given language."""
     return lang_transis[lang][curlang]
+
+
+def get_encoded_writer (out=sys.stdout, encoding=i18n.default_encoding,
+                        errors='replace'):
+    """Get wrapped output writer with given encoding and error handling."""
+    Writer = codecs.getwriter(encoding)
+    return Writer(out, errors)

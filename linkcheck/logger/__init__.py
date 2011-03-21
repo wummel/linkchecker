@@ -55,13 +55,6 @@ ContentTypes = dict(
 )
 
 
-def get_stdout_writer (encoding=i18n.default_encoding, errors='replace'):
-    """Get wrapped sys.stdout writer with given encoding and error
-    handling."""
-    Writer = codecs.getwriter(encoding)
-    return Writer(sys.stdout, errors)
-
-
 class LogStatistics (object):
     """Gather log statistics:
     - number of errors, warnings and valid links
@@ -207,8 +200,8 @@ class Logger (object):
         elif 'fd' in args:
             self.fd = args['fd']
         else:
-            self.fd = get_stdout_writer(encoding=self.output_encoding,
-                                        errors=self.codec_errors)
+            self.fd = i18n.get_encoded_writer(encoding=self.output_encoding,
+                                              errors=self.codec_errors)
 
     def start_fileoutput (self):
         """Start output to configured file."""
