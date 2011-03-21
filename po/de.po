@@ -1,12 +1,12 @@
 # German translation for LinkChecker.
-# Bastian Kleineidam <calvin@users.sourceforge.net>, 2009-2010.
+# Bastian Kleineidam <calvin@users.sourceforge.net>, 2009-2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-03-13 07:34+0100\n"
-"PO-Revision-Date: 2011-03-13 07:36+0100\n"
+"POT-Creation-Date: 2011-03-21 15:21+0100\n"
+"PO-Revision-Date: 2011-03-21 15:23+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -60,39 +60,39 @@ msgstr "Ein Fehler ist während der Update-Prüfung von %(app)s aufgetreten: %(e
 msgid "Closing pending connections..."
 msgstr "Schließe aktuelle Verbindungen..."
 
-#: ../linkcheck/gui/linkchecker_ui_progress.py:76
+#: ../linkcheck/gui/linkchecker_ui_progress.py:82
 msgid "LinkChecker progress"
 msgstr "LinkChecker Fortschritt"
 
-#: ../linkcheck/gui/linkchecker_ui_progress.py:77
+#: ../linkcheck/gui/linkchecker_ui_progress.py:83
 msgid "Status"
 msgstr "Status"
 
-#: ../linkcheck/gui/linkchecker_ui_progress.py:78
+#: ../linkcheck/gui/linkchecker_ui_progress.py:84
 msgid "Active:"
 msgstr "Aktiv:"
 
-#: ../linkcheck/gui/linkchecker_ui_progress.py:79
-#: ../linkcheck/gui/linkchecker_ui_progress.py:81
-#: ../linkcheck/gui/linkchecker_ui_progress.py:83
+#: ../linkcheck/gui/linkchecker_ui_progress.py:85
+#: ../linkcheck/gui/linkchecker_ui_progress.py:87
+#: ../linkcheck/gui/linkchecker_ui_progress.py:89
 msgid "0"
 msgstr "0"
 
-#: ../linkcheck/gui/linkchecker_ui_progress.py:80
+#: ../linkcheck/gui/linkchecker_ui_progress.py:86
 msgid "Queued:"
 msgstr "Wartend:"
 
-#: ../linkcheck/gui/linkchecker_ui_progress.py:82
+#: ../linkcheck/gui/linkchecker_ui_progress.py:88
 msgid "Checked:"
 msgstr "Geprüft:"
 
-#: ../linkcheck/gui/linkchecker_ui_progress.py:84
+#: ../linkcheck/gui/linkchecker_ui_progress.py:90
 msgid "Cancel"
 msgstr "Abbrechen"
 
 #: ../linkcheck/gui/options.py:109
-#: ../linkcheck/gui/linkchecker_ui_options.py:157
-#: ../linkcheck/gui/linkchecker_ui_options.py:161
+#: ../linkcheck/gui/linkchecker_ui_options.py:163
+#: ../linkcheck/gui/linkchecker_ui_options.py:167
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -104,249 +104,245 @@ msgstr "Lesen"
 msgid "File not found"
 msgstr "Datei nicht gefunden"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:701
+#: ../linkcheck/gui/linkchecker_ui_main.py:706
 msgid "LinkChecker"
 msgstr "LinkChecker"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:702
-#: ../linkcheck/gui/linkchecker_ui_main.py:706
+#: ../linkcheck/gui/linkchecker_ui_main.py:707
+#: ../linkcheck/gui/linkchecker_ui_main.py:711
 #: ../linkcheck/gui/urlmodel.py:22
 #: ../linkcheck/logger/__init__.py:43
 msgid "URL"
 msgstr "URL"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:703
+#: ../linkcheck/gui/linkchecker_ui_main.py:708
 msgid "Start checking the given URL."
 msgstr "Beginne, die gegebene URL zu Prüfen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:704
-msgid "Start"
-msgstr "Start"
-
-#: ../linkcheck/gui/linkchecker_ui_main.py:705
+#: ../linkcheck/gui/linkchecker_ui_main.py:710
 msgid "URL properties"
 msgstr "URL Eigenschaften"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:707
+#: ../linkcheck/gui/linkchecker_ui_main.py:712
 #: ../linkcheck/gui/urlmodel.py:22
 #: ../linkcheck/logger/__init__.py:35
 msgid "Name"
 msgstr "Name"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:708
+#: ../linkcheck/gui/linkchecker_ui_main.py:713
 #: ../linkcheck/logger/__init__.py:36
 msgid "Parent URL"
 msgstr "Vater URL"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:709
+#: ../linkcheck/gui/linkchecker_ui_main.py:714
 #: ../linkcheck/logger/__init__.py:34
 msgid "Base"
 msgstr "Basis"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:710
+#: ../linkcheck/gui/linkchecker_ui_main.py:715
 #: ../linkcheck/logger/__init__.py:42
 msgid "Check time"
 msgstr "Prüfzeit"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:711
+#: ../linkcheck/gui/linkchecker_ui_main.py:716
 #: ../linkcheck/logger/__init__.py:40
 msgid "D/L time"
 msgstr "D/L Zeit"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:712
+#: ../linkcheck/gui/linkchecker_ui_main.py:717
 #: ../linkcheck/logger/__init__.py:41
 msgid "Size"
 msgstr "Größe"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:713
+#: ../linkcheck/gui/linkchecker_ui_main.py:718
 #: ../linkcheck/logger/__init__.py:38
 msgid "Info"
 msgstr "Info"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:714
+#: ../linkcheck/gui/linkchecker_ui_main.py:719
 #: ../linkcheck/logger/__init__.py:39
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:715
+#: ../linkcheck/gui/linkchecker_ui_main.py:720
 #: ../linkcheck/gui/urlmodel.py:22
 #: ../linkcheck/logger/__init__.py:33
 msgid "Result"
 msgstr "Ergebnis"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:716
+#: ../linkcheck/gui/linkchecker_ui_main.py:721
 msgid "Check statistics"
 msgstr "Prüfstatistik"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:717
+#: ../linkcheck/gui/linkchecker_ui_main.py:722
 msgid "Valid URLs"
 msgstr "Gültige URLs"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:718
+#: ../linkcheck/gui/linkchecker_ui_main.py:723
 msgid "Warnings"
 msgstr "Warnungen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:719
+#: ../linkcheck/gui/linkchecker_ui_main.py:724
 msgid "Invalid URLs"
 msgstr "Ungültige URLs"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:720
+#: ../linkcheck/gui/linkchecker_ui_main.py:725
 msgid "Content types"
 msgstr "Inhalte"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:721
+#: ../linkcheck/gui/linkchecker_ui_main.py:726
 msgid "Image"
 msgstr "Bild"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:722
+#: ../linkcheck/gui/linkchecker_ui_main.py:727
 msgid "Text"
 msgstr "Text"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:723
+#: ../linkcheck/gui/linkchecker_ui_main.py:728
 msgid "Application"
 msgstr "Anwendung"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:724
+#: ../linkcheck/gui/linkchecker_ui_main.py:729
 msgid "Audio"
 msgstr "Audio"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:725
+#: ../linkcheck/gui/linkchecker_ui_main.py:730
 msgid "Video"
 msgstr "Video"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:726
+#: ../linkcheck/gui/linkchecker_ui_main.py:731
 msgid "Other"
 msgstr "Andere"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:727
+#: ../linkcheck/gui/linkchecker_ui_main.py:732
 msgid "Mail"
 msgstr "E-Mail"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:728
+#: ../linkcheck/gui/linkchecker_ui_main.py:733
 msgid "URL statistics"
 msgstr "URL Statistik"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:729
+#: ../linkcheck/gui/linkchecker_ui_main.py:734
 msgid "Min. length"
 msgstr "Min. Länge"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:730
+#: ../linkcheck/gui/linkchecker_ui_main.py:735
 msgid "Avg. length"
 msgstr "Durchschn. Länge"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:731
+#: ../linkcheck/gui/linkchecker_ui_main.py:736
 msgid "Max. length"
 msgstr "Max. Länge"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:732
+#: ../linkcheck/gui/linkchecker_ui_main.py:737
 msgid "Domains"
 msgstr "Domains"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:733
+#: ../linkcheck/gui/linkchecker_ui_main.py:738
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:734
-#: ../linkcheck/gui/linkchecker_ui_editor.py:51
+#: ../linkcheck/gui/linkchecker_ui_main.py:739
+#: ../linkcheck/gui/linkchecker_ui_editor.py:56
 msgid "&File"
 msgstr "&Datei"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:735
-#: ../linkcheck/gui/linkchecker_ui_main.py:738
+#: ../linkcheck/gui/linkchecker_ui_main.py:740
+#: ../linkcheck/gui/linkchecker_ui_main.py:743
 msgid "&Help"
 msgstr "&Hilfe"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:736
+#: ../linkcheck/gui/linkchecker_ui_main.py:741
 msgid "A&bout"
 msgstr "Ü&ber"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:737
+#: ../linkcheck/gui/linkchecker_ui_main.py:742
 msgid "About"
 msgstr "Über"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:739
+#: ../linkcheck/gui/linkchecker_ui_main.py:744
 msgid "Help"
 msgstr "Hilfe"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:740
+#: ../linkcheck/gui/linkchecker_ui_main.py:745
 msgid "View online"
 msgstr "Online anschauen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:741
+#: ../linkcheck/gui/linkchecker_ui_main.py:746
 msgid "View URL online"
 msgstr "URL Online anschauen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:742
+#: ../linkcheck/gui/linkchecker_ui_main.py:747
 msgid "&Options"
 msgstr "&Optionen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:743
+#: ../linkcheck/gui/linkchecker_ui_main.py:748
 #: /usr/lib/python2.6/optparse.py:1621
 msgid "Options"
 msgstr "Optionen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:744
+#: ../linkcheck/gui/linkchecker_ui_main.py:749
 msgid "Copy to clipboard"
 msgstr "URL kopieren"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:745
+#: ../linkcheck/gui/linkchecker_ui_main.py:750
 msgid "Copy URL to clipboard"
 msgstr "URL in die Zwischenablage kopieren"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:746
+#: ../linkcheck/gui/linkchecker_ui_main.py:751
 msgid "Ctrl+C"
 msgstr "Strg+C"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:747
+#: ../linkcheck/gui/linkchecker_ui_main.py:752
 msgid "View parent online"
 msgstr "Vater-URL Online anschauen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:748
+#: ../linkcheck/gui/linkchecker_ui_main.py:753
 msgid "View parent URL online"
 msgstr "Vater-URL Online anschauen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:749
+#: ../linkcheck/gui/linkchecker_ui_main.py:754
 msgid "View parent source"
 msgstr "Quellcode der Vater-URL anzeigen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:750
+#: ../linkcheck/gui/linkchecker_ui_main.py:755
 msgid "View parent URL source"
 msgstr "Quellcode der Vater-URL anzeigen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:751
+#: ../linkcheck/gui/linkchecker_ui_main.py:756
 msgid "Show debug"
 msgstr "Zeige Debug"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:752
+#: ../linkcheck/gui/linkchecker_ui_main.py:757
 msgid "View properties"
 msgstr "Eigenschaften anschauen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:753
+#: ../linkcheck/gui/linkchecker_ui_main.py:758
 msgid "View URL properties"
 msgstr "URL Eigenschaften anschauen"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:754
+#: ../linkcheck/gui/linkchecker_ui_main.py:759
 msgid "&Save results..."
 msgstr "Ergebnisse &speichern..."
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:755
-#: ../linkcheck/gui/linkchecker_ui_editor.py:53
+#: ../linkcheck/gui/linkchecker_ui_main.py:760
+#: ../linkcheck/gui/linkchecker_ui_editor.py:58
 msgid "Ctrl+S"
 msgstr "Strg+S"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:756
+#: ../linkcheck/gui/linkchecker_ui_main.py:761
 msgid "&Quit"
 msgstr "&Beenden"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:757
+#: ../linkcheck/gui/linkchecker_ui_main.py:762
 msgid "Ctrl+Q"
 msgstr "Strg+Q"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:758
+#: ../linkcheck/gui/linkchecker_ui_main.py:763
 msgid "Check for updates"
 msgstr "Prüfe auf Updates"
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:759
+#: ../linkcheck/gui/linkchecker_ui_main.py:764
 msgid "Donate"
 msgstr "Spenden"
 
@@ -362,59 +358,59 @@ msgstr "Google Chrome Favoritendatei einfügen"
 msgid "Insert Opera bookmark file"
 msgstr "Opera Favoritendatei einfügen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:144
+#: ../linkcheck/gui/linkchecker_ui_options.py:150
 msgid "Linkchecker options"
 msgstr "LinkChecker Optionen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:145
+#: ../linkcheck/gui/linkchecker_ui_options.py:151
 msgid "The most common check options are configurable. They override any configuration file settings."
 msgstr "Die gebräuchlichsten Prüfoptionen sind konfigurierbar. Sie überschreiben alle Einträge der Konfigurationsdateien."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:146
-#: ../linkcheck/gui/linkchecker_ui_options.py:148
+#: ../linkcheck/gui/linkchecker_ui_options.py:152
+#: ../linkcheck/gui/linkchecker_ui_options.py:154
 msgid "Check recursively all links up to given depth. A negative depth will enable infinite recursion."
 msgstr ""
 "Prüfe rekursiv alle Verknüpfungen bis zu der angegebenen Tiefe. Eine\n"
 "negative Tiefe erwirkt unendliche Rekursion."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:147
+#: ../linkcheck/gui/linkchecker_ui_options.py:153
 msgid "Recursive depth"
 msgstr "Rekursionstiefe"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:149
-#: ../linkcheck/gui/linkchecker_ui_options.py:151
+#: ../linkcheck/gui/linkchecker_ui_options.py:155
+#: ../linkcheck/gui/linkchecker_ui_options.py:157
 msgid "Log all checked URLs once. Default is to log only errors and warnings."
 msgstr "Gebe alle URLs aus. Standard ist es, nur fehlerhafte URLs und Warnungen auszugeben."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:150
+#: ../linkcheck/gui/linkchecker_ui_options.py:156
 msgid "Verbose output"
 msgstr "Ausführliche Ausgabe"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:152
+#: ../linkcheck/gui/linkchecker_ui_options.py:158
 msgid "Debug"
 msgstr "Debug"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:153
+#: ../linkcheck/gui/linkchecker_ui_options.py:159
 msgid "Close"
 msgstr "Schließen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:154
+#: ../linkcheck/gui/linkchecker_ui_options.py:160
 msgid "GUI options"
 msgstr "GUI Optionen"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:155
+#: ../linkcheck/gui/linkchecker_ui_options.py:161
 msgid "The configuration files can be edited with an integrated text editor."
 msgstr "Die Konfigurationsdateien können mit einem integrierten Texteditor bearbeitet werden."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:156
+#: ../linkcheck/gui/linkchecker_ui_options.py:162
 msgid "System configuration file"
 msgstr "System-Konfigurationsdatei"
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:158
+#: ../linkcheck/gui/linkchecker_ui_options.py:164
 msgid "Overrides system wide configuration file settings."
 msgstr "Überschreibt systemweite Konfiguration."
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:162
+#: ../linkcheck/gui/linkchecker_ui_options.py:168
 msgid "Configuration files"
 msgstr "Konfigurationsdateien"
 
@@ -450,16 +446,16 @@ msgstr ", Zeile %d"
 msgid ", col %d"
 msgstr ", Spalte %d"
 
-#: ../linkcheck/gui/__init__.py:90
+#: ../linkcheck/gui/__init__.py:91
 msgid "Ready."
 msgstr "Bereit."
 
-#: ../linkcheck/gui/__init__.py:223
+#: ../linkcheck/gui/__init__.py:231
 #, python-format
 msgid "About %(appname)s"
 msgstr "Über %(appname)s"
 
-#: ../linkcheck/gui/__init__.py:224
+#: ../linkcheck/gui/__init__.py:232
 #, python-format
 msgid ""
 "<qt><p>%(appname)s checks HTML documents and websites\n"
@@ -481,31 +477,36 @@ msgstr ""
 "<a href=\"%(donateurl)s\">Spende</a> in Betracht ziehen, Vielen Dank!\n"
 "</qt>"
 
-#: ../linkcheck/gui/__init__.py:285
+#: ../linkcheck/gui/__init__.py:293
 msgid "Error, empty URL"
 msgstr "Fehler, leere URL"
 
-#: ../linkcheck/gui/__init__.py:287
+#: ../linkcheck/gui/__init__.py:295
 #, python-format
 msgid "Checking '%s'."
 msgstr "Prüfe '%s'"
 
-#: ../linkcheck/gui/__init__.py:292
+#: ../linkcheck/gui/__init__.py:300
 #, python-format
 msgid "Error, invalid URL `%s'."
 msgstr "Fehler, ungültige URL `%s'."
 
-#: ../linkcheck/gui/linkchecker_ui_editor.py:50
+#: ../linkcheck/gui/linkchecker_ui_editor.py:55
 msgid "LinkChecker source view"
 msgstr "LinkChecker Quellcodeanzeige"
 
-#: ../linkcheck/gui/linkchecker_ui_editor.py:52
+#: ../linkcheck/gui/linkchecker_ui_editor.py:57
 msgid "&Save"
 msgstr "&Speichern"
 
-#: ../linkcheck/gui/linkchecker_ui_debug.py:37
+#: ../linkcheck/gui/linkchecker_ui_debug.py:42
 msgid "LinkChecker debug log"
 msgstr "LinkChecker Debugausgabe"
+
+#: ../linkcheck/lc_cgi.py:90
+#, python-format
+msgid "URL has unparsable domain name: %s"
+msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %s"
 
 #: ../linkcheck/lc_cgi.py:113
 msgid "unsupported language"
@@ -558,33 +559,33 @@ msgstr ""
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt.\n"
 "</blockquote></body></html>"
 
-#: ../linkcheck/director/console.py:47
+#: ../linkcheck/director/console.py:46
 #, python-format
 msgid "%2d URL active"
 msgid_plural "%2d URLs active"
 msgstr[0] "%2d URL aktiv"
 msgstr[1] "%2d URLs aktiv"
 
-#: ../linkcheck/director/console.py:50
+#: ../linkcheck/director/console.py:49
 #, python-format
 msgid "%5d URL queued"
 msgid_plural "%5d URLs queued"
 msgstr[0] "%5d URL überprüft"
 msgstr[1] "%5d URLs überprüft"
 
-#: ../linkcheck/director/console.py:52
+#: ../linkcheck/director/console.py:51
 #, python-format
 msgid "%4d URL checked"
 msgid_plural "%4d URLs checked"
 msgstr[0] "%4d Verknüpfung überprüft"
 msgstr[1] "%4d Verknüpfungen überprüft"
 
-#: ../linkcheck/director/console.py:54
+#: ../linkcheck/director/console.py:53
 #, python-format
 msgid "runtime %s"
 msgstr "Laufzeit %s"
 
-#: ../linkcheck/director/console.py:74
+#: ../linkcheck/director/console.py:73
 #, python-format
 msgid ""
 "********** Oops, I did it again. *************\n"
@@ -593,9 +594,11 @@ msgid ""
 "at %s\n"
 "and include the following information:\n"
 "- the URL or file you are testing\n"
-"- your commandline arguments and/or configuration.\n"
-"- the output of a debug run with option \"-Dall\" of the executed command\n"
-"- the system information below.\n"
+"- the system information below\n"
+"\n"
+"When using the commandline client:\n"
+"- your commandline arguments and any custom configuration files.\n"
+"- the output of a debug run with option \"-Dall\"\n"
 "\n"
 "Not disclosing some of the information above due to privacy reasons is ok.\n"
 "I will try to help you nonetheless, but you have to give me something\n"
@@ -607,23 +610,25 @@ msgstr ""
 "einen Fehlerbericht an %s\n"
 "mit den folgenden Informationen:\n"
 "- die URL oder Datei, welche Sie gerade prüfen\n"
-"- ihre Kommandozeilenargumente und/oder Ihre Konfiguration.\n"
-"- die Ausgabe eines Debuglaufs Option \"-Dall\" und dem ausgeführten Befehl\n"
 "- die untenstehenden Systeminformationen.\n"
+"\n"
+"Bei Benutzung des Kommandozeilenprogramms:\n"
+"- ihre Kommandozeilenargumente und/oder Ihre Konfiguration.\n"
+"- die Ausgabe eines Debuglaufs mit Option \"-Dall\"\n"
 "\n"
 "Wenn Sie Informationen aus privaten Gründen unterlassen, ist das in Ordnung.\n"
 "Ich werde trotzdem versuchen, Ihnen zu helfen. Sie müssen mir allerdings\n"
 "irgendwas geben, womit ich arbeiten kann ;).\n"
 
-#: ../linkcheck/director/console.py:93
+#: ../linkcheck/director/console.py:99
 msgid "******** LinkChecker internal error, over and out ********"
 msgstr "******** LinkChecker interner Fehler, und tschüß ********"
 
-#: ../linkcheck/director/console.py:98
+#: ../linkcheck/director/console.py:104
 msgid "System info:"
 msgstr "Systeminformation:"
 
-#: ../linkcheck/director/console.py:100
+#: ../linkcheck/director/console.py:106
 #: ../linkchecker:566
 #, python-format
 msgid "Python %(version)s on %(platform)s"
@@ -713,13 +718,13 @@ msgid "could not download update information"
 msgstr "konnte Update-Informationen nicht herunterladen"
 
 #: ../linkcheck/logger/text.py:79
-#: ../linkcheck/logger/__init__.py:344
+#: ../linkcheck/logger/__init__.py:337
 #, python-format
 msgid "Get the newest version at %(url)s"
 msgstr "Die neueste Version gibt es unter %(url)s"
 
 #: ../linkcheck/logger/text.py:81
-#: ../linkcheck/logger/__init__.py:346
+#: ../linkcheck/logger/__init__.py:339
 #, python-format
 msgid "Write comments and bugs to %(url)s"
 msgstr "Schreiben Sie Kommentare und Fehler an %(url)s"
@@ -735,22 +740,22 @@ msgstr "Beginne Prüfen am %s"
 msgid " (cached)"
 msgstr " (aus dem Cache)"
 
-#: ../linkcheck/logger/text.py:185
+#: ../linkcheck/logger/text.py:186
 #: ../linkcheck/logger/html.py:235
 msgid "Valid"
 msgstr "Gültig"
 
-#: ../linkcheck/logger/text.py:188
+#: ../linkcheck/logger/text.py:189
 #: ../linkcheck/logger/html.py:240
 msgid "Error"
 msgstr "Fehler"
 
-#: ../linkcheck/logger/text.py:196
+#: ../linkcheck/logger/text.py:197
 #: ../linkcheck/logger/html.py:268
 msgid "That's it."
 msgstr "Das war's."
 
-#: ../linkcheck/logger/text.py:197
+#: ../linkcheck/logger/text.py:198
 #: ../linkcheck/logger/html.py:270
 #, python-format
 msgid "%d link checked."
@@ -758,7 +763,7 @@ msgid_plural "%d links checked."
 msgstr[0] "%d Verknüpfung überprüft."
 msgstr[1] "%d Verknüpfungen überprüft."
 
-#: ../linkcheck/logger/text.py:200
+#: ../linkcheck/logger/text.py:201
 #: ../linkcheck/logger/html.py:273
 #, python-format
 msgid "%d warning found"
@@ -766,13 +771,13 @@ msgid_plural "%d warnings found"
 msgstr[0] "%d Warnung gefunden"
 msgstr[1] "%d Warnungen gefunden"
 
-#: ../linkcheck/logger/text.py:203
+#: ../linkcheck/logger/text.py:204
 #: ../linkcheck/logger/html.py:276
 #, python-format
 msgid " (%d ignored or duplicates not printed)"
 msgstr " (%d ignorierte oder doppelte Vorkommen nicht ausgegeben)"
 
-#: ../linkcheck/logger/text.py:206
+#: ../linkcheck/logger/text.py:207
 #: ../linkcheck/logger/html.py:279
 #, python-format
 msgid "%d error found"
@@ -780,42 +785,42 @@ msgid_plural "%d errors found"
 msgstr[0] "%d Fehler gefunden"
 msgstr[1] "%d Fehler gefunden"
 
-#: ../linkcheck/logger/text.py:209
+#: ../linkcheck/logger/text.py:210
 #: ../linkcheck/logger/html.py:282
 #, python-format
 msgid " (%d duplicates not printed)"
 msgstr " (%d doppelte Vorkommen nicht ausgegeben)"
 
-#: ../linkcheck/logger/text.py:214
+#: ../linkcheck/logger/text.py:215
 #: ../linkcheck/logger/html.py:288
-#: ../linkcheck/logger/__init__.py:354
+#: ../linkcheck/logger/__init__.py:347
 #, python-format
 msgid "Stopped checking at %(time)s (%(duration)s)"
 msgstr "Beende Prüfen am %(time)s (%(duration)s)"
 
-#: ../linkcheck/logger/text.py:221
+#: ../linkcheck/logger/text.py:222
 msgid "Statistics:"
 msgstr "Statistik:"
 
-#: ../linkcheck/logger/text.py:223
+#: ../linkcheck/logger/text.py:224
 #: ../linkcheck/logger/html.py:249
 #, python-format
 msgid "Number of domains: %d"
 msgstr "Anzahl von Domains: %d"
 
-#: ../linkcheck/logger/text.py:226
+#: ../linkcheck/logger/text.py:227
 #: ../linkcheck/logger/html.py:253
 #, python-format
 msgid "Content types: %(image)d image, %(text)d text, %(video)d video, %(audio)d audio, %(application)d application, %(mail)d mail and %(other)d other."
 msgstr "Inhalte: %(image)d Bild, %(text)d Text, %(video)d Video, %(audio)d Audio, %(application)d Anwendung, %(mail)d E-Mail und %(other)d andere Inhalte."
 
-#: ../linkcheck/logger/text.py:229
+#: ../linkcheck/logger/text.py:230
 #: ../linkcheck/logger/html.py:257
 #, python-format
 msgid "URL lengths: min=%(min)d, max=%(max)d, avg=%(avg)d."
 msgstr "URL Längen: min=%(min)d, max=%(max)d, ∅=%(avg)d"
 
-#: ../linkcheck/logger/text.py:234
+#: ../linkcheck/logger/text.py:235
 #: ../linkcheck/logger/html.py:262
 msgid "No statistics available since zero URLs were checked."
 msgstr "Keine Statistik verfügbar, da Null URLs geprüft wurden."
@@ -850,12 +855,12 @@ msgstr "Cache Schlüssel"
 msgid "Extern"
 msgstr "Extern"
 
-#: ../linkcheck/logger/__init__.py:250
+#: ../linkcheck/logger/__init__.py:243
 #, python-format
 msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr "Herzlichen Glückwunsch zum Geburtstag, LinkChecker, ich bin heute %d Jahre alt geworden!"
 
-#: ../linkcheck/logger/__init__.py:341
+#: ../linkcheck/logger/__init__.py:334
 #, python-format
 msgid "created by %(app)s at %(time)s"
 msgstr "erstellt von %(app)s am %(time)s"
@@ -2258,6 +2263,9 @@ msgstr "%s Option erfordert %d Argumente"
 #, python-format
 msgid "%s option does not take a value"
 msgstr "%s Option nimmt kein Wert"
+
+#~ msgid "Start"
+#~ msgstr "Start"
 
 #~ msgid "Ask for URL if none are given on the commandline."
 #~ msgstr ""
