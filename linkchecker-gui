@@ -23,13 +23,14 @@ from PyQt4.QtGui import QApplication, QStyleFactory, QErrorMessage
 from linkcheck.gui import LinkCheckerMain
 from linkcheck import configuration, drop_privileges
 
-def excepthook (etype, evalue, tb):
+def excepthook (debugwidget, etype, evalue, tb):
     """Catch unhandled exceptions."""
     from cStringIO import StringIO
     from PyQt4.QtCore import qWarning
     from linkcheck.director.console import internal_error
     out = StringIO()
     internal_error(out=out, etype=etype, evalue=evalue, tb=tb)
+    print >> out, debugwidget.getText()
     qWarning(out.getvalue())
 
 ## Look and feel with stylesheets
@@ -41,7 +42,6 @@ Style = "Plastique"
 def main (argv=None):
     if argv is None:
         argv = sys.argv
-    sys.excepthook = excepthook
     app = QApplication(argv)
     app.setApplicationName(configuration.AppName)
     app.setApplicationVersion(configuration.Version)
@@ -57,6 +57,8 @@ def main (argv=None):
     drop_privileges()
     handler = QErrorMessage.qtHandler()
     handler.setMinimumSize(600, 400)
+    sys.excepthook = \
+       lambda etype, evalue, tb: excepthook(window.debug, etype, evalue, tb)
     sys.exit(app.exec_())
 
 
