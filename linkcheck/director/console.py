@@ -77,9 +77,11 @@ You have found an internal error in LinkChecker. Please write a bug report
 at %s
 and include the following information:
 - the URL or file you are testing
-- your commandline arguments and/or configuration.
-- the output of a debug run with option "-Dall" of the executed command
-- the system information below.
+- the system information below
+
+When using the commandline client:
+- your commandline arguments and any custom configuration files.
+- the output of a debug run with option "-Dall"
 
 Not disclosing some of the information above due to privacy reasons is ok.
 I will try to help you nonetheless, but you have to give me something
