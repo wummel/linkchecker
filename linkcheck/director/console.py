@@ -68,7 +68,7 @@ class StatusLogger (object):
         self.fd.flush()
 
 
-def internal_error (out=stderr):
+def internal_error (out=stderr, etype=None, evalue=None, tb=None):
     """Print internal error message (output defaults to stderr)."""
     print >> out, os.linesep
     print >> out, _("""********** Oops, I did it again. *************
@@ -85,10 +85,15 @@ Not disclosing some of the information above due to privacy reasons is ok.
 I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
 """) % configuration.SupportUrl
-    etype, value = sys.exc_info()[:2]
-    print >> out, etype, value
-    traceback.print_exc()
-    print_app_info()
+    if etype is None:
+        etype = sys.exc_info()[0]
+    if evalue is None:
+        evalue = sys.exc_info()[1]
+    print >> out, etype, evalue
+    if tb is None:
+        tb = sys.exc_info()[2]
+    traceback.print_exception(etype, evalue, tb, None, out)
+    print_app_info(out=out)
     print >> out, os.linesep, \
             _("******** LinkChecker internal error, over and out ********")
 
