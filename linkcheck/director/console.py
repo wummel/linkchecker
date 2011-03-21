@@ -19,13 +19,12 @@ Helpers for console output.
 """
 import sys
 import os
-import codecs
 import traceback
 from .. import i18n, configuration, strformat
 
 # Output to stdout and stderr, encoded with the default encoding
-stderr = codecs.getwriter(i18n.default_encoding)(sys.stderr, errors="ignore")
-stdout = codecs.getwriter(i18n.default_encoding)(sys.stdout, errors="ignore")
+stderr = i18n.get_encoded_writer(out=sys.stderr)
+stdout = i18n.get_encoded_writer()
 
 
 def encode (text):
