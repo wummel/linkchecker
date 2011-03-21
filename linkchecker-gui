@@ -28,7 +28,7 @@ def excepthook (debugwidget, etype, evalue, tb):
     from cStringIO import StringIO
     from PyQt4.QtCore import qWarning
     from linkcheck.director.console import internal_error
-    out = i18n.get_encoded_writer(out=StringIO())
+    out = i18n.get_encoded_writer(out=StringIO(), encoding="utf-8")
     internal_error(out=out, etype=etype, evalue=evalue, tb=tb)
     print >> out, debugwidget.getText()
     qWarning(out.getvalue())
