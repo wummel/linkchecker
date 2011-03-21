@@ -175,8 +175,9 @@ def lang_trans (lang, curlang):
     return lang_transis[lang][curlang]
 
 
-def get_encoded_writer (out=sys.stdout, encoding=i18n.default_encoding,
-                        errors='replace'):
+def get_encoded_writer (out=sys.stdout, encoding=None, errors='replace'):
     """Get wrapped output writer with given encoding and error handling."""
+    if encoding is None:
+        encoding = default_encoding
     Writer = codecs.getwriter(encoding)
     return Writer(out, errors)
