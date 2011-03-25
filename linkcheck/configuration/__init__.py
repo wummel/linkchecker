@@ -428,7 +428,7 @@ def get_gconf_http_proxy ():
                     port = 8080
                 return "%s:%d" % (host, port)
     except StandardError, msg:
-        log.info(LOG_CHECK, "error getting HTTP proxy from gconf: %s", msg)
+        log.debug(LOG_CHECK, "error getting HTTP proxy from gconf: %s", msg)
     return None
 
 
@@ -447,7 +447,7 @@ def get_gconf_ftp_proxy ():
                 port = 8080
             return "%s:%d" % (host, port)
     except StandardError, msg:
-        log.info(LOG_CHECK, "error getting FTP proxy from gconf: %s", msg)
+        log.debug(LOG_CHECK, "error getting FTP proxy from gconf: %s", msg)
     return None
 
 
@@ -461,7 +461,7 @@ def get_kde_http_proxy ():
         data = read_kioslaverc(config_dir)
         return data.get("http_proxy")
     except StandardError, msg:
-        log.info(LOG_CHECK, "error getting HTTP proxy from KDE: %s", msg)
+        log.debug(LOG_CHECK, "error getting HTTP proxy from KDE: %s", msg)
 
 
 def get_kde_ftp_proxy ():
@@ -474,7 +474,7 @@ def get_kde_ftp_proxy ():
         data = read_kioslaverc(config_dir)
         return data.get("ftp_proxy")
     except StandardError, msg:
-        log.info(LOG_CHECK, "error getting FTP proxy from KDE: %s", msg)
+        log.debug(LOG_CHECK, "error getting FTP proxy from KDE: %s", msg)
 
 # The following KDE functions are largely ported and ajusted from
 # Google Chromium:
