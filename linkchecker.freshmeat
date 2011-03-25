@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 6.5
+Version: 6.6
 Release-Focus: Minor bugfixes
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
@@ -9,5 +9,5 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-Several HTTP checking bugs have been fixed. Encoding errors when printing
-output in the CGI interface have also been fixed.
+The user and system configuration file are now imported by the GUI.
+Saving results in the GUI is now possible again.
