@@ -2,6 +2,7 @@
 # execute linkchecker -h for help on these options.
 # Commandline options override these settings.
 
+##################### output configuration ##########################
 [output]
 # enable debug messages; see 'linkchecker -h' for valid debug names
 #debug=all
@@ -18,7 +19,12 @@
 # additional file output
 #fileoutput = text, html, gml, sql
 
+
 ##################### logger configuration ##########################
+# Note that the logger configuration is ignored by the linkchecker-gui
+# program. Results in the GUI can be saved to a file with the command
+# File -> Save results.
+#
 # logger output part names:
 # all       For all parts
 # realurl   The full url link
@@ -113,7 +119,8 @@
 [gxml]
 #encoding=iso-8859-1
 
-# checking options
+
+##################### checking options ##########################
 [checking]
 # number of threads
 #threads=5
@@ -142,7 +149,8 @@
 # Send and store cookies
 #cookies=1
 
-# filtering options
+
+##################### filtering options ##########################
 [filtering]
 #ignore=
 # ignore everything with 'lconline' in the URL name
@@ -167,6 +175,8 @@
 
 #internlinks=^http://www\.example\.net/
 
+
+##################### password authentication ##########################
 [authentication]
 # Different user/password pairs for different URLs can be provided.
 # Entries are a triple (URL regular expression, username, password),
