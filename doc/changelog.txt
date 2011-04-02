@@ -1,3 +1,6 @@
+6.7 "" (released xx.xx.2011)
+
+
 6.6 "Coraline" (released 25.3.2011)
 
 Fixes:

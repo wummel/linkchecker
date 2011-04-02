@@ -1,2 +1,1 @@
-- Document Windows filename locations somewhere
 - Port to Python 3.x (will not happen anytime soon though)
