@@ -165,6 +165,28 @@ followed recursively. This is checked by searching for a
 
 <p>Note that the local and FTP directory recursion reads all files in that
 directory, not just a subset like <code>index.htm*</code>.</p>
+
+<h2>Configuration files</h2>
+
+<p>There are two locations where LinkChecker looks for configuration files.
+The first is the system configuration file which is valid for all users.
+The second is the user configuration file which can be adjusted
+by the current user.</p>
+
+<p>On Unix systems the locations are</p>
+
+<ul>
+<li><code>/etc/linkchecker/linkcheckerrc</code> (system configuration)</li>
+<li><code>~/.linkchecker/linkcheckerrc</code> (user configuration)</li>
+</ul>
+
+<p>On Windows the locations are</p>
+
+<ul>
+<li><code>%ProgramFiles%\linkchecker\share\linkchecker\linkcheckerrc</code> (system
+configuration)</li>
+<li><code>%HOMEPATH%\.linkchecker\linkcheckerrc</code> (user configuration)</li>
+</ul>
 <hr/>
     <div class="footer">
       &copy; Copyright 2011, Bastian Kleineidam.

@@ -138,3 +138,23 @@ conditions. The conditions are checked in this order:
 
 Note that the local and FTP directory recursion reads all files in that
 directory, not just a subset like ``index.htm*``.
+
+
+## Configuration files
+
+There are two locations where LinkChecker looks for configuration files.
+The first is the system configuration file which is valid for all users.
+The second is the user configuration file which can be adjusted
+by the current user.
+
+On Unix systems the locations are
+
+- ``/etc/linkchecker/linkcheckerrc`` (system configuration)
+- ``~/.linkchecker/linkcheckerrc`` (user configuration)
+
+On Windows the locations are
+
+- ``%ProgramFiles%\linkchecker\share\linkchecker\linkcheckerrc`` (system
+  configuration)
+- ``%HOMEPATH%\.linkchecker\linkcheckerrc`` (user configuration)
+
