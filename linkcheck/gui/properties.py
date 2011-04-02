@@ -43,7 +43,8 @@ def set_properties (widget, data):
     else:
         widget.prop_size.setText(u"")
     widget.prop_info.setText(wrap(data.info, 65))
-    widget.prop_warning.setText(wrap(data.warnings, 65))
+    warning_msgs = [x[1] for x in data.warnings]
+    widget.prop_warning.setText(wrap(warning_msgs, 65))
     if data.valid:
         result = u"Valid"
     else:
