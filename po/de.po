@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-03-21 15:21+0100\n"
-"PO-Revision-Date: 2011-03-21 15:23+0100\n"
+"POT-Creation-Date: 2011-04-04 18:56+0200\n"
+"PO-Revision-Date: 2011-04-04 18:57+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -424,7 +424,23 @@ msgstr "Konfigurationsdateien"
 msgid "%.3f seconds"
 msgstr "%.3f Sekunden"
 
-#: ../linkcheck/gui/urlsave.py:54
+#: ../linkcheck/gui/urlsave.py:21
+msgid "HTML output (*.html)"
+msgstr "HTML Ausgabe (*.html)"
+
+#: ../linkcheck/gui/urlsave.py:22
+msgid "Text output (*.txt)"
+msgstr "Text Ausgabe (*.txt)"
+
+#: ../linkcheck/gui/urlsave.py:23
+msgid "XML output (*.xml)"
+msgstr "XML Ausgabe (*.xml)"
+
+#: ../linkcheck/gui/urlsave.py:24
+msgid "CSV output (*.csv)"
+msgstr "CSV Ausgabe (*.csv)"
+
+#: ../linkcheck/gui/urlsave.py:56
 msgid "Save check results"
 msgstr "Prüfergebnisse speichern"
 

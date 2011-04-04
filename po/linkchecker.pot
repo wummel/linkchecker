@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-03-21 15:21+0100\n"
+"POT-Creation-Date: 2011-04-04 18:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -427,7 +427,23 @@ msgstr ""
 msgid "%.3f seconds"
 msgstr ""
 
-#: ../linkcheck/gui/urlsave.py:54
+#: ../linkcheck/gui/urlsave.py:21
+msgid "HTML output (*.html)"
+msgstr ""
+
+#: ../linkcheck/gui/urlsave.py:22
+msgid "Text output (*.txt)"
+msgstr ""
+
+#: ../linkcheck/gui/urlsave.py:23
+msgid "XML output (*.xml)"
+msgstr ""
+
+#: ../linkcheck/gui/urlsave.py:24
+msgid "CSV output (*.csv)"
+msgstr ""
+
+#: ../linkcheck/gui/urlsave.py:56
 msgid "Save check results"
 msgstr ""
 

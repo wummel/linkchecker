@@ -18,15 +18,17 @@ import os
 from PyQt4 import QtGui
 
 LoggerFilters = ";;".join((
-    "HTML output (*.html)",
-    "Text output (*.txt)",
-    "XML output (*.xml)",
+    _("HTML output (*.html)"),
+    _("Text output (*.txt)"),
+    _("XML output (*.xml)"),
+    _("CSV output (*.csv)"),
 ))
 
 FileExt2LogType = {
     ".html": "html",
     ".txt": "text",
     ".xml": "xml",
+    ".csv": "csv",
 }
 
 def urlsave (parent, config, urls):
