@@ -19,19 +19,18 @@
 Check HTML pages for broken links. This is the GUI client.
 """
 import sys
-from PyQt4.QtGui import QApplication, QStyleFactory, QErrorMessage
+from PyQt4.QtGui import QApplication, QStyleFactory, QMessageBox
 from linkcheck.gui import LinkCheckerMain
 from linkcheck import configuration, drop_privileges, i18n
 
-def excepthook (debugwidget, etype, evalue, tb):
+def excepthook (parent, etype, evalue, tb):
     """Catch unhandled exceptions."""
     from cStringIO import StringIO
-    from PyQt4.QtCore import qWarning
     from linkcheck.director.console import internal_error
     out = i18n.get_encoded_writer(out=StringIO(), encoding="utf-8")
     internal_error(out=out, etype=etype, evalue=evalue, tb=tb)
-    print >> out, debugwidget.getText()
-    qWarning(out.getvalue())
+    QMessageBox.warning(parent, _(u"LinkChecker internal error"),
+        out.getvalue())
 
 ## Look and feel with stylesheets
 # In Cleanlooks the progress bar text is outside the bar.
@@ -55,10 +54,8 @@ def main (argv=None):
     window = LinkCheckerMain(url=url)
     window.show()
     drop_privileges()
-    handler = QErrorMessage.qtHandler()
-    handler.setMinimumSize(600, 400)
     sys.excepthook = \
-       lambda etype, evalue, tb: excepthook(window.debug, etype, evalue, tb)
+       lambda etype, evalue, tb: excepthook(window, etype, evalue, tb)
     sys.exit(app.exec_())
 
 

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-04-04 18:56+0200\n"
-"PO-Revision-Date: 2011-04-04 18:57+0100\n"
+"POT-Creation-Date: 2011-04-04 19:26+0200\n"
+"PO-Revision-Date: 2011-04-04 19:27+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -2205,6 +2205,10 @@ msgstr "Abgebrochen."
 #: ../linkchecker:782
 msgid "The `profile' Python module is not installed, therefore the --profile option is disabled."
 msgstr "Das `profile' Python Modul ist nicht installiert, deshalb ist die --profile Option deaktiviert."
+
+#: ../linkchecker-gui:32
+msgid "LinkChecker internal error"
+msgstr "LinkChecker interner Fehler"
 
 #: /usr/lib/python2.6/optparse.py:140
 #, python-format
