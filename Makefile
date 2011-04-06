@@ -3,9 +3,8 @@ PYVER:=2.6
 PYTHON:=python$(PYVER)
 VERSION:=$(shell $(PYTHON) setup.py --version)
 MACHINE:=$(shell uname -m)
-HOST:=www.debian.org
-LCOPTS:=-Ftext -Fhtml -Fgml -Fsql -Fcsv -Fxml -Fgxml -Fdot --complete -r1 -C
-PYTHONSRC:=/home/calvin/src/python27-gitsvn/Lib
+FILESCHECK_URL:=http://localhost/~calvin/
+PYTHONSRC:=${HOME}/src/cpython-hg/Lib
 #PYTHONSRC:=/usr/lib/python2.6
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker cgi-bin config doc
 TESTS ?= tests/
@@ -165,7 +164,9 @@ doccheck:
 	  *.py
 
 filescheck:
-	-./linkchecker $(LCOPTS) http://$(HOST)/
+	for out in text html gml sql csv xml gxml dot; do \
+	  ./linkchecker -o$$out -F$$out --complete -r1 -C $(FILESCHECK_URL) || exit 1; \
+	done
 
 update-copyright:
 	update-copyright --holder="Bastian Kleineidam"
