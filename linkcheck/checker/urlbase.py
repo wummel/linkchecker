@@ -459,7 +459,7 @@ class UrlBase (object):
         """Try to ask GeoIP database for country info."""
         if self.host:
             country = geoip.get_country(self.host)
-            if country is not None:
+            if country:
                 self.add_info(_("URL is located in %(country)s.") %
                 {"country": _(country)})
 

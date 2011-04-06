@@ -9,6 +9,7 @@ Fixes:
 - logging: Only write configured output parts in CSV logger.
 - logging: Correctly encode CSV output.
   Closes: SF bug #3263848
+- logging: Don't print empty country information.
 
 Changes:
 - gui: Improved display of internal errors.
