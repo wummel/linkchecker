@@ -200,8 +200,7 @@ class Logger (object):
         elif 'fd' in args:
             self.fd = args['fd']
         else:
-            self.fd = i18n.get_encoded_writer(encoding=self.output_encoding,
-                                              errors=self.codec_errors)
+            self.fd = self.create_fd()
 
     def start_fileoutput (self):
         """Start output to configured file."""
@@ -221,6 +220,9 @@ class Logger (object):
 
     def create_fd (self):
         """Create open file descriptor."""
+        if self.filename is None:
+            return i18n.get_encoded_writer(encoding=self.output_encoding,
+                                           errors=self.codec_errors)
         return codecs.open(self.filename, "wb", self.output_encoding,
                            self.codec_errors)
 

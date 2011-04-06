@@ -5,6 +5,8 @@ Fixes:
   Closes: SF bug #3263974
 - doc: Removed mentioning of old -s option from man page.
 - logging: Only write configured output parts in CSV logger.
+- logging: Correctly encode CSV output.
+  Closes: SF bug #3263848
 
 Changes:
 - gui: Improved display of internal errors.

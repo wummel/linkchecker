@@ -19,6 +19,7 @@ A CSV logger.
 """
 import csv
 import os
+import sys
 from . import Logger
 from .. import strformat
 
@@ -42,6 +43,8 @@ class CSVLogger (Logger):
 
     def create_fd (self):
         """Create open file descriptor."""
+        if self.filename is None:
+            return sys.stdout
         return open(self.filename, "wb")
 
     def comment (self, s, **args):
