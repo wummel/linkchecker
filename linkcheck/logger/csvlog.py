@@ -85,23 +85,42 @@ class CSVLogger (Logger):
     def log_url (self, url_data):
         """Write csv formatted url check info."""
         row = []
-        for s in (url_data.base_url,
-               url_data.parent_url, url_data.base_ref,
-               url_data.result,
-               self.linesep.join(x[1] for x in url_data.warnings),
-               self.linesep.join(url_data.info),
-               url_data.valid, url_data.url,
-               url_data.line, url_data.column,
-               url_data.name, url_data.dltime,
-               url_data.dlsize, url_data.checktime,
-               url_data.cached):
-            row.append(strformat.unicode_safe(s))
-        self.writerow(row)
+        if self.has_part("urlname"):
+            row.append(url_data.base_url)
+        if self.has_part("parentname"):
+            row.append(url_data.parent_url)
+        if self.has_part("baseref"):
+            row.append(url_data.base_ref)
+        if self.has_part("result"):
+            row.append(url_data.result)
+        if self.has_part("warningstring"):
+            row.append(self.linesep.join(x[1] for x in url_data.warnings))
+        if self.has_part("infostring"):
+            row.append(self.linesep.join(url_data.info))
+        if self.has_part("valid"):
+            row.append(url_data.valid)
+        if self.has_part("url"):
+            row.append(url_data.url)
+        if self.has_part("line"):
+            row.append(url_data.line)
+        if self.has_part("column"):
+            row.append(url_data.column)
+        if self.has_part("name"):
+            row.append(url_data.name)
+        if self.has_part("dltime"):
+            row.append(url_data.dltime)
+        if self.has_part("dlsize"):
+            row.append(url_data.dlsize)
+        if self.has_part("checktime"):
+            row.append(url_data.checktime)
+        if self.has_part("cached"):
+            row.append(url_data.cached)
+        self.writerow(map(strformat.unicode_safe, row))
         self.flush()
 
     def writerow (self, row):
         """Write one row in CSV format."""
-        self.writer.writerow([self.encode(s) for s in row])
+        self.writer.writerow(map(self.encode, row))
 
     def end_output (self):
         """Write end of checking info as csv comment."""
