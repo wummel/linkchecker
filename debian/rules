@@ -19,9 +19,7 @@ override_dh_installchangelogs:
 
 
 ROOTDIR=$(CURDIR)/debian/linkchecker
-DOCDIR=$(ROOTDIR)/usr/share/doc/linkchecker
-SHAREDIR=$(ROOTDIR)/usr/share/linkchecker
-HTMLDIR=$(SHAREDIR)/lconline
+HTMLDIR=$(ROOTDIR)/usr/share/linkchecker/lconline
 CGIDIR=$(ROOTDIR)/usr/lib/cgi-bin
 LOCALEDIR=$(ROOTDIR)/usr/share/locale
 ETCDIR=$(ROOTDIR)/etc
