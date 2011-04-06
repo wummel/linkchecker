@@ -8,6 +8,8 @@ Fixes:
 
 Changes:
 - gui: Improved display of internal errors.
+- logging: Print more detailed locale information on internal
+  errors.
 
 Features:
 - gui: Added CSV output type for results.

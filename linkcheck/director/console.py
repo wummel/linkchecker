@@ -19,6 +19,7 @@ Helpers for console output.
 """
 import sys
 import os
+import time
 import traceback
 from .. import i18n, configuration, strformat
 
@@ -95,8 +96,30 @@ I can work with ;) .
         tb = sys.exc_info()[2]
     traceback.print_exception(etype, evalue, tb, None, out)
     print_app_info(out=out)
+    print_proxy_info(out=out)
+    print_locale_info(out=out)
     print >> out, os.linesep, \
             _("******** LinkChecker internal error, over and out ********")
+
+
+def print_env_info (key, out=stderr):
+    """If given environment key is defined, print it out."""
+    value = os.getenv(key)
+    if value is not None:
+        print >> out, key, "=", repr(value)
+
+
+def print_proxy_info (out=stderr):
+    """Print proxy info."""
+    for key in ("http_proxy", "ftp_proxy", "no_proxy"):
+        print_env_info(key, out=out)
+
+
+def print_locale_info (out=stderr):
+    """Print locale info."""
+    for key in ("LANGUAGE", "LC_ALL", "LC_CTYPE", "LANG"):
+        print_env_info(key, out=out)
+    print >> out, _("Default locale:"), i18n.get_locale()
 
 
 def print_app_info (out=stderr):
@@ -105,10 +128,8 @@ def print_app_info (out=stderr):
     print >> out, configuration.App
     print >> out, _("Python %(version)s on %(platform)s") % \
                     {"version": sys.version, "platform": sys.platform}
-    for key in ("LC_ALL", "LC_MESSAGES", "http_proxy", "ftp_proxy", "no_proxy"):
-        value = os.getenv(key)
-        if value is not None:
-            print >> out, key, "=", repr(value)
+    stime = strformat.strtime(time.time())
+    print >> out, _("Local time:"), stime
 
 
 def print_version (out=stdout):
