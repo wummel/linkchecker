@@ -45,7 +45,8 @@ def urlsave (parent, config, urls):
     logger = config.logger_new(logtype, **kwargs)
     logger.start_output()
     for urlitem in urls:
-        logger.log_url(urlitem.url_data)
+        do_print = True
+        logger.log_filter_url(urlitem.url_data, do_print)
     logger.end_output()
 
 
