@@ -3,6 +3,7 @@
 Fixes:
 - gui: Fix display of warnings in property pane.
   Closes: SF bug #3263974
+- doc: Added configuration file locations in HTML documentation.
 - doc: Removed mentioning of old -s option from man page.
 - logging: Only write configured output parts in CSV logger.
 - logging: Correctly encode CSV output.
