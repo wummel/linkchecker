@@ -1111,6 +1111,8 @@ class UrlBase (object):
           Cache key for this URL.
         - url_data.content_type: unicode
           MIME content type for URL content.
+        - url_data.level: int
+          Recursion level until reaching this URL from start URL
         """
         return dict(valid=self.valid,
           extern=self.extern[0],
@@ -1132,6 +1134,7 @@ class UrlBase (object):
           column=self.column,
           cache_url_key=self.cache_url_key,
           content_type=self.get_content_type(),
+          level=self.recursion_level,
         )
 
     def to_wire (self):
@@ -1167,6 +1170,7 @@ urlDataAttr = [
     'column',
     'cache_url_key',
     'content_type',
+    'level',
 ]
 
 class CompactUrlData (object):

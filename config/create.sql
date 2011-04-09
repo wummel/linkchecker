@@ -19,5 +19,6 @@ create table linksdb (
     checktime      int,
     dltime         int,
     dlsize         int,
-    cached         int
+    cached         int,
+    level          int
 );

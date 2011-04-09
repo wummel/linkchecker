@@ -18,6 +18,8 @@ Changes:
 
 Features:
 - gui: Added CSV output type for results.
+- logging: Print recursion level in Machine readable logger outputs
+  xml, csv and sql. Allows filtering the output by recursion level.
 
 
 6.6 "Coraline" (released 25.3.2011)

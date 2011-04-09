@@ -98,7 +98,8 @@ class SQLLogger (Logger):
               "%(checktime)d,"
               "%(dltime)d,"
               "%(dlsize)d,"
-              "%(cached)d"
+              "%(cached)d,"
+              "%(level)d"
               ")%(separator)s" %
               {'table': self.dbname,
                'base_url': sqlify(url_data.base_url),
@@ -117,6 +118,7 @@ class SQLLogger (Logger):
                'dlsize': url_data.dlsize,
                'cached': intify(url_data.cached),
                'separator': self.separator,
+               "level": url_data.level,
               })
         self.flush()
 

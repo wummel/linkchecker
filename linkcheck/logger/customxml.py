@@ -64,6 +64,8 @@ class CustomXMLLogger (xmllog.XMLLogger):
             self.xml_tag(u"dlsize", u"%d" % url_data.dlsize)
         if url_data.checktime and self.has_part("checktime"):
             self.xml_tag(u"checktime", u"%f" % url_data.checktime)
+        if self.has_part("level"):
+            self.xml_tag(u"level", u"%d" % url_data.level)
         if url_data.info and self.has_part('info'):
             self.xml_starttag(u"infos")
             for info in url_data.info:

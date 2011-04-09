@@ -41,6 +41,7 @@ Fields = dict(
     dlsize=_("Size"),
     checktime=_("Check time"),
     url=_("URL"),
+    level=_("Level"),
 )
 del _
 

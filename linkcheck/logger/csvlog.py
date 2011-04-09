@@ -79,7 +79,8 @@ class CSVLogger (Logger):
                   u"dltime",
                   u"dlsize",
                   u"checktime",
-                  u"cached"):
+                  u"cached",
+                  u"level"):
             if self.has_part(s):
                 row.append(s)
         if row:
@@ -118,6 +119,8 @@ class CSVLogger (Logger):
             row.append(url_data.checktime)
         if self.has_part("cached"):
             row.append(url_data.cached)
+        if self.has_part("level"):
+            row.append(url_data.level)
         self.writerow(map(strformat.unicode_safe, row))
         self.flush()
 
