@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-04-04 19:26+0200\n"
+"POT-Creation-Date: 2011-04-09 10:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -443,7 +443,7 @@ msgstr ""
 msgid "CSV output (*.csv)"
 msgstr ""
 
-#: ../linkcheck/gui/urlsave.py:56
+#: ../linkcheck/gui/urlsave.py:57
 msgid "Save check results"
 msgstr ""
 
@@ -560,33 +560,33 @@ msgid ""
 "</html>"
 msgstr ""
 
-#: ../linkcheck/director/console.py:46
+#: ../linkcheck/director/console.py:47
 #, python-format
 msgid "%2d URL active"
 msgid_plural "%2d URLs active"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/director/console.py:49
+#: ../linkcheck/director/console.py:50
 #, python-format
 msgid "%5d URL queued"
 msgid_plural "%5d URLs queued"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/director/console.py:51
+#: ../linkcheck/director/console.py:52
 #, python-format
 msgid "%4d URL checked"
 msgid_plural "%4d URLs checked"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/director/console.py:53
+#: ../linkcheck/director/console.py:54
 #, python-format
 msgid "runtime %s"
 msgstr ""
 
-#: ../linkcheck/director/console.py:73
+#: ../linkcheck/director/console.py:74
 #, python-format
 msgid ""
 "********** Oops, I did it again. *************\n"
@@ -606,17 +606,25 @@ msgid ""
 "I can work with ;) .\n"
 msgstr ""
 
-#: ../linkcheck/director/console.py:99
+#: ../linkcheck/director/console.py:102
 msgid "******** LinkChecker internal error, over and out ********"
 msgstr ""
 
-#: ../linkcheck/director/console.py:104
+#: ../linkcheck/director/console.py:122
+msgid "Default locale:"
+msgstr ""
+
+#: ../linkcheck/director/console.py:127
 msgid "System info:"
 msgstr ""
 
-#: ../linkcheck/director/console.py:106 ../linkchecker:566
+#: ../linkcheck/director/console.py:129 ../linkchecker:566
 #, python-format
 msgid "Python %(version)s on %(platform)s"
+msgstr ""
+
+#: ../linkcheck/director/console.py:132
+msgid "Local time:"
 msgstr ""
 
 #: ../linkcheck/director/__init__.py:39
@@ -704,12 +712,12 @@ msgstr[1] ""
 msgid "could not download update information"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:79 ../linkcheck/logger/__init__.py:337
+#: ../linkcheck/logger/text.py:79 ../linkcheck/logger/__init__.py:340
 #, python-format
 msgid "Get the newest version at %(url)s"
 msgstr ""
 
-#: ../linkcheck/logger/text.py:81 ../linkcheck/logger/__init__.py:339
+#: ../linkcheck/logger/text.py:81 ../linkcheck/logger/__init__.py:342
 #, python-format
 msgid "Write comments and bugs to %(url)s"
 msgstr ""
@@ -767,7 +775,7 @@ msgid " (%d duplicates not printed)"
 msgstr ""
 
 #: ../linkcheck/logger/text.py:215 ../linkcheck/logger/html.py:288
-#: ../linkcheck/logger/__init__.py:347
+#: ../linkcheck/logger/__init__.py:350
 #, python-format
 msgid "Stopped checking at %(time)s (%(duration)s)"
 msgstr ""
@@ -827,12 +835,16 @@ msgstr ""
 msgid "Extern"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:243
+#: ../linkcheck/logger/__init__.py:44
+msgid "Level"
+msgstr ""
+
+#: ../linkcheck/logger/__init__.py:246
 #, python-format
 msgid "Happy birthday for LinkChecker, I'm %d years old today!"
 msgstr ""
 
-#: ../linkcheck/logger/__init__.py:334
+#: ../linkcheck/logger/__init__.py:337
 #, python-format
 msgid "created by %(app)s at %(time)s"
 msgstr ""
