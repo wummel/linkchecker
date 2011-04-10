@@ -290,7 +290,7 @@ def check_manifest ():
         print '\n*** SOURCE WARNING: The MANIFEST file is missing!'
         return
     try:
-        manifest = [l.strip() for l in f.readlines()]
+        manifest = [l.strip() for l in f.readlines() if not l.startswith('#')]
     finally:
         f.close()
     err = [line for line in manifest if not os.path.exists(line)]
