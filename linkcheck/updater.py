@@ -56,7 +56,9 @@ def check_update ():
 
 def get_online_version ():
     """Download update info and parse it."""
-    info, content = get_content(UPDATE_URL)
+    # prevent getting a cached answer
+    headers = {'Pragma': 'no-cache'}
+    info, content = get_content(UPDATE_URL, addheaders=headers)
     if info is None:
         None, _('could not download update information')
     version, url = None, None
