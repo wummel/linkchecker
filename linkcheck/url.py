@@ -584,7 +584,8 @@ def get_opener (user=None, password=None, proxy=None, debuglevel=0):
     return urllib2.build_opener(*handlers)
 
 
-def get_content (url, user=None, password=None, proxy=None, data=None):
+def get_content (url, user=None, password=None, proxy=None, data=None,
+                 addheaders=None):
     """Get URL content and info.
 
     @return: (url info, content), or (None, None) on error.
@@ -600,6 +601,8 @@ def get_content (url, user=None, password=None, proxy=None, data=None):
         # makes problems with some sites
         #'Accept-Encoding': 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
     }
+    if addheaders:
+        headers.update(addheaders)
     req = urllib2.Request(url, data, headers)
     try:
         f = get_opener(user=user, password=password, proxy=proxy,
