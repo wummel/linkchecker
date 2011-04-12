@@ -3,8 +3,9 @@ linkchecker (6.7-1) unstable; urgency=low
   * New upstream release.
     + Fixed manpage notes to mention --ignore-url instead of old -s/-i
       options. (Closes: #621040)
+  * Use Standards version 3.9.2 (no changes needed)
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed, 06 Apr 2011 10:23:34 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 12 Apr 2011 08:19:10 +0200
 
 linkchecker (6.6-1) unstable; urgency=low
 
