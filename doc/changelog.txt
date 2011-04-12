@@ -10,6 +10,8 @@ Fixes:
 - logging: Correctly encode CSV output.
   Closes: SF bug #3263848
 - logging: Don't print empty country information.
+- gui: Don't crash while handling internal error in threads other than
+  the main thread.
 
 Changes:
 - gui: Improved display of internal errors.

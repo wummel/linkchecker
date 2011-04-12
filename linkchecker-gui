@@ -19,7 +19,7 @@
 Check HTML pages for broken links. This is the GUI client.
 """
 import sys
-from PyQt4.QtGui import QApplication, QStyleFactory, QMessageBox
+from PyQt4.QtGui import QApplication, QStyleFactory
 from linkcheck.gui import LinkCheckerMain
 from linkcheck import configuration, drop_privileges, i18n
 
@@ -29,8 +29,7 @@ def excepthook (parent, etype, evalue, tb):
     from linkcheck.director.console import internal_error
     out = i18n.get_encoded_writer(out=StringIO(), encoding="utf-8")
     internal_error(out=out, etype=etype, evalue=evalue, tb=tb)
-    QMessageBox.warning(parent, _(u"LinkChecker internal error"),
-        out.getvalue())
+    parent.error_signal.emit(out.getvalue())
 
 ## Look and feel with stylesheets
 # In Cleanlooks the progress bar text is outside the bar.

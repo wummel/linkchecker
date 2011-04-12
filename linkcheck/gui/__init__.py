@@ -51,6 +51,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
 
     log_url_signal = QtCore.pyqtSignal(object)
     log_stats_signal = QtCore.pyqtSignal(object)
+    error_signal = QtCore.pyqtSignal(str)
 
     def __init__(self, parent=None, url=None):
         """Initialize UI."""
@@ -119,6 +120,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.checker.terminated.connect(set_idle)
         self.log_url_signal.connect(self.model.log_url)
         self.log_stats_signal.connect(self.log_stats)
+        self.error_signal.connect(self.internal_error)
 
     def init_treeview (self):
         """Set treeview model and layout."""
@@ -376,3 +378,7 @@ Version 2 or later.
     def log_stats (self, statistics):
         """Set statistic information for selected URL."""
         set_statistics(self, statistics)
+
+    def internal_error (self, msg):
+        """Display internal error message. Triggered by sys.excepthook()."""
+        QtGui.QMessageBox.warning(self, _(u"LinkChecker internal error"), msg)
