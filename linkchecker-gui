@@ -19,23 +19,19 @@
 Check HTML pages for broken links. This is the GUI client.
 """
 import sys
-from PyQt4.QtGui import QApplication, QStyleFactory
-from linkcheck.gui import LinkCheckerMain
+from PyQt4.QtGui import QApplication
+from linkcheck.gui import LinkCheckerMain, get_app_style
 from linkcheck import configuration, drop_privileges, i18n
 
-def excepthook (parent, etype, evalue, tb):
+def excepthook (window, etype, evalue, tb):
     """Catch unhandled exceptions."""
     from cStringIO import StringIO
     from linkcheck.director.console import internal_error
     out = i18n.get_encoded_writer(out=StringIO(), encoding="utf-8")
     internal_error(out=out, etype=etype, evalue=evalue, tb=tb)
-    parent.error_signal.emit(out.getvalue())
+    # signal main window to be thread-safe
+    window.error_signal.emit(out.getvalue())
 
-## Look and feel with stylesheets
-# In Cleanlooks the progress bar text is outside the bar.
-# Use Plastique instead.
-#Style = "Cleanlooks"
-Style = "Plastique"
 
 def main (argv=None):
     if argv is None:
@@ -44,12 +40,14 @@ def main (argv=None):
     app.setApplicationName(configuration.AppName)
     app.setApplicationVersion(configuration.Version)
     app.setOrganizationName(configuration.Author)
-    QApplication.setStyle(QStyleFactory.create(Style))
+    QApplication.setStyle(get_app_style())
     QApplication.setPalette(QApplication.style().standardPalette())
     if app.argc() > 1:
         url = app.argv()[1]
     else:
         url = u""
+    # use local variable here to avoid garbage collection of the main
+    # window before app.exec_() finishes
     window = LinkCheckerMain(url=url)
     window.show()
     drop_privileges()

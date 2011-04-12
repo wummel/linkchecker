@@ -19,6 +19,7 @@ Changes:
 
 Features:
 - gui: Added CSV output type for results.
+- gui: Use Qt Macintosh widget style on OS X systems.
 - logging: Print recursion level in machine readable logger outputs
   xml, csv and sql. Allows filtering the output by recursion level.
 

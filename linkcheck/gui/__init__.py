@@ -46,6 +46,24 @@ RegistryBase = "Bastian"
 Status = enum('idle', 'checking')
 
 
+def get_app_style ():
+    """Return appropriate QStyle object for the current platform to
+    be used in QApplication.setStyle().
+    Currently prefers Macintosh on OS X, else Plastique.
+    Note that style names are case insensitive.
+
+    See also
+    http://doc.trolltech.com/latest/gallery-macintosh.html
+    and
+    http://doc.trolltech.com/latest/gallery-plastique.html
+    """
+    if sys.platform == 'darwin':
+        style = "Macintosh"
+    else:
+        style = "Plastique"
+    return QtGui.QStyleFactory.create(style)
+
+
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     """The main window displaying checked URLs."""
 
