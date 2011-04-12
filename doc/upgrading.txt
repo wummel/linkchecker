@@ -1,6 +1,11 @@
 Upgrading
 =========
 
+Migrating from 6.6 to 6.7
+-------------------------
+The machine readable output formats xml, csv and sql now report
+the recursion level of each URL.
+
 Migrating from 6.4 to 6.5
 -------------------------
 Only applies if a custom output loggers has been programmed:

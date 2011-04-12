@@ -1,4 +1,4 @@
-6.7 "" (released xx.xx.2011)
+6.7 "Friendship" (released 12.4.2011)
 
 Fixes:
 - gui: Fix display of warnings in property pane.
