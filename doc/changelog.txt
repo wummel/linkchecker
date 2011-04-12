@@ -10,8 +10,7 @@ Fixes:
 - logging: Correctly encode CSV output.
   Closes: SF bug #3263848
 - logging: Don't print empty country information.
-- gui: Don't crash while handling internal error in threads other than
-  the main thread.
+- gui: Don't crash while handling internal error in non-main threads.
 
 Changes:
 - gui: Improved display of internal errors.
@@ -20,7 +19,7 @@ Changes:
 
 Features:
 - gui: Added CSV output type for results.
-- logging: Print recursion level in Machine readable logger outputs
+- logging: Print recursion level in machine readable logger outputs
   xml, csv and sql. Allows filtering the output by recursion level.
 
 
