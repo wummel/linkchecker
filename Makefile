@@ -6,7 +6,7 @@ MACHINE:=$(shell uname -m)
 FILESCHECK_URL:=http://localhost/~calvin/
 PYTHONSRC:=${HOME}/src/cpython-hg/Lib
 #PYTHONSRC:=/usr/lib/python2.6
-PY_FILES_DIRS:=linkcheck tests *.py linkchecker cgi-bin config doc
+PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-gui cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
 TESTOPTS=
