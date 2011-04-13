@@ -1,5 +1,7 @@
 HELPFILES = lccollection.qhc
 HTMLFILES = index.html options.html
+FAVICONS = favicon32x32.png favicon16x16.png
+LOGOICONS = logo128x128.png
 
 all:	$(HELPFILES) $(HTMLFILES)
 
@@ -17,5 +19,8 @@ test:
 %.qhc:	%.qhcp lcdoc.qhp $(HTMLFILES)
 	qcollectiongenerator $< -o $@
 
-favicon.ico:	favicon32x32.png favicon16x16.png
-	png2ico favicon.ico favicon32x32.png favicon16x16.png
+favicon.ico:	$(FAVICONS)
+	png2ico favicon.ico $(FAVICONS)
+
+favicon.icns:	$(FAVICONS) $(LOGOICONS)
+	png2icns favicon.icns $(FAVICONS) $(LOGOICONS)
