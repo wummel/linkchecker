@@ -528,14 +528,17 @@ try:
         def run (self):
             # First, let py2app do it's work.
             py2app_build.run(self)
-            imgPath = os.path.join(self.dist_dir, "LinkChecker.dmg")
-            tmpImgPath = os.path.join(self.dist_dir, "LinkChecker.tmp.dmg")
+            dist_dir = self.dist_dir
+            imgPath = os.path.join(dist_dir, "LinkChecker-%s.dmg" % AppVersion)
+            tmpImgPath = os.path.join(dist_dir, "LinkChecker.tmp.dmg")
             print "*** generating temporary DMG image ***"
-            os.system('hdiutil create -srcfolder "%s" -volname "LinkChecker" -format UDZO "%s"' %
-                (self.dist_dir, tmpImgPath))
+            args = ['hdiutil', 'create', '-srcfolder', dist_dir,
+                    '-volname', 'LinkChecker', '-format', 'UDZO', tmpImgPath]
+            subprocess.check_call(args)
             print "*** generating final DMG image ***"
-            os.system('hdiutil "%s" convert -format UDZO -imagekey zlib-level=9 -o "%s"' %
-                (tmpImgPath, imgPath))
+            args = ['hdiutil', tmpImgPath, 'convert', '-format', 'UDZO',
+                    '-imagekey', 'zlib-level=9', '-o', imgPath]
+            subprocess.check_call(args)
             os.remove(tmpImgPath)
 except ImportError:
     class MyPy2app:
