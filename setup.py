@@ -17,6 +17,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 Setup file for the distuils module.
+It includes the following features:
+- py2exe support
+- py2app support (untested)
+- creation and installation of configuration file with installation data
+- automatic detection and usage of GNU99 standard for C compiler
+- automatic MANIFEST.in check
 """
 
 import sys
@@ -27,20 +33,6 @@ import os
 import subprocess
 import stat
 import glob
-
-# Use setuptools to support eggs. Note that this conflicts with py2exe.
-# The setuptools are not officially supported.
-#try:
-#    from setuptools import setup
-#    from setuptools.command.install_lib import install_lib
-#    from setuptools.command.build_ext import build_ext
-#    from setuptools.command.sdist import sdist
-#    from distutils.command.sdist import sdist as _sdist
-#    sdist.user_options = _sdist.user_options + sdist.user_options
-#    from setuptools.extension import Extension
-#    from setuptools.dist import Distribution
-#except ImportError:
-# use distutils
 from distutils.core import setup, Extension
 from distutils.command.install_lib import install_lib
 from distutils.command.build_ext import build_ext
@@ -54,6 +46,7 @@ from distutils.file_util import write_file, copy_file
 from distutils import util, log
 try:
     # Note that py2exe monkey-patches the distutils.core.Distribution class
+    # So we need to import it before importing the Distribution class
     import py2exe
 except ImportError:
     # ignore when py2exe is not installed
@@ -63,16 +56,31 @@ from distutils.core import Distribution
 AppVersion = "6.7"
 AppName = "LinkChecker"
 
+# basic excludes for py2exe and py2app
+py_excludes = ['doctest', 'unittest', 'optcomplete', 'Tkinter',
+    'PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL',
+    'PyQt4.QtScript', 'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml',
+    'PyQt4.phonon']
 # py2exe options for windows .exe packaging
 py2exe_options = dict(
     packages=["encodings"],
-    excludes=['doctest', 'unittest', 'optcomplete', 'Tkinter', 'win32com.gen_py'],
+    excludes=py_excludes + ['win32com.gen_py'],
     dll_excludes=['MSVCP90.dll'],
     # add sip so that PyQt4 works
-    # add PyQt4.QtSql so that sqlite neede by QHelpCollection works
+    # add PyQt4.QtSql so that sqlite needed by QHelpCollection works
     includes=["sip", "PyQt4.QtSql"],
     compressed=1,
     optimize=2,
+)
+# py2app options for OSX packaging
+# XXX http://www.rkblog.rk.edu.pl/w/p/building-mac-os-x-applications-py2app/
+py2app_options = dict(
+    includes=['sip', 'PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql'],
+    excludes=py_excludes,
+    strip=True,
+    optimize=2,
+    iconfile='doc/html/favicon.icns',
+    plist={'CFBundleIconFile': 'favicon.icns'},
 )
 
 
@@ -184,6 +192,8 @@ class MyDistribution (Distribution, object):
         self.windows = [{
             "script": "linkchecker-gui",
             "icon_resources": [(1, "doc/html/favicon.ico")],
+            # XXX http://warp.byu.edu/site/content/128
+            #"other_resources": [(24, 1, manifest)],
         }]
 
     def run_commands (self):
@@ -476,12 +486,13 @@ try:
 
     class MyPy2exe (py2exe_build):
         """First builds the exe file(s), then creates a Windows installer.
-        You need InnoSetup for it."""
+        Needs InnoSetup to be installed."""
 
         def run (self):
             """Generate py2exe installer."""
             # First, let py2exe do it's work.
             py2exe_build.run(self)
+            print "*** preparing the inno setup script ***"
             lib_dir = self.lib_dir
             dist_dir = self.dist_dir
             # Copy needed sqlite plugin files to distribution directory.
@@ -497,13 +508,38 @@ try:
             script = InnoScript(lib_dir, dist_dir, self.windows_exe_files,
                 self.console_exe_files, self.service_exe_files,
                 self.comserver_files, self.lib_files)
-            print "*** creating the inno setup script***"
+            print "*** creating the inno setup script ***"
             script.create()
-            print "*** compiling the inno setup script***"
+            print "*** compiling the inno setup script ***"
             script.compile()
 except ImportError:
     class MyPy2exe:
         """Dummy py2exe class."""
+        pass
+
+
+try:
+    from py2app.build_app import py2app_build
+
+    class MyPy2app (py2app_build):
+        """First builds the app file(s), then creates a DMG installer.
+        Needs hdiutil to be installed."""
+
+        def run (self):
+            # First, let py2app do it's work.
+            py2app_build.run(self)
+            imgPath = os.path.join(self.dist_dir, "LinkChecker.dmg")
+            tmpImgPath = os.path.join(self.dist_dir, "LinkChecker.tmp.dmg")
+            print "*** generating temporary DMG image ***"
+            os.system('hdiutil create -srcfolder "%s" -volname "LinkChecker" -format UDZO "%s"' %
+                (self.dist_dir, tmpImgPath))
+            print "*** generating final DMG image ***"
+            os.system('hdiutil "%s" convert -format UDZO -imagekey zlib-level=9 -o "%s"' %
+                (tmpImgPath, imgPath))
+            os.remove(tmpImgPath)
+except ImportError:
+    class MyPy2app:
+        """Dummy py2app class."""
         pass
 
 
@@ -554,6 +590,7 @@ o a (Fast)CGI web interface (requires HTTP server)
         'clean': MyClean,
         'sdist': MySdist,
         'py2exe': MyPy2exe,
+        'py2app': MyPy2app,
         'register': MyRegister,
     },
     packages = [
@@ -595,5 +632,8 @@ o a (Fast)CGI web interface (requires HTTP server)
         'Programming Language :: Python',
         'Programming Language :: C',
     ],
-    options = {"py2exe": py2exe_options},
+    options = {
+        "py2exe": py2exe_options,
+        "py2app": py2app_options,
+    },
 )
