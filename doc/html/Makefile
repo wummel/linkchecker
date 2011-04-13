@@ -1,7 +1,8 @@
-HELPFILES = lccollection.qhc
-HTMLFILES = index.html options.html
-FAVICONS = favicon32x32.png favicon16x16.png
-LOGOICONS = logo128x128.png
+HELPFILES := lccollection.qhc
+HTMLFILES := index.html options.html
+OXYGEN := ${HOME}/src/oxygen-gitsvn
+ICOICONS := logo16x16.png logo32x32.png
+ICNSICONS := logo16x16.png logo32x32.png logo48x48.png logo128x128.png
 
 all:	$(HELPFILES) $(HTMLFILES)
 
@@ -19,8 +20,11 @@ test:
 %.qhc:	%.qhcp lcdoc.qhp $(HTMLFILES)
 	qcollectiongenerator $< -o $@
 
-favicon.ico:	$(FAVICONS)
-	png2ico favicon.ico $(FAVICONS)
+logo%.png:	$(OXYGEN)/%/categories/applications-development-web.png
+	cp $< $@
 
-favicon.icns:	$(FAVICONS) $(LOGOICONS)
-	png2icns favicon.icns $(FAVICONS) $(LOGOICONS)
+favicon.ico:	$(ICOICONS)
+	png2ico favicon.ico $(ICOICONS)
+
+favicon.icns:	$(ICNSICONS)
+	png2icns favicon.icns $(ICNSICONS)
