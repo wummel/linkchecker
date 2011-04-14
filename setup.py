@@ -431,19 +431,19 @@ class InnoScript:
         assert pathname.startswith(self.dist_dir)
         return pathname[len(self.dist_dir):]
 
-    def create(self, pathname="dist\\omt.iss"):
+    def create(self, pathname=r"dist\omt.iss"):
         """Create Inno script."""
         self.pathname = pathname
         ofi = self.file = open(pathname, "w")
         print >> ofi, "; WARNING: This script has been created by py2exe. Changes to this script"
         print >> ofi, "; will be overwritten the next time py2exe is run!"
-        print >> ofi, r"[Setup]"
-        print >> ofi, r"AppName=%s" % self.name
-        print >> ofi, r"AppVerName=%s %s" % (self.name, self.version)
+        print >> ofi, "[Setup]"
+        print >> ofi, "AppName=%s" % self.name
+        print >> ofi, "AppVerName=%s %s" % (self.name, self.version)
         print >> ofi, r"DefaultDirName={pf}\%s" % self.name
-        print >> ofi, r"DefaultGroupName=%s" % self.name
-        print >> ofi, r"OutputBaseFilename=%s-%s" % (self.name, self.version)
-        print >> ofi, r"OutputDir=."
+        print >> ofi, "DefaultGroupName=%s" % self.name
+        print >> ofi, "OutputBaseFilename=%s-%s" % (self.name, self.version)
+        print >> ofi, "OutputDir=."
         print >> ofi
 
         files = self.windows_exe_files + \
@@ -451,7 +451,7 @@ class InnoScript:
                 self.service_exe_files + \
                 self.comserver_files + \
                 self.lib_files
-        print >> ofi, r"[Files]"
+        print >> ofi, '[Files]'
         for path in files:
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
         # Install Microsoft Visual C runtime DLL installer
@@ -459,18 +459,18 @@ class InnoScript:
         print >> ofi, r'Source: "%s"; DestDir: "{app}"; Flags: ignoreversion' % vcredist
         print >> ofi
         # Set icon filename
-        print >> ofi, r"[Icons]"
+        print >> ofi, '[Icons]'
         for path in self.windows_exe_files:
             print >> ofi, r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
                   (self.name, path)
-        print >> ofi, 'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
+        print >> ofi, r'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
         print >> ofi
         # Uninstall registry keys
-        print >> ofi, r"[Registry]"
+        print >> ofi, '[Registry]'
         print >> ofi, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
         print >> ofi
         # Run Microsoft Visual C runtime DLL installer
-        print >> ofi, r'[Run]'
+        print >> ofi, '[Run]'
         print >> ofi, r'Filename: "{app}\vcredist_x86.exe"; StatusMsg: "Installing Microsoft dependencies"; Parameters: "/q:a"; Flags: waituntilterminated shellexec'
 
     def compile(self):
