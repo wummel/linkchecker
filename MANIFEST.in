@@ -26,7 +26,7 @@ include debian/README.Debian
 include debian/watch
 include debian/source/format
 include cgi-bin/lconline/*.html cgi-bin/lconline/*.de cgi-bin/lconline/*.en
-include cgi-bin/lconline/*.js cgi-bin/lconline/*.css
+include cgi-bin/lconline/*.js cgi-bin/lconline/*.css cgi-bin/lconline/*.ico
 include linkcheck/HtmlParser/Makefile
 include linkcheck/HtmlParser/htmllex.l
 include linkcheck/HtmlParser/htmlparse.y

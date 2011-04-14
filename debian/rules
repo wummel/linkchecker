@@ -35,6 +35,7 @@ override_dh_auto_install:
 	install -m 644 cgi-bin/lconline/*.en $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.js $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.css $(HTMLDIR)
+	install -m 644 cgi-bin/lconline/*.ico $(HTMLDIR)
 	install -m 755 cgi-bin/lc.cgi $(CGIDIR)
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETCDIR)/bash_completion.d
