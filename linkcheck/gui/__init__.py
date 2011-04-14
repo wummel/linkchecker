@@ -242,20 +242,20 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot()
     def on_actionAbout_triggered (self):
         """Display about dialog."""
+        modules = u"<br>\n".join(configuration.get_modules_info())
         d = {
             "app": configuration.App,
             "appname": configuration.AppName,
             "copyright": configuration.HtmlCopyright,
             "donateurl": configuration.DonateUrl,
-            "pyver": "%d.%d.%d" % sys.version_info[:3],
-            "qtver": QtCore.QT_VERSION_STR,
-            "pyqtver": QtCore.PYQT_VERSION_STR,
+            "pyver": u"%d.%d.%d" % sys.version_info[:3],
+            "modules": modules,
         }
         QtGui.QMessageBox.about(self, _(u"About %(appname)s") % d,
             _(u"""<qt><center>
 <h1>%(app)s</h1>
 <p>Python: %(pyver)s<br>
-Qt: %(qtver)s / PyQt: %(pyqtver)s
+%(modules)s
 <p>%(copyright)s
 <br>%(appname)s is licensed under the
 <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>

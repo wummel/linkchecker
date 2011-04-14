@@ -128,6 +128,8 @@ def print_app_info (out=stderr):
     print >> out, configuration.App
     print >> out, _("Python %(version)s on %(platform)s") % \
                     {"version": sys.version, "platform": sys.platform}
+    for line in configuration.get_modules_info():
+        print >> out, line
     stime = strformat.strtime(time.time())
     print >> out, _("Local time:"), stime
 

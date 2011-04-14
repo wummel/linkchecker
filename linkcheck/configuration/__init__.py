@@ -58,6 +58,34 @@ def normpath (path):
     return os.path.normcase(os.path.normpath(os.path.expanduser(path)))
 
 
+# List optional Python modules in the form (module, name)
+Modules = (
+    ("optcomplete", u"Optcomplete"),
+    ("tidy", u"HTMLtidy"),
+    ("cssutils", u"CSSutils"),
+    ("GeoIP", u"GeoIP"),
+    ("twill", u"Twill"),
+    ("sqlite3", u"Sqlite"),
+    ("gconf", u"Gconf"),
+)
+
+def get_modules_info ():
+    """Return list of unicode strings with detected module info."""
+    lines = []
+    # PyQt
+    try:
+        from PyQt4 import QtCore
+        lines.append(u"Qt: %s / PyQt: %s" %
+                     (QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR))
+    except ImportError:
+        pass
+    # modules
+    modules = [name for (mod, name) in Modules if fileutil.has_module(mod)]
+    if modules:
+        lines.append(u"Modules: %s" % (u", ".join(modules)))
+    return lines
+
+
 # dynamic options
 class Configuration (dict):
     """
