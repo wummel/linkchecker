@@ -19,9 +19,11 @@
 Check HTML pages for broken links. This is the GUI client.
 """
 import sys
+import signal
 from PyQt4.QtGui import QApplication
 from linkcheck.gui import LinkCheckerMain, get_app_style
 from linkcheck import configuration, drop_privileges, i18n
+
 
 def excepthook (window, etype, evalue, tb):
     """Catch unhandled exceptions."""
@@ -31,6 +33,12 @@ def excepthook (window, etype, evalue, tb):
     internal_error(out=out, etype=etype, evalue=evalue, tb=tb)
     # signal main window to be thread-safe
     window.error_signal.emit(out.getvalue())
+
+
+def sigint_handler(*args):
+    """Handler for the SIGINT signal."""
+    sys.stderr.write('\r')
+    QApplication.quit()
 
 
 def main (argv=None):
@@ -46,6 +54,7 @@ def main (argv=None):
         url = app.argv()[1]
     else:
         url = u""
+    signal.signal(signal.SIGINT, sigint_handler)
     # use local variable here to avoid garbage collection of the main
     # window before app.exec_() finishes
     window = LinkCheckerMain(url=url)

@@ -2,6 +2,7 @@
 
 Changes:
 - gui: Print detected module information in about dialog.
+- gui: Close application on Ctrl-C.
 
 
 6.7 "Friendship" (released 12.4.2011)
