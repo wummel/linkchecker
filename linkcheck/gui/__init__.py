@@ -247,17 +247,22 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             "appname": configuration.AppName,
             "copyright": configuration.HtmlCopyright,
             "donateurl": configuration.DonateUrl,
+            "pyver": "%d.%d.%d" % sys.version_info[:3],
+            "qtver": QtCore.QT_VERSION_STR,
+            "pyqtver": QtCore.PYQT_VERSION_STR,
         }
         QtGui.QMessageBox.about(self, _(u"About %(appname)s") % d,
-            _(u"""<qt><p>%(appname)s checks HTML documents and websites
-for broken links.
+            _(u"""<qt><center>
+<h1>%(app)s</h1>
+<p>Python: %(pyver)s<br>
+Qt: %(qtver)s / PyQt: %(pyqtver)s
 <p>%(copyright)s
-<br>%(app)s is licensed under the
+<br>%(appname)s is licensed under the
 <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>
 Version 2 or later.
 <p>If you like %(appname)s, consider one of several ways to
 <a href="%(donateurl)s">donate</a>. Thanks!
-</qt>""") % d)
+</center></qt>""") % d)
 
     @QtCore.pyqtSlot()
     def on_actionDonate_triggered (self):
