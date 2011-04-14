@@ -8,6 +8,7 @@ Source-Package-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${v
 Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
+OSX-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.dmg
 
 Displaying warnings in the GUI has been fixed and CSV output is properly
 encoded. The URL recursion level is now printed in XML, SQL and CSV output
