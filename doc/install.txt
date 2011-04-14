@@ -1,12 +1,23 @@
 Installation
 ============
-
 If you are upgrading from older versions of LinkChecker you should
 also read the upgrading documentation stored in UPGRADING.txt.
 
 
-Requirements for Unix/Linux or Mac OS X
----------------------------------------
+Setup for Windows
+-----------------
+Execute ``LinkChecker-x.y.exe`` and follow the instructions.
+
+
+Setup for Mac OS X
+------------------
+Double click ``LinkChecker-x.y.dmg`` and drop the LinkChecker application
+in your programs folder
+
+
+Setup for Unix/Linux
+--------------------
+First, install the required software.
 
 1. You need a standard GNU development environment with
    
@@ -20,7 +31,7 @@ Requirements for Unix/Linux or Mac OS X
    template from the source files, you will need xgettext with Python
    support. This is available in gettext >= 0.12.
 
-2. Python >= 2.5 from http://www.python.org/ with zlib support
+2. Python >= 2.6 from http://www.python.org/
    
    Be sure to also have installed the included distutils module.
    On most distributions, the distutils module is included in
@@ -48,20 +59,21 @@ Requirements for Unix/Linux or Mac OS X
 8. *Optional, used for login form submission:*
    Twill from http://twill.idyll.org/
 
+9. *Optional, for Mozilla Bookmark parsing:*
+   Python Sqlite from https://code.google.com/p/pysqlite/
 
-Requirements for Windows
-------------------------
+10. *Optional, for GNOME proxy setting parsing:*
+    Python Gtk from http://www.pygtk.org/downloads.html
 
-None, the installer contains all files.
+11. *Optional, to run the CGI web interface:*
+    Apache from http://httpd.apache.org/
 
 
-Setup for Unix/Linux or Mac OS X
---------------------------------
+Now install the application.
 
-1. Install check
+1. Generate Qt documentation
    
-   Be sure to have installed all required Unix/Linux software listed above.
-   Then, run ``make -C doc/html`` to generate the Qt help file.
+   Run ``make -C doc/html`` to generate the Qt help file.
 
 2. Compile Python modules
    
@@ -76,7 +88,7 @@ Setup for Unix/Linux or Mac OS X
 3.
    a) Installation as root
       
-      Run ``su -c 'python setup.py install'`` to install LinkChecker.
+      Run ``sudo python setup.py install`` to install LinkChecker.
    
    b) Installation as a normal user
       
@@ -92,72 +104,14 @@ Setup for Unix/Linux or Mac OS X
       .. _Modifying Python's search path:
          http://docs.python.org/inst/search-path.html#SECTION000410000000000000000
 
-Setup for Windows - the binary .exe installer:
-----------------------------------------------
-
-1. Execute the ``LinkChecker-x.y.exe`` file and follow
-   the instructions.
-
-2. If an error like ``This application has failed to start because the
-   application configuation is incorrect", please install the Microsoft
-   `Visual C++ 2008 runtime`_ package.
-   
-   .. _Visual C++ 2008 runtime:
-      http://www.microsoft.com/downloads/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&displaylang=en
-
-Setup for Windows - compiling from source:
-------------------------------------------
-
-1. Install Python >= 2.5 from http://www.python.org/
-   [http://www.python.org/ftp/python/2.6.6/python-2.6.6.msi]
-
-2. *Optional, for console color support:*
-   Wconio from http://newcenturycomputers.net/projects/wconio.html
-   [http://newcenturycomputers.net/projects/download.cgi/WConio-1.5.1.win32-py2.6.exe]
-
-3. *Optional, for HTML/CSS syntax checks:*
-   HTML tidy from http://utidylib.berlios.de/
-   cssutils from http://cthedot.de/cssutils/
-
-4. *Optional, used for Virus checking:*
-   ClamAv from http://www.sosdg.org/clamav-win32/
-   [http://clamav-sosdg.googlecode.com/files/clamav-0.95-1a.exe]
-
-5. *Optional, for displaying country codes:*
-   Pygeoip from http://code.google.com/p/pygeoip/
-   [http://pygeoip.googlecode.com/files/pygeoip-0.1.3-py2.6.egg]
-
-6. *Optional, used for login form submission:*
-   Twill from http://twill.idyll.org/
-
-7. The MinGW suite from http://mingw.sourceforge.net/
-   [http://sourceforge.net/projects/mingw/files/Automated%20MinGW%20Installer/mingw-get-inst/mingw-get-inst-20100909/mingw-get-inst-20100909.exe/download]
-
-8. Install InnoSetup from http://www.jrsoftware.org/isinfo.php
-   [http://www.jrsoftware.org/download.php/is.exe]
-
-9. Qt4 SDK development tools from http://qt.nokia.com/downloads
-   [http://get.qt.nokia.com/qtsdk/qt-sdk-win-opensource-2010.05.exe]
-   The binary "qcollectiongenerator.exe" is used to generate the
-   documentation files.
-
-10. Generate and execute the LinkChecker installer
-   
-   Change to the ``linkchecker-X.Y`` directory and run
-   ``dist.bat`` to build a binary installer.
-   
-   This generates a binary installer
-   ``dist\LinkChecker-X.Y.exe`` which you just have to execute.
 
 After installation
 ------------------
-
 LinkChecker is now installed. Have fun!
 
 
 (Fast)CGI web interface
 -----------------------
-
 The included CGI scripts can run LinkChecker with a nice graphical web
 interface.
 You can use and adjust the example HTML files in the lconline directory
