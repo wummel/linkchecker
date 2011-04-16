@@ -626,9 +626,13 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
     Py_CLEAR(self->userData->tmp_attrname);
     self->userData->bufpos = 0;
     if (strlen(self->userData->buf)) {
-        /* set line, col */
         int error = 0;
         int i;
+       	PyObject* callback = NULL;
+        PyObject* result = NULL;
+        const char* enc;
+        PyObject* s;
+        /* set line, col */
         for (i=0; i<strlen(self->userData->buf); ++i) {
             if (self->userData->buf[i] == '\n') {
                 ++(self->userData->lineno);
@@ -636,21 +640,18 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
             }
             else ++(self->userData->column);
         }
-        const char* enc = PyString_AsString(self->encoding);
-	PyObject* s = PyUnicode_Decode(self->userData->buf,
-                                     (Py_ssize_t)strlen(self->userData->buf),
-                                     enc, "ignore");
-	PyObject* callback = NULL;
-	PyObject* result = NULL;
-	/* reset buffer */
-	CLEAR_BUF(self->userData->buf);
-	if (s == NULL) { error = 1; goto finish_flush; }
-	if (PyObject_HasAttrString(self->handler, "characters") == 1) {
-	    callback = PyObject_GetAttrString(self->handler, "characters");
-	    if (callback == NULL) { error = 1; goto finish_flush; }
-	    result = PyObject_CallFunction(callback, "O", s);
-	    if (result == NULL) { error = 1; goto finish_flush; }
-	}
+        enc = PyString_AsString(self->encoding);
+        s = PyUnicode_Decode(self->userData->buf,
+               (Py_ssize_t)strlen(self->userData->buf), enc, "ignore");
+        /* reset buffer */
+        CLEAR_BUF(self->userData->buf);
+        if (s == NULL) { error = 1; goto finish_flush; }
+        if (PyObject_HasAttrString(self->handler, "characters") == 1) {
+            callback = PyObject_GetAttrString(self->handler, "characters");
+            if (callback == NULL) { error = 1; goto finish_flush; }
+            result = PyObject_CallFunction(callback, "O", s);
+            if (result == NULL) { error = 1; goto finish_flush; }
+        }
     finish_flush:
 	Py_XDECREF(callback);
 	Py_XDECREF(result);
