@@ -192,19 +192,8 @@ manifestVersion="1.0">
     type="win32"
     name="LinkChecker"
     version="%(appversion)s.0.0"
+    processorArchitecture="*"
 />
-<dependency>
-    <dependentAssembly>
-        <assemblyIdentity
-            type="win32"
-            name="Microsoft.Windows.Common-Controls"
-            version="6.0.0.0"
-            processorArchitecture="X86"
-            publicKeyToken="6595b64144ccf1df"
-            language="*"
-        />
-    </dependentAssembly>
-</dependency>
 </assembly>
 """ % dict(appversion=AppVersion)
 
