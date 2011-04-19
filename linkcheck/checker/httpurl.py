@@ -351,6 +351,15 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.aliases.append(redirected)
             else:
                 # in case of changed scheme make new URL object
+                # For security reasons do not allow redirects to protocols
+                # other than HTTP, HTTPS or FTP.
+                if urlparts[0] != 'ftp':
+                    if set_result:
+                        self.add_warning(
+                        _("Redirection to url `%(newurl)s' is not allowed.") %
+                        {'newurl': redirected})
+                        self.set_result(u"syntax OK")
+                    return -1, response
                 newobj = get_url_from(
                           redirected, self.recursion_level, self.aggregate,
                           parent_url=self.parent_url, base_ref=self.base_ref,

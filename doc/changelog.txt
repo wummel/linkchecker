@@ -3,6 +3,8 @@
 Changes:
 - gui: Print detected module information in about dialog.
 - gui: Close application on Ctrl-C.
+- checking: Ignore redirections if the scheme is not HTTP,
+  HTTPS or FTP.
 
 
 6.7 "Friendship" (released 12.4.2011)

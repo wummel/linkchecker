@@ -29,18 +29,20 @@ class TestHttp (HttpServerTest):
             url = u"http://localhost:%d/tests/checker/data/" \
                   u"http.html" % self.port
             resultlines = self.get_resultlines("http.html")
-            self.direct(url, resultlines, recursionlevel=1)
+            #self.direct(url, resultlines, recursionlevel=1)
             url = u"http://localhost:%d/tests/checker/data/" \
                   u"http.xhtml" % self.port
             resultlines = self.get_resultlines("http.xhtml")
-            self.direct(url, resultlines, recursionlevel=1)
-            self.redirect1_http_test()
-            self.redirect2_http_test()
-            self.redirect3_http_test()
-            self.robots_txt_test()
-            self.robots_txt2_test()
-            self.swf_test()
-            self.obfuscate_test()
+            #self.direct(url, resultlines, recursionlevel=1)
+            #self.redirect1_http_test()
+            #self.redirect2_http_test()
+            #self.redirect3_http_test()
+            self.redirect4_http_test()
+            self.redirect5_http_test()
+            #self.robots_txt_test()
+            #self.robots_txt2_test()
+            #self.swf_test()
+            #self.obfuscate_test()
         finally:
             self.stop_server()
 
@@ -101,6 +103,39 @@ class TestHttp (HttpServerTest):
         url = u"http://localhost:%d/tests/checker/data/redir.html" % self.port
         resultlines = self.get_resultlines("redir.html")
         self.direct(url, resultlines, recursionlevel=1)
+
+    def redirect4_http_test (self):
+        url = u"http://localhost:%d/redirect_newscheme_ftp" % self.port
+        nurl = url
+        rurl = u"ftp://example.com/"
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"info Redirected to `%s'." % rurl,
+            u"warning Redirection to URL `%s' with different scheme found; the original URL was `%s'." % (rurl, nurl),
+            u"valid",
+            u"url %s" % rurl,
+            u"cache key %s" % rurl,
+            u"real url %s" % rurl,
+            u"error",
+        ]
+        self.direct(url, resultlines, recursionlevel=99)
+
+    def redirect5_http_test (self):
+        url = u"http://localhost:%d/redirect_newscheme_file" % self.port
+        nurl = url
+        rurl = u"file:README"
+        rnurl = u"file:///README"
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"info Redirected to `%s'." % rurl,
+            u"warning Redirection to url `%s' is not allowed." % rnurl,
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=99)
 
     def robots_txt_test (self):
         url = u"http://localhost:%d/robots.txt" % self.port
@@ -189,9 +224,21 @@ class CookieRedirectHttpRequestHandler (NoQueryHttpRequestHandler):
         self.send_header("Location", path)
         self.end_headers()
 
+    def redirect_newscheme (self):
+        """Redirect request to a new scheme."""
+        if "file" in self.path:
+            path = "file:README"
+        else:
+            path = "ftp://example.com/"
+        self.send_response(302)
+        self.send_header("Location", path)
+        self.end_headers()
+
     def do_GET (self):
-        """Removes query part of GET request."""
-        if "redirect_newhost" in self.path:
+        """Handle redirections for GET."""
+        if "redirect_newscheme" in self.path:
+            self.redirect_newscheme()
+        elif "redirect_newhost" in self.path:
             self.redirect_newhost()
         elif "redirect" in self.path:
             self.redirect()
@@ -199,7 +246,10 @@ class CookieRedirectHttpRequestHandler (NoQueryHttpRequestHandler):
             super(CookieRedirectHttpRequestHandler, self).do_GET()
 
     def do_HEAD (self):
-        if "redirect_newhost" in self.path:
+        """Handle redirections for HEAD."""
+        if "redirect_newscheme" in self.path:
+            self.redirect_newscheme()
+        elif "redirect_newhost" in self.path:
             self.redirect_newhost()
         elif "redirect" in self.path:
             self.redirect()
