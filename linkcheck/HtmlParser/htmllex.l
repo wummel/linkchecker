@@ -1085,7 +1085,7 @@ int htmllexStart (void* scanner, UserData* data, const char* s, int slen) {
     /* append s to data buffer and scan those bytes.
      As Flex does not distinguish between NUL and EOF characters,
      replace NUL with ' '. */
-    int len = strlen(data->buf);
+    size_t len = strlen(data->buf);
     int i;
     RESIZE_BUF(data->buf, len + slen + 1);
     for (i=0; i < slen; i++) {
@@ -1119,7 +1119,7 @@ int htmllexStart (void* scanner, UserData* data, const char* s, int slen) {
 int htmllexStop (void* scanner, UserData* data) {
     yy_delete_buffer(data->lexbuf, scanner);
     if (data->nextpos > 0) {
-	int len = strlen(data->buf);
+	size_t len = strlen(data->buf);
 	int i, j;
 	for (i=data->nextpos, j=0; i<len; i++, j++) {
             data->buf[j] = data->buf[i];
