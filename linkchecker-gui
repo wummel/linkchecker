@@ -20,9 +20,13 @@ Check HTML pages for broken links. This is the GUI client.
 """
 import sys
 import signal
+from linkcheck import configuration, drop_privileges, i18n, \
+  get_install_data, main_is_frozen
+if main_is_frozen():
+    # Let Python find the C++ runtime DLLs for PyQt.
+    sys.path.append(os.path.join(get_install_data(), 'Microsoft.VC90.CRT'))
 from PyQt4.QtGui import QApplication
 from linkcheck.gui import LinkCheckerMain, get_app_style
-from linkcheck import configuration, drop_privileges, i18n
 
 
 def excepthook (window, etype, evalue, tb):

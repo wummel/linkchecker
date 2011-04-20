@@ -65,6 +65,7 @@ py_excludes = ['doctest', 'unittest', 'optcomplete', 'Tkinter',
 py2exe_options = dict(
     packages=["encodings"],
     excludes=py_excludes + ['win32com.gen_py'],
+    # silence py2exe error about not finding msvcp90.dll
     dll_excludes=['MSVCP90.dll'],
     # add sip so that PyQt4 works
     # add PyQt4.QtSql so that sqlite needed by QHelpCollection works
@@ -194,6 +195,17 @@ manifestVersion="1.0">
     version="%(appversion)s.0.0"
     processorArchitecture="*"
 />
+<dependency>
+  <dependentAssembly>
+    <assemblyIdentity
+      type="win32"
+      name="Microsoft.VC90.CRT"
+      version="9.0.30729.1"
+      processorArchitecture="x86"
+      publicKeyToken="1fc8b3b9a1e18e3b">
+    </assemblyIdentity>
+  </dependentAssembly>
+</dependency>
 </assembly>
 """ % dict(appversion=AppVersion)
 
@@ -419,6 +431,10 @@ if os.name == 'posix':
                'doc/examples/check_blacklist.sh',
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
+elif os.name == 'nt':
+    # XXX test for 64bit platforms
+    crtdir = os.path.expandvars(r'%ProgramFiles%\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT')
+    data_files.append(('Microsoft.VC90.CRT', glob.glob(r'%s\*.*' % crtdir)))
 
 
 class InnoScript:
@@ -468,10 +484,6 @@ class InnoScript:
         print >> ofi, '[Files]'
         for path in files:
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
-        # Install Microsoft Visual C runtime DLL installer
-        vcredist = os.path.join(self.dist_dir, 'vcredist_x86.exe')
-        print >> ofi, r'Source: "%s"; DestDir: "{app}"; Flags: ignoreversion' % vcredist
-        print >> ofi
         # Set icon filename
         print >> ofi, '[Icons]'
         for path in self.windows_exe_files:
@@ -483,9 +495,6 @@ class InnoScript:
         print >> ofi, '[Registry]'
         print >> ofi, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
         print >> ofi
-        # Run Microsoft Visual C runtime DLL installer
-        print >> ofi, '[Run]'
-        print >> ofi, r'Filename: "{app}\vcredist_x86.exe"; StatusMsg: "Installing Microsoft dependencies"; Parameters: "/q:a"; Flags: waituntilterminated shellexec'
 
     def compile(self):
         """Compile Inno script."""
@@ -516,8 +525,6 @@ try:
             copy_tree(src, dst)
             for path in os.listdir(dst):
                 self.lib_files.append(os.path.join(dst, path))
-            # Copy Microsoft Visual C runtime DLL installer
-            copy_file(r'c:\software\vcredist_x86.exe', dist_dir)
             # create the Installer, using the files py2exe has created.
             script = InnoScript(lib_dir, dist_dir, self.windows_exe_files,
                 self.console_exe_files, self.service_exe_files,

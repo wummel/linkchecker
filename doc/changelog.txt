@@ -1,14 +1,15 @@
 6.8 "" (released xx.xx.2011)
 
 Fixes:
-- checking: make module detection more robust
-
+- checking: Make module detection more robust by catching OSError.
 
 Changes:
 - gui: Print detected module information in about dialog.
 - gui: Close application on Ctrl-C.
 - checking: Ignore redirections if the scheme is not HTTP,
   HTTPS or FTP.
+- build: Ship Microsoft C++ runtime files directly instead
+  of the installer package.
 
 
 6.7 "Friendship" (released 12.4.2011)
