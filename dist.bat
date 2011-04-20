@@ -30,8 +30,6 @@ echo Building portable
 rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
 del %PORTDIR%\LinkChecker-%VERSION%.exe > nul
-:: not possible to install this in a portable version
-del %PORTDIR%\vcredist_x86.exe > nul
 echo Compressing executables
 for /r %PORTDIR% %%e in (*.pyd,*.dll,*.exe) do %UPX_EXE% "%%e" --best
 %SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
