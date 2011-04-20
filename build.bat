@@ -18,23 +18,39 @@
 set PYDIR=C:\Python27
 set PYVER=2.7
 
-:: the compiler platform
-set PLATNAME=win32
-:: for 64bit platforms, see also
-:: http://wiki.cython.org/64BitCythonExtensionsOnWindows
-::set PLATNAME=win-amd64
-
-:: the compiler
-::   MinGW (use only for 32bit platforms)
-::set COMPILER="-c mingw32"
-::   Microsoft SDK
-set COMPILER=
-set DISTUTILS_USE_SDK=1
-
 :: Qt SDK installation
 set QTDEV=c:\qt\2010.05\qt
 
 :: END configuration, no need to change anything below
+
+:: detect platform architecture
+:: for 64bit platforms, see also
+:: http://wiki.cython.org/64BitCythonExtensionsOnWindows
+if "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+    set PLATNAME=win-amd64
+) else if "%PROCESSOR_ARCHITECTURE%" == "x86" (
+    if "%PROCESSOR_ARCHITEW6432%" == "AMD64" (
+        set PLATNAME=win-amd64
+    ) else (
+        set PLATNAME=win32
+    )
+) else (
+    echo "Unsupported architecture %PROCESSOR_ARCHITECTURE%"
+    goto :finish
+)
+
+:: detect compiler
+if defined MSSdk (
+    :: Microsoft SDK
+    set COMPILER=
+    set DISTUTILS_USE_SDK=1
+) else if "%PLATNAME%" == "win32" (
+    :: MinGW (only for 32bit platforms)
+    set COMPILER="-c mingw32"
+) else (
+    echo "No Microsoft SDK or MinGW compiler detected."
+    goto :finish
+)
 
 %PYDIR%\python.exe setup.py sdist --manifest-only
 %PYDIR%\python.exe setup.py build %COMPILER%
@@ -43,3 +59,5 @@ copy build\lib.%PLATNAME%-%PYVER%\linkcheck\HtmlParser\htmlsax.pyd linkcheck\Htm
 copy build\lib.%PLATNAME%-%PYVER%\linkcheck\network\_network.pyd linkcheck\network
 :: generate GUI documentation
 %QTDEV%\bin\qcollectiongenerator doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
+
+:finish
