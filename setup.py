@@ -183,7 +183,7 @@ class MyInstallData (install_data, object):
                 os.chmod(path, mode)
 
 
-# Microsoft application manifest, see also
+# Microsoft application manifest for linkchecker-gui.exe; see also
 # http://msdn.microsoft.com/en-us/library/aa374191%28VS.85%29.aspx
 app_manifest = """
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -201,7 +201,7 @@ manifestVersion="1.0">
       type="win32"
       name="Microsoft.VC90.CRT"
       version="9.0.30729.1"
-      processorArchitecture="x86"
+      processorArchitecture="*"
       publicKeyToken="1fc8b3b9a1e18e3b">
     </assemblyIdentity>
   </dependentAssembly>
@@ -432,8 +432,19 @@ if os.name == 'posix':
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
 elif os.name == 'nt':
-    # XXX test for 64bit platforms
-    crtdir = os.path.expandvars(r'%ProgramFiles%\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT')
+    # test for 64bit platforms relies on dist.bat setting PLATNAME accordingly
+    platform = os.environ.get("PLATNAME", "")
+    if platform == "win-amd64":
+        # the Visual C++ runtime files are installed in the x86 directory
+        progvar = "%ProgramFiles(x86)%"
+        architecture = "amd64"
+    elif platform == "win32":
+        progvar = "%ProgramFiles%"
+        architecture = "x86"
+    else:
+        raise ValueError("Unsupported %PLATNAME% variable value %r" % platform)
+    attrs = (os.path.expandvars(progvar), architecture)
+    crtdir = r'%s\Microsoft Visual Studio 9.0\VC\redist\%s\Microsoft.VC90.CRT' % attrs
     data_files.append(('Microsoft.VC90.CRT', glob.glob(r'%s\*.*' % crtdir)))
 
 
