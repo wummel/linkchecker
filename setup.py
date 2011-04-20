@@ -442,7 +442,7 @@ elif os.name == 'nt':
         progvar = "%ProgramFiles%"
         architecture = "x86"
     else:
-        raise ValueError("Unsupported %PLATNAME% variable value %r" % platform)
+        raise ValueError("Unsupported %%PLATNAME%% variable value %r" % platform)
     attrs = (os.path.expandvars(progvar), architecture)
     crtdir = r'%s\Microsoft Visual Studio 9.0\VC\redist\%s\Microsoft.VC90.CRT' % attrs
     data_files.append(('Microsoft.VC90.CRT', glob.glob(r'%s\*.*' % crtdir)))
