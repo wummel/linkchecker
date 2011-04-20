@@ -1,5 +1,9 @@
 6.8 "" (released xx.xx.2011)
 
+Fixes:
+- checking: make module detection more robust
+
+
 Changes:
 - gui: Print detected module information in about dialog.
 - gui: Close application on Ctrl-C.

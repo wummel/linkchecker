@@ -65,7 +65,8 @@ def has_module (name):
     try:
         exec "import %s" % name
         return True
-    except ImportError:
+    except (OSError, ImportError):
+        # some modules (for example HTMLtidy) raise OSError
         return False
 
 

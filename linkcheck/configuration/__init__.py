@@ -339,9 +339,7 @@ class Configuration (dict):
 
     def sanitize_checkhtml (self):
         """Ensure HTML tidy is installed for checking HTML."""
-        try:
-            import tidy
-        except ImportError:
+        if not fileutil.has_module("tidy"):
             log.warn(LOG_CHECK,
                 _("warning: tidy module is not available; " \
                  "download from http://utidylib.berlios.de/"))
@@ -349,9 +347,7 @@ class Configuration (dict):
 
     def sanitize_checkcss (self):
         """Ensure cssutils is installed for checking CSS."""
-        try:
-            import cssutils
-        except ImportError:
+        if not fileutil.has_module("cssutils"):
             log.warn(LOG_CHECK,
                 _("warning: cssutils module is not available; " \
                  "download from http://cthedot.de/cssutils/"))

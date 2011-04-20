@@ -754,12 +754,11 @@ class UrlBase (object):
     def check_html (self):
         """Check HTML syntax of this page (which is supposed to be HTML)
         with the local HTML tidy module."""
-        try:
-            import tidy
-        except ImportError:
+        if not fileutil.has_module("tidy"):
             log.warn(LOG_CHECK, _("warning: tidy module is not available; " \
                  "download from http://utidylib.berlios.de/"))
             return
+        import tidy
         options = dict(output_html=0, show_warnings=1, quiet=True,
             input_encoding='utf8', output_encoding='utf8', tidy_mark=0)
         try:
