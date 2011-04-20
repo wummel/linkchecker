@@ -42,7 +42,7 @@ from distutils.command.build import build
 from distutils.command.install_data import install_data
 from distutils.command.register import register
 from distutils.dir_util import remove_tree, copy_tree
-from distutils.file_util import write_file, copy_file
+from distutils.file_util import write_file
 from distutils import util, log
 try:
     # Note that py2exe monkey-patches the distutils.core.Distribution class
