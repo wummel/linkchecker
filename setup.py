@@ -506,6 +506,11 @@ class InnoScript:
         print >> ofi, '[Registry]'
         print >> ofi, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
         print >> ofi
+        # Uninstall optional log files
+        print >> ofi, '[UninstallDelete]'
+        print >> ofi, r'Type: files; Name: "{pf}\linkchecker*.exe.log"'
+        print >> ofi
+
 
     def compile(self):
         """Compile Inno script."""
