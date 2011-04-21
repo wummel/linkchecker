@@ -508,7 +508,7 @@ class InnoScript:
         print >> ofi
         # Uninstall optional log files
         print >> ofi, '[UninstallDelete]'
-        print >> ofi, r'Type: files; Name: "{pf}\linkchecker*.exe.log"'
+        print >> ofi, r'Type: files; Name: "{pf}\%s\linkchecker*.exe.log"' % self.name
         print >> ofi
 
 
