@@ -27,3 +27,4 @@ Changelog.linkchecker*
 /doc/*.mo
 /po/*.mo
 /LinkChecker-*-portable.zip
+/LinkChecker-*.exe
