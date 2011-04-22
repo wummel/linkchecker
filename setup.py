@@ -466,6 +466,7 @@ class InnoScript:
         self.service_exe_files = [self.chop(p) for p in service_exe_files]
         self.comserver_files = [self.chop(p) for p in comserver_files]
         self.lib_files = [self.chop(p) for p in lib_files]
+        self.icon = os.path.abspath(r'doc\html\favicon.ico')
 
     def chop(self, pathname):
         """Remove distribution directory from path name."""
@@ -475,50 +476,57 @@ class InnoScript:
     def create(self, pathname=r"dist\omt.iss"):
         """Create Inno script."""
         self.pathname = pathname
-        ofi = self.file = open(pathname, "w")
-        print >> ofi, "; WARNING: This script has been created by py2exe. Changes to this script"
-        print >> ofi, "; will be overwritten the next time py2exe is run!"
-        print >> ofi, "[Setup]"
-        print >> ofi, "AppName=%s" % self.name
-        print >> ofi, "AppVerName=%s %s" % (self.name, self.version)
-        print >> ofi, r"DefaultDirName={pf}\%s" % self.name
-        print >> ofi, "DefaultGroupName=%s" % self.name
-        print >> ofi, "OutputBaseFilename=%s-%s" % (self.name, self.version)
-        print >> ofi, "OutputDir=."
-        print >> ofi
+        self.distfilebase = "%s-%s" % (self.name, self.version)
+        self.distfile = self.distfilebase + ".exe"
+        with open(self.pathname, "w") as fd:
+            self.write_inno_script(fd)
 
+    def write_inno_script (self, fd):
+        print >> fd, "; WARNING: This script has been created by py2exe. Changes to this script"
+        print >> fd, "; will be overwritten the next time py2exe is run!"
+        print >> fd, "[Setup]"
+        print >> fd, "AppName=%s" % self.name
+        print >> fd, "AppVerName=%s %s" % (self.name, self.version)
+        print >> fd, r"DefaultDirName={pf}\%s" % self.name
+        print >> fd, "DefaultGroupName=%s" % self.name
+        print >> fd, "OutputBaseFilename=%s" % self.distfilebase
+        print >> fd, "OutputDir=.."
+        print >> fd, "SetupIconFile=%s" % self.icon
+        print >> fd
+        # List of source files
         files = self.windows_exe_files + \
                 self.console_exe_files + \
                 self.service_exe_files + \
                 self.comserver_files + \
                 self.lib_files
-        print >> ofi, '[Files]'
+        print >> fd, '[Files]'
         for path in files:
-            print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
+            print >> fd, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
         # Set icon filename
-        print >> ofi, '[Icons]'
+        print >> fd, '[Icons]'
         for path in self.windows_exe_files:
-            print >> ofi, r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
+            print >> fd, r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
                   (self.name, path)
-        print >> ofi, r'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
-        print >> ofi
+        print >> fd, r'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
+        print >> fd
         # Uninstall registry keys
-        print >> ofi, '[Registry]'
-        print >> ofi, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
-        print >> ofi
+        print >> fd, '[Registry]'
+        print >> fd, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
+        print >> fd
         # Uninstall optional log files
-        print >> ofi, '[UninstallDelete]'
-        print >> ofi, r'Type: files; Name: "{pf}\%s\linkchecker*.exe.log"' % self.name
-        print >> ofi
+        print >> fd, '[UninstallDelete]'
+        print >> fd, r'Type: files; Name: "{pf}\%s\linkchecker*.exe.log"' % self.name
+        print >> fd
 
+    def compile (self):
+        """Compile Inno script with iscc.exe."""
+        cmd = os.path.expandvars(r'%ProgramFiles%\Inno Setup 5\iscc.exe')
+        subprocess.check_call([cmd, self.pathname])
 
-    def compile(self):
-        """Compile Inno script."""
-        import ctypes
-        res = ctypes.windll.shell32.ShellExecuteA(0, "compile",
-            self.pathname, None, None, 0)
-        if res < 32:
-            raise RuntimeError("ShellExecute failed, error %d" % res)
+    def sign (self):
+        """Sign InnoSetup installer with local self-signed certificate."""
+        pfxfile = r'C:\linkchecker.pfx'
+        subprocess.check_call(['signtool.exe', 'sign', '/f', pfxfile, self.distfile])
 
 try:
     from py2exe.build_exe import py2exe as py2exe_build
@@ -549,6 +557,7 @@ try:
             script.create()
             print "*** compiling the inno setup script ***"
             script.compile()
+            script.sign()
 except ImportError:
     class MyPy2exe:
         """Dummy py2exe class."""

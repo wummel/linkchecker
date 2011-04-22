@@ -1,5 +1,5 @@
 :: Gnerating the LinkChecker Windows .exe installer
-:: Copyright (C) 2010 Bastian Kleineidam
+:: Copyright (C) 2010-2011 Bastian Kleineidam
 :: This program is free software; you can redistribute it and/or modify
 :: it under the terms of the GNU General Public License as published by
 :: the Free Software Foundation; either version 2 of the License, or
@@ -23,15 +23,11 @@ rd /s /q build > nul
 call build.bat
 rd /s /q dist > nul
 %PYDIR%\python.exe setup.py py2exe
-:: wait for InnoScript installer to complete (which runs in background)
-pause
 
-echo Building portable
+echo Building portable distribution
 rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
-del %PORTDIR%\LinkChecker-%VERSION%.exe > nul
 echo Compressing executables
 for /r %PORTDIR% %%e in (*.pyd,*.dll,*.exe) do %UPX_EXE% "%%e" --best
 %SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
 rd /s /q %PORTDIR%
-pause
