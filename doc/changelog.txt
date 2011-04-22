@@ -11,6 +11,12 @@ Changes:
 - build: Ship Microsoft C++ runtime files directly instead
   of the installer package.
 
+Features:
+- build: Support building a binary installer in 64bit Windows
+  systems.
+- build: The Windows installer is now signed with a local self-signed
+  certificate.
+
 
 6.7 "Friendship" (released 12.4.2011)
 
