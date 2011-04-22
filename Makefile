@@ -1,11 +1,11 @@
 # This Makefile is only used by developers.
-PYVER:=2.6
+PYVER:=2.7
 PYTHON:=python$(PYVER)
 VERSION:=$(shell $(PYTHON) setup.py --version)
 MACHINE:=$(shell uname -m)
 FILESCHECK_URL:=http://localhost/~calvin/
 PYTHONSRC:=${HOME}/src/cpython-hg/Lib
-#PYTHONSRC:=/usr/lib/python2.6
+#PYTHONSRC:=/usr/lib/$(PYTHON)
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-gui cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
