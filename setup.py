@@ -19,7 +19,7 @@
 Setup file for the distuils module.
 It includes the following features:
 - py2exe support
-- py2app support (untested)
+- py2app support
 - creation and installation of configuration file with installation data
 - automatic detection and usage of GNU99 standard for C compiler
 - automatic MANIFEST.in check
@@ -590,7 +590,7 @@ try:
                     '-volname', 'LinkChecker', '-format', 'UDZO', tmpImgPath]
             subprocess.check_call(args)
             print "*** generating final DMG image ***"
-            args = ['hdiutil', tmpImgPath, 'convert', '-format', 'UDZO',
+            args = ['hdiutil', 'convert', tmpImgPath, '-format', 'UDZO',
                     '-imagekey', 'zlib-level=9', '-o', imgPath]
             subprocess.check_call(args)
             os.remove(tmpImgPath)
