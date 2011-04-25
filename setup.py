@@ -33,6 +33,14 @@ import os
 import subprocess
 import stat
 import glob
+try:
+    # setuptools (which is needed by py2app) monkey-patches the
+    # distutils.core.Command class.
+    # So we need to import it before importing the distutils core
+    import setuptools
+except ImportError:
+    # ignore when setuptools is not installed
+    pass
 from distutils.core import setup, Extension
 from distutils.command.install_lib import install_lib
 from distutils.command.build_ext import build_ext
@@ -45,7 +53,7 @@ from distutils.dir_util import remove_tree, copy_tree
 from distutils.file_util import write_file
 from distutils import util, log
 try:
-    # Note that py2exe monkey-patches the distutils.core.Distribution class
+    # py2exe monkey-patches the distutils.core.Distribution class
     # So we need to import it before importing the Distribution class
     import py2exe
 except ImportError:
