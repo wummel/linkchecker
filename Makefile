@@ -108,6 +108,7 @@ dist-stamp: changelog
 # Build OSX installer
 .PHONY: app
 app: MANIFEST chmod
+	$(MAKE) -C doc/html
 	$(PYTHON) setup.py py2app $(PY2APPOPTS)
 
 # The check programs used here are mostly local scripts on my private system.
