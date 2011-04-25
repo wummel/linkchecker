@@ -19,6 +19,7 @@ DNSPYTHON:=$(HOME)/src/dnspython-git/dns
 # options to run the pep8 utility
 PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
    --exclude="dns,gzip2.py,httplib2.py,robotparser2.py,reindent.py"
+PY2APPOPTS ?=
 
 
 .PHONY: all
@@ -107,7 +108,7 @@ dist-stamp: changelog
 # Build OSX installer
 .PHONY: app
 app: MANIFEST chmod
-	$(PYTHON) setup.py py2app
+	$(PYTHON) setup.py py2app $(PY2APPOPTS)
 
 # The check programs used here are mostly local scripts on my private system.
 # So for other developers there is no need to execute this target.
