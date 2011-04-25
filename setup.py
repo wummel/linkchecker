@@ -565,7 +565,7 @@ except ImportError:
 
 
 try:
-    from py2app.build_app import py2app_build
+    from py2app.build_app import py2app as py2app_build
 
     class MyPy2app (py2app_build):
         """First builds the app file(s), then creates a DMG installer.
