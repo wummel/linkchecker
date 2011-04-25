@@ -2,7 +2,7 @@
 PYVER:=2.7
 PYTHON:=python$(PYVER)
 VERSION:=$(shell $(PYTHON) setup.py --version)
-MACHINE:=$(shell uname -m)
+PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
 FILESCHECK_URL:=http://localhost/~calvin/
 PYTHONSRC:=${HOME}/src/cpython-hg/Lib
 #PYTHONSRC:=/usr/lib/$(PYTHON)
@@ -63,8 +63,8 @@ localbuild: MANIFEST
 	-$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
-	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
-	cp -f build/lib.linux-$(MACHINE)-$(PYVER)/linkcheck/network/_network.so linkcheck/network
+	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
+	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/network/_network.so linkcheck/network
 
 .PHONY: deb_orig
 deb_orig:
