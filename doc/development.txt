@@ -6,39 +6,44 @@ on various platforms.
 
 Requirements
 ------------
+On Mac OS X systems, using MacPorts, Fink or homebrew for software
+installation is recommended.
 
-1. Install Python >= 2.6 from http://www.python.org/
+- Install Python >= 2.6 from http://www.python.org/
 
-2. Qt4 SDK development tools from http://qt.nokia.com/downloads
-   The binary "qcollectiongenerator" is used to generate the
-   documentation files.
+- Qt4 SDK development tools from http://qt.nokia.com/downloads
+  The binary "qcollectiongenerator" is used to generate the
+  documentation files.
 
-3. *On Windows only*, install the MinGW suite from
-   http://mingw.sourceforge.net/
+- Install PyQt >= 4.8 from
+  http://www.riverbankcomputing.co.uk/software/pyqt/download
 
-4. *On Windows only*, install InnoSetup from
-   http://www.jrsoftware.org/isinfo.php
+- *On Windows only*, install the MinGW suite from
+  http://mingw.sourceforge.net/
 
-5. *On Windows only*, download and install the Microsoft
-   Visual C++ 2008 runtime from
-   http://www.microsoft.com/downloads/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&displaylang=en
+- *On Windows only*, install InnoSetup from
+  http://www.jrsoftware.org/isinfo.php
 
-6. *Optional on Windows, for console color support:*
-   Wconio from http://newcenturycomputers.net/projects/wconio.html
+- *On Windows only*, download and install the Microsoft
+  Visual C++ 2008 runtime from
+  http://www.microsoft.com/downloads/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&displaylang=en
 
-3. *Optional, for HTML/CSS syntax checks:*
-   HTML tidy from http://utidylib.berlios.de/
-   cssutils from http://cthedot.de/cssutils/
+- *Optional on Windows, for console color support:*
+  Wconio from http://newcenturycomputers.net/projects/wconio.html
 
-4. *Optional, used for Virus checking:*
-   ClamAv for Unix from http://www.clamav.net/lang/en/download/
-   or for Windows from http://www.sosdg.org/clamav-win32/
+- *Optional, for HTML/CSS syntax checks:*
+  HTML tidy from http://utidylib.berlios.de/
+  cssutils from http://cthedot.de/cssutils/
 
-5. *Optional, for displaying country codes:*
-   Pygeoip from http://code.google.com/p/pygeoip/
+- *Optional, used for Virus checking:*
+  ClamAv for Unix from http://www.clamav.net/lang/en/download/
+  or for Windows from http://www.sosdg.org/clamav-win32/
 
-6. *Optional, used for login form submission:*
-   Twill from http://twill.idyll.org/
+- *Optional, for displaying country codes:*
+  Pygeoip from http://code.google.com/p/pygeoip/
+
+- *Optional, used for login form submission:*
+  Twill from http://twill.idyll.org/
 
 
 Setup for Unix/Linux
@@ -54,11 +59,11 @@ Setup for Mac OS X
 Execute ``make localbuild`` to compile a local version and execute
 ``./linkchecker`` or ``./linkchecker-gui``.
 Execute ``make test`` to run the unittest suite.
-Execute ``make dist`` to build a distributable source package.
+Execute ``make app`` to build a distributable source package.
 
 
 Setup for Windows
 -----------------
-Execute ``build.bat`` to build a local version.
-Execute ``test.bat`` to run the unittest suite.
-Execute ``dist.bat`` to build a binary installer.
+Execute ``windows\build.bat`` to build a local version.
+Execute ``windows\test.bat`` to run the unittest suite.
+Execute ``windows\dist.bat`` to build a binary installer.
