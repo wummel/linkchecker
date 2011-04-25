@@ -189,7 +189,7 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	$(PYTHON) /usr/bin/nosetests -v -m "^test_.*" $(TESTOPTS) $(TESTS)
+	$(PYTHON) $(shell which nosetests) -v -m "^test_.*" $(TESTOPTS) $(TESTS)
 
 .PHONY: pyflakes
 pyflakes:
