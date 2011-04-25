@@ -104,6 +104,11 @@ dist-stamp: changelog
 	$(MAKE) dist
 	touch $@
 
+# Build OSX installer
+.PHONY: app
+app: MANIFEST chmod
+	$(PYTHON) setup.py py2app
+
 # The check programs used here are mostly local scripts on my private system.
 # So for other developers there is no need to execute this target.
 .PHONY: check
