@@ -693,4 +693,5 @@ o a (Fast)CGI web interface (requires HTTP server)
         "py2exe": py2exe_options,
         "py2app": py2app_options,
     },
+    app = ['linkchecker-gui'],
 )
