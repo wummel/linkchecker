@@ -23,21 +23,8 @@ set QTDEV=c:\qt\2010.05\qt
 
 :: END configuration, no need to change anything below
 
-:: detect platform architecture
-:: for 64bit platforms, see also
-:: http://wiki.cython.org/64BitCythonExtensionsOnWindows
-if "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    set PLATNAME=win-amd64
-) else if "%PROCESSOR_ARCHITECTURE%" == "x86" (
-    if "%PROCESSOR_ARCHITEW6432%" == "AMD64" (
-        set PLATNAME=win-amd64
-    ) else (
-        set PLATNAME=win32
-    )
-) else (
-    echo "Unsupported architecture %PROCESSOR_ARCHITECTURE%"
-    goto :finish
-)
+:: set platform architecture
+for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe -c "from distutils.util import get_platform;print get_platform()"`) do set PLATFORM="%%a"
 
 :: detect compiler
 if defined MSSdk (
