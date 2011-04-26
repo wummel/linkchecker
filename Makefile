@@ -61,7 +61,7 @@ locale:
 # to build in the current directory
 .PHONY: localbuild
 localbuild: MANIFEST
-	-$(MAKE) -C doc/html
+	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
 	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
@@ -107,8 +107,7 @@ dist-stamp: changelog
 
 # Build OSX installer
 .PHONY: app
-app: MANIFEST chmod
-	$(MAKE) -C doc/html
+app: localbuild chmod
 	$(PYTHON) setup.py py2app $(PY2APPOPTS)
 
 # The check programs used here are mostly local scripts on my private system.
