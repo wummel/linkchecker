@@ -393,8 +393,8 @@ class Resolver(object):
             return []
         from linkcheck.network import IfConfig
         ifc = IfConfig()
-        return [ifc.getAddr(iface) for iface in ifc.getInterfaceList() \
-                if ifc.isUp(iface)]
+        return [ifc.getAddr(iface)
+                for iface in ifc.getInterfaceList(flags=IfConfig.IFF_UP)]
 
     def add_addrinfo (self, host, interface=False):
         try:

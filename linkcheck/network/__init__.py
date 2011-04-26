@@ -64,7 +64,7 @@ class IfConfig (object):
             return None
         return socket.inet_ntoa(result[20:24])
 
-    def getInterfaceList (self):
+    def getInterfaceList (self, flags=0):
         """Get all interface names in a list."""
         if sys.platform == 'darwin':
             command = ['ifconfig', '-l']
@@ -100,6 +100,8 @@ class IfConfig (object):
             name = struct.unpack("16s%ds" % (self.ifr_size-16), ifconf)[0]
             name = name.split('\0', 1)[0]
             if name:
+                if flags and not (self.getFlags(name) & flags):
+                    continue
                 iflist.append(name)
             i += self.ifr_size
         return iflist
