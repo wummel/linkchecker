@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 6.7
-Release-Focus: Minor bugfixes
+Version: 6.8
+Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
@@ -10,6 +10,6 @@ GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 OSX-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.dmg
 
-Displaying warnings in the GUI has been fixed and CSV output is properly
-encoded. The URL recursion level is now printed in XML, SQL and CSV output
-formats.
+Mac OS X users now have a binary installer package in DMG format.
+The Windows installer now includes all needed C++ runtime files directly
+instead of executing a separate installation.

@@ -1,4 +1,4 @@
-6.8 "Ghost in the shell" (released xx.xx.2011)
+6.8 "Ghost in the shell" (released 26.4.2011)
 
 Fixes:
 - checking: Make module detection more robust by catching OSError.
