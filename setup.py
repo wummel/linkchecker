@@ -17,12 +17,15 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 Setup file for the distuils module.
+
 It includes the following features:
-- py2exe support
-- py2app support
+- py2exe support (including InnoScript installer generation)
+- py2app support (including DMG package generation)
 - creation and installation of configuration file with installation data
 - automatic detection and usage of GNU99 standard for C compiler
 - automatic MANIFEST.in check
+- automatic generation of .mo locale files
+- automatic permission setting on POSIX systems for installed files
 """
 
 import sys
@@ -82,7 +85,6 @@ py2exe_options = dict(
     optimize=2,
 )
 # py2app options for OSX packaging
-# XXX http://www.rkblog.rk.edu.pl/w/p/building-mac-os-x-applications-py2app/
 py2app_options = dict(
     includes=['sip', 'PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql'],
     excludes=py_excludes,
