@@ -92,6 +92,7 @@ py2app_options = dict(
     optimize=2,
     iconfile='doc/html/favicon.icns',
     plist={'CFBundleIconFile': 'favicon.icns'},
+    argv_emulation=True,
 )
 
 
