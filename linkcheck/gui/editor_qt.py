@@ -18,9 +18,14 @@
 Text editor implemented with Qt
 """
 from PyQt4 import QtGui, QtCore
+from . import syntax
 
-# Empty lexer dictionary indicating no support for syntax highlighting
-ContentTypeLexers = {}
+# Map MIME type to QSyntaxHighlighter class
+ContentTypeLexers = {
+    "text/html": syntax.HtmlHighlighter,
+    "application/xml": syntax.XmlHighlighter,
+    "text/plain+ini": syntax.IniHighlighter,
+}
 
 class LineNumberArea (QtGui.QWidget):
     """Display line numbers."""
@@ -50,9 +55,12 @@ class Editor (QtGui.QPlainTextEdit):
         self.updateLineNumberAreaWidth(0)
         self.highlightCurrentLine()
 
-    def setLexer (self):
-        """Does nothing."""
-        pass
+    def highlight (self, lexerclass):
+        """Set syntax highlighter."""
+        if lexerclass:
+            self.lexer = lexerclass(self.document())
+        else:
+            self.lexer = None
 
     def setText (self, text):
         """Set editor text."""

@@ -50,13 +50,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
     def setContentType (self, content_type):
         """Choose a lexer according to given content type."""
         lexerclass = ContentTypeLexers.get(content_type.lower())
-        if lexerclass:
-            lexer = lexerclass()
-            lexer.setFont(self.editor.font())
-            self.editor.setLexer(lexer)
-        else:
-            # use no styling
-            self.editor.setLexer()
+        self.editor.highlight(lexerclass)
 
     def setText (self, text, line=1, col=1):
         """Set editor text and jump to given line and column."""

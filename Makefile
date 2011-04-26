@@ -142,6 +142,7 @@ doccheck:
 	  linkcheck/gui/properties.py \
 	  linkcheck/gui/settings.py \
 	  linkcheck/gui/statistics.py \
+	  linkcheck/gui/syntax.py \
 	  linkcheck/gui/updater.py \
 	  linkcheck/gui/urlmodel.py \
 	  linkcheck/gui/urlsave.py \

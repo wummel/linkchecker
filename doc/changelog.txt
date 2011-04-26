@@ -1,5 +1,9 @@
 6.9 "" (released xx.xx.2011)
 
+Features:
+- gui: Add syntax highlighting for Qt editor in case QScintilla
+  is not installed.
+
 
 6.8 "Ghost in the shell" (released 26.4.2011)
 

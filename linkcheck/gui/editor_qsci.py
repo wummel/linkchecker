@@ -97,3 +97,13 @@ class Editor (Qsci.QsciScintilla):
         # folding margin colors (foreground,background)
         self.setFoldMarginColors(QtGui.QColor("#f5f5dc"),
                                  QtGui.QColor("#aaaaaa"))
+
+    def highlight (self, lexerclass):
+        """Set syntax highlighter."""
+        if lexerclass:
+            lexer = lexerclass()
+            lexer.setFont(self.font())
+            self.setLexer(lexer)
+        else:
+            # use no styling
+            self.setLexer()
