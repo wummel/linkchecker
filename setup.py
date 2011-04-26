@@ -112,6 +112,21 @@ def cnormpath (path):
     return path
 
 
+def get_nt_platform_vars ():
+    """Return program file path and architecture for NT systems."""
+    platform = util.get_platform()
+    if platform == "win-amd64":
+        # the Visual C++ runtime files are installed in the x86 directory
+        progvar = "%ProgramFiles(x86)%"
+        architecture = "amd64"
+    elif platform == "win32":
+        progvar = "%ProgramFiles%"
+        architecture = "x86"
+    else:
+        raise ValueError("Unsupported platform %r" % platform)
+    return os.path.expandvars(progvar), architecture
+
+
 class MyInstallLib (install_lib, object):
     """Custom library installation."""
 
@@ -443,19 +458,9 @@ if os.name == 'posix':
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
 elif os.name == 'nt':
-    platform = util.get_platform()
-    if platform == "win-amd64":
-        # the Visual C++ runtime files are installed in the x86 directory
-        progvar = "%ProgramFiles(x86)%"
-        architecture = "amd64"
-    elif platform == "win32":
-        progvar = "%ProgramFiles%"
-        architecture = "x86"
-    else:
-        raise ValueError("Unsupported platform %r" % platform)
-    attrs = (os.path.expandvars(progvar), architecture)
-    crtdir = r'%s\Microsoft Visual Studio 9.0\VC\redist\%s\Microsoft.VC90.CRT' % attrs
-    data_files.append(('Microsoft.VC90.CRT', glob.glob(r'%s\*.*' % crtdir)))
+    p = r'%s\Microsoft Visual Studio 9.0\VC\redist\%s\Microsoft.VC90.CRT\*.*'
+    files = glob.glob(p % get_nt_platform_vars())
+    data_files.append(('Microsoft.VC90.CRT', files))
 
 
 class InnoScript:
@@ -531,7 +536,8 @@ class InnoScript:
 
     def compile (self):
         """Compile Inno script with iscc.exe."""
-        cmd = os.path.expandvars(r'%ProgramFiles%\Inno Setup 5\iscc.exe')
+        progpath = get_nt_platform_vars()[0]
+        cmd = r'%s\Inno Setup 5\iscc.exe' % progpath
         subprocess.check_call([cmd, self.pathname])
 
     def sign (self):
