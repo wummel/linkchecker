@@ -153,6 +153,8 @@ class IfConfig (object):
         @param ifname: interface name
         @type ifname: string
         """
+        if sys.platform == 'darwin':
+            return ifconfig_inet().get('address')
         return self._getaddr(ifname, self.SIOCGIFADDR)
 
     def getMask (self, ifname):
@@ -160,6 +162,8 @@ class IfConfig (object):
         @param ifname: interface name
         @type ifname: string
         """
+        if sys.platform == 'darwin':
+            return ifconfig_inet().get('netmask')
         return self._getaddr(ifname, self.SIOCGIFNETMASK)
 
     def getBroadcast (self, ifname):
@@ -167,6 +171,8 @@ class IfConfig (object):
         @param ifname: interface name
         @type ifname: string
         """
+        if sys.platform == 'darwin':
+            return ifconfig_inet().get('broadcast')
         return self._getaddr(ifname, self.SIOCGIFBRDADDR)
 
     def isUp (self, ifname):
@@ -183,6 +189,6 @@ class IfConfig (object):
         """
         # since not all systems have IFF_LOOPBACK as a flag defined,
         # the ifname is tested first
-        if ifname == 'lo':
+        if ifname.startswith('lo'):
             return True
         return (self.getFlags(ifname) & self.IFF_LOOPBACK) != 0
