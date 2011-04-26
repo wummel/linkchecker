@@ -132,6 +132,8 @@ doccheck:
 	  linkcheck/gui/contextmenu.py \
 	  linkcheck/gui/debug.py \
 	  linkcheck/gui/editor.py \
+	  linkcheck/gui/editor_qsci.py \
+	  linkcheck/gui/editor_qt.py \
 	  linkcheck/gui/lineedit.py \
 	  linkcheck/gui/help.py \
 	  linkcheck/gui/logger.py \
