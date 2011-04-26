@@ -6,8 +6,38 @@ import sys
 import errno
 import array
 import struct
+import subprocess
 from _network import ifreq_size
 from .. import log, LOG_DNS
+
+
+def pipecmd (cmd1, cmd2):
+    """Return output of "cmd1 | cmd2"."""
+    p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(cmd2, stdin=p1.stdout, stdout=subprocess.PIPE)
+    p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
+    return p2.communicate()[0]
+
+
+def ifconfig_inet (iface):
+    """Return parsed IPv4 info from ifconfig(8) binary."""
+    res = pipecmd(["ifconfig", iface], ["grep", "inet "])
+    info = {}
+    lastpart = None
+    for part in res.split():
+        # Linux systems have prefixes for each value
+        if part.startswith("addr:"):
+            info["address"] = part[5:]
+        elif part.startswith("Bcast:"):
+            info["broadcast"] = part[6:]
+        elif part.startswith("Mask:"):
+            info["netmask"] = part[5:]
+        elif lastpart == "inet":
+            info["address"] = part
+        elif lastpart in ("netmask", "broadcast"):
+            info[lastpart] = part
+        lastpart = part
+    return info
 
 
 class IfConfig (object):
@@ -71,7 +101,6 @@ class IfConfig (object):
             if flags & self.IFF_UP:
                 command.append('-u')
             # replace with subprocess.check_output() for Python 2.7
-            import subprocess
             res = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
             return res.split()
         # initial 8kB buffer to hold interface data
