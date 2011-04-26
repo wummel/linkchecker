@@ -40,6 +40,9 @@ class Editor (QtGui.QPlainTextEdit):
     def __init__ (self, parent):
         """Initialize line numbering."""
         super(Editor, self).__init__(parent)
+        font = QtGui.QFont("Consolas", 11)
+        font.setFixedPitch(True)
+        self.document().setDefaultFont(font)
         self.lineNumberArea = LineNumberArea(self)
         self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
         self.updateRequest.connect(self.updateLineNumberArea)
