@@ -31,7 +31,7 @@ if defined MSSdk (
     :: Microsoft SDK
     set COMPILER=
     set DISTUTILS_USE_SDK=1
-) else if "%PLATNAME%" == "win32" (
+) else if "%PLATFORM%" == "win32" (
     :: MinGW (only for 32bit platforms)
     set COMPILER="-c mingw32"
 ) else (
@@ -42,8 +42,8 @@ if defined MSSdk (
 %PYDIR%\python.exe setup.py sdist --manifest-only
 %PYDIR%\python.exe setup.py build %COMPILER%
 :: copy .pyd files to start linkchecker in local directory
-copy build\lib.%PLATNAME%-%PYVER%\linkcheck\HtmlParser\htmlsax.pyd linkcheck\HtmlParser
-copy build\lib.%PLATNAME%-%PYVER%\linkcheck\network\_network.pyd linkcheck\network
+copy build\lib.%PLATFORM%-%PYVER%\linkcheck\HtmlParser\htmlsax.pyd linkcheck\HtmlParser
+copy build\lib.%PLATFORM%-%PYVER%\linkcheck\network\_network.pyd linkcheck\network
 :: generate GUI documentation
 %QTDEV%\bin\qcollectiongenerator doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
 
