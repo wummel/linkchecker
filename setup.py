@@ -543,7 +543,11 @@ class InnoScript:
     def sign (self):
         """Sign InnoSetup installer with local self-signed certificate."""
         pfxfile = r'C:\linkchecker.pfx'
-        subprocess.check_call(['signtool.exe', 'sign', '/f', pfxfile, self.distfile])
+        if os.path.isfile(pfxfile):
+            cmd = ['signtool.exe', 'sign', '/f', pfxfile, self.distfile]
+            subprocess.check_call(cmd)
+        else:
+            print "No signed installer: certificate %s not found." % pfxfile
 
 try:
     from py2exe.build_exe import py2exe as py2exe_build
