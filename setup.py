@@ -493,6 +493,7 @@ class InnoScript:
             self.write_inno_script(fd)
 
     def write_inno_script (self, fd):
+        """Write Inno script contents."""
         print >> fd, "; WARNING: This script has been created by py2exe. Changes to this script"
         print >> fd, "; will be overwritten the next time py2exe is run!"
         print >> fd, "[Setup]"
@@ -583,6 +584,7 @@ try:
         Needs hdiutil to be installed."""
 
         def run (self):
+            """Generate py2app installer."""
             # First, let py2app do it's work.
             py2app_build.run(self)
             dist_dir = self.dist_dir
