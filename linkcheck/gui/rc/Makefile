@@ -2,7 +2,6 @@
 
 # base directory of oxygen icon set checkout
 OXYGEN = $(HOME)/src/oxygen-gitsvn/16x16
-#CRYSTAL = $(HOME)/src/crystal_project
 
 ICONS = \
 	cancel.png \
@@ -20,8 +19,8 @@ ICONS = \
 
 all: $(ICONS)
 
-#app.png:	$(CRYSTAL)/16x16/apps/agt_web.png
-#	cp $< $@
+app.png:	$(OXYGEN)/categories/applications-development-web.png
+	cp $< $@
 
 save.png:	$(OXYGEN)/actions/document-save-as.png
 	cp $< $@
