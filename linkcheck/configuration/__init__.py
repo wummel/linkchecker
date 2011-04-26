@@ -60,6 +60,7 @@ def normpath (path):
 
 # List optional Python modules in the form (module, name)
 Modules = (
+    ("PyQt4.Qsci", u"QScintilla"),
     ("optcomplete", u"Optcomplete"),
     ("tidy", u"HTMLtidy"),
     ("cssutils", u"CSSutils"),
