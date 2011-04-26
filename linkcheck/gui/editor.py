@@ -17,87 +17,121 @@
 
 import os
 import urlparse
-from PyQt4 import Qsci, QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 from .linkchecker_ui_editor import Ui_EditorDialog
 from ..checker.fileurl import get_os_filename
+try:
+    from PyQt4 import Qsci
 
-# Map MIME type to Scintilla lexer class
-ContentTypeLexers = {
-    "application/x-shellscript": Qsci.QsciLexerBash,
-    "application/x-sh": Qsci.QsciLexerBash,
-    "application/x-msdos-program": Qsci.QsciLexerBatch,
-    #"": Qsci.QsciLexerCMake,
-    "text/x-c++src": Qsci.QsciLexerCPP,
-    "text/css": Qsci.QsciLexerCSS,
-    #"": Qsci.QsciLexerCSharp,
-    #"": Qsci.QsciLexerCustom,
-    "text/x-dsrc": Qsci.QsciLexerD,
-    "text/x-diff": Qsci.QsciLexerDiff,
-    #"": Qsci.QsciLexerFortran,
-    #"": Qsci.QsciLexerFortran77,
-    "text/html": Qsci.QsciLexerHTML,
-    #"": Qsci.QsciLexerIDL,
-    "text/x-java": Qsci.QsciLexerJava,
-    "application/javascript": Qsci.QsciLexerJavaScript,
-    #"": Qsci.QsciLexerLua,
-    "text/x-makefile": Qsci.QsciLexerMakefile,
-    #"": Qsci.QsciLexerPOV,
-    "text/x-pascal": Qsci.QsciLexerPascal,
-    "text/x-perl": Qsci.QsciLexerPerl,
-    "application/postscript": Qsci.QsciLexerPostScript,
-    "text/plain+ini": Qsci.QsciLexerProperties,
-    "text/x-python": Qsci.QsciLexerPython,
-    "application/x-ruby": Qsci.QsciLexerRuby,
-    #"": Qsci.QsciLexerSQL,
-    #"": Qsci.QsciLexerSpice,
-    "application/x-tcl": Qsci.QsciLexerTCL,
-    "application/x-latex": Qsci.QsciLexerTeX,
-    #"": Qsci.QsciLexerVHDL,
-    #"": Qsci.QsciLexerVerilog,
-    "application/xml": Qsci.QsciLexerXML,
-    #"": Qsci.QsciLexerYAML,
-}
+    # Map MIME type to Scintilla lexer class
+    ContentTypeLexers = {
+        "application/x-shellscript": Qsci.QsciLexerBash,
+        "application/x-sh": Qsci.QsciLexerBash,
+        "application/x-msdos-program": Qsci.QsciLexerBatch,
+        #"": Qsci.QsciLexerCMake,
+        "text/x-c++src": Qsci.QsciLexerCPP,
+        "text/css": Qsci.QsciLexerCSS,
+        #"": Qsci.QsciLexerCSharp,
+        #"": Qsci.QsciLexerCustom,
+        "text/x-dsrc": Qsci.QsciLexerD,
+        "text/x-diff": Qsci.QsciLexerDiff,
+        #"": Qsci.QsciLexerFortran,
+        #"": Qsci.QsciLexerFortran77,
+        "text/html": Qsci.QsciLexerHTML,
+        #"": Qsci.QsciLexerIDL,
+        "text/x-java": Qsci.QsciLexerJava,
+        "application/javascript": Qsci.QsciLexerJavaScript,
+        #"": Qsci.QsciLexerLua,
+        "text/x-makefile": Qsci.QsciLexerMakefile,
+        #"": Qsci.QsciLexerPOV,
+        "text/x-pascal": Qsci.QsciLexerPascal,
+        "text/x-perl": Qsci.QsciLexerPerl,
+        "application/postscript": Qsci.QsciLexerPostScript,
+        "text/plain+ini": Qsci.QsciLexerProperties,
+        "text/x-python": Qsci.QsciLexerPython,
+        "application/x-ruby": Qsci.QsciLexerRuby,
+        #"": Qsci.QsciLexerSQL,
+        #"": Qsci.QsciLexerSpice,
+        "application/x-tcl": Qsci.QsciLexerTCL,
+        "application/x-latex": Qsci.QsciLexerTeX,
+        #"": Qsci.QsciLexerVHDL,
+        #"": Qsci.QsciLexerVerilog,
+        "application/xml": Qsci.QsciLexerXML,
+        #"": Qsci.QsciLexerYAML,
+    }
 
-class Editor (Qsci.QsciScintilla):
-    """Configured QsciScintilla widget."""
+    class Editor (Qsci.QsciScintilla):
+        """Configured QsciScintilla widget."""
 
-    def __init__ (self, parent=None):
-        """Set Scintilla options for font, colors, etc."""
-        super(Editor, self).__init__(parent)
-        # Use Courier font with fixed width
-        font = QtGui.QFont("Consolas", 11)
-        font.setFixedPitch(True)
+        def __init__ (self, parent=None):
+            """Set Scintilla options for font, colors, etc."""
+            super(Editor, self).__init__(parent)
+            # Use Courier font with fixed width
+            font = QtGui.QFont("Consolas", 11)
+            font.setFixedPitch(True)
 
-        # Set the default font of the editor
-        # and take the same font for line numbers
-        self.setFont(font)
-        self.setMarginsFont(font)
+            # Set the default font of the editor
+            # and take the same font for line numbers
+            self.setFont(font)
+            self.setMarginsFont(font)
 
-        # line number margin for 4 digits (plus 2px extra space)
-        margin = QtGui.QFontMetrics(font).width("0"*4)+2
-        # Display line numbers, margin 0 is for line numbers
-        self.setMarginWidth(0, margin)
-        self.setMarginLineNumbers(0, True)
+            # line number margin for 4 digits (plus 2px extra space)
+            margin = QtGui.QFontMetrics(font).width("0"*4)+2
+            # Display line numbers, margin 0 is for line numbers
+            self.setMarginWidth(0, margin)
+            self.setMarginLineNumbers(0, True)
 
-        # Show whitespace to help detect whitespace errors
-        self.setWhitespaceVisibility(True)
+            # Show whitespace to help detect whitespace errors
+            self.setWhitespaceVisibility(True)
 
-        # Use boxes as folding visual
-        self.setFolding(self.BoxedTreeFoldStyle)
+            # Use boxes as folding visual
+            self.setFolding(self.BoxedTreeFoldStyle)
 
-        # Braces matching
-        self.setBraceMatching(self.SloppyBraceMatch)
+            # Braces matching
+            self.setBraceMatching(self.SloppyBraceMatch)
 
-        # Editing line color
-        self.setCaretLineVisible(True)
-        self.setCaretLineBackgroundColor(QtGui.QColor("#e5e5cb"))
+            # Editing line color
+            self.setCaretLineVisible(True)
+            self.setCaretLineBackgroundColor(QtGui.QColor("#e5e5cb"))
 
-        # line numbers margin colors
-        self.setMarginsBackgroundColor(QtGui.QColor("#e5e5e5"))
-        self.setMarginsForegroundColor(QtGui.QColor("#333333"))
+            # line numbers margin colors
+            self.setMarginsBackgroundColor(QtGui.QColor("#e5e5e5"))
+            self.setMarginsForegroundColor(QtGui.QColor("#333333"))
 
-        # folding margin colors (foreground,background)
-        self.setFoldMarginColors(QtGui.QColor("#f5f5dc"),QtGui.QColor("#aaaaaa"))
+            # folding margin colors (foreground,background)
+            self.setFoldMarginColors(QtGui.QColor("#f5f5dc"),
+                                     QtGui.QColor("#aaaaaa"))
+
+except ImportError:
+    # Use QPlainTextEdit instead
+    ContentTypeLexers = {}
+
+    class Editor (QtGui.QPlainTextEdit):
+
+        def setLexer (self):
+            pass
+
+        def setText (self, text):
+            return self.setPlainText(text)
+
+        def text (self):
+            return self.toPlainText()
+
+        def setModified (self, flag):
+            return self.document().setModified(flag)
+
+        def isModified (self):
+            return self.document().isModified()
+
+        def setCursorPosition (self, line, column=0):
+            block = self.document().findBlockByNumber(line)
+            if block.isValid():
+                cursor = QtGui.QTextCursor(block)
+                if column > 0:
+                    cursor.movePosition(QtGui.QTextCursor.Right,
+                                        QtGui.QTextCursor.MoveAnchor, column)
+                self.setTextCursor(cursor)
+                self.centerCursor()
 
 
 class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
