@@ -1,4 +1,4 @@
-6.8 "" (released xx.xx.2011)
+6.8 "Ghost in the shell" (released xx.xx.2011)
 
 Fixes:
 - checking: Make module detection more robust by catching OSError.
@@ -19,7 +19,7 @@ Features:
 - build: The Windows installer is now signed with a local self-signed
   certificate.
 - build: Added a Mac OS X binary installer.
-- network: Support listing of network interfaces on Mac OS X systems.
+- network: Support getting network information on Mac OS X systems.
 
 
 6.7 "Friendship" (released 12.4.2011)
