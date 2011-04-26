@@ -26,10 +26,10 @@ except ImportError:
     from .editor_qt import ContentTypeLexers, Editor
 
 class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
-    """Scintilla editor window."""
+    """Editor window."""
 
     def __init__ (self, parent=None):
-        """Initialize the Scintilla editor widget."""
+        """Initialize the editor widget."""
         super(EditorWindow, self).__init__(parent)
         self.setupUi(self)
         # filename used for saving
