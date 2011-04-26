@@ -20,7 +20,7 @@ set SZ_EXE="C:\Programme\7-Zip\7z.exe"
 set UPX_EXE="C:\Software\upx307w\upx.exe"
 for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
 rd /s /q build > nul
-call build.bat
+call windows\build.bat
 rd /s /q dist > nul
 %PYDIR%\python.exe setup.py py2exe
 
