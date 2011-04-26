@@ -233,3 +233,7 @@ changelog:
 .PHONY: gui
 gui:
 	$(MAKE) -C linkcheck/gui
+
+.PHONY: count
+count:
+	@sloccount linkchecker linkchecker-gui linkcheck | grep "Total Physical Source Lines of Code"
