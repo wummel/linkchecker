@@ -2,6 +2,7 @@
 """from http://twistedmatrix.com/wiki/python/IfConfig
 """
 import socket
+import sys
 import errno
 import array
 import struct
@@ -65,6 +66,14 @@ class IfConfig (object):
 
     def getInterfaceList (self):
         """Get all interface names in a list."""
+        if sys.platform == 'darwin':
+            command = ['ifconfig', '-l']
+            if flags & self.IFF_UP:
+                command.append('-u')
+            # replace with subprocess.check_output() for Python 2.7
+            import subprocess
+            res = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
+            return res.split()
         # initial 8kB buffer to hold interface data
         bufsize = 8192
         # 80kB buffer should be enough for most boxen
