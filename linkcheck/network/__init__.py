@@ -154,7 +154,7 @@ class IfConfig (object):
         @type ifname: string
         """
         if sys.platform == 'darwin':
-            return ifconfig_inet().get('address')
+            return ifconfig_inet(ifname).get('address')
         return self._getaddr(ifname, self.SIOCGIFADDR)
 
     def getMask (self, ifname):
@@ -163,7 +163,7 @@ class IfConfig (object):
         @type ifname: string
         """
         if sys.platform == 'darwin':
-            return ifconfig_inet().get('netmask')
+            return ifconfig_inet(ifname).get('netmask')
         return self._getaddr(ifname, self.SIOCGIFNETMASK)
 
     def getBroadcast (self, ifname):
@@ -172,7 +172,7 @@ class IfConfig (object):
         @type ifname: string
         """
         if sys.platform == 'darwin':
-            return ifconfig_inet().get('broadcast')
+            return ifconfig_inet(ifname).get('broadcast')
         return self._getaddr(ifname, self.SIOCGIFBRDADDR)
 
     def isUp (self, ifname):
