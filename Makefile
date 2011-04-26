@@ -191,7 +191,7 @@ releasecheck: check
 
 .PHONY: sign_distfiles
 sign_distfiles:
-	for f in $(shell find dist -name *.bz2 -o -name *.exe -o -name *.zip); do \
+	for f in $(shell find dist -name *.bz2 -o -name *.exe -o -name *.zip -o -name *.dmg); do \
 	  [ -f $${f}.asc ] || gpg --detach-sign --armor $$f; \
 	done
 
