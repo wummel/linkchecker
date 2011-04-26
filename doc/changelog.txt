@@ -18,6 +18,7 @@ Features:
   systems.
 - build: The Windows installer is now signed with a local self-signed
   certificate.
+- network: Support listing of network interfaces on Mac OS X systems.
 
 
 6.7 "Friendship" (released 12.4.2011)
