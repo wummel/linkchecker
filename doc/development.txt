@@ -18,6 +18,10 @@ installation is recommended.
 - Install PyQt >= 4.8 from
   http://www.riverbankcomputing.co.uk/software/pyqt/download
 
+- *Optional, for syntax highlighting in the GUI editor*, install
+  QScintilla from
+  http://www.riverbankcomputing.co.uk/software/qscintilla/download
+  
 - *On Windows only*, install the MinGW suite from
   http://mingw.sourceforge.net/
 
