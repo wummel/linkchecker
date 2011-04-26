@@ -21,7 +21,6 @@ from PyQt4 import QtGui, QtCore
 from .linkchecker_ui_editor import Ui_EditorDialog
 from ..checker.fileurl import get_os_filename
 try:
-    raise ImportError()
     from .editor_qsci import ContentTypeLexers, Editor
 except ImportError:
     from .editor_qt import ContentTypeLexers, Editor
