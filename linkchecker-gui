@@ -64,6 +64,7 @@ def main (argv=None):
     # window before app.exec_() finishes
     window = LinkCheckerMain(url=url)
     window.show()
+    window.raise_() # this will raise the window on Mac OS X
     drop_privileges()
     sys.excepthook = \
        lambda etype, evalue, tb: excepthook(window, etype, evalue, tb)
