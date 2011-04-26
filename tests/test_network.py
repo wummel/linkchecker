@@ -19,7 +19,7 @@ Test network functions.
 """
 
 import unittest
-from tests import need_posix, need_network
+from tests import need_posix, need_network, need_linux
 import linkcheck.network
 from linkcheck.network import iputil
 
@@ -37,10 +37,11 @@ class TestNetwork (unittest.TestCase):
         ifc.getInterfaceList()
 
     @need_network
-    @need_posix
+    @need_linux
     def test_iputils (self):
         host = "www.golem.de"
         ips = iputil.resolve_host(host)
+        self.assertTrue(len(ips) > 0)
         obfuscated = iputil.obfuscate_ip(ips.pop())
         self.assertTrue(iputil.is_obfuscated_ip(obfuscated))
         hosts = iputil.lookup_ips([obfuscated])

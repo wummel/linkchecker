@@ -17,6 +17,7 @@
 import signal
 import subprocess
 import os
+import sys
 import socket
 from nose import SkipTest
 from contextlib import contextmanager
@@ -101,6 +102,14 @@ def has_posix ():
     return os.name == "posix"
 
 need_posix = _need_func(has_posix, "POSIX system")
+
+
+@memoized
+def has_linux ():
+    """Test if this is a Linux system."""
+    return sys.platform.startswith("linux")
+
+need_linux = _need_func(has_linux, "Linux system")
 
 
 @memoized
