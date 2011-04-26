@@ -18,6 +18,7 @@ Features:
   systems.
 - build: The Windows installer is now signed with a local self-signed
   certificate.
+- build: Added a Mac OS X binary installer.
 - network: Support listing of network interfaces on Mac OS X systems.
 
 
