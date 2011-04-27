@@ -21,10 +21,33 @@ import re
 from . import urlbase, absolute_url
 from .. import strformat, url as urlutil
 
+
+def get_intern_pattern (url):
+    """Return intern pattern for given URL. Redirections to the same
+    domain with or without "www." prepended are allowed."""
+    parts = strformat.url_unicode_split(url)
+    scheme = parts[0]
+    domain = parts[1]
+    domain, is_idn = urlutil.idna_encode(domain)
+    # allow redirection www.example.com -> example.com and vice versa
+    if domain.startswith('www.'):
+        domain = domain[4:]
+    if not (domain and scheme):
+        return None
+    path = urlutil.splitparams(parts[2])[0]
+    segments = path.split('/')[:-1]
+    path = "/".join(segments)
+    if url.endswith('/'):
+        path += '/'
+    args = list(re.escape(x) for x in (scheme, domain, path))
+    if args[0] in ('http', 'https'):
+        args[0] = 'https?'
+    args[1] = r"(www\.|)%s" % args[1]
+    return "%s://%s%s" % tuple(args)
+
+
 class InternPatternUrl (urlbase.UrlBase):
-    """
-    Class supporting an intern URL pattern.
-    """
+    """Class supporting an intern URL pattern."""
 
     def get_intern_pattern (self):
         """
@@ -36,22 +59,4 @@ class InternPatternUrl (urlbase.UrlBase):
         url = absolute_url(self.base_url, self.base_ref, self.parent_url)
         if not url:
             return None
-        parts = strformat.url_unicode_split(url)
-        scheme = parts[0]
-        domain = parts[1]
-        domain, is_idn = urlutil.idna_encode(domain)
-        # allow redirection www.example.com -> example.com and vice versa
-        if domain.startswith('www.'):
-            domain = domain[4:]
-        if not (domain and scheme):
-            return None
-        path = urlutil.splitparams(parts[2])[0]
-        segments = path.split('/')[:-1]
-        path = "/".join(segments)
-        if url.endswith('/'):
-            path += '/'
-        args = list(re.escape(x) for x in (scheme, domain, path))
-        if args[0] in ('http', 'https'):
-            args[0] = 'https?'
-        args[1] = r"(www\.|)%s" % args[1]
-        return "%s://%s%s" % tuple(args)
+        return get_intern_pattern(url)
