@@ -28,7 +28,7 @@ from cStringIO import StringIO
 import Cookie
 
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
-    httplib2 as httplib, LinkCheckerError, configuration)
+    httplib2 as httplib, LinkCheckerError, configuration, get_link_pat)
 from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
     get_url_from)
 # import warnings
@@ -294,8 +294,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return self.content_type
 
     def follow_redirections (self, response, set_result=True):
-        """
-        Follow all redirections of http response.
+        """Follow all redirections of http response.
+        XXX split up this function; it is too big
         """
         log.debug(LOG_CHECK, "follow all redirections")
         redirected = self.url
@@ -313,17 +313,35 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             redirected, is_idn = urlbase.url_norm(newurl)
             log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
             urlparts = strformat.url_unicode_split(redirected)
+            if urlparts[0] not in ('ftp', 'http', 'https'):
+                # in case of changed scheme make new URL object
+                # For security reasons do not allow redirects to protocols
+                # other than HTTP, HTTPS or FTP.
+                if set_result:
+                    self.add_warning(
+                      _("Redirection to url `%(newurl)s' is not allowed.") %
+                      {'newurl': redirected})
+                    self.set_result(u"syntax OK")
+                return -1, response
             if urlparts[1] != self.urlparts[1]:
-                # check extern filter again
-                self.set_extern(redirected)
-                if self.extern[0] and self.extern[1]:
-                    if set_result:
-                        self.check301status(response)
-                        self.add_info(
+                # the URL domain changed
+                if self.recursion_level == 0 and urlparts[0] in ('http', 'https'):
+                    # Add intern patterns for redirection of URLs given by the
+                    # user for HTTP schemes
+                    pat = internpaturl.get_intern_pattern(redirected)
+                    log.debug(LOG_CHECK, "Add intern pattern %r", pat)
+                    self.aggregate.config['internlinks'].append(get_link_pat(pat))
+                else:
+                    # check extern filter again
+                    self.set_extern(redirected)
+                    if self.extern[0] and self.extern[1]:
+                        if set_result:
+                            self.check301status(response)
+                            self.add_info(
                              _("The redirected URL is outside of the domain "
                                "filter, checked only syntax."))
-                        self.set_result(u"filtered")
-                    return -1, response
+                            self.set_result(u"filtered")
+                        return -1, response
             # check robots.txt allowance again
             if not self.allows_robots(redirected):
                 if set_result:
@@ -346,20 +364,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                           _("recursive redirection encountered:\n %(urls)s") %
                             {"urls": "\n  => ".join(recursion)}, valid=False)
                 return -1, response
-            if urlparts[0] == self.scheme or urlparts[0] in ('http', 'https'):
+            if urlparts[0] in ('http', 'https'):
                 # remember redirected url as alias
                 self.aliases.append(redirected)
             else:
-                # in case of changed scheme make new URL object
-                # For security reasons do not allow redirects to protocols
-                # other than HTTP, HTTPS or FTP.
-                if urlparts[0] != 'ftp':
-                    if set_result:
-                        self.add_warning(
-                        _("Redirection to url `%(newurl)s' is not allowed.") %
-                        {'newurl': redirected})
-                        self.set_result(u"syntax OK")
-                    return -1, response
+                # ftp scheme
+                assert urlparts[0] == 'ftp', 'Invalid redirection %r' % redirected
                 newobj = get_url_from(
                           redirected, self.recursion_level, self.aggregate,
                           parent_url=self.parent_url, base_ref=self.base_ref,
