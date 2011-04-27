@@ -15,10 +15,10 @@
 :: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @echo off
 set PYDIR=C:\Python27
-set PORTDIR=LinkChecker-portable
 set SZ_EXE="C:\Programme\7-Zip\7z.exe"
 set UPX_EXE="C:\Software\upx307w\upx.exe"
 for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
+set PORTDIR=LinkChecker-%VERSION%
 rd /s /q build > nul
 call windows\build.bat
 rd /s /q dist > nul
