@@ -27,6 +27,7 @@ rd /s /q dist > nul
 echo Building portable distribution
 rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
+del %PORTDIR%\omt.iss
 echo Compressing executables
 for /r %PORTDIR% %%e in (*.pyd,*.dll,*.exe) do %UPX_EXE% "%%e" --best
 %SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
