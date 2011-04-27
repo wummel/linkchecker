@@ -15,6 +15,7 @@
 :: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @echo off
 set PYDIR=C:\Python27
+set UPX_EXE="C:\Software\upx307w\upx.exe"
 set SZ_EXE="C:\Programme\7-Zip\7z.exe"
 for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
 set PORTDIR=LinkChecker-%VERSION%
@@ -27,8 +28,9 @@ echo Building portable distribution
 rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
 del %PORTDIR%\omt.iss
-echo Compressing libraries and executables
-for /r %PORTDIR% %%f in (*.pyd,*.dll,*.exe) do call windows\compress.bat "%%f"
+echo Compressing Python libraries and executables
+:: skip DLL compression as it causes the GUI not to start
+for /r %PORTDIR% %%f in (*.pyd,*.exe) do %UPX_EXE% "%%f" --best
 echo Generating portable distribution file
 %SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
 rd /s /q %PORTDIR%
