@@ -16,7 +16,6 @@
 @echo off
 set PYDIR=C:\Python27
 set SZ_EXE="C:\Programme\7-Zip\7z.exe"
-set UPX_EXE="C:\Software\upx307w\upx.exe"
 for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
 set PORTDIR=LinkChecker-%VERSION%
 rd /s /q build > nul
@@ -28,7 +27,8 @@ echo Building portable distribution
 rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
 del %PORTDIR%\omt.iss
-echo Compressing executables
-for /r %PORTDIR% %%e in (*.pyd,*.dll,*.exe) do %UPX_EXE% "%%e" --best
+echo Compressing libraries and executables
+for /r %PORTDIR% %%f in (*.pyd,*.dll,*.exe) do call compress.bat "%%f"
+echo Generating portable distribution file
 %SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
 rd /s /q %PORTDIR%
