@@ -624,7 +624,7 @@ class MyRegister (register, object):
         return data
 
 
-setup (
+args = dict(
     name = AppName,
     version = AppVersion,
     description = "check websites and HTML documents for broken links",
@@ -707,5 +707,8 @@ o a (Fast)CGI web interface (requires HTTP server)
         "py2exe": py2exe_options,
         "py2app": py2app_options,
     },
-    app = ['linkchecker-gui'],
 )
+if sys.platform == 'darwin':
+    args["app"] = ['linkchecker-gui']
+
+setup(**args)
