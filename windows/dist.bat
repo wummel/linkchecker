@@ -28,7 +28,7 @@ rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
 del %PORTDIR%\omt.iss
 echo Compressing libraries and executables
-for /r %PORTDIR% %%f in (*.pyd,*.dll,*.exe) do call compress.bat "%%f"
+for /r %PORTDIR% %%f in (*.pyd,*.dll,*.exe) do call windows\compress.bat "%%f"
 echo Generating portable distribution file
 %SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
 rd /s /q %PORTDIR%
