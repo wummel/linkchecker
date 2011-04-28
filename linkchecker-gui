@@ -55,8 +55,9 @@ def main (argv=None):
     app.setOrganizationName(configuration.Author)
     QApplication.setStyle(get_app_style())
     QApplication.setPalette(QApplication.style().standardPalette())
-    if app.argc() > 1:
-        url = app.argv()[1]
+    args = app.arguments()
+    if len(args) > 1:
+        url = args[1]
     else:
         url = u""
     signal.signal(signal.SIGINT, sigint_handler)
@@ -72,4 +73,4 @@ def main (argv=None):
 
 
 if __name__ == "__main__":
-    main(argv=sys.argv)
+    main()
