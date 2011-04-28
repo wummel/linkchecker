@@ -24,6 +24,12 @@ def set_statistics (widget, statistics):
     widget.stats_url_maxlen.setText(u"%d" % statistics.max_url_length)
     widget.stats_url_avglen.setText(u"%d" % statistics.avg_url_length)
     widget.stats_valid_urls.setText(u"%d" % (statistics.number - statistics.errors))
+    if statistics.errors > 0:
+        color = '#aa0000'
+    else:
+        color = '#00aa00'
+    style = "QLabel {font-weight:bold; color:%s;}" % color
+    widget.stats_invalid_urls.setStyleSheet(style)
     widget.stats_invalid_urls.setText(u"%d" % statistics.errors)
     widget.stats_warnings.setText(u"%d" % statistics.warnings)
     for key, value in statistics.link_types.items():

@@ -10,6 +10,7 @@ Changes:
 Features:
 - gui: Add syntax highlighting for Qt editor in case QScintilla
   is not installed.
+- gui: Colorize number of errors in output statistics.
 
 
 6.8 "Ghost in the shell" (released 26.4.2011)
