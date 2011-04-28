@@ -52,7 +52,7 @@ class LineEdit (QtGui.QLineEdit):
 
     def updateCloseButton (self, text):
         """Only display the clear button if there is some text."""
-        self.clearButton.setVisible(not text.isEmpty())
+        self.clearButton.setVisible(bool(text))
 
     def contextMenuEvent (self, event):
         """Add Firefox bookmark action to context menu."""
