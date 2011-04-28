@@ -37,7 +37,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
         # the Scintilla editor widget
         self.editor = Editor(parent=self.frame)
         layout = QtGui.QVBoxLayout(self.frame)
-        layout.setMargin(0)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.editor)
         # for debugging
         #self.setText(("1234567890"*8) + "\n<html><head>\n<title>x</title>\n</head>\n")
@@ -68,7 +68,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
             if os.path.exists(path):
                 self.basedir = path
 
-    @QtCore.pyqtSignature("")
+    @QtCore.pyqtSlot()
     def on_actionSave_triggered (self):
         """Save changed editor contents."""
         if self.editor.isModified() or not self.filename:
