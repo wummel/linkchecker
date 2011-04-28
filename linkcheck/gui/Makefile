@@ -21,3 +21,7 @@ linkchecker_rc.py: rc/linkchecker.qrc
 
 clean:
 	rm -f *.pyc *.pyo
+
+rebuild:
+	rm -f $(UI_FILES) $(RC_FILES)
+	$(MAKE) all
