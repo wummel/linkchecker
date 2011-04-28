@@ -1,5 +1,8 @@
 6.9 "" (released xx.xx.2011)
 
+Fixes:
+- gui: Correctly reset logger statistics.
+
 Changes:
 - checking: Automatically allow redirections from URLs given by the
   user.

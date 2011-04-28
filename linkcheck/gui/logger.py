@@ -56,7 +56,3 @@ class GuiLogger (Logger):
     def end_output (self):
         """Emit statistic data which gets logged in the main window."""
         self.log_stats_signal.emit(self.stats)
-
-    def start_output (self):
-        """Override output handling of base class."""
-        pass
