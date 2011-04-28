@@ -24,14 +24,8 @@ class CheckerThread (QtCore.QThread):
     def __init__ (self, parent=None):
         """Reset check variables."""
         super(CheckerThread, self).__init__(parent)
-        self.exiting = False
         self.aggregate = None
         self.progress = None
-
-    def __del__(self):
-        """Stop thread."""
-        self.exiting = True
-        self.wait()
 
     def check (self, aggregate, progress):
         """Set check variables and start the thread."""
