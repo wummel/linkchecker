@@ -94,9 +94,9 @@ class TitleFinder (object):
             data = self.parser.peek(MAX_TITLELEN)
             data = data.decode(self.parser.encoding, "ignore")
             self.title = linkname.title_name(data)
-            raise StopParse("Title found")
+            raise StopParse("found <title> tag")
         elif tag == 'body':
-            raise StopParse("Found body tag")
+            raise StopParse("found <body> tag")
 
 
 class TagFinder (object):
@@ -135,9 +135,9 @@ class MetaRobotsFinder (TagFinder):
             val = attrs.get_true('content', u'').lower().split(u',')
             self.follow = u'nofollow' not in val
             self.index = u'noindex' not in val
-            raise StopParse("Found meta robots tag")
+            raise StopParse("found <meta name=robots> tag")
         elif tag == 'body':
-            raise StopParse("Found body tag")
+            raise StopParse("found <body> tag")
 
 
 def is_meta_url (attr, attrs):
