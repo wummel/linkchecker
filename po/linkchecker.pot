@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-04-30 07:30+0200\n"
+"POT-Creation-Date: 2011-04-30 07:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,242 +111,242 @@ msgstr ""
 msgid "File not found"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:706
+#: ../linkcheck/gui/linkchecker_ui_main.py:710
 msgid "LinkChecker"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:707
-#: ../linkcheck/gui/linkchecker_ui_main.py:711 ../linkcheck/gui/urlmodel.py:22
+#: ../linkcheck/gui/linkchecker_ui_main.py:711
+#: ../linkcheck/gui/linkchecker_ui_main.py:715 ../linkcheck/gui/urlmodel.py:22
 #: ../linkcheck/logger/__init__.py:43
 msgid "URL"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:708
+#: ../linkcheck/gui/linkchecker_ui_main.py:712
 msgid "Start checking the given URL."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:710
+#: ../linkcheck/gui/linkchecker_ui_main.py:714
 msgid "URL properties"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:712 ../linkcheck/gui/urlmodel.py:22
+#: ../linkcheck/gui/linkchecker_ui_main.py:716 ../linkcheck/gui/urlmodel.py:22
 #: ../linkcheck/logger/__init__.py:35
 msgid "Name"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:713
+#: ../linkcheck/gui/linkchecker_ui_main.py:717
 #: ../linkcheck/logger/__init__.py:36
 msgid "Parent URL"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:714
+#: ../linkcheck/gui/linkchecker_ui_main.py:718
 #: ../linkcheck/logger/__init__.py:34
 msgid "Base"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:715
+#: ../linkcheck/gui/linkchecker_ui_main.py:719
 #: ../linkcheck/logger/__init__.py:42
 msgid "Check time"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:716
+#: ../linkcheck/gui/linkchecker_ui_main.py:720
 #: ../linkcheck/logger/__init__.py:40
 msgid "D/L time"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:717
+#: ../linkcheck/gui/linkchecker_ui_main.py:721
 #: ../linkcheck/logger/__init__.py:41
 msgid "Size"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:718
+#: ../linkcheck/gui/linkchecker_ui_main.py:722
 #: ../linkcheck/logger/__init__.py:38
 msgid "Info"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:719
+#: ../linkcheck/gui/linkchecker_ui_main.py:723
 #: ../linkcheck/logger/__init__.py:39
 msgid "Warning"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:720 ../linkcheck/gui/urlmodel.py:22
+#: ../linkcheck/gui/linkchecker_ui_main.py:724 ../linkcheck/gui/urlmodel.py:22
 #: ../linkcheck/logger/__init__.py:33
 msgid "Result"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:721
-msgid "Check statistics"
-msgstr ""
-
-#: ../linkcheck/gui/linkchecker_ui_main.py:722
-msgid "Valid URLs"
-msgstr ""
-
-#: ../linkcheck/gui/linkchecker_ui_main.py:723
-msgid "Warnings"
-msgstr ""
-
-#: ../linkcheck/gui/linkchecker_ui_main.py:724
-msgid "Invalid URLs"
-msgstr ""
-
 #: ../linkcheck/gui/linkchecker_ui_main.py:725
-msgid "Content types"
+msgid "Check results"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:726
-msgid "Image"
+msgid "Valid URLs"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:727
-msgid "Text"
+msgid "Warnings"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:728
-msgid "Application"
+msgid "Invalid URLs"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:729
-msgid "Audio"
+msgid "Content type statistics"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:730
-msgid "Video"
+msgid "Image"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:731
-msgid "Other"
+msgid "Text"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:732
-msgid "Mail"
+msgid "Application"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:733
-msgid "URL statistics"
+msgid "Audio"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:734
-msgid "Min. length"
+msgid "Video"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:735
-msgid "Avg. length"
+msgid "Other"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:736
-msgid "Max. length"
+msgid "Mail"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:737
-msgid "Domains"
+msgid "URL statistics"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:738
-msgid "&Edit"
+msgid "Min. length"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:739
+msgid "Avg. length"
+msgstr ""
+
+#: ../linkcheck/gui/linkchecker_ui_main.py:740
+msgid "Max. length"
+msgstr ""
+
+#: ../linkcheck/gui/linkchecker_ui_main.py:741
+msgid "Domains"
+msgstr ""
+
+#: ../linkcheck/gui/linkchecker_ui_main.py:742
+msgid "&Edit"
+msgstr ""
+
+#: ../linkcheck/gui/linkchecker_ui_main.py:743
 #: ../linkcheck/gui/linkchecker_ui_editor.py:56
 msgid "&File"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:740
-#: ../linkcheck/gui/linkchecker_ui_main.py:743
+#: ../linkcheck/gui/linkchecker_ui_main.py:744
+#: ../linkcheck/gui/linkchecker_ui_main.py:747
 msgid "&Help"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:741
+#: ../linkcheck/gui/linkchecker_ui_main.py:745
 msgid "A&bout"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:742
+#: ../linkcheck/gui/linkchecker_ui_main.py:746
 msgid "About"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:744
+#: ../linkcheck/gui/linkchecker_ui_main.py:748
 msgid "Help"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:745
+#: ../linkcheck/gui/linkchecker_ui_main.py:749
 msgid "View online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:746
+#: ../linkcheck/gui/linkchecker_ui_main.py:750
 msgid "View URL online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:747
+#: ../linkcheck/gui/linkchecker_ui_main.py:751
 msgid "&Options"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:748
+#: ../linkcheck/gui/linkchecker_ui_main.py:752
 #: /usr/lib/python2.6/optparse.py:1621
 msgid "Options"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:749
+#: ../linkcheck/gui/linkchecker_ui_main.py:753
 msgid "Copy to clipboard"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:750
+#: ../linkcheck/gui/linkchecker_ui_main.py:754
 msgid "Copy URL to clipboard"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:751
+#: ../linkcheck/gui/linkchecker_ui_main.py:755
 msgid "Ctrl+C"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:752
+#: ../linkcheck/gui/linkchecker_ui_main.py:756
 msgid "View parent online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:753
+#: ../linkcheck/gui/linkchecker_ui_main.py:757
 msgid "View parent URL online"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:754
+#: ../linkcheck/gui/linkchecker_ui_main.py:758
 msgid "View parent source"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:755
+#: ../linkcheck/gui/linkchecker_ui_main.py:759
 msgid "View parent URL source"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:756
+#: ../linkcheck/gui/linkchecker_ui_main.py:760
 msgid "Show debug"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:757
+#: ../linkcheck/gui/linkchecker_ui_main.py:761
 msgid "View properties"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:758
+#: ../linkcheck/gui/linkchecker_ui_main.py:762
 msgid "View URL properties"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:759
+#: ../linkcheck/gui/linkchecker_ui_main.py:763
 msgid "&Save results..."
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:760
+#: ../linkcheck/gui/linkchecker_ui_main.py:764
 #: ../linkcheck/gui/linkchecker_ui_editor.py:58
 msgid "Ctrl+S"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:761
+#: ../linkcheck/gui/linkchecker_ui_main.py:765
 msgid "&Quit"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:762
+#: ../linkcheck/gui/linkchecker_ui_main.py:766
 msgid "Ctrl+Q"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:763
+#: ../linkcheck/gui/linkchecker_ui_main.py:767
 msgid "Check for updates"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_main.py:764
+#: ../linkcheck/gui/linkchecker_ui_main.py:768
 msgid "Donate"
 msgstr ""
 
