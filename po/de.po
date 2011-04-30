@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-04-09 10:47+0200\n"
-"PO-Revision-Date: 2011-04-09 10:49+0100\n"
+"POT-Creation-Date: 2011-04-30 07:30+0200\n"
+"PO-Revision-Date: 2011-04-30 07:33+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../linkcheck/gui/editor.py:161
+#: ../linkcheck/gui/editor.py:80
 msgid "Save File As"
 msgstr "Speichern unter"
 
-#: ../linkcheck/gui/editor.py:198
+#: ../linkcheck/gui/editor.py:117
 msgid "readonly"
 msgstr "nur lesen"
 
@@ -462,50 +462,59 @@ msgstr ", Zeile %d"
 msgid ", col %d"
 msgstr ", Spalte %d"
 
-#: ../linkcheck/gui/__init__.py:91
+#: ../linkcheck/gui/__init__.py:110
 msgid "Ready."
 msgstr "Bereit."
 
-#: ../linkcheck/gui/__init__.py:231
+#: ../linkcheck/gui/__init__.py:254
 #, python-format
 msgid "About %(appname)s"
 msgstr "Über %(appname)s"
 
-#: ../linkcheck/gui/__init__.py:232
+#: ../linkcheck/gui/__init__.py:255
 #, python-format
 msgid ""
-"<qt><p>%(appname)s checks HTML documents and websites\n"
-"for broken links.\n"
+"<qt><center>\n"
+"<h1>%(app)s</h1>\n"
+"<p>Python: %(pyver)s<br>\n"
+"%(modules)s\n"
 "<p>%(copyright)s\n"
-"<br>%(app)s is licensed under the\n"
+"<br>%(appname)s is licensed under the\n"
 "<a href=\"http://www.gnu.org/licenses/gpl.html\">GPL</a>\n"
 "Version 2 or later.\n"
 "<p>If you like %(appname)s, consider one of several ways to\n"
 "<a href=\"%(donateurl)s\">donate</a>. Thanks!\n"
-"</qt>"
+"</center></qt>"
 msgstr ""
-"<qt><p>%(appname)s prüft HTML Dokumente und Webseiten auf kaputte Verknüpfungen.\n"
+"<qt><center>\n"
+"<h1>%(app)s</h1>\n"
+"<p>Python: %(pyver)s<br>\n"
+"%(modules)s\n"
 "<p>%(copyright)s\n"
-"<p>%(app)s ist lizensiert unter der\n"
+"<p>%(appname)s ist lizensiert unter der\n"
 "<a href=\"http://www.gnu.org/licenses/gpl.html\">GPL</a>\n"
 "Version 2 oder später.\n"
 "<p>Falls Ihnen %(appname)s gefällt, können Sie mehrere Arten einer\n"
-"<a href=\"%(donateurl)s\">Spende</a> in Betracht ziehen, Vielen Dank!\n"
+"<a href=\"%(donateurl)s\">Spende</a> in Betracht ziehen. Vielen Dank!\n"
 "</qt>"
 
-#: ../linkcheck/gui/__init__.py:293
+#: ../linkcheck/gui/__init__.py:318
 msgid "Error, empty URL"
 msgstr "Fehler, leere URL"
 
-#: ../linkcheck/gui/__init__.py:295
+#: ../linkcheck/gui/__init__.py:320
 #, python-format
 msgid "Checking '%s'."
 msgstr "Prüfe '%s'"
 
-#: ../linkcheck/gui/__init__.py:300
+#: ../linkcheck/gui/__init__.py:325
 #, python-format
 msgid "Error, invalid URL `%s'."
 msgstr "Fehler, ungültige URL `%s'."
+
+#: ../linkcheck/gui/__init__.py:407
+msgid "LinkChecker internal error"
+msgstr "LinkChecker interner Fehler"
 
 #: ../linkcheck/gui/linkchecker_ui_editor.py:55
 msgid "LinkChecker source view"
@@ -654,7 +663,7 @@ msgstr "Systeminformation:"
 msgid "Python %(version)s on %(platform)s"
 msgstr "Python %(version)s auf %(platform)s"
 
-#: ../linkcheck/director/console.py:132
+#: ../linkcheck/director/console.py:134
 msgid "Local time:"
 msgstr "Uhrzeit:"
 
@@ -737,7 +746,7 @@ msgid_plural "%d years"
 msgstr[0] "%d Jahr"
 msgstr[1] "%d Jahre"
 
-#: ../linkcheck/updater.py:61
+#: ../linkcheck/updater.py:63
 msgid "could not download update information"
 msgstr "konnte Update-Informationen nicht herunterladen"
 
@@ -1020,42 +1029,42 @@ msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
 msgid "Download size (%(dlsize)d Byte) does not equal content size (%(size)d Byte)."
 msgstr "Download Grüße (%(dlsize)d Byte) ist ungleich der Inhaltsgröße (%(size)d Byte)."
 
-#: ../linkcheck/checker/urlbase.py:760
-#: ../linkcheck/configuration/__init__.py:318
+#: ../linkcheck/checker/urlbase.py:758
+#: ../linkcheck/configuration/__init__.py:345
 msgid "warning: tidy module is not available; download from http://utidylib.berlios.de/"
 msgstr "Warnung: tidy Modul ist nicht verfügbar; Download von http://utidylib.berlios.de/"
 
-#: ../linkcheck/checker/urlbase.py:772
-#: ../linkcheck/checker/urlbase.py:826
+#: ../linkcheck/checker/urlbase.py:771
+#: ../linkcheck/checker/urlbase.py:825
 msgid "valid HTML syntax"
 msgstr "gültige HTML Syntax"
 
-#: ../linkcheck/checker/urlbase.py:778
+#: ../linkcheck/checker/urlbase.py:777
 #, python-format
 msgid "warning: tidy HTML parsing caused error: %(msg)s "
 msgstr "Warnung: tidy HTML Parser verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:788
-#: ../linkcheck/configuration/__init__.py:328
+#: ../linkcheck/checker/urlbase.py:787
+#: ../linkcheck/configuration/__init__.py:353
 msgid "warning: cssutils module is not available; download from http://cthedot.de/cssutils/"
 msgstr "Warnung: cssutils Modul ist nicht verfügbar; Download von http://cthedot.de/cssutils/"
 
-#: ../linkcheck/checker/urlbase.py:804
-#: ../linkcheck/checker/urlbase.py:865
+#: ../linkcheck/checker/urlbase.py:803
+#: ../linkcheck/checker/urlbase.py:864
 msgid "valid CSS syntax"
 msgstr "gültige CSS Syntax"
 
-#: ../linkcheck/checker/urlbase.py:810
+#: ../linkcheck/checker/urlbase.py:809
 #, python-format
 msgid "warning: cssutils parsing caused error: %(msg)s"
 msgstr "Warnung: cssutils Parser verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:838
+#: ../linkcheck/checker/urlbase.py:837
 #, python-format
 msgid "warning: HTML W3C validation caused error: %(msg)s "
 msgstr "Warnung: HTML W3C Validierung verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:877
+#: ../linkcheck/checker/urlbase.py:876
 #, python-format
 msgid "warning: CSS W3C validation caused error: %(msg)s "
 msgstr "Warnung: CSS W3C Validierung verursachte Fehler: %(msg)s"
@@ -1374,20 +1383,25 @@ msgstr "mehr als %d Weiterleitungen, breche ab"
 msgid "Unsupported HTTP authentication `%(auth)s', only `Basic' authentication is supported."
 msgstr "Nicht unterstützte HTTP Authentifizierungsmethode `%(auth)s', nur `Basic' Authentifizierung ist unterstützt."
 
-#: ../linkcheck/checker/httpurl.py:311
+#: ../linkcheck/checker/httpurl.py:317
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Zu `%(url)s' umgeleitet."
 
-#: ../linkcheck/checker/httpurl.py:323
+#: ../linkcheck/checker/httpurl.py:357
+#, python-format
+msgid "Redirection to url `%(newurl)s' is not allowed."
+msgstr "Umleitung zu `%(newurl)s' ist nicht erlaubt."
+
+#: ../linkcheck/checker/httpurl.py:380
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr "Die Weiterleitungs-URL ist außerhalb des Domain Filters; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:331
+#: ../linkcheck/checker/httpurl.py:393
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr "Zugriff zur Weiterleitungs-URL verweigert durch robots.txt; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:346
+#: ../linkcheck/checker/httpurl.py:411
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
@@ -1396,41 +1410,41 @@ msgstr ""
 "Rekursive Weiterleitung entdeckt:\n"
 " %(urls)s"
 
-#: ../linkcheck/checker/httpurl.py:360
+#: ../linkcheck/checker/httpurl.py:428
 #, python-format
 msgid "Redirection to URL `%(newurl)s' with different scheme found; the original URL was `%(url)s'."
 msgstr "Weiterleitung zu URL `%(newurl)s' mit anderem Schema gefunden; die Original-URL war `%(url)s'."
 
-#: ../linkcheck/checker/httpurl.py:385
+#: ../linkcheck/checker/httpurl.py:440
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr "HTTP 301 (moved permanent) gefunden: sie sollten diesen Link aktualisieren."
 
-#: ../linkcheck/checker/httpurl.py:414
+#: ../linkcheck/checker/httpurl.py:469
 #, python-format
 msgid "Sent cookie: %(cookie)s."
 msgstr "Cookie gesendet: %(cookie)s."
 
-#: ../linkcheck/checker/httpurl.py:422
+#: ../linkcheck/checker/httpurl.py:477
 #, python-format
 msgid "Could not store cookies: %(msg)s."
 msgstr "Konnte Cookie nicht speichern: %(msg)s."
 
-#: ../linkcheck/checker/httpurl.py:431
+#: ../linkcheck/checker/httpurl.py:486
 #, python-format
 msgid "Last modified %(date)s."
 msgstr "Letzte Änderung %(date)s."
 
-#: ../linkcheck/checker/httpurl.py:556
+#: ../linkcheck/checker/httpurl.py:611
 #, python-format
 msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr "Nicht unterstütztes HTTP URL Schema `%(scheme)s'"
 
-#: ../linkcheck/checker/httpurl.py:598
+#: ../linkcheck/checker/httpurl.py:653
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr "Entkomprimierungsfehler %(err)s"
 
-#: ../linkcheck/checker/httpurl.py:614
+#: ../linkcheck/checker/httpurl.py:669
 #, python-format
 msgid "Unsupported content encoding `%(encoding)s'."
 msgstr "Content-Encoding `%(encoding)s' wird nicht unterstützt."
@@ -1482,43 +1496,43 @@ msgstr "fehlende Authentifizierung in entry %(val)r"
 msgid "Invalid login URL `%s'. Only HTTP and HTTPS URLs are supported."
 msgstr "Ungültige Login URL `%s'. Nur HTTP und HTTPS URLs sind unterstützt."
 
-#: ../linkcheck/configuration/__init__.py:258
+#: ../linkcheck/configuration/__init__.py:287
 msgid "warning: missing user or URL pattern in authentication data."
 msgstr "Warnung: Fehlende Benutzer oder regulärer URL Ausdruck in Authentifizierungsdaten."
 
-#: ../linkcheck/configuration/__init__.py:308
+#: ../linkcheck/configuration/__init__.py:337
 msgid "warning: activating text logger output."
 msgstr "Warnung: aktiviere text Loggerausgabe."
 
-#: ../linkcheck/configuration/__init__.py:338
+#: ../linkcheck/configuration/__init__.py:363
 msgid "warning: Clamav could not be initialized"
 msgstr "Warnung: Clamav konnte nicht initialisiert werden"
 
-#: ../linkcheck/configuration/__init__.py:344
+#: ../linkcheck/configuration/__init__.py:369
 msgid "warning: activating sendcookies because storecookies is active."
 msgstr "Warnung: aktiviere Option sendcookies weil Option storecookes aktiviert ist."
 
-#: ../linkcheck/configuration/__init__.py:354
+#: ../linkcheck/configuration/__init__.py:379
 msgid "warning: no CGI password fieldname given for login URL."
 msgstr "Warnung: kein CGI Passwort Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:358
+#: ../linkcheck/configuration/__init__.py:383
 msgid "warning: no CGI user fieldname given for login URL."
 msgstr "Warnung: kein CGI Benutzer Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:362
+#: ../linkcheck/configuration/__init__.py:387
 msgid "warning: no user/password authentication data found for login URL."
 msgstr "Warnung: keine Benutzer/Passwort-Authentifizierung für Login URL gefunden."
 
-#: ../linkcheck/configuration/__init__.py:365
+#: ../linkcheck/configuration/__init__.py:390
 msgid "warning: login URL is not a HTTP URL."
 msgstr "Warnung: Login URL ist keine HTTP URL."
 
-#: ../linkcheck/configuration/__init__.py:369
+#: ../linkcheck/configuration/__init__.py:394
 msgid "warning: login URL is incomplete."
 msgstr "Warnung: Login URL ist unvollständig."
 
-#: ../linkcheck/configuration/__init__.py:373
+#: ../linkcheck/configuration/__init__.py:398
 #, python-format
 msgid "warning: disabling login URL %(url)s."
 msgstr "Warnung: deaktiviere Login URL %(url)s."
@@ -2217,10 +2231,6 @@ msgstr "Abgebrochen."
 #: ../linkchecker:782
 msgid "The `profile' Python module is not installed, therefore the --profile option is disabled."
 msgstr "Das `profile' Python Modul ist nicht installiert, deshalb ist die --profile Option deaktiviert."
-
-#: ../linkchecker-gui:32
-msgid "LinkChecker internal error"
-msgstr "LinkChecker interner Fehler"
 
 #: /usr/lib/python2.6/optparse.py:140
 #, python-format
