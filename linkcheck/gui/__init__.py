@@ -141,6 +141,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.log_stats_signal.connect(self.log_stats)
         self.error_signal.connect(self.internal_error)
         self.options.editor.saved.connect(self.read_config)
+        self.model.rowsInserted.connect(self.treeView.scrollToBottom)
 
     def init_treeview (self):
         """Set treeview model and layout."""
@@ -208,6 +209,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.actionDebug.setEnabled(self.options.get_options()["debug"])
             self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
             self.treeView.setSortingEnabled(True)
+            self.treeView.scrollToTop()
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()

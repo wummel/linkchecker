@@ -7,12 +7,13 @@ Fixes:
 Changes:
 - checking: Automatically allow redirections from URLs given by the
   user.
+- gui: While checking, show new URLs added in the URL list view by
+  scrolling down.
 
 Features:
 - gui: Add syntax highlighting for Qt editor in case QScintilla
   is not installed.
-- gui: Highlight check results and colorize number of errors in
-  output statistics.
+- gui: Highlight check results and colorize number of errors.
 - gui: Reload configuration after changes have been made in the editor.
 
 
