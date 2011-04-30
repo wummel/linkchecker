@@ -2,6 +2,7 @@
 
 Fixes:
 - gui: Correctly reset logger statistics.
+- gui: Fixed saving of parent URL source.
 
 Changes:
 - checking: Automatically allow redirections from URLs given by the

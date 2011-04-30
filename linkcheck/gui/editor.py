@@ -89,10 +89,11 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 return
             self.filename = res
             self.setWindowTitle(self.filename)
-        if not os.path.isfile(self.filename):
-            return
-        if not os.access(self.filename, os.W_OK):
-            return
+        else:
+            if not os.path.isfile(self.filename):
+                return
+            if not os.access(self.filename, os.W_OK):
+                return
         fh = None
         try:
             try:
