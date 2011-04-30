@@ -37,19 +37,16 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
 
     def reset (self):
         """Reset GUI and config options."""
-        config = configuration.Configuration()
         files = configuration.get_standard_config_files()
         self.sys_config, self.user_config = files
-        config.read(files)
-        self.reset_gui_options(config)
+        self.reset_gui_options()
         self.reset_config_options()
 
-    def reset_gui_options (self, config):
-        """Reset GUI options to default values from config."""
-        self.recursionlevel.setValue(config["recursionlevel"])
-        self.verbose.setChecked(config["verbose"])
+    def reset_gui_options (self):
+        """Reset GUI options to default values."""
+        self.recursionlevel.setValue(-1)
+        self.verbose.setChecked(False)
         self.debug.setChecked(False)
-        del config
 
     def reset_config_options (self):
         """Reset configuration file edit buttons."""
