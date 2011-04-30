@@ -95,6 +95,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_treeview()
         self.connect_widgets()
         self.init_config()
+        self.read_config()
         self.init_app()
 
     def init_app (self):
@@ -139,6 +140,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.log_url_signal.connect(self.model.log_url)
         self.log_stats_signal.connect(self.log_stats)
         self.error_signal.connect(self.internal_error)
+        self.options.editor.saved.connect(self.read_config)
 
     def init_treeview (self):
         """Set treeview model and layout."""
@@ -171,7 +173,9 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.handler = GuiLogHandler(self.debug.log_msg_signal)
         status = StatusLogger(self.progress.log_status_signal)
         self.config.init_logging(status, handler=self.handler)
-        # read user and system configuration file
+
+    def read_config (self, filename=None):
+        """Read user and system configuration file."""
         try:
             self.config.read()
         except LinkCheckerError, msg:

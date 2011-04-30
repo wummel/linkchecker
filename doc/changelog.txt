@@ -12,6 +12,7 @@ Features:
   is not installed.
 - gui: Highlight check results and colorize number of errors in
   output statistics.
+- gui: Reload configuration after changes have been made in the editor.
 
 
 6.8 "Ghost in the shell" (released 26.4.2011)

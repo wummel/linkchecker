@@ -28,6 +28,11 @@ except ImportError:
 class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
     """Editor window."""
 
+    # emitted after successful save
+    saved = QtCore.pyqtSignal(str)
+    # emitted after successful load
+    loaded = QtCore.pyqtSignal(str)
+
     def __init__ (self, parent=None):
         """Initialize the editor widget."""
         super(EditorWindow, self).__init__(parent)
@@ -98,6 +103,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 stream.setCodec("UTF-8")
                 stream << self.editor.text()
                 self.editor.setModified(False)
+                self.saved.emit(self.filename)
             except (IOError, OSError), e:
                 err = QtGui.QMessageBox(self)
                 err.setText(str(e))
@@ -127,6 +133,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 stream = QtCore.QTextStream(fh)
                 stream.setCodec("UTF-8")
                 self.setText(stream.readAll())
+                self.loaded.emit(self.filename)
             except (IOError, OSError), e:
                 err = QtGui.QMessageBox(self)
                 err.setText(str(e))
