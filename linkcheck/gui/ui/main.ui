@@ -561,8 +561,14 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="title">
-            <string>Check statistics</string>
+            <string>Check results</string>
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="0" column="0">
@@ -718,7 +724,7 @@
             </sizepolicy>
            </property>
            <property name="title">
-            <string>Content types</string>
+            <string>Content type statistics</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0">

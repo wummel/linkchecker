@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Wed Mar 16 18:06:03 2011
+# Created: Sat Apr 30 07:34:01 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -275,6 +275,10 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setWeight(75)
+        font.setBold(True)
+        self.groupBox.setFont(font)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.gridLayout = QtGui.QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
@@ -718,11 +722,11 @@ class Ui_MainWindow(object):
         self.label_10.setText(_("Info"))
         self.label_11.setText(_("Warning"))
         self.label_12.setText(_("Result"))
-        self.groupBox.setTitle(_("Check statistics"))
+        self.groupBox.setTitle(_("Check results"))
         self.label_24.setText(_("Valid URLs"))
         self.label_26.setText(_("Warnings"))
         self.label_25.setText(_("Invalid URLs"))
-        self.groupBox_3.setTitle(_("Content types"))
+        self.groupBox_3.setTitle(_("Content type statistics"))
         self.label_6.setText(_("Image"))
         self.label_13.setText(_("Text"))
         self.label_27.setText(_("Application"))
