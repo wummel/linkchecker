@@ -95,6 +95,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
             if not os.access(self.filename, os.W_OK):
                 return
         fh = None
+        saved = False
         try:
             try:
                 fh = QtCore.QFile(self.filename)
@@ -104,7 +105,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 stream.setCodec("UTF-8")
                 stream << self.editor.text()
                 self.editor.setModified(False)
-                self.saved.emit(self.filename)
+                saved = True
             except (IOError, OSError), e:
                 err = QtGui.QMessageBox(self)
                 err.setText(str(e))
@@ -112,6 +113,8 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
         finally:
             if fh is not None:
                 fh.close()
+        if saved:
+            self.saved.emit(self.filename)
 
     def load (self, filename):
         """Load editor contents from file."""
@@ -126,6 +129,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
             title = self.filename
         self.setWindowTitle(title)
         fh = None
+        loaded = False
         try:
             try:
                 fh = QtCore.QFile(self.filename)
@@ -134,7 +138,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 stream = QtCore.QTextStream(fh)
                 stream.setCodec("UTF-8")
                 self.setText(stream.readAll())
-                self.loaded.emit(self.filename)
+                loaded = True
             except (IOError, OSError), e:
                 err = QtGui.QMessageBox(self)
                 err.setText(str(e))
@@ -142,3 +146,5 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
         finally:
             if fh is not None:
                 fh.close()
+        if loaded:
+            self.loaded.emit(self.filename)
