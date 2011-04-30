@@ -107,7 +107,7 @@ dist-stamp: changelog
 
 # Build OSX installer
 .PHONY: app
-app: localbuild chmod
+app: distclean localbuild chmod
 	$(PYTHON) setup.py py2app $(PY2APPOPTS)
 
 # The check programs used here are mostly local scripts on my private system.
