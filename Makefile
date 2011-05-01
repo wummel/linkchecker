@@ -33,7 +33,7 @@ clean:
 	$(MAKE) -C po clean
 	$(MAKE) -C doc/html clean
 	$(MAKE) -C linkcheck/HtmlParser clean
-	rm -f linkcheck/network/_network.so
+	rm -f linkcheck/network/_network*.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
 .PHONY: distclean
@@ -64,8 +64,8 @@ localbuild: MANIFEST
 	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
-	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/HtmlParser/htmlsax.so linkcheck/HtmlParser
-	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/network/_network.so linkcheck/network
+	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/HtmlParser/htmlsax*.so linkcheck/HtmlParser
+	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/network/_network*.so linkcheck/network
 
 .PHONY: deb_orig
 deb_orig:
