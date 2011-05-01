@@ -21,7 +21,11 @@ fi
 
 # reload apache configuration
 if [ "$1" = "configure" -a -x /etc/init.d/apache2 ]; then
-    /etc/init.d/apache2 reload
+    if [ -x /usr/sbin/invoke-rc.d ]; then
+        /usr/sbin/invoke-rc.d apache2 reload
+    else
+        /etc/init.d/apache2 reload
+    fi
 fi
 
 exit 0
