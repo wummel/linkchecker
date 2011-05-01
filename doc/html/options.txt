@@ -17,5 +17,3 @@ It can be displayed with Help->Show Debug
 
 ## Configuration files
 The configuration files can be edited with an integrated text editor.
-Note that changes to the configuration files require a restart of
-the GUI to take effect.
