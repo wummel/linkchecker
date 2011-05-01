@@ -130,13 +130,18 @@ aufgelistet.
 \fB\-F\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP], \fB\-\-file\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP]
 Ausgabe in eine Datei namens \fBlinkchecker\-out.\fP\fITYP\fP,
 \fB$HOME/.linkchecker/blacklist\fP bei \fBblacklist\fP Ausgabe, oder \fIDATEINAME\fP
-falls angegeben. Der \fIDATEINAME\fP und \fIENKODIERUNG\fP Teil wird beim
-Ausgabetyp \fBnone\fP ignoriert, ansonsten wird die Datei überschreiben falls
-sie existiert. Sie können diese Option mehr als einmal verwenden. Gültige
-Ausgabetypen sind \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
-\fBnone\fP oder \fBblacklist\fP. Standard ist keine Dateiausgabe. \fIENKODIERUNG\fP
-gibt die Ausgabekodierung an,der Standard ist die Enkodierung der
-ausgewählten Spracheinstellung. Gültige Enkodierungen sind unter
+falls angegeben. Das \fIENCODING\fP gibt die Ausgabekodierung an. Der Standard
+ist das der lokalen Spracheinstellung. Gültige Enkodierungen sind unter
+\fBhttp://docs.python.org/library/codecs.html#standard\-encodings\fP
+aufgelistet.
+.br
+Der \fIDATEINAME\fP und \fIENKODIERUNG\fP Teil wird beim Ausgabetyp \fBnone\fP
+ignoriert, ansonsten wird die Datei überschreiben falls sie existiert. Sie
+können diese Option mehr als einmal verwenden. Gültige Ausgabetypen sind
+\fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP oder
+\fBblacklist\fP. Standard ist keine Dateiausgabe. \fIENKODIERUNG\fP gibt die
+Ausgabekodierung an,der Standard ist die Enkodierung der ausgewählten
+Spracheinstellung. Gültige Enkodierungen sind unter
 \fBhttp://docs.python.org/library/codecs.html#standard\-encodings\fP
 aufgelistet. Beachten Sie, dass Sie mit der Option \fB\-o none\fP jegliche
 Ausgaben auf der Konsole verhindern können.
