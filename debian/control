@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
 Build-Depends: python-all-dev (>= 2.6.6-3), debhelper (>= 7.0.50), gettext,
- qt4-dev-tools
+ qt4-dev-tools, hardening-wrapper
 X-Python-Version: >= 2.6
 Standards-Version: 3.9.2
 Homepage: http://linkchecker.sourceforge.net/

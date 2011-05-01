@@ -2,8 +2,9 @@ linkchecker (6.9-1) unstable; urgency=low
 
   * New upstream release.
   * Move python-qscintilla2 from depends to recommends.
+  * Use hardening-wrapper for compiling C extensions.
 
- -- Bastian Kleineidam <calvin@debian.org>  Tue, 26 Apr 2011 18:40:54 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 01 May 2011 11:45:52 +0200
 
 linkchecker (6.8-1) unstable; urgency=low
 
