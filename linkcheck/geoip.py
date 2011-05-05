@@ -23,6 +23,7 @@ import socket
 from .lock import get_lock
 from .decorators import synchronized
 from .strformat import unicode_safe
+from . import log, LOG_CHECK
 
 # It is unknown if the geoip library is already thread-safe, so
 # no risks should be taken here by using a lock.
@@ -74,6 +75,7 @@ def get_country (host):
     try:
         record = get_geoip_record(host)
     except (geoip_error, socket.error):
+        log.debug(LOG_CHECK, "Geoip error for %r", host, exception=True)
         # ignore lookup errors
         return None
     value = u""
