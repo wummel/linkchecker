@@ -1,5 +1,3 @@
-- [6.9] Warn before closing changed editor window.
-  SF bug #3297245
 - [6.9] Test download of large binary files.
   SF bug #3297970
 - [7.0] Put status info into GUI main window, do not make a modal window

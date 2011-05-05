@@ -13,6 +13,8 @@ Changes:
   scrolling down.
 - gui: Display release date in about dialog.
   Closes: SF bug #3297255
+- gui: Warn before closing changed editor window.
+  Closes: SF bug #3297245
 - doc: Improved warningregex example in default configuration file.
   Closes: SF bug #3297254
 

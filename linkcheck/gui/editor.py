@@ -79,6 +79,36 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
         if self.editor.isModified() or not self.filename:
             self.save()
 
+    def closeEvent (self, e=None):
+        """Save settings and remove registered logging handler"""
+        if self.editor.isModified():
+            # ask if user wants to save
+            if self.wants_save():
+                if self.save():
+                    e.accept()
+                else:
+                    # saving error or user canceled
+                    e.ignore()
+            else:
+                # discard changes
+                e.accept()
+        else:
+            # unchanged
+            e.accept()
+
+    def wants_save (self):
+        """Ask user if he wants to save changes. Return True if user
+        wants to save, else False."""
+        dialog = QtGui.QMessageBox(parent=self)
+        dialog.setIcon(QtGui.QMessageBox.Question)
+        dialog.setWindowTitle(_("Save file?"))
+        dialog.setText(_("The document has been modified."))
+        dialog.setInformativeText(_("Do you want to save your changes?"))
+        dialog.setStandardButtons(QtGui.QMessageBox.Save |
+                                  QtGui.QMessageBox.Discard)
+        dialog.setDefaultButton(QtGui.QMessageBox.Save)
+        return dialog.exec_() == QtGui.QMessageBox.Save
+
     def save (self):
         """Save editor contents to file."""
         if not self.filename:
@@ -115,6 +145,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 fh.close()
         if saved:
             self.saved.emit(self.filename)
+        return saved
 
     def load (self, filename):
         """Load editor contents from file."""
