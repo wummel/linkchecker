@@ -33,6 +33,7 @@ if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 6, 0, 'final', 0)):
     raise SystemExit("This program requires Python 2.6 or later.")
 import os
+import re
 import subprocess
 import stat
 import glob
@@ -125,6 +126,20 @@ def get_nt_platform_vars ():
     else:
         raise ValueError("Unsupported platform %r" % platform)
     return os.path.expandvars(progvar), architecture
+
+
+release_ro = re.compile(r"\(released (.+)\)")
+def get_release_date ():
+    """Parse and return relase date as string from doc/changelog.txt."""
+    fname = os.path.join("doc", "changelog.txt")
+    release_date = "unknown"
+    with open(fname) as fd:
+        # the release date is on the first line
+        line = fd.readline()
+        mo = release_ro.search(line)
+        if mo:
+            release_date = mo.groups(1)
+    return release_date
 
 
 class MyInstallLib (install_lib, object):
@@ -283,8 +298,9 @@ class MyDistribution (Distribution, object):
                 val = unicode(val)
             cmd = "%s = %r" % (name, val)
             data.append(cmd)
-        # write the config file
         data.append('appname = "LinkChecker"')
+        data.append('release_date = "%s"' % get_release_date())
+        # write the config file
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose >= 1, self.dry_run)
 
