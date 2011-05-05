@@ -18,6 +18,7 @@ Features:
   is not installed.
 - gui: Highlight check results and colorize number of errors.
 - gui: Reload configuration after changes have been made in the editor.
+  Closes: SF bug #3297242
 
 
 6.8 "Ghost in the shell" (released 26.4.2011)
