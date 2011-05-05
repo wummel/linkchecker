@@ -25,7 +25,7 @@ import urllib
 import urllib2
 
 from . import urlbase, get_index_html, get_url_from
-from .. import log, LOG_CHECK, fileutil
+from .. import log, LOG_CHECK, fileutil, LinkCheckerError
 from ..bookmarks import firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
@@ -174,6 +174,8 @@ class FileUrl (urlbase.UrlBase):
     def read_content (self):
         """Return file content, or in case of directories a dummy HTML file
         with links to the files."""
+        if self.size > self.MaxFilesizeBytes:
+            raise LinkCheckerError(_("File size too large"))
         if self.is_directory():
             data = get_index_html(get_files(self.get_os_filename()))
             if isinstance(data, unicode):

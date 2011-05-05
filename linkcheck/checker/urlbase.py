@@ -90,6 +90,9 @@ class UrlBase (object):
         "text/plain+chromium": "chromium",
     }
 
+    # Set maximum file size for downloaded files in bytes.
+    MaxFilesizeBytes = 1024*1024*5
+
     def __init__ (self, base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=-1, column=-1,
                   name=u"", url_encoding=None):
@@ -686,6 +689,8 @@ class UrlBase (object):
     def read_content (self):
         """Return data and data size for this URL.
         Can be overridden in subclasses."""
+        if self.size > self.MaxFilesizeBytes:
+            raise LinkCheckerError(_("File size too large"))
         data = self.url_connection.read()
         return data, len(data)
 

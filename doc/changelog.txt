@@ -9,6 +9,8 @@ Fixes:
 Changes:
 - checking: Automatically allow redirections from URLs given by the
   user.
+- checking: Limit download file size to 5MB.
+  SF bug #3297970
 - gui: While checking, show new URLs added in the URL list view by
   scrolling down.
 - gui: Display release date in about dialog.

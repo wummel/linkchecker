@@ -631,6 +631,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # than a former HEAD request.
         self.add_size_info()
         if self._data is None:
+            if self.size > self.MaxFilesizeBytes:
+                raise LinkCheckerError(_("File size too large"))
             self._read_content(response)
         data, size = self._data, self._size
         self._data = self._size = None

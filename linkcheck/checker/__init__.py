@@ -24,6 +24,8 @@ import logging
 import urllib
 from .. import strformat, url as urlutil
 
+MAX_FILESIZE = 1024*1024*10 # 10MB
+
 
 def absolute_url (base_url, base_ref, parent_url):
     """
