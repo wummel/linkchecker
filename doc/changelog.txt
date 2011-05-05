@@ -12,6 +12,8 @@ Changes:
   scrolling down.
 - gui: Display release date in about dialog.
   Closes: SF bug #3297255
+- doc: Improved warningregex example in default configuration file.
+  Closes: SF bug #3297254
 
 Features:
 - gui: Add syntax highlighting for Qt editor in case QScintilla
