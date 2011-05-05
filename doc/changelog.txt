@@ -4,6 +4,7 @@ Fixes:
 - gui: Correctly reset logger statistics.
 - gui: Fixed saving of parent URL source.
 - installer: Fixed portable windows version by not compressing DLLs.
+- checking: Catch socket errors when resolving GeoIP country data.
 
 Changes:
 - checking: Automatically allow redirections from URLs given by the

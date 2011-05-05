@@ -19,6 +19,7 @@ Store and retrieve country names for IPs.
 """
 import os
 import sys
+import socket
 from .lock import get_lock
 from .decorators import synchronized
 from .strformat import unicode_safe
@@ -72,7 +73,7 @@ def get_country (host):
         return None
     try:
         record = get_geoip_record(host)
-    except geoip_error:
+    except (geoip_error, socket.error):
         # ignore lookup errors
         return None
     value = u""
