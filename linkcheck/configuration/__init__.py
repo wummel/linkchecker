@@ -32,6 +32,7 @@ from . import confparse
 from ..decorators import memoized
 
 Version = configdata.version
+ReleaseDate = configdata.release_date
 AppName = configdata.appname
 App = AppName+u" "+Version
 Author = configdata.author

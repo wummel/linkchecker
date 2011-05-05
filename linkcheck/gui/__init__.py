@@ -256,10 +256,12 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             "donateurl": configuration.DonateUrl,
             "pyver": u"%d.%d.%d" % sys.version_info[:3],
             "modules": modules,
+            "releasedate": configuration.ReleaseDate,
         }
         QtGui.QMessageBox.about(self, _(u"About %(appname)s") % d,
             _(u"""<qt><center>
 <h1>%(app)s</h1>
+<p>Released on %(releasedate)s
 <p>Python: %(pyver)s<br>
 %(modules)s
 <p>%(copyright)s

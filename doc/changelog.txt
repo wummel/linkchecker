@@ -10,6 +10,8 @@ Changes:
   user.
 - gui: While checking, show new URLs added in the URL list view by
   scrolling down.
+- gui: Display release date in about dialog.
+  Closes: SF bug #3297255
 
 Features:
 - gui: Add syntax highlighting for Qt editor in case QScintilla
