@@ -81,6 +81,7 @@ upload:
 
 .PHONY: release
 release: distclean releasecheck dist-stamp sign_distfiles upload
+	git tag v$(VERSION)
 	@echo "Updating LinkChecker Homepage..."
 	sed -i -e "s/version = '.*'/version = '$(VERSION)'/" ~/public_html/linkchecker.sf.net/source/conf.py
 	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
