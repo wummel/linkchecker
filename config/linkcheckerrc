@@ -131,7 +131,7 @@
 #recursionlevel=1
 # supply a regular expression for which warnings are printed if found
 # in any HTML files.
-#warningregex=(Oracle DB Error|Page Not Found)
+#warningregex=(Oracle DB Error|Page Not Found|badsite\.example\.com)
 # Basic NNTP server. Overrides NNTP_SERVER environment variable.
 # warn if size info exceeds given maximum of bytes
 #warnsizebytes=2000
