@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 6.8
+Version: 6.9
 Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
@@ -10,6 +10,5 @@ GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 OSX-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.dmg
 
-Mac OS X users now have a binary installer package in DMG format.
-The Windows installer now includes all needed C++ runtime files directly
-instead of executing a separate installation.
+The GUI reloads the configuration file immediately after changing.
+Redirections of URLs given by the user are handled automatically now.

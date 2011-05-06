@@ -1,4 +1,4 @@
-6.9 "" (released xx.xx.2011)
+6.9 "Cowboy Bebop" (released 6.5.2011)
 
 Fixes:
 - gui: Correctly reset logger statistics.
@@ -1667,7 +1667,7 @@ Features:
     Type: bugfix
     Changed: linkcheck/checker/ftpurl.py
 
-2.0rc2 "El d?a de la bestia" (released 20.11.2004)
+2.0rc2 "El dia de la bestia" (released 20.11.2004)
 
   * encode version string for --version output
     Type: bugfix
@@ -1835,7 +1835,7 @@ Features:
     Closes: SF bug #1025459
     Changed: linkcheck/url.py, linkcheck/tests/test_url.py
 
-1.13.2 "Zat?ichi" (released 8.9.2004)
+1.13.2 "Zatoichi" (released 8.9.2004)
   * Fix permissions of data files on install to be world readable.
     Type: bugfix
     Closes: SF bug #1022132
