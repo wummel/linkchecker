@@ -88,6 +88,8 @@ This applies only to valid pages, so we can get their content.
 .br
 Use this to check for pages that contain some form of error, for example
 "This page has moved" or "Oracle Application Server error".
+.br
+See section \fBREGULAR EXPRESSIONS\fP for more info.
 .TP
 \fB\-\-warning\-size\-bytes=\fP\fINUMBER\fP
 Print a warning if content size info is available and exceeds the given
@@ -176,11 +178,15 @@ Check but do not recurse into URLs matching the given regular
 expression.
 .br
 This option can be given multiple times.
+.br
+See section \fBREGULAR EXPRESSIONS\fP for more info.
 .TP
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
 Only check syntax of URLs matching the given regular expression.
 .br
 This option can be given multiple times.
+.br
+See section \fBREGULAR EXPRESSIONS\fP for more info.
 .TP
 \fB\-C\fP, \fB\-\-cookies\fP
 Accept and send HTTP cookies according to RFC 2109. Only cookies
