@@ -40,7 +40,6 @@ Description: check websites and HTML documents for broken links
  package.
 
 Package: linkchecker-gui
-Priority: extra
 Architecture: all
 Depends: linkchecker, python-qt4 (>= 4.5), libqt4-sql-sqlite,
  ${python:Depends}, ${misc:Depends}
