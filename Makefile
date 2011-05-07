@@ -139,7 +139,6 @@ doccheck:
 	  linkcheck/gui/help.py \
 	  linkcheck/gui/logger.py \
 	  linkcheck/gui/options.py \
-	  linkcheck/gui/progress.py \
 	  linkcheck/gui/properties.py \
 	  linkcheck/gui/settings.py \
 	  linkcheck/gui/statistics.py \

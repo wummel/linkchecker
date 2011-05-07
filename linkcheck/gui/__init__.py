@@ -22,9 +22,8 @@ from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
 from .properties import set_properties, clear_properties
 from .statistics import set_statistics, clear_statistics
-from .progress import LinkCheckerProgress, StatusLogger
 from .debug import LinkCheckerDebug
-from .logger import GuiLogger, GuiLogHandler
+from .logger import GuiLogger, GuiLogHandler, StatusLogger
 from .help import HelpWindow
 from .options import LinkCheckerOptions
 from .checker import CheckerThread
@@ -50,7 +49,7 @@ def get_app_style ():
     """Return appropriate QStyle object for the current platform to
     be used in QApplication.setStyle().
     Currently prefers Macintosh on OS X, else Plastique.
-    Note that style names are case insensitive.
+    Style names are case insensitive.
 
     See also
     http://doc.trolltech.com/latest/gallery-macintosh.html
@@ -68,6 +67,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     """The main window displaying checked URLs."""
 
     log_url_signal = QtCore.pyqtSignal(object)
+    log_status_signal = QtCore.pyqtSignal(int, int, int, float)
     log_stats_signal = QtCore.pyqtSignal(object)
     error_signal = QtCore.pyqtSignal(str)
 
@@ -83,9 +83,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.settings = Settings(RegistryBase, configuration.AppName)
         # init subdialogs
         self.options = LinkCheckerOptions(parent=self)
-        self.progress = LinkCheckerProgress(parent=self)
         self.debug = LinkCheckerDebug(parent=self)
-        self.checker = CheckerThread()
+        self.checker = CheckerThread(parent=self)
         self.contextmenu = ContextMenu(parent=self)
         self.editor = EditorWindow(parent=self)
         # Note: do not use QT assistant here because of the .exe packaging
@@ -109,7 +108,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.status = Status.idle
         self.actionSave.setEnabled(False)
         msg = self.config_error or _("Ready.")
-        self.set_statusbar(msg)
+        self.set_statusmsg(msg)
 
     def get_qhcpath (self):
         """Helper function to search for the QHC help file in different
@@ -135,13 +134,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         def set_idle ():
             """Set application status to idle."""
             self.status = Status.idle
+            self.set_statusmsg(_("Check finished."))
         self.checker.finished.connect(set_idle)
         self.checker.terminated.connect(set_idle)
         self.log_url_signal.connect(self.model.log_url)
         self.log_stats_signal.connect(self.log_stats)
         self.error_signal.connect(self.internal_error)
         self.options.editor.saved.connect(self.read_config)
-        self.model.rowsInserted.connect(self.treeView.scrollToBottom)
+        self.log_status_signal.connect(self.log_status)
 
     def init_treeview (self):
         """Set treeview model and layout."""
@@ -172,7 +172,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.config["status"] = True
         self.config["status_wait_seconds"] = 2
         self.handler = GuiLogHandler(self.debug.log_msg_signal)
-        status = StatusLogger(self.progress.log_status_signal)
+        status = StatusLogger(self.log_status_signal)
         self.config.init_logging(status, handler=self.handler)
 
     def read_config (self, filename=None):
@@ -202,9 +202,9 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Set application status."""
         self._status = status
         if status == Status.idle:
-            self.progress.hide()
             self.aggregate = None
             self.controlButton.setEnabled(True)
+            self.controlButton.setText(_("Start"))
             self.actionSave.setEnabled(True)
             self.actionDebug.setEnabled(self.options.get_options()["debug"])
             self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
@@ -213,9 +213,13 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
-            self.progress.reset()
-            self.progress.show()
-            self.controlButton.setEnabled(False)
+            # Reset progress information.
+            self.label_active.setText(u"0")
+            self.label_queued.setText(u"0")
+            self.label_checked.setText(u"0")
+            self.set_statusmsg(u"Checking site...")
+            # XXX disable some commands, reset widgets
+            self.controlButton.setText(_("Cancel"))
 
     status = property(get_status, set_status)
 
@@ -299,7 +303,21 @@ Version 2 or later.
         if self.status == Status.idle:
             self.check()
 
-    on_controlButton_clicked = on_urlinput_returnPressed = start
+    on_urlinput_returnPressed = start
+
+    def cancel (self):
+        """Note that checking is canceled."""
+        self.controlButton.setEnabled(False)
+        self.set_statusmsg(_(u"Closing pending connections..."))
+
+    def on_controlButton_clicked (self):
+        """Start or Cancel has been clicked."""
+        if self.status == Status.idle:
+            self.start()
+        elif self.status == Status.checking:
+            self.cancel()
+        else:
+            raise ValueError("Invalid application status %r" % self.status)
 
     def get_url (self):
         """Return URL to check from the urlinput widget."""
@@ -323,20 +341,20 @@ Version 2 or later.
         aggregate = director.get_aggregate(self.config)
         url = self.get_url()
         if not url:
-            self.set_statusbar(_("Error, empty URL"))
+            self.set_statusmsg(_("Error, empty URL"))
             return
-        self.set_statusbar(_("Checking '%s'.") % strformat.limit(url, 40))
+        self.set_statusmsg(_("Checking '%s'.") % strformat.limit(url, 40))
         url_data = checker.get_url_from(url, 0, aggregate)
         try:
             add_intern_pattern(url_data, self.config)
         except UnicodeError:
-            self.set_statusbar(_("Error, invalid URL `%s'.") %
+            self.set_statusmsg(_("Error, invalid URL `%s'.") %
                                   strformat.limit(url, 40))
             return
         aggregate.urlqueue.put(url_data)
         self.aggregate = aggregate
         # check in background
-        self.checker.check(self.aggregate, self.progress)
+        self.checker.check(self.aggregate)
         self.status = Status.checking
 
     def set_properties (self, selected, deselected):
@@ -402,9 +420,18 @@ Version 2 or later.
             event = QtCore.QEvent(QtCore.QEvent.Clipboard)
             QtGui.QApplication.sendEvent(clipboard, event)
 
-    def set_statusbar (self, msg):
-        """Show status message in status bar."""
-        self.statusBar.showMessage(msg)
+    def set_statusmsg (self, msg):
+        """Show given status message."""
+        if len(msg) > 30:
+            self.label_status.setToolTip(msg)
+            msg = msg[:27]+u"..."
+        self.label_status.setText(msg)
+
+    def log_status (self, checked, in_progress, queued, duration):
+        """Update number of checked, active and queued URLs."""
+        self.label_checked.setText(u"%d" % checked)
+        self.label_active.setText(u"%d" % in_progress)
+        self.label_queued.setText(u"%d" % queued)
 
     def log_stats (self, statistics):
         """Set statistic information for selected URL."""

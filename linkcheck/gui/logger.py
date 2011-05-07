@@ -56,3 +56,15 @@ class GuiLogger (Logger):
     def end_output (self):
         """Emit statistic data which gets logged in the main window."""
         self.log_stats_signal.emit(self.stats)
+
+
+class StatusLogger (object):
+    """GUI status logger, signaling to progress labels."""
+
+    def __init__ (self, signal):
+        """Store given signal object."""
+        self.signal = signal
+
+    def log_status (self, checked, in_progress, queued, duration):
+        """Emit signal with given status information."""
+        self.signal.emit(checked, in_progress, queued, duration)
