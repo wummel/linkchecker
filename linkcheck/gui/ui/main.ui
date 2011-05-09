@@ -116,26 +116,6 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_15">
-        <property name="text">
-         <string>Status:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_status">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="label_32">
         <property name="text">
          <string>Active:</string>
@@ -196,20 +176,43 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Status:</string>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_status">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_busy">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>16</horstretch>
+          <verstretch>16</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
          <size>
-          <width>80</width>
-          <height>20</height>
+          <width>16</width>
+          <height>16</height>
          </size>
         </property>
-       </spacer>
+        <property name="text">
+         <string>O</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

@@ -1,5 +1,9 @@
 7.0 "" (released xx.xx.2011)
 
+Changes:
+- Display status info into GUI main window instead of modal window.
+  Closes: SF bug #3297252
+
 
 6.9 "Cowboy Bebop" (released 6.5.2011)
 

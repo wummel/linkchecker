@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="icons">
     <file>clear.png</file>
+    <file>busy.gif</file>
     <file>save.png</file>
     <file>copy.png</file>
     <file>about.png</file>

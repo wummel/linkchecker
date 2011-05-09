@@ -63,6 +63,13 @@ def get_app_style ():
     return QtGui.QStyleFactory.create(style)
 
 
+def get_icon (name):
+    """Return QIcon with given pixmap resource name."""
+    icon = QtGui.QIcon()
+    icon.addPixmap(QtGui.QPixmap(name), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    return icon
+
+
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     """The main window displaying checked URLs."""
 
@@ -90,6 +97,12 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         # Note: do not use QT assistant here because of the .exe packaging
         self.assistant = HelpWindow(self, self.get_qhcpath())
         self.config_error = None
+        self.icon_start = get_icon(":/icons/start.png")
+        self.icon_stop = get_icon(":/icons/stop.png")
+        self.movie = QtGui.QMovie(":/icons/busy.gif")
+        self.movie.setCacheMode(QtGui.QMovie.CacheAll)
+        self.label_busy.setText(u"")
+        self.label_busy.setMovie(self.movie)
         # init the rest
         self.init_treeview()
         self.connect_widgets()
@@ -135,6 +148,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             """Set application status to idle."""
             self.status = Status.idle
             self.set_statusmsg(_("Check finished."))
+            self.controlButton.clicked.disconnect(self.checker.cancel)
         self.checker.finished.connect(set_idle)
         self.checker.terminated.connect(set_idle)
         self.log_url_signal.connect(self.model.log_url)
@@ -203,13 +217,17 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self._status = status
         if status == Status.idle:
             self.aggregate = None
-            self.controlButton.setEnabled(True)
             self.controlButton.setText(_("Start"))
+            self.controlButton.setIcon(self.icon_start)
+            self.controlButton.setEnabled(True)
             self.actionSave.setEnabled(True)
             self.actionDebug.setEnabled(self.options.get_options()["debug"])
             self.treeView.sortByColumn(0, QtCore.Qt.AscendingOrder)
             self.treeView.setSortingEnabled(True)
             self.treeView.scrollToTop()
+            self.movie.stop()
+            self.label_busy.hide()
+            self.menubar.setEnabled(True)
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
@@ -218,8 +236,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.label_queued.setText(u"0")
             self.label_checked.setText(u"0")
             self.set_statusmsg(u"Checking site...")
-            # XXX disable some commands, reset widgets
-            self.controlButton.setText(_("Cancel"))
+            # disable commands
+            self.menubar.setEnabled(False)
+            # reset widgets
+            self.controlButton.setText(_("Stop"))
+            self.controlButton.setIcon(self.icon_stop)
+            self.controlButton.clicked.connect(self.checker.cancel)
+            self.movie.start()
+            self.label_busy.show()
 
     status = property(get_status, set_status)
 
@@ -310,6 +334,7 @@ Version 2 or later.
         self.controlButton.setEnabled(False)
         self.set_statusmsg(_(u"Closing pending connections..."))
 
+    @QtCore.pyqtSlot()
     def on_controlButton_clicked (self):
         """Start or Cancel has been clicked."""
         if self.status == Status.idle:

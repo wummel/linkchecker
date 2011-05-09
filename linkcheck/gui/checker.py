@@ -29,15 +29,15 @@ class CheckerThread (QtCore.QThread):
     def check (self, aggregate):
         """Set check variables and start the thread."""
         self.aggregate = aggregate
-        self.parent().controlButton.clicked.connect(self.cancel)
         # setup the thread and call run()
         self.start()
 
     def cancel (self):
         """Reset check variables and set stop flag."""
         if self.aggregate is not None:
-            self.aggregate.cancel()
+            aggregate = self.aggregate
             self.aggregate = None
+            aggregate.cancel()
 
     def run (self):
         """Start checking."""
