@@ -228,6 +228,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.movie.stop()
             self.label_busy.hide()
             self.menubar.setEnabled(True)
+            self.urlinput.setEnabled(True)
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
@@ -238,6 +239,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.set_statusmsg(u"Checking site...")
             # disable commands
             self.menubar.setEnabled(False)
+            self.urlinput.setEnabled(False)
             # reset widgets
             self.controlButton.setText(_("Stop"))
             self.controlButton.setIcon(self.icon_stop)
