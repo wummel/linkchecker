@@ -124,7 +124,7 @@ class Settings (object):
         self.settings.beginGroup('recent')
         data = self.settings.value('documents').toStringList()
         self.settings.endGroup()
-        return data
+        return [unicode(doc) for doc in data]
 
     def save_recent_documents (self, data):
         """Save list of recent documents."""
