@@ -119,6 +119,19 @@ class Settings (object):
         self.settings.setValue(key, QtCore.QVariant(data[key]))
         self.settings.endGroup()
 
+    def read_recent_documents (self):
+        """Return list of recent documents."""
+        self.settings.beginGroup('recent')
+        data = self.settings.value('documents').toStringList()
+        self.settings.endGroup()
+        return data
+
+    def save_recent_documents (self, data):
+        """Save list of recent documents."""
+        self.settings.beginGroup('recent')
+        self.settings.setValue('documents', QtCore.QVariant(data))
+        self.settings.endGroup()
+
     def sync (self):
         """Synchronize QSettings object to disk."""
         self.settings.sync()
