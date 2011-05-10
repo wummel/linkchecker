@@ -52,11 +52,11 @@ online.png:	$(OXYGEN)/actions/document-open-remote.png
 options.png:	$(OXYGEN)/categories/preferences-system-network.png
 	cp $< $@
 
-preferences.png:	$(OXYGEN)/categories/preferences-other.png
+preferences.png: $(OXYGEN)/categories/preferences-other.png
 	cp $< $@
 
 clear.png:	$(OXYGEN)/actions/edit-clear-locationbar-rtl.png
 	cp $< $@
 
 clean:
-	rm -f *.png
+	rm -f $(ICONS)
