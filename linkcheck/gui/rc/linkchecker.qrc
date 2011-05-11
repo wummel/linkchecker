@@ -1,7 +1,7 @@
 <RCC>
   <qresource prefix="icons">
-    <file>arrow_down.png</file>
     <file>clear.png</file>
+    <file>arrow_down.png</file>
     <file>busy.gif</file>
     <file>save.png</file>
     <file>copy.png</file>
