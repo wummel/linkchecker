@@ -33,6 +33,7 @@ from .updater import UpdateDialog
 from .urlmodel import UrlItemModel
 from .urlsave import urlsave
 from .settings import Settings
+from .recentdocs import RecentDocumentModel
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat, fileutil, LinkCheckerError
 from ..containers import enum
@@ -82,8 +83,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Initialize UI."""
         super(LinkCheckerMain, self).__init__(parent)
         self.setupUi(self)
-        if url:
-            self.urlinput.setText(url)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle(configuration.App)
         # app settings
@@ -104,11 +103,20 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.label_busy.setText(u"")
         self.label_busy.setMovie(self.movie)
         # init the rest
+        self.init_url(url)
         self.init_treeview()
         self.connect_widgets()
         self.init_config()
         self.read_config()
         self.init_app()
+
+    def init_url (self, url):
+        """Initialize URL input."""
+        documents = self.settings.read_recent_documents()
+        self.recent = RecentDocumentModel(parent=self, documents=documents)
+        self.urlinput.setModel(self.recent)
+        if url:
+            self.urlinput.setText(url)
 
     def init_app (self):
         """Set window size and position, GUI options and reset status."""
@@ -270,6 +278,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.settings.save_geometry(dict(size=self.size(), pos=self.pos()))
         self.settings.save_treeviewcols(self.get_treeviewcols())
         self.settings.save_options(self.options.get_options())
+        self.settings.save_recent_documents(self.recent.get_documents())
         self.settings.sync()
         self.config.remove_loghandler(self.handler)
         if e is not None:
@@ -378,6 +387,7 @@ Version 2 or later.
             self.set_statusmsg(_("Error, invalid URL `%s'.") %
                                   strformat.limit(url, 40))
             return
+        self.recent.add_document(url)
         aggregate.urlqueue.put(url_data)
         self.aggregate = aggregate
         # check in background

@@ -1,3 +1,1 @@
-- [7.0] Remember last X checked URLs in GUI. X is configurable.
-  SF bug #3297243
 - Port to Python 3.x (will not happen anytime soon though)
