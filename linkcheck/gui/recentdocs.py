@@ -14,8 +14,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-import os
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
 
 EmptyQVariant = QtCore.QVariant()
 
@@ -23,10 +22,11 @@ EmptyQVariant = QtCore.QVariant()
 class RecentDocumentModel(QtCore.QAbstractListModel):
     """Model class for list of recent documents."""
 
-    def __init__ (self, parent=None, documents=[]):
+    def __init__ (self, parent=None, documents=[], maxentries=10):
         """Set document list."""
         super(RecentDocumentModel, self).__init__(parent)
-        self.documents = documents[:]
+        self.maxentries = maxentries
+        self.documents = documents[:maxentries]
 
     def rowCount (self, parent=QtCore.QModelIndex()):
         """Return number of documents."""
@@ -71,8 +71,14 @@ class RecentDocumentModel(QtCore.QAbstractListModel):
         assert isinstance(document, unicode)
         while document in self.documents:
             row = self.documents.index(document)
-            self.beginRemoveRows(index, row, row)
-            del self.documents[i]
+            self.beginRemoveRows(QtCore.QModelIndex(), row, row)
+            del self.documents[row]
+            self.endRemoveRows()
+        while len(self.documents) >= self.maxentries:
+            row = len(self.documents) - 1
+            self.beginRemoveRows(QtCore.QModelIndex(), row, row)
+            del self.documents[row]
+            self.endRemoveRows()
         self.beginInsertRows(QtCore.QModelIndex(), 0, 0)
         self.documents.insert(0, document)
         self.endInsertRows()
