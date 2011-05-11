@@ -20,7 +20,7 @@ set SZ_EXE="C:\Programme\7-Zip\7z.exe"
 for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
 set PORTDIR=LinkChecker-%VERSION%
 rd /s /q build > nul
-call windows\build.bat
+call %~dp0\build.bat
 rd /s /q dist > nul
 %PYDIR%\python.exe setup.py py2exe
 
